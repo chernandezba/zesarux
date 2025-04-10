@@ -55,7 +55,7 @@ extern z80_byte mmc_last_port_value_1f;
 extern void mmc_enable(int tarjeta);
 extern void mmc_disable(int tarjeta);
 
-extern void mmc_reset(int card);
+extern void mmc_reset(void);
 
 extern int mmc_read_file_to_memory(int tarjeta);
 
@@ -67,9 +67,9 @@ extern z80_bit mmc_write_protection[];
 extern z80_bit mmc_persistent_writes[];
 
 
-extern z80_byte mmc_last_command[];
+extern z80_byte mmc_last_command;
 
-extern z80_byte mmc_r1[];
+extern z80_byte mmc_r1;
 
 extern char mmc_filemap_name[MMC_MAX_CARDS][PATH_MAX];
 extern int mmc_filemap_from_esxdos[];

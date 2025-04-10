@@ -5952,19 +5952,18 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
     }
 
-    int i;
-    for (i=0;i<MMC_MAX_CARDS;i++) {
-        if (mmc_enabled[i].v) {
-            sprintf (buf_linea,"MMC Registers Card %d\n",i);
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea," State:        %s\n",(mmc_r1[i]&1 ? "Idle" : "Not Idle") );
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    if (mmc_enabled[0].v || mmc_enabled[1].v) {
+        sprintf (buf_linea,"MMC Registers\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-            sprintf (buf_linea," Last Command: %02X\n",mmc_last_command[i]);
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        }
+        sprintf (buf_linea," State:        %s\n",(mmc_r1&1 ? "Idle" : "Not Idle") );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," Last Command: %02X\n",mmc_last_command);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
     }
+
 
     if (superupgrade_enabled.v) {
       sprintf (buf_linea,"Superupgrade 43B port: %02X\n",superupgrade_puerto_43b);

@@ -216,3 +216,10 @@ ok*task manager residos
 TODO: menu_storage_mmc_file(0); en download_tbblue, menu_storage_mmc_emulation
 -funciones de mmc.c que no son de i/o no deben usar [mmc_card_selected], sino parametro [tarjeta] que venga como argumento de la función
 -pendiente implementar mmc_mirror_second_card de nuevo
+
+esto quitarlo en operaciones.c
+
+				//Parece que F6 es la tarjeta 0 en divmmc
+				if (value==0xF6) value=0xFE;
+				mmc_cs(value);
+			}

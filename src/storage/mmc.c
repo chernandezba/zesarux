@@ -134,42 +134,45 @@ int mmc_tarjeta_invalida_seleccionada=0;
 
 z80_byte mmc_last_port_value_1f=0;
 
-//Variables que son arrays para cada una de las tarjetas
-
-
 //Parametros enviados en operacion de escritura
-z80_byte mmc_parameters_sent[MMC_MAX_CARDS][10];
+z80_byte mmc_parameters_sent[10];
 
 //A 0 cuando se ha recibido todos los valores correctos de csd
-int mmc_csd_index[MMC_MAX_CARDS]={-1,-1};
+int mmc_csd_index=-1;
 //A 0 cuando se ha recibido todos los valores correctos de cid
-int mmc_cid_index[MMC_MAX_CARDS]={-1,-1};
+int mmc_cid_index=-1;
 
 //A 0 cuando se ha recibido todos los valores correctos de ocr
-int mmc_ocr_index[MMC_MAX_CARDS]={-1,-1};
+int mmc_ocr_index=-1;
 
 //A 0 cuando se ha recibido todos los valores correctos de read block
-int mmc_read_index[MMC_MAX_CARDS]={-1,-1};
+int mmc_read_index=-1;
 
 //A 0 cuando se ha recibido todos los valores correctos de write block
-int mmc_write_index[MMC_MAX_CARDS]={-1,-1};
+int mmc_write_index=-1;
 
 //Direcciones de inicio de lectura y escritura de datos
-unsigned int mmc_write_address[MMC_MAX_CARDS],mmc_read_address[MMC_MAX_CARDS];
+unsigned int mmc_write_address;
+unsigned int mmc_read_address;
+z80_byte mmc_last_command=0;
+int mmc_index_command=0;
 
-z80_bit mmc_enabled[MMC_MAX_CARDS]={{0},{0}};
-
-z80_byte mmc_last_command[MMC_MAX_CARDS]={0,0};
-
-int mmc_index_command[MMC_MAX_CARDS]={0,0};
-
-//TODO: este mmc_r1[mmc_card_selected] necesita una aclaracion o mejora. Parece los bits CURRENT_STATE de R1 pero no es justo lo mismo
+//TODO: este mmc_r1 necesita una aclaracion o mejora. Parece los bits CURRENT_STATE de R1 pero no es justo lo mismo
 //Aqui lo pongo a 1 para indicar idle, a 0 para no idle. Pero esos bits de CURRENT_STATE son:
 //0 = idle
 //1 = ready
 //2 = ident
 // ....
-z80_byte mmc_r1[MMC_MAX_CARDS]={0,0};
+z80_byte mmc_r1=0;
+
+
+
+
+//Variables que son arrays para cada una de las tarjetas
+
+
+z80_bit mmc_enabled[MMC_MAX_CARDS]={{0},{0}};
+
 
 //64 MB
 long long int mmc_size[MMC_MAX_CARDS]={64*1024*1024,64*1024*1024};
@@ -275,7 +278,7 @@ void mmc_flush_flash_to_disk_una_tarjeta(int tarjeta)
         }
 
 
-        debug_printf (VERBOSE_INFO,"Flushing MMC to disk");
+        debug_printf (VERBOSE_INFO,"Flushing MMC Card %d to disk",tarjeta+1);
 
 
         FILE *ptr_mmcfile;
@@ -616,11 +619,11 @@ Max capacity teniendo en cuenta sectores de (2^15)=32768 bytes:
 
 }
 
-void mmc_reset(int card)
+void mmc_reset(void)
 {
         //Resetear estado
-        mmc_index_command[card]=0;
-        mmc_r1[card]=0;
+        mmc_index_command=0;
+        mmc_r1=0;
 
 }
 
@@ -630,7 +633,7 @@ void mmc_enable(int tarjeta)
         debug_printf (VERBOSE_INFO,"Enabling mmc");
         mmc_enabled[tarjeta].v=1;
 
-	mmc_reset(tarjeta);
+	    mmc_reset();
 
         mmc_memory_pointer[tarjeta]=NULL;
 
@@ -689,18 +692,18 @@ void mmc_cs(z80_byte value)
     if (mmc_tarjeta_invalida_seleccionada) return;
 
 	//Hay que ir a idle??
-	mmc_r1[mmc_card_selected]=1;
+	mmc_r1=1;
 
-	mmc_last_command[mmc_card_selected]=0;
+	mmc_last_command=0;
 
-	mmc_index_command[mmc_card_selected]=0;
+	mmc_index_command=0;
 
 
-	mmc_read_index[mmc_card_selected]=-1;
-	mmc_write_index[mmc_card_selected]=-1;
-	mmc_csd_index[mmc_card_selected]=-1;
-	mmc_cid_index[mmc_card_selected]=-1;
-	mmc_ocr_index[mmc_card_selected]=-1;
+	mmc_read_index=-1;
+	mmc_write_index=-1;
+	mmc_csd_index=-1;
+	mmc_cid_index=-1;
+	mmc_ocr_index=-1;
 
     //printf("mmc_cs value %02XH\n",value);
 
@@ -824,14 +827,14 @@ z80_byte mmc_read(void)
 	z80_byte value;
 
 	//Si no esta en idle
-	if ((mmc_r1[mmc_card_selected]&1)==0) {
-		return mmc_r1[mmc_card_selected];
+	if ((mmc_r1&1)==0) {
+		return mmc_r1;
 	}
 
-    //printf("MMC read. mmc_last_command[mmc_card_selected]=%02XH\n",mmc_last_command[mmc_card_selected]);
+    //printf("MMC read. mmc_last_command=%02XH\n",mmc_last_command);
 
-	//Actuar segun mmc_last_command[mmc_card_selected]
-	switch (mmc_last_command[mmc_card_selected]) {
+	//Actuar segun mmc_last_command
+	switch (mmc_last_command) {
 
 		case 0x00:
 			//Viene de un cs
@@ -855,7 +858,7 @@ z80_byte mmc_read(void)
 		case 0x48:
 			debug_printf (VERBOSE_DEBUG,"MMC Read command CMD8 SEND_IF_COND unhandled");
 
-			//mmc_r1[mmc_card_selected] |=4; //Devolver error
+			//mmc_r1 |=4; //Devolver error
 
             //Parche para poder actualizar desde la bios de zxuno
             if (MACHINE_IS_ZXUNO) {
@@ -870,41 +873,41 @@ z80_byte mmc_read(void)
 
 		case 0x49:
 			debug_printf (VERBOSE_PARANOID,"MMC Read command SEND_CSD");
-			if (mmc_csd_index[mmc_card_selected]>=0) {
+			if (mmc_csd_index>=0) {
 				//valor primero, byte ncr time
-				if (mmc_csd_index[mmc_card_selected]==0) {
+				if (mmc_csd_index==0) {
 					//printf ("retornando ncr\n");
 					value=0xff;
 				}
 
 				//valor segundo, command response 0
-				if (mmc_csd_index[mmc_card_selected]==1) {
+				if (mmc_csd_index==1) {
 					//printf ("retornando command response\n");
 					value=0;
 				}
 
 
 				//Valor tercero feh
-				if (mmc_csd_index[mmc_card_selected]==2) {
+				if (mmc_csd_index==2) {
 					//printf ("retornando feh\n");
 					value=0xFE;
 				}
 
 				//Indice de 3-18, array csd
-				if (mmc_csd_index[mmc_card_selected]>=3 && mmc_csd_index[mmc_card_selected]<=18) {
-					//printf ("retornando valor csd indice: %d\n",mmc_csd_index[mmc_card_selected]-3);
-					value=mmc_csd[mmc_csd_index[mmc_card_selected]-3];
+				if (mmc_csd_index>=3 && mmc_csd_index<=18) {
+					//printf ("retornando valor csd indice: %d\n",mmc_csd_index-3);
+					value=mmc_csd[mmc_csd_index-3];
 				}
 
 				//CRC. A FFh
-				if (mmc_csd_index[mmc_card_selected]==19 || mmc_csd_index[mmc_card_selected]==20) {
+				if (mmc_csd_index==19 || mmc_csd_index==20) {
 					//printf ("retornando CRC\n");
 					value=0xFF;
 				}
 
 				//Si final
-				mmc_csd_index[mmc_card_selected]++;
-				if (mmc_csd_index[mmc_card_selected]==21) mmc_csd_index[mmc_card_selected]=-1;
+				mmc_csd_index++;
+				if (mmc_csd_index==21) mmc_csd_index=-1;
 				return value;
 			}
 
@@ -916,40 +919,40 @@ z80_byte mmc_read(void)
 
 		case 0x4A:
 			debug_printf (VERBOSE_PARANOID,"MMC Read command SEND_CID");
-                        if (mmc_cid_index[mmc_card_selected]>=0) {
+                        if (mmc_cid_index>=0) {
                                 //valor primero, byte ncr time
-                                if (mmc_cid_index[mmc_card_selected]==0) {
+                                if (mmc_cid_index==0) {
                                         //printf ("retornando ncr\n");
                                         value=0xff;
                                 }
 
                                 //valor segundo, command response 0
-                                if (mmc_cid_index[mmc_card_selected]==1) {
+                                if (mmc_cid_index==1) {
                                         //printf ("retornando command response\n");
                                         value=0;
                                 }
 
                                 //Valor tercero feh
-                                if (mmc_cid_index[mmc_card_selected]==2) {
+                                if (mmc_cid_index==2) {
                                         //printf ("retornando feh\n");
                                         value=0xFE;
                                 }
 
                                 //Indice de 3-18, array csd
-                                if (mmc_cid_index[mmc_card_selected]>=3 && mmc_cid_index[mmc_card_selected]<=18) {
-                                        //printf ("retornando valor csd indice: %d\n",mmc_cid_index[mmc_card_selected]-3);
-                                        value=mmc_cid[mmc_cid_index[mmc_card_selected]-3];
+                                if (mmc_cid_index>=3 && mmc_cid_index<=18) {
+                                        //printf ("retornando valor csd indice: %d\n",mmc_cid_index-3);
+                                        value=mmc_cid[mmc_cid_index-3];
                                 }
 
                                 //CRC. A FFh
-                                if (mmc_cid_index[mmc_card_selected]==19 || mmc_cid_index[mmc_card_selected]==20) {
+                                if (mmc_cid_index==19 || mmc_cid_index==20) {
                                         //printf ("retornando CRC\n");
                                         value=0xFF;
                                 }
 
                                 //Si final
-                                mmc_cid_index[mmc_card_selected]++;
-                                if (mmc_cid_index[mmc_card_selected]==21) mmc_cid_index[mmc_card_selected]=-1;
+                                mmc_cid_index++;
+                                if (mmc_cid_index==21) mmc_cid_index=-1;
                                 return value;
                         }
 
@@ -971,44 +974,44 @@ z80_byte mmc_read(void)
 
 
 		case 0x51:
-			if (mmc_read_index[mmc_card_selected]>=0) {
+			if (mmc_read_index>=0) {
 
 				//Debug vario
-				if (mmc_read_index[mmc_card_selected]>=3 && mmc_read_index[mmc_card_selected]<=514) {
+				if (mmc_read_index>=3 && mmc_read_index<=514) {
 					debug_printf (VERBOSE_PARANOID,"MMC Read command READ_SINGLE_BLOCK. Adress=%XH Index=%d PC=%d",
-					mmc_read_address[mmc_card_selected]+mmc_read_index[mmc_card_selected]-3,mmc_read_index[mmc_card_selected],reg_pc);
+					mmc_read_address+mmc_read_index-3,mmc_read_index,reg_pc);
 				}
-				else debug_printf (VERBOSE_PARANOID,"MMC Read command READ_SINGLE_BLOCK. Index=%d PC=%d",mmc_read_index[mmc_card_selected],reg_pc);
+				else debug_printf (VERBOSE_PARANOID,"MMC Read command READ_SINGLE_BLOCK. Index=%d PC=%d",mmc_read_index,reg_pc);
 
                                 //valor primero, byte ncr time
-                                if (mmc_read_index[mmc_card_selected]==0) value=0xff;
+                                if (mmc_read_index==0) value=0xff;
 
                                 //valor segundo, command response 0
-                                if (mmc_read_index[mmc_card_selected]==1) value=0;
+                                if (mmc_read_index==1) value=0;
 
                                 //Valor tercero feh
-                                if (mmc_read_index[mmc_card_selected]==2) value=0xFE;
+                                if (mmc_read_index==2) value=0xFE;
 
                                 //Indice de 3-514, sector
-                                if (mmc_read_index[mmc_card_selected]>=3 && mmc_read_index[mmc_card_selected]<=514) {
-					value=mmc_read_byte_memory(mmc_read_address[mmc_card_selected]+mmc_read_index[mmc_card_selected]-3);
-					//printf ("Retornando byte numero %d con contenido 0x%02X ('%c')\n",mmc_read_index[mmc_card_selected]-3,value,
+                                if (mmc_read_index>=3 && mmc_read_index<=514) {
+					value=mmc_read_byte_memory(mmc_read_address+mmc_read_index-3);
+					//printf ("Retornando byte numero %d con contenido 0x%02X ('%c')\n",mmc_read_index-3,value,
 					//(value>=32 && value<=127 ? value : '?') );
 				}
 
                                 //CRC. A FFh
                                 /*
                                 Nota: no estoy seguro viendo mi codigo si este crc se pretende que sean 1 byte o 2
-                                Porque tal y como está ahora, será 1 byte de crc. Si vemos sobre mmc_read_index[mmc_card_selected]:
-                                mmc_read_index[mmc_card_selected]=514. ultimo byte de datos
-                                mmc_read_index[mmc_card_selected]=515. se asigna value=crc=255. Se retorna ese value. Al incrementarse mmc_read_index[mmc_card_selected] pasa a ser 516 y luego a -1
-                                mmc_read_index[mmc_card_selected]=516. se asigna value=crc=255. Pero aqui NO se llega nunca pues mmc_read_index[mmc_card_selected] pasa de 515 a 516 y a -1 de golpe
+                                Porque tal y como está ahora, será 1 byte de crc. Si vemos sobre mmc_read_index:
+                                mmc_read_index=514. ultimo byte de datos
+                                mmc_read_index=515. se asigna value=crc=255. Se retorna ese value. Al incrementarse mmc_read_index pasa a ser 516 y luego a -1
+                                mmc_read_index=516. se asigna value=crc=255. Pero aqui NO se llega nunca pues mmc_read_index pasa de 515 a 516 y a -1 de golpe
                                 */
-                                if (mmc_read_index[mmc_card_selected]==515 || mmc_read_index[mmc_card_selected]==516) value=0xFF;
+                                if (mmc_read_index==515 || mmc_read_index==516) value=0xFF;
 
                                 //Si final
-                                mmc_read_index[mmc_card_selected]++;
-                                if (mmc_read_index[mmc_card_selected]==516) mmc_read_index[mmc_card_selected]=-1;
+                                mmc_read_index++;
+                                if (mmc_read_index==516) mmc_read_index=-1;
 
 
                                 return value;
@@ -1025,21 +1028,21 @@ z80_byte mmc_read(void)
 
 		//Este comando solo testeado en el arranque del Next. Tambien lo usa el Atic Atac
 		case 0x52:
-			if (mmc_read_index[mmc_card_selected]>=0) {
+			if (mmc_read_index>=0) {
 
-                //printf("READ_MULTIPLE_BLOCK. mmc_read_index[mmc_card_selected]: %d\n",mmc_read_index[mmc_card_selected]);
+                //printf("READ_MULTIPLE_BLOCK. mmc_read_index: %d\n",mmc_read_index);
 
 				//Debug vario
                 /*
-				if (mmc_read_index[mmc_card_selected]>=3 && mmc_read_index[mmc_card_selected]<=514) {
+				if (mmc_read_index>=3 && mmc_read_index<=514) {
 					debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Adress=%XH Index=%d PC=%d A=%d BC=%d",
-					    mmc_read_address[mmc_card_selected]+mmc_read_index[mmc_card_selected]-3,mmc_read_index[mmc_card_selected],reg_pc,reg_a,reg_bc);
+					    mmc_read_address+mmc_read_index-3,mmc_read_index,reg_pc,reg_a,reg_bc);
 				}
-				else debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Index=%d PC=%d",mmc_read_index[mmc_card_selected],reg_pc);
+				else debug_printf (VERBOSE_PARANOID,"MMC Read command READ_MULTIPLE_BLOCK. Index=%d PC=%d",mmc_read_index,reg_pc);
                 */
 
                 //valor primero, byte ncr time
-                if (mmc_read_index[mmc_card_selected]==0) {
+                if (mmc_read_index==0) {
                     value=0xff;
                     //sleep(1);
                     //TODO: atic atac requiere que el primer byte no sea ff, no entiendo del todo por que
@@ -1050,39 +1053,39 @@ z80_byte mmc_read(void)
                 }
 
                 //valor segundo, command response 0
-                if (mmc_read_index[mmc_card_selected]==1) value=0;
+                if (mmc_read_index==1) value=0;
 
                 //Valor tercero feh
-                if (mmc_read_index[mmc_card_selected]==2) value=0xFE;
+                if (mmc_read_index==2) value=0xFE;
 
                 //Indice de 3-514, sector
-                if (mmc_read_index[mmc_card_selected]>=3 && mmc_read_index[mmc_card_selected]<=514) {
-                    value=mmc_read_byte_memory(mmc_read_address[mmc_card_selected]+mmc_read_index[mmc_card_selected]-3);
-                    //printf ("Retornando byte numero %d con contenido 0x%02X ('%c')\n",mmc_read_index[mmc_card_selected]-3,value,
+                if (mmc_read_index>=3 && mmc_read_index<=514) {
+                    value=mmc_read_byte_memory(mmc_read_address+mmc_read_index-3);
+                    //printf ("Retornando byte numero %d con contenido 0x%02X ('%c')\n",mmc_read_index-3,value,
                     //    (value>=32 && value<=127 ? value : '?') );
                 }
 
                 //cuando se han leido los 512 bytes, ir al siguiente sector
-                if (mmc_read_index[mmc_card_selected]==514) mmc_read_index[mmc_card_selected]=515;
+                if (mmc_read_index==514) mmc_read_index=515;
 
 				/*
 
 
                                 //CRC. A FFh
-                                if (mmc_read_index[mmc_card_selected]==515 || mmc_read_index[mmc_card_selected]==516) value=0xFF;
+                                if (mmc_read_index==515 || mmc_read_index==516) value=0xFF;
 
 				*/
 
                 //Si final
-                mmc_read_index[mmc_card_selected]++;
-                if (mmc_read_index[mmc_card_selected]==516) mmc_read_index[mmc_card_selected]=-1;
+                mmc_read_index++;
+                if (mmc_read_index==516) mmc_read_index=-1;
 
 
                 //Siguiente bloque a leer
-                if (mmc_read_index[mmc_card_selected]==-1) {
-                    mmc_read_index[mmc_card_selected]=0;
-                    mmc_read_address[mmc_card_selected] +=512;
-                    //debug_printf (VERBOSE_PARANOID,"MMC: After read 512 bytes on READ_MULTIPLE_BLOCK. Jumping to next Block Read. mmc_read_address[mmc_card_selected]=%XH",mmc_read_address[mmc_card_selected]);
+                if (mmc_read_index==-1) {
+                    mmc_read_index=0;
+                    mmc_read_address +=512;
+                    //debug_printf (VERBOSE_PARANOID,"MMC: After read 512 bytes on READ_MULTIPLE_BLOCK. Jumping to next Block Read. mmc_read_address=%XH",mmc_read_address);
                 }
 
                 return value;
@@ -1099,29 +1102,29 @@ z80_byte mmc_read(void)
 
                 case 0x58:
 			debug_printf (VERBOSE_PARANOID,"MMC Read command WRITE_BLOCK");
-                        if (mmc_write_index[mmc_card_selected]>=0) {
-				//printf ("leyendo status codigo 0x58 con mmc_write_index[mmc_card_selected]: %d\n",mmc_write_index[mmc_card_selected]);
+                        if (mmc_write_index>=0) {
+				//printf ("leyendo status codigo 0x58 con mmc_write_index: %d\n",mmc_write_index);
 
                                 //valor primero, byte ncr time
-                                if (mmc_write_index[mmc_card_selected]==0) value=0xff;
+                                if (mmc_write_index==0) value=0xff;
 
                                 //valor segundo, command response 0
-                                if (mmc_write_index[mmc_card_selected]==1) value=0;
+                                if (mmc_write_index==1) value=0;
 
 
 				//valores siguientes
-				if (mmc_write_index[mmc_card_selected]==2) value=0xff;
-				if (mmc_write_index[mmc_card_selected]==3) value=0xff;
+				if (mmc_write_index==2) value=0xff;
+				if (mmc_write_index==3) value=0xff;
 
 				//xxx0sss1
 				//sss: status:
 				//010 data accepted
-				if (mmc_write_index[mmc_card_selected]==4) value=4+1;
+				if (mmc_write_index==4) value=4+1;
 
 
-				if (mmc_write_index[mmc_card_selected]>=5) value=4+1;
+				if (mmc_write_index>=5) value=4+1;
 
-				mmc_write_index[mmc_card_selected]++;
+				mmc_write_index++;
 
                                 return value;
 
@@ -1135,34 +1138,34 @@ z80_byte mmc_read(void)
 
                 case 0x7A:
 			debug_printf (VERBOSE_PARANOID,"MMC Read command READ_OCR");
-                        if (mmc_ocr_index[mmc_card_selected]>=0) {
+                        if (mmc_ocr_index>=0) {
                                 //valor primero, byte ncr time
-                                if (mmc_ocr_index[mmc_card_selected]==0) {
+                                if (mmc_ocr_index==0) {
                                         //printf ("retornando ncr\n");
                                         value=0xff;
                                 }
 
                                 //valor segundo, command response 0
-                                if (mmc_ocr_index[mmc_card_selected]==1) {
+                                if (mmc_ocr_index==1) {
                                         //printf ("retornando command response\n");
                                         value=0;
                                 }
 
                                 //Indice de 2-6, array ocr
-                                if (mmc_ocr_index[mmc_card_selected]>=2 && mmc_ocr_index[mmc_card_selected]<=6) {
-                                        //printf ("retornando valor ocr indice: %d\n",mmc_ocr_index[mmc_card_selected]-2);
-                                        value=mmc_ocr[mmc_ocr_index[mmc_card_selected]-2];
+                                if (mmc_ocr_index>=2 && mmc_ocr_index<=6) {
+                                        //printf ("retornando valor ocr indice: %d\n",mmc_ocr_index-2);
+                                        value=mmc_ocr[mmc_ocr_index-2];
                                 }
 
                                 //CRC. A FFh
-                                if (mmc_ocr_index[mmc_card_selected]==7 || mmc_ocr_index[mmc_card_selected]==8) {
+                                if (mmc_ocr_index==7 || mmc_ocr_index==8) {
                                         //printf ("retornando CRC\n");
                                         value=0xFF;
                                 }
 
                                 //Si final
-                                mmc_ocr_index[mmc_card_selected]++;
-                                if (mmc_ocr_index[mmc_card_selected]==9) mmc_ocr_index[mmc_card_selected]=-1;
+                                mmc_ocr_index++;
+                                if (mmc_ocr_index==9) mmc_ocr_index=-1;
                                 return value;
                         }
 
@@ -1174,9 +1177,9 @@ z80_byte mmc_read(void)
 
 
 		default:
-			debug_printf (VERBOSE_DEBUG,"Reading parameter for MMC unknown command 0x%02X",mmc_last_command[mmc_card_selected]);
+			debug_printf (VERBOSE_DEBUG,"Reading parameter for MMC unknown command 0x%02X",mmc_last_command);
 
-            //printf ("Reading parameter for MMC unknown command 0x%02X\n",mmc_last_command[mmc_card_selected]);
+            //printf ("Reading parameter for MMC unknown command 0x%02X\n",mmc_last_command);
                 break;
 
 	}
@@ -1211,28 +1214,28 @@ void mmc_write(z80_byte value)
 	mmc_footer_mmc_operating(mmc_card_selected);
 
 
-	if (mmc_index_command[mmc_card_selected]==0) {
+	if (mmc_index_command==0) {
         //printf("MMC Se recibe comando %d (%02XH)\n",value,value);
 		//Se recibe comando
-		mmc_last_command[mmc_card_selected]=value;
-		mmc_index_command[mmc_card_selected]++;
+		mmc_last_command=value;
+		mmc_index_command++;
 	}
 
 	else {
-        //printf("MMC Se recibe parametro de comando %02XH\n",mmc_last_command[mmc_card_selected]);
+        //printf("MMC Se recibe parametro de comando %02XH\n",mmc_last_command);
 		//Se recibe parametro de comando
-		//Actuar segun mmc_last_command[mmc_card_selected]
-		switch (mmc_last_command[mmc_card_selected]) {
+		//Actuar segun mmc_last_command
+		switch (mmc_last_command) {
 			//GO_IDLE_STATE
 			case 0x40:
 				debug_printf (VERBOSE_PARANOID,"MMC Write command GO_IDLE_STATE");
-				if (mmc_index_command[mmc_card_selected]==5) {
+				if (mmc_index_command==5) {
 					//Estado idle
-					mmc_r1[mmc_card_selected]=1;
+					mmc_r1=1;
 					//Reseteamos indice
-					mmc_index_command[mmc_card_selected]=0;
+					mmc_index_command=0;
 				}
-				else mmc_index_command[mmc_card_selected]++;
+				else mmc_index_command++;
 			break;
 
 			/* Este comando lo usa +3e / NextOS. Ya sea que le devuelva error como si no, sigue reintenando
@@ -1244,7 +1247,7 @@ void mmc_write(z80_byte value)
 			//Parece que es de deteccion de MMC/SD
 			case 0x48:
 				debug_printf (VERBOSE_DEBUG,"MMC Write command CMD8 SEND_IF_COND unhandled");
-				//mmc_r1[mmc_card_selected] |=4; //devolver error
+				//mmc_r1 |=4; //devolver error
 			break;
 
 
@@ -1252,26 +1255,26 @@ void mmc_write(z80_byte value)
 			//SEND_CSD
 			case 0x49:
 				debug_printf (VERBOSE_PARANOID,"MMC Write command SEND_CSD");
-				if (mmc_index_command[mmc_card_selected]==5) {
+				if (mmc_index_command==5) {
 					//Ya se pueden enviar valores csd
-					mmc_csd_index[mmc_card_selected]=0;
+					mmc_csd_index=0;
 					//Reseteamos indice
-                                        mmc_index_command[mmc_card_selected]=0;
+                                        mmc_index_command=0;
 				}
-				else mmc_index_command[mmc_card_selected]++;
+				else mmc_index_command++;
 			break;
 
                         //SEND_CID
                         case 0x4a:
 				debug_printf (VERBOSE_PARANOID,"MMC Write command SEND_CID");
                                 //5 valores envia
-                                if (mmc_index_command[mmc_card_selected]==5) {
+                                if (mmc_index_command==5) {
                                         //Ya se pueden enviar valores csd
-                                        mmc_cid_index[mmc_card_selected]=0;
+                                        mmc_cid_index=0;
                                         //Reseteamos indice
-                                        mmc_index_command[mmc_card_selected]=0;
+                                        mmc_index_command=0;
                                 }
-                                else mmc_index_command[mmc_card_selected]++;
+                                else mmc_index_command++;
                         break;
 
 
@@ -1279,13 +1282,13 @@ void mmc_write(z80_byte value)
                     //debug_printf (VERBOSE_PARANOID,"MMC Write command STOP_TRANSMISSION");
 
 
-			        if (mmc_index_command[mmc_card_selected]==5) {
+			        if (mmc_index_command==5) {
                         //Estado idle
-                        mmc_r1[mmc_card_selected]=1;
+                        mmc_r1=1;
                         //Reseteamos indice
-                        mmc_index_command[mmc_card_selected]=0;
+                        mmc_index_command=0;
                     }
-                    else mmc_index_command[mmc_card_selected]++;
+                    else mmc_index_command++;
                 break;
 
             break;
@@ -1295,58 +1298,58 @@ void mmc_write(z80_byte value)
 			//READ_SINGLE_BLOCK
 			case 0x51:
 				debug_printf (VERBOSE_PARANOID,"MMC Write command READ_SINGLE_BLOCK");
-				mmc_parameters_sent[mmc_card_selected][mmc_index_command[mmc_card_selected]-1]=value;
-				mmc_index_command[mmc_card_selected]++;
+				mmc_parameters_sent[mmc_index_command-1]=value;
+				mmc_index_command++;
 
 
 				//5 valores y el ff del final
-				if (mmc_index_command[mmc_card_selected]==6) {
+				if (mmc_index_command==6) {
                                         //Reseteamos indice
-                                        mmc_index_command[mmc_card_selected]=0;
+                                        mmc_index_command=0;
 
 					//Devolvemos datos
-					//printf ("Reading byte at address 0x%02X 0x%02X 0x%02X 0x%02X\n",mmc_parameters_sent[mmc_card_selected][0],mmc_parameters_sent[mmc_card_selected][1],
-					//	mmc_parameters_sent[mmc_card_selected][2],mmc_parameters_sent[mmc_card_selected][3]);
+					//printf ("Reading byte at address 0x%02X 0x%02X 0x%02X 0x%02X\n",mmc_parameters_sent[0],mmc_parameters_sent[1],
+					//	mmc_parameters_sent[2],mmc_parameters_sent[3]);
 
-					unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[mmc_card_selected][0],mmc_parameters_sent[mmc_card_selected][1],
-                                                mmc_parameters_sent[mmc_card_selected][2],mmc_parameters_sent[mmc_card_selected][3]);
+					unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[0],mmc_parameters_sent[1],
+                                                mmc_parameters_sent[2],mmc_parameters_sent[3]);
 					//printf ("Direccion: 0x%X\n",direccion);
-					mmc_read_address[mmc_card_selected]=direccion;
+					mmc_read_address=direccion;
 
 
 
 
-					mmc_read_index[mmc_card_selected]=0;
+					mmc_read_index=0;
                                 }
                         break;
 
 			//READ MULTIPLE BLOCK
 			case 0x52:
                                 //debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK");
-                                mmc_parameters_sent[mmc_card_selected][mmc_index_command[mmc_card_selected]-1]=value;
-                                mmc_index_command[mmc_card_selected]++;
+                                mmc_parameters_sent[mmc_index_command-1]=value;
+                                mmc_index_command++;
 
 
                                 //5 valores y el ff del final
-                                if (mmc_index_command[mmc_card_selected]==6) {
+                                if (mmc_index_command==6) {
                                         //Reseteamos indice
-                                        mmc_index_command[mmc_card_selected]=0;
+                                        mmc_index_command=0;
 
                                         //Devolvemos datos
-                                        //printf ("Reading byte at address 0x%02X 0x%02X 0x%02X 0x%02X\n",mmc_parameters_sent[mmc_card_selected][0],mmc_parameters_sent[mmc_card_selected][1],
-                                        //      mmc_parameters_sent[mmc_card_selected][2],mmc_parameters_sent[mmc_card_selected][3]);
+                                        //printf ("Reading byte at address 0x%02X 0x%02X 0x%02X 0x%02X\n",mmc_parameters_sent[0],mmc_parameters_sent[1],
+                                        //      mmc_parameters_sent[2],mmc_parameters_sent[3]);
 
-                                        unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[mmc_card_selected][0],mmc_parameters_sent[mmc_card_selected][1],
-                                                mmc_parameters_sent[mmc_card_selected][2],mmc_parameters_sent[mmc_card_selected][3]);
+                                        unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[0],mmc_parameters_sent[1],
+                                                mmc_parameters_sent[2],mmc_parameters_sent[3]);
 
                                         //printf ("Direccion: 0x%X\n",direccion);
                                         //printf ("MMC Write command READ_MULTIPLE_BLOCK. Address: %XH\n",direccion);
-                                        mmc_read_address[mmc_card_selected]=direccion;
+                                        mmc_read_address=direccion;
                                         //debug_printf (VERBOSE_PARANOID,"MMC Write command READ_MULTIPLE_BLOCK. Address: %XH",direccion);
 
 
 
-                                        mmc_read_index[mmc_card_selected]=0;
+                                        mmc_read_index=0;
                                 }
                         break;
 
@@ -1355,44 +1358,44 @@ void mmc_write(z80_byte value)
                         case 0x58:
 				#define INICIO_WRITE_BLOCK_OFFSET 5
 				debug_printf (VERBOSE_PARANOID,"MMC Write command WRITE_BLOCK");
-				if (mmc_index_command[mmc_card_selected]<5) {
-	                                mmc_parameters_sent[mmc_card_selected][mmc_index_command[mmc_card_selected]-1]=value;
+				if (mmc_index_command<5) {
+	                                mmc_parameters_sent[mmc_index_command-1]=value;
 				}
 
 
-                                if (mmc_index_command[mmc_card_selected]==INICIO_WRITE_BLOCK_OFFSET) {
+                                if (mmc_index_command==INICIO_WRITE_BLOCK_OFFSET) {
                                         //Reseteamos indice
-                                        //mmc_index_command[mmc_card_selected]=0;
+                                        //mmc_index_command=0;
 
                                         //Devolvemos datos
-                                        //printf ("Writing sector at address 0x%02X 0x%02X 0x%02X 0x%02X\n",mmc_parameters_sent[mmc_card_selected][0],mmc_parameters_sent[mmc_card_selected][1],
-                                          //      mmc_parameters_sent[mmc_card_selected][2],mmc_parameters_sent[mmc_card_selected][3]);
+                                        //printf ("Writing sector at address 0x%02X 0x%02X 0x%02X 0x%02X\n",mmc_parameters_sent[0],mmc_parameters_sent[1],
+                                          //      mmc_parameters_sent[2],mmc_parameters_sent[3]);
 
-					unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[mmc_card_selected][0],mmc_parameters_sent[mmc_card_selected][1],
-                                                mmc_parameters_sent[mmc_card_selected][2],mmc_parameters_sent[mmc_card_selected][3]);
-					mmc_write_address[mmc_card_selected]=direccion;
+					unsigned int direccion=mmc_retorna_dir_32bit(mmc_parameters_sent[0],mmc_parameters_sent[1],
+                                                mmc_parameters_sent[2],mmc_parameters_sent[3]);
+					mmc_write_address=direccion;
 
 					//printf ("Direccion: 0x%X\n",direccion);
 
 
-                                        mmc_write_index[mmc_card_selected]=0;
+                                        mmc_write_index=0;
                                 }
 
-				//if (mmc_index_command[mmc_card_selected]==INICIO_WRITE_BLOCK_OFFSET) printf ("recibido byte gap\n");
-				//if (mmc_index_command[mmc_card_selected]==INICIO_WRITE_BLOCK_OFFSET+1) printf ("recibido data token\n");
+				//if (mmc_index_command==INICIO_WRITE_BLOCK_OFFSET) printf ("recibido byte gap\n");
+				//if (mmc_index_command==INICIO_WRITE_BLOCK_OFFSET+1) printf ("recibido data token\n");
 
-				if (mmc_index_command[mmc_card_selected]>=INICIO_WRITE_BLOCK_OFFSET+2 && mmc_index_command[mmc_card_selected]<=INICIO_WRITE_BLOCK_OFFSET+2+512-1) {
-					//printf ("Escribiendo byte numero %d valor: %d %c\n",mmc_index_command[mmc_card_selected]-(INICIO_WRITE_BLOCK_OFFSET+2),value,
+				if (mmc_index_command>=INICIO_WRITE_BLOCK_OFFSET+2 && mmc_index_command<=INICIO_WRITE_BLOCK_OFFSET+2+512-1) {
+					//printf ("Escribiendo byte numero %d valor: %d %c\n",mmc_index_command-(INICIO_WRITE_BLOCK_OFFSET+2),value,
 					//	(value>=31 && value<=127 ? value : '.'));
 
-					mmc_write_byte_memory(mmc_write_address[mmc_card_selected]+mmc_index_command[mmc_card_selected]-(INICIO_WRITE_BLOCK_OFFSET+2) , value);
+					mmc_write_byte_memory(mmc_write_address+mmc_index_command-(INICIO_WRITE_BLOCK_OFFSET+2) , value);
 				}
 
 
-				mmc_index_command[mmc_card_selected]++;
-				if (mmc_index_command[mmc_card_selected]==INICIO_WRITE_BLOCK_OFFSET+2+512) {
+				mmc_index_command++;
+				if (mmc_index_command==INICIO_WRITE_BLOCK_OFFSET+2+512) {
 					//printf ("byte final de escritura\n");
-					//mmc_index_command[mmc_card_selected]=0;
+					//mmc_index_command=0;
 				}
                         break;
 
@@ -1405,13 +1408,13 @@ void mmc_write(z80_byte value)
 			case 0x7A:
 				debug_printf (VERBOSE_PARANOID,"MMC Write command READ_OCR");
                                 //5 valores envia
-                                if (mmc_index_command[mmc_card_selected]==5) {
+                                if (mmc_index_command==5) {
                                         //Ya se pueden enviar valores ocr
-                                        mmc_ocr_index[mmc_card_selected]=0;
+                                        mmc_ocr_index=0;
                                         //Reseteamos indice
-                                        mmc_index_command[mmc_card_selected]=0;
+                                        mmc_index_command=0;
                                 }
-                                else mmc_index_command[mmc_card_selected]++;
+                                else mmc_index_command++;
                         break;
 
 
@@ -1419,11 +1422,11 @@ void mmc_write(z80_byte value)
 
 
 			default:
-				debug_printf (VERBOSE_DEBUG,"Received parameter for MMC unknown command 0x%02X",mmc_last_command[mmc_card_selected]);
+				debug_printf (VERBOSE_DEBUG,"Received parameter for MMC unknown command 0x%02X",mmc_last_command);
 				/*
 Similarly, if an illegal command has been received, a card shall not change its state, shall not response and shall set the ILLEGAL_COMMAND error bit in the status register.
 				*/
-				//mmc_r1[mmc_card_selected] |=4;
+				//mmc_r1 |=4;
 			break;
 
 		}

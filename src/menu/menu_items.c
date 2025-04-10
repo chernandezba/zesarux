@@ -18006,8 +18006,9 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         for (i=0;i<MMC_MAX_CARDS;i++) {
             if (mmc_file_name[i][0]) {
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,NULL,
-                    "MMC ~~Browser","MMC ~~Browser","MMC ~~Browser");
+                    "MMC ~~Browser Card","MMC ~~Browser Tarjeta","MMC ~~Browser Targeta");
                 menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+                menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," %d",i+1);
                 menu_add_item_menu_valor_opcion(array_menu_mmc_divmmc,i);
                 menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
