@@ -33998,7 +33998,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_inicial(&array_menu_snapshot,"~~Load snapshot",MENU_OPCION_NORMAL,menu_snapshot_load,NULL);
-        menu_add_item_menu_spanish_catalan(array_menu_snapshot,"~~Load instantanea","~~Load instantania");
+        menu_add_item_menu_spanish_catalan(array_menu_snapshot,"~~Load instantánea","~~Load instantània");
         menu_add_item_menu_genera_ventana(array_menu_snapshot);
         menu_add_item_menu_shortcut(array_menu_snapshot,'l');
         menu_add_item_menu_tooltip(array_menu_snapshot,"Load snapshot");
@@ -34006,7 +34006,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
                 "Z80, ZX, SP, SNA, O, 80, P, 81, Z81");
 
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save,NULL,
-            "~~Save snapshot","~~Salvar instantanea","~~Salvar instantania");
+            "~~Save snapshot","~~Salvar instantánea","~~Salvar instantània");
         menu_add_item_menu_shortcut(array_menu_snapshot,'s');
         menu_add_item_menu_genera_ventana(array_menu_snapshot);
         menu_add_item_menu_tooltip(array_menu_snapshot,"Save snapshot of the current machine state");
@@ -34043,14 +34043,14 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quickload,NULL,
-            "Quickl~~oad","L~~oad rapido","L~~oad rapid");
+            "Quickl~~oad","L~~oad rápido","L~~oad ràpid");
         menu_add_item_menu_shortcut(array_menu_snapshot,'o');
         menu_add_item_menu_add_flags(array_menu_snapshot,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         menu_add_item_menu_tooltip(array_menu_snapshot,"Load a snapshot quickly");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Browses on the quicksave directory");
 
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quicksave,NULL,
-            "Quicks~~ave","S~~alvado rapido","S~~alvat rapid");
+            "Quicks~~ave","S~~alvado rápido","S~~alvat ràpid");
         menu_add_item_menu_se_cerrara(array_menu_snapshot);
         menu_add_item_menu_genera_ventana(array_menu_snapshot);
         menu_add_item_menu_shortcut(array_menu_snapshot,'a');
