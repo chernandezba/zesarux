@@ -182,6 +182,8 @@ Para testear dos botones:
 - cpc: commando
 -que es common A/B en sg1000??
 
+-zxvision: al cerrar una ventana no deberia abrir el menu principal, sino cerrar todos menus
+eso deberia ser tanto si se cierra pulsando en boton de cerrar o se pulsa ESC en la ventana
 
 
 -Head over heels enhanced de PCW hace un efecto extraño al cambiar de pantalla,
@@ -215,3 +217,4 @@ ok: menu_storage_mmc_file(0); en download_tbblue, menu_storage_mmc_emulation
 ok-funciones de mmc.c que no son de i/o no deben usar [mmc_card_selected], sino parametro [tarjeta] que venga como argumento de la función
 -tiene sentido mmc_mirror_second_card?
 ok-probar atic atac
+-al cambiar mmc tarjeta 2 no deberia desactivar divmmc por ejemplo
