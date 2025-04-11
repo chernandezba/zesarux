@@ -43783,6 +43783,18 @@ int zxdesktop_lowericon_mmc_is_visible(void)
 	else return 0;
 }
 
+int zxdesktop_lowericon_mmc_is_visible_second(void)
+{
+	if (MACHINE_IS_SPECTRUM) {
+        //Visible la segunda tarjeta si esta habilitada,
+        //o si bien esta habilitada la primera, para dar opcion a habilitar una segunda
+        //Pero si no está ni la primera, no aparece
+        if (mmc_enabled[0].v || mmc_enabled[1].v) return 1;
+        else return 0;
+    }
+	else return 0;
+}
+
 int zxdesktop_lowericon_mmc_is_active(void)
 {
 	if (mmc_enabled[0].v) return 1;
@@ -44316,7 +44328,7 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse},
 
 	//MMC segunda tarjeta
-	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active_second, zxdesktop_lowericon_mmc_accion,
+	{ zxdesktop_lowericon_mmc_is_visible_second, zxdesktop_lowericon_mmc_is_active_second, zxdesktop_lowericon_mmc_accion,
         zxdesktop_lowericon_mmc_accion_boton_derecho_second,
 		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse_second},
 

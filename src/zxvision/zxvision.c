@@ -2241,11 +2241,11 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 	{0,"Ocean",1,7,
 		0,1,1,0, 		//No mostrar cursor,mostrar recuadro,mostrar rainbow
 		4,0, 		//Colores para opcion seleccionada
-		1,6,4,6, 	//Colores para opcion no disponible
+		1,2,5+8,2, 	//Colores para opcion no disponible
 
 		1+8,7+8,        	//Colores para el titulo ventana
         1+8,              //Color recuadro
-		1,0,        	//Colores para el titulo ventana inactiva
+		1,7,        	//Colores para el titulo ventana inactiva
 
 		4,		//Color waveform
 		7,		//Color para zona no usada en visualmem

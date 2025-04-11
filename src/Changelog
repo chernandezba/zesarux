@@ -22,7 +22,7 @@ Improve maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
 Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
-Improved File Selector: allow to use path to a a FAT mounted image on all cases
+Improved File Selector: allow to use path to a FAT mounted image on all cases
 Improved Visual Cassette Tape window: support standard tape too
 Improved Custom rom setting adding a Reset machine option
 
@@ -45,7 +45,7 @@ Improved ZX Vision:
 - Allow to place windows beyond ZEsarUX main window limits
 - Show, with a dot, when an icon is an open window but minimized
 - Keep ZEsarUX window size proportions (disallow different zoom x/y) by default
-- Delete cursor when sending a window to background
+- Hide cursor when sending a window to background
 - Allow to show short text for icons on ZX Desktop
 - Preserve icon name when changing its type
 - Added rzx files support for file selector: can be expanded (to z80 snap file), show file previews, convert to SCR, convert to Z80, use as ZX Desktop background

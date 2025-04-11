@@ -45,7 +45,7 @@ Mejorado ZX Vision:
 - Permitir ubicar ventanas mas allá de los límites de la ventana principal de ZEsarUX
 - Mostrar, con un punto, cuando un icono es de una ventana abierta pero minimizada
 - Mantener las proporciones de tamaño de la ventana de ZEsarUX (no permitir zoom x/y diferente) por defecto
-- Borrar el cursor al enviar una ventana a segundo plano
+- Ocultar el cursor al enviar una ventana a segundo plano
 - Permitir mostrar texto corto de los iconos del ZX Desktop
 - Preservar nombre de icono al cambiar su tipo
 - Agregado soporte de archivos rzx para el selector de archivos: se pueden expandir (a archivo de snapshot z80), mostrar vista previa, convertir a SCR, convertir a Z80, usar como fondo del ZX Desktop

@@ -1560,6 +1560,8 @@ void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS)
     menu_init_footer();
 
     zxvision_restart_all_background_windows();
+
+    salir_todos_menus=1;
 }
 
 
@@ -1706,12 +1708,15 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 
 void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 {
-    int common_opcion_seleccionada=estilo_gui_activo;
+    int common_opcion_seleccionada=0; //estilo_gui_activo;
 
 
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
+
+    //Para poder asignar la linea al tema actual
+    int conteo_items_menus=0;
 
     do {
 
@@ -1723,16 +1728,47 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
             if (!si_complete_video_driver() && definiciones_estilos_gui[i].require_complete_video_driver) {
                 //El estilo requiere video driver completo. Siguiente
                 //printf ("no puedo seleccionar: %s\n",definiciones_estilos_gui[i].nombre_estilo);
+
+
                 //Y ademas movemos el cursor al principio, pues hemos quitado uno al menos de la lista y el cursor no correspondera
-                common_opcion_seleccionada=0;
+                //common_opcion_seleccionada=0;
             }
 
             else {
+                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"ZEsarUX Plus")) {
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--My favorites--");
+                    conteo_items_menus++;
+                }
+
+                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"CPC")) {
+                    menu_add_item_menu_separator(array_menu_common);
+                    conteo_items_menus++;
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--OS/Computers/Apps--");
+                    conteo_items_menus++;
+                }
+
+                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"Bloody")) {
+                    menu_add_item_menu_separator(array_menu_common);
+                    conteo_items_menus++;
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--15 colour based--");
+                    conteo_items_menus++;
+                }
+
+                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"Clean")) {
+                    menu_add_item_menu_separator(array_menu_common);
+                    conteo_items_menus++;
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Misc--");
+                    conteo_items_menus++;
+                }
+
+                if (i==estilo_gui_activo) common_opcion_seleccionada=conteo_items_menus;
+
+
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_apply,NULL,definiciones_estilos_gui[i].nombre_estilo);
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
-
                 //Llamar a la funcion de cambio de estilo simplemente al mover el cursor y sin tener que pulsar enter
                 menu_add_item_menu_seleccionado(array_menu_common,menu_interface_change_gui_style_select);
+                conteo_items_menus++;
             }
 
         }
@@ -1749,7 +1785,7 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Style","Estilo","Estil" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Style");
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion

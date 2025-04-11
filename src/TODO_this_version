@@ -184,7 +184,7 @@ Para testear dos botones:
 
 
 
--Head over heels enhanced hace un efecto extraño al cambiar de pantalla,
+-Head over heels enhanced de PCW hace un efecto extraño al cambiar de pantalla,
 creo que es al redefinir paleta de colores, que corrige al abrir menu por ejemplo
 
 
@@ -214,3 +214,4 @@ ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de
 ok: menu_storage_mmc_file(0); en download_tbblue, menu_storage_mmc_emulation
 ok-funciones de mmc.c que no son de i/o no deben usar [mmc_card_selected], sino parametro [tarjeta] que venga como argumento de la función
 -tiene sentido mmc_mirror_second_card?
+ok-probar atic atac
