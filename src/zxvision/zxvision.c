@@ -16878,6 +16878,9 @@ void zxvision_handle_mouse_events_aux_open_menu_while_in_menu(void)
     }
 }
 
+//Para poder indicar desde el window manager que se ha cerrado una ventana y no queremos que se reabra el menu
+//int pressed_close_window_on_window_manager=0;
+
 //TODO: tiene sentido pasarle el parametro de ventana w, si siempre que llamamos aqui es con el mismo parametro? (zxvision_current_window)
 void zxvision_handle_mouse_events(zxvision_window *w)
 {
@@ -17244,6 +17247,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 						mouse_pressed_close_window=1;
 						//Mostrar boton cerrar pulsado
 						putchar_menu_overlay(w->x,w->y,menu_retorna_caracter_cerrar(),ESTILO_GUI_PAPEL_TITULO,ESTILO_GUI_TINTA_TITULO);
+                        //pressed_close_window_on_window_manager=1;
 					}
 
 					//Si pulsa zona background  window
@@ -26040,15 +26044,32 @@ int zxvision_simple_window_manager(int reopen_menu)
                     //menu_overlay_activo=antes_menu_overlay_activo;
 
 
+
+                    //Logica 1 de Abrir el menu cuando está este window manager
+                    /*
                     //Y reabriremos el menu cuando dejemos de conmutar entre ventanas
                     reopen_menu=1;
-
 
                     //Si desde ventana se ha pulsado F6, boton de background, pero sin conmutar a otra ventana ni pulsar F5, cerrar todo
                     if (menu_pressed_open_menu_while_in_menu.v==0 && !clicked_on_background_windows && menu_window_manager_window_went_background) {
                         reopen_menu=0;
                         debug_printf(VERBOSE_INFO,"From window manager, window goes to background, background windows is allowed even when menu closed, so closing menu");
                     }
+                    */
+
+
+                   //Logica 2 de Abrir el menu cuando está este window manager
+                   //reabrir solo al pulsar F5
+
+                   reopen_menu=0;
+
+                   if (menu_pressed_open_menu_while_in_menu.v) {
+                        reopen_menu=1;
+                   }
+
+
+
+
 
                     //Se reabre el menu tambien si pulsada tecla F5 en cualquiera de los menus
                     if (menu_pressed_open_menu_while_in_menu.v) {
@@ -26139,11 +26160,21 @@ void menu_inicio_bucle(void)
 		}
 
         //printf("antes zxvision_simple_window_manager\n");
+
+        //Esta variable solo se comprueba antes y despues de llamar a zxvision_simple_window_manager, solo tiene sentido aqui
+        //pressed_close_window_on_window_manager=0;
+
         reopen_menu=zxvision_simple_window_manager(reopen_menu);
-        //printf("despues zxvision_simple_window_manager. reopen_menu=%d\n",reopen_menu);
 
 
 		which_window_clicked_on_background=NULL;
+
+        /*if (pressed_close_window_on_window_manager) {
+            printf("A Window has been closed. Do not reopen menu\n");
+            reopen_menu=0;
+        }*/
+
+        //pressed_close_window_on_window_manager=0;
 
 
 		//Si hay que reabrirlo, resetear estado de salida de todos
