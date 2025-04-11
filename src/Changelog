@@ -50,6 +50,7 @@ Improved ZX Vision:
 - Allow to show short text for icons on ZX Desktop
 - Preserve icon name when changing its type
 - Added rzx files support for file selector: can be expanded (to z80 snap file), show file previews, convert to SCR, convert to Z80, use as ZX Desktop background
+- Fixed glitch duplicating Main Menu when pressing F6 on Main Menu
 
 Improved Debug CPU:
 - Show view number inside the window and not in the window title

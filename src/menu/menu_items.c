@@ -42978,9 +42978,12 @@ void menu_inicio_bucle_main(void)
             else f_functions=0;
 
             //Mostrar menu principal
+            //printf("Antes menu_inicio_mostrar_main_menu\n");
             salir_menu=menu_inicio_mostrar_main_menu(salir_menu);
+            //printf("Despues menu_inicio_mostrar_main_menu\n");
 
 		}
+    //printf("while en menu_inicio_bucle_main\n");
 
 	} while (!salir_menu && !salir_todos_menus);
 

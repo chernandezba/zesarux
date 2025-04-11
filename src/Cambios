@@ -50,6 +50,7 @@ Mejorado ZX Vision:
 - Permitir mostrar texto corto de los iconos del ZX Desktop
 - Preservar nombre de icono al cambiar su tipo
 - Agregado soporte de archivos rzx para el selector de archivos: se pueden expandir (a archivo de snapshot z80), mostrar vista previa, convertir a SCR, convertir a Z80, usar como fondo del ZX Desktop
+- Corregido fallo que duplica el Menú Principal al pulsar F6 desde el Menú Principal
 
 Mejorado Debug CPU:
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana

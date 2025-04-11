@@ -21769,6 +21769,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                 if (menu_se_cerrara) cerrar_ventanas=1;
                 if (genera_ventana) cerrar_ventanas=1;
+                //Si pulsamos F6 desde menú principal, queremos que se cierren también, no que se vaya duplicando el menú principal
+                if (tecla==MENU_RETORNO_BACKGROUND) cerrar_ventanas=1;
+
 
                 if (cerrar_ventanas) menu_dibuja_submenu_cierra_todos_submenus();
 
