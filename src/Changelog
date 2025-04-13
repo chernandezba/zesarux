@@ -25,7 +25,7 @@ Improved Watermark Logo: can be shown only when loading/saving, can change color
 Improved File Selector: allow to use path to a FAT mounted image on all cases
 Improved Visual Cassette Tape window: support standard tape too
 Improved Custom rom setting adding a Reset machine option
-Improved Divmmc and ZXMMC emulation: allow to enable them even if no MMC/SD card inserted
+Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
 
 Improved AY Player:
 - Allow to load playlist

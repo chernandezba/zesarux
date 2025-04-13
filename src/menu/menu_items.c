@@ -18086,9 +18086,9 @@ void menu_storage_divide_diviface(MENU_ITEM_PARAMETERS)
 {
         if (divide_diviface_enabled.v) divide_diviface_disable();
         else {
-                divide_diviface_enable();
-                //Tambien activamos puertos si esta ide activado. Luego si quiere el usuario que los desactive
-		if (ide_enabled.v) divide_ide_ports_enable();
+            divide_diviface_enable();
+            //Tambien activamos puertos. Luego si quiere el usuario que los desactive
+		    divide_ide_ports_enable();
         }
 }
 
@@ -18369,7 +18369,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
 
 
-            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_ide_ports_emulation,menu_storage_ide_if_enabled_cond,
+            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_ide_ports_emulation,NULL,
                 "DIVIDE ~~ports","~~Puertos DIVIDE","~~Ports DIVIDE");
             menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(divide_ide_ports_enabled.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_ide_divide,'p');
