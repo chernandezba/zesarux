@@ -17472,8 +17472,8 @@ void menu_storage_divmmc_diviface(MENU_ITEM_PARAMETERS)
 	if (divmmc_diviface_enabled.v) divmmc_diviface_disable();
 	else {
 		divmmc_diviface_enable();
-                //Tambien activamos puertos si esta mmc activado. Luego si quiere el usuario que los desactive
-                if (mmc_enabled[0].v || mmc_enabled[1].v) divmmc_mmc_ports_enable();
+        //Tambien activamos puertos por simplificar la operación al usuario. Luego si quiere el usuario que los desactive
+        divmmc_mmc_ports_enable();
 	}
 }
 
@@ -17993,7 +17993,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         }
 
 
-        if (mmc_enabled[0].v || mmc_enabled[1].v) {
+        //if (mmc_enabled[0].v || mmc_enabled[1].v) {
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_mmc_ports_emulation,NULL,
                 "DIVMMC ~~ports","~~Puertos DIVMMC","~~Ports DIVMMC");
             menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(divmmc_mmc_ports_enabled.v ? 'X' : ' ') );
@@ -18011,7 +18011,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
-        }
+        //}
 
 
         menu_add_item_menu_separator(array_menu_mmc_divmmc);

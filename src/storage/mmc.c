@@ -654,11 +654,13 @@ void mmc_disable(int tarjeta)
 
 	mmc_enabled[tarjeta].v=0;
 
+
+    //Podemos dejar zxmmc y divmmc activados aunque no haya tarjeta insertada
 	//Desactivar ZXMMC
-	zxmmc_emulation.v=0;
+	//zxmmc_emulation.v=0;
 
 	//Desactivar Divmmc ports
-	divmmc_mmc_ports_disable();
+	//divmmc_mmc_ports_disable();
 
         //Si habia memoria asignada, desasignar
         if (mmc_memory_pointer[tarjeta]!=NULL) free (mmc_memory_pointer[tarjeta]);

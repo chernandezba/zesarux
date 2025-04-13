@@ -25,6 +25,7 @@ Mejoado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cam
 Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en todos los casos
 Mejorada ventana de  Visual Cassette Tape window: soportar también cinta estándar
 Mejorada opción de Custom rom agregando una opción para resetear la máquina
+Mejorado emulación de Divmmc y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD insertada
 
 Mejorado AY Player:
 - Permitir cargar lista de reproducción del AY Player
