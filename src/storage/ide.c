@@ -348,7 +348,7 @@ void ide_disable(void)
 
 
         //Desactivar Divide ports
-        divide_ide_ports_disable();
+        //divide_ide_ports_disable();
 
 
 	ide_enabled.v=0;
