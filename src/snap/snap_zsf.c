@@ -2436,7 +2436,7 @@ Byte fields:
 
   //O divide
   if (header[2] & 8) {
-    divide_diviface_disable();
+    divide_diviface_enable();
   }
 
   //Y settings de puertos

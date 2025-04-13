@@ -63,6 +63,7 @@ Mejorado Debug CPU:
 Corregido bloqueo de semáforos en Windows
 Corregido cálculo de uso de cpu cuando el footer está desactivado
 Corregido asignación de esxdos handler root dir al cargar un archivo .nex sin indicar path desde linea de comandos
+Corregido bug al restaurar un snapshot ZSF con DivIDE activado
 
 ----
 
