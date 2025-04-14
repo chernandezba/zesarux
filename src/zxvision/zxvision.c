@@ -2492,6 +2492,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 int current_win_x,current_win_y,current_win_ancho,current_win_alto,current_win_minimize_button_position;
 
 //tipo ventana. normalmente activa. se pone tipo inactiva desde zxvision al pulsar fuera de la ventana
+//Indica que la ventana a dibujar es la activa y por ejemplo el titulo tiene las franjas de colores y el texto del titulo con color destacado
 int ventana_tipo_activa=1;
 
 
