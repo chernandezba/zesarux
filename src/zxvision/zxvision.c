@@ -9402,7 +9402,12 @@ int zxvision_return_background_button_position(int ancho)
     else return ancho-3;
 }
 
-
+//Dice si la ventana es la activa
+int zxvision_window_is_active(zxvision_window *w)
+{
+    if (w==zxvision_current_window && ventana_tipo_activa) return 1;
+    else return 0;
+}
 
 void menu_dibuja_ventana_boton_background(int x,int y,int ancho,zxvision_window *w)
 {

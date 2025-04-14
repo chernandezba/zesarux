@@ -166,4 +166,6 @@ ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de
 -Acabar de probar minimizado de ventanas con setting de ocultar minimizado
 
 
--Process management cuando va a background debe borrar el cursor
+ok -Process management cuando va a background debe borrar el cursor
+
+-quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS

@@ -618,6 +618,8 @@ extern z80_byte zxvision_common_getkey_refresh_noesperanotec_todasteclas(void);
 
 extern zxvision_window *zxvision_current_window;
 
+extern int zxvision_window_is_active(zxvision_window *w);
+
 extern int zxvision_keys_event_not_send_to_machine;
 //extern void zxvision_espera_tecla_timeout_window_splash(void);
 extern void zxvision_espera_tecla_timeout_window_splash(int tipo);

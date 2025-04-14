@@ -18844,8 +18844,11 @@ int menu_display_window_list_valor_contador_segundo_anterior;
 
 void menu_display_window_list_print_item(zxvision_window *w,int linea,char *window_text)
 {
-    if (linea==menu_display_window_list_opcion_seleccionada) {
-        //linea donde esta el cursor. invertir
+
+
+
+    if (linea==menu_display_window_list_opcion_seleccionada && zxvision_window_is_active(w) ) {
+        //linea donde esta el cursor y es la ventana activa. invertir
 
         zxvision_print_string_fillspc(w,1,linea,
             ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0,window_text);
