@@ -6648,7 +6648,7 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
         if (segmento==0 && zxmmcplus_enabled.v && zxmmcplus_paged_on_read() ) {
             z80_byte pagina=zxmmcplus_get_page_number();
 
-            if (zxmmcplus_rom_on_read() ) {
+            if (zxmmcplus_rom_selected() ) {
                 sprintf (texto_pagina_short,"ZO%d",pagina);
                 sprintf (texto_pagina,"ZXMMC+ ROM %d",pagina);
             }

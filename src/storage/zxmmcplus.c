@@ -465,16 +465,13 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 
 void zxmmcplus_poke(z80_int dir,z80_byte value)
 {
-    //Si ROM mapeada
-    //if (zxmmcplus_port_7f_value & 32) zxmmcplus_poke_rom(dir,value);
 
-    //Siempre entrara la peticion de mapeo de flash rom?  No estoy seguro de esto
-    zxmmcplus_poke_rom(dir,value);
+    if (zxmmcplus_rom_selected() ) zxmmcplus_poke_rom(dir,value);
 
     zxmmcplus_poke_ram(dir,value);
 }
 
-int zxmmcplus_rom_on_read(void)
+int zxmmcplus_rom_selected(void)
 {
     if (zxmmcplus_port_7f_value & 32) return 1;
     else return 0;
@@ -483,7 +480,7 @@ int zxmmcplus_rom_on_read(void)
 z80_byte zxmmcplus_peek(z80_int dir)
 {
     //Si RAM o ROM mapeada
-    if (zxmmcplus_rom_on_read() ) return zxmmcplus_read_rom_byte(dir);
+    if (zxmmcplus_rom_selected() ) return zxmmcplus_read_rom_byte(dir);
     else return zxmmcplus_read_ram_byte(dir);
 }
 
