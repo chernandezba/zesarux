@@ -8155,9 +8155,12 @@ void end_emulator_saveornot_config(int saveconfig)
 
 	if (remote_calling_end_emulator.v) end_remote_protocol();
 
-    //Desasignar algunos punteros a memoria no liberada para que herramientas como valgrind no avisen de memoria sin liberar con punteros en uso
-    //no es estrictamente necesario pero por evitar esos avisos de valgrind
-    //ATENCION!! Esto tiene que estar al final del emulador, justo antes del exit
+
+    //Aqui desasignariamos algunos punteros a memoria no liberada para que herramientas como valgrind no avisen de memoria
+    //sin liberar con punteros en uso
+    //Pero entonces sucederia que, por ejemplo, si pulso CTRL-C desde consola con menu abierto, se esta usando cpu_core_loop y al
+    //asignarse a NULL, se genera SEGFAULT
+    /*
     cpu_core_loop=NULL;
     poke_byte=NULL;
     poke_byte_no_time=NULL;
@@ -8170,6 +8173,8 @@ void end_emulator_saveornot_config(int saveconfig)
     nested_list_poke_byte_no_time=NULL;
     nested_list_push_valor=NULL;
     nested_list_core=NULL;
+
+    */
 
     exit(0);
 

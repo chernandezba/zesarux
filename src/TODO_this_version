@@ -158,8 +158,6 @@ ok * desactivar botones superiores si esta topbar
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
 
 
--segfault al hacer ctrl-c de consola con menu abierto
-
 -seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
 
 
@@ -172,8 +170,7 @@ ok * y scr_putpixel_final , el que va al driver de video. esta controlado desde 
 ok * limites al crear ventana
 ok * no permitir escribir ventanas en footer
 
--Soporte 4 botones: agregar a mas maquinas
-* ok kempston, master system, sg1000, coleco, cpc.
+
 
 Para testear dos botones:
 - master system: streets of rage, street fighter ii
@@ -209,9 +206,4 @@ ok*task manager residos
 ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de las nmi en el slot 2
 
 
-
--mmc dos tarjetas
-ok: menu_storage_mmc_file(0); en download_tbblue, menu_storage_mmc_emulation
-ok-funciones de mmc.c que no son de i/o no deben usar [mmc_card_selected], sino parametro [tarjeta] que venga como argumento de la función
--tiene sentido mmc_mirror_second_card?
 
