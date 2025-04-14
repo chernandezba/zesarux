@@ -279,7 +279,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar smartload. probar deteccion de tipo tzx (standard o turbo) en quickload
 -probar recent files, drive
 -probar autoload & autosave
--probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right
+-probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: master system: streets of rage, street fighter ii. sg1000: hero. coleco: hero. cpc: commando. spectrum: hasta 4 botones, con print in 31
 -probar on screen keyboard, con F8 y con joystick
 -probar keyboard help. pulsar teclas. mantener teclas
 -probar on screen adventure keyboard 

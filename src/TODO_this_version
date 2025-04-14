@@ -1,17 +1,3 @@
---Inicio Minimizado de ventanas
-
-
-ok? *problema que todas las funciones que activan ventana por posición, como al pulsar ventana, tienen que ver
-que ventana está minimizada y con el setting de "hide on minimize" activo
-
-
-* al minimizar se ve inicialmente la ventana minimizada, y al refrescar, desaparece.
-Esto es un efecto no provocado aunque creo que queda bien
-aunque si se pulsa en el titulo de la ventana, desaparece pero se queda activa
-
---Fin Minimizado de ventanas
-
----
 
 -con menu cerrado, sin ventanas: pulsar boton derecho en iconos del escritorio,
 lo hace pero el menu contextual sale arriba del todo y no en la posición del cursor
@@ -97,7 +83,6 @@ Ver comentarios en el código donde está explicado
 
 
 AY Player
-*poder generar archivos ay?
 *Video ay player con todas nuevas features
 *muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
 *ejemplo en el FAQ para reproducir archivos ay random, hacerlo ahora con las opciones de cargar carpeta en playlist y opcion random
@@ -117,20 +102,8 @@ cada mensaje en cada idioma
 *etc...
 
 -Más botones joystick, hablado con david - el de los juegos de Next
-* poder asignar otras teclas aparte de:
-"Home",
-"RightAlt",
-"RightCtrl",
-"RightShift",
-"LeftAlt",
-"LeftCtrl",
-"LeftShift",
-"Tab"
-ok * poder asignar mas botones de fuego en joysticks usb, para los nuevos 3 botones kempston
 * probar zeng online con prueba puerto 31 y con juego haoken
-* Soporte a más máquinas y consolas para más botones de fuego. Ejemplo master system. Y actualizar los help keyboard indicando fire1, fire2, etc
-en cpc hasta 3 botones de fuego para 2 joysticks
-https://www.cpcwiki.eu/index.php/Programming:Keyboard_scanning
+
 
 -Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
 "Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
@@ -162,21 +135,6 @@ ok * desactivar botones superiores si esta topbar
 
 
 
--quiza que se permita ventanas que puedan moverse y estar parte fuera de rango visible. mientras origen ventana este dentro de rango,
-el resto puede salir fuera -> comprobar al hacer print y putpixel que no sale fuera
-ok * print no sale fuera, lo controla putchar_menu_overlay_parpadeo_cache_or_not
-ok * putpixel controlado
-ok * y scr_putpixel_final , el que va al driver de video. esta controlado desde scr_redraw_machine_layer
-ok * limites al crear ventana
-ok * no permitir escribir ventanas en footer
-
-
-
-Para testear dos botones:
-- master system: streets of rage, street fighter ii
-- sg1000: hero
-- coleco: hero
-- cpc: commando
 -que es common A/B en sg1000??
 
 
@@ -205,5 +163,7 @@ ok*task manager residos
 *debug mostrar paginas mapeadas
 ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de las nmi en el slot 2
 
+-Acabar de probar minimizado de ventanas con setting de ocultar minimizado
 
 
+-Process management cuando va a background debe borrar el cursor

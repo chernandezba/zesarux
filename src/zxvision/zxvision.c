@@ -15761,6 +15761,18 @@ void zxvision_handle_click_minimize(zxvision_window *w)
 
 		zxvision_draw_window(w);
 		zxvision_draw_window_contents(w);
+
+        /*
+        Si está el setting de "Ocultar ventanas minimizadas",
+        al minimizar se ve inicialmente la ventana minimizada, y al refrescar, desaparece.
+        Esto es un efecto no provocado aunque creo que queda bien
+        aunque si se pulsa en el titulo de la ventana, desaparece pero se queda activa
+        Es que para hacer que desapareciera habría que o bien pasar el foco a otra ventana o bien simular F6 de esa ventana,
+        y se puede complicar desde todos los sitios donde llame a este minimizado.
+        Mejor lo dejamos asi, se ve minimizada visible hasta que se conmute a otra
+        */
+
+
 	}
 
 }
