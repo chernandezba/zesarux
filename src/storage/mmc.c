@@ -127,8 +127,7 @@ z80_byte mmc_cid[16]={1,'Z','E','s','a','r','U','X',' ',1,1,1,1,1,127,128};
 
 int mmc_card_selected=0;
 
-//Decir que hay una segunda unidad mmc pero en realidad es clon de la primera
-z80_bit mmc_mirror_second_card={0};
+
 
 int mmc_tarjeta_invalida_seleccionada=0;
 

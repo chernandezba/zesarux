@@ -214,13 +214,4 @@ ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de
 ok: menu_storage_mmc_file(0); en download_tbblue, menu_storage_mmc_emulation
 ok-funciones de mmc.c que no son de i/o no deben usar [mmc_card_selected], sino parametro [tarjeta] que venga como argumento de la función
 -tiene sentido mmc_mirror_second_card?
-ok-probar atic atac
-ok-al cambiar mmc tarjeta 2 no deberia desactivar divmmc por ejemplo
 
-ok-zxvision: al cerrar una ventana no deberia abrir el menu principal, sino cerrar todos menus
-eso deberia ser tanto si se cierra pulsando en boton de cerrar o se pulsa ESC en la ventana
-
-
-ok-zxvision: al abrir menu principal, se reabre y duplica al pulsar F6
-
-ok-si se tiene emulacion de divide, al salir y volver a entrar el snapshot no activa divide de nuevo

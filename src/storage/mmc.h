@@ -30,7 +30,6 @@
 
 extern void mmc_cs(z80_byte value);
 
-extern z80_bit mmc_mirror_second_card;
 
 
 

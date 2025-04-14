@@ -1540,7 +1540,6 @@ printf("\n"
             MAX_COPY_FILES_TO_MMC);
 
         printf(
-        "--mmc-second-card-mirror        Emulate a second MMC/SD card which is a mirror of the first card\n"
 		"--enable-divmmc-ports           Enable DIVMMC emulation ports only, but not paging. Usually requires --enable-mmc\n"
 		"--enable-divmmc-paging          Enable DIVMMC paging only\n"
 		"--enable-divmmc                 Enable DIVMMC emulation: ports & paging. Usually requires --enable-mmc\n"
@@ -4689,9 +4688,6 @@ int parse_cmdline_options(int desde_commandline) {
 				mmc_persistent_writes[1].v=0;
 			}
 
-            else if (!strcmp(argv[puntero_parametro],"--mmc-second-card-mirror")) {
-                mmc_mirror_second_card.v=1;
-            }
 
 			else if (!strcmp(argv[puntero_parametro],"--enable-divmmc-ports")) {
 				command_line_divmmc_ports.v=1;

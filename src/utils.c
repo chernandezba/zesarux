@@ -4052,7 +4052,6 @@ int util_write_configfile(void)
 
 
   if (divmmc_mmc_ports_enabled.v)             ADD_STRING_CONFIG,"--enable-divmmc-ports");
-  if (mmc_mirror_second_card.v)           ADD_STRING_CONFIG,"--mmc-second-card-mirror");
 
   if (if1_enabled.v)                        ADD_STRING_CONFIG,"--enable-interface1");
 
