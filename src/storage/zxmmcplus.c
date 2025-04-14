@@ -580,7 +580,8 @@ void zxmmcplus_alloc_rom_ram_memory(void)
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for zxmmc+ emulation",size/1024);
 
-    zxmmcplus_memory_pointer=util_malloc(size,"No enough memory for zxmmc+ emulation");
+    //Asigno y relleno con 0, no es que sea estrictamente necesario, pero asi queda la memoria asignada mas "limpia" desde el principio
+    zxmmcplus_memory_pointer=util_malloc_fill(size,"No enough memory for zxmmc+ emulation",0);
 
 
 }
