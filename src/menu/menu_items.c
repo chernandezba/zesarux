@@ -39351,7 +39351,7 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&zxmmcplus_opcion_seleccionada,&item_seleccionado,array_menu_common,"Transtape emulation");
+        retorno_menu=menu_dibuja_menu_no_title_lang(&zxmmcplus_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZXMMC+ emulation");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

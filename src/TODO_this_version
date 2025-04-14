@@ -160,7 +160,7 @@ ok*task manager residos
 *escrituras flashrom en disco duro (flush, etc). archivo flashrom seleccionable
 *manual en extras
 ok*zonas memoria ram y flashrom residos
-*debug mostrar paginas mapeadas
+ok*debug mostrar paginas mapeadas
 ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de las nmi en el slot 2
 
 

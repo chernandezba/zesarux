@@ -116,6 +116,7 @@
 #include "if1.h"
 #include "microdrive.h"
 #include "lec.h"
+#include "zxmmcplus.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -6643,6 +6644,21 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 return;
         }
 
+        //Si es ZXMMC+
+        if (segmento==0 && zxmmcplus_enabled.v && zxmmcplus_paged_on_read() ) {
+            z80_byte pagina=zxmmcplus_get_page_number();
+
+            if (zxmmcplus_rom_on_read() ) {
+                sprintf (texto_pagina_short,"ZO%d",pagina);
+                sprintf (texto_pagina,"ZXMMC+ ROM %d",pagina);
+            }
+            else {
+                sprintf (texto_pagina_short,"ZA%d",pagina);
+                sprintf (texto_pagina,"ZXMMC+ RAM %d",pagina);
+                return;
+            }
+        }
+
 
         //Si es superupgrade
         if (superupgrade_enabled.v) {
@@ -6969,7 +6985,10 @@ typedef struct s_debug_memory_segment debug_memory_segment;
             debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
     }
 
-
+    //Si zxmmc+
+    if (MACHINE_IS_SPECTRUM && zxmmcplus_enabled.v && zxmmcplus_paged_on_read() ) {
+        debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+    }
 
 /*
    if (tbblue_bootrom.v) {

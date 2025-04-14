@@ -210,9 +210,9 @@ enum zxmmcplus_flashrom_commands_prefixes zxmmcplus_romwrite_current_prefix=PREF
 void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 {
 
-    printf("Writing rom address %X value %X pc %X\n",dir,value,reg_pc);
+    //printf("Writing rom address %X value %X pc %X\n",dir,value,reg_pc);
     if ((mmc_last_port_value_1f & 0xF0 )!=0xa0) {
-        printf("Flash is not unlocked for writing (1f port=%02XH)\n",mmc_last_port_value_1f);
+        //printf("Flash is not unlocked for writing (1f port=%02XH)\n",mmc_last_port_value_1f);
         return;
     }
 
@@ -466,16 +466,24 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 void zxmmcplus_poke(z80_int dir,z80_byte value)
 {
     //Si ROM mapeada
-    if (zxmmcplus_port_7f_value & 32) zxmmcplus_poke_rom(dir,value);
+    //if (zxmmcplus_port_7f_value & 32) zxmmcplus_poke_rom(dir,value);
 
-    //RAM puede escribirse aun estando rom mapeada
+    //Siempre entrara la peticion de mapeo de flash rom?  No estoy seguro de esto
+    zxmmcplus_poke_rom(dir,value);
+
     zxmmcplus_poke_ram(dir,value);
+}
+
+int zxmmcplus_rom_on_read(void)
+{
+    if (zxmmcplus_port_7f_value & 32) return 1;
+    else return 0;
 }
 
 z80_byte zxmmcplus_peek(z80_int dir)
 {
     //Si RAM o ROM mapeada
-    if (zxmmcplus_port_7f_value & 32) return zxmmcplus_read_rom_byte(dir);
+    if (zxmmcplus_rom_on_read() ) return zxmmcplus_read_rom_byte(dir);
     else return zxmmcplus_read_ram_byte(dir);
 }
 
@@ -508,13 +516,19 @@ z80_byte zxmmcplus_poke_byte_no_time(z80_int dir,z80_byte valor)
 
 }
 
+int zxmmcplus_paged_on_read(void)
+{
+    if (zxmmcplus_port_7f_value & 64) return 1;
+    else return 0;
+}
+
 z80_byte zxmmcplus_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
 {
 
 	z80_byte valor_leido=debug_nested_peek_byte_call_previous(zxmmcplus_nested_id_peek_byte,dir);
 
 
-	if (dir<16384 && zxmmcplus_port_7f_value & 64) {
+	if (dir<16384 && zxmmcplus_paged_on_read() ) {
 		return zxmmcplus_peek(dir);
 	}
 
@@ -526,7 +540,7 @@ z80_byte zxmmcplus_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 
 	z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(zxmmcplus_nested_id_peek_byte_no_time,dir);
 
-	if (dir<16384 && zxmmcplus_port_7f_value & 64) {
+	if (dir<16384 && zxmmcplus_paged_on_read() ) {
 		return zxmmcplus_peek(dir);
 	}
 
