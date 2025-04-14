@@ -24,8 +24,8 @@
 
 #include "cpu.h"
 
-#define ZXMMCPLUS_RAM_SIZE (512*1024)
 #define ZXMMCPLUS_FLASHROM_SIZE (512*1024)
+#define ZXMMCPLUS_RAM_SIZE (512*1024)
 
 #define ZXMMCPLUS_FLASHROM_FILE_NAME "zxmmcplus.rom"
 
@@ -37,5 +37,6 @@ extern void zxmmcplus_write_port(z80_byte value);
 extern void zxmmcplus_disable(void);
 extern void zxmmcplus_enable(void);
 extern void zxmmcplus_sync_bit_7ffd(void);
+extern z80_byte *zxmmcplus_memory_pointer;
 
 #endif

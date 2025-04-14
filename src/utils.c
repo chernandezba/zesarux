@@ -163,6 +163,7 @@
 #include "microdrive.h"
 #include "microdrive_raw.h"
 #include "lec.h"
+#include "zxmmcplus.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -14974,6 +14975,20 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;
 
+    case MEMORY_ZONE_ZXMMCPLUS_FLASHROM:
+        if (zxmmcplus_enabled.v) {
+            *readwrite=1;
+            size=ZXMMCPLUS_FLASHROM_SIZE;
+        }
+    break;
+
+    case MEMORY_ZONE_ZXMMCPLUS_RAM:
+        if (zxmmcplus_enabled.v) {
+            *readwrite=1;
+            size=ZXMMCPLUS_RAM_SIZE;
+        }
+    break;
+
     case MEMORY_ZONE_MDV1:
         if (microdrive_status[0].microdrive_enabled) {
             *readwrite=1;
@@ -15508,6 +15523,18 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     case MEMORY_ZONE_LEC_MEMORY:
         if (lec_enabled.v) {
             p=&lec_ram_memory_pointer[address];
+        }
+    break;
+
+    case MEMORY_ZONE_ZXMMCPLUS_FLASHROM:
+        if (zxmmcplus_enabled.v) {
+            p=&zxmmcplus_memory_pointer[address];
+        }
+    break;
+
+    case MEMORY_ZONE_ZXMMCPLUS_RAM:
+        if (zxmmcplus_enabled.v) {
+            p=&zxmmcplus_memory_pointer[ZXMMCPLUS_FLASHROM_SIZE+address];
         }
     break;
 
@@ -16066,6 +16093,20 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (lec_enabled.v) {
                        //123456789012345678901234567890
             strcpy(name,"LEC Memory");
+        }
+    break;
+
+    case MEMORY_ZONE_ZXMMCPLUS_FLASHROM:
+        if (zxmmcplus_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"ZXMMC+ FlashROM");
+        }
+    break;
+
+    case MEMORY_ZONE_ZXMMCPLUS_RAM:
+        if (zxmmcplus_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"ZXMMC+ RAM");
         }
     break;
 
