@@ -10673,7 +10673,7 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	//Decir que al abrir la ventana, las pulsaciones de teclas no se envian por defecto a maquina emulada
 	zxvision_keys_event_not_send_to_machine=1;
 
-	ventana_tipo_activa=1;
+	zxvision_set_ventana_tipo_activa();
 
 
 
@@ -10939,7 +10939,7 @@ void zxvision_activate_this_window(zxvision_window *ventana)
     zxvision_window_move_this_window_on_top(ventana);
     zxvision_keys_event_not_send_to_machine=1;
 
-    ventana_tipo_activa=1;
+    zxvision_set_ventana_tipo_activa();
 
 }
 
@@ -11120,7 +11120,7 @@ void zxvision_destroy_window_if_redraw(zxvision_window *w,int redraw)
 	//printf ("Next window was %p\n",w->next_window);
     //printf("Destroying window %p\n",w);
 
-	ventana_tipo_activa=1;
+	zxvision_set_ventana_tipo_activa();
 	zxvision_keys_event_not_send_to_machine=1;
 
 	int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
@@ -13246,7 +13246,7 @@ void zxvision_draw_below_windows(zxvision_window *w)
 	//printf ("after while pointer_window->previous_window!=NULL\n");
 
 	int antes_ventana_tipo_activa=ventana_tipo_activa;
-	ventana_tipo_activa=0; //Redibujar las de debajo como inactivas
+	zxvision_reset_ventana_tipo_activa(); //Redibujar las de debajo como inactivas
 
 	//Redibujar diciendo que estan por debajo
 	ventana_es_background=1;
@@ -13366,7 +13366,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 	}
 
 	int antes_ventana_tipo_activa=ventana_tipo_activa;
-	ventana_tipo_activa=0; //Redibujar las de debajo como inactivas
+	zxvision_reset_ventana_tipo_activa(); //Redibujar las de debajo como inactivas
 
 	//Redibujar diciendo que estan por debajo
 	ventana_es_background=1;
@@ -13469,7 +13469,7 @@ void old_zxvision_draw_overlays_below_windows(zxvision_window *w)
         }
 
         int antes_ventana_tipo_activa=ventana_tipo_activa;
-        ventana_tipo_activa=0; //Redibujar las de debajo como inactivas
+        zxvision_reset_ventana_tipo_activa(); //Redibujar las de debajo como inactivas
 
         //Redibujar diciendo que estan por debajo
         ventana_es_background=1;
@@ -17081,7 +17081,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 	 	else if (si_menu_mouse_en_ventana() && !zxvision_keys_event_not_send_to_machine) {
 			debug_printf (VERBOSE_DEBUG,"Clicked inside window. Events are not sent to emulated machine");
 			zxvision_keys_event_not_send_to_machine=1;
-			ventana_tipo_activa=1;
+			zxvision_set_ventana_tipo_activa();
 
             //Reflejar cambio de color en recuadro alrededor de maquina emulada
             menu_refresca_pantalla();
@@ -17097,7 +17097,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			debug_printf (VERBOSE_DEBUG,"Clicked outside window. Events are sent to emulated machine. X=%d Y=%d",menu_mouse_x,menu_mouse_y);
             //printf ("Clicked outside window. Events are sent to emulated machine. X=%d Y=%d\n",menu_mouse_x,menu_mouse_y);
 			zxvision_keys_event_not_send_to_machine=0;
-			ventana_tipo_activa=0;
+			zxvision_reset_ventana_tipo_activa();
 
             //Reflejar cambio de color en recuadro alrededor de maquina emulada
             menu_refresca_pantalla();
@@ -17463,7 +17463,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                 //printf("zxvision_if_mouse_in_zlogo_or_buttons_desktop 3\n");
 				debug_printf (VERBOSE_DEBUG,"Clicked inside other window or zlogo. Events are not sent to emulated machine");
 				zxvision_keys_event_not_send_to_machine=1;
-				ventana_tipo_activa=1;
+				zxvision_set_ventana_tipo_activa();
 				zxvision_draw_window(w);
 				zxvision_draw_window_contents(w);
 
@@ -26295,7 +26295,7 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
 
 		//Y redibujamos las ventanas, para que se vean los titulos sobretodo (pues los overlay en background no redibujan los titulos)
 		//decir que ventana principal no esta activa, para indicar que están todas en background
-		ventana_tipo_activa=0;
+		zxvision_reset_ventana_tipo_activa();
 
         //este footer me parece ya molesto.
 		//generic_footertext_print_operating("BKWIND");
@@ -27933,7 +27933,7 @@ void show_all_windows_startup(void)
 
         //Y redibujamos las ventanas, para que se vean los titulos sobretodo (pues los overlay en background no redibujan los titulos)
         //decir que ventana principal no esta activa, para indicar que están todas en background
-        ventana_tipo_activa=0;
+        zxvision_reset_ventana_tipo_activa();
 
 
         zxvision_redraw_all_windows();
