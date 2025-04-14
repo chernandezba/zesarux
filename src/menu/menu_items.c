@@ -18847,7 +18847,7 @@ void menu_display_window_list_print_item(zxvision_window *w,int linea,char *wind
 
 
 
-    if (linea==menu_display_window_list_opcion_seleccionada && zxvision_window_is_active(w) ) {
+    if (linea==menu_display_window_list_opcion_seleccionada && zxvision_window_is_active_drawn(w) ) {
         //linea donde esta el cursor y es la ventana activa. invertir
 
         zxvision_print_string_fillspc(w,1,linea,

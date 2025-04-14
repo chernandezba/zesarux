@@ -9403,8 +9403,10 @@ int zxvision_return_background_button_position(int ancho)
     else return ancho-3;
 }
 
-//Dice si la ventana es la activa
-int zxvision_window_is_active(zxvision_window *w)
+//Dice si la ventana es la activa y se dibuja como tal, o sea,
+//esta activa y esta en el menu abierto
+//De momento solo se usa en Process Management para dibujar la linea de cursor desde overlay
+int zxvision_window_is_active_drawn(zxvision_window *w)
 {
     if (w==zxvision_current_window && ventana_tipo_activa) return 1;
     else return 0;
