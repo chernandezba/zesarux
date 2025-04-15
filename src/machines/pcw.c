@@ -925,7 +925,25 @@ void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int 
     *address=(valor & 7) +2 *(valor & 0x1FF8);
 }
 
+#define PCW_COLOUR_START_MODE1_RGB15 2
+#define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+(4*4))
+
+//TODO: inicializar con lo que hay en pcw_rgb_table pasando de rgb24 a rgb15
+int pcw_rgb_table_15_bits[PCW_TOTAL_PALETTE_COLOURS];
+
 int pcw_get_rgb_color_mode2(int i)
+{
+
+
+    int indice_color=i;
+    int color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE2_RGB15+indice_color];
+
+    int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
+    //printf("%d %d\n",i,indice_color_rgb24);
+    return indice_color_rgb24;
+}
+
+int old_pcw_get_rgb_color_mode2(int i)
 {
 
     return PCW_COLOUR_START_MODE2+i;
@@ -941,9 +959,22 @@ void pcw_refresca_putpixel_mode2(int x,int y,int color)
     scr_putpixel_zoom(x,y+1,color_final);
 }
 
+ int old_pcw_get_rgb_color_mode1(int i)
+ {
+    return PCW_COLOUR_START_MODE1+i+pcw_mode1_palette*4;
+ }
+
+
+
+
 int pcw_get_rgb_color_mode1(int i)
 {
-    return PCW_COLOUR_START_MODE1+i+pcw_mode1_palette*4;
+    int indice_color=i+pcw_mode1_palette*4;
+    int color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE1_RGB15+indice_color];
+
+    int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
+    //printf("%d %d\n",i,indice_color_rgb24);
+    return indice_color_rgb24;
 }
 
 void pcw_refresca_putpixel_mode1(int x,int y,int color)
@@ -1352,7 +1383,94 @@ void pcw_boot_check_dsk_not_bootable(void)
 
 }
 
+//Retorna rgb15
+int pcw_convert_rgb_24_to_rgb_15(int rgb24)
+{
+    int r8=(rgb24>>16) & 0xFF;
+    int g8=(rgb24>>8) & 0xFF;
+    int b8=(rgb24   ) & 0xFF;
+
+    int r5=(r8>>3) & 0x1F;
+    int g5=(g8>>3) & 0x1F;
+    int b5=(b8>>3) & 0x1F;
+
+    int rgb15=(r5<<10) | (g5<<5) | b5;
+
+    //printf("RGB24 %06X = RGB15 %06X  R %02X G %02X B %02X ,  R %02X G %02X B %02X\n",rgb24,rgb15,r8,g8,b8,r5,g5,b5);
+
+    return rgb15;
+}
+
+
+
+
+
+
+//Retorna rgb24
 int pcw_get_palette_colour(int indice_color)
+{
+
+    int color_rgb15,color_rgb24;
+
+    switch (pcw_video_mode) {
+        case 0:
+            indice_color=indice_color % 2;
+            color_rgb15=pcw_rgb_table_15_bits[indice_color];
+            color_rgb24=spectrum_colortable_normal[TSCONF_INDEX_FIRST_COLOR+color_rgb15];
+            return color_rgb24;
+        break;
+
+        case 1:
+            indice_color=indice_color % 16;
+            color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE1_RGB15+indice_color];
+            color_rgb24=spectrum_colortable_normal[TSCONF_INDEX_FIRST_COLOR+color_rgb15];
+            return color_rgb24;
+        break;
+
+        case 2:
+        default:
+            indice_color=indice_color % 16;
+            color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE2_RGB15+indice_color];
+            color_rgb24=spectrum_colortable_normal[TSCONF_INDEX_FIRST_COLOR+color_rgb15];
+            return color_rgb24;;
+        break;
+
+    }
+}
+
+void pcw_change_palette_colour(int indice_color,int rgb_color)
+{
+    int rgb15;
+
+    switch (pcw_video_mode) {
+        case 0:
+            indice_color=indice_color % 2;
+            rgb15=pcw_convert_rgb_24_to_rgb_15(rgb_color);
+            pcw_rgb_table_15_bits[indice_color]=rgb15;
+        break;
+
+        case 1:
+            indice_color=indice_color % 16;
+            rgb15=pcw_convert_rgb_24_to_rgb_15(rgb_color);
+            pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE1_RGB15+indice_color]=rgb15;
+        break;
+
+        case 2:
+        default:
+            indice_color=indice_color % 16;
+            rgb15=pcw_convert_rgb_24_to_rgb_15(rgb_color);
+            pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE2_RGB15+indice_color]=rgb15;
+        break;
+
+    }
+
+    //printf("indice %d color %d\n",indice_color,rgb15);
+
+}
+
+
+//Retorna rgb24
+int old_pcw_get_palette_colour(int indice_color)
 {
     switch (pcw_video_mode) {
         case 0:
@@ -1374,7 +1492,7 @@ int pcw_get_palette_colour(int indice_color)
     }
 }
 
-void pcw_change_palette_colour(int indice_color,int rgb_color)
+void old_pcw_change_palette_colour(int indice_color,int rgb_color)
 {
     switch (pcw_video_mode) {
         case 0:

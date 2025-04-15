@@ -169,3 +169,9 @@ ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot pa
 
 
 -quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
+
+
+-PCW:
+*revisar los putpixel que saquen colores de tabla de 15 bits
+*inicializar tabla colores 15 bits con la conversion de la tabla rgb24
+*no deberia alterar ningun color de tabla spectrum_colortable_normal
