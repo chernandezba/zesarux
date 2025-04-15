@@ -156,6 +156,7 @@ https://www.probosci.de/zxbada/zxmmcp/technical.html
 *incluir ram residos en snapshot zsf
 *escrituras flashrom en disco duro (flush, etc). archivo flashrom seleccionable
 *manual en extras
+*RTC: info probablemente https://web.archive.org/web/20110811052347/http://www.zxbada.bbk.org/documentazione/zx-badaloc_technical_info_4.2-ENG.htm
 ok*zonas memoria ram y flashrom residos
 ok*debug mostrar paginas mapeadas
 ok documentar esto *boot rom zxmmc+ parece que requiere la tarjeta de trabajo de las nmi en el slot 2

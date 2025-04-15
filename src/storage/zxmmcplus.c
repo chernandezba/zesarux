@@ -88,6 +88,24 @@ The CPLD detects the OUT $7FFD instruction and captures data bit D4 to the lower
 This means that a complete 128K Spectrum ROM SET can be programmed and will work in flashrom, enabling the creation
 of NMI-patched rom for snapshot purposes. This feature is disabled when zxmmc+ RAM is paged-in, to avoid problems when
 running ResiDOS or bootrom firmware.
+
+---
+
+OLD INFO from ZX Badaloc:
+The non-standard $54DF register allows quick access to ANY ROM/RAM bank (up to 512Kbytes each) that will be
+mapped in address space 0-$3FFF, with a single OUT operation:
+
+D7:       RAM Write Enable (standalone);
+D6:       ‘1’ = Fast Paging Enabled
+D5:       ‘1’ = ROM is paged; ‘0’ = RAM is paged;
+D4:D0   5 upper address bit (bank select), up to 32 banks of 16Kbytes each
+
+Setting bit D6 will enable fast paging mode. Bank selected by bits D4:D0 will appear on address space 0-$3FFF.
+If D5 is also set, the rom chip is accessed. If D5 is reset, then the 128K/512K ram chip is accessed.
+
+Setting bit D7 will allow the ram bank selected by D4:D0 to be WRITTEN on address space 0-$3FFF, without affecting
+the active device for read operation. This allows quick ROM to RAM copy.
+
 */
 z80_byte zxmmcplus_port_7f_value=0;
 

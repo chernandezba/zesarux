@@ -61,6 +61,8 @@ extern void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS);
 extern void menu_betadisk(MENU_ITEM_PARAMETERS);
 extern void menu_storage_trd_emulation(MENU_ITEM_PARAMETERS);
 extern void menu_storage_trd_file(MENU_ITEM_PARAMETERS);
+extern void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS);
+extern void menu_storage_dskplusthree_emulation(MENU_ITEM_PARAMETERS);
 extern void menu_zxpand(MENU_ITEM_PARAMETERS);
 extern void menu_esxdos_traps(MENU_ITEM_PARAMETERS);
 extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);

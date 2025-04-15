@@ -43772,6 +43772,23 @@ void zxdesktop_lowericon_betadisk_accion_boton_derecho(void)
     }
 }
 
+void zxdesktop_lowericon_plus3_flp_accion_boton_derecho(void)
+{
+    char buffer_insert[20];
+    if (dskplusthree_emulation.v) strcpy(buffer_insert,"Eject disk");
+    else strcpy(buffer_insert,"Open...");
+
+    int opcion=menu_simple_one_choices("3\" CF2 Floppy","--Action--",buffer_insert);
+
+    switch (opcion) {
+        case 1:
+            if (dskplusthree_emulation.v) menu_storage_dskplusthree_emulation(0);
+            else menu_storage_dskplusthree_file(0);
+        break;
+
+    }
+}
+
 //Funciones para MMC
 
 int zxdesktop_lowericon_mmc_is_visible(void)
@@ -44311,7 +44328,8 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse},
 
 	//floppy +3
-	{ zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,NULL,
+	{ zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,
+    zxdesktop_lowericon_plus3_flp_accion_boton_derecho,
 		bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse},
 
 	//betadisk
