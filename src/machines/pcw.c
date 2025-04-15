@@ -1394,6 +1394,14 @@ void pcw_change_palette_colour(int indice_color,int rgb_color)
         break;
 
     }
+
+    //Nota: esto no es lo mas eficiente, pero dado que estamos cambiando la paleta de colores que utiliza ZEsarUX, es necesario
+    //esto para que se apliquen los cambios de colores.
+    //Lo ideal seria que el cambio de color se hiciera sobre una tabla intermedia y esta apuntase al color final,
+    //y cal cambiar el color de paleta en pcw se hiciera sobre esa tabla intermedia
+    //Pero la tabla intermedia deberia estar indexada al menos con RGB9, pero tenemos colores de base,
+    //como los Negro/Verde del pcw original, definidos en RGB24 bits, que habria que pasar a RGB9
+    clear_putpixel_cache();
 }
 
 

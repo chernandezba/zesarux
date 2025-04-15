@@ -65,6 +65,7 @@ Corregido cálculo de uso de cpu cuando el footer está desactivado
 Corregido asignación de esxdos handler root dir al cargar un archivo .nex sin indicar path desde linea de comandos
 Corregido bug al restaurar un snapshot ZSF con DivIDE activado
 Corregido segfault al pulsar CTRL-C en consola
+Corregido cambios de color de paleta en PCW
 
 ----
 
