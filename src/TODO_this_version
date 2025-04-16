@@ -172,6 +172,6 @@ ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot pa
 
 
 -PCW:
-*revisar los putpixel que saquen colores de tabla de 15 bits
-*inicializar tabla colores 15 bits con la conversion de la tabla rgb24
-*no deberia alterar ningun color de tabla spectrum_colortable_normal
+ok*revisar los putpixel que saquen colores de tabla de 15 bits
+ok*inicializar tabla colores 15 bits con la conversion de la tabla rgb24
+ok*no deberia alterar ningun color de tabla spectrum_colortable_normal

@@ -103,63 +103,6 @@ z80_byte pcw_interrupt_from_pd765_type=0;
 //Total ram. Para un 8256, 256k. Para un 8512, 512k
 int pcw_total_ram=256*1024;
 
-//Tabla de colores
-int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
-
-    0x000000, //negro
-    0x41FF00,  //verde. Tipico color de green "P1" phosphor
-
-    //4 colores tipicos de CGA
-
-    //Paleta 0 low intensity
-    //negro, green, red, brown
-    0x000000, //negro
-    0x00AA00, //green
-    0xAA0000, //red
-    0xAA5500, //brown
-
-    //Paleta 0 high intensity
-    //negro, light green, light red, yellow
-    0x000000, //negro
-    0x55FF55, //light green,
-    0xFF5555, //light red
-    0xFFFF55, //yellow
-
-    //Paleta 1 low intensity
-    //negro, cyan, magenta, light gray
-    0x000000, //negro
-    0x00AAAA, //cyan
-    0xAA00AA, //magenta
-    0xAAAAAA, //light gray
-
-    //Paleta 1 high intensity
-    0x000000, //negro
-    0x55FFFF, //light cyan
-    0xFF55FF, //light magenta
-    0xFFFFFF, //white
-
-
-
-
-
-    //paleta 16 colores
-    0x000000,
-    0x0000AA,
-    0x00AA00,
-    0x00AAAA,
-    0xAA0000,
-    0xAA00AA,
-    0xAA5500,
-    0xAAAAAA,
-    0x555555,
-    0x5555FF,
-    0x55FF55,
-    0x55FFFF,
-    0xFF5555,
-    0xFF55FF,
-    0xFFFF55,
-    0xFFFFFF
-};
 
 //Determina la paleta del mode1 (la que es como cga)
 int pcw_mode1_palette=0;
@@ -343,6 +286,260 @@ void pcw_set_memory_pages(void)
 
 }
 
+//Tabla de colores en rgb24, solo se usa al principio para convertirla a rgb15
+int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
+
+    0x000000, //negro
+    0x41FF00,  //verde. Tipico color de green "P1" phosphor
+
+    //4 colores tipicos de CGA
+
+    //Paleta 0 low intensity
+    //negro, green, red, brown
+    0x000000, //negro
+    0x00AA00, //green
+    0xAA0000, //red
+    0xAA5500, //brown
+
+    //Paleta 0 high intensity
+    //negro, light green, light red, yellow
+    0x000000, //negro
+    0x55FF55, //light green,
+    0xFF5555, //light red
+    0xFFFF55, //yellow
+
+    //Paleta 1 low intensity
+    //negro, cyan, magenta, light gray
+    0x000000, //negro
+    0x00AAAA, //cyan
+    0xAA00AA, //magenta
+    0xAAAAAA, //light gray
+
+    //Paleta 1 high intensity
+    0x000000, //negro
+    0x55FFFF, //light cyan
+    0xFF55FF, //light magenta
+    0xFFFFFF, //white
+
+
+    //paleta 16 colores
+    0x000000,
+    0x0000AA,
+    0x00AA00,
+    0x00AAAA,
+    0xAA0000,
+    0xAA00AA,
+    0xAA5500,
+    0xAAAAAA,
+    0x555555,
+    0x5555FF,
+    0x55FF55,
+    0x55FFFF,
+    0xFF5555,
+    0xFF55FF,
+    0xFFFF55,
+    0xFFFFFF
+};
+
+
+//Retorna rgb15
+int pcw_convert_rgb_24_to_rgb_15(int rgb24)
+{
+    int r8=(rgb24>>16) & 0xFF;
+    int g8=(rgb24>>8) & 0xFF;
+    int b8=(rgb24   ) & 0xFF;
+
+    int r5=(r8>>3) & 0x1F;
+    int g5=(g8>>3) & 0x1F;
+    int b5=(b8>>3) & 0x1F;
+
+    int rgb15=(r5<<10) | (g5<<5) | b5;
+
+    //printf("RGB24 %06X = RGB15 %06X  R %02X G %02X B %02X ,  R %02X G %02X B %02X\n",rgb24,rgb15,r8,g8,b8,r5,g5,b5);
+
+    return rgb15;
+}
+
+#define PCW_COLOUR_START_MODE1_RGB15 2
+#define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+(4*4))
+
+//La paleta de trabajo es esta, en 15 bits, que al final se obtendran colores de paleta de tsconf de 15 bits
+//Cuando el pcw modifica algun color de la paleta, se hace sobre esta paleta de 15 bits
+int pcw_rgb_table_15_bits[PCW_TOTAL_PALETTE_COLOURS];
+
+//Convertir los colores rgb24 a rgb15
+void pcw_init_colour_palette(void)
+{
+
+    int i;
+
+    for (i=0;i<PCW_TOTAL_PALETTE_COLOURS;i++) {
+        int rgb_24=pcw_rgb_table[i];
+        int rgb_15=pcw_convert_rgb_24_to_rgb_15(rgb_24);
+        pcw_rgb_table_15_bits[i]=rgb_15;
+    }
+
+}
+
+
+//Retorna el color de 15 bits de un indice a paleta
+int pcw_get_color_palette(int index)
+{
+    return pcw_rgb_table_15_bits[index];
+}
+
+//Retorna el color en modo 0
+int pcw_get_rgb_color_mode0(int i)
+{
+    //0 o 1
+    if (pcw_black_white_display.v) {
+        return (i ? 7 : 0);
+    }
+
+    else {
+        int color=pcw_get_color_palette(i);
+        color +=TSCONF_INDEX_FIRST_COLOR;
+
+        return color;
+    }
+}
+
+//Retorna el color en modo 1
+int pcw_get_rgb_color_mode1(int i)
+{
+    int indice_color=i+pcw_mode1_palette*4;
+    int color_rgb15=pcw_get_color_palette(PCW_COLOUR_START_MODE1_RGB15+indice_color);
+
+    int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
+    //printf("%d %d\n",i,indice_color_rgb24);
+    return indice_color_rgb24;
+}
+
+//Retorna el color en modo 2
+int pcw_get_rgb_color_mode2(int i)
+{
+
+
+    int indice_color=i;
+    int color_rgb15=pcw_get_color_palette(PCW_COLOUR_START_MODE2_RGB15+indice_color);
+
+    int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
+    //printf("%d %d\n",i,indice_color_rgb24);
+    return indice_color_rgb24;
+}
+
+//Putpixel para modo 0
+void pcw_refresca_putpixel_mode0(int x,int y,int color)
+{
+    y*=2;
+
+    int color_final=pcw_get_rgb_color_mode0(color);
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
+}
+
+//Putpixel para modo 1
+void pcw_refresca_putpixel_mode1(int x,int y,int color)
+{
+    y*=2;
+
+    int color_final=pcw_get_rgb_color_mode1(color);
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
+}
+
+//Putpixel para modo 2
+void pcw_refresca_putpixel_mode2(int x,int y,int color)
+{
+    y*=2;
+
+    int color_final=pcw_get_rgb_color_mode2(color);
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
+}
+
+
+
+int pcw_get_palette_colour_indexfinal(int indice_color)
+{
+    int color_rgb15,color_rgb24;
+
+    color_rgb15=pcw_get_color_palette(indice_color);
+    color_rgb24=spectrum_colortable_normal[TSCONF_INDEX_FIRST_COLOR+color_rgb15];
+    return color_rgb24;
+}
+
+//Retorna rgb24
+int pcw_get_palette_colour(int indice_color)
+{
+
+    //printf("pcw_get_palette_colour mode %d\n",pcw_video_mode);
+
+    switch (pcw_video_mode) {
+        case 0:
+            indice_color=indice_color % 2;
+            return pcw_get_palette_colour_indexfinal(indice_color);
+        break;
+
+        case 1:
+            indice_color=indice_color % 16;
+            return pcw_get_palette_colour_indexfinal(PCW_COLOUR_START_MODE1_RGB15+indice_color);
+        break;
+
+        case 2:
+        default:
+            indice_color=indice_color % 16;
+            return pcw_get_palette_colour_indexfinal(PCW_COLOUR_START_MODE2_RGB15+indice_color);
+        break;
+
+    }
+}
+
+void pcw_change_palette_colour_indexfinal(int indice_color,int rgb_color)
+{
+    int rgb15;
+
+    rgb15=pcw_convert_rgb_24_to_rgb_15(rgb_color);
+    pcw_rgb_table_15_bits[indice_color]=rgb15;
+
+    modificado_border.v=1;
+
+}
+
+void pcw_change_palette_colour(int indice_color,int rgb_color)
+{
+
+    //printf("pcw_change_palette_colour mode %d\n",pcw_video_mode);
+
+
+    switch (pcw_video_mode) {
+        case 0:
+            indice_color=indice_color % 2;
+            pcw_change_palette_colour_indexfinal(indice_color,rgb_color);
+        break;
+
+        case 1:
+            indice_color=indice_color % 16;
+            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE1_RGB15+indice_color,rgb_color);
+        break;
+
+        case 2:
+        default:
+            indice_color=indice_color % 16;
+            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE2_RGB15+indice_color,rgb_color);
+        break;
+
+    }
+
+    //printf("indice %d color %d\n",indice_color,rgb15);
+
+}
+
+
+
 void pcw_reset(void)
 {
     //pcw_bank_registers[0]=pcw_bank_registers[1]=pcw_bank_registers[2]=pcw_bank_registers[3]=0;
@@ -379,6 +576,10 @@ void pcw_reset(void)
 
     //Recargar contenido del boot de RAM
     rom_load(NULL);
+
+    pcw_video_mode=0;
+
+    pcw_init_colour_palette();
 }
 
 void pcw_init_memory_tables(void)
@@ -925,87 +1126,7 @@ void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int 
     *address=(valor & 7) +2 *(valor & 0x1FF8);
 }
 
-#define PCW_COLOUR_START_MODE1_RGB15 2
-#define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+(4*4))
 
-//TODO: inicializar con lo que hay en pcw_rgb_table pasando de rgb24 a rgb15
-int pcw_rgb_table_15_bits[PCW_TOTAL_PALETTE_COLOURS];
-
-int pcw_get_rgb_color_mode2(int i)
-{
-
-
-    int indice_color=i;
-    int color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE2_RGB15+indice_color];
-
-    int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
-    //printf("%d %d\n",i,indice_color_rgb24);
-    return indice_color_rgb24;
-}
-
-int old_pcw_get_rgb_color_mode2(int i)
-{
-
-    return PCW_COLOUR_START_MODE2+i;
-}
-
-void pcw_refresca_putpixel_mode2(int x,int y,int color)
-{
-    y*=2;
-
-    int color_final=pcw_get_rgb_color_mode2(color);
-
-    scr_putpixel_zoom(x,y,color_final);
-    scr_putpixel_zoom(x,y+1,color_final);
-}
-
- int old_pcw_get_rgb_color_mode1(int i)
- {
-    return PCW_COLOUR_START_MODE1+i+pcw_mode1_palette*4;
- }
-
-
-
-
-int pcw_get_rgb_color_mode1(int i)
-{
-    int indice_color=i+pcw_mode1_palette*4;
-    int color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE1_RGB15+indice_color];
-
-    int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
-    //printf("%d %d\n",i,indice_color_rgb24);
-    return indice_color_rgb24;
-}
-
-void pcw_refresca_putpixel_mode1(int x,int y,int color)
-{
-    y*=2;
-
-    int color_final=pcw_get_rgb_color_mode1(color);
-
-    scr_putpixel_zoom(x,y,color_final);
-    scr_putpixel_zoom(x,y+1,color_final);
-}
-
-int pcw_get_rgb_color(int i)
-{
-    //0 o 1
-    if (pcw_black_white_display.v) {
-        return (i ? 7 : 0);
-    }
-
-    else return (i ? PCW_COLOUR_GREEN : PCW_COLOUR_BLACK);
-}
-
-void pcw_refresca_putpixel(int x,int y,int color)
-{
-    y*=2;
-
-    int color_final=pcw_get_rgb_color(color);
-
-    scr_putpixel_zoom(x,y,color_final);
-    scr_putpixel_zoom(x,y+1,color_final);
-}
 
 /*
 Modo 0 (720x256x2), el nativo del PCW: negro y verde, o Negro y blanco, a elegir vía puente.
@@ -1095,7 +1216,7 @@ void scr_refresca_pantalla_pcw(void)
                         if (byte_leido & 128) pixel_color=1;
                         else pixel_color=0;
 
-                        pcw_refresca_putpixel(x+bit,y+scanline,pixel_color);
+                        pcw_refresca_putpixel_mode0(x+bit,y+scanline,pixel_color);
 
                         byte_leido=byte_leido<<1;
                     }
@@ -1197,7 +1318,7 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
             int color;
 
             //Ejemplo de juego que usa color modo 1: knight lore
-            if (pcw_video_mode==0) color=pcw_get_rgb_color(border_col);
+            if (pcw_video_mode==0) color=pcw_get_rgb_color_mode0(border_col);
             else if (pcw_video_mode==1) color=pcw_get_rgb_color_mode1(border_col*3);
             else color=pcw_get_rgb_color_mode2(border_col*15);
 
@@ -1383,144 +1504,10 @@ void pcw_boot_check_dsk_not_bootable(void)
 
 }
 
-//Retorna rgb15
-int pcw_convert_rgb_24_to_rgb_15(int rgb24)
-{
-    int r8=(rgb24>>16) & 0xFF;
-    int g8=(rgb24>>8) & 0xFF;
-    int b8=(rgb24   ) & 0xFF;
-
-    int r5=(r8>>3) & 0x1F;
-    int g5=(g8>>3) & 0x1F;
-    int b5=(b8>>3) & 0x1F;
-
-    int rgb15=(r5<<10) | (g5<<5) | b5;
-
-    //printf("RGB24 %06X = RGB15 %06X  R %02X G %02X B %02X ,  R %02X G %02X B %02X\n",rgb24,rgb15,r8,g8,b8,r5,g5,b5);
-
-    return rgb15;
-}
 
 
 
 
-
-
-//Retorna rgb24
-int pcw_get_palette_colour(int indice_color)
-{
-
-    int color_rgb15,color_rgb24;
-
-    switch (pcw_video_mode) {
-        case 0:
-            indice_color=indice_color % 2;
-            color_rgb15=pcw_rgb_table_15_bits[indice_color];
-            color_rgb24=spectrum_colortable_normal[TSCONF_INDEX_FIRST_COLOR+color_rgb15];
-            return color_rgb24;
-        break;
-
-        case 1:
-            indice_color=indice_color % 16;
-            color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE1_RGB15+indice_color];
-            color_rgb24=spectrum_colortable_normal[TSCONF_INDEX_FIRST_COLOR+color_rgb15];
-            return color_rgb24;
-        break;
-
-        case 2:
-        default:
-            indice_color=indice_color % 16;
-            color_rgb15=pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE2_RGB15+indice_color];
-            color_rgb24=spectrum_colortable_normal[TSCONF_INDEX_FIRST_COLOR+color_rgb15];
-            return color_rgb24;;
-        break;
-
-    }
-}
-
-void pcw_change_palette_colour(int indice_color,int rgb_color)
-{
-    int rgb15;
-
-    switch (pcw_video_mode) {
-        case 0:
-            indice_color=indice_color % 2;
-            rgb15=pcw_convert_rgb_24_to_rgb_15(rgb_color);
-            pcw_rgb_table_15_bits[indice_color]=rgb15;
-        break;
-
-        case 1:
-            indice_color=indice_color % 16;
-            rgb15=pcw_convert_rgb_24_to_rgb_15(rgb_color);
-            pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE1_RGB15+indice_color]=rgb15;
-        break;
-
-        case 2:
-        default:
-            indice_color=indice_color % 16;
-            rgb15=pcw_convert_rgb_24_to_rgb_15(rgb_color);
-            pcw_rgb_table_15_bits[PCW_COLOUR_START_MODE2_RGB15+indice_color]=rgb15;
-        break;
-
-    }
-
-    //printf("indice %d color %d\n",indice_color,rgb15);
-
-}
-
-
-//Retorna rgb24
-int old_pcw_get_palette_colour(int indice_color)
-{
-    switch (pcw_video_mode) {
-        case 0:
-            indice_color=indice_color % 2;
-            return spectrum_colortable_normal[PCW_INDEX_FIRST_COLOR+indice_color];
-        break;
-
-        case 1:
-            indice_color=indice_color % 16;
-            return spectrum_colortable_normal[PCW_COLOUR_START_MODE1+indice_color];
-        break;
-
-        case 2:
-        default:
-            indice_color=indice_color % 16;
-            return spectrum_colortable_normal[PCW_COLOUR_START_MODE2+indice_color];
-        break;
-
-    }
-}
-
-void old_pcw_change_palette_colour(int indice_color,int rgb_color)
-{
-    switch (pcw_video_mode) {
-        case 0:
-            indice_color=indice_color % 2;
-            spectrum_colortable_normal[PCW_INDEX_FIRST_COLOR+indice_color]=rgb_color;
-        break;
-
-        case 1:
-            indice_color=indice_color % 16;
-            spectrum_colortable_normal[PCW_COLOUR_START_MODE1+indice_color]=rgb_color;
-        break;
-
-        case 2:
-        default:
-            indice_color=indice_color % 16;
-            spectrum_colortable_normal[PCW_COLOUR_START_MODE2+indice_color]=rgb_color;
-        break;
-
-    }
-
-    //Nota: esto no es lo mas eficiente, pero dado que estamos cambiando la paleta de colores que utiliza ZEsarUX, es necesario
-    //esto para que se apliquen los cambios de colores.
-    //Lo ideal seria que el cambio de color se hiciera sobre una tabla intermedia y esta apuntase al color final,
-    //y cal cambiar el color de paleta en pcw se hiciera sobre esa tabla intermedia
-    //Pero la tabla intermedia deberia estar indexada al menos con RGB9, pero tenemos colores de base,
-    //como los Negro/Verde del pcw original, definidos en RGB24 bits, que habria que pasar a RGB9
-    clear_putpixel_cache();
-}
 
 
 void pcw_out_port_video(z80_byte puerto_l,z80_byte value)

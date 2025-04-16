@@ -11064,6 +11064,9 @@ int menu_debug_sprites_total_colors_mapped_palette(int paleta)
 			return VDP_9918A_SMS_MODE4_MAPPED_PALETTE_COLOURS;
 		break;
 
+        case 20:
+            return PCW_TOTAL_PALETTE_COLOURS;
+        break;
 
 	}
 
@@ -11149,6 +11152,10 @@ int menu_debug_sprites_max_value_mapped_palette(int paleta)
             return SMS_TOTAL_PALETTE_COLOURS;
         break;
 
+        case 20:
+            //PCW
+            return TSCONF_TOTAL_PALETTE_COLOURS;
+		break;
 
 
 	}
@@ -11271,7 +11278,10 @@ int menu_debug_sprites_return_index_palette(int paleta, z80_byte color)
             return vdp_9918a_sms_cram[color];
         break;
 
-
+        case 20:
+            //PCW
+            return pcw_get_color_palette(color);
+        break;
 
 
 	}
@@ -11350,6 +11360,10 @@ int menu_debug_sprites_return_color_palette(int paleta, z80_byte color)
 			return SMS_INDEX_FIRST_COLOR+index;
 		break;
 
+		case 20:
+			//PCW
+			return TSCONF_INDEX_FIRST_COLOR+index;
+		break;
 
 	}
 
@@ -11449,6 +11463,10 @@ void menu_debug_sprites_get_palette_name(int paleta, char *s)
 
 		case 19:
 			strcpy(s,"SMS Mode 4");
+		break;
+
+		case 20:
+			strcpy(s,"PCW");
 		break;
 
 		default:
