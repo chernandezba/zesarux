@@ -2552,8 +2552,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_not_change_frame_when_resize_zone,NULL,
             "Change frame over resize","Cambiar marco encima redimensionado","Canviar marc sobre redimensionat");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_change_frame_when_resize_zone.v ? 'X' : ' ' ));
-        menu_add_item_menu_tooltip(array_menu_common,"Change frame window when mouse if over resize zone");
-        menu_add_item_menu_ayuda(array_menu_common,"Change frame window when mouse if over resize zone");
+        menu_add_item_menu_tooltip(array_menu_common,"Change frame window when mouse is over resize zone");
+        menu_add_item_menu_ayuda(array_menu_common,"Change frame window when mouse is over resize zone");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_invert_mouse_scroll,NULL,

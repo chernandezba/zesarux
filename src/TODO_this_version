@@ -172,3 +172,6 @@ ok * iconos y footer con actividad
 
 -quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
 
+
+-en debug cpu, al leer un puerto de teclado, que diga que fila de teclas es . en spectrum. aunque si lee mas de una a la vez, no
+dirá nada
