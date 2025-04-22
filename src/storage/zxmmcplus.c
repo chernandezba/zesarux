@@ -35,6 +35,7 @@
 #include "zesarux.h"
 #include "mmc.h"
 #include "mem128.h"
+#include "menu_items.h"
 
 
 
@@ -177,17 +178,20 @@ void zxmmcplus_footer_print_flash_operating(void)
     watermark_tell_device_activity();
 
     //Y poner icono en inverso
-    /*
+
     if (!zxdesktop_icon_zxmmcplusflash_inverse) {
         zxdesktop_icon_zxmmcplusflash_inverse=1;
         menu_draw_ext_desktop();
     }
-    */
+
 }
 
 void zxmmcplus_write_flashrom_byte(int dir,z80_byte value)
 {
     zxmmcplus_memory_pointer[dir]=value;
+
+    //Avisar de actividad en la flash. Solo al escribir, al leer no porque si está la rom mapeada se leeria continuamente
+    //y continuamente avisaria de actividad
     zxmmcplus_footer_print_flash_operating();
 }
 

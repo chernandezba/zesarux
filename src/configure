@@ -1690,7 +1690,7 @@ ula.o: ula.c ula.h cpu.h start.h debug.h video/screen.h contend.h zxvision/zxvis
 mmc.o: storage/mmc.c storage/mmc.h cpu.h debug.h utils.h zxvision/zxvision.h video/screen.h storage/divmmc.h compileoptions.h operaciones.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c storage/mmc.c
 
-zxmmcplus.o: storage/zxmmcplus.c storage/zxmmcplus.h cpu.h debug.h utils.h operaciones.h zesarux.h storage/mmc.h mem128.h
+zxmmcplus.o: storage/zxmmcplus.c storage/zxmmcplus.h cpu.h debug.h utils.h operaciones.h zesarux.h storage/mmc.h mem128.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c storage/zxmmcplus.c
 
 ide.o: storage/ide.c storage/ide.h cpu.h debug.h utils.h zxvision/zxvision.h video/screen.h storage/divide.h menu/menu_items.h

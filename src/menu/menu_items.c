@@ -44076,6 +44076,25 @@ void zxdesktop_lowericon_zxunoflash_accion(void)
 }
 
 
+//Funciones para ZXMMC+ flash
+int zxdesktop_lowericon_zxmmcplusflash_is_visible(void)
+{
+	if (MACHINE_IS_SPECTRUM && zxmmcplus_enabled.v) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_zxmmcplusflash_is_active(void)
+{
+	if (MACHINE_IS_SPECTRUM && zxmmcplus_enabled.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_zxmmcplusflash_accion(void)
+{
+    menu_zxmmcplus(0);
+}
+
 //Funciones para Cartuchos MSX, Coleco, SVI, SG1000, SMS
 
 
@@ -44311,6 +44330,7 @@ int zxdesktop_icon_mdv4_inverse=0;
 int zxdesktop_icon_flp1_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
+int zxdesktop_icon_zxmmcplusflash_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
 
 
@@ -44408,6 +44428,10 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //zxuno flash. En este caso no hay distincion entre icono insertado y no insertado
 	{ zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,NULL,
 		bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse},
+
+    //zxmmc+ flash. En este caso no hay distincion entre icono insertado y no insertado
+	{ zxdesktop_lowericon_zxmmcplusflash_is_visible, zxdesktop_lowericon_zxmmcplusflash_is_active, zxdesktop_lowericon_zxmmcplusflash_accion,NULL,
+		bitmap_lowericon_ext_desktop_zxmmcplusflash,bitmap_lowericon_ext_desktop_zxmmcplusflash,&zxdesktop_icon_zxmmcplusflash_inverse},
 
     //cartucho dandanator
 	{ zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
