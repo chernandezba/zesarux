@@ -36,6 +36,7 @@
 #include "mmc.h"
 #include "mem128.h"
 #include "menu_items.h"
+#include "screen.h"
 
 
 

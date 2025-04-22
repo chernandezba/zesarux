@@ -66,7 +66,7 @@ extern void menu_storage_dskplusthree_emulation(MENU_ITEM_PARAMETERS);
 extern void menu_zxpand(MENU_ITEM_PARAMETERS);
 extern void menu_esxdos_traps(MENU_ITEM_PARAMETERS);
 extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
-
+extern void menu_zxmmcplus(MENU_ITEM_PARAMETERS);
 
 
 

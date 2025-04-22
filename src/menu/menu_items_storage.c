@@ -154,6 +154,7 @@
 #include "microdrive_raw.h"
 #include "lec.h"
 #include "zesarux.h"
+#include "zxmmcplus.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -178,6 +179,7 @@ int menu_plusthreedisk_info_sectors_list_opcion_seleccionada=0;
 int menu_plusthreedisk_info_tracks_list_opcion_seleccionada=0;
 int menu_plusthreedisk_info_opcion_seleccionada=0;
 int plusthreedisk_opcion_seleccionada=0;
+int zxmmcplus_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -9572,3 +9574,54 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
 
 }
+
+
+
+void menu_zxmmcplus_enable(MENU_ITEM_PARAMETERS)
+{
+    if (zxmmcplus_enabled.v) {
+        zxmmcplus_disable();
+    }
+    else {
+        zxmmcplus_enable();
+    }
+}
+
+
+
+void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_enable,
+                NULL,"[%c] ZXMMC+ Enabled", (zxmmcplus_enabled.v ? 'X' : ' '));
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&zxmmcplus_opcion_seleccionada,&item_seleccionado,array_menu_common,"ZXMMC+ emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
