@@ -169,6 +169,28 @@ z80_byte zxmmcplus_read_ram_byte(z80_int dir)
 	return zxmmcplus_memory_pointer[dir_final];
 }
 
+void zxmmcplus_footer_print_flash_operating(void)
+{
+
+
+	generic_footertext_print_operating("FLASH");
+    watermark_tell_device_activity();
+
+    //Y poner icono en inverso
+    /*
+    if (!zxdesktop_icon_zxmmcplusflash_inverse) {
+        zxdesktop_icon_zxmmcplusflash_inverse=1;
+        menu_draw_ext_desktop();
+    }
+    */
+}
+
+void zxmmcplus_write_flashrom_byte(int dir,z80_byte value)
+{
+    zxmmcplus_memory_pointer[dir]=value;
+    zxmmcplus_footer_print_flash_operating();
+}
+
 void zxmmcplus_poke_ram(z80_int dir,z80_byte value)
 {
 
@@ -190,7 +212,7 @@ void zxmmc_flashrom_blockerase(int bloque)
     int i;
 
     for (i=0;i<65536;i++) {
-        zxmmcplus_memory_pointer[offset++]=255;
+        zxmmcplus_write_flashrom_byte(offset++,255);
     }
 }
 
@@ -410,7 +432,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
             if (zxmmcplus_romwrite_current_prefix==PROGRAM) {
                 //Fin comando Program. Usar dir_final y value para escribir en flash rom
                 printf("Command Program. Writing rom address %X value %X\n",dir_final,value);
-                zxmmcplus_memory_pointer[dir_final]=value;
+                zxmmcplus_write_flashrom_byte(dir_final,value);
                 zxmmcplus_romwrite_index=1;
                 return;
             }

@@ -27,7 +27,7 @@
 #define ZXMMCPLUS_FLASHROM_SIZE (512*1024)
 #define ZXMMCPLUS_RAM_SIZE (512*1024)
 
-#define ZXMMCPLUS_FLASHROM_FILE_NAME "zxmmcplus.rom"
+#define ZXMMCPLUS_FLASHROM_FILE_NAME "zxmmcplus.flash"
 
 extern z80_bit zxmmcplus_enabled;
 extern void zxmmcplus_mmc_cs(z80_byte value);
