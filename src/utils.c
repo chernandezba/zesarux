@@ -4092,6 +4092,9 @@ int util_write_configfile(void)
 
 
   if (zxmmc_emulation.v)                      ADD_STRING_CONFIG,"--enable-zxmmc");
+
+  if (zxmmcplus_flashrom_write_protect.v)     ADD_STRING_CONFIG,"--zxmmcplus-flash-write-protection");
+
   if (eight_bit_simple_ide_enabled.v)         ADD_STRING_CONFIG,"--enable-8bit-ide");
 
 			                      ADD_STRING_CONFIG,"--diviface-ram-size %d",get_diviface_total_ram());

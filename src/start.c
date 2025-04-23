@@ -157,6 +157,7 @@
 #include "microdrive.h"
 #include "microdrive_raw.h"
 #include "debug_nested_functions.h"
+#include "zxmmcplus.h"
 
 
 #ifdef COMPILE_STDOUT
@@ -1591,6 +1592,14 @@ printf("\n"
 		"--simulaterealloadfast      Enable fast simulate real tape loading\n"
         "--deletetzxpauses           Do not follow pauses on TZX tapes\n"
 		"--realloadfast              Fast loading of real tape\n"
+
+
+		"\n"
+		"\n"
+		"Storage - ZXMMC+ Settings\n"
+		"-------------------------\n"
+		"\n"
+		"--zxmmcplus-flash-write-protection          Enable ZXMMC+ Flash ROM write protection\n"
 
 
 		"\n"
@@ -4712,6 +4721,10 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--enable-8bit-ide")) {
                                 command_line_8bitide.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxmmcplus-flash-write-protection")) {
+				zxmmcplus_flashrom_write_protect.v=1;
 			}
 
 

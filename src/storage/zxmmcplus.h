@@ -29,6 +29,7 @@
 
 #define ZXMMCPLUS_FLASHROM_FILE_NAME "zxmmcplus.flash"
 
+extern z80_bit zxmmcplus_flashrom_write_protect;
 extern z80_bit zxmmcplus_enabled;
 extern void zxmmcplus_mmc_cs(z80_byte value);
 extern void zxmmcplus_reset(void);

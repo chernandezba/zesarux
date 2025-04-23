@@ -165,6 +165,9 @@ ok *soporte para spectrum 128k
 ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot para cargar)
 ok * iconos y footer con actividad
 * flush de contenido flash rom
+* al habilitar proteccion escritura, salta lo siguiente al generar un snapshot de nmi con tecla R:
+                    printf("Fin Comando Read/Reset (short). TODO\n");
+                    sleep(5);
 
 
 -Acabar de probar minimizado de ventanas con setting de ocultar minimizado

@@ -42,6 +42,8 @@
 
 z80_bit zxmmcplus_enabled={0};
 
+z80_bit zxmmcplus_flashrom_write_protect={0};
+
 
 //Apunta a memoria rom y ram. Primero rom, luego ram
 z80_byte *zxmmcplus_memory_pointer;
@@ -189,11 +191,16 @@ void zxmmcplus_footer_print_flash_operating(void)
 
 void zxmmcplus_write_flashrom_byte(int dir,z80_byte value)
 {
-    zxmmcplus_memory_pointer[dir]=value;
-
     //Avisar de actividad en la flash. Solo al escribir, al leer no porque si está la rom mapeada se leeria continuamente
     //y continuamente avisaria de actividad
     zxmmcplus_footer_print_flash_operating();
+
+    if (zxmmcplus_flashrom_write_protect.v==0) {
+        zxmmcplus_memory_pointer[dir]=value;
+        //TODO: activar flush a disco
+    }
+
+
 }
 
 void zxmmcplus_poke_ram(z80_int dir,z80_byte value)

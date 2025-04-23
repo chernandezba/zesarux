@@ -9588,6 +9588,10 @@ void menu_zxmmcplus_enable(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_zxmmcplus_flashrom_write_protect(MENU_ITEM_PARAMETERS)
+{
+    zxmmcplus_flashrom_write_protect.v ^=1;
+}
 
 void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
 {
@@ -9598,9 +9602,16 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_enable,
-                NULL,"[%c] ZXMMC+ Enabled", (zxmmcplus_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_enable,NULL,
+            "ZXMMC+ Enabled", "ZXMMC+ Activado", "ZXMMC+ Activat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxmmcplus_enabled.v ? 'X' : ' '));
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_flashrom_write_protect,NULL,
+            "Flash ROM Wr~~ite protect","Protección escr~~itura Flash ROM","Protecció escr~~iptura Flash ROM");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxmmcplus_flashrom_write_protect.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'i');
+        menu_add_item_menu_tooltip(array_menu_common,"If ZXMMC+ Flash ROM is write protected");
+        menu_add_item_menu_ayuda(array_menu_common,"If ZXMMC+ Flash ROM is write protected");
 
         menu_add_item_menu_separator(array_menu_common);
 
