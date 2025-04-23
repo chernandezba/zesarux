@@ -4090,7 +4090,7 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--enable-divide");
   if (divide_rom_name[0]!=0)                  ADD_STRING_CONFIG,"--divide-rom \"%s\"",divide_rom_name);
 
-
+  if (zxmmcplus_enabled.v)                          ADD_STRING_CONFIG,"--enable-zxmmcplus");
   if (zxmmc_emulation.v)                      ADD_STRING_CONFIG,"--enable-zxmmc");
 
   if (zxmmcplus_flashrom_write_protect.v)     ADD_STRING_CONFIG,"--zxmmcplus-flash-write-protection");

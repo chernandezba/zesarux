@@ -298,6 +298,7 @@ z80_bit command_line_esxdos_handler={0};
 z80_bit command_line_mmc={0};
 z80_bit command_line_mmc_2={0};
 z80_bit command_line_zxmmc={0};
+z80_bit command_line_zxmmcplus={0};
 z80_bit command_line_divmmc={0};
 z80_bit command_line_divmmc_ports={0};
 
@@ -1599,7 +1600,8 @@ printf("\n"
 		"Storage - ZXMMC+ Settings\n"
 		"-------------------------\n"
 		"\n"
-		"--zxmmcplus-flash-write-protection          Enable ZXMMC+ Flash ROM write protection\n"
+		"--enable-zxmmcplus                   Enable ZXMMC+ emulation\n"
+		"--zxmmcplus-flash-write-protection   Enable ZXMMC+ Flash ROM write protection\n"
 
 
 		"\n"
@@ -4723,6 +4725,10 @@ int parse_cmdline_options(int desde_commandline) {
                                 command_line_8bitide.v=1;
 			}
 
+			else if (!strcmp(argv[puntero_parametro],"--enable-zxmmcplus")) {
+				command_line_zxmmcplus.v=1;
+			}
+
 			else if (!strcmp(argv[puntero_parametro],"--zxmmcplus-flash-write-protection")) {
 				zxmmcplus_flashrom_write_protect.v=1;
 			}
@@ -7798,6 +7804,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	if (command_line_zxmmc.v) zxmmc_emulation.v=1;
 	if (command_line_8bitide.v) eight_bit_simple_ide_enable();
+
+	if (command_line_zxmmcplus.v) zxmmcplus_enable();
 
 
 	//IDE
