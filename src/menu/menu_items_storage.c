@@ -9593,6 +9593,11 @@ void menu_zxmmcplus_flashrom_write_protect(MENU_ITEM_PARAMETERS)
     zxmmcplus_flashrom_write_protect.v ^=1;
 }
 
+void menu_zxmmcplus_flashrom_persistent_writes(MENU_ITEM_PARAMETERS)
+{
+    zxmmcplus_flashrom_persistent_writes.v ^=1;
+}
+
 void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -9612,6 +9617,15 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'i');
         menu_add_item_menu_tooltip(array_menu_common,"If ZXMMC+ Flash ROM is write protected");
         menu_add_item_menu_ayuda(array_menu_common,"If ZXMMC+ Flash ROM is write protected");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_flashrom_persistent_writes,NULL,
+            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxmmcplus_flashrom_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Tells if ZXMMC+ Flash ROM writes are saved to disk");
+        menu_add_item_menu_ayuda(array_menu_common,"Tells if ZXMMC+ Flash ROM writes are saved to disk. "
+        "Note: all writing operations to ZXMMC+ Flash ROM are always saved to internal memory (unless you disable write permission), but this setting "
+        "tells if these changes are written to disk or not."
+        );
 
         menu_add_item_menu_separator(array_menu_common);
 

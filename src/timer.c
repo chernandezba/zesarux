@@ -75,6 +75,7 @@
 #include "zeng_online_client.h"
 #include "zxvision_topbar.h"
 #include "microdrive.h"
+#include "zxmmcplus.h"
 
 #include "autoselectoptions.h"
 
@@ -1365,6 +1366,8 @@ void timer_check_interrupt(void)
             //escritura de contenido de HiLow a disco
             hilow_flush_contents_to_disk();
 
+            //escritura de contenido de ZXMMC+ Flash ROM a disco
+            zxmmcplus_flashrom_flush_contents_to_disk();
 
             //escritura de contenido de microdrive a disco
             microdrive_flush_to_disk();

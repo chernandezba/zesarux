@@ -1602,6 +1602,7 @@ printf("\n"
 		"\n"
 		"--enable-zxmmcplus                   Enable ZXMMC+ emulation\n"
 		"--zxmmcplus-flash-write-protection   Enable ZXMMC+ Flash ROM write protection\n"
+		"--zxmmcplus-flash-persistent-writes  Enable ZXMMC+ Flash ROM persistent writes\n"
 
 
 		"\n"
@@ -4731,6 +4732,10 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zxmmcplus-flash-write-protection")) {
 				zxmmcplus_flashrom_write_protect.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxmmcplus-flash-persistent-writes")) {
+				zxmmcplus_flashrom_persistent_writes.v=1;
 			}
 
 
