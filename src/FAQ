@@ -638,16 +638,18 @@ Next and Multicore have HDMI output, others dont. Next have FM sound, others don
 In ZEsarUX, you may find references to TBBlue or Spectrum Next, but you can consider they are the same in ZEsarUX
 
 
-Q: Booting Next is a bit slow. Can I run a sna snapshot without having to wait for the Next boot process?
-A: Yes. You can use the tbblue-fast-boot-mode setting and it will go directly to a 48 rom, but with all the Next features enabled (except divmmc). For example, you can run the Dungeonette game with: 
+Q: Booting Next is a bit slow. Can I run a snx/nex snapshot without having to wait for the Next boot process?
+A: Yes. As simple as the following:
 
-./zesarux --noconfigfile --zoom 1 --machine tbblue --realvideo --enabletimexvideo --tbblue-fast-boot-mode --sna-no-change-machine --enable-esxdos-handler --esxdos-root-dir /Users/cesarhernandez/Downloads/Dungeonette/ /Users/cesarhernandez/Downloads/Dungeonette/project.sna
+./zesarux game.nex
 
-You can also load a .nex file with a similar command line:
-./zesarux --noconfigfile --zoom 1 --machine tbblue --realvideo --enabletimexvideo --tbblue-fast-boot-mode --enable-esxdos-handler --esxdos-root-dir /Users/cesarhernandez/Downloads/Warhawk/ /Users/cesarhernandez/Downloads/Warhawk/Warhawk.nex
+The long explanation for this is that ZEsarUX, when loading snx or nex snapshots, also enables ESXDOS handler to the directory where the snapshot is located, so if the game needs to use files from your hard disk, they will be accessed using ESXDOS handler
 
-Also, starting from ZEsarUX 11, when you load a .nex/.snx file, the folder where the snapshot is located, is automatically enabled on esxdos handler, so you can avoid the esxdos settings:
-./zesarux --noconfigfile --zoom 1 --machine tbblue --realvideo --enabletimexvideo --tbblue-fast-boot-mode /Users/cesarhernandez/Downloads/BattleTanks/BattleTanks.nex
+Q: Same question as previous but for sna files (sna for Spectrum Next)
+A: Yes. You need some additional settings:
+
+./zesarux --machine tbblue --sna-no-change-machine --joystickemulated "Kempston" game.sna
+
 
 Q: Trying the breakout demo, it gives me the error: Nonsense in basic at line 10
 A: That is an old version which uses previous NextOS basic. Change line 10 to:
