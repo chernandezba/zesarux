@@ -79,52 +79,48 @@ void zxmmcplus_flashrom_flush_contents_to_disk(void)
 
     printf("Flushing zxmmcplus_flashrom to disk\n");
 
-    /*
-    FILE *ptr_zxmmcplus_flashromfile;
-
-    debug_printf (VERBOSE_INFO,"Opening zxmmcplus_flashrom File %s",zxmmcplus_flashrom_file_name);
-    ptr_zxmmcplus_flashromfile=fopen(zxmmcplus_flashrom_file_name,"wb");
 
 
+	FILE *ptr_zxmmcplus_flashromfile;
 
-    int escritos=0;
-    long long int size;
-    size=zxmmcplus_flashrom_ddh_file_size; //zxmmcplus_flashrom_DEVICE_SIZE;
+	if (zxmmcplus_flash_name[0]==0) {
+		open_sharedfile_write(ZXMMCPLUS_FLASHROM_FILE_NAME,&ptr_zxmmcplus_flashromfile);
+	}
+	else {
+		debug_printf (VERBOSE_INFO,"Opening ZXMMC+ Custom Flash File %s",zxmmcplus_flash_name);
+		ptr_zxmmcplus_flashromfile=fopen(zxmmcplus_flash_name,"wb");
+	}
 
 
+	int escritos=0;
+	int size=ZXMMCPLUS_FLASHROM_SIZE;
 
-    if (ptr_zxmmcplus_flashromfile!=NULL) {
 
-
-        z80_byte *puntero;
-        puntero=zxmmcplus_flashrom_device_buffer;
+	if (ptr_zxmmcplus_flashromfile!=NULL) {
+		z80_byte *puntero;
+		puntero=zxmmcplus_memory_pointer;
 
         //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
         //metera flush a 1
-        zxmmcplus_flashrom_must_flush_to_disk=0;
+		zxmmcplus_flashrom_must_flush_to_disk=0;
+		escritos=fwrite(puntero,1,size,ptr_zxmmcplus_flashromfile);
 
-        escritos=fwrite(puntero,1,size,ptr_zxmmcplus_flashromfile);
-
-        fclose(ptr_zxmmcplus_flashromfile);
-
-
-    }
-
-    //printf ("ptr_zxmmcplus_flashromfile: %d\n",ptr_zxmmcplus_flashromfile);
-    //printf ("escritos: %d\n",escritos);
-
-    if (escritos!=size || ptr_zxmmcplus_flashromfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error writing to zxmmcplus_flashrom file. Disabling write file operations");
-        zxmmcplus_flashrom_persistent_writes.v=0;
-    }
-
-    */
+		fclose(ptr_zxmmcplus_flashromfile);
 
 
-   //TEMPORAL QUITAR ESTO cuando se habilite el codigo de arriba, pues esta ahi dentro
-   zxmmcplus_flashrom_must_flush_to_disk=0;
+	}
+
+	//printf ("ptr_zxmmcplus_flashromfile: %d\n",ptr_zxmmcplus_flashromfile);
+	//printf ("escritos: %d\n",escritos);
+
+	if (escritos!=size || ptr_zxmmcplus_flashromfile==NULL) {
+		debug_printf (VERBOSE_ERR,"Error writing to zxmmcplus_flashrom file. Disabling write file operations");
+		zxmmcplus_flashrom_persistent_writes.v=0;
+	}
 
 }
+
+
 
 
 int zxmmcplus_nested_id_poke_byte;
