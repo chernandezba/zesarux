@@ -70,7 +70,6 @@
 #include "z88.h"
 #include "ulaplus.h"
 #include "autoselectoptions.h"
-#include "zxuno.h"
 #include "charset.h"
 #include "chardetect.h"
 #include "textspeech.h"
@@ -9598,6 +9597,53 @@ void menu_zxmmcplus_flashrom_persistent_writes(MENU_ITEM_PARAMETERS)
     zxmmcplus_flashrom_persistent_writes.v ^=1;
 }
 
+
+void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
+{
+	char *filtros[2];
+
+    filtros[0]="flash";
+    filtros[1]=0;
+
+
+    if (menu_filesel("Select Flash File",filtros,zxmmcplus_flash_name)==1) {
+
+
+        if (si_existe_archivo(zxmmcplus_flash_name) ) {
+
+            if (menu_confirm_yesno_texto("File exists","Reload Flash from file?")) {
+
+                //Decir que no hay que hacer flush anteriores
+                zxmmcplus_flashrom_must_flush_to_disk=0;
+
+                //Y sobreescribir ram spi flash con lo que tiene el archivo de disco
+                zxmmcplus_load_flash();
+            }
+
+        }
+
+        else {
+
+            //Si archivo nuevo,
+            //volcar contenido de la memoria flash en ram aqui
+            //Suponemos que permisos de escritura estan activos
+            zxmmcplus_flashrom_must_flush_to_disk=1;
+        }
+
+    }
+
+	//Sale con ESC
+    else {
+		//dejar archivo por defecto
+		zxmmcplus_flash_name[0]=0;
+
+		if (menu_confirm_yesno_texto("Default Flash file","Reload Flash from file?")) {
+			zxmmcplus_load_flash();
+        }
+
+    }
+}
+
 void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -9610,6 +9656,20 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_enable,NULL,
             "ZXMMC+ Enabled", "ZXMMC+ Activado", "ZXMMC+ Activat");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxmmcplus_enabled.v ? 'X' : ' '));
+
+
+        char string_flash_file_shown[12]; //,string_mmc_file_shown[13];
+        if (zxmmcplus_flash_name[0]==0) sprintf (string_flash_file_shown,"Default");
+        else menu_tape_settings_trunc_name(zxmmcplus_flash_name,string_flash_file_shown,12);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_flash_file,NULL,
+            "~~Flash File","Archivo ~~Flash","Arxiu ~~Flash");
+        menu_add_item_menu_sufijo_format(array_menu_common,": [%s]",string_flash_file_shown);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_shortcut(array_menu_common,'f');
+        menu_add_item_menu_tooltip(array_menu_common,"File used for the ZXMMC+ Flash ROM");
+        menu_add_item_menu_ayuda(array_menu_common,"File used for the ZXMMC+ Flash ROM");
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_flashrom_write_protect,NULL,
             "Flash ROM Wr~~ite protect","Protección escr~~itura Flash ROM","Protecció escr~~iptura Flash ROM");
