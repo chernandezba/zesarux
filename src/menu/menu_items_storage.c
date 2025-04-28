@@ -9606,7 +9606,7 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
     filtros[1]=0;
 
 
-    if (menu_filesel("Select Flash File",filtros,zxmmcplus_flash_name)==1) {
+    if (menu_filesel("Select Flash File. ESC default",filtros,zxmmcplus_flash_name)==1) {
 
 
         if (si_existe_archivo(zxmmcplus_flash_name) ) {
