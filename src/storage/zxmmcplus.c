@@ -728,30 +728,30 @@ void zxmmcplus_alloc_rom_ram_memory(void)
 }
 
 
-int zxmmcplus_load_rom(void)
+int zxmmcplus_load_flash(void)
 {
 
-    FILE *ptr_zxmmcplus_romfile;
+    FILE *ptr_zxmmcplus_flashfile;
     int leidos=0;
 
 	if (zxmmcplus_flash_name[0]==0) {
-		open_sharedfile(ZXMMCPLUS_FLASHROM_FILE_NAME,&ptr_zxmmcplus_romfile);
+		open_sharedfile(ZXMMCPLUS_FLASHROM_FILE_NAME,&ptr_zxmmcplus_flashfile);
 	}
 	else {
 		debug_printf (VERBOSE_INFO,"Opening ZXMMC+ Custom Flash File %s",zxmmcplus_flash_name);
-		ptr_zxmmcplus_romfile=fopen(zxmmcplus_flash_name,"rb");
+		ptr_zxmmcplus_flashfile=fopen(zxmmcplus_flash_name,"rb");
 	}
 
-    if (ptr_zxmmcplus_romfile!=NULL) {
+    if (ptr_zxmmcplus_flashfile!=NULL) {
 
-        leidos=fread(zxmmcplus_memory_pointer,1,ZXMMCPLUS_FLASHROM_SIZE,ptr_zxmmcplus_romfile);
-        fclose(ptr_zxmmcplus_romfile);
+        leidos=fread(zxmmcplus_memory_pointer,1,ZXMMCPLUS_FLASHROM_SIZE,ptr_zxmmcplus_flashfile);
+        fclose(ptr_zxmmcplus_flashfile);
 
     }
 
 
 
-    if (leidos!=ZXMMCPLUS_FLASHROM_SIZE || ptr_zxmmcplus_romfile==NULL) {
+    if (leidos!=ZXMMCPLUS_FLASHROM_SIZE || ptr_zxmmcplus_flashfile==NULL) {
         debug_printf (VERBOSE_ERR,"Error reading zxmmc+ flash rom");
         return 1;
     }
@@ -790,7 +790,7 @@ void zxmmcplus_enable(void)
 	zxmmcplus_alloc_rom_ram_memory();
 
 
-	if (zxmmcplus_load_rom()) return;
+	if (zxmmcplus_load_flash()) return;
 
 	zxmmcplus_set_peek_poke_functions();
 
