@@ -1601,6 +1601,7 @@ printf("\n"
 		"-------------------------\n"
 		"\n"
 		"--enable-zxmmcplus                   Enable ZXMMC+ emulation\n"
+        "--zxmmcplus-flash-file               File to use on ZXMMC+ as Flash ROM. Default: zxmmcplus.flash\n"
 		"--zxmmcplus-flash-write-protection   Enable ZXMMC+ Flash ROM write protection\n"
 		"--zxmmcplus-flash-persistent-writes  Enable ZXMMC+ Flash ROM persistent writes\n"
 
@@ -4729,6 +4730,11 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--enable-zxmmcplus")) {
 				command_line_zxmmcplus.v=1;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxmmcplus-flash-file")) {
+                siguiente_parametro_argumento();
+				sprintf(zxmmcplus_flash_name,"%s",argv[puntero_parametro]);
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--zxmmcplus-flash-write-protection")) {
 				zxmmcplus_flashrom_write_protect.v=1;
