@@ -54,6 +54,9 @@ int zxmmcplus_flashrom_must_flush_to_disk=0;
 z80_byte *zxmmcplus_memory_pointer;
 
 
+//Nombre de la flash. Si "", nombre y ruta por defecto
+char zxmmcplus_flash_name[PATH_MAX]="";
+
 
 void zxmmcplus_flashrom_flush_contents_to_disk(void)
 {
@@ -725,20 +728,19 @@ void zxmmcplus_alloc_rom_ram_memory(void)
 }
 
 
-
 int zxmmcplus_load_rom(void)
 {
 
     FILE *ptr_zxmmcplus_romfile;
     int leidos=0;
 
-
-    debug_printf (VERBOSE_INFO,"Loading zxmmc+ flash rom %s",ZXMMCPLUS_FLASHROM_FILE_NAME);
-
-    open_sharedfile(ZXMMCPLUS_FLASHROM_FILE_NAME,&ptr_zxmmcplus_romfile);
-    if (!ptr_zxmmcplus_romfile) {
-        debug_printf (VERBOSE_ERR,"Unable to open flash rom file");
-    }
+	if (zxmmcplus_flash_name[0]==0) {
+		open_sharedfile(ZXMMCPLUS_FLASHROM_FILE_NAME,&ptr_zxmmcplus_romfile);
+	}
+	else {
+		debug_printf (VERBOSE_INFO,"Opening ZXMMC+ Custom Flash File %s",zxmmcplus_flash_name);
+		ptr_zxmmcplus_romfile=fopen(zxmmcplus_flash_name,"rb");
+	}
 
     if (ptr_zxmmcplus_romfile!=NULL) {
 
