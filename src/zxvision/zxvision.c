@@ -4421,7 +4421,7 @@ void menu_clear_footer(void)
             //pues los colores expuestos a izquierda y derecha son cyan y amarillo, a diferencia del negro del logo normal
             int umbral_marco=33;
             if (gris<=umbral_marco) {
-                debug_printf(VERBOSE_DEBUG,"Drawing frame around footer logo becase background colour intensity is less than %d%%",umbral_marco);
+                debug_printf(VERBOSE_DEBUG,"Drawing frame around footer logo because background colour intensity is less than %d%%",umbral_marco);
                 color_marco='w';
             }
 
