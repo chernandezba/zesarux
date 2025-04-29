@@ -93,7 +93,7 @@ void zxmmcplus_flashrom_flush_contents_to_disk(void)
 
 
 	int escritos=0;
-	int size=ZXMMCPLUS_FLASHROM_SIZE;
+	int size=ZXMMCPLUS_FLASHROM_SIZE+ZXMMCPLUS_RAM_SIZE;
 
 
 	if (ptr_zxmmcplus_flashromfile!=NULL) {
@@ -723,12 +723,27 @@ void zxmmcplus_alloc_rom_ram_memory(void)
 
 }
 
+void zxmmcplus_clear_ram(void)
+{
+    //Saltar ROM
+    int offset_ram=ZXMMCPLUS_FLASHROM_SIZE;
+
+    int i;
+
+    for (i=0;i<ZXMMCPLUS_RAM_SIZE;i++) {
+        zxmmcplus_memory_pointer[offset_ram+i]=0;
+    }
+
+}
+
 
 int zxmmcplus_load_flash(void)
 {
 
     FILE *ptr_zxmmcplus_flashfile;
     int leidos=0;
+
+    int size=ZXMMCPLUS_FLASHROM_SIZE+ZXMMCPLUS_RAM_SIZE;
 
 	if (zxmmcplus_flash_name[0]==0) {
 		open_sharedfile(ZXMMCPLUS_FLASHROM_FILE_NAME,&ptr_zxmmcplus_flashfile);
@@ -740,14 +755,14 @@ int zxmmcplus_load_flash(void)
 
     if (ptr_zxmmcplus_flashfile!=NULL) {
 
-        leidos=fread(zxmmcplus_memory_pointer,1,ZXMMCPLUS_FLASHROM_SIZE,ptr_zxmmcplus_flashfile);
+        leidos=fread(zxmmcplus_memory_pointer,1,size,ptr_zxmmcplus_flashfile);
         fclose(ptr_zxmmcplus_flashfile);
 
     }
 
 
 
-    if (leidos!=ZXMMCPLUS_FLASHROM_SIZE || ptr_zxmmcplus_flashfile==NULL) {
+    if (leidos!=size || ptr_zxmmcplus_flashfile==NULL) {
         debug_printf (VERBOSE_ERR,"Error reading zxmmc+ flash rom");
         return 1;
     }
@@ -765,7 +780,7 @@ void zxmmcplus_reset(void)
 
     zxmmcplus_port_7f_value=64+32; //page-in + rom select
 
-
+    //printf("ZXMMC+ reset\n");
 }
 
 void zxmmcplus_enable(void)

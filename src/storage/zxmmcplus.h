@@ -47,5 +47,6 @@ extern z80_byte *zxmmcplus_memory_pointer;
 extern int zxmmcplus_paged_on_read(void);
 extern int zxmmcplus_rom_selected(void);
 extern int zxmmcplus_get_page_number(void);
+extern void zxmmcplus_clear_ram(void);
 
 #endif

@@ -9644,6 +9644,13 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zxmmcplus_clear_ram(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Clear RAM")) {
+        zxmmcplus_clear_ram();
+    }
+}
+
 void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -9686,6 +9693,12 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
         "Note: all writing operations to ZXMMC+ Flash ROM are always saved to internal memory (unless you disable write permission), but this setting "
         "tells if these changes are written to disk or not."
         );
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_clear_ram,NULL,
+            "Clear ZXMMC+ RAM","Limpiar RAM ZXMMC+","Netejar RAM ZXMMC+");
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
 
         menu_add_item_menu_separator(array_menu_common);
 

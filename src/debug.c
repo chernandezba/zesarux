@@ -6655,8 +6655,8 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
             else {
                 sprintf (texto_pagina_short,"ZA%d",pagina);
                 sprintf (texto_pagina,"ZXMMC+ RAM %d",pagina);
-                return;
             }
+            return;
         }
 
 
