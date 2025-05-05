@@ -675,10 +675,7 @@ z80_byte zxmmcplus_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 
 
 
-void zxmmcplus_nmi(void)
-{
-    //TODO
-}
+
 
 
 
@@ -742,6 +739,7 @@ void zxmmcplus_clear_ram(void)
 }
 
 
+//En el archivo de flash guardamos la ROM y la RAM
 int zxmmcplus_load_flash(void)
 {
 

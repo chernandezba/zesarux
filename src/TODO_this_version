@@ -164,11 +164,7 @@ ok*task manager residos
 ok *soporte para spectrum 128k
 ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot para cargar)
 ok * iconos y footer con actividad
-* flush de contenido flash rom. Pero quiza deberia grabar flash rom y su ram? Al final esa ram en el dispositivo real
-se guarda dado que tiene una pila, por tanto el archivo flash deberia guardar las dos cosas: flash rom y ram?
-->pero cuando se hace flush? porque en ram va a estar escribiendo continuamente
-quiza se deberia hacer flush al expulsar o salir del emulador (como hace ahora no sé que otro dispositivo)
-pero entonces tambien deberia haber una opcion para reset ram (quiza esto deberia estar siempre)
+ok * flush de contenido flash rom y ram
 
 * al habilitar proteccion escritura, salta lo siguiente al generar un snapshot de nmi con tecla R:
                     printf("Fin Comando Read/Reset (short). TODO\n");

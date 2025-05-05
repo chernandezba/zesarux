@@ -9697,7 +9697,7 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxmmcplus_flashrom_persistent_writes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"Tells if ZXMMC+ Flash ROM+RAM writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_common,"Tells if ZXMMC+ Flash ROM+RAM writes are saved to disk. "
-        "Note: all writing operations to ZXMMC+ Flash ROM are always saved to internal memory (unless you disable write permission), but this setting "
+        "Note: all writing operations to ZXMMC+ Flash ROM+RAM are always saved to internal memory (unless you disable write permission), but this setting "
         "tells if these changes are written to disk or not."
         );
 
