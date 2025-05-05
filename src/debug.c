@@ -5762,6 +5762,18 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
                           sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
                   }
 
+        //ZXMMC+
+        if (zxmmcplus_enabled.v) {
+  			sprintf (buf_linea,"ZXMMC+ 7F port: %02X\n",zxmmcplus_port_7f_value);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+  			sprintf (buf_linea," Page: %02d R%cM %s %s\n",
+                zxmmcplus_port_7f_value  & 31,
+                (zxmmcplus_port_7f_value & 32 ? 'O' : 'A'),
+                (zxmmcplus_port_7f_value & 64 ? "PAGE_IN" : "       "),
+                (zxmmcplus_port_7f_value & 128 ? "RAM_WR" : "      ")
+            );
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
 
   	}
 

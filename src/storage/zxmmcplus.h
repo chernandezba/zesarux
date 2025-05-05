@@ -29,6 +29,7 @@
 
 #define ZXMMCPLUS_FLASHROM_FILE_NAME "zxmmcplus.flash"
 
+extern z80_byte zxmmcplus_port_7f_value;
 extern int zxmmcplus_flashrom_must_flush_to_disk;
 extern int zxmmcplus_load_flash(void);
 extern char zxmmcplus_flash_name[];
