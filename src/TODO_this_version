@@ -163,7 +163,7 @@ ok *soporte para spectrum 128k
 ok *snapshots en flashrom sin sd (tecla R desde nmi para grabar, T desde boot para cargar)
 ok * iconos y footer con actividad
 ok * flush de contenido flash rom y ram
-*rom BBC no se ejecuta?
+ok *rom BBC no se ejecuta?
 
 * al habilitar proteccion escritura, salta lo siguiente al generar un snapshot de nmi con tecla R:
                     printf("Fin Comando Read/Reset (short). TODO\n");
