@@ -58,6 +58,8 @@ z80_byte *zxmmcplus_memory_pointer;
 char zxmmcplus_flash_name[PATH_MAX]="";
 
 
+//Solo hacemos flush al salir de ZEsarUX o al desactivar zxmmc+,
+//dado que guardamos flashrom + ram, los cambios en ram pueden ser continuos y no queremos continuamente que se haga flush desde timer
 void zxmmcplus_flashrom_flush_contents_to_disk(void)
 {
 
@@ -287,6 +289,7 @@ void zxmmcplus_poke_ram(z80_int dir,z80_byte value)
             //printf("--Poke to ram address with rom visible for reading %X value %X\n",dir,value);
         }
         zxmmcplus_memory_pointer[dir_final]=value;
+        zxmmcplus_flashrom_must_flush_to_disk=1;
     }
 
 }
@@ -734,6 +737,8 @@ void zxmmcplus_clear_ram(void)
         zxmmcplus_memory_pointer[offset_ram+i]=0;
     }
 
+    zxmmcplus_flashrom_must_flush_to_disk=1;
+
 }
 
 
@@ -817,6 +822,8 @@ void zxmmcplus_enable(void)
 void zxmmcplus_disable(void)
 {
 	if (zxmmcplus_enabled.v==0) return;
+
+    zxmmcplus_flashrom_flush_contents_to_disk();
 
 
 	zxmmcplus_restore_peek_poke_functions();

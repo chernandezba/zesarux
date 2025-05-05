@@ -9600,6 +9600,9 @@ void menu_zxmmcplus_flashrom_persistent_writes(MENU_ITEM_PARAMETERS)
 
 void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
 {
+
+    zxmmcplus_flashrom_flush_contents_to_disk();
+
 	char *filtros[2];
 
     filtros[0]="flash";
@@ -9608,26 +9611,26 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
 
     if (menu_filesel("Select Flash File. ESC default",filtros,zxmmcplus_flash_name)==1) {
 
+        if (zxmmcplus_enabled.v) {
 
-        if (si_existe_archivo(zxmmcplus_flash_name) ) {
+            if (si_existe_archivo(zxmmcplus_flash_name) ) {
 
-            if (menu_confirm_yesno_texto("File exists","Reload Flash from file?")) {
+                if (menu_confirm_yesno_texto("File exists","Reload Flash from file?")) {
 
-                //Decir que no hay que hacer flush anteriores
-                zxmmcplus_flashrom_must_flush_to_disk=0;
 
-                //Y sobreescribir ram spi flash con lo que tiene el archivo de disco
-                zxmmcplus_load_flash();
+                    //Y sobreescribir ram spi flash con lo que tiene el archivo de disco
+                    zxmmcplus_load_flash();
+                }
+
             }
 
-        }
+            else {
 
-        else {
+                //Si archivo nuevo,
+                //decir que habra que hacer flush en ese archivo
+                zxmmcplus_flashrom_must_flush_to_disk=1;
+            }
 
-            //Si archivo nuevo,
-            //volcar contenido de la memoria flash en ram aqui
-            //Suponemos que permisos de escritura estan activos
-            zxmmcplus_flashrom_must_flush_to_disk=1;
         }
 
     }
@@ -9637,8 +9640,12 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
 		//dejar archivo por defecto
 		zxmmcplus_flash_name[0]=0;
 
-		if (menu_confirm_yesno_texto("Default Flash file","Reload Flash from file?")) {
-			zxmmcplus_load_flash();
+        if (zxmmcplus_enabled.v) {
+
+            if (menu_confirm_yesno_texto("Default Flash file","Reload Flash from file?")) {
+                zxmmcplus_load_flash();
+            }
+
         }
 
     }
@@ -9674,8 +9681,8 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo_format(array_menu_common,": [%s]",string_flash_file_shown);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
         menu_add_item_menu_shortcut(array_menu_common,'f');
-        menu_add_item_menu_tooltip(array_menu_common,"File used for the ZXMMC+ Flash ROM");
-        menu_add_item_menu_ayuda(array_menu_common,"File used for the ZXMMC+ Flash ROM");
+        menu_add_item_menu_tooltip(array_menu_common,"File used for the ZXMMC+ Flash ROM+RAM");
+        menu_add_item_menu_ayuda(array_menu_common,"File used for the ZXMMC+ Flash ROM+RAM");
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_flashrom_write_protect,NULL,
@@ -9688,8 +9695,8 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_flashrom_persistent_writes,NULL,
             "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxmmcplus_flashrom_persistent_writes.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Tells if ZXMMC+ Flash ROM writes are saved to disk");
-        menu_add_item_menu_ayuda(array_menu_common,"Tells if ZXMMC+ Flash ROM writes are saved to disk. "
+        menu_add_item_menu_tooltip(array_menu_common,"Tells if ZXMMC+ Flash ROM+RAM writes are saved to disk");
+        menu_add_item_menu_ayuda(array_menu_common,"Tells if ZXMMC+ Flash ROM+RAM writes are saved to disk. "
         "Note: all writing operations to ZXMMC+ Flash ROM are always saved to internal memory (unless you disable write permission), but this setting "
         "tells if these changes are written to disk or not."
         );
