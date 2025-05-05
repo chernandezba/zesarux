@@ -8150,6 +8150,8 @@ void end_emulator_saveornot_config(int saveconfig)
 	trd_flush_contents_to_disk();
     microdrive_force_flush_to_disk();
     hilow_raw_flush_contents_to_disk();
+    zxmmcplus_flashrom_flush_contents_to_disk();
+    dskplusthree_flush_contents_to_disk();
 
 	superupgrade_flush_flash_to_disk();
     hilow_flush_contents_to_disk();
