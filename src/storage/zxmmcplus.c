@@ -209,7 +209,7 @@ void zxmmcplus_sync_bit_7ffd(void)
 
     zxmmcplus_port_7f_value |=bit_d4;
 
-    printf("Sync bit D4 of 7ffd=%02XH zxmmcplus_port_7f_value=%02XH\n",puerto_32765,zxmmcplus_port_7f_value);
+    //printf("Sync bit D4 of 7ffd=%02XH zxmmcplus_port_7f_value=%02XH\n",puerto_32765,zxmmcplus_port_7f_value);
 }
 
 z80_byte zxmmcplus_read_rom_byte(z80_int dir)

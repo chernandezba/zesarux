@@ -2102,6 +2102,7 @@ void set_machine_params(void)
     ifrom_enabled.v=0;
     betadisk_enabled.v=0;
     hilow_enabled.v=0;
+    zxmmcplus_enabled.v=0;
     samram_enabled.v=0;
     hilow_bbn_enabled.v=0;
     if1_enabled.v=0;
