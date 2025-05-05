@@ -103,6 +103,10 @@ Q: How can I use ZXMMC emulation?
 A: Run alternate ROM alternaterom_plus3e_mmcen3eE.rom with machine type Spectrum +2A. Of course you have first to select MMC file, enable MMC emulation,  and enable ZXMMC on the menu
 
 
+Q: I'm trying to run BBC Basic included in ZXMMC+ but it doesn't work
+A: You need to select machine Spectrum 128k, and have Timex video disabled. After that, just do a reset and on the ZXMMC+ boot menu, press key V
+
+
 Q: How can I use DIVMMC emulation?
 A: ZEsarUX uses by default esxdos 0.8.5 firmware (file esxmmc085.rom). It also needs a filesystem for the common esxdos files.
 So, first select MMC file, ZEsarUX has two mmc images for esxdos included in the extras package:
