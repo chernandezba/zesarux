@@ -9594,6 +9594,9 @@ void menu_zxmmcplus_flashrom_write_protect(MENU_ITEM_PARAMETERS)
 
 void menu_zxmmcplus_flashrom_persistent_writes(MENU_ITEM_PARAMETERS)
 {
+    //Grabar cambios antes de modificar este setting
+    zxmmcplus_flashrom_flush_contents_to_disk();
+
     zxmmcplus_flashrom_persistent_writes.v ^=1;
 }
 
@@ -9618,17 +9621,10 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
                 if (menu_confirm_yesno_texto("File exists","Reload Flash from file?")) {
 
 
-                    //Y sobreescribir ram spi flash con lo que tiene el archivo de disco
+                    //Y sobreescribir rom+ram flash con lo que tiene el archivo de disco
                     zxmmcplus_load_flash();
                 }
 
-            }
-
-            else {
-
-                //Si archivo nuevo,
-                //decir que habra que hacer flush en ese archivo
-                zxmmcplus_flashrom_must_flush_to_disk=1;
             }
 
         }
@@ -9649,6 +9645,11 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
         }
 
     }
+
+    //Decir que habra que hacer flush en ese archivo
+    //El tema es que cualquier cambio de la flash seleccionada, debe escribir en disco el contenido que hay
+    //de la memoria actual ROM+RAM
+    zxmmcplus_flashrom_must_flush_to_disk=1;
 }
 
 void menu_zxmmcplus_clear_ram(MENU_ITEM_PARAMETERS)
