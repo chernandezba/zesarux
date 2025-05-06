@@ -54,7 +54,7 @@ Mejorado ZX Vision:
 - Corregido fallo que duplica el Menú Principal al pulsar F6 desde el Menú Principal
 
 Mejorado Debug CPU:
-- Mostrar número de puerto cuando instrucción IN. Mostrar fila teclado cuando puerto es XXFEH
+- Mostrar número de puerto cuando instrucción IN. Mostrar fila teclado cuando puerto es XXFEH en Spectrum
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
 - Agregar opción para activar/desactivar todos los breakpoints
 - Corregido al mover cursor arriba cuando la dirección está cercana a 0
