@@ -1423,6 +1423,11 @@ void menu_debug_registers_change_ptr(void)
 //Para (IX+d),(IY+d), escritura
 #define MOD_WRITE_IXIY_d_MEM8 (1<<28)
 
+//Para IN A,(N)
+#define MOD_READ_IN_A_N (1<<29)
+//Para IN r,(C)
+#define MOD_READ_IN_R_C (1<<30)
+
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
@@ -1467,7 +1472,7 @@ z80_long_int debug_modified_registers_list[256]={
     MOD_REG_SP,MOD_REG_SP,0,0,MOD_REG_SP,MOD_REG_SP,MOD_REG_AF,MOD_REG_SP,
     //208 RET NC
     MOD_REG_SP,MOD_REG_SP|MOD_REG_DE,0,0,MOD_REG_SP,MOD_REG_SP,MOD_REG_AF,MOD_REG_SP,
-    MOD_REG_SP,MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_BC_SHADOW|MOD_REG_DE_SHADOW|MOD_REG_HL_SHADOW,0,MOD_REG_A,MOD_REG_SP,0,MOD_REG_AF,MOD_REG_SP,
+    MOD_REG_SP,MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_BC_SHADOW|MOD_REG_DE_SHADOW|MOD_REG_HL_SHADOW,0,MOD_REG_A|MOD_READ_IN_A_N,MOD_REG_SP,0,MOD_REG_AF,MOD_REG_SP,
     //224 RET PO
     MOD_REG_SP,MOD_REG_SP|MOD_REG_HL,0,MOD_REG_HL,MOD_REG_SP,MOD_REG_SP,MOD_REG_AF,MOD_REG_SP,
     MOD_REG_SP,0,0,MOD_REG_DE|MOD_REG_HL,MOD_REG_SP,0,MOD_REG_AF,MOD_REG_SP,
@@ -1543,17 +1548,17 @@ z80_long_int debug_modified_registers_ed_list[256]={
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
     //64 IN B,(C)
-    MOD_REG_B|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_I,
-    MOD_REG_C|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP,MOD_REG_IM_MODE,MOD_REG_R,
+    MOD_REG_B|MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_I,
+    MOD_REG_C|MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP,MOD_REG_IM_MODE,MOD_REG_R,
     //80 IN D,(C)
-    MOD_REG_D|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
-    MOD_REG_E|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_DE|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_D|MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_E|MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_REG_DE|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
     //96 IN H,(C)
-    MOD_REG_H|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
-    MOD_REG_L|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_H|MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_L|MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
     //112 IN F,(C)
-    MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,                    MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
-    MOD_REG_A|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_SP|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
+    MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,                    MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
+    MOD_REG_A|MOD_REG_F|MOD_READ_IN_R_C,0,MOD_REG_HL|MOD_REG_F,MOD_REG_SP|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
     //128
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -1803,6 +1808,8 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
 	}
 
+    z80_int port;
+
 	if (CPU_IS_Z80) {
 
         switch (linea) {
@@ -1991,6 +1998,27 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                         int longitud=strlen(textoregistros);
                         sprintf (&textoregistros[longitud],"[%s]",segmentos[offset_bloque].shortname);
                     }
+                }
+            break;
+
+            case 21:
+                if (registros_modificados & MOD_READ_IN_A_N) {
+                    //puerto
+                    z80_byte port_l=peek_byte_z80_moto(menu_debug_memory_pointer+1);
+                    z80_byte port_h=reg_a;
+
+                    port=(port_h<<8)|port_l;
+
+                }
+
+                else if (registros_modificados & MOD_READ_IN_R_C) {
+                    //puerto
+                    port=BC;
+                }
+
+
+                if ((registros_modificados & MOD_READ_IN_A_N) || (registros_modificados & MOD_READ_IN_R_C) ) {
+                    sprintf (textoregistros,"INPORT %04X",port);
                 }
             break;
 
