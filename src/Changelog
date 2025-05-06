@@ -54,6 +54,7 @@ Improved ZX Vision:
 - Fixed glitch duplicating Main Menu when pressing F6 on Main Menu
 
 Improved Debug CPU:
+- Show port number when opcode IN. Show keyboard row when port is XXFEH
 - Show view number inside the window and not in the window title
 - Added option to enable/disable all breakpoints
 - Fixed moving cursor up when address near 0
