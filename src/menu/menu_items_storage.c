@@ -9583,6 +9583,9 @@ void menu_zxmmcplus_enable(MENU_ITEM_PARAMETERS)
     }
     else {
         zxmmcplus_enable();
+
+        //ZXMMC+ requiere idealmente ZXMMC para los puertos de SD
+        if (zxmmc_emulation.v==0) zxmmc_emulation.v=1;
     }
 }
 
