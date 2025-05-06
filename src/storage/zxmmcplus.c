@@ -334,6 +334,12 @@ int zxmmcplus_romwrite_index=1;
 
 enum zxmmcplus_flashrom_commands_prefixes zxmmcplus_romwrite_current_prefix=PREFIX_NONE;
 
+/*
+Emulación de toda la parte de escritura en flash rom del chip M29F040B
+Sólo emulamos los comandos que se están usando desde las roms modificadas para zxmmc+, que generan
+snapshots en flashrom al pulsar la nmi y tecla R
+El resto de comandos no se emulan
+*/
 void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 {
 
@@ -575,6 +581,8 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 //Y despues de erase la primera lectura de la rom devuelve el status
                 //TODO: esto es muy chapucero como implemento el byte de status, de momento es solo para
                 //que las operaciones de escritura desde la nmi lo den como valido
+                //Ahora lo que hago es que cuando está este estado, la primera lectura retorna el estado y se baja el flag
+                //Lo normal seria esperar un tiempo concreto para cambiar ese estado (que creo que es como funciona el chip flashrom)
                 zxmmcplus_pending_read_flashrom_status=1;
                 zxmmcplus_flashrom_status=255;
 

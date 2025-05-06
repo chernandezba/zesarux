@@ -151,13 +151,12 @@ https://www.probosci.de/zxbada/zxmmcp/index.html
 
 https://www.probosci.de/zxbada/zxmmcp/technical.html
 *agregar zxmmcplus.flash al repo y paquete
-*comandos flash rom. quizá permitir escrituras solo en el ultimo bloque que ha solicitar resetearlo a cero
-(creo que block erase)
-*snapshots en sd usando la nmi de las roms parcheadas de zxmmcplus (teclas w en nmi por ejemplo)
+
+*snapshots en sd usando la nmi de las roms parcheadas de zxmmcplus (teclas w en nmi por ejemplo) no restauran bien
 *RTC: info probablemente https://web.archive.org/web/20110811052347/http://www.zxbada.bbk.org/documentazione/zx-badaloc_technical_info_4.2-ENG.htm
-* Quitar mensajes debug zxmmc+
 * residos tiene tendencia a corromperse
 
+ok * Quitar mensajes debug zxmmc+
 ok * un readme.txt en carpeta zesarux-extras/extras/media/spectrum/zxmmcplus para explicar los archivos
 ok *al habilitar zxmmc+, debe habilitar tambien zxmmc
 ok*zonas memoria ram y flashrom residos
