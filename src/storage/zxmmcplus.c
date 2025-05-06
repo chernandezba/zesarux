@@ -371,7 +371,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                     }
                     else {
                         printf("Unknown value when command 0x555\n");
-                        //sleep(5);
+
                     }
                 break;
             }
@@ -400,18 +400,18 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 case 0xB0:
                     //Fin Comando Erase Suspend. TODO
                     printf("Fin Comando Erase Suspend. TODO\n");
-                    sleep(5);
+
                 break;
 
                 case 0x30:
                     //Fin Comando Erase Resume. TODO
                     printf("Fin Comando Erase Resume. TODO\n");
-                    sleep(5);
+
                 break;
 
                 default:
                     printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
-                    //sleep(5);
+
                 break;
             }
         break;
@@ -421,7 +421,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
             if (zxmmcplus_romwrite_current_prefix==UNLOCK_BYPASS_PROGRAM) {
                 //Fin comando Unlock Bypass Program. Usar dir_final y value para implementar este comando. TODO
                 printf("Fin Comando Unlock Bypass Program. TODO\n");
-                sleep(5);
+
                 zxmmcplus_romwrite_index=1;
                 return;
             }
@@ -429,14 +429,14 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 if (value==0x00) {
                     //Fin comando Unlock Bypass Reset.TODO
                     printf("Fin Comando Unlock Bypass Reset. TODO\n");
-                    sleep(5);
+
                     zxmmcplus_romwrite_index=1;
                     return;
                 }
                 else {
                     printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
-                    //sleep(5);
+
                     return;
                 }
             }
@@ -444,7 +444,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 if (command!=0x2AA || value!=0x55) {
                     printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
-                    //sleep(5);
+
                     return;
                 }
                 else {
@@ -471,7 +471,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 if (command!=0x555) {
                     printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
-                    //sleep(5);
+
                     return;
                 }
                 else {
@@ -480,7 +480,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                             //Fin comando AutoSelect. TODO
                             zxmmcplus_romwrite_index=1;
                             printf("Fin Comando AutoSelect. TODO\n");
-                            sleep(5);
+
                             return;
                         break;
 
@@ -494,8 +494,8 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                         case 0x20:
                             //Fin comando Unlock bypass. TODO
                             zxmmcplus_romwrite_index=1;
-                        printf("Fin Comando Unlock bypass. TODO\n");
-                        sleep(5);
+                            printf("Fin Comando Unlock bypass. TODO\n");
+
                             return;
                         break;
 
@@ -509,7 +509,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                         default:
                             printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                             zxmmcplus_romwrite_index=1;
-                            //sleep(5);
+
                             return;
                         break;
                     }
@@ -531,7 +531,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 if (command!=0x555 || value!=0xAA) {
                     printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
-                    //sleep(5);
+
                     return;
                 }
                 else {
@@ -546,7 +546,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 if (command!=0x2AA || value!=0x55) {
                     printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
-                    //sleep(5);
+
                     return;
                 }
                 else {
@@ -585,7 +585,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
             else {
                 printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                 zxmmcplus_romwrite_index=1;
-                //sleep(5);
+
                 return;
             }
         break;
