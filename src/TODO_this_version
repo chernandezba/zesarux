@@ -143,7 +143,9 @@ ok * desactivar botones superiores si esta topbar
 creo que es al redefinir paleta de colores, que corrige al abrir menu por ejemplo
 
 
--ZXMMC+ y residos
+---------
+
+----ZXMMC+ y residos
 
 https://www.probosci.de/zxbada/zxmmcp/index.html
 
@@ -173,6 +175,9 @@ ok * al habilitar proteccion escritura, salta lo siguiente al generar un snapsho
                     sleep(5);
 
 
+----Fin ZXMMC+ y residos
+
+---------
 
 -Acabar de probar minimizado de ventanas con setting de ocultar minimizado
 
