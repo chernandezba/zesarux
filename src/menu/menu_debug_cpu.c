@@ -1734,6 +1734,61 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
 
 }
 
+void menu_debug_show_register_line_aux_filas_teclas(z80_byte puerto_h,char *buffer_output)
+{
+    int linea=0;
+
+    //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
+    if ((puerto_h & 1) == 0)   {
+        strcpy(&buffer_output[linea*20],"VCXZSh");
+        linea++;
+    }
+
+    //puerto_65022   db    255  ; G    F    D    S    A     ;1
+    if ((puerto_h & 2) == 0)   {
+        strcpy(&buffer_output[linea*20],"GFDSA");
+        linea++;
+    }
+
+    //puerto_64510    db              255  ; T    R    E    W    Q     ;2
+    if ((puerto_h & 4) == 0)   {
+        strcpy(&buffer_output[linea*20],"TREWQ");
+        linea++;
+    }
+
+
+    //z80_byte puerto_63486=255; //    db              255  ; 5    4    3    2    1     ;3
+    if ((puerto_h & 8) == 0)   {
+        strcpy(&buffer_output[linea*20],"54321");
+        linea++;
+    }
+
+    //z80_byte puerto_61438=255; //    db              255  ; 6    7    8    9    0     ;4
+    if ((puerto_h & 16) == 0)  {
+        strcpy(&buffer_output[linea*20],"67890");
+        linea++;
+    }
+
+    //puerto_57342    db              255  ; Y    U    I    O    P     ;5
+    if ((puerto_h & 32) == 0)  {
+        strcpy(&buffer_output[linea*20],"YUIOP");
+        linea++;
+    }
+
+    //puerto_49150    db              255  ; H                J         K      L    Enter ;6
+    if ((puerto_h & 64) == 0)  {
+        strcpy(&buffer_output[linea*20],"HJKLEnt");
+        linea++;
+    }
+
+    //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+    if ((puerto_h & 128) == 0) {
+        strcpy(&buffer_output[linea*20],"BNMSimSpc");
+        linea++;
+    }
+
+}
+
 //Muestra el registro que le corresponde para esta linea
 //Tambien indica el registro que se modifica, de la siguiente manera:
 //Se indican las columnas que se alteran, de tal manera que se muestre en otro color las columnas afectadas
@@ -1809,6 +1864,12 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 	}
 
     z80_int port;
+
+    //Para mostrar que filas de teclas se leen
+    char filas_teclas[8*20];
+
+    int i;
+    for (i=0;i<8*20;i++) filas_teclas[i]=0;
 
 	if (CPU_IS_Z80) {
 
@@ -2002,6 +2063,14 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
             break;
 
             case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
+            case 28:
+            case 29:
                 if (registros_modificados & MOD_READ_IN_A_N) {
                     //puerto
                     z80_byte port_l=peek_byte_z80_moto(menu_debug_memory_pointer+1);
@@ -2018,7 +2087,20 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
 
                 if ((registros_modificados & MOD_READ_IN_A_N) || (registros_modificados & MOD_READ_IN_R_C) ) {
-                    sprintf (textoregistros,"INPORT %04X",port);
+                    if (linea==21) {
+                        sprintf (textoregistros,"INPORT %04X",port);
+                    }
+                    else {
+                        if ((port & 0xff)==0xFE) {
+                            menu_debug_show_register_line_aux_filas_teclas((port>>8) & 0xFF,filas_teclas);
+
+                            int indice_fila=linea-22;
+                            int offset_string=indice_fila*20;
+                            if (filas_teclas[offset_string]) {
+                                strcpy (textoregistros,&filas_teclas[offset_string]);
+                            }
+                        }
+                    }
                 }
             break;
 
