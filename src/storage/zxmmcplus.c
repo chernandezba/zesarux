@@ -79,9 +79,6 @@ void zxmmcplus_flashrom_flush_contents_to_disk(void)
 
     debug_printf (VERBOSE_INFO,"Flushing zxmmcplus_flashrom to disk");
 
-    printf("Flushing zxmmcplus_flashrom to disk\n");
-
-
 
 	FILE *ptr_zxmmcplus_flashromfile;
 
@@ -216,7 +213,7 @@ z80_byte zxmmcplus_read_rom_byte(z80_int dir)
 {
 
     if (zxmmcplus_pending_read_flashrom_status) {
-        printf("Returning flash rom status byte value %X\n",zxmmcplus_flashrom_status);
+        //printf("Returning flash rom status byte value %X\n",zxmmcplus_flashrom_status);
         zxmmcplus_pending_read_flashrom_status=0;
         return zxmmcplus_flashrom_status;
     }
@@ -272,6 +269,7 @@ void zxmmcplus_write_flashrom_byte(int dir,z80_byte value)
     zxmmcplus_footer_print_flash_operating();
 
     if (zxmmcplus_flashrom_write_protect.v==0) {
+        debug_printf (VERBOSE_PARANOID,"ZXMMC+ Flash ROM Write Address %XH Value %02XH",dir,value);
         zxmmcplus_memory_pointer[dir]=value;
         zxmmcplus_flashrom_must_flush_to_disk=1;
     }
@@ -354,7 +352,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
     //The Command Interface only uses address bits A0-A10 to verify the commands, the upper address bits are Don’t Care.
     int command=dir_final & 0x7FF;
 
-    printf("Writing rom. Index command=%d\n",zxmmcplus_romwrite_index);
+    //printf("Writing rom. Index command=%d\n",zxmmcplus_romwrite_index);
 
     int i;
 
@@ -364,13 +362,13 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
             switch(command) {
                 case 0x555:
                     if (value==0xAA) {
-                        printf("Setting to preffix COMMON_LONG_ONE\n");
+                        //printf("Setting to preffix COMMON_LONG_ONE\n");
                         zxmmcplus_romwrite_current_prefix=COMMON_LONG_ONE;
                         zxmmcplus_romwrite_index++;
                         return;
                     }
                     else {
-                        printf("Unknown value when command 0x555\n");
+                        //printf("Unknown value when command 0x555\n");
 
                     }
                 break;
@@ -378,14 +376,14 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 
             switch(value) {
                 case 0xA0:
-                    printf("Setting to preffix UNLOCK_BYPASS_PROGRAM\n");
+                    //printf("Setting to preffix UNLOCK_BYPASS_PROGRAM\n");
                     zxmmcplus_romwrite_current_prefix=UNLOCK_BYPASS_PROGRAM;
                     zxmmcplus_romwrite_index++;
                     return;
                 break;
 
                 case 0x90:
-                    printf("Setting to preffix UNLOCK_BYPASS_RESET\n");
+                    //printf("Setting to preffix UNLOCK_BYPASS_RESET\n");
                     zxmmcplus_romwrite_current_prefix=UNLOCK_BYPASS_RESET;
                     zxmmcplus_romwrite_index++;
                     return;
@@ -393,24 +391,24 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 
                 case 0xF0:
                     //Fin Comando Read/Reset
-                    printf("Fin Comando Read/Reset (short)\n");
+                    //printf("Fin Comando Read/Reset (short)\n");
                     zxmmcplus_pending_read_flashrom_status=0;
                 break;
 
                 case 0xB0:
                     //Fin Comando Erase Suspend. TODO
-                    printf("Fin Comando Erase Suspend. TODO\n");
+                    //printf("Fin Comando Erase Suspend. TODO\n");
 
                 break;
 
                 case 0x30:
                     //Fin Comando Erase Resume. TODO
-                    printf("Fin Comando Erase Resume. TODO\n");
+                    //printf("Fin Comando Erase Resume. TODO\n");
 
                 break;
 
                 default:
-                    printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                    //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
 
                 break;
             }
@@ -420,7 +418,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
         case 2:
             if (zxmmcplus_romwrite_current_prefix==UNLOCK_BYPASS_PROGRAM) {
                 //Fin comando Unlock Bypass Program. Usar dir_final y value para implementar este comando. TODO
-                printf("Fin Comando Unlock Bypass Program. TODO\n");
+                //printf("Fin Comando Unlock Bypass Program. TODO\n");
 
                 zxmmcplus_romwrite_index=1;
                 return;
@@ -428,13 +426,13 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
             else if (zxmmcplus_romwrite_current_prefix==UNLOCK_BYPASS_RESET) {
                 if (value==0x00) {
                     //Fin comando Unlock Bypass Reset.TODO
-                    printf("Fin Comando Unlock Bypass Reset. TODO\n");
+                    //printf("Fin Comando Unlock Bypass Reset. TODO\n");
 
                     zxmmcplus_romwrite_index=1;
                     return;
                 }
                 else {
-                    printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                    //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
 
                     return;
@@ -442,7 +440,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
             }
             else {
                 if (command!=0x2AA || value!=0x55) {
-                    printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                    //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
 
                     return;
@@ -461,7 +459,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
             if (value==0xF0) {
                 //Fin comando Read/Reset
                 zxmmcplus_romwrite_index=1;
-                printf("Fin Comando Read/Reset (long)\n");
+                //printf("Fin Comando Read/Reset (long)\n");
                 zxmmcplus_pending_read_flashrom_status=0;
                 zxmmcplus_romwrite_index=1;
                 return;
@@ -469,7 +467,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 
             else {
                 if (command!=0x555) {
-                    printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                    //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
 
                     return;
@@ -479,13 +477,13 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                         case 0x90:
                             //Fin comando AutoSelect. TODO
                             zxmmcplus_romwrite_index=1;
-                            printf("Fin Comando AutoSelect. TODO\n");
+                            //printf("Fin Comando AutoSelect. TODO\n");
 
                             return;
                         break;
 
                         case 0xA0:
-                            printf("Setting to preffix PROGRAM\n");
+                            //printf("Setting to preffix PROGRAM\n");
                             zxmmcplus_romwrite_current_prefix=PROGRAM;
                             zxmmcplus_romwrite_index++;
                             return;
@@ -494,20 +492,20 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                         case 0x20:
                             //Fin comando Unlock bypass. TODO
                             zxmmcplus_romwrite_index=1;
-                            printf("Fin Comando Unlock bypass. TODO\n");
+                            //printf("Fin Comando Unlock bypass. TODO\n");
 
                             return;
                         break;
 
                         case 0x80:
-                            printf("Setting to preffix COMMON_LONG_TWO\n");
+                            //printf("Setting to preffix COMMON_LONG_TWO\n");
                             zxmmcplus_romwrite_current_prefix=COMMON_LONG_TWO;
                             zxmmcplus_romwrite_index++;
                             return;
                         break;
 
                         default:
-                            printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                            //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                             zxmmcplus_romwrite_index=1;
 
                             return;
@@ -521,7 +519,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
         case 4:
             if (zxmmcplus_romwrite_current_prefix==PROGRAM) {
                 //Fin comando Program. Usar dir_final y value para escribir en flash rom
-                printf("Command Program. Writing rom address %X value %X\n",dir_final,value);
+                //printf("Command Program. Writing rom address %X value %X\n",dir_final,value);
                 zxmmcplus_write_flashrom_byte(dir_final,value);
                 zxmmcplus_romwrite_index=1;
                 return;
@@ -529,7 +527,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
 
             else {
                 if (command!=0x555 || value!=0xAA) {
-                    printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                    //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
 
                     return;
@@ -544,7 +542,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
         //Quinto byte de comando
         case 5:
                 if (command!=0x2AA || value!=0x55) {
-                    printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                    //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                     zxmmcplus_romwrite_index=1;
 
                     return;
@@ -559,7 +557,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
         case 6:
             if (command==0x555 && value==0x10) {
                 //Fin comando Chip Erase.
-                printf("Chip Erase\n");
+                debug_printf (VERBOSE_DEBUG,"ZXMMC+ Flash ROM Chip Erase");
                 for (i=0;i<8;i++) zxmmc_flashrom_blockerase(i);
                 zxmmcplus_romwrite_index=1;
                 zxmmcplus_pending_read_flashrom_status=1;
@@ -570,7 +568,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 //Fin comando Block Erase.
                 //Bloque se identifica con la dirección
                 int bloque=dir_final/65536;
-                printf("Block Erase block %d (addr %X)\n",bloque,dir_final);
+                debug_printf (VERBOSE_DEBUG,"ZXMMC+ Flash ROM Block Erase block %d (address %XH)",bloque,dir_final);
                 zxmmc_flashrom_blockerase(bloque);
                 zxmmcplus_romwrite_index=1;
 
@@ -583,7 +581,7 @@ void zxmmcplus_poke_rom(z80_int dir,z80_byte value)
                 return;
             }
             else {
-                printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
+                //printf("Unknown command index %d Addr %02X Data %02X\n",zxmmcplus_romwrite_index,command,value);
                 zxmmcplus_romwrite_index=1;
 
                 return;
