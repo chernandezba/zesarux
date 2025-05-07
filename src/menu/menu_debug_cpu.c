@@ -863,8 +863,8 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
     int xventana,yventana,ancho_ventana,alto_ventana;
 
 
-    ancho_ventana=43;
-    alto_ventana=14;
+    ancho_ventana=35;
+    alto_ventana=13;
 
     xventana=menu_center_x()-ancho_ventana/2;
     yventana=menu_center_y()-alto_ventana/2;
@@ -889,14 +889,16 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 	do {
         zxvision_cls(&ventana);
         //TODO calcular esto segun ancho ventana
-        int columna_botones=20;
+        int columna_botones=24;
 
         zxvision_print_string_defaults_fillspc(&ventana,1,0,"Condition:");
 
 
         //TODO: limitar ancho visible
+
+        //Si no hay breakpoint aun, mostrar espacios
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
-            "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "   "));
+            "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "         "));
         menu_add_item_menu_tabulado(array_menu_common,1,1);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_ok,NULL,
@@ -915,12 +917,20 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
         zxvision_print_string_defaults_fillspc(&ventana,1,6,"Action:");
+        //Si no hay accion aun, mostrar espacios
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_action,NULL,
-            "%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "   " ));
+            "%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "      " ));
         menu_add_item_menu_tabulado(array_menu_common,1,7);
 
+        //TODO
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "[Disable]");
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
 
-
+        //TODO
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "[Help]");
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,10);
 
 		//Nombre de ventana solo aparece en el caso de stdout
 		retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Edit Breakpoint" );
