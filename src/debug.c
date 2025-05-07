@@ -1834,17 +1834,17 @@ void cpu_core_loop_debug_check_breakpoints(void)
 
                             if (saltado_breakpoint) {
 
-							debug_breakpoints_conditions_saltado[i]=1;
+                                debug_breakpoints_conditions_saltado[i]=1;
 
-							char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-							exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+                                char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+                                exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
 
-	        	        	char buffer_mensaje[MAX_BREAKPOINT_CONDITION_LENGTH+64];
-        	    	    	sprintf(buffer_mensaje,"%s",buffer_temp);
+                                char buffer_mensaje[MAX_BREAKPOINT_CONDITION_LENGTH+64];
+                                sprintf(buffer_mensaje,"%s",buffer_temp);
 
-	                    	//Ejecutar accion, por defecto es abrir menu
-							catch_breakpoint_index=i;
-        	        		cpu_core_loop_debug_breakpoint(buffer_mensaje);
+                                //Ejecutar accion, por defecto es abrir menu
+                                catch_breakpoint_index=i;
+                                cpu_core_loop_debug_breakpoint(buffer_mensaje);
 
                             }
 						}
