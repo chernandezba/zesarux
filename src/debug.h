@@ -368,6 +368,8 @@ extern int debug_set_breakpoint(int breakpoint_index,char *condicion,int pass_co
 
 extern void debug_set_breakpoint_action(int breakpoint_index,char *accion);
 
+extern void debug_set_breakpoint_passcount(int breakpoint_index,int passcount);
+
 extern void debug_delete_all_repeated_breakpoint(char *texto);
 
 extern void debug_add_breakpoint_ifnot_exists(char *breakpoint_add);

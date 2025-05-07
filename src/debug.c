@@ -5109,6 +5109,20 @@ void debug_set_watch(int watch_index,char *condicion)
 }
 
 //Indice entre 0 y MAX_BREAKPOINTS_CONDITIONS-1
+void debug_set_breakpoint_passcount(int breakpoint_index,int passcount)
+{
+
+    if (breakpoint_index<0 || breakpoint_index>MAX_BREAKPOINTS_CONDITIONS-1) {
+      debug_printf(VERBOSE_ERR,"Index out of range setting breakpoint action");
+      return;
+    }
+
+    debug_breakpoints_pass_count[breakpoint_index]=passcount;
+    debug_breakpoints_pass_count_counter[breakpoint_index]=0;
+
+}
+
+//Indice entre 0 y MAX_BREAKPOINTS_CONDITIONS-1
 void debug_set_breakpoint_action(int breakpoint_index,char *accion)
 {
 

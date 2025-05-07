@@ -4208,6 +4208,11 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--set-breakpointaction %d \"%s\"",i+1,debug_breakpoints_actions_array[i]);
   }
 
+  for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+    if (debug_breakpoints_pass_count[i]) {
+        ADD_STRING_CONFIG,"--set-breakpointpasscount %d %d",i+1,debug_breakpoints_pass_count[i]);
+    }
+  }
 
 
   for (i=0;i<DEBUG_MAX_WATCHES;i++) {

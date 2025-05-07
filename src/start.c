@@ -971,6 +971,10 @@ printf(
 );
 
 printf(
+		"--set-breakpointpasscount n m       Set breakpoint pass count m at position n. n must be between 1 and %d. Used normally with --enable-breakpoints\n",MAX_BREAKPOINTS_CONDITIONS
+);
+
+printf(
         "--disable-breakpoint n              Disables breakpoint (not deletes) at position n\n"
 );
 
@@ -6140,6 +6144,24 @@ int parse_cmdline_options(int desde_commandline) {
 
 		 }
 
+		 else if (!strcmp(argv[puntero_parametro],"--set-breakpointpasscount")) {
+			 siguiente_parametro_argumento();
+			 int valor=atoi(argv[puntero_parametro]);
+			 valor--;
+
+			 siguiente_parametro_argumento();
+
+
+			 if (valor<0 || valor>MAX_BREAKPOINTS_CONDITIONS-1) {
+				 printf("Index %d out of range setting breakpoint pass count \"%s\"\n",valor+1,argv[puntero_parametro]);
+				 exit(1);
+			 }
+
+             int passcount=parse_string_to_number(argv[puntero_parametro]);
+
+			 debug_set_breakpoint_passcount(valor,passcount);
+
+		 }
 
 		 else if (!strcmp(argv[puntero_parametro],"--set-breakpointaction")) {
 			 siguiente_parametro_argumento();

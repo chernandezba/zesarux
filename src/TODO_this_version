@@ -170,7 +170,7 @@ Son ideales para condiciones tipo PC=XXXX, para bucles, para hacer que se salte 
 
 ok-poder definir el pass count desde menu
 -revisar todas llamadas a debug_set_breakpoint que indiquen pass_count si conviene
--que se guarde en configuracion el pass count (si es 0, no guardarlo porque es el valor por defecto)
+ok-que se guarde en configuracion el pass count (si es 0, no guardarlo porque es el valor por defecto)
 -shortcut para cambiarlo?
 -que se vea el pass count limite y actual (si pass count no es 0) en lista de breakpoints
 -quitar prints de debug en cpu_core_loop_debug_check_breakpoints
