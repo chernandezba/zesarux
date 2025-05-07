@@ -175,3 +175,4 @@ ok-que se guarde en configuracion el pass count (si es 0, no guardarlo porque es
 -que se vea el pass count limite y actual (si pass count no es 0) en lista de breakpoints
 -quitar prints de debug en cpu_core_loop_debug_check_breakpoints
 -poderlo ver y cambiarlo desde ZRCP
+-mejor edicion desde menu: condicion, passcount, action

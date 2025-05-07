@@ -796,9 +796,162 @@ int menu_breakpoints_cond(void)
 	return debug_breakpoints_enabled.v;
 }
 
+//Estructura para guardar los parámetros de la edición de breakpoint
 
+struct s_breakpoint_edit_parameters {
+    char string_texto_breakpoint[MAX_BREAKPOINT_CONDITION_LENGTH];
+    int pass_count;
+    char string_texto_action[MAX_BREAKPOINT_CONDITION_LENGTH];
+};
+
+struct s_breakpoint_edit_parameters breakpoint_edit_parameters;
+
+void menu_breakpoints_conditions_set_edit_condition(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("Condition",breakpoint_edit_parameters.string_texto_breakpoint,MAX_BREAKPOINT_CONDITION_LENGTH);
+}
+
+void menu_breakpoints_conditions_set_edit_action(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("Action? (enter=normal)",breakpoint_edit_parameters.string_texto_action,MAX_BREAKPOINT_CONDITION_LENGTH);
+}
+
+void menu_breakpoints_conditions_set_edit_pass_count(MENU_ITEM_PARAMETERS)
+{
+    char string_pass_count[10];
+    sprintf(string_pass_count,"%d",breakpoint_edit_parameters.pass_count);
+    menu_ventana_scanf("Pass count? (0=normal)",string_pass_count,10);
+    breakpoint_edit_parameters.pass_count=parse_string_to_number(string_pass_count);
+}
+
+int menu_breakpoints_conditions_finish_window=0;
+
+void menu_breakpoints_conditions_set_ok(MENU_ITEM_PARAMETERS)
+{
+    int breakpoint_index=valor_opcion;
+
+    debug_set_breakpoint(breakpoint_index,breakpoint_edit_parameters.string_texto_breakpoint,breakpoint_edit_parameters.pass_count);
+
+    //comprobar error
+    if (if_pending_error_message) {
+        menu_muestra_pending_error_message(); //Si se genera un error derivado del set breakpoint, mostrarlo y salir
+        return;
+    }
+
+    debug_set_breakpoint_action(breakpoint_index,breakpoint_edit_parameters.string_texto_action);
+
+    menu_breakpoints_conditions_finish_window=1;
+}
+
+void menu_breakpoints_conditions_set_cancel(MENU_ITEM_PARAMETERS)
+{
+    menu_breakpoints_conditions_finish_window=1;
+}
 
 void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    menu_breakpoints_conditions_finish_window=0;
+
+    int breakpoint_index=valor_opcion;
+
+    zxvision_window ventana;
+
+
+
+    int xventana,yventana,ancho_ventana,alto_ventana;
+
+
+    ancho_ventana=43;
+    alto_ventana=14;
+
+    xventana=menu_center_x()-ancho_ventana/2;
+    yventana=menu_center_y()-alto_ventana/2;
+
+
+
+	zxvision_new_window(&ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Edit Breakpoint");
+	zxvision_draw_window(&ventana);
+
+    int opcion_seleccionada=0;
+
+	menu_item *array_menu_common;
+	menu_item item_seleccionado;
+	int retorno_menu;
+
+    exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[breakpoint_index],breakpoint_edit_parameters.string_texto_breakpoint,MAX_PARSER_TOKENS_NUM);
+
+    breakpoint_edit_parameters.pass_count=debug_breakpoints_pass_count[breakpoint_index];
+
+    strcpy(breakpoint_edit_parameters.string_texto_action,debug_breakpoints_actions_array[breakpoint_index]);
+
+	do {
+        zxvision_cls(&ventana);
+        //TODO calcular esto segun ancho ventana
+        int columna_botones=20;
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,0,"Condition:");
+
+
+        //TODO: limitar ancho visible
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
+            "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "   "));
+        menu_add_item_menu_tabulado(array_menu_common,1,1);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_ok,NULL,
+            "[OK]");
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,1);
+        menu_add_item_menu_valor_opcion(array_menu_common,breakpoint_index);
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,3,"Pass count:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_pass_count,NULL,
+            "%d", breakpoint_edit_parameters.pass_count);
+        menu_add_item_menu_tabulado(array_menu_common,1,4);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_cancel,NULL,
+            "[Cancel]");
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,4);
+
+
+        zxvision_print_string_defaults_fillspc(&ventana,1,6,"Action:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_action,NULL,
+            "%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "   " ));
+        menu_add_item_menu_tabulado(array_menu_common,1,7);
+
+
+
+
+		//Nombre de ventana solo aparece en el caso de stdout
+		retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Edit Breakpoint" );
+
+
+
+			//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
+			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+				//llamamos por valor de funcion
+				if (item_seleccionado.menu_funcion!=NULL) {
+					//printf ("actuamos por funcion\n");
+					item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+				}
+			}
+
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_breakpoints_conditions_finish_window);
+
+
+    //En caso de menus tabulados, es responsabilidad de este de liberar ventana
+    zxvision_destroy_window(&ventana);
+
+
+}
+
+
+
+
+void old_menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 {
         //printf ("linea: %d\n",breakpoints_opcion_seleccionada);
 
