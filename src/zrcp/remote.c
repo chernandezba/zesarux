@@ -1245,7 +1245,7 @@ void remote_set_breakpoint(int misocket,char *parametros)
     return;
   }
 
-  int result=debug_set_breakpoint(indice-1,&parametros[i]);
+  int result=debug_set_breakpoint(indice-1,&parametros[i],0);
   if (result) escribir_socket(misocket,"Error. Error setting breakpoint");
 }
 

@@ -147,6 +147,11 @@ int debug_breakpoints_conditions_saltado[MAX_BREAKPOINTS_CONDITIONS];
 //A 1 si ese breakpoint esta activado. A 0 si no
 int debug_breakpoints_conditions_enabled[MAX_BREAKPOINTS_CONDITIONS];
 
+//pass count de cada breakpoint y contador actual
+//Si pass count = 0, saltará siempre
+//Si pass count = X, saltará a la X vez que se cumpla
+int debug_breakpoints_pass_count[MAX_BREAKPOINTS_CONDITIONS];
+int debug_breakpoints_pass_count_counter[MAX_BREAKPOINTS_CONDITIONS];
 
 
 optimized_breakpoint optimized_breakpoint_array[MAX_BREAKPOINTS_CONDITIONS];
@@ -592,6 +597,8 @@ void init_breakpoints_table(void)
 	    	debug_breakpoints_actions_array[i][0]=0;
 		debug_breakpoints_conditions_saltado[i]=0;
 		debug_breakpoints_conditions_enabled[i]=0;
+        debug_breakpoints_pass_count[i]=0;
+        debug_breakpoints_pass_count_counter[i]=0;
 
 		optimized_breakpoint_array[i].optimized=0;
 	}
@@ -1805,6 +1812,28 @@ void cpu_core_loop_debug_check_breakpoints(void)
                             //printf("breakpoint saltado\n");
                             //printf("PC=%04XH\n",reg_pc);
 
+                            //Ver si el breakpoint tiene un pass_count o salta siempre
+                            int saltado_breakpoint=0;
+
+                            if (debug_breakpoints_pass_count[i]==0) {
+                                printf("Pass count es cero. saltar siempre\n");
+                                saltado_breakpoint=1;
+                            }
+                            else {
+                                printf("Pass count no es cero\n");
+                                debug_breakpoints_pass_count_counter[i]++;
+                                if (debug_breakpoints_pass_count_counter[i]==debug_breakpoints_pass_count[i]) {
+                                    printf("Llegado al pass count\n");
+                                    saltado_breakpoint=1;
+                                }
+                                else {
+                                    printf("No llegado aun al pass count (pass_count=%d actual=%d)\n",
+                                        debug_breakpoints_pass_count[i],debug_breakpoints_pass_count_counter[i]);
+                                }
+                            }
+
+                            if (saltado_breakpoint) {
+
 							debug_breakpoints_conditions_saltado[i]=1;
 
 							char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
@@ -1816,6 +1845,8 @@ void cpu_core_loop_debug_check_breakpoints(void)
 	                    	//Ejecutar accion, por defecto es abrir menu
 							catch_breakpoint_index=i;
         	        		cpu_core_loop_debug_breakpoint(buffer_mensaje);
+
+                            }
 						}
             		}
 					else {
@@ -5011,7 +5042,7 @@ void debug_set_breakpoint_optimized(int breakpoint_index,char *condicion)
 
 //Indice entre 0 y MAX_BREAKPOINTS_CONDITIONS-1
 //Retorna 0 si ok
-int debug_set_breakpoint(int breakpoint_index,char *condicion)
+int debug_set_breakpoint(int breakpoint_index,char *condicion,int pass_count)
 {
 
     if (breakpoint_index<0 || breakpoint_index>MAX_BREAKPOINTS_CONDITIONS-1) {
@@ -5045,6 +5076,8 @@ int debug_set_breakpoint(int breakpoint_index,char *condicion)
 
   	debug_breakpoints_conditions_saltado[breakpoint_index]=0;
   	debug_breakpoints_conditions_enabled[breakpoint_index]=1;
+    debug_breakpoints_pass_count[breakpoint_index]=pass_count;
+    debug_breakpoints_pass_count_counter[breakpoint_index]=0;
 
 	//Llamamos al optimizador
 	debug_set_breakpoint_optimized(breakpoint_index,condicion);
@@ -7955,7 +7988,7 @@ int debug_add_breakpoint_free(char *breakpoint, char *action)
 		return -1;
 	}
 
-	debug_set_breakpoint(posicion,breakpoint);
+	debug_set_breakpoint(posicion,breakpoint,0);
 	debug_set_breakpoint_action(posicion,action);
 
 	return posicion;
@@ -7965,7 +7998,7 @@ int debug_add_breakpoint_free(char *breakpoint, char *action)
 void debug_clear_breakpoint(int indice)
 {
 	//Elimina una linea de breakpoint. Pone condicion vacia y enabled a 0
-	debug_set_breakpoint(indice,"");
+	debug_set_breakpoint(indice,"",0);
 	debug_set_breakpoint_action(indice,"");
 	//debug_breakpoints_conditions_enabled[indice]=0;
 	debug_breakpoints_conditions_disable(indice);

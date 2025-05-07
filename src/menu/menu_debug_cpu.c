@@ -818,7 +818,15 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
   menu_ventana_scanf("Condition",string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
 
-  debug_set_breakpoint(breakpoint_index,string_texto);
+
+
+  char string_pass_count[10];
+  sprintf(string_pass_count,"%d",debug_breakpoints_pass_count[valor_opcion]);
+  menu_ventana_scanf("Pass count? (0=normal)",string_pass_count,10);
+  int pass_count=parse_string_to_number(string_pass_count);
+
+
+  debug_set_breakpoint(breakpoint_index,string_texto,pass_count);
 
 	//comprobar error
 	if (if_pending_error_message) {

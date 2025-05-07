@@ -6085,7 +6085,7 @@ int parse_cmdline_options(int desde_commandline) {
 				 exit(1);
 			 }
 
-			 debug_set_breakpoint(valor,argv[puntero_parametro]);
+			 debug_set_breakpoint(valor,argv[puntero_parametro],0);
 
 		 }
 

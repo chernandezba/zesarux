@@ -90,6 +90,8 @@ extern int debug_breakpoints_conditions_saltado[MAX_BREAKPOINTS_CONDITIONS];
 
 extern int debug_breakpoints_conditions_enabled[MAX_BREAKPOINTS_CONDITIONS];
 
+extern int debug_breakpoints_pass_count[];
+
 
 extern z80_byte mem_breakpoint_array[];
 
@@ -362,7 +364,7 @@ extern void extended_stack_clear(void);
 
 extern int debug_change_register(char *texto);
 
-extern int debug_set_breakpoint(int breakpoint_index,char *condicion);
+extern int debug_set_breakpoint(int breakpoint_index,char *condicion,int pass_count);
 
 extern void debug_set_breakpoint_action(int breakpoint_index,char *accion);
 
