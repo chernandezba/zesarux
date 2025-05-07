@@ -808,12 +808,12 @@ struct s_breakpoint_edit_parameters breakpoint_edit_parameters;
 
 void menu_breakpoints_conditions_set_edit_condition(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf("Condition",breakpoint_edit_parameters.string_texto_breakpoint,MAX_BREAKPOINT_CONDITION_LENGTH);
+    menu_ventana_scanf("Condition?",breakpoint_edit_parameters.string_texto_breakpoint,MAX_BREAKPOINT_CONDITION_LENGTH);
 }
 
 void menu_breakpoints_conditions_set_edit_action(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf("Action? (enter=normal)",breakpoint_edit_parameters.string_texto_action,MAX_BREAKPOINT_CONDITION_LENGTH);
+    menu_ventana_scanf("Action? (empty=normal)",breakpoint_edit_parameters.string_texto_action,MAX_BREAKPOINT_CONDITION_LENGTH);
 }
 
 void menu_breakpoints_conditions_set_edit_pass_count(MENU_ITEM_PARAMETERS)
@@ -864,7 +864,7 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
     ancho_ventana=35;
-    alto_ventana=13;
+    alto_ventana=14;
 
     xventana=menu_center_x()-ancho_ventana/2;
     yventana=menu_center_y()-alto_ventana/2;
@@ -896,9 +896,9 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
         //TODO: limitar ancho visible
 
-        //Si no hay breakpoint aun, mostrar espacios
+
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
-            "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "         "));
+            "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
         menu_add_item_menu_tabulado(array_menu_common,1,1);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_ok,NULL,
@@ -917,9 +917,9 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
         zxvision_print_string_defaults_fillspc(&ventana,1,6,"Action:");
-        //Si no hay accion aun, mostrar espacios
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_action,NULL,
-            "%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "      " ));
+            "%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "Open Menu" ));
         menu_add_item_menu_tabulado(array_menu_common,1,7);
 
         //TODO
