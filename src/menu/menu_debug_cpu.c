@@ -2092,7 +2092,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
                 if ((registros_modificados & MOD_READ_IN_A_N) || (registros_modificados & MOD_READ_IN_R_C) ) {
                     if (linea==21) {
-                        sprintf (textoregistros,"INPORT %04X",port);
+                        sprintf (textoregistros,"IN_PORT %04X",port);
                     }
                     else {
                         if ((port & 0xff)==0xFE && MACHINE_IS_SPECTRUM) {

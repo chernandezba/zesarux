@@ -184,7 +184,6 @@ ok * al habilitar proteccion escritura, salta lo siguiente al generar un snapsho
 -quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
 
 
-ok -en debug cpu, al leer un puerto de teclado, que diga que fila de teclas es . en spectrum.
 
 -con breakpoints off. tenemos breakpoint definido en 32768
 Si pulso toggle en 32768, mete breakpoint duplicado en 32768
