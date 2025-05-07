@@ -114,6 +114,20 @@ Quizá activar flag cuando se escribe al menos una vez y al salir sabemos si hay
 
 ------------------
 
+
+
+--- ZXMMC+ y residos ---
+
+
+*snapshots en sd usando la nmi de las roms parcheadas de zxmmcplus (teclas w en nmi por ejemplo) no restauran bien
+*RTC: info probablemente https://web.archive.org/web/20110811052347/http://www.zxbada.bbk.org/documentazione/zx-badaloc_technical_info_4.2-ENG.htm
+* residos tiene tendencia a corromperse
+
+
+------------------
+
+
+
 --- IDE y DIVIDE ---
 
 -No funciona IDE 8 bit
