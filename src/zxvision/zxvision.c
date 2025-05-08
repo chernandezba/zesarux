@@ -8718,9 +8718,8 @@ void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_a
                         tinta=ESTILO_GUI_TINTA_OPCION_MARCADA;
                     }
                     else if (opcion_campo_seleccionable) {
-                        //TODO colores temporales
-                        papel=7;
-                        tinta=0;
+                        papel=ESTILO_GUI_PAPEL_FILESELECTOR_FILES;
+                        tinta=ESTILO_GUI_TINTA_FILESELECTOR_FILES;
                     }
                     else {
                         papel=ESTILO_GUI_PAPEL_NORMAL;

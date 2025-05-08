@@ -1421,7 +1421,8 @@ struct s_estilos_gui {
 	int papel_opcion_marcada; //Color para opcion marcada, de momento solo usado en osd keyboard
 	int tinta_opcion_marcada;
 
-    int papel_fileselector_files; //Color para fileselector la zona de seleccion de archivos
+    //Color para fileselector la zona de seleccion de archivos o tambien para campos seleccionables, como la ventana de edit breakpoints
+    int papel_fileselector_files;
     int tinta_fileselector_files;
 
 	z80_byte boton_cerrar; //caracter de cerrado de ventana
