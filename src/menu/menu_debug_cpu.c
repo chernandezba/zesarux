@@ -887,6 +887,14 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
     strcpy(breakpoint_edit_parameters.string_texto_action,debug_breakpoints_actions_array[breakpoint_index]);
 
 	do {
+                //Forzar a mostrar atajos
+                z80_bit antes_menu_writing_inverse_color;
+                antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+                menu_writing_inverse_color.v=1;
+
+
+
+
         zxvision_cls(&ventana);
         //TODO calcular esto segun ancho ventana
         int columna_botones=24;
@@ -896,13 +904,14 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         //Para mostrar los campos seleccionables siempre con el mismo ancho y rellenos con espacios
         char buffer_campo_limite[MAX_BREAKPOINT_CONDITION_LENGTH];
 
-        zxvision_print_string_defaults_fillspc(&ventana,1,0,"Condition:");
+        zxvision_print_string_defaults_fillspc(&ventana,1,0,"~^Condition:");
         sprintf(buffer_campo_limite,"%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
         util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
             buffer_campo_limite);
         menu_add_item_menu_tabulado(array_menu_common,1,1);
         menu_add_item_menu_campo_seleccionable(array_menu_common);
+        menu_add_item_menu_shortcut(array_menu_common,'c');
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_ok,NULL,
@@ -911,13 +920,14 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_valor_opcion(array_menu_common,breakpoint_index);
 
 
-        zxvision_print_string_defaults_fillspc(&ventana,1,3,"Pass count:");
+        zxvision_print_string_defaults_fillspc(&ventana,1,3,"~^Pass count:");
         sprintf(buffer_campo_limite,"%d", breakpoint_edit_parameters.pass_count);
         util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_pass_count,NULL,
             "%s", buffer_campo_limite);
         menu_add_item_menu_tabulado(array_menu_common,1,4);
         menu_add_item_menu_campo_seleccionable(array_menu_common);
+        menu_add_item_menu_shortcut(array_menu_common,'p');
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_cancel,NULL,
@@ -925,13 +935,14 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,4);
 
 
-        zxvision_print_string_defaults_fillspc(&ventana,1,6,"Action:");
+        zxvision_print_string_defaults_fillspc(&ventana,1,6,"~^Action:");
         sprintf(buffer_campo_limite,"%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "Open Menu" ));
         util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_action,NULL,
             "%s", buffer_campo_limite);
         menu_add_item_menu_tabulado(array_menu_common,1,7);
         menu_add_item_menu_campo_seleccionable(array_menu_common);
+        menu_add_item_menu_shortcut(array_menu_common,'a');
 
         //TODO
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
@@ -942,6 +953,10 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
             "[Help]");
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,10);
+
+
+				//Restaurar estado mostrar atajos
+				menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
 		//Nombre de ventana solo aparece en el caso de stdout
 		retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Edit Breakpoint" );
