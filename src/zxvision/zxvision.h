@@ -446,7 +446,7 @@ extern zxvision_window *zxvision_find_first_window_below_this(zxvision_window *w
 #define MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH 128
 
 extern void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,
-    int tiene_submenu,int opcion_marcada,int genera_ventana);
+    int tiene_submenu,int opcion_marcada,int genera_ventana,int opcion_campo_seleccionable);
 
 extern void zxvision_set_ventana_tipo_activa(void);
 extern void zxvision_reset_ventana_tipo_activa(void);
@@ -986,6 +986,9 @@ struct s_menu_item {
     //Usado por ejemplo en teclados de perfil de teclas de ZENG Online
     int opcion_marcada;
 
+    //Para mostrarlo en un color diferente, como en la ventana de edición de breakpoints
+    int opcion_campo_seleccionable;
+
 	//siguiente item
 	struct s_menu_item *siguiente_item;
 
@@ -1108,6 +1111,7 @@ extern void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_
 extern void menu_add_item_menu_misc(menu_item *m,char *texto_misc);
 extern void menu_add_item_menu_opcion_conmuta(menu_item *m,z80_bit *opcion);
 extern void menu_add_item_menu_marcar_opcion(menu_item *m,int valor);
+extern void menu_add_item_menu_campo_seleccionable(menu_item *m);
 extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
 extern void menu_add_item_menu_index_full_path(menu_item *m,char *index_name_en,char *index_name_es,char *index_name_ca);
 extern void menu_add_item_menu_separator(menu_item *m);

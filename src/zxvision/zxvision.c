@@ -8685,7 +8685,7 @@ void menu_textspeech_send_text(char *texto_orig)
 
 }
 
-void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_activada,int *papel_orig,int *tinta_orig,int opcion_marcada)
+void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_activada,int *papel_orig,int *tinta_orig,int opcion_marcada,int opcion_campo_seleccionable)
 {
 	int papel,tinta;
 
@@ -8716,6 +8716,11 @@ void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_a
                     if (opcion_marcada) {
                         papel=ESTILO_GUI_PAPEL_OPCION_MARCADA;
                         tinta=ESTILO_GUI_TINTA_OPCION_MARCADA;
+                    }
+                    else if (opcion_campo_seleccionable) {
+                        //TODO colores temporales
+                        papel=7;
+                        tinta=0;
                     }
                     else {
                         papel=ESTILO_GUI_PAPEL_NORMAL;
@@ -8750,7 +8755,7 @@ int menu_es_stdout(void)
 //opcion_actual indica que numero de linea es la seleccionada
 //opcion activada indica a 1 que esa opcion es seleccionable
 void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,
-    int tiene_submenu,int opcion_marcada,int genera_ventana)
+    int tiene_submenu,int opcion_marcada,int genera_ventana,int opcion_campo_seleccionable)
 {
 
 	char texto[MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH+1];
@@ -8770,12 +8775,12 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 	//tinta=0;
 
 
-	menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta,opcion_marcada);
+	menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta,opcion_marcada,opcion_campo_seleccionable);
 
 
 	//Obtenemos colores de una opcion sin seleccion y activada, para poder tener texto en ventana con linea en dos colores
 	int papel_normal,tinta_normal;
-	menu_retorna_colores_linea_opcion(0,-1,1,&papel_normal,&tinta_normal,0);
+	menu_retorna_colores_linea_opcion(0,-1,1,&papel_normal,&tinta_normal,0,opcion_campo_seleccionable);
 
 	//Buscamos a ver si en el texto hay el caracter "||" y en ese caso lo eliminamos del texto final
 	int encontrado=-1;
@@ -8854,7 +8859,7 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 //opcion_actual indica que numero de linea es la seleccionada
 //opcion activada indica a 1 que esa opcion es seleccionable
 void menu_escribe_linea_opcion_tabulado_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto,
-    int x,int y,int opcion_marcada)
+    int x,int y,int opcion_marcada,int opcion_campo_seleccionable)
 {
 
         if (menu_es_stdout()) {
@@ -8867,7 +8872,7 @@ void menu_escribe_linea_opcion_tabulado_zxvision(zxvision_window *ventana,int in
         int papel,tinta;
 
 
-        menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta,opcion_marcada);
+        menu_retorna_colores_linea_opcion(indice,opcion_actual,opcion_activada,&papel,&tinta,opcion_marcada,opcion_campo_seleccionable);
 
 
 		zxvision_print_string(ventana,x,y,tinta,papel,0,texto);
@@ -19954,7 +19959,7 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 
                 if (menu_tabulado) {
                     menu_escribe_linea_opcion_tabulado_zxvision(ventana,i,linea_seleccionada,
-                        opcion_activada,menu_retorna_item_language(aux),aux->menu_tabulado_x,aux->menu_tabulado_y,opcion_marcada);
+                        opcion_activada,menu_retorna_item_language(aux),aux->menu_tabulado_x,aux->menu_tabulado_y,opcion_marcada,aux->opcion_campo_seleccionable);
                 }
 
 
@@ -19965,7 +19970,7 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
                     if (y_destino>=0) {
 
                             menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,
-                                opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu,opcion_marcada,aux->genera_ventana);
+                                opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu,opcion_marcada,aux->genera_ventana,aux->opcion_campo_seleccionable);
                             //menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,aux->texto_opcion,aux->tiene_submenu);
 
                     }
@@ -21971,6 +21976,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->no_indexar_busqueda=0;
     m->one_time=0;
     m->opcion_marcada=0;
+    m->opcion_campo_seleccionable=0;
     m->menu_se_cerrara=0;
     m->opcion_conmuta=NULL;
 
@@ -22245,6 +22251,18 @@ void menu_add_item_menu_marcar_opcion(menu_item *m,int valor)
     }
 
     m->opcion_marcada=valor;
+}
+
+void menu_add_item_menu_campo_seleccionable(menu_item *m)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->siguiente_item!=NULL)
+    {
+            m=m->siguiente_item;
+    }
+
+    m->opcion_campo_seleccionable=1;
 }
 
 //Agregar decirle que es un item avanzado al ultimo item de menu

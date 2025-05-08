@@ -896,10 +896,31 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
         //TODO: limitar ancho visible
 
+        //Para mostrar los campos seleccionables siempre con el mismo ancho
+        char buffer_campo_seleccionable[30];
+        char buffer_campo_limite[MAX_BREAKPOINT_CONDITION_LENGTH];
 
+        //TODO: hacer todo esto del campo de los espacios con una sola función
+        //Obtener salida condicion y truncar a 20
+        sprintf(buffer_campo_limite,"%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
+        buffer_campo_limite[19]=0;
+
+        //string temporal que agrega espacios
+        util_fill_string_character(buffer_campo_seleccionable,19,' ');
+        //le metemos al principio la condicion ya truncada
+        strcpy(buffer_campo_seleccionable,buffer_campo_limite);
+        //y quitamos el 0 del final de la condicion para que se fusione con los espacios
+        int longitud=strlen(buffer_campo_limite);
+        //quitar el 0 del final. TODO: ver si el final no es precisamente el final de cadena porque quitariamos el 0 del final y la cadena no acabaria
+        buffer_campo_seleccionable[longitud]=' ';
+
+
+        //menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
+        //    "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
-            "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
+            buffer_campo_seleccionable);
         menu_add_item_menu_tabulado(array_menu_common,1,1);
+        menu_add_item_menu_campo_seleccionable(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_ok,NULL,
             "[OK]");
@@ -907,9 +928,13 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_valor_opcion(array_menu_common,breakpoint_index);
 
         zxvision_print_string_defaults_fillspc(&ventana,1,3,"Pass count:");
+        //Campo de texto en color que indica campo seleccionable
+        //zxvision_print_string(&ventana,1,4,0,7,0,"3         ");
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_pass_count,NULL,
             "%d", breakpoint_edit_parameters.pass_count);
         menu_add_item_menu_tabulado(array_menu_common,1,4);
+        menu_add_item_menu_campo_seleccionable(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_cancel,NULL,
             "[Cancel]");
@@ -918,9 +943,13 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
         zxvision_print_string_defaults_fillspc(&ventana,1,6,"Action:");
 
+        //Campo de texto en color que indica campo seleccionable
+        //zxvision_print_string(&ventana,1,7,0,7,0,"printe A   ");
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_action,NULL,
             "%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "Open Menu" ));
         menu_add_item_menu_tabulado(array_menu_common,1,7);
+        menu_add_item_menu_campo_seleccionable(array_menu_common);
 
         //TODO
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
@@ -3296,7 +3325,7 @@ int menu_debug_registers_subview_type=0;
 					//De los pocos usos de menu_escribe_linea_opcion_zxvision,
 					//solo se usa en menus y aqui: para poder mostrar linea activada o en rojo
 
-					menu_escribe_linea_opcion_zxvision(w,linea,opcion_actual,opcion_activada,buffer_linea,0,0,0);
+					menu_escribe_linea_opcion_zxvision(w,linea,opcion_actual,opcion_activada,buffer_linea,0,0,0,0);
 
                     menu_debug_registros_colorea_columnas_modificadas(w,linea,columna_registros,columnas_modificadas);
 
@@ -3341,7 +3370,7 @@ int menu_debug_registers_subview_type=0;
 					//De los pocos usos de menu_escribe_linea_opcion_zxvision,
 					//solo se usa en menus y dos veces en esta funcion
 					//en este caso, es para poder procesar los caracteres "||"
-					menu_escribe_linea_opcion_zxvision(w,linea,-1,1,buffer_linea,0,0,0);
+					menu_escribe_linea_opcion_zxvision(w,linea,-1,1,buffer_linea,0,0,0,0);
 
 
 				}

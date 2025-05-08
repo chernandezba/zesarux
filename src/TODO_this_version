@@ -176,3 +176,13 @@ ok-que se guarde en configuracion el pass count (si es 0, no guardarlo porque es
 -quitar prints de debug en cpu_core_loop_debug_check_breakpoints
 -poderlo ver y cambiarlo desde ZRCP
 -mejor edicion desde menu: condicion, passcount, action
+
+
+-zxvision: nuevo color para campos de texto seleccionables. Como en la ventana de edición de breakpoint,
+condición, pass count y action tienen que aparecer con ese color cuando el cursor no está ahí
+En estilo ZXVision plus por ejemplo es papel 7 tinta 0
+Definir el color en cada estilo, luego además tiene que haber una manera al agregar un item de menu para que lo muestre con ese color
+El color dentro del estilo se puede llamar algo asi como "selectable field", con su tinta y su papel
+* definir color en todos los estilos
+* funcion para que, con una string de tamaño inicial indefinido, se trunque a una longitud maxima y se llene con espacios si es menor que esa maxima
+* hacer ese llenado de espacios para los 3 campos de edicion de breakpoints
