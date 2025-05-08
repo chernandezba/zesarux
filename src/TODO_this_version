@@ -183,6 +183,6 @@ condición, pass count y action tienen que aparecer con ese color cuando el curs
 En estilo ZXVision plus por ejemplo es papel 7 tinta 0
 Definir el color en cada estilo, luego además tiene que haber una manera al agregar un item de menu para que lo muestre con ese color
 El color dentro del estilo se puede llamar algo asi como "selectable field", con su tinta y su papel
-* definir color en todos los estilos
+ok * definir color en todos los estilos
 ok * funcion para que, con una string de tamaño inicial indefinido, se trunque a una longitud maxima y se llene con espacios si es menor que esa maxima
 ok * hacer ese llenado de espacios para los 3 campos de edicion de breakpoints

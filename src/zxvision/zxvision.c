@@ -8718,8 +8718,8 @@ void menu_retorna_colores_linea_opcion(int indice,int opcion_actual,int opcion_a
                         tinta=ESTILO_GUI_TINTA_OPCION_MARCADA;
                     }
                     else if (opcion_campo_seleccionable) {
-                        papel=ESTILO_GUI_PAPEL_FILESELECTOR_FILES;
-                        tinta=ESTILO_GUI_TINTA_FILESELECTOR_FILES;
+                        papel=ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE;
+                        tinta=ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE;
                     }
                     else {
                         papel=ESTILO_GUI_PAPEL_NORMAL;

@@ -1422,8 +1422,8 @@ struct s_estilos_gui {
 	int tinta_opcion_marcada;
 
     //Color para fileselector la zona de seleccion de archivos o tambien para campos seleccionables, como la ventana de edit breakpoints
-    int papel_fileselector_files;
-    int tinta_fileselector_files;
+    int papel_campo_seleccionable;
+    int tinta_campo_seleccionable;
 
 	z80_byte boton_cerrar; //caracter de cerrado de ventana
 
@@ -1552,8 +1552,8 @@ extern int pulsado_alguna_ventana_con_menu_cerrado;
 #define ESTILO_GUI_PAPEL_OPCION_MARCADA (definiciones_estilos_gui[estilo_gui_activo].papel_opcion_marcada)
 #define ESTILO_GUI_TINTA_OPCION_MARCADA (definiciones_estilos_gui[estilo_gui_activo].tinta_opcion_marcada)
 
-#define ESTILO_GUI_PAPEL_FILESELECTOR_FILES (definiciones_estilos_gui[estilo_gui_activo].papel_fileselector_files)
-#define ESTILO_GUI_TINTA_FILESELECTOR_FILES (definiciones_estilos_gui[estilo_gui_activo].tinta_fileselector_files)
+#define ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE (definiciones_estilos_gui[estilo_gui_activo].papel_campo_seleccionable)
+#define ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE (definiciones_estilos_gui[estilo_gui_activo].tinta_campo_seleccionable)
 
 #define ESTILO_GUI_PAPEL_TITULO (definiciones_estilos_gui[estilo_gui_activo].papel_titulo)
 #define ESTILO_GUI_TINTA_TITULO (definiciones_estilos_gui[estilo_gui_activo].tinta_titulo)

@@ -1380,7 +1380,7 @@ void zxvision_menu_filesel_print_file(zxvision_window *ventana,char *s,unsigned 
 	//zxvision_print_string_defaults_fillspc(ventana,1,y+ZXVISION_FILESEL_INITIAL_MARGIN,buffer);
 
     zxvision_print_string_fillspc(ventana,1,y+ZXVISION_FILESEL_INITIAL_MARGIN,
-        ESTILO_GUI_TINTA_FILESELECTOR_FILES,ESTILO_GUI_PAPEL_FILESELECTOR_FILES,0,buffer);
+        ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,buffer);
 }
 
 
@@ -3515,12 +3515,12 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
     int rellenar_fin_selector=(ventana->visible_height)-10;
     while (rellenar_fin_selector>0) {
         //zxvision_print_string_fillspc(ventana,1,i+ZXVISION_FILESEL_INITIAL_MARGIN,
-        //    ESTILO_GUI_TINTA_FILESELECTOR_FILES,ESTILO_GUI_PAPEL_FILESELECTOR_FILES,0,"X");
+        //    ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"X");
 
-        //zxvision_fill_width_spaces_paper(ventana,i+ZXVISION_FILESEL_INITIAL_MARGIN,ESTILO_GUI_PAPEL_FILESELECTOR_FILES);
+        //zxvision_fill_width_spaces_paper(ventana,i+ZXVISION_FILESEL_INITIAL_MARGIN,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE);
 
         zxvision_fill_width_spaces_paper_width(ventana,i+ZXVISION_FILESEL_INITIAL_MARGIN,
-            ESTILO_GUI_PAPEL_FILESELECTOR_FILES,1,ventana->total_width-1);
+            ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,1,ventana->total_width-1);
 
         i++;
         rellenar_fin_selector--;
@@ -5990,7 +5990,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
         ventana->beyond_y=FILESEL_INICIO_DIR; //4
         ventana->beyond_width=last_filesel_ventana_visible_ancho-3;
         ventana->beyond_height=last_filesel_ventana_visible_alto-(FILESEL_UPPER_MARGIN+FILESEL_LOWER_MAGIN+FILESEL_INICIO_DIR-1); //-11
-        ventana->beyond_color=ESTILO_GUI_PAPEL_FILESELECTOR_FILES;
+        ventana->beyond_color=ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE;
 
 		if (menu_filesel_show_utils.v) {
 			//Activar los hotkeys desde raton en el caso de file utilities
