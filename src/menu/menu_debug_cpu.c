@@ -1009,7 +1009,7 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
 
-
+/*
 void old_menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 {
         //printf ("linea: %d\n",breakpoints_opcion_seleccionada);
@@ -1054,6 +1054,8 @@ void old_menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
   debug_set_breakpoint_action(breakpoint_index,string_texto);
 
 }
+
+*/
 
 /*
 void menu_breakpoints_condition_evaluate(MENU_ITEM_PARAMETERS)

@@ -1808,9 +1808,16 @@ void cpu_core_loop_debug_check_breakpoints(void)
 
 					if ( se_cumple_breakpoint ) {
 						//Si condicion pasa de false a true o bien el comportamiento por defecto es saltar siempre
+
+                        //printf("debug_breakpoints_cond_behaviour.v = %d debug_breakpoints_conditions_saltado[i] = %d\n",
+                        //    debug_breakpoints_cond_behaviour.v , debug_breakpoints_conditions_saltado[i]);
+
 						if (debug_breakpoints_cond_behaviour.v==0 || debug_breakpoints_conditions_saltado[i]==0) {
                             //printf("breakpoint saltado\n");
                             //printf("PC=%04XH\n",reg_pc);
+
+                            //Decir que ya ha saltado para poder gestionar parametro de Disparar breakpoint cuando on change
+                            debug_breakpoints_conditions_saltado[i]=1;
 
                             //Ver si el breakpoint tiene un pass_count o salta siempre
                             int saltado_breakpoint=0;
@@ -1820,10 +1827,11 @@ void cpu_core_loop_debug_check_breakpoints(void)
                                 saltado_breakpoint=1;
                             }
                             else {
-                                printf("Pass count no es cero\n");
+                                printf("Pass count no es cero. PC=%XH\n",reg_pc);
                                 debug_breakpoints_pass_count_counter[i]++;
                                 if (debug_breakpoints_pass_count_counter[i]==debug_breakpoints_pass_count[i]) {
-                                    printf("Llegado al pass count\n");
+                                    printf("Llegado al pass count (pass_count=%d actual=%d)\n",
+                                        debug_breakpoints_pass_count[i],debug_breakpoints_pass_count_counter[i]);
                                     saltado_breakpoint=1;
                                 }
                                 else {
@@ -1834,7 +1842,7 @@ void cpu_core_loop_debug_check_breakpoints(void)
 
                             if (saltado_breakpoint) {
 
-                                debug_breakpoints_conditions_saltado[i]=1;
+                                //debug_breakpoints_conditions_saltado[i]=1;
 
                                 char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
                                 exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
