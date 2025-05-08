@@ -905,7 +905,10 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         sprintf(buffer_campo_limite,"%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
         buffer_campo_limite[19]=0;
 
+        util_add_string_spaces(buffer_campo_limite,20);
+
         //string temporal que agrega espacios
+        /*
         util_fill_string_character(buffer_campo_seleccionable,19,' ');
         //le metemos al principio la condicion ya truncada
         strcpy(buffer_campo_seleccionable,buffer_campo_limite);
@@ -913,12 +916,12 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         int longitud=strlen(buffer_campo_limite);
         //quitar el 0 del final. TODO: ver si el final no es precisamente el final de cadena porque quitariamos el 0 del final y la cadena no acabaria
         buffer_campo_seleccionable[longitud]=' ';
-
+        */
 
         //menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
         //    "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
-            buffer_campo_seleccionable);
+            buffer_campo_limite/*buffer_campo_seleccionable*/);
         menu_add_item_menu_tabulado(array_menu_common,1,1);
         menu_add_item_menu_campo_seleccionable(array_menu_common);
 

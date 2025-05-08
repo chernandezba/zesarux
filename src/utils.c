@@ -23421,6 +23421,20 @@ void util_fill_string_character(char *buffer_linea,int longitud,z80_byte caracte
     buffer_linea[j]=0;
 }
 
+//Dado una string, le añade espacios al final de la cadena existente hasta rellenar limite indicado
+//Longitud contando tambien el 0 final, o sea, todo el tamaño del array
+void util_add_string_spaces(char *texto,int longitud)
+{
+    int longitud_texto=strlen(texto);
+
+    int i;
+    for (i=longitud_texto;i<longitud-1;i++) {
+        texto[i]=' ';
+    }
+
+    texto[i]=0;
+}
+
 //Hacer drag & drop de un archivo
 //Esto solo tiene sentido lanzarlo desde un thread aparte, como el del driver cocoa
 //pues necesita que el menu se entere (si es que esta el menu abierto) de la simulacion de pulsar tecla ESC
