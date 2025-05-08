@@ -1218,6 +1218,14 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 				//Si accion es menu, no escribir, para que quepa bien en pantalla
 				//else sprintf (string_condition_action,"%s->menu",string_condition_shown);
 				else sprintf (string_condition_action,"%s",string_condition_shown);
+
+
+                //Agregar pass count si conviene
+                if (debug_breakpoints_pass_count[i]) {
+                    char buffer_pass_count[30];
+                    sprintf(buffer_pass_count," (%d/%d)",debug_breakpoints_pass_count_counter[i],debug_breakpoints_pass_count[i]);
+                    util_concat_string(string_condition_action,buffer_pass_count,LENGTH_STRING_CONDITION_ACTION);
+                }
 			}
 			else {
 				sprintf(string_condition_action,"None");

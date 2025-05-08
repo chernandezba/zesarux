@@ -91,6 +91,7 @@ extern int debug_breakpoints_conditions_saltado[MAX_BREAKPOINTS_CONDITIONS];
 extern int debug_breakpoints_conditions_enabled[MAX_BREAKPOINTS_CONDITIONS];
 
 extern int debug_breakpoints_pass_count[];
+extern int debug_breakpoints_pass_count_counter[];
 
 
 extern z80_byte mem_breakpoint_array[];
