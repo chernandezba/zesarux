@@ -890,54 +890,35 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         zxvision_cls(&ventana);
         //TODO calcular esto segun ancho ventana
         int columna_botones=24;
+        //TODO calcular esto segun ancho ventana
+        int max_campo_seleccionable=20;
 
-        zxvision_print_string_defaults_fillspc(&ventana,1,0,"Condition:");
-
-
-        //TODO: limitar ancho visible
-
-        //Para mostrar los campos seleccionables siempre con el mismo ancho
-        char buffer_campo_seleccionable[30];
+        //Para mostrar los campos seleccionables siempre con el mismo ancho y rellenos con espacios
         char buffer_campo_limite[MAX_BREAKPOINT_CONDITION_LENGTH];
 
-        //TODO: hacer todo esto del campo de los espacios con una sola función
-        //Obtener salida condicion y truncar a 20
+        zxvision_print_string_defaults_fillspc(&ventana,1,0,"Condition:");
         sprintf(buffer_campo_limite,"%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
-        //buffer_campo_limite[19]=0;
-
-        util_add_string_spaces(buffer_campo_limite,20);
-
-        //string temporal que agrega espacios
-        /*
-        util_fill_string_character(buffer_campo_seleccionable,19,' ');
-        //le metemos al principio la condicion ya truncada
-        strcpy(buffer_campo_seleccionable,buffer_campo_limite);
-        //y quitamos el 0 del final de la condicion para que se fusione con los espacios
-        int longitud=strlen(buffer_campo_limite);
-        //quitar el 0 del final. TODO: ver si el final no es precisamente el final de cadena porque quitariamos el 0 del final y la cadena no acabaria
-        buffer_campo_seleccionable[longitud]=' ';
-        */
-
-        //menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
-        //    "%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
+        util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_condition,NULL,
-            buffer_campo_limite/*buffer_campo_seleccionable*/);
+            buffer_campo_limite);
         menu_add_item_menu_tabulado(array_menu_common,1,1);
         menu_add_item_menu_campo_seleccionable(array_menu_common);
+
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_ok,NULL,
             "[OK]");
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,1);
         menu_add_item_menu_valor_opcion(array_menu_common,breakpoint_index);
 
-        zxvision_print_string_defaults_fillspc(&ventana,1,3,"Pass count:");
-        //Campo de texto en color que indica campo seleccionable
-        //zxvision_print_string(&ventana,1,4,0,7,0,"3         ");
 
+        zxvision_print_string_defaults_fillspc(&ventana,1,3,"Pass count:");
+        sprintf(buffer_campo_limite,"%d", breakpoint_edit_parameters.pass_count);
+        util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_pass_count,NULL,
-            "%d", breakpoint_edit_parameters.pass_count);
+            "%s", buffer_campo_limite);
         menu_add_item_menu_tabulado(array_menu_common,1,4);
         menu_add_item_menu_campo_seleccionable(array_menu_common);
+
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_cancel,NULL,
             "[Cancel]");
@@ -945,12 +926,10 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
         zxvision_print_string_defaults_fillspc(&ventana,1,6,"Action:");
-
-        //Campo de texto en color que indica campo seleccionable
-        //zxvision_print_string(&ventana,1,7,0,7,0,"printe A   ");
-
+        sprintf(buffer_campo_limite,"%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "Open Menu" ));
+        util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_edit_action,NULL,
-            "%s",(breakpoint_edit_parameters.string_texto_action[0] ? breakpoint_edit_parameters.string_texto_action : "Open Menu" ));
+            "%s", buffer_campo_limite);
         menu_add_item_menu_tabulado(array_menu_common,1,7);
         menu_add_item_menu_campo_seleccionable(array_menu_common);
 
