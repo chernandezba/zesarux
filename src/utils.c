@@ -23423,8 +23423,12 @@ void util_fill_string_character(char *buffer_linea,int longitud,z80_byte caracte
 
 //Dado una string, le añade espacios al final de la cadena existente hasta rellenar limite indicado
 //Longitud contando tambien el 0 final, o sea, todo el tamaño del array
+//Si longitud texto inicial es mayor que longitud indicada, se truncara
 void util_add_string_spaces(char *texto,int longitud)
 {
+    //Trucar siempre longitud maxima
+    texto[longitud-1]=0;
+
     int longitud_texto=strlen(texto);
 
     int i;

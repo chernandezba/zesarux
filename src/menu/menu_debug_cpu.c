@@ -903,7 +903,7 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         //TODO: hacer todo esto del campo de los espacios con una sola función
         //Obtener salida condicion y truncar a 20
         sprintf(buffer_campo_limite,"%s",(breakpoint_edit_parameters.string_texto_breakpoint[0] ? breakpoint_edit_parameters.string_texto_breakpoint : "None"));
-        buffer_campo_limite[19]=0;
+        //buffer_campo_limite[19]=0;
 
         util_add_string_spaces(buffer_campo_limite,20);
 
