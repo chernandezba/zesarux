@@ -195,7 +195,11 @@ extern int map_adventure_offset_y;
 "set-register expression: Sets register indicated on expression. Example: set-register PC=BC+10\n" \
 "start-transaction-log: Starts the transaction log, require that you define the log file before\n" \
 "stop-transaction-log: Stops the transaction log\n" \
-"write address value: Write memory address with indicated value, address and value are expressions\n" \
+"write address value: Write memory address with indicated value, address and value are expressions" \
 
+#define HELP_MESSAGE_BREAKPOINT_PASS_COUNT \
+"Setting a pass count on a breakpoint tells the debugger not to break every time the condition is true, " \
+"but instead only to break the nth time. That is, if the pass count is 3, the debugger only breaks the third time the condition is true\n" \
+"If pass count is 0, it breaks every time, like a normal breakpoint"
 
 #endif

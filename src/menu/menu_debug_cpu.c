@@ -857,6 +857,18 @@ void menu_breakpoints_conditions_set_cancel(MENU_ITEM_PARAMETERS)
     menu_breakpoints_conditions_finish_window=1;
 }
 
+
+void menu_breakpoints_conditions_help(MENU_ITEM_PARAMETERS)
+{
+    menu_generic_message("Help","Set a condition breakpoint, its action and the pass count.\n"
+        HELP_MESSAGE_CONDITION_BREAKPOINT
+        "\n\n\n"
+        HELP_MESSAGE_BREAKPOINT_ACTION
+        "\n\n\n"
+        HELP_MESSAGE_BREAKPOINT_PASS_COUNT
+    );
+}
+
 void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -958,16 +970,18 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_campo_seleccionable(array_menu_common);
         menu_add_item_menu_shortcut(array_menu_common,'a');
 
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_help,NULL,
+            "[He~^lp]");
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
+        //La tecla H para help, que seria lo lógico, no la puedo usar como shortcut, dado que se utiliza como accion igual a F1 en items de menu
+        menu_add_item_menu_shortcut(array_menu_common,'l');
 
+        if (breakpoint_edit_parameters.enabled) zxvision_print_string_defaults_fillspc(&ventana,1,9,"Breakpoint enabled");
+        else zxvision_print_string_defaults_fillspc(&ventana,1,9,"Breakpoint disabled");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_enable_disable,NULL,
             "%s",(breakpoint_edit_parameters.enabled ? "[Disable]" : "[Enable]"));
-        menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
-
-        //TODO
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "[~^Help]");
-        menu_add_item_menu_tabulado(array_menu_common,columna_botones,10);
-        menu_add_item_menu_shortcut(array_menu_common,'h');
+        //menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
+        menu_add_item_menu_tabulado(array_menu_common,1,10);
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
@@ -1265,10 +1279,12 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_valor_opcion(array_menu_breakpoints,i);
 
-			menu_add_item_menu_ayuda(array_menu_breakpoints,"Set a condition breakpoint and its action. Press Space to disable or enable.\n"
+			menu_add_item_menu_ayuda(array_menu_breakpoints,"Set a condition breakpoint, its action and the pass count. Press Space to disable or enable.\n"
 						HELP_MESSAGE_CONDITION_BREAKPOINT
 						"\n\n\n"
 						HELP_MESSAGE_BREAKPOINT_ACTION
+                        "\n\n\n"
+                        HELP_MESSAGE_BREAKPOINT_PASS_COUNT
 
 					);
 
