@@ -872,6 +872,10 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
 	zxvision_new_window(&ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Edit Breakpoint");
+
+    //Forzar visibles hotkeys en esa ventana
+    ventana.writing_inverse_color=1;
+
 	zxvision_draw_window(&ventana);
 
     int opcion_seleccionada=0;
@@ -887,14 +891,6 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
     strcpy(breakpoint_edit_parameters.string_texto_action,debug_breakpoints_actions_array[breakpoint_index]);
 
 	do {
-                //Forzar a mostrar atajos
-                z80_bit antes_menu_writing_inverse_color;
-                antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-                menu_writing_inverse_color.v=1;
-
-
-
-
         zxvision_cls(&ventana);
         //TODO calcular esto segun ancho ventana
         int columna_botones=24;
@@ -915,9 +911,10 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_ok,NULL,
-            "[OK]");
+            "[~^OK]");
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,1);
         menu_add_item_menu_valor_opcion(array_menu_common,breakpoint_index);
+        menu_add_item_menu_shortcut(array_menu_common,'o');
 
 
         zxvision_print_string_defaults_fillspc(&ventana,1,3,"~^Pass count:");
@@ -931,8 +928,9 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_cancel,NULL,
-            "[Cancel]");
+            "[Ca~^ncel]");
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,4);
+        menu_add_item_menu_shortcut(array_menu_common,'n');
 
 
         zxvision_print_string_defaults_fillspc(&ventana,1,6,"~^Action:");
@@ -946,17 +944,16 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
 
         //TODO
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "[Disable]");
+            "[~^Disable]");
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
+        menu_add_item_menu_shortcut(array_menu_common,'d');
 
         //TODO
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "[Help]");
+            "[~^Help]");
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,10);
+        menu_add_item_menu_shortcut(array_menu_common,'h');
 
-
-				//Restaurar estado mostrar atajos
-				menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
 		//Nombre de ventana solo aparece en el caso de stdout
 		retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Edit Breakpoint" );
