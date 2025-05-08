@@ -177,10 +177,3 @@ ok-que se vea el pass count limite y actual (si pass count no es 0) en lista de 
 ok-poderlo ver y cambiarlo desde ZRCP
 -mejor edicion desde menu: condicion, passcount, action. shortcuts para cada campo (que el shortcut lleve al campo pero se muestra en el texto superior)
 
-
--zxvision: nuevo color para campos de texto seleccionables. Como en la ventana de edición de breakpoint,
-condición, pass count y action tienen que aparecer con ese color cuando el cursor no está ahí
-->Reuso el parametro de fileselector para la zona de archivos
-ok * definir color en todos los estilos
-ok * funcion para que, con una string de tamaño inicial indefinido, se trunque a una longitud maxima y se llene con espacios si es menor que esa maxima
-ok * hacer ese llenado de espacios para los 3 campos de edicion de breakpoints
