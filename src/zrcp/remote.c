@@ -718,6 +718,7 @@ struct s_items_ayuda items_ayuda[]={
 	{"get-audio-buffer-info",NULL,NULL,"Get audio buffer information"},
   {"get-breakpoints","|gb","[index] [items]","Get breakpoints list. If set index, returns item at index. If set items, returns number of items list starting from index parameter"},
 	{"get-breakpointsactions","|gba","[index] [items]","Get breakpoints actions list. If set first, returns item at index. If set items, returns number of items list starting from index parameter"},
+    {"get-breakpointspasscount","|gbpc","[index] [items]","Get breakpoints pass count list (current counter and configured limit). If set first, returns item at index. If set items, returns number of items list starting from index parameter"},
 	{"get-breakpoints-optimized",NULL,"[index] [items]","Show which breakpoints are optimized or not. If set index, returns item at index. If set items, returns number of items list starting from index parameter"},
 	  {"get-buildnumber",NULL,NULL,"Shows build number. Useful on beta version, this build number is the compilation date of ZEsarUX in Unix time format"},
 	{"get-cpu-core-name",NULL,NULL,"Get emulation cpu core name"},
@@ -814,6 +815,7 @@ struct s_items_ayuda items_ayuda[]={
 	{"set-breakpointaction","|sba","index [action]","Sets a breakpoint action at desired index entry. The condition to fire the action is the one that matches the same index as on the breakpoints table\n"
 	HELP_MESSAGE_BREAKPOINT_ACTION
 	},
+	{"set-breakpointpasscount","|sbpc","index [pass count]","Sets a breakpoint pass count at desired index entry"},
 	{"set-cr",NULL,NULL,"Sends carriage return to every command output received, useful on Windows environments"},
 	{"set-debug-settings","|sds","setting","Set debug settings on remote command protocol. It's a numeric value with bitmask with different meaning: \n"
 				"Bit 0: show all cpu registers on cpu stepping or only pc+opcode.\nBit 1: show 8 next opcodes on cpu stepping.\n"
@@ -1161,6 +1163,16 @@ void remote_get_breakpointsactions(int misocket,int inicio,int items)
   }
 }
 
+void remote_get_breakpointspasscounts(int misocket,int inicio,int items)
+{
+    int i;
+
+
+    for (i=inicio;i<MAX_BREAKPOINTS_CONDITIONS && i<inicio+items;i++) {
+        escribir_socket_format(misocket,"%d: %d/%d\n",i+1,debug_breakpoints_pass_count_counter[i],debug_breakpoints_pass_count[i]);
+    }
+}
+
 
 void remote_disable_breakpoint(int misocket,char *parametros)
 {
@@ -1249,6 +1261,41 @@ void remote_set_breakpoint(int misocket,char *parametros)
   if (result) escribir_socket(misocket,"Error. Error setting breakpoint");
 }
 
+void remote_set_breakpointpasscount(int misocket,char *parametros)
+{
+  //Separar id indice y condicion
+  //Buscar hasta espacio
+  if (parametros[0]==0) {
+    escribir_socket(misocket,"Error. No parameters set");
+    return;
+  }
+  int i;
+
+  //Evaluar primer parametro
+  int indice=atoi(parametros);
+
+  if (indice<1 || indice>MAX_BREAKPOINTS_CONDITIONS) {
+    escribir_socket(misocket,"Error. Index out of range");
+    return;
+  }
+
+  //Buscar espacio del segundo parametro
+
+  for (i=0;parametros[i]!=' ' && parametros[i];i++);
+
+
+  //Si no hay espacio de segundo parametro, segundo parametro es nulo
+  //Sera igual escribir:
+  //set-breakpointaction 1[_espacio_][_fin_linea]
+  //o
+  //set-breakpointaction 1[_fin_linea]
+  if (parametros[i]!=0) {
+    i++;
+  }
+
+
+  debug_set_breakpoint_passcount(indice-1,parse_string_to_number(&parametros[i]));
+}
 
 void remote_set_breakpointaction(int misocket,char *parametros)
 {
@@ -4323,6 +4370,29 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
     remote_get_breakpoints(misocket,inicio-1,items);
   }
 
+
+    else if (!strcmp(comando_sin_parametros,"get-breakpointspasscount") || !strcmp(comando_sin_parametros,"gbpc")) {
+        int inicio=1;
+        int items=MAX_BREAKPOINTS_CONDITIONS;
+
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        if (remote_command_argc>0) {
+            inicio=parse_string_to_number(remote_command_argv[0]);
+            if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
+                escribir_socket (misocket,"ERROR. Index out of range");
+                return;
+            }
+            items=1;
+        }
+
+        if (remote_command_argc>1) {
+            items=parse_string_to_number(remote_command_argv[1]);
+        }
+
+
+        remote_get_breakpointspasscounts(misocket,inicio-1,items);
+    }
+
 	//get-breakpoints, estado global y lista cada uno, si hay y si esta enabled
 	  else if (!strcmp(comando_sin_parametros,"get-breakpointsactions") || !strcmp(comando_sin_parametros,"gba")) {
         int inicio=1;
@@ -5291,6 +5361,11 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 else if (!strcmp(comando_sin_parametros,"set-breakpoint") || !strcmp(comando_sin_parametros,"sb")) {
   if (debug_breakpoints_enabled.v==0) escribir_socket (misocket,"Error. You must enable breakpoints first");
   else remote_set_breakpoint(misocket,parametros);
+}
+
+else if (!strcmp(comando_sin_parametros,"set-breakpointpasscount") || !strcmp(comando_sin_parametros,"sbpc")) {
+  if (debug_breakpoints_enabled.v==0) escribir_socket (misocket,"Error. You must enable breakpoints first");
+  else remote_set_breakpointpasscount(misocket,parametros);
 }
 
 else if (!strcmp(comando_sin_parametros,"set-breakpointaction") || !strcmp(comando_sin_parametros,"sba")) {
