@@ -152,6 +152,8 @@ Si se utiliza funcion de crear menu pero no es un menu estrictamente, llamar a:
 
 menu_dibuja_menu_dialogo_no_title_lang
 
+En vez de usar menu_dibuja_menu_no_title_lang o cualquier otra variante menu_dibuja_menu*
+
 Esto evita que se indexe dicho menu
 
 El indexado se hace para menus normales, que no sean tabulados

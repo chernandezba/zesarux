@@ -1180,8 +1180,15 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
         do {
 
 
-		menu_add_item_menu_inicial_format(&array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_enable_disable,NULL,"~~Breakpoints: %s",
-			(debug_breakpoints_enabled.v ? "On" : "Off") );
+		//menu_add_item_menu_inicial_format(&array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_enable_disable,NULL,"~~Breakpoints: %s",
+		//	(debug_breakpoints_enabled.v ? "On" : "Off") );
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_breakpoints,MENU_OPCION_NORMAL,menu_breakpoints_enable_disable,NULL,
+            "~~Breakpoints enabled","~~Breakpoints activados","~~Breakpoints activats");
+        menu_add_item_menu_prefijo_format(array_menu_breakpoints,"[%c] ",(debug_breakpoints_enabled.v ? 'X' : ' ') );
+
+        menu_add_item_menu_separator(array_menu_breakpoints);
+
 		menu_add_item_menu_shortcut(array_menu_breakpoints,'b');
 		menu_add_item_menu_tooltip(array_menu_breakpoints,"Enable Breakpoints. All breakpoint types depend on this setting");
 		menu_add_item_menu_ayuda(array_menu_breakpoints,"Enable Breakpoints. All breakpoint types depend on this setting");
@@ -1198,6 +1205,7 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_breakpoints,'e');
 		menu_add_item_menu_tooltip(array_menu_breakpoints,"Evaluate expression using parser");
 		menu_add_item_menu_ayuda(array_menu_breakpoints,"Evaluate expression using parser. It's the same parser as breakpoint conditions below");
+        menu_add_item_menu_genera_ventana(array_menu_breakpoints);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_mem_breakpoints,NULL,
@@ -1213,9 +1221,14 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_NORMAL,menu_clear_all_breakpoints,NULL,
-            "Clear all breakpoints","Limpiar todos breakpoints","Netejar tots breakpoints");
+            "Delete all breakpoints","Eliminar todos breakpoints","Eliminar tots breakpoints");
+        menu_add_item_menu_genera_ventana(array_menu_breakpoints);
 
 
+        menu_add_item_menu_separator(array_menu_breakpoints);
+
+		menu_add_item_menu_en_es_ca(array_menu_breakpoints,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--Breakpoints List--","--Lista Breakpoints--","--Llista breakpoints--");
 
         for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
             #define LENGTH_STRING_CONDITION_SHOWN 30
