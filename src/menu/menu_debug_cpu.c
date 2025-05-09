@@ -977,7 +977,8 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'l');
 
         if (breakpoint_edit_parameters.enabled) zxvision_print_string_defaults_fillspc(&ventana,1,9,"Breakpoint enabled");
-        else zxvision_print_string_defaults_fillspc(&ventana,1,9,"Breakpoint disabled");
+        else zxvision_print_string(&ventana,1,9,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,"Breakpoint disabled");
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_set_enable_disable,NULL,
             "%s",(breakpoint_edit_parameters.enabled ? "[Disable]" : "[Enable]"));
         //menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
