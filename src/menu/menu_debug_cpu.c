@@ -8473,7 +8473,7 @@ void menu_debug_cpu_view_stack(void)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&menu_debug_cpu_view_stack_opcion_seleccionada,&item_seleccionado,array_menu_common,"View Stack");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_debug_cpu_view_stack_opcion_seleccionada,&item_seleccionado,array_menu_common,"View Stack");
 
         //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
         salir_todos_menus=0;
