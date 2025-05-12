@@ -4452,6 +4452,24 @@ void menu_debug_toggle_breakpoint(int borrar)
 
 	debug_printf (VERBOSE_DEBUG,"Address on cursor: %X",direccion_cursor);
 
+
+    //Primero habilitar breakpoints si no están habilitados
+    if (debug_breakpoints_enabled.v==0) {
+        debug_breakpoints_enabled.v=1;
+
+        breakpoints_enable();
+
+        //Si ya habia un breakpoint ahi, avisar al usuario y no hacer toggle
+        int posicion=debug_return_brk_pc_dir_condition_enabled_or_not(direccion_cursor);
+        if (posicion>=0) {
+            menu_warn_message("Breakpoints were not enabled and there was already a breakpoint on the cursor position, which was hidden "
+                            "because breakpoints were not enabled. Returning enabling breakpoints but without toggling that breakpoint");
+            return;
+        }
+    }
+
+
+
 	//Si hay breakpoint ahi, quitarlo, ya sea que este activado o no
 	int posicion=debug_return_brk_pc_dir_condition_enabled_or_not(direccion_cursor);
 	if (posicion>=0) {
@@ -4472,11 +4490,6 @@ void menu_debug_toggle_breakpoint(int borrar)
 		char condicion[30];
 		sprintf (condicion,"PC=%XH",direccion_cursor);
 
-        if (debug_breakpoints_enabled.v==0) {
-                debug_breakpoints_enabled.v=1;
-
-                breakpoints_enable();
-    	}
 		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",condicion);
 
 		debug_add_breakpoint_free(condicion,"");

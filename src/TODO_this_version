@@ -149,7 +149,7 @@ creo que es al redefinir paleta de colores, que corrige al abrir menu por ejempl
 
 
 
--con breakpoints off. tenemos breakpoint definido en 32768
+ok-con breakpoints off. tenemos breakpoint definido en 32768
 Si pulso toggle en 32768, mete breakpoint duplicado en 32768
 
 
