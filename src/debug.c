@@ -1820,11 +1820,11 @@ void cpu_core_loop_debug_check_breakpoints(void)
                             debug_breakpoints_conditions_saltado[i]=1;
 
                             //Ver si el breakpoint tiene un pass_count o salta siempre
-                            int saltado_breakpoint=0;
+                            int notificar_breakpoint=0;
 
                             if (debug_breakpoints_pass_count[i]==0) {
                                 printf("Pass count es cero. saltar siempre\n");
-                                saltado_breakpoint=1;
+                                notificar_breakpoint=1;
                             }
                             else {
                                 printf("Pass count no es cero. PC=%XH\n",reg_pc);
@@ -1832,7 +1832,7 @@ void cpu_core_loop_debug_check_breakpoints(void)
                                 if (debug_breakpoints_pass_count_counter[i]==debug_breakpoints_pass_count[i]) {
                                     printf("Llegado al pass count (pass_count=%d actual=%d)\n",
                                         debug_breakpoints_pass_count[i],debug_breakpoints_pass_count_counter[i]);
-                                    saltado_breakpoint=1;
+                                    notificar_breakpoint=1;
                                 }
                                 else {
                                     printf("No llegado aun al pass count (pass_count=%d actual=%d)\n",
@@ -1840,7 +1840,7 @@ void cpu_core_loop_debug_check_breakpoints(void)
                                 }
                             }
 
-                            if (saltado_breakpoint) {
+                            if (notificar_breakpoint) {
 
                                 //debug_breakpoints_conditions_saltado[i]=1;
 
