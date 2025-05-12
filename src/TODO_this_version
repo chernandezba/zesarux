@@ -157,24 +157,4 @@ Si pulso toggle en 32768, mete breakpoint duplicado en 32768
 
 
 -breakpoints que se disparen cuando se cumpla una condición N veces:
-
-1) Olvídate de que el "pass count" (lo llamo así por ser como lo llama Turbo Pascal) sea una variable más de tus expresiones, no tiene sentido. Debe ser un valor opcional aparte.
-2) Si el pass_count==0 parará todas las veces (o sea, como hasta ahora).
-3) Si el pass_count!=0 parará cuando la condición del breakpoint se cumpla por pass_count veces (si vale 3, se salta 2, para en la tercera)
-4) Cuando se crea un breakpoint en el menú de breakpoints te pide el pass_count, ofreciendo 0 como valor por defecto, y se pone el contador interno a 0
-5) Cuando se crea un breakpoint desde linea de comandos se puede poner opcionalmente un passcount, si no se pone es 0. Al crearse, el contador interno es 0.
-6) Cuando se crea un breakpoint de cualquier otra manera (toggle, run to, los de DAAD/PAW, etc.) no pregunta, pass_count= 0.
-Yo creo que con eso vale, y la verdad, no se me ocurre en qué esceneario necesitaría una opción para resetear contadores.
-
-Son ideales para condiciones tipo PC=XXXX, para bucles, para hacer que se salte por ejemplo la iteración 20 de un bucle
-
-ok *poder definir el pass count desde menu
-ok *revisar todas llamadas a debug_set_breakpoint que indiquen pass_count si conviene
-ok *que se guarde en configuracion el pass count (si es 0, no guardarlo porque es el valor por defecto)
 *shortcut desde ventana menu debug cpu para cambiarlo?
-ok *que se vea el pass count limite y actual (si pass count no es 0) en lista de breakpoints
-ok *quitar prints de debug en cpu_core_loop_debug_check_breakpoints
-ok *poderlo ver y cambiarlo desde ZRCP
-ok *mejor edicion desde menu: condicion, passcount, action. shortcuts para cada campo (que el shortcut lleve al campo pero se muestra en el texto superior)
-ok * testeos varios de que funciona el pass count
-

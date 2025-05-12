@@ -1611,7 +1611,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         4,      //color block visualtape
 		2,7,		//Color para opcion marcada
 
-        7,0, //Colores fileselector, zona seleccion archivos
+        6,0, //Colores fileselector, zona seleccion archivos
 
 		'*',
         '-', //caracter de minimizar ventana
