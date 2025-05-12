@@ -68,6 +68,7 @@ Fixed setting esxdos handler root dir when loading a .nex file without path from
 Fixed bug restoring ZSF snapshot with DivIDE enabled
 Fixed segfault when pressing CTRL-C on console
 Fixed PCW palette colour changes
+Fixed toggle breakpoint on a position that already had a breakpoint when breakpoints were disabled
 
 ----
 
