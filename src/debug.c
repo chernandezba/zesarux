@@ -1823,20 +1823,20 @@ void cpu_core_loop_debug_check_breakpoints(void)
                             int notificar_breakpoint=0;
 
                             if (debug_breakpoints_pass_count[i]==0) {
-                                printf("Pass count es cero. saltar siempre\n");
+                                debug_printf(VERBOSE_DEBUG,"Breakpoint has pass count set to zero. Notify always");
                                 notificar_breakpoint=1;
                             }
                             else {
-                                printf("Pass count no es cero. PC=%XH\n",reg_pc);
+                                debug_printf(VERBOSE_DEBUG,"Breakpoint has pass count set to non-zero");
                                 debug_breakpoints_pass_count_counter[i]++;
                                 if (debug_breakpoints_pass_count_counter[i]==debug_breakpoints_pass_count[i]) {
-                                    printf("Llegado al pass count (pass_count=%d actual=%d)\n",
-                                        debug_breakpoints_pass_count[i],debug_breakpoints_pass_count_counter[i]);
+                                    debug_printf(VERBOSE_DEBUG,"Breakpoint pass count reaches limit (current count=%d, pass_count=%d)",
+                                        debug_breakpoints_pass_count_counter[i],debug_breakpoints_pass_count[i]);
                                     notificar_breakpoint=1;
                                 }
                                 else {
-                                    printf("No llegado aun al pass count (pass_count=%d actual=%d)\n",
-                                        debug_breakpoints_pass_count[i],debug_breakpoints_pass_count_counter[i]);
+                                    debug_printf(VERBOSE_DEBUG,"Breakpoint pass count do not reach limit (current count=%d, pass_count=%d)",
+                                        debug_breakpoints_pass_count_counter[i],debug_breakpoints_pass_count[i]);
                                 }
                             }
 

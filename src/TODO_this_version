@@ -173,8 +173,8 @@ ok *revisar todas llamadas a debug_set_breakpoint que indiquen pass_count si con
 ok *que se guarde en configuracion el pass count (si es 0, no guardarlo porque es el valor por defecto)
 *shortcut desde ventana menu debug cpu para cambiarlo?
 ok *que se vea el pass count limite y actual (si pass count no es 0) en lista de breakpoints
--quitar prints de debug en cpu_core_loop_debug_check_breakpoints
+ok *quitar prints de debug en cpu_core_loop_debug_check_breakpoints
 ok *poderlo ver y cambiarlo desde ZRCP
 ok *mejor edicion desde menu: condicion, passcount, action. shortcuts para cada campo (que el shortcut lleve al campo pero se muestra en el texto superior)
-* testeos varios de que funciona el pass count
+ok * testeos varios de que funciona el pass count
 
