@@ -866,6 +866,7 @@ void menu_breakpoints_conditions_help(MENU_ITEM_PARAMETERS)
         HELP_MESSAGE_BREAKPOINT_ACTION
         "\n\n\n"
         HELP_MESSAGE_BREAKPOINT_PASS_COUNT
+        HELP_MESSAGE_BREAKPOINT_PASS_COUNT_BEHAVIOUR
     );
 }
 
@@ -1301,6 +1302,7 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 						HELP_MESSAGE_BREAKPOINT_ACTION
                         "\n\n\n"
                         HELP_MESSAGE_BREAKPOINT_PASS_COUNT
+                        HELP_MESSAGE_BREAKPOINT_PASS_COUNT_BEHAVIOUR
 
 					);
 

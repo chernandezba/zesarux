@@ -198,8 +198,45 @@ extern int map_adventure_offset_y;
 "write address value: Write memory address with indicated value, address and value are expressions" \
 
 #define HELP_MESSAGE_BREAKPOINT_PASS_COUNT \
-"Setting a pass count on a breakpoint tells the debugger not to break every time the condition is true, " \
-"but instead only to break the nth time. That is, if the pass count is 3, the debugger only breaks the third time the condition is true\n" \
-"If pass count is 0, it breaks every time, like a normal breakpoint"
+"Setting a pass count on a breakpoint tells the debugger not to notify the user every time the breakpoint is triggered, " \
+"but instead only to notify the nth time. That is, if the pass count is 3, the debugger only notifies the third time the breakpoint is triggered\n" \
+"If pass count is 0, it's notified every time, like a normal breakpoint\n" \
+
+#define HELP_MESSAGE_BREAKPOINT_PASS_COUNT_BEHAVIOUR \
+"\n\n" \
+"Notifying a breakpoint depends on the pass count setting of the breakpoint and also on the Breakpoint Behaviour settting, " \
+"so there are 4 possible behaviours.\n" \
+"Consider the following example: \n" \
+"Breakpoint condition: A=1\n" \
+"Running code: \n" \
+"8000 LD A,1\n" \
+"8002 NOP\n" \
+"8003 LD A,0\n" \
+"8005 NOP\n" \
+"8006 LD A,1\n" \
+"8008 NOP\n" \
+"8009 LD A,0\n" \
+"800B NOP\n" \
+"800C LD A,1\n" \
+"800E NOP\n" \
+"800F LD A,0\n" \
+"\n" \
+"1st behaviour: Breakpoint Behaviour: Always, Pass count: 0\n" \
+"Breakpoint is notified on 8002, 8003, 8008, 8009, 800E, 800F\n" \
+"\n" \
+"2nd behaviour: Breakpoint Behaviour: On Change, Pass count: 0\n" \
+"Breakpoint is notified on 8002, 8008, 800E\n" \
+"\n" \
+"3rd behaviour: Breakpoint Behaviour: Always, Pass count: 3\n" \
+"Breakpoint is notified on 8008\n" \
+"\n" \
+"4th behaviour: Breakpoint Behaviour: On Change, Pass count: 3\n" \
+"Breakpoint is notified on 800E\n" \
+"\n" \
+"So, the breakpoint algorithm is: \n" \
+"- If condition is true: \n" \
+"  - If Breakpoint Behaviour=Always or condition changes from false to true: \n" \
+"    - If pass count is 0, notify breakpoint \n" \
+"    - If pass count is not 0, being N the pass count, notify breakpoint the Nth time it enters here \n" \
 
 #endif

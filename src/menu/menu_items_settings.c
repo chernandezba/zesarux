@@ -3260,8 +3260,11 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
             "~~Breakp. behaviour","Comportamiento ~~Breakp.","Comportament ~~Breakp.");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
         menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
-		menu_add_item_menu_tooltip(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
-		menu_add_item_menu_ayuda(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
+		menu_add_item_menu_tooltip(array_menu_settings_debug,"Indicates whether breakpoints are triggered always or only on change from false to true");
+		menu_add_item_menu_ayuda(array_menu_settings_debug,
+            "Indicates whether breakpoints are triggered always or only on change from false to true"
+            HELP_MESSAGE_BREAKPOINT_PASS_COUNT_BEHAVIOUR
+        );
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'b');
 
 
