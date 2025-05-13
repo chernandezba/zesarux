@@ -845,7 +845,9 @@ void zeng_send_keys_onehost(int index_socket)
 {
 
     //struct s_zeng_send_keys_onehost *parametros=&zeng_send_keys_onehost_array[index_socket];
-
+    //Aqui se quejara el compilador porque estoy pasando un entero (index_socket) como un parametro puntero,
+    //que para que lo que lo quiero ya me sirve, el entero es 32 bits, y el puntero sera 32 bits o 64 (dependiendo si la cpu es 32 o 64)
+    //por lo que no hay ningún problema
 	if (pthread_create( &zeng_send_keys_onehost_array[index_socket].thread, NULL, &thread_zeng_send_keys_onehost, (void *) index_socket) ) {
 		debug_printf(VERBOSE_ERR,"Can not create thread_zeng_send_keys_onehost pthread");
         zeng_send_keys_onehost_array[index_socket].finished=1;
@@ -978,6 +980,9 @@ void *thread_zeng_send_snapshot_uno_concreto(void *p_indice_socket)
 void zeng_send_snapshot_uno_concreto(int indice_socket)
 {
 
+    //Aqui se quejara el compilador porque estoy pasando un entero (index_socket) como un parametro puntero,
+    //que para que lo que lo quiero ya me sirve, el entero es 32 bits, y el puntero sera 32 bits o 64 (dependiendo si la cpu es 32 o 64)
+    //por lo que no hay ningún problema
     if (pthread_create( &zeng_send_snapshot_uno_concreto_array[indice_socket].thread, NULL,
             &thread_zeng_send_snapshot_uno_concreto, (void *) indice_socket) ) {
         debug_printf(VERBOSE_ERR,"Can not create thread_zeng_send_snapshot_uno_concreto pthread");
