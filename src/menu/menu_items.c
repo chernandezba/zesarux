@@ -30351,6 +30351,8 @@ void menu_machine_selection_family_machines(int id_familia)
 
     int total_maquinas=0;
 
+    int opcion_seleccionada=0;
+
 	do {
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
@@ -30384,15 +30386,15 @@ void menu_machine_selection_family_machines(int id_familia)
         //menu_convierte_texto_sin_modificadores(array_fabricantes_hotkey[fabricante],titulo);
 
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&machine_selection_por_fabricante_opcion_seleccionada,&item_seleccionado,array_menu_common,titulo );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,titulo );
 
-                        //printf ("Opcion seleccionada: %d\n",machine_selection_por_fabricante_opcion_seleccionada);
+                        //printf ("Opcion seleccionada: %d\n",opcion_seleccionada);
 
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
-            if (machine_selection_por_fabricante_opcion_seleccionada>=0 && machine_selection_por_fabricante_opcion_seleccionada<total_maquinas) {
+            if (opcion_seleccionada>=0 && opcion_seleccionada<total_maquinas) {
 
                 int id_maquina=item_seleccionado.valor_opcion;
                 menu_machine_set_machine_by_id(id_maquina);
