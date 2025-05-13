@@ -9,6 +9,7 @@ Added direct functions to increase/decrease Audio Volume
 Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
+Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)
 Added .ay file support to File Viewer
 Added second MMC/SD card emulation
 Added support for up to 4 joystick fire buttons on:

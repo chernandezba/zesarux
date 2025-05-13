@@ -9,6 +9,7 @@ Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
 Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
+Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Agregado soporte para archivos .ay en Visor de Archivos
 Agregado emulación de una segunda tarjeta de MMC/SD
 Agregado suporte para 4 botones de fuego de joystick en:
