@@ -322,8 +322,8 @@ char custom_romfile[PATH_MAX]="";
 //
 
 
-//Si se selecciona maquina con listado ordenado por nombre (a 1), en vez de por fabricante (a 0)
-int setting_machine_selection_type=0;
+//Tipo de seleccion en el menu machine
+int setting_machine_selection_type=MACHINE_SELECTION_TYPE_BY_MANUFACTURER;
 
 
 //Si el visor de archivos siempre muestra en hexadecimal

@@ -30182,7 +30182,10 @@ int menu_machine_selection_cambio_tipo_lista=0;
 
 void menu_setting_select_machine_by_name(MENU_ITEM_PARAMETERS)
 {
-	setting_machine_selection_type ^=1;
+	setting_machine_selection_type++;
+    if (setting_machine_selection_type>MACHINE_SELECTION_TYPE_BY_FAMILY) {
+        setting_machine_selection_type=MACHINE_SELECTION_TYPE_BY_MANUFACTURER;
+    }
     menu_machine_selection_cambio_tipo_lista=1;
 }
 
@@ -30194,11 +30197,24 @@ void menu_machine_selection_common_items(menu_item *m)
         menu_add_item_menu(m,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_item_menu_es_avanzado(m);
 
+        char machine_selection_type[20];
+
+        if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_NAME) {
+            strcpy(machine_selection_type,"Name");
+        }
+        else if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_FAMILY) {
+            strcpy(machine_selection_type,"Family");
+        }
+        else {
+            strcpy(machine_selection_type,"Manufacturer");
+        }
+
 		menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
-            "Select machine by name","Seleccionar máquina por nombre","Escollir màquina pel nom");
-		menu_add_item_menu_prefijo_format(m,"[%c] ",(setting_machine_selection_type ? 'X' : ' ') );
-		menu_add_item_menu_tooltip(m,"Select machine by name instead of manufacturer on menu Machine");
-		menu_add_item_menu_ayuda(m,"Select machine by name instead of manufacturer on menu Machine");
+            "Machine list type","Tipo listado máquinas","Tipus llistat màquines");
+		menu_add_item_menu_prefijo_format(m,"    ");
+        menu_add_item_menu_sufijo_format(m," [by %s]",machine_selection_type);
+		menu_add_item_menu_tooltip(m,"Select machine by manufacturer, name or family");
+		menu_add_item_menu_ayuda(m,"Select machine by manufacturer, name or family");
         menu_add_item_menu_es_avanzado(m);
 
         menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
@@ -30489,11 +30505,24 @@ void menu_machine_selection(MENU_ITEM_PARAMETERS)
     do {
         menu_machine_selection_cambio_tipo_lista=0;
 
-        if (setting_machine_selection_type==0) {
-            menu_machine_selection_manufacturer(0);
-        }
-        else {
-            menu_machine_selection_by_name(0);
+        switch (setting_machine_selection_type) {
+            case MACHINE_SELECTION_TYPE_BY_MANUFACTURER:
+                menu_machine_selection_manufacturer(0);
+            break;
+
+            case MACHINE_SELECTION_TYPE_BY_NAME:
+                menu_machine_selection_by_name(0);
+            break;
+
+            case MACHINE_SELECTION_TYPE_BY_FAMILY:
+                //TODO
+                menu_machine_selection_manufacturer(0);
+            break;
+
+            default:
+                //no se deberia llegar nunca aqui
+                menu_machine_selection_manufacturer(0);
+            break;
         }
 
         //Recargar si se ha modificado tipo lista

@@ -95,6 +95,10 @@ extern z80_bit msx_loading_stripes;
 
 extern z80_bit msx_loading_noise_reduction;
 
+#define MACHINE_SELECTION_TYPE_BY_MANUFACTURER 0
+#define MACHINE_SELECTION_TYPE_BY_NAME 1
+#define MACHINE_SELECTION_TYPE_BY_FAMILY 2
+
 extern int setting_machine_selection_type;
 
 //extern z80_bit ql_replace_underscore_dot;
