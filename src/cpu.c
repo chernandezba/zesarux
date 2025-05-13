@@ -1445,7 +1445,7 @@ void random_ram_inves(z80_byte *puntero,int longitud)
 
 //Esta lista no tiene por que estar ordenada por id ni por nombre
 //puede estar desordenada
-//Pero la mantengo ordenada por nombre que quiero que aparezca en listado clasificado por familia
+//Pero la mantengo ordenada por orden que quiero que aparezca en listado clasificado por familia
 struct s_machine_names machine_names[]={
     {"ZX Spectrum 16k",              	MACHINE_ID_SPECTRUM_16},
     {"ZX Spectrum 48k", 			    MACHINE_ID_SPECTRUM_48},
@@ -1531,10 +1531,6 @@ struct s_machine_names machine_names[]={
     {"SVI-328",                         MACHINE_ID_SVI_328},
 
     {"MSX1",                            MACHINE_ID_MSX1},
-
-
-
-
 
 
     //Indicador de final

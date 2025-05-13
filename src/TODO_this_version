@@ -145,8 +145,8 @@ ok * desactivar botones superiores si esta topbar
 
 
 -seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
-ok*ordenar familias (en el array origen o luego con qsort?)
-*ordenar maquinas de cada familia (quiza quicksort). o clasificar segun importancia??
+ok *ordenar familias (en el array origen o luego con qsort?)
+ok *ordenar maquinas de cada familia (quiza quicksort). o clasificar segun importancia??
 *revisar limites y opciones admitidas
 *sam coupe es familia spectrum??? creo que deberia ser otra
 *que hacer con familias de un solo miembro ? como msx, master system...

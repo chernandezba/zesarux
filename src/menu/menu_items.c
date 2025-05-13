@@ -30360,7 +30360,7 @@ void menu_machine_selection_family_machines(int id_familia)
         int i;
 
         for (i=0;i<99999 && machine_names[i].nombre_maquina[0]!=0;i++) {
-            printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
+            //printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
             enum machine_families_list familia_maquina=debug_machine_get_id_family(machine_names[i].id);
             if (familia_maquina==id_familia) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",machine_names[i].nombre_maquina);
@@ -30392,7 +30392,7 @@ void menu_machine_selection_family_machines(int id_familia)
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
-            if (machine_selection_por_fabricante_opcion_seleccionada>=0 && machine_selection_por_fabricante_opcion_seleccionada<=total_maquinas) {
+            if (machine_selection_por_fabricante_opcion_seleccionada>=0 && machine_selection_por_fabricante_opcion_seleccionada<total_maquinas) {
 
                 int id_maquina=item_seleccionado.valor_opcion;
                 menu_machine_set_machine_by_id(id_maquina);
@@ -30461,7 +30461,7 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
-            if (opcion_seleccionada>=0 && opcion_seleccionada<=total_families) {
+            if (opcion_seleccionada>=1 && opcion_seleccionada<=total_families) {
 
                 //printf("Llamar a familia\n");
                 menu_machine_selection_family_machines(opcion_seleccionada-1);
