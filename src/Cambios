@@ -57,6 +57,7 @@ Mejorado Debug CPU:
 - Mostrar número de puerto cuando instrucción IN. Mostrar fila teclado cuando puerto es XXFEH en Spectrum
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
 - Agregado cuenta de pasos a breakpoints (un breakpoint que se activa cuando se cumple la condición un número de veces)
+- Mejorada ventana de edición de breakpoints
 - Agregar opción para activar/desactivar todos los breakpoints
 - Corregido al mover cursor arriba cuando la dirección está cercana a 0
 

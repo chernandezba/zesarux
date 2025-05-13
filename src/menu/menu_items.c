@@ -30178,11 +30178,27 @@ void menu_custom_machine_reset(MENU_ITEM_PARAMETERS)
     menu_machine_set_machine_by_id(current_machine_type);
 }
 
+int menu_machine_selection_cambio_tipo_lista=0;
+
+void menu_setting_select_machine_by_name(MENU_ITEM_PARAMETERS)
+{
+	setting_machine_selection_by_name.v ^=1;
+    menu_machine_selection_cambio_tipo_lista=1;
+}
+
+
 //Agregar items comunes a los dos menus de maquina: por fabricante o por nombre de maquina
 void menu_machine_selection_common_items(menu_item *m)
 {
 
         menu_add_item_menu(m,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(m);
+
+		menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
+            "Select machine by name","Seleccionar máquina por nombre","Escollir màquina pel nom");
+		menu_add_item_menu_prefijo_format(m,"[%c] ",(setting_machine_selection_by_name.v ? 'X' : ' ') );
+		menu_add_item_menu_tooltip(m,"Select machine by name instead of manufacturer on menu Machine");
+		menu_add_item_menu_ayuda(m,"Select machine by name instead of manufacturer on menu Machine");
         menu_add_item_menu_es_avanzado(m);
 
         menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
@@ -30301,7 +30317,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
         }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_machine_selection_cambio_tipo_lista);
 
 
 }
@@ -30456,7 +30472,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 					}
 			}
 
-	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_machine_selection_cambio_tipo_lista);
 
 
 	free(sorted_machine_names);
@@ -30470,12 +30486,16 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 void menu_machine_selection(MENU_ITEM_PARAMETERS)
 {
     menu_custom_rom_changed=0;
-	if (setting_machine_selection_by_name.v==0) {
-		menu_machine_selection_manufacturer(0);
-	}
-	else {
-		menu_machine_selection_by_name(0);
-	}
+    do {
+        menu_machine_selection_cambio_tipo_lista=0;
+
+        if (setting_machine_selection_by_name.v==0) {
+            menu_machine_selection_manufacturer(0);
+        }
+        else {
+            menu_machine_selection_by_name(0);
+        }
+    } while (menu_machine_selection_cambio_tipo_lista);
 }
 
 //Retorna puntero a memoria con contenido de archivo leido. NULL si ha habido algun error

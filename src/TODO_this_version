@@ -126,19 +126,14 @@ ok * desactivar botones superiores si esta topbar
 *al salir de topbar, no refresca bien las ventanas en background
 
 
--expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
-
 
 -seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
-
+El problema es que hay muchas de tipo Spectrum y el listado puede ser muy grande
+Quizá clasificarlas también?
+Se podria usar el macro MACHINE_FAMILY_SPECTRUM
 
 
 -que es common A/B en sg1000??
-
-
-
--Head over heels enhanced de PCW hace un efecto extraño al cambiar de pantalla,
-creo que es al redefinir paleta de colores, que corrige al abrir menu por ejemplo
 
 
 
@@ -146,12 +141,6 @@ creo que es al redefinir paleta de colores, que corrige al abrir menu por ejempl
 
 
 -quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
-
-
-
-ok-con breakpoints off. tenemos breakpoint definido en 32768
-Si pulso toggle en 32768, mete breakpoint duplicado en 32768
-
 
 
 -breakpoints que se disparen cuando se cumpla una condición N veces:

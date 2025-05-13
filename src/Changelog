@@ -57,6 +57,7 @@ Improved Debug CPU:
 - Show port number when opcode IN. Show keyboard row when port is XXFEH on Spectrum
 - Show view number inside the window and not in the window title
 - Added pass count to breakpoints (a breakpoint that is triggered when the condition is hit a certain times)
+- Improved edit breakpoint window
 - Added option to enable/disable all breakpoints
 - Fixed moving cursor up when address near 0
 
