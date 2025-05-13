@@ -30343,8 +30343,6 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 void menu_machine_selection_family_machines(int id_familia)
 {
 
-
-    //Seleccion por familia
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
@@ -30368,6 +30366,7 @@ void menu_machine_selection_family_machines(int id_familia)
             if (familia_maquina==id_familia) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",machine_names[i].nombre_maquina);
                 menu_add_item_menu_valor_opcion(array_menu_common,machine_names[i].id);
+                menu_add_item_menu_es_sencillo(array_menu_common);
 
                 //Mover el cursor a la máquina seleccionada
                 //Siempre que no estemos en un full index rescan del buscador de opciones
@@ -30379,29 +30378,17 @@ void menu_machine_selection_family_machines(int id_familia)
 
             }
 
-
-
         }
 
-
-        menu_add_item_menu_es_sencillo(array_menu_common);
-
-
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
-        //char titulo_con_hotkey[100];
+
         char titulo[100];
         sprintf(titulo,"%s",debug_machine_info_family_get_family(id_familia) );
-        //menu_convierte_texto_sin_modificadores(array_fabricantes_hotkey[fabricante],titulo);
-
 
         retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,titulo );
-
-                        //printf ("Opcion seleccionada: %d\n",opcion_seleccionada);
-
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -30416,13 +30403,12 @@ void menu_machine_selection_family_machines(int id_familia)
 
             //llamamos por valor de funcion
             if (item_seleccionado.menu_funcion!=NULL) {
-                    //printf ("actuamos por funcion\n");
-                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
             }
 
 
         }
-
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
@@ -30433,7 +30419,6 @@ void menu_machine_selection_family_machines(int id_familia)
 void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
 {
 
-    //Seleccion por fabricante
     menu_item *array_menu_machine_selection;
     menu_item item_seleccionado;
     int retorno_menu;
@@ -30447,11 +30432,9 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
 
     do {
 
-        //menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
         menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
-        "--Select family--","--Selecciona familia--","--Selecciona familia--");
+            "--Select family--","--Selecciona familia--","--Selecciona familia--");
         menu_add_item_menu_es_sencillo(array_menu_machine_selection);
-
 
 
         int i=0;
@@ -30492,11 +30475,7 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
             if (opcion_seleccionada>=1 && opcion_seleccionada<=total_families) {
-
-                //printf("Llamar a familia\n");
                 menu_machine_selection_family_machines(opcion_seleccionada-1);
-
-
             }
 
             //llamamos por valor de funcion
