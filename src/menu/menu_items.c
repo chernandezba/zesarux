@@ -30210,9 +30210,9 @@ void menu_machine_selection_common_items(menu_item *m)
         }
 
 		menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
-            "Machine list type","Tipo listado máquinas","Tipus llistat màquines");
+            "List type","Tipo listado","Tipus llistat");
 		menu_add_item_menu_prefijo_format(m,"    ");
-        menu_add_item_menu_sufijo_format(m," [by %s]",machine_selection_type);
+        menu_add_item_menu_sufijo_format(m," [%s]",machine_selection_type);
 		menu_add_item_menu_tooltip(m,"Select machine by manufacturer, name or family");
 		menu_add_item_menu_ayuda(m,"Select machine by manufacturer, name or family");
         menu_add_item_menu_es_avanzado(m);
@@ -30340,7 +30340,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_machine_selection_family_machines(int id_familia)
+void menu_machine_selection_family_machines(unsigned int id_familia)
 {
 
     menu_item *array_menu_common;
