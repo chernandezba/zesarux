@@ -9319,17 +9319,17 @@ struct s_machine_family_names family_names[]={
     {MACHINE_FAMILY_SPECTRUM,"Spectrum"}, //Este siempre debe ser el primero
     {MACHINE_FAMILY_ZX80,"ZX80"},
     {MACHINE_FAMILY_ZX81,"ZX81"},
-    {MACHINE_FAMILY_COLECO,"ColecoVision"},
-    {MACHINE_FAMILY_SG1000,"SG1000"},
-    {MACHINE_FAMILY_SVI,"Spectravideo"},
-    {MACHINE_FAMILY_SMS,"Master System"},
-    {MACHINE_FAMILY_MSX,"MSX"},
-    {MACHINE_FAMILY_ACE,"Jupiter Ace"},
+    {MACHINE_FAMILY_MK14,"MK14"},
+    {MACHINE_FAMILY_QL,"QL"},
     {MACHINE_FAMILY_Z88,"Z88"},
     {MACHINE_FAMILY_CPC,"CPC"},
     {MACHINE_FAMILY_PCW,"PCW"},
-    {MACHINE_FAMILY_QL,"QL"},
-    {MACHINE_FAMILY_MK14,"MK14"},
+    {MACHINE_FAMILY_ACE,"Jupiter Ace"},
+    {MACHINE_FAMILY_COLECO,"ColecoVision"},
+    {MACHINE_FAMILY_SG1000,"SG1000"},
+    {MACHINE_FAMILY_SMS,"Master System"},
+    {MACHINE_FAMILY_SVI,"Spectravideo"},
+    {MACHINE_FAMILY_MSX,"MSX"},
 
     {MACHINE_FAMILY_EOF,""}
 };
