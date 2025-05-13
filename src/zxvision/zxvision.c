@@ -28153,7 +28153,7 @@ char *first_aid_string_realjoystick_detected="A real joystick has been detected\
 							"You can go to menu Settings->Hardware->Real joystick support and set your buttons configuration";
 
 int first_aid_no_sg1000_boot=0;
-char *first_aid_string_sg1000_boot="The SG1000 doesn't have a BIOS, so you must insert a game rom from menu Storage->SG1000 Cartridge";
+char *first_aid_string_sg1000_boot="The SG-1000 doesn't have a BIOS, so you must insert a game rom from menu Storage->SG-1000 Cartridge";
 
 int first_aid_no_tbblue_download_sd_bugs=0;
 char *first_aid_string_tbblue_download_sd_bugs="In case of glitches or bugs, maybe the official image uses features not emulated in ZEsarUX yet. "

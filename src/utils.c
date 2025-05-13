@@ -15954,7 +15954,7 @@ void machine_get_memory_zone_name(int zone, char *name)
 
     case MEMORY_ZONE_SG1000_VRAM:
         if (MACHINE_IS_SG1000) {
-               strcpy(name,"SG1000 VRAM");
+               strcpy(name,"SG-1000 VRAM");
         }
     break;
 

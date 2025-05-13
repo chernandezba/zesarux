@@ -21946,7 +21946,7 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_TBBLUE)  strcpy(titulo_ventana,"Debug Next");
 		if (MACHINE_IS_MSX)     strcpy(titulo_ventana,"Debug MSX");
 		if (MACHINE_IS_COLECO)  strcpy(titulo_ventana,"Debug Colecovision");
-		if (MACHINE_IS_SG1000)  strcpy(titulo_ventana,"Debug SG1000");
+		if (MACHINE_IS_SG1000)  strcpy(titulo_ventana,"Debug SG-1000");
         if (MACHINE_IS_SMS)  strcpy(titulo_ventana,"Debug Master System");
 		if (MACHINE_IS_SVI)     strcpy(titulo_ventana,"Debug Spectravideo");
         if (MACHINE_IS_CPC)     strcpy(titulo_ventana,"Debug CPC");
@@ -34546,7 +34546,7 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
 				char window_title[64];
 
 				if (MACHINE_IS_COLECO) strcpy(window_title,"Coleco Cartridge");
-				else if (MACHINE_IS_SG1000) strcpy(window_title,"SG1000 Cartridge");
+				else if (MACHINE_IS_SG1000) strcpy(window_title,"SG-1000 Cartridge");
                 else if (MACHINE_IS_SMS) strcpy(window_title,"SMS Cartridge");
 				else if (MACHINE_IS_SVI) strcpy(window_title,"SVI Cartridge");
 				else strcpy(window_title,"MSX Cartridge");
@@ -39639,10 +39639,10 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SG1000) {
-			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_msxcart,NULL,"SG1000 ~~Cartridge");
+			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_msxcart,NULL,"SG-1000 ~~Cartridge");
 			menu_add_item_menu_shortcut(array_menu_storage,'c');
-			menu_add_item_menu_tooltip(array_menu_storage,"SG1000 Cartridge Settings");
-			menu_add_item_menu_ayuda(array_menu_storage,"SG1000 Cartridge Settings");
+			menu_add_item_menu_tooltip(array_menu_storage,"SG-1000 Cartridge Settings");
+			menu_add_item_menu_ayuda(array_menu_storage,"SG-1000 Cartridge Settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}
 

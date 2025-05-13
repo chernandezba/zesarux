@@ -1414,7 +1414,7 @@ char *string_machines_list_description=
 
 							" MSX1     MSX1\n"
 							" Coleco   Colecovision\n"
-							" SG1000   Sega SG1000\n"
+							" SG1000   Sega SG-1000\n"
                             " SMS      Sega Master System\n"
 							" SVI318   Spectravideo SVI 318\n"
 							" SVI328   Spectravideo SVI 328\n"

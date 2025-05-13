@@ -2024,9 +2024,9 @@ void set_cpu_core_loop(void)
         break;
 
         case CPU_CORE_SG1000:
-            debug_printf(VERBOSE_INFO,"Setting SG1000 CPU core");
+            debug_printf(VERBOSE_INFO,"Setting SG-1000 CPU core");
             cpu_core_loop=cpu_core_loop_sg1000;
-            cpu_core_loop_name="SG1000";
+            cpu_core_loop_name="SG-1000";
         break;
 
         case CPU_CORE_SMS:
@@ -9326,7 +9326,7 @@ struct s_machine_family_names family_names[]={
     {MACHINE_FAMILY_PCW,"PCW"},
     {MACHINE_FAMILY_ACE,"Jupiter Ace"},
     {MACHINE_FAMILY_COLECO,"ColecoVision"},
-    {MACHINE_FAMILY_SG1000,"SG1000"},
+    {MACHINE_FAMILY_SG1000,"SG-1000"},
     {MACHINE_FAMILY_SMS,"Master System"},
     {MACHINE_FAMILY_SVI,"Spectravideo"},
     {MACHINE_FAMILY_MSX,"MSX"},
