@@ -30370,8 +30370,6 @@ void menu_machine_selection_family_machines(int id_familia)
         }
 
 
-        //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s","Prueba");
-
         menu_add_item_menu_es_sencillo(array_menu_common);
 
 
