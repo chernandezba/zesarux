@@ -569,6 +569,7 @@ extern void debug_view_basic_variables(char *results_buffer,int maxima_longitud_
 
 extern char *debug_machine_info_family_get_family(enum machine_families_list family_id);
 extern char *debug_machine_info_family(int machine_id);
+extern struct s_machine_family_names family_names[];
 
 
 #ifdef TIMESENSORS_ENABLED

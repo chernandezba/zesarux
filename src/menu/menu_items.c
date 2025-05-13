@@ -30338,6 +30338,64 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
 }
 
+//Seleccion de maquina por familia
+void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
+{
+
+    //Seleccion por fabricante
+    menu_item *array_menu_machine_selection;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    int opcion_seleccionada=0;
+
+    do {
+
+        //menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
+        "--Select family--","--Selecciona familia--","--Selecciona familia--");
+        menu_add_item_menu_es_sencillo(array_menu_machine_selection);
+
+
+
+        int i=0;
+
+        while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
+            menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",family_names[i].family_name);
+            menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
+            menu_add_item_menu_es_sencillo(array_menu_machine_selection);
+            i++;
+        }
+
+        menu_machine_selection_common_items(array_menu_machine_selection);
+
+
+        menu_add_ESC_item(array_menu_machine_selection);
+
+        //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier
+        //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
+        menu_add_item_menu_index_full_path(array_menu_machine_selection,"Main Menu-> Machine","Menú Principal-> Máquina","Menú Principal-> Màquina");
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,
+            "Machine menu","Menú Máquina","Menú Màquina" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+
+
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_machine_selection_cambio_tipo_lista);
+
+
+}
 
 
 int menu_machine_selection_by_name_alphasort(const struct s_machine_names **d1, const struct s_machine_names **d2)
@@ -30515,8 +30573,7 @@ void menu_machine_selection(MENU_ITEM_PARAMETERS)
             break;
 
             case MACHINE_SELECTION_TYPE_BY_FAMILY:
-                //TODO
-                menu_machine_selection_manufacturer(0);
+                menu_machine_selection_by_family(0);
             break;
 
             default:
