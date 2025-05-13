@@ -2334,7 +2334,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
             "Select machine by name","Seleccionar maquina por nombre","Escollir maquina pel nom");
-		menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_machine_selection_by_name.v ? 'X' : ' ') );
+		menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_machine_selection_type.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
 		menu_add_item_menu_ayuda(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
         menu_add_item_menu_es_avanzado(array_menu_common);

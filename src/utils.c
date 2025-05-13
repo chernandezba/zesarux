@@ -4410,7 +4410,7 @@ int util_write_configfile(void)
   //haya conmutado a menu completo
   if (menu_show_simple_items_by_config.v)       ADD_STRING_CONFIG,"--simplemenus");
 
-  if (setting_machine_selection_by_name.v)    ADD_STRING_CONFIG,"--setmachinebyname");
+  if (setting_machine_selection_type.v)    ADD_STRING_CONFIG,"--setmachinebyname");
 
   if (menu_filesel_hide_dirs.v)         ADD_STRING_CONFIG,"--filebrowser-hide-dirs");
 
