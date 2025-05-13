@@ -1169,7 +1169,7 @@ void remote_get_breakpointspasscounts(int misocket,int inicio,int items)
 
 
     for (i=inicio;i<MAX_BREAKPOINTS_CONDITIONS && i<inicio+items;i++) {
-        escribir_socket_format(misocket,"%d: %d/%d\n",i+1,debug_breakpoints_pass_count_counter[i],debug_breakpoints_pass_count[i]);
+        escribir_socket_format(misocket,"%d: %d %d\n",i+1,debug_breakpoints_pass_count_counter[i],debug_breakpoints_pass_count[i]);
     }
 }
 
@@ -6575,9 +6575,10 @@ void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
 	//Nota: al pasar el parametro de sock_connected_client, o bien creo una estructura con un malloc, para cada conexion,
 	//que ademas deberia llevar yo un control para hacer su free correspondiente, o bien
 	//hago esto, en el que el valor del socket lo envio como si fuese un puntero,
-	//y eso funciona, siempre considerando las limitaciones de un valor de un puntero, por ejemplo en entornos de 32 bits,
+	//y eso funciona, siempre considerando las limitaciones de un valor de un puntero, por ejemplo en cpus de 32 bits,
 	//un puntero tiene tamaño de 32 bits,
 	//y no podria enviar un valor de socket que excediese el rango de 32 bits (si intentase enviar un long de 64 bits por ejemplo)
+    //aunque esto se quejará el compilador con un warning
 	//Nota 2: podrias pensar que serviria asignar una estructura en el stack , pero eso no vale, porque
 	//al finalizar esta funcion, el stack se libera , y cuando el thread vaya a mirar esa estructura,
 	//la memoria donde estaba, esta liberada y a saber entonces que lee...
