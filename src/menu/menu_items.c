@@ -287,7 +287,6 @@ int menu_memory_cheat_next_scan_opcion_seleccionada=0;
 int cpc_additional_roms_opcion_seleccionada=0;
 int lec_memory_opcion_seleccionada=0;
 int visualcasette_tape_opcion_seleccionada=0;
-int machine_selection_by_family_opcion_seleccionada=0;
 
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
@@ -30439,7 +30438,9 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
 
-    machine_selection_by_family_opcion_seleccionada=1;
+    int opcion_seleccionada=1;
+
+    int modificada_linea_familia=0;
 
     //Para poder marcar el cursor en la familia de la maquina actual
     enum machine_families_list familia_maquina_actual=debug_machine_get_id_family(current_machine_type);
@@ -30458,10 +30459,14 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
 
         while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
 
-            //Mover el cursor a la familia seleccionada
+            //Mover el cursor a la familia seleccionada, pero solo la primera vez al entrar en este menu,
+            //para evitar que cuando se vaya a submenu y vuelva aqui, no se altere
             //Siempre que no estemos en un full index rescan del buscador de opciones
-            if (!menu_dibuja_menu_recorrer_menus) {
-                if (familia_maquina_actual==family_names[i].family_id) machine_selection_by_family_opcion_seleccionada=i+1;
+            if (!menu_dibuja_menu_recorrer_menus && !modificada_linea_familia) {
+                if (familia_maquina_actual==family_names[i].family_id) {
+                    opcion_seleccionada=i+1;
+                    modificada_linea_familia=1;
+                }
             }
 
             menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",family_names[i].family_name);
@@ -30480,16 +30485,16 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
         //punto de la creacion del menu. Lo llamo desde aqui porque queda esteticamente mas bonito
         menu_add_item_menu_index_full_path(array_menu_machine_selection,"Main Menu-> Machine","Menú Principal-> Máquina","Menú Principal-> Màquina");
 
-        retorno_menu=menu_dibuja_menu(&machine_selection_by_family_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,
             "Machine menu","Menú Máquina","Menú Màquina" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
-            if (machine_selection_by_family_opcion_seleccionada>=1 && machine_selection_by_family_opcion_seleccionada<=total_families) {
+            if (opcion_seleccionada>=1 && opcion_seleccionada<=total_families) {
 
                 //printf("Llamar a familia\n");
-                menu_machine_selection_family_machines(machine_selection_by_family_opcion_seleccionada-1);
+                menu_machine_selection_family_machines(opcion_seleccionada-1);
 
 
             }
