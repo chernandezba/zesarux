@@ -4412,6 +4412,8 @@ int util_write_configfile(void)
 
   if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_NAME)    ADD_STRING_CONFIG,"--setmachinebyname");
 
+  if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_FAMILY)    ADD_STRING_CONFIG,"--setmachinebyfamily");
+
   if (menu_filesel_hide_dirs.v)         ADD_STRING_CONFIG,"--filebrowser-hide-dirs");
 
   if (menu_filesel_hide_size.v)             ADD_STRING_CONFIG,"--filebrowser-hide-size");

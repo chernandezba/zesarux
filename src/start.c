@@ -1812,7 +1812,8 @@ printf (
         "--charset-customfile f                   Set file name for customfile charset\n"
 
 
-		"--setmachinebyname                       Select machine by name instead of manufacturer\n"
+		"--setmachinebyname                       On machine list, select machine by name instead of manufacturer\n"
+        "--setmachinebyfamily                     On machine list, select machine by family instead of manufacturer\n"
 		"--disablemenu                            Disable menu\n"
 		"--disablemenuandexit                     Disable menu. Any event that opens the menu will exit the emulator\n"
 
@@ -3579,6 +3580,10 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--setmachinebyname")) {
 				setting_machine_selection_type=MACHINE_SELECTION_TYPE_BY_NAME;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--setmachinebyfamily")) {
+				setting_machine_selection_type=MACHINE_SELECTION_TYPE_BY_FAMILY;
 			}
 
             //soportar opcion antigua tambien
