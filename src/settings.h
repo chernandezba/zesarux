@@ -95,7 +95,7 @@ extern z80_bit msx_loading_stripes;
 
 extern z80_bit msx_loading_noise_reduction;
 
-extern z80_bit setting_machine_selection_type;
+extern int setting_machine_selection_type;
 
 //extern z80_bit ql_replace_underscore_dot;
 

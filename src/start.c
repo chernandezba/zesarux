@@ -3578,7 +3578,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 
 			else if (!strcmp(argv[puntero_parametro],"--setmachinebyname")) {
-				setting_machine_selection_type.v=1;
+				setting_machine_selection_type=1;
 			}
 
             //soportar opcion antigua tambien
