@@ -30340,7 +30340,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_machine_selection_family_machines(int fabricante)
+void menu_machine_selection_family_machines(int id_familia)
 {
 
 
@@ -30355,9 +30355,23 @@ void menu_machine_selection_family_machines(int fabricante)
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
+        //Recorrer todas las máquinas y sacar las que sean de familia id_familia
+
+        int i;
+
+        for (i=0;i<99999 && machine_names[i].nombre_maquina[0]!=0;i++) {
+            printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
+            enum machine_families_list familia_maquina=debug_machine_get_id_family(machine_names[i].id);
+            if (familia_maquina==id_familia) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",machine_names[i].nombre_maquina);
+                menu_add_item_menu_valor_opcion(array_menu_common,machine_names[i].id);
+                total_maquinas++;
+            }
+        }
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s","Prueba");
+        //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s","Prueba");
+
         menu_add_item_menu_es_sencillo(array_menu_common);
 
 
@@ -30368,7 +30382,7 @@ void menu_machine_selection_family_machines(int fabricante)
 
         //char titulo_con_hotkey[100];
         char titulo[100];
-        sprintf(titulo,"Familia prueba");
+        sprintf(titulo,"%s",debug_machine_info_family_get_family(id_familia) );
         //menu_convierte_texto_sin_modificadores(array_fabricantes_hotkey[fabricante],titulo);
 
 
@@ -30382,7 +30396,8 @@ void menu_machine_selection_family_machines(int fabricante)
 
             if (machine_selection_por_fabricante_opcion_seleccionada>=0 && machine_selection_por_fabricante_opcion_seleccionada<=total_maquinas) {
 
-                //menu_machine_set_machine_by_id(id_maquina);
+                int id_maquina=item_seleccionado.valor_opcion;
+                menu_machine_set_machine_by_id(id_maquina);
 
             }
 

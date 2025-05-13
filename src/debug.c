@@ -9406,6 +9406,22 @@ char *debug_machine_info_family(int machine_id)
     return debug_machine_info_family_get_family(MACHINE_FAMILY_SPECTRUM);
 }
 
+//Retorna el id de familia para una maquina dada
+enum machine_families_list debug_machine_get_id_family(int machine_id)
+{
+    int i=0;
+
+    while (machine_family_list[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machine_family_list[i].machine_id==machine_id) {
+            return machine_family_list[i].family_id;
+        }
+        i++;
+    }
+
+    //Por defecto
+    return MACHINE_FAMILY_SPECTRUM;
+}
+
 
 //Rutinas de timesensors. Agrega un define TIMESENSORS_ENABLED en compileoptions.h para activarlo y lanza make
 #ifdef TIMESENSORS_ENABLED
