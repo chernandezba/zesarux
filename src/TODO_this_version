@@ -127,10 +127,7 @@ ok * desactivar botones superiores si esta topbar
 
 
 
--seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
-El problema es que hay muchas de tipo Spectrum y el listado puede ser muy grande
-Quizá clasificarlas también?
-Se podria usar el macro MACHINE_FAMILY_SPECTRUM
+
 
 
 -que es common A/B en sg1000??
@@ -145,3 +142,9 @@ Se podria usar el macro MACHINE_FAMILY_SPECTRUM
 
 -breakpoints que se disparen cuando se cumpla una condición N veces:
 *shortcut desde ventana menu debug cpu para cambiarlo?
+
+
+-seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
+*ordenar familias (en el array origen o luego con qsort?)
+*ordenar maquinas de cada familia (quiza quicksort)
+*revisar limites y opciones admitidas
