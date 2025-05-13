@@ -30363,12 +30363,24 @@ void menu_machine_selection_family_machines(int id_familia)
 
         for (i=0;i<99999 && machine_names[i].nombre_maquina[0]!=0;i++) {
             //printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
-            enum machine_families_list familia_maquina=debug_machine_get_id_family(machine_names[i].id);
+            int id_maquina=machine_names[i].id;
+            enum machine_families_list familia_maquina=debug_machine_get_id_family(id_maquina);
             if (familia_maquina==id_familia) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",machine_names[i].nombre_maquina);
                 menu_add_item_menu_valor_opcion(array_menu_common,machine_names[i].id);
+
+                //Mover el cursor a la máquina seleccionada
+                //Siempre que no estemos en un full index rescan del buscador de opciones
+                if (!menu_dibuja_menu_recorrer_menus) {
+                    if (id_maquina==current_machine_type) opcion_seleccionada=total_maquinas;
+                }
+
                 total_maquinas++;
+
             }
+
+
+
         }
 
 
@@ -30428,6 +30440,9 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
 
     int opcion_seleccionada=1;
 
+    //Para poder marcar el cursor en la familia de la maquina actual
+    enum machine_families_list familia_maquina_actual=debug_machine_get_id_family(current_machine_type);
+
     do {
 
         //menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
@@ -30441,6 +30456,13 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
         int total_families=0;
 
         while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
+
+            //Mover el cursor a la familia seleccionada
+            //Siempre que no estemos en un full index rescan del buscador de opciones
+            if (!menu_dibuja_menu_recorrer_menus) {
+                if (familia_maquina_actual==family_names[i].family_id) opcion_seleccionada=i+1;
+            }
+
             menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",family_names[i].family_name);
             menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
             menu_add_item_menu_es_sencillo(array_menu_machine_selection);
