@@ -30424,7 +30424,7 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
 
-    int opcion_seleccionada=0;
+    int opcion_seleccionada=1;
 
     do {
 
