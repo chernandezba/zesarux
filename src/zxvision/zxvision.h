@@ -1117,6 +1117,7 @@ extern void menu_add_item_menu_index_full_path(menu_item *m,char *index_name_en,
 extern void menu_add_item_menu_separator(menu_item *m);
 extern void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m);
 extern void menu_add_item_menu_no_indexar_busqueda(menu_item *m);
+extern int menu_item_get_linea_actual(menu_item *m);
 
 //Flags como alternativa para usar las funciones de menu_add_item_menu_tiene_submenu, menu_add_item_menu_genera_ventana, etc
 #define MENU_ITEM_FLAG_TIENE_SUBMENU 1

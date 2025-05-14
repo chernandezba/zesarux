@@ -22264,6 +22264,21 @@ void menu_add_item_menu_campo_seleccionable(menu_item *m)
     m->opcion_campo_seleccionable=1;
 }
 
+//Retorna linea del item actual
+int menu_item_get_linea_actual(menu_item *m)
+{
+
+    int linea=0;
+
+    while (m->siguiente_item!=NULL)
+    {
+        m=m->siguiente_item;
+        linea++;
+    }
+
+    return linea;
+}
+
 //Agregar decirle que es un item avanzado al ultimo item de menu
 /*
 void old_menu_add_item_menu_es_avanzado(menu_item *m)

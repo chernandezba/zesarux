@@ -30178,7 +30178,11 @@ void menu_custom_machine_reset(MENU_ITEM_PARAMETERS)
     menu_machine_set_machine_by_id(current_machine_type);
 }
 
+//Indicar que hay que volver a cargar el menu de Machines selection porque se ha cambiado el tipo de lista
 int menu_machine_selection_cambio_tipo_lista=0;
+//Indicar que se ha cambiado el tipo de lista y mover el item seleccionado a la opcion de tipo lista, para que el usuario no
+//pierda el cursor
+int menu_machine_selection_cambio_tipo_lista_conservar_cursor=0;
 
 void menu_setting_select_machine_by_name(MENU_ITEM_PARAMETERS)
 {
@@ -30187,11 +30191,13 @@ void menu_setting_select_machine_by_name(MENU_ITEM_PARAMETERS)
         setting_machine_selection_type=MACHINE_SELECTION_TYPE_BY_MANUFACTURER;
     }
     menu_machine_selection_cambio_tipo_lista=1;
+    menu_machine_selection_cambio_tipo_lista_conservar_cursor=1;
 }
 
 
 //Agregar items comunes a los dos menus de maquina: por fabricante o por nombre de maquina
-void menu_machine_selection_common_items(menu_item *m)
+//Se le pasa la variable de opcion seleccionada por si se necesita alterar
+void menu_machine_selection_common_items(menu_item *m,int *opcion_seleccionada)
 {
 
         menu_add_item_menu(m,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -30216,6 +30222,12 @@ void menu_machine_selection_common_items(menu_item *m)
 		menu_add_item_menu_tooltip(m,"Select machine by manufacturer, name or family");
 		menu_add_item_menu_ayuda(m,"Select machine by manufacturer, name or family");
         menu_add_item_menu_es_avanzado(m);
+
+        if (menu_machine_selection_cambio_tipo_lista_conservar_cursor) {
+            menu_machine_selection_cambio_tipo_lista_conservar_cursor=0;
+            int linea_actual=menu_item_get_linea_actual(m);
+            *opcion_seleccionada=linea_actual;
+        }
 
         menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
             "Custom rom","Rom personalizada","Rom personalitzada");
@@ -30302,7 +30314,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_sencillo(array_menu_machine_selection);
         }
 
-        menu_machine_selection_common_items(array_menu_machine_selection);
+        menu_machine_selection_common_items(array_menu_machine_selection,&machine_selection_opcion_seleccionada);
 
 
         menu_add_ESC_item(array_menu_machine_selection);
@@ -30459,7 +30471,7 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
             total_families++;
         }
 
-        menu_machine_selection_common_items(array_menu_machine_selection);
+        menu_machine_selection_common_items(array_menu_machine_selection,&opcion_seleccionada);
 
 
         menu_add_ESC_item(array_menu_machine_selection);
@@ -30619,7 +30631,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 		}
 
-        menu_machine_selection_common_items(array_menu_common);
+        menu_machine_selection_common_items(array_menu_common,&menu_machine_selection_by_name_opcion_seleccionada);
 
 
 		menu_add_ESC_item(array_menu_common);
