@@ -5254,8 +5254,9 @@ int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show
   		numero_linea +=lee_byte_function(dir++);
 
   		//escribir numero linea
-  		sprintf (&results_buffer[index_buffer],"%4d",numero_linea);
-  		index_buffer +=4;
+        //Permitir hasta 5 digitos por programas que tienen lineas especiales mas alla de la 9999, como por ejemplo timeline.tap
+  		sprintf (&results_buffer[index_buffer],"%5d",numero_linea);
+  		index_buffer +=5;
 
   		//obtener longitud linea. orden normal. zx80 no tiene esto
   		if (tipo!=1) {
