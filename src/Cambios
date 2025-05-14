@@ -27,6 +27,7 @@ Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en to
 Mejorada ventana de  Visual Cassette Tape window: soportar también cinta estándar
 Mejorada opción de Custom rom agregando una opción para resetear la máquina
 Mejorado emulación de DivMMC, DivIDE y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD o IDE insertado
+Mejorada ventana de View Basic: permitir lineas > 9999, útil para programas protegidos
 
 Mejorado AY Player:
 - Permitir cargar lista de reproducción del AY Player
