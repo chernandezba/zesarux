@@ -67,6 +67,7 @@ Improved Debug CPU:
 * Fixes:
 
 Fixed semaphore locking on Windows
+Fixed Sinclair QL keyboard: allow fast text writing
 Fixed cpu usage calculation when footer is disabled
 Fixed setting esxdos handler root dir when loading a .nex file without path from command line
 Fixed bug restoring ZSF snapshot with DivIDE enabled

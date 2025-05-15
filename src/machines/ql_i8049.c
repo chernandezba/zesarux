@@ -426,6 +426,9 @@ no repeticion
 
 */
 
+//Ultima tecla pulsada
+int ql_last_tecla_columna=-1;
+int ql_last_tecla_fila=-1;
 
 //int temp_flag_reves=0;
 void ql_ipc_write_ipc_teclado(void)
@@ -487,10 +490,49 @@ void ql_ipc_write_ipc_teclado(void)
     int tecla_control=0;
     int tecla_alt=0;
 
+    int pulsada_tecla_cambiada=0;
+
+    //printf("tecla pulsada columna %d fila %d  last %d %d\n",columna,fila,ql_last_tecla_columna,ql_last_tecla_fila);
+
+    if (ql_last_tecla_columna!=-1 && ql_last_tecla_fila!=-1) {
+        if (ql_last_tecla_columna!=columna || ql_last_tecla_fila!=fila) {
+            //tecla cambiada
+            pulsada_tecla_cambiada=1;
+            //printf("tecla cambiada\n");
+        }
+    }
+
+    ql_last_tecla_columna=columna;
+    ql_last_tecla_fila=fila;
+
 
     if ( (columna>=0 && fila>=0) /*|| ql_pressed_backspace*/) {
 
-        if (ql_mantenido_pulsada_tecla==0 || (ql_mantenido_pulsada_tecla==1 && ql_mantenido_pulsada_tecla_timer>=50) )  {
+        //Aqui vemos si tecla esta pulsada y se repite o si se pasa de no pulsar tecla a pulsarla
+        //PERO, de la misma manera que hacemos en el menu, en zxvision, en menu_espera_no_tecla_con_repeticion,
+        //tenemos que considerar que si se mantiene una tecla y luego se pulsa otra, decir que esa otra ha generado nueva pulsacion y no repeticion
+        //Esto es para poder soportar escribir rapido, es decir, en un ejemplo de escribir los caracteres QWE, el usuario
+        //normalmente cuando escribe rapido, no pasa de la Q a la W levantando la Q, sino que se mantiene la Q, pulsa la W,
+        //en ese momento hay dos pulsadas, y se libera la Q, por tanto, no hay una transición de la Q a la W sin pulsar tecla
+        //Esto replica lo mismo, consideramos la tecla anterior y si se genera una nueva, se dice que es nueva tecla, no que se repite
+        //Siguiendo el ejemplo de pasos, se producira en el paso 3
+        // 1 Mantener Q
+        // 2 Mantener W
+        // 3 Liberar Q
+        //Es en este paso 3 donde vemos que la fila y columna de antes es diferente
+        //Nota: de la misma manera que sucede en las funciones de zxvision, cuando se mantienen dos teclas pulsadas, la fila y columna
+        //de la tecla pulsada que se retorna dependera de la funcion ql_return_columna_fila_puertos, la primera tecla en el orden de procesado
+        //que se lea como pulsada. Por ejemplo, consideramos teclas 4 y 7, estan en misma fila, pero la tecla 4 se lee con bit 6,
+        //Y la tecla 7 se lee con bit 7. Por tanto, la tecla 4 tendra prioridad, en caso de estar pulsadas las dos a la vez, se retornaria
+        //la columna de la tecla 4. Se puede probar de manera muy facil desde el basic del QL,
+        //con estas dos pruebas:
+        //Pulsar tecla 4. Inmediatamente pulsar tecla 7 y dejar las dos pulsadas. Veremos que la tecla que se mantiene es la 4
+        //Pulsar tecla 7. Inmediatamente pulsar tecla 4 y dejar las dos pulsadas. Veremos que aparece un 7 inicial pero luego cambiara a la tecla 4,
+        //porque tiene prioridad al leer
+        //Obviamente este comportamiento puede diferir de un QL normal, pero al menos de esta manera podemos soportar escritura rapida
+        //considerando el cambio de fila o columna como nueva tecla y no como mantenimiento de repetición
+
+        if (pulsada_tecla_cambiada || ql_mantenido_pulsada_tecla==0 || (ql_mantenido_pulsada_tecla==1 && ql_mantenido_pulsada_tecla_timer>=50) )  {
             if (ql_mantenido_pulsada_tecla==0) {
                 ql_mantenido_pulsada_tecla=1;
                 ql_mantenido_pulsada_tecla_timer=0;
@@ -527,6 +569,7 @@ void ql_ipc_write_ipc_teclado(void)
 
         }
         else {
+            //Tecla se repite
             //debug_printf (VERBOSE_PARANOID,"Repeating key");
             ql_ipc_last_nibble_to_read[0]=ql_ipc_last_nibble_to_read[1]=ql_ipc_last_nibble_to_read[2]=ql_ipc_last_nibble_to_read[3]=ql_ipc_last_nibble_to_read[4]=ql_ipc_last_nibble_to_read[5]=0;
         }
