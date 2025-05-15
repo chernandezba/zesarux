@@ -157,6 +157,6 @@ ok *seleccion de linea familia actual y maquina actual al abrir el menu segun ma
 
 -aventura barco5.tap generar "ejecutable" dentro de la misma cinta para poder testear sin tener que cargar antes el paw
 
--Lectura teclas en input menú
-Tener tecla anterior
-Como saber tecla actual si está la anterior y actual las dos pulsadas
+ok-Lectura teclas en input menú de manera rápida
+
+-Revisar teclado chloe al escribir rapido, quiza hacer mismas correcciones que en QL y en cambios de edicion de texto desde zxvision
