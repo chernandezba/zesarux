@@ -47,6 +47,7 @@ Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
 - Permitir ubicar ventanas mas allá de los límites de la ventana principal de ZEsarUX
 - No reabir el menu al cerrar una ventana
+- Permitir escritura rápida de texto en campos de entrada
 - Mostrar, con un punto, cuando un icono es de una ventana abierta pero minimizada
 - Mantener las proporciones de tamaño de la ventana de ZEsarUX (no permitir zoom x/y diferente) por defecto
 - Ocultar el cursor al enviar una ventana a segundo plano

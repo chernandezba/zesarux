@@ -19582,27 +19582,38 @@ void menu_reset_counters_tecla_repeticion(void)
 void menu_espera_no_tecla_con_repeticion(void)
 {
 
-        //Esperar a liberar teclas, pero si se deja pulsada una tecla el tiempo suficiente, se retorna
-        z80_byte acumulado;
+    //Tambien salir si se pulsa tecla diferente, para poder escribir rapido y considerar que en esos casos,
+    //al pulsar rapido las teclas por ejemplo AB, se pasa de la A a la B sin pasar por un momento de "no tecla"
+    z80_byte tecla_inicial=menu_get_pressed_key();
 
-        //printf ("menu_espera_no_tecla_con_repeticion %d\n",menu_contador_teclas_repeticion);
+
+    //Esperar a liberar teclas, pero si se deja pulsada una tecla el tiempo suficiente, se retorna
+    z80_byte acumulado;
+
+    //printf ("menu_espera_no_tecla_con_repeticion %d\n",menu_contador_teclas_repeticion);
 
 	//x frames de segundo entre repeticion
 	menu_segundo_contador_teclas_repeticion=CONTADOR_ENTRE_REPETICION;
 
-        do {
-                menu_cpu_core_loop();
+    do {
+        menu_cpu_core_loop();
 
-                acumulado=menu_da_todas_teclas();
+        acumulado=menu_da_todas_teclas();
 
-        	//printf ("menu_espera_no_tecla_con_repeticion acumulado: %d\n",acumulado);
+        //printf ("menu_espera_no_tecla_con_repeticion acumulado: %d\n",acumulado);
 
 		//si no hay tecla pulsada, restablecer contadores
 		if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) menu_reset_counters_tecla_repeticion();
 
 		//printf ("contadores: 1 %d  2 %d\n",menu_contador_teclas_repeticion,menu_segundo_contador_teclas_repeticion);
 
-        } while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) != MENU_PUERTO_TECLADO_NINGUNA && menu_segundo_contador_teclas_repeticion!=0);
+        z80_byte tecla_actual=menu_get_pressed_key();
+        if (tecla_actual!=tecla_inicial) {
+            //printf("menu_espera_no_tecla_con_repeticion tecla_actual %d no es tecla_inicial %d\n",tecla_actual,tecla_inicial);
+            return;
+        }
+
+    } while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) != MENU_PUERTO_TECLADO_NINGUNA && menu_segundo_contador_teclas_repeticion!=0);
 
 
 }

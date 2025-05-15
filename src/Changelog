@@ -47,6 +47,7 @@ Improved ZX Vision:
 - Allow to hide minimized windows
 - Allow to place windows beyond ZEsarUX main window limits
 - Do not reopen menu when closing a Window
+- Allow fast text writing on input fields
 - Show, with a dot, when an icon is an open window but minimized
 - Keep ZEsarUX window size proportions (disallow different zoom x/y) by default
 - Hide cursor when sending a window to background
