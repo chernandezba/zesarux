@@ -687,89 +687,11 @@ int ql_pulsado_tecla(void)
 	for (i=0;i<8;i++) acumulado &=get_ql_keyboard_table_si_autoload(i);
 
 	if (acumulado==255) return 0;
+
+    //printf("pulsada tecla\n");
 	return 1;
 
 }
-
-
-
-
-/*
-// ================================== matrix ============================
-//        0      1      2      3      4      5      6      7
-//  +-------------------------------------------------------
-// 7|    F4     F1      5     F2     F3     F5      4      7
-// 6|   Ret   Left     Up    Esc  Right      \  Space   Down
-// 5|     ]      z      .      c      b  Pound      m      '
-// 4|     [   Caps      k      s      f      =      g      ;
-// 3|     l      3      h      1      a      p      d      j
-// 2|     9      w      i    Tab      r      -      y      o
-// 1|     8      2      6      q      e      0      t      u
-// 0| Shift   Ctrl    Alt      x      v      /      n      ,
-*/
-
-struct x_tabla_columna_fila
-{
-        int columna;
-        int fila;
-};
-
-struct x_tabla_columna_fila ql_col_fil_numeros[]={
-	{5,1}, //0
-	{3,3},
-	{1,1}, //2
-	{1,3},
-	{6,7},  //4
-	{2,7},
-	{2,1},  //6
-	{7,7},
-	{0,1}, //8
-	{0,2}
-};
-
-
-/*
-// ================================== matrix ============================
-//        0      1      2      3      4      5      6      7
-//  +-------------------------------------------------------
-// 7|    F4     F1      5     F2     F3     F5      4      7
-// 6|   Ret   Left     Up    Esc  Right      \  Space   Down
-// 5|     ]      z      .      c      b  Pound      m      '
-// 4|     [   Caps      k      s      f      =      g      ;
-// 3|     l      3      h      1      a      p      d      j
-// 2|     9      w      i    Tab      r      -      y      o
-// 1|     8      2      6      q      e      0      t      u
-// 0| Shift   Ctrl    Alt      x      v      /      n      ,
-*/
-struct x_tabla_columna_fila ql_col_fil_letras[]={
-	{4,3}, //A
-	{4,5},
-	{3,5},
-	{6,3},
-	{4,1}, //E
-	{4,4},
-	{6,4},
-	{2,3}, //H
-	{2,2},
-	{7,3},
-	{2,4}, //K
-	{0,3},
-	{6,5},
-	{6,0}, //N
-	{7,2},
-	{5,3},
-	{3,1}, //Q
-	{4,2},
-	{3,4},
-	{6,1}, //T
-	{7,1},
-	{4,0},
-	{1,2}, //W
-	{3,0},
-	{6,2},
-	{1,5} //Z
-};
-
 
 
 
