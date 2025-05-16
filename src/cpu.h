@@ -56,7 +56,7 @@ Examples
 
 #define EMULATOR_DATE "06 May 2025"
 #define EMULATOR_SHORT_DATE "06/05/2025"
-#define EMULATOR_GAME_EDITION "xxx"
+#define EMULATOR_GAME_EDITION "Night Shift"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
 
@@ -70,7 +70,7 @@ Examples
 //final
 #define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
 
-#define EDITION_NAME_GAME "editionnamegame.tzx"
+#define EDITION_NAME_GAME "editionnamegame.tap"
 
 
 //8 bits

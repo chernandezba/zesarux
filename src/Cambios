@@ -1,17 +1,17 @@
-ZEsarUX 12.1 - xxx edition. 06 Mayo 2025
+ZEsarUX 12.1 - Night Shift edition. 06 Mayo 2025
 
 * Cosas nuevas agregadas:
 
 Agregado modo Streaming a ZENG Online para ZX Spectrum. Mejora la experiencia de juego: reduce lag y elimina cualquier inconsistencia de estado de juego en todos los jugadores
 Agregada conversión de archivos ZX81 P a P81, y P81 a P
 Agregada emulación de ZXMMC+
+Agregado emulación de una segunda tarjeta de MMC/SD
 Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
 Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Agregado soporte para archivos .ay en Visor de Archivos
-Agregado emulación de una segunda tarjeta de MMC/SD
 Agregado suporte para 4 botones de fuego de joystick en:
 - Kempston joystick (Spectrum): 4 botones
 - Amstrad CPC: 3 botones
@@ -42,6 +42,7 @@ Mejorada emulación de Sinclair QL:
 - Permitir aumentar tamaño RAM de Sinclair QL
 - Permitir cargar y grabar archivos de pantalla de QL
 - Agregada vista previa de archivos de pantalla de QL en el Selector de Archivos
+- Corregido teclado de Sinclair QL keyboard: permitir escritura rápida
 
 Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
@@ -67,7 +68,6 @@ Mejorado Debug CPU:
 * Correcciones:
 
 Corregido bloqueo de semáforos en Windows
-Corregido teclado de Sinclair QL keyboard: permitir escritura rápida
 Corregido cálculo de uso de cpu cuando el footer está desactivado
 Corregido asignación de esxdos handler root dir al cargar un archivo .nex sin indicar path desde linea de comandos
 Corregido bug al restaurar un snapshot ZSF con DivIDE activado
