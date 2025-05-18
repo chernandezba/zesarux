@@ -1569,6 +1569,7 @@ printf("\n"
         "--ql-mdv1-read-only             Mark mdv1 as read only\n"
         "--ql-mdv2-read-only             Mark mdv2 as read only\n"
         "--ql-flp1-read-only             Mark flp1 as read only\n"
+        "--ql-win1-no-alias-mdv1         Do not handle win1_ device as an alias to mdv1_\n"
         "--ql-flp1-dir-copied-mdv1       flp1 path parameter is copied from mdv1 path parameter\n"
 
 
@@ -4914,6 +4915,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--ql-mdv1-read-only")) {
                 ql_device_mdv1_readonly=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ql-win1-no-alias-mdv1")) {
+                ql_win1_alias_mdv1.v=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ql-mdv2-read-only")) {
