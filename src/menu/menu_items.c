@@ -24467,6 +24467,11 @@ int menu_ql_flp1_emulation_cond(void)
     else return 1;
 }
 
+void menu_ql_win1_alias_mdv1(MENU_ITEM_PARAMETERS)
+{
+    ql_win1_alias_mdv1.v ^=1;
+}
+
 void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 {
 
@@ -24507,6 +24512,12 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
                             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_readonly,NULL,"[%c] Read only",
                                 (ql_device_mdv1_readonly ? 'X' : ' ') );
+
+                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_win1_alias_mdv1,NULL,"[%c] win1 alias mdv1",
+                                (ql_win1_alias_mdv1.v ? 'X' : ' ') );
+                            menu_add_item_menu_tooltip(array_menu_common,"If win1_ device is the same as mdv1_");
+                            menu_add_item_menu_ayuda(array_menu_common,"If win1_ device is the same as mdv1_. win1_ device is used on QL-SD, "
+                                "which is not emulated by ZEsarUX, but useful enabling this for Basic programs that use this device name");
 
                             menu_add_item_menu_separator(array_menu_common);
 

@@ -972,6 +972,13 @@ int ql_return_full_path(char *device, char *file, char *fullpath)
         sourcepath=ql_mdv1_root_dir;
 
     }
+
+    else if (!strcasecmp(device,"win1") && ql_win1_alias_mdv1.v) {
+        ql_qdos_last_unit_used=0;
+        if (!ql_device_mdv1_enabled) return 1;
+        sourcepath=ql_mdv1_root_dir;
+    }
+
     else if (!strcasecmp(device,"mdv2")) {
         ql_qdos_last_unit_used=1;
         if (!ql_device_mdv2_enabled) return 1;
@@ -1072,6 +1079,12 @@ int ql_si_ruta_mdv_flp(char *texto)
   char *buscar_mdv1="mdv1_";
   encontrado=util_strcasestr(texto, buscar_mdv1);
   if (encontrado) return 1;
+
+  if (ql_win1_alias_mdv1.v) {
+    char *buscar_win1="win1_";
+    encontrado=util_strcasestr(texto, buscar_win1);
+    if (encontrado) return 1;
+  }
 
   char *buscar_mdv2="mdv2_";
   encontrado=util_strcasestr(texto, buscar_mdv2);
@@ -2165,6 +2178,10 @@ int ql_qdos_check_device_readonly(char *device)
     //printf("device: %s\n",device);
 
     if (!strcasecmp(device,"mdv1")) return ql_device_mdv1_readonly;
+    if (ql_win1_alias_mdv1.v) {
+        if (!strcasecmp(device,"win1")) return ql_device_mdv1_readonly;
+    }
+
     if (!strcasecmp(device,"mdv2")) return ql_device_mdv2_readonly;
     if (!strcasecmp(device,"flp1")) return ql_device_flp1_readonly;
 
@@ -2532,6 +2549,7 @@ D3.L: code:
      //Ver si ruta es tal cual mdv1_,mdv2_ o flp1_ que indica que se abre el dispositivo entero
      if (
          !strcasecmp(ql_nombre_archivo_load,"mdv1_") ||
+         (!strcasecmp(ql_nombre_archivo_load,"win1_") && ql_win1_alias_mdv1.v) ||
          !strcasecmp(ql_nombre_archivo_load,"mdv2_") ||
          !strcasecmp(ql_nombre_archivo_load,"flp1_")
      )

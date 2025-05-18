@@ -250,7 +250,11 @@ int kempston_mouse_factor_sensibilidad=1;
 //z80_bit ql_replace_underscore_dot={1};
 //z80_bit ql_replace_underscore_dot_only_one={1};
 
+//Si ruta a directorio montado flp1 sera misma que mdv1
 z80_bit ql_flp1_follow_mdv1={0};
+
+//Si dispositivo ql win1_ es igual a mdv1_
+z80_bit ql_win1_alias_mdv1={1};
 
 //
 // Display Settings

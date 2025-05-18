@@ -109,6 +109,8 @@ extern int setting_machine_selection_type;
 
 extern z80_bit ql_flp1_follow_mdv1;
 
+extern z80_bit ql_win1_alias_mdv1;
+
 extern z80_bit menu_file_viewer_always_hex;
 
 extern z80_bit debug_view_basic_show_address;

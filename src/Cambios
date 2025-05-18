@@ -42,6 +42,7 @@ Mejorada emulación de Sinclair QL:
 - Permitir aumentar tamaño RAM de Sinclair QL
 - Permitir cargar y grabar archivos de pantalla de QL
 - Agregada vista previa de archivos de pantalla de QL en el Selector de Archivos
+- Permitir usar el dispositivo win1_ como un alias de mdv1_ (útil para rutas de QL-SD)
 - Corregido teclado de Sinclair QL keyboard: permitir escritura rápida
 
 Mejorado ZX Vision:
