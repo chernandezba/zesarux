@@ -24475,8 +24475,6 @@ void menu_ql_win1_alias_mdv1(MENU_ITEM_PARAMETERS)
 void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 {
 
-
-
     //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
     menu_item *array_menu_common;
     menu_item item_seleccionado;
@@ -24484,10 +24482,10 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
     do {
 
 
-
-
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_ql_microdrive_floppy,NULL,"[%c] Microdrive&Floppy",
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_ql_microdrive_floppy,NULL,"[%c] Microdrive & Floppy",
                 (ql_microdrive_floppy_emulation ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Enable Microdrive & Floppy emulation");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable Microdrive & Floppy emulation");
 
         if (ql_microdrive_floppy_emulation) {
             menu_add_item_menu_separator(array_menu_common);
@@ -24504,14 +24502,20 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1,NULL,"[%s]",string_ql_mdv1_root_dir_shown);
             menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_tooltip(array_menu_common,"Directory used for mdv1 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Directory used for mdv1 emulation");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_enable,menu_ql_mdv1_emulation_cond,
                 "Enabled","Activado","Activat");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv1_enabled ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Enable mdv1 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Enable mdv1 emulation");
 
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_readonly,NULL,"[%c] Read only",
                 (ql_device_mdv1_readonly ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Only allow read operations on mdv1, not writing");
+            menu_add_item_menu_ayuda(array_menu_common,"Only allow read operations on mdv1, not writing");
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_win1_alias_mdv1,NULL,"[%c] win1 alias mdv1",
                 (ql_win1_alias_mdv1.v ? 'X' : ' ') );
@@ -24527,30 +24531,42 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2,NULL,"[%s]",string_ql_mdv2_root_dir_shown);
             menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_tooltip(array_menu_common,"Directory used for mdv2 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Directory used for mdv2 emulation");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_enable,menu_ql_mdv2_emulation_cond,
                 "Enabled","Activado","Activat");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv2_enabled ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Enable mdv2 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Enable mdv2 emulation");
 
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_readonly,NULL,"[%c] Read only",
                 (ql_device_mdv2_readonly ? 'X' : ' ') );
-            menu_add_item_menu_separator(array_menu_common);
+            menu_add_item_menu_tooltip(array_menu_common,"Only allow read operations on mdv2, not writing");
+            menu_add_item_menu_ayuda(array_menu_common,"Only allow read operations on mdv2, not writing");
 
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Flp1 root dir:");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1,NULL,"[%s]",string_ql_flp1_root_dir_shown);
             menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_tooltip(array_menu_common,"Directory used for flp1 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Directory used for flp1 emulation");
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_enable,menu_ql_flp1_emulation_cond,
                 "Enabled","Activado","Activat");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_flp1_enabled ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Enable flp1 emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Enable flp1 emulation");
 
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_readonly,NULL,"[%c] Read only",
                 (ql_device_flp1_readonly ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Only allow read operations on flp1, not writing");
+            menu_add_item_menu_ayuda(array_menu_common,"Only allow read operations on flp1, not writing");
 
             menu_add_item_menu_separator(array_menu_common);
 
@@ -24574,6 +24590,8 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_data_size_headerless,NULL,"Data size for headerless exe [%6d]",
                 ql_task_default_data_size);
             menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_tooltip(array_menu_common,"Assign this data  size for headerless exe files");
+            menu_add_item_menu_ayuda(array_menu_common,"Assign this data  size for headerless exe files");
 
         }
 
