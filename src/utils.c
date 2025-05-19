@@ -7118,7 +7118,7 @@ void util_set_reset_key_chloe_keymap(enum util_teclas_chloe_keymap tecla,int pre
 
 void util_set_reset_key_chloe(void)
 {
-	//printf ("Shift: %d non ascii key: %d ascii: %d\n",chloe_keyboard_pressed_shift.v,chloe_keyboard_pressed_tecla,chloe_keyboard_pressed_tecla_ascii);
+	//printf ("util_set_reset_key_chloe. Shift: %d non ascii key: %d ascii: %d\n",chloe_keyboard_pressed_shift.v,chloe_keyboard_pressed_tecla,chloe_keyboard_pressed_tecla_ascii);
 
 	if (chloe_keyboard_pressed_winkey.v) {
 		set_symshift();
@@ -7341,15 +7341,35 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 void util_set_reset_key_handle_chloe_ascii(enum util_teclas tecla,int pressrelease)
 {
 
-                //printf ("teclado es chloe. tecla=%d\n",tecla);
-                //tecla ascii
-       //Tecla no es shift. comentario absurdo???
+    //Teclado chloe tiene un tratamiento algo especial, porque tenemos que ver pulsaciones con shift+numero por ejemplo,
+    //se comportan diferente que en Spectrum. Es por eso que tratamos algunas pulsaciones por la tecla de manera independiente
+    //printf ("util_set_reset_key_handle_chloe_ascii. teclado es chloe. tecla=%d pressrelease=%d\n",tecla,pressrelease);
+
                         //Ver si se pulsa o se libera
                         if (pressrelease==0) {
-                                //Se libera
-				chloe_keyboard_pressed_tecla_ascii=0;
-                                //Liberar todas teclas de puertos
-                                reset_keyboard_ports();
+                                //Se libera una tecla ascii, sin tener pulsado ningun modificador
+                                if (
+
+                                    ((tecla>='0' && tecla<='9') || (tecla>='a' && tecla<='z'))
+                                    &&
+                                    chloe_keyboard_pressed_winkey.v==0 && chloe_keyboard_pressed_shift.v==0
+
+                                ) {
+                                    //liberar solo esa tecla
+                                    //Esto permite pulsaciones de telas rapidas, como por ejemplo QWE sin tener que levantar la Q antes de pulsar la W
+                                    //printf("liberar tecla %c\n",tecla);
+                                    convert_numeros_letras_puerto_teclado_continue(tecla,0);
+                                    chloe_keyboard_pressed_tecla_ascii=0;
+                                }
+
+                                else {
+                                    //Cualquier otra tecla no ascii, liberamos todas las teclas del teclado
+
+                                    chloe_keyboard_pressed_tecla_ascii=0;
+
+
+                                    reset_keyboard_ports();
+                                }
                         }
                         else {
                                 //Se pulsa
@@ -7563,7 +7583,7 @@ void util_generate_random_noise(int pressrelease)
 
 void util_set_reset_key(enum util_teclas tecla,int pressrelease)
 {
-
+    //printf ("util_set_reset_key tecla: %d pressrelease: %d\n",tecla,pressrelease);
     util_generate_random_noise(pressrelease);
 
         if (chloe_keyboard.v && tecla>=32 && tecla<=127) {

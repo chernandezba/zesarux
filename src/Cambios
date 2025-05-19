@@ -74,6 +74,7 @@ Corregido asignación de esxdos handler root dir al cargar un archivo .nex sin i
 Corregido bug al restaurar un snapshot ZSF con DivIDE activado
 Corregido segfault al pulsar CTRL-C en consola
 Corregido cambios de color de paleta en PCW
+Corregido teclado de Chloe: permitir escritura rápida
 Corregido conmutar breakpoint en una posición que ya tenia un breakpoint cuando los breakpoints estaban desactivados
 
 ----
