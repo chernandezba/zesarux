@@ -39,11 +39,11 @@ Mejorado AY Player:
 - Corregida detección de silencio cuando la reproducción está pausada
 
 Mejorada emulación de Sinclair QL:
-- Permitir aumentar tamaño RAM de Sinclair QL
+- Permitir aumentar tamaño RAM
 - Permitir cargar y grabar archivos de pantalla de QL
 - Agregada vista previa de archivos de pantalla de QL en el Selector de Archivos
 - Permitir usar el dispositivo win1_ como un alias de mdv1_ (útil para rutas de QL-SD)
-- Corregido teclado de Sinclair QL keyboard: permitir escritura rápida
+- Corregido teclado de Sinclair QL: permitir escritura rápida
 
 Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas

@@ -39,7 +39,7 @@ Improved AY Player:
 - Fixed silence detection when playback paused
 
 Improved Sinclair QL emulation:
-- Allow to increase Sinclair QL RAM size
+- Allow to increase RAM size
 - Allow to load and save QL screen files
 - Added QL Screen file previews on File Selector
 - Allow to use win1_ device as an alias to mdv1_ (useful for QL-SD paths)
