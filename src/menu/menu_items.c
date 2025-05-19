@@ -24477,124 +24477,124 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
 
 
 
-        //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
 
 
 
-            menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_ql_microdrive_floppy,NULL,"[%c] Microdrive&Floppy",
-                    (ql_microdrive_floppy_emulation ? 'X' : ' ') );
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_ql_microdrive_floppy,NULL,"[%c] Microdrive&Floppy",
+                (ql_microdrive_floppy_emulation ? 'X' : ' ') );
 
-                    if (ql_microdrive_floppy_emulation) {
-                            menu_add_item_menu_separator(array_menu_common);
+        if (ql_microdrive_floppy_emulation) {
+            menu_add_item_menu_separator(array_menu_common);
 
-                            char string_ql_mdv1_root_dir_shown[28];
-                            char string_ql_mdv2_root_dir_shown[28];
-                            char string_ql_flp1_root_dir_shown[28];
-                            menu_tape_settings_trunc_name(ql_mdv1_root_dir,string_ql_mdv1_root_dir_shown,28);
-                            menu_tape_settings_trunc_name(ql_mdv2_root_dir,string_ql_mdv2_root_dir_shown,28);
-                            menu_tape_settings_trunc_name(ql_flp1_root_dir,string_ql_flp1_root_dir_shown,28);
+            char string_ql_mdv1_root_dir_shown[28];
+            char string_ql_mdv2_root_dir_shown[28];
+            char string_ql_flp1_root_dir_shown[28];
+            menu_tape_settings_trunc_name(ql_mdv1_root_dir,string_ql_mdv1_root_dir_shown,28);
+            menu_tape_settings_trunc_name(ql_mdv2_root_dir,string_ql_mdv2_root_dir_shown,28);
+            menu_tape_settings_trunc_name(ql_flp1_root_dir,string_ql_flp1_root_dir_shown,28);
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv1 root dir:");
-                            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv1 root dir:");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1,NULL,"[%s]",string_ql_mdv1_root_dir_shown);
-                            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1,NULL,"[%s]",string_ql_mdv1_root_dir_shown);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
-                            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_enable,menu_ql_mdv1_emulation_cond,
-                                "Enabled","Activado","Activat");
-                            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv1_enabled ? 'X' : ' ') );
-
-
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_readonly,NULL,"[%c] Read only",
-                                (ql_device_mdv1_readonly ? 'X' : ' ') );
-
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_win1_alias_mdv1,NULL,"[%c] win1 alias mdv1",
-                                (ql_win1_alias_mdv1.v ? 'X' : ' ') );
-                            menu_add_item_menu_tooltip(array_menu_common,"If win1_ device is the same as mdv1_");
-                            menu_add_item_menu_ayuda(array_menu_common,"If win1_ device is the same as mdv1_. win1_ device is used on QL-SD, "
-                                "which is not emulated by ZEsarUX, but useful enabling this for Basic programs that use this device name");
-
-                            menu_add_item_menu_separator(array_menu_common);
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_enable,menu_ql_mdv1_emulation_cond,
+                "Enabled","Activado","Activat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv1_enabled ? 'X' : ' ') );
 
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv2 root dir:");
-                            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_readonly,NULL,"[%c] Read only",
+                (ql_device_mdv1_readonly ? 'X' : ' ') );
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2,NULL,"[%s]",string_ql_mdv2_root_dir_shown);
-                            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_win1_alias_mdv1,NULL,"[%c] win1 alias mdv1",
+                (ql_win1_alias_mdv1.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"If win1_ device is the same as mdv1_");
+            menu_add_item_menu_ayuda(array_menu_common,"If win1_ device is the same as mdv1_. win1_ device is used on QL-SD, "
+                "which is not emulated by ZEsarUX, but useful enabling this for Basic programs that use this device name");
 
-                            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_enable,menu_ql_mdv2_emulation_cond,
-                                "Enabled","Activado","Activat");
-                            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv2_enabled ? 'X' : ' ') );
-
-
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_readonly,NULL,"[%c] Read only",
-                                (ql_device_mdv2_readonly ? 'X' : ' ') );
-                            menu_add_item_menu_separator(array_menu_common);
+            menu_add_item_menu_separator(array_menu_common);
 
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Flp1 root dir:");
-                            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Mdv2 root dir:");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1,NULL,"[%s]",string_ql_flp1_root_dir_shown);
-                            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2,NULL,"[%s]",string_ql_mdv2_root_dir_shown);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
-                            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_enable,menu_ql_flp1_emulation_cond,
-                                "Enabled","Activado","Activat");
-                            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_flp1_enabled ? 'X' : ' ') );
-
-
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_readonly,NULL,"[%c] Read only",
-                                (ql_device_flp1_readonly ? 'X' : ' ') );
-
-							menu_add_item_menu_separator(array_menu_common);
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_enable,menu_ql_mdv2_emulation_cond,
+                "Enabled","Activado","Activat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_mdv2_enabled ? 'X' : ' ') );
 
 
-                            /*
-							menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_replace_underscore,NULL,"[%c] Replace _ to . in filename",
-                    			(ql_replace_underscore_dot.v ? 'X' : ' ') );
-
-							if (ql_replace_underscore_dot.v) {
-								menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_replace_underscore_only_one,NULL,"[%c] Replace only the extension",
-                    				(ql_replace_underscore_dot_only_one.v ? 'X' : ' ') );
-							}
-                            */
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_readonly,NULL,"[%c] Read only",
+                (ql_device_mdv2_readonly ? 'X' : ' ') );
+            menu_add_item_menu_separator(array_menu_common);
 
 
-							menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_follow_mdv1,NULL,"[%c] FLP1 path follows MDV1",
-                    (ql_flp1_follow_mdv1.v ? 'X' : ' ') );
-                            menu_add_item_menu_tooltip(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
-                            menu_add_item_menu_ayuda(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Flp1 root dir:");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
-                            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_data_size_headerless,NULL,"Data size for headerless exe [%6d]",
-                                ql_task_default_data_size);
-                            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1,NULL,"[%s]",string_ql_flp1_root_dir_shown);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
 
-                    }
-
-
-			menu_add_item_menu_separator(array_menu_common);
-
-            menu_add_ESC_item(array_menu_common);
-
-            retorno_menu=menu_dibuja_menu_no_title_lang(&ql_mdv_flp_opcion_seleccionada,&item_seleccionado,array_menu_common,"Microdrive & Floppy" );
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_enable,menu_ql_flp1_emulation_cond,
+                "Enabled","Activado","Activat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(ql_device_flp1_enabled ? 'X' : ' ') );
 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_readonly,NULL,"[%c] Read only",
+                (ql_device_flp1_readonly ? 'X' : ' ') );
 
-                        }
+            menu_add_item_menu_separator(array_menu_common);
+
+
+            /*
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_replace_underscore,NULL,"[%c] Replace _ to . in filename",
+                (ql_replace_underscore_dot.v ? 'X' : ' ') );
+
+            if (ql_replace_underscore_dot.v) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_replace_underscore_only_one,NULL,"[%c] Replace only the extension",
+                    (ql_replace_underscore_dot_only_one.v ? 'X' : ' ') );
+            }
+            */
+
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_follow_mdv1,NULL,"[%c] FLP1 path follows MDV1",
+                (ql_flp1_follow_mdv1.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
+            menu_add_item_menu_ayuda(array_menu_common,"flp1 path parameter is copied from mdv1 path parameter");
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ql_data_size_headerless,NULL,"Data size for headerless exe [%6d]",
+                ql_task_default_data_size);
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&ql_mdv_flp_opcion_seleccionada,&item_seleccionado,array_menu_common,"Microdrive & Floppy" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
