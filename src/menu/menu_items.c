@@ -30402,11 +30402,11 @@ void menu_machine_selection_family_machines(unsigned int id_familia)
 
         for (i=0;i<99999 && machine_names[i].nombre_maquina[0]!=0;i++) {
             //printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
-            int id_maquina=machine_names[i].id;
+            int id_maquina=machine_names[i].machine_id;
             enum machine_families_list familia_maquina=debug_machine_get_id_family(id_maquina);
             if (familia_maquina==id_familia) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",machine_names[i].nombre_maquina);
-                menu_add_item_menu_valor_opcion(array_menu_common,machine_names[i].id);
+                menu_add_item_menu_valor_opcion(array_menu_common,machine_names[i].machine_id);
                 menu_add_item_menu_es_sencillo(array_menu_common);
 
                 //Mover el cursor a la máquina seleccionada
@@ -30588,7 +30588,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 		//printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
 
 		strcpy(sorted_machine_names[i].nombre_maquina,machine_names[i].nombre_maquina);
-		sorted_machine_names[i].id=machine_names[i].id;
+		sorted_machine_names[i].machine_id=machine_names[i].machine_id;
 	}
 
 	//Array de punteros para poderlos ordenar
@@ -30648,11 +30648,11 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_machine_selection_by_name_set,NULL,memoria_punteros[i]->nombre_maquina);
             menu_add_item_menu_es_sencillo(array_menu_common);
 
-			menu_add_item_menu_valor_opcion(array_menu_common,memoria_punteros[i]->id);
+			menu_add_item_menu_valor_opcion(array_menu_common,memoria_punteros[i]->machine_id);
 
 			//Si coincide id con la maquina actual, cambiar menu_machine_selection_by_name_opcion_seleccionada
             //Siempre que no estemos en un full index rescan del buscador de opciones
-			if (current_machine_type==memoria_punteros[i]->id) {
+			if (current_machine_type==memoria_punteros[i]->machine_id) {
                 if (!menu_dibuja_menu_recorrer_menus) {
 				    menu_machine_selection_by_name_opcion_seleccionada=i+1;
                 }

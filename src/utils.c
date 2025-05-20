@@ -821,7 +821,7 @@ char *debug_machine_info_family(int machine_id)
     int i=0;
 
     while (machine_names[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (machine_names[i].id==machine_id) {
+        if (machine_names[i].machine_id==machine_id) {
             return debug_machine_info_family_get_family(machine_names[i].family_id);
         }
         i++;
@@ -837,7 +837,7 @@ enum machine_families_list debug_machine_get_id_family(int machine_id)
     int i=0;
 
     while (machine_names[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (machine_names[i].id==machine_id) {
+        if (machine_names[i].machine_id==machine_id) {
             return machine_names[i].family_id;
         }
         i++;
@@ -859,7 +859,7 @@ char *get_machine_name(z80_byte machine)
 			cpu_panic(mensaje);
 		}
 
-		if (machine_names[i].id==machine) return machine_names[i].nombre_maquina;
+		if (machine_names[i].machine_id==machine) return machine_names[i].nombre_maquina;
 	}
 
 	//Aunque aqui no se llega nunca, para que no se queje el compilador

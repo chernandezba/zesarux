@@ -162,7 +162,7 @@ extern char *string_machines_list_description;
 
 struct s_machine_names {
 	char nombre_maquina[MAX_MACHINE_NAME];
-	int id;
+	int machine_id;
     enum machine_families_list family_id;
 };
 
