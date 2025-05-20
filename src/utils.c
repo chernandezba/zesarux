@@ -582,6 +582,101 @@ saved_config_window_geometry saved_config_window_geometry_array[MAX_CONFIG_WINDO
 
 
 
+char *string_machines_list_description=
+//Ordenados por fabricante y año.
+    " MK14     MK14\n"
+
+    " ZX80     ZX80\n"
+    " ZX81     ZX81\n"
+    " 16k      ZX Spectrum 16k\n"
+    " 48k      ZX Spectrum 48k\n"
+    " 48kp     ZX Spectrum+ 48k\n"
+    " 128k     ZX Spectrum+ 128k\n"
+    " QL       QL\n"
+
+    " P2       ZX Spectrum +2\n"
+    " P2F      ZX Spectrum +2 (French)\n"
+    " P2S      ZX Spectrum +2 (Spanish)\n"
+    " P2A40    ZX Spectrum +2A (ROM v4.0)\n"
+    " P2A41    ZX Spectrum +2A (ROM v4.1)\n"
+    " P2AS     ZX Spectrum +2A (Spanish)\n"
+
+    " P340     ZX Spectrum +3 (ROM v4.0)\n"
+    " P341     ZX Spectrum +3 (ROM v4.1)\n"
+    " P3S      ZX Spectrum +3 (Spanish)\n"
+
+    " TC2048   Timex Computer 2048\n"
+    " TC2068   Timex Computer 2068\n"
+    " TS1000   Timex Sinclair 1000\n"
+    " TS1500   Timex Sinclair 1500\n"
+    " TS2068   Timex Sinclair 2068\n"
+
+    " Inves    Inves Spectrum+\n"
+    " 48ks     ZX Spectrum+ 48k (Spanish)\n"
+    " 128ks    ZX Spectrum+ 128k (Spanish)\n"
+
+
+    " TK80     Microdigital TK80\n"
+    " TK82     Microdigital TK82\n"
+    " TK82C    Microdigital TK82C\n"
+    " TK83     Microdigital TK83\n"
+    " TK85     Microdigital TK85\n"
+    " TK90X    Microdigital TK90X\n"
+    " TK90XS   Microdigital TK90X (Spanish)\n"
+    " TK95     Microdigital TK95\n"
+    " TK95S    Microdigital TK95 (Spanish)\n"
+
+    //Czerweny CZ 1000, CZ 1500, CZ 2000, CZ 1000 Plus, CZ 1500 Plus, CZ Spectrum, CZ Spectrum Plus
+
+    " CZ1000   Czerweny CZ 1000\n"
+    " CZ1500   Czerweny CZ 1500\n"
+    " CZ1000p  Czerweny CZ 1000 Plus\n"
+    " CZ1500p  Czerweny CZ 1500 Plus\n"
+    " CZ2000   Czerweny CZ 2000\n"
+    " CZSPEC   Czerweny CZ Spectrum\n"
+    " CZSPECp  Czerweny CZ Spectrum Plus\n"
+
+    " Z88      Cambridge Z88\n"
+
+    " Sam      Sam Coupe\n"
+
+    " Pentagon Pentagon\n"
+
+    " Chloe140 Chloe 140 SE\n"
+    " Chloe280 Chloe 280 SE\n"
+
+    " Chrome   Chrome\n"
+
+    " Prism    Prism 512\n"
+
+    " ZXUNO    ZX-Uno\n"
+
+    " BaseConf ZX-Evolution BaseConf\n"
+
+    " TSConf   ZX-Evolution TS-Conf\n"
+
+    " TBBlue   ZX Spectrum Next/TBBlue\n"
+
+    " ACE      Jupiter Ace\n"
+
+    " CPC464   Amstrad CPC 464\n"
+    " CPC4128  Amstrad CPC 4128\n"
+    " CPC664   Amstrad CPC 664\n"
+    " CPC6128  Amstrad CPC 6128\n"
+    " PCW8256  Amstrad PCW 8256\n"
+    " PCW8512  Amstrad PCW 8512\n"
+
+    " MSX1     MSX1\n"
+    " Coleco   Colecovision\n"
+    " SG1000   Sega SG-1000\n"
+    " SMS      Sega Master System\n"
+    " SVI318   Spectravideo SVI 318\n"
+    " SVI328   Spectravideo SVI 328\n"
+;
+
+
+
+
 struct s_machine_family_names family_names[]={
     {MACHINE_FAMILY_SPECTRUM,"Spectrum","~~Spectrum",'s'}, //Este siempre debe ser el primero
     {MACHINE_FAMILY_ZX80,"ZX80","ZX80",0},

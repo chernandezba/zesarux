@@ -711,7 +711,7 @@ extern void cpu_set_turbo_speed(void);
 
 extern z80_bit windows_no_disable_console;
 
-extern char *string_machines_list_description;
+
 
 
 

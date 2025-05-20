@@ -120,6 +120,8 @@ extern void convert_numeros_letras_puerto_teclado(z80_byte tecla,int pressreleas
 extern struct x_tabla_teclado ql_tabla_teclado_letras[];
 extern struct x_tabla_teclado ql_tabla_teclado_numeros[];
 
+extern char *string_machines_list_description;
+
 //40 mas que suficiente
 #define MAX_MACHINE_NAME 40
 
