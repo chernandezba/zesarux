@@ -164,6 +164,7 @@ struct s_machine_names {
 	char nombre_maquina[MAX_MACHINE_NAME];
 	int machine_id;
     enum machine_families_list family_id;
+    int fabricante;
 };
 
 extern struct s_machine_names machine_names[];

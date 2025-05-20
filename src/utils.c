@@ -724,96 +724,115 @@ char *debug_machine_info_family_get_family(enum machine_families_list family_id)
 //puede estar desordenada
 //Pero la mantengo ordenada por orden que quiero que aparezca en listado clasificado por familia
 struct s_machine_names machine_names[]={
-    {"ZX Spectrum 16k",              	MACHINE_ID_SPECTRUM_16,             MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum 48k", 			    MACHINE_ID_SPECTRUM_48,             MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum+ 48k",		        MACHINE_ID_SPECTRUM_48_PLUS_ENG,    MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum+ 48k (Spanish)",		MACHINE_ID_SPECTRUM_48_PLUS_SPA,    MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum+ 128k",			    MACHINE_ID_SPECTRUM_128,            MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum+ 128k (Spanish)",		MACHINE_ID_SPECTRUM_128_SPA,        MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +2",			        MACHINE_ID_SPECTRUM_P2,             MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +2 (French)",		    MACHINE_ID_SPECTRUM_P2_FRE,         MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +2 (Spanish)",	    MACHINE_ID_SPECTRUM_P2_SPA,         MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +2A (ROM v4.0)",		MACHINE_ID_SPECTRUM_P2A_40,         MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +2A (ROM v4.1)",		MACHINE_ID_SPECTRUM_P2A_41,         MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +2A (Spanish)",		MACHINE_ID_SPECTRUM_P2A_SPA,        MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +3 (ROM v4.0)",		MACHINE_ID_SPECTRUM_P3_40,          MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41,          MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA,         MACHINE_FAMILY_SPECTRUM},
+    {"ZX Spectrum 16k",              	MACHINE_ID_SPECTRUM_16,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
+    {"ZX Spectrum 48k", 			    MACHINE_ID_SPECTRUM_48,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
+    {"ZX Spectrum+ 48k",		        MACHINE_ID_SPECTRUM_48_PLUS_ENG,    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
+    {"ZX Spectrum+ 48k (Spanish)",		MACHINE_ID_SPECTRUM_48_PLUS_SPA,    MACHINE_FAMILY_SPECTRUM,FABRICANTE_INVESTRONICA},
+    {"ZX Spectrum+ 128k",			    MACHINE_ID_SPECTRUM_128,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
+    {"ZX Spectrum+ 128k (Spanish)",		MACHINE_ID_SPECTRUM_128_SPA,        MACHINE_FAMILY_SPECTRUM,FABRICANTE_INVESTRONICA},
+    {"ZX Spectrum +2",			        MACHINE_ID_SPECTRUM_P2,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +2 (French)",		    MACHINE_ID_SPECTRUM_P2_FRE,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +2 (Spanish)",	    MACHINE_ID_SPECTRUM_P2_SPA,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +2A (ROM v4.0)",		MACHINE_ID_SPECTRUM_P2A_40,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +2A (ROM v4.1)",		MACHINE_ID_SPECTRUM_P2A_41,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +2A (Spanish)",		MACHINE_ID_SPECTRUM_P2A_SPA,        MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +3 (ROM v4.0)",		MACHINE_ID_SPECTRUM_P3_40,          MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41,          MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
+    {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA,         MACHINE_FAMILY_SPECTRUM,FABRICANTE_AMSTRAD},
 
-    {"Inves Spectrum+",			        MACHINE_ID_INVES,                   MACHINE_FAMILY_SPECTRUM},
-    {"TK90X",		                    MACHINE_ID_MICRODIGITAL_TK90X,      MACHINE_FAMILY_SPECTRUM},
-    {"TK90X (Spanish)",	                MACHINE_ID_MICRODIGITAL_TK90X_SPA,  MACHINE_FAMILY_SPECTRUM},
-    {"TK95",		                    MACHINE_ID_MICRODIGITAL_TK95,       MACHINE_FAMILY_SPECTRUM},
-    {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA,   MACHINE_FAMILY_SPECTRUM},
+    {"Inves Spectrum+",			        MACHINE_ID_INVES,                   MACHINE_FAMILY_SPECTRUM,FABRICANTE_INVESTRONICA},
+    {"TK90X",		                    MACHINE_ID_MICRODIGITAL_TK90X,      MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK90X (Spanish)",	                MACHINE_ID_MICRODIGITAL_TK90X_SPA,  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK95",		                    MACHINE_ID_MICRODIGITAL_TK95,       MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA,   MACHINE_FAMILY_SPECTRUM,FABRICANTE_MICRODIGITAL_ELECTRONICA},
 
-    {"TS2068",   			            MACHINE_ID_TIMEX_TS2068,            MACHINE_FAMILY_SPECTRUM},
-    {"TC2048",   			            MACHINE_ID_TIMEX_TC2048,            MACHINE_FAMILY_SPECTRUM},
-    {"TC2068",   			            MACHINE_ID_TIMEX_TC2068,            MACHINE_FAMILY_SPECTRUM},
+    {"TS2068",   			            MACHINE_ID_TIMEX_TS2068,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_SINCLAIR},
+    {"TC2048",   			            MACHINE_ID_TIMEX_TC2048,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_COMPUTERS},
+    {"TC2068",   			            MACHINE_ID_TIMEX_TC2068,            MACHINE_FAMILY_SPECTRUM,FABRICANTE_TIMEX_COMPUTERS},
 
-    {"CZ 2000",                         MACHINE_ID_CZ_2000,                 MACHINE_FAMILY_SPECTRUM},
-    {"CZ Spectrum",                     MACHINE_ID_CZ_SPECTRUM,             MACHINE_FAMILY_SPECTRUM},
-    {"CZ Spectrum Plus",                MACHINE_ID_CZ_SPECTRUM_PLUS,        MACHINE_FAMILY_SPECTRUM},
+    {"CZ 2000",                         MACHINE_ID_CZ_2000,                 MACHINE_FAMILY_SPECTRUM,FABRICANTE_CZERWENY_ELECTRONICA},
+    {"CZ Spectrum",                     MACHINE_ID_CZ_SPECTRUM,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_CZERWENY_ELECTRONICA},
+    {"CZ Spectrum Plus",                MACHINE_ID_CZ_SPECTRUM_PLUS,        MACHINE_FAMILY_SPECTRUM,FABRICANTE_CZERWENY_ELECTRONICA},
 
-    {"Sam Coupe", 			            MACHINE_ID_SAM,                     MACHINE_FAMILY_SPECTRUM},
+    {"Sam Coupe", 			            MACHINE_ID_SAM,                     MACHINE_FAMILY_SPECTRUM,FABRICANTE_MILES_GORDON},
 
-    {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM},
-    {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM},
-    {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF,                  MACHINE_FAMILY_SPECTRUM},
-    {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF,                MACHINE_FAMILY_SPECTRUM},
-    {"ZX-Uno",         			        MACHINE_ID_ZXUNO,                   MACHINE_FAMILY_SPECTRUM},
-    {"ZX Spectrum Next",   			    MACHINE_ID_TBBLUE,                  MACHINE_FAMILY_SPECTRUM},
-    {"Chloe 140SE",    			        MACHINE_ID_CHLOE_140SE,             MACHINE_FAMILY_SPECTRUM},
-    {"Chloe 280SE",    			        MACHINE_ID_CHLOE_280SE,             MACHINE_FAMILY_SPECTRUM},
-    {"Prism 512",       			    MACHINE_ID_PRISM,                   MACHINE_FAMILY_SPECTRUM},
+    {"Pentagon",		                MACHINE_ID_PENTAGON,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_PENTAGON},
+    {"Chrome",                          MACHINE_ID_CHROME,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_MARIOPRATO},
+    {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_TSLABS},
+    {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF,                MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEDOPC},
+    {"ZX-Uno",         			        MACHINE_ID_ZXUNO,                   MACHINE_FAMILY_SPECTRUM,FABRICANTE_ZXUNO_TEAM},
+    {"ZX Spectrum Next",   			    MACHINE_ID_TBBLUE,                  MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEXT_TEAM},
+    {"Chloe 140SE",    			        MACHINE_ID_CHLOE_140SE,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_CHLOE_CORPORATION},
+    {"Chloe 280SE",    			        MACHINE_ID_CHLOE_280SE,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_CHLOE_CORPORATION},
+    {"Prism 512",       			    MACHINE_ID_PRISM,                   MACHINE_FAMILY_SPECTRUM,FABRICANTE_NEW_HORIZONS},
 
+    {"ZX80",  				            MACHINE_ID_ZX80,                    MACHINE_FAMILY_ZX80,FABRICANTE_SINCLAIR},
+    {"TK80",		                    MACHINE_ID_MICRODIGITAL_TK80,       MACHINE_FAMILY_ZX80,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK82",		                    MACHINE_ID_MICRODIGITAL_TK82,       MACHINE_FAMILY_ZX80,FABRICANTE_MICRODIGITAL_ELECTRONICA},
 
-    {"ZX80",  				            MACHINE_ID_ZX80,                    MACHINE_FAMILY_ZX80},
-    {"TK80",		                    MACHINE_ID_MICRODIGITAL_TK80,       MACHINE_FAMILY_ZX80},
-    {"TK82",		                    MACHINE_ID_MICRODIGITAL_TK82,       MACHINE_FAMILY_ZX80},
+    {"ZX81",  				            MACHINE_ID_ZX81,                    MACHINE_FAMILY_ZX81,FABRICANTE_SINCLAIR},
+    {"TS1000",   			            MACHINE_ID_TIMEX_TS1000,            MACHINE_FAMILY_ZX81,FABRICANTE_TIMEX_SINCLAIR},
+    {"TS1500",   			            MACHINE_ID_TIMEX_TS1500,            MACHINE_FAMILY_ZX81,FABRICANTE_TIMEX_SINCLAIR},
+    {"TK82C",		                    MACHINE_ID_MICRODIGITAL_TK82C,      MACHINE_FAMILY_ZX81,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK83",		                    MACHINE_ID_MICRODIGITAL_TK83,       MACHINE_FAMILY_ZX81,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"TK85",		                    MACHINE_ID_MICRODIGITAL_TK85,       MACHINE_FAMILY_ZX81,FABRICANTE_MICRODIGITAL_ELECTRONICA},
+    {"CZ 1000",                         MACHINE_ID_CZ_1000,                 MACHINE_FAMILY_ZX81,FABRICANTE_CZERWENY_ELECTRONICA},
+    {"CZ 1500",                         MACHINE_ID_CZ_1500,                 MACHINE_FAMILY_ZX81,FABRICANTE_CZERWENY_ELECTRONICA},
+    {"CZ 1000 Plus",                    MACHINE_ID_CZ_1000_PLUS,            MACHINE_FAMILY_ZX81,FABRICANTE_CZERWENY_ELECTRONICA},
+    {"CZ 1500 Plus",                    MACHINE_ID_CZ_1500_PLUS,            MACHINE_FAMILY_ZX81,FABRICANTE_CZERWENY_ELECTRONICA},
 
-    {"ZX81",  				            MACHINE_ID_ZX81,                    MACHINE_FAMILY_ZX81},
-    {"TS1000",   			            MACHINE_ID_TIMEX_TS1000,            MACHINE_FAMILY_ZX81},
-    {"TS1500",   			            MACHINE_ID_TIMEX_TS1500,            MACHINE_FAMILY_ZX81},
-    {"TK82C",		                    MACHINE_ID_MICRODIGITAL_TK82C,      MACHINE_FAMILY_ZX81},
-    {"TK83",		                    MACHINE_ID_MICRODIGITAL_TK83,       MACHINE_FAMILY_ZX81},
-    {"TK85",		                    MACHINE_ID_MICRODIGITAL_TK85,       MACHINE_FAMILY_ZX81},
-    {"CZ 1000",                         MACHINE_ID_CZ_1000,                 MACHINE_FAMILY_ZX81},
-    {"CZ 1500",                         MACHINE_ID_CZ_1500,                 MACHINE_FAMILY_ZX81},
-    {"CZ 1000 Plus",                    MACHINE_ID_CZ_1000_PLUS,            MACHINE_FAMILY_ZX81},
-    {"CZ 1500 Plus",                    MACHINE_ID_CZ_1500_PLUS,            MACHINE_FAMILY_ZX81},
+    {"MK14",                            MACHINE_ID_MK14_STANDARD,           MACHINE_FAMILY_MK14,FABRICANTE_SCIENCE_OF_CAMBRIDGE},
 
-    {"MK14",                            MACHINE_ID_MK14_STANDARD,           MACHINE_FAMILY_MK14},
+    {"QL",				                MACHINE_ID_QL_STANDARD,             MACHINE_FAMILY_QL,FABRICANTE_SINCLAIR},
 
-    {"QL",				                MACHINE_ID_QL_STANDARD,             MACHINE_FAMILY_QL},
+    {"Z88",  				            MACHINE_ID_Z88,                     MACHINE_FAMILY_Z88,FABRICANTE_CAMBRIDGE_COMPUTERS},
 
-    {"Z88",  				            MACHINE_ID_Z88,                     MACHINE_FAMILY_Z88},
+    {"CPC 464",  			            MACHINE_ID_CPC_464,                 MACHINE_FAMILY_CPC,FABRICANTE_AMSTRAD},
+    {"CPC 4128",  			            MACHINE_ID_CPC_4128,                MACHINE_FAMILY_CPC,FABRICANTE_AMSTRAD},
+    {"CPC 664",  			            MACHINE_ID_CPC_664,                 MACHINE_FAMILY_CPC,FABRICANTE_AMSTRAD},
+    {"CPC 6128",  			            MACHINE_ID_CPC_6128,                MACHINE_FAMILY_CPC,FABRICANTE_AMSTRAD},
 
-    {"CPC 464",  			            MACHINE_ID_CPC_464,                 MACHINE_FAMILY_CPC},
-    {"CPC 4128",  			            MACHINE_ID_CPC_4128,                MACHINE_FAMILY_CPC},
-    {"CPC 664",  			            MACHINE_ID_CPC_664,                 MACHINE_FAMILY_CPC},
-    {"CPC 6128",  			            MACHINE_ID_CPC_6128,                MACHINE_FAMILY_CPC},
+    {"PCW 8256",                        MACHINE_ID_PCW_8256,                MACHINE_FAMILY_PCW,FABRICANTE_AMSTRAD},
+    {"PCW 8512",                        MACHINE_ID_PCW_8512,                MACHINE_FAMILY_PCW,FABRICANTE_AMSTRAD},
 
-    {"PCW 8256",                        MACHINE_ID_PCW_8256,                MACHINE_FAMILY_PCW},
-    {"PCW 8512",                        MACHINE_ID_PCW_8512,                MACHINE_FAMILY_PCW},
+    {"Jupiter Ace",  			        MACHINE_ID_ACE,                     MACHINE_FAMILY_ACE,FABRICANTE_JUPITER_CANTAB},
 
-    {"Jupiter Ace",  			        MACHINE_ID_ACE,                     MACHINE_FAMILY_ACE},
+    {"ColecoVision",                    MACHINE_ID_COLECO,                  MACHINE_FAMILY_COLECO,FABRICANTE_COLECO_INDUSTRIES},
 
-    {"ColecoVision",                    MACHINE_ID_COLECO,                  MACHINE_FAMILY_COLECO},
+    {"SG-1000",                         MACHINE_ID_SG1000,                  MACHINE_FAMILY_SG1000,FABRICANTE_SEGA},
 
-    {"SG-1000",                         MACHINE_ID_SG1000,                  MACHINE_FAMILY_SG1000},
+    {"Master System",                   MACHINE_ID_SMS,                     MACHINE_FAMILY_SMS,FABRICANTE_SEGA},
 
-    {"Master System",                   MACHINE_ID_SMS,                     MACHINE_FAMILY_SMS},
+    {"SVI-318",                         MACHINE_ID_SVI_318,                 MACHINE_FAMILY_SVI,FABRICANTE_SPECTRAVIDEO_INTERNATIONAL},
+    {"SVI-328",                         MACHINE_ID_SVI_328,                 MACHINE_FAMILY_SVI,FABRICANTE_SPECTRAVIDEO_INTERNATIONAL},
 
-    {"SVI-318",                         MACHINE_ID_SVI_318,                 MACHINE_FAMILY_SVI},
-    {"SVI-328",                         MACHINE_ID_SVI_328,                 MACHINE_FAMILY_SVI},
-
-    {"MSX1",                            MACHINE_ID_MSX1,                    MACHINE_FAMILY_MSX},
+    {"MSX1",                            MACHINE_ID_MSX1,                    MACHINE_FAMILY_MSX,FABRICANTE_ASCII_CORP},
 
 
     //Indicador de final
-    {"",0,MACHINE_FAMILY_EOF}
+    {"",0,MACHINE_FAMILY_EOF,FABRICANTE_SINCLAIR}
 
 };
+
+//Retorna fabricante segun tipo maquina
+int return_fabricante_maquina(int machine_id)
+{
+
+    int i=0;
+
+    while (machine_names[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machine_names[i].machine_id==machine_id) {
+            return machine_names[i].fabricante;
+        }
+        i++;
+    }
+
+    //Por defecto
+    cpu_panic ("Unknown manufacturer for machine id");
+
+	//Aqui no se llega nunca. Pero para evitar warning del compilador
+	return 0;
+}
 
 //Retorna en familia nombre de maquina
 char *debug_machine_info_family(int machine_id)
@@ -1118,153 +1137,6 @@ int *return_maquinas_fabricante(int fabricante)
 	return NULL;
 }
 
-
-//Retorna fabricante segun tipo maquina
-int return_fabricante_maquina(int maquina)
-{
-	switch (maquina) {
-		case MACHINE_ID_SPECTRUM_16:
-		case MACHINE_ID_SPECTRUM_48:
-		case MACHINE_ID_SPECTRUM_128:
-        case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
-		case MACHINE_ID_ZX80:
-		case MACHINE_ID_ZX81:
-		case MACHINE_ID_QL_STANDARD:
-			return FABRICANTE_SINCLAIR;
-		break;
-
-        case MACHINE_ID_TIMEX_TS1000:
-        case MACHINE_ID_TIMEX_TS1500:
-		case MACHINE_ID_TIMEX_TS2068:
-			return FABRICANTE_TIMEX_SINCLAIR;
-		break;
-
-		case MACHINE_ID_Z88:
-			return FABRICANTE_CAMBRIDGE_COMPUTERS;
-		break;
-
-		case MACHINE_ID_INVES:
-		case MACHINE_ID_SPECTRUM_128_SPA:
-		case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
-			return FABRICANTE_INVESTRONICA;
-		break;
-
-        case MACHINE_ID_MICRODIGITAL_TK80:
-        case MACHINE_ID_MICRODIGITAL_TK82:
-        case MACHINE_ID_MICRODIGITAL_TK82C:
-        case MACHINE_ID_MICRODIGITAL_TK83:
-        case MACHINE_ID_MICRODIGITAL_TK85:
-		case MACHINE_ID_MICRODIGITAL_TK90X:
-		case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
-		case MACHINE_ID_MICRODIGITAL_TK95:
-        case MACHINE_ID_MICRODIGITAL_TK95_SPA:
-			return FABRICANTE_MICRODIGITAL_ELECTRONICA;
-		break;
-
-		case MACHINE_ID_SPECTRUM_P2:
-		case MACHINE_ID_SPECTRUM_P2_FRE:
-		case MACHINE_ID_SPECTRUM_P2_SPA:
-		case MACHINE_ID_SPECTRUM_P2A_40:
-		case MACHINE_ID_SPECTRUM_P2A_41:
-		case MACHINE_ID_SPECTRUM_P2A_SPA:
-		case MACHINE_ID_SPECTRUM_P3_40:
-		case MACHINE_ID_SPECTRUM_P3_41:
-		case MACHINE_ID_SPECTRUM_P3_SPA:
-		case MACHINE_ID_CPC_464:
-        case MACHINE_ID_CPC_4128:
-        case MACHINE_ID_CPC_664:
-        case MACHINE_ID_CPC_6128:
-        case MACHINE_ID_PCW_8256:
-        case MACHINE_ID_PCW_8512:
-			return FABRICANTE_AMSTRAD;
-		break;
-
-        case MACHINE_ID_TIMEX_TC2048:
-        case MACHINE_ID_TIMEX_TC2068:
-            return FABRICANTE_TIMEX_COMPUTERS;
-        break;
-
-                case MACHINE_ID_COLECO:
-			return FABRICANTE_COLECO_INDUSTRIES;
-		break;
-
-        case MACHINE_ID_SG1000:
-        case MACHINE_ID_SMS:
-			return FABRICANTE_SEGA;
-		break;
-
-                case MACHINE_ID_MSX1:
-			return FABRICANTE_ASCII_CORP;
-		break;
-
-                case MACHINE_ID_SVI_318:
-                case MACHINE_ID_SVI_328:
-			return FABRICANTE_SPECTRAVIDEO_INTERNATIONAL;
-		break;
-
-		case MACHINE_ID_ACE:
-			return FABRICANTE_JUPITER_CANTAB;
-		break;
-
-		case MACHINE_ID_ZXUNO:
-			return FABRICANTE_ZXUNO_TEAM;
-		break;
-
-		case MACHINE_ID_CHLOE_140SE:
-		case MACHINE_ID_CHLOE_280SE:
-			return FABRICANTE_CHLOE_CORPORATION;
-		break;
-
-		case MACHINE_ID_PRISM:
-			return FABRICANTE_NEW_HORIZONS;
-		break;
-
-		case MACHINE_ID_TBBLUE:
-			return FABRICANTE_NEXT_TEAM;
-		break;
-
-		case MACHINE_ID_SAM:
-			return FABRICANTE_MILES_GORDON;
-		break;
-
-		case MACHINE_ID_PENTAGON:
-			return FABRICANTE_PENTAGON;
-		break;
-
-    case MACHINE_ID_CHROME:
-      return FABRICANTE_MARIOPRATO;
-    break;
-
-    case MACHINE_ID_TSCONF:
-      return FABRICANTE_TSLABS;
-    break;
-
-        case MACHINE_ID_BASECONF:
-      return FABRICANTE_NEDOPC;
-    break;
-
-    case MACHINE_ID_MK14_STANDARD:
-      return FABRICANTE_SCIENCE_OF_CAMBRIDGE;
-    break;
-
-            case MACHINE_ID_CZ_1000:
-            case MACHINE_ID_CZ_1500:
-            case MACHINE_ID_CZ_1000_PLUS:
-            case MACHINE_ID_CZ_1500_PLUS:
-            case MACHINE_ID_CZ_2000:
-            case MACHINE_ID_CZ_SPECTRUM:
-            case MACHINE_ID_CZ_SPECTRUM_PLUS:
-                return FABRICANTE_CZERWENY_ELECTRONICA;
-            break;
-
-		default:
-			cpu_panic ("Unknown manufacturer for machine id");
-		break;
-	}
-
-	//Aqui no se llega nunca. Pero para evitar warning del compilador
-	return 0;
-}
 
 
 //Retorna posicion dentro del array de maquinas indicado, posicion en array. 255 si no se encuentra
