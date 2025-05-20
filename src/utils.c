@@ -937,7 +937,7 @@ char *array_fabricantes_hotkey[]={
 char array_fabricantes_hotkey_letra[]="aobcd iurmyewxpngs  tlz";
 
 
-
+/*
 //Array de maquinas por fabricante, acabado en 255
 int array_maquinas_sinclair[]={
 	120,121,0,1,MACHINE_ID_SPECTRUM_48_PLUS_ENG,6,160,255
@@ -1150,6 +1150,7 @@ int return_machine_position(int *array_maquinas,int id_maquina)
 
 	return 255;
 }
+*/
 
 z80_bit debug_parse_config_file;
 
