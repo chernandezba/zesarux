@@ -30400,13 +30400,13 @@ void menu_machine_selection_family_machines(unsigned int id_familia)
 
         int i;
 
-        for (i=0;i<99999 && machine_names[i].nombre_maquina[0]!=0;i++) {
-            //printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
-            int id_maquina=machine_names[i].machine_id;
+        for (i=0;i<99999 && machines_info[i].nombre_maquina[0]!=0;i++) {
+            //printf ("id: %03d nombre: %s\n",machines_info[i].id,machines_info[i].nombre_maquina);
+            int id_maquina=machines_info[i].machine_id;
             enum machine_families_list familia_maquina=debug_machine_get_id_family(id_maquina);
             if (familia_maquina==id_familia) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",machine_names[i].nombre_maquina);
-                menu_add_item_menu_valor_opcion(array_menu_common,machine_names[i].machine_id);
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%s",machines_info[i].nombre_maquina);
+                menu_add_item_menu_valor_opcion(array_menu_common,machines_info[i].machine_id);
                 menu_add_item_menu_es_sencillo(array_menu_common);
 
                 //Mover el cursor a la máquina seleccionada
@@ -30561,8 +30561,8 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 	int i;
 
-	for (i=0;i<99999 && machine_names[i].nombre_maquina[0]!=0;i++) {
-		//printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
+	for (i=0;i<99999 && machines_info[i].nombre_maquina[0]!=0;i++) {
+		//printf ("id: %03d nombre: %s\n",machines_info[i].id,machines_info[i].nombre_maquina);
 		total_maquinas++;
 	}
 
@@ -30585,10 +30585,10 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 	//Insertar listado en memoria
 	for (i=0;i<total_maquinas;i++) {
-		//printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
+		//printf ("id: %03d nombre: %s\n",machines_info[i].id,machines_info[i].nombre_maquina);
 
-		strcpy(sorted_machines_info[i].nombre_maquina,machine_names[i].nombre_maquina);
-		sorted_machines_info[i].machine_id=machine_names[i].machine_id;
+		strcpy(sorted_machines_info[i].nombre_maquina,machines_info[i].nombre_maquina);
+		sorted_machines_info[i].machine_id=machines_info[i].machine_id;
 	}
 
 	//Array de punteros para poderlos ordenar

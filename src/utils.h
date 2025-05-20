@@ -167,7 +167,7 @@ struct s_machine_names {
     int fabricante;
 };
 
-extern struct s_machine_names machine_names[];
+extern struct s_machine_names machines_info[];
 
 extern char *get_machine_name(z80_byte m);
 

@@ -723,7 +723,7 @@ char *debug_machine_info_family_get_family(enum machine_families_list family_id)
 //Esta lista no tiene por que estar ordenada por id ni por nombre
 //puede estar desordenada
 //Pero la mantengo ordenada por orden que quiero que aparezca en listado clasificado por familia
-struct s_machine_names machine_names[]={
+struct s_machine_names machines_info[]={
     {"ZX Spectrum 16k",              	MACHINE_ID_SPECTRUM_16,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
     {"ZX Spectrum 48k", 			    MACHINE_ID_SPECTRUM_48,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
     {"ZX Spectrum+ 48k",		        MACHINE_ID_SPECTRUM_48_PLUS_ENG,    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
@@ -820,9 +820,9 @@ int return_fabricante_maquina(int machine_id)
 
     int i=0;
 
-    while (machine_names[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (machine_names[i].machine_id==machine_id) {
-            return machine_names[i].fabricante;
+    while (machines_info[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machines_info[i].machine_id==machine_id) {
+            return machines_info[i].fabricante;
         }
         i++;
     }
@@ -839,9 +839,9 @@ char *debug_machine_info_family(int machine_id)
 {
     int i=0;
 
-    while (machine_names[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (machine_names[i].machine_id==machine_id) {
-            return debug_machine_info_family_get_family(machine_names[i].family_id);
+    while (machines_info[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machines_info[i].machine_id==machine_id) {
+            return debug_machine_info_family_get_family(machines_info[i].family_id);
         }
         i++;
     }
@@ -855,9 +855,9 @@ enum machine_families_list debug_machine_get_id_family(int machine_id)
 {
     int i=0;
 
-    while (machine_names[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (machine_names[i].machine_id==machine_id) {
-            return machine_names[i].family_id;
+    while (machines_info[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machines_info[i].machine_id==machine_id) {
+            return machines_info[i].family_id;
         }
         i++;
     }
@@ -872,13 +872,13 @@ char *get_machine_name(z80_byte machine)
     //printf("Current machine: %d\n",machine);
 
 	for (i=0;i<99999;i++) {
-		if (machine_names[i].nombre_maquina[0]==0) {
+		if (machines_info[i].nombre_maquina[0]==0) {
 			char mensaje[200];
 			sprintf (mensaje,"No machine name found for machine id: %d",machine);
 			cpu_panic(mensaje);
 		}
 
-		if (machine_names[i].machine_id==machine) return machine_names[i].nombre_maquina;
+		if (machines_info[i].machine_id==machine) return machines_info[i].nombre_maquina;
 	}
 
 	//Aunque aqui no se llega nunca, para que no se queje el compilador
