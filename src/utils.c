@@ -723,7 +723,7 @@ char *debug_machine_info_family_get_family(enum machine_families_list family_id)
 //Esta lista no tiene por que estar ordenada por id ni por nombre
 //puede estar desordenada
 //Pero la mantengo ordenada por orden que quiero que aparezca en listado clasificado por familia
-struct s_machine_names machines_info[]={
+struct s_machines_info machines_info[]={
     {"ZX Spectrum 16k",              	MACHINE_ID_SPECTRUM_16,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
     {"ZX Spectrum 48k", 			    MACHINE_ID_SPECTRUM_48,             MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},
     {"ZX Spectrum+ 48k",		        MACHINE_ID_SPECTRUM_48_PLUS_ENG,    MACHINE_FAMILY_SPECTRUM,FABRICANTE_SINCLAIR},

@@ -160,14 +160,14 @@ extern char *string_machines_list_description;
 //40 mas que suficiente
 #define MAX_MACHINE_NAME 40
 
-struct s_machine_names {
+struct s_machines_info {
 	char nombre_maquina[MAX_MACHINE_NAME];
 	int machine_id;
     enum machine_families_list family_id;
     int fabricante;
 };
 
-extern struct s_machine_names machines_info[];
+extern struct s_machines_info machines_info[];
 
 extern char *get_machine_name(z80_byte m);
 

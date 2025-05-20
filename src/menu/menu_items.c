@@ -30535,7 +30535,7 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
 }
 
 
-int menu_machine_selection_by_name_alphasort(const struct s_machine_names **d1, const struct s_machine_names **d2)
+int menu_machine_selection_by_name_alphasort(const struct s_machines_info **d1, const struct s_machines_info **d2)
 {
 
         //printf ("menu_filesel_alphasort %s %s\n",(*d1)->d_name,(*d2)->d_name );
@@ -30571,9 +30571,9 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 	//Meterlas en array, para poderlas ordenar
 
-	struct s_machine_names *sorted_machines_info;
+	struct s_machines_info *sorted_machines_info;
 
-	int tamanyo_struct=sizeof(struct s_machine_names);
+	int tamanyo_struct=sizeof(struct s_machines_info);
 
 	int tamanyo_total=tamanyo_struct*total_maquinas;
 
@@ -30592,7 +30592,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 	}
 
 	//Array de punteros para poderlos ordenar
-	struct s_machine_names **memoria_punteros;
+	struct s_machines_info **memoria_punteros;
 
 
 	//Asignamos memoria
@@ -30615,7 +30615,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 	funcion_compar=( int (*)(const void *, const void *)  ) menu_machine_selection_by_name_alphasort;
 
-	qsort(memoria_punteros,total_maquinas,sizeof(struct s_machine_names *), funcion_compar);
+	qsort(memoria_punteros,total_maquinas,sizeof(struct s_machines_info *), funcion_compar);
 
 	//Imprimir listado de memoria
 	/*for (i=0;i<total_maquinas;i++) {
