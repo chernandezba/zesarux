@@ -696,6 +696,28 @@ struct s_machine_family_names family_names[]={
     {MACHINE_FAMILY_EOF,"","",0}
 };
 
+
+
+
+//Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
+char *debug_machine_info_family_get_family(enum machine_families_list family_id)
+{
+    int i=0;
+
+    while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (family_names[i].family_id==family_id) {
+            return family_names[i].family_name;
+        }
+        i++;
+    }
+
+    //Por defecto Spectrum
+    return family_names[0].family_name;
+}
+
+
+
+
 struct s_machine_family machine_family_list[]={
     {MACHINE_ID_ZX80,MACHINE_FAMILY_ZX80},
     {MACHINE_ID_MICRODIGITAL_TK80,MACHINE_FAMILY_ZX80},
@@ -734,55 +756,6 @@ struct s_machine_family machine_family_list[]={
 
 };
 
-
-//Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
-char *debug_machine_info_family_get_family(enum machine_families_list family_id)
-{
-    int i=0;
-
-    while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (family_names[i].family_id==family_id) {
-            return family_names[i].family_name;
-        }
-        i++;
-    }
-
-    //Por defecto Spectrum
-    return family_names[0].family_name;
-}
-
-
-//Retorna en familia nombre de maquina
-char *debug_machine_info_family(int machine_id)
-{
-    int i=0;
-
-    while (machine_family_list[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (machine_family_list[i].machine_id==machine_id) {
-            return debug_machine_info_family_get_family(machine_family_list[i].family_id);
-        }
-        i++;
-    }
-
-    //Por defecto
-    return debug_machine_info_family_get_family(MACHINE_FAMILY_SPECTRUM);
-}
-
-//Retorna el id de familia para una maquina dada
-enum machine_families_list debug_machine_get_id_family(int machine_id)
-{
-    int i=0;
-
-    while (machine_family_list[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (machine_family_list[i].machine_id==machine_id) {
-            return machine_family_list[i].family_id;
-        }
-        i++;
-    }
-
-    //Por defecto
-    return MACHINE_FAMILY_SPECTRUM;
-}
 
 //Esta lista no tiene por que estar ordenada por id ni por nombre
 //puede estar desordenada
@@ -878,6 +851,38 @@ struct s_machine_names machine_names[]={
     {"",0}
 
 };
+
+//Retorna en familia nombre de maquina
+char *debug_machine_info_family(int machine_id)
+{
+    int i=0;
+
+    while (machine_family_list[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machine_family_list[i].machine_id==machine_id) {
+            return debug_machine_info_family_get_family(machine_family_list[i].family_id);
+        }
+        i++;
+    }
+
+    //Por defecto
+    return debug_machine_info_family_get_family(MACHINE_FAMILY_SPECTRUM);
+}
+
+//Retorna el id de familia para una maquina dada
+enum machine_families_list debug_machine_get_id_family(int machine_id)
+{
+    int i=0;
+
+    while (machine_family_list[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machine_family_list[i].machine_id==machine_id) {
+            return machine_family_list[i].family_id;
+        }
+        i++;
+    }
+
+    //Por defecto
+    return MACHINE_FAMILY_SPECTRUM;
+}
 
 char *get_machine_name(z80_byte machine)
 {
