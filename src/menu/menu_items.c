@@ -30070,129 +30070,12 @@ void menu_machine_set_machine_by_id(int id_maquina)
 
 }
 
-/*
-void old_menu_machine_selection_manufacturer_machines(int fabricante)
-{
-	int i;
-	int *maquinas;
-
-	maquinas=return_maquinas_fabricante(fabricante);
-
-	//cambiar linea seleccionada a maquina en cuestion
-    //siempre que no estemos en un full index rescan del buscador de opciones
-
-    if (!menu_dibuja_menu_recorrer_menus) {
-        int indice_maquina=return_machine_position(maquinas,current_machine_type);
-        if (indice_maquina!=255) machine_selection_por_fabricante_opcion_seleccionada=indice_maquina;
-        else {
-            //Maquina no es de este menu. Resetear linea a 0
-            machine_selection_por_fabricante_opcion_seleccionada=0;
-        }
-    }
-
-	char *nombre_maquina;
-
-	int total_maquinas;
-
-	int m;
-
-        //Seleccion por fabricante
-                menu_item *array_menu_machine_selection_por_fabricante;
-                menu_item item_seleccionado;
-                int retorno_menu;
-	do {
-
-        menu_add_item_menu_inicial(&array_menu_machine_selection_por_fabricante,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-
-		for (i=0;maquinas[i]!=255;i++) {
-			m=maquinas[i];
-			//printf ("%d\n",m);
-			nombre_maquina=get_machine_name(m);
-			//printf ("%d %s\n",m,nombre_maquina);
-
-            menu_add_item_menu_format(array_menu_machine_selection_por_fabricante,MENU_OPCION_NORMAL,NULL,NULL,"%s",nombre_maquina);
-            menu_add_item_menu_es_sencillo(array_menu_machine_selection_por_fabricante);
 
 
-		}
-
-		total_maquinas=i;
-
-
-
-
-      menu_add_item_menu(array_menu_machine_selection_por_fabricante,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-                        //menu_add_item_menu(array_menu_machine_selection_por_fabricante,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                        menu_add_ESC_item(array_menu_machine_selection_por_fabricante);
-
-        //char titulo_con_hotkey[100];
-        char titulo[100];
-        //sprintf(titulo,"%s",array_fabricantes_hotkey[fabricante]);
-        menu_convierte_texto_sin_modificadores(array_fabricantes_hotkey[fabricante],titulo);
-
-        //retorno_menu=menu_dibuja_menu_no_title_lang(&machine_selection_por_fabricante_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection_por_fabricante,"Select machine" );
-        retorno_menu=menu_dibuja_menu_no_title_lang(&machine_selection_por_fabricante_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection_por_fabricante,titulo );
-
-                        //printf ("Opcion seleccionada: %d\n",machine_selection_por_fabricante_opcion_seleccionada);
-
-
-
-                        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-
-                                if (machine_selection_por_fabricante_opcion_seleccionada>=0 && machine_selection_por_fabricante_opcion_seleccionada<=total_maquinas) {
-
-
-
-								//printf ("Seleccion opcion=%d\n",machine_selection_por_fabricante_opcion_seleccionada);
-								int id_maquina=maquinas[machine_selection_por_fabricante_opcion_seleccionada];
-								//printf ("Maquina= %d %s\n",id_maquina, get_machine_name(id_maquina) );
-
-
-
-
-								menu_machine_set_machine_by_id(id_maquina);
-
-
-
-
-                              }
-
-
-
-                                //llamamos por valor de funcion
-                                if (item_seleccionado.menu_funcion!=NULL) {
-                                        //printf ("actuamos por funcion\n");
-                                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                }
-
-
-
-                        }
-
-
-                } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
-}
-*/
 
 void menu_machine_selection_manufacturer_machines(int fabricante)
 {
 
-
-	//cambiar linea seleccionada a maquina en cuestion
-    //siempre que no estemos en un full index rescan del buscador de opciones
-
-    /*if (!menu_dibuja_menu_recorrer_menus) {
-        int indice_maquina=return_machine_position(maquinas,current_machine_type);
-        if (indice_maquina!=255) machine_selection_por_fabricante_opcion_seleccionada=indice_maquina;
-        else {
-            //Maquina no es de este menu. Resetear linea a 0
-            machine_selection_por_fabricante_opcion_seleccionada=0;
-        }
-    }*/
 
 	char *nombre_maquina;
 
@@ -30219,16 +30102,17 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
                 menu_add_item_menu_valor_opcion(array_menu_machine_selection_por_fabricante,machines_info[i].machine_id);
                 menu_add_item_menu_es_sencillo(array_menu_machine_selection_por_fabricante);
 
-
-                if (machines_info[i].machine_id==current_machine_type) {
-                    //printf("coincide maquina en %d\n",total_maquinas);
-                    machine_selection_por_fabricante_opcion_seleccionada=total_maquinas;
+                //cambiar linea seleccionada a maquina en cuestion
+                //siempre que no estemos en un full index rescan del buscador de opciones
+                if (!menu_dibuja_menu_recorrer_menus) {
+                    if (machines_info[i].machine_id==current_machine_type) {
+                        //printf("coincide maquina en %d\n",total_maquinas);
+                        machine_selection_por_fabricante_opcion_seleccionada=total_maquinas;
+                    }
                 }
 
                 total_maquinas++;
 
-
-                //printf("add %s\n",nombre_maquina);
             }
             i++;
         }
