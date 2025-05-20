@@ -580,6 +580,122 @@ struct x_tabla_teclado mk14_tabla_teclado_numeros[]={
 int total_config_window_geometry=0;
 saved_config_window_geometry saved_config_window_geometry_array[MAX_CONFIG_WINDOW_GEOMETRY];
 
+
+//Esta lista no tiene por que estar ordenada por id ni por nombre
+//puede estar desordenada
+//Pero la mantengo ordenada por orden que quiero que aparezca en listado clasificado por familia
+struct s_machine_names machine_names[]={
+    {"ZX Spectrum 16k",              	MACHINE_ID_SPECTRUM_16},
+    {"ZX Spectrum 48k", 			    MACHINE_ID_SPECTRUM_48},
+    {"ZX Spectrum+ 48k",		        MACHINE_ID_SPECTRUM_48_PLUS_ENG},
+    {"ZX Spectrum+ 48k (Spanish)",		MACHINE_ID_SPECTRUM_48_PLUS_SPA},
+    {"ZX Spectrum+ 128k",			    MACHINE_ID_SPECTRUM_128},
+    {"ZX Spectrum+ 128k (Spanish)",		MACHINE_ID_SPECTRUM_128_SPA},
+    {"ZX Spectrum +2",			        MACHINE_ID_SPECTRUM_P2},
+    {"ZX Spectrum +2 (French)",		    MACHINE_ID_SPECTRUM_P2_FRE},
+    {"ZX Spectrum +2 (Spanish)",	    MACHINE_ID_SPECTRUM_P2_SPA},
+    {"ZX Spectrum +2A (ROM v4.0)",		MACHINE_ID_SPECTRUM_P2A_40},
+    {"ZX Spectrum +2A (ROM v4.1)",		MACHINE_ID_SPECTRUM_P2A_41},
+    {"ZX Spectrum +2A (Spanish)",		MACHINE_ID_SPECTRUM_P2A_SPA},
+    {"ZX Spectrum +3 (ROM v4.0)",		MACHINE_ID_SPECTRUM_P3_40},
+    {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41},
+    {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA},
+
+    {"Inves Spectrum+",			        MACHINE_ID_INVES},
+    {"TK90X",		                    MACHINE_ID_MICRODIGITAL_TK90X},
+    {"TK90X (Spanish)",	                MACHINE_ID_MICRODIGITAL_TK90X_SPA},
+    {"TK95",		                    MACHINE_ID_MICRODIGITAL_TK95},
+    {"TK95 (Spanish)",		            MACHINE_ID_MICRODIGITAL_TK95_SPA},
+
+    {"TS2068",   			            MACHINE_ID_TIMEX_TS2068},
+    {"TC2048",   			            MACHINE_ID_TIMEX_TC2048},
+    {"TC2068",   			            MACHINE_ID_TIMEX_TC2068},
+
+    {"CZ 2000",                         MACHINE_ID_CZ_2000},
+    {"CZ Spectrum",                     MACHINE_ID_CZ_SPECTRUM},
+    {"CZ Spectrum Plus",                MACHINE_ID_CZ_SPECTRUM_PLUS},
+
+    {"Sam Coupe", 			            MACHINE_ID_SAM},
+
+    {"Pentagon",		                MACHINE_ID_PENTAGON},
+    {"Chrome",                          MACHINE_ID_CHROME},
+    {"ZX-Evolution TS-Conf",            MACHINE_ID_TSCONF},
+    {"ZX-Evolution BaseConf",           MACHINE_ID_BASECONF},
+    {"ZX-Uno",         			        MACHINE_ID_ZXUNO},
+    {"ZX Spectrum Next",   			    MACHINE_ID_TBBLUE},
+    {"Chloe 140SE",    			        MACHINE_ID_CHLOE_140SE},
+    {"Chloe 280SE",    			        MACHINE_ID_CHLOE_280SE},
+    {"Prism 512",       			    MACHINE_ID_PRISM},
+
+
+    {"ZX80",  				            MACHINE_ID_ZX80},
+    {"TK80",		                    MACHINE_ID_MICRODIGITAL_TK80},
+    {"TK82",		                    MACHINE_ID_MICRODIGITAL_TK82},
+
+    {"ZX81",  				            MACHINE_ID_ZX81},
+    {"TS1000",   			            MACHINE_ID_TIMEX_TS1000},
+    {"TS1500",   			            MACHINE_ID_TIMEX_TS1500},
+    {"TK82C",		                    MACHINE_ID_MICRODIGITAL_TK82C},
+    {"TK83",		                    MACHINE_ID_MICRODIGITAL_TK83},
+    {"TK85",		                    MACHINE_ID_MICRODIGITAL_TK85},
+    {"CZ 1000",                         MACHINE_ID_CZ_1000},
+    {"CZ 1500",                         MACHINE_ID_CZ_1500},
+    {"CZ 1000 Plus",                    MACHINE_ID_CZ_1000_PLUS},
+    {"CZ 1500 Plus",                    MACHINE_ID_CZ_1500_PLUS},
+
+    {"MK14",                            MACHINE_ID_MK14_STANDARD},
+
+    {"QL",				                MACHINE_ID_QL_STANDARD},
+
+    {"Z88",  				            MACHINE_ID_Z88},
+
+    {"CPC 464",  			            MACHINE_ID_CPC_464},
+    {"CPC 4128",  			            MACHINE_ID_CPC_4128},
+    {"CPC 664",  			            MACHINE_ID_CPC_664},
+    {"CPC 6128",  			            MACHINE_ID_CPC_6128},
+
+    {"PCW 8256",                        MACHINE_ID_PCW_8256},
+    {"PCW 8512",                        MACHINE_ID_PCW_8512},
+
+    {"Jupiter Ace",  			        MACHINE_ID_ACE},
+
+    {"ColecoVision",                    MACHINE_ID_COLECO},
+
+    {"SG-1000",                         MACHINE_ID_SG1000},
+
+    {"Master System",                   MACHINE_ID_SMS},
+
+    {"SVI-318",                         MACHINE_ID_SVI_318},
+    {"SVI-328",                         MACHINE_ID_SVI_328},
+
+    {"MSX1",                            MACHINE_ID_MSX1},
+
+
+    //Indicador de final
+    {"",0}
+
+};
+
+char *get_machine_name(z80_byte machine)
+{
+	int i;
+    //printf("Current machine: %d\n",machine);
+
+	for (i=0;i<99999;i++) {
+		if (machine_names[i].nombre_maquina[0]==0) {
+			char mensaje[200];
+			sprintf (mensaje,"No machine name found for machine id: %d",machine);
+			cpu_panic(mensaje);
+		}
+
+		if (machine_names[i].id==machine) return machine_names[i].nombre_maquina;
+	}
+
+	//Aunque aqui no se llega nunca, para que no se queje el compilador
+	return NULL;
+}
+
+
 /*
 
 Lista fabricantes

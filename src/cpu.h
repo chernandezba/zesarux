@@ -316,17 +316,7 @@ extern z80_bit interrupcion_timer_generada;
 extern z80_byte reg_r_antes_zx8081;
 extern z80_bit temp_zx8081_lineasparimpar;
 
-//40 mas que suficiente
-#define MAX_MACHINE_NAME 40
 
-struct s_machine_names {
-	char nombre_maquina[MAX_MACHINE_NAME];
-	int id;
-};
-
-extern struct s_machine_names machine_names[];
-
-extern char *get_machine_name(z80_byte m);
 
 extern z80_bit cpu_random_r_register;
 
