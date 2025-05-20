@@ -120,6 +120,41 @@ extern void convert_numeros_letras_puerto_teclado(z80_byte tecla,int pressreleas
 extern struct x_tabla_teclado ql_tabla_teclado_letras[];
 extern struct x_tabla_teclado ql_tabla_teclado_numeros[];
 
+//Familias de maquinas
+enum machine_families_list
+{
+    MACHINE_FAMILY_SPECTRUM,
+    MACHINE_FAMILY_ZX80,
+    MACHINE_FAMILY_ZX81,
+    MACHINE_FAMILY_QL,
+    MACHINE_FAMILY_Z88,
+    MACHINE_FAMILY_MK14,
+    MACHINE_FAMILY_CPC,
+    MACHINE_FAMILY_PCW,
+    MACHINE_FAMILY_ACE,
+    MACHINE_FAMILY_COLECO,
+    MACHINE_FAMILY_SG1000,
+    MACHINE_FAMILY_SMS,
+    MACHINE_FAMILY_SVI,
+    MACHINE_FAMILY_MSX,
+    MACHINE_FAMILY_EOF  //Usado para indicar final
+};
+
+#define MAX_FAMILY_NAME_LENGTH 30
+struct s_machine_family_names
+{
+    enum machine_families_list family_id;
+    char family_name[MAX_FAMILY_NAME_LENGTH];
+    char family_name_con_hotkey[MAX_FAMILY_NAME_LENGTH];
+    z80_byte hotkey;
+};
+
+struct s_machine_family
+{
+    z80_byte machine_id;
+    enum machine_families_list family_id;
+};
+
 extern char *string_machines_list_description;
 
 //40 mas que suficiente
@@ -128,6 +163,7 @@ extern char *string_machines_list_description;
 struct s_machine_names {
 	char nombre_maquina[MAX_MACHINE_NAME];
 	int id;
+    enum machine_families_list family_id;
 };
 
 extern struct s_machine_names machine_names[];
