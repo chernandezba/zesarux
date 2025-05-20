@@ -33076,6 +33076,13 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     sprintf(buf_linea,"Family: %s\n",debug_machine_info_family(current_machine_type));
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
+    int fabricante=return_fabricante_maquina(current_machine_type);
+    char fabricante_texto[100];
+    menu_convierte_texto_sin_modificadores(array_fabricantes_hotkey[fabricante],fabricante_texto);
+    sprintf(buf_linea,"Manufacturer: %s\n",fabricante_texto);
+    util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
+
     //CPU
     if (CPU_IS_MOTOROLA) {
         strcpy(buf_linea,"CPU: Motorola 68008\n"); //TODO: de momento no hay otras maquinas emuladas que usen cpu diferente del 68008
