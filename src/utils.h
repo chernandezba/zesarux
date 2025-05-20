@@ -650,7 +650,7 @@ extern int *return_maquinas_fabricante(int fabricante);
 
 extern int return_fabricante_maquina(int maquina);
 
-//extern int return_machine_position(int *array_maquinas,int id_maquina);
+
 
 
 struct s_tecla_redefinida
