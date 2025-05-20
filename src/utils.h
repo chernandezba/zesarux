@@ -132,6 +132,11 @@ extern struct s_machine_names machine_names[];
 
 extern char *get_machine_name(z80_byte m);
 
+extern char *debug_machine_info_family_get_family(enum machine_families_list family_id);
+extern char *debug_machine_info_family(int machine_id);
+extern enum machine_families_list debug_machine_get_id_family(int machine_id);
+extern struct s_machine_family_names family_names[];
+
 extern int get_rom_size(int machine);
 extern int get_ram_size(void);
 extern void configfile_parse(void);

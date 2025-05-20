@@ -567,10 +567,7 @@ extern int remote_load_source_code(char *archivo);
 extern int debug_load_source_code_skip_columns;
 extern void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto);
 
-extern char *debug_machine_info_family_get_family(enum machine_families_list family_id);
-extern char *debug_machine_info_family(int machine_id);
-extern enum machine_families_list debug_machine_get_id_family(int machine_id);
-extern struct s_machine_family_names family_names[];
+
 
 
 #ifdef TIMESENSORS_ENABLED
