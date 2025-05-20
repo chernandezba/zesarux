@@ -1123,13 +1123,13 @@ int *return_maquinas_fabricante(int fabricante)
 int return_fabricante_maquina(int maquina)
 {
 	switch (maquina) {
-		case 0:
-		case 1:
-		case 6:
+		case MACHINE_ID_SPECTRUM_16:
+		case MACHINE_ID_SPECTRUM_48:
+		case MACHINE_ID_SPECTRUM_128:
         case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
-		case 120:
-		case 121:
-		case 160:
+		case MACHINE_ID_ZX80:
+		case MACHINE_ID_ZX81:
+		case MACHINE_ID_QL_STANDARD:
 			return FABRICANTE_SINCLAIR;
 		break;
 
@@ -1139,13 +1139,13 @@ int return_fabricante_maquina(int maquina)
 			return FABRICANTE_TIMEX_SINCLAIR;
 		break;
 
-		case 130:
+		case MACHINE_ID_Z88:
 			return FABRICANTE_CAMBRIDGE_COMPUTERS;
 		break;
 
-		case 2:
-		case 7:
-		case 20:
+		case MACHINE_ID_INVES:
+		case MACHINE_ID_SPECTRUM_128_SPA:
+		case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
 			return FABRICANTE_INVESTRONICA;
 		break;
 
@@ -1161,12 +1161,12 @@ int return_fabricante_maquina(int maquina)
 			return FABRICANTE_MICRODIGITAL_ELECTRONICA;
 		break;
 
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-		case 12:
-		case 13:
+		case MACHINE_ID_SPECTRUM_P2:
+		case MACHINE_ID_SPECTRUM_P2_FRE:
+		case MACHINE_ID_SPECTRUM_P2_SPA:
+		case MACHINE_ID_SPECTRUM_P2A_40:
+		case MACHINE_ID_SPECTRUM_P2A_41:
+		case MACHINE_ID_SPECTRUM_P2A_SPA:
 		case MACHINE_ID_SPECTRUM_P3_40:
 		case MACHINE_ID_SPECTRUM_P3_41:
 		case MACHINE_ID_SPECTRUM_P3_SPA:
@@ -1202,32 +1202,32 @@ int return_fabricante_maquina(int maquina)
 			return FABRICANTE_SPECTRAVIDEO_INTERNATIONAL;
 		break;
 
-		case 122:
+		case MACHINE_ID_ACE:
 			return FABRICANTE_JUPITER_CANTAB;
 		break;
 
-		case 14:
+		case MACHINE_ID_ZXUNO:
 			return FABRICANTE_ZXUNO_TEAM;
 		break;
 
-		case 15:
-		case 16:
+		case MACHINE_ID_CHLOE_140SE:
+		case MACHINE_ID_CHLOE_280SE:
 			return FABRICANTE_CHLOE_CORPORATION;
 		break;
 
-		case 18:
+		case MACHINE_ID_PRISM:
 			return FABRICANTE_NEW_HORIZONS;
 		break;
 
-		case 19:
+		case MACHINE_ID_TBBLUE:
 			return FABRICANTE_NEXT_TEAM;
 		break;
 
-		case 150:
+		case MACHINE_ID_SAM:
 			return FABRICANTE_MILES_GORDON;
 		break;
 
-		case 21:
+		case MACHINE_ID_PENTAGON:
 			return FABRICANTE_PENTAGON;
 		break;
 
