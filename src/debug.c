@@ -9317,22 +9317,22 @@ z80_byte far_peek_byte(int dir)
 
 
 struct s_machine_family_names family_names[]={
-    {MACHINE_FAMILY_SPECTRUM,"Spectrum"}, //Este siempre debe ser el primero
-    {MACHINE_FAMILY_ZX80,"ZX80"},
-    {MACHINE_FAMILY_ZX81,"ZX81"},
-    {MACHINE_FAMILY_QL,"QL"},
-    {MACHINE_FAMILY_Z88,"Z88"},
-    {MACHINE_FAMILY_MK14,"MK14"},
-    {MACHINE_FAMILY_CPC,"CPC"},
-    {MACHINE_FAMILY_PCW,"PCW"},
-    {MACHINE_FAMILY_ACE,"Jupiter Ace"},
-    {MACHINE_FAMILY_COLECO,"ColecoVision"},
-    {MACHINE_FAMILY_SG1000,"SG-1000"},
-    {MACHINE_FAMILY_SMS,"Master System"},
-    {MACHINE_FAMILY_SVI,"Spectravideo"},
-    {MACHINE_FAMILY_MSX,"MSX"},
+    {MACHINE_FAMILY_SPECTRUM,"Spectrum","~~Spectrum",'s'}, //Este siempre debe ser el primero
+    {MACHINE_FAMILY_ZX80,"ZX80","ZX80",0},
+    {MACHINE_FAMILY_ZX81,"ZX81","~~ZX81",'z'},
+    {MACHINE_FAMILY_QL,"QL","~~QL",'q'},
+    {MACHINE_FAMILY_Z88,"Z88","Z88",0},
+    {MACHINE_FAMILY_MK14,"MK14","M~~K14",'k'},
+    {MACHINE_FAMILY_CPC,"CPC","~~CPC",'c'},
+    {MACHINE_FAMILY_PCW,"PCW","~~PCW",'p'},
+    {MACHINE_FAMILY_ACE,"Jupiter Ace","~~Jupiter Ace",'j'},
+    {MACHINE_FAMILY_COLECO,"ColecoVision","C~~olecoVision",'o'},
+    {MACHINE_FAMILY_SG1000,"SG-1000","S~~G-1000",'g'},
+    {MACHINE_FAMILY_SMS,"Master System","~~Master System",'m'},
+    {MACHINE_FAMILY_SVI,"Spectravideo","Sp~~ectravideo",'e'},
+    {MACHINE_FAMILY_MSX,"MSX","MS~~X",'x'},
 
-    {MACHINE_FAMILY_EOF,""}
+    {MACHINE_FAMILY_EOF,"","",0}
 };
 
 struct s_machine_family machine_family_list[]={

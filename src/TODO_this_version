@@ -162,7 +162,7 @@ ok *ordenar maquinas de cada familia (quiza quicksort). o clasificar segun impor
 ok *revisar limites y opciones admitidas
 *sam coupe es familia spectrum??? creo que deberia ser otra
 *que hacer con familias de un solo miembro ? como msx, master system...
-*hotkeys para familias?
+ok*hotkeys para familias?
 ok *seleccion de linea familia actual y maquina actual al abrir el menu segun maquina actual, que no
   lo haga si esta en un full rescan de index, como hacen los otros tipos de manufacturer y nombre
 

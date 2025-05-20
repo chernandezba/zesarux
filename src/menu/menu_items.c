@@ -30493,7 +30493,8 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
                 }
             }
 
-            menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",family_names[i].family_name);
+            menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",family_names[i].family_name_con_hotkey);
+            if (family_names[i].hotkey) menu_add_item_menu_shortcut(array_menu_machine_selection,family_names[i].hotkey);
             menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
             menu_add_item_menu_es_sencillo(array_menu_machine_selection);
             i++;

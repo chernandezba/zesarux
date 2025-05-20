@@ -641,6 +641,8 @@ struct s_machine_family_names
 {
     enum machine_families_list family_id;
     char family_name[MAX_FAMILY_NAME_LENGTH];
+    char family_name_con_hotkey[MAX_FAMILY_NAME_LENGTH];
+    z80_byte hotkey;
 };
 
 struct s_machine_family
