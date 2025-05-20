@@ -30571,7 +30571,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 	//Meterlas en array, para poderlas ordenar
 
-	struct s_machine_names *sorted_machine_names;
+	struct s_machine_names *sorted_machines_info;
 
 	int tamanyo_struct=sizeof(struct s_machine_names);
 
@@ -30579,16 +30579,16 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 	//printf ("Allocating memory for %d\n",tamanyo_total);
 
-	sorted_machine_names=malloc(tamanyo_total);
+	sorted_machines_info=malloc(tamanyo_total);
 
-	if (sorted_machine_names==NULL) cpu_panic ("Cannot allocate memory for machine list");
+	if (sorted_machines_info==NULL) cpu_panic ("Cannot allocate memory for machine list");
 
 	//Insertar listado en memoria
 	for (i=0;i<total_maquinas;i++) {
 		//printf ("id: %03d nombre: %s\n",machine_names[i].id,machine_names[i].nombre_maquina);
 
-		strcpy(sorted_machine_names[i].nombre_maquina,machine_names[i].nombre_maquina);
-		sorted_machine_names[i].machine_id=machine_names[i].machine_id;
+		strcpy(sorted_machines_info[i].nombre_maquina,machine_names[i].nombre_maquina);
+		sorted_machines_info[i].machine_id=machine_names[i].machine_id;
 	}
 
 	//Array de punteros para poderlos ordenar
@@ -30605,7 +30605,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 	//Meter en esa lista de punteros cada item de la estructura
 	for (i=0;i<total_maquinas;i++) {
-		memoria_punteros[i]=&sorted_machine_names[i];
+		memoria_punteros[i]=&sorted_machines_info[i];
 	}
 
 	//Ordenar ese listado de punteros
@@ -30686,7 +30686,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_machine_selection_cambio_tipo_lista);
 
 
-	free(sorted_machine_names);
+	free(sorted_machines_info);
 	free(memoria_punteros);
 
 
