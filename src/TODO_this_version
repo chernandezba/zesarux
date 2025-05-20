@@ -169,5 +169,7 @@ ok *seleccion de linea familia actual y maquina actual al abrir el menu segun ma
 
 -aventura barco5.tap generar "ejecutable" dentro de la misma cinta para poder testear sin tener que cargar antes el paw
 
--eliminar funcion int *return_maquinas_fabricante(int fabricante), array_maquinas_fabricantes*,
+ok-eliminar funcion int *return_maquinas_fabricante(int fabricante), array_maquinas_fabricantes*,
 recorrer array maquinas_info en vez de llamar a return_maquinas_fabricante
+
+-en machine info, que diga tambien fabricante
