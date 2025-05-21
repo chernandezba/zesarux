@@ -44,6 +44,7 @@ Mejorada emulación de Sinclair QL:
 - Agregada vista previa de archivos de pantalla de QL en el Selector de Archivos
 - Permitir usar el dispositivo win1_ como un alias de mdv1_ (útil para rutas de QL-SD)
 - Corregido teclado de Sinclair QL: permitir escritura rápida
+- Permitir desactivar pantalla
 
 Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas

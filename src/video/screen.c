@@ -11841,13 +11841,13 @@ void scr_refresca_pantalla_ql(void)
 $18063	MC_STAT		Master chip status register
 Bit	Purpose
 1	0 = Screen on
-  1 = Screen off
+    1 = Screen off
 
 3	0 = 4 colour (mode 4)
-  1 = 8 colour (mode 8)
+    1 = 8 colour (mode 8)
 
 7	0 = Use screen 0 (allegedly at $20000)
-  1 = Use screen 1 (allegedly at $280000)
+    1 = Use screen 1 (allegedly at $280000)
 
 */
 
@@ -11855,7 +11855,9 @@ Bit	Purpose
     int video_mode=(mc_stat>>3)&1;
     //printf ("mc_stat: %02XH video_mode: %d\n",mc_stat,video_mode);
 
+    int pantalla_apagada=(mc_stat & 2);
 
+    //if (pantalla_apagada) printf("Pantalla apagada %d\n",contador_segundo);
 
     int total_alto;
     int total_ancho;
@@ -11958,6 +11960,8 @@ const int ql_colortable_original[8]={
                         color1=flashing_color;
                     }
 
+                    if (pantalla_apagada) color1=0;
+
           			ql_putpixel_zoom(x++,y*2,color1);
           			ql_putpixel_zoom(x++,y*2,color1);
 
@@ -11996,6 +12000,8 @@ const int ql_colortable_original[8]={
                     else if (green && red==0) color1=4;
                     else if (green==0 && red) color1=2;
                     else color1=7;
+
+                    if (pantalla_apagada) color1=0;
 
                     ql_putpixel_zoom(x++,y*2,color1);
 

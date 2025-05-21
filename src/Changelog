@@ -44,6 +44,7 @@ Improved Sinclair QL emulation:
 - Added QL Screen file previews on File Selector
 - Allow to use win1_ device as an alias to mdv1_ (useful for QL-SD paths)
 - Fixed Sinclair QL keyboard: allow fast text writing
+- Allow display blanking
 
 Improved ZX Vision:
 - Allow to hide minimized windows
