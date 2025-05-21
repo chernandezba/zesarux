@@ -1817,22 +1817,22 @@ z80_long_int debug_modified_registers_ed_list[256]={
     //160 LDI, CPI
     MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //INI, OUTI, NOP, NOP, NOP
-    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM|MOD_READ_IN_R_C, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
     //168 LDD, CPD
     MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //IND, OUTD, NOP, NOP, NOP
-    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM|MOD_READ_IN_R_C, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
     //176 LDIR, CPIR
     MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //INIR, OTIR, NOP, NOP, NOP
-    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM|MOD_READ_IN_R_C, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
     //184 LDDR, CPDR
     MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F,
     //INDR, OTDR, NOP, NOP, NOP
-    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM|MOD_READ_IN_R_C, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
 
     //192
     0,0,0,0,0,0,0,0,
@@ -2323,6 +2323,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
             case 27:
             case 28:
             case 29:
+                //printf("registros_modificados: %XH\n",registros_modificados);
                 if (registros_modificados & MOD_READ_IN_A_N) {
                     //puerto
                     z80_byte port_l=peek_byte_z80_moto(menu_debug_memory_pointer+1);
@@ -2334,6 +2335,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
                 else if (registros_modificados & MOD_READ_IN_R_C) {
                     //puerto
+                    //printf("Puerto bc\n");
                     port=BC;
                 }
 
