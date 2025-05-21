@@ -6311,6 +6311,28 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
         sprintf (buf_linea,"MC_STAT: %02X\n",ql_mc_stat);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea," Screen %d %s Mode %d\n",
+            (ql_mc_stat & 0x80 ? 1 : 0),
+            (ql_mc_stat & 0x02 ? "Off" : "On " ),
+            (ql_mc_stat & 0x08 ? 8 : 4)
+        );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+/*
+$18063	MC_STAT		Master chip status register
+Bit	Purpose
+1	0 = Screen on
+    1 = Screen off
+
+3	0 = 4 colour (mode 4)
+    1 = 8 colour (mode 8)
+
+7	0 = Use screen 0 (allegedly at $20000)
+    1 = Use screen 1 (allegedly at $280000)
+
+*/
+
     }
 
   	if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
