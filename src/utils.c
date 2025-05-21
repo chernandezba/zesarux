@@ -678,43 +678,23 @@ char *string_machines_list_description=
 
 
 struct s_machine_family_names family_names[]={
-    {MACHINE_FAMILY_SPECTRUM,"Spectrum","~~Spectrum",'s'}, //Este siempre debe ser el primero
-    {MACHINE_FAMILY_ZX80,"ZX80","ZX80",0},
-    {MACHINE_FAMILY_ZX81,"ZX81","~~ZX81",'z'},
-    {MACHINE_FAMILY_QL,"QL","~~QL",'q'},
-    {MACHINE_FAMILY_Z88,"Z88","Z88",0},
-    {MACHINE_FAMILY_MK14,"MK14","M~~K14",'k'},
-    {MACHINE_FAMILY_CPC,"CPC","~~CPC",'c'},
-    {MACHINE_FAMILY_PCW,"PCW","~~PCW",'p'},
-    {MACHINE_FAMILY_ACE,"Jupiter Ace","~~Jupiter Ace",'j'},
-    {MACHINE_FAMILY_COLECO,"ColecoVision","C~~olecoVision",'o'},
-    {MACHINE_FAMILY_SG1000,"SG-1000","S~~G-1000",'g'},
-    {MACHINE_FAMILY_SMS,"Master System","~~Master System",'m'},
-    {MACHINE_FAMILY_SVI,"Spectravideo","Sp~~ectravideo",'e'},
-    {MACHINE_FAMILY_MSX,"MSX","MS~~X",'x'},
+    {MACHINE_FAMILY_SPECTRUM,   "Spectrum",         "~~Spectrum",       's'}, //Este siempre debe ser el primero
+    {MACHINE_FAMILY_ZX80,       "ZX80",             "ZX80",             0},
+    {MACHINE_FAMILY_ZX81,       "ZX81",             "~~ZX81",           'z'},
+    {MACHINE_FAMILY_QL,         "QL",               "~~QL",             'q'},
+    {MACHINE_FAMILY_Z88,        "Z88",              "Z88",              0},
+    {MACHINE_FAMILY_MK14,       "MK14",             "M~~K14",           'k'},
+    {MACHINE_FAMILY_CPC,        "CPC",              "~~CPC",            'c'},
+    {MACHINE_FAMILY_PCW,        "PCW",              "~~PCW",            'p'},
+    {MACHINE_FAMILY_ACE,        "Jupiter Ace",      "~~Jupiter Ace",    'j'},
+    {MACHINE_FAMILY_COLECO,     "ColecoVision",     "C~~olecoVision",   'o'},
+    {MACHINE_FAMILY_SG1000,     "SG-1000",          "S~~G-1000",        'g'},
+    {MACHINE_FAMILY_SMS,        "Master System",    "~~Master System",  'm'},
+    {MACHINE_FAMILY_SVI,        "Spectravideo",     "Sp~~ectravideo",   'e'},
+    {MACHINE_FAMILY_MSX,        "MSX",              "MS~~X",            'x'},
 
     {MACHINE_FAMILY_EOF,"","",0}
 };
-
-
-
-
-//Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
-char *debug_machine_info_family_get_family(enum machine_families_list family_id)
-{
-    int i=0;
-
-    while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
-        if (family_names[i].family_id==family_id) {
-            return family_names[i].family_name;
-        }
-        i++;
-    }
-
-    //Por defecto Spectrum
-    return family_names[0].family_name;
-}
-
 
 
 
@@ -814,6 +794,55 @@ struct s_machines_info machines_info[]={
 
 };
 
+
+char *array_fabricantes_hotkey[]={
+        "~~Amstrad",
+        "Ascii C~~orp",
+        "Cam~~bridge Computers",
+        "~~Chloe Corporation",
+        "Coleco In~~dustries",
+        "Czerweny Electronica",
+        "~~Investronica",
+        "J~~upiter Cantab",
+        "Ma~~rio Prato",
+        "~~Microdigital Eletronica",
+        "Miles Gordon Technolog~~y",
+        "N~~edoPC",
+        "Ne~~w Horizons",
+        "Ne~~xt Team",
+        "~~Pentagon",
+        "Scie~~nce of Cambridge",
+        "Se~~ga",
+        "~~Sinclair Research",
+        "Spectravideo Intl",
+        "Timex Computer",
+        "~~Timex Sinclair",
+        "TS ~~Labs",
+        "~~ZXUno Team"
+};
+
+//Si letra es espacio->no hay letra. spectravideo o timex computer no hay letras libres
+char array_fabricantes_hotkey_letra[]="aobcd iurmyewxpngs  tlz";
+
+
+//Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
+char *debug_machine_info_family_get_family(enum machine_families_list family_id)
+{
+    int i=0;
+
+    while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (family_names[i].family_id==family_id) {
+            return family_names[i].family_name;
+        }
+        i++;
+    }
+
+    //Por defecto Spectrum
+    return family_names[0].family_name;
+}
+
+
+
 //Retorna fabricante segun tipo maquina
 int return_fabricante_maquina(int machine_id)
 {
@@ -886,55 +915,8 @@ char *get_machine_name(z80_byte machine)
 }
 
 
-/*
-
-Lista fabricantes
-Science of Cambridge
-Sinclair
-Amstrad
-Timex Sinclair
-Investronica
-Microdigital Eletronica
-Zxuno team
-Chloe Corporation
-New Horizons (Jeff Braine)
-Cambridge computers
-Jupiter cantab
-Miles Gordon Tech
-Pentagon
-Czerweny Electronica
 
 
-*/
-
-char *array_fabricantes_hotkey[]={
-        "~~Amstrad",
-        "Ascii C~~orp",
-        "Cam~~bridge Computers",
-        "~~Chloe Corporation",
-        "Coleco In~~dustries",
-        "Czerweny Electronica",
-        "~~Investronica",
-        "J~~upiter Cantab",
-        "Ma~~rio Prato",
-        "~~Microdigital Eletronica",
-        "Miles Gordon Technolog~~y",
-        "N~~edoPC",
-        "Ne~~w Horizons",
-        "Ne~~xt Team",
-        "~~Pentagon",
-        "Scie~~nce of Cambridge",
-        "Se~~ga",
-        "~~Sinclair Research",
-        "Spectravideo Intl",
-        "Timex Computer",
-        "~~Timex Sinclair",
-        "TS ~~Labs",
-        "~~ZXUno Team"
-};
-
-//Si letra es espacio->no hay letra. spectravideo o timex computer no hay letras libres
-char array_fabricantes_hotkey_letra[]="aobcd iurmyewxpngs  tlz";
 
 
 z80_bit debug_parse_config_file;
