@@ -149,6 +149,7 @@
 #include "plus3dos_handler.h"
 #include "pcw.h"
 #include "zeng_online.h"
+#include "zeng_online_client.h"
 #include "mk14.h"
 #include "microdrive.h"
 #include "microdrive_raw.h"
@@ -30681,6 +30682,17 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
 void menu_machine_selection(MENU_ITEM_PARAMETERS)
 {
+
+    //Si somos cliente de partida online como slave, no permitir esto
+    if (zeng_online_connected.v && zeng_online_i_am_master.v==0) {
+        menu_error_message("You can't change machine while connected to ZENG online");
+        //Evitar que se reabra menu principal, que genera duplicado el mismo menu,
+        //dado que no se ha salido del menu con tecla cursor izquierda
+        //Asi cerramos todos los menus
+        salir_todos_menus=1;
+        return;
+    }
+
     menu_custom_rom_changed=0;
     do {
         menu_machine_selection_cambio_tipo_lista=0;
@@ -42092,6 +42104,15 @@ void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS)
 
 void menu_smartload(MENU_ITEM_PARAMETERS)
 {
+    //Si somos cliente de partida online como slave, no permitir esto
+    if (zeng_online_connected.v && zeng_online_i_am_master.v==0) {
+        menu_error_message("You can't Smartload while connected to ZENG online");
+        //Evitar que se reabra menu principal, que genera duplicado el mismo menu,
+        //dado que no se ha salido del menu con tecla cursor izquierda
+        //Asi cerramos todos los menus
+        salir_todos_menus=1;
+        return;
+    }
 
 	menu_first_aid("smartload");
 

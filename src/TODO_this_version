@@ -45,22 +45,20 @@ Revisar si hay mas sitios donde es necesario  pthread_testcancel();
 
 En modo streaming en debug CPU indicarlo de alguna manera
 
+
 Al hacer debug cpu->reset salir de online? Independientemente de si es modo streaming?
-
-
+Cambiar de maquina estando conectado como cliente en stream, se cambia la maquina y se sigue escuchando sonido. deberia salir de la partida?
+Habria que cubrir tambien cosas como hotswap, que no lo permita, o que haga leave room...
 Si por ejemplo conectado a partida online desde spectrum, cambio a maquina z88,
 y se sigue escuchando la musica del juego online
-
-
+->si cliente conectado a partida, no deja hacer ni reset ni cambiar maquina
+menu machine selection no se permite
+->debug cpu reset se permite aunque no tiene sentido
+->smartload tampoco lo permito
 
 Teclado en pantalla no va con Zeng online?
 ------
 
-
-
--Concepto de zx desktop que muestra archivos de una carpeta.
-Archivos especiales .zxicons identifican iconos del tipo de ahora.
-Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos directos) y cargarlos
 
 
 
@@ -85,7 +83,6 @@ Ver comentarios en el código donde está explicado
 AY Player
 *Video ay player con todas nuevas features
 *muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
-*ejemplo en el FAQ para reproducir archivos ay random, hacerlo ahora con las opciones de cargar carpeta en playlist y opcion random
 
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
@@ -132,7 +129,6 @@ ok * desactivar botones superiores si esta topbar
 
 -que es common A/B en sg1000??
 
-ok-vista de valor de puerto en debug cpu tambien para comandos INI, IND, INIR, INDR
 
 -Acabar de probar minimizado de ventanas con setting de ocultar minimizado
 
@@ -166,5 +162,3 @@ ok*hotkeys para familias?
 ok *seleccion de linea familia actual y maquina actual al abrir el menu segun maquina actual, que no
   lo haga si esta en un full rescan de index, como hacen los otros tipos de manufacturer y nombre
 
-
-ok-aventura barco5.tap generar "ejecutable" dentro de la misma cinta para poder testear sin tener que cargar antes el paw
