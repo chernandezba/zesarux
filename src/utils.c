@@ -5511,6 +5511,12 @@ int quickload_continue(char *nombre) {
 		timex_empty_dock_space();
 	}
 
+    //Si hay dsk insertado, expulsarlo, porque si hacemos quickload de cinta, queremos que cargue la cinta, y no el dsk que seria por defecto
+    //en Spectrum +3 por ejemplo
+    if (dskplusthree_emulation.v) {
+        dskplusthree_disable();
+    }
+
 	//Quitar top speed si es que estabamos cargando algo antes a maxima velocidad
 	top_speed_timer.v=0;
 

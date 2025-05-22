@@ -77,6 +77,7 @@ Corregido segfault al pulsar CTRL-C en consola
 Corregido cambios de color de paleta en PCW
 Corregido teclado de Chloe: permitir escritura rápida
 Corregido conmutar breakpoint en una posición que ya tenia un breakpoint cuando los breakpoints estaban desactivados
+Corregido smartload de un archivo de cinta cuando un dsk está insertado
 
 ----
 
