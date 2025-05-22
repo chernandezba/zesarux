@@ -70,6 +70,8 @@ upara lightgun la mayoria de puertos son teclado o kempston, en que ya se contro
 
 -cacalib, en X windows pero haciendo export DISPLAY=, colores normales tienen parpadeo
 
+-cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
+
 -Fallback de X11 a cacalib no va bien. El menú lo abre como si fuera pixel
 
 -funcion screen_print_splash_text que se pueda mostrar texto con menu abierto. Ideal por ejemplo para open flap del z88
