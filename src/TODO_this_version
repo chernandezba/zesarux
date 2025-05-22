@@ -34,27 +34,12 @@ ZENG Online
 -Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
 
 
-
 -Modo streaming
 acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
 
 
-
 Revisar si hay mas sitios donde es necesario  pthread_testcancel();
 
-
-En modo streaming en debug CPU indicarlo de alguna manera
-
-
-Al hacer debug cpu->reset salir de online? Independientemente de si es modo streaming?
-Cambiar de maquina estando conectado como cliente en stream, se cambia la maquina y se sigue escuchando sonido. deberia salir de la partida?
-Habria que cubrir tambien cosas como hotswap, que no lo permita, o que haga leave room...
-Si por ejemplo conectado a partida online desde spectrum, cambio a maquina z88,
-y se sigue escuchando la musica del juego online
-->si cliente conectado a partida, no deja hacer ni reset ni cambiar maquina
-menu machine selection no se permite
-->debug cpu reset se permite aunque no tiene sentido
-->smartload tampoco lo permito
 
 Teclado en pantalla no va con Zeng online?
 ------
@@ -125,8 +110,6 @@ ok * desactivar botones superiores si esta topbar
 
 
 
-
-
 -que es common A/B en sg1000??
 
 
@@ -153,12 +136,8 @@ etc.
 
 
 -seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
-ok *ordenar familias (en el array origen o luego con qsort?)
-ok *ordenar maquinas de cada familia (quiza quicksort). o clasificar segun importancia??
-ok *revisar limites y opciones admitidas
 *sam coupe es familia spectrum??? creo que deberia ser otra
 *que hacer con familias de un solo miembro ? como msx, master system...
-ok*hotkeys para familias?
-ok *seleccion de linea familia actual y maquina actual al abrir el menu segun maquina actual, que no
-  lo haga si esta en un full rescan de index, como hacen los otros tipos de manufacturer y nombre
 
+
+-en +3, al hacer smartload/insertar tap, si hay un dsk insertarlo , porque si no, acabará cargando el dsk que habia
