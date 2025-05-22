@@ -41838,6 +41838,12 @@ void menu_visual_cassette_tape_overlay(void)
 
     }
 
+    //Validacion porcentaje que no salga de los limites
+    //Esto ha llegado a pasar insertando una cinta de formato no admitido (.zip), aunque no se
+    //como ha podido insertarse pero sucedio haciendo pruebas
+    if (porcentaje<0) porcentaje=0;
+    if (porcentaje>100) porcentaje=100;
+
 
     int porcentaje_cinta_izquierdo=100-porcentaje;
     int porcentaje_cinta_derecho=porcentaje;
