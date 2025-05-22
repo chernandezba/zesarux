@@ -83,6 +83,10 @@ esa manera si que se podría aumentar el límite sin perjudicar dichas operacion
 Archivos especiales .zxicons identifican iconos del tipo de ahora.
 Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos directos) y cargarlos
 
+
+-si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
+Lo mismo pasa con un reorder
+Y lo mismo con posición de nuevos iconos
 --- FIN ZX Desktop
 
 
@@ -132,12 +136,28 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 *date file
 *etc
 
+-En visor dsk que solo muestre primer extent de un archivo. ya esta??
+-extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
+-extractor dsk que use misma manera que visor dsk?
+-extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
+lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
+
 -quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
 usar la que si considera movimiento raton
 
 
+
+-quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
+util por ejemplo para leer archivos de licencia,
+aunque eso afecta a todo mensaje genérico que aparezca en pantalla
+O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
+
+
 -Texto fondo tiene que sea carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto
 
+-Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
+quizá tiene un uso muy reducido porque los programas necesariamente no se graban con variables, excepto algunos que guardan datos
+como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables
 
 -pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
 
@@ -157,6 +177,9 @@ otro ejemplo: el logo de la ventana de about: solo hay que redibujarlo cuando ha
 otro ejemplo: help keyboard
 y muchos otros ejemplos en que son pixeles que no cambian, que no hay que redibujar continuamente
 Con eso se reducirá mucho el uso de cpu en cada frame
+
+-Alto total de process switcher se amplía si necesita ubicar más iconos?
+Debería aumentar total_height si es necesario
 
 -cuando se llama a funcion overlay de cada ventana, se deberia pasar como parametro la propia ventana (zxvision_window *),
 asi la funcion de overlay no tiene que guardar un puntero estatico fuera siempre
@@ -366,6 +389,9 @@ Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el 
 
 -Parece que color de aviso no puede ser mayor que 0-15, pues al usar los $$ de caracter, no permite otros valores. Ver test style Warning text
 
+
+-en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
+->no he conseguido reproducirlo
 -------------
 
 --- menu - mejoras ---
@@ -395,6 +421,15 @@ frecuencias muy altas.
 
 - realtape browser que pille el setting de improved algorithm yes/no
 
+-file browser no muestra dispositivos. importante para uart
+Por alguna razón, en /dev no llega a leerlos ni entrando antes del filtro. Quiza algun parametro especial del directorio
+o algo que no hago bien al leer directorio. La solución pasa por escribir el nombre directamente en el file selector (pulsando TAB o click de raton
+arriba)
+-no lee enlaces simbolicos en filesystem: ejemplo /home/pi/PREPARADOS de raspiboy
+-no se ven enlaces simbólicos en navegador de archivos. Como mínimo de Mac no se ven. Y en Linux?
+-quiza get_file_type deberia excluir sockets y devices, no considerarlos archivos normales,
+asi en smartload y similares no aparecerian -> pero en caso de UART si que deben salir dispositivos!!
+
 - Tape Improved algorithm quizá renombrar a “alternate” algorithm
 
 -ula settings visible en otras maquinas no-spectrum?
@@ -406,6 +441,12 @@ frecuencias muy altas.
 -Ventana ayuda teclado:
 * que se pudiera hacer sin multiplicar por zoom_gui? asi en next, cpc, ql etc no se verian el doble de grande
 
+-algun tipo de indicacion en un menu que diga que no debe activar salir_todos_menus al pulsar ESC, por ejemplo en algunos no quiero
+que se cierren los anteriores, ejemplo:
+*cambio de zona de memoria desde debug cpu o hexdump
+*breakpoints
+*watches
+En estos casos de momento lo que he hecho es que al final de cada menu se haga un "salir_todos_menus=0"
 
 
 -Mostrar info en menu network de descargas, commits etc. Solo si hay ssl (porque github solo esta con https)
@@ -495,6 +536,17 @@ Que uso se le da a tab? En file utils, si se tabula, cambia de sección. En men�
 
 -ventana debug cpu: si se estaba en vista 8, y luego cargamos un juego que no sea de paws/daad/quill,
 la vista 1 sera ventana grande pero con alto total reducido. Parecido a lo que sucedia al cambiar de vista
+
+-mejorar render paws/gac/daad/quill:
+*uso atributos igual que spectrum: 8x8 paper+tinta
+*implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
+
+
+-text adventure map: texto en mapa deberia seguir char filter. Pero char filter
+esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro
+
+-paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
+-daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb. comentar con Carlos-uto
 
 
 -menus tabulados:

@@ -24,8 +24,6 @@ menu_fire_event_open_menu();
 
 
 
-
-
 ----
 
 ZENG Online
@@ -42,9 +40,9 @@ Revisar si hay mas sitios donde es necesario  pthread_testcancel();
 
 
 Teclado en pantalla no va con Zeng online?
+
+-Modo streaming video para ql? Moviendo memoria de video
 ------
-
-
 
 
 -Detector silencio de la tarjeta de sonido  en vez de hacer directamente no enviar sonido,
@@ -53,8 +51,6 @@ donde se queda la tarjeta al desconectarse
 ->solo se oye el "click" con alsa
 ->No da buen resultado ese fadeout, se oye un zumbidillo a medida que va bajando el volumen, cada vez que baja 1 valor el volumen, se oye un pequeño click
 ->quiza con sampleo de 16 bits se podria hacer mas progresivo sin que se notase
-
--Modo streaming video para ql? Moviendo memoria de video
 
 
 -al insertar cintas parece que no se cierra menu, y antes creo que si que se hacia. creo que al meter cinta en real tape
@@ -73,7 +69,7 @@ AY Player
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 
--Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función de diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
+-Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
 El como acepta ese evento de momento es una incógnita
 Quizá llama a la función que crea la ventana con algún flag específico
 
@@ -109,35 +105,9 @@ ok * desactivar botones superiores si esta topbar
 
 
 
-
 -que es common A/B en sg1000??
-
-
--Acabar de probar minimizado de ventanas con setting de ocultar minimizado
 
 
 -quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
 
 
--breakpoints que se disparen cuando se cumpla una condición N veces:
-*shortcut desde ventana menu debug cpu para cambiarlo?
-*para el futuro, para poder soportar:
-a)     "== 5" — Break exactly on the 5th hit.
-b)     ">= 10" — Break on the 10th hit and beyond.
-c)     "% 3 == 0" — Break on every 3rd hit.
-De momento solo soporto a). Se podría crear una pseudovariable (CURRENTHIT) que tome el valor de cada contador del breakpoint evaluado.
-O sea si se está evaluando el primero, darle el valor del contador del primer breakpoint; si el segundo, con el segundo, etc.
-Luego en el parámetro de pass count, en vez de indicarle un numero, indicarle una expresión:
-CURRENTHIT=3
-o
-CURRENTHIT >= 3
-etc.
-
-
-
--seleccion de maquina por tipo: Spectrum, ZX81, ZX80, CPC, etc
-*sam coupe es familia spectrum??? creo que deberia ser otra
-*que hacer con familias de un solo miembro ? como msx, master system...
-
-
--en +3, al hacer smartload/insertar tap, si hay un dsk insertarlo , porque si no, acabará cargando el dsk que habia

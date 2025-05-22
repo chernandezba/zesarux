@@ -32,6 +32,8 @@ Falla con drivers: sdl
 -Parámetro change slow en rpi que no venga por defecto
 Y lo haga la gente manualmente y/ o se detecte si es rpi1
 
+-zona de memoria nueva que apunte a buffers internos, como real video, audio buffer o cosas asi. tiene sentido?
+
 -Quizá componentes threads que se pueda decidir cuál se activa como threads y cual no
 Como variable de ejecucion
 

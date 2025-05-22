@@ -52,7 +52,7 @@ En ambos entornos, mi imac Local, actuando como slave
 
 ---- ZENG ONLINE ----
 
-
+-ZENG para msx ¿no? se leen los cursores en destino cuando se pulsan desde slave
 
 -problema con zeng-online y envio de eventos:
 *del master a los slaves hay que enviar eventos, si no enviasemos eventos, si el tiempo de snapshot es algo lento (por ejemplo medio minuto)

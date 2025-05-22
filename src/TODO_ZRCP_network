@@ -9,10 +9,12 @@ Que permita integrar con ZRCP y acciones...
 
 -Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
 
-
+-permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
+ya que no abren el menu
 
 -Que se puedan ver errores debug verbose etc pero en ZRCP, de manera que no se vean en consola pero si en ZRCP. Eso permitiría debugar remotamente en raspiboy por ejemplo
 
+-ZRCP no envia teclas extendidas cuando se pulsan desde slave: por ejemplo QL y teclas []
 
 -Protocolo remoto:
 Ver si la simulación de pulsado de escape desde smartload de remote protocol no se detecta como space-break en zxuno

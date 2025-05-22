@@ -512,7 +512,14 @@ Quiza deberia leer el kempston solo por 1f o 3f??
 -parpadeo en windows, maquina Next, al entrar cada linea en basic. Sin realvideo no lo hace. Sin autoframeskip, lo hace igual.
 Activando el maximo turbo permitido, tambien hace una franja negra en el border, arriba del todo
 
+-Pantalla completa en Next sale cortada
+
 -Revisar tbblue dma con efectos sonido cuadragon next
+
+-Next: puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
+
+
+-Render pantalla next con hilos, para que sea mas rápido. Cada 4 líneas, 4 CPU diferentes. Problemas con bloqueos?
 
 
 -Poder descargar cp/m dentro de la imagen mmc de TBBlue, usando libreria Chan FatFS

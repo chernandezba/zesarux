@@ -66,6 +66,8 @@ Los de SPIN parece que si que van. No siempre: abu simbel falla
 Quiza el fallo no es al leer el RZX sino en la emulacion del spectrum... quiza hay algun momento en que se genera una interrupcion de mas? o de menos?
 algo que descuadra la lectura de puertos (alguna de mas o de menos) y ya por eso deja de funcionar bien la secuencia de INs del archivo RZX
 
+-exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
+
 
 -soporte de carga szx? Y quizá grabación también? Problema con compresion de datos, hay que usar libreria externa
 

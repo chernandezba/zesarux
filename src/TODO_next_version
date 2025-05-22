@@ -5,8 +5,6 @@ Para versión siguiente:
 -------------
 
 
--exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
-
 
 -parpadeos en driver xwindow en zx desktop al moverse por menus
 
@@ -14,6 +12,7 @@ Para versión siguiente:
 
 -con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
+-en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
 -revisar en menu_debug_change_registers(void),
 //Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
@@ -22,27 +21,11 @@ Para versión siguiente:
 -archivos de cintas que no se cierran en windows al expulsarlas
 
 
--en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
-
-
-
--En visor dsk que solo muestre primer extent de un archivo. ya esta??
--extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
--extractor dsk que use misma manera que visor dsk?
--extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
-lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
 
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
--file browser no muestra dispositivos. importante para uart
-Por alguna razón, en /dev no llega a leerlos ni entrando antes del filtro. Quiza algun parametro especial del directorio
-o algo que no hago bien al leer directorio. La solución pasa por escribir el nombre directamente en el file selector (pulsando TAB o click de raton
-arriba)
--no lee enlaces simbolicos en filesystem: ejemplo /home/pi/PREPARADOS de raspiboy
--no se ven enlaces simbólicos en navegador de archivos. Como mínimo de Mac no se ven. Y en Linux?
--quiza get_file_type deberia excluir sockets y devices, no considerarlos archivos normales,
-asi en smartload y similares no aparecerian -> pero en caso de UART si que deben salir dispositivos!!
+
 
 -revisar pantalla completa en SDL, X11
 --en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
@@ -58,9 +41,6 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 
 
 -full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
-
--en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
-->no he conseguido reproducirlo
 
 
 -Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
@@ -79,15 +59,6 @@ no genera codigo de tecla al pulsar esas extendidas
 ---Mejoras---
 -------------
 
--mejorar render paws/gac/daad/quill:
-*uso atributos igual que spectrum: 8x8 paper+tinta
-*implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
-
-
-
--text adventure map: texto en mapa deberia seguir char filter. Pero char filter
-esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro
-
 
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
@@ -97,13 +68,7 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 
 
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
-
-
--A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
-
-
--paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
--daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb. comentar con Carlos-uto
+-fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
 
 
 -texto speech en menu se oye antes que se empiece a mostrar filesel
@@ -132,29 +97,11 @@ menu_download_file
 
 
 
--fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
-
--asociar archivos tap, tzx etc en Mac a ZEsarUX
-
-
-
--algun tipo de indicacion en un menu que diga que no debe activar salir_todos_menus al pulsar ESC, por ejemplo en algunos no quiero
-que se cierren los anteriores, ejemplo:
-*cambio de zona de memoria desde debug cpu o hexdump
-*breakpoints
-*watches
-En estos casos de momento lo que he hecho es que al final de cada menu se haga un "salir_todos_menus=0"
-
-
 
 -Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
 de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
 
 
-
--si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
-Lo mismo pasa con un reorder
-Y lo mismo con posición de nuevos iconos
 
 
 -Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
@@ -163,9 +110,6 @@ Asi se podría redimensionar siempre sin que se descuadren los textos anteriores
 
 -Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
 
-
--permitir smartload de zrcp sin que haya que abrir y cerrar el menu, para poderlo usar con driver simpletext o null por ejemplo,
-ya que no abren el menu
 
 
 -soporte libretro:
@@ -187,19 +131,13 @@ cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libre
 
 
 
--quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
-util por ejemplo para leer archivos de licencia,
-aunque eso afecta a todo mensaje genérico que aparezca en pantalla
-O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
 
-Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
+-Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 Quitar el parche para soportar la eñe en dicha opcion
 Cuidado que  en la consola si hay verbose debug, se muestra caracter extraño para la ñ
 
 
-
 -Teclado en pantalla en rpi borra el input de debajo
-
 
 
 -Idea menús:
@@ -212,20 +150,12 @@ Y sin barra título
 ---Fin Mejoras---
 
 
--Pantalla completa en Next sale cortada
-
--ZRCP no envia teclas extendidas cuando se pulsan desde slave: por ejemplo QL y teclas []
-
--ZENG para msx ¿no? se leen los cursores en destino cuando se pulsan desde slave
 
 -gac debug con condactos y paso a paso
-
-- Emulación trs 80?
 
 
 
 -Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R? Problema que está guardando algunos registros en parte alta de la memoria y puede interferir con el stack si no se ha cambiado el CLEAR
-
 
 
 
@@ -234,7 +164,7 @@ Y sin barra título
 
 -Documentar cómo van los archivos txt de update del server
 -comentar desensamblado copion9
--diagrama de como funciona zeng online
+-diagrama de como funciona zeng online: quiza ya no hace falta porque hay la ventana de ZENG status
 
 --- Fin Documentar ---
 
@@ -249,9 +179,7 @@ Por ejemplo "Betadisk" está en Main Menu->Storage->Betadisk
 
 -menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado, pero solo cuando es driver texto
 
--Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
-quizá tiene un uso muy reducido porque los programas necesariamente no se graban con variables, excepto algunos que guardan datos
-como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables
+
 
 -issues de submenus:
 --quiza en un menu_dibuja_menu_dialogo_no_title_lang, al pulsar ESC, no debe activar salir_todos_menus
@@ -261,8 +189,6 @@ aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> bl
 
 -con no border on full screen & no footer on full screen, al salir de full screen a veces peta
 parece que es la llamada a menu_interface_border
-
--zona de memoria nueva que apunte a buffers internos, como real video, audio buffer o cosas asi. tiene sentido?
 
 
 
@@ -276,68 +202,17 @@ pues si van a menu anterior, al abrir ese menu ya detectan error pendiente y lo 
 
 -botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
 
------------------------
----INICIO microdrive---
------------------------
-
-*convertir rmd a mdr y vuelta a rmd
-Con archivos p256, etc. creados con microdrive-test.tap
-mdr no encuentra todo archivo p4096 (parece que falla dos ultimos bloques), aunque chkdsk bien y extract archivo bien
-rmd final funciona bien, encuentra todos archivos
-Con Fuse tampoco encuentra ese archivo
-La particularidad es que ese archivo tiene bloques a final de microdrive y al principio
--esa conversion de rmd a mdr, sin archivos (solo con el formateo) pasa de 126 a 125 sectores...
-
-
-
------------------------
----FIN microdrive---
------------------------
-
-
-
-
------------------------
----INICIO Hilow     ---
------------------------
-
--Comentarios en la ROM de hilow de Jane recopilar
-
--poder convertir ddh a raw
-
-
------------------------
----FIN Hilow        ---
------------------------
 
 
 
 -en FAQ formatos MDR/RMD, DDH/RAW
 
 
--Soportar extensiones .sd y .sdhc? Las últimas deberían activar parámetro de direccionamiento sdhc
-
--Sonido de lectura y escritura de floppy +3, según codificación. Manchester? Mfm?
-
 
 -ppi chip 8255 el mismo en cpc y msx...
 
-
-
 -En MSX y SVI no estoy usando usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
 
-
-
--Alto total de process switcher se amplía si necesita ubicar más iconos?
-Debería aumentar total_height si es necesario
-
--Next: puerto 0x5f de DAC D entra en conflicto con volumen canal A de chip AY?
-
-
-
--Accesos mmc más allá del límite no deben desactivar la tarjeta. Solo log del aviso. En general para todos los dispositivos
-
--Render con hilos. Cada 4 líneas, 4 CPU diferentes. Problemas con bloqueos?
 
 
 
@@ -368,7 +243,6 @@ deja la ventana de ZEsarUX en un estado inconsistente
 Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta acabado de iniciar aun
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
-
 
 
 -si tiene que avisar de nueva version disponible en github, parece que no sale aviso si salta un first aid de inicio (testeado en windows)

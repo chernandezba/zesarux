@@ -41,6 +41,8 @@ que lea/escriba a velocidad real (o sea mas lento que como hace ahora). Ahora la
 
 -PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 -implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
+
+-Sonido de lectura y escritura de floppy +3, según codificación. Manchester? Mfm?
 -----------------------
 
 
@@ -112,6 +114,10 @@ Quizá activar flag cuando se escribe al menos una vez y al salir sabemos si hay
 
 -Creacion imagen mmc desde seleccion de imagen mmc, la crea byte a byte y con tamaños grandes puede ser muy lento
 
+-Soportar extensiones .sd y .sdhc? Las últimas deberían activar parámetro de direccionamiento sdhc
+
+-Accesos mmc más allá del límite no deben desactivar la tarjeta. Solo log del aviso. En general para todos los dispositivos
+
 ------------------
 
 
@@ -171,6 +177,14 @@ The &E3 Port is untouched. The &17 Port is 8bit, outputs are called Q0..Q7, as f
 if (z80_wait_signal.v) {
     t_estados++;
 }
+
+*convertir rmd a mdr y vuelta a rmd
+Con archivos p256, etc. creados con microdrive-test.tap
+mdr no encuentra todo archivo p4096 (parece que falla dos ultimos bloques), aunque chkdsk bien y extract archivo bien
+rmd final funciona bien, encuentra todos archivos
+Con Fuse tampoco encuentra ese archivo
+La particularidad es que ese archivo tiene bloques a final de microdrive y al principio
+-esa conversion de rmd a mdr, sin archivos (solo con el formateo) pasa de 126 a 125 sectores...
 
 -------------------
 
@@ -239,6 +253,9 @@ Sector -407021264
 -convert a ddh:
 *linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
 
+-Comentarios en la ROM de hilow de Jane recopilar
+
+-poder convertir ddh a raw
 
 ------------------
 
