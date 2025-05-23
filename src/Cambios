@@ -79,6 +79,7 @@ Corregido teclado de Chloe: permitir escritura rápida
 Corregido conmutar breakpoint en una posición que ya tenia un breakpoint cuando los breakpoints estaban desactivados
 Corregido smartload de un archivo de cinta cuando un dsk está insertado
 Corregido visual casette tape al insertar una cinta no soportada
+Corregida pestaña de protección de escritura en ventana de visual hilow datadrive
 
 ----
 

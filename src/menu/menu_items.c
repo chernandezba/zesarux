@@ -37880,8 +37880,9 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
         d->drawcircle(d,i);
     }
 
-    if (pestanyas_escritura) {
-        d->setcolour(d,0);
+    //si no tiene pestañas, ponerlas del color del fondo, para borrarlas
+    if (!pestanyas_escritura) {
+        d->setcolour(d,GENERIC_VISUALTAPE_COLOR_FONDO);
         d->jumppos(d,60,0);
         d->drawfilledrectangle(d,60,10);
 

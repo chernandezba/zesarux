@@ -79,6 +79,7 @@ Fixed Chloe keyboard: allow fast text writing
 Fixed toggle breakpoint on a position that already had a breakpoint when breakpoints were disabled
 Fixed smartloading a tape file when a dsk is inserted
 Fixed visual casette tape when inserting an unsupported tape
+Fixed write protect tab on visual hilow datadrive window
 
 ----
 
