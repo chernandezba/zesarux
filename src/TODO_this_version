@@ -109,5 +109,8 @@ porque para el usuario es confuso
 ->el problema es que cuando acaba de reproducir los archivos , se para todo y esas lineas de menu estan ahi,
 esta dentro de la funcion de menu y no se puede hacer que salga del menu para ubicar esas lineas arriba del todo
 
--hilow datadrive: hacer pruebas de escrituras (save, format, delete etc) con proteccion de escritura, tanto en ddh como raw,
+-hilow datadrive:
+*hacer pruebas de escrituras (save, format, delete etc) con proteccion de escritura, tanto en ddh como raw,
 por ver los diferentes mensajes de error
+*visual datadrive: ver si pestañas están bien ahora o queremos que se vean gruesas las pestañas cuando no están rotas
+,pero puede que se vieran muy gruesas si ventana muy grande, debido a la escala

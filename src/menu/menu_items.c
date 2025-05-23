@@ -37884,10 +37884,12 @@ void menu_generic_visualtape_dibujar_cinta_estatica(struct zxvision_vectorial_dr
     if (!pestanyas_escritura) {
         d->setcolour(d,GENERIC_VISUALTAPE_COLOR_FONDO);
         d->jumppos(d,60,0);
-        d->drawfilledrectangle(d,60,10);
+        //d->drawfilledrectangle(d,60,10);
+        d->setrelpos(d,+60,0);
 
         d->jumppos(d,GENERIC_VISUALTAPE_ANCHO_CINTA-60-60,0);
-        d->drawfilledrectangle(d,60,10);
+        //d->drawfilledrectangle(d,60,10);
+        d->setrelpos(d,+60,0);
     }
 
 
