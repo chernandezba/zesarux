@@ -3,9 +3,9 @@ ZEsarUX 12.1 - Night Shift edition. 24 May 2025
 * New things added:
 
 Added Streaming mode to ZENG Online for ZX Spectrum. It improves gaming experience: reduces lag and drops all game state inconsistencies between all players
-Added conversion of ZX81 files P to P81, and P81 to P
 Added ZXMMC+ emulation
 Added second MMC/SD card emulation
+Added conversion of ZX81 files P to P81, and P81 to P
 Added direct functions to increase/decrease Audio Volume
 Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot
@@ -18,16 +18,6 @@ Added support for up to 4 joystick fire buttons on:
 - Master System, SG1000, Colecovision: 2 buttons
 
 * Improvements:
-
-Improve maximum sent keys to ZENG/ZENG Online
-Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
-Improved Mac timing by using native timer
-Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
-Improved File Selector: allow to use path to a FAT mounted image on all cases
-Improved Visual Cassette Tape window: support standard tape too
-Improved Custom rom setting adding a Reset machine option
-Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
-Improved View Basic window: allow lines > 9999, useful for protected programs
 
 Improved AY Player:
 - Allow to load playlist
@@ -60,12 +50,22 @@ Improved ZX Vision:
 - Fixed glitch duplicating Main Menu when pressing F6 on Main Menu
 
 Improved Debug CPU:
-- Show port number when opcode IN. Show keyboard row when port is XXFEH on Spectrum
+- Show port number when port read opcode (IN, INI, etc). Show keyboard row when port is XXFEH on Spectrum
 - Show view number inside the window and not in the window title
 - Added pass count to breakpoints (a breakpoint that is triggered when the condition is hit a certain times)
 - Improved edit breakpoint window
 - Added option to enable/disable all breakpoints
 - Fixed moving cursor up when address near 0
+
+Improve maximum sent keys to ZENG/ZENG Online
+Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
+Improved Mac timing by using native timer
+Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
+Improved File Selector: allow to use path to a FAT mounted image on all cases
+Improved Visual Cassette Tape window: support standard tape too
+Improved Custom rom setting adding a Reset machine option
+Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
+Improved View Basic window: allow lines > 9999, useful for protected programs
 
 * Fixes:
 

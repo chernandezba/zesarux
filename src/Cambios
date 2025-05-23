@@ -3,37 +3,27 @@ ZEsarUX 12.1 - Night Shift edition. 24 Mayo 2025
 * Cosas nuevas agregadas:
 
 Agregado modo Streaming a ZENG Online para ZX Spectrum. Mejora la experiencia de juego: reduce lag y elimina cualquier inconsistencia de estado de juego en todos los jugadores
-Agregada conversión de archivos ZX81 P a P81, y P81 a P
 Agregada emulación de ZXMMC+
 Agregado emulación de una segunda tarjeta de MMC/SD
+Agregada conversión de archivos ZX81 P a P81, y P81 a P
 Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
 Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Agregado soporte para archivos .ay en Visor de Archivos
-Agregado suporte para 4 botones de fuego de joystick en:
+Agregado soporte para 4 botones de fuego de joystick en:
 - Kempston joystick (Spectrum): 4 botones
 - Amstrad CPC: 3 botones
 - Master System, SG1000, Colecovision: 2 botones
 
 * Mejoras:
 
-Mejorado máximo de teclas enviado a ZENG/ZENG Online
-Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
-Mejorada temporización en Mac usando temporizador nativo
-Mejoado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
-Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en todos los casos
-Mejorada ventana de  Visual Cassette Tape window: soportar también cinta estándar
-Mejorada opción de Custom rom agregando una opción para resetear la máquina
-Mejorado emulación de DivMMC, DivIDE y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD o IDE insertado
-Mejorada ventana de View Basic: permitir lineas > 9999, útil para programas protegidos
-
 Mejorado AY Player:
 - Permitir cargar lista de reproducción del AY Player
 - Permitir grabar lista de reproducción del AY Player (lista entera o sólo archivos marcados)
 - Permitir incrementar longitud de pista (para algunas pistas con longitud incorrecta)
-- Agregadas funciones directas para siguente/anterior pista/archivo
+- Agregadas funciones directas para siguiente/anterior pista/archivo
 - Mostrar décimas de segundo en duración de canción y tiempo transcurrido
 - Mejor algoritmo de aleatorio
 - Corregida detección de silencio cuando la reproducción está pausada
@@ -49,7 +39,7 @@ Mejorada emulación de Sinclair QL:
 Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
 - Permitir ubicar ventanas mas allá de los límites de la ventana principal de ZEsarUX
-- No reabir el menu al cerrar una ventana
+- No reabrir el menú al cerrar una ventana
 - Permitir escritura rápida de texto en campos de entrada
 - Mostrar, con un punto, cuando un icono es de una ventana abierta pero minimizada
 - Mantener las proporciones de tamaño de la ventana de ZEsarUX (no permitir zoom x/y diferente) por defecto
@@ -60,18 +50,28 @@ Mejorado ZX Vision:
 - Corregido fallo que duplica el Menú Principal al pulsar F6 desde el Menú Principal
 
 Mejorado Debug CPU:
-- Mostrar número de puerto cuando instrucción IN. Mostrar fila teclado cuando puerto es XXFEH en Spectrum
+- Mostrar número de puerto cuando instrucción de lectura puertos (IN, INI, etc). Mostrar fila teclado cuando puerto es XXFEH en Spectrum
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
 - Agregado cuenta de pasos a breakpoints (un breakpoint que se activa cuando se cumple la condición un número de veces)
 - Mejorada ventana de edición de breakpoints
 - Agregar opción para activar/desactivar todos los breakpoints
 - Corregido al mover cursor arriba cuando la dirección está cercana a 0
 
+Mejorado máximo de teclas enviado a ZENG/ZENG Online
+Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
+Mejorada temporización en Mac usando temporizador nativo
+Mejorado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
+Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en todos los casos
+Mejorada ventana de Visual Cassette Tape: soportar también cinta estándar
+Mejorada opción de Custom rom agregando una opción para resetear la máquina
+Mejorada emulación de DivMMC, DivIDE y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD o IDE insertada
+Mejorada ventana de View Basic: permitir lineas > 9999, útil para programas protegidos
+
 * Correcciones:
 
 Corregido bloqueo de semáforos en Windows
 Corregido cálculo de uso de cpu cuando el footer está desactivado
-Corregido asignación de esxdos handler root dir al cargar un archivo .nex sin indicar path desde linea de comandos
+Corregida asignación de esxdos handler root dir al cargar un archivo .nex sin indicar path desde linea de comandos
 Corregido bug al restaurar un snapshot ZSF con DivIDE activado
 Corregido segfault al pulsar CTRL-C en consola
 Corregido cambios de color de paleta en PCW
