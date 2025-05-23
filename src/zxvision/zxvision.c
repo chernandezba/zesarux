@@ -25724,6 +25724,9 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: Handling right button press on a configurable icon (%d)",pulsado_boton);
 
+        //porque queremos que el menu aparezca pegado al raton
+        zxvision_set_next_menu_position_from_current_mouse();
+
         menu_zxdesktop_set_configurable_icons_modify(pulsado_boton);
 
 
