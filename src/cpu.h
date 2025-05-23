@@ -25,8 +25,8 @@
 #include "compileoptions.h"
 
 
-#define EMULATOR_VERSION "12.1-SN"
-//#define EMULATOR_VERSION "12.1-B2"
+//#define EMULATOR_VERSION "12.1-SN"
+#define EMULATOR_VERSION "12.1-B1"
 //#define EMULATOR_VERSION "12.1-RC"
 //#define EMULATOR_VERSION "12.1"
 #define SNAPSHOT_VERSION
