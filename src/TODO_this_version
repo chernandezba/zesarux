@@ -103,3 +103,8 @@ ok * desactivar botones superiores si esta topbar
 
 
 -quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
+
+-AY Player: quiza cuando no hay nada cargado, que la linea de playlist add edit aparezca arriba del todo,
+porque para el usuario es confuso
+->el problema es que cuando acaba de reproducir los archivos , se para todo y esas lineas de menu estan ahi,
+esta dentro de la funcion de menu y no se puede hacer que salga del menu para ubicar esas lineas arriba del todo
