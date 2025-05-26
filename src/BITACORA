@@ -1,3 +1,34 @@
+25 Mayo 2025
+
+En varias ocasiones he pensado poder incorporar controles analógicos de joystick de pc (como volantes) a la emulación. La idea es que en vez de leer
+cuando se mueve el volante a izquierda o derecha, utilizar el valor analógico del movimiento del joystick para saber "que tanto" se está girando
+el volante.
+Esto no tendría mucho sentido (o sería demasiado esfuerzo) si fuese para crear juegos nuevos, pero lo atractivo aquí es poder modificar juegos
+existentes de Spectrum para que lo utilicen. Uno de estos juegos es el Hard Drivin'. Este es un juego al que he jugado mucho y acabé por dominar
+el control de su movimiento "analógico" del volante: con las pulsaciones de teclas izquierda o derecha, el volante se va girando en una de esas
+direcciones, y puede estar mas o menos girado. Esto es un problema cuando hay que volver a poner el mando centrado por ejemplo, que se necesita
+mucha práctica. Pero con el tiempo descubrí el truco de pulsar la tecla Space, que se encarga de centrar el volante. Usando las teclas de giro y
+el space, conseguí controlar el coche, siendo uno de mis juegos favoritos y de los pocos que me he conseguido acabar.
+Volviendo al volante analógico, se trata de que se pueda leer la posición del volante y pasársela al juego, sin tener que usar las teclas de
+dirección ni la tecla space.
+Haciendo uso de la ventana de Memory Cheat de ZEsarUX, buscando valores que se van cambiando en memoria (girando el volante continuamente) en el Hard Drivin',
+me encuentro que la dirección de memoria 96ach se encarga de guardar la posición del volante, con rango desde -120 (volante completamente a la izquierda),
+hasta +120 (volante completamente a la derecha).
+Trampeando un poco el código de ZEsarUX donde se gestiona el joystick, hago que se escriba en esa dirección la posición del volante
+(escalando desde los valores -32768 hasta +32767 que gestiona ZEsarUX). Y puedo jugar, por primera vez, al Hard Drivin' en Spectrum con un volante :)
+La experiencia ha sido muy satisfactoria.
+Me he puesto a probar también con el wec le mans y test drive 2, ambos también con control analógico para el volante, aunque ambos cuentan
+con una función que retorna el volante al centro de manera automática. Modificando esos puntos para que no retorne el volante, y trampeando de
+nuevo el código de ZEsarUX, puedo jugar a ambos con mi volante.
+Las tareas siguientes serán:
+- Opción dentro del menú de configuración de real joystick para poder modificar una posición de memoria guardando la posición del volante.
+Así como rangos de valores admitidos, etc
+- Juegos que tienen funciones de auto-retorno de volante, crearé archivos .POK para desactivar esas secciones
+- Probar mas juegos donde se pueda incorporar el volante, como Toyota celica, Drift y Nightmare rally
+
+Después de eso, crear un video donde se pueda enseñar a la gente la funcionalidad.
+
+
 20 Marzo 2025
 
 Aquí nace un nuevo archivo dentro de ZEsarUX, una bitácora de desarrollo con la intención de ir describiendo los cambios realizados en él.
