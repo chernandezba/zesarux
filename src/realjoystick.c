@@ -1142,7 +1142,8 @@ int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=0;
 */
 
-//Nightmare rally. TODO conseguir que centro sea 4
+//Nightmare rally
+
 z80_int realjoystick_steering_address=0x8e00;
 int realjoystick_steering_min_value=+1;
 int realjoystick_steering_max_value=+7;
@@ -1161,6 +1162,8 @@ int realjoystick_steering_max_value=+11;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=0;
 */
+
+//Chase HQ. Dos contadores. A263, A264
 
 //lectura de evento de joystick y conversion a movimiento de joystick spectrum
 void realjoystick_common_set_event(int button,int type,int value)
