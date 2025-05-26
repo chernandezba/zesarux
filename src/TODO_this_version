@@ -152,3 +152,10 @@ fb27h
 
 en 8317h  retorno a 0
 corregirlo con un jr 832ah (18h, 11h, 00h : el 00 final es para quitar restos y que no parezca que haya un ei)
+
+
+-toyota celica
+5c41h o
+5c74h NO
+
+-5..5

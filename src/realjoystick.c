@@ -1102,24 +1102,16 @@ int realjoystick_steering_enabled=0;
 
 //Hard drivin. 96ach
 //hard drivin acepta valores entre -120 y +120
+/*
 z80_int realjoystick_steering_address=0x96ac;
 int realjoystick_steering_min_value=-120;
 int realjoystick_steering_max_value=+120;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=0;
+*/
+
 
 /*
-
-//Test drive 2. fb27h
-//0..63.32 centro
-z80_int realjoystick_steering_address=0xfb27;
-int realjoystick_steering_min_value=0;
-int realjoystick_steering_max_value=63;
-int realjoystick_steering_center_value=32;
-int realjoystick_steering_inverted=0;
-
-
-
 //Wec le mans. e5e2h
 //izquierda: +12
 //derecha: (-12)
@@ -1128,8 +1120,35 @@ int realjoystick_steering_min_value=-12;
 int realjoystick_steering_max_value=+12;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=1;
-
 */
+
+
+//Test drive 2. fb27h
+//0..63.32 centro
+/*
+z80_int realjoystick_steering_address=0xfb27;
+int realjoystick_steering_min_value=0;
+int realjoystick_steering_max_value=63;
+int realjoystick_steering_center_value=32;
+int realjoystick_steering_inverted=0;
+*/
+
+//Toyota celica. Hay que cambiar el steering return a manual desde menu
+/*
+z80_int realjoystick_steering_address=0x5c41;
+int realjoystick_steering_min_value=-5;
+int realjoystick_steering_max_value=+5;
+int realjoystick_steering_center_value=0;
+int realjoystick_steering_inverted=0;
+*/
+
+//Nightmare rally. TODO conseguir que centro sea 4
+z80_int realjoystick_steering_address=0x8e00;
+int realjoystick_steering_min_value=+1;
+int realjoystick_steering_max_value=+7;
+int realjoystick_steering_center_value=+4;
+int realjoystick_steering_inverted=0;
+//9f73: centrado. 9f66 nop?
 
 //lectura de evento de joystick y conversion a movimiento de joystick spectrum
 void realjoystick_common_set_event(int button,int type,int value)
@@ -1150,7 +1169,7 @@ void realjoystick_common_set_event(int button,int type,int value)
 			menu_info_joystick_last_index=-1; //de momento suponemos ningun evento
 
             if (realjoystick_steering_enabled && button==realjoystick_steering_button && type==REALJOYSTICK_INPUT_EVENT_AXIS)  {
-                printf("Volante: %d\n",value);
+
 
                 //Asumimos que valores que envia el joystick van entre -32768 y +32768
 
@@ -1169,6 +1188,9 @@ void realjoystick_common_set_event(int button,int type,int value)
                 if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
 
                 if (realjoystick_steering_inverted) valor_volante=-valor_volante;
+
+
+                printf("Lectura Volante: %d Valor escrito: %d\n",value,valor_volante);
 
                 poke_byte_no_time(realjoystick_steering_address,valor_volante);
             }
