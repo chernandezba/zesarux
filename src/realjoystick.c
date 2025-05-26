@@ -1148,7 +1148,19 @@ int realjoystick_steering_min_value=+1;
 int realjoystick_steering_max_value=+7;
 int realjoystick_steering_center_value=+4;
 int realjoystick_steering_inverted=0;
-//9f73: centrado. 9f66 nop?
+//9f5d sub d -> nop? 92h (146)
+
+
+/*
+//Drift. 9dech. -11,+11
+//8c30 ret z (c8)
+//Aunque el volante no se ve en pantalla correctamente
+z80_int realjoystick_steering_address=0x9dec;
+int realjoystick_steering_min_value=-11;
+int realjoystick_steering_max_value=+11;
+int realjoystick_steering_center_value=0;
+int realjoystick_steering_inverted=0;
+*/
 
 //lectura de evento de joystick y conversion a movimiento de joystick spectrum
 void realjoystick_common_set_event(int button,int type,int value)
@@ -1182,12 +1194,19 @@ void realjoystick_common_set_event(int button,int type,int value)
                     valor_volante +=32768;
                 }
 
-                valor_volante=(valor_volante*multiplicador)/65536;
+                if (realjoystick_steering_center_value!=0 && valor_volante==32768) {
+                    //Para Nightmare rally, porque si no, el centro de volante daria valor 3 y no 4 como espera
+                    valor_volante=realjoystick_steering_center_value;
+                }
+                else {
 
-                if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
-                if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
+                    valor_volante=(valor_volante*multiplicador)/65536;
 
-                if (realjoystick_steering_inverted) valor_volante=-valor_volante;
+                    if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
+                    if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
+
+                    if (realjoystick_steering_inverted) valor_volante=-valor_volante;
+                }
 
 
                 printf("Lectura Volante: %d Valor escrito: %d\n",value,valor_volante);
