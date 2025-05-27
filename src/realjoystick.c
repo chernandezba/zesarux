@@ -1096,9 +1096,9 @@ int realjoystick_set_event_key(char *text_event,char *text_key)
 
 
 
-
+z80_bit realjoystick_steering_enabled={0};
 int realjoystick_steering_button=48;
-int realjoystick_steering_enabled=0;
+
 
 //Hard drivin. 96ach
 //hard drivin acepta valores entre -120 y +120
@@ -1200,7 +1200,7 @@ void realjoystick_common_set_event(int button,int type,int value)
 
 			menu_info_joystick_last_index=-1; //de momento suponemos ningun evento
 
-            if (realjoystick_steering_enabled && button==realjoystick_steering_button && type==REALJOYSTICK_INPUT_EVENT_AXIS)  {
+            if (realjoystick_steering_enabled.v && button==realjoystick_steering_button && type==REALJOYSTICK_INPUT_EVENT_AXIS)  {
 
 
                 //Asumimos que valores que envia el joystick van entre -32768 y +32768

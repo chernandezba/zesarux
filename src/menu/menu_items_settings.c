@@ -227,6 +227,7 @@ int menu_tbblue_hardware_id_opcion_seleccionada=0;
 int network_settings_opcion_seleccionada=0;
 int zeng_online_server_opcion_seleccionada=0;
 int settings_danger_zone_opcion_seleccionada=0;
+int hardware_realjoystick_steering_opcion_seleccionada;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -10788,6 +10789,76 @@ void menu_hardware_realjoystick_native(MENU_ITEM_PARAMETERS)
 	menu_generic_message("Linux native driver","OK. You must reopen ZEsarUX to apply this setting");
 }
 
+void menu_hardware_realjoystick_steering_enable(MENU_ITEM_PARAMETERS)
+{
+    realjoystick_steering_enabled.v ^=1;
+}
+
+void menu_hardware_realjoystick_steering_button(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Axis number",&realjoystick_steering_button,4,+1,0,255,0);
+}
+
+void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_enable,NULL,
+            "Enable steering wheel","Activar volante","Activar volant");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(realjoystick_steering_enabled.v ? 'X' : ' ' ));
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_button,NULL,
+            "Axis number","Número de eje","Número del eix");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",realjoystick_steering_button);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tooltip(array_menu_common,"Set the axis number assigned to wheel movement");
+        menu_add_item_menu_ayuda(array_menu_common,"Set the axis number assigned to wheel movement");
+
+/*
+
+
+int =48;
+
+z80_int realjoystick_steering_address=0x96ac;
+int realjoystick_steering_min_value=-120;
+int realjoystick_steering_max_value=+120;
+int realjoystick_steering_center_value=0;
+int realjoystick_steering_inverted=0;
+int realjoystick_steering_two_addresses=0;
+*/
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings Menu-> Hardware-> Real joystick settings-> Steering wheel",
+            "Menú Principal-> Menú Opciones-> Hardware-> Opciones joystick real-> Volante",
+            "Menú Principal-> Menú Opcions-> Hardware-> Opcions joystick real-> Volant");
+
+        retorno_menu=menu_dibuja_menu(&hardware_realjoystick_steering_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Steering wheel","Volante","Volant" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
 
 
 
@@ -10848,6 +10919,12 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
         menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering,NULL,
+            "Steering wheel","Volante","Volant");
+		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Assign an analog control on the joystick to a wheel on a game");
+		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Assign an analog control on the joystick to a wheel on a game");
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_TIENE_SUBMENU);
 
 
         menu_add_item_menu_separator(array_menu_hardware_realjoystick);
