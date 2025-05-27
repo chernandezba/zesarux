@@ -12448,6 +12448,31 @@ void parse_customfile_options(void)
             realjoystick_steering_center_value=parse_string_to_number(argv[puntero_parametro]);
         }
 
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-no-inverted")) {
+            realjoystick_steering_inverted.v=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-inverted")) {
+            realjoystick_steering_inverted.v=1;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-no-two-addresses")) {
+            realjoystick_steering_two_addresses.v=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-two-addresses")) {
+            realjoystick_steering_two_addresses.v=1;
+        }
+
+        //Pensados inicialmente para desactivar retornos de volante, usados conjuntamente con parametros --steering*
+        //pero tambien podria servir para poner pokes en un juego cargado, u otras modificaciones
+        else if (!strcmp(argv[puntero_parametro],"--poke")) {
+            siguiente_parametro_argumento();
+            z80_int dir=parse_string_to_number(argv[puntero_parametro]);
+            siguiente_parametro_argumento();
+            z80_byte value=parse_string_to_number(argv[puntero_parametro]);
+            poke_byte_no_time(dir,value);
+        }
 
 
 
