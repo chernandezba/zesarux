@@ -10799,6 +10799,18 @@ void menu_hardware_realjoystick_steering_button(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Axis number",&realjoystick_steering_button,4,+1,0,255,0);
 }
 
+void menu_hardware_realjoystick_steering_address(MENU_ITEM_PARAMETERS)
+{
+    int address=realjoystick_steering_address;
+    menu_ventana_scanf_numero_enhanced("Address",&address,6,+1,0,65535,0);
+    realjoystick_steering_address=address;
+}
+
+void menu_hardware_realjoystick_steering_min_value(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Minimum value",&realjoystick_steering_min_value,4,+1,-128,+255,0);
+}
+
 void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -10819,13 +10831,25 @@ void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Set the axis number assigned to wheel movement");
         menu_add_item_menu_ayuda(array_menu_common,"Set the axis number assigned to wheel movement");
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_address,NULL,
+            "Address","Dirección","Adreça");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%04X]",realjoystick_steering_address);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tooltip(array_menu_common,"Memory address where the game stores the wheel position");
+        menu_add_item_menu_ayuda(array_menu_common,"Memory address where the game stores the wheel position");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_min_value,NULL,
+            "Minimum value","Mínimo valor","Mínim valor");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",realjoystick_steering_min_value);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tooltip(array_menu_common,"Minimum value stored on address (usually when wheel on maximum left position)");
+        menu_add_item_menu_ayuda(array_menu_common,"Minimum value stored on address (usually when wheel on maximum left position)");
+
 /*
 
 
-int =48;
-
-z80_int realjoystick_steering_address=0x96ac;
-int realjoystick_steering_min_value=-120;
+z80_int =0x96ac;
+int =-120;
 int realjoystick_steering_max_value=+120;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=0;
@@ -10921,10 +10945,11 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering,NULL,
-            "Steering wheel","Volante","Volant");
+            "S~~teering wheel","Volan~~te","Volan~~t");
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Assign an analog control on the joystick to a wheel on a game");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Assign an analog control on the joystick to a wheel on a game");
         menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_TIENE_SUBMENU);
+        menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'t');
 
 
         menu_add_item_menu_separator(array_menu_hardware_realjoystick);

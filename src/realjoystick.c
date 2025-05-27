@@ -1099,6 +1099,16 @@ int realjoystick_set_event_key(char *text_event,char *text_key)
 z80_bit realjoystick_steering_enabled={0};
 int realjoystick_steering_button=48;
 
+z80_int realjoystick_steering_address=0x0000;
+int realjoystick_steering_min_value=-120;
+int realjoystick_steering_max_value=+120;
+int realjoystick_steering_center_value=0;
+z80_bit realjoystick_steering_inverted={0};
+
+//dos direcciones, de 0 a max_value, primera dir es derecha, segunda es izquierda
+//Por ejemplo para Chase HB
+z80_bit realjoystick_steering_two_addresses={0};
+
 
 //Hard drivin. 96ach
 //hard drivin acepta valores entre -120 y +120
@@ -1107,8 +1117,8 @@ z80_int realjoystick_steering_address=0x96ac;
 int realjoystick_steering_min_value=-120;
 int realjoystick_steering_max_value=+120;
 int realjoystick_steering_center_value=0;
-int realjoystick_steering_inverted=0;
-int realjoystick_steering_two_addresses=0;
+z80_bit realjoystick_steering_inverted={0};
+z80_bit realjoystick_steering_two_addresses={0};
 */
 
 
@@ -1120,8 +1130,8 @@ z80_int realjoystick_steering_address=0xe5e2;
 int realjoystick_steering_min_value=-12;
 int realjoystick_steering_max_value=+12;
 int realjoystick_steering_center_value=0;
-int realjoystick_steering_inverted=1;
-int realjoystick_steering_two_addresses=0;
+z80_bit realjoystick_steering_inverted={1};
+z80_bit realjoystick_steering_two_addresses={0};
 */
 
 
@@ -1132,8 +1142,8 @@ z80_int realjoystick_steering_address=0xfb27;
 int realjoystick_steering_min_value=0;
 int realjoystick_steering_max_value=63;
 int realjoystick_steering_center_value=32;
-int realjoystick_steering_inverted=0;
-int realjoystick_steering_two_addresses=0;
+z80_bit realjoystick_steering_inverted={0};
+z80_bit realjoystick_steering_two_addresses={0};
 */
 
 //Toyota celica. Hay que cambiar el steering return a manual desde menu
@@ -1142,8 +1152,8 @@ z80_int realjoystick_steering_address=0x5c41;
 int realjoystick_steering_min_value=-5;
 int realjoystick_steering_max_value=+5;
 int realjoystick_steering_center_value=0;
-int realjoystick_steering_inverted=0;
-int realjoystick_steering_two_addresses=0;
+z80_bit realjoystick_steering_inverted={0};
+z80_bit realjoystick_steering_two_addresses={0};
 */
 
 //Nightmare rally
@@ -1153,8 +1163,8 @@ z80_int realjoystick_steering_address=0x8e00;
 int realjoystick_steering_min_value=+1;
 int realjoystick_steering_max_value=+7;
 int realjoystick_steering_center_value=+4;
-int realjoystick_steering_inverted=0;
-int realjoystick_steering_two_addresses=0;
+z80_bit realjoystick_steering_inverted={0};
+z80_bit realjoystick_steering_two_addresses={0};
 //9f5d sub d -> nop? 92h (146)
 */
 
@@ -1166,20 +1176,22 @@ z80_int realjoystick_steering_address=0x9dec;
 int realjoystick_steering_min_value=-11;
 int realjoystick_steering_max_value=+11;
 int realjoystick_steering_center_value=0;
-int realjoystick_steering_inverted=0;
-int realjoystick_steering_two_addresses=0;
+z80_bit realjoystick_steering_inverted={0};
+z80_bit realjoystick_steering_two_addresses={0};
 */
 
 //Chase HQ. Dos contadores. A263, A264
+/*
 z80_int realjoystick_steering_address=0xa263;
 int realjoystick_steering_min_value=0;
 int realjoystick_steering_max_value=36;
 int realjoystick_steering_center_value=0;
-int realjoystick_steering_inverted=0;
+z80_bit realjoystick_steering_inverted={0};
 
 //dos direcciones, de 0 a max_value, primera dir es derecha, segunda es izquierda
 //Por ejemplo para Chase HB
-int realjoystick_steering_two_addresses=1;
+z80_bit realjoystick_steering_two_addresses={1};
+*/
 
 
 //lectura de evento de joystick y conversion a movimiento de joystick spectrum
@@ -1210,7 +1222,7 @@ void realjoystick_common_set_event(int button,int type,int value)
 
                 int valor_volante=value;
 
-                if (realjoystick_steering_two_addresses) {
+                if (realjoystick_steering_two_addresses.v) {
                     //Derecha primera direccion
                     //Izquierda segunda direccion
                     valor_volante=(util_abs(valor_volante)*multiplicador)/32768;
@@ -1249,7 +1261,7 @@ void realjoystick_common_set_event(int button,int type,int value)
                         if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
                         if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
 
-                        if (realjoystick_steering_inverted) valor_volante=-valor_volante;
+                        if (realjoystick_steering_inverted.v) valor_volante=-valor_volante;
                     }
 
 

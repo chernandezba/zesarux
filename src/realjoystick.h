@@ -89,6 +89,12 @@ extern int realjoystick_autocalibrate_value;
 
 extern z80_bit realjoystick_steering_enabled;
 extern int realjoystick_steering_button;
+extern z80_int realjoystick_steering_address;
+extern int realjoystick_steering_min_value;
+extern int realjoystick_steering_max_value;
+extern int realjoystick_steering_center_value;
+extern z80_bit realjoystick_steering_inverted;
+extern z80_bit realjoystick_steering_two_addresses;
 
 
 extern int realjoystick_read_event(int *button,int *type,int *value);
