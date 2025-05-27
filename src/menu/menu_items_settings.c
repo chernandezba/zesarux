@@ -10855,7 +10855,7 @@ void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_address,NULL,
             "Address","Dirección","Adreça");
-        menu_add_item_menu_sufijo_format(array_menu_common," [%04X]",realjoystick_steering_address);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%04XH]",realjoystick_steering_address);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
         menu_add_item_menu_tooltip(array_menu_common,"Memory address where the game stores the wheel position");
         menu_add_item_menu_ayuda(array_menu_common,"Memory address where the game stores the wheel position");
