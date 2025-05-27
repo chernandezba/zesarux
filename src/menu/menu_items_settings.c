@@ -10801,24 +10801,26 @@ void menu_hardware_realjoystick_steering_button(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_realjoystick_steering_address(MENU_ITEM_PARAMETERS)
 {
-    int address=realjoystick_steering_address;
-    menu_ventana_scanf_numero_enhanced("Address",&address,6,+1,0,65535,0);
-    realjoystick_steering_address=address;
+    char buffer[6];
+    sprintf(buffer,"%04XH",realjoystick_steering_address);
+
+    menu_ventana_scanf("Address",buffer,6);
+    realjoystick_steering_address=parse_string_to_number(buffer);
 }
 
 void menu_hardware_realjoystick_steering_min_value(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Minimum value",&realjoystick_steering_min_value,4,+1,-128,+255,0);
+    menu_ventana_scanf_numero_enhanced("Minimum value",&realjoystick_steering_min_value,5,+1,-128,+255,0);
 }
 
 void menu_hardware_realjoystick_steering_max_value(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Maximum value",&realjoystick_steering_max_value,4,+1,-128,+255,0);
+    menu_ventana_scanf_numero_enhanced("Maximum value",&realjoystick_steering_max_value,5,+1,-128,+255,0);
 }
 
 void menu_hardware_realjoystick_steering_center_value(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Center value",&realjoystick_steering_center_value,4,+1,-128,+255,0);
+    menu_ventana_scanf_numero_enhanced("Center value",&realjoystick_steering_center_value,5,+1,-128,+255,0);
 }
 
 void menu_hardware_realjoystick_steering_inverted(MENU_ITEM_PARAMETERS)

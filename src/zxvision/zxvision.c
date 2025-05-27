@@ -25336,6 +25336,10 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 //Y ademas muestra error si limites se exceden
 //Retorna -1 si pulsado ESC o valor fuera de rango
 //Si se ha pulsado ESC o si se exceden los limites, no se modifica *variable
+//max_length: maxima longitud, contando caracter 0 del final
+//minimo: valor minimo admitido
+//maximo: valor maximo admitido
+//circular: si al pasar umbral, se resetea al otro umbral
 int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular)
 {
 
