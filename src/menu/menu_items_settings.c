@@ -10811,6 +10811,26 @@ void menu_hardware_realjoystick_steering_min_value(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Minimum value",&realjoystick_steering_min_value,4,+1,-128,+255,0);
 }
 
+void menu_hardware_realjoystick_steering_max_value(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Maximum value",&realjoystick_steering_max_value,4,+1,-128,+255,0);
+}
+
+void menu_hardware_realjoystick_steering_center_value(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Center value",&realjoystick_steering_center_value,4,+1,-128,+255,0);
+}
+
+void menu_hardware_realjoystick_steering_inverted(MENU_ITEM_PARAMETERS)
+{
+    realjoystick_steering_inverted.v ^=1;
+}
+
+void menu_hardware_realjoystick_steering_two_address(MENU_ITEM_PARAMETERS)
+{
+    realjoystick_steering_two_addresses.v ^=1;
+}
+
 void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -10845,16 +10865,31 @@ void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Minimum value stored on address (usually when wheel on maximum left position)");
         menu_add_item_menu_ayuda(array_menu_common,"Minimum value stored on address (usually when wheel on maximum left position)");
 
-/*
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_max_value,NULL,
+            "Maximum value","Máximo valor","Màxim valor");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",realjoystick_steering_max_value);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tooltip(array_menu_common,"Maximum value stored on address (usually when wheel on maximum right position)");
+        menu_add_item_menu_ayuda(array_menu_common,"Maximum value stored on address (usually when wheel on maximum right position)");
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_center_value,NULL,
+            "Center value","Valor Central","Valor Central");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",realjoystick_steering_center_value);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tooltip(array_menu_common,"Center value stored on address (usually when wheel centered)");
+        menu_add_item_menu_ayuda(array_menu_common,"Center value stored on address (usually when wheel centered)");
 
-z80_int =0x96ac;
-int =-120;
-int realjoystick_steering_max_value=+120;
-int realjoystick_steering_center_value=0;
-int realjoystick_steering_inverted=0;
-int realjoystick_steering_two_addresses=0;
-*/
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_inverted,NULL,
+            "Invert steering left-right","Invertir volante izquierda-derecha","Invertir volant esquerra-dreta");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(realjoystick_steering_inverted.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"If moving wheel to the left means increase value and to the right means decrease value");
+        menu_add_item_menu_ayuda(array_menu_common,"If moving wheel to the left means increase value and to the right means decrease value");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_two_address,NULL,
+            "Two memory address","Dos direcciones de memoria","Dues adreçes de memoria");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(realjoystick_steering_two_addresses.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Special support for games like Chase HQ where the wheel is stored on two consecutive addresses");
+        menu_add_item_menu_ayuda(array_menu_common,"Special support for games like Chase HQ where the wheel is stored on two consecutive addresses");
 
 
         menu_add_item_menu_separator(array_menu_common);

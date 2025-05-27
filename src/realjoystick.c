@@ -1103,6 +1103,8 @@ z80_int realjoystick_steering_address=0x0000;
 int realjoystick_steering_min_value=-120;
 int realjoystick_steering_max_value=+120;
 int realjoystick_steering_center_value=0;
+
+//Si volante a la izquierda implica valor mayor que volante a la derecha. Como en wec le mans
 z80_bit realjoystick_steering_inverted={0};
 
 //dos direcciones, de 0 a max_value, primera dir es derecha, segunda es izquierda
