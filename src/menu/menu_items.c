@@ -27004,11 +27004,23 @@ void menu_memory_cheat_set_watch_or_write_no_ask_choice(int opcion,int direccion
 
 void menu_memory_cheat_set_watch_or_write(int direccion,int watch_id,int pedir_direccion_en_set_watch)
 {
-    int opcion=menu_simple_three_choices("Action","Do you want to","Write value","Set watch","Open Hexadecimal Editor");
+    int opcion;
+
+    if (watch_id>=0) {
+        opcion=menu_simple_four_choices("Action","Do you want to","Write value","Set watch","Open Hexadecimal Editor","Remove watch");
+    }
+
+    else {
+        opcion=menu_simple_three_choices("Action","Do you want to","Write value","Set watch","Open Hexadecimal Editor");
+    }
 
     if (opcion==3) {
         menu_debug_hexdump_direccion=direccion;
         menu_debug_hexdump(0);
+    }
+
+    else if (opcion==4) {
+        memory_cheat_watch_list[watch_id].activo=0;
     }
 
     else {

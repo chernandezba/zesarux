@@ -1193,6 +1193,10 @@ z80_bit realjoystick_steering_inverted={0};
 //dos direcciones, de 0 a max_value, primera dir es derecha, segunda es izquierda
 //Por ejemplo para Chase HB
 z80_bit realjoystick_steering_two_addresses={1};
+
+
+//Travel through time bfd9h -6,+6.
+retorno volante 9cdf 32,d9,bf 0,0,0
 */
 
 
