@@ -10833,6 +10833,24 @@ void menu_hardware_realjoystick_steering_two_address(MENU_ITEM_PARAMETERS)
     realjoystick_steering_two_addresses.v ^=1;
 }
 
+
+void menu_hardware_realjoystick_steering_load_presets(MENU_ITEM_PARAMETERS)
+{
+	char *filtros[2];
+
+    filtros[0]="config";
+    filtros[1]=0;
+
+    char buffer_load_file[PATH_MAX];
+
+
+    if (menu_filesel("Select Config File",filtros,buffer_load_file)==1) {
+    	parse_custom_file_config(buffer_load_file);
+        menu_generic_message_splash("Load presets","Presets applied");
+    }
+
+}
+
 void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -10892,6 +10910,14 @@ void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(realjoystick_steering_two_addresses.v ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_common,"Special support for games like Chase HQ where the wheel is stored on two consecutive addresses");
         menu_add_item_menu_ayuda(array_menu_common,"Special support for games like Chase HQ where the wheel is stored on two consecutive addresses");
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_load_presets,NULL,
+            "Load presets","Cargar ajustes","Carregar opcions");
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tooltip(array_menu_common,"Load presets from .config file");
+        menu_add_item_menu_ayuda(array_menu_common,"Load presets from .config file");
 
 
         menu_add_item_menu_separator(array_menu_common);

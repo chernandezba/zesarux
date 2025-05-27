@@ -12424,6 +12424,32 @@ void parse_customfile_options(void)
 			realjoystick_clear_events_array();
 		}
 
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-enable")) {
+            realjoystick_steering_enabled.v=1;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-address")) {
+            siguiente_parametro_argumento();
+            realjoystick_steering_address=parse_string_to_number(argv[puntero_parametro]);
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-min-value")) {
+            siguiente_parametro_argumento();
+            realjoystick_steering_min_value=parse_string_to_number(argv[puntero_parametro]);
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-max-value")) {
+            siguiente_parametro_argumento();
+            realjoystick_steering_max_value=parse_string_to_number(argv[puntero_parametro]);
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-center-value")) {
+            siguiente_parametro_argumento();
+            realjoystick_steering_center_value=parse_string_to_number(argv[puntero_parametro]);
+        }
+
+
+
 
                   else if (!strcmp(argv[puntero_parametro],"--text-keyboard-add")) {
                                 if (added_some_osd_text_keyboard.v==0) {

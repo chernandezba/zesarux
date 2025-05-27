@@ -1197,6 +1197,10 @@ z80_bit realjoystick_steering_two_addresses={1};
 
 //Travel through time bfd9h -6,+6.
 retorno volante 9cdf 32,d9,bf 0,0,0
+
+//nigel mansel
+//9970h. 0,15. centro 8
+//retorno steer: 9cc5
 */
 
 
