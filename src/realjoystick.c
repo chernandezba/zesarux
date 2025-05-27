@@ -1108,6 +1108,7 @@ int realjoystick_steering_min_value=-120;
 int realjoystick_steering_max_value=+120;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=0;
+int realjoystick_steering_two_addresses=0;
 */
 
 
@@ -1120,6 +1121,7 @@ int realjoystick_steering_min_value=-12;
 int realjoystick_steering_max_value=+12;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=1;
+int realjoystick_steering_two_addresses=0;
 */
 
 
@@ -1131,6 +1133,7 @@ int realjoystick_steering_min_value=0;
 int realjoystick_steering_max_value=63;
 int realjoystick_steering_center_value=32;
 int realjoystick_steering_inverted=0;
+int realjoystick_steering_two_addresses=0;
 */
 
 //Toyota celica. Hay que cambiar el steering return a manual desde menu
@@ -1140,17 +1143,20 @@ int realjoystick_steering_min_value=-5;
 int realjoystick_steering_max_value=+5;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=0;
+int realjoystick_steering_two_addresses=0;
 */
 
 //Nightmare rally
 
+/*
 z80_int realjoystick_steering_address=0x8e00;
 int realjoystick_steering_min_value=+1;
 int realjoystick_steering_max_value=+7;
 int realjoystick_steering_center_value=+4;
 int realjoystick_steering_inverted=0;
+int realjoystick_steering_two_addresses=0;
 //9f5d sub d -> nop? 92h (146)
-
+*/
 
 /*
 //Drift. 9dech. -11,+11
@@ -1161,9 +1167,20 @@ int realjoystick_steering_min_value=-11;
 int realjoystick_steering_max_value=+11;
 int realjoystick_steering_center_value=0;
 int realjoystick_steering_inverted=0;
+int realjoystick_steering_two_addresses=0;
 */
 
 //Chase HQ. Dos contadores. A263, A264
+z80_int realjoystick_steering_address=0xa263;
+int realjoystick_steering_min_value=0;
+int realjoystick_steering_max_value=36;
+int realjoystick_steering_center_value=0;
+int realjoystick_steering_inverted=0;
+
+//dos direcciones, de 0 a max_value, primera dir es derecha, segunda es izquierda
+//Por ejemplo para Chase HB
+int realjoystick_steering_two_addresses=1;
+
 
 //lectura de evento de joystick y conversion a movimiento de joystick spectrum
 void realjoystick_common_set_event(int button,int type,int value)
@@ -1192,29 +1209,55 @@ void realjoystick_common_set_event(int button,int type,int value)
                 int multiplicador=realjoystick_steering_max_value-realjoystick_steering_min_value+1;
 
                 int valor_volante=value;
-                if (realjoystick_steering_center_value!=0) {
-                    //Hacemos el 0 el valor mas a la izquierda
-                    valor_volante +=32768;
-                }
 
-                if (realjoystick_steering_center_value!=0 && valor_volante==32768) {
-                    //Para Nightmare rally, porque si no, el centro de volante daria valor 3 y no 4 como espera
-                    valor_volante=realjoystick_steering_center_value;
-                }
-                else {
-
-                    valor_volante=(valor_volante*multiplicador)/65536;
-
+                if (realjoystick_steering_two_addresses) {
+                    //Derecha primera direccion
+                    //Izquierda segunda direccion
+                    valor_volante=(util_abs(valor_volante)*multiplicador)/32768;
                     if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
                     if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
 
-                    if (realjoystick_steering_inverted) valor_volante=-valor_volante;
+                    if (value>=0) {
+                        poke_byte_no_time(realjoystick_steering_address,valor_volante);
+                        poke_byte_no_time(realjoystick_steering_address+1,0);
+                        printf("Lectura Volante Der: %d Valor escrito: %d\n",value,valor_volante);
+                    }
+                    else {
+                        poke_byte_no_time(realjoystick_steering_address,0);
+                        poke_byte_no_time(realjoystick_steering_address+1,-valor_volante);
+                        printf("Lectura Volante Izq: %d Valor escrito: %d\n",value,-valor_volante);
+                    }
                 }
 
 
-                printf("Lectura Volante: %d Valor escrito: %d\n",value,valor_volante);
+                else {
 
-                poke_byte_no_time(realjoystick_steering_address,valor_volante);
+
+                    if (realjoystick_steering_center_value!=0) {
+                        //Hacemos el 0 el valor mas a la izquierda
+                        valor_volante +=32768;
+                    }
+
+                    if (realjoystick_steering_center_value!=0 && valor_volante==32768) {
+                        //Para Nightmare rally, porque si no, el centro de volante daria valor 3 y no 4 como espera
+                        valor_volante=realjoystick_steering_center_value;
+                    }
+                    else {
+
+                        valor_volante=(valor_volante*multiplicador)/65536;
+
+                        if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
+                        if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
+
+                        if (realjoystick_steering_inverted) valor_volante=-valor_volante;
+                    }
+
+
+                    printf("Lectura Volante: %d Valor escrito: %d\n",value,valor_volante);
+
+                    poke_byte_no_time(realjoystick_steering_address,valor_volante);
+
+                }
             }
 
 
