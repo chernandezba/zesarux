@@ -115,16 +115,22 @@ por ver los diferentes mensajes de error
 *visual datadrive: ver si pestañas están bien ahora o queremos que se vean gruesas las pestañas cuando no están rotas
 ,pero puede que se vieran muy gruesas si ventana muy grande, debido a la escala
 
--lectura mando analógico, como un volante
+
+-linux con sdl2 no detecta joystick?
+
+---------------------
+
+--Inicio lectura mando analógico, como un volante
 *presets para juegos conocidos? hard drivin, wec le mans, test drive 2, Toyota celica, Drift,
 Nightmare rally, chequered flag, enduro racer, turbo cup, power drift
 https://www.youtube.com/playlist?list=PLxOanVBhqd3vkkE35mCw6x63QFBnU9Xsi
 
 
 Presets quiza con archivos .config. Se pueden cargar tal cual? O desde opciones de volante, boton para cargar
-quiza tambien por settings de .config poder hacer pokes para eliminar retorno de steering wheel
-*documentacion parametros .config
+ok *quiza tambien por settings de .config poder hacer pokes para eliminar retorno de steering wheel
+*documentacion parametros .config en --helpcustomconfig
 *poder cargar .config desde smartload?
+*quiza estos .config deberian ser .postconfig, por decir que hay que aplicarlos despues de cargar el juego, por el tema de los pokes
 *entrada en changelog
 *video demo
 
@@ -139,45 +145,7 @@ ok *Probar volante desde Mac
 ok *pedir maximo y minimo juego, maximo y minimo volante, numero eje volante
 ok * en condicion solo hacerlo si tipo es eje
 
-*Debug hard drivin'
 
-96ach volante hard drivin
+--Fin lectura mando analógico, como un volante
 
-(-120, 120)
-
-read:
-a807h  movimiento
-f57fh dibujar
-
-a6d2 movimiento izq
-a6dc movimiento der
-a6e7 centrar volante
-
-*Debug wec le mans
-e5e2h
-
-izquierda: +12
-derecha: (-12)
-87ddh, 8137h: lo pone a 0, incluido e5e1h que no se que es. creo que no lo usa, solo es una manera
-de acceder a e5e2h usando registros de 16 bits. quizá esto que se corrija con un archivo .pok. Parece que es
-el retorno a 0 del volante
--87dd: retorno continuo
--8137: cuando chocas
-
-
-*Debug test drive 2
-fb27h
-0..63.32 centro
-
-en 8317h  retorno a 0
-corregirlo con un jr 832ah (18h, 11h, 00h : el 00 final es para quitar restos y que no parezca que haya un ei)
-
-
--toyota celica
-5c41h o
-5c74h NO
-
--5..5
-
-
--linux con sdl2 no detecta joystick?
+---------------------
