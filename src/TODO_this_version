@@ -133,6 +133,8 @@ ok *quiza tambien por settings de .config poder hacer pokes para eliminar retorn
 *quiza estos .config deberian ser .postconfig, por decir que hay que aplicarlos despues de cargar el juego, por el tema de los pokes
 *entrada en changelog
 *video demo
+*pasar esos .pok a .config. pasar todos los ajustes de juegos de realjoystick.c a archivos config
+*meter esos .config en extras? o en codigo de ZEsarUX tal cual? ocupan poco...
 
 Probar en diferentes sistemas:
 error solo 0 o 1 *Probar volante desde Linux sdl
