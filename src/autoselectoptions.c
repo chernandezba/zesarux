@@ -273,6 +273,51 @@ void set_snaptape_filemachine(char *filename GCC_UNUSED)
 }
 
 
+void set_snaptape_fileoptions_mostrar_footer(void)
+{
+    //mostrar_footer_game_name contendra el nombre del juego
+    //mostrar_footer_first_message contiene el texto entero para el primer mensaje
+    //mostrar_footer_first_message_mostrado contiene el texto entero para el primer mensaje (maximo 32)
+    if (mostrar_footer_game_name!=NULL) {
+
+        //Si hay segundo mensaje, ultimo caracter es ":"
+        if (mostrar_footer_second_message!=NULL) {
+            sprintf (mostrar_footer_first_message,"Applied options for %s:",mostrar_footer_game_name);
+        }
+
+        else {
+            sprintf (mostrar_footer_first_message,"Applied options for %s",mostrar_footer_game_name);
+        }
+
+    }
+    else {
+        sprintf (mostrar_footer_first_message,"Applied options for known game");
+    }
+
+    //Texto mostrado
+    sprintf (mostrar_footer_first_message_mostrado,"%s",mostrar_footer_first_message);
+
+    //Cortar a 32
+    tape_options_corta_a_32(mostrar_footer_first_message_mostrado);
+
+    tape_options_set_first_message_counter=4;
+
+    autoselect_options_put_footer();
+}
+
+//IMPORTANTE llamar aqui siempre antes de parsear custom config file y si despues se llama a set_snaptape_fileoptions_mostrar_footer()
+void set_snaptape_fileoptions_init_footers(void)
+{
+	//Indices de desplazamiento a cero
+	indice_first_message_mostrado=indice_second_message_mostrado=0;
+
+	//Por defecto dejar los contadores a cero
+	tape_options_set_first_message_counter=0;
+	tape_options_set_second_message_counter=0;
+
+	mostrar_footer_game_name=NULL;
+	mostrar_footer_second_message=NULL;
+}
 
 //seleccionar opciones en base a cinta o snapshot
 //Aqui se llama desde:
@@ -302,17 +347,10 @@ void set_snaptape_fileoptions(char *filename)
         sprintf (md5file,"no ssl functions available");
 //#endif
 
+    set_snaptape_fileoptions_init_footers();
 
-	//Indices de desplazamiento a cero
-	indice_first_message_mostrado=indice_second_message_mostrado=0;
 
-	//Por defecto dejar los contadores a cero
-	tape_options_set_first_message_counter=0;
-	tape_options_set_second_message_counter=0;
-
-	int mostrar_footer=1;
-	mostrar_footer_game_name=NULL;
-	mostrar_footer_second_message=NULL;
+    int mostrar_footer=1;
 
 	//printf ("set_snaptape_fileoptions\n");
 
@@ -1237,36 +1275,7 @@ void set_snaptape_fileoptions(char *filename)
 
 
 	if (mostrar_footer) {
-		//mostrar_footer_game_name contendra el nombre del juego
-		//mostrar_footer_first_message contiene el texto entero para el primer mensaje
-		//mostrar_footer_first_message_mostrado contiene el texto entero para el primer mensaje (maximo 32)
-		if (mostrar_footer_game_name!=NULL) {
-
-			//Si hay segundo mensaje, ultimo caracter es ":"
-			if (mostrar_footer_second_message!=NULL) {
-				sprintf (mostrar_footer_first_message,"Applied options for %s:",mostrar_footer_game_name);
-			}
-
-			else {
-				sprintf (mostrar_footer_first_message,"Applied options for %s",mostrar_footer_game_name);
-			}
-
-		}
-		else {
-			sprintf (mostrar_footer_first_message,"Applied options for known game");
-		}
-
-		//Texto mostrado
-		sprintf (mostrar_footer_first_message_mostrado,"%s",mostrar_footer_first_message);
-
-		//Cortar a 32
-		tape_options_corta_a_32(mostrar_footer_first_message_mostrado);
-
-		tape_options_set_first_message_counter=4;
-
-		autoselect_options_put_footer();
-
-
+		set_snaptape_fileoptions_mostrar_footer();
 	}
 
 

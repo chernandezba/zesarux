@@ -26,6 +26,9 @@
 extern void set_snaptape_fileoptions(char *filename);
 extern void set_snaptape_filemachine(char *filename);
 
+extern void set_snaptape_fileoptions_mostrar_footer(void);
+extern void set_snaptape_fileoptions_init_footers(void);
+
 extern int tape_options_set_first_message_counter;
 extern void delete_tape_options_set_first_message(void);
 extern int tape_options_set_second_message_counter;

@@ -1108,7 +1108,7 @@ int realjoystick_steering_center_value=0;
 z80_bit realjoystick_steering_inverted={0};
 
 //dos direcciones, de 0 a max_value, primera dir es derecha, segunda es izquierda
-//Por ejemplo para Chase HB
+//Por ejemplo para Chase HQ
 z80_bit realjoystick_steering_two_addresses={0};
 
 
@@ -1201,7 +1201,7 @@ int realjoystick_steering_center_value=0;
 z80_bit realjoystick_steering_inverted={0};
 
 //dos direcciones, de 0 a max_value, primera dir es derecha, segunda es izquierda
-//Por ejemplo para Chase HB
+//Por ejemplo para Chase HQ
 z80_bit realjoystick_steering_two_addresses={1};
 
 

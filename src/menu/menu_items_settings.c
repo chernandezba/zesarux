@@ -10843,9 +10843,10 @@ void menu_hardware_realjoystick_steering_load_presets(MENU_ITEM_PARAMETERS)
 
     char buffer_load_file[PATH_MAX];
 
-
     if (menu_filesel("Select Config File",filtros,buffer_load_file)==1) {
+        set_snaptape_fileoptions_init_footers();
     	parse_custom_file_config(buffer_load_file);
+        set_snaptape_fileoptions_mostrar_footer();
         menu_generic_message_splash("Load presets","Presets applied");
     }
 
