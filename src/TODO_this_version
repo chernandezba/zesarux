@@ -116,13 +116,25 @@ por ver los diferentes mensajes de error
 ,pero puede que se vieran muy gruesas si ventana muy grande, debido a la escala
 
 -lectura mando analógico, como un volante
-*presets para juegos conocidos? hard drivin, wec le mans, test drive 2, Toyota celica, Drift, Nightmare rally.
+*presets para juegos conocidos? hard drivin, wec le mans, test drive 2, Toyota celica, Drift,
+Nightmare rally, chequered flag, enduro racer, turbo cup, power drift
+https://www.youtube.com/playlist?list=PLxOanVBhqd3vkkE35mCw6x63QFBnU9Xsi
+
+
 Presets quiza con archivos .config. Se pueden cargar tal cual? O desde opciones de volante, boton para cargar
 quiza tambien por settings de .config poder hacer pokes para eliminar retorno de steering wheel
 *documentacion parametros .config
 *poder cargar .config desde smartload?
 *entrada en changelog
 *video demo
+
+Probar en diferentes sistemas:
+error solo 0 o 1 *Probar volante desde Linux sdl
+error no va joystick *Probar volante desde Linux sdl2
+error solo 0 o 1 *Probar volante desde windows
+ok *Probar volante desde Linux nativo
+ok *Probar volante desde Mac
+
 
 ok *pedir maximo y minimo juego, maximo y minimo volante, numero eje volante
 ok * en condicion solo hacerlo si tipo es eje
@@ -166,3 +178,6 @@ corregirlo con un jr 832ah (18h, 11h, 00h : el 00 final es para quitar restos y 
 5c74h NO
 
 -5..5
+
+
+-linux con sdl2 no detecta joystick?

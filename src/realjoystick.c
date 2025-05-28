@@ -1136,6 +1136,16 @@ z80_bit realjoystick_steering_inverted={1};
 z80_bit realjoystick_steering_two_addresses={0};
 */
 
+/*
+//Power drift. e462h
+//izquierda: +10
+//derecha: (-10)
+z80_bit realjoystick_steering_inverted={1};
+*/
+
+//Just a gal. f975h
+//izquierda: -15
+//derecha: +15
 
 //Test drive 2. fb27h
 //0..63.32 centro
