@@ -129,11 +129,10 @@ https://www.youtube.com/playlist?list=PLxOanVBhqd3vkkE35mCw6x63QFBnU9Xsi
 Presets quiza con archivos .config. Se pueden cargar tal cual? O desde opciones de volante, boton para cargar
 ok *quiza tambien por settings de .config poder hacer pokes para eliminar retorno de steering wheel
 *documentacion parametros .config en --helpcustomconfig
-*poder cargar .config desde smartload?
-*quiza estos .config deberian ser .postconfig, por decir que hay que aplicarlos despues de cargar el juego, por el tema de los pokes
+ok *quiza estos .config deberian ser .postconfig, por decir que hay que aplicarlos despues de cargar el juego, por el tema de los pokes
 *entrada en changelog
 *video demo
-*pasar esos .pok a .config. pasar todos los ajustes de juegos de realjoystick.c a archivos config
+ok *pasar esos .pok a .config. pasar todos los ajustes de juegos de realjoystick.c a archivos config
 *meter esos .config en extras? o en codigo de ZEsarUX tal cual? ocupan poco...
 
 Probar en diferentes sistemas:
