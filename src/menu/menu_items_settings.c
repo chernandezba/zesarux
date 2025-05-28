@@ -10838,11 +10838,14 @@ void menu_hardware_realjoystick_steering_load_presets(MENU_ITEM_PARAMETERS)
 {
 	char *filtros[2];
 
-    filtros[0]="config";
+    filtros[0]="postconfig";
     filtros[1]=0;
 
     char buffer_load_file[PATH_MAX];
 
+    //Son archivos .postconfig pensados para cargar despues de cargar el juego,
+    //porque estos del volante contienen la mayoria pokes que desactivan
+    //el autoretorno del volante
     if (menu_filesel("Select Config File",filtros,buffer_load_file)==1) {
         set_snaptape_fileoptions_init_footers();
     	parse_custom_file_config(buffer_load_file);
