@@ -10834,21 +10834,50 @@ void menu_hardware_realjoystick_steering_two_address(MENU_ITEM_PARAMETERS)
 }
 
 
+char last_steering_preset_file[PATH_MAX]="";
+
 void menu_hardware_realjoystick_steering_load_presets(MENU_ITEM_PARAMETERS)
 {
-	char *filtros[2];
+    char *filtros[2];
 
     filtros[0]="postconfig";
     filtros[1]=0;
-
-    char buffer_load_file[PATH_MAX];
-
     //Son archivos .postconfig pensados para cargar despues de cargar el juego,
     //porque estos del volante contienen la mayoria pokes que desactivan
     //el autoretorno del volante
-    if (menu_filesel("Select Config File",filtros,buffer_load_file)==1) {
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio de cinta
+    //si no hay directorio, vamos a rutas predefinidas
+    if (last_steering_preset_file[0]==0) {
+        menu_chdir_sharedfiles();
+        zvfs_chdir("steering_wheel_presets");
+    }
+
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(last_steering_preset_file,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
+
+
+    int ret=menu_filesel("Select Config File",filtros,last_steering_preset_file);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+    if (ret==1) {
         set_snaptape_fileoptions_init_footers();
-    	parse_custom_file_config(buffer_load_file);
+    	parse_custom_file_config(last_steering_preset_file);
         set_snaptape_fileoptions_mostrar_footer();
         menu_generic_message_splash("Load presets","Presets applied");
     }

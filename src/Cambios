@@ -5,6 +5,7 @@ ZEsarUX 12.1 - Night Shift edition. 24 Mayo 2025
 Agregado modo Streaming a ZENG Online para ZX Spectrum. Mejora la experiencia de juego: reduce lag y elimina cualquier inconsistencia de estado de juego en todos los jugadores
 Agregada emulación de ZXMMC+
 Agregado emulación de una segunda tarjeta de MMC/SD
+Agregado soporte para joystick de tipo volante (y otros joysticks con controles analógicos) para juegos de carreras (usando modificaciones pre-definidas para juegos específicos o personalizados)
 Agregada conversión de archivos ZX81 P a P81, y P81 a P
 Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
 Permitir grabar pantalla de ZX80/81 a archivo .scr

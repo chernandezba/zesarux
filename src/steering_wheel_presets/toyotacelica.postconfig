@@ -1,0 +1,8 @@
+--programsettingsinfo "Change also steering return to manual on menu"
+--steering-wheel-address 5c41h
+--steering-wheel-min-value -5
+--steering-wheel-max-value +5
+--steering-wheel-center-value 0
+--steering-wheel-no-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-enable

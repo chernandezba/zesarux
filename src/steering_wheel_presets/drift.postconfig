@@ -1,0 +1,8 @@
+--steering-wheel-address 9dech
+--steering-wheel-min-value -11
+--steering-wheel-max-value +11
+--steering-wheel-center-value 0
+--steering-wheel-no-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-enable
+--poke 35888 201

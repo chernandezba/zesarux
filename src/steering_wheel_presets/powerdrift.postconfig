@@ -1,0 +1,13 @@
+--steering-wheel-address e462h
+--steering-wheel-min-value -10
+--steering-wheel-max-value +10
+--steering-wheel-center-value 0
+--steering-wheel-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-enable
+--poke c9edh 0
+--poke c9eeh 0
+--poke c9efh 0
+--poke caeah 0
+--poke caebh 0
+--poke caech 0

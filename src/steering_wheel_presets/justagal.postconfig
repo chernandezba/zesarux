@@ -1,0 +1,9 @@
+--steering-wheel-address f975h
+--steering-wheel-min-value -15
+--steering-wheel-max-value +15
+--steering-wheel-center-value 0
+--steering-wheel-no-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-enable
+--poke 911bh 0
+--poke 911dh 0

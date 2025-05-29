@@ -1,0 +1,13 @@
+--steering-wheel-address e5e2h
+--steering-wheel-min-value -12
+--steering-wheel-max-value +12
+--steering-wheel-center-value 0
+--steering-wheel-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-enable
+--poke 34781 0
+--poke 34782 0
+--poke 34783 0
+--poke 33079 0
+--poke 33080 0
+--poke 33081 0

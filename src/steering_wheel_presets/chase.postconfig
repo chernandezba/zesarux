@@ -1,0 +1,12 @@
+--programsettingsinfo "Apply this on game screen, not on menu"
+--steering-wheel-address a263h
+--steering-wheel-min-value 0
+--steering-wheel-max-value +36
+--steering-wheel-center-value 0
+--steering-wheel-no-inverted
+--steering-wheel-two-addresses
+--steering-wheel-enable
+--poke 45579 0
+--poke 45580 0
+--poke 45586 0
+--poke 45587 0

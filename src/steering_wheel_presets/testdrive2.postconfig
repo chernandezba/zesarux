@@ -1,0 +1,10 @@
+--steering-wheel-address fb27h
+--steering-wheel-min-value 0
+--steering-wheel-max-value +63
+--steering-wheel-center-value 32
+--steering-wheel-no-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-enable
+--poke 33559 24
+--poke 33560 17
+--poke 33561 0
