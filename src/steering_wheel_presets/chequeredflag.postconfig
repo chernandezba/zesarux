@@ -1,0 +1,17 @@
+--steering-wheel-address 7718h
+--steering-wheel-min-value -128
+--steering-wheel-max-value +127
+--steering-wheel-center-value 0
+--steering-wheel-no-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-16bit
+--steering-wheel-enable
+--poke 7d9fh 0
+--poke 7da0h 0
+--poke 7da1h 0
+--poke 7ec6h 0
+--poke 7ec7h 0
+--poke 7ec8h 0
+--poke 7ee8h 0
+--poke 7ee9h 0
+--poke 7eeah 0

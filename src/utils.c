@@ -12464,6 +12464,14 @@ void parse_customfile_options(void)
             realjoystick_steering_two_addresses.v=1;
         }
 
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-no-16bit")) {
+            realjoystick_steering_16bit.v=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--steering-wheel-16bit")) {
+            realjoystick_steering_16bit.v=1;
+        }
+
         //Pensados inicialmente para desactivar retornos de volante, usados conjuntamente con parametros --steering*
         //pero tambien podria servir para poner pokes en un juego cargado, u otras modificaciones
         else if (!strcmp(argv[puntero_parametro],"--poke")) {

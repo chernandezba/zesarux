@@ -5,6 +5,7 @@
 --steering-wheel-center-value 0
 --steering-wheel-no-inverted
 --steering-wheel-two-addresses
+--steering-wheel-no-16bit
 --steering-wheel-enable
 --poke 45579 0
 --poke 45580 0

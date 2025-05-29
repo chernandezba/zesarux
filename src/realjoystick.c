@@ -1111,6 +1111,9 @@ z80_bit realjoystick_steering_inverted={0};
 //Por ejemplo para Chase HQ
 z80_bit realjoystick_steering_two_addresses={0};
 
+//Para chequered flag por ejemplo, usa dos bytes, como 16 bit, aunque el valor es entre -128 y +127
+z80_bit realjoystick_steering_16bit={0};
+
 
 //Hard drivin. 96ach
 //hard drivin acepta valores entre -120 y +120
@@ -1288,6 +1291,12 @@ void realjoystick_common_set_event(int button,int type,int value)
                     printf("Lectura Volante: %d Valor escrito: %d\n",value,valor_volante);
 
                     poke_byte_no_time(realjoystick_steering_address,valor_volante);
+
+
+                    if (realjoystick_steering_16bit.v) {
+                        if (valor_volante<0) poke_byte_no_time(realjoystick_steering_address+1,255);
+                        else poke_byte_no_time(realjoystick_steering_address+1,0);
+                    }
 
                 }
             }
