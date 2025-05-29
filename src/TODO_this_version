@@ -135,6 +135,7 @@ ok *entrada en changelog
 ok *pasar esos .pok a .config. pasar todos los ajustes de juegos de realjoystick.c a archivos config
 ok *meter esos .config en extras? o en codigo de ZEsarUX tal cual? ocupan poco... quiza en carpeta steering_wheel_presets,
 agregar esa carpeta en configure, generate_install.sh, etc. Y al cargar preset que abra esa carpeta por defecto
+*parametro de numero de eje de joystick usado que sea de config de ZEsarUX, no de .postconfig
 
 Probar en diferentes sistemas:
 error solo 0 o 1 *Probar volante desde Linux sdl
