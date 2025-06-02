@@ -152,3 +152,6 @@ ok * en condicion solo hacerlo si tipo es eje
 --Fin lectura mando analógico, como un volante
 
 ---------------------
+
+
+-soporte joystick real SDL2

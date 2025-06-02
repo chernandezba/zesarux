@@ -1809,7 +1809,7 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
                         menu_info_joystick_last_raw_value=valoraxis;
                 }
 
-                if (valorfinalaxis!=sdl_states_joy_axes[i]) {
+                if (valoraxis!=sdl_states_joy_axes[i]) {
                         //printf ("Enviar cambio estado axis %d : %d\n",i,valorfinalaxis);
                         debug_printf (VERBOSE_DEBUG,"SDL Joystick: Sending state change, axis: %d value: %d",i,valorfinalaxis);
                         realjoystick_common_set_event(i,REALJOYSTICK_INPUT_EVENT_AXIS,valorfinalaxis,valoraxis);
@@ -1817,7 +1817,7 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
                         menu_info_joystick_last_raw_value=valoraxis;
                         realjoystick_ultimo_axis=i;
                 }
-                sdl_states_joy_axes[i]=valorfinalaxis;
+                sdl_states_joy_axes[i]=valoraxis;
         }
 
 
