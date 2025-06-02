@@ -1241,7 +1241,7 @@ printf("\n"
 		"-------------------\n"
 		"\n"
 
-		"--joystickemulated type     Type of emulated joystick. Type can be one of: ");
+		"--joystickemulated type         Type of emulated joystick. Type can be one of: ");
 
 	joystick_print_types();
 		printf (" (default: %s).\n",joystick_texto[joystick_emulation]);
@@ -1249,43 +1249,43 @@ printf("\n"
 
 
 	printf(
-        "--joystickfirekey n         Define which key triggers the first fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
-        "--joystickfirekey2 n        Define which key triggers the second fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
-        "--joystickfirekey3 n        Define which key triggers the third fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
-        "--joystickfirekey4 n        Define which key triggers the fourth fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
-        "--sms-swap-controls         Sega Master System swap controls player 1 <-> player 2\n"
-		"--disablerealjoystick       Disable real joystick emulation\n"
-		"--realjoystickpath f        Change default real joystick device path (used on Linux)\n"
-        "--realjoystickindex n       Change default real joystick device id (used on Windows and other OS with SDL driver)\n"
-		"--realjoystick-calibrate n  Parameter to autocalibrate joystick axis. Axis values read from joystick less than n and greater than -n are considered as 0. Default: 16384. Not used on native linux real joystick\n"
+        "--joystickfirekey n             Define which key triggers the first fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey2 n            Define which key triggers the second fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey3 n            Define which key triggers the third fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--joystickfirekey4 n            Define which key triggers the fourth fire function for the joystick: -1=None, 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift, 4=LeftAlt, 5=LeftCtrl, 6=LeftShift, 7=Tab\n"
+        "--sms-swap-controls             Sega Master System swap controls player 1 <-> player 2\n"
+		"--disablerealjoystick           Disable real joystick emulation\n"
+		"--realjoystickpath f            Change default real joystick device path (used on Linux)\n"
+        "--realjoystickindex n           Change default real joystick device id (used on Windows and other OS with SDL driver)\n"
+		"--realjoystick-calibrate n      Parameter to autocalibrate joystick axis. Axis values read from joystick less than n and greater than -n are considered as 0. Default: 16384. Not used on native linux real joystick\n"
 
 #ifdef USE_LINUXREALJOYSTICK
-		"--no-native-linux-realjoy  Do not use native linux real joystick support. Instead use the video driver joystick support (currently only SDL)\n"
+		"--no-native-linux-realjoy       Do not use native linux real joystick support. Instead use the video driver joystick support (currently only SDL)\n"
 #endif
-        "--joystickevent but evt     Set a joystick button or axis to an event (changes joystick to event table)\n"
-        "                            If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
-        "                            If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
-        "                            Event must be one of: ");
+        "--joystickevent but evt         Set a joystick button or axis to an event (changes joystick to event table)\n"
+        "                                If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
+        "                                If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
+        "                                Event must be one of: ");
 
         realjoystick_print_event_keys();
 
 	printf ("\n"
-		"--joystickkeybt but key     Define a key pressed when a joystick button pressed (changes joystick to key table)\n"
-		"                            If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
-        "                            If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
-        "                            Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\'\n"
-		"                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-		"                            Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
-        "--joystickkeyev evt key     Define a key pressed when a joystick event is generated (changes joystick to key table)\n"
-        "                            Event must be one of: ");
+		"--joystickkeybt but key         Define a key pressed when a joystick button pressed (changes joystick to key table)\n"
+		"                                If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
+        "                                If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
+        "                                Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\'\n"
+		"                                (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+		"                                Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
+        "--joystickkeyev evt key         Define a key pressed when a joystick event is generated (changes joystick to key table)\n"
+        "                                Event must be one of: ");
 
         realjoystick_print_event_keys();
 
 
 	printf ("\n"
-		"                            Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\' \n"
-		"                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-		"                            Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
+		"                                Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\' \n"
+		"                                (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+		"                                Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
 
         	"\n"
 		"  Note: As you may see, --joystickkeyev is not dependent on the real joystick type you use, because it sets an event to a key, "
@@ -1294,10 +1294,12 @@ printf("\n"
 		"which are the same for all joysticks: up: -1, down: +1, left: -1, right: +1)\n"
 
 		"\n"
-		"--clearkeylistonsmart       Clear all joystick (events and buttons) to keys table every smart loading.\n"
-		"                            Joystick to events table is never cleared using this setting\n"
-		"--cleareventlist            Clears joystick to events table\n"
-		"--enablejoysticksimulator   Enable real joystick simulator. Only useful on development\n"
+
+        "--steering-wheel-axis-number n  Set the axis number assigned to wheel movement\n"
+		"--clearkeylistonsmart           Clear all joystick (events and buttons) to keys table every smart loading.\n"
+		"                                Joystick to events table is never cleared using this setting\n"
+		"--cleareventlist                Clears joystick to events table\n"
+		"--enablejoysticksimulator       Enable real joystick simulator. Only useful on development\n"
 
 
 
@@ -6435,6 +6437,11 @@ int parse_cmdline_options(int desde_commandline) {
 
 
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--steering-wheel-axis-number")) {
+                siguiente_parametro_argumento();
+                realjoystick_steering_button=parse_string_to_number(argv[puntero_parametro]);
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--clearkeylistonsmart")) {
 				realjoystick_clear_keys_on_smartload.v=1;

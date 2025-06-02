@@ -1097,7 +1097,7 @@ int realjoystick_set_event_key(char *text_event,char *text_key)
 
 
 z80_bit realjoystick_steering_enabled={0};
-int realjoystick_steering_button=48;
+int realjoystick_steering_button=0;
 
 z80_int realjoystick_steering_address=0x0000;
 int realjoystick_steering_min_value=-120;

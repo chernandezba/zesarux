@@ -4606,7 +4606,7 @@ int util_write_configfile(void)
 
                         ADD_STRING_CONFIG,"--realjoystick-calibrate %d",realjoystick_autocalibrate_value);
 
-
+                                              ADD_STRING_CONFIG,"--steering-wheel-axis-number %d",realjoystick_steering_button);
 
   //real joystick buttons to events. Siempre este antes que el de events/buttons to keys
   for (i=0;i<MAX_EVENTS_JOYSTICK;i++) {
