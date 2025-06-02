@@ -572,7 +572,7 @@ void joystickAction(void* inContext, IOReturn inResult, void* inSender, IOHIDVal
 
         debug_printf(VERBOSE_DEBUG,"Set button %d value %d",boton,valorboton);
 
-        realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_BUTTON,valorboton);
+        realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_BUTTON,valorboton,valorboton);
         realjoystick_hit=1;
         menu_info_joystick_last_raw_value=valorboton;
 
@@ -627,7 +627,7 @@ void joystickAction(void* inContext, IOReturn inResult, void* inSender, IOHIDVal
 
                     debug_printf(VERBOSE_DEBUG,"Set axis %d value %d",boton,valorfinalaxis);
 
-                    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,valorfinalaxis);
+                    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,valorfinalaxis,valorboton);
                     realjoystick_hit=1;
 
                 }

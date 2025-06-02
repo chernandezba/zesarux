@@ -616,7 +616,7 @@ void realjoystick_linux_main(void)
 
 			menu_info_joystick_last_raw_value=value;
 
-			realjoystick_common_set_event(button,realjoystick_linux_event_to_common(type),value);
+			realjoystick_common_set_event(button,realjoystick_linux_event_to_common(type),value,value);
 
 
 

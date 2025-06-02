@@ -395,7 +395,7 @@ void read_simulador_joystick(void)
 
 	menu_info_joystick_last_raw_value=value;
 
-	realjoystick_common_set_event(button,type,value);
+	realjoystick_common_set_event(button,type,value,value);
 
 
 
@@ -1218,7 +1218,8 @@ retorno volante 9cdf 32,d9,bf 0,0,0
 
 
 //lectura de evento de joystick y conversion a movimiento de joystick spectrum
-void realjoystick_common_set_event(int button,int type,int value)
+//value_axis utilizado en el volante (steering wheel)
+void realjoystick_common_set_event(int button,int type,int value,int value_axis)
 {
 
 
@@ -1243,7 +1244,7 @@ void realjoystick_common_set_event(int button,int type,int value)
 
                 int multiplicador=realjoystick_steering_max_value-realjoystick_steering_min_value+1;
 
-                int valor_volante=value;
+                int valor_volante=value_axis;
 
                 if (realjoystick_steering_two_addresses.v) {
                     //Derecha primera direccion
@@ -1252,15 +1253,15 @@ void realjoystick_common_set_event(int button,int type,int value)
                     if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
                     if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
 
-                    if (value>=0) {
+                    if (value_axis>=0) {
                         poke_byte_no_time(realjoystick_steering_address,valor_volante);
                         poke_byte_no_time(realjoystick_steering_address+1,0);
-                        printf("Lectura Volante Der: %d Valor escrito: %d\n",value,valor_volante);
+                        printf("Lectura Volante Der: %d Valor escrito: %d\n",value_axis,valor_volante);
                     }
                     else {
                         poke_byte_no_time(realjoystick_steering_address,0);
                         poke_byte_no_time(realjoystick_steering_address+1,-valor_volante);
-                        printf("Lectura Volante Izq: %d Valor escrito: %d\n",value,-valor_volante);
+                        printf("Lectura Volante Izq: %d Valor escrito: %d\n",value_axis,-valor_volante);
                     }
                 }
 
@@ -1288,7 +1289,7 @@ void realjoystick_common_set_event(int button,int type,int value)
                     }
 
 
-                    printf("Lectura Volante: %d Valor escrito: %d\n",value,valor_volante);
+                    printf("Lectura Volante: %d Valor escrito: %d\n",value_axis,valor_volante);
 
                     poke_byte_no_time(realjoystick_steering_address,valor_volante);
 
@@ -1447,8 +1448,8 @@ void realjoystick_common_set_hat(int boton,int direccion)
     //aunque se elige el 15 porque es el mismo que se recibe desde la lectura de un hat de joystick
 
     //Primero reseteamos movimiento en los dos ejes simulados
-    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0);
-    realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,0);
+    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0,0);
+    realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,0,0);
     menu_info_joystick_last_raw_value=0;
 
 
@@ -1507,22 +1508,22 @@ void realjoystick_common_set_hat(int boton,int direccion)
 
 
         if (bitmask_direction&BITMASK_DIR_LEFT) {
-            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);
+            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,-32767,-32767);
             menu_info_joystick_last_raw_value=-32767;
         }
 
         if (bitmask_direction&BITMASK_DIR_RIGHT) {
-            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);
+            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,+32767,+32767);
             menu_info_joystick_last_raw_value=+32767;
         }
 
         if (bitmask_direction&BITMASK_DIR_UP) {
-            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);
+            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,-32767,-32767);
             menu_info_joystick_last_raw_value=-32767;
         }
 
         if (bitmask_direction&BITMASK_DIR_DOWN) {
-            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);
+            realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,+32767,+32767);
             menu_info_joystick_last_raw_value=+32767;
         }
 
