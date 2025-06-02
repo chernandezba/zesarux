@@ -10654,8 +10654,8 @@ void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
 			else strcpy(buffer_type,"Unknown");
 
 
-			if (menu_info_joystick_last_button<0) strcpy(buffer_texto_medio,"Button: None");
-			else sprintf (buffer_texto_medio,"Button: %d",menu_info_joystick_last_button);
+			if (menu_info_joystick_last_button<0) strcpy(buffer_texto_medio,"Number: None");
+			else sprintf (buffer_texto_medio,"Number: %d",menu_info_joystick_last_button);
 			zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_texto_medio);
 
 			if (menu_info_joystick_last_type<0) strcpy(buffer_texto_medio,"Type: None");
@@ -10958,7 +10958,7 @@ void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_load_presets,NULL,
-            "Load presets","Cargar ajustes","Carregar opcions");
+            "Load game presets","Cargar ajustes de juego ","Carregar opcions de joc");
         menu_add_item_menu_prefijo(array_menu_common,"    ");
         menu_add_item_menu_tooltip(array_menu_common,"Load presets from .config file");
         menu_add_item_menu_ayuda(array_menu_common,"Load presets from .config file");

@@ -140,9 +140,8 @@ agregar esa carpeta en configure, generate_install.sh, etc. Y al cargar preset q
 Probar en diferentes sistemas:
 *acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac. SDL2 no tiene soporte joystick!!
 
+*quitar print debug en consola
 
-ok *pedir maximo y minimo juego, maximo y minimo volante, numero eje volante
-ok * en condicion solo hacerlo si tipo es eje
 
 
 --Fin lectura mando analógico, como un volante
