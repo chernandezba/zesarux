@@ -10948,7 +10948,7 @@ void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Special support for games like Chase HQ where the wheel is stored on two consecutive addresses");
         menu_add_item_menu_ayuda(array_menu_common,"Special support for games like Chase HQ where the wheel is stored on two consecutive addresses");
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_two_address,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_16bit,NULL,
             "16 bit value","Valor de 16 bits","Valor de 16 bits");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(realjoystick_steering_16bit.v ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_common,"Special support for games like Chequered Flag that uses a 16 bit value");

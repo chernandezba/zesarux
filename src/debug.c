@@ -2903,7 +2903,7 @@ void cpu_history_reg_pc_bin_to_string(z80_byte *p,char *destino)
 {
 
 //Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
-  sprintf (destino,"%02x%02x",
+  sprintf (destino,"%02X%02X",
   p[1],p[0] 	//pc
   );
 }
