@@ -126,7 +126,7 @@ Probar en diferentes sistemas:
 *acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac. SDL2 no tiene soporte joystick!!
 
 *quitar print debug en consola
-
+*continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
 
 --Fin lectura mando analógico, como un volante
 
