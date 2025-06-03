@@ -27274,16 +27274,22 @@ int memory_cheat_next_scan_matches(z80_byte value,z80_byte previous_value,z80_by
 }
 
 int menu_memory_cheat_scan_total_results=0;
-
+int memory_cheat_first_scan_start_low_range=23296;
 
 void menu_memory_cheat_first_scan_start(MENU_ITEM_PARAMETERS)
 {
     int total_elementos=get_efectivo_tamanyo_find_buffer();
 
-    menu_memory_cheat_scan_total_results=0;
-
+    //Primero ponerlas todas a 0
     int i;
     for (i=0;i<total_elementos;i++) {
+        menu_memory_cheat_array_list[i].matches=0;
+    }
+
+    menu_memory_cheat_scan_total_results=0;
+
+    //Y empezar desde margen inferior indicado
+    for (i=memory_cheat_first_scan_start_low_range;i<total_elementos;i++) {
         z80_byte value=peek_byte_z80_moto(i);
         int matches=memory_cheat_first_scan_matches(value);
 
@@ -27515,6 +27521,18 @@ void menu_memory_cheat_change_watch(MENU_ITEM_PARAMETERS)
     }
 }
 
+
+void menu_memory_cheat_first_scan_start_low_range(MENU_ITEM_PARAMETERS)
+{
+    char string_valor[6];
+    sprintf (string_valor,"%XH",memory_cheat_first_scan_start_low_range);
+    menu_ventana_scanf("Start Address: ",string_valor,6);
+    memory_cheat_first_scan_start_low_range=parse_string_to_number(string_valor);
+}
+
+
+
+
 void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -27599,6 +27617,10 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
         //zxvision_print_string_defaults_fillspc(ventana,1,0,"First Scan");
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"<Start First Scan>");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start_low_range,NULL,
+            "Start add: %d",memory_cheat_first_scan_start_low_range);
+        menu_add_item_menu_tabulado(array_menu_common,20,0);
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_condition,NULL,

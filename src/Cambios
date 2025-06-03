@@ -59,6 +59,7 @@ Mejorado Debug CPU:
 - Corregido al mover cursor arriba cuando la dirección está cercana a 0
 
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
+Mejorado Memory Cheat: permitir indicar dirección inicial, poder borrar watches
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
 Mejorado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
