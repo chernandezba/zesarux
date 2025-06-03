@@ -116,25 +116,16 @@ por ver los diferentes mensajes de error
 ,pero puede que se vieran muy gruesas si ventana muy grande, debido a la escala
 
 
--linux con sdl2 no detecta joystick?
-
 ---------------------
 
 --Inicio lectura mando analógico, como un volante
-*presets para juegos conocidos? hard drivin, wec le mans, test drive 2, Toyota celica, Drift,
-Nightmare rally, chequered flag, enduro racer, turbo cup, power drift
-https://www.youtube.com/playlist?list=PLxOanVBhqd3vkkE35mCw6x63QFBnU9Xsi
 
-
-
-ok *documentacion parametros .config en --helpcustomconfig
 *video demo
 
 Probar en diferentes sistemas:
 *acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac. SDL2 no tiene soporte joystick!!
 
 *quitar print debug en consola
-
 
 
 --Fin lectura mando analógico, como un volante
