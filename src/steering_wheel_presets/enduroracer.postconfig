@@ -1,0 +1,20 @@
+--steering-wheel-address 9176h
+--steering-wheel-min-value -3
+--steering-wheel-max-value +3
+--steering-wheel-center-value 0
+--steering-wheel-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-no-16bit
+--steering-wheel-enable
+--poke adech 0
+--poke adedh 0
+--poke adeeh 0
+--poke adf2h 0
+--poke adf3h 0
+--poke adf4h 0
+--poke ae12h 0
+--poke ae13h 0
+--poke ae14h 0
+--poke aed2h 0
+--poke aed3h 0
+--poke aed4h 0
