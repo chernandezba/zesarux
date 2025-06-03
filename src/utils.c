@@ -12672,9 +12672,23 @@ void customconfig_help(void)
 	"--joystickkeybt but key\n"
 	"--joystickkeyev evt key\n"
 	"--text-keyboard-add text\n"
-        "--text-keyboard-length n\n"
-        "--text-keyboard-finalspc\n"
+    "--text-keyboard-length n\n"
+    "--text-keyboard-finalspc\n"
 	"--cleareventlist\n"
+
+
+    "--steering-wheel-address n        Memory address where the game stores the wheel position\n"
+    "--steering-wheel-min-value n      Minimum value stored on address (usually when wheel on maximum left position)\n"
+    "--steering-wheel-max-value n      Maximum value stored on address (usually when wheel on maximum right position)\n"
+    "--steering-wheel-center-value n   Center value stored on address (usually when wheel centered)\n"
+    "--steering-wheel-inverted         If moving wheel to the left means increase value and to the right means decrease value\n"
+    "--steering-wheel-no-inverted\n"
+    "--steering-wheel-two-addresses    Special support for games like Chase HQ where the wheel is stored on two consecutive addresses\n"
+    "--steering-wheel-no-two-addresses\n"
+    "--steering-wheel-16bit            Special support for games like Chequered Flag that uses a 16 bit value\n"
+    "--steering-wheel-no-16bit\n"
+    "--steering-wheel-enable           Enable wheel support. Should be the last of the steering wheel parameters to avoid changing wheel memory before it's fully configured\n"
+    "--poke n m                        Poke address n with value m\n"
 
 	"\n"
 	);
