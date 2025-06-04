@@ -1,0 +1,26 @@
+--steering-wheel-address b9e6h
+--steering-wheel-min-value -6
+--steering-wheel-max-value +6
+--steering-wheel-center-value 0
+--steering-wheel-no-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-no-16bit
+--steering-wheel-enable
+--poke b91fh 0
+--poke b920h 0
+--poke b921h 0
+
+--poke b912h 0
+--poke b913h 0
+--poke b914h 0
+
+;The following disables centering steering going offroad but provides you some kind of inmmunity to collisions offroad
+;--poke b9bah 0
+;--poke b9bbh 0
+;--poke b9bch 0
+;--poke b6f1h 0
+;--poke b6f2h 0
+;--poke b6f3h 0
+;--poke b9c3h 0
+;--poke b9c4h 0
+;--poke b9c5h 0
