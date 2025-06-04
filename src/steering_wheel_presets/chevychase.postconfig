@@ -1,0 +1,16 @@
+--steering-wheel-address bb57h
+--steering-wheel-min-value -8
+--steering-wheel-max-value +8
+--steering-wheel-center-value 0
+--steering-wheel-no-inverted
+--steering-wheel-no-two-addresses
+--steering-wheel-no-16bit
+--steering-wheel-enable
+--poke ba83h 0
+--poke ba84h 0
+--poke ba85h 0
+
+--poke ba90h 0
+--poke ba91h 0
+--poke ba92h 0
+

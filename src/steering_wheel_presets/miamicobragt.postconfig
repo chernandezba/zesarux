@@ -1,6 +1,6 @@
 --steering-wheel-address b9e6h
---steering-wheel-min-value -6
---steering-wheel-max-value +6
+--steering-wheel-min-value -8
+--steering-wheel-max-value +8
 --steering-wheel-center-value 0
 --steering-wheel-no-inverted
 --steering-wheel-no-two-addresses
