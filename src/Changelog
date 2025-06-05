@@ -58,8 +58,12 @@ Improved Debug CPU:
 - Added option to enable/disable all breakpoints
 - Fixed moving cursor up when address near 0
 
+Improve Memory Cheat:
+- Allow to set initial address
+- Can delete watches
+- Improve window layout
+
 Improve maximum sent keys to ZENG/ZENG Online
-Improve Memory Cheat: allow to set low address, can delete watches
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
 Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving

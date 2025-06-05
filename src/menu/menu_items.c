@@ -27067,7 +27067,7 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 
            z80_byte valor_actual=peek_byte_z80_moto(i);
 
-            sprintf(buffer_linea,"%0*XH, had %02XH (%3d), now %02XH (%3d)",
+            sprintf(buffer_linea,"%0*XH, scan %02XH (%3d), now %02XH (%3d)",
                 digitos,i,menu_memory_cheat_array_list[i].value_last_scan,menu_memory_cheat_array_list[i].value_last_scan,
                 valor_actual,valor_actual);
 
@@ -27413,7 +27413,7 @@ void menu_memory_cheat_next_scan_condition(MENU_ITEM_PARAMETERS)
 void menu_memory_cheat_next_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
-    sprintf (string_valor,"%XH",memory_cheat_next_scan_condition_first_parameter);
+    sprintf (string_valor,"%02XH",memory_cheat_next_scan_condition_first_parameter);
     menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_next_scan_condition_first_parameter=parse_string_to_number(string_valor);
 }
@@ -27421,7 +27421,7 @@ void menu_memory_cheat_next_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
 void menu_memory_cheat_next_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
-    sprintf (string_valor,"%XH",memory_cheat_next_scan_condition_second_parameter);
+    sprintf (string_valor,"%02XH",memory_cheat_next_scan_condition_second_parameter);
     menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_next_scan_condition_second_parameter=parse_string_to_number(string_valor);
 }
@@ -27431,7 +27431,7 @@ void menu_memory_cheat_next_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 void menu_memory_cheat_first_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
-    sprintf (string_valor,"%XH",memory_cheat_first_scan_condition_first_parameter);
+    sprintf (string_valor,"%02XH",memory_cheat_first_scan_condition_first_parameter);
     menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_first_scan_condition_first_parameter=parse_string_to_number(string_valor);
 }
@@ -27439,7 +27439,7 @@ void menu_memory_cheat_first_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
 void menu_memory_cheat_first_scan_change_second_parameter(MENU_ITEM_PARAMETERS)
 {
     char string_valor[4];
-    sprintf (string_valor,"%XH",memory_cheat_first_scan_condition_second_parameter);
+    sprintf (string_valor,"%02XH",memory_cheat_first_scan_condition_second_parameter);
     menu_ventana_scanf("Value: ",string_valor,4);
     memory_cheat_first_scan_condition_second_parameter=parse_string_to_number(string_valor);
 }
@@ -27598,7 +27598,8 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
     }
 
 
-
+    //Forzar visibles hotkeys en esa ventana
+    ventana->writing_inverse_color=1;
 
 
 	menu_item *array_menu_common;
@@ -27611,25 +27612,41 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
         //zxvision_print_string_defaults_fillspc(ventana,1,7,"");
         zxvision_cls(ventana);
 
+        //Para mostrar los campos seleccionables siempre con el mismo ancho y rellenos con espacios
+        char buffer_campo_limite[100];
+
+
+        int max_campo_seleccionable=14;
+
         zxvision_print_string_defaults_fillspc(ventana,1,MEMORY_CHEAT_WATCHES_LINE,"Watches");
 
 
         //zxvision_print_string_defaults_fillspc(ventana,1,0,"First Scan");
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"[Start First Scan]");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start,NULL,"[~^Start First Scan]");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
+        menu_add_item_menu_shortcut(array_menu_common,'s');
 
         int digitos=4;
 
         if (CPU_IS_MOTOROLA) digitos=6;
 
+        zxvision_print_string_defaults_fillspc(ventana,20,0,"Start ~^addr:");
+        sprintf(buffer_campo_limite,"%0*XH",digitos,memory_cheat_first_scan_start_low_range);
+        util_add_string_spaces(buffer_campo_limite,digitos+2);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_start_low_range,NULL,
-            "Start addr: %0*XH",digitos,memory_cheat_first_scan_start_low_range);
-        menu_add_item_menu_tabulado(array_menu_common,20,0);
+            buffer_campo_limite);
+        menu_add_item_menu_tabulado(array_menu_common,32,0);
+        menu_add_item_menu_shortcut(array_menu_common,'a');
+        menu_add_item_menu_campo_seleccionable(array_menu_common);
 
 
+        zxvision_print_string_defaults_fillspc(ventana,1,1,"Condition:");
+        sprintf(buffer_campo_limite,"%s",memory_cheat_first_scan_possible_conditions_strings[memory_cheat_first_scan_condition]);
+        util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_condition,NULL,
-            "Condition: %s",memory_cheat_first_scan_possible_conditions_strings[memory_cheat_first_scan_condition]);
-        menu_add_item_menu_tabulado(array_menu_common,1,1);
+            buffer_campo_limite);
+        menu_add_item_menu_tabulado(array_menu_common,12,1);
+        menu_add_item_menu_campo_seleccionable(array_menu_common);
 
         //Mostrar parametro excepto en un caso
         if (memory_cheat_first_scan_condition!=MEMORY_CHEAT_FIRST_SCAN_UNKNOWN_VALUE) {
@@ -27637,6 +27654,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
                 "%02XH",memory_cheat_first_scan_condition_first_parameter);
 
             menu_add_item_menu_tabulado(array_menu_common,26,1);
+            menu_add_item_menu_campo_seleccionable(array_menu_common);
 
             if (memory_cheat_first_scan_condition==MEMORY_CHEAT_FIRST_SCAN_VALUE_BETWEEN) {
                 zxvision_print_string_defaults(ventana,26+4,1,"and");
@@ -27644,6 +27662,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_first_scan_change_second_parameter,NULL,
                     "%02XH",memory_cheat_first_scan_condition_second_parameter);
                 menu_add_item_menu_tabulado(array_menu_common,26+4+4,1);
+                menu_add_item_menu_campo_seleccionable(array_menu_common);
             }
 
 
@@ -27653,15 +27672,26 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
         if (menu_memory_cheat_realizado_first_scan) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_view_results,menu_memory_cheat_view_results_cond,
-                "[View Results (%d)]",menu_memory_cheat_scan_total_results);
+                "[~^View Results (%d)]",menu_memory_cheat_scan_total_results);
             menu_add_item_menu_tabulado(array_menu_common,1,3);
+            menu_add_item_menu_shortcut(array_menu_common,'v');
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"[Run Next Scan]");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_start,NULL,"[Run ~^Next Scan]");
             menu_add_item_menu_tabulado(array_menu_common,1,5);
+            menu_add_item_menu_shortcut(array_menu_common,'n');
 
+            zxvision_print_string_defaults_fillspc(ventana,1,6,"Condition:");
+
+
+            max_campo_seleccionable=19;
+            sprintf(buffer_campo_limite,"%s",memory_cheat_next_scan_possible_conditions_strings[memory_cheat_next_scan_condition]);
+            util_add_string_spaces(buffer_campo_limite,max_campo_seleccionable);
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_condition,NULL,
-                "Condition: %s",memory_cheat_next_scan_possible_conditions_strings[memory_cheat_next_scan_condition]);
-            menu_add_item_menu_tabulado(array_menu_common,1,6);
+                buffer_campo_limite);
+            //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_condition,NULL,
+            //    "%s",memory_cheat_next_scan_possible_conditions_strings[memory_cheat_next_scan_condition]);
+            menu_add_item_menu_tabulado(array_menu_common,12,6);
+            menu_add_item_menu_campo_seleccionable(array_menu_common);
 
 
             //Mostrar parametro excepto
@@ -27675,6 +27705,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_first_parameter,NULL,
                     "%02XH",memory_cheat_next_scan_condition_first_parameter);
                 menu_add_item_menu_tabulado(array_menu_common,31,6);
+                menu_add_item_menu_campo_seleccionable(array_menu_common);
 
                 if (memory_cheat_next_scan_condition==MEMORY_CHEAT_NEXT_SCAN_VALUE_BETWEEN) {
                     zxvision_print_string_defaults(ventana,31+4,6,"and");
@@ -27682,6 +27713,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_next_scan_change_second_parameter,NULL,
                         "%02XH",memory_cheat_next_scan_condition_second_parameter);
                     menu_add_item_menu_tabulado(array_menu_common,31+4+4,6);
+                    menu_add_item_menu_campo_seleccionable(array_menu_common);
                 }
             }
 
@@ -27692,7 +27724,7 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
         for (i=0;i<MEMORY_CHEAT_MAX_WATCHES;i++) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_memory_cheat_change_watch,NULL,
-                "Watch %d",i+1);
+                "[Watch %d]",i+1);
             menu_add_item_menu_tabulado(array_menu_common,x,MEMORY_CHEAT_WATCHES_LINE+1);
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
