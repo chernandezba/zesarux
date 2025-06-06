@@ -135,3 +135,7 @@ Probar en diferentes sistemas:
 -soporte joystick real SDL2
 
 -tema ataritos, boton maximizar deberia ser un rombo?
+
+-si está cpu history habilitado, que en el desensamble de debug cpu se vea de alguna manera que la cpu "ha pasado" por alguna dirección,
+quizá indicando con algún caracter en la primera columna. Aunque también sería conveniente ver el orden de ejecución, esto es
+mas complicado de mostrar en esa misma vista
