@@ -3564,11 +3564,11 @@ unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //0x7C,0x00,0x44,0x64,0x54,0x4C,0x44,0x00,
 0x7C,0x00,0xc6,0xe6,0xf6,0xde,0xce,0x00,
 
-//Caracter enviar a background estilo ZEsarUX plus - 148
+//Caracter botón enviar a background estilo ZEsarUX plus - 148
 0,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,0,
 //0,2+8+32+128,4+16+64,2+8+32+128,4+16+64,2+8+32+128,4+16+64,0,
 
-//Caracter botón background - 149. Este 149 se uso por primera vez en AmigaOS
+//Caracter botón enviar a background - 149 estilos os/2 y otros
 0,254,146,162,198,138,146,254,
 
 //Caracter minimizar - 150
