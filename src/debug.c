@@ -3579,6 +3579,35 @@ int cpu_history_get_pc_register_element_to_int(int indice)
 	return cpu_history_reg_pc_bin_to_int(&cpu_history_memory_buffer[offset_memoria]);
 }
 
+//Buscar si direccion pc esta en el historial
+int cpu_history_find_pc(int direccion_to_find)
+{
+
+    int total_elementos=cpu_history_get_total_elements();
+
+    int indice=total_elementos-1;
+
+    int contador=0;
+
+    int encontrado=0;
+
+    while (total_elementos && !encontrado) {
+        int direccion=cpu_history_get_pc_register_element_to_int(indice--);
+        //printf("Direccion %XH\n",direccion);
+
+        if (direccion==direccion_to_find) {
+            return contador;
+        }
+        else {
+            total_elementos--;
+            contador++;
+        }
+    }
+
+    return -1;
+
+}
+
 //Dado un puntero z80_byte, con contenido de registros en binario, restaura los registros
 //Registros 16 bits guardados en little endian
 //El indice 0 es el elemento mas antiguo

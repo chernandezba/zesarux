@@ -1763,30 +1763,12 @@ void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 	else if (!strcasecmp(parameter,"find-pc")) {
 		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
 		else {
-		int total_elementos=cpu_history_get_total_elements();
-        int direccion_to_find=parse_string_to_number(value);
 
-        int indice=total_elementos-1;
+            int direccion_to_find=parse_string_to_number(value);
 
-        int contador=0;
+            int direccion_encontrada=cpu_history_find_pc(direccion_to_find);
 
-        int encontrado=0;
-
-        while (total_elementos && !encontrado) {
-            int direccion=cpu_history_get_pc_register_element_to_int(indice--);
-            //printf("Direccion %XH\n",direccion);
-
-            if (direccion==direccion_to_find) {
-                escribir_socket_format(misocket,"%d",contador);
-                encontrado=1;
-            }
-            else {
-                total_elementos--;
-                contador++;
-            }
-        }
-
-        if (!encontrado) escribir_socket(misocket,"-1");
+            escribir_socket_format(misocket,"%d",direccion_encontrada);
 
 		}
 	}

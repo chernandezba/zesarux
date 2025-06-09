@@ -551,6 +551,7 @@ extern void cpu_history_init_buffer(void);
 extern void cpu_history_get_pc_register_element(int indice,char *string_destino);
 extern int cpu_history_get_pc_register_element_to_int(int indice);
 extern void cpu_history_regs_bin_restore(int indice);
+extern int cpu_history_find_pc(int direccion_to_find);
 
 extern int cpu_history_max_elements;
 
