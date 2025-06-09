@@ -549,6 +549,7 @@ extern void set_cpu_core_history_enable(void);
 extern int cpu_history_set_max_size(int total);
 extern void cpu_history_init_buffer(void);
 extern void cpu_history_get_pc_register_element(int indice,char *string_destino);
+extern int cpu_history_get_pc_register_element_to_int(int indice);
 extern void cpu_history_regs_bin_restore(int indice);
 
 extern int cpu_history_max_elements;

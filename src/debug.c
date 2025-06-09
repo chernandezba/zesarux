@@ -2897,15 +2897,20 @@ void cpu_history_extended_regs_bin_to_string(z80_byte *p,char *destino)
 
 }
 
-//Dado un puntero z80_byte, con contenido de registros en binario, retorna valor registro PC
+//Dado un puntero z80_byte, con contenido de registros en binario, retorna valor registro PC en string
 //Registros 16 bits guardados en little endian
 void cpu_history_reg_pc_bin_to_string(z80_byte *p,char *destino)
 {
-
-//Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
   sprintf (destino,"%02X%02X",
   p[1],p[0] 	//pc
   );
+}
+
+//Dado un puntero z80_byte, con contenido de registros en binario, retorna valor registro PC en variable
+//Registros 16 bits guardados en little endian
+int cpu_history_reg_pc_bin_to_int(z80_byte *p)
+{
+    return p[0]+256*p[1];
 }
 
 //Funcion para leer byte preservando variable MRA
@@ -3554,6 +3559,24 @@ void cpu_history_get_pc_register_element(int indice,char *string_destino)
 	long long int offset_memoria=cpu_history_get_offset_index(posicion);
 
 	cpu_history_reg_pc_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
+}
+
+int cpu_history_get_pc_register_element_to_int(int indice)
+{
+
+	if (indice<0) {
+		return -1;
+	}
+
+	if (indice>=cpu_history_total_elementos) {
+		return -1;
+	}
+
+	int posicion=cpu_history_get_array_pos_element(indice);
+
+	long long int offset_memoria=cpu_history_get_offset_index(posicion);
+
+	return cpu_history_reg_pc_bin_to_int(&cpu_history_memory_buffer[offset_memoria]);
 }
 
 //Dado un puntero z80_byte, con contenido de registros en binario, restaura los registros

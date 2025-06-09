@@ -651,6 +651,7 @@ struct s_items_ayuda items_ayuda[]={
 	{"cpu-history",NULL,"action [parameter] [parameter]","Runs cpu history actions. Action and parameters are the following:\n"
 	"clear                      Clear the cpu history\n"
 	"enabled       yes|no:      Enable or disable the cpu history\n"
+    "find-pc       address      Tells if pc adddress is in cpu history; returns history position or -1 if not found\n"
 	"get           index:       Get registers at position, being 0 the most recent item. This is a legacy command in order to mantain compatibility with DeZog\n"
     "get-extended  index:       Get registers at position, being 0 the most recent item. This command includes more features than 'get'\n"
 	"get-max-size               Return maximum allowed elements in history\n"
@@ -1756,6 +1757,37 @@ void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
 		else {
 			escribir_socket_format(misocket,"%d",cpu_history_get_max_size() );
+		}
+	}
+
+	else if (!strcasecmp(parameter,"find-pc")) {
+		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+		else {
+		int total_elementos=cpu_history_get_total_elements();
+			int direccion_to_find=parse_string_to_number(value);
+
+            int indice=total_elementos-1;
+
+            int contador=0;
+
+            int encontrado=0;
+
+            while (total_elementos && !encontrado) {
+                int direccion=cpu_history_get_pc_register_element_to_int(indice--);
+                //printf("Direccion %XH\n",direccion);
+
+                if (direccion==direccion_to_find) {
+                    escribir_socket_format(misocket,"%d",contador);
+                    encontrado=1;
+                }
+                else {
+                    total_elementos--;
+                    contador++;
+                }
+            }
+
+            if (!encontrado) escribir_socket(misocket,"-1");
+
 		}
 	}
 
