@@ -2840,8 +2840,16 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //Caracter restaurar - 151
 255,129,255,129,255,129,255,0,
 
-//Caracter maximizar - 152
-0,126,2+64,2+64,2+64,2+64,126,0,
+//Caracter maximizar - 152 - AtariTOS
+//0,126,2+64,2+64,2+64,2+64,126,0,
+128+64+32+8+4+2,
+128+64+16+4+2,
+128+32+16+8+2,
+32+16+8,
+128+32+16+8+2,
+128+64+16+4+2,
+128+64+32+8+4+2,
+0,
 
 //Caracter franjas verticales colores titulo - 153
 2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,

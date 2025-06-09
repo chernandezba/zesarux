@@ -1920,7 +1920,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 
 		140, //boton cerrar
         '-', //caracter de minimizar ventana
-        '+', //caracter de maximizar ventana
+        152, //caracter de maximizar ventana
         '=', //caracter de restaurar ventana
         '!', //caracter de background ventana
         148, //caracter de fondo de titulo
