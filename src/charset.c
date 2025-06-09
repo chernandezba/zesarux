@@ -2831,8 +2831,9 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //Caracter fondo titulo - 148
 0,85,0,85,0,85,0,0,
 
-//Caracter background titulo - 149. Este 149 se uso por primera vez en AmigaOS
-0,255,145,163,197,137,255,0,
+//Caracter enviar a background - 149. mismo caracter que en estilo ZEsarUX Plus
+//0,255,145,163,197,137,255,0,
+0,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,0,
 
 //Caracter minimizar - 150
 255,129,129,255,129,129,255,0,
@@ -2842,6 +2843,7 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar - 152 - AtariTOS
 //0,126,2+64,2+64,2+64,2+64,126,0,
+0,
 128+64+32+8+4+2,
 128+64+16+4+2,
 128+32+16+8+2,
@@ -2849,7 +2851,7 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 128+32+16+8+2,
 128+64+16+4+2,
 128+64+32+8+4+2,
-0,
+
 
 //Caracter franjas verticales colores titulo - 153
 2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,2+4+32+64,
@@ -3555,7 +3557,7 @@ unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 //0x7C,0x00,0x44,0x64,0x54,0x4C,0x44,0x00,
 0x7C,0x00,0xc6,0xe6,0xf6,0xde,0xce,0x00,
 
-//Caracter background estilo ZEsarUX plus - 148
+//Caracter enviar a background estilo ZEsarUX plus - 148
 0,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,0,
 //0,2+8+32+128,4+16+64,2+8+32+128,4+16+64,2+8+32+128,4+16+64,0,
 

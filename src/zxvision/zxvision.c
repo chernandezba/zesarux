@@ -1922,7 +1922,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         '-', //caracter de minimizar ventana
         152, //caracter de maximizar ventana
         '=', //caracter de restaurar ventana
-        '!', //caracter de background ventana
+        149, //caracter de background ventana
         148, //caracter de fondo de titulo
 		2, //color de aviso
 		colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
