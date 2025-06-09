@@ -1013,8 +1013,15 @@ unsigned char char_set_spectrum[TOTAL_ASCII_CHARSET_ELEMENTS]={		0
 //Caracter fondo titulo RetroMac - 148
 0,255,0,255,0,255,0,0,
 
-//Caracter background titulo - 149. Este 149 se uso por primera vez en AmigaOS
-0,255,145,163,197,137,255,0,
+//Caracter enviar a background
+2+8+32+128,
+1+4+16+64,
+2+8+32+128,
+1+4+16+64,
+2+8+32+128,
+1+4+16+64,
+2+8+32+128,
+1+4+16+64,
 
 //Caracter minimizar - 150
 255,129,129,255,129,129,255,0,
@@ -3561,7 +3568,7 @@ unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,0,
 //0,2+8+32+128,4+16+64,2+8+32+128,4+16+64,2+8+32+128,4+16+64,0,
 
-//Caracter background titulo - 149. Este 149 se uso por primera vez en AmigaOS
+//Caracter botón background - 149. Este 149 se uso por primera vez en AmigaOS
 0,254,146,162,198,138,146,254,
 
 //Caracter minimizar - 150
