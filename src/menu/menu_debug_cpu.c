@@ -3251,14 +3251,19 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 					//Si linea es donde esta el PC
 					if (puntero_dir==get_pc_register() ) tiene_pc=1;
 
+                    int posicion_encontrada_historial=-1;
+
                     if (cpu_history_enabled.v && cpu_history_started.v) {
-                        int posicion_encontrada=cpu_history_find_pc(puntero_dir,1000);
-                        if (posicion_encontrada>=0) esta_en_historial=1;
+                        posicion_encontrada_historial=cpu_history_find_pc(puntero_dir,1000);
+                        if (posicion_encontrada_historial>=0) esta_en_historial=1;
                     }
 
+                    //Para buffer condicion e informacion de direccion previa de cpu history
                     char buffer_condicion[32];
 
                     buffer_condicion[0]=0;
+
+                    int cumple_condicion=0;
 
 					if (tiene_pc) {
                         buffer_linea[0]='>';
@@ -3273,7 +3278,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
                         direccion_condicion=adjust_address_memory_size(direccion_condicion);
                         opcode_fires=menu_debug_get_mapped_byte(direccion_condicion);
-                        menu_debug_get_condicion_satisfy(opcode_fires,buffer_condicion);
+                        cumple_condicion=menu_debug_get_condicion_satisfy(opcode_fires,buffer_condicion);
                         //strcpy(buffer_condicion," (satisfy NZ)");
                     }
 					if (tiene_brk) {
@@ -3284,13 +3289,31 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                         buffer_linea[0]='-'; //Cuando hay un breakpoint pero que no esta activado
                     }
 
-                    else if (esta_en_historial) {
-                        buffer_linea[0]='h';
-                    }
 
 					if (tiene_pc && tiene_brk) buffer_linea[0]='+'; //Cuando coinciden breakpoint y cursor
 
 
+                    if (esta_en_historial) {
+                        //buffer_linea[0]='h';
+
+                        //Mostrar direccion previa
+                        if (!cumple_condicion && posicion_encontrada_historial>=0) {
+
+                            int total_elementos=cpu_history_get_total_elements();
+
+                            int indice=total_elementos-posicion_encontrada_historial-1;
+
+                            if (indice==0) {
+                                strcpy(buffer_condicion,"(first in history)");
+                            }
+
+                            //Direccion previa a esa
+                            else if (indice>0) {
+                                int direccion=cpu_history_get_pc_register_element_to_int(indice-1);
+                                sprintf(buffer_condicion,"(previous %04X)",direccion);
+                            }
+                        }
+                    }
 
                     debugger_disassemble(dumpassembler,32,&longitud_op,menu_debug_memory_pointer_copia);
 
@@ -3316,7 +3339,24 @@ int menu_debug_registers_subview_type=0;
 
                     //char buffer_desensamblado[200];
 
-					sprintf(&buffer_linea[1],"%04X %s %s",puntero_dir,dumpassembler,buffer_condicion);
+                    //Agregar espacios entre dumpassembler y buffer_condicion para que quede siempre en una columna fija
+                    #define MAX_SPACES_TABULATE 14
+                    char buffer_espacios[MAX_SPACES_TABULATE];
+                    util_fill_string_character(buffer_espacios,MAX_SPACES_TABULATE-1,' ');
+                    int longitud_opcode=strlen(dumpassembler);
+                    //RLCA (IX+d),h
+                    if (longitud_opcode<13) {
+                        int posicion_final=13-longitud_opcode;
+                        if (posicion_final>=0 && posicion_final<MAX_SPACES_TABULATE) {
+                            buffer_espacios[posicion_final]=0;
+                        }
+                        else buffer_espacios[0]=0;
+                    }
+                    else {
+                        buffer_espacios[0]=0;
+                    }
+
+					sprintf(&buffer_linea[1],"%04X %s %s %s",puntero_dir,dumpassembler,buffer_espacios,buffer_condicion);
 
 					//Guardar las direcciones de cada linea
 					//menu_debug_lines_addresses[i]=puntero_dir;
@@ -8142,8 +8182,7 @@ void menu_debug_help(void)
         "+: Si el registro PC coincide con esta dirección\n"
         "*: Si el registro PC no coincide con esta dirección\n"
         "Si hay un breakpoint en una dirección y no está activado, el primer carácter a la izquierda es un guión (-).\n"
-        "Si está CPU history habilitado y la dirección está en las 1000 instrucciones mas recientes, el primer carácter a la izquierda es una h.\n"
-        "El primer carácter a la izquierda es (>) si el registro PC coincide con esta dirección y no hay un breakpoint ni coincide con CPU history.\n"
+        "El primer carácter a la izquierda es (>) si el registro PC coincide con esta dirección y no hay un breakpoint.\n"
         "\n"
         "En esta vista también se visualizan, en color rojo, los registros que modificará la instrucción en que está posicionado el cursor.\n"
         "\n"
@@ -8257,8 +8296,7 @@ void menu_debug_help(void)
         "+: Si el registre PC coincideix amb aquesta adreça\n"
         "*: Si el registre PC no coincideix amb aquesta adreça\n"
         "Si hi ha un breakpoint a una adreça i no està activat, el primer caràcter a l'esquerra és un guió (-).\n"
-        "Si està CPU history activat i l'adreça està a les 1000 instruccions més recents, el primer caràcter a l'esquerra es una h.\n"
-        "El primer caràcter a l'esquerra és (>) si el registre PC coincideix amb aquesta adreça i no hi ha un breakpoint ni coincideix amb CPU history.\n"
+        "El primer caràcter a l'esquerra és (>) si el registre PC coincideix amb aquesta adreça i no hi ha un breakpoint.\n"
         "\n"
         "En aquesta vista també es visualitzen, en color vermell, els registres que modificarà la instrucció en que està posicionat el cursor.\n"
         "\n"
@@ -8373,8 +8411,7 @@ void menu_debug_help(void)
         "+: If PC register matches this address\n"
         "*: If PC register doesn't match this address\n"
         "If there is a breakpoint on an address and it's not enabled, the first left character will be a hyphen (-).\n"
-        "If CPU history is enabled and the address is one of the last 1000 opcodes, the first left character will be a h.\n"
-        "The first left character is (>) if PC register matches this address and there is no breakpoint nor matches with CPU history.\n"
+        "The first left character is (>) if PC register matches this address and there is no breakpoint.\n"
         "\n"
         "In this view you can also see, in red color, which registers will be modified by the opcode the cursor is in.\n"
         "\n"

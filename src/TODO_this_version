@@ -141,3 +141,5 @@ mas complicado de mostrar en esa misma vista
 H en primera columna
 y poder ir a elemento en historial
 ->vista no habilitado por defecto porque es lento
+* ayuda de (previous XXX)
+* agregar a changelog

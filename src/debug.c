@@ -3581,6 +3581,7 @@ int cpu_history_get_pc_register_element_to_int(int indice)
 
 //Buscar si direccion pc esta en el historial
 //Si max_elements_to_find>0, se limita la cantidad a buscar
+//Retorna -1 si no encontrado. >=0 si encontrado, siendo 0 la posicion mas reciente
 int cpu_history_find_pc(int direccion_to_find,int max_elements_to_find)
 {
 
