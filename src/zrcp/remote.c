@@ -1766,7 +1766,7 @@ void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 
             int direccion_to_find=parse_string_to_number(value);
 
-            int direccion_encontrada=cpu_history_find_pc(direccion_to_find);
+            int direccion_encontrada=cpu_history_find_pc(direccion_to_find,0);
 
             escribir_socket_format(misocket,"%d",direccion_encontrada);
 

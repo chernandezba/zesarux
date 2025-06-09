@@ -137,3 +137,7 @@ Probar en diferentes sistemas:
 -si está cpu history habilitado, que en el desensamble de debug cpu se vea de alguna manera que la cpu "ha pasado" por alguna dirección,
 quizá indicando con algún caracter en la primera columna. Aunque también sería conveniente ver el orden de ejecución, esto es
 mas complicado de mostrar en esa misma vista
+
+H en primera columna
+y poder ir a elemento en historial
+->vista no habilitado por defecto porque es lento

@@ -3240,6 +3240,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 					int tiene_brk=0;
 					int tiene_pc=0;
                     int tiene_brk_enabled_or_not=0;
+                    int esta_en_historial=0;
 
 					//Si linea tiene breakpoint activado
 					if (debug_return_brk_pc_dir_condition(puntero_dir)>=0) tiene_brk=1;
@@ -3249,6 +3250,11 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
 					//Si linea es donde esta el PC
 					if (puntero_dir==get_pc_register() ) tiene_pc=1;
+
+                    if (cpu_history_enabled.v && cpu_history_started.v) {
+                        int posicion_encontrada=cpu_history_find_pc(puntero_dir,1000);
+                        if (posicion_encontrada>=0) esta_en_historial=1;
+                    }
 
                     char buffer_condicion[32];
 
@@ -3261,7 +3267,6 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                         if (indice_debug_cpu_backwards_history && cpu_step_mode.v) buffer_linea[0]='^';
 
                         //Meteremos texto, si conviene, de si se cumple condición o no
-                        //prueba
                         z80_byte opcode_fires;
                         int direccion_condicion=menu_debug_memory_pointer_copia;
 
@@ -3277,6 +3282,10 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 					}
                     else if (tiene_brk_enabled_or_not) {
                         buffer_linea[0]='-'; //Cuando hay un breakpoint pero que no esta activado
+                    }
+
+                    else if (esta_en_historial) {
+                        buffer_linea[0]='h';
                     }
 
 					if (tiene_pc && tiene_brk) buffer_linea[0]='+'; //Cuando coinciden breakpoint y cursor
@@ -8133,7 +8142,8 @@ void menu_debug_help(void)
         "+: Si el registro PC coincide con esta dirección\n"
         "*: Si el registro PC no coincide con esta dirección\n"
         "Si hay un breakpoint en una dirección y no está activado, el primer carácter a la izquierda es un guión (-).\n"
-        "El primer carácter a la izquierda es (>) Si el registro PC coincide con esta dirección y no hay un breakpoint.\n"
+        "Si está CPU history habilitado y la dirección está en las 1000 instrucciones mas recientes, el primer carácter a la izquierda es una h.\n"
+        "El primer carácter a la izquierda es (>) si el registro PC coincide con esta dirección y no hay un breakpoint ni coincide con CPU history.\n"
         "\n"
         "En esta vista también se visualizan, en color rojo, los registros que modificará la instrucción en que está posicionado el cursor.\n"
         "\n"
@@ -8247,7 +8257,8 @@ void menu_debug_help(void)
         "+: Si el registre PC coincideix amb aquesta adreça\n"
         "*: Si el registre PC no coincideix amb aquesta adreça\n"
         "Si hi ha un breakpoint a una adreça i no està activat, el primer caràcter a l'esquerra és un guió (-).\n"
-        "El primer caràcter a l'esquerra és (>) si el registre PC coincideix amb aquesta adreça i no hi ha un breakpoint.\n"
+        "Si està CPU history activat i l'adreça està a les 1000 instruccions més recents, el primer caràcter a l'esquerra es una h.\n"
+        "El primer caràcter a l'esquerra és (>) si el registre PC coincideix amb aquesta adreça i no hi ha un breakpoint ni coincideix amb CPU history.\n"
         "\n"
         "En aquesta vista també es visualitzen, en color vermell, els registres que modificarà la instrucció en que està posicionat el cursor.\n"
         "\n"
@@ -8362,7 +8373,8 @@ void menu_debug_help(void)
         "+: If PC register matches this address\n"
         "*: If PC register doesn't match this address\n"
         "If there is a breakpoint on an address and it's not enabled, the first left character will be a hyphen (-).\n"
-        "The first left character is (>) if PC register matches this address and there is no breakpoint.\n"
+        "If CPU history is enabled and the address is one of the last 1000 opcodes, the first left character will be a h.\n"
+        "The first left character is (>) if PC register matches this address and there is no breakpoint nor matches with CPU history.\n"
         "\n"
         "In this view you can also see, in red color, which registers will be modified by the opcode the cursor is in.\n"
         "\n"

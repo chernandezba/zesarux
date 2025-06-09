@@ -3580,7 +3580,8 @@ int cpu_history_get_pc_register_element_to_int(int indice)
 }
 
 //Buscar si direccion pc esta en el historial
-int cpu_history_find_pc(int direccion_to_find)
+//Si max_elements_to_find>0, se limita la cantidad a buscar
+int cpu_history_find_pc(int direccion_to_find,int max_elements_to_find)
 {
 
     int total_elementos=cpu_history_get_total_elements();
@@ -3590,6 +3591,12 @@ int cpu_history_find_pc(int direccion_to_find)
     int contador=0;
 
     int encontrado=0;
+
+    if (max_elements_to_find>0 && max_elements_to_find<total_elementos) {
+        total_elementos=max_elements_to_find;
+    }
+
+    //printf("Finding on %d elements\n",total_elementos);
 
     while (total_elementos && !encontrado) {
         int direccion=cpu_history_get_pc_register_element_to_int(indice--);
