@@ -2168,7 +2168,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         '-', //caracter de minimizar ventana
         '+', //caracter de maximizar ventana
         '=', //caracter de restaurar ventana
-        '!', //caracter de background ventana
+        149, //caracter de background ventana
         ' ', //caracter de fondo de titulo
         2, //color de aviso. Seria TURBOVISION_COLOUR_red pero las franjas de volumen usan un formato $$ que solo permite color de 1 digito
 		colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
