@@ -79,8 +79,7 @@ cada mensaje en cada idioma
 "Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
 
 
--carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
-Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8, en que un caracter ocupa mas de 1 byte
+
 
 
 
@@ -130,3 +129,9 @@ Probar en diferentes sistemas:
 ---------------------
 
 -soporte joystick real SDL2
+
+
+-carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
+Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8, en que un caracter ocupa mas de 1 byte
+->ok
+*falta calcular posicion de ... en caso de archivos o <dir> cuando ancho pequeño

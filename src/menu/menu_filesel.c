@@ -1290,6 +1290,24 @@ int menu_util_file_is_compressed(char *filename)
 //obtiene linea a escribir con nombre de archivo + carpeta
 void menu_filesel_print_file_get(char *buffer, char *s,unsigned int max_length_shown)
 {
+
+    //calcular longitudes segun si hay caracteres utf (acentos, cirílicos, etc)
+    char archivo_no_utf[PATH_MAX];
+
+    int longitud_con_utf=strlen(s);
+    util_convert_utf_no_utf(s,archivo_no_utf,longitud_con_utf);
+    int longitud_sin_utf=strlen(archivo_no_utf);
+
+    int diferencia_longitud=longitud_con_utf-longitud_sin_utf;
+
+    if (diferencia_longitud>0) {
+        //printf("Sumarle %d bytes (%s) (%s)\n",diferencia_longitud,s,archivo_no_utf);
+        //lo que hacemos al final es que contamos el final de longitud teniendo en cuenta la diferencia
+        //entre el numero de caracteres visibles en pantalla y los bytes necesarios (y los bytes necesarios pueden ser
+        //mayor que los caracteres, al utilizar caracteres utf8 de mas de 1 byte)
+        max_length_shown+=diferencia_longitud;
+    }
+
 	unsigned int i;
 
     for (i=0;i<max_length_shown && (s[i])!=0;i++) {
