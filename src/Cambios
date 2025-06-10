@@ -51,6 +51,7 @@ Mejorado ZX Vision:
 - Corregido fallo que duplica el Menú Principal al pulsar F6 desde el Menú Principal
 
 Mejorado Debug CPU:
+- Permitir ver e ir a la dirección previa de un opcode en el historial de cpu
 - Mostrar número de puerto cuando instrucción de lectura puertos (IN, INI, etc). Mostrar fila teclado cuando puerto es XXFEH en Spectrum
 - Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
 - Agregado cuenta de pasos a breakpoints (un breakpoint que se activa cuando se cumple la condición un número de veces)

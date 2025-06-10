@@ -51,6 +51,7 @@ Improved ZX Vision:
 - Fixed glitch duplicating Main Menu when pressing F6 on Main Menu
 
 Improved Debug CPU:
+- Allow to see and go to previous address of an opcode in cpu history
 - Show port number when port read opcode (IN, INI, etc). Show keyboard row when port is XXFEH on Spectrum
 - Show view number inside the window and not in the window title
 - Added pass count to breakpoints (a breakpoint that is triggered when the condition is hit a certain times)
