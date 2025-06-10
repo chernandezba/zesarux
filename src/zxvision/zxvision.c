@@ -2667,6 +2667,7 @@ valores de teclas especiales:
 3  Tecla de background
 4  shift+cursor left
 5  shift+cursor right
+6  shift+cursor up
 8  cursor left
 9  cursor right
 10 cursor down
@@ -3108,7 +3109,13 @@ z80_byte menu_get_pressed_key(void)
 		//if ((puerto_especial_joystick&2)) return 12;
 
 		if ((puerto_especial_joystick&4)) return 10;
-		if ((puerto_especial_joystick&8)) return 11;
+		if ((puerto_especial_joystick&8)) {
+            if ((puerto_65278 & 1)==0) {
+                //printf("Pulsada shift+cursor up\n");
+                return 6;
+            }
+            return 11;
+        }
 //8  cursor left
 //9  cursor right
 //10 cursor down

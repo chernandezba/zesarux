@@ -138,8 +138,7 @@ Probar en diferentes sistemas:
 quizá indicando con algún caracter en la primera columna. Aunque también sería conveniente ver el orden de ejecución, esto es
 mas complicado de mostrar en esa misma vista
 
-H en primera columna
-y poder ir a elemento en historial
-->vista no habilitado por defecto porque es lento
+* poder ir a elemento previo (shift+up). documentar en ayuda. y en leyenda shortcut. solo en modo step
+* poder ir a elemento en historial
 * ayuda de (previous XXX)
 * agregar a changelog

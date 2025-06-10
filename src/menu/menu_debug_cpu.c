@@ -2760,6 +2760,48 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     }
 }
 
+
+//Retorna la anterior posicion encontrada en el historial. <0 si no encontrada
+int menu_debug_cpu_previous_history(int posicion_encontrada_historial)
+{
+    int total_elementos=cpu_history_get_total_elements();
+
+    int indice=total_elementos-posicion_encontrada_historial-1;
+
+
+    //Direccion previa a esa
+    if (indice>0) {
+        return cpu_history_get_pc_register_element_to_int(indice-1);
+    }
+
+    else return -1;
+}
+
+//Retorna la anterior posicion, pasando la direccion de memoria
+//<0 si no encontrada
+int menu_debug_cpu_find_previous_address(int puntero_dir)
+{
+
+    int posicion_encontrada_historial=-1;
+
+    if (cpu_history_enabled.v && cpu_history_started.v) {
+        posicion_encontrada_historial=cpu_history_find_pc(puntero_dir,1000);
+
+        if (posicion_encontrada_historial>=0) {
+
+            int direccion=menu_debug_cpu_previous_history(posicion_encontrada_historial);
+
+            if (direccion>=0) {
+                return direccion;
+            }
+        }
+    }
+
+    return -1;
+}
+
+
+
 int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 {
 	//printf("linea: %d\n",linea);
@@ -3299,18 +3341,10 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                         //Mostrar direccion previa
                         if (!cumple_condicion && posicion_encontrada_historial>=0) {
 
-                            int total_elementos=cpu_history_get_total_elements();
+                            int direccion=menu_debug_cpu_previous_history(posicion_encontrada_historial);
 
-                            int indice=total_elementos-posicion_encontrada_historial-1;
-
-                            if (indice==0) {
-                                strcpy(buffer_condicion,"(first in history)");
-                            }
-
-                            //Direccion previa a esa
-                            else if (indice>0) {
-                                int direccion=cpu_history_get_pc_register_element_to_int(indice-1);
-                                sprintf(buffer_condicion,"(previous %04X)",direccion);
+                            if (direccion>=0) {
+                                sprintf(buffer_condicion,"(previous: %04X)",direccion);
                             }
                         }
                     }
@@ -4999,6 +5033,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 s[0]=0;
             }
             else {
+                /*
                 char string_nextpcbr[32];
                 char string_backwards[32];
 
@@ -5022,12 +5057,15 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 
                 sprintf(s,"set~^Pc=ptr%s%s%s",string_nextpcbr,string_history,string_backwards);
+                */
+
+
 
                 sprintf (buffer_intermedio_short,"~^Pc=ptr%s%s%s%s ~~F~~1:help",
                     ( debug_breakpoints_enabled.v ? " nxtpc~^Br" : "" ),
                     (CPU_IS_Z80 ? " st~~k" : ""),
                     (CPU_IS_Z80 ? " cpu~^Hst" : ""),
-                    (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " b~^Stp bru~^N" : "")
+                    (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " b~^Stp bru~^N ~^s~^h+~^u~^p hist" : "")
 
                 );
 
@@ -5036,7 +5074,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                     ( debug_breakpoints_enabled.v ? " nextpc~^Brk" : "" ),
                     (CPU_IS_Z80 ? " stac~~k" : ""),
                     (CPU_IS_Z80 ? " cpu~^Hist" : ""),
-                    (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " back~^Step backru~^N" : "")
+                    (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " back~^Step backru~^N ~^s~^h+~^u~^p history" : "")
 
                 );
 
@@ -9860,6 +9898,23 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					//Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
 					//de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+                }
+
+			    if (tecla==6) {
+                	//shift+arriba: direccion anterior en el historial
+                    menu_debug_follow_pc.v=0; //se deja de seguir pc
+
+                    //printf("Shift+up\n");
+                    if (cpu_history_enabled.v && cpu_history_started.v) {
+                        int direccion=menu_debug_cpu_find_previous_address(menu_debug_memory_pointer);
+                        if (direccion>=0) menu_debug_memory_pointer=direccion;
+                        //printf("direccion: %d\n",direccion);
+                    }
+
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                    //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+                    si_ejecuta_una_instruccion=0;
                 }
 
 
