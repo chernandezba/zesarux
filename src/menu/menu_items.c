@@ -6185,6 +6185,9 @@ void menu_audio_new_ayplayer_overlay(void)
 		int i;
 		linea=0;
 		for (i=0;i<AYPLAYER_INICIO_LINEA_MENU;i++) zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,"");
+
+        zxvision_print_string_defaults_fillspc_format(menu_audio_new_ayplayer_overlay_window,1,0,"No song playing");
+
 	}
 
     //esto hara ejecutar esto 2 veces por segundo

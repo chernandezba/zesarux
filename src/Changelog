@@ -28,6 +28,7 @@ Improved AY Player:
 - Show tenths of a second on song length and time elapsed
 - Better shuffle algorithm
 - Fixed silence detection when playback paused
+- Tell if no song is playing
 
 Improved Sinclair QL emulation:
 - Allow to increase RAM size

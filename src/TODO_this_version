@@ -133,11 +133,3 @@ Probar en diferentes sistemas:
 ---------------------
 
 -soporte joystick real SDL2
-
--si está cpu history habilitado, que en el desensamble de debug cpu se vea de alguna manera que la cpu "ha pasado" por alguna dirección,
-quizá indicando con algún caracter en la primera columna. Aunque también sería conveniente ver el orden de ejecución, esto es
-mas complicado de mostrar en esa misma vista
-ok * poder ir a elemento previo (shift+up). documentar en ayuda.
-* poder ir a elemento en historial
-ok * ayuda de (previous XXX)
-* agregar a changelog

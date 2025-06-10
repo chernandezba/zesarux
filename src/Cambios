@@ -28,6 +28,7 @@ Mejorado AY Player:
 - Mostrar décimas de segundo en duración de canción y tiempo transcurrido
 - Mejor algoritmo de aleatorio
 - Corregida detección de silencio cuando la reproducción está pausada
+- Decir si no se reproduce ninguna canción
 
 Mejorada emulación de Sinclair QL:
 - Permitir aumentar tamaño RAM
