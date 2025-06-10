@@ -1292,25 +1292,25 @@ void menu_filesel_print_file_get(char *buffer, char *s,unsigned int max_length_s
 {
 	unsigned int i;
 
-        for (i=0;i<max_length_shown && (s[i])!=0;i++) {
-                buffer[i]=s[i];
-        }
+    for (i=0;i<max_length_shown && (s[i])!=0;i++) {
+        buffer[i]=s[i];
+    }
 
 
-        //si sobra espacio, rellenar con espacios
-        for (;i<max_length_shown;i++) {
-                buffer[i]=' ';
-        }
+    //si sobra espacio, rellenar con espacios
+    for (;i<max_length_shown;i++) {
+        buffer[i]=' ';
+    }
 
-        buffer[i]=0;
+    buffer[i]=0;
 
 
-        //si no cabe, poner puntos suspensivos
-        if (strlen(s)>max_length_shown && i>=3) {
-                buffer[i-1]='.';
-                buffer[i-2]='.';
-                buffer[i-3]='.';
-        }
+    //si no cabe, poner puntos suspensivos
+    if (strlen(s)>max_length_shown && i>=3) {
+        buffer[i-1]='.';
+        buffer[i-2]='.';
+        buffer[i-3]='.';
+    }
 
     //y si es un directorio (sin nombre nulo ni espacio), escribir "<dir>
 	//nota: se envia nombre " " (un espacio) cuando se lista el directorio y sobran lineas en blanco al final
@@ -1321,42 +1321,42 @@ void menu_filesel_print_file_get(char *buffer, char *s,unsigned int max_length_s
 	if (s[0]==' ' && s[1]==0) test_dir=0;
 
 	if (test_dir) {
-	        if (get_file_type(s) == 2 && i>=5) {
-        	        buffer[i-1]='>';
-                	buffer[i-2]='r';
-	                buffer[i-3]='i';
-        	        buffer[i-4]='d';
-                	buffer[i-5]='<';
-	        }
+        if (get_file_type(s) == 2 && i>=5) {
+            buffer[i-1]='>';
+            buffer[i-2]='r';
+            buffer[i-3]='i';
+            buffer[i-4]='d';
+            buffer[i-5]='<';
+        }
 
-            else {
-                //Mostrar tamanyo. Si no hay setting de desactivado
-                if (menu_filesel_hide_size.v==0) {
-                    long long int tamanyo=get_file_size(s);
-                    char buffer_tamanyo[100];
-                    char buffer_sufijo[10];
+        else {
+            //Mostrar tamanyo. Si no hay setting de desactivado
+            if (menu_filesel_hide_size.v==0) {
+                long long int tamanyo=get_file_size(s);
+                char buffer_tamanyo[100];
+                char buffer_sufijo[10];
 
-                    tamanyo=get_size_human_friendly(tamanyo,buffer_sufijo);
+                tamanyo=get_size_human_friendly(tamanyo,buffer_sufijo);
 
-                    //Con espacio por delante para separar, por si acaso ancho ventana muy pequeña
-                    sprintf(buffer_tamanyo," %lld %s",tamanyo,buffer_sufijo);
+                //Con espacio por delante para separar, por si acaso ancho ventana muy pequeña
+                sprintf(buffer_tamanyo," %lld %s",tamanyo,buffer_sufijo);
 
-                    unsigned int longitud_texto=strlen(buffer_tamanyo);
+                unsigned int longitud_texto=strlen(buffer_tamanyo);
 
-                    //printf("%s i: %d longitud_texto: %d\n",s,i,longitud_texto);
+                //printf("%s i: %d longitud_texto: %d\n",s,i,longitud_texto);
 
-                    if (i>=longitud_texto) strcpy(&buffer[i-longitud_texto],buffer_tamanyo);
-                }
+                if (i>=longitud_texto) strcpy(&buffer[i-longitud_texto],buffer_tamanyo);
             }
+        }
 
-			//O si es empaquetado
-			/*else if (menu_util_file_is_compressed(s) && i>=5) {
-				    buffer[i-1]='>';
-                	buffer[i-2]='p';
-	                buffer[i-3]='x';
-        	        buffer[i-4]='e';
-                	buffer[i-5]='<';
-			}*/
+        //O si es empaquetado
+        /*else if (menu_util_file_is_compressed(s) && i>=5) {
+                buffer[i-1]='>';
+                buffer[i-2]='p';
+                buffer[i-3]='x';
+                buffer[i-4]='e';
+                buffer[i-5]='<';
+        }*/
 	}
 
 
