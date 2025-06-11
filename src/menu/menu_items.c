@@ -31741,9 +31741,12 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
 void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 {
 
-    char *mensaje_zxdesktop_english="Do you want to enable ZX Desktop?";
-    char *mensaje_zxdesktop_spanish="¿Quieres activar ZX Desktop?";
-    char *mensaje_zxdesktop_catalan="Vols activar ZX Desktop?";
+    char *mensaje_zxdesktop_english="ZX Desktop allows you to enlarge the main window by adding a Desktop area "
+        "so you can have icons and menus located there. Do you want to enable ZX Desktop?";
+    char *mensaje_zxdesktop_spanish="ZX Desktop permite agrandar la ventana principal añadiendo una zona de escriturio "
+        "de tal manera que puedes tener iconos y menús localizados ahí. Quieres activar ZX Desktop?";
+    char *mensaje_zxdesktop_catalan="ZX Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
+        "de tal manera que pots tenir icones i menús localizats allà. Vols activar ZX Desktop?";
 
     char *mensaje_zxdesktop;
     mensaje_zxdesktop=mensaje_zxdesktop_english;
@@ -31802,11 +31805,14 @@ void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_language,NULL,"Escull idioma Català");
         menu_add_item_menu_valor_opcion(array_menu_common,2);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_exit,NULL,"Exit - Salir - Sortir");
-
         menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_ESC_item(array_menu_common);
+        menu_add_item_menu(array_menu_common,"Exit - Salir - Sortir",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+
+        //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_exit,NULL,"Exit - Salir - Sortir");
+
+
+        //menu_add_ESC_item(array_menu_common);
 
         retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_opcion_seleccionada,&item_seleccionado,array_menu_common,"Welcome");
 

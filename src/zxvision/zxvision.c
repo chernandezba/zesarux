@@ -22343,9 +22343,9 @@ char *menu_text_string_autoframeskip_spanish="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_catalan="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_english="Auto Frameskip";
 
-char *menu_text_string_enabled_spanish="Enabled";
-char *menu_text_string_enabled_catalan="Activado";
-char *menu_text_string_enabled_english="Activat";
+char *menu_text_string_enabled_spanish="Activado";
+char *menu_text_string_enabled_catalan="Activat";
+char *menu_text_string_enabled_english="Enabled";
 
 //char *menu_text_string_select_manufacturer_spanish="Selecciona fabricante";
 //char *menu_text_string_select_manufacturer_catalan="Selecciona fabricant";

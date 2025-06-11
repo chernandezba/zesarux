@@ -67,11 +67,7 @@ y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 El como acepta ese evento de momento es una incógnita
 Quizá llama a la función que crea la ventana con algún flag específico
 
--wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
-cada mensaje en cada idioma
-*idioma: english, español, català
-*zx desktop activado (junto con background windows)
-*etc...
+
 
 
 
@@ -135,3 +131,11 @@ Probar en diferentes sistemas:
 Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8, en que un caracter ocupa mas de 1 byte
 ->ok
 *falta calcular posicion de ... en caso de archivos o <dir> cuando ancho pequeño
+
+
+-wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
+cada mensaje en cada idioma
+*idioma: english, español, català
+*zx desktop activado (junto con background windows)
+*etc...
+*gestionar que al pulsar ESC en cualquiera de las ventanas del wizard se pueda salir
