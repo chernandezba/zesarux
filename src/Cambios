@@ -13,6 +13,7 @@ Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Agregado soporte para archivos .ay en Visor de Archivos
+Agregado un asistente de configuración al iniciar ZEsarUX por primera vez
 Agregado soporte para 4 botones de fuego de joystick en:
 - Kempston joystick (Spectrum): 4 botones
 - Amstrad CPC: 3 botones
