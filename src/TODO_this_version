@@ -142,3 +142,6 @@ ok *zx desktop activado (junto con background windows)
 ok *gestionar que al pulsar ESC en cualquiera de las ventanas del wizard se pueda salir
 ok *que al finalizar luego no salga first aid (hasta que no se rearranque)
 ok *no zx desktop si driver no lo permite
+
+
+-revisar algunas opciones de menu que se podrian gestionar con menu_add_item_menu_opcion_conmuta

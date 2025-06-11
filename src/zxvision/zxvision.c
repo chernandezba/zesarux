@@ -22167,7 +22167,7 @@ void menu_add_item_menu_add_flags(menu_item *m,int flags)
 
 }
 
-//Agregar decirle que tiene opcion que conmuta al ultimo item de menu
+//Agregar decirle que tiene opcion que conmuta, en el item de menu actual
 void menu_add_item_menu_opcion_conmuta(menu_item *m,z80_bit *opcion)
 {
        //busca el ultimo item i le añade el indicado

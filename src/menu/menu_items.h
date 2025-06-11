@@ -250,6 +250,7 @@ extern int force_menu_dibuja_menu_recorrer_menus;
 
 
 extern void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS);
+extern void menu_first_start_wizard(MENU_ITEM_PARAMETERS);
 
 
 struct s_menu_debug_view_sensors_list {

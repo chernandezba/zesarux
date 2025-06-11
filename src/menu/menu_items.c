@@ -31780,6 +31780,40 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         }
     }
 
+    int opcion_activar_first_aid=1;
+    if (gui_language==GUI_LANGUAGE_SPANISH) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Quieres activar mensajes de ayuda de 'Primeros Auxilios'? Son mensajes de ayuda que aparecen al iniciar ZEsarUX "
+            "y también al abrir ciertos menús",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_first_aid);
+    }
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Vols activar missatges d'ajuda de 'Primers Auxilis'? Son missatges d'ajuda que apareixen al iniciar ZEsarUX "
+            "i també al obrir alguns menús",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_first_aid);
+    }
+    else {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Do you want to enable 'First aid' help messages? They are help messages that appear on starting ZEsarUX "
+            "and also when opening some menus",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_first_aid);
+    }
+
+    if (salir_todos_menus) return;
+
+    if (!opcion_activar_first_aid) {
+        menu_disable_first_aid.v=1;
+    }
+
+
+
     if (gui_language==GUI_LANGUAGE_SPANISH) {
         menu_generic_message(menu_get_string_language("Welcome"),"Finalizado el asistente inicial, puedes empezar a usar ZEsarUX.\n"
             "Para abrir el menú, puedes usar F5, pulsar el botón izquierdo del ratón sobre el fondo, o pulsar en alguno de los iconos de menú "
