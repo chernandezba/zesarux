@@ -135,10 +135,10 @@ Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8
 
 -wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
 cada mensaje en cada idioma
-*idioma: english, español, català
-*zx desktop activado (junto con background windows)
+ok *idioma: english, español, català
+ok *zx desktop activado (junto con background windows)
 *estilo?
 *etc...
 ok *gestionar que al pulsar ESC en cualquiera de las ventanas del wizard se pueda salir
-*que al finalizar luego no salga first aid (hasta que no se rearranque)
+ok *que al finalizar luego no salga first aid (hasta que no se rearranque)
 ok *no zx desktop si driver no lo permite

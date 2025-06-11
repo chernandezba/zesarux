@@ -31794,6 +31794,10 @@ void menu_first_start_wizard_exit(MENU_ITEM_PARAMETERS)
 
 void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
 {
+
+    //al aparecer el wizard no mostramos el first aid para no molestar demasiado al usuario
+    menu_first_aid_must_show_startup=0;
+
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;

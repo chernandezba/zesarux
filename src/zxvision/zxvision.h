@@ -651,6 +651,7 @@ extern void menu_first_aid_restore_all(void);
 extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
+extern int menu_first_aid_must_show_startup;
 
 #define MAX_F_FUNCTIONS 72
 
