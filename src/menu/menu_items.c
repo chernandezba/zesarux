@@ -31766,7 +31766,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     if (scr_driver_can_ext_desktop() ) {
         int opcion_activar_zxdesktop=1;
-        zxvision_menu_generic_message_setting("ZX Desktop",mensaje_zxdesktop,menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
+        zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_zxdesktop,menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
 
         if (salir_todos_menus) return;
 

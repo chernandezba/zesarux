@@ -22347,6 +22347,10 @@ char *menu_text_string_enabled_spanish="Activado";
 char *menu_text_string_enabled_catalan="Activat";
 char *menu_text_string_enabled_english="Enabled";
 
+char *menu_text_string_welcome_spanish="Bienvenido";
+char *menu_text_string_welcome_catalan="Benvingut";
+char *menu_text_string_welcome_english="Welcome";
+
 //char *menu_text_string_select_manufacturer_spanish="Selecciona fabricante";
 //char *menu_text_string_select_manufacturer_catalan="Selecciona fabricant";
 //char *menu_text_string_select_manufacturer_english="Select manufacturer";
@@ -22372,6 +22376,12 @@ char *menu_get_string_language(char *texto)
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_enabled_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_enabled_catalan;
         else return menu_text_string_enabled_english;
+    }
+
+    else if (!strcmp(texto,"Welcome")) {
+        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_welcome_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_welcome_catalan;
+        else return menu_text_string_welcome_english;
     }
 
     /*else if (!strcmp(texto,"Select manufacturer")) {
