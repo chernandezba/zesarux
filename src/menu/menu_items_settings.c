@@ -1365,12 +1365,9 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-
-                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
-                    "[%c] Autochange Zoom big display",(autochange_zoom_big_display.v ? 'X' : ' ' ));
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
+                    "Autochange Zoom big display","Autocambiar Zoom en pantalla grande","Autocanviar Zoom en pantalla gran");
+                menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(autochange_zoom_big_display.v ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
                 menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
         }
@@ -1511,6 +1508,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         if (index_menu_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_reset_index_search,NULL,
             "    Reset search index","    Reset índice búsqueda","    Reset índex recerca");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
             menu_add_item_menu_se_cerrara(array_menu_window_settings);
             menu_add_item_menu_genera_ventana(array_menu_window_settings);
             menu_add_item_menu_tooltip(array_menu_window_settings,"Reset index of the search feature");
@@ -1520,6 +1518,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             if (menu_old_behaviour_close_menus.v==0) {
                 menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_full_index_search,NULL,
                 "    Full scan search index","    Completo escaneo índice búsqueda","    Complet escaneig índex recerca");
+                menu_add_item_menu_es_avanzado(array_menu_window_settings);
                 menu_add_item_menu_se_cerrara(array_menu_window_settings);
                 menu_add_item_menu_genera_ventana(array_menu_window_settings);
                 menu_add_item_menu_tooltip(array_menu_window_settings,"Run a Full scan search index");
