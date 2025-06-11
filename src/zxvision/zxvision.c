@@ -22343,6 +22343,10 @@ char *menu_text_string_autoframeskip_spanish="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_catalan="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_english="Auto Frameskip";
 
+char *menu_text_string_enabled_spanish="Enabled";
+char *menu_text_string_enabled_catalan="Activado";
+char *menu_text_string_enabled_english="Activat";
+
 //char *menu_text_string_select_manufacturer_spanish="Selecciona fabricante";
 //char *menu_text_string_select_manufacturer_catalan="Selecciona fabricant";
 //char *menu_text_string_select_manufacturer_english="Select manufacturer";
@@ -22362,6 +22366,12 @@ char *menu_get_string_language(char *texto)
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_autoframeskip_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_autoframeskip_catalan;
         else return menu_text_string_autoframeskip_english;
+    }
+
+    else if (!strcmp(texto,"Enabled")) {
+        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_enabled_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_enabled_catalan;
+        else return menu_text_string_enabled_english;
     }
 
     /*else if (!strcmp(texto,"Select manufacturer")) {
@@ -26474,6 +26484,33 @@ void handle_menu_open_cpu_step(void)
 
 }
 
+void enable_zxdesktop_and_background(void)
+{
+    //No esta habilitado, habilitar
+    if (!screen_ext_desktop_enabled) {
+
+
+        //establecemos un minimo de ancho de zxdesktop (512/zoom_x) al habilitar
+        //ideal para maquinas que usualmente usan zoom 1, como tbblue o ql
+        zxdesktop_width=ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON;
+        //printf("Generando valor nuevo\n");
+
+
+        //aparte de conmutar estado, decimos tambien que los menus se abriran en zona zx desktop
+        screen_ext_desktop_place_menu=1;
+
+        //Activar zx desktop
+        menu_ext_desk_settings_enable(0);
+
+        //Activar background windows si no estaba
+        if (!menu_allow_background_windows) menu_allow_background_windows=1;
+
+        //Background windows incluso con menu cerrado
+        if (!always_force_overlay_visible_when_menu_closed) always_force_overlay_visible_when_menu_closed=1;
+
+    }
+}
+
 //menu principal
 void menu_inicio(void)
 {
@@ -26620,24 +26657,7 @@ void menu_inicio(void)
                 //No esta habilitado, habilitar
                 if (!screen_ext_desktop_enabled) {
 
-
-                    //establecemos un minimo de ancho de zxdesktop (512/zoom_x) al habilitar
-                    //ideal para maquinas que usualmente usan zoom 1, como tbblue o ql
-                    zxdesktop_width=ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON;
-                    //printf("Generando valor nuevo\n");
-
-
-                    //aparte de conmutar estado, decimos tambien que los menus se abriran en zona zx desktop
-                    screen_ext_desktop_place_menu=1;
-
-                    //Activar zx desktop
-                    menu_ext_desk_settings_enable(0);
-
-                    //Activar background windows si no estaba
-                    if (!menu_allow_background_windows) menu_allow_background_windows=1;
-
-                    //Background windows incluso con menu cerrado
-                    if (!always_force_overlay_visible_when_menu_closed) always_force_overlay_visible_when_menu_closed=1;
+                    enable_zxdesktop_and_background();
 
                 }
 

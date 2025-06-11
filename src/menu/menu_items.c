@@ -31740,54 +31740,42 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
 
 void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 {
+
+    char *mensaje_zxdesktop_english="Do you want to enable ZX Desktop?";
+    char *mensaje_zxdesktop_spanish="¿Quieres activar ZX Desktop?";
+    char *mensaje_zxdesktop_catalan="Vols activar ZX Desktop?";
+
+    char *mensaje_zxdesktop;
+    mensaje_zxdesktop=mensaje_zxdesktop_english;
+
     switch (valor_opcion) {
         case 1:
             gui_language=GUI_LANGUAGE_SPANISH;
+            mensaje_zxdesktop=mensaje_zxdesktop_spanish;
         break;
 
         case 2:
             gui_language=GUI_LANGUAGE_CATALAN;
+            mensaje_zxdesktop=mensaje_zxdesktop_catalan;
         break;
     }
 
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-    int opcion_seleccionada=0;
 
 
-    do {
+    int opcion_activar_zxdesktop=1;
+    zxvision_menu_generic_message_setting("ZX Desktop",mensaje_zxdesktop,menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Defcon");
-        menu_add_item_menu_shortcut(array_menu_common,'d');
-        menu_add_item_menu_tiene_submenu(array_menu_common);
+    if (opcion_activar_zxdesktop) {
+        //No esta habilitado, pero por si acaso recomprobar
+        if (!screen_ext_desktop_enabled) {
 
+            enable_zxdesktop_and_background();
 
-
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_ESC_item(array_menu_common);
-
-
-        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
-        menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Storage-> Template","Menú Principal-> Almacenamiento-> Plantilla","Menú Principal-> Emmagatzematge-> Plantilla");
-
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Template Menu","Menú Plantilla","Menú Plantilla" );
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-            }
         }
+    }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-
+    salir_todos_menus=1;
 
 }
 
