@@ -4699,33 +4699,31 @@ int util_write_configfile(void)
 int configfile_read(char *mem,int limite)
 {
 
+    char configfile[PATH_MAX];
 
-
-	char configfile[PATH_MAX];
-
-  if (util_get_configfile_name(configfile)==0)  {
-    printf("Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open configuration file\n");
-    return 0;
-  }
+    if (util_get_configfile_name(configfile)==0)  {
+        printf("Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open configuration file\n");
+        return 0;
+    }
 
 
 
-	//Ver si archivo existe
+    //Ver si archivo existe
 
-	if (!si_existe_archivo(configfile)) {
-		printf("Configuration file %s not found\nCreating a new one\n",configfile);
+    if (!si_existe_archivo(configfile)) {
+        printf("Configuration file %s not found\nCreating a new one\n",configfile);
 
-    if (util_create_sample_configfile(1)==0) return 0;
+        if (util_create_sample_configfile(1)==0) return 0;
 
-	}
+    }
 
-        int tamanyo_archivo=get_file_size(configfile);
+    int tamanyo_archivo=get_file_size(configfile);
 
-        if (tamanyo_archivo>limite) {
-             cpu_panic("Configuration file larger than maximum allowed size. Exiting");
-        }
+    if (tamanyo_archivo>limite) {
+        cpu_panic("Configuration file larger than maximum allowed size. Exiting");
+    }
 
-	return configfile_read_aux(configfile,mem);
+    return configfile_read_aux(configfile,mem);
 
 }
 
