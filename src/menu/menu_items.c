@@ -31764,16 +31764,19 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     }
 
 
+    if (scr_driver_can_ext_desktop() ) {
+        int opcion_activar_zxdesktop=1;
+        zxvision_menu_generic_message_setting("ZX Desktop",mensaje_zxdesktop,menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
 
-    int opcion_activar_zxdesktop=1;
-    zxvision_menu_generic_message_setting("ZX Desktop",mensaje_zxdesktop,menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
+        if (salir_todos_menus) return;
 
-    if (opcion_activar_zxdesktop) {
-        //No esta habilitado, pero por si acaso recomprobar
-        if (!screen_ext_desktop_enabled) {
+        if (opcion_activar_zxdesktop) {
+            //No esta habilitado, pero por si acaso recomprobar
+            if (!screen_ext_desktop_enabled) {
 
-            enable_zxdesktop_and_background();
+                enable_zxdesktop_and_background();
 
+            }
         }
     }
 
@@ -31782,10 +31785,12 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
 }
 
+/*
 void menu_first_start_wizard_exit(MENU_ITEM_PARAMETERS)
 {
     salir_todos_menus=1;
 }
+*/
 
 void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
 {

@@ -137,5 +137,8 @@ Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8
 cada mensaje en cada idioma
 *idioma: english, español, català
 *zx desktop activado (junto con background windows)
+*estilo?
 *etc...
-*gestionar que al pulsar ESC en cualquiera de las ventanas del wizard se pueda salir
+ok *gestionar que al pulsar ESC en cualquiera de las ventanas del wizard se pueda salir
+*que al finalizar luego no salga first aid (hasta que no se rearranque)
+ok *no zx desktop si driver no lo permite
