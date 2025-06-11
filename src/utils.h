@@ -178,7 +178,7 @@ extern struct s_machine_family_names family_names[];
 
 extern int get_rom_size(int machine);
 extern int get_ram_size(void);
-extern void configfile_parse(void);
+extern int configfile_parse(void);
 extern char *configfile_argv[];
 extern int configfile_argc;
 

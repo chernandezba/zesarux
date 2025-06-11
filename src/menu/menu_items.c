@@ -31738,6 +31738,105 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
+{
+    switch (valor_opcion) {
+        case 1:
+            gui_language=GUI_LANGUAGE_SPANISH;
+        break;
+
+        case 2:
+            gui_language=GUI_LANGUAGE_CATALAN;
+        break;
+    }
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=0;
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Defcon");
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Storage-> Template","Menú Principal-> Almacenamiento-> Plantilla","Menú Principal-> Emmagatzematge-> Plantilla");
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Template Menu","Menú Plantilla","Menú Plantilla" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+}
+
+void menu_first_start_wizard_exit(MENU_ITEM_PARAMETERS)
+{
+    salir_todos_menus=1;
+}
+
+void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_language,NULL,"Select English Language");
+        menu_add_item_menu_valor_opcion(array_menu_common,0);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_language,NULL,"Elige idioma Español");
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_language,NULL,"Escull idioma Català");
+        menu_add_item_menu_valor_opcion(array_menu_common,2);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_exit,NULL,"Exit - Salir - Sortir");
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_opcion_seleccionada,&item_seleccionado,array_menu_common,"Welcome");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
+
 void menu_help(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_common;

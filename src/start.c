@@ -7054,6 +7054,8 @@ int parse_cmdline_options(int desde_commandline) {
 
 }
 
+int zesarux_first_start=0;
+
 //Proceso inicial
 int zesarux_main (int main_argc,char *main_argv[]) {
 
@@ -7445,7 +7447,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	if (noconfigfile==0) {
         //parametros del archivo de configuracion
-        configfile_parse();
+        zesarux_first_start=configfile_parse();
 
         argc=configfile_argc;
         argv=configfile_argv;
@@ -7799,6 +7801,10 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
              menu_set_menu_abierto(1);
         }
 	}
+
+    if (zesarux_first_start) {
+        menu_set_menu_abierto(1);
+    }
 
     zxvision_index_load_from_disk();
 

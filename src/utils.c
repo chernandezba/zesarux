@@ -4694,10 +4694,12 @@ int util_write_configfile(void)
 }
 
 //Leer archivo de configuracion en buffer
-//Devuelve 0 si no existe
+//Devuelve 0 si no existe o error
 //Detecta que no exceda el limite
-int configfile_read(char *mem,int limite)
+int configfile_read(char *mem,int limite,int *first_start)
 {
+
+    *first_start=0;
 
     char configfile[PATH_MAX];
 
@@ -4714,6 +4716,11 @@ int configfile_read(char *mem,int limite)
         printf("Configuration file %s not found\nCreating a new one\n",configfile);
 
         if (util_create_sample_configfile(1)==0) return 0;
+
+        //Se ha creado nuevo archivo de configuración. Asumimos pues que es la primera vez que se inicia ZEsarUX
+        printf("###  ---- First ZEsarUX start\n");
+
+        *first_start=1;
 
     }
 
@@ -4864,7 +4871,8 @@ int configfile_argc=0;
 //Ignorar lineas que empiecen con ; o #
 //Separar lineas y espacios en diferentes parametros; tener en cuenta texto que haya entre comillas, no separar por espacios
 //Cada final de parametro tendra codigo 0
-void configfile_parse(void)
+//Retorna diferente de 0 si es la primera vez que se inicia ZEsarUX
+int configfile_parse(void)
 {
     //Esta memoria no la liberamos nunca, pues se usara despues
     //en varios sitios, como en parse_cmdline_options(0), y tambien se dejan fijados punteros a muchos parametros
@@ -4877,11 +4885,13 @@ void configfile_parse(void)
 		cpu_panic("Unable to allocate memory for configuration file");
 	}
 
-	if (configfile_read(mem_config,MAX_SIZE_CONFIG_FILE)==0) {
+    int first_start;
+
+	if (configfile_read(mem_config,MAX_SIZE_CONFIG_FILE,&first_start)==0) {
 		//No hay archivo de configuracion. Parametros vacios
 		configfile_argv[0]="";
 		configfile_argc=1;
-		return;
+		return first_start;
 	}
 
 
@@ -4895,7 +4905,7 @@ void configfile_parse(void)
 		}
 	}
 
-	return;
+	return first_start;
 }
 
 
