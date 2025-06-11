@@ -31769,7 +31769,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         break;
     }
 
-
+    //Preguntar si ZX Desktop
     if (scr_driver_can_ext_desktop() ) {
         int opcion_activar_zxdesktop=1;
         zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_zxdesktop,menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
@@ -31786,6 +31786,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         }
     }
 
+    //Preguntar si first aid
     int opcion_activar_first_aid=1;
     if (gui_language==GUI_LANGUAGE_SPANISH) {
         zxvision_menu_generic_message_setting(
@@ -31819,7 +31820,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     }
 
 
-
+    //Final del asistente
     if (gui_language==GUI_LANGUAGE_SPANISH) {
         menu_generic_message(menu_get_string_language("Welcome"),"Finalizado el asistente inicial, puedes empezar a usar ZEsarUX.\n"
             "Para abrir el menú, puedes usar F5, pulsar el botón izquierdo del ratón sobre el fondo, o pulsar en alguno de los iconos de menú "
@@ -31856,6 +31857,7 @@ void menu_first_start_wizard_exit(MENU_ITEM_PARAMETERS)
 }
 */
 
+//Inicio preguntando el idioma
 void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
 {
 
