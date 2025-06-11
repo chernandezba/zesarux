@@ -31780,6 +31780,30 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         }
     }
 
+    if (gui_language==GUI_LANGUAGE_SPANISH) {
+        menu_generic_message(menu_get_string_language("Welcome"),"Finalizado el asistente inicial, puedes empezar a usar ZEsarUX.\n"
+            "Para abrir el menú, puedes usar F5, pulsar el botón izquierdo del ratón sobre el fondo, o pulsar en alguno de los iconos de menú "
+            "superiores si has habilitado ZX Desktop.\n"
+            "Puedes ahora cerrar esta ventana pulsando ESC, ENTER o haciendo click izquierdo con el ratón "
+            "en el botón superior izquierdo de la ventana. Que lo disfrutes!");
+    }
+
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+        menu_generic_message(menu_get_string_language("Welcome"),"Finalitzat l'assistent inicial, pots començar a utilitzar ZEsarUX.\n"
+            "Per obrir el menú, pots fer servir F5, prémer el botó esquerre del ratolí sobre el fons, o prémer alguna de les icones de menú "
+            "superiors si has habilitat ZX Desktop.\n"
+            "Pots ara tancar aquesta finestra prement ESC, ENTER o fent clic esquerre amb el ratolí "
+            "al botó superior esquerre de la finestra. Que ho gaudeixis!");
+    }
+
+    else {
+        menu_generic_message(menu_get_string_language("Welcome"),"After completing the initial wizard, you can start using ZEsarUX.\n"
+            "To open the menu, you can use F5, left-click on the background, or click on one of the menu icons at the top "
+            "if you have enabled ZX Desktop.\n"
+            "You can now close this window by pressing ESC, ENTER, or left-clicking the mouse "
+            "on the top left button of the window. Enjoy!");
+    }
+
 
     salir_todos_menus=1;
 
@@ -31816,7 +31840,7 @@ void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_item_menu(array_menu_common,"Exit - Salir - Sortir",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_item_menu(array_menu_common,"Cancel",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 
         //menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_first_start_wizard_exit,NULL,"Exit - Salir - Sortir");
 
