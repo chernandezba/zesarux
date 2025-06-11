@@ -31752,6 +31752,12 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     mensaje_zxdesktop=mensaje_zxdesktop_english;
 
     switch (valor_opcion) {
+        case 0:
+            //Aunque este es el lenguaje por defecto, pero por si acaso lo definimos aqui
+            gui_language=GUI_LANGUAGE_DEFAULT;
+            mensaje_zxdesktop=mensaje_zxdesktop_english;
+        break;
+
         case 1:
             gui_language=GUI_LANGUAGE_SPANISH;
             mensaje_zxdesktop=mensaje_zxdesktop_spanish;
