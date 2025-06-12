@@ -31758,6 +31758,13 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_realvideo_english="Do you want to enable Real Video? It's an option to perfectly emulate the screen effects of the emulated machine. "
         "It may use a little more CPU, but it's generally a good idea to enable it";
 
+    char *mensaje_firstaid_spanish="Quieres activar mensajes de ayuda de 'Primeros Auxilios'? Son mensajes de ayuda que aparecen al iniciar ZEsarUX "
+        "y también al abrir ciertos menús";
+    char *mensaje_firstaid_catalan="Vols activar missatges d'ajuda de 'Primers Auxilis'? Son missatges d'ajuda que apareixen al iniciar ZEsarUX "
+        "i també al obrir alguns menús";
+    char *mensaje_firstaid_english="Do you want to enable 'First aid' help messages? They are help messages that appear on starting ZEsarUX "
+        "and also when opening some menus";
+
 
     char *mensaje_zxdesktop;
     mensaje_zxdesktop=mensaje_zxdesktop_english;
@@ -31765,24 +31772,30 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_realvideo;
     mensaje_realvideo=mensaje_realvideo_english;
 
+    char *mensaje_firstaid;
+    mensaje_firstaid=mensaje_firstaid_english;
+
     switch (valor_opcion) {
         case 0:
             //Aunque este es el lenguaje por defecto, pero por si acaso lo definimos aqui
             gui_language=GUI_LANGUAGE_DEFAULT;
             mensaje_zxdesktop=mensaje_zxdesktop_english;
             mensaje_realvideo=mensaje_realvideo_english;
+            mensaje_firstaid=mensaje_firstaid_english;
         break;
 
         case 1:
             gui_language=GUI_LANGUAGE_SPANISH;
             mensaje_zxdesktop=mensaje_zxdesktop_spanish;
             mensaje_realvideo=mensaje_realvideo_spanish;
+            mensaje_firstaid=mensaje_firstaid_spanish;
         break;
 
         case 2:
             gui_language=GUI_LANGUAGE_CATALAN;
             mensaje_zxdesktop=mensaje_zxdesktop_catalan;
             mensaje_realvideo=mensaje_realvideo_catalan;
+            mensaje_firstaid=mensaje_firstaid_catalan;
         break;
     }
 
@@ -31818,30 +31831,10 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si first aid
     int opcion_activar_first_aid=1;
-    if (gui_language==GUI_LANGUAGE_SPANISH) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Quieres activar mensajes de ayuda de 'Primeros Auxilios'? Son mensajes de ayuda que aparecen al iniciar ZEsarUX "
-            "y también al abrir ciertos menús",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_first_aid);
-    }
-    else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Vols activar missatges d'ajuda de 'Primers Auxilis'? Son missatges d'ajuda que apareixen al iniciar ZEsarUX "
-            "i també al obrir alguns menús",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_first_aid);
-    }
-    else {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Do you want to enable 'First aid' help messages? They are help messages that appear on starting ZEsarUX "
-            "and also when opening some menus",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_first_aid);
-    }
+
+    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_firstaid,
+        menu_get_string_language("Enabled"),&opcion_activar_first_aid);
+
 
     if (salir_todos_menus) return;
 
