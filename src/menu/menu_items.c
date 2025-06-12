@@ -31743,7 +31743,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Nota: estoy habilitando aqui algunas opciones que en ZEsarUX no vienen activadas por defecto (como visibilidad de tooltips por ejemplo)
 
-
+    //Textos en los diferentes idiomas
     char *mensaje_zxdesktop_english="ZX Desktop allows you to enlarge the main window by adding a Desktop area "
         "so you can have icons and menus located there. Do you want to enable ZX Desktop?";
     char *mensaje_zxdesktop_spanish="ZX Desktop permite agrandar la ventana principal añadiendo una zona de escritorio "
@@ -31775,6 +31775,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_atajos_english="Do you want to enable visible shortcuts? It allows to select menu entries by pressing a key";
 
 
+    //Punteros a los mensajes del idioma correspondiente
     char *mensaje_zxdesktop;
     mensaje_zxdesktop=mensaje_zxdesktop_english;
 
@@ -31820,29 +31821,28 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         break;
     }
 
+
     //Preguntar si ZX Desktop
     if (scr_driver_can_ext_desktop() ) {
         int opcion_activar_zxdesktop=1;
-        zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_zxdesktop,menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
+        zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_zxdesktop,
+            menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
 
         if (salir_todos_menus) return;
 
         if (opcion_activar_zxdesktop) {
             //No esta habilitado, pero por si acaso recomprobar
             if (!screen_ext_desktop_enabled) {
-
                 enable_zxdesktop_and_background();
-
             }
         }
     }
 
+
     //Preguntar si realvideo
     int opcion_activar_realvideo=1;
-
     zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_realvideo,
         menu_get_string_language("Enabled"),&opcion_activar_realvideo);
-
 
     if (salir_todos_menus) return;
 
@@ -31850,12 +31850,11 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
          if (rainbow_enabled.v==0) enable_rainbow();
     }
 
+
     //Preguntar si first aid
     int opcion_activar_first_aid=1;
-
     zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_firstaid,
         menu_get_string_language("Enabled"),&opcion_activar_first_aid);
-
 
     if (salir_todos_menus) return;
 
@@ -31866,10 +31865,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si tooltips
     int opcion_activar_tooltips=0;
-
     zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_tooltips,
         menu_get_string_language("Enabled"),&opcion_activar_tooltips);
-
 
     if (salir_todos_menus) return;
 
@@ -31878,7 +31875,6 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si visibilidad atajos teclado
     int opcion_activar_atajos=1;
-
     zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_atajos,
         menu_get_string_language("Enabled"),&opcion_activar_atajos);
 
