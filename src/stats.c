@@ -106,7 +106,7 @@ void stats_disable(void)
 
 void stats_ask_if_enable(void)
 {
-	int valor_opcion;
+	int valor_opcion=1;
 
 	zxvision_menu_generic_message_setting("Send Statistics","Do you want to send anonymous statistics use? The following information is sent to a server, every time ZEsarUX starts:\n"
 	                                    "-Public IP Address\n"

@@ -31741,9 +31741,12 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
 void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 {
 
+    //Nota: estoy habilitando aqui algunas opciones que en ZEsarUX no vienen activadas por defecto (como visibilidad de tooltips por ejemplo)
+
+
     char *mensaje_zxdesktop_english="ZX Desktop allows you to enlarge the main window by adding a Desktop area "
         "so you can have icons and menus located there. Do you want to enable ZX Desktop?";
-    char *mensaje_zxdesktop_spanish="ZX Desktop permite agrandar la ventana principal añadiendo una zona de escriturio "
+    char *mensaje_zxdesktop_spanish="ZX Desktop permite agrandar la ventana principal añadiendo una zona de escritorio "
         "de tal manera que puedes tener iconos y menús localizados ahí. Quieres activar ZX Desktop?";
     char *mensaje_zxdesktop_catalan="ZX Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
         "de tal manera que pots tenir icones i menús localizats allà. Vols activar ZX Desktop?";
@@ -31786,6 +31789,40 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         }
     }
 
+    //Preguntar si realvideo
+    int opcion_activar_realvideo=1;
+    if (gui_language==GUI_LANGUAGE_SPANISH) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Quieres activar Real Video? Es una opción para emular a la perfección los efectos de pantalla de la máquina emulada. "
+            "Puede usar un poco más de CPU pero generalmente es conveniente activarlo",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_realvideo);
+    }
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            //Ese "Es" lleva tilde, pero dado que no tengo en el charset la E acentuada, de momento se queda así XD
+            "Vols activar Real Video? Es una opció per emular a la perfecció els efectes de pantalla de la màquina emulada. "
+            "Pot usar una mica més de CPU però habitualment és convenient activar-ho",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_realvideo);
+    }
+    else {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Do you want to enable Real Video? It's an option to perfectly emulate the screen effects of the emulated machine. "
+            "It may use a little more CPU, but it's generally a good idea to enable it",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_realvideo);
+    }
+
+    if (salir_todos_menus) return;
+
+    if (opcion_activar_realvideo) {
+         if (rainbow_enabled.v==0) enable_rainbow();
+    }
+
     //Preguntar si first aid
     int opcion_activar_first_aid=1;
     if (gui_language==GUI_LANGUAGE_SPANISH) {
@@ -31818,6 +31855,65 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     if (!opcion_activar_first_aid) {
         menu_disable_first_aid.v=1;
     }
+
+
+    //Preguntar si tooltips
+    int opcion_activar_tooltips=0;
+    if (gui_language==GUI_LANGUAGE_SPANISH) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Quieres activar mensajes de ayuda 'Tooltips'? Son mensajes de ayuda que aparecen al elegir entradas de menús",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_tooltips);
+    }
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Vols activar missatges d'ajuda 'Tooltips'? Son missatges d'ajuda que apareixen al escollir entrades de menús",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_tooltips);
+    }
+    else {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Do you want to enable 'Tooltips' help messages? They are help messages that appear on selecting menu items",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_tooltips);
+    }
+
+    if (salir_todos_menus) return;
+
+    tooltip_enabled.v=opcion_activar_tooltips;
+
+
+    //Preguntar si visibilidad atajos teclado
+    int opcion_activar_atajos=1;
+    if (gui_language==GUI_LANGUAGE_SPANISH) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Quieres activar la visualización de los atajos de teclado? Permite seleccionar entradas de menú pulsando simplemente una tecla",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_atajos);
+    }
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Vols activar la visualització de les dreçeres de teclat? Permet seleccionar entrades de menú prement simplement una tecla",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_atajos);
+    }
+    else {
+        zxvision_menu_generic_message_setting(
+            menu_get_string_language("Welcome"),
+            "Do you want to enable visible shortcuts? It allows to select menu entries by pressing a key",
+            menu_get_string_language("Enabled"),
+            &opcion_activar_atajos);
+    }
+
+    if (salir_todos_menus) return;
+
+    menu_force_writing_inverse_color.v=opcion_activar_atajos;
+
 
 
     //Final del asistente

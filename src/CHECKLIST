@@ -83,7 +83,7 @@ hacer las acciones de:  mover iconos, pulsar iconos (botón izquierdo y derecho)
 3. con alguna ventana abierta y con menu cerrado
 4. con alguna ventana abierta y con menu abierto
 
--iniciar sin archivo de configuracion (borrarlo temporalmente) y ver como se va comportando - first aid, abrir zx desktop, etc
+-iniciar sin archivo de configuracion (borrarlo temporalmente) y ver como se va comportando - asistente de primer inicio, first aid, abrir zx desktop, etc
 
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros

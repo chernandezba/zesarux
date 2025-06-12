@@ -24602,13 +24602,14 @@ void menu_generic_message(char *titulo, const char * texto)
 }
 
 //Mensaje con setting para marcar
+//El contenido de valor_opcion tiene que venir definido en 0/1 según se quiera (habitualmente a 1)
 void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char *texto_opcion, int *valor_opcion)
 {
 
 	int lineas_agregar=4;
 
 	//Asumimos opcion ya marcada
-	*valor_opcion=1;
+	//*valor_opcion=1;
 
 	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
 
@@ -28543,10 +28544,12 @@ int menu_first_aid_title(char *key_setting,char *title) //(enum first_aid_number
 	valor_opcion=first_aid_list[indice].puntero_setting;
 	texto_opcion=first_aid_list[indice].texto_opcion;
 
-	//Esta desmarcada. no mostrar nada
+	//Variable a 1. no mostrar nada
 	if (*valor_opcion) return 0;
 
 
+    //Variable a 0. La marcamos por defecto (que significará: no la muestres de nuevo)
+    *valor_opcion=1;
 
 	zxvision_menu_generic_message_setting(title,texto_opcion,"Do not show it again",valor_opcion);
 
