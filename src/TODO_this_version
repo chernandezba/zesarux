@@ -143,8 +143,7 @@ ok *gestionar que al pulsar ESC en cualquiera de las ventanas del wizard se pued
 ok *que al finalizar luego no salga first aid (hasta que no se rearranque)
 ok *no zx desktop si driver no lo permite
 ok * real video si el driver lo permite
-* mensajes separados como mensaje_zxdesktop=mensaje_zxdesktop_english, para hacer una sola llamada a zxvision_menu_generic_message_setting por cada pregunta
-
+ok * mensajes separados como mensaje_zxdesktop=mensaje_zxdesktop_english, para hacer una sola llamada a zxvision_menu_generic_message_setting por cada pregunta
 
 
 -revisar algunas opciones de menu que se podrian gestionar con menu_add_item_menu_opcion_conmuta
@@ -154,5 +153,3 @@ ok * real video si el driver lo permite
 quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
 Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
 
-
-ok-opcion borrar archivo de config desde menu
