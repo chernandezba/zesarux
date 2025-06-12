@@ -31765,6 +31765,11 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_firstaid_english="Do you want to enable 'First aid' help messages? They are help messages that appear on starting ZEsarUX "
         "and also when opening some menus";
 
+    char *mensaje_tooltips_spanish="Quieres activar mensajes de ayuda 'Tooltips'? Son mensajes de ayuda que aparecen al elegir entradas de menús";
+    char *mensaje_tooltips_catalan="Vols activar missatges d'ajuda 'Tooltips'? Son missatges d'ajuda que apareixen al escollir entrades de menús";
+    char *mensaje_tooltips_english="Do you want to enable 'Tooltips' help messages? They are help messages that appear on selecting menu items";
+
+
 
     char *mensaje_zxdesktop;
     mensaje_zxdesktop=mensaje_zxdesktop_english;
@@ -31775,6 +31780,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_firstaid;
     mensaje_firstaid=mensaje_firstaid_english;
 
+    char *mensaje_tooltips;
+    mensaje_tooltips=mensaje_tooltips_english;
+
     switch (valor_opcion) {
         case 0:
             //Aunque este es el lenguaje por defecto, pero por si acaso lo definimos aqui
@@ -31782,6 +31790,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_zxdesktop=mensaje_zxdesktop_english;
             mensaje_realvideo=mensaje_realvideo_english;
             mensaje_firstaid=mensaje_firstaid_english;
+            mensaje_tooltips=mensaje_tooltips_english;
         break;
 
         case 1:
@@ -31789,6 +31798,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_zxdesktop=mensaje_zxdesktop_spanish;
             mensaje_realvideo=mensaje_realvideo_spanish;
             mensaje_firstaid=mensaje_firstaid_spanish;
+            mensaje_tooltips=mensaje_tooltips_spanish;
         break;
 
         case 2:
@@ -31796,6 +31806,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_zxdesktop=mensaje_zxdesktop_catalan;
             mensaje_realvideo=mensaje_realvideo_catalan;
             mensaje_firstaid=mensaje_firstaid_catalan;
+            mensaje_tooltips=mensaje_tooltips_catalan;
         break;
     }
 
@@ -31845,27 +31856,10 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si tooltips
     int opcion_activar_tooltips=0;
-    if (gui_language==GUI_LANGUAGE_SPANISH) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Quieres activar mensajes de ayuda 'Tooltips'? Son mensajes de ayuda que aparecen al elegir entradas de menús",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_tooltips);
-    }
-    else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Vols activar missatges d'ajuda 'Tooltips'? Son missatges d'ajuda que apareixen al escollir entrades de menús",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_tooltips);
-    }
-    else {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Do you want to enable 'Tooltips' help messages? They are help messages that appear on selecting menu items",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_tooltips);
-    }
+
+    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_tooltips,
+        menu_get_string_language("Enabled"),&opcion_activar_tooltips);
+
 
     if (salir_todos_menus) return;
 
