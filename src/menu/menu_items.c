@@ -31751,24 +31751,38 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_zxdesktop_catalan="ZX Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
         "de tal manera que pots tenir icones i menús localizats allà. Vols activar ZX Desktop?";
 
+    char *mensaje_realvideo_spanish="Quieres activar Real Video? Es una opción para emular a la perfección los efectos de pantalla de la máquina emulada. "
+        "Puede usar un poco más de CPU pero generalmente es conveniente activarlo";
+    char *mensaje_realvideo_catalan="Vols activar Real Video? Es una opció per emular a la perfecció els efectes de pantalla de la màquina emulada. "
+        "Pot usar una mica més de CPU però habitualment és convenient activar-ho";
+    char *mensaje_realvideo_english="Do you want to enable Real Video? It's an option to perfectly emulate the screen effects of the emulated machine. "
+        "It may use a little more CPU, but it's generally a good idea to enable it";
+
+
     char *mensaje_zxdesktop;
     mensaje_zxdesktop=mensaje_zxdesktop_english;
+
+    char *mensaje_realvideo;
+    mensaje_realvideo=mensaje_realvideo_english;
 
     switch (valor_opcion) {
         case 0:
             //Aunque este es el lenguaje por defecto, pero por si acaso lo definimos aqui
             gui_language=GUI_LANGUAGE_DEFAULT;
             mensaje_zxdesktop=mensaje_zxdesktop_english;
+            mensaje_realvideo=mensaje_realvideo_english;
         break;
 
         case 1:
             gui_language=GUI_LANGUAGE_SPANISH;
             mensaje_zxdesktop=mensaje_zxdesktop_spanish;
+            mensaje_realvideo=mensaje_realvideo_spanish;
         break;
 
         case 2:
             gui_language=GUI_LANGUAGE_CATALAN;
             mensaje_zxdesktop=mensaje_zxdesktop_catalan;
+            mensaje_realvideo=mensaje_realvideo_catalan;
         break;
     }
 
@@ -31791,31 +31805,10 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si realvideo
     int opcion_activar_realvideo=1;
-    if (gui_language==GUI_LANGUAGE_SPANISH) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Quieres activar Real Video? Es una opción para emular a la perfección los efectos de pantalla de la máquina emulada. "
-            "Puede usar un poco más de CPU pero generalmente es conveniente activarlo",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_realvideo);
-    }
-    else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            //Ese "Es" lleva tilde, pero dado que no tengo en el charset la E acentuada, de momento se queda así XD
-            "Vols activar Real Video? Es una opció per emular a la perfecció els efectes de pantalla de la màquina emulada. "
-            "Pot usar una mica més de CPU però habitualment és convenient activar-ho",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_realvideo);
-    }
-    else {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Do you want to enable Real Video? It's an option to perfectly emulate the screen effects of the emulated machine. "
-            "It may use a little more CPU, but it's generally a good idea to enable it",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_realvideo);
-    }
+
+    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_realvideo,
+        menu_get_string_language("Enabled"),&opcion_activar_realvideo);
+
 
     if (salir_todos_menus) return;
 

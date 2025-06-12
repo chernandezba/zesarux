@@ -410,8 +410,8 @@ void menu_settings_config_file_delete(MENU_ITEM_PARAMETERS)
 	if (menu_confirm_yesno_texto("Delete configuration file","Need to exit. Sure?")==0) return;
 
 	//util_create_sample_configfile(1);
-    //Realmente borramos el archivo de configuración y se generará desde cero. Así también saldrá el asistente de primera vez
 
+    //Realmente borramos el archivo de configuración y se generará desde cero. Así también saldrá el asistente de primera vez
     char configfile[PATH_MAX];
 
     if (util_get_configfile_name(configfile)==0)  {
