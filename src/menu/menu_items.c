@@ -31774,6 +31774,24 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_atajos_catalan="Vols activar la visualització de les dreçeres de teclat? Permet seleccionar entrades de menú prement simplement una tecla";
     char *mensaje_atajos_english="Do you want to enable visible shortcuts? It allows to select menu entries by pressing a key";
 
+    char *mensaje_fin_spanish="Finalizado el asistente inicial, puedes empezar a usar ZEsarUX.\n"
+        "Para abrir el menú, puedes usar F5, pulsar el botón izquierdo del ratón sobre el fondo, o pulsar en alguno de los iconos de menú "
+        "superiores si has habilitado ZX Desktop.\n"
+        "Puedes ahora cerrar esta ventana pulsando ESC, ENTER o haciendo click izquierdo con el ratón "
+        "en el botón superior izquierdo de la ventana. Que lo disfrutes!";
+
+    char *mensaje_fin_catalan="Finalitzat l'assistent inicial, pots començar a utilitzar ZEsarUX.\n"
+        "Per obrir el menú, pots fer servir F5, prémer el botó esquerre del ratolí sobre el fons, o prémer alguna de les icones de menú "
+        "superiors si has habilitat ZX Desktop.\n"
+        "Pots ara tancar aquesta finestra prement ESC, ENTER o fent clic esquerre amb el ratolí "
+        "al botó superior esquerre de la finestra. Que ho gaudeixis!";
+
+    char *mensaje_fin_english="After completing the initial wizard, you can start using ZEsarUX.\n"
+        "To open the menu, you can use F5, left-click on the background, or click on one of the menu icons at the top "
+        "if you have enabled ZX Desktop.\n"
+        "You can now close this window by pressing ESC, ENTER, or left-clicking the mouse "
+        "on the top left button of the window. Enjoy!";
+
 
     //Punteros a los mensajes del idioma correspondiente
     char *mensaje_zxdesktop;
@@ -31791,6 +31809,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_atajos;
     mensaje_atajos=mensaje_atajos_english;
 
+    char *mensaje_fin;
+    mensaje_fin=mensaje_fin_english;
+
     switch (valor_opcion) {
         case 0:
             //Aunque este es el lenguaje por defecto, pero por si acaso lo definimos aqui
@@ -31800,6 +31821,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_firstaid=mensaje_firstaid_english;
             mensaje_tooltips=mensaje_tooltips_english;
             mensaje_atajos=mensaje_atajos_english;
+            mensaje_fin=mensaje_fin_english;
         break;
 
         case 1:
@@ -31809,6 +31831,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_firstaid=mensaje_firstaid_spanish;
             mensaje_tooltips=mensaje_tooltips_spanish;
             mensaje_atajos=mensaje_atajos_spanish;
+            mensaje_fin=mensaje_fin_spanish;
         break;
 
         case 2:
@@ -31818,6 +31841,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_firstaid=mensaje_firstaid_catalan;
             mensaje_tooltips=mensaje_tooltips_catalan;
             mensaje_atajos=mensaje_atajos_catalan;
+            mensaje_fin=mensaje_fin_catalan;
         break;
     }
 
@@ -31883,33 +31907,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     menu_force_writing_inverse_color.v=opcion_activar_atajos;
 
 
-
     //Final del asistente
-    if (gui_language==GUI_LANGUAGE_SPANISH) {
-        menu_generic_message(menu_get_string_language("Welcome"),"Finalizado el asistente inicial, puedes empezar a usar ZEsarUX.\n"
-            "Para abrir el menú, puedes usar F5, pulsar el botón izquierdo del ratón sobre el fondo, o pulsar en alguno de los iconos de menú "
-            "superiores si has habilitado ZX Desktop.\n"
-            "Puedes ahora cerrar esta ventana pulsando ESC, ENTER o haciendo click izquierdo con el ratón "
-            "en el botón superior izquierdo de la ventana. Que lo disfrutes!");
-    }
-
-    else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        menu_generic_message(menu_get_string_language("Welcome"),"Finalitzat l'assistent inicial, pots començar a utilitzar ZEsarUX.\n"
-            "Per obrir el menú, pots fer servir F5, prémer el botó esquerre del ratolí sobre el fons, o prémer alguna de les icones de menú "
-            "superiors si has habilitat ZX Desktop.\n"
-            "Pots ara tancar aquesta finestra prement ESC, ENTER o fent clic esquerre amb el ratolí "
-            "al botó superior esquerre de la finestra. Que ho gaudeixis!");
-    }
-
-    else {
-        menu_generic_message(menu_get_string_language("Welcome"),"After completing the initial wizard, you can start using ZEsarUX.\n"
-            "To open the menu, you can use F5, left-click on the background, or click on one of the menu icons at the top "
-            "if you have enabled ZX Desktop.\n"
-            "You can now close this window by pressing ESC, ENTER, or left-clicking the mouse "
-            "on the top left button of the window. Enjoy!");
-    }
-
-
+    menu_generic_message(menu_get_string_language("Welcome"),mensaje_fin);
     salir_todos_menus=1;
 
 }
