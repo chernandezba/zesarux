@@ -405,12 +405,24 @@ void menu_settings_config_file_show_location(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_settings_config_file_reset(MENU_ITEM_PARAMETERS)
+void menu_settings_config_file_delete(MENU_ITEM_PARAMETERS)
 {
-	if (menu_confirm_yesno_texto("Reset defaults","Need to exit. Sure?")==0) return;
+	if (menu_confirm_yesno_texto("Delete configuration file","Need to exit. Sure?")==0) return;
 
-	util_create_sample_configfile(1);
-	menu_warn_message("Configuration settings reset to defaults. Press enter to close ZEsarUX. You should start ZEsarUX again to read default configuration");
+	//util_create_sample_configfile(1);
+    //Realmente borramos el archivo de configuración y se generará desde cero. Así también saldrá el asistente de primera vez
+
+    char configfile[PATH_MAX];
+
+    if (util_get_configfile_name(configfile)==0)  {
+        menu_error_message("Error getting config file path");
+        return;
+    }
+
+    unlink(configfile);
+
+	//menu_warn_message("Configuration settings reset to defaults. Press enter to close ZEsarUX. You should start ZEsarUX again to generate default configuration");
+    menu_warn_message("Configuration file deleted. Press enter to close ZEsarUX. You should start ZEsarUX again to generate default configuration");
 
 	//Y nos aseguramos que al salir no se guarde configuración con lo que tenemos en memoria
 	save_configuration_file_on_exit.v=0;
@@ -459,11 +471,10 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
 
-		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,
-            "    ~~Reset config file","    ~~Resetear archivo config","    ~~Resetejar arxiu config");
-		menu_add_item_menu_shortcut(array_menu_settings_config_file,'r');
-		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Reset configuration file to default values");
-		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Reset configuration file to default values");
+		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_delete,NULL,
+            "    Delete config file","    Borrar archivo config","    Esborrar arxiu config");
+		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Delete configuration file");
+		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Delete configuration file");
         menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
 
 

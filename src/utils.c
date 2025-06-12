@@ -4718,7 +4718,7 @@ int configfile_read(char *mem,int limite,int *first_start)
         if (util_create_sample_configfile(1)==0) return 0;
 
         //Se ha creado nuevo archivo de configuración. Asumimos pues que es la primera vez que se inicia ZEsarUX
-        printf("###  ---- First ZEsarUX start\n");
+        //printf("###  ---- First ZEsarUX start\n");
 
         *first_start=1;
 
