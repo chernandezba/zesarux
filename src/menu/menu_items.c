@@ -31770,6 +31770,10 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_tooltips_english="Do you want to enable 'Tooltips' help messages? They are help messages that appear on selecting menu items";
 
 
+    char *mensaje_atajos_spanish="Quieres activar la visualización de los atajos de teclado? Permite seleccionar entradas de menú pulsando simplemente una tecla";
+    char *mensaje_atajos_catalan="Vols activar la visualització de les dreçeres de teclat? Permet seleccionar entrades de menú prement simplement una tecla";
+    char *mensaje_atajos_english="Do you want to enable visible shortcuts? It allows to select menu entries by pressing a key";
+
 
     char *mensaje_zxdesktop;
     mensaje_zxdesktop=mensaje_zxdesktop_english;
@@ -31783,6 +31787,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_tooltips;
     mensaje_tooltips=mensaje_tooltips_english;
 
+    char *mensaje_atajos;
+    mensaje_atajos=mensaje_atajos_english;
+
     switch (valor_opcion) {
         case 0:
             //Aunque este es el lenguaje por defecto, pero por si acaso lo definimos aqui
@@ -31791,6 +31798,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_realvideo=mensaje_realvideo_english;
             mensaje_firstaid=mensaje_firstaid_english;
             mensaje_tooltips=mensaje_tooltips_english;
+            mensaje_atajos=mensaje_atajos_english;
         break;
 
         case 1:
@@ -31799,6 +31807,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_realvideo=mensaje_realvideo_spanish;
             mensaje_firstaid=mensaje_firstaid_spanish;
             mensaje_tooltips=mensaje_tooltips_spanish;
+            mensaje_atajos=mensaje_atajos_spanish;
         break;
 
         case 2:
@@ -31807,6 +31816,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             mensaje_realvideo=mensaje_realvideo_catalan;
             mensaje_firstaid=mensaje_firstaid_catalan;
             mensaje_tooltips=mensaje_tooltips_catalan;
+            mensaje_atajos=mensaje_atajos_catalan;
         break;
     }
 
@@ -31868,27 +31878,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si visibilidad atajos teclado
     int opcion_activar_atajos=1;
-    if (gui_language==GUI_LANGUAGE_SPANISH) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Quieres activar la visualización de los atajos de teclado? Permite seleccionar entradas de menú pulsando simplemente una tecla",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_atajos);
-    }
-    else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Vols activar la visualització de les dreçeres de teclat? Permet seleccionar entrades de menú prement simplement una tecla",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_atajos);
-    }
-    else {
-        zxvision_menu_generic_message_setting(
-            menu_get_string_language("Welcome"),
-            "Do you want to enable visible shortcuts? It allows to select menu entries by pressing a key",
-            menu_get_string_language("Enabled"),
-            &opcion_activar_atajos);
-    }
+
+    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_atajos,
+        menu_get_string_language("Enabled"),&opcion_activar_atajos);
 
     if (salir_todos_menus) return;
 
