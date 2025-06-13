@@ -31846,22 +31846,6 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     }
 
 
-    //Preguntar si ZX Desktop
-    if (scr_driver_can_ext_desktop() ) {
-        int opcion_activar_zxdesktop=1;
-        zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_zxdesktop,
-            menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
-
-        if (salir_todos_menus) return;
-
-        if (opcion_activar_zxdesktop) {
-            //No esta habilitado, pero por si acaso recomprobar
-            if (!screen_ext_desktop_enabled) {
-                enable_zxdesktop_and_background();
-            }
-        }
-    }
-
 
     //Preguntar si realvideo
     int opcion_activar_realvideo=1;
@@ -31905,6 +31889,23 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     if (salir_todos_menus) return;
 
     menu_force_writing_inverse_color.v=opcion_activar_atajos;
+
+
+    //Preguntar si ZX Desktop. Este al final para no marear mucho al usuario con el cambio de posicion de la ventana
+    if (scr_driver_can_ext_desktop() ) {
+        int opcion_activar_zxdesktop=1;
+        zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_zxdesktop,
+            menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
+
+        if (salir_todos_menus) return;
+
+        if (opcion_activar_zxdesktop) {
+            //No esta habilitado, pero por si acaso recomprobar
+            if (!screen_ext_desktop_enabled) {
+                enable_zxdesktop_and_background();
+            }
+        }
+    }
 
 
     //Final del asistente
