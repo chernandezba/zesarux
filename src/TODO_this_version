@@ -155,5 +155,5 @@ Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
 
 -first aid de main menu salta al pulsar sobre zx desktop, no solo al abrir el menú
 
--en funcion menu_settings_statistics, tipo MENU_OPCION_SEPARADOR parece que no salen en stdout. deberian salir, aunque no seleccionables,
+ok-en funcion menu_settings_statistics, tipo MENU_OPCION_SEPARADOR parece que no salen en stdout. deberian salir, aunque no seleccionables,
 pero si mostrables
