@@ -31937,7 +31937,7 @@ void menu_first_start_wizard_exit(MENU_ITEM_PARAMETERS)
 */
 
 //Inicio preguntando el idioma
-void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
+void menu_first_start_wizard(void)
 {
 
     //al aparecer el wizard no mostramos el first aid para no molestar demasiado al usuario
