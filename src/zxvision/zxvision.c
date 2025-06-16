@@ -24611,9 +24611,11 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
 	//Asumimos opcion ya marcada
 	//*valor_opcion=1;
 
-	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
-
 	if (menu_es_stdout()) {
+        printf("%s\n",titulo);
+        scrstdout_menu_print_speech_macro(titulo);
+        printf("%s\n",texto);
+        scrstdout_menu_print_speech_macro((char *)texto);
 		printf ("%s\n",texto_opcion);
 		scrstdout_menu_print_speech_macro (texto_opcion);
 		printf("Enable or disable setting? 0 or 1?\n");
@@ -24621,6 +24623,11 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
 		scanf("%d",valor_opcion);
 		return;
 	}
+
+
+	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
+
+
 
 	zxvision_window *ventana;
 
