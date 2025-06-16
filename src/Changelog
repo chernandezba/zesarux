@@ -90,6 +90,7 @@ Fixed smartloading a tape file when a dsk is inserted
 Fixed visual casette tape when inserting an unsupported tape
 Fixed write protect tab on visual hilow datadrive window
 Fixed File Selector column for "<dir>" text on folders with utf-8 characters
+Fixed separator menu item on stdout video driver
 
 ----
 

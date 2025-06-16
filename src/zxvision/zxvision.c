@@ -19743,6 +19743,11 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 
 		    }
 
+            else {
+                printf("%s",menu_retorna_item_language(aux));
+                scrstdout_menu_print_speech_macro(menu_retorna_item_language(aux));
+            }
+
 
 		    printf ("\n");
         }
