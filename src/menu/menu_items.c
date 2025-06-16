@@ -43452,6 +43452,8 @@ void menu_inicio_bucle_main(void)
     int mostrar_first_aid_menu=1;
     if (menu_pressed_zxdesktop_lower_icon_which>=0) mostrar_first_aid_menu=0;
     if (menu_pressed_zxdesktop_configurable_icon_which>=0) mostrar_first_aid_menu=0;
+    if (menu_pressed_zxdesktop_right_button_background>=0) mostrar_first_aid_menu=0;
+    if (pulsado_alguna_ventana_con_menu_cerrado) mostrar_first_aid_menu=0;
 
     //boton de menu distinto del boton de menu principal
     if (menu_pressed_zxdesktop_button_which>0) mostrar_first_aid_menu=0;
