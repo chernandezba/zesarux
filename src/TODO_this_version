@@ -153,7 +153,5 @@ ok * mensajes separados como mensaje_zxdesktop=mensaje_zxdesktop_english, para h
 quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
 Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
 
--first aid de main menu salta al pulsar sobre zx desktop, no solo al abrir el menú
+ok-first aid de main menu salta al pulsar sobre zx desktop, no solo al abrir el menú
 
-ok-en funcion menu_settings_statistics, tipo MENU_OPCION_SEPARADOR parece que no salen en stdout. deberian salir, aunque no seleccionables,
-pero si mostrables
