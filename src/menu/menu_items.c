@@ -31738,6 +31738,13 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+//Para poner el texto de bienvenida asi como un contador
+char start_wizard_window_title[ZXVISION_MAX_WINDOW_TITLE];
+
+//Total de preguntas sin tener en cuenta los condicionales (como el de zx desktop)
+int start_wizard_total_steps=6;
+
+
 void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 {
 
@@ -31812,6 +31819,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_fin;
     mensaje_fin=mensaje_fin_english;
 
+    int current_step=2;
+
     switch (valor_opcion) {
         case 0:
             //Aunque este es el lenguaje por defecto, pero por si acaso lo definimos aqui
@@ -31849,7 +31858,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si realvideo
     int opcion_activar_realvideo=1;
-    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_realvideo,
+    sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
+    zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_realvideo,
         menu_get_string_language("Enabled"),&opcion_activar_realvideo);
 
     if (salir_todos_menus) return;
@@ -31861,7 +31871,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si first aid
     int opcion_activar_first_aid=1;
-    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_firstaid,
+    sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
+    zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_firstaid,
         menu_get_string_language("Enabled"),&opcion_activar_first_aid);
 
     if (salir_todos_menus) return;
@@ -31873,7 +31884,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si tooltips
     int opcion_activar_tooltips=0;
-    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_tooltips,
+    sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
+    zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_tooltips,
         menu_get_string_language("Enabled"),&opcion_activar_tooltips);
 
     if (salir_todos_menus) return;
@@ -31883,7 +31895,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Preguntar si visibilidad atajos teclado
     int opcion_activar_atajos=1;
-    zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_atajos,
+    sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
+    zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_atajos,
         menu_get_string_language("Enabled"),&opcion_activar_atajos);
 
     if (salir_todos_menus) return;
@@ -31894,7 +31907,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     //Preguntar si ZX Desktop. Este al final para no marear mucho al usuario con el cambio de posicion de la ventana
     if (scr_driver_can_ext_desktop() ) {
         int opcion_activar_zxdesktop=1;
-        zxvision_menu_generic_message_setting(menu_get_string_language("Welcome"),mensaje_zxdesktop,
+        sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
+        zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_zxdesktop,
             menu_get_string_language("Enabled"),&opcion_activar_zxdesktop);
 
         if (salir_todos_menus) return;
@@ -31909,7 +31923,8 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
 
     //Final del asistente
-    menu_generic_message(menu_get_string_language("Welcome"),mensaje_fin);
+    sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
+    menu_generic_message(start_wizard_window_title,mensaje_fin);
     salir_todos_menus=1;
 
 }
@@ -31932,6 +31947,7 @@ void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
 
+    if (scr_driver_can_ext_desktop() ) start_wizard_total_steps++;
 
     do {
 
@@ -31953,7 +31969,9 @@ void menu_first_start_wizard(MENU_ITEM_PARAMETERS)
 
         //menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_opcion_seleccionada,&item_seleccionado,array_menu_common,"Welcome");
+        sprintf(start_wizard_window_title,"Welcome 1/%d",start_wizard_total_steps);
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&in_memoriam_opcion_seleccionada,&item_seleccionado,array_menu_common,start_wizard_window_title);
 
 
 
