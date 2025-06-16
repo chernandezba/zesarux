@@ -43460,7 +43460,8 @@ void menu_inicio_bucle_main(void)
 
 	//Si descargar stats
 	//Si se pregunta si se quiere enviar estadisticas, solo si esta el grabado de configuracion, e interfaz permite menu (no stdout ni simpletext ni null)
-	if (save_configuration_file_on_exit.v && stats_asked.v==0 && si_normal_menu_video_driver()) {
+    //Tampoco queremos que aparezca la primera vez que sale tambien el wizard, porque son demasiadas preguntas y molestará al usuario
+	if (save_configuration_file_on_exit.v && stats_asked.v==0 && si_normal_menu_video_driver() && !appeared_zesarux_first_start) {
 		stats_ask_if_enable();
 	}
 

@@ -50,4 +50,6 @@ extern z80_bit parameter_disable_allbetawarningsleep;
 
 extern int zesarux_first_start;
 
+extern int appeared_zesarux_first_start;
+
 #endif

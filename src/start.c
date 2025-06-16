@@ -7054,7 +7054,11 @@ int parse_cmdline_options(int desde_commandline) {
 
 }
 
+//Primera vez que se inicia y tiene que salir el wizard
 int zesarux_first_start=0;
+
+//Ha salido el wizard
+int appeared_zesarux_first_start=0;
 
 //Proceso inicial
 int zesarux_main (int main_argc,char *main_argv[]) {

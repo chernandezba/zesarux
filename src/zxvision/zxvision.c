@@ -27094,6 +27094,7 @@ void menu_inicio(void)
         osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
         zesarux_first_start=0;
         menu_first_start_wizard();
+        appeared_zesarux_first_start=1;
 
         cls_menu_overlay();
     }
