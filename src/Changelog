@@ -66,7 +66,7 @@ Improve Memory Cheat:
 - Can delete watches
 - Improve window layout
 
-Improve maximum sent keys to ZENG/ZENG Online
+Improved maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
 Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
