@@ -133,19 +133,6 @@ Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8
 *falta calcular posicion de ... en caso de archivos o <dir> cuando ancho pequeño
 
 
--wizard para la primera vez. Y opcion para saltarselo si no se quiere. Que aparezca inicialmente en los 3 idiomas y luego
-cada mensaje en cada idioma
-ok *idioma: english, español, català
-ok *zx desktop activado (junto con background windows)
-*estilo?
-*etc...
-ok *gestionar que al pulsar ESC en cualquiera de las ventanas del wizard se pueda salir
-ok *que al finalizar luego no salga first aid (hasta que no se rearranque)
-ok *no zx desktop si driver no lo permite
-ok * real video si el driver lo permite
-ok * mensajes separados como mensaje_zxdesktop=mensaje_zxdesktop_english, para hacer una sola llamada a zxvision_menu_generic_message_setting por cada pregunta
-
-
 -revisar algunas opciones de menu que se podrian gestionar con menu_add_item_menu_opcion_conmuta
 
 
@@ -153,5 +140,5 @@ ok * mensajes separados como mensaje_zxdesktop=mensaje_zxdesktop_english, para h
 quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
 Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
 
-ok-first aid de main menu salta al pulsar sobre zx desktop, no solo al abrir el menú
+
 

@@ -31742,7 +31742,7 @@ void menu_in_memoriam(MENU_ITEM_PARAMETERS)
 char start_wizard_window_title[ZXVISION_MAX_WINDOW_TITLE];
 
 //Total de preguntas sin tener en cuenta los condicionales (como el de zx desktop)
-int start_wizard_total_steps=6;
+int start_wizard_total_steps=7;
 
 
 void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
@@ -31757,6 +31757,14 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
         "de tal manera que puedes tener iconos y menús localizados ahí. Quieres activar ZX Desktop?";
     char *mensaje_zxdesktop_catalan="ZX Desktop permet engrandir la finestra principal afegint una zona d'escriptori "
         "de tal manera que pots tenir icones i menús localizats allà. Vols activar ZX Desktop?";
+
+    char *mensaje_autosnapshot_spanish="Quieres autograbar el estado de la máquina emulada (snapshot) al salir? "
+        "Y se restaura automáticamente al inicio";
+    char *mensaje_autosnapshot_catalan="Vols autogravar l'estat de la màquina emulada (snapshot) al sortir? "
+        "I es restaura automàticament a l'inici";
+    char *mensaje_autosnapshot_english="Do you want to autosave the emulated machine state (snapshot) on exit? "
+        "And it will be restored automatically on start";
+
 
     char *mensaje_realvideo_spanish="Quieres activar Real Video? Es una opción para emular a la perfección los efectos de pantalla de la máquina emulada. "
         "Puede usar un poco más de CPU pero generalmente es conveniente activarlo";
@@ -31807,6 +31815,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_realvideo;
     mensaje_realvideo=mensaje_realvideo_english;
 
+    char *mensaje_autosnapshot;
+    mensaje_autosnapshot=mensaje_autosnapshot_english;
+
     char *mensaje_firstaid;
     mensaje_firstaid=mensaje_firstaid_english;
 
@@ -31827,6 +31838,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             gui_language=GUI_LANGUAGE_DEFAULT;
             mensaje_zxdesktop=mensaje_zxdesktop_english;
             mensaje_realvideo=mensaje_realvideo_english;
+            mensaje_autosnapshot=mensaje_autosnapshot_english;
             mensaje_firstaid=mensaje_firstaid_english;
             mensaje_tooltips=mensaje_tooltips_english;
             mensaje_atajos=mensaje_atajos_english;
@@ -31837,6 +31849,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             gui_language=GUI_LANGUAGE_SPANISH;
             mensaje_zxdesktop=mensaje_zxdesktop_spanish;
             mensaje_realvideo=mensaje_realvideo_spanish;
+            mensaje_autosnapshot=mensaje_autosnapshot_spanish;
             mensaje_firstaid=mensaje_firstaid_spanish;
             mensaje_tooltips=mensaje_tooltips_spanish;
             mensaje_atajos=mensaje_atajos_spanish;
@@ -31847,6 +31860,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
             gui_language=GUI_LANGUAGE_CATALAN;
             mensaje_zxdesktop=mensaje_zxdesktop_catalan;
             mensaje_realvideo=mensaje_realvideo_catalan;
+            mensaje_autosnapshot=mensaje_autosnapshot_catalan;
             mensaje_firstaid=mensaje_firstaid_catalan;
             mensaje_tooltips=mensaje_tooltips_catalan;
             mensaje_atajos=mensaje_atajos_catalan;
@@ -31867,6 +31881,18 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     if (opcion_activar_realvideo) {
          if (rainbow_enabled.v==0) enable_rainbow();
     }
+
+
+    //Preguntar si autoguardado/autocarga snapshot
+    int opcion_autosnapshot=1;
+    sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
+    zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_autosnapshot,
+        menu_get_string_language("Enabled"),&opcion_autosnapshot);
+
+    if (salir_todos_menus) return;
+
+    autosave_snapshot_on_exit.v=opcion_autosnapshot;
+    autoload_snapshot_on_start.v=opcion_autosnapshot;
 
 
     //Preguntar si first aid
