@@ -1256,12 +1256,12 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
                     if (value_axis>=0) {
                         poke_byte_no_time(realjoystick_steering_address,valor_volante);
                         poke_byte_no_time(realjoystick_steering_address+1,0);
-                        printf("Lectura Volante Der: %d Valor escrito: %d\n",value_axis,valor_volante);
+                        //printf("Lectura Volante Der: %d Valor escrito: %d\n",value_axis,valor_volante);
                     }
                     else {
                         poke_byte_no_time(realjoystick_steering_address,0);
                         poke_byte_no_time(realjoystick_steering_address+1,-valor_volante);
-                        printf("Lectura Volante Izq: %d Valor escrito: %d\n",value_axis,-valor_volante);
+                        //printf("Lectura Volante Izq: %d Valor escrito: %d\n",value_axis,-valor_volante);
                     }
                 }
 
@@ -1289,7 +1289,7 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
                     }
 
 
-                    printf("Lectura Volante: %d Valor escrito: %d\n",value_axis,valor_volante);
+                    //printf("Lectura Volante: %d Valor escrito: %d\n",value_axis,valor_volante);
 
                     poke_byte_no_time(realjoystick_steering_address,valor_volante);
 
