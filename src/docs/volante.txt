@@ -1,11 +1,28 @@
-Con esta característica nueva de ZEsarUX se permite usar volantes de PC (y otros joysticks de tipo analógico) de manera completamente realista en juegos de carreras (coches, motos, etc).
-Sabemos que los juegos de carreras en Spectrum imitan un volante de tal manera que cuando pulsamos una tecla de dirección (izquierda o derecha) el volante del juego se va moviendo en esa dirección, así que si mantenemos pulsada una tecla de dirección por un breve instante, el volante se moverá un poco. Y si mantenemos más rato esa tecla, se moverá algo mas el volante. Esto como veis, es un movimiento puramente digital: pulsamos o no pulsamos la tecla, pero el usuario no tiene manera directa de mover el volante "mucho" o "poco" hacia una dirección, sólo manteniendo la tecla mas o menos rato.
+Con esta característica nueva de ZEsarUX se permite usar volantes de PC (y otros joysticks de tipo analógico) de manera completamente realista 
+en juegos de carreras (coches, motos, etc).
+Sabemos que los juegos de carreras en Spectrum imitan un volante de tal manera que cuando pulsamos una tecla de dirección (izquierda o derecha) 
+el volante del juego se va moviendo en esa dirección, así que si mantenemos pulsada una tecla de dirección por un breve instante, el volante se 
+moverá un poco. Y si mantenemos más rato esa tecla, se moverá algo mas el volante. Esto como veis, es un movimiento puramente digital: pulsamos 
+o no pulsamos la tecla, pero el usuario no tiene manera directa de mover el volante "mucho" o "poco" hacia una dirección, sólo manteniendo 
+la tecla mas o menos rato.
 
-Con esta característica nueva de ZEsarUX permite que, si movemos por ejemplo el volante a mitad de todo el recorrido que permite hacia la izquierda, en el juego se traducirá en que su volante se moverá hasta la mitad de recorrido hacia la izquierda. Ya no hace falta dejar pulsada una tecla mas o menos rato, simplemente giramos el volante en la posición que queremos y cuanto queremos moverlo, y se moverá exactamente de esa manera en el juego.
+Con esta característica nueva de ZEsarUX permite que, si movemos por ejemplo el volante a mitad de todo el recorrido que permite hacia la 
+izquierda, en el juego se traducirá en que su volante se moverá hasta la mitad de recorrido hacia la izquierda. Ya no hace falta dejar pulsada 
+una tecla mas o menos rato, simplemente giramos el volante en la posición que queremos y cuanto queremos moverlo, y se moverá exactamente de 
+esa manera en el juego.
 
-Para conseguir esto, se necesita saber, para un juego concreto, en qué posición de memoria guarda el estado del volante (hacia donde está girado y cuanto está girado). Además, cada juego tiene unos rangos admitidos (por ejemplo, un juego concreto puede tener desde -10 que indicaría el máximo hacia la izquierda, hasta +10 que indicaria el máximo a la derecha). Por ello, me he dedicado a revisar algunos de los juegos mas conocidos de coches y motos; de todos estos, he mirado aquellos se pueden adaptar a este tipo de movimiento (dirección e intensidad). Luego, en ZEsarUX se dispone de una lista de ajustes para esos juegos, de tal manera que podemos cargar un juego de la lista y luego aplicar el ajuste. Dicho ajuste lo que hace es indicarle en qué posición de memoria guarda el volante, los rangos admitidos, etc. De tal manera que es transparente para el usuario.
+Para conseguir esto, se necesita saber, para un juego concreto, en qué posición de memoria guarda el estado del volante (hacia donde está girado
+ y cuanto está girado). Además, cada juego tiene unos rangos admitidos (por ejemplo, un juego concreto puede tener desde -10 que indicaría el 
+máximo hacia la izquierda, hasta +10 que indicaria el máximo a la derecha). Por ello, me he dedicado a revisar algunos de los juegos mas 
+conocidos de coches y motos; de todos estos, he mirado aquellos se pueden adaptar a este tipo de movimiento (dirección e intensidad). 
+Luego, en ZEsarUX se dispone de una lista de ajustes para esos juegos, de tal manera que podemos cargar un juego de la lista y luego aplicar el ajuste. 
+Dicho ajuste lo que hace es indicarle en qué posición de memoria guarda el volante, los rangos admitidos, etc. De tal manera que es transparente
+ para el usuario.
 
-Hay otra particularidad de estos juegos en que cuando se libera una tecla de dirección, el volante regresa sólo a la posición central. O incluso cuando nos salimos de la carretera y chocamos, el volante también regresa al centro. En los ajustes de estos juegos he incluido unas secciones de "pokes" en los que se desactiva esa característica de autocentrado, porque interesa que el volante sólo regrese al centro cuando lo movamos nosotros a dicha posición.
+Hay otra particularidad de estos juegos en que cuando se libera una tecla de dirección, el volante regresa sólo a la posición central. O incluso
+ cuando nos salimos de la carretera y chocamos, el volante también regresa al centro. En los ajustes de estos juegos he incluido unas secciones
+ de "pokes" en los que se desactiva esa característica de autocentrado, porque interesa que el volante sólo regrese al centro cuando lo movamos
+ nosotros a dicha posición.
 
 Como decía, esta funcionalidad está pensada para usarlo con volante pero también sirve cualquier otro joystick analógico de PC.
 
@@ -13,11 +30,14 @@ Como decía, esta funcionalidad está pensada para usarlo con volante pero tambi
 La lista de juegos soportada actualmente es:
 
 
-Chase H.Q., Chequered Flag, Chevy Chase, Drift, Enduro Racer, Hard Drivin', Just a Gal, Miami Cobra GT, Nigel Mansell, Nightmare Rally, Power Drift, Super Hang-On, Test Drive 2, Toyota Cellica, Travel Through Time, Wec Le Mans
+Chase H.Q., Chequered Flag, Chevy Chase, Drift, Enduro Racer, Hard Drivin', Just a Gal, Miami Cobra GT, Nigel Mansell, Nightmare Rally, 
+Power Drift, Super Hang-On, Test Drive 2, Toyota Cellica, Travel Through Time, Wec Le Mans
 
 Es una lista que probablemente irá creciendo y si alguien quiere probarlo en algún juego que no esté en la lista, que me lo comente y puedo intentar agregarlo.
 
-Podéis probar esta característica descargando la versión ZEsarUX 12.1 Beta 1: https://github.com/chernandezba/zesarux/releases/tag/ZEsarUX-12.1-Beta1
+Podéis probar esta característica descargando la versión ZEsarUX 12.1 Beta 1: 
+
+https://github.com/chernandezba/zesarux/releases/tag/ZEsarUX-12.1-Beta1
 
 Y podéis ver un video demostrativo aquí:
 
