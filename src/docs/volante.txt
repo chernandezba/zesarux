@@ -11,8 +11,8 @@ izquierda, en el juego se traducirá en que su volante se moverá hasta la mitad
 una tecla mas o menos rato, simplemente giramos el volante en la posición que queremos y cuanto queremos moverlo, y se moverá exactamente de 
 esa manera en el juego.
 
-Para conseguir esto, se necesita saber, para un juego concreto, en qué posición de memoria guarda el estado del volante (hacia donde está girado
- y cuanto está girado). Además, cada juego tiene unos rangos admitidos (por ejemplo, un juego concreto puede tener desde -10 que indicaría el 
+Para conseguir esto, se necesita saber, para un juego concreto, en qué posición de memoria guarda el estado del volante (hacia donde está girado 
+y cuanto está girado). Además, cada juego tiene unos rangos admitidos (por ejemplo, un juego concreto puede tener desde -10 que indicaría el 
 máximo hacia la izquierda, hasta +10 que indicaria el máximo a la derecha). Por ello, me he dedicado a revisar algunos de los juegos mas 
 conocidos de coches y motos; de todos estos, he mirado aquellos se pueden adaptar a este tipo de movimiento (dirección e intensidad). 
 Luego, en ZEsarUX se dispone de una lista de ajustes para esos juegos, de tal manera que podemos cargar un juego de la lista y luego aplicar el ajuste. 
