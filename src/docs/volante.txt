@@ -19,10 +19,10 @@ Luego, en ZEsarUX se dispone de una lista de ajustes para esos juegos, de tal ma
 Dicho ajuste lo que hace es indicarle en qué posición de memoria guarda el volante, los rangos admitidos, etc. De tal manera que es transparente
  para el usuario.
 
-Hay otra particularidad de estos juegos en que cuando se libera una tecla de dirección, el volante regresa sólo a la posición central. O incluso
- cuando nos salimos de la carretera y chocamos, el volante también regresa al centro. En los ajustes de estos juegos he incluido unas secciones
- de "pokes" en los que se desactiva esa característica de autocentrado, porque interesa que el volante sólo regrese al centro cuando lo movamos
- nosotros a dicha posición.
+Hay otra particularidad de estos juegos en que cuando se libera una tecla de dirección, el volante regresa sólo a la posición central. O incluso 
+cuando nos salimos de la carretera y chocamos, el volante también regresa al centro. En los ajustes de estos juegos he incluido unas secciones 
+de "pokes" en los que se desactiva esa característica de autocentrado, porque interesa que el volante sólo regrese al centro cuando lo movamos 
+nosotros a dicha posición.
 
 Como decía, esta funcionalidad está pensada para usarlo con volante pero también sirve cualquier otro joystick analógico de PC.
 
