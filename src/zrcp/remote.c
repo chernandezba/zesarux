@@ -6503,6 +6503,17 @@ void *zrcp_handle_new_connection(void *entrada)
                         else printf("\\%02X",caracter);
                     }
                     printf("]\n");
+                    if (leidos>=3) {
+                        if (buffer_lectura_socket[indice_destino]==0x1B &&
+                        buffer_lectura_socket[indice_destino+1]=='[' &&
+                        buffer_lectura_socket[indice_destino+2]=='A') {
+                            //flecha arriba
+                            //-1 para quitar salto de linea
+                            write(sock_connected_client, buffer_lectura_socket_anterior, strlen(buffer_lectura_socket_anterior)-1);
+                            strcpy(&buffer_lectura_socket[indice_destino],buffer_lectura_socket_anterior);
+                            leidos=strlen(buffer_lectura_socket_anterior)-1;
+                        }
+                    }
                 }
 
 

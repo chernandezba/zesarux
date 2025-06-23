@@ -139,4 +139,6 @@ Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8
 quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
 Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
 
-
+-ZRCP char mode:
+*creo que hay que quitar echo local
+*descartar sentencia recibida al enviar lo de aplicar modo char
