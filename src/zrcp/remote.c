@@ -6430,11 +6430,20 @@ void zrcp_set_char_mode(int sock_connected_client)
     #define IAC 255
     #define DONT 254
     #define DO 253
+    #define WONT 252
     #define WILL 251
     #define LINEMODE 34
+    #define ECHO 1
+    #define SGA 3  // Suppress Go Ahead
 
-    unsigned char buf[] = {IAC, WILL, LINEMODE, IAC, DO, LINEMODE};
-    write(sock_connected_client, buf, sizeof(buf));
+    unsigned char buf_char_mode[] = {/*IAC, WILL, LINEMODE, */ IAC, DO, LINEMODE};
+    write(sock_connected_client, buf_char_mode, sizeof(buf_char_mode));
+
+    //Y desactivamos el echo del cliente telnet
+    unsigned char buf_echo_off[] = {IAC, WILL, ECHO}; //, IAC, WILL, SGA};
+    write(sock_connected_client, buf_echo_off, sizeof(buf_echo_off));
+
+
 }
 
 void *zrcp_handle_new_connection(void *entrada)
@@ -6473,8 +6482,14 @@ void *zrcp_handle_new_connection(void *entrada)
 
 
     int remote_salir_conexion_cliente=0;
+    int ignorar_primera_recepcion=0;
 
-    if (remote_protocol_char_mode.v) zrcp_set_char_mode(sock_connected_client);
+    if (remote_protocol_char_mode.v) {
+        zrcp_set_char_mode(sock_connected_client);
+        //Las respuestas a nuestros comandos de set_char_mode no quiero enviarlas de nuevo a el, no tendria logica
+        //solo quiero enviarle el texto que realmente escribe el usuario
+        ignorar_primera_recepcion=1;
+    }
 
     while (!remote_salir_conexion_cliente) {
 
@@ -6509,11 +6524,24 @@ void *zrcp_handle_new_connection(void *entrada)
                         buffer_lectura_socket[indice_destino+2]=='A') {
                             //flecha arriba
                             //-1 para quitar salto de linea
-                            write(sock_connected_client, buffer_lectura_socket_anterior, strlen(buffer_lectura_socket_anterior)-1);
+                            //write(sock_connected_client, buffer_lectura_socket_anterior, strlen(buffer_lectura_socket_anterior)-1);
                             strcpy(&buffer_lectura_socket[indice_destino],buffer_lectura_socket_anterior);
                             leidos=strlen(buffer_lectura_socket_anterior)-1;
                         }
                     }
+                    //Es el servidor quien hace el echo
+                    //printf("Escribir %c\n",buffer_lectura_socket[indice_destino]);
+                    if (!ignorar_primera_recepcion) {
+                        //Escribir ignorando caracteres 10 o 13
+                        int jj;
+                        for (jj=0;jj<leidos;jj++) {
+                            char c_enviar=buffer_lectura_socket[indice_destino+jj];
+                            if (c_enviar!=10 && c_enviar!=13) write(sock_connected_client, &buffer_lectura_socket[indice_destino+jj], 1);
+                        }
+                    }
+
+                    ignorar_primera_recepcion=0;
+                    //write(sock_connected_client, "A", 1);
                 }
 
 
@@ -6541,6 +6569,9 @@ void *zrcp_handle_new_connection(void *entrada)
 
                     if (buffer_lectura_socket[indice_destino-1]=='\r' || buffer_lectura_socket[indice_destino-1]=='\n' || buffer_lectura_socket[indice_destino-1]==0) {
                         salir_bucle=1;
+                        if (remote_protocol_char_mode.v) {
+                            write(sock_connected_client, "\r\n", 2);
+                        }
                     }
                 }
 
