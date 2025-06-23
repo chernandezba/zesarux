@@ -6,7 +6,7 @@ moverá un poco. Y si mantenemos más rato esa tecla, se moverá algo mas el vol
 o no pulsamos la tecla, pero el usuario no tiene manera directa de mover el volante "mucho" o "poco" hacia una dirección, sólo manteniendo 
 la tecla más o menos rato.
 
-Con esta característica nueva de ZEsarUX permite que, si movemos por ejemplo el volante a mitad de todo el recorrido que permite hacia la 
+Esta característica nueva permite que, si movemos por ejemplo el volante a mitad de todo el recorrido que permite hacia la 
 izquierda, en el juego se traducirá en que su volante se moverá hasta la mitad de recorrido hacia la izquierda. Ya no hace falta dejar pulsada 
 una tecla mas o menos rato, simplemente giramos el volante en la posición que queremos y cuanto queremos moverlo, y se moverá exactamente de 
 esa manera en el juego.
