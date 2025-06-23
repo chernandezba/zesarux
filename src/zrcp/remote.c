@@ -6432,6 +6432,8 @@ void zrcp_set_char_mode(int sock_connected_client)
     #define DO 253
     #define WONT 252
     #define WILL 251
+    #define SB 250  // Subnegotiation begin
+    #define SE 240  // Subnegotiation end
     #define LINEMODE 34
     #define ECHO 1
     #define SGA 3  // Suppress Go Ahead
@@ -6442,6 +6444,11 @@ void zrcp_set_char_mode(int sock_connected_client)
     //Y desactivamos el echo del cliente telnet
     unsigned char buf_echo_off[] = {IAC, WILL, ECHO, IAC, WILL, SGA};
     write(sock_connected_client, buf_echo_off, sizeof(buf_echo_off));
+
+
+    //Y negociamos conversion \n a \r\n
+    //unsigned char buf_conversion[]= {IAC, SB, LINEMODE, 1,1, IAC, SE};
+    //write(sock_connected_client, buf_conversion,sizeof(buf_conversion));
 
 
 }
