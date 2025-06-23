@@ -6436,11 +6436,11 @@ void zrcp_set_char_mode(int sock_connected_client)
     #define ECHO 1
     #define SGA 3  // Suppress Go Ahead
 
-    unsigned char buf_char_mode[] = {/*IAC, WILL, LINEMODE, */ IAC, DO, LINEMODE};
+    unsigned char buf_char_mode[] = {IAC, WILL, LINEMODE, IAC, DO, LINEMODE};
     write(sock_connected_client, buf_char_mode, sizeof(buf_char_mode));
 
     //Y desactivamos el echo del cliente telnet
-    unsigned char buf_echo_off[] = {IAC, WILL, ECHO}; //, IAC, WILL, SGA};
+    unsigned char buf_echo_off[] = {IAC, WILL, ECHO, IAC, WILL, SGA};
     write(sock_connected_client, buf_echo_off, sizeof(buf_echo_off));
 
 
