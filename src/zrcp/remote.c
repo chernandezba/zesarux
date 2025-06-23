@@ -6425,6 +6425,18 @@ struct s_zrcp_new_connection_parms
 };
 */
 
+void zrcp_set_char_mode(int sock_connected_client)
+{
+    #define IAC 255
+    #define DONT 254
+    #define DO 253
+    #define WILL 251
+    #define LINEMODE 34
+
+    unsigned char buf[] = {IAC, WILL, LINEMODE, IAC, DO, LINEMODE};
+    write(sock_connected_client, buf, sizeof(buf));
+}
+
 void *zrcp_handle_new_connection(void *entrada)
 {
 
@@ -6462,6 +6474,8 @@ void *zrcp_handle_new_connection(void *entrada)
 
     int remote_salir_conexion_cliente=0;
 
+    if (remote_protocol_char_mode.v) zrcp_set_char_mode(sock_connected_client);
+
     while (!remote_salir_conexion_cliente) {
 
         char prompt[1024];
@@ -6479,6 +6493,19 @@ void *zrcp_handle_new_connection(void *entrada)
             int salir_bucle=0;
             do {
                 leidos=leer_socket(sock_connected_client, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
+
+                if (remote_protocol_char_mode.v) {
+                    printf("despues de leer socket. sentencia leida: [");
+                    int jj;
+                    for (jj=0;jj<leidos;jj++) {
+                        z80_byte caracter=buffer_lectura_socket[indice_destino+jj];
+                        if (caracter>=32 && caracter<=126) printf("%c",caracter);
+                        else printf("\\%02X",caracter);
+                    }
+                    printf("]\n");
+                }
+
+
                 debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
 
                 /*
