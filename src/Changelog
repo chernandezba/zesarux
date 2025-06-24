@@ -67,6 +67,7 @@ Improve Memory Cheat:
 - Improve window layout
 
 Improved maximum sent keys to ZENG/ZENG Online
+Improved ZRCP: allow to set char mode to telnet connections (allow cursor up, backspace, tab for example), better CR+LF handling
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
 Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving

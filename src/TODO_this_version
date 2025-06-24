@@ -141,5 +141,7 @@ Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
 
 -ZRCP char mode:
 ok*creo que hay que quitar echo local
-*descartar sentencia recibida al enviar lo de aplicar modo char
-*agregar siempre \r al escribir texto en modo linemode, cuando hay un \n
+ok*descartar sentencia recibida al enviar lo de aplicar modo char
+ok*agregar siempre \r al escribir texto en modo linemode, cuando hay un \n
+*quitar prints debug
+ok*soportar tabulador

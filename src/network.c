@@ -384,11 +384,8 @@ int assignar_adr_internet
 }
 
 
-
-
-
 //Retorna bytes escritos
-int escribir_socket(int socket, char *buffer)
+int old_escribir_socket(int socket, char *buffer)
 {
 
 	char cr=13;
@@ -427,6 +424,68 @@ int escribir_socket(int socket, char *buffer)
 	return escrito;
 
 #endif
+
+}
+
+
+void escribir_socket_add_cr(char *buffer_orig,char *buffer_destino)
+{
+    //printf("inicio add cr\n");
+    do {
+        //printf("%c",*buffer_orig);
+        *buffer_destino=*buffer_orig;
+        buffer_destino++;
+        if ((*buffer_orig)==10) {
+            *buffer_destino=13;
+            buffer_destino++;
+            //printf(" add salto ");
+        }
+
+        if (!(*buffer_orig)) return;
+        buffer_orig++;
+    } while (1);
+}
+
+
+//Retorna bytes escritos
+int escribir_socket(int socket, char *buffer)
+{
+    char *buffer_con_cr=NULL;
+
+    if (enviar_cr) {
+        //Generar otro buffer con saltos agregados
+        buffer_con_cr=util_malloc(strlen(buffer)*2+1,"Can not allocate buffer for CRLF conversion");
+        escribir_socket_add_cr(buffer,buffer_con_cr);
+        buffer=buffer_con_cr;
+    }
+
+
+#ifdef MINGW
+
+	int smsg=send(socket,buffer,strlen(buffer),0);
+	 if(smsg==SOCKET_ERROR){
+			 return Z_ERR_NUM_WRITE_SOCKET;
+	 }
+
+     z_sock_increment_traffic_counter_write(smsg);
+	 return smsg;
+
+#else
+
+    //printf("before write\n");
+	int escrito=write(socket,buffer,strlen(buffer));
+    //printf("after write\n");
+
+
+    z_sock_increment_traffic_counter_write(escrito);
+
+	return escrito;
+
+#endif
+
+    if (enviar_cr) {
+        if (buffer_con_cr!=NULL) free(buffer_con_cr);
+    }
 
 }
 
