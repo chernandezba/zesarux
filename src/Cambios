@@ -66,8 +66,12 @@ Mejorado Memory Cheat:
 - Poder borrar watches
 - Mejorar apariencia de la ventana
 
+Mejorado ZRCP:
+- Permitir habilitar Linemode Telnet (modo carácter): permitir cursor arriba, backspace, tab, ctrl-c
+- Mejor gestión de CR+LF
+- Agregado comandos: cd, pwd
+
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
-Mejorado ZRCP: permitir habilitar modo carácter en conexiones telnet (permitir cursor arriba, backspace, tab por ejemplo), mejor gestión de CR+LF
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
 Mejorado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar

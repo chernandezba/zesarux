@@ -638,6 +638,7 @@ struct s_items_ayuda items_ayuda[]={
 
 },
 
+    {"cd",NULL,NULL,"Change Working Directory"},
 	{"clear-membreakpoints",NULL,NULL,"Clear all memory breakpoints"},
     {"close-all-menus",NULL,NULL,"Close all open menus"},
 
@@ -775,6 +776,7 @@ struct s_items_ayuda items_ayuda[]={
     {"mmc-reload",NULL,NULL,"Reload MMC file"},
 	{"noop",NULL,NULL,"This command does nothing"},
     {"open-menu",NULL,NULL,"Triggers action to open menu (like F5)"},
+    {"pwd",NULL,NULL,"Print Working Directory"},
     {"print-error",NULL,"message","Prints a error message exactly the same way as debug_printf(VERBOSE_ERR,..."},
 	{"print-footer",NULL,"message","Prints message on footer"},
 	{"put-snapshot",NULL,NULL,"Puts a zsf snapshot from console. Contents must be hexadecimal characters without spaces"},
@@ -3393,7 +3395,7 @@ void remote_simple_help(int misocket)
 
 
 //Retorna lista de comandos que coinciden el principio
-int remote_tab_command(int misocket,char *texto_escrito,int longitud_escrito,int *indice_unica_coincidencia)
+int remote_tab_command(int misocket,char *texto_escrito,int longitud_escrito,int *indice_primera_coincidencia,int escribir)
 {
 
 
@@ -3402,15 +3404,42 @@ int remote_tab_command(int misocket,char *texto_escrito,int longitud_escrito,int
 
     for (i=0;items_ayuda[i].nombre_comando!=NULL;i++) {
         if (!strncmp(items_ayuda[i].nombre_comando,texto_escrito,longitud_escrito)) {
-            if (!coincidencias) escribir_socket(misocket,"\n");
+            if (escribir) {
+                if (!coincidencias) escribir_socket(misocket,"\n");
 
-            escribir_socket_format(misocket,"%s\n",items_ayuda[i].nombre_comando);
+                escribir_socket_format(misocket,"%s\n",items_ayuda[i].nombre_comando);
+            }
             coincidencias++;
-            *indice_unica_coincidencia=i;
+            *indice_primera_coincidencia=i;
         }
     }
 
     return coincidencias;
+
+}
+
+int remote_tab_command_completar(int longitud_comando,int indice_primera_coincidencia,int coincidencias,int sock_connected_client)
+{
+
+    //Ver hasta cuantas letras podemos agregar sin que la cantidad de comandos retornados decremente
+    char buffer_comando_completar[1024];
+    int longitud_probar=longitud_comando;
+
+    int longitud_maxima=strlen(items_ayuda[indice_primera_coincidencia].nombre_comando);
+
+    int coincidencias_probar=coincidencias;
+
+    while (longitud_probar<=longitud_maxima && coincidencias_probar==coincidencias) {
+        longitud_probar++;
+        printf("Probando %d letras\n",longitud_probar);
+        memcpy(buffer_comando_completar,items_ayuda[indice_primera_coincidencia].nombre_comando,longitud_probar);
+
+        coincidencias_probar=remote_tab_command(sock_connected_client,buffer_comando_completar,
+            longitud_probar,&indice_primera_coincidencia,0);
+
+
+    }
+    return longitud_probar-1;
 
 }
 
@@ -4056,6 +4085,16 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
     remote_ayplayer(misocket,remote_command_argv[0],remote_command_argv[1]);
   }
+
+	else if (!strcmp(comando_sin_parametros,"cd")) {
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+
+        if (remote_command_argc<1) {
+            escribir_socket(misocket,"ERROR. Needs one parameter");
+            return;
+        }
+        zvfs_chdir(remote_command_argv[0]);
+	}
 
 
  else if (!strcmp(comando_sin_parametros,"clear-membreakpoints")) {
@@ -5100,6 +5139,11 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 	}
 
+	else if (!strcmp(comando_sin_parametros,"pwd")) {
+        char directorio_actual[PATH_MAX];
+        zvfs_getcwd(directorio_actual,PATH_MAX);
+        escribir_socket(misocket,directorio_actual);
+	}
 
 	else if (!strcmp(comando_sin_parametros,"qdos-get-open-files") || !strcmp(comando_sin_parametros,"qlgof")) {
 		if (!MACHINE_IS_QL) escribir_socket(misocket,"Error. Machine is not QL");
@@ -6451,12 +6495,12 @@ struct s_zrcp_new_connection_parms
 void zrcp_set_char_mode(int sock_connected_client)
 {
     #define IAC 255
-    #define DONT 254
+    //#define DONT 254
     #define DO 253
-    #define WONT 252
+    //#define WONT 252
     #define WILL 251
-    #define SB 250  // Subnegotiation begin
-    #define SE 240  // Subnegotiation end
+    //#define SB 250  // Subnegotiation begin
+    //#define SE 240  // Subnegotiation end
     #define LINEMODE 34
     #define ECHO 1
     #define SGA 3  // Suppress Go Ahead
@@ -6468,13 +6512,230 @@ void zrcp_set_char_mode(int sock_connected_client)
     unsigned char buf_echo_off[] = {IAC, WILL, ECHO, IAC, WILL, SGA};
     write(sock_connected_client, buf_echo_off, sizeof(buf_echo_off));
 
-
-    //Y negociamos conversion \n a \r\n
-    //unsigned char buf_conversion[]= {IAC, SB, LINEMODE, 1,1, IAC, SE};
-    //write(sock_connected_client, buf_conversion,sizeof(buf_conversion));
-
     //Automaticamente enviamos \r por cada \n
     enviar_cr=1;
+
+
+}
+
+//CSI : Control Sequence Introducer
+enum enum_estados_char {
+    S_NORMAL, S_ESC, S_CSI
+};
+
+struct s_parameters_handle_linemode {
+    //Punteros a variables que alteraremos
+    int *ignorar_primera_recepcion;
+    int *leidos;
+    int *indice_destino;
+    enum enum_estados_char *estado_char_mode;
+    int *ignorar_ultimo_caracter;
+
+    //Variables que no alteramos
+    char *buffer_lectura_socket;
+    char *buffer_lectura_socket_anterior;
+    char *prompt;
+    int sock_connected_client;
+};
+
+//Gestionar pulsaciones de teclas en modo linemode (modo caracter)
+//Dado que hay muchos parametros y ademas algunos tenemos que modificar las variables, pasamos una estructura
+void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *parametros)
+{
+
+    //Obtener parametros y asignar a variables, para mayor facilidad
+    int ignorar_primera_recepcion=*(parametros->ignorar_primera_recepcion);
+    int leidos=*(parametros->leidos);
+    int indice_destino=*(parametros->indice_destino);
+    enum enum_estados_char estado_char_mode=*(parametros->estado_char_mode);
+    int ignorar_ultimo_caracter=*(parametros->ignorar_ultimo_caracter);
+
+
+    //Estas variables no hay que restaurarlas pues no alteramos su valor
+    char *buffer_lectura_socket=parametros->buffer_lectura_socket;
+    char *buffer_lectura_socket_anterior=parametros->buffer_lectura_socket_anterior;
+    char *prompt=parametros->prompt;
+    int sock_connected_client=parametros->sock_connected_client;
+
+
+
+    printf("despues de leer socket. sentencia leida: [");
+    if (!ignorar_primera_recepcion) {
+        int jj;
+        for (jj=0;jj<leidos;jj++) {
+            z80_byte caracter=buffer_lectura_socket[indice_destino+jj];
+            if (caracter>=32 && caracter<=126) printf("%c",caracter);
+            else printf("\\%02X",caracter);
+
+            switch(estado_char_mode) {
+                case S_NORMAL:
+                    if (caracter == '\x1B') {
+                        estado_char_mode = S_ESC;
+                    }
+                    else {
+
+                        switch(caracter) {
+                            case 0x09:
+                                //tab
+                                printf("llamar a tab command. longitud=%d\n",indice_destino);
+                                int indice_primera_coincidencia;
+                                int coincidencias=remote_tab_command(sock_connected_client,buffer_lectura_socket,
+                                    indice_destino,&indice_primera_coincidencia,1);
+
+
+                                ignorar_ultimo_caracter=1;
+
+                                if (coincidencias) {
+                                    escribir_socket(sock_connected_client,prompt);
+
+                                    //Ver hasta cuantas letras podemos completar
+                                    int letras_completar=remote_tab_command_completar(indice_destino,indice_primera_coincidencia,coincidencias,sock_connected_client);
+
+                                    printf("Maximas letras a completar: %d\n",letras_completar);
+
+                                    if (letras_completar>indice_destino) {
+                                        //podemos completar un trozo del comando
+                                        indice_destino=0;
+                                        memcpy(&buffer_lectura_socket[indice_destino],
+                                                items_ayuda[indice_primera_coincidencia].nombre_comando,
+                                                letras_completar);
+                                        leidos=letras_completar;
+                                        ignorar_ultimo_caracter=0;
+                                    }
+
+                                    else {
+
+                                        int kk;
+                                        for (kk=0;kk<indice_destino;kk++) {
+                                            escribir_socket_format(sock_connected_client,"%c",buffer_lectura_socket[kk]);
+                                        }
+                                    }
+
+                                }
+
+
+
+                            break;
+
+                            case 0x03:
+                                //CTRL-C
+                                escribir_socket(sock_connected_client,"\nERROR. CTRL-C pressed");
+                                //mandamos un enter
+                                leidos=1;
+                                indice_destino=0;
+                                buffer_lectura_socket[indice_destino]=0x0d;
+                        break;
+                            break;
+                        }
+                    }
+                    break;
+                case S_ESC:
+                    if (caracter == '[') {
+                        estado_char_mode = S_CSI;
+                    } else {
+                        estado_char_mode = S_NORMAL;
+                    }
+                    break;
+                case S_CSI:
+                    switch (caracter) {
+                        case 'A':
+                            //cursor arriba
+                            printf("longitud anterior: %ld\n",strlen(buffer_lectura_socket_anterior));
+                            //tiene que haber minimo salto de linea y 1 caracter
+                            if (strlen(buffer_lectura_socket_anterior)>1) {
+
+                                //borrar todos los caracteres que hay escritos en pantalla
+                                while (indice_destino>0) {
+                                    escribir_socket(sock_connected_client,"\x08 \x08");
+                                    indice_destino--;
+                                }
+
+                                //indice_destino=0;
+                                strcpy(&buffer_lectura_socket[indice_destino],buffer_lectura_socket_anterior);
+                                //-1 para quitar salto de linea
+                                leidos=strlen(buffer_lectura_socket_anterior)-1;
+                            }
+                            else {
+                                //comando anterior vacio. deberiamos hacer leidos=0, pero en ese caso se finalizaria el bucle
+                                //hacemos una chapuza indicando que se mete caracter backspace y se gestionara mas abajo
+                                leidos=1;
+                                indice_destino=0;
+                                buffer_lectura_socket[indice_destino]=0x7f;
+                            }
+                        break;
+
+                        case 'B':
+                            escribir_socket(sock_connected_client,"\nERROR. Cursor down not supported");
+                            //mandamos un enter
+                            leidos=1;
+                            indice_destino=0;
+                            buffer_lectura_socket[indice_destino]=0x0d;
+                        break;
+
+                        case 'C':
+                            escribir_socket(sock_connected_client,"\nERROR. Cursor right not supported");
+                            //mandamos un enter
+                            leidos=1;
+                            indice_destino=0;
+                            buffer_lectura_socket[indice_destino]=0x0d;
+                        break;
+
+                        case 'D':
+                            escribir_socket(sock_connected_client,"\nERROR. Cursor left not supported");
+                            //mandamos un enter
+                            leidos=1;
+                            indice_destino=0;
+                            buffer_lectura_socket[indice_destino]=0x0d;
+                        break;
+
+
+                    }
+                    estado_char_mode = S_NORMAL;
+                    break;
+            }
+
+        }
+    }
+    printf("]\n");
+
+
+    //Es el servidor quien hace el echo
+    //printf("Escribir %c\n",buffer_lectura_socket[indice_destino]);
+    if (!ignorar_primera_recepcion) {
+        //Escribir ignorando caracteres 10 o 13 o backspace
+        int jj;
+        for (jj=0;jj<leidos;jj++) {
+            char c_enviar=buffer_lectura_socket[indice_destino+jj];
+            if (c_enviar!=10 && c_enviar!=13 && c_enviar!=0x7f && c_enviar!=9) write(sock_connected_client, &buffer_lectura_socket[indice_destino+jj], 1);
+        }
+    }
+
+    else {
+        //En principio la primera recepcion será la respuesta del cliente telnet a nuestra
+        //petición de establecer line mode. Asumimos por el tipo de respuesta que es eso y descartamos
+        //TODO: se deberia interpretar esa respuesta, donde dice si el cliente telnet
+        //ha establecido bien el line mode, etc etc
+        printf("primera respuesta caracter final: %d\n",buffer_lectura_socket[indice_destino+leidos-1]);
+
+        //Si no finaliza con enter, asumimos que es esa respuesta inicial
+        if (buffer_lectura_socket[indice_destino+leidos-1]!=0x0d) {
+            //hacemos una chapuza indicando que se mete caracter backspace y se gestionara mas abajo
+            leidos=1;
+            indice_destino=0;
+            buffer_lectura_socket[indice_destino]=0x7f;
+        }
+    }
+
+    ignorar_primera_recepcion=0;
+    //write(sock_connected_client, "A", 1);
+
+
+    //Restaurar variables a sus posiciones
+    *(parametros->ignorar_primera_recepcion)=ignorar_primera_recepcion;
+    *(parametros->leidos)=leidos;
+    *(parametros->indice_destino)=indice_destino;
+    *(parametros->estado_char_mode)=estado_char_mode;
+    *(parametros->ignorar_ultimo_caracter)=ignorar_ultimo_caracter;
 
 
 }
@@ -6522,6 +6783,8 @@ void *zrcp_handle_new_connection(void *entrada)
         //Las respuestas a nuestros comandos de set_char_mode no quiero enviarlas de nuevo a el, no tendria logica
         //solo quiero enviarle el texto que realmente escribe el usuario
         ignorar_primera_recepcion=1;
+
+        escribir_socket(sock_connected_client,"Linemode Telnet is enabled, the following keys have special meaning: cursor up, backspace, tab, ctrl-c\n");
     }
 
     while (!remote_salir_conexion_cliente) {
@@ -6534,10 +6797,7 @@ void *zrcp_handle_new_connection(void *entrada)
 
         int indice_destino=0;
 
-        //CSI : Control Sequence Introducer
-        enum enum_estados_char {
-            S_NORMAL, S_ESC, S_CSI
-        };
+
 
         enum enum_estados_char estado_char_mode = S_NORMAL;
 
@@ -6551,192 +6811,20 @@ void *zrcp_handle_new_connection(void *entrada)
                 int ignorar_ultimo_caracter=0;
 
                 if (remote_protocol_char_mode.v) {
-                    printf("despues de leer socket. sentencia leida: [");
-                    if (!ignorar_primera_recepcion) {
-                        int jj;
-                        for (jj=0;jj<leidos;jj++) {
-                            z80_byte caracter=buffer_lectura_socket[indice_destino+jj];
-                            if (caracter>=32 && caracter<=126) printf("%c",caracter);
-                            else printf("\\%02X",caracter);
-
-                            switch(estado_char_mode) {
-                                case S_NORMAL:
-                                    if (caracter == '\x1B') {
-                                        estado_char_mode = S_ESC;
-                                    } else {
-                                        // caracter normal
-                                        //procesar_caracter(caracter);
-                                        switch(caracter) {
-                                            case 0x09:
-                                                //tab
-                                                printf("llamar a tab command. longitud=%d\n",indice_destino);
-                                                int indice_unica_coincidencia;
-                                                int coincidencias=remote_tab_command(sock_connected_client,buffer_lectura_socket,
-                                                    indice_destino,&indice_unica_coincidencia);
-
-                                                ignorar_ultimo_caracter=1;
-
-                                                if (coincidencias) {
-                                                    escribir_socket(sock_connected_client,prompt);
-                                                    if (coincidencias==1) {
-
-                                                        indice_destino=0;
-                                                        strcpy(&buffer_lectura_socket[indice_destino],items_ayuda[indice_unica_coincidencia].nombre_comando);
-
-                                                        leidos=strlen(items_ayuda[indice_unica_coincidencia].nombre_comando);
-                                                        ignorar_ultimo_caracter=0;
-                                                    }
-                                                    else {
-
-                                                        int kk;
-                                                        for (kk=0;kk<indice_destino;kk++) {
-                                                            escribir_socket_format(sock_connected_client,"%c",buffer_lectura_socket[kk]);
-                                                        }
-                                                    }
-                                                }
+                    struct s_parameters_handle_linemode parametros;
+                    parametros.ignorar_primera_recepcion=&ignorar_primera_recepcion;
+                    parametros.leidos=&leidos;
+                    parametros.indice_destino=&indice_destino;
+                    parametros.estado_char_mode=&estado_char_mode;
+                    parametros.ignorar_ultimo_caracter=&ignorar_ultimo_caracter;
+                    parametros.buffer_lectura_socket=buffer_lectura_socket;
+                    parametros.buffer_lectura_socket_anterior=buffer_lectura_socket_anterior;
+                    parametros.prompt=prompt;
+                    parametros.sock_connected_client=sock_connected_client;
 
 
+                    zrcp_handle_linemode_character(&parametros);
 
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                case S_ESC:
-                                    if (caracter == '[') {
-                                        estado_char_mode = S_CSI;
-                                    } else {
-                                        estado_char_mode = S_NORMAL;
-                                    }
-                                    break;
-                                case S_CSI:
-                                    switch (caracter) {
-                                        case 'A':
-                                            //cursor arriba
-                                            printf("longitud anterior: %ld\n",strlen(buffer_lectura_socket_anterior));
-                                            //tiene que haber minimo salto de linea y 1 caracter
-                                            if (strlen(buffer_lectura_socket_anterior)>1) {
-
-                                                //borrar todos los caracteres que hay escritos en pantalla
-                                                while (indice_destino>0) {
-                                                    escribir_socket(sock_connected_client,"\x08 \x08");
-                                                    indice_destino--;
-                                                }
-
-                                                //indice_destino=0;
-                                                strcpy(&buffer_lectura_socket[indice_destino],buffer_lectura_socket_anterior);
-                                                //-1 para quitar salto de linea
-                                                leidos=strlen(buffer_lectura_socket_anterior)-1;
-                                            }
-                                            else {
-                                                //comando anterior vacio. deberiamos hacer leidos=0, pero en ese caso se finalizaria el bucle
-                                                //hacemos una chapuza indicando que se mete caracter backspace y se gestionara mas abajo
-                                                leidos=1;
-                                                indice_destino=0;
-                                                buffer_lectura_socket[indice_destino]=0x7f;
-                                            }
-                                        break;
-
-                                        case 'B':
-                                            escribir_socket(sock_connected_client,"\nERROR. Cursor down not supported");
-                                            //mandamos un enter
-                                            leidos=1;
-                                            indice_destino=0;
-                                            buffer_lectura_socket[indice_destino]=0x0d;
-                                            //manejar_cursor_abajo();
-                                        break;
-
-                                        case 'C':
-                                            escribir_socket(sock_connected_client,"\nERROR. Cursor right not supported");
-                                            //mandamos un enter
-                                            leidos=1;
-                                            indice_destino=0;
-                                            buffer_lectura_socket[indice_destino]=0x0d;
-                                            //manejar_cursor_derecha();
-                                        break;
-
-                                        case 'D':
-                                            escribir_socket(sock_connected_client,"\nERROR. Cursor left not supported");
-                                            //mandamos un enter
-                                            leidos=1;
-                                            indice_destino=0;
-                                            buffer_lectura_socket[indice_destino]=0x0d;
-                                            //manejar_cursor_izquierda();
-                                        break;
-
-                                        default:
-                                            //default_sequence(c);
-                                        break;
-                                    }
-                                    estado_char_mode = S_NORMAL;
-                                    break;
-                            }
-
-                        }
-                    }
-                    printf("]\n");
-
-                    if (leidos>=3) {
-                        if (buffer_lectura_socket[indice_destino]==0x1B &&
-                        buffer_lectura_socket[indice_destino+1]=='[' &&
-                        buffer_lectura_socket[indice_destino+2]=='A') {
-                            //flecha arriba
-                            /*
-
-                            printf("longitud anterior: %ld\n",strlen(buffer_lectura_socket_anterior));
-                            //tiene que haber minimo salto de linea y 1 caracter
-                            if (strlen(buffer_lectura_socket_anterior)>1) {
-
-
-                                //borrar todos los caracteres que hay escritos en pantalla
-                                while (indice_destino>0) {
-                                    escribir_socket(sock_connected_client,"\x08 \x08");
-                                    indice_destino--;
-                                }
-
-                                //indice_destino=0;
-                                strcpy(&buffer_lectura_socket[indice_destino],buffer_lectura_socket_anterior);
-                                //-1 para quitar salto de linea
-                                leidos=strlen(buffer_lectura_socket_anterior)-1;
-                            }
-                            else {
-                                //comando anterior vacio. deberiamos hacer leidos=0, pero en ese caso se finalizaria el bucle
-                                //hacemos una chapuza indicando que se mete caracter backspace y se gestionara mas abajo
-                                leidos=1;
-                                indice_destino=0;
-                                buffer_lectura_socket[indice_destino]=0x7f;
-                            }
-                            */
-                        }
-                    }
-                    //Es el servidor quien hace el echo
-                    //printf("Escribir %c\n",buffer_lectura_socket[indice_destino]);
-                    if (!ignorar_primera_recepcion) {
-                        //Escribir ignorando caracteres 10 o 13 o backspace
-                        int jj;
-                        for (jj=0;jj<leidos;jj++) {
-                            char c_enviar=buffer_lectura_socket[indice_destino+jj];
-                            if (c_enviar!=10 && c_enviar!=13 && c_enviar!=0x7f && c_enviar!=9) write(sock_connected_client, &buffer_lectura_socket[indice_destino+jj], 1);
-                        }
-                    }
-
-                    else {
-                        //En principio la primera recepcion será la respuesta del cliente telnet a nuestra
-                        //petición de establecer line mode. Asumimos por el tipo de respuesta que es eso y descartamos
-                        //TODO: se deberia interpretar esa respuesta, donde dice si el cliente telnet
-                        //ha establecido bien el line mode, etc etc
-                        printf("primera respuesta caracter final: %d\n",buffer_lectura_socket[indice_destino+leidos-1]);
-
-                        //Si no finaliza con enter, asumimos que es esa respuesta inicial
-                        if (buffer_lectura_socket[indice_destino+leidos-1]!=0x0d) {
-                            //hacemos una chapuza indicando que se mete caracter backspace y se gestionara mas abajo
-                            leidos=1;
-                            indice_destino=0;
-                            buffer_lectura_socket[indice_destino]=0x7f;
-                        }
-                    }
-
-                    ignorar_primera_recepcion=0;
-                    //write(sock_connected_client, "A", 1);
                 }
 
 

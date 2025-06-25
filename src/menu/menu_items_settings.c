@@ -9291,11 +9291,11 @@ void menu_network_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL, NULL,NULL,
-            "ZRCP char mode","ZRCP modo caracter","ZRCP mode caracter");
+            "ZRCP Linemode Telnet","ZRCP Linemode Telnet","ZRCP Linemode Telnet");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(remote_protocol_char_mode.v ? 'X' : ' ' ) );
         menu_add_item_menu_opcion_conmuta(array_menu_common,&remote_protocol_char_mode);
-        menu_add_item_menu_tooltip(array_menu_common,"Enables char mode connection");
-        menu_add_item_menu_ayuda(array_menu_common,"Enables char mode connection");
+        menu_add_item_menu_tooltip(array_menu_common,"Enables Linemode Telnet (char mode) connection");
+        menu_add_item_menu_ayuda(array_menu_common,"Enables Linemode Telnet (char mode) connection");
 
 
         menu_add_item_menu_separator(array_menu_common);
