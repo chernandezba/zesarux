@@ -67,7 +67,7 @@ Mejorado Memory Cheat:
 - Mejorar apariencia de la ventana
 
 Mejorado ZRCP:
-- Permitir habilitar Linemode Telnet (modo carácter): permitir cursor arriba, backspace, tab, ctrl-c
+- Permitir habilitar Linemode Telnet (modo carácter): permitir cursor arriba, backspace, tab, ctrl-c, ctrl-d
 - Mejor gestión de CR+LF
 - Agregado comandos: cd, pwd
 

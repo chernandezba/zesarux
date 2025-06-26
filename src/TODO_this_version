@@ -140,10 +140,11 @@ quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
 Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
 
 -ZRCP char mode:
-ok*creo que hay que quitar echo local
-ok*descartar sentencia recibida al enviar lo de aplicar modo char
-ok*agregar siempre \r al escribir texto en modo linemode, cuando hay un \n
+ok * creo que hay que quitar echo local
+ok * descartar sentencia recibida al enviar lo de aplicar modo char
+ok * agregar siempre \r al escribir texto en modo linemode, cuando hay un \n
+ok * soportar tabulador
+ok * char mode setting parametro command line, autoguardado (y por defecto desactivado)
+ok * ctrl-d lo mismo que quit
 *quitar prints debug
-ok*soportar tabulador
-*char mode setting parametro command line, autoguardado (y por defecto desactivado)
 *testear zeng online con char mode desactivado, que todo funcione correctamente

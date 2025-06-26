@@ -6624,8 +6624,15 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
                                 leidos=1;
                                 indice_destino=0;
                                 buffer_lectura_socket[indice_destino]=0x0d;
-                        break;
                             break;
+
+                            case 0x04:
+                                //CTRL-D
+                                indice_destino=0;
+                                strcpy(&buffer_lectura_socket[indice_destino],"quit\x0d");
+                                leidos=strlen("quit\x0d");
+                            break;
+
                         }
                     }
                     break;

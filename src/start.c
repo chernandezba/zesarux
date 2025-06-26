@@ -933,6 +933,7 @@ printf (
 		"--enable-remoteprotocol             Enable ZRCP remote protocol\n"
 		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
         "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
+        "--remoteprotocol-linemode-telnet    Enables Linemode Telnet (char mode) connection\n"
 
 #endif
 
@@ -6004,6 +6005,10 @@ int parse_cmdline_options(int desde_commandline) {
 		 else if (!strcmp(argv[puntero_parametro],"--remoteprotocol-prompt")) {
             siguiente_parametro_argumento();
             strcpy(remote_prompt_command_string,argv[puntero_parametro]);
+		 }
+
+		 else if (!strcmp(argv[puntero_parametro],"--remoteprotocol-linemode-telnet")) {
+            remote_protocol_char_mode.v=1;
 		 }
 
          else if (!strcmp(argv[puntero_parametro],"--enable-zeng-online-server")) {
