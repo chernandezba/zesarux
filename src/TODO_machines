@@ -1196,7 +1196,8 @@ Como ejemplo, el Toshiba HX-10 (un modelo de 64KB) tiene esta configuración de 
 
 -teclas que falten por emular.  cuales mas?
 
--carga real tape no va
+-carga TSX real tape no va?
+carga por cinta audio con external audio source si que va? Alien 8 carga primer bloque y nada mas, o a veces carga la pantalla también
 
 -------------
 

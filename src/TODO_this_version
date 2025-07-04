@@ -112,7 +112,7 @@ por ver los diferentes mensajes de error
 
 --Inicio lectura mando analógico, como un volante
 
-*video demo
+ok *video demo
 
 Probar en diferentes sistemas:
 *acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac. SDL2 no tiene soporte joystick!!
