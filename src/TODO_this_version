@@ -123,7 +123,7 @@ Probar en diferentes sistemas:
 
 ---------------------
 
--soporte joystick real SDL2
+
 
 
 -carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
@@ -148,3 +148,7 @@ ok * char mode setting parametro command line, autoguardado (y por defecto desac
 ok * ctrl-d lo mismo que quit
 *quitar prints debug
 *testear zeng online con char mode desactivado, que todo funcione correctamente
+
+
+-soporte joystick real SDL2
+*probar volante

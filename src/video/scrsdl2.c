@@ -1685,7 +1685,7 @@ int realjoystick_sdl_init(void)
                         sdl_num_hats=SDL_JoystickNumHats(sdl_joy);
                         sdl_num_buttons=SDL_JoystickNumButtons(sdl_joy);
 
-                        debug_printf(VERBOSE_DEBUG,"Name: %s", SDL_JoystickName(realjoystick_index));
+                        debug_printf(VERBOSE_DEBUG,"Name: %s", SDL_JoystickName(sdl_joy));
                         debug_printf(VERBOSE_DEBUG,"Number of Axes: %d", sdl_num_axes);
                         debug_printf(VERBOSE_DEBUG,"Number of Hats: %d", sdl_num_hats);
                         debug_printf(VERBOSE_DEBUG,"Number of Buttons: %d", sdl_num_buttons);
@@ -1694,7 +1694,7 @@ int realjoystick_sdl_init(void)
 
 
                         //Por si acaso el nombre lo truncamos
-                        menu_tape_settings_trunc_name((char *)SDL_JoystickName(realjoystick_index),realjoystick_joy_name,REALJOYSTICK_MAX_NAME);
+                        menu_tape_settings_trunc_name((char *)SDL_JoystickName(sdl_joy),realjoystick_joy_name,REALJOYSTICK_MAX_NAME);
 
                         realjoystick_total_axes=sdl_num_axes;
                         realjoystick_total_buttons=sdl_num_buttons;
