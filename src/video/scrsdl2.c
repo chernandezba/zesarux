@@ -44,6 +44,7 @@
 #include "sam.h"
 #include "ql.h"
 #include "settings.h"
+#include "realjoystick.h"
 #include "msx.h"
 #include "coleco.h"
 #include "sg1000.h"

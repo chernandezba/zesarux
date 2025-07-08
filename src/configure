@@ -2201,7 +2201,7 @@ fi
 if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL" ]; then
 
 cat >> Makefile << _EOF
-scrsdl.o: video/scrsdl.c cpu.h video/scrsdl.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision/zxvision.h timer.h utils.h joystick.h common_sdl.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+scrsdl.o: video/scrsdl.c cpu.h video/scrsdl.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision/zxvision.h timer.h utils.h joystick.h common_sdl.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h realjoystick.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
 	\$(CC) \$(CFLAGS) -c video/scrsdl.c
 
 audiosdl.o: audio/audiosdl.c audio/audiosdl.h cpu.h audio/audio.h compileoptions.h debug.h common_sdl.h settings.h timer.h
@@ -2217,7 +2217,7 @@ fi
 if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL2" ]; then
 
 cat >> Makefile << _EOF
-scrsdl2.o: video/scrsdl2.c cpu.h video/scrsdl2.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision/zxvision.h timer.h utils.h joystick.h common_sdl2.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
+scrsdl2.o: video/scrsdl2.c cpu.h video/scrsdl2.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision/zxvision.h timer.h utils.h joystick.h common_sdl2.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h realjoystick.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
 	\$(CC) \$(CFLAGS) -c video/scrsdl2.c
 
 audiosdl2.o: audio/audiosdl2.c audio/audiosdl2.h cpu.h audio/audio.h compileoptions.h debug.h common_sdl2.h utils.h settings.h timer.h
