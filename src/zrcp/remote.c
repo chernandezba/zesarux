@@ -3431,7 +3431,7 @@ int remote_tab_command_completar(int longitud_comando,int indice_primera_coincid
 
     while (longitud_probar<=longitud_maxima && coincidencias_probar==coincidencias) {
         longitud_probar++;
-        printf("Probando %d letras\n",longitud_probar);
+        //printf("Probando %d letras\n",longitud_probar);
         memcpy(buffer_comando_completar,items_ayuda[indice_primera_coincidencia].nombre_comando,longitud_probar);
 
         coincidencias_probar=remote_tab_command(sock_connected_client,buffer_comando_completar,
@@ -6557,15 +6557,16 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
     char *prompt=parametros->prompt;
     int sock_connected_client=parametros->sock_connected_client;
 
+    int indice_primera_coincidencia;
+    int coincidencias;
 
-
-    printf("despues de leer socket. sentencia leida: [");
+    //printf("despues de leer socket. sentencia leida: [");
     if (!ignorar_primera_recepcion) {
         int jj;
         for (jj=0;jj<leidos;jj++) {
             z80_byte caracter=buffer_lectura_socket[indice_destino+jj];
-            if (caracter>=32 && caracter<=126) printf("%c",caracter);
-            else printf("\\%02X",caracter);
+            //if (caracter>=32 && caracter<=126) printf("%c",caracter);
+            //else printf("\\%02X",caracter);
 
             switch(estado_char_mode) {
                 case S_NORMAL:
@@ -6577,9 +6578,8 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
                         switch(caracter) {
                             case 0x09:
                                 //tab
-                                printf("llamar a tab command. longitud=%d\n",indice_destino);
-                                int indice_primera_coincidencia;
-                                int coincidencias=remote_tab_command(sock_connected_client,buffer_lectura_socket,
+                                //printf("llamar a tab command. longitud=%d\n",indice_destino);
+                                coincidencias=remote_tab_command(sock_connected_client,buffer_lectura_socket,
                                     indice_destino,&indice_primera_coincidencia,1);
 
 
@@ -6591,7 +6591,7 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
                                     //Ver hasta cuantas letras podemos completar
                                     int letras_completar=remote_tab_command_completar(indice_destino,indice_primera_coincidencia,coincidencias,sock_connected_client);
 
-                                    printf("Maximas letras a completar: %d\n",letras_completar);
+                                    //printf("Maximas letras a completar: %d\n",letras_completar);
 
                                     if (letras_completar>indice_destino) {
                                         //podemos completar un trozo del comando
@@ -6647,7 +6647,7 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
                     switch (caracter) {
                         case 'A':
                             //cursor arriba
-                            printf("longitud anterior: %ld\n",strlen(buffer_lectura_socket_anterior));
+                            //printf("longitud anterior: %ld\n",strlen(buffer_lectura_socket_anterior));
                             //tiene que haber minimo salto de linea y 1 caracter
                             if (strlen(buffer_lectura_socket_anterior)>1) {
 
@@ -6703,7 +6703,7 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
 
         }
     }
-    printf("]\n");
+    //printf("]\n");
 
 
     //Es el servidor quien hace el echo
@@ -6722,7 +6722,7 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
         //petición de establecer line mode. Asumimos por el tipo de respuesta que es eso y descartamos
         //TODO: se deberia interpretar esa respuesta, donde dice si el cliente telnet
         //ha establecido bien el line mode, etc etc
-        printf("primera respuesta caracter final: %d\n",buffer_lectura_socket[indice_destino+leidos-1]);
+        //printf("primera respuesta caracter final: %d\n",buffer_lectura_socket[indice_destino+leidos-1]);
 
         //Si no finaliza con enter, asumimos que es esa respuesta inicial
         if (buffer_lectura_socket[indice_destino+leidos-1]!=0x0d) {
@@ -6857,13 +6857,13 @@ void *zrcp_handle_new_connection(void *entrada)
                             //backspace. borrar 1 caracter
                             //se va a incrementar en 1 siempre al salir de este if, y tenemos que borrar un caracter,
                             //por tanto decrementamos otro mas
-                            printf("indice_destino %d\n",indice_destino);
+                            //printf("indice_destino %d\n",indice_destino);
 
                             indice_destino--;
                             if (indice_destino>=0) {
                                 //se quedara el -1 cuando no hay caracteres a borrar. Luego se incrementara en 1
                                 indice_destino--;
-                                printf("\nEliminar caracter. indice_destino=%d\n",indice_destino);
+                                //printf("\nEliminar caracter. indice_destino=%d\n",indice_destino);
                                 escribir_socket(sock_connected_client,"\x08 \x08");
                             }
 
@@ -6876,7 +6876,7 @@ void *zrcp_handle_new_connection(void *entrada)
                     }
 
                     indice_destino +=leidos;
-                    printf("indice_destino despues de agregar: %d\n",indice_destino);
+                    //printf("indice_destino despues de agregar: %d\n",indice_destino);
                     //Si acaba con final de string, salir
 
                     //printf ("%d %d %d %d\n",buffer_lectura_socket[0],buffer_lectura_socket[1],buffer_lectura_socket[2],buffer_lectura_socket[3]);
@@ -6915,7 +6915,7 @@ void *zrcp_handle_new_connection(void *entrada)
                     }
                 }
 
-                printf("interpretar comando: [%s]\n",buffer_lectura_socket);
+                //printf("interpretar comando: [%s]\n",buffer_lectura_socket);
 
                 interpreta_comando(buffer_lectura_socket,sock_connected_client,
 					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente,ip_source_address);

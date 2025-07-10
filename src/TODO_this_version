@@ -146,7 +146,7 @@ ok * agregar siempre \r al escribir texto en modo linemode, cuando hay un \n
 ok * soportar tabulador
 ok * char mode setting parametro command line, autoguardado (y por defecto desactivado)
 ok * ctrl-d lo mismo que quit
-*quitar prints debug
+ok *quitar prints debug
 *testear zeng online con char mode desactivado, que todo funcione correctamente
 
 
