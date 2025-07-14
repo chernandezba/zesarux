@@ -461,7 +461,7 @@ void menu_settings_config_file_change_location(MENU_ITEM_PARAMETERS)
 
     int ret;
 
-    ret=menu_filesel("Select config file",filtros,new_config_file);
+    ret=menu_filesel_save("Select config file",filtros,new_config_file);
     //volvemos a directorio inicial
     zvfs_chdir(directorio_actual);
 
