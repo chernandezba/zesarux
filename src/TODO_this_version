@@ -147,7 +147,7 @@ ok * soportar tabulador
 ok * char mode setting parametro command line, autoguardado (y por defecto desactivado)
 ok * ctrl-d lo mismo que quit
 ok *quitar prints debug
-*testear zeng online con char mode desactivado, que todo funcione correctamente
+ok *testear zeng online con char mode desactivado, que todo funcione correctamente
 
 
 -soporte joystick real SDL2
