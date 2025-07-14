@@ -720,6 +720,7 @@ extern int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap);
 #define DEFAULT_ZESARUX_DEVCONFIG_FILE ".zesaruxdevrc"
 
 extern char *customconfigfile;
+extern char customconfigfile_from_menu[];
 
 extern void get_machine_config_name_by_number(char *machine_name,int machine_number);
 

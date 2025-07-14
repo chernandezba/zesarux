@@ -201,6 +201,9 @@ void parse_customfile_options(void);
 
 char *customconfigfile=NULL;
 
+//Ruta establecida desde menu
+char customconfigfile_from_menu[PATH_MAX]="";
+
 int write_rom_nested_id_poke_byte;
 int write_rom_nested_id_poke_byte_no_time;
 

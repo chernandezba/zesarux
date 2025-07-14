@@ -430,6 +430,50 @@ void menu_settings_config_file_delete(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_settings_config_file_change_location(MENU_ITEM_PARAMETERS)
+{
+
+    char *filtros[2];
+
+    filtros[0]="";
+    filtros[1]=0;
+
+	char new_config_file[PATH_MAX];
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio del configfile
+    char current_config_file[PATH_MAX];
+    util_get_configfile_name(current_config_file);
+
+    char directorio[PATH_MAX];
+    util_get_dir(current_config_file,directorio);
+    debug_printf (VERBOSE_INFO,"Last directory: %s",directorio);
+
+    //cambiamos a ese directorio, siempre que no sea nulo
+    if (directorio[0]!=0) {
+		debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+		zvfs_chdir(directorio);
+    }
+
+
+    int ret;
+
+    ret=menu_filesel("Select config file",filtros,new_config_file);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+
+    if (ret==1) {
+		strcpy (customconfigfile_from_menu,new_config_file);
+        customconfigfile=customconfigfile_from_menu;
+        menu_generic_message_splash("Change config file path","OK. Path changed");
+    }
+
+}
+
 
 //menu config_file settings
 void menu_settings_config_file(MENU_ITEM_PARAMETERS)
@@ -470,12 +514,20 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Show config file location");
         menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
 
+		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_change_location,NULL,
+            "    ~~Change config file path","    ~~Cambiar path archivo configuración","    ~~Canviar path arxiu configuració");
+		menu_add_item_menu_shortcut(array_menu_settings_config_file,'c');
+		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Change config file location");
+		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Change config file location. "
+            "If you want to use this config file on startup instead of the default .zesaruxrc file you must launch ZEsarUX with setting --configfile");
+        menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_GENERA_VENTANA|MENU_ITEM_FLAG_SE_CERRARA|MENU_ITEM_FLAG_ES_AVANZADO);
+
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_delete,NULL,
             "    Delete config file","    Borrar archivo config","    Esborrar arxiu config");
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Delete configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Delete configuration file");
-        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
+        menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_ES_AVANZADO);
 
 
 
