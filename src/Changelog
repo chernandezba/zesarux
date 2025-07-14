@@ -8,7 +8,7 @@ Added second MMC/SD card emulation
 Added support for steering wheel joystick (and other analog joystick controls) to racing games (using pre-defined modification for specific games or custom)
 Added conversion of ZX81 files P to P81, and P81 to P
 Added real joystick support for SDL2
-Added direct functions to increase/decrease Audio Volume
+Added direct functions to increase/decrease/silence Audio Volume
 Allow to save ZX80/81 screen to .scr file
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path

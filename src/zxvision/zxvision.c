@@ -197,6 +197,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"AYPlayerPause",F_FUNCION_AYPLAYER_PAUSE,bitmap_button_ext_desktop_ayplayer_pause,""},
     {"VolumeDecrement",F_FUNCION_VOLUME_DECREMENT,bitmap_button_ext_desktop_volume_decrement,""},
     {"VolumeIncrement",F_FUNCION_VOLUME_INCREMENT,bitmap_button_ext_desktop_volume_increment,""},
+    {"VolumeSilence",F_FUNCION_VOLUME_SILENCE,bitmap_button_ext_desktop_volume_silence,""},
     //menu display
     {"ColourPalettes",F_FUNCION_COLOUR_PALETTES,bitmap_button_ext_desktop_colour_palettes,"displaypalettes"},
 	{"OSDKeyboard",F_FUNCION_OSDKEYBOARD,bitmap_button_ext_desktop_osdkeyboard,""},

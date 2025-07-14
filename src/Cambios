@@ -8,7 +8,7 @@ Agregado emulación de una segunda tarjeta de MMC/SD
 Agregado soporte para joystick de tipo volante (y otros joysticks con controles analógicos) para juegos de carreras (usando modificaciones pre-definidas para juegos específicos o personalizados)
 Agregada conversión de archivos ZX81 P a P81, y P81 a P
 Agregado soporte de joystick real para SDL2
-Agregadas funciones directas para aumentar/reducir el Volumen del Sonido
+Agregadas funciones directas para aumentar/reducir/silenciar el Volumen del Sonido
 Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms

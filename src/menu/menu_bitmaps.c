@@ -4141,6 +4141,36 @@ char *bitmap_button_ext_desktop_volume_decrement[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          " 	//25
 };
 
+char *bitmap_button_ext_desktop_volume_silence[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ", //0
+    "          xxxxxx          ",
+  	"       xxxwwwwwwxxx       ",
+	"     xxwwwwwwwwwwwwxx     ",
+	"    xwwwwwwwwwwwwwwwwx    ",
+	"   xwwwwwwwwwwwwwwwwwwx   ",
+	"   xwwwwwwwwwwxxwwwwwwx   ",
+	"  xwwwwwwwwwxxwxwwwxxwwx  ",
+	"  xwwwwwwwxxwwwxwwxxwwwx  ",
+	"  xwwwwwxxwwwwwxwxxwwwwx  ",
+	" xwwxxxxwwwwwwwxxxwwwwwwx ", //10
+	" xwwxwwxwwwwwwwxxwwwwwwwx ",
+	" xwwxwwxwwwwwwxxwwwwwwwwx ",
+	" xwwxwwxwwwwwxxxwwwwwwwwx ",
+	" xwwxwwxwwwwxxwxwwwwwwwwx ",
+	" xwwxxxxwwwxxwwxwwwwwwwwx ",
+	"  xwwwwwxxxxwwwxwwwwwwwx  ",
+	"  xwwwwwwxxxwwwxwwwwwwwx  ",
+	"  xwwwwwxxwwxxwxwwwwwwwx  ",
+	"   xwwwxxwwwwwxxwwwwwwx   ",
+	"   xwwxxwwwwwwwwwwwwwwx   ", //20
+	"    xwwwwwwwwwwwwwwwwx    ",
+	"     xxwwwwwwwwwwwwxx     ",
+	"       xxxwwwwwwxxx       ",
+	"          xxxxxx          ",
+    "                          " 	//25
+};
+
 char *bitmap_button_ext_desktop_debugcpu_view_adventure[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 	"                          ",	//0

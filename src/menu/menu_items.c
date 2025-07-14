@@ -43662,7 +43662,7 @@ void menu_process_f_function_topspeed(void)
 	}
 }
 
-
+int audiovolume_before_silence=100;
 
 //Procesar accion tecla F, o pulsado de boton superior reconfigurado, o pulsado de icono en ZX Desktop
 //si_pulsado_icono_zxdesktop=1 en caso de iconos de ZX Desktop
@@ -43943,6 +43943,14 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         case F_FUNCION_VOLUME_INCREMENT:
             audiovolume +=10;
             if (audiovolume>=100) audiovolume=100;
+        break;
+
+        case F_FUNCION_VOLUME_SILENCE:
+            if (audiovolume==0) audiovolume=audiovolume_before_silence;
+            else {
+                audiovolume_before_silence=audiovolume;
+                audiovolume=0;
+            }
         break;
 
         case F_FUNCION_COLOUR_PALETTES:
