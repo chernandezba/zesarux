@@ -8,104 +8,9 @@ ok *pendiente sdl1,sdl2,X11. acabar de probar bien
 -sdl en debian 12 32 bits inicializa muy lento
 
 
--Botones superiores no gestionan errores generados por un item
-Ejemplo:
-pulsamos boton network-> zeng online client-> list rooms
-Si el remoto tiene diferente versión ZRCP, se genera error por debug_printf pero no se ve en el menu. El menu se cierra. Aparece el error al abrir el menu con F5
-Si vamos desde menu principal-> network-> zeng online client-> list rooms, el error si que se ve
-O sea parece que al pulsar desde los botones, se sale del menu y se quita el aviso de "abre menu debido a error"
-(    	    	if_pending_error_message=1;
-menu_fire_event_open_menu();
-)
-
-
-
-----
-
-ZENG Online
-
--Si se hace get-snapshot sin haber uno primero, creo que peta: no deberia porque se controla que el size no sea 0
--Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
-
-
--Modo streaming
-acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
-
-
-Revisar si hay mas sitios donde es necesario  pthread_testcancel();
-
-
-Teclado en pantalla no va con Zeng online?
-
--Modo streaming video para ql? Moviendo memoria de video
-------
-
-
--Detector silencio de la tarjeta de sonido  en vez de hacer directamente no enviar sonido,
-debería meter un frame de audio antes donde se pase del último valor al 0, suponiendo que es en el 0
-donde se queda la tarjeta al desconectarse
-->solo se oye el "click" con alsa
-->No da buen resultado ese fadeout, se oye un zumbidillo a medida que va bajando el volumen, cada vez que baja 1 valor el volumen, se oye un pequeño click
-->quiza con sampleo de 16 bits se podria hacer mas progresivo sin que se notase
-
-
-
--Audio sdl callback esta por defecto el old callback o el new? depende de si windows o linux.
-Ver comentarios en el código donde está explicado
-
-
-
-AY Player
-*Video ay player con todas nuevas features
-*muchos archivos ay de la carpeta de demos de spectrum no cargan. ejemplo: thelyra2demo05,icecreammain.ay
-
-
--Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
-y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
-
--Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
-El como acepta ese evento de momento es una incógnita
-Quizá llama a la función que crea la ventana con algún flag específico
-
-
-
-
-
--Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
-"Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
-
-
-
-
-
-
--top bar menu
-ok*primero poder desactivar solo botones de arriba bajo demanda
-ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
-*si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
-la deja en lista de submenu
-*busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
-claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
-*al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
-*con top bar no van pulsaciones botones inferiores. tampoco van botones superiores (aunque superiores se deberian ocultar
-si esta top bar menu)
-*con topbar, no van pulsaciones de raton sobre zx desktop
-ok * desactivar botones superiores si esta topbar
-*al salir de topbar, no refresca bien las ventanas en background
-
-
-
--que es common A/B en sg1000??
 
 
 -quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
-
-
--hilow datadrive:
-*hacer pruebas de escrituras (save, format, delete etc) con proteccion de escritura, tanto en ddh como raw,
-por ver los diferentes mensajes de error
-*visual datadrive: ver si pestañas están bien ahora o queremos que se vean gruesas las pestañas cuando no están rotas
-,pero puede que se vieran muy gruesas si ventana muy grande, debido a la escala
 
 
 ---------------------
@@ -115,9 +20,12 @@ por ver los diferentes mensajes de error
 ok *video demo
 
 Probar en diferentes sistemas:
-*acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac. SDL2 no tiene soporte joystick!!
+*acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac.
 
 *continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
+
+-soporte joystick real SDL2
+*probar volante
 
 --Fin lectura mando analógico, como un volante
 
@@ -125,21 +33,3 @@ Probar en diferentes sistemas:
 
 
 
-
--carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
-Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8, en que un caracter ocupa mas de 1 byte
-->ok
-*falta calcular posicion de ... en caso de archivos o <dir> cuando ancho pequeño
-
-
--revisar algunas opciones de menu que se podrian gestionar con menu_add_item_menu_opcion_conmuta
-
-
--si se quitan tooltips no aparecen shortcuts de opciones... se debería poder tener de manera independiente
-quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
-Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
-
-
-
--soporte joystick real SDL2
-*probar volante

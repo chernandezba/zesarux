@@ -97,6 +97,22 @@ Y lo mismo con posición de nuevos iconos
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
 
 
+-carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
+Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8, en que un caracter ocupa mas de 1 byte
+->ok
+*falta calcular posicion de ... en caso de archivos o <dir> cuando ancho pequeño
+
+
+-revisar algunas opciones de menu que se podrian gestionar con menu_add_item_menu_opcion_conmuta
+
+
+-si se quitan tooltips no aparecen shortcuts de opciones... se debería poder tener de manera independiente
+quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
+Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
+
+
+
+
 -ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,
 y que tenga sentido boton de minimizar?
 Por ejemplo, snapshots a ram, el historial es una ventana de tipo menu y ya no se puede minimizar.

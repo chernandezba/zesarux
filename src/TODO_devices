@@ -242,6 +242,9 @@ https://github.com/charlierobson/ZXpand-Vitamins/wiki/ZXpand---Online-Manual
 
 --- HiLow Data Drive ---
 
+-hilow datadrive:
+*hacer pruebas de escrituras (save, format, delete etc) con proteccion de escritura, tanto en ddh como raw,
+por ver los diferentes mensajes de error
 
 -Ddh con extended info al final, que contenga marcas de sector y labels ?
 
