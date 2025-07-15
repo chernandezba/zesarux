@@ -2893,20 +2893,20 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 0x7E,0x00,0x66,0x76,0x7E,0x6E,0x66,0x00,
 
-//Caracter fondo titulo - 148
+//Caracter fondo titulo estilo AtariTOS - 148
 0,85,0,85,0,85,0,0,
 
-//Caracter enviar a background - 149. mismo caracter que en estilo ZEsarUX Plus
+//Caracter enviar a background estilo ZEsarUX plus - 149
 //0,255,145,163,197,137,255,0,
 0,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,1+4+16+64,2+8+32+128,0,
 
-//Caracter minimizar - 150
+//Caracter minimizar estilo AtariTOS - 150
 255,129,129,255,129,129,255,0,
 
-//Caracter restaurar - 151
+//Caracter restaurar estilo AtariTOS - 151
 255,129,255,129,255,129,255,0,
 
-//Caracter maximizar - 152 - AtariTOS
+//Caracter maximizar estilo AtariTOS - 152
 //0,126,2+64,2+64,2+64,2+64,126,0,
 0,
 128+64+32+8+4+2,
