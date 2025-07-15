@@ -38,6 +38,16 @@ unsigned char char_set_customfile[TOTAL_ASCII_CHARSET_ELEMENTS];
 //Ruta al custom file que contiene un charset
 char char_set_customfile_path[PATH_MAX]="";
 
+/*
+
+Nota sobre charsets y caracteres especiales de ventana (cierre, minimizar, maximizar etc):
+Se han definido los charsets de tal manera que un icono de ventana (por ejemplo el 171 de minimizar ventana en ZEsarUX plus)
+sea un caracter de minimizar ventana en cualquier charset, ya sea el mismo idéntico u otro equivalente de minimizar con otro estilo
+Por ejemplo ese 171 es idéntico en todos los charsets, pero en cambio el 152 que es maximizar en amiga es otro de maximizar diferente en Beos.
+O sea, se trata que el número de caracter en todos los estilos tengan el mismo significado: si es cerrar, que sea cerrar en todos,
+si es maximizar, que sea maximizar en todos, aunque sea estilo diferente, pero que no cambie el significado del caracter
+
+*/
 
 //Puntero NULL: indica final
 struct s_charset_list charset_list[]={
@@ -1082,6 +1092,12 @@ unsigned char char_set_spectrum[TOTAL_ASCII_CHARSET_ELEMENTS]={		0
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -1270,6 +1286,12 @@ unsigned char char_set_cpc[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -1510,6 +1532,12 @@ unsigned char char_set_z88[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -1749,6 +1777,12 @@ unsigned char char_set_sam[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -1943,6 +1977,12 @@ unsigned char char_set_mansoftware[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -2183,6 +2223,12 @@ unsigned char char_set_ql[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -2421,6 +2467,12 @@ unsigned char char_set_retromac[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 //Tipo de letra "topaz" de amiga500, workbench version 1.3
@@ -2662,6 +2714,12 @@ unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -2910,6 +2968,12 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -3149,6 +3213,12 @@ unsigned char char_set_msx[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 
@@ -3386,6 +3456,12 @@ unsigned char char_set_beos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 //DOS 8x8 bitmap by Neil Roy
@@ -3630,6 +3706,12 @@ unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 //Basado en Z88 con variaciones
@@ -3870,6 +3952,12 @@ unsigned char char_set_templeos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter boton cierre QNX - 170
 0,66,36,24,24,36,66,0,
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+0,0,4+8+16+32,4+32,4+32,4+8+16+32,0,0,
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+0,126*2,66*2,66*2,66*2,66*2,126*2,0,
 };
 
 

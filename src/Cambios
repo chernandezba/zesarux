@@ -51,6 +51,7 @@ Mejorado ZX Vision:
 - Ocultar el cursor al enviar una ventana a segundo plano
 - Permitir mostrar texto corto de los iconos del ZX Desktop
 - Preservar nombre de icono al cambiar su tipo
+- Cambiado set de caracteres para el estilo ZEsarUX Plus: ahora usa el mismo que AtariTOS, es un set de caracteres con mejor legibilidad
 - Agregado soporte de archivos rzx para el selector de archivos: se pueden expandir (a archivo de snapshot z80), mostrar vista previa, convertir a SCR, convertir a Z80, usar como fondo del ZX Desktop
 - Corregido fallo que duplica el Menú Principal al pulsar F6 desde el Menú Principal
 

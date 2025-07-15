@@ -51,6 +51,7 @@ Improved ZX Vision:
 - Hide cursor when sending a window to background
 - Allow to show short text for icons on ZX Desktop
 - Preserve icon name when changing its type
+- Changed charset for style ZEsarUX Plus: now uses the same as AtariTOS, it's a charset with better readability
 - Added rzx files support for file selector: can be expanded (to z80 snap file), show file previews, convert to SCR, convert to Z80, use as ZX Desktop background
 - Fixed glitch duplicating Main Menu when pressing F6 on Main Menu
 

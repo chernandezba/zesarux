@@ -10,22 +10,20 @@ ok *pendiente sdl1,sdl2,X11. acabar de probar bien
 
 
 
--quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS
+-quiza cambiar charset de tema ZEsarUX Plus por el de AtariTOS. Problema de asignar iconos de cerrar, maximizar etc en este charset,
+deben salir como los teníamos ahora en tema ZEsarUX Plus
 
 
 ---------------------
 
 --Inicio lectura mando analógico, como un volante
 
-ok *video demo
 
 Probar en diferentes sistemas:
 *acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac.
 
 *continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
 
--soporte joystick real SDL2
-*probar volante
 
 --Fin lectura mando analógico, como un volante
 
