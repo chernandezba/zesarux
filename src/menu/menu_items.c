@@ -37840,6 +37840,8 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
                 //Y decir que buffer no esta lleno
                 audiorecord_last_write_full=0;
+
+                menu_generic_message_splash("Empty buffer","Buffer has been emptied");
             break;
 
 
