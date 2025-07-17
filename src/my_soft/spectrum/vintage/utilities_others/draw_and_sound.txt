@@ -1,0 +1,14 @@
+Cursores
+Space salir
+V CLS
+I Invertir
+C Cargar
+S Salvar
+M Mover
+P Pinta
+B Borrar
+0 No Margen
+1 Margen
+E Ejes SI/NO
+Z Cambiar pantalla a color establecido desde basic
+
