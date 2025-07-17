@@ -567,7 +567,6 @@ void menu_storage_tape_my_soft(MENU_ITEM_PARAMETERS)
     char buffer_nombre[PATH_MAX];
 
 	if (find_sharedfile("my_soft/spectrum/vintage/",buffer_nombre)) {
-		debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
 		strcpy(quickload_file,buffer_nombre);
 		quickfile=quickload_file;
 
