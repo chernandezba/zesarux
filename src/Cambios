@@ -83,6 +83,7 @@ Mejorada ventana de Visual Cassette Tape: soportar también cinta estándar
 Mejorada opción de Custom rom agregando una opción para resetear la máquina
 Mejorada emulación de DivMMC, DivIDE y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD o IDE insertada
 Mejorada ventana de View Basic: permitir lineas > 9999, útil para programas protegidos
+Mejorada ventana Fuente de Sonido Externa mostrando la frecuencia al detectar tono guía o bits 0/1
 
 * Correcciones:
 

@@ -36747,6 +36747,9 @@ struct s_input_analize_input_wave {
    int cuantos_unos;
    int cuantos_guias;
    int cuantos_desconocidos;
+   int cuantos_total;
+
+   int frecuencia_media_total;
 
    int valor_max;
    int valor_min;
@@ -36776,6 +36779,9 @@ void menu_realtape_record_input_analize_azimuth_init(void)
     input_analize_input_wave.cuantos_unos=0;
     input_analize_input_wave.cuantos_guias=0;
     input_analize_input_wave.cuantos_desconocidos=0;
+    input_analize_input_wave.cuantos_total=0;
+
+    input_analize_input_wave.frecuencia_media_total=0;
 
     input_analize_input_wave.valor_max=0;
     input_analize_input_wave.valor_min=0;
@@ -36894,6 +36900,10 @@ void menu_realtape_record_input_analize_azimuth(char valor_leido)
                         input_analize_input_wave.cuantos_desconocidos++;
                     }
 
+                    //Incrementar total pulsos (ceros, unos, etc)
+                    input_analize_input_wave.frecuencia_media_total +=frecuencia;
+                    input_analize_input_wave.cuantos_total++;
+
                     input_analize_input_wave.valor_max=input_analize_input_wave.valor_min=0;
                 //}
             }
@@ -36938,6 +36948,8 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
     if (input_analize_input_wave.cuantos_unos==0) input_analize_input_wave.amplitud_media_unos=0;
     else input_analize_input_wave.amplitud_media_unos /=input_analize_input_wave.cuantos_unos;
 
+    if (input_analize_input_wave.cuantos_total==0) input_analize_input_wave.frecuencia_media_total=0;
+    else input_analize_input_wave.frecuencia_media_total /=input_analize_input_wave.cuantos_total;
 
     /*
     printf("Total ceros: %d Total unos: %d Tonos guias: %d Desconocidos: %d amplitud ceros %d amplitud unos %d\n",
@@ -37036,7 +37048,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             //Si mayoria tono guia
             if (input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_unos &&
                 input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_ceros) {
-                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Pilot tone");
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Pilot tone (%d Hz)",input_analize_input_wave.frecuencia_media_total);
                 strcpy(buffer_signal_type,animacion_string_pilot_tone);
 
                 //Si es tono guia, borrar mensaje de la linea siguiente donde informa de ajuste de azimuth,
@@ -37056,13 +37068,13 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             }
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
             input_analize_input_wave.cuantos_unos<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most zeroes");
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most zeroes (%d Hz)",input_analize_input_wave.frecuencia_media_total);
                 strcpy(buffer_signal_type,animacion_string_zeros);
             }
 
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
                 input_analize_input_wave.cuantos_ceros<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Most ones");
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most ones (%d Hz)",input_analize_input_wave.frecuencia_media_total);
                 strcpy(buffer_signal_type,animacion_string_unos);
             }
 

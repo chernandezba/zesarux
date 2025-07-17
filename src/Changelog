@@ -83,6 +83,7 @@ Improved Visual Cassette Tape window: support standard tape too
 Improved Custom rom setting adding a Reset machine option
 Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
 Improved View Basic window: allow lines > 9999, useful for protected programs
+Improved External Audio Source window showing frequency when detected pilot tone or bits 0/1
 
 * Fixes:
 
