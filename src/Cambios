@@ -99,6 +99,7 @@ Corregido visual casette tape al insertar una cinta no soportada
 Corregida pestaña de protección de escritura en ventana de visual hilow datadrive
 Corregida columna del Selector de Archivos para texto "<dir>" en carpetas con caracteres utf-8
 Corregido item de menú de tipo separador en driver video stdout
+Corregido al mostrar volumen mínimo en ventana Fuente de Sonido Externa
 
 ----
 

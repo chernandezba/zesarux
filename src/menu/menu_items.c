@@ -36959,10 +36959,8 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
     //zxvision_print_string_defaults_fillspc(w,1,linea+3,"");
 
 
-    input_analize_input_wave.min_absoluto=util_get_absolute(input_analize_input_wave.min_absoluto);
-
     int volumen_absoluto=input_analize_input_wave.max_absoluto;
-    if (input_analize_input_wave.min_absoluto>input_analize_input_wave.max_absoluto) volumen_absoluto=input_analize_input_wave.min_absoluto;
+    if (util_get_absolute(input_analize_input_wave.min_absoluto)>input_analize_input_wave.max_absoluto) volumen_absoluto=util_get_absolute(input_analize_input_wave.min_absoluto);
 
     menu_realtape_record_input_analize_volumen_escalado=volumen_absoluto;
 
@@ -36988,7 +36986,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
 
 
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Volume: Max %3d Min %3d Current %3d %s",
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Volume: Max %3d Min %4d Current %3d %s",
         input_analize_input_wave.max_absoluto,input_analize_input_wave.min_absoluto,volumen_absoluto,texto_volumen);
 
 
