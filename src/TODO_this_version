@@ -22,6 +22,3 @@ Probar en diferentes sistemas:
 --Fin lectura mando analógico, como un volante
 
 ---------------------
-
-ok -volumen max y min en external audio source: max sale 127 , min sale 128, no puede ser mayor el minimo que el maximo??
-
