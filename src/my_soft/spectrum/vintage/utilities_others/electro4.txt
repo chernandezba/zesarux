@@ -1,1 +1,3 @@
-Programa creado por César Hernández Bañó y Ruben Parra Martinez, año 1990 probablemente
+Programa creado por César Hernández Bañó y Ruben Parra Martinez, el 19/11/1990
+
+La clave inicial que pide es: 16384
