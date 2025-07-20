@@ -3,5 +3,4 @@ Realizado conjuntamente con mi primo Jonathan.
 El TAP incluye la versión compilada desde PAWS, lista para jugar,
 y además el código fuente de PAWS, de hecho, todo el historial de versiones
 de código fuente desde la versión 1 inicial hasta la última 22.
-No estoy seguro que esté acabado, aunque analizando las localidades y acciones,
-creo que se puede jugar y llegar al final
+Es sencilla pero está completa, se puede jugar y llegar al final
