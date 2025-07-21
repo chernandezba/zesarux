@@ -1,6 +1,17 @@
-Este es un juego realizado con el PAWS, en Verano de 1991.
-Realizado conjuntamente con mi primo Jonathan.
-El TAP incluye la versión compilada desde PAWS, lista para jugar,
-y además el código fuente de PAWS, de hecho, todo el historial de versiones
-de código fuente desde la versión 1 inicial hasta la última 22.
-Es sencilla pero está completa, se puede jugar y llegar al final
+Sinopsis
+
+La historia es simple: tu pueblo vive en la auténtica pobreza y te aventuras a entrar en un gran laberinto donde dice la leyenda que se oculta un gran tesoro, para así poder ayudar a tu pueblo.
+
+Historia y desarrollo
+
+El juego fue realizado durante el verano de 1991. César y Jonathan son primos, y cada verano se juntaban varias semanas y entre muchas otras actividades divertidas, se pasaban horas jugando y trasteando con el ZX Spectrum. En aquella época César tenia 13 años y Jonathan 14. César rescató este juego en Julio de 2025: estuvo recuperando cintas de casette, pasándolas a formato TAP para disfrutarlas en un emulador y apareció este juego, del que no recordaba absolutamente nada. Es probable que el mapeo y muchas de las ideas fuesen de Jonathan, mientras que la programación la realizó César, utilizando el PAW. 
+
+Instrucciones de juego
+
+El juego es bastante simple, aunque siempre se agradecen algunos consejos:
+
+- Guarda todos los objetos que te encuentres, y no los uses hasta que no creas necesario
+- A veces hay puertas difíciles de traspasar, en estos casos dice la leyenda que hay un golpe milenario con un gran poder, el poder del quinto elemento, con el que casi ninguna puerta se resistirá. Para invocarlo, "golpe 5"
+- El tipo de letra del juego es un poco confuso, a veces una "Z" se confunde con un "2"
+- Si te aburres puedes cantar. Quizá no sirva para nada, ¿ o si ?
+- Con la descarga se incluye el juego listo para jugar y también el código fuente en formato PAW. De hecho incluye todo el historial de versiones (desde la 1 primera hasta la última 22)
