@@ -1,0 +1,1 @@
+Esto parece ser la primera rutina utilizada para leer el password del programa electro4
