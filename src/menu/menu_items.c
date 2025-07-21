@@ -36997,9 +36997,11 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 	//zxvision_print_string_defaults_fillspc(menu_audio_draw_sound_wave_window,1,2,buffer_texto_medio);
 
 
+    //zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Volume: Max %3d Min %4d Current %3d %s",
+    //    input_analize_input_wave.max_absoluto,input_analize_input_wave.min_absoluto,volumen_absoluto,texto_volumen);
 
-    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Volume: Max %3d Min %4d Current %3d %s",
-        input_analize_input_wave.max_absoluto,input_analize_input_wave.min_absoluto,volumen_absoluto,texto_volumen);
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Volume: Max %3d Min %4d %s",
+        input_analize_input_wave.max_absoluto,input_analize_input_wave.min_absoluto,texto_volumen);
 
 
     //Minimo valor a partir del cual se considera que es un tipo de onda u otra
