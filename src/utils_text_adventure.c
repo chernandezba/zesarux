@@ -1081,6 +1081,8 @@ int gac_id_palabra_direccion_southeast=-1;
 int gac_id_palabra_direccion_down=-1;
 int gac_id_palabra_direccion_up=-1;
 
+int gac_id_palabra_direccion_entrar=-1;
+int gac_id_palabra_direccion_salir=-1;
 
 //Si buscar_palabras_direcciones no es 0, busca los id de palabras que corresponden a direcciones, y no agrega la palabra al teclado osd
 //Si id_buscar_palabra_count>=0, busca una palabra con el id indicado y lo guarda en palabra_encontrada
@@ -1150,6 +1152,9 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
 
                         if (!strcasecmp(buffer_palabra,"BAJAR") || !strcasecmp(buffer_palabra,"ABAJO") || !strcasecmp(buffer_palabra,"DOWN")) gac_id_palabra_direccion_down=count;
                         if (!strcasecmp(buffer_palabra,"SUBIR") || !strcasecmp(buffer_palabra,"ARRIBA") || !strcasecmp(buffer_palabra,"UP")) gac_id_palabra_direccion_up=count;
+
+                        if (!strcasecmp(buffer_palabra,"ENTRA") || !strcasecmp(buffer_palabra,"ENTRO") || !strcasecmp(buffer_palabra,"ENTER")) gac_id_palabra_direccion_entrar=count;
+                        if (!strcasecmp(buffer_palabra,"SALIR") || !strcasecmp(buffer_palabra,"SALGO") || !strcasecmp(buffer_palabra,"SAL") || !strcasecmp(buffer_palabra,"EXIT")) gac_id_palabra_direccion_salir=count;
                 }
 
                 }
@@ -1330,6 +1335,8 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                         else if (scrap==gac_id_palabra_direccion_southeast) text_adventure_connections_table[room].southeast=destination;
                         else if (scrap==gac_id_palabra_direccion_down) text_adventure_connections_table[room].down=destination;
                         else if (scrap==gac_id_palabra_direccion_up) text_adventure_connections_table[room].up=destination;
+                        else if (scrap==gac_id_palabra_direccion_entrar) text_adventure_connections_table[room].entrar=destination;
+                        else if (scrap==gac_id_palabra_direccion_salir) text_adventure_connections_table[room].salir=destination;
 
                         text_adventure_connections_table[room].gac_location_picture=picture;
                     }
@@ -4560,6 +4567,8 @@ void init_textadventure_connections_table(void)
         text_adventure_connections_table[i].southeast=-1;
         text_adventure_connections_table[i].up=-1;
         text_adventure_connections_table[i].down=-1;
+        text_adventure_connections_table[i].entrar=-1;
+        text_adventure_connections_table[i].salir=-1;
 
         text_adventure_connections_table[i].x=0;
         text_adventure_connections_table[i].y=0;
@@ -4578,6 +4587,8 @@ void init_textadventure_connections_table(void)
         text_adventure_connections_table[i].dudoso_southeast=0;
         text_adventure_connections_table[i].dudoso_up=0;
         text_adventure_connections_table[i].dudoso_down=0;
+        text_adventure_connections_table[i].dudoso_entrar=0;
+        text_adventure_connections_table[i].dudoso_salir=0;
 
 
         text_adventure_connections_table[i].habitacion_dudosa=0;
@@ -4603,7 +4614,7 @@ int textadventure_room_has_exits(int i)
 {
     if (textadventure_walk_rooms_no_connections) return 1;
 
-    int n,s,w,e,nw,ne,sw,se,up,dn;
+    int n,s,w,e,nw,ne,sw,se,up,dn,en,sa;
 
     n=text_adventure_connections_table[i].north;
     s=text_adventure_connections_table[i].south;
@@ -4618,6 +4629,9 @@ int textadventure_room_has_exits(int i)
     up=text_adventure_connections_table[i].up;
     dn=text_adventure_connections_table[i].down;
 
+    en=text_adventure_connections_table[i].entrar;
+    sa=text_adventure_connections_table[i].salir;
+
     if (
         (n!=-1 && n!=i) ||
         (s!=-1 && s!=i) ||
@@ -4630,7 +4644,10 @@ int textadventure_room_has_exits(int i)
         (se!=-1 && se!=i) ||
 
         (up!=-1 && up!=i) ||
-        (dn!=-1 && dn!=i)
+        (dn!=-1 && dn!=i) ||
+
+        (en!=-1 && en!=i) ||
+        (sa!=-1 && sa!=i)
 
     ) {
         return 1;
@@ -4779,6 +4796,19 @@ void textadventure_generate_connections_table(void)
                         !strcasecmp("bajo",palabra_sin_espacios) ||
                         !strcasecmp("baja",palabra_sin_espacios)) {
                         text_adventure_connections_table[i].down=destino;
+                    }
+
+                    if (!strcasecmp("entra",palabra_sin_espacios) ||
+                        !strcasecmp("entro",palabra_sin_espacios) ||
+                        !strcasecmp("enter",palabra_sin_espacios)) {
+                        text_adventure_connections_table[i].entrar=destino;
+                    }
+
+                    if (!strcasecmp("sal",palabra_sin_espacios) ||
+                        !strcasecmp("salir",palabra_sin_espacios) ||
+                        !strcasecmp("salgo",palabra_sin_espacios) ||
+                        !strcasecmp("exit",palabra_sin_espacios)) {
+                        text_adventure_connections_table[i].salir=destino;
                     }
 
                 }
@@ -4973,6 +5003,27 @@ int textadventure_walk(int room, int x, int y, int z, int recurse_level,int id_m
         if (ret!=-1) text_adventure_connections_table[room].dudoso_down=1;
 
     }
+
+    //Entrar-salir se mueve en coordenadas x+-3, y+-3, esto es un poco chapucero, pero no se me ocurre otra manera
+    //de poder asignar un cambio de posición por entrar/salir que no sea el normal de norte,sur,este,oeste,subir,bajar
+    //A malas, si hay una localidad ya asignada en esa posición, simplemente no se verá y/o sale con interrogante
+    if (text_adventure_connections_table[room].entrar!=-1) {
+        int ret=textadventure_walk(text_adventure_connections_table[room].entrar,x+3,y+3,z,recurse_level+1,id_mapa);
+
+        //Esa posicion ya estaba ocupada. Indicamos que esta direccion es dudosa
+        if (ret!=-1) text_adventure_connections_table[room].dudoso_entrar=1;
+
+    }
+
+    //Entrar-salir se mueve en coordenadas x+-3, y+-3, esto es un poco chapucero
+    if (text_adventure_connections_table[room].salir!=-1) {
+        int ret=textadventure_walk(text_adventure_connections_table[room].salir,x-3,y-3,z,recurse_level+1,id_mapa);
+
+        //Esa posicion ya estaba ocupada. Indicamos que esta direccion es dudosa
+        if (ret!=-1) text_adventure_connections_table[room].dudoso_salir=1;
+
+    }
+
 
 
     return existe_posicion;

@@ -78,6 +78,7 @@ Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
 Mejorado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
+Mejorado Mapa de Aventura mostrando direcciones entrar y salir
 Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en todos los casos
 Mejorada ventana de Visual Cassette Tape: soportar también cinta estándar
 Mejorada opción de Custom rom agregando una opción para resetear la máquina

@@ -10793,6 +10793,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
         int longitud_escalon=1*menu_debug_textadventure_map_connections_zoom;
 
+        //int longitud_flechita=longitud_escalon/2;
 
 
         longitud_total_linea *=menu_debug_textadventure_map_connections_zoom;
@@ -10851,6 +10852,19 @@ Bajar. Esquina inferior derecha
 
           x3
 
+Entrar y salir. En medio
+
+xes->coordenada x Entrar/Salir inicio
+|
+      xes2     xes3
+################
+               #
+               #
+########       #
+               #
+               #
+################
+
 */
 
         int x1=x;
@@ -10873,6 +10887,10 @@ Bajar. Esquina inferior derecha
         int x8=x7-longitud_escalon+1;
 
 
+        int y7=y5+longitud_escalon-1;
+        int xes=x+8*menu_debug_textadventure_map_connections_zoom/2+2;
+        int xes2=xes+longitud_escalon-1;
+        int xes3=xes+longitud_escalon*2-1;
 
         menu_debug_textadventure_map_horiz_line(w,x1,y1,longitud_total_linea,color_pared);
 
@@ -10884,9 +10902,9 @@ Bajar. Esquina inferior derecha
 
 
         //direcciones de esa ubicacion
-        int north,south,west,east,northwest,northeast,southwest,southeast,up,down;
+        int north,south,west,east,northwest,northeast,southwest,southeast,up,down,entrar,salir;
 
-        int dudoso_north,dudoso_south,dudoso_west,dudoso_east,dudoso_northwest,dudoso_northeast,dudoso_southwest,dudoso_southeast,dudoso_up,dudoso_down;
+        int dudoso_north,dudoso_south,dudoso_west,dudoso_east,dudoso_northwest,dudoso_northeast,dudoso_southwest,dudoso_southeast,dudoso_up,dudoso_down,dudoso_entrar,dudoso_salir;
 
         north=text_adventure_connections_table[room].north;
         south=text_adventure_connections_table[room].south;
@@ -10901,6 +10919,9 @@ Bajar. Esquina inferior derecha
         up=text_adventure_connections_table[room].up;
         down=text_adventure_connections_table[room].down;
 
+        entrar=text_adventure_connections_table[room].entrar;
+        salir=text_adventure_connections_table[room].salir;
+
         dudoso_north=text_adventure_connections_table[room].dudoso_north;
         dudoso_south=text_adventure_connections_table[room].dudoso_south;
         dudoso_west=text_adventure_connections_table[room].dudoso_west;
@@ -10913,6 +10934,9 @@ Bajar. Esquina inferior derecha
 
         dudoso_up=text_adventure_connections_table[room].dudoso_up;
         dudoso_down=text_adventure_connections_table[room].dudoso_down;
+
+        dudoso_entrar=text_adventure_connections_table[room].dudoso_entrar;
+        dudoso_salir=text_adventure_connections_table[room].dudoso_salir;
 
         //Si se puede ir al norte
         if (north>=0) {
@@ -11014,6 +11038,30 @@ Bajar. Esquina inferior derecha
             menu_debug_textadventure_map_vert_line(w,x5,y3,longitud_escalon,color_final);
             menu_debug_textadventure_map_horiz_line(w,x5,y5,longitud_escalon,color_final);
             menu_debug_textadventure_map_vert_line(w,x6,y5,longitud_escalon,color_final);
+        }
+
+        //Si se puede entrar
+        if (entrar>=0) {
+            int color_final=color_pared;
+            if (dudoso_entrar) color_final=ESTILO_GUI_COLOR_AVISO;
+            menu_debug_textadventure_map_horiz_line(w,xes,y3,longitud_escalon*2-1,color_final);
+            menu_debug_textadventure_map_vert_line(w,xes3,y3,longitud_escalon*2-1,color_final);
+            menu_debug_textadventure_map_horiz_line(w,xes,y7,longitud_escalon*2-1,color_final);
+
+            menu_debug_textadventure_map_horiz_line(w,xes,y5,longitud_escalon,color_final);
+            //menu_debug_textadventure_map_vert_line(w,x5,y5-longitud_flechita,longitud_flechita,color_final);
+        }
+
+        //Si se puede salir
+        if (salir>=0) {
+            int color_final=color_pared;
+            if (dudoso_salir) color_final=ESTILO_GUI_COLOR_AVISO;
+            menu_debug_textadventure_map_horiz_line(w,xes,y3,longitud_escalon*2-1,color_final);
+            menu_debug_textadventure_map_vert_line(w,xes,y3,longitud_escalon*2-1,color_final);
+            menu_debug_textadventure_map_horiz_line(w,xes,y7,longitud_escalon*2-1,color_final);
+
+            menu_debug_textadventure_map_horiz_line(w,xes2,y5,longitud_escalon,color_final);
+            //menu_debug_textadventure_map_vert_line(w,x6,y5-longitud_flechita,longitud_flechita,color_final);
         }
 
 /*

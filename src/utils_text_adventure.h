@@ -203,10 +203,10 @@ extern int textadventure_get_size_map(int mapa,int z,int *ancho,int *alto,int *m
 //define para una localidad, a donde puede ir
 struct text_adventure_conn {
     //destino a donde va cada posicion. -1 si no permite ir
-    int north,south,east,west,northwest,northeast,southwest,southeast,up,down;
+    int north,south,east,west,northwest,northeast,southwest,southeast,up,down,entrar,salir;
 
     //destinos dudosos que llevan a una direccion que no deberia estar ahi
-    int dudoso_north,dudoso_south,dudoso_east,dudoso_west,dudoso_northwest,dudoso_northeast,dudoso_southwest,dudoso_southeast,dudoso_up,dudoso_down;
+    int dudoso_north,dudoso_south,dudoso_east,dudoso_west,dudoso_northwest,dudoso_northeast,dudoso_southwest,dudoso_southeast,dudoso_up,dudoso_down,dudoso_entrar,dudoso_salir;
 
     //mi posicion. Esto se recorre con la funcion recursiva
     int x,y,z;
