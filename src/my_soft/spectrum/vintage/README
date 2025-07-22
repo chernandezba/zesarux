@@ -1,6 +1,6 @@
 Aquí encontrarás muchos programas y juegos hechos por mi, entre los años 1988 y 1997 aproximadamente.
 
-Se puede ver una evolución desde los primeros programas hechos con Basic hacia los mas completos hechos íntegramente en Assembler. En aquella épica me inventé el nombre de mi propia "empresa": Man Software (o el nombre mas corto: Man Soft). Tuve hasta tarjetas de visita y todo.
+Se puede ver una evolución desde los primeros programas hechos con Basic hacia los mas completos hechos íntegramente en Assembler. En aquella época me inventé el nombre de mi propia "empresa": Man Software (o el nombre mas corto: Man Soft). Tuve hasta tarjetas de visita y todo.
 
 En general, me llamaban la atención los programas de edición gráfica (tanto a nivel de pixel como vectorial), con claras influencias
 de programas que veía en PC (como AutoCad o Dr. Halo). Aunque no se podía tener el mismo programa de PC en Spectrum, intentaba
@@ -8,7 +8,7 @@ usar ideas y trasladar el concepto a una máquina con inferiores característica
 
 También hice algunos juegos sencillos en Basic, pero ningún juego en Assembler.
 
-Y también se encuentran muchas utilidades varias (copiones, assemblers, debugger, bases de datos), algunas son programas enteros y otros
+Y también se encuentran muchas utilidades varias (copiones, assemblers, debuggers, bases de datos), algunas son programas enteros y otros
 son rutinas sencillas para comprobar "que se podia hacer" con el Spectrum. Muchos de los programas hechos en assembler incluyen también el código fuente (habitualmente para el Gens de Hisoft)
 
 Te recomiendo que le eches un vistazo a todos (sí, hay muchas cintas, un total de 192 TAP/TZX), pero te resumo los mas destacables de cada carpeta:
@@ -33,7 +33,7 @@ Te recomiendo que le eches un vistazo a todos (sí, hay muchas cintas, un total 
 * The Liner: editor gráfico vectorial
 
 - Utilities & others
-* CAC: Mi propio parser para crear aventuras conversacionales. De manera similar a cuando pedí el Gens, me pedí el PAWS pero tardó muchos meses en llegar y mientrastanto, me creé mi propio parser
+* CAC: Mi propio parser para crear aventuras conversacionales. De manera similar a cuando pedí el Gens, me pedí el PAWS pero tardó muchos meses en llegar y mientras tanto, me creé mi propio parser
 * Editor: editor de textos escrito en Basic. 
 * Electro4: programa para dibujar circuitos electrónicos, creado conjuntamente con mi amigo Rubén Parra Martínez.
 * ManTransfer: programa para volcar el contenido de la ram en cinta. Funciona con interrupciones. Seria algo así como un "Transtape" pero íntegramente con software, sin hardware adicional
