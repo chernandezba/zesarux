@@ -31,7 +31,7 @@ Te recomiendo que le eches un vistazo a todos (sí, hay muchas cintas, un total 
 * Compdibujos: compilador de dibujos. O sea, un programa que, mediante un lenguaje gráfico inventado por mi, compila ese lenguaje a código máquina. El lenguaje permite crear figuras básicas, como lineas, círculos o cuadrados y también otros comandos como rellenar zonas de pantalla o esperar la pulsación de una tecla.
 * ArtistCHB, Draw Screen, The Painter: varios editores gráficos realizados en Basic
 * The Liner: editor gráfico vectorial
-* Animator: programa para realizar animaciones sencillas mediante lineas. Sería algo así como el "Fantavision" de PC portado a Spectrum, limitado y en Basic. Incluye un ejemplo del dibujo de una casa en la misma cinta
+* Animator: programa para realizar animaciones sencillas mediante lineas. Sería algo así como el "Fantavision" de PC portado a Spectrum, limitado y en Basic. Incluye un ejemplo del dibujo de una casa en la misma cinta ("casita"). Incluso hay una versión compilada (basic compilado a código máquina) en casita-compilado.tap
 
 - Utilities & others
 * CAC: Mi propio parser para crear aventuras conversacionales. De manera similar a cuando pedí el Gens, me pedí el PAWS pero tardó muchos meses en llegar y mientras tanto, me creé mi propio parser
