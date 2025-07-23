@@ -14,7 +14,7 @@ son rutinas sencillas para comprobar "que se podia hacer" con el Spectrum. Mucho
 Te recomiendo que le eches un vistazo a todos (sí, hay muchas cintas, un total de 192 TAP/TZX), pero te resumo los mas destacables de cada carpeta:
 
 - Assembler: 
-* SPED52: Editor, ensamblador y desensamblador para Spectrum 128k. A diferencia de otros assemblers de la época, este permite usar código fuente mas allá de 48kb de memoria, pudiendo llegar hasta 72 kb aproximadamente. Además, el desensamblador incluye el concepto de "información de debug" (en aquella época usada por el Turbo Debugger) en que se permite ver el código fuente mientras se hace debug
+* SPED52: Editor, ensamblador y desensamblador para modelos de Spectrum con 128k de RAM (Spectrum 128k, +2, +2A, +3). A diferencia de otros assemblers de la época, este permite usar código fuente mas allá de 48kb de memoria, pudiendo llegar hasta 72 kb aproximadamente. Además, el desensamblador incluye el concepto de "información de debug" (en aquella época usada por el Turbo Debugger) en que se permite ver el código fuente mientras se hace debug
 * RealDebug: Desensamblador reubicable en memoria. Como novedad, que no tenía el Gens de Hisoft, es que gestiona a la perfección el registro R al hacer debug (de ahí viene el nombre, de R-eal debug)
 * PEMS: Intento de hacer un ensamblador, escrito en Basic. En aquella época había pedido el Gens de Hisoft, pero como tardaba mucho (casi un año tardó en llegar), me hice uno propio en Basic.
 
