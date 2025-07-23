@@ -8,4 +8,6 @@ These are programs fixed to run on Inves Spectrum+
 
 -intcopy2_inves.tap: unknown program fixed to run on Inves Spectrum+ (interrupts issue)
 
+-pixeldown-inves.tap: program from Microhobby magazine to generate pixel effects, fixed to run on Inves Spectrum+ (interrupts issue)
+
 -ventanas_inves.tap: program from Microhobby magazine to create text windows, fixed to run on Inves Spectrum+ (interrupts issue)
