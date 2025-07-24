@@ -15,7 +15,7 @@ Te recomiendo que le eches un vistazo a todos (sí, hay muchas cintas, un total 
 
 - Assembler: 
 * SPED52: Editor, ensamblador y desensamblador para modelos de Spectrum con 128k de RAM (Spectrum 128k, +2, +2A, +3). A diferencia de otros assemblers de la época, este permite usar código fuente mas allá de 48kb de memoria, pudiendo llegar hasta 72 kb aproximadamente. Además, el desensamblador incluye el concepto de "información de debug" (en aquella época usada por el Turbo Debugger) en que se permite ver el código fuente mientras se hace debug
-* RealDebug: Desensamblador reubicable en memoria. Como novedad, que no tenía el Gens de Hisoft, es que gestiona a la perfección el registro R al hacer debug (de ahí viene el nombre, de R-eal debug)
+* RealDebug: Desensamblador reubicable en memoria. Como novedad, que no tenía el Gens de Hisoft, es que gestiona a la perfección el registro R al hacer debug (de ahí viene el nombre, de R-eal debug). Tiene una versión para 48k y otra para 128k.
 * PEMS: Intento de hacer un ensamblador, escrito en Basic. En aquella época había pedido el Gens de Hisoft, pero como tardaba mucho (casi un año tardó en llegar), me hice uno propio en Basic.
 
 - Copiers: Me obsesionaban los programas "copiones" y aunque tenía el famoso "copiador azul", creé varios copiones en aquella época
@@ -38,6 +38,6 @@ Te recomiendo que le eches un vistazo a todos (sí, hay muchas cintas, un total 
 * Editor: editor de textos escrito en Basic. 
 * Electro4: programa para dibujar circuitos electrónicos, creado conjuntamente con mi amigo Rubén Parra Martínez.
 * ManTransfer: programa para volcar el contenido de la ram en cinta. Funciona con interrupciones. Seria algo así como un "Transtape" pero íntegramente con software, sin hardware adicional
-* Memoedit: Programa para visualizar y editar la memoria ram. Escrito en código máquina y reubicable
+* Memoedit: Programa para visualizar y editar la memoria ram. Escrito en código máquina. Tiene una versión para 48k y otra para 128k.
 
 
