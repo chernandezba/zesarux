@@ -74,6 +74,10 @@ Improved ZRCP:
 - Better CR+LF handling
 - Added commands: cd, pwd
 
+Improved External Audio Source window:
+- Show frequency when detected pilot tone or bits 0/1
+- Show approximate bytes read
+
 Improved maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
@@ -84,7 +88,6 @@ Improved Visual Cassette Tape window: support standard tape too
 Improved Custom rom setting adding a Reset machine option
 Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
 Improved View Basic window: allow lines > 9999, useful for protected programs
-Improved External Audio Source window showing frequency when detected pilot tone or bits 0/1
 
 * Fixes:
 

@@ -22,3 +22,4 @@ Probar en diferentes sistemas:
 --Fin lectura mando analógico, como un volante
 
 ---------------------
+tape viewer, si cada linea de cinta pasa de una linea, no hace bien seek. ejemplo con crash history

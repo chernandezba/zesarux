@@ -36939,6 +36939,8 @@ int menu_realtape_record_input_analize_azimuth_end_conta_segundo=0;
 
 int menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum=0;
 
+int menu_realtape_record_input_estimacion_bits=0;
+
 void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
 {
 
@@ -37046,6 +37048,8 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             char buffer_signal_type[50];
             buffer_signal_type[0]=0;
 
+            //Estimacion del total de bits leidos - Se resetea al detectar algo que no son ceros ni unos
+
             //Analisis del tipo de onda
             //Si mayoria tono guia
             if (input_analize_input_wave.cuantos_guias>input_analize_input_wave.cuantos_unos &&
@@ -37067,22 +37071,38 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
                 if (menu_realtape_record_input_porcentaje_azimuth_antes!=menu_realtape_record_input_porcentaje_azimuth) {
                     w->must_clear_cache_on_draw_once=1;
                 }
+
+                menu_realtape_record_input_estimacion_bits=0;
             }
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
             input_analize_input_wave.cuantos_unos<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most zeroes (%d Hz)",input_analize_input_wave.frecuencia_media_total);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most zeroes (%d Hz) (%d B)",
+                    input_analize_input_wave.frecuencia_media_total,menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_zeros);
+
+                menu_realtape_record_input_estimacion_bits +=input_analize_input_wave.cuantos_unos;
+                menu_realtape_record_input_estimacion_bits +=input_analize_input_wave.cuantos_ceros;
             }
 
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
                 input_analize_input_wave.cuantos_ceros<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most ones (%d Hz)",input_analize_input_wave.frecuencia_media_total);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most ones (%d Hz) (%d B)",
+                    input_analize_input_wave.frecuencia_media_total,menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_unos);
+
+                menu_realtape_record_input_estimacion_bits +=input_analize_input_wave.cuantos_unos;
+                menu_realtape_record_input_estimacion_bits +=input_analize_input_wave.cuantos_ceros;
+
             }
 
             else {
-                zxvision_print_string_defaults_fillspc(w,1,linea,"Signal type: Mixed zeros and ones");
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Mixed zeros and ones (%d B)",
+                    menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_unos_zeros);
+
+                menu_realtape_record_input_estimacion_bits +=input_analize_input_wave.cuantos_unos;
+                menu_realtape_record_input_estimacion_bits +=input_analize_input_wave.cuantos_ceros;
+
             }
 
             //zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: %s",buffer_signal_type);
@@ -37140,6 +37160,8 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             if (menu_realtape_record_input_analize_azimuth_end_conta_segundo-contador_segundo>50*2) {
                 zxvision_print_string_defaults_fillspc_format(w,1,linea,"");
             }
+
+            menu_realtape_record_input_estimacion_bits=0;
         }
 
 

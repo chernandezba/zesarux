@@ -74,6 +74,10 @@ Mejorado ZRCP:
 - Mejor gestión de CR+LF
 - Agregado comandos: cd, pwd
 
+Mejorada ventana Fuente de Sonido Externa:
+- Mostrar la frecuencia al detectar tono guía o bits 0/1
+- Mostrar cantidad aproximada de bytes leídos
+
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
@@ -84,7 +88,6 @@ Mejorada ventana de Visual Cassette Tape: soportar también cinta estándar
 Mejorada opción de Custom rom agregando una opción para resetear la máquina
 Mejorada emulación de DivMMC, DivIDE y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD o IDE insertada
 Mejorada ventana de View Basic: permitir lineas > 9999, útil para programas protegidos
-Mejorada ventana Fuente de Sonido Externa mostrando la frecuencia al detectar tono guía o bits 0/1
 
 * Correcciones:
 
