@@ -3360,7 +3360,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, NULL,NULL,
-            "Show results in decimal in Watches","Ver resultados en decimal en Watches","Veure resultats en decimal a Watches");
+            "Show decimal results in Watches","Ver resultados decimales en Watches","Veure resultats decimals a Watches");
 		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_watches_show_decimal.v ? 'X' : ' ') );
         menu_add_item_menu_opcion_conmuta(array_menu_settings_debug,&debug_watches_show_decimal);
 
