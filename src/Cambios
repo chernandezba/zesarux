@@ -63,6 +63,7 @@ Mejorado Debug CPU:
 - Mejorada ventana de edición de breakpoints
 - Agregar opción para activar/desactivar todos los breakpoints
 - Corregido al mover cursor arriba cuando la dirección está cercana a 0
+- Watches puede mostrar resultados en hexadecimal o decimal
 
 Mejorado Memory Cheat:
 - Permitir indicar dirección inicial

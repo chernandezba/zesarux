@@ -63,6 +63,7 @@ Improved Debug CPU:
 - Improved edit breakpoint window
 - Added option to enable/disable all breakpoints
 - Fixed moving cursor up when address near 0
+- Watches can show results in hexadecimal or decimal
 
 Improve Memory Cheat:
 - Allow to set initial address

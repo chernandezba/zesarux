@@ -116,6 +116,8 @@ extern z80_bit menu_file_viewer_always_hex;
 
 extern z80_bit debug_view_basic_show_address;
 
+extern z80_bit debug_watches_show_decimal;
+
 extern int gui_language;
 
 extern int zxdesktop_disable_on_full_screen;

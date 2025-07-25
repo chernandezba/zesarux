@@ -3359,6 +3359,13 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows location address of every basic line on menu View Basic");
 
 
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, NULL,NULL,
+            "Show results in decimal in Watches","Ver resultados en decimal en Watches","Veure resultats en decimal a Watches");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_watches_show_decimal.v ? 'X' : ' ') );
+        menu_add_item_menu_opcion_conmuta(array_menu_settings_debug,&debug_watches_show_decimal);
+
+		menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows results in decimal in window Watches");
+		menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows results in decimal in window Watches");
 
 		if (si_complete_video_driver() ) {
 			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_settings_visualmem_grafico,NULL,
