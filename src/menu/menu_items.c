@@ -37076,7 +37076,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             }
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
             input_analize_input_wave.cuantos_unos<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most zeroes (%d Hz) (%d B)",
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most zeroes (%5d Hz) (%d B)",
                     input_analize_input_wave.frecuencia_media_total,menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_zeros);
 
@@ -37086,7 +37086,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
                 input_analize_input_wave.cuantos_ceros<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most ones (%d Hz) (%d B)",
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most ones   (%5d Hz) (%d B)",
                     input_analize_input_wave.frecuencia_media_total,menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_unos);
 
@@ -37096,7 +37096,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             }
 
             else {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Mixed zeros and ones (%d B)",
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Mixed zeros and ones   (%d B)",
                     menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_unos_zeros);
 
@@ -37883,7 +37883,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
             case 'e':
                 if (!audio_is_recording_input) {
-                    printf("start recording\n");
+                    //printf("start recording\n");
                     audiodriver_start_record_input();
                 }
             break;
