@@ -37076,7 +37076,12 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             }
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
             input_analize_input_wave.cuantos_unos<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most zeroes (%5d Hz) (%d B)",
+                //Los bytes los indico con "~" porque es una cantidad aproximada, porque analizamos
+                //el buffer para saber el tipo de datos (tono guia, bits, etc) a nivel estadístico,
+                //no parseamos perfectamente los 0 y 1 (pues pueden quedar a medias a final de un buffer por ejemplo),
+                //por tanto la cantidad mostrada suele ser menor a los bytes realmente leidos,
+                //mientras mas leemos, mas "pierde" la cuenta, porque hay mas bits que se cortan a final de buffer
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most zeroes (%5d Hz) (~%d B)",
                     input_analize_input_wave.frecuencia_media_total,menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_zeros);
 
@@ -37086,7 +37091,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
             else if (input_analize_input_wave.cuantos_guias<minimo_ondas &&
                 input_analize_input_wave.cuantos_ceros<minimo_ondas) {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most ones   (%5d Hz) (%d B)",
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Most ones   (%5d Hz) (~%d B)",
                     input_analize_input_wave.frecuencia_media_total,menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_unos);
 
@@ -37096,7 +37101,7 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             }
 
             else {
-                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Mixed zeros and ones   (%d B)",
+                zxvision_print_string_defaults_fillspc_format(w,1,linea,"Signal type: Mixed zeros and ones   (~%d B)",
                     menu_realtape_record_input_estimacion_bits/8);
                 strcpy(buffer_signal_type,animacion_string_unos_zeros);
 
