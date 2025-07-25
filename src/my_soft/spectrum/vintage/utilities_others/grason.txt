@@ -1,0 +1,2 @@
+Rutina para grabar el sonido desde la entrada de cassette y luego lo reproduce (no se oye perfecto).
+Requiere cargarse en modo USR0 de un Spectrum 128k. Lee todo el sonido usando los 128kb de RAM y luego lo reproduce
