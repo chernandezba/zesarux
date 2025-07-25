@@ -77,6 +77,7 @@ Mejorado ZRCP:
 Mejorada ventana Fuente de Sonido Externa:
 - Mostrar la frecuencia al detectar tono guía o bits 0/1
 - Mostrar cantidad aproximada de bytes leídos
+- Permitir activar entrada desde esta ventana
 
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL

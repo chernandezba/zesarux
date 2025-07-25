@@ -37413,7 +37413,7 @@ int menu_realtape_record_input_show_info(zxvision_window *w,int linea)
         menu_realtape_record_input_show_previo_value=menu_string_volumen_maxmin(buf_volumen_canal,posicion_buffer_audio,
                                                     menu_realtape_record_input_show_previo_value,tamanyo_buffer_audio);
         if (!audio_is_recording_input) {
-            strcpy (texto_buffer,"Record Buffer: (Not Recording)");
+            strcpy (texto_buffer,"Record Buffer: (Not Recording). ~~e: enable");
         }
 
         else {
@@ -37707,9 +37707,9 @@ void menu_realtape_record_input_overlay(void)
 
 
     //Forzar a mostrar atajos
-    z80_bit antes_menu_writing_inverse_color;
-    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-    menu_writing_inverse_color.v=1;
+    //z80_bit antes_menu_writing_inverse_color;
+    //antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+    //menu_writing_inverse_color.v=1;
 
     //menu_realtape_record_input_tipo_onda
     //0=linea continua, 1=relleno, 2=solo puntos
@@ -37724,7 +37724,7 @@ void menu_realtape_record_input_overlay(void)
 
 
     //Restaurar comportamiento atajos
-    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
+    //menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
     int alto=(menu_realtape_record_input_window->visible_height-2)*menu_char_height;
     int ancho=(menu_realtape_record_input_window->visible_width-2)*menu_char_width;
@@ -37817,6 +37817,9 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
+        //Forzar visibles hotkeys en esa ventana
+        ventana->writing_inverse_color=1;
+
     }
 
     //Si ya existe, activar esta ventana
@@ -37876,6 +37879,13 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
                 audiorecord_last_write_full=0;
 
                 menu_generic_message_splash("Empty buffer","Buffer has been emptied");
+            break;
+
+            case 'e':
+                if (!audio_is_recording_input) {
+                    printf("start recording\n");
+                    audiodriver_start_record_input();
+                }
             break;
 
 
