@@ -1,1 +1,2 @@
 Cargar con programa "minutos musicales" de la microhobby 8, página 13
+Cargar la melodia con este programa, con la tecla j. Cuando pregunte clave, indicar 0 (clave de DO=0) y tiempo 1 (a mayor tiempo, mas rapido)
