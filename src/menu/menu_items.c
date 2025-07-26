@@ -36941,6 +36941,13 @@ int menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum=0;
 
 int menu_realtape_record_input_estimacion_bits=0;
 
+void menu_realtape_record_input_print_unknown_average_freq(zxvision_window *w,int linea)
+{
+    if (audio_is_recording_input) {
+        zxvision_print_string_defaults_fillspc_format(w,1,linea,"Unknown signal. Average frequency (%5d Hz)",input_analize_input_wave.frecuencia_media_total);
+    }
+}
+
 void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea)
 {
 
@@ -37164,6 +37171,8 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
             //Borrar linea deteccion azimuth si ha pasado 2 segundos al menos
             if (menu_realtape_record_input_analize_azimuth_end_conta_segundo-contador_segundo>50*2) {
                 zxvision_print_string_defaults_fillspc_format(w,1,linea,"");
+
+                menu_realtape_record_input_print_unknown_average_freq(w,linea);
             }
 
             menu_realtape_record_input_estimacion_bits=0;
@@ -37178,6 +37187,8 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
         //Resetear contador de tiempo de deteccion
         //printf("No detectada senyal spectrum. %d\n",contador_segundo_infinito);
         menu_realtape_record_input_analize_azimuth_tiempo_deteccion_spectrum=0;
+
+        menu_realtape_record_input_print_unknown_average_freq(w,linea);
     }
 
     menu_realtape_record_input_analize_azimuth_end_conta_segundo=contador_segundo;

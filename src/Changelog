@@ -78,6 +78,7 @@ Improved ZRCP:
 Improved External Audio Source window:
 - Show frequency when detected pilot tone or bits 0/1
 - Show approximate bytes read
+- Show average frequency when unknown signal
 - Allow to enable input from this window
 
 Improved maximum sent keys to ZENG/ZENG Online
