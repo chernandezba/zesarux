@@ -36944,7 +36944,7 @@ int menu_realtape_record_input_estimacion_bits=0;
 void menu_realtape_record_input_print_unknown_average_freq(zxvision_window *w,int linea)
 {
     if (audio_is_recording_input) {
-        zxvision_print_string_defaults_fillspc_format(w,1,linea,"Unknown signal. Average frequency (%5d Hz)",input_analize_input_wave.frecuencia_media_total);
+        zxvision_print_string_defaults_fillspc_format(w,1,linea,"Unknown signal. Average frequency: %5d Hz",input_analize_input_wave.frecuencia_media_total);
     }
 }
 
