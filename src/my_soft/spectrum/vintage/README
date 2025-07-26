@@ -11,6 +11,8 @@ También hice algunos juegos sencillos en Basic, pero ningún juego en Assembler
 Y también se encuentran muchas utilidades varias (copiones, assemblers, debuggers, bases de datos), algunas son programas enteros y otros
 son rutinas sencillas para comprobar "que se podia hacer" con el Spectrum. Muchos de los programas hechos en assembler incluyen también el código fuente (habitualmente para el Gens de Hisoft)
 
+Es importante comentar que los programas realizados hasta 1993 aproximadamente, estaban realizados en mi antiguo Inves Spectrum+. Es por esto que, por ejemplo, hay caracteres como la Ñ, que no aparecen correctamente si no se seleciona esta máquina. O los juegos y programas que usan el control por joystick kempston, leen del puerto 221, que sólo funciona en Inves.
+
 Te recomiendo que le eches un vistazo a todos (sí, hay muchas cintas, un total de 192 TAP/TZX), pero te resumo los mas destacables de cada carpeta:
 
 - Assembler: 
