@@ -1,0 +1,1 @@
+source code is created using TED editor from Microhobby magazine. Can be converted to sped using utilities_others/converso.tap
