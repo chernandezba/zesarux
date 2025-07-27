@@ -23,3 +23,7 @@ Probar en diferentes sistemas:
 
 ---------------------
 tape viewer, si cada linea de cinta pasa de una linea, no hace bien seek. ejemplo con crash history
+
+-en external audio source. hago shift-e (flush) y mientras está la ventana splash, pulso en pantalla spectrum
+No se cierra el menu realmente, solo pierde el foco. Deberia cerrar el menu
+Si en cambio pulso justo al inicio de ventana splash, si que cierra el menu
