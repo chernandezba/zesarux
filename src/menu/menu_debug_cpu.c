@@ -736,9 +736,9 @@ void menu_mem_breakpoints_clear(MENU_ITEM_PARAMETERS)
 
 void menu_clear_all_breakpoints(MENU_ITEM_PARAMETERS)
 {
-	if (menu_confirm_yesno("Clear breakpoints")) {
+	if (menu_confirm_yesno("Delete all breakpoints")) {
 		init_breakpoints_table();
-		menu_generic_message("Clear breakpoints","OK. All breakpoints cleared");
+		menu_generic_message("Delete all breakpoints","OK. All breakpoints deleted");
 	}
 }
 
