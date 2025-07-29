@@ -179,6 +179,7 @@ int menu_plusthreedisk_info_tracks_list_opcion_seleccionada=0;
 int menu_plusthreedisk_info_opcion_seleccionada=0;
 int plusthreedisk_opcion_seleccionada=0;
 int zxmmcplus_opcion_seleccionada=0;
+int storage_tape_copier_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -579,7 +580,81 @@ void menu_storage_tape_my_soft(MENU_ITEM_PARAMETERS)
     }
 }
 
+
 void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador Primi 2  (48K)");
+        menu_add_item_menu_misc(array_menu_common,"copiadorprimi2.zsf");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador Azul     (48K)");
+        menu_add_item_menu_misc(array_menu_common,"copiador.zsf");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Duplitape         (48K)");
+        menu_add_item_menu_misc(array_menu_common,"duplitape.zsf");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Duplitape2        (48K)");
+        menu_add_item_menu_misc(array_menu_common,"duplitape2.zsf");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copion9           (48K)");
+        menu_add_item_menu_misc(array_menu_common,"copion9.zsf");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Mancopy           (48K)");
+        menu_add_item_menu_misc(array_menu_common,"mancopy.zsf");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Lao-Copy 2        (48K)");
+        menu_add_item_menu_misc(array_menu_common,"laocopy2.zsf");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"SuperTapeCopier  (128K)");
+        menu_add_item_menu_misc(array_menu_common,"supertapecopier.zsf");
+
+        //menu_add_item_menu_separator(array_menu_common);
+
+        //menu_add_ESC_item(array_menu_common);
+
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&storage_tape_copier_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Tape copier");
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+
+            char copion_con_carpeta[PATH_MAX];
+            sprintf(copion_con_carpeta,"copiers/%s",item_seleccionado.texto_misc);
+            char buffer_nombre[PATH_MAX];
+
+            if (find_sharedfile(copion_con_carpeta,buffer_nombre)) {
+                debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
+                strcpy(quickload_file,buffer_nombre);
+                quickfile=quickload_file;
+                //Forzar autoload
+                z80_bit pre_noautoload;
+                pre_noautoload.v=noautoload.v;
+                noautoload.v=0;
+                quickload(quickload_file);
+
+                noautoload.v=pre_noautoload.v;
+                salir_todos_menus=1;
+            }
+            else {
+                debug_printf(VERBOSE_ERR,"Tape copier %s not found",item_seleccionado.texto_misc);
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
+
+void old_menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 {
 
     char copion[256]="";
