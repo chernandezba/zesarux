@@ -37885,22 +37885,35 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
             break;
 
             case 'E':
-                //La fifo de entrada
-                audiorecord_input_empty_buffer_with_lock();
+                if (audio_is_recording_input) {
+                    //La fifo de entrada
+                    audiorecord_input_empty_buffer_with_lock();
 
-                //Y tambien este buffer visual
-                menu_realtape_record_input_empty_visual_buffer();
+                    //Y tambien este buffer visual
+                    menu_realtape_record_input_empty_visual_buffer();
 
-                //Y decir que buffer no esta lleno
-                audiorecord_last_write_full=0;
+                    //Y decir que buffer no esta lleno
+                    audiorecord_last_write_full=0;
 
-                menu_generic_message_splash("Empty buffer","Buffer has been emptied");
+
+                    //Evito splash, porque si mientras se visualiza pulso con el raton fuera,
+                    //no cierra el menu, solo la ventana pierde el foco
+                    //dejando la ventana de record activa (aunque sin foco) y al pulsar
+                    //en ventana de spectrum las teclas shift+space (y esta la opcion de zxvision->use speccy keys)
+                    //me cerraria la ventana de record input
+                    //menu_generic_message_splash("Empty buffer","Buffer has been emptied");
+
+
+                    menu_generic_message("Empty buffer","Buffer has been emptied");
+                }
             break;
 
             case 'e':
-                if (!audio_is_recording_input) {
-                    //printf("start recording\n");
-                    audiodriver_start_record_input();
+                if (audio_can_record_input() ) {
+                    if (!audio_is_recording_input) {
+                        //printf("start recording\n");
+                        audiodriver_start_record_input();
+                    }
                 }
             break;
 
