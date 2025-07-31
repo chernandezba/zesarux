@@ -355,7 +355,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
 
 //printf(item_seleccionado.texto_opcion);
         //generic_message_tooltip_return retorno_ventana;
-        //zxvision_generic_message_tooltip("Rooms", 0,0, 0, 1, &retorno_ventana, 1, "%s", zeng_remote_list_rooms_buffer);
+        //zxvision_generic_message_tooltip("Rooms", 0,0, 0, 1, &retorno_ventana, 1, 0, "%s", zeng_remote_list_rooms_buffer);
 
 
         //printf("Despues ventana rooms\n");

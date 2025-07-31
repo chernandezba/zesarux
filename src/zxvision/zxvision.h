@@ -845,7 +845,7 @@ struct s_generic_message_tooltip_return {
 
 typedef struct s_generic_message_tooltip_return generic_message_tooltip_return;
 
-extern void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, int return_after_print_text, int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...);
+extern void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, int return_after_print_text,int volver_timeout, int tooltip_enabled,     int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, int no_trocear_lineas, const char * texto_format , ...);
 extern int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int longitud,int max_ancho_texto,char **buffer_lineas);
 
 //Posiciones de texto mostrado en second overlay

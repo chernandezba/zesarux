@@ -1202,7 +1202,7 @@ void menu_zxvision_test(MENU_ITEM_PARAMETERS)
 
 
 		//zxvision_generic_message_tooltip("pruebas", 30, 0, 0, generic_message_tooltip_return *retorno, const char * texto_format , ...)
-		zxvision_generic_message_tooltip("Pruebas" , 1, 0 , 0, 0, 0, NULL, 0, "Hola que tal como estas esto es una prueba de escribir texto. "
+		zxvision_generic_message_tooltip("Pruebas" , 1, 0 , 0, 0, 0, NULL, 0, 0, "Hola que tal como estas esto es una prueba de escribir texto. "
 					"No se que mas poner pero me voy a empezar a repetir, "
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore "
 					"et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip"
@@ -25991,7 +25991,7 @@ void menu_debug_show_symbol_table(MENU_ITEM_PARAMETERS)
 //util_concat_string(menu_debug_show_symbol_table_texto_browser,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
 
 	//menu_debug_show_symbol_table_texto_browser[menu_debug_show_symbol_table_indice_buffer]=0;
-	zxvision_generic_message_tooltip("Symbol Table" , 1, 0 , 0, 0, 1, NULL, 1, "%s", menu_debug_show_symbol_table_texto_browser);
+	zxvision_generic_message_tooltip("Symbol Table" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", menu_debug_show_symbol_table_texto_browser);
 
 
     free(menu_debug_show_symbol_table_texto_browser);
@@ -27096,7 +27096,7 @@ void menu_memory_cheat_view_results(MENU_ITEM_PARAMETERS)
 	generic_message_tooltip_return retorno_ventana;
 
 
-	zxvision_generic_message_tooltip("View Results" , 1, 0 , 0, 0, 1, &retorno_ventana, 1, "%s", texto_browser);
+	zxvision_generic_message_tooltip("View Results" , 1, 0 , 0, 0, 1, &retorno_ventana, 1, 0, "%s", texto_browser);
 
 
     free(texto_browser);
@@ -31228,7 +31228,7 @@ void menu_about_about(MENU_ITEM_PARAMETERS)
 
 	generic_message_tooltip_return retorno_ventana;
 
-	zxvision_generic_message_tooltip("About" , 0, 0 ,0,0,0,&retorno_ventana,0,mensaje_about);
+	zxvision_generic_message_tooltip("About" , 0, 0 ,0,0,0,&retorno_ventana,0,0, mensaje_about);
 
 
 
@@ -35794,7 +35794,7 @@ void menu_z88_slot_card_browser(MENU_ITEM_PARAMETERS)
 
         //menu_generic_message_tooltip("Card browser", 0, 0, 1, NULL, "%s", texto_buffer);
 
-	zxvision_generic_message_tooltip("Card Browser" , 1, 0 , 0, 0, 1, NULL, 1, "%s", texto_buffer);
+	zxvision_generic_message_tooltip("Card Browser" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", texto_buffer);
 
 }
 
@@ -35819,7 +35819,7 @@ void menu_z88_slot_copy_from_eprom(MENU_ITEM_PARAMETERS)
 	//printf ("archivos: %s\n",texto_buffer);
 	generic_message_tooltip_return retorno_archivo;
 	//menu_generic_message_tooltip("Select file", 0, 0, 1, &retorno_archivo, "%s", texto_buffer);
-	zxvision_generic_message_tooltip("Select file" , 1, 0 , 0, 0, 1, &retorno_archivo, 1,"%s", texto_buffer);
+	zxvision_generic_message_tooltip("Select file" , 1, 0 , 0, 0, 1, &retorno_archivo, 1,0, "%s", texto_buffer);
 
 	//Si se sale con ESC
 	if (retorno_archivo.estado_retorno==0) return;

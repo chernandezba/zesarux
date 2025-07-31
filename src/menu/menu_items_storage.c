@@ -987,6 +987,7 @@ void menu_tape_browser(MENU_ITEM_PARAMETERS)
 
         //Si es .tap, podemos hacer browse
         if (!util_compare_file_extension(tapefile,"tap")) {
+            //printf("linea seek: %d\n",linea);
             if (linea>=0) {
                 if (menu_confirm_yesno("Seek to block?")) {
                     tape_seek_to_block(linea);
@@ -2085,7 +2086,7 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
             //printf("browser: %s\n",texto_chkdsk);
 
-            zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 1, 0 , 0, 0, 1, NULL, 1, "%s", texto_chkdsk);
+            zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", texto_chkdsk);
 
             free(texto_chkdsk);
             return;
@@ -2153,7 +2154,7 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
     //printf("browser: %s\n",texto_chkdsk);
 
-	zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 1, 0 , 0, 0, 1, NULL, 1, "%s", texto_chkdsk);
+	zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", texto_chkdsk);
 
 
     free(texto_chkdsk);

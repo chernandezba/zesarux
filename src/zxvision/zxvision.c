@@ -12069,8 +12069,9 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int disable_
 //return_after_print_text, si no es 0, se usa para que vuelva a la funcion que llama justo despues de escribir texto,
 //usado en opciones de mostrar First Aid y luego agregarle opciones de menu tabladas,
 //por lo que agrega cierta altura a la ventana. Se agregan tantas lineas como diga el parametro return_after_print_text
+//no_trocear_lineas indica que las lineas no se cortaran en ancho. De momento solo Tape Viewer utiliza el no trocear lineas
 void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, int return_after_print_text,int volver_timeout, int tooltip_enabled,
-    int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...)
+    int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, int no_trocear_lineas, const char * texto_format , ...)
 {
 	//Buffer de entrada
 
@@ -12149,7 +12150,18 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
 	//const int max_ancho_texto=NEW_MAX_ANCHO_LINEAS_GENERIC_MESSAGE-2;
 
     //Ancho de linea inicial en ventana
-    int max_ancho_texto=40;
+    int default_ancho_ventana=40;
+    int max_ancho_texto=default_ancho_ventana;
+
+
+    //En principio, el ancho del contenido de la ventana no tiene limite.
+    //con 200 caracteres en principio nos aseguramos que habra suficiente
+    //De momento solo se usa para Tape Viewer, que es suficiente con 200
+    int total_width_cuando_no_trocear=200;
+
+    if (no_trocear_lineas) {
+        max_ancho_texto=total_width_cuando_no_trocear;
+    }
 
     int ancho_total_permitido;
 
@@ -12164,7 +12176,9 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
     if (ancho_total_permitido<30) ancho_total_permitido=30;
 
     //Controlar que el maximo no salga de pantalla
-    if (max_ancho_texto>ancho_total_permitido-2) max_ancho_texto=ancho_total_permitido-2;
+    if (no_trocear_lineas==0) {
+        if (max_ancho_texto>ancho_total_permitido-2) max_ancho_texto=ancho_total_permitido-2;
+    }
 
     int longitud=strlen(texto);
 
@@ -12230,7 +12244,17 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
 
 	//printf ("alto ventana: %d\n",alto_ventana);
 	//int ancho_ventana=max_ancho_texto+2;
-	int ancho_ventana=max_ancho_texto+2;
+	int ancho_ventana;
+
+    if (no_trocear_lineas) {
+        ancho_ventana=default_ancho_ventana+2;
+    }
+
+    else {
+        ancho_ventana=max_ancho_texto+2;
+    }
+
+
 
     //printf("max_ancho_texto %d ancho_ventana %d ancho_total_permitido: %d Maximo ancho: %d\n",
     //    max_ancho_texto,ancho_ventana,ancho_total_permitido,ZXVISION_MAX_ANCHO_VENTANA);
@@ -12360,6 +12384,8 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
             //abajo
             case 10:
                 linea_a_speech=zxvision_generic_message_cursor_down(ventana);
+
+                //printf("Cursor: %d\n",ventana->cursor_line);
 
                 zxvision_sound_event_cursor_movement();
 
@@ -12527,9 +12553,9 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
 
 
             default:
-                //Si cambia ancho ventana
-                if (ancho_ventana!=ventana->visible_width) {
-                    //printf("Cambio ancho ventana: %d\n",ventana->visible_width);
+                //Si cambia ancho ventana y no hemos pulsado enter para salir
+                if (ancho_ventana!=ventana->visible_width && tecla!=13) {
+                    //printf("Cambio ancho ventana: %d %d\n",ancho_ventana,ventana->visible_width);
 
                     ancho_ventana=ventana->visible_width;
                     alto_ventana=ventana->visible_height;
@@ -12552,11 +12578,17 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
                     //Y minimo
                     if (ancho_linea<5) ancho_linea=5;
 
+                    if (no_trocear_lineas) {
+                        ancho_linea=total_width_cuando_no_trocear;
+                    }
+
                     indice_linea=zxvision_generic_message_aux_justificar_lineas(texto,longitud,ancho_linea,punteros_buffer_lineas);
 
                     //printf("Total lineas: %d\n",indice_linea);
 
                     alto_total_ventana=indice_linea;
+
+                    //printf("caso nueva ventana por cambio de ancho. tecla=%d\n",tecla);
 
                     zxvision_generic_message_crea_ventana(ventana,disable_special_chars,xventana,yventana,ancho_ventana,alto_ventana,alto_total_ventana,
                         titulo,resizable,mostrar_cursor,indice_linea,punteros_buffer_lineas,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -12587,7 +12619,7 @@ void zxvision_generic_message_tooltip(char *titulo, int disable_special_chars, i
 		if (tecla==2) retorno->estado_retorno=0;
 		else retorno->estado_retorno=1;
 
-		//printf ("\n\nLinea seleccionada: %d (%s)\n",linea_final,buffer_lineas[linea_final]);
+		//printf ("\n\nLinea seleccionada: %d (%s)\n",linea_final,punteros_buffer_lineas[linea_final]);
 
 	}
 
@@ -13145,6 +13177,7 @@ int zxvision_cursor_out_view(zxvision_window *ventana)
 
 void zxvision_set_cursor_line(zxvision_window *ventana,int linea)
 {
+    //printf("llamado a zxvision_set_cursor_line linea=%d\n",linea);
     ventana->cursor_line=linea;
 
     zxvision_set_flag_dirty_must_draw_contents(ventana);
@@ -20241,7 +20274,7 @@ void menu_dibuja_menu_help_tooltip(char *texto, int si_tooltip)
         if (si_tooltip) {
 			//menu_generic_message_tooltip("Tooltip",0,1,0,NULL,"%s",texto);
 			//printf ("justo antes de message tooltip\n");
-			zxvision_generic_message_tooltip("Tooltip" , 0, 0 ,0,1,0,NULL,0,"%s",texto);
+			zxvision_generic_message_tooltip("Tooltip" , 0, 0 ,0,1,0,NULL,0,0, "%s",texto);
 		}
 
 		else menu_generic_message("Help",texto);
@@ -24590,7 +24623,7 @@ void menu_generic_message_format(char *titulo, const char * texto_format , ...)
 
 
 	//menu_generic_message_tooltip(titulo, 0, 0, 0, NULL, "%s", texto);
-	zxvision_generic_message_tooltip(titulo , 0, 0 , 0, 0, 0, NULL, 1, "%s", texto);
+	zxvision_generic_message_tooltip(titulo , 0, 0 , 0, 0, 0, NULL, 1, 0, "%s", texto);
 
 
 	//En Linux esto funciona bien sin tener que hacer las funciones va_ previas:
@@ -24604,7 +24637,7 @@ void menu_generic_message(char *titulo, const char * texto)
 {
 
         //menu_generic_message_tooltip(titulo, 0, 0, 0, NULL, "%s", texto);
-		zxvision_generic_message_tooltip(titulo , 0, 0 , 0, 0, 0, NULL, 1, "%s", texto);
+		zxvision_generic_message_tooltip(titulo , 0, 0 , 0, 0, 0, NULL, 1, 0, "%s", texto);
 }
 
 //Mensaje con setting para marcar
@@ -24631,7 +24664,7 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
 	}
 
 
-	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
+	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, 0, "%s", texto);
 
 
 
@@ -24734,7 +24767,7 @@ int zxvision_menu_generic_message_two_buttons(char *titulo, const char *texto,
 		return -1;
 	}
 
-	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, "%s", texto);
+	zxvision_generic_message_tooltip(titulo , 0, lineas_agregar , 0, 0, 0, NULL, 1, 0, "%s", texto);
 
 	zxvision_window *ventana;
 
@@ -24806,7 +24839,7 @@ void menu_generic_message_splash(char *titulo, const char * texto)
 {
 
         //menu_generic_message_tooltip(titulo, 1, 0, 0, NULL, "%s", texto);
-		zxvision_generic_message_tooltip(titulo , 0, 0 , 1, 0, 0, NULL, 0, "%s", texto);
+		zxvision_generic_message_tooltip(titulo , 0, 0 , 1, 0, 0, NULL, 0, 0, "%s", texto);
 		menu_espera_no_tecla();
 }
 
@@ -24814,7 +24847,7 @@ void menu_generic_message_warn(char *titulo, const char * texto)
 {
 
         //menu_generic_message_tooltip(titulo, 1, 0, 0, NULL, "%s", texto);
-		zxvision_generic_message_tooltip(titulo , 0, 0 , 2, 0, 0, NULL, 0, "%s", texto);
+		zxvision_generic_message_tooltip(titulo , 0, 0 , 2, 0, 0, NULL, 0, 0, "%s", texto);
 }
 
 int menu_confirm_yesno(char *texto_ventana)
