@@ -1,2 +1,0 @@
-Version corregida del theliner74
-- No funcionaban los comandos de CARGAR o GRABAR datos
