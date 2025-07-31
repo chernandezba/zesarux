@@ -1,0 +1,6 @@
+Movimiento con 6789
+Shift+1 para comandos especiales. Se pueden tambien escribir pulsando tecla E
+Espacio para comandos "normales", como "regenerar" o "circulo"
+OPQA para comandos que necesitan indicar una area, como ESCR para escribir texto o CIRCULO
+
+El programa tiene un buffer de teclado por interrupciones, por tanto, secciones que vayan lentas tendran teclas almacenadas en buffer de antes
