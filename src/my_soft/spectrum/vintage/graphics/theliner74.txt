@@ -1,7 +1,5 @@
 Movimiento principal del eje de coordenadas:
 Movimiento con 6789, salto por defecto de 8 en 8. Pulsar tecla s para cambiar el salto. Con teclas 1 y 2 se marca inicio y final de linea. Con teclas 1 y 3 se marca inicio y final de arco
-
-
 Shift+1 para comandos especiales. Se pueden tambien escribir pulsando tecla E
 Espacio para comandos "normales", como "regenerar" o "circulo"
 
@@ -20,27 +18,27 @@ Al escribir comandos y comandos especiales, se pueden indicar las primeras letra
 Comandos:
 ---------
 
-LINEA
+LINEA: Dibuja una linea entre dos puntos. Se debe cambiar la direccion y longitud mediante OPQA
 
-TRIANGULO
+TRIANGULO: Dibuja un triángulo
 
-RECTANGULO
+RECTANGULO: Dibuja un rectángulo
 
-CIRCULO
+CIRCULO: Dibuja un circulo. Nota: si se especifica valores de ancho y alto diferentes, se dibujará una elipse
 
-ELIPSE
+ELIPSE: Dibuja una elipse
 
-ARCO
+ARCO: Dibuja un arco
 
-ESPIRAL
+ESPIRAL: Dibuja una espiral
 
-REGENERAR
+REGENERAR: Redibuja todo
 
-COPIAR OBJETO
+COPIAR OBJETO: Copia el objeto seleccionado
 
-MOVER OBJETO
+MOVER OBJETO: Mover el objeto seleccionado
 
-BORRAR OBJETO
+BORRAR OBJETO: Borrar el objeto seleccionado
 
 ROMPER OBJETO: No implementado?
 
@@ -50,7 +48,7 @@ ROTAR OBJETO: Rotar un objeto en base a un centro indicado
 
 ESPEJO: Espejar una objeto verticalmente u horizontalmente
 
-TRAMAS
+TRAMAS: Dibuja una serie de lineas, separadas con un incremento concreto y modificando el tamaño en cada una
 
 MOSTRAR CARACTER: Escribir texto, varios caracteres (a pesar de lo que podria parecer por el nombre). No se guarda en datos, solo aparece al momento en pantalla. Se puede luego convertir a lineas con comando PROCESAR
 
@@ -70,9 +68,9 @@ GRABAR: grabar datos o pantalla
 
 INSERTAR BYTES: insertar bytes de datos al final. Ejemplo si insertamos los 4 bytes siguientes: 0 0 175 255, generaremos una linea diagonal de punta a punta de la pantalla
 
-INTRODUCIR COMANDOS ESPECIALES
+INTRODUCIR COMANDOS ESPECIALES: Permite seleccionar comandos especiales. Misma función que al pulsar tecla E desde el modo de eje de coordenadas
 
-LISTAR COMANDOS ESPECIALES
+LISTAR COMANDOS ESPECIALES: Listar los comandos especiales disponibles
 
 PROCESAR PANTALLA: escanear la pantalla pixel a pixel y convertirla a lineas. Util para comando "MOSTRAR CARACTER" o aun mas, cargando una pantalla de un juego y convirtiéndola a lineas
 
@@ -87,13 +85,13 @@ COMENZAR: Borrar dibujo y empezar desde cero
 Comandos especiales:
 --------------------
 
-BORRA PANTALLA 
+BORRA PANTALLA: Comando para borrar la pantalla
 
 ESPERA UNA TECLA: esperar pulsación de cualquier tecla. Revisar porque no se si funciona bien
 
-SONIDO +30 
+SONIDO +30: Reproducir un sonido agudo
 
-SONIDO -30 
+SONIDO -30: Reproducir un sonido grave
 
 ACTIVAR LINEA PUNTEADA: el dibujado de lineas no será continuo sino que se alterna 1 punto con 1 blanco cada vez
 
@@ -101,27 +99,27 @@ DESACTIVAR LINEA PUNTEADA: desactivar el comportamiento de linea punteada
 
 BORRAR ZONA INFERIOR
 
-CONTORNO
+CONTORNO: Cambiar el color del border
 
-TINTA
+TINTA: Cambiar el color de la tinta
 
-PAPEL
+PAPEL: Cambiar el color del papel
 
-BRILLO
+BRILLO: Activar o desactivar el brillo
 
-PARPADEO
+PARPADEO: Activar o desactivar el parpadeo
 
-SOBRE
+SOBRE: Activar o desactivar el modo XOR (OVER del basic)
 
-INVERSO
+INVERSO: Activar el modo inverso
 
 ESPERA TECLA: Espera tecla indicada con codigo ascii. Ejemplo si indicamos 48, esperara tecla "0". Revisar porque no se si funciona bien
 
 PAUSA: Espera un valor de x * 20 ms (igual al comando PAUSE de basic)
 
-COMENTARIO
+COMENTARIO: Agregar un comentario de texto a los datos
 
-EJECUTA CODIGO MAQUINA
+EJECUTA CODIGO MAQUINA: Ejecuta una sentencia en código máquina, se indica mediante bytes. Habitualmente el byte final debe ser un 201 (RET)
 
 
 
