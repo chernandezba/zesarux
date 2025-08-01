@@ -100,7 +100,7 @@ ACTIVAR LINEA PUNTEADA: el dibujado de lineas no será continuo sino que se alte
 
 DESACTIVAR LINEA PUNTEADA: desactivar el comportamiento de linea punteada
 
-BORRAR ZONA INFERIOR
+BORRAR ZONA INFERIOR (?): Borrar dos lineas inferiores de la pantalla (el canal #0)
 
 CONTORNO: Cambiar el color del border
 
@@ -139,4 +139,31 @@ Notas técnicas
 
 La rutina en 23873, usada por ejemplo para buscar un comando especial, usa la variable de sistema en 23629 (DEST 	Address of variable in assignment. ). Desde basic, se asigna una variable (s$) que creo que no se usa en basic, pero la rutina de codigo máquina sabe donde está esa variable (la última usada) y por tanto puede leer la lista de comandos especiales (que está en una variable de basic). Esto se puede ver en la linea 3052
 
+---
 
+Pendiente corregir rutinas de esperar tecla
+
+ESPERA TECLA (concreta): 628E. Deberia llamar a 25437 (leer caracter de buffer de teclado) que retorna caracter en registro C:
+
+628D PUSH AF
+628E CALL 62D1H
+6291 CALL 25437
+6294 POP AF
+6295 CP C
+6296 JR NZ,628DH
+6298 JP 6178H
+629B NOP
+629C NOP
+629D NOP
+Nota: Como estan las mayusculas habilitadas, por ejemplo en el dibujo de HELLO, espera h minusculas primero y por tanto debemos pasar a minusculas con shift+2
+Dibujo HELLO requiere teclas: h e l l o !
+
+ESPERA UNA TECLA: Similar para la rutina que espera cualquier tecla
+61F7 CALL 25437
+61FA LD A,C
+61FB OR A
+61FC JR Z,61F7H
+61FE JP 6178H
+6201 NOP
+6202 NOP
+6203 NOP
