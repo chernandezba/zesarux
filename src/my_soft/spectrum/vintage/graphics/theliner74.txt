@@ -1,6 +1,135 @@
-Movimiento con 6789
+Movimiento principal del eje de coordenadas:
+Movimiento con 6789, salto por defecto de 8 en 8. Pulsar tecla s para cambiar el salto. Con teclas 1 y 2 se marca inicio y final de linea. Con teclas 1 y 3 se marca inicio y final de arco
+
+
 Shift+1 para comandos especiales. Se pueden tambien escribir pulsando tecla E
 Espacio para comandos "normales", como "regenerar" o "circulo"
-OPQA para comandos que necesitan indicar una area, como ESCR para escribir texto o CIRCULO
 
-El programa tiene un buffer de teclado por interrupciones, por tanto, secciones que vayan lentas tendran teclas almacenadas en buffer de antes
+Comandos "normales" generan lineas. Comandos especiales no estan basados en lineas
+
+OPQA para comandos que necesitan indicar una area, como ESCR para escribir texto o CIRCULO. En ese modo de area, si se pulsa espacio se puede indicar numericamente el ancho y alto
+
+El programa tiene un buffer de teclado por interrupciones, por tanto, secciones que vayan lentas tendran teclas almacenadas en buffer de antes.
+
+El regenerado del dibujo se hace desde código máquina, por tanto es muy rápido
+
+Se listan los comandos y comandos especiales. Los que tienen un interrogante (?) es que no se sabe seguro que haga esa función
+
+Al escribir comandos y comandos especiales, se pueden indicar las primeras letras, no solo el comando entero. Por ejemplo indicar "LIN" por "LINEA"
+
+Comandos:
+---------
+
+LINEA
+
+TRIANGULO
+
+RECTANGULO
+
+CIRCULO
+
+ELIPSE
+
+ARCO
+
+ESPIRAL
+
+REGENERAR
+
+COPIAR OBJETO
+
+MOVER OBJETO
+
+BORRAR OBJETO
+
+ROMPER OBJETO: No implementado?
+
+TAMAÑO OBJETO: Escalar un objeto
+
+ROTAR OBJETO: Rotar un objeto en base a un centro indicado
+
+ESPEJO: Espejar una objeto verticalmente u horizontalmente
+
+TRAMAS
+
+MOSTRAR CARACTER: Escribir texto, varios caracteres (a pesar de lo que podria parecer por el nombre). No se guarda en datos, solo aparece al momento en pantalla. Se puede luego convertir a lineas con comando PROCESAR
+
+ESCALA: mostrar eje coordenadas escalado a parametros indicados
+
+LISTAR: listar los datos. Se puede activar modo paso a paso al principio pulsando la tecla P: en ese modo se avanza cada comando pulsando P. Luego en modo paso a paso se pueden borrar objetos: pulsando una primera vez la tecla borrar antes del inicio, y luego pulsando de nuevo borrar despues del trozo a borrar. Tecla V para volver
+
+LONGITUD DATOS: Mostrar lo que ocupa el dibujo
+
+ESCRIBIR: Escribir texto como lineas
+
+LISTAR OBJETOS: Listar los objetos que componen una selección dada
+
+CARGAR: cargar datos o pantalla
+
+GRABAR: grabar datos o pantalla
+
+INSERTAR BYTES: insertar bytes de datos al final. Ejemplo si insertamos los 4 bytes siguientes: 0 0 175 255, generaremos una linea diagonal de punta a punta de la pantalla
+
+INTRODUCIR COMANDOS ESPECIALES
+
+LISTAR COMANDOS ESPECIALES
+
+PROCESAR PANTALLA: escanear la pantalla pixel a pixel y convertirla a lineas. Util para comando "MOSTRAR CARACTER" o aun mas, cargando una pantalla de un juego y convirtiéndola a lineas
+
+CARGAR OVERLAY (?): Cargar rutina en código máquina y ejecutarla 
+
+BASIC: Salir al basic desactivando el buffer de teclado. Escribir RETURN para volver
+
+COMENZAR: Borrar dibujo y empezar desde cero
+
+
+
+Comandos especiales:
+--------------------
+
+BORRA PANTALLA 
+
+ESPERA UNA TECLA: esperar pulsación de cualquier tecla. Revisar porque no se si funciona bien
+
+SONIDO +30 
+
+SONIDO -30 
+
+ACTIVAR LINEA PUNTEADA: el dibujado de lineas no será continuo sino que se alterna 1 punto con 1 blanco cada vez
+
+DESACTIVAR LINEA PUNTEADA: desactivar el comportamiento de linea punteada
+
+BORRAR ZONA INFERIOR
+
+CONTORNO
+
+TINTA
+
+PAPEL
+
+BRILLO
+
+PARPADEO
+
+SOBRE
+
+INVERSO
+
+ESPERA TECLA: Espera tecla indicada con codigo ascii. Ejemplo si indicamos 48, esperara tecla "0". Revisar porque no se si funciona bien
+
+PAUSA: Espera un valor de x * 20 ms (igual al comando PAUSE de basic)
+
+COMENTARIO
+
+EJECUTA CODIGO MAQUINA
+
+
+
+-------
+
+
+Acerca del formato de los datos guardados:
+
+- Si el primer byte es < 176, es una linea, en formato: y1 x1 y2 x2, siendo x1,y1 el punto inicial y x2,y2 el punto final
+- Si el primer byte es >=175, es un comando especial. Por ejemplo,  "BORRA PANTALLA" es 176 o "ESPERA UNA TECLA" es 177
+- El primer byte indica el comando. S
