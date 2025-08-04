@@ -140,11 +140,9 @@ Notas técnicas
 
 La rutina en 23873, usada por ejemplo para buscar un comando especial, usa la variable de sistema en 23629 (DEST 	Address of variable in assignment. ). Desde basic, se asigna una variable (s$) que creo que no se usa en basic, pero la rutina de codigo máquina sabe donde está esa variable (la última usada) y por tanto puede leer la lista de comandos especiales (que está en una variable de basic). Esto se puede ver en la linea 3052
 
----
+* Los comandos de espera tecla y espera una tecla no funcionaban en the liner 74. Desde que se incorporó el buffer de teclado, dichos comandos no funcionaban, porque esperaban leer la tecla de 23560 como en basic habitualmente, pero el buffer de teclado borra la tecla de esa variable de sistema. Hay que llamar a la rutina propia de leer tecla del buffer (25437). Esas rutinas por tanto se han sustituido en the liner 75 por lo siguiente:
 
-Pendiente corregir rutinas de esperar tecla
-
-ESPERA TECLA (concreta): 628E. Deberia llamar a 25437 (leer caracter de buffer de teclado) que retorna caracter en registro C:
+ESPERA TECLA (concreta): 628D. La rutina 25437 (leer caracter de buffer de teclado) retorna caracter en registro C:
 
 628D PUSH AF
 628E CALL 62D1H
