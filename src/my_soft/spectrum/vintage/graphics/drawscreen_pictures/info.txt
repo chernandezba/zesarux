@@ -4,3 +4,4 @@ navidad.tap -> cargar con drawscreenv3_3. aunque da un error casi al final. quiz
 paw.tap -> cargar con drawscreenv3_3
 stars.tap -> cargar con drawscreenv3_3
 3d.tap -> cargar con drawscreenv3_3
+casa.tap -> cargar con drawscreenv3_3
