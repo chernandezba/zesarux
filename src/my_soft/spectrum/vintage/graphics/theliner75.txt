@@ -1,7 +1,17 @@
 The Liner 75 - Introducción
 ---------------------------
 
-Esta versión es una mejorada de la versión 74. La 74 fue la última realizada en los años 90, y la 75 tiene fecha del 04/08/2025. Se conserva la fecha original de la versión 74 en el programa, para que el usuario tenga la impresión que es una versión de los 90 (que realmente lo es, solo que con algunos bugs corregidos). Estas modificaciones de la versión 75 son correcciones de algunas funciones que no funcionaban después de la incorporación del buffer de teclado en the liner:
+The Liner es un programa de dibujo vectorial. Todo dibujo en pantalla se genera mediante lineas: circulos, rectangulos, incluso texto, son generados mediante lineas. Incluye además otro tipo de elementos que se pueden incorporar dentro de un dibujo, como cambio de color o esperar la pulsación de una tecla, por ejemplo.
+
+Es una clara inspiración del AutoCAD de PC.
+
+Esta versión 75 del The Liner y algunas otras también recientes, usan un buffer de teclado. Es decir, mientras el ordenador está realizando tareas en segundo plano, toda tecla pulsada se almacena en un buffer y luego el programa lee dichas teclas. Esto es una clara inspiración de antiguos programas de MS-DOS de PC, que también tenian buffer de teclado.
+
+
+Notas sobre la versión 75
+-------------------------
+
+Esta versión 75 es una mejorada de la versión 74. La 74 fue la última realizada en los años 90, y la 75 tiene fecha del 04/08/2025. Se conserva la fecha original de la versión 74 en el programa, para que el usuario tenga la impresión que es una versión de los 90 (que realmente lo es, solo que con algunos bugs corregidos). Estas modificaciones de la versión 75 son correcciones de algunas funciones que no funcionaban después de la incorporación del buffer de teclado en The Liner:
 
 - No funcionaban los comandos de CARGAR o GRABAR datos. Tampoco algunas opciones como Espejo
 - No funcionaban los comandos especiales de ESPERA TECLA y ESPERA UNA TECLA
