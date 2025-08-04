@@ -1,2 +1,181 @@
-Version corregida del theliner74
-- No funcionaban los comandos de CARGAR o GRABAR datos
+The Liner 75 - Introducción
+---------------------------
+
+Esta versión es una mejorada de la versión 74. La 74 fue la última realizada en los años 90, y la 75 tiene fecha del 04/08/2025. Se conserva la fecha original de la versión 74 en el programa, para que el usuario tenga la impresión que es una versión de los 90 (que realmente lo es, solo que con algunos bugs corregidos). Estas modificaciones de la versión 75 son correcciones de algunas funciones que no funcionaban después de la incorporación del buffer de teclado en the liner:
+
+- No funcionaban los comandos de CARGAR o GRABAR datos. Tampoco algunas opciones como Espejo
+- No funcionaban los comandos especiales de ESPERA TECLA y ESPERA UNA TECLA
+- Se incorpora un ejemplo de programa overlay
+- Se redacta este mini manual
+
+
+Instrucciones
+-------------
+
+Movimiento principal del eje de coordenadas:
+- Movimiento con 6789, salto por defecto de 8 en 8. Pulsar tecla s para cambiar el salto. Con teclas 1 y 2 se marca inicio y final de linea. Con teclas 1 y 3 se marca inicio y final de arco
+- Tecla I para ir a una posición concreta
+- Symbol shift+caps shift para comandos "normales", como "regenerar" o "circulo". Se pueden también escribir pulsando tecla espacio
+- Shift+1 para comandos especiales. Se pueden tambien escribir pulsando tecla E
+
+Comandos "normales" generan lineas. Comandos especiales no estan basados en lineas
+
+OPQA para comandos que necesitan indicar una area, como ESCR para escribir texto o CIRCULO. En ese modo de area, si se pulsa espacio se puede indicar numericamente el ancho y alto
+
+El programa tiene un buffer de teclado por interrupciones, por tanto, secciones que vayan lentas tendran teclas almacenadas en buffer de antes.
+
+El regenerado del dibujo se hace desde código máquina, por tanto es muy rápido
+
+Nota: el programa no detecta si ciertas acciones se salen de pantalla (por ejemplo dibujar una espiral muy grande que salga de los límites). En ese caso se generaría un error y se volvería al basic. Al volver al basic con error, se queda el buffer de teclado activo, pero en Basic no funciona y no veremos las teclas pulsadas. En ese caso hay que hacer que se llene el buffer (por ejemplo pulsando la tecla borrar o espacio 32 veces) y entonces si que se leerían las teclas y en ese caso podemos volver al programa con la sentencia RETURN
+
+Se listan a continuación los comandos y comandos especiales. Los que tienen un interrogante (?) es que no se sabe seguro que haga esa función
+
+Al escribir comandos y comandos especiales, se pueden indicar las primeras letras, no solo el comando entero. Por ejemplo indicar "LIN" por "LINEA"
+
+
+* Comandos:
+
+LINEA: Dibuja una linea entre dos puntos. Se debe cambiar la direccion y longitud mediante OPQA
+
+TRIANGULO: Dibuja un triángulo
+
+RECTANGULO: Dibuja un rectángulo
+
+CIRCULO: Dibuja un circulo. Nota: si se especifica valores de ancho y alto diferentes, se dibujará una elipse
+
+ELIPSE: Dibuja una elipse
+
+ARCO: Dibuja un arco
+
+ESPIRAL: Dibuja una espiral
+
+REGENERAR: Redibuja todo
+
+COPIAR OBJETO: Copia el objeto seleccionado
+
+MOVER OBJETO: Mover el objeto seleccionado
+
+BORRAR OBJETO: Borrar el objeto seleccionado
+
+ROMPER OBJETO: No implementado?
+
+TAMAÑO OBJETO: Escalar un objeto
+
+ROTAR OBJETO: Rotar un objeto en base a un centro indicado
+
+ESPEJO: Espejar una objeto verticalmente u horizontalmente
+
+TRAMAS: Dibuja una serie de lineas, separadas con un incremento concreto y modificando el tamaño en cada una
+
+MOSTRAR CARACTER: Escribir texto, varios caracteres (a pesar de lo que podria parecer por el nombre). No se guarda en datos, solo aparece al momento en pantalla. Se puede luego convertir a lineas con comando PROCESAR
+
+ESCALA: mostrar eje coordenadas escalado a parametros indicados
+
+LISTAR: listar los datos. Se puede activar modo paso a paso al principio pulsando la tecla P: en ese modo se avanza cada comando pulsando P. Luego en modo paso a paso se pueden borrar objetos: pulsando una primera vez la tecla borrar antes del inicio, y luego pulsando de nuevo borrar despues del trozo a borrar. Tecla V para volver
+
+LONGITUD DATOS: Mostrar lo que ocupa el dibujo
+
+ESCRIBIR: Escribir texto como lineas
+
+LISTAR OBJETOS: Listar los objetos que componen una selección dada
+
+CARGAR: cargar datos o pantalla
+
+GRABAR: grabar datos o pantalla
+
+INSERTAR BYTES: insertar bytes de datos al final. Ejemplo si insertamos los 4 bytes siguientes: 0 0 175 255, generaremos una linea diagonal de punta a punta de la pantalla
+
+INTRODUCIR COMANDOS ESPECIALES: Permite seleccionar comandos especiales. Misma función que al pulsar tecla E desde el modo de eje de coordenadas
+
+LISTAR COMANDOS ESPECIALES: Listar los comandos especiales disponibles
+
+PROCESAR PANTALLA: escanear la pantalla pixel a pixel y convertirla a lineas. Util para comando "MOSTRAR CARACTER" o aun mas, cargando una pantalla de un juego y convirtiéndola a lineas
+
+CARGAR OVERLAY: Cargar rutina en código máquina y ejecutarla. Esto es una clara influencia de los overlays de PAWS de cinta, donde se cargaban módulos del editor de PAWS desde cinta, cuando quedaba poca RAM disponible.
+La rutina de overlay puede alterar el inicio y final de los datos, modificando el word en la dirección 23296/7 (para fin) o 23298/9 (para inicio). Existe un overlay de testeo (actualmente en cinta theliner-test-overlay.tap pero en futuro en cinta misma de the liner!! ### agregar esto), que agrega un comentario con nombre "test" al dibujo. Este overlay no tiene utilidad práctica, solo para demostrar como implementar un overlay. Se puede indicar con este comando, el nombre es "testlin.ov" indicando longitud 25 y reserva de bytes 0. Al ejecutar el overlay veremos como agrega ese comentario de test al final del dibujo
+
+BASIC: Salir al basic desactivando el buffer de teclado. Escribir RETURN para volver
+
+COMENZAR: Borrar dibujo y empezar desde cero
+
+
+
+* Comandos especiales:
+
+BORRA PANTALLA: Comando para borrar la pantalla
+
+ESPERA UNA TECLA: esperar pulsación de cualquier tecla. Revisar porque no se si funciona bien
+
+SONIDO +30: Reproducir un sonido agudo
+
+SONIDO -30: Reproducir un sonido grave
+
+ACTIVAR LINEA PUNTEADA: el dibujado de lineas no será continuo sino que se alterna 1 punto con 1 blanco cada vez
+
+DESACTIVAR LINEA PUNTEADA: desactivar el comportamiento de linea punteada
+
+BORRAR ZONA INFERIOR (?): Borrar dos lineas inferiores de la pantalla (el canal #0)
+
+CONTORNO: Cambiar el color del border
+
+TINTA: Cambiar el color de la tinta
+
+PAPEL: Cambiar el color del papel
+
+BRILLO: Activar o desactivar el brillo
+
+PARPADEO: Activar o desactivar el parpadeo
+
+SOBRE: Activar o desactivar el modo XOR (OVER del basic)
+
+INVERSO: Activar el modo inverso
+
+ESPERA TECLA: Espera tecla indicada con codigo ascii. Ejemplo si indicamos 48, esperara tecla "0". Revisar porque no se si funciona bien
+
+PAUSA: Espera un valor de x * 20 ms (igual al comando PAUSE de basic)
+
+COMENTARIO: Agregar un comentario de texto a los datos
+
+EJECUTA CODIGO MAQUINA: Ejecuta una sentencia en código máquina, se indica mediante bytes. Habitualmente el byte final debe ser un 201 (RET)
+
+
+
+Notas técnicas
+--------------
+
+* Acerca del formato de los datos guardados:
+
+- Si el primer byte es < 176, es una linea, en formato: y1 x1 y2 x2, siendo x1,y1 el punto inicial y x2,y2 el punto final
+- Si el primer byte es >=175, es un comando especial. Por ejemplo, "BORRA PANTALLA" es 176 o "ESPERA UNA TECLA" es 177
+
+
+* Acerca de rutinas en código máquina que leen variables
+
+La rutina en 23873, usada por ejemplo para buscar un comando especial, usa la variable de sistema en 23629 (DEST Address of variable in assignment. ). Desde basic, se asigna una variable (s$) que creo que no se usa en basic, pero la rutina de codigo máquina sabe donde está esa variable (la última usada) y por tanto puede leer la lista de comandos especiales (que está en una variable de basic). Esto se puede ver en la linea 3052
+
+* Los comandos de espera tecla y espera una tecla no funcionaban en the liner 74. Desde que se incorporó el buffer de teclado, dichos comandos no funcionaban, porque esperaban leer la tecla de 23560 como en basic habitualmente, pero el buffer de teclado borra la tecla de esa variable de sistema. Hay que llamar a la rutina propia de leer tecla del buffer (25437). Esas rutinas por tanto se han sustituido en the liner 75 por lo siguiente:
+
+ESPERA TECLA (concreta): 628D. La rutina 25437 (leer caracter de buffer de teclado) retorna caracter en registro C:
+
+628D PUSH AF
+628E CALL 62D1H
+6291 CALL 25437
+6294 POP AF
+6295 CP C
+6296 JR NZ,628DH
+6298 JP 6178H
+629B NOP
+629C NOP
+629D NOP
+Nota: Como estan las mayusculas habilitadas, por ejemplo en el dibujo de HELLO, espera h minusculas primero y por tanto debemos pasar a minusculas con shift+2
+Dibujo HELLO requiere teclas: h e l l o !
+
+ESPERA UNA TECLA: Similar para la rutina que espera cualquier tecla
+61F7 CALL 25437
+61FA LD A,C
+61FB OR A
+61FC JR Z,61F7H
+61FE JP 6178H
+6201 NOP
+6202 NOP
+6203 NOP
