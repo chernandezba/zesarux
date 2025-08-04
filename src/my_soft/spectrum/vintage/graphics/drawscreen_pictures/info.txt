@@ -1,3 +1,5 @@
+Todos estos algunos tambien se pueden cargar con drawscreen v8
+
 
 cara.tap-> cargar con drawscreenv3_3. tecla f para cargar
 navidad.tap -> cargar con drawscreenv3_3. aunque da un error casi al final. quiza necesita version 3_1 ?
@@ -5,3 +7,6 @@ paw.tap -> cargar con drawscreenv3_3
 stars.tap -> cargar con drawscreenv3_3
 3d.tap -> cargar con drawscreenv3_3
 casa.tap -> cargar con drawscreenv3_3
+super.tap -> cargar con drawscreenv3_3
+mdt.tap -> cargar con drawscreenv3_3
+tapa.tap -> cargar con drawscreenv3_3
