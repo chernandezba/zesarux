@@ -92,7 +92,7 @@ LISTAR COMANDOS ESPECIALES: Listar los comandos especiales disponibles
 PROCESAR PANTALLA: escanear la pantalla pixel a pixel y convertirla a lineas. Util para comando "MOSTRAR CARACTER" o aun mas, cargando una pantalla de un juego y convirtiéndola a lineas
 
 CARGAR OVERLAY: Cargar rutina en código máquina y ejecutarla. Esto es una clara influencia de los overlays de PAWS de cinta, donde se cargaban módulos del editor de PAWS desde cinta, cuando quedaba poca RAM disponible.
-La rutina de overlay puede alterar el inicio y final de los datos, modificando el word en la dirección 23296/7 (para fin) o 23298/9 (para inicio). Existe un overlay de testeo (actualmente en cinta theliner-test-overlay.tap pero en futuro en cinta misma de the liner!! ### agregar esto), que agrega un comentario con nombre "test" al dibujo. Este overlay no tiene utilidad práctica, solo para demostrar como implementar un overlay. Se puede indicar con este comando, el nombre es "testlin.ov" indicando longitud 25 y reserva de bytes 0. Al ejecutar el overlay veremos como agrega ese comentario de test al final del dibujo
+La rutina de overlay puede alterar el inicio y final de los datos, modificando el word en la dirección 23296/7 (para fin) o 23298/9 (para inicio). Existe un overlay de testeo (incluido en el mismo tap del The liner), que agrega un comentario con nombre "test" al dibujo. Este overlay no tiene utilidad práctica, solo para demostrar como implementar un overlay. Se puede indicar con este comando, el nombre es "testlin.ov" indicando longitud 25 y reserva de bytes 0. Al ejecutar el overlay veremos como agrega ese comentario de test al final del dibujo
 
 BASIC: Salir al basic desactivando el buffer de teclado. Escribir RETURN para volver
 
