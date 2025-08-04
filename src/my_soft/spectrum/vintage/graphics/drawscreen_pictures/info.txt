@@ -1,1 +1,3 @@
+
 cara.tap-> cargar con drawscreenv3_3. tecla f para cargar
+navidad.tap -> cargar con drawscreenv3_3. aunque da un error casi al final. quiza necesita version 3_1 ?
