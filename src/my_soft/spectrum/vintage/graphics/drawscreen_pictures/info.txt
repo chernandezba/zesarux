@@ -1,0 +1,1 @@
+cara.tap-> cargar con drawscreenv3_3. tecla f para cargar
