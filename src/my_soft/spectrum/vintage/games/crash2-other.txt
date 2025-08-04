@@ -1,0 +1,4 @@
+misma version que crash2.tap pero:
+
+- La pantalla carga en otra dirección y luego aparece de golpe en pantalla
+- Tiene una rutina por interrupciones que permite grabar el juego pulsando las teclas BNM
