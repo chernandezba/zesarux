@@ -1,0 +1,1 @@
+menuventana.tap utilizado en menus de draw screen v7.0
