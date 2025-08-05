@@ -37796,7 +37796,25 @@ void menu_realtape_record_input_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_realtape_record_input;
 
+void menu_realtape_empty_buffer(void)
+{
+    if (audio_can_record_input() ) {
 
+        if (audio_is_recording_input) {
+            //La fifo de entrada
+            audiorecord_input_empty_buffer_with_lock();
+
+            //Y tambien este buffer visual
+            menu_realtape_record_input_empty_visual_buffer();
+
+            //Y decir que buffer no esta lleno
+            audiorecord_last_write_full=0;
+
+        }
+
+    }
+
+}
 
 void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 {
@@ -37886,15 +37904,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
             case 'E':
                 if (audio_is_recording_input) {
-                    //La fifo de entrada
-                    audiorecord_input_empty_buffer_with_lock();
-
-                    //Y tambien este buffer visual
-                    menu_realtape_record_input_empty_visual_buffer();
-
-                    //Y decir que buffer no esta lleno
-                    audiorecord_last_write_full=0;
-
+                    menu_realtape_empty_buffer();
 
                     //Evito splash, porque si mientras se visualiza pulso con el raton fuera,
                     //no cierra el menu, solo la ventana pierde el foco

@@ -639,6 +639,12 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
                 noautoload.v=0;
                 quickload(quickload_file);
 
+                //Y vaciamos el buffer de lectura de audio. Si lo tenemos activado,
+                //asi vaciamos y sincronizamos
+                //Nota: evidentemente al vaciar el buffer, si se estaba cargando, se cortara la carga,
+                //pero dado que hemos iniciado un copiador de cinta, no se estaba cargando nada ahora mismo
+                menu_realtape_empty_buffer();
+
                 noautoload.v=pre_noautoload.v;
                 salir_todos_menus=1;
             }
