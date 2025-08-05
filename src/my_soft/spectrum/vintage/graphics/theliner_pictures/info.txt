@@ -1,0 +1,7 @@
+Estos se abren con the liner 35
+circle_liner_35.tap
+mario_liner_35.tap
+
+Este se abre con the liner 75
+dibujo_raro_liner.tap
+

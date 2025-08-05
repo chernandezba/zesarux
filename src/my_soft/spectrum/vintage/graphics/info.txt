@@ -1,0 +1,21 @@
+Programas de edición gráfica en orden cronológico
+
+Betadraw: Primer programa creado para edición gráfica, en 16/04/1990. Necesita betabasic
+
+Artistchb: Primera versión en 23/08/1990. El movimiento se realiza mediante joystick kempston, requiere maquina Inves
+
+Draw Assist: Movimiento con teclas r y c b. Requiere betabasic para algunas funciones (roll...). Fecha desconocida. Probablemente posterior a artistchb
+
+The Point: Ultima versión de 16/07/1991. Programa de dibujo pixel a pixel
+
+Draw Screen: Versión 1.30 de 29/10/1991. Primer programa que introduce el concepto de almacenamiento de datos de dibujo, como secuencia de comandos gráficos: lineas, círculos, etc. Varias versiones (desde v1 hasta v8) y diferentes formatos de datos de dibujo. Hay varios archivos grabados con nombre en spectrum con extensión .da, que corresponden a gráficos con Draw Screen
+
+Man 3D: Última versión en 28/12/1991. Programa para dibujar en 3D
+
+Draw And Sound. Realizado en código máquina, el 26/10/1992. Programa sencillo para dibujar pixel a pixel
+
+The Liner: Primeras versiones de fecha sin concretar, probablemente 1992 o 1993. Todos los datos de dibujo están basados en lineas. Las últimas versiones tienen un dibujado por código máquina, por tanto es muy rápido
+
+The Painter: Programa de dibujo pixel a pixel. Es el precursor de Cursor Draw pero realizado en basic. Ultima versión del 21/02/1993
+
+Cursor Draw: Última versión en 18/08/1994, realizado completamente en código máquina. Programa de dibujo pixel a pixel, una evolución del The Painter pero muy mejorada
