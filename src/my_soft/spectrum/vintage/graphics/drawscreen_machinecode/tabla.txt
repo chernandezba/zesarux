@@ -1,0 +1,2 @@
+Include codigo gens y binario
+Creo que se usa en la siguiente versión de draw screen v7.0 pero no estoy seguro
