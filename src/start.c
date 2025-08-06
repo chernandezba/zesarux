@@ -1851,6 +1851,7 @@ printf (
 		"--no-show-changelog                      Do not show changelog when updating version\n"
         "--no-show-david-in-memoriam              Do not show David in memoriam message\n"
 		"--machinelist                            Get machines list names whitespace separated, and exit\n"
+        "--hexedit-follow e                       Hex Edit follow expression\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
         "--disableallbetawarningpause             Do not pause beta warning message on boot for any version\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
@@ -6607,6 +6608,11 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--no-show-david-in-memoriam")) {
                 do_no_show_david_in_memoriam.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--hexedit-follow")) {
+                siguiente_parametro_argumento();
+                menu_debug_hexdump_add_follow_expression(argv[puntero_parametro]);
             }
 
 			else if (!strcmp(argv[puntero_parametro],"--disablebetawarning")) {

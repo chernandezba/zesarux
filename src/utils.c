@@ -4116,6 +4116,19 @@ int util_write_configfile(void)
   if (remote_tamanyo_archivo_raw_source_code) ADD_STRING_CONFIG,"--load-source-code %s",last_source_code_file);
 
 
+    if (menu_debug_hexdump_follow_expression_defined()) {
+
+        char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+
+        menu_debug_hexdump_get_follow_expression_string(buffer_temp);
+
+        ADD_STRING_CONFIG,"--hexedit-follow \"%s\"",buffer_temp);
+
+    }
+
+
+
+
   for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
 
 

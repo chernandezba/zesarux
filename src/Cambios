@@ -83,6 +83,7 @@ Mejorada ventana Fuente de Sonido Externa:
 - Mostrar frecuencia media cuando señal desconocida
 - Permitir activar entrada desde esta ventana
 
+Mejorado Hexadecimal editor: expresión de seguimiento se guarda en configuración
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo

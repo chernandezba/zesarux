@@ -252,6 +252,10 @@ extern void menu_realtape_empty_buffer(void);
 extern void menu_visual_cassette_tape(MENU_ITEM_PARAMETERS);
 extern void menu_first_start_wizard(void);
 
+extern int menu_debug_hexdump_add_follow_expression(char *string_texto);
+extern int menu_debug_hexdump_follow_expression_defined(void);
+extern void menu_debug_hexdump_get_follow_expression_string(char *string_texto);
+
 
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];

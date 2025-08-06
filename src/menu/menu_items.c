@@ -7743,6 +7743,49 @@ menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p)
 
 }
 
+
+int menu_debug_hexdump_inicializada_follow_expression=0;
+
+//Retorna 1 si está definida la expresión
+int menu_debug_hexdump_follow_expression_defined(void)
+{
+    if (menu_debug_hexdump_inicializada_follow_expression) {
+        if (menu_hexdump_follow_expression[0].tipo!=TPT_FIN) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+void menu_debug_hexdump_get_follow_expression_string(char *string_texto)
+{
+    if (menu_debug_hexdump_follow_expression_defined() ) {
+        exp_par_tokens_to_exp(menu_hexdump_follow_expression,string_texto,MAX_PARSER_TOKENS_NUM);
+    }
+
+    else {
+        string_texto[0]=0;
+    }
+}
+
+
+int menu_debug_hexdump_add_follow_expression(char *string_texto)
+{
+    int result=exp_par_exp_to_tokens(string_texto,menu_hexdump_follow_expression);
+
+    if (result<0) {
+        debug_printf(VERBOSE_ERR,"Error adding follow expression");
+        menu_hexdump_follow_expression[0].tipo=TPT_FIN;
+    }
+    else {
+        menu_debug_hexdump_inicializada_follow_expression=1;
+    }
+
+
+    return result;
+}
+
 void menu_debug_hexdump_follow(void)
 {
 
@@ -7760,29 +7803,29 @@ void menu_debug_hexdump_follow(void)
 
         menu_ventana_scanf("Expression to follow",string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
 
-        int result=exp_par_exp_to_tokens(string_texto,menu_hexdump_follow_expression);
+        int result=menu_debug_hexdump_add_follow_expression(string_texto);
         if (result<0) {
-            //menu_hexdump_follow_expression[0].tipo=TPT_FIN; //Inicializarlo vacio
             //Dejamos la expresion anterior
             exp_par_exp_to_tokens(copia_string_texto,menu_hexdump_follow_expression);
-            menu_error_message("Error adding follow expression");
         }
 
         else {
-
             menu_hexdump_follow_mode=1;
-
         }
 
     }
 
+    //Si se ha generado error al agregar expresión
+    //comprobar error
+    if (if_pending_error_message) {
+        menu_muestra_pending_error_message();
+    }
 
 
 }
 
 zxvision_window zxvision_window_debug_hexdump;
 
-int menu_debug_hexdump_inicializada_follow_expression=0;
 
 void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 {

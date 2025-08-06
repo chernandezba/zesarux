@@ -83,6 +83,7 @@ Improved External Audio Source window:
 - Show average frequency when unknown signal
 - Allow to enable input from this window
 
+Improved Hexadecimal editor: follow expression is saved on configuration
 Improved maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
