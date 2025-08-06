@@ -1230,6 +1230,15 @@ void menu_storage_trd_expand(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_storage_hilow_expand(MENU_ITEM_PARAMETERS)
+{
+
+    menu_storage_tape_expand(hilow_file_name);
+
+}
+
+
+
 //menu storage tape
 void menu_storage_tape(MENU_ITEM_PARAMETERS)
 {
@@ -4268,6 +4277,13 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_hilow);
             menu_add_item_menu_genera_ventana(array_menu_hilow);
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_expand,menu_storage_hilow_emulation_cond,
+            "View Expanded","Ver Expandido","Veure Expandit");
+        menu_add_item_menu_prefijo(array_menu_hilow,"    ");
+        menu_add_item_menu_tooltip(array_menu_hilow,"Expand hilow file");
+        menu_add_item_menu_ayuda(array_menu_hilow,"Expand hilow file");
+        menu_add_item_menu_add_flags(array_menu_hilow,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
 
 #ifdef USE_PTHREADS
