@@ -33701,6 +33701,22 @@ void menu_ascii_table(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_debug_view_basic_gosub_stack(MENU_ITEM_PARAMETERS)
+{
+
+
+    char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing go sub stack");
+
+	debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
+
+    menu_generic_message_format("Basic GO SUB stack","%s",results_buffer);
+
+    free(results_buffer);
+
+
+
+
+}
 
 
 //menu debug
@@ -33960,6 +33976,12 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_debug);
         }
 
+        if (MACHINE_IS_SPECTRUM) {
+		    menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic_gosub_stack,NULL,
+                "View GO SUB stack","Ver pila GO SUB","Veure pila GO SUB");
+            menu_add_item_menu_se_cerrara(array_menu_debug);
+            menu_add_item_menu_genera_ventana(array_menu_debug);
+        }
 
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sensors,NULL,

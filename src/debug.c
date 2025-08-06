@@ -9332,6 +9332,88 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
 }
 
+
+void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
+{
+
+    //Cadena vacia inicialmente
+    results_buffer[0]=0;
+
+
+    char buffer_linea[100];
+
+
+   /*
+    Desde sp en adelante (como mucho 16 en adelante). o desde 5C3D+6? esto no siempre
+    03h 13h: inicio marca, o b4h 12h
+    luego linea little endian, sentencia
+    */
+
+    int inicio_direccion=reg_sp;
+
+    int i;
+
+    int encontrado=0;
+
+    for (i=0;i<32 && !encontrado;i++) {
+        if (
+            (peek_byte_no_time(inicio_direccion)==0x03 && peek_byte_no_time(inicio_direccion+1)==0x13) ||
+            (peek_byte_no_time(inicio_direccion)==0xb4 && peek_byte_no_time(inicio_direccion+1)==0x12) ) {
+                encontrado=1;
+                inicio_direccion +=2;
+            }
+        else {
+            inicio_direccion++;
+        }
+
+    }
+
+
+    if (!encontrado) {
+        strcpy (results_buffer,"Stack start not found");
+        return;
+    }
+
+    int salir=0;
+    int resultado=0;
+
+    int vacio=1;
+
+
+    while (!salir) {
+        //Byte 3E (el byte alto del primer word) indica el final
+        if (peek_byte_no_time(inicio_direccion+1)==0x3E || inicio_direccion>65535) salir=1;
+        else {
+            z80_int linea=peek_byte_no_time(inicio_direccion)+256*peek_byte_no_time(inicio_direccion+1);
+            z80_byte sentencia=peek_byte_no_time(inicio_direccion+2);
+            inicio_direccion+=3;
+            //printf("Linea: %d sentencia: %d\n",linea,sentencia);
+
+            sprintf (buffer_linea,"%4d:%d\n",linea,sentencia);
+            resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
+            vacio=0;
+        }
+
+
+        //controlar maximo
+        if (resultado) {
+            debug_printf(VERBOSE_ERR,"Reached maximum text size. Showing only allowed text");
+            //forzar salir
+            salir=1;
+        }
+
+    }
+
+    if (vacio)  {
+        strcpy (results_buffer,"GO SUB Stack is empty");
+        return;
+    }
+
+
+
+}
+
+
 //Para hacer peek de una direccion de todo el espacio de memoria de una maquina
 //realmente no es que podamos acceder a todo la memoria asignada de esa memoria, sino que vemos la SRAM
 //Especialmente util para Spectrum Next o ZXUno por ejemplo
