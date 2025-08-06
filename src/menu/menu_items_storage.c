@@ -1237,6 +1237,14 @@ void menu_storage_hilow_expand(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
+{
+    int indice_microdrive=valor_opcion;
+
+    menu_storage_tape_expand(microdrive_status[indice_microdrive].microdrive_file_name);
+
+}
+
 
 
 //menu storage tape
@@ -7822,6 +7830,16 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_se_cerrara(array_menu_common);
 			menu_add_item_menu_genera_ventana(array_menu_common);
 			menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+            if (microdrive_status[i].microdrive_file_name[0]) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_expand,NULL,
+                    "View Expanded","Ver Expandido","Veure Expandit");
+                menu_add_item_menu_prefijo(array_menu_common,"    ");
+                menu_add_item_menu_tooltip(array_menu_common,"Expand microdrive file");
+                menu_add_item_menu_ayuda(array_menu_common,"Expand microdrive file");
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+                menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+            }
 
 
             menu_add_item_menu_separator(array_menu_common);
