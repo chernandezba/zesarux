@@ -15,6 +15,7 @@ Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual 
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Agregado soporte para archivos .ay en Visor de Archivos
 Permitir cambiar path del archivo de configuración desde el menú
+Premitir ver archivo expandido desde submenus de Almacenamiento (cinta, dsk, etc)
 Agregado un asistente de configuración al iniciar ZEsarUX por primera vez
 Agregado soporte para 4 botones de fuego de joystick en:
 - Kempston joystick (Spectrum): 4 botones

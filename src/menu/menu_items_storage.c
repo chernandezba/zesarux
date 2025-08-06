@@ -1129,6 +1129,100 @@ int menu_realtape_inserted_cond(void)
 }
 
 
+void menu_storage_tape_expand(char *archivo)
+{
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //char *archivo=tapefile;
+
+    debug_printf(VERBOSE_DEBUG,"Expanding file %s",archivo);
+
+    //Obtener nombre archivo y carpeta
+    char nombre[NAME_MAX];
+    char dir[PATH_MAX];
+
+    //Ubicarse en la carpeta donde esta el archivo (requerido por menu_filesel_expand)
+    util_get_dir(archivo,dir);
+    util_get_file_no_directory(archivo,nombre);
+
+    zvfs_chdir(dir);
+
+
+    char tmpdir[PATH_MAX];
+
+    if (menu_filesel_expand(nombre,tmpdir) ) {
+        debug_printf(VERBOSE_ERR,"Don't know how to expand that file");
+    }
+
+    else {
+        //menu_filesel_change_to_tmp(tmpdir);
+
+
+        char *filtros[2];
+
+
+        filtros[0]="";
+        filtros[1]=0;
+
+        zvfs_chdir(tmpdir);
+
+
+        int ret;
+
+        char archivo_salida[PATH_MAX];
+
+        //Habilitar vista de file utils
+        menu_filesel_show_utils.v=1;
+
+        ret=menu_filesel("View expanded",filtros,archivo_salida);
+        menu_filesel_show_utils.v=0;
+
+
+        if (ret==1) {
+            //tapefile=tape_open_file;
+            //tape_init();
+        }
+
+
+    }
+
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+}
+
+void menu_storage_input_tape_expand(MENU_ITEM_PARAMETERS)
+{
+
+    menu_storage_tape_expand(tapefile);
+
+}
+
+void menu_storage_output_tape_expand(MENU_ITEM_PARAMETERS)
+{
+
+    menu_storage_tape_expand(tape_out_file);
+
+}
+
+
+void menu_storage_realtape_expand(MENU_ITEM_PARAMETERS)
+{
+
+    menu_storage_tape_expand(realtape_name);
+
+}
+
+
+void menu_storage_plusthreedisk_expand(MENU_ITEM_PARAMETERS)
+{
+
+    menu_storage_tape_expand(dskplusthree_file_name);
+
+}
+
 //menu storage tape
 void menu_storage_tape(MENU_ITEM_PARAMETERS)
 {
@@ -1169,7 +1263,16 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Input tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Input tape");
-        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
+
+		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_input_tape_expand,menu_tape_input_insert_cond,"View Expanded");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+		//menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
+		menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Input tape");
+		menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Input tape");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
 
 
 		menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -1191,7 +1294,15 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'r');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Output tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Output tape");
-        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
+		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_output_tape_expand,menu_tape_output_insert_cond,"View Expanded");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+		//menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
+		menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Output tape");
+		menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Output tape");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
 
 
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -1248,6 +1359,14 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Real tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Real tape");
 
+		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_realtape_expand,menu_realtape_cond,"View Expanded");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+		//menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
+		menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Real tape");
+		menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Real tape");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
+
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_realtape,NULL,
             "~~Visual Real Tape","Cinta Real ~~Visual","Cinta Real ~~Visual");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
@@ -1277,6 +1396,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_tape_settings);
             menu_add_item_menu_tooltip(array_menu_tape_settings,"Allow to run a tape copier");
             menu_add_item_menu_ayuda(array_menu_tape_settings,"Allow to run a tape copier");
+            menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_ES_AVANZADO);
 
 
             menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_tape_my_soft,NULL,
@@ -9595,7 +9715,10 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_plusthreedisk,'t');
             menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
             menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
+            menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_ES_AVANZADO);
+
             menu_add_item_menu_separator(array_menu_plusthreedisk);
+            menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_ES_AVANZADO);
         }
 
 
@@ -9610,7 +9733,12 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
             "Tracks ~~list","~~Lista Pistas","~~Llista Pistes");
         menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'l');
-        menu_add_item_menu_genera_ventana(array_menu_plusthreedisk);
+        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO);
+
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_expand,menu_storage_dskplusthree_info_cond,
+            "View Expanded","Ver Expandido","Veure Expandit");
+        menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
+        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
@@ -9619,7 +9747,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'f');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Format Viewer");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Format Viewer");
-        menu_add_item_menu_genera_ventana(array_menu_plusthreedisk);
+        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO);
 
         menu_add_item_menu_separator(array_menu_plusthreedisk);
 

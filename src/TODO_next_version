@@ -332,3 +332,8 @@ Quizá lo que debería hacer, si está en ventana de splash, al pulsar con raton
 -cerrar ventana de splash (que ya lo hace hora)
 Realmente tiene que haber algo diferente entre menu_generic_message_splash y menu_generic_message, porque con el primero,
 al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Pero con el segundo, el foco se queda en la ventana que habia debajo
+
+
+
+-En filesel viewer, que entienda formato archivos fuente .GEN y los muestre. Pista: primera linea suele ser 10,
+por tanto si lee primeros dos bytes 0A 00, que deduzca que es .GEN
