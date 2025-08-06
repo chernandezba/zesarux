@@ -24,10 +24,4 @@ Probar en diferentes sistemas:
 ---------------------
 
 
--Expandir archivos también desde dsk y otros tipos de archivos , desde sus menus de storage
-
--Ver pila de llamadas a gosub
-
-Desde sp en adelante (como mucho 16 en adelante). o desde 5C3D+6? esto no siempre
-03h 13h: inicio marca, o b4h 12h
-luego linea little endian, sentencia
+-Poder guardar en config expresión de follow de hex edit
