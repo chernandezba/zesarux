@@ -16,6 +16,7 @@ Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)
 Added .ay file support to File Viewer
 Allow to change configuration file path from the menu
 Allow to view expanded file from Storage submenus (tape, dsk, etc)
+Allow to view GO SUB Basic stack
 Added configuration wizard when running ZEsarUX for the first time
 Added support for up to 4 joystick fire buttons on:
 - Kempston joystick (Spectrum): 4 buttons

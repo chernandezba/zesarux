@@ -9344,9 +9344,10 @@ void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto
 
 
    /*
-    Desde sp en adelante (como mucho 16 en adelante). o desde 5C3D+6? esto no siempre
+    Desde sp en adelante (como mucho 32 en adelante)
     03h 13h: inicio marca, o b4h 12h
     luego linea little endian, sentencia
+    Nota: este método para encontrar el inicio no es infalible, lo he encontrado mediante pruebas
     */
 
     int inicio_direccion=reg_sp;
