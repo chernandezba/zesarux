@@ -1223,6 +1223,13 @@ void menu_storage_plusthreedisk_expand(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_storage_trd_expand(MENU_ITEM_PARAMETERS)
+{
+
+    menu_storage_tape_expand(trd_file_name);
+
+}
+
 //menu storage tape
 void menu_storage_tape(MENU_ITEM_PARAMETERS)
 {
@@ -8738,8 +8745,6 @@ void menu_storage_trd_browser(MENU_ITEM_PARAMETERS)
 	//menu_file_trd_browser_show(trd_file_name,"TRD");
 	menu_file_viewer_read_file("TRD file viewer",trd_file_name);
 
-    //por coherencia cerrar menus al salir de aqui
-    salir_todos_menus=1;
 }
 
 
@@ -8821,9 +8826,16 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
             "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
         menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
         menu_add_item_menu_shortcut(array_menu_betadisk,'v');
-        menu_add_item_menu_genera_ventana(array_menu_betadisk);
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Viewer");
         menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Viewer");
+        menu_add_item_menu_add_flags(array_menu_betadisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_expand,menu_storage_trd_emulation_cond,
+            "View Expanded","Ver Expandido","Veure Expandit");
+        menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
+        menu_add_item_menu_tooltip(array_menu_betadisk,"Expand TRD file");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"Expand TRD file");
+        menu_add_item_menu_add_flags(array_menu_betadisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
             "Visual Floppy","Visual Floppy","Visual Floppy");
