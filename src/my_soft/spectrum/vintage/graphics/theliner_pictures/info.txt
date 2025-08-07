@@ -2,6 +2,10 @@ Estos se abren con the liner 35
 circle_liner_35.tap
 mario_liner_35.tap
 
+Estos con liner 47
+mario_bros_pantalla_liner_47.tap
+circle_pantalla_liner_47.tap
+
 Este se abre con the liner 75
 dibujo_raro_liner.tap
 

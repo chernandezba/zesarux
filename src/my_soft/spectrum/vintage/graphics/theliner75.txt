@@ -158,9 +158,9 @@ Notas técnicas
 - Si el primer byte es < 176, es una linea, en formato: y1 x1 y2 x2, siendo x1,y1 el punto inicial y x2,y2 el punto final
 - Si el primer byte es >=175, es un comando especial. Por ejemplo, "BORRA PANTALLA" es 176 o "ESPERA UNA TECLA" es 177
 
-Luego, al grabar los datos en cinta, se utiliza una cabecera con primer byte=4
+Luego, al grabar los datos en cinta, se utiliza una cabecera con primer byte=4. En The Liner 46 se empezó a usar una cabecera de 28 bytes, pero en algún momento se pasó a cabecera de 17 bytes, conservando el primer byte=4
 
-Por cierto, en theliner35.tap se utiliza otro formato para guardar los dibujos, mediante una matriz de caracteres. Desconozco ahora mismo si el formato interno de los datos es similar a versiones recientes o no
+Por cierto, en theliner35.tap se utiliza otro formato para guardar los dibujos, mediante una matriz de caracteres. Desconozco ahora mismo si el formato interno de los datos es similar a versiones recientes o no. En theliner46.tap por ejemplo ya se usa el formato nuevo
 
 
 * Acerca de rutinas en código máquina que leen variables
