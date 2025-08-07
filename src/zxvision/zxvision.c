@@ -20513,24 +20513,7 @@ void menu_dibuja_submenu_cierra_n_submenus(int veces)
     //printf("--Fin menu_dibuja_submenu_cierra_submenu_dos_ultimos\n");
 }
 
-//liberar memoria de todos los submenus
-void old_con_error_menu_dibuja_submenu_free_all(void)
-{
-    if (menu_show_submenus_tree.v==0) return;
 
-    zxvision_window *w=menu_dibuja_submenu_primer_submenu;
-
-    if (w==NULL) return;
-
-    while (w->submenu_next!=NULL) {
-        free(w);
-        w=w->submenu_next;
-    }
-
-
-    menu_dibuja_submenu_primer_submenu=NULL;
-
-}
 
 //liberar memoria de todos los submenus
 void menu_dibuja_submenu_free_all(void)
