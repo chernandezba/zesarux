@@ -8,7 +8,7 @@ COPY ./ /zesarux/src/
 # Compilar con info de debug
 ENV CFLAGS "-g -rdynamic"
 ENV LDFLAGS "-g -rdynamic"
-RUN cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make clean && make -j3
+RUN cd zesarux/src && ./configure --enable-ssl && make clean && make -j3
 
 WORKDIR /zesarux/src
 

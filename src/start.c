@@ -1846,6 +1846,7 @@ printf (
         "--no-saveconf-on-exit                    Do not save configuration when exiting emulator (default setting). Can be used to override a previous --saveconf-on-exit for example\n"
 		"--quickexit                              Exit emulator quickly: no yes/no confirmation and no fadeout\n"
 		"--exit-after n                           Exit emulator after n seconds\n"
+        "--disable-first-start-wizard             Disable first start wizard\n"
 		"--last-version s                         String which identifies last build version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
         "--last-version-text s                    String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
 		"--no-show-changelog                      Do not show changelog when updating version\n"
@@ -6478,6 +6479,9 @@ int parse_cmdline_options(int desde_commandline) {
 				exit_emulator_after_seconds=valor;
                          }
 
+            else if (!strcmp(argv[puntero_parametro],"--disable-first-start-wizard")) {
+                first_start_wizard_disabled=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--zeng-remote-hostname")) {
 				siguiente_parametro_argumento();
@@ -7070,6 +7074,9 @@ int zesarux_first_start=0;
 
 //Ha salido el wizard
 int appeared_zesarux_first_start=0;
+
+//Desactivado el wizard por linea de comandos
+int first_start_wizard_disabled=0;
 
 //Proceso inicial
 int zesarux_main (int main_argc,char *main_argv[]) {

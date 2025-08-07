@@ -52,4 +52,6 @@ extern int zesarux_first_start;
 
 extern int appeared_zesarux_first_start;
 
+extern int first_start_wizard_disabled;
+
 #endif

@@ -39,7 +39,7 @@ docker-build-and-get-binary() {
                 echo "-----Running image"
                 sleep 1
 		docker rm run-zesarux-$VERSIONNAME
-                docker run --name run-zesarux-$VERSIONNAME -it zesarux.$VERSIONNAME --vo stdout --ao null --exit-after 1
+                docker run --name run-zesarux-$VERSIONNAME -it zesarux.$VERSIONNAME --vo stdout --ao null --disable-first-start-wizard --exit-after 1
 
                 echo
                 echo "-----Getting executables and install file"
