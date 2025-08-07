@@ -1,0 +1,4 @@
+Es una versión completada del crash cars 2 original:
+
+- Se agrega pantalla de instrucciones
+- Se agrega secuencia final al acabarse las vidas
