@@ -1,7 +1,9 @@
 Parece ser que de Draw Screen version 3 han habido dos tipos de versiones:
 
 - Versión en Beta Basic. De 18/03/1992. Corresponde a archivos drawscreen_v3_2_betabasic.tap y drawscreen_v3_3_betabasic.tap
-- Versión en código máquina. De 22/07/1992. Corresponde a los archivos drawscreen_v3_0.tap, drawscreen_v3_2_gens.tap, drawscreen_v3_3_gens.tap
+- Versión en código máquina. De 22/07/1992. Corresponde a los archivos drawscreen_v3_1-21.tap drawscreen_v3_30.tap drawscreen_v3_32.tap drawscreen_v3_33.tap. O sea hay desde la version v3.1 hasta la v3.33
 
-Creo que la versión en código máquina no tuvo mas evolución que esa v3.3 en gens. Y supuestamente la siguiente versión seria la v4 escrita en Beta Basic de nuevo
+Creo que la versión en código máquina no tuvo mas evolución que esa v3 en gens. Hay la parte de menus, ventana y carga de pantalla. Pero nada mas, aparentemente
+
+Y supuestamente la siguiente versión seria la v4 escrita en Beta Basic de nuevo
 
