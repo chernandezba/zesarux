@@ -337,3 +337,14 @@ al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Per
 
 -En filesel viewer, que entienda formato archivos fuente .GEN y los muestre. Pista: primera linea suele ser 10,
 por tanto si lee primeros dos bytes 0A 00, que deduzca que es .GEN
+
+-En watches que permita agregar etiquetas a cada expresión
+Por ejemplo si expresión es IX, etiqueta que diga "Dirección de carga"
+Que se puedan activar etiquetas en cada watch independiente
+
+-De alguna manera que se vea una miniatura de la pantalla del juego cargado
+En alguna ventana nueva quizá
+
+-Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
+
+-Ventana que permita agregar notas, que permita quedarse en bakground

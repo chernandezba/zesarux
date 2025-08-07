@@ -4,7 +4,7 @@
 
 OPTIONS="--noconfigfile"
 
-ORIGFILE=./my_soft/spectrum/vintage/sped52.tap
+ORIGFILE=./my_soft/spectrum/vintage/assembler/sped52.tap
 PZXFILE=`mktemp`.pzx
 TZXFILE=`mktemp`.tzx
 TAPFILE=`mktemp`.tap
