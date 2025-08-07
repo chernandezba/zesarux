@@ -5,5 +5,5 @@ Parece ser que de Draw Screen version 3 han habido dos tipos de versiones:
 
 Creo que la versión en código máquina no tuvo mas evolución que esa v3 en gens. Hay la parte de menus, ventana y carga de pantalla. Pero nada mas, aparentemente
 
-Y supuestamente la siguiente versión seria la v4 escrita en Beta Basic de nuevo
+Y supuestamente la siguiente versión seria la v4 escrita en Beta Basic de nuevo. Creo además que las rutinas de abrir ventanas y menus en código máquina se usan en versión 4 y adelante: están escritas en basic pero usa esas rutinas en código máquina para los menús
 
