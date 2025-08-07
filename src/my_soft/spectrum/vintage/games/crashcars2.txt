@@ -1,5 +1,11 @@
-Es una versión completada del crash cars 2 original:
+Es una versión extendida del crash cars 2 original (crashcars2-original.tap):
 
 - Se agrega pantalla de instrucciones
 - Se agrega secuencia final al acabarse las vidas
 - En modo edición de carretera se muestra el gráfico del coche en vez del "#"
+
+Se hizo el 07/08/2025. Se ha mantenido el mismo nombre pues creo que estas mejoras
+se deberían haber implementado en su momento en el juego original, pues eran algo básico.
+
+Se ha intentado que el estilo de lo que se ha agregado (por ejemplo las instrucciones) fuera el mismo
+estilo que hubieramos pensado 30 años atrás entre Rubén y yo.
