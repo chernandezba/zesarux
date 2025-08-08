@@ -4111,6 +4111,8 @@ int util_write_configfile(void)
 
   if (debug_view_basic_show_address.v)        ADD_STRING_CONFIG,"--show-basic-address");
 
+  if (debug_watches_show_decimal.v)           ADD_STRING_CONFIG,"--watch-show-decimal-results");
+
                                               ADD_STRING_CONFIG,"--cpu-history-max-items %d",cpu_history_max_elements);
 
   if (remote_tamanyo_archivo_raw_source_code) ADD_STRING_CONFIG,"--load-source-code %s",last_source_code_file);

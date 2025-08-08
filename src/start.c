@@ -984,6 +984,7 @@ printf(
 );
 
 printf (
+        "--watch-show-decimal-results        Shows results in decimal in window Watches\n"
 	    "--set-mem-breakpoint a n            Set memory breakpoint at address a for type n\n"
         "--load-source-code f                Load source code from file\n"
         "--load-symbol-table f               Load symbol table from file\n"
@@ -4497,6 +4498,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--z88-no-persistent-writes")) {
                 z88_eprom_or_flash_persistent_writes.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--watch-show-decimal-results")) {
+                debug_watches_show_decimal.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--load-source-code")) {
