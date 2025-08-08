@@ -80,6 +80,93 @@ int menu_file_viewer_read_text_file_char_print(z80_byte caracter)
 
 }
 
+void menu_file_viewer_gens_show(char *file_read_memory,int longitud)
+{
+
+
+        int index_buffer;
+
+        char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for sped file show");
+
+        index_buffer=0;
+
+        int salir=0;
+
+		int x=0;
+
+		int lineas=0;
+
+        int nueva_linea=1;
+
+		while (!salir && longitud) {
+			z80_byte caracter=*file_read_memory;
+			file_read_memory++;
+
+            if (nueva_linea && longitud) {
+                z80_byte caracter2=*file_read_memory;
+                file_read_memory++;
+                longitud--;
+
+                z80_int numero_linea=caracter+caracter2*256;
+
+                sprintf(&results_buffer[index_buffer],"%5d",numero_linea);
+
+                index_buffer +=5;
+
+            }
+
+            else {
+
+                nueva_linea=0;
+
+                if (caracter==13) {
+                    caracter=10;
+                    lineas++;
+                }
+
+                else if (caracter==127) {
+                    //(C)
+                    caracter='c';
+                }
+
+                else if (caracter>=128) {
+                    caracter -=128;
+                    int tabcolumn;
+                    if (x<7) tabcolumn=7;
+                    else tabcolumn=12;
+
+                    while (x<tabcolumn) {
+                        results_buffer[index_buffer++]=' ';
+                        x++;
+                    }
+
+                }
+
+                results_buffer[index_buffer++]=caracter;
+                //controlar maximo
+                //100 bytes de margen
+                if (index_buffer>MAX_TEXTO_GENERIC_MESSAGE-100 || lineas>=MAX_LINEAS_TOTAL_GENERIC_MESSAGE) {
+                    debug_printf (VERBOSE_ERR,"Too many lines to show. Showing only the first %d",lineas);
+                    //forzar salir
+                    salir=1;
+                }
+
+                x++;
+                if (caracter==10) x=0;
+
+            }
+
+			longitud--;
+		}
+
+        results_buffer[index_buffer]=0;
+
+        menu_generic_message("SPED file",results_buffer);
+
+        free(results_buffer);
+
+}
+
 void menu_file_viewer_sped_show(char *file_read_memory,int longitud)
 {
 
@@ -289,12 +376,23 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 	-que no hayan otros códigos menores que 32 excepto los saltos de línea
 	-que haya ascii
 	-que haya códigos mayores que 128
+
+
+    Detector archivos gens:
+    - Primeros bytes 10,00: linea 10
+    - Resto de caracteres pueden ser los que sean porque hay numeros de linea de todo tipo
 	*/
 
 	int sped_cr=0;
 	int sped_below_32=0;
 	int sped_ascii=0;
 	int sped_beyond_128=0;
+
+    int primera_linea_gens_10=0;
+
+    if (leidos>2) {
+        if (file_read_memory[0]==10 && file_read_memory[1]==0) primera_linea_gens_10=1;
+    }
 
 	for (i=0;i<leidos;i++) {
 		caracter=file_read_memory[i];
@@ -322,12 +420,28 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 	}
 
 	//Sacar porcentaje 10%
-	int umbral=leidos/10;
+	int umbral_hexa=leidos/10;
 
-	if (codigos_no_imprimibles>umbral) {
-		debug_printf(VERBOSE_INFO,"Considering file as hexadecimal because the invalid characters are higher than 10%% of the total size (%d/%d)",
-			codigos_no_imprimibles,leidos);
-		menu_file_hexdump_browser_show(file_name);
+    int umbral_gens=(leidos*20)/100;
+
+    printf("leidos %d codigos_no_imprimibles %d umbral_gens %d\n",leidos,codigos_no_imprimibles,umbral_gens);
+
+	if (codigos_no_imprimibles>umbral_hexa) {
+        //Pero si menor de 20% podemos pensar que quiza es gens
+        if (codigos_no_imprimibles<umbral_gens && primera_linea_gens_10) {
+            debug_printf(VERBOSE_INFO,"File possibly is a gens file");
+            menu_file_viewer_gens_show(file_read_memory,leidos);
+            free(file_read_memory);
+            return;
+        }
+
+        else {
+
+            debug_printf(VERBOSE_INFO,"Considering file as hexadecimal because the invalid characters are higher than 10%% of the total size (%d/%d)",
+                codigos_no_imprimibles,leidos);
+            menu_file_hexdump_browser_show(file_name);
+
+        }
 	}
 
 	else {
