@@ -84,86 +84,100 @@ void menu_file_viewer_gens_show(char *file_read_memory,int longitud)
 {
 
 
-        int index_buffer;
+    int index_buffer;
 
-        char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for sped file show");
+    char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for sped file show");
 
-        index_buffer=0;
+    index_buffer=0;
 
-        int salir=0;
+    int salir=0;
 
-		int x=0;
+    int x=0;
 
-		int lineas=0;
+    int lineas=0;
 
-        int nueva_linea=1;
+    int nueva_linea=1;
 
-		while (!salir && longitud) {
-			z80_byte caracter=*file_read_memory;
-			file_read_memory++;
+    while (!salir && longitud) {
+        z80_byte caracter=*file_read_memory;
+        file_read_memory++;
 
-            if (nueva_linea && longitud) {
-                z80_byte caracter2=*file_read_memory;
-                file_read_memory++;
-                longitud--;
+        if (nueva_linea && longitud) {
+            nueva_linea=0;
+            z80_byte caracter2=*file_read_memory;
+            file_read_memory++;
+            longitud--;
 
-                z80_int numero_linea=caracter+caracter2*256;
+            z80_int numero_linea=caracter+caracter2*256;
 
-                sprintf(&results_buffer[index_buffer],"%5d",numero_linea);
+            sprintf(&results_buffer[index_buffer],"%5d ",numero_linea);
 
-                index_buffer +=5;
+            index_buffer +=6;
+            x +=6;
 
+        }
+
+        else {
+
+            if (caracter==13) {
+                caracter=10;
+                lineas++;
+            }
+
+            else if (caracter==127) {
+                //(C)
+                caracter='c';
+            }
+
+            //tab. 13 y 19. y el resto, simplemente un espacio
+            else if (caracter==9) {
+                int tabcolumn;
+                if (x<13) tabcolumn=13;
+                else if (x<19) tabcolumn=19;
+                else tabcolumn=x+1;
+
+                while (x<tabcolumn) {
+                    results_buffer[index_buffer++]=' ';
+                    x++;
+                }
+            }
+
+
+            if (
+                (caracter>=32 && caracter<=126) ||
+                caracter==10
+            ) {
+                results_buffer[index_buffer++]=caracter;
             }
 
             else {
-
-                nueva_linea=0;
-
-                if (caracter==13) {
-                    caracter=10;
-                    lineas++;
-                }
-
-                else if (caracter==127) {
-                    //(C)
-                    caracter='c';
-                }
-
-                else if (caracter>=128) {
-                    caracter -=128;
-                    int tabcolumn;
-                    if (x<7) tabcolumn=7;
-                    else tabcolumn=12;
-
-                    while (x<tabcolumn) {
-                        results_buffer[index_buffer++]=' ';
-                        x++;
-                    }
-
-                }
-
-                results_buffer[index_buffer++]=caracter;
-                //controlar maximo
-                //100 bytes de margen
-                if (index_buffer>MAX_TEXTO_GENERIC_MESSAGE-100 || lineas>=MAX_LINEAS_TOTAL_GENERIC_MESSAGE) {
-                    debug_printf (VERBOSE_ERR,"Too many lines to show. Showing only the first %d",lineas);
-                    //forzar salir
-                    salir=1;
-                }
-
-                x++;
-                if (caracter==10) x=0;
-
+                if (caracter!=9) results_buffer[index_buffer++]='?';
             }
 
-			longitud--;
-		}
+            //controlar maximo
+            //100 bytes de margen
+            if (index_buffer>MAX_TEXTO_GENERIC_MESSAGE-100 || lineas>=MAX_LINEAS_TOTAL_GENERIC_MESSAGE) {
+                debug_printf (VERBOSE_ERR,"Too many lines to show. Showing only the first %d",lineas);
+                //forzar salir
+                salir=1;
+            }
 
-        results_buffer[index_buffer]=0;
+            x++;
+            if (caracter==10) {
+                x=0;
+                nueva_linea=1;
+            }
 
-        menu_generic_message("SPED file",results_buffer);
+        }
 
-        free(results_buffer);
+        longitud--;
+    }
+
+    results_buffer[index_buffer]=0;
+
+    menu_generic_message("GENS file",results_buffer);
+
+    free(results_buffer);
 
 }
 
@@ -422,9 +436,11 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 	//Sacar porcentaje 10%
 	int umbral_hexa=leidos/10;
 
+    //Y Gens entre 10 y 20%
     int umbral_gens=(leidos*20)/100;
 
-    printf("leidos %d codigos_no_imprimibles %d umbral_gens %d\n",leidos,codigos_no_imprimibles,umbral_gens);
+    //printf("leidos %d codigos_no_imprimibles %d umbral_gens %d\n",leidos,codigos_no_imprimibles,umbral_gens);
+
 
 	if (codigos_no_imprimibles>umbral_hexa) {
         //Pero si menor de 20% podemos pensar que quiza es gens
