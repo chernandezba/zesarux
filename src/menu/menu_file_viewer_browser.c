@@ -441,23 +441,22 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 
     //printf("leidos %d codigos_no_imprimibles %d umbral_gens %d\n",leidos,codigos_no_imprimibles,umbral_gens);
 
+    //Si menor de 20% y primeros bytes de linea 10 podemos pensar que quiza es gens
+    if (codigos_no_imprimibles<umbral_gens && primera_linea_gens_10) {
+        debug_printf(VERBOSE_INFO,"File possibly is a gens file");
+        menu_file_viewer_gens_show(file_read_memory,leidos);
+        free(file_read_memory);
+        return;
+    }
 
 	if (codigos_no_imprimibles>umbral_hexa) {
-        //Pero si menor de 20% podemos pensar que quiza es gens
-        if (codigos_no_imprimibles<umbral_gens && primera_linea_gens_10) {
-            debug_printf(VERBOSE_INFO,"File possibly is a gens file");
-            menu_file_viewer_gens_show(file_read_memory,leidos);
-            free(file_read_memory);
-            return;
-        }
 
-        else {
 
-            debug_printf(VERBOSE_INFO,"Considering file as hexadecimal because the invalid characters are higher than 10%% of the total size (%d/%d)",
-                codigos_no_imprimibles,leidos);
-            menu_file_hexdump_browser_show(file_name);
+        debug_printf(VERBOSE_INFO,"Considering file as hexadecimal because the invalid characters are higher than 10%% of the total size (%d/%d)",
+            codigos_no_imprimibles,leidos);
+        menu_file_hexdump_browser_show(file_name);
 
-        }
+
 	}
 
 	else {
