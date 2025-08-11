@@ -591,29 +591,36 @@ void menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
 
     do {
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador Primi 2  (48K)");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador ~~Primi 2  (48K)");
         menu_add_item_menu_misc(array_menu_common,"copiadorprimi2.zsf");
+        menu_add_item_menu_shortcut(array_menu_common,'p');
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador Azul     (48K)");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copiador ~~Azul     (48K)");
         menu_add_item_menu_misc(array_menu_common,"copiador.zsf");
+        menu_add_item_menu_shortcut(array_menu_common,'a');
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Duplitape         (48K)");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Duplitape         (48K)");
         menu_add_item_menu_misc(array_menu_common,"duplitape.zsf");
+        menu_add_item_menu_shortcut(array_menu_common,'d');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Duplitape2        (48K)");
         menu_add_item_menu_misc(array_menu_common,"duplitape2.zsf");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Copion9           (48K)");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Copion9           (48K)");
         menu_add_item_menu_misc(array_menu_common,"copion9.zsf");
+        menu_add_item_menu_shortcut(array_menu_common,'c');
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Mancopy           (48K)");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Mancopy           (48K)");
         menu_add_item_menu_misc(array_menu_common,"mancopy.zsf");
+        menu_add_item_menu_shortcut(array_menu_common,'m');
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Lao-Copy 2        (48K)");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~Lao-Copy 2        (48K)");
         menu_add_item_menu_misc(array_menu_common,"laocopy2.zsf");
+        menu_add_item_menu_shortcut(array_menu_common,'l');
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"SuperTapeCopier  (128K)");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"~~SuperTapeCopier  (128K)");
         menu_add_item_menu_misc(array_menu_common,"supertapecopier.zsf");
+        menu_add_item_menu_shortcut(array_menu_common,'s');
 
         //menu_add_item_menu_separator(array_menu_common);
 
