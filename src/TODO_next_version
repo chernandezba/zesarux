@@ -335,9 +335,6 @@ al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Per
 
 
 
--En filesel viewer, que entienda formato archivos fuente .GEN y los muestre. Pista: primera linea suele ser 10,
-por tanto si lee primeros dos bytes 0A 00, que deduzca que es .GEN
-
 -En watches que permita agregar etiquetas a cada expresión
 Por ejemplo si expresión es IX, etiqueta que diga "Dirección de carga"
 Que se puedan activar etiquetas en cada watch independiente
