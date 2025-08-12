@@ -33292,12 +33292,68 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     //free(punteros_lineas);
 }
 
-//Si contenido se ha modificado y hay que recargar la vista
+//Si contenido se ha modificado y hay que hacer dump de nuevo
 int menu_view_basic_listing_modified=0;
 
 int menu_view_basic_contador_segundo_anterior=0;
 
 char *menu_view_basic_listing_results_buffer=NULL;
+
+z80_bit menu_view_basic_listing_follow_current_line={0};
+
+int menu_view_basic_listing_follow_line_last=-1;
+
+//Retorna indice de linea en array si encontrada
+//-1 si no encontrada
+int menu_view_basic_listing_find_line_aux(int linea_buscar)
+{
+
+    int i;
+
+    char buffer_linea_buscar[7];
+    //Numero y espacio
+    sprintf(buffer_linea_buscar,"%5d ",linea_buscar);
+
+    for (i=0;i<menu_view_basic_listing_total_lineas;i++) {
+        char *linea=menu_view_basic_listing_punteros_lineas[i];
+        printf("%d : %s\n",i,linea);
+
+        //Numero y espacio
+        if (strlen(linea)>=6) {
+            if (!strncmp(linea,buffer_linea_buscar,5)) {
+                return i;
+            }
+        }
+    }
+
+    return -1;
+
+}
+
+//Retorna 0 si no encontrada
+int menu_view_basic_listing_find_line(zxvision_window *w)
+{
+	char buffer_texto[10];
+
+	buffer_texto[0]=0;
+    menu_ventana_scanf("Line to search",buffer_texto,6);
+
+    int linea=parse_string_to_number(buffer_texto);
+
+    int indice=menu_view_basic_listing_find_line_aux(linea);
+
+    if (indice>=0) {
+        printf("Encontrada\n");
+        zxvision_set_offset_y(w,indice);
+        return 1;
+    }
+
+    else {
+        printf("No encontrada\n");
+        return 0;
+    }
+
+}
 
 void menu_view_basic_listing_overlay(void)
 {
@@ -33329,6 +33385,33 @@ void menu_view_basic_listing_overlay(void)
             menu_view_basic_listing_last_crc32=crc32;
             menu_view_basic_listing_modified=1;
         }
+
+        if (menu_view_basic_listing_follow_current_line.v) {
+            //Obtener linea actual y ver si ha cambiado
+            int linea,sentencia;
+            debug_view_basic_get_current_line(&linea,&sentencia);
+
+            if (linea>=0 && linea>=9999) {
+
+                if (linea!=menu_view_basic_listing_follow_line_last) {
+                    menu_view_basic_listing_follow_line_last=linea;
+
+                    int indice=menu_view_basic_listing_find_line_aux(menu_view_basic_listing_follow_line_last);
+
+                    if (indice>=0) {
+                        printf("Encontrada\n");
+                        zxvision_set_offset_y(menu_view_basic_listing_window,indice);
+
+                    }
+
+                    else {
+                        printf("No encontrada\n");
+
+                    }
+                }
+            }
+        }
+
 
     }
 
@@ -33403,57 +33486,7 @@ void menu_view_basic_listing_set_length(void)
     menu_view_basic_listing_memory_length=menu_view_basic_listing_set_number("Length",menu_view_basic_listing_memory_length);
 }
 
-//Retorna indice de linea en array si encontrada
-//-1 si no encontrada
-int menu_view_basic_listing_find_line_aux(int linea_buscar)
-{
 
-    int i;
-
-    char buffer_linea_buscar[7];
-    //Numero y espacio
-    sprintf(buffer_linea_buscar,"%5d ",linea_buscar);
-
-    for (i=0;i<menu_view_basic_listing_total_lineas;i++) {
-        char *linea=menu_view_basic_listing_punteros_lineas[i];
-        printf("%d : %s\n",i,linea);
-
-        //Numero y espacio
-        if (strlen(linea)>=6) {
-            if (!strncmp(linea,buffer_linea_buscar,5)) {
-                return i;
-            }
-        }
-    }
-
-    return -1;
-
-}
-
-//Retorna 0 si no encontrada
-int menu_view_basic_listing_find_line(zxvision_window *w)
-{
-	char buffer_texto[10];
-
-	buffer_texto[0]=0;
-    menu_ventana_scanf("Line to search",buffer_texto,6);
-
-    int linea=parse_string_to_number(buffer_texto);
-
-    int indice=menu_view_basic_listing_find_line_aux(linea);
-
-    if (indice>=0) {
-        printf("Encontrada\n");
-        zxvision_set_offset_y(w,indice);
-        return 1;
-    }
-
-    else {
-        printf("No encontrada\n");
-        return 0;
-    }
-
-}
 
 
 void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
@@ -33558,8 +33591,9 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 
         ventana->writing_inverse_color=1;
         zxvision_print_string_defaults_fillspc_format(ventana,1,0,
-            "[%c] Show ~~address [%c] Show ~~BetaBasic ~~e: Find line",(debug_view_basic_show_address.v ? 'X' : ' ' ),
-            (debug_view_basic_show_betabasic.v ? 'X' : ' ')
+            "[%c] Show ~~address [%c] Show ~~BetaBasic [%c] ~~Follow ~~e: Find line",(debug_view_basic_show_address.v ? 'X' : ' ' ),
+            (debug_view_basic_show_betabasic.v ? 'X' : ' '),
+            (menu_view_basic_listing_follow_current_line.v ? 'X' : ' ')
         );
         zxvision_print_string_defaults_fillspc_format(ventana,1,1,
             "[%c] Custom ~~pointer %s",
@@ -33601,6 +33635,10 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
                 if (!menu_view_basic_listing_find_line(ventana)) {
                     menu_warn_message("Line not found");
                 }
+            break;
+
+            case 'f':
+                menu_view_basic_listing_follow_current_line.v ^=1;
             break;
 
             case 'b':
