@@ -33140,7 +33140,7 @@ zxvision_window *menu_view_basic_listing_window;
 
 //Para poder hacer view basic desde direcciones de memoria
 z80_bit menu_view_basic_listing_memory_enabled={0};
-int menu_view_basic_listing_memory_pointer=23755;  //0x5cde primer bloque basic cargado en Cargador Azul
+int menu_view_basic_listing_memory_pointer=23755;  //0x5cde=23774 primer bloque basic cargado en Cargador Azul
 int menu_view_basic_listing_memory_length=10000;
 
 void menu_view_basic_listing_get_basic(char *results_buffer)
@@ -33247,17 +33247,13 @@ void menu_view_basic_listing_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_view_basic_listing;
 
-
-void menu_view_basic_listing_set_pointer(void)
+int menu_view_basic_listing_set_number(char *title,int value)
 {
 
     char string_texto[MAX_BREAKPOINT_CONDITION_LENGTH];
 	sprintf(string_texto,"%d",menu_view_basic_listing_memory_pointer);
 
-    menu_ventana_scanf("Pointer",string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
-
-
-        //menu_generic_message_format("Result","%s -> %s",string_texto,(result ? "True" : "False " ));
+    menu_ventana_scanf(title,string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
 
 
 	//int exp_par_evaluate_expression(char *entrada,char *salida)
@@ -33267,7 +33263,7 @@ void menu_view_basic_listing_set_pointer(void)
 	int result=exp_par_evaluate_expression(string_texto,buffer_salida,string_detoken);
 	if (result==0) {
 		//menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);
-        menu_view_basic_listing_memory_pointer=parse_string_to_number(buffer_salida);
+        value=parse_string_to_number(buffer_salida);
 	}
 
 	else if (result==1) {
@@ -33278,7 +33274,18 @@ void menu_view_basic_listing_set_pointer(void)
 		menu_generic_message_format("Error","%s parsed string: %s",buffer_salida,string_detoken);
 	}
 
+    return value;
 
+}
+
+void menu_view_basic_listing_set_pointer(void)
+{
+    menu_view_basic_listing_memory_pointer=menu_view_basic_listing_set_number("Pointer",menu_view_basic_listing_memory_pointer);
+}
+
+void menu_view_basic_listing_set_length(void)
+{
+    menu_view_basic_listing_memory_length=menu_view_basic_listing_set_number("Length",menu_view_basic_listing_memory_length);
 }
 
 void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
@@ -33372,13 +33379,20 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 *poder buscar texto
         */
 
+        char buffer_custom_pointer[100];
+        buffer_custom_pointer[0]=0;
+
+        if (menu_view_basic_listing_memory_enabled.v) {
+            sprintf(buffer_custom_pointer,"~~Set: %d ~~Length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
+        }
+
         ventana->writing_inverse_color=1;
         zxvision_print_string_defaults_format(ventana,1,0,
             "[%c] Show ~~address",(debug_view_basic_show_address.v ? 'X' : ' ' ));
         zxvision_print_string_defaults_format(ventana,1,1,
             "[%c] Custom ~~pointer %s",
             (menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
-            (menu_view_basic_listing_memory_enabled.v ? "~~Set" : "")
+            buffer_custom_pointer
         );
         ventana->writing_inverse_color=0;
 
@@ -33401,6 +33415,12 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
             case 's':
                 if (menu_view_basic_listing_memory_enabled.v) {
                     menu_view_basic_listing_set_pointer();
+                }
+            break;
+
+            case 'l':
+                if (menu_view_basic_listing_memory_enabled.v) {
+                    menu_view_basic_listing_set_length();
                 }
             break;
 
