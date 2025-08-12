@@ -85,6 +85,10 @@ Mejorada ventana Fuente de Sonido Externa:
 - Mostrar frecuencia media cuando señal desconocida
 - Permitir activar entrada desde esta ventana
 
+Mejorada ventana de View Basic:
+- Permitir lineas > 9999, útil para programas protegidos
+- AGREGAR LO QUE FALTA!!!
+
 Mejorado Hexadecimal editor: expresión de seguimiento se guarda en configuración
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
@@ -95,7 +99,6 @@ Mejorado Selector de Archivos: permitir usar ruta a una imagen montada FAT en to
 Mejorada ventana de Visual Cassette Tape: soportar también cinta estándar
 Mejorada opción de Custom rom agregando una opción para resetear la máquina
 Mejorada emulación de DivMMC, DivIDE y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD o IDE insertada
-Mejorada ventana de View Basic: permitir lineas > 9999, útil para programas protegidos
 
 * Correcciones:
 

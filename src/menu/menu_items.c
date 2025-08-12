@@ -33399,7 +33399,7 @@ void menu_view_basic_listing_overlay(void)
                     int indice=menu_view_basic_listing_find_line_aux(menu_view_basic_listing_follow_line_last);
 
                     if (indice>=0) {
-                        printf("Encontrada\n");
+                        printf("Encontrada linea actual %d\n",linea);
                         zxvision_set_offset_y(menu_view_basic_listing_window,indice);
 
                     }

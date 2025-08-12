@@ -85,6 +85,10 @@ Improved External Audio Source window:
 - Show average frequency when unknown signal
 - Allow to enable input from this window
 
+Improved View Basic window:
+- Allow lines > 9999, useful for protected programs
+- AGREGAR LO QUE FALTA!!!
+
 Improved Hexadecimal editor: follow expression is saved on configuration
 Improved maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
@@ -95,7 +99,6 @@ Improved File Selector: allow to use path to a FAT mounted image on all cases
 Improved Visual Cassette Tape window: support standard tape too
 Improved Custom rom setting adding a Reset machine option
 Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
-Improved View Basic window: allow lines > 9999, useful for protected programs
 
 * Fixes:
 
