@@ -33143,6 +33143,46 @@ z80_bit menu_view_basic_listing_memory_enabled={0};
 int menu_view_basic_listing_memory_pointer=23755;  //0x5cde=23774 primer bloque basic cargado en Cargador Azul
 int menu_view_basic_listing_memory_length=10000;
 
+z80_long_int menu_view_basic_listing_last_crc32=0;
+
+//Calcular crc32 del bloque listado por saber si se modifica para volver a renderizar
+z80_long_int menu_view_basic_listing_get_crc32(void)
+{
+
+
+    int start_address=menu_view_basic_listing_memory_pointer;
+    int length=menu_view_basic_listing_memory_length;
+
+    if (length<1) {
+      //escribir_socket(misocket,"ERROR. Length must be >0");
+      return 0;
+    }
+
+
+    //Copiar contenido memoria segun memory zone activa a buffer de memoria temporal
+    z80_byte *memoria_temporal;
+    memoria_temporal=malloc(length);
+    if (memoria_temporal==NULL) cpu_panic("Can not allocate memory for crc32 calculation");
+
+    int longitud_copiar=length;
+    int i;
+
+    for (i=0;longitud_copiar>0;i++,longitud_copiar--) {
+      z80_byte byte_leido=peek_byte_no_time(start_address+i);
+      memoria_temporal[i]=byte_leido;
+    }
+
+
+
+    z80_long_int crc32=util_crc32_calculation(0,memoria_temporal,length);
+
+
+    free(memoria_temporal);
+
+    return crc32;
+
+}
+
 void menu_view_basic_listing_get_basic(char *results_buffer)
 {
 
@@ -33166,7 +33206,7 @@ void menu_view_basic_listing_get_basic(char *results_buffer)
 
 
 
-  	printf("%s\n",results_buffer);
+  	//printf("%s\n",results_buffer);
 
 
 
@@ -33219,6 +33259,8 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
 //Si contenido se ha modificado y hay que recargar la vista
 int menu_view_basic_listing_modified=0;
 
+int menu_view_basic_contador_segundo_anterior=0;
+
 void menu_view_basic_listing_overlay(void)
 {
 
@@ -33231,7 +33273,24 @@ void menu_view_basic_listing_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
+
+    //esto hara ejecutar esto 2 veces por segundo
+    if ( ((contador_segundo%500) == 0 && menu_view_basic_contador_segundo_anterior!=contador_segundo) ) {
+
+        menu_view_basic_contador_segundo_anterior=contador_segundo;
+
+
+        z80_long_int crc32=menu_view_basic_listing_get_crc32();
+        if (crc32!=menu_view_basic_listing_last_crc32) {
+            printf("CRC modificado\n");
+            menu_view_basic_listing_last_crc32=crc32;
+            menu_view_basic_listing_modified=1;
+        }
+
+    }
+
     if (menu_view_basic_listing_modified) {
+        printf("Listar de nuevo\n");
         menu_view_basic_listing_modified=0;
         char *results_buffer=util_malloc(VIEW_BASIC_MAX_BASIC_TEXT,"Can not allocate memory for view basic");
         menu_view_basic_listing_get_basic(results_buffer);
