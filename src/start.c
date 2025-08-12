@@ -983,6 +983,10 @@ printf(
 		"--set-watch n s                     Set watch with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces\n",DEBUG_MAX_WATCHES
 );
 
+printf(
+		"--set-watch-label n s               Set watch label with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces\n",DEBUG_MAX_WATCHES
+);
+
 printf (
         "--watch-show-decimal-results        Shows results in decimal in window Watches\n"
 	    "--set-mem-breakpoint a n            Set memory breakpoint at address a for type n\n"
@@ -6146,6 +6150,23 @@ int parse_cmdline_options(int desde_commandline) {
 			 }
 
 			 debug_set_watch(valor,argv[puntero_parametro]);
+
+		 }
+
+		 else if (!strcmp(argv[puntero_parametro],"--set-watch-label")) {
+			 siguiente_parametro_argumento();
+			 int valor=atoi(argv[puntero_parametro]);
+			 valor--;
+
+			 siguiente_parametro_argumento();
+
+
+			 if (valor<0 || valor>DEBUG_MAX_WATCHES-1) {
+				 printf("Index %d out of range setting watch label \"%s\"\n",valor+1,argv[puntero_parametro]);
+				 exit(1);
+			 }
+
+            strcpy(debug_watches_labels_array[valor],argv[puntero_parametro]);
 
 		 }
 

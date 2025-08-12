@@ -4068,6 +4068,10 @@ void menu_watches_edit(MENU_ITEM_PARAMETERS)
 
   debug_set_watch(watch_index,string_texto);
 
+  if (debug_watches_labels_array[watch_index][0]==0) strcpy(debug_watches_labels_array[watch_index],string_texto);
+
+  menu_ventana_scanf("Label",debug_watches_labels_array[watch_index],MAX_BREAKPOINT_CONDITION_LENGTH);
+
   menu_muestra_pending_error_message(); //Si se genera un error derivado del set watch, mostrarlo
 
 }
@@ -4185,11 +4189,20 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 		for (i=0;i<DEBUG_MAX_WATCHES;i++) {
 
-			//Convertir token de watch a texto
-			if (debug_watches_array[i][0].tipo==TPT_FIN) {
-				strcpy(string_detoken,"None");
-			}
-			else exp_par_tokens_to_exp(debug_watches_array[i],string_detoken,MAX_PARSER_TOKENS_NUM);
+            //Si el label no está vacío
+            if (debug_watches_labels_array[i][0]) {
+                strcpy(string_detoken,debug_watches_labels_array[i]);
+            }
+
+            else {
+
+                //Convertir token de watch a texto
+                if (debug_watches_array[i][0].tipo==TPT_FIN) {
+                    strcpy(string_detoken,"None");
+                }
+                else exp_par_tokens_to_exp(debug_watches_array[i],string_detoken,MAX_PARSER_TOKENS_NUM);
+
+            }
 
 			//Limitar a 27 caracteres
 			menu_tape_settings_trunc_name(string_detoken,texto_expresion_shown,27);

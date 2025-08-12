@@ -288,6 +288,7 @@ int menu_memory_cheat_next_scan_opcion_seleccionada=0;
 int cpc_additional_roms_opcion_seleccionada=0;
 int lec_memory_opcion_seleccionada=0;
 int visualcasette_tape_opcion_seleccionada=0;
+int debug_view_basic_opcion_seleccionada=0;
 
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
@@ -33100,7 +33101,7 @@ void menu_debug_load_binary(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
+void menu_debug_view_basic_listing(MENU_ITEM_PARAMETERS)
 {
 
     char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing basic");
@@ -33762,6 +33763,78 @@ void menu_debug_view_basic_gosub_stack(MENU_ITEM_PARAMETERS)
 }
 
 
+
+/*
+
+Inicio de template para gestion de menu
+
+Sustituir:
+
+debug_view_basic por el nombre del menu (aparece en la funcion y en la variable de opcion seleccionada)
+Cambiar titulo de menu en llamada a funcion menu_dibuja_menu
+*/
+
+void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_debug_view_basic_listing,menu_debug_view_basic_cond,
+            "View Basic ~~listing","Ver ~~listado Basic","Veure ~~llistat Basic");
+		menu_add_item_menu_shortcut(array_menu_common,'l');
+        menu_add_item_menu_se_cerrara(array_menu_common);
+        menu_add_item_menu_genera_ventana(array_menu_common);
+
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+		    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_view_basic_variables,NULL,
+                "View Basic ~~variables","Ver ~~variables Basic","Veure ~~variables Basic");
+            menu_add_item_menu_shortcut(array_menu_common,'v');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+        }
+
+        if (MACHINE_IS_SPECTRUM) {
+		    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_view_basic_gosub_stack,NULL,
+                "View ~~GO SUB stack","Ver pila ~~GO SUB","Veure pila ~~GO SUB");
+            menu_add_item_menu_shortcut(array_menu_common,'g');
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+        }
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Debug-> Basic","Menú Principal-> Debug-> Basic","Menú Principal-> Debug-> Basic");
+
+        retorno_menu=menu_dibuja_menu(&debug_view_basic_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Basic","Basic","Basic" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
 //menu debug
 void menu_debug_main(MENU_ITEM_PARAMETERS)
 {
@@ -34005,26 +34078,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_se_cerrara(array_menu_debug);
         menu_add_item_menu_genera_ventana(array_menu_debug);
 
-		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic,menu_debug_view_basic_cond,
-            "View ~~Basic","Ver ~~Basic","Veure ~~Basic");
-		menu_add_item_menu_shortcut(array_menu_debug,'b');
-        menu_add_item_menu_se_cerrara(array_menu_debug);
-        menu_add_item_menu_genera_ventana(array_menu_debug);
 
-        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
-		    menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic_variables,NULL,
-                "View Basic variab~~les","Ver variab~~les Basic","Veure variab~~les Basic");
-            menu_add_item_menu_shortcut(array_menu_debug,'l');
-            menu_add_item_menu_se_cerrara(array_menu_debug);
-            menu_add_item_menu_genera_ventana(array_menu_debug);
-        }
-
-        if (MACHINE_IS_SPECTRUM) {
-		    menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic_gosub_stack,NULL,
-                "View GO SUB stack","Ver pila GO SUB","Veure pila GO SUB");
-            menu_add_item_menu_se_cerrara(array_menu_debug);
-            menu_add_item_menu_genera_ventana(array_menu_debug);
-        }
 
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sensors,NULL,
@@ -34166,6 +34220,11 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		*/
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic,menu_debug_view_basic_cond,
+            "~~Basic","~~Basic","~~Basic");
+		menu_add_item_menu_shortcut(array_menu_debug,'b');
+        menu_add_item_menu_tiene_submenu(array_menu_debug);
 
         if (CPU_IS_Z80) {
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_cpu_transaction_log,NULL,

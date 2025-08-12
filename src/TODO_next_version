@@ -335,9 +335,24 @@ al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Per
 
 
 
--En watches que permita agregar etiquetas a cada expresión
-Por ejemplo si expresión es IX, etiqueta que diga "Dirección de carga"
-Que se puedan activar etiquetas en cada watch independiente
+-Visor de basic que permita indicar dirección ram donde empezar: sirve para poder ver el bloque de basic
+cargado desde el Cargador Azul por ejemplo
+Quizá una ventana con una primera linea con dirección de inicio y otra info, y de la segunda linea hacia abajo que sea
+el listado basic
+*Sprite navigator por ejemplo usa una primera linea fija y la segunda para abajo variables
+*Pero necesitaria ventana que trunque y justifique lineas, como una ventana de dialogo normal -> ejemplo en text adventure localidades
+zxvision_generic_message_aux_justificar_lineas... para justificar
+*y debug_view_basic_from_memory similar a como lo hace el file browser para mostrar vista basic con direccion inicio modificable
+*misma ventana para basic normal y el modificable de direccion de inicio. con checkbox con algo como:
+[x] Current basic / Start address
+Si start address, que pregunte direccion inicio y también longitud en bytes
+
+*que se pueda quedar en background. Que refresque al entrar y también estando en background si detecta cambios en programa
+(quiza sacar un checksum cada 1 segundo de toda la longitud y ver si cambia)
+*permitir betabasic: keywords son letras gráficas. opcion si mostrar keywords betabasic o no
+*show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
+
+-quiza debug basic, variables y gosub en submenu aparte -> Debug -> Basic ->
 
 -De alguna manera que se vea una miniatura de la pantalla del juego cargado
 En alguna ventana nueva quizá

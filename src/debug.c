@@ -132,6 +132,8 @@ token_parser debug_breakpoints_conditions_array_tokens[MAX_BREAKPOINTS_CONDITION
 
 //watches. nuevo formato con parser de tokens
 token_parser debug_watches_array[DEBUG_MAX_WATCHES][MAX_PARSER_TOKENS_NUM];
+//etiquetas de watches
+char debug_watches_labels_array[DEBUG_MAX_WATCHES][MAX_BREAKPOINT_CONDITION_LENGTH];
 
 
 //Ultimo breakpoint activo+1 (o sea, despues del ultimo activo) para optimizar la comprobacion de breakpoints,
@@ -619,6 +621,7 @@ void init_watches_table(void)
 
 	for (i=0;i<DEBUG_MAX_WATCHES;i++) {
 		debug_watches_array[i][0].tipo=TPT_FIN;
+        debug_watches_labels_array[i][0]=0;
 	}
 
 

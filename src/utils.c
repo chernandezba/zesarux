@@ -4171,6 +4171,10 @@ int util_write_configfile(void)
                                 ADD_STRING_CONFIG,"--set-watch %d \"%s\"",i+1,buffer_temp);
 			}
 
+			if (debug_watches_labels_array[i][0]) {
+                ADD_STRING_CONFIG,"--set-watch-label %d \"%s\"",i+1,debug_watches_labels_array[i]);
+			}
+
 	}
 
 

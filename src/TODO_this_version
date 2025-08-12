@@ -22,3 +22,14 @@ Probar en diferentes sistemas:
 --Fin lectura mando analógico, como un volante
 
 ---------------------
+
+
+ok -En watches que permita agregar etiquetas a cada expresión
+Por ejemplo si expresión es IX, etiqueta que diga "Dirección de carga"
+Que se puedan activar etiquetas en cada watch independiente
+* al agregar expresión: que meta etiqueta igual a expresión
+* que sucede al editar expresión? no quiero que toque la etiqueta existente
+Pero se distingue entre agregar y editar? Agregar seria cuando la existente está vacía
+O directamente que el label muestre la que haya (si está vacía, meter igual a expresión)
+* al mostrar, si label vacia: mostrar expresión. Esto es para facilitar updates de watches existentes en versiones anteriores,
+sino el usuario lo veria en blanco
