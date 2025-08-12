@@ -33171,7 +33171,9 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     //Punteros a cada linea de esas
     //Esto es muy maximo, pero podria pasar
     //Un maximo de VIEW_BASIC_MAX_LINES_FINAL lineas
-    char *punteros_lineas[VIEW_BASIC_MAX_LINES_FINAL];
+
+    //char *punteros_lineas[VIEW_BASIC_MAX_LINES_FINAL];
+    char **punteros_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*sizeof(char *),"Can not allocate memory for basic lines");
 
     //Maximo de linea contando 0 del final
     int max_line_length=w->total_width;
@@ -33179,28 +33181,29 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     //maximo permitido en ancho
     int maxima_longitud=max_line_length-1;
 
-
-    char *buffer_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*max_line_length,"Can not allocate memory location messages");
+    printf("antes de malloc buffer lineas\n");
+    char *buffer_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*max_line_length,"Can not allocate memory for basic lines");
 
 
     //Inicializar punteros a lineas
     int i;
     for (i=0;i<VIEW_BASIC_MAX_LINES_FINAL;i++) {
+        //printf("puntero linea %d\n",i);
         int offset_linea=i*max_line_length;
         punteros_lineas[i]=&buffer_lineas[offset_linea];
     }
-
 
 
     int total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,punteros_lineas);
 
 
     for (i=0;i<total_lineas;i++) {
-            //printf("linea %d : %s\n",i,punteros_lineas[i]);
-            zxvision_print_string_defaults(w,1,VIEW_BASIC_HEADER_LINES+i,punteros_lineas[i]);
+        //printf("linea %d : %s\n",i,punteros_lineas[i]);
+        zxvision_print_string_defaults_fillspc(w,1,VIEW_BASIC_HEADER_LINES+i,punteros_lineas[i]);
     }
 
     free(buffer_lineas);
+    free(punteros_lineas);
 }
 
 //Si contenido se ha modificado y hay que recargar la vista
