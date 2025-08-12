@@ -33225,6 +33225,11 @@ void menu_view_basic_listing_get_basic(char *results_buffer)
 
 }
 
+//Punteros a las diferentes lineas
+char **menu_view_basic_listing_punteros_lineas=NULL;
+
+//Donde almacenar las lineas ya troceadas
+char *menu_view_basic_listing_buffer_lineas=NULL;
 
 void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w)
 {
@@ -33234,7 +33239,14 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     //Un maximo de VIEW_BASIC_MAX_LINES_FINAL lineas
 
     //char *punteros_lineas[VIEW_BASIC_MAX_LINES_FINAL];
-    char **punteros_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*sizeof(char *),"Can not allocate memory for basic lines");
+    if (menu_view_basic_listing_punteros_lineas!=NULL) {
+        free(menu_view_basic_listing_punteros_lineas);
+        menu_view_basic_listing_punteros_lineas=NULL;
+    }
+
+    if (menu_view_basic_listing_punteros_lineas==NULL) {
+        menu_view_basic_listing_punteros_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*sizeof(char *),"Can not allocate memory for basic lines");
+    }
 
     //Maximo de linea contando 0 del final
     int max_line_length=w->total_width;
@@ -33243,7 +33255,14 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     int maxima_longitud=max_line_length-1;
 
     printf("antes de malloc buffer lineas\n");
-    char *buffer_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*max_line_length,"Can not allocate memory for basic lines");
+    if (menu_view_basic_listing_buffer_lineas!=NULL) {
+        free(menu_view_basic_listing_buffer_lineas);
+        menu_view_basic_listing_buffer_lineas=NULL;
+    }
+
+    if (menu_view_basic_listing_buffer_lineas==NULL) {
+        menu_view_basic_listing_buffer_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*max_line_length,"Can not allocate memory for basic lines");
+    }
 
 
     //Inicializar punteros a lineas
@@ -33251,22 +33270,22 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     for (i=0;i<VIEW_BASIC_MAX_LINES_FINAL;i++) {
         //printf("puntero linea %d\n",i);
         int offset_linea=i*max_line_length;
-        punteros_lineas[i]=&buffer_lineas[offset_linea];
+        menu_view_basic_listing_punteros_lineas[i]=&menu_view_basic_listing_buffer_lineas[offset_linea];
     }
 
 
-    int total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,punteros_lineas);
+    int total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,menu_view_basic_listing_punteros_lineas);
 
     //Reajustar alto total ventana
     zxvision_set_total_height(w,VIEW_BASIC_HEADER_LINES+total_lineas);
 
     for (i=0;i<total_lineas;i++) {
         //printf("linea %d : %s\n",i,punteros_lineas[i]);
-        zxvision_print_string_defaults_fillspc(w,1,VIEW_BASIC_HEADER_LINES+i,punteros_lineas[i]);
+        zxvision_print_string_defaults_fillspc(w,1,VIEW_BASIC_HEADER_LINES+i,menu_view_basic_listing_punteros_lineas[i]);
     }
 
-    free(buffer_lineas);
-    free(punteros_lineas);
+    //free(buffer_lineas);
+    //free(punteros_lineas);
 }
 
 //Si contenido se ha modificado y hay que recargar la vista
