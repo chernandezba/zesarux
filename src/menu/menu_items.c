@@ -33131,8 +33131,8 @@ zxvision_window *menu_view_basic_listing_window;
 
 #define VIEW_BASIC_HEADER_LINES 2
 
-//200kb al descomponer tokens en texto creo que es mas que suficiente
-#define VIEW_BASIC_MAX_BASIC_TEXT (200*1024)
+//1024kb al descomponer tokens en texto creo que es mas que suficiente
+#define VIEW_BASIC_MAX_BASIC_TEXT (1024*1024)
 
 //Mas que suficiente creo contando lineas que se cortan y van a la siguiente
 #define VIEW_BASIC_MAX_LINES_FINAL (9999*10)
