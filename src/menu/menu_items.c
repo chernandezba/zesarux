@@ -33113,8 +33113,6 @@ void menu_debug_load_binary(MENU_ITEM_PARAMETERS)
 }
 */
 
-zxvision_window *menu_view_basic_listing_window;
-
 /*
 
 
@@ -33128,10 +33126,21 @@ z80_byte menu_file_bas_browser_show_peek(z80_int dir)
 }
 */
 
-void menu_view_basic_listing_get_basic()
+
+zxvision_window *menu_view_basic_listing_window;
+
+#define VIEW_BASIC_HEADER_LINES 2
+
+//200kb al descomponer tokens en texto creo que es mas que suficiente
+#define VIEW_BASIC_MAX_BASIC_TEXT (200*1024)
+
+//Mas que suficiente creo contando lineas que se cortan y van a la siguiente
+#define VIEW_BASIC_MAX_LINES_FINAL (9999*10)
+
+void menu_view_basic_listing_get_basic(char *results_buffer)
 {
 
-    char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for reading the file");
+
 
 
 
@@ -33151,11 +33160,51 @@ void menu_view_basic_listing_get_basic()
 
   	printf("%s\n",results_buffer);
 
-    free(results_buffer);
+
 
 }
 
 
+void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w)
+{
+    //trocear
+    //Punteros a cada linea de esas
+    //Esto es muy maximo, pero podria pasar
+    //Un maximo de VIEW_BASIC_MAX_LINES_FINAL lineas
+    char *punteros_lineas[VIEW_BASIC_MAX_LINES_FINAL];
+
+    //Maximo de linea contando 0 del final
+    int max_line_length=w->total_width;
+
+    //maximo permitido en ancho
+    int maxima_longitud=max_line_length-1;
+
+
+    char *buffer_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*max_line_length,"Can not allocate memory location messages");
+
+
+    //Inicializar punteros a lineas
+    int i;
+    for (i=0;i<VIEW_BASIC_MAX_LINES_FINAL;i++) {
+        int offset_linea=i*max_line_length;
+        punteros_lineas[i]=&buffer_lineas[offset_linea];
+    }
+
+
+
+    int total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,punteros_lineas);
+
+
+    for (i=0;i<total_lineas;i++) {
+            //printf("linea %d : %s\n",i,punteros_lineas[i]);
+            zxvision_print_string_defaults(w,1,VIEW_BASIC_HEADER_LINES+i,punteros_lineas[i]);
+    }
+
+    free(buffer_lineas);
+}
+
+//Si contenido se ha modificado y hay que recargar la vista
+int menu_view_basic_listing_modified=0;
 
 void menu_view_basic_listing_overlay(void)
 {
@@ -33169,7 +33218,14 @@ void menu_view_basic_listing_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
+    if (menu_view_basic_listing_modified) {
+        menu_view_basic_listing_modified=0;
+        char *results_buffer=util_malloc(VIEW_BASIC_MAX_BASIC_TEXT,"Can not allocate memory for view basic");
+        menu_view_basic_listing_get_basic(results_buffer);
+        menu_view_basic_listing_print_basic(results_buffer,menu_view_basic_listing_window);
 
+        free(results_buffer);
+    }
 
 
     //Mostrar contenido
@@ -33219,8 +33275,8 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
-        //2 lineas superiores fijas
-        ventana->upper_margin=2;
+        //unas lineas superiores fijas
+        ventana->upper_margin=VIEW_BASIC_HEADER_LINES;
 
     }
 
@@ -33257,7 +33313,9 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 cargado desde el Cargador Azul por ejemplo
 Quizá una ventana con una primera linea con dirección de inicio y otra info, y de la segunda linea hacia abajo que sea
 el listado basic
+
 ok *Sprite navigator por ejemplo usa una primera linea fija y la segunda para abajo variables
+
 *Pero necesitaria ventana que trunque y justifique lineas, como una ventana de dialogo normal -> ejemplo en text adventure localidades
 zxvision_generic_message_aux_justificar_lineas... para justificar
 *y debug_view_basic_from_memory similar a como lo hace el file browser para mostrar vista basic con direccion inicio modificable
@@ -33286,8 +33344,7 @@ Si start address, que pregunte direccion inicio y también longitud en bytes
         zxvision_print_string_defaults_format(ventana,1,11,"Linea Scroll 10");
 
 
-        //temp
-            menu_view_basic_listing_get_basic();
+        menu_view_basic_listing_modified=1;
 
 		tecla=zxvision_common_getkey_refresh();
 
