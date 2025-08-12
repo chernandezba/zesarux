@@ -43,7 +43,7 @@ extern void print_registers(char *buffer);
 extern void cpu_panic(char *mensaje);
 
 extern void debug_view_basic_get_current_line(int *linea,int *sentencia);
-extern void debug_view_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,char **dir_tokens,int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir) , int tipo, int show_address, int show_current_line,int mostrar_betabasic );
+extern void debug_view_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,char **dir_tokens,int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir) , int tipo, int show_address, int show_current_line,int mostrar_betabasic,int maximo_guardar );
 extern void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,z80_byte (*lee_byte_function)(z80_int dir) );
 
 extern void debug_tiempo_inicial(void);

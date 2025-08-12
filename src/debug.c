@@ -5318,7 +5318,7 @@ void debug_view_basic_get_current_line(int *linea,int *sentencia)
 
 //tipo: tipo maquina: 0: spectrum. 1: zx80. 2: zx81
 void debug_view_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,char **dir_tokens,
-int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show_address, int show_current_line,int mostrar_betabasic )
+int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show_address, int show_current_line,int mostrar_betabasic,int maximo_guardar )
 {
 
 	  	z80_int dir;
@@ -5502,7 +5502,7 @@ int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show
 
   			//controlar maximo
   			//1024 bytes de margen
-  			if (index_buffer>MAX_TEXTO_GENERIC_MESSAGE-1024) {
+  			if (index_buffer>maximo_guardar-1024) {
                           	debug_printf (VERBOSE_ERR,"Too many results to show. Showing only the first ones");
                   	        //forzar salir
   				longitud_linea=0;
@@ -5515,7 +5515,7 @@ int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show
 
                   //controlar maximo
                   //1024 bytes de margen
-                  if (index_buffer>MAX_TEXTO_GENERIC_MESSAGE-1024) {
+                  if (index_buffer>maximo_guardar-1024) {
                           debug_printf (VERBOSE_ERR,"Too many results to show. Showing only the first ones");
                           //forzar salir
                           salir=1;
@@ -5757,7 +5757,7 @@ void debug_view_basic(char *results_buffer)
 
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
-        parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v);
+        parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v,MAX_TEXTO_GENERIC_MESSAGE);
 
 }
 

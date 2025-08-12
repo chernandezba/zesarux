@@ -33215,7 +33215,7 @@ void menu_view_basic_listing_get_basic(char *results_buffer)
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
         parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,
-        debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v);
+        debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v,VIEW_BASIC_MAX_BASIC_TEXT);
 
 
 
@@ -33366,10 +33366,10 @@ void menu_view_basic_listing_overlay(void)
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    //printf("contador_segundo %d\n",contador_segundo);
 
-
-    //esto hara ejecutar esto 2 veces por segundo
-    if ( ((contador_segundo%500) == 0 && menu_view_basic_contador_segundo_anterior!=contador_segundo) ) {
+    //esto hara ejecutar esto 5 veces por segundo
+    if ( ((contador_segundo%200) == 0 && menu_view_basic_contador_segundo_anterior!=contador_segundo) ) {
 
         menu_view_basic_contador_segundo_anterior=contador_segundo;
 
@@ -33380,6 +33380,7 @@ void menu_view_basic_listing_overlay(void)
 
 
         z80_long_int crc32=menu_view_basic_listing_get_crc32();
+        printf("Obtenido crc: %X\n",crc32);
         if (crc32!=menu_view_basic_listing_last_crc32) {
             printf("CRC modificado\n");
             menu_view_basic_listing_last_crc32=crc32;
