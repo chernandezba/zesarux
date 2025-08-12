@@ -256,6 +256,8 @@ extern int menu_debug_hexdump_add_follow_expression(char *string_texto);
 extern int menu_debug_hexdump_follow_expression_defined(void);
 extern void menu_debug_hexdump_get_follow_expression_string(char *string_texto);
 
+extern void menu_view_basic_listing(MENU_ITEM_PARAMETERS);
+
 
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];

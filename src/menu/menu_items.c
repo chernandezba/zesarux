@@ -33101,7 +33101,7 @@ void menu_debug_load_binary(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_debug_view_basic_listing(MENU_ITEM_PARAMETERS)
+/*void menu_debug_view_basic_listing(MENU_ITEM_PARAMETERS)
 {
 
     char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing basic");
@@ -33111,7 +33111,152 @@ void menu_debug_view_basic_listing(MENU_ITEM_PARAMETERS)
 
     free(results_buffer);
 }
+*/
 
+
+/*
+Inicio de Template de ventana de menu que se puede enviar a background
+Sustituir "view_basic_listing" por el nombre de la ventana
+Sustituir "viewbasiclisting" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
+Sustituir "View Basic Listing" por el titulo de la ventana
+Y definirla en zxvision_known_window_names_array
+*/
+
+
+zxvision_window *menu_view_basic_listing_window;
+
+
+void menu_view_basic_listing_overlay(void)
+{
+
+    menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_view_basic_listing_window->is_minimized) return;
+
+
+    //Print....
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+
+    //Mostrar contenido
+    zxvision_draw_window_contents(menu_view_basic_listing_window);
+
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_view_basic_listing;
+
+
+void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_view_basic_listing;
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("viewbasiclisting",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Basic Listing",
+            "viewbasiclisting",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_view_basic_listing_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_view_basic_listing_overlay);
+
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
+    }
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+
+    } while (salir==0);
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
 
 
 
@@ -33784,7 +33929,7 @@ void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
     do {
 
 
-		menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_debug_view_basic_listing,menu_debug_view_basic_cond,
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_view_basic_listing,menu_debug_view_basic_cond,
             "View Basic ~~listing","Ver ~~listado Basic","Veure ~~llistat Basic");
 		menu_add_item_menu_shortcut(array_menu_common,'l');
         menu_add_item_menu_se_cerrara(array_menu_common);
