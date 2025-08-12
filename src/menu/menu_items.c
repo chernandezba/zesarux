@@ -33512,6 +33512,16 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
                 debug_view_basic_show_betabasic.v ^=1;
             break;
 
+            //abajo
+            case 10:
+                zxvision_send_scroll_down(ventana);
+            break;
+
+            //arriba
+            case 11:
+                zxvision_send_scroll_up(ventana);
+            break;
+
 
             //Salir con ESC
             case 2:
