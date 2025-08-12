@@ -33274,6 +33274,8 @@ int menu_view_basic_listing_modified=0;
 
 int menu_view_basic_contador_segundo_anterior=0;
 
+char *menu_view_basic_listing_results_buffer=NULL;
+
 void menu_view_basic_listing_overlay(void)
 {
 
@@ -33308,13 +33310,21 @@ void menu_view_basic_listing_overlay(void)
     }
 
     if (menu_view_basic_listing_modified) {
-        printf("Listar de nuevo\n");
+        printf("Obtener listado de nuevo de nuevo\n");
         menu_view_basic_listing_modified=0;
-        char *results_buffer=util_malloc(VIEW_BASIC_MAX_BASIC_TEXT,"Can not allocate memory for view basic");
-        menu_view_basic_listing_get_basic(results_buffer);
-        menu_view_basic_listing_print_basic(results_buffer,menu_view_basic_listing_window);
 
-        free(results_buffer);
+        if (menu_view_basic_listing_results_buffer!=NULL) {
+            free(menu_view_basic_listing_results_buffer);
+            menu_view_basic_listing_results_buffer=NULL;
+        }
+
+        if (menu_view_basic_listing_results_buffer==NULL) {
+            menu_view_basic_listing_results_buffer=util_malloc(VIEW_BASIC_MAX_BASIC_TEXT,"Can not allocate memory for view basic");
+        }
+
+        menu_view_basic_listing_get_basic(menu_view_basic_listing_results_buffer);
+        menu_view_basic_listing_print_basic(menu_view_basic_listing_results_buffer,menu_view_basic_listing_window);
+
     }
 
 
@@ -33437,6 +33447,8 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
         return;
     }
 
+    menu_view_basic_listing_modified=1;
+
     do {
         /*
         -Visor de basic que permita indicar dirección ram donde empezar: sirve para poder ver el bloque de basic
@@ -33481,7 +33493,7 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
         ventana->writing_inverse_color=0;
 
 
-        menu_view_basic_listing_modified=1;
+
 
 		tecla=zxvision_common_getkey_refresh();
 
@@ -33510,6 +33522,7 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 
             case 'b':
                 debug_view_basic_show_betabasic.v ^=1;
+                menu_view_basic_listing_modified=1;
             break;
 
             //abajo
