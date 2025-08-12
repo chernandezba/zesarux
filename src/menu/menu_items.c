@@ -33155,6 +33155,11 @@ void menu_view_basic_listing_get_basic(char *results_buffer)
         parameters.final_basic=menu_view_basic_listing_memory_pointer+menu_view_basic_listing_memory_length;
     }
 
+    else {
+        menu_view_basic_listing_memory_pointer=parameters.dir_inicio_linea;
+        menu_view_basic_listing_memory_length=parameters.final_basic-parameters.dir_inicio_linea;
+    }
+
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
         parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1);
@@ -33251,7 +33256,7 @@ int menu_view_basic_listing_set_number(char *title,int value)
 {
 
     char string_texto[MAX_BREAKPOINT_CONDITION_LENGTH];
-	sprintf(string_texto,"%d",menu_view_basic_listing_memory_pointer);
+	sprintf(string_texto,"%d",value);
 
     menu_ventana_scanf(title,string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
 
@@ -33387,9 +33392,9 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
         }
 
         ventana->writing_inverse_color=1;
-        zxvision_print_string_defaults_format(ventana,1,0,
+        zxvision_print_string_defaults_fillspc_format(ventana,1,0,
             "[%c] Show ~~address",(debug_view_basic_show_address.v ? 'X' : ' ' ));
-        zxvision_print_string_defaults_format(ventana,1,1,
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,
             "[%c] Custom ~~pointer %s",
             (menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
             buffer_custom_pointer
