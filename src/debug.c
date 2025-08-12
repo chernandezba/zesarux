@@ -5603,13 +5603,11 @@ void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,
 
 
 
-void debug_view_basic(char *results_buffer)
+void debug_view_basic_prepare_parameters(view_basic_parameters *parameters)
 {
 
   	char **dir_tokens;
   	int inicio_tokens;
-
-
 
 
   	int dir_inicio_linea;
@@ -5664,7 +5662,27 @@ void debug_view_basic(char *results_buffer)
     }
 
 
-	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,final_basic,dir_tokens,inicio_tokens,peek_byte_no_time,tipo,debug_view_basic_show_address.v,1);
+    parameters->dir_inicio_linea=dir_inicio_linea;
+    parameters->final_basic=final_basic;
+    parameters->dir_tokens=dir_tokens;
+    parameters->inicio_tokens=inicio_tokens;
+    parameters->tipo=tipo;
+
+
+}
+
+
+
+
+void debug_view_basic(char *results_buffer)
+{
+
+    view_basic_parameters parameters;
+    debug_view_basic_prepare_parameters(&parameters);
+
+
+	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
+        parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1);
 
 }
 

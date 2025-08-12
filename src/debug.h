@@ -376,6 +376,19 @@ extern void debug_delete_all_repeated_breakpoint(char *texto);
 
 extern void debug_add_breakpoint_ifnot_exists(char *breakpoint_add);
 
+struct s_view_basic_parameters {
+    int dir_inicio_linea;
+    int final_basic;
+    char **dir_tokens;
+    int inicio_tokens;
+    int tipo;
+};
+
+typedef struct s_view_basic_parameters view_basic_parameters;
+
+extern void debug_view_basic_prepare_parameters(view_basic_parameters *parameters);
+
+
 extern void debug_view_basic(char *results_buffer);
 
 extern void debug_get_ioports(char *stats_buffer);

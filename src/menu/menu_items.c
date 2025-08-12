@@ -33114,16 +33114,149 @@ void menu_debug_load_binary(MENU_ITEM_PARAMETERS)
 */
 
 
-/*
-Inicio de Template de ventana de menu que se puede enviar a background
-Sustituir "view_basic_listing" por el nombre de la ventana
-Sustituir "viewbasiclisting" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
-Sustituir "View Basic Listing" por el titulo de la ventana
-Y definirla en zxvision_known_window_names_array
-*/
 
 
 zxvision_window *menu_view_basic_listing_window;
+
+
+z80_byte *last_bas_browser_memory;
+int last_bas_browser_memory_size=1;
+
+z80_byte menu_file_bas_browser_show_peek(z80_int dir)
+{
+	return last_bas_browser_memory[dir % last_bas_browser_memory_size]; //con % para no salirnos de la memoria
+}
+
+void menu_view_basic_listing_get_basic()
+{
+
+	//Leemos archivo .bas
+        FILE *ptr_file_bas_browser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+    //printf("menu_file_basic_browser_show %s\n",filename);
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_bas_browser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        return;
+    }
+    /*
+        ptr_file_bas_browser=fopen(filename,"rb");
+
+        if (!ptr_file_bas_browser) {
+		debug_printf(VERBOSE_ERR,"Unable to open file");
+		return;
+	}
+    */
+
+	int tamanyo=get_file_size(filename);
+    //printf("tamanyo: %d\n",tamanyo);
+
+
+	z80_byte *memoria;
+	memoria=malloc(tamanyo);
+	if (memoria==NULL) cpu_panic ("Can not allocate memory for bas read");
+
+	last_bas_browser_memory_size=tamanyo;
+
+	last_bas_browser_memory=memoria;
+
+	//Leer archivo
+
+
+
+
+    char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for reading the file");
+
+	char titulo_ventana[33];
+	strcpy(titulo_ventana,"View Basic");
+
+  	char **dir_tokens;
+  	int inicio_tokens;
+
+	int dir_inicio_linea=0;
+
+	int tipo=0; //Asumimos spectrum
+
+    //printf("antes de ver extension\n");
+
+	//Si es basic zx81
+	if (MACHINE_IS_ZX81) {
+
+        //ZX81
+        //dir_inicio_linea=116; //16509-0x4009
+        dir_inicio_linea=0;
+
+        //D_FILE
+        //final_basic=peek_byte_no_time(0x400C)+256*peek_byte_no_time(0x400D);
+
+        dir_tokens=zx81_rom_tokens;
+
+        inicio_tokens=192;
+
+        tipo=2;
+
+
+	}
+
+	else if (MACHINE_IS_ZX80) {
+
+                //ZX80
+            //ZX80
+                  //dir_inicio_linea=40; //16424-16384
+				  dir_inicio_linea=0;
+
+
+                  //VARS
+                  //final_basic=peek_byte_no_time(0x4008)+256*peek_byte_no_time(0x4009);
+
+                  dir_tokens=zx80_rom_tokens;
+
+                  inicio_tokens=213;
+
+                tipo=1;
+
+	}
+
+
+	else {
+		//O es texto tal cual o es tokens de spectrum
+		//.bas , .b
+
+		//Deducimos si es un simple .bas de texto normal, o es de basic spectrum
+		//Comprobacion facil, primeros dos bytes contiene numero de linea. Asumimos que si los dos son caracteres ascii imprimibles, son de texto
+		//Y siempre que extension no sea .B (en este caso es spectrum con tokens)
+
+        //Tambien contemplar archivos .bas con tokens pero con la cabecera de PLUS3DOS delante
+        //Estos son los archivos .bas generados por ejemplo desde Next y grabados en la mmc
+
+        int indice_memoria=0;
+
+
+
+
+
+		//basic spectrum
+  			dir_tokens=spectrum_rom_tokens;
+
+  			inicio_tokens=163;
+	}
+
+
+	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,
+        inicio_tokens,menu_file_bas_browser_show_peek,tipo,debug_view_basic_show_address.v,0);
+
+  	menu_generic_message_format(titulo_ventana,"%s",results_buffer);
+	free(memoria);
+    free(results_buffer);
+
+}
+
 
 
 void menu_view_basic_listing_overlay(void)
@@ -33186,6 +33319,9 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
+        //2 lineas superiores fijas
+        ventana->upper_margin=2;
+
     }
 
     //Si ya existe, activar esta ventana
@@ -33216,6 +33352,38 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
     }
 
     do {
+        /*
+        -Visor de basic que permita indicar dirección ram donde empezar: sirve para poder ver el bloque de basic
+cargado desde el Cargador Azul por ejemplo
+Quizá una ventana con una primera linea con dirección de inicio y otra info, y de la segunda linea hacia abajo que sea
+el listado basic
+ok *Sprite navigator por ejemplo usa una primera linea fija y la segunda para abajo variables
+*Pero necesitaria ventana que trunque y justifique lineas, como una ventana de dialogo normal -> ejemplo en text adventure localidades
+zxvision_generic_message_aux_justificar_lineas... para justificar
+*y debug_view_basic_from_memory similar a como lo hace el file browser para mostrar vista basic con direccion inicio modificable
+*misma ventana para basic normal y el modificable de direccion de inicio. con checkbox con algo como:
+[x] Current basic / Start address
+Si start address, que pregunte direccion inicio y también longitud en bytes
+
+*que se pueda quedar en background. Que refresque al entrar y también estando en background si detecta cambios en programa
+(quiza sacar un checksum cada 1 segundo de toda la longitud y ver si cambia)
+*permitir betabasic: keywords son letras gráficas. opcion si mostrar keywords betabasic o no
+*show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
+        */
+
+        zxvision_print_string_defaults_format(ventana,1,0,"Cabecera 1");
+        zxvision_print_string_defaults_format(ventana,1,1,"Cabecera 2");
+
+        zxvision_print_string_defaults_format(ventana,1,2,"Linea Scroll 1");
+        zxvision_print_string_defaults_format(ventana,1,3,"Linea Scroll 2");
+        zxvision_print_string_defaults_format(ventana,1,4,"Linea Scroll 3");
+        zxvision_print_string_defaults_format(ventana,1,5,"Linea Scroll 4");
+        zxvision_print_string_defaults_format(ventana,1,6,"Linea Scroll 5");
+        zxvision_print_string_defaults_format(ventana,1,7,"Linea Scroll 6");
+        zxvision_print_string_defaults_format(ventana,1,8,"Linea Scroll 7");
+        zxvision_print_string_defaults_format(ventana,1,9,"Linea Scroll 8");
+        zxvision_print_string_defaults_format(ventana,1,10,"Linea Scroll 9");
+        zxvision_print_string_defaults_format(ventana,1,11,"Linea Scroll 10");
 
 
 		tecla=zxvision_common_getkey_refresh();
