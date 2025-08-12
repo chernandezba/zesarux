@@ -33144,6 +33144,7 @@ int menu_view_basic_listing_memory_pointer=23755;  //0x5cde=23774 primer bloque 
 int menu_view_basic_listing_memory_length=10000;
 
 z80_long_int menu_view_basic_listing_last_crc32=0;
+z80_bit menu_view_basic_listing_show_betabasic_tokens={0};
 
 //Calcular crc32 del bloque listado por saber si se modifica para volver a renderizar
 z80_long_int menu_view_basic_listing_get_crc32(void)
@@ -33213,7 +33214,8 @@ void menu_view_basic_listing_get_basic(char *results_buffer)
 
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
-        parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1);
+        parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,
+        debug_view_basic_show_address.v,1,menu_view_basic_listing_show_betabasic_tokens.v);
 
 
 
@@ -33468,7 +33470,9 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 
         ventana->writing_inverse_color=1;
         zxvision_print_string_defaults_fillspc_format(ventana,1,0,
-            "[%c] Show ~~address",(debug_view_basic_show_address.v ? 'X' : ' ' ));
+            "[%c] Show ~~address [%c] Show ~~BetaBasic",(debug_view_basic_show_address.v ? 'X' : ' ' ),
+            (menu_view_basic_listing_show_betabasic_tokens.v ? 'X' : ' ')
+        );
         zxvision_print_string_defaults_fillspc_format(ventana,1,1,
             "[%c] Custom ~~pointer %s",
             (menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
@@ -33502,6 +33506,10 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
                 if (menu_view_basic_listing_memory_enabled.v) {
                     menu_view_basic_listing_set_length();
                 }
+            break;
+
+            case 'b':
+                menu_view_basic_listing_show_betabasic_tokens.v ^=1;
             break;
 
 

@@ -5116,7 +5116,8 @@ void menu_file_basic_browser_show(char *filename)
 	}
 
 
-	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,inicio_tokens,menu_file_bas_browser_show_peek,tipo,debug_view_basic_show_address.v,0);
+	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,inicio_tokens,menu_file_bas_browser_show_peek,
+        tipo,debug_view_basic_show_address.v,0,0);
 
   	menu_generic_message_format(titulo_ventana,"%s",results_buffer);
 	free(memoria);
