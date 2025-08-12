@@ -33137,24 +33137,27 @@ zxvision_window *menu_view_basic_listing_window;
 //Mas que suficiente creo contando lineas que se cortan y van a la siguiente
 #define VIEW_BASIC_MAX_LINES_FINAL (9999*10)
 
+
+//Para poder hacer view basic desde direcciones de memoria
+z80_bit menu_view_basic_listing_memory_enabled={0};
+int menu_view_basic_listing_memory_pointer=23755;  //0x5cde primer bloque basic cargado en Cargador Azul
+int menu_view_basic_listing_memory_length=10000;
+
 void menu_view_basic_listing_get_basic(char *results_buffer)
 {
-
-
-
 
 
     view_basic_parameters parameters;
     debug_view_basic_prepare_parameters(&parameters);
 
-
-
+    if (menu_view_basic_listing_memory_enabled.v) {
+        parameters.dir_inicio_linea=menu_view_basic_listing_memory_pointer;
+        parameters.final_basic=menu_view_basic_listing_memory_pointer+menu_view_basic_listing_memory_length;
+    }
 
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
         parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1);
-
-
 
 
 
@@ -33245,6 +33248,39 @@ void menu_view_basic_listing_overlay(void)
 zxvision_window zxvision_window_view_basic_listing;
 
 
+void menu_view_basic_listing_set_pointer(void)
+{
+
+    char string_texto[MAX_BREAKPOINT_CONDITION_LENGTH];
+	sprintf(string_texto,"%d",menu_view_basic_listing_memory_pointer);
+
+    menu_ventana_scanf("Pointer",string_texto,MAX_BREAKPOINT_CONDITION_LENGTH);
+
+
+        //menu_generic_message_format("Result","%s -> %s",string_texto,(result ? "True" : "False " ));
+
+
+	//int exp_par_evaluate_expression(char *entrada,char *salida)
+	char buffer_salida[256]; //mas que suficiente
+	char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
+
+	int result=exp_par_evaluate_expression(string_texto,buffer_salida,string_detoken);
+	if (result==0) {
+		//menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);
+        menu_view_basic_listing_memory_pointer=parse_string_to_number(buffer_salida);
+	}
+
+	else if (result==1) {
+		menu_error_message(buffer_salida);
+	}
+
+	else {
+		menu_generic_message_format("Error","%s parsed string: %s",buffer_salida,string_detoken);
+	}
+
+
+}
+
 void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -33331,22 +33367,20 @@ Si start address, que pregunte direccion inicio y también longitud en bytes
 *que se pueda quedar en background. Que refresque al entrar y también estando en background si detecta cambios en programa
 (quiza sacar un checksum cada 1 segundo de toda la longitud y ver si cambia)
 *permitir betabasic: keywords son letras gráficas. opcion si mostrar keywords betabasic o no
-*show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
+ok *show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
+
+*poder buscar texto
         */
 
-        zxvision_print_string_defaults_format(ventana,1,0,"Cabecera 1");
-        zxvision_print_string_defaults_format(ventana,1,1,"Cabecera 2");
-
-        /*zxvision_print_string_defaults_format(ventana,1,2,"Linea Scroll 1");
-        zxvision_print_string_defaults_format(ventana,1,3,"Linea Scroll 2");
-        zxvision_print_string_defaults_format(ventana,1,4,"Linea Scroll 3");
-        zxvision_print_string_defaults_format(ventana,1,5,"Linea Scroll 4");
-        zxvision_print_string_defaults_format(ventana,1,6,"Linea Scroll 5");
-        zxvision_print_string_defaults_format(ventana,1,7,"Linea Scroll 6");
-        zxvision_print_string_defaults_format(ventana,1,8,"Linea Scroll 7");
-        zxvision_print_string_defaults_format(ventana,1,9,"Linea Scroll 8");
-        zxvision_print_string_defaults_format(ventana,1,10,"Linea Scroll 9");
-        zxvision_print_string_defaults_format(ventana,1,11,"Linea Scroll 10");*/
+        ventana->writing_inverse_color=1;
+        zxvision_print_string_defaults_format(ventana,1,0,
+            "[%c] Show ~~address",(debug_view_basic_show_address.v ? 'X' : ' ' ));
+        zxvision_print_string_defaults_format(ventana,1,1,
+            "[%c] Custom ~~pointer %s",
+            (menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
+            (menu_view_basic_listing_memory_enabled.v ? "~~Set" : "")
+        );
+        ventana->writing_inverse_color=0;
 
 
         menu_view_basic_listing_modified=1;
@@ -33356,11 +33390,19 @@ Si start address, que pregunte direccion inicio y también longitud en bytes
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
+            case 'a':
+                debug_view_basic_show_address.v ^=1;
             break;
 
+            case 'p':
+                menu_view_basic_listing_memory_enabled.v ^=1;
+            break;
+
+            case 's':
+                if (menu_view_basic_listing_memory_enabled.v) {
+                    menu_view_basic_listing_set_pointer();
+                }
+            break;
 
 
             //Salir con ESC
