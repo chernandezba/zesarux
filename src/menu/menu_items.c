@@ -33391,7 +33391,7 @@ void menu_view_basic_listing_overlay(void)
             int linea,sentencia;
             debug_view_basic_get_current_line(&linea,&sentencia);
 
-            if (linea>=0 && linea>=9999) {
+            if (linea>=0 && linea<=9999) {
 
                 if (linea!=menu_view_basic_listing_follow_line_last) {
                     menu_view_basic_listing_follow_line_last=linea;
@@ -33559,28 +33559,7 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
     menu_view_basic_listing_modified=1;
 
     do {
-        /*
-        -Visor de basic que permita indicar dirección ram donde empezar: sirve para poder ver el bloque de basic
-cargado desde el Cargador Azul por ejemplo
-Quizá una ventana con una primera linea con dirección de inicio y otra info, y de la segunda linea hacia abajo que sea
-el listado basic
 
-ok *Sprite navigator por ejemplo usa una primera linea fija y la segunda para abajo variables
-
-*Pero necesitaria ventana que trunque y justifique lineas, como una ventana de dialogo normal -> ejemplo en text adventure localidades
-zxvision_generic_message_aux_justificar_lineas... para justificar
-*y debug_view_basic_from_memory similar a como lo hace el file browser para mostrar vista basic con direccion inicio modificable
-*misma ventana para basic normal y el modificable de direccion de inicio. con checkbox con algo como:
-[x] Current basic / Start address
-Si start address, que pregunte direccion inicio y también longitud en bytes
-
-*que se pueda quedar en background. Que refresque al entrar y también estando en background si detecta cambios en programa
-(quiza sacar un checksum cada 1 segundo de toda la longitud y ver si cambia)
-*permitir betabasic: keywords son letras gráficas. opcion si mostrar keywords betabasic o no
-ok *show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
-
-*poder buscar texto
-        */
 
         char buffer_custom_pointer[100];
         buffer_custom_pointer[0]=0;
