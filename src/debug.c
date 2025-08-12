@@ -5250,42 +5250,42 @@ void debug_add_breakpoint_ifnot_exists(char *breakpoint_add)
 }
 
 char *betabasic_tokens[]={
-" DEF PROC ",  //129
-" PROC ",  //130
-" END PROC ",  //131
-" RENUM ",  //132
-" ----",  //133
-" AUTO ",  //134
-" DELETE ",  //135
-" ----",  //136
-" JOIN ",  //137
-" EDIT ",  //138
-" KEYIN ",  //139
-" ----",  //140
-" ----",  //141
-" DEF KEY ",  //142
-" ----",  //143
-" ALTER ",  //144
-" B ",  //145
-" CLOCK ",  //146
-" DO ",  //147
-" ELSE ",  //148
-" FILL ",  //149
-" GET ",  //150
-" H ",  //151
-" EXIT IF ",  //152
-" WHILE ",  //153
-" UNTIL ",  //154
-" LOOP ",  //155
-" SORT ",  //156
-" ON ERROR ",  //157
-" ON ",  //158
-" DPOKE ",  //159
-" POP ",  //160
-" ROLL ",  //161
-" SCROLL ",  //162
-" TRACE ",  //163
-" USING "  //164
+"DEF PROC",  //129
+"PROC",  //130
+"END PROC",  //131
+"RENUM",  //132
+"----",  //133
+"AUTO",  //134
+"DELETE",  //135
+"----",  //136
+"JOIN",  //137
+"EDIT",  //138
+"KEYIN",  //139
+"----",  //140
+"----",  //141
+"DEF KEY",  //142
+"----",  //143
+"ALTER",  //144
+"B",  //145
+"CLOCK",  //146
+"DO",  //147
+"ELSE",  //148
+"FILL",  //149
+"GET",  //150
+"H",  //151
+"EXIT IF",  //152
+"WHILE",  //153
+"UNTIL",  //154
+"LOOP",  //155
+"SORT",  //156
+"ON ERROR",  //157
+"ON",  //158
+"DPOKE",  //159
+"POP",  //160
+"ROLL",  //161
+"SCROLL",  //162
+"TRACE",  //163
+"USING"  //164
 };
 
 //tipo: tipo maquina: 0: spectrum. 1: zx80. 2: zx81
@@ -5468,8 +5468,8 @@ int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show
                 if (byte_leido>=129 && byte_leido<=164 && mostrar_betabasic==1) {
                     int indice=byte_leido-129;
 
-                    sprintf (&results_buffer[index_buffer],"%s ",betabasic_tokens[indice]);
-                    index_buffer +=strlen(betabasic_tokens[indice])+1;
+                    sprintf (&results_buffer[index_buffer]," %s ",betabasic_tokens[indice]);
+                    index_buffer +=strlen(betabasic_tokens[indice])+2;
                     lo_ultimo_es_un_token=1;
                 }
 
@@ -5677,6 +5677,12 @@ void debug_view_basic_prepare_parameters(view_basic_parameters *parameters)
 
   		inicio_tokens=163;
 
+        if (debug_view_basic_show_betabasic.v) {
+            //SPECTRUM y PLAY no salen. son de betabasic
+            inicio_tokens +=2;
+            dir_tokens=&spectrum_rom_tokens[2];
+        }
+
   	}
 
   	else if (MACHINE_IS_ZX81_TYPE) {
@@ -5729,7 +5735,7 @@ void debug_view_basic(char *results_buffer)
 
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
-        parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1,0);
+        parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v);
 
 }
 

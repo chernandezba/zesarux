@@ -167,6 +167,9 @@ z80_bit setting_mostrar_visualmem_grafico={1};
 //Si se muestra direccion en cada linea en View Basic
 z80_bit debug_view_basic_show_address={0};
 
+//Si se muestran keywords betabasic en view basic
+z80_bit debug_view_basic_show_betabasic={0};
+
 //Si se muestra resultados en decimal en Watches
 z80_bit debug_watches_show_decimal={0};
 
