@@ -33215,7 +33215,7 @@ void menu_view_basic_listing_get_basic(char *results_buffer)
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
         parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,
-        debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v,VIEW_BASIC_MAX_BASIC_TEXT);
+        debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v,VIEW_BASIC_MAX_BASIC_TEXT,0);
 
 
 
@@ -33619,6 +33619,7 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
             case 'f':
                 menu_view_basic_listing_follow_current_line.v ^=1;
+                menu_view_basic_listing_follow_line_last=-1;
             break;
 
             case 'b':
