@@ -33183,22 +33183,33 @@ z80_long_int menu_view_basic_listing_get_crc32(void)
 
 }
 
+//Definir parametros basic y ademas establecer variables de inico y final segun si custom pointer
+void menu_view_basic_listing_get_basic_parameters(view_basic_parameters *parameters)
+{
+
+
+    debug_view_basic_prepare_parameters(parameters);
+
+    if (menu_view_basic_listing_memory_enabled.v) {
+        parameters->dir_inicio_linea=menu_view_basic_listing_memory_pointer;
+        parameters->final_basic=menu_view_basic_listing_memory_pointer+menu_view_basic_listing_memory_length;
+    }
+
+    else {
+        menu_view_basic_listing_memory_pointer=parameters->dir_inicio_linea;
+        menu_view_basic_listing_memory_length=parameters->final_basic-parameters->dir_inicio_linea;
+    }
+
+
+}
+
 void menu_view_basic_listing_get_basic(char *results_buffer)
 {
 
 
     view_basic_parameters parameters;
-    debug_view_basic_prepare_parameters(&parameters);
 
-    if (menu_view_basic_listing_memory_enabled.v) {
-        parameters.dir_inicio_linea=menu_view_basic_listing_memory_pointer;
-        parameters.final_basic=menu_view_basic_listing_memory_pointer+menu_view_basic_listing_memory_length;
-    }
-
-    else {
-        menu_view_basic_listing_memory_pointer=parameters.dir_inicio_linea;
-        menu_view_basic_listing_memory_length=parameters.final_basic-parameters.dir_inicio_linea;
-    }
+    menu_view_basic_listing_get_basic_parameters(&parameters);
 
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
@@ -33278,6 +33289,11 @@ void menu_view_basic_listing_overlay(void)
     if ( ((contador_segundo%500) == 0 && menu_view_basic_contador_segundo_anterior!=contador_segundo) ) {
 
         menu_view_basic_contador_segundo_anterior=contador_segundo;
+
+        view_basic_parameters parameters;
+
+        //Llamar aqui por saber si ha cambiado la longitud del programa basic
+        menu_view_basic_listing_get_basic_parameters(&parameters);
 
 
         z80_long_int crc32=menu_view_basic_listing_get_crc32();
