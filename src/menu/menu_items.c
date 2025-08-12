@@ -33231,6 +33231,8 @@ char **menu_view_basic_listing_punteros_lineas=NULL;
 //Donde almacenar las lineas ya troceadas
 char *menu_view_basic_listing_buffer_lineas=NULL;
 
+int menu_view_basic_listing_total_lineas=0;
+
 void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w)
 {
     //trocear
@@ -33256,11 +33258,13 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
 
     printf("antes de malloc buffer lineas\n");
     if (menu_view_basic_listing_buffer_lineas!=NULL) {
+        printf("Liberando menu_view_basic_listing_buffer_lineas\n");
         free(menu_view_basic_listing_buffer_lineas);
         menu_view_basic_listing_buffer_lineas=NULL;
     }
 
     if (menu_view_basic_listing_buffer_lineas==NULL) {
+        printf("Asignando menu_view_basic_listing_buffer_lineas\n");
         menu_view_basic_listing_buffer_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*max_line_length,"Can not allocate memory for basic lines");
     }
 
@@ -33274,12 +33278,12 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     }
 
 
-    int total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,menu_view_basic_listing_punteros_lineas);
+    menu_view_basic_listing_total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,menu_view_basic_listing_punteros_lineas);
 
     //Reajustar alto total ventana
-    zxvision_set_total_height(w,VIEW_BASIC_HEADER_LINES+total_lineas);
+    zxvision_set_total_height(w,VIEW_BASIC_HEADER_LINES+menu_view_basic_listing_total_lineas);
 
-    for (i=0;i<total_lineas;i++) {
+    for (i=0;i<menu_view_basic_listing_total_lineas;i++) {
         //printf("linea %d : %s\n",i,punteros_lineas[i]);
         zxvision_print_string_defaults_fillspc(w,1,VIEW_BASIC_HEADER_LINES+i,menu_view_basic_listing_punteros_lineas[i]);
     }
@@ -33399,6 +33403,59 @@ void menu_view_basic_listing_set_length(void)
     menu_view_basic_listing_memory_length=menu_view_basic_listing_set_number("Length",menu_view_basic_listing_memory_length);
 }
 
+//Retorna indice de linea en array si encontrada
+//-1 si no encontrada
+int menu_view_basic_listing_find_line_aux(int linea_buscar)
+{
+
+    int i;
+
+    char buffer_linea_buscar[7];
+    //Numero y espacio
+    sprintf(buffer_linea_buscar,"%5d ",linea_buscar);
+
+    for (i=0;i<menu_view_basic_listing_total_lineas;i++) {
+        char *linea=menu_view_basic_listing_punteros_lineas[i];
+        printf("%d : %s\n",i,linea);
+
+        //Numero y espacio
+        if (strlen(linea)>=6) {
+            if (!strncmp(linea,buffer_linea_buscar,5)) {
+                return i;
+            }
+        }
+    }
+
+    return -1;
+
+}
+
+//Retorna 0 si no encontrada
+int menu_view_basic_listing_find_line(zxvision_window *w)
+{
+	char buffer_texto[10];
+
+	buffer_texto[0]=0;
+    menu_ventana_scanf("Line to search",buffer_texto,6);
+
+    int linea=parse_string_to_number(buffer_texto);
+
+    int indice=menu_view_basic_listing_find_line_aux(linea);
+
+    if (indice>=0) {
+        printf("Encontrada\n");
+        zxvision_set_offset_y(w,indice);
+        return 1;
+    }
+
+    else {
+        printf("No encontrada\n");
+        return 0;
+    }
+
+}
+
+
 void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -33501,7 +33558,7 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 
         ventana->writing_inverse_color=1;
         zxvision_print_string_defaults_fillspc_format(ventana,1,0,
-            "[%c] Show ~~address [%c] Show ~~BetaBasic",(debug_view_basic_show_address.v ? 'X' : ' ' ),
+            "[%c] Show ~~address [%c] Show ~~BetaBasic ~~e: Find line",(debug_view_basic_show_address.v ? 'X' : ' ' ),
             (debug_view_basic_show_betabasic.v ? 'X' : ' ')
         );
         zxvision_print_string_defaults_fillspc_format(ventana,1,1,
@@ -33521,6 +33578,7 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 
             case 'a':
                 debug_view_basic_show_address.v ^=1;
+                menu_view_basic_listing_modified=1;
             break;
 
             case 'p':
@@ -33536,6 +33594,12 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
             case 'l':
                 if (menu_view_basic_listing_memory_enabled.v) {
                     menu_view_basic_listing_set_length();
+                }
+            break;
+
+            case 'e':
+                if (!menu_view_basic_listing_find_line(ventana)) {
+                    menu_warn_message("Line not found");
                 }
             break;
 
