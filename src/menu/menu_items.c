@@ -33196,6 +33196,8 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
 
     int total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,punteros_lineas);
 
+    //Reajustar alto total ventana
+    zxvision_set_total_height(w,VIEW_BASIC_HEADER_LINES+total_lineas);
 
     for (i=0;i<total_lineas;i++) {
         //printf("linea %d : %s\n",i,punteros_lineas[i]);
@@ -33335,7 +33337,7 @@ Si start address, que pregunte direccion inicio y también longitud en bytes
         zxvision_print_string_defaults_format(ventana,1,0,"Cabecera 1");
         zxvision_print_string_defaults_format(ventana,1,1,"Cabecera 2");
 
-        zxvision_print_string_defaults_format(ventana,1,2,"Linea Scroll 1");
+        /*zxvision_print_string_defaults_format(ventana,1,2,"Linea Scroll 1");
         zxvision_print_string_defaults_format(ventana,1,3,"Linea Scroll 2");
         zxvision_print_string_defaults_format(ventana,1,4,"Linea Scroll 3");
         zxvision_print_string_defaults_format(ventana,1,5,"Linea Scroll 4");
@@ -33344,7 +33346,7 @@ Si start address, que pregunte direccion inicio y también longitud en bytes
         zxvision_print_string_defaults_format(ventana,1,8,"Linea Scroll 7");
         zxvision_print_string_defaults_format(ventana,1,9,"Linea Scroll 8");
         zxvision_print_string_defaults_format(ventana,1,10,"Linea Scroll 9");
-        zxvision_print_string_defaults_format(ventana,1,11,"Linea Scroll 10");
+        zxvision_print_string_defaults_format(ventana,1,11,"Linea Scroll 10");*/
 
 
         menu_view_basic_listing_modified=1;
