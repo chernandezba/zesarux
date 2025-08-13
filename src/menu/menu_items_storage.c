@@ -1353,7 +1353,14 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         int ocultar_real_tape_archivo=0;
         if (audio_can_record_input() && audio_is_recording_input) ocultar_real_tape_archivo=1;
 
-        if (!ocultar_real_tape_archivo) {
+        if (ocultar_real_tape_archivo) {
+            menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "(Real Tape disabled when","(Cinta Real de Entrada desactivada cuando","(Cinta Real d'Entrada desactivada quan");
+                        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "external audio source enabled)","habilitada fuente de sonido externa)","habilitada font de so externa)");
+
+        }
+        else {
 
         menu_tape_settings_trunc_name(realtape_name,string_realtape_shown,23);
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_open,NULL,
