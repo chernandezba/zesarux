@@ -56,8 +56,8 @@ ok *que se pueda quedar en background. Que refresque al entrar y también estand
 (quiza sacar un checksum cada 1 segundo de toda la longitud y ver si cambia)
 ok *permitir betabasic: keywords son letras gráficas. opcion si mostrar keywords betabasic o no
 ok *show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
-*funcion debug get basic limita el maximo de caracteres a MAX_TEXTO_GENERIC_MESSAGE
-*Ver tokens adicionales de versiones superiores de betabasic
+ok *funcion debug get basic limita el maximo de caracteres a MAX_TEXTO_GENERIC_MESSAGE
+ok *Ver tokens adicionales de versiones superiores de betabasic
 *poder buscar texto
 ok *poder buscar lineas
 ok *permitir pgup, pgdn
