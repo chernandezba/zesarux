@@ -33587,6 +33587,8 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
 		tecla=zxvision_common_getkey_refresh();
 
+        zxvision_handle_cursors_pgupdn(ventana,tecla);
+
 
         switch (tecla) {
 
@@ -33628,6 +33630,7 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
             break;
 
             //abajo
+            /*
             case 10:
                 zxvision_send_scroll_down(ventana);
             break;
@@ -33636,6 +33639,7 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
             case 11:
                 zxvision_send_scroll_up(ventana);
             break;
+            */
 
 
             //Salir con ESC

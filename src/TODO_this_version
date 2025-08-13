@@ -60,4 +60,8 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 *Ver tokens adicionales de versiones superiores de betabasic
 *poder buscar texto
 ok *poder buscar lineas
-*permitir pgup, pgdn
+ok *permitir pgup, pgdn
+ok *probar en linux meter poke continuo en direccion basic y ver si libera bien memoria de buffers
+
+
+-En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc

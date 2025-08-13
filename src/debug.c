@@ -5254,25 +5254,25 @@ char *betabasic_tokens[]={
 "PROC",  //130
 "END PROC",  //131
 "RENUM",  //132
-"----",  //133
+"WINDOW",  //133
 "AUTO",  //134
 "DELETE",  //135
-"----",  //136
+"REF",  //136
 "JOIN",  //137
 "EDIT",  //138
 "KEYIN",  //139
-"----",  //140
-"----",  //141
+"LOCAL",  //140
+"DEFAULT",  //141
 "DEF KEY",  //142
-"----",  //143
+"CSIZE",  //143
 "ALTER",  //144
-"B",  //145
+"BLANK",  //145
 "CLOCK",  //146
 "DO",  //147
 "ELSE",  //148
 "FILL",  //149
 "GET",  //150
-"H",  //151
+"ENDIF",  //151
 "EXIT IF",  //152
 "WHILE",  //153
 "UNTIL",  //154

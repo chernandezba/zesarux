@@ -18032,7 +18032,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 
 						//PgUp
 						case 24:
-							for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2;contador_pgdnup++) {
+							for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2-ventana->upper_margin;contador_pgdnup++) {
 								zxvision_send_scroll_up(ventana);
 							}
 							//Decir que no se ha pulsado tecla para que se relea
@@ -18041,7 +18041,7 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 
                     	//PgDn
                     	case 25:
-                    		for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2;contador_pgdnup++) {
+                    		for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2-ventana->upper_margin;contador_pgdnup++) {
 								zxvision_send_scroll_down(ventana);
                         	}
 
