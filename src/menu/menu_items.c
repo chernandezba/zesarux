@@ -37976,6 +37976,9 @@ void menu_realtape_record_input_draw_waveform(zxvision_window *w,int x_orig,int 
 
         if (menu_realtape_record_input_onda_onda_congelada) valor_leido=menu_realtape_record_input_audio_buffer[i];
 
+        //Si invertir señal en entrada, mostrarla tambien invertida
+        if (realtape_last_value_invert_signal.v) valor_leido=-valor_leido;
+
         if (valor_leido>valor_max) valor_max=valor_leido;
         if (valor_leido<valor_min) valor_min=valor_leido;
 
