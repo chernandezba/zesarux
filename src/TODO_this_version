@@ -62,6 +62,6 @@ ok *show address in view basic que aparezca también esa opción en la ventana (
 ok *poder buscar lineas
 ok *permitir pgup, pgdn
 ok *probar en linux meter poke continuo en direccion basic y ver si libera bien memoria de buffers
-
+* icono
 
 -En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
