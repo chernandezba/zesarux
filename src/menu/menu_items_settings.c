@@ -11351,10 +11351,18 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Enable loading sound. With sound disabled, the tape is also loaded");
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new,NULL,
-            "Improved algorithm","Algoritmo mejorado","Algoritme millorat");
+            "Alternative algorithm","Algoritmo alternativo","Algoritme alternatiu");
         menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (realtape_algorithm_new.v==1 ? 'X' : ' '));
-		menu_add_item_menu_tooltip(array_menu_settings_tape,"Use improved loading algorithm");
-		menu_add_item_menu_ayuda(array_menu_settings_tape,"Use improved loading algorithm. Gives better results with non-zero centered audio tapes but without noise");
+		menu_add_item_menu_tooltip(array_menu_settings_tape,"Use alternative loading algorithm");
+		menu_add_item_menu_ayuda(array_menu_settings_tape,"Use alternative loading algorithm. Gives better results with non-zero centered audio tapes but without noise");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,
+            "Invert signal","Invertir señal","Invertir senyal");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (realtape_last_value_invert_signal.v ? 'X' : ' '));
+		menu_add_item_menu_tooltip(array_menu_settings_tape,"Invert signal, useful for some ZX81 tapes for example");
+		menu_add_item_menu_ayuda(array_menu_settings_tape,"Invert signal, useful for some ZX81 tapes for example");
+        menu_add_item_menu_opcion_conmuta(array_menu_settings_tape,&realtape_last_value_invert_signal);
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
         if (realtape_algorithm_new.v) {

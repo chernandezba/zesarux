@@ -276,10 +276,10 @@ void core_coleco_fin_scanline(void)
 					if (realtape_loading_sound.v) {
                         reset_silence_detection_counter();
                         audio_valor_enviar_sonido_izquierdo /=2;
-	                    audio_valor_enviar_sonido_izquierdo += realtape_last_value/2;
+	                    audio_valor_enviar_sonido_izquierdo += get_realtape_last_value()/2;
 
 						audio_valor_enviar_sonido_derecho /=2;
-	                    audio_valor_enviar_sonido_derecho += realtape_last_value/2;
+	                    audio_valor_enviar_sonido_derecho += get_realtape_last_value()/2;
 
 						//Sonido alterado cuando top speed
 						if (timer_condicion_top_speed() ) {

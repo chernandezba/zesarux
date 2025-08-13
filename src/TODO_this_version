@@ -65,3 +65,6 @@ ok *probar en linux meter poke continuo en direccion basic y ver si libera bien 
 * icono
 
 -En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
+
+
+-lectura cinta opcion invertir señal: para control stocks por ejemplo

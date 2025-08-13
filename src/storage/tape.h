@@ -100,6 +100,8 @@ extern char realtape_name_rwa[];
 extern void realtape_get_byte(void);
 
 extern char realtape_last_value;
+extern char get_realtape_last_value(void);
+extern z80_bit realtape_last_value_invert_signal;
 
 extern void realtape_insert(void);
 extern void realtape_eject(void);

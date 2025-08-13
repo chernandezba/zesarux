@@ -540,7 +540,7 @@ z80_byte svi_in_port_ppi(z80_byte puerto_l)
 
 		/*valor=0;
                 if (realtape_inserted.v && realtape_playing.v) {
-                        if (realtape_last_value>=realtape_volumen) {
+                        if (get_realtape_last_value()>=realtape_volumen) {
                                 valor=valor|128;
                                 printf ("1 ");
                         }

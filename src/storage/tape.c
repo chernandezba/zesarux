@@ -2026,7 +2026,19 @@ void gestionar_autoload_cpc(void)
 
 
 FILE *ptr_realtape;
+
+//Ultimo byte de sample leido, ya sea cinta real por cable o archivo rwa, wav, etc
+//Para leer este valor hay que llamar siempre a get_realtape_last_value(), para poder aplicar setting de inversión de onda si conviene
 char realtape_last_value;
+
+z80_bit realtape_last_value_invert_signal={0};
+
+char get_realtape_last_value(void)
+{
+    if (realtape_last_value_invert_signal.v) return -realtape_last_value;
+
+    else return realtape_last_value;
+}
 
 //2 para ZX81 mejor
 //0 para spectrum mejor
@@ -3287,7 +3299,7 @@ int realtape_get_current_bit_playing(void)
         char return_value=0;
 
         //sacar diferencia valor anterior con actual
-        int diferencia=realtape_last_value-realtape_previous_value;
+        int diferencia=get_realtape_last_value()-realtape_previous_value;
 
         if (diferencia<0) diferencia=-diferencia;
 
@@ -3300,12 +3312,12 @@ int realtape_get_current_bit_playing(void)
         else {
 
             //Si la onda "sube", es +1
-            if (realtape_last_value>realtape_previous_value) {
+            if (get_realtape_last_value()>realtape_previous_value) {
                 //printf ("superior\n");
                 return_value=1;
             }
             //Si la onda "baja", es -1
-            else if (realtape_last_value<realtape_previous_value) {
+            else if (get_realtape_last_value()<realtape_previous_value) {
                 return_value=0;
                 //printf("inferior\n");
             }
@@ -3319,7 +3331,7 @@ int realtape_get_current_bit_playing(void)
 
         }
 
-        realtape_previous_value=realtape_last_value;
+        realtape_previous_value=get_realtape_last_value();
         realtape_previous_return_value=return_value;
 
         //printf("retornar %d\n",return_value);
@@ -3334,7 +3346,7 @@ int realtape_get_current_bit_playing(void)
         //pues la onda no está centrada en 0
 
 
-        if (realtape_last_value>=realtape_volumen) {
+        if (get_realtape_last_value()>=realtape_volumen) {
             //printf ("1 \n");
             return 1;
 

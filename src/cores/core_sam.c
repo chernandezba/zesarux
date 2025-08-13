@@ -299,7 +299,7 @@ void core_sam_fin_scanline(void)
         if (realtape_loading_sound.v) {
             reset_silence_detection_counter();
             audio_valor_enviar_sonido /=2;
-            audio_valor_enviar_sonido += realtape_last_value/2;
+            audio_valor_enviar_sonido += get_realtape_last_value()/2;
             //Sonido alterado cuando top speed
             if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
         }
