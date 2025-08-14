@@ -63,6 +63,7 @@ ok *poder buscar lineas
 ok *permitir pgup, pgdn
 ok *probar en linux meter poke continuo en direccion basic y ver si libera bien memoria de buffers
 * icono
+* Ver basic con interface 1 conectado
 
 -En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
 
