@@ -343,3 +343,8 @@ En alguna ventana nueva quizá
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 
 -Ventana que permita agregar notas, que permita quedarse en bakground
+
+-Copi128: poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
+y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
+Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
+los traps que tenemos ahora
