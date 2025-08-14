@@ -65,7 +65,12 @@ ok *probar en linux meter poke continuo en direccion basic y ver si libera bien 
 * icono
 * Ver basic con interface 1 conectado
 
+
+
 -En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
 
-
--lectura cinta opcion invertir señal: para control stocks por ejemplo
+-alguna manera que desde external audio source:
+abra hexedit con expresión follow de ix
+abra watches con watch DE, IX etc para la carga
+abra vista basic
+defina también tamaños de esas ventanas?
