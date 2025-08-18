@@ -19,38 +19,10 @@
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
-#include "cpu.h"
-#include "utils.h"
-
-//tipos de datos que luego se obtendrán desde cpu.h
-//64 bits
-//typedef long long int z80_64bit;
-
-
-z80_byte *enhanced_memoria;
-
-int main_enhanced_zx81_read(char *rwafile)
+int main(void)
 {
-    z80_64bit tamanyo_archivo=get_file_size(rwafile);
 
-    FILE *ptr_archivo;
-    ptr_archivo=fopen(rwafile,"rb");
-
-
-    if (!ptr_archivo) {
-        printf("Unable to open rwa file: %s\n",rwafile);
-        return 1;
-    }
-
-    //Cargarlo todo en memoria
-    enhanced_memoria=util_malloc(tamanyo_archivo,"Can not allocate memory for load rwa file");
-    fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
-    fclose(ptr_archivo);
-
+    main_enhanced_zx81_read("prueba");
     return 0;
+
 }
