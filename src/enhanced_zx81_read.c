@@ -144,7 +144,6 @@ void enh_get_amplitud_maxima(z80_byte *enhanced_memoria,z80_64bit tamanyo_memori
 void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media)
 {
     z80_64bit i;
-    z80_64bit acumulada_amplitud=0;
     z80_64bit amplitud_maxima=0;
     z80_64bit total_pulsos=0;
 
@@ -153,6 +152,7 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
     z80_byte amplitud_este_pulso=0;
     z80_byte valor_sample_anterior=enhanced_memoria[0];
     z80_byte valor_sample_inicio_pulso=enhanced_memoria[0];
+    z80_byte valor_sample_pico_alto=0;
 
     for (i=0;i<tamanyo_memoria;i++) {
         z80_byte valor_sample=enhanced_memoria[i];
@@ -164,13 +164,13 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
                 //subiendo
                 if (valor_sample<valor_sample_anterior) {
                     amplitud_este_pulso=valor_sample_anterior-valor_sample_inicio_pulso;
+                    valor_sample_pico_alto=valor_sample_anterior;
                     if (1/*amplitud_este_pulso>60*/) {
                         printf("%lld Pico pulso Pulso. sample anterior %d sample actual %d amplitud: %d\n",
                             i,valor_sample_anterior,valor_sample,amplitud_este_pulso);
                     }
-                    acumulada_amplitud +=amplitud_este_pulso;
 
-                    enh_amplitudes[amplitud_este_pulso]++;
+
 
                     if (amplitud_este_pulso>amplitud_maxima) amplitud_maxima=amplitud_este_pulso;
                     estado_pulso=1;
@@ -185,11 +185,20 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
                     ** si está subiendo y sube y baja y luego sube (o sea aparentemente llegamos al final), si amplitud de la parte de
  bajada no al menos un 70% de AMPLITUD_MAXIMA (media), volver a ciclo de subida
                     */
-                    valor_sample_inicio_pulso=valor_sample;
-                    estado_pulso=0;
-                    total_pulsos++;
-                    if (1/*amplitud_este_pulso>60*/) {
-                        printf("%lld Final Pulso-inicio. valor_sample: %d\n",i,valor_sample_inicio_pulso);
+                    int amplitud_bajada=valor_sample_pico_alto-valor_sample_anterior;
+                    int amplitud_media_minimo=(amplitud_media*70)/100;
+                    if (amplitud_bajada<amplitud_media_minimo) {
+                        estado_pulso=0;
+                    }
+
+                    else {
+                        valor_sample_inicio_pulso=valor_sample;
+                        estado_pulso=0;
+                        total_pulsos++;
+                        if (1/*amplitud_este_pulso>60*/) {
+                            printf("%lld Final Pulso-inicio. valor_sample: %d. amplitud subida: %d amplitud bajada %d\n",
+                                i,valor_sample_inicio_pulso,amplitud_este_pulso,amplitud_bajada);
+                        }
                     }
                 }
             break;
@@ -198,7 +207,7 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
         valor_sample_anterior=valor_sample;
     }
 
-    printf("Amplitud media: %lld\n",acumulada_amplitud/total_pulsos);
+
 
     //return amplitud_maxima;
 
