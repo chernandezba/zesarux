@@ -141,7 +141,26 @@ void enh_get_amplitud_maxima(z80_byte *enhanced_memoria,z80_64bit tamanyo_memori
 
 }
 
-void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media)
+z80_byte   caracteres_zx81_no_artistic[64]=" ??????????\"?$:?()><=+-*/;,."
+                           "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+z80_byte da_codigo81(z80_byte codigo)
+{
+
+  if (codigo>127) {
+
+        codigo-=128;
+  }
+
+
+
+
+    return (codigo<64 ? caracteres_zx81_no_artistic[codigo] : '~');
+
+
+}
+
+int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media,z80_byte *destino_p81)
 {
     z80_64bit i;
     z80_64bit amplitud_maxima=0;
@@ -165,6 +184,8 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
 
     z80_byte acumulado_byte=0;
     int numero_bit_en_byte=0;
+
+    int indice_destino_p81=0;
 
     for (i=0;i<tamanyo_memoria;i++) {
         z80_byte valor_sample=enhanced_memoria[i];
@@ -233,13 +254,15 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
                             int bit_leido=0;
                             if (conteo_pulsos_de_bit==4) bit_leido=0;
                             else if (conteo_pulsos_de_bit==8 ||conteo_pulsos_de_bit==9) bit_leido=1;
+                            else if (conteo_pulsos_de_bit==1) printf("1 solo pulso. Quiza final de archivo?\n");
                             else printf("No sabemos que bit es cuando hay %d pulsos\n",conteo_pulsos_de_bit);
 
-                            acumulado_byte=acumulado_byte<<2;
+                            acumulado_byte=acumulado_byte<<1;
                             acumulado_byte |=bit_leido;
                             numero_bit_en_byte++;
                             if (numero_bit_en_byte==8) {
-                                printf("Byte final: %d (%XH)\n",acumulado_byte,acumulado_byte);
+                                printf("Byte final: %3d (%02XH) caracter %c\n",acumulado_byte,acumulado_byte,da_codigo81(acumulado_byte));
+                                destino_p81[indice_destino_p81++]=acumulado_byte;
                                 acumulado_byte=0;
                                 numero_bit_en_byte=0;
                             }
@@ -263,11 +286,12 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
 
 
     //return amplitud_maxima;
+    return indice_destino_p81;
 
 
 }
 
-int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria)
+int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81)
 {
     int i;
     for (i=0;i<256;i++) enh_amplitudes[i]=0;
@@ -281,7 +305,8 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
     //prueba
     z80_byte amplitud_media=18;
 
-    enh_get_pulsos(enhanced_memoria,tamanyo_memoria,amplitud_media);
 
-    return 0;
+    int longitud_p81=enh_get_pulsos(enhanced_memoria,tamanyo_memoria,amplitud_media,memoria_p81);
+
+    return longitud_p81;
 }

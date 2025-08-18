@@ -83,7 +83,9 @@ int main(void)
     fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
     fclose(ptr_archivo);
 
-    main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo);
+    z80_byte *memoria_p81=malloc(65536); //mas de 64 kb para un .P81 seria absurdo
+
+    int longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81);
 
     return 0;
 
