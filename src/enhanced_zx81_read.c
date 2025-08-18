@@ -30,10 +30,27 @@
 //64 bits
 //typedef long long int z80_64bit;
 
+char *rwafile="";
+
+z80_byte *enhanced_memoria;
+
 int main(void)
 {
+    z80_64bit tamanyo_archivo=get_file_size(rwafile);
+
+    FILE *ptr_archivo;
+    ptr_archivo=fopen(rwafile,"rb");
 
 
+    if (!ptr_archivo) {
+        printf("Unable to open rwa file: %s\n",rwafile);
+        return 1;
+    }
+
+    //Cargarlo todo en memoria
+    enhanced_memoria=util_malloc(tamanyo_archivo,"Can not allocate memory for load rwa file");
+    fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
+    fclose(ptr_archivo);
 
     return 0;
 }
