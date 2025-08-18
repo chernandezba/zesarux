@@ -85,7 +85,32 @@ int main(void)
 
     z80_byte *memoria_p81=malloc(65536); //mas de 64 kb para un .P81 seria absurdo
 
+    if (memoria_p81==NULL) {
+        printf("Can not allocate memory for load rwa file");
+        return 0;
+    }
+
     int longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81);
+
+
+
+    FILE *ptr_dskplusthreefile;
+    ptr_dskplusthreefile=fopen("salida.p81","wb");
+
+
+    if (ptr_dskplusthreefile!=NULL) {
+
+        fwrite(memoria_p81,1,longitud_p81,ptr_dskplusthreefile);
+
+
+        fclose(ptr_dskplusthreefile);
+    }
+
+
+    free(enhanced_memoria);
+    free(memoria_p81);
+
+
 
     return 0;
 
