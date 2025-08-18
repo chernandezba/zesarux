@@ -254,7 +254,10 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
                             int bit_leido=0;
                             if (conteo_pulsos_de_bit==4) bit_leido=0;
                             else if (conteo_pulsos_de_bit==8 ||conteo_pulsos_de_bit==9) bit_leido=1;
-                            else if (conteo_pulsos_de_bit==1) printf("1 solo pulso. Quiza final de archivo?\n");
+                            else if (conteo_pulsos_de_bit==1) {
+                                printf("1 solo pulso. Quiza final de archivo?\n");
+                                return indice_destino_p81;
+                            }
                             else printf("No sabemos que bit es cuando hay %d pulsos\n",conteo_pulsos_de_bit);
 
                             acumulado_byte=acumulado_byte<<1;
