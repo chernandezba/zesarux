@@ -56,7 +56,7 @@ long long int enh_get_file_size(char *nombre)
 
 }
 
-char *rwafile="prueba.rwa";
+char *rwafile="/Users/cesarhernandez/Desktop/prueba.rwa";
 
 int main(void)
 {

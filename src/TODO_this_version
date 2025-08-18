@@ -75,36 +75,3 @@ abra watches con watch DE, IX etc para la carga
 abra vista basic
 defina también tamaños de esas ventanas?
 
--Nuevo algoritmo de lectura de audio zx81 -> .P
-
-* calculo aproximado de maxima amplitud. Para saber la media de amplitud.
-valor inicial. Que suba hasta un máximo y baje a un mínimo. Eso para todo el audio. Eso es un pulso de subida
-Eso devuelve un valor AMPLITUD_MEDIA
-
-*Para lectura de pulso exacto, no aproximado:
-valor inicial. que suba hasta un máximo y baje a un mínimo.
--Dos estados: subiendo y bajando. Inicial en subiendo.
--En estado subiendo:
---Mientras valor leido sea mayor que anterior, sigue en subiendo
---Si valor leido es menor que anterior, pasa a estado bajando
--En estado bajando:
---Mientras valor leido sea inferior a anterior, sigue en bajando
---Si valor leido es mayor que anterior, finaliza el pulso
-
-Con condiciones:
-** si está subiendo y sube y baja y luego sube (o sea aparentemente llegamos al final), si amplitud de la parte de
- bajada no al menos un 70% de AMPLITUD media, saltar a ciclo de subida
-Esto es para evitar crestas que tienen "rugosidades" (forma de U en la misma cresta) o los "picos" producidos con los silencios
-de delante de cada bit inicial
--> amplitud de la cresta de subida= valor máximo-valor inicial
--> amplitud de la cresta de bajada= valor máximo-valor final (actual)
-Devolver:
--longitud de la cresta de subida: desde posición inicial hasta posición de máximo valor
--longitud de la cresta de bajada: desde posición de máximo valor hasta posición final
--amplitud de la cresta de subida
--amplitud de la cresta de bajada
-Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
-Crestas de bajada que sean 3 o 4 veces de mayor longiutd que la cresta de subide implica que hay un silencio despues de dicha onda
-(esto ultimo no debería darse en teoria)
-
-Nota: el final se marca con un pulso aislado (a diferencia de bits 0 - 4 pulsos - o bits 1 - 8 pulsos)

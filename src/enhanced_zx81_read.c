@@ -31,11 +31,54 @@
 //64 bits
 //typedef long long int z80_64bit;
 
+/*
 
-z80_byte enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria)
+-Nuevo algoritmo de lectura de audio zx81 -> .P
+
+* calculo aproximado de maxima amplitud. Para saber la media de amplitud.
+valor inicial. Que suba hasta un máximo y baje a un mínimo. Eso para todo el audio. Eso es un pulso de subida
+Eso devuelve un valor AMPLITUD_MAXIMA
+
+*Para lectura de pulso exacto, no aproximado:
+valor inicial. que suba hasta un máximo y baje a un mínimo.
+-Dos estados: subiendo y bajando. Inicial en subiendo.
+-En estado subiendo:
+--Mientras valor leido sea mayor que anterior, sigue en subiendo
+--Si valor leido es menor que anterior, pasa a estado bajando
+-En estado bajando:
+--Mientras valor leido sea inferior a anterior, sigue en bajando
+--Si valor leido es mayor que anterior, finaliza el pulso
+
+Con condiciones:
+** si está subiendo y sube y baja y luego sube (o sea aparentemente llegamos al final), si amplitud de la parte de
+ bajada no al menos un 70% de AMPLITUD_MAXIMA media, saltar a ciclo de subida
+Esto es para evitar crestas que tienen "rugosidades" (forma de U en la misma cresta) o los "picos" producidos con los silencios
+de delante de cada bit inicial
+-> amplitud de la cresta de subida= valor máximo-valor inicial
+-> amplitud de la cresta de bajada= valor máximo-valor final (actual)
+Devolver:
+-longitud de la cresta de subida: desde posición inicial hasta posición de máximo valor
+-longitud de la cresta de bajada: desde posición de máximo valor hasta posición final
+-amplitud de la cresta de subida
+-amplitud de la cresta de bajada
+Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
+Crestas de bajada que sean 3 o 4 veces de mayor longiutd que la cresta de subide implica que hay un silencio despues de dicha onda
+(esto ultimo no debería darse en teoria)
+
+Nota: el final se marca con un pulso aislado (a diferencia de bits 0 - 4 pulsos - o bits 1 - 8 pulsos)
+
+*/
+
+//Actualmente esta rutina de amplitud maxima NO VA BIEN. Detecta como pulsos los silencios previos a cada pulso de bit
+
+
+
+
+z80_byte enh_get_amplitud_maxima(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria)
 {
     z80_64bit i;
     z80_64bit acumulada_amplitud=0;
+    z80_64bit amplitud_maxima=0;
     z80_64bit total_pulsos=0;
 
     int estado_pulso=0; //0: subiendo, 1: bajando
@@ -47,12 +90,16 @@ z80_byte enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_mem
     for (i=0;i<tamanyo_memoria;i++) {
         z80_byte valor_sample=enhanced_memoria[i];
 
+        //if (i>=62920 && i<=62957) printf("i: %lld\n",i);
+
         switch(estado_pulso) {
             case 0:
                 //subiendo
                 if (valor_sample<valor_sample_anterior) {
-                    amplitud_este_pulso=valor_sample-valor_sample_inicio_pulso;
+                    amplitud_este_pulso=valor_sample_anterior-valor_sample_inicio_pulso;
+                    if (amplitud_este_pulso>60) printf("%lld Pico pulso Pulso amplitud: %d\n",i,amplitud_este_pulso);
                     acumulada_amplitud +=amplitud_este_pulso;
+                    if (amplitud_este_pulso>amplitud_maxima) amplitud_maxima=amplitud_este_pulso;
                     estado_pulso=1;
                 }
             break;
@@ -62,6 +109,8 @@ z80_byte enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_mem
                 if (valor_sample>valor_sample_anterior) {
                     valor_sample_inicio_pulso=valor_sample;
                     estado_pulso=0;
+                    total_pulsos++;
+                    if (amplitud_este_pulso>60) printf("%lld Final Pulso amplitud: %d\n",i,amplitud_este_pulso);
                 }
             break;
         }
@@ -69,18 +118,20 @@ z80_byte enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_mem
         valor_sample_anterior=valor_sample;
     }
 
-    total_pulsos++;
+    printf("Amplitud media: %lld\n",acumulada_amplitud/total_pulsos);
 
-    return acumulada_amplitud/total_pulsos;
+    return amplitud_maxima;
+
+
 }
 
 
 int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria)
 {
 
-    z80_byte amplitud_media=enh_get_amplitud_media(enhanced_memoria,tamanyo_memoria);
+    z80_byte amplitud_maxima=enh_get_amplitud_maxima(enhanced_memoria,tamanyo_memoria);
 
-    printf("Amplitud media: %d\n",amplitud_media);
+    printf("Amplitud maxima: %d\n",amplitud_maxima);
 
 
     return 0;
