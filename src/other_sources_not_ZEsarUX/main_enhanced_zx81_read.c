@@ -19,10 +19,71 @@
 
 */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+
+
+typedef long long int z80_64bit;
+typedef unsigned char z80_byte;
+
+//Retorna tamanyo archivo
+long long int enh_get_file_size(char *nombre)
+{
+
+
+#if __MINGW32__
+        //Para que funcione la llamada en windows 32 bit. Si no, trata tamanyos de archivos con enteros de 32 bits
+        //y mostrara mal cualquier tamanyo mayor de 2 GB
+        struct __stat64 buf_stat;
+        if (_stat64(nombre, &buf_stat) != 0) {
+#else
+
+        struct stat buf_stat;
+        if (stat(nombre, &buf_stat)!=0) {
+#endif
+            printf("Unable to get status of file %s\n",nombre);
+            return 0;
+        }
+
+        else {
+			//printf ("file size: %ld\n",buf_stat.st_size);
+			return buf_stat.st_size;
+        }
+
+}
+
+char *rwafile="prueba.rwa";
+
 int main(void)
 {
 
-    main_enhanced_zx81_read("prueba");
+
+    z80_64bit tamanyo_archivo=enh_get_file_size(rwafile);
+
+    FILE *ptr_archivo;
+    ptr_archivo=fopen(rwafile,"rb");
+
+
+    if (!ptr_archivo) {
+        printf("Unable to open rwa file: %s\n",rwafile);
+        return 1;
+    }
+
+
+    //Cargarlo todo en memoria
+    z80_byte *enhanced_memoria=malloc(tamanyo_archivo);
+    if (enhanced_memoria==NULL) {
+        printf("Can not allocate memory for load rwa file");
+        return 0;
+    }
+    fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
+    fclose(ptr_archivo);
+
+    main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo);
+
     return 0;
+
 
 }

@@ -25,64 +25,18 @@
 
 
 #include "cpu.h"
-#include "utils.h"
+
 
 //tipos de datos que luego se obtendrán desde cpu.h
 //64 bits
 //typedef long long int z80_64bit;
 
 
-z80_byte *enhanced_memoria;
 
-//Retorna tamanyo archivo
-long long int enh_get_file_size(char *nombre)
+int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_archivo)
 {
 
 
-
-
-#if __MINGW32__
-        //Para que funcione la llamada en windows 32 bit. Si no, trata tamanyos de archivos con enteros de 32 bits
-        //y mostrara mal cualquier tamanyo mayor de 2 GB
-        struct __stat64 buf_stat;
-        if (_stat64(nombre, &buf_stat) != 0) {
-#else
-
-        struct stat buf_stat;
-        if (stat(nombre, &buf_stat)!=0) {
-#endif
-            printf("Unable to get status of file %s\n",nombre);
-            return 0;
-        }
-
-        else {
-			//printf ("file size: %ld\n",buf_stat.st_size);
-			return buf_stat.st_size;
-        }
-
-}
-
-int main_enhanced_zx81_read(char *rwafile)
-{
-    z80_64bit tamanyo_archivo=enh_get_file_size(rwafile);
-
-    FILE *ptr_archivo;
-    ptr_archivo=fopen(rwafile,"rb");
-
-
-    if (!ptr_archivo) {
-        printf("Unable to open rwa file: %s\n",rwafile);
-        return 1;
-    }
-
-    //Cargarlo todo en memoria
-    enhanced_memoria=malloc(tamanyo_archivo);
-    if (enhanced_memoria==NULL) {
-        printf("Can not allocate memory for load rwa file");
-        return 0;
-    }
-    fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
-    fclose(ptr_archivo);
 
     return 0;
 }
