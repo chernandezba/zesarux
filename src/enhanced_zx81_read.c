@@ -145,7 +145,7 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
 {
     z80_64bit i;
     z80_64bit amplitud_maxima=0;
-    z80_64bit total_pulsos=0;
+
 
     int estado_pulso=0; //0: subiendo, 1: bajando
 
@@ -153,6 +153,18 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
     z80_byte valor_sample_anterior=enhanced_memoria[0];
     z80_byte valor_sample_inicio_pulso=enhanced_memoria[0];
     z80_byte valor_sample_pico_alto=0;
+
+    //z80_64bit longitud_cresta_subida=0;
+    //z80_64bit longitud_cresta_bajada=0;
+
+    z80_64bit posicion_cresta_subida=0;
+    z80_64bit posicion_cresta_bajada=0;
+
+    z80_64bit pulsos_leidos=0;
+    int conteo_pulsos_de_bit=0;
+
+    z80_byte acumulado_byte=0;
+    int numero_bit_en_byte=0;
 
     for (i=0;i<tamanyo_memoria;i++) {
         z80_byte valor_sample=enhanced_memoria[i];
@@ -174,6 +186,7 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
 
                     if (amplitud_este_pulso>amplitud_maxima) amplitud_maxima=amplitud_este_pulso;
                     estado_pulso=1;
+                    posicion_cresta_bajada=i;
                 }
             break;
 
@@ -194,11 +207,51 @@ void enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byt
                     else {
                         valor_sample_inicio_pulso=valor_sample;
                         estado_pulso=0;
-                        total_pulsos++;
-                        if (1/*amplitud_este_pulso>60*/) {
-                            printf("%lld Final Pulso-inicio. valor_sample: %d. amplitud subida: %d amplitud bajada %d\n",
-                                i,valor_sample_inicio_pulso,amplitud_este_pulso,amplitud_bajada);
+
+
+                        z80_64bit longitud_cresta_subida=posicion_cresta_bajada-posicion_cresta_subida;
+                        z80_64bit longitud_cresta_bajada=i-posicion_cresta_bajada;
+
+
+                        printf("%lld Final Pulso-inicio. valor_sample: %d. amplitud subida: %d amplitud bajada %d long subida %lld long bajada: %lld\n",
+                            i,valor_sample_inicio_pulso,amplitud_este_pulso,amplitud_bajada,
+                            longitud_cresta_subida,longitud_cresta_bajada);
+
+
+
+                        posicion_cresta_subida=i;
+
+                        //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
+                        if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
+                            printf("Hay fin de bit antes de este pulso. Conteo pulsos de bit: %d\n",conteo_pulsos_de_bit);
+
+                            //4 para 0. 8 o 9 para 1. TODO: no deberia ser 8 y no 9 siempre???
+
+                            //z80_byte acumulado_byte=0;
+                            //int numero_bit_en_byte=0;
+
+                            int bit_leido=0;
+                            if (conteo_pulsos_de_bit==4) bit_leido=0;
+                            else if (conteo_pulsos_de_bit==8 ||conteo_pulsos_de_bit==9) bit_leido=1;
+                            else printf("No sabemos que bit es cuando hay %d pulsos\n",conteo_pulsos_de_bit);
+
+                            acumulado_byte=acumulado_byte<<2;
+                            acumulado_byte |=bit_leido;
+                            numero_bit_en_byte++;
+                            if (numero_bit_en_byte==8) {
+                                printf("Byte final: %d (%XH)\n",acumulado_byte,acumulado_byte);
+                                acumulado_byte=0;
+                                numero_bit_en_byte=0;
+                            }
+
+                            conteo_pulsos_de_bit=0;
                         }
+
+                        conteo_pulsos_de_bit++;
+
+                        pulsos_leidos++;
+
+
                     }
                 }
             break;
