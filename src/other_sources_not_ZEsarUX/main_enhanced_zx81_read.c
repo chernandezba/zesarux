@@ -109,7 +109,7 @@ int main(void)
     }
 
     //Generamos tambien el .p
-    printf("Longitud nombre: %d\n",longitud_nombre);
+    printf("Longitud nombre: %d Longitud p81: %d\n",longitud_nombre,longitud_p81);
 
     ptr_dskplusthreefile=fopen("salida.p","wb");
 
