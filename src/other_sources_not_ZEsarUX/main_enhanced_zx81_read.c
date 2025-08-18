@@ -24,6 +24,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#include "enhanced_zx81_read.h"
+
 
 typedef long long int z80_64bit;
 typedef unsigned char z80_byte;
