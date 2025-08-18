@@ -160,7 +160,7 @@ z80_byte da_codigo81(z80_byte codigo)
 
 }
 
-int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media,z80_byte *destino_p81)
+int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media,z80_byte *destino_p81,int *longitud_nombre)
 {
     z80_64bit i;
     z80_64bit amplitud_maxima=0;
@@ -186,6 +186,8 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
     int numero_bit_en_byte=0;
 
     int indice_destino_p81=0;
+    int leido_nombre=0;
+    *longitud_nombre=0;
 
     for (i=0;i<tamanyo_memoria;i++) {
         z80_byte valor_sample=enhanced_memoria[i];
@@ -266,6 +268,14 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
                             if (numero_bit_en_byte==8) {
                                 printf("Byte final: %3d (%02XH) caracter %c\n",acumulado_byte,acumulado_byte,da_codigo81(acumulado_byte));
                                 destino_p81[indice_destino_p81++]=acumulado_byte;
+
+                                if (!leido_nombre) {
+                                    if (acumulado_byte&128) {
+                                        *longitud_nombre=indice_destino_p81;
+                                        leido_nombre=1;
+                                    }
+                                }
+
                                 acumulado_byte=0;
                                 numero_bit_en_byte=0;
                             }
@@ -294,7 +304,7 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
 
 }
 
-int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81)
+int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,int *longitud_nombre)
 {
     int i;
     for (i=0;i<256;i++) enh_amplitudes[i]=0;
@@ -305,11 +315,11 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
 
     for (i=0;i<256;i++) printf("Amplitud %i cantidad: %lld\n",i,enh_amplitudes[i]);
 
-    //prueba
+    //prueba. Para control de stocks
     z80_byte amplitud_media=18;
 
 
-    int longitud_p81=enh_get_pulsos(enhanced_memoria,tamanyo_memoria,amplitud_media,memoria_p81);
+    int longitud_p81=enh_get_pulsos(enhanced_memoria,tamanyo_memoria,amplitud_media,memoria_p81,longitud_nombre);
 
     return longitud_p81;
 }

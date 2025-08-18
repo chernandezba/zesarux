@@ -90,7 +90,9 @@ int main(void)
         return 0;
     }
 
-    int longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81);
+    int longitud_nombre;
+
+    int longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,&longitud_nombre);
 
 
 
@@ -101,6 +103,20 @@ int main(void)
     if (ptr_dskplusthreefile!=NULL) {
 
         fwrite(memoria_p81,1,longitud_p81,ptr_dskplusthreefile);
+
+
+        fclose(ptr_dskplusthreefile);
+    }
+
+    //Generamos tambien el .p
+    printf("Longitud nombre: %d\n",longitud_nombre);
+
+    ptr_dskplusthreefile=fopen("salida.p","wb");
+
+
+    if (ptr_dskplusthreefile!=NULL) {
+
+        fwrite(&memoria_p81[longitud_nombre],1,longitud_p81-longitud_nombre,ptr_dskplusthreefile);
 
 
         fclose(ptr_dskplusthreefile);
