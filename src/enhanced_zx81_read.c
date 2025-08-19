@@ -76,16 +76,16 @@ Eso es un problema? Realmente no, simplemente la  longitud de la cresta de subid
 
 
 //Array que indica cuantas amplitudes de cada valor se han encontrado
-z80_64bit enh_amplitudes[256];
+int enh_amplitudes[256];
 
 
 //Funcion obsoleta
-void enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria)
+void enh_get_amplitud_media(z80_byte *enhanced_memoria,int tamanyo_memoria)
 {
-    z80_64bit i;
-    z80_64bit acumulada_amplitud=0;
-    z80_64bit amplitud_maxima=0;
-    z80_64bit total_pulsos=0;
+    int i;
+    int acumulada_amplitud=0;
+    int amplitud_maxima=0;
+    int total_pulsos=0;
 
     int estado_pulso=0; //0: subiendo, 1: bajando
 
@@ -103,7 +103,7 @@ void enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
                 if (valor_sample<valor_sample_anterior) {
                     amplitud_este_pulso=valor_sample_anterior-valor_sample_inicio_pulso;
                     if (1/*amplitud_este_pulso>60*/) {
-                        printf("%lld Pico pulso Pulso. sample anterior %d sample actual %d amplitud: %d\n",
+                        printf("%d Pico pulso Pulso. sample anterior %d sample actual %d amplitud: %d\n",
                             i,valor_sample_anterior,valor_sample,amplitud_este_pulso);
                     }
                     acumulada_amplitud +=amplitud_este_pulso;
@@ -122,7 +122,7 @@ void enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
                     estado_pulso=0;
                     total_pulsos++;
                     if (1/*amplitud_este_pulso>60*/) {
-                        printf("%lld Final Pulso-inicio. valor_sample: %d\n",i,valor_sample_inicio_pulso);
+                        printf("%d Final Pulso-inicio. valor_sample: %d\n",i,valor_sample_inicio_pulso);
                     }
                 }
             break;
@@ -131,7 +131,7 @@ void enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
         valor_sample_anterior=valor_sample;
     }
 
-    printf("Amplitud media: %lld\n",acumulada_amplitud/total_pulsos);
+    printf("Amplitud media: %d\n",acumulada_amplitud/total_pulsos);
 
     //return amplitud_maxima;
 
@@ -152,11 +152,11 @@ z80_byte return_zx81_char(z80_byte codigo)
 
 }
 
-int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *destino_p81,
+int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
     z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *))
 {
-    z80_64bit i;
-    z80_64bit amplitud_maxima=0;
+    int i;
+    int amplitud_maxima=0;
 
 
     int estado_pulso=0; //0: subiendo, 1: bajando
@@ -166,10 +166,10 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
     z80_byte valor_sample_inicio_pulso=enhanced_memoria[0];
     z80_byte valor_sample_pico_alto=0;
 
-    z80_64bit posicion_cresta_subida=0;
-    z80_64bit posicion_cresta_bajada=0;
+    int posicion_cresta_subida=0;
+    int posicion_cresta_bajada=0;
 
-    z80_64bit pulsos_leidos=0;
+    int pulsos_leidos=0;
     int conteo_pulsos_de_bit=0;
 
     z80_byte acumulado_byte=0;
@@ -192,7 +192,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                     amplitud_este_pulso=valor_sample_anterior-valor_sample_inicio_pulso;
                     valor_sample_pico_alto=valor_sample_anterior;
                     if (debug_print && fun_print!=NULL) {
-                        sprintf(buffer_print,"%lld: Top part of pulse. previous sample: %d current sample: %d amplitude: %d",
+                        sprintf(buffer_print,"%d: Top part of pulse. previous sample: %d current sample: %d amplitude: %d",
                             i,valor_sample_anterior,valor_sample,amplitud_este_pulso);
                         fun_print(buffer_print);
                     }
@@ -226,12 +226,12 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                         estado_pulso=0;
 
 
-                        z80_64bit longitud_cresta_subida=posicion_cresta_bajada-posicion_cresta_subida;
-                        z80_64bit longitud_cresta_bajada=i-posicion_cresta_bajada;
+                        int longitud_cresta_subida=posicion_cresta_bajada-posicion_cresta_subida;
+                        int longitud_cresta_bajada=i-posicion_cresta_bajada;
 
                         if (debug_print && fun_print!=NULL) {
-                            sprintf(buffer_print,"%lld End pulse. sample value: %d. Rise amplitude: %d "
-                                                 "Fall amplitude: %d Rise length: %lld Fall length: %lld",
+                            sprintf(buffer_print,"%d End pulse. sample value: %d. Rise amplitude: %d "
+                                                 "Fall amplitude: %d Rise length: %d Fall length: %d",
                                 i,valor_sample_inicio_pulso,amplitud_este_pulso,amplitud_bajada,
                                 longitud_cresta_subida,longitud_cresta_bajada);
                             fun_print(buffer_print);
@@ -243,7 +243,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                         //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
                         if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
                             if (debug_print && fun_print!=NULL) {
-                                sprintf(buffer_print,"%lld End of bit before this current pulse. Total bit pulses: %d",i,conteo_pulsos_de_bit);
+                                sprintf(buffer_print,"%d End of bit before this current pulse. Total bit pulses: %d",i,conteo_pulsos_de_bit);
                                 fun_print(buffer_print);
                             }
 
@@ -257,14 +257,14 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                             else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
                             else if (conteo_pulsos_de_bit==1) {
                                 if (fun_print!=NULL) {
-                                    sprintf(buffer_print,"%lld Only one pulse. Assume end of program",i);
+                                    sprintf(buffer_print,"%d Only one pulse. Assume end of program",i);
                                     fun_print(buffer_print);
                                 }
                                 return indice_destino_p81;
                             }
                             else {
                                 if (fun_print!=NULL) {
-                                    sprintf(buffer_print,"%lld We do not know what bit value is when found %d pulses",i,conteo_pulsos_de_bit);
+                                    sprintf(buffer_print,"%d We do not know what bit value is when found %d pulses",i,conteo_pulsos_de_bit);
                                     fun_print(buffer_print);
                                 }
                             }
@@ -274,7 +274,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                             numero_bit_en_byte++;
                             if (numero_bit_en_byte==8) {
                                 if (debug_print && fun_print!=NULL)  {
-                                    sprintf(buffer_print,"%lld Final Byte: %3d (%02XH) Character %c",i,acumulado_byte,acumulado_byte,return_zx81_char(acumulado_byte));
+                                    sprintf(buffer_print,"%d Final Byte: %3d (%02XH) Character %c",i,acumulado_byte,acumulado_byte,return_zx81_char(acumulado_byte));
                                     fun_print(buffer_print);
                                 }
 
@@ -316,7 +316,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
 
 
 //Funcion obsoleta
-int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,
+int main_enhanced_zx81_read(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *memoria_p81,
     z80_byte amplitud_media,int analizar_amplitudes,int debug_print,int *longitud_nombre)
 {
     if (analizar_amplitudes) {
@@ -337,7 +337,7 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
         //printf("Amplitud maxima: %d\n",amplitud_maxima);
 
         if (debug_print)  {
-            for (i=0;i<256;i++) printf("Amplitud %i cantidad: %lld\n",i,enh_amplitudes[i]);
+            for (i=0;i<256;i++) printf("Amplitud %i cantidad: %d\n",i,enh_amplitudes[i]);
         }
 
     }

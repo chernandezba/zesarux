@@ -113,7 +113,7 @@ int main(int argc,char *argv[])
 
     int debug_print=atoi(argv[4]);
 
-    z80_64bit tamanyo_archivo=enh_get_file_size(rwafile);
+    int tamanyo_archivo=enh_get_file_size(rwafile);
 
     FILE *ptr_archivo;
     ptr_archivo=fopen(rwafile,"rb");
@@ -136,7 +136,7 @@ int main(int argc,char *argv[])
     fclose(ptr_archivo);
 
     if (invert_signal) {
-        z80_64bit i;
+        int i;
         for (i=0;i<tamanyo_archivo;i++) {
             int valor=enhanced_memoria[i];
             valor=255-valor;

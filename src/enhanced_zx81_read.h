@@ -23,13 +23,11 @@
 #define ENHANCED_ZX81_READ_H
 
 
-//#include "cpu.h"
 
-typedef long long int z80_64bit;
 typedef unsigned char z80_byte;
 
-//extern int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,z80_byte amplitud_media,int analizar_amplitudes,int debug_print,int *longitud_nombre);
-extern int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *destino_p81,
+
+extern int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
     z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *));
 extern z80_byte return_zx81_char(z80_byte codigo);
 
