@@ -128,7 +128,7 @@ int main(int argc,char *argv[])
     //Cargarlo todo en memoria
     z80_byte *enhanced_memoria=malloc(tamanyo_archivo);
     if (enhanced_memoria==NULL) {
-        printf("Can not allocate memory for load rwa file");
+        printf("Can not allocate memory for load rwa file\n");
         return 1;
     }
 
@@ -149,7 +149,7 @@ int main(int argc,char *argv[])
     z80_byte *memoria_p81=malloc(65536); //mas de 64 kb para un .P81 seria absurdo
 
     if (memoria_p81==NULL) {
-        printf("Can not allocate memory for load rwa file");
+        printf("Can not allocate memory for load rwa file\n");
         return 1;
     }
 

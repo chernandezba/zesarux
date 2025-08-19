@@ -23388,10 +23388,23 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
 
 }
 
+//Por cada amplitud probada, que longitud se genera
+int util_enhanced_longitudes_autodetectar[256];
+
+void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81)
+{
+    int i;
+
+    for (i=0;i<longitud_nombre;i++) {
+        printf("%c",return_zx81_char(memoria_p81[i]));
+    }
+    printf("\n");
+}
+
 //Conversión automática de un archivo raw  (rwa, smp, etc) a P81 usando rutina enhanced
 void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
 {
-    char *rwafile=argv[1];
+    //char *rwafile=argv[1];
 
     //Valor para control de stocks
     //Nota: es un int porque en autodeteccion hacemos un bucle hasta 255 y no quiero que de la vuelta
@@ -23413,30 +23426,29 @@ void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
 
     int debug_print=0;
 
-    z80_64bit tamanyo_archivo=enh_get_file_size(rwafile);
+    int tamanyo_archivo=get_file_size(filename);
 
     FILE *ptr_archivo;
-    ptr_archivo=fopen(rwafile,"rb");
+    ptr_archivo=fopen(filename,"rb");
 
 
     if (!ptr_archivo) {
-        printf("Unable to open rwa file: %s\n",rwafile);
-        return 1;
+        debug_printf(VERBOSE_ERR,"Unable to open rwa file: %s",filename);
+        return;
     }
 
 
     //Cargarlo todo en memoria
     z80_byte *enhanced_memoria=malloc(tamanyo_archivo);
     if (enhanced_memoria==NULL) {
-        printf("Can not allocate memory for load rwa file");
-        return 1;
+        cpu_panic("Can not allocate memory for load rwa file");
     }
 
     fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
     fclose(ptr_archivo);
 
     if (invert_signal) {
-        z80_64bit i;
+        int i;
         for (i=0;i<tamanyo_archivo;i++) {
             int valor=enhanced_memoria[i];
             valor=255-valor;
@@ -23449,8 +23461,7 @@ void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
     z80_byte *memoria_p81=malloc(65536); //mas de 64 kb para un .P81 seria absurdo
 
     if (memoria_p81==NULL) {
-        printf("Can not allocate memory for load rwa file");
-        return 1;
+        cpu_panic("Can not allocate memory for load rwa file");
     }
 
     int longitud_nombre;
@@ -23467,25 +23478,25 @@ void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
 
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                                debug_print,&longitud_nombre,print_mensajes);
+                                debug_print,&longitud_nombre,NULL);
 
             else longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
                     debug_print,&longitud_nombre,NULL);
 
-            longitudes_autodetectar[amplitud_media]=longitud_p81;
+            util_enhanced_longitudes_autodetectar[amplitud_media]=longitud_p81;
 
 
             printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
 
-            print_nombre(longitud_nombre,memoria_p81);
+            util_enhanced_print_nombre(longitud_nombre,memoria_p81);
         }
 
         //buscar longitud maxima
         int longitud_maxima=0;
         int i;
         for (i=inicio_autodetectar;i<=final_autodetectar;i++) {
-            if (longitudes_autodetectar[i]>longitud_maxima) {
-                longitud_maxima=longitudes_autodetectar[i];
+            if (util_enhanced_longitudes_autodetectar[i]>longitud_maxima) {
+                longitud_maxima=util_enhanced_longitudes_autodetectar[i];
                 amplitud_media=i;
             }
         }
@@ -23496,17 +23507,15 @@ void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
 
     }
 
-
-
-    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,print_mensajes);
+    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
 
 
     printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
 
-    print_nombre(longitud_nombre,memoria_p81);
+    util_enhanced_print_nombre(longitud_nombre,memoria_p81);
 
     FILE *ptr_dskplusthreefile;
-    ptr_dskplusthreefile=fopen("output.p81","wb");
+    ptr_dskplusthreefile=fopen(archivo_destino,"wb");
 
 
     if (ptr_dskplusthreefile!=NULL) {
@@ -23517,18 +23526,7 @@ void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
         fclose(ptr_dskplusthreefile);
     }
 
-    //Generamos tambien el .p
 
-    ptr_dskplusthreefile=fopen("output.p","wb");
-
-
-    if (ptr_dskplusthreefile!=NULL) {
-
-        fwrite(&memoria_p81[longitud_nombre],1,longitud_p81-longitud_nombre,ptr_dskplusthreefile);
-
-
-        fclose(ptr_dskplusthreefile);
-    }
 
 
     free(enhanced_memoria);
@@ -23536,7 +23534,7 @@ void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
 
 
 
-    return 0;
+    //return 0;
 
 }
 
