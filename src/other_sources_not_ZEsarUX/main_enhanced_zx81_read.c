@@ -68,7 +68,7 @@ int main(int argc,char *argv[])
         printf("amplitude should be a value between 1 and 255 or word autodetect\n");
         printf("invert must be 0 or 1 - to invert signal or not\n");
         printf("debug must be 0 or 1\n");
-        printf("Input file must be 8 bit unsigned, 1 channel. No matter recorded frequency\n")
+        printf("Input file must be 8 bit unsigned, 1 channel. No matter recorded frequency\n");
         exit(1);
     }
 
@@ -145,7 +145,8 @@ int main(int argc,char *argv[])
 
     for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
 
-        longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
+        //longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
+        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre);
 
         longitudes_autodetectar[amplitud_media]=longitud_p81;
 
@@ -176,7 +177,8 @@ int main(int argc,char *argv[])
         printf("Autodetección. Probando con amplitud %d\n",amplitud_media);
 
 
-        longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
+        //longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
+        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre);
 
         printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
 

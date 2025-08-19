@@ -151,7 +151,8 @@ z80_byte return_zx81_char(z80_byte codigo)
 
 }
 
-int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media,z80_byte *destino_p81,int debug_print,int *longitud_nombre)
+int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *destino_p81,
+    z80_byte amplitud_media, int debug_print,int *longitud_nombre)
 {
     z80_64bit i;
     z80_64bit amplitud_maxima=0;
@@ -329,7 +330,7 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
     }
 
 
-    int longitud_p81=enh_get_pulsos(enhanced_memoria,tamanyo_memoria,amplitud_media,memoria_p81,debug_print,longitud_nombre);
+    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre);
 
     return longitud_p81;
 }
