@@ -56,11 +56,39 @@ long long int enh_get_file_size(char *nombre)
 
 }
 
-char *rwafile="/Users/cesarhernandez/Desktop/prueba.rwa";
 
-int main(void)
+//Por cada amplitud probada, que longitud se genera
+int longitudes_autodetectar[256];
+
+int main(int argc,char *argv[])
 {
 
+    if (argc<5) {
+        printf("%s file amplitude invert debug \n",argv[0]);
+        printf("amplitude should be a value between 1 and 255 or word autodetect\n");
+        printf("invert must be 0 or 1 - to invert signal or not\n");
+        printf("debug must be 0 or 1\n");
+        printf("Input file must be 8 bit unsigned, 1 channel. No matter recorded frequency\n")
+        exit(1);
+    }
+
+    char *rwafile=argv[1];
+
+    //Valor para control de stocks
+    //Nota: es un int porque en autodeteccion hacemos un bucle hasta 255 y no quiero que de la vuelta
+    int amplitud_media=18;
+
+
+    int autodetectar_amplitud=0;
+
+    if (!strcasecmp(argv[2],"autodetect")) {
+        autodetectar_amplitud=1;
+    }
+    else amplitud_media=atoi(argv[2]);
+
+    int invert_signal=atoi(argv[3]);
+
+    int debug_print=atoi(argv[4]);
 
     z80_64bit tamanyo_archivo=enh_get_file_size(rwafile);
 
@@ -83,6 +111,17 @@ int main(void)
     fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
     fclose(ptr_archivo);
 
+    if (invert_signal) {
+        z80_64bit i;
+        for (i=0;i<tamanyo_archivo;i++) {
+            int valor=enhanced_memoria[i];
+            valor=255-valor;
+            enhanced_memoria[i]=valor;
+        }
+    }
+
+
+
     z80_byte *memoria_p81=malloc(65536); //mas de 64 kb para un .P81 seria absurdo
 
     if (memoria_p81==NULL) {
@@ -92,8 +131,60 @@ int main(void)
 
     int longitud_nombre;
 
-    int longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,&longitud_nombre);
 
+
+    int longitud_p81;
+
+    int inicio_autodetectar=5;
+    int final_autodetectar=255;
+
+    if (!autodetectar_amplitud) {
+        inicio_autodetectar=amplitud_media;
+        final_autodetectar=amplitud_media;
+    }
+
+    for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
+
+        longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
+
+        longitudes_autodetectar[amplitud_media]=longitud_p81;
+
+
+        printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
+
+        int i;
+
+        for (i=0;i<longitud_nombre;i++) {
+            printf("%c",return_zx81_char(memoria_p81[i]));
+        }
+        printf("\n");
+
+    }
+
+    if (autodetectar_amplitud) {
+        //buscar longitud maxima
+        int longitud_maxima=0;
+        int i;
+        for (i=inicio_autodetectar;i<=final_autodetectar;i++) {
+            if (longitudes_autodetectar[i]>longitud_maxima) {
+                longitud_maxima=longitudes_autodetectar[i];
+                amplitud_media=i;
+            }
+        }
+
+        //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
+        printf("Autodetección. Probando con amplitud %d\n",amplitud_media);
+
+
+        longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
+
+        printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
+
+        for (i=0;i<longitud_nombre;i++) {
+            printf("%c",return_zx81_char(memoria_p81[i]));
+        }
+        printf("\n");
+    }
 
 
     FILE *ptr_dskplusthreefile;
@@ -109,7 +200,6 @@ int main(void)
     }
 
     //Generamos tambien el .p
-    printf("Longitud nombre: %d Longitud p81: %d\n",longitud_nombre,longitud_p81);
 
     ptr_dskplusthreefile=fopen("salida.p","wb");
 

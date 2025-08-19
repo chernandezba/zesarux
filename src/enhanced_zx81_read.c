@@ -27,9 +27,6 @@
 #include "cpu.h"
 
 
-//tipos de datos que luego se obtendrán desde cpu.h
-//64 bits
-//typedef long long int z80_64bit;
 
 /*
 
@@ -37,7 +34,7 @@
 
 * calculo aproximado de maxima amplitud. Para saber la media de amplitud.
 valor inicial. Que suba hasta un máximo y baje a un mínimo. Eso para todo el audio. Eso es un pulso de subida
-Eso devuelve un valor AMPLITUD_MAXIMA
+Eso devuelve un valor AMPLITUD_MEDIA
 
 *Para lectura de pulso exacto, no aproximado:
 valor inicial. que suba hasta un máximo y baje a un mínimo.
@@ -51,7 +48,7 @@ valor inicial. que suba hasta un máximo y baje a un mínimo.
 
 Con condiciones:
 ** si está subiendo y sube y baja y luego sube (o sea aparentemente llegamos al final), si amplitud de la parte de
- bajada no al menos un 70% de AMPLITUD_MAXIMA (media), volver a ciclo de subida
+ bajada no al menos un 70% de AMPLITUD_MEDIA, volver a ciclo de subida
 Esto es para evitar crestas que tienen "rugosidades" (forma de U en la misma cresta) o los "picos" producidos con los silencios
 de delante de cada bit inicial
 -> amplitud de la cresta de subida= valor máximo-valor inicial
@@ -73,16 +70,14 @@ Eso es un problema? Realmente no, simplemente la  longitud de la cresta de subid
 
 */
 
-//Actualmente esta rutina de amplitud maxima NO VA BIEN. Detecta como pulsos los silencios previos a cada pulso de bit
 
-//Quiza se podria hacer que fuese el usuario quien dijera la amplitud maxima (la media realmente) de un pulso de bits
 
 //Array que indica cuantas amplitudes de cada valor se han encontrado
 z80_64bit enh_amplitudes[256];
 
 
 
-void enh_get_amplitud_maxima(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria)
+void enh_get_amplitud_media(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria)
 {
     z80_64bit i;
     z80_64bit acumulada_amplitud=0;
@@ -141,26 +136,22 @@ void enh_get_amplitud_maxima(z80_byte *enhanced_memoria,z80_64bit tamanyo_memori
 
 }
 
-z80_byte   caracteres_zx81_no_artistic[64]=" ??????????\"?$:?()><=+-*/;,."
+z80_byte zx81_char_table[64]=" ??????????\"?$:?()><=+-*/;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-z80_byte da_codigo81(z80_byte codigo)
+z80_byte return_zx81_char(z80_byte codigo)
 {
 
-  if (codigo>127) {
-
+    if (codigo>127) {
         codigo-=128;
-  }
+    }
 
-
-
-
-    return (codigo<64 ? caracteres_zx81_no_artistic[codigo] : '~');
+    return (codigo<64 ? zx81_char_table[codigo] : '?');
 
 
 }
 
-int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media,z80_byte *destino_p81,int *longitud_nombre)
+int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte amplitud_media,z80_byte *destino_p81,int debug_print,int *longitud_nombre)
 {
     z80_64bit i;
     z80_64bit amplitud_maxima=0;
@@ -200,7 +191,7 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
                 if (valor_sample<valor_sample_anterior) {
                     amplitud_este_pulso=valor_sample_anterior-valor_sample_inicio_pulso;
                     valor_sample_pico_alto=valor_sample_anterior;
-                    if (1/*amplitud_este_pulso>60*/) {
+                    if (debug_print) {
                         printf("%lld Pico pulso Pulso. sample anterior %d sample actual %d amplitud: %d\n",
                             i,valor_sample_anterior,valor_sample,amplitud_este_pulso);
                     }
@@ -223,7 +214,9 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
                     */
                     int amplitud_bajada=valor_sample_pico_alto-valor_sample_anterior;
                     int amplitud_media_minimo=(amplitud_media*70)/100;
-                    if (amplitud_bajada<amplitud_media_minimo) {
+                    //int amplitud_media_alternativa_minimo=(amplitud_media_alternativa*70)/100;
+
+                    if (amplitud_bajada<amplitud_media_minimo /*&& amplitud_bajada<amplitud_media_alternativa_minimo*/) {
                         estado_pulso=0;
                     }
 
@@ -235,18 +228,18 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
                         z80_64bit longitud_cresta_subida=posicion_cresta_bajada-posicion_cresta_subida;
                         z80_64bit longitud_cresta_bajada=i-posicion_cresta_bajada;
 
-
-                        printf("%lld Final Pulso-inicio. valor_sample: %d. amplitud subida: %d amplitud bajada %d long subida %lld long bajada: %lld\n",
-                            i,valor_sample_inicio_pulso,amplitud_este_pulso,amplitud_bajada,
-                            longitud_cresta_subida,longitud_cresta_bajada);
-
+                        if (debug_print) {
+                            printf("%lld Final Pulso-inicio. valor_sample: %d. amplitud subida: %d amplitud bajada %d long subida %lld long bajada: %lld\n",
+                                i,valor_sample_inicio_pulso,amplitud_este_pulso,amplitud_bajada,
+                                longitud_cresta_subida,longitud_cresta_bajada);
+                        }
 
 
                         posicion_cresta_subida=i;
 
                         //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
                         if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
-                            printf("Hay fin de bit antes de este pulso. Conteo pulsos de bit: %d\n",conteo_pulsos_de_bit);
+                            if (debug_print) printf("Hay fin de bit antes de este pulso. Conteo pulsos de bit: %d\n",conteo_pulsos_de_bit);
 
                             //4 para 0. 8 o 9 para 1. TODO: no deberia ser 8 y no 9 siempre???
 
@@ -254,19 +247,24 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
                             //int numero_bit_en_byte=0;
 
                             int bit_leido=0;
-                            if (conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
+                            if (conteo_pulsos_de_bit==3 || conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
                             else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
                             else if (conteo_pulsos_de_bit==1) {
                                 printf("1 solo pulso. Quiza final de archivo?\n");
                                 return indice_destino_p81;
                             }
-                            else printf("No sabemos que bit es cuando hay %d pulsos\n",conteo_pulsos_de_bit);
+                            else {
+                                printf("No sabemos que bit es cuando hay %d pulsos\n",conteo_pulsos_de_bit);
+                            }
 
                             acumulado_byte=acumulado_byte<<1;
                             acumulado_byte |=bit_leido;
                             numero_bit_en_byte++;
                             if (numero_bit_en_byte==8) {
-                                printf("Byte final: %3d (%02XH) caracter %c\n",acumulado_byte,acumulado_byte,da_codigo81(acumulado_byte));
+                                if (debug_print)  {
+                                    printf("Byte final: %3d (%02XH) caracter %c\n",acumulado_byte,acumulado_byte,return_zx81_char(acumulado_byte));
+                                }
+
                                 destino_p81[indice_destino_p81++]=acumulado_byte;
 
                                 if (!leido_nombre) {
@@ -304,22 +302,34 @@ int enh_get_pulsos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte
 
 }
 
-int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,int *longitud_nombre)
+int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,
+    z80_byte amplitud_media,int analizar_amplitudes,int debug_print,int *longitud_nombre)
 {
-    int i;
-    for (i=0;i<256;i++) enh_amplitudes[i]=0;
+    if (analizar_amplitudes) {
+        /*
+        Algoritmo no usado pero se pretendia determinar la mejor amplitud, aunque creo que solo con esto no se puede encontrar
+        por ejemplo con STOCKS vemos que el valor mas alto es
+        Amplitud 38 cantidad: 11926
 
-    enh_get_amplitud_maxima(enhanced_memoria,tamanyo_memoria);
+        Pero en cambio ese valor de 38 no da una lectura correcta del programa
+        (amplitud_media=39 Longitud nombre: 14 Longitud p81: 4248 Nombre: CONTROL STOCKS)
+        y realmente ocupa 6433 bytes y no 4248
+        */
+        int i;
+        for (i=0;i<256;i++) enh_amplitudes[i]=0;
 
-    //printf("Amplitud maxima: %d\n",amplitud_maxima);
+        enh_get_amplitud_media(enhanced_memoria,tamanyo_memoria);
 
-    for (i=0;i<256;i++) printf("Amplitud %i cantidad: %lld\n",i,enh_amplitudes[i]);
+        //printf("Amplitud maxima: %d\n",amplitud_maxima);
 
-    //prueba. Para control de stocks
-    z80_byte amplitud_media=18;
+        if (debug_print)  {
+            for (i=0;i<256;i++) printf("Amplitud %i cantidad: %lld\n",i,enh_amplitudes[i]);
+        }
+
+    }
 
 
-    int longitud_p81=enh_get_pulsos(enhanced_memoria,tamanyo_memoria,amplitud_media,memoria_p81,longitud_nombre);
+    int longitud_p81=enh_get_pulsos(enhanced_memoria,tamanyo_memoria,amplitud_media,memoria_p81,debug_print,longitud_nombre);
 
     return longitud_p81;
 }

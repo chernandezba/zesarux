@@ -26,6 +26,7 @@
 #include "cpu.h"
 
 
-extern int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,int *longitud_nombre);
+extern int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,z80_byte amplitud_media,int analizar_amplitudes,int debug_print,int *longitud_nombre);
+extern z80_byte return_zx81_char(z80_byte codigo);
 
 #endif
