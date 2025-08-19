@@ -164,6 +164,7 @@
 #include "microdrive_raw.h"
 #include "lec.h"
 #include "zxmmcplus.h"
+#include "enhanced_zx81_read.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -23384,6 +23385,61 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
     ptr_mycinta_smp=antes_ptr_mycinta_smp;
 
     lee_smp_ya_convertido=antes_lee_smp_ya_convertido;
+
+}
+
+//Conversión automática de un archivo raw  (rwa, smp, etc) a P81 usando rutina enhanced
+void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
+{
+}
+
+//Convierte una cinta real (wav, rwa, smp) a zx81 P81
+//Usa rutina enhanced de lectura de zx81
+void enhanced_convert_realtape_to_p81(char *filename, char *archivo_destino)
+{
+
+
+    //Hay que convertir el nombre del archivo (si no es rwa)
+    char nombre_origen[NAME_MAX];
+    util_get_file_no_directory(filename,nombre_origen);
+
+
+
+    char file_to_open[PATH_MAX];
+    file_to_open[0]=0; //de momento
+
+    //si es rwa o smp, archivo tal cual
+    if (!util_compare_file_extension(filename,"rwa") || !util_compare_file_extension(filename,"smp")) {
+        strcpy(file_to_open,filename);
+    }
+
+    //convertir
+    /*if (!util_compare_file_extension(filename,"smp")) {
+        if (convert_smp_to_rwa_tmpdir(filename,file_to_open)) {
+			debug_printf(VERBOSE_ERR,"Error converting input file");
+			return;
+		}
+    }*/
+
+    //convertir
+    if (!util_compare_file_extension(filename,"wav")) {
+        if (convert_wav_to_rwa_tmpdir(filename,file_to_open)) {
+			debug_printf(VERBOSE_ERR,"Error converting input file");
+			return;
+		}
+    }
+
+
+
+    if (file_to_open[0]==0) {
+        debug_printf(VERBOSE_ERR,"Do not know how to convert this file to P/O");
+        return;
+    }
+
+
+    util_enhanced_convert_raw_to_p81(file_to_open,archivo_destino);
+
+
 
 }
 

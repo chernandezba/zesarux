@@ -2002,6 +2002,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                         "RWA to WAV",
                         "RWA to TAP",
                         "RWA to P",
+                        "RWA to P81",
                         "RWA to O",
                         NULL};
 
@@ -2027,6 +2028,11 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                         break;
 
                         case 3:
+                                sprintf(archivo_destino,"%s/%s.p81",directorio,archivo);
+                                enhanced_convert_realtape_to_p81(fullpath, archivo_destino);
+                        break;
+
+                        case 4:
                                 sprintf(archivo_destino,"%s/%s.o",directorio,archivo);
                                 convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
                         break;
