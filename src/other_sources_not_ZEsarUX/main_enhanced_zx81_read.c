@@ -77,13 +77,18 @@ void print_nombre(int longitud_nombre,z80_byte *memoria_p81)
 
 int main(int argc,char *argv[])
 {
+    printf(
+        "ENHANCED ZX81 READ V1.0\n"
+        "(c) Cesar Hernandez Bano (19/08/2025)\n"
+        "\n"
+    );
 
     if (argc<5) {
-        printf("%s file amplitude invert debug \n",argv[0]);
+        printf("Syntax: %s file amplitude invert debug \n",argv[0]);
         printf("amplitude should be a value between 1 and 255 or word autodetect\n");
         printf("invert must be 0 or 1 - to invert signal or not\n");
         printf("debug must be 0 or 1\n");
-        printf("Input file must be 8 bit unsigned, 1 channel. No matter recorded frequency\n");
+        printf("Input file must be raw, 8 bit, unsigned, 1 channel. No matter recorded frequency\n");
         exit(1);
     }
 
@@ -156,7 +161,12 @@ int main(int argc,char *argv[])
 
         for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
 
-            longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
+            //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
+            if (debug_print) longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+                                debug_print,&longitud_nombre,print_mensajes);
+
+            else longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+                    debug_print,&longitud_nombre,NULL);
 
             longitudes_autodetectar[amplitud_media]=longitud_p81;
 
@@ -164,7 +174,6 @@ int main(int argc,char *argv[])
             printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
 
             print_nombre(longitud_nombre,memoria_p81);
-
         }
 
         //buscar longitud maxima
