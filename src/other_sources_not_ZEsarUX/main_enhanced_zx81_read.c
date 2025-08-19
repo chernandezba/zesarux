@@ -64,6 +64,16 @@ void print_mensajes(char *texto)
 {
 }
 
+void print_nombre(int longitud_nombre,z80_byte *memoria_p81)
+{
+    int i;
+
+    for (i=0;i<longitud_nombre;i++) {
+        printf("%c",return_zx81_char(memoria_p81[i]));
+    }
+    printf("\n");
+}
+
 int main(int argc,char *argv[])
 {
 
@@ -135,38 +145,28 @@ int main(int argc,char *argv[])
 
     int longitud_nombre;
 
-
-
     int longitud_p81;
 
-    int inicio_autodetectar=5;
-    int final_autodetectar=255;
-
-    if (!autodetectar_amplitud) {
-        inicio_autodetectar=amplitud_media;
-        final_autodetectar=amplitud_media;
-    }
-
-    for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
-
-        //longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
-        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
-
-        longitudes_autodetectar[amplitud_media]=longitud_p81;
-
-
-        printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
-
-        int i;
-
-        for (i=0;i<longitud_nombre;i++) {
-            printf("%c",return_zx81_char(memoria_p81[i]));
-        }
-        printf("\n");
-
-    }
 
     if (autodetectar_amplitud) {
+
+        int inicio_autodetectar=5;
+        int final_autodetectar=255;
+
+        for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
+
+            //longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
+            longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
+
+            longitudes_autodetectar[amplitud_media]=longitud_p81;
+
+
+            printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
+
+            print_nombre(longitud_nombre,memoria_p81);
+
+        }
+
         //buscar longitud maxima
         int longitud_maxima=0;
         int i;
@@ -184,14 +184,16 @@ int main(int argc,char *argv[])
         //longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
         longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
 
-        printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
-
-        for (i=0;i<longitud_nombre;i++) {
-            printf("%c",return_zx81_char(memoria_p81[i]));
-        }
-        printf("\n");
     }
 
+
+    else {
+        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
+    }
+
+    printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
+
+    print_nombre(longitud_nombre,memoria_p81);
 
     FILE *ptr_dskplusthreefile;
     ptr_dskplusthreefile=fopen("salida.p81","wb");
