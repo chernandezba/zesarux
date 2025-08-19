@@ -89,7 +89,7 @@ Improved View Basic window:
 - Allow lines > 9999, useful for protected programs
 - AGREGAR LO QUE FALTA!!!
 
-Improved conversion audio to P/P81 ZX81 files: add alternative enhanced algorithm
+Improved conversion audio to P/P81 ZX81 files: added alternative enhanced algorithm
 Improved Hexadecimal editor: follow expression is saved on configuration
 Improved maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
