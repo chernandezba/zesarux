@@ -134,5 +134,8 @@ se llama tambien al usar visual real tape, esa info de bloques
 *al insertar en standard tape un archivo smp/rwa, llama a snap_load_zx80_zx81_load_smp: ahi se deberia autodetectar,
 y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es comun a zx80 y zx81
 
+*Nota en algún sitio que esta conversión mejorada de raw a p/p81 requiere que se borren pulsos de ruido de antes de los datos,
+se permite la zona de silencio de zx81 pero algún click que haya antes, mas alto de esas zonas de silencio, se deben borrar a mano
+(ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
