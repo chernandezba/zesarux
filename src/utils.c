@@ -23391,6 +23391,153 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
 //Conversión automática de un archivo raw  (rwa, smp, etc) a P81 usando rutina enhanced
 void util_enhanced_convert_raw_to_p81(char *filename, char *archivo_destino)
 {
+    char *rwafile=argv[1];
+
+    //Valor para control de stocks
+    //Nota: es un int porque en autodeteccion hacemos un bucle hasta 255 y no quiero que de la vuelta
+    int amplitud_media=18;
+
+
+    int autodetectar_amplitud=0;
+
+    /*
+    if (!strcasecmp(argv[2],"autodetect")) {
+        autodetectar_amplitud=1;
+    }
+    else amplitud_media=atoi(argv[2]);
+    */
+
+    autodetectar_amplitud=1;
+
+    int invert_signal=0;
+
+    int debug_print=0;
+
+    z80_64bit tamanyo_archivo=enh_get_file_size(rwafile);
+
+    FILE *ptr_archivo;
+    ptr_archivo=fopen(rwafile,"rb");
+
+
+    if (!ptr_archivo) {
+        printf("Unable to open rwa file: %s\n",rwafile);
+        return 1;
+    }
+
+
+    //Cargarlo todo en memoria
+    z80_byte *enhanced_memoria=malloc(tamanyo_archivo);
+    if (enhanced_memoria==NULL) {
+        printf("Can not allocate memory for load rwa file");
+        return 1;
+    }
+
+    fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
+    fclose(ptr_archivo);
+
+    if (invert_signal) {
+        z80_64bit i;
+        for (i=0;i<tamanyo_archivo;i++) {
+            int valor=enhanced_memoria[i];
+            valor=255-valor;
+            enhanced_memoria[i]=valor;
+        }
+    }
+
+
+
+    z80_byte *memoria_p81=malloc(65536); //mas de 64 kb para un .P81 seria absurdo
+
+    if (memoria_p81==NULL) {
+        printf("Can not allocate memory for load rwa file");
+        return 1;
+    }
+
+    int longitud_nombre;
+
+    int longitud_p81;
+
+
+    if (autodetectar_amplitud) {
+
+        int inicio_autodetectar=5;
+        int final_autodetectar=255;
+
+        for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
+
+            //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
+            if (debug_print) longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+                                debug_print,&longitud_nombre,print_mensajes);
+
+            else longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+                    debug_print,&longitud_nombre,NULL);
+
+            longitudes_autodetectar[amplitud_media]=longitud_p81;
+
+
+            printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
+
+            print_nombre(longitud_nombre,memoria_p81);
+        }
+
+        //buscar longitud maxima
+        int longitud_maxima=0;
+        int i;
+        for (i=inicio_autodetectar;i<=final_autodetectar;i++) {
+            if (longitudes_autodetectar[i]>longitud_maxima) {
+                longitud_maxima=longitudes_autodetectar[i];
+                amplitud_media=i;
+            }
+        }
+
+        //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
+        printf("Autodetected best amplitude %d\n",amplitud_media);
+
+
+    }
+
+
+
+    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,print_mensajes);
+
+
+    printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
+
+    print_nombre(longitud_nombre,memoria_p81);
+
+    FILE *ptr_dskplusthreefile;
+    ptr_dskplusthreefile=fopen("output.p81","wb");
+
+
+    if (ptr_dskplusthreefile!=NULL) {
+
+        fwrite(memoria_p81,1,longitud_p81,ptr_dskplusthreefile);
+
+
+        fclose(ptr_dskplusthreefile);
+    }
+
+    //Generamos tambien el .p
+
+    ptr_dskplusthreefile=fopen("output.p","wb");
+
+
+    if (ptr_dskplusthreefile!=NULL) {
+
+        fwrite(&memoria_p81[longitud_nombre],1,longitud_p81-longitud_nombre,ptr_dskplusthreefile);
+
+
+        fclose(ptr_dskplusthreefile);
+    }
+
+
+    free(enhanced_memoria);
+    free(memoria_p81);
+
+
+
+    return 0;
+
 }
 
 //Convierte una cinta real (wav, rwa, smp) a zx81 P81
