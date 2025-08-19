@@ -152,7 +152,7 @@ z80_byte return_zx81_char(z80_byte codigo)
 }
 
 int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *destino_p81,
-    z80_byte amplitud_media, int debug_print,int *longitud_nombre)
+    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *))
 {
     z80_64bit i;
     z80_64bit amplitud_maxima=0;
@@ -303,6 +303,8 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
 
 }
 
+
+//Funcion obsoleta
 int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_byte *memoria_p81,
     z80_byte amplitud_media,int analizar_amplitudes,int debug_print,int *longitud_nombre)
 {
@@ -330,7 +332,7 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria
     }
 
 
-    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre);
+    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL);
 
     return longitud_p81;
 }

@@ -60,6 +60,10 @@ long long int enh_get_file_size(char *nombre)
 //Por cada amplitud probada, que longitud se genera
 int longitudes_autodetectar[256];
 
+void print_mensajes(char *texto)
+{
+}
+
 int main(int argc,char *argv[])
 {
 
@@ -146,7 +150,7 @@ int main(int argc,char *argv[])
     for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
 
         //longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
-        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre);
+        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
 
         longitudes_autodetectar[amplitud_media]=longitud_p81;
 
@@ -178,7 +182,7 @@ int main(int argc,char *argv[])
 
 
         //longitud_p81=main_enhanced_zx81_read(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,0,debug_print,&longitud_nombre);
-        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre);
+        longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
 
         printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
 
