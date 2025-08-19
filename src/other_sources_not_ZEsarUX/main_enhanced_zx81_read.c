@@ -85,10 +85,14 @@ int main(int argc,char *argv[])
 
     if (argc<5) {
         printf("Syntax: %s file amplitude invert debug \n",argv[0]);
-        printf("amplitude should be a value between 1 and 255 or word autodetect\n");
-        printf("invert must be 0 or 1 - to invert signal or not\n");
-        printf("debug must be 0 or 1\n");
-        printf("Input file must be raw, 8 bit, unsigned, 1 channel. No matter recorded frequency\n");
+
+        printf(
+            "amplitude should be a value between 1 and 255 or word autodetect\n"
+            "invert must be 0 or 1 - to invert signal or not\n"
+            "debug must be 0 or 1\n"
+            "Input file must be raw, 8 bit, unsigned, 1 channel. No matter recorded frequency\n"
+            "Output files will be output.p81 and output.p; I recommend you to use output.p81 becase it's a full dump with the name\n"
+        );
         exit(1);
     }
 
@@ -126,8 +130,9 @@ int main(int argc,char *argv[])
     z80_byte *enhanced_memoria=malloc(tamanyo_archivo);
     if (enhanced_memoria==NULL) {
         printf("Can not allocate memory for load rwa file");
-        return 0;
+        return 1;
     }
+
     fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
     fclose(ptr_archivo);
 
@@ -146,7 +151,7 @@ int main(int argc,char *argv[])
 
     if (memoria_p81==NULL) {
         printf("Can not allocate memory for load rwa file");
-        return 0;
+        return 1;
     }
 
     int longitud_nombre;
@@ -171,7 +176,7 @@ int main(int argc,char *argv[])
             longitudes_autodetectar[amplitud_media]=longitud_p81;
 
 
-            printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
+            printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
 
             print_nombre(longitud_nombre,memoria_p81);
         }
@@ -187,7 +192,7 @@ int main(int argc,char *argv[])
         }
 
         //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
-        printf("Autodetección. Probando con amplitud %d\n",amplitud_media);
+        printf("Autodetected best amplitude %d\n",amplitud_media);
 
 
     }
@@ -197,12 +202,12 @@ int main(int argc,char *argv[])
     longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,print_mensajes);
 
 
-    printf("amplitud_media=%d Longitud nombre: %d Longitud p81: %d Nombre: ",amplitud_media,longitud_nombre,longitud_p81);
+    printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
 
     print_nombre(longitud_nombre,memoria_p81);
 
     FILE *ptr_dskplusthreefile;
-    ptr_dskplusthreefile=fopen("salida.p81","wb");
+    ptr_dskplusthreefile=fopen("output.p81","wb");
 
 
     if (ptr_dskplusthreefile!=NULL) {
@@ -215,7 +220,7 @@ int main(int argc,char *argv[])
 
     //Generamos tambien el .p
 
-    ptr_dskplusthreefile=fopen("salida.p","wb");
+    ptr_dskplusthreefile=fopen("output.p","wb");
 
 
     if (ptr_dskplusthreefile!=NULL) {
