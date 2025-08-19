@@ -23391,14 +23391,18 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
 //Por cada amplitud probada, que longitud se genera
 int util_enhanced_longitudes_autodetectar[256];
 
-void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81)
+void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81,char *nombre_destino)
 {
     int i;
 
     for (i=0;i<longitud_nombre;i++) {
-        printf("%c",return_zx81_char(memoria_p81[i]));
+
+        z80_bit inverse;
+        nombre_destino[i]=da_codigo81_solo_letras(memoria_p81[i],&inverse);
+
+        //nombre_destino[i]=return_zx81_char(memoria_p81[i]);
     }
-    printf("\n");
+    nombre_destino[i]=0;
 }
 
 //Conversión automática de un archivo raw  (rwa, smp, etc) a P81 usando rutina enhanced
@@ -23468,6 +23472,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino)
 
     int longitud_p81;
 
+    char buffer_nombre[256];
 
     if (autodetectar_amplitud) {
 
@@ -23485,10 +23490,11 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino)
 
             util_enhanced_longitudes_autodetectar[amplitud_media]=longitud_p81;
 
+            util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
-            printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
+            debug_printf(VERBOSE_DEBUG,"Amplitude=%d Name length: %d Length p81: %d Name: [%s]",amplitud_media,longitud_nombre,longitud_p81,buffer_nombre);
 
-            util_enhanced_print_nombre(longitud_nombre,memoria_p81);
+
         }
 
         //buscar longitud maxima
@@ -23502,17 +23508,17 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino)
         }
 
         //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
-        printf("Autodetected best amplitude %d\n",amplitud_media);
+        debug_printf(VERBOSE_INFO,"Autodetected best amplitude %d",amplitud_media);
 
 
     }
 
     longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
 
+    util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
-    printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
+    debug_printf(VERBOSE_INFO,"Amplitude=%d Name length: %d Length p81: %d Name: [%s]",amplitud_media,longitud_nombre,longitud_p81,buffer_nombre);
 
-    util_enhanced_print_nombre(longitud_nombre,memoria_p81);
 
     FILE *ptr_dskplusthreefile;
     ptr_dskplusthreefile=fopen(archivo_destino,"wb");
