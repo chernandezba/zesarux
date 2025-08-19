@@ -27,8 +27,7 @@
 #include "enhanced_zx81_read.h"
 
 
-typedef long long int z80_64bit;
-typedef unsigned char z80_byte;
+
 
 //Retorna tamanyo archivo
 long long int enh_get_file_size(char *nombre)
@@ -84,13 +83,13 @@ int main(int argc,char *argv[])
     );
 
     if (argc<5) {
-        printf("Syntax: %s file amplitude invert debug \n",argv[0]);
+        printf("Syntax: %s input_file amplitude invert debug \n",argv[0]);
 
         printf(
             "amplitude should be a value between 1 and 255 or word autodetect\n"
             "invert must be 0 or 1 - to invert signal or not\n"
             "debug must be 0 or 1\n"
-            "Input file must be raw, 8 bit, unsigned, 1 channel. No matter recorded frequency\n"
+            "input_file must be raw, 8 bit, unsigned, 1 channel. No matter recorded frequency\n"
             "Output files will be output.p81 and output.p; I recommend you to use output.p81 becase it's a full dump with the name\n"
         );
         exit(1);

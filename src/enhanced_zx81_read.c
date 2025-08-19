@@ -24,7 +24,8 @@
 #include <string.h>
 
 
-#include "cpu.h"
+#include "enhanced_zx81_read.h"
+//#include "cpu.h"
 
 
 
@@ -34,7 +35,9 @@
 
 * calculo aproximado de maxima amplitud. Para saber la media de amplitud.
 valor inicial. Que suba hasta un máximo y baje a un mínimo. Eso para todo el audio. Eso es un pulso de subida
-Eso devuelve un valor AMPLITUD_MEDIA
+Eso devuelve un valor AMPLITUD_MEDIA -> Ese algoritmo está obsoleto y no se usa
+Al final se calcula la mejor amplitud en base a la que proporciona mayor bytes generados en el archivo de salida.
+Pero esto lo hace el programa que llama aqui, por tanto se debe invocar a enh_zx81_lee_datos con la amplitud ideal ya calculada
 
 *Para lectura de pulso exacto, no aproximado:
 valor inicial. que suba hasta un máximo y baje a un mínimo.
