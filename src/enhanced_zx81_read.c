@@ -181,10 +181,11 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
     int leido_nombre=0;
     *longitud_nombre=0;
 
+    char buffer_print[200];
+
     for (i=0;i<tamanyo_memoria;i++) {
         z80_byte valor_sample=enhanced_memoria[i];
 
-        //if (i>=62920 && i<=62957) printf("i: %lld\n",i);
 
         switch(estado_pulso) {
             case 0:
@@ -192,9 +193,10 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                 if (valor_sample<valor_sample_anterior) {
                     amplitud_este_pulso=valor_sample_anterior-valor_sample_inicio_pulso;
                     valor_sample_pico_alto=valor_sample_anterior;
-                    if (debug_print) {
-                        printf("%lld Pico pulso Pulso. sample anterior %d sample actual %d amplitud: %d\n",
+                    if (debug_print && fun_print!=NULL) {
+                        sprintf(buffer_print,"%lld Pico pulso Pulso. sample anterior %d sample actual %d amplitud: %d",
                             i,valor_sample_anterior,valor_sample,amplitud_este_pulso);
+                        fun_print(buffer_print);
                     }
 
 
@@ -229,10 +231,12 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                         z80_64bit longitud_cresta_subida=posicion_cresta_bajada-posicion_cresta_subida;
                         z80_64bit longitud_cresta_bajada=i-posicion_cresta_bajada;
 
-                        if (debug_print) {
-                            printf("%lld Final Pulso-inicio. valor_sample: %d. amplitud subida: %d amplitud bajada %d long subida %lld long bajada: %lld\n",
+                        if (debug_print && fun_print!=NULL) {
+                            sprintf(buffer_print,"%lld Final Pulso-inicio. valor_sample: %d. amplitud subida: %d "
+                                                 "amplitud bajada %d long subida %lld long bajada: %lld",
                                 i,valor_sample_inicio_pulso,amplitud_este_pulso,amplitud_bajada,
                                 longitud_cresta_subida,longitud_cresta_bajada);
+                            fun_print(buffer_print);
                         }
 
 
@@ -240,7 +244,10 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
 
                         //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
                         if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
-                            if (debug_print) printf("Hay fin de bit antes de este pulso. Conteo pulsos de bit: %d\n",conteo_pulsos_de_bit);
+                            if (debug_print && fun_print!=NULL) {
+                                sprintf(buffer_print,"Hay fin de bit antes de este pulso. Conteo pulsos de bit: %d",conteo_pulsos_de_bit);
+                                fun_print(buffer_print);
+                            }
 
                             //4 para 0. 8 o 9 para 1. TODO: no deberia ser 8 y no 9 siempre???
 
@@ -251,19 +258,26 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,z80_64bit tamanyo_memoria,z80_
                             if (conteo_pulsos_de_bit==3 || conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
                             else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
                             else if (conteo_pulsos_de_bit==1) {
-                                printf("1 solo pulso. Quiza final de archivo?\n");
+                                if (fun_print!=NULL) {
+                                    sprintf(buffer_print,"1 solo pulso. Quiza final de archivo?");
+                                    fun_print(buffer_print);
+                                }
                                 return indice_destino_p81;
                             }
                             else {
-                                printf("No sabemos que bit es cuando hay %d pulsos\n",conteo_pulsos_de_bit);
+                                if (fun_print!=NULL) {
+                                    sprintf(buffer_print,"No sabemos que bit es cuando hay %d pulsos",conteo_pulsos_de_bit);
+                                    fun_print(buffer_print);
+                                }
                             }
 
                             acumulado_byte=acumulado_byte<<1;
                             acumulado_byte |=bit_leido;
                             numero_bit_en_byte++;
                             if (numero_bit_en_byte==8) {
-                                if (debug_print)  {
-                                    printf("Byte final: %3d (%02XH) caracter %c\n",acumulado_byte,acumulado_byte,return_zx81_char(acumulado_byte));
+                                if (debug_print && fun_print!=NULL)  {
+                                    sprintf(buffer_print,"Byte final: %3d (%02XH) caracter %c",acumulado_byte,acumulado_byte,return_zx81_char(acumulado_byte));
+                                    fun_print(buffer_print);
                                 }
 
                                 destino_p81[indice_destino_p81++]=acumulado_byte;
