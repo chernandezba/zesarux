@@ -1950,7 +1950,21 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.p",directorio,archivo);
-                                convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+
+
+                                int tipo=menu_simple_two_choices("Convert algorithm","Which algorithm?","New","Old");
+                                if (tipo==0) return; //ESC
+
+                                switch(tipo) {
+                                    case 1:
+                                        enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino);
+                                    break;
+
+                                    case 2:
+                                        convert_realtape_to_po(fullpath, archivo_destino,NULL,0);
+                                    break;
+                                }
+
                         break;
 
                         case 4:
