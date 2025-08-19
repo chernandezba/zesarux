@@ -89,6 +89,7 @@ Mejorada ventana de View Basic:
 - Permitir lineas > 9999, útil para programas protegidos
 - AGREGAR LO QUE FALTA!!!
 
+Mejorada conversión de audio a archivos P/P81 de ZX81: agregar un algoritmo mejorado alternativo
 Mejorado Hexadecimal editor: expresión de seguimiento se guarda en configuración
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
