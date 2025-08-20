@@ -1439,7 +1439,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
-        menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print);
+        menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,NULL);
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
 
@@ -1491,11 +1491,14 @@ void menu_convert_audio_to_zx81_stop_conversion(void)
         debug_printf(VERBOSE_DEBUG,"Stopping convert audio thread");
 
 
-        if (pthread_cancel(convert_audio_to_zx81_thread)) {
+        /*if (pthread_cancel(convert_audio_to_zx81_thread)) {
             menu_error_message("Error canceling thread");
         }
 
-        convert_audio_to_zx81_thread_running=0;
+        convert_audio_to_zx81_thread_running=0;*/
+
+        //Dado que el proceso de conversión corre en una función aparte, no llama a pthread_testcancel ni otras condiciones que le hacen
+        //cancelarse. Se utiliza otra manera algo mas ingeniosa
 
     }
 
