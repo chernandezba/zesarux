@@ -23498,7 +23498,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
             debug_printf(VERBOSE_DEBUG,buffer_linea);
 
-            if (fun_print) {
+            if (fun_print!=NULL) {
                 fun_print(buffer_linea);
             }
 
@@ -23516,7 +23516,12 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
         }
 
         //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
-        debug_printf(VERBOSE_INFO,"Autodetected best amplitude %d",amplitud_media);
+        sprintf(buffer_linea,"Autodetected best amplitude %d",amplitud_media);
+        debug_printf(VERBOSE_INFO,buffer_linea);
+
+        if (fun_print!=NULL) {
+            fun_print(buffer_linea);
+        }
 
 
     }
@@ -23525,8 +23530,12 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
     util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
-    debug_printf(VERBOSE_INFO,"Amplitude=%d Name length: %d Length p81: %d Name: [%s]",amplitud_media,longitud_nombre,longitud_p81,buffer_nombre);
+    sprintf(buffer_linea,"Amplitude=%d Name length: %d Length p81: %d Name: [%s]",amplitud_media,longitud_nombre,longitud_p81,buffer_nombre);
+    debug_printf(VERBOSE_INFO,buffer_linea);
 
+    if (fun_print!=NULL) {
+        fun_print(buffer_linea);
+    }
 
     FILE *ptr_dskplusthreefile;
     ptr_dskplusthreefile=fopen(archivo_destino,"wb");
