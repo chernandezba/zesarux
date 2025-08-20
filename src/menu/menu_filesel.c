@@ -1957,7 +1957,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                                 switch(tipo) {
                                     case 1:
-                                        enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0);
+                                        enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0,0);
                                     break;
 
                                     case 2:
@@ -1969,7 +1969,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 4:
                                 sprintf(archivo_destino,"%s/%s.p81",directorio,archivo);
-                                enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0);
+                                enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0,0);
                         break;
 
                         case 5:
@@ -2013,7 +2013,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                                 switch(tipo) {
                                     case 1:
-                                        enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0);
+                                        enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0,0);
                                     break;
 
                                     case 2:
@@ -2025,7 +2025,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.p81",directorio,archivo);
-                                enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0);
+                                enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0,0);
                         break;
 
                         case 4:
@@ -2069,7 +2069,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                                 switch(tipo) {
                                     case 1:
-                                        enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0);
+                                        enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0,0);
                                     break;
 
                                     case 2:
@@ -2080,7 +2080,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.p81",directorio,archivo);
-                                enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0);
+                                enhanced_convert_realtape_to_p_p81(fullpath, archivo_destino,NULL,1,0,0);
                         break;
 
                         case 4:

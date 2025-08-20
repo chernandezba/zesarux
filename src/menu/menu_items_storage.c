@@ -1272,6 +1272,9 @@ int antes_menu_convert_audio_to_zx81_output_text_lineas_total=0;
 int menu_convert_audio_to_zx81_autodetect_amplitude=1;
 int menu_convert_audio_to_zx81_amplitude=20;
 
+//si se hace debug de texto salida
+int menu_convert_audio_to_zx81_debug_print=0;
+
 char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
 char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 
@@ -1282,14 +1285,19 @@ void menu_convert_audio_to_zx81_fun_print(char *texto)
     //no deberia, pero si no hay puntero, no meter nada
     if (menu_convert_audio_to_zx81_output_text_mem==NULL) return;
 
+    //offset a la memoria de texto
+    int offset=menu_convert_audio_to_zx81_output_text_lineas_total*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
+
     //Vemos si no llegado a maximo
+    //margen de 10 por si entra una linea muy larga
     if (menu_convert_audio_to_zx81_output_text_lineas_total>=MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_TOTAL-10) {
+        //sobreescribimos la linea anterior
+        offset -=MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
+
+        strcpy(&menu_convert_audio_to_zx81_output_text_mem[offset],"--Not enough memory to show all messages--");
         return;
     }
 
-    //printf("Conversion: %s\n",texto);
-    //obtener offset
-    int offset=menu_convert_audio_to_zx81_output_text_lineas_total*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
 
     strcpy(&menu_convert_audio_to_zx81_output_text_mem[offset],texto);
 
@@ -1410,7 +1418,8 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
 
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,
-        menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,menu_convert_audio_to_zx81_amplitude);
+        menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
+        menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print);
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
 
@@ -1676,7 +1685,8 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
             else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output ~~run conversion ~~amplitude: %s",buf_autodetect);
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output ~~run conversion ~~amplitude: %s  [%c] ~~debug",
+                buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' ') );
         }
 
         ventana->writing_inverse_color=0;
@@ -1729,6 +1739,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 if (menu_convert_audio_to_zx81_output_file[0] && convert_audio_to_zx81_has_finished) {
                     menu_storage_tape_expand(menu_convert_audio_to_zx81_output_file);
                 }
+            break;
+
+            case 'd':
+                menu_convert_audio_to_zx81_debug_print ^=1;
             break;
 
             //Salir con ESC

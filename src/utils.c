@@ -23409,7 +23409,8 @@ void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81,char *
 //fun_print: funcion a llamar con mensajes de debug
 //autodetectar_amplitud: si se detecta (1) o no (0) amplitud_media ideal
 //amplitud_media: indicar el valor cuando autodetectar_amplitud=0
-void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,int amplitud_media)
+void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,
+    int amplitud_media,int debug_print)
 {
     //char *rwafile=argv[1];
 
@@ -23422,7 +23423,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
     int invert_signal=0;
 
-    int debug_print=0;
+    //int debug_print=0;
 
     int tamanyo_archivo=get_file_size(filename);
 
@@ -23478,11 +23479,15 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
         for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
 
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
-            if (debug_print) longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+            if (debug_print) {
+                longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
                                 debug_print,&longitud_nombre,fun_print);
+            }
 
-            else longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+            else {
+                longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
                     debug_print,&longitud_nombre,NULL);
+            }
 
             util_enhanced_longitudes_autodetectar[amplitud_media]=longitud_p81;
 
@@ -23561,7 +23566,8 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
 //Convierte una cinta real (wav, rwa, smp) a zx81 P81/P
 //Usa rutina enhanced de lectura de zx81
-void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,int amplitud_media)
+void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),
+    int autodetectar_amplitud,int amplitud_media,int debug_print)
 {
 
 
@@ -23596,7 +23602,7 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
     }
 
 
-    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print,autodetectar_amplitud,amplitud_media);
+    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print,autodetectar_amplitud,amplitud_media,debug_print);
 
 
 
