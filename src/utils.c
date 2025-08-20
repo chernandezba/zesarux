@@ -23406,7 +23406,7 @@ void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81,char *
 }
 
 //Conversión automática de un archivo raw  (rwa, smp, etc) a P81 usando rutina enhanced
-void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *))
+void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud)
 {
     //char *rwafile=argv[1];
 
@@ -23415,16 +23415,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
     int amplitud_media=18;
 
 
-    int autodetectar_amplitud=0;
 
-    /*
-    if (!strcasecmp(argv[2],"autodetect")) {
-        autodetectar_amplitud=1;
-    }
-    else amplitud_media=atoi(argv[2]);
-    */
-
-    autodetectar_amplitud=1;
 
     int invert_signal=0;
 
@@ -23567,7 +23558,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
 //Convierte una cinta real (wav, rwa, smp) a zx81 P81/P
 //Usa rutina enhanced de lectura de zx81
-void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *))
+void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud)
 {
 
 
@@ -23602,7 +23593,7 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
     }
 
 
-    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print);
+    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print,autodetectar_amplitud);
 
 
 
