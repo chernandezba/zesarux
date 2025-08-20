@@ -1308,21 +1308,21 @@ void menu_convert_audio_to_zx81_find(zxvision_window *w)
 
     int i;
 
-    int longitud_buscar=strlen(buffer_texto);
 
     for (i=0;i<menu_convert_audio_to_zx81_output_text_lineas_total;i++) {
         int offset_linea=menu_convert_audio_to_zx81_return_offset_text_mem(i);
         char *linea=&menu_convert_audio_to_zx81_output_text_mem[offset_linea];
         printf("%d : %s\n",i,linea);
 
-
-        if (!strncasecmp(linea,buffer_texto,longitud_buscar)) {
-            printf("Encontrada\n");
-            zxvision_set_offset_y(w,i+MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES);
+        if (util_strcasestr(linea,buffer_texto)!=NULL) {
+            //printf("Found\n");
+            zxvision_set_offset_y(w,i);
             return;
         }
 
     }
+
+    menu_warn_message("Text not found");
 
 
 }
@@ -1793,6 +1793,8 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         ventana->writing_inverse_color=0;
 
 		tecla=zxvision_common_getkey_refresh();
+
+        zxvision_handle_cursors_pgupdn(ventana,tecla);
 
 
         switch (tecla) {
