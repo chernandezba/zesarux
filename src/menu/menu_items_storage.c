@@ -1270,7 +1270,7 @@ int menu_convert_audio_to_zx81_output_text_lineas_total=0;
 int antes_menu_convert_audio_to_zx81_output_text_lineas_total=0;
 
 int menu_convert_audio_to_zx81_autodetect_amplitude=1;
-int menu_convert_audio_to_zx81_amplitude=18;
+int menu_convert_audio_to_zx81_amplitude=20;
 
 void menu_convert_audio_to_zx81_fun_print(char *texto)
 {
@@ -1676,6 +1676,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'a':
                 menu_convert_audio_to_zx81_autodetect_amplitude ^=1;
+            break;
+
+            case 's':
+                if (!menu_convert_audio_to_zx81_autodetect_amplitude) {
+                    menu_ventana_scanf_numero_enhanced("Amplitude",&menu_convert_audio_to_zx81_amplitude,4,+1,1,255,0);
+                }
             break;
 
             //Salir con ESC
