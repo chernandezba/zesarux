@@ -1413,6 +1413,28 @@ void menu_convert_audio_to_zx81_print_debug_line(zxvision_window *w)
     menu_convert_audio_to_zx81_window->writing_inverse_color=antes_writing_inverse_color;
 }
 
+void menu_convert_audio_to_zx81_print_line_actions(zxvision_window *ventana)
+{
+
+    if (menu_convert_audio_to_zx81_input_file[0]==0) {
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input");
+    }
+
+    else if (menu_convert_audio_to_zx81_output_file[0]==0) {
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input ~~output");
+    }
+
+    else {
+
+        char buffer_run_stop[100]="";
+        if (convert_audio_to_zx81_thread_running) strcpy(buffer_run_stop,"s~~top");
+        else strcpy(buffer_run_stop,"~~run conversion");
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,
+            "~~input ~~output %s",buffer_run_stop);
+    }
+}
+
 void menu_convert_audio_to_zx81_overlay(void)
 {
 
@@ -1420,6 +1442,10 @@ void menu_convert_audio_to_zx81_overlay(void)
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_convert_audio_to_zx81_window->is_minimized) return;
+
+    menu_convert_audio_to_zx81_window->writing_inverse_color=1;
+
+    menu_convert_audio_to_zx81_print_line_actions(menu_convert_audio_to_zx81_window);
 
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"");
 
@@ -1446,7 +1472,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 
             int tamanyo=0;
 
-            menu_convert_audio_to_zx81_window->writing_inverse_color=1;
+
 
             if (si_existe_archivo(menu_convert_audio_to_zx81_output_file)) {
                 tamanyo=get_file_size(menu_convert_audio_to_zx81_output_file);
@@ -1461,9 +1487,11 @@ void menu_convert_audio_to_zx81_overlay(void)
             }
 
 
-            menu_convert_audio_to_zx81_window->writing_inverse_color=0;
+
         }
     }
+
+    menu_convert_audio_to_zx81_window->writing_inverse_color=0;
 
     if (antes_menu_convert_audio_to_zx81_output_text_lineas_total!=menu_convert_audio_to_zx81_output_text_lineas_total) {
         //antes borrar todas si hay menos
@@ -1789,18 +1817,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
         ventana->writing_inverse_color=1;
 
-        if (menu_convert_audio_to_zx81_input_file[0]==0) {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input");
-        }
-
-        else if (menu_convert_audio_to_zx81_output_file[0]==0) {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input ~~output");
-        }
-
-        else {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,
-                "~~input ~~output ~~run conversion s~~top");
-        }
+        menu_convert_audio_to_zx81_print_line_actions(ventana);
 
 
         char buf_autodetect[30];
