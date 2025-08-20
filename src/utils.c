@@ -23406,7 +23406,7 @@ void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81,char *
 }
 
 //Conversión automática de un archivo raw  (rwa, smp, etc) a P81 usando rutina enhanced
-void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino)
+void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *))
 {
     //char *rwafile=argv[1];
 
@@ -23483,7 +23483,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino)
 
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                                debug_print,&longitud_nombre,NULL);
+                                debug_print,&longitud_nombre,fun_print);
 
             else longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
                     debug_print,&longitud_nombre,NULL);
@@ -23513,7 +23513,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino)
 
     }
 
-    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,NULL);
+    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,fun_print);
 
     util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
@@ -23550,7 +23550,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino)
 
 //Convierte una cinta real (wav, rwa, smp) a zx81 P81/P
 //Usa rutina enhanced de lectura de zx81
-void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino)
+void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *))
 {
 
 
@@ -23585,7 +23585,7 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino)
     }
 
 
-    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino);
+    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print);
 
 
 

@@ -1269,8 +1269,6 @@ void menu_convert_audio_to_zx81_overlay(void)
     if (menu_convert_audio_to_zx81_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
         //Nota: hay un bug al gestionar final de parpadeo y necesita un caracter al menos despues - de ahí el espacio
@@ -1313,7 +1311,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
 
 
-    enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file);
+    enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,NULL);
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
 
