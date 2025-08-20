@@ -37,6 +37,10 @@ sino el usuario lo veria en blanco
 -view gosub stack como ventana en segundo plano y que se actualice continuamente
 
 
+---------
+
+-- Nuevo visor de Basic --
+
 -Visor de basic que permita indicar dirección ram donde empezar: sirve para poder ver el bloque de basic
 cargado desde el Cargador Azul por ejemplo
 Quizá una ventana con una primera linea con dirección de inicio y otra info, y de la segunda linea hacia abajo que sea
@@ -58,14 +62,19 @@ ok *permitir betabasic: keywords son letras gráficas. opcion si mostrar keyword
 ok *show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
 ok *funcion debug get basic limita el maximo de caracteres a MAX_TEXTO_GENERIC_MESSAGE
 ok *Ver tokens adicionales de versiones superiores de betabasic
-*poder buscar texto
 ok *poder buscar lineas
 ok *permitir pgup, pgdn
 ok *probar en linux meter poke continuo en direccion basic y ver si libera bien memoria de buffers
+ok * Ver basic con interface 1 conectado
+ok * que actualice current line continuamente
+*poder buscar texto
 * icono
-* Ver basic con interface 1 conectado
 
+*cada linea tiene doble salto de linea
 
+-- Fin nuevo visor de Basic --
+
+---------
 
 -En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
 
@@ -139,3 +148,5 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 (ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
+
+-Nueva ventana para poder leer audio de cinta y generar archivo RWA

@@ -33129,7 +33129,7 @@ z80_byte menu_file_bas_browser_show_peek(z80_int dir)
 
 zxvision_window *menu_view_basic_listing_window;
 
-#define VIEW_BASIC_HEADER_LINES 2
+#define VIEW_BASIC_HEADER_LINES 3
 
 //1024kb al descomponer tokens en texto creo que es mas que suficiente
 #define VIEW_BASIC_MAX_BASIC_TEXT (1024*1024)
@@ -33204,7 +33204,7 @@ void menu_view_basic_listing_get_basic_parameters(view_basic_parameters *paramet
 
 }
 
-void menu_view_basic_listing_get_basic(char *results_buffer)
+void menu_view_basic_listing_get_basic(char *results_buffer,int show_current_line)
 {
 
 
@@ -33215,7 +33215,7 @@ void menu_view_basic_listing_get_basic(char *results_buffer)
 
 	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
         parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,
-        debug_view_basic_show_address.v,1,debug_view_basic_show_betabasic.v,VIEW_BASIC_MAX_BASIC_TEXT,0);
+        debug_view_basic_show_address.v,show_current_line,debug_view_basic_show_betabasic.v,VIEW_BASIC_MAX_BASIC_TEXT,0);
 
 
 
@@ -33355,6 +33355,33 @@ int menu_view_basic_listing_find_line(zxvision_window *w)
 
 }
 
+void menu_view_basic_listing_print_pointer_line(zxvision_window *ventana)
+{
+    int antes_writing_inverse_color=ventana->writing_inverse_color;
+
+    ventana->writing_inverse_color=1;
+
+
+    char buffer_custom_pointer[100];
+    buffer_custom_pointer[0]=0;
+
+    if (menu_view_basic_listing_memory_enabled.v) {
+        sprintf(buffer_custom_pointer,"[Custom] Addre~~ss: %d ~~length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
+    }
+    else {
+        sprintf(buffer_custom_pointer,"[ Auto ] Address: %d length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
+    }
+
+
+    zxvision_print_string_defaults_fillspc_format(ventana,1,1,
+        "Start ~~pointer %s",
+        //(menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
+        buffer_custom_pointer
+    );
+    ventana->writing_inverse_color=antes_writing_inverse_color;
+
+}
+
 void menu_view_basic_listing_overlay(void)
 {
 
@@ -33378,6 +33405,27 @@ void menu_view_basic_listing_overlay(void)
         //Llamar aqui por saber si ha cambiado la longitud del programa basic
         menu_view_basic_listing_get_basic_parameters(&parameters);
 
+        printf("start add: %d\n",menu_view_basic_listing_memory_pointer);
+
+        //Escribir esto continuamente para reflejar cambios en inicio de programa cuando se usa Interface 1
+        menu_view_basic_listing_print_pointer_line(menu_view_basic_listing_window);
+
+        //Obtener linea actual
+        int linea,sentencia;
+        debug_view_basic_get_current_line(&linea,&sentencia);
+
+
+        //Muestro aqui continuamente la linea y sentencia actual
+
+        if (MACHINE_IS_ZX8081) {
+            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,2,"Current line: %5d",linea);
+        }
+
+        else {
+            //Spectrum
+            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,2,"Current line: %5d:%3d",linea,sentencia);
+        }
+
 
         z80_long_int crc32=menu_view_basic_listing_get_crc32();
         printf("Obtenido crc: %X\n",crc32);
@@ -33388,9 +33436,9 @@ void menu_view_basic_listing_overlay(void)
         }
 
         if (menu_view_basic_listing_follow_current_line.v) {
-            //Obtener linea actual y ver si ha cambiado
-            int linea,sentencia;
-            debug_view_basic_get_current_line(&linea,&sentencia);
+
+
+            //Ver si ha cambiado linea actual
 
             if (linea>=0 && linea<=9999) {
 
@@ -33429,7 +33477,7 @@ void menu_view_basic_listing_overlay(void)
             menu_view_basic_listing_results_buffer=util_malloc(VIEW_BASIC_MAX_BASIC_TEXT,"Can not allocate memory for view basic");
         }
 
-        menu_view_basic_listing_get_basic(menu_view_basic_listing_results_buffer);
+        menu_view_basic_listing_get_basic(menu_view_basic_listing_results_buffer,0);
         menu_view_basic_listing_print_basic(menu_view_basic_listing_results_buffer,menu_view_basic_listing_window);
 
     }
@@ -33562,24 +33610,18 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
     do {
 
 
-        char buffer_custom_pointer[100];
-        buffer_custom_pointer[0]=0;
-
-        if (menu_view_basic_listing_memory_enabled.v) {
-            sprintf(buffer_custom_pointer,"~~Set: %d ~~Length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
-        }
 
         ventana->writing_inverse_color=1;
+
         zxvision_print_string_defaults_fillspc_format(ventana,1,0,
             "[%c] Show ~~address [%c] Show ~~BetaBasic [%c] ~~Follow ~~e: Find line",(debug_view_basic_show_address.v ? 'X' : ' ' ),
             (debug_view_basic_show_betabasic.v ? 'X' : ' '),
             (menu_view_basic_listing_follow_current_line.v ? 'X' : ' ')
         );
-        zxvision_print_string_defaults_fillspc_format(ventana,1,1,
-            "[%c] Custom ~~pointer %s",
-            (menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
-            buffer_custom_pointer
-        );
+
+        menu_view_basic_listing_print_pointer_line(ventana);
+
+
         ventana->writing_inverse_color=0;
 
 
