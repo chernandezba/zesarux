@@ -1269,6 +1269,9 @@ int menu_convert_audio_to_zx81_output_text_lineas_total=0;
 //lineas anteriormente leidas por el overlay, para saber si refrescar
 int antes_menu_convert_audio_to_zx81_output_text_lineas_total=0;
 
+int menu_convert_audio_to_zx81_autodetect_amplitude=1;
+int menu_convert_audio_to_zx81_amplitude=18;
+
 void menu_convert_audio_to_zx81_fun_print(char *texto)
 {
 
@@ -1631,7 +1634,11 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         }
 
         else {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output ~~run conversion");
+            char buf_autodetect[30];
+            if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
+            else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output ~~run conversion ~~amplitude: %s",buf_autodetect);
         }
 
         ventana->writing_inverse_color=0;
@@ -1664,6 +1671,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                     }
 
                 }
+            break;
+
+            case 'a':
+                menu_convert_audio_to_zx81_autodetect_amplitude ^=1;
             break;
 
             //Salir con ESC
