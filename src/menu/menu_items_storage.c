@@ -1288,6 +1288,11 @@ char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
 char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 
 
+void menu_convert_audio_to_zx81_fun_print(char *texto)
+{
+    printf("Conversion: %s\n",texto);
+}
+
 #ifdef USE_PTHREADS
 pthread_t convert_audio_to_zx81_thread;
 
@@ -1311,7 +1316,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
 
 
-    enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,NULL);
+    enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,menu_convert_audio_to_zx81_fun_print);
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
 
