@@ -2100,6 +2100,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 #ifdef USE_PTHREADS
         if (MACHINE_IS_ZX81_TYPE) {
+            menu_add_item_menu_separator(array_menu_tape_settings);
             menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_convert_audio_to_zx81,NULL,
                 "Convert Audio to ZX81","Convertir Audio a ZX81","Convertir Audio a ZX81");
             menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
