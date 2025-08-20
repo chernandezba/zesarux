@@ -1313,16 +1313,15 @@ void menu_convert_audio_to_zx81_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_convert_audio_to_zx81_window->is_minimized) return;
 
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,3,"Debug output:");
 
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
-        //Nota: hay un bug al gestionar final de parpadeo y necesita un caracter al menos despues - de ahí el espacio
+        //Nota: hay un bug al gestionar final de parpadeo y necesita un caracter al menos despues - de ahí el espacio al final
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"^^Conversion running^^ ");
-        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,3,"Debug output:");
     }
     else {
-        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"");
-
         if (convert_audio_to_zx81_has_finished) {
             char nombre[NAME_MAX];
             util_get_file_no_directory(menu_convert_audio_to_zx81_output_file,nombre);
@@ -1514,6 +1513,8 @@ void menu_convert_audio_to_zx81_select_input_file(void)
 
     if (ret) {
         strcpy(menu_convert_audio_to_zx81_input_file,buffer_load_file);
+        //al cambiar archivo, decir que no ha finalizado
+        convert_audio_to_zx81_has_finished=0;
     }
 
 
@@ -1562,6 +1563,8 @@ void menu_convert_audio_to_zx81_select_output_file(void)
 
     if (ret) {
         strcpy(menu_convert_audio_to_zx81_output_file,buffer_load_file);
+        //al cambiar archivo, decir que no ha finalizado
+        convert_audio_to_zx81_has_finished=0;
     }
 
 
@@ -1689,8 +1692,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
                     //comprobar error
                     if (if_pending_error_message) {
-                        menu_muestra_pending_error_message(); //Si se genera un error derivado del run
-                        return;
+                        menu_muestra_pending_error_message();
                     }
 
                 }
@@ -1703,6 +1705,11 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             case 's':
                 if (!menu_convert_audio_to_zx81_autodetect_amplitude) {
                     menu_ventana_scanf_numero_enhanced("Amplitude",&menu_convert_audio_to_zx81_amplitude,4,+1,1,255,0);
+
+                    //comprobar error
+                    if (if_pending_error_message) {
+                        menu_muestra_pending_error_message();
+                    }
                 }
             break;
 
