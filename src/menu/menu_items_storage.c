@@ -1258,6 +1258,7 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_convert_audio_to_zx81_window;
 
+int convert_audio_to_zx81_thread_running=0;
 
 void menu_convert_audio_to_zx81_overlay(void)
 {
@@ -1270,6 +1271,12 @@ void menu_convert_audio_to_zx81_overlay(void)
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    if (convert_audio_to_zx81_thread_running) {
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"Conversion running");
+    }
+    else {
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"");
+    }
 
 
     //Mostrar contenido
@@ -1280,13 +1287,95 @@ void menu_convert_audio_to_zx81_overlay(void)
 char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
 char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 
-void menu_convert_audio_to_zx81_run_conversion(void)
+
+#ifdef USE_PTHREADS
+pthread_t convert_audio_to_zx81_thread;
+
+
+
+void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 {
-    //Conversion simple sin threads
+
+    debug_printf(VERBOSE_DEBUG,"Start convert audio thread");
+
+    //TODO: esto deberia ser un semaforo, pero el usuario tendria que ser muy muy rapido para poder ejecutar esto dos veces seguidas
+    //y que suceda esto simultaneamente en dos sitios a la vez
+    if (convert_audio_to_zx81_thread_running) {
+        debug_printf(VERBOSE_DEBUG,"Already running convert audio thread");
+        return NULL;
+    }
+
+
+    convert_audio_to_zx81_thread_running=1;
+
+
+
+
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file);
+
+    debug_printf(VERBOSE_DEBUG,"End convert audio thread");
+
+
+    convert_audio_to_zx81_thread_running=0;
+
+
+    return NULL;
+
+
 }
 
 
+void menu_convert_audio_to_zx81_run_conversion(void)
+{
+    if (convert_audio_to_zx81_thread_running) {
+        debug_printf(VERBOSE_ERR,"Task already running");
+        return;
+    }
+
+
+    //Iniciar el thread
+    if (pthread_create( &convert_audio_to_zx81_thread, NULL, &menu_convert_audio_to_zx81_thread_function, NULL) ) {
+                debug_printf(VERBOSE_ERR,"Can not create convert audio thread");
+                return;
+    }
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(convert_audio_to_zx81_thread);
+
+}
+
+//Detener el thread
+void menu_convert_audio_to_zx81_stop_conversion(void)
+{
+
+
+    if (convert_audio_to_zx81_thread_running) {
+        debug_printf(VERBOSE_DEBUG,"Stopping convert audio thread");
+
+
+        if (pthread_cancel(convert_audio_to_zx81_thread)) {
+            menu_error_message("Error canceling thread");
+        }
+
+        convert_audio_to_zx81_thread_running=0;
+
+    }
+
+
+}
+
+# else
+
+//Si se compila sin pthreads
+void menu_convert_audio_to_zx81_run_conversion(void)
+{
+    debug_printf(VERBOSE_ERR,"You need to enable threads support to run this");
+}
+
+#endif
+
+//    //Conversion simple sin threads
+//    enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file);
 
 void menu_convert_audio_to_zx81_select_input_file(void)
 {
@@ -1690,6 +1779,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
         }
 
+#ifdef USE_PTHREADS
         if (MACHINE_IS_ZX81_TYPE) {
             menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_convert_audio_to_zx81,NULL,
                 "Convert Audio to ZX81","Convertir Audio a ZX81","Convertir Audio a ZX81");
@@ -1697,6 +1787,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_tape_settings);
             menu_add_item_menu_genera_ventana(array_menu_tape_settings);
         }
+#endif
 
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_separator(array_menu_tape_settings);
