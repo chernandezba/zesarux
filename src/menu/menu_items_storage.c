@@ -1312,6 +1312,7 @@ void menu_convert_audio_to_zx81_find_continue(zxvision_window *w)
         if (util_strcasestr(linea,menu_convert_audio_to_zx81_find_buffer_text)!=NULL) {
             //printf("Found\n");
             zxvision_set_offset_y(w,i);
+            menu_convert_audio_to_zx81_find_primera_linea=i;
             return;
         }
 
