@@ -1254,7 +1254,7 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 2
 
 zxvision_window *menu_convert_audio_to_zx81_window;
 
@@ -1274,6 +1274,97 @@ void menu_convert_audio_to_zx81_overlay(void)
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_convert_audio_to_zx81_window);
+
+}
+
+char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
+char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
+
+void menu_convert_audio_to_zx81_select_input_file(void)
+{
+
+    char *filtros[]={"wav","rwa","smp",0};
+
+
+	//guardamos directorio actual
+	char directorio_actual[PATH_MAX];
+	getcwd(directorio_actual,PATH_MAX);
+
+	int ret;
+
+	//Obtenemos ultimo directorio visitado
+	if (menu_convert_audio_to_zx81_input_file[0]!=0) {
+		char directorio[PATH_MAX];
+		util_get_dir(menu_convert_audio_to_zx81_input_file,directorio);
+		//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+		//cambiamos a ese directorio, siempre que no sea nulo
+		if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+		}
+	}
+
+
+    char buffer_load_file[PATH_MAX];
+
+    ret=menu_filesel("Select Input Audio File",filtros,buffer_load_file);
+
+	//volvemos a directorio inicial
+	zvfs_chdir(directorio_actual);
+
+    if (ret) {
+        strcpy(menu_convert_audio_to_zx81_input_file,buffer_load_file);
+    }
+
+
+}
+
+
+void menu_convert_audio_to_zx81_select_output_file(void)
+{
+
+    char *filtros[]={"p81","p",0};
+
+
+	//guardamos directorio actual
+	char directorio_actual[PATH_MAX];
+	getcwd(directorio_actual,PATH_MAX);
+
+	int ret;
+
+    char directorio[PATH_MAX]="";
+
+
+	//Obtenemos ultimo directorio visitado
+	if (menu_convert_audio_to_zx81_output_file[0]!=0) {
+		util_get_dir(menu_convert_audio_to_zx81_output_file,directorio);
+	}
+
+    else if (menu_convert_audio_to_zx81_input_file[0]!=0) {
+        //Si no hay output, indicar el mismo del input
+        util_get_dir(menu_convert_audio_to_zx81_input_file,directorio);
+    }
+
+
+    //cambiamos a ese directorio, siempre que no sea nulo
+    if (directorio[0]!=0) {
+        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+        zvfs_chdir(directorio);
+    }
+
+
+    char buffer_load_file[PATH_MAX];
+
+    ret=menu_filesel_save("Select Output P/P81 File",filtros,buffer_load_file);
+
+	//volvemos a directorio inicial
+	zvfs_chdir(directorio_actual);
+
+    if (ret) {
+        strcpy(menu_convert_audio_to_zx81_output_file,buffer_load_file);
+    }
+
 
 }
 
@@ -1319,6 +1410,8 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
+        ventana->upper_margin=MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES;
+
     }
 
     //Si ya existe, activar esta ventana
@@ -1350,11 +1443,34 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
     do {
 
+        ventana->writing_inverse_color=1;
+
+        if (menu_convert_audio_to_zx81_input_file[0]==0) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input");
+        }
+
+        else if (menu_convert_audio_to_zx81_output_file[0]==0) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output");
+        }
+
+        else {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output ~~run conversion");
+        }
+
+        ventana->writing_inverse_color=0;
 
 		tecla=zxvision_common_getkey_refresh();
 
 
         switch (tecla) {
+
+            case 'i':
+                menu_convert_audio_to_zx81_select_input_file();
+            break;
+
+            case 'o':
+                menu_convert_audio_to_zx81_select_output_file();
+            break;
 
             //Salir con ESC
             case 2:
