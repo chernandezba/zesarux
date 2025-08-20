@@ -67,6 +67,7 @@ extern void menu_zxpand(MENU_ITEM_PARAMETERS);
 extern void menu_esxdos_traps(MENU_ITEM_PARAMETERS);
 extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
 extern void menu_zxmmcplus(MENU_ITEM_PARAMETERS);
+extern void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS);
 
 
 
