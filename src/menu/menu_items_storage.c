@@ -1290,31 +1290,26 @@ int menu_convert_audio_to_zx81_return_offset_text_mem(int linea)
     return offset;
 }
 
+char menu_convert_audio_to_zx81_find_buffer_text[100];
 
+int menu_convert_audio_to_zx81_find_primera_linea=0;
 
-void menu_convert_audio_to_zx81_find(zxvision_window *w)
+void menu_convert_audio_to_zx81_find_continue(zxvision_window *w)
 {
-
     if (menu_convert_audio_to_zx81_output_text_mem==NULL) {
         menu_warn_message("No text output to find");
         return;
     }
 
-	char buffer_texto[100];
-
-	buffer_texto[0]=0;
-    menu_ventana_scanf("Text to search",buffer_texto,100);
-
-
     int i;
 
 
-    for (i=0;i<menu_convert_audio_to_zx81_output_text_lineas_total;i++) {
+    for (i=menu_convert_audio_to_zx81_find_primera_linea;i<menu_convert_audio_to_zx81_output_text_lineas_total;i++) {
         int offset_linea=menu_convert_audio_to_zx81_return_offset_text_mem(i);
         char *linea=&menu_convert_audio_to_zx81_output_text_mem[offset_linea];
-        printf("%d : %s\n",i,linea);
+        //printf("%d : %s\n",i,linea);
 
-        if (util_strcasestr(linea,buffer_texto)!=NULL) {
+        if (util_strcasestr(linea,menu_convert_audio_to_zx81_find_buffer_text)!=NULL) {
             //printf("Found\n");
             zxvision_set_offset_y(w,i);
             return;
@@ -1323,6 +1318,31 @@ void menu_convert_audio_to_zx81_find(zxvision_window *w)
     }
 
     menu_warn_message("Text not found");
+
+}
+
+void menu_convert_audio_to_zx81_find(zxvision_window *w)
+{
+
+	menu_convert_audio_to_zx81_find_buffer_text[0]=0;
+    menu_ventana_scanf("Text to search",menu_convert_audio_to_zx81_find_buffer_text,100);
+
+    menu_convert_audio_to_zx81_find_primera_linea=0;
+
+    menu_convert_audio_to_zx81_find_continue(w);
+
+}
+
+void menu_convert_audio_to_zx81_find_next(zxvision_window *w)
+{
+    if (menu_convert_audio_to_zx81_find_buffer_text[0]==0) {
+        menu_warn_message("No text to search");
+        return;
+    }
+
+    menu_convert_audio_to_zx81_find_primera_linea++;
+
+    menu_convert_audio_to_zx81_find_continue(w);
 
 
 }
@@ -1387,7 +1407,7 @@ void menu_convert_audio_to_zx81_print_debug_line(zxvision_window *w)
 
     menu_convert_audio_to_zx81_window->writing_inverse_color=1;
 
-    zxvision_print_string_defaults_fillspc_format(w,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT,"Debug output: (~~f: find)");
+    zxvision_print_string_defaults_fillspc_format(w,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT,"Debug output: (~~f: find ~~n: next)");
 
     menu_convert_audio_to_zx81_window->writing_inverse_color=antes_writing_inverse_color;
 }
@@ -1854,6 +1874,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'f':
                 menu_convert_audio_to_zx81_find(ventana);
+            break;
+
+            case 'n':
+                menu_convert_audio_to_zx81_find_next(ventana);
             break;
 
             //Salir con ESC
