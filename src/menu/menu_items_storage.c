@@ -1284,6 +1284,48 @@ int menu_convert_audio_to_zx81_debug_print=0;
 char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
 char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 
+int menu_convert_audio_to_zx81_return_offset_text_mem(int linea)
+{
+    int offset=linea*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
+    return offset;
+}
+
+
+
+void menu_convert_audio_to_zx81_find(zxvision_window *w)
+{
+
+    if (menu_convert_audio_to_zx81_output_text_mem==NULL) {
+        menu_warn_message("No text output to find");
+        return;
+    }
+
+	char buffer_texto[100];
+
+	buffer_texto[0]=0;
+    menu_ventana_scanf("Text to search",buffer_texto,100);
+
+
+    int i;
+
+    int longitud_buscar=strlen(buffer_texto);
+
+    for (i=0;i<menu_convert_audio_to_zx81_output_text_lineas_total;i++) {
+        int offset_linea=menu_convert_audio_to_zx81_return_offset_text_mem(i);
+        char *linea=&menu_convert_audio_to_zx81_output_text_mem[offset_linea];
+        printf("%d : %s\n",i,linea);
+
+
+        if (!strncasecmp(linea,buffer_texto,longitud_buscar)) {
+            printf("Encontrada\n");
+            zxvision_set_offset_y(w,i+MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES);
+            return;
+        }
+
+    }
+
+
+}
 
 void menu_convert_audio_to_zx81_fun_print(char *texto)
 {
@@ -1296,7 +1338,7 @@ void menu_convert_audio_to_zx81_fun_print(char *texto)
     if (menu_convert_audio_to_zx81_output_text_mem==NULL) return;
 
     //offset a la memoria de texto
-    int offset=menu_convert_audio_to_zx81_output_text_lineas_total*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
+    int offset=menu_convert_audio_to_zx81_return_offset_text_mem(menu_convert_audio_to_zx81_output_text_lineas_total);
 
     //Vemos si no llegado a maximo
     //margen de 10 por si entra una linea muy larga
@@ -1341,7 +1383,13 @@ void menu_convert_audio_to_zx81_clear_debug_output(void)
 
 void menu_convert_audio_to_zx81_print_debug_line(zxvision_window *w)
 {
-    zxvision_print_string_defaults_fillspc_format(w,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT,"Debug output:");
+    int antes_writing_inverse_color=menu_convert_audio_to_zx81_window->writing_inverse_color;
+
+    menu_convert_audio_to_zx81_window->writing_inverse_color=1;
+
+    zxvision_print_string_defaults_fillspc_format(w,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT,"Debug output: (~~f: find)");
+
+    menu_convert_audio_to_zx81_window->writing_inverse_color=antes_writing_inverse_color;
 }
 
 void menu_convert_audio_to_zx81_overlay(void)
@@ -1410,7 +1458,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 
             for (i=0;i<menu_convert_audio_to_zx81_output_text_lineas_total;i++) {
                 //obtener offset
-                int offset=i*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
+                int offset=menu_convert_audio_to_zx81_return_offset_text_mem(i);
 
                 zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,
                 MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES+i,
@@ -1800,6 +1848,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'd':
                 menu_convert_audio_to_zx81_debug_print ^=1;
+            break;
+
+            case 'f':
+                menu_convert_audio_to_zx81_find(ventana);
             break;
 
             //Salir con ESC
