@@ -1333,8 +1333,10 @@ void menu_convert_audio_to_zx81_overlay(void)
                 tamanyo=get_file_size(menu_convert_audio_to_zx81_output_file);
             }
 
+            menu_convert_audio_to_zx81_window->writing_inverse_color=1;
             zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,
-                "Conversion finished. File %s Size %d bytes",nombre,tamanyo);
+                "Conversion finished. File %s Size %d bytes. ~~v: view",nombre,tamanyo);
+            menu_convert_audio_to_zx81_window->writing_inverse_color=0;
         }
     }
 
@@ -1711,6 +1713,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                     if (if_pending_error_message) {
                         menu_muestra_pending_error_message();
                     }
+                }
+            break;
+
+            case 'v':
+                if (menu_convert_audio_to_zx81_output_file[0] && convert_audio_to_zx81_has_finished) {
+                    menu_storage_tape_expand(menu_convert_audio_to_zx81_output_file);
                 }
             break;
 
