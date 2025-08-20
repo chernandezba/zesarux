@@ -1576,6 +1576,13 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 //no dejar iniciar si no esta input u output
                 if (menu_convert_audio_to_zx81_input_file[0] && menu_convert_audio_to_zx81_output_file[0]) {
                     menu_convert_audio_to_zx81_run_conversion();
+
+                    //comprobar error
+                    if (if_pending_error_message) {
+                        menu_muestra_pending_error_message(); //Si se genera un error derivado del run
+                        return;
+                    }
+
                 }
             break;
 
