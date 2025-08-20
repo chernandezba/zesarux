@@ -133,9 +133,10 @@ En cambio mis archivos generados desde P a RWA, esos si que se leen bien
 -Dos maneras (realmente 3) de llamar a la función de conversión de RWA a P/P81:
 ok * desde file utils. convert RWA a P/P81. Automático sin preguntar amplitud
 * por linea de comandos. convert RWA a P/P81. Automático sin preguntar amplitud
-* desde storage->tape, nuevo submenu. con ventana en background, lanzando tarea como thread, viendo datos de autodetección
+ok * desde storage->tape, nuevo submenu. con ventana en background, lanzando tarea como thread, viendo datos de autodetección
 que diga también posibles errores (ejemplo "No sabemos que bit es cuando hay 6 pulsos")
 marcado por defecto autodetección pero se puede especificar amplitud típica
+*falta opcion de activar debug en ventana
 
 *Luego también se podría integrar en visual real tape, la función que obtiene el nombre del programa y su longitud
 *en menu_file_realtape_browser_show, con tecla V de view muestra los bloques de datos de un rwa, si es zx8081 o spectrum. creo que aqui
