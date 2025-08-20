@@ -1309,6 +1309,7 @@ void menu_convert_audio_to_zx81_overlay(void)
         //Con parpadeo el texto
         //Nota: hay un bug al gestionar final de parpadeo y necesita un caracter al menos despues - de ahí el espacio
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"^^Conversion running^^ ");
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,2,"Debug output:");
     }
     else {
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"");
@@ -1334,7 +1335,8 @@ void menu_convert_audio_to_zx81_overlay(void)
                 //obtener offset
                 int offset=i*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
 
-                zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,i,
+                zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,
+                MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES+i,
                     &menu_convert_audio_to_zx81_output_text_mem[offset]);
             }
         }
@@ -1578,8 +1580,9 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         }
 
         int total_height=MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES+MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_TOTAL;
+        int total_width=MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,total_height,"Convert Audio to ZX81",
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,total_width,total_height,"Convert Audio to ZX81",
             "convertaudiotozx81",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
