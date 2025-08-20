@@ -1272,7 +1272,9 @@ void menu_convert_audio_to_zx81_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
     if (convert_audio_to_zx81_thread_running) {
-        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"Conversion running");
+        //Con parpadeo el texto
+        //Nota: hay un bug al gestionar final de parpadeo y necesita un caracter al menos despues - de ahí el espacio
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"^^Conversion running^^ ");
     }
     else {
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"");
