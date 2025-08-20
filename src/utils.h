@@ -556,7 +556,7 @@ extern char external_tool_unrar[];
 
 extern void convert_relative_to_absolute(char *relative_path,char *final_path);
 extern void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_info_output,int si_load);
-extern void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud);
+extern void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,int amplitud_media);
 
 //Mas de 48kb de pokes no tiene sentido
 #define MAX_LINEAS_POK_FILE 49152

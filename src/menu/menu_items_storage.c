@@ -1383,7 +1383,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
 
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,
-        menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude);
+        menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,menu_convert_audio_to_zx81_amplitude);
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
 
