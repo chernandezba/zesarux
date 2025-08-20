@@ -1280,6 +1280,14 @@ void menu_convert_audio_to_zx81_overlay(void)
 char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
 char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 
+void menu_convert_audio_to_zx81_run_conversion(void)
+{
+    //Conversion simple sin threads
+    enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file);
+}
+
+
+
 void menu_convert_audio_to_zx81_select_input_file(void)
 {
 
@@ -1469,7 +1477,17 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             break;
 
             case 'o':
-                menu_convert_audio_to_zx81_select_output_file();
+                //no dejar activar output si no esta input
+                if (menu_convert_audio_to_zx81_input_file[0]) {
+                    menu_convert_audio_to_zx81_select_output_file();
+                }
+            break;
+
+            case 'r':
+                //no dejar iniciar si no esta input u output
+                if (menu_convert_audio_to_zx81_input_file[0] && menu_convert_audio_to_zx81_output_file[0]) {
+                    menu_convert_audio_to_zx81_run_conversion();
+                }
             break;
 
             //Salir con ESC

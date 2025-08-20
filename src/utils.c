@@ -23568,13 +23568,6 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino)
         strcpy(file_to_open,filename);
     }
 
-    //convertir
-    /*if (!util_compare_file_extension(filename,"smp")) {
-        if (convert_smp_to_rwa_tmpdir(filename,file_to_open)) {
-			debug_printf(VERBOSE_ERR,"Error converting input file");
-			return;
-		}
-    }*/
 
     //convertir
     if (!util_compare_file_extension(filename,"wav")) {
