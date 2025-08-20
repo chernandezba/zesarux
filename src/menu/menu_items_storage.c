@@ -1305,6 +1305,15 @@ int convert_audio_to_zx81_thread_running=0;
 
 int convert_audio_to_zx81_has_finished=0;
 
+void menu_convert_audio_to_zx81_clear_debug_output(void)
+{
+    int i;
+
+    for (i=MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES;i<MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_TOTAL+MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES;i++) {
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,i,"");
+    }
+}
+
 void menu_convert_audio_to_zx81_overlay(void)
 {
 
@@ -1343,11 +1352,7 @@ void menu_convert_audio_to_zx81_overlay(void)
     if (antes_menu_convert_audio_to_zx81_output_text_lineas_total!=menu_convert_audio_to_zx81_output_text_lineas_total) {
         //antes borrar todas si hay menos
         if (menu_convert_audio_to_zx81_output_text_lineas_total<antes_menu_convert_audio_to_zx81_output_text_lineas_total) {
-            int i;
-
-            for (i=MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES;i<MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_TOTAL+MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES;i++) {
-                zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,i,"");
-            }
+            menu_convert_audio_to_zx81_clear_debug_output();
         }
 
         //escribir esas lineas
@@ -1518,6 +1523,8 @@ void menu_convert_audio_to_zx81_select_input_file(void)
         strcpy(menu_convert_audio_to_zx81_input_file,buffer_load_file);
         //al cambiar archivo, decir que no ha finalizado
         convert_audio_to_zx81_has_finished=0;
+
+        menu_convert_audio_to_zx81_clear_debug_output();
     }
 
 
@@ -1568,6 +1575,8 @@ void menu_convert_audio_to_zx81_select_output_file(void)
         strcpy(menu_convert_audio_to_zx81_output_file,buffer_load_file);
         //al cambiar archivo, decir que no ha finalizado
         convert_audio_to_zx81_has_finished=0;
+
+        menu_convert_audio_to_zx81_clear_debug_output();
     }
 
 
