@@ -23504,7 +23504,10 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
             }
 
             if (cancel_autodetect!=NULL) {
-                if (*cancel_autodetect) return;
+                if (*cancel_autodetect) {
+                    printf("Cancelled autodetect\n");
+                    return;
+                }
             }
 
 

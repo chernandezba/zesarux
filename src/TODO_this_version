@@ -158,7 +158,7 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 
 *en View expanded, si se reusa archivo de salida, al ser una carpeta temporal, hay restos de las anteriores
 
-*Quizá si opción debug, sacar print por consola también. Así se supera el límite de ventana.  Indicarlo en mensaje de límite de líneas
+ok *Quizá si opción debug, sacar print por consola también. Así se supera el límite de ventana.  Indicarlo en mensaje de límite de líneas
 
 *Carga turbo de stocks? Bajar pulsos a 2 y 4 creo
 
