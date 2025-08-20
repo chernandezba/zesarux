@@ -1254,7 +1254,12 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 4
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 5
+
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS 1
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 2
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
 #define MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_TOTAL 10000
@@ -1283,6 +1288,10 @@ char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 void menu_convert_audio_to_zx81_fun_print(char *texto)
 {
 
+    //Si está con debug también sacarlo por consola
+    if (menu_convert_audio_to_zx81_debug_print) printf("%s\n",texto);
+
+
     //no deberia, pero si no hay puntero, no meter nada
     if (menu_convert_audio_to_zx81_output_text_mem==NULL) return;
 
@@ -1295,7 +1304,12 @@ void menu_convert_audio_to_zx81_fun_print(char *texto)
         //sobreescribimos la linea anterior
         offset -=MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
 
-        strcpy(&menu_convert_audio_to_zx81_output_text_mem[offset],"--Not enough memory to show all messages--");
+        if (menu_convert_audio_to_zx81_debug_print) {
+            strcpy(&menu_convert_audio_to_zx81_output_text_mem[offset],"--Not enough memory to show all messages. See console (stdout) --");
+        }
+        else {
+            strcpy(&menu_convert_audio_to_zx81_output_text_mem[offset],"--Not enough memory to show all messages--");
+        }
         return;
     }
 
@@ -1323,6 +1337,11 @@ void menu_convert_audio_to_zx81_clear_debug_output(void)
     }
 }
 
+void menu_convert_audio_to_zx81_print_debug_line(zxvision_window *w)
+{
+    zxvision_print_string_defaults_fillspc_format(w,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT,"Debug output:");
+}
+
 void menu_convert_audio_to_zx81_overlay(void)
 {
 
@@ -1331,17 +1350,17 @@ void menu_convert_audio_to_zx81_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_convert_audio_to_zx81_window->is_minimized) return;
 
-    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"");
 
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
         //Nota: hay un bug al gestionar final de parpadeo y necesita un caracter al menos despues - de ahí el espacio al final
-        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"^^Conversion running^^ ");
-        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,3,"Debug output:");
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"^^Conversion running^^ ");
+        menu_convert_audio_to_zx81_print_debug_line(menu_convert_audio_to_zx81_window);
     }
     else {
         if (convert_audio_to_zx81_has_finished) {
-            zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,3,"Debug output:");
+            menu_convert_audio_to_zx81_print_debug_line(menu_convert_audio_to_zx81_window);
             char nombre[NAME_MAX];
             util_get_file_no_directory(menu_convert_audio_to_zx81_output_file,nombre);
 
@@ -1352,7 +1371,7 @@ void menu_convert_audio_to_zx81_overlay(void)
             }
 
             menu_convert_audio_to_zx81_window->writing_inverse_color=1;
-            zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,
+            zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,
                 "Conversion finished. File %s Size %d bytes. ~~v: view",nombre,tamanyo);
             menu_convert_audio_to_zx81_window->writing_inverse_color=0;
         }
@@ -1439,7 +1458,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 void menu_convert_audio_to_zx81_run_conversion(void)
 {
     if (convert_audio_to_zx81_thread_running) {
-        debug_printf(VERBOSE_ERR,"Task already running");
+        debug_printf(VERBOSE_ERR,"Conversion already running");
         return;
     }
 
@@ -1466,7 +1485,7 @@ void menu_convert_audio_to_zx81_run_conversion(void)
 //Detener el thread
 void menu_convert_audio_to_zx81_stop_conversion(void)
 {
-
+    if (!convert_audio_to_zx81_thread_running) return;
 
     if (convert_audio_to_zx81_thread_running) {
         debug_printf(VERBOSE_DEBUG,"Stopping convert audio thread");
@@ -1489,6 +1508,10 @@ void menu_convert_audio_to_zx81_stop_conversion(void)
 void menu_convert_audio_to_zx81_run_conversion(void)
 {
     debug_printf(VERBOSE_ERR,"You need to enable threads support to run this");
+}
+
+void menu_convert_audio_to_zx81_stop_conversion(void)
+{
 }
 
 #endif
@@ -1674,21 +1697,26 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         ventana->writing_inverse_color=1;
 
         if (menu_convert_audio_to_zx81_input_file[0]==0) {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input");
+            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input");
         }
 
         else if (menu_convert_audio_to_zx81_output_file[0]==0) {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output");
+            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input ~~output");
         }
 
         else {
-            char buf_autodetect[30];
-            if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
-            else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
-
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~input ~~output ~~run conversion ~~amplitude: %s  [%c] ~~debug",
-                buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' ') );
+            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,
+                "~~input ~~output ~~run conversion s~~top");
         }
+
+
+        char buf_autodetect[30];
+        if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
+        else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,"~~amplitude: %s  [%c] ~~debug",
+            buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' ') );
+
 
         ventana->writing_inverse_color=0;
 
@@ -1719,6 +1747,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                     }
 
                 }
+            break;
+
+            case 't':
+                menu_convert_audio_to_zx81_stop_conversion();
             break;
 
             case 'a':

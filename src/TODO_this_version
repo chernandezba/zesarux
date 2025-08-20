@@ -158,6 +158,10 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 
 *en View expanded, si se reusa archivo de salida, al ser una carpeta temporal, hay restos de las anteriores
 
+*Quizá si opción debug, sacar print por consola también. Así se supera el límite de ventana.  Indicarlo en mensaje de límite de líneas
+
+*Carga turbo de stocks? Bajar pulsos a 2 y 4 creo
+
 *Nota en algún sitio que esta conversión mejorada de raw a p/p81 requiere que se borren pulsos de ruido de antes de los datos,
 se permite la zona de silencio de zx81 pero algún click que haya antes, mas alto de esas zonas de silencio, se deben borrar a mano
 (ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
