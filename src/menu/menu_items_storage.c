@@ -1314,15 +1314,16 @@ void menu_convert_audio_to_zx81_overlay(void)
     if (menu_convert_audio_to_zx81_window->is_minimized) return;
 
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"");
-    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,3,"Debug output:");
 
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
         //Nota: hay un bug al gestionar final de parpadeo y necesita un caracter al menos despues - de ahí el espacio al final
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,1,"^^Conversion running^^ ");
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,3,"Debug output:");
     }
     else {
         if (convert_audio_to_zx81_has_finished) {
+            zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,3,"Debug output:");
             char nombre[NAME_MAX];
             util_get_file_no_directory(menu_convert_audio_to_zx81_output_file,nombre);
 
