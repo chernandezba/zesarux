@@ -1256,10 +1256,11 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 4
 
-//1000 lineas de debug output
-#define MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_TOTAL 1000
+//10000 lineas de debug output
+#define MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_TOTAL 10000
 //de 200 caracteres de ancho maximo
 #define MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH 200
+//2 MB para texto de salida. Mas que suficiente (aparte de lo que ocupa propiamente la zxvision_window)
 
 //texto de salida
 char *menu_convert_audio_to_zx81_output_text_mem=NULL;

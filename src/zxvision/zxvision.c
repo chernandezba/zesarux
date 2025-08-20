@@ -10513,12 +10513,25 @@ void zxvision_cls(zxvision_window *w)
 	}
 }
 
+int zxvision_get_size_text_buffer(int total_width,int total_height)
+{
+	int buffer_size=total_width*total_height;
+	buffer_size *= sizeof(overlay_screen);
+
+    return buffer_size;
+}
+
 void zxvision_alloc_memory(zxvision_window *w,int total_width,int total_height)
 {
     //printf("zxvision_alloc_memory. width: %d height: %d\n",total_width,total_height);
 
-	int buffer_size=total_width*total_height;
-	w->memory=malloc(buffer_size*sizeof(overlay_screen));
+	//int buffer_size=total_width*total_height;
+	//w->memory=malloc(buffer_size*sizeof(overlay_screen));
+
+    int memory_required=zxvision_get_size_text_buffer(total_width,total_height);
+    w->memory=malloc(memory_required);
+
+    //printf("ALLOC %lu %d\n",buffer_size*sizeof(overlay_screen),memory_required);
 
 	if (w->memory==NULL) cpu_panic ("Can not allocate memory for window");
 

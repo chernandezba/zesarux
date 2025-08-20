@@ -18658,13 +18658,17 @@ void menu_unpaws_ungac(MENU_ITEM_PARAMETERS)
 
 void menu_display_window_list_info(zxvision_window *w)
 {
+
+    //calcular tamaño ocupado por la ventana (lo que ocupan los caracteres)
+    int memory_used=zxvision_get_size_text_buffer(w->total_width,w->total_height);
+
     menu_generic_message_format("Window information",
         "PID: %u\n"
         "Title: %s\n"
         "Name: %s\n"
         "Position: %d,%d\n"
         "Visible size: %dX%d\n"
-        "Total size: %dX%d\n"
+        "Total size: %dX%d (%d KiB)\n"
         "Scroll %d,%d\n"
         "Minimized: %s\n"
         "Maximized: %s\n"
@@ -18673,7 +18677,7 @@ void menu_display_window_list_info(zxvision_window *w)
         "Can be resized: %s\n"
         "Can be minimized: %s\n"
         ,
-        w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
+        w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,memory_used/1024,
         w->offset_x,w->offset_y,
         (w->is_minimized ? "Yes" : "No"),
         (w->is_maximized ? "Yes" : "No"),
