@@ -1255,12 +1255,14 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 6
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 8
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS 1
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION 2
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 3
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 2
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 3
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 4
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 5
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1450,8 +1452,9 @@ void menu_convert_audio_to_zx81_overlay(void)
     menu_convert_audio_to_zx81_print_line_actions(menu_convert_audio_to_zx81_window);
 
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"");
-    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION,
-            "");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,"");
 
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
@@ -1484,13 +1487,22 @@ void menu_convert_audio_to_zx81_overlay(void)
 
         z80_bit inverse;
 
-        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION,
-            "Current info: in %10d out %6d last %02X (%c) part %02X bitpos %d lastbit %d pulsesbit %d",
-            conversion_info.enh_global_input_position,conversion_info.enh_global_output_position,
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,
+            "Current info: Input Pos %10d Output Pos %6d",
+            conversion_info.enh_global_input_position,conversion_info.enh_global_output_position
+        );
+
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,
+            " Last Byte generated %02X (%c) Partial %02X Lasts CONTROL DE",
             conversion_info.enh_global_last_byte_read,da_codigo81_solo_letras(conversion_info.enh_global_last_byte_read,&inverse),
-            conversion_info.enh_global_partial_byte_read,
-            conversion_info.enh_global_bit_position_in_byte,conversion_info.enh_global_last_bit_read,
-            conversion_info.enh_global_pulses_of_a_bit);
+            conversion_info.enh_global_partial_byte_read
+        );
+
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,
+            " Last bit %d Bit Pos %d Pulses in a bit %d",
+            conversion_info.enh_global_last_bit_read,
+            conversion_info.enh_global_bit_position_in_byte,conversion_info.enh_global_pulses_of_a_bit
+        );
     }
     else {
         if (convert_audio_to_zx81_has_finished) {
