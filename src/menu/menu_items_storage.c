@@ -1502,7 +1502,7 @@ void menu_convert_audio_to_zx81_overlay(void)
         );
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,
-            " Last Byte generated %02X (%c) Partial %02X Lasts %s",
+            " Last Byte generated %02X (%c) Partial %02X Lasts [%s]",
             conversion_info.enh_global_last_byte_read,da_codigo81_solo_letras(conversion_info.enh_global_last_byte_read,&inverse),
             conversion_info.enh_global_partial_byte_read,last_bytes_ascii
         );
@@ -1605,7 +1605,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
-        menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect);
+        menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,NULL);
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
 

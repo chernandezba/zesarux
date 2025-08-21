@@ -203,8 +203,9 @@ void enh_zx81_lee_rotate_last_bytes(void)
 
 //cancel_process puntero a valor int que dice si se cancela el proceso (valor diferente de 0). Si no se usa, pasar puntero a NULL. Esto
 //si puede activar desde thread externo
+//callback es una rutina que se llama en cada iteración del bucle, si no es NULL
 int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
-    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process)
+    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,void (*callback)(void))
 {
 
     //Inicializar globales que se pueden leer desde thread externo
@@ -262,9 +263,9 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
         z80_byte valor_sample=enhanced_memoria[i];
 
-
-//TEMPORAL
-//usleep(1000);
+        if (callback!=NULL) {
+            callback();
+        }
 
         switch(estado_pulso) {
             case 0:
@@ -429,7 +430,7 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_b
     }
 
 
-    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL,NULL);
+    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL,NULL,NULL);
 
     return longitud_p81;
 }

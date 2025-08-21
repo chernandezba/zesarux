@@ -23412,7 +23412,7 @@ void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81,char *
 //cancel_process es un puntero a una variable que indica si tiene valor diferente de 0, que hay que acabar el proceso de autodetectar,
 //que puede tardar mucho y se tiene que poder cancelar desde otro thread. Si no se quiere usar esa característica, indicar NULL el puntero
 void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,
-    int amplitud_media,int debug_print,int *cancel_process)
+    int amplitud_media,int debug_print,int *cancel_process,void (*callback)(void))
 {
     //char *rwafile=argv[1];
 
@@ -23483,12 +23483,12 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) {
                 longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                                debug_print,&longitud_nombre,fun_print,cancel_process);
+                                debug_print,&longitud_nombre,fun_print,cancel_process,callback);
             }
 
             else {
                 longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                    debug_print,&longitud_nombre,NULL,cancel_process);
+                    debug_print,&longitud_nombre,NULL,cancel_process,callback);
             }
 
             util_enhanced_longitudes_autodetectar[amplitud_media]=longitud_p81;
@@ -23534,7 +23534,8 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
     }
 
-    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,debug_print,&longitud_nombre,fun_print,cancel_process);
+    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+        debug_print,&longitud_nombre,fun_print,cancel_process,callback);
 
     util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
@@ -23576,7 +23577,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 //Convierte una cinta real (wav, rwa, smp) a zx81 P81/P
 //Usa rutina enhanced de lectura de zx81
 void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),
-    int autodetectar_amplitud,int amplitud_media,int debug_print,int *cancel_autodetect)
+    int autodetectar_amplitud,int amplitud_media,int debug_print,int *cancel_autodetect,void (*callback)(void))
 {
 
 
@@ -23611,7 +23612,8 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
     }
 
 
-    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print,autodetectar_amplitud,amplitud_media,debug_print,cancel_autodetect);
+    util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print,autodetectar_amplitud,
+        amplitud_media,debug_print,cancel_autodetect,callback);
 
 
 
