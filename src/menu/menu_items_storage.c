@@ -1441,6 +1441,7 @@ void menu_convert_audio_to_zx81_print_line_actions(zxvision_window *ventana)
 
 
 //Para la vista de scroll en waveform
+/*
 char menu_convert_audio_to_zx81_get_last_sample(void)
 {
 
@@ -1455,8 +1456,10 @@ char menu_convert_audio_to_zx81_get_last_sample(void)
 
 
 }
+*/
 
 //Para saber si hace scroll vista de waveform
+/*
 int menu_convert_audio_to_zx81_waveform_last_input_position=0;
 
 
@@ -1473,6 +1476,24 @@ int menu_convert_audio_to_zx81_si_scroll_waveform(void)
 
     return hacer_scroll;
 }
+*/
+
+int menu_convert_audio_to_zx81_get_input_position(void)
+{
+    struct s_enh_zx81_lee_global_info conversion_info;
+    enh_zx81_lee_get_global_info(&conversion_info);
+
+    return conversion_info.enh_global_input_position;
+}
+
+int menu_convert_audio_to_zx81_get_sample(int offset)
+{
+    if (offset<0 || offset>=util_enhanced_convert_raw_to_p_p81_memoria_tamanyo) return 0;
+
+    else return util_enhanced_convert_raw_to_p_p81_puntero_memoria[offset];
+
+}
+
 
 
 void menu_convert_audio_to_zx81_overlay(void)

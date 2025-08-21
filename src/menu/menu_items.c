@@ -4795,17 +4795,21 @@ void menu_audio_draw_sound_wave(void)
                 extern int menu_convert_audio_to_zx81_waveform_last_input_position;
 
                 //esto es solo para actualizar menu_convert_audio_to_zx81_waveform_last_input_position
-                menu_convert_audio_to_zx81_si_scroll_waveform();
+                //menu_convert_audio_to_zx81_si_scroll_waveform();
 
 
-                offset+=menu_convert_audio_to_zx81_waveform_last_input_position;
+                offset+=menu_convert_audio_to_zx81_get_input_position();
+                //menu_convert_audio_to_zx81_waveform_last_input_position;
 
 
                 if (offset<0) valor_medio=0;
                 else {
                     //acceder a la memoria de input rwa a lo bruto
-                    extern z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria;
-                    int valor_unsigned=util_enhanced_convert_raw_to_p_p81_puntero_memoria[offset];
+                    //extern z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria;
+                    int valor_unsigned=menu_convert_audio_to_zx81_get_sample(offset);
+                    //util_enhanced_convert_raw_to_p_p81_puntero_memoria[offset];
+
+
                     int valor_signed=valor_unsigned-128;
 
                     valor_medio=valor_signed;

@@ -559,6 +559,11 @@ extern void convert_realtape_to_po(char *filename, char *archivo_destino, char *
 extern void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,
     int amplitud_media,int debug_print,int *cancel_autodetect,void (*callback)(void));
 
+extern z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria;
+
+extern int util_enhanced_convert_raw_to_p_p81_memoria_tamanyo;
+
+
 //Mas de 48kb de pokes no tiene sentido
 #define MAX_LINEAS_POK_FILE 49152
 
