@@ -70,7 +70,7 @@ struct s_charset_list charset_list[]={
 };
 
 //char set por defecto, que corresponde a estilo gui por defecto (ZEsarUX plus)
-unsigned char *char_set=char_set_dos;
+unsigned char *char_set=char_set_ataritos;
 
 //charset alterado por el usuario
 int user_charset=-1;
