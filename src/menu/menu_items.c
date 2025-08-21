@@ -4777,11 +4777,16 @@ void menu_audio_draw_sound_wave(void)
 
 			valor_medio=valor_medio/max_valores;
 
-
             //TEMPORAL CHAPUZA prueba de conversion zx81
+            //TEMPORAL CHAPUZA prueba de conversion zx81
+            //TEMPORAL CHAPUZA prueba de conversion zx81
+            //TEMPORAL CHAPUZA prueba de conversion zx81
+            //SOLO POR PROBAR. CAMBIAR ESTO POR ALGO DEFINITIVO
             if (convert_audio_to_zx81_thread_running) {
                 int offset=x-xinicial_grafica-ancho_grafica;
 
+                //temp cada 4 bytes
+                offset /=4;
 
                 extern int menu_convert_audio_to_zx81_waveform_last_input_position;
 
