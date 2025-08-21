@@ -1606,7 +1606,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 //velocidad 1: mas lento
 
 
-int menu_convert_audio_to_zx81_speed_conversion=5;
+int menu_convert_audio_to_zx81_speed_conversion=6;
 
 //Aqui se llama en cada iteracion del bucle de conversion. Meter pausas si conviene
 void menu_convert_audio_to_zx81_callback(void)
@@ -1614,9 +1614,10 @@ void menu_convert_audio_to_zx81_callback(void)
 
     int pausa;
 
-    if (menu_convert_audio_to_zx81_speed_conversion==5) return;
-    else if (menu_convert_audio_to_zx81_speed_conversion==4) pausa=10;
-    else if (menu_convert_audio_to_zx81_speed_conversion==3) pausa=100;
+    if (menu_convert_audio_to_zx81_speed_conversion==6) return;
+    else if (menu_convert_audio_to_zx81_speed_conversion==5) pausa=10;
+    else if (menu_convert_audio_to_zx81_speed_conversion==4) pausa=100;
+    else if (menu_convert_audio_to_zx81_speed_conversion==3) pausa=10000;
     else if (menu_convert_audio_to_zx81_speed_conversion==2) pausa=100000;
     else pausa=1000000;
 
@@ -1919,10 +1920,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
         else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
 
-        char *textos_pausa[]={"Very Slow","Slow","Medium","Fast","Fastest"};
+        char *textos_pausa[]={"Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,
-            "~~amplitude: %s  [%c] ~~debug.  speed ~~1-~~5: %d: %s",
+            "~~amplitude: %s  [%c] ~~debug.  speed ~~1-~~6: %d: %s",
             buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
             menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion-1]
         );
@@ -2016,6 +2017,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case '5':
                 menu_convert_audio_to_zx81_speed_conversion=5;
+            break;
+
+            case '6':
+                menu_convert_audio_to_zx81_speed_conversion=6;
             break;
 
             //Salir con ESC
