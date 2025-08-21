@@ -1573,9 +1573,29 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 }
 
+//velocidad 0: sin pausa (no pause)
+//velocidad 1: mas rapido
+//velocidad 2: ..
+//velocidad 3: ..
+//velocidad 4: mas lento
 
 
+int menu_convert_audio_to_zx81_speed_conversion=0;
 
+//Aqui se llama en cada iteracion del bucle de conversion. Meter pausas si conviene
+void menu_convert_audio_to_zx81_callback(void)
+{
+    if (!menu_convert_audio_to_zx81_speed_conversion) return;
+
+    //por si acaso
+    int pausa;
+    if (menu_convert_audio_to_zx81_speed_conversion==1) pausa=10;
+    else if (menu_convert_audio_to_zx81_speed_conversion==2) pausa=100;
+    else if (menu_convert_audio_to_zx81_speed_conversion==3) pausa=100000;
+    else pausa=1000000;
+
+    usleep(pausa);
+}
 
 
 #ifdef USE_PTHREADS
@@ -1605,7 +1625,9 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
-        menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,NULL);
+        menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,
+        menu_convert_audio_to_zx81_callback
+    );
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
 
@@ -1873,8 +1895,14 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
         else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,"~~amplitude: %s  [%c] ~~debug",
-            buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' ') );
+
+        char *textos_pausa[]={"Fastest","Fast","Medium","Slow","Very Slow"};
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,
+            "~~amplitude: %s  [%c] ~~debug.  speed ~~0-~~4: %d: %s",
+            buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
+            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
+        );
 
 
         ventana->writing_inverse_color=0;
@@ -1945,6 +1973,26 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'n':
                 menu_convert_audio_to_zx81_find_next(ventana);
+            break;
+
+            case '0':
+                menu_convert_audio_to_zx81_speed_conversion=0;
+            break;
+
+            case '1':
+                menu_convert_audio_to_zx81_speed_conversion=1;
+            break;
+
+            case '2':
+                menu_convert_audio_to_zx81_speed_conversion=2;
+            break;
+
+            case '3':
+                menu_convert_audio_to_zx81_speed_conversion=3;
+            break;
+
+            case '4':
+                menu_convert_audio_to_zx81_speed_conversion=4;
             break;
 
             //Salir con ESC
