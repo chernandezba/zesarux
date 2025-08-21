@@ -1429,13 +1429,14 @@ void menu_convert_audio_to_zx81_print_line_actions(zxvision_window *ventana)
     }
 
     else {
+        if (convert_audio_to_zx81_thread_running) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"s~~top conversion");
+        }
+        else {
 
-        char buffer_run_stop[100]="";
-        if (convert_audio_to_zx81_thread_running) strcpy(buffer_run_stop,"s~~top");
-        else strcpy(buffer_run_stop,"~~run conversion");
-
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,
-            "~~input ~~output %s",buffer_run_stop);
+            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,
+                "~~input ~~output ~~run conversion");
+        }
     }
 }
 
@@ -1620,11 +1621,12 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 }
 
-//velocidad 5: sin pausa (no pause)
-//velocidad 4: mas rapido
+//velocidad 6: sin pausa (no pause)
+//velocidad 5: mas rapido
 //velocidad 3: ..
 //velocidad 2: ..
 //velocidad 1: mas lento
+//velocidad 0: pausado
 
 
 int menu_convert_audio_to_zx81_speed_conversion=6;
@@ -1634,6 +1636,14 @@ void menu_convert_audio_to_zx81_callback(void)
 {
 
     int pausa;
+
+    if (!menu_convert_audio_to_zx81_speed_conversion) {
+        //detenido. bucle cerrado
+        while (!menu_convert_audio_to_zx81_speed_conversion && !menu_convert_audio_to_zx81_cancel_autodetect) {
+            sleep(1);
+        }
+        return;
+    }
 
     if (menu_convert_audio_to_zx81_speed_conversion==6) return;
     else if (menu_convert_audio_to_zx81_speed_conversion==5) pausa=10;
@@ -1941,12 +1951,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
         else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
 
-        char *textos_pausa[]={"Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
+        char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,
-            "~~amplitude: %s  [%c] ~~debug.  speed ~~1-~~6: %d: %s",
+            "~~amplitude: %s  [%c] ~~debug.  speed ~~0-~~6: %d: %s",
             buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion-1]
+            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
         );
 
 
@@ -1960,19 +1970,19 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         switch (tecla) {
 
             case 'i':
-                menu_convert_audio_to_zx81_select_input_file();
+                if (!convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_select_input_file();
             break;
 
             case 'o':
                 //no dejar activar output si no esta input
-                if (menu_convert_audio_to_zx81_input_file[0]) {
+                if (menu_convert_audio_to_zx81_input_file[0] && !convert_audio_to_zx81_thread_running) {
                     menu_convert_audio_to_zx81_select_output_file();
                 }
             break;
 
             case 'r':
                 //no dejar iniciar si no esta input u output
-                if (menu_convert_audio_to_zx81_input_file[0] && menu_convert_audio_to_zx81_output_file[0]) {
+                if (menu_convert_audio_to_zx81_input_file[0] && menu_convert_audio_to_zx81_output_file[0] && !convert_audio_to_zx81_thread_running) {
                     menu_convert_audio_to_zx81_run_conversion();
 
                     //comprobar error
@@ -1984,7 +1994,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             break;
 
             case 't':
-                menu_convert_audio_to_zx81_stop_conversion();
+                if (convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_stop_conversion();
             break;
 
             case 'a':
@@ -2018,6 +2028,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'n':
                 menu_convert_audio_to_zx81_find_next(ventana);
+            break;
+
+            case '0':
+                menu_convert_audio_to_zx81_speed_conversion=0;
             break;
 
             case '1':

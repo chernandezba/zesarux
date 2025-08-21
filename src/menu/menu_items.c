@@ -4617,14 +4617,6 @@ void menu_audio_draw_sound_wave(void)
         menu_audio_draw_sound_wave_valor_min=menu_hilow_convert_audio_last_audio_sample;
     }
 
-    //Si convirtiendo de audio a zx81, alterar max y min especial para la vista de scroll
-    /*if (convert_audio_to_zx81_thread_running) {
-
-        char valor_sample=menu_convert_audio_to_zx81_get_last_sample();
-
-        menu_audio_draw_sound_wave_valor_max=valor_sample;
-        menu_audio_draw_sound_wave_valor_min=valor_sample;
-    }*/
 
 	int audiomedio=audiostats.medio;
 	menu_audio_draw_sound_wave_valor_medio=audiomedio;
@@ -4663,11 +4655,6 @@ void menu_audio_draw_sound_wave(void)
             }
         }
 
-        //Si scroll waveform convirtiendo zx81
-
-        /*if (convert_audio_to_zx81_thread_running) {
-            if (!menu_convert_audio_to_zx81_si_scroll_waveform()) hacer_scroll=0;
-        }*/
 
         if (hacer_scroll) {
 
@@ -4777,29 +4764,17 @@ void menu_audio_draw_sound_wave(void)
 
 			valor_medio=valor_medio/max_valores;
 
-            //TEMPORAL CHAPUZA prueba de conversion zx81
-            //TEMPORAL CHAPUZA prueba de conversion zx81
-            //TEMPORAL CHAPUZA prueba de conversion zx81
-            //TEMPORAL CHAPUZA prueba de conversion zx81
-            //SOLO POR PROBAR. CAMBIAR ESTO POR ALGO DEFINITIVO
-
+            //Para visualizar la forma de onda en el conversor de sonido a zx81
+            //Queremos que cada valor de sample esté separado 4 pixeles así podemos unirlo con lineas y se ve mejor
             int cada_cuanto_convert_zx81=4;
 
             if (convert_audio_to_zx81_thread_running) {
                 //Ubicar a la derecha de la ventana lo que se está convirtiendo
                 int offset=x-xinicial_grafica-ancho_grafica;
 
-                //cada 4 pixeles
                 offset /=cada_cuanto_convert_zx81;
 
-                extern int menu_convert_audio_to_zx81_waveform_last_input_position;
-
-                //esto es solo para actualizar menu_convert_audio_to_zx81_waveform_last_input_position
-                //menu_convert_audio_to_zx81_si_scroll_waveform();
-
-
                 offset+=menu_convert_audio_to_zx81_get_input_position();
-                //menu_convert_audio_to_zx81_waveform_last_input_position;
 
 
                 if (offset<0) valor_medio=0;
@@ -4808,7 +4783,6 @@ void menu_audio_draw_sound_wave(void)
                     //extern z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria;
                     int valor_unsigned=menu_convert_audio_to_zx81_get_sample(offset);
                     //util_enhanced_convert_raw_to_p_p81_puntero_memoria[offset];
-
 
                     int valor_signed=valor_unsigned-128;
 
@@ -4843,8 +4817,9 @@ void menu_audio_draw_sound_wave(void)
                             if (x % cada_cuanto_convert_zx81 != 0) dibujar_linea=0;
 
                             if (dibujar_linea) {
+                                //unir el punto del sample anterior con el actual
                                 zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,ESTILO_GUI_COLOR_WAVEFORM,
-                                 menu_waveform_putpixel_array_from_linea);
+                                                    menu_waveform_putpixel_array_from_linea);
                             }
                         }
 
@@ -4871,14 +4846,14 @@ void menu_audio_draw_sound_wave(void)
 			lasty=y;
 
 
-			//dibujamos valor actual
-			if (si_complete_video_driver() ) {
-                menu_waveform_putpixel_array(x,y,ESTILO_GUI_COLOR_WAVEFORM);
-			}
+                //dibujamos valor actual
+                if (si_complete_video_driver() ) {
+                    menu_waveform_putpixel_array(x,y,ESTILO_GUI_COLOR_WAVEFORM);
+                }
 
-			else {
-				zxvision_print_char_simple(menu_audio_draw_sound_wave_window,xorigen+x,yorigen+y,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,'#');
-			}
+                else {
+                    zxvision_print_char_simple(menu_audio_draw_sound_wave_window,xorigen+x,yorigen+y,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,'#');
+                }
 
             }
 
