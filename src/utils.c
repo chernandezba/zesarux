@@ -23405,6 +23405,11 @@ void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81,char *
     nombre_destino[i]=0;
 }
 
+//Ultimo bloque de memoria asignado para leer archivo de entrada de sonido
+z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria=NULL;
+
+int util_enhanced_convert_raw_to_p_p81_memoria_tamanyo=0;
+
 //Conversión automática de un archivo raw  (rwa, smp, etc) a P81 usando rutina enhanced
 //fun_print: funcion a llamar con mensajes de debug
 //autodetectar_amplitud: si se detecta (1) o no (0) amplitud_media ideal
@@ -23440,20 +23445,24 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
 
     //Cargarlo todo en memoria
-    z80_byte *enhanced_memoria=malloc(tamanyo_archivo);
-    if (enhanced_memoria==NULL) {
-        cpu_panic("Can not allocate memory for load rwa file");
+    if (util_enhanced_convert_raw_to_p_p81_puntero_memoria!=NULL) {
+        util_enhanced_convert_raw_to_p_p81_memoria_tamanyo=0;
+        free(util_enhanced_convert_raw_to_p_p81_puntero_memoria);
     }
 
-    fread(enhanced_memoria,1,tamanyo_archivo,ptr_archivo);
+    util_enhanced_convert_raw_to_p_p81_puntero_memoria=util_malloc(tamanyo_archivo,"Can not allocate memory for load rwa file");
+
+    util_enhanced_convert_raw_to_p_p81_memoria_tamanyo=tamanyo_archivo;
+
+    fread(util_enhanced_convert_raw_to_p_p81_puntero_memoria,1,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,ptr_archivo);
     fclose(ptr_archivo);
 
     if (invert_signal) {
         int i;
-        for (i=0;i<tamanyo_archivo;i++) {
-            int valor=enhanced_memoria[i];
+        for (i=0;i<util_enhanced_convert_raw_to_p_p81_memoria_tamanyo;i++) {
+            int valor=util_enhanced_convert_raw_to_p_p81_puntero_memoria[i];
             valor=255-valor;
-            enhanced_memoria[i]=valor;
+            util_enhanced_convert_raw_to_p_p81_puntero_memoria[i]=valor;
         }
     }
 
@@ -23482,12 +23491,12 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) {
-                longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+                longitud_p81=enh_zx81_lee_datos(util_enhanced_convert_raw_to_p_p81_puntero_memoria,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,memoria_p81,amplitud_media,
                                 debug_print,&longitud_nombre,fun_print,cancel_process,callback);
             }
 
             else {
-                longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+                longitud_p81=enh_zx81_lee_datos(util_enhanced_convert_raw_to_p_p81_puntero_memoria,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,memoria_p81,amplitud_media,
                     debug_print,&longitud_nombre,NULL,cancel_process,callback);
             }
 
@@ -23534,7 +23543,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
     }
 
-    longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
+    longitud_p81=enh_zx81_lee_datos(util_enhanced_convert_raw_to_p_p81_puntero_memoria,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,memoria_p81,amplitud_media,
         debug_print,&longitud_nombre,fun_print,cancel_process,callback);
 
     util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
@@ -23565,7 +23574,6 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
         fclose(ptr_dskplusthreefile);
     }
 
-    free(enhanced_memoria);
     free(memoria_p81);
 
 
