@@ -1568,9 +1568,19 @@ void menu_convert_audio_to_zx81_overlay(void)
             conversion_info.enh_global_input_position,conversion_info.enh_global_output_position
         );
 
+        char string_last_bits[9];
+
+        z80_byte acum=conversion_info.enh_global_partial_byte_read;
+        for (i=0;i<8;i++) {
+            string_last_bits[i]=(acum & 128 ? '1' : '0');
+            acum=acum<<1;
+        }
+
+        string_last_bits[i]=0;
+
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,
-            "Bits read: Last bit %d Bit Pos %d Pulses in a bit %d",
-            conversion_info.enh_global_last_bit_read,
+            "Bits read: %s Bit Pos %d Bit Pulses %d",
+            string_last_bits,
             conversion_info.enh_global_bit_position_in_byte,conversion_info.enh_global_pulses_of_a_bit
         );
 
