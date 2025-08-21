@@ -1708,8 +1708,6 @@ void menu_convert_audio_to_zx81_stop_conversion(void)
 
 #endif
 
-//    //Conversion simple sin threads
-//    enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file);
 
 void menu_convert_audio_to_zx81_select_input_file(void)
 {
