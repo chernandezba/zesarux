@@ -1255,14 +1255,15 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 8
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 9
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS 1
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 2
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 3
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 4
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 5
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 5
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 6
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1529,6 +1530,7 @@ void menu_convert_audio_to_zx81_overlay(void)
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR,"");
 
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
@@ -1550,14 +1552,15 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 
         z80_bit inverse;
+        int i;
 
-        char last_bytes_ascii[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH+1];
+        /*char last_bytes_ascii[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH+1];
         int i;
         for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
             last_bytes_ascii[i]=da_codigo81_solo_letras(conversion_info.enh_global_last_bytes[i],&inverse);
         }
 
-        last_bytes_ascii[i]=0;
+        last_bytes_ascii[i]=0;*/
 
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,
@@ -1566,16 +1569,40 @@ void menu_convert_audio_to_zx81_overlay(void)
         );
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,
-            " Last Byte generated %02X (%c) Partial %02X Lasts [%s]",
-            conversion_info.enh_global_last_byte_read,da_codigo81_solo_letras(conversion_info.enh_global_last_byte_read,&inverse),
-            conversion_info.enh_global_partial_byte_read,last_bytes_ascii
-        );
-
-        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,
-            " Last bit %d Bit Pos %d Pulses in a bit %d",
+            "Bits read: Last bit %d Bit Pos %d Pulses in a bit %d",
             conversion_info.enh_global_last_bit_read,
             conversion_info.enh_global_bit_position_in_byte,conversion_info.enh_global_pulses_of_a_bit
         );
+
+        /*zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,
+            "Bytes read: Last Byte generated %02X (%c) Partial %02X Lasts [%s]",
+            conversion_info.enh_global_last_byte_read,da_codigo81_solo_letras(conversion_info.enh_global_last_byte_read,&inverse),
+            conversion_info.enh_global_partial_byte_read,last_bytes_ascii
+        );*/
+
+        char string_bytes_read[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH*3+1];
+        for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
+            sprintf(&string_bytes_read[i*3],"%02X ",conversion_info.enh_global_last_bytes[i]);
+        }
+
+        string_bytes_read[i*3]=0;
+
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,
+            "Bytes read: %s%02X",string_bytes_read,conversion_info.enh_global_partial_byte_read);
+        //    conversion_info.enh_global_last_byte_read,da_codigo81_solo_letras(conversion_info.enh_global_last_byte_read,&inverse),
+        //    conversion_info.enh_global_partial_byte_read,last_bytes_ascii
+        //);
+
+        char string_chars_read[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH*3+1];
+        for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
+            sprintf(&string_chars_read[i*3],"%c  ",da_codigo81_solo_letras(conversion_info.enh_global_last_bytes[i],&inverse));
+        }
+
+        string_chars_read[i*3]=0;
+
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR,
+            "Chars read: %s%c",string_chars_read,da_codigo81_solo_letras(conversion_info.enh_global_partial_byte_read,&inverse));
+
     }
     else {
         if (convert_audio_to_zx81_has_finished) {
