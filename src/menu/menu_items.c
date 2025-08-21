@@ -4782,11 +4782,15 @@ void menu_audio_draw_sound_wave(void)
             //TEMPORAL CHAPUZA prueba de conversion zx81
             //TEMPORAL CHAPUZA prueba de conversion zx81
             //SOLO POR PROBAR. CAMBIAR ESTO POR ALGO DEFINITIVO
+
+            int cada_cuanto_convert_zx81=4;
+
             if (convert_audio_to_zx81_thread_running) {
+                //Ubicar a la derecha de la ventana lo que se está convirtiendo
                 int offset=x-xinicial_grafica-ancho_grafica;
 
-                //temp cada 4 bytes
-                offset /=4;
+                //cada 4 pixeles
+                offset /=cada_cuanto_convert_zx81;
 
                 extern int menu_convert_audio_to_zx81_waveform_last_input_position;
 
@@ -4795,7 +4799,7 @@ void menu_audio_draw_sound_wave(void)
 
 
                 offset+=menu_convert_audio_to_zx81_waveform_last_input_position;
-                //Ubicar a la derecha de la ventana lo que se está convirtiendo
+
 
                 if (offset<0) valor_medio=0;
                 else {
@@ -4821,6 +4825,8 @@ void menu_audio_draw_sound_wave(void)
 			y=menu_audio_draw_sound_wave_ycentro-y;
 
 
+            int dibujar_linea=1;
+
 			//unimos valor anterior con actual con una linea vertical
             //Pero si no es el primer valor
 			if (x!=xinicial_grafica) {
@@ -4828,8 +4834,20 @@ void menu_audio_draw_sound_wave(void)
 
 					//Onda no llena
 					if (!menu_sound_wave_llena) {
+
+                        if (convert_audio_to_zx81_thread_running) {
+                            if (x % cada_cuanto_convert_zx81 != 0) dibujar_linea=0;
+
+                            if (dibujar_linea) {
+                                zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,ESTILO_GUI_COLOR_WAVEFORM,
+                                 menu_waveform_putpixel_array_from_linea);
+                            }
+                        }
+
+                        else {
                         zxvision_draw_line(menu_audio_draw_sound_wave_window,x,lasty,x,y,ESTILO_GUI_COLOR_WAVEFORM,
                             menu_waveform_putpixel_array_from_linea);
+                        }
                     }
 
 					//dibujar la onda "llena", es decir, siempre contar desde centro
@@ -4845,8 +4863,9 @@ void menu_audio_draw_sound_wave(void)
 				}
 			}
 
-
+            if (dibujar_linea) {
 			lasty=y;
+
 
 			//dibujamos valor actual
 			if (si_complete_video_driver() ) {
@@ -4856,6 +4875,8 @@ void menu_audio_draw_sound_wave(void)
 			else {
 				zxvision_print_char_simple(menu_audio_draw_sound_wave_window,xorigen+x,yorigen+y,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,'#');
 			}
+
+            }
 
 		}
 
