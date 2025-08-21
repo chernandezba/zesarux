@@ -4618,13 +4618,13 @@ void menu_audio_draw_sound_wave(void)
     }
 
     //Si convirtiendo de audio a zx81, alterar max y min especial para la vista de scroll
-    if (convert_audio_to_zx81_thread_running) {
+    /*if (convert_audio_to_zx81_thread_running) {
 
         char valor_sample=menu_convert_audio_to_zx81_get_last_sample();
 
         menu_audio_draw_sound_wave_valor_max=valor_sample;
         menu_audio_draw_sound_wave_valor_min=valor_sample;
-    }
+    }*/
 
 	int audiomedio=audiostats.medio;
 	menu_audio_draw_sound_wave_valor_medio=audiomedio;
@@ -4665,9 +4665,9 @@ void menu_audio_draw_sound_wave(void)
 
         //Si scroll waveform convirtiendo zx81
 
-        if (convert_audio_to_zx81_thread_running) {
+        /*if (convert_audio_to_zx81_thread_running) {
             if (!menu_convert_audio_to_zx81_si_scroll_waveform()) hacer_scroll=0;
-        }
+        }*/
 
         if (hacer_scroll) {
 
@@ -4776,6 +4776,33 @@ void menu_audio_draw_sound_wave(void)
 			}
 
 			valor_medio=valor_medio/max_valores;
+
+
+            //TEMPORAL CHAPUZA prueba de conversion zx81
+            if (convert_audio_to_zx81_thread_running) {
+                int offset=x-xinicial_grafica-ancho_grafica;
+
+
+                extern int menu_convert_audio_to_zx81_waveform_last_input_position;
+
+                //esto es solo para actualizar menu_convert_audio_to_zx81_waveform_last_input_position
+                menu_convert_audio_to_zx81_si_scroll_waveform();
+
+
+                offset+=menu_convert_audio_to_zx81_waveform_last_input_position;
+                //Ubicar a la derecha de la ventana lo que se está convirtiendo
+
+                if (offset<0) valor_medio=0;
+                else {
+                    //acceder a la memoria de input rwa a lo bruto
+                    extern z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria;
+                    int valor_unsigned=util_enhanced_convert_raw_to_p_p81_puntero_memoria[offset];
+                    int valor_signed=valor_unsigned-128;
+
+                    valor_medio=valor_signed;
+                }
+
+            }
 
 
 			valor_audio=valor_medio;
