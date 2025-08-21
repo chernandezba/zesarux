@@ -158,6 +158,7 @@ z80_byte return_zx81_char(z80_byte codigo)
 
 
 int enh_global_input_position=0;
+z80_byte enh_global_last_audio_sample=0;
 int enh_global_output_position=0;
 z80_byte enh_global_last_byte_read=0;
 z80_byte enh_global_partial_byte_read=0;
@@ -173,6 +174,7 @@ z80_byte enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH];
 void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *info)
 {
     info->enh_global_input_position=enh_global_input_position;
+    info->enh_global_last_audio_sample=enh_global_last_audio_sample;
     info->enh_global_output_position=enh_global_output_position;
     info->enh_global_last_byte_read=enh_global_last_byte_read;
     info->enh_global_partial_byte_read=enh_global_partial_byte_read;
@@ -262,6 +264,8 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
         }
 
         z80_byte valor_sample=enhanced_memoria[i];
+
+        enh_global_last_audio_sample=valor_sample;
 
         if (callback!=NULL) {
             callback();

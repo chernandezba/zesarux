@@ -4617,6 +4617,14 @@ void menu_audio_draw_sound_wave(void)
         menu_audio_draw_sound_wave_valor_min=menu_hilow_convert_audio_last_audio_sample;
     }
 
+    //Si convirtiendo de audio a zx81, alterar max y min especial para la vista de scroll
+    if (convert_audio_to_zx81_thread_running) {
+
+        char valor_sample=menu_convert_audio_to_zx81_get_last_sample();
+
+        menu_audio_draw_sound_wave_valor_max=valor_sample;
+        menu_audio_draw_sound_wave_valor_min=valor_sample;
+    }
 
 	int audiomedio=audiostats.medio;
 	menu_audio_draw_sound_wave_valor_medio=audiomedio;
@@ -4653,6 +4661,12 @@ void menu_audio_draw_sound_wave(void)
                 menu_audio_draw_sound_wave_si_scroll_hilow_audio++;
                 if ( (menu_audio_draw_sound_wave_si_scroll_hilow_audio % menu_hilow_convert_lento) !=0) hacer_scroll=0;
             }
+        }
+
+        //Si scroll waveform convirtiendo zx81
+
+        if (convert_audio_to_zx81_thread_running) {
+            if (!menu_convert_audio_to_zx81_si_scroll_waveform()) hacer_scroll=0;
         }
 
         if (hacer_scroll) {

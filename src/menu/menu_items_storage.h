@@ -69,7 +69,9 @@ extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
 extern void menu_zxmmcplus(MENU_ITEM_PARAMETERS);
 extern void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS);
 
-
+extern int convert_audio_to_zx81_thread_running;
+extern char menu_convert_audio_to_zx81_get_last_sample(void);
+extern int menu_convert_audio_to_zx81_si_scroll_waveform(void);
 
 #endif
 

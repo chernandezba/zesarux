@@ -1439,6 +1439,42 @@ void menu_convert_audio_to_zx81_print_line_actions(zxvision_window *ventana)
     }
 }
 
+
+//Para la vista de scroll en waveform
+char menu_convert_audio_to_zx81_get_last_sample(void)
+{
+
+    struct s_enh_zx81_lee_global_info conversion_info;
+    enh_zx81_lee_get_global_info(&conversion_info);
+
+    int valor_sample=conversion_info.enh_global_last_audio_sample;
+    //pasar a signed
+    valor_sample=valor_sample-128;
+
+    return valor_sample;
+
+
+}
+
+//Para saber si hace scroll vista de waveform
+int menu_convert_audio_to_zx81_waveform_last_input_position=0;
+
+
+int menu_convert_audio_to_zx81_si_scroll_waveform(void)
+{
+    struct s_enh_zx81_lee_global_info conversion_info;
+    enh_zx81_lee_get_global_info(&conversion_info);
+
+    int hacer_scroll=0;
+
+    if (conversion_info.enh_global_input_position!=menu_convert_audio_to_zx81_waveform_last_input_position) hacer_scroll=1;
+
+    menu_convert_audio_to_zx81_waveform_last_input_position=conversion_info.enh_global_input_position;
+
+    return hacer_scroll;
+}
+
+
 void menu_convert_audio_to_zx81_overlay(void)
 {
 
@@ -1473,17 +1509,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 
         struct s_enh_zx81_lee_global_info conversion_info;
         enh_zx81_lee_get_global_info(&conversion_info);
-        /*
-        struct s_enh_zx81_lee_global_info {
-        int enh_global_input_position;
-        int enh_global_output_position;
-        z80_byte enh_global_last_byte_read;
-        z80_byte enh_global_partial_byte_read;
-        int enh_global_bit_position_in_byte;
-        int enh_global_last_bit_read;
-        int enh_global_pulses_of_a_bit;
-    };
-        */
+
 
         z80_bit inverse;
 
