@@ -4813,6 +4813,7 @@ void menu_audio_draw_sound_wave(void)
 					//Onda no llena
 					if (!menu_sound_wave_llena) {
 
+                        //Para mostrar forma de onda de conversion de audio a zx81
                         if (convert_audio_to_zx81_thread_running) {
                             if (x % cada_cuanto_convert_zx81 != 0) dibujar_linea=0;
 

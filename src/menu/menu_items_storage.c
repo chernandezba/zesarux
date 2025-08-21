@@ -1545,7 +1545,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,
-            "Current info: Input Pos %10d Output Pos %6d",
+            "Input Pos %10d Output Pos %6d",
             conversion_info.enh_global_input_position,conversion_info.enh_global_output_position
         );
 
@@ -1948,13 +1948,13 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
 
         char buf_autodetect[30];
-        if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Autodetect]");
-        else sprintf(buf_autodetect,"[%d] ~~set",menu_convert_audio_to_zx81_amplitude);
+        if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Auto]");
+        else sprintf(buf_autodetect,"[ %3d] ~~set",menu_convert_audio_to_zx81_amplitude);
 
         char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,
-            "~~amplitude: %s  [%c] ~~debug.  speed ~~0-~~6: %d: %s",
+            "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
             buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
             menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
         );

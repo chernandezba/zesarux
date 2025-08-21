@@ -72,6 +72,8 @@ extern void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS);
 extern int convert_audio_to_zx81_thread_running;
 extern char menu_convert_audio_to_zx81_get_last_sample(void);
 extern int menu_convert_audio_to_zx81_si_scroll_waveform(void);
+extern int menu_convert_audio_to_zx81_get_input_position(void);
+extern int menu_convert_audio_to_zx81_get_sample(int offset);
 
 #endif
 
