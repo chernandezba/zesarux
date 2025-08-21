@@ -165,19 +165,41 @@ int enh_global_last_bit_read=0;
 int enh_global_bit_position_in_byte=0;
 int enh_global_pulses_of_a_bit=0;
 
+//ultimos bytes leidos. El de mas de la derecha (el ultimo) es el ultimo byte leido
+z80_byte enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH];
 
 
 //funcion para obtener posicion actual: pos sample, pos output, ultimo byte, ultimo bit, conteo de pulsos de bit, ...
-void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *i)
+void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *info)
 {
-    i->enh_global_input_position=enh_global_input_position;
-    i->enh_global_output_position=enh_global_output_position;
-    i->enh_global_last_byte_read=enh_global_last_byte_read;
-    i->enh_global_partial_byte_read=enh_global_partial_byte_read;
-    i->enh_global_last_bit_read=enh_global_last_bit_read;
-    i->enh_global_bit_position_in_byte=enh_global_bit_position_in_byte;
-    i->enh_global_pulses_of_a_bit=enh_global_pulses_of_a_bit;
+    info->enh_global_input_position=enh_global_input_position;
+    info->enh_global_output_position=enh_global_output_position;
+    info->enh_global_last_byte_read=enh_global_last_byte_read;
+    info->enh_global_partial_byte_read=enh_global_partial_byte_read;
+    info->enh_global_last_bit_read=enh_global_last_bit_read;
+    info->enh_global_bit_position_in_byte=enh_global_bit_position_in_byte;
+    info->enh_global_pulses_of_a_bit=enh_global_pulses_of_a_bit;
+
+    int i;
+
+    for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
+        info->enh_global_last_bytes[i]=enh_global_last_bytes[i];
+    }
+
 }
+
+//rotar el array de ultimos bytes
+//de derecha a izquierda
+void enh_zx81_lee_rotate_last_bytes(void)
+{
+    int i;
+    for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH-1;i++) {
+        enh_global_last_bytes[i]=enh_global_last_bytes[i+1];
+    }
+
+    enh_global_last_bytes[i]=0;
+}
+
 
 //cancel_process puntero a valor int que dice si se cancela el proceso (valor diferente de 0). Si no se usa, pasar puntero a NULL. Esto
 //si puede activar desde thread externo
@@ -193,8 +215,12 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     enh_global_bit_position_in_byte=0;
     enh_global_pulses_of_a_bit=0;
 
-
     int i;
+    for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
+        enh_global_last_bytes[i]=0;
+    }
+
+
     int amplitud_maxima=0;
 
 
@@ -236,6 +262,9 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
         z80_byte valor_sample=enhanced_memoria[i];
 
+
+//TEMPORAL
+//usleep(1000);
 
         switch(estado_pulso) {
             case 0:
@@ -333,6 +362,9 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
                                 destino_p81[indice_destino_p81++]=acumulado_byte;
                                 enh_global_last_byte_read=acumulado_byte;
+
+                                enh_zx81_lee_rotate_last_bytes();
+                                enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH-1]=acumulado_byte;
 
                                 if (!leido_nombre) {
                                     if (acumulado_byte&128) {
