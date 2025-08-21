@@ -154,6 +154,7 @@
 #include "lec.h"
 #include "zesarux.h"
 #include "zxmmcplus.h"
+#include "enhanced_zx81_read.h"
 
 
 //Opciones seleccionadas para cada menu
@@ -1254,11 +1255,12 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 5
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 6
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS 1
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 2
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION 2
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 3
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1448,6 +1450,8 @@ void menu_convert_audio_to_zx81_overlay(void)
     menu_convert_audio_to_zx81_print_line_actions(menu_convert_audio_to_zx81_window);
 
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION,
+            "");
 
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
@@ -1463,6 +1467,30 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 
         menu_convert_audio_to_zx81_print_debug_line(menu_convert_audio_to_zx81_window);
+
+        struct s_enh_zx81_lee_global_info conversion_info;
+        enh_zx81_lee_get_global_info(&conversion_info);
+        /*
+        struct s_enh_zx81_lee_global_info {
+        int enh_global_input_position;
+        int enh_global_output_position;
+        z80_byte enh_global_last_byte_read;
+        z80_byte enh_global_partial_byte_read;
+        int enh_global_bit_position_in_byte;
+        int enh_global_last_bit_read;
+        int enh_global_pulses_of_a_bit;
+    };
+        */
+
+        z80_bit inverse;
+
+        zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION,
+            "Current info: in %10d out %6d last %02X (%c) part %02X bitpos %d lastbit %d pulsesbit %d",
+            conversion_info.enh_global_input_position,conversion_info.enh_global_output_position,
+            conversion_info.enh_global_last_byte_read,da_codigo81_solo_letras(conversion_info.enh_global_last_byte_read,&inverse),
+            conversion_info.enh_global_partial_byte_read,
+            conversion_info.enh_global_bit_position_in_byte,conversion_info.enh_global_last_bit_read,
+            conversion_info.enh_global_pulses_of_a_bit);
     }
     else {
         if (convert_audio_to_zx81_has_finished) {

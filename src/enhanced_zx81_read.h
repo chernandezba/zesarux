@@ -28,7 +28,19 @@ typedef unsigned char z80_byte;
 
 
 extern int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
-    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *));
+    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process);
 extern z80_byte return_zx81_char(z80_byte codigo);
+
+struct s_enh_zx81_lee_global_info {
+    int enh_global_input_position;
+    int enh_global_output_position;
+    z80_byte enh_global_last_byte_read;
+    z80_byte enh_global_partial_byte_read;
+    int enh_global_last_bit_read;
+    int enh_global_bit_position_in_byte;
+    int enh_global_pulses_of_a_bit;
+};
+
+extern void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *i);
 
 #endif

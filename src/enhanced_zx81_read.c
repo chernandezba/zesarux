@@ -25,8 +25,11 @@
 
 
 #include "enhanced_zx81_read.h"
-//#include "cpu.h"
 
+
+//#include "cpu.h"
+//HAY QUE mantener este código con el mínimo de dependencias pues se tiene que poder compilar externamente junto con main_enhanced_zx81_read.c
+//y adicionalmente se compila también en ZEsarUX
 
 
 /*
@@ -152,9 +155,45 @@ z80_byte return_zx81_char(z80_byte codigo)
 
 }
 
-int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
-    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *))
+
+
+int enh_global_input_position=0;
+int enh_global_output_position=0;
+z80_byte enh_global_last_byte_read=0;
+z80_byte enh_global_partial_byte_read=0;
+int enh_global_last_bit_read=0;
+int enh_global_bit_position_in_byte=0;
+int enh_global_pulses_of_a_bit=0;
+
+
+
+//funcion para obtener posicion actual: pos sample, pos output, ultimo byte, ultimo bit, conteo de pulsos de bit, ...
+void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *i)
 {
+    i->enh_global_input_position=enh_global_input_position;
+    i->enh_global_output_position=enh_global_output_position;
+    i->enh_global_last_byte_read=enh_global_last_byte_read;
+    i->enh_global_partial_byte_read=enh_global_partial_byte_read;
+    i->enh_global_last_bit_read=enh_global_last_bit_read;
+    i->enh_global_bit_position_in_byte=enh_global_bit_position_in_byte;
+    i->enh_global_pulses_of_a_bit=enh_global_pulses_of_a_bit;
+}
+
+//cancel_process puntero a valor int que dice si se cancela el proceso (valor diferente de 0). Si no se usa, pasar puntero a NULL. Esto
+//si puede activar desde thread externo
+int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
+    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process)
+{
+
+    //Inicializar globales que se pueden leer desde thread externo
+    enh_global_input_position=0;
+    enh_global_output_position=0;
+    enh_global_last_byte_read=0;
+    enh_global_last_bit_read=0;
+    enh_global_bit_position_in_byte=0;
+    enh_global_pulses_of_a_bit=0;
+
+
     int i;
     int amplitud_maxima=0;
 
@@ -182,6 +221,19 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     char buffer_print[200];
 
     for (i=0;i<tamanyo_memoria;i++) {
+        enh_global_input_position=i;
+        enh_global_output_position=indice_destino_p81;
+        enh_global_partial_byte_read=acumulado_byte;
+        enh_global_pulses_of_a_bit=conteo_pulsos_de_bit;
+        enh_global_bit_position_in_byte=numero_bit_en_byte;
+
+        if (cancel_process!=NULL) {
+            if (*cancel_process) {
+                printf("Cancelled reading data\n");
+                return indice_destino_p81;
+            }
+        }
+
         z80_byte valor_sample=enhanced_memoria[i];
 
 
@@ -271,6 +323,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
                             acumulado_byte=acumulado_byte<<1;
                             acumulado_byte |=bit_leido;
+                            enh_global_last_bit_read=bit_leido;
                             numero_bit_en_byte++;
                             if (numero_bit_en_byte==8) {
                                 if (debug_print && fun_print!=NULL)  {
@@ -279,6 +332,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                 }
 
                                 destino_p81[indice_destino_p81++]=acumulado_byte;
+                                enh_global_last_byte_read=acumulado_byte;
 
                                 if (!leido_nombre) {
                                     if (acumulado_byte&128) {
@@ -343,7 +397,7 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_b
     }
 
 
-    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL);
+    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL,NULL);
 
     return longitud_p81;
 }
