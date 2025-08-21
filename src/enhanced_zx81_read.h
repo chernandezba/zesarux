@@ -41,6 +41,8 @@ struct s_enh_zx81_lee_global_info {
     int enh_global_last_bit_read;
     int enh_global_bit_position_in_byte;
     int enh_global_pulses_of_a_bit;
+    int enh_global_rise_position;
+    int enh_global_start_bit_position;
     z80_byte enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH];
 };
 

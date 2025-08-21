@@ -165,6 +165,8 @@ z80_byte enh_global_partial_byte_read=0;
 int enh_global_last_bit_read=0;
 int enh_global_bit_position_in_byte=0;
 int enh_global_pulses_of_a_bit=0;
+int enh_global_rise_position=0;
+int enh_global_start_bit_position=0;
 
 //ultimos bytes leidos. El de mas de la derecha (el ultimo) es el ultimo byte leido
 z80_byte enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH];
@@ -181,6 +183,8 @@ void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *info)
     info->enh_global_last_bit_read=enh_global_last_bit_read;
     info->enh_global_bit_position_in_byte=enh_global_bit_position_in_byte;
     info->enh_global_pulses_of_a_bit=enh_global_pulses_of_a_bit;
+    info->enh_global_rise_position=enh_global_rise_position;
+    info->enh_global_start_bit_position=enh_global_start_bit_position;
 
     int i;
 
@@ -217,6 +221,8 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     enh_global_last_bit_read=0;
     enh_global_bit_position_in_byte=0;
     enh_global_pulses_of_a_bit=0;
+    enh_global_rise_position=0;
+
 
     int i;
     for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
@@ -325,6 +331,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
 
                         posicion_cresta_subida=i;
+                        enh_global_rise_position=i;
 
                         //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
                         if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
@@ -358,6 +365,9 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                             acumulado_byte=acumulado_byte<<1;
                             acumulado_byte |=bit_leido;
                             enh_global_last_bit_read=bit_leido;
+
+                            enh_global_start_bit_position=i;
+
                             numero_bit_en_byte++;
                             if (numero_bit_en_byte==8) {
                                 if (debug_print && fun_print!=NULL)  {

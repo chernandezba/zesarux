@@ -149,8 +149,6 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 *icono ventana
 
 
-*f1 ayuda indicando como funciona y detallando el debug output
-
 *entrada en changelog
 
 *opcion para smartload directamente archivo generado en salida
@@ -163,6 +161,8 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 *Nota en algún sitio que esta conversión mejorada de raw a p/p81 requiere que se borren pulsos de ruido de antes de los datos,
 se permite la zona de silencio de zx81 pero algún click que haya antes, mas alto de esas zonas de silencio, se deben borrar a mano
 (ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
+
+*f1 ayuda indicando como funciona y detallando el debug output
 
 ok *poder buscar texto en debug output: por ejemplo Character para encontrar nombre
 

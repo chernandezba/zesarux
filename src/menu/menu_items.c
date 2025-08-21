@@ -4766,6 +4766,7 @@ void menu_audio_draw_sound_wave(void)
 
             //Para visualizar la forma de onda en el conversor de sonido a zx81
             //Queremos que cada valor de sample esté separado 4 pixeles así podemos unirlo con lineas y se ve mejor
+            int color_linea=ESTILO_GUI_COLOR_WAVEFORM;
             int cada_cuanto_convert_zx81=4;
 
             if (convert_audio_to_zx81_thread_running) {
@@ -4775,6 +4776,9 @@ void menu_audio_draw_sound_wave(void)
                 offset /=cada_cuanto_convert_zx81;
 
                 offset+=menu_convert_audio_to_zx81_get_input_position();
+
+                int posicion_color_destacar=menu_convert_audio_to_zx81_get_color_destacar();
+                if (offset>=posicion_color_destacar) color_linea=ESTILO_GUI_COLOR_BLOCK_VISUALTAPE;
 
 
                 if (offset<0) valor_medio=0;
@@ -4819,7 +4823,7 @@ void menu_audio_draw_sound_wave(void)
 
                             if (dibujar_linea) {
                                 //unir el punto del sample anterior con el actual
-                                zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,ESTILO_GUI_COLOR_WAVEFORM,
+                                zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,color_linea,
                                                     menu_waveform_putpixel_array_from_linea);
                             }
                         }

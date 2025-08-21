@@ -1487,6 +1487,22 @@ int menu_convert_audio_to_zx81_get_input_position(void)
     return conversion_info.enh_global_input_position;
 }
 
+//0: destacar pulso
+//1: destacar bit. Tal y como funciona el algorimo, el primer pulso de un bit lo remarcaria como del bit anterior,
+//es como va el algoritmo, pero para el usuario seria confuso. De momento dejamos esto fijo con 0 - solo destacar pulso
+//En un futuro esto tendria que ser una opcion modificable para destacar pulso, o bit, o byte...
+int menu_convert_audio_to_zx81_que_estacamos_en_waveform=0;
+
+int menu_convert_audio_to_zx81_get_color_destacar(void)
+{
+    struct s_enh_zx81_lee_global_info conversion_info;
+    enh_zx81_lee_get_global_info(&conversion_info);
+
+    if (menu_convert_audio_to_zx81_que_estacamos_en_waveform==1) return conversion_info.enh_global_start_bit_position;
+    else return conversion_info.enh_global_rise_position;
+
+}
+
 int menu_convert_audio_to_zx81_get_sample(int offset)
 {
     if (offset<0 || offset>=util_enhanced_convert_raw_to_p_p81_memoria_tamanyo) return 0;
