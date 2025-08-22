@@ -1475,7 +1475,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
     char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
-    char *textos_destacar[]={"Pulse","Bit","Byte"};
+    char *textos_destacar[]={"Pulse"," Bit "," Byte"};
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
         "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
@@ -1487,7 +1487,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
     if (menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
-            "hi~~ghlight: %s",
+            "hi~~ghlight: [%s]",
             textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform]
         );
     }
@@ -1594,7 +1594,7 @@ int menu_convert_audio_to_zx81_get_color_destacar(void)
             if (total_pulses==0) ancho=0;
             else ancho /=total_pulses;
 
-            printf("ajustamos. total_pulses: %d restar: %d\n",total_pulses,ancho);
+            //printf("ajustamos. total_pulses: %d restar: %d\n",total_pulses,ancho);
 
             inicio_byte -=ancho;
         }
