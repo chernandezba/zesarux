@@ -1666,10 +1666,19 @@ void menu_convert_audio_to_zx81_overlay(void)
 
         last_bytes_ascii[i]=0;*/
 
+        int percent_input=0;
+
+        //hacemos el calculo con variable de 64 bits porque se puede salir de rango de 31 bits (2 GB)
+        //en cuanto tenemos un archivo de 20 MB y multiplicamos por 100
+        z80_64bit tamanyo=conversion_info.enh_global_total_input_size;
+
+        if (tamanyo!=0) {
+            percent_input=(conversion_info.enh_global_input_position*100)/conversion_info.enh_global_total_input_size;
+        }
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,
-            "Input Pos %10d Output Pos %6d",
-            conversion_info.enh_global_input_position,conversion_info.enh_global_output_position
+            "Input Pos %10d (%3d%%) Output Pos %6d",
+            conversion_info.enh_global_input_position,percent_input,conversion_info.enh_global_output_position
         );
 
         char string_last_bits[9];

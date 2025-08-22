@@ -178,6 +178,7 @@ hacerlo con un callback desde enhanced_zx81_read
 ok *no poder cambiar input ni output mientras está en ejecución
 *que se pueda escuchar la onda mientras se convierte
 *poder editar la onda cuando haya un error - que se pare si hay un error. Requeriria otra ventana diferente de la waveform?
+*que pasa si llega el pulso final y poco despues se acaba el archivo. lo finaliza bien?
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 

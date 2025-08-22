@@ -34,6 +34,8 @@ extern z80_byte return_zx81_char(z80_byte codigo);
 
 struct s_enh_zx81_lee_global_info {
     int enh_global_input_position;
+    int enh_global_total_input_size;
+
     z80_byte enh_global_last_audio_sample;
     int enh_global_output_position;
     z80_byte enh_global_last_byte_read;

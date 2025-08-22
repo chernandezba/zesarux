@@ -168,6 +168,7 @@ int enh_global_pulses_of_a_bit=0;
 int enh_global_rise_position=0;
 int enh_global_start_bit_position=0;
 int enh_global_start_byte_position=0;
+int enh_global_total_input_size=0;
 
 //ultimos bytes leidos. El de mas de la derecha (el ultimo) es el ultimo byte leido
 z80_byte enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH];
@@ -177,6 +178,7 @@ z80_byte enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH];
 void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *info)
 {
     info->enh_global_input_position=enh_global_input_position;
+    info->enh_global_total_input_size=enh_global_total_input_size;
     info->enh_global_last_audio_sample=enh_global_last_audio_sample;
     info->enh_global_output_position=enh_global_output_position;
     info->enh_global_last_byte_read=enh_global_last_byte_read;
@@ -226,6 +228,8 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     enh_global_rise_position=0;
     enh_global_start_bit_position=0;
     enh_global_start_byte_position=0;
+
+    enh_global_total_input_size=tamanyo_memoria;
 
 
     int i;
