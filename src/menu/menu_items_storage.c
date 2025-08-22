@@ -1682,11 +1682,11 @@ void menu_convert_audio_to_zx81_overlay(void)
 
         string_last_bits[i]=0;
 
-        char string_new_bit[20]="";
+        char string_new_bit[30]="";
         //Al detectar nuevo bit, contador de pulsos se pone a 1
         //Evitar el primer pulso detectado
         if (conversion_info.enh_global_pulses_of_a_bit==1 &&
-            !(conversion_info.enh_global_output_position==0 && conversion_info.enh_global_bit_position_in_byte==0) ) strcpy(string_new_bit,"^^New bit");
+            !(conversion_info.enh_global_output_position==0 && conversion_info.enh_global_bit_position_in_byte==0) ) strcpy(string_new_bit,"^^New bit^^ ");
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,
             "Bits read:  %s Bit Pos %d Bit Pulses %d  %s",
@@ -1708,11 +1708,11 @@ void menu_convert_audio_to_zx81_overlay(void)
 
         string_bytes_read[i*3]=0;
 
-        char string_new_byte[20]="";
+        char string_new_byte[30]="";
         //Al detectar nuevo byte, contador de bits se pone a 0
         //Evitar el primer byte detectado
         if (conversion_info.enh_global_bit_position_in_byte==0 &&
-            conversion_info.enh_global_output_position!=0) strcpy(string_new_byte,"^^New byte");
+            conversion_info.enh_global_output_position!=0) strcpy(string_new_byte,"^^New byte^^ ");
 
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,
