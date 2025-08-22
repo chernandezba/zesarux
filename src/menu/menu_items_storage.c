@@ -1255,15 +1255,16 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 9
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 10
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS 1
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 2
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 3
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 4
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 5
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 6
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE 1
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO 2
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 3
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 4
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 5
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 6
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 7
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1599,7 +1600,7 @@ void menu_convert_audio_to_zx81_overlay(void)
             !(conversion_info.enh_global_output_position==0 && conversion_info.enh_global_bit_position_in_byte==0) ) strcpy(string_new_bit,"New bit");
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,
-            "Bits read: %s Bit Pos %d Bit Pulses %d %s",
+            "Bits read:  %s Bit Pos %d Bit Pulses %d %s",
             string_last_bits,
             conversion_info.enh_global_bit_position_in_byte,conversion_info.enh_global_pulses_of_a_bit,
             string_new_bit
@@ -2045,10 +2046,14 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
         char *textos_destacar[]={"Pulse","Bit"};
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,
-            "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s  d~~est: %s",
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
+            "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
             buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion],
+            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
+        );
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
+            "hi~~ghlight: %s",
             textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform]
         );
 
@@ -2151,7 +2156,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 menu_convert_audio_to_zx81_speed_conversion=6;
             break;
 
-            case 'e':
+            case 'g':
                 menu_convert_audio_to_zx81_que_destacamos_en_waveform ^=1;
             break;
 
