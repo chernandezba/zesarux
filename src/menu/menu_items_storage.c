@@ -1291,9 +1291,9 @@ char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
 char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 
 //0: destacar pulso
-//1: destacar bit. Tal y como funciona el algorimo, el primer pulso de un bit lo remarcaria como del bit anterior,
-//es como va el algoritmo, pero para el usuario seria confuso. De momento dejamos esto fijo con 0 - solo destacar pulso
-//En un futuro esto tendria que ser una opcion modificable para destacar pulso, o bit, o byte...
+//1: destacar bit. Tal y como funciona el algorimo, el primer pulso de un bit lo remarcara como del bit anterior,
+//es como va el algoritmo
+//2 destacar byte
 int menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
 
 //velocidad 6: sin pausa (no pause)
@@ -1475,7 +1475,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
     char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
-    char *textos_destacar[]={"Pulse","Bit"};
+    char *textos_destacar[]={"Pulse","Bit","Byte"};
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
         "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
@@ -1553,6 +1553,7 @@ int menu_convert_audio_to_zx81_get_color_destacar(void)
     enh_zx81_lee_get_global_info(&conversion_info);
 
     if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==1) {
+        //Bit
         int inicio_bit=conversion_info.enh_global_start_bit_position;
 
         //printf("inicio_bit: %d\n",inicio_bit);
@@ -1563,13 +1564,46 @@ int menu_convert_audio_to_zx81_get_color_destacar(void)
             //printf("ajustamos\n");
             //le restamos un calculo aproximado de lo que puede ser
             int ancho=conversion_info.enh_global_input_position-inicio_bit;
-            ancho /=conversion_info.enh_global_pulses_of_a_bit;
+
+            //por si acaso
+            if (conversion_info.enh_global_pulses_of_a_bit==0) ancho=0;
+            else ancho /=conversion_info.enh_global_pulses_of_a_bit;
 
             inicio_bit -=ancho;
         }
         return inicio_bit;
     }
-    else return conversion_info.enh_global_rise_position;
+    else if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==2) {
+        //Byte
+        int inicio_byte=conversion_info.enh_global_start_byte_position;
+
+        //printf("inicio_bit: %d\n",inicio_bit);
+
+        //A partir del segundo byte, el inicio siempre es desde el segundo pulso, hacemos un ajuste a mano
+        //TODO: no aplicar con el primer byte de todos
+        if (conversion_info.enh_global_output_position>=1) {
+
+            //le restamos un calculo aproximado de lo que puede ser
+            //asumimos que cada bit tiene de media 6 pulsos (ni 4 ni 8)
+            int total_pulses=conversion_info.enh_global_pulses_of_a_bit+conversion_info.enh_global_bit_position_in_byte*6;
+            int ancho=conversion_info.enh_global_input_position-inicio_byte;
+
+
+
+            //por si acaso
+            if (total_pulses==0) ancho=0;
+            else ancho /=total_pulses;
+
+            printf("ajustamos. total_pulses: %d restar: %d\n",total_pulses,ancho);
+
+            inicio_byte -=ancho;
+        }
+        return inicio_byte;
+    }
+    else {
+        //Pulso
+        return conversion_info.enh_global_rise_position;
+    }
 
 }
 
@@ -2186,7 +2220,8 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             break;
 
             case 'g':
-                menu_convert_audio_to_zx81_que_destacamos_en_waveform ^=1;
+                menu_convert_audio_to_zx81_que_destacamos_en_waveform++;
+                if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==3) menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
             break;
 
             case 'w':
