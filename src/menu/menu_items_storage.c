@@ -1492,14 +1492,28 @@ int menu_convert_audio_to_zx81_get_input_position(void)
 //1: destacar bit. Tal y como funciona el algorimo, el primer pulso de un bit lo remarcaria como del bit anterior,
 //es como va el algoritmo, pero para el usuario seria confuso. De momento dejamos esto fijo con 0 - solo destacar pulso
 //En un futuro esto tendria que ser una opcion modificable para destacar pulso, o bit, o byte...
-int menu_convert_audio_to_zx81_que_estacamos_en_waveform=0;
+int menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
 
 int menu_convert_audio_to_zx81_get_color_destacar(void)
 {
     struct s_enh_zx81_lee_global_info conversion_info;
     enh_zx81_lee_get_global_info(&conversion_info);
 
-    if (menu_convert_audio_to_zx81_que_estacamos_en_waveform==1) return conversion_info.enh_global_start_bit_position;
+    if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==1) {
+        int inicio_bit=conversion_info.enh_global_start_bit_position;
+
+        //A partir del segundo grupo de pulsos, el inicio siempre es desde el segundo pulso, hacemos un ajuste a mano
+        //TODO: no aplicar con el primer pulso de todos
+        if (conversion_info.enh_global_pulses_of_a_bit>=1) {
+            //printf("ajustamos\n");
+            //le restamos un calculo aproximado de lo que puede ser
+            int ancho=conversion_info.enh_global_input_position-inicio_bit;
+            ancho /=conversion_info.enh_global_pulses_of_a_bit;
+
+            inicio_bit -=ancho;
+        }
+        return inicio_bit;
+    }
     else return conversion_info.enh_global_rise_position;
 
 }
@@ -1617,12 +1631,21 @@ void menu_convert_audio_to_zx81_overlay(void)
         //    conversion_info.enh_global_partial_byte_read,last_bytes_ascii
         //);
 
-        char string_chars_read[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH*3+1];
-        for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
-            sprintf(&string_chars_read[i*3],"%c  ",da_codigo81_solo_letras(conversion_info.enh_global_last_bytes[i],&inverse));
+        //caracter+2 espacios+reservado 2 para invertir
+        char string_chars_read[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH*5+1];
+        int indice_dest_char=0;
+        for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++,indice_dest_char+=3) {
+            z80_byte character=da_codigo81_solo_letras(conversion_info.enh_global_last_bytes[i],&inverse);
+            //si inverso, poner color invertido
+            if (inverse.v) {
+                strcpy(&string_chars_read[indice_dest_char],"~!");
+                indice_dest_char +=2;
+            }
+
+            sprintf(&string_chars_read[indice_dest_char],"%c  ",character);
         }
 
-        string_chars_read[i*3]=0;
+        string_chars_read[indice_dest_char]=0;
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR,
             "Chars read: %s%c",string_chars_read,da_codigo81_solo_letras(conversion_info.enh_global_partial_byte_read,&inverse));
@@ -2020,10 +2043,13 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
         char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
+        char *textos_destacar[]={"Pulse","Bit"};
+
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS,
-            "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
+            "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s  d~~est: %s",
             buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
+            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion],
+            textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform]
         );
 
 
@@ -2123,6 +2149,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case '6':
                 menu_convert_audio_to_zx81_speed_conversion=6;
+            break;
+
+            case 'e':
+                menu_convert_audio_to_zx81_que_destacamos_en_waveform ^=1;
             break;
 
             //Salir con ESC

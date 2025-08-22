@@ -7966,7 +7966,10 @@ void menu_desactiva_cuadrado(void)
 	//ventana_activa_tipo_zxvision=0;
 }
 
-//Devuelve 1 si hay dos ~~ seguidas en la posicion del indice o ~^
+//Devuelve 1 si hay dos ~~ seguidas en la posicion del indice o ~^ o ~ !
+//~~: color hotkey, bajando letra a minusculas
+//~^: color hotkey, sin bajar letra a minusculas
+//~!: inverso siempre, cambiando tinta por papel, independientemente del estilo de GUI. Usado en lector de audio a zx81
 //Sino, 0
 int menu_escribe_texto_si_inverso(char *texto, int indice)
 {
@@ -7974,7 +7977,7 @@ int menu_escribe_texto_si_inverso(char *texto, int indice)
 	if (menu_disable_special_chars.v) return 0;
 
 	if (texto[indice++]!='~') return 0;
-	if (texto[indice]!='~' && texto[indice]!='^') {
+	if (texto[indice]!='~' && texto[indice]!='^' && texto[indice]!='!') {
 		return 0;
 	}
 
@@ -14582,6 +14585,8 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 		overlay_screen caracter_aux;
 		caracter_aux.caracter=*texto;
 
+        int invertir_siempre_independientemente_del_estilo=0;
+
 		//TODO: gestion caracteres de control
 //Si dos ^ seguidas, invertir estado parpadeo
 		if (menu_escribe_texto_si_parpadeo(texto,0)) {
@@ -14598,12 +14603,18 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 			caracter_aux.caracter=*texto;
 		}
 
-		//ver si dos ~~ o ~^ seguidas y cuidado al comparar que no nos vayamos mas alla del codigo 0 final
+		//ver si dos ~~ o ~^ o ~! seguidas y cuidado al comparar que no nos vayamos mas alla del codigo 0 final
 		if (menu_escribe_texto_si_inverso(texto,0)) {
 			minuscula_letra=1;
 			//y saltamos esos codigos de negado. Ver si era ~^, con lo que indica que no hay que bajar a minusculas
 			texto++;
 			if (*texto=='^') minuscula_letra=0;
+
+            if (*texto=='!') {
+                invertir_siempre_independientemente_del_estilo=1;
+                minuscula_letra=0;
+            }
+
 			texto++;
 			caracter_aux.caracter=*texto;
 
@@ -14654,7 +14665,7 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 			caracter_aux.papel=papel;
 		}
 		else {
-            if (ESTILO_GUI_INVERSE_TINTA!=-1) {
+            if (ESTILO_GUI_INVERSE_TINTA!=-1 && !invertir_siempre_independientemente_del_estilo) {
 			    caracter_aux.tinta=ESTILO_GUI_INVERSE_TINTA;
 			    caracter_aux.papel=papel;
             }
