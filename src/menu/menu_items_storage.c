@@ -1677,7 +1677,7 @@ void menu_convert_audio_to_zx81_overlay(void)
         }
 
         zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,
-            "Input Pos %10d (%3d%%) Output Pos %6d",
+            "Input Pos %10d (%3d%%) Output File Size: %6d bytes",
             conversion_info.enh_global_input_position,percent_input,conversion_info.enh_global_output_position
         );
 
