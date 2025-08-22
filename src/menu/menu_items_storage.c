@@ -1290,6 +1290,22 @@ int menu_convert_audio_to_zx81_debug_print=0;
 char menu_convert_audio_to_zx81_input_file[PATH_MAX]="";
 char menu_convert_audio_to_zx81_output_file[PATH_MAX]="";
 
+//0: destacar pulso
+//1: destacar bit. Tal y como funciona el algorimo, el primer pulso de un bit lo remarcaria como del bit anterior,
+//es como va el algoritmo, pero para el usuario seria confuso. De momento dejamos esto fijo con 0 - solo destacar pulso
+//En un futuro esto tendria que ser una opcion modificable para destacar pulso, o bit, o byte...
+int menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
+
+//velocidad 6: sin pausa (no pause)
+//velocidad 5: mas rapido
+//velocidad 3: ..
+//velocidad 2: ..
+//velocidad 1: mas lento
+//velocidad 0: pausado
+
+
+int menu_convert_audio_to_zx81_speed_conversion=6;
+
 int menu_convert_audio_to_zx81_return_offset_text_mem(int linea)
 {
     int offset=linea*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;
@@ -1442,6 +1458,46 @@ void menu_convert_audio_to_zx81_print_line_actions(zxvision_window *ventana)
     }
 }
 
+int menu_convert_audio_to_zx81_ventana_waveform_abierta(void)
+{
+    zxvision_window *ventana_waveform_abierta=zxvision_find_window_in_background("waveform");
+    if (ventana_waveform_abierta) return 1;
+    else return 0;
+}
+
+void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
+{
+
+
+    char buf_autodetect[30];
+    if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Auto]");
+    else sprintf(buf_autodetect,"[ %3d] ~~set",menu_convert_audio_to_zx81_amplitude);
+
+    char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
+
+    char *textos_destacar[]={"Pulse","Bit"};
+
+    zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
+        "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
+        buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
+        menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
+    );
+
+
+    if (menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
+            "hi~~ghlight: %s",
+            textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform]
+        );
+    }
+    else {
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
+            "Open ~~waveform window to see input audio");
+    }
+
+}
+
 
 //Para la vista de scroll en waveform
 /*
@@ -1489,11 +1545,7 @@ int menu_convert_audio_to_zx81_get_input_position(void)
     return conversion_info.enh_global_input_position;
 }
 
-//0: destacar pulso
-//1: destacar bit. Tal y como funciona el algorimo, el primer pulso de un bit lo remarcaria como del bit anterior,
-//es como va el algoritmo, pero para el usuario seria confuso. De momento dejamos esto fijo con 0 - solo destacar pulso
-//En un futuro esto tendria que ser una opcion modificable para destacar pulso, o bit, o byte...
-int menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
+
 
 int menu_convert_audio_to_zx81_get_color_destacar(void)
 {
@@ -1540,6 +1592,7 @@ void menu_convert_audio_to_zx81_overlay(void)
     menu_convert_audio_to_zx81_window->writing_inverse_color=1;
 
     menu_convert_audio_to_zx81_print_line_actions(menu_convert_audio_to_zx81_window);
+    menu_convert_audio_to_zx81_print_lines_settings(menu_convert_audio_to_zx81_window);
 
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,"");
@@ -1712,15 +1765,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 }
 
-//velocidad 6: sin pausa (no pause)
-//velocidad 5: mas rapido
-//velocidad 3: ..
-//velocidad 2: ..
-//velocidad 1: mas lento
-//velocidad 0: pausado
 
-
-int menu_convert_audio_to_zx81_speed_conversion=6;
 
 //Aqui se llama en cada iteracion del bucle de conversion. Meter pausas si conviene
 void menu_convert_audio_to_zx81_callback(void)
@@ -2036,26 +2081,8 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         ventana->writing_inverse_color=1;
 
         menu_convert_audio_to_zx81_print_line_actions(ventana);
+        menu_convert_audio_to_zx81_print_lines_settings(ventana);
 
-
-        char buf_autodetect[30];
-        if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Auto]");
-        else sprintf(buf_autodetect,"[ %3d] ~~set",menu_convert_audio_to_zx81_amplitude);
-
-        char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
-
-        char *textos_destacar[]={"Pulse","Bit"};
-
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
-            "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
-            buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-            menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
-        );
-
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
-            "hi~~ghlight: %s",
-            textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform]
-        );
 
 
         ventana->writing_inverse_color=0;
@@ -2158,6 +2185,16 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'g':
                 menu_convert_audio_to_zx81_que_destacamos_en_waveform ^=1;
+            break;
+
+            case 'w':
+                if (!menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
+                    menu_sound_wave_llena=0;
+
+                    menu_audio_new_waveform(0);
+                    tecla=3;
+                    salir=1;
+                }
             break;
 
             //Salir con ESC
