@@ -222,6 +222,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     enh_global_bit_position_in_byte=0;
     enh_global_pulses_of_a_bit=0;
     enh_global_rise_position=0;
+    enh_global_start_bit_position=0;
 
 
     int i;

@@ -1555,6 +1555,8 @@ int menu_convert_audio_to_zx81_get_color_destacar(void)
     if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==1) {
         int inicio_bit=conversion_info.enh_global_start_bit_position;
 
+        //printf("inicio_bit: %d\n",inicio_bit);
+
         //A partir del segundo grupo de pulsos, el inicio siempre es desde el segundo pulso, hacemos un ajuste a mano
         //TODO: no aplicar con el primer pulso de todos
         if (conversion_info.enh_global_pulses_of_a_bit>=1) {
