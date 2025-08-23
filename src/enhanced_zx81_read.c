@@ -429,9 +429,11 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                             //Pulso que no finaliza un bit
                             //Ignorar primer byte para no tener en cuenta silencios y ondas largas del principio
                             if (indice_destino_p81>0) {
+                                //Para sacar longitud media de un pulso y adivinar sample rate del audio
                                 if (enh_zx81_longitud_pulso_medio_cuantos<ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS) {
-                                    printf("%d Rise length: %d Fall length: %d suma: %d\n",
-                                        i,longitud_cresta_subida,longitud_cresta_bajada,longitud_cresta_subida+longitud_cresta_bajada);
+                                    //printf("%d Rise length: %d Fall length: %d suma: %d\n",
+                                    //    i,longitud_cresta_subida,longitud_cresta_bajada,longitud_cresta_subida+longitud_cresta_bajada);
+
 
                                     enh_zx81_acumulado_longitud_pulso_medio +=longitud_cresta_subida+longitud_cresta_bajada;
                                     enh_zx81_longitud_pulso_medio_cuantos++;
@@ -443,7 +445,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                         //11111 hz: acumulado: 337 dividido: 3. Calculamos (337*15600)/476=11044 aprox 11111
                                         //44100 hz: acumulado: 1342. dividido: 13
                                         enh_zx81_longitud_pulso_medio=enh_zx81_acumulado_longitud_pulso_medio; ///ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS;
-                                        printf("Longitud pulso medio: %d\n",enh_zx81_longitud_pulso_medio);
+                                        //printf("Longitud pulso medio: %d\n",enh_zx81_longitud_pulso_medio);
 
                                         //Aprox hz por valor referencia de 15600 hz
                                         //int freq_sampleo_aprox=(enh_zx81_longitud_pulso_medio*15600)/476;
@@ -452,7 +454,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                         int freq_sampleo_aprox=(enh_zx81_longitud_pulso_medio*44100)/1342;
 
 
-                                        printf("Freq sampleo aprox: %d Hz\n",freq_sampleo_aprox);
+                                        //printf("Freq sampleo aprox: %d Hz\n",freq_sampleo_aprox);
                                         enh_global_guessed_sample_rate=freq_sampleo_aprox;
 
 
