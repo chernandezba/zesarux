@@ -49,6 +49,7 @@ struct s_enh_zx81_lee_global_info {
     int enh_global_start_bit_position;
     int enh_global_start_byte_position;
     z80_byte enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH];
+    int enh_zx81_guessed_sample_rate;
 };
 
 extern void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *i);

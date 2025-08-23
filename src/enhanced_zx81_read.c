@@ -155,6 +155,19 @@ z80_byte return_zx81_char(z80_byte codigo)
 
 }
 
+//Para calcular longitud media de un pulso. Esto nos servira para adivinar frecuencia de sampleo
+//sumar 100
+
+int enh_zx81_acumulado_longitud_pulso_medio=0;
+
+//valor medio final
+int enh_zx81_longitud_pulso_medio=0;
+
+//cuantos hemos sumado
+int enh_zx81_longitud_pulso_medio_cuantos=0;
+
+//frecuencia de sampleo adivinada
+int enh_zx81_guessed_sample_rate=0;
 
 
 int enh_global_input_position=0;
@@ -189,6 +202,7 @@ void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *info)
     info->enh_global_rise_position=enh_global_rise_position;
     info->enh_global_start_bit_position=enh_global_start_bit_position;
     info->enh_global_start_byte_position=enh_global_start_byte_position;
+    info->enh_zx81_guessed_sample_rate=enh_zx81_guessed_sample_rate;
 
     int i;
 
@@ -210,17 +224,7 @@ void enh_zx81_lee_rotate_last_bytes(void)
     enh_global_last_bytes[i]=0;
 }
 
-//Para calcular longitud media de un pulso
-//sumar 100
 
-
-int enh_zx81_acumulado_longitud_pulso_medio=0;
-
-//valor medio final
-int enh_zx81_longitud_pulso_medio=0;
-
-//cuantos hemos sumado
-int enh_zx81_longitud_pulso_medio_cuantos=0;
 
 //cancel_process puntero a valor int que dice si se cancela el proceso (valor diferente de 0). Si no se usa, pasar puntero a NULL. Esto
 //si puede activar desde thread externo
@@ -242,6 +246,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     enh_zx81_acumulado_longitud_pulso_medio=0;
     enh_zx81_longitud_pulso_medio=0;
     enh_zx81_longitud_pulso_medio_cuantos=0;
+    enh_zx81_guessed_sample_rate=0;
 
 
     enh_global_total_input_size=tamanyo_memoria;
@@ -436,12 +441,20 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                         //valores referencia (con ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS=100):
                                         //15600 hz : acumulado: 476 dividido: 4
                                         //11111 hz: acumulado: 337 dividido: 3. Calculamos (337*15600)/476=11044 aprox 11111
+                                        //44100 hz: acumulado: 1342. dividido: 13
                                         enh_zx81_longitud_pulso_medio=enh_zx81_acumulado_longitud_pulso_medio; ///ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS;
                                         printf("Longitud pulso medio: %d\n",enh_zx81_longitud_pulso_medio);
 
                                         //Aprox hz por valor referencia de 15600 hz
-                                        int freq_sampleo_aprox=(enh_zx81_longitud_pulso_medio*15600)/476;
+                                        //int freq_sampleo_aprox=(enh_zx81_longitud_pulso_medio*15600)/476;
+
+                                        //Aprox hz por valor referencia de 44100 hz
+                                        int freq_sampleo_aprox=(enh_zx81_longitud_pulso_medio*44100)/1342;
+
+
                                         printf("Freq sampleo aprox: %d Hz\n",freq_sampleo_aprox);
+                                        enh_zx81_guessed_sample_rate=freq_sampleo_aprox;
+
 
                                     }
                                 }
