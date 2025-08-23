@@ -28,6 +28,8 @@ typedef unsigned char z80_byte;
 
 #define ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH 10
 
+#define ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS 100
+
 extern int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
     z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,void (*callback)(void));
 extern z80_byte return_zx81_char(z80_byte codigo);

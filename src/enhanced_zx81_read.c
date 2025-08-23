@@ -211,8 +211,8 @@ void enh_zx81_lee_rotate_last_bytes(void)
 }
 
 //Para calcular longitud media de un pulso
-//sumar 100 y dividir
-#define ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS 100
+//sumar 100
+
 
 int enh_zx81_acumulado_longitud_pulso_medio=0;
 
@@ -432,8 +432,16 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                     enh_zx81_longitud_pulso_medio_cuantos++;
 
                                     if (enh_zx81_longitud_pulso_medio_cuantos==ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS) {
-                                        enh_zx81_longitud_pulso_medio=enh_zx81_acumulado_longitud_pulso_medio/ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS;
+                                        //no dividimos por el total por no perder decimales
+                                        //valores referencia (con ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS=100):
+                                        //15600 hz : acumulado: 476 dividido: 4
+                                        //11111 hz: acumulado: 337 dividido: 3. Calculamos (337*15600)/476=11044 aprox 11111
+                                        enh_zx81_longitud_pulso_medio=enh_zx81_acumulado_longitud_pulso_medio; ///ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS;
                                         printf("Longitud pulso medio: %d\n",enh_zx81_longitud_pulso_medio);
+
+                                        //Aprox hz por valor referencia de 15600 hz
+                                        int freq_sampleo_aprox=(enh_zx81_longitud_pulso_medio*15600)/476;
+                                        printf("Freq sampleo aprox: %d Hz\n",freq_sampleo_aprox);
 
                                     }
                                 }
