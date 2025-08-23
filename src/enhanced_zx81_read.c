@@ -167,7 +167,7 @@ int enh_zx81_longitud_pulso_medio=0;
 int enh_zx81_longitud_pulso_medio_cuantos=0;
 
 //frecuencia de sampleo adivinada
-int enh_zx81_guessed_sample_rate=0;
+int enh_global_guessed_sample_rate=0;
 
 
 int enh_global_input_position=0;
@@ -202,7 +202,7 @@ void enh_zx81_lee_get_global_info(struct s_enh_zx81_lee_global_info *info)
     info->enh_global_rise_position=enh_global_rise_position;
     info->enh_global_start_bit_position=enh_global_start_bit_position;
     info->enh_global_start_byte_position=enh_global_start_byte_position;
-    info->enh_zx81_guessed_sample_rate=enh_zx81_guessed_sample_rate;
+    info->enh_global_guessed_sample_rate=enh_global_guessed_sample_rate;
 
     int i;
 
@@ -246,7 +246,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     enh_zx81_acumulado_longitud_pulso_medio=0;
     enh_zx81_longitud_pulso_medio=0;
     enh_zx81_longitud_pulso_medio_cuantos=0;
-    enh_zx81_guessed_sample_rate=0;
+    enh_global_guessed_sample_rate=0;
 
 
     enh_global_total_input_size=tamanyo_memoria;
@@ -453,7 +453,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
 
                                         printf("Freq sampleo aprox: %d Hz\n",freq_sampleo_aprox);
-                                        enh_zx81_guessed_sample_rate=freq_sampleo_aprox;
+                                        enh_global_guessed_sample_rate=freq_sampleo_aprox;
 
 
                                     }
