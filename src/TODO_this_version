@@ -186,6 +186,8 @@ ok * Detectar frecuencia sampleo según ancho de un pulso (o de varios). Ajustar
 
 *marcar inicio y final de pulso/bit/byte en waveform con linea vertical
 
+*que diga nombre programa detectado, y no solo en las lineas debug
+
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
 -Nueva ventana para poder leer audio de cinta y generar archivo RWA
