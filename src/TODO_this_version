@@ -182,7 +182,9 @@ ok *no poder cambiar input ni output mientras está en ejecución
 
 ok * que la amplitud detectada la meta en setting de amplitude en la ventana
 
-* Detectar frecuencia sampleo según ancho de un pulso (o de varios). Ajustar a conocidas: 15600, 11111, 44100 etc
+ok * Detectar frecuencia sampleo según ancho de un pulso (o de varios). Ajustar a conocidas: 15600, 11111, 44100 etc
+
+*marcar inicio y final de pulso/bit/byte en waveform con linea vertical
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
