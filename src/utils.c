@@ -23417,7 +23417,7 @@ int util_enhanced_convert_raw_to_p_p81_memoria_tamanyo=0;
 //cancel_process es un puntero a una variable que indica si tiene valor diferente de 0, que hay que acabar el proceso de autodetectar,
 //que puede tardar mucho y se tiene que poder cancelar desde otro thread. Si no se quiere usar esa característica, indicar NULL el puntero
 void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,
-    int amplitud_media,int debug_print,int *cancel_process,void (*callback)(void))
+    int amplitud_media,int debug_print,int *cancel_process,void (*callback)(void),int *valor_autodetectado_amplitud)
 {
     //char *rwafile=argv[1];
 
@@ -23534,6 +23534,9 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
         //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
         sprintf(buffer_linea,"Autodetected best amplitude %d",amplitud_media);
+        if (valor_autodetectado_amplitud!=NULL) {
+            *valor_autodetectado_amplitud=amplitud_media;
+        }
         debug_printf(VERBOSE_INFO,buffer_linea);
 
         if (fun_print!=NULL) {
@@ -23585,7 +23588,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 //Convierte una cinta real (wav, rwa, smp) a zx81 P81/P
 //Usa rutina enhanced de lectura de zx81
 void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),
-    int autodetectar_amplitud,int amplitud_media,int debug_print,int *cancel_autodetect,void (*callback)(void))
+    int autodetectar_amplitud,int amplitud_media,int debug_print,int *cancel_autodetect,void (*callback)(void),int *valor_autodetectado_amplitud)
 {
 
 
@@ -23621,7 +23624,7 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
 
 
     util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print,autodetectar_amplitud,
-        amplitud_media,debug_print,cancel_autodetect,callback);
+        amplitud_media,debug_print,cancel_autodetect,callback,valor_autodetectado_amplitud);
 
 
 

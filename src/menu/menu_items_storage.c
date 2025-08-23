@@ -1861,11 +1861,15 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
 
 
 
+    int *pointer_to_autodetected_amplitude=NULL;
+
+    if (menu_convert_audio_to_zx81_autodetect_amplitude) pointer_to_autodetected_amplitude=&menu_convert_audio_to_zx81_amplitude;
+
 
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
         menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,
-        menu_convert_audio_to_zx81_callback
+        menu_convert_audio_to_zx81_callback,pointer_to_autodetected_amplitude
     );
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");

@@ -180,7 +180,7 @@ ok *no poder cambiar input ni output mientras está en ejecución
 *poder editar la onda cuando haya un error - que se pare si hay un error. Requeriria otra ventana diferente de la waveform?
 *que pasa si llega el pulso final y poco despues se acaba el archivo. lo finaliza bien?
 
-* que la amplitud detectada la meta en setting de amplitude en la ventana
+ok * que la amplitud detectada la meta en setting de amplitude en la ventana
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
