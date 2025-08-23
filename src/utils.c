@@ -10068,6 +10068,43 @@ int convert_wav_to_rwa(char *origen, char *destino)
 
 }
 
+//Convertir wav a crudo: 8 bits, mono, unsigned, y no alteramos hz
+int convert_wav_to_crudo(char *origen, char *destino)
+{
+
+
+
+	char sox_command[PATH_MAX];
+
+	char sox_program[PATH_MAX];
+
+
+
+	//sprintf (sox_program,"/usr/bin/sox");
+	//sprintf (sox_command,"/usr/bin/sox \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",origen,FRECUENCIA_SONIDO_RWA_FILES,destino);
+	sprintf (sox_program,"%s",external_tool_sox);
+	sprintf (sox_command,"%s \"%s\" -t .raw -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,destino);
+
+
+
+
+	if (!si_existe_archivo(sox_program)) {
+		debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
+		return 1;
+	}
+
+
+	debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
+
+	if (system (sox_command)==-1) {
+		debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
+		return 1;
+	}
+
+	return 0;
+
+}
+
 int convert_rwa_to_wav(char *origen, char *destino)
 {
 
@@ -12020,6 +12057,19 @@ void convert_to_rwa_common_tmp(char *origen, char *destino)
         debug_printf (VERBOSE_INFO,"Creating temporary file %s",destino);
 }
 
+//Crea carpeta temporal y asigna nombre para archivo temporal crudo
+//Nota: metemos extensión raw aunque aqui da igual la frecuencia usada,
+//pero en otros sitios de ZEsarUX definimos un raw como 44100 hz (como al leer hilow)
+//TODO: crear una nueva extensión que indique "crudo" y no sea rwa ni raw
+void convert_to_crudo_common_tmp(char *origen, char *destino)
+{
+        char nombre_origen[NAME_MAX];
+        util_get_file_no_directory(origen,nombre_origen);
+
+        sprintf (destino,"%s/tmp_%s.raw",get_tmpdir_base(),nombre_origen);
+        debug_printf (VERBOSE_INFO,"Creating temporary file %s",destino);
+}
+
 
 //Crea carpeta temporal y asigna nombre para archivo temporal raw
 void convert_to_raw_common_tmp(char *origen, char *destino)
@@ -12069,6 +12119,15 @@ int convert_wav_to_rwa_tmpdir(char *origen, char *destino)
         convert_to_rwa_common_tmp(origen,destino);
 
         return convert_wav_to_rwa(origen,destino);
+
+}
+
+//pasar de wav a archivo en crudo (8 bit unsigned 1 canal, pero sin cambiar la frecuencia de sampleo)
+int convert_wav_to_crudo_tmpdir(char *origen, char *destino)
+{
+        convert_to_crudo_common_tmp(origen,destino);
+
+        return convert_wav_to_crudo(origen,destino);
 
 }
 
@@ -23607,9 +23666,12 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
     }
 
 
-    //convertir
+    //si es wav pasar a formato crudo
+    //La rutina enhanced de lectura zx81 puede leer cualquier frecuencia de sampleo
     if (!util_compare_file_extension(filename,"wav")) {
-        if (convert_wav_to_rwa_tmpdir(filename,file_to_open)) {
+        //Esta conversion de wav lo pasamos a formato crudo sin alterar los Hz (de ahi que lo llamo "crudo" y no rwa ni raw que
+        //esas dos extensiones les asigno una frecuencia definida)
+        if (convert_wav_to_crudo_tmpdir(filename,file_to_open)) {
 			debug_printf(VERBOSE_ERR,"Error converting input file");
 			return;
 		}
