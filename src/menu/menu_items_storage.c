@@ -1255,7 +1255,7 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 10
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 11
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE 1
@@ -1265,6 +1265,7 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 5
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 6
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 7
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT 8
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1615,7 +1616,7 @@ int menu_convert_audio_to_zx81_get_sample(int offset)
 
 }
 
-
+int menu_convert_audio_to_zx81_guessed_sample_rate=0;
 
 void menu_convert_audio_to_zx81_overlay(void)
 {
@@ -1630,11 +1631,12 @@ void menu_convert_audio_to_zx81_overlay(void)
     menu_convert_audio_to_zx81_print_line_actions(menu_convert_audio_to_zx81_window);
     menu_convert_audio_to_zx81_print_lines_settings(menu_convert_audio_to_zx81_window);
 
-    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT,"");
 
     if (convert_audio_to_zx81_thread_running) {
         //Con parpadeo el texto
@@ -1653,6 +1655,9 @@ void menu_convert_audio_to_zx81_overlay(void)
 
         struct s_enh_zx81_lee_global_info conversion_info;
         enh_zx81_lee_get_global_info(&conversion_info);
+
+        //Guardamos adivinada frecuencia de sampleo aunque esto solo es valido cuando se ha leido ya un trozo del archivo
+        menu_convert_audio_to_zx81_guessed_sample_rate=conversion_info.enh_zx81_guessed_sample_rate;
 
 
         z80_bit inverse;
@@ -1765,6 +1770,8 @@ void menu_convert_audio_to_zx81_overlay(void)
 
                 zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,
                     "Conversion finished. File %s Size %d bytes. ~~v: view",nombre,tamanyo);
+                zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT,
+                    "Guessed input frequency: %d Hz",menu_convert_audio_to_zx81_guessed_sample_rate);
             }
 
             else {
