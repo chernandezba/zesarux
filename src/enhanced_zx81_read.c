@@ -210,6 +210,17 @@ void enh_zx81_lee_rotate_last_bytes(void)
     enh_global_last_bytes[i]=0;
 }
 
+//Para calcular longitud media de un pulso
+//sumar 100 y dividir
+#define ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS 100
+
+int enh_zx81_acumulado_longitud_pulso_medio=0;
+
+//valor medio final
+int enh_zx81_longitud_pulso_medio=0;
+
+//cuantos hemos sumado
+int enh_zx81_longitud_pulso_medio_cuantos=0;
 
 //cancel_process puntero a valor int que dice si se cancela el proceso (valor diferente de 0). Si no se usa, pasar puntero a NULL. Esto
 //si puede activar desde thread externo
@@ -228,6 +239,10 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
     enh_global_rise_position=0;
     enh_global_start_bit_position=0;
     enh_global_start_byte_position=0;
+    enh_zx81_acumulado_longitud_pulso_medio=0;
+    enh_zx81_longitud_pulso_medio=0;
+    enh_zx81_longitud_pulso_medio_cuantos=0;
+
 
     enh_global_total_input_size=tamanyo_memoria;
 
@@ -403,6 +418,26 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                             }
 
                             conteo_pulsos_de_bit=0;
+                        }
+
+                        else {
+                            //Pulso que no finaliza un bit
+                            //Ignorar primer byte para no tener en cuenta silencios y ondas largas del principio
+                            if (indice_destino_p81>0) {
+                                if (enh_zx81_longitud_pulso_medio_cuantos<ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS) {
+                                    printf("%d Rise length: %d Fall length: %d suma: %d\n",
+                                        i,longitud_cresta_subida,longitud_cresta_bajada,longitud_cresta_subida+longitud_cresta_bajada);
+
+                                    enh_zx81_acumulado_longitud_pulso_medio +=longitud_cresta_subida+longitud_cresta_bajada;
+                                    enh_zx81_longitud_pulso_medio_cuantos++;
+
+                                    if (enh_zx81_longitud_pulso_medio_cuantos==ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS) {
+                                        enh_zx81_longitud_pulso_medio=enh_zx81_acumulado_longitud_pulso_medio/ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS;
+                                        printf("Longitud pulso medio: %d\n",enh_zx81_longitud_pulso_medio);
+
+                                    }
+                                }
+                            }
                         }
 
                         conteo_pulsos_de_bit++;
