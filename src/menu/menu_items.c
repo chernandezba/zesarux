@@ -4775,8 +4775,7 @@ void menu_audio_draw_sound_wave(void)
 
                 offset /=cada_cuanto_convert_zx81;
 
-                extern int menu_convert_audio_to_zx81_prueba_zoom;
-                offset *=menu_convert_audio_to_zx81_prueba_zoom;
+                offset *=menu_convert_audio_to_zx81_zoom_wave;
 
                 offset+=menu_convert_audio_to_zx81_get_input_position();
 
@@ -4787,9 +4786,16 @@ void menu_audio_draw_sound_wave(void)
                 if (offset<0) valor_medio=0;
                 else {
                     //acceder a la memoria de input rwa a lo bruto
-                    //extern z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria;
-                    int valor_unsigned=menu_convert_audio_to_zx81_get_sample(offset);
-                    //util_enhanced_convert_raw_to_p_p81_puntero_memoria[offset];
+
+                    //generar valores medios segun zoom
+                    int valor_unsigned=0;
+                    int jj;
+
+                    for (jj=0;jj<menu_convert_audio_to_zx81_zoom_wave;jj++) {
+                        valor_unsigned +=menu_convert_audio_to_zx81_get_sample(offset+jj);
+                    }
+
+                    valor_unsigned /=menu_convert_audio_to_zx81_zoom_wave;
 
                     int valor_signed=valor_unsigned-128;
 
