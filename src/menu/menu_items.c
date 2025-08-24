@@ -4769,8 +4769,8 @@ void menu_audio_draw_sound_wave(void)
             int color_linea=ESTILO_GUI_COLOR_WAVEFORM;
             int cada_cuanto_convert_zx81=4;
 
-            int convert_zx81_max_valor=128;
-            int convert_zx81_min_valor=128;
+            int convert_zx81_max_valor=0;
+            int convert_zx81_min_valor=255;
 
             if (menu_convert_audio_to_zx81_zoom_wave==2) cada_cuanto_convert_zx81=2;
             else if (menu_convert_audio_to_zx81_zoom_wave>=4) cada_cuanto_convert_zx81=1;
@@ -4793,7 +4793,11 @@ void menu_audio_draw_sound_wave(void)
                 if (offset>=posicion_color_destacar) color_linea=ESTILO_GUI_COLOR_BLOCK_VISUALTAPE;
 
 
-                if (offset<0) valor_medio=0;
+                if (offset<0) {
+                    valor_medio=0;
+                    convert_zx81_max_valor=128;
+                    convert_zx81_min_valor=128;
+                }
                 else {
                     //acceder a la memoria de input rwa a lo bruto
 
@@ -4845,10 +4849,8 @@ void menu_audio_draw_sound_wave(void)
                             if (x % cada_cuanto_convert_zx81 != 0) dibujar_linea=0;
 
                             if (dibujar_linea) {
-                                if (menu_convert_audio_to_zx81_zoom_wave>=8) {
+                                if (menu_convert_audio_to_zx81_zoom_wave>=16) {
                                     //maximo y minimo de ese trozo de zoom
-                                    //int convert_zx81_max_valor=128;
-                                    //int convert_zx81_min_valor=128;
 
                                     convert_zx81_max_valor=convert_zx81_max_valor-128;
                                     int convert_zx81_max_valor_y=convert_zx81_max_valor*alto/256;
@@ -4860,10 +4862,11 @@ void menu_audio_draw_sound_wave(void)
                                     //Lo situamos en el centro. Negativo hacia abajo (Y positiva)
                                     convert_zx81_min_valor_y=menu_audio_draw_sound_wave_ycentro-convert_zx81_min_valor_y;
 
-                                    //color blanco con brillo por probar. TODO cambiar color
+                                    //color por probar
+                                    //Es dificil indicar un color que sea diferente del waveform y diferente del de fondo
                                     zxvision_draw_line(menu_audio_draw_sound_wave_window,
                                         x,convert_zx81_min_valor_y,
-                                        x,convert_zx81_max_valor_y,15,
+                                        x,convert_zx81_max_valor_y,ESTILO_GUI_COLOR_AVISO,
                                         menu_waveform_putpixel_array_from_linea);
                                 }
 
