@@ -4769,6 +4769,9 @@ void menu_audio_draw_sound_wave(void)
             int color_linea=ESTILO_GUI_COLOR_WAVEFORM;
             int cada_cuanto_convert_zx81=4;
 
+            int convert_zx81_max_valor=128;
+            int convert_zx81_min_valor=128;
+
             if (menu_convert_audio_to_zx81_zoom_wave==2) cada_cuanto_convert_zx81=2;
             else if (menu_convert_audio_to_zx81_zoom_wave>=4) cada_cuanto_convert_zx81=1;
 
@@ -4801,6 +4804,9 @@ void menu_audio_draw_sound_wave(void)
                     for (jj=0;jj<menu_convert_audio_to_zx81_zoom_wave;jj++) {
                         int valor_sample=menu_convert_audio_to_zx81_get_sample(offset+jj);
                         valor_unsigned +=valor_sample;
+
+                        if (valor_sample>convert_zx81_max_valor) convert_zx81_max_valor=valor_sample;
+                        if (valor_sample<convert_zx81_min_valor) convert_zx81_min_valor=valor_sample;
                     }
 
                     valor_unsigned /=menu_convert_audio_to_zx81_zoom_wave;
@@ -4839,6 +4845,29 @@ void menu_audio_draw_sound_wave(void)
                             if (x % cada_cuanto_convert_zx81 != 0) dibujar_linea=0;
 
                             if (dibujar_linea) {
+                                if (menu_convert_audio_to_zx81_zoom_wave>=8) {
+                                    //maximo y minimo de ese trozo de zoom
+                                    //int convert_zx81_max_valor=128;
+                                    //int convert_zx81_min_valor=128;
+
+                                    convert_zx81_max_valor=convert_zx81_max_valor-128;
+                                    int convert_zx81_max_valor_y=convert_zx81_max_valor*alto/256;
+                                    //Lo situamos en el centro. Negativo hacia abajo (Y positiva)
+                                    convert_zx81_max_valor_y=menu_audio_draw_sound_wave_ycentro-convert_zx81_max_valor_y;
+
+                                    convert_zx81_min_valor=convert_zx81_min_valor-128;
+                                    int convert_zx81_min_valor_y=convert_zx81_min_valor*alto/256;
+                                    //Lo situamos en el centro. Negativo hacia abajo (Y positiva)
+                                    convert_zx81_min_valor_y=menu_audio_draw_sound_wave_ycentro-convert_zx81_min_valor_y;
+
+                                    //color blanco con brillo por probar. TODO cambiar color
+                                    zxvision_draw_line(menu_audio_draw_sound_wave_window,
+                                        x,convert_zx81_min_valor_y,
+                                        x,convert_zx81_max_valor_y,15,
+                                        menu_waveform_putpixel_array_from_linea);
+                                }
+
+
                                 //unir el punto del sample anterior con el actual
                                 zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,color_linea,
                                                     menu_waveform_putpixel_array_from_linea);
