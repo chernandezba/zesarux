@@ -1852,7 +1852,7 @@ void menu_convert_audio_to_zx81_callback(void)
 
     if (menu_convert_audio_to_zx81_speed_conversion==6) return;
     else if (menu_convert_audio_to_zx81_speed_conversion==5) pausa=10;
-    else if (menu_convert_audio_to_zx81_speed_conversion==4) pausa=100;
+    else if (menu_convert_audio_to_zx81_speed_conversion==4) pausa=1000;
     else if (menu_convert_audio_to_zx81_speed_conversion==3) pausa=10000;
     else if (menu_convert_audio_to_zx81_speed_conversion==2) pausa=100000;
     else pausa=1000000;
