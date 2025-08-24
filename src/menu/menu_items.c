@@ -4769,6 +4769,9 @@ void menu_audio_draw_sound_wave(void)
             int color_linea=ESTILO_GUI_COLOR_WAVEFORM;
             int cada_cuanto_convert_zx81=4;
 
+            if (menu_convert_audio_to_zx81_zoom_wave==2) cada_cuanto_convert_zx81=2;
+            else if (menu_convert_audio_to_zx81_zoom_wave>=4) cada_cuanto_convert_zx81=1;
+
             if (convert_audio_to_zx81_thread_running) {
                 //Ubicar a la derecha de la ventana lo que se está convirtiendo
                 int offset=x-xinicial_grafica-ancho_grafica;
