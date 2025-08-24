@@ -4796,7 +4796,8 @@ void menu_audio_draw_sound_wave(void)
                     int jj;
 
                     for (jj=0;jj<menu_convert_audio_to_zx81_zoom_wave;jj++) {
-                        valor_unsigned +=menu_convert_audio_to_zx81_get_sample(offset+jj);
+                        int valor_sample=menu_convert_audio_to_zx81_get_sample(offset+jj);
+                        valor_unsigned +=valor_sample;
                     }
 
                     valor_unsigned /=menu_convert_audio_to_zx81_zoom_wave;
