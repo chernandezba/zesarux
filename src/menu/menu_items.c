@@ -4775,6 +4775,9 @@ void menu_audio_draw_sound_wave(void)
 
                 offset /=cada_cuanto_convert_zx81;
 
+                extern int menu_convert_audio_to_zx81_prueba_zoom;
+                offset *=menu_convert_audio_to_zx81_prueba_zoom;
+
                 offset+=menu_convert_audio_to_zx81_get_input_position();
 
                 int posicion_color_destacar=menu_convert_audio_to_zx81_get_color_destacar();

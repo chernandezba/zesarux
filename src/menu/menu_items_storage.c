@@ -2080,6 +2080,7 @@ void menu_convert_audio_to_zx81_select_output_file(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_convert_audio_to_zx81;
 
+int menu_convert_audio_to_zx81_prueba_zoom=1;
 
 void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 {
@@ -2271,6 +2272,14 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                     tecla=3;
                     salir=1;
                 }
+            break;
+
+            case 'x':
+                menu_convert_audio_to_zx81_prueba_zoom++;
+            break;
+
+            case 'z':
+                if (menu_convert_audio_to_zx81_prueba_zoom>1) menu_convert_audio_to_zx81_prueba_zoom--;
             break;
 
             //Salir con ESC

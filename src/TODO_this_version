@@ -188,6 +188,8 @@ ok * Detectar frecuencia sampleo según ancho de un pulso (o de varios). Ajustar
 
 *que diga nombre programa detectado, y no solo en las lineas debug
 
+*en zoom hacer valores medios : si zoom 2, media de 2, si zoom 3 media de 3, etc
+
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
 -Nueva ventana para poder leer audio de cinta y generar archivo RWA
