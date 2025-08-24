@@ -4779,6 +4779,10 @@ void menu_audio_draw_sound_wave(void)
 
                 offset+=menu_convert_audio_to_zx81_get_input_position();
 
+                //Y ajustar offset a nivel de zoom, para que la señal no "cambie" a medida que va moviendose
+                int restar=offset % menu_convert_audio_to_zx81_zoom_wave;
+                offset -=restar;
+
                 int posicion_color_destacar=menu_convert_audio_to_zx81_get_color_destacar();
                 if (offset>=posicion_color_destacar) color_linea=ESTILO_GUI_COLOR_BLOCK_VISUALTAPE;
 
