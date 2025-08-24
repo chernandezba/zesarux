@@ -1488,7 +1488,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
     if (menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
-            "hi~~ghlight: [%s] zoom: %d z: +, x: -",
+            "hi~~ghlight: [%s] zoom: 1:%-3d z: -, x: +",
             textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform],
             menu_convert_audio_to_zx81_zoom_wave
         );
@@ -2275,12 +2275,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 'x':
-                menu_convert_audio_to_zx81_zoom_wave++;
+            case 'z':
+                if (menu_convert_audio_to_zx81_zoom_wave<256) menu_convert_audio_to_zx81_zoom_wave *=2;
             break;
 
-            case 'z':
-                if (menu_convert_audio_to_zx81_zoom_wave>1) menu_convert_audio_to_zx81_zoom_wave--;
+            case 'x':
+                if (menu_convert_audio_to_zx81_zoom_wave>1) menu_convert_audio_to_zx81_zoom_wave /=2;
             break;
 
             //Salir con ESC
