@@ -1327,7 +1327,9 @@ void menu_convert_audio_to_zx81_get_audio_buffer(void)
     int destino=0;
 
     for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
-        char audio_leido=menu_convert_audio_to_zx81_get_sample(origen++);
+        int valor_leido=menu_convert_audio_to_zx81_get_sample(origen++);
+
+        char audio_leido=valor_leido-128;
         if (origen==AUDIO_BUFFER_SIZE) origen=0;
 
         /* temporal desactivado
@@ -1918,7 +1920,7 @@ void menu_convert_audio_to_zx81_callback(void)
     }
 
     if (menu_convert_audio_to_zx81_speed_conversion==6) return;
-    else if (menu_convert_audio_to_zx81_speed_conversion==5) pausa=10;
+    else if (menu_convert_audio_to_zx81_speed_conversion==5) pausa=64; //10;
     else if (menu_convert_audio_to_zx81_speed_conversion==4) pausa=1000;
     else if (menu_convert_audio_to_zx81_speed_conversion==3) pausa=10000;
     else if (menu_convert_audio_to_zx81_speed_conversion==2) pausa=100000;
