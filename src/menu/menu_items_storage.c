@@ -1309,6 +1309,47 @@ int menu_convert_audio_to_zx81_wave_manual_position=0;
 
 int menu_convert_audio_to_zx81_speed_conversion=6;
 
+//pasar de mi buffer intermedio al buffer final de sonido
+void menu_convert_audio_to_zx81_get_audio_buffer(void)
+{
+
+    reset_beeper_silence_detection_counter();
+
+    int i;
+
+    //int origen=menu_hilow_convert_audio_buffer_index;
+
+    //temp
+    struct s_enh_zx81_lee_global_info cinfo;
+    enh_zx81_lee_get_global_info(&cinfo);
+    int origen=cinfo.enh_global_input_position;
+
+    int destino=0;
+
+    for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
+        char audio_leido=menu_convert_audio_to_zx81_get_sample(origen++);
+        if (origen==AUDIO_BUFFER_SIZE) origen=0;
+
+        /* temporal desactivado
+
+        if (!menu_hilow_convert_audio_hear_sound) audio_leido=0;
+
+        //Si estamos esperando input del usuario, tambien silencio
+        if (menu_hilow_convert_audio_esperar_siguiente_sector) audio_leido=0;
+
+        //Si en pausa, tambien silencio
+        if (menu_hilow_convert_paused) audio_leido=0;
+
+        //Esto tanto sirve para waveform (en modos no scroll) para que se vea toda la ventana con mismo ultimo valor
+        if (menu_hilow_convert_lento) audio_leido=menu_hilow_convert_audio_last_audio_sample;
+
+        */
+
+        audio_buffer[destino++]=audio_leido;
+        audio_buffer[destino++]=audio_leido;
+    }
+}
+
 int menu_convert_audio_to_zx81_return_offset_text_mem(int linea)
 {
     int offset=linea*MENU_CONVERT_AUDIO_TO_ZX81_OUTPUT_LINES_WIDTH;

@@ -77,6 +77,7 @@ extern int menu_convert_audio_to_zx81_get_sample(int offset);
 extern int menu_convert_audio_to_zx81_get_color_destacar(void);
 extern int menu_convert_audio_to_zx81_zoom_wave;
 extern int menu_convert_audio_to_zx81_wave_follows_conversion;
+extern void menu_convert_audio_to_zx81_get_audio_buffer(void);
 
 #endif
 

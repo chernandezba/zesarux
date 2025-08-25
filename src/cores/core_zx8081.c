@@ -51,6 +51,7 @@
 #include "zeng.h"
 #include "snap_ram.h"
 #include "zeng_online_client.h"
+#include "menu_items_storage.h"
 
 
 void init_zx8081_scanline_y_x(int y,int x,int ancho)
@@ -365,10 +366,14 @@ void cpu_core_loop_zx8081(void)
 
                                 int linea_estados=t_estados/screen_testados_linea;
 
-                                while (linea_estados<312) {
+                while (linea_estados<312) {
 					audio_send_mono_sample(audio_valor_enviar_sonido);
-                                        linea_estados++;
-                                }
+                    linea_estados++;
+                }
+
+                if (convert_audio_to_zx81_thread_running) {
+                    menu_convert_audio_to_zx81_get_audio_buffer();
+                }
 
 
 				t_estados -=screen_testados_total;

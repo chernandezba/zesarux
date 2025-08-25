@@ -196,7 +196,9 @@ ok Zoom señal. Ejemplo -2 zoom sería coordenada x *2? luego dar el valor medio
 
 ok Con zoom hay que ajustar que el byte leído sea siempre el de más a la derecha
 
--que pueda moverme por la señal, o que haga follow (lo que hace ahora). falta cambiar teclas movimiento
+ok -que pueda moverme por la señal, o que haga follow (lo que hace ahora). falta cambiar teclas movimiento
+
+-poder escuchar señal: forzar detector silencio
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
