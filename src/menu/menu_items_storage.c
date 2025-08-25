@@ -2197,68 +2197,6 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         struct s_enh_zx81_lee_global_info cinfo;
 
         switch (tecla) {
-
-            case 'i':
-                if (!convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_select_input_file();
-            break;
-
-            case 'o':
-                //no dejar activar output si no esta input
-                if (menu_convert_audio_to_zx81_input_file[0] && !convert_audio_to_zx81_thread_running) {
-                    menu_convert_audio_to_zx81_select_output_file();
-                }
-            break;
-
-            case 'r':
-                //no dejar iniciar si no esta input u output
-                if (menu_convert_audio_to_zx81_input_file[0] && menu_convert_audio_to_zx81_output_file[0] && !convert_audio_to_zx81_thread_running) {
-                    menu_convert_audio_to_zx81_run_conversion();
-
-                    //comprobar error
-                    if (if_pending_error_message) {
-                        menu_muestra_pending_error_message();
-                    }
-
-                }
-            break;
-
-            case 't':
-                if (convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_stop_conversion();
-            break;
-
-            case 'a':
-                menu_convert_audio_to_zx81_autodetect_amplitude ^=1;
-            break;
-
-            case 's':
-                if (!menu_convert_audio_to_zx81_autodetect_amplitude) {
-                    menu_ventana_scanf_numero_enhanced("Amplitude",&menu_convert_audio_to_zx81_amplitude,4,+1,1,255,0);
-
-                    //comprobar error
-                    if (if_pending_error_message) {
-                        menu_muestra_pending_error_message();
-                    }
-                }
-            break;
-
-            case 'e':
-                if (menu_convert_audio_to_zx81_output_file[0] && convert_audio_to_zx81_has_finished) {
-                    menu_storage_tape_expand(menu_convert_audio_to_zx81_output_file);
-                }
-            break;
-
-            case 'd':
-                menu_convert_audio_to_zx81_debug_print ^=1;
-            break;
-
-            case 'f':
-                menu_convert_audio_to_zx81_find(ventana);
-            break;
-
-            case 'n':
-                menu_convert_audio_to_zx81_find_next(ventana);
-            break;
-
             case '0':
                 menu_convert_audio_to_zx81_speed_conversion=0;
             break;
@@ -2287,33 +2225,80 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 menu_convert_audio_to_zx81_speed_conversion=6;
             break;
 
-            case 'g':
-                menu_convert_audio_to_zx81_que_destacamos_en_waveform++;
-                if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==3) menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
-            break;
-
-            case 'w':
-                if (!menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
-                    menu_sound_wave_llena=0;
-
-                    menu_audio_new_waveform(0);
-                    tecla=3;
-                    salir=1;
-                }
-            break;
-
-            case 'z':
-                if (menu_convert_audio_to_zx81_zoom_wave<256) menu_convert_audio_to_zx81_zoom_wave *=2;
-            break;
-
-            case 'x':
-                if (menu_convert_audio_to_zx81_zoom_wave>1) menu_convert_audio_to_zx81_zoom_wave /=2;
+            case 'a':
+                menu_convert_audio_to_zx81_autodetect_amplitude ^=1;
             break;
 
             case 'c':
                 if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
                     if (menu_convert_audio_to_zx81_wave_manual_position>=menu_convert_audio_to_zx81_zoom_wave) menu_convert_audio_to_zx81_wave_manual_position-=menu_convert_audio_to_zx81_zoom_wave;
                 }
+            break;
+
+            case 'd':
+                menu_convert_audio_to_zx81_debug_print ^=1;
+            break;
+
+            case 'e':
+                if (menu_convert_audio_to_zx81_output_file[0] && convert_audio_to_zx81_has_finished) {
+                    menu_storage_tape_expand(menu_convert_audio_to_zx81_output_file);
+                }
+            break;
+
+            case 'f':
+                menu_convert_audio_to_zx81_find(ventana);
+            break;
+
+            case 'g':
+                menu_convert_audio_to_zx81_que_destacamos_en_waveform++;
+                if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==3) menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
+            break;
+
+            case 'i':
+                if (!convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_select_input_file();
+            break;
+
+            case 'l':
+                menu_convert_audio_to_zx81_wave_follows_conversion ^=1;
+            break;
+
+            case 'n':
+                menu_convert_audio_to_zx81_find_next(ventana);
+            break;
+
+            case 'o':
+                //no dejar activar output si no esta input
+                if (menu_convert_audio_to_zx81_input_file[0] && !convert_audio_to_zx81_thread_running) {
+                    menu_convert_audio_to_zx81_select_output_file();
+                }
+            break;
+
+            case 'r':
+                //no dejar iniciar si no esta input u output
+                if (menu_convert_audio_to_zx81_input_file[0] && menu_convert_audio_to_zx81_output_file[0] && !convert_audio_to_zx81_thread_running) {
+                    menu_convert_audio_to_zx81_run_conversion();
+
+                    //comprobar error
+                    if (if_pending_error_message) {
+                        menu_muestra_pending_error_message();
+                    }
+
+                }
+            break;
+
+            case 's':
+                if (!menu_convert_audio_to_zx81_autodetect_amplitude) {
+                    menu_ventana_scanf_numero_enhanced("Amplitude",&menu_convert_audio_to_zx81_amplitude,4,+1,1,255,0);
+
+                    //comprobar error
+                    if (if_pending_error_message) {
+                        menu_muestra_pending_error_message();
+                    }
+                }
+            break;
+
+            case 't':
+                if (convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_stop_conversion();
             break;
 
             case 'v':
@@ -2326,9 +2311,24 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 'l':
-                menu_convert_audio_to_zx81_wave_follows_conversion ^=1;
+            case 'w':
+                if (!menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
+                    menu_sound_wave_llena=0;
+
+                    menu_audio_new_waveform(0);
+                    tecla=3;
+                    salir=1;
+                }
             break;
+
+            case 'x':
+                if (menu_convert_audio_to_zx81_zoom_wave>1) menu_convert_audio_to_zx81_zoom_wave /=2;
+            break;
+
+            case 'z':
+                if (menu_convert_audio_to_zx81_zoom_wave<256) menu_convert_audio_to_zx81_zoom_wave *=2;
+            break;
+
 
 
             //Salir con ESC
