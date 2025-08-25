@@ -1489,12 +1489,22 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
     if (menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
 
+        char buffer_change_pos[30]="";
+        if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
+            strcpy(buffer_change_pos,"~~c~~v Change");
+
+            struct s_enh_zx81_lee_global_info cinfo;
+            enh_zx81_lee_get_global_info(&cinfo);
+            menu_convert_audio_to_zx81_wave_manual_position=cinfo.enh_global_input_position;
+        }
+
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
-            "hi~~ghlight: [%s] zoom ~~z~~x: 1:%-3d [%c] fo~~llow [%d] pos",
+            "hi~~ghlight: [%s] zoom ~~z~~x: 1:%-3d [%c] fo~~llow pos [%d] %s",
             textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform],
             menu_convert_audio_to_zx81_zoom_wave,
             (menu_convert_audio_to_zx81_wave_follows_conversion ? 'X' : ' '),
-            menu_convert_audio_to_zx81_wave_manual_position
+            menu_convert_audio_to_zx81_wave_manual_position,
+            buffer_change_pos
         );
     }
     else {
@@ -1794,7 +1804,7 @@ void menu_convert_audio_to_zx81_overlay(void)
                 tamanyo=get_file_size(menu_convert_audio_to_zx81_output_file);
 
                 zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS,
-                    "Conversion finished. File %s Size %d bytes. ~~v: view",nombre,tamanyo);
+                    "Conversion finished. File %s Size %d bytes. ~~e: view",nombre,tamanyo);
 
                 //solo por sacar la guessed sample rate, si ha ido muy rapido no lo habra podido obtener antes mientras el thread estaba running
                 //lo sacamos ahora
@@ -2182,6 +2192,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
         zxvision_handle_cursors_pgupdn(ventana,tecla);
 
+        struct s_enh_zx81_lee_global_info cinfo;
 
         switch (tecla) {
 
@@ -2228,7 +2239,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 'v':
+            case 'e':
                 if (menu_convert_audio_to_zx81_output_file[0] && convert_audio_to_zx81_has_finished) {
                     menu_storage_tape_expand(menu_convert_audio_to_zx81_output_file);
                 }
@@ -2297,13 +2308,17 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 if (menu_convert_audio_to_zx81_zoom_wave>1) menu_convert_audio_to_zx81_zoom_wave /=2;
             break;
 
-            case 8:
+            case 'c':
                 if (menu_convert_audio_to_zx81_wave_manual_position>=menu_convert_audio_to_zx81_zoom_wave) menu_convert_audio_to_zx81_wave_manual_position-=menu_convert_audio_to_zx81_zoom_wave;
             break;
 
-            case 9:
-                //TODO check max limit
-                menu_convert_audio_to_zx81_wave_manual_position+=menu_convert_audio_to_zx81_zoom_wave;
+            case 'v':
+                //check max limit
+                enh_zx81_lee_get_global_info(&cinfo);
+                menu_convert_audio_to_zx81_wave_manual_position=cinfo.enh_global_input_position;
+                if (menu_convert_audio_to_zx81_wave_manual_position<cinfo.enh_global_total_input_size-menu_convert_audio_to_zx81_zoom_wave) {
+                    menu_convert_audio_to_zx81_wave_manual_position+=menu_convert_audio_to_zx81_zoom_wave;
+                }
             break;
 
             case 'l':
