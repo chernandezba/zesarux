@@ -1307,7 +1307,8 @@ int menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
 int menu_convert_audio_to_zx81_wave_follows_conversion=1;
 int menu_convert_audio_to_zx81_wave_manual_position=0;
 
-int menu_convert_audio_to_zx81_speed_conversion=6;
+int menu_convert_audio_to_zx81_speed_conversion=5;
+int menu_convert_audio_to_zx81_speed_conversion_paused=0;
 
 //pasar de mi buffer intermedio al buffer final de sonido
 void menu_convert_audio_to_zx81_get_audio_buffer(void)
@@ -1519,14 +1520,14 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
     if (menu_convert_audio_to_zx81_autodetect_amplitude) strcpy(buf_autodetect,"[Auto]");
     else sprintf(buf_autodetect,"[ %3d] ~~set",menu_convert_audio_to_zx81_amplitude);
 
-    char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
+    //char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
     char *textos_destacar[]={"Pulse"," Bit "," Byte"};
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
-        "%s ~~amplitude [%c] ~~debug.  speed ~~0-~~6: %d: %s",
+        "%s ~~amplitude [%c] ~~debug.  speed ~~1-~~0: %d",
         buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-        menu_convert_audio_to_zx81_speed_conversion,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]
+        menu_convert_audio_to_zx81_speed_conversion/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
     );
 
 
@@ -1903,7 +1904,42 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 }
 
-
+//devolver la pausa asociada y el multiplicador para el buffer de envio a audio
+//multiplicador es negativo si indica que hay que promediar valores
+//multiplicador tiene valores positivos si hay que repetir valores. Por ejemplo para velocidad 4,
+//pausa es de 640 us , por tanto multiplicador 10 porque tenemos que repetir de 1 valor a 10
+//para velocidad 6, hay que juntar dos valores en 1 (valor medio) y por eso indico -2
+void menu_convert_audio_to_da_velocidad_y_multiplicador(int *pausa,int *multiplicador)
+{
+    if (menu_convert_audio_to_zx81_speed_conversion==0) return;
+    else if (menu_convert_audio_to_zx81_speed_conversion==1) {
+        *pausa=640000;
+    }
+    else if (menu_convert_audio_to_zx81_speed_conversion==2) {
+        *pausa=64000;
+    }
+    else if (menu_convert_audio_to_zx81_speed_conversion==3) {
+        *pausa=6400;
+    }
+    else if (menu_convert_audio_to_zx81_speed_conversion==4) {
+        *pausa=640;
+    }
+    else if (menu_convert_audio_to_zx81_speed_conversion==5) {
+        *pausa=64; //tiempo real con frecuencia 15600 hz
+    }
+    else if (menu_convert_audio_to_zx81_speed_conversion==6) {
+        *pausa=32;
+    }
+    else if (menu_convert_audio_to_zx81_speed_conversion==7) {
+        *pausa=16;
+    }
+    else if (menu_convert_audio_to_zx81_speed_conversion==8) {
+        *pausa=8;
+    }
+    else {
+        *pausa=4; //speed 9 y cualquier otro (que no deberia, pero por si acaso)
+    }
+}
 
 //Aqui se llama en cada iteracion del bucle de conversion. Meter pausas si conviene
 void menu_convert_audio_to_zx81_callback(void)
@@ -1911,20 +1947,32 @@ void menu_convert_audio_to_zx81_callback(void)
 
     int pausa;
 
-    if (!menu_convert_audio_to_zx81_speed_conversion) {
+    if (menu_convert_audio_to_zx81_speed_conversion_paused) {
         //detenido. bucle cerrado
-        while (!menu_convert_audio_to_zx81_speed_conversion && !menu_convert_audio_to_zx81_cancel_autodetect) {
+        while (menu_convert_audio_to_zx81_speed_conversion_paused && !menu_convert_audio_to_zx81_cancel_autodetect) {
             sleep(1);
         }
         return;
     }
 
-    if (menu_convert_audio_to_zx81_speed_conversion==6) return;
-    else if (menu_convert_audio_to_zx81_speed_conversion==5) pausa=64; //10;
-    else if (menu_convert_audio_to_zx81_speed_conversion==4) pausa=1000;
-    else if (menu_convert_audio_to_zx81_speed_conversion==3) pausa=10000;
-    else if (menu_convert_audio_to_zx81_speed_conversion==2) pausa=100000;
-    else pausa=1000000;
+
+    //1: 640000 us-> algo mas de medio segundo
+    //2: 64000 us
+    //3: mas lento 6400 us
+    //4: mas lento  640us
+    //5: tiempo real 64 us
+    //6: 32 us
+    //7: 16 us
+    //8: 8 us
+    //9: 4 us
+    //0: sin pausa. lo mas rapido
+
+
+    if (menu_convert_audio_to_zx81_speed_conversion==0) return;
+
+    int multiplicador;
+    menu_convert_audio_to_da_velocidad_y_multiplicador(&pausa,&multiplicador);
+
 
     usleep(pausa);
 }
@@ -2268,6 +2316,18 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 menu_convert_audio_to_zx81_speed_conversion=6;
             break;
 
+            case '7':
+                menu_convert_audio_to_zx81_speed_conversion=7;
+            break;
+
+            case '8':
+                menu_convert_audio_to_zx81_speed_conversion=8;
+            break;
+
+            case '9':
+                menu_convert_audio_to_zx81_speed_conversion=9;
+            break;
+
             case 'a':
                 menu_convert_audio_to_zx81_autodetect_amplitude ^=1;
             break;
@@ -2314,6 +2374,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 if (menu_convert_audio_to_zx81_input_file[0] && !convert_audio_to_zx81_thread_running) {
                     menu_convert_audio_to_zx81_select_output_file();
                 }
+            break;
+
+            case 'p':
+                menu_convert_audio_to_zx81_speed_conversion_paused ^=1;
             break;
 
             case 'r':
