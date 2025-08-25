@@ -1627,11 +1627,17 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
     buffer_speed[destino++]=' ';
     buffer_speed[destino]=0;
 
+    char info_speed[30]="";
+
+    if (menu_convert_audio_to_zx81_speed_conversion==5) strcpy(info_speed,"Real Time");
+    else if (menu_convert_audio_to_zx81_speed_conversion==1) strcpy(info_speed,"Slowest");
+    else if (menu_convert_audio_to_zx81_speed_conversion==0) strcpy(info_speed,"Fastest");
+
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
-        "%s ~~amplitude [%c] ~~debug.  speed %s",
+        "%s ~~amplitude [%c] ~~debug.  speed %s%s",
         buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-        buffer_speed/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
+        buffer_speed,info_speed/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
     );
 
 
