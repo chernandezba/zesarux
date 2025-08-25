@@ -1599,10 +1599,39 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
     char *textos_destacar[]={"Pulse"," Bit "," Byte"};
 
+    //10*3 de indicar hotkey
+    //+4 de activar y desactivar parpadeo
+    //+2 del espacio y 0 final. nota: para que pille parpadeo desactivado al final, tiene que haber al menos un caracter antes de fin
+    char buffer_speed[10*3+4+2];
+
+    int i;
+    int destino=0;
+
+
+    //Indicar la velocidad parpadeando
+    //caracteres 1234567890 . el 0 viene del indice 10
+    for (i=1;i<=10;i++) {
+        int comparar_multiplicador=i;
+        if (i==10) comparar_multiplicador=0;
+
+        if (comparar_multiplicador==menu_convert_audio_to_zx81_speed_conversion) {
+            sprintf(&buffer_speed[destino],"^^~~%c^^",'0'+comparar_multiplicador);
+            destino +=7;
+        }
+        else {
+            sprintf(&buffer_speed[destino],"~~%c",'0'+comparar_multiplicador);
+            destino +=3;
+        }
+    }
+
+    buffer_speed[destino++]=' ';
+    buffer_speed[destino]=0;
+
+
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
-        "%s ~~amplitude [%c] ~~debug.  speed ~~1-~~0: %d",
+        "%s ~~amplitude [%c] ~~debug.  speed %s",
         buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-        menu_convert_audio_to_zx81_speed_conversion/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
+        buffer_speed/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
     );
 
 
