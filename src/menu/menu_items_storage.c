@@ -1255,17 +1255,18 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 11
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 12
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE 1
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO 2
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 3
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 4
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 5
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 6
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 7
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT 8
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_THREE 3
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 4
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 5
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 6
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 7
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 8
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT 9
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1309,6 +1310,9 @@ int menu_convert_audio_to_zx81_wave_manual_position=0;
 
 int menu_convert_audio_to_zx81_speed_conversion=5;
 int menu_convert_audio_to_zx81_speed_conversion_paused=0;
+
+//Si se escucha sonido al convertir
+int menu_convert_audio_to_zx81_hear_sound=1;
 
 //devolver la pausa asociada y el multiplicador para el buffer de envio a audio
 //multiplicador es negativo si indica que hay que promediar valores
@@ -1366,7 +1370,7 @@ void menu_convert_audio_to_zx81_get_audio_buffer(void)
 
     reset_beeper_silence_detection_counter();
 
-    int i;
+
 
     //int origen=menu_hilow_convert_audio_buffer_index;
 
@@ -1388,20 +1392,20 @@ void menu_convert_audio_to_zx81_get_audio_buffer(void)
         int valor_leido=menu_convert_audio_to_zx81_get_sample(origen++);
         char audio_leido=valor_leido-128;
 
-        /* temporal desactivado
 
-        if (!menu_hilow_convert_audio_hear_sound) audio_leido=0;
+
+        if (!menu_convert_audio_to_zx81_hear_sound) audio_leido=0;
 
         //Si estamos esperando input del usuario, tambien silencio
-        if (menu_hilow_convert_audio_esperar_siguiente_sector) audio_leido=0;
+        //if (menu_hilow_convert_audio_esperar_siguiente_sector) audio_leido=0;
 
         //Si en pausa, tambien silencio
-        if (menu_hilow_convert_paused) audio_leido=0;
+        if (menu_convert_audio_to_zx81_speed_conversion_paused) audio_leido=0;
 
         //Esto tanto sirve para waveform (en modos no scroll) para que se vea toda la ventana con mismo ultimo valor
-        if (menu_hilow_convert_lento) audio_leido=menu_hilow_convert_audio_last_audio_sample;
+        //if (menu_hilow_convert_lento) audio_leido=menu_hilow_convert_audio_last_audio_sample;
 
-        */
+
 
         int j;
 
@@ -1635,11 +1639,16 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
-        "%s ~~amplitude [%c] ~~debug.  speed %s%s",
+        "%s ~~amplitude [%c] ~~debug [%c] hear so~~und",
         buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
-        buffer_speed,info_speed/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
+        (menu_convert_audio_to_zx81_hear_sound ? 'X' : ' ')
     );
 
+    zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
+        "[%c] ~~pause. speed %s%s",
+        (menu_convert_audio_to_zx81_speed_conversion_paused ? 'X' : ' '),
+        buffer_speed,info_speed/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
+    );
 
     if (menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
 
@@ -1654,7 +1663,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
             menu_convert_audio_to_zx81_wave_manual_position=cinfo.enh_global_input_position;
         }
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_THREE,
             "hi~~ghlight: [%s] zoom ~~z~~x: 1:%-3d [%c] fo~~llow pos [%d] %s",
             textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform],
             menu_convert_audio_to_zx81_zoom_wave,
@@ -1664,7 +1673,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
         );
     }
     else {
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_THREE,
             "Open ~~waveform window to see input audio");
     }
 
@@ -2025,7 +2034,8 @@ void menu_convert_audio_to_zx81_callback(void)
     if (menu_convert_audio_to_zx81_speed_conversion_paused) {
         //detenido. bucle cerrado
         while (menu_convert_audio_to_zx81_speed_conversion_paused && !menu_convert_audio_to_zx81_cancel_autodetect) {
-            sleep(1);
+            //pausa de 0.1 para que responda rapido al quitar la pausa
+            usleep(100000);
         }
         return;
     }
@@ -2481,6 +2491,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 't':
                 if (convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_stop_conversion();
+            break;
+
+            case 'u':
+                menu_convert_audio_to_zx81_hear_sound ^=1;
             break;
 
             case 'v':
