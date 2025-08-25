@@ -1492,7 +1492,9 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
         char buffer_change_pos[30]="";
         if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
             strcpy(buffer_change_pos,"~~c~~v Change");
+        }
 
+        else {
             struct s_enh_zx81_lee_global_info cinfo;
             enh_zx81_lee_get_global_info(&cinfo);
             menu_convert_audio_to_zx81_wave_manual_position=cinfo.enh_global_input_position;
@@ -2309,15 +2311,18 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             break;
 
             case 'c':
-                if (menu_convert_audio_to_zx81_wave_manual_position>=menu_convert_audio_to_zx81_zoom_wave) menu_convert_audio_to_zx81_wave_manual_position-=menu_convert_audio_to_zx81_zoom_wave;
+                if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
+                    if (menu_convert_audio_to_zx81_wave_manual_position>=menu_convert_audio_to_zx81_zoom_wave) menu_convert_audio_to_zx81_wave_manual_position-=menu_convert_audio_to_zx81_zoom_wave;
+                }
             break;
 
             case 'v':
-                //check max limit
-                enh_zx81_lee_get_global_info(&cinfo);
-                menu_convert_audio_to_zx81_wave_manual_position=cinfo.enh_global_input_position;
-                if (menu_convert_audio_to_zx81_wave_manual_position<cinfo.enh_global_total_input_size-menu_convert_audio_to_zx81_zoom_wave) {
-                    menu_convert_audio_to_zx81_wave_manual_position+=menu_convert_audio_to_zx81_zoom_wave;
+                if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
+                    //check max limit
+                    enh_zx81_lee_get_global_info(&cinfo);
+                    if (menu_convert_audio_to_zx81_wave_manual_position<cinfo.enh_global_total_input_size-menu_convert_audio_to_zx81_zoom_wave) {
+                        menu_convert_audio_to_zx81_wave_manual_position+=menu_convert_audio_to_zx81_zoom_wave;
+                    }
                 }
             break;
 
