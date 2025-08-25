@@ -1416,6 +1416,7 @@ struct s_estilos_gui {
         int color_recuadro; //color del recuadro de ventana. Para la mayoria de estilos, es igual que papel_titulo
 		int papel_titulo_inactiva, tinta_titulo_inactiva; //Colores de titulo con ventana inactiva
 
+        int color_waveform_oscuro;  //Color para forma de onda en view waveform, color secundario mas oscuro, usado en convert audio a zx81
         int color_waveform;  //Color para forma de onda en view waveform
         int color_unused_visualmem; //Color para zona no usada en visualmem
 
@@ -1567,6 +1568,7 @@ extern int pulsado_alguna_ventana_con_menu_cerrado;
 #define ESTILO_GUI_TINTA_TITULO_INACTIVA (definiciones_estilos_gui[estilo_gui_activo].tinta_titulo_inactiva)
 
 #define ESTILO_GUI_COLOR_WAVEFORM (definiciones_estilos_gui[estilo_gui_activo].color_waveform)
+#define ESTILO_GUI_COLOR_WAVEFORM_OSCURO (definiciones_estilos_gui[estilo_gui_activo].color_waveform_oscuro)
 #define ESTILO_GUI_COLOR_UNUSED_VISUALMEM (definiciones_estilos_gui[estilo_gui_activo].color_unused_visualmem)
 
 #define ESTILO_GUI_COLOR_BLOCK_VISUALTAPE (definiciones_estilos_gui[estilo_gui_activo].color_block_visualtape)

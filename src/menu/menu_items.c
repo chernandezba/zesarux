@@ -4765,6 +4765,14 @@ void menu_audio_draw_sound_wave(void)
 			valor_medio=valor_medio/max_valores;
 
             //Para visualizar la forma de onda en el conversor de sonido a zx81
+            /*
+                Con ventana de conversion de audio a zx81, hacemos aquí en waveform
+                - En zoom 1, unir cada valor de sample anterior con una linea. Lo dibujamos separados 4 pixeles
+                - Al aumentar zoom, esa separacion se va reduciendo: zoom 2, cada 2 pixeles. zoom 4 o superior, cada pixel
+                - A zoom > 1, valor de sample mostrado es la media de 2 valores (zoom 2) o 4 valores (zoom 4) etc
+                - Cuando el zoom es >=16, mostramos tambien en color algo mas oscuro linea vertical indicando valor mínimo y máximo
+                Todo eso se hace aqui a continuación y un poco mas abajo, buscar por condición convert_audio_to_zx81_thread_running
+            */
             //Queremos que cada valor de sample esté separado 4 pixeles así podemos unirlo con lineas y se ve mejor
             int color_linea=ESTILO_GUI_COLOR_WAVEFORM;
             int cada_cuanto_convert_zx81=4;
@@ -4783,14 +4791,18 @@ void menu_audio_draw_sound_wave(void)
 
                 offset *=menu_convert_audio_to_zx81_zoom_wave;
 
-                offset+=menu_convert_audio_to_zx81_get_input_position();
+                offset+=menu_convert_audio_to_zx81_waveform_get_input_position();
 
                 //Y ajustar offset a nivel de zoom, para que la señal no "cambie" a medida que va moviendose
+                //Asi los valores medios a obtener siempre se empieza por un offset multiple del zoom
                 int restar=offset % menu_convert_audio_to_zx81_zoom_wave;
                 offset -=restar;
 
-                int posicion_color_destacar=menu_convert_audio_to_zx81_get_color_destacar();
-                if (offset>=posicion_color_destacar) color_linea=ESTILO_GUI_COLOR_BLOCK_VISUALTAPE;
+                //destacar pulso, bit o byte
+                if (menu_convert_audio_to_zx81_wave_follows_conversion) {
+                    int posicion_color_destacar=menu_convert_audio_to_zx81_get_color_destacar();
+                    if (offset>=posicion_color_destacar) color_linea=ESTILO_GUI_COLOR_BLOCK_VISUALTAPE;
+                }
 
 
                 if (offset<0) {
@@ -4862,11 +4874,10 @@ void menu_audio_draw_sound_wave(void)
                                     //Lo situamos en el centro. Negativo hacia abajo (Y positiva)
                                     convert_zx81_min_valor_y=menu_audio_draw_sound_wave_ycentro-convert_zx81_min_valor_y;
 
-                                    //color por probar
-                                    //Es dificil indicar un color que sea diferente del waveform y diferente del de fondo
+                                    //Indicamos un color mas oscuro sobre la zona de maximos y minimos
                                     zxvision_draw_line(menu_audio_draw_sound_wave_window,
                                         x,convert_zx81_min_valor_y,
-                                        x,convert_zx81_max_valor_y,ESTILO_GUI_COLOR_AVISO,
+                                        x,convert_zx81_max_valor_y,ESTILO_GUI_COLOR_WAVEFORM_OSCURO,
                                         menu_waveform_putpixel_array_from_linea);
                                 }
 

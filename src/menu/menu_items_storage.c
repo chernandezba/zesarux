@@ -1304,6 +1304,8 @@ int menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
 //velocidad 1: mas lento
 //velocidad 0: pausado
 
+int menu_convert_audio_to_zx81_wave_follows_conversion=1;
+int menu_convert_audio_to_zx81_wave_manual_position=0;
 
 int menu_convert_audio_to_zx81_speed_conversion=6;
 
@@ -1488,9 +1490,11 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
     if (menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
-            "hi~~ghlight: [%s] zoom: 1:%-3d z: -, x: +",
+            "hi~~ghlight: [%s] zoom ~~z~~x: 1:%-3d [%c] fo~~llow [%d] pos",
             textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform],
-            menu_convert_audio_to_zx81_zoom_wave
+            menu_convert_audio_to_zx81_zoom_wave,
+            (menu_convert_audio_to_zx81_wave_follows_conversion ? 'X' : ' '),
+            menu_convert_audio_to_zx81_wave_manual_position
         );
     }
     else {
@@ -1539,12 +1543,22 @@ int menu_convert_audio_to_zx81_si_scroll_waveform(void)
 }
 */
 
-int menu_convert_audio_to_zx81_get_input_position(void)
-{
-    struct s_enh_zx81_lee_global_info conversion_info;
-    enh_zx81_lee_get_global_info(&conversion_info);
 
-    return conversion_info.enh_global_input_position;
+//Retornar la posicion para la ventana de waveform
+int menu_convert_audio_to_zx81_waveform_get_input_position(void)
+{
+    if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
+        return menu_convert_audio_to_zx81_wave_manual_position;
+    }
+
+    else {
+
+
+        struct s_enh_zx81_lee_global_info conversion_info;
+        enh_zx81_lee_get_global_info(&conversion_info);
+
+        return conversion_info.enh_global_input_position;
+    }
 }
 
 
@@ -2282,6 +2296,20 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             case 'x':
                 if (menu_convert_audio_to_zx81_zoom_wave>1) menu_convert_audio_to_zx81_zoom_wave /=2;
             break;
+
+            case 8:
+                if (menu_convert_audio_to_zx81_wave_manual_position>=menu_convert_audio_to_zx81_zoom_wave) menu_convert_audio_to_zx81_wave_manual_position-=menu_convert_audio_to_zx81_zoom_wave;
+            break;
+
+            case 9:
+                //TODO check max limit
+                menu_convert_audio_to_zx81_wave_manual_position+=menu_convert_audio_to_zx81_zoom_wave;
+            break;
+
+            case 'l':
+                menu_convert_audio_to_zx81_wave_follows_conversion ^=1;
+            break;
+
 
             //Salir con ESC
             case 2:

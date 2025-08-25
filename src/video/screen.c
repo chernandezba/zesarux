@@ -478,7 +478,7 @@ const int turbovision_colortable_original[TURBOVISION_TOTAL_PALETTE_COLOURS]={
 0xa80000,
 0x00a800,  //2 green
 0xa85400,
-0x0000a8,
+0x0000a8,  //4 blue
 0xa800a8,
 0x00a8a8,  //6 cyan
 0xa8a8a8,  //7 white
@@ -486,7 +486,7 @@ const int turbovision_colortable_original[TURBOVISION_TOTAL_PALETTE_COLOURS]={
 0xfc5454,
 0x54fc54,
 0xfcfc54,
-0x5454fc,
+0x5454fc,  //4 light blue
 0xfc54fc,
 0x54fcfc,
 0xffffff
@@ -518,12 +518,14 @@ const int amigaos_colortable_original[AMIGAOS_TOTAL_PALETTE_COLOURS]={
     0x0055aa, //Tinta Titulo ventana
     0x416b94, //Tinta Titulo ventana inactiva
     0xff8a00, //Naranja
+    0xc06800, //Naranja oscuro
     0xe84c44  //Rojo alterado. Original: 0xdf2020
 
 };
 
 const int ataritos_colortable_original[ATARITOS_TOTAL_PALETTE_COLOURS]={
     0x00de00,  //Verde
+    0x00a700,  //Verde oscuro
     0xdedede   //Blanco
 };
 
@@ -540,6 +542,7 @@ const int osdos_colortable_original[OSDOS_TOTAL_PALETTE_COLOURS]={
 //Paleta de color "Warp 4" de OS/2
 const int osdos_colortable_original[OSDOS_TOTAL_PALETTE_COLOURS]={
     0x2900b0,  //Azul titulo ventana papel, texto seleccionado
+    0x1f0084,  //Azul mas oscuro para waveform
     0xcccccc, //gris de papel, tinta titulo ventana inactiva
     0x808080, //Tinta opcion no disponible, titulo ventana inactiva papel
 };
@@ -559,8 +562,8 @@ const int riscos_colortable_original[RISCOS_TOTAL_PALETTE_COLOURS]={
 
 const int qnx_colortable_original[QNX_TOTAL_PALETTE_COLOURS]={
     0x007b6b,  //Verde titulo ventana papel
-    //0x0000a5, //Azul opcion seleccionada
     0x1100fa, //Azul opcion seleccionada
+    0x0d00bc, //Azul oscuro para waveform
     0xc6c6c6, //gris de papel
     0x8c8c8c //titulo ventana inactiva papel
 };

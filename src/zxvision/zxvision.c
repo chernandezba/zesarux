@@ -1545,7 +1545,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
         ZESARUX_PLUS_COLOUR_WHITE,OSDOS_COLOUR_GRAY_INACTIVE,        	//Colores para el titulo ventana inactiva
 
-		4+8,		//Color waveform
+		4,4+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,ZESARUX_PLUS_COLOUR_WHITE,		//Color para opcion marcada
@@ -1576,7 +1576,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
 		7+8,0,        	//Colores para el titulo ventana inactiva
 
-		1,		//Color waveform
+		1,1+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -1607,7 +1607,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
 		7,0,        	//Colores para el titulo ventana inactiva
 
-		1,		//Color waveform
+		1,1+8,		//Colores waveform
 		4,		//Color para zona no usada en visualmem
         4,      //color block visualtape
 		2,7,		//Color para opcion marcada
@@ -1640,7 +1640,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         6,              //Color recuadro
 		1,6,		//Colores para el titulo ventana inactiva
 
-		4,		//Color waveform
+		4,4+8,		//Colores waveform
 		7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -1670,7 +1670,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
         7+8,0,        	//Colores para el titulo ventana inactiva
 
-        1,		//Color waveform
+        1,1+8,		//Colores waveform
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
         3,7+8,		//Color para opcion marcada
@@ -1701,7 +1701,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         6+8,              //Color recuadro
         1,6+8,            //Colores para el titulo ventana inactiva
 
-        4,              //Color waveform
+        4,4+8,              //Colores waveform
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         2,7+8,		//Color para opcion marcada
@@ -1732,7 +1732,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         VDP_9918_INDEX_FIRST_COLOR+15,              //Color recuadro
         VDP_9918_INDEX_FIRST_COLOR+4,VDP_9918_INDEX_FIRST_COLOR+15,            //Colores para el titulo ventana inactiva
 
-        VDP_9918_INDEX_FIRST_COLOR+2,              //Color waveform
+        VDP_9918_INDEX_FIRST_COLOR+2,VDP_9918_INDEX_FIRST_COLOR+3,              //Colores waveform
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         VDP_9918_INDEX_FIRST_COLOR+6,VDP_9918_INDEX_FIRST_COLOR+15,		//Color para opcion marcada
@@ -1762,7 +1762,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         2,              //Color recuadro
         7+8,2,        	//Colores para el titulo ventana inactiva
 
-        4,		//Color waveform
+        4,4+8,		//Colores waveform
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
         2,7+8,		//Color para opcion marcada
@@ -1792,7 +1792,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
         7+8,0,          //Colores para el titulo ventana inactiva
 
-        1,              //Color waveform
+        1,1+8,              //Colores waveform
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         2,7+8,		//Color para opcion marcada
@@ -1822,7 +1822,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         Z88_PXCOLON,              //Color recuadro
         Z88_PXCOLGREY,Z88_PXCOLOFF,          //Colores para el titulo ventana inactiva
 
-        4,              //Color waveform
+        4,4+8,              //Colores waveform
         4,               //Color para zona no usada en visualmem
         6,      //color block visualtape
         2,7+8,		//Color para opcion marcada
@@ -1852,7 +1852,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
         7+8,0,          //Colores para el titulo ventana inactiva
 
-        4,              //Color waveform
+        4,4+8,              //Colores waveform
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         7,0,		//Color para opcion marcada
@@ -1882,7 +1882,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,              //Color recuadro
 		7+8,AMIGAOS_COLOUR_inactive_title_ink,        	//Colores para el titulo ventana inactiva
 
-		AMIGAOS_COLOUR_orange,		//Color waveform
+		AMIGAOS_COLOUR_orange_dark,AMIGAOS_COLOUR_orange,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		AMIGAOS_COLOUR_red,7+8,		//Color para opcion marcada
@@ -1912,7 +1912,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
 		ATARITOS_COLOUR_white,0,        	//Colores para el titulo ventana inactiva
 
-		ATARITOS_COLOUR_green,		//Color waveform
+		ATARITOS_COLOUR_green_dark,ATARITOS_COLOUR_green,		//Colores waveform
 		ATARITOS_COLOUR_green,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,ATARITOS_COLOUR_white,		//Color para opcion marcada
@@ -1942,7 +1942,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         BEOS_COLOUR_grey_box,              //Color recuadro
 		BEOS_COLOUR_grey_inactive_title,0,        	//Colores para el titulo ventana inactiva
 
-		1,		//Color waveform
+		1,1+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -1973,7 +1973,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
 		OSDOS_COLOUR_GRAY_INACTIVE,OSDOS_COLOUR_GRAY,        	//Colores para el titulo ventana inactiva
 
-		OSDOS_COLOUR_BLUE,		//Color waveform
+		OSDOS_COLOUR_BLUE_DARK,OSDOS_COLOUR_BLUE,		//Colores waveform
 		OSDOS_COLOUR_GRAY_INACTIVE,		//Color para zona no usada en visualmem
         OSDOS_COLOUR_GRAY_INACTIVE,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -2003,7 +2003,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         QNX_COLOUR_GRAY_INACTIVE,              //Color recuadro
 		QNX_COLOUR_GRAY_INACTIVE,0,        	//Colores para el titulo ventana inactiva
 
-		QNX_COLOUR_BLUE,		//Color waveform
+		QNX_COLOUR_BLUE_DARK,QNX_COLOUR_BLUE,		//Colores waveform
 		QNX_COLOUR_GRAY_INACTIVE,		//Color para zona no usada en visualmem
         QNX_COLOUR_GRAY_INACTIVE,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -2033,7 +2033,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         RETROMAC_COLOUR_window_box,              //Color recuadro
 		RETROMAC_COLOUR_paper,RETROMAC_COLOUR_unavailable_ink,    	//Colores para el titulo ventana inactiva
 
-		4,		//Color waveform
+		4,4+8,		//Colores waveform
 		5,		//Color para zona no usada en visualmem
         5+8,      //color block visualtape
 		2,7,		//Color para opcion marcada
@@ -2064,7 +2064,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         RISCOS_COLOUR_LIGHTBLUE,              //Color recuadro
         RISCOS_COLOUR_ORANGE,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana inactiva
 
-		4+8,		//Color waveform
+		4,4+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		RISCOS_COLOUR_RED,7+8,		//Color para opcion marcada
@@ -2098,7 +2098,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,              //Color recuadro
 		7+8,1,        	//Colores para el titulo ventana inactiva
 
-		4,		//Color waveform
+		4,4+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -2128,7 +2128,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,              //Color recuadro
 		7,0,        	//Colores para el titulo ventana inactiva
 
-		4,		//Color waveform
+		4,4+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -2158,7 +2158,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         TURBOVISION_COLOUR_lightwhite,              //Color recuadro
 		TURBOVISION_COLOUR_white,TURBOVISION_COLOUR_black,        	//Colores para el titulo ventana inactiva
 
-		TURBOVISION_COLOUR_blue,		//Color waveform
+		TURBOVISION_COLOUR_blue_dark,TURBOVISION_COLOUR_blue,		//Colores waveform
 		TURBOVISION_COLOUR_cyan,		//Color para zona no usada en visualmem
         TURBOVISION_COLOUR_cyan,       //color block visualtape
 		TURBOVISION_COLOUR_red,TURBOVISION_COLOUR_lightwhite,		//Color para opcion marcada
@@ -2188,7 +2188,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         2+8,              //Color recuadro
 		2,0,        	//Colores para el titulo ventana inactiva
 
-		1,		//Color waveform
+		1,1+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -2218,7 +2218,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         4+8,              //Color recuadro
 		4,7,        	//Colores para el titulo ventana inactiva
 
-		1,		//Color waveform
+		1,1+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		4,7+8,		//Color para opcion marcada
@@ -2248,7 +2248,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1+8,              //Color recuadro
 		1,7,        	//Colores para el titulo ventana inactiva
 
-		4,		//Color waveform
+		4,4+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		1,7+8,		//Color para opcion marcada
@@ -2278,7 +2278,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         3+8,              //Color recuadro
 		3,0,        	//Colores para el titulo ventana inactiva
 
-		1,		//Color waveform
+		1,1+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		3,7+8,		//Color para opcion marcada
@@ -2308,7 +2308,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         5+8,              //Color recuadro
 		5,0,        	//Colores para el titulo ventana inactiva
 
-		1,		//Color waveform
+		1,1+8,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		5,7+8,		//Color para opcion marcada
@@ -2338,7 +2338,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         6+8,              //Color recuadro
 		6,0,        	//Colores para el titulo ventana inactiva
 
-		4,		//Color waveform
+		4,4+8,		//Colores waveform
 		5,		//Color para zona no usada en visualmem
         5,      //color block visualtape
 		6,7+8,		//Color para opcion marcada
@@ -2368,7 +2368,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,              //Color recuadro
         7,0,          //Colores para el titulo ventana inactiva
 
-        1,              //Color waveform
+        1,1+8,              //Colores waveform
         7+8,               //Color para zona no usada en visualmem
         7+8,      //color block visualtape
         7+8,0,		//Color para opcion marcada
@@ -2398,7 +2398,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,              //Color recuadro
         0,7,          //Colores para el titulo ventana inactiva
 
-        5,              //Color waveform
+        5,5+8,              //Colores waveform
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
         0,7+8,		//Color para opcion marcada
@@ -2430,7 +2430,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         SOLARIZED_COLOUR_base0,              //Color recuadro
 		SOLARIZED_COLOUR_base03,SOLARIZED_COLOUR_base0,        	//Colores para el titulo ventana inactiva
 
-		SOLARIZED_COLOUR_blue,		//Color waveform
+		SOLARIZED_COLOUR_blue,SOLARIZED_COLOUR_cyan,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
@@ -2462,7 +2462,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         SOLARIZED_COLOUR_base00,              //Color recuadro
 		SOLARIZED_COLOUR_base3,SOLARIZED_COLOUR_base00,        	//Colores para el titulo ventana inactiva
 
-		SOLARIZED_COLOUR_blue,		//Color waveform
+		SOLARIZED_COLOUR_blue,SOLARIZED_COLOUR_cyan,		//Colores waveform
 		7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
 		2,7+8,		//Color para opcion marcada
