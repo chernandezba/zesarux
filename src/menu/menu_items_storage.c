@@ -1255,18 +1255,19 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 12
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 13
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE 1
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO 2
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_THREE 3
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 4
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 5
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 6
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 7
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 8
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT 9
+//entre settings e info una linea en blanco
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_ONE 5
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_TWO 6
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_THREE 7
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FOUR 8
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS 9
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT 10
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1325,7 +1326,12 @@ void menu_convert_audio_to_zx81_da_velocidad_y_multiplicador(int *pausa,int *mul
     *pausa=1;
     *multiplicador=1;
 
-    if (menu_convert_audio_to_zx81_speed_conversion==0) return;
+    if (menu_convert_audio_to_zx81_speed_conversion==0) {
+        //sin pausa. devolvemos multiplicador para que se oiga aun mas agudo que en velocidad 9
+        //aunque en este modo es casi instantaneo, puede ir quiza un poco mas lento si habilitamos debug
+        *multiplicador=-32;
+        return;
+    }
     else if (menu_convert_audio_to_zx81_speed_conversion==1) {
         *pausa=640000;
         *multiplicador=10000;
@@ -1371,10 +1377,6 @@ void menu_convert_audio_to_zx81_get_audio_buffer(void)
     reset_beeper_silence_detection_counter();
 
 
-
-    //int origen=menu_hilow_convert_audio_buffer_index;
-
-    //temp
     struct s_enh_zx81_lee_global_info cinfo;
     enh_zx81_lee_get_global_info(&cinfo);
     int origen=cinfo.enh_global_input_position;
