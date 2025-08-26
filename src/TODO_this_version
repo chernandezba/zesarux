@@ -170,7 +170,7 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 
 *marcar inicio y final de pulso/bit/byte en waveform con linea vertical
 
-*que diga nombre programa detectado, y no solo en las lineas debug
+ok *que diga nombre programa detectado, y no solo en las lineas debug
 
 *usleep preciso para que funcione bien en windows?
 
