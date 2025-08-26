@@ -4598,7 +4598,8 @@ void menu_audio_draw_sound_wave(void)
 	}
 
 
-
+    //coordenada mas abajo hasta la fecha para escribir texto destacar
+    int destacar_max_y=0;
 
 	audiobuffer_stats audiostats;
 	audio_get_audiobuffer_stats(&audiostats);
@@ -4894,14 +4895,21 @@ void menu_audio_draw_sound_wave(void)
                                 zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,color_linea,
                                                     menu_waveform_putpixel_array_from_linea);
 
+                                if (y>destacar_max_y) destacar_max_y=y;
+
                                 //Solo escribir este texto cuando zoom maximo
                                 if (texto_destacar_posicion && menu_convert_audio_to_zx81_zoom_wave==1) {
                                     char buffer_texto_destacar[40];
                                     sprintf(buffer_texto_destacar,"Start %s",menu_convert_audio_to_zx81_get_string_destacar() );
+
+                                    /*
                                     //la coordenada y mas abajo de las dos, de la union de las dos lineas anteriores
                                     int baja_y=y;
                                     if (lasty>baja_y) baja_y=lasty;
-                                    zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,baja_y+30,2,
+                                    */
+
+                                    zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,
+                                        destacar_max_y+20,2,
                                         color_linea, buffer_texto_destacar,
                                         menu_waveform_putpixel_array_from_linea);
                                 }

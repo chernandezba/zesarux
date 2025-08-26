@@ -170,7 +170,7 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 
 *Señal highlight quizá que salga también con franja color inverso
 
-*texto vectorial que diga donde empieza pulso, bit y byte. implementar texto vectorial de letras de The Liner
+ok *texto vectorial que diga donde empieza pulso, bit y byte. implementar texto vectorial de letras de The Liner
 
 *ajustar esto:
                         //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
