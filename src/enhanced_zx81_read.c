@@ -292,7 +292,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
         if (cancel_process!=NULL) {
             if (*cancel_process) {
-                printf("Cancelled reading data\n");
+                //printf("Cancelled reading data\n");
                 return indice_destino_p81;
             }
         }
@@ -363,6 +363,9 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
                         //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
                         if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
+
+                        //para turbo
+                        //if (longitud_cresta_subida>(longitud_cresta_bajada*25)/10 && pulsos_leidos) {
                             if (debug_print && fun_print!=NULL) {
                                 sprintf(buffer_print,"%d End of bit before this current pulse. Total bit pulses: %d",i,conteo_pulsos_de_bit);
                                 fun_print(buffer_print);
@@ -376,6 +379,11 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                             int bit_leido=0;
                             if (conteo_pulsos_de_bit==3 || conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
                             else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
+
+                            //para turbo
+                            //if (conteo_pulsos_de_bit==2) bit_leido=0;
+                            //else if (conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5 || conteo_pulsos_de_bit==6) bit_leido=1;
+
                             else if (conteo_pulsos_de_bit==1) {
                                 if (fun_print!=NULL) {
                                     sprintf(buffer_print,"%d Only one pulse. Assume end of program",i);
