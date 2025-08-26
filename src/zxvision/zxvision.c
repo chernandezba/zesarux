@@ -15029,7 +15029,97 @@ void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int rad
 
 }
 
+//Cada caracter se define en una cuadricula de 8x8
+//El significado de cada string es:
+//Empezar en primer caracter
+//bucle:
+//si caracter es "P", indica moverse a posicion x,y de los dos siguientes caracteres
+//si caracter es un digito, indica hacer linea desde posicion anterior a posicion indicada en siguientes caracteres, y moverse a dicha posicion
+//cualquier otro caracter no es admitido
+//Nota: están obtenidos desde The Liner 75, donde el 0,0 está abajo
+char *zxvision_vectorial_characters[]={
 
+ "","P3236P3030","P2526P4546","P0565P0161P1016P5056","P551513535111P3036","66P0516P1506P5061P6051","P3034P3636","P3546","P40313546","P20313526", //: REM )
+
+ "66P0660P0363P3036","P0363P3036","P304142","P0363","P1010","66","66P0006666000","P143630","P066663030060","P06666000P0363", // REM 3
+
+ "P060363P6066","P660603636000","P660600606303","P30336606","06666000P0363","6066060363","P3131P3535","P203132P3434", // REM ;
+
+ "P502356","P0161P0565","P104316","P141526365432P3030","P525140301234P3636","066660P0363","P5000065665645303P53626150", // REM B
+
+ "P60000666","P300006366330","P60000666P0343","0666P0343","P660600606333","06P6066P0363", // REM H
+
+ "60P0666P3036","P03006066","06P0336P0330","P060060","06336660","066066","06666000","06666303", // REM P
+
+ "06666000P6033","06666303P5023","P660603636000","P3036P0666","P06006066","P0603306366", // REM V
+
+ "P0600336066","66P0660","P063366P3033","P06660060" // REM Z
+};
+
+void zxvision_print_vectorial_text(zxvision_window *w,int x,int y,int text_zoom,int color,char *texto,
+    void (*fun_putpixel) (zxvision_window *w,int parm_x,int parm_y,int parm_color) )
+{
+
+    //calcular el punto mas bajo
+    int origen_x=x;
+    int origen_y=y+7*text_zoom;
+
+    int xactual=0;
+    int yactual=0;
+
+    while (*texto) {
+        char caracter=*texto;
+        texto++;
+
+        if (caracter>='a' && caracter<='z') caracter -=32;
+
+        if (caracter<32 || caracter>'Z') caracter='?';
+
+        int indice_caracter_vectorial=caracter-32;
+
+        char *caracter_vectorial=zxvision_vectorial_characters[indice_caracter_vectorial];
+        //printf("caracter vectorial: [%s]\n",caracter_vectorial);
+
+        int i;
+        int x_en_caracter=0;
+        int y_en_caracter=0;
+        for (i=0;caracter_vectorial[i];) {
+            if (caracter_vectorial[i]=='P') {
+                i++;
+                x_en_caracter=caracter_vectorial[i++]-'0';
+                y_en_caracter=caracter_vectorial[i++]-'0';
+            }
+            else {
+                //Sera digito
+                int nueva_x=caracter_vectorial[i++]-'0';
+                int nueva_y=caracter_vectorial[i++]-'0';
+
+                //trazar linea de antes a ahora
+                int xorig_escalada=xactual+x_en_caracter*text_zoom;
+                xorig_escalada +=origen_x;
+                int yorig_escalada=yactual+y_en_caracter*text_zoom;
+                //y hacia arriba
+                yorig_escalada=origen_y-yorig_escalada;
+
+                int xdest_escalada=xactual+nueva_x*text_zoom;
+                xdest_escalada +=origen_x;
+                int ydest_escalada=yactual+nueva_y*text_zoom;
+                //y hacia arriba
+                ydest_escalada=origen_y-ydest_escalada;
+
+                zxvision_draw_line(w,xorig_escalada,yorig_escalada,xdest_escalada,ydest_escalada,color, fun_putpixel);
+
+                x_en_caracter=nueva_x;
+                y_en_caracter=nueva_y;
+            }
+
+
+        }
+
+        xactual +=8*text_zoom;
+
+    }
+}
 
 
 void zxvision_widgets_draw_speedometer(zxvision_window *ventana,int xcentro_widget,int ycentro_widget,int longitud_linea,int grados,int color_linea,int color_contorno)

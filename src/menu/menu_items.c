@@ -4885,6 +4885,15 @@ void menu_audio_draw_sound_wave(void)
                                 //unir el punto del sample anterior con el actual
                                 zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,color_linea,
                                                     menu_waveform_putpixel_array_from_linea);
+
+                                //temp
+                                char buffer_texto[257];
+                                int jjj;
+                                for (jjj=1;jjj<256;jjj++) buffer_texto[jjj-1]=jjj;
+                                buffer_texto[jjj]=0;
+                                zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,8,8*4,1,
+                                    7, buffer_texto,zxvision_putpixel);
+
                             }
                         }
 
