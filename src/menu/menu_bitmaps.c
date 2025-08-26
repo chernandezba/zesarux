@@ -2550,11 +2550,11 @@ char *bitmap_lowericon_ext_desktop_audio_to_zx81_convert[EXT_DESKTOP_BUTTONS_ANC
 	" xggxx xxg      gxx xxggx ",
 	" xgggxxxggggggggggxxxgggx ",
 	" xggggggggggggggggggggggx ",
-	" xgxxxxgxggxgxxxxggxxgggx ",
-	" xgggxgggxxggxggxgxgxgggx ",	//10
-	" xggxggggxxggxxxxgggxgggx ",
-    " xgxxxxgxggxgxggxgggxgggx ",
-	" xgggggggggggxxxxgggxgggx ",
+	" xgxxxxgxgggxgxxxxggxxggx ",
+	" xgggxgggxgxggxggxgxgxggx ",	//10
+	" xggxgggggxgggxxxxgggxggx ",
+    " xgxgggggxgxggxggxgggxggx ",
+	" xgxxxxgxgggxgxxxxgggxggx ",
 	" xgggggxxxxxxxxxxxxgggggx ",
 	" xggggxggggggggggggxggggx ",
 	" xxgggxggggggggggggxgggxx ",
