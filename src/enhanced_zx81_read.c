@@ -362,6 +362,9 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                         enh_global_rise_position=i;
 
                         //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
+                        //Ejemplo en Control de Stocks, la mayoria de finales de bit son:
+                        //Rise length: 21 Fall length: 3
+                        //Por tanto hay mucho mas que 3 veces mas
                         if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
 
                         //para turbo
