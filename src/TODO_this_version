@@ -146,15 +146,11 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 
 *que ventana de conversión permita usar antiguo algoritmo?
 
-ok *icono ventana
-
 
 *entrada en changelog
 
-ok *opcion para smartload directamente archivo generado en salida
 
 *en View expanded, si se reusa archivo de salida, al ser una carpeta temporal, hay restos de las anteriores
-
 
 
 *Nota en algún sitio que esta conversión mejorada de raw a p/p81 requiere que se borren pulsos de ruido de antes de los datos,
@@ -165,7 +161,6 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 
 *poder editar la onda cuando haya un error - que se pare si hay un error. Requeriria otra ventana diferente de la waveform?
 *que pasa si llega el pulso final y poco despues se acaba el archivo. lo finaliza bien?
-
 
 *marcar inicio y final de pulso/bit/byte en waveform con linea vertical
 
@@ -186,5 +181,7 @@ realmente es *3?
 *Poder convertir turbo de cinta de stocks
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
+
+
 
 -Nueva ventana para poder leer audio de cinta y generar archivo RWA
