@@ -1305,6 +1305,15 @@ int menu_convert_audio_to_zx81_guessed_sample_rate=0;
 //2 destacar byte
 int menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
 
+char *menu_convert_audio_to_zx81_que_destacamos_textos_destacar[]={"Pulse"," Bit ","Byte ","Unknown"};
+
+char *menu_convert_audio_to_zx81_get_string_destacar(void)
+{
+    int i=menu_convert_audio_to_zx81_que_destacamos_en_waveform;
+
+    if (i<0 || i>=3) i=3;
+    return menu_convert_audio_to_zx81_que_destacamos_textos_destacar[i];
+}
 
 
 int menu_convert_audio_to_zx81_wave_follows_conversion=1;
@@ -1646,7 +1655,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
     //char *textos_pausa[]={"Paused","Very Slow","Slow","Medium","Fast","Very Fast","Fastest"};
 
-    char *textos_destacar[]={"Pulse"," Bit ","Byte "};
+    //char *textos_destacar[]={"Pulse"," Bit ","Byte "};
 
     //10*3 de indicar hotkey
     //+4 de activar y desactivar parpadeo
@@ -1720,7 +1729,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_FOUR,
             "[%s] hi~~ghlight.  zoom ~~z~~x: 1:%-3d",
-            textos_destacar[menu_convert_audio_to_zx81_que_destacamos_en_waveform],
+            menu_convert_audio_to_zx81_get_string_destacar(),
             menu_convert_audio_to_zx81_zoom_wave
         );
 

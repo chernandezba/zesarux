@@ -15056,6 +15056,8 @@ char *zxvision_vectorial_characters[]={
  "P0600336066","66P0660","P063366P3033","P06660060" // REM Z
 };
 
+
+//TODO corregir: &@
 void zxvision_print_vectorial_text(zxvision_window *w,int x,int y,int text_zoom,int color,char *texto,
     void (*fun_putpixel) (zxvision_window *w,int parm_x,int parm_y,int parm_color) )
 {

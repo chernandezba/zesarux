@@ -4533,7 +4533,7 @@ void menu_audio_draw_sound_wave(void)
 			menu_waveform_previous_volume=menu_decae_dec_valor_volumen(menu_waveform_previous_volume,menu_audio_draw_sound_wave_volumen_escalado);
 
 
-			//Frecuency
+			//Frequency
 			sprintf (buffer_texto_medio,"Average freq: %d Hz (%s)",
 			    menu_audio_draw_sound_wave_frecuencia_aproximada,get_note_name(menu_audio_draw_sound_wave_frecuencia_aproximada));
 
@@ -4783,6 +4783,8 @@ void menu_audio_draw_sound_wave(void)
             if (menu_convert_audio_to_zx81_zoom_wave==2) cada_cuanto_convert_zx81=2;
             else if (menu_convert_audio_to_zx81_zoom_wave>=4) cada_cuanto_convert_zx81=1;
 
+            int texto_destacar_posicion=0;
+
             if (convert_audio_to_zx81_thread_running) {
                 //Ubicar a la derecha de la ventana lo que se está convirtiendo
                 int offset=x-xinicial_grafica-ancho_grafica;
@@ -4801,7 +4803,13 @@ void menu_audio_draw_sound_wave(void)
                 //destacar pulso, bit o byte
                 if (menu_convert_audio_to_zx81_wave_follows_conversion) {
                     int posicion_color_destacar=menu_convert_audio_to_zx81_get_color_destacar();
-                    if (offset>=posicion_color_destacar) color_linea=ESTILO_GUI_COLOR_BLOCK_VISUALTAPE;
+                    if (offset>=posicion_color_destacar) {
+                        color_linea=ESTILO_GUI_COLOR_BLOCK_VISUALTAPE;
+
+                        if (offset==posicion_color_destacar) {
+                            texto_destacar_posicion=1;
+                        }
+                    }
                 }
 
 
@@ -4886,13 +4894,19 @@ void menu_audio_draw_sound_wave(void)
                                 zxvision_draw_line(menu_audio_draw_sound_wave_window,x-cada_cuanto_convert_zx81,lasty,x,y,color_linea,
                                                     menu_waveform_putpixel_array_from_linea);
 
-                                //temp
-                                char buffer_texto[257];
-                                int jjj;
-                                for (jjj=1;jjj<256;jjj++) buffer_texto[jjj-1]=jjj;
-                                buffer_texto[jjj]=0;
-                                zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,8,8*4,1,
-                                    7, buffer_texto,zxvision_putpixel);
+                                //Solo escribir este texto cuando zoom maximo
+                                if (texto_destacar_posicion && menu_convert_audio_to_zx81_zoom_wave==1) {
+                                    char buffer_texto_destacar[40];
+                                    sprintf(buffer_texto_destacar,"Start %s",menu_convert_audio_to_zx81_get_string_destacar() );
+                                    //la coordenada y mas abajo de las dos, de la union de las dos lineas anteriores
+                                    int baja_y=y;
+                                    if (lasty>baja_y) baja_y=lasty;
+                                    zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,baja_y+30,2,
+                                        color_linea, buffer_texto_destacar,
+                                        menu_waveform_putpixel_array_from_linea);
+                                }
+
+
 
                             }
                         }
