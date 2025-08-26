@@ -2049,7 +2049,7 @@ void menu_convert_audio_to_zx81_overlay(void)
                     "Conversion finished. Name: [%s]",menu_convert_audio_to_zx81_nombre_programa);
 
                 zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_TWO,
-                    "File %s Size %d bytes ~~e: view",nombre,tamanyo);
+                    "File %s Size %d bytes ~~e: view ~~m: Smartload",nombre,tamanyo);
 
 
                 //solo por sacar la guessed sample rate, si ha ido muy rapido no lo habra podido obtener antes mientras el thread estaba running
@@ -2534,6 +2534,17 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'l':
                 menu_convert_audio_to_zx81_wave_follows_conversion ^=1;
+            break;
+
+            case 'm':
+                strcpy(quickload_file,menu_convert_audio_to_zx81_output_file);
+                quickfile=quickload_file;
+                //Forzar autoload
+                z80_bit pre_noautoload;
+                pre_noautoload.v=noautoload.v;
+                noautoload.v=0;
+                quickload(quickload_file);
+                noautoload.v=pre_noautoload.v;
             break;
 
             case 'n':
