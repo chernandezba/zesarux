@@ -2539,6 +2539,37 @@ char *bitmap_lowericon_ext_desktop_hilow_convert[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_lowericon_ext_desktop_audio_to_zx81_convert[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	"                          ", //0
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",
+	" xxggggggggggggggggggggxx ",
+	" xgggxxxggggggggggxxxgggx ",
+	" xggxx xxg      gxx xxggx ",
+	" xggx   xg      gx   xggx ",
+	" xggxx xxg      gxx xxggx ",
+	" xgggxxxggggggggggxxxgggx ",
+	" xggggggggggggggggggggggx ",
+	" xgxxxxgxggxgxxxxggxxgggx ",
+	" xgggxgggxxggxggxgxgxgggx ",	//10
+	" xggxggggxxggxxxxgggxgggx ",
+    " xgxxxxgxggxgxggxgggxgggx ",
+	" xgggggggggggxxxxgggxgggx ",
+	" xgggggxxxxxxxxxxxxgggggx ",
+	" xggggxggggggggggggxggggx ",
+	" xxgggxggggggggggggxgggxx ",
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",
+	"             x            ",
+    "             x            ",
+    "           xxxxx          ",  //20
+    "            xxx           ",
+    "             x            ",
+	" xx xxx xxx xxx xxx xx xx ",
+	"  x x x x x x x x x  x  x ",
+	"  x xxx xxx xxx xxx  x  x "  //25
+
+};
+
 char *bitmap_button_ext_desktop_hilow_visual_datadrive[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0

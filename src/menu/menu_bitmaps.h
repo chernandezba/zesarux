@@ -221,6 +221,7 @@ extern char *bitmap_button_ext_desktop_hilow_visual_datadrive[];
 extern char *bitmap_lowericon_ext_desktop_hilow_convert[];
 
 extern char *bitmap_button_ext_desktop_visual_cassete_tape[];
+extern char *bitmap_lowericon_ext_desktop_audio_to_zx81_convert[];
 
 extern char *bitmap_button_ext_desktop_helpkeyboard[];
 
