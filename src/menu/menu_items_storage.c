@@ -1330,6 +1330,9 @@ int menu_convert_audio_to_zx81_hear_sound=1;
 
 char menu_convert_audio_to_zx81_nombre_programa[256]="";
 
+//Errores al leer pulsos en la conversion
+int menu_convert_audio_to_zx81_errores_pulsos_detectados=0;
+
 //devolver la pausa asociada y el multiplicador para el buffer de envio a audio
 //multiplicador es negativo si indica que hay que promediar valores
 //multiplicador tiene valores positivos si hay que repetir valores. Por ejemplo para velocidad 4,
@@ -2054,8 +2057,15 @@ void menu_convert_audio_to_zx81_overlay(void)
             if (si_existe_archivo(menu_convert_audio_to_zx81_output_file)) {
                 tamanyo=get_file_size(menu_convert_audio_to_zx81_output_file);
 
-                zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,
-                    "Conversion finished. Name: [%s]",menu_convert_audio_to_zx81_nombre_programa);
+                int tinta=ESTILO_GUI_TINTA_NORMAL;
+                if (menu_convert_audio_to_zx81_errores_pulsos_detectados) tinta=ESTILO_GUI_COLOR_AVISO;
+
+                zxvision_print_string_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,
+                    tinta,ESTILO_GUI_PAPEL_NORMAL,0,
+                    "Conversion finished. Errors: %d. Name: [%s]",menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_nombre_programa);
+
+                //zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,
+                //    "Conversion finished. Errors: %d. Name: [%s]",menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_nombre_programa);
 
                 zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_TWO,
                     "File %s Size %d bytes ~~e: view ~~m: Smartload",nombre,tamanyo);
@@ -2187,7 +2197,8 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
     enhanced_convert_realtape_to_p_p81(menu_convert_audio_to_zx81_input_file,menu_convert_audio_to_zx81_output_file,
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
         menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,
-        menu_convert_audio_to_zx81_callback,pointer_to_autodetected_amplitude,menu_convert_audio_to_zx81_nombre_programa,NULL
+        menu_convert_audio_to_zx81_callback,pointer_to_autodetected_amplitude,menu_convert_audio_to_zx81_nombre_programa,
+        &menu_convert_audio_to_zx81_errores_pulsos_detectados
     );
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
