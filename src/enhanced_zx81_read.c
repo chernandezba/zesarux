@@ -252,6 +252,10 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
     enh_global_total_input_size=tamanyo_memoria;
 
+    if (total_pulsos_sospechosos!=NULL) {
+        *total_pulsos_sospechosos=0;
+    }
+
 
     int i;
     for (i=0;i<ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH;i++) {
