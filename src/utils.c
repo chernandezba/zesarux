@@ -23454,8 +23454,8 @@ void util_enhanced_print_nombre(int longitud_nombre,z80_byte *memoria_p81,char *
 {
     int i;
 
-    for (i=0;i<longitud_nombre;i++) {
-
+    //Maximo 255 caracteres+0 del final
+    for (i=0;i<longitud_nombre && i<255;i++) {
         z80_bit inverse;
         nombre_destino[i]=da_codigo81_solo_letras(memoria_p81[i],&inverse);
 
