@@ -1333,6 +1333,11 @@ char menu_convert_audio_to_zx81_nombre_programa[256]="";
 //Errores al leer pulsos en la conversion
 int menu_convert_audio_to_zx81_errores_pulsos_detectados=0;
 
+//Para guardar listado de esos errores
+struct s_enh_zx81_pulse_errors menu_convert_audio_to_zx81_error_list[ENH_ZX81_MAX_ERRORS_TO_STORE];
+
+
+
 //devolver la pausa asociada y el multiplicador para el buffer de envio a audio
 //multiplicador es negativo si indica que hay que promediar valores
 //multiplicador tiene valores positivos si hay que repetir valores. Por ejemplo para velocidad 4,
@@ -2198,7 +2203,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
         menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,
         menu_convert_audio_to_zx81_callback,pointer_to_autodetected_amplitude,menu_convert_audio_to_zx81_nombre_programa,
-        &menu_convert_audio_to_zx81_errores_pulsos_detectados,NULL
+        &menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_error_list
     );
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");

@@ -33,8 +33,12 @@ typedef unsigned char z80_byte;
 //Estructura para guardar información de errores en pulsos
 struct s_enh_zx81_pulse_errors {
     int position;
-    int errors;
+    int pulse_count;
 };
+
+//Limito la cantidad maxima de errores que se pueden guardar en un array de struct s_enh_zx81_pulse_errors
+//Realmente podria usar un parametro al llamar a la funcion, pero no quiero complicarla mas aun con muchos parametros
+#define ENH_ZX81_MAX_ERRORS_TO_STORE 100
 
 extern int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
     z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,

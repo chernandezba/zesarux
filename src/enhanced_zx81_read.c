@@ -415,6 +415,13 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                 else bit_leido=1;
 
                                 if (total_pulsos_sospechosos!=NULL) {
+                                    if (listado_errores!=NULL) {
+                                        if (*total_pulsos_sospechosos < ENH_ZX81_MAX_ERRORS_TO_STORE) {
+                                            listado_errores[*total_pulsos_sospechosos].position=i;
+                                            listado_errores[*total_pulsos_sospechosos].pulse_count=conteo_pulsos_de_bit;
+                                        }
+                                    }
+
                                     *total_pulsos_sospechosos=(*total_pulsos_sospechosos)+1;
                                 }
                                 if (fun_print!=NULL) {
