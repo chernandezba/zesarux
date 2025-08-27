@@ -380,10 +380,17 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                             //int numero_bit_en_byte=0;
 
                             int bit_leido=0;
-                            if (conteo_pulsos_de_bit==3 || conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
-                            else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
 
-                            //para turbo
+                            //Conteo de pulsos que habia inicialmente, leido stocks.p81 con md5 6775784b5fd35b5a9f3444fdf10a7447
+                            //if (conteo_pulsos_de_bit==3 || conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
+                            //else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
+
+                            //Conteo de pulsos que debe ser
+                            if (conteo_pulsos_de_bit==4) bit_leido=0;
+                            else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9) bit_leido=1;
+
+
+                            //Prueba conteo de pulsos para turbo
                             //if (conteo_pulsos_de_bit==2) bit_leido=0;
                             //else if (conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5 || conteo_pulsos_de_bit==6) bit_leido=1;
 
