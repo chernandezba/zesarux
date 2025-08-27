@@ -23544,6 +23544,8 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
     char buffer_linea[1024];
 
+    int pulsos_sospechosos_para_esta_amplitud;
+
     if (autodetectar_amplitud) {
 
         int inicio_autodetectar=5;
@@ -23551,7 +23553,6 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
         for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
 
-            int pulsos_sospechosos_para_esta_amplitud;
 
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) {
@@ -23569,7 +23570,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
             util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
-            sprintf(buffer_linea,"Amplitude=%d Errors pulses=%d Name length: %d Length p81: %d Name: [%s]",
+            sprintf(buffer_linea,"Amplitude=%d Pulse errors=%d Name length: %d Length p81: %d Name: [%s]",
                 amplitud_media,pulsos_sospechosos_para_esta_amplitud,longitud_nombre,longitud_p81,buffer_nombre);
 
             debug_printf(VERBOSE_DEBUG,buffer_linea);
@@ -23599,7 +23600,13 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
             }
         }
 
-        printf("Longitud maxima autodetectada: %d para inicialmente amplitud_media: %d\n",longitud_maxima,amplitud_media);
+        sprintf(buffer_linea,"Autodetected Maximum length %d. Let's see which one has less errors",longitud_maxima);
+
+        debug_printf(VERBOSE_DEBUG,buffer_linea);
+
+        if (fun_print!=NULL) {
+            fun_print(buffer_linea);
+        }
 
         //buscar cual de las amplitudes que genera esa longitud maxima es la que tiene menos errores
         int errores_detectados=999999;
@@ -23608,15 +23615,20 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
                 if (util_enhanced_errores_pulsos_autodetectar[i]<errores_detectados) {
                     errores_detectados=util_enhanced_errores_pulsos_autodetectar[i];
                     amplitud_media=i;
-                    printf("Menos errores con %d (%d errores)\n",i,errores_detectados);
+                    sprintf(buffer_linea,"Less errors using amplitude %d (%d errors)",i,errores_detectados);
+
+                    debug_printf(VERBOSE_DEBUG,buffer_linea);
+
+                    if (fun_print!=NULL) {
+                        fun_print(buffer_linea);
+                    }
                 }
             }
         }
 
-        printf("Final obtencion menos errores con amplitud=%d, errores=%d\n",amplitud_media,errores_detectados);
 
         //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
-        sprintf(buffer_linea,"Autodetected best amplitude %d",amplitud_media);
+        sprintf(buffer_linea,"Autodetected best amplitude %d errors=%d",amplitud_media,errores_detectados);
         if (valor_autodetectado_amplitud!=NULL) {
             *valor_autodetectado_amplitud=amplitud_media;
         }
@@ -23628,23 +23640,25 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
 
     }
-    int pulsos_sospechosos;
+
 
     longitud_p81=enh_zx81_lee_datos(util_enhanced_convert_raw_to_p_p81_puntero_memoria,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,memoria_p81,amplitud_media,
-        debug_print,&longitud_nombre,fun_print,cancel_process,callback,&pulsos_sospechosos /*total_pulsos_sospechosos*/);
+        debug_print,&longitud_nombre,fun_print,cancel_process,callback,&pulsos_sospechosos_para_esta_amplitud);
 
     util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
-    sprintf(buffer_linea,"Amplitude=%d Name length: %d Length p81: %d Name: [%s]",amplitud_media,longitud_nombre,longitud_p81,buffer_nombre);
+    sprintf(buffer_linea,"Amplitude=%d Pulse errors=%d Name length: %d Length p81: %d Name: [%s]",
+        amplitud_media,pulsos_sospechosos_para_esta_amplitud,longitud_nombre,longitud_p81,buffer_nombre);
     debug_printf(VERBOSE_INFO,buffer_linea);
 
-    //temp
-    if (total_pulsos_sospechosos!=NULL) printf("Total pulsos sospechosos: %d\n",*total_pulsos_sospechosos);
-    //temp
-    printf("Total pulsos sospechosos: %d\n",pulsos_sospechosos);
+
 
     if (fun_print!=NULL) {
         fun_print(buffer_linea);
+    }
+
+    if (total_pulsos_sospechosos!=NULL) {
+        *total_pulsos_sospechosos=pulsos_sospechosos_para_esta_amplitud;
     }
 
     if (nombre_programa!=NULL) strcpy(nombre_programa,buffer_nombre);

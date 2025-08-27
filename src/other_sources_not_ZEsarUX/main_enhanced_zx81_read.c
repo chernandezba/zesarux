@@ -180,7 +180,7 @@ int main(int argc,char *argv[])
             errores_pulsos_autodetectar[amplitud_media]=pulsos_sospechosos_para_esta_amplitud;
 
 
-            printf("Amplitude=%d Errors pulses=%d Name length: %d Length p81: %d Name: ",
+            printf("Amplitude=%d Pulse errors=%d Name length: %d Length p81: %d Name: ",
                 amplitud_media,pulsos_sospechosos_para_esta_amplitud,longitud_nombre,longitud_p81);
 
             print_nombre(longitud_nombre,memoria_p81);
