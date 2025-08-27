@@ -231,7 +231,7 @@ void enh_zx81_lee_rotate_last_bytes(void)
 //callback es una rutina que se llama en cada iteración del bucle, si no es NULL
 int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
     z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,
-    void (*callback)(void),int *total_pulsos_sospechosos)
+    void (*callback)(void),int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores)
 {
 
     //Inicializar globales que se pueden leer desde thread externo
@@ -545,7 +545,8 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_b
     }
 
 
-    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL,NULL,NULL,NULL);
+    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,
+        longitud_nombre,NULL,NULL,NULL,NULL,NULL);
 
     return longitud_p81;
 }

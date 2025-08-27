@@ -171,10 +171,10 @@ int main(int argc,char *argv[])
 
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                                debug_print,&longitud_nombre,print_mensajes,NULL,NULL,&pulsos_sospechosos_para_esta_amplitud);
+                                debug_print,&longitud_nombre,print_mensajes,NULL,NULL,&pulsos_sospechosos_para_esta_amplitud,NULL);
 
             else longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                    debug_print,&longitud_nombre,NULL,NULL,NULL,&pulsos_sospechosos_para_esta_amplitud);
+                    debug_print,&longitud_nombre,NULL,NULL,NULL,&pulsos_sospechosos_para_esta_amplitud,NULL);
 
             longitudes_autodetectar[amplitud_media]=longitud_p81;
             errores_pulsos_autodetectar[amplitud_media]=pulsos_sospechosos_para_esta_amplitud;
@@ -222,7 +222,7 @@ int main(int argc,char *argv[])
 
 
     longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-        debug_print,&longitud_nombre,print_mensajes,NULL,NULL,NULL);
+        debug_print,&longitud_nombre,print_mensajes,NULL,NULL,NULL,NULL);
 
 
     printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);

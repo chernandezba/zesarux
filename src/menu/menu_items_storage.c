@@ -2198,7 +2198,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
         menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,
         menu_convert_audio_to_zx81_callback,pointer_to_autodetected_amplitude,menu_convert_audio_to_zx81_nombre_programa,
-        &menu_convert_audio_to_zx81_errores_pulsos_detectados
+        &menu_convert_audio_to_zx81_errores_pulsos_detectados,NULL
     );
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");

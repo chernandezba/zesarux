@@ -30,11 +30,18 @@ typedef unsigned char z80_byte;
 
 #define ENH_ZX81_LONG_MEDIA_CONTAR_PULSOS 100
 
+//Estructura para guardar información de errores en pulsos
+struct s_enh_zx81_pulse_errors {
+    int position;
+    int errors;
+};
+
 extern int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
     z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,
-    void (*callback)(void),int *total_pulsos_sospechosos);
+    void (*callback)(void),int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores);
 extern z80_byte return_zx81_char(z80_byte codigo);
 
+//Estructura para la obtencion de conversión en ejecución
 struct s_enh_zx81_lee_global_info {
     int enh_global_input_position;
     int enh_global_total_input_size;
