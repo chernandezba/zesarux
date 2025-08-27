@@ -80,6 +80,7 @@ extern int menu_convert_audio_to_zx81_wave_follows_conversion;
 extern void menu_convert_audio_to_zx81_get_audio_buffer(void);
 extern char *menu_convert_audio_to_zx81_get_string_destacar(void);
 extern int menu_convert_audio_to_zx81_que_destacamos_en_waveform;
+extern int menu_convert_audio_to_zx81_si_error_pos_actual(int posicion,int *pulsos);
 
 #endif
 

@@ -4786,6 +4786,9 @@ void menu_audio_draw_sound_wave(void)
 
             int texto_destacar_posicion=0;
 
+            int convert_audio_to_zx81_error_en_pos_actual=0;
+            int convert_audio_to_zx81_error_en_pos_actual_pulsos=0;
+
             if (convert_audio_to_zx81_thread_running) {
                 //Ubicar a la derecha de la ventana lo que se está convirtiendo
                 int offset=x-xinicial_grafica-ancho_grafica;
@@ -4800,6 +4803,10 @@ void menu_audio_draw_sound_wave(void)
                 //Asi los valores medios a obtener siempre se empieza por un offset multiple del zoom
                 int restar=offset % menu_convert_audio_to_zx81_zoom_wave;
                 offset -=restar;
+
+                //Ver si hay algun error en posicion actual
+                convert_audio_to_zx81_error_en_pos_actual=menu_convert_audio_to_zx81_si_error_pos_actual(
+                        offset,&convert_audio_to_zx81_error_en_pos_actual_pulsos);
 
                 //destacar pulso, bit o byte
                 if (menu_convert_audio_to_zx81_wave_follows_conversion) {
@@ -4914,6 +4921,19 @@ void menu_audio_draw_sound_wave(void)
                                     zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,
                                         destacar_max_y+20,2,
                                         color_linea, buffer_texto_destacar,
+                                        menu_waveform_putpixel_array_from_linea);
+                                }
+
+                                //Si error en pos actual
+                                if (convert_audio_to_zx81_error_en_pos_actual && menu_convert_audio_to_zx81_zoom_wave==1) {
+                                    char buffer_texto_pulsos[40];
+
+                                    sprintf(buffer_texto_pulsos,"Error %d pulses!!",convert_audio_to_zx81_error_en_pos_actual_pulsos);
+
+                                    //+40. algo mas abajo del texto a destacar, para que no se mezclen
+                                    zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,
+                                        destacar_max_y+40,2,
+                                        ESTILO_GUI_COLOR_WAVEFORM, buffer_texto_pulsos,
                                         menu_waveform_putpixel_array_from_linea);
                                 }
 

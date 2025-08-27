@@ -191,10 +191,15 @@ Hacerlo para ventana y programa externo también
 Y se podria tambien hacer (aunque igualmente avisando) que si es un numero de pulsos extraños, si es <=5, es un 0. y otra cosa, es un 1
 Porque ahora mismo esta metiendo valor 0 para cualquier bit con pulsos desconocidos
 
--Quiza que con esos pulsos sospechosos se marquen en waveform. Pero para eso la rutina de conversión deberia
+ok -Quiza que con esos pulsos sospechosos se marquen en waveform. Pero para eso la rutina de conversión deberia
 retornar una tabla con las posiciones de todos los sospechosos. Incluso podria haber una tecla para navegar entre esos pulsos sospechosos
 Quiza pasar un puntero a esa tabla al llamar a convertir, indicando un maximo admitido: si hay muchos errores (+ de 100?) no tiene sentido revisarlos todos. Y que ademas diga conteo de pulsos que ha calculado la rutina en cada uno de esos fallos
 Como siempre, NULL como parametro si no queremos eso
+
+-waveform solo se puede visualizar cuando el thread esta activo
+Quiza esto no es un problema pues siempre se puede lanzar y pausar para que se pueda examinar la señal
+Por ejemplo si quiero ver todos los errores de pulsos, si lanzo y acaba el thread, no se vera
+Habria que lanzar el thread y pausarlo antes de que acabe
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 

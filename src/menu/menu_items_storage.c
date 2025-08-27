@@ -1817,7 +1817,7 @@ int menu_convert_audio_to_zx81_waveform_get_input_position(void)
 }
 
 
-
+//Retornar posicion de donde empieza lo que destacamos: pulso, bit o byte
 int menu_convert_audio_to_zx81_get_color_destacar(void)
 {
     struct s_enh_zx81_lee_global_info conversion_info;
@@ -2165,6 +2165,22 @@ void menu_convert_audio_to_zx81_callback(void)
 
 
     usleep(pausa);
+}
+
+//Decimos si en la posicion actual hay algun error al leer pulsos
+//Y cuantos pulsos
+int menu_convert_audio_to_zx81_si_error_pos_actual(int posicion,int *pulsos)
+{
+
+    int i;
+    for (i=0;i<menu_convert_audio_to_zx81_errores_pulsos_detectados && i<ENH_ZX81_MAX_ERRORS_TO_STORE;i++) {
+        if (posicion==menu_convert_audio_to_zx81_error_list[i].position) {
+            *pulsos=menu_convert_audio_to_zx81_error_list[i].pulse_count;
+            return 1;
+        }
+    }
+
+    return 0;
 }
 
 
