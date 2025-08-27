@@ -230,7 +230,8 @@ void enh_zx81_lee_rotate_last_bytes(void)
 //si puede activar desde thread externo
 //callback es una rutina que se llama en cada iteración del bucle, si no es NULL
 int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
-    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,void (*callback)(void))
+    z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,
+    void (*callback)(void),int *total_pulsos_sospechosos)
 {
 
     //Inicializar globales que se pueden leer desde thread externo
@@ -402,6 +403,9 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                 return indice_destino_p81;
                             }
                             else {
+                                if (total_pulsos_sospechosos!=NULL) {
+                                    *total_pulsos_sospechosos=(*total_pulsos_sospechosos)+1;
+                                }
                                 if (fun_print!=NULL) {
                                     sprintf(buffer_print,"%d We do not know what bit value is when found %d pulses",i,conteo_pulsos_de_bit);
                                     fun_print(buffer_print);
@@ -530,7 +534,7 @@ int main_enhanced_zx81_read(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_b
     }
 
 
-    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL,NULL,NULL);
+    int longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_memoria,memoria_p81,amplitud_media,debug_print,longitud_nombre,NULL,NULL,NULL,NULL);
 
     return longitud_p81;
 }
