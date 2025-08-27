@@ -4900,7 +4900,10 @@ void menu_audio_draw_sound_wave(void)
                                 //Solo escribir este texto cuando zoom maximo
                                 if (texto_destacar_posicion && menu_convert_audio_to_zx81_zoom_wave==1) {
                                     char buffer_texto_destacar[40];
-                                    sprintf(buffer_texto_destacar,"Start %s",menu_convert_audio_to_zx81_get_string_destacar() );
+
+                                    //Como el pulse tiene poca longitud, quitamos el texto Start, para que se pueda ver
+                                    if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==0) strcpy(buffer_texto_destacar,"Pulse");
+                                    else sprintf(buffer_texto_destacar,"Start %s",menu_convert_audio_to_zx81_get_string_destacar() );
 
                                     /*
                                     //la coordenada y mas abajo de las dos, de la union de las dos lineas anteriores
