@@ -2067,7 +2067,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 
                 zxvision_print_string_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,
                     tinta,ESTILO_GUI_PAPEL_NORMAL,0,
-                    "Conversion finished. Errors: %d. Name: [%s]",menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_nombre_programa);
+                    "Conversion finished. Possible Errors: %d. Name: [%s]",menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_nombre_programa);
 
                 //zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,
                 //    "Conversion finished. Errors: %d. Name: [%s]",menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_nombre_programa);
@@ -2586,6 +2586,9 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 noautoload.v=0;
                 quickload(quickload_file);
                 noautoload.v=pre_noautoload.v;
+
+                tecla=3;
+                salir=1;
             break;
 
             case 'n':

@@ -23570,8 +23570,8 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
             util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
-            sprintf(buffer_linea,"Amplitude=%d Pulse errors=%d Name length: %d Length p81: %d Name: [%s]",
-                amplitud_media,pulsos_sospechosos_para_esta_amplitud,longitud_nombre,longitud_p81,buffer_nombre);
+            sprintf(buffer_linea,"Amplitude=%d Pulse errors=%d Length p81: %d Name length: %d Name: [%s]",
+                amplitud_media,pulsos_sospechosos_para_esta_amplitud,longitud_p81,longitud_nombre,buffer_nombre);
 
             debug_printf(VERBOSE_DEBUG,buffer_linea);
 
