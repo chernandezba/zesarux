@@ -144,7 +144,7 @@ se llama tambien al usar visual real tape, esa info de bloques
 *al insertar en standard tape un archivo smp/rwa, llama a snap_load_zx80_zx81_load_smp: ahi se deberia autodetectar,
 y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es comun a zx80 y zx81
 
-*que ventana de conversión permita usar antiguo algoritmo?
+*que ventana de conversión permita usar antiguo algoritmo? DESCARTADO esto
 
 
 *entrada en changelog
@@ -158,7 +158,6 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 (ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
 
 
-*poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
 
 *que pasa si llega el pulso final y poco despues se acaba el archivo. lo finaliza bien?
 
@@ -177,31 +176,22 @@ realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 
 
 *Poder convertir turbo de cinta de stocks
 
-*revisar pulsos que no son 4 u 8, realmente existen en el archivo de audio o es un error de la rutina?
 
-ok *autodeteccion que escoja amplitud con archivo de salida mayor en tamaño, y en igualdad de condiciones,
-que sea la amplitud que menos bits desconocidos obtenga (ejemplo de hacerlo detectado a 12 o manual a 15 en controlstocks_mas_recortado.rwa o a 20). OJO: 15 da resultado diferente que a 20, y en ambos no salta error de bits desconocidos!! Cual es el bueno? a 20 o a 15?
-Habria que ver que bits son diferentes y por que
-En teoria a 18 es perfecto, no salen bits desconocidos
-
-ok ->en enh_zx81_lee_datos, meter otro parametro, puntero a variable que guarde bits desconocidos
-Eso mostrarlo al final
-Quedarse con, de los que sean mayor espacio generado, el que tenga menos bits desconocidos
-Hacerlo para ventana y programa externo también
-Y se podria tambien hacer (aunque igualmente avisando) que si es un numero de pulsos extraños, si es <=5, es un 0. y otra cosa, es un 1
-Porque ahora mismo esta metiendo valor 0 para cualquier bit con pulsos desconocidos
 
 ok -Quiza que con esos pulsos sospechosos se marquen en waveform. Pero para eso la rutina de conversión deberia
-retornar una tabla con las posiciones de todos los sospechosos. Incluso podria haber una tecla para navegar entre esos pulsos sospechosos
+retornar una tabla con las posiciones de todos los sospechosos.
 Quiza pasar un puntero a esa tabla al llamar a convertir, indicando un maximo admitido: si hay muchos errores (+ de 100?) no tiene sentido revisarlos todos. Y que ademas diga conteo de pulsos que ha calculado la rutina en cada uno de esos fallos
 Como siempre, NULL como parametro si no queremos eso
+-Incluso podria haber una tecla para navegar entre esos pulsos sospechosos
+-Incluso que cuando encuentre un pulso sospechoso, llamar a un callback y que pregunte al usuario qué hacer
+*poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
 
 -waveform solo se puede visualizar cuando el thread esta activo
 Quiza esto no es un problema pues siempre se puede lanzar y pausar para que se pueda examinar la señal
 Por ejemplo si quiero ver todos los errores de pulsos, si lanzo y acaba el thread, no se vera
 Habria que lanzar el thread y pausarlo antes de que acabe
 
--Load “nombre” en zx81 funciona buscando un archivo nombre.p81? O solo con .p?
+ok -Load “nombre” en zx81 funciona buscando un archivo nombre.p81? O solo con .p?
 No va , corregir rutina new_tap_load_detect_zx81
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
