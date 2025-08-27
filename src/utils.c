@@ -23594,6 +23594,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
         for (i=inicio_autodetectar;i<=final_autodetectar;i++) {
             if (util_enhanced_longitudes_autodetectar[i]>longitud_maxima) {
                 longitud_maxima=util_enhanced_longitudes_autodetectar[i];
+                //De momento amplitud usamos esta inicial
                 amplitud_media=i;
             }
         }
@@ -23612,7 +23613,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
             }
         }
 
-        printf("Final obtencion menos errores con %d, amplitud=%d, errores=%d\n",i,amplitud_media,errores_detectados);
+        printf("Final obtencion menos errores con amplitud=%d, errores=%d\n",amplitud_media,errores_detectados);
 
         //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
         sprintf(buffer_linea,"Autodetected best amplitude %d",amplitud_media);

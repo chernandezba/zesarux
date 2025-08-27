@@ -58,6 +58,8 @@ long long int enh_get_file_size(char *nombre)
 
 //Por cada amplitud probada, que longitud se genera
 int longitudes_autodetectar[256];
+//Por cada amplitud probada, cuantos errores de pulsos se genera
+int errores_pulsos_autodetectar[256];
 
 void print_mensajes(char *texto)
 {
@@ -165,17 +167,21 @@ int main(int argc,char *argv[])
 
         for (amplitud_media=inicio_autodetectar;amplitud_media<=final_autodetectar;amplitud_media++) {
 
+            int pulsos_sospechosos_para_esta_amplitud;
+
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                                debug_print,&longitud_nombre,print_mensajes,NULL,NULL,NULL);
+                                debug_print,&longitud_nombre,print_mensajes,NULL,NULL,&pulsos_sospechosos_para_esta_amplitud);
 
             else longitud_p81=enh_zx81_lee_datos(enhanced_memoria,tamanyo_archivo,memoria_p81,amplitud_media,
-                    debug_print,&longitud_nombre,NULL,NULL,NULL,NULL);
+                    debug_print,&longitud_nombre,NULL,NULL,NULL,&pulsos_sospechosos_para_esta_amplitud);
 
             longitudes_autodetectar[amplitud_media]=longitud_p81;
+            errores_pulsos_autodetectar[amplitud_media]=pulsos_sospechosos_para_esta_amplitud;
 
 
-            printf("Amplitude=%d Name length: %d Length p81: %d Name: ",amplitud_media,longitud_nombre,longitud_p81);
+            printf("Amplitude=%d Errors pulses=%d Name length: %d Length p81: %d Name: ",
+                amplitud_media,pulsos_sospechosos_para_esta_amplitud,longitud_nombre,longitud_p81);
 
             print_nombre(longitud_nombre,memoria_p81);
         }
@@ -186,12 +192,29 @@ int main(int argc,char *argv[])
         for (i=inicio_autodetectar;i<=final_autodetectar;i++) {
             if (longitudes_autodetectar[i]>longitud_maxima) {
                 longitud_maxima=longitudes_autodetectar[i];
+                //De momento amplitud usamos esta inicial
                 amplitud_media=i;
             }
         }
 
+        printf("Autodetected Maximum length %d. Let's see which one has less errors\n",longitud_maxima);
+
+        //buscar cual de las amplitudes que genera esa longitud maxima es la que tiene menos errores
+        int errores_detectados=999999;
+        for (i=inicio_autodetectar;i<=final_autodetectar;i++) {
+            if (longitudes_autodetectar[i]==longitud_maxima) {
+                if (errores_pulsos_autodetectar[i]<errores_detectados) {
+                    errores_detectados=errores_pulsos_autodetectar[i];
+                    amplitud_media=i;
+                    printf("Less errors using amplitude %d (%d errors)\n",i,errores_detectados);
+                }
+            }
+        }
+
+        //printf("Final obtencion menos errores con amplitud=%d, errores=%d\n",amplitud_media,errores_detectados);
+
         //"Nombre" para poder hacer grep por consola y que me salgan los nombres anteriores de cada prueba y esta linea tambien
-        printf("Autodetected best amplitude %d\n",amplitud_media);
+        printf("Autodetected best amplitude %d errors=%d\n",amplitud_media,errores_detectados);
 
 
     }
