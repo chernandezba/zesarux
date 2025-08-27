@@ -201,6 +201,9 @@ Quiza esto no es un problema pues siempre se puede lanzar y pausar para que se p
 Por ejemplo si quiero ver todos los errores de pulsos, si lanzo y acaba el thread, no se vera
 Habria que lanzar el thread y pausarlo antes de que acabe
 
+-Load “nombre” en zx81 funciona buscando un archivo nombre.p81? O solo con .p?
+No va , corregir rutina new_tap_load_detect_zx81
+
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
 

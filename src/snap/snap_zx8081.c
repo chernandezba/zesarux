@@ -480,6 +480,17 @@ int new_tap_load_detect_zx81(void)
 
                 debug_printf (VERBOSE_DEBUG,"Final tape name: %s",nombre_cinta_load_nombre_81);
 
+                //Si no existe .P, cambiar a .P81
+                if (!si_existe_archivo(nombre_cinta_load_nombre_81)) {
+                    debug_printf (VERBOSE_INFO,"Tape: %s does not exist. Trying with .P81",nombre_cinta_load_nombre_81);
+                    l=strlen(nombre_cinta_load_nombre_81);
+
+                    //A partir de algo como A.P (3 caracteres)
+                    if (l>=3) {
+                        strcpy(&nombre_cinta_load_nombre_81[l-1],"P81");
+                    }
+                }
+
                 tapefile=nombre_cinta_load_nombre_81;
 
                 debug_printf (VERBOSE_INFO,"Inserting tape: %s",tapefile);
