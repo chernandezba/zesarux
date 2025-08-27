@@ -15037,15 +15037,17 @@ void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int rad
 //si caracter es un digito, indica hacer linea desde posicion anterior a posicion indicada en siguientes caracteres, y moverse a dicha posicion
 //cualquier otro caracter no es admitido
 //Nota: están obtenidos desde The Liner 75, donde el 0,0 está abajo
+//TODO: FALTAN todos los que van a continuacion de la Z. La rutina convierte minusculas a mayusculas, esos quedan solventados,
+//pero no hay [ \ ] ^ ... { | } ... etc
 char *zxvision_vectorial_characters[]={
 
- "","P3236P3030","P2526P4546","P0565P0161P1016P5056","P551513535111P3036","66P0516P1506P5061P6051","P3034P3636","P3546","P40313546","P20313526", //: REM )
+ "","P3236P3030","P2526P4546","P0565P0161P1016P5056","P551513535111P3036","66P0516P1506P5061P6051","P5014253401103052","P3546","P40313546","P20313526", //: REM )
 
  "66P0660P0363P3036","P0363P3036","P304142","P0363","P1010","66","66P0006666000","P143630","P066663030060","P06666000P0363", // REM 3
 
  "P060363P6066","P660603636000","P660600606303","P30336606","06666000P0363","6066060363","P3131P3535","P203132P3434", // REM ;
 
- "P502356","P0161P0565","P104316","P141526365432P3030","P525140301234P3636","066660P0363","P5000065665645303P53626150", // REM B
+ "P502356","P0161P0565","P104316","P141526365432P3030","P40100104154554534222233332","066660P0363","P5000065665645303P53626150", // REM B
 
  "P60000666","P300006366330","P60000666P0343","0666P0343","P660600606333","06P6066P0363", // REM H
 
@@ -15057,7 +15059,6 @@ char *zxvision_vectorial_characters[]={
 };
 
 
-//TODO corregir: &@
 void zxvision_print_vectorial_text(zxvision_window *w,int x,int y,int text_zoom,int color,char *texto,
     void (*fun_putpixel) (zxvision_window *w,int parm_x,int parm_y,int parm_color) )
 {
@@ -15109,7 +15110,7 @@ void zxvision_print_vectorial_text(zxvision_window *w,int x,int y,int text_zoom,
                 //y hacia arriba
                 ydest_escalada=origen_y-ydest_escalada;
 
-                zxvision_draw_line(w,xorig_escalada,yorig_escalada,xdest_escalada,ydest_escalada,color, fun_putpixel);
+                zxvision_draw_line(w,xorig_escalada,yorig_escalada,xdest_escalada,ydest_escalada,color,fun_putpixel);
 
                 x_en_caracter=nueva_x;
                 y_en_caracter=nueva_y;
