@@ -390,14 +390,13 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                             //if (conteo_pulsos_de_bit==3 || conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
                             //else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
 
-                            //Conteo de pulsos que debe ser
-                            if (conteo_pulsos_de_bit==4) bit_leido=0;
-                            else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9) bit_leido=1;
-
-
                             //Prueba conteo de pulsos para turbo
                             //if (conteo_pulsos_de_bit==2) bit_leido=0;
                             //else if (conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5 || conteo_pulsos_de_bit==6) bit_leido=1;
+
+                            //Conteo de pulsos que debe ser: 4 pulsos para bits a 0; 8 o 9 pulsos para bits a 1
+                            if (conteo_pulsos_de_bit==4) bit_leido=0;
+                            else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9) bit_leido=1;
 
                             else if (conteo_pulsos_de_bit==1) {
                                 if (fun_print!=NULL) {
@@ -407,6 +406,14 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                 return indice_destino_p81;
                             }
                             else {
+                                //En caso de conteo de pulsos desconocidos, aplicamos la logica de:
+                                //5 o menos pulsos: es un 0
+                                //6 o mas pulsos, es un 1
+                                //Nota: esto no deberia pasar en una cinta correcta, lo hacemos para intentar
+                                //corregir errores
+                                if (conteo_pulsos_de_bit<=5) bit_leido=0;
+                                else bit_leido=1;
+
                                 if (total_pulsos_sospechosos!=NULL) {
                                     *total_pulsos_sospechosos=(*total_pulsos_sospechosos)+1;
                                 }

@@ -179,12 +179,12 @@ realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 
 
 *revisar pulsos que no son 4 u 8, realmente existen en el archivo de audio o es un error de la rutina?
 
-*autodeteccion que escoja amplitud con archivo de salida mayor en tamaño, y en igualdad de condiciones,
+ok *autodeteccion que escoja amplitud con archivo de salida mayor en tamaño, y en igualdad de condiciones,
 que sea la amplitud que menos bits desconocidos obtenga (ejemplo de hacerlo detectado a 12 o manual a 15 en controlstocks_mas_recortado.rwa o a 20). OJO: 15 da resultado diferente que a 20, y en ambos no salta error de bits desconocidos!! Cual es el bueno? a 20 o a 15?
 Habria que ver que bits son diferentes y por que
 En teoria a 18 es perfecto, no salen bits desconocidos
 
-->en enh_zx81_lee_datos, meter otro parametro, puntero a variable que guarde bits desconocidos
+ok ->en enh_zx81_lee_datos, meter otro parametro, puntero a variable que guarde bits desconocidos
 Eso mostrarlo al final
 Quedarse con, de los que sean mayor espacio generado, el que tenga menos bits desconocidos
 Hacerlo para ventana y programa externo también
