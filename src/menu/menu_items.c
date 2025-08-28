@@ -32957,6 +32957,8 @@ void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
 		if (si_existe_archivo(audiorecord_input_write_to_disk_file_name)) {
 
             if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) {
+                //quitamos archivo de la config
+                audiorecord_input_write_to_disk_file_name[0]=0;
                 return;
             }
 
@@ -32988,8 +32990,11 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
             menu_external_audio_source_to_disk_enable,menu_external_audio_source_to_disk_enable_cond,
             "Enabled","Activado","Activat");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(audiorecord_input_write_to_disk_enabled ? 'X' : ' ') );
-		menu_add_item_menu_tooltip(array_menu_common,"Enable recording to file");
-		menu_add_item_menu_ayuda(array_menu_common,"Enable recording to file");
+
+        //No pongo tooltip, asi el usuario puede dejar el cursor aqui mientras graba, y luego desactivar al final,
+        //sin que le moleste el tooltip
+		//menu_add_item_menu_tooltip(array_menu_common,"Enable recording to file");
+		//menu_add_item_menu_ayuda(array_menu_common,"Enable recording to file");
 
 
         char string_file_shown[20];
