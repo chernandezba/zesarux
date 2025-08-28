@@ -297,7 +297,7 @@ int audiorecord_input_write_to_disk_output_freq=15600;
 int audiorecord_input_write_to_disk_output_counter=0;
 
 //Temporal para abrir el archivo sobre la marcha
-int audiorecord_input_write_to_disk_file_opened=0;
+//int audiorecord_input_write_to_disk_file_opened=0;
 
 FILE *ptr_audiorecord_input_write_to_disk;
 
@@ -318,7 +318,8 @@ void audiorecord_input_write_to_disk_enable_capture(void)
         return;
     }
 
-    audiorecord_input_write_to_disk_file_opened=1;
+    audiorecord_input_write_to_disk_enabled=1;
+    audiorecord_input_write_to_disk_output_buffer_pos=0;
 
     //Cambiar samplerate si RWA
     if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"rwa")) {
@@ -329,9 +330,12 @@ void audiorecord_input_write_to_disk_enable_capture(void)
 
 void audiorecord_input_write_to_disk_disable_capture(void)
 {
-    if (audiorecord_input_write_to_disk_file_opened) {
+    if (audiorecord_input_write_to_disk_enabled) {
+        //escribir lo que haya leido del trozo del buffer
+        fwrite(audiorecord_input_write_to_disk_mem_buffer, 1, audiorecord_input_write_to_disk_output_buffer_pos, ptr_audiorecord_input_write_to_disk);
+
         fclose(ptr_audiorecord_input_write_to_disk);
-        audiorecord_input_write_to_disk_file_opened=0;
+        audiorecord_input_write_to_disk_enabled=0;
     }
 
 }

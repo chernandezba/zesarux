@@ -32909,7 +32909,8 @@ void menu_external_audio_source_to_disk_enable(MENU_ITEM_PARAMETERS)
 
 int menu_external_audio_source_to_disk_enable_cond(void)
 {
-    return audiorecord_input_write_to_disk_file_name[0];
+    if (audiorecord_input_write_to_disk_file_name[0]) return 1;
+    else return 0;
 }
 
 void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
@@ -32970,6 +32971,7 @@ void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
 
 void menu_external_audio_source_to_disk_samplerate(MENU_ITEM_PARAMETERS)
 {
+    menu_ventana_scanf_numero_enhanced("Samplerate Hz",&audiorecord_input_write_to_disk_output_freq,7,+100,1,999999,0);
 }
 
 void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
@@ -32977,16 +32979,7 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
-/*
 
-char audiorecord_input_write_to_disk_file_name[PATH_MAX]="prueba.rwa";
-
-//Input sample es AUDIO_RECORD_FREQUENCY
-
-
-//Output sample freq
-int audiorecord_input_write_to_disk_output_freq=15600;
-*/
 
     do {
 
@@ -33012,7 +33005,13 @@ int audiorecord_input_write_to_disk_output_freq=15600;
             "Sample Rate","Frecuencia Sampleo","Frequencia Sampleig");
         menu_add_item_menu_sufijo_format(array_menu_common," [%d] Hz",audiorecord_input_write_to_disk_output_freq);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
+        menu_add_item_menu_tooltip(array_menu_common,"Output file samplerate");
 
+        //OJO no salirse de este tamanyo con texto largo
+        char texto_ayuda_samplerate[200];
+        sprintf(texto_ayuda_samplerate,"Audio is captured at %d Hz so any output samplerate bigger than this will be resampled "
+            "but won't have more definition",AUDIO_RECORD_FREQUENCY);
+        menu_add_item_menu_ayuda(array_menu_common,texto_ayuda_samplerate);
 
 
         menu_add_item_menu_separator(array_menu_common);
