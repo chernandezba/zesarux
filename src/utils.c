@@ -23479,7 +23479,7 @@ int util_enhanced_convert_raw_to_p_p81_memoria_tamanyo=0;
 //que puede tardar mucho y se tiene que poder cancelar desde otro thread. Si no se quiere usar esa característica, indicar NULL el puntero
 void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,
     int amplitud_media,int debug_print,int *cancel_process,void (*callback)(void),int *valor_autodetectado_amplitud,
-    char *nombre_programa,int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores)
+    char *nombre_programa,int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores,int invert_signal)
 {
     //char *rwafile=argv[1];
 
@@ -23490,7 +23490,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
 
 
-    int invert_signal=0;
+    //int invert_signal=0;
 
     //int debug_print=0;
 
@@ -23695,7 +23695,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),
     int autodetectar_amplitud,int amplitud_media,int debug_print,int *cancel_autodetect,
     void (*callback)(void),int *valor_autodetectado_amplitud,char *nombre_programa,int *total_pulsos_sospechosos,
-    struct s_enh_zx81_pulse_errors *listado_errores)
+    struct s_enh_zx81_pulse_errors *listado_errores,int invert_signal)
 {
 
 
@@ -23734,7 +23734,8 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
 
 
     util_enhanced_convert_raw_to_p_p81(file_to_open,archivo_destino,fun_print,autodetectar_amplitud,
-        amplitud_media,debug_print,cancel_autodetect,callback,valor_autodetectado_amplitud,nombre_programa,total_pulsos_sospechosos,listado_errores);
+        amplitud_media,debug_print,cancel_autodetect,callback,valor_autodetectado_amplitud,nombre_programa,
+        total_pulsos_sospechosos,listado_errores,invert_signal);
 
 
 

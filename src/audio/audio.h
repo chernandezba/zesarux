@@ -116,6 +116,7 @@ extern int audiorecord_input_write_to_disk_output_freq;
 extern void audiorecord_input_write_to_disk_enable_capture(void);
 extern void audiorecord_input_write_to_disk_disable_capture(void);
 extern void audiorecord_input_write_to_disk_time_size(int *minutos,int *segundos);
+extern long long audiorecord_input_write_to_disk_total_size(void);
 
 extern void external_audio_source_print_footer(void);
 

@@ -33027,6 +33027,17 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
             audiorecord_input_write_to_disk_time_size(&minutos,&segundos);
 
             menu_add_item_menu_sufijo_format(array_menu_common," %02d:%02d",minutos,segundos);
+
+
+            long long tamanyo=audiorecord_input_write_to_disk_total_size();
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "Total Size","Tamaño Total","Tamany Total");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+            //pasar a MB
+            tamanyo /= 1024;
+
+            menu_add_item_menu_sufijo_format(array_menu_common," %lld KB",tamanyo);
         }
 
 

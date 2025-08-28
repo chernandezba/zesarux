@@ -1336,7 +1336,7 @@ int menu_convert_audio_to_zx81_errores_pulsos_detectados=0;
 //Para guardar listado de esos errores
 struct s_enh_zx81_pulse_errors menu_convert_audio_to_zx81_error_list[ENH_ZX81_MAX_ERRORS_TO_STORE];
 
-
+int menu_convert_audio_to_zx81_invert_signal=0;
 
 //devolver la pausa asociada y el multiplicador para el buffer de envio a audio
 //multiplicador es negativo si indica que hay que promediar valores
@@ -1709,8 +1709,10 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
-        "%s [%c] ~~debug [%c] hear so~~und",
-        buf_autodetect,(menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
+        "%s [%c] ~~b: invert [%c] ~~debug [%c] so~~und",
+        buf_autodetect,
+        (menu_convert_audio_to_zx81_invert_signal ? 'X' : ' '),
+        (menu_convert_audio_to_zx81_debug_print ? 'X' : ' '),
         (menu_convert_audio_to_zx81_hear_sound ? 'X' : ' ')
     );
 
@@ -2219,7 +2221,7 @@ void *menu_convert_audio_to_zx81_thread_function(void *nada GCC_UNUSED)
         menu_convert_audio_to_zx81_fun_print,menu_convert_audio_to_zx81_autodetect_amplitude,
         menu_convert_audio_to_zx81_amplitude,menu_convert_audio_to_zx81_debug_print,&menu_convert_audio_to_zx81_cancel_autodetect,
         menu_convert_audio_to_zx81_callback,pointer_to_autodetected_amplitude,menu_convert_audio_to_zx81_nombre_programa,
-        &menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_error_list
+        &menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_error_list,menu_convert_audio_to_zx81_invert_signal
     );
 
     debug_printf(VERBOSE_DEBUG,"End convert audio thread");
@@ -2540,6 +2542,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 if (!convert_audio_to_zx81_thread_running) {
                     menu_convert_audio_to_zx81_autodetect_amplitude ^=1;
                 }
+            break;
+
+            case 'b':
+                menu_convert_audio_to_zx81_invert_signal ^=1;
             break;
 
             case 'c':

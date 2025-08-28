@@ -559,7 +559,7 @@ extern void convert_relative_to_absolute(char *relative_path,char *final_path);
 extern void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_info_output,int si_load);
 extern void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,
     int amplitud_media,int debug_print,int *cancel_autodetect,void (*callback)(void),int *valor_autodetectado_amplitud,
-    char *nombre_programa,int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores);
+    char *nombre_programa,int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores,int invert_signal);
 
 extern z80_byte *util_enhanced_convert_raw_to_p_p81_puntero_memoria;
 

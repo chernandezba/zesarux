@@ -357,6 +357,21 @@ void audiorecord_input_write_to_disk_time_size(int *minutos,int *segundos)
     }
 }
 
+//Retornar tamanyo archivo
+long long audiorecord_input_write_to_disk_total_size(void)
+{
+
+    //por si acaso
+    long long tamanyo=0;
+
+    if (audiorecord_input_write_to_disk_enabled) {
+        if (si_existe_archivo(audiorecord_input_write_to_disk_file_name)) {
+            tamanyo=get_file_size(audiorecord_input_write_to_disk_file_name);
+        }
+    }
+
+    return tamanyo;
+}
 
 void audiorecord_input_write_to_disk_save_byte(z80_byte valor_escribir)
 {
