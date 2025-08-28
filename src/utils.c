@@ -23708,8 +23708,8 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
     char file_to_open[PATH_MAX];
     file_to_open[0]=0; //de momento
 
-    //si es rwa o smp, archivo tal cual
-    if (!util_compare_file_extension(filename,"rwa") || !util_compare_file_extension(filename,"smp")) {
+    //si es rwa o smp o raw, archivo tal cual
+    if (!util_compare_file_extension(filename,"rwa") || !util_compare_file_extension(filename,"smp") || !util_compare_file_extension(filename,"raw")) {
         strcpy(file_to_open,filename);
     }
 

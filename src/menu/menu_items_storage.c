@@ -2307,7 +2307,7 @@ void menu_convert_audio_to_zx81_stop_conversion(void)
 void menu_convert_audio_to_zx81_select_input_file(void)
 {
 
-    char *filtros[]={"wav","rwa","smp",0};
+    char *filtros[]={"rwa","smp","raw","wav",0};
 
 
 	//guardamos directorio actual

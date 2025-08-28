@@ -196,6 +196,9 @@ No va , corregir rutina new_tap_load_detect_zx81
 
 -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
 
+-un .RAW tambien identifica a una imagen de salida de hilow en formato crudo
+-tambien un .raw es archivo de audio 44100hz, 8 bit, unsigned para entrada de sonido al convertir de cinta hilow a ddh
+
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
 -Captura a disco
