@@ -32899,10 +32899,73 @@ void menu_specnext_audio_dac(MENU_ITEM_PARAMETERS)
 
 void menu_external_audio_source_to_disk_enable(MENU_ITEM_PARAMETERS)
 {
+    if (!audiorecord_input_write_to_disk_enabled) {
+        audiorecord_input_write_to_disk_enable_capture();
+    }
+    else {
+        audiorecord_input_write_to_disk_disable_capture();
+    }
+}
+
+int menu_external_audio_source_to_disk_enable_cond(void)
+{
+    return audiorecord_input_write_to_disk_file_name[0];
 }
 
 void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
 {
+    //disable if enabled
+    if (audiorecord_input_write_to_disk_enabled) {
+        audiorecord_input_write_to_disk_disable_capture();
+    }
+
+    //select file
+
+	char *filtros[]={"rwa",0};
+
+	//guardamos directorio actual
+	char directorio_actual[PATH_MAX];
+	getcwd(directorio_actual,PATH_MAX);
+
+	//Obtenemos directorio de parametro
+
+	if (audiorecord_input_write_to_disk_file_name[0]) {
+        char directorio[PATH_MAX];
+        util_get_dir(audiorecord_input_write_to_disk_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+		//cambiamos a ese directorio, siempre que no sea nulo
+		if (directorio[0]!=0) {
+			debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+			zvfs_chdir(directorio);
+		}
+	}
+
+
+    int ret;
+
+    ret=menu_filesel_save("Select Output File",filtros,audiorecord_input_write_to_disk_file_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+
+	if (ret==1) {
+
+		//Ver si archivo existe y preguntar
+
+		if (si_existe_archivo(audiorecord_input_write_to_disk_file_name)) {
+
+            if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) {
+                return;
+            }
+
+		}
+
+        //and enable
+        audiorecord_input_write_to_disk_enable_capture();
+	}
+
+
 }
 
 void menu_external_audio_source_to_disk_samplerate(MENU_ITEM_PARAMETERS)
@@ -32928,7 +32991,8 @@ int audiorecord_input_write_to_disk_output_freq=15600;
     do {
 
 
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_external_audio_source_to_disk_enable,NULL,
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,
+            menu_external_audio_source_to_disk_enable,menu_external_audio_source_to_disk_enable_cond,
             "Enabled","Activado","Activat");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(audiorecord_input_write_to_disk_enabled ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Enable recording to file");
@@ -32946,7 +33010,7 @@ int audiorecord_input_write_to_disk_output_freq=15600;
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_external_audio_source_to_disk_samplerate,NULL,
             "Sample Rate","Frecuencia Sampleo","Frequencia Sampleig");
-        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",audiorecord_input_write_to_disk_output_freq);
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d] Hz",audiorecord_input_write_to_disk_output_freq);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
 
 

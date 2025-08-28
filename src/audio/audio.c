@@ -285,7 +285,7 @@ int audiorecord_last_write_full=0;
 
 int audiorecord_input_write_to_disk_enabled=0;
 
-char audiorecord_input_write_to_disk_file_name[PATH_MAX]="prueba.rwa";
+char audiorecord_input_write_to_disk_file_name[PATH_MAX]="";
 
 //Input sample es AUDIO_RECORD_FREQUENCY
 
@@ -310,9 +310,35 @@ int audiorecord_input_write_to_disk_output_buffer_pos=0;
 //buffer de escritura, para no escribir byte a byte
 z80_byte audiorecord_input_write_to_disk_mem_buffer[AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER];
 
+void audiorecord_input_write_to_disk_enable_capture(void)
+{
+    ptr_audiorecord_input_write_to_disk=fopen(audiorecord_input_write_to_disk_file_name,"wb");
+    if (!ptr_audiorecord_input_write_to_disk) {
+        debug_printf(VERBOSE_ERR,"Unable to open file output %s",audiorecord_input_write_to_disk_file_name);
+        return;
+    }
+
+    audiorecord_input_write_to_disk_file_opened=1;
+
+    //Cambiar samplerate si RWA
+    if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"rwa")) {
+        audiorecord_input_write_to_disk_output_freq=15600;
+    }
+
+}
+
+void audiorecord_input_write_to_disk_disable_capture(void)
+{
+    if (audiorecord_input_write_to_disk_file_opened) {
+        fclose(ptr_audiorecord_input_write_to_disk);
+        audiorecord_input_write_to_disk_file_opened=0;
+    }
+
+}
+
 void audiorecord_input_write_to_disk_save_byte(z80_byte valor_escribir)
 {
-    if (!audiorecord_input_write_to_disk_file_opened) {
+    /*if (!audiorecord_input_write_to_disk_file_opened) {
         //abrir archivo. TEMPORAL para abrirlo sobre la marcha
 
         ptr_audiorecord_input_write_to_disk=fopen(audiorecord_input_write_to_disk_file_name,"wb");
@@ -323,7 +349,7 @@ void audiorecord_input_write_to_disk_save_byte(z80_byte valor_escribir)
 
         audiorecord_input_write_to_disk_file_opened=1;
 
-    }
+    }*/
 
     //escribir byte en archivo. En bloques de 1KB
     audiorecord_input_write_to_disk_mem_buffer[audiorecord_input_write_to_disk_output_buffer_pos++]=valor_escribir;
