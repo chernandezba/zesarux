@@ -289,6 +289,7 @@ int cpc_additional_roms_opcion_seleccionada=0;
 int lec_memory_opcion_seleccionada=0;
 int visualcasette_tape_opcion_seleccionada=0;
 int debug_view_basic_opcion_seleccionada=0;
+int external_audio_source_to_disk_opcion_seleccionada;
 
 //int mdv_simulate_bad_sectors_opcion_seleccionada=0;
 
@@ -32896,6 +32897,87 @@ void menu_specnext_audio_dac(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_external_audio_source_to_disk_enable(MENU_ITEM_PARAMETERS)
+{
+}
+
+void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
+{
+}
+
+void menu_external_audio_source_to_disk_samplerate(MENU_ITEM_PARAMETERS)
+{
+}
+
+void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+/*
+
+char audiorecord_input_write_to_disk_file_name[PATH_MAX]="prueba.rwa";
+
+//Input sample es AUDIO_RECORD_FREQUENCY
+
+
+//Output sample freq
+int audiorecord_input_write_to_disk_output_freq=15600;
+*/
+
+    do {
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_external_audio_source_to_disk_enable,NULL,
+            "Enabled","Activado","Activat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(audiorecord_input_write_to_disk_enabled ? 'X' : ' ') );
+		menu_add_item_menu_tooltip(array_menu_common,"Enable recording to file");
+		menu_add_item_menu_ayuda(array_menu_common,"Enable recording to file");
+
+
+        char string_file_shown[20];
+		menu_tape_settings_trunc_name(audiorecord_input_write_to_disk_file_name,string_file_shown,20);
+
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_external_audio_source_to_disk_select_file,NULL,
+            "Output File","Archivo Salida","Arxiu Sortida");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_file_shown);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_external_audio_source_to_disk_samplerate,NULL,
+            "Sample Rate","Frecuencia Sampleo","Frequencia Sampleig");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d]",audiorecord_input_write_to_disk_output_freq);
+        menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Audio-> Capture Audio to File",
+            "Menú Principal-> Audio-> Capturar Audio a Archivo",
+            "Menú Principal-> Audio-> Capturar Audio a Arxiu");
+
+        retorno_menu=menu_dibuja_menu(&external_audio_source_to_disk_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Capture Audio to File Menu","Menú Capturar Audio a Archivo","Menú Capturar Audio a Arxiu" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
 
 
 //menu audio
@@ -33002,6 +33084,13 @@ void menu_audio(MENU_ITEM_PARAMETERS)
                 "a mp3 player or your phone");
 
             if (audio_is_recording_input) {
+
+                menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_external_audio_source_to_disk,NULL,
+                    "Capture Audio to File","Capturar Audio a Archivo","Capturar Audio a Arxiu");
+                menu_add_item_menu_tooltip(array_menu_audio,"Capture Audio and store to audio file");
+                menu_add_item_menu_ayuda(array_menu_audio,"Capture Audio and store to audio file");
+                menu_add_item_menu_shortcut(array_menu_audio,'m');
+                menu_add_item_menu_tiene_submenu(array_menu_audio);
 
 
 #ifdef COMPILE_SDL

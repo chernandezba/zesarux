@@ -285,6 +285,8 @@ int audiorecord_last_write_full=0;
 
 int audiorecord_input_write_to_disk_enabled=0;
 
+char audiorecord_input_write_to_disk_file_name[PATH_MAX]="prueba.rwa";
+
 //Input sample es AUDIO_RECORD_FREQUENCY
 
 
@@ -299,7 +301,6 @@ int audiorecord_input_write_to_disk_file_opened=0;
 
 FILE *ptr_audiorecord_input_write_to_disk;
 
-char audiorecord_input_write_to_disk_file_name[PATH_MAX]="prueba.rwa";
 
 #define AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER 1024
 

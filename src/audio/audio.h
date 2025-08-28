@@ -109,6 +109,11 @@ extern void audiorecord_input_empty_buffer_with_lock(void);
 
 extern int audiorecord_last_write_full;
 
+extern int audiorecord_input_write_to_disk_enabled;
+
+extern char audiorecord_input_write_to_disk_file_name[];
+extern int audiorecord_input_write_to_disk_output_freq;
+
 extern void external_audio_source_print_footer(void);
 
 extern z80_bit audio_noreset_audiobuffer_full;
