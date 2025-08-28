@@ -33018,10 +33018,8 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
                 "Recorded time","Tiempo de Grabación","Temps de Gravació");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
 
-            long long tamanyo=get_file_size(audiorecord_input_write_to_disk_file_name);
-            int minutos=tamanyo/audiorecord_input_write_to_disk_output_freq/60;
-            int segundos=(tamanyo/audiorecord_input_write_to_disk_output_freq) % 60;
-
+            int minutos,segundos;
+            audiorecord_input_write_to_disk_time_size(&minutos,&segundos);
 
             menu_add_item_menu_sufijo_format(array_menu_common," %02d:%02d",minutos,segundos);
         }
@@ -37444,7 +37442,7 @@ int menu_realtape_record_input_porcentaje_azimuth_antes=0;
 int menu_realtape_record_input_aviso_azimuth=0;
 
 //En que linea se indica la info del contenido de la cinta y por tanto aqui se alinea el dibujo del cabezal
-#define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 10
+#define DRAW_TAPE_MOSTRAR_CONTENIDO_CINTA_LINEA 11
 
 //Analizador de espectro de la señal.Tenemos rangos de frecuencias donde indicamos si hay una señal de ese tipo
 #define ANALIZADOR_ESPECTRO_RANGOS 33
@@ -38027,14 +38025,16 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
     //solo mostrar info cuando señal sea de Spectrum
 
     //borrar primero esas lineas
-    //Max min
+    //Volumen Max min
+    //Recording to file
     //Guessed
     //Signal type
     //Azimuth
     zxvision_print_string_defaults_fillspc(w,1,linea,"");
     zxvision_print_string_defaults_fillspc(w,1,linea+1,"");
     zxvision_print_string_defaults_fillspc(w,1,linea+2,"");
-    //zxvision_print_string_defaults_fillspc(w,1,linea+3,"");
+    zxvision_print_string_defaults_fillspc(w,1,linea+3,"");
+    //zxvision_print_string_defaults_fillspc(w,1,linea+4,"");
 
 
     int volumen_absoluto=input_analize_input_wave.max_absoluto;
@@ -38068,6 +38068,17 @@ void menu_realtape_record_input_analize_azimuth_end(zxvision_window *w,int linea
 
     zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Volume: Max %3d Min %4d %s",
         input_analize_input_wave.max_absoluto,input_analize_input_wave.min_absoluto,texto_volumen);
+
+    if (audiorecord_input_write_to_disk_enabled) {
+        int minutos,segundos;
+        audiorecord_input_write_to_disk_time_size(&minutos,&segundos);
+
+        zxvision_print_string_defaults_fillspc_format(w,1,linea,"^^Recording to file^^ %02d:%02d",minutos,segundos);
+
+    }
+
+    linea++;
+
 
 
     //Minimo valor a partir del cual se considera que es un tipo de onda u otra
@@ -38770,6 +38781,7 @@ void menu_realtape_record_input_overlay(void)
 /* Texto salida. Desde linea 0
 record buffer
 volume
+recording to file
 Guessed zx
 signal type
 azimuth accuracy
@@ -38785,8 +38797,13 @@ line wave type
 
     int linea_info_azimuth=linea;
 
-
-    linea+=4;
+    //Saltamos 5 lineas
+    //volume
+    //recording to file
+    //guessed zx
+    //signal type
+    //azimuth accuracy
+    linea+=5;
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
@@ -38909,7 +38926,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("externalaudiosource",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=55;
-            alto_ventana=26;
+            alto_ventana=27;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;

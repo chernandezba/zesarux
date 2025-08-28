@@ -340,6 +340,24 @@ void audiorecord_input_write_to_disk_disable_capture(void)
 
 }
 
+//Retornar minutos y segundos escritos del archivo
+void audiorecord_input_write_to_disk_time_size(int *minutos,int *segundos)
+{
+
+    //por si acaso
+    *minutos=0;
+    *segundos=0;
+
+    if (audiorecord_input_write_to_disk_enabled) {
+        if (si_existe_archivo(audiorecord_input_write_to_disk_file_name)) {
+            long long tamanyo=get_file_size(audiorecord_input_write_to_disk_file_name);
+            *minutos=tamanyo/audiorecord_input_write_to_disk_output_freq/60;
+            *segundos=(tamanyo/audiorecord_input_write_to_disk_output_freq) % 60;
+        }
+    }
+}
+
+
 void audiorecord_input_write_to_disk_save_byte(z80_byte valor_escribir)
 {
     /*if (!audiorecord_input_write_to_disk_file_opened) {
