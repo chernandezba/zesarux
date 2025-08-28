@@ -278,10 +278,111 @@ int audiorecord_avisado_fifo_llena=0;
 //Flag que se activa siempre que este llena, este flag solo lo resetea en principio desde la ventana de external audio source
 int audiorecord_last_write_full=0;
 
+
+//
+//Inicio sección para grabación a disco de sonido capturado
+//
+
+int audiorecord_input_write_to_disk_enabled=0;
+
+//Input sample es AUDIO_RECORD_FREQUENCY
+
+
+//Output sample freq
+int audiorecord_input_write_to_disk_output_freq=15600;
+
+//Contador para poder hacer resampling
+int audiorecord_input_write_to_disk_output_counter=0;
+
+//Temporal para abrir el archivo sobre la marcha
+int audiorecord_input_write_to_disk_file_opened=0;
+
+FILE *ptr_audiorecord_input_write_to_disk;
+
+char audiorecord_input_write_to_disk_file_name[PATH_MAX]="prueba.rwa";
+
+#define AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER 1024
+
+//posicion en el buffer de salida
+int audiorecord_input_write_to_disk_output_buffer_pos=0;
+
+//buffer de escritura, para no escribir byte a byte
+z80_byte audiorecord_input_write_to_disk_mem_buffer[AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER];
+
+void audiorecord_input_write_to_disk_save_byte(z80_byte valor_escribir)
+{
+    if (!audiorecord_input_write_to_disk_file_opened) {
+        //abrir archivo. TEMPORAL para abrirlo sobre la marcha
+
+        ptr_audiorecord_input_write_to_disk=fopen(audiorecord_input_write_to_disk_file_name,"wb");
+        if (!ptr_audiorecord_input_write_to_disk) {
+            debug_printf(VERBOSE_ERR,"Unable to open file output %s",audiorecord_input_write_to_disk_file_name);
+            return;
+        }
+
+        audiorecord_input_write_to_disk_file_opened=1;
+
+    }
+
+    //escribir byte en archivo. En bloques de 1KB
+    audiorecord_input_write_to_disk_mem_buffer[audiorecord_input_write_to_disk_output_buffer_pos++]=valor_escribir;
+
+    if (audiorecord_input_write_to_disk_output_buffer_pos>=AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER) {
+        audiorecord_input_write_to_disk_output_buffer_pos=0;
+
+        //flush a disco
+        fwrite(audiorecord_input_write_to_disk_mem_buffer, 1, AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER, ptr_audiorecord_input_write_to_disk);
+
+    }
+}
+
+void audiorecord_input_write_to_disk_one_byte(char valor_escribir)
+{
+    //Convertir primero a unsigned
+    int valor_unsigned=128+valor_escribir;
+
+    //Hacer resampling
+    audiorecord_input_write_to_disk_output_counter +=audiorecord_input_write_to_disk_output_freq;
+    //printf("Llamado\n");
+
+    while (audiorecord_input_write_to_disk_output_counter>=AUDIO_RECORD_FREQUENCY) {
+        //escribir a disco
+        audiorecord_input_write_to_disk_save_byte(valor_unsigned);
+        //printf("Escrito byte\n");
+
+        audiorecord_input_write_to_disk_output_counter -=AUDIO_RECORD_FREQUENCY;
+    }
+
+}
+
+void audiorecord_input_write_to_disk(char *origen,int longitud)
+{
+    if (!audiorecord_input_write_to_disk_enabled) return;
+
+    for (;longitud>0;longitud--) {
+
+        char valor_escribir=*origen;
+
+        audiorecord_input_write_to_disk_one_byte(valor_escribir);
+
+        origen++;
+
+    }
+
+}
+
+
+//
+//Fin sección para grabación a disco de sonido capturado
+//
+
+
 //escribir datos en la fifo
 //Retorna no 0 si fifo llena
 int audiorecord_input_fifo_write(char *origen,int longitud)
 {
+
+    audiorecord_input_write_to_disk(origen,longitud);
 
 	for (;longitud>0;longitud--) {
 

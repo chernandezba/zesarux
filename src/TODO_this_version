@@ -194,8 +194,16 @@ Habria que lanzar el thread y pausarlo antes de que acabe
 ok -Load “nombre” en zx81 funciona buscando un archivo nombre.p81? O solo con .p?
 No va , corregir rutina new_tap_load_detect_zx81
 
+-Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
+
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
-
+-Captura a disco
+*entrada en changelog
+*opcion para archivo de salida en ventana de captura
+*RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31200 hz, mas alla de eso se duplican bytes)
+*si hay libreria audiofile, poder generar WAV de salida
+*Permitir Signed al grabar raw?
+*Resample a menos frecuencia tendría que hacer valor medio con los anteriores?
 
 -Nueva ventana para poder leer audio de cinta y generar archivo RWA
