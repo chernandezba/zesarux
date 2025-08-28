@@ -38766,6 +38766,16 @@ void menu_realtape_record_input_overlay(void)
 
 
     int linea=0;
+
+/* Texto salida. Desde linea 0
+record buffer
+volume
+Guessed zx
+signal type
+azimuth accuracy
+line wave type
+*/
+
     //menu_realtape_record_input_analize_buffer(menu_realtape_record_input_window);
     linea=menu_realtape_record_input_show_info(menu_realtape_record_input_window,linea);
 
