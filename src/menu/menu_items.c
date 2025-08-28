@@ -32922,7 +32922,7 @@ void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
 
     //select file
 
-	char *filtros[]={"rwa",0};
+	char *filtros[]={"raw","rwa",0};
 
 	//guardamos directorio actual
 	char directorio_actual[PATH_MAX];

@@ -198,6 +198,9 @@ No va , corregir rutina new_tap_load_detect_zx81
 
 -un .RAW tambien identifica a una imagen de salida de hilow en formato crudo
 -tambien un .raw es archivo de audio 44100hz, 8 bit, unsigned para entrada de sonido al convertir de cinta hilow a ddh
+-y ahora tambien al capturar sonido, considero un .raw como archivo en crudo con frecuencia de sampleo 31200hz
+En general, considerando audio, .raw seria formato en crudo, con cualquier samplerate. Y para todos los sitios considero 8 bit unsigned
+Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero que no tiene que ver con el sonido
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 

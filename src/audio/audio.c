@@ -326,6 +326,11 @@ void audiorecord_input_write_to_disk_enable_capture(void)
         audiorecord_input_write_to_disk_output_freq=15600;
     }
 
+    //Y si es RAW, consideramos que es misma frecuencia a la que se captura
+    if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"raw")) {
+        audiorecord_input_write_to_disk_output_freq=AUDIO_RECORD_FREQUENCY;
+    }
+
 }
 
 void audiorecord_input_write_to_disk_disable_capture(void)
