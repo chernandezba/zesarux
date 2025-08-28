@@ -33013,6 +33013,19 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
             "but won't have more definition",AUDIO_RECORD_FREQUENCY);
         menu_add_item_menu_ayuda(array_menu_common,texto_ayuda_samplerate);
 
+        if (audiorecord_input_write_to_disk_enabled) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "Recorded time","Tiempo de Grabación","Temps de Gravació");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+            long long tamanyo=get_file_size(audiorecord_input_write_to_disk_file_name);
+            int minutos=tamanyo/audiorecord_input_write_to_disk_output_freq/60;
+            int segundos=(tamanyo/audiorecord_input_write_to_disk_output_freq) % 60;
+
+
+            menu_add_item_menu_sufijo_format(array_menu_common," %02d:%02d",minutos,segundos);
+        }
+
 
         menu_add_item_menu_separator(array_menu_common);
 
