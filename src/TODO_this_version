@@ -158,14 +158,13 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 (ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
 
 
-
 *que pasa si llega el pulso final y poco despues se acaba el archivo. lo finaliza bien?
 
 
-*usleep preciso para que funcione bien en windows?
+*usleep preciso para que funcione bien en windows? Segun notas de hilow, algunos Linux tampoco
+Mac parece hacerlo bien... o si?
 
 *poder convertir audio de zx80?
-
 
 
 *ajustar esto:
@@ -191,10 +190,9 @@ Quiza esto no es un problema pues siempre se puede lanzar y pausar para que se p
 Por ejemplo si quiero ver todos los errores de pulsos, si lanzo y acaba el thread, no se vera
 Habria que lanzar el thread y pausarlo antes de que acabe
 
-ok -Load “nombre” en zx81 funciona buscando un archivo nombre.p81? O solo con .p?
-No va , corregir rutina new_tap_load_detect_zx81
 
--Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
+
+ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
 
 -un .RAW tambien identifica a una imagen de salida de hilow en formato crudo
 -tambien un .raw es archivo de audio 44100hz, 8 bit, unsigned para entrada de sonido al convertir de cinta hilow a ddh
@@ -204,12 +202,13 @@ Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero qu
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
+
+
 -Captura a disco
 *entrada en changelog
 *opcion para archivo de salida en ventana de captura
-*RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31200 hz, mas alla de eso se duplican bytes)
+ok *RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31200 hz, mas alla de eso se duplican bytes)
 *si hay libreria audiofile, poder generar WAV de salida
 *Permitir Signed al grabar raw?
 *Resample a menos frecuencia tendría que hacer valor medio con los anteriores?
 
--Nueva ventana para poder leer audio de cinta y generar archivo RWA
