@@ -19879,8 +19879,8 @@ void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_b
 }
 
 
-//Convertir .P y .P81, listado basic, a pantalla SCR de Spectrum
-int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
+//Convertir .O , .P y .P81, listado basic, a pantalla SCR de Spectrum
+int util_convert_o_p_p81_basic_to_scr(char *filename,char *archivo_destino)
 {
 
 
@@ -19905,6 +19905,7 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
 
     int in_fatfs;
 
+    int tipo=2; //ZX81
 
     if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
             debug_printf(VERBOSE_ERR,"Error opening %s",filename);
@@ -19919,6 +19920,11 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
             zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
             bytes_to_load--;
         }
+    }
+
+    if (!util_compare_file_extension(filename,"o")) {
+        //zx80
+        tipo=1;
     }
 
 
@@ -19941,21 +19947,21 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
     int i;
 
     for (i=0;i<6144;i++) {
-            buffer_pantalla[i]=0;
+        buffer_pantalla[i]=0;
     }
 
     for (;i<6912;i++) {
-            buffer_pantalla[i]=56+64;
+        buffer_pantalla[i]=56+64;
     }
 
 
     //Convertimos basic a texto
-    char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,2);
+    char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,tipo);
 
     if (basic_listing_txt==NULL) return 1;
 
 
-    printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
+    //printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
 
     int y=0;
     int x=0;
@@ -24614,11 +24620,29 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
                 //borrar preview vacio
                 //util_delete(tmpfile_scr);
 
-                util_convert_p_p81_basic_to_scr(nombre,tmpfile_scr);
+                util_convert_o_p_p81_basic_to_scr(nombre,tmpfile_scr);
             }
 		}
 
+	}
 
+	//Si es O
+	else if (!util_compare_file_extension(nombre,"o") ) {
+		debug_printf(VERBOSE_DEBUG,"File is a O snapshot");
+
+        //printf("File is a O snapshot\n");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+
+            //Los archivos O de ZX80 no contienen pantalla, a diferencia de los P de ZX81
+            //por tanto, sacar el listado basic y mostrarlo como pantalla
+
+            util_convert_o_p_p81_basic_to_scr(nombre,tmpfile_scr);
+
+		}
 
 	}
 
@@ -24667,6 +24691,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"z80") ||
         !util_compare_file_extension(nombre,"p") ||
         !util_compare_file_extension(nombre,"p81") ||
+        !util_compare_file_extension(nombre,"o") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912 ||
         util_preview_file_is_ql_screen(file_size)

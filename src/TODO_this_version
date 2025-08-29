@@ -204,8 +204,8 @@ Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero qu
 
 
 -Revisar funcion util_convert_p_p81_basic_to_scr(nombre,tmpfile_scr); de converir .p/.p81 a listado basic y de ahi a miniatura scr
-*quitar todo lo de video memory que no se usa
-*soportar zx80
+ok *quitar todo lo de video memory que no se usa
+ok para .O *soportar zx80
 *preview de archivos .81? que formato era? en extras hires hay
 *probar con archivos random .p, .p81 etc y ver que no peta
 *Preview de .baszx80, .baszx81. Estos salen de expandir y no tienen offset a primera línea. ojo porque la rutina de convertir le suma esos offset...
