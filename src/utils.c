@@ -19743,21 +19743,19 @@ z80_byte util_convert_memory_to_txt_basic_listing_peek(z80_int dir)
 char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int tipo)
 {
 
+    util_convert_memory_to_txt_basic_listing_last_size=tamanyo;
 
-
-	util_convert_memory_to_txt_basic_listing_last_size=tamanyo;
-
-	util_convert_memory_to_txt_basic_listing_last_memory=memoria;
+    util_convert_memory_to_txt_basic_listing_last_memory=memoria;
 
     //Realmente aqui podríamos usar un tamaño mas grande, el listado no lo vamos a mostrar con una ventana de mensaje,
     //sino exportar a texto el listado. Pero bueno igualmente ese límite es suficiente
     char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for reading the file");
 
 
-  	char **dir_tokens;
-  	int inicio_tokens;
+    char **dir_tokens;
+    int inicio_tokens;
 
-	int dir_inicio_linea=0;
+    int dir_inicio_linea=0;
 
 
 	//Si es basic zx81
@@ -19824,7 +19822,7 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
 
 	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,inicio_tokens,
         util_convert_memory_to_txt_basic_listing_peek,
-        tipo,0,0,debug_view_basic_show_betabasic.v,MAX_TEXTO_GENERIC_MESSAGE,0);
+        tipo,0,0,0,MAX_TEXTO_GENERIC_MESSAGE,0);
 
 
     return results_buffer;
@@ -19835,54 +19833,49 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
 void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pantalla_destino)
 {
 
+    //Validar origen
+    if (y<0 || x<0 || y>23 || x>32) {
+        //printf ("x o y fuera de rango\n");
+        return;
+    }
+
+
+    z80_int direccion=screen_addr_table[(y*8*32)+x];
+
+
+
+    if (caracter>127 || caracter<32) caracter='?';
+
+    int scanline;
+
+    int offset_caracter=(caracter-32)*8;
+
+
+    for (scanline=0;scanline<8;scanline++) {
         //Validar origen
-        if (y<0 || x<0 || y>23 || x>32) {
-                //printf ("x o y fuera de rango\n");
-                return;
+        if (offset_caracter>=512) {
+            //printf("offset caracter %d fuera de rango\n",caracter);
+            return;
         }
 
-        //printf ("x %d y %d car %d\n",x,y,caracter);
+        z80_byte byte_leido=char_set_spectrum[offset_caracter++];
 
-        z80_int direccion=screen_addr_table[(y*8*32)+x];
-
-        //direccion +=x;
-
-        int inverso=0;
-
-        if (caracter>127 || caracter<32) caracter='?';
-
-
-        int scanline;
-
-        int offset_caracter=(caracter-32)*8;
-
-
-        for (scanline=0;scanline<8;scanline++) {
-                //Validar origen
-                if (offset_caracter>=512) {
-                        //printf("offset caracter %d fuera de rango\n",caracter);
-                        return;
-                }
-
-                z80_byte byte_leido=char_set_spectrum[offset_caracter++];
-
-                //Validar destino
-                if (direccion>=6912) {
-                        //printf("offset destino %d fuera de rango\n",direccion);
-                        return;
-                }
-
-                if (inverso) byte_leido ^=255;
-
-                //printf ("destino %d byte %d\n",direccion,byte_leido);
-
-                pantalla_destino[direccion]=byte_leido;
-
-
-                direccion +=256;
-
-
+        //Validar destino
+        if (direccion>=6912) {
+            //printf("offset destino %d fuera de rango\n",direccion);
+            return;
         }
+
+
+        //printf ("destino %d byte %d\n",direccion,byte_leido);
+
+        pantalla_destino[direccion]=byte_leido;
+
+
+        direccion +=256;
+
+
+    }
 }
 
 
@@ -19891,150 +19884,123 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
 {
 
 
-        //snapshot .P y .P81 a SCR
-        z80_byte *buffer_lectura;
+    //snapshot .P y .P81 a SCR
+    z80_byte *buffer_lectura;
 
-        long long int bytes_to_load=get_file_size(filename);
+    long long int bytes_to_load=get_file_size(filename);
 
-        if (bytes_to_load<20) return 1; //Tamaño muy pequeño
+    if (bytes_to_load<20) return 1; //Tamaño muy pequeño
 
-        buffer_lectura=malloc(bytes_to_load);
+    buffer_lectura=malloc(bytes_to_load);
 
-        if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
-
-
-        FILE *ptr_pfile;
+    if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
 
 
-        //Soporte para FatFS
-        FIL fil;        /* File object */
-        //FRESULT fr;     /* FatFs return code */
-
-        int in_fatfs;
+    FILE *ptr_pfile;
 
 
-        if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
-                debug_printf(VERBOSE_ERR,"Error opening %s",filename);
-                return 1;
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
+            debug_printf(VERBOSE_ERR,"Error opening %s",filename);
+            return 1;
+    }
+
+    //Saltar el nombre del principio si es un .p81
+    if (!util_compare_file_extension(filename,"p81")) {
+        z80_byte byte_leido=0;
+        while (bytes_to_load>0 && (byte_leido&128)==0) {
+            //printf("saltando byte\n");
+            zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
+            bytes_to_load--;
         }
+    }
 
-        //Saltar el nombre del principio si es un .p81
-        if (!util_compare_file_extension(filename,"p81")) {
-            z80_byte byte_leido=0;
-            while (bytes_to_load>0 && (byte_leido&128)==0) {
-                //printf("saltando byte\n");
-                zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
-                bytes_to_load--;
+
+    zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+
+
+
+    zvfs_fclose(in_fatfs,ptr_pfile,&fil);
+
+
+
+    //Asignamos 6912 bytes para la pantalla
+    z80_byte *buffer_pantalla;
+
+    buffer_pantalla=malloc(6912);
+
+    if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+    //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
+    int i;
+
+    for (i=0;i<6144;i++) {
+            buffer_pantalla[i]=0;
+    }
+
+    for (;i<6912;i++) {
+            buffer_pantalla[i]=56+64;
+    }
+
+
+    //Convertimos basic a texto
+    char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,2);
+
+    if (basic_listing_txt==NULL) return 1;
+
+
+    printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
+
+    int y=0;
+    int x=0;
+    z80_byte caracter;
+
+    char *puntero_basic_listado=basic_listing_txt;
+    int bytes_basic_listado=bytes_to_load;
+
+    while (y<24 && bytes_basic_listado>0) {
+
+        caracter=*puntero_basic_listado;
+        puntero_basic_listado++;
+        bytes_basic_listado--;
+
+
+        if (caracter==10) {
+            //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
+            y++;
+            x=0;
+        }
+        else {
+
+            util_convert_p_p81_basic_to_scr_putchar(caracter,x,y,buffer_pantalla);
+
+            x++;
+
+            if (x==32) {
+                    x=0;
+                    y++;
             }
+
         }
-
-
-        zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
-
-
-
-        zvfs_fclose(in_fatfs,ptr_pfile,&fil);
-
-
-
-       //int normal_snapshot_load_addr=0x4009;
-
-       //int offset_puntero=0x400C-normal_snapshot_load_addr;
-
-       ////z80_int video_pointer=buffer_lectura[offset_puntero]+256*buffer_lectura[offset_puntero+1];
-
-       //Nota: parece que los snapshot de zx80 (.o) no guardan nunca la pantalla, por lo que un conversor de .o a .scr no tiene sentido
-       //aunque en ese caso bastaria con poner ormal_snapshot_load_addr=0x4000
-
-
-       ////video_pointer -=normal_snapshot_load_addr;
-
-       //char_set_zx81_no_ascii
-
-       //Asignamos 6912 bytes para la pantalla
-        z80_byte *buffer_pantalla;
-
-        buffer_pantalla=malloc(6912);
-
-        if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
-
-        //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
-        int i;
-
-        for (i=0;i<6144;i++) {
-                buffer_pantalla[i]=0;
-        }
-
-        for (;i<6912;i++) {
-                buffer_pantalla[i]=56+64;
-        }
-
-
-        //Convertimos basic a texto
-        char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,2);
-
-        if (basic_listing_txt==NULL) return 1;
-
-        //TODO: free(basic_listing_txt)
-        printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
-
-       //se supone que el primer byte es 118 . saltarlo
-        ////video_pointer++;
-        int y=0;
-        int x=0;
-        z80_byte caracter;
-
-        char *puntero_basic_listado=basic_listing_txt;
-        int bytes_basic_listado=bytes_to_load;
-
-        while (y<24 && bytes_basic_listado>0) {
-
-                caracter=*puntero_basic_listado;
-                puntero_basic_listado++;
-                bytes_basic_listado--;
-
-
-                if (caracter==10) {
-                        //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
-
-                                y++;
-
-
-                                x=0;
-                }
-                else {
-
-
-
-                        util_convert_p_p81_basic_to_scr_putchar(caracter,x,y,buffer_pantalla);
-
-
-
-                        x++;
-
-                        if (x==32) {
-
-                                x=0;
-                                y++;
-
-
-                        }
-
-                }
-
 
     }
 
-        //Grabar pantalla
-        util_save_file(buffer_pantalla,6912,archivo_destino);
+    //Grabar pantalla
+    util_save_file(buffer_pantalla,6912,archivo_destino);
 
-        free(buffer_pantalla);
-        free(buffer_lectura);
+    free(buffer_pantalla);
+    free(buffer_lectura);
 
-        free(basic_listing_txt);
+    free(basic_listing_txt);
 
 
-        return 0;
+    return 0;
 
 }
 
