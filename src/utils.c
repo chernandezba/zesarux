@@ -19718,16 +19718,11 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
 z80_byte *util_convert_memory_to_txt_basic_listing_last_memory;
 int util_convert_memory_to_txt_basic_listing_last_size=1;
 
-int temppppp=0;
+
 
 
 z80_byte util_convert_memory_to_txt_basic_listing_peek(z80_int dir)
 {
-    if (temppppp<10) {
-        temppppp++;
-        printf("Pedido byte dir %d resultado %02X\n",dir,
-            util_convert_memory_to_txt_basic_listing_last_memory[dir % util_convert_memory_to_txt_basic_listing_last_size]);
-    }
 
     if (!util_convert_memory_to_txt_basic_listing_last_size) return 0;
 
@@ -19748,41 +19743,14 @@ z80_byte util_convert_memory_to_txt_basic_listing_peek(z80_int dir)
 char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int tipo)
 {
 
-    /*
-	//Leemos archivo .bas
-        FILE *ptr_file_bas_browser;
 
-
-
-    int in_fatfs;
-
-    //printf("menu_file_basic_browser_show %s\n",filename);
-
-    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_bas_browser,&fil)<0) {
-        debug_printf(VERBOSE_ERR,"Unable to open file");
-        return;
-    }
-    */
-
-	//int tamanyo=get_file_size(filename);
-    //printf("tamanyo: %d\n",tamanyo);
-
-
-	//z80_byte *memoria;
-	//memoria=malloc(tamanyo);
-	//if (memoria==NULL) cpu_panic ("Can not allocate memory for bas read");
-
-	//last_bas_browser_memory_size=tamanyo;
-
-	//last_bas_browser_memory=memoria;
 
 	util_convert_memory_to_txt_basic_listing_last_size=tamanyo;
 
 	util_convert_memory_to_txt_basic_listing_last_memory=memoria;
 
-    printf("Primeros bytes memoria: %02X %02X %02X\n",memoria[0],memoria[1],memoria[2]);
-
-
+    //Realmente aqui podríamos usar un tamaño mas grande, el listado no lo vamos a mostrar con una ventana de mensaje,
+    //sino exportar a texto el listado. Pero bueno igualmente ese límite es suficiente
     char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for reading the file");
 
 
@@ -19791,9 +19759,6 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
 
 	int dir_inicio_linea=0;
 
-	//int tipo=0; //Asumimos spectrum
-
-    //printf("antes de ver extension\n");
 
 	//Si es basic zx81
 	if (tipo==2) {
@@ -19861,12 +19826,7 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
         util_convert_memory_to_txt_basic_listing_peek,
         tipo,0,0,debug_view_basic_show_betabasic.v,MAX_TEXTO_GENERIC_MESSAGE,0);
 
-  	//menu_generic_message_format(titulo_ventana,"%s",results_buffer);
 
-
-    //free(memoria);
-
-    //free(results_buffer);
     return results_buffer;
 
 }
