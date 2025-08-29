@@ -19973,7 +19973,8 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
         //Convertimos basic a texto
         char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,2);
 
-        //TODO: comparar puntero a NULL
+        if (basic_listing_txt==NULL) return 1;
+
         //TODO: free(basic_listing_txt)
         printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
 
@@ -20029,6 +20030,8 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
 
         free(buffer_pantalla);
         free(buffer_lectura);
+
+        free(basic_listing_txt);
 
 
         return 0;
