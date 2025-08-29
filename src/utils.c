@@ -19906,10 +19906,6 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
         FILE *ptr_pfile;
 
 
-
-        //int leidos;
-
-
         //Soporte para FatFS
         FIL fil;        /* File object */
         //FRESULT fr;     /* FatFs return code */
@@ -19933,44 +19929,17 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
         }
 
 
-        //Load File
-
-        /*
-        ptr_pfile=fopen(filename,"rb");
-        if (ptr_pfile==NULL) {
-                debug_printf(VERBOSE_ERR,"Error opening %s",filename);
-                return 1;
-        }
-        */
-
-        //leidos=zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
         zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
-        //leidos=fread(buffer_lectura,1,bytes_to_load,ptr_pfile);
+
 
 
         zvfs_fclose(in_fatfs,ptr_pfile,&fil);
-        //fclose(ptr_pfile);
-
-//        //puntero pantalla en DFILE
-        /*
-        video_pointer=peek_word_no_time(0x400C);
 
 
-        y snap se carga en:
 
-        puntero_inicio=memoria_spectrum+0x4009;
+       //int normal_snapshot_load_addr=0x4009;
 
-        por tanto desde el offset de un .p file es en la posicion 3
-
-        Luego restar a eso 9 bytes
-
-
-        el primer byte es 118 . saltarlo
-        */
-
-       int normal_snapshot_load_addr=0x4009;
-
-       int offset_puntero=0x400C-normal_snapshot_load_addr;
+       //int offset_puntero=0x400C-normal_snapshot_load_addr;
 
        ////z80_int video_pointer=buffer_lectura[offset_puntero]+256*buffer_lectura[offset_puntero+1];
 
@@ -20018,15 +19987,7 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
         int bytes_basic_listado=bytes_to_load;
 
         while (y<24 && bytes_basic_listado>0) {
-                //printf ("y: %d\n",y);
 
-                //Ver rango
-                ////if (video_pointer>=bytes_to_load) {
-                ////    //printf("video pointer incorrecto\n");
-                ////    return 1;
-                ////}
-
-                ////caracter=buffer_lectura[video_pointer++];
                 caracter=*puntero_basic_listado;
                 puntero_basic_listado++;
                 bytes_basic_listado--;
@@ -20034,49 +19995,27 @@ int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
 
                 if (caracter==10) {
                         //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
-                                /*for (;x<32;x++) {
-                                        printf (" ");
-                                        util_convert_p_to_scr_putchar(' ' ,x,y,buffer_pantalla);
-					//puntero_printchar_caracter(' ');
-                                }*/
+
                                 y++;
-
-
-
-                                //printf ("\n");
-				//puntero_printchar_caracter('\n');
 
 
                                 x=0;
                 }
                 else {
-                        //z80_bit inverse;
 
-                        //printf("byte: %d\n",caracter);
 
 
                         util_convert_p_p81_basic_to_scr_putchar(caracter,x,y,buffer_pantalla);
 
-                        //caracter=da_codigo81(caracter,&inverse);
-                        //printf ("%c",caracter);
+
 
                         x++;
 
                         if (x==32) {
-                                //Ver rango
-                                ////if (video_pointer>=bytes_to_load) return 1;
 
-                                ////if (buffer_lectura[video_pointer]!=118) {
-                                ////        //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
-								////}
-                                //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
-                                ////video_pointer++;
                                 x=0;
                                 y++;
 
-
-                                //printf ("\n");
-				//puntero_printchar_caracter('\n');
 
                         }
 
