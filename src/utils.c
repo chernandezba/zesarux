@@ -24603,7 +24603,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 	}
 
 	//Si es P
-	else if (!util_compare_file_extension(nombre,"p") || !util_compare_file_extension(nombre,"p81")) {
+	else if (!util_compare_file_extension(nombre,"p") || !util_compare_file_extension(nombre,"p81") || !util_compare_file_extension(nombre,"81")) {
 		debug_printf(VERBOSE_DEBUG,"File is a p/p81 snapshot");
 
 		menu_filesel_mkdir(tmpdir);
@@ -24690,6 +24690,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"sp") ||
         !util_compare_file_extension(nombre,"z80") ||
         !util_compare_file_extension(nombre,"p") ||
+        !util_compare_file_extension(nombre,"81") ||
         !util_compare_file_extension(nombre,"p81") ||
         !util_compare_file_extension(nombre,"o") ||
         !util_compare_file_extension(nombre,"zsf") ||
