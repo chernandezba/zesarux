@@ -18963,7 +18963,7 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
 
 	//Si es P/P81
 	else if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"p81")) {
-		util_convert_p_to_scr(filename,archivo_destino);
+		util_convert_p_to_scr(filename,archivo_destino,NULL);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
         return 0;
 	}
@@ -19513,9 +19513,16 @@ void util_convert_p_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *panta
         }
 }
 
-int util_convert_p_to_scr(char *filename,char *archivo_destino)
+//Convertir .P y .P81 a pantalla SCR de Spectrum
+//pantalla_vacia puntero a variable, se pondra la variable a 1 si la pantalla esta vacia. Puntero a NULL si no queremos usar esto
+int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_vacia)
 {
-        //snapshot .P a SCR
+        //Asumimos que la pantalla esta vacia
+        int pantalla_vacia=1;
+
+        if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
+
+        //snapshot .P y .P81 a SCR
         z80_byte *buffer_lectura;
 
         long long int bytes_to_load=get_file_size(filename);
@@ -19660,7 +19667,9 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
                 else {
                         //z80_bit inverse;
 
+                        //printf("byte: %d\n",caracter);
 
+                        if (caracter) pantalla_vacia=0;
 
                         util_convert_p_to_scr_putchar(caracter,x,y,buffer_pantalla);
 
@@ -19698,10 +19707,434 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
         free(buffer_pantalla);
         free(buffer_lectura);
 
+
+        if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
+
         return 0;
 
 }
 
+
+z80_byte *util_convert_memory_to_txt_basic_listing_last_memory;
+int util_convert_memory_to_txt_basic_listing_last_size=1;
+
+int temppppp=0;
+
+
+z80_byte util_convert_memory_to_txt_basic_listing_peek(z80_int dir)
+{
+    if (temppppp<10) {
+        temppppp++;
+        printf("Pedido byte dir %d resultado %02X\n",dir,
+            util_convert_memory_to_txt_basic_listing_last_memory[dir % util_convert_memory_to_txt_basic_listing_last_size]);
+    }
+
+    if (!util_convert_memory_to_txt_basic_listing_last_size) return 0;
+
+	else return util_convert_memory_to_txt_basic_listing_last_memory[dir % util_convert_memory_to_txt_basic_listing_last_size]; //con % para no salirnos de la memoria
+}
+
+//Convertir de programa de memoria (ZX80, ZX81, Spectrum) a Texto listado basic
+//memoria apunta al principio de los datos, o sea:
+//En Spectrum: primera linea basic
+//En ZX80,81: variables sistema, y luego viene basic
+//tipo indica si es:
+//0: Spectrum
+//1: ZX80
+//2: ZX81
+//3: ZX88
+//OJO: esta funcion solo se puede llamar 1 vez simultaneamente, al usar una funcion auxiliar util_convert_memory_to_txt_basic_listing_peek,
+//con variables estáticas
+char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int tipo)
+{
+
+    /*
+	//Leemos archivo .bas
+        FILE *ptr_file_bas_browser;
+
+
+
+    int in_fatfs;
+
+    //printf("menu_file_basic_browser_show %s\n",filename);
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_bas_browser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        return;
+    }
+    */
+
+	//int tamanyo=get_file_size(filename);
+    //printf("tamanyo: %d\n",tamanyo);
+
+
+	//z80_byte *memoria;
+	//memoria=malloc(tamanyo);
+	//if (memoria==NULL) cpu_panic ("Can not allocate memory for bas read");
+
+	//last_bas_browser_memory_size=tamanyo;
+
+	//last_bas_browser_memory=memoria;
+
+	util_convert_memory_to_txt_basic_listing_last_size=tamanyo;
+
+	util_convert_memory_to_txt_basic_listing_last_memory=memoria;
+
+    printf("Primeros bytes memoria: %02X %02X %02X\n",memoria[0],memoria[1],memoria[2]);
+
+
+    char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for reading the file");
+
+
+  	char **dir_tokens;
+  	int inicio_tokens;
+
+	int dir_inicio_linea=0;
+
+	//int tipo=0; //Asumimos spectrum
+
+    //printf("antes de ver extension\n");
+
+	//Si es basic zx81
+	if (tipo==2) {
+
+        //ZX81
+        dir_inicio_linea=116; //16509-0x4009
+        //dir_inicio_linea=0;
+
+        //D_FILE
+        //final_basic=peek_byte_no_time(0x400C)+256*peek_byte_no_time(0x400D);
+
+        dir_tokens=zx81_rom_tokens;
+
+        inicio_tokens=192;
+
+
+	}
+
+	else if (tipo==1) {
+
+
+        //ZX80
+        dir_inicio_linea=40; //16424-16384
+        //dir_inicio_linea=0;
+
+
+        //VARS
+        //final_basic=peek_byte_no_time(0x4008)+256*peek_byte_no_time(0x4009);
+
+        dir_tokens=zx80_rom_tokens;
+
+        inicio_tokens=213;
+
+
+	}
+
+	//Si extension z88 o si firma de final de archivo parece ser .z88
+    //TODO
+	else if (tipo==3) {
+		/*dir_inicio_linea=0;
+		debug_view_z88_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,menu_file_bas_browser_show_peek);
+
+  		menu_generic_message_format("View Z88 Basic","%s",results_buffer);
+		free(memoria);
+	//void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,
+	//z80_byte (*lee_byte_function)(z80_int dir) )
+		//Este finaliza aqui
+        free(results_buffer);*/
+		return NULL;
+	}
+
+    //Tipo Spectrum
+	else {
+
+		//basic spectrum
+        dir_tokens=spectrum_rom_tokens;
+
+        inicio_tokens=163;
+	}
+
+
+
+
+	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,inicio_tokens,
+        util_convert_memory_to_txt_basic_listing_peek,
+        tipo,0,0,debug_view_basic_show_betabasic.v,MAX_TEXTO_GENERIC_MESSAGE,0);
+
+  	//menu_generic_message_format(titulo_ventana,"%s",results_buffer);
+
+
+    //free(memoria);
+
+    //free(results_buffer);
+    return results_buffer;
+
+}
+
+
+void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pantalla_destino)
+{
+
+        //Validar origen
+        if (y<0 || x<0 || y>23 || x>32) {
+                //printf ("x o y fuera de rango\n");
+                return;
+        }
+
+        //printf ("x %d y %d car %d\n",x,y,caracter);
+
+        z80_int direccion=screen_addr_table[(y*8*32)+x];
+
+        //direccion +=x;
+
+        int inverso=0;
+
+        if (caracter>127 || caracter<32) caracter='?';
+
+
+        int scanline;
+
+        int offset_caracter=(caracter-32)*8;
+
+
+        for (scanline=0;scanline<8;scanline++) {
+                //Validar origen
+                if (offset_caracter>=512) {
+                        //printf("offset caracter %d fuera de rango\n",caracter);
+                        return;
+                }
+
+                z80_byte byte_leido=char_set_spectrum[offset_caracter++];
+
+                //Validar destino
+                if (direccion>=6912) {
+                        //printf("offset destino %d fuera de rango\n",direccion);
+                        return;
+                }
+
+                if (inverso) byte_leido ^=255;
+
+                //printf ("destino %d byte %d\n",direccion,byte_leido);
+
+                pantalla_destino[direccion]=byte_leido;
+
+
+                direccion +=256;
+
+
+        }
+}
+
+
+//Convertir .P y .P81, listado basic, a pantalla SCR de Spectrum
+int util_convert_p_p81_basic_to_scr(char *filename,char *archivo_destino)
+{
+
+
+        //snapshot .P y .P81 a SCR
+        z80_byte *buffer_lectura;
+
+        long long int bytes_to_load=get_file_size(filename);
+
+        if (bytes_to_load<20) return 1; //Tamaño muy pequeño
+
+        buffer_lectura=malloc(bytes_to_load);
+
+        if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+
+        FILE *ptr_pfile;
+
+
+
+        //int leidos;
+
+
+        //Soporte para FatFS
+        FIL fil;        /* File object */
+        //FRESULT fr;     /* FatFs return code */
+
+        int in_fatfs;
+
+
+        if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
+                debug_printf(VERBOSE_ERR,"Error opening %s",filename);
+                return 1;
+        }
+
+        //Saltar el nombre del principio si es un .p81
+        if (!util_compare_file_extension(filename,"p81")) {
+            z80_byte byte_leido=0;
+            while (bytes_to_load>0 && (byte_leido&128)==0) {
+                //printf("saltando byte\n");
+                zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
+                bytes_to_load--;
+            }
+        }
+
+
+        //Load File
+
+        /*
+        ptr_pfile=fopen(filename,"rb");
+        if (ptr_pfile==NULL) {
+                debug_printf(VERBOSE_ERR,"Error opening %s",filename);
+                return 1;
+        }
+        */
+
+        //leidos=zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+        zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+        //leidos=fread(buffer_lectura,1,bytes_to_load,ptr_pfile);
+
+
+        zvfs_fclose(in_fatfs,ptr_pfile,&fil);
+        //fclose(ptr_pfile);
+
+//        //puntero pantalla en DFILE
+        /*
+        video_pointer=peek_word_no_time(0x400C);
+
+
+        y snap se carga en:
+
+        puntero_inicio=memoria_spectrum+0x4009;
+
+        por tanto desde el offset de un .p file es en la posicion 3
+
+        Luego restar a eso 9 bytes
+
+
+        el primer byte es 118 . saltarlo
+        */
+
+       int normal_snapshot_load_addr=0x4009;
+
+       int offset_puntero=0x400C-normal_snapshot_load_addr;
+
+       ////z80_int video_pointer=buffer_lectura[offset_puntero]+256*buffer_lectura[offset_puntero+1];
+
+       //Nota: parece que los snapshot de zx80 (.o) no guardan nunca la pantalla, por lo que un conversor de .o a .scr no tiene sentido
+       //aunque en ese caso bastaria con poner ormal_snapshot_load_addr=0x4000
+
+
+       ////video_pointer -=normal_snapshot_load_addr;
+
+       //char_set_zx81_no_ascii
+
+       //Asignamos 6912 bytes para la pantalla
+        z80_byte *buffer_pantalla;
+
+        buffer_pantalla=malloc(6912);
+
+        if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+        //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
+        int i;
+
+        for (i=0;i<6144;i++) {
+                buffer_pantalla[i]=0;
+        }
+
+        for (;i<6912;i++) {
+                buffer_pantalla[i]=56+64;
+        }
+
+
+        //Convertimos basic a texto
+        char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,2);
+
+        //TODO: comparar puntero a NULL
+        //TODO: free(basic_listing_txt)
+        printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
+
+       //se supone que el primer byte es 118 . saltarlo
+        ////video_pointer++;
+        int y=0;
+        int x=0;
+        z80_byte caracter;
+
+        char *puntero_basic_listado=basic_listing_txt;
+        int bytes_basic_listado=bytes_to_load;
+
+        while (y<24 && bytes_basic_listado>0) {
+                //printf ("y: %d\n",y);
+
+                //Ver rango
+                ////if (video_pointer>=bytes_to_load) {
+                ////    //printf("video pointer incorrecto\n");
+                ////    return 1;
+                ////}
+
+                ////caracter=buffer_lectura[video_pointer++];
+                caracter=*puntero_basic_listado;
+                puntero_basic_listado++;
+                bytes_basic_listado--;
+
+
+                if (caracter==10) {
+                        //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
+                                /*for (;x<32;x++) {
+                                        printf (" ");
+                                        util_convert_p_to_scr_putchar(' ' ,x,y,buffer_pantalla);
+					//puntero_printchar_caracter(' ');
+                                }*/
+                                y++;
+
+
+
+                                //printf ("\n");
+				//puntero_printchar_caracter('\n');
+
+
+                                x=0;
+                }
+                else {
+                        //z80_bit inverse;
+
+                        //printf("byte: %d\n",caracter);
+
+
+                        util_convert_p_p81_basic_to_scr_putchar(caracter,x,y,buffer_pantalla);
+
+                        //caracter=da_codigo81(caracter,&inverse);
+                        //printf ("%c",caracter);
+
+                        x++;
+
+                        if (x==32) {
+                                //Ver rango
+                                ////if (video_pointer>=bytes_to_load) return 1;
+
+                                ////if (buffer_lectura[video_pointer]!=118) {
+                                ////        //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
+								////}
+                                //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
+                                ////video_pointer++;
+                                x=0;
+                                y++;
+
+
+                                //printf ("\n");
+				//puntero_printchar_caracter('\n');
+
+                        }
+
+                }
+
+
+    }
+
+        //Grabar pantalla
+        util_save_file(buffer_pantalla,6912,archivo_destino);
+
+        free(buffer_pantalla);
+        free(buffer_lectura);
+
+
+        return 0;
+
+}
 
 
 int util_convert_z80_to_scr(char *filename,char *archivo_destino)
@@ -24303,7 +24736,18 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 		//Si no existe preview
 		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_p_to_scr(nombre,tmpfile_scr);
+            int pantalla_vacia;
+
+			util_convert_p_to_scr(nombre,tmpfile_scr,&pantalla_vacia);
+
+
+            //Si esta la pantalla en blanco, mostramos listado basic
+            if (pantalla_vacia) {
+                //borrar preview vacio
+                //util_delete(tmpfile_scr);
+
+                util_convert_p_p81_basic_to_scr(nombre,tmpfile_scr);
+            }
 		}
 
 

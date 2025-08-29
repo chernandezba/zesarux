@@ -2147,7 +2147,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.scr",directorio,archivo);
-								util_convert_p_to_scr(fullpath,archivo_destino);
+								util_convert_p_to_scr(fullpath,archivo_destino,NULL);
                         break;
 
 
@@ -2185,7 +2185,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 
                         case 3:
                                 sprintf(archivo_destino,"%s/%s.scr",directorio,archivo);
-								util_convert_p_to_scr(fullpath,archivo_destino);
+								util_convert_p_to_scr(fullpath,archivo_destino,NULL);
                         break;
 
 

@@ -5398,6 +5398,8 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
   		//asignamos ya siguiente direccion.
   		dir_inicio_linea=dir+longitud_linea;
 
+        //printf("longitud_linea: %d\n",longitud_linea);
+
   		while (longitud_linea>0) {
   			byte_leido=lee_byte_function(dir++);
   			longitud_linea--;
@@ -5523,9 +5525,9 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
         }
 
 
-  		//meter dos saltos de linea
+  		//meter dos saltos de linea. Porque????
   		results_buffer[index_buffer++]='\n';
-  		results_buffer[index_buffer++]='\n';
+  		//results_buffer[index_buffer++]='\n';
 
   	}
 
