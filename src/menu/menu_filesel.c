@@ -5415,7 +5415,32 @@ void menu_filesel_overlay_render_preview_aux(int es_directorio,char *archivo_pre
         //strcpy (nombre_sin_barras,archivo_preview);
         sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),archivo_preview);
 
-        sprintf (preview_scr,"%s/%s.scr",tmpdir,archivo_preview);
+        //En el caso de los archivos README, dado que pueden haber mas de uno en diferentes directorios,
+        //generar un nombre unico de preview para tener cada uno con su preview distinto
+        if (!strcasecmp(archivo_preview,"README")) {
+            char nombre_entero_sin_barras[PATH_MAX];
+            if (dir_name==NULL) {
+                char directorio_actual[PATH_MAX];
+                getcwd(directorio_actual,PATH_MAX);
+                strcpy(nombre_entero_sin_barras,directorio_actual);
+            }
+            else {
+                if (dir_name[0]==0) {
+                    char directorio_actual[PATH_MAX];
+                    getcwd(directorio_actual,PATH_MAX);
+                    strcpy(nombre_entero_sin_barras,directorio_actual);
+                }
+                else {
+                    strcpy(nombre_entero_sin_barras,dir_name);
+                }
+            }
+            util_normalize_file_name_for_temp_dir(nombre_entero_sin_barras);
+            sprintf (preview_scr,"%s/%s-%s.scr",tmpdir,nombre_entero_sin_barras,archivo_preview);
+        }
+
+        else {
+            sprintf (preview_scr,"%s/%s.scr",tmpdir,archivo_preview);
+        }
     }
 
     char archivo_info_pantalla[PATH_MAX];
