@@ -318,6 +318,9 @@ int menu_file_filter(const char *name,char *filtros[])
 	if (!strcasecmp(extension,"eprom")) return 1;
 	if (!strcasecmp(extension,"flash")) return 1;
 
+    //Queremos que los .txt y README siempre salgan pues pueden dar info de los archivos de cinta incluidos
+    if (!strcasecmp(extension,"txt")) return 1;
+    if (!strcasecmp(name,"README")) return 1;
 
 	return 0;
 

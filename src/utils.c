@@ -24775,9 +24775,9 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	}
 
-	//Si es .txt
+	//Si es .txt o README
     //hacemos preview con pantalla del texto
-	else if (!util_compare_file_extension(nombre,"txt")) {
+	else if (!util_compare_file_extension(nombre,"txt") || !strcasecmp(nombre,"README")) {
 		debug_printf(VERBOSE_DEBUG,"File is a text file");
 
 		menu_filesel_mkdir(tmpdir);
@@ -24860,6 +24860,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"bas") ||
         !util_compare_file_extension(nombre,"o") ||
         !util_compare_file_extension(nombre,"txt") ||
+        !strcasecmp(nombre,"README") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912 ||
         util_preview_file_is_ql_screen(file_size)
