@@ -19855,7 +19855,7 @@ void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_b
 
     for (scanline=0;scanline<8;scanline++) {
         //Validar origen
-        if (offset_caracter>=512) {
+        if (offset_caracter>=768) {
             //printf("offset caracter %d fuera de rango\n",caracter);
             return;
         }
@@ -19878,6 +19878,119 @@ void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_b
 
 
     }
+}
+
+
+//Convertir .txt a pantalla SCR de Spectrum
+int util_convert_txt_to_scr(char *filename,char *archivo_destino)
+{
+
+
+    //snapshot .P y .P81 a SCR
+    z80_byte *buffer_lectura;
+
+    long long int bytes_to_load=get_file_size(filename);
+
+
+    buffer_lectura=malloc(bytes_to_load);
+
+    if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+
+    FILE *ptr_pfile;
+
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
+            debug_printf(VERBOSE_ERR,"Error opening %s",filename);
+            return 1;
+    }
+
+
+
+    zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+
+    zvfs_fclose(in_fatfs,ptr_pfile,&fil);
+
+
+
+    //Asignamos 6912 bytes para la pantalla
+    z80_byte *buffer_pantalla;
+
+    buffer_pantalla=malloc(6912);
+
+    if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+    //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
+    int i;
+
+    for (i=0;i<6144;i++) {
+        buffer_pantalla[i]=0;
+    }
+
+    for (;i<6912;i++) {
+        buffer_pantalla[i]=56+64;
+    }
+
+
+    //printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
+
+    int y=0;
+    int x=0;
+    z80_byte caracter;
+
+    char *puntero_basic_listado=(char *) buffer_lectura;
+    int bytes_basic_listado=bytes_to_load;
+
+    while (y<24 && bytes_basic_listado>0) {
+        //printf("caracter [%c] x %d y %d\n",caracter,x,y);
+        caracter=*puntero_basic_listado;
+        puntero_basic_listado++;
+        bytes_basic_listado--;
+
+        if (caracter==13) {
+            //archivos ms-dos, windows. salto linea igual
+            y++;
+            x=0;
+        }
+
+        else if (caracter==10) {
+            //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
+            y++;
+            x=0;
+        }
+        else {
+
+            util_convert_p_p81_basic_to_scr_putchar(caracter,x,y,buffer_pantalla);
+
+            x++;
+
+            if (x==32) {
+                    x=0;
+                    y++;
+            }
+
+        }
+
+    }
+
+    //Grabar pantalla
+    util_save_file(buffer_pantalla,6912,archivo_destino);
+
+    free(buffer_pantalla);
+    free(buffer_lectura);
+
+    //free(basic_listing_txt);
+
+
+    return 0;
+
 }
 
 
@@ -24662,6 +24775,20 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	}
 
+	//Si es .txt
+    //hacemos preview con pantalla del texto
+	else if (!util_compare_file_extension(nombre,"txt")) {
+		debug_printf(VERBOSE_DEBUG,"File is a text file");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+            util_convert_txt_to_scr(nombre,tmpfile_scr);
+		}
+
+	}
+
 	//Si es O
 	else if (!util_compare_file_extension(nombre,"o") ) {
 		debug_printf(VERBOSE_DEBUG,"File is a O snapshot");
@@ -24732,6 +24859,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"baszx81") ||
         !util_compare_file_extension(nombre,"bas") ||
         !util_compare_file_extension(nombre,"o") ||
+        !util_compare_file_extension(nombre,"txt") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912 ||
         util_preview_file_is_ql_screen(file_size)
