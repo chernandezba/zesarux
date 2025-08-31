@@ -12309,7 +12309,7 @@ void menu_ext_desk_settings_switch_button(MENU_ITEM_PARAMETERS)
 
 void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
 {
-    char *filtros[16];
+    char *filtros[17];
 
     filtros[0]="scr";
     filtros[1]="tap";
@@ -12323,10 +12323,11 @@ void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
     filtros[9]="sp";
     filtros[10]="z80";
     filtros[11]="p";
-    filtros[12]="mdr";
-    filtros[13]="rmd";
-    filtros[14]="rzx";
-    filtros[15]=0;
+    filtros[12]="81";
+    filtros[13]="mdr";
+    filtros[14]="rmd";
+    filtros[15]="rzx";
+    filtros[16]=0;
 
 
     //guardamos directorio actual

@@ -200,6 +200,8 @@ ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
 En general, considerando audio, .raw seria formato en crudo, con cualquier samplerate. Y para todos los sitios considero 8 bit unsigned
 Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero que no tiene que ver con el sonido
 
+-Si en convertir de zx81 el archivo input no se reconoce extensión, genera un error pero no se ve hasta abrir alguna ventana
+
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
 
@@ -211,10 +213,10 @@ ok *preview de archivos .81? que formato era? en extras hires hay
 *Preview de .baszx80, .baszx81. Estos salen de expandir y no tienen offset a primera línea. ojo porque la rutina de convertir le suma esos offset...
 *Preview de tap quizá mostrar pantalla listado basic (si hay basic) cuando no hay pantalla
 -Agregar funcion convertir que haga eso mismo en file utilities
--Poder cargar (real tape) .81
--Poder expandir .81
--Otras funciones de los .81
--En teoria son los mismos que .P , solo que con otra extension
+ok-Poder cargar (real tape) .81
+ok-Poder expandir .81
+ok-Otras funciones de los .81
+-En teoria son casi los mismos que .P , solo que con otra extension
 
 -Captura a disco
 *entrada en changelog
@@ -224,3 +226,9 @@ ok *RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31
 *Permitir Signed al grabar raw?
 *Resample a menos frecuencia tendría que hacer valor medio con los anteriores?
 
+
+-Crear link en el desktop desde file utils
+En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese
+En config se guarda número de icono? O solo se agrega? Eso permite que al cargar vengan si huecos entre medio
+
+-Tooltip de real tape parece que indique solo archivos de audio

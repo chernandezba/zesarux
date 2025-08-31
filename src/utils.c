@@ -11415,7 +11415,7 @@ int convert_any_to_wav(char *origen, char *destino)
 	else if (!util_compare_file_extension(origen,"tzx")) result_first_convert=convert_tzx_to_rwa_tmpdir(origen,rwa_temp_file);
 	else if (!util_compare_file_extension(origen,"smp")) result_first_convert=convert_smp_to_rwa_tmpdir(origen,rwa_temp_file);
 	else if (!util_compare_file_extension(origen,"o")) result_first_convert=convert_o_to_rwa_tmpdir(origen,rwa_temp_file);
-	else if (!util_compare_file_extension(origen,"p") || !util_compare_file_extension(origen,"p81")) result_first_convert=convert_p_to_rwa_tmpdir(origen,rwa_temp_file);
+	else if (!util_compare_file_extension(origen,"p") || !util_compare_file_extension(origen,"81") || !util_compare_file_extension(origen,"p81")) result_first_convert=convert_p_to_rwa_tmpdir(origen,rwa_temp_file);
         else if (!util_compare_file_extension(origen,"pzx")) result_first_convert=convert_pzx_to_rwa_tmpdir(origen,rwa_temp_file);
 	else return 1;
 
@@ -18962,7 +18962,7 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
 	}
 
 	//Si es P/P81
-	else if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"p81")) {
+	else if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"81") || !util_compare_file_extension(filename,"p81")) {
 		util_convert_p_to_scr(filename,archivo_destino,NULL);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
         return 0;
@@ -19513,7 +19513,7 @@ void util_convert_p_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *panta
         }
 }
 
-//Convertir .P y .P81 a pantalla SCR de Spectrum
+//Convertir .P y .81 y .P81 a pantalla SCR de Spectrum
 //pantalla_vacia puntero a variable, se pondra la variable a 1 si la pantalla esta vacia. Puntero a NULL si no queremos usar esto
 int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_vacia)
 {
@@ -20195,7 +20195,7 @@ int util_extract_p(char *filename,char *tempdir)
 
 
 	//tapefile
-	if (util_compare_file_extension(filename,"p")!=0 && util_compare_file_extension(filename,"p81")!=0) {
+	if (util_compare_file_extension(filename,"p")!=0 && util_compare_file_extension(filename,"81")!=0 && util_compare_file_extension(filename,"p81")!=0) {
 		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
 		return 1;
 	}

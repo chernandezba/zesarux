@@ -4336,7 +4336,7 @@ int menu_tape_browser_show(char *filename,int indice_bloque_actual)
 
 
     //ZX80 O, ZX81 P
-    if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"p81")) {
+    if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"81") || !util_compare_file_extension(filename,"p81")) {
         menu_file_p_browser_show(filename);
         return -1;
     }
@@ -5956,7 +5956,7 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         //z88 en caso que la deteccion automatica (que se hace aqui mas abajo) falle
         else if (!util_compare_file_extension(file_name,"basz88")) menu_file_basic_browser_show(file_name);
 
-        else if (!util_compare_file_extension(file_name,"p") || !util_compare_file_extension(file_name,"p81")) menu_file_p_browser_show(file_name);
+        else if (!util_compare_file_extension(file_name,"p") || !util_compare_file_extension(file_name,"81") || !util_compare_file_extension(file_name,"p81")) menu_file_p_browser_show(file_name);
 
         else if (!util_compare_file_extension(file_name,"o")) menu_file_o_browser_show(file_name);
 

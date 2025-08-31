@@ -2639,7 +2639,7 @@ void realtape_insert(void)
     }
 
 
-    else if (!util_compare_file_extension(realtape_name,"p") || !util_compare_file_extension(realtape_name,"p81")) {
+    else if (!util_compare_file_extension(realtape_name,"p") || !util_compare_file_extension(realtape_name,"81") || !util_compare_file_extension(realtape_name,"p81")) {
                 debug_printf (VERBOSE_INFO,"Detected P/P81 file");
                 realtape_tipo=4;
                 if (convert_p_to_rwa_tmpdir(realtape_name,realtape_name_rwa)) {

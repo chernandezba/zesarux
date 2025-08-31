@@ -747,6 +747,8 @@ void new_load_zx80_o_snapshot_in_mem(char *archivo)
 
 
 //Rutina para cargar archivo snap zx81 en memoria
+//Admite .P, .P81 y .81
+//Nota: Los archivos .81 son como los .P pero con bytes añadidos al final, que no estoy seguro para qué se usan
 void new_load_zx81_p_snapshot_in_mem(char *archivo)
 {
 

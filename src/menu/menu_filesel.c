@@ -2116,7 +2116,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                 }
         }
 
-        else if (!util_compare_file_extension(archivo,"p") ) {
+        else if (!util_compare_file_extension(archivo,"p") || !util_compare_file_extension(archivo,"81")) {
                 char *opciones[]={
                         "P to P81",
                         "P to RWA",
@@ -3197,7 +3197,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","p81","o","mdv","scl","ddh","mdr","rmd","rzx",
+        "flash","p","81","p81","o","mdv","scl","ddh","mdr","rmd","rzx",
         NULL
     };
 
@@ -3293,7 +3293,7 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
                 return util_extract_z88_card(archivo,tmpdir);
         }
 
-        else if (!util_compare_file_extension(archivo,"p") || !util_compare_file_extension(archivo,"p81")) {
+        else if (!util_compare_file_extension(archivo,"p") || !util_compare_file_extension(archivo,"81") || !util_compare_file_extension(archivo,"p81")) {
                 debug_printf (VERBOSE_DEBUG,"Is a P file");
         	return util_extract_p(archivo,tmpdir);
         }
