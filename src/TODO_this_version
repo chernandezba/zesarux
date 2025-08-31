@@ -213,10 +213,6 @@ ok *preview de archivos .81? que formato era? en extras hires hay
 *Preview de .baszx80, .baszx81. Estos salen de expandir y no tienen offset a primera línea. ojo porque la rutina de convertir le suma esos offset...
 *Preview de tap quizá mostrar pantalla listado basic (si hay basic) cuando no hay pantalla
 -Agregar funcion convertir que haga eso mismo en file utilities
-ok-Poder cargar (real tape) .81
-ok-Poder expandir .81
-ok-Otras funciones de los .81
--En teoria son casi los mismos que .P , solo que con otra extension
 
 -Captura a disco
 *entrada en changelog

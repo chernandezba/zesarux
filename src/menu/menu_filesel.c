@@ -1186,11 +1186,11 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 
         //                         01234  567890  12345  678901  2345678901
         sprintf(buffer_line_actions_short,"%sM~^Kdr ~^Inf",
-                (es_directorio ? "" : "~^View ~^Trunc C~^Onv ~^Filemem ")
+                (es_directorio ? "" : "~^View ~^Trunc C~^Onv ~^Filemem ~^Lnk ")
         );
 
         sprintf(buffer_line_actions_long,"%sMa~^Kedir ~^Info",
-                (es_directorio ? "" : "~^View ~^Truncate C~^Onvert ~^Filemem ")
+                (es_directorio ? "" : "~^View ~^Truncate C~^Onvert ~^Filemem ~^Link ")
         );
 
         menu_get_legend_short_long(buffer_linea,ancho_visible,buffer_line_actions_short,buffer_line_actions_long);
@@ -6645,7 +6645,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 						//Comun para acciones que usan archivo seleccionado
 						if (tecla=='V' || tecla=='T' || tecla=='E' || tecla=='M' || tecla=='N' || tecla=='C'
-                            || tecla=='P' || tecla=='F' || tecla=='O' || tecla=='I' || tecla=='U' || tecla=='S') {
+                            || tecla=='P' || tecla=='F' || tecla=='O' || tecla=='I' || tecla=='U' || tecla=='S' || tecla=='L') {
 
 
 						    //releer con speech
@@ -6762,6 +6762,13 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 									//Filemem
 									if (tecla=='F') {
 										file_utils_file_mem_load(file_utils_file_selected);
+									}
+
+									//Link to ZX Desktop
+									if (tecla=='L') {
+                                        //Creamos enlace directo en escritorio
+                                        zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,file_utils_file_selected);
+                                        menu_generic_message_splash("Create link","Ok created link on ZX Desktop");
 									}
 
 									//Convert

@@ -10,9 +10,11 @@ Added conversion of ZX81 files P to P81, and P81 to P
 Allow to save ZX80/81 screen to .scr file
 Allow to LOAD "name" of a ZX81 .P81 file
 Added .O (ZX80) file previews: show basic listing
-Added .P/.P81 (ZX81) file previews when no screen stored in file: show basic listing
+Added .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic listing
+Added some file actions for .81 files
 Added real joystick support for SDL2
 Added direct functions to increase/decrease/silence Audio Volume
+Allow to create link to file on ZX Desktop, from File utilities
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
 Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)
