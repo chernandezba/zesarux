@@ -1105,6 +1105,18 @@ int util_compare_file_extension(char *filename,char *extension_compare)
 }
 
 
+//Compara el nombre indicado con la del archivo, sin distinguir mayusculas
+//Devuelve valor de strcasecmp -> 0 igual, otros->diferente
+//Sin tener en cuenta la carpeta
+int util_compare_file_name(char *filename,char *file_compare)
+{
+	char file_sin_dir[NAME_MAX];
+
+	util_get_file_no_directory(filename,file_sin_dir);
+
+	return strcasecmp(file_sin_dir,file_compare);
+}
+
 
 //Retorna el directorio de una ruta completa, ignorando barras repetidas del final
 void util_get_dir(char *ruta,char *directorio)
@@ -24683,6 +24695,8 @@ int util_preview_file_is_ql_screen(int file_size)
 void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_scr,int file_size)
 {
 
+    //printf("util_extract_preview_file_simple. nombre: [%s]\n",nombre);
+
 	if (!util_compare_file_extension(nombre,"scr")
         || file_size==6912
         || util_preview_file_is_ql_screen(file_size)
@@ -24777,7 +24791,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	//Si es .txt o README
     //hacemos preview con pantalla del texto
-	else if (!util_compare_file_extension(nombre,"txt") || !strcasecmp(nombre,"README")) {
+	else if (!util_compare_file_extension(nombre,"txt") || !util_compare_file_name(nombre,"README")) {
 		debug_printf(VERBOSE_DEBUG,"File is a text file");
 
 		menu_filesel_mkdir(tmpdir);
@@ -24847,6 +24861,8 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
     }
 
 
+//printf("util_get_extract_preview_type_file. name: [%s]\n",nombre);
+
     if (
         !util_compare_file_extension(nombre,"scr")  ||
         !util_compare_file_extension(nombre,"sna") ||
@@ -24860,7 +24876,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"bas") ||
         !util_compare_file_extension(nombre,"o") ||
         !util_compare_file_extension(nombre,"txt") ||
-        !strcasecmp(nombre,"README") ||
+        !util_compare_file_name(nombre,"README") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912 ||
         util_preview_file_is_ql_screen(file_size)

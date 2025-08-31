@@ -45,6 +45,7 @@ extern void util_get_complete_path(char *dir,char *name,char *fullpath);
 
 
 extern int util_compare_file_extension(char *filename,char *extension_compare);
+extern int util_compare_file_name(char *filename,char *file_compare);
 
 extern void util_get_dir(char *ruta,char *directorio);
 
