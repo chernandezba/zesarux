@@ -11,6 +11,7 @@ Allow to save ZX80/81 screen to .scr file
 Allow to LOAD "name" of a ZX81 .P81 file
 Added .O (ZX80) file previews: show basic listing
 Added .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic listing
+Added .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81) basic listing preview
 Added some file actions for .81 files
 Added real joystick support for SDL2
 Added direct functions to increase/decrease/silence Audio Volume

@@ -19881,7 +19881,7 @@ void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_b
 }
 
 
-//Convertir .O , .P y .P81, listado basic, a pantalla SCR de Spectrum
+//Convertir .O , .P y .P81, .bas de spectrum . listado basic, a pantalla SCR de Spectrum
 int util_convert_o_p_p81_basic_to_scr(char *filename,char *archivo_destino)
 {
 
@@ -19959,6 +19959,12 @@ int util_convert_o_p_p81_basic_to_scr(char *filename,char *archivo_destino)
     int datos_directos=0;
 
     if (!util_compare_file_extension(filename,"baszx80") || !util_compare_file_extension(filename,"baszx81")) {
+        datos_directos=1;
+    }
+
+    if (!util_compare_file_extension(filename,"bas")) {
+        //zx spectrum
+        tipo=0;
         datos_directos=1;
     }
 
@@ -24644,8 +24650,8 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	//Si es .baszx80 o .baszx81
     //hacemos preview con pantalla de listado de basic
-	else if (!util_compare_file_extension(nombre,"baszx80") || !util_compare_file_extension(nombre,"baszx81") ) {
-		debug_printf(VERBOSE_DEBUG,"File is a zx80/zx81 basic listing");
+	else if (!util_compare_file_extension(nombre,"baszx80") || !util_compare_file_extension(nombre,"baszx81") || !util_compare_file_extension(nombre,"bas")) {
+		debug_printf(VERBOSE_DEBUG,"File is a zx80/zx81/spectrum basic listing");
 
 		menu_filesel_mkdir(tmpdir);
 
@@ -24724,6 +24730,7 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"p81") ||
         !util_compare_file_extension(nombre,"baszx80") ||
         !util_compare_file_extension(nombre,"baszx81") ||
+        !util_compare_file_extension(nombre,"bas") ||
         !util_compare_file_extension(nombre,"o") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912 ||

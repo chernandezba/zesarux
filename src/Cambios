@@ -11,6 +11,7 @@ Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir LOAD "nombre" de un archivo .P81 de ZX81
 Agregado previews de archivos .O (ZX80): mostrar listado basic
 Agregado previews de archivos .P/.81/.P81 (ZX81) cuando no tienen pantalla grabada en el archivo: mostrar listado basic
+Agregado previews de basic de archivos .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81)
 Agregada algunas acciones para archivos .81
 Agregado soporte de joystick real para SDL2
 Agregadas funciones directas para aumentar/reducir/silenciar el Volumen del Sonido
