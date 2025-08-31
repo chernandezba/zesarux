@@ -19740,7 +19740,9 @@ z80_byte util_convert_memory_to_txt_basic_listing_peek(z80_int dir)
 //3: ZX88
 //OJO: esta funcion solo se puede llamar 1 vez simultaneamente, al usar una funcion auxiliar util_convert_memory_to_txt_basic_listing_peek,
 //con variables estáticas
-char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int tipo)
+//Variable datos_directos indica por ejemplo para .baszx80 y .baszx81 que no hay datos al principio con variables de sistema,
+//o sea el primer byte ya es de la primera linea de basic
+char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int tipo,int datos_directos)
 {
 
     util_convert_memory_to_txt_basic_listing_last_size=tamanyo;
@@ -19817,7 +19819,7 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
         inicio_tokens=163;
 	}
 
-
+    if (datos_directos) dir_inicio_linea=0;
 
 
 	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,inicio_tokens,
@@ -19922,7 +19924,7 @@ int util_convert_o_p_p81_basic_to_scr(char *filename,char *archivo_destino)
         }
     }
 
-    if (!util_compare_file_extension(filename,"o")) {
+    if (!util_compare_file_extension(filename,"o") || !util_compare_file_extension(filename,"baszx80")) {
         //zx80
         tipo=1;
     }
@@ -19954,9 +19956,14 @@ int util_convert_o_p_p81_basic_to_scr(char *filename,char *archivo_destino)
         buffer_pantalla[i]=56+64;
     }
 
+    int datos_directos=0;
+
+    if (!util_compare_file_extension(filename,"baszx80") || !util_compare_file_extension(filename,"baszx81")) {
+        datos_directos=1;
+    }
 
     //Convertimos basic a texto
-    char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,tipo);
+    char *basic_listing_txt=util_convert_memory_to_txt_basic_listing(buffer_lectura,bytes_to_load,tipo,datos_directos);
 
     if (basic_listing_txt==NULL) return 1;
 
@@ -20233,8 +20240,13 @@ int util_extract_p(char *filename,char *tempdir)
 	}
         */
 
+    //nombre_programa_final sera prefijo_programa + '-' + nombre_programa
+    char nombre_programa_final[256];
 
     char nombre_programa[256];
+    char prefijo_programa[256];
+
+    util_get_file_no_directory(filename,prefijo_programa);
     strcpy(nombre_programa,"basic-data");
 
     //Saltar el nombre del principio si es un .p81, guardando en un buffer
@@ -20254,6 +20266,9 @@ int util_extract_p(char *filename,char *tempdir)
         }
         nombre_programa[i]=0;
     }
+
+    sprintf(nombre_programa_final,"%s-%s",prefijo_programa,nombre_programa);
+
 
 	taperead=malloc(total_mem);
 	if (taperead==NULL) cpu_panic("Error allocating memory for expander");
@@ -20276,7 +20291,7 @@ int util_extract_p(char *filename,char *tempdir)
 
 
         char buffer_temp_file[PATH_MAX];
-        sprintf (buffer_temp_file,"%s/%s.baszx81",tempdir,nombre_programa);
+        sprintf (buffer_temp_file,"%s/%s.baszx81",tempdir,nombre_programa_final);
 
         int offset=116;
         //116 = 16509-0x4009
@@ -20355,10 +20370,11 @@ int util_extract_o(char *filename,char *tempdir)
         zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
         //fclose(ptr_tapebrowser);
 
-
+        char nombre_origen[NAME_MAX];
+        util_get_file_no_directory(filename,nombre_origen);
 
         char buffer_temp_file[PATH_MAX];
-        sprintf (buffer_temp_file,"%s/basic-data.baszx80",tempdir);
+        sprintf (buffer_temp_file,"%s/%s-basic-data.baszx80",tempdir,nombre_origen);
 
         int offset=40;
         //40 = 16424-16384
@@ -24626,6 +24642,20 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	}
 
+	//Si es .baszx80 o .baszx81
+    //hacemos preview con pantalla de listado de basic
+	else if (!util_compare_file_extension(nombre,"baszx80") || !util_compare_file_extension(nombre,"baszx81") ) {
+		debug_printf(VERBOSE_DEBUG,"File is a zx80/zx81 basic listing");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+            util_convert_o_p_p81_basic_to_scr(nombre,tmpfile_scr);
+		}
+
+	}
+
 	//Si es O
 	else if (!util_compare_file_extension(nombre,"o") ) {
 		debug_printf(VERBOSE_DEBUG,"File is a O snapshot");
@@ -24692,6 +24722,8 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"p") ||
         !util_compare_file_extension(nombre,"81") ||
         !util_compare_file_extension(nombre,"p81") ||
+        !util_compare_file_extension(nombre,"baszx80") ||
+        !util_compare_file_extension(nombre,"baszx81") ||
         !util_compare_file_extension(nombre,"o") ||
         !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912 ||
