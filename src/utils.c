@@ -19882,7 +19882,7 @@ void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_b
 
 
 //Convertir .O , .P y .P81, .bas de spectrum . listado basic, a pantalla SCR de Spectrum
-int util_convert_o_p_p81_basic_to_scr(char *filename,char *archivo_destino)
+int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_destino)
 {
 
 
@@ -24642,7 +24642,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
                 //borrar preview vacio
                 //util_delete(tmpfile_scr);
 
-                util_convert_o_p_p81_basic_to_scr(nombre,tmpfile_scr);
+                util_convert_o_p_p81_spec_basic_to_scr(nombre,tmpfile_scr);
             }
 		}
 
@@ -24657,7 +24657,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 		//Si no existe preview
 		if (!si_existe_archivo(tmpfile_scr)) {
-            util_convert_o_p_p81_basic_to_scr(nombre,tmpfile_scr);
+            util_convert_o_p_p81_spec_basic_to_scr(nombre,tmpfile_scr);
 		}
 
 	}
@@ -24676,7 +24676,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
             //Los archivos O de ZX80 no contienen pantalla, a diferencia de los P de ZX81
             //por tanto, sacar el listado basic y mostrarlo como pantalla
 
-            util_convert_o_p_p81_basic_to_scr(nombre,tmpfile_scr);
+            util_convert_o_p_p81_spec_basic_to_scr(nombre,tmpfile_scr);
 
 		}
 
