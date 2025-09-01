@@ -13,6 +13,7 @@ Added .O (ZX80) file previews: show basic listing
 Added .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic listing
 Added .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81) basic listing preview
 Added .txt file previews
+Added .tap/.tzx file preview when tape does not have screen; it gets the basic listing
 Added some file actions for .81 files
 Added real joystick support for SDL2
 Added direct functions to increase/decrease/silence Audio Volume
