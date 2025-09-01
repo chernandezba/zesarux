@@ -19956,13 +19956,13 @@ int util_convert_txt_to_scr(char *filename,char *archivo_destino)
     z80_byte caracter;
 
     char *puntero_basic_listado=(char *) buffer_lectura;
-    int bytes_basic_listado=strlen((char *)buffer_lectura);
+    int total_caracteres=strlen((char *)buffer_lectura);
 
-    while (y<24 && bytes_basic_listado>0) {
-        printf("caracter [%c] [%02X] x %d y %d bytes_basic_listado: %d\n",caracter,caracter,x,y,bytes_basic_listado);
+    while (y<24 && total_caracteres>0) {
+        //printf("caracter [%c] [%02X] x %d y %d total_caracteres: %d\n",caracter,caracter,x,y,total_caracteres);
         caracter=*puntero_basic_listado;
         puntero_basic_listado++;
-        bytes_basic_listado--;
+        total_caracteres--;
 
         if (caracter==13) {
             //archivos ms-dos, windows. salto linea igual
