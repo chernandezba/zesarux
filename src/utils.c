@@ -20125,7 +20125,7 @@ int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_destino)
 
     long long int bytes_to_load=get_file_size(filename);
 
-    if (bytes_to_load<20) return 1; //Tamaño muy pequeño
+    if (bytes_to_load<1) return 1; //Tamaño muy pequeño
 
     buffer_lectura=malloc(bytes_to_load);
 
