@@ -19984,8 +19984,6 @@ void util_convert_txt_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pan
 int util_convert_txt_to_scr(char *filename,char *archivo_destino)
 {
 
-
-    //snapshot .P y .P81 a SCR
     z80_byte *buffer_lectura;
 
     long long int bytes_to_load=get_file_size(filename);
@@ -20036,7 +20034,7 @@ int util_convert_txt_to_scr(char *filename,char *archivo_destino)
     }
 
     for (;i<6912;i++) {
-        buffer_pantalla[i]=56+64;
+        buffer_pantalla[i]=56; //papel 7 tinta 0
     }
 
 
@@ -20209,16 +20207,7 @@ int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_destino)
 
     if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
 
-    //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
-    int i;
 
-    for (i=0;i<6144;i++) {
-        buffer_pantalla[i]=0;
-    }
-
-    for (;i<6912;i++) {
-        buffer_pantalla[i]=56+64;
-    }
 
     int datos_directos=0;
 
@@ -20237,6 +20226,19 @@ int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_destino)
 
     if (basic_listing_txt==NULL) return 1;
 
+
+    //Pixeles a 0. Atributos a papel 7, tinta 0. brillo 1 en caso de zx80 y zx81
+    int i;
+    z80_byte atributo=56;
+    if (tipo==1 || tipo==2) atributo |=64;
+
+    for (i=0;i<6144;i++) {
+        buffer_pantalla[i]=0;
+    }
+
+    for (;i<6912;i++) {
+        buffer_pantalla[i]=atributo;
+    }
 
     //printf("Listado basic: cargado (%lld) en texto: %d\n",bytes_to_load,strlen(basic_listing_txt));
 
