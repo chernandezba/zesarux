@@ -210,7 +210,7 @@ ok *quitar todo lo de video memory que no se usa
 ok para .O *soportar zx80
 ok *preview de archivos .81? que formato era? en extras hires hay
 *probar con archivos random .p, .p81 etc y ver que no peta
-*Preview de .baszx80, .baszx81. Estos salen de expandir y no tienen offset a primera línea. ojo porque la rutina de convertir le suma esos offset...
+ok *Preview de .baszx80, .baszx81. Estos salen de expandir y no tienen offset a primera línea. ojo porque la rutina de convertir le suma esos offset...
 *Preview de tap quizá mostrar pantalla listado basic (si hay basic) cuando no hay pantalla
 -Agregar funcion convertir que haga eso mismo en file utilities
 
@@ -226,4 +226,4 @@ ok *RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31
 En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese
 En config se guarda número de icono? O solo se agrega? Eso permite que al cargar vengan si huecos entre medio
 
--Tooltip de real tape parece que indique solo archivos de audio
+ok-Tooltip de real tape parece que indique solo archivos de audio
