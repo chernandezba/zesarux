@@ -19843,8 +19843,7 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
 
 }
 
-
-void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pantalla_destino)
+void util_convert_txt_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pantalla_destino)
 {
 
     //Validar origen
@@ -19857,22 +19856,18 @@ void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_b
     z80_int direccion=screen_addr_table[(y*8*32)+x];
 
 
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
 
-    if (caracter>127 || caracter<32) caracter='?';
+    int offset_caracter=(caracter-32)*8;
 
     int scanline;
 
-    int offset_caracter=(caracter-32)*8;
 
 
     for (scanline=0;scanline<8;scanline++) {
         //Validar origen
-        if (offset_caracter>=768) {
-            //printf("offset caracter %d fuera de rango\n",caracter);
-            return;
-        }
 
-        z80_byte byte_leido=char_set_spectrum[offset_caracter++];
+        z80_byte byte_leido=char_set[offset_caracter++];
 
         //Validar destino
         if (direccion>=6912) {
@@ -19891,6 +19886,7 @@ void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_b
 
     }
 }
+
 
 
 //Convertir .txt a pantalla SCR de Spectrum
@@ -19979,7 +19975,7 @@ int util_convert_txt_to_scr(char *filename,char *archivo_destino)
         }
         else {
 
-            util_convert_p_p81_basic_to_scr_putchar(caracter,x,y,buffer_pantalla);
+            util_convert_txt_to_scr_putchar(caracter,x,y,buffer_pantalla);
 
             x++;
 
@@ -20004,6 +20000,56 @@ int util_convert_txt_to_scr(char *filename,char *archivo_destino)
     return 0;
 
 }
+
+
+void util_convert_p_p81_basic_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pantalla_destino)
+{
+
+    //Validar origen
+    if (y<0 || x<0 || y>23 || x>32) {
+        //printf ("x o y fuera de rango\n");
+        return;
+    }
+
+
+    z80_int direccion=screen_addr_table[(y*8*32)+x];
+
+
+
+    if (caracter>127 || caracter<32) caracter='?';
+
+    int scanline;
+
+    int offset_caracter=(caracter-32)*8;
+
+
+    for (scanline=0;scanline<8;scanline++) {
+        //Validar origen
+        if (offset_caracter>=768) {
+            //printf("offset caracter %d fuera de rango\n",caracter);
+            return;
+        }
+
+        z80_byte byte_leido=char_set_spectrum[offset_caracter++];
+
+        //Validar destino
+        if (direccion>=6912) {
+            //printf("offset destino %d fuera de rango\n",direccion);
+            return;
+        }
+
+
+        //printf ("destino %d byte %d\n",direccion,byte_leido);
+
+        pantalla_destino[direccion]=byte_leido;
+
+
+        direccion +=256;
+
+
+    }
+}
+
 
 
 //Convertir .O , .P y .P81, .bas de spectrum . listado basic, a pantalla SCR de Spectrum
