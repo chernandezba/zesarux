@@ -18340,7 +18340,9 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
 
 //Rutina para extraer PZX pero tambien para convertir a TAP
 //Si tapfile !=NULL, lo convierte a tap, en vez de expandir
-int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
+//Indica si quiere generar preview de scr en casos que no hay pantalla, sacarlo del basic (esto habitualmente para previews,
+//pero no para tecla expand Espacio)
+int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int generate_preview_scr)
 {
 
 
@@ -18433,6 +18435,9 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
     int copia_puntero;
 
     int remaining_file_size=total_file_size;
+
+    int archivo_pzx_tiene_scr=0;
+    char primer_bloque_basic[PATH_MAX]="";
 
 	while(remaining_file_size>0 && !salir) {
 
@@ -18615,6 +18620,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                         extension_agregar[0]=0; //Por defecto
 
                         int era_pantalla=0;
+                        int era_basic=0;
 
                         //Si bloque de flag 255, ver si corresponde al bloque anterior de flag 0
                         if (flag==255 && previo_flag==0 && previo_longitud_segun_cabecera==longitud_final) {
@@ -18622,6 +18628,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                             if (previo_tipo_bloque==0) {
                                 //Basic
                                 strcpy(extension_agregar,".bas");
+                                era_basic=1;
                             }
 
 
@@ -18634,6 +18641,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                             strcpy(extension_agregar,".scr");
                             //y ademas decimos que ese es el achivo de pantalla usado en los previews
                             era_pantalla=1;
+                            archivo_pzx_tiene_scr=1;
                         }
 
 
@@ -18648,6 +18656,12 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
 
                                 //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
                                 util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
+                            }
+
+                            if (era_basic) {
+                                if (primer_bloque_basic[0]==0) {
+                                    strcpy (primer_bloque_basic,buffer_temp_file);
+                                }
                             }
 
                         }
@@ -18727,6 +18741,22 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
         }
     }
 
+    if (!archivo_pzx_tiene_scr && generate_preview_scr) {
+        //No tiene pantalla scr
+        //Agregamos preview de basic, si es que tiene basic
+        if (primer_bloque_basic[0]) {
+            //Generar pantalla de ese basic
+            char preview_scr_de_basic[PATH_MAX];
+            sprintf(preview_scr_de_basic,"%s.scr",primer_bloque_basic);
+            util_convert_o_p_p81_spec_basic_to_scr(primer_bloque_basic,preview_scr_de_basic);
+
+            char buff_preview_scr[PATH_MAX];
+            sprintf(buff_preview_scr,"%s/%s",tempdirectory,MENU_SCR_INFO_FILE_NAME);
+
+            //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
+            util_save_file((z80_byte *)preview_scr_de_basic,strlen(preview_scr_de_basic)+1,buff_preview_scr);
+        }
+    }
 
     free(taperead);
 
@@ -18976,7 +19006,7 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
         retorno=util_extract_tzx(filename,tmpdir,NULL,1);
     }
     else if (!util_compare_file_extension(filename,"pzx") ) {
-            retorno=util_extract_pzx(filename,tmpdir,NULL);
+            retorno=util_extract_pzx(filename,tmpdir,NULL,1);
     }
     else if (!util_compare_file_extension(filename,"trd") ) {
             retorno=util_extract_trd(filename,tmpdir);
@@ -24750,7 +24780,7 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
 
 			else if (!util_compare_file_extension(nombre,"pzx") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a pzx file");
-					retorno=util_extract_pzx(nombre,tmpdir,NULL);
+					retorno=util_extract_pzx(nombre,tmpdir,NULL,1);
 			}
 
 			else if (!util_compare_file_extension(nombre,"trd") ) {

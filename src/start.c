@@ -7025,7 +7025,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Converting from PZX file %s to TAP file %s\n",origen,destino);
 
-                if (util_extract_pzx(origen,NULL,destino)) {
+                if (util_extract_pzx(origen,NULL,destino,0)) {
                     printf("Error executing conversion\n");
                     exit(1);
                 }

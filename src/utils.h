@@ -900,7 +900,7 @@ extern int util_extract_o(char *filename,char *tempdir);
 
 extern int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int generate_preview_scr);
 
-extern int util_extract_pzx(char *filename,char *tempdir,char *tapfile);
+extern int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int generate_preview_scr);
 
 extern int util_extract_trd(char *filename,char *tempdir);
 

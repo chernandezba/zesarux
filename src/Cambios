@@ -60,7 +60,7 @@ Mejorado Selector de Archivos:
 - Agregado previews de archivos .O (ZX80), .P/.81/.P81 (ZX81) cuando no tienen pantalla grabada en el archivo: mostrar listado basic
 - Agregado previews de basic de archivos .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81)
 - Agregado previews de archivos .txt
-- Agregado previews de archivos .tap/.tzx cuando no tiene pantalla; en ese caso obtiene el listado del basic
+- Agregado previews de archivos .tap/.tzx/.pzx cuando no tiene pantalla; en ese caso obtiene el listado del basic
 - Agregada conversión de archivos ZX81 P a P81, y P81 a P
 - Agregada algunas acciones para archivos .81 en Selector de Archivos
 - Permitir crear enlace a un archivo en el ZX Desktop, desde File utilities

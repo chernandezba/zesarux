@@ -2210,7 +2210,7 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
                 switch (opcion) {
                         case 0:
                                 sprintf(archivo_destino,"%s/%s.tap",directorio,archivo);
-								util_extract_pzx(fullpath,NULL,archivo_destino);
+								util_extract_pzx(fullpath,NULL,archivo_destino,0);
                         break;
 
                         case 1:
@@ -3268,7 +3268,7 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
 
         else if (!util_compare_file_extension(archivo,"pzx") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a pzx file");
-                return util_extract_pzx(archivo,tmpdir,NULL);
+                return util_extract_pzx(archivo,tmpdir,NULL,0);
         }
 
         else if (!util_compare_file_extension(archivo,"trd") ) {

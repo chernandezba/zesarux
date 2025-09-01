@@ -60,7 +60,7 @@ Improved File Selector:
 - Added .O (ZX80), .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic listing
 - Added .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81) basic listing preview
 - Added .txt file previews
-- Added .tap/.tzx file preview when tape does not have screen; it gets the basic listing
+- Added .tap/.tzx/.pzx file preview when tape does not have screen; it gets the basic listing
 - Added conversion of ZX81 files P to P81, and P81 to P
 - Added some file actions for .81 files on File Selector
 - Allow to create link to file on ZX Desktop, from File utilities
