@@ -20206,14 +20206,14 @@ int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_destino)
     if (basic_listing_txt==NULL) return 1;
 
 
-    //printf("Listado basic: (%lld) %s\n",bytes_to_load,basic_listing_txt);
+    //printf("Listado basic: cargado (%lld) en texto: %d\n",bytes_to_load,strlen(basic_listing_txt));
 
     int y=0;
     int x=0;
     z80_byte caracter;
 
     char *puntero_basic_listado=basic_listing_txt;
-    int bytes_basic_listado=bytes_to_load;
+    int bytes_basic_listado=strlen(basic_listing_txt);
 
     while (y<24 && bytes_basic_listado>0) {
 
