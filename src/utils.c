@@ -17924,7 +17924,6 @@ int util_extract_ddh(char *filename,char *tempdir)
 int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 {
 
-
 	//tapefile
 	if (
         util_compare_file_extension(filename,"tzx")!=0 &&
@@ -17942,7 +17941,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
 
 
-        FILE *ptr_tapebrowser;
+    FILE *ptr_tapebrowser;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -17972,8 +17971,8 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 	z80_byte *puntero_lectura;
 	puntero_lectura=taperead;
 
-        //Abrir fichero tapfile si conviene convertir
-        FILE *ptr_tapfile;
+    //Abrir fichero tapfile si conviene convertir
+    FILE *ptr_tapfile;
 
     //Soporte para FatFS
     FIL fil_tapfile;        /* File object */
@@ -17984,40 +17983,40 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
 
 
-        if (tapfile!=NULL) {
+    if (tapfile!=NULL) {
 
 
 
-                if (zvfs_fopen_write(tapfile,&in_fatfs_tapfile,&ptr_tapfile,&fil_tapfile)<0) {
-                    debug_printf (VERBOSE_ERR,"Can not open %s",tapfile);
-                    return 1;
-                }
-
-                /*
-                ptr_tapfile=fopen(tapfile,"wb");
-
-                if (!ptr_tapfile) {
-                                debug_printf (VERBOSE_ERR,"Can not open %s",tapfile);
-                                return 1;
-                }
-                */
+        if (zvfs_fopen_write(tapfile,&in_fatfs_tapfile,&ptr_tapfile,&fil_tapfile)<0) {
+            debug_printf (VERBOSE_ERR,"Can not open %s",tapfile);
+            return 1;
         }
 
+        /*
+        ptr_tapfile=fopen(tapfile,"wb");
 
-        int leidos;
+        if (!ptr_tapfile) {
+                        debug_printf (VERBOSE_ERR,"Can not open %s",tapfile);
+                        return 1;
+        }
+        */
+    }
 
-        leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
 
-        //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
+    int leidos;
+
+    leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
+
+    //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
 	if (leidos==0) {
-                debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
-                return 1;
-        }
+        debug_printf(VERBOSE_ERR,"Error reading tape");
+        free(taperead);
+        return 1;
+    }
 
-        zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
-        //fclose(ptr_tapebrowser);
+    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
+    //fclose(ptr_tapebrowser);
 
 	char buffer_texto[32*4]; //4 lineas mas que suficiente
 
@@ -18035,7 +18034,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
 	int salir=0;
 
-		z80_byte *copia_puntero;
+    z80_byte *copia_puntero;
 
     int archivo_tzx_tiene_scr=0;
     char primer_bloque_basic[PATH_MAX]="";
@@ -18048,260 +18047,259 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
 		switch (tzx_id) {
 
-		case 0x10:
-                case 0x11:
+		    case 0x10:
+            case 0x11:
 
-                //ID 10 - Standard Speed Data Block
-                //ID 11 - Turbo Speed Data Block
+            //ID 10 - Standard Speed Data Block
+            //ID 11 - Turbo Speed Data Block
 
                 if (tzx_id==0x11) {
-                        copia_puntero=puntero_lectura+16;
-                        //copia_puntero hay que dejarlo justo donde quedan 2 bytes de la longitud y luego el siguiente es el flag
-                        //realmente los de longitud no se leeran luego, el flag si. Esto es por compatibilidad con la gestion del bloque tipo 0x10
+                    copia_puntero=puntero_lectura+16;
+                    //copia_puntero hay que dejarlo justo donde quedan 2 bytes de la longitud y luego el siguiente es el flag
+                    //realmente los de longitud no se leeran luego, el flag si. Esto es por compatibilidad con la gestion del bloque tipo 0x10
 
-                        longitud_bloque=puntero_lectura[15]+256*puntero_lectura[16]+65536*puntero_lectura[17];
-                        puntero_lectura+=18;
+                    longitud_bloque=puntero_lectura[15]+256*puntero_lectura[16]+65536*puntero_lectura[17];
+                    puntero_lectura+=18;
 
-                        //bloque simulado para poder obtener nombre del bloque
-                        //39 bytes: 2 de longitud, 1 de flag, y 36 de maximo cabecera tipo sped
-                        z80_byte buffer_temp_cabecera[39];
+                    //bloque simulado para poder obtener nombre del bloque
+                    //39 bytes: 2 de longitud, 1 de flag, y 36 de maximo cabecera tipo sped
+                    z80_byte buffer_temp_cabecera[39];
 
-                        //2 primeros bytes de longitud
-                        buffer_temp_cabecera[0]=longitud_bloque % 0xFF;
-                        buffer_temp_cabecera[1]=(longitud_bloque % 0xFF00)>>8;
-                        util_memcpy_protect_origin(&buffer_temp_cabecera[2], puntero_lectura, 37, 0, 37);
+                    //2 primeros bytes de longitud
+                    buffer_temp_cabecera[0]=longitud_bloque % 0xFF;
+                    buffer_temp_cabecera[1]=(longitud_bloque % 0xFF00)>>8;
+                    util_memcpy_protect_origin(&buffer_temp_cabecera[2], puntero_lectura, 37, 0, 37);
 
-                        util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0);
+                    util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0);
 
                 }
 
                 else {
-		        puntero_lectura +=2;
-		        total_mem -=2;
-                        copia_puntero=puntero_lectura;
-                        longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,0);
+                    puntero_lectura +=2;
+                    total_mem -=2;
+                    copia_puntero=puntero_lectura;
+                    longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,0);
                 }
 
 
-		total_mem-=longitud_bloque;
-		puntero_lectura +=longitud_bloque;
-		//debug_printf (VERBOSE_DEBUG,"Tape browser. Block: %s",buffer_texto);
+                total_mem-=longitud_bloque;
+                puntero_lectura +=longitud_bloque;
+                //debug_printf (VERBOSE_DEBUG,"Tape browser. Block: %s",buffer_texto);
 
 
-     //printf ("nombre: %s c1: %d\n",buffer_nombre,buffer_nombre[0]);
+                //printf ("nombre: %s c1: %d\n",buffer_nombre,buffer_nombre[0]);
 
-		char buffer_temp_file[PATH_MAX];
-		int longitud_final;
+                char buffer_temp_file[PATH_MAX];
+                int longitud_final;
 
                 if (tzx_id==0x11) longitud_final=longitud_bloque-2;
 
                 else longitud_final=longitud_bloque-2-2; //Saltar los dos de cabecera, el de flag y el crc
 
-		z80_byte tipo_bloque=255;
+                z80_byte tipo_bloque=255;
 
-		//Si bloque de flag 0 y longitud 17 o longitud 34 (sped)
-		z80_byte flag=copia_puntero[2];
+                //Si bloque de flag 0 y longitud 17 o longitud 34 (sped)
+                z80_byte flag=copia_puntero[2];
 
-		//printf ("flag %d previo_flag %d previolong %d longitud_final %d\n",flag,previo_flag,previo_longitud_segun_cabecera,longitud_final);
+                //printf ("flag %d previo_flag %d previolong %d longitud_final %d\n",flag,previo_flag,previo_longitud_segun_cabecera,longitud_final);
 
-		int longitud_segun_cabecera=-1;
+                int longitud_segun_cabecera=-1;
 
-		if (flag==0 && (longitud_final==17 || longitud_final==34) ) {
-			if (tapfile==NULL) sprintf (buffer_temp_file,"%s/%02d-header-%s",tempdirectory,filenumber,buffer_texto);
+                if (flag==0 && (longitud_final==17 || longitud_final==34) ) {
+                    if (tapfile==NULL) sprintf (buffer_temp_file,"%s/%02d-header-%s",tempdirectory,filenumber,buffer_texto);
 
-			tipo_bloque=copia_puntero[3]; //0, program, 3 bytes etc
+                    tipo_bloque=copia_puntero[3]; //0, program, 3 bytes etc
 
-			//printf ("%s : tipo %d\n",buffer_temp_file,tipo_bloque);
+                    //printf ("%s : tipo %d\n",buffer_temp_file,tipo_bloque);
 
-			//Longitud segun cabecera
-			longitud_segun_cabecera=value_8_to_16(copia_puntero[15],copia_puntero[14]);
+                    //Longitud segun cabecera
+                    longitud_segun_cabecera=value_8_to_16(copia_puntero[15],copia_puntero[14]);
 
-		}
-		else {
-			char extension_agregar[10];
-			extension_agregar[0]=0; //Por defecto
+                }
+                else {
+                    char extension_agregar[10];
+                    extension_agregar[0]=0; //Por defecto
 
-                        int era_pantalla=0;
-                        int era_basic=0;
+                    int era_pantalla=0;
+                    int era_basic=0;
 
-			//Si bloque de flag 255, ver si corresponde al bloque anterior de flag 0
-			if (flag==255 && previo_flag==0 && previo_longitud_segun_cabecera==longitud_final) {
-				//Corresponde. Agregar extensiones bas o scr segun el caso
-				if (previo_tipo_bloque==0) {
-					//Basic
-					strcpy(extension_agregar,".bas");
-                    era_basic=1;
-				}
-
-
-			}
-
-            //Consideramos que es pantalla siempre que tenga longitud 6912,
-            //sin tener en cuenta que haya cabecera antes o no
-            if (longitud_final==6912) {
-                //archivo a expandir es pantalla scr
-                strcpy(extension_agregar,".scr");
-                //y ademas decimos que ese es el achivo de pantalla usado en los previews
-                era_pantalla=1;
-                archivo_tzx_tiene_scr=1;
-            }
-
-
-			if (tapfile==NULL) {
-                                sprintf (buffer_temp_file,"%s/%02d-data-%d%s",tempdirectory,filenumber,longitud_final,extension_agregar);
-
-                                if (era_pantalla) {
-                                        //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
-                                        //usado en los previews
-                                        char buff_preview_scr[PATH_MAX];
-                                        sprintf(buff_preview_scr,"%s/%s",tempdirectory,MENU_SCR_INFO_FILE_NAME);
-
-                                        //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
-                                        util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
-                                }
-
-                                if (era_basic) {
-                                    if (primer_bloque_basic[0]==0) {
-                                        strcpy (primer_bloque_basic,buffer_temp_file);
-                                    }
-                                }
+                    //Si bloque de flag 255, ver si corresponde al bloque anterior de flag 0
+                    if (flag==255 && previo_flag==0 && previo_longitud_segun_cabecera==longitud_final) {
+                        //Corresponde. Agregar extensiones bas o scr segun el caso
+                        if (previo_tipo_bloque==0) {
+                            //Basic
+                            strcpy(extension_agregar,".bas");
+                            era_basic=1;
                         }
-		}
+
+                    }
+
+                    //Consideramos que es pantalla siempre que tenga longitud 6912,
+                    //sin tener en cuenta que haya cabecera antes o no
+                    if (longitud_final==6912) {
+                        //archivo a expandir es pantalla scr
+                        strcpy(extension_agregar,".scr");
+                        //y ademas decimos que ese es el achivo de pantalla usado en los previews
+                        era_pantalla=1;
+                        archivo_tzx_tiene_scr=1;
+                    }
+
+
+                    if (tapfile==NULL) {
+                        sprintf (buffer_temp_file,"%s/%02d-data-%d%s",tempdirectory,filenumber,longitud_final,extension_agregar);
+
+                        if (era_pantalla) {
+                            //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
+                            //usado en los previews
+                            char buff_preview_scr[PATH_MAX];
+                            sprintf(buff_preview_scr,"%s/%s",tempdirectory,MENU_SCR_INFO_FILE_NAME);
+
+                            //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
+                            util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
+                        }
+
+                        if (era_basic) {
+                            if (primer_bloque_basic[0]==0) {
+                                strcpy (primer_bloque_basic,buffer_temp_file);
+                            }
+                        }
+                    }
+                }
 
 
                 //Si expandir
                 if (tapfile==NULL) {
-		        //Generar bloque con datos, saltando los dos de cabecera y el flag
-		        util_save_file(copia_puntero+3,longitud_final,buffer_temp_file);
+                    //Generar bloque con datos, saltando los dos de cabecera y el flag
+                    util_save_file(copia_puntero+3,longitud_final,buffer_temp_file);
                 }
 
                 //Convertir a tap
                 else {
-                        //Generar bloque con datos
-                        //Meter longitud, flag
-                        z80_byte buffer_tap[3];
-                        z80_int longitud_cabecera_tap=longitud_final+2;
-                        buffer_tap[0]=value_16_to_8l(longitud_cabecera_tap);
-                        buffer_tap[1]=value_16_to_8h(longitud_cabecera_tap);
-                        buffer_tap[2]=flag;
+                    //Generar bloque con datos
+                    //Meter longitud, flag
+                    z80_byte buffer_tap[3];
+                    z80_int longitud_cabecera_tap=longitud_final+2;
+                    buffer_tap[0]=value_16_to_8l(longitud_cabecera_tap);
+                    buffer_tap[1]=value_16_to_8h(longitud_cabecera_tap);
+                    buffer_tap[2]=flag;
 
 
 
-                        zvfs_fwrite(in_fatfs_tapfile,buffer_tap,3,ptr_tapfile,&fil_tapfile);
+                    zvfs_fwrite(in_fatfs_tapfile,buffer_tap,3,ptr_tapfile,&fil_tapfile);
 
-                        //fwrite(buffer_tap,1,3,ptr_tapfile);
+                    //fwrite(buffer_tap,1,3,ptr_tapfile);
 
 
-                        //Meter datos
-                        zvfs_fwrite(in_fatfs_tapfile,copia_puntero+3,longitud_final,ptr_tapfile,&fil_tapfile);
-                        //fwrite(copia_puntero+3,1,longitud_final,ptr_tapfile);
+                    //Meter datos
+                    zvfs_fwrite(in_fatfs_tapfile,copia_puntero+3,longitud_final,ptr_tapfile,&fil_tapfile);
+                    //fwrite(copia_puntero+3,1,longitud_final,ptr_tapfile);
 
-                        //Agregar CRC
-                        z80_byte byte_crc=*(copia_puntero+3+longitud_final);
+                    //Agregar CRC
+                    z80_byte byte_crc=*(copia_puntero+3+longitud_final);
 
-                        buffer_tap[0]=byte_crc;
+                    buffer_tap[0]=byte_crc;
 
-                        zvfs_fwrite(in_fatfs_tapfile,buffer_tap,1,ptr_tapfile,&fil_tapfile);
-                        //fwrite(buffer_tap,1,1,ptr_tapfile);
+                    zvfs_fwrite(in_fatfs_tapfile,buffer_tap,1,ptr_tapfile,&fil_tapfile);
+                    //fwrite(buffer_tap,1,1,ptr_tapfile);
 
                 }
 
-		filenumber++;
+                filenumber++;
 
-		previo_flag=flag;
-		previo_longitud_segun_cabecera=longitud_segun_cabecera;
-		previo_tipo_bloque=tipo_bloque;
+                previo_flag=flag;
+                previo_longitud_segun_cabecera=longitud_segun_cabecera;
+                previo_tipo_bloque=tipo_bloque;
 
-		break;
-
-
-		case 0x20:
+		    break;
 
 
-                                //sprintf(buffer_texto,"ID 20 - Pause");
-                                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+		    case 0x20:
 
 
-                                puntero_lectura+=2;
-				total_mem -=2;
+                //sprintf(buffer_texto,"ID 20 - Pause");
+                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+
+                puntero_lectura+=2;
+                total_mem -=2;
 
 
 
-                        break;
+            break;
 
-                        case 0x30:
-                                //sprintf(buffer_texto,"ID 30 Text description:");
-                                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+            case 0x30:
+                //sprintf(buffer_texto,"ID 30 Text description:");
+                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-                                longitud_bloque=*puntero_lectura;
-                                //printf ("puntero: %d longitud: %d\n",puntero,longitud_bloque);
-                                //util_binary_to_ascii(&tzx_file_mem[puntero+1],buffer_bloque,longitud_bloque,longitud_bloque);
-                                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
+                longitud_bloque=*puntero_lectura;
+                //printf ("puntero: %d longitud: %d\n",puntero,longitud_bloque);
+                //util_binary_to_ascii(&tzx_file_mem[puntero+1],buffer_bloque,longitud_bloque,longitud_bloque);
+                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
-                                puntero_lectura+=1;
-                                puntero_lectura+=longitud_bloque;
-                                //printf ("puntero: %d\n",puntero);
+                puntero_lectura+=1;
+                puntero_lectura+=longitud_bloque;
+                //printf ("puntero: %d\n",puntero);
 
-				total_mem -=(longitud_bloque+1);
-                        break;
+                total_mem -=(longitud_bloque+1);
+            break;
 
-                        case 0x31:
-                                //sprintf(buffer_texto,"ID 31 Message block:");
-                                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+            case 0x31:
+                //sprintf(buffer_texto,"ID 31 Message block:");
+                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-                                longitud_bloque=puntero_lectura[1];
-                                //util_binary_to_ascii(&tzx_file_mem[puntero+2],buffer_bloque,longitud_bloque,longitud_bloque);
-                                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
+                longitud_bloque=puntero_lectura[1];
+                //util_binary_to_ascii(&tzx_file_mem[puntero+2],buffer_bloque,longitud_bloque,longitud_bloque);
+                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
-                                puntero_lectura+=2;
-                                puntero_lectura+=longitud_bloque;
+                puntero_lectura+=2;
+                puntero_lectura+=longitud_bloque;
 
-				total_mem -=(longitud_bloque+2);
-                        break;
+                total_mem -=(longitud_bloque+2);
+            break;
 
-                        case 0x32:
-                                //sprintf(buffer_texto,"ID 32 Archive info:");
-                                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+            case 0x32:
+                //sprintf(buffer_texto,"ID 32 Archive info:");
+                //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-                                longitud_bloque=puntero_lectura[0]+256*puntero_lectura[1];
-                                puntero_lectura+=2;
+                longitud_bloque=puntero_lectura[0]+256*puntero_lectura[1];
+                puntero_lectura+=2;
 
 
-                                z80_byte nstrings=*puntero_lectura;
-				puntero_lectura++;
+                z80_byte nstrings=*puntero_lectura;
+                puntero_lectura++;
 
-				total_mem -=3;
+                total_mem -=3;
 
-				//char buffer_text_id[256];
-                                //char buffer_text_text[256];
+                //char buffer_text_id[256];
+                //char buffer_text_text[256];
 
-                                for (;nstrings;nstrings--) {
-                                        //z80_byte text_type=*puntero_lectura;
-					puntero_lectura++;
-                                        z80_byte longitud_texto=*puntero_lectura;
-					puntero_lectura++;
+                for (;nstrings;nstrings--) {
+                    //z80_byte text_type=*puntero_lectura;
+                    puntero_lectura++;
+                    z80_byte longitud_texto=*puntero_lectura;
+                    puntero_lectura++;
 
-					total_mem -=2;
+                    total_mem -=2;
 
-                                        //tape_tzx_get_archive_info(text_type,buffer_text_id);
-                                        //util_binary_to_ascii(&tzx_file_mem[puntero],buffer_text_text,longitud_texto,longitud_texto);
-                                        //sprintf (buffer_texto,"%s: %s",buffer_text_id,buffer_text_text);
+                    //tape_tzx_get_archive_info(text_type,buffer_text_id);
+                    //util_binary_to_ascii(&tzx_file_mem[puntero],buffer_text_text,longitud_texto,longitud_texto);
+                    //sprintf (buffer_texto,"%s: %s",buffer_text_id,buffer_text_text);
 
-                                        //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+                    //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-                                        puntero_lectura +=longitud_texto;
+                    puntero_lectura +=longitud_texto;
 
-					total_mem -=longitud_texto;
-                                }
+                    total_mem -=longitud_texto;
+                }
 
-                        break;
+            break;
 
-		default:
-                        debug_printf(VERBOSE_DEBUG,"Unhandled TZX id %02XH. Stopping",tzx_id);
-			salir=1;
-		break;
+            default:
+                debug_printf(VERBOSE_DEBUG,"Unhandled TZX id %02XH. Stopping",tzx_id);
+                salir=1;
+            break;
 
-	   }
+        }
 	}
 
 
@@ -18325,10 +18323,10 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
 	free(taperead);
 
-        if (tapfile!=NULL) {
-            zvfs_fclose(in_fatfs_tapfile,ptr_tapfile,&fil_tapfile);
-            //fclose(ptr_tapfile);
-        }
+    if (tapfile!=NULL) {
+        zvfs_fclose(in_fatfs_tapfile,ptr_tapfile,&fil_tapfile);
+        //fclose(ptr_tapfile);
+    }
 
 	return 0;
 
