@@ -2822,8 +2822,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo_format(array_menu_tape_settings," [%s]",string_realtape_shown);
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'f');
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Audio file to use as the input audio");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Audio file to use as the input audio");
+		menu_add_item_menu_tooltip(array_menu_tape_settings,"File to use as the input audio");
+		menu_add_item_menu_ayuda(array_menu_tape_settings,"File to use as the input audio. File can be an audio file but also a tap, tzx, etc");
 
 
 		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_insert,menu_realtape_cond,
