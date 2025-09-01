@@ -1,2 +1,2 @@
 El programa utiliza una rutina de buffer de teclado, para almacenar teclas cuando no se están leyendo,
-que apareción en la microhobby 202, página 22, y adaptada a Inves por mi hermano David
+que apareció en la microhobby 202, página 22, y adaptada a Inves por mi hermano David
