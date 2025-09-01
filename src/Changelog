@@ -6,23 +6,13 @@ Added Streaming mode to ZENG Online for ZX Spectrum. It improves gaming experien
 Added ZXMMC+ emulation
 Added second MMC/SD card emulation
 Added support for steering wheel joystick (and other analog joystick controls) to racing games (using pre-defined modification for specific games or custom)
-Added conversion of ZX81 files P to P81, and P81 to P
 Allow to save ZX80/81 screen to .scr file
 Allow to LOAD "name" of a ZX81 .P81 file
-Added .O (ZX80) file previews: show basic listing
-Added .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic listing
-Added .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81) basic listing preview
-Added .txt file previews
-Added .tap/.tzx file preview when tape does not have screen; it gets the basic listing
-Added some file actions for .81 files
 Added real joystick support for SDL2
 Added direct functions to increase/decrease/silence Audio Volume
-Allow to create link to file on ZX Desktop, from File utilities
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
 Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)
-Added .ay file support to File Viewer
-Added GENS file support to File Viewer
 Allow to change configuration file path from the menu
 Allow to view expanded file from Storage submenus (tape, dsk, etc)
 Allow to view GO SUB Basic stack
@@ -66,6 +56,18 @@ Improved ZX Vision:
 - Added rzx files support for file selector: can be expanded (to z80 snap file), show file previews, convert to SCR, convert to Z80, use as ZX Desktop background
 - Fixed glitch duplicating Main Menu when pressing F6 on Main Menu
 
+Improved File Selector:
+- Added .O (ZX80), .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic listing
+- Added .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81) basic listing preview
+- Added .txt file previews
+- Added .tap/.tzx file preview when tape does not have screen; it gets the basic listing
+- Added conversion of ZX81 files P to P81, and P81 to P
+- Added some file actions for .81 files on File Selector
+- Allow to create link to file on ZX Desktop, from File utilities
+- Added .ay file support to File Viewer
+- Added GENS file support to File Viewer
+- Allow to use path to a FAT mounted image on all cases
+
 Improved Debug CPU:
 - Allow to see and go to previous address of an opcode in cpu history
 - Show port number when port read opcode (IN, INI, etc). Show keyboard row when port is XXFEH on Spectrum
@@ -104,7 +106,6 @@ Improved Windows timing and any other system using SDL video driver. Now uses SD
 Improved Mac timing by using native timer
 Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
 Improved Adventure Map showing enter and exit directions
-Improved File Selector: allow to use path to a FAT mounted image on all cases
 Improved Visual Cassette Tape window: support standard tape too
 Improved Custom rom setting adding a Reset machine option
 Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
