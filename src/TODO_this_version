@@ -205,15 +205,6 @@ Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero qu
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
 
--Revisar funcion util_convert_p_p81_basic_to_scr(nombre,tmpfile_scr); de converir .p/.p81 a listado basic y de ahi a miniatura scr
-ok *quitar todo lo de video memory que no se usa
-ok para .O *soportar zx80
-ok *preview de archivos .81? que formato era? en extras hires hay
-ok *probar con archivos random .p, .p81 etc y ver que no peta
-ok *Preview de .baszx80, .baszx81. Estos salen de expandir y no tienen offset a primera línea. ojo porque la rutina de convertir le suma esos offset...
-ok *Preview de tap quizá mostrar pantalla listado basic (si hay basic) cuando no hay pantalla
--Agregar funcion convertir para pasar de .tap que haga eso mismo en file utilities
-*preview basic z88
 
 -Captura a disco
 *entrada en changelog
