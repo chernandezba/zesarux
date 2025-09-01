@@ -24839,7 +24839,14 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 	//Si es .txt o README
     //hacemos preview con pantalla del texto
-	else if (!util_compare_file_extension(nombre,"txt") || !util_compare_file_name(nombre,"README")) {
+    //Siempre que no sea el de zesarux_last_dir.txt ni zesarux_scr_info.txt
+	else if (
+
+        (!util_compare_file_extension(nombre,"txt") || !util_compare_file_name(nombre,"README")) &&
+        util_compare_file_name(nombre,MENU_LAST_DIR_FILE_NAME) && util_compare_file_name(nombre,MENU_SCR_INFO_FILE_NAME)
+
+        ){
+
 		debug_printf(VERBOSE_DEBUG,"File is a text file");
 
 		menu_filesel_mkdir(tmpdir);
