@@ -58,6 +58,8 @@ extern int alsa_change_instrument(unsigned char instrument);
 extern void audioalsa_start_record_input(void);
 extern void audioalsa_stop_record_input(void);
 
+extern int alsa_change_instrument(unsigned char instrument);
+
 #define ALSA_MID_VELOCITY 127
 
 
