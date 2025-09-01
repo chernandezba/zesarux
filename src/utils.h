@@ -872,6 +872,8 @@ extern int util_convert_zsf_to_scr(char *filename,char *archivo_destino);
 
 extern int util_convert_any_to_scr(char *filename,char *archivo_destino);
 
+extern int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_destino);
+
 extern int util_get_absolute(int valor);
 
 extern int util_get_sign(int valor);
