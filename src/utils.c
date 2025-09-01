@@ -17254,7 +17254,9 @@ int util_get_sign(int valor)
 //Rutina para extraer TAP pero tambien para convertir a TZX o PZX
 //Si tzxfile !=NULL, lo convierte a tzx o pzx, en vez de expandir
 //Si tzx_turbo_rg, convierte a tzx turbo de Rodolfo Guerra (4000 bauds)
-int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg)
+//Indica si quiere generar preview de scr en casos que no hay pantalla, sacarlo del basic (esto habitualmente para previews,
+//pero no para tecla expand Espacio)
+int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg,int generate_preview_scr)
 {
 
 
@@ -17623,7 +17625,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                 }
 	}
 
-    if (!archivo_tap_tiene_scr) {
+    if (!archivo_tap_tiene_scr && generate_preview_scr) {
         //No tiene pantalla scr
         //Agregamos preview de basic, si es que tiene basic
         if (primer_bloque_basic[0]) {
@@ -17921,7 +17923,9 @@ int util_extract_ddh(char *filename,char *tempdir)
 
 //Rutina para extraer TZX pero tambien para convertir a TAP
 //Si tapfile !=NULL, lo convierte a tap, en vez de expandir
-int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
+//Indica si quiere generar preview de scr en casos que no hay pantalla, sacarlo del basic (esto habitualmente para previews,
+//pero no para tecla expand Espacio)
+int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int generate_preview_scr)
 {
 
 	//tapefile
@@ -18303,7 +18307,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 	}
 
 
-    if (!archivo_tzx_tiene_scr) {
+    if (!archivo_tzx_tiene_scr && generate_preview_scr) {
         //No tiene pantalla scr
         //Agregamos preview de basic, si es que tiene basic
         if (primer_bloque_basic[0]) {
@@ -18966,10 +18970,10 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     //Tipos de archivos que hay que extraer todos y buscar un archivo de pantalla
 
     if (!util_compare_file_extension(filename,"tap")) {
-        retorno=util_extract_tap(filename,tmpdir,NULL,0);
+        retorno=util_extract_tap(filename,tmpdir,NULL,0,1);
     }
     else if (!util_compare_file_extension(filename,"tzx")) {
-        retorno=util_extract_tzx(filename,tmpdir,NULL);
+        retorno=util_extract_tzx(filename,tmpdir,NULL,1);
     }
     else if (!util_compare_file_extension(filename,"pzx") ) {
             retorno=util_extract_pzx(filename,tmpdir,NULL);
@@ -24708,12 +24712,12 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
 
 			if (!util_compare_file_extension(nombre,"tap") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a tap file");
-					retorno=util_extract_tap(nombre,tmpdir,NULL,0);
+					retorno=util_extract_tap(nombre,tmpdir,NULL,0,1);
 			}
 
 			else if (!util_compare_file_extension(nombre,"tzx") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a tzx file");
-					retorno=util_extract_tzx(nombre,tmpdir,NULL);
+					retorno=util_extract_tzx(nombre,tmpdir,NULL,1);
 			}
 
 			else if (!util_compare_file_extension(nombre,"rzx") ) {

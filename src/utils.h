@@ -886,7 +886,7 @@ extern void convert_to_rwa_common_tmp(char *origen, char *destino);
 
 extern void util_tape_get_name_header(z80_byte *tape,char *texto);
 
-extern int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg);
+extern int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg,int generate_preview_scr);
 
 extern int util_extract_ddh(char *filename,char *tempdir);
 
@@ -898,7 +898,7 @@ extern int util_extract_p(char *filename,char *tempdir);
 
 extern int util_extract_o(char *filename,char *tempdir);
 
-extern int util_extract_tzx(char *filename,char *tempdir,char *tapfile);
+extern int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int generate_preview_scr);
 
 extern int util_extract_pzx(char *filename,char *tempdir,char *tapfile);
 

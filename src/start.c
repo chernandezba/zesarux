@@ -6940,7 +6940,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Converting from TAP file %s to TZX file %s\n",origen,destino);
 
-                if (util_extract_tap(origen,NULL,destino,0)) {
+                if (util_extract_tap(origen,NULL,destino,0,0)) {
                     printf("Error executing conversion\n");
                     exit(1);
                 }
@@ -6974,7 +6974,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Converting from TAP file %s to TZX Rodolfo Guerra Turbo file %s\n",origen,destino);
 
-                if (util_extract_tap(origen,NULL,destino,1)) {
+                if (util_extract_tap(origen,NULL,destino,1,0)) {
                     printf("Error executing conversion\n");
                     exit(1);
                 }
@@ -6991,7 +6991,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Converting from TAP file %s to PZX file %s\n",origen,destino);
 
-                if (util_extract_tap(origen,NULL,destino,0)) {
+                if (util_extract_tap(origen,NULL,destino,0,0)) {
                     printf("Error executing conversion\n");
                     exit(1);
                 }
@@ -7008,7 +7008,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Converting from TZX file %s to TAP file %s\n",origen,destino);
 
-                if (util_extract_tzx(origen,NULL,destino)) {
+                if (util_extract_tzx(origen,NULL,destino,0)) {
                     printf("Error executing conversion\n");
                     exit(1);
                 }
