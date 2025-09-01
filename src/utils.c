@@ -19899,8 +19899,8 @@ int util_convert_txt_to_scr(char *filename,char *archivo_destino)
 
     long long int bytes_to_load=get_file_size(filename);
 
-
-    buffer_lectura=malloc(bytes_to_load);
+    //+1 para poder meter un 0 final
+    buffer_lectura=malloc(bytes_to_load+1);
 
     if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
 
@@ -19926,7 +19926,9 @@ int util_convert_txt_to_scr(char *filename,char *archivo_destino)
 
     zvfs_fclose(in_fatfs,ptr_pfile,&fil);
 
-
+    //metemos 0 final y convertimos string utf a caracteres de mi charset
+    buffer_lectura[bytes_to_load]=0;
+    util_convert_utf_charset((char *)buffer_lectura,buffer_lectura,bytes_to_load);
 
     //Asignamos 6912 bytes para la pantalla
     z80_byte *buffer_pantalla;
@@ -19954,10 +19956,10 @@ int util_convert_txt_to_scr(char *filename,char *archivo_destino)
     z80_byte caracter;
 
     char *puntero_basic_listado=(char *) buffer_lectura;
-    int bytes_basic_listado=bytes_to_load;
+    int bytes_basic_listado=strlen((char *)buffer_lectura);
 
     while (y<24 && bytes_basic_listado>0) {
-        //printf("caracter [%c] x %d y %d\n",caracter,x,y);
+        printf("caracter [%c] [%02X] x %d y %d bytes_basic_listado: %d\n",caracter,caracter,x,y,bytes_basic_listado);
         caracter=*puntero_basic_listado;
         puntero_basic_listado++;
         bytes_basic_listado--;
