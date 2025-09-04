@@ -1727,7 +1727,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
         char buffer_change_pos[100]="";
         if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
-            strcpy(buffer_change_pos,"~~c~~v: Move ~~j~~k: Seek errors");
+            strcpy(buffer_change_pos,"~^G: change ~~c~~v: Move ~~j~~k: Seek errors");
         }
 
         else {
@@ -2619,6 +2619,21 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             case 'g':
                 menu_convert_audio_to_zx81_que_destacamos_en_waveform++;
                 if (menu_convert_audio_to_zx81_que_destacamos_en_waveform==3) menu_convert_audio_to_zx81_que_destacamos_en_waveform=0;
+            break;
+
+            case 'G':
+                if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
+                    //check max limit
+                    enh_zx81_lee_get_global_info(&cinfo);
+
+                    menu_ventana_scanf_numero_enhanced("Position",&menu_convert_audio_to_zx81_wave_manual_position,
+                        10,+256,0,cinfo.enh_global_total_input_size-1,0);
+
+                    //comprobar error
+                    if (if_pending_error_message) {
+                        menu_muestra_pending_error_message();
+                    }
+                }
             break;
 
             case 'i':
