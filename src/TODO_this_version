@@ -177,15 +177,12 @@ realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 
 
 
 
-ok -Quiza que con esos pulsos sospechosos se marquen en waveform. Pero para eso la rutina de conversión deberia
-retornar una tabla con las posiciones de todos los sospechosos.
-Quiza pasar un puntero a esa tabla al llamar a convertir, indicando un maximo admitido: si hay muchos errores (+ de 100?) no tiene sentido revisarlos todos. Y que ademas diga conteo de pulsos que ha calculado la rutina en cada uno de esos fallos
-Como siempre, NULL como parametro si no queremos eso
--Incluso podria haber una tecla para navegar entre esos pulsos sospechosos
+ok -Incluso podria haber una tecla para navegar entre esos pulsos sospechosos
 -Incluso que cuando encuentre un pulso sospechoso, llamar a un callback y que pregunte al usuario qué hacer
 *poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
+-permitir ir waveform a un punto concreto escribiendo posición
 
--waveform solo se puede visualizar cuando el thread esta activo
+ok-waveform solo se puede visualizar cuando el thread esta activo
 Quiza esto no es un problema pues siempre se puede lanzar y pausar para que se pueda examinar la señal
 Por ejemplo si quiero ver todos los errores de pulsos, si lanzo y acaba el thread, no se vera
 Habria que lanzar el thread y pausarlo antes de que acabe

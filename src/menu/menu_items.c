@@ -4773,7 +4773,7 @@ void menu_audio_draw_sound_wave(void)
                 - Al aumentar zoom, esa separacion se va reduciendo: zoom 2, cada 2 pixeles. zoom 4 o superior, cada pixel
                 - A zoom > 1, valor de sample mostrado es la media de 2 valores (zoom 2) o 4 valores (zoom 4) etc
                 - Cuando el zoom es >=16, mostramos tambien en color algo mas oscuro linea vertical indicando valor mínimo y máximo
-                Todo eso se hace aqui a continuación y un poco mas abajo, buscar por condición convert_audio_to_zx81_thread_running
+                Todo eso se hace aqui a continuación y un poco mas abajo, buscar por condición menu_convert_audio_to_zx81_window_running
             */
             //Queremos que cada valor de sample esté separado 4 pixeles así podemos unirlo con lineas y se ve mejor
             int color_linea=ESTILO_GUI_COLOR_WAVEFORM;
@@ -4790,7 +4790,7 @@ void menu_audio_draw_sound_wave(void)
             int convert_audio_to_zx81_error_en_pos_actual=0;
             int convert_audio_to_zx81_error_en_pos_actual_pulsos=0;
 
-            if (convert_audio_to_zx81_thread_running) {
+            if (menu_convert_audio_to_zx81_window_running) {
                 //Ubicar a la derecha de la ventana lo que se está convirtiendo
                 int offset=x-xinicial_grafica-ancho_grafica;
 
@@ -4828,7 +4828,7 @@ void menu_audio_draw_sound_wave(void)
                     convert_zx81_min_valor=128;
                 }
                 else {
-                    //acceder a la memoria de input rwa a lo bruto
+                    //acceder a la memoria de input rwa
 
                     //generar valores medios segun zoom
                     int valor_unsigned=0;
@@ -4874,7 +4874,7 @@ void menu_audio_draw_sound_wave(void)
 					if (!menu_sound_wave_llena) {
 
                         //Para mostrar forma de onda de conversion de audio a zx81
-                        if (convert_audio_to_zx81_thread_running) {
+                        if (menu_convert_audio_to_zx81_window_running) {
                             if (x % cada_cuanto_convert_zx81 != 0) dibujar_linea=0;
 
                             if (dibujar_linea) {

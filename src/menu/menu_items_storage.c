@@ -2450,6 +2450,10 @@ zxvision_window zxvision_window_convert_audio_to_zx81;
 
 int menu_convert_audio_to_zx81_zoom_wave=1;
 
+//Para que la ventana de waveform sepa que se tiene esta ventana abierta
+//Es mas rapido consultar una variable que no usar la llamada a zxvision_find_window_in_background
+int menu_convert_audio_to_zx81_window_running=0;
+
 void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -2519,6 +2523,8 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
         return;
     }
+
+    menu_convert_audio_to_zx81_window_running=1;
 
     do {
 
@@ -2749,6 +2755,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
 	else {
 		zxvision_destroy_window(ventana);
+        menu_convert_audio_to_zx81_window_running=0;
 	}
 
 
