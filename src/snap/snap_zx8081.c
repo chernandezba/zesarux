@@ -290,65 +290,65 @@ void new_save_zx80_o_snapshot(char *filename)
 void new_save_zx81_p_snapshot(char *filename)
 {
 
-       FILE *ptr_pfile;
+    FILE *ptr_pfile;
 
 
-        ptr_pfile=fopen(filename,"wb");
-        if (!ptr_pfile) {
-                debug_printf (VERBOSE_ERR,"Error writing snapshot file %s",filename);
-                return;
+    ptr_pfile=fopen(filename,"wb");
+    if (!ptr_pfile) {
+            debug_printf (VERBOSE_ERR,"Error writing snapshot file %s",filename);
+            return;
+    }
+
+    //Si formato P81, agregar nombre de archivo al inicio
+    if (!util_compare_file_extension(filename,"p81")) {
+
+        char nombre_corto[PATH_MAX];
+        util_get_file_no_directory(filename,nombre_corto);
+
+        char nombre_sin_extension[PATH_MAX];
+        util_get_file_without_extension(nombre_corto,nombre_sin_extension);
+
+        debug_printf(VERBOSE_INFO,"Adding filename [%s] at the beginning of the p81 file",nombre_sin_extension);
+
+        int i;
+        int longitud_nombre=strlen(nombre_sin_extension);
+        for (i=0;i<longitud_nombre;i++) {
+            z80_byte caracter_zx81=ascii_to_zx81(nombre_sin_extension[i]);
+            if (i==longitud_nombre-1) caracter_zx81 |=128; //Indicar caracter final
+            fwrite(&caracter_zx81,1,1,ptr_pfile);
         }
-
-        //Si formato P81, agregar nombre de archivo al inicio
-        if (!util_compare_file_extension(filename,"p81")) {
-
-            char nombre_corto[PATH_MAX];
-            util_get_file_no_directory(filename,nombre_corto);
-
-            char nombre_sin_extension[PATH_MAX];
-            util_get_file_without_extension(nombre_corto,nombre_sin_extension);
-
-            debug_printf(VERBOSE_INFO,"Adding filename [%s] at the beginning of the p81 file",nombre_sin_extension);
-
-            int i;
-            int longitud_nombre=strlen(nombre_sin_extension);
-            for (i=0;i<longitud_nombre;i++) {
-                z80_byte caracter_zx81=ascii_to_zx81(nombre_sin_extension[i]);
-                if (i==longitud_nombre-1) caracter_zx81 |=128; //Indicar caracter final
-                fwrite(&caracter_zx81,1,1,ptr_pfile);
-            }
-        }
+    }
 
 
-        z80_int puntero_inicio;
+    z80_int puntero_inicio;
 
-        z80_int bytes_grabar;
-        z80_int e_line;
+    z80_int bytes_grabar;
+    z80_int e_line;
 
 
 
-                puntero_inicio=0x4009;
-                e_line=value_8_to_16(peek_byte_no_time(16405),peek_byte_no_time(16404) );
+    puntero_inicio=0x4009;
+    e_line=value_8_to_16(peek_byte_no_time(16405),peek_byte_no_time(16404) );
 
-		//En caso que e_line tenga valor invalido... por ejemplo que grabamos snapshot desde juego en ejecucion,
-		//que puede que este valor se sale de rango
+    //En caso que e_line tenga valor invalido... por ejemplo que grabamos snapshot desde juego en ejecucion,
+    //que puede que este valor se sale de rango
 
-		//TODO: comprobar rampacks
-                if (e_line<16384) {
-                        debug_printf (VERBOSE_WARN,"Invalid value for end of basic program (e_line = %d ) . Setting maximum - 32767",e_line);
-                        e_line=32767;
-                }
-
-
-
-        bytes_grabar=e_line-puntero_inicio+1;
-
-        //Escritura de datos
-        debug_printf (VERBOSE_INFO,"Saving %d bytes starting from %d address",bytes_grabar,puntero_inicio);
-        fwrite(&memoria_spectrum[puntero_inicio],1,bytes_grabar,ptr_pfile);
+    //TODO: comprobar rampacks
+    if (e_line<16384) {
+        debug_printf (VERBOSE_WARN,"Invalid value for end of basic program (e_line = %d ) . Setting maximum - 32767",e_line);
+        e_line=32767;
+    }
 
 
-        fclose(ptr_pfile);
+
+    bytes_grabar=e_line-puntero_inicio+1;
+
+    //Escritura de datos
+    debug_printf (VERBOSE_INFO,"Saving %d bytes starting from %d address",bytes_grabar,puntero_inicio);
+    fwrite(&memoria_spectrum[puntero_inicio],1,bytes_grabar,ptr_pfile);
+
+
+    fclose(ptr_pfile);
 
 
 
