@@ -181,9 +181,6 @@ realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 
 *poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
 -permitir ir waveform a un punto concreto escribiendo posición
 
-ok-waveform solo se puede visualizar cuando el thread esta activo
-
-
 
 ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
 

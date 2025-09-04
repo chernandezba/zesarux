@@ -2532,13 +2532,14 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
     do {
 
         ventana->writing_inverse_color=1;
-
         menu_convert_audio_to_zx81_print_line_actions(ventana);
         menu_convert_audio_to_zx81_print_lines_settings(ventana);
-
-
-
         ventana->writing_inverse_color=0;
+
+        //comprobar si hay algún error pendiente de mostrar, por ejemplo hacer un set amplitude con valor fuera de rango
+        if (if_pending_error_message) {
+            menu_muestra_pending_error_message();
+        }
 
 		tecla=zxvision_common_getkey_refresh();
 
@@ -2631,11 +2632,6 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
                     menu_ventana_scanf_numero_enhanced("Position",&menu_convert_audio_to_zx81_wave_manual_position,
                         10,+256,0,cinfo.enh_global_total_input_size-1,0);
-
-                    //comprobar error
-                    if (if_pending_error_message) {
-                        menu_muestra_pending_error_message();
-                    }
                 }
             break;
 
@@ -2699,22 +2695,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
                     menu_convert_audio_to_zx81_run_conversion();
 
-                    //comprobar error
-                    if (if_pending_error_message) {
-                        menu_muestra_pending_error_message();
-                    }
-
                 }
             break;
 
             case 's':
                 if (!menu_convert_audio_to_zx81_autodetect_amplitude && !convert_audio_to_zx81_thread_running) {
                     menu_ventana_scanf_numero_enhanced("Amplitude",&menu_convert_audio_to_zx81_amplitude,4,+1,1,255,0);
-
-                    //comprobar error
-                    if (if_pending_error_message) {
-                        menu_muestra_pending_error_message();
-                    }
                 }
             break;
 
