@@ -182,9 +182,6 @@ realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 
 -permitir ir waveform a un punto concreto escribiendo posición
 
 ok-waveform solo se puede visualizar cuando el thread esta activo
-Quiza esto no es un problema pues siempre se puede lanzar y pausar para que se pueda examinar la señal
-Por ejemplo si quiero ver todos los errores de pulsos, si lanzo y acaba el thread, no se vera
-Habria que lanzar el thread y pausarlo antes de que acabe
 
 
 
