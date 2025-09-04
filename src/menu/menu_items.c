@@ -4932,8 +4932,14 @@ void menu_audio_draw_sound_wave(void)
                                     sprintf(buffer_texto_pulsos,"Error %d pulses!!",convert_audio_to_zx81_error_en_pos_actual_pulsos);
 
                                     //+40. algo mas abajo del texto a destacar, para que no se mezclen
-                                    zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,
+                                    /*zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,
                                         destacar_max_y+40,2,
+                                        ESTILO_GUI_COLOR_WAVEFORM, buffer_texto_pulsos,
+                                        menu_waveform_putpixel_array_from_linea);*/
+
+                                    //En coordenada Y 0 para no mezclar
+                                    zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,
+                                        0,2,
                                         ESTILO_GUI_COLOR_WAVEFORM, buffer_texto_pulsos,
                                         menu_waveform_putpixel_array_from_linea);
                                 }

@@ -1729,7 +1729,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
         if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
             //Solo mostrar teclas de seek errors si es que hay errores
             sprintf(buffer_change_pos,"~^G: change ~~c~~v: Move %s",
-            (menu_convert_audio_to_zx81_errores_pulsos_detectados ? "~~j~~k: Seek errors" : "")
+            (menu_convert_audio_to_zx81_errores_pulsos_detectados ? "~^C~^V: Seek errors" : "")
             );
         }
 
@@ -2612,6 +2612,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                 }
             break;
 
+            case 'C':
+                if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
+                    menu_convert_audio_to_zx81_move_previous_error();
+                }
+            break;
+
             case 'd':
                 if (!convert_audio_to_zx81_thread_running) {
                     menu_convert_audio_to_zx81_debug_print ^=1;
@@ -2645,18 +2651,6 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'i':
                 if (!convert_audio_to_zx81_thread_running) menu_convert_audio_to_zx81_select_input_file();
-            break;
-
-            case 'j':
-                if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
-                    menu_convert_audio_to_zx81_move_previous_error();
-                }
-            break;
-
-            case 'k':
-                if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
-                    menu_convert_audio_to_zx81_move_next_error();
-                }
             break;
 
             case 'l':
@@ -2727,6 +2721,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
                     if (menu_convert_audio_to_zx81_wave_manual_position<cinfo.enh_global_total_input_size-menu_convert_audio_to_zx81_zoom_wave) {
                         menu_convert_audio_to_zx81_wave_manual_position+=menu_convert_audio_to_zx81_zoom_wave;
                     }
+                }
+            break;
+
+            case 'V':
+                if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
+                    menu_convert_audio_to_zx81_move_next_error();
                 }
             break;
 
