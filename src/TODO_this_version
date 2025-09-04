@@ -190,7 +190,7 @@ ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
 En general, considerando audio, .raw seria formato en crudo, con cualquier samplerate. Y para todos los sitios considero 8 bit unsigned
 Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero que no tiene que ver con el sonido
 
--Si en convertir de zx81 el archivo input no se reconoce extensión, genera un error pero no se ve hasta abrir alguna ventana
+ok -Si en convertir de zx81 el archivo input no se reconoce extensión, genera un error pero no se ve hasta abrir alguna ventana
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 

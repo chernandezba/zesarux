@@ -617,6 +617,7 @@ extern z80_byte zxvision_common_getkey_refresh_noesperatecla(void);
 extern z80_byte zxvision_common_getkey_refresh_noesperanotec(void);
 extern z80_byte zxvision_common_getkey_wheel_refresh_noesperanotec(void);
 extern z80_byte zxvision_common_getkey_refresh_noesperanotec_todasteclas(void);
+extern z80_byte zxvision_common_getkey_refresh_o_pending_error_message(void);
 
 extern zxvision_window *zxvision_current_window;
 
@@ -1278,6 +1279,7 @@ extern int menu_si_tecla_pulsada(void);
 extern void menu_espera_tecla_o_joystick(void);
 extern void menu_espera_no_tecla(void);
 extern void menu_get_dir(char *ruta,char *directorio);
+extern void menu_espera_tecla_o_pending_error_message(void);
 
 extern int menu_tell_if_realjoystick_detected_counter;
 extern void menu_tell_if_realjoystick_detected(void);

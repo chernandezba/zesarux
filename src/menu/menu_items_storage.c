@@ -2536,14 +2536,19 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         menu_convert_audio_to_zx81_print_lines_settings(ventana);
         ventana->writing_inverse_color=0;
 
-        //comprobar si hay algún error pendiente de mostrar, por ejemplo hacer un set amplitude con valor fuera de rango
+        //Aqui se sale al pulsar tecla o si hay pendiente mostrar un mensaje de error,
+        //esto puede pasar después de hacer Run y la rutina de conversión retorna error por formato de input desconocido,
+        //y como se lanza en un thread aparte, puede suceder algo mas tarde y por tanto es necesario esta función que lee tecla y retorna
+        //si se genera un error
+		tecla=zxvision_common_getkey_refresh_o_pending_error_message();
+
+        zxvision_handle_cursors_pgupdn(ventana,tecla);
+
+        //comprobar si hay algún error pendiente de mostrar, por ejemplo hacer un set amplitude con valor fuera de rango,
+        //o que al hacer Run la rutina de conversión retorna error por formato de input desconocido
         if (if_pending_error_message) {
             menu_muestra_pending_error_message();
         }
-
-		tecla=zxvision_common_getkey_refresh();
-
-        zxvision_handle_cursors_pgupdn(ventana,tecla);
 
         struct s_enh_zx81_lee_global_info cinfo;
 

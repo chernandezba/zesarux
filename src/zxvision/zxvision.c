@@ -18253,7 +18253,7 @@ z80_byte zxvision_common_getkey_refresh(void)
 			menu_refresca_pantalla();
 		}
 
-
+                //Por qué ejecutamos esto aqui??? Solo ejecutará una instrucción
 	            menu_cpu_core_loop();
 
 				menu_espera_tecla();
@@ -18269,6 +18269,44 @@ z80_byte zxvision_common_getkey_refresh(void)
 			//printf ("Esperamos no tecla\n");
 			menu_espera_no_tecla_con_repeticion();
 		}
+
+    //printf("zxvision_common_getkey_refresh. tecla=%d\n",tecla);
+
+	return tecla;
+}
+
+/*
+Funcion comun usados en algunas ventanas que:
+-refrescan pantalla
+-ejecutan core loop si multitask activo
+-leen tecla y esperan a liberar dicha tecla
+-sale también si hay pendiente mostrar un error
+*/
+z80_byte zxvision_common_getkey_refresh_o_pending_error_message(void)
+{
+	z80_byte tecla;
+
+        if (!menu_multitarea) {
+        //printf ("refresca pantalla\n");
+        menu_refresca_pantalla();
+    }
+
+    //Por qué ejecutamos esto aqui??? Solo ejecutará una instrucción
+    menu_cpu_core_loop();
+
+    menu_espera_tecla_o_pending_error_message();
+    tecla=zxvision_read_keyboard();
+
+    //con enter no salimos. TODO: esto se hace porque el mouse esta enviando enter al pulsar boton izquierdo, y lo hace tambien al hacer dragging
+    //lo ideal seria que mouse no enviase enter al pulsar boton izquierdo y entonces podemos hacer que se salga tambien con enter
+    if (tecla==13 && mouse_left) {
+        tecla=0;
+    }
+
+    if (tecla) {
+        //printf ("Esperamos no tecla\n");
+        menu_espera_no_tecla_con_repeticion();
+    }
 
     //printf("zxvision_common_getkey_refresh. tecla=%d\n",tecla);
 
@@ -19559,6 +19597,30 @@ void menu_espera_tecla(void)
 
 
 	} while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA);
+
+	//Al salir del bucle, reseteamos contadores de repeticion
+	menu_reset_counters_tecla_repeticion();
+
+}
+
+void menu_espera_tecla_o_pending_error_message(void)
+{
+
+    //Esperar a pulsar una tecla o hay pendiente mostrar un mensaje de error
+    z80_byte acumulado;
+
+    //Si al entrar aqui ya hay tecla pulsada, volver
+    acumulado=menu_da_todas_teclas();
+    if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) !=MENU_PUERTO_TECLADO_NINGUNA) return;
+
+
+    do {
+        menu_cpu_core_loop();
+
+        acumulado=menu_da_todas_teclas();
+
+
+	} while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA && !if_pending_error_message);
 
 	//Al salir del bucle, reseteamos contadores de repeticion
 	menu_reset_counters_tecla_repeticion();
