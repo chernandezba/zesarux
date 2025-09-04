@@ -2673,6 +2673,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             case 'r':
                 //no dejar iniciar si no esta input u output
                 if (menu_convert_audio_to_zx81_input_file[0] && menu_convert_audio_to_zx81_output_file[0] && !convert_audio_to_zx81_thread_running) {
+                    //poner scroll a 0 porque si el usuario ha hecho scroll, luego puede parecer
+                    //que no se generan mensajes nuevos
+                    zxvision_set_offset_y(ventana,0);
+                    //y por coherencia, scroll horizontal también
+                    zxvision_set_offset_x(ventana,0);
+
                     menu_convert_audio_to_zx81_run_conversion();
 
                     //comprobar error

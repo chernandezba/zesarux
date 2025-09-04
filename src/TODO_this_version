@@ -177,7 +177,6 @@ realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 
 
 
 
-ok -Incluso podria haber una tecla para navegar entre esos pulsos sospechosos
 -Incluso que cuando encuentre un pulso sospechoso, llamar a un callback y que pregunte al usuario qué hacer
 *poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
 -permitir ir waveform a un punto concreto escribiendo posición
