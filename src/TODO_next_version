@@ -348,3 +348,7 @@ En alguna ventana nueva quizá
 y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
 Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
 los traps que tenemos ahora
+
+-En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese
+En config se guarda número de icono? O solo se agrega? Eso permite que al cargar vengan si huecos entre medio
+-en config se agregan uno a uno

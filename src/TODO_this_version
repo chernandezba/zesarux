@@ -215,7 +215,3 @@ ok *RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31
 *Resample a menos frecuencia tendría que hacer valor medio con los anteriores?
 
 
-En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese
-En config se guarda número de icono? O solo se agrega? Eso permite que al cargar vengan si huecos entre medio
-
-ok-Tooltip de real tape parece que indique solo archivos de audio
