@@ -2090,7 +2090,7 @@ void menu_convert_audio_to_zx81_overlay(void)
 
             else {
                 zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,
-                    "Conversion finished. File %s does not exists",nombre);
+                    "Conversion finished. File %s does not exist",nombre);
             }
 
 
@@ -10729,7 +10729,7 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 			//menu_warn_message("File does not exist");
 			//return;
 
-            if (menu_confirm_yesno_texto("DSK does not exists","Create?")) {
+            if (menu_confirm_yesno_texto("DSK does not exist","Create?")) {
 
                 //Parece que a +3DOS no le gusta nada discos que se salen del formato estandard
                 int tipo=menu_simple_two_choices("DSK type","Image type?","+3DOS compatible","Custom");
