@@ -1745,7 +1745,7 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
         );
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_FIVE,
-            "[%c] fo~~llow position [%d] %s",
+            "[%c] fo~~llow pos. [%d] %s",
             (menu_convert_audio_to_zx81_wave_follows_conversion ? 'X' : ' '),
             menu_convert_audio_to_zx81_wave_manual_position,
             buffer_change_pos

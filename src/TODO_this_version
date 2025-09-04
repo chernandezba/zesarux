@@ -179,7 +179,8 @@ realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 
 
 -Incluso que cuando encuentre un pulso sospechoso, llamar a un callback y que pregunte al usuario qué hacer
 *poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
--permitir ir waveform a un punto concreto escribiendo posición
+
+ok -permitir ir waveform a un punto concreto escribiendo posición
 
 
 ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
@@ -190,13 +191,12 @@ ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
 En general, considerando audio, .raw seria formato en crudo, con cualquier samplerate. Y para todos los sitios considero 8 bit unsigned
 Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero que no tiene que ver con el sonido
 
-ok -Si en convertir de zx81 el archivo input no se reconoce extensión, genera un error pero no se ve hasta abrir alguna ventana
 
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
 
 
--Captura a disco
+-Captura sonido a archivo de disco
 *entrada en changelog
 *opcion para archivo de salida en ventana de captura
 ok *RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31200 hz, mas alla de eso se duplican bytes)
