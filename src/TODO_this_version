@@ -158,7 +158,7 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 (ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
 
 
-*que pasa si llega el pulso final y poco despues se acaba el archivo. lo finaliza bien?
+ok *que pasa si llega el pulso final y poco despues se acaba el archivo. lo finaliza bien?
 
 
 *usleep preciso para que funcione bien en windows? Segun notas de hilow, algunos Linux tampoco

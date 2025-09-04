@@ -1727,7 +1727,10 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
 
         char buffer_change_pos[100]="";
         if (!menu_convert_audio_to_zx81_wave_follows_conversion) {
-            strcpy(buffer_change_pos,"~^G: change ~~c~~v: Move ~~j~~k: Seek errors");
+            //Solo mostrar teclas de seek errors si es que hay errores
+            sprintf(buffer_change_pos,"~^G: change ~~c~~v: Move %s",
+            (menu_convert_audio_to_zx81_errores_pulsos_detectados ? "~~j~~k: Seek errors" : "")
+            );
         }
 
         else {
