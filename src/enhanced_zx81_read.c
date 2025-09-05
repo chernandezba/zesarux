@@ -229,6 +229,14 @@ void enh_zx81_lee_rotate_last_bytes(void)
 //cancel_process puntero a valor int que dice si se cancela el proceso (valor diferente de 0). Si no se usa, pasar puntero a NULL. Esto
 //si puede activar desde thread externo
 //callback es una rutina que se llama en cada iteración del bucle, si no es NULL
+/*
+Nota: se han hecho pruebas con carga turbo (730 bauds), los datos contenidos en la cinta de control de stocks
+En este código se encuentran comentados trozos para leer turbo, en cuanto al conteo de bits normal, el conteo de bits
+cuando los pulsos no son normales y las longitudes de las crestas. Sin embargo no se llega a una rutina perfecta para leer bien esos datos,
+a veces aparecen unos textos de datos de stocks, luego jugando con las longitudes de las crestas salen otros textos, etc
+Dado que actualmente sólo dispongo de esos datos, no llego a una conclusión sobre cual seria la rutina buena para leer turbo. Por tanto,
+dejo ese código comentado por si en un futuro tengo mas cintas turbo y se puede implementar bien
+*/
 int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *destino_p81,
     z80_byte amplitud_media, int debug_print,int *longitud_nombre,void (*fun_print)(char *),int *cancel_process,
     void (*callback)(void),int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores)
@@ -386,11 +394,8 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
 
                             int bit_leido=0;
 
-                            //Conteo de pulsos que habia inicialmente, leido stocks.p81 con md5 6775784b5fd35b5a9f3444fdf10a7447
-                            //if (conteo_pulsos_de_bit==3 || conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5) bit_leido=0;
-                            //else if (conteo_pulsos_de_bit==8 || conteo_pulsos_de_bit==9 || conteo_pulsos_de_bit==10) bit_leido=1;
 
-                            //Prueba conteo de pulsos para turbo
+                            //conteo de pulsos para turbo
                             //if (conteo_pulsos_de_bit==2) bit_leido=0;
                             //else if (conteo_pulsos_de_bit==4 || conteo_pulsos_de_bit==5 || conteo_pulsos_de_bit==6) bit_leido=1;
 
@@ -411,6 +416,10 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                 //6 o mas pulsos, es un 1
                                 //Nota: esto no deberia pasar en una cinta correcta, lo hacemos para intentar
                                 //corregir errores
+
+                                //Para turbo
+                                //if (conteo_pulsos_de_bit<=2) bit_leido=0;
+
                                 if (conteo_pulsos_de_bit<=5) bit_leido=0;
                                 else bit_leido=1;
 
