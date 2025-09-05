@@ -425,7 +425,7 @@ int enh_zx81_lee_datos(z80_byte *enhanced_memoria,int tamanyo_memoria,z80_byte *
                                     *total_pulsos_sospechosos=(*total_pulsos_sospechosos)+1;
                                 }
                                 if (fun_print!=NULL) {
-                                    sprintf(buffer_print,"%d We do not know what bit value is when found %d pulses",i,conteo_pulsos_de_bit);
+                                    sprintf(buffer_print,"%d Anomalous pulse count %d. Assume bit value %d",i,conteo_pulsos_de_bit,bit_leido);
                                     fun_print(buffer_print);
                                 }
                             }
