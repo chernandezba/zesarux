@@ -32982,6 +32982,13 @@ void menu_external_audio_source_to_disk_samplerate(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Samplerate Hz",&audiorecord_input_write_to_disk_output_freq,7,+100,1,999999,0);
 }
 
+int menu_external_audio_source_to_disk_samplerate_cond(void)
+{
+    if (audiorecord_input_write_to_disk_enabled) return 0;
+    else return 1;
+}
+
+
 void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -33012,7 +33019,8 @@ void menu_external_audio_source_to_disk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo(array_menu_common,"    ");
 
 
-		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_external_audio_source_to_disk_samplerate,NULL,
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,
+            menu_external_audio_source_to_disk_samplerate,menu_external_audio_source_to_disk_samplerate_cond,
             "Sample Rate","Frecuencia Sampleo","Frequencia Sampleig");
         menu_add_item_menu_sufijo_format(array_menu_common," [%d] Hz",audiorecord_input_write_to_disk_output_freq);
         menu_add_item_menu_prefijo(array_menu_common,"    ");

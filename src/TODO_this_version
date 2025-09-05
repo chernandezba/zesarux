@@ -164,12 +164,6 @@ Mac parece hacerlo bien... o si?
 *poder convertir audio de zx80?
 
 
-*ajustar esto:
-                        //Crestas de subida que sean 3 o 4 veces de mayor longitud que la cresta de bajada implica que hay un silencio antes de dicha onda
-                        if (longitud_cresta_subida>longitud_cresta_bajada*3 && pulsos_leidos) {
-realmente es *3? Bueno realmente es bastante mas que 3, ejemplo Rise length: 21 Fall length: 3
-
-
 
 ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
 
