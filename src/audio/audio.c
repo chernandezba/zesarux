@@ -310,25 +310,80 @@ int audiorecord_input_write_to_disk_output_buffer_pos=0;
 //buffer de escritura, para no escribir byte a byte
 z80_byte audiorecord_input_write_to_disk_mem_buffer[AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER];
 
-void audiorecord_input_write_to_disk_enable_capture(void)
+#define AUDIORECORD_WRITE_DISK_FILE_TYPE_RAW 0
+#define AUDIORECORD_WRITE_DISK_FILE_TYPE_WAV 1
+
+int audiorecord_input_write_to_disk_file_type=AUDIORECORD_WRITE_DISK_FILE_TYPE_RAW;
+
+
+#ifdef USE_SNDFILE
+
+SF_INFO audiorecord_input_write_to_disk_wav_info;
+SNDFILE *audiorecord_input_write_to_disk_output_wavfile;
+
+
+void audiorecord_input_write_to_disk_send_frame_wav(char *buffer)
 {
-    ptr_audiorecord_input_write_to_disk=fopen(audiorecord_input_write_to_disk_file_name,"wb");
-    if (!ptr_audiorecord_input_write_to_disk) {
-        debug_printf(VERBOSE_ERR,"Unable to open file output %s",audiorecord_input_write_to_disk_file_name);
-        return;
-    }
+
+        sf_write_raw(audiorecord_input_write_to_disk_output_wavfile,audiorecord_input_write_to_disk_mem_buffer,AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER);
+}
+
+void audiorecord_input_write_to_disk_enable_capture_wav(void)
+{
+
+
+	audiorecord_input_write_to_disk_wav_info.format=SF_FORMAT_WAV | SF_FORMAT_PCM_U8;
+	audiorecord_input_write_to_disk_wav_info.samplerate=audiorecord_input_write_to_disk_output_freq;
+	audiorecord_input_write_to_disk_wav_info.channels=1;
+	audiorecord_input_write_to_disk_wav_info.frames= 123456789 ; /* Wrong length. Library should correct this on sf_close. */
+
+
+	// open output file
+	audiorecord_input_write_to_disk_output_wavfile = sf_open(audiorecord_input_write_to_disk_file_name, SFM_WRITE, &audiorecord_input_write_to_disk_wav_info);
+
+	//printf ("open wav\n");
+
+	if (audiorecord_input_write_to_disk_output_wavfile==NULL) {
+		debug_printf (VERBOSE_ERR,"Failed with error: %s",sf_strerror(NULL));
+		return;
+	}
 
     audiorecord_input_write_to_disk_enabled=1;
     audiorecord_input_write_to_disk_output_buffer_pos=0;
 
-    //Cambiar samplerate si RWA
-    if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"rwa")) {
-        audiorecord_input_write_to_disk_output_freq=15600;
+
+}
+
+
+
+
+#endif
+
+
+
+void audiorecord_input_write_to_disk_enable_capture(void)
+{
+
+    if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"wav")) {
+#ifdef USE_SNDFILE
+        audiorecord_input_write_to_disk_file_type=AUDIORECORD_WRITE_DISK_FILE_TYPE_WAV;
+        audiorecord_input_write_to_disk_enable_capture_wav();
+#else
+        debug_printf(VERBOSE_ERR,"ZEsarUX is not compiled with libsndfile support");
+#endif
     }
 
-    //Y si es RAW, consideramos que es misma frecuencia a la que se captura
-    if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"raw")) {
-        audiorecord_input_write_to_disk_output_freq=AUDIO_RECORD_FREQUENCY;
+    else {
+        audiorecord_input_write_to_disk_file_type=AUDIORECORD_WRITE_DISK_FILE_TYPE_RAW;
+        ptr_audiorecord_input_write_to_disk=fopen(audiorecord_input_write_to_disk_file_name,"wb");
+        if (!ptr_audiorecord_input_write_to_disk) {
+            debug_printf(VERBOSE_ERR,"Unable to open file output %s",audiorecord_input_write_to_disk_file_name);
+            return;
+        }
+
+        audiorecord_input_write_to_disk_enabled=1;
+        audiorecord_input_write_to_disk_output_buffer_pos=0;
+
     }
 
 }
@@ -336,11 +391,27 @@ void audiorecord_input_write_to_disk_enable_capture(void)
 void audiorecord_input_write_to_disk_disable_capture(void)
 {
     if (audiorecord_input_write_to_disk_enabled) {
-        //escribir lo que haya leido del trozo del buffer
-        fwrite(audiorecord_input_write_to_disk_mem_buffer, 1, audiorecord_input_write_to_disk_output_buffer_pos, ptr_audiorecord_input_write_to_disk);
 
-        fclose(ptr_audiorecord_input_write_to_disk);
+
+#ifdef USE_SNDFILE
+
+        if (audiorecord_input_write_to_disk_file_type==AUDIORECORD_WRITE_DISK_FILE_TYPE_WAV) {
+            debug_printf (VERBOSE_INFO,"Closing aofile type WAV");
+            sf_close(audiorecord_input_write_to_disk_output_wavfile);
+        }
+
+#endif
+
+        if (audiorecord_input_write_to_disk_file_type==AUDIORECORD_WRITE_DISK_FILE_TYPE_RAW) {
+            //escribir lo que haya leido del trozo del buffer
+            fwrite(audiorecord_input_write_to_disk_mem_buffer, 1, audiorecord_input_write_to_disk_output_buffer_pos, ptr_audiorecord_input_write_to_disk);
+
+            fclose(ptr_audiorecord_input_write_to_disk);
+        }
+
+
         audiorecord_input_write_to_disk_enabled=0;
+
     }
 
 }
@@ -400,7 +471,15 @@ void audiorecord_input_write_to_disk_save_byte(z80_byte valor_escribir)
         audiorecord_input_write_to_disk_output_buffer_pos=0;
 
         //flush a disco
-        fwrite(audiorecord_input_write_to_disk_mem_buffer, 1, AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER, ptr_audiorecord_input_write_to_disk);
+        if (audiorecord_input_write_to_disk_file_type==AUDIORECORD_WRITE_DISK_FILE_TYPE_RAW) {
+            fwrite(audiorecord_input_write_to_disk_mem_buffer, 1, AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER, ptr_audiorecord_input_write_to_disk);
+        }
+
+#ifdef USE_SNDFILE
+        if (audiorecord_input_write_to_disk_file_type==AUDIORECORD_WRITE_DISK_FILE_TYPE_WAV) {
+            audiorecord_input_write_to_disk_send_frame_wav();
+        }
+#endif
 
     }
 }

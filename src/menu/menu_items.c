@@ -32970,6 +32970,16 @@ void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
 
 		}
 
+        //Cambiar samplerate si RWA
+        if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"rwa")) {
+            audiorecord_input_write_to_disk_output_freq=15600;
+        }
+
+        //Y si es RAW, consideramos que es misma frecuencia a la que se captura
+        if (!util_compare_file_extension(audiorecord_input_write_to_disk_file_name,"raw")) {
+            audiorecord_input_write_to_disk_output_freq=AUDIO_RECORD_FREQUENCY;
+        }
+
         //and enable
         audiorecord_input_write_to_disk_enable_capture();
 	}
