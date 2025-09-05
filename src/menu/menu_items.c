@@ -32928,7 +32928,11 @@ void menu_external_audio_source_to_disk_select_file(MENU_ITEM_PARAMETERS)
 
     //select file
 
+#ifdef USE_SNDFILE
+    char *filtros[]={"wav","raw","rwa",0};
+#else
 	char *filtros[]={"raw","rwa",0};
+#endif
 
 	//guardamos directorio actual
 	char directorio_actual[PATH_MAX];
