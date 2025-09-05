@@ -322,7 +322,7 @@ SF_INFO audiorecord_input_write_to_disk_wav_info;
 SNDFILE *audiorecord_input_write_to_disk_output_wavfile;
 
 
-void audiorecord_input_write_to_disk_send_frame_wav(char *buffer)
+void audiorecord_input_write_to_disk_send_frame_wav(void)
 {
 
         sf_write_raw(audiorecord_input_write_to_disk_output_wavfile,audiorecord_input_write_to_disk_mem_buffer,AUDIO_RECORD_WRITE_DISK_OUTPUT_BUFFER);
