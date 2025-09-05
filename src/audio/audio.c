@@ -396,7 +396,9 @@ void audiorecord_input_write_to_disk_disable_capture(void)
 #ifdef USE_SNDFILE
 
         if (audiorecord_input_write_to_disk_file_type==AUDIORECORD_WRITE_DISK_FILE_TYPE_WAV) {
-            debug_printf (VERBOSE_INFO,"Closing aofile type WAV");
+            //escribir lo que haya leido del trozo del buffer
+            sf_write_raw(audiorecord_input_write_to_disk_output_wavfile,audiorecord_input_write_to_disk_mem_buffer,audiorecord_input_write_to_disk_output_buffer_pos);
+
             sf_close(audiorecord_input_write_to_disk_output_wavfile);
         }
 
@@ -417,6 +419,7 @@ void audiorecord_input_write_to_disk_disable_capture(void)
 }
 
 //Retornar minutos y segundos escritos del archivo
+//Nota: esto es exacto para un archivo en crudo. Pero para un wav no es preciso, aunque sirve como aproximado
 void audiorecord_input_write_to_disk_time_size(int *minutos,int *segundos)
 {
 
@@ -451,18 +454,6 @@ long long audiorecord_input_write_to_disk_total_size(void)
 
 void audiorecord_input_write_to_disk_save_byte(z80_byte valor_escribir)
 {
-    /*if (!audiorecord_input_write_to_disk_file_opened) {
-        //abrir archivo. TEMPORAL para abrirlo sobre la marcha
-
-        ptr_audiorecord_input_write_to_disk=fopen(audiorecord_input_write_to_disk_file_name,"wb");
-        if (!ptr_audiorecord_input_write_to_disk) {
-            debug_printf(VERBOSE_ERR,"Unable to open file output %s",audiorecord_input_write_to_disk_file_name);
-            return;
-        }
-
-        audiorecord_input_write_to_disk_file_opened=1;
-
-    }*/
 
     //escribir byte en archivo. En bloques de 1KB
     audiorecord_input_write_to_disk_mem_buffer[audiorecord_input_write_to_disk_output_buffer_pos++]=valor_escribir;
