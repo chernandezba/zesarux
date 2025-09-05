@@ -489,15 +489,6 @@ void audiorecord_input_write_to_disk_one_byte(char valor_escribir)
     //Convertir primero a unsigned
     int valor_unsigned=128+valor_escribir;
 
-#ifdef USE_SNDFILE
-    //Ya hace resampleo la propia libreria
-    if (audiorecord_input_write_to_disk_file_type==AUDIORECORD_WRITE_DISK_FILE_TYPE_WAV) {
-        audiorecord_input_write_to_disk_save_byte(valor_unsigned);
-        return;
-    }
-#endif
-
-
     //Hacer resampling
     audiorecord_input_write_to_disk_output_counter +=audiorecord_input_write_to_disk_output_freq;
     //printf("Llamado\n");
