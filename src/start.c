@@ -839,7 +839,7 @@ printf (
 
 
 #ifdef COMPILE_ALSA
-        "--alsacapturedevice s       Define alsa capture device for audio input (default: hw0)\n"
+        "--alsacapturedevice s       Define alsa capture device for audio input (default: hw:0)\n"
 		"--alsaperiodsize n          Alsa audio periodsize multiplier (2 or 4). Default 2. Lower values reduce latency but can increase cpu usage\n"
 
 

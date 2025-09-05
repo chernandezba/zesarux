@@ -1532,7 +1532,7 @@ void audioalsa_start_record_input(void)
     //16 bits, stereo
     capture_buffer = util_malloc(ALSA_CAPTURE_BUFFER,"Cannot allocate memory for audio capture");
 
-    fprintf(stdout, "buffer allocated\n");
+    //fprintf(stdout, "buffer allocated\n");
 
 
     audioalsa_start_record_input_create_thread();
