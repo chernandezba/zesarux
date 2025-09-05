@@ -4929,7 +4929,7 @@ void menu_audio_draw_sound_wave(void)
                                 if (convert_audio_to_zx81_error_en_pos_actual && menu_convert_audio_to_zx81_zoom_wave==1) {
                                     char buffer_texto_pulsos[40];
 
-                                    sprintf(buffer_texto_pulsos,"Error %d pulses!!",convert_audio_to_zx81_error_en_pos_actual_pulsos);
+                                    sprintf(buffer_texto_pulsos,"<-Error %d pulses!!",convert_audio_to_zx81_error_en_pos_actual_pulsos);
 
                                     //+40. algo mas abajo del texto a destacar, para que no se mezclen
                                     /*zxvision_print_vectorial_text(menu_audio_draw_sound_wave_window,x,
