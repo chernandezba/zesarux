@@ -96,8 +96,12 @@ Improved External Audio Source window:
 - Allow to enable input from this window
 
 Improved View Basic window:
+- Window can be put in background
+- Automatically refreshes if listing changes
+- Allow to show BetaBasic tokens
+- Allow to set custom start + length program
+- Allow to follow line executed
 - Allow lines > 9999, useful for protected programs
-- AGREGAR LO QUE FALTA!!!
 
 Improved conversion audio to P/P81 ZX81 files: added alternative enhanced algorithm
 Improved Hexadecimal editor: follow expression is saved on configuration
