@@ -34093,26 +34093,14 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
 
         switch (tecla) {
-
             case 'a':
                 debug_view_basic_show_address.v ^=1;
                 menu_view_basic_listing_modified=1;
             break;
 
-            case 'p':
-                menu_view_basic_listing_memory_enabled.v ^=1;
-            break;
-
-            case 's':
-                if (menu_view_basic_listing_memory_enabled.v) {
-                    menu_view_basic_listing_set_pointer();
-                }
-            break;
-
-            case 'l':
-                if (menu_view_basic_listing_memory_enabled.v) {
-                    menu_view_basic_listing_set_length();
-                }
+            case 'b':
+                debug_view_basic_show_betabasic.v ^=1;
+                menu_view_basic_listing_modified=1;
             break;
 
             case 'e':
@@ -34121,9 +34109,14 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 't':
-                if (!menu_view_basic_listing_find_text(ventana)) {
-                    menu_warn_message("Text not found");
+            case 'f':
+                menu_view_basic_listing_follow_current_line.v ^=1;
+                menu_view_basic_listing_follow_line_last=-1;
+            break;
+
+            case 'l':
+                if (menu_view_basic_listing_memory_enabled.v) {
+                    menu_view_basic_listing_set_length();
                 }
             break;
 
@@ -34138,27 +34131,21 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 'f':
-                menu_view_basic_listing_follow_current_line.v ^=1;
-                menu_view_basic_listing_follow_line_last=-1;
+            case 'p':
+                menu_view_basic_listing_memory_enabled.v ^=1;
             break;
 
-            case 'b':
-                debug_view_basic_show_betabasic.v ^=1;
-                menu_view_basic_listing_modified=1;
+            case 's':
+                if (menu_view_basic_listing_memory_enabled.v) {
+                    menu_view_basic_listing_set_pointer();
+                }
             break;
 
-            //abajo
-            /*
-            case 10:
-                zxvision_send_scroll_down(ventana);
+            case 't':
+                if (!menu_view_basic_listing_find_text(ventana)) {
+                    menu_warn_message("Text not found");
+                }
             break;
-
-            //arriba
-            case 11:
-                zxvision_send_scroll_up(ventana);
-            break;
-            */
 
 
             //Salir con ESC
