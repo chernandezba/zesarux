@@ -33767,10 +33767,8 @@ char menu_view_basic_listing_find_text_buffer_texto[30]="";
 int menu_view_basic_listing_find_text_last_line=0;
 
 //Retorna 0 si no encontrado
-int menu_view_basic_listing_find_next(zxvision_window *w)
+int menu_view_basic_listing_find_next_continue(zxvision_window *w)
 {
-
-    menu_view_basic_listing_find_text_last_line++;
 
     int indice=menu_view_basic_listing_find_text_aux(menu_view_basic_listing_find_text_buffer_texto,menu_view_basic_listing_find_text_last_line);
 
@@ -33789,28 +33787,26 @@ int menu_view_basic_listing_find_next(zxvision_window *w)
 
 }
 
+//Retorna 0 si no encontrado
+int menu_view_basic_listing_find_next(zxvision_window *w)
+{
+
+    menu_view_basic_listing_find_text_last_line++;
+
+    return menu_view_basic_listing_find_next_continue(w);
+
+}
+
 
 //Retorna 0 si no encontrado
 int menu_view_basic_listing_find_text(zxvision_window *w)
 {
 
-	menu_view_basic_listing_find_text_buffer_texto[0]=0;
     menu_ventana_scanf("Text to search",menu_view_basic_listing_find_text_buffer_texto,30);
 
-    int indice=menu_view_basic_listing_find_text_aux(menu_view_basic_listing_find_text_buffer_texto,0);
+    menu_view_basic_listing_find_text_last_line=0;
 
-    if (indice>=0) {
-        //printf("Encontrada\n");
-        menu_view_basic_listing_find_text_last_line=indice;
-        zxvision_set_offset_y(w,indice);
-        return 1;
-    }
-
-    else {
-        menu_view_basic_listing_find_text_last_line=0;
-        //printf("No encontrada\n");
-        return 0;
-    }
+    return menu_view_basic_listing_find_next_continue(w);
 
 }
 

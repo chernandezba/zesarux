@@ -67,7 +67,7 @@ ok *permitir pgup, pgdn
 ok *probar en linux meter poke continuo en direccion basic y ver si libera bien memoria de buffers
 ok * Ver basic con interface 1 conectado
 ok * que actualice current line continuamente
-*poder buscar texto
+ok *poder buscar texto
 * icono
 
 *cada linea tiene doble salto de linea
