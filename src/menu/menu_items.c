@@ -33505,7 +33505,12 @@ z80_byte menu_file_bas_browser_show_peek(z80_int dir)
 
 zxvision_window *menu_view_basic_listing_window;
 
-#define VIEW_BASIC_HEADER_LINES 3
+#define VIEW_BASIC_HEADER_LINES 4
+
+#define MENU_VIEW_BASIC_LISTING_LINE_SETTINGS 0
+#define MENU_VIEW_BASIC_LISTING_LINE_FIND 1
+#define MENU_VIEW_BASIC_LISTING_LINE_POINTER 2
+#define MENU_VIEW_BASIC_LISTING_LINE_LINE 3
 
 //1024kb al descomponer tokens en texto creo que es mas que suficiente
 #define VIEW_BASIC_MAX_BASIC_TEXT (1024*1024)
@@ -33692,7 +33697,7 @@ int menu_view_basic_listing_find_line_aux(int linea_buscar)
 
     for (i=0;i<menu_view_basic_listing_total_lineas;i++) {
         char *linea=menu_view_basic_listing_punteros_lineas[i];
-        printf("%d : %s\n",i,linea);
+        //printf("%d : %s\n",i,linea);
 
         //Numero y espacio
         if (strlen(linea)>=6) {
@@ -33731,6 +33736,52 @@ int menu_view_basic_listing_find_line(zxvision_window *w)
 
 }
 
+//Retorna indice de linea en array si encontrada
+//-1 si no encontrada
+int menu_view_basic_listing_find_text_aux(char *texto_buscar)
+{
+
+    int i;
+
+
+    for (i=0;i<menu_view_basic_listing_total_lineas;i++) {
+        char *linea=menu_view_basic_listing_punteros_lineas[i];
+        //printf("%d : %s\n",i,linea);
+
+        char *encontrado=util_strcasestr(linea,texto_buscar);
+        if (encontrado!=NULL) {
+            return i;
+        }
+
+    }
+
+    return -1;
+
+}
+
+//Retorna 0 si no encontrado
+int menu_view_basic_listing_find_text(zxvision_window *w)
+{
+	char buffer_texto[10];
+
+	buffer_texto[0]=0;
+    menu_ventana_scanf("Text to search",buffer_texto,6);
+
+    int indice=menu_view_basic_listing_find_text_aux(buffer_texto);
+
+    if (indice>=0) {
+        printf("Encontrada\n");
+        zxvision_set_offset_y(w,indice);
+        return 1;
+    }
+
+    else {
+        printf("No encontrada\n");
+        return 0;
+    }
+
+}
+
 void menu_view_basic_listing_print_pointer_line(zxvision_window *ventana)
 {
     int antes_writing_inverse_color=ventana->writing_inverse_color;
@@ -33749,7 +33800,7 @@ void menu_view_basic_listing_print_pointer_line(zxvision_window *ventana)
     }
 
 
-    zxvision_print_string_defaults_fillspc_format(ventana,1,1,
+    zxvision_print_string_defaults_fillspc_format(ventana,1,2,
         "Start ~~pointer %s",
         //(menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
         buffer_custom_pointer
@@ -33794,12 +33845,12 @@ void menu_view_basic_listing_overlay(void)
         //Muestro aqui continuamente la linea y sentencia actual
 
         if (MACHINE_IS_ZX8081) {
-            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,2,"Current line: %5d",linea);
+            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,3,"Current line: %5d",linea);
         }
 
         else {
             //Spectrum
-            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,2,"Current line: %5d:%3d",linea,sentencia);
+            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,3,"Current line: %5d:%3d",linea,sentencia);
         }
 
 
@@ -33989,10 +34040,16 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
         ventana->writing_inverse_color=1;
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,0,
-            "[%c] Show ~~address [%c] Show ~~BetaBasic [%c] ~~Follow ~~e: Find line",(debug_view_basic_show_address.v ? 'X' : ' ' ),
+        int linea=0;
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,
+            "[%c] Show ~~address [%c] Show ~~BetaBasic [%c] ~~Follow",(debug_view_basic_show_address.v ? 'X' : ' ' ),
             (debug_view_basic_show_betabasic.v ? 'X' : ' '),
             (menu_view_basic_listing_follow_current_line.v ? 'X' : ' ')
+        );
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,
+            "~~e: Find line ~~t: Find text"
         );
 
         menu_view_basic_listing_print_pointer_line(ventana);
@@ -34034,6 +34091,12 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
             case 'e':
                 if (!menu_view_basic_listing_find_line(ventana)) {
                     menu_warn_message("Line not found");
+                }
+            break;
+
+            case 't':
+                if (!menu_view_basic_listing_find_text(ventana)) {
+                    menu_warn_message("Text not found");
                 }
             break;
 
