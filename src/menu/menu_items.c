@@ -33638,15 +33638,15 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     //maximo permitido en ancho
     int maxima_longitud=max_line_length-1;
 
-    printf("antes de malloc buffer lineas\n");
+    //printf("antes de malloc buffer lineas\n");
     if (menu_view_basic_listing_buffer_lineas!=NULL) {
-        printf("Liberando menu_view_basic_listing_buffer_lineas\n");
+        //printf("Liberando menu_view_basic_listing_buffer_lineas\n");
         free(menu_view_basic_listing_buffer_lineas);
         menu_view_basic_listing_buffer_lineas=NULL;
     }
 
     if (menu_view_basic_listing_buffer_lineas==NULL) {
-        printf("Asignando menu_view_basic_listing_buffer_lineas\n");
+        //printf("Asignando menu_view_basic_listing_buffer_lineas\n");
         menu_view_basic_listing_buffer_lineas=util_malloc(VIEW_BASIC_MAX_LINES_FINAL*max_line_length,"Can not allocate memory for basic lines");
     }
 
@@ -33860,7 +33860,7 @@ void menu_view_basic_listing_overlay(void)
         //Llamar aqui por saber si ha cambiado la longitud del programa basic
         menu_view_basic_listing_get_basic_parameters(&parameters);
 
-        printf("start add: %d\n",menu_view_basic_listing_memory_pointer);
+        //printf("start add: %d\n",menu_view_basic_listing_memory_pointer);
 
         //Escribir esto continuamente para reflejar cambios en inicio de programa cuando se usa Interface 1
         menu_view_basic_listing_print_pointer_line(menu_view_basic_listing_window);
@@ -33883,9 +33883,9 @@ void menu_view_basic_listing_overlay(void)
 
 
         z80_long_int crc32=menu_view_basic_listing_get_crc32();
-        printf("Obtenido crc: %X\n",crc32);
+        //printf("Obtenido crc: %X\n",crc32);
         if (crc32!=menu_view_basic_listing_last_crc32) {
-            printf("CRC modificado\n");
+            //printf("CRC modificado\n");
             menu_view_basic_listing_last_crc32=crc32;
             menu_view_basic_listing_modified=1;
         }
@@ -33903,13 +33903,13 @@ void menu_view_basic_listing_overlay(void)
                     int indice=menu_view_basic_listing_find_line_aux(menu_view_basic_listing_follow_line_last);
 
                     if (indice>=0) {
-                        printf("Encontrada linea actual %d\n",linea);
+                        //printf("Encontrada linea actual %d\n",linea);
                         zxvision_set_offset_y(menu_view_basic_listing_window,indice);
 
                     }
 
                     else {
-                        printf("No encontrada\n");
+                        //printf("No encontrada\n");
 
                     }
                 }
@@ -33920,7 +33920,7 @@ void menu_view_basic_listing_overlay(void)
     }
 
     if (menu_view_basic_listing_modified) {
-        printf("Obtener listado de nuevo de nuevo\n");
+        //printf("Obtener listado de nuevo de nuevo\n");
         menu_view_basic_listing_modified=0;
 
         if (menu_view_basic_listing_results_buffer!=NULL) {
