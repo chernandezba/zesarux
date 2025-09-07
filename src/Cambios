@@ -99,7 +99,7 @@ Mejorada ventana de View Basic:
 - La ventana se puede dejar en segundo plano
 - Automaticamente refresca si el listado cambia
 - Permitir ver tokens de BetaBasic
-- Permitir definir inicio + longitud de programa personalizado
+- Permitir definir inicio y longitud de programa personalizado
 - Permitir seguir línea en ejecución
 - Permitir lineas > 9999, útil para programas protegidos
 

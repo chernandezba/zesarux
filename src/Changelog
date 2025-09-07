@@ -99,7 +99,7 @@ Improved View Basic window:
 - Window can be put in background
 - Automatically refreshes if listing changes
 - Allow to show BetaBasic tokens
-- Allow to set custom start + length program
+- Allow to set custom start and program length
 - Allow to follow line executed
 - Allow lines > 9999, useful for protected programs
 
