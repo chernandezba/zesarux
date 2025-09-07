@@ -33821,15 +33821,15 @@ void menu_view_basic_listing_print_pointer_line(zxvision_window *ventana)
     buffer_custom_pointer[0]=0;
 
     if (menu_view_basic_listing_memory_enabled.v) {
-        sprintf(buffer_custom_pointer,"[Custom] Addre~~ss: %d ~~length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
+        sprintf(buffer_custom_pointer,"[Custom] S~~tart: %d len~~gth: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
     }
     else {
-        sprintf(buffer_custom_pointer,"[ Auto ] Address: %d length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
+        sprintf(buffer_custom_pointer,"[ Auto ] Start: %d length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
     }
 
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_VIEW_BASIC_LISTING_LINE_POINTER,
-        "Start ~~pointer %s",
+        "~~Start & Length %s",
         //(menu_view_basic_listing_memory_enabled.v ? 'X' : ' ' ),
         buffer_custom_pointer
     );
@@ -34070,13 +34070,13 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_VIEW_BASIC_LISTING_LINE_SETTINGS,
-            "[%c] Show ~~address [%c] Show ~~BetaBasic [%c] ~~Follow",(debug_view_basic_show_address.v ? 'X' : ' ' ),
+            "[%c] Show ~~address [%c] Show ~~BetaBasic [%c] Fo~~llow",(debug_view_basic_show_address.v ? 'X' : ' ' ),
             (debug_view_basic_show_betabasic.v ? 'X' : ' '),
             (menu_view_basic_listing_follow_current_line.v ? 'X' : ' ')
         );
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_VIEW_BASIC_LISTING_LINE_FIND,
-            "~~e: Find lin~~e ~~t: Find ~~text ~~n: Find ~~next"
+            "~~e: Find lin~~e ~~f: ~~Find text ~~n: Find ~~next"
         );
 
         menu_view_basic_listing_print_pointer_line(ventana);
@@ -34110,15 +34110,23 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
             break;
 
             case 'f':
-                menu_view_basic_listing_follow_current_line.v ^=1;
-                menu_view_basic_listing_follow_line_last=-1;
+                if (!menu_view_basic_listing_find_text(ventana)) {
+                    menu_warn_message("Text not found");
+                }
             break;
 
-            case 'l':
+            case 'g':
                 if (menu_view_basic_listing_memory_enabled.v) {
                     menu_view_basic_listing_set_length();
                 }
             break;
+
+            case 'l':
+                menu_view_basic_listing_follow_current_line.v ^=1;
+                menu_view_basic_listing_follow_line_last=-1;
+            break;
+
+
 
             case 'n':
                 if (menu_view_basic_listing_find_text_buffer_texto[0]==0) {
@@ -34131,19 +34139,13 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 'p':
+            case 's':
                 menu_view_basic_listing_memory_enabled.v ^=1;
             break;
 
-            case 's':
+            case 't':
                 if (menu_view_basic_listing_memory_enabled.v) {
                     menu_view_basic_listing_set_pointer();
-                }
-            break;
-
-            case 't':
-                if (!menu_view_basic_listing_find_text(ventana)) {
-                    menu_warn_message("Text not found");
                 }
             break;
 

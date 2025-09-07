@@ -41,36 +41,10 @@ sino el usuario lo veria en blanco
 
 -- Nuevo visor de Basic --
 
--Visor de basic que permita indicar dirección ram donde empezar: sirve para poder ver el bloque de basic
-cargado desde el Cargador Azul por ejemplo
-Quizá una ventana con una primera linea con dirección de inicio y otra info, y de la segunda linea hacia abajo que sea
-el listado basic
 
-ok *Sprite navigator por ejemplo usa una primera linea fija y la segunda para abajo variables
-
-ok *Pero necesitaria ventana que trunque y justifique lineas, como una ventana de dialogo normal -> ejemplo en text adventure localidades
-zxvision_generic_message_aux_justificar_lineas... para justificar
-ok *y debug_view_basic_from_memory similar a como lo hace el file browser para mostrar vista basic con direccion inicio modificable
-
-ok *misma ventana para basic normal y el modificable de direccion de inicio. con checkbox con algo como:
-[x] Current basic / Start address
-Si start address, que pregunte direccion inicio y también longitud en bytes
-
-ok *que se pueda quedar en background. Que refresque al entrar y también estando en background si detecta cambios en programa
-(quiza sacar un checksum cada 1 segundo de toda la longitud y ver si cambia)
-ok *permitir betabasic: keywords son letras gráficas. opcion si mostrar keywords betabasic o no
-ok *show address in view basic que aparezca también esa opción en la ventana (y quitarla del menu settings debug)
-ok *funcion debug get basic limita el maximo de caracteres a MAX_TEXTO_GENERIC_MESSAGE
-ok *Ver tokens adicionales de versiones superiores de betabasic
-ok *poder buscar lineas
-ok *permitir pgup, pgdn
-ok *probar en linux meter poke continuo en direccion basic y ver si libera bien memoria de buffers
-ok * Ver basic con interface 1 conectado
-ok * que actualice current line continuamente
-ok *poder buscar texto
 * icono
 
-*cada linea tiene doble salto de linea
+ok *cada linea tiene doble salto de linea
 
 -- Fin nuevo visor de Basic --
 
