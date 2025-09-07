@@ -9769,7 +9769,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"videoinfo",           "videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
     {"videolayers",         "videolayer",   menu_video_layers,bitmap_button_ext_desktop_videolayers},
     {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_videooutput},
-    {"viewbasiclisting",    "view basic",   menu_view_basic_listing,bitmap_button_ext_desktop_userdefined},
+    {"viewbasiclisting",    "view basic",   menu_view_basic_listing,bitmap_button_ext_desktop_view_basic},
     {"visualcassettetape",  "viscastap",    menu_visual_cassette_tape,bitmap_button_ext_desktop_visual_cassete_tape},
     {"visualfloppy",        "visual flp",   menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
 #ifdef EMULATE_VISUALMEM
