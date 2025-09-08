@@ -4392,33 +4392,11 @@ void menu_hilow_convert_audio_write_hilow_ddh_file(char *archivo)
 
 void menu_hilow_convert_help(void)
 {
-    /*
-    if (gui_language==GUI_LANGUAGE_SPANISH) {
-        menu_generic_message("Ayuda",
-        "En esta ventana de Debug CPU se pueden tener diferentes vistas (seleccionables con las teclas 1-8), cada una mostrando diferente información:\n"
 
-        );
-    }
-
-    else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        menu_generic_message("Ajuda",
-        "En aquesta finestra de Debug CPU es poden tenir diferents vistes (seleccionables amb les tecles 1-8), cadascuna mostrant diferent informació:\n"
-
-        );
-    }
-
-
-    else {
-        menu_generic_message("Help",
-        "This Debug CPU window can show different views (chosen with keys 1-8), each of them showing different information:\n"
-        "1 - Default view. You see a top section with opcodes disassembly and registers. This section can be changed pressing key m, "
-
-        );
-    }*/
 
         menu_generic_message("Help",
         "This tool reads from a HiLow Tape Audio file and converts it to Data Drive Hilow image file (.ddh) that can be used on ZEsarUX.\n"
-        "The input audio file can be a .raw file (44100 Hz, mono, 8 bit, unsigned) but also a .wav file (you will need sox utility configured to read .wav).\n"
+        "The input audio file can be a .raw file (in this case: 44100 Hz, mono, 8 bit, unsigned) but also a .wav file (you will need sox utility configured to read .wav).\n"
         "The input audio file must be divided on two files: one from the side A, and the other one from the side B.\n"
         "The sector being read is enabled as a Memory Zone, that you may see using the Hexadecimal Editor, for example.\n"
         "\n"

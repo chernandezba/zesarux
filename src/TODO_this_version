@@ -116,8 +116,6 @@ Mac parece hacerlo bien... o si?
 
 
 
-ok -Puede leer .RAW sin problema? Mientras sea 8 bit unsigned debería funcionar
-
 -un .RAW tambien identifica a una imagen de salida de hilow en formato crudo
 -tambien un .raw es archivo de audio 44100hz, 8 bit, unsigned para entrada de sonido al convertir de cinta hilow a ddh
 -y ahora tambien al capturar sonido, considero un .raw como archivo en crudo con frecuencia de sampleo 31200hz
