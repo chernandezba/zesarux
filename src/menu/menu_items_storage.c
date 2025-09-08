@@ -2136,6 +2136,51 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 
 
+//Para hacer las pausas entre cada sample de audio
+struct timeval menu_convert_audio_to_zx81_timer_antes, menu_convert_audio_to_zx81_timer_ahora;
+
+
+void menu_convert_audio_to_zx81_tiempo_inicial(void)
+{
+
+    gettimeofday(&menu_convert_audio_to_zx81_timer_antes, NULL);
+
+}
+
+//Calcular tiempo pasado en microsegundos
+long menu_convert_audio_to_zx81_tiempo_final_usec(void)
+{
+
+    long menu_convert_audio_to_zx81_timer_time, menu_convert_audio_to_zx81_timer_seconds, menu_convert_audio_to_zx81_timer_useconds;
+
+    gettimeofday(&menu_convert_audio_to_zx81_timer_ahora, NULL);
+
+    menu_convert_audio_to_zx81_timer_seconds  = menu_convert_audio_to_zx81_timer_ahora.tv_sec  - menu_convert_audio_to_zx81_timer_antes.tv_sec;
+    menu_convert_audio_to_zx81_timer_useconds = menu_convert_audio_to_zx81_timer_ahora.tv_usec - menu_convert_audio_to_zx81_timer_antes.tv_usec;
+
+    menu_convert_audio_to_zx81_timer_time = ((menu_convert_audio_to_zx81_timer_seconds) * 1000000 + menu_convert_audio_to_zx81_timer_useconds);
+
+    //printf("Elapsed time: %ld milliseconds\n\r", menu_convert_audio_to_zx81_timer_mtime);
+
+        return menu_convert_audio_to_zx81_timer_time;
+}
+
+void menu_convert_audio_to_zx81_precise_usleep(int duracion)
+{
+
+    int tiempo_pasado_usec=menu_convert_audio_to_zx81_tiempo_final_usec();
+
+    while (tiempo_pasado_usec<duracion) {
+        //Dormir 1 microsegundo para no saturar la cpu
+	//No. esto no es muy preciso en algunos Linux. Casi prefiero saturar una cpu y que se escuche a tiempo real
+        //usleep(1);
+        tiempo_pasado_usec=menu_convert_audio_to_zx81_tiempo_final_usec();
+    }
+}
+
+//Si queremos un usleep preciso, quiza en Windows y en algunos Linux es necesario. Mac suele ser preciso la funcion normal de usleep
+int menu_convert_audio_to_zx81_activar_precise_usleep=0;
+
 //Aqui se llama en cada iteracion del bucle de conversion. Meter pausas si conviene
 void menu_convert_audio_to_zx81_callback(void)
 {
@@ -2169,8 +2214,16 @@ void menu_convert_audio_to_zx81_callback(void)
     int multiplicador;
     menu_convert_audio_to_zx81_da_velocidad_y_multiplicador(&pausa,&multiplicador);
 
+    if (menu_convert_audio_to_zx81_activar_precise_usleep) {
+        menu_convert_audio_to_zx81_precise_usleep(pausa);
+        menu_convert_audio_to_zx81_tiempo_inicial();
+    }
 
-    usleep(pausa);
+    else {
+        usleep(pausa);
+    }
+
+
 }
 
 //Decimos si en la posicion actual hay algun error al leer pulsos
@@ -2514,6 +2567,8 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
 
 	int salir=0;
+
+    menu_convert_audio_to_zx81_tiempo_inicial();
 
 
     menu_convert_audio_to_zx81_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
