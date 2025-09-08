@@ -34877,6 +34877,48 @@ int menu_view_gosub_stack_recargar=0;
 
 #define MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH 30
 
+z80_long_int menu_view_gosub_stack_last_crc32=0;
+
+//Calcular crc32 del stack por saber si se modifica para volver a renderizar
+z80_long_int menu_view_gosub_stack_get_crc32(void)
+{
+
+
+    int start_address=reg_sp;
+    int length=65536-reg_sp;
+
+    if (length<1) {
+      //escribir_socket(misocket,"ERROR. Length must be >0");
+      return 0;
+    }
+
+
+    //Copiar contenido memoria segun memory zone activa a buffer de memoria temporal
+    z80_byte *memoria_temporal;
+    memoria_temporal=malloc(length);
+    if (memoria_temporal==NULL) cpu_panic("Can not allocate memory for crc32 calculation");
+
+    int longitud_copiar=length;
+    int i;
+
+    for (i=0;longitud_copiar>0;i++,longitud_copiar--) {
+      z80_byte byte_leido=peek_byte_no_time(start_address+i);
+      memoria_temporal[i]=byte_leido;
+    }
+
+
+
+    z80_long_int crc32=util_crc32_calculation(0,memoria_temporal,length);
+
+
+    free(memoria_temporal);
+
+    return crc32;
+
+}
+
+
+
 void menu_view_gosub_stack_overlay(void)
 {
 
@@ -34889,12 +34931,19 @@ void menu_view_gosub_stack_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
+    z80_long_int crc32=menu_view_gosub_stack_get_crc32();
+    printf("Obtenido crc: %X\n",crc32);
+    if (crc32!=menu_view_gosub_stack_last_crc32) {
+        printf("CRC modificado\n");
+        menu_view_gosub_stack_last_crc32=crc32;
+        menu_view_gosub_stack_recargar=1;
+    }
+
     if (menu_view_gosub_stack_recargar) {
         char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing go sub stack");
 
         debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
 
-        //menu_generic_message_format("Basic GO SUB stack","%s",results_buffer);
         //Mostrar una a una todas las lineas
 
         char buffer_linea[MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH+1];
