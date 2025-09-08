@@ -259,6 +259,7 @@ extern int menu_debug_hexdump_follow_expression_defined(void);
 extern void menu_debug_hexdump_get_follow_expression_string(char *string_texto);
 
 extern void menu_view_basic_listing(MENU_ITEM_PARAMETERS);
+extern void menu_view_gosub_stack(MENU_ITEM_PARAMETERS);
 
 
 struct s_menu_debug_view_sensors_list {

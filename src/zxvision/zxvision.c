@@ -9770,6 +9770,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"videolayers",         "videolayer",   menu_video_layers,bitmap_button_ext_desktop_videolayers},
     {"videooutput",         "video outp",   menu_video_output,bitmap_button_ext_desktop_videooutput},
     {"viewbasiclisting",    "view basic",   menu_view_basic_listing,bitmap_button_ext_desktop_view_basic},
+    {"viewgosubstack",      "view gosub",   menu_view_gosub_stack,bitmap_button_ext_desktop_userdefined},
     {"visualcassettetape",  "viscastap",    menu_visual_cassette_tape,bitmap_button_ext_desktop_visual_cassete_tape},
     {"visualfloppy",        "visual flp",   menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
 #ifdef EMULATE_VISUALMEM

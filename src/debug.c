@@ -9498,7 +9498,7 @@ void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto
 
         //controlar maximo
         if (resultado) {
-            debug_printf(VERBOSE_ERR,"Reached maximum text size. Showing only allowed text");
+            debug_printf(VERBOSE_DEBUG,"Reached maximum text size. Showing only allowed text");
             //forzar salir
             salir=1;
         }
