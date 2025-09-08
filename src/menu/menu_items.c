@@ -33664,15 +33664,20 @@ void menu_view_basic_listing_print_basic(char *results_buffer,zxvision_window *w
     menu_view_basic_listing_total_lineas=zxvision_generic_message_aux_justificar_lineas(results_buffer,strlen(results_buffer),maxima_longitud,menu_view_basic_listing_punteros_lineas);
 
     //Reajustar alto total ventana
-    zxvision_set_total_height(w,VIEW_BASIC_HEADER_LINES+menu_view_basic_listing_total_lineas);
+    //Darle lineas en blanco al final para que se pueda hacer follow de lineas hacia el final tambien (sino el scroll no bajaria mas)
+    int aumentar_tamanyo=w->visible_height-VIEW_BASIC_HEADER_LINES-2-1;
+    zxvision_set_total_height(w,VIEW_BASIC_HEADER_LINES+menu_view_basic_listing_total_lineas+aumentar_tamanyo);
 
     for (i=0;i<menu_view_basic_listing_total_lineas;i++) {
         //printf("linea %d : %s\n",i,punteros_lineas[i]);
         zxvision_print_string_defaults_fillspc(w,1,VIEW_BASIC_HEADER_LINES+i,menu_view_basic_listing_punteros_lineas[i]);
     }
 
-    //free(buffer_lineas);
-    //free(punteros_lineas);
+    //limpiar las lineas de margen por debajo
+    for (;i<menu_view_basic_listing_total_lineas+aumentar_tamanyo;i++) {
+        zxvision_print_string_defaults_fillspc(w,1,VIEW_BASIC_HEADER_LINES+i,"");
+    }
+
 }
 
 //Si contenido se ha modificado y hay que hacer dump de nuevo
