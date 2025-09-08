@@ -41,9 +41,6 @@ defina también tamaños de esas ventanas?
 
 --Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
-
-
-
 -Este algoritmo está pensado para lecturas de cintas reales, con su señal imperfecta
 Intentar leer una señal perfecta como la de unkatris (que ademas no tiene valores 0) provoca que no se  lean datos
 En cambio mis archivos generados desde P a RWA, esos si que se leen bien
@@ -64,31 +61,18 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 
 *entrada en changelog
 
+*teclas que quizá no se deberían dejar pulsar cuando está conversión activa (como ~~debug)
 
 *en View expanded, si se reusa archivo de salida, al ser una carpeta temporal, hay restos de las anteriores
 
-*f1 ayuda indicando como funciona y detallando el debug output
-*comentar en ayuda que esta conversión mejorada de raw a p/p81 requiere que se borren pulsos de ruido de antes de los datos,
-se permite la zona de silencio de zx81 pero algún click que haya antes, mas alto de esas zonas de silencio, se deben borrar a mano
-(ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
-
-
-ok *usleep preciso para que funcione bien en windows? Segun notas de hilow, algunos Linux tampoco
-Mac parece hacerlo bien... o si?
 
 *poder convertir audio de zx80?
 
 
 
--un .RAW tambien identifica a una imagen de salida de hilow en formato crudo
--tambien un .raw es archivo de audio 44100hz, 8 bit, unsigned para entrada de sonido al convertir de cinta hilow a ddh
--y ahora tambien al capturar sonido, considero un .raw como archivo en crudo con frecuencia de sampleo 31200hz
-En general, considerando audio, .raw seria formato en crudo, con cualquier samplerate. Y para todos los sitios considero 8 bit unsigned
-Y para hilow de salida en crudo, es otra cosa, es formato hilow en crudo pero que no tiene que ver con el sonido
-
-
 --FIN Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
 
+---------
 
 
 
