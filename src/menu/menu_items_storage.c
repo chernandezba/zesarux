@@ -1339,6 +1339,9 @@ struct s_enh_zx81_pulse_errors menu_convert_audio_to_zx81_error_list[ENH_ZX81_MA
 
 int menu_convert_audio_to_zx81_invert_signal=0;
 
+//Si queremos un usleep preciso, quiza en Windows y en algunos Linux es necesario. Mac suele ser preciso la funcion normal de usleep
+int menu_convert_audio_to_zx81_activar_precise_usleep=0;
+
 //devolver la pausa asociada y el multiplicador para el buffer de envio a audio
 //multiplicador es negativo si indica que hay que promediar valores
 //multiplicador tiene valores positivos si hay que repetir valores. Por ejemplo para velocidad 4,
@@ -1718,9 +1721,10 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
     );
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_TWO,
-        "[%c] ~~pause. speed %s%s",
+        "[%c] ~~pause. speed %s%s [%c] ~~Precise",
         (menu_convert_audio_to_zx81_speed_conversion_paused ? 'X' : ' '),
-        buffer_speed,info_speed/*,textos_pausa[menu_convert_audio_to_zx81_speed_conversion]*/
+        buffer_speed,info_speed,
+        (menu_convert_audio_to_zx81_activar_precise_usleep  ? 'X' : ' ')
     );
 
     if (menu_convert_audio_to_zx81_ventana_waveform_abierta() ) {
@@ -2178,8 +2182,7 @@ void menu_convert_audio_to_zx81_precise_usleep(int duracion)
     }
 }
 
-//Si queremos un usleep preciso, quiza en Windows y en algunos Linux es necesario. Mac suele ser preciso la funcion normal de usleep
-int menu_convert_audio_to_zx81_activar_precise_usleep=0;
+
 
 //Aqui se llama en cada iteracion del bucle de conversion. Meter pausas si conviene
 void menu_convert_audio_to_zx81_callback(void)
@@ -2739,6 +2742,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'p':
                 menu_convert_audio_to_zx81_speed_conversion_paused ^=1;
+            break;
+
+            case 'P':
+                menu_convert_audio_to_zx81_activar_precise_usleep ^=1;
             break;
 
             case 'r':
