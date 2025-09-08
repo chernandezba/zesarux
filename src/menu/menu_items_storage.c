@@ -1494,6 +1494,9 @@ void menu_convert_audio_to_zx81_get_audio_buffer(void)
             valor_leido /=promediar;
 
             audio_leido=valor_leido-128;
+
+            if (!menu_convert_audio_to_zx81_hear_sound) audio_leido=0;
+
             audio_buffer[destino++]=audio_leido;
             if (destino<AUDIO_BUFFER_SIZE*2) audio_buffer[destino++]=audio_leido;
         }
@@ -2729,7 +2732,9 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
             break;
 
             case 'b':
-                menu_convert_audio_to_zx81_invert_signal ^=1;
+                if (!convert_audio_to_zx81_thread_running) {
+                    menu_convert_audio_to_zx81_invert_signal ^=1;
+                }
             break;
 
             case 'c':
