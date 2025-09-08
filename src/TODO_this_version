@@ -148,6 +148,6 @@ ok acabar de probar *si hay libreria audiofile, poder generar WAV de salida
 -En view basic listing
 *si texto a buscar esta hacia el final, no hace scroll justo hacia esa linea, porque el scroll de ventana
 no permite ir mas alla. Quiza habría que dar algo mas de alto a la ventana para que pueda bajar
-*si current line es interprete de comandos y no linea en ejecucion, dice Current Line: 65534
+ok*si current line es interprete de comandos y no linea en ejecucion, dice Current Line: 65534
 *si carga breakout de zx80, al hacer run dice Length  -7530
 *show betabasic solo deberia salir si maquina spectrum

@@ -33870,17 +33870,26 @@ void menu_view_basic_listing_overlay(void)
         int linea,sentencia;
         debug_view_basic_get_current_line(&linea,&sentencia);
 
+        char buffer_linea[100];
 
-        //Muestro aqui continuamente la linea y sentencia actual
-
-        if (MACHINE_IS_ZX8081) {
-            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,MENU_VIEW_BASIC_LISTING_LINE_LINE,"Current line: %5d",linea);
+        if (linea>32767) {
+            strcpy(buffer_linea,"Not in line");
         }
 
         else {
-            //Spectrum
-            zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,MENU_VIEW_BASIC_LISTING_LINE_LINE,"Current line: %5d:%3d",linea,sentencia);
+            if (MACHINE_IS_ZX8081) {
+                sprintf(buffer_linea,"%5d",linea);
+            }
+
+            else {
+                //Spectrum
+                sprintf(buffer_linea,"%5d:%3d",linea,sentencia);
+            }
         }
+
+        //Muestro aqui continuamente la linea y sentencia actual
+
+        zxvision_print_string_defaults_fillspc_format(menu_view_basic_listing_window,1,MENU_VIEW_BASIC_LISTING_LINE_LINE,"Current line: %s",buffer_linea);
 
 
         z80_long_int crc32=menu_view_basic_listing_get_crc32();
