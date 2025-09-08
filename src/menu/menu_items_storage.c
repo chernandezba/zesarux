@@ -1703,17 +1703,25 @@ void menu_convert_audio_to_zx81_print_lines_settings(zxvision_window *ventana)
     char info_speed[30]="";
 
     //Con nombres de animales es mas gracioso
-    if (menu_convert_audio_to_zx81_speed_conversion==1) strcpy(info_speed,"Snail");
-    else if (menu_convert_audio_to_zx81_speed_conversion==2) strcpy(info_speed,"Tortoise");
-    else if (menu_convert_audio_to_zx81_speed_conversion==3) strcpy(info_speed,"Sloth");
-    else if (menu_convert_audio_to_zx81_speed_conversion==4) strcpy(info_speed,"Starfish");
-    else if (menu_convert_audio_to_zx81_speed_conversion==5) strcpy(info_speed,"Real Time");
-    else if (menu_convert_audio_to_zx81_speed_conversion==6) strcpy(info_speed,"Elephant");
-    else if (menu_convert_audio_to_zx81_speed_conversion==7) strcpy(info_speed,"Dog");
-    else if (menu_convert_audio_to_zx81_speed_conversion==8) strcpy(info_speed,"Ostrich");
-    else if (menu_convert_audio_to_zx81_speed_conversion==9) strcpy(info_speed,"Lion");
-    else if (menu_convert_audio_to_zx81_speed_conversion==0) strcpy(info_speed,"Cheetah");
+    int indice_velocidades=menu_convert_audio_to_zx81_speed_conversion;
+    //por si acaso
+    if (indice_velocidades<0 || indice_velocidades>9) indice_velocidades=0;
 
+    char *textos_velocidades[]={
+        "Cheetah  ",
+        "Snail    ",
+        "Tortoise ",
+        "Sloth    ",
+        "Starfish ",
+        "Real Time",
+        "Elephant ",
+        "Dog      ",
+        "Ostrich  ",
+        "Lion     "
+    };
+
+
+    strcpy(info_speed,textos_velocidades[indice_velocidades]);
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE,
         "%s [%c] ~~b: invert [%c] ~~debug [%c] so~~und",
