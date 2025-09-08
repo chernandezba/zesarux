@@ -34096,10 +34096,16 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
 
         ventana->writing_inverse_color=1;
 
+        char buffer_betabasic[100]="";
+        if (MACHINE_IS_SPECTRUM) {
+            sprintf(buffer_betabasic,"[%c] Show ~~BetaBasic ",(debug_view_basic_show_betabasic.v ? 'X' : ' ') );
+        }
+
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_VIEW_BASIC_LISTING_LINE_SETTINGS,
-            "[%c] Show ~~address [%c] Show ~~BetaBasic [%c] Fo~~llow",(debug_view_basic_show_address.v ? 'X' : ' ' ),
-            (debug_view_basic_show_betabasic.v ? 'X' : ' '),
+            "[%c] Show ~~address %s[%c] Fo~~llow line",
+            (debug_view_basic_show_address.v ? 'X' : ' ' ),
+            buffer_betabasic,
             (menu_view_basic_listing_follow_current_line.v ? 'X' : ' ')
         );
 
@@ -34127,8 +34133,10 @@ void menu_view_basic_listing(MENU_ITEM_PARAMETERS)
             break;
 
             case 'b':
-                debug_view_basic_show_betabasic.v ^=1;
-                menu_view_basic_listing_modified=1;
+                if (MACHINE_IS_SPECTRUM) {
+                    debug_view_basic_show_betabasic.v ^=1;
+                    menu_view_basic_listing_modified=1;
+                }
             break;
 
             case 'e':
