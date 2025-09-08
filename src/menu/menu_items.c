@@ -33817,15 +33817,27 @@ void menu_view_basic_listing_print_pointer_line(zxvision_window *ventana)
 
     ventana->writing_inverse_color=1;
 
+    char buffer_length[100];
+
+    //No mostrar valores negativos, que queda extraño
+    //Esto pasa por ejemplo al cargar Breakout de ZX80 y ejecutarlo
+    if (menu_view_basic_listing_memory_length<0) {
+        strcpy(buffer_length,"Unknown");
+    }
+
+    else {
+        sprintf(buffer_length,"%d",menu_view_basic_listing_memory_length);
+    }
+
 
     char buffer_custom_pointer[100];
     buffer_custom_pointer[0]=0;
 
     if (menu_view_basic_listing_memory_enabled.v) {
-        sprintf(buffer_custom_pointer,"[Custom] S~~tart: %d len~~gth: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
+        sprintf(buffer_custom_pointer,"[Custom] S~~tart: %d len~~gth: %s",menu_view_basic_listing_memory_pointer,buffer_length);
     }
     else {
-        sprintf(buffer_custom_pointer,"[ Auto ] Start: %d length: %d",menu_view_basic_listing_memory_pointer,menu_view_basic_listing_memory_length);
+        sprintf(buffer_custom_pointer,"[ Auto ] Start: %d length: %s",menu_view_basic_listing_memory_pointer,buffer_length);
     }
 
 
