@@ -33872,20 +33872,26 @@ void menu_view_basic_listing_overlay(void)
 
         char buffer_linea[100];
 
-        if (linea>32767) {
-            strcpy(buffer_linea,"Not in line");
+
+        if (MACHINE_IS_ZX8081) {
+            if (linea>32767) {
+                strcpy(buffer_linea,"Not in line");
+            }
+            else {
+                sprintf(buffer_linea,"%5d",linea);
+            }
         }
 
         else {
-            if (MACHINE_IS_ZX8081) {
-                sprintf(buffer_linea,"%5d",linea);
+            //Spectrum
+            if (linea>32767) {
+                sprintf(buffer_linea,"Not in line. Sentence %d",sentencia);
             }
-
             else {
-                //Spectrum
                 sprintf(buffer_linea,"%5d:%3d",linea,sentencia);
             }
         }
+
 
         //Muestro aqui continuamente la linea y sentencia actual
 
