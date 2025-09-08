@@ -34927,50 +34927,58 @@ void menu_view_gosub_stack_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_view_gosub_stack_window->is_minimized) return;
 
-
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
-
-    z80_long_int crc32=menu_view_gosub_stack_get_crc32();
-    //printf("Obtenido crc: %X\n",crc32);
-    if (crc32!=menu_view_gosub_stack_last_crc32) {
-        //printf("CRC modificado\n");
-        menu_view_gosub_stack_last_crc32=crc32;
-        menu_view_gosub_stack_recargar=1;
+    if (!MACHINE_IS_SPECTRUM) {
+        zxvision_cls(menu_view_gosub_stack_window);
+        zxvision_print_string_defaults_fillspc_format(menu_view_gosub_stack_window,1,0,"Only available on Spectrum");
     }
 
-    if (menu_view_gosub_stack_recargar) {
-        char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing go sub stack");
+    else {
 
-        int lineas=debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
 
-        //Mostrar una a una todas las lineas
+        //Print....
+        //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
-        //Ajustar alto ventana. Al menos una linea aunque solo sea para mostrar error
-        zxvision_set_total_height(menu_view_gosub_stack_window,lineas+1);
-
-        char buffer_linea[MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH+1];
-        char *puntero_leer=results_buffer;
-        int i;
-        for (i=0;i<menu_view_gosub_stack_window->total_height;i++) {
-            int columna=0;
-            while (*puntero_leer && (*puntero_leer)!='\n') {
-                if (columna<MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH) {
-                    buffer_linea[columna++]=*puntero_leer;
-                }
-                puntero_leer++;
-            }
-            buffer_linea[columna++]=0;
-            if (*puntero_leer=='\n') puntero_leer++;
-
-            zxvision_print_string_defaults_fillspc_format(menu_view_gosub_stack_window,1,i,"%s",buffer_linea);
+        z80_long_int crc32=menu_view_gosub_stack_get_crc32();
+        //printf("Obtenido crc: %X\n",crc32);
+        if (crc32!=menu_view_gosub_stack_last_crc32) {
+            //printf("CRC modificado\n");
+            menu_view_gosub_stack_last_crc32=crc32;
+            menu_view_gosub_stack_recargar=1;
         }
 
+        if (menu_view_gosub_stack_recargar) {
+            char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing go sub stack");
 
-        free(results_buffer);
+            int lineas=debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
 
-        menu_view_gosub_stack_recargar=0;
+            //Mostrar una a una todas las lineas
 
+            //Ajustar alto ventana. Al menos una linea aunque solo sea para mostrar error
+            zxvision_set_total_height(menu_view_gosub_stack_window,lineas+1);
+
+            char buffer_linea[MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH+1];
+            char *puntero_leer=results_buffer;
+            int i;
+            for (i=0;i<menu_view_gosub_stack_window->total_height;i++) {
+                int columna=0;
+                while (*puntero_leer && (*puntero_leer)!='\n') {
+                    if (columna<MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH) {
+                        buffer_linea[columna++]=*puntero_leer;
+                    }
+                    puntero_leer++;
+                }
+                buffer_linea[columna++]=0;
+                if (*puntero_leer=='\n') puntero_leer++;
+
+                zxvision_print_string_defaults_fillspc_format(menu_view_gosub_stack_window,1,i,"%s",buffer_linea);
+            }
+
+
+            free(results_buffer);
+
+            menu_view_gosub_stack_recargar=0;
+
+        }
     }
 
     //Mostrar contenido

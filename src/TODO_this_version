@@ -24,7 +24,7 @@ Probar en diferentes sistemas:
 ---------------------
 
 
--view gosub stack como ventana en segundo plano y que se actualice continuamente
+
 
 
 -En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
@@ -145,3 +145,5 @@ ok acabar de probar *si hay libreria audiofile, poder generar WAV de salida
 *en ambos linux, uso driver alsa. Para cambio a captura de tarjeta USB, uso parámetro --alsacapturedevice hw:1
 
 
+-view gosub stack como ventana en segundo plano y que se actualice continuamente
+*falta icono
