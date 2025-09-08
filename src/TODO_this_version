@@ -40,42 +40,9 @@ defina también tamaños de esas ventanas?
 ---------
 
 --Nuevo algoritmo de lectura de audio y conversión a P/P81 de ZX81--
-*si autodetectar amplitud por maximo de longitud de archivo resultante, no tiene sentido analisis de amplitudes
-*analisis de amplitudes es complejo... con STOCKS vemos que el valor mas alto es
-Amplitud 38 cantidad: 11926
 
-Pero en cambio ese valor de 38 no da una lectura correcta del programa
-(amplitud_media=39 Longitud nombre: 14 Longitud p81: 4248 Nombre: CONTROL STOCKS)
-y realmente ocupa 6433 bytes y no 4248
 
-Por tanto creo que lo mejor es que:
--Por defecto autodetectar. Que vayan saliendo valores finales en pantalla con longitudes y al final sea automaticamente el que decida
--Que el usuario pueda abortar la detección e indicar un valor preferido (o segun lo que vea en pantalla)
-A igualdad de valores, ejemplo:
 
-amplitud_media=14 Longitud nombre: 0 Longitud p81: 0 Nombre:
-amplitud_media=15 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=16 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=17 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=18 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=19 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=20 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=21 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=22 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=23 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=24 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=25 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=26 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=27 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=28 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=29 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=30 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=31 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=32 Longitud nombre: 14 Longitud p81: 6433 Nombre: CONTROL STOCKS
-amplitud_media=33 Longitud nombre: 14 Longitud p81: 4249 Nombre: CONTROL STOCKS
-
-Entre 15 y 32 son iguales, pero el 32 da resultado erroneo. Es mejor que el usuario escoja un valor entre medias (23 por ejemplo),
-aunque el algoritmo escogera el 15 (que da resultado correcto), que es el primero del mas alto
 
 -Este algoritmo está pensado para lecturas de cintas reales, con su señal imperfecta
 Intentar leer una señal perfecta como la de unkatris (que ademas no tiene valores 0) provoca que no se  lean datos
@@ -87,16 +54,13 @@ ok * desde file utils. convert RWA a P/P81. Automático sin preguntar amplitud
 ok * desde storage->tape, nuevo submenu. con ventana en background, lanzando tarea como thread, viendo datos de autodetección
 que diga también posibles errores (ejemplo "No sabemos que bit es cuando hay 6 pulsos")
 marcado por defecto autodetección pero se puede especificar amplitud típica
-*falta opcion de activar debug en ventana
+
 
 *Luego también se podría integrar en visual real tape, la función que obtiene el nombre del programa y su longitud
 *en menu_file_realtape_browser_show, con tecla V de view muestra los bloques de datos de un rwa, si es zx8081 o spectrum. creo que aqui
 se llama tambien al usar visual real tape, esa info de bloques
 *al insertar en standard tape un archivo smp/rwa, llama a snap_load_zx80_zx81_load_smp: ahi se deberia autodetectar,
 y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es comun a zx80 y zx81
-
-*que ventana de conversión permita usar antiguo algoritmo? DESCARTADO esto
-
 
 *entrada en changelog
 
@@ -109,7 +73,7 @@ se permite la zona de silencio de zx81 pero algún click que haya antes, mas alt
 (ejemplo orquesta_zx81.rwa.gz incluye un click que hace que no cargue bien)
 
 
-*usleep preciso para que funcione bien en windows? Segun notas de hilow, algunos Linux tampoco
+ok *usleep preciso para que funcione bien en windows? Segun notas de hilow, algunos Linux tampoco
 Mac parece hacerlo bien... o si?
 
 *poder convertir audio de zx80?

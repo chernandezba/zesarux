@@ -1634,21 +1634,21 @@ void menu_convert_audio_to_zx81_print_line_actions(zxvision_window *ventana)
 {
 
     if (menu_convert_audio_to_zx81_input_file[0]==0) {
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input");
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input ~~f~~1: help");
     }
 
     else if (menu_convert_audio_to_zx81_output_file[0]==0) {
-        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input ~~output");
+        zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"~~input ~~output ~~f~~1: help");
     }
 
     else {
         if (convert_audio_to_zx81_thread_running) {
-            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"s~~top conversion");
+            zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,"s~~top conversion ~~f~~1: help");
         }
         else {
 
             zxvision_print_string_defaults_fillspc_format(ventana,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS,
-                "~~input ~~output ~~run conversion");
+                "~~input ~~output ~~run conversion ~~f~~1: help");
         }
     }
 }
@@ -2527,6 +2527,57 @@ int menu_convert_audio_to_zx81_zoom_wave=1;
 //Es mas rapido consultar una variable que no usar la llamada a zxvision_find_window_in_background
 int menu_convert_audio_to_zx81_window_running=0;
 
+
+
+void menu_convert_audio_to_zx81_help(void)
+{
+
+    menu_generic_message("Help",
+        "This tool reads from a ZX81 audio file and converts it to digital format (.p, .p81).\n"
+        "The input audio file can be a .raw file (in this case: any sample frequency, mono, 8 bit, unsigned), "
+        "a .rwa file (15600 Hz, mono, 8 bit, unsigned) "
+        "but also a .wav file (you will need sox utility configured to read .wav).\n"
+        "This tool uses a new algorithm improving the previous algorithm (whis is also available in other menus in ZEsarUX).\n"
+        "It runs an autodetection for the best amplitude values and selects which amplitude gives the biggest output file with less errors\n"
+        "\n"
+        "The keys used in this window are:\n"
+        "\n"
+        "F1: This help\n"
+        "i: Set the input audio file\n"
+        "o: Set the output file\n"
+        "r: Run conversion\n"
+        "t: Stop conversion\n"
+        "p: Pause conversion\n"
+        "numbers 1..0: Set speed conversion; 1 is slowest, 5 is real time, 0 is fastest\n"
+        "a: Toggle autodetect best amplitude\n"
+        "b: Invert signal of input audio file\n"
+        "d: Toggle more debug info\n"
+        "e: Expand output, only available when finishing conversion\n"
+        "f: Find text on debug output\n"
+        "m: Smartload output file\n"
+        "n: Find next text occurence on debug output\n"
+        "s: Set amplitude when disabled autodetection\n"
+        "u: Toggle hear sound while running conversion\n"
+        "shift+u: Toggle precise simulation speed. Note: it doesn't alter conversion, only how you hear audio while running conversion\n"
+        "w: Open Waveform window. When this window is opened, the input audio file will be shown there. Also, there are some actions "
+        "that can be executed when this window is opened, see below\n"
+        "\n"
+        "These keys are used when waveform window is opened:\n"
+        "c: Move waveform to the left\n"
+        "shift+c: Locate previous error\n"
+        "g: Select which element to highlight on waveform window: pulse, bit or byte\n"
+        "shift+g: Move waveform to an exact position\n"
+        "l: Toggle waveform view to follow conversion\n"
+        "v: Move waveform to the right\n"
+        "shift+v: Locate next error\n"
+        "x: Zoom in\n"
+        "z: Zoom out\n"
+
+    );
+
+}
+
+
 void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -2625,6 +2676,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         struct s_enh_zx81_lee_global_info cinfo;
 
         switch (tecla) {
+            case MENU_TECLA_AYUDA:
+                menu_convert_audio_to_zx81_help();
+            break;
+
             case '0':
                 menu_convert_audio_to_zx81_speed_conversion=0;
             break;
