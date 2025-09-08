@@ -34851,24 +34851,6 @@ void menu_ascii_table(MENU_ITEM_PARAMETERS)
 }
 
 
-void old_menu_debug_view_basic_gosub_stack(MENU_ITEM_PARAMETERS)
-{
-
-
-    char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing go sub stack");
-
-	debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
-
-    menu_generic_message_format("Basic GO SUB stack","%s",results_buffer);
-
-    free(results_buffer);
-
-
-
-
-}
-
-
 
 
 zxvision_window *menu_view_gosub_stack_window;
