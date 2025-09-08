@@ -34942,9 +34942,12 @@ void menu_view_gosub_stack_overlay(void)
     if (menu_view_gosub_stack_recargar) {
         char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing go sub stack");
 
-        debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
+        int lineas=debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
 
         //Mostrar una a una todas las lineas
+
+        //Ajustar alto ventana. Al menos una linea aunque solo sea para mostrar error
+        zxvision_set_total_height(menu_view_gosub_stack_window,lineas+1);
 
         char buffer_linea[MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH+1];
         char *puntero_leer=results_buffer;

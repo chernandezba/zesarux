@@ -9433,7 +9433,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 }
 
 
-void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
+int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 {
 
     //Cadena vacia inicialmente
@@ -9442,6 +9442,7 @@ void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto
 
     char buffer_linea[100];
 
+    int lineas_total=0;
 
    /*
     Desde sp en adelante (como mucho 32 en adelante)
@@ -9472,7 +9473,7 @@ void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto
 
     if (!encontrado) {
         strcpy (results_buffer,"Stack start not found");
-        return;
+        return 0;
     }
 
     int salir=0;
@@ -9493,6 +9494,8 @@ void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto
             sprintf (buffer_linea,"%4d:%d\n",linea,sentencia);
             resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
             vacio=0;
+
+            lineas_total++;
         }
 
 
@@ -9507,10 +9510,10 @@ void debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto
 
     if (vacio)  {
         strcpy (results_buffer,"GO SUB Stack is empty");
-        return;
+        return 0;
     }
 
-
+    return lineas_total;
 
 }
 
