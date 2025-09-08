@@ -34888,8 +34888,8 @@ z80_long_int menu_view_gosub_stack_get_crc32(void)
     int length=65536-reg_sp;
 
     if (length<1) {
-      //escribir_socket(misocket,"ERROR. Length must be >0");
-      return 0;
+        //escribir_socket(misocket,"ERROR. Length must be >0");
+        return 0;
     }
 
 
@@ -34902,8 +34902,8 @@ z80_long_int menu_view_gosub_stack_get_crc32(void)
     int i;
 
     for (i=0;longitud_copiar>0;i++,longitud_copiar--) {
-      z80_byte byte_leido=peek_byte_no_time(start_address+i);
-      memoria_temporal[i]=byte_leido;
+        z80_byte byte_leido=peek_byte_no_time(start_address+i);
+        memoria_temporal[i]=byte_leido;
     }
 
 
@@ -34932,9 +34932,9 @@ void menu_view_gosub_stack_overlay(void)
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
     z80_long_int crc32=menu_view_gosub_stack_get_crc32();
-    printf("Obtenido crc: %X\n",crc32);
+    //printf("Obtenido crc: %X\n",crc32);
     if (crc32!=menu_view_gosub_stack_last_crc32) {
-        printf("CRC modificado\n");
+        //printf("CRC modificado\n");
         menu_view_gosub_stack_last_crc32=crc32;
         menu_view_gosub_stack_recargar=1;
     }
@@ -35055,15 +35055,9 @@ void menu_view_gosub_stack(MENU_ITEM_PARAMETERS)
 
 
 		tecla=zxvision_common_getkey_refresh();
-
+        zxvision_handle_cursors_pgupdn(ventana,tecla);
 
         switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
 
 
             //Salir con ESC
