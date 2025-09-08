@@ -1256,7 +1256,7 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 
 
 
-#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 17
+#define MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES 18
 
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_ACTIONS 0
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_SETTINGS_ONE 1
@@ -1272,7 +1272,8 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FIVE 11
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE 12
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_TWO 13
-#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT 14
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_THREE 14
+#define MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT 15
 #define MENU_CONVERT_AUDIO_TO_ZX81_LINE_DEBUG_OUTPUT (MENU_CONVERT_AUDIO_TO_ZX81_HEADER_LINES-1)
 
 //10000 lineas de debug output
@@ -1932,6 +1933,7 @@ void menu_convert_audio_to_zx81_overlay(void)
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_INFO_CONVERSION_FIVE,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_TWO,"");
+    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_THREE,"");
     zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_GUESSED_INPUT,"");
 
     if (menu_convert_audio_to_zx81_guessed_sample_rate!=0) {
@@ -2084,6 +2086,15 @@ void menu_convert_audio_to_zx81_overlay(void)
 
 
             if (si_existe_archivo(menu_convert_audio_to_zx81_output_file)) {
+                //solo por sacar la guessed sample rate, si ha ido muy rapido no lo habra podido obtener antes mientras el thread estaba running
+                //lo sacamos ahora
+                //tambien por leer los ultimos bytes
+                struct s_enh_zx81_lee_global_info cinfo;
+                enh_zx81_lee_get_global_info(&cinfo);
+
+                menu_convert_audio_to_zx81_guessed_sample_rate=cinfo.enh_global_guessed_sample_rate;
+
+
                 tamanyo=get_file_size(menu_convert_audio_to_zx81_output_file);
 
                 int tinta=ESTILO_GUI_TINTA_NORMAL;
@@ -2093,19 +2104,28 @@ void menu_convert_audio_to_zx81_overlay(void)
                     tinta,ESTILO_GUI_PAPEL_NORMAL,0,
                     "Conversion finished. Possible Errors: %d. Name: [%s]",menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_nombre_programa);
 
+
+                z80_byte last_byte=cinfo.enh_global_last_bytes[ENHANCED_GLOBAL_INFO_LAST_BYTES_LENGTH-1];
+                if (last_byte!=0x80) {
+                    zxvision_print_string_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_TWO,
+                        ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,
+                        "Last byte mismatch: %02X",last_byte);
+                }
+                else {
+                    zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_TWO,
+                        "Last byte matches expected: %02X",last_byte);
+                }
+
+
+
                 //zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_ONE,
                 //    "Conversion finished. Errors: %d. Name: [%s]",menu_convert_audio_to_zx81_errores_pulsos_detectados,menu_convert_audio_to_zx81_nombre_programa);
 
-                zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_TWO,
+                zxvision_print_string_defaults_fillspc_format(menu_convert_audio_to_zx81_window,1,MENU_CONVERT_AUDIO_TO_ZX81_LINE_CONVERSIONS_THREE,
                     "File %s Size %d bytes ~~e: view ~~m: Smartload",nombre,tamanyo);
 
 
-                //solo por sacar la guessed sample rate, si ha ido muy rapido no lo habra podido obtener antes mientras el thread estaba running
-                //lo sacamos ahora
-                struct s_enh_zx81_lee_global_info cinfo;
-                enh_zx81_lee_get_global_info(&cinfo);
 
-                menu_convert_audio_to_zx81_guessed_sample_rate=cinfo.enh_global_guessed_sample_rate;
 
             }
 
