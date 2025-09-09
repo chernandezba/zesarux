@@ -15,7 +15,6 @@ Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual 
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Permitir cambiar path del archivo de configuración desde el menú
 Premitir ver archivo expandido desde submenus de Almacenamiento (cinta, dsk, etc)
-Permitir ver la pila del GO SUB de Basic
 Agregado un asistente de configuración al iniciar ZEsarUX por primera vez
 Agregado soporte para 4 botones de fuego de joystick en:
 - Kempston joystick (Spectrum): 4 botones
@@ -95,13 +94,19 @@ Mejorada ventana Fuente de Sonido Externa:
 - Mostrar frecuencia media cuando señal desconocida
 - Permitir activar entrada desde esta ventana
 
-Mejorada ventana de View Basic:
+Mejorada ventana de View Basic Listing:
 - La ventana se puede dejar en segundo plano
 - Automaticamente refresca si el listado cambia
 - Permitir ver tokens de BetaBasic
 - Permitir definir inicio y longitud de programa personalizado
 - Permitir seguir línea en ejecución
 - Permitir lineas > 9999, útil para programas protegidos
+
+Mejorada ventana de View Basic Variables:
+- La ventana se puede dejar en segundo plano
+- Automaticamente refresca si las variables cambian
+
+Agregada ventana para ver la pila del GO SUB de Basic
 
 Mejorada conversión de audio a archivos P/P81 de ZX81: agregado un algoritmo mejorado alternativo
 Mejorado Hexadecimal editor: expresión de seguimiento se guarda en configuración

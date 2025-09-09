@@ -15,7 +15,6 @@ Allow to locate rom files running ZEsarUX from a current folder different than t
 Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)
 Allow to change configuration file path from the menu
 Allow to view expanded file from Storage submenus (tape, dsk, etc)
-Allow to view GO SUB Basic stack
 Added configuration wizard when running ZEsarUX for the first time
 Added support for up to 4 joystick fire buttons on:
 - Kempston joystick (Spectrum): 4 buttons
@@ -95,13 +94,19 @@ Improved External Audio Source window:
 - Show average frequency when unknown signal
 - Allow to enable input from this window
 
-Improved View Basic window:
+Improved View Basic Listing:
 - Window can be put in background
 - Automatically refreshes if listing changes
 - Allow to show BetaBasic tokens
 - Allow to set custom start and program length
 - Allow to follow line executed
 - Allow lines > 9999, useful for protected programs
+
+Improved View Basic Variables:
+- Window can be put in background
+- Automatically refreshes if variables change
+
+Added view GO SUB Basic stack window
 
 Improved conversion audio to P/P81 ZX81 files: added alternative enhanced algorithm
 Improved Hexadecimal editor: follow expression is saved on configuration
