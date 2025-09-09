@@ -921,6 +921,8 @@ extern void util_save_game_config(char *filename);
 extern int util_is_digit(char c);
 extern int util_is_letter(char c);
 
+extern void util_quitar_ceros_decimales(char *numero);
+
 extern int util_get_available_drives(char *texto);
 
 extern int get_cpu_frequency(void);

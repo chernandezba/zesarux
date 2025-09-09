@@ -8817,7 +8817,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         strcpy(buffer_valor_total_sin_ceros,buffer_valor_total);
         util_quitar_ceros_decimales(buffer_valor_total_sin_ceros);
 
-        sprintf(buffer_linea,"(float)%s %s",buffer_valor_total,buffer_valor_total_sin_ceros);
+        sprintf(buffer_linea,"(float)%s",buffer_valor_total_sin_ceros);
 
     }
 }

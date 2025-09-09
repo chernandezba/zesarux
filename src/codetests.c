@@ -2801,6 +2801,34 @@ void codetests_timer(void)
 
 }
 
+void codetests_leading_zeroes_check(char *input_number,char *expected_number)
+{
+    char number[100];
+    strcpy(number,input_number);
+    printf("Testing %s\n",number);
+    util_quitar_ceros_decimales(number);
+    if (strcmp(number,expected_number)) {
+        printf("Error strip leading zeroes. Got: [%s] Expected: [%s]\n",number,expected_number);
+        exit(1);
+    }
+}
+
+void codetests_leading_zeroes(void)
+{
+    codetests_leading_zeroes_check("1","1");
+    codetests_leading_zeroes_check("11","11");
+    codetests_leading_zeroes_check("11.0","11");
+    codetests_leading_zeroes_check("22.02","22.02");
+    codetests_leading_zeroes_check("33.0400","33.04");
+    codetests_leading_zeroes_check("-1","-1");
+    codetests_leading_zeroes_check("-1.0","-1");
+    codetests_leading_zeroes_check("-1234.56789","-1234.56789");
+    codetests_leading_zeroes_check("-1234.56789000","-1234.56789");
+    codetests_leading_zeroes_check("-1234.567890001","-1234.567890001");
+    codetests_leading_zeroes_check("-1234.567890001000","-1234.567890001");
+}
+
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -2931,6 +2959,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning timer tests\n");
     codetests_timer();
+
+    printf("\nRunning leading zeroes tests\n");
+    codetests_leading_zeroes();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();
