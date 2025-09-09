@@ -28092,7 +28092,7 @@ z80_long_int menu_view_basic_variables_get_crc32(void)
     //Realmente es menos, pero con esto ya nos sirve
     int length=debug_view_basic_variables_get_length_variables();
 
-    printf("Start %04XH length: %d\n",start_address,length);
+    printf("Start %5d length: %d\n",start_address,length);
 
     if (length<1) {
         //escribir_socket(misocket,"ERROR. Length must be >0");
@@ -28203,6 +28203,9 @@ void menu_view_basic_variables_overlay(void)
 zxvision_window zxvision_window_view_basic_variables;
 
 
+//Nota: menu_view_basic_variables y menu_view_gosub_stack son casi la misma ventana, se comportan igual,
+//solo difieren en qué información muestran. Quizá en un futuro se podría hacer una ventana genérica que pudiese
+//mostrar un contenido de texto en background y que refrescase bajo ciertas condiciones
 void menu_view_basic_variables(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -35218,7 +35221,9 @@ void menu_view_gosub_stack_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_view_gosub_stack;
 
-
+//Nota: menu_view_basic_variables y menu_view_gosub_stack son casi la misma ventana, se comportan igual,
+//solo difieren en qué información muestran. Quizá en un futuro se podría hacer una ventana genérica que pudiese
+//mostrar un contenido de texto en background y que refrescase bajo ciertas condiciones
 void menu_view_gosub_stack(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -35249,7 +35254,7 @@ void menu_view_gosub_stack(MENU_ITEM_PARAMETERS)
         }
 
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View GO SUB stack",
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"GO SUB stack",
             "viewgosubstack",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
