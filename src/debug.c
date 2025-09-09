@@ -9081,18 +9081,16 @@ z80_int debug_view_basic_variables_get_start(void)
     return dir;
 }
 
-int debug_view_basic_variables_get_length_variables(void)
+
+
+z80_int debug_get_eline_value(void)
 {
-    int longitud=0;
+    z80_int puntero_e_line=23641;
+    if (MACHINE_IS_ZX81) puntero_e_line=16404;
+    if (MACHINE_IS_ZX80) puntero_e_line=16396;
 
-    z80_int dir=debug_view_basic_variables_get_start();
+    return peek_word_no_time(puntero_e_line);
 
-    while(dir!=65535 && peek_byte_no_time(dir)!=128) {
-        //printf("dir %d\n",dir);
-        dir++;
-        longitud++;
-    }
-    return longitud;
 }
 
 #define DEBUG_VIEW_BASIC_VARIABLES_MAX_NAME_VARIABLE 256
@@ -9114,6 +9112,8 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
     char buffer_linea[MAX_DEBUG_BASIC_VARIABLES_LINE_LENGTH+1];
 
     sprintf(buffer_linea,"VARS(%d)=%d\n\n",vars_pointer,dir);
+
+    //printf("dir: %d\n",dir);
 
     util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
@@ -9161,9 +9161,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
         //no hay matrices alfanum en zx80??
     }
 
+    z80_int limite=debug_get_eline_value()-1;
 
-
-  	while (peek_byte_no_time(dir)!=128 && !salir) {
+  	while (peek_byte_no_time(dir)!=128 && !salir && dir<limite) {
         //printf("variables %d (%02XH)\n",dir,peek_byte_no_time(dir) );
         z80_int dir_antes=dir;
         sprintf (buffer_linea,"%d: ",dir);

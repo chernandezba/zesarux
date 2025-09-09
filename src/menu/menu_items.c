@@ -28090,10 +28090,12 @@ z80_long_int menu_view_basic_variables_get_crc32(void)
     int start_address=debug_view_basic_variables_get_start();
 
     //Realmente es menos, pero con esto ya nos sirve
-    int length=debug_view_basic_variables_get_length_variables();
+    int length=debug_get_eline_value()-1-start_address;
+    //debug_view_basic_variables_get_length_variables();
 
     z80_int puntero_e_line=23641;
-    if (MACHINE_IS_ZX8081) puntero_e_line=16404;
+    if (MACHINE_IS_ZX81) puntero_e_line=16404;
+    if (MACHINE_IS_ZX80) puntero_e_line=16396;
 
     printf("Start %5d length: %d (suma=%d) (e_line)=%d\n",start_address,length,start_address+length,peek_word_no_time(puntero_e_line));
 
