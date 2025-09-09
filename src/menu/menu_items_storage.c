@@ -2583,7 +2583,7 @@ void menu_convert_audio_to_zx81_help(void)
         "n: Find next text occurence on debug output\n"
         "s: Set amplitude when disabled autodetection\n"
         "u: Toggle hear sound while running conversion\n"
-        "shift+u: Toggle precise simulation speed. Note: it doesn't alter conversion, only how you hear audio while running conversion\n"
+        "shift+u: Toggle precise simulation speed, using more CPU. Note: it doesn't alter conversion, only how you hear audio while running conversion\n"
         "w: Open Waveform window. When this window is opened, the input audio file will be shown there. Also, there are some actions "
         "that can be executed when this window is opened, see below\n"
         "\n"
