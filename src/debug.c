@@ -9060,6 +9060,41 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
 //1,2,2
 //...
 
+z80_int debug_view_basic_variables_get_vars_pointer(void)
+{
+    z80_int vars_pointer=23627;
+
+    if (MACHINE_IS_ZX81_TYPE) vars_pointer=16400;
+    if (MACHINE_IS_ZX80_TYPE) vars_pointer=16392;
+
+    return vars_pointer;
+}
+
+z80_int debug_view_basic_variables_get_start(void)
+{
+    z80_int vars_pointer=debug_view_basic_variables_get_vars_pointer();
+
+	z80_int dir;
+
+  	dir=peek_word_no_time(vars_pointer);
+
+    return dir;
+}
+
+int debug_view_basic_variables_get_length_variables(void)
+{
+    int longitud=0;
+
+    z80_int dir=debug_view_basic_variables_get_start();
+
+    while(dir!=65535 && peek_byte_no_time(dir)!=128) {
+        dir++;
+        longitud++;
+    }
+    return longitud;
+}
+
+
 //tipo: tipo maquina: 0: spectrum. 1: zx80. 2: zx81
 void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 {
@@ -9068,10 +9103,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
     results_buffer[0]=0;
 
 
-    z80_int vars_pointer=23627;
-
-    if (MACHINE_IS_ZX81_TYPE) vars_pointer=16400;
-    if (MACHINE_IS_ZX80_TYPE) vars_pointer=16392;
+    z80_int vars_pointer=debug_view_basic_variables_get_vars_pointer();
 
 	z80_int dir;
 
