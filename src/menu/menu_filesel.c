@@ -6273,22 +6273,22 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 						if (menu_avisa_si_extension_no_habitual(filtros,filesel_nombre_archivo_seleccionado)) {
 
-                        //unimos directorio y nombre archivo. siempre que inicio != '/'
-						if (filesel_nombre_archivo_seleccionado[0]!='/') {
-                        	//getcwd(archivo,PATH_MAX);
-                            zvfs_getcwd(archivo,PATH_MAX);
-                            sprintf(&archivo[strlen(archivo)],"/%s",filesel_nombre_archivo_seleccionado);
-						}
+                            //unimos directorio y nombre archivo. siempre que inicio != '/'
+                            if (filesel_nombre_archivo_seleccionado[0]!='/') {
+                                //getcwd(archivo,PATH_MAX);
+                                zvfs_getcwd(archivo,PATH_MAX);
+                                sprintf(&archivo[strlen(archivo)],"/%s",filesel_nombre_archivo_seleccionado);
+                            }
 
-						else sprintf(archivo,"%s",filesel_nombre_archivo_seleccionado);
+                            else sprintf(archivo,"%s",filesel_nombre_archivo_seleccionado);
 
 
-                        zvfs_chdir(filesel_directorio_inicial);
-						menu_filesel_free_mem();
+                            zvfs_chdir(filesel_directorio_inicial);
+                            menu_filesel_free_mem();
 
-						menu_filesel_preexit(ventana);
-						last_filesused_insert(archivo);
-						return 1;
+                            menu_filesel_preexit(ventana);
+                            last_filesused_insert(archivo);
+                            return 1;
 
 						}
 
@@ -6578,20 +6578,20 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 									if (menu_avisa_si_extension_no_habitual(filtros,filesel_nombre_archivo_seleccionado)) {
 
-									//unimos directorio y nombre archivo
-									//getcwd(archivo,PATH_MAX);
-                                    zvfs_getcwd(archivo,PATH_MAX);
-									sprintf(&archivo[strlen(archivo)],"/%s",item_seleccionado->d_name);
+                                        //unimos directorio y nombre archivo
+                                        //getcwd(archivo,PATH_MAX);
+                                        zvfs_getcwd(archivo,PATH_MAX);
+                                        sprintf(&archivo[strlen(archivo)],"/%s",item_seleccionado->d_name);
 
-									zvfs_chdir(filesel_directorio_inicial);
-									menu_filesel_free_mem();
+                                        zvfs_chdir(filesel_directorio_inicial);
+                                        menu_filesel_free_mem();
 
-									//Guardar anteriores tamaños ventana
-									menu_filesel_save_params_window(ventana);
+                                        //Guardar anteriores tamaños ventana
+                                        menu_filesel_save_params_window(ventana);
 
-									menu_filesel_preexit(ventana);
-									last_filesused_insert(archivo);
-									return 1;
+                                        menu_filesel_preexit(ventana);
+                                        last_filesused_insert(archivo);
+                                        return 1;
 
 									}
                                     /*
