@@ -1138,7 +1138,7 @@ int menu_realtape_inserted_cond(void)
 }
 
 
-void menu_storage_tape_expand(char *archivo)
+void menu_storage_tape_expand(char *archivo,char *sufijo_carpeta)
 {
 
     //guardamos directorio actual
@@ -1162,7 +1162,7 @@ void menu_storage_tape_expand(char *archivo)
 
     char tmpdir[PATH_MAX];
 
-    if (menu_filesel_expand(nombre,tmpdir,NULL) ) {
+    if (menu_filesel_expand(nombre,tmpdir,sufijo_carpeta) ) {
         debug_printf(VERBOSE_ERR,"Don't know how to expand that file");
     }
 
@@ -1205,14 +1205,14 @@ void menu_storage_tape_expand(char *archivo)
 void menu_storage_input_tape_expand(MENU_ITEM_PARAMETERS)
 {
 
-    menu_storage_tape_expand(tapefile);
+    menu_storage_tape_expand(tapefile,NULL);
 
 }
 
 void menu_storage_output_tape_expand(MENU_ITEM_PARAMETERS)
 {
 
-    menu_storage_tape_expand(tape_out_file);
+    menu_storage_tape_expand(tape_out_file,NULL);
 
 }
 
@@ -1220,7 +1220,7 @@ void menu_storage_output_tape_expand(MENU_ITEM_PARAMETERS)
 void menu_storage_realtape_expand(MENU_ITEM_PARAMETERS)
 {
 
-    menu_storage_tape_expand(realtape_name);
+    menu_storage_tape_expand(realtape_name,NULL);
 
 }
 
@@ -1228,21 +1228,21 @@ void menu_storage_realtape_expand(MENU_ITEM_PARAMETERS)
 void menu_storage_plusthreedisk_expand(MENU_ITEM_PARAMETERS)
 {
 
-    menu_storage_tape_expand(dskplusthree_file_name);
+    menu_storage_tape_expand(dskplusthree_file_name,NULL);
 
 }
 
 void menu_storage_trd_expand(MENU_ITEM_PARAMETERS)
 {
 
-    menu_storage_tape_expand(trd_file_name);
+    menu_storage_tape_expand(trd_file_name,NULL);
 
 }
 
 void menu_storage_hilow_expand(MENU_ITEM_PARAMETERS)
 {
 
-    menu_storage_tape_expand(hilow_file_name);
+    menu_storage_tape_expand(hilow_file_name,NULL);
 
 }
 
@@ -1250,7 +1250,7 @@ void menu_storage_microdrive_expand(MENU_ITEM_PARAMETERS)
 {
     int indice_microdrive=valor_opcion;
 
-    menu_storage_tape_expand(microdrive_status[indice_microdrive].microdrive_file_name);
+    menu_storage_tape_expand(microdrive_status[indice_microdrive].microdrive_file_name,NULL);
 
 }
 
@@ -2603,6 +2603,10 @@ void menu_convert_audio_to_zx81_help(void)
 }
 
 
+//Para que cada vez que se haga expand, utilice una carpeta temporal nueva, por si reusamos nombre de salida,
+//para que no guarde restos de conversiones anteriores
+int menu_convert_audio_to_zx81_sufijo_carpeta_expand=1;
+
 void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -2777,7 +2781,9 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 
             case 'e':
                 if (menu_convert_audio_to_zx81_output_file[0] && convert_audio_to_zx81_has_finished) {
-                    menu_storage_tape_expand(menu_convert_audio_to_zx81_output_file);
+                    char sufijo_carpeta[30];
+                    sprintf(sufijo_carpeta,"-%d",menu_convert_audio_to_zx81_sufijo_carpeta_expand++);
+                    menu_storage_tape_expand(menu_convert_audio_to_zx81_output_file,sufijo_carpeta);
                 }
             break;
 
