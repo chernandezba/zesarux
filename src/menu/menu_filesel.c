@@ -6292,6 +6292,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 						}
 
+                        /*
+                        No salir si el usuario no quiere usar ese archivo
 						else {
 							//Extension no conocida. No modificar variable archivo
 							//printf ("Unknown extension. Do not modify archivo. Contents: %s\n",archivo);
@@ -6299,7 +6301,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
      						menu_filesel_preexit(ventana);
 							return 0;
 						}
-
+                        */
 
 
 
@@ -6584,7 +6586,6 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 									zvfs_chdir(filesel_directorio_inicial);
 									menu_filesel_free_mem();
 
-									//return menu_avisa_si_extension_no_habitual(filtros,archivo);
 									//Guardar anteriores tamaños ventana
 									menu_filesel_save_params_window(ventana);
 
@@ -6593,7 +6594,8 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 									return 1;
 
 									}
-
+                                    /*
+                                    No salir si el usuario no quiere usar ese archivo
                                     else {
                                                         //Extension no conocida. No modificar variable archivo
                                                         //printf ("Unknown extension. Do not modify archivo. Contents: %s\n",archivo);
@@ -6601,7 +6603,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 														menu_filesel_preexit(ventana);
                                                         return 0;
                                     }
-
+                                    */
 
 									//Volver con OK
 									//return 1;
@@ -6639,7 +6641,6 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                             zvfs_chdir(filesel_directorio_inicial);
                             menu_filesel_free_mem();
 
-                            //return menu_avisa_si_extension_no_habitual(filtros,archivo);
 
                             menu_filesel_preexit(ventana);
                             return 1;
