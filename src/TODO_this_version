@@ -92,7 +92,7 @@ ok acabar de probar *si hay libreria audiofile, poder generar WAV de salida
 -Basic variables
 *space invaders 1k. lee longitud variables 16217. hay algún sitio (variable de sistema?) que indique final de variables?
 con "rebote-otro.tap" tambien pasa parecido
--Habria que usar el valor de e_line (23641) -1 como final. Ver si zx80/zx81 tambien tiene este final
+
+ok -Habria que usar el valor de e_line (23641) -1 como final. Ver si zx80/zx81 tambien tiene este final
 en zx81 parece que e_line esta mas alla de las variables. quiza verlo como limite final, si se lee 80h o se llega hasta e_line-1
 e_line en zx80 creo que no indica bien final de variables (esta mas alla)
-*el 80h que se busca para encontrar longitud, se tiene que hacer parseando variables, no se puede simplemente buscar un 80h

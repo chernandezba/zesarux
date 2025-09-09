@@ -16751,6 +16751,33 @@ int util_count_lines(char *texto)
     return lineas;
 }
 
+//Quitar los ceros a la derecha decimales de una string
+void util_quitar_ceros_decimales(char *numero)
+{
+    int i=strlen(numero)-1;
+
+    int encontrado_punto=0;
+    int encontrado_nocero=0;
+
+    for (;i>=0;i--) {
+        if (numero[i]=='.') encontrado_punto=1;
+
+        else {
+            if (!encontrado_nocero) {
+                if (numero[i]=='0') numero[i]=0;
+                else encontrado_nocero=1;
+            }
+
+           // if (numero[i]!='0') encontrado_nocero=1;
+        }
+    }
+
+    int longitud=strlen(numero);
+    if (longitud>=1) {
+        if (numero[longitud-1]=='.') numero[longitud-1]=0;
+    }
+}
+
 
 //De una cadena de bytes, lo muestra como hexadecimal, sin espacios. Retorna cadena acabada en 0
 //Completa con espacios hasta longitud
