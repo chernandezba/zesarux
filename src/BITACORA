@@ -1,3 +1,27 @@
+10 Septiembre 2025
+
+Últimamente me he centrado en recuperar cintas de ZX Spectrum de mis programas. Adicionalmente, encontré una cinta de ZX81 (Control de Stocks),
+que es un programa comercial. Las rutinas que tenía para convertir audio desde ZX81 no eran todo lo buenas que me gustaría y además, aunque
+podía cargar directamente desde cinta con el típico LOAD "" del ZX81, las primeras cargas no fueron perfectas.
+Esto me llevó a pensar unas mejores rutinas de conversión del sonido de carga del ZX81, para convertirlo a digital (formatos .P y .P81).
+La señal del ZX81, dado que es a muy baja velocidad (de media 300 baudios) permite que, en teoría, tenga un gran porcentaje de probabilidad
+de recuperación. Es decir, examinando una señal "a ojo" se puede saber qué bits representan esa señal (4 pulsos es un bit 0, 8 pulsos es un bit 1).
+La rutina que tenía de conversión integrada en ZEsarUX (y también la de línea de comandos) es prácticamente la misma que la primera que hice
+en 1998! Por tanto, aunque conseguí cargar bastantes programas, no está exenta de fallos y no funciona todo lo bien que debería.
+Con mis observaciones sobre la señal de carga y lo "fácil" que sería generar una rutina de inteligencia artificial (obviamente para alguien
+que sepa programar rutinas de ese tipo - yo no), pensé que debería hacer una rutina nueva. No he metido IA en la misma, pero sí he simplificado
+la rutina al máximo. Considerando como la rutina tiene que detectar el inicio y fin de un pulso (según la proporción del flanco de subida y
+el de bajada) y además considerando una amplitud mínima para ese pulso (amplitud que se autodetecta para obtener los mejores valores), al final
+obtengo una rutina que me ha permitido recuperar, de momento, hasta 48 programas de ZX81 (de una cinta grabada por mi en 1994),
+prácticamente cargando todos a la primera (con algún ajuste de azimuth en alguno).
+Además la rutina no necesita un samplerate concreto, al algoritmo le da igual el samplerate con el que esté
+capturado el sonido.
+Esto representa un gran logro respecto al algoritmo anterior (que internamente en ZEsarUX se sigue pudiendo utilizar). Además,
+he generado una nueva ventana donde se puede ver la conversión del sonido de cinta, como se van leyendo los bits según la señal de onda, todo
+de manera bastante gráfica por lo que representa, por una parte, una herramienta didáctica para aprender como funciona la señal de carga del ZX81,
+y por otra parte, es una buena herramienta de preservación de la descripción de esta señal.
+
+
 25 Mayo 2025
 
 En varias ocasiones he pensado poder incorporar controles analógicos de joystick de pc (como volantes) a la emulación. La idea es que en vez de leer
