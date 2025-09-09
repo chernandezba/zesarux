@@ -1162,7 +1162,7 @@ void menu_storage_tape_expand(char *archivo)
 
     char tmpdir[PATH_MAX];
 
-    if (menu_filesel_expand(nombre,tmpdir) ) {
+    if (menu_filesel_expand(nombre,tmpdir,NULL) ) {
         debug_printf(VERBOSE_ERR,"Don't know how to expand that file");
     }
 

@@ -3220,7 +3220,8 @@ int menu_filesel_file_can_be_expanded(char *archivo)
 
 //Expandir archivos (no descomprimir, sino expandir por ejemplo un tap o un hdf)
 //Devuelve 0 si ok
-int menu_filesel_expand(char *archivo,char *tmpdir)
+//sufijo_carpeta si no es NULL, agrega ese sufijo al nombre de carpeta temporal
+int menu_filesel_expand(char *archivo,char *tmpdir,char *sufijo_carpeta)
 {
 
     if (!menu_filesel_file_can_be_expanded(archivo)) {
@@ -3228,7 +3229,14 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
         return 1;
     }
 
-	sprintf (tmpdir,"%s/%s",get_tmpdir_base(),archivo);
+    if (sufijo_carpeta!=NULL) {
+        sprintf (tmpdir,"%s/%s%s",get_tmpdir_base(),archivo,sufijo_carpeta);
+    }
+
+    else {
+	    sprintf (tmpdir,"%s/%s",get_tmpdir_base(),archivo);
+    }
+
 	menu_filesel_mkdir(tmpdir);
 
         //TODO: hdf no se puede expandir si el archivo esta en una imagen mmc
@@ -6498,7 +6506,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                             debug_printf(VERBOSE_DEBUG,"Expanding file %s",item_seleccionado->d_name);
                             char tmpdir[PATH_MAX];
 
-                            if (menu_filesel_expand(item_seleccionado->d_name,tmpdir) ) {
+                            if (menu_filesel_expand(item_seleccionado->d_name,tmpdir,NULL) ) {
                                 //TODO: Si lanzo este warning se descuadra el dibujado de ventana
                                 //menu_warn_message("Don't know how to expand that file");
                                 debug_printf(VERBOSE_INFO,"Don't know how to expand that file");
