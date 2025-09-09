@@ -24116,7 +24116,7 @@ int util_enhanced_convert_raw_to_p_p81_memoria_tamanyo=0;
 //que puede tardar mucho y se tiene que poder cancelar desde otro thread. Si no se quiere usar esa característica, indicar NULL el puntero
 void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,void (*fun_print)(char *),int autodetectar_amplitud,
     int amplitud_media,int debug_print,int *cancel_process,void (*callback)(void),int *valor_autodetectado_amplitud,
-    char *nombre_programa,int *total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores,int invert_signal)
+    char *nombre_programa,int *param_total_pulsos_sospechosos,struct s_enh_zx81_pulse_errors *listado_errores,int invert_signal)
 {
     //char *rwafile=argv[1];
 
@@ -24130,6 +24130,7 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
     //int invert_signal=0;
 
     //int debug_print=0;
+    int total_pulsos_sospechosos;
 
     int tamanyo_archivo=get_file_size(filename);
 
@@ -24194,21 +24195,21 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
             //no queremos hacer print de mensajes de deteccion, a no ser que el usuario active el debug
             if (debug_print) {
                 longitud_p81=enh_zx81_lee_datos(util_enhanced_convert_raw_to_p_p81_puntero_memoria,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,memoria_p81,amplitud_media,
-                                debug_print,&longitud_nombre,fun_print,cancel_process,callback,total_pulsos_sospechosos,listado_errores);
+                                debug_print,&longitud_nombre,fun_print,cancel_process,callback,&total_pulsos_sospechosos,listado_errores);
             }
 
             else {
                 longitud_p81=enh_zx81_lee_datos(util_enhanced_convert_raw_to_p_p81_puntero_memoria,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,memoria_p81,amplitud_media,
-                    debug_print,&longitud_nombre,NULL,cancel_process,callback,total_pulsos_sospechosos,listado_errores);
+                    debug_print,&longitud_nombre,NULL,cancel_process,callback,&total_pulsos_sospechosos,listado_errores);
             }
 
             util_enhanced_longitudes_autodetectar[amplitud_media]=longitud_p81;
-            util_enhanced_errores_pulsos_autodetectar[amplitud_media]=*total_pulsos_sospechosos;
+            util_enhanced_errores_pulsos_autodetectar[amplitud_media]=total_pulsos_sospechosos;
 
             util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
             sprintf(buffer_linea,"Amplitude=%d Pulse errors=%d Length p81: %d Name: [%s]",
-                amplitud_media,*total_pulsos_sospechosos,longitud_p81,buffer_nombre);
+                amplitud_media,total_pulsos_sospechosos,longitud_p81,buffer_nombre);
 
             debug_printf(VERBOSE_DEBUG,buffer_linea);
 
@@ -24280,12 +24281,12 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
 
 
     longitud_p81=enh_zx81_lee_datos(util_enhanced_convert_raw_to_p_p81_puntero_memoria,util_enhanced_convert_raw_to_p_p81_memoria_tamanyo,memoria_p81,amplitud_media,
-        debug_print,&longitud_nombre,fun_print,cancel_process,callback,total_pulsos_sospechosos,listado_errores);
+        debug_print,&longitud_nombre,fun_print,cancel_process,callback,&total_pulsos_sospechosos,listado_errores);
 
     util_enhanced_print_nombre(longitud_nombre,memoria_p81,buffer_nombre);
 
     sprintf(buffer_linea,"Amplitude=%d Pulse errors=%d Length p81: %d Name: [%s]",
-        amplitud_media,*total_pulsos_sospechosos,longitud_p81,buffer_nombre);
+        amplitud_media,total_pulsos_sospechosos,longitud_p81,buffer_nombre);
     debug_printf(VERBOSE_INFO,buffer_linea);
 
 
@@ -24294,9 +24295,9 @@ void util_enhanced_convert_raw_to_p_p81(char *filename, char *archivo_destino,vo
         fun_print(buffer_linea);
     }
 
-    /*if (total_pulsos_sospechosos!=NULL) {
-        *total_pulsos_sospechosos=pulsos_sospechosos_para_esta_amplitud;
-    }*/
+    if (param_total_pulsos_sospechosos!=NULL) {
+        *param_total_pulsos_sospechosos=total_pulsos_sospechosos;
+    }
 
     if (nombre_programa!=NULL) strcpy(nombre_programa,buffer_nombre);
 

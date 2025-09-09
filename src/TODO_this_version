@@ -45,12 +45,6 @@ defina también tamaños de esas ventanas?
 Intentar leer una señal perfecta como la de unkatris (que ademas no tiene valores 0) provoca que no se  lean datos
 En cambio mis archivos generados desde P a RWA, esos si que se leen bien
 
--Dos maneras (realmente 3) de llamar a la función de conversión de RWA a P/P81:
-ok * desde file utils. convert RWA a P/P81. Automático sin preguntar amplitud
-* por linea de comandos. convert RWA a P/P81. Automático sin preguntar amplitud
-ok * desde storage->tape, nuevo submenu. con ventana en background, lanzando tarea como thread, viendo datos de autodetección
-que diga también posibles errores (ejemplo "No sabemos que bit es cuando hay 6 pulsos")
-marcado por defecto autodetección pero se puede especificar amplitud típica
 
 
 *Luego también se podría integrar en visual real tape, la función que obtiene el nombre del programa y su longitud
@@ -62,10 +56,8 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 *entrada en changelog
 
 
-ok *en View expanded, si se reusa archivo de salida, al ser una carpeta temporal, hay restos de las anteriores
 
 
-*poder convertir audio de zx80?
 
 
 
