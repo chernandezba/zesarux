@@ -67,6 +67,14 @@ Mejorado Selector de Archivos:
 - Agregado soporte para archivos GENS en Visor de Archivos
 - Permitir usar ruta a una imagen montada FAT en todos los casos
 
+Mejorada conversión de audio a archivos P/P81 de ZX81:
+- Agregado un algoritmo mejorado alternativo
+- Agregada herramienta en Storage-> Tape
+- Permitir ver la señal de sonido mientras se convierte, describiendo pulsos, bits y bytes
+- Permitir escuchar la señal de sonido mientras se convierte
+- Permitir ver bits, bytes y caracteres mientras se convierte
+- Esta es una herramienta educativa y de preservación de como funciona la señal de cinta del ZX81
+
 Mejorado Debug CPU:
 - Permitir ver e ir a la dirección previa de un opcode en el historial de cpu
 - Mostrar número de puerto cuando instrucción de lectura puertos (IN, INI, etc). Mostrar fila teclado cuando puerto es XXFEH en Spectrum
@@ -108,7 +116,6 @@ Mejorada ventana de View Basic Variables:
 
 Agregada ventana para ver la pila del GO SUB de Basic
 
-Mejorada conversión de audio a archivos P/P81 de ZX81: agregado un algoritmo mejorado alternativo
 Mejorado Hexadecimal editor: expresión de seguimiento se guarda en configuración
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
