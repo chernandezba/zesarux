@@ -9292,7 +9292,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 //sleep(5);
 
                 if (total_tamanyo>65535) {
-                    debug_printf(VERBOSE_ERR,"Array exceeds 64k (%lld)",total_tamanyo);
+                    debug_printf(VERBOSE_DEBUG,"Array exceeds 64k (%lld)",total_tamanyo);
                     salir=1;
                 }
 
@@ -9411,14 +9411,14 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
         //controlar maximo
         if (resultado) {
-            debug_printf(VERBOSE_ERR,"Reached maximum text size. Showing only allowed text");
+            debug_printf(VERBOSE_DEBUG,"Reached maximum text size. Showing only allowed text");
                 //forzar salir
                 salir=1;
         }
 
         //si dir ahora es menor, es que ha "dado la vuelta" a la memoria
         if (dir<dir_antes) {
-            debug_printf(VERBOSE_ERR,"Reading beyond memory limits");
+            debug_printf(VERBOSE_DEBUG,"Reading beyond memory limits");
             salir=1;
         }
 

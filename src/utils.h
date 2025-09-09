@@ -929,6 +929,7 @@ extern int get_cpu_frequency(void);
 extern void util_clear_final_spaces(char *orig,char *destination);
 
 extern int util_concat_string(char *original,char *string_to_add,int limite);
+extern int util_count_lines(char *texto);
 
 extern void snapshot_get_date_time_string_human(char *texto);
 extern void snapshot_get_date_time_string(char *texto);

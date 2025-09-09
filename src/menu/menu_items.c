@@ -28075,6 +28075,53 @@ void old_menu_debug_view_basic_variables(MENU_ITEM_PARAMETERS)
 zxvision_window *menu_view_basic_variables_window;
 
 
+
+int menu_view_basic_variables_recargar=0;
+
+#define MENU_VIEW_BASIC_VARIABLES_MAX_LINE_LENGTH 30
+
+z80_long_int menu_view_basic_variables_last_crc32=0;
+
+//Calcular crc32 de las variables por saber si se modifica para volver a renderizar
+z80_long_int menu_view_basic_variables_get_crc32(void)
+{
+
+
+    int start_address=reg_sp;
+    int length=65536-reg_sp;
+
+    if (length<1) {
+        //escribir_socket(misocket,"ERROR. Length must be >0");
+        return 0;
+    }
+
+
+    //Copiar contenido memoria segun memory zone activa a buffer de memoria temporal
+    z80_byte *memoria_temporal;
+    memoria_temporal=malloc(length);
+    if (memoria_temporal==NULL) cpu_panic("Can not allocate memory for crc32 calculation");
+
+    int longitud_copiar=length;
+    int i;
+
+    for (i=0;longitud_copiar>0;i++,longitud_copiar--) {
+        z80_byte byte_leido=peek_byte_no_time(start_address+i);
+        memoria_temporal[i]=byte_leido;
+    }
+
+
+
+    z80_long_int crc32=util_crc32_calculation(0,memoria_temporal,length);
+
+
+    free(memoria_temporal);
+
+    return crc32;
+
+}
+
+
+
 void menu_view_basic_variables_overlay(void)
 {
 
@@ -28083,15 +28130,67 @@ void menu_view_basic_variables_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_view_basic_variables_window->is_minimized) return;
 
+    if (!MACHINE_IS_SPECTRUM && !MACHINE_IS_ZX8081) {
+        zxvision_cls(menu_view_basic_variables_window);
+        zxvision_print_string_defaults_fillspc_format(menu_view_basic_variables_window,1,0,"Only available on Spectrum and ZX80/81");
+    }
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    else {
 
+
+        //Print....
+        //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+        z80_long_int crc32=menu_view_basic_variables_get_crc32();
+        //printf("Obtenido crc: %X\n",crc32);
+        if (crc32!=menu_view_basic_variables_last_crc32) {
+            //printf("CRC modificado\n");
+            menu_view_basic_variables_last_crc32=crc32;
+            menu_view_basic_variables_recargar=1;
+        }
+
+        if (menu_view_basic_variables_recargar) {
+            char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing basic variables");
+            debug_view_basic_variables(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
+
+            int lineas=util_count_lines(results_buffer);
+
+            //Mostrar una a una todas las lineas
+
+            //Ajustar alto ventana. Al menos una linea aunque solo sea para mostrar error
+            zxvision_set_total_height(menu_view_basic_variables_window,lineas+1);
+
+            char buffer_linea[MENU_VIEW_BASIC_VARIABLES_MAX_LINE_LENGTH+1];
+            char *puntero_leer=results_buffer;
+            int i;
+            for (i=0;i<menu_view_basic_variables_window->total_height;i++) {
+                int columna=0;
+                while (*puntero_leer && (*puntero_leer)!='\n') {
+                    if (columna<MENU_VIEW_BASIC_VARIABLES_MAX_LINE_LENGTH) {
+                        buffer_linea[columna++]=*puntero_leer;
+                    }
+                    puntero_leer++;
+                }
+                buffer_linea[columna++]=0;
+                if (*puntero_leer=='\n') puntero_leer++;
+
+                zxvision_print_string_defaults_fillspc_format(menu_view_basic_variables_window,1,i,"%s",buffer_linea);
+            }
+
+
+            free(results_buffer);
+
+            menu_view_basic_variables_recargar=0;
+
+        }
+    }
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_view_basic_variables_window);
 
 }
+
+
 
 
 
@@ -28108,6 +28207,8 @@ void menu_view_basic_variables(MENU_ITEM_PARAMETERS)
         menu_warn_message("This window needs multitask enabled");
         return;
     }
+
+    menu_first_aid("debug_variables");
 
     zxvision_window *ventana;
     ventana=&zxvision_window_view_basic_variables;
@@ -28149,6 +28250,8 @@ void menu_view_basic_variables(MENU_ITEM_PARAMETERS)
 
 	int salir=0;
 
+    menu_view_basic_variables_recargar=1;
+
 
     menu_view_basic_variables_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
@@ -28168,16 +28271,9 @@ void menu_view_basic_variables(MENU_ITEM_PARAMETERS)
 
 
 		tecla=zxvision_common_getkey_refresh();
-
+        zxvision_handle_cursors_pgupdn(ventana,tecla);
 
         switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
-
 
             //Salir con ESC
             case 2:

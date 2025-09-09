@@ -89,3 +89,6 @@ ok acabar de probar *si hay libreria audiofile, poder generar WAV de salida
 *en la de 32 bits, activando Audio Input en esa máquina virtual, no se suele colgar, lee bien, pero a veces se desconecta al cabo de pocos minutos. Y habilitando la tarjeta por USB, captura mal
 *en ambos linux, uso driver alsa. Para cambio a captura de tarjeta USB, uso parámetro --alsacapturedevice hw:1
 
+-Basic variables
+*icono
+*entrada en changelog

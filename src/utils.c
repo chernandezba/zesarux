@@ -16737,6 +16737,21 @@ int util_concat_string(char *original,char *string_to_add,int limite)
         return 0;
 }
 
+//Retornar numero de lineas de una string
+int util_count_lines(char *texto)
+{
+    int lineas=1;
+
+    while (*texto) {
+        if (*texto=='\n') lineas++;
+
+        texto++;
+    }
+
+    return lineas;
+}
+
+
 //De una cadena de bytes, lo muestra como hexadecimal, sin espacios. Retorna cadena acabada en 0
 //Completa con espacios hasta longitud
 void util_binary_to_hex(z80_byte *origen, char *destino, int longitud_max, int longitud)
