@@ -28149,7 +28149,7 @@ void menu_view_basic_variables_overlay(void)
         z80_long_int crc32=menu_view_basic_variables_get_crc32();
         //printf("Obtenido crc: %X\n",crc32);
         if (crc32!=menu_view_basic_variables_last_crc32) {
-            printf("CRC modificado\n");
+            //printf("CRC modificado\n");
             menu_view_basic_variables_last_crc32=crc32;
             menu_view_basic_variables_recargar=1;
         }
