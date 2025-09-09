@@ -28093,11 +28093,7 @@ z80_long_int menu_view_basic_variables_get_crc32(void)
     int length=debug_get_eline_value()-1-start_address;
     //debug_view_basic_variables_get_length_variables();
 
-    z80_int puntero_e_line=23641;
-    if (MACHINE_IS_ZX81) puntero_e_line=16404;
-    if (MACHINE_IS_ZX80) puntero_e_line=16396;
-
-    printf("Start %5d length: %d (suma=%d) (e_line)=%d\n",start_address,length,start_address+length,peek_word_no_time(puntero_e_line));
+    //printf("Start %5d length: %d (suma=%d) (e_line)=%d\n",start_address,length,start_address+length,debug_get_eline_value());
 
     if (length<1) {
         //escribir_socket(misocket,"ERROR. Length must be >0");
@@ -28156,6 +28152,19 @@ void menu_view_basic_variables_overlay(void)
             printf("CRC modificado\n");
             menu_view_basic_variables_last_crc32=crc32;
             menu_view_basic_variables_recargar=1;
+        }
+
+        if (!menu_view_basic_variables_recargar) {
+            //Ver si longitud variables es 0
+            int start_address=debug_view_basic_variables_get_start();
+
+            //A veces la longitud es menos que esto que obtenemos, pero con esto ya nos sirve
+            int length=debug_get_eline_value()-1-start_address;
+
+            if (!length) {
+                zxvision_cls(menu_view_basic_variables_window);
+                zxvision_print_string_defaults_fillspc_format(menu_view_basic_variables_window,1,0,"No variables");
+            }
         }
 
         if (menu_view_basic_variables_recargar) {
