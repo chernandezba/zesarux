@@ -8967,7 +8967,7 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
 
     //controlar maximo dimensiones
     if (total_dimensiones>30) {
-        debug_printf(VERBOSE_ERR,"Maximum dimension for an array reached: 30");
+        debug_printf(VERBOSE_DEBUG,"Maximum dimension for an array reached: 30");
         total_dimensiones=30;
     }
 
@@ -8975,7 +8975,7 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
     int tamanyo_dimension=dimensiones[indice];
 
     if (tamanyo_dimension>100) {
-        debug_printf(VERBOSE_ERR,"Maximum size for an array dimension reached: 100");
+        debug_printf(VERBOSE_DEBUG,"Maximum size for an array dimension reached: 100");
         tamanyo_dimension=100;
     }
 
@@ -9088,6 +9088,7 @@ int debug_view_basic_variables_get_length_variables(void)
     z80_int dir=debug_view_basic_variables_get_start();
 
     while(dir!=65535 && peek_byte_no_time(dir)!=128) {
+        //printf("dir %d\n",dir);
         dir++;
         longitud++;
     }
@@ -9161,6 +9162,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
 
   	while (peek_byte_no_time(dir)!=128 && !salir) {
+        //printf("variables %d\n",dir);
         z80_int dir_antes=dir;
         sprintf (buffer_linea,"%d: ",dir);
         util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
