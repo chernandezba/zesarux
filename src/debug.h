@@ -585,6 +585,7 @@ extern int debug_load_source_code_skip_columns;
 extern void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto);
 extern z80_int debug_view_basic_variables_get_start(void);
 extern int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto);
+extern z80_int debug_get_eline_value(void);
 
 
 
