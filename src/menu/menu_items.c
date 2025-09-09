@@ -28092,7 +28092,10 @@ z80_long_int menu_view_basic_variables_get_crc32(void)
     //Realmente es menos, pero con esto ya nos sirve
     int length=debug_view_basic_variables_get_length_variables();
 
-    printf("Start %5d length: %d (suma=%d) (23641)=%d\n",start_address,length,start_address+length,peek_word_no_time(23641));
+    z80_int puntero_e_line=23641;
+    if (MACHINE_IS_ZX8081) puntero_e_line=16404;
+
+    printf("Start %5d length: %d (suma=%d) (e_line)=%d\n",start_address,length,start_address+length,peek_word_no_time(puntero_e_line));
 
     if (length<1) {
         //escribir_socket(misocket,"ERROR. Length must be >0");
