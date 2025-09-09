@@ -359,3 +359,5 @@ En config se guarda número de icono? O solo se agrega? Eso permite que al carga
 *poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
 No sé si vale la pena, porque los casos que veo suele ser de 5 pulsos (que convierte automáticamente a un bit 0) o de 9-10 pulsos (que convierte automáticamente a un bit 1). Creo que otros errores ya resultarían en archivos de audio de poca calidad que tendría que preguntar al usuario
 miles de veces
+
+-view basic variables: mejorar precisión en valores float, aumentando cantidad de bits que se tienen en cuenta
