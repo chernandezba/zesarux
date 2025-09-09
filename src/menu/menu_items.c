@@ -28092,7 +28092,7 @@ z80_long_int menu_view_basic_variables_get_crc32(void)
     //Realmente es menos, pero con esto ya nos sirve
     int length=debug_view_basic_variables_get_length_variables();
 
-    printf("Start %5d length: %d\n",start_address,length);
+    //printf("Start %5d length: %d\n",start_address,length);
 
     if (length<1) {
         //escribir_socket(misocket,"ERROR. Length must be >0");
@@ -28146,9 +28146,9 @@ void menu_view_basic_variables_overlay(void)
         //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
         z80_long_int crc32=menu_view_basic_variables_get_crc32();
-        printf("Obtenido crc: %X\n",crc32);
+        //printf("Obtenido crc: %X\n",crc32);
         if (crc32!=menu_view_basic_variables_last_crc32) {
-            printf("CRC modificado\n");
+            //printf("CRC modificado\n");
             menu_view_basic_variables_last_crc32=crc32;
             menu_view_basic_variables_recargar=1;
         }
