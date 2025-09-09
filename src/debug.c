@@ -9095,6 +9095,8 @@ int debug_view_basic_variables_get_length_variables(void)
     return longitud;
 }
 
+#define DEBUG_VIEW_BASIC_VARIABLES_MAX_NAME_VARIABLE 256
+
 
 //tipo: tipo maquina: 0: spectrum. 1: zx80. 2: zx81
 void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
@@ -9162,7 +9164,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
 
   	while (peek_byte_no_time(dir)!=128 && !salir) {
-        //printf("variables %d\n",dir);
+        //printf("variables %d (%02XH)\n",dir,peek_byte_no_time(dir) );
         z80_int dir_antes=dir;
         sprintf (buffer_linea,"%d: ",dir);
         util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
@@ -9351,7 +9353,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 //Variable numérica identificada de mas de un solo caracter
                 letra_variable=debug_view_basic_variables_letra_variable(first_byte_letter);
 
-                char buf_nombre_variable[256];
+                char buf_nombre_variable[DEBUG_VIEW_BASIC_VARIABLES_MAX_NAME_VARIABLE+1];
                 buf_nombre_variable[0]=letra_variable;
 
                 int indice_nombre=1;
@@ -9369,7 +9371,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                     letra_variable=debug_view_basic_variables_getchar(letra_variable);
                     //if (letra_variable<32 || letra_variable>126) letra_variable='?';
 
-                    buf_nombre_variable[indice_nombre++]=letra_variable;
+                    if (indice_nombre<DEBUG_VIEW_BASIC_VARIABLES_MAX_NAME_VARIABLE) {
+                        buf_nombre_variable[indice_nombre++]=letra_variable;
+                    }
 
                 }
 
