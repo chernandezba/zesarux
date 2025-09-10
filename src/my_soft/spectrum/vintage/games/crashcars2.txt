@@ -9,3 +9,5 @@ se deberían haber implementado en su momento en el juego original, pues eran al
 
 Se ha intentado que el estilo de lo que se ha agregado (por ejemplo las instrucciones) fuera el mismo
 estilo que hubieramos pensado 30 años atrás entre Rubén y yo.
+
+Dedicado a la memoria de Rubén Parra Martínez, fallecido en Octubre de 2024
