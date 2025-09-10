@@ -4,7 +4,7 @@ La historia es simple: tu pueblo vive en la auténtica pobreza y te aventuras a 
 
 Historia y desarrollo
 
-El juego fue realizado durante el verano de 1991. César y Jonathan son primos, y cada verano se juntaban varias semanas y entre muchas otras actividades divertidas, se pasaban horas jugando y trasteando con el ZX Spectrum. En aquella época César tenia 13 años y Jonathan 14. César rescató este juego en Julio de 2025: estuvo recuperando cintas de casette, pasándolas a formato TAP para disfrutarlas en un emulador y apareció este juego, del que no recordaba absolutamente nada. Es probable que el mapeo y muchas de las ideas fuesen de Jonathan, mientras que la programación la realizó César, utilizando el PAW. 
+El juego fue realizado durante el verano de 1991. César y Jonathan son primos, y cada verano se juntaban varias semanas y entre muchas otras actividades divertidas, se pasaban horas jugando y trasteando con el ZX Spectrum. En aquella época César tenia 13 años y Jonathan 14. César rescató este juego en Julio de 2025: estuvo recuperando cintas de casette, pasándolas a formato TAP para disfrutarlas en un emulador y apareció este juego, del que no recordaba absolutamente nada. Es probable que el mapeo y muchas de las ideas fuesen de Jonathan, mientras que la programación la realizó César, utilizando el Professional Adventure Writing System (PAWS), de Gilsoft International. 
 
 Instrucciones de juego
 
