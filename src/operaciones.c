@@ -7234,7 +7234,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         }
 
         //kempston joystick para maquinas no Inves
-        //Si A5=A6=A7=0 y A0=1, kempston joystick
+        //Si A5=A6=A7=0 y A0=1, kempston joystick. El tipico es el puerto 31 (00011111)
         if ( (puerto_l & (1+32+64+128)) == 1 && !(MACHINE_IS_INVES) ) {
 
                 if (joystick_emulation==JOYSTICK_KEMPSTON || gunstick_emulation==GUNSTICK_KEMPSTON) {
