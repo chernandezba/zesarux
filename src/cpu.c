@@ -464,7 +464,16 @@ z80_int get_im2_interrupt_vector(void)
 {
     z80_byte bus_value=get_ula_databus_value();
 
-    if (joystick_barato) bus_value=puerto_especial_joystick;
+    if (joystick_barato) {
+        if (zxvision_key_not_sent_emulated_mach() ) {
+            bus_value=0;
+        }
+        else {
+            bus_value=puerto_especial_joystick;
+        }
+    }
+
+    //printf("%04X\n",reg_i*256+bus_value);
 
     return reg_i*256+bus_value;
 }
