@@ -462,7 +462,11 @@ en el Spectrum significa "1"
 */
 z80_int get_im2_interrupt_vector(void)
 {
-    return reg_i*256+get_ula_databus_value();
+    z80_byte bus_value=get_ula_databus_value();
+
+    if (joystick_barato) bus_value=puerto_especial_joystick;
+
+    return reg_i*256+bus_value;
 }
 
 //Inves. Contador ula delay. mas o menos exagerado

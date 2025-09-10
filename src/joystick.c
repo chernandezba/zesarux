@@ -47,6 +47,30 @@ int joystick_autoleftright_counter=0;
 //0=left, 1=right
 int joystick_autoleftright_status=0;
 
+/*
+Los dispositivos baratos meten "basura" en el bus: al generar una interrupción, en vez de haber el FFH habitual,
+meten el valor de lectura del disposito, porque creen que se está leyendo el joystick.
+Ejemplo extenso explicado por Miguel Angel Rodriguez, respecto a joysticks kempston que solo leen A5=0 y no tienen en cuenta
+que se active la señal de lectura:
+
+Resulta que durante el ciclo de reconocimiento de la interrupción, el Z80 activa IORQ, como si fuese
+un ciclo de entrada salida, pero no activa ni la señal de lectura ni la de escritura. Esas interfaces
+decodifican falsamente esa situación como una situación de lectura de puerto. Si da la casualidad de que
+en el bus de direcciones, en ese momento, A5 esté a cero (y eso depende de qué dirección de memoria es la
+que se estaba ejecutando en el momento en que ocurrió la interrupción) tienes al aparato enviando por el
+bus de datos lo que esté leyendo del Joy stick en ese momento, y el Z80 interpretándolo como un vector de interrupción
+
+IORQ se activa durante el ACK de una interrupción, es lo esperado, y es un comportamiento documentado.
+No es un error del procesador. En lugar de usar un pin del chip específico para notificar el reconocimiento de
+interrupción, se usa la secuencia de activar IORQ y también M1. Esa secuencia no se activa a la vez en ningún otro momento
+
+---
+
+Realmente si emulase solo dispositivo kempston barato, tendria que al menos ver si A5=0 y meter basura en el bus en ese caso
+Como lo estoy haciendo como una opción de joystick genérico barato, no miro A5=0 y meto siempre basura en el bus al generar interrupción
+*/
+int joystick_barato=0;
+
 //Que tecla actua como el Fire del joystick. Por defecto, Home
 //Si es <0, no actua ninguna tecla
 //#define JOYSTICK_KEY_FIRE_IS_HOME 0

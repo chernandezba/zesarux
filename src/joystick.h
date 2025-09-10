@@ -55,6 +55,7 @@ extern int joystick_autoleftright_frequency;
 extern int joystick_autoleftright_counter;
 extern int joystick_autoleftright_status;
 
+extern int joystick_barato;
 
 extern char *joystick_texto[];
 
