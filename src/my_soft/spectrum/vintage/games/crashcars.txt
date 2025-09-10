@@ -1,0 +1,2 @@
+En este juego me ayudó mi hermano Oscar a crearlo, creo recordar que la detección de colisiones no funcionaba del todo bien.
+Creo que también me ayudó con el movimiento de los obstáculos al pasar de pantalla
