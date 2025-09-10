@@ -20,6 +20,7 @@ Agregado soporte para 4 botones de fuego de joystick en:
 - Kempston joystick (Spectrum): 4 botones
 - Amstrad CPC: 3 botones
 - Master System, SG1000, Colecovision: 2 botones
+Agregada opción para emular un dispositivo de joystick barato, que mete valores en el bus, afectando a las interrupciones
 
 * Mejoras:
 

@@ -55,5 +55,6 @@ ok acabar de probar *si hay libreria audiofile, poder generar WAV de salida
 *en ambos linux, uso driver alsa. Para cambio a captura de tarjeta USB, uso parámetro --alsacapturedevice hw:1
 
 -opcion joystick barato
-*entrada en changelog
-*ver si A5=0 o no hacer check de dirección?
+ok *entrada en changelog
+ok *ver si A5=0 o no hacer check de dirección?
+*juegos que fallan con esta opción: pussy.tap, simulador de raton (Antonio Bermudez, 1991, Microhobby), The Humans

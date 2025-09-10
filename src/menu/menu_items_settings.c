@@ -6189,8 +6189,14 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_barato,NULL,
             "Cheap Joystick","Joystick Barato","Joystick Barat");
         menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",(joystick_barato ? 'X': ' ' ));
-        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Emulates a cheap device which puts values in the bus");
-        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Emulates a cheap device which puts values in the bus");
+        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Emulates a cheap device which puts values in the bus, affecting interrupts");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Emulates a cheap device which puts values in the bus, affecting interrupts. "
+            "Usually cheap devices only check for IORQ signal but don't check for read signal so they put joystick value "
+            "on any IORQ signal, even when an interrupt is triggered; so the interrupt vector is formed by I*256+value in the bus. "
+            "Also, these devices check for A5=0 for kempston joystick (next address to execute after the interrupt), but I don't check A5.\n"
+            "Some games/programs that will fail enabling this: Pussy.tap (ULAPlus/Timex demo by Miguel Angel Rodriguez Jodar), "
+            "Simulador de raton (Antonio Bermudez, 1991, Microhobby), The Humans"
+            );
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 

@@ -20,6 +20,7 @@ Added support for up to 4 joystick fire buttons on:
 - Kempston joystick (Spectrum): 4 buttons
 - Amstrad CPC: 3 buttons
 - Master System, SG1000, Colecovision: 2 buttons
+Added setting to emulate a cheap joystick device which puts values in the bus, affecting interrupts
 
 * Improvements:
 
