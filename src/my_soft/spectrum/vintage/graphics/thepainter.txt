@@ -1,0 +1,33 @@
+THE PAINTER
+
+Teclas utilizadas
+
+- Movimiento del eje de coordenadas con teclas 6789
+- s: cambiar salto (incremento) del movimiento del eje de coordenadas
+- i: ir a una posición concreta
+- m: modo mover
+- p: modo pintar
+- b: modo borrar
+- r: rellenar en la posición del cursor
+- d: movimiento a la izquierda de las figuras
+- g: movimiento a la derecha de las figuras
+- f: dibujar la figura seleccionada
+- x: movimiento a la izquierda de las acciones
+- v: movimiento a la derecha de las acciones
+- c: realizar la acción seleccionada
+- 1: indicar punto inicial de una linea
+- 2: indicar punto final de una linea y dibujarla
+- Espacio: cargar y grabar pantalla. Soporta velocidad turbo
+
+
+
+En acciones de dibujar figuras o de selección de áreas rectangulares:
+
+- el movimiento es también con teclas 6789
+- teclas OPQA para cambiar el tamaño
+- Enter: para finalizar
+- Espacio: para asignar un tamaño
+- i: para ir a una posición concreta. 
+- 1,0,g: teclas para asignar grados en el dibujo de arcos
+
+Tanto el movimiento como el cambio de tamaño se hace en incrementos de 1 pixel, si se quiere ir mas rápido, mantener pulsada tecla shift
