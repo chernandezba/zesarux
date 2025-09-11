@@ -1,0 +1,58 @@
+SPED - Spectrum Ensamblador/Desensamblador para 128K
+
+Introducción
+------------
+
+Este programa permite usar toda la RAM del Spectrum 128k para poder superar límites que otros compiladores de Spectrum no alcanzan, por ejemplo, se dispone de hasta 74 KB para editar código fuente. El formato del código fuente está optimizado para ocupar menos que otros similares como Hisoft GENS o TED. Se tienen además otras funcionalidades no presentes en otros compiladores:
+
+- Se puede hacer debug de código preservando la pantalla
+- Se dispone de información de depuración, permitiendo hacer debug de código viendo el código fuente
+- Utiliza un formato propietario para las cabeceras de cinta que almacena la fecha de grabación. Esta cabecera, pese a ocupar más de los 17 bytes habituales del Spectrum, es compatible con las sentencias LOAD "" CODE del Basic
+
+El programa dispone de varias pantallas de ayuda que te permiten conocer los comandos y teclas utilizadas, por tanto, no es necesario
+un manual extenso aquí.
+
+
+Secciones de SPED
+-----------------
+
+Hay 3 zonas principales de SPED:
+
+- La interfaz de comandos inicial: Permite saltar a las diferentes zonas del programa, así como ensamblar el código, grabar, etc
+Con la tecla H nos aparece una ventana de ayuda
+
+- El editor: Donde crear nuestro código fuente.
+Pulsando caps shift+symbol shift (modo extendido) y luego H, aparece la ayuda del editor; si una tecla de la ayuda va precedida por una S, significa que hay que pulsar symbol shift y la tecla a continuación. Por ejemplo "SD Borrar Linea", significa que hay que pulsar symbol shift+D para borrar una linea.
+Con symbol shift+Q se sale del editor y se vuelve a la interfaz de comandos
+
+- El desensamblador: Permite desensamblar el código. SPED permite mostrar el código fuente a medida que se depura, para ello, hay que usar la directiva "DPR+" en el código,y luego pulsar la tecla symbol shift+D en el desensamblador.
+Con la tecla H nos aparece una ventana de ayuda 
+Con symbol shift+Q se sale del desensamblador y se vuelve a la interfaz de comandos
+
+
+Directivas del compilador
+-------------------------
+
+El compilador, aparte de entender lenguaje ensamblador del Z80, entiende otros comandos adicionales:
+
+LST+  - mostrar el listado mientras se compila
+LST-  - no mostrar el listado mientras se compila
+DPR+  - activar la generación de información de depuración
+DPR-  - desactivar la generación de información de depuración
+
+Los siguientes son comunes a otros compiladores:
+
+DEFS - Reservar una cantidad de bytes
+DEFM - Definir una cadena de texto
+DEFB - Definir un byte
+DEFW - Definir un word (2 Bytes)
+ORG  - Definir en qué dirección se compila el código: Dado que se dispone de una página de RAM de 16KB del Spectrum 128k, lo habitual es ubicar el programa a partir de la dirección 49152
+ENT  - Definir en qué dirección se va a ejecutar el código: Esto se comporta diferente a otros compiladores; por ejemplo podemos ubicar el código en la 49152 (con ORG 49152) pero decirle que se va a cargar y ejecutar en la dirección 30000 (con ENT 30000). O incluso para crear código reubicable, se suele especificar ENT 0
+
+
+Operadores del compilador
+-------------------------
+
+$  - Indica en qué dirección se ejecutará la linea donde se hace referencia (relacionado con ENT). Por ejemplo se podría utilizar en una linea como "LD HL,$"; si esa
+línea se está compilando para ejecutarse en la dirección 40000, el código resultante será "LD HL,40000"
+!  - Indica en qué dirección se está compilando la linea donde se hace referencia (relacionado con ORG). Por ejemplo se podría utilizar en una linea como "LD HL,!"; si esa línea se está compilando en la dirección 50000, el código resultante será "LD HL,50000"
