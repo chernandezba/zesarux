@@ -1,0 +1,50 @@
+Este es un programa desensamblador para ZX Spectrum. Incluye dos versiones: una genérica para cualquier modelo de Spectrum y otra exclusiva de modelos con 128k de RAM
+
+Dentro del programa, la versión de 128k dispone de una ayuda que se accede pulsando la tecla H. La versión genérica no dispone de ayuda, pero utiliza las mismas acciones y teclas que la versión de 128k, a excepción de varias funciones que no tiene la versión genérica: 
+
+- selección de ram 
+- ensamblar
+- ver pantalla
+- ayuda
+
+Una de las particularidades de este desensamblador, que no tenían los de la época, es que gestiona correctamente el registro R en la ejecución de instrucciones (de ahí el origen del nombre: "R"eal Debug).
+También es capaz de mostrar los comandos asociados al calculador de la ROM con la instrucción RST 40.
+
+Las teclas son parecidas a las utilizadas en el desensamblador Hisoft Mons4:
+
+A: seleccionar ram (sólo para versión de 128k)
+symbol shift+A: volver a basic
+C: convertir numero a decimal
+symbol shift+C: ejecución continua
+D: mostrar desensamblado como secuencias de bytes DEFB
+E: ensamblar (sólo para versión de 128k)
+H: ayuda (sólo para versión de 128k)
+I: insertar byte
+symbol shift+I: activar/desactivar interrupciones
+symbol shift+K: ejecutar código donde está el puntero de memoria
+L: listar hexadecimal
+M: cambiar puntero memoria
+symbol shift+M: seleccionar registro  
+symbol shift+N: cambiar registro PC con el valor del puntero de memoria
+R: activar/desactivar visualización opcodes de comandos RST 8,40        
+symbol shift+R: forzar visualización opcodes de comandos RST 40
+S: ver pantalla (sólo para versión de 128k)  
+T: desensamblar convirtiendo a texto en formato compatible con GENS4 o TED
+symbol shift+T: saltar instrucción
+W: poner punto de paro
+symbol shift+Z: ejecución paso a paso
+Space: cambiar valor registro seleccionado
+symbol shift+4: desensamblar
+symbol shift+3: cambiar visualización valores en hexadecimal o decimal
+cursores izquierda/derecha: decrementar/incrementar puntero de memoria en 8
+cursores arriba/abajo: decrementar/incrementar puntero de memoria en una instrucción
+shift+1/ENTER: decrementar/incrementar puntero de memoria en 1 (en pantalla principal)
+
+shift+1: salir de pantallas secundarias (como ayuda, desensamblar, listar hexadecimal, ensamblar, etc)
+
+Al indicar valores, se puede usar los siguientes sufijos:
+
+#: Hexadecimal
+": Ascii
+%: Binario
+-+: Valor negativo o positivo
