@@ -44,7 +44,7 @@ When I finished sped (the 52th version), I really only made two programs using t
 
 * conversion tool: I did a conversion tool to convert from GENS or Microhobby editor to Microhobby editor or Sped
 
-https://github.com/chernandezba/zesarux/blob/master/src/my_soft/spectrum/vintage/converso.tap. 
+https://github.com/chernandezba/zesarux/blob/master/src/my_soft/spectrum/vintage/utilities_others/converso.tap
 
 The conversions are easy:
 
@@ -52,7 +52,7 @@ The conversions are easy:
 
 -- microhobby editor doesn't use line numbers but it does use same character for tabulators
 
--- sped doesn't use line numbers and it doesn't use chr$ 9 for tabulators either: it just sets bit 7 of the first character that is tabulated. This is very simple and it uses less ram than the other two: for a 1000 line source code program, my sped uses at least 1000 bytes less (suposing only 1 tabulator for every line, which in fact, they could be more)
+-- sped doesn't use line numbers and it doesn't use chr$ 9 for tabulators either: it just sets bit 7 of the first character that is tabulated. This is very simple and it uses less ram than the other two: for a 1000 line source code program, my sped uses at least 1000 bytes less (asuming only 1 tabulator for every line, which in fact, they could be more)
 
 
 * license: all the programs I made for the spectrum are covered by the GNU GPL license, so sped52 is also covered by it. All the future changes to sped must include the source code.
