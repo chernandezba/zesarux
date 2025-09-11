@@ -1,0 +1,34 @@
+Drawscreen es un programa de dibujo vectorial. Todas las formas que componen un dibujo (lineas, circulos, textos, etc) se guardan en un buffer de memoria con la definición de todos ellos. No es por tanto un programa de dibujo pixel a pixel
+
+Al iniciar el programa aparece un menú con las opciones, en el que nos podemos mover con los cursores y Enter para seleccionar acción:
+
+- Ir a dibujo: Empezar un dibujo nuevo
+- Cargar: Cargar un dibujo grabado en cinta
+- Imprimir: Carga una pantalla de cinta y la imprime en una impresora
+- Atributos: Definir los colores
+
+Con la opción de "Ir a dibujo" se pregunta por el Buffer de Dibujo, en este caso tenemos que indicar la memoria reservada para nuestro dibujo. Como ejemplo, un valor de 5000 es suficiente.
+
+Dentro del programa, aparece un eje de coordenadas que se puede mover con las teclas 6789.
+
+Pulsando la tecla "a" aparece un menú de ayuda, donde se indican varias teclas con acciones. Una de esas acciones que merece explicar es la tecla asociada
+a la tecla Espacio (comando). Aquí se puede escribir el nombre de diferentes comandos, que listamos a continuación:
+
+atributos: Cambiar los colores del dibujo
+ayuda: Mostrar la pantalla de ayuda (misma acción que pulsando la tecla a)
+borrar objeto: Borra el objeto indicado por el eje de coordenadas. Para que se detecte el objeto a borrar, el punto inicial de dicho objeto debe coincidir exactamente con la posición actual del eje de coordenadas
+borrar pantalla: Borra la pantalla
+circulo: Dibujar un círculo
+dimensiones: Simular un efecto de 3 Dimensiones. Para ello, dibujar dos rectángulos y luego ejecutar este comando: los vértices de ambos rectángulos se unen para simular un efecto 3D
+escala: Cambio de la escala del dibujo. Por defecto es de 256 pixeles de ancho y 176 pixeles de alto
+figuras: Dibujar diferentes figuras
+elipse: Dibujar una elipse
+fichero: Acciones de carga y grabación
+invertir: Invertir los pixeles en pantalla
+pincel: No implementado?
+regen: Regenerar el dibujo: borra la pantalla y dibuja uno a uno todos los objetos que componen el dibujo leyendo del buffer de memoria
+rellenar: Rellenar una zona de pantalla
+salto: Definir el incremento del eje de coordenadas
+texto: Escribir texto en pantalla
+tinta: Cambio del color de la tinta
+tramas: Realizar tramado de lineas en pantalla

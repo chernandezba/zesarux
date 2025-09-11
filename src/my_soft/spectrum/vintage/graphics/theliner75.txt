@@ -1,7 +1,8 @@
 The Liner 75 - Introducción
 ---------------------------
 
-The Liner es un programa de dibujo vectorial. Todo dibujo en pantalla se genera mediante lineas: circulos, rectangulos, incluso texto, son generados mediante lineas. Incluye además otro tipo de elementos que se pueden incorporar dentro de un dibujo, como cambio de color o esperar la pulsación de una tecla, por ejemplo.
+The Liner es un programa de dibujo vectorial. Todo dibujo en pantalla se genera mediante lineas: circulos, rectangulos, incluso texto, son generados mediante lineas. Incluye además otro tipo de elementos que se pueden incorporar dentro de un dibujo, como cambio de color o esperar la pulsación de una tecla, por ejemplo. Este The Liner se puede
+ considerar una evolución de Draw Screen, también creado por mi.
 
 Es una clara inspiración del AutoCAD de PC.
 
