@@ -114,7 +114,7 @@ COMENZAR: Borrar dibujo y empezar desde cero
 
 BORRA PANTALLA: Comando para borrar la pantalla
 
-ESPERA UNA TECLA: esperar pulsación de cualquier tecla. Revisar porque no se si funciona bien
+ESPERA UNA TECLA: esperar pulsación de cualquier tecla
 
 SONIDO +30: Reproducir un sonido agudo
 
@@ -140,7 +140,7 @@ SOBRE: Activar o desactivar el modo XOR (OVER del basic)
 
 INVERSO: Activar el modo inverso
 
-ESPERA TECLA: Espera tecla indicada con codigo ascii. Ejemplo si indicamos 48, esperara tecla "0". Revisar porque no se si funciona bien
+ESPERA TECLA: Espera tecla indicada con codigo ascii. Ejemplo si indicamos 48, esperara tecla "0"
 
 PAUSA: Espera un valor de x * 20 ms (igual al comando PAUSE de basic)
 
