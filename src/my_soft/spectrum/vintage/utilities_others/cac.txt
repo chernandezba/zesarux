@@ -1,0 +1,11 @@
+Este es un programa para crear aventuras conversacionales (CAC significa Creador de Aventuras Conversacionales).
+
+El primer comando a ejecutar debe ser "pant", para definir el total de pantallas disponibles.
+
+Luego se puede usar el comando "descr" para asignar descripciones a las pantallas.
+
+Y a continuación se puede usar el comando "rec" (de "recorrido") para indicar las salidas de cada pantalla.
+
+Con el comando "test" se puede probar la aventura. Escribir el comando "fin" para salir del test.
+
+
