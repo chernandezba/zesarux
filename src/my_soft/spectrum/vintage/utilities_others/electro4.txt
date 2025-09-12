@@ -1,3 +1,16 @@
 Programa creado por César Hernández Bañó y Ruben Parra Martinez (marca "Micro Electro"), el 19/11/1990
 
-La clave inicial que pide es: 16384
+Está dedicado a Rubén, fallecido en Octubre de 2024
+
+Es un programa para diseñar circuitos electrónicos
+
+Al inicio pide una clave: 16384
+
+Teclas utilizadas en el programa:
+
+- Cursores: para seleccionar opciones, mover objetos en pantalla. Enter para seleccionar
+- Teclas 0,1 para activar/desactivar dibujado de cable
+- Tecla b para borrar pantalla
+- Tecla v para volver
+- Tecla c para ir a dibujado de cable
+

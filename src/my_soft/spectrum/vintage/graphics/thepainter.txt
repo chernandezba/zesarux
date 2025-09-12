@@ -1,5 +1,7 @@
 THE PAINTER
 
+Este es un programa de dibujo pixel a pixel.
+
 Teclas utilizadas
 
 - Movimiento del eje de coordenadas con teclas 6789

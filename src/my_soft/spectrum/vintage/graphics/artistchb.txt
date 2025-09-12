@@ -1,0 +1,8 @@
+Teclas utilizadas
+
+- En la parte inicial, donde pregunta los colores, se deben usar los cursores (shift+5 y shift+8) y enter
+- En el menú, se utiza OPQAM
+
+Nomenclatura
+
+Se utiliza en ocasiones la palabra "altura" para referirse a la coordenada Y, y la palabra "longitud" para referirse a la coordenada X
