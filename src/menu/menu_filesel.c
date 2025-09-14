@@ -107,6 +107,10 @@ char filesel_nombre_archivo_seleccionado[PATH_MAX];
 //Si mostrar en filesel utilidades de archivos
 z80_bit menu_filesel_show_utils={0};
 
+//Al mostrar en filesel utilidades de archivos, solo las que no realizan modificaciones: ni delete, move, etc, pero sí View por ejemplo
+//Esto se usa en View Expanded (storage-tape por ejemplo)
+z80_bit menu_filesel_show_only_read_only_utils={0};
+
 //Decir que en el menu drives aparecera (si es que esta montado) imagen mmc, aunque no estemos con file utils activo
 z80_bit menu_filesel_drives_allow_fatfs={0};
 
@@ -1186,6 +1190,18 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
         char buffer_line_actions_long[OVERLAY_SCREEN_MAX_WIDTH+1];
         char buffer_linea[OVERLAY_SCREEN_MAX_WIDTH+1];
 
+        if (menu_filesel_show_only_read_only_utils.v) {
+            //                         01234  567890  12345  678901  2345678901
+            sprintf(buffer_line_actions_short,"%s~^Inf",
+                    (es_directorio ? "" : "~^View ~^Filemem ~^Lnk ")
+            );
+
+            sprintf(buffer_line_actions_long,"%s~^Info",
+                    (es_directorio ? "" : "~^View ~^Filemem ~^Link ")
+            );
+        }
+
+        else {
 
         //                         01234  567890  12345  678901  2345678901
         sprintf(buffer_line_actions_short,"%sM~^Kdr ~^Inf",
@@ -1195,6 +1211,7 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
         sprintf(buffer_line_actions_long,"%sMa~^Kedir ~^Info",
                 (es_directorio ? "" : "~^View ~^Truncate C~^Onvert ~^Filemem ~^Link ")
         );
+        }
 
         menu_get_legend_short_long(buffer_linea,ancho_visible,buffer_line_actions_short,buffer_line_actions_long);
         zxvision_print_string_defaults_fillspc(ventana,1,posicion_filtros-1,buffer_linea);
@@ -1204,7 +1221,12 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 
         char buffer_sync[32];
         if (menu_mmc_image_montada) {
+            if (menu_filesel_show_only_read_only_utils.v) {
+                strcpy(buffer_sync,"~^Umount ");
+            }
+            else {
             strcpy(buffer_sync,"~^Umount ~^Sync ");
+            }
         }
         else {
             if (es_directorio) buffer_sync[0]=0;
@@ -1218,8 +1240,17 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
             buffer_sync);
         */
 
+        if (menu_filesel_show_only_read_only_utils.v) {
+            sprintf(buffer_line_actions_short,"%s",buffer_sync);
+            sprintf(buffer_line_actions_long,"%s",buffer_sync);
+        }
+
+        else {
+
         sprintf(buffer_line_actions_short,"%sD~^El Re~^N ~^Paste ~^Copy ~^Move",buffer_sync);
         sprintf(buffer_line_actions_long,"%sD~^Elete Re~^Name ~^Paste ~^Copy ~^Move",buffer_sync);
+
+        }
 
         menu_get_legend_short_long(buffer_linea,ancho_visible,buffer_line_actions_short,buffer_line_actions_long);
         zxvision_print_string_defaults_fillspc(ventana,1,posicion_filtros,buffer_linea);
@@ -6708,13 +6739,13 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 
                                 //Rename para cualquier tipo de archivo
-                                if (tecla=='N') {
+                                if (tecla=='N' && menu_filesel_show_only_read_only_utils.v==0) {
                                     file_utils_move_rename_copy_file(file_utils_file_selected,1,ventana);
                                     releer_directorio=1;
                                 }
 
                                 //Copy para cualquier tipo de origen. Si es directorio, hara copy recursive
-                                if (tecla=='C') {
+                                if (tecla=='C' && menu_filesel_show_only_read_only_utils.v==0) {
                                     file_utils_move_rename_copy_file(file_utils_file_selected,2,ventana);
                                     //Restaurar variables globales que se alteran al llamar al otro filesel
                                     //TODO: hacer que estas variables no sean globales sino locales de esta funcion menu_filesel
@@ -6725,7 +6756,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                                 }
 
                                 //Move para cualquier tipo de origen. Aunque no permitimos mover carpetas entre diferentes filesystems
-                                if (tecla=='M') {
+                                if (tecla=='M' && menu_filesel_show_only_read_only_utils.v==0) {
                                     file_utils_move_rename_copy_file(file_utils_file_selected,0,ventana);
                                     //Restaurar variables globales que se alteran al llamar al otro filesel
                                     //TODO: hacer que estas variables no sean globales sino locales de esta funcion menu_filesel
@@ -6738,7 +6769,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 
                                 //Delete para cualquier tipo de archivo
-                                if (tecla=='E') {
+                                if (tecla=='E' && menu_filesel_show_only_read_only_utils.v==0) {
                                     if (menu_confirm_yesno_texto("Delete","Sure?")) {
                                         file_utils_delete(file_utils_file_selected);
 
@@ -6774,7 +6805,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                                 }
 
                                 //Sync mmc image
-                                if (tecla=='S' && menu_mmc_image_montada) {
+                                if (tecla=='S' && menu_mmc_image_montada && menu_filesel_show_only_read_only_utils.v==0) {
                                     if (menu_confirm_yesno_texto("Sync changes","Sure?")) menu_filesel_mmc_sync();
                                 }
 
@@ -6791,7 +6822,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                                     }
 
 									//Truncate
-									if (tecla=='T') {
+									if (tecla=='T' && menu_filesel_show_only_read_only_utils.v==0) {
 										if (menu_confirm_yesno_texto("Truncate","Sure?")) util_truncate_file(file_utils_file_selected);
 									}
 
@@ -6809,7 +6840,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 									}
 
 									//Convert
-									if (tecla=='O') {
+									if (tecla=='O' && menu_filesel_show_only_read_only_utils.v==0) {
 										file_utils_file_convert(file_utils_file_selected);
 										releer_directorio=1;
 									}
@@ -6823,7 +6854,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 						}
 
 						//Mkdir
-						if (tecla=='K') {
+						if (tecla=='K' && menu_filesel_show_only_read_only_utils.v==0) {
 							char string_carpeta[200];
 							string_carpeta[0]=0;
 							menu_ventana_scanf("Folder name",string_carpeta,200);
@@ -6836,7 +6867,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 
 						//Paste text
-						if (tecla=='P') {
+						if (tecla=='P' && menu_filesel_show_only_read_only_utils.v==0) {
 							file_utils_paste_clipboard();
 
 

@@ -1185,9 +1185,12 @@ void menu_storage_tape_expand(char *archivo,char *sufijo_carpeta)
 
         //Habilitar vista de file utils
         menu_filesel_show_utils.v=1;
+        //Y solo los file utils que no hacen modificaciones
+        menu_filesel_show_only_read_only_utils.v=1;
 
         ret=menu_filesel("View expanded",filtros,archivo_salida);
         menu_filesel_show_utils.v=0;
+        menu_filesel_show_only_read_only_utils.v=0;
 
 
         if (ret==1) {
