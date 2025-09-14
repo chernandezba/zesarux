@@ -6,6 +6,7 @@ Added Streaming mode to ZENG Online for ZX Spectrum. It improves gaming experien
 Added ZXMMC+ emulation
 Added second MMC/SD card emulation
 Added support for steering wheel joystick (and other analog joystick controls) to racing games (using pre-defined modification for specific games or custom)
+Allow to save to disk audio captured from External Audio Source
 Allow to save ZX80/81 screen to .scr file
 Allow to LOAD "name" of a ZX81 .P81 file
 Added real joystick support for SDL2

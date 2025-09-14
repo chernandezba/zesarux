@@ -24,10 +24,8 @@ Probar en diferentes sistemas:
 ---------------------
 
 
-
-
-
 -En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
+
 
 -alguna manera que desde external audio source:
 abra hexedit con expresión follow de ix
@@ -38,15 +36,6 @@ defina también tamaños de esas ventanas?
 
 
 ---------
-
-
--Captura sonido a archivo de disco
-*entrada en changelog, extendida (ahora solo hay una linea)
-*opcion para archivo de salida en ventana de captura
-ok *RWA (15600), RAW (44100?) y formato custom Hz (aunque captura son siempre 31200 hz, mas alla de eso se duplican bytes)
-ok acabar de probar *si hay libreria audiofile, poder generar WAV de salida
-*Permitir Signed al grabar raw?
-*Resample a menos frecuencia tendría que hacer valor medio con los anteriores?
 
 
 -Notas sobre captura de audio en máquinas virtuales Linux:
