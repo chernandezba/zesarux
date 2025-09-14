@@ -1203,14 +1203,14 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 
         else {
 
-        //                         01234  567890  12345  678901  2345678901
-        sprintf(buffer_line_actions_short,"%sM~^Kdr ~^Inf",
-                (es_directorio ? "" : "~^View ~^Trunc C~^Onv ~^Filemem ~^Lnk ")
-        );
+            //                         01234  567890  12345  678901  2345678901
+            sprintf(buffer_line_actions_short,"%sM~^Kdr ~^Inf",
+                    (es_directorio ? "" : "~^View ~^Trunc C~^Onv ~^Filemem ~^Lnk ")
+            );
 
-        sprintf(buffer_line_actions_long,"%sMa~^Kedir ~^Info",
-                (es_directorio ? "" : "~^View ~^Truncate C~^Onvert ~^Filemem ~^Link ")
-        );
+            sprintf(buffer_line_actions_long,"%sMa~^Kedir ~^Info",
+                    (es_directorio ? "" : "~^View ~^Truncate C~^Onvert ~^Filemem ~^Link ")
+            );
         }
 
         menu_get_legend_short_long(buffer_linea,ancho_visible,buffer_line_actions_short,buffer_line_actions_long);
@@ -1225,7 +1225,7 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
                 strcpy(buffer_sync,"~^Umount ");
             }
             else {
-            strcpy(buffer_sync,"~^Umount ~^Sync ");
+                strcpy(buffer_sync,"~^Umount ~^Sync ");
             }
         }
         else {
@@ -1247,8 +1247,8 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 
         else {
 
-        sprintf(buffer_line_actions_short,"%sD~^El Re~^N ~^Paste ~^Copy ~^Move",buffer_sync);
-        sprintf(buffer_line_actions_long,"%sD~^Elete Re~^Name ~^Paste ~^Copy ~^Move",buffer_sync);
+            sprintf(buffer_line_actions_short,"%sD~^El Re~^N ~^Paste ~^Copy ~^Move",buffer_sync);
+            sprintf(buffer_line_actions_long,"%sD~^Elete Re~^Name ~^Paste ~^Copy ~^Move",buffer_sync);
 
         }
 
