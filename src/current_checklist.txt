@@ -12,8 +12,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
 
--ejecutar automatic_tests.sh
-
 -ejecutar tests/manual_tests.sh
 
 -ejecutar tests/machines_test.sh
