@@ -11052,8 +11052,9 @@ void menu_hardware_realjoystick_steering(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering_load_presets,NULL,
             "Load game presets","Cargar ajustes de juego","Carregar opcions de joc");
         menu_add_item_menu_prefijo(array_menu_common,"    ");
-        menu_add_item_menu_tooltip(array_menu_common,"Load presets from .config file");
-        menu_add_item_menu_ayuda(array_menu_common,"Load presets from .config file");
+        menu_add_item_menu_tooltip(array_menu_common,"Load presets from .postconfig file");
+        menu_add_item_menu_ayuda(array_menu_common,"Load presets from .postconfig file. .postconfig files must be loaded after loading the game, "
+            "because some of them change memory values from the game (to disable steering wheel auto-return, for example)"
 
 
         menu_add_item_menu_separator(array_menu_common);
