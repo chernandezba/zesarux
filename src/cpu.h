@@ -27,9 +27,9 @@
 
 //#define EMULATOR_VERSION "12.1-SN"
 //#define EMULATOR_VERSION "12.1-B1"
-#define EMULATOR_VERSION "12.1-RC"
-//#define EMULATOR_VERSION "12.1"
-#define SNAPSHOT_VERSION
+//#define EMULATOR_VERSION "12.1-RC"
+#define EMULATOR_VERSION "12.1"
+//#define SNAPSHOT_VERSION
 
 /*
 EMULATOR_NUMBER_VERSION format:
@@ -54,8 +54,8 @@ Examples
 //Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
 #define EMULATOR_NUMBER_VERSION EMULATOR_VERSION
 
-#define EMULATOR_DATE "28 August 2025"
-#define EMULATOR_SHORT_DATE "28/08/2025"
+#define EMULATOR_DATE "15 September 2025"
+#define EMULATOR_SHORT_DATE "15/09/2025"
 #define EMULATOR_GAME_EDITION "Night Shift"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
