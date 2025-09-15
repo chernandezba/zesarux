@@ -1,43 +1,4 @@
-
--Opción por defecto no permitir "zoom x" diferente de "zoom y" al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
-ok *pendiente sdl1,sdl2,X11. acabar de probar bien
-
--SDL2 no deja cambiar a zoom 2 redimensionando con ratón
-
--sdl en debian 12 32 bits inicializa muy lento
-
----------------------
-
---Inicio lectura mando analógico, como un volante
+Volante
 
 Probar en diferentes sistemas:
 *acabar de probarlo de nuevo en todos: SDL windows, SDL linux, linux nativo, mac.
-
-*continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
-
-
---Fin lectura mando analógico, como un volante
-
----------------------
-
-ok-En view expanded desde tape input output etc que solo se pueda hacer View dentro, pero nada de move, delete, etc
-
-
--alguna manera que desde external audio source:
-abra hexedit con expresión follow de ix
-abra watches con watch DE, IX etc para la carga
-abra vista basic
-defina también tamaños de esas ventanas?
-
----------
-
-
--Notas sobre captura de audio en máquinas virtuales Linux:
-*en la de 64 bits, activando Audio Input en esa máquina virtual, se cuelga a los segundos. Y habilitando la tarjeta por USB, captura mal
-*en la de 32 bits, activando Audio Input en esa máquina virtual, no se suele colgar, lee bien, pero a veces se desconecta al cabo de pocos minutos. Y habilitando la tarjeta por USB, captura mal
-*en ambos linux, uso driver alsa. Para cambio a captura de tarjeta USB, uso parámetro --alsacapturedevice hw:1
-
--opcion joystick barato
-ok *entrada en changelog
-ok *ver si A5=0 o no hacer check de dirección?
-*juegos que fallan con esta opción: pussy.tap, simulador de raton (Antonio Bermudez, 1991, Microhobby), The Humans

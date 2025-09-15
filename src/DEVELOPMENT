@@ -1226,3 +1226,12 @@ Nested peek_byte_no_time functions
 Element: 0x7fb4e275c9a0 (0) id: 0 name: Debug peek_byte_no_time pointer function: 0x10be7a900 previous: 0x0 next: 0x7fb4e24a2880
 Element: 0x7fb4e24a2880 (1) id: 1 name: Betadisk peek_byte_no_time pointer function: 0x10bfc7bc0 previous: 0x7fb4e275c9a0 next: 0x0
 
+
+
+-----
+
+
+-Notas sobre captura de audio en máquinas virtuales Linux:
+*en la de 64 bits, activando Audio Input en esa máquina virtual, se cuelga a los segundos. Y habilitando la tarjeta por USB, captura mal
+*en la de 32 bits, activando Audio Input en esa máquina virtual, no se suele colgar, lee bien, pero a veces se desconecta al cabo de pocos minutos. Y habilitando la tarjeta por USB, captura mal
+*en ambos linux, uso driver alsa. Para cambio a captura de tarjeta USB, uso parámetro --alsacapturedevice hw:1

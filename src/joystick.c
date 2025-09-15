@@ -68,6 +68,9 @@ interrupción, se usa la secuencia de activar IORQ y también M1. Esa secuencia 
 
 Realmente si emulase solo dispositivo kempston barato, tendria que al menos ver si A5=0 y meter basura en el bus en ese caso
 Como lo estoy haciendo como una opción de joystick genérico barato, no miro A5=0 y meto siempre basura en el bus al generar interrupción
+
+Juegos que fallan con esta opción: pussy.tap, simulador de raton (Antonio Bermudez, 1991, Microhobby), The Humans
+
 */
 int joystick_barato=0;
 

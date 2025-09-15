@@ -373,3 +373,22 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 
 -Captura sonido a archivo de disco
 *opcion para archivo de salida en ventana de captura
+
+-alguna manera que desde external audio source:
+abra hexedit con expresión follow de ix
+abra watches con watch DE, IX etc para la carga
+abra vista basic
+defina también tamaños de esas ventanas?
+Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargando o copiando desde cinta
+
+
+
+-Opción por defecto no permitir "zoom x" diferente de "zoom y" al redimensionar ventana mediante ratón. Quedarse con valor inferior de zoom
+ok *pendiente sdl1,sdl2,X11. acabar de probar bien
+
+-SDL2 no deja cambiar a zoom 2 redimensionando con ratón
+
+-sdl en debian 12 32 bits inicializa muy lento
+
+-Volante:
+*continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
