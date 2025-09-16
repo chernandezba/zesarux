@@ -392,3 +392,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 -Volante:
 *continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
 *en haiku se bloquea al arrancar si conectado un volante
+
+-implementar máquinas de 60 Hz (timex, master system etc)
+-implementar timings ula TK90x

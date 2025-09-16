@@ -10538,7 +10538,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_betadisk,'k');
         menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
-        menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk");
+        menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk. Do a RANDOMIZE USR 15616 to open TR-DOS");
 
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,

@@ -31549,7 +31549,7 @@ void menu_about_statistics(MENU_ITEM_PARAMETERS)
 
 		"\n"
 		"Edited with Visual Studio Code and vim\n"
-		"Developed on macOS Catalina, Debian 11, Raspbian, FreeBSD 12, and MinGW environment on Windows\n"
+		"Developed on macOS Catalina, Debian 12, Raspbian, FreeBSD 12, and MinGW environment on Windows\n"
 		,
         LINES_SOURCE,
         TOTAL_COMMENTS,
