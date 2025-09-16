@@ -6419,14 +6419,14 @@ void menu_audio_new_ayplayer_overlay(void)
 			zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,&ay_player_file_song_name[ayplayer_new_contador_string_track_name]);
 
 
-			zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,"Author");
+			zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,"Author:");
 
 			ayplayer_new_contador_string_author=menu_ay_player_get_continuous_string(menu_audio_new_ayplayer_overlay_window,
                 ayplayer_new_contador_string_author,ay_player_file_author,&ayplayer_new_retardo_author);
 			zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,&ay_player_file_author[ayplayer_new_contador_string_author]);
 
 
-			zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,"Misc");
+			zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,"Misc:");
 			ayplayer_new_contador_string_misc=menu_ay_player_get_continuous_string(menu_audio_new_ayplayer_overlay_window,
                 ayplayer_new_contador_string_misc,ay_player_file_misc,&ayplayer_new_retardo_misc);
 			zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,&ay_player_file_misc[ayplayer_new_contador_string_misc]);

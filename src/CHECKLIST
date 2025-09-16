@@ -172,6 +172,7 @@ Drivers audio:
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
+-probar ZXMMC+
 -probar divmmc con zxuno y sin zxuno. tambien en instalado en /Applications en Mac y en /usr/ de Linux. Probar reload mmc
 -probar esxdos handler
 -probar divide. Probar reload ide
@@ -251,7 +252,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar exportar disassemble a archivo texto
 -probar assembler, desde menu y ZRCP
 -probar watches
--probar remote command protocol ZRCP, en linux, mac y windows
+-probar remote command protocol ZRCP, en linux, mac y windows. Probar linemode telnet
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar rzx files con extras/media/spectrum/rzx
 -probar quill/paws/daad debugger
