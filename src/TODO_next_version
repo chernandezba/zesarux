@@ -395,3 +395,5 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 -implementar máquinas de 60 Hz (timex, master system etc)
 -implementar timings ula TK90x
+
+-baseconf: intentar que arranque. Y si no, quitar de la lista
