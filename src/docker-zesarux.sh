@@ -17,6 +17,12 @@ docker-build-version() {
 	docker build --tag=zesarux.$VERSIONNAME --progress plain -f Dockerfile.$VERSIONNAME .
 }
 
+docker-run() {
+	VERSIONNAME=$1
+		docker rm run-zesarux-$VERSIONNAME
+                docker run --name run-zesarux-$VERSIONNAME -it zesarux.$VERSIONNAME --vo stdout
+}
+
 
 docker-build-and-get-binary() {
 	VERSIONNAME=$1
@@ -53,10 +59,11 @@ docker-build-and-get-binary() {
 }
 
 help() {
-	echo "$0 [build|build-version|build-version-and-get-binary|clean-cache|codetests|localrun|localsh|run|run-curses|run-mac-xorg|run-xorg]"
+	echo "$0 [build|build-version|build-version-and-get-binary|clean-cache|codetests|localrun|localsh|run|run-curses|run-mac-xorg|run-version|run-xorg]"
 	echo
 	echo "Development actions:"
 	echo "--------------------"
+	echo "These development actions use Debian:"
 	echo "build:        Builds a simple Debian version"
 	echo "codetests:    Execute simple ZEsarUX codetests from a simple Debian version"
 	echo "run:          Executes a simple Debian version using stdout driver"
@@ -70,8 +77,13 @@ help() {
 	echo "-----------------"
 	echo "build-version:                Builds a release version"
 	echo "build-version-and-get-binary: Same as build-version + running several tests (codetests, program tests, etc) + get the tar.gz binary package"
-	echo "push:                         Builds and push a version to DockerHub"
+	echo "push:                         Builds and push a Debian version to DockerHub"
 	echo "Note: build-version and build-version-and-get-binary require a parameter, one of: [debian|fedora|ubuntu]"
+	echo
+	echo "Run actions:"
+	echo "------------"
+	echo "Using release versions from the previous build section:"
+	echo "run-version:  Runs a [debian|fedora|ubuntu] version, requires building first"
 	echo
 	echo "Misc:"
 	echo "-----"
@@ -110,6 +122,15 @@ case $1 in
 		fi
 
 		docker-build-and-get-binary $2
+	;;
+
+	run-version)
+		if [ $# == 1 ]; then
+			echo "A parameter version is required"
+			exit 1
+		fi
+
+		docker-run $2
 	;;
 
 	run)
