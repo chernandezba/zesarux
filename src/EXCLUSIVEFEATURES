@@ -28,6 +28,8 @@ The following are features exclusive to ZEsarUX and not found on any emulator of
 
 * Use artificial intelligence to get realistic images for location description on Text Adventure games
 
+* Allow to use a steering wheel joystick on Spectrum racing games as an analog controller
+
 * Can save screen to .stl file, useful to print on 3D Printer
 
 * Emulates Spectrum keyboard ghosting error feature
