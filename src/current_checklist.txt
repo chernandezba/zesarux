@@ -175,18 +175,15 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar memory cheat
 -probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
 -probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
--probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
 -probar desactivar breakpoints con espacio
 -probar exportar disassemble a archivo texto
 -probar assembler, desde menu y ZRCP
--probar watches
 ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar rzx files con extras/media/spectrum/rzx
 -probar quill/paws/daad debugger
--probar text adventure map
 -probar location graphics gac/paws/daad
--probar quicksave, autosave at interval, snapshots to ram
+-probar quicksave, snapshots to ram
 -probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81
@@ -206,9 +203,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 ** primer y segundo mensaje se desplazan, como voyage of peril
 ** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
 * Con y sin border enabled
--probar smartload. probar deteccion de tipo tzx (standard o turbo) en quickload
--probar recent files, drive
--probar autoload & autosave
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: master system: streets of rage, street fighter ii. sg1000: hero. coleco: hero. cpc: commando. spectrum: hasta 4 botones, con print in 31
 -probar on screen keyboard, con F8 y con joystick
 -probar keyboard help. pulsar teclas. mantener teclas
@@ -217,7 +211,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar --limitopenmenu
 -probar idle bus. con Arkanoid por ejemplo
 -probar realjoystick. probar opciones linea comandos: --joystickkeyev, --joystickkeybt, --joystickevent. Probar menu test joystick. Probar joystick sdl, joystick nativo linux, joystick simulator, disable joystick. En todos casos probar quitar y poner border (porque reinicializa drivers)
--probar volante joystick
 -probar cambio driver audio desde menu
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
@@ -232,10 +225,8 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar F4 (pantalla a speech) en Spectrum (con texto normal y graficos), Z88, ZX81 (con y sin rainbow, y con texto normal y con graficos->4 combinaciones). ZX80
 -probar funcion Find. probar buscar pokes
 -probar poke: manual y pok file (tanto buenos como corrupt, longline, desde snap_tests/)
--probar ram refresh junto con extras/media/spectrum/tests/memoryrefresh.tap
 -probar opcion para desactivar paging en ram/rom
 -probar cpu transaction log
--probar menu file utilities
 -probar demos beeper
 -probar real beeper activo/desactivado
 -probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
