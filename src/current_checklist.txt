@@ -111,10 +111,6 @@ Drivers audio:
 -probar carga desde cinta real
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
--probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
--probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
-config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
-Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
 
 -probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
 Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
@@ -136,24 +132,20 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar color border en ULAPlus
 -probar desactivando ssl
 -probar activando ssl
--probar azerty. se puede probar pulsando guion o cedilla
 -probar redefinir teclas, en menu y linea comandos
 -probar desactivando contended memory en compilacion
 
 -probar desactivando memptr y pasar z80tests.tap de spectrum. probar activando memptr y pasar z80tests.tap
 -probar z80flags.tap. con memptr y --enable-undoc-scfccf son 6 de 152: fallan bit n,a ; bit n,[r,(hl)], ldi, ldd, ldir, lddr
--probar cpustats
 -probar visualmem, tambien en drivers no graficos como curses, aa, etc
 -probar desactivando cpustats
 -probar desactivando visualmem
 -probar waveform, tambien en drivers no graficos como curses, aa, etc
--probar expansiones de ram de zx80/81
 -probar a sobreescribir algun archivo y que pida confirmacion en menu
 -probar opcion desactivar contended memory en menu
 -probar fuller audio box emulation
 -probar advanced timing settings 
 -probar menu de stdout
--probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp
 -probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
 -probar archivo de configuracion, probar comillas en archivo configuracion (simples y dobles : por ejemplo : --joystickkeyev Up 't' (esto poniendo joystick a none para que se envie solo la t) o  --joystickemulated "Sinclair 2"). probar grabado archivo config
 -probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
