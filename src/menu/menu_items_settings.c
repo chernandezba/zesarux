@@ -6031,6 +6031,9 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
 
 						//Decir que no es custom
 						menu_add_item_menu_valor_opcion(array_menu_tbblue_hardware_id,0);
+
+                        //Indicar la opcion seleccionada con el id actual
+                        if (tbblue_machine_id==machine_id) menu_tbblue_hardware_id_opcion_seleccionada=i;
 					}
 
 				}
