@@ -1237,7 +1237,7 @@ printf("\n"
 		"--enablekempstonmouse       Enable kempston mouse emulation\n"
 		"--kempstonmouse-sens n      Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
 		printf (
-
+        "--tbblue-machine-id         Machine id for Spectrum Next\n"
 
 
 
@@ -3878,6 +3878,11 @@ int parse_cmdline_options(int desde_commandline) {
 				zxprinter_bitmap_filename=argv[puntero_parametro];
 				zxprinter_file_bitmap_init();
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--tbblue-machine-id")) {
+				siguiente_parametro_argumento();
+                tbblue_machine_id=parse_string_to_number(argv[puntero_parametro]);
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--printertextfile")) {
                                 siguiente_parametro_argumento();

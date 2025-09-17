@@ -3877,6 +3877,8 @@ int util_write_configfile(void)
   //TODO printertextfile
   //TODO redefinekey
 
+                                            ADD_STRING_CONFIG,"--tbblue-machine-id %d",tbblue_machine_id);
+
   if (recreated_zx_keyboard_support.v)	      ADD_STRING_CONFIG,"--recreatedzx");
   if (recreated_zx_keyboard_support_also_on_menu.v)     ADD_STRING_CONFIG,"--recreatedzx-also-on-menu");
 
