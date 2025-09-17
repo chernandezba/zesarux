@@ -397,3 +397,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 -implementar timings ula TK90x
 
 -baseconf: intentar que arranque. Y si no, quitar de la lista
+
+
+-zx desktop: reorder icons automaticos. que cuando se cree o se borre uno, siempre haga un reorder
