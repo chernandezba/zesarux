@@ -18,7 +18,7 @@ sleep 3
 
 $ZESARUXCMD --machine 128k --ao $DRIVER
 $ZESARUXCMD extras/media/zx81/aydemo.p --ao $DRIVER
-$ZESARUXCMD extras/media/zx81/ORQUESTA.P --ao $DRIVER
+$ZESARUXCMD extras/media/zx81/ORQUESTA.P81 --ao $DRIVER
 $ZESARUXCMD extras/media/z88/lem.epr --ao $DRIVER
 $ZESARUXCMD extras/snap_tests/test3200z88.zx --ao $DRIVER
 

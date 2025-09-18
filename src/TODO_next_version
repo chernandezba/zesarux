@@ -261,6 +261,8 @@ si esta top bar menu)
 *con topbar, no van pulsaciones de raton sobre zx desktop
 ok * desactivar botones superiores si esta topbar
 *al salir de topbar, no refresca bien las ventanas en background
+*Cuando desplega un menu, si pulsa tecla izquierda o derecha y no hay mas submenus (o menus previos), debería moverse por topbar
+Por tanto hay que hacer que la función de menu pueda volver en esos casos y decir que se ha pulsado izq/der
 
 
 -Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
