@@ -1237,7 +1237,7 @@ printf("\n"
 		"--enablekempstonmouse       Enable kempston mouse emulation\n"
 		"--kempstonmouse-sens n      Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
 		printf (
-        "--tbblue-machine-id         Machine id for Spectrum Next\n"
+        "--tbblue-machine-id n       Set machine id n for Spectrum Next\n"
 
 
 
