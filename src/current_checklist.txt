@@ -146,7 +146,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar --verbose 0 y que no aparezca ningun mensaje por consola...
 -probar footer y cpu uso, temperatura, cinta carga, printing, etc. en xwindows, sdl, fbdev, cocoa, curses. con y sin border. en spectrum, zx80/81 y z88
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: master system: streets of rage, street fighter ii. sg1000: hero. coleco: hero. cpc: commando. spectrum: hasta 4 botones, con print in 31
--probar keyboard help. pulsar teclas. mantener teclas
 -probar on screen adventure keyboard 
 -probar asignar teclas f a funciones
 -probar --limitopenmenu
