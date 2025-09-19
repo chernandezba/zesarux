@@ -101,9 +101,6 @@ Drivers audio:
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 
--probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
-Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
-
 -probar modos video timex. Mode 0 standard, 1 dual screen, 2 hires colour 8x1), timex+ulaplus. Mode 6 (512x192 monochrome)
 Modo 0 con solo habilitarlo
 Modo 1 con testtimexmode1.tap
@@ -137,36 +134,18 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar buscador vidas infinitas. tambien con cpu top speed
--probar memory cheat
 -probar desactivar breakpoints con espacio
 -probar exportar disassemble a archivo texto
 -probar assembler, desde menu y ZRCP
 ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar rzx files con extras/media/spectrum/rzx
--probar quill/paws/daad debugger
--probar location graphics gac/paws/daad
--probar quicksave, snapshots to ram
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
 -probar --verbose 0 y que no aparezca ningun mensaje por consola...
 -probar footer y cpu uso, temperatura, cinta carga, printing, etc. en xwindows, sdl, fbdev, cocoa, curses. con y sin border. en spectrum, zx80/81 y z88
--probar custom configuration file, con snap_tests/test_autoconfig.tap  (y hay snap_tests/test_autoconfig.tap.config) y snap_tests/test_autoconfig.p (y hay snap_tests/test_autoconfig.p.config)
--probar footer cuando se carga cinta/snap detectado por autoselectoptions o custom configuration file:
-* cuando el juego es generico y no se indica nombre (por ejemplo, aydemo)
-* juego que solo pone nombre pero no info, por ejemplo Dancing Demon y Pink Panther
-* cuando se indica juego (como por ejemplo, overscan.tap)
-* nombre con punto, como H.E.R.O.
-* cuando hay segundo mensaje:
-** Song in Lines 5 - no cabe entero 
-** Manic miner zx81 o orquesta - caben los : en el primer mensaje
-** segundo mensaje se desplaza porque no cabe, como beamrider 
-** primer y segundo mensaje se desplazan, como voyage of peril
-** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
-* Con y sin border enabled
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: master system: streets of rage, street fighter ii. sg1000: hero. coleco: hero. cpc: commando. spectrum: hasta 4 botones, con print in 31
--probar on screen keyboard, con F8 y con joystick
 -probar keyboard help. pulsar teclas. mantener teclas
 -probar on screen adventure keyboard 
 -probar asignar teclas f a funciones
