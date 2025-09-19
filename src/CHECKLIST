@@ -233,7 +233,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar shortcuts en menu
 -probar GUI styles: opcion normal, seleccionada, no disponible, no disponible seleccionada, pixel (audio waveform, visual mem, view sprites) en: driver grafico, en caca y en curses
 -probar opcion desactivar contended memory en menu
--probar fuller audio box emulation
 -probar advanced timing settings 
 -probar menu de stdout
 -probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp
