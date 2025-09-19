@@ -7,7 +7,7 @@
 
 -dibuja4.tzx. dibuja9.tap, dibuja10.tap, dibuja11.tap: a drawing program. different versions: 4,9,10 and 11
 
--elautobus.tzx seems to be based on game "The ticket" that came with the English PAWS version. We are not sure if the game is finished or not
+-elautobus.tzx: Game created witht the PAWS, based initially on the demo game on the PAWS manual but expanded with a lot of new features, locations and actions
 
 -gusano.tap: a funny game located in Space...
 

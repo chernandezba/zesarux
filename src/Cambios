@@ -11,6 +11,11 @@ Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir LOAD "nombre" de un archivo .P81 de ZX81
 Agregado soporte de joystick real para SDL2
 Agregadas funciones directas para aumentar/reducir/silenciar el Volumen del Sonido
+Agregadas muchas cintas mías recuperadas de los años 80 y 90:
+- Un total de 264 archivos adicionales en la carpeta my_soft
+- Incluyen Utilidades y Juegos
+- Algunos nuevos, otros son diferentes versiones de programas ya existentes
+- La mayoría de Spectrum pero también algún programa de ZX81 (realizado por mi padre y hermanos)
 Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)

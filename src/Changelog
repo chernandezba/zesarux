@@ -11,6 +11,11 @@ Allow to save ZX80/81 screen to .scr file
 Allow to LOAD "name" of a ZX81 .P81 file
 Added real joystick support for SDL2
 Added direct functions to increase/decrease/silence Audio Volume
+Added lots of my tapes recovered from the 80s and 90s:
+- A total of 264 additional files in the my_soft folder
+- Include Utilities and Games
+- Some are new, others are different versions of existing programs
+- Mostly Spectrum but also some ZX81 programs (made by my father and brothers)
 Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
 Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)

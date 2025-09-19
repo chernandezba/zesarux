@@ -83,11 +83,9 @@ Drivers audio:
 
 -Probar ZENG Online server
 
--probar aofile raw y wav
 -probar con --disable-sndfile
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar todas maquinas, una por una 
--probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar realvideo z88
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
@@ -95,19 +93,12 @@ Drivers audio:
 -probar export to .mid
 -probar playmid de zxuno y lo enruta a midi a traves de registros 14 y 15
 -probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak (aydemo, pink panther...) )
--probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 -probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
--probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
--probar any flag loading cintas, con copiador, rocman
--probar archivos zip, tar, rar, gz
 -probar cambiando rutas a sox, gunzip, etc...
 
 -probar diferentes cargas, a continuacion, hay ejemplos en carpeta snap_tests y tambien alguno suelto, como canciones.smp y orquesta.smp
 *probar carga binaria (tape) smp,wav,rwa en spectrum
 *probar carga binaria (tape) smp,wav,rwa en zx80
-*probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o.
-
--probar carga desde cinta real
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 
@@ -123,9 +114,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
--probar verbose 3, 4, debugregisters
--probar desactivando border, con y sin realvideo, en spectrum y zx8081
--probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
 -probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
 -probar autoactivado de rainbow cuando efectos en border. juegos, demos y snap_tests/test_autorealvideo_border.zx
 -probar color border en ULAPlus
