@@ -100,19 +100,10 @@ Drivers audio:
 *probar carga binaria (tape) smp,wav,rwa en zx80
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
-
--probar modos video timex. Mode 0 standard, 1 dual screen, 2 hires colour 8x1), timex+ulaplus. Mode 6 (512x192 monochrome)
-Modo 0 con solo habilitarlo
-Modo 1 con testtimexmode1.tap
-Modo 2 con demos
-Modo 2 con timex+ulaplus demo slideshow_timex_64.tap, DemoHAM8, DemoHAM8x1.tzx
-Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y testtimexmode6-ulaplus.tap y alternaterom_sebasic4_rom01.rom(mode 1)
-
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
 -probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
 -probar autoactivado de rainbow cuando efectos en border. juegos, demos y snap_tests/test_autorealvideo_border.zx
--probar color border en ULAPlus
 -probar desactivando ssl
 -probar activando ssl
 -probar redefinir teclas, en menu y linea comandos
@@ -145,7 +136,7 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar COPY to printer
 -probar --verbose 0 y que no aparezca ningun mensaje por consola...
 -probar footer y cpu uso, temperatura, cinta carga, printing, etc. en xwindows, sdl, fbdev, cocoa, curses. con y sin border. en spectrum, zx80/81 y z88
--probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: master system: streets of rage, street fighter ii. sg1000: hero. coleco: hero. cpc: commando. spectrum: hasta 4 botones, con print in 31
+-probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: cpc: commando. spectrum: hasta 4 botones, con print in 31
 -probar on screen adventure keyboard 
 -probar asignar teclas f a funciones
 -probar --limitopenmenu
@@ -171,15 +162,9 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
 -probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena
 -probar modo gigascreen. demos e imagenes
--probar modos ULA Plus: rgb estandard, modo 3 radastan, modos ZEsarUX. modos ham (cambio rapido de paleta por interrupciones) multicolor demo, etc. hardware scroll radastan+zxuno
--probar View Sprites
 -probar emulator speed
--probar turbo mode. manual y en zxuno, prism, chloe y tbblue
--probar top speed, con threads y sin threads
--probar accelerate loaders
 -probar mantransferv3
 -probar multiface, transtape, etc... todos los dispositivos de copia
-
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 
 -probar Jupiter Ace. centipede (chip ay) y valkyr (speaker y chip ay). cargar y grabar ace. cargar wav
@@ -192,13 +177,11 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -Probar Sam Coupe. Todas teclas. Probar atomlite
 -probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA. Probar playmid, que envia .mid a puertos midi del ay (mas rapido sin real video)
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
--Probar TSConf
 -Probar Chrome
 -Probar MK14
 
 -Pruebas interfaz menu:
 * habilitar zx desktop. probar botones, iconos
-* zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
 * sonidos en menu al moverse cursor, etc
 
 -probar usar extension de archivo no conocida y ver que avisa
