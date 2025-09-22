@@ -43,16 +43,6 @@ Drivers video:
 -ejecutar tests/videotest.sh
 
 
--iniciar con ./zesarux --noconfigfile
-habilitar zxdesktop
-hacer las acciones de:  mover iconos, pulsar iconos (botón izquierdo y derecho), pulsar botones superiores (menus) e inferiores (dispositivos) con boton izquierdo y derecho de raton, pulsar en fondo zx desktop con boton derecho, con boton izquierdo (para que se cierre el menu) y con boton izquierdo+shift (para enviar el foco al fondo) en las siguientes situaciones:
-1. sin ninguna ventana y con menu cerrado
-2. sin ninguna ventana y con menu abierto
-3. con alguna ventana abierta y con menu cerrado
-4. con alguna ventana abierta y con menu abierto
-
--iniciar sin archivo de configuracion (borrarlo temporalmente) y ver como se va comportando - asistente de primer inicio, first aid, abrir zx desktop, etc
-
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
