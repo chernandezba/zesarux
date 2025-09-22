@@ -121,7 +121,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar asignar teclas f a funciones
 -probar --limitopenmenu
 -probar idle bus. con Arkanoid por ejemplo
--probar cambio driver audio desde menu
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
 -probar frameskip
@@ -148,7 +147,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 
 -probar Jupiter Ace. centipede (chip ay) y valkyr (speaker y chip ay). cargar y grabar ace. cargar wav
--probar Chloe 140, 280. Tests, carga trap, grabar tap, chloe keyboard
 -probar Timex. Tests, carga trap, grabar tap
 -Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
 -Probar TBBlue. Copper (carpeta media... copper con demo specdrum y beast (beast con esxdos handler ) ) .  Sprites con Dungeonette (con esxdos handler), tiles. cargar con --noconfigfile y smartload un archivo .nex con archivos de recursos (usara esxdos handler), ver que cargue todo bien
@@ -158,13 +156,10 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA. Probar playmid, que envia .mid a puertos midi del ay (mas rapido sin real video)
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
 -Probar Chrome
--Probar MK14
 
 -Pruebas interfaz menu:
-* habilitar zx desktop. probar botones, iconos
 * sonidos en menu al moverse cursor, etc
 
--probar usar extension de archivo no conocida y ver que avisa
 -probar activando funciones de captura de segmentation fault y forzando fallo
 -probar cpu_panic. desde dentro del emulador y antes de entrar 
 -probar en general mayoria de cintas, snaps y eproms incluidas
