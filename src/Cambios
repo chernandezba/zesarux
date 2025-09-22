@@ -6,17 +6,16 @@ Agregado modo Streaming a ZENG Online para ZX Spectrum. Mejora la experiencia de
 Agregada emulación de ZXMMC+
 Agregado emulación de una segunda tarjeta de MMC/SD
 Agregado soporte para joystick de tipo volante (y otros joysticks con controles analógicos) para juegos de carreras (usando modificaciones pre-definidas para juegos específicos o personalizados)
+Agregado soporte de joystick real para SDL2
 Permitir grabar a disco audio capturado desde Fuente de Sonido Externa
 Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir LOAD "nombre" de un archivo .P81 de ZX81
-Agregado soporte de joystick real para SDL2
 Agregadas funciones directas para aumentar/reducir/silenciar el Volumen del Sonido
 Agregadas muchas cintas mías recuperadas de los años 80 y 90:
 - Un total de 264 archivos adicionales en la carpeta my_soft
 - Incluyen Utilidades y Juegos
 - Algunos nuevos, otros son diferentes versiones de programas ya existentes
 - La mayoría de Spectrum pero también algún programa de ZX81 (realizado por mi padre y hermanos)
-Permitir grabar una nota de texto en un snapshot ZSF
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Permitir cambiar path del archivo de configuración desde el menú
@@ -27,6 +26,7 @@ Agregado soporte para 4 botones de fuego de joystick en:
 - Amstrad CPC: 3 botones
 - Master System, SG1000, Colecovision: 2 botones
 Agregada opción para emular un dispositivo de joystick barato, que mete valores en el bus, afectando a las interrupciones
+Permitir grabar una nota de texto en un snapshot ZSF
 
 * Mejoras:
 
@@ -47,6 +47,41 @@ Mejorada emulación de Sinclair QL:
 - Permitir usar el dispositivo win1_ como un alias de mdv1_ (útil para rutas de QL-SD)
 - Corregido teclado de Sinclair QL: permitir escritura rápida
 - Permitir desactivar pantalla
+
+Mejorada conversión de audio a archivos P/P81 de ZX81:
+- Agregado un algoritmo mejorado alternativo
+- Agregada herramienta en Storage-> Tape
+- Permitir ver la señal de sonido mientras se convierte, describiendo pulsos, bits y bytes
+- Permitir escuchar la señal de sonido mientras se convierte
+- Permitir ver bits, bytes y caracteres mientras se convierte
+- Esta es una herramienta educativa y de preservación de como funciona la señal de cinta del ZX81
+
+Mejorada ventana Fuente de Sonido Externa:
+- Mostrar la frecuencia al detectar tono guía o bits 0/1
+- Mostrar cantidad aproximada de bytes leídos
+- Mostrar frecuencia media cuando señal desconocida
+- Permitir activar entrada desde esta ventana
+
+Mejorado Debug CPU:
+- Permitir ver e ir a la dirección previa de un opcode en el historial de cpu
+- Mostrar número de puerto cuando instrucción de lectura puertos (IN, INI, etc). Mostrar fila teclado cuando puerto es XXFEH en Spectrum
+- Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
+- Agregado cuenta de pasos a breakpoints (un breakpoint que se activa cuando se cumple la condición un número de veces)
+- Mejorada ventana de edición de breakpoints
+- Agregar opción para activar/desactivar todos los breakpoints
+- Corregido al mover cursor arriba cuando la dirección está cercana a 0
+- Watches puede mostrar resultados en hexadecimal o decimal
+- Permitir definir etiquetas en Watches
+
+Mejorado Memory Cheat:
+- Permitir indicar dirección inicial
+- Poder borrar watches
+- Mejorar apariencia de la ventana
+
+Mejorado ZRCP:
+- Permitir habilitar Linemode Telnet (modo carácter): permitir cursor arriba, backspace, tab, ctrl-c, ctrl-d
+- Mejor gestión de CR+LF
+- Agregado comandos: cd, pwd
 
 Mejorado ZX Vision:
 - Permitir ocultar ventanas minimizadas
@@ -74,41 +109,6 @@ Mejorado Selector de Archivos:
 - Agregado soporte para archivos GENS en Visor de Archivos
 - Permitir usar ruta a una imagen montada FAT en todos los casos
 
-Mejorada conversión de audio a archivos P/P81 de ZX81:
-- Agregado un algoritmo mejorado alternativo
-- Agregada herramienta en Storage-> Tape
-- Permitir ver la señal de sonido mientras se convierte, describiendo pulsos, bits y bytes
-- Permitir escuchar la señal de sonido mientras se convierte
-- Permitir ver bits, bytes y caracteres mientras se convierte
-- Esta es una herramienta educativa y de preservación de como funciona la señal de cinta del ZX81
-
-Mejorado Debug CPU:
-- Permitir ver e ir a la dirección previa de un opcode en el historial de cpu
-- Mostrar número de puerto cuando instrucción de lectura puertos (IN, INI, etc). Mostrar fila teclado cuando puerto es XXFEH en Spectrum
-- Mostrar número de vista dentro de la ventana en vez de en el título de la ventana
-- Agregado cuenta de pasos a breakpoints (un breakpoint que se activa cuando se cumple la condición un número de veces)
-- Mejorada ventana de edición de breakpoints
-- Agregar opción para activar/desactivar todos los breakpoints
-- Corregido al mover cursor arriba cuando la dirección está cercana a 0
-- Watches puede mostrar resultados en hexadecimal o decimal
-- Permitir definir etiquetas en Watches
-
-Mejorado Memory Cheat:
-- Permitir indicar dirección inicial
-- Poder borrar watches
-- Mejorar apariencia de la ventana
-
-Mejorado ZRCP:
-- Permitir habilitar Linemode Telnet (modo carácter): permitir cursor arriba, backspace, tab, ctrl-c, ctrl-d
-- Mejor gestión de CR+LF
-- Agregado comandos: cd, pwd
-
-Mejorada ventana Fuente de Sonido Externa:
-- Mostrar la frecuencia al detectar tono guía o bits 0/1
-- Mostrar cantidad aproximada de bytes leídos
-- Mostrar frecuencia media cuando señal desconocida
-- Permitir activar entrada desde esta ventana
-
 Mejorada ventana de View Basic Listing:
 - La ventana se puede dejar en segundo plano
 - Automaticamente refresca si el listado cambia
@@ -122,7 +122,6 @@ Mejorada ventana de View Basic Variables:
 - Automaticamente refresca si las variables cambian
 
 Agregada ventana para ver la pila del GO SUB de Basic
-
 Mejorado Hexadecimal editor: expresión de seguimiento se guarda en configuración
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL

@@ -6,17 +6,16 @@ Added Streaming mode to ZENG Online for ZX Spectrum. It improves gaming experien
 Added ZXMMC+ emulation
 Added second MMC/SD card emulation
 Added support for steering wheel joystick (and other analog joystick controls) to racing games (using pre-defined modification for specific games or custom)
+Added real joystick support for SDL2
 Allow to save to disk audio captured from External Audio Source
 Allow to save ZX80/81 screen to .scr file
 Allow to LOAD "name" of a ZX81 .P81 file
-Added real joystick support for SDL2
 Added direct functions to increase/decrease/silence Audio Volume
 Added lots of my tapes recovered from the 80s and 90s:
 - A total of 264 additional files in the my_soft folder
 - Include Utilities and Games
 - Some are new, others are different versions of existing programs
 - Mostly Spectrum but also some ZX81 programs (made by my father and brothers)
-Allow to save text note on a ZSF snapshot
 Allow to locate rom files running ZEsarUX from a current folder different than the rom path
 Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)
 Allow to change configuration file path from the menu
@@ -27,6 +26,7 @@ Added support for up to 4 joystick fire buttons on:
 - Amstrad CPC: 3 buttons
 - Master System, SG1000, Colecovision: 2 buttons
 Added setting to emulate a cheap joystick device which puts values in the bus, affecting interrupts
+Allow to save text note on a ZSF snapshot
 
 * Improvements:
 
@@ -47,6 +47,41 @@ Improved Sinclair QL emulation:
 - Allow to use win1_ device as an alias to mdv1_ (useful for QL-SD paths)
 - Fixed Sinclair QL keyboard: allow fast text writing
 - Allow display blanking
+
+Improved audio conversion to P/P81 ZX81 files:
+- Added alternative enhanced algorithm
+- Added tool on Storage-> Tape
+- Allow to see wave form while converting, describing pulses, bits and bytes
+- Allow to hear wave form while converting
+- Allow to see bits, bytes, and characters while converting
+- This is an educational and preservation tool of how the ZX81 tape signal works
+
+Improved External Audio Source window:
+- Show frequency when detected pilot tone or bits 0/1
+- Show approximate bytes read
+- Show average frequency when unknown signal
+- Allow to enable input from this window
+
+Improved Debug CPU:
+- Allow to see and go to previous address of an opcode in cpu history
+- Show port number when port read opcode (IN, INI, etc). Show keyboard row when port is XXFEH on Spectrum
+- Show view number inside the window and not in the window title
+- Added pass count to breakpoints (a breakpoint that is triggered when the condition is hit a certain times)
+- Improved edit breakpoint window
+- Added option to enable/disable all breakpoints
+- Fixed moving cursor up when address near 0
+- Watches can show results in hexadecimal or decimal
+- Allow to set labels in Watches
+
+Improve Memory Cheat:
+- Allow to set initial address
+- Can delete watches
+- Improve window layout
+
+Improved ZRCP:
+- Allow to set Linemode Telnet (char mode): allow cursor up, backspace, tab, ctrl-c, ctrl-d
+- Better CR+LF handling
+- Added commands: cd, pwd
 
 Improved ZX Vision:
 - Allow to hide minimized windows
@@ -74,41 +109,6 @@ Improved File Selector:
 - Added GENS file support to File Viewer
 - Allow to use path to a FAT mounted image on all cases
 
-Improved audio conversion to P/P81 ZX81 files:
-- Added alternative enhanced algorithm
-- Added tool on Storage-> Tape
-- Allow to see wave form while converting, describing pulses, bits and bytes
-- Allow to hear wave form while converting
-- Allow to see bits, bytes, and characters while converting
-- This is an educational and preservation tool of how the ZX81 tape signal works
-
-Improved Debug CPU:
-- Allow to see and go to previous address of an opcode in cpu history
-- Show port number when port read opcode (IN, INI, etc). Show keyboard row when port is XXFEH on Spectrum
-- Show view number inside the window and not in the window title
-- Added pass count to breakpoints (a breakpoint that is triggered when the condition is hit a certain times)
-- Improved edit breakpoint window
-- Added option to enable/disable all breakpoints
-- Fixed moving cursor up when address near 0
-- Watches can show results in hexadecimal or decimal
-- Allow to set labels in Watches
-
-Improve Memory Cheat:
-- Allow to set initial address
-- Can delete watches
-- Improve window layout
-
-Improved ZRCP:
-- Allow to set Linemode Telnet (char mode): allow cursor up, backspace, tab, ctrl-c, ctrl-d
-- Better CR+LF handling
-- Added commands: cd, pwd
-
-Improved External Audio Source window:
-- Show frequency when detected pilot tone or bits 0/1
-- Show approximate bytes read
-- Show average frequency when unknown signal
-- Allow to enable input from this window
-
 Improved View Basic Listing:
 - Window can be put in background
 - Automatically refreshes if listing changes
@@ -122,7 +122,6 @@ Improved View Basic Variables:
 - Automatically refreshes if variables change
 
 Added view GO SUB Basic stack window
-
 Improved Hexadecimal editor: follow expression is saved on configuration
 Improved maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
