@@ -13,10 +13,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
 ok Mac
 
--ejecutar tests/manual_tests.sh
-
--ejecutar tests/games_tests.sh
-
 -ejecutar tests/automatic_test_cycle_machines.sh
 
 Drivers video:
@@ -192,20 +188,3 @@ pruebas Z88:
 -probar en menus tarjetas de aplicaciones, archivos, desconocidas
 -probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
-pruebas QL
--teclado:
-
-the main thing to check is the character codes - use:
-REP Loop:print code(inkey$(-1))
-
-This will show the character code for each pressed key.
-
-In particular check 
-
-a (97)
-CTRL a (1) 
-and 
-ALT a ( ALT is awkard, it returns 255 plus the character code, so you should see on screen two values, 255 then 97 when you press this combination)
-
--cargar manualmente juegos en memoria mediante load binary
--cargar lbytes mediante emulacion de microdrive&floppy
