@@ -7203,7 +7203,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	"\n"
 	);
 
-	printf ("Please read the other licenses used in ZEsarUX, from the menu Help->Licenses or just open files from folder licenses/\n\n\n");
+	printf ("Please read the other licenses used in ZEsarUX, from the menu Help->Licenses or just open files from licenses/ folder\n\n\n");
 
 
 
