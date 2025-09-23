@@ -138,7 +138,7 @@ Corregido bloqueo de semáforos en Windows
 Corregido cálculo de uso de cpu cuando el footer está desactivado
 Corregida asignación de esxdos handler root dir al cargar un archivo .nex sin indicar path desde linea de comandos
 Corregido bug al restaurar un snapshot ZSF con DivIDE activado
-Corregido sonidos de menú al cerrar menú y al mostrar un error
+Corregido sonidos de menú al cerrar menú, al mostrar un error, y cuando el detector de silencio está activado
 Corregido segfault al pulsar CTRL-C en consola
 Corregido cambios de color de paleta en PCW
 Corregido teclado de Chloe: permitir escritura rápida

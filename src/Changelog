@@ -138,7 +138,7 @@ Fixed semaphore locking on Windows
 Fixed cpu usage calculation when footer is disabled
 Fixed setting esxdos handler root dir when loading a .nex file without path from command line
 Fixed bug restoring ZSF snapshot with DivIDE enabled
-Fixed menu sounds when closing menu and when showing an error
+Fixed menu sounds when closing menu, when showing an error, and when silence detection is enabled
 Fixed segfault when pressing CTRL-C on console
 Fixed PCW palette colour changes
 Fixed Chloe keyboard: allow fast text writing

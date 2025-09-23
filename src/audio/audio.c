@@ -2551,6 +2551,7 @@ void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_dere
     if (audio_menu_tone_generator_active.v) {
         audio_menu_tone_generator_get_output(&valor_sonido_izquierdo,&valor_sonido_derecho);
         audio_menu_tone_generator_timer_event();
+        reset_silence_detection_counter();
     }
 
 	audio_buffer[audio_buffer_indice]=valor_sonido_izquierdo;
