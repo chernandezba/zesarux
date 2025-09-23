@@ -1,0 +1,91 @@
+On Spectrum:
+ZEsarUX ZXI Port register: 53051 (CF3BH)
+ZEsarUX ZXI Port data:     57147 (DF3BH)
+
+On ZX80/81:
+ZEsarUX Port register:  53 (35H)
+ZEsarUX Port data:      83 (53H)
+
+To write a register, first OUT to port register 0xCF3B and then OUT to port data 0xDF3B
+To read a register, first OUT to port register 0xCF3B and then IN from port data 0xDF3B
+You can also read the register selection doing a IN from port 0xCF3B
+Port register 0xCF3B is set to zero when doing a reset
+
+You must enable these ports from menu->settings->debug->hardware debug ports (or command line --hardware-debug-ports)
+
+
+
+There are 256 possible registers:
+
+----
+
+* Reg 0: Write: CONTROL_BITS0. Set to 0 when doing a reset
+
+Bit 0: Set to 1 to map lower 16kb inves memory ram readable from 0000-3fffh
+Bits 1-7: Unused
+
+
+----
+
+* Reg 1: Write: HARDWARE_DEBUG_ASCII
+
+Write this register to output an ascii character to the pc console
+
+
+----
+
+* Reg 2: Write: HARDWARE_DEBUG_NUMBER 
+
+Write this register to output a number to the pc console
+
+
+----
+
+* Reg 3: Write: ZEsarUX control register
+Bit 0: Set to 1 to exit emulator
+Bit 1-7: Unused
+
+
+----
+
+* Reg 4: Read: ZEsarUX version number
+
+Used to get ZEsarUX version number string. 
+Emulator version format:
+XX.YY-S
+
+XX: Major version number. 1 or 2 digits number. Currently using only one digit but could be greater (on ZEsarUX version 10 or higher)
+YY: Minor version number. 1 or 2 digits number
+-S: Optional string, only present on non-stable versions. S it's normally "SN" or "RC", where RC can also be RCX, being X a digit: RC1, RC2, etc
+
+Examples
+
+6.0: Means major version 6, minor version 0. It's a stable version (no suffix string -....)
+
+6.1-RC: Means major version 6, minor version 1, beta version: RC
+
+
+
+You must write first to this register (with value 0) to reset index string to position 0 (you could even write any value to change the index)
+Then read this register to get the string, every read will get a character (the index is incremented every read), finishing the string with character 0. When it reaches the end, the index string is reset to the beginning.
+Index is reset to 0 every reset
+
+
+----
+
+* Reg 5: Read: ZEsarUX build number
+
+Used to get ZEsarUX build number string. Build number is the unix time of the ZEsarUX compilation
+Same behaviour as "Reg 4: ZEsarUX version number": write value 0 here to reset string index. 
+Every read will get a character, finishing the string with character 0. When it reaches the end, the index string is reset to the beginning.
+Index is reset to 0 every reset
+
+----
+
+* Reg 6: Write: HARDWARE_DEBUG_BYTE_FILE
+
+Write this register to output a byte to a file. File must be configured from the debug settings menu
+
+----
+
+* Reg 7-255: Unused

@@ -82,15 +82,11 @@ Drivers audio:
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
--probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
--probar autoactivado de rainbow cuando efectos en border. juegos, demos y snap_tests/test_autorealvideo_border.zx
 -probar desactivando ssl
 -probar activando ssl
 -probar redefinir teclas, en menu y linea comandos
 -probar desactivando contended memory en compilacion
 
--probar desactivando memptr y pasar z80tests.tap de spectrum. probar activando memptr y pasar z80tests.tap
--probar z80flags.tap. con memptr y --enable-undoc-scfccf son 6 de 152: fallan bit n,a ; bit n,[r,(hl)], ldi, ldd, ldir, lddr
 -probar visualmem, tambien en drivers no graficos como curses, aa, etc
 -probar desactivando cpustats
 -probar desactivando visualmem
@@ -100,14 +96,7 @@ Drivers audio:
 -probar advanced timing settings 
 -probar menu de stdout
 -probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
--probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
-nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
--probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
-nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar buscador vidas infinitas. tambien con cpu top speed
--probar desactivar breakpoints con espacio
--probar exportar disassemble a archivo texto
--probar assembler, desde menu y ZRCP
 ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar rzx files con extras/media/spectrum/rzx
