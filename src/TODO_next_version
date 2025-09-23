@@ -410,3 +410,5 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 -ver gosub stack en zx80, zx81
 
 -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
+
+-Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
