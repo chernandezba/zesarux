@@ -29435,6 +29435,11 @@ void zxvision_sound_event_aux(char *nota,int duracion)
 
 void zxvision_sound_event_error_menu(void)
 {
+    //printf("sonido error\n");
+
+    //Este sonido de error tiene prioridad. Si hay alguno sonando, lo cancelamos para que suene este
+    audio_menu_tone_generator_stop();
+
     zxvision_sound_event_aux("C2",50);
 }
 

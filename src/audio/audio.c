@@ -2476,7 +2476,7 @@ void audio_menu_tone_generator_play_note(char *nota,int duracion)
 }
 
 
-
+//Detener sonido en curso
 void audio_menu_tone_generator_stop(void)
 {
     audio_menu_tone_generator_active.v=0;
