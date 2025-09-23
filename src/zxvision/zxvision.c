@@ -11209,8 +11209,10 @@ void zxvision_destroy_window_if_redraw(zxvision_window *w,int redraw)
         zxvision_redraw_all_windows();
     }
 
+    //printf("zxvision_destroy_window_if_redraw. zxvision_next_do_not_play_close_window_sound=%d\n",zxvision_next_do_not_play_close_window_sound);
     if (!zxvision_next_do_not_play_close_window_sound) zxvision_sound_event_close_window();
 
+    //printf("Se pone zxvision_next_do_not_play_close_window_sound a 0 al cerrar ventana\n");
     zxvision_next_do_not_play_close_window_sound=0;
 
 }
@@ -20662,6 +20664,9 @@ void menu_dibuja_submenu_cierra_n_submenus(int veces)
     while (w!=NULL && veces>0) {
         //printf("Cerrando submenu %p [%s]\n",w,w->window_title);
         //No andar redibujando, hacerlo al final del todo
+        //decir que no haga sonido de cerrar ventana porque es un menu
+        zxvision_next_do_not_play_close_window_sound=1;
+
         zxvision_destroy_window_if_redraw(w,0);
         //printf("Despues cerrado submenu %p [%s]\n",w,w->window_title);
 
@@ -21995,6 +22000,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         //Decir que no haga el sonido de cierre de ventana, ese sonido
         //solo deberia ser cuando son ventanas no de menu
+        //printf("decir no sonido al cerrar. se pone zxvision_next_do_not_play_close_window_sound a 1\n");
         zxvision_next_do_not_play_close_window_sound=1;
 
         //si hay setting de submenu, no siempre se destruye ventana
@@ -29446,11 +29452,13 @@ void zxvision_sound_event_cursor_movement(void)
 //porque al moverse por menus, se iria escuchando el de cierre, aunque se van abriendo submenus
 void zxvision_sound_event_close_window(void)
 {
+    //printf("sound close\n");
     zxvision_sound_event_aux("C7",5);
 }
 
 //TODO: complicado saber cuando disparar este evento,
 //y que no sea por ejemplo cuando se restauran ventanas en startup por ejemplo
+//de momento no se llama
 void zxvision_sound_event_new_window(void)
 {
     zxvision_sound_event_aux("C4",5);

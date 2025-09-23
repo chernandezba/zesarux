@@ -125,8 +125,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar demos beeper
 -probar real beeper activo/desactivado
 -probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
--probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena
--probar modo gigascreen. demos e imagenes
 -probar emulator speed
 -probar mantransferv3
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
