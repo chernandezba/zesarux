@@ -140,9 +140,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
 -Probar Chrome
 
--Pruebas interfaz menu:
-* sonidos en menu al moverse cursor, etc
-
 -probar activando funciones de captura de segmentation fault y forzando fallo
 -probar cpu_panic. desde dentro del emulador y antes de entrar 
 -probar en general mayoria de cintas, snaps y eproms incluidas
