@@ -110,7 +110,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar idle bus. con Arkanoid por ejemplo
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
--probar frameskip
 -probar easter eggs
 -probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
 -probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , ql, cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow y curses, para cada maquina (total: 6 pruebas)
@@ -124,7 +123,6 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar cpu transaction log
 -probar demos beeper
 -probar real beeper activo/desactivado
--probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
 -probar emulator speed
 -probar mantransferv3
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
