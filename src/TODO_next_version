@@ -430,3 +430,5 @@ Preparo tests/autosnap_and_tape_test.sh que servirá para testear eso, que habr�
 
 -modo linemode de ZRCP que se pueda cambiar temporalmente a través de ZRCP para que instancias de zeng o zeng online lo puedan desactivar
 para poderse comunicar correctamente (ni zeng ni zeng online funcionan si está activado linemode telnet)
+
+-view basic listing: al aumentar tamaño ventana (o dismunuir) debería renderizar de nuevo el listado
