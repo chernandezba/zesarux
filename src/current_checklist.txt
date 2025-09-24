@@ -91,8 +91,5 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar real beeper activo/desactivado
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 
--probar instalando en ruta concreta y ejecutando desde alli
--probar generando archivo binario y probar a ejecutar, e instalar. 
--probar generando archivo source y probar a compilar e instalar cambiando prefix
 -probar versiones finales: binario->bajar y ejecutar, instalar. source->bajar, compilar y ejecutar, instalar.
 
