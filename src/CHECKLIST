@@ -97,8 +97,8 @@ Drivers audio:
 **ver en todos casos usos de cpu
 **probar sonido Z88, Spectrum (beep y ay), ZX80/81 (vsync sound y ay)
 **aumentar/bajar velocidad cpu
-***usar tests/soundtest.sh
 ***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
+- ejecutar tests/soundtest.sh
 
 -probar targets:
 * linux 32 bits

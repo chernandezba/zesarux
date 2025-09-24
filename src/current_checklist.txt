@@ -31,7 +31,7 @@ Drivers video:
 **en aa, caca probar mensajes debug
 **en stdout, probar con modo traprst16 y modo autoredraw
 **en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
--ejecutar tests/videotest.sh
+OK Mac -ejecutar tests/videotest.sh
 
 
 -probar desactivando xextensions en configure con --disable-xext
@@ -48,6 +48,7 @@ Drivers audio:
 **aumentar/bajar velocidad cpu
 ***usar tests/soundtest.sh
 ***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
+Ok Mac
 
 -probar targets:
 * linux 32 bits
