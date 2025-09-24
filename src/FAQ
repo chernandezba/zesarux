@@ -1040,6 +1040,7 @@ So, starting version 12, I use some kind of Calendar versioning: (current year-2
 So it doesn't depend now on kind of changes of every release, but the year of the release.
 By the way, maybe I will change version type on the future again, considering the current year, for example version 2027.0, 2027.1, etc
 
+Also, all versions have an "edition" name, which is most of the times a game I like, for example: ZEsarUX 12.1 - Night Shift edition.
 
 Q: I have a question not listed here. What can I do?
 A: Send a mail to chernandezba (at) hotmail.com and I will answer you.
