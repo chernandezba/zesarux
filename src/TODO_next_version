@@ -427,3 +427,6 @@ Por que tape_init() se llama tan pronto?
 --realtape falla de manera similar
 validar también --snap, --slotcard, --outtape, no sé si fallan tambien cuando hay un zesarux_autosave.zsf
 Preparo tests/autosnap_and_tape_test.sh que servirá para testear eso, que habrá que incluir en los tests automaticos
+
+-modo linemode de ZRCP que se pueda cambiar temporalmente a través de ZRCP para que instancias de zeng o zeng online lo puedan desactivar
+para poderse comunicar correctamente (ni zeng ni zeng online funcionan si está activado linemode telnet)

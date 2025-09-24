@@ -1,12 +1,17 @@
-ZEsarUX 12.1 Release Candidate - Night Shift edition. 28 Agosto 2025
+ZEsarUX 12.1 - Night Shift edition. 25 Septiembre 2025
 
 * Cosas nuevas agregadas:
 
 Agregado modo Streaming a ZENG Online para ZX Spectrum. Mejora la experiencia de juego: reduce lag y elimina cualquier inconsistencia de estado de juego en todos los jugadores
-Agregada emulación de ZXMMC+
-Agregado emulación de una segunda tarjeta de MMC/SD
 Agregado soporte para joystick de tipo volante (y otros joysticks con controles analógicos) para juegos de carreras (usando modificaciones pre-definidas para juegos específicos o personalizados)
 Agregado soporte de joystick real para SDL2
+Agregado soporte para 4 botones de fuego de joystick en:
+- Kempston joystick (Spectrum): 4 botones
+- Amstrad CPC: 3 botones
+- Master System, SG1000, Colecovision: 2 botones
+Agregada opción para emular un dispositivo de joystick barato, que mete valores en el bus, afectando a las interrupciones
+Agregada emulación de ZXMMC+
+Agregado emulación de una segunda tarjeta de MMC/SD
 Permitir grabar a disco audio capturado desde Fuente de Sonido Externa
 Permitir grabar pantalla de ZX80/81 a archivo .scr
 Permitir LOAD "nombre" de un archivo .P81 de ZX81
@@ -19,20 +24,14 @@ Agregadas muchas cintas mías recuperadas de los años 80 y 90:
 Permitir encontrar archivos de rom al ejecutar ZEsarUX desde una carpeta actual diferente de la ruta de las roms
 Permitir seleccionar máquina según tipo familia (Spectrum, ZX80, ZX81, CPC, etc)
 Permitir cambiar path del archivo de configuración desde el menú
-Premitir ver archivo expandido desde submenus de Almacenamiento (cinta, dsk, etc)
+Permitir ver archivo expandido desde submenus de Almacenamiento (cinta, dsk, etc)
 Agregado un asistente de configuración al iniciar ZEsarUX por primera vez
-Agregado soporte para 4 botones de fuego de joystick en:
-- Kempston joystick (Spectrum): 4 botones
-- Amstrad CPC: 3 botones
-- Master System, SG1000, Colecovision: 2 botones
-Agregada opción para emular un dispositivo de joystick barato, que mete valores en el bus, afectando a las interrupciones
 Permitir grabar una nota de texto en un snapshot ZSF
 
 * Mejoras:
 
 Mejorado AY Player:
-- Permitir cargar lista de reproducción del AY Player
-- Permitir grabar lista de reproducción del AY Player (lista entera o sólo archivos marcados)
+- Permitir cargar y grabar lista de reproducción del AY Player (la grabación por lista entera o sólo archivos marcados)
 - Permitir incrementar longitud de pista (para algunas pistas con longitud incorrecta)
 - Agregadas funciones directas para siguiente/anterior pista/archivo
 - Mostrar décimas de segundo en duración de canción y tiempo transcurrido
@@ -48,7 +47,7 @@ Mejorada emulación de Sinclair QL:
 - Corregido teclado de Sinclair QL: permitir escritura rápida
 - Permitir desactivar pantalla
 
-Mejorada conversión de audio a archivos P/P81 de ZX81:
+Mejorada conversión de audio de cintas reales de ZX81 a archivos P/P81:
 - Agregado un algoritmo mejorado alternativo
 - Agregada herramienta en Storage-> Tape
 - Permitir ver la señal de sonido mientras se convierte, describiendo pulsos, bits y bytes
@@ -98,10 +97,10 @@ Mejorado ZX Vision:
 - Corregido fallo que duplica el Menú Principal al pulsar F6 desde el Menú Principal
 
 Mejorado Selector de Archivos:
-- Agregado previews de archivos .O (ZX80), .P/.81/.P81 (ZX81) cuando no tienen pantalla grabada en el archivo: mostrar listado basic
+- Agregado previews de archivos .O (ZX80), .P/.81/.P81 (ZX81) cuando no tienen pantalla grabada en el archivo: mostrar listado del programa en basic
 - Agregado previews de basic de archivos .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81)
 - Agregado previews de archivos .txt
-- Agregado previews de archivos .tap/.tzx/.pzx cuando no tiene pantalla; en ese caso obtiene el listado del basic
+- Agregado previews de archivos .tap/.tzx/.pzx cuando no tienen pantalla: mostrar listado del programa en basic
 - Agregada conversión de archivos ZX81 P a P81, y P81 a P
 - Agregada algunas acciones para archivos .81 en Selector de Archivos
 - Permitir crear enlace a un archivo en el ZX Desktop, desde File utilities
@@ -122,12 +121,12 @@ Mejorada ventana de View Basic Variables:
 - Automaticamente refresca si las variables cambian
 
 Agregada ventana para ver la pila del GO SUB de Basic
-Mejorado Hexadecimal editor: expresión de seguimiento se guarda en configuración
+Mejorado Hexadecimal editor: la expresión de seguimiento se guarda en configuración
 Mejorado máximo de teclas enviado a ZENG/ZENG Online
 Mejorada temporización en Windows y otros sistemas que usen driver de video SDL. Ahora usa temporización de SDL
 Mejorada temporización en Mac usando temporizador nativo
 Mejorado logo de marca de agua: puede mostrarse sólo al cargar/grabar, puede cambiar colores al cargar/grabar
-Mejorado Mapa de Aventura mostrando direcciones entrar y salir
+Mejorado Mapa de Aventura: se agregan direcciones entrar y salir
 Mejorada ventana de Visual Cassette Tape: soportar también cinta estándar
 Mejorada opción de Custom rom agregando una opción para resetear la máquina
 Mejorada emulación de DivMMC, DivIDE y ZXMMC: permitir activarlos incluso si no hay tarjeta MMC/SD o IDE insertada

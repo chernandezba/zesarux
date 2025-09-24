@@ -17,6 +17,7 @@ cat storage/esxdos_handler.c |grep ESXDOS_RST8_|grep -v ESXDOS_RST8_FA_|grep cas
 tener en cuenta de sacar de esta lista los casos que retornan hacia rst8 (con funcion esxdos_handler_run_normal_rst8), como DISK_READ
 
 * Actualizar features, segun lo agregado a Changelog
+* Revisar orden de las entradas en Changelog, que haya una agrupación mas o menos lógica
 * vigilar funciones F de pruebas en xwindows, desactivar las que sean de pruebas
 
 * generar README.md mediante ./generate_readme_md.sh > ../README.md

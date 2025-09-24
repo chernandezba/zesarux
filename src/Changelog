@@ -1,12 +1,17 @@
-ZEsarUX 12.1 Release Candidate - Night Shift edition. 28 August 2025
+ZEsarUX 12.1 - Night Shift edition. 25 September 2025
 
 * New things added:
 
 Added Streaming mode to ZENG Online for ZX Spectrum. It improves gaming experience: reduces lag and drops all game state inconsistencies between all players
-Added ZXMMC+ emulation
-Added second MMC/SD card emulation
 Added support for steering wheel joystick (and other analog joystick controls) to racing games (using pre-defined modification for specific games or custom)
 Added real joystick support for SDL2
+Added support for up to 4 joystick fire buttons on:
+- Kempston joystick (Spectrum): 4 buttons
+- Amstrad CPC: 3 buttons
+- Master System, SG1000, Colecovision: 2 buttons
+Added setting to emulate a cheap joystick device which puts values in the bus, affecting interrupts
+Added ZXMMC+ emulation
+Added second MMC/SD card emulation
 Allow to save to disk audio captured from External Audio Source
 Allow to save ZX80/81 screen to .scr file
 Allow to LOAD "name" of a ZX81 .P81 file
@@ -21,18 +26,12 @@ Allow machine selection by family type (Spectrum, ZX80, ZX81, CPC, etc)
 Allow to change configuration file path from the menu
 Allow to view expanded file from Storage submenus (tape, dsk, etc)
 Added configuration wizard when running ZEsarUX for the first time
-Added support for up to 4 joystick fire buttons on:
-- Kempston joystick (Spectrum): 4 buttons
-- Amstrad CPC: 3 buttons
-- Master System, SG1000, Colecovision: 2 buttons
-Added setting to emulate a cheap joystick device which puts values in the bus, affecting interrupts
 Allow to save text note on a ZSF snapshot
 
 * Improvements:
 
 Improved AY Player:
-- Allow to load playlist
-- Allow to save playlist (full playlist or just marked files)
+- Allow to load and save playlist (saving full playlist or just marked files)
 - Allow to increase track length (for some tracks with incorrect length)
 - Added direct functions to next/previous track/file
 - Show tenths of a second on song length and time elapsed
@@ -48,7 +47,7 @@ Improved Sinclair QL emulation:
 - Fixed Sinclair QL keyboard: allow fast text writing
 - Allow display blanking
 
-Improved audio conversion to P/P81 ZX81 files:
+Improved audio conversion from ZX81 real tapes to P/P81 files:
 - Added alternative enhanced algorithm
 - Added tool on Storage-> Tape
 - Allow to see wave form while converting, describing pulses, bits and bytes
@@ -58,7 +57,7 @@ Improved audio conversion to P/P81 ZX81 files:
 
 Improved External Audio Source window:
 - Show frequency when detected pilot tone or bits 0/1
-- Show approximate bytes read
+- Show approximate read bytes
 - Show average frequency when unknown signal
 - Allow to enable input from this window
 
@@ -98,10 +97,10 @@ Improved ZX Vision:
 - Fixed glitch duplicating Main Menu when pressing F6 on Main Menu
 
 Improved File Selector:
-- Added .O (ZX80), .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic listing
+- Added .O (ZX80), .P/.81/.P81 (ZX81) file previews when no screen stored in file: show basic program listing
 - Added .bas (ZX Spectrum), .baszx80 (ZX80), .baszx81 (ZX81) basic listing preview
 - Added .txt file previews
-- Added .tap/.tzx/.pzx file preview when tape does not have screen; it gets the basic listing
+- Added .tap/.tzx/.pzx file preview when tape does not have screen: show basic program listing
 - Added conversion of ZX81 files P to P81, and P81 to P
 - Added some file actions for .81 files on File Selector
 - Allow to create link to file on ZX Desktop, from File utilities
@@ -127,7 +126,7 @@ Improved maximum sent keys to ZENG/ZENG Online
 Improved Windows timing and any other system using SDL video driver. Now uses SDL Timing
 Improved Mac timing by using native timer
 Improved Watermark Logo: can be shown only when loading/saving, can change colors when loading/saving
-Improved Adventure Map showing enter and exit directions
+Improved Adventure Map: added enter and exit directions
 Improved Visual Cassette Tape window: support standard tape too
 Improved Custom rom setting adding a Reset machine option
 Improved DivMMC, DivIDE and ZXMMC emulation: allow to enable them even if no MMC/SD card or IDE inserted
