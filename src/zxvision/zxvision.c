@@ -4164,7 +4164,10 @@ void menu_footer_f5_menu_timer(void)
         menu_footer_f5_menu_counter--;
 
         //Si llega a 0, actualizarlo con footer definitivo
-        if (menu_footer_f5_menu_counter==0) menu_footer_bottom_line();
+        if (menu_footer_f5_menu_counter==0) {
+            menu_footer_clear_bottom_line();
+            menu_footer_bottom_line();
+        }
     }
 }
 
