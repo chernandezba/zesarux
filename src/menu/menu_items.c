@@ -37624,6 +37624,11 @@ void menu_z88_slot_persistent_writes(MENU_ITEM_PARAMETERS)
     z88_eprom_or_flash_persistent_writes.v ^=1;
 }
 
+void menu_z88_slot_card_expand(MENU_ITEM_PARAMETERS)
+{
+    menu_storage_tape_expand(z88_memory_slots[valor_opcion].eprom_flash_nombre_archivo,NULL);
+}
+
 //menu z88 slots
 void menu_z88_slots(MENU_ITEM_PARAMETERS)
 {
@@ -37815,6 +37820,16 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Browse card");
                 //establecemos numero slot como opcion de ese item de menu
                 menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
+
+
+                menu_add_item_menu_en_es_ca(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_card_expand,NULL,
+                    "View Expanded","Ver Expandido","Veure Expandit");
+                if (slot==3) menu_add_item_menu_prefijo(array_menu_z88_slots,"    ");
+                menu_add_item_menu_tooltip(array_menu_z88_slots,"Expand eprom file");
+                menu_add_item_menu_ayuda(array_menu_z88_slots,"Expand eprom file");
+                menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
+                menu_add_item_menu_add_flags(array_menu_z88_slots,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
 
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_from_eprom,NULL,"Copy from Card");
 

@@ -42,6 +42,7 @@ extern void menu_kartusho(MENU_ITEM_PARAMETERS);
 extern void menu_superupgrade(MENU_ITEM_PARAMETERS);
 extern void menu_ifrom(MENU_ITEM_PARAMETERS);
 extern void menu_storage_hilow_insert(MENU_ITEM_PARAMETERS);
+extern void menu_storage_tape_expand(char *archivo,char *sufijo_carpeta);
 extern void menu_hilow(MENU_ITEM_PARAMETERS);
 extern void menu_samram(MENU_ITEM_PARAMETERS);
 extern void menu_timexcart(MENU_ITEM_PARAMETERS);

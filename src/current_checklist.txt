@@ -31,7 +31,6 @@ Drivers video:
 **en aa, caca probar mensajes debug
 **en stdout, probar con modo traprst16 y modo autoredraw
 **en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
-**probar recreated
 -ejecutar tests/videotest.sh
 
 
@@ -65,7 +64,6 @@ Drivers audio:
 
 -probar con --disable-sndfile
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
--probar todas maquinas, una por una 
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar realvideo z88
 -probar chip sonido AY, en spectrum y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
@@ -79,22 +77,13 @@ Drivers audio:
 *probar carga binaria (tape) smp,wav,rwa en spectrum
 *probar carga binaria (tape) smp,wav,rwa en zx80
 
--probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
--probar desactivando ssl
--probar activando ssl
 -probar redefinir teclas, en menu y linea comandos
 -probar desactivando contended memory en compilacion
 
--probar visualmem, tambien en drivers no graficos como curses, aa, etc
--probar desactivando cpustats
--probar desactivando visualmem
--probar waveform, tambien en drivers no graficos como curses, aa, etc
 -probar a sobreescribir algun archivo y que pida confirmacion en menu
 -probar opcion desactivar contended memory en menu
--probar advanced timing settings 
--probar menu de stdout
 -probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
 -probar buscador vidas infinitas. tambien con cpu top speed
 ok mac -probar remote command protocol ZRCP, en linux, mac y windows
@@ -102,17 +91,15 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
 -probar --verbose 0 y que no aparezca ningun mensaje por consola...
--probar footer y cpu uso, temperatura, cinta carga, printing, etc. en xwindows, sdl, fbdev, cocoa, curses. con y sin border. en spectrum, zx80/81 y z88
+-probar footer y cpu uso, temperatura, cinta carga, printing, etc. en xwindows, sdl, fbdev, cocoa, con y sin border. en spectrum, zx80/81 y z88
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: cpc: commando. spectrum: hasta 4 botones, con print in 31
 -probar on screen adventure keyboard 
 -probar asignar teclas f a funciones
 -probar --limitopenmenu
--probar idle bus. con Arkanoid por ejemplo
 -probar desactivar putpixel cache en compilacion
--probar Setting putpixel functions to zoom 1, variable, interlace
 -probar easter eggs
 -probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
--probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , ql, cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow y curses, para cada maquina (total: 6 pruebas)
+-probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , ql, cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow , para cada maquina (total: 6 pruebas)
 -probar rutinas autodeteccion caracteres: algunos de sslfunctions, otro no listado (como Spiderman o masters of the universe), hobbit (usa dos rutinas de caracteres). probar con stdout y xwindows, sdl, etc. probar --enableprintchartrap y --disableprintchartrap en stdout y xwindows
 -probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
 -probar speech en stdout
@@ -131,15 +118,4 @@ ok mac -probar remote command protocol ZRCP, en linux, mac y windows
 -probar generando archivo binario y probar a ejecutar, e instalar. 
 -probar generando archivo source y probar a compilar e instalar cambiando prefix
 -probar versiones finales: binario->bajar y ejecutar, instalar. source->bajar, compilar y ejecutar, instalar.
-
-pruebas Z88:
--cambio ram interna
--agregar ram externa
--eprom (formatos .eprom, .epr y .63): crear eprom, agregar eprom (eprom, epr y .63), borrado eprom, copia de eprom (desde menu emulador y desde Filer), copia a eprom (desde menu emulador (y llenando la eprom hasta que no quepa mas)  y desde filer), reclaim free space eprom, undelete eprom, insertar eprom desde linea de comandos. insertar en slot 1 o 2 (no escritura)
--flash: crear flash, agregar flash, borrar flash, copia de flash (desde menu emulador y desde Filer), copia a flash (desde menu emulador (y llenando la flash hasta que no quepa mas)  y desde filer), inicializar flash desde flashstore (y ver que la funcion de erase lo graba con FF), reclaim free space flash, undelete flash, insertar flash desde linea de comandos. insertar en slot 1 o 2 (no escritura)
--probar card browser con flash y eprom.
--tarjeta hibrida ram+eprom: insertar la de actualizacion a oz 4.7 a ver si la reconoce y si reconoce RAM
--grabar snaps con eproms y flash en diferentes slots
--probar en menus tarjetas de aplicaciones, archivos, desconocidas
--probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 

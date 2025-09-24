@@ -259,6 +259,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar location graphics gac/paws/daad
 -probar quicksave, autosave at interval, snapshots to ram
 -probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
+-probar settings-danger zona-timers
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer

@@ -88,7 +88,8 @@ help() {
 	echo "Misc:"
 	echo "-----"
 	echo "clean-cache: Clean docker cache"
-	echo "All docker actions get source code from git except localrun and localsh"
+	echo
+	echo "Note: all docker actions get source code from git except localrun and localsh"
 }
 
 if [ $# == 0 ]; then
