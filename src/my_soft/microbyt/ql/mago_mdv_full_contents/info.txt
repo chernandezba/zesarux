@@ -1,0 +1,14 @@
+This is a full dump of microdrive contents "mago.mdv" (excluding programa Grafico that has i/o error)
+
+Game Samantha has some errors:
+
+- is missing some files:
+
+Samantha0_lab
+Grafico
+
+Game is modified to omit these files so it does not fire any error (original is Samantha_orig, see differences).
+
+- Seems to have missing/mixed/corrupted lines starting at 29997, so they are deleted
+
+- The game is incomplete, it has the menu and then the game does nothing (it has the rendering maze routine but missing Samantha0_lab)

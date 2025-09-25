@@ -1,0 +1,26 @@
+1 CLEAR:MODE 4:WINDOW#0,400,30,60,215:OPEN#1,con_512x256a0x0:OPEN#2,con_400X190a60X20:FOR n=0TO 2:PAPER#n;7:INK#n;0:CLS#n
+2 SCALE#2;190,0,0
+3 CLS#0:PRINT#0;"Ecuaciñn de la gråfica =":EDIT 16
+4 STOP
+5 MISTake  REPeat lìmites
+6 CLS#0:INPUT#0;"Lìmites mìnimo y måximo de X ="!x!","!l\"Lìmites mìnimo y måximo de Y ="!Y!","!m
+7 CLS#0:CLS#2:POINT#2;GRAfica(0,x),0:LINE_R#2 TO 0,190:f$=GRAfica(1,x)
+8 PRINT#0;"Quiere poner otros lìmites (S/N)"
+9 MISTake  IF TECla$=="N"THEN EXIT lìmites
+10 MISTake  END REPeat lìmites
+11 CLS#0:PRINT#0;"Quiere representar otra funciñn (S/N)"
+12 IF TECla$=="S"THEN RUN
+13 LRUN mdv1_BOOT
+14 DEFine FuNction VAL(x)
+15 IF gr
+16 RETurn x*x
+17 ELSE 
+18 RETurn 0
+19 END IF :END DEFine 
+20 DEFine FuNction GRAfica(gr,xx):LOCal x
+21 x=xx:inc_y=ABS(190/(m-Y)):mem1=inc_y:base_y=inc_y*Y:mem0=base_y:mem3=x:inc_x=ABS((l-x)/290):f=VAL(x)
+22 FOR n=0TO 290:POINT#2;n,f*inc_y-base_y:x=x+inc_x:f=VAL(x)
+23 RETurn -mem3/(inc_x):END DEFine 
+24 DEFine FuNction TECla$:LOCal a$
+25 REPeat tecla:a$=INKEY$(-1):IF a$=="S"OR a$=="N"THEN EXIT tecla
+26 RETurn a$:END DEFine 

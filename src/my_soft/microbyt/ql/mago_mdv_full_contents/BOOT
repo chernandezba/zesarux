@@ -1,0 +1,11 @@
+1 MODE 4:CLEAR:RESTORE 10:TRA 0:WINDOW 512,256,0,0:FOR n=0TO 2:PAPER#n;0:INK#n;7:END FOR n:CLS:AT 2,15:PRINT"Programas a los que tiene acceso a este menu"\\TO 30;"Menu :":READ n$:FOR n=1 TO n$:rotu:END FOR n:PRINT#0;"   Pulse las teclas ( ¿ y ¾ ) para elegir la opci–n y pulse ENTER."
+2 n=1:REPeat fe
+3 PAPER 7:INK 0:rotu:b=CODE(INKEY$(-1)):PAPER 0:INK 7
+4 IF b=10 THEN EXIT fe
+5 IF b=216:rotu:n=n+1:IF n>n$ THEN n=1
+6 IF b=208:rotu:n=n-1:IF n<1THEN n=n$
+7 END REPeat fe
+8 LRUN "mdv1_"&b$
+9 DEFine PROCedure rotu:RESTORE 11:FOR m=1TO n:READ A$,b$:END FOR m:AT 5+n,19:PRINT n!"."!A$:END DEFine 
+10 DATA 5
+11 DATA "El juego del mago","Mago","Editor de texto","Editor","El laberinto de Samantha","Laberinto","Cintas punks y Heavys","Cintas","Representaci–n de grŒficas","Grafica"

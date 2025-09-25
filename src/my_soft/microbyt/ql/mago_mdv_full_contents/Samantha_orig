@@ -1,0 +1,188 @@
+20 RESTORE 8000:gr=RESPR(64):DIM udg(2,2):LBYTES mdv1_Udg,gr:FOR n=1TO 2:READ udg(n,2):udg(n,1)=RESPR(udg(n,2)*9+2)+2:LBYTES "mdv1_Samantha"&n&"_udg",udg(n,1)
+21 lab$="":OPEN_IN#6;mdv2_Samantha0_lab:REPeat ff:INPUT#6;b$:lab$=lab$&b$&CHR$(10):IF EOF(#6)THEN EXIT ff
+22 lab$=lab$(1TO LEN(lab$)-1):CLOSE#6
+25 DIM men$(4,13),men%(4),tecla$(1,4,1),tecla%(1,5,1),tabla$(7,7,1):men%(0)=1:men%(3)=1:FOR n=0TO 4:READ men$(n)
+27 FOR n=0TO 1:FOR m=0TO 4:READ tecla$(n,m,1):READ tecla%(n,m+1,0):READ tecla%(n,m+1,1):END FOR m:END FOR n
+30 MERGE mdv1_Grafico
+40 gra$="":FOR n=128TO 255:gra$=gra$&CHR$(n)
+45 RESTORE 8050:FOR n=7TO 0STEP -1:FOR m=0TO 7:READ tabla$(n,m,1):END FOR m:END FOR n
+50 CLS#0:menu%=1:REPeat Men
+60 Menu
+65 IF Jugar THEN EXIT Men
+70 END REPeat Men
+80 STOP
+100 STOP
+110 CLS:CLS#0:INPUT#0;a,b,c:OPEN#5;scr_:LL_gr 2,5:GRAFICO 4,5,udg(2,1),a,b,c,100,40,7,0
+120 STOP
+130 c=5:gra=udg(1,1):pos=42:an=10:al=8:x=100:y=40:pa=7:in=0
+140 FOR n=0TO 360
+150 xx=29:yy=6
+160 FOR m=0TO 2:SET xx,yy:xx=xx+COS(RAD(n)):yy=yy+SIN(RAD(n))
+170 END FOR n
+180 STOP
+200 DEFine FuNction Jugar:LOCal a,n,t
+210 a=0:n=0:REPeat men2
+220 INK#3;7:CURSOR#3;80,57+20*n:PRINT#3;gra$(41):t=CODE(INKEY$(-1)):BEEP 1000,t:IF t=27THEN a=1:EXIT men2
+230 IF t=208THEN CURSOR#3;80,57+20*n:PRINT#3;" ":n=n-1:IF n<0THEN n=4
+240 IF t=216THEN CURSOR#3;80,57+20*n:PRINT#3;" ":n=n+1:IF n>4THEN n=0
+250 IF t=10
+260 SELect ON n
+270 =0TO 3
+275 t=1-2*(n MOD 2):IF men%(n+t)THEN men%(n+t)=0:Menu2 n+t:men%(n)=1:Menu2 n
+280 IF n=2OR n=3THEN Def_tec n-1
+310 =4:Jugar2
+320 END SELect 
+330 END IF 
+340 END REPeat men2
+350 RETurn a:END DEFine 
+360 DEFine PROCedure Def_tec(x):LOCal n,m,xx,a,a$,t,v
+370 SELect ON x
+380 =1
+390 CLS#3:CSIZE#3;1,1:INK#3;7,4,3:CURSOR#3;120,7:PRINT#3;"JOYSTICK":PAPER#3;2:INK#3;7,4,1:CSIZE#3;1,0:CURSOR#3;30,40:PRINT#3;"1";gra$(42)!"Jugador":PAPER#3;7:INK#3;0,2,1:CURSOR#3;140,40:PRINT#3;"ESC":PAPER#3;4:INK#3;0,2,1:CURSOR#3;200,40:PRINT#3;"2";gra$(42)!"Jugador"
+400 CSIZE#3;0,0:PAPER#3;0
+410 OVER#3;1:FOR m=0TO 7:CURSOR#3;30,60+9*m:INK#3;2*(m<2)+7*(m>1):a$=gra$(43+10*m TO 42+10*(m+1)):PRINT#3;a$:CURSOR#3;190,60+9*m:PRINT#3;a$
+420 JOYst(0):JOYst(1)
+430 n=1:OVER#3;0:REPeat f1
+440 PON_cursor n,1:a=CODE(INKEY$(-1)):BEEP 500,a:IF a=192THEN PON_cursor n,0:n=n-1:IF n<0THEN n=2
+450 IF a=200THEN PON_cursor n,0:n=n+1:IF n>2THEN n=0
+460 IF a=10AND n=1THEN EXIT f1
+480 IF a=10AND (NOT(n)OR n=2)AND tecla%(0,0,0)+tecla%(0,0,1)<>3THEN m=(n=2):tecla%(0,0,m)=1+tecla%(0,0,NOT(n))-2*(tecla%(0,0,NOT(n))=2):JOYst m:v=tecla%(0,0,m):RESTORE 8130+10*(v-1):FOR a=0TO 4:tecla%(m,a+1,0)=NOT(v-1):READ tecla%(m,a+1,1)
+490 END REPeat f1
+500 =2
+510 CLS#3:CSIZE#3;1,1:INK#3;7,2,1:CURSOR#3;100,7:PRINT#3;"DEFINIR TECLAS":PAPER#3;7:INK#3;0,2,1:CURSOR#3;30,40:CSIZE#3;1,0:PRINT#3;"1";gra$(42)!"Jugador":CURSOR#3;200,40:PRINT#3;"2";gra$(42)!"Jugador":CURSOR#3;140,40:PRINT#3;"ESC"
+520 FOR n=0TO 1
+530 xx=30+160*n:PAPER#3;0:INK#3;4,7,1:CSIZE#3;1,1:OVER#3;0
+540 IF tecla%(0,0,n)
+550 PAPER#3;0:CSIZE#3;0,0:OVER#3;1:FOR m=0TO 7:CURSOR#3;xx,62+9*m:INK#3;2*(m<2)+7*(m>1):PRINT#3;gra$(43+10*m TO 42+10*(m+1))
+560 ELSE 
+570 RESTORE 8040:FOR m=0TO 4:READ a$:CURSOR#3;xx,60+20*m:PRINT#3;a$!":";:CURSOR#3;xx+100,60+20*m:PRINT#3;tecla$(n,m,1);
+580 END IF 
+590 END FOR n
+600 n=1:PAPER#3;0:OVER#3;0:REPeat f1
+610 PON_cursor n,1:m=CODE(INKEY$(-1)):BEEP 1000,m:IF m=192THEN PON_cursor n,0:n=n-1:IF n<0THEN n=2
+620 IF m=200THEN PON_cursor n,0:n=n+1:IF n>2THEN n=0
+630 IF m=10AND n=1THEN EXIT f1
+640 IF m=10AND(NOT(n)OR n=2)
+650 PON_cursor n,0:m=(n=2):xx=30+160*m:CSIZE#3;1,1:INK#3;4,7,1:IF tecla%(0,0,m)THEN tecla%(0,0,m)=0:RESTORE 8040:FOR a=0TO 4:CURSOR#3;xx,60+20*a:PRINT#3;"     ";:READ a$:CURSOR#3;xx,60+20*a:PRINT#3;a$;
+655 FOR t=0TO 4
+660 CURSOR#3;xx+100,60+20*t:PRINT#3;gra$(40):REPeat f2
+665 FOR m=0TO 7:a=KEYROW(m):IF a THEN EXIT m
+667 IF a THEN EXIT f2
+668 END REPeat f2
+670 BEEP 2000,a+7*m:v=INT(LN(a)/LN(2)):a=2^v:a$=tabla$(m,v,1):CURSOR#3;xx+100,60+20*t:v=(n=2):PRINT#3;a$:tecla$(v,t,1)=a$:tecla%(v,t+1,0)=m:tecla%(v,t+1,1)=a
+680 END FOR t
+690 END IF 
+700 END REPeat f1
+710 END SELect :Menu3:END DEFine 
+720 DEFine PROCedure PON_cursor(x,x1)
+730 INK#3;7:CURSOR#3;20+110*(x=1)+170*(x=2),40:CSIZE#3;1,0:IF x1
+740 PRINT#3;gra$(41)
+750 ELSE 
+760 PRINT#3;" "
+770 END IF 
+780 END DEFine 
+790 DEFine PROCedure JOYst(x):LOCal a$,a
+800 CURSOR#3;40+160*x,140:INK#3;2+2*x:CSIZE#3;2,1:a=tecla%(0,0,x)
+810 SELect ON a
+820 =0:a$="NO  "
+830 =1:a$="CTL1"
+840 =2:a$="CTL2"
+850 END SELect 
+860 PRINT#3;a$:END DEFine 
+870 DEFine PROCedure Jugar2:LOCal n
+880 PAPER#3;2,4,1:CLS#3:WINDOW#3;288,145,60,70:PAPER#3;0:INK#3;7:CLS#3:ini:LL_gr 2,3
+890 DIM ju(1,4),pant$(576):RESTORE 8150:FOR n=0TO 4:READ ju(0,n),ju(1,n)
+891 IMP_la 262:PAUSE-1:STOP:REPeat Jugar3
+7999 END DEFine 
+8000 DATA 128,128
+8010 DATA "Un  jugador","Dos jugadores","Joystick","Definir teclas","Jugar"
+8020 DATA "Q",6,8,"A",4,16,"O",6,32,"P",4,32," ",1,64
+8030 DATA "5",0,4,"6",6,4,"7",0,128,"8",6,1,"-",5,32
+8040 DATA "SUBIR","BAJAR","IZQUIERDA","DERECHA","SALTAR"
+8050 DATA gra$(126),"c","a","X","V","<","N",","
+8060 DATA "8","2","6","Q","E","0","T","U"
+8070 DATA "9","W","I","t","R","-","Y","O"
+8080 DATA "L","3","H","1","A","P","D","J"
+8090 DATA CHR$(34),gra$(127),"K","S","F","=","G","n"
+8100 DATA "^","Z",".","C","B","[","M",";"
+8110 DATA gra$(128),gra$(125),gra$(123),"e",gra$(41),"]"," ",gra$(124)
+8120 DATA "f","f","5","f","f","f","4","7"
+8130 DATA 4,128,2,16,64
+8140 DATA 1,8,2,16,32
+8150 DATA 12,12*men%(1),64,152,30,108,1,1,7,7
+9000 DEFine PROCedure LL_gr(nu,ca):CALL gr,ca,udg(nu,1)-2,128,udg(nu,2):END DEFine 
+9010 DEFine PROCedure Menu
+9020 LL_gr 1,1:CLS:INK 2,4,3:CSIZE 2,1:CURSOR 100,0:PRINT gra$(1TO 19):OVER 1:INK 7,4,3:CURSOR 100,16:PRINT gra$(20 TO 38):OVER 0:OPEN#3;scr_320X180a48X60:PAPER#3;0:CLS#3:BORDER#3;4,2,4,1:OPEN#4;scr_100X180a368X60:PAPER#4;2:CLS#4:BORDER#4;4,4,7,3:CSIZE#4;2,1:INK#4;0,7,3:CURSOR#4;14,8:PRINT#4;"1 JP":CURSOR#4;14,86:INK#4;7,0,3:PRINT#4;"2 JP":CURSOR#4;12,42:INK#4;0,7,1:CSIZE#4;1,1:PRINT#4;"ENERGIA":CURSOR#4;12,130:INK#4;7,0,1:PRINT#4;"ENERGIA"
+9025 IF menu%THEN menu%=0:ini
+9030 Menu3
+9100 END DEFine 
+9110 DEFine PROCedure PON_ene(x,y):CURSOR#4;x,y:INK#4;0:PAPER#4;2:CSIZE#4;0,0:PRINT#4;FILL$(gra$(39),4);:PAPER#4;4:PRINT#4;FILL$(gra$(39),4);:PAPER#4;7:PRINT#4;FILL$(gra$(39),3);gra$(40):END DEFine 
+9120 DEFine PROCedure ini:PAPER#4;7:INK#4;2:CSIZE#4;1,0:CURSOR#4;6,30:PRINT#4;FILL$("0",9):INK#4;4:CURSOR#4;6,108:PRINT#4;FILL$("0",9):LL_gr 1,4:PON_ene 6,64:PON_ene 6,152:PAPER#4;2:END DEFine 
+9130 DEFine PROCedure Menu2(x)
+9140 INK#3;4,7,3:IF men%(x)THEN PAPER#3;7:INK#3;2,0,1
+9150 CURSOR#3;96,58+20*x:PRINT#3;x+1!"."!men$(x,1TO):PAPER#3;0
+9160 END DEFine 
+9170 DEFine PROCedure Menu3
+9180 LL_gr 1,3:CLS#3:INK#3;7:CURSOR#3;100,7:CSIZE#3;0,0:PRINT#3;gra$(1TO 19):OVER#3;1:CURSOR#3;100,16:INK#3;2:PRINT#3;gra$(20TO 38):OVER#3;0:CSIZE#3;1,1:INK#3;2,7,1:CURSOR#3;140,34:PRINT#3;"Menu :":CSIZE#3;1,1:FOR n=0TO 4:Menu2 n
+9200 END DEFine 
+9210 DEFine PROCedure IMP_la(xx):LOCal n,a,x,y
+9220 n=2:x=0:y=0:PAPER#3;CODE(lab$(xx)):CLS#3:OVER#3;1:CSIZE#3;0,0:REPeat fg
+9230 a=CODE(lab$(xx+n)):IF a=255THEN EXIT fg
+9240 SELect ON a
+9250 =0:INK CODE(lab$(xx+n+1)):n=n+1
+9260 =101:y=CODE(lab$(xx+n+1)):x=CODE(lab$(xx+n+2)):n=n+2
+9270 =REMAINDER :CURSOR#3;x*12,y*18:PRINT#3;gra$(a TO a+1):CURSOR#3;x*12,y*18+9:PRINT#3;gra$(a+2TO a+3):x=x+1
+9280 END SELect 
+9290 n=n+1
+9300 END REPeat fg
+9310 INK#3;CODE(lab$(xx+1)):END DEFine 
+10000 c=5:gra=udg(2,1):pos=96:an=2:al=2:x=100:y=40:pa=7:in=0
+10010 FOR m=0TO 2*PI STEP PI/180:SET 6+5*COS(m),9+8*SIN(m)
+10020 STOP
+12000 DEFine PROCedure Mirar_ju:LOCal n,x,y
+12010 x=0:y=0:CSIZE#3;0,0:OVER#3;1
+12020 FOR n=1TO 101STEP 4
+12030 CURSOR#3;x,y:PRINT#3;gra$(n TO n+1):CURSOR#3;x,y+9:PRINT#3;gra$(n+2TO n+3):x=x+29:IF x>288-29THEN x=0:y=y+22
+12040 END FOR n
+12050 PAUSE-1:OVER#3;0:END DEFine 
+15000 DEFine PROCedure entrar(x):LOCal n,m,a,y,a$,b$,xx
+15010 m=x:IF m<0THEN m=LEN(lab$)+x
+15020 OPEN#7;con_288X140a60X70:PAPER#7;0:INK#7;7:CLS#7:y=0:FOR n=0 TO 13:AT#7;n,10:PRINT#7;numero$(n+m,5)!CODE(lab$(n+m));:IF n+m=LEN(lab$)THEN EXIT n
+15030 REPeat entrar2
+15040 AT#7;y,10:PAPER#7;7:INK#7;0:PRINT#7;numero$(m,5)!CODE(lab$(m)):PAPER#7;0:INK#7;7:a=CODE(INKEY$(-1)):AT#7;y,10:PRINT#7;numero$(m,5)!CODE(lab$(m)):IF a=27THEN EXIT entrar2
+15050 IF a=208AND m>x THEN m=m-1:y=y-1:IF y<0THEN y=0:SCROLL#7;10
+15060 IF a=216AND m<LEN(lab$)THEN m=m+1:y=y+1:IF y>13THEN y=13:SCROLL#7;-10
+15070 IF a=32
+15080 AT#7;y,10:PRINT#7;numero$(m,5)!CODE(lab$(m))!"lo modifica a ="!;:INPUT#7;a$;:IF a$<>""THEN lab$(m)=CHR$(a$)
+15090 AT#7;y,10:PRINT#7;FILL$(" ",30);
+15100 END IF 
+15110 IF a=105OR a=73
+15120 WINDOW#7;288,10*(y+1),60,70:b$="":xx=m+1:REPeat entrar3
+15130 IF y THEN SCROLL#7;-10
+15140 AT#7;y,10:PRINT#7;numero$(xx,5)!;:INPUT#7;a$:IF a$=""THEN EXIT entrar3
+15150 b$=b$&CHR$(a$):xx=xx+1:END REPeat entrar3
+15160 WINDOW#7;288,140,60,70:IF b$<>""
+15170 IF m+1>LEN(lab$)THEN lab$=lab$&b$:ELSE :lab$=lab$(1TO m)&b$&lab$(m+1TO)
+15180 END IF :FOR n=0TO 13:AT#7;n,10:PRINT#7;numero$(m-y+n,5)!CODE(lab$(m-y+n));"  ";:IF m-y+n=LEN(lab$)THEN EXIT n
+15190 END IF 
+15200 END REPeat entrar2
+15210 CLOSE#7:END DEFine 
+15220 DEFine FuNction numero$(nn,nn2):RETurn FILL$(" ",nn2-LEN(nn))&nn:END DEFine 
+29997 DEFine-(n%>1))&a$(n%TO)
+9170 END IF 
+9180 n%=n%-1
+9190 END IF 
+9200 =202:IF n%<l%THEN a$=a$(1TO n%-1)&a$(n%+1TO)
+9210 IF n%=l%THEN a$=a$(1TO n%-1)
+9220 =car1% TO car2%:IF l%<lon%
+9230 IF n%=l%+1
+9240 a$=a$&tecla$
+9250 ELSE 
+9260 a$=a$(1TO n%-1)&tecla$&a$(n%TO)
+9270 END IF 
+9280 n%=n%+1
+9290 END IF 
+9300 END SELect 
+9310 END REPeat Tecla
+9320 cod=m
+9330 
