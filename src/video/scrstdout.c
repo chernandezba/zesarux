@@ -110,9 +110,17 @@ void scrstdout_menu_print_speech(char *texto_orig)
 
 	//pasar filtros de conversion de corchetes de menu [ ] [X] en "Disabled" o "Enabled"
 	char texto[MAX_BUFFER_SPEECH+1];
-	menu_textspeech_filter_corchetes(texto_orig,texto);
 
-	textspeech_print_speech(texto);
+    //Si texto demasiado grande no pasar filtro
+    if (strlen(texto_orig)>MAX_BUFFER_SPEECH) {
+        textspeech_print_speech(texto_orig);
+    }
+
+    else {
+        menu_textspeech_filter_corchetes(texto_orig,texto);
+        textspeech_print_speech(texto);
+    }
+
 
 	//scrtextspeech_filter_run_pending();
 	do {
