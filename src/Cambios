@@ -148,6 +148,7 @@ Corregida pestaña de protección de escritura en ventana de visual hilow datadr
 Corregida columna del Selector de Archivos para texto "<dir>" en carpetas con caracteres utf-8
 Corregido item de menú de tipo separador en driver video stdout
 Corregido al mostrar volumen mínimo en ventana Fuente de Sonido Externa
+Corregido segfault al usar texto a voz con menús stdout y mensajes de texto muy grandes
 
 ----
 

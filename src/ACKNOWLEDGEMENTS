@@ -14,7 +14,7 @@ I want to thank the help and the collaboration of the following people (date sor
 -Paul Farrow, for the information and games for the ZX80 and ZX81 and Spectra Video modes. See http://www.fruitcake.plus.com/
 -Martin Korth, for the information about video signals on the ZX80 & ZX81. See http://nocash.emubase.de/zxdocs.htm
 -Kelly Murta, for granting permission to include programs of his website. See http://zx81.eu5.org/toddysofte.html
--Joan Sales Roig, for granting permission to include ZX81 Orquesta
+-Joan Sales Roig, for granting permission to include ZX81 Orquesta and Control de Stocks
 -Alfonso Saavedra "Son Link", for testing and suggestions to my emulator
 -Dave Hughes, for granting permission to include El Stompo, Sun Bucket and others
 -Einar Saukas, for granting permission to include KnightsDemonsDX, NirvanaEngine, BifrostEngine and others
@@ -40,7 +40,7 @@ I want to thank the help and the collaboration of the following people (date sor
 -Jeff Braine, for information about his Prism machine
 -Juan Carlos Gonzalez Amestoy, for help with Spectrum timings, OpenGL drawing on Mac and much MORE :) You really need to try his RVM emulator!
 -Simon Owen, for the information about Atom Lite on Sam Coupe
--Uto, helping me improving the debug menu
+-Uto, helping me improving the debug menu and for information about Quill, PAWS and DAAD parsers
 -Victor Trucco and Fabio Belavenuto for information about their TBBlue machine
 -Daniel Leon for information about his ZX Dandanator! Mini interface and bug reporting
 -Alejandro Valero for information about his Superupgrade interface, 8-bit simple ide interface, and PD765 emulation (+3 disk drive)

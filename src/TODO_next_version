@@ -427,8 +427,19 @@ Por que tape_init() se llama tan pronto?
 --realtape falla de manera similar
 validar también --snap, --slotcard, --outtape, no sé si fallan tambien cuando hay un zesarux_autosave.zsf
 Preparo tests/autosnap_and_tape_test.sh que servirá para testear eso, que habrá que incluir en los tests automaticos
+Ademas en algunos casos (no recuerdo que combinacion ahora), al hacer reinsert (o insert, si no estaba insertada) de cinta, generaba segfault
 
 -modo linemode de ZRCP que se pueda cambiar temporalmente a través de ZRCP para que instancias de zeng o zeng online lo puedan desactivar
 para poderse comunicar correctamente (ni zeng ni zeng online funcionan si está activado linemode telnet)
 
 -view basic listing: al aumentar tamaño ventana (o dismunuir) debería renderizar de nuevo el listado
+
+-pasar dumps de mis mdv exportando contenido entero a carpetas. Y poner carpetas con el label correspondiente
+partir de /Users/cesarhernandez/Documents/ql/microdrives_recuperados
+Y dejar originales tambien en codigo fuente
+desde qemulator, montar el .mdv original en mdv1, y en mdv2_ una carpeta
+usar WCOPY mdv1_ to mdv2_
+Si hay archivos con acentos en el nombre, hay que copiarlos a mano
+
+-en speech, parece evitar algunas lineas con acentos, por ejemplo menu opciones, item estadísticas (pero sí que lee por ejemplo archivo configuración)
+-en speech, al cerrar ventanas de menu parece leer el titulo de la ventana en background mas arriba. Por ejemplo ir a help->about y cerrarla
