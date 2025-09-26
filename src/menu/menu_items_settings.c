@@ -12125,6 +12125,8 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
         create_default_zxdesktop_configurable_icons();
     }
 
+    zxvision_reorder_configurable_icons_if_auto();
+
 	cls_menu_overlay();
 
 
@@ -12161,6 +12163,8 @@ void menu_ext_desk_settings_custom_width_height(int reorganize_windows)
         //Comprobar posiciones iconos y reajustar
         zxvision_check_all_configurable_icons_positions();
     }
+
+    zxvision_reorder_configurable_icons_if_auto();
 
 	//Conveniente esto para borrar "restos" de ventanas
 	cls_menu_overlay();

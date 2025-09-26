@@ -3084,6 +3084,8 @@ void post_set_machine_no_rom_load_reopen_window(void)
 
     }
 
+    zxvision_reorder_configurable_icons_if_auto();
+
     set_last_dimensiones_ventana();
 
 }

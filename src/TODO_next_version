@@ -401,7 +401,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 -baseconf: intentar que arranque. Y si no, quitar de la lista
 
 
--zx desktop: opción de reorder icons automaticos. que cuando se cree o se borre uno, siempre haga un reorder
 
 -convertir todos tabs a espacios en archivos de código fuente: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
 

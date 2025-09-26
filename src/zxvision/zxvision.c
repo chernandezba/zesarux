@@ -690,6 +690,9 @@ void zxvision_reorder_configurable_icons(void)
 
 void zxvision_reorder_configurable_icons_if_auto(void)
 {
+    //Si desactivado zx desktop
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) return;
+
     if (zxdesktop_automatic_reorder_icons.v) {
         zxvision_reorder_configurable_icons();
     }
@@ -720,6 +723,8 @@ void zxvision_check_all_configurable_icons_positions(void)
             }
         }
     }
+
+    zxvision_reorder_configurable_icons_if_auto();
 }
 
 //Agregar nuevo icono indicandole indice a tabla de acciones
@@ -28906,6 +28911,8 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
         zxvision_check_all_configurable_icons_positions();
     }
 
+    zxvision_reorder_configurable_icons_if_auto();
+
 	//Conveniente esto para borrar "restos" de ventanas
 	cls_menu_overlay();
 
@@ -29000,6 +29007,8 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
         zxvision_check_all_configurable_icons_positions();
 
     }
+
+    zxvision_reorder_configurable_icons_if_auto();
 
 	//Conveniente esto para borrar "restos" de ventanas
 	cls_menu_overlay();
