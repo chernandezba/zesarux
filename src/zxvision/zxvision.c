@@ -738,6 +738,11 @@ int zxvision_add_configurable_icon(int indice_funcion)
             zxvision_get_next_free_icon_position(&icon_x,&icon_y);
 
             zxvision_set_configurable_icon_position(i,icon_x,icon_y);
+
+            if (zxdesktop_automatic_reorder_icons.v) {
+                zxvision_reorder_configurable_icons();
+            }
+
             return i;
         }
     }
@@ -1033,6 +1038,10 @@ int if_zxdesktop_trash_not_empty(void)
 void zxvision_move_configurable_icon_to_trash(int indice_icono)
 {
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_DELETED;
+
+    if (zxdesktop_automatic_reorder_icons.v) {
+        zxvision_reorder_configurable_icons();
+    }
 }
 
 void zxvision_recover_configurable_icon_from_trash(int indice_icono)

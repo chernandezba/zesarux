@@ -143,6 +143,8 @@ extern z80_bit zxdesktop_configurable_icons_enabled;
 
 extern z80_bit zxdesktop_empty_trash_on_exit;
 
+extern z80_bit zxdesktop_automatic_reorder_icons;
+
 extern z80_bit zxdesktop_icon_show_app_open;
 
 extern z80_bit z88_hide_keys_shortcuts;

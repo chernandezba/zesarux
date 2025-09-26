@@ -12758,7 +12758,10 @@ void menu_ext_desk_settings_show_app_open(MENU_ITEM_PARAMETERS)
 }
 
 
-
+void menu_ext_desk_settings_automatic_reorder_icons(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_automatic_reorder_icons.v ^=1;
+}
 
 
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
@@ -12895,6 +12898,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 
             if (zxdesktop_configurable_icons_enabled.v) {
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_automatic_reorder_icons,NULL,
+                    "Automatic order icons","Ordenar iconos automáticamente","Ordenar icones automàticament");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_automatic_reorder_icons.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_empty_trash_exit,NULL,
                     "Empty trash on exit","Vaciar papelera al salir","Buidar paperera al sortir");

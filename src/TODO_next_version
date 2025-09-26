@@ -403,7 +403,7 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 -zx desktop: opción de reorder icons automaticos. que cuando se cree o se borre uno, siempre haga un reorder
 
--convertir todos tabs a espacios: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
+-convertir todos tabs a espacios en archivos de código fuente: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
 
 -En Machine information que diga el chip de sonido que tiene
 
@@ -432,7 +432,7 @@ Ademas en algunos casos (no recuerdo que combinacion ahora), al hacer reinsert (
 -modo linemode de ZRCP que se pueda cambiar temporalmente a través de ZRCP para que instancias de zeng o zeng online lo puedan desactivar
 para poderse comunicar correctamente (ni zeng ni zeng online funcionan si está activado linemode telnet)
 
--view basic listing: al aumentar tamaño ventana (o dismunuir) debería renderizar de nuevo el listado
+-view basic listing: al aumentar tamaño ventana (o disminuir) debería renderizar de nuevo el listado
 
 -pasar dumps de mis mdv exportando contenido entero a carpetas. Y poner carpetas con el label correspondiente
 partir de /Users/cesarhernandez/Documents/ql/microdrives_recuperados
@@ -443,3 +443,8 @@ Si hay archivos con acentos en el nombre, hay que copiarlos a mano
 
 -en speech, parece evitar algunas lineas con acentos, por ejemplo menu opciones, item estadísticas (pero sí que lee por ejemplo archivo configuración)
 -en speech, al cerrar ventanas de menu parece leer el titulo de la ventana en background mas arriba. Por ejemplo ir a help->about y cerrarla
+
+
+-drag and drop de un zip , que lo descomprima y cargue el tap, snap o lo que se encuentre
+
+-en conversion de audio a zx81, texto de bit pos X bit pulses Z, poner dos puntos:  bit pos: X bit pulses: Z
