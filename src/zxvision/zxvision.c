@@ -687,6 +687,14 @@ void zxvision_reorder_configurable_icons(void)
     }
 }
 
+
+void zxvision_reorder_configurable_icons_if_auto(void)
+{
+    if (zxdesktop_automatic_reorder_icons.v) {
+        zxvision_reorder_configurable_icons();
+    }
+}
+
 //Comprobar y reajustar posiciones (si conviene) en caso de por ejemplo cambios de maquina (de spectrum a tbblue por ejemplo)
 //donde iconos pueden ir a parar a debajo de pantalla emulada
 void zxvision_check_all_configurable_icons_positions(void)
@@ -739,9 +747,7 @@ int zxvision_add_configurable_icon(int indice_funcion)
 
             zxvision_set_configurable_icon_position(i,icon_x,icon_y);
 
-            if (zxdesktop_automatic_reorder_icons.v) {
-                zxvision_reorder_configurable_icons();
-            }
+            zxvision_reorder_configurable_icons_if_auto();
 
             return i;
         }
@@ -1039,9 +1045,7 @@ void zxvision_move_configurable_icon_to_trash(int indice_icono)
 {
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_DELETED;
 
-    if (zxdesktop_automatic_reorder_icons.v) {
-        zxvision_reorder_configurable_icons();
-    }
+    zxvision_reorder_configurable_icons_if_auto();
 }
 
 void zxvision_recover_configurable_icon_from_trash(int indice_icono)
@@ -16880,6 +16884,8 @@ void zxvision_handle_mouse_events_stop_drag_icon(void)
 
         zxvision_mover_icono_papelera_si_conviene();
 
+        zxvision_reorder_configurable_icons_if_auto();
+
     }
 }
 
@@ -26065,6 +26071,8 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
 
             zxvision_mover_icono_papelera_si_conviene();
+
+            zxvision_reorder_configurable_icons_if_auto();
 
             //configurable_icon_is_being_moved_which
         }
