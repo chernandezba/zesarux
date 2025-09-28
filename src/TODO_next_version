@@ -448,3 +448,5 @@ Si hay archivos con acentos en el nombre, hay que copiarlos a mano
 o al menos que lo descomprima
 
 -en conversion de audio a zx81, texto de bit pos X bit pulses Z, poner dos puntos:  bit pos: X bit pulses: Z
+
+-drag drop en otros sistemas: windows (necesario sdl2), linux (con xwindow se puede?)

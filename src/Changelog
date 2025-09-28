@@ -1,6 +1,7 @@
 ZEsarUX 13.0 - xxx edition. 26 September 2025
 
 Added setting to automatically order icons on ZX Desktop
+Allow drag&drop of compressed files
 Fix loading tape with --tape and --realtape and autoload snapshot on start
 
 ----

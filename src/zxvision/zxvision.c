@@ -27426,6 +27426,7 @@ void menu_inicio(void)
 
             if (menu_event_drag_drop.v) {
                 debug_printf(VERBOSE_INFO,"Received drag and drop event with file %s",quickload_file);
+                //printf("Received drag and drop event with file %s\n",quickload_file);
                 //Entrado drag-drop de archivo
                 //para evitar que entre con la pulsacion de teclas activa
                 //menu_espera_no_tecla_con_repeticion();
@@ -27433,13 +27434,51 @@ void menu_inicio(void)
                 osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
                 quickfile=quickload_file;
 
+                //Si es archivo comprimido
+                if (menu_util_file_is_compressed(quickload_file) ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a compressed file");
 
-                last_filesused_insert(quickload_file); //Agregar a lista de archivos recientes
 
-                if (quickload(quickload_file)) {
-                debug_printf (VERBOSE_ERR,"Unknown file format");
+                    //guardamos directorio actual
+                    char directorio_actual[PATH_MAX];
+                    getcwd(directorio_actual,PATH_MAX);
 
-                //menu_generic_message("ERROR","Unknown file format");
+                    //Cambiamos a esa ruta. Requerido por menu_filesel_uncompress
+                    char ruta_a_comprimido[PATH_MAX];
+                    util_get_dir(quickload_file,ruta_a_comprimido);
+                    char archivo_sin_ruta[PATH_MAX];
+                    util_get_file_no_directory(quickload_file,archivo_sin_ruta);
+
+                    zvfs_chdir(ruta_a_comprimido);
+
+                    //Descomprimimos
+                    char tmpdir[PATH_MAX];
+                    int retorno=menu_filesel_uncompress(archivo_sin_ruta,tmpdir);
+
+                    //volvemos a directorio inicial
+                    zvfs_chdir(directorio_actual);
+
+                    //printf("retorno: %d\n",retorno);
+
+                    if (!retorno) {
+                        //quickfile=tmpdir;
+
+                        //Necesario decirle a smartload que ruta es directorio (acabarlo con /)
+                        sprintf(quickload_file,"%s/",tmpdir);
+                        //printf("dir: [%s]\n",quickload_file);
+                        menu_smartload(0);
+                    }
+
+                }
+
+                else {
+                    last_filesused_insert(quickload_file); //Agregar a lista de archivos recientes
+
+                    if (quickload(quickload_file)) {
+                        debug_printf (VERBOSE_ERR,"Unknown file format");
+
+                        //menu_generic_message("ERROR","Unknown file format");
+                    }
                 }
                 menu_muestra_pending_error_message(); //Si se genera un error derivado del quickload
                 cls_menu_overlay();
