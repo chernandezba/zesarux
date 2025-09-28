@@ -7722,12 +7722,12 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	screen_set_parameters_slow_machines();
 
 
-	tape_init();
+	//tape_init();
 
-    tape_out_init();
+    //tape_out_init();
 
 	//Si hay realtape insertado
-	if (realtape_name!=NULL) realtape_insert();
+	//if (realtape_name!=NULL) realtape_insert();
 
 
 	main_init_audio();
@@ -8058,6 +8058,11 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 		autoload_snapshot();
 	}
 
+    tape_init();
+    tape_out_init();
+
+	//Si hay realtape insertado
+	if (realtape_name!=NULL) realtape_insert();
 
 	//Ver si hay que cargar snapshot. considerar quickload
 	if (quickload_inicial.v==1) {

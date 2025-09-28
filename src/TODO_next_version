@@ -419,7 +419,7 @@ o cambiar la prioridad a date-usleep, que lo hace en caso de cocoa pero parece q
 -hacer un reduce 0.5 (como el 0.75 pero a la mitad). soportar antialias también
 
 
--con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
+ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
 Esto es porque primero se llama a tape_init() que inserta la cinta y posteriormente a autoload_snapshot();
 quiza tape_init() tendria que ir despues de autoload_snapshot() pero hay que validarlo bien todo antes
 Por que tape_init() se llama tan pronto?

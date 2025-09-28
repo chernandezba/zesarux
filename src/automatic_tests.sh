@@ -42,6 +42,18 @@ if [ $? != 0 ]; then
         exit 1
 fi
 
+tests/autosnap_and_tape_test.sh --tape
+if [ $? != 0 ]; then
+        echo "Error autosnap and tape test"
+        exit 1
+fi
+
+tests/autosnap_and_tape_test.sh --realtape
+if [ $? != 0 ]; then
+        echo "Error autosnap and real tape test"
+        exit 1
+fi
+
 
 echo "All tests succeeded"
 exit 0

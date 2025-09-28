@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# Script to test autoloading autosnap and inserting tape using --tape
+# Script to test autoloading autosnap and inserting tape using --tape or --realtape
+
+TAPETYPE="$1"
 
 TEMPFILE=`mktemp`
 
@@ -20,7 +22,7 @@ fi
 #meto mi autosnap preparado
 cp tests/blank48.zsf zesarux_autosave.zsf
 
-./zesarux --noconfigfile --ao null --autoloadsnap --vo stdout --hardware-debug-ports --exit-after 5 --machine 48k --fastautoload --tape tests/autosnap_and_tape_test.tap > $TEMPFILE
+./zesarux --noconfigfile --ao null --autoloadsnap --vo stdout --hardware-debug-ports --exit-after 5 --machine 48k --realloadfast --fastautoload $TAPETYPE tests/autosnap_and_tape_test.tap > $TEMPFILE
 
 
 rm -f zesarux_autosave.zsf
