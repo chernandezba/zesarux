@@ -27425,24 +27425,24 @@ void menu_inicio(void)
 
 
             if (menu_event_drag_drop.v) {
-                                debug_printf(VERBOSE_INFO,"Received drag and drop event with file %s",quickload_file);
-            //Entrado drag-drop de archivo
-                    //para evitar que entre con la pulsacion de teclas activa
-                    //menu_espera_no_tecla_con_repeticion();
-                    //menu_espera_no_tecla();
-            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-            quickfile=quickload_file;
+                debug_printf(VERBOSE_INFO,"Received drag and drop event with file %s",quickload_file);
+                //Entrado drag-drop de archivo
+                //para evitar que entre con la pulsacion de teclas activa
+                //menu_espera_no_tecla_con_repeticion();
+                //menu_espera_no_tecla();
+                osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+                quickfile=quickload_file;
 
 
-            last_filesused_insert(quickload_file); //Agregar a lista de archivos recientes
+                last_filesused_insert(quickload_file); //Agregar a lista de archivos recientes
 
-                    if (quickload(quickload_file)) {
-                            debug_printf (VERBOSE_ERR,"Unknown file format");
+                if (quickload(quickload_file)) {
+                debug_printf (VERBOSE_ERR,"Unknown file format");
 
                 //menu_generic_message("ERROR","Unknown file format");
-                    }
-            menu_muestra_pending_error_message(); //Si se genera un error derivado del quickload
-                    cls_menu_overlay();
+                }
+                menu_muestra_pending_error_message(); //Si se genera un error derivado del quickload
+                cls_menu_overlay();
             }
 
 
