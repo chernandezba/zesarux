@@ -3,6 +3,7 @@ ZEsarUX 13.0 - xxx edition. 26 Septiembre 2025
 Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Permitir drag&drop de archivos comprimidos
 Agregado carga con --tape y --realtape con autocarga de snapshot al inicio
+Corregido descomprimir archivos tar y rar con espacios en el nombre
 
 ----
 

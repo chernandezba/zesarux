@@ -3184,14 +3184,14 @@ switch (compressed_type) {
                 //sprintf (uncompress_program,"/bin/tar");
                 //sprintf (uncompress_command,"tar -xvf \"%s\" -C %s",archivo,tmpdir);
                 sprintf (uncompress_program,"%s",external_tool_tar);
-                sprintf (uncompress_command,"%s -xvf \"%s\" -C %s",external_tool_tar,archivo,tmpdir);
+                sprintf (uncompress_command,"%s -xvf \"%s\" -C \"%s\"",external_tool_tar,archivo,tmpdir);
         break;
 
         case COMPRESSED_RAR:
                 //sprintf (uncompress_program,"/usr/bin/unrar");
                 //sprintf (uncompress_command,"unrar x -o+ \"%s\" %s",archivo,tmpdir);
                 sprintf (uncompress_program,"%s",external_tool_unrar);
-                sprintf (uncompress_command,"%s x -o+ \"%s\" %s",external_tool_unrar,archivo,tmpdir);
+                sprintf (uncompress_command,"%s x -o+ \"%s\" \"%s\"",external_tool_unrar,archivo,tmpdir);
         break;
 
 
