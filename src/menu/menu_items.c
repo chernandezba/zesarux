@@ -34116,6 +34116,8 @@ void menu_view_basic_listing_print_pointer_line(zxvision_window *ventana)
 
 }
 
+int menu_view_basic_listing_last_width=-1;
+
 void menu_view_basic_listing_overlay(void)
 {
 
@@ -34184,6 +34186,12 @@ void menu_view_basic_listing_overlay(void)
             menu_view_basic_listing_modified=1;
         }
 
+        //Si ha cambiado ancho, obtener de nuevo listado
+        if (menu_view_basic_listing_last_width!=menu_view_basic_listing_window->visible_width) {
+            menu_view_basic_listing_last_width=menu_view_basic_listing_window->visible_width;
+            menu_view_basic_listing_modified=1;
+        }
+
         if (menu_view_basic_listing_follow_current_line.v) {
 
 
@@ -34214,7 +34222,7 @@ void menu_view_basic_listing_overlay(void)
     }
 
     if (menu_view_basic_listing_modified) {
-        //printf("Obtener listado de nuevo de nuevo\n");
+        //printf("Obtener listado de nuevo\n");
         menu_view_basic_listing_modified=0;
 
         if (menu_view_basic_listing_results_buffer!=NULL) {
