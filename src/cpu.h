@@ -90,7 +90,7 @@ typedef long long int z80_64bit;
 typedef unsigned int menu_z80_moto_int;
 
 struct s_z80_bit {
-	unsigned int v:1;
+    unsigned int v:1;
 };
 
 
