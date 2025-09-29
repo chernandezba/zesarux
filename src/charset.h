@@ -63,6 +63,8 @@ extern void set_user_charset(void);
 
 #define CHAR_Z_LOGO_SMALL_TOPBAR 173
 
+#define APPLE_LOGO_IN_CHARSET_RETROMAC 141
+
 //Tamanyo de cada array para charset en menu, asi podemos saber si por error he metido mas elementos
 //(aunque el compilador no me avisa cuando hay menos elementos, que seria deseable)
 #define TOTAL_ASCII_CHARSET_ELEMENTS ((MAX_CHARSET_GRAPHIC-32+1)*8)
