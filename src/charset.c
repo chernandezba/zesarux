@@ -1098,6 +1098,9 @@ unsigned char char_set_spectrum[TOTAL_ASCII_CHARSET_ELEMENTS]={		0
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -1292,6 +1295,9 @@ unsigned char char_set_cpc[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -1538,6 +1544,9 @@ unsigned char char_set_z88[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -1783,6 +1792,9 @@ unsigned char char_set_sam[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -1983,6 +1995,9 @@ unsigned char char_set_mansoftware[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -2229,6 +2244,9 @@ unsigned char char_set_ql[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -2473,6 +2491,9 @@ unsigned char char_set_retromac[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 //Tipo de letra "topaz" de amiga500, workbench version 1.3
@@ -2720,6 +2741,9 @@ unsigned char char_set_amigaos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -2974,6 +2998,9 @@ unsigned char char_set_ataritos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -3219,6 +3246,9 @@ unsigned char char_set_msx[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 
@@ -3462,6 +3492,9 @@ unsigned char char_set_beos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 //DOS 8x8 bitmap by Neil Roy
@@ -3712,6 +3745,9 @@ unsigned char char_set_dos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 //Basado en Z88 con variaciones
@@ -3958,6 +3994,9 @@ unsigned char char_set_templeos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 
 //Caracter maximizar estilo ZEsarUX plus - 172
 0,126*2,66*2,66*2,66*2,66*2,126*2,0,
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
+0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
 

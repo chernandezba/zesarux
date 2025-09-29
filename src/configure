@@ -1630,7 +1630,7 @@ snap_rzx.o: snap/snap_rzx.c snap/snap_rzx.h snap/snap.h cpu.h debug.h operacione
 zxvision.o: zxvision/zxvision.c zxvision/zxvision.h zxvision/zxvision_topbar.h menu/menu_items.h menu/menu_items_storage.h menu/menu_items_settings.h menu/menu_bitmaps.h menu/menu_debug_cpu.h menu/menu_file_viewer_browser.h menu/menu_zeng_online.h video/screen.h cpu.h start.h debug.h soundchips/ay38912.h storage/tape.h audio/audio.h timer.h operaciones.h utils.h joystick.h ula.h realjoystick.h video/scrstdout.h autoselectoptions.h charset.h chardetect.h textspeech.h machines/prism.h machines/cpc.h machines/sam.h machines/tbblue.h zrcp/remote.h machines/tsconf.h settings.h stats.h network.h machines/ql.h zvfs.h menu/menu_filesel.h storage/pd765.h dsk.h zrcp/zeng_online_client.h machines/ql_qdos_handler.h machines/ql_i8049.h
 	\$(CC) \$(CFLAGS) -c zxvision/zxvision.c
 
-zxvision_topbar.o: zxvision/zxvision_topbar.c zxvision/zxvision.h cpu.h joystick.h debug.h settings.h menu/menu_items.h menu/menu_items_settings.h
+zxvision_topbar.o: zxvision/zxvision_topbar.c zxvision/zxvision.h cpu.h joystick.h debug.h settings.h menu/menu_items.h menu/menu_items_settings.h charset.h video/screen.h
 	\$(CC) \$(CFLAGS) -c zxvision/zxvision_topbar.c
 
 menu_filesel.o: menu/menu_filesel.c menu/menu_filesel.h zxvision/zxvision.h menu/menu_file_viewer_browser.h video/screen.h cpu.h debug.h timer.h utils.h compileoptions.h third_party/ff.h third_party/diskio.h zvfs.h snap/snap.h joystick.h textspeech.h network.h ula.h settings.h

@@ -58,7 +58,10 @@ extern int get_charset_id_by_name(char *nombre);
 
 extern void set_user_charset(void);
 
-#define MAX_CHARSET_GRAPHIC 172
+#define MAX_CHARSET_GRAPHIC 173
+
+
+#define CHAR_Z_LOGO_SMALL_TOPBAR 173
 
 //Tamanyo de cada array para charset en menu, asi podemos saber si por error he metido mas elementos
 //(aunque el compilador no me avisa cuando hay menos elementos, que seria deseable)

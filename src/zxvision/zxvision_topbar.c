@@ -33,6 +33,8 @@
 #include "settings.h"
 #include "menu_items.h"
 #include "menu_items_settings.h"
+#include "charset.h"
+#include "screen.h"
 
 int previous_switchtopbar_timer_event_mouse_x=0;
 int previous_switchtopbar_timer_event_mouse_y=0;
@@ -142,12 +144,20 @@ z80_byte menu_topbarmenu_get_key(void)
     return tecla;
 }
 
+//lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
                                //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
                                //0         1         2         3         4         5         6         7         8         9         10
-char *topbar_string_linea_menus="Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
+char topbar_string_linea_menus[]="Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
 
 void menu_topbarmenu_write_bar(void)
 {
+
+    //Aunque topbar en principio solo va a estar con drivers completos, por si acaso solo lo cambio en esos casos
+    //asi seria compatible con curses por ejemplo, dejaria la "Z" normal
+    if (si_complete_video_driver() ) {
+        //El primer caracter lo cambiamos por la Z pequeña del logo, que tiene colores
+        topbar_string_linea_menus[0]=(unsigned char) CHAR_Z_LOGO_SMALL_TOPBAR;
+    }
 
     menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,topbar_string_linea_menus);
 

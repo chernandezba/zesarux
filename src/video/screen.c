@@ -3190,6 +3190,20 @@ int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
     return 1;
 }
 
+//Logo Z pequeña mostrada en el top bar, con franjas de color
+//Color -1: el del paper
+//Color -2: el de la tinta
+int scr_putchar_menu_comun_small_z_logo[8][8]={
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-2,-2,-2,-2,-2,-2,-1},
+    {-1,-1,-1,-1,-1,-2, 2,-1},
+    {-1,-1,-1,-1,-2, 2, 6,-1},
+    {-1,-1,-1,-2, 2, 6, 4,-1},
+    {-1,-1,-2, 2, 6, 4, 5,-1},
+    {-1,-2,-2,-2,-2,-2,-2,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1}
+};
+
 //Muestra un caracter en pantalla, usado en menu
 //entrada: caracter
 //x,y: coordenadas en x-0..31 e y 0..23
@@ -3235,6 +3249,13 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
             for (bit=0;bit<8;bit++) {
                 if (byte_leido & 128 ) color=tinta;
                 else color=papel;
+
+                //Z logo pequeña usada en topbar
+                if (caracter==CHAR_Z_LOGO_SMALL_TOPBAR) {
+                    color=scr_putchar_menu_comun_small_z_logo[line][bit];
+                    if (color==-1) color=papel;
+                    if (color==-2) color=tinta;
+                }
 
                 byte_leido=(byte_leido&127)<<1;
 
