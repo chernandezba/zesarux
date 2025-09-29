@@ -3224,46 +3224,43 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
     for (line=0;line<8;line++) {
 
-    byte_leido=*puntero++;
-    if (inverse.v==1) byte_leido = byte_leido ^255;
+        byte_leido=*puntero++;
+        if (inverse.v==1) byte_leido = byte_leido ^255;
 
-    int px=0; //Coordenada x del pixel final
+        int px=0; //Coordenada x del pixel final
 
-    //Si se dibuja esa linea debido a reduccion de alto de caracter
-    if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
+        //Si se dibuja esa linea debido a reduccion de alto de caracter
+        if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
 
-        for (bit=0;bit<8;bit++) {
-            if (byte_leido & 128 ) color=tinta;
-            else color=papel;
+            for (bit=0;bit<8;bit++) {
+                if (byte_leido & 128 ) color=tinta;
+                else color=papel;
 
-
-
-            byte_leido=(byte_leido&127)<<1;
-
-            //este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
-
-            int xfinal,yfinal;
-
-            //xfinal=(((x*menu_char_width)+bit)*zoom_level);
-
-            xfinal=(((x*menu_char_width)+px)*zoom_level);
-            yfinal=y*zoom_level;
+                byte_leido=(byte_leido&127)<<1;
 
 
-            //Hacer zoom de ese pixel si conviene
+                int xfinal,yfinal;
 
-            //Ancho de caracter 8, 7 y 6 pixeles
-            if (scr_putchar_menu_comun_zoom_reduce_charwidth(bit)) {
-                scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-                px++;
+                //xfinal=(((x*menu_char_width)+bit)*zoom_level);
+
+                xfinal=(((x*menu_char_width)+px)*zoom_level);
+                yfinal=y*zoom_level;
+
+
+                //Hacer zoom de ese pixel si conviene
+
+                //Ancho de caracter 8, 7 y 6 pixeles
+                if (scr_putchar_menu_comun_zoom_reduce_charwidth(bit)) {
+                    scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
+                    px++;
+                }
+
             }
 
+            y++;
+
         }
-
-        y++;
-
     }
-  }
 }
 
 //y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
