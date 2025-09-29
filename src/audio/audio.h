@@ -341,6 +341,8 @@ extern void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_soni
 
 extern void audiodac_send_sample_value(z80_byte value);
 
+extern const char *audio_get_chip_name(void);
+
 extern void midi_output_frame_event(void);
 extern int audio_midi_output_init(void);
 extern void audio_midi_output_finish(void);

@@ -15047,28 +15047,28 @@ void menu_audio_chip_info(MENU_ITEM_PARAMETERS)
 
 	if (sn_chip_present.v) {
 		//SN
-		menu_generic_message_format("Audio Chip Info","Audio Chip: Texas Instruments SN76489AN\nFrequency: %d Hz\n"
+		menu_generic_message_format("Audio Chip Info","Audio Chip: %s\nFrequency: %d Hz\n"
 									"Min Tone Frequency: %d Hz\nMax Tone Frequency: %d Hz\n"
 									"3 Tone Channels, 1 Noise Channel",
-			chip_frequency,min_freq,max_freq
+			audio_get_chip_name(),chip_frequency,min_freq,max_freq
 		);
 	}
 
 	else if (i8049_chip_present) {
 		//8049 del QL
-		menu_generic_message_format("Audio Chip Info","Audio Chip: Intel 8049\nFrequency: %d MHz\n"
+		menu_generic_message_format("Audio Chip Info","Audio Chip: %s\nFrequency: %d MHz\n"
 									"Min Tone Frequency: %d Hz\nMax Tone Frequency: %d Hz\n"
 									"2 PseudoTone Channels, Noise Effects",
-			chip_frequency/1000000,min_freq,max_freq
+			audio_get_chip_name(),chip_frequency/1000000,min_freq,max_freq
 		);
 	}
 
 	else {
 		//AY
-		menu_generic_message_format("Audio Chip Info","Audio Chip: General Instrument AY-3-8910\nFrequency: %d Hz\n"
+		menu_generic_message_format("Audio Chip Info","Audio Chip: %s\nFrequency: %d Hz\n"
 									"Min Tone Frequency: %d Hz\nMax Tone Frequency: %d Hz\n"
 									"3 Noise/Tone Channels, 1 Envelope Generator",
-			chip_frequency,min_freq,max_freq
+			audio_get_chip_name(),chip_frequency,min_freq,max_freq
 		);
 	}
 
