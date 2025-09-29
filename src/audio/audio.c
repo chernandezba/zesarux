@@ -2595,6 +2595,7 @@ void audiodac_send_sample_value(z80_byte value)
 const char *audio_get_chip_info_string_ay="General Instrument AY-3-8910";
 const char *audio_get_chip_info_string_intel="Intel 8049";
 const char *audio_get_chip_info_string_sn="Texas Instruments SN76489AN";
+const char *audio_get_chip_info_string_philips="Philips SAA 1099";
 const char *audio_get_chip_info_string_none="";
 
 const char *audio_get_chip_name(void)
@@ -2606,6 +2607,10 @@ const char *audio_get_chip_name(void)
 	else if (i8049_chip_present) {
 		return audio_get_chip_info_string_intel;
 	}
+
+    else if (MACHINE_IS_SAM) {
+        return audio_get_chip_info_string_philips;
+    }
 
 	else if (ay_chip_present.v) {
 		return audio_get_chip_info_string_ay;

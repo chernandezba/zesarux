@@ -15063,6 +15063,15 @@ void menu_audio_chip_info(MENU_ITEM_PARAMETERS)
 		);
 	}
 
+    else if (MACHINE_IS_SAM) {
+        //TODO: no estoy seguro que sean 8 MHz
+		menu_generic_message_format("Audio Chip Info","Audio Chip: %s\nFrequency: 8 MHz\n"
+									"Min Tone Frequency: 30 Hz\nMax Tone Frequency: 7740 Hz\n"
+									"6 Tone Channels, 2 Noise Channels",
+			audio_get_chip_name()
+		);
+    }
+
 	else {
 		//AY
 		menu_generic_message_format("Audio Chip Info","Audio Chip: %s\nFrequency: %d Hz\n"
@@ -33395,6 +33404,8 @@ void menu_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_genera_ventana(array_menu_audio);
 		}
 
+        //En el caso de sam coupe se cumple condicion menu_cond_ay_or_sn_chip porque realmente estamos
+        //simulando el chip SAA con el AY
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_chip_info,menu_cond_ay_or_sn_chip,
             "Audio Chip Info","Info del Chip de Audio","Info del Xip d'Audio");
         menu_add_item_menu_se_cerrara(array_menu_audio);
@@ -34877,6 +34888,13 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         else sprintf(buf_linea,"CPU: Zilog Z80 (%s)\n",z80_cpu_types_strings[z80_cpu_current_type]);
     }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
+    //Chip de sonido
+    const char *chip_name=audio_get_chip_name();
+    if (chip_name[0]) {
+        sprintf(buf_linea,"Audio Chip: %s\n",chip_name);
+        util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+    }
 
     //Memoria RAM
     int total_ram=get_ram_size();
