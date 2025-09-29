@@ -3778,6 +3778,8 @@ int util_write_configfile(void)
   if (mouse_menu_disabled.v)                  ADD_STRING_CONFIG,"--disablemenumouse");
   if (mouse_menu_ignore_click_open.v)         ADD_STRING_CONFIG,"--ignoremouseclickopenmenu");
 
+  if (zxvision_topbar_menu_enabled.v)           ADD_STRING_CONFIG,"--enable-topbar-menu");
+
   if (kempston_mouse_emulation.v)             ADD_STRING_CONFIG,"--enablekempstonmouse");
 
                                               ADD_STRING_CONFIG,"--kempstonmouse-sens %d",kempston_mouse_factor_sensibilidad);

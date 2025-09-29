@@ -1757,6 +1757,7 @@ printf("\n"
         "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
 		"--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
 		"--disablemenumouse                       Disable mouse on emulator menu\n"
+        "--enable-topbar-menu                     Enable topbar menu\n"
 
 		//"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
 
@@ -3633,6 +3634,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--disablemenumouse")) {
 				mouse_menu_disabled.v=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--enable-topbar-menu")) {
+                zxvision_topbar_menu_enabled.v=1;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--ignoremouseclickopenmenu")) {
                 mouse_menu_ignore_click_open.v=1;

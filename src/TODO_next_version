@@ -379,7 +379,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 -convertir todos tabs a espacios en archivos de código fuente: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
 
--En Machine information que diga el chip de sonido que tiene
 
 -ver gosub stack en zx80, zx81
 
