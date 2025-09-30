@@ -273,6 +273,13 @@ void menu_topbarmenu(void)
         menu_topbarmenu_flecha_derecha(total_menus);
     }
 
+    //Si hemos salido de menus con flecha izquierda o derecha, desplegar el siguiente menu , pero,
+    //si el siguiente es smartload, se desplega una ventana y dejamos de navegar
+    //por tanto en ese caso, si es smartload, no desplegaremos menu sino cursor arriba
+    if (dibujar_cursor_topbar_pos_cursor==1) {
+        ultimo_menu_salido_con_flecha_izquierda=ultimo_menu_salido_con_flecha_derecha=0;
+    }
+
     do {
 
         //Esperar tecla/raton, y siempre que no se haya entrado abriendo el menu pulsando ya en barra superior
