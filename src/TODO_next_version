@@ -417,18 +417,24 @@ o al menos que lo descomprima
 -drag drop en otros sistemas: windows (necesario sdl2), linux (con xwindow se puede?)
 
 -top bar menu
-ok*primero poder desactivar solo botones de arriba bajo demanda
-ok*top bar tiene que poder aparecer como overlay. Así se puede hacer mostrar al mover ratón, y también mientras menús están activos
+
 *si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
 la deja en lista de submenu
+
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
+
 *al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
 *con top bar no van pulsaciones botones inferiores. tampoco van botones superiores (aunque superiores se deberian ocultar
 si esta top bar menu)
+
 *con topbar, no van pulsaciones de raton sobre zx desktop (ni iconos, ni fondo, ni iconos de dispositivos)
-ok * desactivar botones superiores si esta topbar
+
 *al salir de topbar, no refresca bien las ventanas en background
+
 *Cuando desplega un menu, si pulsa tecla izquierda o derecha y no hay mas submenus (o menus previos), debería moverse por topbar
 Por tanto hay que hacer que la función de menu pueda volver en esos casos y decir que se ha pulsado izq/der
-*al maximizar ventanas, la ventana no deberia ocupar la primera fila (que es donde esta el topbar)
+
+*mover izquierda y derecha en menus, que se abran otros menus principales
+
+*no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto
