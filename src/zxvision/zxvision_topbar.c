@@ -232,7 +232,11 @@ void menu_topbarmenu(void)
 {
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
 
-
+    //tecla Z para primer menu ZEsarUX
+    //tecla S para Smartload
+    //tecla N para snapshot
+    //etc
+    char *topbar_hotkeys="zsnmadteowil";
 
     posiciones_menus[0]=0;
 
@@ -298,6 +302,18 @@ void menu_topbarmenu(void)
             if (tecla_leida!=13) {
 
                 menu_espera_no_tecla();
+
+                if (tecla_leida>='a' && tecla_leida<='z') {
+                    //ver hotkeys
+                    for (i=0;topbar_hotkeys[i];i++) {
+                        if (tecla_leida==topbar_hotkeys[i]) break;
+                    }
+                    if (topbar_hotkeys[i]) {
+                        dibujar_cursor_topbar_pos_cursor=i;
+                        tecla_leida=13;
+                        salir_linea_superior=1;
+                    }
+                }
 
                 switch(tecla_leida) {
                     case 8:
