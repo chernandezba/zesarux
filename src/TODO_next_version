@@ -416,7 +416,7 @@ o al menos que lo descomprima
 
 -drag drop en otros sistemas: windows (necesario sdl2), linux (con xwindow se puede?)
 
--top bar menu
+----top bar menu
 
 *si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
 la deja en lista de submenu
@@ -432,9 +432,11 @@ si esta top bar menu)
 
 *al salir de topbar, no refresca bien las ventanas en background
 
-*Cuando desplega un menu, si pulsa tecla izquierda o derecha y no hay mas submenus (o menus previos), debería moverse por topbar
+ok *Cuando desplega un menu, si pulsa tecla izquierda o derecha y no hay mas submenus (o menus previos), debería moverse por topbar
 Por tanto hay que hacer que la función de menu pueda volver en esos casos y decir que se ha pulsado izq/der
 
 *mover izquierda y derecha en menus, que se abran otros menus principales
 
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto
+
+----Fin top bar menu

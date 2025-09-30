@@ -276,9 +276,10 @@ void menu_topbarmenu(void)
     do {
 
         //Esperar tecla/raton, y siempre que no se haya entrado abriendo el menu pulsando ya en barra superior
+        //o se haya pulsado flecha izquierda o derecha en menus abiertos
         //Moverse por los titulos superiores
         int salir_linea_superior=0;
-        while (!salir_linea_superior && !menu_topbarmenu_pressed_bar) {
+        while (!salir_linea_superior && !menu_topbarmenu_pressed_bar && !ultimo_menu_salido_con_flecha_izquierda && !ultimo_menu_salido_con_flecha_derecha) {
 
             dibujar_cursor_topbar=1;
 
@@ -333,8 +334,12 @@ void menu_topbarmenu(void)
         dibujar_cursor_topbar=0;
 
         //Si pulsado boton raton o enter en el paso anterior o se haya entrado abriendo el menu pulsando ya en barra superior
-        if ( tecla_leida==13 || menu_topbarmenu_pressed_bar) {
+        if ( tecla_leida==13 || menu_topbarmenu_pressed_bar || ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
 
+            //Por si acaso reseteamos estos dos, ya no se necesitan para ver que hemos salido de un menu pulsando cursor izquierda o derecha
+            //creo que realmente no haria falta, pero por si en un futuro hay manera de volver a entrar en esta funcion sin pasar por dibujado
+            //del menu, que es donde se resetean tambien
+            ultimo_menu_salido_con_flecha_izquierda=ultimo_menu_salido_con_flecha_derecha=0;
 
             int columna_posicion_x;
 
@@ -379,6 +384,8 @@ void menu_topbarmenu(void)
             //int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
             //printf("posicion x: %d\n",columna_posicion_x);
+
+            printf("posicion cursor: %d\n",pos_cursor);
 
 
             //asumimos que saldremos del topbar
@@ -448,6 +455,11 @@ void menu_topbarmenu(void)
                 //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
                 //pero deja submenus abiertos
                 menu_dibuja_submenu_cierra_todos_submenus();
+
+
+                if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
+                    printf("Ultimo menu pulsado izquierda o derecha\n");
+                }
 
 
                 if (if_menu_topbarmenu_pressed_bar() && mouse_left)  {
