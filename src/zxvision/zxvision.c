@@ -21696,18 +21696,20 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                                 //salir como si fuera ESC, para cerrar todos submenus
                                 salir_todos_menus=1;
                                 salir_con_flecha_derecha=1;
-                                break;
+                                //break;
                             }
                         }
 
                     }
-                    else {
+                    /*else {
                         break;
-                    }
+                    }*/
                 }
 
-                (*opcion_inicial)=menu_dibuja_menu_cursor_abajo((*opcion_inicial),max_opciones,m);
-                zxvision_sound_event_cursor_movement();
+                else {
+                    (*opcion_inicial)=menu_dibuja_menu_cursor_abajo((*opcion_inicial),max_opciones,m);
+                    zxvision_sound_event_cursor_movement();
+                }
             break;
 
             //Mover abajo
