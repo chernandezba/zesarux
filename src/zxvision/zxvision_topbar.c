@@ -160,9 +160,9 @@ void menu_topbarmenu_write_bar(void)
     }
 
     //Y si el estilo es retromac, metemos icono de manzana en vez de la Z
-    if (char_set==char_set_retromac) {
-        topbar_string_linea_menus[0]=(unsigned char) APPLE_LOGO_IN_CHARSET_RETROMAC;
-    }
+    //if (char_set==char_set_retromac) {
+    //    topbar_string_linea_menus[0]=(unsigned char) APPLE_LOGO_IN_CHARSET_RETROMAC;
+    //}
 
 
     menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,topbar_string_linea_menus);

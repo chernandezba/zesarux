@@ -16082,6 +16082,11 @@ void zxvision_handle_maximize(zxvision_window *w)
 
                 }
 
+                //O si hay top bar
+                else if (zxvision_topbar_menu_enabled.v) {
+                    yinicial=1;
+                    max_height--;
+                }
 
 
             }
