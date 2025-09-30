@@ -21678,8 +21678,25 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 //en menus tabulados, misma funcion que abajo para un no tabulado
                 if (m->es_menu_tabulado==0) {
                     //y si no tiene submenu, salir cuando se tiene topbar habilitado
+                    //y siendo el primer submenu
                     if (zxvision_topbar_menu_enabled.v) {
-                        salir_con_flecha_derecha=1;
+
+                        if (menu_old_behaviour_close_menus.v) {
+                            salir_con_flecha_derecha=1;
+                        }
+
+                        else {
+
+                            if (ventana==menu_dibuja_submenu_primer_submenu) {
+                                printf("--Somos el primer submenu\n");
+                                salir_con_flecha_derecha=1;
+                            }
+                            else {
+                                printf("--No somos el primer submenu\n");
+                                break;
+                            }
+                        }
+
                     }
                     else {
                         break;
