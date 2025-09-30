@@ -1187,6 +1187,7 @@ extern void menu_dibuja_submenu_free_all(void);
 extern void menu_tape_settings_trunc_name(char *orig,char *dest,int max);
 
 extern int ultimo_menu_salido_con_flecha_izquierda;
+extern int ultimo_menu_salido_con_flecha_derecha;
 
 extern int menu_confirm_yesno(char *texto_ventana);
 extern int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior);

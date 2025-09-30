@@ -220,6 +220,11 @@ void menu_topbarmenu_flecha_izquierda(void)
     if (dibujar_cursor_topbar_pos_cursor>0) dibujar_cursor_topbar_pos_cursor--;
 }
 
+void menu_topbarmenu_flecha_derecha(int total_menus)
+{
+    if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
+}
+
 //Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
 int menu_topbarmenu_pressed_bar=0;
 
@@ -260,6 +265,10 @@ void menu_topbarmenu(void)
         menu_topbarmenu_flecha_izquierda();
     }
 
+    if (ultimo_menu_salido_con_flecha_derecha) {
+        menu_topbarmenu_flecha_derecha(total_menus);
+    }
+
     do {
 
         //Esperar tecla/raton, y siempre que no se haya entrado abriendo el menu pulsando ya en barra superior
@@ -298,7 +307,7 @@ void menu_topbarmenu(void)
 
                     case 9:
                         printf("derecha\n");
-                        if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
+                        menu_topbarmenu_flecha_derecha(total_menus);
                     break;
                 }
             }

@@ -20882,6 +20882,9 @@ int menu_dibuja_menu_recorrer_menus_entrado_submenu=0;
 //Para que topbar menu sepa si se ha salido con flecha izquierda
 int ultimo_menu_salido_con_flecha_izquierda=0;
 
+//Para que topbar menu sepa si se ha salido con flecha derecha
+int ultimo_menu_salido_con_flecha_derecha=0;
+
 //Funcion de gestion de menu
 //Entrada: opcion_inicial: puntero a opcion inicial seleccionada
 //m: estructura de menu (estructura en forma de lista con punteros)
@@ -20923,6 +20926,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     salir_todos_menus=0;
 
     ultimo_menu_salido_con_flecha_izquierda=0;
+    ultimo_menu_salido_con_flecha_derecha=0;
 
     //no escribir letras de atajos de teclado al entrar en un menu
     menu_writing_inverse_color.v=0;
@@ -21174,6 +21178,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //printf ("despues de zxvision_draw_window\n");
 
     int salir_con_flecha_izquierda=0;
+    int salir_con_flecha_derecha=0;
 
     //Entrar aqui cada vez que se dibuje otra subventana aparte, como tooltip o ayuda
     do {
@@ -21207,7 +21212,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 &&
         tecla!=MENU_RETORNO_F10 && tecla!=MENU_RETORNO_BACKGROUND && redibuja_ventana==0 &&
-        !salir_con_flecha_izquierda && menu_tooltip_counter<TOOLTIP_SECONDS) {
+        !salir_con_flecha_izquierda && !salir_con_flecha_derecha && menu_tooltip_counter<TOOLTIP_SECONDS) {
 
         //printf ("tecla desde bucle: %d\n",tecla);
 
@@ -21671,7 +21676,15 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Mover Derecha, solo en tabulados
             case '8':
                 //en menus tabulados, misma funcion que abajo para un no tabulado
-                if (m->es_menu_tabulado==0) break;
+                if (m->es_menu_tabulado==0) {
+                    //y si no tiene submenu, salir cuando se tiene topbar habilitado
+                    if (zxvision_topbar_menu_enabled.v) {
+                        salir_con_flecha_derecha=1;
+                    }
+                    else {
+                        break;
+                    }
+                }
 
                 (*opcion_inicial)=menu_dibuja_menu_cursor_abajo((*opcion_inicial),max_opciones,m);
                 zxvision_sound_event_cursor_movement();
@@ -22084,6 +22097,15 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         zxvision_helper_menu_shortcut_delete_last();
 
         ultimo_menu_salido_con_flecha_izquierda=1;
+
+        return MENU_RETORNO_ESC;
+    }
+
+    if (salir_con_flecha_derecha) {
+        //printf("Return con flecha izquierda\n");
+        zxvision_helper_menu_shortcut_delete_last();
+
+        ultimo_menu_salido_con_flecha_derecha=1;
 
         return MENU_RETORNO_ESC;
     }
@@ -26498,9 +26520,9 @@ void menu_inicio_bucle(void)
                 reopen_menu=1;
             }
 
-            //miramos si se ha salido pulsando tecla izquierda
-            if (ultimo_menu_salido_con_flecha_izquierda) {
-                printf("Reabrir topbar porque se ha salido de menu con flecha izquierda\n");
+            //miramos si se ha salido pulsando tecla izquierda o derecha
+            if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
+                printf("Reabrir topbar porque se ha salido de menu con flecha izquierda o derecha\n");
                 reopen_menu=1;
             }
 
