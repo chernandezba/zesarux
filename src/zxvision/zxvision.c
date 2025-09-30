@@ -21693,6 +21693,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                             }
                             else {
                                 printf("--No somos el primer submenu\n");
+                                //salir como si fuera ESC, para cerrar todos submenus
+                                salir_todos_menus=1;
+                                salir_con_flecha_derecha=1;
                                 break;
                             }
                         }
