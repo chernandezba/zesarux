@@ -144,6 +144,14 @@ z80_byte menu_topbarmenu_get_key(void)
     return tecla;
 }
 
+
+int dibujar_cursor_topbar=0;
+int dibujar_cursor_topbar_pos_cursor=0;
+
+//Generar posiciones de donde está cada menu
+//20 posiciones maximo, incluyendo el primero
+int posiciones_menus[20];
+
 //lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
                                //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
                                //0         1         2         3         4         5         6         7         8         9         10
@@ -167,6 +175,19 @@ void menu_topbarmenu_write_bar(void)
 
     menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,topbar_string_linea_menus);
 
+    if (dibujar_cursor_topbar) {
+        printf("dibujar top bar cursor\n");
+
+        int x_inicio=posiciones_menus[dibujar_cursor_topbar_pos_cursor];
+        menu_escribe_texto(x_inicio,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"*");
+        int x_final=posiciones_menus[dibujar_cursor_topbar_pos_cursor+1]-1;
+        menu_escribe_texto(x_final,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"=");
+
+        for (;x_inicio<=x_final;x_inicio++) {
+            putchar_menu_overlay_parpadeo(x_inicio,0,topbar_string_linea_menus[x_inicio],ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+            //menu_escribe_texto(x_inicio,0,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,topbar_string_linea_menus[x_inicio]);
+        }
+    }
 }
 
 int if_menu_topbarmenu_pressed_bar(void)
@@ -193,9 +214,7 @@ void menu_topbarmenu(void)
 {
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
 
-    //Generar posiciones de donde está cada menu
-    //20 posiciones maximo, incluyendo el primero
-    int posiciones_menus[20];
+
 
     posiciones_menus[0]=0;
 
@@ -220,6 +239,9 @@ void menu_topbarmenu(void)
     int tecla_leida=0;
     int salir_topbar=0;
 
+    //int dibujar_cursor_topbar_pos_cursor=0;
+
+    int total_menus=total_posiciones-1;
 
     do {
 
@@ -227,6 +249,10 @@ void menu_topbarmenu(void)
         //Moverse por los titulos superiores
         int salir_linea_superior=0;
         while (!salir_linea_superior && !menu_topbarmenu_pressed_bar) {
+
+            dibujar_cursor_topbar=1;
+
+            printf("cursor_pos %d total_menus %d\n",dibujar_cursor_topbar_pos_cursor,total_menus);
 
             menu_refresca_pantalla();
 
@@ -240,26 +266,36 @@ void menu_topbarmenu(void)
 
             if (tecla_leida==13) salir_linea_superior=1;
 
-            switch(tecla_leida) {
-                case 8:
-                    printf("izquierda\n");
-                break;
+            if (tecla_leida!=13) {
 
-                case 9:
-                    printf("derecha\n");
-                break;
+                menu_espera_no_tecla();
+
+                switch(tecla_leida) {
+                    case 8:
+                        printf("izquierda\n");
+                        if (dibujar_cursor_topbar_pos_cursor>0) dibujar_cursor_topbar_pos_cursor--;
+                    break;
+
+                    case 9:
+                        printf("derecha\n");
+                        if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
+                    break;
+                }
             }
 
         }
 
+        dibujar_cursor_topbar=0;
+
         //Si pulsado boton raton en el paso anterior o se haya entrado abriendo el menu pulsando ya en barra superior
         if ( (tecla_leida==13 && mouse_left) || menu_topbarmenu_pressed_bar) {
             menu_topbarmenu_pressed_bar=0;
-            int posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
+
+            int columna_posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
 
             //int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
-            printf("posicion x: %d\n",posicion_x);
+            printf("posicion x: %d\n",columna_posicion_x);
 
 
             //asumimos que saldremos del topbar
@@ -276,7 +312,7 @@ void menu_topbarmenu(void)
                 //Detectar que menu hemos pulsado
                 int i;
                 for (i=0;i<total_posiciones;i++) {
-                    if (posicion_x<posiciones_menus[i]) break;
+                    if (columna_posicion_x<posiciones_menus[i]) break;
                 }
 
                 if (i<total_posiciones) {
