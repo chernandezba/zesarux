@@ -352,75 +352,75 @@ void menu_topbarmenu(void)
 
             if (posicion_y==0 && pos_cursor>=0) {
 
-                    force_next_menu_position_x=posiciones_menus[pos_cursor];
+                force_next_menu_position_x=posiciones_menus[pos_cursor];
 
-                    //hemos pulsado en topbar, nos mantenemos
-                    salir_topbar=0;
+                //hemos pulsado en topbar, nos mantenemos
+                salir_topbar=0;
 
-                    switch(pos_cursor) {
-                        case 0:
-                            menu_inicio_bucle_main();
-                        break;
+                switch(pos_cursor) {
+                    case 0:
+                        menu_inicio_bucle_main();
+                    break;
 
-                        case 1:
-                            menu_smartload(0);
-                        break;
+                    case 1:
+                        menu_smartload(0);
+                    break;
 
-                        case 2:
-                            menu_snapshot(0);
-                        break;
+                    case 2:
+                        menu_snapshot(0);
+                    break;
 
-                        case 3:
-                            menu_machine_selection(0);
-                        break;
+                    case 3:
+                        menu_machine_selection(0);
+                    break;
 
-                        case 4:
-                            menu_audio(0);
-                        break;
+                    case 4:
+                        menu_audio(0);
+                    break;
 
-                        case 5:
-                            menu_display_settings(0);
-                        break;
+                    case 5:
+                        menu_display_settings(0);
+                    break;
 
-                        case 6:
-                            menu_storage(0);
-                        break;
+                    case 6:
+                        menu_storage(0);
+                    break;
 
-                        case 7:
-                            menu_debug_main(0);
-                        break;
+                    case 7:
+                        menu_debug_main(0);
+                    break;
 
-                        case 8:
-                            menu_network(0);
-                        break;
+                    case 8:
+                        menu_network(0);
+                    break;
 
-                        case 9:
-                            menu_windows(0);
-                        break;
+                    case 9:
+                        menu_windows(0);
+                    break;
 
-                        case 10:
-                            menu_settings(0);
-                        break;
+                    case 10:
+                        menu_settings(0);
+                    break;
 
-                        case 11:
-                            menu_help(0);
-                        break;
-                    }
+                    case 11:
+                        menu_help(0);
+                    break;
+                }
 
-                    printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",
-                        if_menu_topbarmenu_pressed_bar(),mouse_left);
+                printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",
+                    if_menu_topbarmenu_pressed_bar(),mouse_left);
 
-                    //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
-                    //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
-                    //pero deja submenus abiertos
-                    menu_dibuja_submenu_cierra_todos_submenus();
+                //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
+                //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
+                //pero deja submenus abiertos
+                menu_dibuja_submenu_cierra_todos_submenus();
 
 
-                    if (if_menu_topbarmenu_pressed_bar() && mouse_left)  {
-                        //continuamos aqui y sin tener que esperar tecla
-                        printf("Reentraremos en menu\n");
-                        menu_topbarmenu_pressed_bar=1;
-                    }
+                if (if_menu_topbarmenu_pressed_bar() && mouse_left)  {
+                    //continuamos aqui y sin tener que esperar tecla
+                    printf("Reentraremos en menu\n");
+                    menu_topbarmenu_pressed_bar=1;
+                }
 
             }
 
