@@ -272,6 +272,9 @@ void menu_topbarmenu(void)
                 tecla_leida=13;
             }
 
+            //tecla abajo es como enter
+            if (tecla_leida==10) tecla_leida=13;
+
             if (tecla_leida==13) salir_linea_superior=1;
 
             if (tecla_leida!=13) {
@@ -347,9 +350,7 @@ void menu_topbarmenu(void)
             //asumimos que saldremos del topbar
             salir_topbar=1;
 
-            if (posicion_y==0) {
-
-                if (pos_cursor>=0) {
+            if (posicion_y==0 && pos_cursor>=0) {
 
                     force_next_menu_position_x=posiciones_menus[pos_cursor];
 
@@ -420,7 +421,7 @@ void menu_topbarmenu(void)
                         printf("Reentraremos en menu\n");
                         menu_topbarmenu_pressed_bar=1;
                     }
-                }
+
             }
 
 
