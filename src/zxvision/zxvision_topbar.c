@@ -215,6 +215,11 @@ int if_menu_topbarmenu_enabled_and_pressed_bar(void)
     return if_menu_topbarmenu_pressed_bar();
 }
 
+void menu_topbarmenu_flecha_izquierda(void)
+{
+    if (dibujar_cursor_topbar_pos_cursor>0) dibujar_cursor_topbar_pos_cursor--;
+}
+
 //Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
 int menu_topbarmenu_pressed_bar=0;
 
@@ -251,6 +256,10 @@ void menu_topbarmenu(void)
 
     int total_menus=total_posiciones-1;
 
+    if (ultimo_menu_salido_con_flecha_izquierda) {
+        menu_topbarmenu_flecha_izquierda();
+    }
+
     do {
 
         //Esperar tecla/raton, y siempre que no se haya entrado abriendo el menu pulsando ya en barra superior
@@ -284,7 +293,7 @@ void menu_topbarmenu(void)
                 switch(tecla_leida) {
                     case 8:
                         printf("izquierda\n");
-                        if (dibujar_cursor_topbar_pos_cursor>0) dibujar_cursor_topbar_pos_cursor--;
+                        menu_topbarmenu_flecha_izquierda();
                     break;
 
                     case 9:

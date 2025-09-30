@@ -20879,6 +20879,9 @@ int menu_dibuja_menu_recorrer_menus=0;
 //cuando entramos en submenu, resetear la opcion a la primera
 int menu_dibuja_menu_recorrer_menus_entrado_submenu=0;
 
+//Para que topbar menu sepa si se ha salido con flecha izquierda
+int ultimo_menu_salido_con_flecha_izquierda=0;
+
 //Funcion de gestion de menu
 //Entrada: opcion_inicial: puntero a opcion inicial seleccionada
 //m: estructura de menu (estructura en forma de lista con punteros)
@@ -20918,6 +20921,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //menu->Audio->Waveform: ahi se quedaria salir_todos_menus=1
     //Y entonces al por ejemplo cambiar tipo onda en waveform, se cerraria todo
     salir_todos_menus=0;
+
+    ultimo_menu_salido_con_flecha_izquierda=0;
 
     //no escribir letras de atajos de teclado al entrar en un menu
     menu_writing_inverse_color.v=0;
@@ -22077,6 +22082,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     if (salir_con_flecha_izquierda) {
         //printf("Return con flecha izquierda\n");
         zxvision_helper_menu_shortcut_delete_last();
+
+        ultimo_menu_salido_con_flecha_izquierda=1;
 
         return MENU_RETORNO_ESC;
     }
@@ -26488,6 +26495,12 @@ void menu_inicio_bucle(void)
             //esto viene de la funcion zxvision_handle_mouse_events y el if (if_menu_topbarmenu_enabled_and_pressed_bar ) {
             if (menu_pressed_open_menu_while_in_menu.v && if_menu_topbarmenu_pressed_bar() ) {
                 menu_topbarmenu_pressed_bar=1;
+                reopen_menu=1;
+            }
+
+            //miramos si se ha salido pulsando tecla izquierda
+            if (ultimo_menu_salido_con_flecha_izquierda) {
+                printf("Reabrir topbar porque se ha salido de menu con flecha izquierda\n");
                 reopen_menu=1;
             }
 

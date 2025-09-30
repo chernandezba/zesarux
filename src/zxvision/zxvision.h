@@ -1186,6 +1186,8 @@ extern void menu_dibuja_submenu_cierra_todos_submenus(void);
 extern void menu_dibuja_submenu_free_all(void);
 extern void menu_tape_settings_trunc_name(char *orig,char *dest,int max);
 
+extern int ultimo_menu_salido_con_flecha_izquierda;
+
 extern int menu_confirm_yesno(char *texto_ventana);
 extern int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior);
 extern int menu_confirm_yesno_texto_additional_item(char *texto_ventana,char *texto_interior,char *(*texto_adicional)(void),void (*funcion_trigger_texto_adicional) (void),char *(*texto_adicional2)(void),void (*funcion_trigger_texto_adicional2) (void) );
