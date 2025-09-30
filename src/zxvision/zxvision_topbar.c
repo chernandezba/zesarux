@@ -400,6 +400,9 @@ void menu_topbarmenu(void)
 
             if (posicion_y==0 && pos_cursor>=0) {
 
+                //actualizar posicion de cursor global con lo calculado segun el raton
+                dibujar_cursor_topbar_pos_cursor=pos_cursor;
+
                 force_next_menu_position_x=posiciones_menus[pos_cursor];
 
                 //hemos pulsado en topbar, nos mantenemos
