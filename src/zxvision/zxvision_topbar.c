@@ -49,8 +49,8 @@ void topbar_make_switchbutton_visible(void)
 
     if (zxvision_topbar_menu_enabled.v==0) return;
 
-    debug_printf(VERBOSE_INFO,"Make topbar switch button visible");
-    printf("Make topbar switch button visible\n");
+    debug_printf(VERBOSE_INFO,"Make topbar visible");
+    printf("Make topbar visible\n");
     switchtopbar_button_visible.v=1;
 
 }
@@ -65,14 +65,17 @@ void topbar_make_switchbutton_invisible(void)
     //e interesa establecer el timer como conviene
     switchtopbar_button_visible_timer=MAX_SWITCH_TOPBAR_VISIBLE_TIMER;
 
-    debug_printf(VERBOSE_INFO,"Make topbar switch button hidden");
-    printf("Make topbar switch button hidden\n");
+    debug_printf(VERBOSE_INFO,"Make topbar hidden");
+    printf("Make topbar hidden\n");
     switchtopbar_button_visible.v=0;
 
     if (menu_abierto) return;
 
     //Para borrar el texto de topbar
     cls_menu_overlay();
+
+    zxvision_redraw_all_windows();
+    //menu_refresca_pantalla();
 
 }
 
