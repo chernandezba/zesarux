@@ -166,7 +166,7 @@ char topbar_string_linea_menus[]="Z  Smartload  Snapshot  Machine  Audio  Displa
 
 void menu_topbarmenu_write_bar(void)
 {
-    printf("Escribir topbar\n");
+    //printf("Escribir topbar\n");
 
     //Aunque topbar en principio solo va a estar con drivers completos, por si acaso solo lo cambio en esos casos
     //asi seria compatible con curses por ejemplo, dejaria la "Z" normal
