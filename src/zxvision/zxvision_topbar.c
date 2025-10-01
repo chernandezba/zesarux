@@ -91,6 +91,12 @@ int get_pos_y_mouse_topbar(void)
     return posicion_y;
 }
 
+int get_pos_x_mouse_topbar(void)
+{
+    int columna_posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
+    return columna_posicion_x;
+}
+
 //Ocultar o mostrar topbar cuando menu cerrado
 void topbar_timer_event(void)
 {
@@ -308,8 +314,12 @@ void menu_topbarmenu(void)
         estabamos_en_smartload=1;
     }
 
+    int last_pos_x_mouse_columna=-1;
+    int last_pos_y_mouse_fila=-1;
+
     do {
 
+        //Este bucle controla el movimiento del cursor sobre los menus superiores sin abrir ningún menú
         //Esperar tecla/raton, y siempre que no se haya entrado abriendo el menu pulsando ya en barra superior
         //o se haya pulsado flecha izquierda o derecha en menus abiertos
         //Moverse por los titulos superiores
@@ -327,6 +337,30 @@ void menu_topbarmenu(void)
             tecla_leida=menu_topbarmenu_get_key();
 
             printf("tecla leida: %d\n",tecla_leida);
+
+            //si se ha movido el raton por la parte superior
+            if (tecla_leida==0) {
+                if (get_pos_y_mouse_topbar()==0)  {
+                    int columna_actual=get_pos_x_mouse_topbar();
+                    if (columna_actual!=last_pos_x_mouse_columna) {
+                        printf("Raton movido de columna en topbar\n");
+
+                        //Detectar que menu esta seleccionando
+                        int i;
+                        for (i=0;i<total_posiciones;i++) {
+                            if (columna_actual<posiciones_menus[i]) break;
+                        }
+
+                        if (i<total_posiciones) {
+                            dibujar_cursor_topbar_pos_cursor=i-1;
+                        }
+
+                    }
+                }
+            }
+
+            last_pos_x_mouse_columna=get_pos_x_mouse_topbar();
+            last_pos_y_mouse_fila=get_pos_y_mouse_topbar();
 
             //si boton derecho, salir
             if (mouse_right) {
@@ -394,6 +428,7 @@ void menu_topbarmenu(void)
 
         dibujar_cursor_topbar=0;
 
+        //Aqui se gestiona la apertura de un menu
         //Si pulsado boton raton o enter en el paso anterior o se haya entrado abriendo el menu pulsando ya en barra superior
         if ( tecla_leida==13 || menu_topbarmenu_pressed_bar || ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
 
@@ -412,7 +447,7 @@ void menu_topbarmenu(void)
             //Entrado por raton
             if ((tecla_leida==13 && mouse_left) || menu_topbarmenu_pressed_bar) {
                 menu_topbarmenu_pressed_bar=0;
-                columna_posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
+                columna_posicion_x=get_pos_x_mouse_topbar();
                 posicion_y=get_pos_y_mouse_topbar();
 
                 if (posicion_y==0) {
