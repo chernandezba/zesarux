@@ -244,6 +244,7 @@ void menu_topbarmenu_preexit(void)
     dibujar_cursor_topbar=0;
     menu_en_topbar=0;
     topbar_make_switchbutton_invisible();
+    salir_todos_menus=1;
 }
 
 
@@ -382,6 +383,8 @@ void menu_topbarmenu(void)
                     case 2:
                         //ESC
                         menu_topbarmenu_preexit();
+                        //salir_todos_menus=1;
+                        printf("Salir del menu con ESC\n");
                         return;
                     break;
                 }
