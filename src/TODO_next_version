@@ -425,8 +425,6 @@ https://forums.raspberrypi.com/viewtopic.php?p=2340448#p2340448
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 
-*al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
-
 
 *uart bridge emulation: al estar desactivado no deja ir a la derecha
 
@@ -434,8 +432,10 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí
 
-
+*opcion para no mostrarlo al acercar el raton a parte alta. Pero que si aparezca al hacer click en esa parte y/o pulsando F5
 
 *topbar que funcione si no hay multitask?
+
+*agregar a changelog
 
 ----Fin top bar menu

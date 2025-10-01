@@ -45409,6 +45409,17 @@ void menu_inicio_bucle_main(void)
 		else {
 
             if (zxvision_topbar_menu_enabled.v) {
+                printf("Entramos a top bar menu desde menu_inicio_bucle_main()\n");
+
+                //Si pulsado en topbar menu
+                printf("pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
+                if (!pulsado_alguna_ventana_con_menu_cerrado) {
+                    if (if_menu_topbarmenu_pressed_bar() ) {
+                        printf("menu_inicio. pulsado top bar\n");
+                        menu_topbarmenu_pressed_bar=1;
+                    }
+                }
+
                 menu_topbarmenu();
 
                 //printf("despues topbar menu. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
