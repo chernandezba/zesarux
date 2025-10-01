@@ -39,10 +39,13 @@
 int previous_switchtopbar_timer_event_mouse_x=0;
 int previous_switchtopbar_timer_event_mouse_y=0;
 //si estaba visible o no
-z80_bit switchtopbar_button_visible={0};
+z80_bit topbar_esta_visible={0};
 
 //temporizador desde que empieza a no moverse
 int switchtopbar_button_visible_timer=0;
+
+//indica a la funcion de overlay que estamos en el topbar
+int menu_en_topbar=0;
 
 void topbar_make_switchbutton_visible(void)
 {
@@ -51,7 +54,7 @@ void topbar_make_switchbutton_visible(void)
 
     debug_printf(VERBOSE_INFO,"Make topbar visible");
     printf("Make topbar visible\n");
-    switchtopbar_button_visible.v=1;
+    topbar_esta_visible.v=1;
 
 }
 
@@ -67,9 +70,10 @@ void topbar_make_switchbutton_invisible(void)
 
     debug_printf(VERBOSE_INFO,"Make topbar hidden");
     printf("Make topbar hidden\n");
-    switchtopbar_button_visible.v=0;
+    topbar_esta_visible.v=0;
 
-    if (menu_abierto) return;
+
+    if (menu_en_topbar) return;
 
     //Para borrar el texto de topbar
     cls_menu_overlay();
@@ -98,7 +102,7 @@ void topbar_timer_event(void)
 
 
     //No estaba visible
-    if (switchtopbar_button_visible.v==0) {
+    if (topbar_esta_visible.v==0) {
         if (movido) {
             topbar_make_switchbutton_visible();
         }
@@ -162,6 +166,7 @@ char topbar_string_linea_menus[]="Z  Smartload  Snapshot  Machine  Audio  Displa
 
 void menu_topbarmenu_write_bar(void)
 {
+    printf("Escribir topbar\n");
 
     //Aunque topbar en principio solo va a estar con drivers completos, por si acaso solo lo cambio en esos casos
     //asi seria compatible con curses por ejemplo, dejaria la "Z" normal
@@ -234,12 +239,17 @@ int menu_topbarmenu_pressed_bar=0;
 void menu_topbarmenu_preexit(void)
 {
     dibujar_cursor_topbar=0;
+    menu_en_topbar=0;
     topbar_make_switchbutton_invisible();
 }
+
+
 
 void menu_topbarmenu(void)
 {
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
+
+    menu_en_topbar=1;
 
     zxvision_redraw_all_windows();
 
@@ -524,11 +534,13 @@ void topbar_text_overlay(void)
     //Dibujar topbar
     if (zxvision_topbar_menu_enabled.v) {
         int mostrar_topbar=0;
-        if (menu_abierto) mostrar_topbar=1;
+
+
+        if (menu_en_topbar) mostrar_topbar=1;
 
         if (overlay_visible_when_menu_closed) {
             //si menu cerrado pero se ha movido raton
-            if (switchtopbar_button_visible.v) mostrar_topbar=1;
+            if (topbar_esta_visible.v) mostrar_topbar=1;
         }
 
         if (mostrar_topbar) {
