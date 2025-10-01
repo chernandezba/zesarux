@@ -336,6 +336,11 @@ void menu_topbarmenu(void)
                         printf("derecha\n");
                         menu_topbarmenu_flecha_derecha(total_menus);
                     break;
+
+                    case 2:
+                        //ESC
+                        return;
+                    break;
                 }
             }
 
