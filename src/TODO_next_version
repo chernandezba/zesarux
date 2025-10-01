@@ -421,17 +421,11 @@ https://forums.raspberrypi.com/viewtopic.php?p=2340448#p2340448
 
 ----top bar menu
 
-*si menu que se abre tiene seleccionado un item de submenu, al pulsar boton izquierdo en otro sitio provoca que esa ventana
-la deja en lista de submenu
 
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 
 *al estar en un menu y pulsar en otro de topbar, que se reabra, el truco creo que esta en activar menu_pressed_open_menu_while_in_menu.v
-*con top bar no van pulsaciones botones inferiores. tampoco van botones superiores (aunque superiores se deberian ocultar
-si esta top bar menu)
-
-*con topbar, no van pulsaciones de raton sobre zx desktop (ni iconos, ni fondo, ni iconos de dispositivos)
 
 
 *uart bridge emulation: al estar desactivado no deja ir a la derecha
@@ -440,10 +434,8 @@ si esta top bar menu)
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí
 
-*Quizá al pasar por smartloqd se sube al menú superior pero al ir izquierda o derecha tendría que desplegar si antes estaba desplegado
+
 
 *topbar que funcione si no hay multitask?
-
-
 
 ----Fin top bar menu
