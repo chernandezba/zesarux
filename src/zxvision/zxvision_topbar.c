@@ -83,6 +83,14 @@ void topbar_make_switchbutton_invisible(void)
 
 }
 
+//Retorna la fila donde está el ratón
+int get_pos_y_mouse_topbar(void)
+{
+    int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
+
+    return posicion_y;
+}
+
 //Ocultar o mostrar topbar cuando menu cerrado
 void topbar_timer_event(void)
 {
@@ -103,14 +111,14 @@ void topbar_timer_event(void)
 
     //No estaba visible
     if (topbar_esta_visible_por_timer.v==0) {
-        if (movido) {
+        if (movido && get_pos_y_mouse_topbar()==0) {
             topbar_make_switchbutton_visible();
         }
     }
 
     //Estaba visible
     else {
-        if (movido) {
+        if (movido && get_pos_y_mouse_topbar()==0) {
             switchtopbar_button_visible_timer=0;
         }
 
@@ -199,12 +207,7 @@ void menu_topbarmenu_write_bar(void)
     }
 }
 
-int get_pos_y_mouse_topbar(void)
-{
-    int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
-    return posicion_y;
-}
 
 int if_menu_topbarmenu_pressed_bar(void)
 {
