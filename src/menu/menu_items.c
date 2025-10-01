@@ -44,6 +44,7 @@
 
 
 #include "zxvision.h"
+#include "zxvision_topbar.h"
 #include "menu_items.h"
 #include "menu_items_storage.h"
 #include "menu_items_settings.h"
@@ -45107,6 +45108,9 @@ void menu_switch_simple_menus(MENU_ITEM_PARAMETERS)
     menu_show_simple_items.v ^=1;
 }
 
+
+
+//TODO: Esta variable de entrada salir_menu para que se usa en entrada???
 int menu_inicio_mostrar_main_menu(int salir_menu)
 {
 

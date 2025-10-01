@@ -439,7 +439,8 @@ void menu_topbarmenu(void)
 
                 switch(pos_cursor) {
                     case 0:
-                        menu_inicio_bucle_main();
+                        //menu_inicio_bucle_main();
+                        menu_inicio_mostrar_main_menu(0);
                     break;
 
                     case 1:
@@ -486,6 +487,7 @@ void menu_topbarmenu(void)
                         menu_help(0);
                     break;
                 }
+
 
                 printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",
                     if_menu_topbarmenu_pressed_bar(),mouse_left);

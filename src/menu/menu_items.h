@@ -262,6 +262,7 @@ extern void menu_view_basic_listing(MENU_ITEM_PARAMETERS);
 extern void menu_view_gosub_stack(MENU_ITEM_PARAMETERS);
 extern void menu_view_basic_variables(MENU_ITEM_PARAMETERS);
 
+extern int menu_inicio_mostrar_main_menu(int salir_menu);
 
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];
