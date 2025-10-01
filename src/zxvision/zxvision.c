@@ -26528,6 +26528,7 @@ void menu_inicio_bucle(void)
         }
 
         //menu en barra arriba del todo
+        /*
         if (zxvision_topbar_menu_enabled.v) {
             menu_topbarmenu();
 
@@ -26548,6 +26549,10 @@ void menu_inicio_bucle(void)
                 reopen_menu=1;
             }
 
+        }
+        */
+
+        if (0) {
         }
 
         else {

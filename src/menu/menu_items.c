@@ -45403,20 +45403,55 @@ void menu_inicio_bucle_main(void)
 		}
 
 		else {
-            //printf("else if\n");
-            zxvision_helper_menu_shortcut_init();
-            //zxvision_index_search_init_menu_path();
 
-            //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
-            //gamelife_fire_next_event();
+            if (zxvision_topbar_menu_enabled.v) {
+                menu_topbarmenu();
 
-            if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
-            else f_functions=0;
+                //printf("despues topbar menu. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
-            //Mostrar menu principal
-            //printf("Antes menu_inicio_mostrar_main_menu\n");
-            salir_menu=menu_inicio_mostrar_main_menu(salir_menu);
-            //printf("Despues menu_inicio_mostrar_main_menu\n");
+                //Revisar esto
+                /*
+
+                //Aqui miramos si hay un evento de reapertura de menu, este evento menu_pressed_open_menu_while_in_menu.v
+                //se definio para el menu "clasico" y no el topbar, aunque nos sirve igual
+                //Se podria haber usado otro evento diferente? quiza si
+                //esto viene de la funcion zxvision_handle_mouse_events y el if (if_menu_topbarmenu_enabled_and_pressed_bar ) {
+
+
+
+                if (menu_pressed_open_menu_while_in_menu.v && if_menu_topbarmenu_pressed_bar() ) {
+                    menu_topbarmenu_pressed_bar=1;
+                    reopen_menu=1;
+                }
+                */
+
+                //miramos si se ha salido pulsando tecla izquierda o derecha
+                if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
+                    printf("Reabrir topbar porque se ha salido de menu con flecha izquierda o derecha\n");
+                    //reopen_menu=1;
+                    salir_todos_menus=0;
+                }
+
+
+            }
+
+            else {
+
+                //printf("else if\n");
+                zxvision_helper_menu_shortcut_init();
+                //zxvision_index_search_init_menu_path();
+
+                //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
+                //gamelife_fire_next_event();
+
+                if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
+                else f_functions=0;
+
+                //Mostrar menu principal
+                //printf("Antes menu_inicio_mostrar_main_menu\n");
+                salir_menu=menu_inicio_mostrar_main_menu(salir_menu);
+                //printf("Despues menu_inicio_mostrar_main_menu\n");
+            }
 
 		}
     //printf("while en menu_inicio_bucle_main\n");
