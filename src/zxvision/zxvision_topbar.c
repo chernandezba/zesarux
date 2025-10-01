@@ -231,6 +231,11 @@ void menu_topbarmenu_flecha_derecha(int total_menus)
 //Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
 int menu_topbarmenu_pressed_bar=0;
 
+void menu_topbarmenu_preexit(void)
+{
+    topbar_make_switchbutton_invisible();
+}
+
 void menu_topbarmenu(void)
 {
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
@@ -339,6 +344,7 @@ void menu_topbarmenu(void)
 
                     case 2:
                         //ESC
+                        menu_topbarmenu_preexit();
                         return;
                     break;
                 }
@@ -503,6 +509,8 @@ void menu_topbarmenu(void)
     menu_espera_no_tecla_con_repeticion();
 
     printf("salir menu_topbarmenu\n");
+
+    menu_topbarmenu_preexit();
 }
 
 
