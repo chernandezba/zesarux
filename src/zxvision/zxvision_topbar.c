@@ -39,7 +39,7 @@
 int previous_switchtopbar_timer_event_mouse_x=0;
 int previous_switchtopbar_timer_event_mouse_y=0;
 //si estaba visible o no
-z80_bit topbar_esta_visible={0};
+z80_bit topbar_esta_visible_por_timer={0};
 
 //temporizador desde que empieza a no moverse
 int switchtopbar_button_visible_timer=0;
@@ -54,7 +54,7 @@ void topbar_make_switchbutton_visible(void)
 
     debug_printf(VERBOSE_INFO,"Make topbar visible");
     printf("Make topbar visible\n");
-    topbar_esta_visible.v=1;
+    topbar_esta_visible_por_timer.v=1;
 
 }
 
@@ -70,7 +70,7 @@ void topbar_make_switchbutton_invisible(void)
 
     debug_printf(VERBOSE_INFO,"Make topbar hidden");
     printf("Make topbar hidden\n");
-    topbar_esta_visible.v=0;
+    topbar_esta_visible_por_timer.v=0;
 
 
     if (menu_en_topbar) return;
@@ -102,7 +102,7 @@ void topbar_timer_event(void)
 
 
     //No estaba visible
-    if (topbar_esta_visible.v==0) {
+    if (topbar_esta_visible_por_timer.v==0) {
         if (movido) {
             topbar_make_switchbutton_visible();
         }
@@ -541,11 +541,11 @@ void topbar_text_overlay(void)
         /*
         if (overlay_visible_when_menu_closed) {
             //si menu cerrado pero se ha movido raton
-            if (topbar_esta_visible.v) mostrar_topbar=1;
+            if (topbar_esta_visible_por_timer.v) mostrar_topbar=1;
         }
         */
 
-        if (topbar_esta_visible.v) mostrar_topbar=1;
+        if (topbar_esta_visible_por_timer.v) mostrar_topbar=1;
 
         if (mostrar_topbar) {
             menu_topbarmenu_write_bar();
