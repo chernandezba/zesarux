@@ -425,10 +425,14 @@ https://forums.raspberrypi.com/viewtopic.php?p=2340448#p2340448
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 
+*haciendo un full scan search index con topbar habilitado, no acaba nunca, llega al menu de mas abajo y vuelve arriba
 
 *uart bridge emulation: al estar desactivado no deja ir a la derecha
 
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto
+
+*si se pulsa raton en el fondo por ejemplo, se visualiza topbar, esto es correcto. Aunque el foco de teclado está
+en la maquina emulada
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí
 
