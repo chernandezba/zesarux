@@ -297,11 +297,14 @@ void menu_topbarmenu(void)
         menu_topbarmenu_flecha_derecha(total_menus);
     }
 
-    //Si hemos salido de menus con flecha izquierda o derecha, desplegar el siguiente menu , pero,
+    int estabamos_en_smartload=0;
+
+    //Si hemos salido de menus con flecha izquierda o derecha, desplegar el siguiente menu, pero,
     //si el siguiente es smartload, se desplega una ventana y dejamos de navegar
     //por tanto en ese caso, si es smartload, no desplegaremos menu sino cursor arriba
-    if (dibujar_cursor_topbar_pos_cursor==1) {
+    if ((ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) && dibujar_cursor_topbar_pos_cursor==1) {
         ultimo_menu_salido_con_flecha_izquierda=ultimo_menu_salido_con_flecha_derecha=0;
+        estabamos_en_smartload=1;
     }
 
     do {
@@ -359,11 +362,21 @@ void menu_topbarmenu(void)
                     case 8:
                         printf("izquierda\n");
                         menu_topbarmenu_flecha_izquierda();
+                        if (estabamos_en_smartload) {
+                            printf("Estabamos en smartload. Desplegar menu\n");
+                            salir_linea_superior=1;
+                            tecla_leida=13;
+                        }
                     break;
 
                     case 9:
                         printf("derecha\n");
                         menu_topbarmenu_flecha_derecha(total_menus);
+                        if (estabamos_en_smartload) {
+                            printf("Estabamos en smartload. Desplegar menu\n");
+                            salir_linea_superior=1;
+                            tecla_leida=13;
+                        }
                     break;
 
                     case 2:
