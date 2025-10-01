@@ -233,12 +233,15 @@ int menu_topbarmenu_pressed_bar=0;
 
 void menu_topbarmenu_preexit(void)
 {
+    dibujar_cursor_topbar=0;
     topbar_make_switchbutton_invisible();
 }
 
 void menu_topbarmenu(void)
 {
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
+
+    zxvision_redraw_all_windows();
 
     //tecla Z para primer menu ZEsarUX
     //tecla S para Smartload
@@ -300,7 +303,9 @@ void menu_topbarmenu(void)
 
             printf("cursor_pos %d total_menus %d\n",dibujar_cursor_topbar_pos_cursor,total_menus);
 
-            menu_refresca_pantalla();
+            //menu_refresca_pantalla();
+            //scr_refresca_pantalla();
+            //zxvision_redraw_all_windows();
 
             tecla_leida=menu_topbarmenu_get_key();
 
