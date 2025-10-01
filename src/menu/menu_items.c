@@ -45423,9 +45423,14 @@ void menu_inicio_bucle_main(void)
 
 
                 if (menu_pressed_open_menu_while_in_menu.v && if_menu_topbarmenu_pressed_bar() ) {
+                    //TODO: realmente no tenemos la certeza que se haya pulsado con el raton tal cual,
+                    //puede haberse pulsado el raton o puede haberse pulsado F5
+                    //Por tanto si pulsamos F5 y el raton esta en la topbar, la accion
+                    //sera como si el raton hubiese pulsado en donde esta indicando, desplegandose el menu a donde indica
                     menu_topbarmenu_pressed_bar=1;
                     printf("Reabrir menu por haber pulsado en topbar\n");
                     //reopen_menu=1;
+                    menu_pressed_open_menu_while_in_menu.v=0;
                     salir_todos_menus=0;
                 }
 
