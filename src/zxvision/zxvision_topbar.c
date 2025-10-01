@@ -321,6 +321,12 @@ void menu_topbarmenu(void)
 
             printf("tecla leida: %d\n",tecla_leida);
 
+            //si boton derecho, salir
+            if (mouse_right) {
+                menu_topbarmenu_preexit();
+                return;
+            }
+
             if (mouse_left) {
                 tecla_leida=13;
             }

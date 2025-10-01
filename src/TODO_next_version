@@ -438,9 +438,7 @@ si esta top bar menu)
 
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto
 
-ok *con menu cerrado, si pulso en icono del desktop, se abre el menu, en vez de atender pulsaciones de zx desktop
-
-ok *NO se abre menu Z del toolbar
+*en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí
 
 *topbar que funcione si no hay multitask?
 
