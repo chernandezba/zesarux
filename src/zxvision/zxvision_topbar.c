@@ -538,10 +538,14 @@ void topbar_text_overlay(void)
 
         if (menu_en_topbar) mostrar_topbar=1;
 
+        /*
         if (overlay_visible_when_menu_closed) {
             //si menu cerrado pero se ha movido raton
             if (topbar_esta_visible.v) mostrar_topbar=1;
         }
+        */
+
+        if (topbar_esta_visible.v) mostrar_topbar=1;
 
         if (mostrar_topbar) {
             menu_topbarmenu_write_bar();
