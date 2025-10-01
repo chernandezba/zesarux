@@ -258,6 +258,7 @@ void menu_topbarmenu_preexit(void)
 void menu_topbarmenu(void)
 {
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
+    printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",menu_abierto,zxvision_keys_event_not_send_to_machine);
 
     menu_en_topbar=1;
 
