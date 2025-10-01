@@ -563,6 +563,8 @@ void menu_topbarmenu(void)
                 }
 
 
+                //TODO: Creo que aqui no se llega porque al salir de los menus se espera a liberar teclas y raton
+                //y por tanto mouse_left no estará pulsado
                 if (if_menu_topbarmenu_pressed_bar() && mouse_left)  {
                     //continuamos aqui y sin tener que esperar tecla
                     printf("Reentraremos en menu\n");

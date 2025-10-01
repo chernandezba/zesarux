@@ -27126,7 +27126,9 @@ void menu_inicio(void)
 
         //Si pulsado en topbar menu
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
-            if (if_menu_topbarmenu_pressed_bar() ) menu_topbarmenu_pressed_bar=1;
+            if (if_menu_topbarmenu_pressed_bar() ) {
+                menu_topbarmenu_pressed_bar=1;
+            }
         }
 
         //printf("menu_inicio: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",

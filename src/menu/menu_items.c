@@ -45413,8 +45413,7 @@ void menu_inicio_bucle_main(void)
 
                 //printf("despues topbar menu. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
-                //Revisar esto
-                /*
+
 
                 //Aqui miramos si hay un evento de reapertura de menu, este evento menu_pressed_open_menu_while_in_menu.v
                 //se definio para el menu "clasico" y no el topbar, aunque nos sirve igual
@@ -45425,9 +45424,11 @@ void menu_inicio_bucle_main(void)
 
                 if (menu_pressed_open_menu_while_in_menu.v && if_menu_topbarmenu_pressed_bar() ) {
                     menu_topbarmenu_pressed_bar=1;
-                    reopen_menu=1;
+                    printf("Reabrir menu por haber pulsado en topbar\n");
+                    //reopen_menu=1;
+                    salir_todos_menus=0;
                 }
-                */
+
 
                 //miramos si se ha salido pulsando tecla izquierda o derecha
                 if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
