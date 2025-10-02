@@ -436,8 +436,6 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto:
 si se distingue porque hay un menu con texto inverso
 
-ok *con menu cerrado. Se pulsa raton boton izquierdo en el fondo por ejemplo, se visualiza topbar, esto es correcto. Aunque el foco de teclado está
-en la maquina emulada
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí
 
@@ -449,7 +447,6 @@ en la maquina emulada
 
 *agregar a changelog
 
-*settings-hardware-real joystick-joystick to events-flecha derecha y cerra menu, y no deberia
 
 *menus que no son menus (dialogos) creados desde menu_dibuja_menu_dialogo, como joystick to keys, con topbar activo
 deberian salir centrados en el zx desktop , y no salen centrados
