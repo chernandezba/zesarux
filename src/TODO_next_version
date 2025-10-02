@@ -451,6 +451,9 @@ en la maquina emulada
 
 *settings-hardware-real joystick-joystick to events-flecha derecha y cerra menu, y no deberia
 
+*menus que no son menus (dialogos) creados desde menu_dibuja_menu_dialogo, como joystick to keys, con topbar activo
+deberian salir centrados en el zx desktop , y no salen centrados
+
 *revisar shortcuts helper con topbar, no va bien. tampoco van bien sin topbar e interactuando con botones zona superior
 
 ----Fin top bar menu

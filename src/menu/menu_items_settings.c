@@ -10239,7 +10239,7 @@ void menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
 	menu_espera_no_tecla();
 
     if (realjoystick_events_array[valor_opcion].asignado.v) {
-        int opcion=menu_simple_two_choices("Event is assigned","Do you want to","Edit event","Unassign event");
+        int opcion=menu_simple_two_choices("Event is assigned","What do you want?","Edit event","Unassign event");
         switch(opcion) {
             case 1:
                 //Editar. Salimos del switch
@@ -10419,7 +10419,9 @@ void menu_hardware_realjoystick_keys_button_by_button(int indice,z80_byte caract
 
     if (tecla==2) {
         //Desasignar si se sale con ESC
-        realjoystick_keys_array[indice].asignado.v=0;
+        //realjoystick_keys_array[indice].asignado.v=0;
+
+        //No hacer nada si se sale con ESC
     }
 
     else {
@@ -10447,6 +10449,27 @@ void menu_hardware_realjoystick_keys_button_by_button(int indice,z80_byte caract
 void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
 {
 
+    if (realjoystick_keys_array[valor_opcion].asignado.v) {
+        int opcion=menu_simple_two_choices("Key is assigned","What do you want?","Edit key","Unassign key");
+        switch(opcion) {
+            case 1:
+                //Editar. Salimos del switch
+            break;
+
+            case 2:
+                //Desasignar
+                realjoystick_keys_array[valor_opcion].asignado.v=0;
+                return;
+            break;
+
+            default:
+                //Salir con eSC
+                return;
+            break;
+        }
+    }
+
+
     //printf("valor opcion: %d\n",valor_opcion);
 
 	//int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2)
@@ -10467,7 +10490,9 @@ void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
 
     if (caracter==0) {
 		//desasignamos
-		realjoystick_keys_array[valor_opcion].asignado.v=0;
+		//realjoystick_keys_array[valor_opcion].asignado.v=0;
+
+        //no hacemos nada
 		return;
 	}
 
