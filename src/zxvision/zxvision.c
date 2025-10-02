@@ -21551,6 +21551,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
             //F1 (ayuda) o h en drivers que no soportan F
             else if ((puerto_especial2 & 1)==0 || (tecla_leida=='h' && f_functions==0) ) {
+                printf("mostrar ayuda puerto_especial2 &1 %d tecla_leida %d f_functions %d\n",puerto_especial2 &1,tecla_leida,f_functions );
                                 //F1
                 char *texto_ayuda;
                 texto_ayuda=menu_retorna_item(m,(*opcion_inicial))->texto_ayuda;
@@ -21680,7 +21681,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 if (m->es_menu_tabulado==0) {
                     //y si no tiene submenu, salir cuando se tiene topbar habilitado
                     //y siendo el primer submenu
-                    if (zxvision_topbar_menu_enabled.v) {
+                    if (zxvision_topbar_menu_enabled.v && m->no_es_realmente_un_menu==0) {
 
                         if (menu_old_behaviour_close_menus.v) {
                             salir_con_flecha_derecha=1;

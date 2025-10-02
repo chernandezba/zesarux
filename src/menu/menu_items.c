@@ -45325,6 +45325,15 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
 
 }
 
+void set_f_functions_depending_on_driver(void)
+{
+    if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
+    else {
+        //printf("poner f_functions a 0\n");
+        f_functions=0;
+    }
+}
+
 void menu_inicio_bucle_main(void)
 {
     //printf("menu_inicio_bucle_main: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
@@ -45408,6 +45417,11 @@ void menu_inicio_bucle_main(void)
 
 		else {
 
+            //printf("scr_new_driver_name [%s]\n",scr_new_driver_name);
+
+            zxvision_helper_menu_shortcut_init();
+            set_f_functions_depending_on_driver();
+
             if (zxvision_topbar_menu_enabled.v) {
                 printf("Entramos a top bar menu desde menu_inicio_bucle_main()\n");
 
@@ -45465,14 +45479,11 @@ void menu_inicio_bucle_main(void)
             else {
 
                 //printf("else if\n");
-                zxvision_helper_menu_shortcut_init();
+
                 //zxvision_index_search_init_menu_path();
 
                 //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
                 //gamelife_fire_next_event();
-
-                if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
-                else f_functions=0;
 
                 //Mostrar menu principal
                 //printf("Antes menu_inicio_mostrar_main_menu\n");
