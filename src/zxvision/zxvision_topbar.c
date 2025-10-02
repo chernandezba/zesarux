@@ -177,7 +177,7 @@ int posiciones_menus[20];
                                                   //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
                                                   //0         1         2         3         4         5         6         7         8         9         10
 char topbar_string_linea_menus_with_zxdesktop[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
-char topbar_string_linea_menus_without_zxdesktop[]="Z SL Snp Mch Aud Dsp Sto Deb Net Win Set Hlp";
+char topbar_string_linea_menus_without_zxdesktop[]="Z SL Sna Mch Aud Dsp Sto Dbg Net Win Set Hlp";
 
 char *menu_topbar_get_text_topbar(void)
 {
@@ -462,6 +462,8 @@ void menu_topbarmenu(void)
 
             int posicion_y=0;
 
+            printf("--Antes menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
+
             //Entrado por raton
             if ((tecla_leida==13 && mouse_left) || menu_topbarmenu_pressed_bar) {
                 menu_topbarmenu_pressed_bar=0;
@@ -486,6 +488,8 @@ void menu_topbarmenu(void)
             else {
                 pos_cursor=dibujar_cursor_topbar_pos_cursor;
             }
+
+            printf("--Despues menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
 
             if (posicion_y==0) {
                 menu_espera_no_tecla_con_repeticion();
