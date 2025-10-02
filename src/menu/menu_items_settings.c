@@ -10235,7 +10235,29 @@ int menu_common_wait_realjoystick_press(zxvision_window *ventana)
 void menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
 {
 
+
 	menu_espera_no_tecla();
+
+    if (realjoystick_events_array[valor_opcion].asignado.v) {
+        int opcion=menu_simple_two_choices("Event is assigned","Do you want to","Edit event","Unassign event");
+        switch(opcion) {
+            case 1:
+                //Editar. Salimos del switch
+            break;
+
+            case 2:
+                //Desasignar
+                realjoystick_events_array[valor_opcion].asignado.v=0;
+                return;
+            break;
+
+            default:
+                //Salir con eSC
+                return;
+            break;
+        }
+    }
+
 
 
 	zxvision_window ventana;
@@ -10264,7 +10286,10 @@ void menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
 
     if (tecla==2) {
         //Desasignar si se sale con ESC
-        realjoystick_events_array[valor_opcion].asignado.v=0;
+        //realjoystick_events_array[valor_opcion].asignado.v=0;
+
+        //No hacer nada si se sale con ESC
+
     }
 
     else {
