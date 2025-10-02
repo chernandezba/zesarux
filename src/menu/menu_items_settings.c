@@ -10121,7 +10121,7 @@ int menu_common_wait_realjoystick_press(zxvision_window *ventana)
 	do {
 
 		menu_cpu_core_loop();
-                acumulado=menu_da_todas_teclas();
+        acumulado=menu_da_todas_teclas();
 
 		//si no hay multitarea, pausar
 		if (menu_multitarea==0) {
@@ -10327,39 +10327,39 @@ int menu_joystick_event_list(void)
         int joystick_event_list_opcion_seleccionada=0;
 
 
-                char buffer_texto[40];
+        char buffer_texto[40];
 
-                int i;
-                for (i=0;i<MAX_EVENTS_JOYSTICK;i++) {
+        int i;
+        for (i=0;i<MAX_EVENTS_JOYSTICK;i++) {
 
-                  //enum defined_f_function_ids accion=defined_f_functions_keys_array[i];
+            //enum defined_f_function_ids accion=defined_f_functions_keys_array[i];
 
-                  sprintf (buffer_texto,"%s",realjoystick_event_names[i]);
-
-
-                    if (i==0) menu_add_item_menu_inicial_format(&array_menu_joystick_event_list,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-                     else menu_add_item_menu_format(array_menu_joystick_event_list,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-
-				}
+            sprintf (buffer_texto,"%s",realjoystick_event_names[i]);
 
 
+            if (i==0) menu_add_item_menu_inicial_format(&array_menu_joystick_event_list,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+            else menu_add_item_menu_format(array_menu_joystick_event_list,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 
-                menu_add_item_menu(array_menu_joystick_event_list,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                menu_add_ESC_item(array_menu_joystick_event_list);
-
-                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&joystick_event_list_opcion_seleccionada,&item_seleccionado,array_menu_joystick_event_list,"Select event" );
+        }
 
 
 
+        menu_add_item_menu(array_menu_joystick_event_list,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_ESC_item(array_menu_joystick_event_list);
 
-								if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&joystick_event_list_opcion_seleccionada,&item_seleccionado,array_menu_joystick_event_list,"Select event" );
 
-												//Si se pulsa Enter
-												return joystick_event_list_opcion_seleccionada;
 
-                                }
 
-                                else return -1;
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+
+            //Si se pulsa Enter
+            return joystick_event_list_opcion_seleccionada;
+
+        }
+
+        else return -1;
 
 }
 
@@ -10502,16 +10502,15 @@ void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
 
 	if (tipo==1) { //Definir por boton
 
-            menu_hardware_realjoystick_keys_button_by_button(valor_opcion,caracter);
+        menu_hardware_realjoystick_keys_button_by_button(valor_opcion,caracter);
 
+    }
 
-        }
-
-        if (tipo==2) { //Definir por evento
-        	int evento=menu_joystick_event_list();
-        	 realjoystick_copy_event_button_key(evento,valor_opcion,caracter);
-        	//printf ("evento: %d\n",evento);
-        }
+    if (tipo==2) { //Definir por evento
+        int evento=menu_joystick_event_list();
+        realjoystick_copy_event_button_key(evento,valor_opcion,caracter);
+        //printf ("evento: %d\n",evento);
+    }
 
 
 
@@ -10522,71 +10521,71 @@ void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_realjoystick_clear_keys(MENU_ITEM_PARAMETERS)
 {
-        if (menu_confirm_yesno_texto("Clear list","Sure?")==1) {
-                realjoystick_clear_keys_array();
-        }
+    if (menu_confirm_yesno_texto("Clear list","Sure?")==1) {
+            realjoystick_clear_keys_array();
+    }
 }
 
 
 void menu_hardware_realjoystick_keys(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_hardware_realjoystick_keys;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_hardware_realjoystick_keys;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
-                char buffer_texto[40];
-                char buffer_texto_boton[10];
+        char buffer_texto[40];
+        char buffer_texto_boton[10];
 
-                int i;
-                for (i=0;i<MAX_KEYS_JOYSTICK;i++) {
-                        if (realjoystick_keys_array[i].asignado.v) {
-				menu_print_text_axis(buffer_texto_boton,realjoystick_keys_array[i].button_type,realjoystick_keys_array[i].button);
+        int i;
+        for (i=0;i<MAX_KEYS_JOYSTICK;i++) {
+            if (realjoystick_keys_array[i].asignado.v) {
+                menu_print_text_axis(buffer_texto_boton,realjoystick_keys_array[i].button_type,realjoystick_keys_array[i].button);
 
-				z80_byte c=realjoystick_keys_array[i].caracter;
-				if (c>=32 && c<=126) sprintf (buffer_texto,"Button %s sends [%c]",buffer_texto_boton,c);
-				else sprintf (buffer_texto,"Button %s sends [(%d)]",buffer_texto_boton,c);
-                        }
+                z80_byte c=realjoystick_keys_array[i].caracter;
+                if (c>=32 && c<=126) sprintf (buffer_texto,"Button %s sends [%c]",buffer_texto_boton,c);
+                else sprintf (buffer_texto,"Button %s sends [(%d)]",buffer_texto_boton,c);
+            }
 
-                        else {
-                                sprintf(buffer_texto,"Unused entry");
-			}
-
-
-
-                        if (i==0) menu_add_item_menu_inicial_format(&array_menu_hardware_realjoystick_keys,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_button,NULL,buffer_texto);
-                        else menu_add_item_menu_format(array_menu_hardware_realjoystick_keys,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_button,NULL,buffer_texto);
-
-                        menu_add_item_menu_valor_opcion(array_menu_hardware_realjoystick_keys,i);
+            else {
+                sprintf(buffer_texto,"Unused entry");
+            }
 
 
-                        menu_add_item_menu_tooltip(array_menu_hardware_realjoystick_keys,"Redefine the button");
-                        menu_add_item_menu_ayuda(array_menu_hardware_realjoystick_keys,"Indicates which key on the Spectrum keyboard is sent when "
-						"pressed the button/axis on the real joystick");
+
+            if (i==0) menu_add_item_menu_inicial_format(&array_menu_hardware_realjoystick_keys,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_button,NULL,buffer_texto);
+            else menu_add_item_menu_format(array_menu_hardware_realjoystick_keys,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_button,NULL,buffer_texto);
+
+            menu_add_item_menu_valor_opcion(array_menu_hardware_realjoystick_keys,i);
+
+
+            menu_add_item_menu_tooltip(array_menu_hardware_realjoystick_keys,"Redefine the button");
+            menu_add_item_menu_ayuda(array_menu_hardware_realjoystick_keys,"Indicates which key on the Spectrum keyboard is sent when "
+            "pressed the button/axis on the real joystick");
+        }
+
+        menu_add_item_menu(array_menu_hardware_realjoystick_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_format(array_menu_hardware_realjoystick_keys,MENU_OPCION_NORMAL,menu_hardware_realjoystick_clear_keys,NULL,"Clear list");
+
+
+        menu_add_item_menu(array_menu_hardware_realjoystick_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_hardware_realjoystick_keys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_hardware_realjoystick_keys);
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&hardware_realjoystick_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick_keys,"Joystick to keys" );
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
                 }
+        }
 
-                menu_add_item_menu(array_menu_hardware_realjoystick_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-		menu_add_item_menu_format(array_menu_hardware_realjoystick_keys,MENU_OPCION_NORMAL,menu_hardware_realjoystick_clear_keys,NULL,"Clear list");
-
-
-                menu_add_item_menu(array_menu_hardware_realjoystick_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_hardware_realjoystick_keys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_hardware_realjoystick_keys);
-
-                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&hardware_realjoystick_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick_keys,"Joystick to keys" );
-
-
-
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                        }
-                }
-
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
 
