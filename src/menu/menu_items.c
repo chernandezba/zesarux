@@ -45417,6 +45417,8 @@ void menu_inicio_bucle_main(void)
                     printf("mouse_left: %d\n",mouse_left);
                     if (if_menu_topbarmenu_pressed_bar() ) {
                         printf("menu_inicio. pulsado top bar\n");
+                        //Si activase esto, provocaria que cuando se mueve el cursor del topbar con teclado,
+                        //si está el raton arriba en el topbar, no se moveria el cursor
                         //menu_topbarmenu_pressed_bar=1;
                     }
                 }
