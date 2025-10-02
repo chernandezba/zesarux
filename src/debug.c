@@ -1494,7 +1494,7 @@ void do_breakpoint_exception(char *message)
 //Mostrar mensaje que ha hecho saltar el breakpoint y ejecutar accion (por defecto abrir menu)
 void cpu_core_loop_debug_breakpoint(char *message)
 {
-	//menu_abierto=1;
+	//menu_set_menu_abierto(1);
 	do_breakpoint_exception(message);
 
     if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
@@ -7927,7 +7927,7 @@ void debug_cpu_step_over(void)
 
   //Parar hasta volver de la instruccion actual o cuando se produzca algun evento de apertura de menu, como un breakpoint
   int antes_menu_abierto=menu_abierto;
-  menu_abierto=0;
+  menu_set_menu_abierto(0);
   int salir=0;
   while (get_pc_register()!=direccion_final && !salir) {
     //printf("Running until step over ends. Addr=%04XH final=%04XH\n",get_pc_register(),direccion_final);

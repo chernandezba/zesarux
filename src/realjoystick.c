@@ -559,7 +559,7 @@ void realjoystick_send_f_function(int accion)
 
       menu_button_f_function.v=1;
       menu_button_f_function_action=accion;
-      menu_abierto=1;
+      menu_set_menu_abierto(1);
 
 }
 
@@ -693,7 +693,7 @@ void realjoystick_set_reset_action(int index,int value)
 
 		case REALJOYSTICK_EVENT_QUICKLOAD:
 			if (value) {
-				menu_abierto=1;
+				menu_set_menu_abierto(1);
 				menu_button_smartload.v=1;
 			}
 		break;
@@ -721,14 +721,14 @@ void realjoystick_set_reset_action(int index,int value)
 
 		case REALJOYSTICK_EVENT_OSDKEYBOARD:
             if (value) {
-                menu_abierto=1;
+                menu_set_menu_abierto(1);
                 menu_button_osdkeyboard.v=1;
             }
         break;
 
 		case REALJOYSTICK_EVENT_OSD_TEXT_KEYBOARD:
             if (value) {
-                menu_abierto=1;
+                menu_set_menu_abierto(1);
                 menu_button_osd_adv_keyboard_openmenu.v=1;
             }
         break;

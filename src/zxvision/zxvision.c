@@ -2598,8 +2598,8 @@ void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida
 //Interrumpe el core y le dice que hay que abrir el menu
 void menu_fire_event_open_menu(void)
 {
-    //printf ("Ejecutar menu_fire_event_open_menu\n");
-    menu_abierto=1;
+    printf ("Ejecutar menu_fire_event_open_menu\n");
+    menu_set_menu_abierto(1);
     menu_event_open_menu.v=1;
 }
 
@@ -4693,8 +4693,9 @@ void redraw_footer(void)
 //Actualmente solo cambia el valor de menu_abierto
 void menu_set_menu_abierto(int valor)
 {
+    printf("menu_set_menu_abierto: %d\n",valor);
 
-        menu_abierto=valor;
+    menu_abierto=valor;
 }
 
 //Para meter el logo u otros botones en zona de extended desktop
@@ -9890,7 +9891,7 @@ void zxvision_open_menu_with_window(char *geometry_name)
     zxvision_switch_to_window_on_open_menu=1;
     strcpy(zxvision_switch_to_window_on_open_menu_name,geometry_name);
     menu_event_open_menu.v=1;
-    menu_abierto=1;
+    menu_set_menu_abierto(1);
 }
 
 void zxvision_restore_windows_on_startup_aux_launch_window(int indice)
@@ -26780,7 +26781,7 @@ void handle_menu_open_cpu_step(void)
 
     #ifdef MINGW
                 int antes_menu_abierto=menu_abierto;
-                menu_abierto=0; //Para que no aparezca en gris al refrescar
+                menu_set_menu_abierto(0); //Para que no aparezca en gris al refrescar
                     scr_refresca_pantalla();
                 menu_abierto=antes_menu_abierto;
 
@@ -27781,7 +27782,7 @@ void menu_inicio(void)
     if (menu_event_pending_drag_drop_menu_open.v) {
         menu_event_pending_drag_drop_menu_open.v=0;
         menu_event_drag_drop.v=1;
-        menu_abierto=1;
+        menu_set_menu_abierto(1);
         //printf("Reabrir menu para gestionar drag & drop\n");
     }
 
@@ -27789,7 +27790,7 @@ void menu_inicio(void)
     if (menu_event_pending_zmenu_file_menu_open.v) {
         menu_event_pending_zmenu_file_menu_open.v=0;
         menu_event_open_zmenu_file.v=1;
-        menu_abierto=1;
+        menu_set_menu_abierto(1);
         //printf("Reabrir menu para gestionar zmenu\n");
     }
 
@@ -28808,7 +28809,7 @@ void menu_first_aid_random_startup(void)
             if ((*valor_opcion)==0) {
                 string_config_key_aid_startup=first_aid_list[i].config_name;
                 encontrado=1;
-                menu_abierto=1;
+                menu_set_menu_abierto(1);
                 menu_first_aid_must_show_startup=1;
             }
         }

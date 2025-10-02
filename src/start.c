@@ -8030,7 +8030,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
                     menu_event_new_version_show_changes.v=1;
                     menu_set_menu_abierto(1);
                 }
-				//menu_abierto=1;
+				//menu_set_menu_abierto(1);
 			}
 		}
 	}
@@ -8227,7 +8227,7 @@ void end_emulator_saveornot_config(int saveconfig)
 
 
 
-	menu_abierto=0;
+	menu_set_menu_abierto(0);
 
 	if (saveconfig && save_configuration_file_on_exit.v) {
 		int uptime_seconds=timer_get_uptime_seconds();

@@ -258,9 +258,14 @@ void menu_topbarmenu_preexit(void)
 void menu_topbarmenu(void)
 {
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
-    printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",menu_abierto,zxvision_keys_event_not_send_to_machine);
+    printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",zxvision_keys_event_not_send_to_machine,menu_abierto);
 
     menu_en_topbar=1;
+
+    //Esto es necesario al entrar pulsando boton izquierdo raton en el fondo
+    //TODO: porque por alguna razón, al entrar con boton izquierdo no se cambia
+    //aunque cuando se entra pulsando por ejemplo F5 o si se pulsa boton izquierdo en el top bar si que se cambia
+    zxvision_keys_event_not_send_to_machine=1;
 
     zxvision_redraw_all_windows();
 

@@ -268,7 +268,7 @@ void *stats_check_updates_pthread(void *nada GCC_UNUSED)
 							//Y si driver permite menu normal
 							if (si_normal_menu_video_driver()) {
 								menu_event_new_update.v=1;
-								menu_abierto=1;
+								menu_set_menu_abierto(1);
 							}
 
 						}

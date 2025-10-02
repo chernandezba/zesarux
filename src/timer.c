@@ -1064,7 +1064,7 @@ void timer_check_interrupt(void)
                 if (menu_button_osdkeyboard_return.v) {
                     menu_button_osdkeyboard_return.v=0;
                     menu_button_osdkeyboard.v=1;
-                    menu_abierto=1;
+                    menu_set_menu_abierto(1);
                 }
             }
 
@@ -1091,7 +1091,7 @@ void timer_check_interrupt(void)
             if (timer_on_screen_adv_key==0) {
                 //Hay que volver a menu
                 menu_button_osd_adv_keyboard_return.v=1;
-                                    menu_abierto=1;
+                                    menu_set_menu_abierto(1);
             }
         }
 

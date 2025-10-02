@@ -148,7 +148,7 @@ void timex_set_memory_pages(void)
 
 					//temp
 					//printf ("forzamos menu\n");
-					//menu_abierto=1;
+					//menu_set_menu_abierto(1);
 
 
 				}

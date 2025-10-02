@@ -2088,7 +2088,7 @@ void remote_cpu_enter_step(int misocket)
 
   //Avisar que entramos en paso a paso y Abrir menu
   menu_event_remote_protocol_enterstep.v=1;
-  menu_abierto=1;
+  menu_set_menu_abierto(1);
 
   int contador_timeout;
   //Esperamos a que se haya recibido la señal de entrada en remote cpu-step
@@ -2203,7 +2203,7 @@ void remote_core_loop_if_update_immediately(int update,int nowait_endframe)
 void remote_cpu_before_core_loop(void)
 {
   //Limpiar algun flag que se haya quedado antes
-  menu_abierto=0;
+  menu_set_menu_abierto(0);
   menu_breakpoint_exception.v=0;
 }
 
@@ -2480,10 +2480,10 @@ for (line=0;line<8;line++,y++) {
 void remote_easter_egg_refresca_pantalla(void)
 {
   //sin color oscuro gris
-  menu_abierto=0;
+  menu_set_menu_abierto(0);
   //printf ("%p\n",scr_refresca_pantalla_solo_driver);
   scr_refresca_pantalla_solo_driver();
-  menu_abierto=1;
+  menu_set_menu_abierto(1);
   scr_actualiza_tablas_teclado(); //Xwindows por ejemplo requiere esto
 }
 

@@ -8854,7 +8854,7 @@ void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS)
 
 		//menu_espera_no_tecla();
 
-		//menu_abierto=1;
+		//menu_set_menu_abierto(1);
 		//Si con control de joystick se ha salido con tecla ESCMenu, esa tecla de joystick lo que hace es ESC
 		//pero luego fuerza a abrir el menu de nuevo. Por tanto, decimos que no hay que abrir menu
 		menu_event_open_menu.v=0;
@@ -45026,7 +45026,7 @@ void menu_exit_emulator(MENU_ITEM_PARAMETERS)
         cls_menu_overlay();
 
         reset_menu_overlay_function();
-        menu_abierto=0;
+        menu_set_menu_abierto(0);
 
 
         end_emulator_autosave_snapshot();
@@ -46030,7 +46030,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
             if (ventana_debug_cpu!=NULL) zxvision_handle_mouse_ev_switch_back_wind(ventana_debug_cpu);
 
-            menu_abierto=1;*/
+            menu_set_menu_abierto(1);*/
 		break;
 
 		case F_FUNCION_DEBUGCPU_BREAKPOINTS:

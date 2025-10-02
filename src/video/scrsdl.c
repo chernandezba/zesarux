@@ -1532,7 +1532,7 @@ void scrsdl_actualiza_tablas_teclado(void)
 		if (event.type==SDL_QUIT) {
             debug_printf (VERBOSE_INFO,"Received window close event");
             //Hacemos que aparezca el menu con opcion de salir del emulador
-            menu_abierto=1;
+            menu_set_menu_abierto(1);
             menu_button_exit_emulator.v=1;
 		}
 
