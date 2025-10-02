@@ -45414,9 +45414,10 @@ void menu_inicio_bucle_main(void)
                 //Si pulsado en topbar menu
                 printf("pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
+                    printf("mouse_left: %d\n",mouse_left);
                     if (if_menu_topbarmenu_pressed_bar() ) {
                         printf("menu_inicio. pulsado top bar\n");
-                        menu_topbarmenu_pressed_bar=1;
+                        //menu_topbarmenu_pressed_bar=1;
                     }
                 }
 
