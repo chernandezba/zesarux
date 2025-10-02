@@ -10347,7 +10347,7 @@ int menu_joystick_event_list(void)
                 menu_add_item_menu(array_menu_joystick_event_list,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 menu_add_ESC_item(array_menu_joystick_event_list);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&joystick_event_list_opcion_seleccionada,&item_seleccionado,array_menu_joystick_event_list,"Select event" );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&joystick_event_list_opcion_seleccionada,&item_seleccionado,array_menu_joystick_event_list,"Select event" );
 
 
 
