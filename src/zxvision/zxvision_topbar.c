@@ -174,13 +174,24 @@ int dibujar_cursor_topbar_pos_cursor=0;
 int posiciones_menus[20];
 
 //lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
-                               //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
-                               //0         1         2         3         4         5         6         7         8         9         10
-char topbar_string_linea_menus[]="Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
+                                                  //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+                                                  //0         1         2         3         4         5         6         7         8         9         10
+char topbar_string_linea_menus_with_zxdesktop[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
+char topbar_string_linea_menus_without_zxdesktop[]="Z SL Snp Mch Aud Dsp Sto Deb Net Win Set Hlp";
+
+char *menu_topbar_get_text_topbar(void)
+{
+    if (if_zxdesktop_enabled_and_driver_allows() ) return topbar_string_linea_menus_with_zxdesktop;
+    else return topbar_string_linea_menus_without_zxdesktop;
+}
+
 
 void menu_topbarmenu_write_bar(void)
 {
     //printf("Escribir topbar\n");
+
+    //
+    char *topbar_string_linea_menus=menu_topbar_get_text_topbar();
 
     //Aunque topbar en principio solo va a estar con drivers completos, por si acaso solo lo cambio en esos casos
     //asi seria compatible con curses por ejemplo, dejaria la "Z" normal
@@ -279,6 +290,7 @@ void menu_topbarmenu(void)
 
     int i,total_posiciones;
     int leido_espacio=0;
+    char *topbar_string_linea_menus=menu_topbar_get_text_topbar();
     for (i=0,total_posiciones=1;topbar_string_linea_menus[i];i++) {
         if (leido_espacio) {
             if (topbar_string_linea_menus[i]!=' ') {
