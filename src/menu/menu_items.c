@@ -45419,6 +45419,7 @@ void menu_inicio_bucle_main(void)
                         printf("menu_inicio. pulsado top bar\n");
                         //Si activase esto, provocaria que cuando se mueve el cursor del topbar con teclado,
                         //si está el raton arriba en el topbar, no se moveria el cursor
+                        //Pero por otra parte, no sé por que tenia esto activado
                         //menu_topbarmenu_pressed_bar=1;
                     }
                 }
