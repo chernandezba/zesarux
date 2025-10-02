@@ -436,7 +436,7 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto:
 si se distingue porque hay un menu con texto inverso
 
-*con menu cerrado. Se pulsa raton boton izquierdo en el fondo por ejemplo, se visualiza topbar, esto es correcto. Aunque el foco de teclado está
+ok *con menu cerrado. Se pulsa raton boton izquierdo en el fondo por ejemplo, se visualiza topbar, esto es correcto. Aunque el foco de teclado está
 en la maquina emulada
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí
@@ -445,8 +445,7 @@ en la maquina emulada
 
 *topbar que funcione si no hay multitask?
 
-ok *Alternativa topbar con texto reducido si no se tiene ZX desktop: Z Sml Snap Disp Debg Wind etc…
-*quiza en vez de doble espacio para separar menus uno solo, cuando texto entero en topbar
+*pulso F5, luego F5 de nuevo. luego para salir , ESC dos veces
 
 *agregar a changelog
 

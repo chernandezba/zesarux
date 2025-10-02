@@ -26558,7 +26558,7 @@ void menu_inicio_bucle(void)
 
         else {
 
-            //printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
+            printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
             menu_inicio_bucle_main();
             //printf("despues menu_inicio_bucle_main\n");
 
@@ -27126,7 +27126,7 @@ void menu_inicio(void)
         }
 
         //Si pulsado en topbar menu
-        printf("pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
+        printf("menu_inicio. pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
             if (if_menu_topbarmenu_pressed_bar() ) {
                 printf("menu_inicio. pulsado top bar\n");
@@ -27793,6 +27793,8 @@ void menu_inicio(void)
         menu_set_menu_abierto(1);
         //printf("Reabrir menu para gestionar zmenu\n");
     }
+
+    printf("Fin menu_inicio\n");
 
 }
 

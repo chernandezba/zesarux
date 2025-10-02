@@ -45412,11 +45412,13 @@ void menu_inicio_bucle_main(void)
                 printf("Entramos a top bar menu desde menu_inicio_bucle_main()\n");
 
                 //Si pulsado en topbar menu
-                printf("pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
+                //TODO: dado que se ha desactivado el menu_topbarmenu_pressed_bar=1 aqui,
+                //no tiene sentido este bloque de codigo, no hace nada útil
+                printf("menu_inicio_bucle_main. pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
                     printf("mouse_left: %d\n",mouse_left);
                     if (if_menu_topbarmenu_pressed_bar() ) {
-                        printf("menu_inicio. pulsado top bar\n");
+                        printf("menu_inicio_bucle_main. pulsado top bar\n");
                         //Si activase esto, provocaria que cuando se mueve el cursor del topbar con teclado,
                         //si está el raton arriba en el topbar, no se moveria el cursor
                         //Pero por otra parte, no sé por que tenia esto activado
