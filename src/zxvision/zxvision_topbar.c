@@ -45,7 +45,9 @@ z80_bit topbar_esta_visible_por_timer={0};
 int switchtopbar_button_visible_timer=0;
 
 //indica a la funcion de overlay que estamos en el topbar
-int menu_en_topbar=0;
+int topbar_overlay_we_are_on_topbar=0;
+
+
 
 void topbar_make_switchbutton_visible(void)
 {
@@ -60,6 +62,16 @@ void topbar_make_switchbutton_visible(void)
 
 #define MAX_SWITCH_TOPBAR_VISIBLE_TIMER 100
 
+void reset_topbar_overlay_we_are_on_topbar(void)
+{
+    if (zxvision_topbar_menu_enabled.v==0) return;
+
+    topbar_overlay_we_are_on_topbar=0;
+
+    //dibujar_cursor_topbar=0;
+
+}
+
 void topbar_make_switchbutton_invisible(void)
 {
     if (zxvision_topbar_menu_enabled.v==0) return;
@@ -73,7 +85,7 @@ void topbar_make_switchbutton_invisible(void)
     topbar_esta_visible_por_timer.v=0;
 
 
-    if (menu_en_topbar) return;
+    if (topbar_overlay_we_are_on_topbar) return;
 
     //Para borrar el texto de topbar
     cls_menu_overlay();
@@ -259,7 +271,7 @@ int menu_topbarmenu_pressed_bar=0;
 void menu_topbarmenu_preexit(void)
 {
     dibujar_cursor_topbar=0;
-    menu_en_topbar=0;
+    topbar_overlay_we_are_on_topbar=0;
     topbar_make_switchbutton_invisible();
     salir_todos_menus=1;
 }
@@ -271,7 +283,7 @@ void menu_topbarmenu(void)
     printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
     printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",zxvision_keys_event_not_send_to_machine,menu_abierto);
 
-    menu_en_topbar=1;
+    topbar_overlay_we_are_on_topbar=1;
 
     //Esto es necesario al entrar pulsando boton izquierdo raton en el fondo
     //TODO: porque por alguna razón, al entrar con boton izquierdo no se cambia
@@ -625,7 +637,7 @@ void topbar_text_overlay(void)
         int mostrar_topbar=0;
 
 
-        if (menu_en_topbar) mostrar_topbar=1;
+        if (topbar_overlay_we_are_on_topbar) mostrar_topbar=1;
 
         /*
         if (overlay_visible_when_menu_closed) {

@@ -456,7 +456,7 @@ si se distingue porque hay un menu con texto inverso
 
 *visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
 
-*menu que genera ventana en background, ejemplo audio waveform o core statistics, deja el topbar visible
+ok *menu que genera ventana en background, ejemplo audio waveform o core statistics, deja el topbar visible
 Se tendria que hacer que la funcion de menu, cuando abre una de ese tipo que va a background (ventana se cerrara o algo asi???)
 pusiera la variable de visibilidad de topbar a 0
 

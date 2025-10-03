@@ -22108,7 +22108,14 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 //if (tiene_submenu==0) cerrar_ventanas=1;
 
                 if (menu_se_cerrara) cerrar_ventanas=1;
-                if (genera_ventana) cerrar_ventanas=1;
+                if (genera_ventana) {
+                    cerrar_ventanas=1;
+
+                    //Y ocultar topbar
+                    printf("*** Ocultar topbar\n");
+                    reset_topbar_overlay_we_are_on_topbar();
+
+                }
                 //Si pulsamos F6 desde menú principal, queremos que se cierren también, no que se vaya duplicando el menú principal
                 if (tecla==MENU_RETORNO_BACKGROUND) cerrar_ventanas=1;
 

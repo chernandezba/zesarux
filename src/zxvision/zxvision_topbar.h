@@ -28,5 +28,6 @@ extern int menu_topbarmenu_pressed_bar;
 extern void menu_topbarmenu(void);
 extern int if_menu_topbarmenu_pressed_bar(void);
 extern int if_menu_topbarmenu_enabled_and_pressed_bar(void);
+extern void reset_topbar_overlay_we_are_on_topbar(void);
 
 #endif
