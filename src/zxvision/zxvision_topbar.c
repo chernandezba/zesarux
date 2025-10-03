@@ -85,6 +85,18 @@ void reset_topbar_overlay_we_are_on_topbar(void)
 
     dibujar_cursor_topbar=0;
 
+
+    //TODO: realmente no la borramos del texto overlay,
+    //sino que le decimos que no esta ahi,
+    //y supuestamente en los siguientes refrescos enteros del entorno zxvision
+    //se borrara todo el overlay y desaparecera
+    //Si a veces no desaparece, habria que escribir en la primera
+    //linea de overlay caracteres a 0, para "liberar" esas posiciones de overlay y que se vea el fondo
+    //Esto conllevaria un efecto secundario y es que si hay alguna ventana que ocupa esa primera linea,
+    //se borraria ese texto de la primera linea, aunque no deberia pasar, normalmente las ventanas
+    //estaran por debajo de esa linea
+
+
 }
 
 void topbar_make_switchbutton_invisible(void)
