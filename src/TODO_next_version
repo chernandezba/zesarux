@@ -462,6 +462,10 @@ deberian salir centrados en el zx desktop , y no salen centrados
 
 *revisar shortcuts helper con topbar, no va bien. tampoco van bien sin topbar e interactuando con botones zona superior
 
+*windows->rearrange, cascade etc: tienen que considerar linea 1 de inicio cuando esta topbar (ponen linea 0 porque no hay botones superiores)
+
+*boton derecho en zx desktop no funciona si raton por la parte de arriba (probablemente donde estarian los botones superiores)
+
 *agregar a changelog
 
 ----Fin top bar menu
