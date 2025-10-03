@@ -47,6 +47,9 @@ int switchtopbar_button_visible_timer=0;
 //indica a la funcion de overlay que estamos en el topbar
 int topbar_overlay_we_are_on_topbar=0;
 
+int dibujar_cursor_topbar=0;
+int dibujar_cursor_topbar_pos_cursor=0;
+
 
 
 void topbar_make_switchbutton_visible(void)
@@ -68,7 +71,7 @@ void reset_topbar_overlay_we_are_on_topbar(void)
 
     topbar_overlay_we_are_on_topbar=0;
 
-    //dibujar_cursor_topbar=0;
+    dibujar_cursor_topbar=0;
 
 }
 
@@ -178,8 +181,7 @@ z80_byte menu_topbarmenu_get_key(void)
 }
 
 
-int dibujar_cursor_topbar=0;
-int dibujar_cursor_topbar_pos_cursor=0;
+
 
 //Generar posiciones de donde está cada menu
 //20 posiciones maximo, incluyendo el primero
