@@ -422,6 +422,12 @@ https://forums.raspberrypi.com/viewtopic.php?p=2340448#p2340448
 -pulsar dos veces con boton derecho en zx desktop abre dos veces el menu de zx desktop (menu pequeñito) y luego al pulsar ESC hay que pulsar dos
 veces
 
+-que con menus de botones superiores (obviamente con topbar desactivado) pudieras cambiarte de cada uno de los menus con flecha izquierda-derecha, tal cual como se hace con topbar: ejemplo estando en Machine que pudieras saltar a Audio con flecha derecha
+
+-ZX desktop: si menu char height no es 8, limite de ventanas por debajo al moverlas hace un efecto extraño,
+probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin poderse usar
+
+-help->about se corta el logo si menu_char_height<8
 
 ----top bar menu
 
@@ -445,12 +451,20 @@ si se distingue porque hay un menu con texto inverso
 
 *pulso F5, luego F5 de nuevo. luego para salir , ESC dos veces
 
-*agregar a changelog
+*help->licenses->information. se repite information, para salir ESC dos veces??? creo que no falla esto
 
+
+*visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
+
+*menu que genera ventana en background, ejemplo audio waveform o core statistics, deja el topbar visible
+Se tendria que hacer que la funcion de menu, cuando abre una de ese tipo que va a background (ventana se cerrara o algo asi???)
+pusiera la variable de visibilidad de topbar a 0
 
 *menus que no son menus (dialogos) creados desde menu_dibuja_menu_dialogo, como joystick to keys, con topbar activo
 deberian salir centrados en el zx desktop , y no salen centrados
 
 *revisar shortcuts helper con topbar, no va bien. tampoco van bien sin topbar e interactuando con botones zona superior
+
+*agregar a changelog
 
 ----Fin top bar menu

@@ -2321,6 +2321,12 @@ void menu_item_old_behaviour_close_menus(MENU_ITEM_PARAMETERS)
 void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
 {
     zxvision_topbar_menu_enabled.v ^=1;
+
+    //Comprobar posiciones iconos y reajustar
+    //Debido a que con topbar dejamos que los iconos empiecen mas arriba que cuando hay botones superiores
+    zxvision_check_all_configurable_icons_positions();
+
+    zxvision_reorder_configurable_icons_if_auto();
 }
 
 void menu_interface_previous_submenus(MENU_ITEM_PARAMETERS)

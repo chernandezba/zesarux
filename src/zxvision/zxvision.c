@@ -358,6 +358,30 @@ zxdesktop_configurable_icon zxdesktop_configurable_icons_list[MAX_ZXDESKTOP_CONF
 //Id de icono que se esta ejecutando la accion ahora mismo
 int zxdesktop_configurable_icons_current_executing=-1;
 
+
+//Retorna la coordenada y minima que puede tener un icono en el zx desktop
+//coordenada sin considerar zoom_y
+int zxvision_get_minimum_y_icon_position(void)
+{
+    //yinicial debajo de botones superiores
+    int alto_boton;
+    menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,NULL,NULL);
+    alto_boton /=zoom_y;
+
+
+    int yinicial=alto_boton+16;
+
+    //Si está topbar, la yinicial es mas arriba
+    if (zxvision_topbar_menu_enabled.v) {
+        //1 fila de texto. con algo de margen
+        yinicial=menu_char_height*2;
+    }
+
+    //printf("yinicial: %d\n",yinicial);
+
+    return yinicial;
+}
+
 //Dice si una posicion para un icono es valida, evitando salirse de ventana, en zonas de botones, o en zona de pantalla emulada
 //x,y en coordenadas de iconos (o sea sin zoom)
 //Retorna no 0 si es valido
@@ -374,20 +398,21 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
         return 0;
     }
 
-    int xinicio_botones,xfinal_botones,yinicio_botones,alto_boton;
+    int xinicio_botones,xfinal_botones,yinicio_botones; //,alto_boton;
 
     //Ver si en posicion de iconos superiores
-    menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,&xinicio_botones,&xfinal_botones);
+    menu_ext_desktop_buttons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones);
     //Posiciones menos el zoom
     xinicio_botones /=zoom_x;
     xfinal_botones /=zoom_x;
-    alto_boton /=zoom_y;
+    //alto_boton /=zoom_y;
 
     //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
     xinicio_botones -=ZESARUX_ASCII_LOGO_ANCHO;
 
+    int minima_y=zxvision_get_minimum_y_icon_position();
 
-    if (y<alto_boton && x>=xinicio_botones && x<xfinal_botones) {
+    if (y<minima_y && x>=xinicio_botones && x<xfinal_botones) {
         //printf("Check icon position: %d,%d on upper buttons position (y<%d)\n",x,y,alto_boton);
         return 0;
     }
@@ -494,15 +519,7 @@ void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int 
 
     int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
 
-    //yinicial debajo de botones superiores
-    int alto_boton;
-    menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,NULL,NULL);
-    alto_boton /=zoom_y;
-
-
-    int yinicial=alto_boton+16;
-
-
+    int yinicial=zxvision_get_minimum_y_icon_position();
 
     //Hasta llegar a los iconos de dispositivos inferiores
     int yfinal;

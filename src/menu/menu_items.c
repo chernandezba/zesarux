@@ -31920,6 +31920,11 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
             //En este menu no hago que al abrir un item se cierren todos los menus (usando menu_add_item_menu_se_cerrara(array_menu_common); ),
             //porque creo que puede ser lógico que si un usuario lee una licencia, quiera leer las demás, y así no se le cierra el menu
             //y las tiene todas a mano
+            //Va cerrando una licencia con ESC y vuelve a este menu y puede leer otra, sin tener que reabrir el menu
+            //Esto va un poco en contra del funcionamiento de los menus, puede ser confuso a veces
+            //TODO: mejorar el acceso a todas las licencias, sin tener que confundir al usuario con menus
+            //que no se cierran todos al pulsar ESC
+            //Quizá con algún tipo de ventana con pestañas? Cada pestaña te llevaría una licencia diferente
 
             menu_add_item_menu_inicial(&array_menu_common,"~~Information",MENU_OPCION_NORMAL,menu_about_licenses_info,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'i');
