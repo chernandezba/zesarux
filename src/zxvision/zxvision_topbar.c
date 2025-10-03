@@ -50,7 +50,20 @@ int topbar_overlay_we_are_on_topbar=0;
 int dibujar_cursor_topbar=0;
 int dibujar_cursor_topbar_pos_cursor=0;
 
+//Generar posiciones de donde está cada menu
+//20 posiciones maximo, incluyendo el primero
+int posiciones_menus[20];
 
+//lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
+                                                  //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+                                                  //0         1         2         3         4         5         6         7         8         9         10
+char topbar_string_linea_menus_with_zxdesktop[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
+char topbar_string_linea_menus_without_zxdesktop[]="Z SL Sna Mch Aud Dsp Sto Dbg Net Win Set Hlp";
+
+//Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
+int menu_topbarmenu_pressed_bar=0;
+
+#define MAX_SWITCH_TOPBAR_VISIBLE_TIMER 100
 
 void topbar_make_switchbutton_visible(void)
 {
@@ -63,7 +76,6 @@ void topbar_make_switchbutton_visible(void)
 
 }
 
-#define MAX_SWITCH_TOPBAR_VISIBLE_TIMER 100
 
 void reset_topbar_overlay_we_are_on_topbar(void)
 {
@@ -157,8 +169,6 @@ void topbar_timer_event(void)
 
 
 
-
-
 z80_byte menu_topbarmenu_get_key(void)
 {
     z80_byte tecla;
@@ -183,15 +193,6 @@ z80_byte menu_topbarmenu_get_key(void)
 
 
 
-//Generar posiciones de donde está cada menu
-//20 posiciones maximo, incluyendo el primero
-int posiciones_menus[20];
-
-//lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
-                                                  //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
-                                                  //0         1         2         3         4         5         6         7         8         9         10
-char topbar_string_linea_menus_with_zxdesktop[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
-char topbar_string_linea_menus_without_zxdesktop[]="Z SL Sna Mch Aud Dsp Sto Dbg Net Win Set Hlp";
 
 char *menu_topbar_get_text_topbar(void)
 {
@@ -267,8 +268,7 @@ void menu_topbarmenu_flecha_derecha(int total_menus)
     if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
 }
 
-//Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
-int menu_topbarmenu_pressed_bar=0;
+
 
 void menu_topbarmenu_preexit(void)
 {
