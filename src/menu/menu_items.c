@@ -26276,7 +26276,7 @@ void menu_snapshot_rewind_browse(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&snapshot_rewind_browse_opcion_seleccionada,&item_seleccionado,array_menu_common,"Browse Snapshots");
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&snapshot_rewind_browse_opcion_seleccionada,&item_seleccionado,array_menu_common,"Browse Snapshots");
 
 
 
@@ -26344,10 +26344,10 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
 
         if (snapshot_in_ram_enabled.v) {
-
             menu_add_item_menu_separator(array_menu_common);
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_browse,NULL,"Browse");
-
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
         }
 
 
