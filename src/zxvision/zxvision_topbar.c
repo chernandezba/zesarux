@@ -337,6 +337,8 @@ void menu_topbarmenu(void)
 
     do {
 
+        dibujar_cursor_topbar=1;
+
         //Este bucle controla el movimiento del cursor sobre los menus superiores sin abrir ningún menú
         //Esperar tecla/raton, y siempre que no se haya entrado abriendo el menu pulsando ya en barra superior
         //o se haya pulsado flecha izquierda o derecha en menus abiertos
@@ -344,7 +346,7 @@ void menu_topbarmenu(void)
         int salir_linea_superior=0;
         while (!salir_linea_superior && !menu_topbarmenu_pressed_bar && !ultimo_menu_salido_con_flecha_izquierda && !ultimo_menu_salido_con_flecha_derecha) {
 
-            dibujar_cursor_topbar=1;
+            //dibujar_cursor_topbar=1;
 
             printf("cursor_pos %d total_menus %d\n",dibujar_cursor_topbar_pos_cursor,total_menus);
 
@@ -444,7 +446,8 @@ void menu_topbarmenu(void)
 
         }
 
-        dibujar_cursor_topbar=0;
+
+        //dibujar_cursor_topbar=0;
 
         //Aqui se gestiona la apertura de un menu
         //Si pulsado boton raton o enter en el paso anterior o se haya entrado abriendo el menu pulsando ya en barra superior
