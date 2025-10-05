@@ -2039,6 +2039,8 @@ void menu_debug_show_register_line_aux_filas_teclas(z80_byte puerto_h,char *buff
 }
 
 //Guardamos los registros de antes de ejecutar la instrucción paso a paso para saber que valores se han cambiado
+z80_int debug_antes_reg_sp;
+
 z80_byte debug_antes_reg_a;
 z80_byte debug_antes_reg_f;
 z80_byte debug_antes_reg_a_shadow;
@@ -2066,6 +2068,8 @@ z80_bit debug_antes_iff1,debug_antes_iff2;
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
 {
+    debug_antes_reg_sp=reg_sp;
+
     debug_antes_reg_a=reg_a;
     debug_antes_reg_f=Z80_FLAGS;
     debug_antes_reg_a_shadow=reg_a_shadow;
@@ -2194,6 +2198,15 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             case 1:
                 sprintf (textoregistros,"SP %04X",reg_sp);
                 if (registros_modificados & MOD_REG_SP)         *columnas_modificadas |=(1|(2<<4));      //columna 1,2 registro SP
+
+                if (cpu_step_mode.v) {
+                    if (reg_sp!=debug_antes_reg_sp) {
+                        *columnas_modificadas |=(4<<16);
+                        *columnas_modificadas |=(5<<20);
+                        *columnas_modificadas |=(6<<24);
+                        *columnas_modificadas |=(7<<28);
+                    }
+                }
             break;
 
             case 2:
