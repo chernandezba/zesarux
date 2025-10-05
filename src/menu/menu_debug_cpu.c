@@ -2038,11 +2038,29 @@ void menu_debug_show_register_line_aux_filas_teclas(z80_byte puerto_h,char *buff
 
 }
 
+//Guardamos los registros de antes de ejecutar la instrucción paso a paso para saber que valores se han cambiado
+z80_byte debug_antes_reg_a;
+z80_byte debug_antes_reg_f;
+
+//Copiarnos los registros anteriores antes de hacer un cpu step to step
+void menu_debug_value_registers_modified_copy(void)
+{
+    debug_antes_reg_a=reg_a;
+    debug_antes_reg_f=Z80_FLAGS;
+}
+
+
+
 //Muestra el registro que le corresponde para esta linea
 //Tambien indica el registro que se modifica, de la siguiente manera:
 //Se indican las columnas que se alteran, de tal manera que se muestre en otro color las columnas afectadas
 //El numero de columna sera un valor entre 0 y 14, por tanto, permitimos cambiar hasta 3 columnas, codificando asi:
 //(columna1+1)+(columna2+1)*16+(columna3+1)*256
+//Se indican dos tipos de modificaciones sobre los registros:
+//1) En el nombre del registro: eso se hace en base a la instrucción que indica el cursor, según lo que hace dicha instrucción,
+//   por ejemplo un "INC A" dira que modifica el registro A
+//2) Según el valor del registro si se ha modificado: según los valores anteriores, indica que se ha alterado
+//   Ejemplo si se ejecuta un "XOR A" dira que se ha modificado el contenido del registro A siempre que el valor anterior no fuese ya 0
 
 //0123456789012
 //HL 0000'0000
@@ -2139,6 +2157,17 @@ void menu_debug_show_register_line(int linea,char *textoregistros,unsigned int *
                 if (registros_modificados & MOD_REG_A)          *columnas_modificadas |=1;      //columna 1 registro A
                 if (registros_modificados & MOD_REG_F)          *columnas_modificadas |=(2<<4); //columna 2 registro F
                 if (registros_modificados & MOD_REG_AF_SHADOW)  *columnas_modificadas |=(8<<8); //columna 8 registro AF'
+
+                if (cpu_step_mode.v) {
+                    if (reg_a!=debug_antes_reg_a) {
+                        *columnas_modificadas |=(4<<16);
+                        *columnas_modificadas |=(5<<20);
+                    }
+                    if (Z80_FLAGS!=debug_antes_reg_f) {
+                        *columnas_modificadas |=(6<<24);
+                        *columnas_modificadas |=(7<<28);
+                    }
+                }
             break;
 
             case 3:
@@ -2730,6 +2759,8 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
 }
 
 //columnas_modificadas es una variable de 32 bits
+//Columnas 1-4 son para nombres de registros (en color de opcion marcada)
+//Columnas 5-8 son para valores de registros (en color inverso)
 void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int linea,int xinicial,unsigned int columnas_modificadas)
 {
     //no hacerlo si la vista no muestra registros
@@ -2767,22 +2798,22 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
 
     if (columna5) {
         columna5--;
-        zxvision_set_attr(w,xinicial+columna5,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna5,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 
     if (columna6) {
         columna6--;
-        zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 
     if (columna7) {
         columna7--;
-        zxvision_set_attr(w,xinicial+columna7,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna7,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 
     if (columna8) {
         columna8--;
-        zxvision_set_attr(w,xinicial+columna8,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna8,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 }
 
@@ -10151,6 +10182,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 				else {
                     //printf("ejecutando cpu_core_loop. PC=%XH\n",reg_pc);
+                    menu_debug_value_registers_modified_copy();
+
                     menu_debug_registers_run_cpu_opcode();
                     //printf("despues ejecutando cpu_core_loop. PC=%XH\n",reg_pc);
 
