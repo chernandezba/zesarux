@@ -2041,6 +2041,8 @@ void menu_debug_show_register_line_aux_filas_teclas(z80_byte puerto_h,char *buff
 //Guardamos los registros de antes de ejecutar la instrucción paso a paso para saber que valores se han cambiado
 z80_byte debug_antes_reg_a;
 z80_byte debug_antes_reg_f;
+z80_byte debug_antes_reg_a_shadow;
+z80_byte debug_antes_reg_f_shadow;
 z80_byte debug_antes_reg_h;
 z80_byte debug_antes_reg_l;
 
@@ -2049,6 +2051,8 @@ void menu_debug_value_registers_modified_copy(void)
 {
     debug_antes_reg_a=reg_a;
     debug_antes_reg_f=Z80_FLAGS;
+    debug_antes_reg_a_shadow=reg_a_shadow;
+    debug_antes_reg_f_shadow=Z80_FLAGS_SHADOW;
     debug_antes_reg_h=reg_h;
     debug_antes_reg_l=reg_l;
 }
@@ -2170,6 +2174,15 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     if (Z80_FLAGS!=debug_antes_reg_f) {
                         *columnas_modificadas |=(6<<24);
                         *columnas_modificadas |=(7<<28);
+                    }
+
+                    if (reg_a_shadow!=debug_antes_reg_a_shadow) {
+                        *columnas_modificadas |=(9L<<32);
+                        *columnas_modificadas |=(10L<<36);
+                    }
+                    if (Z80_FLAGS_SHADOW!=debug_antes_reg_f_shadow) {
+                        *columnas_modificadas |=(11L<<40);
+                        *columnas_modificadas |=(12L<<44);
                     }
                 }
             break;
