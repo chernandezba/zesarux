@@ -2046,7 +2046,7 @@ void menu_debug_show_register_line_aux_filas_teclas(z80_byte puerto_h,char *buff
 
 //0123456789012
 //HL 0000'0000
-void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_modificadas)
+void menu_debug_show_register_line(int linea,char *textoregistros,unsigned int *columnas_modificadas)
 {
 	char buffer_flags[32];
 
@@ -2609,7 +2609,7 @@ void menu_debug_registers_adjust_ptr_on_follow(void)
 }
 
 
-void menu_debug_registros_parte_derecha(int linea,char *buffer_linea,int columna_registros,int mostrar_separador,int *columnas_modificadas)
+void menu_debug_registros_parte_derecha(int linea,char *buffer_linea,int columna_registros,int mostrar_separador,unsigned int *columnas_modificadas)
 {
 
     char buffer_registros[33];
@@ -2729,7 +2729,8 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
     return 0;
 }
 
-void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int linea,int xinicial,int columnas_modificadas)
+//columnas_modificadas es una variable de 32 bits
+void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int linea,int xinicial,unsigned int columnas_modificadas)
 {
     //no hacerlo si la vista no muestra registros
     if (menu_debug_registers_subview_type==4) return;
@@ -2738,6 +2739,11 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     int columna2=(columnas_modificadas>>4) & 0xF;
     int columna3=(columnas_modificadas>>8) & 0xF;
     int columna4=(columnas_modificadas>>12) & 0xF;
+
+    int columna5=(columnas_modificadas>>16) & 0xF;
+    int columna6=(columnas_modificadas>>20) & 0xF;
+    int columna7=(columnas_modificadas>>24) & 0xF;
+    int columna8=(columnas_modificadas>>28) & 0xF;
 
     if (columna1) {
         columna1--;
@@ -2757,6 +2763,26 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     if (columna4) {
         columna4--;
         zxvision_set_attr(w,xinicial+columna4,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+    }
+
+    if (columna5) {
+        columna5--;
+        zxvision_set_attr(w,xinicial+columna5,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+    }
+
+    if (columna6) {
+        columna6--;
+        zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+    }
+
+    if (columna7) {
+        columna7--;
+        zxvision_set_attr(w,xinicial+columna7,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+    }
+
+    if (columna8) {
+        columna8--;
+        zxvision_set_attr(w,xinicial+columna8,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 }
 
@@ -2820,7 +2846,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 	//menu_debug_registers_adjust_ptr_on_follow();
 
-    int columnas_modificadas;
+    unsigned int columnas_modificadas;
 
 
 	//Conservamos valor original y usamos uno de copia
