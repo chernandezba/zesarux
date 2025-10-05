@@ -2058,6 +2058,8 @@ z80_byte debug_antes_reg_c_shadow;
 z80_int debug_antes_reg_ix;
 z80_int debug_antes_reg_iy;
 
+z80_byte debug_antes_reg_i;
+
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
 {
@@ -2080,6 +2082,8 @@ void menu_debug_value_registers_modified_copy(void)
 
     debug_antes_reg_ix=reg_ix;
     debug_antes_reg_iy=reg_iy;
+
+    debug_antes_reg_i=reg_i;
 }
 
 
@@ -2360,6 +2364,13 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                 sprintf (textoregistros,"IR %02X%02X%s",reg_i,(reg_r&127)|(reg_r_bit7&128) , string_vector_int);
                 if (registros_modificados & MOD_REG_I)          *columnas_modificadas |=1;      //columna 1 registro I
                 if (registros_modificados & MOD_REG_R)          *columnas_modificadas |=(2<<4); //columna 2 registro R
+
+                if (cpu_step_mode.v) {
+                    if (reg_i!=debug_antes_reg_i) {
+                        *columnas_modificadas |=(4<<16);
+                        *columnas_modificadas |=(5<<20);
+                    }
+                }
             break;
 
             case 10:
@@ -9225,6 +9236,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 if (tecla=='s') {
 					cpu_step_mode.v=1;
 					menu_debug_follow_pc.v=1; //se sigue pc
+
+                    //Al activar cpu step indicamos que copiamos valores actuales de registros para empezar a indicar si hay cambios
+                    menu_debug_value_registers_modified_copy();
 				}
 
 				if (tecla=='z') {

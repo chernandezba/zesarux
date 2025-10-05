@@ -4,6 +4,7 @@ Added setting to automatically order icons on ZX Desktop
 Allow drag&drop of compressed files
 
 Improved editing joystick to events/keys (allow to unasign easily)
+Improved debug cpu: show when registers values are modified by last opcode execution
 
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name

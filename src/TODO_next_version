@@ -431,6 +431,10 @@ probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin
 
 -en debug cpu, para evaluar expresion hay que ir a breakpoints. poco intuitivo. deberia tener una tecla directa desde debug cpu
 
+-agregar a ayuda de debug cpu lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
+
+-cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores
+
 ----top bar menu
 
 
