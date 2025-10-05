@@ -429,6 +429,8 @@ probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin
 
 -help->about se corta el logo si menu_char_height<8
 
+-en debug cpu, para evaluar expresion hay que ir a breakpoints. poco intuitivo. deberia tener una tecla directa desde debug cpu
+
 ----top bar menu
 
 
