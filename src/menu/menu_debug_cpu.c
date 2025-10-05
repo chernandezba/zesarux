@@ -2054,8 +2054,8 @@ void menu_debug_value_registers_modified_copy(void)
 //Muestra el registro que le corresponde para esta linea
 //Tambien indica el registro que se modifica, de la siguiente manera:
 //Se indican las columnas que se alteran, de tal manera que se muestre en otro color las columnas afectadas
-//El numero de columna sera un valor entre 0 y 14, por tanto, permitimos cambiar hasta 3 columnas, codificando asi:
-//(columna1+1)+(columna2+1)*16+(columna3+1)*256
+//El numero de columna sera un valor entre 0 y 14, por tanto, permitimos cambiar varias columnas, codificando asi:
+//(columna1+1)+(columna2+1)*16+(columna3+1)*256 etc
 //Se indican dos tipos de modificaciones sobre los registros:
 //1) En el nombre del registro: eso se hace en base a la instrucción que indica el cursor, según lo que hace dicha instrucción,
 //   por ejemplo un "INC A" dira que modifica el registro A
@@ -2064,7 +2064,7 @@ void menu_debug_value_registers_modified_copy(void)
 
 //0123456789012
 //HL 0000'0000
-void menu_debug_show_register_line(int linea,char *textoregistros,unsigned int *columnas_modificadas)
+void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *columnas_modificadas)
 {
 	char buffer_flags[32];
 
@@ -2172,6 +2172,34 @@ void menu_debug_show_register_line(int linea,char *textoregistros,unsigned int *
 
             case 3:
                 sprintf (textoregistros,"%c%c%c%c%c%c%c%c",DEBUG_STRING_FLAGS);
+
+                if (cpu_step_mode.v) {
+                    if ((Z80_FLAGS & 0x80)!=(debug_antes_reg_f & 0x80)) {
+                        *columnas_modificadas |=(1<<16);
+                    }
+                    if ((Z80_FLAGS & 0x40)!=(debug_antes_reg_f & 0x40)) {
+                        *columnas_modificadas |=(2<<20);
+                    }
+                    if ((Z80_FLAGS & 0x20)!=(debug_antes_reg_f & 0x20)) {
+                        *columnas_modificadas |=(3<<24);
+                    }
+                    if ((Z80_FLAGS & 0x10)!=(debug_antes_reg_f & 0x10)) {
+                        *columnas_modificadas |=(4<<28);
+                    }
+                    if ((Z80_FLAGS & 0x08)!=(debug_antes_reg_f & 0x08)) {
+                        *columnas_modificadas |=(5L<<32);
+                    }
+                    if ((Z80_FLAGS & 0x04)!=(debug_antes_reg_f & 0x04)) {
+                        *columnas_modificadas |=(6L<<36);
+                    }
+                    if ((Z80_FLAGS & 0x02)!=(debug_antes_reg_f & 0x02)) {
+                        *columnas_modificadas |=(7L<<40);
+                    }
+                    if ((Z80_FLAGS & 0x01)!=(debug_antes_reg_f & 0x01)) {
+                        *columnas_modificadas |=(8L<<44);
+                    }
+                }
+
             break;
 
             case 4:
@@ -2638,7 +2666,7 @@ void menu_debug_registers_adjust_ptr_on_follow(void)
 }
 
 
-void menu_debug_registros_parte_derecha(int linea,char *buffer_linea,int columna_registros,int mostrar_separador,unsigned int *columnas_modificadas)
+void menu_debug_registros_parte_derecha(int linea,char *buffer_linea,int columna_registros,int mostrar_separador,z80_64bit *columnas_modificadas)
 {
 
     char buffer_registros[33];
@@ -2758,10 +2786,10 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
     return 0;
 }
 
-//columnas_modificadas es una variable de 32 bits
+//columnas_modificadas es una variable de 64 bits
 //Columnas 1-4 son para nombres de registros (en color de opcion marcada)
-//Columnas 5-8 son para valores de registros (en color inverso)
-void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int linea,int xinicial,unsigned int columnas_modificadas)
+//Columnas 5-12 son para valores de registros (en color inverso)
+void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int linea,int xinicial,z80_64bit columnas_modificadas)
 {
     //no hacerlo si la vista no muestra registros
     if (menu_debug_registers_subview_type==4) return;
@@ -2775,6 +2803,11 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     int columna6=(columnas_modificadas>>20) & 0xF;
     int columna7=(columnas_modificadas>>24) & 0xF;
     int columna8=(columnas_modificadas>>28) & 0xF;
+
+    int columna9=(columnas_modificadas>>32) & 0xF;
+    int columna10=(columnas_modificadas>>36) & 0xF;
+    int columna11=(columnas_modificadas>>40) & 0xF;
+    int columna12=(columnas_modificadas>>44) & 0xF;
 
     if (columna1) {
         columna1--;
@@ -2814,6 +2847,26 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     if (columna8) {
         columna8--;
         zxvision_set_attr(w,xinicial+columna8,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+    }
+
+    if (columna9) {
+        columna9--;
+        zxvision_set_attr(w,xinicial+columna9,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+    }
+
+    if (columna10) {
+        columna10--;
+        zxvision_set_attr(w,xinicial+columna10,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+    }
+
+    if (columna11) {
+        columna11--;
+        zxvision_set_attr(w,xinicial+columna11,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+    }
+
+    if (columna12) {
+        columna12--;
+        zxvision_set_attr(w,xinicial+columna12,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 }
 
@@ -2877,7 +2930,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 	//menu_debug_registers_adjust_ptr_on_follow();
 
-    unsigned int columnas_modificadas;
+    z80_64bit columnas_modificadas;
 
 
 	//Conservamos valor original y usamos uno de copia
