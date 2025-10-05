@@ -2047,6 +2047,10 @@ z80_byte debug_antes_reg_h;
 z80_byte debug_antes_reg_l;
 z80_byte debug_antes_reg_h_shadow;
 z80_byte debug_antes_reg_l_shadow;
+z80_byte debug_antes_reg_d;
+z80_byte debug_antes_reg_e;
+z80_byte debug_antes_reg_d_shadow;
+z80_byte debug_antes_reg_e_shadow;
 
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
@@ -2059,6 +2063,10 @@ void menu_debug_value_registers_modified_copy(void)
     debug_antes_reg_l=reg_l;
     debug_antes_reg_h_shadow=reg_h_shadow;
     debug_antes_reg_l_shadow=reg_l_shadow;
+    debug_antes_reg_d=reg_d;
+    debug_antes_reg_e=reg_e;
+    debug_antes_reg_d_shadow=reg_d_shadow;
+    debug_antes_reg_e_shadow=reg_e_shadow;
 }
 
 
@@ -2254,6 +2262,25 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                 if (registros_modificados & MOD_REG_D)          *columnas_modificadas |=1;      //columna 1 registro D
                 if (registros_modificados & MOD_REG_E)          *columnas_modificadas |=(2<<4); //columna 2 registro E
                 if (registros_modificados & MOD_REG_DE_SHADOW)  *columnas_modificadas |=(8<<8); //columna 8 registro DE'
+
+                if (cpu_step_mode.v) {
+                    if (reg_d!=debug_antes_reg_d) {
+                        *columnas_modificadas |=(4<<16);
+                        *columnas_modificadas |=(5<<20);
+                    }
+                    if (reg_e!=debug_antes_reg_e) {
+                        *columnas_modificadas |=(6<<24);
+                        *columnas_modificadas |=(7<<28);
+                    }
+                    if (reg_d_shadow!=debug_antes_reg_d_shadow) {
+                        *columnas_modificadas |=(9L<<32);
+                        *columnas_modificadas |=(10L<<36);
+                    }
+                    if (reg_e_shadow!=debug_antes_reg_e_shadow) {
+                        *columnas_modificadas |=(11L<<40);
+                        *columnas_modificadas |=(12L<<44);
+                    }
+                }
             break;
 
             case 6:
