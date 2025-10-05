@@ -2055,6 +2055,7 @@ z80_byte debug_antes_reg_b;
 z80_byte debug_antes_reg_c;
 z80_byte debug_antes_reg_b_shadow;
 z80_byte debug_antes_reg_c_shadow;
+z80_int debug_antes_reg_ix;
 
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
@@ -2075,6 +2076,8 @@ void menu_debug_value_registers_modified_copy(void)
     debug_antes_reg_c=reg_c;
     debug_antes_reg_b_shadow=reg_b_shadow;
     debug_antes_reg_c_shadow=reg_c_shadow;
+
+    debug_antes_reg_ix=reg_ix;
 }
 
 
@@ -2321,6 +2324,17 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                 sprintf (textoregistros,"IX %04X",reg_ix);
                 if (registros_modificados & MOD_REG_IX_H)          *columnas_modificadas |=1;      //columna 1 registro IX_H
                 if (registros_modificados & MOD_REG_IX_L)          *columnas_modificadas |=(2<<4); //columna 2 registro IX_l
+
+                if (cpu_step_mode.v) {
+                    if ((reg_ix & 0xFF00)!=(debug_antes_reg_ix & 0xFF00)) {
+                        *columnas_modificadas |=(4<<16);
+                        *columnas_modificadas |=(5<<20);
+                    }
+                    if ((reg_ix & 0x00FF)!=(debug_antes_reg_ix & 0x00FF)) {
+                        *columnas_modificadas |=(6<<24);
+                        *columnas_modificadas |=(7<<28);
+                    }
+                }
             break;
 
             case 8:
