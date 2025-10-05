@@ -2059,6 +2059,7 @@ z80_int debug_antes_reg_ix;
 z80_int debug_antes_reg_iy;
 
 z80_byte debug_antes_reg_i;
+z80_byte debug_antes_im_mode;
 
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
@@ -2084,6 +2085,7 @@ void menu_debug_value_registers_modified_copy(void)
     debug_antes_reg_iy=reg_iy;
 
     debug_antes_reg_i=reg_i;
+    debug_antes_im_mode=im_mode;
 }
 
 
@@ -2378,6 +2380,12 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                 if (registros_modificados & MOD_REG_IFF)          *columnas_modificadas |=5|(6<<4)|(7<<8);      //columna 5,6,7 registro IFF
                 //nunca se va a dar junto el cambio de IFF y IM
                 if (registros_modificados & MOD_REG_IM_MODE)      *columnas_modificadas |=1|(2<<4);      //columna 1,2 registro IM
+
+                if (cpu_step_mode.v) {
+                    if (im_mode!=debug_antes_im_mode) {
+                        *columnas_modificadas |=(3<<16);
+                    }
+                }
             break;
 
             case 11:
