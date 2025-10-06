@@ -35904,65 +35904,60 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 void menu_snapshot_load(MENU_ITEM_PARAMETERS)
 {
 
-        char *filtros[17];
+    char *filtros[17];
 
-        filtros[0]="zx";
-        filtros[1]="sp";
-        filtros[2]="z80";
-        filtros[3]="sna";
-        filtros[4]="o";
-        filtros[5]="p";
+    filtros[0]="zx";
+    filtros[1]="sp";
+    filtros[2]="z80";
+    filtros[3]="sna";
+    filtros[4]="o";
+    filtros[5]="p";
 
-        filtros[6]="80";
-        filtros[7]="81";
-        filtros[8]="p81";
-        filtros[9]="z81";
-        filtros[10]="ace";
-		filtros[11]="rzx";
-		filtros[12]="zsf";
-		filtros[13]="spg";
-		filtros[14]="nex";
-        filtros[15]="snx";
-        filtros[16]=0;
+    filtros[6]="80";
+    filtros[7]="81";
+    filtros[8]="p81";
+    filtros[9]="z81";
+    filtros[10]="ace";
+    filtros[11]="rzx";
+    filtros[12]="zsf";
+    filtros[13]="spg";
+    filtros[14]="nex";
+    filtros[15]="snx";
+    filtros[16]=0;
 
 
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-        //Obtenemos directorio de snap
-        //si no hay directorio, vamos a rutas predefinidas
-        if (snapfile==NULL) menu_chdir_sharedfiles();
+    //Obtenemos directorio de snap
+    //si no hay directorio, vamos a rutas predefinidas
+    if (snapfile==NULL) menu_chdir_sharedfiles();
 
 	else {
-	        char directorio[PATH_MAX];
-	        util_get_dir(snapfile,directorio);
-	        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+        char directorio[PATH_MAX];
+        util_get_dir(snapfile,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-	        //cambiamos a ese directorio, siempre que no sea nulo
-	        if (directorio[0]!=0) {
-	                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-	                zvfs_chdir(directorio);
-        	}
-	}
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
+        }
+    }
 
 
 	int ret;
 
 	ret=menu_filesel("Select Snapshot",filtros,snapshot_load_file);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
 
     if (ret==1) {
 		snapfile=snapshot_load_file;
-
-
-			snapshot_load();
-
-
-
+        snapshot_load();
     }
 
     //Y salimos de todos los menus
@@ -35993,7 +35988,7 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
 		    filtros[4]="zx";
 		    filtros[5]=0;
         }
-}
+    }
 
 	else if (MACHINE_IS_Z88) {
 		filtros[0]="zsf";
@@ -36032,59 +36027,54 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
 		filtros[4]=0;
 	}
 
-
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
-
-
- 		//Obtenemos directorio de snap save
-        //si no hay directorio, vamos a rutas predefinidas
-        if (snapshot_save_file[0]==0) menu_chdir_sharedfiles();
-
-		else {
-			char directorio[PATH_MAX];
-			util_get_dir(snapshot_save_file,directorio);
-			//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
-
-			//cambiamos a ese directorio, siempre que no sea nulo
-			if (directorio[0]!=0) {
-					debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-					zvfs_chdir(directorio);
-			}
-		}
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
 
+    //Obtenemos directorio de snap save
+    //si no hay directorio, vamos a rutas predefinidas
+    if (snapshot_save_file[0]==0) menu_chdir_sharedfiles();
 
-		int ret;
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(snapshot_save_file,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-		ret=menu_filesel_save("Snapshot file",filtros,snapshot_save_file);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
-
-        if (ret==1) {
-
-			//Ver si archivo existe y preguntar
-			struct stat buf_stat;
-
-			if (stat(snapshot_save_file, &buf_stat)==0) {
-
-			if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
-
-		}
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
+        }
+    }
 
 
-		snapshot_save(snapshot_save_file);
+    int ret;
 
-		//Si ha ido bien la grabacion
-		if (!if_pending_error_message) menu_generic_message_splash("Save Snapshot","OK. Snapshot saved");
+    ret=menu_filesel_save("Snapshot file",filtros,snapshot_save_file);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
+    if (ret==1) {
 
+        //Ver si archivo existe y preguntar
+        struct stat buf_stat;
+
+        if (stat(snapshot_save_file, &buf_stat)==0) {
+
+            if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
 
         }
 
-			//Y salimos de todos los menus
-			salir_todos_menus=1;
+        snapshot_save(snapshot_save_file);
+
+        //Si ha ido bien la grabacion
+        if (!if_pending_error_message) menu_generic_message_splash("Save Snapshot","OK. Snapshot saved");
+
+    }
+
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 
 }
