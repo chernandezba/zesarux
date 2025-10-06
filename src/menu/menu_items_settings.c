@@ -12903,33 +12903,33 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
             if (zxvision_topbar_menu_enabled.v==0) {
 
-			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_upper_buttons,NULL,
-                "Direct access upper buttons","Botones de acceso directo superiores","Botons d'accés directe superiors");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_zxdesktop_upper_buttons_enabled.v ? 'X' : ' ' ) );
-            //menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'d');
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_upper_buttons,NULL,
+                    "Direct access upper buttons","Botones de acceso directo superiores","Botons d'accés directe superiors");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_zxdesktop_upper_buttons_enabled.v ? 'X' : ' ' ) );
+                //menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'d');
 
-			if (menu_zxdesktop_upper_buttons_enabled.v) {
-				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,
-                    "Transparent upper buttons","Botones superiores transparentes","Botons superiors transparents");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );
-                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+                if (menu_zxdesktop_upper_buttons_enabled.v) {
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,
+                        "Transparent upper buttons","Botones superiores transparentes","Botons superiors transparents");
+                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
-                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_box,NULL,
-                    "Box on upper buttons","Caja en botones superiores","Caixa als botons superiors");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_upper_icons.v ? ' ' : 'X' ) );
-                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_box,NULL,
+                        "Box on upper buttons","Caja en botones superiores","Caixa als botons superiors");
+                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_upper_icons.v ? ' ' : 'X' ) );
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
-                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_userdef_buttons_functions,NULL,
-                    "    Customize ~~buttons","    Personalizar ~~botones","    Personalitzar ~~botons");
-                menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
-                //menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
-                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
-                menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_userdef_buttons_functions,NULL,
+                        "    Customize ~~buttons","    Personalizar ~~botones","    Personalitzar ~~botons");
+                    menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
+                    //menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+                    menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
 
-                menu_add_item_menu_separator(array_menu_ext_desktop_settings);
-                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+                    menu_add_item_menu_separator(array_menu_ext_desktop_settings);
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
-            }
+                }
             }
 
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_lower_buttons,NULL,
