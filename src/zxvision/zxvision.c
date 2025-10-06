@@ -18570,12 +18570,20 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
 
     int origen_y=0;
 
-    //Si hay botones parte superior zxdesktop, origen_y lo incrementamos
-    if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() && menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
-        origen_y=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
 
-        //Y quitamos ese alto disponible para no sobreescribir botones inferiores
-        yfinal-=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
+    if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop()) {
+        if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
+            origen_y=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
+        }
+
+        if (zxvision_topbar_menu_enabled.v) {
+            origen_y=1;
+        }
+
+        if (menu_zxdesktop_lower_buttons_enabled.v) {
+            //Y quitamos ese alto disponible para no sobreescribir botones inferiores
+            yfinal-=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
+        }
 
     }
 
@@ -21115,7 +21123,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     if (!posicionar_submenu) {
 
-        //Solo alterar posicion si se abre desde botones de menu por ejemplo
+        //Solo alterar posicion si se abre desde botones de menu o desde topbar por ejemplo
         if (force_next_menu_position.v) {
 
             x=force_next_menu_position_x;
