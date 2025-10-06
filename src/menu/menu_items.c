@@ -25843,7 +25843,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
 
 
-	int x_ventana,y_ventana,ancho_ventana,alto_ventana;
+	int x_ventana,y_ventana,ancho_visible,alto_visible;
 
     //hardcoded. la imagen bmp hace 64x64
     int ancho_imagen_salamanquesa=64;
@@ -25907,34 +25907,37 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
     }
 
     //+1 de margen derecho. el habitual izquierdo no lo contamos pues la parte izquierda ya la ocupa el logo
-    ancho_ventana=ancho_maximo+x_texto+1;
+    ancho_visible=ancho_maximo+x_texto+1;
 
 
-    alto_ventana=10;
+    //alto_visible=10;
+    alto_visible=(alto_imagen_salamanquesa/menu_char_height)+2; //+2 de la linea de titulo y la de abajo del todo
 
+    //Si no es multiple el alto del bitmap con el alto del char height, sumar 1
+    if (alto_imagen_salamanquesa % menu_char_height!=0) alto_visible++;
 
-
-    //x_ventana=menu_center_x()-ancho_ventana/2;
+    //x_ventana=menu_center_x()-ancho_visible/2;
 
     //Dado que si tenemos la opcion activada de situar ventanas en zx desktop por defecto,
     //si zx desktop es muy pequeño, no cabera ahi, y entonces la ventana se redimensiona al maximo como consecuencia del error
     //de que no cabe
     //por eso en vez de obtener menu_center_x() mejor usamos scr_get_menu_width que nos da el ancho total
 
-    x_ventana=(scr_get_menu_width()-ancho_ventana)/2;
+    x_ventana=(scr_get_menu_width()-ancho_visible)/2;
 
-    y_ventana=menu_center_y()-alto_ventana/2;
+    y_ventana=menu_center_y()-alto_visible/2;
 
     //printf ("ancho %d alto %d\n",ancho,alto);
 
 
 
-    int ancho_ventana_visible=ancho_ventana-1;
-    int alto_ventana_visible=alto_ventana-2;
+    int ancho_total=ancho_visible-1;
+    int alto_total=alto_visible-2;
 
 
-	zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,
-							ancho_ventana_visible,alto_ventana_visible,"About");
+
+	zxvision_new_window(ventana,x_ventana,y_ventana,ancho_visible,alto_visible,
+							ancho_total,alto_total,"About");
 
 
     //nota: la carga del juego de edicion y por tanto uno de los easter egg no sale con este about, logicamente pues no tenemos
@@ -25998,9 +26001,9 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
 
     int x,y;
-    for (y=0;y<alto_ventana_visible;y++) {
+    for (y=0;y<alto_total;y++) {
         //zxvision_print_string_defaults_fillspc(ventana,10,i,"");
-        for (x=x_texto;x<ancho_ventana_visible;x++) {
+        for (x=x_texto;x<ancho_total;x++) {
             //zxvision_print_string_defaults(ventana,10,y,"         ");
             zxvision_print_char_defaults(ventana,x,y,' ');
         }
@@ -26011,7 +26014,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
     //considerar 3 lineas para centrar el texto (la de build number no la contamos pues solo es en los snapshots)
     //linea inicial para que quede centrado
-    linea=(alto_ventana_visible-3)/2;
+    linea=(alto_total-3)/2;
     //printf("linea: %d\n",linea);
 
 

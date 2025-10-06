@@ -427,7 +427,7 @@ veces
 -ZX desktop: si menu char height no es 8, limite de ventanas por debajo al moverlas hace un efecto extraño,
 probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin poderse usar
 
--help->about se corta el logo si menu_char_height<8
+ok -help->about se corta el logo si menu_char_height<8
 
 -en debug cpu, para evaluar expresion hay que ir a breakpoints. poco intuitivo. deberia tener una tecla directa desde debug cpu
 
@@ -435,6 +435,7 @@ probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin
 
 -cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores
 Con ruN pasa lo mismo también
+
 
 ----top bar menu
 
@@ -447,7 +448,7 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 *uart bridge emulation: al estar desactivado no deja ir a la derecha
 
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto:
-si se distingue porque hay un menu con texto inverso
+-> si se distingue porque hay un menu con texto inverso
 
 *opcion para no mostrarlo al acercar el raton a parte alta. Pero que si aparezca al hacer click en esa parte y/o pulsando F5
 
@@ -468,6 +469,8 @@ si se distingue porque hay un menu con texto inverso
 deberian salir centrados en el zx desktop , y no salen centrados
 
 *revisar shortcuts helper con topbar, no va bien. tampoco van bien sin topbar e interactuando con botones zona superior
+ok falta botones zona superior
+
 
 *windows->rearrange, cascade etc: tienen que considerar linea 1 de inicio cuando esta topbar (ponen linea 0 porque no hay botones superiores)
 
