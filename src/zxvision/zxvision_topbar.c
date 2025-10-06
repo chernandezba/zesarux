@@ -288,8 +288,6 @@ void menu_topbarmenu_preexit(void)
     topbar_overlay_we_are_on_topbar=0;
     topbar_make_switchbutton_invisible();
     salir_todos_menus=1;
-    //menu_pressed_open_menu_while_in_menu.v=0;
-    //menu_event_open_menu.v=0;
 }
 
 
@@ -499,6 +497,7 @@ void menu_topbarmenu(void)
             int posicion_y=0;
 
             printf("--Antes menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
+            printf("0 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
             //Entrado por raton
             if ((tecla_leida==13 && mouse_left) || menu_topbarmenu_pressed_bar) {
@@ -526,6 +525,7 @@ void menu_topbarmenu(void)
             }
 
             printf("--Despues menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
+            printf("1 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
             if (posicion_y==0) {
                 menu_espera_no_tecla_con_repeticion();
@@ -534,6 +534,7 @@ void menu_topbarmenu(void)
                 force_next_menu_position_y=1;
             }
 
+            printf("2 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
             //int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
@@ -544,6 +545,11 @@ void menu_topbarmenu(void)
 
             //asumimos que saldremos del topbar
             salir_topbar=1;
+
+            //desde el menu_espera_no_tecla_con_repeticion se puede activar menu_pressed_open_menu_while_in_menu.v
+            //si se ha pulsado F5 dos veces, desplegado un menu con raton y el raton esta en el topbar
+            //Cosa que provoca un efecto que está detallado mas abajo en el TODO de Si se pulsa F5 dos veces...
+
 
             if (posicion_y==0 && pos_cursor>=0) {
 
@@ -640,6 +646,23 @@ void menu_topbarmenu(void)
                     menu_topbarmenu_pressed_bar=1;
                 }
 
+                //TODO
+                //Si se pulsa F5 dos veces, abrimos menu Audio (o cualquier otro menu) con raton, pulsar ESC y se volvera a entrar al topbar, sin cerrar todo,
+                //porque menu_pressed_open_menu_while_in_menu.v estaba activado
+                //Pero por otra parte, ese comportamiento es el mismo que si abrimos menu audio , se despliega el menu,
+                //y luego pulso en otro menu, como en debug por ejemplo
+                //Se activa salir_todos_menus y abrimos menu Audio tenemos que dejar que se reentre al menu
+                //En resumen: pulsar F5 dos veces y abrir menu con raton provoca que se tenga que pulsar ESC dos veces,
+                //no puedo activar menu_pressed_open_menu_while_in_menu.v=0 o dejaria de poderse cambiar a otro menu
+                //Esto sucede en parte por la gestión que se tiene de la tecla F5 o de la pulsación de raton para abrir menu,
+                //que ambos hacen generalmente la misma acción y cuesta distinguirlos
+                //En resumen, que es una acción tan remota que no vale la pena liarme para corregir esto, porque además
+                //supondría tener que cambiar varias cosas del core de zxvision de apertura de menu
+                //Y realmente el efecto secundario no es tan catastrofico, se puede vivir con él
+                //if (salir_todos_menus) {
+                    //menu_pressed_open_menu_while_in_menu.v=0;
+                //}
+
             }
 
 
@@ -659,8 +682,6 @@ void menu_topbarmenu(void)
     printf("salir menu_topbarmenu\n");
 
     menu_topbarmenu_preexit();
-
-    //menu_pressed_open_menu_while_in_menu.v=0;
 }
 
 
