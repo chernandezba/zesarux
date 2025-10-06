@@ -26586,6 +26586,8 @@ void menu_inicio_bucle(void)
     //Si reabrimos menu despues de conmutar entre ventanas en background
     int reopen_menu;
 
+    //printf("--menu_inicio_bucle. antes while reopen_menu\n");
+
     do {
         reopen_menu=0;
 
@@ -26635,7 +26637,7 @@ void menu_inicio_bucle(void)
         if (menu_pressed_open_menu_while_in_menu.v) {
             menu_pressed_open_menu_while_in_menu.v=0;
             reopen_menu=1;
-            //printf ("menu_inicio_bucle. Reabrimos menu\n");
+            printf ("menu_inicio_bucle. Reabrimos menu por menu_pressed_open_menu_while_in_menu\n");
         }
 
         //printf("antes zxvision_simple_window_manager\n");
@@ -26696,7 +26698,7 @@ void menu_inicio_bucle(void)
 
     } while (reopen_menu);
 
-    //printf("menu_inicio_bucle. despues while reopen_menu\n");
+    //printf("--menu_inicio_bucle. despues while reopen_menu\n");
 
     //Ya no se deberia mostrar boton de cerrar todos menus
     //menu_mostrar_boton_close_all_menus.v=0;

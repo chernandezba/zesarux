@@ -288,6 +288,8 @@ void menu_topbarmenu_preexit(void)
     topbar_overlay_we_are_on_topbar=0;
     topbar_make_switchbutton_invisible();
     salir_todos_menus=1;
+    //menu_pressed_open_menu_while_in_menu.v=0;
+    //menu_event_open_menu.v=0;
 }
 
 
@@ -384,6 +386,10 @@ void menu_topbarmenu(void)
 
             printf("tecla leida: %d\n",tecla_leida);
 
+            //Si se ha pulsado tecla F5 estando aqui, se quedaria esta variable activada que
+            //provocaria que para salir del menu hubiera que pulsar ESC dos veces
+            menu_pressed_open_menu_while_in_menu.v=0;
+
             //si se ha movido el raton por la parte superior
             if (tecla_leida==0) {
                 if (get_pos_y_mouse_topbar()==0)  {
@@ -464,7 +470,8 @@ void menu_topbarmenu(void)
                         //ESC
                         menu_topbarmenu_preexit();
                         //salir_todos_menus=1;
-                        printf("Salir del menu con ESC\n");
+                        printf("Salir del menu con ESC. menu_event_open_menu.v=%d menu_abierto=%d\n",menu_event_open_menu.v,menu_abierto);
+                        //menu_pressed_open_menu_while_in_menu.v=0;
                         return;
                     break;
                 }
@@ -652,6 +659,8 @@ void menu_topbarmenu(void)
     printf("salir menu_topbarmenu\n");
 
     menu_topbarmenu_preexit();
+
+    //menu_pressed_open_menu_while_in_menu.v=0;
 }
 
 
