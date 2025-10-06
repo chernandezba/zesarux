@@ -35955,22 +35955,18 @@ void menu_snapshot_load(MENU_ITEM_PARAMETERS)
         zvfs_chdir(directorio_actual);
 
 
-        if (ret==1) {
+    if (ret==1) {
 		snapfile=snapshot_load_file;
-
-		//sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
-		//reset_menu_overlay_function();
 
 
 			snapshot_load();
 
-		//restauramos modo normal de texto de menu
-		//set_menu_overlay_function(normal_overlay_texto_menu);
 
-		//Y salimos de todos los menus
-		salir_todos_menus=1;
-        }
 
+    }
+
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -36083,12 +36079,12 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
 		//Si ha ido bien la grabacion
 		if (!if_pending_error_message) menu_generic_message_splash("Save Snapshot","OK. Snapshot saved");
 
-			//Y salimos de todos los menus
-			salir_todos_menus=1;
+
 
         }
 
-
+			//Y salimos de todos los menus
+			salir_todos_menus=1;
 
 
 }
