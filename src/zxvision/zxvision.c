@@ -26322,6 +26322,8 @@ void menu_inicio_handle_button_presses(void)
             //Inicializar indice search, indicar ruta vacia
             //innecesario con nuevo metodo de indexacion zxvision_index_search_init_menu_path_main_menu();
 
+            zxvision_helper_menu_shortcut_init();
+
             switch (pulsado_boton) {
                 case 0:
                     //Nada. Solo abrir el menu
@@ -26329,47 +26331,58 @@ void menu_inicio_handle_button_presses(void)
 
                 case 1:
                     //printf("antes smartload\n");
+                    zxvision_helper_menu_shortcut_print('s');
                     menu_smartload(0);
                     //printf("despues smartload\n");
                 break;
 
                 case 2:
+                    zxvision_helper_menu_shortcut_print('n');
                     menu_snapshot(0);
                 break;
 
                 case 3:
+                    zxvision_helper_menu_shortcut_print('m');
                     menu_machine_selection(0);
                 break;
 
                 case 4:
+                    zxvision_helper_menu_shortcut_print('a');
                     menu_audio(0);
                 break;
 
                 case 5:
+                    zxvision_helper_menu_shortcut_print('d');
                     menu_display_settings(0);
                 break;
 
                 case 6:
+                    zxvision_helper_menu_shortcut_print('t');
                     menu_storage(0);
                 break;
 
                 case 7:
+                    zxvision_helper_menu_shortcut_print('e');
                     menu_debug_main(0);
                 break;
 
                 case 8:
+                    zxvision_helper_menu_shortcut_print('o');
                     menu_network(0);
                 break;
 
                 case 9:
+                    zxvision_helper_menu_shortcut_print('w');
                     menu_windows(0);
                 break;
 
                 case 10:
+                    zxvision_helper_menu_shortcut_print('i');
                     menu_settings(0);
                 break;
 
                 case 11:
+                    zxvision_helper_menu_shortcut_print('l');
                     menu_help(0);
                 break;
 
