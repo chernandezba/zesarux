@@ -26907,6 +26907,7 @@ void menu_inicio(void)
     //printf ("inicio menu_inicio. menu_event_remote_protocol_enterstep.v=%d\n",menu_event_remote_protocol_enterstep.v);
     pulsado_alguna_ventana_con_menu_cerrado=0;
 
+    //printf("menu_inicio. poner a 0 menu_topbarmenu_pressed_bar\n");
     menu_topbarmenu_pressed_bar=0;
 
     int indice_abrir_ventana_sin_multitarea=-1;

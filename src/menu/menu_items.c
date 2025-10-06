@@ -45420,17 +45420,23 @@ void menu_inicio_bucle_main(void)
                 printf("Entramos a top bar menu desde menu_inicio_bucle_main()\n");
 
                 //Si pulsado en topbar menu
-                //TODO: dado que se ha desactivado el menu_topbarmenu_pressed_bar=1 aqui,
-                //no tiene sentido este bloque de codigo, no hace nada útil
                 printf("menu_inicio_bucle_main. pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
                     printf("mouse_left: %d\n",mouse_left);
                     if (if_menu_topbarmenu_pressed_bar() ) {
-                        printf("menu_inicio_bucle_main. pulsado top bar\n");
-                        //Si activase esto, provocaria que cuando se mueve el cursor del topbar con teclado,
-                        //si está el raton arriba en el topbar, no se moveria el cursor
-                        //Pero por otra parte, no sé por que tenia esto activado
-                        //menu_topbarmenu_pressed_bar=1;
+                        printf("menu_inicio_bucle_main. pulsado top bar. salido izq o der: %d %d\n",
+                            ultimo_menu_salido_con_flecha_izquierda,
+                            ultimo_menu_salido_con_flecha_derecha);
+
+
+
+                        //TODO: llegamos aqui y vemos el raton en la zona del topbar y asumimos que se ha pulsado
+                        //Pero no miramos que se haya pulsado el boton, porque aunque se hubiera pulsado, se espera a que se libere
+                        //y por tanto aqui no se estaria pulsando. Se generaria un posible falso positivo de menu_topbarmenu_pressed_bar
+                        //Entonces miramos si se ha pulsado flecha izquierda o derecha
+                        if (!ultimo_menu_salido_con_flecha_izquierda && !ultimo_menu_salido_con_flecha_derecha) {
+                            menu_topbarmenu_pressed_bar=1;
+                        }
                     }
                 }
 

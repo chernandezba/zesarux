@@ -621,7 +621,7 @@ void menu_topbarmenu(void)
 
 
                 if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
-                    printf("Ultimo menu pulsado izquierda o derecha\n");
+                    printf("Ultimo menu pulsado izquierda o derecha. menu_topbarmenu_pressed_bar=%d\n",menu_topbarmenu_pressed_bar);
                 }
 
 
