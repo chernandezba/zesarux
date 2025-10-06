@@ -439,7 +439,6 @@ Con ruN pasa lo mismo también
 
 ----top bar menu
 
-
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 
@@ -458,18 +457,13 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 
 *help->licenses->information. se repite information, para salir ESC dos veces??? creo que no falla esto
 
-
 *visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
 
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí. relacionado con lo anterior
 
-ok *windows->rearrange, cascade etc: tienen que considerar linea 1 de inicio cuando esta topbar (ponen linea 0 porque no hay botones superiores)
-
-*con topbar activo, setting de top buttons no deberia aparecer
-
-*boton derecho en zx desktop no funciona si raton por la parte de arriba (probablemente donde estarian los botones superiores)
+ok *boton derecho en zx desktop no funciona si raton por la parte de arriba (probablemente donde estarian los botones superiores)
 
 *agregar a changelog
 

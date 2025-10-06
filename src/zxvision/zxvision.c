@@ -16573,17 +16573,21 @@ int zxvision_if_mouse_in_background(void)
     int xinicio_botones,xfinal_botones,yinicio_botones,alto_boton;
 
     //Ver si en posicion de iconos superiores
-    menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,&xinicio_botones,&xfinal_botones);
-    if (mouse_pixel_y<=alto_boton && mouse_pixel_x>=xinicio_botones && mouse_pixel_x<=xfinal_botones) {
-        //printf("On upper buttons\n");
-        return 0;
+    if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
+        menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,&xinicio_botones,&xfinal_botones);
+        if (mouse_pixel_y<=alto_boton && mouse_pixel_x>=xinicio_botones && mouse_pixel_x<=xfinal_botones) {
+            //printf("On upper buttons\n");
+            return 0;
+        }
     }
 
     //Ver si en posicion de iconos inferiores
-    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
-    if (mouse_pixel_y>=yinicio_botones && mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones) {
-        //printf("On lower buttons\n");
-        return 0;
+    if (menu_zxdesktop_lower_buttons_enabled.v) {
+        menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+        if (mouse_pixel_y>=yinicio_botones && mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones) {
+            //printf("On lower buttons\n");
+            return 0;
+        }
     }
 
 
