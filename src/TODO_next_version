@@ -465,11 +465,8 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí. relacionado con lo anterior
 
-*menus que no son menus (dialogos) creados desde menu_dibuja_menu_dialogo, como joystick to keys, con topbar activo
-deberian salir centrados en el zx desktop , y no salen centrados
-
-*revisar shortcuts helper con topbar, no va bien. tampoco van bien sin topbar e interactuando con botones zona superior
-ok falta botones zona superior
+ok *menus que no son menus (dialogos) creados desde menu_dibuja_menu_dialogo, como joystick to keys o tape copier, con topbar activo
+deberian salir centrados en el zx desktop , y no salen centrados. Tambien pasa al pulsar botones superiores
 
 
 *windows->rearrange, cascade etc: tienen que considerar linea 1 de inicio cuando esta topbar (ponen linea 0 porque no hay botones superiores)

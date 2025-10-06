@@ -1633,7 +1633,7 @@ extern z80_bit menu_was_open_by_left_mouse_button;
 extern z80_bit menu_was_open_by_right_mouse_button;
 
 extern z80_bit force_next_menu_position;
-
+extern void zxvision_enable_next_menu_position(void);
 
 extern void menu_chdir_sharedfiles(void);
 
@@ -1872,7 +1872,7 @@ extern void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce);
 #define MAX_ZXVISION_HELPER_SHORTCUTS_LENGTH 30
 
 extern char zxvision_helper_shorcuts_accumulated[];
-
+extern void zxvision_helper_menu_shortcut_print(int tecla);
 
 //Para dibujo vectorial, usando escala. Utilizado en Visual Microdrive por ejemplo
 struct zxvision_vectorial_draw

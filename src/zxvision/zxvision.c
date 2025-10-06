@@ -1472,7 +1472,7 @@ void menu_espera_tecla_timeout_tooltip(void);
 z80_byte menu_da_todas_teclas(void);
 void menu_espera_tecla_cualquiera(void);
 
-void zxvision_helper_menu_shortcut_print(int tecla);
+
 void zxvision_helper_menu_shortcut_delete_last(void);
 void zxvision_helper_menu_shortcut_init(void);
 
@@ -16505,19 +16505,30 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
     return zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(1);
 }
 
+void zxvision_enable_next_menu_position(void)
+{
+    force_next_menu_position.v=1;
+    //printf("-Enable force position\n");
+
+}
+
 //Decir que el siguiente menu se abre en posicion fija
 //Coordenadas en caracteres
 void zxvision_set_next_menu_position(int x,int y)
 {
-    force_next_menu_position.v=1;
-
     force_next_menu_position_x=x;
     force_next_menu_position_y=y;
+    //printf("-Set force position\n");
+
+    zxvision_enable_next_menu_position();
 }
 
 void zxvision_reset_set_next_menu_position(void)
 {
     force_next_menu_position.v=0;
+
+    //printf("-Reset force position\n");
+
 }
 
 
@@ -22010,7 +22021,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     //nos apuntamos valor de retorno
 
-    //force_next_menu_position.v=0;
+    //zxvision_reset_set_next_menu_position();
 
     menu_item *menu_sel;
     menu_sel=menu_retorna_item(m,(*opcion_inicial));
@@ -22081,6 +22092,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     menu_speech_reset_tecla_pulsada();
 
     ventana->submenu_linea_seleccionada=*opcion_inicial;
+
+    if (genera_ventana) {
+        //Si se fuerza posicion del menu, como al usar topbar o botones superiores,
+        //si lo siguiente genera una ventana, no forzara posicion
+        zxvision_reset_set_next_menu_position();
+    }
 
     //En caso de menus tabulados, es responsabilidad de este de borrar con cls y liberar ventana
     if (es_tabulado==0) {
@@ -26057,7 +26074,7 @@ void menu_inicio_handle_right_button_background(void)
         //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
         //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
         //que se abran dependiendo del boton, queden debajo de dicho boton
-        force_next_menu_position.v=0;
+        zxvision_reset_set_next_menu_position();
     }
 }
 
@@ -26258,7 +26275,7 @@ int menu_inicio_handle_button_presses_userdef(int boton)
 void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
 {
 
-    force_next_menu_position.v=1;
+    zxvision_enable_next_menu_position();
 
     int x,y;
 
@@ -26417,7 +26434,7 @@ void menu_inicio_handle_button_presses(void)
     //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
     //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
     //que se abran dependiendo del boton, queden debajo de dicho boton
-    force_next_menu_position.v=0;
+    zxvision_reset_set_next_menu_position();
 
 }
 

@@ -12712,7 +12712,7 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
     //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
     //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
     //que se abran dependiendo del boton, queden debajo de dicho boton
-    force_next_menu_position.v=0;
+    zxvision_reset_set_next_menu_position();
 
 
 }

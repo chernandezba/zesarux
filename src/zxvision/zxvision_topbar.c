@@ -523,7 +523,7 @@ void menu_topbarmenu(void)
             if (posicion_y==0) {
                 menu_espera_no_tecla_con_repeticion();
 
-                force_next_menu_position.v=1;
+                zxvision_enable_next_menu_position();
                 force_next_menu_position_y=1;
             }
 
