@@ -65,7 +65,7 @@ int menu_topbarmenu_pressed_bar=0;
 
 #define MAX_SWITCH_TOPBAR_VISIBLE_TIMER 100
 
-void topbar_make_switchbutton_visible(void)
+void topbar_make_topbar_visible(void)
 {
 
     if (zxvision_topbar_menu_enabled.v==0) return;
@@ -99,7 +99,7 @@ void reset_topbar_overlay_we_are_on_topbar(void)
 
 }
 
-void topbar_make_switchbutton_invisible(void)
+void topbar_make_topbar_invisible(void)
 {
     if (zxvision_topbar_menu_enabled.v==0) return;
 
@@ -158,7 +158,7 @@ void topbar_timer_event(void)
     //No estaba visible
     if (topbar_esta_visible_por_timer.v==0) {
         if (movido && get_pos_y_mouse_topbar()==0) {
-            topbar_make_switchbutton_visible();
+            topbar_make_topbar_visible();
         }
     }
 
@@ -173,7 +173,7 @@ void topbar_timer_event(void)
 
             //en 2 segundos (50*2 frames) desaparece
             if (switchtopbar_button_visible_timer==MAX_SWITCH_TOPBAR_VISIBLE_TIMER) {
-                topbar_make_switchbutton_invisible();
+                topbar_make_topbar_invisible();
             }
         }
 
@@ -287,7 +287,7 @@ void menu_topbarmenu_preexit(void)
 {
     dibujar_cursor_topbar=0;
     topbar_overlay_we_are_on_topbar=0;
-    topbar_make_switchbutton_invisible();
+    topbar_make_topbar_invisible();
     salir_todos_menus=1;
 }
 

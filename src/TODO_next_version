@@ -441,8 +441,6 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 
 *haciendo un full scan search index con topbar habilitado, no acaba nunca, llega al menu de mas abajo y vuelve arriba
 
-ok *uart bridge emulation: al estar desactivado no deja ir a la derecha
-
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto:
 -> si se distingue porque hay un menu con texto inverso
 
