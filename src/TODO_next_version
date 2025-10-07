@@ -439,6 +439,11 @@ Con ruN pasa lo mismo también
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
 Excepto por el main menu mismo, sino agregaria "Main Menu->Main Menu"
+->lo hace mal, parcialmente: ejemplo:
+Main Menu-> Settings
+pero:
+Settings Menu-> Accessibility Settings
+->pero sucede lo mismo sin topbar y desplegando menus desde los botones superiores
 
 ok *haciendo un full scan search index con topbar habilitado, no acaba nunca, llega al menu de mas abajo y vuelve arriba
 
