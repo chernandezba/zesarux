@@ -16518,7 +16518,7 @@ void zxvision_set_next_menu_position(int x,int y)
 {
     force_next_menu_position_x=x;
     force_next_menu_position_y=y;
-    //printf("-Set force position\n");
+    //printf("-Set force position %d,%d\n",x,y);
 
     zxvision_enable_next_menu_position();
 }
@@ -20816,6 +20816,8 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
     //menu centrado normalmente
     //*xnormal=menu_center_x()-ancho/2;
     //*ynormal=menu_center_y()-alto/2;
+    //printf("--- menu_dibuja_submenu_get_menu_pos menu_dibuja_submenu_primer_submenu=%p force_next_menu_position.v=%d\n",
+    //    menu_dibuja_submenu_primer_submenu,force_next_menu_position.v);
 
     //menu a la derecha del anterior siempre que tengamos zx desktop habilitado y opcion de situar menus en zx desktop
     if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
@@ -20826,6 +20828,7 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 
             //Al primero se le puede forzar posicion, por los botones superiores por ejemplo
             if (force_next_menu_position.v) {
+                //printf("---menu_dibuja_submenu_get_menu_pos obtencion por force_next_menu_position.v\n");
                 *xnormal=force_next_menu_position_x;
                 *ynormal=force_next_menu_position_y;
             }
@@ -20833,6 +20836,8 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
             //Posicionamos al inicio del zx desktop
             else {
                 int x,y;
+
+                //printf("---menu_dibuja_submenu_get_menu_pos obtencion por calculo inicio del zx desktop\n");
 
 
                 int alto_boton;
@@ -20858,6 +20863,8 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 
         else {
             //a la derecha del anterior
+
+            //printf("---menu_dibuja_submenu_get_menu_pos obtencion por ubicar a la derecha del menu anterior\n");
 
             zxvision_window *ultima_ventana=menu_dibuja_submenu_find_last_submenu();
 
@@ -21129,6 +21136,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         //Solo alterar posicion si se abre desde botones de menu o desde topbar por ejemplo
         if (force_next_menu_position.v) {
+            //printf("---menu_dibuja_menu obtener posicion debido a force_next_menu_position.v\n");
 
             x=force_next_menu_position_x;
             y=force_next_menu_position_y;
@@ -21138,6 +21146,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     }
 
     else {
+        //printf("---menu_dibuja_menu obtener posicion debido a menu_dibuja_submenu_get_menu_pos\n");
         //Posicionar segun politica de submenus
         menu_dibuja_submenu_get_menu_pos(&x,&y);
 
@@ -21162,6 +21171,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         if (x+ancho>scr_get_menu_width()) ancho_visible=scr_get_menu_width()-x;
         if (y+alto>scr_get_menu_height()) alto_visible=scr_get_menu_height()-y;
     }
+
+    //printf("---menu_dibuja_menu posicion menu %d,%d\n",x,y);
 
     int redibuja_ventana;
     int tecla;
@@ -22121,11 +22132,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     ventana->submenu_linea_seleccionada=*opcion_inicial;
 
-    if (genera_ventana) {
-        //Si se fuerza posicion del menu, como al usar topbar o botones superiores,
-        //si lo siguiente genera una ventana, no forzara posicion
-        zxvision_reset_set_next_menu_position();
-    }
+
 
     //En caso de menus tabulados, es responsabilidad de este de borrar con cls y liberar ventana
     if (es_tabulado==0) {
@@ -22266,6 +22273,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         if (tecla_atajo) zxvision_helper_menu_shortcut_print(tecla_atajo);
 
         //innecesario con nuevo metodo de indexacion if (es_one_time) zxvision_index_delete_last_submenu_path();
+
+        if (genera_ventana) {
+            //Si se fuerza posicion del menu, como al usar topbar o botones superiores,
+            //si lo siguiente genera una ventana, no forzara posicion
+            //printf("---menu_dibuja_menu zxvision_reset_set_next_menu_position\n");
+            zxvision_reset_set_next_menu_position();
+        }
 
         //Si se gestiona la conmutacion de opcion directamente desde aqui
         if (item_seleccionado->opcion_conmuta!=NULL) {
@@ -26325,6 +26339,8 @@ void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
 
     force_next_menu_position_x=x;
     force_next_menu_position_y=y;
+
+    //printf("menu_inicio_handle_button_pressed_set_next_menu_position %d,%d\n",x,y);
 }
 
 //Gestionar pulsaciones de botones superiores

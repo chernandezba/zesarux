@@ -452,7 +452,8 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
 
-*si vamos a submenu, como display->text adventure tools, al pulsar flecha izquierda el menu display sale mas abajo de lo que deberia
+ok *si vamos a submenu, como display->text adventure tools, al pulsar flecha izquierda el menu display sale mas abajo de lo que deberia
+Solo pasa con Display
 
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 
