@@ -380,6 +380,7 @@ void menu_topbarmenu(void)
             //menu_refresca_pantalla();
             //scr_refresca_pantalla();
             //zxvision_redraw_all_windows();
+            if (!menu_multitarea) menu_refresca_pantalla();
 
             tecla_leida=menu_topbarmenu_get_key();
 

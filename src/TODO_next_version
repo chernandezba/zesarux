@@ -445,6 +445,8 @@ claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu direct
 -> si se distingue porque hay un menu con texto inverso
 
 *topbar que funcione si no hay multitask?
+ok-al mover raton arriba no aparecera overlay, porque necesita multitask y background windows even with menu closed precisamente
+->acabar de probarlo bien
 
 *help->licenses->information. se repite information, para salir ESC dos veces??? creo que no falla esto
 
