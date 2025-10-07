@@ -2516,6 +2516,16 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_menu_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
+        if (zxvision_topbar_menu_enabled.v) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                "Show topbar moving mouse to top","Mostrar topbar al mover ratón arriba","Mostrar topbar al moure ratolí a dalt");
+            menu_add_item_menu_tooltip(array_menu_common,"Show topbar when moving mouse to top");
+            menu_add_item_menu_ayuda(array_menu_common,"Show topbar when moving mouse to top");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_appears_move_mouse_top.v ? 'X' : ' ') );
+            menu_add_item_menu_opcion_conmuta(array_menu_common,&zxvision_topbar_appears_move_mouse_top);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+        }
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
             "Use mouse on menu","Usar ratón en el menu","Usar ratolí al menu");

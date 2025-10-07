@@ -398,8 +398,10 @@ z80_bit zxdesktop_icon_show_app_open={1};
 // ZX Vision Settings
 //
 
-//Con top bar menu, desactivamos botones superiores
+//Si está activo topbar menu
 z80_bit zxvision_topbar_menu_enabled={0};
+//Si aparece topbar al mover raton a la parte superior
+z80_bit zxvision_topbar_appears_move_mouse_top={1};
 
 //
 // General Settings

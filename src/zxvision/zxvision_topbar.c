@@ -142,6 +142,7 @@ void topbar_timer_event(void)
 
     if (zxvision_topbar_menu_enabled.v==0) return;
 
+    if (zxvision_topbar_appears_move_mouse_top.v==0) return;
 
     int movido=0;
 

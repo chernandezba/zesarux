@@ -198,6 +198,7 @@ extern z80_bit opcion_fast_welcome_message;
 extern z80_bit opcion_no_welcome_message;
 
 extern z80_bit zxvision_topbar_menu_enabled;
+extern z80_bit zxvision_topbar_appears_move_mouse_top;
 
 extern z80_bit zxvision_setting_use_speccy_keys;
 
