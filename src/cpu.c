@@ -596,7 +596,7 @@ int cpu_turbo_speed_antes=1;
 z80_bit set_machine_empties_audio_buffer={1};
 
 //Texto indicado en el parametro
-char parameter_disablebetawarning[100]="";
+//char parameter_disablebetawarning[100]="";
 
 
 //parametros de estadisticas

@@ -46,7 +46,7 @@ extern int siguiente_parametro(void);
 
 extern void siguiente_parametro_argumento(void);
 
-extern z80_bit parameter_disable_allbetawarningsleep;
+//extern z80_bit parameter_disable_allbetawarningsleep;
 
 extern int zesarux_first_start;
 

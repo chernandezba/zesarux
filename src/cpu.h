@@ -25,11 +25,11 @@
 #include "compileoptions.h"
 
 
-//#define EMULATOR_VERSION "12.1-SN"
-//#define EMULATOR_VERSION "12.1-B1"
-//#define EMULATOR_VERSION "12.1-RC"
-#define EMULATOR_VERSION "12.1"
-//#define SNAPSHOT_VERSION
+#define EMULATOR_VERSION "13.0-SN"
+//#define EMULATOR_VERSION "13.0-B1"
+//#define EMULATOR_VERSION "13.0-RC"
+//#define EMULATOR_VERSION "13.0"
+#define SNAPSHOT_VERSION
 
 /*
 EMULATOR_NUMBER_VERSION format:
@@ -54,9 +54,9 @@ Examples
 //Para obtener EMULATOR_NUMBER_VERSION se deberia usar siempre util_get_emulator_version_number
 #define EMULATOR_NUMBER_VERSION EMULATOR_VERSION
 
-#define EMULATOR_DATE "25 September 2025"
-#define EMULATOR_SHORT_DATE "25/09/2025"
-#define EMULATOR_GAME_EDITION "Night Shift"
+#define EMULATOR_DATE "26 September 2025"
+#define EMULATOR_SHORT_DATE "26/09/2025"
+#define EMULATOR_GAME_EDITION "xxx"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com"
 
@@ -694,7 +694,7 @@ extern z80_bit sdl_raw_keyboard_read;
 extern z80_bit core_spectrum_uses_reduced;
 
 
-extern char parameter_disablebetawarning[];
+//extern char parameter_disablebetawarning[];
 
 extern int total_minutes_use;
 

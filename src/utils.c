@@ -4470,9 +4470,11 @@ int util_write_configfile(void)
   if (do_no_show_david_in_memoriam.v)         ADD_STRING_CONFIG,"--no-show-david-in-memoriam");
 
 
-  if (parameter_disablebetawarning[0])        ADD_STRING_CONFIG,"--disablebetawarning \"%s\"",parameter_disablebetawarning);
+  //Deprecated
+  //if (parameter_disablebetawarning[0])        ADD_STRING_CONFIG,"--disablebetawarning \"%s\"",parameter_disablebetawarning);
 
-  if (parameter_disable_allbetawarningsleep.v)  ADD_STRING_CONFIG,"--disableallbetawarningpause");
+  //Deprecated
+  //if (parameter_disable_allbetawarningsleep.v)  ADD_STRING_CONFIG,"--disableallbetawarningpause");
 
   for (i=0;i<total_config_window_geometry;i++) {
        ADD_STRING_CONFIG,"--window-geometry %s %d %d %d %d %d %d %d %d", saved_config_window_geometry_array[i].nombre,
