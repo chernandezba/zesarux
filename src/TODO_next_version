@@ -438,8 +438,9 @@ Con ruN pasa lo mismo también
 
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
 claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
+Excepto por el main menu mismo, sino agregaria "Main Menu->Main Menu"
 
-*haciendo un full scan search index con topbar habilitado, no acaba nunca, llega al menu de mas abajo y vuelve arriba
+ok *haciendo un full scan search index con topbar habilitado, no acaba nunca, llega al menu de mas abajo y vuelve arriba
 
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto:
 -> si se distingue porque hay un menu con texto inverso
@@ -452,8 +453,6 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
 
-ok *si vamos a submenu, como display->text adventure tools, al pulsar flecha izquierda el menu display sale mas abajo de lo que deberia
-Solo pasa con Display
 
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 

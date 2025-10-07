@@ -20922,6 +20922,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 //
 
 //Usado en el reindexado de el indice de busqueda
+//Deja de reindexar cuando se detecta ESC en el menu principal
 int menu_dibuja_menu_recorrer_menus=0;
 
 //cuando entramos en submenu, resetear la opcion a la primera
@@ -21304,6 +21305,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         menu_refresca_pantalla();
 
         if (menu_dibuja_menu_recorrer_menus) {
+            //printf("Entering menu [%s]\n",titulo);
             debug_printf(VERBOSE_INFO,"Entering menu [%s]",titulo);
             if (menu_dibuja_menu_recorrer_menus==2) {
                 menu_dibuja_menu_recorrer_menus=1;
@@ -21334,6 +21336,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     //entrar a submenu con  enter
                     salir_recorrer=1;
                     tecla=13;
+                    //printf("Entering submenu [%s]\n",item_recorrer->texto_opcion);
                     debug_printf(VERBOSE_INFO,"Entering submenu [%s]",item_recorrer->texto_opcion);
                     menu_dibuja_menu_recorrer_menus_entrado_submenu=1;
 
@@ -21343,7 +21346,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                     if (*opcion_inicial>=max_opciones-1) {
                         //Salir con flecha izquierda
-                        //printf("salir con flecha izquierda\n");
+                        //printf("####scanindex. salir con flecha izquierda\n");
                         salir_recorrer=1;
 
                         if (m->no_es_realmente_un_menu) {
@@ -21363,7 +21366,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                         //Si ha dado la vuelta
                         if (*opcion_inicial<anterior_opcion) {
-                            //printf("salir con flecha izquierda\n");
+                            //printf("ha dado la vuelta. salir con flecha izquierda\n");
                             salir_recorrer=1;
 
                             if (m->no_es_realmente_un_menu) {

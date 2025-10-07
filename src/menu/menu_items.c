@@ -45312,7 +45312,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             }
 
 
-
+            //Esta es la razon por la que deja de reindexar el search index: al detectar ESC en el menu principal
             if (retorno_menu==MENU_RETORNO_ESC || (item_seleccionado.tipo_opcion & MENU_OPCION_ESC) == MENU_OPCION_ESC) {
                 //printf ("opcion ESC o pulsado ESC\n");
                 salir_menu=1;
@@ -45447,6 +45447,7 @@ void menu_inicio_bucle_main(void)
 
                 //printf("despues topbar menu. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
+                //printf("------------despues topbar menu. salir_menu=%d salir_todos_menus=%d\n",salir_menu,salir_todos_menus);
 
 
                 //Aqui miramos si hay un evento de reapertura de menu, este evento menu_pressed_open_menu_while_in_menu.v
@@ -45476,6 +45477,8 @@ void menu_inicio_bucle_main(void)
                     salir_todos_menus=0;
                 }
 
+                //printf("-------------despues topbar menu 2. salir_menu=%d salir_todos_menus=%d\n",salir_menu,salir_todos_menus);
+
 
             }
 
@@ -45498,6 +45501,8 @@ void menu_inicio_bucle_main(void)
     //printf("while en menu_inicio_bucle_main\n");
 
     } while (!salir_menu && !salir_todos_menus);
+
+    printf("-----------Fin menu_inicio_bucle_mail con salir_menu=%d salir_todos_menus=%d\n",salir_menu,salir_todos_menus);
 
 //extern zxvision_window *menu_dibuja_submenu_primer_submenu;
     //printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main. antes menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);

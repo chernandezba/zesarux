@@ -552,6 +552,8 @@ void menu_topbarmenu(void)
             //si se ha pulsado F5 dos veces, desplegado un menu con raton y el raton esta en el topbar
             //Cosa que provoca un efecto que está detallado mas abajo en el TODO de Si se pulsa F5 dos veces...
 
+            //Usado para detectar salida del menu principal y parar un full search index
+            int detectar_salir_menu_principal=0;
 
             if (posicion_y==0 && pos_cursor>=0) {
 
@@ -565,8 +567,7 @@ void menu_topbarmenu(void)
 
                 switch(pos_cursor) {
                     case 0:
-                        //menu_inicio_bucle_main();
-                        menu_inicio_mostrar_main_menu(0);
+                        detectar_salir_menu_principal=menu_inicio_mostrar_main_menu(detectar_salir_menu_principal);
                     break;
 
                     case 1:
@@ -628,6 +629,12 @@ void menu_topbarmenu(void)
 
                 printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",
                     if_menu_topbarmenu_pressed_bar(),mouse_left);
+
+                //Para parar el reindexado
+                if (detectar_salir_menu_principal) {
+                    //printf("PARAMOS REINDEXADO\n");
+                    menu_dibuja_menu_recorrer_menus=0;
+                }
 
                 //Necesario para cerrar submenus, por ejemplo si estamos en un item de menu con submenus,
                 //y simplemente pulsamos fuera del menu, con lo que se simula pulsado ESC
