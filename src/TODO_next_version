@@ -452,6 +452,8 @@ ok *uart bridge emulation: al estar desactivado no deja ir a la derecha
 
 *visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
 
+*si vamos a submenu, como display->text adventure tools, al pulsar flecha izquierda el menu display sale mas abajo de lo que deberia
+
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí. relacionado con lo anterior
