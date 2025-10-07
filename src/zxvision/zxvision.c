@@ -21676,10 +21676,25 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         //flecha derecha se comporta como enter en menus no tabulados y si tiene submenu
         if (m->es_menu_tabulado==0) {
-            if (tecla=='8' && menu_old_behaviour_close_menus.v==0 && menu_retorna_item(m,(*opcion_inicial))->tiene_submenu) tecla=13;
+            menu_item *comprobar_derecha=menu_retorna_item(m,(*opcion_inicial));
+            if (tecla=='8' && menu_old_behaviour_close_menus.v==0 && comprobar_derecha->tiene_submenu) {
+                int cambiar_a_enter=1;
+                //con topbar, si submenu no habilitado (como uart bridge emulation) se comporta como flecha derecha y no como enter
+                if (zxvision_topbar_menu_enabled.v) {
+                    t_menu_funcion_activo fun_activo=comprobar_derecha->menu_funcion_activo;
+                    if (fun_activo!=NULL) {
+                        if (fun_activo()==0) {
+                            printf("----flecha derecha se comporta como enter\n");
+                            cambiar_a_enter=0;
+                        }
+                    }
+                }
+
+                if (cambiar_a_enter) tecla=13;
+            }
         }
 
-        //printf("tecla: %d\n",tecla);
+        //printf("teclaxxx: %d\n",tecla);
 
         switch (tecla) {
             case 13:
@@ -21732,6 +21747,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                             if (ventana==menu_dibuja_submenu_primer_submenu) {
                                 printf("--Somos el primer submenu\n");
                                 salir_con_flecha_derecha=1;
+                                //printf("### salir con flecha derecha siendo primer submenu\n");
                             }
                             else {
                                 printf("--No somos el primer submenu\n");
