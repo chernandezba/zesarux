@@ -25746,14 +25746,16 @@ int new_about_window_ancho_mostrar=0;
 //0 salamanquesa primera
 //1 salamanquesa segunda
 //2 David
-//3 Diego
+//3 David adulto
+//4 Diego
 int cual_about_logo=1;
 
 unsigned char *retorna_bitmap_salamanquesa(void)
 {
     if (cual_about_logo==1) return bitmap_salamanquesa_otra_mas;
     else if (cual_about_logo==2) return david_pequenyo_64pix_transparent;
-    else if (cual_about_logo==3) return diego_64pix_transparent;
+    else if (cual_about_logo==3) return david_adulto_64pix_transparent;
+    else if (cual_about_logo==4) return diego_64pix_transparent;
     else return bitmap_salamanquesa;
 }
 
@@ -25761,8 +25763,9 @@ int retorna_color_transparente_salamanquesa(void)
 {
 
     if (cual_about_logo==1) return 0xfe;
-    else if (cual_about_logo==2) return 255;
-    else if (cual_about_logo==3) return 0x23;
+    else if (cual_about_logo==2) return 0xff;
+    else if (cual_about_logo==3) return 0xff;
+    else if (cual_about_logo==4) return 0x23;
     else return 255;
 
 }
@@ -25951,7 +25954,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
     //Cargar el archivo bmp
     /*
-    bmp. 256 colour (indexed)
+    Debe ser bmp. 256 colour (indexed).  grabar con no-codificación run lenght,  y no sobreescribir la información de espacio de colores
     */
 
 /*
@@ -26083,7 +26086,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
                                 //printf("Switch logo\n");
                                 //click normal. cambiar a la otra salamanquesa
                                 cual_about_logo++;
-                                if (cual_about_logo>3) cual_about_logo=0;
+                                if (cual_about_logo>4) cual_about_logo=0;
                                 menu_about_load_bmp_palette();
 
                                 tiempo_pulsando_inicial=0;
