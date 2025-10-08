@@ -1757,8 +1757,8 @@ printf("\n"
         "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
 		"--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
 		"--disablemenumouse                       Disable mouse on emulator menu\n"
-        "--enable-topbar-menu                     Enable topbar menu\n"
-        "--no-show-topbar-menu-move-top           Do not show topbar moving mouse to top\n"
+        "--enable-topbar-menu                     Enable Top Menu\n"
+        "--no-show-topbar-menu-move-top           Do not show Top Menu when moving mouse to top\n"
 
 		//"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
 

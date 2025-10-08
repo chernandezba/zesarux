@@ -2518,17 +2518,17 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_enable_topbar_menu,NULL,
-            "Enable topbar menu","Activar topbar menu","Activar topbar menu");
-        menu_add_item_menu_tooltip(array_menu_common,"Enable a menu bar on the top of the display");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable a menu bar on the top of the display. It disables the top menu buttons");
+            "Enable Top Menu","Activar Menú Superior","Activar Menú Superior");
+        menu_add_item_menu_tooltip(array_menu_common,"Enable a Top Menu");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable a Top Menu. It disables the upper buttons");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_menu_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         if (zxvision_topbar_menu_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-                "Show topbar moving mouse to top","Mostrar topbar al mover ratón arriba","Mostrar topbar al moure ratolí a dalt");
-            menu_add_item_menu_tooltip(array_menu_common,"Show topbar when moving mouse to top");
-            menu_add_item_menu_ayuda(array_menu_common,"Show topbar when moving mouse to top");
+                "Show Top Menu moving mouse to top","Mostrar Menú Superior al mover ratón arriba","Mostrar Menú Superior al moure ratolí a dalt");
+            menu_add_item_menu_tooltip(array_menu_common,"Show Top Menu when moving mouse to top");
+            menu_add_item_menu_ayuda(array_menu_common,"Show Top Menu when moving mouse to top");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_appears_move_mouse_top.v ? 'X' : ' ') );
             menu_add_item_menu_opcion_conmuta(array_menu_common,&zxvision_topbar_appears_move_mouse_top);
             menu_add_item_menu_es_avanzado(array_menu_common);

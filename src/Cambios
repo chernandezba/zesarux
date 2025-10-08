@@ -3,6 +3,9 @@ ZEsarUX 13 - xxx edition. 08 Octubre 2025
 Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Permitir drag&drop de archivos comprimidos
 
+Mejorado ZX Vision:
+- Agregado nuevo Menú Superior (no habilitado por defecto)
+
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado debug cpu: mostrar cuando los valores de registros se han modificado por la última execución de instrucción
 
