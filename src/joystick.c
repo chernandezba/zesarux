@@ -182,7 +182,10 @@ int gunstick_solo_brillo=0;
 //y entre 0 y 591
 //Para cacalib, tambien devuelve coordenadas dentro del tamanyo de la ventana
 //por defecto, 80x32
-int mouse_x=0,mouse_y=0;
+//Al entrar, no sabemos donde está el ratón, asumimos fuera de pantalla (-100 para que sea "lejos" de la pantalla). Si en cambio establecieramos 0,0,
+//al entrar y pulsar F5 (con topbar habilitado) sin haber movido el raton antes, se desplegaria el menu Z
+//porque se pensaria que el raton está arriba del todo a la izquierda
+int mouse_x=-100,mouse_y=-100;
 
 int mouse_pressed_close_window=0;
 int mouse_pressed_background_window=0;

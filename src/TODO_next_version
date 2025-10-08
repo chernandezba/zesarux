@@ -462,8 +462,6 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 *help->licenses->information. se repite information, para salir ESC dos veces??? creo que no falla esto
 
 
-ok * topbar aparece aunque el cursor esté fuera de la pantalla, solo con que coincida coordenada y
-
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí. relacionado con lo anterior
