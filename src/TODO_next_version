@@ -455,7 +455,6 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 ->La solución seria que todos usasen menu_add_item_menu_index_full_path com por ejemplo en "Snapshots to RAM menu"
 
 
-
 *topbar que funcione si no hay multitask?
 ok-al mover raton arriba no aparecera overlay, porque necesita multitask y background windows even with menu closed precisamente
 ->acabar de probarlo bien
@@ -463,8 +462,7 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 *help->licenses->information. se repite information, para salir ESC dos veces??? creo que no falla esto
 
 
-* topbar aparece aunque el cursor esté fuera de la pantalla, solo con que coincida coordenada y
-
+ok * topbar aparece aunque el cursor esté fuera de la pantalla, solo con que coincida coordenada y
 
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 

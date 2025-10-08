@@ -15926,6 +15926,15 @@ int zxvision_mouse_in_bottom_right(zxvision_window *w)
     return 0;
 }
 
+int zxvision_mouse_in_zesarux_window(void)
+{
+    if (mouse_x>=0 && mouse_y>=0 &&
+        mouse_x<=(screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom()) &&
+        mouse_y<=screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom() ) {
+            return 1;
+    }
+    else return 0;
+}
 
 void zxvision_handle_click_minimize(zxvision_window *w)
 {

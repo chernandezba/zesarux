@@ -166,10 +166,21 @@ void topbar_timer_event(void)
     previous_switchtopbar_timer_event_mouse_x=mouse_x;
     previous_switchtopbar_timer_event_mouse_y=mouse_y;
 
+    /*
+    if (movido) {
+        if (zxvision_mouse_in_zesarux_window()) {
+            printf("En ventana\n");
+        }
+        else {
+            printf("NO en ventana\n");
+        }
+    }
+    */
+
 
     //No estaba visible
     if (topbar_esta_visible_por_timer.v==0) {
-        if (movido && get_pos_y_mouse_topbar()==0) {
+        if (movido && get_pos_y_mouse_topbar()==0 && zxvision_mouse_in_zesarux_window()) {
             topbar_make_topbar_visible();
         }
     }
