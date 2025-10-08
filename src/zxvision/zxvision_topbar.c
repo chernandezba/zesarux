@@ -214,13 +214,15 @@ z80_byte menu_topbarmenu_get_key(void)
     menu_espera_tecla_timeout_tooltip();
     printf("Despues timeout\n");
 
-    if (menu_tooltip_counter>=TOOLTIP_SECONDS) {
-        topbarmenu_mostrar_hotkeys_por_timer=1;
-    }
+
 
     //menu_espera_tecla();
     tecla=zxvision_read_keyboard();
 
+    //Ver los hotkeys si ha pasado el timer o si se pulsa una tecla de letra
+    if (menu_tooltip_counter>=TOOLTIP_SECONDS || (tecla>='a' && tecla<='z') ) {
+        topbarmenu_mostrar_hotkeys_por_timer=1;
+    }
 
 
     return tecla;
