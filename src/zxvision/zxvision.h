@@ -310,6 +310,7 @@ extern void menu_espera_tecla_no_cpu_loop(void);
 extern int menu_generic_message_final_abajo(int primera_linea,int alto_ventana,int indice_linea);
 extern void menu_espera_tecla_timeout_window_splash(void);
 extern void menu_espera_tecla_o_wheel(void);
+extern void menu_espera_tecla_timeout_tooltip(void);
 
 extern int f_functions;
 extern char *string_esc_closes_menus;

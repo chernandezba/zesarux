@@ -1468,7 +1468,7 @@ void menu_establece_cuadrado(int x1,int y1,int x2,int y2,int color);
 void menu_util_cut_line_at_spaces(int posicion_corte, char *texto,char *linea1, char *linea2);
 
 
-void menu_espera_tecla_timeout_tooltip(void);
+
 z80_byte menu_da_todas_teclas(void);
 void menu_espera_tecla_cualquiera(void);
 

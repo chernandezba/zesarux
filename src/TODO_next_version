@@ -455,8 +455,6 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 ->La solución seria que todos usasen menu_add_item_menu_index_full_path com por ejemplo en "Snapshots to RAM menu"
 
 
-*no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto:
--> si se distingue porque hay un menu con texto inverso
 
 *topbar que funcione si no hay multitask?
 ok-al mover raton arriba no aparecera overlay, porque necesita multitask y background windows even with menu closed precisamente
@@ -464,16 +462,9 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *help->licenses->information. se repite information, para salir ESC dos veces??? creo que no falla esto
 
-ok*visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
-->falta llamar a menu_topbarmenu_crear_indice_posiciones desde algun sitio,
-quiza la primera vez que se activa overlay, controlando que no se haya llamado antes
-->se ven siempre al mover el raton, no sé si quiero que aparezcan pasados unos segundos, porque habría
-que activar un timer en la barra superior. habria que hacer algo parecido a menu_espera_tecla_timeout_tooltip,
-o incluso se puede usar misma función?
 
 * topbar aparece aunque el cursor esté fuera de la pantalla, solo con que coincida coordenada y
 
-ok *color cursor que siga el color definido en el estilo gui
 
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 

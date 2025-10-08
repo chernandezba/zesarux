@@ -53,6 +53,9 @@ int dibujar_cursor_topbar_pos_cursor=0;
 //Dice si estan los menus desplegados o solo estamos en la linea superior
 int topbar_menu_desplegado=0;
 
+//Si se muestran los hotkeys por timer
+int topbarmenu_mostrar_hotkeys_por_timer=0;
+
 //Generar posiciones de donde está cada menu
 //20 posiciones maximo, incluyendo el primero
 int posiciones_menus[20];
@@ -193,6 +196,9 @@ void topbar_timer_event(void)
 
 z80_byte menu_topbarmenu_get_key(void)
 {
+
+    menu_tooltip_counter=0;
+
     z80_byte tecla;
 
     if (!menu_multitarea) {
@@ -204,7 +210,15 @@ z80_byte menu_topbarmenu_get_key(void)
     menu_cpu_core_loop();
 
 
-    menu_espera_tecla();
+
+    menu_espera_tecla_timeout_tooltip();
+    printf("Despues timeout\n");
+
+    if (menu_tooltip_counter>=TOOLTIP_SECONDS) {
+        topbarmenu_mostrar_hotkeys_por_timer=1;
+    }
+
+    //menu_espera_tecla();
     tecla=zxvision_read_keyboard();
 
 
@@ -256,7 +270,12 @@ void menu_topbarmenu_write_bar(void)
             //Mostrar hotkeys
             //Que aparezcan solo cuando es visible la primera linea y ademas,
             //cuando estemos realmente dentro, no cuando aparece al mover el raton arriba y sin pulsar
-            if (!topbar_menu_desplegado && topbar_overlay_we_are_on_topbar) {
+            int mostrar_hotkeys=0;
+
+            if (menu_force_writing_inverse_color.v) mostrar_hotkeys=1;
+            if (topbarmenu_mostrar_hotkeys_por_timer) mostrar_hotkeys=1;
+
+            if (!topbar_menu_desplegado && topbar_overlay_we_are_on_topbar && mostrar_hotkeys) {
                 //printf("mostrar hotkey en x %d\n",x);
                 if (ESTILO_GUI_INVERSE_TINTA!=-1) {
                     tinta=ESTILO_GUI_INVERSE_TINTA;
@@ -361,6 +380,7 @@ void menu_topbarmenu(void)
     printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",zxvision_keys_event_not_send_to_machine,menu_abierto);
 
     topbar_overlay_we_are_on_topbar=1;
+    topbarmenu_mostrar_hotkeys_por_timer=0;
 
     //Esto es necesario al entrar pulsando boton izquierdo raton en el fondo
     //TODO: porque por alguna razón, al entrar con boton izquierdo no se cambia
