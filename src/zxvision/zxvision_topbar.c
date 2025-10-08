@@ -21,7 +21,9 @@
 
 
 //
-// Top bar menu functions
+// Top Menu functions (initially known as Top bar menu)
+// For the user is called "Top Menu"
+// On the code is called mostly "top bar menu", but can also be referred as "Top Menu"
 //
 
 
