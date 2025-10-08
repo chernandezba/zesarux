@@ -16103,17 +16103,18 @@ void zxvision_handle_maximize(zxvision_window *w)
                 //Si hay botones parte superior zxdesktop, origen_y lo incrementamos
                 if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
                     yinicial=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
-
-                    //Y quitamos ese alto disponible para no sobreescribir botones inferiores
-                    max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8)*2;
-
+                    max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
                 }
 
                 //O si hay top bar
                 else if (zxvision_topbar_menu_enabled.v) {
                     yinicial=1;
+                    //Le quitamos la linea superior
                     max_height--;
                 }
+
+                //Y quitamos ese alto disponible para no sobreescribir botones inferiores
+                max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
 
 
             }
