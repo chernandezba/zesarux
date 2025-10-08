@@ -1757,8 +1757,8 @@ printf("\n"
         "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
 		"--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
 		"--disablemenumouse                       Disable mouse on emulator menu\n"
-        "--enable-topbar-menu                     Enable Top Menu\n"
-        "--no-show-topbar-menu-move-top           Do not show Top Menu when moving mouse to top\n"
+        "--enable-top-menu                     Enable Top Menu\n"
+        "--no-show-top-menu-move-top           Do not show Top Menu when moving mouse to top\n"
 
 		//"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
 
@@ -3636,11 +3636,21 @@ int parse_cmdline_options(int desde_commandline) {
 				mouse_menu_disabled.v=1;
 			}
 
-            else if (!strcmp(argv[puntero_parametro],"--enable-topbar-menu")) {
+            else if (
+                    !strcmp(argv[puntero_parametro],"--enable-topbar-menu") ||
+                    !strcmp(argv[puntero_parametro],"--enable-top-menu")
+                ) {
+                    //--enable-topbar-menu deprecated
+
                 zxvision_topbar_menu_enabled.v=1;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--no-show-topbar-menu-move-top")) {
+            else if (
+                    !strcmp(argv[puntero_parametro],"--no-show-topbar-menu-move-top") ||
+                    !strcmp(argv[puntero_parametro],"--no-show-top-menu-move-top")
+                ) {
+                    //--no-show-topbar-menu-move-top deprecated
+
                 zxvision_topbar_appears_move_mouse_top.v=0;
             }
 

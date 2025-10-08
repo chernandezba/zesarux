@@ -465,10 +465,7 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *menu de exit ZEsarUX no sale centrado
 
-ok *maximizar con topbar, se come parte de iconos inferiores
-
 *mensajes debug topbar meterlos en un tipo de debug nuevo, para poder filtrar
 
-*agregar a changelog
 
 ----Fin top bar menu
