@@ -276,6 +276,25 @@ void menu_topbarmenu_write_bar(void)
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
+        char caracter_escribir=topbar_string_linea_menus[x];
+
+        //Resaltar menu donde apunta el cursor
+        if (dibujar_cursor_topbar && caracter_escribir!=' ') {
+            //printf("dibujar top bar cursor\n");
+
+            int x_inicio=posiciones_menus[dibujar_cursor_topbar_pos_cursor];
+
+            int x_final=posiciones_menus[dibujar_cursor_topbar_pos_cursor+1]-1;
+
+            if (x>=x_inicio && x<=x_final) {
+                tinta=ESTILO_GUI_TINTA_SELECCIONADO;
+                papel=ESTILO_GUI_PAPEL_SELECCIONADO;
+            }
+
+        }
+
+
+
         if (posiciones_menus[pos_menu]==x) {
             //Esta en una posicion de hotkey
             pos_menu++;
@@ -302,16 +321,17 @@ void menu_topbarmenu_write_bar(void)
             }
         }
 
-        putchar_menu_overlay_parpadeo(x,0,topbar_string_linea_menus[x],tinta,papel,0);
+        putchar_menu_overlay_parpadeo(x,0,caracter_escribir,tinta,papel,0);
     }
 
+    /*
     if (dibujar_cursor_topbar) {
         //printf("dibujar top bar cursor\n");
 
         int x_inicio=posiciones_menus[dibujar_cursor_topbar_pos_cursor];
-        //menu_escribe_texto(x_inicio,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"*");
+
         int x_final=posiciones_menus[dibujar_cursor_topbar_pos_cursor+1]-1;
-        //menu_escribe_texto(x_final,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"=");
+
 
         //Escribir ese nombre de menu seleccionado en color inverso o lo que corresponda según el estilo actual de GUI
         for (;x_inicio<=x_final && topbar_string_linea_menus[x_inicio]!=' ';x_inicio++) {
@@ -319,9 +339,8 @@ void menu_topbarmenu_write_bar(void)
             //menu_escribe_texto(x_inicio,0,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,topbar_string_linea_menus[x_inicio]);
         }
     }
+    */
 }
-
-
 
 int if_menu_topbarmenu_pressed_bar(void)
 {
