@@ -269,6 +269,7 @@ void menu_topbarmenu_write_bar(void)
     //    topbar_string_linea_menus[0]=(unsigned char) APPLE_LOGO_IN_CHARSET_RETROMAC;
     //}
 
+    //Indicar que nombre de menu estamos esperando para hotkey: 0=Z, 1=Smartload, 2=Snapshot, etc
     int pos_menu=0;
 
     int x;
@@ -293,10 +294,18 @@ void menu_topbarmenu_write_bar(void)
 
         }
 
+        //Mirar si hay que indicar letra de hotkey
+        char caracter_escribir_minusculas=letra_minuscula(caracter_escribir);
 
+        //El primer caracter es una letra z especial, no es 'z' sino el caracter con franjas de colores
+        if (x==0) caracter_escribir_minusculas='z';
 
-        if (posiciones_menus[pos_menu]==x) {
-            //Esta en una posicion de hotkey
+        //printf("Comparar posiciones_menus[%d]=%d\n",pos_menu,posiciones_menus[pos_menu]);
+
+        if (x>=posiciones_menus[pos_menu] && caracter_escribir_minusculas==topbar_hotkeys[pos_menu] ) {
+            //printf("Letra hotkey: [%c] x=%d\n",topbar_hotkeys[pos_menu],x);
+
+            //Esta en una posicion de hotkey. Saltamos al siguiente para la proxima hotkey
             pos_menu++;
 
             //Mostrar hotkeys
