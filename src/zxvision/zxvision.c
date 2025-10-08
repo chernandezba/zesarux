@@ -16113,8 +16113,12 @@ void zxvision_handle_maximize(zxvision_window *w)
                     max_height--;
                 }
 
-                //Y quitamos ese alto disponible para no sobreescribir botones inferiores
-                max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
+
+
+                if (menu_zxdesktop_lower_buttons_enabled.v) {
+                    //Y quitamos ese alto disponible para no sobreescribir botones inferiores
+                    max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
+                }
 
 
             }
