@@ -434,6 +434,8 @@ probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin
 -cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores
 Con ruN pasa lo mismo también
 
+-al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
+
 ----top bar menu
 
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
@@ -444,8 +446,14 @@ Main Menu-> Settings
 pero:
 Settings Menu-> Accessibility Settings
 ->pero sucede lo mismo sin topbar y desplegando menus desde los botones superiores
+->Pero no puedo agregar "Main Menu" de manera sistemática a todos, por ejemplo al pulsar
+boton derecho en zx desktop e ir a settings, se genera menu inicial  "ZX Desktop Settings". Si se agregase Main Menu quedaria:
+"Main Menu-> ZX Desktop Settings", lo cual es incorrecto, lo correcto es:
+"Main Menu-> Settings-> ZX Desktop Settings"
+Creo que es dificil de solventar eso y sucede en los menus que se genera el indice de manera automática, en cambio
+todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecerá correctamente
+->La solución seria que todos usasen menu_add_item_menu_index_full_path com por ejemplo en "Snapshots to RAM menu"
 
-ok *haciendo un full scan search index con topbar habilitado, no acaba nunca, llega al menu de mas abajo y vuelve arriba
 
 *no se distingue cuando aparece el menu por encima al mover el raton, de cuando aparece cuando está abierto:
 -> si se distingue porque hay un menu con texto inverso
@@ -456,12 +464,21 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *help->licenses->information. se repite information, para salir ESC dos veces??? creo que no falla esto
 
-*visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
+ok*visibilidad de hotkeys en menus de topbar igual que menus normales: que se vean las letras pasados unos segundos...
+->falta llamar a menu_topbarmenu_crear_indice_posiciones desde algun sitio,
+quiza la primera vez que se activa overlay, controlando que no se haya llamado antes
+->se ven siempre al mover el raton, no sé si quiero que aparezcan pasados unos segundos, porque habría
+que activar un timer en la barra superior. habria que hacer algo parecido a menu_espera_tecla_timeout_tooltip,
+o incluso se puede usar misma función?
 
+* topbar aparece aunque el cursor esté fuera de la pantalla, solo con que coincida coordenada y
+
+ok *color cursor que siga el color definido en el estilo gui
 
 *help->licenses, help->about y se queda el topbar activo. Parece que pasa muy pocas veces??
 
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí. relacionado con lo anterior
+->quizá es culpa del autoframeskip?
 
 *agregar a changelog
 

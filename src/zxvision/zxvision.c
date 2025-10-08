@@ -21062,8 +21062,14 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
             //Agregarle la ventana actual, que aun no esta en la lista de ventanas
             int longitud=strlen(buf_full_path);
-            if (longitud==0) strcpy(buf_full_path,titulo);
-            else sprintf(&buf_full_path[longitud],"-> %s",titulo);
+            if (longitud==0) {
+                //printf("---Agregar indice de menu principal\n");
+                strcpy(buf_full_path,titulo);
+            }
+            else {
+                //printf("---Agregar indice de submenu, a raiz: [%s]\n",buf_full_path);
+                sprintf(&buf_full_path[longitud],"-> %s",titulo);
+            }
 
             //generar uno aunque no sepa los subtitulos anteriores
             //sprintf(buf_full_path,"... -> %s",titulo);

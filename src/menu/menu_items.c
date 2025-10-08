@@ -26361,6 +26361,11 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Snapshot-> Snapshots to RAM menu","Menú Principal-> Instantánea-> Menú instantáneas a RAM","Menú Principal-> Instantània-> Menú instantànies a RAM");
+
         retorno_menu=menu_dibuja_menu(&snapshot_rewind_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Snapshots to RAM menu","Menú instantáneas a RAM","Menú instantànies a RAM");
 

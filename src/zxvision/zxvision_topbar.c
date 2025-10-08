@@ -50,6 +50,9 @@ int topbar_overlay_we_are_on_topbar=0;
 int dibujar_cursor_topbar=0;
 int dibujar_cursor_topbar_pos_cursor=0;
 
+//Dice si estan los menus desplegados o solo estamos en la linea superior
+int topbar_menu_desplegado=0;
+
 //Generar posiciones de donde está cada menu
 //20 posiciones maximo, incluyendo el primero
 int posiciones_menus[20];
@@ -59,6 +62,12 @@ int posiciones_menus[20];
                                                   //0         1         2         3         4         5         6         7         8         9         10
 char topbar_string_linea_menus_with_zxdesktop[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
 char topbar_string_linea_menus_without_zxdesktop[]="Z SL Sna Mch Aud Dsp Sto Dbg Net Win Set Hlp";
+
+//tecla Z para primer menu ZEsarUX
+//tecla S para Smartload
+//tecla N para snapshot
+//etc
+char *topbar_hotkeys="zsnmadteowil";
 
 //Indica que se ha pulsado en la barra de menu antes de entrar en menu_topbarmenu()
 int menu_topbarmenu_pressed_bar=0;
@@ -233,8 +242,36 @@ void menu_topbarmenu_write_bar(void)
     //    topbar_string_linea_menus[0]=(unsigned char) APPLE_LOGO_IN_CHARSET_RETROMAC;
     //}
 
+    int pos_menu=0;
 
-    menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,topbar_string_linea_menus);
+    int x;
+    for (x=0;topbar_string_linea_menus[x];x++) {
+        int tinta=ESTILO_GUI_TINTA_NORMAL;
+        int papel=ESTILO_GUI_PAPEL_NORMAL;
+
+        if (posiciones_menus[pos_menu]==x) {
+            //Esta en una posicion de hotkey
+            pos_menu++;
+
+            //Mostrar hotkeys
+            //Que aparezcan solo cuando es visible la primera linea y ademas,
+            //cuando estemos realmente dentro, no cuando aparece al mover el raton arriba y sin pulsar
+            if (!topbar_menu_desplegado && topbar_overlay_we_are_on_topbar) {
+                //printf("mostrar hotkey en x %d\n",x);
+                if (ESTILO_GUI_INVERSE_TINTA!=-1) {
+                    tinta=ESTILO_GUI_INVERSE_TINTA;
+                }
+                else {
+                    //Intercambiar
+                    int temp_papel=papel;
+                    papel=tinta;
+                    tinta=temp_papel;
+                }
+            }
+        }
+
+        putchar_menu_overlay_parpadeo(x,0,topbar_string_linea_menus[x],tinta,papel,0);
+    }
 
     if (dibujar_cursor_topbar) {
         //printf("dibujar top bar cursor\n");
@@ -244,9 +281,9 @@ void menu_topbarmenu_write_bar(void)
         int x_final=posiciones_menus[dibujar_cursor_topbar_pos_cursor+1]-1;
         //menu_escribe_texto(x_final,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"=");
 
-        //Escribir ese nombre de menu seleccionado en color inverso
-        for (;x_inicio<=x_final;x_inicio++) {
-            putchar_menu_overlay_parpadeo(x_inicio,0,topbar_string_linea_menus[x_inicio],ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        //Escribir ese nombre de menu seleccionado en color inverso o lo que corresponda según el estilo actual de GUI
+        for (;x_inicio<=x_final && topbar_string_linea_menus[x_inicio]!=' ';x_inicio++) {
+            putchar_menu_overlay_parpadeo(x_inicio,0,topbar_string_linea_menus[x_inicio],ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0);
             //menu_escribe_texto(x_inicio,0,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,topbar_string_linea_menus[x_inicio]);
         }
     }
@@ -287,32 +324,13 @@ void menu_topbarmenu_preexit(void)
 {
     dibujar_cursor_topbar=0;
     topbar_overlay_we_are_on_topbar=0;
+    topbar_menu_desplegado=0;
     topbar_make_topbar_invisible();
     salir_todos_menus=1;
 }
 
-
-
-void menu_topbarmenu(void)
+int menu_topbarmenu_crear_indice_posiciones(void)
 {
-    printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
-    printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",zxvision_keys_event_not_send_to_machine,menu_abierto);
-
-    topbar_overlay_we_are_on_topbar=1;
-
-    //Esto es necesario al entrar pulsando boton izquierdo raton en el fondo
-    //TODO: porque por alguna razón, al entrar con boton izquierdo no se cambia
-    //aunque cuando se entra pulsando por ejemplo F5 o si se pulsa boton izquierdo en el top bar si que se cambia
-    zxvision_keys_event_not_send_to_machine=1;
-
-    zxvision_redraw_all_windows();
-
-    //tecla Z para primer menu ZEsarUX
-    //tecla S para Smartload
-    //tecla N para snapshot
-    //etc
-    char *topbar_hotkeys="zsnmadteowil";
-
     posiciones_menus[0]=0;
 
     int i,total_posiciones;
@@ -333,6 +351,49 @@ void menu_topbarmenu(void)
 
     //El del menu Help
     posiciones_menus[total_posiciones++]=i;
+
+    return total_posiciones;
+}
+
+void menu_topbarmenu(void)
+{
+    printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
+    printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",zxvision_keys_event_not_send_to_machine,menu_abierto);
+
+    topbar_overlay_we_are_on_topbar=1;
+
+    //Esto es necesario al entrar pulsando boton izquierdo raton en el fondo
+    //TODO: porque por alguna razón, al entrar con boton izquierdo no se cambia
+    //aunque cuando se entra pulsando por ejemplo F5 o si se pulsa boton izquierdo en el top bar si que se cambia
+    zxvision_keys_event_not_send_to_machine=1;
+
+    zxvision_redraw_all_windows();
+
+
+    int total_posiciones=menu_topbarmenu_crear_indice_posiciones();
+    /*posiciones_menus[0]=0;
+
+    int i,total_posiciones;
+    int leido_espacio=0;
+    char *topbar_string_linea_menus=menu_topbar_get_text_topbar();
+    for (i=0,total_posiciones=1;topbar_string_linea_menus[i];i++) {
+        if (leido_espacio) {
+            if (topbar_string_linea_menus[i]!=' ') {
+                //printf("posicion %d i %d\n",total_posiciones,i);
+                posiciones_menus[total_posiciones++]=i;
+                leido_espacio=0;
+            }
+        }
+        else {
+            if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
+        }
+    }
+
+    //El del menu Help
+    posiciones_menus[total_posiciones++]=i;
+    */
+
+    int i;
 
     int tecla_leida=0;
     int salir_topbar=0;
@@ -557,6 +618,8 @@ void menu_topbarmenu(void)
 
             if (posicion_y==0 && pos_cursor>=0) {
 
+                topbar_menu_desplegado=1;
+
                 //actualizar posicion de cursor global con lo calculado segun el raton
                 dibujar_cursor_topbar_pos_cursor=pos_cursor;
 
@@ -693,6 +756,7 @@ void menu_topbarmenu(void)
     menu_topbarmenu_preexit();
 }
 
+int topbar_text_overlay_llamado_a_crear_indice_posiciones=0;
 
 void topbar_text_overlay(void)
 {
@@ -713,6 +777,11 @@ void topbar_text_overlay(void)
         if (topbar_esta_visible_por_timer.v) mostrar_topbar=1;
 
         if (mostrar_topbar) {
+            if (!topbar_text_overlay_llamado_a_crear_indice_posiciones) {
+                printf("----Creamos indice posiciones\n");
+                menu_topbarmenu_crear_indice_posiciones();
+                topbar_text_overlay_llamado_a_crear_indice_posiciones=1;
+            }
             menu_topbarmenu_write_bar();
         }
     }
