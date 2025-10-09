@@ -43603,7 +43603,7 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
     //Y dibujar dicho botón
     int nivel_zoom=1;
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-        0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0,1);
+        0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0,0);
 
     //marca alrededor del seleccionado
     if (indice_icono==seleccionado_indice_icono) {

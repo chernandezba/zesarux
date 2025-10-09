@@ -24,6 +24,18 @@
 
 
 /*
+
+Nota: los iconos están pensados para verse bien con fondo blanco y que no se fundan en el fondo,
+por tanto no es recomendable usar color blanco en pixeles aislados o se fundirian con el fondo.
+Por ejemplo muchos se funden con el fondo si es negro.
+Algunos iconos tienen incluido cierto contorno blanco para que queden bien con cualquier fondo.
+
+Y si con todo eso algunos iconos se funden con algun color particular de fondo, se puede habilitar la opción
+de ZX Desktop-> Contorno en iconos
+
+*/
+
+/*
 0 ZEsarUX
 1 Smartload
 2 Snapshot
