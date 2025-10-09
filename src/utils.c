@@ -7565,6 +7565,7 @@ void util_generate_random_noise(int pressrelease)
     if (pressrelease) util_random_noise_last_time=contador_segundo_infinito;
     else {
         util_random_noise=contador_segundo_infinito-util_random_noise_last_time;
+        //printf("Generate util_random_noise %d\n",util_random_noise);
     }
 }
 
@@ -25639,7 +25640,7 @@ int util_get_random(void)
     //esto ira de 0 a 1000
     valor_random +=util_random_noise;
 
-    //Para generar valores impares
+    //Para generar valores impares ?¿
     if (util_random_noise<500) valor_random++;
 
     return valor_random;

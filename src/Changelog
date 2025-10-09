@@ -5,6 +5,7 @@ Allow drag&drop of compressed files
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
+- Added setting to add a stroke on icons
 
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved debug cpu: show when registers values are modified by last opcode execution

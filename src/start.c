@@ -395,17 +395,19 @@ void emulator_main_loop(void)
 void init_randomize_noise_value(void)
 {
 
-                int chips=ay_retorna_numero_chips();
+    int chips=ay_retorna_numero_chips();
 
-                int i;
+    int i;
 
-                for (i=0;i<chips;i++) {
+    for (i=0;i<chips;i++) {
 
-	                gettimeofday(&z80_interrupts_timer_antes, NULL);
-        	        randomize_noise[i]=z80_interrupts_timer_antes.tv_sec & 0xFFFF;
-                	//printf ("randomize vale: %d\n",randomize_noise);
+        gettimeofday(&z80_interrupts_timer_antes, NULL);
+        randomize_noise[i]=z80_interrupts_timer_antes.tv_sec & 0xFFFF;
+        //printf ("randomize vale: %d\n",randomize_noise);
 
-		}
+    }
+
+    //printf("Init random : %d %3d %3d\n",randomize_noise[0],value_16_to_8h(randomize_noise[0]),value_16_to_8l(randomize_noise[0]));
 }
 
 void random_ram(z80_byte *puntero,int longitud)

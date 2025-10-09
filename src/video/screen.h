@@ -540,13 +540,13 @@ extern void screen_switch_rainbow_buffer(void);
 #define SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS 16
 
 
-
+#define GIGASCREEN_INDEX_FIRST_COLOR (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS)
 #define GIGASCREEN_TOTAL_PALETTE_COLOURS 256
 
-#define Z88_PXCOLON (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS+GIGASCREEN_TOTAL_PALETTE_COLOURS+0)
-#define Z88_PXCOLGREY (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS+GIGASCREEN_TOTAL_PALETTE_COLOURS+1)
-#define Z88_PXCOLOFF (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS+GIGASCREEN_TOTAL_PALETTE_COLOURS+2)
-#define Z88_PXCOLSCROFF (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS+GIGASCREEN_TOTAL_PALETTE_COLOURS+3)
+#define Z88_PXCOLON (GIGASCREEN_INDEX_FIRST_COLOR+GIGASCREEN_TOTAL_PALETTE_COLOURS+0)
+#define Z88_PXCOLGREY (GIGASCREEN_INDEX_FIRST_COLOR+GIGASCREEN_TOTAL_PALETTE_COLOURS+1)
+#define Z88_PXCOLOFF (GIGASCREEN_INDEX_FIRST_COLOR+GIGASCREEN_TOTAL_PALETTE_COLOURS+2)
+#define Z88_PXCOLSCROFF (GIGASCREEN_INDEX_FIRST_COLOR+GIGASCREEN_TOTAL_PALETTE_COLOURS+3)
 
 #define Z88_TOTAL_PALETTE_COLOURS 4
 
@@ -953,8 +953,10 @@ extern z80_bit screen_watermark_enabled_only_when_device_activity;
 extern z80_bit screen_watermark_rotate_colors_device_activity;
 
 extern void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) );
-extern void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso );
-extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso,int offset_inicio_agregar );
+extern void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig,
+    int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),
+    int zoom,int inverso,int permitir_envoltura );
+extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso,int offset_inicio_agregar,int permitir_envoltura );
 //extern void screen_put_mask_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino,   void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int offset_inicio_agregar,int color_pixel);
 
 

@@ -4,7 +4,8 @@ Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Permitir drag&drop de archivos comprimidos
 
 Mejorado ZX Vision:
-- Agregado nuevo Menú Superior (no habilitado por defecto)
+- Agregado nuevo Menú Superior (no habilitado por defecto
+- Agregada opción para añadir un contorno a los iconos
 
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado debug cpu: mostrar cuando los valores de registros se han modificado por la última execución de instrucción

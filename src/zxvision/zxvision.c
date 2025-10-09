@@ -4476,7 +4476,8 @@ void menu_clear_footer(void)
             //copiamos el logo a bitmap de destino cambiando el color del marco
             menu_footer_logo_copy_final(color_marco);
 
-            screen_put_asciibitmap_generic(&zesarux_ascii_logo_footer[1],NULL,xlogo,yinicial,ZESARUX_ASCII_LOGO_ANCHO,24, 0,footer_logo_putpixel,zoom_logo,0);
+            screen_put_asciibitmap_generic(&zesarux_ascii_logo_footer[1],NULL,xlogo,yinicial,ZESARUX_ASCII_LOGO_ANCHO,24, 0,
+            footer_logo_putpixel,zoom_logo,0,0);
         }
 
 
@@ -4753,6 +4754,13 @@ void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED
         //printf("Retorno %d %d\n",x,y);
         return;
     }
+
+    //Considerar la mascara de protección, vendrá con color blanco
+    //printf("color %d\n",color);
+    //if (color==7) {
+        //printf("XX\n");
+    //    return;
+    //}
 
     //El color es el del estilo
     scr_putpixel(x,y,ESTILO_GUI_TINTA_NORMAL);
@@ -5244,14 +5252,16 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
         }
 
         if (es_set_machine) {
-            screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0);
+            screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+            0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
 
             //Y continuamos hacia abajo diciendo que dibuje la flecha
             puntero_bitmap=bitmap_button_ext_desktop_set_machine_only_arrow;
 
         }
 
-        screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0);
+        screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+        0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
     }
 }
 
@@ -5491,7 +5501,8 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
     }
 
 
-    screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,inverso);
+    screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+        0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,inverso,1);
 
 
 
@@ -5726,7 +5737,8 @@ void menu_draw_ext_desktop_buttons(int xinicio)
 
 
 
-        screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0);
+        screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
+        0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
 
 
 
@@ -5767,7 +5779,7 @@ void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
 
     //Y dibujar bitmap
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
-        menu_draw_ext_desktop_putpixel_bitmap,zoom,0);
+        menu_draw_ext_desktop_putpixel_bitmap,zoom,0,1);
 
 }
 
@@ -5804,7 +5816,7 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
         //TODO: esta funcion no permite zoom X y zoom Y diferentes, solo permite uno
         //en el caso del texto le enviamos el zoom que sea mas pequeño
         screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
-            menu_draw_ext_desktop_putpixel_bitmap_icon_text,zoom,0,offset);
+            menu_draw_ext_desktop_putpixel_bitmap_icon_text,zoom,0,offset,0);
 
 
         x +=(ancho_caracter+1)*zoom_x*menu_gui_zoom;     //El ancho de caracter +1 para que no queden pegados
@@ -6164,6 +6176,10 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     }
 
 
+    //temp
+    //Primer pixel en negro
+    //bitmap[0][0]='x';
+
     menu_draw_ext_desktop_one_icon(x,y,bitmap);
 
 
@@ -6343,6 +6359,9 @@ z80_bit menu_ext_desktop_configurable_icons_text_background={1};
 
 //Si mostrar el texto de los iconos mas corto para que no exceda en ancho
 z80_bit menu_ext_desktop_configurable_icons_short_text={0};
+
+//Si se dibuja envoltura para iconos del ZX desktop, botones superiores, inferiores, etc
+z80_bit menu_ext_desktop_contorno_iconos={0};
 
 int menu_ext_desktop_fill_rainbow_counter;
 
@@ -6967,7 +6986,8 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
             if (menu_ext_desktop_fill==6) {
                 int j;
 
-                for (j=0;j<ancho_no_zxdesktop;j++) ay_randomize(0);
+                //for (j=0;j<ancho_no_zxdesktop;j++) ay_randomize(0);
+                for (j=0;j<ancho_no_zxdesktop;j++) util_get_random();
             }
         }
 
@@ -7081,10 +7101,19 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
                     //Random
                     case 6:
-                        ay_randomize(0);
+                        //ay_randomize(0);
 
                         //randomize_noise es valor de 16 bits. sacar uno de 8 bits
-                        color=value_16_to_8h(randomize_noise[0]) % EMULATOR_TOTAL_PALETTE_COLOURS;
+                        //color=value_16_to_8h(randomize_noise[0]) % EMULATOR_TOTAL_PALETTE_COLOURS;
+
+                        //sacamos color entre 0-255
+                        color=value_16_to_8h(util_get_random());
+
+                        //por si acaso restringir a esa paleta (idealmente de 256 colores) sacando el resto
+                        color = color % GIGASCREEN_TOTAL_PALETTE_COLOURS;
+                        //printf("1 %d\n",color);
+                        //donde empieza el gigascreen
+                        color +=GIGASCREEN_INDEX_FIRST_COLOR;
 
                         scr_putpixel(x,y,color);
                     break;

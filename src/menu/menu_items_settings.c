@@ -11623,7 +11623,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
         //Y dibujar dicho botón
         int nivel_zoom=1;
         screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-            0,menu_zxdesktop_set_userdef_button_func_action_putpixel,nivel_zoom,0);
+            0,menu_zxdesktop_set_userdef_button_func_action_putpixel,nivel_zoom,0,1);
     }
 
     //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
@@ -11800,7 +11800,7 @@ void menu_zxdesktop_get_window_list_overlay(void)
         //Y dibujar dicho botón
         int nivel_zoom=1;
         screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-            0,menu_zxdesktop_get_window_list_putpixel,nivel_zoom,0);
+            0,menu_zxdesktop_get_window_list_putpixel,nivel_zoom,0,1);
 
     }
 
@@ -13019,6 +13019,16 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
 
             }
+
+            menu_add_item_menu_separator(array_menu_ext_desktop_settings);
+
+            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Stroke on icons","Contorno en iconos","Contorn en icones");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_contorno_iconos.v ? 'X' : ' ' ) );
+            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a white stroke on icons");
+            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a white stroke on icons, useful to avoid blending with ZX Desktop");
+            menu_add_item_menu_opcion_conmuta(array_menu_ext_desktop_settings,&menu_ext_desktop_contorno_iconos);
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 

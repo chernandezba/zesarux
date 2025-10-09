@@ -436,6 +436,20 @@ Con ruN pasa lo mismo también
 
 -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 
+-funcion para poner una "máscara" de pixeles blancos envolviendo un icono en el desktop. Para evitar que se funda
+Desde menu_draw_ext_desktop_one_icon...
+Hay dos maneras:
+1) Haciendo una copia del bitmap y meterle la máscara, y dibujar la copia
+2) Que la función de render le meta la máscara al vuelo. función screen_put_asciibitmap_generic
+
+1) seria mejor porque podría hacer solo la máscara en iconos del desktop, o de botones, pero no hacerlo por ejemplo en el dibujo de partituras,
+o del logo Z en pantalla
+
+2) entraría para todos los iconos. Aunque se podría pasar un parámetro a screen_put_asciibitmap_generic para que lo haga o no
+
+
+se hace 2). dibujar_envoltura que sea un setting de zx desktop
+
 ----top bar menu
 
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado

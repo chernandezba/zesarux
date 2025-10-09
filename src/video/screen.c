@@ -4329,9 +4329,17 @@ void screen_put_mask_asciibitmap_generic_offset_inicio(char **origen,z80_int *de
 */
 
 //Mete un bitmap en formato ascii en un bitmap generico, y agregando un offset que salta X lineas en origen
+//permitir_envoltura: si se permite dibujar la envoltura alrededor de los pixeles, que evita que se funda el icono con el zx desktop segun el color
+//(cuando se activan como transparentes)
+//Por ejemplo los textos de iconos del zx desktop no permiten envoltura
 void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino,
-    void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso,int offset_inicio_agregar)
+    void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso,int offset_inicio_agregar,int permitir_envoltura)
 {
+
+    int dibujar_envoltura=menu_ext_desktop_contorno_iconos.v;
+
+    if (!permitir_envoltura) dibujar_envoltura=0;
+
 	int fila,columna;
 
 	for (fila=0;fila<alto_orig;fila++) {
@@ -4341,10 +4349,62 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
 		texto=origen[fila+offset_inicio_agregar];
 		for (columna=0;columna<ancho_orig;columna++) {
 			char caracter=texto[columna];
+            int color_pixel=-1; //por defecto no dibujar
 
 			if (caracter!=' ') {
-				int color_pixel=return_color_zesarux_ascii(caracter);
+				color_pixel=return_color_zesarux_ascii(caracter);
+			}
 
+            else {
+                //Es un espacio. hay que dibujar una envoltura?
+                if (dibujar_envoltura) {
+                    //caracter a la derecha
+                    if (columna<ancho_orig-1) {
+                       char caracter_siguiente=texto[columna+1];
+                       //Si lo de la derecha no es transparente y no es blanco
+                        if (caracter_siguiente!=' ' && caracter_siguiente!='w') {
+                            color_pixel=7;//return_color_zesarux_ascii('w');
+                       }
+                    }
+
+                    //caracter a la izquierda
+                    if (columna>0) {
+                       char caracter_anterior=texto[columna-1];
+                       //Si lo de la izquierda no es transparente y no es blanco
+                        if (caracter_anterior!=' ' && caracter_anterior!='w') {
+                            color_pixel=7;//return_color_zesarux_ascii('w');
+                       }
+                    }
+
+                    //caracter arriba
+                    if (fila>0) {
+                        char *texto_arriba;
+		                texto_arriba=origen[fila-1+offset_inicio_agregar];
+                       char caracter_anterior=texto_arriba[columna];
+                       //Si lo de arriba no es transparente y no es blanco
+                        if (caracter_anterior!=' ' && caracter_anterior!='w') {
+                            color_pixel=7;//return_color_zesarux_ascii('w');
+                       }
+                    }
+
+                    //caracter abajo
+                    if (fila<alto_orig-1) {
+                        char *texto_abajo;
+		                texto_abajo=origen[fila+1+offset_inicio_agregar];
+                       char caracter_siguiente=texto_abajo[columna];
+                       //Si lo de abajo no es transparente y no es blanco
+                        if (caracter_siguiente!=' ' && caracter_siguiente!='w') {
+                            color_pixel=7;//return_color_zesarux_ascii('w');
+                       }
+                    }
+
+
+                }
+            }
+
+
+
+            if (color_pixel>=0) {
 				if (inverso) {
 					//Se supone que el color esta entre 0 y 15 pero por si acaso
 					if (color_pixel>=0 && color_pixel<=15) {
@@ -4358,8 +4418,7 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
 						putpixel(destino,x+columna*zoom+zx,y+fila*zoom+zy,ancho_destino,color_pixel);
 					}
 				}
-			}
-
+            }
 
 
 
@@ -4368,9 +4427,11 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
 }
 
 //Mete un bitmap en formato ascii en un bitmap generico
-void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso)
+void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig,
+    int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),
+    int zoom,int inverso,int permitir_envoltura)
 {
-	screen_put_asciibitmap_generic_offset_inicio(origen,destino,x,y,ancho_orig,alto_orig,ancho_destino,putpixel,zoom,inverso,0);
+	screen_put_asciibitmap_generic_offset_inicio(origen,destino,x,y,ancho_orig,alto_orig,ancho_destino,putpixel,zoom,inverso,0,permitir_envoltura);
 }
 
 
@@ -4497,7 +4558,7 @@ void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino
     }
 
 
-	screen_put_asciibitmap_generic(lineas_logo_copiado,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
+	screen_put_asciibitmap_generic(lineas_logo_copiado,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0,0);
 
     free(logo_copiado);
 }
@@ -9697,7 +9758,7 @@ Bit 6 GRN1 most  significant bit of green.
 
 
     //colores para gigascreen
-    int index_giga=32;
+    int index_giga=GIGASCREEN_INDEX_FIRST_COLOR;
     for (i=0;i<16;i++) {
         for (j=0;j<16;j++) {
 
@@ -12476,7 +12537,7 @@ void all_interlace_scr_refresca_pantalla(void)
 int get_gigascreen_color(int c0,int c1)
 {
 	//return c0 ^ c1;
-	int index=32+(c0*16)+c1;
+	int index=GIGASCREEN_INDEX_FIRST_COLOR+(c0*16)+c1;
 
 
 	//if (index>=287) {
