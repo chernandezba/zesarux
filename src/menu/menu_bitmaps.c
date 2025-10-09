@@ -4294,20 +4294,20 @@ char *bitmap_button_ext_desktop_volume_silence[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 char *bitmap_button_ext_desktop_debugcpu_view_adventure[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
-	"    www  www  w w  www    ",	//0
-	"   wbbbwwbbbwwbwbwwbbbw   ",
-	"    wbw wbww wbwbw wbw    ",
-	"    wbw wbbw  wbw  wbw    ",
-	"    wbw wbww wbwbw wbw    ",
-	"    wbw wbbbwwbwbw wbw    ",
-	"  w  www www ww www ww  w ",
-	" wbw wbbw wbwbwwbbbwwbwwbw",
-	"wbwbwwbwbwwbwbwwbww wbbwbw",
-	"wbbbwwbwbwwbwbwwbbw wbwbbw",
-	"wbwbwwbwbwwbwbwwbww wbwwbw",  //10
-	"wbwbwwbbw  wbw wbbbwwbwwbw",
-	" w w  ww    w   www  w  w ",
+   //01234567890123456789012345
+	"                          ",	//0
+	"    bbb  bbb  b b  bbb    ",
+	"     b   b    b b   b     ",
+	"     b   bb    b    b     ",
+	"     b   b    b b   b     ",
+	"     b   bbb  b b   b     ",
+	"                          ",
+	"  b   bb   b b  bbb  b  b ",
+	" b b  b b  b b  b    bb b ",
+	" bbb  b b  b b  bb   b bb ",
+	" b b  b b  b b  b    b  b ",  //10
+	" b b  bb    b   bbb  b  b ",
+	"                          ",
     "                          ",
     "                 R        ",
     "                R         ",
