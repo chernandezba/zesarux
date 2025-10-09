@@ -4938,23 +4938,23 @@ char *bitmap_button_ext_desktop_quicksave[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"       bbbbbbbbbbbb  xx   ",
 	"      bbbbbbbbbbbbbb      ",
 	"     bbbbbbbbbbbbbbbb     ",
+	"  bbbbbbbbbbbbbbbbbbbbbb  ",
+	" bbbbbbbbbb    bbbbbbbbbb ",	//10
+	" bbbbbbbbb      bbbbbbbbb ",
+	" bbWWbbbb        bbbbbbbb ",
+	" bbWWbbb   xx     bbbbbbb ",
+	" bbbbbbb  x       bbbbbbb ",
+	" bbbbbb   x        bbbbbb ",
+	" bbbbbb            bbbbbb ",
+	" bbbbbb            bbbbbb ",
+	" bbbbbbb          bbbbbbb ",
+	" bbbbbbb          bbbbbbb ",
+	" bbbbbbbb        bbbbbbbb ",	//20
+	" bbbbbbbbb      bbbbbbbbb ",
+	" bbbbbbbbbb    bbbbbbbbbb ",
 	" bbbbbbbbbbbbbbbbbbbbbbbb ",
-	"bbbbbbbbbbb    bbbbbbbbbbb",	//10
-	"bbbbbbbbbb      bbbbbbbbbb",
-	"bbbWWbbbb        bbbbbbbbb",
-	"bbbWWbbb   xx     bbbbbbbb",
-	"bbbbbbbb  x       bbbbbbbb",
-	"bbbbbbb   x        bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbbb          bbbbbbbb",
-	"bbbbbbbb          bbbbbbbb",
-	"bbbbbbbbb        bbbbbbbbb",	//20
-	"bbbbbbbbbb      bbbbbbbbbb",
-	"bbbbbbbbbbb    bbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb"	//25
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	" bbbbbbbbbbbbbbbbbbbbbbbb "	//25
 
 
 };
