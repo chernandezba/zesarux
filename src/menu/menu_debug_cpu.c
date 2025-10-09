@@ -1526,7 +1526,9 @@ void menu_debug_registers_print_register_aux_moto(zxvision_window *w,char *texto
 }
 
 z80_bit menu_debug_follow_pc={1}; //Si puntero de direccion sigue al registro pc
-menu_z80_moto_int menu_debug_memory_pointer=0; //Puntero de direccion
+menu_z80_moto_int menu_debug_memory_pointer=0; //Puntero de direccion usada en las vistas con desensamblado (1-4)
+menu_z80_moto_int menu_debug_memory_pointer_hexa_mem=0; //Puntero de direccion usada en las vistas con memoria hexa (5,6)
+
 //Ultima direccion asignada a la variable
 menu_z80_moto_int last_menu_debug_memory_pointer=0;
 
@@ -1611,7 +1613,12 @@ void menu_debug_registers_change_ptr(void)
         int result=menu_debug_cpu_calculate_expression(string_address,&last_menu_debug_memory_pointer);
 
         if (result==0) {
-            menu_debug_memory_pointer=last_menu_debug_memory_pointer;
+            if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
+                menu_debug_memory_pointer_hexa_mem=last_menu_debug_memory_pointer;
+            }
+            else {
+                menu_debug_memory_pointer=last_menu_debug_memory_pointer;
+            }
         }
 
     }
@@ -3865,6 +3872,8 @@ int menu_debug_registers_subview_type=0;
 
 		if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
 
+            menu_debug_memory_pointer_copia=menu_debug_memory_pointer_hexa_mem;
+
 			//Hacer que texto ventana empiece pegado a la izquierda
 			menu_escribe_linea_startx=0;
 
@@ -4696,12 +4705,18 @@ void menu_debug_cursor_up(void)
 			menu_debug_line_cursor--;
 		}
 
-                                        if (menu_debug_view_has_disassemly() ) { //Si vista con desensamblado
-                                                menu_debug_memory_pointer=menu_debug_disassemble_subir(menu_debug_memory_pointer);
-                                        }
-                                        else {  //Vista solo hexa
-                                                menu_debug_memory_pointer -=menu_debug_registers_print_registers_longitud_opcode;
-                                        }
+        if (menu_debug_view_has_disassemly() ) { //Si vista con desensamblado
+                menu_debug_memory_pointer=menu_debug_disassemble_subir(menu_debug_memory_pointer);
+        }
+        else {  //Vista solo hexa
+            if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
+                menu_debug_memory_pointer_hexa_mem -=menu_debug_registers_print_registers_longitud_opcode;
+            }
+
+            else {
+                menu_debug_memory_pointer -=menu_debug_registers_print_registers_longitud_opcode;
+            }
+        }
 }
 
 
@@ -4715,7 +4730,13 @@ void menu_debug_cursor_down(zxvision_window *w)
                                                 menu_debug_memory_pointer=menu_debug_disassemble_bajar(menu_debug_memory_pointer);
                                         }
                                         else {  //Vista solo hexa
+                                            if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
+                                                menu_debug_memory_pointer_hexa_mem +=menu_debug_registers_print_registers_longitud_opcode;
+                                            }
+
+                                            else {
                                                 menu_debug_memory_pointer +=menu_debug_registers_print_registers_longitud_opcode;
+                                            }
                                         }
 
 }
@@ -5110,30 +5131,40 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 	char buffer_mensaje[64];
 	char buffer_mensaje_short[64];
 	char buffer_mensaje_long[64];
-                //Forzar a mostrar atajos
-                z80_bit antes_menu_writing_inverse_color;
-                antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-                menu_writing_inverse_color.v=1;
+    //Forzar a mostrar atajos
+    z80_bit antes_menu_writing_inverse_color;
+    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+    menu_writing_inverse_color.v=1;
 
 
-                                //Mostrar puntero direccion
-                                menu_debug_memory_pointer=adjust_address_memory_size(menu_debug_memory_pointer);
+    //Mostrar puntero direccion
+    menu_debug_memory_pointer=adjust_address_memory_size(menu_debug_memory_pointer);
+    menu_debug_memory_pointer_hexa_mem=adjust_address_memory_size(menu_debug_memory_pointer_hexa_mem);
 
 
-				if (menu_debug_registers_current_view!=7 && menu_debug_registers_current_view!=8) {
+    if (menu_debug_registers_current_view!=7 && menu_debug_registers_current_view!=8) {
 
-                                char string_direccion[10];
-                                menu_debug_print_address_memory_zone(string_direccion,menu_debug_memory_pointer);
+            char string_direccion[10];
+            if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
+                menu_debug_print_address_memory_zone(string_direccion,menu_debug_memory_pointer_hexa_mem);
+            }
+            else {
+                menu_debug_print_address_memory_zone(string_direccion,menu_debug_memory_pointer);
+            }
 
 				char maxima_vista='7';
 
 
 				if (util_textadventure_is_daad_quill_paws_gac() ) maxima_vista='8';
 
-								sprintf(buffer_mensaje_short,"~~Mptr:%sH [%c] ~~FlwPC ~~1-~~%c:V%d",
+                //En vistas 5 y 6 se usa el otro memptr, que llamaremos memptx
+                char letra_final_memptr='r';
+                if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) letra_final_memptr='x';
+
+								sprintf(buffer_mensaje_short,"~~Mpt%c:%sH [%c] ~~FlwPC ~~1-~~%c:V%d",letra_final_memptr,
                                         string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista,menu_debug_registers_current_view );
 
-								sprintf(buffer_mensaje_long,"~~Memptr:%sH [%c] ~~FollowPC ~~1-~~%c:View %d",
+								sprintf(buffer_mensaje_long,"~~Mempt%c:%sH [%c] ~~FollowPC ~~1-~~%c:View %d",letra_final_memptr,
                                         string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista,menu_debug_registers_current_view );
 
 
@@ -8088,7 +8119,12 @@ z80_byte menu_debug_cpu_handle_mouse(zxvision_window *ventana)
             //Primero nos posicionamos en la direccion de arriba del todo
             //TODO: lo mejor sería tener una variable que cuando muestre vista 1 indique la direccion de memoria de la primera linea,
             //para no tener que recalcularla aqui
-            menu_debug_memory_pointer=menu_debug_disassemble_subir_veces(menu_debug_memory_pointer,menu_debug_line_cursor);
+            if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
+                menu_debug_memory_pointer_hexa_mem=menu_debug_disassemble_subir_veces(menu_debug_memory_pointer_hexa_mem,menu_debug_line_cursor);
+            }
+            else {
+                menu_debug_memory_pointer=menu_debug_disassemble_subir_veces(menu_debug_memory_pointer,menu_debug_line_cursor);
+            }
 
             //Cursor a 0
             menu_debug_line_cursor=0;
