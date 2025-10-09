@@ -4954,7 +4954,7 @@ char *bitmap_button_ext_desktop_quicksave[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" bbbbbbbbbb    bbbbbbbbbb ",
 	" bbbbbbbbbbbbbbbbbbbbbbbb ",
 	" bbbbbbbbbbbbbbbbbbbbbbbb ",
-	" bbbbbbbbbbbbbbbbbbbbbbbb "	//25
+	"                          "	//25
 
 
 };
