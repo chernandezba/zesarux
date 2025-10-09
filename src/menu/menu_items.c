@@ -43261,13 +43261,6 @@ zxvision_window *menu_process_switcher_window;
 
 void menu_process_switcher_draw_icon_text_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color GCC_UNUSED)
 {
-    //Considerar la mascara de protección, vendrá con color blanco
-    //printf("color %d\n",color);
-    //if (color==7) {
-        //printf("XX\n");
-        return;
-    //}
-
     //El color es el del estilo
     zxvision_putpixel(menu_process_switcher_window,x,y,ESTILO_GUI_TINTA_NORMAL);
 }

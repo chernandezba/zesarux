@@ -4755,13 +4755,6 @@ void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED
         return;
     }
 
-    //Considerar la mascara de protección, vendrá con color blanco
-    //printf("color %d\n",color);
-    //if (color==7) {
-        //printf("XX\n");
-    //    return;
-    //}
-
     //El color es el del estilo
     scr_putpixel(x,y,ESTILO_GUI_TINTA_NORMAL);
 }
