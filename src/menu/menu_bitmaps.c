@@ -4929,32 +4929,32 @@ char *bitmap_button_ext_desktop_quickload[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_quicksave[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "                      ww  ",     //0
-  	"                     wxxw ",
-	"                     wxxw ",
-	"         wwwwwwww   wwxxww",
-	"        wbbbbbbbbw wxxxxxx",
-	"       wbbbbbbbbbbw wxxxxw",
-	"      wbbbbbbbbbbbbw wxxw ",
-	"     wbbbbbbbbbbbbbbw ww  ",
-	"  wwwbbbbbbbbbbbbbbbbwww  ",
-	" wbbbbbbbbbbbbbbbbbbbbbbw ",
-	"wbbbbbbbbbbwwwwbbbbbbbbbbw",	//10
-	"wbbbbbbbbbw    wbbbbbbbbbw",
-	"wbbWWbbbbw  ww  wbbbbbbbbw",
-	"wbbWWbbbw  wxxw  wbbbbbbbw",
-	"wbbbbbbbw wxww   wbbbbbbbw",
-	"wbbbbbbw  wxw     wbbbbbbw",
-	"wbbbbbbw   w      wbbbbbbw",
-	"wbbbbbbw          wbbbbbbw",
-	"wbbbbbbbw        wbbbbbbbw",
-	"wbbbbbbbw        wbbbbbbbw",
-	"wbbbbbbbbw      wbbbbbbbbw",	//20
-	"wbbbbbbbbbw    wbbbbbbbbbw",
-	"wbbbbbbbbbbwwwwbbbbbbbbbbw",
-	"wbbbbbbbbbbbbbbbbbbbbbbbbw",
-	"wbbbbbbbbbbbbbbbbbbbbbbbbw",
-	"wwwwwwwwwwwwwwwwwwwwwwwwww"	//25
+    "                     xx   ",     //0
+  	"                     xx   ",
+	"                     xx   ",
+	"                     xx   ",
+	"         bbbbbbbb  xxxxxx ",
+	"        bbbbbbbbbb  xxxx  ",
+	"       bbbbbbbbbbbb  xx   ",
+	"      bbbbbbbbbbbbbb      ",
+	"     bbbbbbbbbbbbbbbb     ",
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	"bbbbbbbbbbb    bbbbbbbbbbb",	//10
+	"bbbbbbbbbb      bbbbbbbbbb",
+	"bbbWWbbbb        bbbbbbbbb",
+	"bbbWWbbb   xx     bbbbbbbb",
+	"bbbbbbbb  x       bbbbbbbb",
+	"bbbbbbb   x        bbbbbbb",
+	"bbbbbbb            bbbbbbb",
+	"bbbbbbb            bbbbbbb",
+	"bbbbbbbb          bbbbbbbb",
+	"bbbbbbbb          bbbbbbbb",
+	"bbbbbbbbb        bbbbbbbbb",	//20
+	"bbbbbbbbbb      bbbbbbbbbb",
+	"bbbbbbbbbbb    bbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb"	//25
 
 
 };
