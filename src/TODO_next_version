@@ -424,12 +424,7 @@ veces
 -ZX desktop: si menu char height no es 8, limite de ventanas por debajo al moverlas hace un efecto extraño,
 probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin poderse usar
 
--en debug cpu, para evaluar expresion hay que ir a breakpoints. poco intuitivo. deberia tener una tecla directa desde debug cpu
 
--agregar a ayuda de debug cpu lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
-
--cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores
-Con ruN pasa lo mismo también
 
 -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 

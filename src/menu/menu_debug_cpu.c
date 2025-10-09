@@ -2112,9 +2112,10 @@ void menu_debug_value_registers_modified_copy(void)
 //(columna1+1)+(columna2+1)*16+(columna3+1)*256 etc
 //Se indican dos tipos de modificaciones sobre los registros:
 //1) En el nombre del registro: eso se hace en base a la instrucción que indica el cursor, según lo que hace dicha instrucción,
-//   por ejemplo un "INC A" dira que modifica el registro A
+//   por ejemplo un "INC A" dira que modifica el registro A. Se usan las primeras 4 columnas (bits 0 a 15)
 //2) Según el valor del registro si se ha modificado: según los valores anteriores, indica que se ha alterado
 //   Ejemplo si se ejecuta un "XOR A" dira que se ha modificado el contenido del registro A siempre que el valor anterior no fuese ya 0
+//   Se usan las siguientes columnas (bits 16 en adelante)
 
 //0123456789012
 //HL 0000'0000
@@ -2133,13 +2134,6 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
     //3=AF'
     z80_long_int registros_modificados=menu_debug_get_modified_registers(menu_debug_memory_pointer);
 
-    //temp
-    //*columnas_modificadas=(1)+16*3+256*6;
-
-	//char textopaginasmem[100];
-
-	//char textopaginasmem_linea1[100];
-	//char textopaginasmem_linea2[100];
 
     debug_memory_segment segmentos[MAX_DEBUG_MEMORY_SEGMENTS];
     int total_segmentos=debug_get_memory_pages_extended(segmentos);
@@ -2538,7 +2532,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     if (offset_bloque<=debug_antes_total_segmentos_memoria-1) {
                         if (strcasecmp(debug_segmentos_memoria_antes[offset_bloque].shortname,segmentos[offset_bloque].shortname)) {
                             //Cambiado bloque
-                            printf("cambiado bloque %d\n",offset_bloque);
+                            //printf("cambiado bloque %d\n",offset_bloque);
                             z80_64bit inicio_columna=1;
                             int rotar=16;
 
@@ -2566,7 +2560,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                         if (offset_bloque<=debug_antes_total_segmentos_memoria-1) {
                             if (strcasecmp(debug_segmentos_memoria_antes[offset_bloque].shortname,segmentos[offset_bloque].shortname)) {
                                 //Cambiado bloque
-                                printf("cambiado bloque %d\n",offset_bloque);
+                                //printf("cambiado bloque %d\n",offset_bloque);
                                 z80_64bit inicio_columna=1+longitud;
                                 int rotar=16;
 
