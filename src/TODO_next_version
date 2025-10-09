@@ -411,13 +411,10 @@ se le envian los caracrteres desde zxvision_draw_window_contents
 -Speccy online browser
 Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se escuchan porque se lee la línea del nombre del juego y no la de debajo que dice el tipo
 
-ok lo descomprime y abre file selector -drag and drop de un zip , que lo descomprima y cargue el tap, snap o lo que se encuentre
-o al menos que lo descomprima
+
 
 -drag drop en otros sistemas: windows (necesario sdl2), linux (con xwindow se puede?)
 
--joystick to events, joystick to keys: manera de desasignar, sin tener que editar y pulsar ESC, algo mas intuitivo
-https://forums.raspberrypi.com/viewtopic.php?p=2340448#p2340448
 
 -pulsar dos veces con boton derecho en zx desktop abre dos veces el menu de zx desktop (menu pequeñito) y luego al pulsar ESC hay que pulsar dos
 veces
@@ -436,50 +433,5 @@ Con ruN pasa lo mismo también
 
 -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 
--funcion para poner una "máscara" de pixeles blancos envolviendo un icono en el desktop. Para evitar que se funda
-Desde menu_draw_ext_desktop_one_icon...
-Hay dos maneras:
-1) Haciendo una copia del bitmap y meterle la máscara, y dibujar la copia
-2) Que la función de render le meta la máscara al vuelo. función screen_put_asciibitmap_generic
-
-1) seria mejor porque podría hacer solo la máscara en iconos del desktop, o de botones, pero no hacerlo por ejemplo en el dibujo de partituras,
-o del logo Z en pantalla
-
-2) entraría para todos los iconos. Aunque se podría pasar un parámetro a screen_put_asciibitmap_generic para que lo haga o no
 
 
-se hace 2). dibujar_envoltura que sea un setting de zx desktop
-
-----top bar menu
-
-*busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
-claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
-Excepto por el main menu mismo, sino agregaria "Main Menu->Main Menu"
-->lo hace mal, parcialmente: ejemplo:
-Main Menu-> Settings
-pero:
-Settings Menu-> Accessibility Settings
-->pero sucede lo mismo sin topbar y desplegando menus desde los botones superiores
-->Pero no puedo agregar "Main Menu" de manera sistemática a todos, por ejemplo al pulsar
-boton derecho en zx desktop e ir a settings, se genera menu inicial  "ZX Desktop Settings". Si se agregase Main Menu quedaria:
-"Main Menu-> ZX Desktop Settings", lo cual es incorrecto, lo correcto es:
-"Main Menu-> Settings-> ZX Desktop Settings"
-Creo que es dificil de solventar eso y sucede en los menus que se genera el indice de manera automática, en cambio
-todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecerá correctamente
-->La solución seria que todos usasen menu_add_item_menu_index_full_path com por ejemplo en "Snapshots to RAM menu"
-
-
-*topbar que funcione si no hay multitask?
-ok-al mover raton arriba no aparecera overlay, porque necesita multitask y background windows even with menu closed precisamente
-->acabar de probarlo bien
-
-
-*en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí. relacionado con lo anterior
-->quizá es culpa del autoframeskip?
-
-*menu de exit ZEsarUX no sale centrado
-
-*mensajes debug topbar meterlos en un tipo de debug nuevo, para poder filtrar
-
-
-----Fin top bar menu
