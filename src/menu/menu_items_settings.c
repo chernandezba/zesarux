@@ -12839,6 +12839,8 @@ void menu_ext_desk_settings_show_app_open(MENU_ITEM_PARAMETERS)
 void menu_ext_desk_settings_automatic_reorder_icons(MENU_ITEM_PARAMETERS)
 {
     zxdesktop_automatic_reorder_icons.v ^=1;
+
+    zxvision_reorder_configurable_icons_if_auto();
 }
 
 void menu_zxdesktop_set_stroke_color(MENU_ITEM_PARAMETERS)
