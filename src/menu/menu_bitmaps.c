@@ -1376,7 +1376,7 @@ char *bitmap_lowericon_ext_desktop_mdv_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_lowericon_ext_desktop_mdv_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     " wwwwww             wwwww ",     //0
-  	" wxxxxxw           wxxxxw ",
+  	" wxxxxxww          wxxxxw ",
 	" wx    xxwwwwwwwwwwx   xw ",
 	" wx      xxxxxxxxxx    xw ",
 	" wx                    xw ",
