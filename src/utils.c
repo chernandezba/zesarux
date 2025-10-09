@@ -3655,6 +3655,8 @@ int util_write_configfile(void)
 
     if (zxdesktop_icon_show_app_open.v==0)              ADD_STRING_CONFIG,"--zxdesktop-no-show-indicators-open-apps");
 
+    if (menu_ext_desktop_contorno_iconos.v)             ADD_STRING_CONFIG,"--zxdesktop-enable-stroke-icons");
+
     if (zxdesktop_configurable_icons_enabled.v) {
         for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
             if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
