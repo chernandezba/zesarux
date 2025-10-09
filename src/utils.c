@@ -272,16 +272,16 @@ struct x_tabla_teclado tabla_teclado_letras[]={
 };
 
 struct x_tabla_teclado z88_tabla_teclado_numeros[]={
-	{&blink_kbd_a13,1}, //0
-	{&blink_kbd_a13,32},
-	{&blink_kbd_a12,32},
-	{&blink_kbd_a11,32},
-	{&blink_kbd_a10,32},
-	{&blink_kbd_a9,32},	//5
-	{&blink_kbd_a8,32},
-	{&blink_kbd_a8,2},
-	{&blink_kbd_a8,1},
-	{&blink_kbd_a11,1}
+    {&blink_kbd_a13,1}, //0
+    {&blink_kbd_a13,32},
+    {&blink_kbd_a12,32},
+    {&blink_kbd_a11,32},
+    {&blink_kbd_a10,32},
+    {&blink_kbd_a9,32},	//5
+    {&blink_kbd_a8,32},
+    {&blink_kbd_a8,2},
+    {&blink_kbd_a8,1},
+    {&blink_kbd_a11,1}
 
 };
 
@@ -316,38 +316,38 @@ struct x_tabla_teclado pcw_tabla_teclado_numeros[]={
 
 
 struct x_tabla_teclado z88_tabla_teclado_letras[]={
-	{&blink_kbd_a13,8}, //A
-	{&blink_kbd_a9,4},
-	{&blink_kbd_a11,4},
-	{&blink_kbd_a11,8}, //D
-	{&blink_kbd_a11,16},
-	{&blink_kbd_a10,8},
-	{&blink_kbd_a9,8},
-	{&blink_kbd_a8,8}, //H
-	{&blink_kbd_a9,1},
-	{&blink_kbd_a10,2},
-	{&blink_kbd_a11,2},
-	{&blink_kbd_a13,2}, //L
-	{&blink_kbd_a12,2},
-	{&blink_kbd_a8,4}, //N
-	{&blink_kbd_a10,1},
-	{&blink_kbd_a12,1}, //P
-	{&blink_kbd_a13,16},
-	{&blink_kbd_a10,16},
-	{&blink_kbd_a12,8},
-	{&blink_kbd_a9,16}, //T
-	{&blink_kbd_a9,2},
-	{&blink_kbd_a10,4},
-	{&blink_kbd_a12,16},
-	{&blink_kbd_a12,4}, //X
-	{&blink_kbd_a8,16},
-	{&blink_kbd_a13,4}
+    {&blink_kbd_a13,8}, //A
+    {&blink_kbd_a9,4},
+    {&blink_kbd_a11,4},
+    {&blink_kbd_a11,8}, //D
+    {&blink_kbd_a11,16},
+    {&blink_kbd_a10,8},
+    {&blink_kbd_a9,8},
+    {&blink_kbd_a8,8}, //H
+    {&blink_kbd_a9,1},
+    {&blink_kbd_a10,2},
+    {&blink_kbd_a11,2},
+    {&blink_kbd_a13,2}, //L
+    {&blink_kbd_a12,2},
+    {&blink_kbd_a8,4}, //N
+    {&blink_kbd_a10,1},
+    {&blink_kbd_a12,1}, //P
+    {&blink_kbd_a13,16},
+    {&blink_kbd_a10,16},
+    {&blink_kbd_a12,8},
+    {&blink_kbd_a9,16}, //T
+    {&blink_kbd_a9,2},
+    {&blink_kbd_a10,4},
+    {&blink_kbd_a12,16},
+    {&blink_kbd_a12,4}, //X
+    {&blink_kbd_a8,16},
+    {&blink_kbd_a13,4}
 };
 
 
 struct x_tabla_teclado cpc_tabla_teclado_letras[]={
-	{&cpc_keyboard_table[8],32}, //A
-	{&cpc_keyboard_table[6],64},
+    {&cpc_keyboard_table[8],32}, //A
+    {&cpc_keyboard_table[6],64},
         {&cpc_keyboard_table[7],64},
         {&cpc_keyboard_table[7],32}, //D
         {&cpc_keyboard_table[7],4},
@@ -376,8 +376,8 @@ struct x_tabla_teclado cpc_tabla_teclado_letras[]={
 
 //Teclado de pcw y cpc iguales...
 struct x_tabla_teclado pcw_tabla_teclado_letras[]={
-	{&pcw_keyboard_table[8],32}, //A
-	{&pcw_keyboard_table[6],64},
+    {&pcw_keyboard_table[8],32}, //A
+    {&pcw_keyboard_table[6],64},
         {&pcw_keyboard_table[7],64},
         {&pcw_keyboard_table[7],32}, //D
         {&pcw_keyboard_table[7],4},
@@ -405,8 +405,8 @@ struct x_tabla_teclado pcw_tabla_teclado_letras[]={
 };
 
 struct x_tabla_teclado msx_tabla_teclado_letras[]={
-	{&msx_keyboard_table[2],64}, //A
-	{&msx_keyboard_table[2],128},
+    {&msx_keyboard_table[2],64}, //A
+    {&msx_keyboard_table[2],128},
         {&msx_keyboard_table[3],1},
         {&msx_keyboard_table[3],2}, //D
         {&msx_keyboard_table[3],4},
@@ -451,8 +451,8 @@ struct x_tabla_teclado msx_tabla_teclado_numeros[]={
 
 
 struct x_tabla_teclado svi_tabla_teclado_letras[]={
-	{&svi_keyboard_table[2],2}, //A
-	{&svi_keyboard_table[2],4},
+    {&svi_keyboard_table[2],2}, //A
+    {&svi_keyboard_table[2],4},
         {&svi_keyboard_table[2],8},
         {&svi_keyboard_table[2],16}, //D
         {&svi_keyboard_table[2],32},
@@ -509,8 +509,8 @@ struct x_tabla_teclado svi_tabla_teclado_numeros[]={
 
 //89l6ihverantyd
 struct x_tabla_teclado ql_tabla_teclado_letras[]={
-	      {&ql_keyboard_table[4],16}, //A
-	      {&ql_keyboard_table[2],16},
+          {&ql_keyboard_table[4],16}, //A
+          {&ql_keyboard_table[2],16},
         {&ql_keyboard_table[2],8},
         {&ql_keyboard_table[4],64}, //D
         {&ql_keyboard_table[6],16},//E
@@ -550,7 +550,7 @@ struct x_tabla_teclado ql_tabla_teclado_letras[]={
 // 7| Shift   Ctrl    Alt      x      v      /      n      ,
 
 struct x_tabla_teclado ql_tabla_teclado_numeros[]={
-	      {&ql_keyboard_table[6],32}, //0
+          {&ql_keyboard_table[6],32}, //0
         {&ql_keyboard_table[4],8},
         {&ql_keyboard_table[6],2},
         {&ql_keyboard_table[4],2}, //3
@@ -863,8 +863,8 @@ int return_fabricante_maquina(int machine_id)
     //Por defecto
     cpu_panic ("Unknown manufacturer for machine id");
 
-	//Aqui no se llega nunca. Pero para evitar warning del compilador
-	return 0;
+    //Aqui no se llega nunca. Pero para evitar warning del compilador
+    return 0;
 }
 
 //Retorna en familia nombre de maquina
@@ -901,21 +901,21 @@ enum machine_families_list debug_machine_get_id_family(int machine_id)
 
 char *get_machine_name(z80_byte machine)
 {
-	int i;
+    int i;
     //printf("Current machine: %d\n",machine);
 
-	for (i=0;i<99999;i++) {
-		if (machines_info[i].nombre_maquina[0]==0) {
-			char mensaje[200];
-			sprintf (mensaje,"No machine name found for machine id: %d",machine);
-			cpu_panic(mensaje);
-		}
+    for (i=0;i<99999;i++) {
+        if (machines_info[i].nombre_maquina[0]==0) {
+            char mensaje[200];
+            sprintf (mensaje,"No machine name found for machine id: %d",machine);
+            cpu_panic(mensaje);
+        }
 
-		if (machines_info[i].machine_id==machine) return machines_info[i].nombre_maquina;
-	}
+        if (machines_info[i].machine_id==machine) return machines_info[i].nombre_maquina;
+    }
 
-	//Aunque aqui no se llega nunca, para que no se queje el compilador
-	return NULL;
+    //Aunque aqui no se llega nunca, para que no se queje el compilador
+    return NULL;
 }
 
 
@@ -939,38 +939,38 @@ unsigned int stats_codprfdcb[256];
 
 void util_stats_increment_counter(unsigned int *stats_array,int index)
 {
-	stats_array[index]++;
+    stats_array[index]++;
 }
 
 unsigned int util_stats_get_counter(unsigned int *stats_array,int index)
 {
-	return stats_array[index];
+    return stats_array[index];
 }
 
 void util_stats_set_counter(unsigned int *stats_array,int index,unsigned int value)
 {
-	stats_array[index]=value;
+    stats_array[index]=value;
 }
 
 
 //Buscar dentro del indice el de mayor valor
 int util_stats_find_max_counter(unsigned int *stats_array)
 {
-	int index_max=0;
-	unsigned int value_max=0;
+    int index_max=0;
+    unsigned int value_max=0;
 
-	int i;
-	unsigned int value;
+    int i;
+    unsigned int value;
 
-	for (i=0;i<256;i++) {
-		value=util_stats_get_counter(stats_array,i);
-		if (value>value_max) {
-			value_max=value;
-			index_max=i;
-		}
-	}
+    for (i=0;i<256;i++) {
+        value=util_stats_get_counter(stats_array,i);
+        if (value>value_max) {
+            value_max=value;
+            index_max=i;
+        }
+    }
 
-	return index_max;
+    return index_max;
 }
 
 
@@ -996,8 +996,8 @@ void util_stats_init(void)
 unsigned int util_stats_sum_all_counters(void)
 {
 
-	unsigned int total=0;
-	int i;
+    unsigned int total=0;
+    int i;
 
         for (i=0;i<256;i++) {
                 total +=util_stats_get_counter(stats_codsinpr,i);
@@ -1010,7 +1010,7 @@ unsigned int util_stats_sum_all_counters(void)
         }
 
 
-	return total;
+    return total;
 
 }
 
@@ -1064,13 +1064,13 @@ void util_get_file_extension(char *filename,char *extension)
 void util_get_file_without_extension(char *filename,char *filename_without_extension)
 {
 
-	int i;
+    int i;
 
-	for (i=0;filename[i]!=0 && filename[i]!='.';i++) {
-		filename_without_extension[i]=filename[i];
-	}
+    for (i=0;filename[i]!=0 && filename[i]!='.';i++) {
+        filename_without_extension[i]=filename[i];
+    }
 
-	filename_without_extension[i]=0;
+    filename_without_extension[i]=0;
 
         //printf ("Filename: %s without Extension: %s\n",filename,filename_without_extension);
 }
@@ -1080,16 +1080,16 @@ void util_get_file_without_extension(char *filename,char *filename_without_exten
 //Obtiene el nombre y extension (quitamos el directorio)
 void util_get_file_no_directory(char *filename,char *file_no_dir)
 {
-	//buscamos / o barra invertida windows
+    //buscamos / o barra invertida windows
 
         int j;
         j=strlen(filename);
         if (j==0) file_no_dir[0]=0;
-	else {
-		for (;j>=0 && filename[j]!='/' && filename[j]!='\\' ;j--);
+    else {
+        for (;j>=0 && filename[j]!='/' && filename[j]!='\\' ;j--);
 
-		strcpy(file_no_dir,&filename[j+1]);
-	}
+        strcpy(file_no_dir,&filename[j+1]);
+    }
 }
 
 //Compara la extension indicada con la del archivo, sin distinguir mayusculas
@@ -1097,11 +1097,11 @@ void util_get_file_no_directory(char *filename,char *file_no_dir)
 //Extension sin el punto
 int util_compare_file_extension(char *filename,char *extension_compare)
 {
-	char extension[NAME_MAX];
+    char extension[NAME_MAX];
 
-	util_get_file_extension(filename,extension);
+    util_get_file_extension(filename,extension);
 
-	return strcasecmp(extension,extension_compare);
+    return strcasecmp(extension,extension_compare);
 }
 
 
@@ -1110,11 +1110,11 @@ int util_compare_file_extension(char *filename,char *extension_compare)
 //Sin tener en cuenta la carpeta
 int util_compare_file_name(char *filename,char *file_compare)
 {
-	char file_sin_dir[NAME_MAX];
+    char file_sin_dir[NAME_MAX];
 
-	util_get_file_no_directory(filename,file_sin_dir);
+    util_get_file_no_directory(filename,file_sin_dir);
 
-	return strcasecmp(file_sin_dir,file_compare);
+    return strcasecmp(file_sin_dir,file_compare);
 }
 
 
@@ -1129,7 +1129,7 @@ void util_get_dir(char *ruta,char *directorio)
                 return;
         }
 
-	//buscar barra final / (o \ de windows)
+    //buscar barra final / (o \ de windows)
         for (i=strlen(ruta)-1;i>=0;i--) {
                 if (ruta[i]=='/' || ruta[i]=='\\') break;
         }
@@ -1166,13 +1166,13 @@ void util_get_dir(char *ruta,char *directorio)
 //lo mete en fullpath
 void util_get_complete_path(char *dir,char *name,char *fullpath)
 {
-	if (dir[0]==0) {
-		//directorio nulo
-		sprintf (fullpath,"%s",name);
-	}
-	else {
-		sprintf (fullpath,"%s/%s",dir,name);
-	}
+    if (dir[0]==0) {
+        //directorio nulo
+        sprintf (fullpath,"%s",name);
+    }
+    else {
+        sprintf (fullpath,"%s/%s",dir,name);
+    }
 }
 
 void util_press_menu_symshift(int pressrelease)
@@ -1210,8 +1210,8 @@ void set_symshift(void)
 
 void set_shift_z88(void)
 {
-	//A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
-	blink_kbd_a14 &= 255-64;
+    //A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
+    blink_kbd_a14 &= 255-64;
 }
 
 void clear_shift_z88(void)
@@ -1232,9 +1232,9 @@ void clear_shift_z88(void)
 int find_sharedfile(char *archivo,char *ruta_final)
 {
         char buffer_nombre[PATH_MAX];
-	strcpy(buffer_nombre,archivo);
+    strcpy(buffer_nombre,archivo);
 
-	int existe;
+    int existe;
 
         //ruta actual
         debug_printf(VERBOSE_INFO,"Looking for file %s from current dir",buffer_nombre);
@@ -1261,12 +1261,12 @@ int find_sharedfile(char *archivo,char *ruta_final)
                 }
         }
 
-	if (existe) {
-		if (ruta_final!=NULL) strcpy(ruta_final,buffer_nombre);
-		debug_printf(VERBOSE_INFO,"Found on path %s",buffer_nombre);
-	}
+    if (existe) {
+        if (ruta_final!=NULL) strcpy(ruta_final,buffer_nombre);
+        debug_printf(VERBOSE_INFO,"Found on path %s",buffer_nombre);
+    }
 
-	return existe;
+    return existe;
 }
 
 
@@ -1276,12 +1276,12 @@ void open_sharedfile(char *archivo,FILE **f)
 {
         char buffer_nombre[PATH_MAX];
 
-	int existe=find_sharedfile(archivo,buffer_nombre);
-	if (existe) {
-		*f=fopen(buffer_nombre,"rb");
-	}
+    int existe=find_sharedfile(archivo,buffer_nombre);
+    if (existe) {
+        *f=fopen(buffer_nombre,"rb");
+    }
 
-	else *f=NULL;
+    else *f=NULL;
 
 }
 
@@ -1290,12 +1290,12 @@ void open_sharedfile(char *archivo,FILE **f)
 //NULL
 void open_sharedfile_write_open(char *archivo,FILE **f)
 {
-	//Asumimos NULL
-	*f=NULL;
+    //Asumimos NULL
+    *f=NULL;
 
-	if (!si_existe_archivo(archivo)) return;
+    if (!si_existe_archivo(archivo)) return;
 
-	*f=fopen(archivo,"wb");
+    *f=fopen(archivo,"wb");
 
 }
 
@@ -1334,7 +1334,7 @@ void old_open_sharedfile_write(char *archivo,FILE **f)
                 }
         }
 
-	//printf ("file: %d\n",*f);
+    //printf ("file: %d\n",*f);
 
 }
 
@@ -1349,7 +1349,7 @@ void open_sharedfile_write(char *archivo,FILE **f)
 
     char archivo_with_path[PATH_MAX];
 
-	int existe=find_sharedfile(archivo,archivo_with_path);
+    int existe=find_sharedfile(archivo,archivo_with_path);
 
     if (existe) {
         *f=fopen(archivo_with_path,"wb");
@@ -1361,24 +1361,24 @@ void get_compile_info(char *s)
 {
         sprintf (s,"%s",
         "Compilation date: " COMPILATION_DATE "\n"
-	"\n"
-	"Compilation system: " COMPILATION_SYSTEM "\n"
-	"\n"
-	"Compilation system release: " COMPILATION_SYSTEM_RELEASE "\n"
-	"\n"
+    "\n"
+    "Compilation system: " COMPILATION_SYSTEM "\n"
+    "\n"
+    "Compilation system release: " COMPILATION_SYSTEM_RELEASE "\n"
+    "\n"
         "Configure command: " CONFIGURE_OPTIONS "\n"
-	"\n"
+    "\n"
         "Compile variables: " COMPILE_VARIABLES "\n"
-	"\n"
+    "\n"
         "Compile INITIALCFLAGS: " COMPILE_INITIALCFLAGS "\n"
         "Compile INITIALLDFLAGS: " COMPILE_INITIALLDFLAGS "\n"
         "Compile FINALCFLAGS: " COMPILE_FINALCFLAGS "\n"
         "Compile FINALLDFLAGS: " COMPILE_FINALLDFLAGS "\n"
-	"\n"
+    "\n"
         "Install PREFIX: " INSTALL_PREFIX "\n"
         );
 
-	if (strlen(s)>=MAX_COMPILE_INFO_LENGTH) cpu_panic("Error. MAX_COMPILE_INFO_LENGTH reached");
+    if (strlen(s)>=MAX_COMPILE_INFO_LENGTH) cpu_panic("Error. MAX_COMPILE_INFO_LENGTH reached");
 }
 
 void show_compile_info(void)
@@ -1393,586 +1393,586 @@ void show_compile_info(void)
 void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 {
 
-	//printf ("ascii_to_keyboard_port_set_clear: tecla: %d pressrelease: %d\n",tecla,pressrelease);
+    //printf ("ascii_to_keyboard_port_set_clear: tecla: %d pressrelease: %d\n",tecla,pressrelease);
 
     if (tecla>='A' && tecla<='Z') {
-					if (MACHINE_IS_SPECTRUM || MACHINE_IS_ACE) {
-                                        	//mayus. para Spectrum
-						if (pressrelease) {
-	                                        	puerto_65278 &=255-1;
-						}
-						else {
-							puerto_65278 |=1;
-						}
-					}
+                    if (MACHINE_IS_SPECTRUM || MACHINE_IS_ACE) {
+                                            //mayus. para Spectrum
+                        if (pressrelease) {
+                                                puerto_65278 &=255-1;
+                        }
+                        else {
+                            puerto_65278 |=1;
+                        }
+                    }
 
-					if (MACHINE_IS_Z88) {
-						//mayus. para Z88
-						//A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
-						if (pressrelease) {
-							blink_kbd_a14 &=255-64;
-						}
-						else {
-							blink_kbd_a14 |=64;
-						}
-					}
+                    if (MACHINE_IS_Z88) {
+                        //mayus. para Z88
+                        //A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
+                        if (pressrelease) {
+                            blink_kbd_a14 &=255-64;
+                        }
+                        else {
+                            blink_kbd_a14 |=64;
+                        }
+                    }
 
                                         //mayus para MSX
-					if (MACHINE_IS_MSX) {
-						if (pressrelease) {
-							msx_keyboard_table[6] &=255-1;
-						}
-						else {
-							msx_keyboard_table[6] |=1;
-						}
-					}
+                    if (MACHINE_IS_MSX) {
+                        if (pressrelease) {
+                            msx_keyboard_table[6] &=255-1;
+                        }
+                        else {
+                            msx_keyboard_table[6] |=1;
+                        }
+                    }
 
-					if (MACHINE_IS_SVI) {
-						if (pressrelease) {
-							svi_keyboard_table[6] &=255-1;
-						}
-						else {
-							svi_keyboard_table[6] |=1;
-						}
-					}
+                    if (MACHINE_IS_SVI) {
+                        if (pressrelease) {
+                            svi_keyboard_table[6] &=255-1;
+                        }
+                        else {
+                            svi_keyboard_table[6] |=1;
+                        }
+                    }
 
-					if (MACHINE_IS_CPC) {
-						if (pressrelease) {
-							cpc_keyboard_table[2] &=255-32;
-						}
-						else {
-							cpc_keyboard_table[2] |=32;
-						}
-					}
+                    if (MACHINE_IS_CPC) {
+                        if (pressrelease) {
+                            cpc_keyboard_table[2] &=255-32;
+                        }
+                        else {
+                            cpc_keyboard_table[2] |=32;
+                        }
+                    }
 
-					if (MACHINE_IS_PCW) {
-						if (pressrelease) {
+                    if (MACHINE_IS_PCW) {
+                        if (pressrelease) {
                             pcw_keyboard_table[2] &=255-32;
 
-						}
-						else {
+                        }
+                        else {
                             pcw_keyboard_table[2] |=32;
-						}
-					}
+                        }
+                    }
 
-       	                                tecla=tecla+('a'-'A');
+                                           tecla=tecla+('a'-'A');
     }
 
 
         //printf ("Tecla buena: %d  \n",c);
-	switch(tecla) {
+    switch(tecla) {
 
                                 case 27:
                                         //printf ("Alt\n");
                                 break;
 
-				case 32:
-                                	if (pressrelease) {
-						puerto_32766 &=255-1;
-                                        	blink_kbd_a13 &= (255-64);
-						cpc_keyboard_table[5] &= (255-128);
+                case 32:
+                                    if (pressrelease) {
+                        puerto_32766 &=255-1;
+                                            blink_kbd_a13 &= (255-64);
+                        cpc_keyboard_table[5] &= (255-128);
                                                 msx_keyboard_table[8] &= (255-1);
                                                 svi_keyboard_table[8] &= (255-1);
-					}
-	                                else {
-						puerto_32766 |=1;
-                                        	blink_kbd_a13 |= 64;
-						cpc_keyboard_table[5] |= 128;
+                    }
+                                    else {
+                        puerto_32766 |=1;
+                                            blink_kbd_a13 |= 64;
+                        cpc_keyboard_table[5] |= 128;
                                                 msx_keyboard_table[8] |= 1;
                                                 svi_keyboard_table[8] |= 1;
-					}
+                    }
 
-        	                break;
+                            break;
 
 
-	                        case 13:
-	                        case 10:
-        	                        if (pressrelease) {
-						puerto_49150 &=255-1;
-						blink_kbd_a8 &= (255-64);
-						//Enter "grande" del cpc
-						cpc_keyboard_table[2] &= (255-4);
+                            case 13:
+                            case 10:
+                                    if (pressrelease) {
+                        puerto_49150 &=255-1;
+                        blink_kbd_a8 &= (255-64);
+                        //Enter "grande" del cpc
+                        cpc_keyboard_table[2] &= (255-4);
                                                 msx_keyboard_table[7] &= (255-128);
                                                 svi_keyboard_table[6] &= (255-64);
-					}
+                    }
 
-                	                else {
-						puerto_49150 |=1;
-						blink_kbd_a8 |= 64;
-						cpc_keyboard_table[2] |= 4;
+                                    else {
+                        puerto_49150 |=1;
+                        blink_kbd_a8 |= 64;
+                        cpc_keyboard_table[2] |= 4;
                                                 msx_keyboard_table[7] |= 128;
                                                 svi_keyboard_table[6] |= 64;
-					}
+                    }
 
 
-                        	break;
+                            break;
 
                                 default:
-					convert_numeros_letras_puerto_teclado(tecla,pressrelease);
+                    convert_numeros_letras_puerto_teclado(tecla,pressrelease);
                                 break;
-	}
+    }
 
 
-	//simbolos para ZX Spectrum
-	if (MACHINE_IS_SPECTRUM) {
-		switch (tecla) {
+    //simbolos para ZX Spectrum
+    if (MACHINE_IS_SPECTRUM) {
+        switch (tecla) {
                                 case '!':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-1;
-					}
-					else {
-						clear_symshift();
-						puerto_63486 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-1;
+                    }
+                    else {
+                        clear_symshift();
+                        puerto_63486 |=1;
+                    }
                                 break;
 
                                 //Enviar caps shift con 128
                                 case 128:
                                         if (pressrelease) {
-						//mayus
-						puerto_65278 &=255-1;
+                        //mayus
+                        puerto_65278 &=255-1;
                                         }
                                         else {
-						//mayus
-						puerto_65278 |=1;
+                        //mayus
+                        puerto_65278 |=1;
                                         }
-				break;
+                break;
 
                                 //Enviar symbol shift con 129
                                 case 129:
                                         if (pressrelease) {
-						set_symshift();
+                        set_symshift();
                                         }
                                         else {
-						clear_symshift();
+                        clear_symshift();
                                         }
-				break;
+                break;
 
-				//Enviar Shift + 1 (edit).
-				/*
-				En curses va bien
-				Es stdout habria que hacer el | , luego el texto y enter, todo a la vez, en la misma linea,
-				porque si se hace | y enter, se edita la linea y al dar enter se entra la linea sin modificar
-				*/
-				case '|':
+                //Enviar Shift + 1 (edit).
+                /*
+                En curses va bien
+                Es stdout habria que hacer el | , luego el texto y enter, todo a la vez, en la misma linea,
+                porque si se hace | y enter, se edita la linea y al dar enter se entra la linea sin modificar
+                */
+                case '|':
                                         if (pressrelease) {
-						//mayus
-						puerto_65278 &=255-1;
+                        //mayus
+                        puerto_65278 &=255-1;
                                                 puerto_63486 &=255-1;
                                         }
                                         else {
-						//mayus
-						puerto_65278 |=1;
+                        //mayus
+                        puerto_65278 |=1;
                                                 puerto_63486 |=1;
                                         }
-				break;
+                break;
 
 
                                 //Symbol + 2
                                 case '@':
                                         if (pressrelease) {
-						set_symshift();
-	                                        puerto_63486 &=255-2;
-					}
-					else {
-						clear_symshift();
-	                                        puerto_63486 |=2;
-					}
+                        set_symshift();
+                                            puerto_63486 &=255-2;
+                    }
+                    else {
+                        clear_symshift();
+                                            puerto_63486 |=2;
+                    }
                                 break;
 
                                  //Symbol + 3
                                 case '#':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_63486 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_63486 |=4;
+                    }
 
                                 break;
 
                                 case '$':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_63486 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_63486 |=8;
+                    }
                                 break;
 
 
                                 case '%':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_63486 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_63486 |=16;
+                    }
                                 break;
 
                                 case '&':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=16;
+                    }
                                 break;
 
                                 //Comilla simple
                                 case '\'':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=8;
+                    }
                                 break;
 
                                 case '(':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=4;
+                    }
                                 break;
 
                                 case ')':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=2;
+                    }
                                 break;
 
                                 case '_':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-1;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-1;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=1;
+                    }
                                 break;
 
                                 case '*':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_32766 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_32766 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_32766 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=16;
+                    }
                                 break;
 
                                 case '?':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=8;
+                    }
                                 break;
 
                                 //Esto equivale al simbolo de "flecha" arriba - exponente
                                 case '^':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=16;
+                    }
                                 break;
 
                                 case '-':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=8;
+                    }
                                 break;
 
 
                                 case '+':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=4;
+                    }
                                 break;
 
                                 case '=':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=2;
+                    }
                                 break;
 
                                 case ';':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=2;
+                    }
                                 break;
 
                                 //Comilla doble
                                 case '"':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-1;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-1;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=1;
+                    }
                                 break;
 
                                 case '<':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_64510 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_64510 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_64510 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_64510 |=8;
+                    }
                                 break;
 
                                 case '>':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_64510 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_64510 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_64510 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_64510 |=16;
+                    }
                                 break;
 
                                 case '/':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=16;
+                    }
                                 break;
 
                                 case ':':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=2;
+                    }
                                 break;
 
                                 case '.':
-					if (pressrelease) {
-						puerto_32766 &=255-2-4;
-					}
-					else {
-						puerto_32766 |=2+4;
-					}
+                    if (pressrelease) {
+                        puerto_32766 &=255-2-4;
+                    }
+                    else {
+                        puerto_32766 |=2+4;
+                    }
 
                                 break;
 
                                 case ',':
-					if (pressrelease) {
-	                                        puerto_32766 &=255-2-8;
-					}
-					else {
-	                                        puerto_32766 |=2+8;
-					}
-				break;
+                    if (pressrelease) {
+                                            puerto_32766 &=255-2-8;
+                    }
+                    else {
+                                            puerto_32766 |=2+8;
+                    }
+                break;
 
 
-		}
-	}
+        }
+    }
 
-	//simbolos para Jupiter Ace
-	else if (MACHINE_IS_ACE) {
-		switch (tecla) {
+    //simbolos para Jupiter Ace
+    else if (MACHINE_IS_ACE) {
+        switch (tecla) {
                                 case '!':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-1;
-					}
-					else {
-						clear_symshift();
-						puerto_63486 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-1;
+                    }
+                    else {
+                        clear_symshift();
+                        puerto_63486 |=1;
+                    }
                                 break;
 
 
 
                                 case '@':
                                         if (pressrelease) {
-						set_symshift();
-	                                        puerto_63486 &=255-2;
-					}
-					else {
-						clear_symshift();
-	                                        puerto_63486 |=2;
-					}
+                        set_symshift();
+                                            puerto_63486 &=255-2;
+                    }
+                    else {
+                        clear_symshift();
+                                            puerto_63486 |=2;
+                    }
                                 break;
 
                                 case '#':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_63486 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_63486 |=4;
+                    }
 
                                 break;
 
                                 case '$':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_63486 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_63486 |=8;
+                    }
                                 break;
 
 
                                 case '%':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_63486 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_63486 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_63486 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_63486 |=16;
+                    }
                                 break;
 
                                 case '&':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=16;
+                    }
                                 break;
 
                                 //Comilla simple
                                 case '\'':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=8;
+                    }
                                 break;
 
                                 case '(':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=4;
+                    }
                                 break;
 
                                 case ')':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=2;
+                    }
                                 break;
 
                                 case '_':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_61438 &=255-1;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_61438 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_61438 &=255-1;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_61438 |=1;
+                    }
                                 break;
 
                                 case '*':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_32766 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_32766 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_32766 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=16;
+                    }
                                 break;
 
                                 case '?':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=8;
+                    }
                                 break;
 
-				case '~':
-					if (pressrelease) {
+                case '~':
+                    if (pressrelease) {
                                                 set_symshift();
                                                 puerto_65022 &=255-1;
                                         }
@@ -2029,368 +2029,368 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
                                 //Esto equivale al simbolo de "flecha" arriba - exponente
                                 case '^':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=16;
+                    }
                                 break;
 
                                 case '-':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=8;
+                    }
                                 break;
 
 
                                 case '+':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=4;
+                    }
                                 break;
 
                                 case '=':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=2;
+                    }
                                 break;
 
                                 case '[':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=16;
+                    }
                                 break;
 
                                 case ']':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=8;
+                    }
                                 break;
 
 
-				/* Simbolo copyright (C) . TODO
+                /* Simbolo copyright (C) . TODO
                                 case '(C)':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=4;
+                    }
                                 break;
-				*/
+                */
 
                                 case ';':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=2;
+                    }
                                 break;
 
                                 //Comilla doble
                                 case '"':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-1;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-1;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=1;
+                    }
                                 break;
 
                                 case '<':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_64510 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_64510 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_64510 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_64510 |=8;
+                    }
                                 break;
 
                                 case '>':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_64510 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_64510 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_64510 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_64510 |=16;
+                    }
                                 break;
 
                                 case '/':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=16;
+                    }
                                 break;
 
                                 case ':':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=2;
+                    }
                                 break;
 
                                 case '.':
-					if (pressrelease) {
-						puerto_32766 &=255-2-4;
-					}
-					else {
-						puerto_32766 |=2+4;
-					}
+                    if (pressrelease) {
+                        puerto_32766 &=255-2-4;
+                    }
+                    else {
+                        puerto_32766 |=2+4;
+                    }
 
                                 break;
 
                                 case ',':
-					if (pressrelease) {
-	                                        puerto_32766 &=255-2-8;
-					}
-					else {
-	                                        puerto_32766 |=2+8;
-					}
-				break;
+                    if (pressrelease) {
+                                            puerto_32766 &=255-2-8;
+                    }
+                    else {
+                                            puerto_32766 |=2+8;
+                    }
+                break;
 
 
-		}
+        }
 
-	}
+    }
 
 
-	//simbolos para ZX80
-	else if (MACHINE_IS_ZX80_TYPE) {
+    //simbolos para ZX80
+    else if (MACHINE_IS_ZX80_TYPE) {
                 switch (tecla) {
                                 case '$':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=8;
+                    }
                                 break;
 
 
                                 case '(':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=4;
+                    }
                                 break;
 
                                 case ')':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=2;
+                    }
                                 break;
 
                                 case '*':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-1;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-1;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=1;
+                    }
                                 break;
 
                                 case '?':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=8;
+                    }
 
                                 break;
 
                                 //Esto equivale al simbolo de ** - exponente
                                 case '^':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=16;
+                    }
                                 break;
 
                                 case '-':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=8;
+                    }
                                 break;
 
                                 case '+':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=4;
+                    }
                                 break;
 
                                 case '=':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=2;
+                    }
                                 break;
 
                                 case ';':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=4;
+                    }
                                 break;
 
                                 //Comilla doble
                                 case '"':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=16;
+                    }
                                 break;
 
                                 case '<':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_32766 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_32766 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_32766 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=8;
+                    }
                                 break;
 
                                 case '>':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_32766 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_32766 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_32766 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=4;
+                    }
                                 break;
 
                                 case '/':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=16;
+                    }
                                 break;
 
                                 case ':':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=2;
+                    }
                                 break;
 
                                 case '.':
-					if (pressrelease) {
-						puerto_32766 &=255-2;
-					}
-					else {
-						puerto_32766 |=2;
-					}
+                    if (pressrelease) {
+                        puerto_32766 &=255-2;
+                    }
+                    else {
+                        puerto_32766 |=2;
+                    }
                                 break;
 
                                 case ',':
                                         if (pressrelease) {
-						set_symshift();
-						puerto_32766 &=255-2;
-					}
-					else {
-						clear_symshift();
-						puerto_32766 |=2;
-					}
+                        set_symshift();
+                        puerto_32766 &=255-2;
+                    }
+                    else {
+                        clear_symshift();
+                        puerto_32766 |=2;
+                    }
 
                                 break;
 
@@ -2402,193 +2402,193 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                 switch (tecla) {
 
                                 case '$':
-					if (pressrelease) {
-	                                        set_symshift();
-						puerto_57342 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-						puerto_57342 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                        puerto_57342 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                        puerto_57342 |=8;
+                    }
                                 break;
 
 
                                 case '(':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=4;
+                    }
                                 break;
 
                                 case ')':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=2;
+                    }
                                 break;
 
                                 case '*':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_32766 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_32766 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_32766 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=16;
+                    }
                                 break;
 
                                 case '?':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=8;
+                    }
                                 break;
 
                                 //Esto equivale al simbolo de ** - exponente
                                 case '^':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=16;
+                    }
                                 break;
 
                                 case '-':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=8;
+                    }
                                 break;
 
                                 case '+':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=4;
+                    }
                                 break;
 
                                 case '=':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_49150 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_49150 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_49150 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_49150 |=2;
+                    }
                                 break;
 
                                 case ';':
-					if (pressrelease) {
-	                                        set_symshift();
-	                                        puerto_65278 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-	                                        puerto_65278 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=4;
+                    }
                                 break;
 
                                 //Comilla doble
                                 case '"':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_57342 &=255-1;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_57342 |=1;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_57342 &=255-1;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_57342 |=1;
+                    }
                                 break;
 
                                 case '<':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_32766 &=255-8;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_32766 |=8;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_32766 &=255-8;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=8;
+                    }
                                 break;
 
                                 case '>':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_32766 &=255-4;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_32766 |=4;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_32766 &=255-4;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=4;
+                    }
                                 break;
 
                                 case '/':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-16;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=16;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-16;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=16;
+                    }
                                 break;
 
                                 case ':':
-					if (pressrelease) {
-	                                        set_symshift();
-        	                                puerto_65278 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-        	                                puerto_65278 |=2;
-					}
+                    if (pressrelease) {
+                                            set_symshift();
+                                            puerto_65278 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_65278 |=2;
+                    }
                                 break;
 
                                 case '.':
-					if (pressrelease) {
-	                                        puerto_32766 &=255-2;
-					}
-					else {
-	                                        puerto_32766 |=2;
-					}
+                    if (pressrelease) {
+                                            puerto_32766 &=255-2;
+                    }
+                    else {
+                                            puerto_32766 |=2;
+                    }
 
                                 break;
 
                                 case ',':
-					if (pressrelease) {
-	                                        set_symshift();
-						puerto_32766 &=255-2;
-					}
-					else {
-	                                        clear_symshift();
-	                                        puerto_32766 |=2;
-					}
-				break;
+                    if (pressrelease) {
+                                            set_symshift();
+                        puerto_32766 &=255-2;
+                    }
+                    else {
+                                            clear_symshift();
+                                            puerto_32766 |=2;
+                    }
+                break;
 
                 }
         }
@@ -2597,17 +2597,17 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                 switch (tecla) {
                                 case '!':
                                         if (pressrelease) {
-						set_shift_z88();
-						//A13 (#5) [      SPACE   1       Q       A       Z       L       0
-						blink_kbd_a13 &=255-32;
+                        set_shift_z88();
+                        //A13 (#5) [      SPACE   1       Q       A       Z       L       0
+                        blink_kbd_a13 &=255-32;
                                         }
                                         else {
-						clear_shift_z88();
-						blink_kbd_a13 |=32;
+                        clear_shift_z88();
+                        blink_kbd_a13 |=32;
                                         }
                                 break;
 
-				case '@':
+                case '@':
                                         if (pressrelease) {
                                                 set_shift_z88();
                                                 blink_kbd_a12 &=255-32;
@@ -2662,7 +2662,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                         }
                                 break;
 
-				//A8  (#0) | DEL    ENTER   6       Y       H       N       7       8
+                //A8  (#0) | DEL    ENTER   6       Y       H       N       7       8
                                 case '&':
                                         if (pressrelease) {
                                                 set_shift_z88();
@@ -2685,7 +2685,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                         }
                                 break;
 
-				//A11 (#3) | -      RGT     3       E       D       C       K       9
+                //A11 (#3) | -      RGT     3       E       D       C       K       9
                                 case '(':
                                         if (pressrelease) {
                                                 set_shift_z88();
@@ -2697,7 +2697,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                         }
                                 break;
 
-				//A13 (#5) | [      SPACE   1       Q       A       Z       L       0
+                //A13 (#5) | [      SPACE   1       Q       A       Z       L       0
                                 case ')':
                                         if (pressrelease) {
                                                 set_shift_z88();
@@ -2709,9 +2709,9 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                         }
                                 break;
 
-				//A11 (#3) | -      RGT     3       E       D       C       K       9
-				//A10 (#2) | =      DWN     4       R       F       V       J       O
-				//A9  (#1) | \      UP      5       T       G       B       U       I
+                //A11 (#3) | -      RGT     3       E       D       C       K       9
+                //A10 (#2) | =      DWN     4       R       F       V       J       O
+                //A9  (#1) | \      UP      5       T       G       B       U       I
                                 case '-':
                                         if (pressrelease) {
                                                 blink_kbd_a11 &=255-128;
@@ -2775,8 +2775,8 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                         }
                                 break;
 
-				//A13 (#5) | [      SPACE   1       Q       A       Z       L       0
-				//A12 (#4) | ]      LFT     2       W       S       X       M
+                //A13 (#5) | [      SPACE   1       Q       A       Z       L       0
+                //A12 (#4) | ]      LFT     2       W       S       X       M
                                 case '[':
                                         if (pressrelease) {
                                                 blink_kbd_a13 &=255-128;
@@ -2820,7 +2820,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                 break;
 
 
-				//A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
+                //A14 (#6) | HELP   LSH     TAB     DIA     MENU    ,       ;       '
                                 case ';':
                                         if (pressrelease) {
                                                 blink_kbd_a14 &=255-2;
@@ -2866,9 +2866,9 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
 
 
-				//A15 (#7) | RSH    SQR     ESC     INDEX   CAPS    .       /       £
-				//TODO Libra se envia como ...?
-				/*
+                //A15 (#7) | RSH    SQR     ESC     INDEX   CAPS    .       /       £
+                //TODO Libra se envia como ...?
+                /*
                                 case 'XXXX':
                                         if (pressrelease) {
                                                 blink_kbd_a15 &=255-1;
@@ -2877,7 +2877,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                                 blink_kbd_a15 |=1;
                                         }
                                 break;
-				*/
+                */
 
 
                                 case '~':
@@ -2914,7 +2914,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
                                         }
                                 break;
 
-				//A15 (#7) | RSH    SQR     ESC     INDEX   CAPS    .       /       £
+                //A15 (#7) | RSH    SQR     ESC     INDEX   CAPS    .       /       £
                                 case '.':
                                         if (pressrelease) {
                                                 blink_kbd_a15 &=255-4;
@@ -2960,8 +2960,8 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
 
 
-		}
-	}
+        }
+    }
 
 
 
@@ -2970,7 +2970,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 //Segun tecla de entrada, genera puerto de teclado, lo activa
 void ascii_to_keyboard_port(unsigned tecla)
 {
-	ascii_to_keyboard_port_set_clear(tecla,1);
+    ascii_to_keyboard_port_set_clear(tecla,1);
 }
 
 int input_file_keyboard_is_playing(void)
@@ -2981,7 +2981,7 @@ int input_file_keyboard_is_playing(void)
 
 void insert_input_file_keyboard(void)
 {
-	input_file_keyboard_inserted.v=1;
+    input_file_keyboard_inserted.v=1;
         input_file_keyboard_playing.v=0;
 }
 
@@ -2999,24 +2999,24 @@ void eject_input_file_keyboard(void)
 
 int input_file_keyboard_init(void)
 {
-	ptr_input_file_keyboard=fopen(input_file_keyboard_name,"rb");
+    ptr_input_file_keyboard=fopen(input_file_keyboard_name,"rb");
 
-	if (!ptr_input_file_keyboard) {
-		debug_printf(VERBOSE_ERR,"Unable to open keyboard input file %s",input_file_keyboard_name);
-		eject_input_file_keyboard();
-		return 1;
-	}
+    if (!ptr_input_file_keyboard) {
+        debug_printf(VERBOSE_ERR,"Unable to open keyboard input file %s",input_file_keyboard_name);
+        eject_input_file_keyboard();
+        return 1;
+    }
 
-	insert_input_file_keyboard();
+    insert_input_file_keyboard();
 
-	return 0;
+    return 0;
 
 }
 
 void input_file_keyboard_close(void)
 {
-	eject_input_file_keyboard();
-	fclose(ptr_input_file_keyboard);
+    eject_input_file_keyboard();
+    fclose(ptr_input_file_keyboard);
 }
 
 
@@ -3051,28 +3051,28 @@ void reset_keyboard_ports(void)
         puerto_teclado_sam_bff9=255;
         puerto_teclado_sam_7ff9=255;
 
-	//De Z88
-	blink_kbd_a15=255;
-	blink_kbd_a14=255;
-	blink_kbd_a13=255;
-	blink_kbd_a12=255;
-	blink_kbd_a11=255;
-	blink_kbd_a10=255;
-	blink_kbd_a9=255;
-	blink_kbd_a8=255;
+    //De Z88
+    blink_kbd_a15=255;
+    blink_kbd_a14=255;
+    blink_kbd_a13=255;
+    blink_kbd_a12=255;
+    blink_kbd_a11=255;
+    blink_kbd_a10=255;
+    blink_kbd_a9=255;
+    blink_kbd_a8=255;
 
-	//De CPC
-	int i=0;
-	for (i=0;i<16;i++) cpc_keyboard_table[i]=255;
+    //De CPC
+    int i=0;
+    for (i=0;i<16;i++) cpc_keyboard_table[i]=255;
 
-	//De MSX
-	for (i=0;i<16;i++) msx_keyboard_table[i]=255;
+    //De MSX
+    for (i=0;i<16;i++) msx_keyboard_table[i]=255;
 
-	//De Spectravideo
-	for (i=0;i<16;i++) svi_keyboard_table[i]=255;
+    //De Spectravideo
+    for (i=0;i<16;i++) svi_keyboard_table[i]=255;
 
-	//De QL
-	for (i=0;i<8;i++) ql_keyboard_table[i]=255;
+    //De QL
+    for (i=0;i<8;i++) ql_keyboard_table[i]=255;
 
     //De pcw
     for (i=0;i<16;i++) pcw_keyboard_table[i]=255;
@@ -3083,7 +3083,7 @@ void reset_keyboard_ports(void)
         menu_tab.v=0;
 
     //De MK14
-	for (i=0;i<MK14_DIGITS;i++) {
+    for (i=0;i<MK14_DIGITS;i++) {
         mk14_keystatus[i] = 0xFF;                            // Keys not pressed
     }
 
@@ -3096,20 +3096,20 @@ void input_file_keyboard_get_key(void)
                         if (input_file_keyboard_pending_next.v==1) {
                                 input_file_keyboard_pending_next.v=0;
                                 //leer siguiente tecla o enviar pausa (nada)
-				if (input_file_keyboard_send_pause.v==1) {
-					if (input_file_keyboard_is_pause.v==1) {
-						reset_keyboard_ports();
-						return;
-					}
-				}
+                if (input_file_keyboard_send_pause.v==1) {
+                    if (input_file_keyboard_is_pause.v==1) {
+                        reset_keyboard_ports();
+                        return;
+                    }
+                }
 
                                 int leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
-				if (leidos==0) {
-					debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
-					eject_input_file_keyboard();
-					reset_keyboard_ports();
-					return;
-				}
+                if (leidos==0) {
+                    debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
+                    eject_input_file_keyboard();
+                    reset_keyboard_ports();
+                    return;
+                }
 
                         }
 
@@ -3117,12 +3117,12 @@ void input_file_keyboard_get_key(void)
                         //Puertos a 0
                         reset_keyboard_ports();
                         //solo habilitar tecla indicada
-			if (input_file_keyboard_send_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
+            if (input_file_keyboard_send_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
 
-			//Se envia pausa. Ver si ahora es pausa o tecla
-			else {
-				if (input_file_keyboard_is_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
-			}
+            //Se envia pausa. Ver si ahora es pausa o tecla
+            else {
+                if (input_file_keyboard_is_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
+            }
 
 
 }
@@ -3305,7 +3305,7 @@ int configfile_read_aux(char *configfile,char *mem)
         //Avisar si tamanyo grande
         if (get_file_size(configfile) > (long long int)MAX_SIZE_CONFIG_FILE) cpu_panic("Configuration file is larger than maximum size allowed");
 
-	FILE *ptr_configfile;
+    FILE *ptr_configfile;
         ptr_configfile=fopen(configfile,"rb");
 
 
@@ -3336,27 +3336,27 @@ int util_get_configfile_name_aux(char *configfile,char *file_to_find)
   }
 
   #ifndef MINGW
-  	char *directorio_home;
-  	directorio_home=getenv("HOME");
-  	if ( directorio_home==NULL) {
+      char *directorio_home;
+      directorio_home=getenv("HOME");
+      if ( directorio_home==NULL) {
                   //printf("Unable to find $HOME environment variable to open configuration file\n");
-  		return 0;
-  	}
+          return 0;
+      }
 
-  	sprintf(configfile,"%s/%s",directorio_home,file_to_find);
+      sprintf(configfile,"%s/%s",directorio_home,file_to_find);
 
   #else
-  	char *homedrive;
-  	char *homepath;
-  	homedrive=getenv("HOMEDRIVE");
-  	homepath=getenv("HOMEPATH");
+      char *homedrive;
+      char *homepath;
+      homedrive=getenv("HOMEDRIVE");
+      homepath=getenv("HOMEPATH");
 
-  	if (homedrive==NULL || homepath==NULL) {
-  		//printf("Unable to find HOMEDRIVE or HOMEPATH environment variables to open configuration file\n");
+      if (homedrive==NULL || homepath==NULL) {
+          //printf("Unable to find HOMEDRIVE or HOMEPATH environment variables to open configuration file\n");
                   return 0;
           }
 
-  	sprintf(configfile,"%s\\%s\\%s",homedrive,homepath,file_to_find);
+      sprintf(configfile,"%s\\%s\\%s",homedrive,homepath,file_to_find);
 
   #endif
 
@@ -3380,7 +3380,7 @@ int util_create_sample_configfile(int additional)
 {
 
 char configfile[PATH_MAX];
-	FILE *ptr_configfile;
+    FILE *ptr_configfile;
 
 if (util_get_configfile_name(configfile)==0)  {
   printf("Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open configuration file\n");
@@ -3433,12 +3433,12 @@ if (util_get_configfile_name(configfile)==0)  {
   fwrite(sample_config, 1, strlen(sample_config), ptr_configfile);
 
   if (additional)  {
-	char *sample_config_additional="--saveconf-on-exit"
-	    "\n"
-	    "\n"
-	;
+    char *sample_config_additional="--saveconf-on-exit"
+        "\n"
+        "\n"
+    ;
 
-	fwrite(sample_config_additional, 1, strlen(sample_config_additional), ptr_configfile);
+    fwrite(sample_config_additional, 1, strlen(sample_config_additional), ptr_configfile);
    }
 
 
@@ -3462,7 +3462,7 @@ if (util_get_configfile_name(configfile)==0)  {
 int util_write_config_add_string (char *config_settings, const char * format , ...)
 {
 
-	//tamaño del buffer bastante mas grande que el valor constante definido
+    //tamaño del buffer bastante mas grande que el valor constante definido
     char string_add[MAX_CONFIG_SETTING+100];
 
 
@@ -3482,16 +3482,16 @@ int util_write_config_add_string (char *config_settings, const char * format , .
 //Retorna un string con valor X,+X o -X segun button_type
 void util_write_config_aux_realjoystick(int button_type, int button, char *texto)
 {
-  		if (button_type==0) {
-  			sprintf(texto,"%d",button);
-  		}
-  		else if (button_type<0) {
-  			sprintf(texto,"-%d",button);
-  		}
+          if (button_type==0) {
+              sprintf(texto,"%d",button);
+          }
+          else if (button_type<0) {
+              sprintf(texto,"-%d",button);
+          }
 
-  		else {
-  			sprintf(texto,"+%d",button);
-  		}
+          else {
+              sprintf(texto,"+%d",button);
+          }
 }
 
 void util_copy_path_delete_last_slash(char *origen, char *destino)
@@ -3575,8 +3575,8 @@ int util_write_configfile(void)
 
 
 
-						ADD_STRING_CONFIG,"--reduce-075-offset-x %d",screen_reduce_offset_x);
-						ADD_STRING_CONFIG,"--reduce-075-offset-y %d",screen_reduce_offset_y);
+                        ADD_STRING_CONFIG,"--reduce-075-offset-x %d",screen_reduce_offset_x);
+                        ADD_STRING_CONFIG,"--reduce-075-offset-y %d",screen_reduce_offset_y);
 
   if (screen_watermark_enabled.v)               ADD_STRING_CONFIG,"--enable-watermark");
 
@@ -3610,7 +3610,7 @@ int util_write_configfile(void)
 
     if (menu_ext_desktop_transparent_lower_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-transparent-lower-buttons");
 
-	if (menu_ext_desktop_transparent_configurable_icons.v==0)  ADD_STRING_CONFIG,"--zxdesktop-no-transparent-configurable-icons");
+    if (menu_ext_desktop_transparent_configurable_icons.v==0)  ADD_STRING_CONFIG,"--zxdesktop-no-transparent-configurable-icons");
 
     if (menu_ext_desktop_configurable_icons_text_background.v==0)   ADD_STRING_CONFIG,"--zxdesktop-no-configurable-icons-text-bg");
 
@@ -3623,7 +3623,7 @@ int util_write_configfile(void)
     if (zxdesktop_switch_button_enabled.v==0)         ADD_STRING_CONFIG,"--zxdesktop-disable-footer-switch");
 
 
-	if (zxdesktop_disable_on_full_screen)             ADD_STRING_CONFIG,"--zxdesktop-disable-on-fullscreen");
+    if (zxdesktop_disable_on_full_screen)             ADD_STRING_CONFIG,"--zxdesktop-disable-on-fullscreen");
 
     if (disable_border_on_full_screen)                  ADD_STRING_CONFIG,"--disable-border-on-fullscreen");
     if (disable_footer_on_full_screen)                  ADD_STRING_CONFIG,"--disable-footer-on-fullscreen");
@@ -3845,14 +3845,14 @@ int util_write_configfile(void)
 
 
   if (quickload_file[0]!=0) {
-	util_get_dir(quickload_file,buffer_temp);
- 	ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
+    util_get_dir(quickload_file,buffer_temp);
+     ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
   }
 
   //Archivos recientes de smartload. Recorremos desde abajo hasta arriba
-	for (i=MAX_LAST_FILESUSED-1;i>=0;i--) {
-		if (last_files_used_array[i][0]!=0) ADD_STRING_CONFIG,"--addlastfile \"%s\"",last_files_used_array[i]);
-	}
+    for (i=MAX_LAST_FILESUSED-1;i>=0;i--) {
+        if (last_files_used_array[i][0]!=0) ADD_STRING_CONFIG,"--addlastfile \"%s\"",last_files_used_array[i]);
+    }
 
 
 
@@ -3863,20 +3863,20 @@ int util_write_configfile(void)
         util_copy_path_delete_last_slash(snapshot_autosave_interval_quicksave_directory,buffer_temp);
         //printf ("dir quicksave final: %s\n",buffer_temp);
 
- 	ADD_STRING_CONFIG,"--quicksavepath \"%s\"",buffer_temp);
+     ADD_STRING_CONFIG,"--quicksavepath \"%s\"",buffer_temp);
   }
 
 
   if (binary_file_load[0]!=0) {
         //printf ("dir binary_file_load: %s\n",binary_file_load);
-	util_get_dir(binary_file_load,buffer_temp);
+    util_get_dir(binary_file_load,buffer_temp);
         //printf ("dir binary_file_load final: %s\n",buffer_temp);
- 	ADD_STRING_CONFIG,"--loadbinarypath \"%s\"",buffer_temp);
+     ADD_STRING_CONFIG,"--loadbinarypath \"%s\"",buffer_temp);
   }
 
   if (binary_file_save[0]!=0) {
         util_get_dir(binary_file_save,buffer_temp);
- 	ADD_STRING_CONFIG,"--savebinarypath \"%s\"",buffer_temp);
+     ADD_STRING_CONFIG,"--savebinarypath \"%s\"",buffer_temp);
   }
 
   if (zxuno_flash_spi_name[0])                ADD_STRING_CONFIG,"--zxunospifile \"%s\"",zxuno_flash_spi_name);
@@ -3911,9 +3911,9 @@ int util_write_configfile(void)
 
 
   if (emulator_tmpdir_set_by_user[0]!=0) {
-	//Quitar barra del final si la hay
-	util_copy_path_delete_last_slash(emulator_tmpdir_set_by_user,buffer_temp);
- 	ADD_STRING_CONFIG,"--tempdir \"%s\"",buffer_temp);
+    //Quitar barra del final si la hay
+    util_copy_path_delete_last_slash(emulator_tmpdir_set_by_user,buffer_temp);
+     ADD_STRING_CONFIG,"--tempdir \"%s\"",buffer_temp);
   }
 
   if (sna_setting_no_change_machine.v)          ADD_STRING_CONFIG,"--snap-no-change-machine");
@@ -4056,7 +4056,7 @@ int util_write_configfile(void)
 
   if (eight_bit_simple_ide_enabled.v)         ADD_STRING_CONFIG,"--enable-8bit-ide");
 
-			                      ADD_STRING_CONFIG,"--diviface-ram-size %d",get_diviface_total_ram());
+                                  ADD_STRING_CONFIG,"--diviface-ram-size %d",get_diviface_total_ram());
 
   if (zxpand_enabled.v)                       ADD_STRING_CONFIG,"--enable-zxpand");
   if (zxpand_root_dir[0]!=0)                  ADD_STRING_CONFIG,"--zxpand-root-dir \"%s\"",zxpand_root_dir);
@@ -4162,20 +4162,20 @@ int util_write_configfile(void)
 
 
 
-			if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
+            if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
 
-				//nuevo parser de breakpoints
-				char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-				exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+                //nuevo parser de breakpoints
+                char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+                exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
                                 ADD_STRING_CONFIG,"--set-breakpoint %d \"%s\"",i+1,buffer_temp);
 
                 if (!debug_breakpoints_conditions_enabled[i]) {
                     ADD_STRING_CONFIG,"--disable-breakpoint %d",i+1);
                 }
-			}
+            }
 
 
-	}
+    }
 
   for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
     if (debug_breakpoints_actions_array[i][0]!=0)
@@ -4191,25 +4191,25 @@ int util_write_configfile(void)
 
   for (i=0;i<DEBUG_MAX_WATCHES;i++) {
 
-			if (debug_watches_array[i][0].tipo!=TPT_FIN) {
+            if (debug_watches_array[i][0].tipo!=TPT_FIN) {
 
-				char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-				exp_par_tokens_to_exp(debug_watches_array[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+                char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+                exp_par_tokens_to_exp(debug_watches_array[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
                                 ADD_STRING_CONFIG,"--set-watch %d \"%s\"",i+1,buffer_temp);
-			}
+            }
 
-			if (debug_watches_labels_array[i][0]) {
+            if (debug_watches_labels_array[i][0]) {
                 ADD_STRING_CONFIG,"--set-watch-label %d \"%s\"",i+1,debug_watches_labels_array[i]);
-			}
+            }
 
-	}
+    }
 
 
 
   for (i=0;i<65536;i++) {
-		if (mem_breakpoint_array[i]!=0)
+        if (mem_breakpoint_array[i]!=0)
                                               ADD_STRING_CONFIG,"--set-mem-breakpoint %04XH %d",i,mem_breakpoint_array[i]);
-	}
+    }
 
   if (hardware_debug_port.v)                  ADD_STRING_CONFIG,"--hardware-debug-ports");
   if (zesarux_zxi_hardware_debug_file[0]!=0)  ADD_STRING_CONFIG,"--hardware-debug-ports-byte-file \"%s\"",zesarux_zxi_hardware_debug_file);
@@ -4372,12 +4372,12 @@ int util_write_configfile(void)
 
   if (menu_disable_first_aid.v)               ADD_STRING_CONFIG,"--disable-all-first-aid");
 
-	for (i=0;i<total_first_aid;i++) {
+    for (i=0;i<total_first_aid;i++) {
                 int *opcion;
                 opcion=first_aid_list[i].puntero_setting;
 
                 if (*opcion) ADD_STRING_CONFIG,"--no-first-aid %s",first_aid_list[i].config_name);
-	}
+    }
 
 
   if (menu_limit_menu_open.v)                 ADD_STRING_CONFIG,"--limitopenmenu");
@@ -4447,9 +4447,9 @@ int util_write_configfile(void)
 
   if (stats_uuid[0]!=0)                      ADD_STRING_CONFIG,"--stats-uuid %s",stats_uuid);
 
-  			ADD_STRING_CONFIG,"--stats-speccy-queries %d",stats_total_speccy_browser_queries);
+              ADD_STRING_CONFIG,"--stats-speccy-queries %d",stats_total_speccy_browser_queries);
 
-			ADD_STRING_CONFIG,"--stats-zx81-queries %d",stats_total_zx81_browser_queries);
+            ADD_STRING_CONFIG,"--stats-zx81-queries %d",stats_total_zx81_browser_queries);
 
 
 
@@ -4498,12 +4498,12 @@ int util_write_configfile(void)
 
   if (menu_allow_background_windows && menu_reopen_background_windows_on_start.v) {
         //Guardar lista de ventanas activas
-	//Empezamos una a una, desde la de mas abajo
-	zxvision_window *ventana;
+    //Empezamos una a una, desde la de mas abajo
+    zxvision_window *ventana;
 
-	ventana=zxvision_current_window;
+    ventana=zxvision_current_window;
 
-	if (ventana!=NULL) {
+    if (ventana!=NULL) {
 
                 ventana=zxvision_find_first_window_below_this(ventana);
 
@@ -4662,15 +4662,15 @@ int util_write_configfile(void)
 
   //real joystick buttons to events. Siempre este antes que el de events/buttons to keys
   for (i=0;i<MAX_EVENTS_JOYSTICK;i++) {
-  	if (realjoystick_events_array[i].asignado.v) {
-  		char texto_button[20];
-  		int button_type;
-  		button_type=realjoystick_events_array[i].button_type;
+      if (realjoystick_events_array[i].asignado.v) {
+          char texto_button[20];
+          int button_type;
+          button_type=realjoystick_events_array[i].button_type;
 
-  		util_write_config_aux_realjoystick(button_type, realjoystick_events_array[i].button, texto_button);
+          util_write_config_aux_realjoystick(button_type, realjoystick_events_array[i].button, texto_button);
 
-  		ADD_STRING_CONFIG,"--joystickevent %s %s",texto_button,realjoystick_event_names[i]);
-  	}
+          ADD_STRING_CONFIG,"--joystickevent %s %s",texto_button,realjoystick_event_names[i]);
+      }
   }
 
 
@@ -4679,17 +4679,17 @@ int util_write_configfile(void)
 
   //real joystick buttons to keys
   for (i=0;i<MAX_KEYS_JOYSTICK;i++) {
-  	if (realjoystick_keys_array[i].asignado.v) {
-  		char texto_button[20];
-  		int button_type;
-  		z80_byte caracter;
-  		caracter=realjoystick_keys_array[i].caracter;
-  		button_type=realjoystick_keys_array[i].button_type;
+      if (realjoystick_keys_array[i].asignado.v) {
+          char texto_button[20];
+          int button_type;
+          z80_byte caracter;
+          caracter=realjoystick_keys_array[i].caracter;
+          button_type=realjoystick_keys_array[i].button_type;
 
-		util_write_config_aux_realjoystick(button_type, realjoystick_keys_array[i].button, texto_button);
+        util_write_config_aux_realjoystick(button_type, realjoystick_keys_array[i].button, texto_button);
 
-  		ADD_STRING_CONFIG,"--joystickkeybt %s %d",texto_button,caracter);
-  	}
+          ADD_STRING_CONFIG,"--joystickkeybt %s %d",texto_button,caracter);
+      }
   }
 
 
@@ -4704,7 +4704,7 @@ int util_write_configfile(void)
   for (i=0;i<osd_adv_kbd_defined;i++) {
           //Truco para poder poner " en el texto. Con barra invertida
           if (!strcmp(osd_adv_kbd_list[i],"\"")) ADD_STRING_CONFIG,"--text-keyboard-add \\");
-	else ADD_STRING_CONFIG,"--text-keyboard-add \"%s\"",osd_adv_kbd_list[i]);
+    else ADD_STRING_CONFIG,"--text-keyboard-add \"%s\"",osd_adv_kbd_list[i]);
   }
 
                                         ADD_STRING_CONFIG,"--text-keyboard-length %d",adventure_keyboard_key_length);
@@ -4717,7 +4717,7 @@ int util_write_configfile(void)
   //Guardar si hay algo que Guardar
   if (indice_string) {
     char configfile[PATH_MAX];
-  	 FILE *ptr_configfile;
+       FILE *ptr_configfile;
 
      if (util_get_configfile_name(configfile)==0)  {
        debug_printf(VERBOSE_ERR,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open configuration file");
@@ -4791,7 +4791,7 @@ int devconfigfile_read(char *mem,int limite)
 
 
 
-	char configfile[PATH_MAX];
+    char configfile[PATH_MAX];
 
   if (util_get_devconfigfile_name(configfile)==0)  {
     debug_printf(VERBOSE_INFO,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open dev configuration file");
@@ -4800,14 +4800,14 @@ int devconfigfile_read(char *mem,int limite)
 
 
 
-	//Ver si archivo existe
+    //Ver si archivo existe
 
-	if (!si_existe_archivo(configfile)) {
-		debug_printf(VERBOSE_INFO,"Additional configuration file %s not found",configfile);
+    if (!si_existe_archivo(configfile)) {
+        debug_printf(VERBOSE_INFO,"Additional configuration file %s not found",configfile);
 
                 return 0;
 
-	}
+    }
 
         int tamanyo_archivo=get_file_size(configfile);
 
@@ -4815,7 +4815,7 @@ int devconfigfile_read(char *mem,int limite)
              cpu_panic("Configuration file larger than maximum allowed size. Exiting");
         }
 
-	return configfile_read_aux(configfile,mem);
+    return configfile_read_aux(configfile,mem);
 
 }
 
@@ -4823,26 +4823,26 @@ int devconfigfile_read(char *mem,int limite)
 char *configfile_end_line(char *m)
 {
 
-	while ( (*m!='\n') && (*m!=0) ) {
-		m++;
-	}
+    while ( (*m!='\n') && (*m!=0) ) {
+        m++;
+    }
 
-	return m;
+    return m;
 }
 
 //Retorna puntero a caracter leido que hace de final (sea final de linea o de archivo)
 char *configfile_next_field(char *m,int comillas_iniciales)
 {
 
-	//Hasta final de linea, o final de texto, o espacio (y no comilla previa), o comillas
+    //Hasta final de linea, o final de texto, o espacio (y no comilla previa), o comillas
        while (
-		(*m!='\n') &&
-		(*m!='\r') &&
-		(*m!=0) &&
-		(*m!='"')
-	 ) {
+        (*m!='\n') &&
+        (*m!='\r') &&
+        (*m!=0) &&
+        (*m!='"')
+     ) {
 
-		if (comillas_iniciales==0 && *m==' ') break;
+        if (comillas_iniciales==0 && *m==' ') break;
 
                 //Dejamos que se puedan escapar unas " si van precedidas de barra invertida
                 //if ( (*m)=='\\') {
@@ -4858,60 +4858,60 @@ char *configfile_next_field(char *m,int comillas_iniciales)
 
 void configfile_parse_lines(char *mem,char *p_argv[],int *p_argc)
 {
-	char caracter;
-	int argumentos=*p_argc;
+    char caracter;
+    int argumentos=*p_argc;
 
-	//para compatibilidad con rutinas de leer parametros, argv[0] no lo usamos
-	p_argv[0]="";
-	argumentos++;
+    //para compatibilidad con rutinas de leer parametros, argv[0] no lo usamos
+    p_argv[0]="";
+    argumentos++;
 
-	do {
-		caracter=*mem;
+    do {
+        caracter=*mem;
 
-		//Fin
-		if (caracter==0) {
-			*p_argc=argumentos;
-			return;
-		}
+        //Fin
+        if (caracter==0) {
+            *p_argc=argumentos;
+            return;
+        }
 
-		//Comentarios
-		if (caracter==';' || caracter=='#') {
-			mem=configfile_end_line(mem);
-			if (*mem) mem++;
-		}
+        //Comentarios
+        if (caracter==';' || caracter=='#') {
+            mem=configfile_end_line(mem);
+            if (*mem) mem++;
+        }
 
-		//Estamos en salto de linea o espacio o retorno de carro, saltamos
-		else if (caracter=='\n' || caracter==' ' || caracter=='\r' ) mem++;
+        //Estamos en salto de linea o espacio o retorno de carro, saltamos
+        else if (caracter=='\n' || caracter==' ' || caracter=='\r' ) mem++;
 
-		else {
+        else {
 
-			int comillas_iniciales=0;
+            int comillas_iniciales=0;
 
-			//Parametro correcto
-			//Ver si comillas iniciales
-			if (caracter=='"') {
-				comillas_iniciales=1;
-				mem++;
-				//printf ("comillas iniciales en %s\n",mem);
-			}
+            //Parametro correcto
+            //Ver si comillas iniciales
+            if (caracter=='"') {
+                comillas_iniciales=1;
+                mem++;
+                //printf ("comillas iniciales en %s\n",mem);
+            }
 
             //Indicar cada argumento con su puntero a memoria
-			p_argv[argumentos]=mem;
-			argumentos++;
+            p_argv[argumentos]=mem;
+            argumentos++;
                         if (argumentos>MAX_PARAMETERS_CONFIG_FILE) {
                                 cpu_panic("Maximum parameters in config file reached");
                         }
 
-			mem=configfile_next_field(mem,comillas_iniciales);
+            mem=configfile_next_field(mem,comillas_iniciales);
 
-			//Poner codigo 0 al final
-			if (*mem) {
-				*mem=0;
-				mem++;
-			}
-		}
+            //Poner codigo 0 al final
+            if (*mem) {
+                *mem=0;
+                mem++;
+            }
+        }
 
-	} while (1);
+    } while (1);
 
 }
 
@@ -4929,35 +4929,35 @@ int configfile_parse(void)
     //Esta memoria no la liberamos nunca, pues se usara despues
     //en varios sitios, como en parse_cmdline_options(0), y tambien se dejan fijados punteros a muchos parametros
     //que se leen del archivo de config, como realtape_name=argv[puntero_parametro];
-	char *mem_config=malloc(MAX_SIZE_CONFIG_FILE+1);
+    char *mem_config=malloc(MAX_SIZE_CONFIG_FILE+1);
 
 
 
     if (mem_config==NULL) {
-		cpu_panic("Unable to allocate memory for configuration file");
-	}
+        cpu_panic("Unable to allocate memory for configuration file");
+    }
 
     int first_start;
 
-	if (configfile_read(mem_config,MAX_SIZE_CONFIG_FILE,&first_start)==0) {
-		//No hay archivo de configuracion. Parametros vacios
-		configfile_argv[0]="";
-		configfile_argc=1;
-		return first_start;
-	}
+    if (configfile_read(mem_config,MAX_SIZE_CONFIG_FILE,&first_start)==0) {
+        //No hay archivo de configuracion. Parametros vacios
+        configfile_argv[0]="";
+        configfile_argc=1;
+        return first_start;
+    }
 
 
-	configfile_parse_lines(mem_config,&configfile_argv[0],&configfile_argc);
+    configfile_parse_lines(mem_config,&configfile_argv[0],&configfile_argc);
 
-	//Mostrar cada parametro. Ignoramos el primero (numero 0) pues es vacio
-	if (debug_parse_config_file.v) {
-		int i;
-		for (i=1;i<configfile_argc;i++) {
-			printf ("Debug: Configfile, parameter %d = [%s]\n",i,configfile_argv[i]);
-		}
-	}
+    //Mostrar cada parametro. Ignoramos el primero (numero 0) pues es vacio
+    if (debug_parse_config_file.v) {
+        int i;
+        for (i=1;i<configfile_argc;i++) {
+            printf ("Debug: Configfile, parameter %d = [%s]\n",i,configfile_argv[i]);
+        }
+    }
 
-	return first_start;
+    return first_start;
 }
 
 
@@ -4971,21 +4971,21 @@ int devconfigfile_parse(void)
     //Esta memoria no la liberamos nunca, pues se usara despues
     //en varios sitios, como en parse_cmdline_options(0), y tambien se dejan fijados punteros a muchos parametros
     //que se leen del archivo de config, como realtape_name=argv[puntero_parametro];
-	char *mem_devconfig=malloc(MAX_SIZE_CONFIG_FILE+1);
+    char *mem_devconfig=malloc(MAX_SIZE_CONFIG_FILE+1);
 
 
 
     if (mem_devconfig==NULL) {
-		cpu_panic("Unable to allocate memory for configuration file");
-	}
+        cpu_panic("Unable to allocate memory for configuration file");
+    }
 
-	if (devconfigfile_read(mem_devconfig,MAX_SIZE_CONFIG_FILE)==0) {
-		//No hay archivo de configuracion. Parametros vacios
-		return 0;
-	}
+    if (devconfigfile_read(mem_devconfig,MAX_SIZE_CONFIG_FILE)==0) {
+        //No hay archivo de configuracion. Parametros vacios
+        return 0;
+    }
 
 
-	configfile_parse_lines(mem_devconfig,&devconfigfile_argv[0],&devconfigfile_argc);
+    configfile_parse_lines(mem_devconfig,&devconfigfile_argv[0],&devconfigfile_argc);
 
         return 1;
 
@@ -4997,24 +4997,24 @@ char *custom_config_mem_pointer=NULL;
 void configfile_parse_custom_file(char *archivo)
 {
 
-	//Ver si hay que asignar memoria
-	//Debe quedar esta memoria asignada al salir de este procedimiento, pues lo usa en parse_customfile_options
-	if (custom_config_mem_pointer==NULL) {
-		debug_printf (VERBOSE_DEBUG,"Allocating memory to read custom config file");
-		custom_config_mem_pointer=malloc(MAX_SIZE_CONFIG_FILE+1);
-	}
+    //Ver si hay que asignar memoria
+    //Debe quedar esta memoria asignada al salir de este procedimiento, pues lo usa en parse_customfile_options
+    if (custom_config_mem_pointer==NULL) {
+        debug_printf (VERBOSE_DEBUG,"Allocating memory to read custom config file");
+        custom_config_mem_pointer=malloc(MAX_SIZE_CONFIG_FILE+1);
+    }
 
-	else {
-		debug_printf (VERBOSE_DEBUG,"No need to allocate memory to read custom config file, we allocated it before");
-	}
+    else {
+        debug_printf (VERBOSE_DEBUG,"No need to allocate memory to read custom config file, we allocated it before");
+    }
 
 
         if (custom_config_mem_pointer==NULL) {
                 cpu_panic("Unable to allocate memory for configuration file");
         }
 
-	//Valor inicial
-	configfile_argc=0;
+    //Valor inicial
+    configfile_argc=0;
 
 
         if (configfile_read_aux(archivo,custom_config_mem_pointer)==0) {
@@ -5045,12 +5045,12 @@ void configfile_parse_custom_file(char *archivo)
 void parse_custom_file_config(char *archivo)
 {
 
-	configfile_parse_custom_file(archivo);
-	argc=configfile_argc;
-	argv=configfile_argv;
-	puntero_parametro=0;
+    configfile_parse_custom_file(archivo);
+    argc=configfile_argc;
+    argv=configfile_argv;
+    puntero_parametro=0;
 
-	parse_customfile_options();
+    parse_customfile_options();
 }
 
 
@@ -5059,28 +5059,28 @@ tecla_redefinida lista_teclas_redefinidas[MAX_TECLAS_REDEFINIDAS];
 
 void clear_lista_teclas_redefinidas(void)
 {
-	int i;
-	for (i=0;i<MAX_TECLAS_REDEFINIDAS;i++) {
-		lista_teclas_redefinidas[i].tecla_original=0;
-	}
-	debug_printf (VERBOSE_DEBUG,"Cleared redefined keys table");
+    int i;
+    for (i=0;i<MAX_TECLAS_REDEFINIDAS;i++) {
+        lista_teclas_redefinidas[i].tecla_original=0;
+    }
+    debug_printf (VERBOSE_DEBUG,"Cleared redefined keys table");
 }
 
 //Poder redefinir una tecla. Retorna 0 si no hay redefinicion. Retorna 1 si lo hay
 z80_byte util_redefinir_tecla(z80_byte tecla)
 {
 
-	int i;
-	z80_byte tecla_original,tecla_redefinida;
-	for (i=0;i<MAX_TECLAS_REDEFINIDAS;i++) {
-		tecla_original=lista_teclas_redefinidas[i].tecla_original;
-		tecla_redefinida=lista_teclas_redefinidas[i].tecla_redefinida;
-		if (tecla_original) {
-			if (tecla_original==tecla) return tecla_redefinida;
-		}
-	}
+    int i;
+    z80_byte tecla_original,tecla_redefinida;
+    for (i=0;i<MAX_TECLAS_REDEFINIDAS;i++) {
+        tecla_original=lista_teclas_redefinidas[i].tecla_original;
+        tecla_redefinida=lista_teclas_redefinidas[i].tecla_redefinida;
+        if (tecla_original) {
+            if (tecla_original==tecla) return tecla_redefinida;
+        }
+    }
 
-	return 0;
+    return 0;
 
 
 }
@@ -5089,23 +5089,23 @@ z80_byte util_redefinir_tecla(z80_byte tecla)
 int util_add_redefinir_tecla(z80_byte p_tecla_original, z80_byte p_tecla_redefinida)
 {
 
-	int i;
+    int i;
         z80_byte tecla_original;
-	//z80_byte tecla_redefinida;
+    //z80_byte tecla_redefinida;
 
-	for (i=0;i<MAX_TECLAS_REDEFINIDAS;i++) {
-		tecla_original=lista_teclas_redefinidas[i].tecla_original;
+    for (i=0;i<MAX_TECLAS_REDEFINIDAS;i++) {
+        tecla_original=lista_teclas_redefinidas[i].tecla_original;
                 //tecla_redefinida=lista_teclas_redefinidas[i].tecla_redefinida;
-		if (tecla_original==0) {
-			lista_teclas_redefinidas[i].tecla_original=p_tecla_original;
-			lista_teclas_redefinidas[i].tecla_redefinida=p_tecla_redefinida;
-			debug_printf (VERBOSE_DEBUG,"Added key %d to be %d",p_tecla_original,p_tecla_redefinida);
-			return 0;
-		}
-	}
+        if (tecla_original==0) {
+            lista_teclas_redefinidas[i].tecla_original=p_tecla_original;
+            lista_teclas_redefinidas[i].tecla_redefinida=p_tecla_redefinida;
+            debug_printf (VERBOSE_DEBUG,"Added key %d to be %d",p_tecla_original,p_tecla_redefinida);
+            return 0;
+        }
+    }
 
-	debug_printf (VERBOSE_ERR,"Maximum redefined keys (%d)",MAX_TECLAS_REDEFINIDAS);
-	return 1;
+    debug_printf (VERBOSE_ERR,"Maximum redefined keys (%d)",MAX_TECLAS_REDEFINIDAS);
+    return 1;
 }
 
 
@@ -5121,32 +5121,32 @@ void convert_numeros_letras_puerto_teclado_continue(z80_byte tecla,int pressrele
                //printf ("Entrada a convertir tecla recreated desde convert_numeros_letras_puerto_teclado_continue\n");
                recreated_zx_spectrum_keyboard_convert(tecla, &tecla_final, &pressrelease_final);
                if (tecla_final) {
-               		//printf ("redefinicion de tecla. antes: %d despues: %d\n",tecla,tecla_final);
+                       //printf ("redefinicion de tecla. antes: %d despues: %d\n",tecla,tecla_final);
                        tecla=tecla_final;
                        pressrelease=pressrelease_final;
 
-			if (tecla==UTIL_KEY_CAPS_SHIFT) {
-				//printf ("Pulsada caps shift (%d)\n",UTIL_KEY_CAPS_SHIFT);
-				util_set_reset_key(tecla,pressrelease);
-				return;
-			}
+            if (tecla==UTIL_KEY_CAPS_SHIFT) {
+                //printf ("Pulsada caps shift (%d)\n",UTIL_KEY_CAPS_SHIFT);
+                util_set_reset_key(tecla,pressrelease);
+                return;
+            }
 
                        //Si sigue estando entre a-z y 0-9 enviar tal cual. Si no, llamar a util_set_reset_key
                        if (
-                       	(tecla>='a' && tecla<='z') ||
-                       	(tecla>='0' && tecla<='9')
-                       	)
+                           (tecla>='a' && tecla<='z') ||
+                           (tecla>='0' && tecla<='9')
+                           )
                        {
-                       	//Nada. Prefiero escribir la condicion asi que no poner un negado
-                       	//printf("Tecla final es entre az y 09. generar puerto spectrum\n");
+                           //Nada. Prefiero escribir la condicion asi que no poner un negado
+                           //printf("Tecla final es entre az y 09. generar puerto spectrum\n");
                        }
 
 
                        else {
-                       	//util_set_reset_key(tecla,pressrelease);
-                       	//printf ("Enviar a util_set_reset_key_convert_recreated_yesno sin convertir\n");
-                       	util_set_reset_key_convert_recreated_yesno(tecla,pressrelease,0);
-                       	return;
+                           //util_set_reset_key(tecla,pressrelease);
+                           //printf ("Enviar a util_set_reset_key_convert_recreated_yesno sin convertir\n");
+                           util_set_reset_key_convert_recreated_yesno(tecla,pressrelease,0);
+                           return;
                        }
                }
        }*/
@@ -5159,10 +5159,10 @@ void convert_numeros_letras_puerto_teclado_continue(z80_byte tecla,int pressrele
 void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tecla,int pressrelease)
 {
 
-	//Redefinicion de teclas
-	z80_byte tecla_redefinida;
-	tecla_redefinida=util_redefinir_tecla(tecla);
-	if (tecla_redefinida) tecla=tecla_redefinida;
+    //Redefinicion de teclas
+    z80_byte tecla_redefinida;
+    tecla_redefinida=util_redefinir_tecla(tecla);
+    if (tecla_redefinida) tecla=tecla_redefinida;
 
   if (tecla>='a' && tecla<='z') {
       int indice=tecla-'a';
@@ -5237,13 +5237,13 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                128 64  32  16
 
                 0  8   -   A	mk14_keystatus[0]
-            	1  9   -   B	mk14_keystatus[1]
-            	2  -   GO  C	mk14_keystatus[2]
-            	3  -   MEM D	mk14_keystatus[3]
-            	4  -   ABR -	mk14_keystatus[4]
-            	5  -   -   -	mk14_keystatus[5]
-            	6  -   -   E	mk14_keystatus[6]
-            	7  -   TER F	mk14_keystatus[7]
+                1  9   -   B	mk14_keystatus[1]
+                2  -   GO  C	mk14_keystatus[2]
+                3  -   MEM D	mk14_keystatus[3]
+                4  -   ABR -	mk14_keystatus[4]
+                5  -   -   -	mk14_keystatus[5]
+                6  -   -   E	mk14_keystatus[6]
+                7  -   TER F	mk14_keystatus[7]
 
             GO: mapeado a G
             MEM: mapeado a M
@@ -5340,7 +5340,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                                                 else *puerto |=mascara;
   }
 
-	if (MACHINE_IS_CPC) {
+    if (MACHINE_IS_CPC) {
                                                 puerto=cpc_tabla_teclado_numeros[indice].puerto;
                                                 mascara=cpc_tabla_teclado_numeros[indice].mascara;
 
@@ -5348,7 +5348,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                                                 else *puerto |=mascara;
   }
 
-	if (MACHINE_IS_PCW) {
+    if (MACHINE_IS_PCW) {
                                                 puerto=pcw_tabla_teclado_numeros[indice].puerto;
                                                 mascara=pcw_tabla_teclado_numeros[indice].mascara;
 
@@ -5357,7 +5357,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
 
   }
 
-	if (MACHINE_IS_MSX) {
+    if (MACHINE_IS_MSX) {
                                                 puerto=msx_tabla_teclado_numeros[indice].puerto;
                                                 mascara=msx_tabla_teclado_numeros[indice].mascara;
 
@@ -5365,7 +5365,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                                                 else *puerto |=mascara;
   }
 
-	if (MACHINE_IS_SVI) {
+    if (MACHINE_IS_SVI) {
                                                 puerto=svi_tabla_teclado_numeros[indice].puerto;
                                                 mascara=svi_tabla_teclado_numeros[indice].mascara;
 
@@ -5410,7 +5410,7 @@ void insert_snap_cmdline(char *s)
 
 //retorna 1 si ok
 int quickload_valid_extension(char *nombre) {
-	if (
+    if (
                    !util_compare_file_extension(nombre,"zx")
                 || !util_compare_file_extension(nombre,"sp")
                 || !util_compare_file_extension(nombre,"zsf")
@@ -5442,10 +5442,10 @@ int quickload_valid_extension(char *nombre) {
                 || !util_compare_file_extension(nombre,"epr")
                 || !util_compare_file_extension(nombre,"63")
                 || !util_compare_file_extension(nombre,"eprom")
-		|| !util_compare_file_extension(nombre,"flash")
-		|| !util_compare_file_extension(nombre,"ace")
-		|| !util_compare_file_extension(nombre,"dck")
-		|| !util_compare_file_extension(nombre,"cdt")
+        || !util_compare_file_extension(nombre,"flash")
+        || !util_compare_file_extension(nombre,"ace")
+        || !util_compare_file_extension(nombre,"dck")
+        || !util_compare_file_extension(nombre,"cdt")
     || !util_compare_file_extension(nombre,"ay")
     || !util_compare_file_extension(nombre,"scr")
     || !util_compare_file_extension(nombre,"rzx")
@@ -5459,12 +5459,12 @@ int quickload_valid_extension(char *nombre) {
 
     || !util_compare_file_extension(nombre,"zmenu")
     || !util_compare_file_extension(nombre,"m3u")
-	) {
-		return 1;
-	}
+    ) {
+        return 1;
+    }
 
 
-	return 0;
+    return 0;
 
 
 }
@@ -5478,25 +5478,25 @@ void quickload_standard_tape(char *nombre)
 {
                 if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
 
-			//De momento sam coupe solo carga en real tape
-			if (MACHINE_IS_SAM) {
-		                realtape_name=nombre;
-		                realtape_insert();
-		                return;
+            //De momento sam coupe solo carga en real tape
+            if (MACHINE_IS_SAM) {
+                        realtape_name=nombre;
+                        realtape_insert();
+                        return;
 
-			}
+            }
 
-			//Extension tap tambien es de jupiter ace
-			if (!MACHINE_IS_ACE) {
+            //Extension tap tambien es de jupiter ace
+            if (!MACHINE_IS_ACE) {
 
-	                        //Si no estamos en spectrum, cambiar maquina
-        	                if (!(MACHINE_IS_SPECTRUM)) {
-                	                //spectrum 128k
-                        	        current_machine_type=6;
-                                	set_machine(NULL);
-	                                //el reset machine viene desde tape_init
-        	                }
-			}
+                            //Si no estamos en spectrum, cambiar maquina
+                            if (!(MACHINE_IS_SPECTRUM)) {
+                                    //spectrum 128k
+                                    current_machine_type=6;
+                                    set_machine(NULL);
+                                    //el reset machine viene desde tape_init
+                            }
+            }
 
                         //establecer parametros por defecto
                         set_machine_params();
@@ -5562,14 +5562,14 @@ void quickload_common_set_spectrum(void)
 
 int quickload_continue(char *nombre) {
 
-	//Si hay cinta realtape insertada, quitarla
+    //Si hay cinta realtape insertada, quitarla
     if (realtape_inserted.v) realtape_eject();
 
-	//Si hay cartucho de timex insertado, expulsarlo
-	//Realmente no comprobamos si hay cartucho pues no hay ningun flag que indique insertado o no. Simplemente liberamos memoria dock
-	if (MACHINE_IS_TIMEX_TS_TC_2068) {
-		timex_empty_dock_space();
-	}
+    //Si hay cartucho de timex insertado, expulsarlo
+    //Realmente no comprobamos si hay cartucho pues no hay ningun flag que indique insertado o no. Simplemente liberamos memoria dock
+    if (MACHINE_IS_TIMEX_TS_TC_2068) {
+        timex_empty_dock_space();
+    }
 
     //Si hay dsk insertado, expulsarlo, porque si hacemos quickload de cinta, queremos que cargue la cinta, y no el dsk que seria por defecto
     //en Spectrum +3 por ejemplo
@@ -5577,36 +5577,36 @@ int quickload_continue(char *nombre) {
         dskplusthree_disable();
     }
 
-	//Quitar top speed si es que estabamos cargando algo antes a maxima velocidad
-	top_speed_timer.v=0;
+    //Quitar top speed si es que estabamos cargando algo antes a maxima velocidad
+    top_speed_timer.v=0;
 
-	//Poner modo turbo a 1. En Z88 no hacer esto, pues desasigna los slots , porque llama a set_machine_params y este a init_z88_memory_slots
-	if (!MACHINE_IS_Z88 && cpu_turbo_speed!=1) {
-		cpu_turbo_speed=1;
-		cpu_set_turbo_speed();
-	}
+    //Poner modo turbo a 1. En Z88 no hacer esto, pues desasigna los slots , porque llama a set_machine_params y este a init_z88_memory_slots
+    if (!MACHINE_IS_Z88 && cpu_turbo_speed!=1) {
+        cpu_turbo_speed=1;
+        cpu_set_turbo_speed();
+    }
 
 
 
 #ifdef EMULATE_RASPBERRY
-	//desactivar realvideo por defecto en raspberry. Si hace falta, el realvideo se activara desde el archivo snapshot o en la deteccion por ssl
-	if (cambio_parametros_maquinas_lentas.v==0) {
-		debug_printf (VERBOSE_INFO,"Parameter changeslowparameters not enabled. Do not change any frameskip or realvideo parameters");
-	}
+    //desactivar realvideo por defecto en raspberry. Si hace falta, el realvideo se activara desde el archivo snapshot o en la deteccion por ssl
+    if (cambio_parametros_maquinas_lentas.v==0) {
+        debug_printf (VERBOSE_INFO,"Parameter changeslowparameters not enabled. Do not change any frameskip or realvideo parameters");
+    }
     else {
-	    disable_rainbow();
+        disable_rainbow();
     }
 #endif
 
-	//expulsar cinta insertada
-	eject_tape_load();
-	tapefile=NULL;
+    //expulsar cinta insertada
+    eject_tape_load();
+    tapefile=NULL;
 
 
-	if (realjoystick_clear_keys_on_smartload.v) {
-	        //Eliminar asignacion de eventos joystick a teclas.
-		realjoystick_clear_keys_array();
-	}
+    if (realjoystick_clear_keys_on_smartload.v) {
+            //Eliminar asignacion de eventos joystick a teclas.
+        realjoystick_clear_keys_array();
+    }
 
     if (
             !util_compare_file_extension(nombre,"zx")
@@ -5823,14 +5823,14 @@ int quickload_continue(char *nombre) {
         return 0;
     }
 
-	//dock cartridges de Timex
-	else if (
-		!util_compare_file_extension(nombre,"dck")
-	) {
-		//Aqui el autoload da igual. cambiamos siempre a timex si conviene
-		if (!MACHINE_IS_TIMEX_TS_TC_2068) {
-			current_machine_type=MACHINE_ID_TIMEX_TS2068;
-			set_machine(NULL);
+    //dock cartridges de Timex
+    else if (
+        !util_compare_file_extension(nombre,"dck")
+    ) {
+        //Aqui el autoload da igual. cambiamos siempre a timex si conviene
+        if (!MACHINE_IS_TIMEX_TS_TC_2068) {
+            current_machine_type=MACHINE_ID_TIMEX_TS2068;
+            set_machine(NULL);
 
             //establecer parametros por defecto. Incluido quitar slots de memoria
             set_machine_params();
@@ -5838,20 +5838,20 @@ int quickload_continue(char *nombre) {
             reset_cpu();
         }
 
-		timex_insert_dck_cartridge(nombre);
+        timex_insert_dck_cartridge(nombre);
 
-		return 0;
+        return 0;
 
-	}
+    }
 
-	//TRD
-	else if (
-		!util_compare_file_extension(nombre,"trd")
-	) {
-		//Aqui el autoload da igual. cambiamos siempre a Pentagon si conviene
-		if (!MACHINE_IS_SPECTRUM) {
-			current_machine_type=MACHINE_ID_PENTAGON;
-			set_machine(NULL);
+    //TRD
+    else if (
+        !util_compare_file_extension(nombre,"trd")
+    ) {
+        //Aqui el autoload da igual. cambiamos siempre a Pentagon si conviene
+        if (!MACHINE_IS_SPECTRUM) {
+            current_machine_type=MACHINE_ID_PENTAGON;
+            set_machine(NULL);
 
             //establecer parametros por defecto. Incluido quitar slots de memoria
             set_machine_params();
@@ -5864,18 +5864,18 @@ int quickload_continue(char *nombre) {
         trd_insert_disk(nombre);
 
 
-		return 0;
+        return 0;
 
-	}
+    }
 
-	//DDH
-	else if (
+    //DDH
+    else if (
         !util_compare_file_extension(nombre,"ddh")
-	) {
-		//Aqui el autoload da igual. cambiamos siempre a Spectrum si conviene
-		if (!MACHINE_IS_SPECTRUM) {
-			current_machine_type=MACHINE_ID_SPECTRUM_48;
-			set_machine(NULL);
+    ) {
+        //Aqui el autoload da igual. cambiamos siempre a Spectrum si conviene
+        if (!MACHINE_IS_SPECTRUM) {
+            current_machine_type=MACHINE_ID_SPECTRUM_48;
+            set_machine(NULL);
 
             //establecer parametros por defecto. Incluido quitar slots de memoria
             set_machine_params();
@@ -5889,19 +5889,19 @@ int quickload_continue(char *nombre) {
 
         hilow_enable();
 
-		return 0;
+        return 0;
 
-	}
+    }
 
-	//MDR y RMD
-	else if (
-		!util_compare_file_extension(nombre,"mdr") ||
+    //MDR y RMD
+    else if (
+        !util_compare_file_extension(nombre,"mdr") ||
         !util_compare_file_extension(nombre,"rmd")
-	) {
-		//Aqui el autoload da igual. cambiamos siempre a Spectrum si conviene
-		if (!MACHINE_IS_SPECTRUM) {
-			current_machine_type=MACHINE_ID_SPECTRUM_48;
-			set_machine(NULL);
+    ) {
+        //Aqui el autoload da igual. cambiamos siempre a Spectrum si conviene
+        if (!MACHINE_IS_SPECTRUM) {
+            current_machine_type=MACHINE_ID_SPECTRUM_48;
+            set_machine(NULL);
 
             //establecer parametros por defecto. Incluido quitar slots de memoria
             set_machine_params();
@@ -5918,19 +5918,19 @@ int quickload_continue(char *nombre) {
         microdrive_insert(0);
 
 
-		return 0;
+        return 0;
 
-	}
+    }
 
 
-	//DSK
-	else if (
-		!util_compare_file_extension(nombre,"dsk")
-	) {
-		//Aqui el autoload da igual. cambiamos siempre a P3 si conviene
-		if (!MACHINE_IS_SPECTRUM_P3 && !MACHINE_IS_CPC_HAS_FLOPPY && !MACHINE_IS_PCW) {
-			current_machine_type=MACHINE_ID_SPECTRUM_P3_40;
-			set_machine(NULL);
+    //DSK
+    else if (
+        !util_compare_file_extension(nombre,"dsk")
+    ) {
+        //Aqui el autoload da igual. cambiamos siempre a P3 si conviene
+        if (!MACHINE_IS_SPECTRUM_P3 && !MACHINE_IS_CPC_HAS_FLOPPY && !MACHINE_IS_PCW) {
+            current_machine_type=MACHINE_ID_SPECTRUM_P3_40;
+            set_machine(NULL);
 
             //establecer parametros por defecto. Incluido quitar slots de memoria
             set_machine_params();
@@ -5955,13 +5955,13 @@ int quickload_continue(char *nombre) {
         else {
             pd765_enable();
         }
-		//plus3dos_traps.v=1;
+        //plus3dos_traps.v=1;
 
 
 
-		return 0;
+        return 0;
 
-	}
+    }
 
 
     //Archivos ay
@@ -5974,7 +5974,7 @@ int quickload_continue(char *nombre) {
 
     }
 
-	//Playlist
+    //Playlist
     else if (
             !util_compare_file_extension(nombre,"m3u")
 
@@ -5995,13 +5995,13 @@ int quickload_continue(char *nombre) {
     }
 
 
-	//cintas de CPC
-	else if (
+    //cintas de CPC
+    else if (
                 !util_compare_file_extension(nombre,"cdt")
         ) {
-		//Aqui el autoload da igual. cambiamos siempre a cpc si conviene
+        //Aqui el autoload da igual. cambiamos siempre a cpc si conviene
             if (!MACHINE_IS_CPC) {
-			    current_machine_type=140;
+                current_machine_type=140;
                 set_machine(NULL);
 
                     //establecer parametros por defecto. Incluido quitar slots de memoria
@@ -6018,8 +6018,8 @@ int quickload_continue(char *nombre) {
 
         }
 
-	//Archivos .rom
-	else if (
+    //Archivos .rom
+    else if (
             !util_compare_file_extension(nombre,"rom")
         ) {
 
@@ -6039,13 +6039,13 @@ int quickload_continue(char *nombre) {
 
     }
 
-	//Cartuchos de Coleco
-	else if (
+    //Cartuchos de Coleco
+    else if (
             !util_compare_file_extension(nombre,"col")
         ) {
-		//Aqui el autoload da igual. cambiamos siempre a coleco si conviene
+        //Aqui el autoload da igual. cambiamos siempre a coleco si conviene
         if (!MACHINE_IS_COLECO) {
-			current_machine_type=MACHINE_ID_COLECO;
+            current_machine_type=MACHINE_ID_COLECO;
             set_machine(NULL);
 
                 //establecer parametros por defecto. Incluido quitar slots de memoria
@@ -6061,12 +6061,12 @@ int quickload_continue(char *nombre) {
 
     }
 
-	//Cartuchos de SG1000
-	else if (
+    //Cartuchos de SG1000
+    else if (
                 !util_compare_file_extension(nombre,"sg")
              || !util_compare_file_extension(nombre,"sc")
         ) {
-		//Aqui el autoload da igual. cambiamos siempre a sg1000 si conviene
+        //Aqui el autoload da igual. cambiamos siempre a sg1000 si conviene
         if (!MACHINE_IS_SG1000 && !MACHINE_IS_SMS) {
             current_machine_type=MACHINE_ID_SG1000;
             set_machine(NULL);
@@ -6085,14 +6085,14 @@ int quickload_continue(char *nombre) {
     }
 
     //Cartuchos de SMS
-	else if (
+    else if (
                 !util_compare_file_extension(nombre,"sms")
              || !util_compare_file_extension(nombre,"bin")
 
         ) {
-		//Aqui el autoload da igual. cambiamos siempre a sms si conviene
+        //Aqui el autoload da igual. cambiamos siempre a sms si conviene
         if (!MACHINE_IS_SMS) {
-			current_machine_type=MACHINE_ID_SMS;
+            current_machine_type=MACHINE_ID_SMS;
             set_machine(NULL);
 
                 //establecer parametros por defecto. Incluido quitar slots de memoria
@@ -6108,15 +6108,15 @@ int quickload_continue(char *nombre) {
 
     }
 
-	//eprom cards de Z88
+    //eprom cards de Z88
     else if (
             !util_compare_file_extension(nombre,"epr")
-		|| !util_compare_file_extension(nombre,"63")
-		|| !util_compare_file_extension(nombre,"eprom")
+        || !util_compare_file_extension(nombre,"63")
+        || !util_compare_file_extension(nombre,"eprom")
 
         ) {
 
-		//Aqui el autoload da igual. cambiamos siempre a Z88 si conviene
+        //Aqui el autoload da igual. cambiamos siempre a Z88 si conviene
 
         //Si no estamos en z88, cambiar maquina
         if (!(MACHINE_IS_Z88)) {
@@ -6130,28 +6130,28 @@ int quickload_continue(char *nombre) {
         }
 
 
-		//Insertar rom en slot libre
-		debug_printf (VERBOSE_INFO,"Finding free slots");
+        //Insertar rom en slot libre
+        debug_printf (VERBOSE_INFO,"Finding free slots");
 
-		int slot;
-		for (slot=1;slot<=3 && z88_memory_slots[slot].size!=0;slot++);
+        int slot;
+        for (slot=1;slot<=3 && z88_memory_slots[slot].size!=0;slot++);
 
 
-		//si no hay ninguno libre, meterlo en slot 1
-		if (slot==4) {
-			//debug_printf (VERBOSE_INFO,"No free slots. Using slot 1");
-			debug_printf (VERBOSE_ERR,"No free slots to use. Inserting new card on slot 1");
-			slot=1;
-		}
+        //si no hay ninguno libre, meterlo en slot 1
+        if (slot==4) {
+            //debug_printf (VERBOSE_INFO,"No free slots. Using slot 1");
+            debug_printf (VERBOSE_ERR,"No free slots to use. Inserting new card on slot 1");
+            slot=1;
+        }
 
-		z88_load_eprom_card(nombre,slot);
+        z88_load_eprom_card(nombre,slot);
 
 
         return 0;
     }
 
 
-	//flash cards de Z88
+    //flash cards de Z88
     else if (
                    !util_compare_file_extension(nombre,"flash")
 
@@ -6178,7 +6178,7 @@ int quickload_continue(char *nombre) {
     }
 
 
-	//Archivos de menus
+    //Archivos de menus
     else if (
                    !util_compare_file_extension(nombre,"zmenu")
 
@@ -6208,32 +6208,32 @@ int quickload_continue(char *nombre) {
 
 int quickload(char *nombre) {
 
-	//Recordar estado de algunos interfaces para activarlos despues
-	z80_bit antes_divmmc_diviface_enabled;
-	antes_divmmc_diviface_enabled.v=divmmc_diviface_enabled.v;
+    //Recordar estado de algunos interfaces para activarlos despues
+    z80_bit antes_divmmc_diviface_enabled;
+    antes_divmmc_diviface_enabled.v=divmmc_diviface_enabled.v;
 
-	z80_bit antes_divide_diviface_enabled;
-	antes_divide_diviface_enabled.v=divide_diviface_enabled.v;
+    z80_bit antes_divide_diviface_enabled;
+    antes_divide_diviface_enabled.v=divide_diviface_enabled.v;
 
-	z80_bit antes_superupgrade_enabled;
-	antes_superupgrade_enabled.v=superupgrade_enabled.v;
+    z80_bit antes_superupgrade_enabled;
+    antes_superupgrade_enabled.v=superupgrade_enabled.v;
 
     z80_bit antes_debug_breakpoints_enabled;
     antes_debug_breakpoints_enabled.v=debug_breakpoints_enabled.v;
 
-	z80_bit antes_cpu_history_enabled;
-	antes_cpu_history_enabled.v=cpu_history_enabled.v;
+    z80_bit antes_cpu_history_enabled;
+    antes_cpu_history_enabled.v=cpu_history_enabled.v;
 
 
-	int retorno=quickload_continue(nombre);
+    int retorno=quickload_continue(nombre);
 
-	//En tbblue, setting de divmmc desactivado se gestiona mediante bit de registro
-	/*
-	z80_byte diven=tbblue_registers[6]&16;
-	*/
-	if (MACHINE_IS_TBBLUE) {
-		if ((tbblue_registers[6]&16)==0) antes_divmmc_diviface_enabled.v=0;
-	}
+    //En tbblue, setting de divmmc desactivado se gestiona mediante bit de registro
+    /*
+    z80_byte diven=tbblue_registers[6]&16;
+    */
+    if (MACHINE_IS_TBBLUE) {
+        if ((tbblue_registers[6]&16)==0) antes_divmmc_diviface_enabled.v=0;
+    }
 
     if (antes_divmmc_diviface_enabled.v)  {
         debug_printf (VERBOSE_DEBUG,"Reenabling divmmc as it was enabled before quickload");
@@ -6247,12 +6247,12 @@ int quickload(char *nombre) {
         divide_diviface_enable();
     }
 
-	if (antes_superupgrade_enabled.v && superupgrade_enabled.v==0) {
-		debug_printf (VERBOSE_DEBUG,"Reenabling superupgrade as it was enabled before quickload");
-		superupgrade_enable(0);
-	}
+    if (antes_superupgrade_enabled.v && superupgrade_enabled.v==0) {
+        debug_printf (VERBOSE_DEBUG,"Reenabling superupgrade as it was enabled before quickload");
+        superupgrade_enable(0);
+    }
 
-	if (antes_cpu_history_enabled.v) set_cpu_core_history_enable();
+    if (antes_cpu_history_enabled.v) set_cpu_core_history_enable();
 
     //Si estaba modo debug cpu, reactivar
     //Asegurarme que no este ya habilitado debug_breakpoints_enabled.v, puede suceder simplemente
@@ -6264,7 +6264,7 @@ int quickload(char *nombre) {
         breakpoints_enable();
     }
 
-	return retorno;
+    return retorno;
 
 }
 
@@ -6299,11 +6299,11 @@ int si_existe_archivo(char *nombre)
 
                 if (stat(nombre, &buf_stat)==0) {
 
-			return 1;
+            return 1;
 
                 }
 
-	return 0;
+    return 0;
     }
 
 }
@@ -6414,8 +6414,8 @@ long long int get_file_size(char *nombre)
         }
 
         else {
-			//printf ("file size: %ld\n",buf_stat.st_size);
-			return buf_stat.st_size;
+            //printf ("file size: %ld\n",buf_stat.st_size);
+            return buf_stat.st_size;
         }
     }
 }
@@ -6428,7 +6428,7 @@ long long int get_file_size(char *nombre)
 int get_file_lines(char *filename)
 {
 
-	int leidos;
+    int leidos;
         int total_lineas=0;
 
         //Leemos primero todo el archivo en memoria
@@ -6482,7 +6482,7 @@ int get_file_lines(char *filename)
 
         //printf ("lineas total: %d\n",total_lineas);
 
-	return total_lineas;
+    return total_lineas;
 
 }
 
@@ -6493,7 +6493,7 @@ int get_file_lines(char *filename)
 int lee_archivo(char *nombre,char *buffer,int max_longitud)
 {
 
-	int leidos;
+    int leidos;
 
                 FILE *ptr_archivo;
 
@@ -6523,7 +6523,7 @@ int lee_archivo(char *nombre,char *buffer,int max_longitud)
                 //fclose(ptr_archivo);
 
 
-		return leidos;
+        return leidos;
 
 }
 
@@ -6531,7 +6531,7 @@ int lee_archivo(char *nombre,char *buffer,int max_longitud)
 void util_set_reset_key_msx_keymap(enum util_teclas_msx_keymap tecla,int pressrelease)
 {
         switch (tecla) {
-			case UTIL_KEY_MSX_MINUS:
+            case UTIL_KEY_MSX_MINUS:
                                 if (pressrelease) {
                                         msx_keyboard_table[1] &=255-4;
                                 }
@@ -6547,7 +6547,7 @@ void util_set_reset_key_msx_keymap(enum util_teclas_msx_keymap tecla,int pressre
 void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressrelease)
 {
         switch (tecla) {
-			case UTIL_KEY_CPC_MINUS:
+            case UTIL_KEY_CPC_MINUS:
                                 if (pressrelease) {
                                         cpc_keyboard_table[3] &=255-2;
                                 }
@@ -6556,7 +6556,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_CIRCUNFLEJO:
+            case UTIL_KEY_CPC_CIRCUNFLEJO:
                                 if (pressrelease) {
                                         cpc_keyboard_table[3] &=255-1;
                                 }
@@ -6565,7 +6565,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_ARROBA:
+            case UTIL_KEY_CPC_ARROBA:
                                 if (pressrelease) {
                                         cpc_keyboard_table[3] &=255-4;
                                 }
@@ -6574,7 +6574,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_BRACKET_LEFT:
+            case UTIL_KEY_CPC_BRACKET_LEFT:
                                 if (pressrelease) {
                                         cpc_keyboard_table[2] &=255-2;
                                 }
@@ -6583,7 +6583,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_COLON:
+            case UTIL_KEY_CPC_COLON:
                                 if (pressrelease) {
                                         cpc_keyboard_table[3] &=255-32;
                                 }
@@ -6592,7 +6592,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_SEMICOLON:
+            case UTIL_KEY_CPC_SEMICOLON:
                                 if (pressrelease) {
                                         cpc_keyboard_table[3] &=255-16;
                                 }
@@ -6601,7 +6601,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_BRACKET_RIGHT:
+            case UTIL_KEY_CPC_BRACKET_RIGHT:
                                 if (pressrelease) {
                                         cpc_keyboard_table[2] &=255-8;
                                 }
@@ -6610,7 +6610,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_COMMA:
+            case UTIL_KEY_CPC_COMMA:
                                 if (pressrelease) {
                                         cpc_keyboard_table[4] &=255-128;
                                 }
@@ -6619,7 +6619,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_PERIOD:
+            case UTIL_KEY_CPC_PERIOD:
 
 
                                 if (pressrelease) {
@@ -6630,7 +6630,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_SLASH:
+            case UTIL_KEY_CPC_SLASH:
                                 if (pressrelease) {
                                         cpc_keyboard_table[3] &=255-64;
                                 }
@@ -6639,7 +6639,7 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-			case UTIL_KEY_CPC_BACKSLASH:
+            case UTIL_KEY_CPC_BACKSLASH:
                                 if (pressrelease) {
                                         cpc_keyboard_table[2] &=255-64;
                                 }
@@ -6648,13 +6648,13 @@ void util_set_reset_key_cpc_keymap(enum util_teclas_cpc_keymap tecla,int pressre
                                 }
                         break;
 
-	}
+    }
 
 }
 
 void util_set_reset_key_z88_keymap(enum util_teclas_z88_keymap tecla,int pressrelease)
 {
-	switch (tecla) {
+    switch (tecla) {
                         case UTIL_KEY_Z88_MINUS:
                                 if (pressrelease) {
                                         blink_kbd_a11 &= 255-128;
@@ -6758,7 +6758,7 @@ void util_set_reset_key_z88_keymap(enum util_teclas_z88_keymap tecla,int pressre
                                         }
                         break;
 
-	}
+    }
 }
 
 
@@ -6821,7 +6821,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
 
                         case UTIL_KEY_COMMON_KEYMAP_BRACKET_LEFT:
                                 if (pressrelease) {
-					                             puerto_teclado_sam_dff9 &= 255-32;
+                                                 puerto_teclado_sam_dff9 &= 255-32;
                                        //// 4|     [   Caps      k      s      f      =      g      ;     ql_keyboard_table[3]
                                        ql_keyboard_table[3] &=255-1;
                                        msx_keyboard_table[1] &= 255-32;
@@ -6829,7 +6829,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                        pcw_keyboard_table[3] &=(255-4);
                                 }
                                 else {
-					                             puerto_teclado_sam_dff9 |= 32;
+                                                 puerto_teclado_sam_dff9 |= 32;
                                        ql_keyboard_table[3] |=1;
                                        msx_keyboard_table[1] |=32;
                                        svi_keyboard_table[5] |= 8;
@@ -6838,9 +6838,9 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                         break;
 
 
-			case UTIL_KEY_COMMON_KEYMAP_BRACKET_RIGHT:
+            case UTIL_KEY_COMMON_KEYMAP_BRACKET_RIGHT:
                                 if (pressrelease) {
-					                             puerto_teclado_sam_dff9 &= 255-64;
+                                                 puerto_teclado_sam_dff9 &= 255-64;
                                        // 5|     ]      z      .      c      b  Pound      m      '     ql_keyboard_table[2]
                                        ql_keyboard_table[2] &=255-1;
                                        msx_keyboard_table[1] &= 255-64;
@@ -6907,9 +6907,9 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                         break;
 
 
-			case UTIL_KEY_COMMON_KEYMAP_COMMA:
+            case UTIL_KEY_COMMON_KEYMAP_COMMA:
                                 if (pressrelease) {
-					                              puerto_teclado_sam_7ff9 &= 255-32;
+                                                  puerto_teclado_sam_7ff9 &= 255-32;
                                         ql_keyboard_table[7] &=(255-128);
                                         msx_keyboard_table[2] &= 255-4;
                                         svi_keyboard_table[1] &= 255-16;
@@ -6917,7 +6917,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
 
                                 }
                                 else {
-					                             puerto_teclado_sam_7ff9 |= 32;
+                                                 puerto_teclado_sam_7ff9 |= 32;
                                        ql_keyboard_table[7] |=128;
                                        msx_keyboard_table[2] |= 4;
                                        svi_keyboard_table[1] |= 16;
@@ -6927,14 +6927,14 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
 
                         case UTIL_KEY_COMMON_KEYMAP_PERIOD:
                                  if (pressrelease) {
-					                              puerto_teclado_sam_7ff9 &= 255-64;
+                                                  puerto_teclado_sam_7ff9 &= 255-64;
                                         ql_keyboard_table[2] &=(255-4);
                                         msx_keyboard_table[2] &= 255-8;
                                         svi_keyboard_table[1] &= 255-64;
                                         pcw_keyboard_table[3] &=(255-128);
                                  }
                                  else {
-					                              puerto_teclado_sam_7ff9 |= 64;
+                                                  puerto_teclado_sam_7ff9 |= 64;
                                         ql_keyboard_table[2] |=4;
                                         msx_keyboard_table[2] |= 8;
                                         svi_keyboard_table[1] |= 64;
@@ -6944,7 +6944,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
 
                         case UTIL_KEY_COMMON_KEYMAP_SLASH:
                                  if (pressrelease) {
-					                              puerto_teclado_sam_7ff9 &= 255-128;
+                                                  puerto_teclado_sam_7ff9 &= 255-128;
                                         // 0| Shift   Ctrl    Alt      x      v      /      n      ,     ql_keyboard_table[7]
                                         ql_keyboard_table[7] &=255-32;
                                         msx_keyboard_table[2] &= 255-16;
@@ -6952,7 +6952,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                         pcw_keyboard_table[3] &=(255-64);
                                  }
                                  else {
-					                              puerto_teclado_sam_7ff9 |= 128;
+                                                  puerto_teclado_sam_7ff9 |= 128;
                                         ql_keyboard_table[7] |=32;
                                         msx_keyboard_table[2] |= 16;
                                         svi_keyboard_table[1] |= 128;
@@ -6992,184 +6992,184 @@ z80_byte chloe_keyboard_pressed_tecla_ascii=0;
 //Todas se corresponen a symbol shift + algo
 
 struct s_teclas_chloe_numeros {
-	z80_byte ascii_origen;
-	z80_byte ascii_destino;
+    z80_byte ascii_origen;
+    z80_byte ascii_destino;
 };
 
 typedef struct s_teclas_chloe_numeros teclas_chloe_numeros;
 
 #define TOTAL_TECLAS_CHLOE_NUMEROS 10
 teclas_chloe_numeros tabla_teclas_chloe_numeros[TOTAL_TECLAS_CHLOE_NUMEROS]={
-	{'1','1'},
-	{'2','2'},
-	{'3','3'},
-	{'4','4'},
-	{'5','5'},
-	{'6','h'},
-	{'7','6'},
-	{'8','b'},
-	{'9','8'},
-	{'0','9'},
+    {'1','1'},
+    {'2','2'},
+    {'3','3'},
+    {'4','4'},
+    {'5','5'},
+    {'6','h'},
+    {'7','6'},
+    {'8','b'},
+    {'9','8'},
+    {'0','9'},
 };
 
 void util_set_reset_key_chloe_keymap(enum util_teclas_chloe_keymap tecla,int pressrelease)
 {
-	//printf ("envio de tecla extendida por keymap. tecla: %d pressrelease: %d\n",tecla,pressrelease);
+    //printf ("envio de tecla extendida por keymap. tecla: %d pressrelease: %d\n",tecla,pressrelease);
 
-	//todas generan sym shift
-	if (pressrelease==0) {
-		reset_keyboard_ports();
-		return;
-	}
-
-
-	//Se pulsan las teclas
-	//Teclas que vienen de keymap, como -_ etc
-	switch (tecla) {
-		case UTIL_KEY_CHLOE_MINUS:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('0',1);
-			else  convert_numeros_letras_puerto_teclado_continue('j',1);
-		break;
-
-		case UTIL_KEY_CHLOE_EQUAL:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('k',1);
-			else convert_numeros_letras_puerto_teclado_continue('l',1);
-		break;
+    //todas generan sym shift
+    if (pressrelease==0) {
+        reset_keyboard_ports();
+        return;
+    }
 
 
-		case UTIL_KEY_CHLOE_BRACKET_LEFT:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('f',1);
-			else convert_numeros_letras_puerto_teclado_continue('y',1);
-		break;
+    //Se pulsan las teclas
+    //Teclas que vienen de keymap, como -_ etc
+    switch (tecla) {
+        case UTIL_KEY_CHLOE_MINUS:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('0',1);
+            else  convert_numeros_letras_puerto_teclado_continue('j',1);
+        break;
 
-		case UTIL_KEY_CHLOE_BRACKET_RIGHT:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('g',1);
-			else convert_numeros_letras_puerto_teclado_continue('u',1);
-		break;
+        case UTIL_KEY_CHLOE_EQUAL:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('k',1);
+            else convert_numeros_letras_puerto_teclado_continue('l',1);
+        break;
 
-		case UTIL_KEY_CHLOE_SEMICOLON:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('z',1);
-			else convert_numeros_letras_puerto_teclado_continue('o',1);
-		break;
 
-		case UTIL_KEY_CHLOE_APOSTROPHE:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('p',1);
-			else convert_numeros_letras_puerto_teclado_continue('7',1);
-		break;
+        case UTIL_KEY_CHLOE_BRACKET_LEFT:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('f',1);
+            else convert_numeros_letras_puerto_teclado_continue('y',1);
+        break;
 
-		case UTIL_KEY_CHLOE_POUND:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('s',1);
-			else convert_numeros_letras_puerto_teclado_continue('d',1);
-		break;
+        case UTIL_KEY_CHLOE_BRACKET_RIGHT:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('g',1);
+            else convert_numeros_letras_puerto_teclado_continue('u',1);
+        break;
 
-		case UTIL_KEY_CHLOE_SLASH:
-			set_symshift();
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('c',1);
-			else convert_numeros_letras_puerto_teclado_continue('v',1);
-		break;
+        case UTIL_KEY_CHLOE_SEMICOLON:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('z',1);
+            else convert_numeros_letras_puerto_teclado_continue('o',1);
+        break;
 
-		case UTIL_KEY_CHLOE_COMMA:
-			set_symshift();
+        case UTIL_KEY_CHLOE_APOSTROPHE:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('p',1);
+            else convert_numeros_letras_puerto_teclado_continue('7',1);
+        break;
+
+        case UTIL_KEY_CHLOE_POUND:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('s',1);
+            else convert_numeros_letras_puerto_teclado_continue('d',1);
+        break;
+
+        case UTIL_KEY_CHLOE_SLASH:
+            set_symshift();
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('c',1);
+            else convert_numeros_letras_puerto_teclado_continue('v',1);
+        break;
+
+        case UTIL_KEY_CHLOE_COMMA:
+            set_symshift();
                         if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('r',1);
                         else convert_numeros_letras_puerto_teclado_continue('n',1);
-		break;
+        break;
 
-		case UTIL_KEY_CHLOE_PERIOD:
-			set_symshift();
+        case UTIL_KEY_CHLOE_PERIOD:
+            set_symshift();
                         if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('t',1);
                         else convert_numeros_letras_puerto_teclado_continue('m',1);
-		break;
+        break;
 
-		case UTIL_KEY_CHLOE_LEFTZ:
-			set_symshift();
+        case UTIL_KEY_CHLOE_LEFTZ:
+            set_symshift();
                         if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('a',1);
                         else convert_numeros_letras_puerto_teclado_continue('x',1);
-		break;
+        break;
 
-		case UTIL_KEY_CHLOE_BACKSLASH:
-			//Esto se mapea a true video (shift +3) e inverse video (shift+4)
-			//Activar mayus
-			puerto_65278  &=255-1;
+        case UTIL_KEY_CHLOE_BACKSLASH:
+            //Esto se mapea a true video (shift +3) e inverse video (shift+4)
+            //Activar mayus
+            puerto_65278  &=255-1;
 
-			if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('4',1);
-			else convert_numeros_letras_puerto_teclado_continue('3',1);
-		break;
-
-
+            if (chloe_keyboard_pressed_shift.v) convert_numeros_letras_puerto_teclado_continue('4',1);
+            else convert_numeros_letras_puerto_teclado_continue('3',1);
+        break;
 
 
-	}
+
+
+    }
 }
 
 
 void util_set_reset_key_chloe(void)
 {
-	//printf ("util_set_reset_key_chloe. Shift: %d non ascii key: %d ascii: %d\n",chloe_keyboard_pressed_shift.v,chloe_keyboard_pressed_tecla,chloe_keyboard_pressed_tecla_ascii);
+    //printf ("util_set_reset_key_chloe. Shift: %d non ascii key: %d ascii: %d\n",chloe_keyboard_pressed_shift.v,chloe_keyboard_pressed_tecla,chloe_keyboard_pressed_tecla_ascii);
 
-	if (chloe_keyboard_pressed_winkey.v) {
-		set_symshift();
-	}
+    if (chloe_keyboard_pressed_winkey.v) {
+        set_symshift();
+    }
 
-				if (chloe_keyboard_pressed_shift.v==0) {
-					//Tecla sin shift
-					//Enviar tecla tal cual sin modificador
-					//printf ("Enviar tecla sin shift\n");
-					if (chloe_keyboard_pressed_tecla!=UTIL_KEY_NONE) {
-						//printf ("tecla no es ascii: %d\n",chloe_keyboard_pressed_tecla);
-						util_set_reset_key_continue(chloe_keyboard_pressed_tecla,1);
-					}
-					else {
-						//printf ("tecla es ascii: %d\n",chloe_keyboard_pressed_tecla_ascii);
-						convert_numeros_letras_puerto_teclado_continue(chloe_keyboard_pressed_tecla_ascii,1);
-					}
-					return;
-				}
+                if (chloe_keyboard_pressed_shift.v==0) {
+                    //Tecla sin shift
+                    //Enviar tecla tal cual sin modificador
+                    //printf ("Enviar tecla sin shift\n");
+                    if (chloe_keyboard_pressed_tecla!=UTIL_KEY_NONE) {
+                        //printf ("tecla no es ascii: %d\n",chloe_keyboard_pressed_tecla);
+                        util_set_reset_key_continue(chloe_keyboard_pressed_tecla,1);
+                    }
+                    else {
+                        //printf ("tecla es ascii: %d\n",chloe_keyboard_pressed_tecla_ascii);
+                        convert_numeros_letras_puerto_teclado_continue(chloe_keyboard_pressed_tecla_ascii,1);
+                    }
+                    return;
+                }
 
 
-				//Tecla con shift
+                //Tecla con shift
 
                                 if (chloe_keyboard_pressed_tecla==UTIL_KEY_NONE && chloe_keyboard_pressed_tecla_ascii==0) {
-					//No tecla pulsada. Volver
+                    //No tecla pulsada. Volver
                                         return;
                                 }
 
                                 else {
                                         //Tecla con shift
-					//printf ("Pulsado shift y tecla %d o %d ascii\n",chloe_keyboard_pressed_tecla,chloe_keyboard_pressed_tecla_ascii);
+                    //printf ("Pulsado shift y tecla %d o %d ascii\n",chloe_keyboard_pressed_tecla,chloe_keyboard_pressed_tecla_ascii);
 
-					//Ver si es tecla ascii
-					if (chloe_keyboard_pressed_tecla_ascii) {
-						//printf ("Es tecla ascii\n");
-						int i;
+                    //Ver si es tecla ascii
+                    if (chloe_keyboard_pressed_tecla_ascii) {
+                        //printf ("Es tecla ascii\n");
+                        int i;
 
-						//Ver si es tecla numerica
-						for (i=0;i<TOTAL_TECLAS_CHLOE_NUMEROS;i++) {
-							if (tabla_teclas_chloe_numeros[i].ascii_origen==chloe_keyboard_pressed_tecla_ascii) {
-								set_symshift();
-								convert_numeros_letras_puerto_teclado_continue(tabla_teclas_chloe_numeros[i].ascii_destino,1);
-								return;
-							}
-						}
+                        //Ver si es tecla numerica
+                        for (i=0;i<TOTAL_TECLAS_CHLOE_NUMEROS;i++) {
+                            if (tabla_teclas_chloe_numeros[i].ascii_origen==chloe_keyboard_pressed_tecla_ascii) {
+                                set_symshift();
+                                convert_numeros_letras_puerto_teclado_continue(tabla_teclas_chloe_numeros[i].ascii_destino,1);
+                                return;
+                            }
+                        }
 
-						//No es tecla numerica. Enviar mayusculas y ascii
-						util_set_reset_key_continue(UTIL_KEY_SHIFT_L,1);
-						convert_numeros_letras_puerto_teclado_continue(chloe_keyboard_pressed_tecla_ascii,1);
-						return;
-					}
+                        //No es tecla numerica. Enviar mayusculas y ascii
+                        util_set_reset_key_continue(UTIL_KEY_SHIFT_L,1);
+                        convert_numeros_letras_puerto_teclado_continue(chloe_keyboard_pressed_tecla_ascii,1);
+                        return;
+                    }
 
-					//No es tecla ascii
-					//printf ("No es tecla ascii\n");
+                    //No es tecla ascii
+                    //printf ("No es tecla ascii\n");
 
 
-					if (chloe_keyboard_pressed_tecla!=UTIL_KEY_NONE) util_set_reset_key_continue(chloe_keyboard_pressed_tecla,1);
-					else convert_numeros_letras_puerto_teclado_continue(chloe_keyboard_pressed_tecla_ascii,1);
+                    if (chloe_keyboard_pressed_tecla!=UTIL_KEY_NONE) util_set_reset_key_continue(chloe_keyboard_pressed_tecla,1);
+                    else convert_numeros_letras_puerto_teclado_continue(chloe_keyboard_pressed_tecla_ascii,1);
 
 
 
@@ -7201,25 +7201,25 @@ unsigned int util_if_open_just_menu_initial_counter=0;
 //Accion de abrir menu (F5, boton joystick) que ademas controla si el boton esta limitado para que abra el menu solo cuando se pulsa 3 veces seguidas, por ejemplo, en 1 segundo
 int util_if_open_just_menu(void)
 {
-	if (menu_limit_menu_open.v==0) return 1;
+    if (menu_limit_menu_open.v==0) return 1;
 
-	//esta limitado el uso de F5, hay que pulsar 3 veces en el ultimo segundo
-	if (util_if_open_just_menu_times==0) {
-		util_if_open_just_menu_initial_counter=util_if_open_just_menu_counter;
-	}
+    //esta limitado el uso de F5, hay que pulsar 3 veces en el ultimo segundo
+    if (util_if_open_just_menu_times==0) {
+        util_if_open_just_menu_initial_counter=util_if_open_just_menu_counter;
+    }
 
-	util_if_open_just_menu_times++;
-	debug_printf (VERBOSE_DEBUG,"Pressed open menu key: %d times",util_if_open_just_menu_times);
+    util_if_open_just_menu_times++;
+    debug_printf (VERBOSE_DEBUG,"Pressed open menu key: %d times",util_if_open_just_menu_times);
 
-	//Si llega a 3 veces, ver si la diferencia del contador es menor o igual que 50
-	if (util_if_open_just_menu_times==3) {
-		util_if_open_just_menu_times=0;
-		int diferencia=util_if_open_just_menu_counter-util_if_open_just_menu_initial_counter;
-		debug_printf (VERBOSE_DEBUG,"Time elapsed between the third keypress and the first one (in 1/50s): %d",diferencia);
-		if (diferencia<=50) return 1;
-	}
+    //Si llega a 3 veces, ver si la diferencia del contador es menor o igual que 50
+    if (util_if_open_just_menu_times==3) {
+        util_if_open_just_menu_times=0;
+        int diferencia=util_if_open_just_menu_counter-util_if_open_just_menu_initial_counter;
+        debug_printf (VERBOSE_DEBUG,"Time elapsed between the third keypress and the first one (in 1/50s): %d",diferencia);
+        if (diferencia<=50) return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -7377,10 +7377,10 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 {
 
 
-	//Para poder evitar que se vuelva a convertir cuando se llama desde convert_numeros_letras_puerto_teclado_continue
-	if (convertrecreated) {
-		//Si teclado recreated
-		if (recreated_zx_keyboard_support.v) {
+    //Para poder evitar que se vuelva a convertir cuando se llama desde convert_numeros_letras_puerto_teclado_continue
+    if (convertrecreated) {
+        //Si teclado recreated
+        if (recreated_zx_keyboard_support.v) {
 
             int leer_recreated=0;
 
@@ -7393,95 +7393,95 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 
             if (leer_recreated) {
 
-			enum util_teclas tecla_final;
-			int pressrelease_final;
+            enum util_teclas tecla_final;
+            int pressrelease_final;
 
-			//Si es mayusculas
-			if (tecla==UTIL_KEY_SHIFT_L) {
-				//printf ("Pulsada shift L real\n");
-				if (pressrelease) recreated_zx_keyboard_pressed_caps.v=1;
-				else recreated_zx_keyboard_pressed_caps.v=0;
-				return;
-			}
+            //Si es mayusculas
+            if (tecla==UTIL_KEY_SHIFT_L) {
+                //printf ("Pulsada shift L real\n");
+                if (pressrelease) recreated_zx_keyboard_pressed_caps.v=1;
+                else recreated_zx_keyboard_pressed_caps.v=0;
+                return;
+            }
 
-			//printf ("Entrada a convertir tecla recreated desde util_set_reset_key\n");
-			recreated_zx_spectrum_keyboard_convert(tecla, &tecla_final, &pressrelease_final);
-			if (tecla_final) {
-				tecla=tecla_final;
-				pressrelease=pressrelease_final;
-			}
+            //printf ("Entrada a convertir tecla recreated desde util_set_reset_key\n");
+            recreated_zx_spectrum_keyboard_convert(tecla, &tecla_final, &pressrelease_final);
+            if (tecla_final) {
+                tecla=tecla_final;
+                pressrelease=pressrelease_final;
+            }
 
             }
-		}
-	}
+        }
+    }
 
-	if (chloe_keyboard.v) {
-		//Ver si tecla que se pulsa es shift
-		if (tecla==UTIL_KEY_SHIFT_L || tecla==UTIL_KEY_SHIFT_R) {
-			//Ver si se pulsa o se libera
-			if (pressrelease==0) {
-				//Se libera
-				chloe_keyboard_pressed_shift.v=0;
-				util_set_reset_key_continue(tecla,pressrelease);
-				return;
-			}
-			else {
-				//Se pulsa
-				//Si solo pulsado shift pero no una tecla diferente, no hacer nada, solo activar modificador
-				chloe_keyboard_pressed_shift.v=1;
-				util_set_reset_key_chloe();
-				return;
-			}
-		}
+    if (chloe_keyboard.v) {
+        //Ver si tecla que se pulsa es shift
+        if (tecla==UTIL_KEY_SHIFT_L || tecla==UTIL_KEY_SHIFT_R) {
+            //Ver si se pulsa o se libera
+            if (pressrelease==0) {
+                //Se libera
+                chloe_keyboard_pressed_shift.v=0;
+                util_set_reset_key_continue(tecla,pressrelease);
+                return;
+            }
+            else {
+                //Se pulsa
+                //Si solo pulsado shift pero no una tecla diferente, no hacer nada, solo activar modificador
+                chloe_keyboard_pressed_shift.v=1;
+                util_set_reset_key_chloe();
+                return;
+            }
+        }
 
-		//Ver si se pulsa tecla Windows (o cmd en mac)
-		else if (tecla==UTIL_KEY_WINKEY_L) {
-			//Ver si se pulsa o se libera
+        //Ver si se pulsa tecla Windows (o cmd en mac)
+        else if (tecla==UTIL_KEY_WINKEY_L) {
+            //Ver si se pulsa o se libera
                         if (pressrelease==0) {
-				//printf ("Liberada winkey\n");
-				chloe_keyboard_pressed_winkey.v=0;
-				clear_symshift();
-				//Liberar todas teclas de puertos en caso de driver cocoa
-				//Esto sucede porque esto es tecla cmd y en cocoa,
-				//cuando se libera cmd, no se envian liberacion de otras teclas pulsadas
-				if (strcmp(scr_new_driver_name,"cocoa")==0) {
-					//printf ("Liberando todas teclas en driver cocoa\n");
-					chloe_keyboard_pressed_tecla=UTIL_KEY_NONE;
-					chloe_keyboard_pressed_tecla_ascii=0;
-					reset_keyboard_ports();
-	                                return;
-				}
-				util_set_reset_key_continue(tecla,pressrelease);
+                //printf ("Liberada winkey\n");
+                chloe_keyboard_pressed_winkey.v=0;
+                clear_symshift();
+                //Liberar todas teclas de puertos en caso de driver cocoa
+                //Esto sucede porque esto es tecla cmd y en cocoa,
+                //cuando se libera cmd, no se envian liberacion de otras teclas pulsadas
+                if (strcmp(scr_new_driver_name,"cocoa")==0) {
+                    //printf ("Liberando todas teclas en driver cocoa\n");
+                    chloe_keyboard_pressed_tecla=UTIL_KEY_NONE;
+                    chloe_keyboard_pressed_tecla_ascii=0;
+                    reset_keyboard_ports();
+                                    return;
+                }
+                util_set_reset_key_continue(tecla,pressrelease);
                                 return;
                         }
                         else {
                                 //Se pulsa
-				//printf ("utils. enviando winkey - symbol shift\n");
-				chloe_keyboard_pressed_winkey.v=1;
-				util_set_reset_key_chloe();
+                //printf ("utils. enviando winkey - symbol shift\n");
+                chloe_keyboard_pressed_winkey.v=1;
+                util_set_reset_key_chloe();
                                 return;
                         }
-		}
+        }
 
-		else if (tecla==UTIL_KEY_ALT_L || tecla==UTIL_KEY_ALT_R) {
-			//Se pulsa alt
-			if (pressrelease==0) {
-				//Liberar todas teclas de puertos
+        else if (tecla==UTIL_KEY_ALT_L || tecla==UTIL_KEY_ALT_R) {
+            //Se pulsa alt
+            if (pressrelease==0) {
+                //Liberar todas teclas de puertos
                                 reset_keyboard_ports();
                                 return;
                         }
                         else {
                                 //Se pulsa
-				//Enviar sym+shift
-				set_symshift();
-				puerto_65278  &=255-1;
-				return;
-			}
-		}
+                //Enviar sym+shift
+                set_symshift();
+                puerto_65278  &=255-1;
+                return;
+            }
+        }
 
-		else if (tecla==UTIL_KEY_CONTROL_L || tecla==UTIL_KEY_CONTROL_R)  {
-			//En Chloe, Control es shift+9
-			if (pressrelease==0) {
+        else if (tecla==UTIL_KEY_CONTROL_L || tecla==UTIL_KEY_CONTROL_R)  {
+            //En Chloe, Control es shift+9
+            if (pressrelease==0) {
                                 //Liberar todas teclas de puertos
                                 reset_keyboard_ports();
                                 return;
@@ -7492,14 +7492,14 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
                                 puerto_65278  &=255-1;
                                 //9
                                 puerto_61438  &=255-2;
-				return;
-			}
-		}
+                return;
+            }
+        }
 
 
-		else if (tecla==UTIL_KEY_TAB && menu_abierto==0) {
+        else if (tecla==UTIL_KEY_TAB && menu_abierto==0) {
                        //En Chloe, TAB es shift+1. Pero con menu cerrado
-			if (pressrelease==0) {
+            if (pressrelease==0) {
                                 //Liberar todas teclas de puertos
                                 reset_keyboard_ports();
                                 return;
@@ -7509,36 +7509,36 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
                                 puerto_65278  &=255-1;
                                 //1
                                 puerto_63486  &=255-1;
-				return;
-			}
+                return;
+            }
                 }
 
 
-		else if (tecla==UTIL_KEY_ESC) {
-		      //ESC en Chloe es BREAK
-			if (pressrelease==0) {
+        else if (tecla==UTIL_KEY_ESC) {
+              //ESC en Chloe es BREAK
+            if (pressrelease==0) {
                                 //Liberar todas teclas de puertos
                                 reset_keyboard_ports();
                                 return;
                         }
                         else {
-                        	puerto_65278 &=255-1;
-				puerto_32766 &=255-1;
-				//Y indicar tecla ESC y otra funcion de esc (liberar cola speech)
-				util_set_reset_key_continue(UTIL_KEY_ESC,1);
+                            puerto_65278 &=255-1;
+                puerto_32766 &=255-1;
+                //Y indicar tecla ESC y otra funcion de esc (liberar cola speech)
+                util_set_reset_key_continue(UTIL_KEY_ESC,1);
                                 return;
                         }
-		}
+        }
 
 
 
-		else {
-			//Ver si se pulsa o se libera
+        else {
+            //Ver si se pulsa o se libera
                         if (pressrelease==0) {
                                 //Se libera
                                 chloe_keyboard_pressed_tecla=UTIL_KEY_NONE;
-				//Liberar todas teclas de puertos
-				reset_keyboard_ports();
+                //Liberar todas teclas de puertos
+                reset_keyboard_ports();
                                 return;
                         }
                         else {
@@ -7546,16 +7546,16 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
                                 //Si solo pulsado shift pero no una tecla diferente, no hacer nada, solo activar modificador
                                 chloe_keyboard_pressed_tecla=tecla;
                                 util_set_reset_key_chloe();
-				return;
+                return;
                         }
                 }
 
 
-	}
+    }
 
-	else {
-		util_set_reset_key_continue(tecla,pressrelease);
-	}
+    else {
+        util_set_reset_key_continue(tecla,pressrelease);
+    }
 
 }
 
@@ -8109,8 +8109,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                             pcw_keyboard_table[0xA] &=(255-32);
                                         }
 
-					//Avisar de envio enter especial para rutinas de speech, para que envien sonido
-					textspeech_send_new_line();
+                    //Avisar de envio enter especial para rutinas de speech, para que envien sonido
+                    textspeech_send_new_line();
 
                                 }
 
@@ -8133,12 +8133,12 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 }
 
 
-					//if (MACHINE_IS_CPC) {
-					//	printf ("Temporal en CPC Enter es Fire\n");
+                    //if (MACHINE_IS_CPC) {
+                    //	printf ("Temporal en CPC Enter es Fire\n");
 //&49     DEL     Joy 1 Fire 3 (CPC only) Joy 1 Fire 2    Joy1 Fire 1     Joy1 right      Joy1 left       Joy1 down       Joy1 up
-					//	if (pressrelease) cpc_keyboard_table[9] &=(255-16);
-					//	else cpc_keyboard_table[9] |=16;
-					//}
+                    //	if (pressrelease) cpc_keyboard_table[9] &=(255-16);
+                    //	else cpc_keyboard_table[9] |=16;
+                    //}
 
 
 
@@ -8201,7 +8201,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                         puerto_65278  &=255-1;
                                         blink_kbd_a14 &= (255-64);
-					                              cpc_keyboard_table[2] &=255-32;
+                                                  cpc_keyboard_table[2] &=255-32;
                                         ql_keyboard_table[7] &= (255-1);
                                         msx_keyboard_table[6] &=(255-1);
                                         svi_keyboard_table[6] &=(255-1);
@@ -8211,7 +8211,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         puerto_65278 |=1;
                                         blink_kbd_a14 |= 64;
                                         ql_keyboard_table[7] |= 1;
-					cpc_keyboard_table[2] |=32;
+                    cpc_keyboard_table[2] |=32;
                                         msx_keyboard_table[6] |=1;
                                         svi_keyboard_table[6] |=1;
                                         pcw_keyboard_table[2] |=32;
@@ -8229,7 +8229,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                         puerto_65278  &=255-1;
                                         blink_kbd_a15 &= (255-128);
-					                              cpc_keyboard_table[2] &=255-32;
+                                                  cpc_keyboard_table[2] &=255-32;
                                         ql_keyboard_table[7] &= (255-1);
                                         msx_keyboard_table[6] &=(255-1);
                                         svi_keyboard_table[6] &=(255-1);
@@ -8238,7 +8238,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 else  {
                                         puerto_65278 |=1;
                                         blink_kbd_a15 |= 128;
-					                              cpc_keyboard_table[2] |=32;
+                                                  cpc_keyboard_table[2] |=32;
                                         ql_keyboard_table[7] |= 1;
                                         msx_keyboard_table[6] |=1;
                                         svi_keyboard_table[6] |=1;
@@ -8477,7 +8477,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         else              puerto_teclado_sam_eff9 |= 128;
                                 }
 
-				else {
+                else {
 
 
 // 6|   Ret   Left     Up    Esc  Right      \  Space   Down     ql_keyboard_table[1]
@@ -8488,13 +8488,13 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 // 1|     8      2      6      q      e      0      t      u     ql_keyboard_table[6]
 // 0| Shift   Ctrl    Alt      x      v      /      n      ,     ql_keyboard_table[7]
 
-	                                if (pressrelease) {
-        	                                puerto_65278 &=255-1;
-                	                        puerto_61438 &=255-1;
-                        	                blink_kbd_a8 &= (255-128);
+                                    if (pressrelease) {
+                                            puerto_65278 &=255-1;
+                                            puerto_61438 &=255-1;
+                                            blink_kbd_a8 &= (255-128);
 
                                                         //En cpc hacemos que tanto del y backspace del teclado sean el DEL del cpc
-						                              cpc_keyboard_table[9] &=(255-128);
+                                                      cpc_keyboard_table[9] &=(255-128);
                                                 msx_keyboard_table[7] &=(255-32);
                                                 svi_keyboard_table[5] &=(255-64);
                                           //ql_pressed_backspace=1;
@@ -8502,20 +8502,20 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                           ql_keyboard_table[1] &=(255-2);
                                           pcw_keyboard_table[9] &=(255-128);
 
-	                                }
-        	                        else {
-                	                        puerto_65278 |=1;
-                        	                puerto_61438 |=1;
-                                	        blink_kbd_a8 |= 128;
-						                              cpc_keyboard_table[9] |=128;
+                                    }
+                                    else {
+                                            puerto_65278 |=1;
+                                            puerto_61438 |=1;
+                                            blink_kbd_a8 |= 128;
+                                                      cpc_keyboard_table[9] |=128;
                                                 msx_keyboard_table[7] |=32;
                                                 svi_keyboard_table[5] |=64;
                                           //ql_pressed_backspace=0;
                                           ql_keyboard_table[7] |=2;
                                           ql_keyboard_table[1] |=2;
                                           pcw_keyboard_table[9] |=128;
-	                                }
-				}
+                                    }
+                }
                         break;
 
 
@@ -8577,7 +8577,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //puerto_63486 &=255-16;
                                         joystick_set_left(1);
                                         blink_kbd_a12 &= (255-64);
-					                    cpc_keyboard_table[1] &=(255-1);
+                                        cpc_keyboard_table[1] &=(255-1);
                                         msx_keyboard_table[8] &=(255-16);
                                         svi_keyboard_table[6] &=(255-128);
 
@@ -8590,7 +8590,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //puerto_63486 |=16;
                                         joystick_release_left(1);
                                         blink_kbd_a12 |= 64;
-					                    cpc_keyboard_table[1] |=1;
+                                        cpc_keyboard_table[1] |=1;
                                         msx_keyboard_table[8] |=16;
                                         svi_keyboard_table[6] |=128;
                                         ql_keyboard_table[1] |= 2;
@@ -8603,7 +8603,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //puerto_61438 &=255-4;
                                         joystick_set_right(1);
                                         blink_kbd_a11 &= (255-64);
-					                              cpc_keyboard_table[0] &=(255-2);
+                                                  cpc_keyboard_table[0] &=(255-2);
                                         msx_keyboard_table[8] &=(255-128);
                                         svi_keyboard_table[8] &=(255-128);
                                         ql_keyboard_table[1] &= (255-16);
@@ -8629,7 +8629,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         joystick_set_down(1);
 
                                         blink_kbd_a10 &= (255-64);
-					cpc_keyboard_table[0] &=(255-4);
+                    cpc_keyboard_table[0] &=(255-4);
                                         msx_keyboard_table[8] &=(255-64);
                                         svi_keyboard_table[7] &=(255-128);
                                         ql_keyboard_table[1] &= (255-128);
@@ -8642,7 +8642,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         joystick_release_down(1);
 
                                         blink_kbd_a10 |= 64;
-					cpc_keyboard_table[0] |=4;
+                    cpc_keyboard_table[0] |=4;
                                         msx_keyboard_table[8] |=64;
                                         svi_keyboard_table[7] |=128;
                                         ql_keyboard_table[1] |= 128;
@@ -8656,7 +8656,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //puerto_61438 &=255-8;
                                         joystick_set_up(1);
                                         blink_kbd_a9 &= (255-64);
-					cpc_keyboard_table[0] &=(255-1);
+                    cpc_keyboard_table[0] &=(255-1);
                                         msx_keyboard_table[8] &=(255-32);
                                         svi_keyboard_table[5] &=(255-128);
                                         ql_keyboard_table[1] &= (255-4);
@@ -8667,7 +8667,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //puerto_61438 |=8;
                                         joystick_release_up(1);
                                         blink_kbd_a9 |= 64;
-					cpc_keyboard_table[0] |=1;
+                    cpc_keyboard_table[0] |=1;
                                         msx_keyboard_table[8] |=32;
                                         svi_keyboard_table[5] |=128;
                                         ql_keyboard_table[1] |=4;
@@ -8734,7 +8734,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                         joystick_set_left(0);
                                         blink_kbd_a12 &= (255-64);
-					cpc_keyboard_table[1] &=(255-1);
+                    cpc_keyboard_table[1] &=(255-1);
 
           // 1|   Ret   Left     Up    Esc  Right      \  Space   Down
                                         ql_keyboard_table[1] &= (255-2);
@@ -8742,7 +8742,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 else {
                                         joystick_release_left(0);
                                         blink_kbd_a12 |= 64;
-					                              cpc_keyboard_table[1] |=1;
+                                                  cpc_keyboard_table[1] |=1;
                                         ql_keyboard_table[1] |= 2;
                                 }
                         break;
@@ -8750,7 +8750,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                         joystick_set_right(0);
                                         blink_kbd_a11 &= (255-64);
-					                              cpc_keyboard_table[0] &=(255-2);
+                                                  cpc_keyboard_table[0] &=(255-2);
                                         ql_keyboard_table[1] &= (255-16);
                                 }
                                 else {
@@ -8766,7 +8766,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         joystick_set_down(0);
 
                                         blink_kbd_a10 &= (255-64);
-					cpc_keyboard_table[0] &=(255-4);
+                    cpc_keyboard_table[0] &=(255-4);
                                         ql_keyboard_table[1] &= (255-128);
 
                                 }
@@ -8774,7 +8774,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         joystick_release_down(0);
 
                                         blink_kbd_a10 |= 64;
-					cpc_keyboard_table[0] |=4;
+                    cpc_keyboard_table[0] |=4;
                                         ql_keyboard_table[1] |= 128;
                                 }
                         break;
@@ -8783,13 +8783,13 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                         joystick_set_up(0);
                                         blink_kbd_a9 &= (255-64);
-					cpc_keyboard_table[0] &=(255-1);
+                    cpc_keyboard_table[0] &=(255-1);
                                         ql_keyboard_table[1] &= (255-4);
                                 }
                                 else {
                                         joystick_release_up(0);
                                         blink_kbd_a9 |= 64;
-					cpc_keyboard_table[0] |=1;
+                    cpc_keyboard_table[0] |=1;
                                         ql_keyboard_table[1] |=4;
                                 }
                         break;
@@ -8808,52 +8808,52 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //printf ("Liberado TAB\n");
                                 }
 
-				if (MACHINE_IS_SAM) {
-					if (pressrelease) puerto_teclado_sam_f7f9 &= (255-64);
-					else              puerto_teclado_sam_f7f9 |= 64;
-				}
+                if (MACHINE_IS_SAM) {
+                    if (pressrelease) puerto_teclado_sam_f7f9 &= (255-64);
+                    else              puerto_teclado_sam_f7f9 |= 64;
+                }
 
-				else {
-	                                if (pressrelease) {
-                                        	puerto_65278 &=255-1;
-                                	        puerto_32766 &=255-2;
-                        	                blink_kbd_a14 &= (255-32);
-						                              cpc_keyboard_table[8]&= (255-16);
+                else {
+                                    if (pressrelease) {
+                                            puerto_65278 &=255-1;
+                                            puerto_32766 &=255-2;
+                                            blink_kbd_a14 &= (255-32);
+                                                      cpc_keyboard_table[8]&= (255-16);
                                           // 2|     9      w      i    Tab      r      -      y      o     ql_keyboard_table[5]
 
                                           msx_keyboard_table[7] &=(255-8);
                                           ql_keyboard_table[5] &=(255-8);
 
                                           pcw_keyboard_table[8]&= (255-16);
-        	                        }
+                                    }
 
 
 
-	                                else {
-                                	        puerto_65278 |=1;
-                        	                puerto_32766 |=2;
-                	                        blink_kbd_a14 |= 32;
-						                              cpc_keyboard_table[8]|= 16;
+                                    else {
+                                            puerto_65278 |=1;
+                                            puerto_32766 |=2;
+                                            blink_kbd_a14 |= 32;
+                                                      cpc_keyboard_table[8]|= 16;
                                         msx_keyboard_table[7] |=8;
                                           ql_keyboard_table[5] |=8;
 
                                           pcw_keyboard_table[8]|= 16;
-	                                }
-				}
+                                    }
+                }
                         break;
 
                         case UTIL_KEY_CAPS_LOCK:
-				if (MACHINE_IS_SAM) {
+                if (MACHINE_IS_SAM) {
                                         if (pressrelease) puerto_teclado_sam_f7f9 &= (255-128);
                                         else              puerto_teclado_sam_f7f9 |= 128;
                                 }
 
-				else {
+                else {
 
-	                                if (pressrelease) {
-        	                                puerto_65278 &=255-1;
-                	                        puerto_63486 &=255-2;
-                        	                blink_kbd_a15 &= (255-8);
+                                    if (pressrelease) {
+                                            puerto_65278 &=255-1;
+                                            puerto_63486 &=255-2;
+                                            blink_kbd_a15 &= (255-8);
                                                 cpc_keyboard_table[8] &=(255-64);
                                                 // 4|     [   Caps      k      s      f      =      g      ;     ql_keyboard_table[3]
                                                 msx_keyboard_table[6] &=(255-8);
@@ -8865,11 +8865,11 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                                 pcw_keyboard_table[0xD] &=(255-64);
 
                                                 //printf("CAPS\n");
-	                                }
-        	                        else {
-                	                        puerto_65278 |=1;
-                        	                puerto_63486 |=2;
-                                	        blink_kbd_a15 |= 8;
+                                    }
+                                    else {
+                                            puerto_65278 |=1;
+                                            puerto_63486 |=2;
+                                            blink_kbd_a15 |= 8;
                                                 cpc_keyboard_table[8] |=64;
                                                 msx_keyboard_table[6] |=8;
                                                 svi_keyboard_table[8] |=8;
@@ -8877,8 +8877,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                                 pcw_keyboard_table[8] |=64;
 
                                                 pcw_keyboard_table[0xD] |=64;
-	                                }
-				}
+                                    }
+                }
                         break;
 
                         case UTIL_KEY_COMMA:
@@ -8896,33 +8896,33 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                     }
                                 }
 
-				if (actuar_como_zx8081) {
-					if (pressrelease) {
-						puerto_32766 &=255-2;
-						puerto_65278 &=255-1;
-					}
-					else {
-						puerto_32766 |=2;
-						puerto_65278 |=1;
-					}
-				}
+                if (actuar_como_zx8081) {
+                    if (pressrelease) {
+                        puerto_32766 &=255-2;
+                        puerto_65278 &=255-1;
+                    }
+                    else {
+                        puerto_32766 |=2;
+                        puerto_65278 |=1;
+                    }
+                }
 
 
-				else {
+                else {
 
 
-	                                if (pressrelease) {
-        	                                puerto_32766 &=255-2-8;
+                                    if (pressrelease) {
+                                            puerto_32766 &=255-2-8;
 
-                	                }
-                        	        else {
-                                	        puerto_32766 |=2+8;
+                                    }
+                                    else {
+                                            puerto_32766 |=2+8;
 
-	                                }
+                                    }
 
 
-					//Temp para CPC. Quiza hay que tener en cuenta keymap
-					if (pressrelease) {
+                    //Temp para CPC. Quiza hay que tener en cuenta keymap
+                    if (pressrelease) {
                                                 cpc_keyboard_table[4] &=255-128;
                                                 pcw_keyboard_table[4] &=255-128;
                                         }
@@ -8930,7 +8930,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                                 cpc_keyboard_table[4] |=128;
                                                 pcw_keyboard_table[4] |=128;
                                         }
-				}
+                }
                         break;
 
 
@@ -9055,9 +9055,9 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 }
                         break;
 
-			//F4 pulsado. Volcar pantalla a speech si el menu esta cerrado
-			case UTIL_KEY_F4:
-			if (pressrelease) {
+            //F4 pulsado. Volcar pantalla a speech si el menu esta cerrado
+            case UTIL_KEY_F4:
+            if (pressrelease) {
                                    if (!menu_abierto) textspeech_enviar_speech_pantalla();
 
                                    ql_keyboard_table[0] &= (255-1);
@@ -9076,13 +9076,13 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                    pcw_keyboard_table[0] |=1;
                                    pcw_keyboard_table[2] |=32;
                                  }
-		        break;
+                break;
 
                         //F5 pulsado
                         case UTIL_KEY_F5:
 
                                 if (pressrelease) {
-					                    if (util_if_open_just_menu() )  {
+                                        if (util_if_open_just_menu() )  {
                                             //printf("Disparar evento abrir menu\n");
                                             menu_fire_event_open_menu();
                                         }
@@ -9123,9 +9123,9 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         case UTIL_KEY_F7:
 
                                 if (pressrelease) {
-					if (simulador_joystick) {
-						simulador_joystick_forzado=1;
-					}
+                    if (simulador_joystick) {
+                        simulador_joystick_forzado=1;
+                    }
                                     pcw_keyboard_table[0xA] &=(255-16);
 
                                 }
@@ -9135,7 +9135,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         break;
 
 
-			//F8 pulsado. On Screen keyboard, pero en pcw no
+            //F8 pulsado. On Screen keyboard, pero en pcw no
                         case UTIL_KEY_F8:
 
                             if (MACHINE_IS_PCW) {
@@ -9284,7 +9284,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
 
 
-			            break;
+                        break;
 
                         //PgUP
                         case UTIL_KEY_PAGE_UP:
@@ -9309,7 +9309,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         break;
 
 
-			//Teclas del keypad
+            //Teclas del keypad
             //Los de arriba del numero 7, en keypad UK
             //numlock  /  *  -
 
@@ -9403,148 +9403,148 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     }
             break;
 
-			case UTIL_KEY_KP0:
-				if (pressrelease) {
-					cpc_keyboard_table[1] &=(255-128);
-					puerto_teclado_sam_dff9 &=(255-128);
+            case UTIL_KEY_KP0:
+                if (pressrelease) {
+                    cpc_keyboard_table[1] &=(255-128);
+                    puerto_teclado_sam_dff9 &=(255-128);
                     pcw_keyboard_table[0] &=(255-2);
-				}
-				else {
-					cpc_keyboard_table[1] |=128;
-					puerto_teclado_sam_dff9 |=128;
+                }
+                else {
+                    cpc_keyboard_table[1] |=128;
+                    puerto_teclado_sam_dff9 |=128;
                     pcw_keyboard_table[0] |=2;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP1:
-				if (pressrelease) {
-					cpc_keyboard_table[1] &=(255-32);
-					puerto_teclado_sam_fef9 &=(255-32);
+            case UTIL_KEY_KP1:
+                if (pressrelease) {
+                    cpc_keyboard_table[1] &=(255-32);
+                    puerto_teclado_sam_fef9 &=(255-32);
                     pcw_keyboard_table[1] &=(255-128);
-				}
-				else {
-					cpc_keyboard_table[1] |=32;
-					puerto_teclado_sam_fef9 |=32;
+                }
+                else {
+                    cpc_keyboard_table[1] |=32;
+                    puerto_teclado_sam_fef9 |=32;
                     pcw_keyboard_table[1] |=128;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP2:
-				if (pressrelease) {
-					cpc_keyboard_table[1] &=(255-64);
-					puerto_teclado_sam_fef9 &=(255-64);
+            case UTIL_KEY_KP2:
+                if (pressrelease) {
+                    cpc_keyboard_table[1] &=(255-64);
+                    puerto_teclado_sam_fef9 &=(255-64);
                     pcw_keyboard_table[0] &=(255-128);
-				}
-				else {
-					cpc_keyboard_table[1] |=64;
-					puerto_teclado_sam_fef9 |=64;
+                }
+                else {
+                    cpc_keyboard_table[1] |=64;
+                    puerto_teclado_sam_fef9 |=64;
                     pcw_keyboard_table[0] |=128;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP3:
-				if (pressrelease) {
-					cpc_keyboard_table[0] &=(255-32);
-					puerto_teclado_sam_fef9 &=(255-128);
+            case UTIL_KEY_KP3:
+                if (pressrelease) {
+                    cpc_keyboard_table[0] &=(255-32);
+                    puerto_teclado_sam_fef9 &=(255-128);
                     pcw_keyboard_table[0] &=(255-64);
-				}
-				else {
-					cpc_keyboard_table[0] |=32;
-					puerto_teclado_sam_fef9 |=128;
+                }
+                else {
+                    cpc_keyboard_table[0] |=32;
+                    puerto_teclado_sam_fef9 |=128;
                     pcw_keyboard_table[0] |=64;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP4:
-				if (pressrelease) {
-					cpc_keyboard_table[2] &=(255-16);
-					puerto_teclado_sam_fdf9 &=(255-32);
+            case UTIL_KEY_KP4:
+                if (pressrelease) {
+                    cpc_keyboard_table[2] &=(255-16);
+                    puerto_teclado_sam_fdf9 &=(255-32);
                     pcw_keyboard_table[1] |=(255-32);
-				}
-				else {
-					cpc_keyboard_table[2] |=16;
-					puerto_teclado_sam_fdf9 |=32;
+                }
+                else {
+                    cpc_keyboard_table[2] |=16;
+                    puerto_teclado_sam_fdf9 |=32;
                     pcw_keyboard_table[1] |=32;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP5:
-				if (pressrelease) {
-					cpc_keyboard_table[1] &=(255-16);
-					puerto_teclado_sam_fdf9 &=(255-64);
+            case UTIL_KEY_KP5:
+                if (pressrelease) {
+                    cpc_keyboard_table[1] &=(255-16);
+                    puerto_teclado_sam_fdf9 &=(255-64);
                     pcw_keyboard_table[1] &=(255-64);
-				}
-				else {
-					cpc_keyboard_table[1] |=16;
-					puerto_teclado_sam_fdf9 |=64;
+                }
+                else {
+                    cpc_keyboard_table[1] |=16;
+                    puerto_teclado_sam_fdf9 |=64;
                     pcw_keyboard_table[1] |=64;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP6:
-				if (pressrelease) {
-					cpc_keyboard_table[0] &=(255-16);
-					puerto_teclado_sam_fdf9 &=(255-128);
+            case UTIL_KEY_KP6:
+                if (pressrelease) {
+                    cpc_keyboard_table[0] &=(255-16);
+                    puerto_teclado_sam_fdf9 &=(255-128);
                     pcw_keyboard_table[0] &=(255-32);
-				}
-				else {
-					cpc_keyboard_table[0] |=16;
-					puerto_teclado_sam_fdf9 |=128;
+                }
+                else {
+                    cpc_keyboard_table[0] |=16;
+                    puerto_teclado_sam_fdf9 |=128;
                     pcw_keyboard_table[0] |=32;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP7:
-				if (pressrelease) {
-					cpc_keyboard_table[1] &=(255-4);
-					puerto_teclado_sam_fbf9 &=(255-32);
+            case UTIL_KEY_KP7:
+                if (pressrelease) {
+                    cpc_keyboard_table[1] &=(255-4);
+                    puerto_teclado_sam_fbf9 &=(255-32);
                     pcw_keyboard_table[2] &=(255-16);
-				}
-				else {
-					cpc_keyboard_table[1] |=4;
-					puerto_teclado_sam_fbf9 |=32;
+                }
+                else {
+                    cpc_keyboard_table[1] |=4;
+                    puerto_teclado_sam_fbf9 |=32;
                     pcw_keyboard_table[2] |=16;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP8:
-				if (pressrelease) {
-					cpc_keyboard_table[1] &=(255-8);
-					puerto_teclado_sam_fbf9 &=(255-64);
+            case UTIL_KEY_KP8:
+                if (pressrelease) {
+                    cpc_keyboard_table[1] &=(255-8);
+                    puerto_teclado_sam_fbf9 &=(255-64);
                     pcw_keyboard_table[1] &=(255-16);
-				}
-				else {
-					cpc_keyboard_table[1] |=8;
-					puerto_teclado_sam_fbf9 |=64;
+                }
+                else {
+                    cpc_keyboard_table[1] |=8;
+                    puerto_teclado_sam_fbf9 |=64;
                     pcw_keyboard_table[1] |=16;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP9:
-				if (pressrelease) {
-					cpc_keyboard_table[0] &=(255-8);
-					puerto_teclado_sam_fbf9 &=(255-128);
+            case UTIL_KEY_KP9:
+                if (pressrelease) {
+                    cpc_keyboard_table[0] &=(255-8);
+                    puerto_teclado_sam_fbf9 &=(255-128);
                     pcw_keyboard_table[0] &=(255-16);
-				}
-				else {
-					cpc_keyboard_table[0] |=8;
-					puerto_teclado_sam_fbf9 |=128;
+                }
+                else {
+                    cpc_keyboard_table[0] |=8;
+                    puerto_teclado_sam_fbf9 |=128;
                     pcw_keyboard_table[0] |=16;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP_COMMA:
-				if (pressrelease) {
-					cpc_keyboard_table[0] &=(255-128);
+            case UTIL_KEY_KP_COMMA:
+                if (pressrelease) {
+                    cpc_keyboard_table[0] &=(255-128);
                     pcw_keyboard_table[0xA] &=(255-64);
-				}
-				else {
-					cpc_keyboard_table[0] |=128;
+                }
+                else {
+                    cpc_keyboard_table[0] |=128;
                     pcw_keyboard_table[0xA] |=64;
-				}
-			break;
+                }
+            break;
 
-			case UTIL_KEY_KP_ENTER:
+            case UTIL_KEY_KP_ENTER:
                 if (pressrelease) {
                     if (keyboard_swap_enter_return.v==0) {
                         cpc_keyboard_table[0] &=(255-64);
@@ -9568,41 +9568,41 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         pcw_keyboard_table[2] |= 4;
                     }
                 }
-			break;
+            break;
 
 
-			case UTIL_KEY_NONE:
-				//Esto no se usa aqui, solo lo usa en la rutina de Chloe. Lo pongo para que no se queje de Warning al compilar
-				//Ademas esto identifica cuando no habia tecla previa en Chloe, no tiene sentido aqui en el switch gestionarlo
-			break;
+            case UTIL_KEY_NONE:
+                //Esto no se usa aqui, solo lo usa en la rutina de Chloe. Lo pongo para que no se queje de Warning al compilar
+                //Ademas esto identifica cuando no habia tecla previa en Chloe, no tiene sentido aqui en el switch gestionarlo
+            break;
 
-			//NO: Chapuza. Para gestion de z y b del teclado recreated
-			//La solucion elegante seria que para activar un puerto de tecla, se usase solo util_set_reset_keys,
-			//y nadie llamase a convert_numeros_letras_puerto_teclado . Para ello, todas las teclas fuera de lo ascii (ctrl, alt, etc)
-			//deben tener una numeracion fuera de lo ascii normal (128 en adelante?)
-			//Esta chapuza que hago tambien esta provocando que se llame a la funcion de recreated_zx_spectrum_keyboard_convert
-			//desde dos sitios, cuando deberia llamarse solo desde un sitio
-			//case 'z':
-			//case 'b':
-			//	convert_numeros_letras_puerto_teclado_continue_after_recreated(tecla,pressrelease);
-			//break;
+            //NO: Chapuza. Para gestion de z y b del teclado recreated
+            //La solucion elegante seria que para activar un puerto de tecla, se usase solo util_set_reset_keys,
+            //y nadie llamase a convert_numeros_letras_puerto_teclado . Para ello, todas las teclas fuera de lo ascii (ctrl, alt, etc)
+            //deben tener una numeracion fuera de lo ascii normal (128 en adelante?)
+            //Esta chapuza que hago tambien esta provocando que se llame a la funcion de recreated_zx_spectrum_keyboard_convert
+            //desde dos sitios, cuando deberia llamarse solo desde un sitio
+            //case 'z':
+            //case 'b':
+            //	convert_numeros_letras_puerto_teclado_continue_after_recreated(tecla,pressrelease);
+            //break;
 
 
-			default:
-				//Caso entre a-z y 0-9
-			if (
+            default:
+                //Caso entre a-z y 0-9
+            if (
                         (tecla>='a' && tecla<='z') ||
                         (tecla>='0' && tecla<='9')
-			)
-				{
-					convert_numeros_letras_puerto_teclado_continue_after_recreated(tecla,pressrelease);
-				}
-			break;
+            )
+                {
+                    convert_numeros_letras_puerto_teclado_continue_after_recreated(tecla,pressrelease);
+                }
+            break;
 
 
 
 
-	}
+    }
 }
 
 //Memoria para labels
@@ -9756,10 +9756,10 @@ void labels_load(char *archivo)
 //Da tipo valor segun:
 /*
 enum token_parser_formato {
-	TPF_DECIMAL,
-	TPF_HEXADECIMAL,
-	TPF_BINARIO,
-	TPF_ASCII
+    TPF_DECIMAL,
+    TPF_HEXADECIMAL,
+    TPF_BINARIO,
+    TPF_ASCII
 }; */
 
 int parse_string_is_hexa(char *texto,int longitud)
@@ -9787,22 +9787,22 @@ int parse_string_is_hexa(char *texto,int longitud)
 
 unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_formato *tipo_valor)
 {
-	int value;
+    int value;
 
         //Asumimos decimal
         *tipo_valor=TPF_DECIMAL;
 
-	int l=strlen(texto);
-	if (l==0) return 0;
+    int l=strlen(texto);
+    if (l==0) return 0;
 
 
-	//Si empieza por ' o ""
-	if (texto[0]=='\'' || texto[0]=='"') {
+    //Si empieza por ' o ""
+    if (texto[0]=='\'' || texto[0]=='"') {
                 *tipo_valor=TPF_ASCII;
                 return texto[1];
         }
 
-	//sufijo. Buscar ultimo caracter antes de final de cadena o espacio o parentesis de cierre. Asi podemos parsear cosas como "20H 32 34", y se interpretara solo el 20H
+    //sufijo. Buscar ultimo caracter antes de final de cadena o espacio o parentesis de cierre. Asi podemos parsear cosas como "20H 32 34", y se interpretara solo el 20H
     //Nota: ese parentesis de cierre se usa, en principio, solamente desde assemble.c cuando el valor a parsear es de tipo
     //ASM_PARM_PARENTHESIS_N o ASM_PARM_PARENTHESIS_NN. Esto no deberia dar ningun problema, pero por si acaso...
         int posicion_sufijo=0;
@@ -9812,9 +9812,9 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
   //int posicion_sufijo=l-1;
 
 
-	char sufijo=texto[posicion_sufijo];
-	if (sufijo=='H' || sufijo=='h') {
-		//hexadecimal
+    char sufijo=texto[posicion_sufijo];
+    if (sufijo=='H' || sufijo=='h') {
+        //hexadecimal
         //Vamos a comprobar que todo lo que haya este en el rango 0..9 a..f A...F
         //Por que si no, un label que se llame por ejemplo "Research" pensara que es un valor hexadecimal, porque acaba en h
         if (parse_string_is_hexa(texto,posicion_sufijo)) {
@@ -9827,19 +9827,19 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
                     *tipo_valor=TPF_HEXADECIMAL;
             return value;
         }
-	}
+    }
 
         if (sufijo=='%') {
-		//binario
-		//quitamos sufijo y parseamos
-		texto[posicion_sufijo]=0;
-		value=strtol(texto, NULL, 2);
-		//volvemos a dejar sufijo tal cual
-		texto[posicion_sufijo]=sufijo;
+        //binario
+        //quitamos sufijo y parseamos
+        texto[posicion_sufijo]=0;
+        value=strtol(texto, NULL, 2);
+        //volvemos a dejar sufijo tal cual
+        texto[posicion_sufijo]=sufijo;
 
                 *tipo_valor=TPF_BINARIO;
-		return value;
-	}
+        return value;
+    }
 
     //Si empieza por letra, es un label
     if ( (texto[0]>='A' && texto[0]<='Z') ||
@@ -9849,7 +9849,7 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
         return parse_string_to_number_label(texto);
     }
 
-	//decimal
+    //decimal
         return atoi(texto);
 
 }
@@ -9878,7 +9878,7 @@ unsigned int parse_string_to_number(char *texto)
 /*//Valor de retorno unsigned de 64 bits
 long long int parse_string_to_long_number(char *texto)
 {
-	long long int value;
+    long long int value;
 
   while (*texto && *texto!=' ') {
     printf("t: [%c]",*texto);
@@ -9905,69 +9905,69 @@ char emulator_tmpdir_set_by_user[PATH_MAX]="";
 char *get_tmpdir_base(void)
 {
 
-	//Si lo ha cambiado el usuario
-	if (emulator_tmpdir_set_by_user[0]!=0) strcpy(emulator_tmpdir,emulator_tmpdir_set_by_user);
+    //Si lo ha cambiado el usuario
+    if (emulator_tmpdir_set_by_user[0]!=0) strcpy(emulator_tmpdir,emulator_tmpdir_set_by_user);
 
 
-	if (emulator_tmpdir[0]==0) {
+    if (emulator_tmpdir[0]==0) {
 
 #ifndef MINGW
-		int uid=getuid();
-		sprintf (emulator_tmpdir,"/tmp/zesarux-%d",uid);
+        int uid=getuid();
+        sprintf (emulator_tmpdir,"/tmp/zesarux-%d",uid);
 #else
-		//Obtener ruta temporal raiz c:\windows
-		char windows_temp[PATH_MAX];
+        //Obtener ruta temporal raiz c:\windows
+        char windows_temp[PATH_MAX];
 
-		char *env_tmp,*env_temp,*env_userprofile,*env_systemroot;
-        	env_tmp=getenv("TMP");
-        	env_temp=getenv("TEMP");
-		env_userprofile=getenv("USERPROFILE");
-		env_systemroot=getenv("SystemRoot");
+        char *env_tmp,*env_temp,*env_userprofile,*env_systemroot;
+            env_tmp=getenv("TMP");
+            env_temp=getenv("TEMP");
+        env_userprofile=getenv("USERPROFILE");
+        env_systemroot=getenv("SystemRoot");
 
 
-		//Ir probando uno a uno
-		if (env_tmp!=NULL) sprintf (windows_temp,"%s",env_tmp);
-		else if (env_temp!=NULL) sprintf (windows_temp,"%s",env_temp);
-		else if (env_userprofile!=NULL) sprintf (windows_temp,"%s",env_userprofile);
-		else if (env_systemroot!=NULL) sprintf (windows_temp,"%s",env_systemroot);
-		else {
-			//como ultima instancia, c:\windows\temp
-			sprintf (windows_temp,"%s","C:\\windows\\temp\\");
-		}
+        //Ir probando uno a uno
+        if (env_tmp!=NULL) sprintf (windows_temp,"%s",env_tmp);
+        else if (env_temp!=NULL) sprintf (windows_temp,"%s",env_temp);
+        else if (env_userprofile!=NULL) sprintf (windows_temp,"%s",env_userprofile);
+        else if (env_systemroot!=NULL) sprintf (windows_temp,"%s",env_systemroot);
+        else {
+            //como ultima instancia, c:\windows\temp
+            sprintf (windows_temp,"%s","C:\\windows\\temp\\");
+        }
 
-		debug_printf (VERBOSE_DEBUG,"Windows Temporary dir: %s",windows_temp);
+        debug_printf (VERBOSE_DEBUG,"Windows Temporary dir: %s",windows_temp);
 
-		//Obtener un uid unico para usuario
-		char template_dir[PATH_MAX];
-		sprintf (template_dir,"%s\\zesarux-XXXXXX",windows_temp);
+        //Obtener un uid unico para usuario
+        char template_dir[PATH_MAX];
+        sprintf (template_dir,"%s\\zesarux-XXXXXX",windows_temp);
 
-		char *dir;
-		dir=mkdtemp(template_dir);
+        char *dir;
+        dir=mkdtemp(template_dir);
 
                 if (dir==NULL) {
                         debug_printf (VERBOSE_DEBUG,"Error getting temporary directory: %s",strerror(errno) );
                 }
                 else {
                         sprintf(emulator_tmpdir,"%s",dir);
-			debug_printf (VERBOSE_DEBUG,"ZEsarUX Temporary dir: %s",emulator_tmpdir);
+            debug_printf (VERBOSE_DEBUG,"ZEsarUX Temporary dir: %s",emulator_tmpdir);
                 }
 
 #endif
 
 
-		debug_printf (VERBOSE_INFO,"Creating new temporary directory %s",emulator_tmpdir);
+        debug_printf (VERBOSE_INFO,"Creating new temporary directory %s",emulator_tmpdir);
 
 
 #ifndef MINGW
-	      mkdir(emulator_tmpdir,S_IRWXU);
+          mkdir(emulator_tmpdir,S_IRWXU);
 #else
-	      mkdir(emulator_tmpdir);
+          mkdir(emulator_tmpdir);
 #endif
 
 
-	}
+    }
 
-	return emulator_tmpdir;
+    return emulator_tmpdir;
 }
 
 #define FRECUENCIA_SONIDO_RWA_FILES 15600
@@ -9975,54 +9975,54 @@ char *get_tmpdir_base(void)
 int convert_smp_to_rwa(char *origen, char *destino)
 {
 
-	FILE *ptr_origen;
-	ptr_origen=fopen(origen,"rb");
-	if (ptr_origen==NULL) {
-		debug_printf (VERBOSE_ERR,"Error reading source file");
-		return 1;
-	}
+    FILE *ptr_origen;
+    ptr_origen=fopen(origen,"rb");
+    if (ptr_origen==NULL) {
+        debug_printf (VERBOSE_ERR,"Error reading source file");
+        return 1;
+    }
 
         FILE *ptr_destino;
         ptr_destino=fopen(destino,"wb");
         if (ptr_destino==NULL) {
-		debug_printf (VERBOSE_ERR,"Error creating target file: %s",destino);
-		return 1;
-	}
+        debug_printf (VERBOSE_ERR,"Error creating target file: %s",destino);
+        return 1;
+    }
 
-	unsigned char last_value=0;
-	unsigned char previous_last_value=0;
+    unsigned char last_value=0;
+    unsigned char previous_last_value=0;
 
-	#define FREQ_SMP 11111
+    #define FREQ_SMP 11111
 
-	int contador=FRECUENCIA_SONIDO_RWA_FILES;
-	int frecuencia_origen=FREQ_SMP;
+    int contador=FRECUENCIA_SONIDO_RWA_FILES;
+    int frecuencia_origen=FREQ_SMP;
 
-	while (!feof(ptr_origen)) {
+    while (!feof(ptr_origen)) {
 
-		//"Sampleamos" frecuencia original a 15600
+        //"Sampleamos" frecuencia original a 15600
 
-		contador=contador-frecuencia_origen;
-		if (contador<=0) {
-			fread(&last_value, 1,1 , ptr_origen);
-			contador +=FRECUENCIA_SONIDO_RWA_FILES;
-		}
-
-
-
-		//fwrite(&last_value,1,1,ptr_destino);
-		//en vez de escribir ultimo valor tal cual, hacer la media de los dos anteriores
-		int media=(previous_last_value+last_value)/2;
-		unsigned char media8=media;
-		fwrite(&media8,1,1,ptr_destino);
-
-		previous_last_value=last_value;
-	}
+        contador=contador-frecuencia_origen;
+        if (contador<=0) {
+            fread(&last_value, 1,1 , ptr_origen);
+            contador +=FRECUENCIA_SONIDO_RWA_FILES;
+        }
 
 
-	fclose(ptr_origen);
-	fclose(ptr_destino);
 
-	return 0;
+        //fwrite(&last_value,1,1,ptr_destino);
+        //en vez de escribir ultimo valor tal cual, hacer la media de los dos anteriores
+        int media=(previous_last_value+last_value)/2;
+        unsigned char media8=media;
+        fwrite(&media8,1,1,ptr_destino);
+
+        previous_last_value=last_value;
+    }
+
+
+    fclose(ptr_origen);
+    fclose(ptr_destino);
+
+    return 0;
 
 }
 
@@ -10032,31 +10032,31 @@ int convert_wav_to_raw(char *origen, char *destino)
 
 
 
-	char sox_command[PATH_MAX];
+    char sox_command[PATH_MAX];
 
-	char sox_program[PATH_MAX];
-
-
-	sprintf (sox_program,"%s",external_tool_sox);
-	sprintf (sox_command,"%s \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,44100,destino);
+    char sox_program[PATH_MAX];
 
 
+    sprintf (sox_program,"%s",external_tool_sox);
+    sprintf (sox_command,"%s \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,44100,destino);
 
 
-	if (!si_existe_archivo(sox_program)) {
-		debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
-		return 1;
-	}
 
 
-	debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
+    if (!si_existe_archivo(sox_program)) {
+        debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
+        return 1;
+    }
 
-	if (system (sox_command)==-1) {
-		debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
-		return 1;
-	}
 
-	return 0;
+    debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
+
+    if (system (sox_command)==-1) {
+        debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
+        return 1;
+    }
+
+    return 0;
 
 }
 
@@ -10066,34 +10066,34 @@ int convert_wav_to_rwa(char *origen, char *destino)
 
 
 
-	char sox_command[PATH_MAX];
+    char sox_command[PATH_MAX];
 
-	char sox_program[PATH_MAX];
-
-
-
-	//sprintf (sox_program,"/usr/bin/sox");
-	//sprintf (sox_command,"/usr/bin/sox \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",origen,FRECUENCIA_SONIDO_RWA_FILES,destino);
-	sprintf (sox_program,"%s",external_tool_sox);
-	sprintf (sox_command,"%s \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,FRECUENCIA_SONIDO_RWA_FILES,destino);
+    char sox_program[PATH_MAX];
 
 
 
+    //sprintf (sox_program,"/usr/bin/sox");
+    //sprintf (sox_command,"/usr/bin/sox \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",origen,FRECUENCIA_SONIDO_RWA_FILES,destino);
+    sprintf (sox_program,"%s",external_tool_sox);
+    sprintf (sox_command,"%s \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,FRECUENCIA_SONIDO_RWA_FILES,destino);
 
-	if (!si_existe_archivo(sox_program)) {
-		debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
-		return 1;
-	}
 
 
-	debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
 
-	if (system (sox_command)==-1) {
-		debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
-		return 1;
-	}
+    if (!si_existe_archivo(sox_program)) {
+        debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
+        return 1;
+    }
 
-	return 0;
+
+    debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
+
+    if (system (sox_command)==-1) {
+        debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
+        return 1;
+    }
+
+    return 0;
 
 }
 
@@ -10103,34 +10103,34 @@ int convert_wav_to_crudo(char *origen, char *destino)
 
 
 
-	char sox_command[PATH_MAX];
+    char sox_command[PATH_MAX];
 
-	char sox_program[PATH_MAX];
-
-
-
-	//sprintf (sox_program,"/usr/bin/sox");
-	//sprintf (sox_command,"/usr/bin/sox \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",origen,FRECUENCIA_SONIDO_RWA_FILES,destino);
-	sprintf (sox_program,"%s",external_tool_sox);
-	sprintf (sox_command,"%s \"%s\" -t .raw -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,destino);
+    char sox_program[PATH_MAX];
 
 
 
+    //sprintf (sox_program,"/usr/bin/sox");
+    //sprintf (sox_command,"/usr/bin/sox \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",origen,FRECUENCIA_SONIDO_RWA_FILES,destino);
+    sprintf (sox_program,"%s",external_tool_sox);
+    sprintf (sox_command,"%s \"%s\" -t .raw -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,destino);
 
-	if (!si_existe_archivo(sox_program)) {
-		debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
-		return 1;
-	}
 
 
-	debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
 
-	if (system (sox_command)==-1) {
-		debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
-		return 1;
-	}
+    if (!si_existe_archivo(sox_program)) {
+        debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
+        return 1;
+    }
 
-	return 0;
+
+    debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
+
+    if (system (sox_command)==-1) {
+        debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
+        return 1;
+    }
+
+    return 0;
 
 }
 
@@ -10180,19 +10180,19 @@ int convert_tzx_to_rwa(char *origen, char *destino)
         //sprintf (destino,"%s/tmp_%s.rwa",get_tmpdir_base(),nombre_origen);
         //debug_printf (VERBOSE_INFO,"Creating temporary file %s",destino);
 
-	//playtzx-0.12c/playtzx -au -freq 15600 Rambo.tzx Rambo.rwa
-	char *argumentos[]={
-		"playtzx","-au","-freq","",
+    //playtzx-0.12c/playtzx -au -freq 15600 Rambo.tzx Rambo.rwa
+    char *argumentos[]={
+        "playtzx","-au","-freq","",
         "-sil","",
         "",""
-	};
+    };
 
-	//sprintf (tzx_frecuencia_sonido,"%d",FRECUENCIA_SONIDO);
-	//frecuencia de sonido a generar archivo siempre 15600, independientemente del % de cpu
-	sprintf (tzx_frecuencia_sonido,"%d",FRECUENCIA_SONIDO_RWA_FILES);
+    //sprintf (tzx_frecuencia_sonido,"%d",FRECUENCIA_SONIDO);
+    //frecuencia de sonido a generar archivo siempre 15600, independientemente del % de cpu
+    sprintf (tzx_frecuencia_sonido,"%d",FRECUENCIA_SONIDO_RWA_FILES);
 
 
-	argumentos[3]=tzx_frecuencia_sonido;
+    argumentos[3]=tzx_frecuencia_sonido;
 
     //Agregar 2 segundos de silencio al principio
     //Sin este silencio, la autocarga de Spectrum +3 no funciona, por que no le da tiempo entre que inicia la rom y se pone a cargar
@@ -10200,10 +10200,10 @@ int convert_tzx_to_rwa(char *origen, char *destino)
     sprintf(buffer_silencio,"%d",FRECUENCIA_SONIDO_RWA_FILES*2);
     argumentos[5]=buffer_silencio;
 
-	argumentos[6]=origen;
-	argumentos[7]=destino;
+    argumentos[6]=origen;
+    argumentos[7]=destino;
 
-	return main_playtzx(8,argumentos);
+    return main_playtzx(8,argumentos);
 }
 
 void convert_o_p_to_rwa_write_silence(FILE *ptr_archivo,int segundos)
@@ -10228,45 +10228,45 @@ void convert_o_p_to_rwa_write_bit(FILE *ptr_archivo,int bit,unsigned char valor_
   1:  /\/\/\/\/\/\/\/\/\________
 
         //150 us high: byte:  1 1
-	//byte 0 de punto medio
+    //byte 0 de punto medio
         //150 us low: byte: 0 0
 
         //silencio: 1300 us -> 22 bytes a 0
 
 
-	Lo unico que depende de la frecuencia es esos 2 bytes a 1 y los dos bytes a 0 y los 22 bytes de silencio de final de bit
+    Lo unico que depende de la frecuencia es esos 2 bytes a 1 y los dos bytes a 0 y los 22 bytes de silencio de final de bit
 
 */
 
 
 
-	int longitud;
+    int longitud;
 
-	//Bit a 1 son 9 ondas. Bit a 0 son 4 ondas
-	if (bit) longitud=9;
-	else longitud=4;
+    //Bit a 1 son 9 ondas. Bit a 0 son 4 ondas
+    if (bit) longitud=9;
+    else longitud=4;
 
-	z80_byte escrito;
-	int i;
-	for (i=0;i<longitud;i++) {
+    z80_byte escrito;
+    int i;
+    for (i=0;i<longitud;i++) {
 
-		//2 bytes arriba
-		fwrite(&valor_high,1,1,ptr_archivo);
-		fwrite(&valor_high,1,1,ptr_archivo);
+        //2 bytes arriba
+        fwrite(&valor_high,1,1,ptr_archivo);
+        fwrite(&valor_high,1,1,ptr_archivo);
 
-		//1 byte 0. esto podria ser -1 a efectos practicos. pero se pone 0 para que "visualmente" quede mejor
-		escrito=128;
-		fwrite(&escrito,1,1,ptr_archivo);
+        //1 byte 0. esto podria ser -1 a efectos practicos. pero se pone 0 para que "visualmente" quede mejor
+        escrito=128;
+        fwrite(&escrito,1,1,ptr_archivo);
 
-		//2 bytes -1
-		fwrite(&valor_low,1,1,ptr_archivo);
-		fwrite(&valor_low,1,1,ptr_archivo);
-	}
+        //2 bytes -1
+        fwrite(&valor_low,1,1,ptr_archivo);
+        fwrite(&valor_low,1,1,ptr_archivo);
+    }
 
-	escrito=128;
-	for (i=0;i<22;i++) {
-		fwrite(&escrito,1,1,ptr_archivo);
-	}
+    escrito=128;
+    for (i=0;i<22;i++) {
+        fwrite(&escrito,1,1,ptr_archivo);
+    }
 }
 
 
@@ -10302,14 +10302,14 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
 
 */
 
-	//en senyal rwa a 15600 hz, cada pulso de 150+150 us dura aprox 5 bytes -> 0,00032 s
-	//300 us -> 1/1000000 * 300 = 0,0003
+    //en senyal rwa a 15600 hz, cada pulso de 150+150 us dura aprox 5 bytes -> 0,00032 s
+    //300 us -> 1/1000000 * 300 = 0,0003
 
-	//150 us high: byte:  1 1
-	//byte 0 de punto medio
-	//150 us low: byte: -1 -1
+    //150 us high: byte:  1 1
+    //byte 0 de punto medio
+    //150 us low: byte: -1 -1
 
-	//silencio: 1300 us -> 22 bytes a 0
+    //silencio: 1300 us -> 22 bytes a 0
 
 
         FILE *ptr_origen;
@@ -10326,13 +10326,13 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
                 return 1;
         }
 
-	//metemos 7 segundos de silencio
-	convert_o_p_to_rwa_write_silence(ptr_destino,7);
+    //metemos 7 segundos de silencio
+    convert_o_p_to_rwa_write_silence(ptr_destino,7);
 
         unsigned char leido;
 
 
-	//Si ZX81, metemos nombre al principio.
+    //Si ZX81, metemos nombre al principio.
     //En los P no hay el nombre al principio. En el audio si lo hay
 
     //Pero si es un P81, el nombre ya nos viene
@@ -10340,7 +10340,7 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
 
     if (!util_compare_file_extension(origen,"p81")) si_p81=1;
 
-	if (si_p && !si_p81) {
+    if (si_p && !si_p81) {
 
 
         //obtenemos nombre archivo y directorio por separado
@@ -10364,17 +10364,17 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
 
             convert_o_p_to_rwa_write_byte(ptr_destino,letra);
         }
-	}
+    }
 
 
         //metemos datos
         while (!feof(ptr_origen)) {
-		fread(&leido, 1,1 , ptr_origen);
-		convert_o_p_to_rwa_write_byte(ptr_destino,leido);
+        fread(&leido, 1,1 , ptr_origen);
+        convert_o_p_to_rwa_write_byte(ptr_destino,leido);
         }
 
-	//metemos 3 segundos de silencio
-	convert_o_p_to_rwa_write_silence(ptr_destino,3);
+    //metemos 3 segundos de silencio
+    convert_o_p_to_rwa_write_silence(ptr_destino,3);
 
         fclose(ptr_origen);
         fclose(ptr_destino);
@@ -10385,7 +10385,7 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
 
 int convert_o_to_rwa(char *origen, char *destino)
 {
-	return convert_o_p_to_rwa(origen,destino,0);
+    return convert_o_p_to_rwa(origen,destino,0);
 }
 
 int convert_p_to_rwa(char *origen, char *destino)
@@ -10520,9 +10520,9 @@ unsigned char convert_tap_to_rwa_wave_low[]={
 void convert_tap_to_rwa_write_bit(FILE *ptr_archivo,int bit)
 {
 
-	int longitud;
+    int longitud;
 
-	//Bit a 1 son 4 bytes high , 4 low
+    //Bit a 1 son 4 bytes high , 4 low
     longitud=(bit==0 ? 4 : 8);
 
 
@@ -10562,7 +10562,7 @@ void convert_tap_to_rwa_write_pilot(FILE *ptr_archivo,z80_byte flag_bloque)
 
 ////Tono guia: 10 bytes high. 10 bytes low.
 
-	int ondas;
+    int ondas;
 
         int longitud=10;
 
@@ -10573,33 +10573,33 @@ void convert_tap_to_rwa_write_pilot(FILE *ptr_archivo,z80_byte flag_bloque)
 //flag 0: 8063/2
 //flag 255: 3223/2
 
-	int totalondas;
+    int totalondas;
 
-	int diferenciamaxmin=8063-3223;
+    int diferenciamaxmin=8063-3223;
 
-	flag_bloque=255-flag_bloque;
+    flag_bloque=255-flag_bloque;
 
-	totalondas=3223+(diferenciamaxmin*flag_bloque/256);
+    totalondas=3223+(diferenciamaxmin*flag_bloque/256);
 
-	debug_printf (VERBOSE_DEBUG,"Number of pilot tone waves: %d",totalondas);
+    debug_printf (VERBOSE_DEBUG,"Number of pilot tone waves: %d",totalondas);
 
-	for (ondas=0;ondas<totalondas/2;ondas++) {
+    for (ondas=0;ondas<totalondas/2;ondas++) {
 
-	        for (i=0;i<longitud;i++) {
-			escrito=128+SPEC_AMPLITUD_PILOT;
-                	//bytes arriba
-	                fwrite(&escrito,1,1,ptr_archivo);
+            for (i=0;i<longitud;i++) {
+            escrito=128+SPEC_AMPLITUD_PILOT;
+                    //bytes arriba
+                    fwrite(&escrito,1,1,ptr_archivo);
 
-        	}
+            }
 
-	        for (i=0;i<longitud;i++) {
-			escrito=128-SPEC_AMPLITUD_PILOT;
+            for (i=0;i<longitud;i++) {
+            escrito=128-SPEC_AMPLITUD_PILOT;
 
-	                //bytes abajo
-        	        fwrite(&escrito,1,1,ptr_archivo);
+                    //bytes abajo
+                    fwrite(&escrito,1,1,ptr_archivo);
 
-	        }
-	}
+            }
+    }
 }
 
 void convert_tap_to_rwa_write_sync_false(FILE *ptr_archivo)
@@ -10608,15 +10608,15 @@ void convert_tap_to_rwa_write_sync_false(FILE *ptr_archivo)
 #define SPEC_AMPLITUD_SYNC_FALSE 50
         //Metemos onda "falsa" de sincronismo
         //convert_tap_to_rwa_write_sync_false(ptr_destino);
-	//        //Primero sync pulse (high): 190us-> 3 bytes
+    //        //Primero sync pulse (high): 190us-> 3 bytes
         //Segundo sync pulse (low): 210us->3 bytes
 
-	z80_byte escrito;
-	escrito=128+SPEC_AMPLITUD_SYNC_FALSE;
+    z80_byte escrito;
+    escrito=128+SPEC_AMPLITUD_SYNC_FALSE;
 
-	fwrite(&escrito,1,1,ptr_archivo);
-	fwrite(&escrito,1,1,ptr_archivo);
-	fwrite(&escrito,1,1,ptr_archivo);
+    fwrite(&escrito,1,1,ptr_archivo);
+    fwrite(&escrito,1,1,ptr_archivo);
+    fwrite(&escrito,1,1,ptr_archivo);
 
         escrito=128-SPEC_AMPLITUD_SYNC_FALSE;
 
@@ -10656,12 +10656,12 @@ int convert_tap_to_rwa(char *origen, char *destino)
 
 
 /*
-	//Tono guia: 10 bytes high. 10 bytes low. cada pulso entero (+1 y -1 ) dura: 0.001280 segundos. medio pulso dura 0.000641 -> aprox 619us/pulse. cada byte son 64.102564 us
-	//Primero sync pulse (high): 190us-> 3 bytes
-	//Segundo sync pulse (low): 210us->3 bytes
+    //Tono guia: 10 bytes high. 10 bytes low. cada pulso entero (+1 y -1 ) dura: 0.001280 segundos. medio pulso dura 0.000641 -> aprox 619us/pulse. cada byte son 64.102564 us
+    //Primero sync pulse (high): 190us-> 3 bytes
+    //Segundo sync pulse (low): 210us->3 bytes
 
-	//bit a 0: 244 us -> 3.8 bytes-> 4 bytes a high. 4 bytes a low -> 8 total onda que dura el bit 0
-	//bit a 1: 488 us-> 7.6 bytes -> 8 bytes a high. 8 bytes a low ->16 total onda que dura el bit 1
+    //bit a 0: 244 us -> 3.8 bytes-> 4 bytes a high. 4 bytes a low -> 8 total onda que dura el bit 0
+    //bit a 1: 488 us-> 7.6 bytes -> 8 bytes a high. 8 bytes a low ->16 total onda que dura el bit 1
 
 
 Spectrum Cassette Blocks
@@ -10677,67 +10677,67 @@ Spectrum Cassette Blocks
 
 */
 
-	//Bucle hasta que acabe tap
-	//metemos 2 segundos de silencio
-	convert_tap_to_rwa_write_silence(ptr_destino,2);
+    //Bucle hasta que acabe tap
+    //metemos 2 segundos de silencio
+    convert_tap_to_rwa_write_silence(ptr_destino,2);
 
-	while (!feof(ptr_origen)) {
+    while (!feof(ptr_origen)) {
 
-        	unsigned char leido;
-
-
-
-		//Leer longitud de lo que viene
-		z80_int longitud_bloque;
-
-		fread(&leido, 1,1 , ptr_origen);
-
-		//aqui puede haber feof
-		if (!feof(ptr_origen)) {
-
-			longitud_bloque=leido;
-
-		        fread(&leido, 1,1 , ptr_origen);
-        		longitud_bloque +=leido*256;
-
-			z80_byte flag_bloque;
-			fread(&flag_bloque, 1,1 , ptr_origen);
-
-			debug_printf (VERBOSE_INFO,"Generating audio tape block. Length (without flag and checksum): %d, flag: %d",longitud_bloque-2,flag_bloque);
-
-			//Meter tono guia, longitud de tono guia depende de flag
-			convert_tap_to_rwa_write_pilot(ptr_destino,flag_bloque);
-
-			//Metemos onda "falsa" de sincronismo
-			convert_tap_to_rwa_write_sync_false(ptr_destino);
-
-			//Metemos flag
-			convert_tap_to_rwa_write_byte(ptr_destino,flag_bloque);
-			//Meter datos
-			//bucle de longitud bloque.
-
-			//restamos el flag que ya esta escrito
-			longitud_bloque--;
-
-			while (longitud_bloque>0) {
+            unsigned char leido;
 
 
-				fread(&leido, 1,1 , ptr_origen);
-				convert_tap_to_rwa_write_byte(ptr_destino,leido);
 
-				longitud_bloque--;
+        //Leer longitud de lo que viene
+        z80_int longitud_bloque;
 
-			}
+        fread(&leido, 1,1 , ptr_origen);
 
-			//fin bucle longitud bloque
+        //aqui puede haber feof
+        if (!feof(ptr_origen)) {
 
-			//metemos 1 segundo de silencio
-			convert_tap_to_rwa_write_silence(ptr_destino,1);
+            longitud_bloque=leido;
 
-			//seguir a siguiente bloque dentro de tap
-		}
+                fread(&leido, 1,1 , ptr_origen);
+                longitud_bloque +=leido*256;
 
-	}
+            z80_byte flag_bloque;
+            fread(&flag_bloque, 1,1 , ptr_origen);
+
+            debug_printf (VERBOSE_INFO,"Generating audio tape block. Length (without flag and checksum): %d, flag: %d",longitud_bloque-2,flag_bloque);
+
+            //Meter tono guia, longitud de tono guia depende de flag
+            convert_tap_to_rwa_write_pilot(ptr_destino,flag_bloque);
+
+            //Metemos onda "falsa" de sincronismo
+            convert_tap_to_rwa_write_sync_false(ptr_destino);
+
+            //Metemos flag
+            convert_tap_to_rwa_write_byte(ptr_destino,flag_bloque);
+            //Meter datos
+            //bucle de longitud bloque.
+
+            //restamos el flag que ya esta escrito
+            longitud_bloque--;
+
+            while (longitud_bloque>0) {
+
+
+                fread(&leido, 1,1 , ptr_origen);
+                convert_tap_to_rwa_write_byte(ptr_destino,leido);
+
+                longitud_bloque--;
+
+            }
+
+            //fin bucle longitud bloque
+
+            //metemos 1 segundo de silencio
+            convert_tap_to_rwa_write_silence(ptr_destino,1);
+
+            //seguir a siguiente bloque dentro de tap
+        }
+
+    }
 
 
         fclose(ptr_origen);
@@ -10753,12 +10753,12 @@ Spectrum Cassette Blocks
 
 void convert_pzx_to_rwa_write_one_pulse(int valor_pulso,FILE *ptr_destino)
 {
-     	z80_byte escrito;
+         z80_byte escrito;
 
         if (valor_pulso) escrito=128+CONVERT_PZX_AMPLITUD_PULSE;
         else escrito=128-CONVERT_PZX_AMPLITUD_PULSE;
 
-	fwrite(&escrito,1,1,ptr_destino);
+    fwrite(&escrito,1,1,ptr_destino);
 }
 
 void convert_pzx_to_rwa_write_pulses(int *p_t_estado_actual,int duracion_pulsos,int *p_valor_pulso_inicial,FILE *ptr_destino)
@@ -11438,18 +11438,18 @@ int convert_any_to_wav(char *origen, char *destino)
         //Primero pasar a rwa y luego a wav
         char rwa_temp_file[PATH_MAX];
 
-	int result_first_convert;
+    int result_first_convert;
 
-	if (!util_compare_file_extension(origen,"tap")) result_first_convert=convert_tap_to_rwa_tmpdir(origen,rwa_temp_file);
-	else if (!util_compare_file_extension(origen,"tzx")) result_first_convert=convert_tzx_to_rwa_tmpdir(origen,rwa_temp_file);
-	else if (!util_compare_file_extension(origen,"smp")) result_first_convert=convert_smp_to_rwa_tmpdir(origen,rwa_temp_file);
-	else if (!util_compare_file_extension(origen,"o")) result_first_convert=convert_o_to_rwa_tmpdir(origen,rwa_temp_file);
-	else if (!util_compare_file_extension(origen,"p") || !util_compare_file_extension(origen,"81") || !util_compare_file_extension(origen,"p81")) result_first_convert=convert_p_to_rwa_tmpdir(origen,rwa_temp_file);
+    if (!util_compare_file_extension(origen,"tap")) result_first_convert=convert_tap_to_rwa_tmpdir(origen,rwa_temp_file);
+    else if (!util_compare_file_extension(origen,"tzx")) result_first_convert=convert_tzx_to_rwa_tmpdir(origen,rwa_temp_file);
+    else if (!util_compare_file_extension(origen,"smp")) result_first_convert=convert_smp_to_rwa_tmpdir(origen,rwa_temp_file);
+    else if (!util_compare_file_extension(origen,"o")) result_first_convert=convert_o_to_rwa_tmpdir(origen,rwa_temp_file);
+    else if (!util_compare_file_extension(origen,"p") || !util_compare_file_extension(origen,"81") || !util_compare_file_extension(origen,"p81")) result_first_convert=convert_p_to_rwa_tmpdir(origen,rwa_temp_file);
         else if (!util_compare_file_extension(origen,"pzx")) result_first_convert=convert_pzx_to_rwa_tmpdir(origen,rwa_temp_file);
-	else return 1;
+    else return 1;
 
          if (result_first_convert) {
-			//Error
+            //Error
                         return 1;
                 }
 
@@ -11562,9 +11562,9 @@ saltar a paso 1
         return 1;
     }
 
-	//int leidos;
+    //int leidos;
 
-	char buffer_cabecera[MICRODRIVE_RAW_HEADER_SIZE];
+    char buffer_cabecera[MICRODRIVE_RAW_HEADER_SIZE];
 
     FILE *ptr_inputfile;
     ptr_inputfile=fopen(origen,"rb");
@@ -11577,7 +11577,7 @@ saltar a paso 1
 
 
 
-	//Leemos la cabecera
+    //Leemos la cabecera
     fread(buffer_cabecera,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_inputfile);
 
     int total_size=tamanyo_archivo/2;
@@ -11591,7 +11591,7 @@ saltar a paso 1
 
 
 
-	fclose (ptr_inputfile);
+    fclose (ptr_inputfile);
 
     //Y buffer para mdr
     //Al menos espacio ocupado en raw
@@ -11674,8 +11674,8 @@ saltar a paso 1
 
 
 
-	FILE *ptr_outputfile;
-	ptr_outputfile=fopen(destino,"wb");
+    FILE *ptr_outputfile;
+    ptr_outputfile=fopen(destino,"wb");
 
     if (ptr_outputfile==NULL) {
             debug_printf (VERBOSE_ERR,"Error opening %s",destino);
@@ -11730,7 +11730,7 @@ int convert_mdr_to_rmd(char *origen, char *destino)
         return 1;
     }
 
-	//int leidos;
+    //int leidos;
 
 
     //buffer para mdr
@@ -11751,7 +11751,7 @@ int convert_mdr_to_rmd(char *origen, char *destino)
 
     fread(microdrive_buffer_mdr,1,tamanyo_archivo,ptr_inputfile);
 
-	fclose (ptr_inputfile);
+    fclose (ptr_inputfile);
 
 
     //Espacio para datos e info
@@ -11836,8 +11836,8 @@ int convert_mdr_to_rmd(char *origen, char *destino)
 
 
 
-	FILE *ptr_outputfile;
-	ptr_outputfile=fopen(destino,"wb");
+    FILE *ptr_outputfile;
+    ptr_outputfile=fopen(destino,"wb");
 
     if (ptr_outputfile==NULL) {
             debug_printf (VERBOSE_ERR,"Error opening %s",destino);
@@ -11863,9 +11863,9 @@ int convert_mdr_to_rmd(char *origen, char *destino)
 int convert_hdf_to_raw(char *origen, char *destino)
 {
 
-	int leidos;
+    int leidos;
 
-	unsigned char buffer_lectura[1024];
+    unsigned char buffer_lectura[1024];
 
         FILE *ptr_inputfile;
         ptr_inputfile=fopen(origen,"rb");
@@ -11875,8 +11875,8 @@ int convert_hdf_to_raw(char *origen, char *destino)
                 return 1;
         }
 
-	FILE *ptr_outputfile;
-	ptr_outputfile=fopen(destino,"wb");
+    FILE *ptr_outputfile;
+    ptr_outputfile=fopen(destino,"wb");
 
         if (ptr_outputfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error opening %s",destino);
@@ -11884,39 +11884,39 @@ int convert_hdf_to_raw(char *origen, char *destino)
         }
 
 
-	// Leer offset a datos raw del byte de cabecera:
-	//0x09 DOFS WORD Image data offset This is the absolute offset in the HDF file where the actual hard-disk data dump starts.
-	//In HDF version 1.1 this is 0x216.
+    // Leer offset a datos raw del byte de cabecera:
+    //0x09 DOFS WORD Image data offset This is the absolute offset in the HDF file where the actual hard-disk data dump starts.
+    //In HDF version 1.1 this is 0x216.
 
-	//Leemos 10 bytes de la cabecera
+    //Leemos 10 bytes de la cabecera
         fread(buffer_lectura,1,10,ptr_inputfile);
 
-	int offset_raw=buffer_lectura[9]+256*buffer_lectura[10];
+    int offset_raw=buffer_lectura[9]+256*buffer_lectura[10];
 
-	debug_printf (VERBOSE_DEBUG,"Offset to raw data: %d",offset_raw);
+    debug_printf (VERBOSE_DEBUG,"Offset to raw data: %d",offset_raw);
 
 
-	//Ya hemos leido 10 bytes del principio
-	int saltar_bytes=offset_raw-10;
+    //Ya hemos leido 10 bytes del principio
+    int saltar_bytes=offset_raw-10;
 
-	//Saltar esos bytes
-	fread(buffer_lectura,1,saltar_bytes,ptr_inputfile);
+    //Saltar esos bytes
+    fread(buffer_lectura,1,saltar_bytes,ptr_inputfile);
 
-	//Y vamos leyendo bloques de 1024
-	int escritos=0;
+    //Y vamos leyendo bloques de 1024
+    int escritos=0;
 
-	do {
-	        leidos=fread(buffer_lectura,1,1024,ptr_inputfile);
-		if (leidos>0) {
-			fwrite(buffer_lectura,1,leidos,ptr_outputfile);
-			escritos +=leidos;
-			debug_printf (VERBOSE_DEBUG,"Writing data %dKB ",escritos/1024);
-			//put_progress_bar();
-			//printf ("\r");
-		}
-	} while (leidos>0);
+    do {
+            leidos=fread(buffer_lectura,1,1024,ptr_inputfile);
+        if (leidos>0) {
+            fwrite(buffer_lectura,1,leidos,ptr_outputfile);
+            escritos +=leidos;
+            debug_printf (VERBOSE_DEBUG,"Writing data %dKB ",escritos/1024);
+            //put_progress_bar();
+            //printf ("\r");
+        }
+    } while (leidos>0);
 
-	fclose (ptr_inputfile);
+    fclose (ptr_inputfile);
 
         fclose(ptr_outputfile);
 
@@ -11966,7 +11966,7 @@ int convert_scr_to_txt(char *origen, char *destino)
 int convert_scr_to_tap(char *origen, char *destino)
 {
 
-	int leidos;
+    int leidos;
 
         int tamanyo_origen=get_file_size(origen);
 
@@ -11984,7 +11984,7 @@ int convert_scr_to_tap(char *origen, char *destino)
 
 
 
-	//unsigned char buffer_lectura[1024];
+    //unsigned char buffer_lectura[1024];
 
         FILE *ptr_inputfile;
         ptr_inputfile=fopen(origen,"rb");
@@ -12007,8 +12007,8 @@ int convert_scr_to_tap(char *origen, char *destino)
 
 
 
-	FILE *ptr_outputfile;
-	ptr_outputfile=fopen(destino,"wb");
+    FILE *ptr_outputfile;
+    ptr_outputfile=fopen(destino,"wb");
 
         if (ptr_outputfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error opening %s",destino);
@@ -12043,7 +12043,7 @@ int convert_scr_to_tap(char *origen, char *destino)
         fwrite(bloque_cabecera,1,19,ptr_outputfile);
 
 
-	//Escribir bloque de datos propiamente
+    //Escribir bloque de datos propiamente
 
         //indicar longitud bloque que viene. 6912+2  (+2 del flag y crc)
         buf_tap_cab[0]=0x02;
@@ -12113,23 +12113,23 @@ void convert_to_raw_common_tmp(char *origen, char *destino)
 //Convierte archivo tap a rwa en carpeta temporal, generando nombre de archivo destino
 int convert_tap_to_rwa_tmpdir(char *origen, char *destino)
 {
-	convert_to_rwa_common_tmp(origen,destino);
+    convert_to_rwa_common_tmp(origen,destino);
 
-	return convert_tap_to_rwa(origen,destino);
+    return convert_tap_to_rwa(origen,destino);
 }
 
 //Convierte archivo pzx a rwa en carpeta temporal, generando nombre de archivo destino
 int convert_pzx_to_rwa_tmpdir(char *origen, char *destino)
 {
-	convert_to_rwa_common_tmp(origen,destino);
+    convert_to_rwa_common_tmp(origen,destino);
 
-	return convert_pzx_to_rwa(origen,destino);
+    return convert_pzx_to_rwa(origen,destino);
 }
 
 //Convierte archivo tzx a rwa en carpeta temporal, generando nombre de archivo destino
 int convert_tzx_to_rwa_tmpdir(char *origen, char *destino)
 {
-	convert_to_rwa_common_tmp(origen,destino);
+    convert_to_rwa_common_tmp(origen,destino);
 
         return convert_tzx_to_rwa(origen,destino);
 
@@ -12193,42 +12193,42 @@ int save_binary_file(char *filename,int valor_leido_direccion,int valor_leido_lo
 {
 
 
-	menu_debug_set_memory_zone_attr();
+    menu_debug_set_memory_zone_attr();
 
         char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
-	menu_get_current_memory_zone_name_number(zone_name);
+    menu_get_current_memory_zone_name_number(zone_name);
 
         if (valor_leido_longitud==0) valor_leido_longitud=menu_debug_memory_zone_size;
 
 
-	debug_printf(VERBOSE_INFO,"Saving %s file at %d address at zone %s with %d bytes",filename,valor_leido_direccion,zone_name,valor_leido_longitud);
+    debug_printf(VERBOSE_INFO,"Saving %s file at %d address at zone %s with %d bytes",filename,valor_leido_direccion,zone_name,valor_leido_longitud);
 
-	FILE *ptr_binaryfile_save;
-	ptr_binaryfile_save=fopen(filename,"wb");
-	if (!ptr_binaryfile_save) {
+    FILE *ptr_binaryfile_save;
+    ptr_binaryfile_save=fopen(filename,"wb");
+    if (!ptr_binaryfile_save) {
 
-		debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",filename);
-		return 1;
-	}
+        debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",filename);
+        return 1;
+    }
 
-	else {
+    else {
 
-		int escritos=1;
-		z80_byte byte_leido;
-		while (valor_leido_longitud>0 && escritos>0) {
+        int escritos=1;
+        z80_byte byte_leido;
+        while (valor_leido_longitud>0 && escritos>0) {
 
-			byte_leido=menu_debug_get_mapped_byte(valor_leido_direccion);
+            byte_leido=menu_debug_get_mapped_byte(valor_leido_direccion);
 
-			escritos=fwrite(&byte_leido,1,1,ptr_binaryfile_save);
-			valor_leido_direccion++;
-			valor_leido_longitud--;
-		}
+            escritos=fwrite(&byte_leido,1,1,ptr_binaryfile_save);
+            valor_leido_direccion++;
+            valor_leido_longitud--;
+        }
 
 
-		fclose(ptr_binaryfile_save);
-	}
+        fclose(ptr_binaryfile_save);
+    }
 
-	return 0;
+    return 0;
 
 }
 
@@ -12238,50 +12238,50 @@ int save_binary_file(char *filename,int valor_leido_direccion,int valor_leido_lo
 //Tiene en cuenta zonas de memoria
 int load_binary_file(char *filename,int valor_leido_direccion,int valor_leido_longitud)
 {
-	int returncode=0;
+    int returncode=0;
 
-	if (!si_existe_archivo(filename)) return 1;
+    if (!si_existe_archivo(filename)) return 1;
 
-	if (valor_leido_longitud==0) valor_leido_longitud=4194304; //4 MB max
-
-
-	menu_debug_set_memory_zone_attr();
+    if (valor_leido_longitud==0) valor_leido_longitud=4194304; //4 MB max
 
 
-	char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
-	menu_get_current_memory_zone_name_number(zone_name);
-
-	debug_printf(VERBOSE_INFO,"Loading %s file at %d address at zone %s with maximum %d bytes",filename,valor_leido_direccion,zone_name,valor_leido_longitud);
+    menu_debug_set_memory_zone_attr();
 
 
-	FILE *ptr_binaryfile_load;
-	ptr_binaryfile_load=fopen(filename,"rb");
-	if (!ptr_binaryfile_load) {
+    char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
+    menu_get_current_memory_zone_name_number(zone_name);
 
-		debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",filename);
-		returncode=2;
-
-	}
-
-	else {
-
-		int leidos=1;
-		z80_byte byte_leido;
-		while (valor_leido_longitud>0 && leidos>0) {
-			leidos=fread(&byte_leido,1,1,ptr_binaryfile_load);
-			if (leidos>0) {
-
-					menu_debug_write_mapped_byte(valor_leido_direccion,byte_leido);
-
-					valor_leido_direccion++;
-					valor_leido_longitud--;
-			}
-		}
+    debug_printf(VERBOSE_INFO,"Loading %s file at %d address at zone %s with maximum %d bytes",filename,valor_leido_direccion,zone_name,valor_leido_longitud);
 
 
-		fclose(ptr_binaryfile_load);
+    FILE *ptr_binaryfile_load;
+    ptr_binaryfile_load=fopen(filename,"rb");
+    if (!ptr_binaryfile_load) {
 
-	}
+        debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",filename);
+        returncode=2;
+
+    }
+
+    else {
+
+        int leidos=1;
+        z80_byte byte_leido;
+        while (valor_leido_longitud>0 && leidos>0) {
+            leidos=fread(&byte_leido,1,1,ptr_binaryfile_load);
+            if (leidos>0) {
+
+                    menu_debug_write_mapped_byte(valor_leido_direccion,byte_leido);
+
+                    valor_leido_direccion++;
+                    valor_leido_longitud--;
+            }
+        }
+
+
+        fclose(ptr_binaryfile_load);
+
+    }
 
     return returncode;
 
@@ -12298,31 +12298,31 @@ int load_binary_file(char *filename,int valor_leido_direccion,int valor_leido_lo
 void parse_customfile_options(void)
 {
 
-	//Si se ha leido algun parametro de --joystickkeybt o --joystickkeyev
-	//Cuando se lee el primero, se inicializa la tabla a 0
-	int leido_config_joystick_a_key=0;
+    //Si se ha leido algun parametro de --joystickkeybt o --joystickkeyev
+    //Cuando se lee el primero, se inicializa la tabla a 0
+    int leido_config_joystick_a_key=0;
 
-	z80_bit added_some_osd_text_keyboard={0};
+    z80_bit added_some_osd_text_keyboard={0};
 
         while (!siguiente_parametro()) {
 
-		debug_printf (VERBOSE_DEBUG,"Parsing setting %s",argv[puntero_parametro]);
+        debug_printf (VERBOSE_DEBUG,"Parsing setting %s",argv[puntero_parametro]);
 
                 if (!strcmp(argv[puntero_parametro],"--realvideo")) {
                                 enable_rainbow();
                 }
 
-		else if (!strcmp(argv[puntero_parametro],"--snoweffect")) {
+        else if (!strcmp(argv[puntero_parametro],"--snoweffect")) {
                                 snow_effect_enabled.v=1;
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--wrx")) {
-			enable_wrx();
-		}
+        else if (!strcmp(argv[puntero_parametro],"--wrx")) {
+            enable_wrx();
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--chroma81")) {
+        else if (!strcmp(argv[puntero_parametro],"--chroma81")) {
                         enable_chroma81();
-		}
+        }
 
                 else if (!strcmp(argv[puntero_parametro],"--vsync-minimum-length")) {
                                 siguiente_parametro_argumento();
@@ -12334,17 +12334,17 @@ void parse_customfile_options(void)
                                 minimo_duracion_vsync=valor;
                 }
 
-		else if (!strcmp(argv[puntero_parametro],"--no-horiz-stabilization")) {
+        else if (!strcmp(argv[puntero_parametro],"--no-horiz-stabilization")) {
                         video_zx8081_estabilizador_imagen.v=0;
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--programname")) {
-			siguiente_parametro_argumento();
-			mostrar_footer_game_name=argv[puntero_parametro];
-		}
+        else if (!strcmp(argv[puntero_parametro],"--programname")) {
+            siguiente_parametro_argumento();
+            mostrar_footer_game_name=argv[puntero_parametro];
+        }
 
-		//Para que aparezca --programsettingsinfo tiene que haber --programname
-		else if (!strcmp(argv[puntero_parametro],"--programsettingsinfo")) {
+        //Para que aparezca --programsettingsinfo tiene que haber --programname
+        else if (!strcmp(argv[puntero_parametro],"--programsettingsinfo")) {
                         siguiente_parametro_argumento();
                         mostrar_footer_second_message=argv[puntero_parametro];
 
@@ -12362,53 +12362,53 @@ void parse_customfile_options(void)
                 }
 
 
-		else if (!strcmp(argv[puntero_parametro],"--disableborder")) {
-			debug_printf(VERBOSE_INFO,"End Screen");
-	//Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
-	//mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
+        else if (!strcmp(argv[puntero_parametro],"--disableborder")) {
+            debug_printf(VERBOSE_INFO,"End Screen");
+    //Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
+    //mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
   void (*previous_function)(void);
   int menu_antes;
 
-	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
+    screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
 
-			disable_border();
-			screen_init_pantalla_and_others_and_realjoystick();
+            disable_border();
+            screen_init_pantalla_and_others_and_realjoystick();
                         screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
-			debug_printf(VERBOSE_INFO,"Creating Screen");
-		}
+            debug_printf(VERBOSE_INFO,"Creating Screen");
+        }
 
                 else if (!strcmp(argv[puntero_parametro],"--enableborder")) {
                         debug_printf(VERBOSE_INFO,"End Screen");
 
-	//Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
-	//mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
+    //Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
+    //mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
   void (*previous_function)(void);
   int menu_antes;
 
-	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
+    screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
                         enable_border();
-			screen_init_pantalla_and_others_and_realjoystick();
+            screen_init_pantalla_and_others_and_realjoystick();
                         screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
                         debug_printf(VERBOSE_INFO,"Creating Screen");
                 }
 
-		else if (!strcmp(argv[puntero_parametro],"--enableinterlace")) {
-			enable_interlace();
-		}
+        else if (!strcmp(argv[puntero_parametro],"--enableinterlace")) {
+            enable_interlace();
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--disableinterlace")) {
-			disable_interlace();
-		}
+        else if (!strcmp(argv[puntero_parametro],"--disableinterlace")) {
+            disable_interlace();
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--enableulaplus")) {
-			enable_ulaplus();
-		}
+        else if (!strcmp(argv[puntero_parametro],"--enableulaplus")) {
+            enable_ulaplus();
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--disableulaplus")) {
-			disable_ulaplus();
-		}
+        else if (!strcmp(argv[puntero_parametro],"--disableulaplus")) {
+            disable_ulaplus();
+        }
 
                 else if (!strcmp(argv[puntero_parametro],"--enablespectra")) {
                         spectra_enable();
@@ -12418,20 +12418,20 @@ void parse_customfile_options(void)
                         spectra_disable();
                 }
 
-		else if (!strcmp(argv[puntero_parametro],"--enabletimexvideo")) {
+        else if (!strcmp(argv[puntero_parametro],"--enabletimexvideo")) {
                         enable_timex_video();
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--disabletimexvideo")) {
+        else if (!strcmp(argv[puntero_parametro],"--disabletimexvideo")) {
                         disable_timex_video();
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--enablezgx")) {
+        else if (!strcmp(argv[puntero_parametro],"--enablezgx")) {
                         spritechip_enable();
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--redefinekey")) {
-				z80_byte tecla_original, tecla_redefinida;
+        else if (!strcmp(argv[puntero_parametro],"--redefinekey")) {
+                z80_byte tecla_original, tecla_redefinida;
                                 siguiente_parametro_argumento();
                                 tecla_original=parse_string_to_number(argv[puntero_parametro]);
 
@@ -12439,27 +12439,27 @@ void parse_customfile_options(void)
                                 tecla_redefinida=parse_string_to_number(argv[puntero_parametro]);
 
                                 if (util_add_redefinir_tecla(tecla_original,tecla_redefinida)) {
-					//Error volver sin leer mas parametros
+                    //Error volver sin leer mas parametros
                                         return;
                                 }
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--clearredefinekey")) {
-			clear_lista_teclas_redefinidas();
-		}
+        else if (!strcmp(argv[puntero_parametro],"--clearredefinekey")) {
+            clear_lista_teclas_redefinidas();
+        }
 
 
 
-		else if (!strcmp(argv[puntero_parametro],"--joystickemulated")) {
-			siguiente_parametro_argumento();
-			if (realjoystick_set_type(argv[puntero_parametro])) {
-			//Error. Volver sin leer mas parametros
-				return;
-			}
+        else if (!strcmp(argv[puntero_parametro],"--joystickemulated")) {
+            siguiente_parametro_argumento();
+            if (realjoystick_set_type(argv[puntero_parametro])) {
+            //Error. Volver sin leer mas parametros
+                return;
+            }
 
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--joystickevent")) {
+        else if (!strcmp(argv[puntero_parametro],"--joystickevent")) {
                                 char *text_button;
                                 char *text_event;
 
@@ -12473,23 +12473,23 @@ void parse_customfile_options(void)
 
                                 //Y definir el evento
                                 if (realjoystick_set_button_event(text_button,text_event)) {
-					//Error. Volver sin leer mas parametros
+                    //Error. Volver sin leer mas parametros
                                         return;
                                 }
 
 
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--joystickkeybt")) {
+        else if (!strcmp(argv[puntero_parametro],"--joystickkeybt")) {
 
-				if (leido_config_joystick_a_key==0) {
-					//Vaciar tabla
-					realjoystick_clear_keys_array();
-					//Puntero a 0
-					joystickkey_definidas=0;
-					//Decir que para las siguientes no se borra
-					leido_config_joystick_a_key=1;
-				}
+                if (leido_config_joystick_a_key==0) {
+                    //Vaciar tabla
+                    realjoystick_clear_keys_array();
+                    //Puntero a 0
+                    joystickkey_definidas=0;
+                    //Decir que para las siguientes no se borra
+                    leido_config_joystick_a_key=1;
+                }
 
                                 char *text_button;
                                 char *text_key;
@@ -12504,11 +12504,11 @@ void parse_customfile_options(void)
 
                                 //Y definir el evento
                                 if (realjoystick_set_button_key(text_button,text_key)) {
-					//Error. Volver sin leer mas parametros
+                    //Error. Volver sin leer mas parametros
                                         return;
                                 }
 
-		}
+        }
 
                 else if (!strcmp(argv[puntero_parametro],"--joystickkeyev")) {
 
@@ -12534,15 +12534,15 @@ void parse_customfile_options(void)
 
                                 //Y definir el evento
                                 if (realjoystick_set_event_key(text_event,text_key)) {
-					//Error. Volver sin leer mas parametros
+                    //Error. Volver sin leer mas parametros
                                         return;
                                 }
 
                 }
 
                 else if (!strcmp(argv[puntero_parametro],"--cleareventlist")) {
-			realjoystick_clear_events_array();
-		}
+            realjoystick_clear_events_array();
+        }
 
         else if (!strcmp(argv[puntero_parametro],"--steering-wheel-enable")) {
             realjoystick_steering_enabled.v=1;
@@ -12615,28 +12615,28 @@ void parse_customfile_options(void)
                                 util_add_text_adventure_kdb(argv[puntero_parametro]);
                         }
 
-				else if (!strcmp(argv[puntero_parametro],"--text-keyboard-length")) {
-						siguiente_parametro_argumento();
-						int valor=parse_string_to_number(argv[puntero_parametro]);
-						if (valor<10 || valor>100) {
+                else if (!strcmp(argv[puntero_parametro],"--text-keyboard-length")) {
+                        siguiente_parametro_argumento();
+                        int valor=parse_string_to_number(argv[puntero_parametro]);
+                        if (valor<10 || valor>100) {
                                         debug_printf (VERBOSE_ERR,"Invalid text-keyboard-length value\n");
                                         return;
                                 }
-						adventure_keyboard_key_length=valor;
-				}
+                        adventure_keyboard_key_length=valor;
+                }
 
-				else if (!strcmp(argv[puntero_parametro],"--text-keyboard-finalspc")) {
-						adventure_keyboard_send_final_spc=1;
+                else if (!strcmp(argv[puntero_parametro],"--text-keyboard-finalspc")) {
+                        adventure_keyboard_send_final_spc=1;
 
-				}
+                }
 
-		 else if (!strcmp(argv[puntero_parametro],"--machine")) {
+         else if (!strcmp(argv[puntero_parametro],"--machine")) {
                                 char *machine_name;
                                 siguiente_parametro_argumento();
                                 machine_name=argv[puntero_parametro];
 
                                 if (set_machine_type_by_name(machine_name)) {
-					                               //Error. Volver sin leer mas parametros
+                                                   //Error. Volver sin leer mas parametros
                                         return;
                                 }
 
@@ -12644,13 +12644,13 @@ void parse_customfile_options(void)
                                 cold_start_cpu_registers();
                                 reset_cpu();
 
-		}
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--zx8081vsyncsound")) {
-			zx8081_vsync_sound.v=1;
-		}
+        else if (!strcmp(argv[puntero_parametro],"--zx8081vsyncsound")) {
+            zx8081_vsync_sound.v=1;
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--zx8081mem")) {
+        else if (!strcmp(argv[puntero_parametro],"--zx8081mem")) {
                                 siguiente_parametro_argumento();
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<1 || valor>16) {
@@ -12672,20 +12672,20 @@ void parse_customfile_options(void)
                                 enable_ram_in_49152();
                 }
 
-		else if (!strcmp(argv[puntero_parametro],"--gigascreen")) {
+        else if (!strcmp(argv[puntero_parametro],"--gigascreen")) {
                                 enable_gigascreen();
-		}
+        }
 
 
-		else if (!strcmp(argv[puntero_parametro],"--enablezx8081lnctradjust")) {
-			video_zx8081_lnctr_adjust.v=1;
-		}
+        else if (!strcmp(argv[puntero_parametro],"--enablezx8081lnctradjust")) {
+            video_zx8081_lnctr_adjust.v=1;
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--disablezx8081lnctradjust")) {
-			video_zx8081_lnctr_adjust.v=0;
-		}
+        else if (!strcmp(argv[puntero_parametro],"--disablezx8081lnctradjust")) {
+            video_zx8081_lnctr_adjust.v=0;
+        }
 
-		else if (!strcmp(argv[puntero_parametro],"--frameskip")) {
+        else if (!strcmp(argv[puntero_parametro],"--frameskip")) {
                                 siguiente_parametro_argumento();
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<0 || valor>50) {
@@ -12695,15 +12695,15 @@ void parse_customfile_options(void)
                                 frameskip=valor;
                 }
 
-		else if (!strcmp(argv[puntero_parametro],"--aychip")) {
+        else if (!strcmp(argv[puntero_parametro],"--aychip")) {
                                 ay_chip_present.v=1;
-		}
+        }
 
 
 
-		//
-		//Opcion no reconocida. Error
-		//
+        //
+        //Opcion no reconocida. Error
+        //
                 else {
                         debug_printf (VERBOSE_ERR,"Setting %s not allowed on custom config file",argv[puntero_parametro]);
                         return;
@@ -12715,87 +12715,87 @@ void parse_customfile_options(void)
 
 void zmenufiles_help(void)
 {
-	printf ("zmenu files help:\n"
-		"\n"
-		"zmenu files are configuration files to open a menu inside ZEsarUX.\n"
-		"The idea for that files is to have a launcher for different programs, they are opened by the Smartloard or just writing them as a ZEsarUX parameter.\n"
-		"zmenu files are text files and have extension .zmenu.\n"
-		"\n"
-		"The following are the allowed parameters on a zmenu file:\n"
-		"\n"
+    printf ("zmenu files help:\n"
+        "\n"
+        "zmenu files are configuration files to open a menu inside ZEsarUX.\n"
+        "The idea for that files is to have a launcher for different programs, they are opened by the Smartloard or just writing them as a ZEsarUX parameter.\n"
+        "zmenu files are text files and have extension .zmenu.\n"
+        "\n"
+        "The following are the allowed parameters on a zmenu file:\n"
+        "\n"
 
         "--set-launcher text                                 Set the name of the launcher window\n"
         "--add-launcher-entry-smartload name path_to_file    Defines a program to by run like a smartload entry. Path is searched on the current directory, and also on the common installed path\n"
         "--add-launcher-entry-ql-mdv    name path_to_folder  Defines a directory to by mounted on QL as a mdv1 path. Path is searched on the current directory, and also on the common installed path\n"
 
         "\n"
-	);
+    );
 }
 
 void customconfig_help(void)
 {
-	printf ("Custom config help:\n"
-		"\n"
-		"Custom config files are configuration files for every program or game you want.\n"
+    printf ("Custom config help:\n"
+        "\n"
+        "Custom config files are configuration files for every program or game you want.\n"
         "There are two types of custom config files:\n"
-		"1. When you load a tape/snapshot, the emulator will search for a file, identical name of the file you load,\n"
-		"but adding extension .config, and it will apply every parameter contained in the file.\n"
-		"So, if you load for example: game.tap, it will be searched a file game.tap.config\n"
+        "1. When you load a tape/snapshot, the emulator will search for a file, identical name of the file you load,\n"
+        "but adding extension .config, and it will apply every parameter contained in the file.\n"
+        "So, if you load for example: game.tap, it will be searched a file game.tap.config\n"
         "\n"
         "2. Load presets for steering wheel configuration. After loading a racing game,\n"
         "you can load a config file with extension .postconfig, that configures the wheel parameters and maybe also\n"
         "change game memory address to disable auto steering return by making some pokes.\n"
         "\n"
-		"This config file is a text file you can edit; the format is like the " DEFAULT_ZESARUX_CONFIG_FILE " main configuration file,\n"
-		"but not every command line parameter allowed on main configuration file is allowed on a custom config file.\n"
+        "This config file is a text file you can edit; the format is like the " DEFAULT_ZESARUX_CONFIG_FILE " main configuration file,\n"
+        "but not every command line parameter allowed on main configuration file is allowed on a custom config file.\n"
         ".config and .postconfig files are almost the same, can have the same settings,\n"
         "but settings like --poke only have sense on .postconfig files.\n"
-		"There are some .config files included in the ZEsarUX extras package, you can view them to have some examples.\n"
+        "There are some .config files included in the ZEsarUX extras package, you can view them to have some examples.\n"
         "There are also some .postconfig files included on folder steering_wheel_presets.\n"
-		"\n"
-		"The following are the allowed parameters on a custom config file, I don't describe the parameters that are the same as on command line:\n"
-		"\n"
+        "\n"
+        "The following are the allowed parameters on a custom config file, I don't describe the parameters that are the same as on command line:\n"
+        "\n"
 
-	"--machine id \n"
-	"--programname text                Set the name of the tape/snapshot, shown on footer\n"
-	"--programsettingsinfo text        Set the text for settings information, shown on footer\n"
-	"--frameskip n\n"
-	"--disableborder\n"
-	"--enableborder                    Enable border\n"
-	"--aychip                          Enable AY-Chip\n"
-	"--zx8081mem n\n"
-	"--zx8081ram8K2000\n"
-	"--zx8081ram16K8000\n"
-	"--zx8081ram16KC000\n"
-	"--zx8081vsyncsound\n"
-	"--realvideo\n"
-	"--snoweffect\n"
-	"--enableinterlace                 Enable interlace video mode\n"
-	"--disableinterlace                Disable interlace video mode\n"
-	"--enableulaplus                   Enable ULAplus video modes\n"
-	"--disableulaplus                  Disable ULAplus video modes\n"
-	"--enablespectra                   Enable Spectra video modes\n"
-	"--disablespectra                  Disable Spectra video modes\n"
-	"--enabletimexvideo                Enable Timex video modes\n"
-	"--disabletimexvideo               Disable Timex video modes\n"
-	"--enablezgx\n"
-	"--wrx\n"
-	"--chroma81\n"
-	"--vsync-minimum-length n \n"
-	"--no-horiz-stabilization          Disable Horizontal Stabilization\n"
-	"--gigascreen                      Enable GigaScreen emulation\n"
-	"--enablezx8081lnctradjust         Enable LNCTR adjust on ZX80/81\n"
-	"--disablezx8081lnctradjust        Disable LNCTR adjust on ZX80/81\n"
-	"--redefinekey src dest\n"
-	"--clearredefinekey                Clear redefine key table\n"
-	"--joystickemulated type\n"
-	"--joystickevent but evt\n"
-	"--joystickkeybt but key\n"
-	"--joystickkeyev evt key\n"
-	"--text-keyboard-add text\n"
+    "--machine id \n"
+    "--programname text                Set the name of the tape/snapshot, shown on footer\n"
+    "--programsettingsinfo text        Set the text for settings information, shown on footer\n"
+    "--frameskip n\n"
+    "--disableborder\n"
+    "--enableborder                    Enable border\n"
+    "--aychip                          Enable AY-Chip\n"
+    "--zx8081mem n\n"
+    "--zx8081ram8K2000\n"
+    "--zx8081ram16K8000\n"
+    "--zx8081ram16KC000\n"
+    "--zx8081vsyncsound\n"
+    "--realvideo\n"
+    "--snoweffect\n"
+    "--enableinterlace                 Enable interlace video mode\n"
+    "--disableinterlace                Disable interlace video mode\n"
+    "--enableulaplus                   Enable ULAplus video modes\n"
+    "--disableulaplus                  Disable ULAplus video modes\n"
+    "--enablespectra                   Enable Spectra video modes\n"
+    "--disablespectra                  Disable Spectra video modes\n"
+    "--enabletimexvideo                Enable Timex video modes\n"
+    "--disabletimexvideo               Disable Timex video modes\n"
+    "--enablezgx\n"
+    "--wrx\n"
+    "--chroma81\n"
+    "--vsync-minimum-length n \n"
+    "--no-horiz-stabilization          Disable Horizontal Stabilization\n"
+    "--gigascreen                      Enable GigaScreen emulation\n"
+    "--enablezx8081lnctradjust         Enable LNCTR adjust on ZX80/81\n"
+    "--disablezx8081lnctradjust        Disable LNCTR adjust on ZX80/81\n"
+    "--redefinekey src dest\n"
+    "--clearredefinekey                Clear redefine key table\n"
+    "--joystickemulated type\n"
+    "--joystickevent but evt\n"
+    "--joystickkeybt but key\n"
+    "--joystickkeyev evt key\n"
+    "--text-keyboard-add text\n"
     "--text-keyboard-length n\n"
     "--text-keyboard-finalspc\n"
-	"--cleareventlist\n"
+    "--cleareventlist\n"
 
     "--steering-wheel-address n        Memory address where the game stores the wheel position\n"
     "--steering-wheel-min-value n      Minimum value stored on address (usually when wheel on maximum left position)\n"
@@ -12810,8 +12810,8 @@ void customconfig_help(void)
     "--steering-wheel-enable           Enable wheel support. Should be the last of the steering wheel parameters to avoid changing wheel memory before it's fully configured\n"
     "--poke n m                        Poke address n with value m\n"
 
-	"\n"
-	);
+    "\n"
+    );
 }
 
 //Nombres cortos de maquinas y sus id y su icono
@@ -12970,7 +12970,7 @@ int set_machine_type_by_name(char *machine_name)
   current_machine_type=maquina;
 
 
-	return 0;
+    return 0;
 }
 
 //Esta es la funcion inversa de la anterior. Devuelve "" si no se sabe numero de maquina
@@ -13001,7 +13001,7 @@ int scandir_mingw(const char *dir, struct dirent ***namelist,
               int (*compar)(const struct dirent **, const struct dirent **))
 {
 
-	#define MAX_ARCHIVOS_SCANDIR_MINGW 20000
+    #define MAX_ARCHIVOS_SCANDIR_MINGW 20000
         int archivos=0;
 
         //Puntero a cada archivo leido
@@ -13035,39 +13035,39 @@ int scandir_mingw(const char *dir, struct dirent ***namelist,
 
                 debug_printf(VERBOSE_DEBUG,"scandir_mingw: file: %s",dp->d_name);
 
-		if (filter(dp)) {
+        if (filter(dp)) {
 
-		        //Asignar memoria para ese fichero
-		        memoria_archivos=malloc(sizeof(struct dirent));
+                //Asignar memoria para ese fichero
+                memoria_archivos=malloc(sizeof(struct dirent));
 
-		      if (memoria_archivos==NULL) {
-                		cpu_panic("Error allocating memory when reading directory");
-		        }
+              if (memoria_archivos==NULL) {
+                        cpu_panic("Error allocating memory when reading directory");
+                }
 
-		        //Meter puntero
-		        memoria_punteros[archivos]=memoria_archivos;
+                //Meter puntero
+                memoria_punteros[archivos]=memoria_archivos;
 
-		        //Meter datos
-		        memcpy(memoria_archivos,dp,sizeof( struct dirent ));
-		        archivos++;
+                //Meter datos
+                memcpy(memoria_archivos,dp,sizeof( struct dirent ));
+                archivos++;
 
-		        if (archivos>=MAX_ARCHIVOS_SCANDIR_MINGW) {
-                		debug_printf(VERBOSE_ERR,"Error. Maximum files in directory reached: %d",MAX_ARCHIVOS_SCANDIR_MINGW);
-		                return archivos;
-		        }
+                if (archivos>=MAX_ARCHIVOS_SCANDIR_MINGW) {
+                        debug_printf(VERBOSE_ERR,"Error. Maximum files in directory reached: %d",MAX_ARCHIVOS_SCANDIR_MINGW);
+                        return archivos;
+                }
 
-		}
+        }
 
 
        }
        closedir(dfd);
 
-	//lanzar qsort
-	int (*funcion_compar)(const void *, const void *);
+    //lanzar qsort
+    int (*funcion_compar)(const void *, const void *);
 
-	funcion_compar=( int (*)(const void *, const void *)  )compar;
+    funcion_compar=( int (*)(const void *, const void *)  )compar;
 
-	qsort(memoria_punteros,archivos,sizeof( struct dirent *), funcion_compar);
+    qsort(memoria_punteros,archivos,sizeof( struct dirent *), funcion_compar);
 
         return archivos;
 }
@@ -13076,8 +13076,8 @@ int scandir_mingw(const char *dir, struct dirent ***namelist,
 //Devuelve la letra en mayusculas
 char letra_mayuscula(char c)
 {
-	if (c>='a' && c<='z') c=c-('a'-'A');
-	return c;
+    if (c>='a' && c<='z') c=c-('a'-'A');
+    return c;
 }
 
 //Devuelve la letra en minusculas
@@ -13097,29 +13097,29 @@ int int_minuscula(int c)
 //Convierte una string en minusculas
 void string_a_minusculas(char *origen, char *destino)
 {
-	char letra;
+    char letra;
 
-	for (;*origen;origen++,destino++) {
-		letra=*origen;
-		letra=letra_minuscula(letra);
-		*destino=letra;
-	}
+    for (;*origen;origen++,destino++) {
+        letra=*origen;
+        letra=letra_minuscula(letra);
+        *destino=letra;
+    }
 
-	*destino=0;
+    *destino=0;
 }
 
 //Convierte una string en mayusculas
 void string_a_mayusculas(char *origen, char *destino)
 {
-	char letra;
+    char letra;
 
-	for (;*origen;origen++,destino++) {
-		letra=*origen;
-		letra=letra_mayuscula(letra);
-		*destino=letra;
-	}
+    for (;*origen;origen++,destino++) {
+        letra=*origen;
+        letra=letra_mayuscula(letra);
+        *destino=letra;
+    }
 
-	*destino=0;
+    *destino=0;
 }
 
 //Dice si ruta es absoluta. 1 si es absoluta. 0 si no
@@ -13127,23 +13127,23 @@ int si_ruta_absoluta(char *ruta)
 {
 
 #ifdef MINGW
-	//En Windows
-	//Si empieza por '\' es absoluta
+    //En Windows
+    //Si empieza por '\' es absoluta
         if (ruta[0]=='\\') return 1;
 
-	//Si empieza por letra unidad: es absoluta
-	if (strlen(ruta)>2) {
-		//Solo mirar los :
-		if (ruta[1]==':') return 1;
-	}
+    //Si empieza por letra unidad: es absoluta
+    if (strlen(ruta)>2) {
+        //Solo mirar los :
+        if (ruta[1]==':') return 1;
+    }
 
         return 0;
 
 #else
-	//En Unix
-	//Si empieza por '/' es absoluta
-	if (ruta[0]=='/') return 1;
-	else return 0;
+    //En Unix
+    //Si empieza por '/' es absoluta
+    if (ruta[0]=='/') return 1;
+    else return 0;
 #endif
 
 }
@@ -13357,14 +13357,14 @@ int get_file_type(char *nombre)
     struct stat buf_stat;
 
     if (stat(nombre, &buf_stat)==0) {
-		debug_printf (VERBOSE_DEBUG,"Name: %s st_mode: %d constants: S_IFDIR: %d",nombre,buf_stat.st_mode,S_IFDIR);
+        debug_printf (VERBOSE_DEBUG,"Name: %s st_mode: %d constants: S_IFDIR: %d",nombre,buf_stat.st_mode,S_IFDIR);
 
-		if (buf_stat.st_mode & S_IFDIR) return 2;
-		else return 1;
-	}
+        if (buf_stat.st_mode & S_IFDIR) return 2;
+        else return 1;
+    }
 
 
-	//desconocido
+    //desconocido
     return 0;
 
 
@@ -13374,67 +13374,67 @@ int get_file_type(char *nombre)
 
 void convert_relative_to_absolute(char *relative_path,char *final_path)
 {
-	//Directorio actual
-	char directorio_actual[PATH_MAX];
-	getcwd(directorio_actual,PATH_MAX);
+    //Directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-	//Cambiamos a lo que dice el path relativo
-	zvfs_chdir(relative_path);
+    //Cambiamos a lo que dice el path relativo
+    zvfs_chdir(relative_path);
 
-	//Y en que directorio acabamos?
-	getcwd(final_path,PATH_MAX);
+    //Y en que directorio acabamos?
+    getcwd(final_path,PATH_MAX);
 
-	//Volver a directorio inicial
-	zvfs_chdir(directorio_actual);
+    //Volver a directorio inicial
+    zvfs_chdir(directorio_actual);
 
-	//printf ("Convert relative to absolute path: relative: %s absolute: %s\n",relative_path,final_path);
+    //printf ("Convert relative to absolute path: relative: %s absolute: %s\n",relative_path,final_path);
 
-	debug_printf (VERBOSE_DEBUG,"Convert relative to absolute path: relative: %s absolute: %s",relative_path,final_path);
+    debug_printf (VERBOSE_DEBUG,"Convert relative to absolute path: relative: %s absolute: %s",relative_path,final_path);
 
 }
 
 int util_read_file_lines(char *memoria,char **lineas,int max_lineas)
 {
 
-	int linea=0;
-	//char letra;
+    int linea=0;
+    //char letra;
 
-	while (linea<max_lineas && *memoria!=0) {
-		lineas[linea++]=memoria;
+    while (linea<max_lineas && *memoria!=0) {
+        lineas[linea++]=memoria;
 
-		while (*memoria!='\n' && *memoria!='\r' && *memoria!=0) {
-			//printf ("1 %d %c ",linea,*memoria);
-			memoria++;
-		}
+        while (*memoria!='\n' && *memoria!='\r' && *memoria!=0) {
+            //printf ("1 %d %c ",linea,*memoria);
+            memoria++;
+        }
 
-		//meter un 0
-		if (*memoria!=0) {
-			*memoria=0;
-			memoria++;
-		}
+        //meter un 0
+        if (*memoria!=0) {
+            *memoria=0;
+            memoria++;
+        }
 
-		//saltar saltos de lineas sobrantes
-		while ( (*memoria=='\n' || *memoria=='\r') && *memoria!=0) {
-			//printf ("2 %d %c ",linea,*memoria);
-			memoria++;
-		}
+        //saltar saltos de lineas sobrantes
+        while ( (*memoria=='\n' || *memoria=='\r') && *memoria!=0) {
+            //printf ("2 %d %c ",linea,*memoria);
+            memoria++;
+        }
 
-		//printf (" memoria %p\n",memoria);
-	}
+        //printf (" memoria %p\n",memoria);
+    }
 
-	return linea;
+    return linea;
 
 }
 
 int util_read_line_fields(char *memoria,char **campos)
 {
-	int campo_actual=0;
-	while (*memoria!=0) {
-		campos[campo_actual++]=memoria;
+    int campo_actual=0;
+    while (*memoria!=0) {
+        campos[campo_actual++]=memoria;
 
-		while (*memoria!=' ' && *memoria!=0) {
-			memoria++;
-		}
+        while (*memoria!=' ' && *memoria!=0) {
+            memoria++;
+        }
 
                 //meter un 0
                 if (*memoria!=0) {
@@ -13442,13 +13442,13 @@ int util_read_line_fields(char *memoria,char **campos)
                         memoria++;
                 }
 
-		//saltar espacios adicionales
-		while ( *memoria==' ' && *memoria!=0) {
-			memoria++;
-		}
-	}
+        //saltar espacios adicionales
+        while ( *memoria==' ' && *memoria!=0) {
+            memoria++;
+        }
+    }
 
-	return campo_actual;
+    return campo_actual;
 }
 
 
@@ -13498,9 +13498,9 @@ z80_byte valor_orig;
 
 */
 
-	//int indice_accion=0;
+    //int indice_accion=0;
 
-	//char *lineas[MAX_LINEAS_POK_FILE];
+    //char *lineas[MAX_LINEAS_POK_FILE];
 
         char **lineas;
 
@@ -13508,95 +13508,95 @@ z80_byte valor_orig;
 
         if (lineas==NULL) cpu_panic("Can not allocate memory for pok file reading");
 
-	char ultimo_nombre_poke[MAX_LENGTH_LINE_POKE_FILE+1]="";
+    char ultimo_nombre_poke[MAX_LENGTH_LINE_POKE_FILE+1]="";
 
-	int lineas_leidas=util_read_file_lines(memoria,lineas,MAX_LINEAS_POK_FILE);
+    int lineas_leidas=util_read_file_lines(memoria,lineas,MAX_LINEAS_POK_FILE);
 
-	int i,j;
+    int i,j;
 
-	int total_pokes=0;
+    int total_pokes=0;
 
-	int final=0;
+    int final=0;
 
-	int destino=0;
+    int destino=0;
 
-	for (i=0;i<lineas_leidas && final==0;i++) {
-		debug_printf (VERBOSE_DEBUG,"line: %d text: %s",i,lineas[i]);
-		char *campos[10];
+    for (i=0;i<lineas_leidas && final==0;i++) {
+        debug_printf (VERBOSE_DEBUG,"line: %d text: %s",i,lineas[i]);
+        char *campos[10];
 
-		//Si linea pasa de 1024, limitar
-		if (strlen(lineas[i]) >=1024 ) {
-			debug_printf (VERBOSE_DEBUG,"Line %d too large. Truncating",i);
-			lineas[i][1023]=0;
-		}
+        //Si linea pasa de 1024, limitar
+        if (strlen(lineas[i]) >=1024 ) {
+            debug_printf (VERBOSE_DEBUG,"Line %d too large. Truncating",i);
+            lineas[i][1023]=0;
+        }
 
-		//copiar linea actual antes de trocear para recuperar luego nombre de poke en N si conviene
+        //copiar linea actual antes de trocear para recuperar luego nombre de poke en N si conviene
 
-		char ultima_linea[1024];
-		sprintf (ultima_linea,"%s",lineas[i]);
-		//si linea execede maximo, truncar
-		if (strlen(ultima_linea) > MAX_LENGTH_LINE_POKE_FILE) ultima_linea[MAX_LENGTH_LINE_POKE_FILE]=0;
+        char ultima_linea[1024];
+        sprintf (ultima_linea,"%s",lineas[i]);
+        //si linea execede maximo, truncar
+        if (strlen(ultima_linea) > MAX_LENGTH_LINE_POKE_FILE) ultima_linea[MAX_LENGTH_LINE_POKE_FILE]=0;
 
-		int total_campos=util_read_line_fields(lineas[i],campos);
-		for (j=0;j<total_campos;j++) {
-			//printf ("campo %d : [%s] ",j,campos[j]);
-			//Si campo excede maximo, truncar
-			if ( strlen(campos[j]) > MAX_LENGTH_LINE_POKE_FILE) campos[j][MAX_LENGTH_LINE_POKE_FILE]=0;
-		}
+        int total_campos=util_read_line_fields(lineas[i],campos);
+        for (j=0;j<total_campos;j++) {
+            //printf ("campo %d : [%s] ",j,campos[j]);
+            //Si campo excede maximo, truncar
+            if ( strlen(campos[j]) > MAX_LENGTH_LINE_POKE_FILE) campos[j][MAX_LENGTH_LINE_POKE_FILE]=0;
+        }
 
-		//Casos
-		switch (campos[0][0]) {
-			case 'N':
-				//Texto de accion puede ser de dos palabras
-				//sprintf (ultimo_nombre_poke,"%s %s",&campos[0][1], (total_campos>1 ? campos[1] : "")   );
-				sprintf (ultimo_nombre_poke,"%s",&ultima_linea[1]);
-			break;
+        //Casos
+        switch (campos[0][0]) {
+            case 'N':
+                //Texto de accion puede ser de dos palabras
+                //sprintf (ultimo_nombre_poke,"%s %s",&campos[0][1], (total_campos>1 ? campos[1] : "")   );
+                sprintf (ultimo_nombre_poke,"%s",&ultima_linea[1]);
+            break;
 
-			case 'M':
-			case 'Z':
-				//printf ("i: %d puntero %p\n",i,&tabla_pokes[i]->indice_accion);
-				tabla_pokes[destino]->indice_accion=total_pokes;
-				sprintf (tabla_pokes[destino]->texto,"%s",ultimo_nombre_poke);
-				if (total_campos>=4) {
-					tabla_pokes[destino]->banco=atoi(campos[1]);
-					tabla_pokes[destino]->direccion=atoi(campos[2]);
-					tabla_pokes[destino]->valor=atoi(campos[3]);
-				}
+            case 'M':
+            case 'Z':
+                //printf ("i: %d puntero %p\n",i,&tabla_pokes[i]->indice_accion);
+                tabla_pokes[destino]->indice_accion=total_pokes;
+                sprintf (tabla_pokes[destino]->texto,"%s",ultimo_nombre_poke);
+                if (total_campos>=4) {
+                    tabla_pokes[destino]->banco=atoi(campos[1]);
+                    tabla_pokes[destino]->direccion=atoi(campos[2]);
+                    tabla_pokes[destino]->valor=atoi(campos[3]);
+                }
 
-				if (total_campos>=5) {
-					tabla_pokes[destino]->valor_orig=atoi(campos[4]);
-				}
+                if (total_campos>=5) {
+                    tabla_pokes[destino]->valor_orig=atoi(campos[4]);
+                }
 
-				//Si era final de poke de accion, incrementar
-				if (campos[0][0]=='Z') total_pokes++;
+                //Si era final de poke de accion, incrementar
+                if (campos[0][0]=='Z') total_pokes++;
 
-				destino++;
+                destino++;
 
-			break;
-
-
-			case 'Y':
-				final=1;
-			break;
-
-			default:
-				//printf ("error format\n");
-				return -1;
-			break;
-		}
-
-		if (!final) {
-
-		}
+            break;
 
 
-		//printf ("\n");
-	}
+            case 'Y':
+                final=1;
+            break;
+
+            default:
+                //printf ("error format\n");
+                return -1;
+            break;
+        }
+
+        if (!final) {
+
+        }
+
+
+        //printf ("\n");
+    }
 
         free(lineas);
 
-	//return lineas_leidas;
-	return destino;
+    //return lineas_leidas;
+    return destino;
 
 }
 
@@ -13604,7 +13604,7 @@ z80_byte valor_orig;
 //Retorna numero elementos del array
 int util_parse_pok_file(char *file,struct s_pokfile **tabla_pokes)
 {
-	char *mem;
+    char *mem;
 
         int max_size=(MAX_LINEAS_POK_FILE*MAX_LENGTH_LINE_POKE_FILE)-1; //1 para el 0 del final
 
@@ -13614,7 +13614,7 @@ int util_parse_pok_file(char *file,struct s_pokfile **tabla_pokes)
                 return 0;
         }
 
-	mem=malloc(max_size);
+    mem=malloc(max_size);
 
 
                 FILE *ptr_pok;
@@ -13628,19 +13628,19 @@ int util_parse_pok_file(char *file,struct s_pokfile **tabla_pokes)
 
                 int leidos=fread(mem,1,max_size,ptr_pok);
 
-		//Fin de texto
-		mem[leidos]=0;
+        //Fin de texto
+        mem[leidos]=0;
 
-		fclose(ptr_pok);
-
-
-	int total=util_parse_pok_mem(mem,tabla_pokes);
+        fclose(ptr_pok);
 
 
+    int total=util_parse_pok_mem(mem,tabla_pokes);
 
-	free(mem);
 
-	return total;
+
+    free(mem);
+
+    return total;
 
 
 }
@@ -13649,41 +13649,41 @@ int util_parse_pok_file(char *file,struct s_pokfile **tabla_pokes)
 //Usado en pok file
 int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
 {
-	//Si estamos en maquina 48k
-	if (MACHINE_IS_SPECTRUM_16_48) {
-		if (banco<8) {
-			debug_printf (VERBOSE_ERR,"This poke is for a 128k machine and we are not in 128k machine (poke bank: %d)",banco);
-			return -1;
-		}
+    //Si estamos en maquina 48k
+    if (MACHINE_IS_SPECTRUM_16_48) {
+        if (banco<8) {
+            debug_printf (VERBOSE_ERR,"This poke is for a 128k machine and we are not in 128k machine (poke bank: %d)",banco);
+            return -1;
+        }
 
-		debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
-		poke_byte_no_time(direccion,valor);
-	}
+        debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
+        poke_byte_no_time(direccion,valor);
+    }
 
 
-	//si maquina 128k
-	else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
-		//ram_mem_table
-		//Si banco >7, hacer poke normal
-		if (banco>7) {
-			debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
-			poke_byte_no_time(direccion,valor);
-		}
-		else {
-			//Poke con banco de memoria
-			direccion = direccion & 16383;
-			z80_byte *puntero;
-			puntero=ram_mem_table[banco]+direccion;
-			debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
-			*puntero=valor;
-		}
-	}
+    //si maquina 128k
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
+        //ram_mem_table
+        //Si banco >7, hacer poke normal
+        if (banco>7) {
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
+            poke_byte_no_time(direccion,valor);
+        }
+        else {
+            //Poke con banco de memoria
+            direccion = direccion & 16383;
+            z80_byte *puntero;
+            puntero=ram_mem_table[banco]+direccion;
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
+            *puntero=valor;
+        }
+    }
 
-	else if (MACHINE_IS_ZXUNO)  {
-		if (ZXUNO_BOOTM_ENABLED) {
-			debug_printf (VERBOSE_ERR,"Can not poke in ZX-Uno mode with BOOTM enabled");
-			return -1;
-		}
+    else if (MACHINE_IS_ZXUNO)  {
+        if (ZXUNO_BOOTM_ENABLED) {
+            debug_printf (VERBOSE_ERR,"Can not poke in ZX-Uno mode with BOOTM enabled");
+            return -1;
+        }
 
                 if (banco>7) {
                         debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
@@ -13694,18 +13694,18 @@ int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
                         direccion = direccion & 16383;
                         z80_byte *puntero;
                         puntero=zxuno_sram_mem_table_new[banco]+direccion;
-			debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
+            debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing bank %d address %d with value %d",banco,direccion,valor);
                         *puntero=valor;
                 }
-	}
+    }
 
-	//resto de maquinas
-	else if (MACHINE_IS_ZX8081 || MACHINE_IS_Z88) {
-		debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
-		poke_byte_no_time(direccion,valor);
-	}
+    //resto de maquinas
+    else if (MACHINE_IS_ZX8081 || MACHINE_IS_Z88) {
+        debug_printf (VERBOSE_DEBUG,"util_spectrum_poke. pokeing address %d with value %d",direccion,valor);
+        poke_byte_no_time(direccion,valor);
+    }
 
-	return 0;
+    return 0;
 
 
 }
@@ -13718,24 +13718,24 @@ int util_poke(z80_byte banco,z80_int direccion,z80_byte valor)
 int util_busca_archivo_nocase(char *archivo,char *directorio,char *nombreencontrado)
 {
 
-	debug_printf (VERBOSE_DEBUG,"Searching file %s in directory %s",archivo,directorio);
+    debug_printf (VERBOSE_DEBUG,"Searching file %s in directory %s",archivo,directorio);
 
-	//Saltar todas las / iniciales del archivo
-	while ( (*archivo=='/' || *archivo=='\\') && (*archivo!=0) ) {
-		archivo++;
-	}
-
-
-	struct dirent *busca_archivo_dirent;
-	DIR *busca_archivo_dir=NULL;
+    //Saltar todas las / iniciales del archivo
+    while ( (*archivo=='/' || *archivo=='\\') && (*archivo!=0) ) {
+        archivo++;
+    }
 
 
+    struct dirent *busca_archivo_dirent;
+    DIR *busca_archivo_dir=NULL;
 
-	busca_archivo_dir = opendir(directorio);
 
 
-	if (busca_archivo_dir==NULL) {
-		return 0;
+    busca_archivo_dir = opendir(directorio);
+
+
+    if (busca_archivo_dir==NULL) {
+        return 0;
         }
 
         do {
@@ -13744,21 +13744,21 @@ int util_busca_archivo_nocase(char *archivo,char *directorio,char *nombreencontr
 
                 if (busca_archivo_dirent == NULL) {
                         closedir(busca_archivo_dir);
-			return 0;
+            return 0;
                 }
 
-		if (!strcasecmp(archivo,busca_archivo_dirent->d_name)) {
-			//Encontrado
-			sprintf (nombreencontrado,"%s",busca_archivo_dirent->d_name);
-			debug_printf (VERBOSE_DEBUG,"Found file %s",nombreencontrado);
-			return 1;
-		}
+        if (!strcasecmp(archivo,busca_archivo_dirent->d_name)) {
+            //Encontrado
+            sprintf (nombreencontrado,"%s",busca_archivo_dirent->d_name);
+            debug_printf (VERBOSE_DEBUG,"Found file %s",nombreencontrado);
+            return 1;
+        }
 
 
         } while(1);
 
-	//Aqui no llega nunca
-	return 0;
+    //Aqui no llega nunca
+    return 0;
 
 
 }
@@ -13767,8 +13767,8 @@ int util_busca_archivo_nocase(char *archivo,char *directorio,char *nombreencontr
 //Funciones Spool Turbo para modelos Spectrum
 void peek_byte_spoolturbo_check_key(z80_int dir)
 {
-	//si dir=23560, enviar tecla de spool file
-	z80_int lastk=23560;
+    //si dir=23560, enviar tecla de spool file
+    z80_int lastk=23560;
 
     /* pruebas modo turbo en jupiter ace
     if (MACHINE_IS_ACE) {
@@ -13785,7 +13785,7 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
     */
 
         if (input_file_keyboard_is_playing() && dir==lastk) {
-	                        z80_byte input_file_keyboard_last_key;
+                            z80_byte input_file_keyboard_last_key;
 
                                 int leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
                                 if (leidos==0) {
@@ -13810,9 +13810,9 @@ z80_byte (*peek_byte_no_spoolturbo)(z80_int dir);
 z80_byte peek_byte_spoolturbo(z80_int dir)
 {
 
-	peek_byte_spoolturbo_check_key(dir);
+    peek_byte_spoolturbo_check_key(dir);
 
-	return peek_byte_no_spoolturbo(dir);
+    return peek_byte_no_spoolturbo(dir);
 }
 
 z80_byte peek_byte_no_time_spoolturbo(z80_int dir)
@@ -13832,11 +13832,11 @@ void set_peek_byte_function_spoolturbo(void)
     debug_printf(VERBOSE_INFO,"Enabling spoolturbo on peek_byte");
 
 
-	if (MACHINE_IS_SPECTRUM) {
-		//Cambiar valores de repeticion de teclas
-		poke_byte_no_time(23561,1);
-		poke_byte_no_time(23562,1);
-	}
+    if (MACHINE_IS_SPECTRUM) {
+        //Cambiar valores de repeticion de teclas
+        poke_byte_no_time(23561,1);
+        poke_byte_no_time(23562,1);
+    }
 
 
     peek_byte_no_time_no_spoolturbo=peek_byte_no_time;
@@ -13849,12 +13849,12 @@ void set_peek_byte_function_spoolturbo(void)
 
 void reset_peek_byte_function_spoolturbo(void)
 {
-	debug_printf(VERBOSE_INFO,"Resetting spoolturbo on peek_byte");
+    debug_printf(VERBOSE_INFO,"Resetting spoolturbo on peek_byte");
 
     if (MACHINE_IS_SPECTRUM) {
-	    //Restaurar valores de repeticion de teclas
-	    poke_byte_no_time(23561,35);
-	    poke_byte_no_time(23562,5);
+        //Restaurar valores de repeticion de teclas
+        poke_byte_no_time(23561,35);
+        poke_byte_no_time(23562,5);
     }
 
     peek_byte_no_time=peek_byte_no_time_no_spoolturbo;
@@ -13871,23 +13871,23 @@ void reset_peek_byte_function_spoolturbo(void)
 
 void poke_byte_writerom_exec(z80_int dir,z80_byte value)
 {
-	if (MACHINE_IS_SPECTRUM) {
-		if (dir<16384) memoria_spectrum[dir]=value;
-	}
+    if (MACHINE_IS_SPECTRUM) {
+        if (dir<16384) memoria_spectrum[dir]=value;
+    }
 
-	else if (MACHINE_IS_ZX80_TYPE) {
+    else if (MACHINE_IS_ZX80_TYPE) {
                 if (dir<4096) memoria_spectrum[dir]=value;
         }
 
-	else if (MACHINE_IS_ZX81_TYPE) {
+    else if (MACHINE_IS_ZX81_TYPE) {
                 if (dir<8192) memoria_spectrum[dir]=value;
         }
 
-	else if (MACHINE_IS_ACE) {
+    else if (MACHINE_IS_ACE) {
                 if (dir<8192) memoria_spectrum[dir]=value;
         }
 
-	else if (MACHINE_IS_SAM) {
+    else if (MACHINE_IS_SAM) {
 
                 z80_byte *puntero;
                 puntero=sam_return_segment_memory(dir);
@@ -13897,32 +13897,32 @@ void poke_byte_writerom_exec(z80_int dir,z80_byte value)
                 puntero=puntero+dir;
                 *puntero=value;
 
-	}
+    }
 }
 
 z80_byte poke_byte_writerom(z80_int dir,z80_byte value)
 {
 
-	poke_byte_writerom_exec(dir,value);
+    poke_byte_writerom_exec(dir,value);
 
         //poke_byte_no_writerom(dir,value);
-	debug_nested_poke_byte_call_previous(write_rom_nested_id_poke_byte,dir,value);
+    debug_nested_poke_byte_call_previous(write_rom_nested_id_poke_byte,dir,value);
 
-	//Para que no se queje el compilador
-	return 0;
+    //Para que no se queje el compilador
+    return 0;
 
 }
 
 z80_byte poke_byte_no_time_writerom(z80_int dir,z80_byte value)
 {
 
-	poke_byte_writerom_exec(dir,value);
+    poke_byte_writerom_exec(dir,value);
 
         //poke_byte_no_time_no_writerom(dir,value);
-	debug_nested_poke_byte_no_time_call_previous(write_rom_nested_id_poke_byte_no_time,dir,value);
+    debug_nested_poke_byte_no_time_call_previous(write_rom_nested_id_poke_byte_no_time,dir,value);
 
-	//Para que no se queje el compilador
-	return 0;
+    //Para que no se queje el compilador
+    return 0;
 }
 
 
@@ -13958,27 +13958,27 @@ void reset_poke_byte_function_writerom(void)
 //Retorna nombre de cinta spectrum (10 bytes)
 void util_tape_get_name_header(z80_byte *tape,char *texto)
 {
-	int i;
-	z80_byte caracter;
+    int i;
+    z80_byte caracter;
 
-	for (i=0;i<10;i++) {
-		caracter=*tape++;
-		if (caracter<32 || caracter>126) caracter='.';
+    for (i=0;i<10;i++) {
+        caracter=*tape++;
+        if (caracter<32 || caracter>126) caracter='.';
 
-		*texto++=caracter;
-	}
+        *texto++=caracter;
+    }
 
-	*texto=0;
+    *texto=0;
 }
 
 void util_tape_get_info_tapeblock_ace(z80_byte *tape,z80_byte flag,z80_int longitud,char *texto)
 {
-	char buffer_nombre[11];
+    char buffer_nombre[11];
 
-	z80_byte first_byte=tape[0];
-		if (flag==0 && (first_byte==0 || first_byte==32) && longitud==27) {
-			//Posible cabecera
-			util_tape_get_name_header(&tape[1],buffer_nombre);
+    z80_byte first_byte=tape[0];
+        if (flag==0 && (first_byte==0 || first_byte==32) && longitud==27) {
+            //Posible cabecera
+            util_tape_get_name_header(&tape[1],buffer_nombre);
 
                         z80_int cabecera_longitud;
                         z80_int cabecera_inicio;
@@ -13988,23 +13988,23 @@ void util_tape_get_info_tapeblock_ace(z80_byte *tape,z80_byte flag,z80_int longi
 
 
 
-			//Evitar el uso del caracter ":" para evitar generar nombres (en el expansor de archivos) con ":" que pueden dar problemas en windows
-			switch (first_byte) {
-				case 0:
-					sprintf(texto,"Dict %s [%d]",buffer_nombre,cabecera_longitud);
-				break;
+            //Evitar el uso del caracter ":" para evitar generar nombres (en el expansor de archivos) con ":" que pueden dar problemas en windows
+            switch (first_byte) {
+                case 0:
+                    sprintf(texto,"Dict %s [%d]",buffer_nombre,cabecera_longitud);
+                break;
 
-				case 32:
-					sprintf(texto,"Bytes %s [%d,%d]",buffer_nombre,cabecera_inicio,cabecera_longitud);
-				break;
-
-
-
-			}
-		}
+                case 32:
+                    sprintf(texto,"Bytes %s [%d,%d]",buffer_nombre,cabecera_inicio,cabecera_longitud);
+                break;
 
 
-		else sprintf(texto,"Flag %d Length %d",flag,longitud-2); //Saltar los 2 bytes de flag y checksum
+
+            }
+        }
+
+
+        else sprintf(texto,"Flag %d Length %d",flag,longitud-2); //Saltar los 2 bytes de flag y checksum
 }
 
 
@@ -14012,12 +14012,12 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 {
 
     //42 caracteres maximo de la info?
-	char buffer_nombre[11];
+    char buffer_nombre[11];
 
-	z80_byte first_byte=tape[0];
-		if (flag==0 && first_byte<=4 && longitud==19) {
-			//Posible cabecera
-			util_tape_get_name_header(&tape[1],buffer_nombre);
+    z80_byte first_byte=tape[0];
+        if (flag==0 && first_byte<=4 && longitud==19) {
+            //Posible cabecera
+            util_tape_get_name_header(&tape[1],buffer_nombre);
 
             z80_int cabecera_longitud;
             z80_int cabecera_inicio;
@@ -14029,39 +14029,39 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 
 
 
-			//Evitar el uso del caracter ":" para evitar generar nombres (en el expansor de archivos) con ":" que pueden dar problemas en windows
-			switch (first_byte) {
-				case 0:
+            //Evitar el uso del caracter ":" para evitar generar nombres (en el expansor de archivos) con ":" que pueden dar problemas en windows
+            switch (first_byte) {
+                case 0:
                     //Si tiene autoinicio
                     if (cabecera_inicio<32768) sprintf(texto,"Program %s [size %d,LINE %d]",buffer_nombre,cabecera_longitud,cabecera_inicio);
-					else sprintf(texto,"Program %s [size %d]",buffer_nombre,cabecera_longitud);
-				break;
+                    else sprintf(texto,"Program %s [size %d]",buffer_nombre,cabecera_longitud);
+                break;
 
-				case 1:
-					sprintf(texto,"Num array %s [size %d,%c()]",buffer_nombre,cabecera_longitud,array_var_name);
-				break;
+                case 1:
+                    sprintf(texto,"Num array %s [size %d,%c()]",buffer_nombre,cabecera_longitud,array_var_name);
+                break;
 
-				case 2:
-					sprintf(texto,"Char array %s [size %d,%c$()]",buffer_nombre,cabecera_longitud,array_var_name);
-				break;
+                case 2:
+                    sprintf(texto,"Char array %s [size %d,%c$()]",buffer_nombre,cabecera_longitud,array_var_name);
+                break;
 
-				case 3:
+                case 3:
                                         if (cabecera_longitud==6912 && cabecera_inicio==16384) sprintf(texto,"Screen$ %s",buffer_nombre);
                                                           //01234567890123456789012345678901
                                                           //Code: 1234567890 [16384,49152]
-					else sprintf(texto,"Code %s [%d,%d]",buffer_nombre,cabecera_inicio,cabecera_longitud);
-				break;
+                    else sprintf(texto,"Code %s [%d,%d]",buffer_nombre,cabecera_inicio,cabecera_longitud);
+                break;
 
                 //Esto solo soportado por Hilow
-				case 4:
-					sprintf(texto,"NMI %s",buffer_nombre);
-				break;
-			}
-		}
+                case 4:
+                    sprintf(texto,"NMI %s",buffer_nombre);
+                break;
+            }
+        }
 
-		else if (flag==0 && first_byte==3 && longitud==36) {
-			//Bloque de codigo fuente SPED
-			util_tape_get_name_header(&tape[1],buffer_nombre);
+        else if (flag==0 && first_byte==3 && longitud==36) {
+            //Bloque de codigo fuente SPED
+            util_tape_get_name_header(&tape[1],buffer_nombre);
 
                                      //01234567890123456789012345678901
                                      //SPED: 1234567890 (12/12/2099)
@@ -14069,12 +14069,12 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
                         z80_byte sped_month=tape[19];
                         z80_byte sped_year=tape[20];
 
-			sprintf(texto,"SPED %s (%d-%d-%d)",buffer_nombre,sped_day,sped_month,sped_year+1980);
+            sprintf(texto,"SPED %s (%d-%d-%d)",buffer_nombre,sped_day,sped_month,sped_year+1980);
 
-		}
+        }
 
 
-		else sprintf(texto,"Flag %d Length %d",flag,longitud-2); //Saltar los 2 bytes de flag y checksum
+        else sprintf(texto,"Flag %d Length %d",flag,longitud-2); //Saltar los 2 bytes de flag y checksum
 }
 
 //Retorna texto descriptivo de informacion de cinta en texto. Cinta tipo tap o tzx
@@ -14082,7 +14082,7 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 //origin_tap es importante cuando se viene de un tap y maquina activa es jupiter ace, pues esos tap no tienen flag
 int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
 {
-	int longitud=value_8_to_16(tape[1],tape[0]);
+    int longitud=value_8_to_16(tape[1],tape[0]);
 
     //Soporte para cintas TAP de Jupiter Ace, que no tienen flag
     if (MACHINE_IS_ACE) {
@@ -14143,7 +14143,7 @@ int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
     }
 
 
-	return longitud+2;
+    return longitud+2;
 }
 
 
@@ -14240,8 +14240,8 @@ char *mingw_strcasestr(const char *arg1, const char *arg2)
      b = arg2;
 
      while((*a | 32) == (*b | 32)) {
-	a++;
-	b++;
+    a++;
+    b++;
        if(!*b)
          return (char *)arg1;
      }
@@ -14404,11 +14404,11 @@ int util_write_pbm_file(char *archivo, int ancho, int alto, int ppb, z80_byte *s
 
 
     //Escribir cabecera pbm
-  	char pbm_header[20]; //Suficiente
+      char pbm_header[20]; //Suficiente
 
-  	sprintf (pbm_header,"P4\n%d %0d\n",ancho,alto);
+      sprintf (pbm_header,"P4\n%d %0d\n",ancho,alto);
 
-  	fwrite(pbm_header,1,strlen(pbm_header),ptr_destino);
+      fwrite(pbm_header,1,strlen(pbm_header),ptr_destino);
 
 
   int x,y;
@@ -14490,9 +14490,9 @@ int util_write_stl_file(char *archivo, int ancho, int alto, z80_byte *source,int
     }
 
     //Escribir fin stl
-  	sprintf (stl_header,"endsolid\n");
+      sprintf (stl_header,"endsolid\n");
 
-  	fwrite(stl_header,1,strlen(stl_header),ptr_destino);
+      fwrite(stl_header,1,strlen(stl_header),ptr_destino);
 
     fclose(ptr_destino);
 
@@ -14517,7 +14517,7 @@ int util_write_sprite_c_file(char *archivo, int ancho, int alto, int ppb, z80_by
         char *c_header="//Created by ZEsarUX emulator\n\nunsigned char mysprite[]={\n";
         char *c_end_header="};\n";
 
-  	fwrite(c_header,1,strlen(c_header),ptr_destino);
+      fwrite(c_header,1,strlen(c_header),ptr_destino);
 
           char buffer_linea[30]; // "0xFF," (5 caracteres. Damos mas por si acaso extendemos)
 
@@ -14547,9 +14547,9 @@ fwrite(c_end_header,1,strlen(c_end_header),ptr_destino);
 void util_truncate_file(char *filename)
 {
 
-	debug_printf(VERBOSE_INFO,"Truncating file %s",filename);
+    debug_printf(VERBOSE_INFO,"Truncating file %s",filename);
 
-	FILE *ptr_destino;
+    FILE *ptr_destino;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -14565,16 +14565,16 @@ void util_truncate_file(char *filename)
 
 
     /*
-	ptr_destino=fopen(filename,"wb");
+    ptr_destino=fopen(filename,"wb");
 
-  	if (ptr_destino==NULL) {
-    		debug_printf (VERBOSE_ERR,"Error truncating file");
-    		return;
-    	}
+      if (ptr_destino==NULL) {
+            debug_printf (VERBOSE_ERR,"Error truncating file");
+            return;
+        }
     */
 
    zvfs_fclose(in_fatfs,ptr_destino,&fil);
-    	//fclose(ptr_destino);
+        //fclose(ptr_destino);
 
 }
 
@@ -14642,23 +14642,23 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       }
 
       if (MACHINE_IS_INVES) {
-	size=65536;
+    size=65536;
       }
 
       if (MACHINE_IS_SAM) {
-	size=512*1024; //512 kb para simplificar->siempre el maximo
+    size=512*1024; //512 kb para simplificar->siempre el maximo
       }
 
       if (MACHINE_IS_Z88) {
-      	size=0; //Solo zona memoria de 4 mb en caso de z88
+          size=0; //Solo zona memoria de 4 mb en caso de z88
       }
 
       if (MACHINE_IS_MSX) {
-      	size=0; //Mostrar zona de memoria de 256kb en caso de msx
+          size=0; //Mostrar zona de memoria de 256kb en caso de msx
       }
 
        if (MACHINE_IS_SVI) {
-      	size=0; //Mostrar zona de memoria de 256kb en caso de msx
+          size=0; //Mostrar zona de memoria de 256kb en caso de msx
       }
 
       if (MACHINE_IS_SMS) {
@@ -14683,9 +14683,9 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         size=65536;
       }
 
-	if (MACHINE_IS_CHLOE) {
-		size=32768;
-	}
+    if (MACHINE_IS_CHLOE) {
+        size=32768;
+    }
 
       //Vigilar condiciones que pueden cumplir mas de una maquina a la vez
 
@@ -14731,18 +14731,18 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
 
       if (MACHINE_IS_SAM) {
-	size=32768;
+    size=32768;
       }
 
       if (MACHINE_IS_MSX) {
-	size=32768;
+    size=32768;
       }
       if (MACHINE_IS_SVI) {
-	size=32768;
+    size=32768;
       }
 
       if (MACHINE_IS_Z88) {
-      	size=0; //Solo zona memoria de 4 mb en caso de z88
+          size=0; //Solo zona memoria de 4 mb en caso de z88
       }
 
       if (MACHINE_IS_SMS) {
@@ -14786,10 +14786,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
     //kartusho
     case 6:
-	if (kartusho_enabled.v) {
+    if (kartusho_enabled.v) {
           *readwrite=1;
-	  size=KARTUSHO_SIZE;
-	}
+      size=KARTUSHO_SIZE;
+    }
     break;
 
     //dandanator
@@ -14819,37 +14819,37 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
     //Z88 memory
     case 10:
-    	if (MACHINE_IS_Z88) {
+        if (MACHINE_IS_Z88) {
                 *readwrite=1;
-    		size=4*1024*1024; //Zona entera de los 4 MB
-    	}
+            size=4*1024*1024; //Zona entera de los 4 MB
+        }
     break;
 
 
 
     //Betadisk
     case 11:
-    	if (betadisk_enabled.v) {
+        if (betadisk_enabled.v) {
                 *readwrite=1;
-    		size=BETADISK_SIZE;
-    	}
+            size=BETADISK_SIZE;
+        }
     break;
 
 
     //Multiface rom
     case 12:
-    	if (multiface_enabled.v) {
+        if (multiface_enabled.v) {
                 *readwrite=1;
-    		size=8192;
-    	}
+            size=8192;
+        }
     break;
 
     //Multiface ram
     case 13:
-    	if (multiface_enabled.v) {
+        if (multiface_enabled.v) {
                 *readwrite=3;
-    		size=8192;
-    	}
+            size=8192;
+        }
     break;
 
     //tbblue sprites
@@ -14868,7 +14868,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       }
     break;
 
-	//memory zone by file. 16
+    //memory zone by file. 16
     case MEMORY_ZONE_NUM_FILE_ZONE:
       if (memory_zone_by_file_size>0) {
         *readwrite=3;
@@ -14890,8 +14890,8 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         size=8192;
       }
       if (MACHINE_IS_CHLOE_280SE) {
-	*readwrite=1;
-	size=65536;
+    *readwrite=1;
+    size=65536;
       }
     break;
 
@@ -14901,8 +14901,8 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         size=65536;
       }
       if (MACHINE_IS_CHLOE_280SE) {
-	*readwrite=1;
-	size=65536;
+    *readwrite=1;
+    size=65536;
       }
     break;
 
@@ -14935,10 +14935,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
     //ifrom
     case MEMORY_ZONE_IFROM:
-	if (ifrom_enabled.v) {
+    if (ifrom_enabled.v) {
           *readwrite=1;
-	  size=IFROM_SIZE;
-	}
+      size=IFROM_SIZE;
+    }
     break;
 
 
@@ -15228,10 +15228,10 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         p=&memoria_spectrum[address+65536];
       }
 
-	if (MACHINE_IS_CHLOE) {
-	z80_byte *start=chloe_home_ram_mem_table[0];
-	p=&start[address];
-	}
+    if (MACHINE_IS_CHLOE) {
+    z80_byte *start=chloe_home_ram_mem_table[0];
+    p=&start[address];
+    }
 
       //Vigilar condiciones que pueden cumplir mas de una maquina a la vez
 
@@ -15270,11 +15270,11 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
       }
 
       if (MACHINE_IS_INVES) {
-	p=&memoria_spectrum[address];
+    p=&memoria_spectrum[address];
       }
 
       if (MACHINE_IS_SAM) {
-	z80_byte *start=sam_ram_memory[0];
+    z80_byte *start=sam_ram_memory[0];
         p=&start[address];
       }
 
@@ -15300,7 +15300,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
       }
 
       if (MACHINE_IS_INVES) {
-	p=&memoria_spectrum[65536+address];
+    p=&memoria_spectrum[65536+address];
       }
 
     break;
@@ -15337,7 +15337,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     //kartusho
     case 6:
         if (kartusho_enabled.v) {
-	p=&kartusho_memory_pointer[address];
+    p=&kartusho_memory_pointer[address];
       }
     break;
 
@@ -15364,31 +15364,31 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     break;
 
     case 10:
-    	if (MACHINE_IS_Z88) {
-    		p=&memoria_spectrum[address];
-    	}
+        if (MACHINE_IS_Z88) {
+            p=&memoria_spectrum[address];
+        }
     break;
 
     //Betadisk
     case 11:
-	if (betadisk_enabled.v) {
-    		p=&betadisk_memory_pointer[address];
-    	}
+    if (betadisk_enabled.v) {
+            p=&betadisk_memory_pointer[address];
+        }
     break;
 
 
     //Multiface rom
     case 12:
-    	if (multiface_enabled.v) {
-    		p=&multiface_memory_pointer[address];
-    	}
+        if (multiface_enabled.v) {
+            p=&multiface_memory_pointer[address];
+        }
     break;
 
     //Multiface ram
     case 13:
-    	if (multiface_enabled.v) {
-    		p=&multiface_memory_pointer[address+8192];
-    	}
+        if (multiface_enabled.v) {
+            p=&multiface_memory_pointer[address+8192];
+        }
     break;
 
 
@@ -15414,12 +15414,12 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
       }
     break;
 
-	//memory zone by file. 16
-	case MEMORY_ZONE_NUM_FILE_ZONE:
-		if (memory_zone_by_file_size>0) {
-			p=&memory_zone_by_file_pointer[address];
-		}
-	break;
+    //memory zone by file. 16
+    case MEMORY_ZONE_NUM_FILE_ZONE:
+        if (memory_zone_by_file_size>0) {
+            p=&memory_zone_by_file_pointer[address];
+        }
+    break;
 
     //tbblue copper
     case MEMORY_ZONE_NUM_TBBLUE_COPPER:
@@ -15501,7 +15501,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     //ifrom
     case MEMORY_ZONE_IFROM:
         if (ifrom_enabled.v) {
-	p=&ifrom_memory_pointer[address];
+    p=&ifrom_memory_pointer[address];
       }
     break;
 
@@ -15581,7 +15581,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     //hilow ram
     case MEMORY_ZONE_HILOW_RAM:
         if (hilow_enabled.v) {
-	        //La RAM esta despues de los 8kb de rom
+            //La RAM esta despues de los 8kb de rom
             p=&hilow_memory_pointer[8192+address];
         }
     break;
@@ -15612,7 +15612,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     //hilow barbanegra ram
     case MEMORY_ZONE_HILOW_BARBANEGRA_RAM:
         if (hilow_bbn_enabled.v) {
-	        //La RAM esta despues de los 8kb de rom
+            //La RAM esta despues de los 8kb de rom
             p=&hilow_bbn_memory_pointer[8192+address];
         }
     break;
@@ -15628,7 +15628,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     //transtape ram
     case MEMORY_ZONE_TRANSTAPE_RAM:
         if (transtape_enabled.v) {
-	        //La RAM esta despues de los kb de rom
+            //La RAM esta despues de los kb de rom
             p=&transtape_memory_pointer[TRANSTAPE_ROM_SIZE+address];
         }
     break;
@@ -15877,7 +15877,7 @@ void machine_get_memory_zone_name(int zone, char *name)
   //Zona 0, ram speccy
   switch (zone) {
     case 0:
-		 //123456789012345678901234567890
+         //123456789012345678901234567890
       strcpy(name,"Machine RAM");
 
 
@@ -15885,7 +15885,7 @@ void machine_get_memory_zone_name(int zone, char *name)
 
 
     case 1:
-		 //123456789012345678901234567890
+         //123456789012345678901234567890
       strcpy(name,"Machine ROM");
 
 
@@ -15893,14 +15893,14 @@ void machine_get_memory_zone_name(int zone, char *name)
 
     case 2:
       if (diviface_enabled.v) {
-		   //123456789012345678901234567890
+           //123456789012345678901234567890
         strcpy(name,"Diviface eprom");
       }
     break;
 
     case 3:
       if (diviface_enabled.v) {
-		   //123456789012345678901234567890
+           //123456789012345678901234567890
         strcpy(name,"Diviface ram");
       }
     break;
@@ -15908,14 +15908,14 @@ void machine_get_memory_zone_name(int zone, char *name)
     //zxuno flash
     case 4:
       if (MACHINE_IS_ZXUNO) {
-		   //123456789012345678901234567890
+           //123456789012345678901234567890
         strcpy(name,"ZX-Uno flash");
       }
     break;
 
     case 5:
       if (MACHINE_IS_TSCONF) {
-		   //123456789012345678901234567890
+           //123456789012345678901234567890
         strcpy(name,"TSConf Fmaps");
       }
     break;
@@ -15923,98 +15923,98 @@ void machine_get_memory_zone_name(int zone, char *name)
     //kartusho
     case 6:
         if (kartusho_enabled.v) {
-		           //123456789012345678901234567890
-		strcpy(name,"Kartusho rom");
-	}
+                   //123456789012345678901234567890
+        strcpy(name,"Kartusho rom");
+    }
     break;
 
     //dandanator
     case 7:
         if (dandanator_enabled.v) {
-		           //123456789012345678901234567890
+                   //123456789012345678901234567890
                 strcpy(name,"Dandanator rom");
         }
     break;
 
 
-	//superupgrade ram
+    //superupgrade ram
     case 8:
-	if (superupgrade_enabled.v) {
-		           //123456789012345678901234567890
-		strcpy(name,"Superupgr. ram");
-	}
+    if (superupgrade_enabled.v) {
+                   //123456789012345678901234567890
+        strcpy(name,"Superupgr. ram");
+    }
     break;
 
 
         //superupgrade rom
     case 9:
         if (superupgrade_enabled.v) {
-		           //123456789012345678901234567890
+                   //123456789012345678901234567890
                 strcpy(name,"Superupgr. rom");
         }
     break;
 
 
     case 10:
-    	if (MACHINE_IS_Z88) {
-    		strcpy(name,"Full 4 MB");
-    	}
+        if (MACHINE_IS_Z88) {
+            strcpy(name,"Full 4 MB");
+        }
     break;
 
     //Betadisk
     case 11:
-	if (betadisk_enabled.v) {
-			   //123456789012345678901234567890
-		strcpy(name,"Betadisk rom");
-	}
+    if (betadisk_enabled.v) {
+               //123456789012345678901234567890
+        strcpy(name,"Betadisk rom");
+    }
     break;
 
 
     //Multiface rom
     case 12:
-    	if (multiface_enabled.v) {
-    			   //123456789012345678901234567890
-		strcpy(name,"Multiface rom");
+        if (multiface_enabled.v) {
+                   //123456789012345678901234567890
+        strcpy(name,"Multiface rom");
         }
     break;
 
 
     //Multiface ram
     case 13:
-    	if (multiface_enabled.v) {
-    			   //123456789012345678901234567890
-		strcpy(name,"Multiface ram");
+        if (multiface_enabled.v) {
+                   //123456789012345678901234567890
+        strcpy(name,"Multiface ram");
         }
     break;
 
     case 14:
         if (MACHINE_IS_TBBLUE) {
-          		   //123456789012345678901234567890
-		strcpy(name,"TBBlue patterns");
+                     //123456789012345678901234567890
+        strcpy(name,"TBBlue patterns");
         }
     break;
 
     //tsconf sprites
     case 15:
       if (MACHINE_IS_TSCONF) {
-          		   //123456789012345678901234567890
-		strcpy(name,"TSConf sprites");
+                     //123456789012345678901234567890
+        strcpy(name,"TSConf sprites");
       }
         break;
 
-	//memory zone by file. 16
-	case MEMORY_ZONE_NUM_FILE_ZONE:
-		if (memory_zone_by_file_size>0) {
-          		   //123456789012345678901234567890
-		strcpy(name,"File zone");
-		}
-	break;
+    //memory zone by file. 16
+    case MEMORY_ZONE_NUM_FILE_ZONE:
+        if (memory_zone_by_file_size>0) {
+                     //123456789012345678901234567890
+        strcpy(name,"File zone");
+        }
+    break;
 
     //tbblue copper. 17
     case MEMORY_ZONE_NUM_TBBLUE_COPPER:
       if (MACHINE_IS_TBBLUE) {
-          		   //123456789012345678901234567890
-		strcpy(name,"TBBlue copper");
+                     //123456789012345678901234567890
+        strcpy(name,"TBBlue copper");
       }
     break;
 
@@ -16069,9 +16069,9 @@ void machine_get_memory_zone_name(int zone, char *name)
     //ifrom
     case MEMORY_ZONE_IFROM:
         if (ifrom_enabled.v) {
-		           //123456789012345678901234567890
-		strcpy(name,"iFrom rom");
-	}
+                   //123456789012345678901234567890
+        strcpy(name,"iFrom rom");
+    }
     break;
 
 
@@ -16330,7 +16330,7 @@ int machine_get_next_available_memory_zone(int zone)
 
 void util_delete(char *filename)
 {
-	unlink(filename);
+    unlink(filename);
 }
 
 
@@ -16375,32 +16375,32 @@ z80_long_int util_crc32_calculation(z80_long_int crc, z80_byte *buf, size_t len)
 //Retorna cuantos bits estan a 0 en un byte
 int util_return_ceros_byte(z80_byte valor)
 {
-	int i;
-	int ceros=0;
-	for (i=0;i<8;i++) {
-		if ((valor&1)==0) ceros++;
+    int i;
+    int ceros=0;
+    for (i=0;i<8;i++) {
+        if ((valor&1)==0) ceros++;
 
-		valor=valor>>1;
-	}
+        valor=valor>>1;
+    }
 
-	return ceros;
+    return ceros;
 }
 
 
 void util_byte_to_binary(z80_byte value,char *texto)
 {
-	int i;
+    int i;
 
-	for (i=0;i<8;i++) {
-		if (value&128) *texto='1';
-		else *texto='0';
+    for (i=0;i<8;i++) {
+        if (value&128) *texto='1';
+        else *texto='0';
 
-		texto++;
+        texto++;
 
-		value=value<<1;
-	}
+        value=value<<1;
+    }
 
-	*texto=0; //fin cadena
+    *texto=0; //fin cadena
 }
 
 void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file)
@@ -16449,7 +16449,7 @@ int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
     int leidos=zvfs_fread(in_fatfs,taperead,total_leer,ptr_tapebrowser,&fil);
 
 
-	if (leidos==0) {
+    if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading data");
         return 0;
     }
@@ -16463,9 +16463,9 @@ int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
 void util_copy_file(char *source_file, char *destination_file)
 {
 
-	long long int tamanyo_origen=get_file_size(source_file);
+    long long int tamanyo_origen=get_file_size(source_file);
 
-	FILE *ptr_source_file;
+    FILE *ptr_source_file;
 
     //Soporte para FatFS
     FIL fil_source;        /* File object */
@@ -16508,16 +16508,16 @@ void util_copy_file(char *source_file, char *destination_file)
 
             zvfs_fread(in_fatfs_source,&byte_buffer,1,ptr_source_file,&fil_source);
 
-        	//fread(&byte_buffer,1,1,ptr_source_file);
+            //fread(&byte_buffer,1,1,ptr_source_file);
 
 
             zvfs_fwrite(in_fatfs_destination,&byte_buffer,1,ptr_destination_file,&fil_destination);
 
-        	//fwrite(&byte_buffer,1,1,ptr_destination_file);
+            //fwrite(&byte_buffer,1,1,ptr_destination_file);
             //if ((tamanyo_origen % 1024)==0) printf("bytes restantes por copiar: %ld\n",tamanyo_origen);
 
-        	tamanyo_origen--;
-	}
+            tamanyo_origen--;
+    }
 
     zvfs_fclose(in_fatfs_source,ptr_source_file,&fil_source);
     zvfs_fclose(in_fatfs_destination,ptr_destination_file,&fil_destination);
@@ -16537,50 +16537,50 @@ int si_existe_editionnamegame(char *nombre_final)
 //esté denegada la distribución
 int util_load_editionnamegame(void)
 {
-	char nombre_final[PATH_MAX];
-	if (si_existe_editionnamegame(nombre_final)) {
-		debug_printf(VERBOSE_INFO,"Loading name edition game %s",EMULATOR_GAME_EDITION);
-		strcpy(quickload_file,nombre_final);
-		quickfile=quickload_file;
-		//Forzar autoload
-		z80_bit pre_noautoload;
-		pre_noautoload.v=noautoload.v;
-		noautoload.v=0;
-		quickload(quickload_file);
+    char nombre_final[PATH_MAX];
+    if (si_existe_editionnamegame(nombre_final)) {
+        debug_printf(VERBOSE_INFO,"Loading name edition game %s",EMULATOR_GAME_EDITION);
+        strcpy(quickload_file,nombre_final);
+        quickfile=quickload_file;
+        //Forzar autoload
+        z80_bit pre_noautoload;
+        pre_noautoload.v=noautoload.v;
+        noautoload.v=0;
+        quickload(quickload_file);
 
-		noautoload.v=pre_noautoload.v;
-		return 1;
-	}
-	else return 0;
+        noautoload.v=pre_noautoload.v;
+        return 1;
+    }
+    else return 0;
 }
 
 
 int util_extract_mdv(char *mdvname, char *dest_dir)
 {
-	//echo "./mdvtool /Users/chernandezba/Downloads/psion/ABACUS.MDV export_all /tmp/"
+    //echo "./mdvtool /Users/chernandezba/Downloads/psion/ABACUS.MDV export_all /tmp/"
 
-	//qlay mdv must be file size 174930
-	if (get_file_size(mdvname)!=174930) {
-		debug_printf(VERBOSE_ERR,"I can only open QLAY mdv file format - must be exactly 174930 bytes in size");
-		return 1;
-	}
+    //qlay mdv must be file size 174930
+    if (get_file_size(mdvname)!=174930) {
+        debug_printf(VERBOSE_ERR,"I can only open QLAY mdv file format - must be exactly 174930 bytes in size");
+        return 1;
+    }
 
-	char *argumentos[]={
+    char *argumentos[]={
                 "mdvtool","","export_all",""
         };
 
         argumentos[1]=mdvname;
         argumentos[3]=dest_dir;
 
-	return main_mdvtool(4,argumentos);
+    return main_mdvtool(4,argumentos);
 }
 
 int util_extract_hdf(char *hdfname, char *dest_dir)
 {
 
-	int leidos;
+    int leidos;
 
-	//unsigned char buffer_lectura[1024];
+    //unsigned char buffer_lectura[1024];
         //Asignamos bloque de 64kb de lectura
         z80_byte *buffer_lectura;
 
@@ -16611,8 +16611,8 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
                 return 1;
         }
 
-	FILE *ptr_outputfile;
-	ptr_outputfile=fopen(archivo_destino,"wb");
+    FILE *ptr_outputfile;
+    ptr_outputfile=fopen(archivo_destino,"wb");
 
         if (ptr_outputfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error opening output file %s",archivo_destino);
@@ -16621,47 +16621,47 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
 
         //printf ("Input: %s output: %s\n",hdfname,archivo_destino);
 
-	// Leer offset a datos raw del byte de cabecera:
-	//0x09 DOFS WORD Image data offset This is the absolute offset in the HDF file where the actual hard-disk data dump starts.
-	//In HDF version 1.1 this is 0x216.
+    // Leer offset a datos raw del byte de cabecera:
+    //0x09 DOFS WORD Image data offset This is the absolute offset in the HDF file where the actual hard-disk data dump starts.
+    //In HDF version 1.1 this is 0x216.
 
-	//Leemos 11 bytes de la cabecera
+    //Leemos 11 bytes de la cabecera
         fread(buffer_lectura,1,11,ptr_inputfile);
 
-	int offset_raw=buffer_lectura[9]+256*buffer_lectura[10];
+    int offset_raw=buffer_lectura[9]+256*buffer_lectura[10];
 
-	debug_printf (VERBOSE_DEBUG,"HDF Offset to raw data: %d",offset_raw);
+    debug_printf (VERBOSE_DEBUG,"HDF Offset to raw data: %d",offset_raw);
 
 
-	//Ya hemos leido 11 bytes del principio
-	int saltar_bytes=offset_raw-11;
+    //Ya hemos leido 11 bytes del principio
+    int saltar_bytes=offset_raw-11;
 
-	//Saltar esos bytes
-	fread(buffer_lectura,1,saltar_bytes,ptr_inputfile);
+    //Saltar esos bytes
+    fread(buffer_lectura,1,saltar_bytes,ptr_inputfile);
 
-	//Y vamos leyendo bloques de 1024
-	long long int escritos=0;
+    //Y vamos leyendo bloques de 1024
+    long long int escritos=0;
 
-	do {
-	        leidos=fread(buffer_lectura,1,65536,ptr_inputfile);
-		if (leidos>0) {
-			fwrite(buffer_lectura,1,leidos,ptr_outputfile);
-			escritos +=leidos;
-			debug_printf (VERBOSE_DEBUG,"Writing temporary data %dKB",escritos/1024);
-		}
-	} while (leidos>0);
+    do {
+            leidos=fread(buffer_lectura,1,65536,ptr_inputfile);
+        if (leidos>0) {
+            fwrite(buffer_lectura,1,leidos,ptr_outputfile);
+            escritos +=leidos;
+            debug_printf (VERBOSE_DEBUG,"Writing temporary data %dKB",escritos/1024);
+        }
+    } while (leidos>0);
 
         //Y luego rellenar archivo a siguiente valor valido de archivo .ide
         //Nota: para .mmc ya nos sirve, dado que .mmc necesita que sea multiple de 256 kb
         long long int valid_ide_sizes[]={
-		 8*1024*1024,   //0
-		 16*1024*1024,
-		 32*1024*1024,
-		 64*1024*1024,
-		 128*1024*1024,
-		 256*1024*1024, //5
-		 512*1024*1024,
-		 1024*1024*1024,  //7. 1 GB
+         8*1024*1024,   //0
+         16*1024*1024,
+         32*1024*1024,
+         64*1024*1024,
+         128*1024*1024,
+         256*1024*1024, //5
+         512*1024*1024,
+         1024*1024*1024,  //7. 1 GB
                  2147483648L, //8. 2 GB
         };
 
@@ -16696,13 +16696,13 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
         }
 
 
-	fclose (ptr_inputfile);
+    fclose (ptr_inputfile);
 
         fclose(ptr_outputfile);
 
         free(buffer_lectura);
 
-	return 0;
+    return 0;
 
 
 
@@ -16712,19 +16712,19 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
 //Cambiar en cadena s, caracter orig por dest
 void util_string_replace_char(char *s,char orig,char dest)
 {
-	while (*s) {
-		if ( (*s)==orig) *s=dest;
-		s++;
-	}
+    while (*s) {
+        if ( (*s)==orig) *s=dest;
+        s++;
+    }
 }
 
 
 //Agrega una cadena de texto a otra con salto de linea al final. Retorna longitud texto agregado contando salto de linea
 int util_add_string_newline(char *destination,char *text_to_add)
 {
-	int longitud_texto=strlen(text_to_add)+1; //Agregar salto de linea
-	sprintf (destination,"%s\n",text_to_add);
- 	return longitud_texto;
+    int longitud_texto=strlen(text_to_add)+1; //Agregar salto de linea
+    sprintf (destination,"%s\n",text_to_add);
+     return longitud_texto;
 
 }
 
@@ -16800,23 +16800,23 @@ void util_quitar_ceros_decimales(char *numero)
 //Completa con espacios hasta longitud
 void util_binary_to_hex(z80_byte *origen, char *destino, int longitud_max, int longitud)
 {
-	int i;
+    int i;
 
-	for (i=0;i<longitud_max && i<longitud;i++) {
-		sprintf(destino,"%02X",*origen);
+    for (i=0;i<longitud_max && i<longitud;i++) {
+        sprintf(destino,"%02X",*origen);
 
-		origen++;
-		destino+=2;
-	}
+        origen++;
+        destino+=2;
+    }
 
-	for (;i<longitud_max;i++) {
-		*destino=' ';
-		destino++;
-		*destino=' ';
-		destino++;
-	}
+    for (;i<longitud_max;i++) {
+        *destino=' ';
+        destino++;
+        *destino=' ';
+        destino++;
+    }
 
-	*destino=0;
+    *destino=0;
 }
 
 
@@ -16825,19 +16825,19 @@ void util_binary_to_hex(z80_byte *origen, char *destino, int longitud_max, int l
 //Completa con espacios
 void util_binary_to_ascii(z80_byte *origen, char *destino, int longitud_max, int longitud)
 {
-	int i;
-	z80_byte caracter;
+    int i;
+    z80_byte caracter;
 
-	for (i=0;i<longitud_max && i<longitud;i++) {
-		caracter=*origen;
-		if (caracter<32 || caracter>126) caracter='.';
-		*destino=caracter;
+    for (i=0;i<longitud_max && i<longitud;i++) {
+        caracter=*origen;
+        if (caracter<32 || caracter>126) caracter='.';
+        *destino=caracter;
 
-		origen++;
-		destino++;
-	}
+        origen++;
+        destino++;
+    }
 
-	for (;i<longitud_max;i++) {
+    for (;i<longitud_max;i++) {
                 *destino=' ';
         }
 
@@ -16899,7 +16899,7 @@ void util_ascii_to_binary(int valor_origen,char *destino,int longitud_max)
 
 /*void util_file_save(char *filename,z80_byte *puntero, long int tamanyo);
 {
-	           FILE *ptr_filesave;
+               FILE *ptr_filesave;
                                   ptr_filesave=fopen(filename,"wb");
                                   if (!ptr_filesave)
                                 {
@@ -16945,36 +16945,36 @@ Retorna: numero de repeticiones (minimo 1) y el byte que es (modifica contenido 
 
 int util_get_byte_repetitions(z80_byte *memoria,int longitud,z80_byte *byte_repetido)
 {
-	int repeticiones=1;
+    int repeticiones=1;
 
-	//Primer byte
-	z80_byte byte_anterior;
-	byte_anterior=*memoria;
-	//printf ("byte anterior: %d\n",byte_anterior);
+    //Primer byte
+    z80_byte byte_anterior;
+    byte_anterior=*memoria;
+    //printf ("byte anterior: %d\n",byte_anterior);
 
-	memoria++;
-	longitud--;
+    memoria++;
+    longitud--;
 
-	while (longitud>0 && (*memoria)==byte_anterior) {
-		//printf ("longitud: %d memoria: %p\n",longitud,memoria);
-		repeticiones++;
-		memoria++;
-		longitud--;
-	}
+    while (longitud>0 && (*memoria)==byte_anterior) {
+        //printf ("longitud: %d memoria: %p\n",longitud,memoria);
+        repeticiones++;
+        memoria++;
+        longitud--;
+    }
 
-	*byte_repetido=byte_anterior;
-	return repeticiones;
+    *byte_repetido=byte_anterior;
+    return repeticiones;
 
 }
 
 void util_write_repeated_byte(z80_byte *memoria,z80_byte byte_a_repetir,int longitud)
 {
-	while (longitud>0) {
-		*memoria=byte_a_repetir;
+    while (longitud>0) {
+        *memoria=byte_a_repetir;
 
-		longitud--;
-		memoria++;
-	}
+        longitud--;
+        memoria++;
+    }
 }
 
 
@@ -17019,83 +17019,83 @@ consideramos lo peor que sea el doble
 int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longitud,z80_byte magic_byte)
 {
 
-	int longitud_destino=0;
+    int longitud_destino=0;
 
-	int antes_es_magic_aislado=0; //Si el de antes era un byte magic (normalmente DD) asilado
+    int antes_es_magic_aislado=0; //Si el de antes era un byte magic (normalmente DD) asilado
 
-	while (longitud) {
-		z80_byte byte_repetido;
-		int repeticiones=util_get_byte_repetitions(origen,longitud,&byte_repetido);
-		//printf ("Remaining size: %d Byte: %02X Repetitions: %d\n",longitud,byte_repetido,repeticiones);
-		//if (longitud<0) exit(1);
+    while (longitud) {
+        z80_byte byte_repetido;
+        int repeticiones=util_get_byte_repetitions(origen,longitud,&byte_repetido);
+        //printf ("Remaining size: %d Byte: %02X Repetitions: %d\n",longitud,byte_repetido,repeticiones);
+        //if (longitud<0) exit(1);
 
-		origen +=repeticiones;
-		longitud -=repeticiones;
+        origen +=repeticiones;
+        longitud -=repeticiones;
 
-		//Hay repeticiones
-		if (repeticiones>=5
-			||
-		(byte_repetido==magic_byte && repeticiones>1)
-		) {
-			//Escribir magic byte dos veces, byte a repetir, y numero repeticiones
-			//Si repeticiones > 256, trocear
-			while (repeticiones>0) {
-				if (antes_es_magic_aislado) {
+        //Hay repeticiones
+        if (repeticiones>=5
+            ||
+        (byte_repetido==magic_byte && repeticiones>1)
+        ) {
+            //Escribir magic byte dos veces, byte a repetir, y numero repeticiones
+            //Si repeticiones > 256, trocear
+            while (repeticiones>0) {
+                if (antes_es_magic_aislado) {
                     antes_es_magic_aislado=0;
 
                     //Antes hay un DD. Convertirlo en DD DD DD 01
-					destino[0]=magic_byte;
-					destino[1]=magic_byte;
-					destino[2]=1;
+                    destino[0]=magic_byte;
+                    destino[1]=magic_byte;
+                    destino[2]=1;
 
-					destino +=3;
-					longitud_destino +=3;
+                    destino +=3;
+                    longitud_destino +=3;
 
                     //printf("antes_es_magic_aislado\n");
 
                     //printf("--Repeticion byte_a_repetir %d longitud_repeticion %d\n",magic_byte,1);
-				}
+                }
 
-				destino[0]=magic_byte;
-				destino[1]=magic_byte;
-				destino[2]=byte_repetido;
-				z80_byte brep;
-				if (repeticiones>255) brep=0;
-				else brep=repeticiones;
+                destino[0]=magic_byte;
+                destino[1]=magic_byte;
+                destino[2]=byte_repetido;
+                z80_byte brep;
+                if (repeticiones>255) brep=0;
+                else brep=repeticiones;
 
-				destino[3]=brep;
+                destino[3]=brep;
 
-				//printf ("%d %02X %02X %02X %02X\n",longitud,magic_byte,magic_byte,byte_repetido,brep);
+                //printf ("%d %02X %02X %02X %02X\n",longitud,magic_byte,magic_byte,byte_repetido,brep);
 
                 //printf("--Repeticion byte_a_repetir %d longitud_repeticion %d\n",byte_repetido,(brep==0 ? 256 : brep));
 
-				destino +=4;
-				longitud_destino +=4;
+                destino +=4;
+                longitud_destino +=4;
 
-				repeticiones -=256;
-			}
+                repeticiones -=256;
+            }
 
-			//antes_es_magic_aislado=0;
-		}
+            //antes_es_magic_aislado=0;
+        }
 
-		else {
-			//No hay repeticiones
-			if (repeticiones==1 && byte_repetido==magic_byte) antes_es_magic_aislado=1;
-			else antes_es_magic_aislado=0;
-
-
-			util_write_repeated_byte(destino,byte_repetido,repeticiones);
-			//printf ("%d %02X(%d)\n",longitud,byte_repetido,repeticiones);
-
-			destino +=repeticiones;
-			longitud_destino +=repeticiones;
+        else {
+            //No hay repeticiones
+            if (repeticiones==1 && byte_repetido==magic_byte) antes_es_magic_aislado=1;
+            else antes_es_magic_aislado=0;
 
 
+            util_write_repeated_byte(destino,byte_repetido,repeticiones);
+            //printf ("%d %02X(%d)\n",longitud,byte_repetido,repeticiones);
 
-		}
-	}
+            destino +=repeticiones;
+            longitud_destino +=repeticiones;
 
-	return longitud_destino;
+
+
+        }
+    }
+
+    return longitud_destino;
 
 }
 
@@ -17115,18 +17115,18 @@ int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,int long
 
         while (longitud) {
             //printf("util_uncompress_data_repetitions. longitud %d longitud_destino %d\n",longitud,longitud_destino);
-		//Si primer y segundo byte son el byte magic
-		int repeticion=0;
-		if (longitud>=4) {
-			if (origen[0]==magic_byte && origen[1]==magic_byte) {
-				repeticion=1;
+        //Si primer y segundo byte son el byte magic
+        int repeticion=0;
+        if (longitud>=4) {
+            if (origen[0]==magic_byte && origen[1]==magic_byte) {
+                repeticion=1;
 
-				z80_byte byte_a_repetir=origen[2];
+                z80_byte byte_a_repetir=origen[2];
 
-				int longitud_repeticion;
-				longitud_repeticion=origen[3];
+                int longitud_repeticion;
+                longitud_repeticion=origen[3];
 
-				if (longitud_repeticion==0) longitud_repeticion=256;
+                if (longitud_repeticion==0) longitud_repeticion=256;
 
                 //printf("Read %02X\n",origen[0]);
                 //printf("Read %02X\n",origen[1]);
@@ -17135,31 +17135,31 @@ int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,int long
 
                 //printf("--Repeticion byte_a_repetir %d longitud_repeticion %d\n",byte_a_repetir,longitud_repeticion);
 
-				util_write_repeated_byte(destino,byte_a_repetir,longitud_repeticion);
+                util_write_repeated_byte(destino,byte_a_repetir,longitud_repeticion);
 
-				origen+=4;
-				longitud-=4;
+                origen+=4;
+                longitud-=4;
 
-				destino+=longitud_repeticion;
-				longitud_destino+=longitud_repeticion;
-			}
-		}
+                destino+=longitud_repeticion;
+                longitud_destino+=longitud_repeticion;
+            }
+        }
 
-		if (!repeticion) {
+        if (!repeticion) {
             //printf("Read %02X\n",*origen);
             //printf("Antes de escribir en destino %p (memoria_spectrum: %p)\n",destino,memoria_spectrum);
-			*destino=*origen;
+            *destino=*origen;
             //printf("Despues de escribir en destino\n");
 
-			origen++;
-			longitud--;
+            origen++;
+            longitud--;
 
-			destino++;
-			longitud_destino++;
-		}
-	}
+            destino++;
+            longitud_destino++;
+        }
+    }
 
-	return longitud_destino;
+    return longitud_destino;
 }
 
 
@@ -17199,18 +17199,18 @@ void util_spectrumscreen_get_xy(z80_int dir,int *xdest,int *ydest)
 //Convierte una pantalla de tipo spectrum (con sus particulares direcciones) a un sprite
 void util_convert_scr_sprite(z80_byte *origen,z80_byte *destino)
 {
-	int x,y;
-	z80_byte *linea_origen;
+    int x,y;
+    z80_byte *linea_origen;
 
-	for (y=0;y<192;y++) {
-		int offset_origen=screen_addr_table[y*32] & 8191;
-		linea_origen=&origen[offset_origen];
-		for (x=0;x<32;x++) {
-			*destino=*linea_origen;
-			destino++;
-			linea_origen++;
-		}
-	}
+    for (y=0;y<192;y++) {
+        int offset_origen=screen_addr_table[y*32] & 8191;
+        linea_origen=&origen[offset_origen];
+        for (x=0;x<32;x++) {
+            *destino=*linea_origen;
+            destino++;
+            linea_origen++;
+        }
+    }
 }
 
 //Dado una zona de memoria con formato scr, devuelve el color del pixel en posicion x,y
@@ -17303,9 +17303,9 @@ int util_get_absolute(int valor)
 //Devolver signo de valor
 int util_get_sign(int valor)
 {
-	if (valor<0) return -1;
+    if (valor<0) return -1;
 
-	return +1;
+    return +1;
 }
 
 
@@ -17319,18 +17319,18 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 {
 
 
-	//tapefile
-	if (util_compare_file_extension(filename,"tap")!=0) {
-		debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
-		return 1;
-	}
+    //tapefile
+    if (util_compare_file_extension(filename,"tap")!=0) {
+        debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
+        return 1;
+    }
 
     int es_pzx=0;
 
-	//Leemos cinta en memoria
-	int total_file_size=get_file_size(filename);
+    //Leemos cinta en memoria
+    int total_file_size=get_file_size(filename);
 
-	z80_byte *taperead;
+    z80_byte *taperead;
 
 
 
@@ -17352,16 +17352,16 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
         ptr_tapebrowser=fopen(filename,"rb");
 
         if (!ptr_tapebrowser) {
-		debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting tap",filename);
-		return 1;
-	}
+        debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting tap",filename);
+        return 1;
+    }
     */
 
-	taperead=malloc(total_file_size);
-	if (taperead==NULL) cpu_panic("Error allocating memory for tape browser");
+    taperead=malloc(total_file_size);
+    if (taperead==NULL) cpu_panic("Error allocating memory for tape browser");
 
-	//z80_byte *puntero_lectura;
-	//puntero_lectura=taperead;
+    //z80_byte *puntero_lectura;
+    //puntero_lectura=taperead;
     int nuevo_puntero_lectura=0;
 
         //Abrir fichero tzxfile si conviene convertir
@@ -17411,39 +17411,39 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
          leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
 
 
-	if (leidos==0) {
+    if (leidos==0) {
                 debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
+        free(taperead);
                 return 1;
         }
 
         zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
         //fclose(ptr_tapebrowser);
 
-	char buffer_texto[32*4]; //4 lineas mas que suficiente
+    char buffer_texto[32*4]; //4 lineas mas que suficiente
 
-	int longitud_bloque;
+    int longitud_bloque;
 
 
 
-	int filenumber=0;
+    int filenumber=0;
 
-	int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
-	z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
-	z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
+    int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
+    z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
+    z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
 
     int remaining_file_size=total_file_size;
 
     int archivo_tap_tiene_scr=0;
     char primer_bloque_basic[PATH_MAX]="";
 
-	while(remaining_file_size>0) {
-		//z80_byte *copia_puntero=puntero_lectura;
+    while(remaining_file_size>0) {
+        //z80_byte *copia_puntero=puntero_lectura;
         int nuevo_copia_puntero=nuevo_puntero_lectura;
         //Buffer temporal para evitar que se salga de sitio
         z80_byte buffer_temp[36]; //36 maximo en una cabecera tipo sped
         util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,nuevo_puntero_lectura,36);
-		longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,1);
+        longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,1);
                 //printf("longitud bloque: %d\n",longitud_bloque);
                 //printf("nombre: %s\n",buffer_texto);
 
@@ -17453,16 +17453,16 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                         if (buffer_texto[i]=='/') buffer_texto[i]=' ';
                 }
 
-		remaining_file_size-=longitud_bloque;
+        remaining_file_size-=longitud_bloque;
 
-		nuevo_puntero_lectura +=longitud_bloque;
-		//debug_printf (VERBOSE_DEBUG,"Tape browser. Block: %s",buffer_texto);
+        nuevo_puntero_lectura +=longitud_bloque;
+        //debug_printf (VERBOSE_DEBUG,"Tape browser. Block: %s",buffer_texto);
 
 
      //printf ("nombre: %s c1: %d\n",buffer_nombre,buffer_nombre[0]);
 
-		char buffer_temp_file[PATH_MAX];
-		int longitud_final=longitud_bloque-2-2; //Saltar los dos de cabecera, el de flag y el crc
+        char buffer_temp_file[PATH_MAX];
+        int longitud_final=longitud_bloque-2-2; //Saltar los dos de cabecera, el de flag y el crc
 
                 if (longitud_final>=0) {
                         z80_byte tipo_bloque=255;
@@ -17682,7 +17682,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                         previo_tipo_bloque=tipo_bloque;
 
                 }
-	}
+    }
 
     if (!archivo_tap_tiene_scr && generate_preview_scr) {
         //No tiene pantalla scr
@@ -17702,14 +17702,14 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
     }
 
 
-	free(taperead);
+    free(taperead);
 
         if (tzxfile!=NULL) {
             zvfs_fclose(in_fatfs_tzxfile,ptr_tzxfile,&fil_tzxfile);
             //fclose(ptr_tzxfile);
         }
 
-	return 0;
+    return 0;
 
 }
 
@@ -17719,15 +17719,15 @@ int util_extract_mdr(char *filename,char *tempdir)
 {
 
 
-	if (util_compare_file_extension(filename,"mdr")!=0) {
-		debug_printf(VERBOSE_ERR,"MDR expander not supported for this microdrive type");
-		return 1;
-	}
+    if (util_compare_file_extension(filename,"mdr")!=0) {
+        debug_printf(VERBOSE_ERR,"MDR expander not supported for this microdrive type");
+        return 1;
+    }
 
-	//Leemos cinta en memoria
-	int total_file_size=get_file_size(filename);
+    //Leemos cinta en memoria
+    int total_file_size=get_file_size(filename);
 
-	z80_byte *taperead;
+    z80_byte *taperead;
 
 
 
@@ -17746,7 +17746,7 @@ int util_extract_mdr(char *filename,char *tempdir)
     }
 
 
-	taperead=util_malloc(total_file_size,"Can not allocate memory for expand mdr");
+    taperead=util_malloc(total_file_size,"Can not allocate memory for expand mdr");
 
 
     int leidos;
@@ -17755,9 +17755,9 @@ int util_extract_mdr(char *filename,char *tempdir)
     leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
 
 
-	if (leidos==0) {
+    if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
+        free(taperead);
         return 1;
     }
 
@@ -17834,9 +17834,9 @@ int util_extract_mdr(char *filename,char *tempdir)
 
     free(catalogo);
 
-	free(taperead);
+    free(taperead);
 
-	return 0;
+    return 0;
 
 }
 
@@ -17865,15 +17865,15 @@ int util_extract_rmd(char *filename,char *tempdir)
 int util_extract_ddh(char *filename,char *tempdir)
 {
 
-	if (util_compare_file_extension(filename,"ddh")!=0) {
-		debug_printf(VERBOSE_ERR,"DDH expander not supported for this image type");
-		return 1;
-	}
+    if (util_compare_file_extension(filename,"ddh")!=0) {
+        debug_printf(VERBOSE_ERR,"DDH expander not supported for this image type");
+        return 1;
+    }
 
-	//Leemos cinta en memoria
-	int total_file_size=HILOW_DEVICE_SIZE;
+    //Leemos cinta en memoria
+    int total_file_size=HILOW_DEVICE_SIZE;
 
-	z80_byte *taperead;
+    z80_byte *taperead;
 
 
 
@@ -17892,7 +17892,7 @@ int util_extract_ddh(char *filename,char *tempdir)
     }
 
 
-	taperead=util_malloc(total_file_size,"Can not allocate memory for expand ddh");
+    taperead=util_malloc(total_file_size,"Can not allocate memory for expand ddh");
 
 
     int leidos;
@@ -17901,18 +17901,18 @@ int util_extract_ddh(char *filename,char *tempdir)
     leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
 
 
-	if (leidos==0) {
+    if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
+        free(taperead);
         return 1;
     }
 
     zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
 
 
-	char buffer_texto[32*4]; //4 lineas mas que suficiente
+    char buffer_texto[32*4]; //4 lineas mas que suficiente
 
-	//int longitud_bloque;
+    //int longitud_bloque;
 
 
     int id_archivo;
@@ -17973,9 +17973,9 @@ int util_extract_ddh(char *filename,char *tempdir)
     }
 
 
-	free(taperead);
+    free(taperead);
 
-	return 0;
+    return 0;
 
 }
 
@@ -17987,20 +17987,20 @@ int util_extract_ddh(char *filename,char *tempdir)
 int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int generate_preview_scr)
 {
 
-	//tapefile
-	if (
+    //tapefile
+    if (
         util_compare_file_extension(filename,"tzx")!=0 &&
         util_compare_file_extension(filename,"cdt")!=0
 
     ) {
-		debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
-		return 1;
-	}
+        debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
+        return 1;
+    }
 
-	//Leemos cinta en memoria
-	int total_mem=get_file_size(filename);
+    //Leemos cinta en memoria
+    int total_mem=get_file_size(filename);
 
-	z80_byte *taperead;
+    z80_byte *taperead;
 
 
 
@@ -18023,16 +18023,16 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
         ptr_tapebrowser=fopen(filename,"rb");
 
         if (!ptr_tapebrowser) {
-		debug_printf(VERBOSE_ERR,"Unable to open tape for extracting tzx");
-		return 1;
-	}
+        debug_printf(VERBOSE_ERR,"Unable to open tape for extracting tzx");
+        return 1;
+    }
     */
 
-	taperead=malloc(total_mem);
-	if (taperead==NULL) cpu_panic("Error allocating memory for tape browser/convert");
+    taperead=malloc(total_mem);
+    if (taperead==NULL) cpu_panic("Error allocating memory for tape browser/convert");
 
-	z80_byte *puntero_lectura;
-	puntero_lectura=taperead;
+    z80_byte *puntero_lectura;
+    puntero_lectura=taperead;
 
     //Abrir fichero tapfile si conviene convertir
     FILE *ptr_tapfile;
@@ -18072,7 +18072,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
 
     //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
-	if (leidos==0) {
+    if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading tape");
         free(taperead);
         return 1;
@@ -18081,36 +18081,36 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
     zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
     //fclose(ptr_tapebrowser);
 
-	char buffer_texto[32*4]; //4 lineas mas que suficiente
+    char buffer_texto[32*4]; //4 lineas mas que suficiente
 
-	int longitud_bloque;
+    int longitud_bloque;
 
 
 
-	int filenumber=0;
+    int filenumber=0;
 
-	int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
-	z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
-	z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
+    int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
+    z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
+    z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
 
-	puntero_lectura +=10; //Saltar cabecera (version tzx etc)
+    puntero_lectura +=10; //Saltar cabecera (version tzx etc)
 
-	int salir=0;
+    int salir=0;
 
     z80_byte *copia_puntero;
 
     int archivo_tzx_tiene_scr=0;
     char primer_bloque_basic[PATH_MAX]="";
 
-	while(total_mem>0 && !salir) {
+    while(total_mem>0 && !salir) {
 
-		z80_byte tzx_id=*puntero_lectura;
+        z80_byte tzx_id=*puntero_lectura;
 
-		puntero_lectura++;
+        puntero_lectura++;
 
-		switch (tzx_id) {
+        switch (tzx_id) {
 
-		    case 0x10:
+            case 0x10:
             case 0x11:
 
             //ID 10 - Standard Speed Data Block
@@ -18273,10 +18273,10 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
                 previo_longitud_segun_cabecera=longitud_segun_cabecera;
                 previo_tipo_bloque=tipo_bloque;
 
-		    break;
+            break;
 
 
-		    case 0x20:
+            case 0x20:
 
 
                 //sprintf(buffer_texto,"ID 20 - Pause");
@@ -18363,7 +18363,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
             break;
 
         }
-	}
+    }
 
 
     if (!archivo_tzx_tiene_scr && generate_preview_scr) {
@@ -18384,14 +18384,14 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
     }
 
 
-	free(taperead);
+    free(taperead);
 
     if (tapfile!=NULL) {
         zvfs_fclose(in_fatfs_tapfile,ptr_tapfile,&fil_tapfile);
         //fclose(ptr_tapfile);
     }
 
-	return 0;
+    return 0;
 
 }
 
@@ -18405,16 +18405,16 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int genera
 {
 
 
-	//tapefile
-	if (util_compare_file_extension(filename,"pzx")!=0) {
-		debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
-		return 1;
-	}
+    //tapefile
+    if (util_compare_file_extension(filename,"pzx")!=0) {
+        debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
+        return 1;
+    }
 
-	//Leemos cinta en memoria
-	int total_file_size=get_file_size(filename);
+    //Leemos cinta en memoria
+    int total_file_size=get_file_size(filename);
 
-	z80_byte *taperead;
+    z80_byte *taperead;
 
 
 
@@ -18432,12 +18432,12 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int genera
 
 
 
-	taperead=malloc(total_file_size);
-	if (taperead==NULL) cpu_panic("Error allocating memory for tape browser/convert");
+    taperead=malloc(total_file_size);
+    if (taperead==NULL) cpu_panic("Error allocating memory for tape browser/convert");
 
-	//z80_byte *puntero_lectura;
+    //z80_byte *puntero_lectura;
 
-	//puntero_lectura=taperead;
+    //puntero_lectura=taperead;
     int puntero_lectura=0;
 
     //Abrir fichero tapfile si conviene convertir
@@ -18465,30 +18465,30 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int genera
     leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
     //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
-	if (leidos==0) {
+    if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
+        free(taperead);
         return 1;
     }
 
     zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
     //fclose(ptr_tapebrowser);
 
-	char buffer_texto[32*4]; //4 lineas mas que suficiente
+    char buffer_texto[32*4]; //4 lineas mas que suficiente
 
-	int longitud_bloque;
-
-
-
-	int filenumber=0;
-
-	int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
-	z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
-	z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
+    int longitud_bloque;
 
 
 
-	int salir=0;
+    int filenumber=0;
+
+    int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
+    z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
+    z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
+
+
+
+    int salir=0;
 
     //z80_byte *copia_puntero;
     int copia_puntero;
@@ -18498,7 +18498,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int genera
     int archivo_pzx_tiene_scr=0;
     char primer_bloque_basic[PATH_MAX]="";
 
-	while(remaining_file_size>0 && !salir) {
+    while(remaining_file_size>0 && !salir) {
 
         //Comprobaciones para pzx corruptos
         //total_file_size,remaining_file_size,puntero_lectura)
@@ -18824,7 +18824,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int genera
         //fclose(ptr_tapfile);
     }
 
-	return 0;
+    return 0;
 
 }
 
@@ -19084,16 +19084,16 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
             retorno=util_extract_dsk(filename,tmpdir);
     }
 
-	else if (!util_compare_file_extension(filename,"rzx")) {
+    else if (!util_compare_file_extension(filename,"rzx")) {
         char z80_destination[PATH_MAX]="";
         retorno=util_extract_rzx(filename,tmpdir,z80_destination,NULL);
 
         if (z80_destination[0]) {
-		    util_convert_z80_to_scr(z80_destination,archivo_destino);
+            util_convert_z80_to_scr(z80_destination,archivo_destino);
             //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
             return 0;
         }
-	}
+    }
 
     //Tipos de archivos en que es conversion directa
     else if (!util_compare_file_extension(filename,"zsf")) {
@@ -19102,33 +19102,33 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
         return 0;
     }
 
-	//Si es sna
-	else if (!util_compare_file_extension(filename,"sna")) {
+    //Si es sna
+    else if (!util_compare_file_extension(filename,"sna")) {
         util_convert_sna_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
         return 0;
-	}
+    }
 
-	//Si es sp
-	else if (!util_compare_file_extension(filename,"sp")) {
+    //Si es sp
+    else if (!util_compare_file_extension(filename,"sp")) {
         util_convert_sp_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
         return 0;
-	}
+    }
 
-	//Si es z80
-	else if (!util_compare_file_extension(filename,"z80")) {
-		util_convert_z80_to_scr(filename,archivo_destino);
+    //Si es z80
+    else if (!util_compare_file_extension(filename,"z80")) {
+        util_convert_z80_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
         return 0;
-	}
+    }
 
-	//Si es P/P81
-	else if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"81") || !util_compare_file_extension(filename,"p81")) {
-		util_convert_p_to_scr(filename,archivo_destino,NULL);
+    //Si es P/P81
+    else if (!util_compare_file_extension(filename,"p") || !util_compare_file_extension(filename,"81") || !util_compare_file_extension(filename,"p81")) {
+        util_convert_p_to_scr(filename,archivo_destino,NULL);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
         return 0;
-	}
+    }
 
 
     else {
@@ -19814,14 +19814,14 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
                                 /*for (;x<32;x++) {
                                         printf (" ");
                                         util_convert_p_to_scr_putchar(' ' ,x,y,buffer_pantalla);
-					//puntero_printchar_caracter(' ');
+                    //puntero_printchar_caracter(' ');
                                 }*/
                                 y++;
 
 
 
                                 //printf ("\n");
-				//puntero_printchar_caracter('\n');
+                //puntero_printchar_caracter('\n');
 
 
                                 x=0;
@@ -19846,7 +19846,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
 
                                 if (buffer_lectura[video_pointer]!=118) {
                                         //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
-								}
+                                }
                                 //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
                                 video_pointer++;
                                 x=0;
@@ -19854,7 +19854,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
 
 
                                 //printf ("\n");
-				//puntero_printchar_caracter('\n');
+                //puntero_printchar_caracter('\n');
 
                         }
 
@@ -19888,7 +19888,7 @@ z80_byte util_convert_memory_to_txt_basic_listing_peek(z80_int dir)
 
     if (!util_convert_memory_to_txt_basic_listing_last_size) return 0;
 
-	else return util_convert_memory_to_txt_basic_listing_last_memory[dir % util_convert_memory_to_txt_basic_listing_last_size]; //con % para no salirnos de la memoria
+    else return util_convert_memory_to_txt_basic_listing_last_memory[dir % util_convert_memory_to_txt_basic_listing_last_size]; //con % para no salirnos de la memoria
 }
 
 //Convertir de programa de memoria (ZX80, ZX81, Spectrum) a Texto listado basic
@@ -19922,8 +19922,8 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
     int dir_inicio_linea=0;
 
 
-	//Si es basic zx81
-	if (tipo==2) {
+    //Si es basic zx81
+    if (tipo==2) {
 
         //ZX81
         dir_inicio_linea=116; //16509-0x4009
@@ -19937,9 +19937,9 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
         inicio_tokens=192;
 
 
-	}
+    }
 
-	else if (tipo==1) {
+    else if (tipo==1) {
 
 
         //ZX80
@@ -19955,36 +19955,36 @@ char *util_convert_memory_to_txt_basic_listing(z80_byte *memoria,int tamanyo,int
         inicio_tokens=213;
 
 
-	}
+    }
 
-	//Si extension z88 o si firma de final de archivo parece ser .z88
+    //Si extension z88 o si firma de final de archivo parece ser .z88
     //TODO
-	else if (tipo==3) {
-		/*dir_inicio_linea=0;
-		debug_view_z88_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,menu_file_bas_browser_show_peek);
+    else if (tipo==3) {
+        /*dir_inicio_linea=0;
+        debug_view_z88_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,menu_file_bas_browser_show_peek);
 
-  		menu_generic_message_format("View Z88 Basic","%s",results_buffer);
-		free(memoria);
-	//void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,
-	//z80_byte (*lee_byte_function)(z80_int dir) )
-		//Este finaliza aqui
+          menu_generic_message_format("View Z88 Basic","%s",results_buffer);
+        free(memoria);
+    //void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,
+    //z80_byte (*lee_byte_function)(z80_int dir) )
+        //Este finaliza aqui
         free(results_buffer);*/
-		return NULL;
-	}
+        return NULL;
+    }
 
     //Tipo Spectrum
-	else {
+    else {
 
-		//basic spectrum
+        //basic spectrum
         dir_tokens=spectrum_rom_tokens;
 
         inicio_tokens=163;
-	}
+    }
 
     if (datos_directos) dir_inicio_linea=0;
 
 
-	debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,inicio_tokens,
+    debug_view_basic_from_memory(results_buffer,dir_inicio_linea,tamanyo,dir_tokens,inicio_tokens,
         util_convert_memory_to_txt_basic_listing_peek,
         tipo,0,0,0,MAX_TEXTO_GENERIC_MESSAGE,0);
 
@@ -20353,14 +20353,14 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 {
     //snapshot z80 a SCR
 
-	z80_byte z80_header[Z80_MAIN_HEADER_SIZE];
+    z80_byte z80_header[Z80_MAIN_HEADER_SIZE];
 
-	//Cabecera adicional
+    //Cabecera adicional
 
-	z80_byte z80_header_adicional[Z80_AUX_HEADER_SIZE];
+    z80_byte z80_header_adicional[Z80_AUX_HEADER_SIZE];
 
-	//Cabecera de cada bloque de datos en version 2 o 3
-	z80_byte z80_header_bloque[3];
+    //Cabecera de cada bloque de datos en version 2 o 3
+    z80_byte z80_header_bloque[3];
 
     z80_byte *buffer_lectura;
     buffer_lectura=malloc(1024*1024); //1 MB, mas que suficiente
@@ -20532,17 +20532,17 @@ int util_extract_p(char *filename,char *tempdir)
 {
 
 
-	//tapefile
-	if (util_compare_file_extension(filename,"p")!=0 && util_compare_file_extension(filename,"81")!=0 && util_compare_file_extension(filename,"p81")!=0) {
-		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
-		return 1;
-	}
+    //tapefile
+    if (util_compare_file_extension(filename,"p")!=0 && util_compare_file_extension(filename,"81")!=0 && util_compare_file_extension(filename,"p81")!=0) {
+        debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
+        return 1;
+    }
 
 
-	//Leemos archivo en memoria
-	int total_mem=get_file_size(filename);
+    //Leemos archivo en memoria
+    int total_mem=get_file_size(filename);
 
-	z80_byte *taperead;
+    z80_byte *taperead;
 
 
 
@@ -20566,9 +20566,9 @@ int util_extract_p(char *filename,char *tempdir)
         ptr_tapebrowser=fopen(filename,"rb");
 
         if (!ptr_tapebrowser) {
-		debug_printf(VERBOSE_ERR,"Unable to open file");
-		return 1;
-	}
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        return 1;
+    }
         */
 
     //nombre_programa_final sera prefijo_programa + '-' + nombre_programa
@@ -20601,8 +20601,8 @@ int util_extract_p(char *filename,char *tempdir)
     sprintf(nombre_programa_final,"%s-%s",prefijo_programa,nombre_programa);
 
 
-	taperead=malloc(total_mem);
-	if (taperead==NULL) cpu_panic("Error allocating memory for expander");
+    taperead=malloc(total_mem);
+    if (taperead==NULL) cpu_panic("Error allocating memory for expander");
 
 
         int leidos;
@@ -20610,9 +20610,9 @@ int util_extract_p(char *filename,char *tempdir)
         leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
         //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
-	if (leidos==0) {
+    if (leidos==0) {
                 debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
+        free(taperead);
                 return 1;
         }
 
@@ -20634,7 +20634,7 @@ int util_extract_p(char *filename,char *tempdir)
 
         free(taperead);
 
-	return 0;
+    return 0;
 
 }
 
@@ -20644,17 +20644,17 @@ int util_extract_o(char *filename,char *tempdir)
 {
 
 
-	//tapefile
-	if (util_compare_file_extension(filename,"o")!=0) {
-		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
-		return 1;
-	}
+    //tapefile
+    if (util_compare_file_extension(filename,"o")!=0) {
+        debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
+        return 1;
+    }
 
 
-	//Leemos archivo en memoria
-	int total_mem=get_file_size(filename);
+    //Leemos archivo en memoria
+    int total_mem=get_file_size(filename);
 
-	z80_byte *taperead;
+    z80_byte *taperead;
 
 
 
@@ -20677,13 +20677,13 @@ int util_extract_o(char *filename,char *tempdir)
         ptr_tapebrowser=fopen(filename,"rb");
 
         if (!ptr_tapebrowser) {
-		debug_printf(VERBOSE_ERR,"Unable to open file");
-		return 1;
-	}
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        return 1;
+    }
     */
 
-	taperead=malloc(total_mem);
-	if (taperead==NULL) cpu_panic("Error allocating memory for expander");
+    taperead=malloc(total_mem);
+    if (taperead==NULL) cpu_panic("Error allocating memory for expander");
 
 
         int leidos;
@@ -20691,9 +20691,9 @@ int util_extract_o(char *filename,char *tempdir)
         leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
         //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
-	if (leidos==0) {
+    if (leidos==0) {
                 debug_printf(VERBOSE_ERR,"Error reading tape");
-		free(taperead);
+        free(taperead);
                 return 1;
         }
 
@@ -20717,7 +20717,7 @@ int util_extract_o(char *filename,char *tempdir)
 
         free(taperead);
 
-	return 0;
+    return 0;
 
 }
 
@@ -20994,27 +20994,27 @@ int util_extract_rzx(char *archivo,char *tempdir,char *return_z80_destination_na
 int util_extract_trd(char *filename,char *tempdir)
 {
 
-	//tapefile
-	if (util_compare_file_extension(filename,"trd")!=0) {
-		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
-		return 1;
-	}
+    //tapefile
+    if (util_compare_file_extension(filename,"trd")!=0) {
+        debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
+        return 1;
+    }
 
-	//Leemos trd en memoria
-	int bytes_to_load=get_file_size(filename);
-
-
-	int tamanyo_trd_entry=16;
+    //Leemos trd en memoria
+    int bytes_to_load=get_file_size(filename);
 
 
-	z80_byte *trd_file_memory;
-	trd_file_memory=malloc(bytes_to_load);
-	if (trd_file_memory==NULL) {
-		debug_printf(VERBOSE_ERR,"Unable to assign memory");
-		return 0;
-	}
+    int tamanyo_trd_entry=16;
 
-	//Leemos cabecera archivo trd
+
+    z80_byte *trd_file_memory;
+    trd_file_memory=malloc(bytes_to_load);
+    if (trd_file_memory==NULL) {
+        debug_printf(VERBOSE_ERR,"Unable to assign memory");
+        return 0;
+    }
+
+    //Leemos cabecera archivo trd
     FILE *ptr_file_trd_browser;
 
     //Soporte para FatFS
@@ -21035,7 +21035,7 @@ int util_extract_trd(char *filename,char *tempdir)
     leidos=zvfs_fread(in_fatfs,trd_file_memory,bytes_to_load,ptr_file_trd_browser,&fil);
     //leidos=fread(trd_file_memory,1,bytes_to_load,ptr_file_trd_browser);
 
-	if (leidos==0) {
+    if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading file");
         return 0;
     }
@@ -21046,10 +21046,10 @@ int util_extract_trd(char *filename,char *tempdir)
 
 
 
-	char buffer_texto[64]; //2 lineas, por si acaso
+    char buffer_texto[64]; //2 lineas, por si acaso
 
 
-	int start_track_8=256*8;
+    int start_track_8=256*8;
 
 
     z80_int files_on_disk=util_get_byte_protect(trd_file_memory,bytes_to_load,start_track_8+228);
@@ -21059,18 +21059,18 @@ int util_extract_trd(char *filename,char *tempdir)
 
 
 
-	int puntero,i;
+    int puntero,i;
 
-	puntero=0;
+    puntero=0;
 
     char buffer_temp_file[PATH_MAX];
 
     //TODO: Total de archivos incluye los borrados??
-	for (i=0;i<files_on_disk+deleted_files_on_disk;i++) {
+    for (i=0;i<files_on_disk+deleted_files_on_disk;i++) {
         z80_byte buffer_nombre[10];
         util_memcpy_protect_origin(buffer_nombre,trd_file_memory,bytes_to_load,puntero,9);
-		menu_file_mmc_browser_show_file(buffer_nombre,buffer_texto,1,9);
-		if (buffer_texto[0]!='?') {
+        menu_file_mmc_browser_show_file(buffer_nombre,buffer_texto,1,9);
+        if (buffer_texto[0]!='?') {
 
             z80_byte start_sector=util_get_byte_protect(trd_file_memory,bytes_to_load,puntero+14);
             z80_byte start_track=util_get_byte_protect(trd_file_memory,bytes_to_load,puntero+15);
@@ -21115,16 +21115,16 @@ int util_extract_trd(char *filename,char *tempdir)
             util_memcpy_protect_origin(buffer_temp_memoria,trd_file_memory,bytes_to_load,offset,longitud_final);
 
             util_save_file(buffer_temp_memoria,longitud_final,buffer_temp_file);
-		}
+        }
 
 
-		puntero +=tamanyo_trd_entry;
+        puntero +=tamanyo_trd_entry;
 
 
-	}
+    }
 
 
-	free(trd_file_memory);
+    free(trd_file_memory);
 
     return 0;
 
@@ -21154,98 +21154,98 @@ sectores van alternados:
 
 */
 
-	int pista;
-	int sector;
+    int pista;
+    int sector;
 
-	//int iniciopista_orig=256;
+    //int iniciopista_orig=256;
 
     //printf("util_dsk_getphysical_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
 
-	//Buscamos en todo el archivo dsk
-	for (pista=0;pista<total_pistas;pista++) {
+    //Buscamos en todo el archivo dsk
+    for (pista=0;pista<total_pistas;pista++) {
 
         //TODO: de momento cara 0
         int iniciopista_orig=menu_dsk_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
 
         //printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
 
-		//int sectores_en_pista=dsk_memoria[iniciopista_orig+0x15];
+        //int sectores_en_pista=dsk_memoria[iniciopista_orig+0x15];
 
         int sectores_en_pista=util_get_byte_protect(dsk_memoria,longitud_dsk,iniciopista_orig+0x15);
-		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+        //debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
         //printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
-		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
-		int iniciopista=iniciopista_orig;
-		//saltar 0x18
-		iniciopista +=0x18;
+        //int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
+        int iniciopista=iniciopista_orig;
+        //saltar 0x18
+        iniciopista +=0x18;
 
-		for (sector=0;sector<sectores_en_pista;sector++) {
-			int offset_tabla_sector=sector*8;
+        for (sector=0;sector<sectores_en_pista;sector++) {
+            int offset_tabla_sector=sector*8;
 
-			//printf("before getting pista_id sumando %d %d\n",iniciopista,offset_tabla_sector);
+            //printf("before getting pista_id sumando %d %d\n",iniciopista,offset_tabla_sector);
 
-			int offset_leer_dsk;
+            int offset_leer_dsk;
 
-			offset_leer_dsk=iniciopista+offset_tabla_sector;
-			//Validar offset
-			if (offset_leer_dsk>=longitud_dsk) return -1;
+            offset_leer_dsk=iniciopista+offset_tabla_sector;
+            //Validar offset
+            if (offset_leer_dsk>=longitud_dsk) return -1;
 
             //printf("before getting pistaid\n");
-			//z80_byte pista_id=dsk_memoria[offset_leer_dsk]; //Leemos pista id
+            //z80_byte pista_id=dsk_memoria[offset_leer_dsk]; //Leemos pista id
 
             z80_byte pista_id=util_get_byte_protect(dsk_memoria,longitud_dsk,offset_leer_dsk); //Leemos pista id
 
 
-			//printf("after getting pistaid\n");
+            //printf("after getting pistaid\n");
 
 
-			//Validar offset
-			offset_leer_dsk=iniciopista+offset_tabla_sector+2;
-			if (offset_leer_dsk>=longitud_dsk) return -1;
+            //Validar offset
+            offset_leer_dsk=iniciopista+offset_tabla_sector+2;
+            if (offset_leer_dsk>=longitud_dsk) return -1;
 
 
             //printf("before getting sector_id\n");
-			//z80_byte sector_id=dsk_memoria[offset_leer_dsk]; //Leemos c1, c2, etc
+            //z80_byte sector_id=dsk_memoria[offset_leer_dsk]; //Leemos c1, c2, etc
 
             z80_byte sector_id=util_get_byte_protect(dsk_memoria,longitud_dsk,offset_leer_dsk); //Leemos c1, c2, etc
 
-			//printf("after getting sector_id\n");
+            //printf("after getting sector_id\n");
 
-			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
+            //debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
 
             //printf("C: %02XH R: %02X \n",pista_id,sector_id);
 
-			sector_id &=0xF;
+            sector_id &=0xF;
 
-			sector_id--;  //empiezan en 1...
+            sector_id--;  //empiezan en 1...
 
-			if (pista_id==pista_buscar && sector_id==sector_buscar) {
-				//printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
-		                return sector;
-			}
+            if (pista_id==pista_buscar && sector_id==sector_buscar) {
+                //printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
+                        return sector;
+            }
 
             //printf("after if\n");
 
-		}
+        }
 
         //printf("after for\n");
 
-		//debug_printf(VERBOSE_DEBUG,"");
+        //debug_printf(VERBOSE_DEBUG,"");
 
-		iniciopista_orig +=256;
-		iniciopista_orig +=512*sectores_en_pista;
-	}
+        iniciopista_orig +=256;
+        iniciopista_orig +=512*sectores_en_pista;
+    }
 
     //printf("Not found sector %d/%d\n",pista_buscar,sector_buscar);
 
-	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);
+    debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);
 
-	//retornamos offset fuera de rango
-	//printf("returning -1\n");
-	return -1;
+    //retornamos offset fuera de rango
+    //printf("returning -1\n");
+    return -1;
 
 
 }
@@ -21253,42 +21253,42 @@ sectores van alternados:
 //Retorna los dos sectores (fisicos, no logicos) que ocupa un bloque de 1kb
 void util_dsk_getsectors_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *sector1,int *pista1,int *sector2,int *pista2,int incremento_pista)
 {
-			//int total_pistas=longitud_dsk/4864;
+            //int total_pistas=longitud_dsk/4864;
             int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
             //printf("total_pistas: %d\n",total_pistas);
-			int pista;
-			int sector_en_pista;
+            int pista;
+            int sector_en_pista;
 
-			int sector_total;
+            int sector_total;
 
-			sector_total=bloque*2; //cada bloque es de 2 sectores
+            sector_total=bloque*2; //cada bloque es de 2 sectores
 
             //Incremento_pista indica sumar x pistas de desplazamiento al bloque
             sector_total +=9*incremento_pista;
 
-			//tenemos sector total en variable bloque
-			//sacar pista
-			pista=sector_total/9; //9 sectores por pista
-			sector_en_pista=sector_total % 9;
+            //tenemos sector total en variable bloque
+            //sacar pista
+            pista=sector_total/9; //9 sectores por pista
+            sector_en_pista=sector_total % 9;
 
-			//printf ("pista: %d sector en pista: %d\n",pista,sector_en_pista);
+            //printf ("pista: %d sector en pista: %d\n",pista,sector_en_pista);
 
-			//offset a los datos dentro del dsk
-			//int offset=pista*4864+sector_en_pista*512;
+            //offset a los datos dentro del dsk
+            //int offset=pista*4864+sector_en_pista*512;
 
 
-			//printf("before getting offset1\n");
+            //printf("before getting offset1\n");
             *pista1=pista;
-			*sector1=util_dsk_getphysical_track_sector(dsk_file_memory,total_pistas,pista,sector_en_pista,longitud_dsk);
+            *sector1=util_dsk_getphysical_track_sector(dsk_file_memory,total_pistas,pista,sector_en_pista,longitud_dsk);
 
-			sector_total++;
-			pista=sector_total/9; //9 sectores por pista
-			sector_en_pista=sector_total % 9;
+            sector_total++;
+            pista=sector_total/9; //9 sectores por pista
+            sector_en_pista=sector_total % 9;
 
-			//printf("before getting offset2\n");
+            //printf("before getting offset2\n");
             *pista2=pista;
-			*sector2=util_dsk_getphysical_track_sector(dsk_file_memory,total_pistas,pista,sector_en_pista,longitud_dsk);
-			//printf("after getting offset2\n");
+            *sector2=util_dsk_getphysical_track_sector(dsk_file_memory,total_pistas,pista,sector_en_pista,longitud_dsk);
+            //printf("after getting offset2\n");
 
 }
 
@@ -21387,11 +21387,11 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
 
 void util_extract_dsk_get_filename(z80_byte *origen,char *destino,int sipuntoextension,int longitud)
 {
-	int i;
+    int i;
 
-	for (i=0;i<longitud;i++) {
-		char caracter;
-		caracter=*origen;
+    for (i=0;i<longitud;i++) {
+        char caracter;
+        caracter=*origen;
 
 
         origen++;
@@ -21419,35 +21419,35 @@ void util_extract_dsk_get_filename(z80_byte *origen,char *destino,int sipuntoext
         }
 
 
-	}
+    }
 
-	*destino=0;
+    *destino=0;
 }
 
 
 int util_extract_dsk(char *filename,char *tempdir)  {
 
 
-	int tamanyo_dsk_entry=32;
+    int tamanyo_dsk_entry=32;
 
-	int max_entradas_dsk=64;
+    int max_entradas_dsk=64;
 
-	//Asignamos para 16 entradas
-	//int bytes_to_load=tamanyo_dsk_entry*max_entradas_dsk;
+    //Asignamos para 16 entradas
+    //int bytes_to_load=tamanyo_dsk_entry*max_entradas_dsk;
 
-	//Max 300kb
-	int bytes_to_load=300000;  //temp. 4096
+    //Max 300kb
+    int bytes_to_load=300000;  //temp. 4096
 
-	z80_byte *dsk_file_memory;
-	dsk_file_memory=malloc(bytes_to_load);
-	if (dsk_file_memory==NULL) {
-		debug_printf(VERBOSE_ERR,"Unable to assign memory");
-		return 0;
-	}
+    z80_byte *dsk_file_memory;
+    dsk_file_memory=malloc(bytes_to_load);
+    if (dsk_file_memory==NULL) {
+        debug_printf(VERBOSE_ERR,"Unable to assign memory");
+        return 0;
+    }
 
     int longitud_dsk=bytes_to_load;
 
-	//Leemos archivo dsk
+    //Leemos archivo dsk
     FILE *ptr_file_dsk_browser;
 
     //Soporte para FatFS
@@ -21458,9 +21458,9 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 
 
     if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_dsk_browser,&fil)<0) {
-		debug_printf(VERBOSE_ERR,"Unable to open file");
-		free(dsk_file_memory);
-		return 0;
+        debug_printf(VERBOSE_ERR,"Unable to open file");
+        free(dsk_file_memory);
+        return 0;
     }
 
 
@@ -21469,7 +21469,7 @@ int util_extract_dsk(char *filename,char *tempdir)  {
     leidos=zvfs_fread(in_fatfs,dsk_file_memory,bytes_to_load,ptr_file_dsk_browser,&fil);
     //leidos=fread(dsk_file_memory,1,bytes_to_load,ptr_file_dsk_browser);
 
-	if (leidos==0) {
+    if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading file");
         return 0;
 }
@@ -21481,12 +21481,12 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 
 
 
-	char buffer_texto[64]; //2 lineas, por si acaso
+    char buffer_texto[64]; //2 lineas, por si acaso
 
 
 
- 	//sprintf(buffer_texto,"DSK disk image");
-	//indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+     //sprintf(buffer_texto,"DSK disk image");
+    //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
 /*
@@ -21517,26 +21517,26 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 00000280  00 4b 49 54 31 32 38 20  20 c2 49 4e 01 00 00 59  |.KIT128  .IN...Y|
 */
 
-	//La extension es de 1 byte
+    //La extension es de 1 byte
 
 
 /*
- 	sprintf(buffer_texto,"Disk information:");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+     sprintf(buffer_texto,"Disk information:");
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-	util_binary_to_ascii(&dsk_file_memory[0], buffer_texto, 34, 34);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    util_binary_to_ascii(&dsk_file_memory[0], buffer_texto, 34, 34);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
- 	sprintf(buffer_texto,"\nCreator:");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-	util_binary_to_ascii(&dsk_file_memory[0x22], buffer_texto, 14, 14);
+     sprintf(buffer_texto,"\nCreator:");
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    util_binary_to_ascii(&dsk_file_memory[0x22], buffer_texto, 14, 14);
 
-	sprintf(buffer_texto,"\nTracks: %d",dsk_file_memory[0x30]);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    sprintf(buffer_texto,"\nTracks: %d",dsk_file_memory[0x30]);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-	sprintf(buffer_texto,"Sides: %d",dsk_file_memory[0x31]);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    sprintf(buffer_texto,"Sides: %d",dsk_file_memory[0x31]);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
         sprintf(buffer_texto,"\nFirst PLUS3 entries:");
@@ -21544,7 +21544,7 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 */
 
 
-	int i;
+    int i;
 
     int pista_filesystem;
 
@@ -21581,11 +21581,11 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
     //printf("total pistas: %d\n",total_pistas);
 
 
-	if (puntero==-1) {
-		//printf ("Filesystem track/sector 0/0 not found. Guessing it\n");
-		//no encontrado. probar con lo habitual
-		puntero=0x200;
-	}
+    if (puntero==-1) {
+        //printf ("Filesystem track/sector 0/0 not found. Guessing it\n");
+        //no encontrado. probar con lo habitual
+        puntero=0x200;
+    }
 
 
 
@@ -21594,22 +21594,22 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
     for (pista_buscar=1;pista_buscar<=2;pista_buscar++) {
 
         printf("Pista: %d\n",pista_buscar);
-		//Si contiene e5 en el nombre, nos vamos a pista 1
+        //Si contiene e5 en el nombre, nos vamos a pista 1
         //O si segundo caracter no es ascii
 
         z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
 
-		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
+        if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
 
             puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista_buscar,0,longitud_dsk);
 
-			if (puntero==-1) {
+            if (puntero==-1) {
                 printf ("Filesystem track/sector not found. Guessing it\n");
                 //no encontrado. probar con lo habitual
                 puntero=0x200;
-			}
+            }
 
-		}
+        }
 
         else break;
 
@@ -21620,7 +21620,7 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
 
 
 
-	puntero++; //Saltar el primer byte en la entrada de filesystem
+    puntero++; //Saltar el primer byte en la entrada de filesystem
 
 /*
 TODO
@@ -21629,11 +21629,11 @@ en que empieza en 1300H. Porque??
 */
 
 
-	z80_byte *buffer_temp;
-	buffer_temp=malloc(80000);
+    z80_byte *buffer_temp;
+    buffer_temp=malloc(80000);
 
 
-	for (i=0;i<max_entradas_dsk;i++) {
+    for (i=0;i<max_entradas_dsk;i++) {
 
                 //printf("entrada %d\n",i);
 
@@ -21641,7 +21641,7 @@ en que empieza en 1300H. Porque??
         //printf("before menu_file_mmc_browser_show_file\n");
         z80_byte buffer_nombre[12];
         util_memcpy_protect_origin(buffer_nombre,dsk_file_memory,longitud_dsk,puntero,11);
-		//menu_file_mmc_browser_show_file(buffer_nombre,buffer_texto,1,11);
+        //menu_file_mmc_browser_show_file(buffer_nombre,buffer_texto,1,11);
 
         //Emilio Butragueno Futbol.dsk tiene 4 archivos llamados BUITRE.XXX donde XXX son caracteres no validos
         //Si no se muestran esos XXX, se cambian por espacios, y entonces hay 4 archivos todos iguales , y uno de ellos es la pantalla
@@ -21657,7 +21657,7 @@ en que empieza en 1300H. Porque??
         printf("nombre final: [%s]\n",buffer_texto);*/
 
 
-		if (buffer_texto[0]!='?') {
+        if (buffer_texto[0]!='?') {
 
             if (file_is_deleted==0xE5) debug_printf (VERBOSE_DEBUG,"File %s is deleted. Skipping",buffer_texto);
             else {
@@ -21775,7 +21775,7 @@ en que empieza en 1300H. Porque??
                 char buffer_nombre_destino[PATH_MAX];
                 sprintf (buffer_nombre_destino,"%s/%s",tempdir,buffer_texto);
 
-			    //Ver si es primer entrada de archivo (con lo que sobreescribimos) o si es segunda y siguientes, hacer append
+                //Ver si es primer entrada de archivo (con lo que sobreescribimos) o si es segunda y siguientes, hacer append
 /*
 
 Byte 12
@@ -21789,10 +21789,10 @@ Byte 12
    it is 01 for the second 02 and so on.
 */
 
-			    int longitud_en_bloques=destino_en_buffer_temp; //(total_bloques-1)*1024;
+                int longitud_en_bloques=destino_en_buffer_temp; //(total_bloques-1)*1024;
 
 
-			    if (continuation_marker==0) {
+                if (continuation_marker==0) {
                     int longitud_final=longitud_en_bloques;
 
                     //printf("longitud_final: %d\n",longitud_final);
@@ -21816,7 +21816,7 @@ Byte 12
                         //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
                         util_save_file((z80_byte *)buffer_nombre_destino,strlen(buffer_nombre_destino)+1,buff_preview_scr);
                     }
-			    }
+                }
 
                 else {
                     debug_printf (VERBOSE_DEBUG,"File entry is not the first. Adding %d bytes to the file %s",longitud_en_bloques,buffer_nombre_destino);
@@ -21827,9 +21827,9 @@ Byte 12
                 }
 
 
-			debug_printf (VERBOSE_DEBUG,"Saving file %s",buffer_nombre_destino);
+            debug_printf (VERBOSE_DEBUG,"Saving file %s",buffer_nombre_destino);
 
-		}
+        }
     }
 
     puntero +=tamanyo_dsk_entry;
@@ -21938,15 +21938,15 @@ Aunque el basic esta en:
 c800h/1024=32h
 
 
-		*/
-	}
+        */
+    }
 
 
 
 
-	free(dsk_file_memory);
+    free(dsk_file_memory);
 
-	return 0;
+    return 0;
 
 }
 
@@ -21989,8 +21989,8 @@ int util_extract_z88_card(char *filename,char *tempdir)
         if (flash_file_memory[1]!=0 && flash_file_memory[1]!='/') {
                 //No es archivo epr, eprom o flash con archivos. Salir
                 debug_printf (VERBOSE_INFO,"This is not a Z88 File Card");
-        	free(flash_file_memory);
-        	return 1;
+            free(flash_file_memory);
+            return 1;
         }
 
 
@@ -22014,7 +22014,7 @@ int util_extract_z88_card(char *filename,char *tempdir)
                 if (retorno) {
                         z88_eprom_flash_get_file_name(&file,buffer_nombre);
 
-			if (buffer_nombre[0]=='.') buffer_nombre[0]='D'; //archivo borrado
+            if (buffer_nombre[0]=='.') buffer_nombre[0]='D'; //archivo borrado
 
                         z80_long_int tamanyo=file.size[0]+(file.size[1]*256)+(file.size[2]*65536)+(file.size[3]*16777216);
                         debug_printf (VERBOSE_INFO,"Name: %s size: %d",buffer_nombre,tamanyo);
@@ -22028,10 +22028,10 @@ int util_extract_z88_card(char *filename,char *tempdir)
 
 
                         //Grabar archivo
-			char buffer_nombre_destino[PATH_MAX];
-			sprintf (buffer_nombre_destino,"%s/%s",tempdir,&buffer_nombre[index_nombre]);
+            char buffer_nombre_destino[PATH_MAX];
+            sprintf (buffer_nombre_destino,"%s/%s",tempdir,&buffer_nombre[index_nombre]);
 
-			util_save_file(data_ptr,tamanyo,buffer_nombre_destino);
+            util_save_file(data_ptr,tamanyo,buffer_nombre_destino);
 
                 }
 
@@ -22192,17 +22192,17 @@ void util_save_game_config(char *filename)
 --joystickkeyev evt key
 */
 
-					ADD_STRING_CONFIG,"--clearredefinekey");
+                    ADD_STRING_CONFIG,"--clearredefinekey");
 
                                         //Esto conviene meterlo en el .config, asi el usuario
                                         //sabe que sus botones a eventos se inicializan en el juego
                                         //y se establecen un poco mas abajo
                                         //en caso que no quisiera, que lo quite
 
-					ADD_STRING_CONFIG,"--cleareventlist");
+                    ADD_STRING_CONFIG,"--cleareventlist");
 
 
-						ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
+                        ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
 
 
   //real joystick buttons to events. Siempre este antes que el de events/buttons to keys
@@ -22321,31 +22321,31 @@ int util_is_letter(char c)
 int util_get_available_drives(char *texto)
 {
 #ifdef MINGW
-	int bitmask_unidades=GetLogicalDrives(); //Mascara de bits. bit inferior si unidad A disponible, etc
+    int bitmask_unidades=GetLogicalDrives(); //Mascara de bits. bit inferior si unidad A disponible, etc
 #else
-	int bitmask_unidades=0;
+    int bitmask_unidades=0;
 #endif
 
-	int unidades_detectadas=0;
+    int unidades_detectadas=0;
 
-	char letra_actual='A';
+    char letra_actual='A';
 
-	for (;letra_actual<='Z';letra_actual++) {
-		//Ver bit inferior
-		if (bitmask_unidades&1) {
-			//printf ("letra actual: %d unidades_detectadas: %d\n",letra_actual,unidades_detectadas);
-			texto[unidades_detectadas]=letra_actual;
-			unidades_detectadas++;
-		}
+    for (;letra_actual<='Z';letra_actual++) {
+        //Ver bit inferior
+        if (bitmask_unidades&1) {
+            //printf ("letra actual: %d unidades_detectadas: %d\n",letra_actual,unidades_detectadas);
+            texto[unidades_detectadas]=letra_actual;
+            unidades_detectadas++;
+        }
 
-		bitmask_unidades >>=1;
-	}
+        bitmask_unidades >>=1;
+    }
 
-	//y final de texto
-	texto[unidades_detectadas]=0;
+    //y final de texto
+    texto[unidades_detectadas]=0;
 
 
-	return unidades_detectadas;
+    return unidades_detectadas;
 }
 
 int get_cpu_frequency(void)
@@ -22542,34 +22542,34 @@ char util_printable_char(char c)
 //retorna puntero a byte despues de salto linea
 char *util_read_line(char *origen,char *destino,int size_orig,int max_size_dest,int *leidos)
 {
-	max_size_dest --;
-	*leidos=0;
-	for (;*origen && size_orig>0 && max_size_dest>0;origen++,size_orig--,(*leidos)++) {
-		//ignorar cr
-		if ( *origen=='\r' ) continue;
-		if ( *origen=='\n' ) {
-			origen++;
+    max_size_dest --;
+    *leidos=0;
+    for (;*origen && size_orig>0 && max_size_dest>0;origen++,size_orig--,(*leidos)++) {
+        //ignorar cr
+        if ( *origen=='\r' ) continue;
+        if ( *origen=='\n' ) {
+            origen++;
             (*leidos)++;
-			break;
-		}
-		*destino=*origen;
-		destino++;
-		max_size_dest--;
+            break;
+        }
+        *destino=*origen;
+        destino++;
+        max_size_dest--;
 
-	}
-	*destino=0;
-	return origen;
+    }
+    *destino=0;
+    return origen;
 }
 
 //Retorna el codigo http o <0 si otros errores
 int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int estimated_maximum_size,char *ssl_sni_host_name)
 {
   int http_code;
-	char *mem;
-	char *orig_mem;
-	char *mem_after_headers;
-	int total_leidos;
-	int retorno;
+    char *mem;
+    char *orig_mem;
+    char *mem_after_headers;
+    int total_leidos;
+    int retorno;
     char redirect_url[NETWORK_MAX_URL];
 
 
@@ -22602,26 +22602,26 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
         retorno=zsock_http(nuevo_host,nueva_url,&http_code,&mem,&total_leidos,
                 &mem_after_headers,1,"",use_ssl,redirect_url,estimated_maximum_size,ssl_sni_host_name);
 
-	}
+    }
 
 
-	orig_mem=mem;
+    orig_mem=mem;
 
-	if (mem_after_headers!=NULL && http_code==200) {
-		//temp limite
-		//mem_after_headers[10000]=0;
-		//menu_generic_message("Games",mem_after_headers);
-		//char texto_final[30000];
+    if (mem_after_headers!=NULL && http_code==200) {
+        //temp limite
+        //mem_after_headers[10000]=0;
+        //menu_generic_message("Games",mem_after_headers);
+        //char texto_final[30000];
 
-		//int indice_destino=0;
+        //int indice_destino=0;
 
-		int dif_header=mem_after_headers-mem;
-		total_leidos -=dif_header;
-		mem=mem_after_headers;
-		//grabar a disco
-		//todo usar funcion de utils comun, existe?
+        int dif_header=mem_after_headers-mem;
+        total_leidos -=dif_header;
+        mem=mem_after_headers;
+        //grabar a disco
+        //todo usar funcion de utils comun, existe?
 
-		FILE *ptr_destino;
+        FILE *ptr_destino;
         ptr_destino=fopen(archivo,"wb");
 
         if (ptr_destino==NULL) {
@@ -22658,20 +22658,20 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
 
 void util_normalize_name(char *texto)
 {
-	while (*texto) {
-		char c=*texto;
-		if (c=='(' || c==')') {
-			*texto='_';
-		}
-		texto++;
-	}
+    while (*texto) {
+        char c=*texto;
+        if (c=='(' || c==')') {
+            *texto='_';
+        }
+        texto++;
+    }
 }
 
 void util_normalize_query_http(char *orig,char *dest)
 {
 
-	while (*orig) {
-		char c=*orig;
+    while (*orig) {
+        char c=*orig;
                 if (c<=32 || c>=127 || c=='/') {
                         sprintf (dest,"%%%02x",c);
                         dest+=3;
@@ -22679,14 +22679,14 @@ void util_normalize_query_http(char *orig,char *dest)
 
                 else {
                         *dest=c;
-			dest++;
-		}
+            dest++;
+        }
 
 
-		orig++;
-	}
+        orig++;
+    }
 
-	*dest=0;
+    *dest=0;
 
 
 }
@@ -23121,11 +23121,11 @@ int util_bmp_load_palette_changed_palette_second=0;
 void util_bmp_load_palette(z80_byte *mem,int indice_inicio_color)
 {
 
-		//Cargar la paleta bmp. A partir del offset 36h??
+        //Cargar la paleta bmp. A partir del offset 36h??
 /*
 ColorTable	4 * NumColors bytes	0036h	present only if Info.BitsPerPixel less than 8
 colors should be ordered by importance
- 		Red	1 byte	 	Red intensity
+         Red	1 byte	 	Red intensity
 Green	1 byte	 	Green intensity
 Blue	1 byte	 	Blue intensity
 reserved	1 byte	 	unused (=0)
@@ -23218,42 +23218,42 @@ z80_byte *util_load_bmp_file(char *archivo,int id_paleta)
 void util_rotate_file(char *filename,int archivos)
 {
 
-	//Borrar el ultimo
-	char buffer_last_file[PATH_MAX];
+    //Borrar el ultimo
+    char buffer_last_file[PATH_MAX];
 
-	sprintf(buffer_last_file,"%s.%d",filename,archivos);
+    sprintf(buffer_last_file,"%s.%d",filename,archivos);
 
-	debug_printf (VERBOSE_DEBUG,"Erasing oldest file %s",buffer_last_file);
+    debug_printf (VERBOSE_DEBUG,"Erasing oldest file %s",buffer_last_file);
 
-	util_delete(buffer_last_file);
+    util_delete(buffer_last_file);
 
-	//Y renombrar, el penultimo al ultimo, el antepenultimo al penultimo, etc
-	//con 10 archivos:
-	//ren file.9 file.10
-	//ren file.8 file.9
-	//ren file.7 file.8
-	//...
-	//ren file.1 file.2
-	//ren file file.1 esto a mano
-	int i;
+    //Y renombrar, el penultimo al ultimo, el antepenultimo al penultimo, etc
+    //con 10 archivos:
+    //ren file.9 file.10
+    //ren file.8 file.9
+    //ren file.7 file.8
+    //...
+    //ren file.1 file.2
+    //ren file file.1 esto a mano
+    int i;
 
-	for (i=archivos-1;i>=0;i--) {
-		char buffer_file_orig[PATH_MAX];
-		char buffer_file_dest[PATH_MAX];
+    for (i=archivos-1;i>=0;i--) {
+        char buffer_file_orig[PATH_MAX];
+        char buffer_file_dest[PATH_MAX];
 
-		//Caso especial ultimo (seria el .0)
-		if (i==0) {
-			strcpy(buffer_file_orig,filename);
-		}
-		else {
-			sprintf(buffer_file_orig,"%s.%d",filename,i);
-		}
+        //Caso especial ultimo (seria el .0)
+        if (i==0) {
+            strcpy(buffer_file_orig,filename);
+        }
+        else {
+            sprintf(buffer_file_orig,"%s.%d",filename,i);
+        }
 
-		sprintf(buffer_file_dest,"%s.%d",filename,i+1);
+        sprintf(buffer_file_dest,"%s.%d",filename,i+1);
 
-		debug_printf (VERBOSE_DEBUG,"Renaming log file %s -> %s",buffer_file_orig,buffer_file_dest);
-		rename(buffer_file_orig,buffer_file_dest);
-	}
+        debug_printf (VERBOSE_DEBUG,"Renaming log file %s -> %s",buffer_file_orig,buffer_file_dest);
+        rename(buffer_file_orig,buffer_file_dest);
+    }
 
 
 }
@@ -23947,17 +23947,17 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
     //convertir
     if (!util_compare_file_extension(filename,"smp")) {
         if (convert_smp_to_rwa_tmpdir(filename,file_to_open)) {
-			debug_printf(VERBOSE_ERR,"Error converting input file");
-			return;
-		}
+            debug_printf(VERBOSE_ERR,"Error converting input file");
+            return;
+        }
     }
 
     //convertir
     if (!util_compare_file_extension(filename,"wav")) {
         if (convert_wav_to_rwa_tmpdir(filename,file_to_open)) {
-			debug_printf(VERBOSE_ERR,"Error converting input file");
-			return;
-		}
+            debug_printf(VERBOSE_ERR,"Error converting input file");
+            return;
+        }
     }
 
 
@@ -24066,17 +24066,17 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
     //convertir
     if (!util_compare_file_extension(filename,"smp")) {
         if (convert_smp_to_rwa_tmpdir(filename,file_to_open)) {
-			debug_printf(VERBOSE_ERR,"Error converting input file");
-			return;
-		}
+            debug_printf(VERBOSE_ERR,"Error converting input file");
+            return;
+        }
     }
 
     //convertir
     if (!util_compare_file_extension(filename,"wav")) {
         if (convert_wav_to_rwa_tmpdir(filename,file_to_open)) {
-			debug_printf(VERBOSE_ERR,"Error converting input file");
-			return;
-		}
+            debug_printf(VERBOSE_ERR,"Error converting input file");
+            return;
+        }
     }
 
 
@@ -24375,9 +24375,9 @@ void enhanced_convert_realtape_to_p_p81(char *filename, char *archivo_destino,vo
         //Esta conversion de wav lo pasamos a formato crudo sin alterar los Hz (de ahi que lo llamo "crudo" y no rwa ni raw que
         //esas dos extensiones les asigno una frecuencia definida)
         if (convert_wav_to_crudo_tmpdir(filename,file_to_open)) {
-			debug_printf(VERBOSE_ERR,"Error converting input file");
-			return;
-		}
+            debug_printf(VERBOSE_ERR,"Error converting input file");
+            return;
+        }
     }
 
 
@@ -24612,8 +24612,8 @@ int util_if_filesystem_plusidedos(z80_byte *memoria,int total_size)
 
     util_memcpy_protect_origin((z80_byte *) filesystem,memoria,total_size,0,10);
 
-	filesystem[10]=0;
-	if (!strcmp(filesystem,"PLUSIDEDOS")) {
+    filesystem[10]=0;
+    if (!strcmp(filesystem,"PLUSIDEDOS")) {
         //printf("es plusidedos\n");
         return 1;
     }
@@ -24629,18 +24629,18 @@ int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
 
     util_memcpy_protect_origin((z80_byte *) filesystem,memoria,total_size,0x100036,5);
 
-	filesystem[5]=0;
-	if (!strcmp(filesystem,"FAT16")){
+    filesystem[5]=0;
+    if (!strcmp(filesystem,"FAT16")){
         //printf("es fat16\n");
         return 1;
     }
     else return 0;
 
 
-	//memcpy(filesystem,&mmc_file_memory[0x100036],5);
+    //memcpy(filesystem,&mmc_file_memory[0x100036],5);
 
-	//filesystem[5]=0;
-	//if (!strcmp(filesystem,"FAT16")) {
+    //filesystem[5]=0;
+    //if (!strcmp(filesystem,"FAT16")) {
 }
 
 //Retorna texto %Y-%m-%d-%H-%M-%S, usado en quicksave y en dump zsf on panic
@@ -24674,14 +24674,14 @@ struct timeval tv;
 
 void snapshot_get_date_time_string(char *texto)
 {
-	//Para formatos de quicksave y dump zsf en panic. Todo guiones
-	snapshot_get_date_time_string_common(texto,1);
+    //Para formatos de quicksave y dump zsf en panic. Todo guiones
+    snapshot_get_date_time_string_common(texto,1);
 }
 
 void snapshot_get_date_time_string_human(char *texto)
 {
-	//Para formatos de texto incluidos por ejemplo en cabecera pzx
-	snapshot_get_date_time_string_common(texto,0);
+    //Para formatos de texto incluidos por ejemplo en cabecera pzx
+    snapshot_get_date_time_string_common(texto,0);
 }
 
 //Retorna segundos desde 1970
@@ -24800,23 +24800,23 @@ void util_scanf_history_insert(char **textos_historial,char *texto)
 //Extraer preview de diferentes tipos de archivos que requieren expandir
 int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
 {
-			int retorno=1;
+            int retorno=1;
 
-			if (!util_compare_file_extension(nombre,"tap") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a tap file");
-					retorno=util_extract_tap(nombre,tmpdir,NULL,0,1);
-			}
+            if (!util_compare_file_extension(nombre,"tap") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a tap file");
+                    retorno=util_extract_tap(nombre,tmpdir,NULL,0,1);
+            }
 
-			else if (!util_compare_file_extension(nombre,"tzx") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a tzx file");
-					retorno=util_extract_tzx(nombre,tmpdir,NULL,1);
-			}
+            else if (!util_compare_file_extension(nombre,"tzx") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a tzx file");
+                    retorno=util_extract_tzx(nombre,tmpdir,NULL,1);
+            }
 
-			else if (!util_compare_file_extension(nombre,"rzx") ) {
+            else if (!util_compare_file_extension(nombre,"rzx") ) {
                     //Hay que extraer el z80 de dentro del rzx, y luego despues de ese, sacar el scr
-					debug_printf (VERBOSE_DEBUG,"Is a rzx file");
+                    debug_printf (VERBOSE_DEBUG,"Is a rzx file");
                     char z80_destination[PATH_MAX]="";
-					util_extract_rzx(nombre,tmpdir,z80_destination,NULL);
+                    util_extract_rzx(nombre,tmpdir,z80_destination,NULL);
 
                     if (z80_destination[0]) {
                         char scr_destino[PATH_MAX];
@@ -24838,40 +24838,40 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
                         //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
                         util_save_file((z80_byte *)scr_destino,strlen(scr_destino)+1,buff_preview_scr);
                     }
-			}
+            }
 
-			else if (!util_compare_file_extension(nombre,"pzx") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a pzx file");
-					retorno=util_extract_pzx(nombre,tmpdir,NULL,1);
-			}
+            else if (!util_compare_file_extension(nombre,"pzx") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a pzx file");
+                    retorno=util_extract_pzx(nombre,tmpdir,NULL,1);
+            }
 
-			else if (!util_compare_file_extension(nombre,"trd") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a trd file");
-					retorno=util_extract_trd(nombre,tmpdir);
-			}
+            else if (!util_compare_file_extension(nombre,"trd") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a trd file");
+                    retorno=util_extract_trd(nombre,tmpdir);
+            }
 
-			else if (!util_compare_file_extension(nombre,"ddh") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a ddh file");
-					retorno=util_extract_ddh(nombre,tmpdir);
-			}
+            else if (!util_compare_file_extension(nombre,"ddh") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a ddh file");
+                    retorno=util_extract_ddh(nombre,tmpdir);
+            }
 
-			else if (!util_compare_file_extension(nombre,"mdr") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a mdr file");
-					retorno=util_extract_mdr(nombre,tmpdir);
-			}
+            else if (!util_compare_file_extension(nombre,"mdr") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a mdr file");
+                    retorno=util_extract_mdr(nombre,tmpdir);
+            }
 
-			else if (!util_compare_file_extension(nombre,"rmd") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a rmd file");
-					retorno=util_extract_rmd(nombre,tmpdir);
-			}
+            else if (!util_compare_file_extension(nombre,"rmd") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a rmd file");
+                    retorno=util_extract_rmd(nombre,tmpdir);
+            }
 
-			else if (!util_compare_file_extension(nombre,"dsk") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a dsk file");
+            else if (!util_compare_file_extension(nombre,"dsk") ) {
+                    debug_printf (VERBOSE_DEBUG,"Is a dsk file");
                     //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
                     //printf("Before extract dsk\n");
-					retorno=util_extract_dsk(nombre,tmpdir);
+                    retorno=util_extract_dsk(nombre,tmpdir);
                     //printf("After extract dsk\n");
-			}
+            }
 
             //printf("if_pending_error_message: %d\n",if_pending_error_message);
             //Quitar posibles errores al preparar esta preview
@@ -24898,71 +24898,71 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
     //printf("util_extract_preview_file_simple. nombre: [%s]\n",nombre);
 
-	if (!util_compare_file_extension(nombre,"scr")
+    if (!util_compare_file_extension(nombre,"scr")
         || file_size==6912
         || util_preview_file_is_ql_screen(file_size)
         ) {
-		debug_printf(VERBOSE_DEBUG,"File is a scr screen");
+        debug_printf(VERBOSE_DEBUG,"File is a scr screen");
 
         //Decir que el scrfile es el mismo
         strcpy(tmpfile_scr,nombre);
 
 
-	}
+    }
 
-	//Si es sna
-	else if (!util_compare_file_extension(nombre,"sna")) {
-		debug_printf(VERBOSE_DEBUG,"File is a sna snapshot");
+    //Si es sna
+    else if (!util_compare_file_extension(nombre,"sna")) {
+        debug_printf(VERBOSE_DEBUG,"File is a sna snapshot");
 
-		menu_filesel_mkdir(tmpdir);
+        menu_filesel_mkdir(tmpdir);
 
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_sna_to_scr(nombre,tmpfile_scr);
-		}
-
-
-
-	}
-
-	//Si es sp
-	else if (!util_compare_file_extension(nombre,"sp")) {
-		debug_printf(VERBOSE_DEBUG,"File is a sp snapshot");
-
-		menu_filesel_mkdir(tmpdir);
-
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_sp_to_scr(nombre,tmpfile_scr);
-		}
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
+            util_convert_sna_to_scr(nombre,tmpfile_scr);
+        }
 
 
-	}
 
-	//Si es z80
-	else if (!util_compare_file_extension(nombre,"z80")) {
-		debug_printf(VERBOSE_DEBUG,"File is a z80 snapshot");
+    }
 
-		menu_filesel_mkdir(tmpdir);
+    //Si es sp
+    else if (!util_compare_file_extension(nombre,"sp")) {
+        debug_printf(VERBOSE_DEBUG,"File is a sp snapshot");
 
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_z80_to_scr(nombre,tmpfile_scr);
-		}
+        menu_filesel_mkdir(tmpdir);
 
-	}
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
+            util_convert_sp_to_scr(nombre,tmpfile_scr);
+        }
 
-	//Si es P
-	else if (!util_compare_file_extension(nombre,"p") || !util_compare_file_extension(nombre,"p81") || !util_compare_file_extension(nombre,"81")) {
-		debug_printf(VERBOSE_DEBUG,"File is a p/p81 snapshot");
 
-		menu_filesel_mkdir(tmpdir);
+    }
 
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
+    //Si es z80
+    else if (!util_compare_file_extension(nombre,"z80")) {
+        debug_printf(VERBOSE_DEBUG,"File is a z80 snapshot");
+
+        menu_filesel_mkdir(tmpdir);
+
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
+            util_convert_z80_to_scr(nombre,tmpfile_scr);
+        }
+
+    }
+
+    //Si es P
+    else if (!util_compare_file_extension(nombre,"p") || !util_compare_file_extension(nombre,"p81") || !util_compare_file_extension(nombre,"81")) {
+        debug_printf(VERBOSE_DEBUG,"File is a p/p81 snapshot");
+
+        menu_filesel_mkdir(tmpdir);
+
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
             int pantalla_vacia;
 
-			util_convert_p_to_scr(nombre,tmpfile_scr,&pantalla_vacia);
+            util_convert_p_to_scr(nombre,tmpfile_scr,&pantalla_vacia);
 
 
             //Si esta la pantalla en blanco, mostramos listado basic
@@ -24972,79 +24972,79 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
                 util_convert_o_p_p81_spec_basic_to_scr(nombre,tmpfile_scr);
             }
-		}
+        }
 
-	}
+    }
 
-	//Si es .baszx80 o .baszx81
+    //Si es .baszx80 o .baszx81
     //hacemos preview con pantalla de listado de basic
-	else if (!util_compare_file_extension(nombre,"baszx80") || !util_compare_file_extension(nombre,"baszx81") || !util_compare_file_extension(nombre,"bas")) {
-		debug_printf(VERBOSE_DEBUG,"File is a zx80/zx81/spectrum basic listing");
+    else if (!util_compare_file_extension(nombre,"baszx80") || !util_compare_file_extension(nombre,"baszx81") || !util_compare_file_extension(nombre,"bas")) {
+        debug_printf(VERBOSE_DEBUG,"File is a zx80/zx81/spectrum basic listing");
 
-		menu_filesel_mkdir(tmpdir);
+        menu_filesel_mkdir(tmpdir);
 
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
             util_convert_o_p_p81_spec_basic_to_scr(nombre,tmpfile_scr);
-		}
+        }
 
-	}
+    }
 
-	//Si es .txt o README
+    //Si es .txt o README
     //hacemos preview con pantalla del texto
     //Siempre que no sea el de zesarux_last_dir.txt ni zesarux_scr_info.txt
-	else if (
+    else if (
 
         (!util_compare_file_extension(nombre,"txt") || !util_compare_file_name(nombre,"README")) &&
         util_compare_file_name(nombre,MENU_LAST_DIR_FILE_NAME) && util_compare_file_name(nombre,MENU_SCR_INFO_FILE_NAME)
 
         ){
 
-		debug_printf(VERBOSE_DEBUG,"File is a text file");
+        debug_printf(VERBOSE_DEBUG,"File is a text file");
 
-		menu_filesel_mkdir(tmpdir);
+        menu_filesel_mkdir(tmpdir);
 
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
             util_convert_txt_to_scr(nombre,tmpfile_scr);
-		}
+        }
 
-	}
+    }
 
-	//Si es O
-	else if (!util_compare_file_extension(nombre,"o") ) {
-		debug_printf(VERBOSE_DEBUG,"File is a O snapshot");
+    //Si es O
+    else if (!util_compare_file_extension(nombre,"o") ) {
+        debug_printf(VERBOSE_DEBUG,"File is a O snapshot");
 
         //printf("File is a O snapshot\n");
 
-		menu_filesel_mkdir(tmpdir);
+        menu_filesel_mkdir(tmpdir);
 
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
 
             //Los archivos O de ZX80 no contienen pantalla, a diferencia de los P de ZX81
             //por tanto, sacar el listado basic y mostrarlo como pantalla
 
             util_convert_o_p_p81_spec_basic_to_scr(nombre,tmpfile_scr);
 
-		}
+        }
 
-	}
+    }
 
-	//Si es ZSF
-	else if (!util_compare_file_extension(nombre,"zsf")) {
-		debug_printf(VERBOSE_DEBUG,"File is a zsf snapshot");
+    //Si es ZSF
+    else if (!util_compare_file_extension(nombre,"zsf")) {
+        debug_printf(VERBOSE_DEBUG,"File is a zsf snapshot");
 
-		menu_filesel_mkdir(tmpdir);
+        menu_filesel_mkdir(tmpdir);
 
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_zsf_to_scr(nombre,tmpfile_scr);
-		}
+        //Si no existe preview
+        if (!si_existe_archivo(tmpfile_scr)) {
+            util_convert_zsf_to_scr(nombre,tmpfile_scr);
+        }
 
 
 
-	}
+    }
 
 }
 
@@ -25055,16 +25055,16 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 int util_get_extract_preview_type_file(char *nombre,long long int file_size)
 {
     if (!util_compare_file_extension(nombre,"tap") ||
-		!util_compare_file_extension(nombre,"tzx") ||
-		!util_compare_file_extension(nombre,"pzx") ||
-		!util_compare_file_extension(nombre,"trd") ||
-		!util_compare_file_extension(nombre,"dsk") ||
+        !util_compare_file_extension(nombre,"tzx") ||
+        !util_compare_file_extension(nombre,"pzx") ||
+        !util_compare_file_extension(nombre,"trd") ||
+        !util_compare_file_extension(nombre,"dsk") ||
         !util_compare_file_extension(nombre,"ddh") ||
         !util_compare_file_extension(nombre,"mdr") ||
         !util_compare_file_extension(nombre,"rzx") ||
         !util_compare_file_extension(nombre,"rmd")
 
-	) {
+    ) {
         return 1;
     }
 
