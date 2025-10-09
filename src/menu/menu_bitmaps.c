@@ -33,6 +33,10 @@ Algunos iconos tienen incluido cierto contorno blanco para que queden bien con c
 Y si con todo eso algunos iconos se funden con algun color particular de fondo, se puede habilitar la opción
 de ZX Desktop-> Contorno en iconos
 
+
+Nota 2: Es recomendable que los iconos no llegen a los bordes (ni superior, ni inferior, ni laterales)
+Estéticamente queda mejor dejar un espacio, además la opción de contorno de iconos podrá aplicar a todos los pixeles de esa manera
+
 */
 
 /*
