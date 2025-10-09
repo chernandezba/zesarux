@@ -2065,6 +2065,10 @@ z80_byte debug_antes_im_mode;
 
 z80_bit debug_antes_iff1,debug_antes_iff2;
 
+debug_memory_segment debug_segmentos_memoria_antes[MAX_DEBUG_MEMORY_SEGMENTS];
+
+int debug_antes_total_segmentos_memoria=0;
+
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
 {
@@ -2095,6 +2099,8 @@ void menu_debug_value_registers_modified_copy(void)
 
     debug_antes_iff1.v=iff1.v;
     debug_antes_iff2.v=iff2.v;
+
+    debug_antes_total_segmentos_memoria=debug_get_memory_pages_extended(debug_segmentos_memoria_antes);
 }
 
 
@@ -2135,8 +2141,8 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
 	//char textopaginasmem_linea1[100];
 	//char textopaginasmem_linea2[100];
 
-        debug_memory_segment segmentos[MAX_DEBUG_MEMORY_SEGMENTS];
-        int total_segmentos=debug_get_memory_pages_extended(segmentos);
+    debug_memory_segment segmentos[MAX_DEBUG_MEMORY_SEGMENTS];
+    int total_segmentos=debug_get_memory_pages_extended(segmentos);
 
 	int offset_bloque;
 
@@ -2514,11 +2520,11 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             break;
 
 
+            //Páginas memoria
             case 17:
             case 18:
             case 19:
             case 20:
-                //Por defecto, cad
                 //Mostrar en una linea, dos bloques de memoria mapeadas
                 offset_bloque=linea-17;  //este 17 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
@@ -2527,12 +2533,52 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                 //primer bloque
                 if (offset_bloque<total_segmentos) {
                     sprintf (textoregistros,"[%s]",segmentos[offset_bloque].shortname);
+
+
+                    if (offset_bloque<=debug_antes_total_segmentos_memoria-1) {
+                        if (strcasecmp(debug_segmentos_memoria_antes[offset_bloque].shortname,segmentos[offset_bloque].shortname)) {
+                            //Cambiado bloque
+                            printf("cambiado bloque %d\n",offset_bloque);
+                            z80_64bit inicio_columna=1;
+                            int rotar=16;
+
+                            int longitud=strlen(textoregistros);
+
+                            int i;
+                            for (i=0;i<longitud;i++) {
+                                *columnas_modificadas |=(inicio_columna<<rotar);
+
+                                rotar +=4;
+                                inicio_columna++;
+                            }
+
+
+                        }
+                    }
+
                     offset_bloque++;
 
                     //Segundo bloque
                     if (offset_bloque<total_segmentos) {
                         int longitud=strlen(textoregistros);
                         sprintf (&textoregistros[longitud],"[%s]",segmentos[offset_bloque].shortname);
+
+                        if (offset_bloque<=debug_antes_total_segmentos_memoria-1) {
+                            if (strcasecmp(debug_segmentos_memoria_antes[offset_bloque].shortname,segmentos[offset_bloque].shortname)) {
+                                //Cambiado bloque
+                                printf("cambiado bloque %d\n",offset_bloque);
+                                z80_64bit inicio_columna=1+longitud;
+                                int rotar=16;
+
+                                int i;
+                                for (i=0;i<longitud;i++) {
+                                    *columnas_modificadas |=(inicio_columna<<rotar);
+
+                                    rotar +=4;
+                                    inicio_columna++;
+                                }
+                            }
+                        }
                     }
                 }
             break;
