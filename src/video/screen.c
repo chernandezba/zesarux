@@ -4363,7 +4363,7 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
                        char caracter_siguiente=texto[columna+1];
                        //Si lo de la derecha no es transparente y no es blanco
                         if (caracter_siguiente!=' ' && caracter_siguiente!='w') {
-                            color_pixel=7;//return_color_zesarux_ascii('w');
+                            color_pixel=menu_ext_desktop_color_contorno_iconos;
                        }
                     }
 
@@ -4372,7 +4372,7 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
                        char caracter_anterior=texto[columna-1];
                        //Si lo de la izquierda no es transparente y no es blanco
                         if (caracter_anterior!=' ' && caracter_anterior!='w') {
-                            color_pixel=7;//return_color_zesarux_ascii('w');
+                            color_pixel=menu_ext_desktop_color_contorno_iconos;
                        }
                     }
 
@@ -4383,7 +4383,7 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
                        char caracter_anterior=texto_arriba[columna];
                        //Si lo de arriba no es transparente y no es blanco
                         if (caracter_anterior!=' ' && caracter_anterior!='w') {
-                            color_pixel=7;//return_color_zesarux_ascii('w');
+                            color_pixel=menu_ext_desktop_color_contorno_iconos;
                        }
                     }
 
@@ -4394,7 +4394,7 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
                        char caracter_siguiente=texto_abajo[columna];
                        //Si lo de abajo no es transparente y no es blanco
                         if (caracter_siguiente!=' ' && caracter_siguiente!='w') {
-                            color_pixel=7;//return_color_zesarux_ascii('w');
+                            color_pixel=menu_ext_desktop_color_contorno_iconos;
                        }
                     }
 

@@ -1515,6 +1515,7 @@ extern z80_bit menu_ext_desktop_transparent_configurable_icons;
 extern z80_bit menu_ext_desktop_configurable_icons_text_background;
 extern z80_bit menu_ext_desktop_configurable_icons_short_text;
 extern z80_bit menu_ext_desktop_contorno_iconos;
+extern int menu_ext_desktop_color_contorno_iconos;
 
 extern int lowericon_realtape_frame;
 extern int lowericon_cf2_floppy_frame;

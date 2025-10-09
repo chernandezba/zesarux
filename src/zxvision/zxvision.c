@@ -6355,6 +6355,7 @@ z80_bit menu_ext_desktop_configurable_icons_short_text={0};
 
 //Si se dibuja envoltura para iconos del ZX desktop, botones superiores, inferiores, etc
 z80_bit menu_ext_desktop_contorno_iconos={0};
+int menu_ext_desktop_color_contorno_iconos=7;
 
 int menu_ext_desktop_fill_rainbow_counter;
 

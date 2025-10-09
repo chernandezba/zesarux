@@ -12841,6 +12841,11 @@ void menu_ext_desk_settings_automatic_reorder_icons(MENU_ITEM_PARAMETERS)
     zxdesktop_automatic_reorder_icons.v ^=1;
 }
 
+void menu_zxdesktop_set_stroke_color(MENU_ITEM_PARAMETERS)
+{
+    menu_ext_desktop_color_contorno_iconos++;
+    if (menu_ext_desktop_color_contorno_iconos==16) menu_ext_desktop_color_contorno_iconos=0;
+}
 
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
@@ -13025,10 +13030,17 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,NULL,NULL,
                 "Stroke on icons","Contorno en iconos","Contorn en icones");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_contorno_iconos.v ? 'X' : ' ' ) );
-            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a white stroke on icons");
-            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a white stroke on icons, useful to avoid blending with ZX Desktop");
+            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a stroke on icons");
+            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a stroke on icons, useful to avoid blending with ZX Desktop");
             menu_add_item_menu_opcion_conmuta(array_menu_ext_desktop_settings,&menu_ext_desktop_contorno_iconos);
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
+            if (menu_ext_desktop_contorno_iconos.v) {
+				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_stroke_color,NULL,
+                        "Stroke Color","Color contorno","Color contorn");
+				menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",spectrum_colour_names[menu_ext_desktop_color_contorno_iconos]);
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
+			}
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
