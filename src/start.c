@@ -1719,7 +1719,8 @@ printf("\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
         "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"
         "--zxdesktop-configurable-icons-short-text      Show short text on configurable icons\n"
-        "--zxdesktop-enable-stroke-icons                Sets a stroke on icons, useful to avoid blending with ZX Desktop\n"
+        "--zxdesktop-enable-icons-stroke                Sets a stroke on icons, useful to avoid blending with ZX Desktop\n"
+        "--zxdesktop-icons-stroke-color                 Define color icons stroke (0-15)\n"
 
         "--zxdesktop-add-icon x y a n e s               Add icon to position x,y, to action a, icon name n, extra parameters e, status s. "
           "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. action can be: ");
@@ -2954,8 +2955,19 @@ int parse_cmdline_options(int desde_commandline) {
                 zxdesktop_icon_show_app_open.v=0;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-enable-stroke-icons")) {
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-enable-icons-stroke")) {
                 menu_ext_desktop_contorno_iconos.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-icons-stroke-color")) {
+                siguiente_parametro_argumento();
+                int color=parse_string_to_number(argv[puntero_parametro]);
+                if (color<0 || color>15) {
+                    debug_printf (VERBOSE_ERR,"Invalid color for stroke: %d",color);
+                }
+                else {
+                    menu_ext_desktop_color_contorno_iconos=color;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon")) {
