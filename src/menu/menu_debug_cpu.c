@@ -3001,8 +3001,8 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
 }
 
 //columnas_modificadas es una variable de 64 bits
-//Columnas 1-4 son para nombres de registros (en color de opcion marcada)
-//Columnas 5-12 son para valores de registros (en color inverso)
+//Columnas 1-4 son para nombres de registros (en color inverso)
+//Columnas 5-12 son para valores de registros (en color de opcion marcada)
 void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int linea,int xinicial,z80_64bit columnas_modificadas)
 {
     //no hacerlo si la vista no muestra registros
@@ -3025,62 +3025,62 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
 
     if (columna1) {
         columna1--;
-        zxvision_set_attr(w,xinicial+columna1,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna1,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 
     if (columna2) {
         columna2--;
-        zxvision_set_attr(w,xinicial+columna2,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna2,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 
     if (columna3) {
         columna3--;
-        zxvision_set_attr(w,xinicial+columna3,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna3,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 
     if (columna4) {
         columna4--;
-        zxvision_set_attr(w,xinicial+columna4,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+        zxvision_set_attr(w,xinicial+columna4,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
     }
 
     if (columna5) {
         columna5--;
-        zxvision_set_attr(w,xinicial+columna5,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna5,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 
     if (columna6) {
         columna6--;
-        zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 
     if (columna7) {
         columna7--;
-        zxvision_set_attr(w,xinicial+columna7,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna7,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 
     if (columna8) {
         columna8--;
-        zxvision_set_attr(w,xinicial+columna8,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna8,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 
     if (columna9) {
         columna9--;
-        zxvision_set_attr(w,xinicial+columna9,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna9,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 
     if (columna10) {
         columna10--;
-        zxvision_set_attr(w,xinicial+columna10,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna10,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 
     if (columna11) {
         columna11--;
-        zxvision_set_attr(w,xinicial+columna11,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna11,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 
     if (columna12) {
         columna12--;
-        zxvision_set_attr(w,xinicial+columna12,linea,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,0);
+        zxvision_set_attr(w,xinicial+columna12,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
     }
 }
 
