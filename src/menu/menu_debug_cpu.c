@@ -5159,13 +5159,23 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 
                 //En vistas 5 y 6 se usa el otro memptr, que llamaremos memptx
                 char letra_final_memptr='r';
-                if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) letra_final_memptr='x';
 
-								sprintf(buffer_mensaje_short,"~~Mpt%c:%sH [%c] ~~FlwPC ~~1-~~%c:V%d",letra_final_memptr,
-                                        string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista,menu_debug_registers_current_view );
+                char string_follow_pc_short[30];
+                char string_follow_pc_long[30];
+                sprintf(string_follow_pc_short,"[%c] ~~FlwPC ",(menu_debug_follow_pc.v ? 'X' : ' '));
+                sprintf(string_follow_pc_long,"[%c] ~~FollowPC ",(menu_debug_follow_pc.v ? 'X' : ' '));
 
-								sprintf(buffer_mensaje_long,"~~Mempt%c:%sH [%c] ~~FollowPC ~~1-~~%c:View %d",letra_final_memptr,
-                                        string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista,menu_debug_registers_current_view );
+                if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
+                    letra_final_memptr='x';
+                    string_follow_pc_short[0]=0;
+                    string_follow_pc_long[0]=0;
+                }
+
+                sprintf(buffer_mensaje_short,"~~Mpt%c:%sH %s~~1-~~%c:V%d",letra_final_memptr,
+                        string_direccion,string_follow_pc_short,maxima_vista,menu_debug_registers_current_view );
+
+                sprintf(buffer_mensaje_long,"~~Mempt%c:%sH %s~~1-~~%c:View %d",letra_final_memptr,
+                        string_direccion,string_follow_pc_long,maxima_vista,menu_debug_registers_current_view );
 
 
 

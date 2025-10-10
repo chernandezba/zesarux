@@ -45,7 +45,7 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 Como hacerlo? Guardamos bloque de memoria (sin llamar a peek_byte_no_time para no alterar condiciones MRA) o comparamos
 las strings de pantalla tal cual?
 
--followpc no tiene sentido que lo enseñe en vistas 5 y 6
+ok-followpc no tiene sentido que lo enseñe en vistas 5 y 6
 
 ok? -cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores
 Con ruN pasa lo mismo también
