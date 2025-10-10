@@ -428,5 +428,5 @@ probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin
 
 -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 
-
+-funcion (fkey/icono) que permita enviar abrir menu y enviar pulsaciones de hotkeys, para poder lanzar la mayoria de acciones de menus
 

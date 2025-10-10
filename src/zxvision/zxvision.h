@@ -989,8 +989,8 @@ struct s_menu_item {
 	//funcion a la que debe saltar al pulsar espacio
 	t_menu_funcion menu_funcion_espacio;
 
-    //Opcion está marcada, simplemente mostrar en otro color
-    //Usado por ejemplo en teclados de perfil de teclas de ZENG Online
+    //Opcion está marcada, simplemente mostrar en otro color, la mayoria siempre es rojo
+    //Usado por ejemplo en teclados de perfil de teclas de ZENG Online, en F8 OSD keyboard, o en Debug CPU para mostrar valores de registros modificados
     int opcion_marcada;
 
     //Para mostrarlo en un color diferente, como en la ventana de edición de breakpoints

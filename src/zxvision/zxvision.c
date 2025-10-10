@@ -2226,7 +2226,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,1+8,		//Colores waveform
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
-        2,7+8,		//Color para opcion marcada
+        4,0,		//Color para opcion marcada
 
         7,0, //Colores fileselector, zona seleccion archivos
 
@@ -2256,7 +2256,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,1+8,		//Colores waveform
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
-        4,7+8,		//Color para opcion marcada
+        2,7+8,		//Color para opcion marcada
 
         7,0, //Colores fileselector, zona seleccion archivos
 
@@ -2286,7 +2286,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         4,4+8,		//Colores waveform
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
-        1,7+8,		//Color para opcion marcada
+        2,7+8,		//Color para opcion marcada
 
         7,0, //Colores fileselector, zona seleccion archivos
 
@@ -2316,7 +2316,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,1+8,		//Colores waveform
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
-        3,7+8,		//Color para opcion marcada
+        4+8,0,		//Color para opcion marcada
 
         7,0, //Colores fileselector, zona seleccion archivos
 
@@ -2346,7 +2346,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,1+8,		//Colores waveform
         7,		//Color para zona no usada en visualmem
         7,      //color block visualtape
-        5,7+8,		//Color para opcion marcada
+        2,7+8,		//Color para opcion marcada
 
         7,0, //Colores fileselector, zona seleccion archivos
 
@@ -2376,7 +2376,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         4,4+8,		//Colores waveform
         5,		//Color para zona no usada en visualmem
         5,      //color block visualtape
-        6,7+8,		//Color para opcion marcada
+        2,7+8,		//Color para opcion marcada
 
         7,0, //Colores fileselector, zona seleccion archivos
 
@@ -2436,7 +2436,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         5,5+8,              //Colores waveform
         7,               //Color para zona no usada en visualmem
         7,      //color block visualtape
-        0,7+8,		//Color para opcion marcada
+        1,7+8,		//Color para opcion marcada
 
         0,7, //Colores fileselector, zona seleccion archivos
 
