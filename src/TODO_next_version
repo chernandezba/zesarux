@@ -86,10 +86,8 @@ menu_download_file
 
 
 
-
 -Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
 de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
-
 
 
 
@@ -166,7 +164,8 @@ Por ejemplo "Betadisk" está en Main Menu->Storage->Betadisk
 
 
 
--menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado, pero solo cuando es driver texto
+-menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado (F8), pero solo cuando es driver texto. Pero la gestion de teclado cuando se pulsa F8 es un tanto especial, porque
+envia la tecla abajo y vale en cualquier parte de menu. Quiza en F8 se deberia conservar el viejo de texto aun
 
 
 
@@ -203,9 +202,6 @@ pues si van a menu anterior, al abrir ese menu ya detectan error pendiente y lo 
 
 
 -Visual real tape: con cinta cdt de CPC (zynaps.cdt) dice que hay bloques de spectrum y no es asi
-
-
--modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
 
 
 
@@ -297,15 +293,14 @@ Realmente tiene que haber algo diferente entre menu_generic_message_splash y men
 al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Pero con el segundo, el foco se queda en la ventana que habia debajo
 
 
-
-
-
 -De alguna manera que se vea una miniatura de la pantalla del juego cargado
 En alguna ventana nueva quizá
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 
--Ventana que permita agregar notas, que permita quedarse en bakground
+-Ventana que permita agregar notas, que permita quedarse en background
+Problema: donde se guardan las notas? En config no puede ser, ocuparia demasiado
+Deberia ir vinculado a un archivo de texto. Basicamente se trata de hacer un mini editor de texto
 
 -Copi128: poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
 y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
@@ -345,9 +340,6 @@ defina también tamaños de esas ventanas?
 Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargando o copiando desde cinta
 
 
-
-
-
 -SDL2 no deja cambiar a zoom 2 redimensionando con ratón
 
 -sdl en debian 12 32 bits inicializa muy lento
@@ -357,6 +349,7 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 *en haiku se bloquea al arrancar si conectado un volante
 
 -implementar máquinas de 60 Hz (timex, master system etc)
+-modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
 -implementar timings ula TK90x
 
 -baseconf: intentar que arranque. Y si no, quitar de la lista
