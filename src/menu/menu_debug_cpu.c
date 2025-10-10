@@ -2076,6 +2076,11 @@ debug_memory_segment debug_segmentos_memoria_antes[MAX_DEBUG_MEMORY_SEGMENTS];
 
 int debug_antes_total_segmentos_memoria=0;
 
+
+z80_byte debug_antes_peek_hl,debug_antes_peek_hl_2;
+z80_byte debug_antes_peek_de,debug_antes_peek_de_2;
+z80_byte debug_antes_peek_bc,debug_antes_peek_bc_2;
+
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
 {
@@ -2108,6 +2113,15 @@ void menu_debug_value_registers_modified_copy(void)
     debug_antes_iff2.v=iff2.v;
 
     debug_antes_total_segmentos_memoria=debug_get_memory_pages_extended(debug_segmentos_memoria_antes);
+
+    debug_antes_peek_hl=peek_byte_z80_moto(HL);
+    debug_antes_peek_hl_2=peek_byte_z80_moto(HL+1);
+
+    debug_antes_peek_de=peek_byte_z80_moto(DE);
+    debug_antes_peek_de_2=peek_byte_z80_moto(DE+1);
+
+    debug_antes_peek_bc=peek_byte_z80_moto(BC);
+    debug_antes_peek_bc_2=peek_byte_z80_moto(BC+1);
 }
 
 
@@ -2194,6 +2208,10 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
 
     int i;
     for (i=0;i<DEBUG_FILAS_TECLAS_FILAS*DEBUG_FILAS_TECLAS_LEN_LINEA;i++) filas_teclas[i]=0;
+
+    z80_byte peek_hl,peek_hl_2;
+    z80_byte peek_de,peek_de_2;
+    z80_byte peek_bc,peek_bc_2;
 
 	if (CPU_IS_Z80) {
 
@@ -2423,24 +2441,63 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             break;
 
             case 11:
-                sprintf (textoregistros,"(HL) %02X %02X",peek_byte_z80_moto(HL),peek_byte_z80_moto(HL+1));
+                peek_hl=peek_byte_z80_moto(HL);
+                peek_hl_2=peek_byte_z80_moto(HL+1);
+                sprintf (textoregistros,"(HL) %02X %02X",peek_hl,peek_hl_2);
                 //mostrar cuando se modifica (HL)
                 //columna 1,2,3,4 registro (HL)
                 if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+
+                if (cpu_step_mode.v) {
+                    if (peek_hl!=debug_antes_peek_hl) {
+                        *columnas_modificadas |=(6<<16);
+                        *columnas_modificadas |=(7<<20);
+                    }
+                    if (peek_hl_2!=debug_antes_peek_hl_2) {
+                        *columnas_modificadas |=(9<<24);
+                        *columnas_modificadas |=(10<<28);
+                    }
+                }
             break;
 
             case 12:
-                sprintf (textoregistros,"(DE) %02X %02X",peek_byte_z80_moto(DE),peek_byte_z80_moto(DE+1));
+                peek_de=peek_byte_z80_moto(DE);
+                peek_de_2=peek_byte_z80_moto(DE+1);
+                sprintf (textoregistros,"(DE) %02X %02X",peek_de,peek_de_2);
                 //mostrar cuando se modifica (DE)
                 //columna 1,2,3,4 registro (DE)
                 if (registros_modificados & MOD_REG_DE_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+
+                if (cpu_step_mode.v) {
+                    if (peek_de!=debug_antes_peek_de) {
+                        *columnas_modificadas |=(6<<16);
+                        *columnas_modificadas |=(7<<20);
+                    }
+                    if (peek_de_2!=debug_antes_peek_de_2) {
+                        *columnas_modificadas |=(9<<24);
+                        *columnas_modificadas |=(10<<28);
+                    }
+                }
             break;
 
             case 13:
-                sprintf (textoregistros,"(BC) %02X %02X",peek_byte_z80_moto(BC),peek_byte_z80_moto(BC+1));
+                peek_bc=peek_byte_z80_moto(BC);
+                peek_bc_2=peek_byte_z80_moto(BC+1);
+                sprintf (textoregistros,"(BC) %02X %02X",peek_bc,peek_bc_2);
                 //mostrar cuando se modifica (BC)
                 //columna 1,2,3,4 registro (BC)
                 if (registros_modificados & MOD_REG_BC_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+
+                if (cpu_step_mode.v) {
+                    if (peek_bc!=debug_antes_peek_bc) {
+                        *columnas_modificadas |=(6<<16);
+                        *columnas_modificadas |=(7<<20);
+                    }
+                    if (peek_bc_2!=debug_antes_peek_bc_2) {
+                        *columnas_modificadas |=(9<<24);
+                        *columnas_modificadas |=(10<<28);
+                    }
+                }
             break;
 
 
@@ -5375,7 +5432,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 							//01234567890123456789012345678901
 							// ClrTstPart Write VScr MemZn 99
-				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr Ev~~te Mem~~Zn %d",menu_debug_memory_zone);
+				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr Ev~~t Mem~~Zn %d",menu_debug_memory_zone);
 							//012345678901234567890123456789012345678901234567890123456789012
 							// ClearTstatesPartial Write ViewScreen MemoryZone 99
 				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
@@ -5386,7 +5443,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			else {
 							//01234567890123456789012345678901
 							// Clrtstpart Write MemZone 99
-				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite Ev~~te Mem~~Zone %d",menu_debug_memory_zone);
+				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite Ev~~t Mem~~Zone %d",menu_debug_memory_zone);
 
 							//012345678901234567890123456789012345678901234567890123456789012
 							// ClearTstatesPartial Write MemoryZone 99

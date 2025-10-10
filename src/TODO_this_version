@@ -34,10 +34,6 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 ----Fin top bar menu
 
-
-
--en debug cpu, para evaluar expresion hay que ir a breakpoints. poco intuitivo. deberia tener una tecla directa desde debug cpu
-
 -agregar a ayuda de debug cpu:
 * lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
 * memptx de vistas 5 y 6
