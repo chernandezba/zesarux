@@ -1,3 +1,5 @@
+*zxlife poder acelerarlo o ralentizarlo
+
 ----top bar menu
 
 *busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
@@ -31,6 +33,8 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *mensajes debug topbar meterlos en un tipo de debug nuevo, para poder filtrar
 
+*al pulsar en iconos de dispositivos, se abren los menus arriba, por debajo de donde estarían
+los botones superiores. Quizá deberian abrirse mas arriba, justo por debajo del top menu?
 
 ----Fin top bar menu
 
