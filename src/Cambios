@@ -11,6 +11,7 @@ Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado debug cpu:
 - Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
 - Vistas 5 y 6 usan un memptr diferente ("memptx")
+- Tecla directa (t) para evaluar expresiones
 
 Agregado carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido descomprimir archivos tar y rar con espacios en el nombre

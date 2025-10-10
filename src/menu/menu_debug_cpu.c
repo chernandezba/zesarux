@@ -5375,10 +5375,10 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 							//01234567890123456789012345678901
 							// ClrTstPart Write VScr MemZn 99
-				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr Mem~~Zn %d",menu_debug_memory_zone);
+				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr Ev~~te Mem~~Zn %d",menu_debug_memory_zone);
 							//012345678901234567890123456789012345678901234567890123456789012
 							// ClearTstatesPartial Write ViewScreen MemoryZone 99
-				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Memory~~Zone %d",menu_debug_memory_zone);
+				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
 
 
 				menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
@@ -5386,11 +5386,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			else {
 							//01234567890123456789012345678901
 							// Clrtstpart Write MemZone 99
-				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite Mem~~Zone %d",menu_debug_memory_zone);
+				sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite Ev~~te Mem~~Zone %d",menu_debug_memory_zone);
 
 							//012345678901234567890123456789012345678901234567890123456789012
 							// ClearTstatesPartial Write MemoryZone 99
-				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite Memory~~Zone %d",menu_debug_memory_zone);
+				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
 
 				menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
 
@@ -9404,6 +9404,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 				}
 
+				if (tecla=='t') {
+					menu_breakpoints_condition_evaluate_new(0);
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+				}
+
 				if (tecla=='k' && menu_debug_registers_current_view!=8 && CPU_IS_Z80) {
                     menu_debug_cpu_view_stack();
                     //Decimos que no hay tecla pulsada
@@ -9877,6 +9883,26 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					menu_emulation_paused_on_menu=1;
 
                     menu_breakpoints(0);
+
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+
+					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+					si_ejecuta_una_instruccion=0;
+
+
+                    //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
+                    //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
+					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+
+                }
+
+                if (tecla=='t') {
+					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
+					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+					menu_emulation_paused_on_menu=1;
+
+                    menu_breakpoints_condition_evaluate_new(0);
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;

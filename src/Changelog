@@ -11,6 +11,7 @@ Improved editing joystick to events/keys (allow to unasign easily)
 Improved debug cpu:
 - Show when registers values are modified by last opcode execution
 - Views 5 and 6 use a different memptr ("memptx")
+- Direct key (t) to evaluate expressions
 
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name
