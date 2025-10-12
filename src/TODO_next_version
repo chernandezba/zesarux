@@ -365,9 +365,7 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 -Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
 
--en Mac, con driver curses, el timer que se activa es usleep y va mas lento.
-Tendria que saltar a timer tipo date, en caso que no se use driver de video cocoa
-o cambiar la prioridad a date-usleep, que lo hace en caso de cocoa pero parece que no con curses
+
 
 -hacer un reduce 0.5 (como el 0.75 pero a la mitad). soportar antialias también
 
