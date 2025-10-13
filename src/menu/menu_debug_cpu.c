@@ -1595,6 +1595,11 @@ char *menu_debug_registers_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
 
 int menu_debug_registers_change_pedido_una_vez=0;
 
+//Decir si se ha cambiado el cursor en vistas 5 y 6 y no tiene que mostrar diferencias al listar hexadecimal la primera vez
+int pendiente_copy_diferencias_vistas_hexa=0;
+
+
+
 void menu_debug_registers_change_ptr(void)
 {
 
@@ -1622,6 +1627,7 @@ void menu_debug_registers_change_ptr(void)
         if (result==0) {
             if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
                 menu_debug_memory_pointer_hexa_mem=last_menu_debug_memory_pointer;
+                pendiente_copy_diferencias_vistas_hexa=1;
             }
             else {
                 menu_debug_memory_pointer=last_menu_debug_memory_pointer;
@@ -2089,7 +2095,8 @@ z80_byte debug_antes_peek_de,debug_antes_peek_de_2;
 z80_byte debug_antes_peek_bc,debug_antes_peek_bc_2;
 
 #define DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA 8
-#define DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS 20
+//mas que suficiente 50 lineas
+#define DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS 50
 
 
 menu_debug_hexdump_store_differences menu_debug_registers_diferencias_vistas_hexadecimal[DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS][DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA];
@@ -3212,8 +3219,6 @@ int menu_debug_cpu_find_previous_address(int puntero_dir)
 }
 
 
-
-
 int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 {
 	//printf("linea: %d\n",linea);
@@ -3971,6 +3976,8 @@ int menu_debug_registers_subview_type=0;
 
 			int limite=menu_debug_get_main_list_view(w);
 
+            //printf("Dibujar vista 5/6\n");
+
 			for (i=0;i<limite;i++) {
                 //menu_debug_registers_diferencias_vistas_hexadecimal
 
@@ -3994,17 +4001,23 @@ int menu_debug_registers_subview_type=0;
                     //menu_debug_registers_strings_diferencias_vistas_hexadecimal[DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS][DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA*2+1];
                     //zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
 
-                    printf("Dibujar vista 5/6\n");
+
 
                     if (i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS && cpu_step_mode.v) {
                         int j;
                         for (j=0;j<DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA;j++) {
+                            if (pendiente_copy_diferencias_vistas_hexa) puntero_diferencias[j].antes=puntero_diferencias[j].despues;
+
                             if (puntero_diferencias[j].antes!=puntero_diferencias[j].despues) {
 
                                 int columna=pos_volcado_hexa+j*2;
 
                                 zxvision_set_attr(w,columna,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
                                 zxvision_set_attr(w,columna+1,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+
+                                //Tambien cambio sobre caracter
+                                columna=pos_volcado_hexa+DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA*2+1+j;
+                                zxvision_set_attr(w,columna,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
 
                             }
                         }
@@ -4013,6 +4026,8 @@ int menu_debug_registers_subview_type=0;
 					menu_debug_memory_pointer_copia +=longitud_linea;
                     linea++;
 			}
+
+            pendiente_copy_diferencias_vistas_hexa=0;
 
 			menu_debug_memory_pointer_last=menu_debug_memory_pointer_copia;
 
@@ -4834,6 +4849,7 @@ void menu_debug_cursor_up(void)
         else {  //Vista solo hexa
             if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
                 menu_debug_memory_pointer_hexa_mem -=menu_debug_registers_print_registers_longitud_opcode;
+                pendiente_copy_diferencias_vistas_hexa=1;
             }
 
             else {
@@ -4855,6 +4871,7 @@ void menu_debug_cursor_down(zxvision_window *w)
                                         else {  //Vista solo hexa
                                             if (menu_debug_registers_current_view==5 || menu_debug_registers_current_view==6) {
                                                 menu_debug_memory_pointer_hexa_mem +=menu_debug_registers_print_registers_longitud_opcode;
+                                                pendiente_copy_diferencias_vistas_hexa=1;
                                             }
 
                                             else {
