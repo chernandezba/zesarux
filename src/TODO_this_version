@@ -53,7 +53,7 @@ o cambiar la prioridad a date-usleep, que lo hace en caso de cocoa pero parece q
 * memptx de vistas 5 y 6
 * tecla 't' para evaluate
 
--mostrar diferencias de memoria en vistas 5 y 6 de ejecución anterior y actual
+ok-mostrar diferencias de memoria en vistas 5 y 6 de ejecución anterior y actual
 Como hacerlo? Guardamos bloque de memoria (sin llamar a peek_byte_no_time para no alterar condiciones MRA) o comparamos
 las strings de pantalla tal cual?
 
