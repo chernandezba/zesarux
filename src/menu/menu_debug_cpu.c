@@ -2088,6 +2088,27 @@ z80_byte debug_antes_peek_hl,debug_antes_peek_hl_2;
 z80_byte debug_antes_peek_de,debug_antes_peek_de_2;
 z80_byte debug_antes_peek_bc,debug_antes_peek_bc_2;
 
+#define DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA 8
+#define DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS 20
+
+
+menu_debug_hexdump_store_differences menu_debug_registers_diferencias_vistas_hexadecimal[DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS][DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA];
+
+//Para copiar valores actuales como los de antes
+void menu_debug_registers_diferencias_vistas_hexadecimal_copy(void)
+{
+    int i;
+
+    for (i=0;i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS;i++) {
+
+        int j;
+        for (j=0;j<DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA;j++) {
+            menu_debug_registers_diferencias_vistas_hexadecimal[i][j].antes=menu_debug_registers_diferencias_vistas_hexadecimal[i][j].despues;
+        }
+    }
+
+}
+
 //Copiarnos los registros anteriores antes de hacer un cpu step to step
 void menu_debug_value_registers_modified_copy(void)
 {
@@ -2129,6 +2150,8 @@ void menu_debug_value_registers_modified_copy(void)
 
     debug_antes_peek_bc=peek_byte_z80_moto(BC);
     debug_antes_peek_bc_2=peek_byte_z80_moto(BC+1);
+
+    menu_debug_registers_diferencias_vistas_hexadecimal_copy();
 }
 
 
@@ -3188,11 +3211,8 @@ int menu_debug_cpu_find_previous_address(int puntero_dir)
     return -1;
 }
 
-#define DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA 8
-#define DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS 20
 
 
-menu_debug_hexdump_store_differences menu_debug_registers_diferencias_vistas_hexadecimal[DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS][DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA];
 
 int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 {
@@ -3976,12 +3996,17 @@ int menu_debug_registers_subview_type=0;
 
                     printf("Dibujar vista 5/6\n");
 
-                    if (i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS) {
+                    if (i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS && cpu_step_mode.v) {
                         int j;
                         for (j=0;j<DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA;j++) {
                             if (puntero_diferencias[j].antes!=puntero_diferencias[j].despues) {
 
-                                zxvision_set_attr(w,j,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+                                int columna=j*2;
+
+                                //TODO: averiguar en que columna empieza el volcado hexadecimal
+
+                                zxvision_set_attr(w,columna,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+                                zxvision_set_attr(w,columna+1,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
 
                             }
                         }
