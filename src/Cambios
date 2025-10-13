@@ -8,6 +8,7 @@ Mejorado ZX Vision:
 - Agregada opción para añadir un contorno a los iconos
 
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
+Mejorado ZX Life: permitir acelerar juego
 Mejorado debug cpu:
 - Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
 - Vistas 5 y 6 usan un memptr diferente ("memptx")

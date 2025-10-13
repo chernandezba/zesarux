@@ -313,6 +313,7 @@ extern int zxdesktop_icon_zxunoflash_inverse;
 extern int zxdesktop_icon_zxmmcplusflash_inverse;
 extern int zxdesktop_icon_hilow_inverse;
 
+extern void gamelife_timer_counter_event(void);
 
 #define GENERIC_VISUALTAPE_COLOR_FONDO AMIGAOS_COLOUR_blue
 #define VISUALTAPE_COLOR_MARCO 7

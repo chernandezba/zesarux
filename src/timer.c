@@ -1265,6 +1265,8 @@ void timer_check_interrupt(void)
 
         textadv_location_timer_event();
 
+        gamelife_timer_counter_event();
+
         //Cosas que suceden cada 1 segundo
         if (contador_segundo>=1000) {
 
@@ -1300,8 +1302,6 @@ void timer_check_interrupt(void)
             }*/
 
 
-            //contador para juego de la vida
-            gamelife_timer_counter++;
 
 
             //temporizador de impresion para escribir generico footer en pantalla

@@ -42570,7 +42570,20 @@ int gamelife_get_neighbors(int x,int y)
 }
 
 
+int gamelife_timer_counter_frames=0;
 
+//Cada cuantos frames se considera un cambio de generacion
+int gamelife_timer_counter_total_frames=50;
+
+//Llamado 50 veces por segundo
+void gamelife_timer_counter_event(void)
+{
+    gamelife_timer_counter_frames++;
+    if (gamelife_timer_counter_frames>=gamelife_timer_counter_total_frames) {
+        gamelife_timer_counter++;
+        gamelife_timer_counter_frames=0;
+    }
+}
 
 void gamelife_next_generation(void)
 {
@@ -42591,16 +42604,11 @@ Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
 
     last_gamelife_timer_counter=gamelife_timer_counter;
 
-    //Y si se ha pulsado cursor arriba o abajo
-    //if (!gamelife_next_event) return;
-
-    //gamelife_next_event=0;
-
     int x,y;
 
     for (x=0;x<gamelife_current_width;x++) {
         for (y=0;y<gamelife_current_height;y++) {
-            //randomize board
+
             int alive=gamelife_board[x][y];
 
             int neighbors=gamelife_get_neighbors(x,y);
@@ -42785,8 +42793,15 @@ void menu_toy_zxlife_overlay(void)
     //dibujando a 49 FPS en vez de 50, no se dibujaria nunca
     //aqui mejor se compara contra contador_segundo_infinito porque contador_segundo coincide muchas veces con el
     //contador anterior y entonces refresca menos de 2 veces por segundo
+
+    int conteo_refresco=20*gamelife_timer_counter_total_frames;
+
+    //Al menos redibujar pantalla 2 veces por segundo
+    if (conteo_refresco>500) conteo_refresco=500;
+
+
     if (
-        ((contador_segundo%500) == 0 && menu_toy_zxlife_contador_segundo_anterior!=contador_segundo_infinito) ||
+        ((contador_segundo % conteo_refresco) == 0 && menu_toy_zxlife_contador_segundo_anterior!=contador_segundo_infinito) ||
         menu_toy_zxlife_draw_force_overlay
 
     )
@@ -42794,7 +42809,7 @@ void menu_toy_zxlife_overlay(void)
     {
         menu_toy_zxlife_draw_force_overlay=0;
         menu_toy_zxlife_contador_segundo_anterior=contador_segundo_infinito;
-        //printf("Draw\n");
+        //printf("----Draw---- %d\n",contador_segundo);
 
 
         //Recalcular ancho y alto segun tamaño ventana
@@ -43019,6 +43034,12 @@ void menu_toys_zxlife_edit(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_toys_zxlife_fps(MENU_ITEM_PARAMETERS)
+{
+    gamelife_timer_counter_total_frames /=2;
+    if (gamelife_timer_counter_total_frames==0) gamelife_timer_counter_total_frames=50;
+}
+
 void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -43124,6 +43145,16 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
             "[%c] ~~Grid",(gamelife_grid ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_zxlife,'g');
         menu_add_item_menu_ayuda(array_menu_zxlife,"Toggle grid");
+        menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
+        x+=9;
+
+
+        int game_fps=50/gamelife_timer_counter_total_frames;
+        //printf("fps: %d\n",game_fps);
+        menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_fps,NULL,
+            "[%2d] ~~FPS",game_fps);
+        menu_add_item_menu_shortcut(array_menu_zxlife,'f');
+        menu_add_item_menu_ayuda(array_menu_zxlife,"Game speed");
         menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
         x+=9;
 
