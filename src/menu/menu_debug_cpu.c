@@ -3979,7 +3979,6 @@ int menu_debug_registers_subview_type=0;
             //printf("Dibujar vista 5/6\n");
 
 			for (i=0;i<limite;i++) {
-                //menu_debug_registers_diferencias_vistas_hexadecimal
 
                     menu_debug_hexdump_store_differences *puntero_diferencias;
                     if (i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS) {
@@ -3998,10 +3997,6 @@ int menu_debug_registers_subview_type=0;
 					//menu_escribe_linea_opcion(linea++,-1,1,dumpassembler);
 					zxvision_print_string_defaults_fillspc(w,0,linea,dumpassembler);
 
-                    //menu_debug_registers_strings_diferencias_vistas_hexadecimal[DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS][DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA*2+1];
-                    //zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
-
-
 
                     if (i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS && cpu_step_mode.v) {
                         int j;
@@ -4015,7 +4010,7 @@ int menu_debug_registers_subview_type=0;
                                 zxvision_set_attr(w,columna,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
                                 zxvision_set_attr(w,columna+1,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
 
-                                //Tambien cambio sobre caracter
+                                //Tambien cambio color de caracter
                                 columna=pos_volcado_hexa+DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA*2+1+j;
                                 zxvision_set_attr(w,columna,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
 
