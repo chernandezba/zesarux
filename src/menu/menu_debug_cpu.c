@@ -282,7 +282,7 @@ void menu_debug_dissassemble_una_inst_sino_hexa(char *dumpassembler,menu_z80_mot
 
 	buf_temp_hexa[i]=0;
 
-	menu_debug_registers_dump_hex(buf_temp_hexa,dir,longitud_opcode);
+	menu_debug_registers_dump_hex(buf_temp_hexa,dir,longitud_opcode,NULL);
 	int longitud_texto_hex=longitud_opcode*2;
 	//quitar el 0 final
 	buf_temp_hexa[longitud_texto_hex]=' ';
@@ -1340,18 +1340,25 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
 
 //Vuelca contenido hexa o decimal de memoria de spectrum en cadena de texto, finalizando con 0 la cadena de texto
-void menu_debug_registers_dump_hex_decimal(char *texto,menu_z80_moto_int direccion,int longitud,int decimal)
+void menu_debug_registers_dump_hex_decimal(char *texto,menu_z80_moto_int direccion,int longitud,
+    int decimal,menu_debug_hexdump_store_differences *diferencias)
 {
 
 	z80_byte byte_leido;
 
 	int puntero=0;
 
-	for (;longitud>0;longitud--) {
+    int bytes_leidos=0;
+
+	for (;longitud>0;longitud--,bytes_leidos++) {
 
 		direccion=adjust_address_memory_size(direccion);
 
         byte_leido=menu_debug_get_mapped_byte(direccion);
+
+        if (diferencias!=NULL) {
+            diferencias[bytes_leidos].despues=byte_leido;
+        }
 
         direccion++;
 
@@ -1370,15 +1377,15 @@ void menu_debug_registers_dump_hex_decimal(char *texto,menu_z80_moto_int direcci
 }
 
 //Vuelca contenido hexa de memoria de spectrum en cadena de texto, finalizando con 0 la cadena de texto
-void menu_debug_registers_dump_hex(char *texto,menu_z80_moto_int direccion,int longitud)
+void menu_debug_registers_dump_hex(char *texto,menu_z80_moto_int direccion,int longitud,menu_debug_hexdump_store_differences *diferencias)
 {
-    menu_debug_registers_dump_hex_decimal(texto,direccion,longitud,0);
+    menu_debug_registers_dump_hex_decimal(texto,direccion,longitud,0,diferencias);
 }
 
 //Vuelca contenido decimal de memoria de spectrum en cadena de texto, finalizando con 0 la cadena de texto
 void menu_debug_registers_dump_decimal(char *texto,menu_z80_moto_int direccion,int longitud)
 {
-	menu_debug_registers_dump_hex_decimal(texto,direccion,longitud,1);
+	menu_debug_registers_dump_hex_decimal(texto,direccion,longitud,1,NULL);
 }
 
 //Vuelca contenido ascii de memoria de spectrum en cadena de texto
@@ -3181,7 +3188,11 @@ int menu_debug_cpu_find_previous_address(int puntero_dir)
     return -1;
 }
 
+#define DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA 8
+#define DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS 20
 
+
+menu_debug_hexdump_store_differences menu_debug_registers_diferencias_vistas_hexadecimal[DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS][DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA];
 
 int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 {
@@ -3250,22 +3261,22 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 
 			if (CPU_IS_SCMP) {
-				menu_debug_registers_dump_hex(dumpmemoria,get_pc_register(),8);
+				menu_debug_registers_dump_hex(dumpmemoria,get_pc_register(),8,NULL);
 	     		sprintf (textoregistros,"PC: %04X : %s",get_pc_register(),dumpmemoria);
 	     		 //menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
 
-				menu_debug_registers_dump_hex(dumpmemoria,scmp_m_P1.w.l,8);
+				menu_debug_registers_dump_hex(dumpmemoria,scmp_m_P1.w.l,8,NULL);
 				sprintf (textoregistros,"P1: %04X : %s",scmp_m_P1.w.l,dumpmemoria);
 				//menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
 
-				menu_debug_registers_dump_hex(dumpmemoria,scmp_m_P2.w.l,8);
+				menu_debug_registers_dump_hex(dumpmemoria,scmp_m_P2.w.l,8,NULL);
 				sprintf (textoregistros,"P2: %04X : %s",scmp_m_P2.w.l,dumpmemoria);
 				//menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
 
-				menu_debug_registers_dump_hex(dumpmemoria,scmp_m_P3.w.l,8);
+				menu_debug_registers_dump_hex(dumpmemoria,scmp_m_P3.w.l,8,NULL);
 				sprintf (textoregistros,"P3: %04X : %s",scmp_m_P3.w.l,dumpmemoria);
 				//menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
@@ -3324,14 +3335,14 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 			else {
 				//Z80
-				menu_debug_registers_dump_hex(dumpmemoria,get_pc_register(),8);
+				menu_debug_registers_dump_hex(dumpmemoria,get_pc_register(),8,NULL);
 
 				sprintf (textoregistros,"PC: %04X : %s",get_pc_register(),dumpmemoria);
 				//menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
 
 
-				menu_debug_registers_dump_hex(dumpmemoria,reg_sp,8);
+				menu_debug_registers_dump_hex(dumpmemoria,reg_sp,8,NULL);
 				sprintf (textoregistros,"SP: %04X : %s",reg_sp,dumpmemoria);
 				//menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
 				zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
@@ -3746,7 +3757,7 @@ int menu_debug_registers_subview_type=0;
 
 
 					//Si mostramos en vez de desensamblado, volcado hexa, decimal o ascii
-					if (menu_debug_registers_subview_type==1)	menu_debug_registers_dump_hex(dumpassembler,puntero_dir,longitud_op);
+					if (menu_debug_registers_subview_type==1)	menu_debug_registers_dump_hex(dumpassembler,puntero_dir,longitud_op,NULL);
                     if (menu_debug_registers_subview_type==2)	menu_debug_registers_dump_decimal(dumpassembler,puntero_dir,longitud_op);
 					if (menu_debug_registers_subview_type==3)  menu_debug_registers_dump_ascii(dumpassembler,puntero_dir,longitud_op,menu_debug_hexdump_with_ascii_modo_ascii,0);
 
@@ -3935,17 +3946,49 @@ int menu_debug_registers_subview_type=0;
 			menu_escribe_linea_startx=0;
 
 
-			int longitud_linea=8;
+			int longitud_linea=DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA;
 
 
 			int limite=menu_debug_get_main_list_view(w);
 
 			for (i=0;i<limite;i++) {
-					menu_debug_hexdump_with_ascii(dumpassembler,menu_debug_memory_pointer_copia,longitud_linea,0);
+                //menu_debug_registers_diferencias_vistas_hexadecimal
+
+                    menu_debug_hexdump_store_differences *puntero_diferencias;
+                    if (i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS) {
+                        puntero_diferencias=menu_debug_registers_diferencias_vistas_hexadecimal[i];
+                    }
+                    else {
+                        puntero_diferencias=NULL;
+                    }
+
+
+					menu_debug_hexdump_with_ascii(dumpassembler,menu_debug_memory_pointer_copia,
+                        longitud_linea,0,puntero_diferencias);
+
+
 					//menu_debug_registers_dump_hex(dumpassembler,menu_debug_memory_pointer_copia,longitud_linea);
 					//menu_escribe_linea_opcion(linea++,-1,1,dumpassembler);
-					zxvision_print_string_defaults_fillspc(w,0,linea++,dumpassembler);
+					zxvision_print_string_defaults_fillspc(w,0,linea,dumpassembler);
+
+                    //menu_debug_registers_strings_diferencias_vistas_hexadecimal[DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS][DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA*2+1];
+                    //zxvision_set_attr(w,xinicial+columna6,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+
+                    printf("Dibujar vista 5/6\n");
+
+                    if (i<DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS) {
+                        int j;
+                        for (j=0;j<DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA;j++) {
+                            if (puntero_diferencias[j].antes!=puntero_diferencias[j].despues) {
+
+                                zxvision_set_attr(w,j,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+
+                            }
+                        }
+                    }
+
 					menu_debug_memory_pointer_copia +=longitud_linea;
+                    linea++;
 			}
 
 			menu_debug_memory_pointer_last=menu_debug_memory_pointer_copia;

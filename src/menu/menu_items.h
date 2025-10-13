@@ -24,6 +24,7 @@
 
 #include "cpu.h"
 #include "sensors.h"
+#include "menu_debug_cpu.h"
 
 
 extern void menu_poke(MENU_ITEM_PARAMETERS);
@@ -203,7 +204,9 @@ extern void menu_snapshot_rewind(MENU_ITEM_PARAMETERS);
 
 extern menu_z80_moto_int menu_debug_hexdump_direccion;
 
-extern void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor);
+
+
+extern void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor,menu_debug_hexdump_store_differences *diferencias);
 
 extern char *menu_debug_hexdump_change_ptr_historial[];
 

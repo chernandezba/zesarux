@@ -1641,10 +1641,6 @@ extern void zxvision_enable_next_menu_position(void);
 
 extern void menu_chdir_sharedfiles(void);
 
-extern void menu_debug_registers_dump_hex(char *texto,menu_z80_moto_int direccion,int longitud);
-
-extern void menu_debug_registers_dump_ascii(char *texto,menu_z80_moto_int direccion,int longitud,int modoascii,z80_byte valor_xor);
-
 extern int menu_gui_zoom;
 
 extern int menu_escribe_linea_startx;

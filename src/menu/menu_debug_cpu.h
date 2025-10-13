@@ -50,6 +50,17 @@ extern menu_z80_moto_int menu_debug_disassemble_last_ptr;
 extern menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial);
 extern menu_z80_moto_int menu_debug_disassemble_bajar(menu_z80_moto_int dir_inicial);
 
+//Para guardar cambios de valores de memoria
+struct s_menu_debug_hexdump_store_differences {
+    z80_byte antes;
+    z80_byte despues;
+};
+
+typedef struct s_menu_debug_hexdump_store_differences menu_debug_hexdump_store_differences;
+
+
+extern void menu_debug_registers_dump_hex(char *texto,menu_z80_moto_int direccion,int longitud,menu_debug_hexdump_store_differences *diferencias);
+extern void menu_debug_registers_dump_ascii(char *texto,menu_z80_moto_int direccion,int longitud,int modoascii,z80_byte valor_xor);
 extern int menu_debug_hexdump_with_ascii_modo_ascii;
 extern z80_byte menu_debug_get_mapped_byte(int direccion);
 extern void menu_debug_write_mapped_byte(int direccion,z80_byte valor);

@@ -2608,9 +2608,6 @@ char last_files_used_array[MAX_LAST_FILESUSED][PATH_MAX];
 
 
 
-void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor);
-
-
 
 //Interrumpe el core y le dice que hay que abrir el menu
 void menu_fire_event_open_menu(void)
