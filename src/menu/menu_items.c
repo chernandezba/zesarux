@@ -7229,8 +7229,8 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 #define DEBUG_HEXDUMP_WINDOW_ALTO 23
 
 
-
-void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor,menu_debug_hexdump_store_differences *diferencias)
+//Retorna posicion donde empieza el volcado hexa
+int menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor,menu_debug_hexdump_store_differences *diferencias)
 {
     //dir_leida=adjust_address_space_cpu(dir_leida);
 
@@ -7246,13 +7246,15 @@ void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida
     //cambiamos el 0 final por un espacio
     dumpmemoria[longitud_direccion]=' ';
 
-    menu_debug_registers_dump_hex(&dumpmemoria[longitud_direccion+1],dir_leida,bytes_por_linea,diferencias);
+    int pos_empieza_hexadecimal=longitud_direccion+1;
+
+    menu_debug_registers_dump_hex(&dumpmemoria[pos_empieza_hexadecimal],dir_leida,bytes_por_linea,diferencias);
 
     //01234567890123456789012345678901
     //000FFF ABCDABCDABCDABCD 12345678
 
     //metemos espacio
-    int offset=longitud_direccion+1+bytes_por_linea*2;
+    int offset=pos_empieza_hexadecimal+bytes_por_linea*2;
 
     dumpmemoria[offset]=' ';
     //dumpmemoria[offset]='X';
@@ -7262,6 +7264,8 @@ void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida
     menu_debug_registers_dump_ascii(&dumpmemoria[offset+1],dir_leida,bytes_por_linea,menu_debug_hexdump_with_ascii_modo_ascii,valor_xor);
 
     //printf ("%s\n",dumpmemoria);
+
+    return pos_empieza_hexadecimal;
 }
 
 

@@ -206,7 +206,7 @@ extern menu_z80_moto_int menu_debug_hexdump_direccion;
 
 
 
-extern void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor,menu_debug_hexdump_store_differences *diferencias);
+extern int menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor,menu_debug_hexdump_store_differences *diferencias);
 
 extern char *menu_debug_hexdump_change_ptr_historial[];
 

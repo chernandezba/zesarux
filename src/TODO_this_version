@@ -49,6 +49,7 @@ o cambiar la prioridad a date-usleep, que lo hace en caso de cocoa pero parece q
 
 -agregar a ayuda de debug cpu:
 * lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
+* mostrar memoria hexa en vistas 5 y 6, muestra diferencias respecto a anterior apertura vista 5/6
 * memptx de vistas 5 y 6
 * tecla 't' para evaluate
 

@@ -3983,7 +3983,7 @@ int menu_debug_registers_subview_type=0;
                     }
 
 
-					menu_debug_hexdump_with_ascii(dumpassembler,menu_debug_memory_pointer_copia,
+					int pos_volcado_hexa=menu_debug_hexdump_with_ascii(dumpassembler,menu_debug_memory_pointer_copia,
                         longitud_linea,0,puntero_diferencias);
 
 
@@ -4001,9 +4001,7 @@ int menu_debug_registers_subview_type=0;
                         for (j=0;j<DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA;j++) {
                             if (puntero_diferencias[j].antes!=puntero_diferencias[j].despues) {
 
-                                int columna=j*2;
-
-                                //TODO: averiguar en que columna empieza el volcado hexadecimal
+                                int columna=pos_volcado_hexa+j*2;
 
                                 zxvision_set_attr(w,columna,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
                                 zxvision_set_attr(w,columna+1,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
