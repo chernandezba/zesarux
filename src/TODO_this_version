@@ -42,7 +42,14 @@ menus de topbar deben salir con traducción también. aunque ocupará mas caract
 
 
 -zxlife: reglas en el extremo del juego no corresponden con la realidad, creo, porque no hace el conteo igual
+https://math.stackexchange.com/questions/1699282/conways-game-of-life-borders-rules
+"The data component of your program might be implemented as a 500 x 500 array even though you are only drawing
+ the middle 300 x 300 to the screen. Any cells beyond the 500 x 500 grid would be permanently dead for the sake
+ of your program."
 
+ o también:
+"If you really want to "do it right", it is possible to design the data structures and algorithms such that when
+ cells need to be created "off the edge" the data structure extends to fit them"
 
 -agregar a ayuda de debug cpu:
 * lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
