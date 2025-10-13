@@ -43036,8 +43036,41 @@ void menu_toys_zxlife_edit(MENU_ITEM_PARAMETERS)
 
 void menu_toys_zxlife_fps(MENU_ITEM_PARAMETERS)
 {
-    gamelife_timer_counter_total_frames /=2;
-    if (gamelife_timer_counter_total_frames==0) gamelife_timer_counter_total_frames=50;
+    //1, 2, 4, 8,16,50    FPS
+    //50,25,12,6,3 ,1     gamelife_timer_counter_total_frames
+
+    int opcion=menu_simple_six_choices("Speed FPS","Select","1 FPS","2 FPS","4 FPS","8 FPS","16 FPS","50 FPS");
+    if (!opcion) return;
+
+    switch(opcion) {
+        case 1:
+           gamelife_timer_counter_total_frames=50;
+        break;
+
+        case 2:
+           gamelife_timer_counter_total_frames=25;
+        break;
+
+        case 3:
+           gamelife_timer_counter_total_frames=12;
+        break;
+
+        case 4:
+           gamelife_timer_counter_total_frames=6;
+        break;
+
+        case 5:
+           gamelife_timer_counter_total_frames=3;
+        break;
+
+        case 6:
+           gamelife_timer_counter_total_frames=1;
+        break;
+
+    }
+
+    //gamelife_timer_counter_total_frames /=2;
+    //if (gamelife_timer_counter_total_frames==0) gamelife_timer_counter_total_frames=50;
 }
 
 void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
