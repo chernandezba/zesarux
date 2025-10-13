@@ -43,17 +43,12 @@ menus de topbar deben salir con traducción también. aunque ocupará mas caract
 
 -zxlife poder acelerarlo o ralentizarlo
 
-ok-en Mac, con driver curses, el timer que se activa es usleep y va mas lento.
-Tendria que saltar a timer tipo date, en caso que no se use driver de video cocoa
-o cambiar la prioridad a date-usleep, que lo hace en caso de cocoa pero parece que no con curses
 
 -agregar a ayuda de debug cpu:
 * lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
 * mostrar memoria hexa en vistas 5 y 6, muestra diferencias respecto a anterior apertura vista 5/6
 * memptx de vistas 5 y 6
 * tecla 't' para evaluate
-
-ok-mostrar diferencias de memoria en vistas 5 y 6 de ejecución anterior y actual
 
 
 ok? -cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores

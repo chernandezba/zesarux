@@ -637,11 +637,11 @@ void init_timer(void)
 #if defined(__APPLE__)
     //Parece que en Mac el timer usleep no funciona bien... lo metemos al final de la lista de prioridades
     timer_remove_timer(available_timers,TIMER_USLEEP);
-    printf("Quitar usleep\n");
+    //printf("Quitar usleep\n");
 
 #ifdef USE_PTHREADS
     timer_add_timer_usleep_to_bottom();
-    printf("Poner usleep al fondo\n");
+    //printf("Poner usleep al fondo\n");
 #endif
 
 #endif
