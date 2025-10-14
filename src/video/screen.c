@@ -4675,14 +4675,20 @@ z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
+        int ancho_final,alto_final;
+
         //Zoom 0.5
         if (screen_reduce_050.v) {
             screen_scale_rainbow_21(origen,ancho,alto,destino);
+            ancho_final=ancho/2;
+            alto_final=alto/2;
         }
 
         else {
             //Zoom 0.75
 		    screen_scale_rainbow_43(origen,ancho,alto,destino);
+            ancho_final=(ancho*3)/4;
+            alto_final=(alto*3)/4;
         }
 
 		//Forzamos meter watermark
@@ -4691,7 +4697,7 @@ void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,in
 		int watermark_y;
 
 		//Misma variable que watermark general
-		screen_get_offsets_watermark_position(screen_watermark_position,((ancho*3)/4),((alto*3)/4),&watermark_x,&watermark_y);
+		screen_get_offsets_watermark_position(screen_watermark_position,ancho_final,alto_final,&watermark_x,&watermark_y);
 
 		watermark_x +=screen_reduce_offset_x;
 		watermark_y +=screen_reduce_offset_y;
