@@ -45354,6 +45354,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
                 "Exit ZEsarUX","Salir de ZEsarUX","Sortir de ZEsarUX");
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s",(f_functions==1 ? "F10 ": "") );
             menu_add_item_menu_es_sencillo(array_menu_principal);
+            menu_add_item_menu_genera_ventana(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,"Exit ZEsarUX");
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
 
