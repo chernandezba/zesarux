@@ -1930,9 +1930,9 @@ freebsd: all
 	rm -fR bintargztemp
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
-	tar -C bintargztemp -cvzf ZEsarUX_freebsd-\$(EMULATOR_VERSION)-freebsd12_amd64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	tar -C bintargztemp -cvzf ZEsarUX_freebsd-\$(EMULATOR_VERSION)-freebsd14_amd64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	echo
-	echo "Generated file is : ZEsarUX_freebsd-\$(EMULATOR_VERSION)-freebsd12_amd64.tar.gz"
+	echo "Generated file is : ZEsarUX_freebsd-\$(EMULATOR_VERSION)-freebsd14_amd64.tar.gz"
 
 
 ubuntu:
