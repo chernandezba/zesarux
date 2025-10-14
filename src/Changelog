@@ -8,7 +8,7 @@ Improved ZX Vision:
 - Added setting to add a stroke on icons
 
 Improved editing joystick to events/keys (allow to unasign easily)
-Improved ZX Life: allow to speed up game
+Improved ZX Life: allow to speed up game, fix behaviour on board limits
 Improved debug cpu:
 - Show when registers values are modified by last opcode execution
 - Views 5 and 6 use a different memptr ("memptx")

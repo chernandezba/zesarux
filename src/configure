@@ -1901,9 +1901,9 @@ debian32: all
 	rm -fR bintargztemp
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
-	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-debian12_i686.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-debian13_i686.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	echo
-	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian12_i686.tar.gz"
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian13_i686.tar.gz"
 
 
 debian64: all
@@ -1911,9 +1911,9 @@ debian64: all
 	rm -fR bintargztemp
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
-	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-debian12_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-debian13_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	echo
-	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian12_x86_64.tar.gz"
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian13_x86_64.tar.gz"
 
 haiku: all
 	./generate_install_sh.sh
@@ -1942,10 +1942,10 @@ ubuntu:
 	rm -fR bintargztemp
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
-	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu24_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	rm zesarux install.sh
 	echo
-	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz"
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu24_x86_64.tar.gz"
 
 
 fedora:
@@ -1955,10 +1955,10 @@ fedora:
 	rm -fR bintargztemp
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
-	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora38_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora42_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	rm zesarux install.sh
 	echo
-	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora38_x86_64.tar.gz"
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora42_x86_64.tar.gz"
 
 
 #just for testing right now
@@ -1969,9 +1969,9 @@ debiandocker:
 	rm -fR bintargztemp
 	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
 	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
-	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-debian12_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-debian13_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	echo
-	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian12_x86_64.tar.gz"
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian13_x86_64.tar.gz"
 
 
 extra_files:
