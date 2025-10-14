@@ -1,8 +1,8 @@
 FROM fedora:42
 
 # No parece haber SDL 1.2 en fedora, por tanto uso SDL2 (aunque este es medio beta en ZEsarUX)
-RUN yum -y install which git gcc make ncurses-devel openssl-devel pulseaudio-libs-devel libsndfile-devel alsa-lib-devel SDL2-devel
-RUN yum -y groupinstall "X Software Development"
+RUN dnf -y install which git gcc make ncurses-devel openssl-devel pulseaudio-libs-devel libsndfile-devel alsa-lib-devel SDL2-devel
+RUN dnf -y install xorg-x11-server-devel libXxf86vm-devel
 
 ENV CFLAGS "-O3"
 ENV LDFLAGS "-O3"
