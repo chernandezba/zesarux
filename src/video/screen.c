@@ -106,6 +106,8 @@ z80_bit screen_show_fps={1};
 
 //Si pantalla final rainbow se reduce tamanyo a 4/3 (dividir por 4, mult por 3)
 z80_bit screen_reduce_075={0};
+//Si pantalla final rainbow se reduce tamanyo a 1/2
+z80_bit screen_reduce_050={0};
 
 //Antialias al reducir
 z80_bit screen_reduce_075_antialias={1};
@@ -4674,10 +4676,14 @@ void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,in
 {
 
         //Zoom 0.5
-        //screen_scale_rainbow_21(origen,ancho,alto,destino);
+        if (screen_reduce_050.v) {
+            screen_scale_rainbow_21(origen,ancho,alto,destino);
+        }
 
-        //Zoom 0.75
-		screen_scale_rainbow_43(origen,ancho,alto,destino);
+        else {
+            //Zoom 0.75
+		    screen_scale_rainbow_43(origen,ancho,alto,destino);
+        }
 
 		//Forzamos meter watermark
 
@@ -4785,7 +4791,7 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
 
 
 		//Reducimos los dos bufferes si conviene-escalado 0.75
-        if (screen_reduce_075.v) {
+        if (screen_reduce_075.v || screen_reduce_050.v) {
                 screen_scale_075_gigascreen_function(ancho,alto);
 				puntero_one=new_scalled_rainbow_buffer_gigascren_one;
 				puntero_two=new_scalled_rainbow_buffer_gigascren_two;
@@ -5018,7 +5024,7 @@ void screen_add_watermark_rainbow(void)
     }
 
     //Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
-	if (mostrar_watermark && screen_reduce_075.v==0) {
+	if (mostrar_watermark && screen_reduce_075.v==0 && screen_reduce_050.v==0) {
 		int watermark_x;
 		int watermark_y;
 
@@ -5049,7 +5055,7 @@ void screen_add_watermark_no_rainbow(void)
     }
 
     //Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
-	if (mostrar_watermark && screen_reduce_075.v==0) {
+	if (mostrar_watermark && screen_reduce_075.v==0 && screen_reduce_050.v==0) {
 
                 int watermark_x;
                 int watermark_y;
@@ -5120,7 +5126,7 @@ void scr_refresca_pantalla_rainbow_comun(void)
 
 
 	//Si se reduce la pantalla 0.75
-	if (screen_reduce_075.v) {
+	if (screen_reduce_075.v || screen_reduce_050.v) {
 		screen_scale_075_function(ancho,alto);
 		puntero=new_scalled_rainbow_buffer;
 	}

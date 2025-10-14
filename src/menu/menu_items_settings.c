@@ -895,6 +895,14 @@ void menu_interface_zoom_height(MENU_ITEM_PARAMETERS)
 void menu_window_settings_reduce_075(MENU_ITEM_PARAMETERS)
 {
 	screen_reduce_075.v ^=1;
+    screen_reduce_050.v=0;
+	enable_rainbow();
+}
+
+void menu_window_settings_reduce_050(MENU_ITEM_PARAMETERS)
+{
+	screen_reduce_050.v ^=1;
+    screen_reduce_075.v=0;
 	enable_rainbow();
 }
 
@@ -1450,7 +1458,13 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75. Enables realvideo and forces watermark. This feature has been used on a large bulb display for the RunZX 2018 event");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-		if (screen_reduce_075.v) {
+		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_050,NULL,"[%c] R~~educe display factor 0.50",(screen_reduce_050.v ? 'X' : ' ') );
+		menu_add_item_menu_shortcut(array_menu_window_settings,'e');
+		menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.50. Enables realvideo and forces watermark");
+		menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.50. Enables realvideo and forces watermark.");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+		if (screen_reduce_075.v || screen_reduce_050.v) {
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_antialias,NULL,"[%c]  Antialias",(screen_reduce_075_antialias.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");

@@ -940,6 +940,7 @@ extern void scr_refresca_pantalla_tsconf_text(void (*fun_color) (z80_byte color,
 extern void scr_refresca_pantalla_tsconf_text_textmode (void (*fun_color) (z80_byte color,int *brillo, int *parpadeo), void (*fun_caracter) (int x,int y,int brillo, unsigned char inv,z80_byte caracter ) , void (*fun_saltolinea) (void) , int factor_division);
 
 extern z80_bit screen_reduce_075;
+extern z80_bit screen_reduce_050;
 
 extern int screen_reduce_offset_x;
 extern int screen_reduce_offset_y;

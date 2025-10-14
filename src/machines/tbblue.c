@@ -8614,8 +8614,8 @@ void screen_tbblue_refresca_rainbow(void)
 	puntero=rainbow_buffer;
 
 
-	//Si se reduce la pantalla 0.75
-	if (screen_reduce_075.v) {
+	//Si se reduce la pantalla 0.75 o 0.50
+	if (screen_reduce_075.v || screen_reduce_050.v) {
 		screen_scale_075_function(ancho,alto);
 		puntero=new_scalled_rainbow_buffer;
 	}
