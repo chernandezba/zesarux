@@ -4254,18 +4254,24 @@ void screen_scale_rainbow_21(z80_int *orig,int ancho,int alto,z80_int *dest)
 
 	z80_int color_1;
 	z80_int color_2;
-	z80_int color_3;
-	z80_int color_4;
+
 
 
 	for (y=0;y<alto;y+=2) {
 
 		for (x=0;x<ancho;x+=2) {
 
+            //Hacemos gigascreen de pixel arriba-izq y de abajo-der
             color_1=*orig;
             orig++;
+
+            color_2=orig[ancho];
+
             orig++;
-            *dest=color_1;
+
+
+            *dest=screen_scale_075_mix_two(color_1,color_2);
+            //*dest=color_1;
             dest++;
 
 
