@@ -54,8 +54,7 @@ posiblemente habrá mucha cosa a mostrar como cambiada
 
 -hacer un reduce 0.5 (como el 0.75 pero a la mitad). soportar antialias también
 
-ok *modo gigascreen con antialias en 0.5 o 0.75 se ve mal
-*pasar de 0.75 a 0.5 deja rastros
+ok *pasar de 0.75 a 0.5 deja rastros
 
 *renombrar funciones comunes 0.75 a 0.75_0.50
 *probar tbblue

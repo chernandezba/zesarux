@@ -4976,7 +4976,7 @@ void screen_scale_075_050_free_buffers(void)
     }
 }
 
-void screen_scale_075_function(int ancho,int alto)
+void screen_scale_075_050_function(int ancho,int alto)
 {
 
 
@@ -5132,7 +5132,7 @@ void scr_refresca_pantalla_rainbow_comun(void)
 
 	//Si se reduce la pantalla 0.75
 	if (screen_reduce_075.v || screen_reduce_050.v) {
-		screen_scale_075_function(ancho,alto);
+		screen_scale_075_050_function(ancho,alto);
 		puntero=new_scalled_rainbow_buffer;
 	}
 	//Fin reduccion pantalla 0.75
