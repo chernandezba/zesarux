@@ -367,7 +367,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 
--hacer un reduce 0.5 (como el 0.75 pero a la mitad). soportar antialias también
 
 
 ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
@@ -413,7 +412,7 @@ veces
 -que con menus de botones superiores (obviamente con topbar desactivado) pudieras cambiarte de cada uno de los menus con flecha izquierda-derecha, tal cual como se hace con topbar: ejemplo estando en Machine que pudieras saltar a Audio con flecha derecha
 
 -ZX desktop: si menu char height no es 8, limite de ventanas por debajo al moverlas hace un efecto extraño,
-probablemnte porque el alto es multiple de 8 y queda menos de una fila abajo sin poderse usar
+probablemente porque el alto es multiple de 8 y queda menos de una fila abajo sin poderse usar
 
 
 

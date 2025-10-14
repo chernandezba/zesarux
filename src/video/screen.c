@@ -4230,6 +4230,61 @@ De esto se ve que siempre se descarta dos pixeles como minimo, el l y p
 
 }
 
+//Escalado a la mitad (2:1)
+void screen_scale_rainbow_21(z80_int *orig,int ancho,int alto,z80_int *dest)
+{
+
+	int x,y;
+
+	int ancho_destino=ancho/2;
+	int alto_destino=alto/2;
+
+	int diferencia_ancho=ancho-ancho_destino;
+	int diferencia_alto=alto-alto_destino;
+
+	//Controlar offsets
+	if (screen_reduce_offset_x>diferencia_ancho) screen_reduce_offset_x=diferencia_ancho;
+	if (screen_reduce_offset_y>diferencia_alto) screen_reduce_offset_y=diferencia_alto-1;
+
+	if (screen_reduce_offset_x<0) screen_reduce_offset_x=0;
+	if (screen_reduce_offset_y<0) screen_reduce_offset_y=0;
+
+	dest +=screen_reduce_offset_x;
+	dest +=screen_reduce_offset_y*ancho;
+
+	z80_int color_1;
+	z80_int color_2;
+	z80_int color_3;
+	z80_int color_4;
+
+
+	for (y=0;y<alto;y+=2) {
+
+		for (x=0;x<ancho;x+=2) {
+
+            color_1=*orig;
+            orig++;
+            orig++;
+            *dest=color_1;
+            dest++;
+
+
+		}
+
+		dest+=diferencia_ancho;
+
+
+        //Saltar la segunda linea
+        orig+=ancho;
+
+
+
+	}
+
+}
+
+
+
 
 //Meter pixel en un buffer rainbow de color indexado 16 bits. Usado en watermark y se podria usar en mas cosas
 void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int color)
@@ -4612,7 +4667,10 @@ z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
+        //Zoom 0.5
+        //screen_scale_rainbow_21(origen,ancho,alto,destino);
 
+        //Zoom 0.75
 		screen_scale_rainbow_43(origen,ancho,alto,destino);
 
 		//Forzamos meter watermark
