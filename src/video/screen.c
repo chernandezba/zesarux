@@ -4065,7 +4065,7 @@ BITS INK PAPER BORDER
 //Mezclar dos colores si estan en rango spectrum 0-15, retornando el gigascreen. Si no, devolver el primero
 z80_int screen_scale_075_mix_two(z80_int color1, z80_int color2)
 {
-	if (color1<16 && color2<16 && screen_reduce_075_antialias.v) return get_gigascreen_color(color1,color2);
+	if (color1<16 && color2<16 && screen_reduce_075_antialias.v && gigascreen_enabled.v==0) return get_gigascreen_color(color1,color2);
 	else return color1;
 }
 
