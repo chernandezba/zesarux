@@ -54,7 +54,7 @@ posiblemente habrá mucha cosa a mostrar como cambiada
 
 -hacer un reduce 0.5 (como el 0.75 pero a la mitad). soportar antialias también
 
-ok *pasar de 0.75 a 0.5 deja rastros
+*quizá no forzar watermark con reduce? dejarlo solo en 0.75 pero no en 0.5? en 0.5 queda muy encima de la pantalla
 
 *renombrar funciones comunes 0.75 a 0.75_0.50
 *probar tbblue
