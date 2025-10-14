@@ -907,6 +907,9 @@ void menu_window_settings_reduce_075(MENU_ITEM_PARAMETERS)
         screen_reduce_050.v=0;
     }
 
+    //Liberar buffers para borrar rastros de escalados 0.50/0.75
+    screen_scale_075_050_free_buffers();
+
 	enable_rainbow();
 }
 

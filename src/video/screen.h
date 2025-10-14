@@ -941,6 +941,7 @@ extern void scr_refresca_pantalla_tsconf_text_textmode (void (*fun_color) (z80_b
 
 extern z80_bit screen_reduce_075;
 extern z80_bit screen_reduce_050;
+extern void screen_scale_075_050_free_buffers(void);
 
 extern int screen_reduce_offset_x;
 extern int screen_reduce_offset_y;

@@ -4717,13 +4717,7 @@ void screen_scale_075_gigascreen_function(int ancho,int alto)
                 //Si ha cambiado el tamanyo
                 if (scalled_rainbow_ancho!=ancho || scalled_rainbow_alto!=alto) {
                         //Liberar si existia
-                        if (new_scalled_rainbow_buffer_gigascren_one!=NULL) {
-                                debug_printf(VERBOSE_DEBUG,"Freeing previous scaled gigascreen rainbow buffers");
-                                free (new_scalled_rainbow_buffer_gigascren_one);
-								free (new_scalled_rainbow_buffer_gigascren_two);
-                                new_scalled_rainbow_buffer_gigascren_one=NULL;
-								new_scalled_rainbow_buffer_gigascren_two=NULL;
-                        }
+                        screen_scale_075_050_free_buffers();
 
                         asignar=1;
                 }
@@ -4965,7 +4959,22 @@ z80_int *new_scalled_rainbow_buffer=NULL;
 
 
 
+void screen_scale_075_050_free_buffers(void)
+{
+    if (new_scalled_rainbow_buffer!=NULL) {
+        debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
+        free (new_scalled_rainbow_buffer);
+        new_scalled_rainbow_buffer=NULL;
+    }
 
+    if (new_scalled_rainbow_buffer_gigascren_one!=NULL) {
+            debug_printf(VERBOSE_DEBUG,"Freeing previous scaled gigascreen rainbow buffers");
+            free (new_scalled_rainbow_buffer_gigascren_one);
+            free (new_scalled_rainbow_buffer_gigascren_two);
+            new_scalled_rainbow_buffer_gigascren_one=NULL;
+            new_scalled_rainbow_buffer_gigascren_two=NULL;
+    }
+}
 
 void screen_scale_075_function(int ancho,int alto)
 {
@@ -4977,11 +4986,7 @@ void screen_scale_075_function(int ancho,int alto)
 		//Si ha cambiado el tamanyo
 		if (scalled_rainbow_ancho!=ancho || scalled_rainbow_alto!=alto) {
 			//Liberar si existia
-			if (new_scalled_rainbow_buffer!=NULL) {
-				debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
-				free (new_scalled_rainbow_buffer);
-				new_scalled_rainbow_buffer=NULL;
-			}
+			screen_scale_075_050_free_buffers();
 
 			asignar=1;
 		}
