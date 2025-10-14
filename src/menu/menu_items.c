@@ -42445,8 +42445,15 @@ zxvision_draw_window(ventana);
 }
 
 
-#define GAMELIFE_MAX_WIDTH 120
-#define GAMELIFE_MAX_HEIGHT 80
+//#define GAMELIFE_MAX_WIDTH 120
+//#define GAMELIFE_MAX_HEIGHT 80
+#define GAMELIFE_MAX_WIDTH  300
+#define GAMELIFE_MAX_HEIGHT 300
+
+//La vista del usuario estará desplazada esta cantidad
+#define GAMELIFE_OFFSET_VIEW_X 100
+#define GAMELIFE_OFFSET_VIEW_Y 100
+
 int gamelife_board[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
 
 //Usado temporalmente para el siguiente ciclo
@@ -42485,8 +42492,8 @@ void gamelife_copy_board_state(void)
 {
     int x,y;
 
-    for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_height;y++) {
+    for (x=0;x<GAMELIFE_MAX_WIDTH;x++) {
+        for (y=0;y<GAMELIFE_MAX_HEIGHT;y++) {
             gamelife_board_last_state[x][y]=gamelife_board[x][y];
         }
     }
@@ -42496,22 +42503,22 @@ void gamelife_reset_last_board_state(void)
 {
     int x,y;
 
-    for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_height;y++) {
+    for (x=0;x<GAMELIFE_MAX_WIDTH;x++) {
+        for (y=0;y<GAMELIFE_MAX_HEIGHT;y++) {
             //cualquier cosa que no vaya a ser lo anterior
             gamelife_board_last_state[x][y]=-1;
         }
     }
 }
 
-int gamelife_empty_board(void)
+int gamelife_is_empty_board(void)
 {
 
 
         int x,y;
 
-        for (x=0;x<gamelife_current_width;x++) {
-            for (y=0;y<gamelife_current_height;y++) {
+        for (x=0;x<GAMELIFE_MAX_WIDTH;x++) {
+            for (y=0;y<GAMELIFE_MAX_HEIGHT;y++) {
 
                 if (gamelife_board[x][y]) return 0;
             }
@@ -42534,7 +42541,7 @@ int gamelife_get_neighbors_fila_arriba_abajo(int x,int y)
    //centro
    vecinos+=gamelife_board[x][y];
    //derecha
-   if (x<gamelife_current_width-1) vecinos+=gamelife_board[x+1][y];
+   if (x<GAMELIFE_MAX_WIDTH-1) vecinos+=gamelife_board[x+1][y];
 
    return vecinos;
 
@@ -42557,13 +42564,13 @@ int gamelife_get_neighbors(int x,int y)
 
 
     //fila de abajo
-    if (y<gamelife_current_height-1) vecinos +=gamelife_get_neighbors_fila_arriba_abajo(x,y+1);
+    if (y<GAMELIFE_MAX_HEIGHT-1) vecinos +=gamelife_get_neighbors_fila_arriba_abajo(x,y+1);
 
    //mi fila
    //izqu
    if (x>=1) vecinos+=gamelife_board[x-1][y];
    //derecha
-   if (x<gamelife_current_width-1) vecinos+=gamelife_board[x+1][y];
+   if (x<GAMELIFE_MAX_WIDTH-1) vecinos+=gamelife_board[x+1][y];
 
    return vecinos;
 
@@ -42606,8 +42613,8 @@ Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
 
     int x,y;
 
-    for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_height;y++) {
+    for (x=0;x<GAMELIFE_MAX_WIDTH;x++) {
+        for (y=0;y<GAMELIFE_MAX_HEIGHT;y++) {
 
             int alive=gamelife_board[x][y];
 
@@ -42629,8 +42636,8 @@ Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
     }
 
     //Y copiar del tablero temporal del siguiente ciclo a este
-    for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_height;y++) {
+    for (x=0;x<GAMELIFE_MAX_WIDTH;x++) {
+        for (y=0;y<GAMELIFE_MAX_HEIGHT;y++) {
             gamelife_board[x][y]=gamelife_board_temporal_copy[x][y];
         }
     }
@@ -42658,8 +42665,8 @@ void gamelife_random_board(void)
 
     int x,y;
 
-    for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_height;y++) {
+    for (x=0;x<GAMELIFE_MAX_WIDTH;x++) {
+        for (y=0;y<GAMELIFE_MAX_HEIGHT;y++) {
             //randomize board
             int alive;
             ay_randomize(0);
@@ -42689,7 +42696,7 @@ void gamelife_next_frame(zxvision_window *w)
 {
 
     //Si tablero no inicializado o si tablero vacio
-    /*if (gamelife_empty_board()) gamelife_started=0;
+    /*if (gamelife_is_empty_board()) gamelife_started=0;
 
     if (!gamelife_started) {
         gamelife_started=1;
@@ -42701,7 +42708,7 @@ void gamelife_next_frame(zxvision_window *w)
         gamelife_next_generation();
     }*/
 
-    if (gamelife_empty_board()) {
+    if (gamelife_is_empty_board()) {
         if (!gamelife_paused) {
             gamelife_paused=1;
             //Indicarlo para que el usuario lo vea
@@ -42827,9 +42834,13 @@ void menu_toy_zxlife_overlay(void)
             int alto=((zxlife_last_window_height-GAMELIVE_LINES_MENU-3)*menu_char_height)/GAMELIFE_SIZE_LIVE;
 
             //vigilar limites
-            if (ancho>GAMELIFE_MAX_WIDTH) ancho=GAMELIFE_MAX_WIDTH;
+            if (ancho>GAMELIFE_MAX_WIDTH-GAMELIFE_OFFSET_VIEW_X) {
+                ancho=GAMELIFE_MAX_WIDTH-GAMELIFE_OFFSET_VIEW_X;
+            }
 
-            if (alto>GAMELIFE_MAX_HEIGHT) alto=GAMELIFE_MAX_HEIGHT;
+            if (alto>GAMELIFE_MAX_HEIGHT-GAMELIFE_OFFSET_VIEW_Y) {
+                alto=GAMELIFE_MAX_HEIGHT-GAMELIFE_OFFSET_VIEW_Y;
+            }
 
             if (ancho<4) ancho=4;
             if (alto<4) alto=4;
@@ -42855,8 +42866,8 @@ void menu_toy_zxlife_overlay(void)
             debug_printf(VERBOSE_DEBUG,"Drawing all fields on ZX Life because the window is dirty");
         }
 
-        for (x=0;x<gamelife_current_width;x++) {
-            for (y=0;y<gamelife_current_height;y++) {
+        for (x=GAMELIFE_OFFSET_VIEW_X;x<gamelife_current_width+GAMELIFE_OFFSET_VIEW_X && x<GAMELIFE_MAX_WIDTH;x++) {
+            for (y=GAMELIFE_OFFSET_VIEW_Y;y<gamelife_current_height+GAMELIFE_OFFSET_VIEW_Y && y<GAMELIFE_MAX_HEIGHT;y++) {
 
                 int alive=gamelife_board[x][y];
 
@@ -42866,7 +42877,7 @@ void menu_toy_zxlife_overlay(void)
                 int last_alive=gamelife_board_last_state[x][y];
 
                 if (alive!=last_alive || menu_toy_zxlife_window->dirty_user_must_draw_contents) {
-                    menu_toy_zxlife_draw_life(menu_toy_zxlife_window,x,y,alive);
+                    menu_toy_zxlife_draw_life(menu_toy_zxlife_window,x-GAMELIFE_OFFSET_VIEW_X,y-GAMELIFE_OFFSET_VIEW_Y,alive);
                 }
             }
         }
@@ -42946,7 +42957,7 @@ void menu_toys_zxlife_handle_click_position(int pulsado_x,int pulsado_y,int aliv
             menu_toys_zxlife_ultimo_pulsado_posicion_x=pulsado_x;
             menu_toys_zxlife_ultimo_pulsado_posicion_y=pulsado_y;
             menu_toys_zxlife_ultimo_pulsado_posicion_alive=alive;
-            gamelife_board[pulsado_x][pulsado_y]=alive;
+            gamelife_board[pulsado_x+GAMELIFE_OFFSET_VIEW_X][pulsado_y+GAMELIFE_OFFSET_VIEW_Y]=alive;
             menu_toy_zxlife_draw_force_overlay=1;
         }
     }
