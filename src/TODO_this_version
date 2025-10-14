@@ -55,6 +55,7 @@ posiblemente habrá mucha cosa a mostrar como cambiada
 -hacer un reduce 0.5 (como el 0.75 pero a la mitad). soportar antialias también
 
 *quizá no forzar watermark con reduce? dejarlo solo en 0.75 pero no en 0.5? en 0.5 queda muy encima de la pantalla
+si quito el forzado, asegurarse que sigue saliendo al activarlo a mano, y con reducción activada
 
 *renombrar funciones comunes 0.75 a 0.75_0.50
 *probar tbblue
