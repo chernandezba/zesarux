@@ -7190,33 +7190,33 @@ char *bitmap_button_ext_desktop_openwindow[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 char *bitmap_button_ext_desktop_sendkeysmenu[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
-    "                          ",     //0
-  	"                          ",
-	"                          ",
-	"                          ",
-	"  bbb    bbb    bbb       ",
-	"  bbb    bbb    bbb       ",
-	"  bbb    bbb    bbb       ",
-    " bbbbb  bbbbb  bbbbb      ",
-    "  bbb    bbb    bbb       ",
-    "   b      b      b        ",
-	"                          ",	//10
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxwwxwxwwxwwxxxxxxxxxxxxxx",
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxwwxwwxwwxwwxwwxwwxwwwxxx",
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxxwwxwwxwwxwwxwwxwwxwwxxx",
-	"xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
-	"xxxxwwxwwxwwxwwxwwxwwxwxry",
-	"xxxxxxxxxxxxxxxxxxxxxxxryg",
-	"xxxxxxwwxwwwwwwwwxwwxxrygb",
-	"xxxxxxxxxxxxxxxxxxxxxrygbx",
-	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+   //01234567890123456789012345
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//0
+	"bWbbbWbbWWWWbbWbbbWbbWbbWb",
+	"bWWbWWbbWbbbbbWWbbWbbWbbWb",
+	"bWbWbWbbWWWbbbWbWbWbbWbbWb",
+	"bWbbbWbbWbbbbbWbbWWbbWbbWb",
+	"bWbbbWbbWWWWbbWbbbWbbWWWWb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbWWWbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//10
+	"bbbbbbbybbbbWWWWbbbbbbbbbb",
+	"bbbyyyyyybbbWbbbbbbbbbbbbb",
+	"bbbyyyyyyybbWWWbbbbbbbbbbb",
+	"bbbyyyyyybbbWbbbbbbbbbbbbb",
+	"bbbbbbbybbbbWWWWbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbWWWbbbbbbbbbb",
+	"bbbbbbbbbbbbbbWbbbbbbbbbbb",
+	"bbbbbbbbbbbbbbbbbbbbbbbbbb",	//20
+	"bbbbbbbybbbbWWWbbbbbbbbbbb",
+	"bbbyyyyyybbbWbbWbbbbbbbbbb",
+	"bbbyyyyyyybbWWWbbbbbbbbbbb",
+	"bbbyyyyyybbbWbbWbbbbbbbbbb",
+	"bbbbbbbybbbbWbbWbbbbbbbbbb"	//25
 };
 
 char *bitmap_button_ext_desktop_processmanagement[EXT_DESKTOP_BUTTONS_ANCHO]={
