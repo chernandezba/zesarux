@@ -4675,24 +4675,25 @@ z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
-        int ancho_final,alto_final;
+        //int ancho_final,alto_final;
 
         //Zoom 0.5
         if (screen_reduce_050.v) {
             screen_scale_rainbow_21(origen,ancho,alto,destino);
-            ancho_final=ancho/2;
-            alto_final=alto/2;
+            //ancho_final=ancho/2;
+            //alto_final=alto/2;
         }
 
         else {
             //Zoom 0.75
 		    screen_scale_rainbow_43(origen,ancho,alto,destino);
-            ancho_final=(ancho*3)/4;
-            alto_final=(alto*3)/4;
+            //ancho_final=(ancho*3)/4;
+            //alto_final=(alto*3)/4;
         }
 
-		//Forzamos meter watermark
 
+		//Forzamos meter watermark
+        /*
 		int watermark_x;
 		int watermark_y;
 
@@ -4704,7 +4705,7 @@ void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,in
 
 
 		screen_put_watermark_generic(destino,watermark_x,watermark_y,scalled_rainbow_ancho,screen_generic_putpixel_indexcolour);
-
+        */
 
 
 
@@ -5034,8 +5035,8 @@ void screen_add_watermark_rainbow(void)
         }
     }
 
-    //Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
-	if (mostrar_watermark && screen_reduce_075.v==0 && screen_reduce_050.v==0) {
+    //Si está opcion de watermark
+	if (mostrar_watermark) {
 		int watermark_x;
 		int watermark_y;
 
@@ -5065,8 +5066,8 @@ void screen_add_watermark_no_rainbow(void)
         }
     }
 
-    //Si esta opcion de watermark general pero no esta el reduce de 0.75 (porque este reduce fuerza siempre watermark)
-	if (mostrar_watermark && screen_reduce_075.v==0 && screen_reduce_050.v==0) {
+    //Si esta opcion de watermark
+	if (mostrar_watermark) {
 
                 int watermark_x;
                 int watermark_y;

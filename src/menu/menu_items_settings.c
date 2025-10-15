@@ -1452,12 +1452,11 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 
 
-
-                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
-                    "Autochange Zoom big display","Autocambiar Zoom en pantalla grande","Autocanviar Zoom en pantalla gran");
-                menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(autochange_zoom_big_display.v ? 'X' : ' ' ));
-                menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
-                menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
+                "Autochange Zoom big display","Autocambiar Zoom en pantalla grande","Autocanviar Zoom en pantalla gran");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(autochange_zoom_big_display.v ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
         }
 
         char string_reduce[10];
@@ -1468,8 +1467,8 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,
             menu_window_settings_reduce_075,NULL,"[%s] R~~educe display",string_reduce);
 		menu_add_item_menu_shortcut(array_menu_window_settings,'e');
-		menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75 or 0.5. Enables realvideo and forces watermark");
-		menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75 or 0.5. Enables realvideo and forces watermark. Reduce to 0.75 has been used on a large bulb display for the RunZX 2018 event");
+		menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75 or 0.5");
+		menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75 or 0.5. Enables realvideo. Reduce to 0.75 was used on a large bulb display for the RunZX 2018 event");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
@@ -1485,12 +1484,6 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
-
-
-		/*"--reduce-075               Reduce display size 4/3 (divide by 4, multiply by 3)\n"
-		"--reduce-075-offset-x n    Destination offset x on reduced display\n"
-		"--reduce-075-offset-y n    Destination offset y on reduced display\n"*/
-
 
 
 		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,NULL,"[%c] Window F~~ooter",(menu_footer ? 'X' : ' ') );
