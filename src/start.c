@@ -2753,7 +2753,7 @@ int parse_cmdline_options(int desde_commandline) {
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--reduce-075-no-antialias")) {
-				screen_reduce_075_antialias.v=0;
+				screen_reduce_075_050_antialias.v=0;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--reduce-075-offset-x")) {

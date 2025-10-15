@@ -917,7 +917,7 @@ void menu_window_settings_reduce_075(MENU_ITEM_PARAMETERS)
 
 void menu_window_settings_reduce_075_antialias(MENU_ITEM_PARAMETERS)
 {
-	screen_reduce_075_antialias.v ^=1;
+	screen_reduce_075_050_antialias.v ^=1;
 }
 
 void menu_window_settings_reduce_075_ofx(MENU_ITEM_PARAMETERS)
@@ -1473,7 +1473,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 
 		if (screen_reduce_075.v || screen_reduce_050.v) {
-			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_antialias,NULL,"[%c]  Antialias",(screen_reduce_075_antialias.v ? 'X' : ' ') );
+			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_antialias,NULL,"[%c]  Antialias",(screen_reduce_075_050_antialias.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);

@@ -110,7 +110,7 @@ z80_bit screen_reduce_075={0};
 z80_bit screen_reduce_050={0};
 
 //Antialias al reducir
-z80_bit screen_reduce_075_antialias={1};
+z80_bit screen_reduce_075_050_antialias={1};
 
 //Si se debe mantener siempre zoom_x=zoom_y
 z80_bit screen_keep_both_zoom_equals={1};
@@ -4065,7 +4065,7 @@ BITS INK PAPER BORDER
 //Mezclar dos colores si estan en rango spectrum 0-15, retornando el gigascreen. Si no, devolver el primero
 z80_int screen_scale_075_050_mix_two(z80_int color1, z80_int color2)
 {
-	if (color1<16 && color2<16 && screen_reduce_075_antialias.v && gigascreen_enabled.v==0) return get_gigascreen_color(color1,color2);
+	if (color1<16 && color2<16 && screen_reduce_075_050_antialias.v && gigascreen_enabled.v==0) return get_gigascreen_color(color1,color2);
 	else return color1;
 }
 
