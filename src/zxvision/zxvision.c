@@ -3083,8 +3083,9 @@ int menu_inject_teclas_contador=0;
 int menu_inject_teclas_estado=0;
 
 int menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=0;
+int menu_inicio_handle_button_presses_mantenerse_en_menu=0;
 
-void test_inject_teclas(char *teclas)
+void menu_inject_teclas_send_teclas(char *teclas)
 {
     if (teclas[0]==0) return;
 
@@ -3093,8 +3094,32 @@ void test_inject_teclas(char *teclas)
     menu_inject_teclas_estado=1;
     menu_fire_event_open_menu();
     menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=1;
+    menu_inicio_handle_button_presses_mantenerse_en_menu=1;
 }
 
+z80_byte menu_inject_da_todas_teclas(void)
+{
+    //sleep(1);
+    if (menu_inject_teclas_estado>=1 && menu_inject_teclas_estado<=10) {
+        menu_inject_teclas_estado++;
+
+        printf("Retornar no tecla pulsada\n");
+
+        //no tecla
+        return 255;
+    }
+    else {
+        menu_inject_teclas_estado++;
+
+        //Conmutar a no pulsar tecla
+        if (menu_inject_teclas_estado>=21) menu_inject_teclas_estado=1;
+
+        printf("Retornar tecla pulsada\n");
+
+        //tecla pulsada
+        return 254;
+    }
+}
 
 
 z80_bit menu_symshift={0};
@@ -3110,11 +3135,15 @@ z80_byte menu_get_pressed_key(void)
         //sleep(1);
         printf("inject activo. menu_get_pressed_key menu_inject_teclas_estado=%d\n",menu_inject_teclas_estado);
         if (menu_inject_teclas_estado>=11 && menu_inject_teclas_estado<=20) {
-            z80_byte tecla_buffer=menu_inject_teclas[menu_inject_teclas_contador++];
+            z80_byte tecla_buffer=menu_inject_teclas[menu_inject_teclas_contador];
             printf("Retornar tecla buffer %c\n",tecla_buffer);
             menu_inject_teclas_estado++;
+
+            //Conmutar a no pulsar tecla
             if (menu_inject_teclas_estado>=21) menu_inject_teclas_estado=1;
 
+            //Siguiente tecla en el buffer
+            menu_inject_teclas_contador++;
             if (menu_inject_teclas[menu_inject_teclas_contador]==0) menu_inject_teclas_estado=0;
 
             return tecla_buffer;
@@ -19295,20 +19324,7 @@ int timer_osd_keyboard_menu=0;
 z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido,int absolutamente_todas_teclas)
 {
     if (menu_inject_teclas_estado) {
-        //sleep(1);
-        if (menu_inject_teclas_estado>=1 && menu_inject_teclas_estado<=10) {
-            menu_inject_teclas_estado++;
-            //menu_inject_teclas_estado=2;
-            printf("Retornar no tecla pulsada\n");
-            return 255; //no tecla
-        }
-        else {
-            menu_inject_teclas_estado++;
-            if (menu_inject_teclas_estado>=21) menu_inject_teclas_estado=1;
-            printf("Retornar tecla pulsada\n");
-            //menu_inject_teclas_estado=1;
-            return 254; //tecla
-        }
+        return menu_inject_da_todas_teclas();
     }
 
 
@@ -26578,7 +26594,10 @@ void menu_inicio_handle_button_presses(void)
 
     else {
         //Cerrar todos menus. De lo contrario nos iriamos al menu principal si por ejemplo al pulsar el boton Network pulsamos flecha izquierda
-        salir_todos_menus=1;
+
+        if (!menu_inicio_handle_button_presses_mantenerse_en_menu) salir_todos_menus=1;
+
+        menu_inicio_handle_button_presses_mantenerse_en_menu=0;
     }
 
     //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton

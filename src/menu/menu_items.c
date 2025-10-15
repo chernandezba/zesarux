@@ -35454,7 +35454,7 @@ void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
 
 void menu_debug_test_send_keys(MENU_ITEM_PARAMETERS)
 {
-    test_inject_teclas("ers");
+    menu_inject_teclas_send_teclas("ers");
 }
 
 
@@ -45804,7 +45804,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
                     char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
 
-                    test_inject_teclas(nombre);
+                    menu_inject_teclas_send_teclas(nombre);
 
                 }
             }
@@ -45819,14 +45819,14 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                     }
                     else {
                         char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
-                        test_inject_teclas(nombre);
+                        menu_inject_teclas_send_teclas(nombre);
                     }
                 }
                 else {
                     if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                     else {
                         char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
-                        test_inject_teclas(nombre);
+                        menu_inject_teclas_send_teclas(nombre);
                     }
                 }
 

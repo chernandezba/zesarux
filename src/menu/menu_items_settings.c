@@ -11991,6 +11991,7 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
             //Algunas acciones que permiten extra info
             if (
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_OPEN_WINDOW ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_SEND_KEYS_MENU ||
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_SET_MACHINE ||
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_TAPE ||
@@ -12107,6 +12108,7 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
             //Algunas acciones que permiten extra info
             if (
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_OPEN_WINDOW ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_SEND_KEYS_MENU ||
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_SET_MACHINE ||
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_TAPE ||

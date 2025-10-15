@@ -818,6 +818,8 @@ extern void menu_inicio_handle_button_presses(void);
 extern void menu_inicio_handle_lower_icon_presses(void);
 extern void zxvision_helper_menu_shortcut_init(void);
 
+extern void menu_inject_teclas_send_teclas(char *teclas);
+
 extern enum defined_f_function_ids menu_da_accion_direct_functions_indice(int indice);
 
 extern overlay_screen overlay_screen_array[];
