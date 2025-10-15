@@ -3572,7 +3572,7 @@ int util_write_configfile(void)
 
   if (screen_reduce_075.v)			ADD_STRING_CONFIG,"--reduce-075");
   if (screen_reduce_050.v)			ADD_STRING_CONFIG,"--reduce-050");
-  if (screen_reduce_075_050_antialias.v==0)		ADD_STRING_CONFIG,"--reduce-075-no-antialias");
+  if (screen_reduce_075_050_antialias.v==0)		ADD_STRING_CONFIG,"--reduce-display-no-antialias");
 
 
 
