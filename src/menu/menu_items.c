@@ -35454,7 +35454,7 @@ void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
 
 void menu_debug_test_send_keys(MENU_ITEM_PARAMETERS)
 {
-    test_inject_teclas();
+    test_inject_teclas("ers");
 }
 
 
@@ -45795,7 +45795,43 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         break;
 
         case F_FUNCION_SEND_KEYS_MENU:
-            test_inject_teclas();
+
+           //Si viene de pulsar icono
+            if (si_pulsado_icono_zxdesktop) {
+                indice_icono=zxdesktop_configurable_icons_current_executing;
+
+                if (indice_icono!=-1) {
+
+                    char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
+
+                    test_inject_teclas(nombre);
+
+                }
+            }
+
+            //Viene de pulsar tecla F o boton ZX Desktop redefinido
+            else {
+                if (si_pulsado_boton_redefinido) {
+                    //debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon or F-key");
+                    //printf("Numero boton pulsado: %d\n",numero_boton_redefinido);
+                    if (numero_boton_redefinido<0 || numero_boton_redefinido>=MAX_USERDEF_BUTTONS) {
+                        debug_printf(VERBOSE_ERR,"Error getting Button parameters");
+                    }
+                    else {
+                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
+                        test_inject_teclas(nombre);
+                    }
+                }
+                else {
+                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                    else {
+                        char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+                        test_inject_teclas(nombre);
+                    }
+                }
+
+            }
+
         break;
 
         case F_FUNCION_DESKTOP_SNAPSHOT:

@@ -3084,9 +3084,11 @@ int menu_inject_teclas_estado=0;
 
 int menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=0;
 
-void test_inject_teclas(void)
+void test_inject_teclas(char *teclas)
 {
-    strcpy(menu_inject_teclas,"ers");
+    if (teclas[0]==0) return;
+
+    strcpy(menu_inject_teclas,teclas);
     menu_inject_teclas_contador=0;
     menu_inject_teclas_estado=1;
     menu_fire_event_open_menu();
