@@ -926,6 +926,9 @@ void menu_window_settings_reduce_075_050_ofx(MENU_ITEM_PARAMETERS)
         sprintf (string_offset,"%d",screen_reduce_offset_x);
         menu_ventana_scanf("Offset x",string_offset,3);
         screen_reduce_offset_x=parse_string_to_number(string_offset);
+
+        //Liberar buffers para borrar rastros de otros offsets
+        screen_scale_075_050_free_buffers();
 }
 
 void menu_window_settings_reduce_075_050_ofy(MENU_ITEM_PARAMETERS)
@@ -934,6 +937,9 @@ void menu_window_settings_reduce_075_050_ofy(MENU_ITEM_PARAMETERS)
         sprintf (string_offset,"%d",screen_reduce_offset_y);
         menu_ventana_scanf("Offset y",string_offset,3);
         screen_reduce_offset_y=parse_string_to_number(string_offset);
+
+        //Liberar buffers para borrar rastros de otros offsets
+        screen_scale_075_050_free_buffers();
 }
 
 void menu_interface_footer(MENU_ITEM_PARAMETERS)
