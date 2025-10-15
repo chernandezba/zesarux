@@ -4063,7 +4063,7 @@ BITS INK PAPER BORDER
 }
 
 //Mezclar dos colores si estan en rango spectrum 0-15, retornando el gigascreen. Si no, devolver el primero
-z80_int screen_scale_075_mix_two(z80_int color1, z80_int color2)
+z80_int screen_scale_075_050_mix_two(z80_int color1, z80_int color2)
 {
 	if (color1<16 && color2<16 && screen_reduce_075_antialias.v && gigascreen_enabled.v==0) return get_gigascreen_color(color1,color2);
 	else return color1;
@@ -4173,7 +4173,7 @@ De esto se ve que siempre se descarta dos pixeles como minimo, el l y p
 			color_der=*orig;
 			orig++;
 
-			*dest=screen_scale_075_mix_two(color_izq,color_der);
+			*dest=screen_scale_075_050_mix_two(color_izq,color_der);
 			dest++;
 			}
 
@@ -4182,7 +4182,7 @@ De esto se ve que siempre se descarta dos pixeles como minimo, el l y p
 			color_arr=*orig;
 			color_aba=orig[ancho];
 
-			*dest=screen_scale_075_mix_two(color_arr,color_aba);
+			*dest=screen_scale_075_050_mix_two(color_arr,color_aba);
 			dest++;
 			orig++;
 
@@ -4190,7 +4190,7 @@ De esto se ve que siempre se descarta dos pixeles como minimo, el l y p
 			color_arr=*orig;
 			color_aba=orig[ancho];
 
-			*dest=screen_scale_075_mix_two(color_arr,color_aba);
+			*dest=screen_scale_075_050_mix_two(color_arr,color_aba);
 			dest++;
 			orig++;
 
@@ -4201,13 +4201,13 @@ De esto se ve que siempre se descarta dos pixeles como minimo, el l y p
 			color_der=*orig;
 			orig++;
 
-			*dest=screen_scale_075_mix_two(color_izq,color_der);
+			*dest=screen_scale_075_050_mix_two(color_izq,color_der);
 			dest++;*/
 
 			color_arr=*orig;
 			color_aba=orig[ancho];
 
-			*dest=screen_scale_075_mix_two(color_arr,color_aba);
+			*dest=screen_scale_075_050_mix_two(color_arr,color_aba);
 			dest++;
 			orig++;
 
@@ -4272,7 +4272,7 @@ void screen_scale_rainbow_21(z80_int *orig,int ancho,int alto,z80_int *dest)
             orig++;
 
 
-            *dest=screen_scale_075_mix_two(color_1,color_2);
+            *dest=screen_scale_075_050_mix_two(color_1,color_2);
             //*dest=color_1;
             dest++;
 
@@ -4672,7 +4672,7 @@ int scalled_rainbow_alto=0;
 z80_int *new_scalled_rainbow_buffer_gigascren_one=NULL;
 z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 
-void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
+void screen_scale_075_050_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
         //int ancho_final,alto_final;
@@ -4714,7 +4714,7 @@ void screen_scale_075_and_watermark_function(z80_int *origen,z80_int *destino,in
 
 
 
-void screen_scale_075_gigascreen_function(int ancho,int alto)
+void screen_scale_075_050_gigascreen_function(int ancho,int alto)
 {
 
 
@@ -4750,8 +4750,8 @@ void screen_scale_075_gigascreen_function(int ancho,int alto)
                         scalled_rainbow_alto=alto;
                 }
 
-				screen_scale_075_and_watermark_function(rainbow_buffer_one,new_scalled_rainbow_buffer_gigascren_one,ancho,alto);
-				screen_scale_075_and_watermark_function(rainbow_buffer_two,new_scalled_rainbow_buffer_gigascren_two,ancho,alto);
+				screen_scale_075_050_and_watermark_function(rainbow_buffer_one,new_scalled_rainbow_buffer_gigascren_one,ancho,alto);
+				screen_scale_075_050_and_watermark_function(rainbow_buffer_two,new_scalled_rainbow_buffer_gigascren_two,ancho,alto);
 }
 
 
@@ -4793,7 +4793,7 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
 
 		//Reducimos los dos bufferes si conviene-escalado 0.75
         if (screen_reduce_075.v || screen_reduce_050.v) {
-                screen_scale_075_gigascreen_function(ancho,alto);
+                screen_scale_075_050_gigascreen_function(ancho,alto);
 				puntero_one=new_scalled_rainbow_buffer_gigascren_one;
 				puntero_two=new_scalled_rainbow_buffer_gigascren_two;
         }
@@ -5016,8 +5016,8 @@ void screen_scale_075_050_function(int ancho,int alto)
 
 
 		//Destino va a ser el mismo
-		//screen_scale_075_and_watermark_function(rainbow_buffer,rainbow_buffer,ancho,alto);
-		screen_scale_075_and_watermark_function(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
+		//screen_scale_075_050_and_watermark_function(rainbow_buffer,rainbow_buffer,ancho,alto);
+		screen_scale_075_050_and_watermark_function(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
 
 }
 
