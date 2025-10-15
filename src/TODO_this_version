@@ -57,6 +57,6 @@ posiblemente habrá mucha cosa a mostrar como cambiada
 
 -funcion (fkey/icono) que permita enviar abrir menu y enviar pulsaciones de hotkeys, para poder lanzar la mayoria de acciones de menus
 interceptar menu_da_todas_teclas,
-*icono para F_FUNCION_SEND_KEYS_MENU
+ok *icono para F_FUNCION_SEND_KEYS_MENU
 *changelog
 *quitar debug
