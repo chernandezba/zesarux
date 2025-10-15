@@ -233,6 +233,8 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_showbackgroundwindows,""},
     //Abrir una ventana cualquiera. Necesita nombre de la ventana en la extra info del icono
     {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_openwindow,""},
+    {"SendKeysMenu",F_FUNCION_SEND_KEYS_MENU,bitmap_button_ext_desktop_openwindow,""},
+
 
     //Misc
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage,""},
@@ -3080,11 +3082,15 @@ int menu_inject_teclas_contador=0;
 //11-20: pulsado tecla
 int menu_inject_teclas_estado=0;
 
+int menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=0;
+
 void test_inject_teclas(void)
 {
     strcpy(menu_inject_teclas,"ers");
     menu_inject_teclas_contador=0;
     menu_inject_teclas_estado=1;
+    menu_fire_event_open_menu();
+    menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=1;
 }
 
 
@@ -3099,7 +3105,7 @@ z80_byte menu_get_pressed_key(void)
 {
 
     if (menu_inject_teclas_estado) {
-        sleep(1);
+        //sleep(1);
         printf("inject activo. menu_get_pressed_key menu_inject_teclas_estado=%d\n",menu_inject_teclas_estado);
         if (menu_inject_teclas_estado>=11 && menu_inject_teclas_estado<=20) {
             z80_byte tecla_buffer=menu_inject_teclas[menu_inject_teclas_contador++];
@@ -19287,7 +19293,7 @@ int timer_osd_keyboard_menu=0;
 z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido,int absolutamente_todas_teclas)
 {
     if (menu_inject_teclas_estado) {
-        sleep(1);
+        //sleep(1);
         if (menu_inject_teclas_estado>=1 && menu_inject_teclas_estado<=10) {
             menu_inject_teclas_estado++;
             //menu_inject_teclas_estado=2;
@@ -26211,6 +26217,8 @@ void menu_inicio_handle_right_button_background(void)
     }
 }
 
+
+
 //Gestionar pulsaciones sobre iconos, tanto si es boton derecho como izquierdo
 void menu_inicio_handle_configurable_icon_presses(void)
 {
@@ -26371,10 +26379,15 @@ void menu_inicio_handle_configurable_icon_presses(void)
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
         menu_process_f_functions_by_action_name(id_funcion,1,-1,0,0);
-        //printf("Despues procesar funcion\n");
+        //printf("Despues procesar funcion de icono\n");
     }
 
-    salir_todos_menus=1;
+    if (!menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu) {
+        salir_todos_menus=1;
+    }
+
+    menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=0;
+
     configurable_icon_is_being_moved=0;
 
 
@@ -27849,6 +27862,8 @@ void menu_inicio(void)
                 menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0);
                 menu_button_f_function_action=0;
             }
+
+            //menu_event_open_menu.v
 
             menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
             cls_menu_overlay();

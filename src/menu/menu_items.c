@@ -45794,6 +45794,10 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
             }
         break;
 
+        case F_FUNCION_SEND_KEYS_MENU:
+            test_inject_teclas();
+        break;
+
         case F_FUNCION_DESKTOP_SNAPSHOT:
         case F_FUNCION_DESKTOP_TAPE:
         case F_FUNCION_DESKTOP_GENERIC_SMARTLOAD:
