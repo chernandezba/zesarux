@@ -233,7 +233,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_showbackgroundwindows,""},
     //Abrir una ventana cualquiera. Necesita nombre de la ventana en la extra info del icono
     {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_openwindow,""},
-    {"SendKeysMenu",F_FUNCION_SEND_KEYS_MENU,bitmap_button_ext_desktop_openwindow,""},
+    {"SendKeysMenu",F_FUNCION_SEND_KEYS_MENU,bitmap_button_ext_desktop_sendkeysmenu,""},
 
 
     //Misc
@@ -3082,12 +3082,15 @@ int menu_inject_teclas_contador=0;
 //11-20: pulsado tecla
 int menu_inject_teclas_estado=0;
 
+//Decir que al pulsar un icono del escritorio debe quedarse en el menu. Usado para procesar inject de teclas
 int menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=0;
+//Decir que al pulsar un botón superior debe quedarse en el menu. Usado para procesar inject de teclas
 int menu_inicio_handle_button_presses_mantenerse_en_menu=0;
 
 void menu_inject_teclas_send_teclas(char *teclas)
 {
     if (teclas[0]==0) return;
+    if (strlen(teclas)>MAX_INJECT_TECLAS) return;
 
     strcpy(menu_inject_teclas,teclas);
     menu_inject_teclas_contador=0;

@@ -134,6 +134,7 @@ extern char *bitmap_button_ext_desktop_zx81_online[];
 extern char *bitmap_button_ext_desktop_visualrealtape[];
 extern char *bitmap_button_ext_desktop_poke[];
 extern char *bitmap_button_ext_desktop_openwindow[];
+extern char *bitmap_button_ext_desktop_sendkeysmenu[];
 extern char *bitmap_button_ext_desktop_processmanagement[];
 extern char *bitmap_button_ext_desktop_processswitcher[];
 extern char *bitmap_button_ext_desktop_videoinfo[];
