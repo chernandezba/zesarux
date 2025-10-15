@@ -6,7 +6,7 @@ Permitir reducir pantalla a la mitad
 Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 
 Mejorado ZX Vision:
-- Agregado nuevo Menú Superior (no habilitado por defecto
+- Agregado nuevo Menú Superior (no habilitado por defecto)
 - Agregada opción para añadir un contorno a los iconos
 
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
