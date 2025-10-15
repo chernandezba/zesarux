@@ -45137,7 +45137,7 @@ void menu_search(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf("Query",menu_search_campo_busqueda,MAX_TEXTO_OPCION);
 
     if (menu_search_campo_busqueda[0]==0) {
-        menu_error_message("Write at least one character");
+        //menu_error_message("Write at least one character");
         return;
     }
 
