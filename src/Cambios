@@ -3,6 +3,7 @@ ZEsarUX 13 - xxx edition. 08 Octubre 2025
 Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Permitir drag&drop de archivos comprimidos
 Permitir reducir pantalla a la mitad
+Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 
 Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto

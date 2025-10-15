@@ -3098,6 +3098,8 @@ void menu_inject_teclas_send_teclas(char *teclas)
     menu_fire_event_open_menu();
     menu_inicio_handle_configurable_icon_presses_mantenerse_en_menu=1;
     menu_inicio_handle_button_presses_mantenerse_en_menu=1;
+
+    debug_printf(VERBOSE_INFO,"SendKeysMenu: Enable send keys: %s",teclas);
 }
 
 z80_byte menu_inject_da_todas_teclas(void)
@@ -3106,7 +3108,7 @@ z80_byte menu_inject_da_todas_teclas(void)
     if (menu_inject_teclas_estado>=1 && menu_inject_teclas_estado<=10) {
         menu_inject_teclas_estado++;
 
-        printf("Retornar no tecla pulsada\n");
+        debug_printf(VERBOSE_INFO,"SendKeysMenu: Return key is not pressed");
 
         //no tecla
         return 255;
@@ -3117,7 +3119,7 @@ z80_byte menu_inject_da_todas_teclas(void)
         //Conmutar a no pulsar tecla
         if (menu_inject_teclas_estado>=21) menu_inject_teclas_estado=1;
 
-        printf("Retornar tecla pulsada\n");
+        debug_printf(VERBOSE_INFO,"SendKeysMenu: Return key is pressed");
 
         //tecla pulsada
         return 254;
@@ -3136,10 +3138,10 @@ z80_byte menu_get_pressed_key(void)
 
     if (menu_inject_teclas_estado) {
         //sleep(1);
-        printf("inject activo. menu_get_pressed_key menu_inject_teclas_estado=%d\n",menu_inject_teclas_estado);
+        //printf("inject activo. menu_get_pressed_key menu_inject_teclas_estado=%d\n",menu_inject_teclas_estado);
         if (menu_inject_teclas_estado>=11 && menu_inject_teclas_estado<=20) {
             z80_byte tecla_buffer=menu_inject_teclas[menu_inject_teclas_contador];
-            printf("Retornar tecla buffer %c\n",tecla_buffer);
+            debug_printf(VERBOSE_INFO,"SendKeysMenu: Return key pressed [%c]",tecla_buffer);
             menu_inject_teclas_estado++;
 
             //Conmutar a no pulsar tecla
@@ -3147,7 +3149,10 @@ z80_byte menu_get_pressed_key(void)
 
             //Siguiente tecla en el buffer
             menu_inject_teclas_contador++;
-            if (menu_inject_teclas[menu_inject_teclas_contador]==0) menu_inject_teclas_estado=0;
+            if (menu_inject_teclas[menu_inject_teclas_contador]==0) {
+                debug_printf(VERBOSE_INFO,"SendKeysMenu: End sending keys");
+                menu_inject_teclas_estado=0;
+            }
 
             return tecla_buffer;
         }
