@@ -3071,6 +3071,21 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
     return 0;
 }
 
+#define MAX_INJECT_TECLAS 20
+char menu_inject_teclas[MAX_INJECT_TECLAS+1];
+int menu_inject_teclas_contador=0;
+
+//0: no activado inject
+//1-10: no pulsado tecla
+//11-20: pulsado tecla
+int menu_inject_teclas_estado=0;
+
+void test_inject_teclas(void)
+{
+    strcpy(menu_inject_teclas,"ers");
+    menu_inject_teclas_contador=0;
+    menu_inject_teclas_estado=1;
+}
 
 
 
@@ -3082,6 +3097,22 @@ z80_bit menu_tab={0};
 //devuelve tecla pulsada teniendo en cuenta mayus, sym shift
 z80_byte menu_get_pressed_key(void)
 {
+
+    if (menu_inject_teclas_estado) {
+        sleep(1);
+        printf("inject activo. menu_get_pressed_key menu_inject_teclas_estado=%d\n",menu_inject_teclas_estado);
+        if (menu_inject_teclas_estado>=11 && menu_inject_teclas_estado<=20) {
+            z80_byte tecla_buffer=menu_inject_teclas[menu_inject_teclas_contador++];
+            printf("Retornar tecla buffer %c\n",tecla_buffer);
+            menu_inject_teclas_estado++;
+            if (menu_inject_teclas_estado>=21) menu_inject_teclas_estado=1;
+
+            if (menu_inject_teclas[menu_inject_teclas_contador]==0) menu_inject_teclas_estado=0;
+
+            return tecla_buffer;
+        }
+    }
+
     //printf("menu_get_pressed_key\n");
     //Ver tambien eventos de mouse de zxvision
     //int pulsado_boton_cerrar=
@@ -19255,6 +19286,23 @@ int timer_osd_keyboard_menu=0;
 //tambien adicionales de Z88 etc. eso se usa en help keyboard
 z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido,int absolutamente_todas_teclas)
 {
+    if (menu_inject_teclas_estado) {
+        sleep(1);
+        if (menu_inject_teclas_estado>=1 && menu_inject_teclas_estado<=10) {
+            menu_inject_teclas_estado++;
+            //menu_inject_teclas_estado=2;
+            printf("Retornar no tecla pulsada\n");
+            return 255; //no tecla
+        }
+        else {
+            menu_inject_teclas_estado++;
+            if (menu_inject_teclas_estado>=21) menu_inject_teclas_estado=1;
+            printf("Retornar tecla pulsada\n");
+            //menu_inject_teclas_estado=1;
+            return 254; //tecla
+        }
+    }
+
 
     //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 1: %d\n",mouse_movido);
 

@@ -35452,6 +35452,10 @@ void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_debug_test_send_keys(MENU_ITEM_PARAMETERS)
+{
+    test_inject_teclas();
+}
 
 
 //menu debug
@@ -35889,6 +35893,9 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_debug);
         }
 
+        //test send keys to buffer
+        menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_test_send_keys,NULL,"Test send keys");
+        menu_add_item_menu_se_cerrara(array_menu_debug);
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 //menu_add_item_menu(array_menu_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
