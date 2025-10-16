@@ -30,7 +30,7 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *mensajes debug topbar meterlos en un tipo de debug nuevo, para poder filtrar
 
-*smartload->recent files. Recent files sale ventana pegada al top menu
+
 *storage->sd->autoconfigure tbblue sd. sd image type sale pegada al top menu
 
 *al pulsar en iconos de dispositivos, se abren los menus arriba, por debajo de donde estarían

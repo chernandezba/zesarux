@@ -44422,6 +44422,10 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
         "zsf","zx", 0
     };
 
+    //Como se lanza desde menu principal (como botón directo arriba del todo o desde top menu),
+    //se quedaria fijada la posición de la siguiente ventana, que afectaria a Recent Files
+    zxvision_reset_set_next_menu_position();
+
 
         //guardamos directorio actual
         char directorio_actual[PATH_MAX];
