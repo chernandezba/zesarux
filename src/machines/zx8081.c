@@ -72,29 +72,29 @@ The ZX81/ZX80 Keyboard Matrix
 
 
 //Real
-z80_byte   caracteres_zx80_no_artistic[64]=" \"???????????$:?()-+*/=><;,."
+z80_byte   caracteres_zx80_no_artistic[]=" \"???????????$:?()-+*/=><;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 //Un poco mas artistico
-z80_byte   caracteres_zx80[64]=" \"|v''../#_^f$:?()-+*/=><;,."
+z80_byte   caracteres_zx80[]=" \"|v''../#_^f$:?()-+*/=><;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 
 //Real
-z80_byte   caracteres_zx81_no_artistic[64]=" ??????????\"?$:?()><=+-*/;,."
+z80_byte   caracteres_zx81_no_artistic[]=" ??????????\"?$:?()><=+-*/;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 //Un poco mas artistico
-z80_byte   caracteres_zx81[64]=" ''^.|/p#_^\"f$:?()><=+-*/;,."
+z80_byte   caracteres_zx81[]=" ''^.|/p#_^\"f$:?()><=+-*/;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 
 //Caracteres sin interrogantes ni nada, para funciones ocr a speech
-z80_byte   caracteres_zx80_solo_letras[64]=
+z80_byte   caracteres_zx80_solo_letras[]=
 			   " \"           $:?()-+*/=><;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-z80_byte   caracteres_zx81_solo_letras[64]=
+z80_byte   caracteres_zx81_solo_letras[]=
 			  //01234567890 12345678901234567
 			   "           \" $:?()><=+-*/;,."
 			  //890123456789012345678901234567890123

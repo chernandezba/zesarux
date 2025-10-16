@@ -141,7 +141,7 @@ void enh_get_amplitud_media(z80_byte *enhanced_memoria,int tamanyo_memoria)
 
 }
 
-z80_byte zx81_char_table[64]=" ??????????\"?$:?()><=+-*/;,."
+z80_byte zx81_char_table[]=" ??????????\"?$:?()><=+-*/;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 z80_byte return_zx81_char(z80_byte codigo)
