@@ -26861,6 +26861,7 @@ void menu_find_bytes(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_string,NULL,"Find text string %s",tipo_busqueda);
 
                 menu_add_item_menu_format(array_menu_find_bytes,MENU_OPCION_NORMAL,menu_find_bytes_view_results,NULL,"View results");
+                menu_add_item_menu_genera_ventana(array_menu_find_bytes);
                 menu_add_item_menu_tooltip(array_menu_find_bytes,"View results");
                 menu_add_item_menu_ayuda(array_menu_find_bytes,"View results");
 
@@ -28048,10 +28049,12 @@ void menu_find(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_inicial_format(&array_menu_find,MENU_OPCION_NORMAL,menu_find_bytes,NULL,"Find bytes");
                 menu_add_item_menu_tooltip(array_menu_find,"Find several bytes on memory");
+                menu_add_item_menu_tiene_submenu(array_menu_find);
                 menu_add_item_menu_ayuda(array_menu_find,"Find several bytes on the 64 KB of mapped memory, considering the last address found (if any)");
 
-                                menu_add_item_menu_format(array_menu_find,MENU_OPCION_NORMAL,menu_find_lives,NULL,"Find lives address");
+                menu_add_item_menu_format(array_menu_find,MENU_OPCION_NORMAL,menu_find_lives,NULL,"Find lives address");
                 menu_add_item_menu_tooltip(array_menu_find,"Find memory pointer where lives are located");
+                menu_add_item_menu_tiene_submenu(array_menu_find);
                 menu_add_item_menu_ayuda(array_menu_find,"Find memory pointer where lives are located)");
 
                 menu_add_item_menu_format(array_menu_find,MENU_OPCION_NORMAL,menu_memory_cheat,NULL,"Memory Cheat");
