@@ -28,12 +28,13 @@
 #include <stdio.h>
 #ifndef MINGW
 	#include <unistd.h>
+    #include <sys/utsname.h>
 #endif
 #include <string.h>
 
 #include <time.h>
 #include <sys/time.h>
-#include <sys/utsname.h>
+
 #include <errno.h>
 
 #include <signal.h>
@@ -556,6 +557,17 @@ void get_os_release(void)
 
 //MAX_MACHINE_HARDWARE_NAME
 char running_machine_hardware_name[MAX_MACHINE_HARDWARE_NAME+1]=""; //Por si acaso definida inicialmente en blanco
+
+#ifdef MINGW
+void get_machine_hardware_name(void)
+{
+    //Mingw no tiene uname
+    //Lo sacamos de COMPILATION_MACHINE_HARDWARE_NAME, que obviamente, no tiene por que coincidir
+    //Le ponemos el sufijo -win para saber que es de windows y no real del todo
+    sprintf(running_machine_hardware_name,"%s-win",COMPILATION_MACHINE_HARDWARE_NAME);
+}
+
+#else
 void get_machine_hardware_name(void)
 {
     struct utsname buffer;
@@ -571,6 +583,7 @@ void get_machine_hardware_name(void)
     debug_printf(VERBOSE_INFO,"Running machine hardware name: %s",running_machine_hardware_name);
 
 }
+#endif
 
 
 int siguiente_parametro(void)
