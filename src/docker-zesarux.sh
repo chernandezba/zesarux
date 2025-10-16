@@ -23,6 +23,13 @@ docker-run() {
                 docker run --name run-zesarux-$VERSIONNAME -it zesarux.$VERSIONNAME --vo stdout
 }
 
+docker-sh() {
+	VERSIONNAME=$1
+		docker rm run-zesarux-$VERSIONNAME
+                docker run --name run-zesarux-$VERSIONNAME -it --entrypoint /bin/bash zesarux.$VERSIONNAME
+}
+
+
 
 docker-build-and-get-binary() {
 	VERSIONNAME=$1
@@ -133,6 +140,17 @@ case $1 in
 
 		docker-run $2
 	;;
+
+	sh-version)
+		if [ $# == 1 ]; then
+			echo "A parameter version is required"
+			exit 1
+		fi
+
+		docker-sh $2
+	;;
+
+
 
 	run)
 		docker-build
