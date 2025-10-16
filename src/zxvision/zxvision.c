@@ -26671,6 +26671,8 @@ int zxvision_simple_window_manager(int reopen_menu)
                     debug_printf (VERBOSE_DEBUG,"Starting window %s",geometry_name);
                     menu_window_manager_window_went_background=0;
 
+                    //printf("----pulsado en ventana\n");
+
                     zxvision_known_window_names_array[indice].start(0);
 
 

@@ -23,22 +23,21 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 ->acabar de probarlo bien
 
 
-*en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí. relacionado con lo anterior
+*en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
 ->quizá es culpa del autoframeskip?
 
 *si estamos en una ventana y pulsamos F5, la ventana aparece como si estuviera activa (barra de titulo normal, marco, etc)
 
 *mensajes debug topbar meterlos en un tipo de debug nuevo, para poder filtrar
 
+*menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
-*al pulsar en iconos de dispositivos, se abren los menus arriba, por debajo de donde estarían
-los botones superiores. Quizá deberian abrirse mas arriba, justo por debajo del top menu?
 
-menus de topbar deben salir con traducción también. aunque ocupará mas caracteres...
 
 ----------Fin top bar menu----------
 ----------------------------------------
 
+*zxlife->select fps. si pulsar en ESC de ventana fps, se cierra el juego
 
 -agregar a ayuda de debug cpu:
 * lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc

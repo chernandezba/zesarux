@@ -389,6 +389,9 @@ void menu_topbarmenu_preexit(void)
     topbar_menu_desplegado=0;
     topbar_make_topbar_invisible();
     salir_todos_menus=1;
+
+    //Aqui o quizá solo al final? En linea 821
+    zxvision_reset_set_next_menu_position();
 }
 
 int menu_topbarmenu_crear_indice_posiciones(void)
