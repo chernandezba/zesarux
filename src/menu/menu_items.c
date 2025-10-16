@@ -6874,8 +6874,6 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&linea_seleccionada,&item_seleccionado,array_menu_common,"Playlist");
 
-        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
-        salir_todos_menus=0;
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -7192,7 +7190,10 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
                         if (item_seleccionado.menu_funcion!=NULL) {
                                 //printf ("actuamos por funcion\n");
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
+                                //Al ser este menu un menu tabulado,
+                                //si hay alguna accion disparada que se haya pulsado ESC,
+                                //no queremos que cierre este menu
+                                salir_todos_menus=0;
 
                         }
                 }
