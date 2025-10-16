@@ -14272,8 +14272,6 @@ void menu_record_mid_instrument(MENU_ITEM_PARAMETERS)
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&record_mid_instrument_opcion_seleccionada,&item_seleccionado,array_menu_common,"Instrument");
 
-        //no queremos que al pulsar ESC aqui se cierren todos los menus anteriores
-        salir_todos_menus=0;
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //Cambiar instrumento y salir
