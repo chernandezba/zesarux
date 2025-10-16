@@ -426,13 +426,16 @@ if [ "$SISTEMA" == "Haiku" ]; then
 fi
 
 
+echo -n "Checking machine hardware name ... "
+COMPILATION_MACHINE_HARDWARE_NAME=`uname -m`
+echo $COMPILATION_MACHINE_HARDWARE_NAME
+
 # Ver si aplicamos definicion para llamadas de 64 bits en 32 bits (stat por ejemplo)
 
 if [ "$SISTEMA" == "GNU/Linux" ]; then
 	echo -n "Checking if 32 bit Linux ... "
-	BITSSISTEMA=`uname -m`
 
-	if [ "$BITSSISTEMA" == "i686" ] || [ "$BITSSISTEMA" == "i386" ]; then
+	if [ "$COMPILATION_MACHINE_HARDWARE_NAME" == "i686" ] || [ "$COMPILATION_MACHINE_HARDWARE_NAME" == "i386" ]; then
 		echo "Applying compiler definition to work with files larger than 2 GB on a 32 bit system"
 		CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64"
 	else
@@ -1528,7 +1531,7 @@ ffsystem.o: third_party/ffsystem.c third_party/ffconf.h third_party/ff.h
 ffunicode.o: third_party/ffunicode.c third_party/ffconf.h third_party/ff.h
 	\$(CC) \$(CFLAGS) -c third_party/ffunicode.c
 
-stats.o: stats.c stats.h cpu.h zxvision/zxvision.h compileoptions.h debug.h network.h video/screen.h timer.h
+stats.o: stats.c stats.h cpu.h zxvision/zxvision.h compileoptions.h debug.h network.h video/screen.h timer.h start.h
 	\$(CC) \$(CFLAGS) -c stats.c
 
 sensors.o: sensors.c sensors.h cpu.h debug.h soundchips/ay38912.h video/screen.h zxvision/zxvision.h timer.h stats.h audio/audio.h soundchips/sn76489an.h zrcp/zeng_online_client.h ula.h machines/tbblue.h
@@ -2614,6 +2617,7 @@ cat >> compileoptions.h << _EOF
 #define COMPILATION_DATE "`date`"
 #define COMPILATION_SYSTEM "$SISTEMA"
 #define COMPILATION_SYSTEM_RELEASE "$SISTEMA_RELEASE"
+#define COMPILATION_MACHINE_HARDWARE_NAME "$COMPILATION_MACHINE_HARDWARE_NAME"
 #define CONFIGURE_OPTIONS "$0 $CONFIGURE_OPTIONS"
 #define COMPILE_VARIABLES "$COMPILE_VARIABLES"
 #define COMPILE_INITIALCFLAGS "$INITIALCFLAGS"

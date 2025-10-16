@@ -57,3 +57,9 @@ posiblemente habrá mucha cosa a mostrar como cambiada
 
 ok -funcion (fkey/icono) que permita enviar abrir menu y enviar pulsaciones de hotkeys, para poder lanzar la mayoria de acciones de menus
 
+ok-detectar arquitectura 32/64 bits en compilación y ejecución, para incluirla en estadísticas:
+*en Linux se detecta en configure si es 32 o 64
+*en Windows actualmente compilo en 32 bits
+*en Mac compilo en 64 bits (y probablemente en uno de 32 bits ya no compila)
+*en Haiku, FreeBSD, Ubuntu, Fedora compilo en 64 bits
+uname -m sirve para todos

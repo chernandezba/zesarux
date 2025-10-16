@@ -24,6 +24,8 @@
 
 #include "cpu.h"
 
+#define MAX_MACHINE_HARDWARE_NAME 30
+
 extern int zesarux_main (int main_argc,char *main_argv[]);
 extern void set_last_dimensiones_ventana(void);
 extern void random_ram(z80_byte *puntero,int longitud);
@@ -51,6 +53,9 @@ extern void siguiente_parametro_argumento(void);
 extern int zesarux_first_start;
 
 extern int appeared_zesarux_first_start;
+
+
+extern char running_machine_hardware_name[];
 
 extern int first_start_wizard_disabled;
 

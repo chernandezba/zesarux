@@ -33,6 +33,7 @@
 
 #include <time.h>
 #include <sys/time.h>
+#include <sys/utsname.h>
 #include <errno.h>
 
 #include <signal.h>
@@ -551,6 +552,26 @@ void get_os_release(void)
     }
     debug_printf(VERBOSE_INFO,"Running OS Release: %s",os_release_name);
 }
+
+
+//MAX_MACHINE_HARDWARE_NAME
+char running_machine_hardware_name[MAX_MACHINE_HARDWARE_NAME+1]=""; //Por si acaso definida inicialmente en blanco
+void get_machine_hardware_name(void)
+{
+    struct utsname buffer;
+
+    if (uname(&buffer) != 0) {
+        //perror("uname");
+        return;
+    }
+
+    if (strlen(buffer.machine)<=MAX_MACHINE_HARDWARE_NAME) {
+        strcpy(running_machine_hardware_name,buffer.machine);
+    }
+    debug_printf(VERBOSE_INFO,"Running machine hardware name: %s",running_machine_hardware_name);
+
+}
+
 
 int siguiente_parametro(void)
 {
@@ -7698,6 +7719,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	inicializa_tabla_contend_speed_higher();
 
     get_os_release();
+
+    get_machine_hardware_name();
 
 
 

@@ -13623,9 +13623,13 @@ void menu_settings_statistics(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Running System Release:");
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"     %s",os_release_name);
 
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Running Machine Hardware Name: %s",running_machine_hardware_name);
+
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Compilation System: %s",COMPILATION_SYSTEM);
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Compilation System Release:");
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"     %s",COMPILATION_SYSTEM_RELEASE);
+
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Compilation Machine Hardware Name: %s",COMPILATION_MACHINE_HARDWARE_NAME);
 
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Minutes: %d",stats_get_current_total_minutes_use() );
 
