@@ -18113,6 +18113,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,
                     "Autoconfigure Next SD","Autoconfigurar Next SD","Autoconfigurar Next SD");
                 menu_add_item_menu_prefijo(array_menu_mmc_divmmc,"    ");
+                menu_add_item_menu_genera_ventana(array_menu_mmc_divmmc);
 
             }
 
