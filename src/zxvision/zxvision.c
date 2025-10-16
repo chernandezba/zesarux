@@ -25972,6 +25972,7 @@ void menu_inicio_handle_lower_icon_presses(void)
 
     funcion_accion=zdesktop_lowericons_array[indice_array].accion;
 
+    zxvision_set_next_menu_position_from_current_mouse();
 
     //Si pulsado con boton derecho
     if (menu_pressed_zxdesktop_lower_icon_which_right_button) {
@@ -25995,16 +25996,18 @@ void menu_inicio_handle_lower_icon_presses(void)
             menu_warn_message("This device has no right-click associated action");
         }
         else {
-            zxvision_set_next_menu_position_from_current_mouse();
+            //zxvision_set_next_menu_position_from_current_mouse();
             funcion_accion=zdesktop_lowericons_array[indice_array].accion_boton_derecho;
             funcion_accion();
-            zxvision_reset_set_next_menu_position();
+            //zxvision_reset_set_next_menu_position();
         }
     }
 
     else {
         funcion_accion();
     }
+
+    zxvision_reset_set_next_menu_position();
 
     salir_todos_menus=1;
 
