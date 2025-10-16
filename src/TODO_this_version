@@ -56,5 +56,7 @@ posiblemente habrá mucha cosa a mostrar como cambiada
 
 
 ok -funcion (fkey/icono) que permita enviar abrir menu y enviar pulsaciones de hotkeys, para poder lanzar la mayoria de acciones de menus
+acabarlo de probar
 
 ok-detectar arquitectura 32/64 bits en compilación y ejecución, para incluirla en estadísticas
+acabarlo de probar
