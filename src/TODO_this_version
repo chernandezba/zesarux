@@ -38,9 +38,6 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 ----------------------------------------
 
 
-*si se pulsa boton de cerrar todos los menus, desde una ventana que se ha abierto desde otra con menu tabulado, se cierra esa ventana de menu tabulado,
-en vez de dejarse en background
-
 
 -agregar a ayuda de debug cpu:
 * lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc

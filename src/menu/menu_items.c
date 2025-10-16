@@ -7191,7 +7191,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
                                 //printf ("actuamos por funcion\n");
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
                                 //Al ser este menu un menu tabulado,
-                                //si hay alguna accion disparada que se haya pulsado ESC,
+                                //si hay alguna accion disparada en la que se haya pulsado ESC,
                                 //no queremos que cierre este menu
                                 salir_todos_menus=0;
 
@@ -43241,8 +43241,10 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
                     if (item_seleccionado.menu_funcion!=NULL) {
                             //printf ("actuamos por funcion\n");
                             item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-
+                            //Al ser este menu un menu tabulado,
+                            //si hay alguna accion disparada en la que se haya pulsado ESC,
+                            //no queremos que cierre este menu
+                            salir_todos_menus=0;
                     }
             }
 
@@ -47337,7 +47339,7 @@ void menu_template_menu(MENU_ITEM_PARAMETERS)
                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
                 //Si este menu lo definimos como un menu tabulado,
-                //si hay alguna accion disparada que se haya pulsado ESC,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
                 //no queremos que cierre este menu
                 //salir_todos_menus=0;
 
