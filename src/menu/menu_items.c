@@ -27281,8 +27281,7 @@ void menu_memory_cheat_set_watch_or_write(int direccion,int watch_id,int pedir_d
 
     }
 
-    //no queremos que al pulsar ESC se cierre la ventana de memory cheat
-    salir_todos_menus=0;
+
 
 }
 
@@ -27422,8 +27421,7 @@ void menu_memory_cheat_first_scan_condition(MENU_ITEM_PARAMETERS)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-    //no queremos que al pulsar ESC se cierre la ventana de memory cheat
-    salir_todos_menus=0;
+
 }
 
 int memory_cheat_first_scan_matches(z80_byte value)
@@ -27658,8 +27656,7 @@ void menu_memory_cheat_next_scan_condition(MENU_ITEM_PARAMETERS)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-    //no queremos que al pulsar ESC se cierre la ventana de memory cheat
-    salir_todos_menus=0;
+
 }
 
 void menu_memory_cheat_next_scan_change_first_parameter(MENU_ITEM_PARAMETERS)
@@ -27997,6 +27994,10 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
                 if (item_seleccionado.menu_funcion!=NULL) {
                     //printf ("actuamos por funcion\n");
                     item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    //Al ser esto un menu tabulado, si hay alguna accion disparada que se haya pulsado ESC,
+                    //no queremos que cierre este menu
+                    salir_todos_menus=0;
 
                 }
             }
@@ -47337,6 +47338,11 @@ void menu_template_menu(MENU_ITEM_PARAMETERS)
             if (item_seleccionado.menu_funcion!=NULL) {
                 //printf ("actuamos por funcion\n");
                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
 
             }
         }
