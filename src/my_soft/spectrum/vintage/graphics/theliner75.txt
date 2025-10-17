@@ -194,3 +194,40 @@ ESPERA UNA TECLA: Similar para la rutina que espera cualquier tecla
 6201 NOP
 6202 NOP
 6203 NOP
+
+
+--------------
+
+Notas adicionales. Revisar!!!
+
+25437: leer tecla
+-usado en linea 31
+25324: activar rutina. im2
+25335: im 1. desactivar rutina
+
+25473 cantidad de teclas en buffer
+25474 byte status. copia de 23658 	FLAGS2 	More flags.  (solo bit 3). por defecto a 0 -> caps lock
+
+
+
+
+25537 linea 1
+
+
+25542 leer bit 3 de 23658
+
+-----
+
+Asegurarse que print in 65278 retorna 190 o 191. usar keyboard issue3, y
+no tener carga de cinta activada o cambiara el bit 6
+basarse en liner 74 y corregir aquellos sitios que no lee bien las ordenes (como PROCE en horizontal o vertical) o graba datos. en principio habria que leer las teclas siempre en mayusculas
+
+adicional: la rutina interrupciones gestiona caps lock, por tanto se puede pulsar en cualquier sitio
+ademas, se activa caps lock siempre en varios sitios
+
+-en seleccion de areas (como en proce) shift+OPQA amplia mas rapido. igual con shift+6789
+
+
+-gosub 9981 desactiva buffer teclado. ideal para moverse por el basic sin el molesto sonido en el border
+
+
