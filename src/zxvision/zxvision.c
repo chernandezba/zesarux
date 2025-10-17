@@ -373,6 +373,11 @@ int zxvision_get_minimum_y_icon_position(void)
 
     int yinicial=alto_boton+16;
 
+    //Si no hay menus superiores activados
+    if (menu_zxdesktop_upper_buttons_enabled.v==0) {
+        yinicial=0;
+    }
+
     //Si está topbar, la yinicial es mas arriba
     if (zxvision_topbar_menu_enabled.v) {
         //1 fila de texto. con algo de margen
