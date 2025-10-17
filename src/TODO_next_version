@@ -23,15 +23,8 @@ Para versión siguiente:
 
 -cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
 
-
-
-
-
-
 -full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
 
-
--Si se crea ventana de alto negativo, acaba haciendo panic al asignar memoria. Quizá controlar esto?
 
 -keyboard help
 - pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
@@ -47,9 +40,6 @@ no genera codigo de tecla al pulsar esas extendidas
 ---Mejoras---
 -------------
 
-
-
--algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
