@@ -4116,17 +4116,19 @@ int parse_cmdline_options(int desde_commandline) {
 
 				int valor=parse_string_to_number(argv[puntero_parametro]);
 
+                //Si da error de invalid button, ya habremos saltado el siguiente parametro y así facilitamos la carga
+                //de la configuración aunque este punto falle
+                siguiente_parametro_argumento();
+
 				if (valor<0 || valor>=MAX_USERDEF_BUTTONS) {
-					printf ("Invalid button\n");
-					exit(1);
+					debug_printf (VERBOSE_ERR,"Invalid button %d",valor);
 				}
 
-				siguiente_parametro_argumento();
-
-				if (menu_define_button_function(valor,argv[puntero_parametro])) {
-					printf ("Invalid button action: %s\n",argv[puntero_parametro]);
-					exit(1);
-				}
+                else {
+                    if (menu_define_button_function(valor,argv[puntero_parametro])) {
+                        debug_printf (VERBOSE_ERR,"Invalid button action: %s",argv[puntero_parametro]);
+                    }
+                }
 
 
 			}
@@ -7152,7 +7154,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (desde_commandline) {
 				    //parametro desconocido por linea de comandos, avisar con error
-				    debug_printf (VERBOSE_ERR,"Unknown parameter : %s . Stopping parsing the rest of parameters",argv[puntero_parametro]);
+				    debug_printf (VERBOSE_ERR,"Unknown setting : %s . Stopping parsing the rest of settings",argv[puntero_parametro]);
                     return 1;
                 }
 
@@ -7160,7 +7162,14 @@ int parse_cmdline_options(int desde_commandline) {
 
 
                     //si en cambio estamos parseando archivo de configuracion, hacerlo mas tolerante, arrancar pero con aviso
-                    debug_printf (VERBOSE_ERR,"Unknown parameter : %s",argv[puntero_parametro]);
+                    //Nota: para que sea tolerante en cuanto a fallos en parametros de un comando, por ejemplo:
+                    //--def-button-function 99999 "SendKeysMenu"
+                    //Ese 99999 no es válido, lo que hace el parseo de ese comando es leer primero los dos parámetros
+                    //(el numero de botón y la acción) y luego mostrar error si conviene. Pero de esa manera ya hemos
+                    //parseado los dos parámetros y el "cursor" de lectura de config estará en el siguiente comando
+                    //Sin embargo, si parásemos al leer el número de botón inválido, el siguiente comando que se leería
+                    //seria "SendKeysMenu", lo cual tampoco seria mucho problema porque se mostraria este error de "Unknown setting"
+                    debug_printf (VERBOSE_ERR,"Unknown setting : %s",argv[puntero_parametro]);
 
                     //Nos vamos hasta siguiente parametro que empiece con "--"
                     int salir=0;
