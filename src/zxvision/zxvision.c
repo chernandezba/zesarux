@@ -20953,6 +20953,18 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 
                 //printf("---menu_dibuja_submenu_get_menu_pos obtencion por calculo inicio del zx desktop\n");
 
+                //Aqui entramos cuando es el primer menu y no forzamos posicion
+                //Aqui por ejemplo se entrara al abrir "ZX Desktop settings" haciendo click derecho en el desktop
+                //Tambien al abrir menu con F5 y no hay topbar
+                /*
+                Posicionado:
+                x: donde empieza el zx desktop
+                y: si está topbar, y=1.
+                   si no está topbar:
+                       si hay botones superiores, por debajo de ellos
+                       si no hay botones superiores, y=0
+                */
+
 
                 int alto_boton;
                 int ancho_boton;
@@ -20968,6 +20980,12 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
                 //int offset_x=cual_boton*ancho_boton;
                 //int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
                 x=origen_x; //+(offset_x/ancho_texto);
+
+                //Si no hay botones superiores, arriba del todo
+                if (menu_zxdesktop_upper_buttons_enabled.v==0) y=0;
+
+                //Si tenemos top menu, coordenada y=1
+                if (zxvision_topbar_menu_enabled.v) y=1;
 
                 *xnormal=x;
                 *ynormal=y;
@@ -21303,7 +21321,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     zxvision_window *ventana;
     zxvision_window ventana_menu;
 
-
+    //printf("Posicionar ventana menu en %d,%d\n",x,y);
 
     if (m->es_menu_tabulado==0) {
 
@@ -26207,8 +26225,12 @@ void menu_inicio_handle_right_button_background(void)
     if (menu_pressed_zxdesktop_right_button_background>=0) {
         menu_pressed_zxdesktop_right_button_background=-1;
 
-        //propiedades zx desktop, agregar icono
+        zxvision_set_next_menu_position_from_current_mouse();
+
+        //propiedades zx desktop
         int opcion=menu_simple_five_choices("ZX Desktop","--Action--","New icon","New file link","Customize icons","Reorder icons","ZX Desktop settings");
+
+        zxvision_reset_set_next_menu_position();
 
         switch (opcion) {
 
