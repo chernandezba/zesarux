@@ -12379,6 +12379,7 @@ void menu_ext_desk_settings_placemenu(MENU_ITEM_PARAMETERS)
 void menu_ext_desk_settings_direct_upper_buttons(MENU_ITEM_PARAMETERS)
 {
 	menu_zxdesktop_upper_buttons_enabled.v ^=1;
+    zxvision_reorder_configurable_icons_if_auto();
 }
 
 void menu_ext_desk_settings_direct_lower_buttons(MENU_ITEM_PARAMETERS)
