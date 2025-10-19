@@ -188,7 +188,6 @@ while [ $# -gt 0 ]; do
 	;;
 
 	--no-check-c-compiler)
-        shift
 	CHECK_CCOMPILER=""
 	;;
 
