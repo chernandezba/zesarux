@@ -88,6 +88,22 @@ void z_atomic_reset(z_atomic_semaphore *s)
         #ifdef OTHER_UNIX
 
             //Otros Unix no POSIX, como AROS
+            //Operaciones arriesgadamente no atomicas
+
+            int z_atomic_test_and_set(z_atomic_semaphore *s)
+            {
+                    //Estaba a 1, no establecemos bloqueo
+                    if (*s) return 1;
+
+                    //Adquirimos bloqueo
+                    *s=1;
+                    return 0;
+            }
+
+            void z_atomic_reset(z_atomic_semaphore *s)
+            {
+                    *s=0;
+            }
 
         #else
 
