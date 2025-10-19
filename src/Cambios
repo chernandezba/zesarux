@@ -21,6 +21,7 @@ Mejorado debug cpu:
 Agregado carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido descomprimir archivos tar y rar con espacios en el nombre
 Corregido temporizador por defecto en Mac OS X cuando no se usa driver cocoa
+Corregido compilación sin pthreads
 
 ----
 

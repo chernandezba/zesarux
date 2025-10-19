@@ -93,6 +93,71 @@ pthread_t thread_zeng_online_client_stop_master_thread;
 
 #endif
 
+//Variables que aunque son de pthreads se usan en otros sitios
+int zoc_streaming_display_received_counter=0;
+int zeng_online_client_get_snapshot_applied_finished=0;
+int zoc_common_alive_user_send_counter=0;
+int zoc_common_get_messages_received_counter=0;
+int zoc_generated_differential_displays_counter=0;
+int zoc_generated_full_displays_counter=0;
+int zoc_get_keys_counter=0;
+
+int zoc_get_pending_authorization_size_last_queue_size=0;
+int zoc_get_pending_authorization_counter=0;
+int zoc_keys_send_counter=0;
+int zoc_received_snapshot_counter=0;
+
+char *zoc_send_streaming_audio_mem_hexa=NULL;
+int zoc_master_pending_send_streaming_audio=0;
+
+int zoc_send_streaming_audio_counter=0;
+
+int zoc_send_streaming_display_counter=0;
+
+int zoc_sent_snapshots_counter=0;
+
+char zoc_last_audio_value_received=0;
+
+int zoc_sent_streaming_audio_silence_counter=0;
+int zoc_sent_streaming_audio_no_silence_counter=0;
+
+//Decir si se bloquea temporalmente la aplicacion de streaming de video
+int zoc_slave_forbid_apply_streaming_video=0;
+
+int zoc_pending_apply_received_streaming_audio=0;
+
+int zoc_last_id_stream_audio=-1;
+
+
+
+z80_byte *zoc_get_audio_mem_binary=NULL;
+
+z80_byte *zoc_get_audio_mem_binary_second_buffer=NULL;
+
+int zoc_get_audio_mem_binary_longitud=0;
+
+int zoc_streaming_audio_received_counter=0;
+
+int zoc_streaming_audio_no_silence_received_counter=0;
+int zoc_streaming_audio_silence_received_counter=0;
+
+//Conteo de veces llamado a  zeng_online_client_end_frame_from_core_functions, y por tanto frames de video
+//Usado para obtener FPS en modo streaming
+int zoc_client_video_frames=0;
+
+//Conteo de cuantas pantallas recibidas, se usa para obtener el FPS
+int zoc_client_streaming_display_count=0;
+
+int zoc_client_streaming_display_fps=0;
+
+//Usado para obtener la media de fps en un intervalo dado
+int zoc_client_streaming_display_fps_seconds=0;
+int zoc_client_streaming_display_fps_sum=0;
+int zoc_client_streaming_display_fps_last_interval=0;
+
+int zoc_streaming_display_differential_received_counter=0;
+int zoc_streaming_display_full_received_counter=0;
+
 //Variables y funciones que no son de pthreads
 int zeng_online_client_list_rooms_thread_running=0;
 int zeng_online_client_create_room_thread_running=0;
@@ -2522,7 +2587,7 @@ int zoc_send_snapshot(int indice_socket)
 
 }
 
-int zoc_send_streaming_display_counter=0;
+
 
 //Para las dos pantallas que se envian cada vez: la diferencial y la completa
 char *zoc_send_streaming_display_mem_hexa[2]={NULL,NULL};
@@ -2578,10 +2643,7 @@ int zoc_send_streaming_display(int indice_socket,int slot)
 
 }
 
-char *zoc_send_streaming_audio_mem_hexa=NULL;
-int zoc_master_pending_send_streaming_audio=0;
 
-int zoc_send_streaming_audio_counter=0;
 
 int zoc_send_streaming_audio(int indice_socket)
 {
@@ -2634,7 +2696,7 @@ int zoc_send_streaming_audio(int indice_socket)
 }
 
 
-int zoc_get_keys_counter=0;
+
 
 void zoc_get_keys(int indice_socket)
 {
@@ -2812,22 +2874,7 @@ void zoc_get_keys(int indice_socket)
 
 }
 
-int zoc_pending_apply_received_streaming_audio=0;
 
-int zoc_last_id_stream_audio=-1;
-
-
-
-z80_byte *zoc_get_audio_mem_binary=NULL;
-
-z80_byte *zoc_get_audio_mem_binary_second_buffer=NULL;
-
-int zoc_get_audio_mem_binary_longitud=0;
-
-int zoc_streaming_audio_received_counter=0;
-
-int zoc_streaming_audio_no_silence_received_counter=0;
-int zoc_streaming_audio_silence_received_counter=0;
 
 int zoc_get_stream_audio_continuous(int indice_socket)
 {
@@ -3241,7 +3288,7 @@ int zoc_keys_tecla_conmutada(zeng_key_presses *elemento)
 
 }
 
-int zoc_keys_send_counter=0;
+
 
 int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
 {
@@ -3300,9 +3347,7 @@ int zoc_keys_send_pending(int indice_socket,int *enviada_alguna_tecla)
     return error_desconectar;
 }
 
-int zoc_get_pending_authorization_size_last_queue_size=0;
 
-int zoc_get_pending_authorization_counter=0;
 
 int zoc_get_pending_authorization_size(int indice_socket)
 {
@@ -3428,7 +3473,7 @@ int contador_alive_anteriorsegundos=0;
 //unsigned int antes_network_traffic_counter_read=0;
 //unsigned int antes_network_traffic_counter_write=0;
 
-int zoc_common_alive_user_send_counter=0;
+
 
 void zoc_common_alive_user(int indice_socket)
 {
@@ -3460,7 +3505,7 @@ void zoc_common_alive_user(int indice_socket)
     }
 }
 
-int zoc_common_get_messages_received_counter=0;
+
 
 void zoc_common_get_messages_slave_master(int indice_socket)
 {
@@ -3513,7 +3558,7 @@ void zoc_common_get_messages_slave_master(int indice_socket)
     }
 }
 
-int zoc_sent_snapshots_counter=0;
+
 
 void master_thread_put_snapshot(int indice_socket)
 {
@@ -3891,7 +3936,7 @@ void *zoc_master_thread_function_stream_audio(void *nada GCC_UNUSED)
 
 }
 
-int zoc_received_snapshot_counter=0;
+
 
 
 int zoc_receive_snapshot(int indice_socket)
@@ -4187,7 +4232,7 @@ int zoc_receive_snapshot(int indice_socket)
 
 }
 
-int zoc_streaming_display_received_counter=0;
+
 
 int zoc_receive_streaming_display(int indice_socket,int slot)
 {
@@ -4565,7 +4610,7 @@ void slave_thread_get_snapshot(int indice_socket)
 
 int zoc_slave_force_get_snapshot=0;
 
-int zeng_online_client_get_snapshot_applied_finished=0;
+
 
 void *zoc_slave_thread_function(void *nada GCC_UNUSED)
 {
@@ -5044,22 +5089,7 @@ void zeng_online_client_apply_pending_received_snapshot(void)
 }
 
 
-//Conteo de veces llamado a  zeng_online_client_end_frame_from_core_functions, y por tanto frames de video
-//Usado para obtener FPS en modo streaming
-int zoc_client_video_frames=0;
 
-//Conteo de cuantas pantallas recibidas, se usa para obtener el FPS
-int zoc_client_streaming_display_count=0;
-
-int zoc_client_streaming_display_fps=0;
-
-//Usado para obtener la media de fps en un intervalo dado
-int zoc_client_streaming_display_fps_seconds=0;
-int zoc_client_streaming_display_fps_sum=0;
-int zoc_client_streaming_display_fps_last_interval=0;
-
-int zoc_streaming_display_differential_received_counter=0;
-int zoc_streaming_display_full_received_counter=0;
 
 z80_byte *zoc_get_base_mem_pantalla(void)
 {
@@ -5068,8 +5098,7 @@ z80_byte *zoc_get_base_mem_pantalla(void)
     return get_base_mem_pantalla();
 }
 
-//Decir si se bloquea temporalmente la aplicacion de streaming de video
-int zoc_slave_forbid_apply_streaming_video=0;
+
 
 void zeng_online_client_apply_pending_received_streaming_display(void)
 {
@@ -5441,8 +5470,7 @@ int zoc_generate_differential_display(z80_byte *current_screen)
 
 }
 
-int zoc_generated_differential_displays_counter=0;
-int zoc_generated_full_displays_counter=0;
+
 
 int zoc_get_streaming_display(z80_byte *buffer_temp_sin_comprimir,int force_full_display)
 {
@@ -5983,10 +6011,7 @@ void zeng_online_client_alter_fps_streaming(void)
 }
 
 
-char zoc_last_audio_value_received=0;
 
-int zoc_sent_streaming_audio_silence_counter=0;
-int zoc_sent_streaming_audio_no_silence_counter=0;
 
 void zeng_online_client_end_audio_frame_stuff(void)
 {
@@ -6248,6 +6273,10 @@ void zeng_online_client_end_audio_frame_stuff(void)
 }
 
 void zeng_online_client_apply_pending_received_snapshot(void)
+{
+}
+
+void zoc_slave_set_force_get_snapshot(void)
 {
 }
 

@@ -21,6 +21,7 @@ Improved debug cpu:
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver
+Fixed non-pthreads compilation
 
 ----
 
