@@ -47,6 +47,11 @@
 #include <netinet/in.h>
 #endif
 
+
+#ifdef OTHER_UNIX
+#include <netinet/in.h>
+#endif
+
 //Maxima longitud de una url (valor inventado por mi)
 #define NETWORK_MAX_URL 1024
 
