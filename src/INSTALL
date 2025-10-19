@@ -6,6 +6,8 @@ Note that most of the information that applies to Linux also applies to FreeBSD.
 
 For Haiku instructions, see near the end of this file
 
+For AROS instructions, see near the end of this file
+
 For Windows specific instructions please see the INSTALLWINDOWS file.
 
 
@@ -251,6 +253,14 @@ make
 --
 
 Please don't ask me about Haiku help, I'm not an expert on this OS ;)
+
+
+Note for AROS
+-------------
+
+Launch configure script:
+
+sh configure --disable-pthreads --no-check-c-compiler
 
 
 Utilities
