@@ -85,6 +85,12 @@ void z_atomic_reset(z_atomic_semaphore *s)
 
     #else
 
+        #ifdef OTHER_UNIX
+
+            //Otros Unix no POSIX, como AROS
+
+        #else
+
             //En Linux
             //Son builtins de Gcc
             //https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html#_005f_005fatomic-Builtins
@@ -99,8 +105,10 @@ void z_atomic_reset(z_atomic_semaphore *s)
 {
 	__atomic_clear(s,__ATOMIC_RELAXED);
 }
-
+        #endif
 
     #endif
+
+
 
 #endif
