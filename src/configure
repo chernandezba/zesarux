@@ -71,6 +71,7 @@ show_help()
 	echo "--enable-cpustats            Enable CPU statistics option on menu (enabled by default)"
 	echo "--disable-cpustats           Disable CPU statistics option on menu"
 	echo "--enable-raspberry           Enable Raspberry extensions"
+	echo "--other-unix                 Enable compilation on Other Unix OS, maybe non full POSIX, like AROS"
 	echo "--enable-sdl2                Enable SDL2 libraries. Experimental"
 	echo "--enable-ssl                 Enable ssl functions"
 	echo "--disable-contend            Disable Contended Memory emulation"
@@ -149,6 +150,7 @@ OPTION_WORDS_BIGENDIAN=""
 OPTIONCOCOA="enabled"
 OPTIONREDUCED_CORE_SPECTRUM=""
 CHECK_CCOMPILER="yes"
+OPTIONOTHER_UNIX=""
 
 
 LIBSDL="SDL"
@@ -343,6 +345,10 @@ while [ $# -gt 0 ]; do
 
 	--spectrum-reduced-core)
 	OPTIONREDUCED_CORE_SPECTRUM="yes"
+	;;
+
+        --other-unix)
+	OPTIONOTHER_UNIX="yes"
 	;;
 
 
@@ -2557,6 +2563,13 @@ cat >> compileoptions.h << _EOF
 #define EMULATE_RASPBERRY
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_RASPBERRY"
+fi
+
+if [ "$OPTIONOTHER_UNIX" != "" ]; then
+cat >> compileoptions.h << _EOF
+#define OTHER_UNIX
+_EOF
+COMPILE_VARIABLES="$COMPILE_VARIABLES OTHER_UNIX"
 fi
 
 

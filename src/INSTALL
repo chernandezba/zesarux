@@ -260,7 +260,7 @@ Note for AROS
 
 Launch configure script:
 
-sh configure --disable-pthreads --no-check-c-compiler
+sh configure --disable-pthreads --no-check-c-compiler --other-unix
 
 
 Utilities
