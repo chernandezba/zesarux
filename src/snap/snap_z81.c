@@ -277,16 +277,12 @@ void load_snap_mem(FILE *f)
         }
 }
 
+
+/*
 void load_snap_ace(FILE *f)
 {
-	printf ("TODO\n");
 
-	//de momento volver sin mas
-	//y que el compilador no se queje de variable no usada
-	f=NULL;
-	f++;
-	return;
-/*
+
         int puntero_memoria=0x2000;
         unsigned char c;
         int len, eof;
@@ -336,9 +332,9 @@ void load_snap_ace(FILE *f)
         z80.iff2 = memory[puntero_memoria]; puntero_memoria+=4;
         z80.i = memory[puntero_memoria]; puntero_memoria+=4;
         z80.r = memory[puntero_memoria];
-	*/
-}
 
+}
+*/
 
 void load_z81_snapshot(char *archivo)
 {
