@@ -89,6 +89,8 @@ void z_atomic_reset(z_atomic_semaphore *s)
 
             //Otros Unix no POSIX, como AROS
             //Operaciones arriesgadamente no atomicas
+            //Por otra parte, en esos otros sistemas no tienen soporte pthreads,
+            //por tanto no hay necesidad de operaciones atómicas
 
             int z_atomic_test_and_set(z_atomic_semaphore *s)
             {
