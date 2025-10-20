@@ -76,6 +76,7 @@ Other by 3rd party:
 
 Also tested on:
 * AROS Research Operating System (Amiga Compatible)
+* FiwixOS
 
 Also an experimental [Docker image](https://hub.docker.com/r/chernandezba/zesarux) 
 
