@@ -79,6 +79,7 @@ struct s_z_sockets_struct {
 #ifndef NETWORKING_DISABLED
 	struct sockaddr_in adr;
 #else
+    //Alguna función de aqui, aun sin soporte de network, se compila y necesita este atributo
     int adr;
 #endif
 	int socket_number;
