@@ -12,6 +12,7 @@ Mejorado ZX Vision:
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
 Mejorado icono de Papelera
+Mejorado código para permitir compilar en otros sistemas Unix, como AROS o FiwixOS
 Mejorado debug cpu:
 - Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
 - Vistas 5 y 6 usan un memptr diferente ("memptx")
@@ -22,6 +23,7 @@ Agregado carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido descomprimir archivos tar y rar con espacios en el nombre
 Corregido temporizador por defecto en Mac OS X cuando no se usa driver cocoa
 Corregido compilación sin pthreads
+Corregido posible división por 0 al obtener erróneamente el uso de cpu en Linux
 
 ----
 

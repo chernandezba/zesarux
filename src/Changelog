@@ -12,6 +12,7 @@ Improved ZX Vision:
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved ZX Life: allow to speed up game, fix behaviour on board limits
 Improved Trash icon
+Improve code to allow compilation on other Unix systems, like AROS or FiwixOS
 Improved debug cpu:
 - Show when registers values are modified by last opcode execution
 - Views 5 and 6 use a different memptr ("memptx")
@@ -22,6 +23,7 @@ Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver
 Fixed non-pthreads compilation
+Fixed possible divide by 0 when getting bad cpu usage on Linux
 
 ----
 
