@@ -59,13 +59,17 @@
 //por defecto 1 mb
 #define MAX_ZSOCK_HTTP_BUFFER 1*1024*1024
 
+#ifndef NETWORKING_DISABLED
+extern int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port);
+extern int connectar_socket(int s,struct sockaddr_in *adr);
+#endif
+
 extern int enviar_cr;
 
 extern int crear_socket_TCP(void);
 extern int escribir_socket(int socket, char *buffer);
 
-extern int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port);
-extern int connectar_socket(int s,struct sockaddr_in *adr);
+
 
 extern int leer_socket(int s, char *buffer, int longitud);
 extern int escribir_socket_format (int misocket, const char * format , ...);

@@ -76,7 +76,11 @@ Estos ya vienen de network.h
 
 struct s_z_sockets_struct {
 	int used;
+#ifndef NETWORKING_DISABLED
 	struct sockaddr_in adr;
+#else
+    int adr;
+#endif
 	int socket_number;
 	z80_bit use_ssl;
 
@@ -601,7 +605,7 @@ iResult = ioctlsocket(socket, FIONBIO, &iMode);
 
 
 
-//Fin de funciones CON pthreads
+//Fin de funciones CON networking
 #else
 
 
@@ -620,7 +624,7 @@ int crear_socket_TCP(void)
 }
 
 
-int omplir_adr_internet(struct sockaddr_in *adr GCC_UNUSED,char *host GCC_UNUSED,unsigned short n_port GCC_UNUSED)
+int omplir_adr_internet(int *adr GCC_UNUSED,char *host GCC_UNUSED,unsigned short n_port GCC_UNUSED)
 {
 	debug_printf (VERBOSE_ERR,"Pthreads unavailable but trying to use TCP/IP sockets");
 
@@ -658,7 +662,7 @@ int leer_socket(int s GCC_UNUSED, char *buffer GCC_UNUSED, int longitud GCC_UNUS
 
 
 
-int connectar_socket(int s GCC_UNUSED,struct sockaddr_in *adr GCC_UNUSED)
+int connectar_socket(int s GCC_UNUSED,int *adr GCC_UNUSED)
 {
 
 	debug_printf (VERBOSE_ERR,"Pthreads unavailable but trying to use TCP/IP sockets");

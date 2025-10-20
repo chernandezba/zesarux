@@ -105,7 +105,7 @@ Drivers audio:
 * linux 64 bits con y sin pthreads
 * raspberry. y activando extensiones raspberry
 * mac os x, con y sin optimizaciones
-* otros unix, como AROS
+* otros unix, como AROS (probado en AROS Icaros Desktop)
 * windows mingw, con y sin pthreads
 * windows cygwin
 
