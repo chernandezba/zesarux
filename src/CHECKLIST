@@ -101,10 +101,11 @@ Drivers audio:
 - ejecutar tests/soundtest.sh
 
 -probar targets:
-* linux 32 bits
-* linux 64 bits
+* linux 32 bits con y sin pthreads
+* linux 64 bits con y sin pthreads
 * raspberry. y activando extensiones raspberry
 * mac os x, con y sin optimizaciones
+* otros unix, como AROS
 * windows mingw, con y sin pthreads
 * windows cygwin
 
