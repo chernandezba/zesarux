@@ -30,6 +30,7 @@
 #include "utils.h"
 #include "sam.h"
 #include "chardevice.h"
+#include "compileoptions.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -219,6 +220,13 @@ void textspeech_empty_speech_fifo(void)
 	if (textspeech_stop_filter_program==NULL) return;
 
 #ifndef MINGW
+
+
+#ifdef NO_FORK_AVAILABLE
+    debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+    return;
+#endif
+
 
 	textspeech_ver_si_stop_finalizado();
 
@@ -504,6 +512,12 @@ void scrtextspeech_filter_run_pending(void)
     if (textspeech_filter_program_wait.v) esperarhijo=1;
 
 #ifndef MINGW
+
+
+#ifdef NO_FORK_AVAILABLE
+    debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+    return;
+#endif
 
     int fds[2];
 

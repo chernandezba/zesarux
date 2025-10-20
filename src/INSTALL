@@ -258,9 +258,17 @@ Please don't ask me about Haiku help, I'm not an expert on this OS ;)
 Note for AROS
 -------------
 
-Launch configure script:
+To compile:
 
-sh configure --disable-pthreads --no-check-c-compiler --other-unix
+-Open shell
+-Then, on the shell, run "sh" shell command, which opens a Unix-compatible shell:
+sh
+
+-Then run :
+
+export LDFLAGS="-nix"
+sh configure --other-unix --disable-pthreads
+make
 
 
 Utilities

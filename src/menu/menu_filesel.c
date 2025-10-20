@@ -604,8 +604,15 @@ primer_filesel_item=NULL;
     else {
 
 #ifndef MINGW
+
+    #ifdef OTHER_UNIX
+    n = scandir_mingw(".", &namelist, menu_filesel_filter_func, menu_filesel_alphasort);
+    #else
+    //Linux, Mac...
 	n = scandir(".", &namelist, menu_filesel_filter_func, menu_filesel_alphasort);
+    #endif
 #else
+    //Windows
 	//alternativa scandir, creada por mi
 	n = scandir_mingw(".", &namelist, menu_filesel_filter_func, menu_filesel_alphasort);
 #endif
@@ -5272,8 +5279,14 @@ int menu_filesel_render_preview_directory_find_file(char *directorio,char *archi
     else {
 
 #ifndef MINGW
+    #ifdef OTHER_UNIX
+    n = scandir_mingw(directorio, &namelist, menu_filesel_render_preview_directory_find_file_filter_func, menu_filesel_alphasort);
+    #else
+    //Linux, Mac...
 	n = scandir(directorio, &namelist, menu_filesel_render_preview_directory_find_file_filter_func, menu_filesel_alphasort);
+    #endif
 #else
+    //Windows
 	//alternativa scandir, creada por mi
 	n = scandir_mingw(directorio, &namelist, menu_filesel_render_preview_directory_find_file_filter_func, menu_filesel_alphasort);
 #endif

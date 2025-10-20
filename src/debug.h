@@ -49,7 +49,7 @@ extern void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio
 extern void debug_tiempo_inicial(void);
 extern void debug_tiempo_final(void);
 
-extern void debug_printf (int debuglevel,__const char *__restrict __format, ...);
+extern void debug_printf (int debuglevel, const char * format , ...);
 extern void debug_printf_source (int debuglevel, char *archivo, int linea, const char *funcion, const char * format , ...);
 #define VERBOSE_DEBUG_SOURCE VERBOSE_DEBUG, __FILE__, __LINE__, __FUNCTION__
 

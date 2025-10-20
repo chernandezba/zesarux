@@ -41,6 +41,7 @@
 #include "start.h"
 #include "menu_items.h"
 #include "menu_filesel.h"
+#include "compileoptions.h"
 
 
 
@@ -1294,8 +1295,18 @@ void ay_player_add_directory_playlist(char *directorio)
     else {
 
 #ifndef MINGW
+
+    #ifdef OTHER_UNIX
+    n = scandir_mingw(".", &namelist, ay_player_add_directory_playlist_filter_func, ay_player_add_directory_playlist_alphasort);
+    #else
+
+    //Linux, Mac, ...
 	n = scandir(".", &namelist, ay_player_add_directory_playlist_filter_func, ay_player_add_directory_playlist_alphasort);
+    #endif
 #else
+
+    //Windows
+
 	//alternativa scandir, creada por mi
 	n = scandir_mingw(".", &namelist, ay_player_add_directory_playlist_filter_func, ay_player_add_directory_playlist_alphasort);
 #endif

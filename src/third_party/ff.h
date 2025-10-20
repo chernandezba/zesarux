@@ -28,6 +28,8 @@ extern "C" {
 
 #include "ffconf.h"		/* FatFs configuration options */
 
+#include "compileoptions.h"
+
 #if FF_DEFINED != FFCONF_DEF
 #error Wrong configuration file (ffconf.h).
 #endif
@@ -35,10 +37,59 @@ extern "C" {
 
 /* Integer types used for FatFs API */
 
+#ifdef OTHER_UNIX
+
+//Esto no es infalible.... Pero al menos en Aros funciona
+//En Aros funciona porque en <exec/types.h> define esos tipos pero antes comprueba si están
+//los macros definidos de __typedef_UINT, __typedef_BYTE, etc
+
+#define FF_INTDEF 1
+
+#ifndef __typedef_UINT
+#define __typedef_UINT
+typedef unsigned int	UINT;	/* int must be 16-bit or 32-bit */
+#endif
+
+#ifndef __typedef_BYTE
+#define __typedef_BYTE
+typedef unsigned char	BYTE;	/* char must be 8-bit */
+#endif
+
+#ifndef __typedef_UBYTE
+#define __typedef_UBYTE
+typedef unsigned char	UBYTE;	/* char must be 8-bit */
+#endif
+
+#ifndef __typedef_WORD
+#define __typedef_WORD
+typedef unsigned short	WORD;	/* 16-bit unsigned integer */
+#endif
+
+#ifndef __typedef_UWORD
+#define __typedef_UWORD
+typedef unsigned short	UWORD;	/* 16-bit unsigned integer */
+#endif
+
+#ifndef __typedef_DWORD
+#define __typedef_DWORD
+typedef unsigned long	DWORD;	/* 32-bit unsigned integer */
+#endif
+
+#ifndef __typedef_WCHAR
+#define __typedef_WCHAR
+typedef WORD			WCHAR;	/* UTF-16 character type */
+#endif
+
+
+
+#else
+
+
 #if defined(_WIN32)	/* Main development platform */
 #define FF_INTDEF 2
 #include <windows.h>
 typedef unsigned __int64 QWORD;
+
 #elif (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || defined(__cplusplus)	/* C99 or later */
 #define FF_INTDEF 2
 #include <stdint.h>
@@ -48,6 +99,7 @@ typedef uint16_t		WORD;	/* 16-bit unsigned integer */
 typedef uint32_t		DWORD;	/* 32-bit unsigned integer */
 typedef uint64_t		QWORD;	/* 64-bit unsigned integer */
 typedef WORD			WCHAR;	/* UTF-16 character type */
+
 #else  	/* Earlier than C99 */
 #define FF_INTDEF 1
 typedef unsigned int	UINT;	/* int must be 16-bit or 32-bit */
@@ -55,8 +107,12 @@ typedef unsigned char	BYTE;	/* char must be 8-bit */
 typedef unsigned short	WORD;	/* 16-bit unsigned integer */
 typedef unsigned long	DWORD;	/* 32-bit unsigned integer */
 typedef WORD			WCHAR;	/* UTF-16 character type */
+
 #endif
 
+
+//de OTHER_UNIX
+#endif
 
 /* Definitions of volume management */
 

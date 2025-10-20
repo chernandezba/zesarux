@@ -24,16 +24,22 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include "compileoptions.h"
+
 #ifndef MINGW
+#ifndef OTHER_UNIX
+
 //select no existe en windows
 #include <sys/select.h>
 #include <termios.h>
+#endif
 #endif
 
 
 #include "chardevice.h"
 #include "cpu.h"
 #include "debug.h"
+
 
 
 //Devuelve file handle. <0 si error
@@ -114,6 +120,13 @@ int chardevice_dataread_avail(int handler)
     //Decimos que hay siempre datos disponibles
     return 1;
 #else
+
+    #ifdef OTHER_UNIX
+    //Decimos que hay siempre datos disponibles
+    return 1;
+    #else
+
+
     fd_set readset;
 
     FD_ZERO(&readset);
@@ -134,6 +147,8 @@ int chardevice_dataread_avail(int handler)
 
     if (resultado<=0) return 0;
     else return 1;
+
+    #endif
  #endif
 
 }
@@ -180,6 +195,8 @@ int chardevice_getspeed_enum_int(enum chardevice_speed velocidad)
 }
 
 #ifndef MINGW
+
+#ifndef OTHER_UNIX
 speed_t chardevice_getspeed_enum_speed_t(enum chardevice_speed velocidad)
 {
     switch (velocidad) {
@@ -209,13 +226,19 @@ speed_t chardevice_getspeed_enum_speed_t(enum chardevice_speed velocidad)
     }
 }
 #endif
+#endif
 
 void chardevice_setspeed(int handler,enum chardevice_speed velocidad)
 {
 
 #ifdef MINGW
+    //En Windows
     //nada
 #else
+
+    #ifdef OTHER_UNIX
+    //nada
+    #else
 
 debug_printf (VERBOSE_DEBUG,"Setting speed port to %d",chardevice_getspeed_enum_int(velocidad));
 
@@ -243,6 +266,7 @@ struct termios options;
         debug_printf(VERBOSE_ERR,"Error setting port speed");
         return;
     }
+    #endif
 #endif
 
 }

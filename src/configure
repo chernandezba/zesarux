@@ -151,6 +151,7 @@ OPTIONCOCOA="enabled"
 OPTIONREDUCED_CORE_SPECTRUM=""
 CHECK_CCOMPILER="yes"
 OPTIONOTHER_UNIX=""
+OPTIONNO_FORK_AVAILABLE=""
 
 
 LIBSDL="SDL"
@@ -463,7 +464,7 @@ if [ -e /etc/os-release ]; then
 	SISTEMA_RELEASE=`cat /etc/os-release |grep PRETTY_NAME| head -n1 |cut -d '"' -f2`
 fi
 
-if [ "$CHECK_CCOMPILER" == "yes" ]; then
+if [ "$CHECK_CCOMPILER" == "yes" ] && [ "$OPTIONOTHER_UNIX" == "" ]; then
 
 	echo -n "Checking for $CCOMPILER compiler ... "
 
@@ -967,6 +968,30 @@ else
 fi
 
 
+# Chequeos para otros sistemas Unix
+if [ "$OPTIONOTHER_UNIX" != "" ]; then
+	echo -n "Checking fork() call ... "
+
+        TEMPFILE="configure.compile.c"
+
+        cat > $TEMPFILE << _EOF
+#include <unistd.h>
+int main () {
+pid_t hijo=fork();
+return 0;
+}
+_EOF
+
+        $CCOMPILER $CFLAGS $TEMPFILE -o $TEMPFILE.o >> $LOGFILE 2>&1
+        RESULTCODE=$?
+        if [ $RESULTCODE != 0 ]; then
+                echo "not found"
+                OPTIONNO_FORK_AVAILABLE="yes"
+        else
+                echo "found"
+	fi
+fi
+
 
 echo -n "Checking for audio dsp ... "
 if [ "$OPTIONOBJDSP" != "" ]; then
@@ -1440,7 +1465,7 @@ tape_pzx.o: storage/tape_pzx.c storage/tape_pzx.h storage/tape.h cpu.h operacion
 audio.o: audio/audio.c audio/audio.h cpu.h start.h debug.h video/screen.h utils.h machines/zx8081.h audio/audionull.h machines/jupiterace.h autoselectoptions.h operaciones.h machines/cpc.h settings.h audio/audio_sine_table.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h soundchips/sn76489an.h machines/ql_i8049.h compileoptions.h zvfs.h menu/menu_filesel.h atomic.h menu/menu_items.h timer.h zrcp/zeng_online_client.h audio/audio_ayplayer.h
 	\$(CC) \$(CFLAGS) -c audio/audio.c
 
-audio_ayplayer.o: audio/audio_ayplayer.c audio/audio_ayplayer.h audio/audio.h cpu.h debug.h autoselectoptions.h utils.h operaciones.h machines/cpc.h soundchips/ay38912.h zvfs.h start.h menu/menu_items.h menu/menu_filesel.h
+audio_ayplayer.o: audio/audio_ayplayer.c audio/audio_ayplayer.h audio/audio.h cpu.h debug.h autoselectoptions.h utils.h operaciones.h machines/cpc.h soundchips/ay38912.h zvfs.h start.h menu/menu_items.h menu/menu_filesel.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c audio/audio_ayplayer.c
 
 audio_sine_table.o: audio/audio_sine_table.c audio/audio_sine_table.h audio/audio.h
@@ -1741,7 +1766,7 @@ codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h m
 assemble.o: assemble.c assemble.h cpu.h debug.h utils.h
 	\$(CC) \$(CFLAGS) -c assemble.c
 
-chardevice.o: chardevice.c chardevice.h cpu.h debug.h
+chardevice.o: chardevice.c chardevice.h cpu.h debug.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c chardevice.c
 
 uartbridge.o: uartbridge.c uartbridge.h cpu.h debug.h utils.h chardevice.h video/screen.h
@@ -2570,6 +2595,14 @@ cat >> compileoptions.h << _EOF
 #define OTHER_UNIX
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES OTHER_UNIX"
+fi
+
+
+if [ "$OPTIONNO_FORK_AVAILABLE" != "" ]; then
+cat >> compileoptions.h << _EOF
+#define NO_FORK_AVAILABLE
+_EOF
+COMPILE_VARIABLES="$COMPILE_VARIABLES NO_FORK_AVAILABLE"
 fi
 
 
