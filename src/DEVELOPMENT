@@ -56,6 +56,29 @@ curl -s https://api.github.com/repos/chernandezba/zesarux/releases | egrep '"nam
 
 --------------
 
+Para compilar en Fiwix OS
+
+- Generar un comprimido con el código fuente
+
+- Convertir ese tar.gz en un archivo de disco virtual de virtualbox
+
+VBoxManage convertfromraw ZEsarUX_src-13.0.tar.gz discotar2.vdi --format VDI
+
+Tiene que ser múltiple de 512 por lo que hay que rellenarlo con 0 si hace falta
+
+- Agregarlo como disco en la máquina virtual
+
+- Dentro de Fiwix, descomprimir con:
+
+cat /dev/hdb > ZEsarUX.tar.gz
+tar -xvzf ZEsarUX.tar.gz
+
+- Compilar con:
+
+./configure --disable-pthreads --disable-networking --disable-aa --disable-sdl
+
+--------------
+
 Para que el cpu_panic muestre backtrace si hay un error, compilar con -g -rdynamic (en Linux) o -g (en Mac)
 
 
