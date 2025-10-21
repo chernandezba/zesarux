@@ -4,6 +4,7 @@ Added setting to automatically order icons on ZX Desktop
 Allow drag&drop of compressed files
 Allow to reduce display to half
 Added f-key/icon to trigger an action ("SendKeysMenu") to send keys to menu, for example send keys "tti" to open input tape
+Allow SDL driver to use a 8-bit color palette
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)

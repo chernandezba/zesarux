@@ -90,6 +90,11 @@ int scrsdl_crea_ventana(void)
 
     alto +=screen_get_ext_desktop_height_zoom();
 
+    if (scr_sdl_force_size.v) {
+        ancho=scr_sdl_force_size_width;
+        alto=scr_sdl_force_size_height;
+    }
+
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
     if (scr_sdl_8bits_color.v) {
@@ -144,8 +149,15 @@ void scrsdl_putpixel_final_rgb_32(int x,int y,unsigned int color_rgb)
 void scrsdl_putpixel_final_rgb_8(int x,int y,unsigned int color_rgb)
 {
 
-    //TODO: controlar limites x,y
     Uint8 *p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x;
+
+    //controlar limites x,y
+    if (scr_sdl_force_size.v) {
+        int ancho=scr_sdl_force_size_width;
+        int alto=scr_sdl_force_size_height;
+        if (x>=ancho || y>=alto) return;
+    }
+
 
     //Usamos color rgb 8 bits: 3 bits Red, 3 bits Green, 2 bits Blue : RRRGGGBB
     unsigned char r,g,b;
@@ -286,6 +298,13 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
     int alto=screen_get_window_size_height_zoom_border_en();
     alto +=screen_get_ext_desktop_height_zoom();
+
+    //controlar limites x,y
+    if (scr_sdl_force_size.v) {
+        ancho=scr_sdl_force_size_width;
+        alto=scr_sdl_force_size_height;
+    }
+
 
     SDL_UpdateRect(sdl_screen, 0, 0, ancho, alto );
 
