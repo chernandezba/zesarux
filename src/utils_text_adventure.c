@@ -1467,9 +1467,10 @@ void util_gac_dump_messages(char *texto_destino,int max_texto)
    int message; // keeps a count of the number of entries in the dictionary
    int i, len; //temporary char variables
    //int fileptr;
-   char *scrap;
 
-   scrap=calloc(1,255);
+   //char *scrap;
+
+   //scrap=calloc(1,255);
 
    z80_int puntero=startptr;
    i=0;
