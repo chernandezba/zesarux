@@ -85,6 +85,7 @@ show_help()
 	echo "Environment variables:"
 	echo "CFLAGS                       C compiler flags"
 	echo "LDFLAGS                      linker flags"
+	echo "LIBS                         additional libraries"
 	echo
         exit 1
 
@@ -381,12 +382,15 @@ done
 
 INITIALCFLAGS=$CFLAGS
 INITIALLDFLAGS=$LDFLAGS
+INITIALLIBS=$LIBS
 
 echo Initial CFLAGS=$INITIALCFLAGS
 echo Initial LDFLAGS=$INITIALLDFLAGS
+echo Initial LIBS=$INITIALLIBS
 
 echo Initial CFLAGS=$INITIALCFLAGS >>$LOGFILE
 echo Initial LDFLAGS=$INITIALLDFLAGS >>$LOGFILE
+echo Initial LIBS=$INITIALLIBS >> $LOGFILE
 
 
 #LDFLAGS="$LDFLAGS -lm"
@@ -395,6 +399,8 @@ echo Initial LDFLAGS=$INITIALLDFLAGS >>$LOGFILE
 #agregar carpetas audio y video y cores etc
 #agregar tambien carpeta . necesaria para que al compilar desde carpetas audio y video etc encuentre los includes de esta carpeta principal
 CFLAGS="$CFLAGS -fsigned-char -I. -Iaudio -Icopy_interfaces -Icores -Icpus -Imachines -Imenu -Isnap -Istorage -Isoundchips -Ithird_party -Ivideo -Ivideo_chips -Izrcp -Izxvision"
+
+LIBS="$LIBS"
 
 # Si version snapshot, activar tambien warnings extra
 # TODO: esto solo vale si el define esta justo al principio de linea
@@ -1339,17 +1345,28 @@ fi
 echo
 echo Final CFLAGS=$CFLAGS
 echo Final LDFLAGS=$LDFLAGS
+echo Final LIBS=$LIBS
 echo Final CFLAGS=$CFLAGS >>$LOGFILE
 echo Final LDFLAGS=$LDFLAGS >>$LOGFILE
+echo Final LIBS=$LIBS >> $LOGFILE
 
 
 #final
 
 echo "Creating Makefile"
+
+#TODO corregir, deberia ser:
+# en LDFLAGS solo flags Flags del linker, como -L (rutas) o -Wl,...
+# en LIBS Las librerías a enlazar (-lm, -lSDL, -lvga, etc.). Para eso, las LIBS que agrego deben ir antes de las de usuario,
+# osea: LIBS="-lSDL $LIBS" por ejemplo
+#gcc $(LDFLAGS) archivo1.o archivo2.o ... -o myprog $(LIBS)
+
+
 cat > Makefile << _EOF
 EMULATOR_VERSION=13.0
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
+LIBS=$LIBS
 CC=$CCOMPILER
 INSTALLPREFIX=$INSTALLPREFIX
 
@@ -1358,7 +1375,7 @@ all: zesarux
 
 
 zesarux: $OPTIONWINDOWSRESOURCE charset.o $OPTIONOBJSTDOUT $OPTIONOBJSIMPLETEXT $OPTIONOBJCURSES $OPTIONOBJCURSESW $OPTIONOBJAA $OPTIONOBJCACA $OPTIONOBJXWINDOWS $OPTIONOBJSDL $OPTIONOBJFBDEV autoselectoptions.o chardetect.o textspeech.o scrnull.o $OPTIONOBJDSP $OPTIONOBJONEBITSPEAKER $OPTIONOBJALSA $OPTIONOBJPULSE $OPTIONOBJCOREAUDIO $OPTIONLINUXREALJOYSTICK audionull.o ay38912.o sn76489an.o vdp_9918a.o vdp_9918a_sms.o msx.o svi.o coleco.o sg1000.o sms.o saa_simul.o cpu.o start.o z80_codsinpr.o z80_codprddfd.o z80_codpred.o operaciones.o debug.o tape.o tape_tap.o tape_tzx.o tape_pzx.o tape_smp.o audio.o audio_ayplayer.o audio_sine_table.o screen.o mem128.o chloe.o prism.o tbblue.o timex.o zx8081.o jupiterace.o z88.o cpc.o pcw.o sam.o atomlite.o zxuno.o snap.o snap_nex.o snap_zsf.o snap_ram.o snap_z81.o snap_zx8081.o snap_rzx.o snap_spg.o spg_depack.o zxvision.o zxvision_topbar.o menu_items.o menu_items_storage.o menu_filesel.o menu_file_viewer_browser.o menu_zeng_online.o menu_items_settings.o menu_debug_cpu.o menu_bitmaps.o about_logo.o settings.o core_spectrum.o core_reduced_spectrum.o core_zx8081.o core_z88.o core_cpc.o core_pcw.o core_ace.o core_sam.o core_ql.o core_mk14.o core_msx.o core_svi.o core_coleco.o core_sg1000.o core_sms.o mk14.o scmp.o timer.o contend.o disassemble.o utils.o utils_text_adventure.o playtzx.o mdvtool.o joystick.o ula.o mmc.o ide.o pd765.o dsk.o plus3dos_handler.o divmmc.o divide.o diviface.o zxpand.o lec.o superupgrade.o dandanator.o gs.o betadisk.o codetests.o kartusho.o samram.o ifrom.o enhanced_zx81_read.o hilow_datadrive.o hilow_barbanegra.o transtape.o mhpokeador.o specmate.o interface007.o dinamid3.o phoenix.o defcon.o ramjet.o datagear.o zxmmcplus.o spritefinder.o multiface.o spectra.o spritechip.o printers.o realjoystick.o ulaplus.o if1.o microdrive.o microdrive_raw.o ds1307.o ql.o ql_qdos_handler.o ql_i8049.o ql_zx8302.o m68kcpu.o m68kdasm.o m68kops.o  m68kopac.o m68kopdm.o m68kopnz.o chrome.o zxevo.o tsconf.o baseconf.o remote.o esxdos_handler.o assemble.o expression_parser.o chardevice.o uartbridge.o network.o zeng.o zeng_online.o zeng_online_client.o zvfs.o atomic.o stats.o sensors.o hilow_datadrive_audio.o scl2trd.o zip.o diskio.o ff.o ffsystem.o ffunicode.o $MAINSOURCE.o
-	\$(CC) \$(CFLAGS) cpu.o $MAINSOURCE.o start.o charset.o $OPTIONOBJSTDOUT $OPTIONOBJSIMPLETEXT $OPTIONOBJCURSES $OPTIONOBJCURSESW $OPTIONOBJAA $OPTIONOBJCACA $OPTIONOBJXWINDOWS $OPTIONOBJSDL $OPTIONOBJFBDEV autoselectoptions.o chardetect.o textspeech.o scrnull.o screen.o mem128.o chloe.o prism.o tbblue.o timex.o $OPTIONOBJDSP $OPTIONOBJONEBITSPEAKER $OPTIONOBJALSA $OPTIONOBJPULSE $OPTIONOBJCOREAUDIO $OPTIONLINUXREALJOYSTICK audionull.o ay38912.o sn76489an.o vdp_9918a.o vdp_9918a_sms.o msx.o svi.o coleco.o sg1000.o sms.o saa_simul.o z80_codsinpr.o z80_codprddfd.o z80_codpred.o operaciones.o debug.o tape.o tape_tap.o tape_tzx.o tape_pzx.o tape_smp.o audio.o audio_ayplayer.o audio_sine_table.o zx8081.o jupiterace.o z88.o cpc.o pcw.o sam.o atomlite.o zxuno.o snap.o snap_nex.o snap_zsf.o snap_ram.o snap_z81.o snap_spg.o spg_depack.o snap_zx8081.o snap_rzx.o zxvision.o zxvision_topbar.o menu_items.o menu_items_storage.o menu_filesel.o menu_file_viewer_browser.o menu_zeng_online.o menu_items_settings.o menu_debug_cpu.o menu_bitmaps.o about_logo.o settings.o core_spectrum.o core_reduced_spectrum.o core_zx8081.o core_z88.o core_cpc.o core_pcw.o core_ace.o core_sam.o core_ql.o core_mk14.o core_msx.o core_svi.o core_coleco.o core_sg1000.o core_sms.o mk14.o scmp.o timer.o contend.o disassemble.o utils.o utils_text_adventure.o playtzx.o mdvtool.o joystick.o ula.o mmc.o ide.o pd765.o dsk.o plus3dos_handler.o divmmc.o divide.o diviface.o zxpand.o lec.o superupgrade.o dandanator.o gs.o betadisk.o codetests.o kartusho.o samram.o ifrom.o enhanced_zx81_read.o hilow_datadrive.o hilow_barbanegra.o transtape.o mhpokeador.o specmate.o interface007.o dinamid3.o phoenix.o defcon.o ramjet.o datagear.o spritefinder.o zxmmcplus.o multiface.o spectra.o spritechip.o printers.o realjoystick.o ulaplus.o ds1307.o if1.o microdrive.o microdrive_raw.o ql.o ql_qdos_handler.o ql_i8049.o ql_zx8302.o m68kcpu.o m68kdasm.o m68kops.o  m68kopac.o m68kopdm.o m68kopnz.o chrome.o zxevo.o tsconf.o baseconf.o remote.o esxdos_handler.o assemble.o expression_parser.o chardevice.o uartbridge.o network.o zeng.o zeng_online.o zeng_online_client.o zvfs.o atomic.o stats.o sensors.o hilow_datadrive_audio.o scl2trd.o zip.o diskio.o ff.o ffsystem.o ffunicode.o -o zesarux \$(LDFLAGS)
+	\$(CC) \$(CFLAGS) cpu.o $MAINSOURCE.o start.o charset.o $OPTIONOBJSTDOUT $OPTIONOBJSIMPLETEXT $OPTIONOBJCURSES $OPTIONOBJCURSESW $OPTIONOBJAA $OPTIONOBJCACA $OPTIONOBJXWINDOWS $OPTIONOBJSDL $OPTIONOBJFBDEV autoselectoptions.o chardetect.o textspeech.o scrnull.o screen.o mem128.o chloe.o prism.o tbblue.o timex.o $OPTIONOBJDSP $OPTIONOBJONEBITSPEAKER $OPTIONOBJALSA $OPTIONOBJPULSE $OPTIONOBJCOREAUDIO $OPTIONLINUXREALJOYSTICK audionull.o ay38912.o sn76489an.o vdp_9918a.o vdp_9918a_sms.o msx.o svi.o coleco.o sg1000.o sms.o saa_simul.o z80_codsinpr.o z80_codprddfd.o z80_codpred.o operaciones.o debug.o tape.o tape_tap.o tape_tzx.o tape_pzx.o tape_smp.o audio.o audio_ayplayer.o audio_sine_table.o zx8081.o jupiterace.o z88.o cpc.o pcw.o sam.o atomlite.o zxuno.o snap.o snap_nex.o snap_zsf.o snap_ram.o snap_z81.o snap_spg.o spg_depack.o snap_zx8081.o snap_rzx.o zxvision.o zxvision_topbar.o menu_items.o menu_items_storage.o menu_filesel.o menu_file_viewer_browser.o menu_zeng_online.o menu_items_settings.o menu_debug_cpu.o menu_bitmaps.o about_logo.o settings.o core_spectrum.o core_reduced_spectrum.o core_zx8081.o core_z88.o core_cpc.o core_pcw.o core_ace.o core_sam.o core_ql.o core_mk14.o core_msx.o core_svi.o core_coleco.o core_sg1000.o core_sms.o mk14.o scmp.o timer.o contend.o disassemble.o utils.o utils_text_adventure.o playtzx.o mdvtool.o joystick.o ula.o mmc.o ide.o pd765.o dsk.o plus3dos_handler.o divmmc.o divide.o diviface.o zxpand.o lec.o superupgrade.o dandanator.o gs.o betadisk.o codetests.o kartusho.o samram.o ifrom.o enhanced_zx81_read.o hilow_datadrive.o hilow_barbanegra.o transtape.o mhpokeador.o specmate.o interface007.o dinamid3.o phoenix.o defcon.o ramjet.o datagear.o spritefinder.o zxmmcplus.o multiface.o spectra.o spritechip.o printers.o realjoystick.o ulaplus.o ds1307.o if1.o microdrive.o microdrive_raw.o ql.o ql_qdos_handler.o ql_i8049.o ql_zx8302.o m68kcpu.o m68kdasm.o m68kops.o  m68kopac.o m68kopdm.o m68kopnz.o chrome.o zxevo.o tsconf.o baseconf.o remote.o esxdos_handler.o assemble.o expression_parser.o chardevice.o uartbridge.o network.o zeng.o zeng_online.o zeng_online_client.o zvfs.o atomic.o stats.o sensors.o hilow_datadrive_audio.o scl2trd.o zip.o diskio.o ff.o ffsystem.o ffunicode.o -o zesarux \$(LDFLAGS) \$(LIBS)
 	@echo
 	@echo "Compilation finished"
 	@echo "You can run it without installing by typing ./zesarux (or just zesarux on Windows)"
@@ -2678,6 +2695,7 @@ cat >> compileoptions.h << _EOF
 #define COMPILE_INITIALLDFLAGS "$INITIALLDFLAGS"
 #define COMPILE_FINALCFLAGS "$CFLAGS"
 #define COMPILE_FINALLDFLAGS "$LDFLAGS"
+#define COMPILE_FINALLIBS "$LIBS"
 #define INSTALL_PREFIX "$INSTALLPREFIX"
 
 #define LINES_SOURCE $LINES_SOURCE
