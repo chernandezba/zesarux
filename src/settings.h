@@ -206,6 +206,7 @@ extern z80_bit sms_swap_controls;
 
 extern z80_bit scr_sdl_8bits_color;
 
+extern z80_bit scr_sdl_force_size;
 extern int scr_sdl_force_size_width;
 extern int scr_sdl_force_size_height;
 
