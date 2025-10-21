@@ -93,6 +93,7 @@ int scrsdl_crea_ventana(void)
     if (scr_sdl_force_size.v) {
         ancho=scr_sdl_force_size_width;
         alto=scr_sdl_force_size_height;
+        flags=SDL_HWSURFACE;
     }
 
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
