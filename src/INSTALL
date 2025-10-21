@@ -276,6 +276,7 @@ Note for FiwixOS
 
 - Compile:
 
+export CFLAGS="-DSHORT_SLEEP_TIMER"
 export LIBS="-lvga"
 ./configure --disable-pthreads --disable-networking --disable-aa
 make

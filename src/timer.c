@@ -828,8 +828,16 @@ void timer_pause_waiting_end_frame(void)
 		timer_usleep(1000/16);
 
 #else
+
+    //Otras esperas para final de frame, por ejemplo para FiwixOS, esto mejora la velocidad
+    #ifdef SHORT_SLEEP_TIMER
+        //printf("Using short timer\n");
+        timer_usleep(1000/16);
+    #else
+
 		//Timer normal
 		timer_sleep(1);
+    #endif
 
 #endif
 	}
