@@ -204,5 +204,7 @@ extern z80_bit zxvision_setting_use_speccy_keys;
 
 extern z80_bit sms_swap_controls;
 
+extern z80_bit scr_sdl_8bits_color;
+
 #endif
 

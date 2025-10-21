@@ -4346,6 +4346,9 @@ int util_write_configfile(void)
   //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
   if (sdl_raw_keyboard_read.v)                ADD_STRING_CONFIG,"--sdlrawkeyboard");
 
+  //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+  if (scr_sdl_8bits_color.v)                  ADD_STRING_CONFIG,"--sdl-8bit-color");
+
 
   //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
   if (audiosdl_use_new_callback.v)              ADD_STRING_CONFIG,"--sdl-use-callback-new");

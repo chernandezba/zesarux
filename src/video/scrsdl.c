@@ -69,7 +69,7 @@ SDL_Surface *sdl_screen;
 int scrsdl_debe_redimensionar=0;
 
 
-z80_bit scr_sdl_8bits_color={0};
+
 
 int scrsdl_crea_ventana(void)
 {

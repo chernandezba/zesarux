@@ -470,3 +470,10 @@ z80_bit zeng_online_show_footer_lag_indicator={1};
 
 //Decir que pulsaciones locales de teclas en slave se envian a la maquina al momento, y no se eliminan para esperar que vengan como eventos
 z80_bit zeng_online_allow_instant_keys={0};
+
+
+//
+// Settings de Drivers
+///
+
+z80_bit scr_sdl_8bits_color={0};

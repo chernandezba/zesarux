@@ -910,7 +910,11 @@ printf (
         "--fifosdlbuffersize n       SDL fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n"
         "--sdl-use-callback-new      SDL audio use new callback (usually better results on Windows)\n"
         "--sdl-use-callback-old      SDL audio use old callback\n"
-        "--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n");
+        "--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n"
+        "--sdl-8bit-color            SDL use 8 bit color palette\n"
+
+
+        );
 
 
         printf (
@@ -5932,6 +5936,11 @@ int parse_cmdline_options(int desde_commandline) {
             //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
             else if (!strcmp(argv[puntero_parametro],"--sdlrawkeyboard")) {
                     sdl_raw_keyboard_read.v=1;
+            }
+
+            //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
+            else if (!strcmp(argv[puntero_parametro],"--sdl-8bit-color")) {
+                scr_sdl_8bits_color.v=1;
             }
 
             //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
