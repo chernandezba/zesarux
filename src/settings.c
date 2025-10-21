@@ -478,7 +478,7 @@ z80_bit zeng_online_allow_instant_keys={0};
 
 z80_bit scr_sdl_8bits_color={0};
 
-//Tamaño SDL forzado
+//Tamaño SDL forzado. Pensado para FiwixOS
 z80_bit scr_sdl_force_size={0};
 int scr_sdl_force_size_width=800;
 int scr_sdl_force_size_height=600;

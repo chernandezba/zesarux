@@ -4350,6 +4350,13 @@ int util_write_configfile(void)
   if (scr_sdl_8bits_color.v)                  ADD_STRING_CONFIG,"--sdl-8bit-color");
 
 
+//Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+  if (scr_sdl_force_size.v) {
+    ADD_STRING_CONFIG,"--sdl-force-win-size %d %d",scr_sdl_force_size_width,scr_sdl_force_size_height);
+  }
+
+
+
   //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
   if (audiosdl_use_new_callback.v)              ADD_STRING_CONFIG,"--sdl-use-callback-new");
   //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,

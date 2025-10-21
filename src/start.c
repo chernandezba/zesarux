@@ -912,6 +912,7 @@ printf (
         "--sdl-use-callback-old      SDL audio use old callback\n"
         "--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n"
         "--sdl-8bit-color            SDL use 8 bit color palette\n"
+        "--sdl-force-win-size w h    SDL force window size to width (w) and heigth (h)\n"
 
 
         );
@@ -5941,6 +5942,17 @@ int parse_cmdline_options(int desde_commandline) {
             //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
             else if (!strcmp(argv[puntero_parametro],"--sdl-8bit-color")) {
                 scr_sdl_8bits_color.v=1;
+            }
+
+            //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
+            else if (!strcmp(argv[puntero_parametro],"--sdl-force-win-size")) {
+                siguiente_parametro_argumento();
+                scr_sdl_force_size_width=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                scr_sdl_force_size_height=parse_string_to_number(argv[puntero_parametro]);
+
+                scr_sdl_force_size.v=1;
             }
 
             //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
