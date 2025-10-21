@@ -69,7 +69,7 @@ SDL_Surface *sdl_screen;
 int scrsdl_debe_redimensionar=0;
 
 
-
+z80_bit scr_sdl_8bits_color={0};
 
 int scrsdl_crea_ventana(void)
 {
@@ -92,7 +92,15 @@ int scrsdl_crea_ventana(void)
 
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
-    sdl_screen = SDL_SetVideoMode(ancho,alto,32, flags);
+    if (scr_sdl_8bits_color.v) {
+        sdl_screen = SDL_SetVideoMode(ancho,alto,8, flags);
+    }
+
+    else {
+        sdl_screen = SDL_SetVideoMode(ancho,alto,32, flags);
+    }
+
+
     if ( sdl_screen == NULL ) {
         return 1;
     }
@@ -116,7 +124,10 @@ int scrsdl_crea_ventana(void)
 
 }
 
-void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
+//Puntero a la funcion final
+void (*scrsdl_putpixel_final_rgb)(int x,int y,unsigned int color_rgb);
+
+void scrsdl_putpixel_final_rgb_32(int x,int y,unsigned int color_rgb)
 {
     Uint8 *p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x * 4;
 
@@ -128,6 +139,21 @@ void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
     //y escribir
 
     *(Uint32 *)p = color_rgb;
+}
+
+void scrsdl_putpixel_final_rgb_8(int x,int y,unsigned int color_rgb)
+{
+
+    //TODO: controlar limites x,y
+    Uint8 *p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x;
+
+    //Usamos color rgb 8 bits: 3 bits Red, 3 bits Green, 2 bits Blue : RRRGGGBB
+    unsigned char r,g,b;
+    r=(color_rgb>>16) & 0xE0; //Mascara 11100000
+    g=(color_rgb>>11) & 0x1C; //Mascara 00011100
+    b=(color_rgb>> 6) & 0x03; //Mascara 00000011
+
+    *p = (r|g|b);
 }
 
 
@@ -1892,6 +1918,13 @@ int scrsdl_init (void) {
         //Inicializaciones necesarias
         scr_putpixel=scrsdl_putpixel;
         scr_putpixel_final=scrsdl_putpixel_final;
+
+        if (scr_sdl_8bits_color.v) {
+            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_32;
+        }
+        else {
+            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_8;
+        }
         scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
 
         scr_get_menu_width=scrsdl_get_menu_width;
