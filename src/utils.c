@@ -1374,8 +1374,10 @@ void get_compile_info(char *s)
     "\n"
         "Compile INITIALCFLAGS: " COMPILE_INITIALCFLAGS "\n"
         "Compile INITIALLDFLAGS: " COMPILE_INITIALLDFLAGS "\n"
+        "Compile INITIALLIBS: " COMPILE_INITIALLIBS "\n"
         "Compile FINALCFLAGS: " COMPILE_FINALCFLAGS "\n"
         "Compile FINALLDFLAGS: " COMPILE_FINALLDFLAGS "\n"
+        "Compile FINALLIBS: " COMPILE_FINALLIBS "\n"
     "\n"
         "Install PREFIX: " INSTALL_PREFIX "\n"
         );
