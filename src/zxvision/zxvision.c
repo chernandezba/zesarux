@@ -2619,7 +2619,7 @@ char last_files_used_array[MAX_LAST_FILESUSED][PATH_MAX];
 //Interrumpe el core y le dice que hay que abrir el menu
 void menu_fire_event_open_menu(void)
 {
-    printf ("Ejecutar menu_fire_event_open_menu\n");
+    //printf ("Ejecutar menu_fire_event_open_menu\n");
     menu_set_menu_abierto(1);
     menu_event_open_menu.v=1;
 }
@@ -4789,7 +4789,7 @@ void redraw_footer(void)
 //Actualmente solo cambia el valor de menu_abierto
 void menu_set_menu_abierto(int valor)
 {
-    printf("menu_set_menu_abierto: %d\n",valor);
+    //printf("menu_set_menu_abierto: %d\n",valor);
 
     menu_abierto=valor;
 }
@@ -26824,7 +26824,7 @@ void menu_inicio_bucle(void)
 
         else {
 
-            printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
+            //printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
             menu_inicio_bucle_main();
             //printf("despues menu_inicio_bucle_main\n");
 
