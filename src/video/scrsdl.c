@@ -1920,10 +1920,10 @@ int scrsdl_init (void) {
         scr_putpixel_final=scrsdl_putpixel_final;
 
         if (scr_sdl_8bits_color.v) {
-            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_32;
+            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_8;
         }
         else {
-            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_8;
+            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_32;
         }
         scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
 
