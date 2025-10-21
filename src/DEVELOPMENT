@@ -73,9 +73,6 @@ Tiene que ser múltiple de 512 por lo que hay que rellenarlo con 0 si hace falta
 cat /dev/hdb > ZEsarUX.tar.gz
 tar -xvzf ZEsarUX.tar.gz
 
-- Compilar con:
-
-./configure --disable-pthreads --disable-networking --disable-aa --disable-sdl
 
 --------------
 
