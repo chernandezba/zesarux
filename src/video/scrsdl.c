@@ -1935,6 +1935,10 @@ int scrsdl_init (void) {
     //Esto tiene que ir al principio de inicializar driver para leer correctamente el tamaño de ventana
     screen_este_driver_permite_ext_desktop=1;
 
+    if (scr_sdl_force_size.v) {
+        //Si cambiamos tamaño, habitualmente será reducirlo y por tanto no creo que quede espacio para ZX Desktop
+        screen_este_driver_permite_ext_desktop=0;
+    }
 
         //Inicializaciones necesarias
         scr_putpixel=scrsdl_putpixel;
