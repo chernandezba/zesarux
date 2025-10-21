@@ -90,9 +90,13 @@ int scrsdl_crea_ventana(void)
 
     alto +=screen_get_ext_desktop_height_zoom();
 
+    int ancho_ventana=ancho;
+    int alto_ventana=alto;
+
+
     if (scr_sdl_force_size.v) {
-        ancho=scr_sdl_force_size_width;
-        alto=scr_sdl_force_size_height;
+        ancho_ventana=scr_sdl_force_size_width;
+        alto_ventana=scr_sdl_force_size_height;
         //En FiwixOS este flag es necesario, tendrá que ver con el uso que hace SDL de la vgalib
         flags=SDL_HWSURFACE;
     }
@@ -100,11 +104,11 @@ int scrsdl_crea_ventana(void)
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
     if (scr_sdl_8bits_color.v) {
-        sdl_screen = SDL_SetVideoMode(ancho,alto,8, flags);
+        sdl_screen = SDL_SetVideoMode(ancho_ventana,alto_ventana,8, flags);
     }
 
     else {
-        sdl_screen = SDL_SetVideoMode(ancho,alto,32, flags);
+        sdl_screen = SDL_SetVideoMode(ancho_ventana,alto_ventana,32, flags);
     }
 
 
