@@ -364,7 +364,7 @@ while [ $# -gt 0 ]; do
 
 	#Ver si se pide --prefix=
 	echo -n "$1"|grep "prefix=" > /dev/null
-	if [ $? == 0 ]; then
+	if [ $? = 0 ]; then
 		INST=`echo -n "$1"|cut -d '=' -f2`
 		set_installprefix "$INST"
 	else
@@ -405,7 +405,7 @@ LIBS="$LIBS"
 # Si version snapshot, activar tambien warnings extra
 # TODO: esto solo vale si el define esta justo al principio de linea
 cat cpu.h|grep "^#define SNAPSHOT_VERSION" > /dev/null
-if [ $? == 0 ]; then
+if [ $? = 0 ]; then
     echo "Enabling all compiler warnings on snapshot version"
     CFLAGS="$CFLAGS -Wall -Wextra"
 fi
@@ -427,7 +427,7 @@ fi
 echo $SISTEMA
 
 
-if [ "$SISTEMA" == "Msys" ]; then
+if [ "$SISTEMA" = "Msys" ]; then
 	# compilamos el archivo de recurso para el icono
 	OPTIONWINDOWSRESOURCE="zesarux.res"
 
@@ -440,7 +440,7 @@ if [ "$SISTEMA" == "Msys" ]; then
 fi
 
 
-if [ "$SISTEMA" == "Haiku" ]; then
+if [ "$SISTEMA" = "Haiku" ]; then
 	CFLAGS="$CFLAGS -DHAIKU_OS"
 	LIBS="-lnetwork $LIBS"
 fi
@@ -452,10 +452,10 @@ echo $COMPILATION_MACHINE_HARDWARE_NAME
 
 # Ver si aplicamos definicion para llamadas de 64 bits en 32 bits (stat por ejemplo)
 
-if [ "$SISTEMA" == "GNU/Linux" ]; then
+if [ "$SISTEMA" = "GNU/Linux" ]; then
 	echo -n "Checking if 32 bit Linux ... "
 
-	if [ "$COMPILATION_MACHINE_HARDWARE_NAME" == "i686" ] || [ "$COMPILATION_MACHINE_HARDWARE_NAME" == "i386" ]; then
+	if [ "$COMPILATION_MACHINE_HARDWARE_NAME" = "i686" ] || [ "$COMPILATION_MACHINE_HARDWARE_NAME" = "i386" ]; then
 		echo "Applying compiler definition to work with files larger than 2 GB on a 32 bit system"
 		CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64"
 	else
@@ -471,7 +471,7 @@ if [ -e /etc/os-release ]; then
 	SISTEMA_RELEASE=`cat /etc/os-release |grep PRETTY_NAME| head -n1 |cut -d '"' -f2`
 fi
 
-if [ "$CHECK_CCOMPILER" == "yes" ] && [ "$OPTIONOTHER_UNIX" == "" ]; then
+if [ "$CHECK_CCOMPILER" = "yes" ] && [ "$OPTIONOTHER_UNIX" = "" ]; then
 
 	echo -n "Checking for $CCOMPILER compiler ... "
 
@@ -729,7 +729,7 @@ _EOF
 		echo "found"
 			#nota: no debemos linkar contra las dos a la vez
 
-		if [ "$OPTIONOBJCURSESW" == "" ]; then
+		if [ "$OPTIONOBJCURSESW" = "" ]; then
         	LIBS="-lncurses $LIBS"
         	fi
 	fi
@@ -959,7 +959,7 @@ _EOF
                 LIBS="-lpthread $LIBS"
 
 #pthreads implica tambien habilitar protocolo remoto y con ello api de sockets
-		if [ "$SISTEMA" == "Msys" ]; then
+		if [ "$SISTEMA" = "Msys" ]; then
 			LIBS="-lwsock32 $LIBS"
 		fi
 
@@ -1052,7 +1052,7 @@ _EOF
 	# Solo para linux. Antes de esta comprobacion me podria saltar la compilacion de prueba
 	# pero lo hago para no liarlo mas y asi se parece a otras detecciones de drivers
 	# ademas necesita pthreads
-        if [ $RESULTCODE != 0 ] || [ "$SISTEMA" != "GNU/Linux" ] || [ "$OPTIONPTHREADS" == "" ]; then
+        if [ $RESULTCODE != 0 ] || [ "$SISTEMA" != "GNU/Linux" ] || [ "$OPTIONPTHREADS" = "" ]; then
                 echo "not found"
                 OPTIONOBJONEBITSPEAKER=""
         else
@@ -1179,7 +1179,7 @@ _EOF
         else
                 echo -n "found"
 
-		if [ "$OPTIONPTHREADS" == "" ]; then
+		if [ "$OPTIONPTHREADS" = "" ]; then
 			echo ". But requires pthreads, and it is not enabled. Disabling Cocoa"
 			OPTIONCOCOA=""
 
@@ -1225,9 +1225,9 @@ return 0;
 }
 _EOF
 
-	if [ "$SISTEMA" == "Darwin" ]; then
+	if [ "$SISTEMA" = "Darwin" ]; then
 		$CCOMPILER -c $CFLAGS -I/Library/Frameworks/$LIBSDL.framework/Headers -framework $LIBSDL -F/Library/Frameworks $TEMPFILE -o $TEMPFILE.o >> $LOGFILE 2>&1
-	elif [ "$SISTEMA" == "Msys" ]; then
+	elif [ "$SISTEMA" = "Msys" ]; then
 		#echo "$CCOMPILER -c $CFLAGS -Lc:\mingw\${LIBSDL}\lib -Ic:\mingw\${LIBSDL}\include -l$LIBSDL $TEMPFILE -o $TEMPFILE.o"
 		#echo LIBSDL=${LIBSDL}
 		#temp detectar libsdl1
@@ -1244,7 +1244,7 @@ _EOF
                 echo -n "found"
 
 
-                if [ "$SISTEMA" == "Darwin" ] && [ "$LIBSDL" == "SDL" ]; then
+                if [ "$SISTEMA" = "Darwin" ] && [ "$LIBSDL" = "SDL" ]; then
                                 echo ". But it's incompatible with Mac OSX. Disabling SDL. Try using SDL2"
                                 OPTIONOBJSDL=""
 
@@ -1252,11 +1252,11 @@ _EOF
 
 			echo
 
-			if [ "$SISTEMA" == "Darwin" ]; then
+			if [ "$SISTEMA" = "Darwin" ]; then
 				CFLAGS="$CFLAGS -I/Library/Frameworks/$LIBSDL.framework/Headers"
 				LDFLAGS="-F/Library/Frameworks $LDFLAGS"
 				LIBS="-framework $LIBSDL $LIBS"
-			elif [ "$SISTEMA" == "Msys" ]; then
+			elif [ "$SISTEMA" = "Msys" ]; then
                                 CFLAGS="$CFLAGS -I/c/mingw/$LIBSDL/include"
                                 LDFLAGS="-L/c/mingw/$LIBSDL/lib $LDFLAGS"
                                 LIBS="-l$LIBSDL $LIBS"
@@ -1326,7 +1326,7 @@ _EOF
         RESULTCODE=$?
 
 	#necesita pthreads
-        if [ $RESULTCODE != 0 ] || [ "$OPTIONPTHREADS" == "" ]; then
+        if [ $RESULTCODE != 0 ] || [ "$OPTIONPTHREADS" = "" ]; then
                 echo "not found"
                 OPTIONLINUXREALJOYSTICK=""
 
@@ -2154,7 +2154,7 @@ bin_sprite_to_c: other_sources_not_ZEsarUX/bin_sprite_to_c.c
 _EOF
 
 
-if [ "$MAINSOURCE" == "main_unix" ]; then
+if [ "$MAINSOURCE" = "main_unix" ]; then
 
 cat >> Makefile << _EOF
 main_unix.o: main_unix.c cpu.h start.h
@@ -2165,7 +2165,7 @@ _EOF
 fi
 
 
-if [ "$MAINSOURCE" == "scrcocoa" ]; then
+if [ "$MAINSOURCE" = "scrcocoa" ]; then
 cat >> Makefile << _EOF
 scrcocoa.o: video/scrcocoa.m joystick.h compileoptions.h cpu.h start.h video/screen.h charset.h debug.h utils.h timer.h zxvision/zxvision.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h realjoystick.h machines/pcw.h
 	clang -I. -Iaudio -Ivideo -Icores -Imenu -Isnap -Icopy_interfaces -Imachines -I zxvision video/scrcocoa.m -c -o scrcocoa.o
@@ -2263,7 +2263,7 @@ _EOF
 fi
 
 
-if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL" ]; then
+if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" = "SDL" ]; then
 
 cat >> Makefile << _EOF
 scrsdl.o: video/scrsdl.c cpu.h video/scrsdl.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision/zxvision.h timer.h utils.h joystick.h common_sdl.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h realjoystick.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
@@ -2279,7 +2279,7 @@ _EOF
 
 fi
 
-if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL2" ]; then
+if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" = "SDL2" ]; then
 
 cat >> Makefile << _EOF
 scrsdl2.o: video/scrsdl2.c cpu.h video/scrsdl2.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision/zxvision.h timer.h utils.h joystick.h common_sdl2.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h realjoystick.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
@@ -2436,7 +2436,7 @@ cat >> compileoptions.h << _EOF
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_SDL"
 
-if [ "$LIBSDL" == "SDL2" ]; then
+if [ "$LIBSDL" = "SDL2" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_SDL2
 _EOF
@@ -2497,7 +2497,7 @@ OPTIONLINUXREALJOYSTICK=""
 fi
 
 
-if [ "$OPTIONNETWORKING" == "" ]; then
+if [ "$OPTIONNETWORKING" = "" ]; then
 cat >> compileoptions.h << _EOF
 #define NETWORKING_DISABLED
 _EOF
@@ -2764,48 +2764,48 @@ echo "null"
 
 
 echo -n " Disabled Video output drivers: "
-if [ "$OPTIONOBJSTDOUT" == "" ]; then
+if [ "$OPTIONOBJSTDOUT" = "" ]; then
         echo -n "stdout "
 fi
 
-if [ "$OPTIONOBJSIMPLETEXT" == "" ]; then
+if [ "$OPTIONOBJSIMPLETEXT" = "" ]; then
         echo -n "simpletext "
 fi
 
 
-if [ "$OPTIONOBJCURSES" == "" ]; then
+if [ "$OPTIONOBJCURSES" = "" ]; then
         echo -n "curses "
 fi
 
-if [ "$OPTIONOBJCURSESW" == "" ]; then
+if [ "$OPTIONOBJCURSESW" = "" ]; then
         echo -n "cursesw "
 fi
 
 
-if [ "$OPTIONOBJAA" == "" ]; then
+if [ "$OPTIONOBJAA" = "" ]; then
         echo -n "aa "
 fi
 
-if [ "$OPTIONOBJCACA" == "" ]; then
+if [ "$OPTIONOBJCACA" = "" ]; then
         echo -n "caca "
 fi
 
 
-if [ "$OPTIONCOCOA" == "" ]; then
+if [ "$OPTIONCOCOA" = "" ]; then
         echo -n "cocoa "
 fi
 
-if [ "$OPTIONOBJXWINDOWS" == "" ]; then
+if [ "$OPTIONOBJXWINDOWS" = "" ]; then
         echo -n "xwindows "
 fi
 
-if [ "$OPTIONOBJSDL" == "" ]; then
+if [ "$OPTIONOBJSDL" = "" ]; then
         echo -n "$TEXTOLIBSDL "
 fi
 
 
 
-if [ "$OPTIONOBJFBDEV" == "" ]; then
+if [ "$OPTIONOBJFBDEV" = "" ]; then
         echo -n "fbdev "
 fi
 
@@ -2848,28 +2848,28 @@ echo "null"
 
 
 echo -n " Disabled Audio output drivers: "
-if [ "$OPTIONOBJDSP" == "" ]; then
+if [ "$OPTIONOBJDSP" = "" ]; then
         echo -n "dsp "
 fi
 
-if [ "$OPTIONOBJONEBITSPEAKER" == "" ]; then
+if [ "$OPTIONOBJONEBITSPEAKER" = "" ]; then
         echo -n "onebitspeaker "
 fi
 
-if [ "$OPTIONOBJALSA" == "" ]; then
+if [ "$OPTIONOBJALSA" = "" ]; then
         echo -n "alsa "
 fi
 
-if [ "$OPTIONOBJPULSE" == "" ]; then
+if [ "$OPTIONOBJPULSE" = "" ]; then
         echo -n "pulse "
 fi
 
 
-if [ "$OPTIONOBJCOREAUDIO" == "" ]; then
+if [ "$OPTIONOBJCOREAUDIO" = "" ]; then
         echo -n "coreaudio "
 fi
 
-if [ "$OPTIONOBJSDL" == "" ]; then
+if [ "$OPTIONOBJSDL" = "" ]; then
         echo -n "$TEXTOLIBSDL "
 fi
 
@@ -2891,7 +2891,7 @@ echo
 
 echo -n " Disabled Audio File output drivers: "
 
-if [ "$OPTIONSNDFILE" == "" ]; then
+if [ "$OPTIONSNDFILE" = "" ]; then
         echo -n "wav "
 fi
 
@@ -2900,7 +2900,7 @@ echo
 
 echo -n " Pthreads support: "
 
-if [ "$OPTIONPTHREADS" == "" ]; then
+if [ "$OPTIONPTHREADS" = "" ]; then
 	echo "no"
 else
 	echo "yes"
@@ -2909,7 +2909,7 @@ fi
 
 echo -n " SSL support: "
 
-if [ "$OPTIONOBJSSL" == "" ]; then
+if [ "$OPTIONOBJSSL" = "" ]; then
         echo "no"
 else
         echo "yes"
@@ -2917,7 +2917,7 @@ fi
 
 echo -n " Networking support: "
 
-if [ "$OPTIONNETWORKING" == "" ]; then
+if [ "$OPTIONNETWORKING" = "" ]; then
         echo "no"
 else
         echo "yes"
@@ -2926,7 +2926,7 @@ fi
 
 echo -n " Remote command protocol support: "
 
-if [ "$OPTIONNETWORKING" == "" ]; then
+if [ "$OPTIONNETWORKING" = "" ]; then
         echo "no. It needs networking support"
 else
         echo "yes"
@@ -2936,7 +2936,7 @@ fi
 
 echo -n " Linux real joystick support: "
 
-if [ "$OPTIONLINUXREALJOYSTICK" == "" ]; then
+if [ "$OPTIONLINUXREALJOYSTICK" = "" ]; then
         echo "no"
 else
         echo "yes"
@@ -2946,14 +2946,14 @@ fi
 
 
 echo -n " MEMPTR emulation: "
-if [ "$OPTIONEMULATE_MEMPTR" == "" ]; then
+if [ "$OPTIONEMULATE_MEMPTR" = "" ]; then
 	echo "no"
 else
 	echo "yes"
 fi
 
 echo -n " Visual memory option: "
-if [ "$OPTIONEMULATE_VISUALMEM" == "" ]; then
+if [ "$OPTIONEMULATE_VISUALMEM" = "" ]; then
         echo "no"
 else
         echo "yes"
@@ -2961,14 +2961,14 @@ fi
 
 
 echo -n " CPU statistics option: "
-if [ "$OPTIONEMULATE_CPU_STATS" == "" ]; then
+if [ "$OPTIONEMULATE_CPU_STATS" = "" ]; then
         echo "no"
 else
         echo "yes"
 fi
 
 echo -n " Raspberry extensions: "
-if [ "$OPTIONEMULATE_RASPBERRY" == "" ]; then
+if [ "$OPTIONEMULATE_RASPBERRY" = "" ]; then
         echo "no"
 else
         echo "yes"
@@ -2978,21 +2978,21 @@ fi
 
 
 echo -n " Contended memory emulation: "
-if [ "$OPTIONEMULATE_CONTEND" == "" ]; then
+if [ "$OPTIONEMULATE_CONTEND" = "" ]; then
         echo "no"
 else
         echo "yes"
 fi
 
 echo -n " Putpixel cache: "
-if [ "$OPTIONPUTPIXELCACHE" == "" ]; then
+if [ "$OPTIONPUTPIXELCACHE" = "" ]; then
         echo "no"
 else
         echo "yes"
 fi
 
 echo -n " Spectrum default core: "
-if [ "$OPTIONREDUCED_CORE_SPECTRUM" == "" ]; then
+if [ "$OPTIONREDUCED_CORE_SPECTRUM" = "" ]; then
         echo "Normal"
 else
         echo "Reduced"
