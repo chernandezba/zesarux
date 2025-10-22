@@ -35,6 +35,7 @@
 #include "audio.h"
 #include "timer.h"
 #include "compileoptions.h"
+#include "zesarux.h"
 
 
 char valor_sonido_3200hz=+50;

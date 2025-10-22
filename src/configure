@@ -1607,7 +1607,7 @@ zx8081.o: machines/zx8081.c machines/zx8081.h cpu.h video/screen.h debug.h audio
 jupiterace.o: machines/jupiterace.c machines/jupiterace.h cpu.h video/screen.h debug.h audio/audio.h cores/core_ace.h operaciones.h zxvision/zxvision.h
 	\$(CC) \$(CFLAGS) -c machines/jupiterace.c
 
-z88.o: machines/z88.c machines/z88.h cpu.h video/screen.h debug.h cores/core_z88.h contend.h joystick.h zxvision/zxvision.h operaciones.h utils.h timer.h compileoptions.h
+z88.o: machines/z88.c machines/z88.h cpu.h video/screen.h debug.h cores/core_z88.h contend.h joystick.h zxvision/zxvision.h operaciones.h utils.h timer.h compileoptions.h zesarux.h
 	\$(CC) \$(CFLAGS) -c machines/z88.c
 
 cpc.o: machines/cpc.c machines/cpc.h cpu.h video/screen.h debug.h cores/core_cpc.h contend.h joystick.h zxvision/zxvision.h operaciones.h utils.h soundchips/ay38912.h storage/tape.h dsk.h storage/pd765.h audio/audio_ayplayer.h
