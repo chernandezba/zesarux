@@ -170,6 +170,23 @@ Sega Master System
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_sms.png "Sega Master System")
 
 
+ZEsarUX running on alternative Unix versions:
+
+
+ZEsarUX on AROS
+
+![alt text](${URLIMAGES_BASE}/screenshots/ZEsarUX_aros.png "ZEsarUX on AROS")
+
+ZEsarUX on FiwixOS
+
+![alt text](${URLIMAGES_BASE}/screenshots/ZEsarUX_fiwixos.png "ZEsarUX on FiwixOS")
+
+ZEsarUX on Sortix
+
+![alt text](${URLIMAGES_BASE}/screenshots/ZEsarUX_sortix.png "ZEsarUX on FiwixOS")
+
+
+
 Do you want to know how ZEsarUX looked like in the past? See this:
 [PREVIOUS_SCREENSHOTS](https://github.com/chernandezba/zesarux/blob/master/PREVIOUS_SCREENSHOTS.md)
 
