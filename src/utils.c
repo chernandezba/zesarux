@@ -14270,7 +14270,7 @@ char *util_strcasestr(char *string, char *string_a_buscar)
 {
 
         //Debe coincidir desde el principio de string
-#ifdef MINGW
+#if defined(MINGW) || defined(OTHER_UNIX)
         //En Windows no esta la funcion strcasestr
         char *coincide=mingw_strcasestr(string,string_a_buscar);
 #else
