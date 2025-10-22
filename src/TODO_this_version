@@ -71,4 +71,4 @@ Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer
 ->crearla forzada con alto =1?
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
-Quizá algo que compile en unix pero sin extensiones posix, como por ejemplo "uname". Que sistemas por ejemplo ? Aros?
+Probar mas sistemas unix alternativos
