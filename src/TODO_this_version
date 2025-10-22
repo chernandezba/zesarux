@@ -72,3 +72,4 @@ Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 Probar mas sistemas unix alternativos
+-Revisar NO_FORK_AVAILABLE. si no está, no debe lanzar la linea de fork(). Ejemplo en Aros. Por que luego si que linkea??
