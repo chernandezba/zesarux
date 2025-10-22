@@ -435,7 +435,8 @@ if [ "$SISTEMA" == "Msys" ]; then
 	#winmm son las librerias multimedia de windows, para usar el Midi
 	#y agregar el icono
 
-	LDFLAGS="zesarux.res $LDFLAGS -lwinmm"
+	LDFLAGS="zesarux.res $LDFLAGS"
+	LIBS="-lwinmm $LIBS"
 fi
 
 
