@@ -571,18 +571,22 @@ if [ "$SHORTSIZE" != "8" ]; then
 fi
 
 
-echo -n "Checking Little Endian System ... "
+if command -v od >/dev/null 2>&1; then
 
-#RESULT=`echo -n I | hexdump -o | awk '{ print substr($2,6,1); exit}'`
-RESULT=`echo -n I | od -to2 | awk '{ print substr($2,6,1); exit}'`
-if [ "$RESULT" != "1" ]; then
-	echo
-	echo "WARNING! Big endian arquitecture. Not tested yet. Run at your own risk!"
-	sleep 5
-	OPTION_WORDS_BIGENDIAN="yes"
-else
+    echo -n "Checking Little Endian System ... "
 
-echo "ok"
+    #RESULT=`echo -n I | hexdump -o | awk '{ print substr($2,6,1); exit}'`
+    RESULT=`echo -n I | od -to2 | awk '{ print substr($2,6,1); exit}'`
+    if [ "$RESULT" != "1" ]; then
+        echo
+        echo "WARNING! Big endian arquitecture. Not tested yet. Run at your own risk!"
+        sleep 5
+        OPTION_WORDS_BIGENDIAN="yes"
+    else
+
+    echo "ok"
+
+    fi
 
 fi
 
