@@ -592,7 +592,7 @@ fi
 
 
 echo -n "Checking for stdout functions ... "
-if [ -n "$OPTIONOBJSTDOUT" ]; then
+if [ "$OPTIONOBJSTDOUT" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -620,7 +620,7 @@ fi
 
 
 echo -n "Checking for simpletext functions ... "
-if [ -n "$OPTIONOBJSIMPLETEXT" ]; then
+if [ "$OPTIONOBJSIMPLETEXT" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -649,7 +649,7 @@ fi
 
 
 echo -n "Checking for fbdev functions ... "
-if [ -n "$OPTIONOBJFBDEV" ]; then
+if [ "$OPTIONOBJFBDEV" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -680,7 +680,7 @@ fi
 
 #ver si ncursesw
 echo -n "Checking for cursesw libraries ... "
-if [ -n "$OPTIONOBJCURSESW" ]; then
+if [ "$OPTIONOBJCURSESW" != "" ]; then
 
 	TEMPFILE="configure.compile.c"
 
@@ -712,7 +712,7 @@ fi
 
 
 echo -n "Checking for curses libraries ... "
-if [ -n "$OPTIONOBJCURSES" ]; then
+if [ "$OPTIONOBJCURSES" != "" ]; then
 #en principio activo, probemos a compilar
 
 	TEMPFILE="configure.compile.c"
@@ -750,7 +750,7 @@ fi
 
 
 echo -n "Checking for aa libraries ... "
-if [ -n "$OPTIONOBJAA" ]; then
+if [ "$OPTIONOBJAA" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -778,7 +778,7 @@ else
 fi
 
 echo -n "Checking for caca libraries ... "
-if [ -n "$OPTIONOBJCACA" ]; then
+if [ "$OPTIONOBJCACA" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -807,7 +807,7 @@ fi
 
 
 echo -n "Checking for SSL libraries ... "
-if [ -n "$OPTIONOBJSSL" ]; then
+if [ "$OPTIONOBJSSL" != "" ]; then
 #en principio activo, probemos a compilar
 
 #parece que homebrew tiene las cabeceras aqui
@@ -843,7 +843,7 @@ fi
 
 
 echo -n "Checking for xwindows libraries ... "
-if [ -n "$OPTIONOBJXWINDOWS" ]; then
+if [ "$OPTIONOBJXWINDOWS" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -877,7 +877,7 @@ fi
 
 
 echo -n "Checking for xwindows extensions ... "
-if [ -n "$OPTIONXEXT" ]; then
+if [ "$OPTIONXEXT" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -907,7 +907,7 @@ else
 fi
 
 echo -n "Checking for xwindows vidmode extensions ... "
-if [ -n "$OPTIONXVIDMODE" ]; then
+if [ "$OPTIONXVIDMODE" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -941,7 +941,7 @@ fi
 
 
 echo -n "Checking for posix threads ... "
-if [ -n "$OPTIONPTHREADS" ]; then
+if [ "$OPTIONPTHREADS" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -981,7 +981,7 @@ fi
 
 
 # Chequeos para otros sistemas Unix
-if [ -n "$OPTIONOTHER_UNIX" ]; then
+if [ "$OPTIONOTHER_UNIX" != "" ]; then
 	echo -n "Checking fork() call ... "
 
         TEMPFILE="configure.compile.c"
@@ -1006,7 +1006,7 @@ fi
 
 
 echo -n "Checking for audio dsp ... "
-if [ -n "$OPTIONOBJDSP" ]; then
+if [ "$OPTIONOBJDSP" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -1036,7 +1036,7 @@ fi
 
 
 echo -n "Checking for audio onebitspeaker ... "
-if [ -n "$OPTIONOBJONEBITSPEAKER" ]; then
+if [ "$OPTIONOBJONEBITSPEAKER" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -1072,7 +1072,7 @@ fi
 
 
 echo -n "Checking for audio alsa ... "
-if [ -n "$OPTIONOBJALSA" ]; then
+if [ "$OPTIONOBJALSA" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -1101,7 +1101,7 @@ else
 fi
 
 echo -n "Checking for audio pulse ... "
-if [ -n "$OPTIONOBJPULSE" ]; then
+if [ "$OPTIONOBJPULSE" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -1132,7 +1132,7 @@ fi
 
 
 echo -n "Checking for coreaudio ... "
-if [ -n "$OPTIONOBJCOREAUDIO" ]; then
+if [ "$OPTIONOBJCOREAUDIO" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -1162,7 +1162,7 @@ fi
 
 
 echo -n "Checking for Cocoa Mac OS X GUI ... "
-if [ -n "$OPTIONCOCOA" ]; then
+if [ "$OPTIONCOCOA" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.m"
@@ -1205,7 +1205,7 @@ fi
 
 #Hay que comprobar SDL2 despues de cocoa
 echo -n "Checking for $TEXTOLIBSDL libraries ... "
-if [ -n "$OPTIONOBJSDL" ]; then
+if [ "$OPTIONOBJSDL" != "" ]; then
 
 
 #en principio activo, probemos a compilar
@@ -1280,7 +1280,7 @@ fi
 
 
 echo -n "Checking for libsndfile ... "
-if [ -n "$OPTIONSNDFILE" ]; then
+if [ "$OPTIONSNDFILE" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -1313,7 +1313,7 @@ fi
 
 
 echo -n "Checking for linux real joystick ... "
-if [ -n "$OPTIONLINUXREALJOYSTICK" ]; then
+if [ "$OPTIONLINUXREALJOYSTICK" != "" ]; then
 #en principio activo, probemos a compilar
 
         TEMPFILE="configure.compile.c"
@@ -2180,7 +2180,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJSTDOUT" ]; then
+if [ "$OPTIONOBJSTDOUT" != "" ]; then
 
 cat >> Makefile << _EOF
 scrstdout.o: video/scrstdout.c video/scrstdout.h debug.h video/screen.h mem128.h machines/zx8081.h operaciones.h cpu.h utils.h zxvision/zxvision.h joystick.h ula.h third_party/disassemble.h machines/z88.h timer.h chardetect.h textspeech.h machines/tsconf.h machines/baseconf.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h zrcp/zeng_online_client.h
@@ -2190,7 +2190,7 @@ _EOF
 
 fi
 
-if [ -n "$OPTIONOBJSIMPLETEXT" ]; then
+if [ "$OPTIONOBJSIMPLETEXT" != "" ]; then
 
 cat >> Makefile << _EOF
 scrsimpletext.o: video/scrsimpletext.c video/scrsimpletext.h debug.h video/screen.h mem128.h machines/zx8081.h operaciones.h cpu.h utils.h zxvision/zxvision.h joystick.h ula.h third_party/disassemble.h machines/z88.h timer.h machines/tsconf.h machines/baseconf.h settings.h textspeech.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h
@@ -2202,7 +2202,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJCURSES" ]; then
+if [ "$OPTIONOBJCURSES" != "" ]; then
 
 cat >> Makefile << _EOF
 scrcurses.o: video/scrcurses.c cpu.h video/scrcurses.h compileoptions.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h video/screen.h audio/audio.h zxvision/zxvision.h utils.h joystick.h ula.h machines/z88.h machines/sam.h charset.h machines/tsconf.h machines/baseconf.h settings.h machines/chloe.h machines/timex.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h zrcp/zeng.h zrcp/zeng_online.h zrcp/zeng_online_client.h
@@ -2212,7 +2212,7 @@ _EOF
 
 fi
 
-if [ -n "$OPTIONOBJCURSESW" ]; then
+if [ "$OPTIONOBJCURSESW" != "" ]; then
 
 cat >> Makefile << _EOF
 cursesw_ext.o: cursesw_ext.c cursesw_ext.h cpu.h debug.h settings.h
@@ -2222,7 +2222,7 @@ _EOF
 
 fi
 
-if [ -n "$OPTIONOBJFBDEV" ]; then
+if [ "$OPTIONOBJFBDEV" != "" ]; then
 
 cat >> Makefile << _EOF
 scrfbdev.o: video/scrfbdev.c cpu.h video/scrfbdev.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h video/screen.h audio/audio.h zxvision/zxvision.h utils.h joystick.h ula.h machines/z88.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
@@ -2233,7 +2233,7 @@ _EOF
 fi
 
 
-if [ -n "$OPTIONOBJAA" ]; then
+if [ "$OPTIONOBJAA" != "" ]; then
 
 cat >> Makefile << _EOF
 scraa.o: video/scraa.c cpu.h video/scraa.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h audio/audio.h zxvision/zxvision.h video/screen.h utils.h joystick.h ula.h machines/z88.h textspeech.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
@@ -2243,7 +2243,7 @@ _EOF
 
 fi
 
-if [ -n "$OPTIONOBJCACA" ]; then
+if [ "$OPTIONOBJCACA" != "" ]; then
 
 cat >> Makefile << _EOF
 scrcaca.o: video/scrcaca.c cpu.h video/scrcaca.h operaciones.h mem128.h charset.h debug.h machines/zx8081.h audio/audio.h zxvision/zxvision.h video/screen.h utils.h joystick.h machines/z88.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
@@ -2256,7 +2256,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJXWINDOWS" ]; then
+if [ "$OPTIONOBJXWINDOWS" != "" ]; then
 
 cat >> Makefile << _EOF
 scrxwindows.o: video/scrxwindows.c cpu.h video/scrxwindows.h debug.h video/screen.h mem128.h compileoptions.h machines/zx8081.h audio/audio.h charset.h zxvision/zxvision.h timer.h utils.h joystick.h machines/cpc.h machines/prism.h machines/z88.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h machines/pcw.h
@@ -2301,7 +2301,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJDSP" ]; then
+if [ "$OPTIONOBJDSP" != "" ]; then
 
 cat >> Makefile << _EOF
 audiodsp.o: audio/audiodsp.c audio/audiodsp.h cpu.h audio/audio.h compileoptions.h debug.h settings.h
@@ -2312,7 +2312,7 @@ _EOF
 fi
 
 
-if [ -n "$OPTIONOBJONEBITSPEAKER" ]; then
+if [ "$OPTIONOBJONEBITSPEAKER" != "" ]; then
 
 cat >> Makefile << _EOF
 audioonebitspeaker.o: audio/audioonebitspeaker.c audio/audioonebitspeaker.h cpu.h audio/audio.h compileoptions.h debug.h settings.h
@@ -2323,7 +2323,7 @@ _EOF
 fi
 
 
-if [ -n "$OPTIONOBJALSA" ]; then
+if [ "$OPTIONOBJALSA" != "" ]; then
 
 cat >> Makefile << _EOF
 audioalsa.o: audio/audioalsa.c audio/audioalsa.h cpu.h audio/audio.h compileoptions.h debug.h settings.h soundchips/ay38912.h utils.h
@@ -2334,7 +2334,7 @@ _EOF
 fi
 
 
-if [ -n "$OPTIONOBJPULSE" ]; then
+if [ "$OPTIONOBJPULSE" != "" ]; then
 
 cat >> Makefile << _EOF
 audiopulse.o: audio/audiopulse.c audio/audiopulse.h cpu.h audio/audio.h compileoptions.h debug.h utils.h settings.h timer.h
@@ -2346,7 +2346,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJCOREAUDIO" ]; then
+if [ "$OPTIONOBJCOREAUDIO" != "" ]; then
 
 cat >> Makefile << _EOF
 audiocoreaudio.o: audio/audiocoreaudio.c audio/audiocoreaudio.h cpu.h audio/audio.h compileoptions.h debug.h settings.h
@@ -2357,7 +2357,7 @@ _EOF
 fi
 
 
-if [ -n "$OPTIONWINDOWSRESOURCE" ]; then
+if [ "$OPTIONWINDOWSRESOURCE" != "" ]; then
 
 cat >> Makefile << _EOF
 zesarux.res: zesarux.rc
@@ -2381,14 +2381,14 @@ cat > compileoptions.h << _EOF
 
 _EOF
 
-if [ -n "$OPTIONOBJSTDOUT" ]; then
+if [ "$OPTIONOBJSTDOUT" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_STDOUT
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_STDOUT"
 fi
 
-if [ -n "$OPTIONOBJSIMPLETEXT" ]; then
+if [ "$OPTIONOBJSIMPLETEXT" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_SIMPLETEXT
 _EOF
@@ -2397,28 +2397,28 @@ fi
 
 
 
-if [ -n "$OPTIONOBJCURSES" ]; then
+if [ "$OPTIONOBJCURSES" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_CURSES
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_CURSES"
 fi
 
-if [ -n "$OPTIONOBJCURSESW" ]; then
+if [ "$OPTIONOBJCURSESW" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_CURSESW
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_CURSESW"
 fi
 
-if [ -n "$OPTIONOBJAA" ]; then
+if [ "$OPTIONOBJAA" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_AA
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_AA"
 fi
 
-if [ -n "$OPTIONOBJCACA" ]; then
+if [ "$OPTIONOBJCACA" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_CACA
 _EOF
@@ -2427,14 +2427,14 @@ fi
 
 
 
-if [ -n "$OPTIONOBJXWINDOWS" ]; then
+if [ "$OPTIONOBJXWINDOWS" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_XWINDOWS
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_XWINDOWS"
 fi
 
-if [ -n "$OPTIONOBJSDL" ]; then
+if [ "$OPTIONOBJSDL" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_SDL
 _EOF
@@ -2450,7 +2450,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJFBDEV" ]; then
+if [ "$OPTIONOBJFBDEV" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_FBDEV
 _EOF
@@ -2459,7 +2459,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJSSL" ]; then
+if [ "$OPTIONOBJSSL" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_SSL
 _EOF
@@ -2467,14 +2467,14 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_SSL"
 fi
 
 
-if [ -n "$OPTIONXEXT" ]; then
+if [ "$OPTIONXEXT" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define USE_XEXT
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES USE_XEXT"
 fi
 
-if [ -n "$OPTIONXVIDMODE" ]; then
+if [ "$OPTIONXVIDMODE" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define USE_XVIDMODE
 _EOF
@@ -2483,7 +2483,7 @@ fi
 
 
 
-if [ -n "$OPTIONPTHREADS" ]; then
+if [ "$OPTIONPTHREADS" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define USE_PTHREADS
 _EOF
@@ -2511,7 +2511,7 @@ fi
 
 
 
-if [ -n "$OPTIONCOCOA" ]; then
+if [ "$OPTIONCOCOA" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define USE_COCOA
 _EOF
@@ -2521,7 +2521,7 @@ fi
 
 
 
-if [ -n "$OPTIONSNDFILE" ]; then
+if [ "$OPTIONSNDFILE" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define USE_SNDFILE
 _EOF
@@ -2530,7 +2530,7 @@ fi
 
 
 
-if [ -n "$OPTIONOBJDSP" ]; then
+if [ "$OPTIONOBJDSP" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_DSP
 _EOF
@@ -2538,7 +2538,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_DSP"
 fi
 
 
-if [ -n "$OPTIONOBJONEBITSPEAKER" ]; then
+if [ "$OPTIONOBJONEBITSPEAKER" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_ONEBITSPEAKER
 _EOF
@@ -2548,14 +2548,14 @@ fi
 
 
 
-if [ -n "$OPTIONOBJALSA" ]; then
+if [ "$OPTIONOBJALSA" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_ALSA
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_ALSA"
 fi
 
-if [ -n "$OPTIONOBJPULSE" ]; then
+if [ "$OPTIONOBJPULSE" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_PULSE
 _EOF
@@ -2563,7 +2563,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_PULSE"
 fi
 
 
-if [ -n "$OPTIONOBJCOREAUDIO" ]; then
+if [ "$OPTIONOBJCOREAUDIO" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define COMPILE_COREAUDIO
 _EOF
@@ -2571,7 +2571,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES COMPILE_COREAUDIO"
 fi
 
 
-if [ -n "$OPTIONEMULATE_UNDOC_SCF_CCF" ]; then
+if [ "$OPTIONEMULATE_UNDOC_SCF_CCF" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define EMULATE_SCF_CCF_UNDOC_FLAGS
 _EOF
@@ -2579,7 +2579,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_SCF_CCF_UNDOC_FLAGS"
 fi
 
 
-if [ -n "$OPTIONEMULATE_MEMPTR" ]; then
+if [ "$OPTIONEMULATE_MEMPTR" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define EMULATE_MEMPTR
 _EOF
@@ -2587,7 +2587,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_MEMPTR"
 fi
 
 
-if [ -n "$OPTIONEMULATE_VISUALMEM" ]; then
+if [ "$OPTIONEMULATE_VISUALMEM" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define EMULATE_VISUALMEM
 _EOF
@@ -2595,21 +2595,21 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_VISUALMEM"
 fi
 
 
-if [ -n "$OPTIONEMULATE_CPU_STATS" ]; then
+if [ "$OPTIONEMULATE_CPU_STATS" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define EMULATE_CPU_STATS
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_CPU_STATS"
 fi
 
-if [ -n "$OPTIONEMULATE_RASPBERRY" ]; then
+if [ "$OPTIONEMULATE_RASPBERRY" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define EMULATE_RASPBERRY
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_RASPBERRY"
 fi
 
-if [ -n "$OPTIONOTHER_UNIX" ]; then
+if [ "$OPTIONOTHER_UNIX" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define OTHER_UNIX
 _EOF
@@ -2617,7 +2617,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES OTHER_UNIX"
 fi
 
 
-if [ -n "$OPTIONNO_FORK_AVAILABLE" ]; then
+if [ "$OPTIONNO_FORK_AVAILABLE" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define NO_FORK_AVAILABLE
 _EOF
@@ -2625,21 +2625,21 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES NO_FORK_AVAILABLE"
 fi
 
 
-if [ -n "$OPTIONEMULATE_CONTEND" ]; then
+if [ "$OPTIONEMULATE_CONTEND" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define EMULATE_CONTEND
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES EMULATE_CONTEND"
 fi
 
-if [ -n "$OPTIONPUTPIXELCACHE" ]; then
+if [ "$OPTIONPUTPIXELCACHE" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define PUTPIXELCACHE
 _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES PUTPIXELCACHE"
 fi
 
-if [ -n "$OPTION_WORDS_BIGENDIAN" ]; then
+if [ "$OPTION_WORDS_BIGENDIAN" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define WORDS_BIGENDIAN
 _EOF
@@ -2647,7 +2647,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES WORDS_BIGENDIAN"
 fi
 
 
-if [ -n "$OPTIONLINUXREALJOYSTICK" ]; then
+if [ "$OPTIONLINUXREALJOYSTICK" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define USE_LINUXREALJOYSTICK
 _EOF
@@ -2655,7 +2655,7 @@ COMPILE_VARIABLES="$COMPILE_VARIABLES USE_LINUXREALJOYSTICK"
 fi
 
 
-if [ -n "$OPTIONREDUCED_CORE_SPECTRUM" ]; then
+if [ "$OPTIONREDUCED_CORE_SPECTRUM" != "" ]; then
 cat >> compileoptions.h << _EOF
 #define USE_REDUCED_CORE_SPECTRUM
 _EOF
@@ -2720,46 +2720,46 @@ echo "Config files successfully generated by $0"
 echo
 
 echo -n " Enabled Video output drivers: "
-if [ -n "$OPTIONOBJSTDOUT" ]; then
+if [ "$OPTIONOBJSTDOUT" != "" ]; then
         echo -n "stdout "
 fi
 
-if [ -n "$OPTIONOBJSIMPLETEXT" ]; then
+if [ "$OPTIONOBJSIMPLETEXT" != "" ]; then
         echo -n "simpletext "
 fi
 
 
-if [ -n "$OPTIONOBJCURSES" ]; then
+if [ "$OPTIONOBJCURSES" != "" ]; then
         echo -n "curses "
 fi
 
-if [ -n "$OPTIONOBJCURSESW" ]; then
+if [ "$OPTIONOBJCURSESW" != "" ]; then
         echo -n "cursesw "
 fi
 
-if [ -n "$OPTIONOBJAA" ]; then
+if [ "$OPTIONOBJAA" != "" ]; then
         echo -n "aa "
 fi
 
-if [ -n "$OPTIONOBJCACA" ]; then
+if [ "$OPTIONOBJCACA" != "" ]; then
         echo -n "caca "
 fi
 
 
-if [ -n "$OPTIONCOCOA" ]; then
+if [ "$OPTIONCOCOA" != "" ]; then
         echo -n "cocoa "
 fi
 
-if [ -n "$OPTIONOBJXWINDOWS" ]; then
+if [ "$OPTIONOBJXWINDOWS" != "" ]; then
         echo -n "xwindows "
 fi
 
-if [ -n "$OPTIONOBJSDL" ]; then
+if [ "$OPTIONOBJSDL" != "" ]; then
         echo -n "$TEXTOLIBSDL "
 fi
 
 
-if [ -n "$OPTIONOBJFBDEV" ]; then
+if [ "$OPTIONOBJFBDEV" != "" ]; then
         echo -n "fbdev "
 fi
 
@@ -2821,28 +2821,28 @@ fi
 echo
 
 echo -n " Enabled Audio output drivers: "
-if [ -n "$OPTIONOBJDSP" ]; then
+if [ "$OPTIONOBJDSP" != "" ]; then
         echo -n "dsp "
 fi
 
-if [ -n "$OPTIONOBJONEBITSPEAKER" ]; then
+if [ "$OPTIONOBJONEBITSPEAKER" != "" ]; then
         echo -n "onebitspeaker "
 fi
 
-if [ -n "$OPTIONOBJALSA" ]; then
+if [ "$OPTIONOBJALSA" != "" ]; then
         echo -n "alsa "
 fi
 
-if [ -n "$OPTIONOBJPULSE" ]; then
+if [ "$OPTIONOBJPULSE" != "" ]; then
         echo -n "pulse "
 fi
 
 
-if [ -n "$OPTIONOBJCOREAUDIO" ]; then
+if [ "$OPTIONOBJCOREAUDIO" != "" ]; then
         echo -n "coreaudio "
 fi
 
-if [ -n "$OPTIONOBJSDL" ]; then
+if [ "$OPTIONOBJSDL" != "" ]; then
         echo -n "$TEXTOLIBSDL "
 fi
 
@@ -2885,7 +2885,7 @@ echo -n " Enabled Audio File output drivers: "
 
 echo -n "raw "
 
-if [ -n "$OPTIONSNDFILE" ]; then
+if [ "$OPTIONSNDFILE" != "" ]; then
 	echo -n "wav "
 fi
 
