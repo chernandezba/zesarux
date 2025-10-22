@@ -363,7 +363,7 @@ while [ $# -gt 0 ]; do
        *)
 
 	#Ver si se pide --prefix=
-	echo -n "$1"|grep "prefix=" > /dev/null
+	echo -n "$1"|grep -q "prefix="
 	if [ $? = 0 ]; then
 		INST=`echo -n "$1"|cut -d '=' -f2`
 		set_installprefix "$INST"
@@ -404,7 +404,7 @@ LIBS="$LIBS"
 
 # Si version snapshot, activar tambien warnings extra
 # TODO: esto solo vale si el define esta justo al principio de linea
-cat cpu.h|grep "^#define SNAPSHOT_VERSION" > /dev/null
+cat cpu.h|grep -q "^#define SNAPSHOT_VERSION"
 if [ $? = 0 ]; then
     echo "Enabling all compiler warnings on snapshot version"
     CFLAGS="$CFLAGS -Wall -Wextra"
