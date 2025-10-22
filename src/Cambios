@@ -14,7 +14,7 @@ Mejorado ZX Vision:
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
 Mejorado icono de Papelera
-Mejorado código para permitir compilar en otros sistemas Unix, como AROS o FiwixOS
+Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix
 Mejorado debug cpu:
 - Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
 - Vistas 5 y 6 usan un memptr diferente ("memptx")

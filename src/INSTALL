@@ -4,7 +4,7 @@ ZEsarUX Installation Instructions
 This file explains how to install ZEsarUX on Unix systems: GNU/Linux, FreeBSD, Mac OS X, Raspberry, Haiku
 Note that most of the information that applies to Linux also applies to FreeBSD.
 
-For Haiku, AROS or FiwixOS instructions, see near the end of this file
+For Haiku, AROS, FiwixOS or Sortix instructions, see near the end of this file
 
 For Windows specific instructions please see the INSTALLWINDOWS file.
 
@@ -283,6 +283,16 @@ make
 
 - Start the first time with:
 ./zesarux --zoom 1 --sdl-8bit-color --sdl-force-win-size 320 200 --disableborder --ao null --disable-autoframeskip --vo sdl
+
+
+Note for Sortix
+---------------
+
+- Compile:
+
+export LIBS="-ldisplay -ltermcap"
+sh ./configure --disable-pthreads --other-unix
+make
 
 
 

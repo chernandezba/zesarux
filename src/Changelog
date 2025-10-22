@@ -14,7 +14,7 @@ Improved ZX Vision:
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved ZX Life: allow to speed up game, fix behaviour on board limits
 Improved Trash icon
-Improve code to allow compilation on other Unix systems, like AROS or FiwixOS
+Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix
 Improved debug cpu:
 - Show when registers values are modified by last opcode execution
 - Views 5 and 6 use a different memptr ("memptx")
