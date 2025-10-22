@@ -959,7 +959,7 @@ _EOF
 
 #pthreads implica tambien habilitar protocolo remoto y con ello api de sockets
 		if [ "$SISTEMA" == "Msys" ]; then
-			LIBS="-lwsock32 $$LIBS"
+			LIBS="-lwsock32 $LIBS"
 		fi
 
 

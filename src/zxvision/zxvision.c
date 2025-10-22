@@ -7491,8 +7491,11 @@ void menu_get_cpu_use_perc(void)
         long uso_cpu_idle;
 
         //proteger division por cero
-        if (dif_segundos==0 || menu_cpu_use_num_cpus==0) uso_cpu_idle=100;
-        else uso_cpu_idle=dif_cpu_idle/dif_segundos/menu_cpu_use_num_cpus;
+        int ncpus=menu_cpu_use_num_cpus;
+        if (ncpus==0) ncpus=1;
+
+        if (dif_segundos==0) uso_cpu_idle=100;
+        else uso_cpu_idle=dif_cpu_idle/dif_segundos/ncpus;
 
 #if defined(__APPLE__)
         debug_printf (VERBOSE_PARANOID,"cpu use: %ld",uso_cpu_idle);
