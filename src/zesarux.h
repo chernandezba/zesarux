@@ -30,6 +30,8 @@
 //Para Linux
 #include <dirent.h>
 
+#include "compileoptions.h"
+
 //Para Mac
 #if defined(__APPLE__)
     #include <sys/syslimits.h>
