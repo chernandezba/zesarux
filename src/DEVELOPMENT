@@ -64,7 +64,8 @@ Para compilar en Fiwix OS
 
 VBoxManage convertfromraw ZEsarUX_src-13.0.tar.gz discotar2.vdi --format VDI
 
-Tiene que ser múltiple de 512 por lo que hay que rellenarlo con 0 si hace falta
+Tiene que ser múltiple de 512 por lo que hay que rellenarlo con 0 si hace falta.
+Aun así también es conveniente meterle bastantes 0 de mas (unos 2048 bytes) porque si no, suele dar error al descomprimir en el último archivo
 
 - Agregarlo como disco en la máquina virtual
 
