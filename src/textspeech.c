@@ -89,10 +89,15 @@ int fifo_buffer_speech_read=0;
 int fifo_buffer_speech_write=0;
 int fifo_buffer_speech_size=0;
 
+#ifdef NO_FORK_AVAILABLE
+int proceso_hijo_speech=0;
+int proceso_stop_filtro=0;
 
+#else
 pid_t proceso_hijo_speech=0;
-
 pid_t proceso_stop_filtro=0;
+
+#endif
 
 //Tiempo en segundos para enviar texto aunque no se reciba salto de linea. 0=nunca
 int textspeech_timeout_no_enter=3;
