@@ -222,15 +222,17 @@ void textspeech_empty_speech_fifo(void)
 #ifndef MINGW
 
 
-#ifdef NO_FORK_AVAILABLE
-    debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
-    return;
-#endif
+    #ifdef NO_FORK_AVAILABLE
+        debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+        return;
+    #else
 
 
 	textspeech_ver_si_stop_finalizado();
 
     proceso_stop_filtro = fork();
+
+    #endif
 
 
     switch (proceso_stop_filtro) {
@@ -514,10 +516,10 @@ void scrtextspeech_filter_run_pending(void)
 #ifndef MINGW
 
 
-#ifdef NO_FORK_AVAILABLE
-    debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
-    return;
-#endif
+    #ifdef NO_FORK_AVAILABLE
+        debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+        return;
+    #else
 
     int fds[2];
 
@@ -545,6 +547,8 @@ void scrtextspeech_filter_run_pending(void)
 
     //printf("Launching child process\n");
     proceso_hijo_speech = fork();
+
+    #endif
 
 
     switch (proceso_hijo_speech) {

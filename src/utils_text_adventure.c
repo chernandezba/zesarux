@@ -5883,14 +5883,16 @@ void textadv_location_desc_run_convert(void)
 #ifndef MINGW
 
 
-#ifdef NO_FORK_AVAILABLE
-    debug_printf (VERBOSE_ERR,"Text to image functions are not available on this system");
-    return;
-#endif
+    #ifdef NO_FORK_AVAILABLE
+        debug_printf (VERBOSE_ERR,"Text to image functions are not available on this system");
+        return;
+    #else
 
 
     //printf("Launching child process\n");
     proceso_hijo_text_convert = fork();
+
+    #endif
 
 
     switch (proceso_hijo_text_convert) {
