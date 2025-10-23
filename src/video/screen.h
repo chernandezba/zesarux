@@ -72,6 +72,7 @@ extern int (*scr_get_menu_height) (void);
 extern int scr_driver_can_ext_desktop (void);
 
 extern int screen_este_driver_permite_ext_desktop;
+extern int screen_forbid_zxdesktop;
 
 extern int zxdesktop_width;
 extern int zxdesktop_height;

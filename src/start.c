@@ -1730,6 +1730,7 @@ printf("\n"
 
 
         "--enable-zxdesktop                             Enable ZX Desktop space\n"
+        "--forbid-zxdesktop                             Do not allow to enable ZX Desktop\n"
         "--zxdesktop-width n                            ZX Desktop width\n"
         "--zxdesktop-height n                           ZX Desktop height\n"
         "--zxdesktop-fill-type n                        ZX Desktop fill type (0,1,2,3,4 or 5)\n"
@@ -2824,8 +2825,15 @@ int parse_cmdline_options(int desde_commandline) {
                 screen_watermark_enabled.v=1;
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--forbid-zxdesktop")) {
+                screen_forbid_zxdesktop=1;
+            }
+
             else if (!strcmp(argv[puntero_parametro],"--enable-zxdesktop")) {
-                screen_ext_desktop_enabled=1;
+                if (screen_forbid_zxdesktop) {
+                    debug_printf(VERBOSE_ERR,"Enabling ZX Desktop is forbidden");
+                }
+                else screen_ext_desktop_enabled=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-width")) {

@@ -232,10 +232,16 @@ int putpixel_min_y=99999;
 int scrstdout_simpletext_refresh_factor=5;
 
 //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
+//Para leer el valor, usar scr_driver_can_ext_desktop
 int screen_este_driver_permite_ext_desktop=0;
+
+//Para que se le pueda deshabilitar el zx desktop al usuario
+int screen_forbid_zxdesktop=0;
 
 int scr_driver_can_ext_desktop (void)
 {
+    if (screen_forbid_zxdesktop) return 0;
+
     return screen_este_driver_permite_ext_desktop;
 }
 
