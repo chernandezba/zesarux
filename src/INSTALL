@@ -282,7 +282,7 @@ export LIBS="-lvga"
 make
 
 - Start the first time with:
-./zesarux --zoom 1 --sdl-8bit-color --sdl-force-win-size 320 200 --disableborder --ao null --disable-autoframeskip --vo sdl
+./zesarux --zoom 1 --sdl-8bit-color --sdl-force-win-size 320 200 --disableborder --ao null --disable-autoframeskip --vo sdl --enable-zxdesktop --zxdesktop-width 64 --zxdesktop-height 0
 
 
 Note for Sortix
