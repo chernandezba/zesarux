@@ -72,9 +72,3 @@ Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 Probar mas sistemas unix alternativos
--Revisar NO_FORK_AVAILABLE. si no está, no debe lanzar la linea de fork(). Ejemplo en Aros. Por que luego si que linkea??
-
-
-
--parametros recomendados para fiwixos: con zx desktop? con ancho 64 cuando modo 320x200
-y opcion de no mostrar botones para extender zx desktop

@@ -282,7 +282,12 @@ export LIBS="-lvga"
 make
 
 - Start the first time with:
-./zesarux --zoom 1 --sdl-8bit-color --sdl-force-win-size 320 200 --disableborder --ao null --disable-autoframeskip --vo sdl --enable-zxdesktop --zxdesktop-width 64 --zxdesktop-height 0
+./zesarux --zoom 1 --sdl-8bit-color --sdl-force-win-size 320 200 --disableborder --ao null --disable-autoframeskip --vo sdl --enable-zxdesktop --zxdesktop-width 64 --zxdesktop-height 0 --zxdesktop-disable-footer-switch
+
+- Note: the most important settings are:
+--sdl-8bit-color --sdl-force-win-size 320 200 --vo sdl
+
+If not set this, probably ZEsarUX will generate a segmentation fault due to small video mode
 
 
 Note for Sortix
