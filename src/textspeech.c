@@ -205,6 +205,7 @@ void textspeech_ver_si_stop_finalizado(void)
 #endif
 }
 
+int textspeech_empty_speech_fifo_avisado_no_fork=0;
 
 void textspeech_empty_speech_fifo(void)
 {
@@ -223,7 +224,10 @@ void textspeech_empty_speech_fifo(void)
 
 
     #ifdef NO_FORK_AVAILABLE
-        debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+        if (!textspeech_empty_speech_fifo_avisado_no_fork) {
+            debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+            textspeech_empty_speech_fifo_avisado_no_fork=1;
+        }
         return;
     #else
 
@@ -490,7 +494,7 @@ int textspeech_get_stdout_childs(void)
     return 0;
 }
 
-
+int scrtextspeech_filter_run_pending_avisado_no_fork=0;
 
 void scrtextspeech_filter_run_pending(void)
 {
@@ -517,9 +521,12 @@ void scrtextspeech_filter_run_pending(void)
 
 
     #ifdef NO_FORK_AVAILABLE
-        debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+        if (!scrtextspeech_filter_run_pending_avisado_no_fork) {
+            debug_printf (VERBOSE_ERR,"Textspeech functions are not available on this system");
+            scrtextspeech_filter_run_pending_avisado_no_fork=1;
+        }
         return;
-    #else
+    #endif
 
     int fds[2];
 
@@ -544,11 +551,11 @@ void scrtextspeech_filter_run_pending(void)
         }
     }
 
-
+    #ifndef NO_FORK_AVAILABLE
     //printf("Launching child process\n");
     proceso_hijo_speech = fork();
-
     #endif
+
 
 
     switch (proceso_hijo_speech) {

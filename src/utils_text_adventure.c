@@ -5868,6 +5868,8 @@ void textadv_location_desc_mete_comillas(char *origen,char *destino)
 
 int proceso_hijo_text_convert;
 
+int textadv_location_desc_run_convert_avisado_no_fork=0;
+
 void textadv_location_desc_run_convert(void)
 {
 
@@ -5884,7 +5886,10 @@ void textadv_location_desc_run_convert(void)
 
 
     #ifdef NO_FORK_AVAILABLE
-        debug_printf (VERBOSE_ERR,"Text to image functions are not available on this system");
+        if (!textadv_location_desc_run_convert_avisado_no_fork) {
+            debug_printf (VERBOSE_ERR,"Text to image functions are not available on this system");
+            textadv_location_desc_run_convert_avisado_no_fork=1;
+        }
         return;
     #else
 
