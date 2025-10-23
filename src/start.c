@@ -2832,11 +2832,12 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
-                if (valor<128 || valor>9999) {
-                    printf ("Invalid value for ZX Desktop width\n");
-                    exit(1);
+                if (valor<0 || valor>9999) {
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop width");
                 }
-                zxdesktop_width=valor;
+                else {
+                    zxdesktop_width=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-height")) {
@@ -2844,10 +2845,11 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>9999) {
-                    printf ("Invalid value for ZX Desktop height\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop height");
                 }
-                zxdesktop_height=valor;
+                else {
+                    zxdesktop_height=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-type")) {

@@ -12286,7 +12286,7 @@ void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
 
     int valor=parse_string_to_number(string_width);
 
-    if (valor<128 || valor>9999) {
+    if (valor<0 || valor>9999) {
         debug_printf (VERBOSE_ERR,"Invalid value");
         return;
     }
