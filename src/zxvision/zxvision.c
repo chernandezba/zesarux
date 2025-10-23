@@ -10811,6 +10811,19 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     //Alto visible se reduce en 1 - por el titulo de ventana
     //printf("--Crear ventana %s\n",title);
 
+
+    //Control de ancho y alto negativos
+    //En algún caso muy remoto que ahora no recuerdo, creando una ventana negativa genera segmentation fault al asignar memoria
+    //Si eso pasa, fuerzo ancho y alto a algo grande para que no pete con segfault si asume que era mas grande...
+    if (total_height<0) {
+        //debug_printf(VERBOSE_ERR,"Tried to create a window of negative height: %d",total_height);
+        total_height=100;
+    }
+    if (total_width<0) {
+        //debug_printf(VERBOSE_ERR,"Tried to create a window of negative width: %d",total_width);
+        total_width=100;
+    }
+
     w->x=x;
     w->y=y;
     w->visible_width=visible_width;
