@@ -436,36 +436,34 @@ char *bitmap_button_ext_desktop_audio[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
-
-
 char *bitmap_button_ext_desktop_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
   	"                          ",
 	"                          ",
-	"                          ",
-	"         bbbbbbbb         ",
-	"        bbbbbbbbbb        ",
-	"       bbbbbbbbbbbb       ",
-	"      bbbbbbbbbbbbbb      ",
-	"     bbbbbbbbbbbbbbbb     ",
-	" bbbbbbbbbbbbbbbbbbbbbbbb ",
-	"bbbbbbbbbbb    bbbbbbbbbbb",	//10
-	"bbbbbbbbbb      bbbbbbbbbb",
-	"bbbWWbbbb        bbbbbbbbb",
-	"bbbWWbbb   xx     bbbbbbbb",
-	"bbbbbbbb  x       bbbbbbbb",
-	"bbbbbbb   x        bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbbb          bbbbbbbb",
-	"bbbbbbbb          bbbbbbbb",
-	"bbbbbbbbb        bbbbbbbbb",	//20
-	"bbbbbbbbbb      bbbbbbbbbb",
-	"bbbbbbbbbbb    bbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb"	//25
+	"         xxxxxxxx         ",
+	"        xbbbbbbbbx        ",
+	"       xbbbbbbbbbbx       ",
+	"      xbbbbbbbbbbbbx      ",
+	"     xbbbbbbbbbbbbbbx     ",
+	"  xxxbbbbbbbbbbbbbbbbxxx  ",
+	"xxbbbbbbbbbbbbbbbbbbbbbbxx",
+	"xbbbbbbbbbbxxxxbbbbbbbbbbx",	//10
+	"xbbbbbbbbbx    xbbbbbbbbbx",
+	"xbbWWbbbbx      xbbbbbbbbx",
+	"xbbWWbbbx  xx    xbbbbbbbx",
+	"xbbbbbbbx x      xbbbbbbbx",
+	"xbbbbbbx  x       xbbbbbbx",
+	"xbbbbbbx          xbbbbbbx",
+	"xbbbbbbx          xbbbbbbx",
+	"xbbbbbbbx        xbbbbbbbx",
+	"xbbbbbbbx        xbbbbbbbx",
+	"xbbbbbbbbx      xbbbbbbbbx",	//20
+	"xbbbbbbbbbx    xbbbbbbbbbx",
+	"xbbbbbbbbbbxxxxbbbbbbbbbbx",
+	"xbbbbbbbbbbbbbbbbbbbbbbbbx",
+	"xbbbbbbbbbbbbbbbbbbbbbbbbx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx"	//25
 
 
 };
@@ -4909,9 +4907,8 @@ char *bitmap_button_ext_desktop_osdadvkeyboard[EXT_DESKTOP_BUTTONS_ANCHO]={
     "xxxxxxxxxxxxxxxxxxxxxxxxxx"   //25
 };
 
-
 char *bitmap_button_ext_desktop_quickload[EXT_DESKTOP_BUTTONS_ANCHO]={
-     //01234567890123456789012345
+    //01234567890123456789012345
     "                     xx   ",     //0
   	"                    xxxx  ",
 	"                   xxxxxx ",
@@ -4921,23 +4918,23 @@ char *bitmap_button_ext_desktop_quickload[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"       bbbbbbbbbbbb  xx   ",
 	"      bbbbbbbbbbbbbb      ",
 	"     bbbbbbbbbbbbbbbb     ",
+	"  bbbbbbbbbbbbbbbbbbbbbb  ",
+	" bbbbbbbbbb    bbbbbbbbbb ",	//10
+	" bbbbbbbbb      bbbbbbbbb ",
+	" bbWWbbbb        bbbbbbbb ",
+	" bbWWbbb   xx     bbbbbbb ",
+	" bbbbbbb  x       bbbbbbb ",
+	" bbbbbb   x        bbbbbb ",
+	" bbbbbb            bbbbbb ",
+	" bbbbbb            bbbbbb ",
+	" bbbbbbb          bbbbbbb ",
+	" bbbbbbb          bbbbbbb ",
+	" bbbbbbbb        bbbbbbbb ",	//20
+	" bbbbbbbbb      bbbbbbbbb ",
+	" bbbbbbbbbb    bbbbbbbbbb ",
 	" bbbbbbbbbbbbbbbbbbbbbbbb ",
-	"bbbbbbbbbbb    bbbbbbbbbbb",	//10
-	"bbbbbbbbbb      bbbbbbbbbb",
-	"bbbWWbbbb        bbbbbbbbb",
-	"bbbWWbbb   xx     bbbbbbbb",
-	"bbbbbbbb  x       bbbbbbbb",
-	"bbbbbbb   x        bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbb            bbbbbbb",
-	"bbbbbbbb          bbbbbbbb",
-	"bbbbbbbb          bbbbbbbb",
-	"bbbbbbbbb        bbbbbbbbb",	//20
-	"bbbbbbbbbb      bbbbbbbbbb",
-	"bbbbbbbbbbb    bbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb",
-	"bbbbbbbbbbbbbbbbbbbbbbbbbb"	//25
+	" bbbbbbbbbbbbbbbbbbbbbbbb ",
+	"                          "	//25
 
 
 };

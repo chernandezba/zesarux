@@ -68,3 +68,7 @@ Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 Probar mas sistemas unix alternativos
+
+ok -fondo de botones superiores e inferiores debe seguir el color de paper del estilo activo
+-Revisar que en todos estilos se vean bien
+-Arreglar icono snapshot, ayuda, para que tenga contorno negro. Si no, con color azul (tema Ocean) no se ven

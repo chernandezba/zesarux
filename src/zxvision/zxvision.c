@@ -5059,7 +5059,7 @@ void menu_draw_ext_desktop_one_button_background(int contador_boton,int pulsado)
 
 
     int color_recuadro=0;
-    int color_relleno=7;
+    int color_relleno=ESTILO_GUI_PAPEL_NORMAL;//  7;
 
     if (pulsado) color_recuadro=7;
 
@@ -5120,7 +5120,7 @@ void menu_draw_ext_desktop_one_lower_icon_background(int contador_boton,int puls
 
 
     int color_recuadro=0;
-    int color_relleno=7;
+    int color_relleno=ESTILO_GUI_PAPEL_NORMAL;//  7;
 
     if (pulsado) color_recuadro=7;
 
