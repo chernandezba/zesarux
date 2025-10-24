@@ -6416,7 +6416,7 @@ int menu_ext_desktop_fill_second_color=13;
 
 z80_bit menu_ext_desktop_degraded_inverted={0};
 
-
+//si son transparentes o tienen el color de fondo forzado
 z80_bit menu_ext_desktop_transparent_upper_icons={0};
 z80_bit menu_ext_desktop_transparent_lower_icons={0};
 
