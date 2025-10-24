@@ -281,32 +281,32 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 //Boton ayuda
 char *bitmap_button_ext_desktop_help[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
-    "        bbbbbbbb          ",     //0
-  	"       bbbbbbbbbb         ",
-	"      bbb      bbb        ",
-	"     bbb        bbb       ",
-	"    bbb          bbb      ",
-	"    bbb          bbb      ",
-	"    bbb          bbb      ",
-	"    bbb          bbb      ",
-	"                 bbb      ",
-	"                 bbb      ",
-	"                bbbb      ",	//10
-	"               bbbb       ",
-	"              bbbb        ",
-	"             bbbb         ",
-	"            bbbb          ",
-	"            bbb           ",
-	"            bbb           ",
-	"            bbb           ",
-	"            bbb           ",
-	"            bbb           ",
+    "        xxxxxxxx          ",  //0
+    "       xbbbbbbbbx         ",
+  	"      xbbbbbbbbbbx        ",
+	"     xbbbxxxxxxbbbx       ",
+	"    xbbbx      xbbbx      ",
+	"   xbbbx        xbbbx     ",
+	"   xbbbx        xbbbx     ",
+	"   xbbbx        xbbbx     ",
+	"   xbbbx        xbbbx     ",
+	"   xxxxx        xbbbx     ",
+	"                xbbbx     ", //10
+	"               xbbbbx     ",
+	"              xbbbbx      ",
+	"             xbbbbx       ",
+	"            xbbbbx        ",
+	"           xbbbbx         ",
+	"           xbbbx          ",
+	"           xbbbx          ",
+	"           xbbbx          ",
+	"           xxxxx          ",
 	"                          ",    //20
-	"             b            ",
-	"            bbb           ",
-	"           bbbbb          ",
-	"            bbb           ",
-	"             b            " 	 //25
+	"            xxx           ",
+	"           xbbbx          ",
+	"          xbbbbbx         ",
+	"           xbbbx          ",
+	"            xxx           " 	 //25
 };
 
 

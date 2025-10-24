@@ -14,6 +14,7 @@ Improved ZX Vision:
 Improved ZX Desktop:
 - Allow to set small values for ZX Desktop width size
 - Add setting to disallow enabling ZX Desktop
+- Background color of upper and lower buttons follow GUI style
 
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved ZX Life: allow to speed up game, fix behaviour on board limits

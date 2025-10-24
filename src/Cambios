@@ -14,6 +14,7 @@ Mejorado ZX Vision:
 Mejorado ZX Desktop:
 - Permitir definir valores pequeños para el ancho del ZX Desktop
 - Agregar opción para prohibir activar ZX Desktop
+- Color de fondo de botones superiores e inferiores siguen el color del estilo del GUI
 
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
