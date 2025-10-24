@@ -21764,7 +21764,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
             //F1 (ayuda) o h en drivers que no soportan F
             else if ((puerto_especial2 & 1)==0 || (tecla_leida=='h' && f_functions==0) ) {
-                printf("mostrar ayuda puerto_especial2 &1 %d tecla_leida %d f_functions %d\n",puerto_especial2 &1,tecla_leida,f_functions );
+                //printf("mostrar ayuda puerto_especial2 &1 %d tecla_leida %d f_functions %d\n",puerto_especial2 &1,tecla_leida,f_functions );
                                 //F1
                 char *texto_ayuda;
                 texto_ayuda=menu_retorna_item(m,(*opcion_inicial))->texto_ayuda;
