@@ -83,4 +83,5 @@ Si 0, no. Si 1, upper. Si 2, lower. Si 3, icono desktop
 Pero luego el color de envoltura, tambien es configurable cada tipo de icono con su color? Demasiado complejo?
 Pero por ejempo en menu_zxdesktop_set_userdef_button_func_action_overlay, ahora dibuja contorno. Pero luego? Le decimos que es 3 (icono desktop)?
 
-En forzar color de fondo de iconos del desktop siempre es blanco. Si le pongo el color de gui, se verá mal?
+-En forzar color de fondo de iconos del desktop siempre es blanco. Si le pongo el color de gui, se verá mal?
+->Creo que tendria que ser siempre blanco porque los iconos se han dibujado pensando en fondo blanco
