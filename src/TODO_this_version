@@ -71,4 +71,13 @@ Probar mas sistemas unix alternativos
 
 ok -fondo de botones superiores e inferiores debe seguir el color de paper del estilo activo
 -Revisar que en todos estilos se vean bien
--Arreglar icono snapshot, ayuda, para que tenga contorno negro. Si no, con color azul (tema Ocean) no se ven
+
+-Poder habilitar contorno de manera independiente en:
+*botones superiores
+*botones inferiores
+*iconos zx desktop
+Quizá no se puede porque la función es única
+Quizá a screen_put_asciibitmap_generic_offset_inicio habria que pasar un parámetro para indicar tipo icono para saber la envoltura
+Quizá el parametro ya está y es permitir envoltura
+Si 0, no. Si 1, upper. Si 2, lower. Si 3, icono desktop
+Pero luego el color de envoltura, tambien es configurable cada tipo de icono con su color? Demasiado complejo?
