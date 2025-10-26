@@ -1758,10 +1758,12 @@ printf("\n"
         "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
         "--zxdesktop-no-show-indicators-open-apps       Show icon indicators for open apps\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent or force background color\n"
+        "--zxdesktop-configurable-icons-bg-follow-gui   Background color for configurable icons follow GUI style\n"
+        "--zxdesktop-configurable-icons-bg-color n      Background color for configurable icons when no follow GUI style\n"
         "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"
         "--zxdesktop-configurable-icons-short-text      Show short text on configurable icons\n"
         "--zxdesktop-enable-icons-stroke                Sets a stroke on icons, useful to avoid blending with ZX Desktop\n"
-        "--zxdesktop-icons-stroke-color                 Define color icons stroke (0-15)\n"
+        "--zxdesktop-icons-stroke-color n               Define color icons stroke (0-15)\n"
 
         "--zxdesktop-add-icon x y a n e s               Add icon to position x,y, to action a, icon name n, extra parameters e, status s. "
           "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. action can be: ");
@@ -2931,6 +2933,24 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-transparent-configurable-icons")) {
                 menu_ext_desktop_transparent_configurable_icons.v=0;
             }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-configurable-icons-bg-follow-gui")) {
+                menu_ext_desktop_configurable_icons_background_color_follow_gui.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-configurable-icons-bg-color")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+
+                if (valor<0 || valor>15) {
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop icon background color");
+                }
+                else {
+                    menu_ext_desktop_configurable_icons_background_color=valor;
+                }
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-configurable-icons-text-bg")) {
                 menu_ext_desktop_configurable_icons_text_background.v=0;

@@ -3619,6 +3619,12 @@ int util_write_configfile(void)
 
     if (menu_ext_desktop_transparent_configurable_icons.v==0)  ADD_STRING_CONFIG,"--zxdesktop-no-transparent-configurable-icons");
 
+    if (menu_ext_desktop_configurable_icons_background_color_follow_gui.v) ADD_STRING_CONFIG,"--zxdesktop-configurable-icons-bg-follow-gui");
+
+                                                ADD_STRING_CONFIG,"--zxdesktop-configurable-icons-bg-color %d",menu_ext_desktop_configurable_icons_background_color);
+
+
+
     if (menu_ext_desktop_configurable_icons_text_background.v==0)   ADD_STRING_CONFIG,"--zxdesktop-no-configurable-icons-text-bg");
 
     if (menu_ext_desktop_configurable_icons_short_text.v)   ADD_STRING_CONFIG,"--zxdesktop-configurable-icons-short-text");
