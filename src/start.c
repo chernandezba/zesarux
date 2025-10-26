@@ -1741,6 +1741,8 @@ printf("\n"
         "--zxdesktop-disable-upper-buttons              Disable ZX Desktop direct access upper buttons\n"
         "--zxdesktop-disable-lower-buttons              Disable ZX Desktop direct access lower buttons\n"
         "--zxdesktop-transparent-upper-buttons          Make ZX Desktop upper buttons transparent or force background color\n"
+        "--zxdesktop-upper-buttons-bg-follow-gui        Background color for upper buttons follows GUI style\n"
+        "--zxdesktop-upper-buttons-bg-color n           Background color for upper buttons when no follow GUI style\n"
         "--zxdesktop-transparent-lower-buttons          Make ZX Desktop lower buttons transparent or force background color\n"
         "--zxdesktop-disable-box-upper-buttons          Disable box around ZX Desktop upper buttons\n"
         "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"
@@ -1758,7 +1760,7 @@ printf("\n"
         "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
         "--zxdesktop-no-show-indicators-open-apps       Show icon indicators for open apps\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent or force background color\n"
-        "--zxdesktop-configurable-icons-bg-follow-gui   Background color for configurable icons follow GUI style\n"
+        "--zxdesktop-configurable-icons-bg-follow-gui   Background color for configurable icons follows GUI style\n"
         "--zxdesktop-configurable-icons-bg-color n      Background color for configurable icons when no follow GUI style\n"
         "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"
         "--zxdesktop-configurable-icons-short-text      Show short text on configurable icons\n"
@@ -2924,6 +2926,23 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-transparent-upper-buttons")) {
                 menu_ext_desktop_transparent_upper_icons.v=1;
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-upper-buttons-bg-follow-gui")) {
+                menu_ext_desktop_upper_icons_background_color_follow_gui.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-upper-buttons-bg-color")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+
+                if (valor<0 || valor>15) {
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop upper buttons background color");
+                }
+                else {
+                    menu_ext_desktop_upper_icons_background_color=valor;
+                }
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-transparent-lower-buttons")) {
                 menu_ext_desktop_transparent_lower_icons.v=1;

@@ -12885,6 +12885,18 @@ void menu_ext_desk_settings_configurable_icons_background_color(MENU_ITEM_PARAME
     if (menu_ext_desktop_configurable_icons_background_color==16) menu_ext_desktop_configurable_icons_background_color=0;
 }
 
+void menu_ext_desk_settings_upper_icons_background_color_follow_gui(MENU_ITEM_PARAMETERS)
+{
+    menu_ext_desktop_upper_icons_background_color_follow_gui.v ^=1;
+}
+
+void menu_ext_desk_settings_upper_icons_background_color(MENU_ITEM_PARAMETERS)
+{
+    menu_ext_desktop_upper_icons_background_color++;
+    if (menu_ext_desktop_upper_icons_background_color==16) menu_ext_desktop_upper_icons_background_color=0;
+}
+
+
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_ext_desktop_settings;
@@ -12978,6 +12990,25 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                         "Force background color","Forzar color de fondo","Forçar color de fons");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? ' ' : 'X' ) );
                     menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
+
+                    if (menu_ext_desktop_transparent_upper_icons.v==0) {
+                        menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_icons_background_color_follow_gui,NULL,
+                            "Background color follow GUI style","Color de fondo sigue estilo GUI","Color de fons segueix estil GUI");
+                        menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_upper_icons_background_color_follow_gui.v ? 'X' : ' ' ) );
+                        menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
+                        if (menu_ext_desktop_upper_icons_background_color_follow_gui.v==0) {
+                            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_icons_background_color,NULL,
+                                "Background color","Color de fondo","Color de fons");
+                            menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",spectrum_colour_names[menu_ext_desktop_upper_icons_background_color]);
+                            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"    ");
+                            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+                        }
+
+                    }
+
+
 
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_box,NULL,
                         "Box","Caja","Caixa");

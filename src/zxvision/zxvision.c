@@ -5059,7 +5059,16 @@ void menu_draw_ext_desktop_one_button_background(int contador_boton,int pulsado)
 
 
     int color_recuadro=0;
-    int color_relleno=ESTILO_GUI_PAPEL_NORMAL;//  7;
+    //int color_relleno=7;
+    int color_relleno;
+
+    if (menu_ext_desktop_upper_icons_background_color_follow_gui.v) {
+        color_relleno=ESTILO_GUI_PAPEL_NORMAL;
+    }
+    else {
+        color_relleno=menu_ext_desktop_upper_icons_background_color;
+    }
+
 
     if (pulsado) color_recuadro=7;
 
@@ -6427,6 +6436,10 @@ z80_bit menu_ext_desktop_degraded_inverted={0};
 
 //si son transparentes o tienen el color de fondo forzado
 z80_bit menu_ext_desktop_transparent_upper_icons={0};
+
+z80_bit menu_ext_desktop_upper_icons_background_color_follow_gui={0};
+int menu_ext_desktop_upper_icons_background_color=7;
+
 z80_bit menu_ext_desktop_transparent_lower_icons={0};
 
 z80_bit menu_ext_desktop_disable_box_upper_icons={0};
