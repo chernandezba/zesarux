@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-INSTALL_PREFIX=`grep INSTALL_PREFIX compileoptions.h | cut -d '"' -f2`
+INSTALLPREFIX=`grep INSTALL_PREFIX compileoptions.h | cut -d '"' -f2`
 if [ -n "$DESTDIR" ]; then
-	INSTALLPREFIX="$DESTDIR/$INSTALL_PREFIX"
+	INSTALLPREFIX="$DESTDIR/$INSTALLPREFIX"
 fi
 
 EDITION_NAME_GAME=`cat cpu.h|grep EDITION_NAME_GAME|cut -d '"' -f2`
