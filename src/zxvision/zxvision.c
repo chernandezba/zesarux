@@ -5736,7 +5736,7 @@ void menu_draw_ext_desktop_buttons(int xinicio)
 
 
     //mostrar todos los iconos de la parte superior, pero solo para modo debug
-#ifdef FORCE_VISIBLE_ALL_UPPER_ICONS
+#ifdef FORCE_VISIBLE_ALL_UPPER_BUTTONS
 
     for (numero_boton=0;numero_boton<MAX_F_FUNCTIONS;numero_boton++) {
 

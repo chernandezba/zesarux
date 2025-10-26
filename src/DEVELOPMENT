@@ -82,21 +82,21 @@ Para que el cpu_panic muestre backtrace si hay un error, compilar con -g -rdynam
 
 Para mostrar todos los iconos lower meter en compileoptions.h:
 
-#define FORCE_VISIBLE_ALL_LOWER_ICONS
+#define FORCE_VISIBLE_ALL_LOWER_BUTTONS
 
 
 Para poner como disabled en todos los iconos lower meter en compileoptions.h:
 
-#define FORCE_DISABLED_ALL_LOWER_ICONS
+#define FORCE_DISABLED_ALL_LOWER_BUTTONS
 
 Para poner como enabled en todos los iconos lower meter en compileoptions.h:
 
-#define FORCE_ENABLED_ALL_LOWER_ICONS
+#define FORCE_ENABLED_ALL_LOWER_BUTTONS
 
 
 Para forzar ver todos los iconos posibles de botones upper meter en compileoptions.h:
 
-#define FORCE_VISIBLE_ALL_UPPER_ICONS
+#define FORCE_VISIBLE_ALL_UPPER_BUTTONS
 
 --------------
 
