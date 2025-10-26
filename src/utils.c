@@ -3621,11 +3621,11 @@ int util_write_configfile(void)
 
 
 
-    if (menu_ext_desktop_transparent_lower_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-transparent-lower-buttons");
+    if (menu_ext_desktop_transparent_lower_buttons.v)   ADD_STRING_CONFIG,"--zxdesktop-transparent-lower-buttons");
 
-    if (menu_ext_desktop_lower_icons_background_color_follow_gui.v) ADD_STRING_CONFIG,"--zxdesktop-lower-buttons-bg-follow-gui");
+    if (menu_ext_desktop_lower_buttons_background_color_follow_gui.v) ADD_STRING_CONFIG,"--zxdesktop-lower-buttons-bg-follow-gui");
 
-                                                ADD_STRING_CONFIG,"--zxdesktop-lower-buttons-bg-color %d",menu_ext_desktop_lower_icons_background_color);
+                                                ADD_STRING_CONFIG,"--zxdesktop-lower-buttons-bg-color %d",menu_ext_desktop_lower_buttons_background_color);
 
 
     if (menu_ext_desktop_transparent_configurable_icons.v==0)  ADD_STRING_CONFIG,"--zxdesktop-no-transparent-configurable-icons");
@@ -3642,7 +3642,7 @@ int util_write_configfile(void)
 
     if (menu_ext_desktop_disable_box_upper_buttons.v)   ADD_STRING_CONFIG,"--zxdesktop-disable-box-upper-buttons");
 
-    if (menu_ext_desktop_disable_box_lower_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-disable-box-lower-buttons");
+    if (menu_ext_desktop_disable_box_lower_buttons.v)   ADD_STRING_CONFIG,"--zxdesktop-disable-box-lower-buttons");
 
     if (zxdesktop_switch_button_enabled.v==0)         ADD_STRING_CONFIG,"--zxdesktop-disable-footer-switch");
 

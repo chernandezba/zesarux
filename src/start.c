@@ -2947,11 +2947,11 @@ int parse_cmdline_options(int desde_commandline) {
 
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-transparent-lower-buttons")) {
-                menu_ext_desktop_transparent_lower_icons.v=1;
+                menu_ext_desktop_transparent_lower_buttons.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-lower-buttons-bg-follow-gui")) {
-                menu_ext_desktop_lower_icons_background_color_follow_gui.v=1;
+                menu_ext_desktop_lower_buttons_background_color_follow_gui.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-lower-buttons-bg-color")) {
@@ -2962,7 +2962,7 @@ int parse_cmdline_options(int desde_commandline) {
                     debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop lower buttons background color");
                 }
                 else {
-                    menu_ext_desktop_lower_icons_background_color=valor;
+                    menu_ext_desktop_lower_buttons_background_color=valor;
                 }
             }
 
@@ -3002,7 +3002,7 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-box-lower-buttons")) {
-                menu_ext_desktop_disable_box_lower_icons.v=1;
+                menu_ext_desktop_disable_box_lower_buttons.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-footer-switch")) {

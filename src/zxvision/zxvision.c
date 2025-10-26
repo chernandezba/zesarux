@@ -426,7 +426,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 
     //Ver si en posicion de iconos inferiores
 
-    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+    menu_ext_desktop_lower_buttons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
     //Posiciones menos el zoom
     xinicio_botones /=zoom_x;
     xfinal_botones /=zoom_x;
@@ -530,7 +530,7 @@ void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int 
 
     //Hasta llegar a los iconos de dispositivos inferiores
     int yfinal;
-    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
+    menu_ext_desktop_lower_buttons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
     //Posiciones menos el zoom
     yfinal /=zoom_y;
     //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
@@ -583,7 +583,7 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 
     //Hasta llegar a los iconos de dispositivos inferiores
     int yfinal;
-    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
+    menu_ext_desktop_lower_buttons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
     //Posiciones menos el zoom
     yfinal /=zoom_y;
     //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
@@ -664,7 +664,7 @@ void zxvision_reorder_configurable_icons(void)
 
     //Hasta llegar a los iconos de dispositivos inferiores
     int yfinal;
-    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
+    menu_ext_desktop_lower_buttons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
     //Posiciones menos el zoom
     yfinal /=zoom_y;
     //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
@@ -1020,7 +1020,7 @@ void create_default_zxdesktop_configurable_icons(void)
 
         //La papelera queda a la posicion y algo por encima de los lower device icons
         int yinicio_botones;
-        menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yinicio_botones);
+        menu_ext_desktop_lower_buttons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yinicio_botones);
         yinicio_botones /=zoom_y;
 
         int separacion_y_iconos=ZESARUX_ASCII_LOGO_ANCHO*2*menu_gui_zoom;
@@ -4883,7 +4883,7 @@ void menu_ext_desktop_buttons_get_geometry(int *p_ancho_boton,int *p_alto_boton,
 //Retorna geometria de los lower icons, si punteros no son null
 //ancho, alto boton
 //xfinal_botones: posicion X mas a la derecha del ultimo boton
-void menu_ext_desktop_lower_icons_get_geometry(int *p_ancho_boton,int *p_alto_boton,int *p_total_botones,int *p_xinicio_botones,int *p_xfinal_botones,int *p_yinicio_botones)
+void menu_ext_desktop_lower_buttons_get_geometry(int *p_ancho_boton,int *p_alto_boton,int *p_total_botones,int *p_xinicio_botones,int *p_xfinal_botones,int *p_yinicio_botones)
 {
 
     //int total_botones=TOTAL_ZXDESKTOP_MAX_LOWER_ICONS;
@@ -5104,7 +5104,7 @@ void menu_draw_ext_desktop_one_lower_icon_background(int contador_boton,int puls
     int yinicio; //=0;
 
 
-    menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL,&yinicio);
+    menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL,&yinicio);
 
 
     //printf ("lower icons background. ancho boton: %d alto boton: %d\n",ancho_boton,alto_boton);
@@ -5133,17 +5133,17 @@ void menu_draw_ext_desktop_one_lower_icon_background(int contador_boton,int puls
     //int color_relleno=7;
     int color_relleno;
 
-    if (menu_ext_desktop_lower_icons_background_color_follow_gui.v) {
+    if (menu_ext_desktop_lower_buttons_background_color_follow_gui.v) {
         color_relleno=ESTILO_GUI_PAPEL_NORMAL;
     }
     else {
-        color_relleno=menu_ext_desktop_lower_icons_background_color;
+        color_relleno=menu_ext_desktop_lower_buttons_background_color;
     }
 
 
     if (pulsado) color_recuadro=7;
 
-    if (menu_ext_desktop_disable_box_lower_icons.v==0) {
+    if (menu_ext_desktop_disable_box_lower_buttons.v==0) {
         menu_draw_ext_desktop_recuadro_button(xinicio,yinicio,ancho_boton,alto_boton,color_recuadro);
     }
 
@@ -5151,7 +5151,7 @@ void menu_draw_ext_desktop_one_lower_icon_background(int contador_boton,int puls
 
 
     //Se rellena solo cuando se pulsa el botón o cuando no hay transparencia
-    if (pulsado || menu_ext_desktop_transparent_lower_icons.v==0) {
+    if (pulsado || menu_ext_desktop_transparent_lower_buttons.v==0) {
         for (y=yinicio+2;y<yinicio+alto_boton-2;y++) {
             for (x=xinicio+2;x<xinicio+ancho_boton-2;x++) {
                 scr_putpixel(x,y,color_relleno);
@@ -5416,7 +5416,7 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 
     int yinicio;
 
-    menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,NULL,&yinicio);
+    menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,NULL,&yinicio);
 
     //printf("yinicio: %d\n",)
 
@@ -5599,7 +5599,7 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 }
 
 
-void menu_draw_ext_desktop_lower_icons(void)
+void menu_draw_ext_desktop_lower_buttons(void)
 {
 
     if (menu_zxdesktop_lower_buttons_enabled.v==0) return;
@@ -5731,7 +5731,7 @@ void menu_draw_ext_desktop_buttons(int xinicio)
 
 
     if (menu_zxdesktop_lower_buttons_enabled.v) {
-        menu_draw_ext_desktop_lower_icons();
+        menu_draw_ext_desktop_lower_buttons();
     }
 
 
@@ -6450,13 +6450,13 @@ z80_bit menu_ext_desktop_transparent_upper_buttons={0};
 z80_bit menu_ext_desktop_upper_buttons_background_color_follow_gui={0};
 int menu_ext_desktop_upper_buttons_background_color=7;
 
-z80_bit menu_ext_desktop_transparent_lower_icons={0};
+z80_bit menu_ext_desktop_transparent_lower_buttons={0};
 
-z80_bit menu_ext_desktop_lower_icons_background_color_follow_gui={0};
-int menu_ext_desktop_lower_icons_background_color=7;
+z80_bit menu_ext_desktop_lower_buttons_background_color_follow_gui={0};
+int menu_ext_desktop_lower_buttons_background_color=7;
 
 z80_bit menu_ext_desktop_disable_box_upper_buttons={0};
-z80_bit menu_ext_desktop_disable_box_lower_icons={0};
+z80_bit menu_ext_desktop_disable_box_lower_buttons={0};
 
 z80_bit menu_ext_desktop_transparent_configurable_icons={1};
 //Si fondo de los iconos no es transparente, si forzar un color o seguir estilo del gui
@@ -16594,7 +16594,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(int activar_accion)
 
         if (menu_zxdesktop_lower_buttons_enabled.v) {
             int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
-            menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+            menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
 
             if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
                 mouse_pixel_y>=yinicio_botones && mouse_pixel_y<yinicio_botones+alto_boton
@@ -16753,7 +16753,7 @@ int zxvision_if_mouse_in_background(void)
 
     //Ver si en posicion de iconos inferiores
     if (menu_zxdesktop_lower_buttons_enabled.v) {
-        menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+        menu_ext_desktop_lower_buttons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
         if (mouse_pixel_y>=yinicio_botones && mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones) {
             //printf("On lower buttons\n");
             return 0;
@@ -18220,7 +18220,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 
                     int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
-                    menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+                    menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
 
                     if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
                         mouse_pixel_y>=yinicio_botones && mouse_pixel_y<yinicio_botones+alto_boton
@@ -26029,7 +26029,7 @@ void menu_inicio_handle_lower_icon_presses(void)
 
     int yinicio;
 
-    menu_ext_desktop_lower_icons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,NULL,&yinicio);
+    menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,NULL,&yinicio);
 
     //printf("yinicio: %d\n",)
 
