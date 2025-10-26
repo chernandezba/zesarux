@@ -1744,6 +1744,8 @@ printf("\n"
         "--zxdesktop-upper-buttons-bg-follow-gui        Background color for upper buttons follows GUI style\n"
         "--zxdesktop-upper-buttons-bg-color n           Background color for upper buttons when no follow GUI style\n"
         "--zxdesktop-transparent-lower-buttons          Make ZX Desktop lower buttons transparent or force background color\n"
+        "--zxdesktop-lower-buttons-bg-follow-gui        Background color for lower buttons follows GUI style\n"
+        "--zxdesktop-lower-buttons-bg-color n           Background color for lower buttons when no follow GUI style\n"
         "--zxdesktop-disable-box-upper-buttons          Disable box around ZX Desktop upper buttons\n"
         "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"
         "--zxdesktop-disable-footer-switch              Disable ZX Desktop footer enlarge/reduce buttons\n"
@@ -2946,6 +2948,22 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-transparent-lower-buttons")) {
                 menu_ext_desktop_transparent_lower_icons.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-lower-buttons-bg-follow-gui")) {
+                menu_ext_desktop_lower_icons_background_color_follow_gui.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-lower-buttons-bg-color")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+
+                if (valor<0 || valor>15) {
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop lower buttons background color");
+                }
+                else {
+                    menu_ext_desktop_lower_icons_background_color=valor;
+                }
             }
 
             //Esta opcion va al reves de otras de transparencia, porque por defecto estos iconos son transparentes
