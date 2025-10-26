@@ -1821,7 +1821,7 @@ struct s_zxdesktop_lowericons_info {
 
 
 
-#define TOTAL_ZXDESKTOP_MAX_LOWER_ICONS 26
+#define TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS 26
 
 //Cada 12 frames de pantalla lanzar las funciones de print y condicion
 #define ZXVISION_SIMPLE_PROGRESS_WINDOW_FRAMES_REFRESH 12

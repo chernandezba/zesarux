@@ -4886,7 +4886,7 @@ void menu_ext_desktop_buttons_get_geometry(int *p_ancho_boton,int *p_alto_boton,
 void menu_ext_desktop_lower_buttons_get_geometry(int *p_ancho_boton,int *p_alto_boton,int *p_total_botones,int *p_xinicio_botones,int *p_xfinal_botones,int *p_yinicio_botones)
 {
 
-    //int total_botones=TOTAL_ZXDESKTOP_MAX_LOWER_ICONS;
+    //int total_botones=TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS;
 
     //Considerar los botones que estan visibles solamente para la geometria, no todos los posibles
 
@@ -4897,14 +4897,14 @@ void menu_ext_desktop_lower_buttons_get_geometry(int *p_ancho_boton,int *p_alto_
     int i;
 
 
-    for (i=0;i<TOTAL_ZXDESKTOP_MAX_LOWER_ICONS;i++) {
+    for (i=0;i<TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS;i++) {
         int (*funcion_is_visible)(void);
         funcion_is_visible=zdesktop_lowericons_array[i].is_visible;
 
         int visible=funcion_is_visible();
 
 //Para poder forzar visibilidad de iconos para debug
-#ifdef FORCE_VISIBLE_ALL_LOWER_ICONS
+#ifdef FORCE_VISIBLE_ALL_LOWER_BUTTONS
     visible=1;
 #endif
         if (visible) {
@@ -5368,7 +5368,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 int zxdesktop_lowericon_find_index(int icono)
 {
     //int total_botones;
-    int total_botones=TOTAL_ZXDESKTOP_MAX_LOWER_ICONS;
+    int total_botones=TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS;
 
     if (icono>=total_botones || icono<0) return -1;
 
@@ -5383,7 +5383,7 @@ int zxdesktop_lowericon_find_index(int icono)
         int visible=funcion_is_visible();
 
 //Para poder forzar visibilidad de iconos para debug
-#ifdef FORCE_VISIBLE_ALL_LOWER_ICONS
+#ifdef FORCE_VISIBLE_ALL_LOWER_BUTTONS
     visible=1;
 #endif
 
@@ -5482,11 +5482,11 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 
     int is_enabled=funcion_is_enabled();
 
-#ifdef FORCE_DISABLED_ALL_LOWER_ICONS
+#ifdef FORCE_DISABLED_ALL_LOWER_BUTTONS
     is_enabled=0;
 #endif
 
-#ifdef FORCE_ENABLED_ALL_LOWER_ICONS
+#ifdef FORCE_ENABLED_ALL_LOWER_BUTTONS
     is_enabled=1;
 #endif
 
@@ -5604,7 +5604,7 @@ void menu_draw_ext_desktop_lower_buttons(void)
 
     if (menu_zxdesktop_lower_buttons_enabled.v==0) return;
 
-    int total_iconos=TOTAL_ZXDESKTOP_MAX_LOWER_ICONS;
+    int total_iconos=TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS;
 
 
     int i;

@@ -46981,7 +46981,7 @@ int zxdesktop_icon_zxmmcplusflash_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
 
 
-struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_ICONS]={
+struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS]={
     //cinta standard
     { zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,
         zxdesktop_lowericon_cassete_std_accion_boton_derecho,
