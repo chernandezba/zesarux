@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 _INSTALL_PREFIX=`grep INSTALL_PREFIX compileoptions.h | cut -d '"' -f2`
-if [ -z "$DESTDIR" ] ; then INSTALLPREFIX="$_INSTALL_PREFIX" ; else INSTALLPREFIX="$DESTDIR/$_INSTALL_PREFIX" ; fi
+if [ -z "$DESTDIR" ]; then
+	INSTALLPREFIX="$_INSTALL_PREFIX"
+else
+	INSTALLPREFIX="$DESTDIR/$_INSTALL_PREFIX"
+fi
 
 EDITION_NAME_GAME=`cat cpu.h|grep EDITION_NAME_GAME|cut -d '"' -f2`
 
