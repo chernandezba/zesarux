@@ -9,12 +9,12 @@ Permitir al driver SDL forzar el tamaño de la ventana
 
 Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto)
-- Agregada opción para añadir un contorno a los iconos
 
 Mejorado ZX Desktop:
 - Permitir definir valores pequeños para el ancho del ZX Desktop
 - Agregar opción para prohibir activar ZX Desktop
 - Permitir cambiar el color de fondo de iconos, botones inferiores y superiores
+- Agregada opción para añadir un contorno a los iconos
 
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
