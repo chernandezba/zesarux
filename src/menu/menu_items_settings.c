@@ -13013,8 +13013,10 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
 
+            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "--Icons on ZX Desktop--","--Iconos en ZX Desktop--","--Icones al ZX Desktop--");
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_enabled,NULL,
-                "Icons on ZX Desktop","Iconos en ZX Desktop","Icones al ZX Desktop");
+                "Enable","Activar","Activar");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_configurable_icons_enabled.v ? 'X' : ' ' ) );
 
 
@@ -13025,29 +13027,29 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_automatic_reorder_icons.v ? 'X' : ' ' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
-                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_empty_trash_exit,NULL,
-                    "Empty trash on exit","Vaciar papelera al salir","Buidar paperera al sortir");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_empty_trash_on_exit.v ? 'X' : ' ' ) );
-                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
-
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
-                    "Force icons background color","Forzar color de fondo de iconos","Forçar color de fons de icones");
+                    "Force background color","Forzar color de fondo","Forçar color de fons");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_configurable_icons.v ? ' ' : 'X' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_text_background,NULL,
-                    "Icon text background","Fondo de texto de iconos","Fons de text de icones");
+                    "Text background","Fondo de texto","Fons de text");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_text_background.v ? 'X' : ' ' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_short_text,NULL,
-                    "Short text icons","Texto corto de iconos","Text curt de icones");
+                    "Short text","Texto corto","Text curt");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_short_text.v ? 'X' : ' ' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_show_app_open,NULL,
                     "Show indicators for open apps","Mostrar indicadores en apps abiertas","Mostrar indicadors en apps obertes");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_icon_show_app_open.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_empty_trash_exit,NULL,
+                    "Empty trash on exit","Vaciar papelera al salir","Buidar paperera al sortir");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_empty_trash_on_exit.v ? 'X' : ' ' ) );
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
