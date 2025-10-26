@@ -6202,7 +6202,16 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0 || menu_pressed_zxdesktop_configurable_icon_which==index_icon) {
         //Aplicar un background si se pulsa o si hay setting de no fondo transparente
         //Color 7 blanco siempre fijo, asumimos que los iconos no usan color blanco que se puedan "fusionar" con este fondo
-        int color=7;
+        //int color=7;
+
+        int color;
+        if (menu_ext_desktop_configurable_icons_background_color_follow_gui.v) {
+            color=ESTILO_GUI_PAPEL_NORMAL;
+        }
+        else {
+            color=menu_ext_desktop_configurable_icons_background_color;
+        }
+
 
         //Pero si se ha hecho boton derecho sobre este icono, alterar color
         if (menu_pressed_zxdesktop_configurable_icon_which==index_icon) color=ESTILO_GUI_PAPEL_SELECCIONADO;
@@ -6424,6 +6433,10 @@ z80_bit menu_ext_desktop_disable_box_upper_icons={0};
 z80_bit menu_ext_desktop_disable_box_lower_icons={0};
 
 z80_bit menu_ext_desktop_transparent_configurable_icons={1};
+//Si fondo de los iconos no es transparente, si forzar un color o seguir estilo del gui
+//Por defecto, color blanco, pues los iconos se han dibujado pensando en ese color de fondo
+z80_bit menu_ext_desktop_configurable_icons_background_color_follow_gui={0};
+int menu_ext_desktop_configurable_icons_background_color=7;
 
 //Si se escribe el texto de los iconos con texto de fondo
 z80_bit menu_ext_desktop_configurable_icons_text_background={1};
