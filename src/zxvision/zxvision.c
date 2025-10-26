@@ -5738,6 +5738,8 @@ void menu_draw_ext_desktop_buttons(int xinicio)
     //mostrar todos los iconos de la parte superior, pero solo para modo debug
 #ifdef FORCE_VISIBLE_ALL_UPPER_BUTTONS
 
+    int numero_boton;
+
     for (numero_boton=0;numero_boton<MAX_F_FUNCTIONS;numero_boton++) {
 
         //int yinicio;
@@ -5762,6 +5764,7 @@ void menu_draw_ext_desktop_buttons(int xinicio)
 
 
         int xfinal;
+        int total_botones;
 
         menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,NULL,&xfinal);
 
@@ -5791,27 +5794,27 @@ void menu_draw_ext_desktop_buttons(int xinicio)
 
 
 
-//fondo
-    int color_recuadro=0;
-    int color_relleno=7;
+    //fondo
+        int color_recuadro=0;
+        int color_relleno=7;
 
-    if (pulsado) color_recuadro=7;
+        if (pulsado) color_recuadro=7;
 
-    if (menu_ext_desktop_disable_box_upper_buttons.v==0) {
-        menu_draw_ext_desktop_recuadro_button(destino_x-6,destino_y-6,ancho_boton,alto_boton,color_recuadro);
-    }
+        if (menu_ext_desktop_disable_box_upper_buttons.v==0) {
+            menu_draw_ext_desktop_recuadro_button(destino_x-6,destino_y-6,ancho_boton,alto_boton,color_recuadro);
+        }
 
 
 
-    //Se rellena solo cuando se pulsa el botón o cuando no hay transparencia
-    int y;
-    if (pulsado || menu_ext_desktop_transparent_upper_buttons.v==0) {
-        for (y=destino_y-4;y<destino_y+alto_boton-8;y++) {
-            for (x=destino_x-4;x<destino_x+ancho_boton-8;x++) {
-                scr_putpixel(x,y,color_relleno);
+        //Se rellena solo cuando se pulsa el botón o cuando no hay transparencia
+        int x,y;
+        if (pulsado || menu_ext_desktop_transparent_upper_buttons.v==0) {
+            for (y=destino_y-4;y<destino_y+alto_boton-8;y++) {
+                for (x=destino_x-4;x<destino_x+ancho_boton-8;x++) {
+                    scr_putpixel(x,y,color_relleno);
+                }
             }
         }
-    }
 
 
 
