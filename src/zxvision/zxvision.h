@@ -1508,16 +1508,16 @@ extern int menu_ext_desktop_fill_second_color;
 
 extern z80_bit menu_ext_desktop_degraded_inverted;
 
-extern z80_bit menu_ext_desktop_transparent_upper_icons;
-extern z80_bit menu_ext_desktop_upper_icons_background_color_follow_gui;
-extern int menu_ext_desktop_upper_icons_background_color;
+extern z80_bit menu_ext_desktop_transparent_upper_buttons;
+extern z80_bit menu_ext_desktop_upper_buttons_background_color_follow_gui;
+extern int menu_ext_desktop_upper_buttons_background_color;
 
 extern z80_bit menu_ext_desktop_transparent_lower_icons;
 extern z80_bit menu_ext_desktop_lower_icons_background_color_follow_gui;
 extern int menu_ext_desktop_lower_icons_background_color;
 
 
-extern z80_bit menu_ext_desktop_disable_box_upper_icons;
+extern z80_bit menu_ext_desktop_disable_box_upper_buttons;
 extern z80_bit menu_ext_desktop_disable_box_lower_icons;
 
 extern z80_bit menu_ext_desktop_transparent_configurable_icons;

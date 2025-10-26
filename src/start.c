@@ -2926,11 +2926,11 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-transparent-upper-buttons")) {
-                menu_ext_desktop_transparent_upper_icons.v=1;
+                menu_ext_desktop_transparent_upper_buttons.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-upper-buttons-bg-follow-gui")) {
-                menu_ext_desktop_upper_icons_background_color_follow_gui.v=1;
+                menu_ext_desktop_upper_buttons_background_color_follow_gui.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-upper-buttons-bg-color")) {
@@ -2941,7 +2941,7 @@ int parse_cmdline_options(int desde_commandline) {
                     debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop upper buttons background color");
                 }
                 else {
-                    menu_ext_desktop_upper_icons_background_color=valor;
+                    menu_ext_desktop_upper_buttons_background_color=valor;
                 }
             }
 
@@ -2998,7 +2998,7 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-box-upper-buttons")) {
-                menu_ext_desktop_disable_box_upper_icons.v=1;
+                menu_ext_desktop_disable_box_upper_buttons.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-box-lower-buttons")) {
