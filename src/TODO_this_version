@@ -52,10 +52,6 @@ No hace falta, dejamos que se guarde el estado anterior antes del Run, y si ha p
 posiblemente habrá mucha cosa a mostrar como cambiada
 
 
-ok -funcion (fkey/icono) que permita enviar abrir menu y enviar pulsaciones de hotkeys, para poder lanzar la mayoria de acciones de menus
-acabarlo de probar
-
-
 -Ayuda para algunos tipos de iconos o acciones, como send keys menú
 
 -Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
@@ -69,19 +65,11 @@ Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 Probar mas sistemas unix alternativos
 
-ok -fondo de botones superiores e inferiores debe seguir el color de paper del estilo activo
--Revisar que en todos estilos se vean bien
 
--Poder habilitar contorno de manera independiente en:
-*botones superiores
-*botones inferiores
-*iconos zx desktop
-Quizá no se puede porque la función es única
-Quizá a screen_put_asciibitmap_generic_offset_inicio habria que pasar un parámetro para indicar tipo icono para saber la envoltura
-Quizá el parametro ya está y es permitir envoltura
-Si 0, no. Si 1, upper. Si 2, lower. Si 3, icono desktop
-Pero luego el color de envoltura, tambien es configurable cada tipo de icono con su color? Demasiado complejo?
-Pero por ejempo en menu_zxdesktop_set_userdef_button_func_action_overlay, ahora dibuja contorno. Pero luego? Le decimos que es 3 (icono desktop)?
 
--En forzar color de fondo de iconos del desktop siempre es blanco. Si le pongo el color de gui, se verá mal?
-->Creo que tendria que ser siempre blanco porque los iconos se han dibujado pensando en fondo blanco
+DESTDIR deberia ir en generate_install.sh o en install.sh? Creo que en el último
+Realmente es para el "make install" y tal y como está ahora seria suficiente
+
+
+-Quizá texto corto de iconos podría mostrar mas letras, ahora está pensado para que no sobresalga el texto del ancho del icono,
+pero queda bastante espacio aun para el icono a la derecha. ah o no, si quito autoorder es justo el espacio

@@ -6,6 +6,7 @@ Permitir reducir pantalla a la mitad
 Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 Permitir al driver SDL usar una paleta de color de 8 bits
 Permitir al driver SDL forzar el tamaño de la ventana
+Permitir variable de entorno DESTDIR en el paso make install
 
 Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto)
