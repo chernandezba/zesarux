@@ -230,6 +230,7 @@ int zeng_online_server_opcion_seleccionada=0;
 int settings_danger_zone_opcion_seleccionada=0;
 int hardware_realjoystick_steering_opcion_seleccionada=0;
 int settings_apps_opcion_seleccionada=0;
+int settings_windows_features_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -2579,6 +2580,133 @@ void menu_settings_apps(MENU_ITEM_PARAMETERS)
 
 
 
+void menu_settings_windows_features(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,
+            "Percentage bar","Barra de porcentaje","Barra de percentatge");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_vertical_percentaje_bar.v==0 ? 'X' : ' ') );
+        //menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
+        menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
+            "Minimize button","Botón de minimizar","Botó de minimitzar");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_minimize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,
+            "Maximize button","Botón de maximizar","Botó de maximitzar");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_maximize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,
+            "Close button","Botón de cerrar","Botó de tancar");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimized_windows,NULL,
+            "Hide minimized windows","Ocultar ventanas minimizadas","Ocultar finestres minimitzades");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_hide_minimized_windows.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Hide minimized windows");
+        menu_add_item_menu_ayuda(array_menu_common,"Hide minimized windows. "
+            "Only minimized windows that are applications that can be backgrounded are hidden. "
+            "Hidden minimized windows can be seen on the Process Switcher"
+            );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_windows_beyond_limit,NULL,
+            "Allow windows beyond limits","Permitir ventanas fuera límites","Permetre finestres fora límits");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_allow_windows_beyond_limit.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Allow windows beyond limits");
+        menu_add_item_menu_ayuda(array_menu_common,"Allow windows beyond limits");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,
+            "Background button on inactive","Botón de background en inactivo","Botó de background a inactiu");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
+        menu_add_item_menu_tooltip(array_menu_common,"Shows background button flashing on inactive windows");
+        menu_add_item_menu_ayuda(array_menu_common,"Shows background button flashing on inactive windows");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_not_change_frame_when_resize_zone,NULL,
+            "Change frame over resize","Cambiar marco encima redimensionado","Canviar marc sobre redimensionat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_change_frame_when_resize_zone.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Change frame window when mouse is over resize zone");
+        menu_add_item_menu_ayuda(array_menu_common,"Change frame window when mouse is over resize zone");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_invert_mouse_scroll,NULL,
+            "Invert mouse scroll","Invertir scroll raton","Invertir scroll ratoli");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_invert_mouse_scroll.v ? 'X' : ' ') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+        if (menu_allow_background_windows && menu_multitarea && save_configuration_file_on_exit.v) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reopen_background_windows_on_start,NULL,
+                "Reopen windows on start","Reabrir ventanas al inicio","Reobrir finestres al inici");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_reopen_background_windows_on_start.v ? 'X' : ' ') );
+        }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_windows_geometry,NULL,
+            "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
+        menu_add_item_menu_tooltip(array_menu_common,"Restore all windows positions and sizes to their default values");
+        menu_add_item_menu_ayuda(array_menu_common,"Restore all windows positions and sizes to their default values");
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+        //menu_add_item_menu_se_cerrara(array_menu_common);
+        //menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> ZX Vision-> Windows features",
+            "Menú Principal-> Opciones-> ZX Vision-> Características Ventanas",
+            "Menú Principal-> Opcions-> ZX Vision-> Característiques Finestres");
+
+        retorno_menu=menu_dibuja_menu(&settings_windows_features_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Windows features Settings","Opciones Características Ventanas","Opcions Característiques Finestres" );
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
+
 
 
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
@@ -2878,94 +3006,15 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 
-
-        menu_add_item_menu_separator(array_menu_common);
-
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "--Windows features--","--Características ventanas--","--Característiques finestres--");
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,
-            "Percentage bar","Barra de porcentaje","Barra de percentatge");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_vertical_percentaje_bar.v==0 ? 'X' : ' ') );
-        //menu_add_item_menu_shortcut(array_menu_common,'p');
-        menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
-        menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
-            "Minimize button","Botón de minimizar","Botó de minimitzar");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_minimize_button.v ? ' ' : 'X') );
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,
-            "Maximize button","Botón de maximizar","Botó de maximitzar");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_maximize_button.v ? ' ' : 'X') );
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,
-            "Close button","Botón de cerrar","Botó de tancar");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimized_windows,NULL,
-            "Hide minimized windows","Ocultar ventanas minimizadas","Ocultar finestres minimitzades");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_hide_minimized_windows.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Hide minimized windows");
-        menu_add_item_menu_ayuda(array_menu_common,"Hide minimized windows. "
-            "Only minimized windows that are applications that can be backgrounded are hidden. "
-            "Hidden minimized windows can be seen on the Process Switcher"
-            );
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_windows_beyond_limit,NULL,
-            "Allow windows beyond limits","Permitir ventanas fuera límites","Permetre finestres fora límits");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_allow_windows_beyond_limit.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Allow windows beyond limits");
-        menu_add_item_menu_ayuda(array_menu_common,"Allow windows beyond limits");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,
-            "Background button on inactive","Botón de background en inactivo","Botó de background a inactiu");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
-        menu_add_item_menu_tooltip(array_menu_common,"Shows background button flashing on inactive windows");
-        menu_add_item_menu_ayuda(array_menu_common,"Shows background button flashing on inactive windows");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_not_change_frame_when_resize_zone,NULL,
-            "Change frame over resize","Cambiar marco encima redimensionado","Canviar marc sobre redimensionat");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_change_frame_when_resize_zone.v ? 'X' : ' ' ));
-        menu_add_item_menu_tooltip(array_menu_common,"Change frame window when mouse is over resize zone");
-        menu_add_item_menu_ayuda(array_menu_common,"Change frame window when mouse is over resize zone");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_invert_mouse_scroll,NULL,
-            "Invert mouse scroll","Invertir scroll raton","Invertir scroll ratoli");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_invert_mouse_scroll.v ? 'X' : ' ') );
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-
-        if (menu_allow_background_windows && menu_multitarea && save_configuration_file_on_exit.v) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reopen_background_windows_on_start,NULL,
-                "Reopen windows on start","Reabrir ventanas al inicio","Reobrir finestres al inici");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_reopen_background_windows_on_start.v ? 'X' : ' ') );
-        }
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_windows_geometry,NULL,
-            "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
-        menu_add_item_menu_tooltip(array_menu_common,"Restore all windows positions and sizes to their default values");
-        menu_add_item_menu_ayuda(array_menu_common,"Restore all windows positions and sizes to their default values");
-        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
-        //menu_add_item_menu_se_cerrara(array_menu_common);
-        //menu_add_item_menu_es_avanzado(array_menu_common);
-
-
-
-
         menu_add_item_menu_separator(array_menu_common);
         menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_apps,NULL,
+            "Apps","Apps","Apps");
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
 
         if (si_complete_video_driver() ) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_special_fx_settings,NULL,
@@ -2976,13 +3025,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_common);
         }
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_apps,NULL,
-            "Apps","Apps","Apps");
-
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_windows_features,NULL,
+            "Windows features","Características ventanas","Característiques finestres");
         menu_add_item_menu_tiene_submenu(array_menu_common);
         menu_add_item_menu_es_avanzado(array_menu_common);
-
-
 
 
         menu_add_item_menu_separator(array_menu_common);
