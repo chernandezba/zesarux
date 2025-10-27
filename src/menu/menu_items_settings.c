@@ -2836,6 +2836,45 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "- Cursor left go back to the previous menu, Cursor right activates the item (the same as Enter)\n"
         );
 
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,
+            "M~~ultitask menu","Menu m~~ultitarea","Menu m~~ultitasca");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (menu_multitarea==1 ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'u');
+        menu_add_item_menu_tooltip(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
+        menu_add_item_menu_ayuda(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
+
+
+        if (menu_multitarea) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,
+                "Sto~~p emulation on menu","Sto~~p emulación en menu","Sto~~p emulació al menu");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_emulation_paused_on_menu ? 'X' : ' ' ));
+
+            menu_add_item_menu_shortcut(array_menu_common,'p');
+            menu_add_item_menu_tooltip(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
+            menu_add_item_menu_ayuda(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
+        }
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows,NULL,
+            "~~Background windows","Ventanas en ~~background","Finestres a ~~background");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_allow_background_windows ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_common,'b');
+        menu_add_item_menu_tooltip(array_menu_common,"You can allow some menu windows to be put on the background. See Help-> Background Windows Help for more info");
+        menu_add_item_menu_ayuda(array_menu_common,"You can allow some menu windows to be put on the background. See Help-> Background Windows Help for more info");
+
+
+        if (menu_allow_background_windows && menu_multitarea) {
+           menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows_always_force,NULL,
+            "Even when menu closed","Incluso con menu cerrado","Inclús amb menu tancat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c]  ",(always_force_overlay_visible_when_menu_closed ? 'X' : ' ') );
+           menu_add_item_menu_tooltip(array_menu_common,"Shows background window even when menu closed");
+           menu_add_item_menu_ayuda(array_menu_common,"Shows background window even when menu closed");
+        }
+
+
+
+
         menu_add_item_menu_separator(array_menu_common);
 
 
@@ -2904,53 +2943,6 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
-
-        menu_add_item_menu_separator(array_menu_common);
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,
-            "M~~ultitask menu","Menu m~~ultitarea","Menu m~~ultitasca");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (menu_multitarea==1 ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_common,'u');
-        menu_add_item_menu_tooltip(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
-        menu_add_item_menu_ayuda(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
-
-
-        if (menu_multitarea) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,
-                "Sto~~p emulation on menu","Sto~~p emulación en menu","Sto~~p emulació al menu");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_emulation_paused_on_menu ? 'X' : ' ' ));
-
-            menu_add_item_menu_shortcut(array_menu_common,'p');
-            menu_add_item_menu_tooltip(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
-            menu_add_item_menu_ayuda(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
-        }
-
-
-
-
-
-
-
-        menu_add_item_menu_separator(array_menu_common);
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows,NULL,
-            "~~Background windows","Ventanas en ~~background","Finestres a ~~background");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_allow_background_windows ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'b');
-        menu_add_item_menu_tooltip(array_menu_common,"You can allow some menu windows to be put on the background. See Help-> Background Windows Help for more info");
-        menu_add_item_menu_ayuda(array_menu_common,"You can allow some menu windows to be put on the background. See Help-> Background Windows Help for more info");
-
-
-        if (menu_allow_background_windows && menu_multitarea) {
-           menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows_always_force,NULL,
-            "Even when menu closed","Incluso con menu cerrado","Inclús amb menu tancat");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c]  ",(always_force_overlay_visible_when_menu_closed ? 'X' : ' ') );
-           menu_add_item_menu_tooltip(array_menu_common,"Shows background window even when menu closed");
-           menu_add_item_menu_ayuda(array_menu_common,"Shows background window even when menu closed");
-        }
-
         if (menu_allow_background_windows && menu_multitarea && save_configuration_file_on_exit.v) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reopen_background_windows_on_start,NULL,
                 "Reopen windows on start","Reabrir ventanas al inicio","Reobrir finestres al inici");
@@ -2964,6 +2956,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
         //menu_add_item_menu_se_cerrara(array_menu_common);
         //menu_add_item_menu_es_avanzado(array_menu_common);
+
 
 
 
