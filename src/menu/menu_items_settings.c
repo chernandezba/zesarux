@@ -8203,8 +8203,11 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_settings_display,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_settings_display);
 
+        menu_add_item_menu_index_full_path(array_menu_settings_display,
+            "Main Menu-> Settings-> Emulated Video","Menú Principal-> Opciones-> Video emulado","Menú Principal-> Opcions-> Video emulat");
+
         retorno_menu=menu_dibuja_menu(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,
-            "Display Settings","Opciones Display","Opcions Display" );
+            "Emulated Video Settings","Opciones Video emulado","Opcions Video emulat");
 
 
 
@@ -9673,10 +9676,11 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);
         menu_add_item_menu_es_avanzado(array_menu_settings);
 
-        menu_add_item_menu(array_menu_settings,"~~Display",MENU_OPCION_NORMAL,menu_settings_display,NULL);
+        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
+            "Emulated Vi~~deo","Vi~~deo emulado","Vi~~deo emulat");
         menu_add_item_menu_shortcut(array_menu_settings,'d');
-        menu_add_item_menu_tooltip(array_menu_settings,"Display settings");
-        menu_add_item_menu_ayuda(array_menu_settings,"Display settings");
+        menu_add_item_menu_tooltip(array_menu_settings,"Settings for the emulated video");
+        menu_add_item_menu_ayuda(array_menu_settings,"Settings for the emulated video");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_external_tools_config,NULL,
