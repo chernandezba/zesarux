@@ -2646,6 +2646,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_common);
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--Menus Behaviour--","--Comportamiento menús--","--Comportament menús--");
+
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_enable_topbar_menu,NULL,
             "Enable Top Menu","Activar Menú Superior","Activar Menú Superior");
         menu_add_item_menu_tooltip(array_menu_common,"Enable a Top Menu");
@@ -2697,6 +2700,12 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_use_speccy_keys,NULL,
+            "Use speccy keys","Usar teclas speccy","Usar tecles speccy");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_setting_use_speccy_keys.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB, caps shift+ctrl+m for Open Menu (F5)");
+        menu_add_item_menu_ayuda(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB, caps shift+ctrl+m for Open Menu (F5)");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_tooltip,NULL,"[%c] ~~Tooltips",(tooltip_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'t');
@@ -2719,17 +2728,6 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Force confirmation dialogs yes/no always to yes");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
-
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,
-            "Percentage bar","Barra de porcentaje","Barra de percentatge");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_vertical_percentaje_bar.v==0 ? 'X' : ' ') );
-        //menu_add_item_menu_shortcut(array_menu_common,'p');
-        menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
-        menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,
             "Submenu indicator","Indicador de submenu","Indicador de submenu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_submenu_indicator.v==0 ? 'X' : ' ') );
@@ -2743,6 +2741,44 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Shows previous submenus");
         menu_add_item_menu_ayuda(array_menu_common,"Shows previous submenus");
         menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_mouse_right_esc,NULL,
+            "Right mouse sends ESC","Botón derecho envia ESC","Botó dret envia ESC");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_mouse_right_send_esc.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
+        menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_item_old_behaviour_close_menus,NULL,
+            "Old menu behaviour (ESC, etc)","Antiguo comportamiento menú (ESC, etc)","Antic comportament menú (ESC, etc)");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_old_behaviour_close_menus.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Old menu behaviour reacts different to ESC key and closing app windows");
+        menu_add_item_menu_ayuda(array_menu_common,"The Old menu behaviour:\n"
+            "- ESC key always go back to the previous menu\n"
+            "- When closing a window that's created from a menu, you will go back to the menu\n"
+            "- Cursors left or right do nothing\n"
+            "\n"
+            "The New menu behaviour (starting from ZEsarUX X):\n"
+            "- ESC key always closes all menus\n"
+            "- When closing a window that's created from a menu, all menus will be closed\n"
+            "- Cursor left go back to the previous menu, Cursor right activates the item (the same as Enter)\n"
+        );
+
+        menu_add_item_menu_separator(array_menu_common);
+
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--Windows features--","--Características ventanas--","--Característiques finestres--");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,
+            "Percentage bar","Barra de porcentaje","Barra de percentatge");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_vertical_percentaje_bar.v==0 ? 'X' : ' ') );
+        //menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
+        menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
             "Minimize button","Botón de minimizar","Botó de minimitzar");
@@ -2796,19 +2832,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_mouse_right_esc,NULL,
-            "Right mouse sends ESC","Botón derecho envia ESC","Botó dret envia ESC");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_mouse_right_send_esc.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
-        menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_use_speccy_keys,NULL,
-            "Use speccy keys","Usar teclas speccy","Usar tecles speccy");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_setting_use_speccy_keys.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB, caps shift+ctrl+m for Open Menu (F5)");
-        menu_add_item_menu_ayuda(array_menu_common,"On menu interaction, use keys 5678 as cursors, caps shift+space for ESC, caps shift+ctrl for TAB, caps shift+ctrl+m for Open Menu (F5)");
-        menu_add_item_menu_es_avanzado(array_menu_common);
+        menu_add_item_menu_separator(array_menu_common);
 
 
         //TODO: este setting tendria que estar quiza en otro sitio
@@ -2860,23 +2884,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_separator(array_menu_common);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_item_old_behaviour_close_menus,NULL,
-            "Old menu behaviour (ESC, etc)","Antiguo comportamiento menú (ESC, etc)","Antic comportament menú (ESC, etc)");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_old_behaviour_close_menus.v ? 'X' : ' ' ));
-        menu_add_item_menu_tooltip(array_menu_common,"Old menu behaviour reacts different to ESC key and closing app windows");
-        menu_add_item_menu_ayuda(array_menu_common,"The Old menu behaviour:\n"
-            "- ESC key always go back to the previous menu\n"
-            "- When closing a window that's created from a menu, you will go back to the menu\n"
-            "- Cursors left or right do nothing\n"
-            "\n"
-            "The New menu behaviour (starting from ZEsarUX X):\n"
-            "- ESC key always closes all menus\n"
-            "- When closing a window that's created from a menu, all menus will be closed\n"
-            "- Cursor left go back to the previous menu, Cursor right activates the item (the same as Enter)\n"
-        );
+
+
         menu_add_item_menu_separator(array_menu_common);
 
 
