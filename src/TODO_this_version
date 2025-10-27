@@ -40,10 +40,10 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 
 -agregar a ayuda de debug cpu:
-* lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
-* mostrar memoria hexa en vistas 5 y 6, muestra diferencias respecto a anterior apertura vista 5/6
-* memptx de vistas 5 y 6
-* tecla 't' para evaluate
+ok * lo de mostrar valores de registros modificados: que lo muestra en color inverso, etc etc
+ok * mostrar memoria hexa en vistas 5 y 6, muestra diferencias respecto a anterior apertura vista 5/6
+ok * memptx de vistas 5 y 6
+ok * tecla 't' para evaluate
 
 
 ok? -cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores
