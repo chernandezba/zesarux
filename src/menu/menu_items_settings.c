@@ -1277,6 +1277,11 @@ void menu_interface_both_zoom_equals(MENU_ITEM_PARAMETERS)
     menu_warn_message("Some video drivers require that you restart ZEsarUX in order for this setting to take effect, like X11");
 }
 
+void menu_setting_quickexit(MENU_ITEM_PARAMETERS)
+{
+    quickexit.v ^=1;
+}
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -1359,6 +1364,14 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 "Fast welcome logo & message","Logo bienvenida y mensaje rápido","Logo benvinguda i missatge ràpid");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(opcion_fast_welcome_message.v ? 'X' : ' '));
         }
+
+
+        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_quickexit,NULL,"[%c] Quick exit",
+            (quickexit.v ? 'X' : ' ') );
+        //menu_add_item_menu_shortcut(array_menu_window_settings,'q');
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Exit emulator quickly: no yes/no confirmation and no fadeout");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Exit emulator quickly: no yes/no confirmation and no fadeout");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
         menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -2178,10 +2191,7 @@ void menu_interface_disable_menu_mouse(MENU_ITEM_PARAMETERS)
     mouse_menu_disabled.v ^=1;
 }
 
-void menu_setting_quickexit(MENU_ITEM_PARAMETERS)
-{
-    quickexit.v ^=1;
-}
+
 
 
 /*
@@ -2562,25 +2572,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         }
 
 
-        /*
-        Esto ahora está en el mismo menu de Machine selection
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
-            "Select machine by name","Seleccionar maquina por nombre","Escollir maquina pel nom");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_machine_selection_type.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
-        menu_add_item_menu_ayuda(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-        */
-
-
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_quickexit,NULL,"[%c] ~~Quick exit",
-            (quickexit.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'q');
-        menu_add_item_menu_tooltip(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");
-        menu_add_item_menu_ayuda(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");
-        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,
