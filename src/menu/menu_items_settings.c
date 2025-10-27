@@ -2722,8 +2722,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "--Appearance--","--Apariencia--","--Aparença--");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "--- Appearance ---","--- Apariencia ---","--- Aparença ---");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,
             "    ~~Style","    E~~stilo","    E~~stil");
@@ -2837,7 +2837,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "--Menus Behaviour--","--Comportamiento menús--","--Comportament menús--");
+            "--- Menus Behaviour ---","--- Comportamiento menús ---","--- Comportament menús ---");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_enable_topbar_menu,NULL,
             "Enable Top Menu","Activar Menú Superior","Activar Menú Superior");
@@ -3111,7 +3111,7 @@ void menu_osd_settings(MENU_ITEM_PARAMETERS)
     menu_add_item_menu_separator(array_menu_osd_settings);
 
     menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,NULL,NULL,
-        "--Watermark--","--Marca de agua--","--Marca d'aigüa--");
+        "--- Watermark ---","--- Marca de agua ---","--- Marca d'aigüa ---");
 
     menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark,NULL,
         "Enabled","Activado","Activat");
@@ -4558,7 +4558,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
             if (!strcmp(audio_new_driver_name,"sdl")) {
                 menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                menu_add_item_menu(array_menu_settings_audio,"--Audio SDL settings--",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu(array_menu_settings_audio,"--- Audio SDL settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audiosdl_callback_type,NULL,
                     "Callback Type","Tipo Callback","Tipus Callback");
@@ -4574,7 +4574,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
             if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
                 menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                menu_add_item_menu(array_menu_settings_audio,"--One Bit Speaker settings--",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu(array_menu_settings_audio,"--- One Bit Speaker settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_tipo_speaker,NULL,
                     "Speaker Type","Tipo Speaker","Tipus Speaker");
@@ -8693,7 +8693,7 @@ void menu_textspeech(MENU_ITEM_PARAMETERS)
             //if (chardetect_printchar_enabled.v) {
                 menu_add_item_menu(array_menu_textspeech,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,NULL,NULL,"--Trap print to speech--");
+                menu_add_item_menu_format(array_menu_textspeech,MENU_OPCION_NORMAL,NULL,NULL,"--- Trap print to speech ---");
                 menu_add_item_menu_tooltip(array_menu_textspeech,"Settings for text coming from trap print and sent to speech");
                 menu_add_item_menu_ayuda(array_menu_textspeech,"Settings for text coming from trap print and sent to speech");
 
@@ -11560,7 +11560,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         //char string_realtape_shown[23];
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,
-            "--Standard Tape--","--Cinta Estándar--","--Cinta Estàndard");
+            "--- Standard Tape ---","--- Cinta Estándar ---","--- Cinta Estàndard ---");
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_standard_to_real_tape_fallback,NULL,
@@ -11620,7 +11620,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,
-            "--Input Real Tape--","--Cinta Real de Entrada--","--Cinta Real d'Entrada--");
+            "--- Input Real Tape ---","--- Cinta Real de Entrada ---","--- Cinta Real d'Entrada ---");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_loading_sound,NULL,
             "Loading sound","Sonido de carga","So de càrrega");
@@ -13148,7 +13148,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             if (zxvision_topbar_menu_enabled.v==0) {
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
-                    "--Upper Buttons--","--Botones Superiores--","--Botons superiors--");
+                    "--- Upper Buttons ---","--- Botones Superiores--","--- Botons superiors ---");
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_upper_buttons,NULL,
                     "Enable","Activar","Activar");
@@ -13201,7 +13201,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
-                "--Lower Buttons--","--Botones Inferiores--","--Botons inferiors--");
+                "--- Lower Buttons ---","--- Botones Inferiores ---","--- Botons inferiors ---");
 
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_lower_buttons,NULL,
                 "Enable","Activar","Activar");
@@ -13242,7 +13242,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
-                "--Icons on ZX Desktop--","--Iconos en ZX Desktop--","--Icones al ZX Desktop--");
+                "--- Icons on ZX Desktop ---","--- Iconos en ZX Desktop ---","--- Icones al ZX Desktop ---");
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_enabled,NULL,
                 "Enable","Activar","Activar");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_configurable_icons_enabled.v ? 'X' : ' ' ) );
@@ -13327,7 +13327,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
-                "--Background--","--Fondo--","--Fons--");
+                "--- Background ---","--- Fondo ---","--- Fons ---");
 
             char fill_type_name[32];
             int seleccion_primary=0;

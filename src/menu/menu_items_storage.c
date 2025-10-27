@@ -2963,8 +2963,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         //char string_tape_load_inserted[50],string_tape_save_inserted[50];
 		char string_realtape_shown[23];
 
-		menu_add_item_menu_inicial_format(&array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,"--Standard Tape--");
-        menu_add_item_menu_spanish_catalan(array_menu_tape_settings,"--Cinta Estandar--","--Cinta Estandard--");
+		menu_add_item_menu_inicial_format(&array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,"--- Standard Tape ---");
+        menu_add_item_menu_spanish_catalan(array_menu_tape_settings,"--- Cinta Estandar ---","--- Cinta Estandard ---");
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Select Standard tape for Input and Output");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Standard tapes are those handled by ROM routines and "
 					"have normal speed (no turbo). These tapes are handled by ZEsarUX and loaded or saved "
@@ -3035,7 +3035,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,
-            "--Input Real Tape--","--Cinta Real de Entrada--","--Cinta Real d'Entrada--");
+            "--- Input Real Tape ---","--- Cinta Real de Entrada ---","--- Cinta Real d'Entrada ---");
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Input Real Tape at normal loading Speed");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"You may select any input valid tape: o, p, tap, tzx, rwa, wav, smp. "
 					"This tape is handled the same way as the real machine does, at normal loading speed, and may "
@@ -9402,7 +9402,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         int i;
         for (i=0;i<MAX_MICRODRIVES_BY_CONFIG;i++) {
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--Microdrive %d--",i+1);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Microdrive %d ---",i+1);
 
             char string_microdrive_file_shown[17];
 

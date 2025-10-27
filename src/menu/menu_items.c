@@ -17522,7 +17522,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "--Network Gaming--","--Juego en Red--","--Joc en Xarxa");
+            "--- Network Gaming ---","--- Juego en Red ---","--- Joc en Xarxa ---");
 
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng,NULL,"Z~~ENG");
@@ -18077,8 +18077,8 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         for (i=0;i<MMC_MAX_CARDS;i++) {
 
             menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,NULL,NULL,
-            "--Card","--Tarjeta","--Targeta");
-            menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," %d--",i);
+            "--- Card","--- Tarjeta","--- Targeta");
+            menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," %d ---",i);
 
             if (!mmc_filemap_from_esxdos[i]) {
 
@@ -30895,7 +30895,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
         //menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
         menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
-        "--Select manufacturer--","--Selecciona fabricante--","--Selecciona fabricant--");
+        "--- Select manufacturer ---","--- Selecciona fabricante ---","--- Selecciona fabricant ---");
         menu_add_item_menu_es_sencillo(array_menu_machine_selection);
 
         //Primer fabricante
@@ -31043,7 +31043,7 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
     do {
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "--Select family--","--Selecciona familia--","--Selecciona familia--");
+            "--- Select family ---","--- Selecciona familia ---","--- Selecciona familia ---");
         menu_add_item_menu_es_sencillo(array_menu_machine_selection);
 
 
@@ -31209,7 +31209,7 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "--Select machine--","--Selecciona máquina--","--Selecciona màquina--");
+            "--- Select machine ---","--- Selecciona máquina ---","--- Selecciona màquina ---");
         menu_add_item_menu_es_sencillo(array_menu_common);
 
         for (i=0;i<total_maquinas;i++) {
@@ -33488,7 +33488,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_audio);
 
             menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,NULL,NULL,
-                "--External Audio Source--","--Fuente de Sonido Externa--","--Font de So Externa--");
+                "--- External Audio Source ---","--- Fuente de Sonido Externa ---","--- Font de So Externa ---");
 
             menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_input_enable,NULL,
                 "Enable ~~External Audio Source","Activar Fuente de Sonido ~~Externa","Activar Font de So ~~Externa");
@@ -36654,7 +36654,7 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_NORMAL,menu_msx_mapper_type,NULL,"[%s] Mapper type",buf_mapper_type);
 
                     menu_add_item_menu(array_menu_msxcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"---Info---");
+                    menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Info ---");
                     menu_add_item_menu_format(array_menu_msxcart,MENU_OPCION_SEPARADOR,NULL,NULL,"Cartridge Size: %d KB",msx_cartridge_size/1024);
 
                     menu_add_item_menu(array_menu_msxcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
