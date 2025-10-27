@@ -1360,11 +1360,13 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_welcome_message,NULL,
             "Show welcome logo & message","Mostrar logo bienvenida y mensaje","Mostrar logo benvinguda i missatge");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(opcion_no_welcome_message.v ? ' ' : 'X'));
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         if (opcion_no_welcome_message.v==0) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fast_welcome_message,NULL,
                 "Fast welcome logo & message","Logo bienvenida y mensaje rápido","Logo benvinguda i missatge ràpid");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(opcion_fast_welcome_message.v ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
 
 
@@ -2186,9 +2188,10 @@ void menu_interface_first_aid(MENU_ITEM_PARAMETERS)
 
 void menu_interface_restore_first_aid(MENU_ITEM_PARAMETERS)
 {
-    menu_first_aid_restore_all();
-
-    menu_generic_message("Restore messages","OK. Restored all first aid messages");
+    if (menu_confirm_yesno("Restore all first aid") ) {
+        menu_first_aid_restore_all();
+        menu_generic_message("Restore messages","OK. Restored all first aid messages");
+    }
 }
 
 void menu_interface_charwidth_after_width_change(void)
@@ -2719,6 +2722,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "--Appearance--","--Apariencia--","--Aparença--");
+
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,
             "    ~~Style","    E~~stilo","    E~~stil");
 
@@ -2823,26 +2829,6 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo(array_menu_common,"    ");
         menu_add_item_menu_tooltip(array_menu_common,"Menu character height");
         menu_add_item_menu_ayuda(array_menu_common,"Menu character height. You can reduce it so allowing more text rows in a window");
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "First aid help","Ayuda de primeros auxilios","Ajuda de primers auxilis");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_disable_first_aid.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_disable_first_aid);
-        menu_add_item_menu_tooltip(array_menu_common,"Enable or disable First Aid help");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable or disable First Aid help");
-
-
-        if (menu_disable_first_aid.v==0) {
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_first_aid,NULL,
-                "    Restore all 1st aid mess.","    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
-            menu_add_item_menu_tooltip(array_menu_common,"Restore all First Aid help messages");
-            menu_add_item_menu_ayuda(array_menu_common,"Restore all First Aid help messages");
-            menu_add_item_menu_es_avanzado(array_menu_common);
-
-        }
-
-
 
 
 
@@ -2956,6 +2942,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_item_old_behaviour_close_menus,NULL,
             "Old menu behaviour (ESC, etc)","Antiguo comportamiento menú (ESC, etc)","Antic comportament menú (ESC, etc)");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_old_behaviour_close_menus.v ? 'X' : ' ' ));
+        menu_add_item_menu_es_avanzado(array_menu_common);
         menu_add_item_menu_tooltip(array_menu_common,"Old menu behaviour reacts different to ESC key and closing app windows");
         menu_add_item_menu_ayuda(array_menu_common,"The Old menu behaviour:\n"
             "- ESC key always go back to the previous menu\n"
@@ -2981,7 +2968,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,
                 "Sto~~p emulation on menu","Sto~~p emulación en menu","Sto~~p emulació al menu");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_emulation_paused_on_menu ? 'X' : ' ' ));
-
+            menu_add_item_menu_es_avanzado(array_menu_common);
             menu_add_item_menu_shortcut(array_menu_common,'p');
             menu_add_item_menu_tooltip(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
             menu_add_item_menu_ayuda(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
@@ -3005,6 +2992,23 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         }
 
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "First aid help","Ayuda de primeros auxilios","Ajuda de primers auxilis");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_disable_first_aid.v==0 ? 'X' : ' ') );
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_disable_first_aid);
+        menu_add_item_menu_tooltip(array_menu_common,"Enable or disable First Aid help");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable or disable First Aid help");
+
+
+        if (menu_disable_first_aid.v==0) {
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_first_aid,NULL,
+                "    Restore all 1st aid mess.","    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
+            menu_add_item_menu_tooltip(array_menu_common,"Restore all First Aid help messages");
+            menu_add_item_menu_ayuda(array_menu_common,"Restore all First Aid help messages");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+        }
 
         menu_add_item_menu_separator(array_menu_common);
         menu_add_item_menu_es_avanzado(array_menu_common);
