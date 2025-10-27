@@ -5498,7 +5498,7 @@ void snap_dump_zsf_on_cpu_panic(void)
 
   snapshot_get_date_time_string(time_string);
 
-  sprintf (dump_snapshot_panic_name,"cpu_panic-%s.zsf",time_string);
+  sprintf (dump_snapshot_panic_name,"zesarux_panic-%s.zsf",time_string);
 
   snapshot_save(dump_snapshot_panic_name);
 
