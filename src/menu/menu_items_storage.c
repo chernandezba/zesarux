@@ -9397,6 +9397,8 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
+        menu_add_item_menu_separator(array_menu_common);
+
         //De momento soportar hasta 4 microdrives en el menu , aunque se permiten hasta 8
 
         int i;
