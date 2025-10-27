@@ -1368,9 +1368,9 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_quickexit,NULL,"[%c] Quick exit",
-            (quickexit.v ? 'X' : ' ') );
-        //menu_add_item_menu_shortcut(array_menu_window_settings,'q');
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_quickexit,NULL,
+            "Quick exit","Salida rápida","Sortida ràpida");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(quickexit.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_window_settings,"Exit emulator quickly: no yes/no confirmation and no fadeout");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Exit emulator quickly: no yes/no confirmation and no fadeout");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
@@ -3018,9 +3018,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         if (si_complete_video_driver() ) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_special_fx_settings,NULL,
-                "Special ~~FX","E~~fectos especiales","E~~fectes especials");
-
-            menu_add_item_menu_shortcut(array_menu_common,'f');
+                "Special FX","Efectos especiales","Efectes especials");
             menu_add_item_menu_tiene_submenu(array_menu_common);
             menu_add_item_menu_es_avanzado(array_menu_common);
         }
