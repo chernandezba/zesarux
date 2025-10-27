@@ -11658,11 +11658,15 @@ void menu_zxmmcplus(MENU_ITEM_PARAMETERS)
         "tells if these changes are written to disk or not."
         );
 
-        menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_clear_ram,NULL,
-            "Clear ZXMMC+ RAM","Limpiar RAM ZXMMC+","Netejar RAM ZXMMC+");
-        menu_add_item_menu_prefijo(array_menu_common,"    ");
+        if (zxmmcplus_enabled.v) {
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxmmcplus_clear_ram,NULL,
+                "Clear ZXMMC+ RAM","Limpiar RAM ZXMMC+","Netejar RAM ZXMMC+");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+        }
+
 
         menu_add_item_menu_separator(array_menu_common);
 
