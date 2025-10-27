@@ -1598,26 +1598,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (mouse_menu_disabled.v==0) {
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_ignore_click_open_menu,NULL,
-                "Cl~~icking mouse opens menu","Cl~~ick raton abre menú","Cl~~ick ratolí obre menú");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (mouse_menu_ignore_click_open.v==0 ? 'X' : ' ') );
 
-
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Ignore mouse clicking to open menu or ZX Desktop buttons");
-            menu_add_item_menu_shortcut(array_menu_window_settings,'i');
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Disabling this will make mouse be ignored when clicking on "
-                "the window to open menu or pressing ZX Desktop buttons. The mouse can still be used when the menu is open");
-            menu_add_item_menu_es_avanzado(array_menu_window_settings);
-        }
-
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_limit_menu_open,NULL,
-            "Li~~mit menu opening","Li~~mitar apertura menú","Li~~mitar apertura menú");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(menu_limit_menu_open.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_window_settings,'m');
-        menu_add_item_menu_tooltip(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button)");
-        menu_add_item_menu_ayuda(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second");
-        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 
@@ -2697,7 +2678,24 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu_shortcut(array_menu_common,'m');
                 menu_add_item_menu_es_avanzado(array_menu_common);
             }
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_ignore_click_open_menu,NULL,
+                "Cl~~icking mouse opens menu","Cl~~ick raton abre menú","Cl~~ick ratolí obre menú");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_ignore_click_open.v==0 ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_common,"Ignore mouse clicking to open menu or ZX Desktop buttons");
+            menu_add_item_menu_shortcut(array_menu_common,'i');
+            menu_add_item_menu_ayuda(array_menu_common,"Disabling this will make mouse be ignored when clicking on "
+                "the window to open menu or pressing ZX Desktop buttons. The mouse can still be used when the menu is open");
+            menu_add_item_menu_es_avanzado(array_menu_common);
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_limit_menu_open,NULL,
+            "Li~~mit menu opening","Li~~mitar apertura menú","Li~~mitar apertura menú");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_limit_menu_open.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_common,'m');
+        menu_add_item_menu_tooltip(array_menu_common,"Limit the action to open menu (F5 by default, joystick button)");
+        menu_add_item_menu_ayuda(array_menu_common,"Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_tooltip,NULL,"[%c] ~~Tooltips",(tooltip_enabled.v ? 'X' : ' ') );
