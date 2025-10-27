@@ -1311,7 +1311,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_tape_settings_trunc_name(online_download_path,string_online_download_path,16);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_online_download_path,NULL,
-        "Online Download Path","Ruta descargas online","Ruta descarregues online");
+        "Online Download Path","Ruta descargas online","Ruta descàrregues online");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"    ");
         menu_add_item_menu_sufijo_format(array_menu_window_settings," [%s]",string_online_download_path);
         menu_add_item_menu_tooltip(array_menu_window_settings,"Where to download files from the speccy and zx81 online browser");
