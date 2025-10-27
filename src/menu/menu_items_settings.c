@@ -228,7 +228,8 @@ int menu_tbblue_hardware_id_opcion_seleccionada=0;
 int network_settings_opcion_seleccionada=0;
 int zeng_online_server_opcion_seleccionada=0;
 int settings_danger_zone_opcion_seleccionada=0;
-int hardware_realjoystick_steering_opcion_seleccionada;
+int hardware_realjoystick_steering_opcion_seleccionada=0;
+int settings_apps_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -2509,6 +2510,77 @@ void menu_interface_allow_windows_beyond_limit(MENU_ITEM_PARAMETERS)
     zxvision_allow_windows_beyond_limit.v ^=1;
 }
 
+
+
+void menu_settings_apps(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_immutable,NULL,
+            "Process switcher immutable","Process switcher inmutable","Process switcher inmutable");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_immutable.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
+        menu_add_item_menu_ayuda(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_always_visible,NULL,
+            "Process switcher always visible","Process switcher siempre visible","Process switcher sempre visible");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_always_visible.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always visible (on top of all windows)");
+        menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always visible (on top of all windows)");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_always_left_bottom,NULL,
+            "Process switcher force left-bottom","Process switcher forzar izquierda-abajo","Process switcher forçar esquerra-avall");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_force_left_bottom.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always located on left-bottom");
+        menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always located on left-bottom");
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> ZX Vision-> Apps",
+            "Menú Principal-> Opciones-> ZX Vision-> Apps",
+            "Menú Principal-> Opcions-> ZX Vision-> Apps");
+
+        retorno_menu=menu_dibuja_menu(&settings_apps_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Apps Settings","Opciones Apps","Opcions Apps" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
+
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2832,34 +2904,6 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
-        menu_add_item_menu_separator(array_menu_common);
-
-
-        //TODO: este setting tendria que estar quiza en otro sitio
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_immutable,NULL,
-            "Process switcher immutable","Process switcher inmutable","Process switcher inmutable");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_immutable.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
-        menu_add_item_menu_ayuda(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-
-        //TODO: este setting tendria que estar quiza en otro sitio
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_always_visible,NULL,
-            "Process switcher always visible","Process switcher siempre visible","Process switcher sempre visible");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_always_visible.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always visible (on top of all windows)");
-        menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always visible (on top of all windows)");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        //TODO: este setting tendria que estar quiza en otro sitio
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_always_left_bottom,NULL,
-            "Process switcher force left-bottom","Process switcher forzar izquierda-abajo","Process switcher forçar esquerra-avall");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_force_left_bottom.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always located on left-bottom");
-        menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always located on left-bottom");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
 
         menu_add_item_menu_separator(array_menu_common);
 
@@ -2924,7 +2968,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_separator(array_menu_common);
-
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         if (si_complete_video_driver() ) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_special_fx_settings,NULL,
@@ -2933,6 +2977,13 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_common,'f');
             menu_add_item_menu_tiene_submenu(array_menu_common);
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_apps,NULL,
+            "Apps","Apps","Apps");
+
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
 
 
 
