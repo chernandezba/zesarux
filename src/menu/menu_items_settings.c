@@ -1341,6 +1341,25 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             }
         }
 
+      menu_add_item_menu_separator(array_menu_window_settings);
+
+
+
+           menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_logo_type,NULL,
+            "ZEsarUX logo","ZEsarUX logo","ZEsarUX logo");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_window_settings," [%s]",(xanniversary_logo.v ? "X Anniversary" : "Normal"));
+
+           menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_welcome_message,NULL,
+            "Show welcome logo & message","Mostrar logo bienvenida y mensaje","Mostrar logo benvinguda i missatge");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(opcion_no_welcome_message.v ? ' ' : 'X'));
+
+        if (opcion_no_welcome_message.v==0) {
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fast_welcome_message,NULL,
+                "Fast welcome logo & message","Logo bienvenida y mensaje rápido","Logo benvinguda i missatge ràpid");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(opcion_fast_welcome_message.v ? 'X' : ' '));
+        }
+
 
         menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -1362,6 +1381,89 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+void menu_interface_red(MENU_ITEM_PARAMETERS)
+{
+    screen_gray_mode ^= 4;
+    menu_interface_rgb_inverse_common();
+}
+
+void menu_interface_green(MENU_ITEM_PARAMETERS)
+{
+        screen_gray_mode ^= 2;
+    menu_interface_rgb_inverse_common();
+}
+
+void menu_interface_blue(MENU_ITEM_PARAMETERS)
+{
+        screen_gray_mode ^= 1;
+    menu_interface_rgb_inverse_common();
+}
+
+void menu_interface_inverse_video(MENU_ITEM_PARAMETERS)
+{
+        inverse_video.v ^= 1;
+    menu_interface_rgb_inverse_common();
+}
+
+void menu_interface_real_1648_palette(MENU_ITEM_PARAMETERS)
+{
+    spectrum_1648_use_real_palette.v ^=1;
+    //screen_set_spectrum_palette_offset();
+    menu_interface_rgb_inverse_common();
+}
+
+void menu_colour_settings(MENU_ITEM_PARAMETERS)
+{
+        menu_item *array_menu_colour_settings;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+
+
+        menu_add_item_menu_inicial_format(&array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_red,NULL,"[%c] ~~Red display",(screen_gray_mode & 4 ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_colour_settings,'r');
+
+        menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_green,NULL,"[%c] ~~Green display",(screen_gray_mode & 2 ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_colour_settings,'g');
+
+        menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_blue,NULL,"[%c] ~~Blue display",(screen_gray_mode & 1 ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_colour_settings,'b');
+
+        menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_inverse_video,NULL,"[%c] ~~Inverse colours",(inverse_video.v==1 ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_colour_settings,'i');
+        menu_add_item_menu_tooltip(array_menu_colour_settings,"Inverse Color Palette");
+        menu_add_item_menu_ayuda(array_menu_colour_settings,"Inverses all the colours used on the emulator, including menu");
+
+
+        if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48) {
+            menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_real_1648_palette,NULL,"[%c] R~~eal palette",(spectrum_1648_use_real_palette.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_colour_settings,'e');
+            menu_add_item_menu_tooltip(array_menu_colour_settings,"Use real Spectrum 16/48/+ colour palette");
+            menu_add_item_menu_ayuda(array_menu_colour_settings,"Use real Spectrum 16/48/+ colour palette. "
+                "In fact, this palette is the same as a Spectrum issue 3, and almost the same as issue 1 and 2");
+        }
+
+        menu_add_item_menu(array_menu_colour_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_ESC_item(array_menu_colour_settings);
+
+                retorno_menu=menu_dibuja_menu_no_title_lang(&colour_settings_opcion_seleccionada,&item_seleccionado,array_menu_colour_settings,"Colour Settings" );
+
+
+
+                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                        }
+                }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
 
@@ -1480,12 +1582,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 #endif
 
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
-            "Flash enabled","Parpadeo activado","Parpelleig activat");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
-        menu_add_item_menu_tooltip(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
-        menu_add_item_menu_ayuda(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
-        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
 
 
         if (mouse_menu_disabled.v==0) {
@@ -1628,24 +1725,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         }
 #endif
 
-        menu_add_item_menu_separator(array_menu_window_settings);
 
-
-
-           menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_logo_type,NULL,
-            "ZEsarUX logo","ZEsarUX logo","ZEsarUX logo");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"    ");
-        menu_add_item_menu_sufijo_format(array_menu_window_settings," [%s]",(xanniversary_logo.v ? "X Anniversary" : "Normal"));
-
-           menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_welcome_message,NULL,
-            "Show welcome logo & message","Mostrar logo bienvenida y mensaje","Mostrar logo benvinguda i missatge");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(opcion_no_welcome_message.v ? ' ' : 'X'));
-
-        if (opcion_no_welcome_message.v==0) {
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fast_welcome_message,NULL,
-                "Fast welcome logo & message","Logo bienvenida y mensaje rápido","Logo benvinguda i missatge ràpid");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(opcion_fast_welcome_message.v ? 'X' : ' '));
-        }
 
 
 
@@ -1661,6 +1741,15 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_separator(array_menu_window_settings);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_colour_settings,NULL,
+            "Colour settings","Opciones de colores","Opcions de colors");
+        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+        menu_add_item_menu_separator(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 
@@ -7467,88 +7556,6 @@ void menu_interface_rgb_inverse_common(void)
     menu_init_footer();
 }
 
-void menu_interface_red(MENU_ITEM_PARAMETERS)
-{
-    screen_gray_mode ^= 4;
-    menu_interface_rgb_inverse_common();
-}
-
-void menu_interface_green(MENU_ITEM_PARAMETERS)
-{
-        screen_gray_mode ^= 2;
-    menu_interface_rgb_inverse_common();
-}
-
-void menu_interface_blue(MENU_ITEM_PARAMETERS)
-{
-        screen_gray_mode ^= 1;
-    menu_interface_rgb_inverse_common();
-}
-
-void menu_interface_inverse_video(MENU_ITEM_PARAMETERS)
-{
-        inverse_video.v ^= 1;
-    menu_interface_rgb_inverse_common();
-}
-
-void menu_interface_real_1648_palette(MENU_ITEM_PARAMETERS)
-{
-    spectrum_1648_use_real_palette.v ^=1;
-    //screen_set_spectrum_palette_offset();
-    menu_interface_rgb_inverse_common();
-}
-
-void menu_colour_settings(MENU_ITEM_PARAMETERS)
-{
-        menu_item *array_menu_colour_settings;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-
-
-
-        menu_add_item_menu_inicial_format(&array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_red,NULL,"[%c] ~~Red display",(screen_gray_mode & 4 ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_colour_settings,'r');
-
-        menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_green,NULL,"[%c] ~~Green display",(screen_gray_mode & 2 ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_colour_settings,'g');
-
-        menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_blue,NULL,"[%c] ~~Blue display",(screen_gray_mode & 1 ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_colour_settings,'b');
-
-        menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_inverse_video,NULL,"[%c] ~~Inverse colours",(inverse_video.v==1 ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_colour_settings,'i');
-        menu_add_item_menu_tooltip(array_menu_colour_settings,"Inverse Color Palette");
-        menu_add_item_menu_ayuda(array_menu_colour_settings,"Inverses all the colours used on the emulator, including menu");
-
-
-        if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48) {
-            menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_real_1648_palette,NULL,"[%c] R~~eal palette",(spectrum_1648_use_real_palette.v ? 'X' : ' ') );
-            menu_add_item_menu_shortcut(array_menu_colour_settings,'e');
-            menu_add_item_menu_tooltip(array_menu_colour_settings,"Use real Spectrum 16/48/+ colour palette");
-            menu_add_item_menu_ayuda(array_menu_colour_settings,"Use real Spectrum 16/48/+ colour palette. "
-                "In fact, this palette is the same as a Spectrum issue 3, and almost the same as issue 1 and 2");
-        }
-
-        menu_add_item_menu(array_menu_colour_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-        menu_add_ESC_item(array_menu_colour_settings);
-
-                retorno_menu=menu_dibuja_menu_no_title_lang(&colour_settings_opcion_seleccionada,&item_seleccionado,array_menu_colour_settings,"Colour Settings" );
-
-
-
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                        }
-                }
-
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-}
 
 void menu_settings_display_z88_shortcuts(MENU_ITEM_PARAMETERS)
 {
@@ -8148,6 +8155,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         }
 
 
+        menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
+            "Flash enabled","Parpadeo activado","Parpelleig activat");
+        menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_ayuda(array_menu_settings_display,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,
@@ -8235,24 +8249,16 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_settings_display,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-        menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_colour_settings,NULL,
-            "Colour settings","Opciones de colores","Opcions de colors");
-        menu_add_item_menu_tiene_submenu(array_menu_settings_display);
-        //menu_add_item_menu_shortcut(array_menu_settings_display,'c');
-
 
         menu_add_item_menu(array_menu_settings_display,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         //menu_add_item_menu(array_menu_settings_display,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_settings_display);
 
         menu_add_item_menu_index_full_path(array_menu_settings_display,
-            "Main Menu-> Settings-> Emulated Video","Menú Principal-> Opciones-> Video emulado","Menú Principal-> Opcions-> Video emulat");
+            "Main Menu-> Settings-> Emulated Display","Menú Principal-> Opciones-> Display emulado","Menú Principal-> Opcions-> Display emulat");
 
         retorno_menu=menu_dibuja_menu(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,
-            "Emulated Video Settings","Opciones Video emulado","Opcions Video emulat");
+            "Emulated Display Settings","Opciones Display emulado","Opcions Display emulat");
 
 
 
@@ -9722,10 +9728,10 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
-            "Emulated Vi~~deo","Vi~~deo emulado","Vi~~deo emulat");
+            "Emulated ~~Display","~~Display emulado","~~Display emulat");
         menu_add_item_menu_shortcut(array_menu_settings,'d');
-        menu_add_item_menu_tooltip(array_menu_settings,"Settings for the emulated video");
-        menu_add_item_menu_ayuda(array_menu_settings,"Settings for the emulated video");
+        menu_add_item_menu_tooltip(array_menu_settings,"Settings for the emulated display");
+        menu_add_item_menu_ayuda(array_menu_settings,"Settings for the emulated display");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_external_tools_config,NULL,
@@ -9767,10 +9773,10 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_main_window_settings,NULL,
-            "Main Window", "Ventana Principal", "Finestra Principal");
-        //menu_add_item_menu_shortcut(array_menu_settings,'g');
-        menu_add_item_menu_tooltip(array_menu_settings,"These settings are related to the ZEsarUX Window");
-        menu_add_item_menu_ayuda(array_menu_settings,"These settings are related to the ZEsarUX Window");
+            "Ma~~in Window", "Ventana Pr~~incipal", "Finestra Pr~~incipal");
+        menu_add_item_menu_shortcut(array_menu_settings,'i');
+        menu_add_item_menu_tooltip(array_menu_settings,"These settings are related to the main ZEsarUX Window");
+        menu_add_item_menu_ayuda(array_menu_settings,"These settings are related to the main ZEsarUX Window");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
 
@@ -9799,8 +9805,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         //Si no hay threads, tampoco este menu
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_statistics,NULL,
-            "Stat~~istics","Estad~~ísticas","Estad~~ístiques");
-        menu_add_item_menu_shortcut(array_menu_settings,'i');
+            "Statistics","Estadísticas","Estadístiques");
         menu_add_item_menu_tooltip(array_menu_settings,"Statistics settings");
         menu_add_item_menu_ayuda(array_menu_settings,"Statistics settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
