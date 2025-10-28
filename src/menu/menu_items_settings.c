@@ -2722,7 +2722,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Appearance ---","--- Apariencia ---","--- Aparença ---");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,
@@ -11559,7 +11559,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
                 //char string_tape_load_shown[20],string_tape_load_inserted[50],string_tape_save_shown[20],string_tape_save_inserted[50];
         //char string_realtape_shown[23];
 
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_tape,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Standard Tape ---","--- Cinta Estándar ---","--- Cinta Estàndard ---");
 
 
@@ -11619,7 +11619,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Input Real Tape ---","--- Cinta Real de Entrada ---","--- Cinta Real d'Entrada ---");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_loading_sound,NULL,

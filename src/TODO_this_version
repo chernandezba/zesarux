@@ -67,9 +67,10 @@ Realmente es para el "make install" y tal y como está ahora seria suficiente
 -Quizá texto corto de iconos podría mostrar mas letras, ahora está pensado para que no sobresalga el texto del ancho del icono,
 pero queda bastante espacio aun para el icono a la derecha. ah o no, si quito autoorder es justo el espacio
 
--Poder hacer que el primer item de un menu sea un separador, así se podria tener como separador
+ok-Poder hacer que el primer item de un menu sea un separador, así se podria tener como separador
 settings->zxvision->appearance
 storage->tape->standard tape
+Revisar muchos otros que se pueden poner como separador
 
 
 -ojo menu_dibuja_menu_cursor_abajo, el while (menu_retorna_item(m  no mira si llega al limite de opciones
