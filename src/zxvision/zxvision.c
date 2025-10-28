@@ -20558,6 +20558,18 @@ int menu_dibuja_menu_cursor_abajo(int linea_seleccionada,int max_opciones,menu_i
     return linea_seleccionada;
 }
 
+int menu_dibuja_menu_iterar_item_no_separador(int linea_seleccionada,int max_opciones,menu_item *m)
+{
+
+    //si linea resultante es separador, incrementar
+    while (menu_retorna_item(m,linea_seleccionada)->tipo_opcion==MENU_OPCION_SEPARADOR && linea_seleccionada<max_opciones-1) {
+        linea_seleccionada++;
+    }
+
+
+    return linea_seleccionada;
+}
+
 
 int menu_dibuja_menu_cursor_abajo_tabulado(int linea_seleccionada,int max_opciones,menu_item *m)
 {
@@ -21461,7 +21473,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     if (menu_retorna_item(m,(*opcion_inicial))->tipo_opcion==MENU_OPCION_SEPARADOR) {
         debug_printf(VERBOSE_INFO,"Selected Option is a separator. Set option to 0");
         printf("Selected Option is a separator. Set option to 0\n");
-        (*opcion_inicial)=0;
+
+        int linea_final=menu_dibuja_menu_iterar_item_no_separador((*opcion_inicial),max_opciones,m);
+
+        (*opcion_inicial)=linea_final;
     }
 
 
