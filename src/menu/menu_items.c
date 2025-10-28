@@ -17521,7 +17521,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_common);
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Network Gaming ---","--- Juego en Red ---","--- Joc en Xarxa ---");
 
 
@@ -18076,7 +18076,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
         for (i=0;i<MMC_MAX_CARDS;i++) {
 
-            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,NULL,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Card","--- Tarjeta","--- Targeta");
             menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," %d ---",i);
 
@@ -33482,7 +33482,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         if (audio_can_record_input() ) {
             menu_add_item_menu_separator(array_menu_audio);
 
-            menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,NULL,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_SEPARADOR,NULL,NULL,
                 "--- External Audio Source ---","--- Fuente de Sonido Externa ---","--- Font de So Externa ---");
 
             menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_record_input_enable,NULL,
