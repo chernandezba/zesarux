@@ -21467,17 +21467,16 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         }
 
 
-    //menu_retorna_item(m,(*opcion_inicial))->tipo_opcion==MENU_OPCION_SEPARADOR
-    //si opcion activa es un separador (que esto pasa por ejemplo cuando activamos realvideo, dejamos el cursor por debajo, y cambiamos a zxspectrum)
-    //en ese caso, seleccionamos linea 0
-    if (menu_retorna_item(m,(*opcion_inicial))->tipo_opcion==MENU_OPCION_SEPARADOR) {
-        debug_printf(VERBOSE_INFO,"Selected Option is a separator. Set option to 0");
-        printf("Selected Option is a separator. Set option to 0\n");
+        //menu_retorna_item(m,(*opcion_inicial))->tipo_opcion==MENU_OPCION_SEPARADOR
+        //si opcion activa es un separador (que esto pasa por ejemplo cuando activamos realvideo, dejamos el cursor por debajo, y cambiamos a zxspectrum)
+        //en ese caso, seleccionamos siguiente linea que no sea separador
+        if (menu_retorna_item(m,(*opcion_inicial))->tipo_opcion==MENU_OPCION_SEPARADOR) {
+            debug_printf(VERBOSE_INFO,"Selected Option is a separator. Set next item which is not separator");
 
-        int linea_final=menu_dibuja_menu_iterar_item_no_separador((*opcion_inicial),max_opciones,m);
+            int linea_final=menu_dibuja_menu_iterar_item_no_separador((*opcion_inicial),max_opciones,m);
 
-        (*opcion_inicial)=linea_final;
-    }
+            (*opcion_inicial)=linea_final;
+        }
 
 
     while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 &&
