@@ -2963,7 +2963,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         //char string_tape_load_inserted[50],string_tape_save_inserted[50];
 		char string_realtape_shown[23];
 
-		menu_add_item_menu_inicial_format(&array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,"--- Standard Tape ---");
+		menu_add_item_menu_inicial_format(&array_menu_tape_settings,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Standard Tape ---");
         menu_add_item_menu_spanish_catalan(array_menu_tape_settings,"--- Cinta Estandar ---","--- Cinta Estandard ---");
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Select Standard tape for Input and Output");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Standard tapes are those handled by ROM routines and "

@@ -21460,6 +21460,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //en ese caso, seleccionamos linea 0
     if (menu_retorna_item(m,(*opcion_inicial))->tipo_opcion==MENU_OPCION_SEPARADOR) {
         debug_printf(VERBOSE_INFO,"Selected Option is a separator. Set option to 0");
+        printf("Selected Option is a separator. Set option to 0\n");
         (*opcion_inicial)=0;
     }
 
