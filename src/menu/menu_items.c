@@ -45549,16 +45549,14 @@ void menu_inicio_bucle_main(void)
             set_f_functions_depending_on_driver();
 
             if (zxvision_topbar_menu_enabled.v) {
-                printf("Entramos a top bar menu desde menu_inicio_bucle_main()\n");
+                DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Entering Top Menu from menu_inicio_bucle_main()");
 
                 //Si pulsado en topbar menu
-                printf("menu_inicio_bucle_main. pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
+                //printf("menu_inicio_bucle_main. pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
-                    printf("mouse_left: %d\n",mouse_left);
+                    //printf("mouse_left: %d\n",mouse_left);
                     if (if_menu_topbarmenu_pressed_bar() ) {
-                        printf("menu_inicio_bucle_main. pulsado top bar. salido izq o der: %d %d\n",
-                            ultimo_menu_salido_con_flecha_izquierda,
-                            ultimo_menu_salido_con_flecha_derecha);
+                        //printf("menu_inicio_bucle_main. pulsado top bar. salido izq o der: %d %d\n",ultimo_menu_salido_con_flecha_izquierda,ultimo_menu_salido_con_flecha_derecha);
 
 
 
@@ -45592,7 +45590,7 @@ void menu_inicio_bucle_main(void)
                     //Por tanto si pulsamos F5 y el raton esta en la topbar, la accion
                     //sera como si el raton hubiese pulsado en donde esta indicando, desplegandose el menu a donde indica
                     menu_topbarmenu_pressed_bar=1;
-                    printf("Reabrir menu por haber pulsado en topbar\n");
+                    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Reopen menu because Top Menu has beenm clicked");
                     //reopen_menu=1;
                     menu_pressed_open_menu_while_in_menu.v=0;
                     salir_todos_menus=0;
@@ -45601,7 +45599,7 @@ void menu_inicio_bucle_main(void)
 
                 //miramos si se ha salido pulsando tecla izquierda o derecha
                 if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
-                    printf("Reabrir topbar porque se ha salido de menu con flecha izquierda o derecha\n");
+                    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Reopen Top Menu because it exited using cursor keys left or right");
                     //reopen_menu=1;
                     salir_todos_menus=0;
                 }
@@ -45631,7 +45629,7 @@ void menu_inicio_bucle_main(void)
 
     } while (!salir_menu && !salir_todos_menus);
 
-    printf("-----------Fin menu_inicio_bucle_mail con salir_menu=%d salir_todos_menus=%d\n",salir_menu,salir_todos_menus);
+    //printf("-----------Fin menu_inicio_bucle_mail con salir_menu=%d salir_todos_menus=%d\n",salir_menu,salir_todos_menus);
 
 //extern zxvision_window *menu_dibuja_submenu_primer_submenu;
     //printf("llamar a menu_dibuja_menu_cierra_todos_submenus desde fin menu_inicio_bucle_main. antes menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);

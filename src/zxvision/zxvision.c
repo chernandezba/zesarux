@@ -27469,10 +27469,10 @@ void menu_inicio(void)
         }
 
         //Si pulsado en topbar menu
-        printf("menu_inicio. pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
+        //printf("menu_inicio. pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
             if (if_menu_topbarmenu_pressed_bar() ) {
-                printf("menu_inicio. pulsado top bar\n");
+                DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Clicked on Top Menu");
                 menu_topbarmenu_pressed_bar=1;
             }
         }

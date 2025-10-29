@@ -84,8 +84,8 @@ void topbar_make_topbar_visible(void)
 
     if (zxvision_topbar_menu_enabled.v==0) return;
 
-    debug_printf(VERBOSE_INFO,"Make topbar visible");
-    printf("Make topbar visible\n");
+    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Make topbar visible");
+
     topbar_esta_visible_por_timer.v=1;
 
 }
@@ -121,8 +121,8 @@ void topbar_make_topbar_invisible(void)
     //e interesa establecer el timer como conviene
     switchtopbar_button_visible_timer=MAX_SWITCH_TOPBAR_VISIBLE_TIMER;
 
-    debug_printf(VERBOSE_INFO,"Make topbar hidden");
-    printf("Make topbar hidden\n");
+    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Make topbar hidden");
+
     topbar_esta_visible_por_timer.v=0;
 
 
