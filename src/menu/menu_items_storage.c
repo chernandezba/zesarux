@@ -194,7 +194,7 @@ char tape_out_open_file[PATH_MAX];
 
 void menu_kartusho_rom_file(MENU_ITEM_PARAMETERS)
 {
-	kartusho_disable();
+    kartusho_disable();
 
         char *filtros[2];
 
@@ -236,27 +236,27 @@ void menu_kartusho_rom_file(MENU_ITEM_PARAMETERS)
 
 int menu_storage_kartusho_emulation_cond(void)
 {
-	if (kartusho_rom_file_name[0]==0) return 0;
+    if (kartusho_rom_file_name[0]==0) return 0;
         return 1;
 }
 
 int menu_storage_kartusho_press_button_cond(void)
 {
-	return kartusho_enabled.v;
+    return kartusho_enabled.v;
 }
 
 
 void menu_storage_kartusho_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (kartusho_enabled.v) kartusho_disable();
-	else kartusho_enable();
+    if (kartusho_enabled.v) kartusho_disable();
+    else kartusho_enable();
 }
 
 void menu_storage_kartusho_press_button(MENU_ITEM_PARAMETERS)
 {
-	kartusho_press_button();
-	//Y salimos de todos los menus
-	salir_todos_menus=1;
+    kartusho_press_button();
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -278,15 +278,15 @@ void menu_kartusho(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_kartusho,"ROM Emulation file");
 
 
-                        			menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_emulation,menu_storage_kartusho_emulation_cond,"[%c] ~~Kartusho Enabled", (kartusho_enabled.v ? 'X' : ' '));
+                                    menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_emulation,menu_storage_kartusho_emulation_cond,"[%c] ~~Kartusho Enabled", (kartusho_enabled.v ? 'X' : ' '));
                         menu_add_item_menu_shortcut(array_menu_kartusho,'k');
                         menu_add_item_menu_tooltip(array_menu_kartusho,"Enable kartusho");
                         menu_add_item_menu_ayuda(array_menu_kartusho,"Enable kartusho");
 
 
-			menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_press_button,menu_storage_kartusho_press_button_cond,"~~Press button");
+            menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_press_button,menu_storage_kartusho_press_button_cond,"~~Press button");
              menu_add_item_menu_prefijo(array_menu_kartusho,"    ");
-			menu_add_item_menu_shortcut(array_menu_kartusho,'p');
+            menu_add_item_menu_shortcut(array_menu_kartusho,'p');
                         menu_add_item_menu_tooltip(array_menu_kartusho,"Press button");
                         menu_add_item_menu_ayuda(array_menu_kartusho,"Press button");
 
@@ -373,11 +373,11 @@ void menu_storage_superupgrade_emulation(MENU_ITEM_PARAMETERS)
 
 void menu_storage_superupgrade_internal_rom(MENU_ITEM_PARAMETERS)
 {
-		//superupgrade_puerto_43b ^=0x20;
-		//if ( (superupgrade_puerto_43b & (32+64))==32) return 1;
+        //superupgrade_puerto_43b ^=0x20;
+        //if ( (superupgrade_puerto_43b & (32+64))==32) return 1;
 
-		superupgrade_puerto_43b &=(255-32-64);
-		superupgrade_puerto_43b |=32;
+        superupgrade_puerto_43b &=(255-32-64);
+        superupgrade_puerto_43b |=32;
 }
 
 
@@ -406,10 +406,10 @@ void menu_superupgrade(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_superupgrade,"Enable superupgrade");
 
 
-												menu_add_item_menu_format(array_menu_superupgrade,MENU_OPCION_NORMAL,menu_storage_superupgrade_internal_rom,menu_storage_superupgrade_emulation_cond,"[%c] Show ~~internal ROM", (si_superupgrade_muestra_rom_interna() ? 'X' : ' '));
-												menu_add_item_menu_shortcut(array_menu_superupgrade,'i');
-												menu_add_item_menu_tooltip(array_menu_superupgrade,"Show internal ROM instead of Superupgrade flash");
-												menu_add_item_menu_ayuda(array_menu_superupgrade,"Show internal ROM instead of Superupgrade flash");
+                                                menu_add_item_menu_format(array_menu_superupgrade,MENU_OPCION_NORMAL,menu_storage_superupgrade_internal_rom,menu_storage_superupgrade_emulation_cond,"[%c] Show ~~internal ROM", (si_superupgrade_muestra_rom_interna() ? 'X' : ' '));
+                                                menu_add_item_menu_shortcut(array_menu_superupgrade,'i');
+                                                menu_add_item_menu_tooltip(array_menu_superupgrade,"Show internal ROM instead of Superupgrade flash");
+                                                menu_add_item_menu_ayuda(array_menu_superupgrade,"Show internal ROM instead of Superupgrade flash");
 
 
 
@@ -442,7 +442,7 @@ retorno_menu=menu_dibuja_menu_no_title_lang(&superupgrade_opcion_seleccionada,&i
 
 void menu_ifrom_rom_file(MENU_ITEM_PARAMETERS)
 {
-	ifrom_disable();
+    ifrom_disable();
 
         char *filtros[2];
 
@@ -484,27 +484,27 @@ void menu_ifrom_rom_file(MENU_ITEM_PARAMETERS)
 
 int menu_storage_ifrom_emulation_cond(void)
 {
-	if (ifrom_rom_file_name[0]==0) return 0;
+    if (ifrom_rom_file_name[0]==0) return 0;
         return 1;
 }
 
 int menu_storage_ifrom_press_button_cond(void)
 {
-	return ifrom_enabled.v;
+    return ifrom_enabled.v;
 }
 
 
 void menu_storage_ifrom_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (ifrom_enabled.v) ifrom_disable();
-	else ifrom_enable();
+    if (ifrom_enabled.v) ifrom_disable();
+    else ifrom_enable();
 }
 
 void menu_storage_ifrom_press_button(MENU_ITEM_PARAMETERS)
 {
-	ifrom_press_button();
-	//Y salimos de todos los menus
-	salir_todos_menus=1;
+    ifrom_press_button();
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -526,15 +526,15 @@ void menu_ifrom(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_ifrom,"ROM Emulation file");
 
 
-                        			menu_add_item_menu_format(array_menu_ifrom,MENU_OPCION_NORMAL,menu_storage_ifrom_emulation,menu_storage_ifrom_emulation_cond,"[%c] ~~iFrom Enabled", (ifrom_enabled.v ? 'X' : ' '));
+                                    menu_add_item_menu_format(array_menu_ifrom,MENU_OPCION_NORMAL,menu_storage_ifrom_emulation,menu_storage_ifrom_emulation_cond,"[%c] ~~iFrom Enabled", (ifrom_enabled.v ? 'X' : ' '));
                         menu_add_item_menu_shortcut(array_menu_ifrom,'i');
                         menu_add_item_menu_tooltip(array_menu_ifrom,"Enable ifrom");
                         menu_add_item_menu_ayuda(array_menu_ifrom,"Enable ifrom");
 
 
-			menu_add_item_menu_format(array_menu_ifrom,MENU_OPCION_NORMAL,menu_storage_ifrom_press_button,menu_storage_ifrom_press_button_cond,"~~Press button");
+            menu_add_item_menu_format(array_menu_ifrom,MENU_OPCION_NORMAL,menu_storage_ifrom_press_button,menu_storage_ifrom_press_button_cond,"~~Press button");
             menu_add_item_menu_prefijo(array_menu_ifrom,"    ");
-			menu_add_item_menu_shortcut(array_menu_ifrom,'p');
+            menu_add_item_menu_shortcut(array_menu_ifrom,'p');
                         menu_add_item_menu_tooltip(array_menu_ifrom,"Press button");
                         menu_add_item_menu_ayuda(array_menu_ifrom,"Press button");
 
@@ -568,9 +568,9 @@ void menu_storage_tape_my_soft(MENU_ITEM_PARAMETERS)
 
     char buffer_nombre[PATH_MAX];
 
-	if (find_sharedfile("my_soft/spectrum/vintage/",buffer_nombre)) {
-		strcpy(quickload_file,buffer_nombre);
-		quickfile=quickload_file;
+    if (find_sharedfile("my_soft/spectrum/vintage/",buffer_nombre)) {
+        strcpy(quickload_file,buffer_nombre);
+        quickfile=quickload_file;
 
         menu_smartload(0);
 
@@ -728,17 +728,17 @@ void old_menu_storage_tape_copier(MENU_ITEM_PARAMETERS)
     sprintf(copion_con_carpeta,"copiers/%s",copion);
     char buffer_nombre[PATH_MAX];
 
-	if (find_sharedfile(copion_con_carpeta,buffer_nombre)) {
-		debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
-		strcpy(quickload_file,buffer_nombre);
-		quickfile=quickload_file;
-		//Forzar autoload
-		z80_bit pre_noautoload;
-		pre_noautoload.v=noautoload.v;
-		noautoload.v=0;
-		quickload(quickload_file);
+    if (find_sharedfile(copion_con_carpeta,buffer_nombre)) {
+        debug_printf(VERBOSE_INFO,"Loading tape copier %s",buffer_nombre);
+        strcpy(quickload_file,buffer_nombre);
+        quickfile=quickload_file;
+        //Forzar autoload
+        z80_bit pre_noautoload;
+        pre_noautoload.v=noautoload.v;
+        noautoload.v=0;
+        quickload(quickload_file);
 
-		noautoload.v=pre_noautoload.v;
+        noautoload.v=pre_noautoload.v;
         salir_todos_menus=1;
     }
     else {
@@ -752,17 +752,17 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
 
         char *filtros[8];
 
-	if (MACHINE_IS_ZX80_TYPE) {
-		filtros[0]="80";
-        	filtros[1]="o";
-        	filtros[2]="rwa";
-        	filtros[3]="smp";
-        	filtros[4]="wav";
-        	filtros[5]="z81";
-        	filtros[6]=0;
-	}
+    if (MACHINE_IS_ZX80_TYPE) {
+        filtros[0]="80";
+            filtros[1]="o";
+            filtros[2]="rwa";
+            filtros[3]="smp";
+            filtros[4]="wav";
+            filtros[5]="z81";
+            filtros[6]=0;
+    }
 
-	else if (MACHINE_IS_ZX81_TYPE) {
+    else if (MACHINE_IS_ZX81_TYPE) {
                 filtros[0]="p";
                 filtros[1]="81";
                 filtros[2]="p81";
@@ -773,17 +773,17 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
                 filtros[7]=0;
         }
 
-	else if (MACHINE_IS_MSX) {
+    else if (MACHINE_IS_MSX) {
                 filtros[0]="cas";
                 filtros[1]=0;
         }
 
-	else if (MACHINE_IS_SVI) {
+    else if (MACHINE_IS_SVI) {
                 filtros[0]="cas";
                 filtros[1]=0;
         }
 
-	else {
+    else {
         filtros[0]="tzx";
         filtros[1]="tap";
         filtros[2]="pzx";
@@ -791,28 +791,28 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
         filtros[4]="smp";
         filtros[5]="wav";
         filtros[6]=0;
-	}
+    }
 
 
-	//guardamos directorio actual
-	char directorio_actual[PATH_MAX];
-	getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-	//Obtenemos directorio de cinta
-	//si no hay directorio, vamos a rutas predefinidas
-	if (tapefile==NULL) menu_chdir_sharedfiles();
+    //Obtenemos directorio de cinta
+    //si no hay directorio, vamos a rutas predefinidas
+    if (tapefile==NULL) menu_chdir_sharedfiles();
 
-	else {
-	        char directorio[PATH_MAX];
-	        util_get_dir(tapefile,directorio);
-	        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    else {
+            char directorio[PATH_MAX];
+            util_get_dir(tapefile,directorio);
+            //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-		//cambiamos a ese directorio, siempre que no sea nulo
-		if (directorio[0]!=0) {
-			debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-			zvfs_chdir(directorio);
-		}
-	}
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
 
 
 
@@ -823,10 +823,10 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
         zvfs_chdir(directorio_actual);
 
 
-	if (ret==1) {
-		tapefile=tape_open_file;
-		tape_init();
-	}
+    if (ret==1) {
+        tapefile=tape_open_file;
+        tape_init();
+    }
 
 
 }
@@ -842,49 +842,49 @@ int menu_tape_out_open_last_rotated=10;
 void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 {
 
-	char *filtros[5];
-	char mensaje_existe[20];
+    char *filtros[5];
+    char mensaje_existe[20];
 
-	if (MACHINE_IS_ZX8081) {
+    if (MACHINE_IS_ZX8081) {
 
-		if (MACHINE_IS_ZX80_TYPE) {
+        if (MACHINE_IS_ZX80_TYPE) {
             filtros[0]="o";
             filtros[1]=0;
         }
-		else {
+        else {
             filtros[0]="p";
             filtros[1]="p81";
             filtros[2]=0;
         }
 
-		strcpy(mensaje_existe,"Overwrite?");
-	}
+        strcpy(mensaje_existe,"Overwrite?");
+    }
 
-	else {
+    else {
         filtros[0]="tap";
-		filtros[1]="tzx";
-		filtros[2]="pzx";
-		filtros[3]=0;
-		strcpy(mensaje_existe,"Append?");
-	}
+        filtros[1]="tzx";
+        filtros[2]="pzx";
+        filtros[3]=0;
+        strcpy(mensaje_existe,"Append?");
+    }
 
-	//guardamos directorio actual
-	char directorio_actual[PATH_MAX];
-	getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-	//Obtenemos directorio de cinta
+    //Obtenemos directorio de cinta
 
-	if (tape_out_file!=NULL) {
-	        char directorio[PATH_MAX];
-	        util_get_dir(tape_out_file,directorio);
-	        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    if (tape_out_file!=NULL) {
+            char directorio[PATH_MAX];
+            util_get_dir(tape_out_file,directorio);
+            //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-		//cambiamos a ese directorio, siempre que no sea nulo
-		if (directorio[0]!=0) {
-			debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-			zvfs_chdir(directorio);
-		}
-	}
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
 
 
         int ret;
@@ -894,77 +894,77 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
         zvfs_chdir(directorio_actual);
 
 
-	if (ret==1) {
+    if (ret==1) {
 
-		//Ver si archivo existe y preguntar
-		struct stat buf_stat;
+        //Ver si archivo existe y preguntar
+        struct stat buf_stat;
 
-		if (stat(tape_out_open_file, &buf_stat)==0) {
+        if (stat(tape_out_open_file, &buf_stat)==0) {
 
-			if (MACHINE_IS_ZX8081) {
-					if (menu_confirm_yesno_texto("File exists",mensaje_existe)==0) {
-						tape_out_file=NULL;
-						tap_out_close();
-						return;
-				}
-			}
+            if (MACHINE_IS_ZX8081) {
+                    if (menu_confirm_yesno_texto("File exists",mensaje_existe)==0) {
+                        tape_out_file=NULL;
+                        tap_out_close();
+                        return;
+                }
+            }
 
-			else {
-				int opcion=menu_ask_no_append_truncate_texto("File exists","What do you want?",1);
-				//printf ("opcion: %d\n",opcion);
+            else {
+                int opcion=menu_ask_no_append_truncate_texto("File exists","What do you want?",1);
+                //printf ("opcion: %d\n",opcion);
 
-				//Cancel
-				if (opcion==0) {
-					tape_out_file=NULL;
-					tap_out_close();
-					return;
-				}
+                //Cancel
+                if (opcion==0) {
+                    tape_out_file=NULL;
+                    tap_out_close();
+                    return;
+                }
 
-				//Truncate
-				if (opcion==2) {
-					util_truncate_file(tape_out_open_file);
-				}
+                //Truncate
+                if (opcion==2) {
+                    util_truncate_file(tape_out_open_file);
+                }
 
-				//Rotate
-				if (opcion==3) {
-					//Rotar
-					char string_rotaciones[3];
-
-
-					int valor_leido;
-					sprintf (string_rotaciones,"%d",menu_tape_out_open_last_rotated);
-
-					menu_ventana_scanf("Number of files",string_rotaciones,3);
-
-					valor_leido=parse_string_to_number(string_rotaciones);
-
-					if (valor_leido<1 || valor_leido>99) {
-							debug_printf (VERBOSE_ERR,"Invalid value %d",valor_leido);
-							tape_out_file=NULL;
-							tap_out_close();
-							return;
-					}
-
-					menu_tape_out_open_last_rotated=valor_leido;
+                //Rotate
+                if (opcion==3) {
+                    //Rotar
+                    char string_rotaciones[3];
 
 
-					util_rotate_file(tape_out_open_file,menu_tape_out_open_last_rotated);
-					//El actual ya se creará cuando se escriba la primera vez
-				}
+                    int valor_leido;
+                    sprintf (string_rotaciones,"%d",menu_tape_out_open_last_rotated);
 
-			}
+                    menu_ventana_scanf("Number of files",string_rotaciones,3);
 
-		}
+                    valor_leido=parse_string_to_number(string_rotaciones);
 
-		tape_out_file=tape_out_open_file;
-		tape_out_init();
-	}
+                    if (valor_leido<1 || valor_leido>99) {
+                            debug_printf (VERBOSE_ERR,"Invalid value %d",valor_leido);
+                            tape_out_file=NULL;
+                            tap_out_close();
+                            return;
+                    }
+
+                    menu_tape_out_open_last_rotated=valor_leido;
 
 
-	else {
-		tape_out_file=NULL;
-		tap_out_close();
-	}
+                    util_rotate_file(tape_out_open_file,menu_tape_out_open_last_rotated);
+                    //El actual ya se creará cuando se escriba la primera vez
+                }
+
+            }
+
+        }
+
+        tape_out_file=tape_out_open_file;
+        tape_out_init();
+    }
+
+
+    else {
+        tape_out_file=NULL;
+        tap_out_close();
+    }
 
 
 
@@ -973,15 +973,15 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 void menu_tape_input_insert(MENU_ITEM_PARAMETERS)
 {
 
-	if (tapefile==NULL) return;
+    if (tapefile==NULL) return;
 
-	if ((tape_loadsave_inserted & TAPE_LOAD_INSERTED)==0) {
-		tap_open();
-	}
+    if ((tape_loadsave_inserted & TAPE_LOAD_INSERTED)==0) {
+        tap_open();
+    }
 
-	else {
-		tap_close();
-	}
+    else {
+        tap_close();
+    }
 }
 
 
@@ -1016,18 +1016,18 @@ void menu_tape_browser(MENU_ITEM_PARAMETERS)
 
 void menu_tape_browser_output(MENU_ITEM_PARAMETERS)
 {
-	menu_tape_browser_show(tape_out_file,-1);
+    menu_tape_browser_show(tape_out_file,-1);
 }
 
 void menu_tape_browser_real(MENU_ITEM_PARAMETERS)
 {
-	menu_tape_browser_show(realtape_name,-1);
+    menu_tape_browser_show(realtape_name,-1);
 }
 
 int menu_tape_input_insert_cond(void)
 {
-	if (tapefile==NULL) return 0;
-	else return 1;
+    if (tapefile==NULL) return 0;
+    else return 1;
 }
 
 int menu_tape_output_insert_cond(void)
@@ -1041,7 +1041,7 @@ void menu_tape_output_insert(MENU_ITEM_PARAMETERS)
 
         if (tape_out_file==NULL) return;
 
-	if ((tape_loadsave_inserted & TAPE_SAVE_INSERTED)==0) {
+    if ((tape_loadsave_inserted & TAPE_SAVE_INSERTED)==0) {
                 tap_out_open();
         }
 
@@ -1076,7 +1076,7 @@ void menu_realtape_open(MENU_ITEM_PARAMETERS)
         filtros[7]="o";
         filtros[8]="tap";
         filtros[9]="cdt";
-		filtros[10]="pzx";
+        filtros[10]="pzx";
         filtros[11]=0;
 
 
@@ -1093,7 +1093,7 @@ void menu_realtape_open(MENU_ITEM_PARAMETERS)
                 util_get_dir(realtape_name,directorio);
                 //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-     		//cambiamos a ese directorio, siempre que no sea nulo
+             //cambiamos a ese directorio, siempre que no sea nulo
                 if (directorio[0]!=0) {
                         debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
                         zvfs_chdir(directorio);
@@ -1114,27 +1114,27 @@ void menu_realtape_open(MENU_ITEM_PARAMETERS)
 
                 menu_realtape_message_reading();
 
-        	realtape_insert();
-	}
+            realtape_insert();
+    }
 
 
 }
 
 void menu_realtape_insert(MENU_ITEM_PARAMETERS)
 {
-	if (realtape_inserted.v==0) {
+    if (realtape_inserted.v==0) {
         menu_realtape_message_reading();
 
         realtape_insert();
     }
-	else realtape_eject();
+    else realtape_eject();
 }
 
 
 int menu_realtape_inserted_cond(void)
 {
-	if (menu_realtape_cond()==0) return 0;
-	return realtape_inserted.v;
+    if (menu_realtape_cond()==0) return 0;
+    return realtape_inserted.v;
 }
 
 
@@ -1549,7 +1549,7 @@ void menu_convert_audio_to_zx81_find_continue(zxvision_window *w)
 void menu_convert_audio_to_zx81_find(zxvision_window *w)
 {
 
-	menu_convert_audio_to_zx81_find_buffer_text[0]=0;
+    menu_convert_audio_to_zx81_find_buffer_text[0]=0;
     menu_ventana_scanf("Text to search",menu_convert_audio_to_zx81_find_buffer_text,100);
 
     menu_convert_audio_to_zx81_find_primera_linea=0;
@@ -2213,7 +2213,7 @@ void menu_convert_audio_to_zx81_precise_usleep(int duracion)
 
     while (tiempo_pasado_usec<duracion) {
         //Dormir 1 microsegundo para no saturar la cpu
-	//No. esto no es muy preciso en algunos Linux. Casi prefiero saturar una cpu y que se escuche a tiempo real
+    //No. esto no es muy preciso en algunos Linux. Casi prefiero saturar una cpu y que se escuche a tiempo real
         //usleep(1);
         tiempo_pasado_usec=menu_convert_audio_to_zx81_tiempo_final_usec();
     }
@@ -2399,8 +2399,8 @@ void menu_convert_audio_to_zx81_run_conversion(void)
                 return;
     }
 
-	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
-	pthread_detach(convert_audio_to_zx81_thread);
+    //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+    pthread_detach(convert_audio_to_zx81_thread);
 
 }
 
@@ -2449,32 +2449,32 @@ void menu_convert_audio_to_zx81_select_input_file(void)
     char *filtros[]={"rwa","smp","raw","wav",0};
 
 
-	//guardamos directorio actual
-	char directorio_actual[PATH_MAX];
-	getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-	int ret;
+    int ret;
 
-	//Obtenemos ultimo directorio visitado
-	if (menu_convert_audio_to_zx81_input_file[0]!=0) {
-		char directorio[PATH_MAX];
-		util_get_dir(menu_convert_audio_to_zx81_input_file,directorio);
-		//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    //Obtenemos ultimo directorio visitado
+    if (menu_convert_audio_to_zx81_input_file[0]!=0) {
+        char directorio[PATH_MAX];
+        util_get_dir(menu_convert_audio_to_zx81_input_file,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-		//cambiamos a ese directorio, siempre que no sea nulo
-		if (directorio[0]!=0) {
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
             debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
             zvfs_chdir(directorio);
-		}
-	}
+        }
+    }
 
 
     char buffer_load_file[PATH_MAX];
 
     ret=menu_filesel("Select Input Audio File",filtros,buffer_load_file);
 
-	//volvemos a directorio inicial
-	zvfs_chdir(directorio_actual);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
     if (ret) {
         strcpy(menu_convert_audio_to_zx81_input_file,buffer_load_file);
@@ -2496,19 +2496,19 @@ void menu_convert_audio_to_zx81_select_output_file(void)
     char *filtros[]={"p81","p",0};
 
 
-	//guardamos directorio actual
-	char directorio_actual[PATH_MAX];
-	getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-	int ret;
+    int ret;
 
     char directorio[PATH_MAX]="";
 
 
-	//Obtenemos ultimo directorio visitado
-	if (menu_convert_audio_to_zx81_output_file[0]!=0) {
-		util_get_dir(menu_convert_audio_to_zx81_output_file,directorio);
-	}
+    //Obtenemos ultimo directorio visitado
+    if (menu_convert_audio_to_zx81_output_file[0]!=0) {
+        util_get_dir(menu_convert_audio_to_zx81_output_file,directorio);
+    }
 
     else if (menu_convert_audio_to_zx81_input_file[0]!=0) {
         //Si no hay output, indicar el mismo del input
@@ -2527,8 +2527,8 @@ void menu_convert_audio_to_zx81_select_output_file(void)
 
     ret=menu_filesel_save("Select Output P/P81 File",filtros,buffer_load_file);
 
-	//volvemos a directorio inicial
-	zvfs_chdir(directorio_actual);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
     if (ret) {
         strcpy(menu_convert_audio_to_zx81_output_file,buffer_load_file);
@@ -2615,7 +2615,7 @@ int menu_convert_audio_to_zx81_sufijo_carpeta_expand=1;
 
 void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 {
-	menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
@@ -2625,10 +2625,10 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_convert_audio_to_zx81;
 
-	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	//zxvision_delete_window_if_exists(ventana);
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
@@ -2661,12 +2661,12 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }
 
-	zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
-	z80_byte tecla;
+    z80_byte tecla;
 
 
-	int salir=0;
+    int salir=0;
 
     menu_convert_audio_to_zx81_tiempo_inicial();
 
@@ -2698,7 +2698,7 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
         //esto puede pasar después de hacer Run y la rutina de conversión retorna error por formato de input desconocido,
         //y como se lanza en un thread aparte, puede suceder algo mas tarde y por tanto es necesario esta función que lee tecla y retorna
         //si se genera un error
-		tecla=zxvision_common_getkey_refresh_o_pending_error_message();
+        tecla=zxvision_common_getkey_refresh_o_pending_error_message();
 
         zxvision_handle_cursors_pgupdn(ventana,tecla);
 
@@ -2932,16 +2932,16 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
     } while (salir==0);
 
 
-	util_add_window_geometry_compact(ventana);
+    util_add_window_geometry_compact(ventana);
 
-	if (tecla==3) {
-		zxvision_message_put_window_background();
-	}
+    if (tecla==3) {
+        zxvision_message_put_window_background();
+    }
 
-	else {
-		zxvision_destroy_window(ventana);
+    else {
+        zxvision_destroy_window(ventana);
         menu_convert_audio_to_zx81_window_running=0;
-	}
+    }
 
 
 }
@@ -2955,78 +2955,49 @@ void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS)
 void menu_storage_tape(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_tape_settings;
-	menu_item item_seleccionado;
-	int retorno_menu;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
     do {
         char string_tape_load_shown[20],string_tape_save_shown[20];
         //char string_tape_load_inserted[50],string_tape_save_inserted[50];
-		char string_realtape_shown[23];
+        char string_realtape_shown[23];
 
-		menu_add_item_menu_inicial_format(&array_menu_tape_settings,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Standard Tape ---");
+        menu_add_item_menu_inicial_format(&array_menu_tape_settings,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Standard Tape ---");
         menu_add_item_menu_spanish_catalan(array_menu_tape_settings,"--- Cinta Estandar ---","--- Cinta Estandard ---");
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Select Standard tape for Input and Output");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Standard tapes are those handled by ROM routines and "
-					"have normal speed (no turbo). These tapes are handled by ZEsarUX and loaded or saved "
-					"very quickly (for example tap). Audio format files (for example rwa, wav or smp) "
-					"are converted by ZEsarUX to bytes and loaded on the machine memory. For every other non standard "
-					"tapes (turbo or handled by non-ROM routines like loading stripes on different colours) you must use "
-					"Real Input tape for load, and Audio output to file for saving");
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Select Standard tape for Input and Output");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Standard tapes are those handled by ROM routines and "
+                    "have normal speed (no turbo). These tapes are handled by ZEsarUX and loaded or saved "
+                    "very quickly (for example tap). Audio format files (for example rwa, wav or smp) "
+                    "are converted by ZEsarUX to bytes and loaded on the machine memory. For every other non standard "
+                    "tapes (turbo or handled by non-ROM routines like loading stripes on different colours) you must use "
+                    "Real Input tape for load, and Audio output to file for saving");
 
 
-		menu_tape_settings_trunc_name(tapefile,string_tape_load_shown,20);
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_open,NULL,"~~Input [%s]",string_tape_load_shown);
+        menu_tape_settings_trunc_name(tapefile,string_tape_load_shown,20);
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_open,NULL,"~~Input [%s]",string_tape_load_shown);
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'i');
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'i');
 
 
-		//sprintf (string_tape_load_inserted,"[%c] Input tape inserted",((tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0 ? 'X' : ' '));
-		//menu_add_item_menu(array_menu_tape_settings,string_tape_load_inserted,MENU_OPCION_NORMAL,menu_tape_input_insert,menu_tape_input_insert_cond);
+        //sprintf (string_tape_load_inserted,"[%c] Input tape inserted",((tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0 ? 'X' : ' '));
+        //menu_add_item_menu(array_menu_tape_settings,string_tape_load_inserted,MENU_OPCION_NORMAL,menu_tape_input_insert,menu_tape_input_insert_cond);
 
         menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_input_insert,menu_tape_input_insert_cond,
             "[%c] Input tape inserted",(is_tape_inserted() ? 'X' : ' '));
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser,menu_tape_input_insert_cond,"Tape Vi~~ewer");
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser,menu_tape_input_insert_cond,"Tape Vi~~ewer");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Input tape");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Input tape");
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Input tape");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Input tape");
         menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_input_tape_expand,menu_tape_input_insert_cond,"View Expanded");
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_input_tape_expand,menu_tape_input_insert_cond,"View Expanded");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Input tape");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Input tape");
-        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
-
-
-
-		menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-        menu_tape_settings_trunc_name(tape_out_file,string_tape_save_shown,20);
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_out_open,NULL,"~~Output [%s]",string_tape_save_shown);
-        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'o');
-
-        //sprintf (string_tape_save_inserted,"[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
-        //menu_add_item_menu(array_menu_tape_settings,string_tape_save_inserted,MENU_OPCION_NORMAL,menu_tape_output_insert,menu_tape_output_insert_cond);
-
-        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_output_insert,menu_tape_output_insert_cond,
-            "[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
-
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_output,menu_tape_output_insert_cond,"Tape Viewe~~r");
-        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'r');
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Output tape");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Output tape");
-        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
-
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_output_tape_expand,menu_tape_output_insert_cond,"View Expanded");
-        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Output tape");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Output tape");
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Input tape");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Input tape");
         menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
 
@@ -3034,14 +3005,43 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,
+        menu_tape_settings_trunc_name(tape_out_file,string_tape_save_shown,20);
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_out_open,NULL,"~~Output [%s]",string_tape_save_shown);
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'o');
+
+        //sprintf (string_tape_save_inserted,"[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
+        //menu_add_item_menu(array_menu_tape_settings,string_tape_save_inserted,MENU_OPCION_NORMAL,menu_tape_output_insert,menu_tape_output_insert_cond);
+
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_output_insert,menu_tape_output_insert_cond,
+            "[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
+
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_output,menu_tape_output_insert_cond,"Tape Viewe~~r");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'r');
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Output tape");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Output tape");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_output_tape_expand,menu_tape_output_insert_cond,"View Expanded");
+        menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Output tape");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Output tape");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
+
+
+
+        menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,
             "--- Input Real Tape ---","--- Cinta Real de Entrada ---","--- Cinta Real d'Entrada ---");
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Input Real Tape at normal loading Speed");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"You may select any input valid tape: o, p, tap, tzx, rwa, wav, smp. "
-					"This tape is handled the same way as the real machine does, at normal loading speed, and may "
-					"select tapes with different loading methods instead of the ROM: turbo loading, alkatraz, etc...\n"
-					"When inserted real tape, realvideo is enabled, only to show real loading stripes on screen, but it is "
-					"not necessary, you may disable realvideo if you want");
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Input Real Tape at normal loading Speed");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"You may select any input valid tape: o, p, tap, tzx, rwa, wav, smp. "
+                    "This tape is handled the same way as the real machine does, at normal loading speed, and may "
+                    "select tapes with different loading methods instead of the ROM: turbo loading, alkatraz, etc...\n"
+                    "When inserted real tape, realvideo is enabled, only to show real loading stripes on screen, but it is "
+                    "not necessary, you may disable realvideo if you want");
 
 
 
@@ -3064,38 +3064,38 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             "~~File","~~Fichero","~~Fitxer");
         menu_add_item_menu_sufijo_format(array_menu_tape_settings," [%s]",string_realtape_shown);
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'f');
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"File to use as the input audio");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"File to use as the input audio. File can be an audio file but also a tap, tzx, etc");
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'f');
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"File to use as the input audio");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"File to use as the input audio. File can be an audio file but also a tap, tzx, etc");
 
 
-		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_insert,menu_realtape_cond,
+        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_insert,menu_realtape_cond,
             "Inserted","Insertado","Insertat");
         menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (realtape_inserted.v==1 ? 'X' : ' '));
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Insert the file");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Insert the file");
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Insert the file");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Insert the file");
 
 
 
-		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_pause_unpause,menu_realtape_inserted_cond,
+        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_pause_unpause,menu_realtape_inserted_cond,
             "~~Playing","Re~~produciendose","Re~~produint-se");
         menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (realtape_playing.v==1 ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'p');
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Start playing the tape");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Start playing the tape");
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'p');
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Start playing the tape");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Start playing the tape");
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_real,menu_realtape_cond,"Tape Vie~~wer");
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_real,menu_realtape_cond,"Tape Vie~~wer");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'w');
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'w');
         menu_add_item_menu_genera_ventana(array_menu_tape_settings);
         menu_add_item_menu_se_cerrara(array_menu_tape_settings);
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Real tape");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Real tape");
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Real tape");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Real tape");
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_realtape_expand,menu_realtape_cond,"View Expanded");
+        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_storage_realtape_expand,menu_realtape_cond,"View Expanded");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-		menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Real tape");
-		menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Real tape");
+        menu_add_item_menu_tooltip(array_menu_tape_settings,"Expand Real tape");
+        menu_add_item_menu_ayuda(array_menu_tape_settings,"Expand Real tape");
         menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
 
@@ -3154,22 +3154,22 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-		menu_add_ESC_item(array_menu_tape_settings);
+        menu_add_ESC_item(array_menu_tape_settings);
 
         retorno_menu=menu_dibuja_menu_no_title_lang(&storage_tape_opcion_seleccionada,&item_seleccionado,array_menu_tape_settings,"Tape" );
 
 
 
-		if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-			//llamamos por valor de funcion
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
             if (item_seleccionado.menu_funcion!=NULL) {
                     //printf ("actuamos por funcion\n");
                     item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
             }
-		}
+        }
 
-	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
@@ -3217,11 +3217,11 @@ void menu_timexcart_load(MENU_ITEM_PARAMETERS)
 
         ret=menu_filesel("Select Cartridge",filtros,last_timex_cart);
         //volvemos a directorio inicial
-		zvfs_chdir(directorio_actual);
+        zvfs_chdir(directorio_actual);
 
 
         if (ret==1) {
-		//                sprintf (last_timex_cart,"%s",timexcart_load_file);
+        //                sprintf (last_timex_cart,"%s",timexcart_load_file);
 
                 //sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
                 //reset_menu_overlay_function();
@@ -3242,8 +3242,8 @@ void menu_timexcart_load(MENU_ITEM_PARAMETERS)
 
 void menu_timexcart_eject(MENU_ITEM_PARAMETERS)
 {
-	timex_empty_dock_space();
-	menu_generic_message("Eject Cartridge","OK. Cartridge ejected");
+    timex_empty_dock_space();
+    menu_generic_message("Eject Cartridge","OK. Cartridge ejected");
 }
 
 
@@ -3269,7 +3269,7 @@ void menu_timexcart(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_ayuda(array_menu_timexcart,"Eject Cartridge");
 
 
-     				menu_add_item_menu(array_menu_timexcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                     menu_add_item_menu(array_menu_timexcart,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 menu_add_ESC_item(array_menu_timexcart);
 
                 retorno_menu=menu_dibuja_menu_no_title_lang(&timexcart_opcion_seleccionada,&item_seleccionado,array_menu_timexcart,"Timex Cartridge" );
@@ -3293,7 +3293,7 @@ void menu_timexcart(MENU_ITEM_PARAMETERS)
 
 void menu_dandanator_rom_file(MENU_ITEM_PARAMETERS)
 {
-	dandanator_disable();
+    dandanator_disable();
 
     char *filtros[2];
 
@@ -3304,18 +3304,18 @@ void menu_dandanator_rom_file(MENU_ITEM_PARAMETERS)
     char directorio_actual[PATH_MAX];
     getcwd(directorio_actual,PATH_MAX);
 
-	//Obtenemos ultimo directorio visitado
-	if (dandanator_rom_file_name[0]!=0) {
-		char directorio[PATH_MAX];
-		util_get_dir(dandanator_rom_file_name,directorio);
-		//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    //Obtenemos ultimo directorio visitado
+    if (dandanator_rom_file_name[0]!=0) {
+        char directorio[PATH_MAX];
+        util_get_dir(dandanator_rom_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-		//cambiamos a ese directorio, siempre que no sea nulo
-		if (directorio[0]!=0) {
-				debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-				zvfs_chdir(directorio);
-		}
-	}
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
+        }
+    }
 
     int ret;
 
@@ -3356,27 +3356,27 @@ void menu_dandanator_rom_file(MENU_ITEM_PARAMETERS)
 
 int menu_storage_dandanator_emulation_cond(void)
 {
-	if (dandanator_rom_file_name[0]==0) return 0;
+    if (dandanator_rom_file_name[0]==0) return 0;
         return 1;
 }
 
 int menu_storage_dandanator_press_button_cond(void)
 {
-	return dandanator_enabled.v;
+    return dandanator_enabled.v;
 }
 
 
 void menu_storage_dandanator_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (dandanator_enabled.v) dandanator_disable();
-	else dandanator_enable();
+    if (dandanator_enabled.v) dandanator_disable();
+    else dandanator_enable();
 }
 
 void menu_storage_dandanator_press_button(MENU_ITEM_PARAMETERS)
 {
-	dandanator_press_button();
-	//Y salimos de todos los menus
-	salir_todos_menus=1;
+    dandanator_press_button();
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
@@ -3404,9 +3404,9 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_dandanator,"Enable dandanator");
 
 
-			menu_add_item_menu_format(array_menu_dandanator,MENU_OPCION_NORMAL,menu_storage_dandanator_press_button,menu_storage_dandanator_press_button_cond,"~~Press button");
+            menu_add_item_menu_format(array_menu_dandanator,MENU_OPCION_NORMAL,menu_storage_dandanator_press_button,menu_storage_dandanator_press_button_cond,"~~Press button");
             menu_add_item_menu_prefijo(array_menu_dandanator,"    ");
-			menu_add_item_menu_shortcut(array_menu_dandanator,'p');
+            menu_add_item_menu_shortcut(array_menu_dandanator,'p');
                         menu_add_item_menu_tooltip(array_menu_dandanator,"Press button");
                         menu_add_item_menu_ayuda(array_menu_dandanator,"Press button");
 
@@ -3415,9 +3415,9 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_dandanator);
 
-				char titulo_menu[32];
-				if (MACHINE_IS_SPECTRUM) strcpy(titulo_menu,"ZX Dandanator");
-				else strcpy(titulo_menu,"CPC Dandanator");
+                char titulo_menu[32];
+                if (MACHINE_IS_SPECTRUM) strcpy(titulo_menu,"ZX Dandanator");
+                else strcpy(titulo_menu,"CPC Dandanator");
 
                 retorno_menu=menu_dibuja_menu_no_title_lang(&dandanator_opcion_seleccionada,&item_seleccionado,array_menu_dandanator,titulo_menu);
 
@@ -3442,7 +3442,7 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
 
 void menu_samram_rom_file(MENU_ITEM_PARAMETERS)
 {
-	samram_disable();
+    samram_disable();
 
         char *filtros[2];
 
@@ -3484,30 +3484,30 @@ void menu_samram_rom_file(MENU_ITEM_PARAMETERS)
 
 int menu_storage_samram_emulation_cond(void)
 {
-	if (samram_rom_file_name[0]==0) return 0;
+    if (samram_rom_file_name[0]==0) return 0;
         return 1;
 }
 
 /*
 int menu_storage_samram_press_button_cond(void)
 {
-	return samram_enabled.v;
+    return samram_enabled.v;
 }
 */
 
 
 void menu_storage_samram_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (samram_enabled.v) samram_disable();
-	else samram_enable();
+    if (samram_enabled.v) samram_disable();
+    else samram_enable();
 }
 
 /*
 void menu_storage_samram_press_button(MENU_ITEM_PARAMETERS)
 {
-	samram_press_button();
-	//Y salimos de todos los menus
-	salir_todos_menus=1;
+    samram_press_button();
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 */
@@ -3530,15 +3530,15 @@ void menu_samram(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_samram,"ROM Emulation file");
 
 
-                        			menu_add_item_menu_format(array_menu_samram,MENU_OPCION_NORMAL,menu_storage_samram_emulation,menu_storage_samram_emulation_cond,"[%c] ~~Samram Enabled", (samram_enabled.v ? 'X' : ' '));
+                                    menu_add_item_menu_format(array_menu_samram,MENU_OPCION_NORMAL,menu_storage_samram_emulation,menu_storage_samram_emulation_cond,"[%c] ~~Samram Enabled", (samram_enabled.v ? 'X' : ' '));
                         menu_add_item_menu_shortcut(array_menu_samram,'s');
                         menu_add_item_menu_tooltip(array_menu_samram,"Enable samram");
                         menu_add_item_menu_ayuda(array_menu_samram,"Enable samram");
 
 
             /*
-			menu_add_item_menu_format(array_menu_samram,MENU_OPCION_NORMAL,menu_storage_samram_press_button,menu_storage_samram_press_button_cond,"~~Press button");
-			menu_add_item_menu_shortcut(array_menu_samram,'p');
+            menu_add_item_menu_format(array_menu_samram,MENU_OPCION_NORMAL,menu_storage_samram_press_button,menu_storage_samram_press_button_cond,"~~Press button");
+            menu_add_item_menu_shortcut(array_menu_samram,'p');
                         menu_add_item_menu_tooltip(array_menu_samram,"Press button");
                         menu_add_item_menu_ayuda(array_menu_samram,"Press button");
             */
@@ -3596,14 +3596,14 @@ void menu_storage_hilow_invert_bit(MENU_ITEM_PARAMETERS)
 
 int menu_storage_hilow_press_button_cond(void)
 {
-	return hilow_enabled.v;
+    return hilow_enabled.v;
 }
 
 
 void menu_storage_hilow_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (hilow_enabled.v) hilow_disable();
-	else hilow_enable();
+    if (hilow_enabled.v) hilow_disable();
+    else hilow_enable();
 }
 
 void menu_storage_hilow_insert(MENU_ITEM_PARAMETERS)
@@ -3637,7 +3637,7 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
     //Para que haga flush al cambiar de cinta
     if (hilow_rom_traps.v==0) {
-	    hilow_disable();
+        hilow_disable();
     }
 
     char *filtros[3];
@@ -3675,8 +3675,8 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
 
     if (ret==1) {
-		if (!si_existe_archivo(hilow_file_name)) {
-			if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+        if (!si_existe_archivo(hilow_file_name)) {
+            if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
                 hilow_file_name[0]=0;
                 return;
             }
@@ -3685,7 +3685,7 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
                 int total_sectors=HILOW_MAX_SECTORS;
 
-	            if (menu_ventana_scanf_numero_enhanced("Total sectors",&total_sectors,4,+1,3,HILOW_MAX_SECTORS,0)>=0) {
+                if (menu_ventana_scanf_numero_enhanced("Total sectors",&total_sectors,4,+1,3,HILOW_MAX_SECTORS,0)>=0) {
 
 
                     //Crear archivo vacio
@@ -3759,7 +3759,7 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
                 free(temp_mem);
             }
 
-		}
+        }
 
         //si ya estaba habilitado, cargar la imagen
         if (hilow_enabled.v) {
@@ -3781,7 +3781,7 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
 void menu_storage_hilow_persistent_writes(MENU_ITEM_PARAMETERS)
 {
-	hilow_persistent_writes.v ^=1;
+    hilow_persistent_writes.v ^=1;
 }
 
 
@@ -3801,7 +3801,7 @@ int menu_storage_hilow_enabled_cond(void)
 
 void menu_storage_hilow_write_protect(MENU_ITEM_PARAMETERS)
 {
-	hilow_write_protection.v ^=1;
+    hilow_write_protection.v ^=1;
 }
 
 
@@ -3863,10 +3863,10 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
     //p_sector_zero=hilow_device_buffer;
     //p_sector_one=&hilow_device_buffer[2048];
 
-	char *texto_chkdsk=util_malloc_max_texto_browser();
-	int indice_buffer=0;
+    char *texto_chkdsk=util_malloc_max_texto_browser();
+    int indice_buffer=0;
 
-	char buffer_texto[1024];
+    char buffer_texto[1024];
     int longitud_texto;
     char *txt_ok="OK ";
     char *txt_err="ERR";
@@ -4018,11 +4018,11 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
 
 
-	texto_chkdsk[indice_buffer]=0;
+    texto_chkdsk[indice_buffer]=0;
 
     //printf("browser: %s\n",texto_chkdsk);
 
-	zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", texto_chkdsk);
+    zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 1, 0 , 0, 0, 1, NULL, 1, 0, "%s", texto_chkdsk);
 
 
     free(texto_chkdsk);
@@ -4073,7 +4073,7 @@ void menu_hilow_convert_audio_precise_usleep(int duracion)
 
     while (tiempo_pasado_usec<duracion) {
         //Dormir 1 microsegundo para no saturar la cpu
-	//No. esto no es muy preciso en algunos Linux. Casi prefiero saturar una cpu y que se escuche a tiempo real
+    //No. esto no es muy preciso en algunos Linux. Casi prefiero saturar una cpu y que se escuche a tiempo real
         //usleep(1);
         tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
     }
@@ -4745,8 +4745,8 @@ void menu_hilow_convert_audio_run_thread(void)
                 return;
     }
 
-	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
-	pthread_detach(hilow_convert_audio_thread);
+    //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+    pthread_detach(hilow_convert_audio_thread);
 }
 
 //Detener el thread
@@ -4992,32 +4992,32 @@ void menu_hilow_convert_audio_input_file(void)
     filtros[2]=0;
 
 
-	//guardamos directorio actual
-	char directorio_actual[PATH_MAX];
-	getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-	int ret;
+    int ret;
 
-	//Obtenemos ultimo directorio visitado
-	if (menu_hilow_convert_audio_input_raw[0]!=0) {
-		char directorio[PATH_MAX];
-		util_get_dir(menu_hilow_convert_audio_input_raw,directorio);
-		//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    //Obtenemos ultimo directorio visitado
+    if (menu_hilow_convert_audio_input_raw[0]!=0) {
+        char directorio[PATH_MAX];
+        util_get_dir(menu_hilow_convert_audio_input_raw,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-		//cambiamos a ese directorio, siempre que no sea nulo
-		if (directorio[0]!=0) {
-				debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-				zvfs_chdir(directorio);
-		}
-	}
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
+        }
+    }
 
 
     char buffer_load_file[PATH_MAX];
 
     ret=menu_filesel("Select Input raw File",filtros,buffer_load_file);
 
-	//volvemos a directorio inicial
-	zvfs_chdir(directorio_actual);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
     if (ret) {
         strcpy(menu_hilow_convert_audio_input_raw,buffer_load_file);
@@ -5039,32 +5039,32 @@ void menu_hilow_convert_audio_output_file(void)
     filtros[1]=0;
 
 
-	//guardamos directorio actual
-	char directorio_actual[PATH_MAX];
-	getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-	int ret;
+    int ret;
 
-	//Obtenemos ultimo directorio visitado
-	if (menu_hilow_convert_audio_output_ddh[0]!=0) {
-		char directorio[PATH_MAX];
-		util_get_dir(menu_hilow_convert_audio_output_ddh,directorio);
-		//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    //Obtenemos ultimo directorio visitado
+    if (menu_hilow_convert_audio_output_ddh[0]!=0) {
+        char directorio[PATH_MAX];
+        util_get_dir(menu_hilow_convert_audio_output_ddh,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-		//cambiamos a ese directorio, siempre que no sea nulo
-		if (directorio[0]!=0) {
-				debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-				zvfs_chdir(directorio);
-		}
-	}
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
+        }
+    }
 
 
     char buffer_load_file[PATH_MAX];
 
     ret=menu_filesel("Select Output ddh File",filtros,buffer_load_file);
 
-	//volvemos a directorio inicial
-	zvfs_chdir(directorio_actual);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
     if (ret) {
         strcpy(menu_hilow_convert_audio_output_ddh,buffer_load_file);
@@ -5083,7 +5083,7 @@ zxvision_window zxvision_window_hilow_convert_audio;
 
 void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 {
-	menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
@@ -5098,10 +5098,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_hilow_convert_audio;
 
-	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	//zxvision_delete_window_if_exists(ventana);
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
@@ -5134,12 +5134,12 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 
 
-	zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
-	z80_byte tecla;
+    z80_byte tecla;
 
 
-	int salir=0;
+    int salir=0;
 
     menu_hilow_convert_audio_tiempo_inicial();
 
@@ -5280,7 +5280,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
         menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
 
 
-		tecla=zxvision_common_getkey_refresh();
+        tecla=zxvision_common_getkey_refresh();
 
 
         switch (tecla) {
@@ -5491,19 +5491,19 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 
 
-	util_add_window_geometry_compact(ventana);
+    util_add_window_geometry_compact(ventana);
 
-	if (tecla==3) {
-		zxvision_message_put_window_background();
-	}
+    if (tecla==3) {
+        zxvision_message_put_window_background();
+    }
 
-	else {
+    else {
 
         //Cerrar el thread
         menu_hilow_convert_audio_stop_thread();
 
-		zxvision_destroy_window(ventana);
-	}
+        zxvision_destroy_window(ventana);
+    }
 
 
 }
@@ -5694,7 +5694,7 @@ zxvision_window zxvision_window_hilow_visual_datadrive;
 
 void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
 {
-	menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
@@ -5707,10 +5707,10 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_hilow_visual_datadrive;
 
-	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	//zxvision_delete_window_if_exists(ventana);
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
@@ -5742,7 +5742,7 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }
 
-	zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
     //para mostrar correctamente el color del fondo alterado por default_paper
     zxvision_draw_window_contents(ventana);
@@ -5763,10 +5763,10 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
     }
 
 
-	menu_item *array_menu_visual_hilow;
-	menu_item item_seleccionado;
-	int retorno_menu;
-	do {
+    menu_item *array_menu_visual_hilow;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
         //Borrar posible texto anterior
         //zxvision_print_string_defaults_fillspc(ventana,1,1,"");
@@ -5784,17 +5784,17 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
         zxvision_draw_window_contents(ventana);
 
 
-		menu_add_item_menu_inicial_format(&array_menu_visual_hilow,MENU_OPCION_NORMAL,menu_visual_hilow_slow_movement,NULL
+        menu_add_item_menu_inicial_format(&array_menu_visual_hilow,MENU_OPCION_NORMAL,menu_visual_hilow_slow_movement,NULL
             ,"[%c] ~~Slow movement",(hilow_visual_slow_movement ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_visual_hilow,'s');
-		menu_add_item_menu_ayuda(array_menu_visual_hilow,"Slow movement");
-		menu_add_item_menu_tabulado(array_menu_visual_hilow,1,0);
+        menu_add_item_menu_shortcut(array_menu_visual_hilow,'s');
+        menu_add_item_menu_ayuda(array_menu_visual_hilow,"Slow movement");
+        menu_add_item_menu_tabulado(array_menu_visual_hilow,1,0);
 
 
-		//Nombre de ventana solo aparece en el caso de stdout
-		retorno_menu=menu_dibuja_menu_no_title_lang(&visualhilow_opcion_seleccionada,&item_seleccionado,array_menu_visual_hilow,"Visual Hilow Datadrive" );
+        //Nombre de ventana solo aparece en el caso de stdout
+        retorno_menu=menu_dibuja_menu_no_title_lang(&visualhilow_opcion_seleccionada,&item_seleccionado,array_menu_visual_hilow,"Visual Hilow Datadrive" );
 
-		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+        if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
             //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
             //Con este cls provoca que se borren todas las otras ventanas en background
 
@@ -5808,24 +5808,24 @@ void menu_hilow_visual_datadrive(MENU_ITEM_PARAMETERS)
 
                     }
             }
-		}
+        }
 
-	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
-
-
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
 
-	util_add_window_geometry_compact(ventana);
 
-	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
-		zxvision_message_put_window_background();
-	}
 
-	else {
+    util_add_window_geometry_compact(ventana);
 
-		zxvision_destroy_window(ventana);
-	}
+    if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+        zxvision_message_put_window_background();
+    }
+
+    else {
+
+        zxvision_destroy_window(ventana);
+    }
 
 
 }
@@ -6080,17 +6080,17 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
     int microdrive_seleccionado=valor_opcion;
 
-	microdrive_eject(microdrive_seleccionado);
+    microdrive_eject(microdrive_seleccionado);
 
         char *filtros[3];
 
         filtros[0]="rmd";
         filtros[1]="mdr";
-		filtros[2]=0;
+        filtros[2]=0;
 
 
 
-	   //guardamos directorio actual
+       //guardamos directorio actual
         char directorio_actual[PATH_MAX];
         getcwd(directorio_actual,PATH_MAX);
 
@@ -6112,8 +6112,8 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
 
 
 
-		int ret=menu_filesel("Select Microdrive File",filtros,microdrive_status[microdrive_seleccionado].microdrive_file_name);
-		//volvemos a directorio inicial
+        int ret=menu_filesel("Select Microdrive File",filtros,microdrive_status[microdrive_seleccionado].microdrive_file_name);
+        //volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
 
 
@@ -6125,78 +6125,78 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
                     return;
                 }
 
-				if (!util_compare_file_extension(microdrive_status[microdrive_seleccionado].microdrive_file_name,"mdr")) {
+                if (!util_compare_file_extension(microdrive_status[microdrive_seleccionado].microdrive_file_name,"mdr")) {
 
 
-					int total_sectors=MDR_MAX_SECTORS;
+                    int total_sectors=MDR_MAX_SECTORS;
 
-					//Si se sale con Cancel o se pone valor incorrecto
-					if (menu_ventana_scanf_numero_enhanced("Total Sectors?",&total_sectors,4,+1,1,MDR_MAX_SECTORS,0)<0) {
+                    //Si se sale con Cancel o se pone valor incorrecto
+                    if (menu_ventana_scanf_numero_enhanced("Total Sectors?",&total_sectors,4,+1,1,MDR_MAX_SECTORS,0)<0) {
                         //printf("Salir con error\n");
-						microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
-						return;
-					}
+                        microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
+                        return;
+                    }
 
-					//Crear archivo vacio
-					FILE *ptr_mdrfile;
-					ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
+                    //Crear archivo vacio
+                    FILE *ptr_mdrfile;
+                    ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
 
-					int totalsize=total_sectors*MDR_BYTES_PER_SECTOR+1; //+1 del byte final de write protect
-					z80_byte valor_grabar=0;
+                    int totalsize=total_sectors*MDR_BYTES_PER_SECTOR+1; //+1 del byte final de write protect
+                    z80_byte valor_grabar=0;
 
-					if (ptr_mdrfile!=NULL) {
-						while (totalsize) {
-							fwrite(&valor_grabar,1,1,ptr_mdrfile);
-							totalsize--;
-						}
-						fclose(ptr_mdrfile);
-					}
+                    if (ptr_mdrfile!=NULL) {
+                        while (totalsize) {
+                            fwrite(&valor_grabar,1,1,ptr_mdrfile);
+                            totalsize--;
+                        }
+                        fclose(ptr_mdrfile);
+                    }
 
-				}
+                }
 
-				else {
-					//Para raw
-					int total_size=MICRODRIVE_RAW_COMMON_SIZE;
+                else {
+                    //Para raw
+                    int total_size=MICRODRIVE_RAW_COMMON_SIZE;
 
-					//Si se sale con Cancel o se pone valor incorrecto
-					if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,1000000,0)<0) {
-						microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
-						return;
-					}
+                    //Si se sale con Cancel o se pone valor incorrecto
+                    if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,1000000,0)<0) {
+                        microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
+                        return;
+                    }
 
-					//Espacio en bytes *2
-					total_size *=2;
+                    //Espacio en bytes *2
+                    total_size *=2;
 
-					//Crear archivo vacio
-					FILE *ptr_mdrfile;
-					ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
+                    //Crear archivo vacio
+                    FILE *ptr_mdrfile;
+                    ptr_mdrfile=fopen(microdrive_status[microdrive_seleccionado].microdrive_file_name,"wb");
 
-					//Escribir cabecera
-					z80_byte header[MICRODRIVE_RAW_HEADER_SIZE];
+                    //Escribir cabecera
+                    z80_byte header[MICRODRIVE_RAW_HEADER_SIZE];
 
-					microdrive_raw_create_header(header,0);
+                    microdrive_raw_create_header(header,0);
 
-					fwrite(header,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_mdrfile);
+                    fwrite(header,1,MICRODRIVE_RAW_HEADER_SIZE,ptr_mdrfile);
 
 
 
-					z80_byte valor_grabar=0;
+                    z80_byte valor_grabar=0;
 
-					if (ptr_mdrfile!=NULL) {
-						while (total_size) {
-							fwrite(&valor_grabar,1,1,ptr_mdrfile);
-							total_size--;
-						}
-						fclose(ptr_mdrfile);
-					}
+                    if (ptr_mdrfile!=NULL) {
+                        while (total_size) {
+                            fwrite(&valor_grabar,1,1,ptr_mdrfile);
+                            total_size--;
+                        }
+                        fclose(ptr_mdrfile);
+                    }
 
-				}
+                }
 
             }
 
             microdrive_insert(microdrive_seleccionado);
 
-		}
+        }
 
 
 
@@ -6268,7 +6268,7 @@ void menu_mdv_simulate_raw_bad_change(MENU_ITEM_PARAMETERS)
 
     switch(opcion) {
         case 1:
-			microdrive_raw_unmark_bad_position(microdrive_seleccionado,posicion);
+            microdrive_raw_unmark_bad_position(microdrive_seleccionado,posicion);
         break;
 
     }
@@ -6283,12 +6283,12 @@ void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
 
     //printf("MDV: %d\n",microdrive_seleccionado);
 
-	if (microdrive_status[microdrive_seleccionado].raw_format) {
-		int max_valor=microdrive_status[microdrive_seleccionado].raw_total_size-1;
+    if (microdrive_status[microdrive_seleccionado].raw_format) {
+        int max_valor=microdrive_status[microdrive_seleccionado].raw_total_size-1;
 
 
-		if (menu_ventana_scanf_numero_enhanced("Position?",&menu_mdv_simulate_bad_add_last_position,7,+1,0,max_valor,0)>=0) {
-		    microdrive_raw_mark_bad_position(microdrive_seleccionado,menu_mdv_simulate_bad_add_last_position);
+        if (menu_ventana_scanf_numero_enhanced("Position?",&menu_mdv_simulate_bad_add_last_position,7,+1,0,max_valor,0)>=0) {
+            microdrive_raw_mark_bad_position(microdrive_seleccionado,menu_mdv_simulate_bad_add_last_position);
 
             //Indicar siguiente posicion por si se vuelve a agregar otro
             if (menu_mdv_simulate_bad_add_last_position<max_valor) menu_mdv_simulate_bad_add_last_position++;
@@ -6298,19 +6298,19 @@ void menu_mdv_simulate_bad_add(MENU_ITEM_PARAMETERS)
         }
 
 
-	}
+    }
 
-	else {
+    else {
 
-		int max_valor=microdrive_status[microdrive_seleccionado].mdr_total_sectors-1;
+        int max_valor=microdrive_status[microdrive_seleccionado].mdr_total_sectors-1;
 
-		int sector=0;
+        int sector=0;
 
-		if (menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0)>=0) {
-		    microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=1;
+        if (menu_ventana_scanf_numero_enhanced("Sector?",&sector,4,+1,0,max_valor,0)>=0) {
+            microdrive_status[microdrive_seleccionado].bad_sectors_simulated[sector]=1;
         }
 
-	}
+    }
 
 }
 
@@ -6334,46 +6334,46 @@ void menu_mdv_simulate_bad(MENU_ITEM_PARAMETERS)
 
         int i;
 
-		if (microdrive_status[microdrive_seleccionado].raw_format) {
-			z80_int *puntero=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
-			for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
+        if (microdrive_status[microdrive_seleccionado].raw_format) {
+            z80_int *puntero=microdrive_status[microdrive_seleccionado].raw_microdrive_buffer;
+            for (i=0;i<microdrive_status[microdrive_seleccionado].raw_total_size;i++) {
 
-				if (puntero[i] & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
+                if (puntero[i] & MICRODRIVE_RAW_INFO_BYTE_MASK_BAD_POSITION) {
 
-					menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_raw_bad_change,NULL,"Position %d",i);
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_raw_bad_change,NULL,"Position %d",i);
 
-					//Codificar sector y microdrive seleccionado como:
-					//valor=microdrive_seleccionado+sector*256;
-					menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado+i*256);
-				}
-
-
-
-			}
-		}
-		else {
-			for (i=0;i<MDR_MAX_SECTORS;i++) {
-
-				if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) {
-
-					menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_change,NULL,"Sector %d",i);
-
-					//Codificar sector y microdrive seleccionado como:
-					//valor=microdrive_seleccionado+sector*256;
-					menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado+i*256);
-				}
+                    //Codificar sector y microdrive seleccionado como:
+                    //valor=microdrive_seleccionado+sector*256;
+                    menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado+i*256);
+                }
 
 
 
-			}
-		}
+            }
+        }
+        else {
+            for (i=0;i<MDR_MAX_SECTORS;i++) {
 
-		if (microdrive_status[microdrive_seleccionado].raw_format) {
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad position");
-		}
-		else {
-        	menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad sector");
-		}
+                if (microdrive_status[microdrive_seleccionado].bad_sectors_simulated[i]) {
+
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_change,NULL,"Sector %d",i);
+
+                    //Codificar sector y microdrive seleccionado como:
+                    //valor=microdrive_seleccionado+sector*256;
+                    menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado+i*256);
+                }
+
+
+
+            }
+        }
+
+        if (microdrive_status[microdrive_seleccionado].raw_format) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad position");
+        }
+        else {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mdv_simulate_bad_add,NULL,"Add bad sector");
+        }
         menu_add_item_menu_valor_opcion(array_menu_common,microdrive_seleccionado);
 
 
@@ -7348,28 +7348,28 @@ void visual_microdrive_get_info_rodillos_interiores(int *radio_cinta_sectores,in
     //cinta enrollada. maximo grueso=295-152=143
     int max_radio_cinta_sectores=143-10; //para que no llegue al tope
 
-	//Si es imagen raw, obtener de otra manera
-	if (microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_format) {
-		int size=microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_total_size;
-		*radio_cinta_sectores=(size*max_radio_cinta_sectores)/MICRODRIVE_RAW_COMMON_SIZE;
-	}
+    //Si es imagen raw, obtener de otra manera
+    if (microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_format) {
+        int size=microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_total_size;
+        *radio_cinta_sectores=(size*max_radio_cinta_sectores)/MICRODRIVE_RAW_COMMON_SIZE;
+    }
 
-	else {
+    else {
 
 
-		int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
+        int numero_microdrive=menu_visual_microdrive_mirando_microdrive;
 
-		int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
+        int total_sectores=microdrive_status[numero_microdrive].mdr_total_sectors;
 
-		//sacar radio
-		*radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
+        //sacar radio
+        *radio_cinta_sectores=(total_sectores*max_radio_cinta_sectores)/MDR_MAX_SECTORS;
 
-	}
+    }
 
     //Si es un microdrive super pequeño, al menos 1 de radio
     if (*radio_cinta_sectores==0) *radio_cinta_sectores=1;
-	//Controlar maximo tambien
-	if (*radio_cinta_sectores>max_radio_cinta_sectores) *radio_cinta_sectores=max_radio_cinta_sectores;
+    //Controlar maximo tambien
+    if (*radio_cinta_sectores>max_radio_cinta_sectores) *radio_cinta_sectores=max_radio_cinta_sectores;
 
     *radio_base=152;
 }
@@ -7583,11 +7583,11 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
     int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
     int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
 
-	int total_offset;
+    int total_offset;
 
-	if (microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_format) {
-		total_offset=microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_current_position;
-	}
+    if (microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_format) {
+        total_offset=microdrive_status[menu_visual_microdrive_mirando_microdrive].raw_current_position;
+    }
 
     else total_offset=(sector_actual*MDR_BYTES_PER_SECTOR)+offset_actual;
 
@@ -7633,27 +7633,27 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
         int color_cinta_enrollada=0; //esto sera negro
         visual_microdrive_marca_sector_cero(d,color_cinta_enrollada);
 
-		int marca_sector_cero=0;
+        int marca_sector_cero=0;
 
-		if (microdrive_status[numero_microdrive].raw_format) {
+        if (microdrive_status[numero_microdrive].raw_format) {
 
-			//Asi un poco a ojo, en formato raw, esa posicion mas o menos es la del sector 0
-			if (microdrive_status[numero_microdrive].raw_current_position<MICRODRIVE_RAW_COMMON_SECTOR_SIZE) {
-				marca_sector_cero=1;
-			}
-		}
+            //Asi un poco a ojo, en formato raw, esa posicion mas o menos es la del sector 0
+            if (microdrive_status[numero_microdrive].raw_current_position<MICRODRIVE_RAW_COMMON_SECTOR_SIZE) {
+                marca_sector_cero=1;
+            }
+        }
 
         else {
-			if (sector_actual==0) {
-            	//De momento solo indicarlo en el trocito que lee la esponjita
-            	//TODO: usar offset en el sector. De momento solo poner esa zona en rojo
+            if (sector_actual==0) {
+                //De momento solo indicarlo en el trocito que lee la esponjita
+                //TODO: usar offset en el sector. De momento solo poner esa zona en rojo
 
-				marca_sector_cero=1;
+                marca_sector_cero=1;
 
-        	}
-		}
+            }
+        }
 
-		if (marca_sector_cero) visual_microdrive_marca_sector_cero(d,2);
+        if (marca_sector_cero) visual_microdrive_marca_sector_cero(d,2);
 
 
         int radio_cinta_sectores;
@@ -7684,17 +7684,17 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
         if (motor_on) {
             //int offset_actual=microdrive_status[numero_microdrive].mdr_current_offset_in_sector;
 
-			if (microdrive_status[numero_microdrive].raw_format) {
-				//Cinta raw tiembla cada paso de 500 bytes
-				int paso=total_offset/500;
-				if (paso % 2) sumar_pos=desplazamiento;
-			}
+            if (microdrive_status[numero_microdrive].raw_format) {
+                //Cinta raw tiembla cada paso de 500 bytes
+                int paso=total_offset/500;
+                if (paso % 2) sumar_pos=desplazamiento;
+            }
 
-			else {
-				//En caso de mdr, tiembla cada paso de sector
-				int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
-				if (sector_actual % 2) sumar_pos=desplazamiento;
-			}
+            else {
+                //En caso de mdr, tiembla cada paso de sector
+                int sector_actual=microdrive_status[numero_microdrive].mdr_current_sector;
+                if (sector_actual % 2) sumar_pos=desplazamiento;
+            }
         }
 
 
@@ -7789,12 +7789,12 @@ void menu_visual_microdrive_dibujar_microdrive_dinamico(struct zxvision_vectoria
         if (interface1_last_value_port_ef & 0x04) color_cabezal=4; //read
         else color_cabezal=2; //write
 
-		//escribiendo gap. magenta
-		//no se aprecia por tanto no lo habilito
-		/*if ((interface1_last_value_port_ef & 0x08)==0 && (interface1_last_value_port_ef & 0x04)) {
-			//printf("Magenta\n");
-			color_cabezal=3;
-		}*/
+        //escribiendo gap. magenta
+        //no se aprecia por tanto no lo habilito
+        /*if ((interface1_last_value_port_ef & 0x08)==0 && (interface1_last_value_port_ef & 0x04)) {
+            //printf("Magenta\n");
+            color_cabezal=3;
+        }*/
     }
 
     d->setcolour(d,color_cabezal);
@@ -7948,7 +7948,7 @@ zxvision_window zxvision_window_visual_microdrive;
 void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 {
 
-	menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
@@ -7958,10 +7958,10 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_visual_microdrive;
 
-	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	//zxvision_delete_window_if_exists(ventana);
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
@@ -7994,15 +7994,15 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }
 
-	zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
     //para mostrar correctamente el color del fondo alterado por default_paper
     zxvision_draw_window_contents(ventana);
 
-	//z80_byte tecla;
+    //z80_byte tecla;
 
 
-	//int salir=0;
+    //int salir=0;
 
 
     menu_visual_microdrive_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
@@ -8022,10 +8022,10 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
     }
 
 
-    	menu_item *array_menu_visual_microdrive;
-	menu_item item_seleccionado;
-	int retorno_menu;
-	do {
+        menu_item *array_menu_visual_microdrive;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
 
 
@@ -8034,23 +8034,23 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_inicial_format(&array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_cual,NULL
+        menu_add_item_menu_inicial_format(&array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_cual,NULL
             ,"~~Looking MDV%d",menu_visual_microdrive_mirando_microdrive+1);
-		menu_add_item_menu_shortcut(array_menu_visual_microdrive,'l');
-		menu_add_item_menu_ayuda(array_menu_visual_microdrive,"Which microdrive");
-		menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,0);
+        menu_add_item_menu_shortcut(array_menu_visual_microdrive,'l');
+        menu_add_item_menu_ayuda(array_menu_visual_microdrive,"Which microdrive");
+        menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,0);
 
-		menu_add_item_menu_format(array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_slow_movement,NULL
+        menu_add_item_menu_format(array_menu_visual_microdrive,MENU_OPCION_NORMAL,menu_visual_microdrive_slow_movement,NULL
             ,"[%c] ~~Slow movement",(visual_microdrive_slow_movement ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_visual_microdrive,'s');
-		menu_add_item_menu_ayuda(array_menu_visual_microdrive,"Slow movement");
-		menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,1);
+        menu_add_item_menu_shortcut(array_menu_visual_microdrive,'s');
+        menu_add_item_menu_ayuda(array_menu_visual_microdrive,"Slow movement");
+        menu_add_item_menu_tabulado(array_menu_visual_microdrive,1,1);
 
 
-		//Nombre de ventana solo aparece en el caso de stdout
-		retorno_menu=menu_dibuja_menu_no_title_lang(&visualmicrodrive_opcion_seleccionada,&item_seleccionado,array_menu_visual_microdrive,"Visual Microdrive" );
+        //Nombre de ventana solo aparece en el caso de stdout
+        retorno_menu=menu_dibuja_menu_no_title_lang(&visualmicrodrive_opcion_seleccionada,&item_seleccionado,array_menu_visual_microdrive,"Visual Microdrive" );
 
-		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+        if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
             //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
             //Con este cls provoca que se borren todas las otras ventanas en background
 
@@ -8064,24 +8064,24 @@ void menu_visual_microdrive(MENU_ITEM_PARAMETERS)
 
                     }
             }
-		}
+        }
 
-	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
-
-
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
 
-	util_add_window_geometry_compact(ventana);
 
-	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
-		zxvision_message_put_window_background();
-	}
 
-	else {
+    util_add_window_geometry_compact(ventana);
 
-		zxvision_destroy_window(ventana);
-	}
+    if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+        zxvision_message_put_window_background();
+    }
+
+    else {
+
+        zxvision_destroy_window(ventana);
+    }
 
 
 
@@ -8207,8 +8207,8 @@ void menu_microdrive_raw_map_draw_putpixel_char(zxvision_window *w,int x,int y,i
 
 
 
-	z80_byte *puntero;
-	puntero=&char_set[(caracter-32)*8];
+    z80_byte *puntero;
+    puntero=&char_set[(caracter-32)*8];
 
 
 
@@ -8981,11 +8981,11 @@ void menu_microdrive_raw_map_arriba(zxvision_window *ventana)
 
 void microdrive_raw_map_edit_index(void)
 {
-	int offset=menu_microdrive_raw_map_start_index;
+    int offset=menu_microdrive_raw_map_start_index;
 
     int max=microdrive_status[microdrive_raw_map_selected_unit].raw_total_size-1;
 
-	menu_ventana_scanf_numero_enhanced("New position",&offset,8,+1024,0,max,0);
+    menu_ventana_scanf_numero_enhanced("New position",&offset,8,+1024,0,max,0);
 
     //comprobar error
     if (if_pending_error_message) {
@@ -9052,7 +9052,7 @@ zxvision_window zxvision_window_microdrive_raw_map;
 
 void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
 {
-	menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
@@ -9068,10 +9068,10 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_microdrive_raw_map;
 
-	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	//zxvision_delete_window_if_exists(ventana);
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
@@ -9104,12 +9104,12 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }
 
-	zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
-	z80_byte tecla;
+    z80_byte tecla;
 
 
-	int salir=0;
+    int salir=0;
 
 
     menu_microdrive_raw_map_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
@@ -9147,7 +9147,7 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
         int aux_pgdnup;
 
 
-		tecla=zxvision_common_getkey_refresh();
+        tecla=zxvision_common_getkey_refresh();
 
 
         switch (tecla) {
@@ -9265,16 +9265,16 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
     } while (salir==0);
 
 
-	util_add_window_geometry_compact(ventana);
+    util_add_window_geometry_compact(ventana);
 
-	if (tecla==3) {
-		zxvision_message_put_window_background();
-	}
+    if (tecla==3) {
+        zxvision_message_put_window_background();
+    }
 
-	else {
+    else {
 
-		zxvision_destroy_window(ventana);
-	}
+        zxvision_destroy_window(ventana);
+    }
 
 
 }
@@ -9292,9 +9292,9 @@ void menu_microdrive_raw_full_erase(MENU_ITEM_PARAMETERS)
 void menu_microdrive_raw_enlarge(MENU_ITEM_PARAMETERS)
 {
 
-	int perc=2;
+    int perc=2;
 
-	if (menu_ventana_scanf_numero_enhanced("Stretch (%)",&perc,4,+1,1,100,0)>=0) {
+    if (menu_ventana_scanf_numero_enhanced("Stretch (%)",&perc,4,+1,1,100,0)>=0) {
 
         if (menu_confirm_yesno("Stretch")) {
 
@@ -9328,8 +9328,8 @@ void menu_interface1_simulate_sound_write(MENU_ITEM_PARAMETERS)
 
 void menu_interface1_enable(MENU_ITEM_PARAMETERS)
 {
-	if (if1_enabled.v==0) enable_if1();
-	else disable_if1();
+    if (if1_enabled.v==0) enable_if1();
+    else disable_if1();
 }
 
 void menu_interface1(MENU_ITEM_PARAMETERS)
@@ -9522,12 +9522,12 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
 
             }
 
-			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive_previo,NULL,
-					"Visual Microdrive","Visual Microdrive","Visual Microdrive");
-			menu_add_item_menu_prefijo(array_menu_common,"    ");
-			menu_add_item_menu_se_cerrara(array_menu_common);
-			menu_add_item_menu_genera_ventana(array_menu_common);
-			menu_add_item_menu_valor_opcion(array_menu_common,i);
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive_previo,NULL,
+                    "Visual Microdrive","Visual Microdrive","Visual Microdrive");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
 
             if (microdrive_status[i].microdrive_file_name[0]) {
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_expand,NULL,
@@ -10203,7 +10203,7 @@ void menu_visual_floppy_rotation_real(MENU_ITEM_PARAMETERS)
 
 void menu_visual_floppy_switch_header(MENU_ITEM_PARAMETERS)
 {
-	menu_visualfloppy_header_visible ^=1;
+    menu_visualfloppy_header_visible ^=1;
 }
 
 void menu_visualfloppy_switch_coloured_effects(MENU_ITEM_PARAMETERS)
@@ -10213,7 +10213,7 @@ void menu_visualfloppy_switch_coloured_effects(MENU_ITEM_PARAMETERS)
 
 void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 {
-	menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
@@ -10223,10 +10223,10 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_visual_floppy;
 
-	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	//zxvision_delete_window_if_exists(ventana);
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
@@ -10260,7 +10260,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }
 
-	zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
 
 
@@ -10283,10 +10283,10 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
             return;
     }
 
-    	menu_item *array_menu_debug_new_visualfloppy;
-	menu_item item_seleccionado;
-	int retorno_menu;
-	do {
+        menu_item *array_menu_debug_new_visualfloppy;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
         //forzar a escribir el fondo desde overlay
         //menu_visual_floppy_fondo_asignado=0;
@@ -10294,11 +10294,11 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
         //borrar primera linea por si conmuta parametro rotacion
         zxvision_fill_width_spaces_paper(ventana,0,HEATMAP_INDEX_FIRST_COLOR);
 
-		menu_add_item_menu_inicial_format(&array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation,NULL
+        menu_add_item_menu_inicial_format(&array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation,NULL
             ,"[%c] ~~Rotation",(menu_visualfloppy_rotacion_activada ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'r');
-		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Disable rotation");
-		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,0);
+        menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'r');
+        menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Disable rotation");
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,0);
 
 
         if (menu_visualfloppy_rotacion_activada) {
@@ -10309,25 +10309,25 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);
         }
 
-		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
+        menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
             ,"[%c] He~~ad",(menu_visualfloppy_header_visible ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
-		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
-		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
+        menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
+        menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);
 
 
-		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_effects,NULL
+        menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_effects,NULL
             ,"[%c] ~~Color effects",(menu_visualfloppy_coloured_effects ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
-		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show tracks divisions in different colours");
-		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,1);
+        menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
+        menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show tracks divisions in different colours");
+        menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,1);
 
 
 
-		//Nombre de ventana solo aparece en el caso de stdout
-		retorno_menu=menu_dibuja_menu_no_title_lang(&visualfloppy_opcion_seleccionada,&item_seleccionado,array_menu_debug_new_visualfloppy,"Visual floppy" );
+        //Nombre de ventana solo aparece en el caso de stdout
+        retorno_menu=menu_dibuja_menu_no_title_lang(&visualfloppy_opcion_seleccionada,&item_seleccionado,array_menu_debug_new_visualfloppy,"Visual floppy" );
 
-		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+        if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
             //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
             //Con este cls provoca que se borren todas las otras ventanas en background
 
@@ -10341,24 +10341,24 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
                     }
             }
-		}
+        }
 
-	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
-
-
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
 
-	util_add_window_geometry_compact(ventana);
 
-	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
-		zxvision_message_put_window_background();
-	}
 
-	else {
+    util_add_window_geometry_compact(ventana);
 
-		zxvision_destroy_window(ventana);
-	}
+    if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+        zxvision_message_put_window_background();
+    }
+
+    else {
+
+        zxvision_destroy_window(ventana);
+    }
 
 
 }
@@ -10368,25 +10368,25 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 void menu_storage_betadisk_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (betadisk_enabled.v) betadisk_disable();
-	else betadisk_enable();
+    if (betadisk_enabled.v) betadisk_disable();
+    else betadisk_enable();
 }
 
 void menu_storage_betadisk_allow_boot(MENU_ITEM_PARAMETERS)
 {
-	betadisk_allow_boot_48k.v ^=1;
+    betadisk_allow_boot_48k.v ^=1;
 }
 
 
 void menu_storage_trd_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (trd_enabled.v) trd_disable();
-	else trd_enable();
+    if (trd_enabled.v) trd_disable();
+    else trd_enable();
 }
 
 void menu_storage_trd_write_protect(MENU_ITEM_PARAMETERS)
 {
-	trd_write_protection.v ^=1;
+    trd_write_protection.v ^=1;
 }
 
 int menu_storage_trd_emulation_cond(void)
@@ -10399,7 +10399,7 @@ int menu_storage_trd_emulation_cond(void)
 void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 {
 
-	trd_disable();
+    trd_disable();
 
         char *filtros[2];
 
@@ -10432,32 +10432,32 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
         zvfs_chdir(directorio_actual);
 
         if (ret==1) {
-		if (!si_existe_archivo(trd_file_name)) {
-			if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+        if (!si_existe_archivo(trd_file_name)) {
+            if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
                                 trd_file_name[0]=0;
                                 return;
                         }
 
 
-			//Crear archivo vacio
-		        FILE *ptr_trdfile;
-			ptr_trdfile=fopen(trd_file_name,"wb");
+            //Crear archivo vacio
+                FILE *ptr_trdfile;
+            ptr_trdfile=fopen(trd_file_name,"wb");
 
-		        long long int totalsize=640*1024;
+                long long int totalsize=640*1024;
 
-			z80_byte valor_grabar=0;
+            z80_byte valor_grabar=0;
 
-		        if (ptr_trdfile!=NULL) {
-				while (totalsize) {
-					fwrite(&valor_grabar,1,1,ptr_trdfile);
-					totalsize--;
-				}
-		                fclose(ptr_trdfile);
-		        }
+                if (ptr_trdfile!=NULL) {
+                while (totalsize) {
+                    fwrite(&valor_grabar,1,1,ptr_trdfile);
+                    totalsize--;
+                }
+                        fclose(ptr_trdfile);
+                }
 
-		}
+        }
 
-		trd_enable();
+        trd_enable();
 
 
 
@@ -10474,15 +10474,15 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 
 void menu_storage_trd_browser(MENU_ITEM_PARAMETERS)
 {
-	//menu_file_trd_browser_show(trd_file_name,"TRD");
-	menu_file_viewer_read_file("TRD file viewer",trd_file_name);
+    //menu_file_trd_browser_show(trd_file_name,"TRD");
+    menu_file_viewer_read_file("TRD file viewer",trd_file_name);
 
 }
 
 
 void menu_storage_trd_persistent_writes(MENU_ITEM_PARAMETERS)
 {
-	trd_persistent_writes.v ^=1;
+    trd_persistent_writes.v ^=1;
 }
 
 
@@ -10601,21 +10601,21 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 
 void menu_storage_zxpand_enable(MENU_ITEM_PARAMETERS)
 {
-	if (zxpand_enabled.v) zxpand_disable();
-	else zxpand_enable();
+    if (zxpand_enabled.v) zxpand_disable();
+    else zxpand_enable();
 }
 
 void menu_storage_zxpand_root_dir(MENU_ITEM_PARAMETERS)
 {
 
-	int ret;
-	ret=menu_storage_string_root_dir(zxpand_root_dir);
+    int ret;
+    ret=menu_storage_string_root_dir(zxpand_root_dir);
 
-	//Si sale con ESC
-	if (ret==0) {
-       	//directorio zxpand vacio
+    //Si sale con ESC
+    if (ret==0) {
+           //directorio zxpand vacio
         zxpand_cwd[0]=0;
-	}
+    }
 
 }
 
@@ -10633,31 +10633,31 @@ void menu_zxpand(MENU_ITEM_PARAMETERS)
 
 
 
-			menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_storage_zxpand_enable,NULL,"[%c] ZX~~pand emulation",(zxpand_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_storage_zxpand_enable,NULL,"[%c] ZX~~pand emulation",(zxpand_enabled.v ? 'X' : ' ') );
                         menu_add_item_menu_shortcut(array_menu_common,'p');
-			menu_add_item_menu_tooltip(array_menu_common,"Enable ZXpand emulation");
-			menu_add_item_menu_ayuda(array_menu_common,"Enable ZXpand emulation");
+            menu_add_item_menu_tooltip(array_menu_common,"Enable ZXpand emulation");
+            menu_add_item_menu_ayuda(array_menu_common,"Enable ZXpand emulation");
 
 
-			if (zxpand_enabled.v) {
-				char string_zxpand_root_folder_shown[20];
-				menu_tape_settings_trunc_name(zxpand_root_dir,string_zxpand_root_folder_shown,20);
+            if (zxpand_enabled.v) {
+                char string_zxpand_root_folder_shown[20];
+                menu_tape_settings_trunc_name(zxpand_root_dir,string_zxpand_root_folder_shown,20);
 
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_storage_zxpand_root_dir,NULL,"~~Root dir: %s",string_zxpand_root_folder_shown);
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_storage_zxpand_root_dir,NULL,"~~Root dir: %s",string_zxpand_root_folder_shown);
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
-                        	menu_add_item_menu_shortcut(array_menu_common,'r');
-				menu_add_item_menu_tooltip(array_menu_common,"Sets the root directory for ZXpand filesystem");
-				menu_add_item_menu_ayuda(array_menu_common,"Sets the root directory for ZXpand filesystem. "
-					"Only file and folder names valid for zxpand will be shown:\n"
-					"-Maximum 8 characters for name and 3 for extension\n"
-					"-Files and folders will be shown always in uppercase. Folders which are not uppercase, are shown but can not be accessed\n"
-					);
+                            menu_add_item_menu_shortcut(array_menu_common,'r');
+                menu_add_item_menu_tooltip(array_menu_common,"Sets the root directory for ZXpand filesystem");
+                menu_add_item_menu_ayuda(array_menu_common,"Sets the root directory for ZXpand filesystem. "
+                    "Only file and folder names valid for zxpand will be shown:\n"
+                    "-Maximum 8 characters for name and 3 for extension\n"
+                    "-Files and folders will be shown always in uppercase. Folders which are not uppercase, are shown but can not be accessed\n"
+                    );
 
-			}
+            }
 
 
 
-			menu_add_item_menu_separator(array_menu_common);
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_ESC_item(array_menu_common);
 
@@ -10699,27 +10699,27 @@ int menu_storage_string_root_dir(char *string_root_dir)
         int ret;
 
 
-	char nada[PATH_MAX];
+    char nada[PATH_MAX];
 
         //Obtenemos ultimo directorio visitado
-	zvfs_chdir(string_root_dir);
+    zvfs_chdir(string_root_dir);
 
 
         ret=menu_filesel("Enter dir & press ESC",filtros,nada);
 
 
-	//Si sale con ESC
-	if (ret==0) {
-		//Directorio root
-		sprintf (string_root_dir,"%s",menu_filesel_last_directory_seen);
-		debug_printf (VERBOSE_DEBUG,"Selected directory: %s",string_root_dir);
+    //Si sale con ESC
+    if (ret==0) {
+        //Directorio root
+        sprintf (string_root_dir,"%s",menu_filesel_last_directory_seen);
+        debug_printf (VERBOSE_DEBUG,"Selected directory: %s",string_root_dir);
 
-	}
+    }
 
     //volvemos a directorio inicial
     zvfs_chdir(directorio_actual);
 
-	return ret;
+    return ret;
 
 
 }
@@ -10733,28 +10733,28 @@ void menu_storage_esxdos_traps_emulation(MENU_ITEM_PARAMETERS)
 
 
 
-	if (esxdos_handler_enabled.v) esxdos_handler_disable();
-	else {
-		//Si no hay paging, avisar
-		if (diviface_enabled.v==0) {
-			if (menu_confirm_yesno_texto("No divide/mmc paging","Sure enable?")==0) return;
-		}
-		esxdos_handler_enable();
-	}
+    if (esxdos_handler_enabled.v) esxdos_handler_disable();
+    else {
+        //Si no hay paging, avisar
+        if (diviface_enabled.v==0) {
+            if (menu_confirm_yesno_texto("No divide/mmc paging","Sure enable?")==0) return;
+        }
+        esxdos_handler_enable();
+    }
 }
 
 void menu_esxdos_traps_root_dir(MENU_ITEM_PARAMETERS)
 {
 
 
-	int ret;
-	ret=menu_storage_string_root_dir(esxdos_handler_root_dir);
+    int ret;
+    ret=menu_storage_string_root_dir(esxdos_handler_root_dir);
 
-	//Si sale con ESC
-	if (ret==0) {
+    //Si sale con ESC
+    if (ret==0) {
         //directorio esxdos vacio
-	    esxdos_handler_cwd[0]=0;
-	}
+        esxdos_handler_cwd[0]=0;
+    }
 
 }
 
@@ -10829,7 +10829,7 @@ void menu_esxdos_traps(MENU_ITEM_PARAMETERS)
 void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 {
 
-	dskplusthree_disable();
+    dskplusthree_disable();
 
         char *filtros[2];
 
@@ -10856,8 +10856,8 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
                 }
         }
 
-	char dskfile[PATH_MAX];
-	dskfile[0]=0;
+    char dskfile[PATH_MAX];
+    dskfile[0]=0;
 
         int ret=menu_filesel("Select DSK File",filtros,dskfile);
         //volvemos a directorio inicial
@@ -10865,10 +10865,10 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 
         if (ret==1) {
 
-		if (!si_existe_archivo(dskfile)) {
+        if (!si_existe_archivo(dskfile)) {
 
-			//menu_warn_message("File does not exist");
-			//return;
+            //menu_warn_message("File does not exist");
+            //return;
 
             if (menu_confirm_yesno_texto("DSK does not exist","Create?")) {
 
@@ -10944,14 +10944,14 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 
 
 
-		}
-		dsk_insert_disk(dskfile);
+        }
+        dsk_insert_disk(dskfile);
 
-		dskplusthree_enable();
+        dskplusthree_enable();
 
         //Habilitar pd765 a no ser que los traps esten activados
         if (plus3dos_traps.v==0) pd765_enable();
-		//plus3dos_traps.v=1;
+        //plus3dos_traps.v=1;
 
 
         }
@@ -10964,14 +10964,14 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 
 void menu_storage_plusthreedisk_traps(MENU_ITEM_PARAMETERS)
 {
-	plus3dos_traps.v ^=1;
+    plus3dos_traps.v ^=1;
 }
 
 
 void menu_plusthreedisk_pd765(MENU_ITEM_PARAMETERS)
 {
     if (pd765_enabled.v) pd765_disable();
-	else pd765_enable();
+    else pd765_enable();
 }
 
 int menu_storage_dskplusthree_emulation_cond(void)
@@ -10983,22 +10983,22 @@ int menu_storage_dskplusthree_emulation_cond(void)
 
 void menu_storage_dskplusthree_emulation(MENU_ITEM_PARAMETERS)
 {
-	if (dskplusthree_emulation.v==0) {
-		dskplusthree_enable();
+    if (dskplusthree_emulation.v==0) {
+        dskplusthree_enable();
 
         //Habilitar pd765 a no ser que los traps esten activados
         if (plus3dos_traps.v==0) pd765_enable();
 
-		//plus3dos_traps.v=1;
-	}
+        //plus3dos_traps.v=1;
+    }
 
-	else dskplusthree_disable();
+    else dskplusthree_disable();
 }
 
 
 void menu_storage_dskplusthree_browser(MENU_ITEM_PARAMETERS)
 {
-	menu_file_dsk_browser_show(dskplusthree_file_name);
+    menu_file_dsk_browser_show(dskplusthree_file_name);
 
     //por coherencia, despues de aqui cerramos todas las ventanas
     salir_todos_menus=1;
@@ -11006,13 +11006,13 @@ void menu_storage_dskplusthree_browser(MENU_ITEM_PARAMETERS)
 
 void menu_storage_dsk_write_protect(MENU_ITEM_PARAMETERS)
 {
-	dskplusthree_write_protection.v ^=1;
+    dskplusthree_write_protection.v ^=1;
 }
 
 
 void menu_storage_dskplusthree_persistent_writes(MENU_ITEM_PARAMETERS)
 {
-	dskplusthree_persistent_writes.v ^=1;
+    dskplusthree_persistent_writes.v ^=1;
 }
 
 int menu_storage_dskplusthree_info_cond(void)
@@ -11413,25 +11413,25 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
                 NULL,"    Boot CP/M now","    Boot CP/M ahora","    Boot CP/M ara");
-			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot CP/M");
-			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot CP/M");
+            menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot CP/M");
+            menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot CP/M");
 
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm_reinsert_previous,NULL,
             "Reinsert previous dsk after boot","Reinsertar previo dsk después boot","Reinsertar previ dsk després boot");
             menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ",(pcw_boot_reinsert_previous_dsk.v ? 'X' : ' ') );
-			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
-			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
+            menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
+            menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
 
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_failback_cpm_when_no_boot,NULL,
             "Failback to CP/M if no boot","Failback a CP/M si no boot","Failback a CP/M si no boot");
             menu_add_item_menu_prefijo_format(array_menu_plusthreedisk,"[%c] ",(pcw_failback_cpm_when_no_boot.v ? 'X' : ' ') );
-			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
-			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
+            menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
+            menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
 
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,NULL,
                 "    Boot LocoScript now","    Boot LocoScript ahora","    Boot LocoScript ara");
-			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot LocoScript");
-			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot LocoScript");
+            menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot LocoScript");
+            menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot LocoScript");
 
             menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -11562,7 +11562,7 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
 
     zxmmcplus_flashrom_flush_contents_to_disk();
 
-	char *filtros[2];
+    char *filtros[2];
 
     filtros[0]="flash";
     filtros[1]=0;
@@ -11587,10 +11587,10 @@ void menu_zxmmcplus_flash_file(MENU_ITEM_PARAMETERS)
 
     }
 
-	//Sale con ESC
+    //Sale con ESC
     else {
-		//dejar archivo por defecto
-		zxmmcplus_flash_name[0]=0;
+        //dejar archivo por defecto
+        zxmmcplus_flash_name[0]=0;
 
         if (zxmmcplus_enabled.v) {
 

@@ -40,9 +40,6 @@ con el raton no selecciona el menu donde apunta el raton, sino que luego hay que
 ----------------------------------------
 
 
-
-
-
 -Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
 
 
@@ -72,3 +69,4 @@ curses enlazar contra -lcurses y no -lncurses
 Poder definir otra tecla para abrir el menu, F5 lanza comandos del sistema
 Por ejemplo en driver curses defino tecla END como si fuera F5
 Parece que curses no tiene soporte para eventos de ratón
+setting para compilar con clang
