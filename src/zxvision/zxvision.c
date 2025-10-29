@@ -26870,47 +26870,17 @@ void menu_inicio_bucle(void)
             //printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
         }
 
-        //menu en barra arriba del todo
-        /*
-        if (zxvision_topbar_menu_enabled.v) {
-            menu_topbarmenu();
 
-            printf("despues topbar menu. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
+        //printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
+        menu_inicio_bucle_main();
+        //printf("despues menu_inicio_bucle_main\n");
 
-            //Aqui miramos si hay un evento de reapertura de menu, este evento menu_pressed_open_menu_while_in_menu.v
-            //se definio para el menu "clasico" y no el topbar, aunque nos sirve igual
-            //Se podria haber usado otro evento diferente? quiza si
-            //esto viene de la funcion zxvision_handle_mouse_events y el if (if_menu_topbarmenu_enabled_and_pressed_bar ) {
-            if (menu_pressed_open_menu_while_in_menu.v && if_menu_topbarmenu_pressed_bar() ) {
-                menu_topbarmenu_pressed_bar=1;
-                reopen_menu=1;
-            }
-
-            //miramos si se ha salido pulsando tecla izquierda o derecha
-            if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
-                printf("Reabrir topbar porque se ha salido de menu con flecha izquierda o derecha\n");
-                reopen_menu=1;
-            }
-
-        }
-        */
-
-        if (0) {
-        }
-
-        else {
-
-            //printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
-            menu_inicio_bucle_main();
-            //printf("despues menu_inicio_bucle_main\n");
-
-        }
 
         //Se reabre el menu tambien si pulsada tecla F5 en cualquiera de los menus
         if (menu_pressed_open_menu_while_in_menu.v) {
             menu_pressed_open_menu_while_in_menu.v=0;
             reopen_menu=1;
-            printf ("menu_inicio_bucle. Reabrimos menu por menu_pressed_open_menu_while_in_menu\n");
+            //printf ("menu_inicio_bucle. Reabrimos menu por menu_pressed_open_menu_while_in_menu\n");
         }
 
         //printf("antes zxvision_simple_window_manager\n");
