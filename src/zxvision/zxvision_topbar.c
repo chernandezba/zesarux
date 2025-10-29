@@ -848,7 +848,7 @@ void topbar_text_overlay(void)
 
         if (mostrar_topbar) {
             if (!topbar_text_overlay_llamado_a_crear_indice_posiciones) {
-                printf("----Creamos indice posiciones\n");
+                DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Creating menu positions index");
                 menu_topbarmenu_crear_indice_posiciones();
                 topbar_text_overlay_llamado_a_crear_indice_posiciones=1;
             }

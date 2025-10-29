@@ -266,6 +266,8 @@ extern int overlay_visible_when_menu_closed;
 //Para poder hacer debug_printf con la clase de debug adecuada
 #define DBG_PRINT_ZXVISION_EVENTS debug_printf(VERBOSE_CLASS_ZXVISION_EVENTS|
 
+#define DBG_PRINT_ZXVISION_TOPMENU debug_printf(VERBOSE_CLASS_ZXVISION_TOPMENU|
+
 extern char esc_key_message[];
 extern char *openmenu_key_message;
 
