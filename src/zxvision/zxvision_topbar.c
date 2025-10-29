@@ -86,6 +86,11 @@ void topbar_make_topbar_visible(void)
 
     DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Make Top Menu visible");
 
+    /*
+    Nota: sin multitask, no se verá menú superior al mover el ratón arriba, no aparecera overlay,
+    porque necesita multitask y background windows even with menu closed
+    */
+
     topbar_esta_visible_por_timer.v=1;
 
 }

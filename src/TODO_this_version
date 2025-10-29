@@ -18,22 +18,13 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 ->La solución seria que todos usasen menu_add_item_menu_index_full_path com por ejemplo en "Snapshots to RAM menu"
 
 
-*topbar que funcione si no hay multitask?
-ok-al mover raton arriba no aparecera overlay, porque necesita multitask y background windows even with menu closed precisamente
-->acabar de probarlo bien
-
-
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
 ->quizá es culpa del autoframeskip?
 
 *si estamos en una ventana y pulsamos F5, la ventana aparece como si estuviera activa (barra de titulo normal, marco, etc)
 
-*mensajes debug topbar meterlos en un tipo de debug nuevo, para poder filtrar
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
-
-ok *con barra solo de menu abierta arriba, si venimos con el raton desde abajo hacia otro menu no seleccionado, cuando se sube
-con el raton no selecciona el menu donde apunta el raton, sino que luego hay que moverlo un poco a la izquierda o derecha para que se de cuenta
 
 
 ----------Fin top bar menu----------
