@@ -1559,6 +1559,7 @@ extern int zxvision_add_configurable_icon_no_add_position(int indice_funcion);
 extern void zxvision_set_configurable_icon_text(int indice_icono,char *texto);
 extern void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info);
 extern int zxdesktop_configurable_icons_enabled_and_visible(void);
+extern void zxvision_create_configurable_icon(enum defined_f_function_ids id_funcion,char *nombre,char *extra_info);
 extern void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre);
 extern void zxvision_create_link_desktop_from_window(zxvision_window *w);
 extern void zxvision_get_next_free_icon_position(int *p_x,int *p_y);

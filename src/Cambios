@@ -11,6 +11,7 @@ Permitir variable de entorno DESTDIR en el paso make install
 Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto)
 - Reordenadas opciones & nuevo menú: revisa opciones -> Display Emulado, General, Ventana Principal, ZX Vision
+- Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas
 
 Mejorado ZX Desktop:
 - Permitir definir valores pequeños para el ancho del ZX Desktop

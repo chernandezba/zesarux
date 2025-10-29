@@ -32,6 +32,8 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
+*con barra solo de menu abierta arriba, si venimos con el raton desde abajo hacia otro menu no seleccionado, cuando se sube
+con el raton no selecciona el menu donde apunta el raton, sino que luego hay que moverlo un poco a la izquierda o derecha para que se de cuenta
 
 
 ----------Fin top bar menu----------
@@ -39,13 +41,7 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 
 
-ok? -cuando se dispara un breakpoint que abre el menu, llamar a menu_debug_value_registers_modified_copy() para que se reseteen cambios anteriores
-Con ruN pasa lo mismo también
-No hace falta, dejamos que se guarde el estado anterior antes del Run, y si ha pasado mucho tiempo hasta que salta el breakpoint, pues
-posiblemente habrá mucha cosa a mostrar como cambiada
 
-
--Ayuda para algunos tipos de iconos o acciones, como send keys menú
 
 -Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
 
@@ -66,3 +62,12 @@ Realmente es para el "make install" y tal y como está ahora seria suficiente
 -Quizá texto corto de iconos podría mostrar mas letras, ahora está pensado para que no sobresalga el texto del ancho del icono,
 pero queda bastante espacio aun para el icono a la derecha. ah o no, si quito autoorder es justo el espacio
 
+-Ayuda para algunos tipos de iconos o acciones, como send keys menú: send keys por ejemplo tiene el caracter "@" que indica tecla ESC
+
+-sendkeys menu poder simular envio ESC para hacer que se cierre el menu
+
+-Para Minix:
+curses enlazar contra -lcurses y no -lncurses
+Poder definir otra tecla para abrir el menu, F5 lanza comandos del sistema
+Por ejemplo en driver curses defino tecla END como si fuera F5
+Parece que curses no tiene soporte para eventos de ratón

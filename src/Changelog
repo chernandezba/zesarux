@@ -11,6 +11,7 @@ Allow DESTDIR environment varieble on make install step
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
 - Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision
+- Added shortcuts helper action to create icon to trigger recorded keys
 
 Improved ZX Desktop:
 - Allow to set small values for ZX Desktop width size

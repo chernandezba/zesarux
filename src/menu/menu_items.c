@@ -34737,7 +34737,7 @@ void menu_debug_set_pc_zero(MENU_ITEM_PARAMETERS)
 
 
 #define SHORTCUTS_HELPER_ANCHO 32
-#define SHORTCUTS_HELPER_ALTO 3
+#define SHORTCUTS_HELPER_ALTO 4
 #define SHORTCUTS_HELPER_X (menu_center_x()-SHORTCUTS_HELPER_ANCHO/2)
 
 //ponerlo arriba para que inicialmente sea el sitio mejor para verse
@@ -34770,7 +34770,7 @@ void menu_shortcuts_helper_overlay(void)
     if ( ((contador_segundo%200) == 0 && menu_shortcuts_helper_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
         menu_shortcuts_helper_valor_contador_segundo_anterior=contador_segundo;
 
-        zxvision_print_string_defaults_fillspc(menu_audio_shortcuts_helper_window,1,0,zxvision_helper_shorcuts_accumulated);
+        zxvision_print_string_defaults_fillspc_format(menu_audio_shortcuts_helper_window,1,0,"Keys: %s",zxvision_helper_shorcuts_accumulated);
     }
 
 
@@ -34847,7 +34847,47 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
         return;
     }
 
-    int tecla=zxvision_wait_until_esc(ventana);
+    //Forzar visibles hotkeys en esa ventana
+    ventana->writing_inverse_color=1;
+
+    zxvision_print_string_defaults_fillspc(ventana,1,1,"~~i: Generate icon on desktop");
+
+    //int tecla=zxvision_wait_until_esc(ventana);
+    z80_byte tecla;
+
+    int salir=0;
+
+    do {
+
+        tecla=zxvision_common_getkey_refresh();
+
+        switch (tecla) {
+
+            case 'i':
+                //Creamos icono en escritorio
+                //Contiene al principio "Menu "
+                if (strlen(zxvision_helper_shorcuts_accumulated)<6) {
+                    menu_error_message("Key list is empty");
+                }
+                else {
+                    zxvision_create_configurable_icon(F_FUNCION_SEND_KEYS_MENU,"Send keys",&zxvision_helper_shorcuts_accumulated[5]);
+                    menu_generic_message_splash("Create link","Ok created link on ZX Desktop");
+                }
+            break;
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;
+        }
+
+
+    } while (salir==0);
 
 
 
