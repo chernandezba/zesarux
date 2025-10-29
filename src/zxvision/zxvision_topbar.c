@@ -426,6 +426,9 @@ void menu_topbarmenu(void)
     topbar_overlay_we_are_on_topbar=1;
     topbarmenu_mostrar_hotkeys_por_timer=0;
 
+    //Necesario para que, si estamos en una ventana y pulsamos F5, esa ventana aparezca como no activa
+    zxvision_reset_ventana_tipo_activa();
+
     //Esto es necesario al entrar pulsando boton izquierdo raton en el fondo
     //TODO: porque por alguna razón, al entrar con boton izquierdo no se cambia
     //aunque cuando se entra pulsando por ejemplo F5 o si se pulsa boton izquierdo en el top bar si que se cambia

@@ -21,8 +21,8 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
 ->quizá es culpa del autoframeskip?
 
-*si estamos en una ventana y pulsamos F5, la ventana aparece como si estuviera activa (barra de titulo normal, marco, etc)
-
+*si tenemos solo la barra arriba activa y pulsamos en una ventana, o en un boton inferior, cerrará el menu
+pero no va a esa ventana o botón inferior
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
