@@ -438,34 +438,12 @@ void menu_topbarmenu(void)
 
 
     int total_posiciones=menu_topbarmenu_crear_indice_posiciones();
-    /*posiciones_menus[0]=0;
-
-    int i,total_posiciones;
-    int leido_espacio=0;
-    char *topbar_string_linea_menus=menu_topbar_get_text_topbar();
-    for (i=0,total_posiciones=1;topbar_string_linea_menus[i];i++) {
-        if (leido_espacio) {
-            if (topbar_string_linea_menus[i]!=' ') {
-                //printf("posicion %d i %d\n",total_posiciones,i);
-                posiciones_menus[total_posiciones++]=i;
-                leido_espacio=0;
-            }
-        }
-        else {
-            if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
-        }
-    }
-
-    //El del menu Help
-    posiciones_menus[total_posiciones++]=i;
-    */
 
     int i;
 
     int tecla_leida=0;
     int salir_topbar=0;
 
-    //int dibujar_cursor_topbar_pos_cursor=0;
 
     int total_menus=total_posiciones-1;
 
@@ -802,10 +780,12 @@ void menu_topbarmenu(void)
                 //En resumen, que es una acción tan remota que no vale la pena liarme para corregir esto, porque además
                 //supondría tener que cambiar varias cosas del core de zxvision de apertura de menu
                 //Y realmente el efecto secundario no es tan catastrofico, se puede vivir con él
-                //if (salir_todos_menus) {
-                    //menu_pressed_open_menu_while_in_menu.v=0;
-                //}
 
+
+            }
+
+            else {
+                printf ("Saldremos top menu porque no pulsado en top menu\n");
             }
 
 
