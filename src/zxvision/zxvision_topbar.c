@@ -521,6 +521,7 @@ void menu_topbarmenu(void)
             if (tecla_leida==0) {
                 if (get_pos_y_mouse_topbar()==0)  {
                     int columna_actual=get_pos_x_mouse_topbar();
+                    printf("### raton en posicion superior. last_pos_x_mouse_columna %d columna_actual %d\n",last_pos_x_mouse_columna,columna_actual);
                     if (columna_actual!=last_pos_x_mouse_columna) {
                         printf("Raton movido de columna en topbar\n");
 
@@ -538,8 +539,11 @@ void menu_topbarmenu(void)
                 }
             }
 
-            last_pos_x_mouse_columna=get_pos_x_mouse_topbar();
+
             last_pos_y_mouse_fila=get_pos_y_mouse_topbar();
+            if (last_pos_y_mouse_fila==0) {
+                last_pos_x_mouse_columna=get_pos_x_mouse_topbar();
+            }
 
             //si boton derecho, salir
             if (mouse_right) {

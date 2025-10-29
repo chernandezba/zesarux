@@ -32,7 +32,7 @@ ok-al mover raton arriba no aparecera overlay, porque necesita multitask y backg
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
-*con barra solo de menu abierta arriba, si venimos con el raton desde abajo hacia otro menu no seleccionado, cuando se sube
+ok *con barra solo de menu abierta arriba, si venimos con el raton desde abajo hacia otro menu no seleccionado, cuando se sube
 con el raton no selecciona el menu donde apunta el raton, sino que luego hay que moverlo un poco a la izquierda o derecha para que se de cuenta
 
 
