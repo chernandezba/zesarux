@@ -64,7 +64,8 @@ pero queda bastante espacio aun para el icono a la derecha. ah o no, si quito au
 
 -Ayuda para algunos tipos de iconos o acciones, como send keys menú: send keys por ejemplo tiene el caracter "@" que indica tecla ESC
 
--sendkeys menu poder simular envio ESC para hacer que se cierre el menu
+ok -sendkeys menu poder simular envio ESC para hacer que se cierre el menu
+->ok con "@"
 
 -Para Minix:
 curses enlazar contra -lcurses y no -lncurses
