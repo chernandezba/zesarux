@@ -811,10 +811,7 @@ void menu_topbarmenu(void)
 
         }
 
-        //temp salimos siempre
-        //el problema es que para reentrar hay que tener mouse_left activo, pero de cada menu
-        //siempre se sale y se espera a liberar boton, entonces mouse_left sera 0 siempre porque el boton no se estara pulsando
-        //Hay que reentrar aqui de otra manera
+
         salir_topbar=1;
 
         //salir en caso que pulsado en otra zona que no es menu
