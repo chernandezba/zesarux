@@ -21978,12 +21978,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                         else {
 
                             if (ventana==menu_dibuja_submenu_primer_submenu) {
-                                printf("--Somos el primer submenu\n");
+                                //printf("--Somos el primer submenu\n");
                                 salir_con_flecha_derecha=1;
                                 //printf("### salir con flecha derecha siendo primer submenu\n");
                             }
                             else {
-                                printf("--No somos el primer submenu\n");
+                                //printf("--No somos el primer submenu\n");
                                 //salir como si fuera ESC, para cerrar todos submenus
                                 salir_todos_menus=1;
                                 salir_con_flecha_derecha=1;

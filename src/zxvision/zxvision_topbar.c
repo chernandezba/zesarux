@@ -168,16 +168,7 @@ void topbar_timer_event(void)
     previous_switchtopbar_timer_event_mouse_x=mouse_x;
     previous_switchtopbar_timer_event_mouse_y=mouse_y;
 
-    /*
-    if (movido) {
-        if (zxvision_mouse_in_zesarux_window()) {
-            printf("En ventana\n");
-        }
-        else {
-            printf("NO en ventana\n");
-        }
-    }
-    */
+
 
 
     //No estaba visible
@@ -580,20 +571,20 @@ void menu_topbarmenu(void)
 
                 switch(tecla_leida) {
                     case 8:
-                        printf("izquierda\n");
+                        //printf("izquierda\n");
                         menu_topbarmenu_flecha_izquierda();
                         if (estabamos_en_smartload) {
-                            printf("Estabamos en smartload. Desplegar menu\n");
+                            DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: We were on Smartload. Expand menu");
                             salir_linea_superior=1;
                             tecla_leida=13;
                         }
                     break;
 
                     case 9:
-                        printf("derecha\n");
+                        //printf("derecha\n");
                         menu_topbarmenu_flecha_derecha(total_menus);
                         if (estabamos_en_smartload) {
-                            printf("Estabamos en smartload. Desplegar menu\n");
+                            DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: We were on Smartload. Expand menu");
                             salir_linea_superior=1;
                             tecla_leida=13;
                         }
@@ -603,7 +594,8 @@ void menu_topbarmenu(void)
                         //ESC
                         menu_topbarmenu_preexit();
                         //salir_todos_menus=1;
-                        printf("Salir del menu con ESC. menu_event_open_menu.v=%d menu_abierto=%d\n",menu_event_open_menu.v,menu_abierto);
+                        DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Exiting menu because pressed key ESC. menu_event_open_menu.v=%d menu_abierto=%d",
+                            menu_event_open_menu.v,menu_abierto);
                         //menu_pressed_open_menu_while_in_menu.v=0;
                         return;
                     break;
@@ -785,7 +777,7 @@ void menu_topbarmenu(void)
                 //y por tanto mouse_left no estará pulsado
                 if (if_menu_topbarmenu_pressed_bar() && mouse_left)  {
                     //continuamos aqui y sin tener que esperar tecla
-                    printf("Reentraremos en menu\n");
+                    //printf("Reentraremos en menu\n");
                     menu_topbarmenu_pressed_bar=1;
                 }
 
