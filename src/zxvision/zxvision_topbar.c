@@ -224,8 +224,6 @@ z80_byte menu_topbarmenu_get_key(void)
     //printf("Despues timeout\n");
 
 
-
-    //menu_espera_tecla();
     tecla=zxvision_read_keyboard();
 
     //Ver los hotkeys si ha pasado el timer o si se pulsa una tecla de letra
@@ -262,10 +260,6 @@ void menu_topbarmenu_write_bar(void)
         topbar_string_linea_menus[0]=(unsigned char) CHAR_Z_LOGO_SMALL_TOPBAR;
     }
 
-    //Y si el estilo es retromac, metemos icono de manzana en vez de la Z
-    //if (char_set==char_set_retromac) {
-    //    topbar_string_linea_menus[0]=(unsigned char) APPLE_LOGO_IN_CHARSET_RETROMAC;
-    //}
 
     //Indicar que nombre de menu estamos esperando para hotkey: 0=Z, 1=Smartload, 2=Snapshot, etc
     int pos_menu=0;
@@ -331,22 +325,7 @@ void menu_topbarmenu_write_bar(void)
         putchar_menu_overlay_parpadeo(x,0,caracter_escribir,tinta,papel,0);
     }
 
-    /*
-    if (dibujar_cursor_topbar) {
-        //printf("dibujar top bar cursor\n");
 
-        int x_inicio=posiciones_menus[dibujar_cursor_topbar_pos_cursor];
-
-        int x_final=posiciones_menus[dibujar_cursor_topbar_pos_cursor+1]-1;
-
-
-        //Escribir ese nombre de menu seleccionado en color inverso o lo que corresponda según el estilo actual de GUI
-        for (;x_inicio<=x_final && topbar_string_linea_menus[x_inicio]!=' ';x_inicio++) {
-            putchar_menu_overlay_parpadeo(x_inicio,0,topbar_string_linea_menus[x_inicio],ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0);
-            //menu_escribe_texto(x_inicio,0,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL,topbar_string_linea_menus[x_inicio]);
-        }
-    }
-    */
 }
 
 int if_menu_topbarmenu_pressed_bar(void)
@@ -386,7 +365,6 @@ void menu_topbarmenu_preexit(void)
     topbar_make_topbar_invisible();
     salir_todos_menus=1;
 
-    //Aqui o quizá solo al final? En linea 821
     zxvision_reset_set_next_menu_position();
 }
 
@@ -483,9 +461,7 @@ void menu_topbarmenu(void)
 
             DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Menu selected %d Total Menus %d",dibujar_cursor_topbar_pos_cursor,total_menus);
 
-            //menu_refresca_pantalla();
-            //scr_refresca_pantalla();
-            //zxvision_redraw_all_windows();
+
             if (!menu_multitarea) menu_refresca_pantalla();
 
             tecla_leida=menu_topbarmenu_get_key();
@@ -591,7 +567,6 @@ void menu_topbarmenu(void)
         }
 
 
-        //dibujar_cursor_topbar=0;
 
         //Aqui se gestiona la apertura de un menu
         //Si pulsado boton raton o enter en el paso anterior o se haya entrado abriendo el menu pulsando ya en barra superior
@@ -814,13 +789,6 @@ void topbar_text_overlay(void)
 
 
         if (topbar_overlay_we_are_on_topbar) mostrar_topbar=1;
-
-        /*
-        if (overlay_visible_when_menu_closed) {
-            //si menu cerrado pero se ha movido raton
-            if (topbar_esta_visible_por_timer.v) mostrar_topbar=1;
-        }
-        */
 
         if (topbar_esta_visible_por_timer.v) mostrar_topbar=1;
 
