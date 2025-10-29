@@ -45590,7 +45590,7 @@ void menu_inicio_bucle_main(void)
                     //Por tanto si pulsamos F5 y el raton esta en la topbar, la accion
                     //sera como si el raton hubiese pulsado en donde esta indicando, desplegandose el menu a donde indica
                     menu_topbarmenu_pressed_bar=1;
-                    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Reopen menu because Top Menu has beenm clicked");
+                    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Reopen menu because Top Menu has been clicked");
                     //reopen_menu=1;
                     menu_pressed_open_menu_while_in_menu.v=0;
                     salir_todos_menus=0;

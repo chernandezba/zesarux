@@ -84,7 +84,7 @@ void topbar_make_topbar_visible(void)
 
     if (zxvision_topbar_menu_enabled.v==0) return;
 
-    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Make topbar visible");
+    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Make Top Menu visible");
 
     topbar_esta_visible_por_timer.v=1;
 
@@ -121,7 +121,7 @@ void topbar_make_topbar_invisible(void)
     //e interesa establecer el timer como conviene
     switchtopbar_button_visible_timer=MAX_SWITCH_TOPBAR_VISIBLE_TIMER;
 
-    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Make topbar hidden");
+    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Make Top Menu hidden");
 
     topbar_esta_visible_por_timer.v=0;
 
@@ -225,7 +225,7 @@ z80_byte menu_topbarmenu_get_key(void)
 
 
     menu_espera_tecla_timeout_tooltip();
-    printf("Despues timeout\n");
+    //printf("Despues timeout\n");
 
 
 
@@ -422,8 +422,10 @@ int menu_topbarmenu_crear_indice_posiciones(void)
 
 void menu_topbarmenu(void)
 {
-    printf("Entramos en topbar menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d\n",mouse_left,menu_topbarmenu_pressed_bar);
-    printf("Entramos en topbar menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d\n",zxvision_keys_event_not_send_to_machine,menu_abierto);
+    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Entering Top Menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d",
+        mouse_left,menu_topbarmenu_pressed_bar);
+    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Entering Top Menu. zxvision_keys_event_not_send_to_machine: %d menu_abierto: %d",
+        zxvision_keys_event_not_send_to_machine,menu_abierto);
 
     topbar_overlay_we_are_on_topbar=1;
     topbarmenu_mostrar_hotkeys_por_timer=0;
@@ -502,7 +504,7 @@ void menu_topbarmenu(void)
 
             //dibujar_cursor_topbar=1;
 
-            printf("cursor_pos %d total_menus %d\n",dibujar_cursor_topbar_pos_cursor,total_menus);
+            DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Menu selected %d Total Menus %d",dibujar_cursor_topbar_pos_cursor,total_menus);
 
             //menu_refresca_pantalla();
             //scr_refresca_pantalla();
@@ -511,7 +513,7 @@ void menu_topbarmenu(void)
 
             tecla_leida=menu_topbarmenu_get_key();
 
-            printf("tecla leida: %d\n",tecla_leida);
+            //printf("tecla leida: %d\n",tecla_leida);
 
             //Si se ha pulsado tecla F5 estando aqui, se quedaria esta variable activada que
             //provocaria que para salir del menu hubiera que pulsar ESC dos veces
@@ -521,9 +523,9 @@ void menu_topbarmenu(void)
             if (tecla_leida==0) {
                 if (get_pos_y_mouse_topbar()==0)  {
                     int columna_actual=get_pos_x_mouse_topbar();
-                    printf("### raton en posicion superior. last_pos_x_mouse_columna %d columna_actual %d\n",last_pos_x_mouse_columna,columna_actual);
+                    //printf("### raton en posicion superior. last_pos_x_mouse_columna %d columna_actual %d\n",last_pos_x_mouse_columna,columna_actual);
                     if (columna_actual!=last_pos_x_mouse_columna) {
-                        printf("Raton movido de columna en topbar\n");
+                        //printf("Raton movido de columna en topbar\n");
 
                         //Detectar que menu esta seleccionando
                         int i;
@@ -629,8 +631,8 @@ void menu_topbarmenu(void)
 
             int posicion_y=0;
 
-            printf("--Antes menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
-            printf("0 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
+            //printf("--Antes menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
+            //printf("0 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
             //Entrado por raton
             if ((tecla_leida==13 && mouse_left) || menu_topbarmenu_pressed_bar) {
@@ -657,8 +659,8 @@ void menu_topbarmenu(void)
                 pos_cursor=dibujar_cursor_topbar_pos_cursor;
             }
 
-            printf("--Despues menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
-            printf("1 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
+            //printf("--Despues menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
+            //printf("1 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
             if (posicion_y==0) {
                 menu_espera_no_tecla_con_repeticion();
@@ -667,13 +669,13 @@ void menu_topbarmenu(void)
                 force_next_menu_position_y=1;
             }
 
-            printf("2 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
+            //printf("2 antes abrir menu audio menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
 
             //int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
             //printf("posicion x: %d\n",columna_posicion_x);
 
-            printf("posicion cursor: %d\n",pos_cursor);
+            //printf("posicion cursor: %d\n",pos_cursor);
 
 
             //asumimos que saldremos del topbar
@@ -760,8 +762,7 @@ void menu_topbarmenu(void)
                 }
 
 
-                printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",
-                    if_menu_topbarmenu_pressed_bar(),mouse_left);
+                //printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",if_menu_topbarmenu_pressed_bar(),mouse_left);
 
                 //Para parar el reindexado
                 if (detectar_salir_menu_principal) {
@@ -776,7 +777,7 @@ void menu_topbarmenu(void)
 
 
                 if (ultimo_menu_salido_con_flecha_izquierda || ultimo_menu_salido_con_flecha_derecha) {
-                    printf("Ultimo menu pulsado izquierda o derecha. menu_topbarmenu_pressed_bar=%d\n",menu_topbarmenu_pressed_bar);
+                    //printf("Ultimo menu pulsado izquierda o derecha. menu_topbarmenu_pressed_bar=%d\n",menu_topbarmenu_pressed_bar);
                 }
 
 
@@ -821,7 +822,7 @@ void menu_topbarmenu(void)
 
     menu_espera_no_tecla_con_repeticion();
 
-    printf("salir menu_topbarmenu\n");
+    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Exiting Top Menu");
 
     menu_topbarmenu_preexit();
 }

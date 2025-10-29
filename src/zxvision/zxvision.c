@@ -22386,7 +22386,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     cerrar_ventanas=1;
 
                     //Y ocultar topbar
-                    printf("*** Ocultar topbar\n");
+                    DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Hide Top Menu when exiting menu_dibuja_menu");
                     reset_topbar_overlay_we_are_on_topbar();
 
                 }
@@ -28139,7 +28139,7 @@ void menu_inicio(void)
         //printf("Reabrir menu para gestionar zmenu\n");
     }
 
-    printf("Fin menu_inicio\n");
+    //printf("Fin menu_inicio\n");
 
 }
 
