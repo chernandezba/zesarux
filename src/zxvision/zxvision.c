@@ -3149,6 +3149,9 @@ z80_byte menu_get_pressed_key(void)
             debug_printf(VERBOSE_INFO,"SendKeysMenu: Return key pressed [%c]",tecla_buffer);
             menu_inject_teclas_estado++;
 
+            //Tecla "@" es ESC
+            if (tecla_buffer=='@') tecla_buffer=2;
+
             //Conmutar a no pulsar tecla
             if (menu_inject_teclas_estado>=21) menu_inject_teclas_estado=1;
 
