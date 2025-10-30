@@ -484,7 +484,7 @@ void menu_topbarmenu(void)
 
             //dibujar_cursor_topbar=1;
 
-            DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Menu selected %d Total Menus %d",dibujar_cursor_topbar_pos_cursor,total_menus);
+            DBG_PRINT_ZXVISION_TOPMENU VERBOSE_PARANOID,"ZXVISION_TOPMENU: Menu selected %d Total Menus %d",dibujar_cursor_topbar_pos_cursor,total_menus);
 
 
             if (!menu_multitarea) menu_refresca_pantalla();

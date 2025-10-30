@@ -21939,7 +21939,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     t_menu_funcion_activo fun_activo=comprobar_derecha->menu_funcion_activo;
                     if (fun_activo!=NULL) {
                         if (fun_activo()==0) {
-                            printf("----flecha derecha se comporta como enter\n");
+                            debug_printf(VERBOSE_DEBUG,"Right cursor key behaves as Enter");
                             cambiar_a_enter=0;
                         }
                     }
