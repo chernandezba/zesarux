@@ -16545,6 +16545,21 @@ int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_height(void)
     return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(0);
 }
 
+//Si se ha pulsado botones o iconos o boton derecho en el zx desktop
+int zxvision_if_pressed_buttons_or_icons_or_desktop(void)
+{
+    if (
+        menu_pressed_zxdesktop_button_which>=0 ||
+        menu_pressed_zxdesktop_lower_icon_which>=0 ||
+        menu_pressed_zxdesktop_configurable_icon_which>=0 ||
+        menu_pressed_zxdesktop_right_button_zxdesktop_background>=0
+    ) {
+        return 1;
+    }
+
+    else return 0;
+}
+
 //Funcion de detectar si raton en botones upper, lower o iconos de desktop, pero ademas
 //con variable activar_accion que dice si se dispara la accion que habilita ese boton
 //Esa variable sirve para que en casos que solo queremos comprobar que el raton esta ahi pero sin disparar la accion

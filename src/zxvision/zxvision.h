@@ -430,6 +430,8 @@ extern int zxvision_scanf_history(char *titulo,char *texto,int max_length,char *
 
 extern int zxvision_clicked_mouse_button(void);
 
+extern int zxvision_if_pressed_buttons_or_icons_or_desktop(void);
+
 extern zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y);
 extern zxvision_window *zxvision_find_window_in_background(char *geometry_name);
 extern zxvision_window *zxvision_coords_in_any_window(int x,int y);

@@ -497,16 +497,7 @@ void menu_topbarmenu(void)
             //provocaria que para salir del menu hubiera que pulsar ESC dos veces
             //Ponerlo a 0 si no hay ningun evento de boton etc, lo cual
             //por eliminacion querra decir que se abre el menu sin mas , sin atender a peticiones sobre pulsaciones
-            if (
-                ! (
-                menu_pressed_zxdesktop_button_which>=0 ||
-                menu_pressed_zxdesktop_lower_icon_which>=0 ||
-                menu_pressed_zxdesktop_configurable_icon_which>=0 ||
-                menu_pressed_zxdesktop_right_button_zxdesktop_background>=0
-
-                )
-
-                ) {
+            if (!zxvision_if_pressed_buttons_or_icons_or_desktop() ) {
                     //printf(">>>Decir que no se reabra el menu\n");
                     menu_pressed_open_menu_while_in_menu.v=0;
                 }
