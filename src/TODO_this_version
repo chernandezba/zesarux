@@ -59,3 +59,10 @@ Poder definir otra tecla para abrir el menu, F5 lanza comandos del sistema
 Por ejemplo en driver curses defino tecla END como si fuera F5
 Parece que curses no tiene soporte para eventos de ratón
 setting para compilar con clang
+
+
+-opciones lightgun que se puedan pasar por linea de comandos y se guarden en config
+-deberia ir solo con color blanco o cualquiera que no sea negro? o incluso cualquier color, no mirar el color
+-quiza en magnum no se detecta bien coordenada x o coincidencia con tal
+en el de dardos se ve que detecta bien la coordenada y
+o porque utiliza gunstick_view_electron en magnum pero gunstick_view_white en el resto de lighgun?

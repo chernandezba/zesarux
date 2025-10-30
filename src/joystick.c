@@ -469,7 +469,10 @@ int gunstick_view_electron(void)
     int dif=y-gunstick_y;
     if (dif<0) dif=-dif;
 
+    int dif_x=x-gunstick_x;
+    if (dif_x<0) dif_x=-dif_x;
 
+    //if (dif<gunstick_range_y && dif_x<gunstick_range_x) {
     if (dif<gunstick_range_y) {
 
         debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
@@ -483,8 +486,11 @@ int gunstick_view_electron(void)
 
         if (x<ancho && y<alto) {
 
+            //temp
+            //return 1;
+
             //Ver si hay algo en blanco cerca de donde se ha disparado
-                                                int indice_cache;
+            int indice_cache;
                         //x=gunstick_x;
 
             int rango_y;
@@ -515,6 +521,7 @@ int gunstick_view_electron(void)
                     int maskbrillo=7;
                     if (gunstick_solo_brillo) maskbrillo=15;
 
+                    //if ( (color&maskbrillo)>0) {
                     if ( (color&maskbrillo)==maskbrillo) {
                         debug_printf (VERBOSE_DEBUG,"White zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
                         return 1;
