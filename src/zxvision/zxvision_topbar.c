@@ -163,6 +163,8 @@ void topbar_timer_event(void)
 
     if (zxvision_topbar_appears_move_mouse_top.v==0) return;
 
+    if (!si_menu_mouse_activado()) return;
+
     int movido=0;
 
     if (previous_switchtopbar_timer_event_mouse_x!=mouse_x || previous_switchtopbar_timer_event_mouse_y!=mouse_y)
