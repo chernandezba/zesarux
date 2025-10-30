@@ -502,7 +502,7 @@ void menu_topbarmenu(void)
                 menu_pressed_zxdesktop_button_which>=0 ||
                 menu_pressed_zxdesktop_lower_icon_which>=0 ||
                 menu_pressed_zxdesktop_configurable_icon_which>=0 ||
-                menu_pressed_zxdesktop_right_button_background>=0
+                menu_pressed_zxdesktop_right_button_zxdesktop_background>=0
 
                 )
 

@@ -45472,7 +45472,7 @@ void menu_inicio_bucle_main(void)
     int mostrar_first_aid_menu=1;
     if (menu_pressed_zxdesktop_lower_icon_which>=0) mostrar_first_aid_menu=0;
     if (menu_pressed_zxdesktop_configurable_icon_which>=0) mostrar_first_aid_menu=0;
-    if (menu_pressed_zxdesktop_right_button_background>=0) mostrar_first_aid_menu=0;
+    if (menu_pressed_zxdesktop_right_button_zxdesktop_background>=0) mostrar_first_aid_menu=0;
     if (pulsado_alguna_ventana_con_menu_cerrado) mostrar_first_aid_menu=0;
 
     //boton de menu distinto del boton de menu principal
@@ -45496,7 +45496,7 @@ void menu_inicio_bucle_main(void)
         //printf("menu_pressed_zxdesktop_configurable_icon_which %d\n",menu_pressed_zxdesktop_configurable_icon_which);
         //printf("antes del if\n");
         if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0
-            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0
+            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_zxdesktop_background>=0
             || pulsado_alguna_ventana_con_menu_cerrado) {
 
             DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: menu_inicio_bucle_main. Condition true: "
@@ -45530,7 +45530,7 @@ void menu_inicio_bucle_main(void)
                 menu_inicio_handle_configurable_icon_presses();
             }
 
-            else if (menu_pressed_zxdesktop_right_button_background>=0) {
+            else if (menu_pressed_zxdesktop_right_button_zxdesktop_background>=0) {
                 DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: menu_inicio_bucle_main. Handle right button background");
                 menu_inicio_handle_right_button_background();
             }

@@ -1436,7 +1436,7 @@ int menu_pressed_zxdesktop_lower_icon_which_right_button=0;
 //En que icono configurable se ha pulsado del menu
 int menu_pressed_zxdesktop_configurable_icon_which=-1;
 //Se ha pulsado en boton derecho sobre el desktop
-int menu_pressed_zxdesktop_right_button_background=-1;
+int menu_pressed_zxdesktop_right_button_zxdesktop_background=-1;
 
 //Si se ha pulsado boton derecho en un icono
 int menu_pressed_zxdesktop_configurable_icon_right_button=0;
@@ -6410,7 +6410,7 @@ void menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado(void)
     if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
         menu_ext_desktop_draw_configurable_icon(menu_pressed_zxdesktop_configurable_icon_which,1);
     }
-    if (menu_pressed_zxdesktop_right_button_background>=0) {
+    if (menu_pressed_zxdesktop_right_button_zxdesktop_background>=0) {
 
     }
 }
@@ -16858,7 +16858,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
                     //printf("Pulsado en ZX desktop con boton derecho desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button\n");
 
-                    menu_pressed_zxdesktop_right_button_background=1;
+                    menu_pressed_zxdesktop_right_button_zxdesktop_background=1;
 
                     //de momento no altero posicion menu si se pulsa en background
                     //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
@@ -18296,7 +18296,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     if (zxvision_if_mouse_in_background() ) {
                         //printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");
 
-                        menu_pressed_zxdesktop_right_button_background=1;
+                        menu_pressed_zxdesktop_right_button_zxdesktop_background=1;
 
                         //de momento no altero posicion menu si se pulsa en background
                         //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
@@ -26303,8 +26303,8 @@ void menu_inicio_handle_right_button_background(void)
     //Liberar pulsada tecla background
     mouse_pressed_background_window=0;
 
-    if (menu_pressed_zxdesktop_right_button_background>=0) {
-        menu_pressed_zxdesktop_right_button_background=-1;
+    if (menu_pressed_zxdesktop_right_button_zxdesktop_background>=0) {
+        menu_pressed_zxdesktop_right_button_zxdesktop_background=-1;
 
         zxvision_set_next_menu_position_from_current_mouse();
 
@@ -26866,7 +26866,7 @@ void menu_inicio_bucle(void)
 
         //Si se ha pulsado en algun boton de menu
         if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0
-            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0) {
+            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_zxdesktop_background>=0) {
             //printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
         }
 

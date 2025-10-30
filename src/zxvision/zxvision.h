@@ -1539,7 +1539,7 @@ extern int menu_pressed_zxdesktop_lower_icon_which_right_button;
 extern int menu_pressed_zxdesktop_button_which;
 extern int menu_pressed_zxdesktop_configurable_icon_which;
 extern int menu_pressed_zxdesktop_configurable_icon_right_button;
-extern int menu_pressed_zxdesktop_right_button_background;
+extern int menu_pressed_zxdesktop_right_button_zxdesktop_background;
 extern z80_bit menu_pressed_close_all_menus;
 extern z80_bit menu_pressed_open_menu_while_in_menu;
 

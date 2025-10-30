@@ -30,11 +30,11 @@ Pendiente:
 menu_pressed_zxdesktop_button_which>=0 ||
 menu_pressed_zxdesktop_lower_icon_which>=0 ||
 menu_pressed_zxdesktop_configurable_icon_which>=0 ||
-menu_pressed_zxdesktop_right_button_background>=0 ||
+menu_pressed_zxdesktop_right_button_zxdesktop_background>=0 ||
 
 
 Esto hacerlo en una funcion, del tipo:
-zxvision_if_pressed_buttons_or_icons_or_window() -> en la de window falta la condicion adecuada
+zxvision_if_pressed_buttons_or_icons_or_desktop()
 
 
 
