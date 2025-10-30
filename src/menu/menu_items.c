@@ -45495,9 +45495,8 @@ void menu_inicio_bucle_main(void)
     do {
         //printf("menu_pressed_zxdesktop_configurable_icon_which %d\n",menu_pressed_zxdesktop_configurable_icon_which);
         //printf("antes del if\n");
-        if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0
-            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_zxdesktop_background>=0
-            || pulsado_alguna_ventana_con_menu_cerrado) {
+        if (zxvision_if_pressed_buttons_or_icons_or_desktop() ||
+            pulsado_alguna_ventana_con_menu_cerrado) {
 
             DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: menu_inicio_bucle_main. Condition true: "
                 "menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d "

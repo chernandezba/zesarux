@@ -6405,11 +6405,18 @@ int if_position_in_desktop_icons(int posicion_x,int posicion_y)
 
 void menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado(void)
 {
-    if (menu_pressed_zxdesktop_button_which>=0) menu_draw_ext_desktop_dibujar_boton_pulsado(menu_pressed_zxdesktop_button_which);
-    if (menu_pressed_zxdesktop_lower_icon_which>=0) menu_ext_desktop_draw_lower_icon(menu_pressed_zxdesktop_lower_icon_which,1);
+    if (menu_pressed_zxdesktop_button_which>=0) {
+        menu_draw_ext_desktop_dibujar_boton_pulsado(menu_pressed_zxdesktop_button_which);
+    }
+
+    if (menu_pressed_zxdesktop_lower_icon_which>=0) {
+        menu_ext_desktop_draw_lower_icon(menu_pressed_zxdesktop_lower_icon_which,1);
+    }
+
     if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
         menu_ext_desktop_draw_configurable_icon(menu_pressed_zxdesktop_configurable_icon_which,1);
     }
+
     if (menu_pressed_zxdesktop_right_button_zxdesktop_background>=0) {
 
     }
@@ -26880,8 +26887,7 @@ void menu_inicio_bucle(void)
         reopen_menu=0;
 
         //Si se ha pulsado en algun boton de menu
-        if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0
-            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_zxdesktop_background>=0) {
+        if (zxvision_if_pressed_buttons_or_icons_or_desktop() ) {
             //printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
         }
 
