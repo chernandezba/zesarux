@@ -245,8 +245,8 @@ char *gunstick_texto[]={
         "Sinclair 1",
         "Sinclair 2",
         "Kempston",
-	"AYChip",
-	"Port DFH"
+    "AYChip",
+    "Port DFH"
 };
 
 
@@ -288,17 +288,17 @@ void joystick_set_right(int si_enviar_zeng_event)
 
         //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
         puerto_especial_joystick |=1;
-	debug_printf(VERBOSE_DEBUG,"joystick_set_right");
+    debug_printf(VERBOSE_DEBUG,"joystick_set_right");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_RIGHT,1);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_RIGHT,1);
 }
 
 void joystick_release_right(int si_enviar_zeng_event)
 {
         puerto_especial_joystick &=255-1;
-	debug_printf(VERBOSE_DEBUG,"joystick_release_right");
+    debug_printf(VERBOSE_DEBUG,"joystick_release_right");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_RIGHT,0);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_RIGHT,0);
 }
 
 
@@ -308,17 +308,17 @@ void joystick_set_left(int si_enviar_zeng_event)
 
         //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
         puerto_especial_joystick |=2;
-	debug_printf(VERBOSE_DEBUG,"joystick_set_left");
+    debug_printf(VERBOSE_DEBUG,"joystick_set_left");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_LEFT,1);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_LEFT,1);
 }
 
 void joystick_release_left(int si_enviar_zeng_event)
 {
         puerto_especial_joystick &=255-2;
-	debug_printf(VERBOSE_DEBUG,"joystick_release_left");
+    debug_printf(VERBOSE_DEBUG,"joystick_release_left");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_LEFT,0);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_LEFT,0);
 }
 
 
@@ -329,17 +329,17 @@ void joystick_set_down(int si_enviar_zeng_event)
 
         //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
         puerto_especial_joystick |=4;
-	debug_printf(VERBOSE_DEBUG,"joystick_set_down");
+    debug_printf(VERBOSE_DEBUG,"joystick_set_down");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_DOWN,1);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_DOWN,1);
 }
 
 void joystick_release_down(int si_enviar_zeng_event)
 {
         puerto_especial_joystick &=255-4;
-	debug_printf(VERBOSE_DEBUG,"joystick_release_down");
+    debug_printf(VERBOSE_DEBUG,"joystick_release_down");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_DOWN,0);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_DOWN,0);
 }
 
 void joystick_set_up(int si_enviar_zeng_event)
@@ -348,17 +348,17 @@ void joystick_set_up(int si_enviar_zeng_event)
 
         //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
         puerto_especial_joystick |=8;
-	debug_printf(VERBOSE_DEBUG,"joystick_set_up");
+    debug_printf(VERBOSE_DEBUG,"joystick_set_up");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_UP,1);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_UP,1);
 }
 
 void joystick_release_up(int si_enviar_zeng_event)
 {
         puerto_especial_joystick &=255-8;
-	debug_printf(VERBOSE_DEBUG,"joystick_release_up");
+    debug_printf(VERBOSE_DEBUG,"joystick_release_up");
 
-	if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_UP,0);
+    if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_UP,0);
 }
 
 //fire_button: indica que boton de fuego: 0 primer boton, 1 segundo boton, etc
@@ -369,9 +369,9 @@ void joystick_set_fire(int si_enviar_zeng_event,int fire_button)
     //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
     int mascara_fuego=16 << fire_button;
     puerto_especial_joystick |=mascara_fuego;
-	debug_printf(VERBOSE_DEBUG,"joystick_set_fire");
+    debug_printf(VERBOSE_DEBUG,"joystick_set_fire");
 
-	if (si_enviar_zeng_event) {
+    if (si_enviar_zeng_event) {
         if (fire_button==0)      zeng_send_key_event(UTIL_KEY_JOY_FIRE,1);
         else if (fire_button==1) zeng_send_key_event(UTIL_KEY_JOY_FIRE2,1);
         else if (fire_button==2) zeng_send_key_event(UTIL_KEY_JOY_FIRE3,1);
@@ -384,9 +384,9 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
 {
     int mascara_fuego=16 << fire_button;
     puerto_especial_joystick &=255-mascara_fuego;
-	debug_printf(VERBOSE_DEBUG,"joystick_release_fire");
+    debug_printf(VERBOSE_DEBUG,"joystick_release_fire");
 
-	if (si_enviar_zeng_event) {
+    if (si_enviar_zeng_event) {
         if (fire_button==0)      zeng_send_key_event(UTIL_KEY_JOY_FIRE,0);
         else if (fire_button==1) zeng_send_key_event(UTIL_KEY_JOY_FIRE2,0);
         else if (fire_button==2) zeng_send_key_event(UTIL_KEY_JOY_FIRE3,0);
@@ -401,36 +401,36 @@ int gunstick_view_white(void)
 
 //Si curses
 #ifdef COMPILE_CURSES
-	if (!strcmp(scr_new_driver_name,"curses")) {
-		return (scrcurses_return_gunstick_view_white() );
-	}
+    if (!strcmp(scr_new_driver_name,"curses")) {
+        return (scrcurses_return_gunstick_view_white() );
+    }
 #endif
 
-	//ver zona en blanco
-	//Proteccion para que no se salga de putpixel_cache
-	//dimensiones putpixel_cache
-	int ancho,alto;
-	//ancho=LEFT_BORDER_NO_ZOOM+ANCHO_PANTALLA+RIGHT_BORDER_NO_ZOOM;
-	//alto=TOP_BORDER_NO_ZOOM+ALTO_PANTALLA+BOTTOM_BORDER_NO_ZOOM;
+    //ver zona en blanco
+    //Proteccion para que no se salga de putpixel_cache
+    //dimensiones putpixel_cache
+    int ancho,alto;
+    //ancho=LEFT_BORDER_NO_ZOOM+ANCHO_PANTALLA+RIGHT_BORDER_NO_ZOOM;
+    //alto=TOP_BORDER_NO_ZOOM+ALTO_PANTALLA+BOTTOM_BORDER_NO_ZOOM;
 
-	ancho=screen_get_emulated_display_width_no_zoom();
-	alto=screen_get_emulated_display_height_no_zoom();
+    ancho=screen_get_emulated_display_width_no_zoom();
+    alto=screen_get_emulated_display_height_no_zoom();
 
-	if (gunstick_x<ancho && gunstick_y<alto) {
-		int indice_cache;
+    if (gunstick_x<ancho && gunstick_y<alto) {
+        int indice_cache;
 
-		indice_cache=(get_total_ancho_rainbow()*gunstick_y)+gunstick_x;
+        indice_cache=(get_total_ancho_rainbow()*gunstick_y)+gunstick_x;
 
-		z80_byte color=putpixel_cache[indice_cache];
+        z80_byte color=putpixel_cache[indice_cache];
 
-		//color blanco con o sin brillo
-		if (color==15 || color==7) {
-			debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
-			return 1;
-		}
-	}
+        //color blanco con o sin brillo
+        if (color==15 || color==7) {
+            debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
+            return 1;
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 //Ver si la zona donde apunta el raton (gunstick) esta pasando el electron. Usado en magnum light phaser
@@ -459,73 +459,73 @@ int gunstick_view_electron(void)
 
    debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %d x: %d y: %d. gun is at x: %d y: %d",t_estados,x,y,gunstick_x,gunstick_y);
 
-	//aproximacion. solo detectamos coordenada y. Parece que los juegos no hacen barrido de toda la x.
-	//TODO. los juegos que leen pistola asi no funcionan
-	//if (y==gunstick_y) return 1;
+    //aproximacion. solo detectamos coordenada y. Parece que los juegos no hacen barrido de toda la x.
+    //TODO. los juegos que leen pistola asi no funcionan
+    //if (y==gunstick_y) return 1;
 
-	//rango de y
-	int dif=y-gunstick_y;
-	if (dif<0) dif=-dif;
+    //rango de y
+    int dif=y-gunstick_y;
+    if (dif<0) dif=-dif;
 
 
-	if (dif<gunstick_range_y) {
+    if (dif<gunstick_range_y) {
 
-		debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
+        debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
 
-		//Proteccion para que no se salga de putpixel_cache
-   		//dimensiones putpixel_cache
-	        int ancho,alto;
+        //Proteccion para que no se salga de putpixel_cache
+           //dimensiones putpixel_cache
+            int ancho,alto;
 
-	        ancho=screen_get_emulated_display_width_no_zoom();
-        	alto=screen_get_emulated_display_height_no_zoom();
+            ancho=screen_get_emulated_display_width_no_zoom();
+            alto=screen_get_emulated_display_height_no_zoom();
 
-        	if (x<ancho && y<alto) {
+            if (x<ancho && y<alto) {
 
-			//Ver si hay algo en blanco cerca de donde se ha disparado
+            //Ver si hay algo en blanco cerca de donde se ha disparado
                                               int indice_cache;
-						//x=gunstick_x;
+                        //x=gunstick_x;
 
-			int rango_y;
-			y=gunstick_y-gunstick_range_y/2;
+            int rango_y;
+            y=gunstick_y-gunstick_range_y/2;
 
-			//Restar offset
-			y=y-gunstick_y_offset;
+            //Restar offset
+            y=y-gunstick_y_offset;
 
-			if (y<0) y=0;
-			for (rango_y=gunstick_range_y;rango_y>0;rango_y--,y++) {
+            if (y<0) y=0;
+            for (rango_y=gunstick_range_y;rango_y>0;rango_y--,y++) {
 
 
-				x=gunstick_x-gunstick_range_x/2;
-				if (x<0) x=0;
+                x=gunstick_x-gunstick_range_x/2;
+                if (x<0) x=0;
 
                                 indice_cache=(get_total_ancho_rainbow()*y)+x;
 
-				int rango_x;
-				z80_byte color;
-				for (rango_x=gunstick_range_x;rango_x>0;rango_x--) {
+                int rango_x;
+                z80_byte color;
+                for (rango_x=gunstick_range_x;rango_x>0;rango_x--) {
 
-                                	color=putpixel_cache[indice_cache];
+                                    color=putpixel_cache[indice_cache];
 
                                         //color blanco con o sin brillo
-					//si no es color valido
-					if (color>15) return 0;
+                    //si no es color valido
+                    if (color>15) return 0;
 
-					int maskbrillo=7;
-					if (gunstick_solo_brillo) maskbrillo=15;
+                    int maskbrillo=7;
+                    if (gunstick_solo_brillo) maskbrillo=15;
 
                                         if ( (color&maskbrillo)==maskbrillo) {
-						debug_printf (VERBOSE_DEBUG,"White zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
-						return 1;
-					}
-					indice_cache++;
+                        debug_printf (VERBOSE_DEBUG,"White zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
+                        return 1;
+                    }
+                    indice_cache++;
 
-					//printf ("rango_x: %d rango_y: %d x: %d y: %d\n",rango_x,rango_y,x,y);
+                    //printf ("rango_x: %d rango_y: %d x: %d y: %d\n",rango_x,rango_y,x,y);
 
-				}
-			}
-		}
+                }
+            }
+        }
 
-	}
+    }
 
   return 0;
 
@@ -538,10 +538,10 @@ int gunstick_view_electron(void)
 
 void joystick_print_types(void)
 {
-	int i;
+    int i;
 
-	for (i=0;i<=JOYSTICK_TOTAL;i++) {
-		printf ("%s",joystick_texto[i]);
-		if (i!=JOYSTICK_TOTAL) printf (", ");
-	}
+    for (i=0;i<=JOYSTICK_TOTAL;i++) {
+        printf ("%s",joystick_texto[i]);
+        if (i!=JOYSTICK_TOTAL) printf (", ");
+    }
 }
