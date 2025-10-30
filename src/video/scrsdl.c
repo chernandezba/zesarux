@@ -1507,7 +1507,10 @@ void scrsdl_actualiza_tablas_teclado(void)
             mouse_x=event.motion.x;
             mouse_y=event.motion.y;
 
-
+            gunstick_x=event.motion.x;
+            gunstick_y=event.motion.y;
+            gunstick_x=gunstick_x/zoom_x;
+            gunstick_y=gunstick_y/zoom_y;
 
             kempston_mouse_x=mouse_x/zoom_x;
             kempston_mouse_y=255-mouse_y/zoom_y;
@@ -1531,12 +1534,9 @@ void scrsdl_actualiza_tablas_teclado(void)
 				util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
             }
 
-            gunstick_x=event.button.x;
-            gunstick_y=event.button.y;
-            gunstick_x=gunstick_x/zoom_x;
-            gunstick_y=gunstick_y/zoom_y;
 
-            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", event.button.x, event.button.y,gunstick_x,gunstick_y);
+
+            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d", event.button.x, event.button.y);
 
 		}
 

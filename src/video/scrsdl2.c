@@ -1515,7 +1515,10 @@ See the SDL documentation. Scancodes represent the physical position of the keys
             mouse_x=event.motion.x;
             mouse_y=event.motion.y;
 
-
+            gunstick_x=event.motion.x;
+            gunstick_y=event.motion.y;
+            gunstick_x=gunstick_x/zoom_x;
+            gunstick_y=gunstick_y/zoom_y;
 
             kempston_mouse_x=mouse_x/zoom_x;
             kempston_mouse_y=255-mouse_y/zoom_y;
@@ -1542,13 +1545,9 @@ See the SDL documentation. Scancodes represent the physical position of the keys
 
             //TODO: soporte rueda raton. Ya no se trata como un boton en SDL2, sino que es  SDL_MOUSEWHEEL  event
 
-            gunstick_x=event.button.x;
-            gunstick_y=event.button.y;
-            gunstick_x=gunstick_x/zoom_x;
-            gunstick_y=gunstick_y/zoom_y;
 
-            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", event.button.x, event.button.y,
-                gunstick_x,gunstick_y);
+
+            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d", event.button.x, event.button.y);
 
 		}
 
