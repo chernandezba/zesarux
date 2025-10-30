@@ -432,6 +432,7 @@ extern int zxvision_clicked_mouse_button(void);
 
 extern zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y);
 extern zxvision_window *zxvision_find_window_in_background(char *geometry_name);
+extern zxvision_window *zxvision_coords_in_any_window(int x,int y);
 
 extern int clicked_on_background_windows;
 
@@ -483,7 +484,7 @@ extern void zxvision_print_string_defaults_fillspc(zxvision_window *w,int x,int 
 extern void zxvision_print_string_defaults_fillspc_format(zxvision_window *w,int x,int y,const char * format , ...);
 
 extern void zxvision_handle_mouse_events(zxvision_window *w);
-
+extern void zxvision_handle_mouse_ev_switch_back_wind(zxvision_window *ventana_pulsada);
 
 extern void zxvision_handle_click_minimize(zxvision_window *w);
 extern void zxvision_minimize_window(zxvision_window *w);

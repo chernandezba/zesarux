@@ -21,8 +21,23 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
 ->quizá es culpa del autoframeskip?
 
-*si tenemos solo la barra arriba activa y pulsamos en una ventana, o en un boton inferior, cerrará el menu
+ok*si tenemos solo la barra arriba activa y pulsamos en una ventana, o en un boton inferior, cerrará el menu
 pero no va a esa ventana o botón inferior
+Corregido
+
+
+Pendiente:
+menu_pressed_zxdesktop_button_which>=0 ||
+menu_pressed_zxdesktop_lower_icon_which>=0 ||
+menu_pressed_zxdesktop_configurable_icon_which>=0 ||
+menu_pressed_zxdesktop_right_button_background>=0 ||
+
+
+Esto hacerlo en una funcion, del tipo:
+zxvision_if_pressed_buttons_or_icons_or_window() -> en la de window falta la condicion adecuada
+
+
+
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 

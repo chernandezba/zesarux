@@ -45462,6 +45462,8 @@ void set_f_functions_depending_on_driver(void)
 
 void menu_inicio_bucle_main(void)
 {
+    //printf("Inicio menu_inicio_bucle_main\n");
+
     //printf("menu_inicio_bucle_main: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
     //            menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
 
@@ -45642,6 +45644,8 @@ void menu_inicio_bucle_main(void)
 
     //Si se ha lanzado un reindexado entero de todos los menus
     menu_dibuja_menu_recorrer_menus=0;
+
+    //printf("Fin menu_inicio_bucle_main\n");
 
 }
 

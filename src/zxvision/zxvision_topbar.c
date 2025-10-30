@@ -394,6 +394,31 @@ int menu_topbarmenu_crear_indice_posiciones(void)
     return total_posiciones;
 }
 
+void zxvision_topbar_check_pressed_window(void)
+{
+    if (!mouse_left) return;
+    if (!menu_allow_background_windows) return;
+    if (zxvision_current_window==NULL) return;
+    //Vamos a ver en que ventana se ha pulsado, si tenemos background activado
+    zxvision_window *ventana_pulsada;
+
+    int absolute_mouse_x,absolute_mouse_y;
+
+    menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);
+
+    ventana_pulsada=zxvision_coords_in_any_window(absolute_mouse_x,absolute_mouse_y);
+
+
+    if (ventana_pulsada!=NULL && zxvision_show_minimized(ventana_pulsada)) {
+        DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Pressed on window [%s] from Top Menu Bar",ventana_pulsada->window_title);
+
+        zxvision_handle_mouse_ev_switch_back_wind(ventana_pulsada);
+
+        //printf("despues de conmutar ventana\n");
+
+    }
+}
+
 void menu_topbarmenu(void)
 {
     DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Entering Top Menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d",
@@ -470,7 +495,21 @@ void menu_topbarmenu(void)
 
             //Si se ha pulsado tecla F5 estando aqui, se quedaria esta variable activada que
             //provocaria que para salir del menu hubiera que pulsar ESC dos veces
-            menu_pressed_open_menu_while_in_menu.v=0;
+            //Ponerlo a 0 si no hay ningun evento de boton etc, lo cual
+            //por eliminacion querra decir que se abre el menu sin mas , sin atender a peticiones sobre pulsaciones
+            if (
+                ! (
+                menu_pressed_zxdesktop_button_which>=0 ||
+                menu_pressed_zxdesktop_lower_icon_which>=0 ||
+                menu_pressed_zxdesktop_configurable_icon_which>=0 ||
+                menu_pressed_zxdesktop_right_button_background>=0
+
+                )
+
+                ) {
+                    //printf(">>>Decir que no se reabra el menu\n");
+                    menu_pressed_open_menu_while_in_menu.v=0;
+                }
 
             //si se ha movido el raton por la parte superior
             if (tecla_leida==0) {
@@ -566,7 +605,11 @@ void menu_topbarmenu(void)
 
         }
 
+        //printf("menu_topbar_menu fin linea superior. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
+        //printf("menu_topbar_menu fin linea superior. clicked_on_background_windows=%d pulsado_alguna_ventana_con_menu_cerrado=%d\n",
+        //    clicked_on_background_windows,pulsado_alguna_ventana_con_menu_cerrado);
 
+        //printf("menu_topbar_menu fin linea superior. zxvision_current_window=%p\n",zxvision_current_window);
 
         //Aqui se gestiona la apertura de un menu
         //Si pulsado boton raton o enter en el paso anterior o se haya entrado abriendo el menu pulsando ya en barra superior
@@ -760,7 +803,15 @@ void menu_topbarmenu(void)
             }
 
             else {
-                printf ("Saldremos top menu porque no pulsado en top menu\n");
+                //Aqui llegamos cuando no se ha pulsado en ningun menu para desplegar
+                DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Exiting top menu bar because not pressed on any menu item");
+
+
+                //Comprobamos nosotros mismos si se ha pulsado en alguna ventana
+                //Nota: Este tipo de eventos comprueban de la misma manera que se comprueba la pulsación de iconos o de botones inferiores
+                zxvision_topbar_check_pressed_window();
+
+                //Ver si hemos pulsado en una ventana
             }
 
 
@@ -776,7 +827,13 @@ void menu_topbarmenu(void)
 
     DBG_PRINT_ZXVISION_TOPMENU VERBOSE_INFO,"ZXVISION_TOPMENU: Exiting Top Menu");
 
+    //printf("menu_topbar_menu antes preexit. menu_pressed_open_menu_while_in_menu.v=%d\n",menu_pressed_open_menu_while_in_menu.v);
+
     menu_topbarmenu_preexit();
+
+    //printf("Salir menu_topbar_menu menu_pressed_open_menu_while_in_menu.v=%d clicked_on_background_windows=%d\n",
+    //    menu_pressed_open_menu_while_in_menu.v,clicked_on_background_windows);
+
 }
 
 int topbar_text_overlay_llamado_a_crear_indice_posiciones=0;
