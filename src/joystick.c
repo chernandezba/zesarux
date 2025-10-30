@@ -436,28 +436,28 @@ int gunstick_view_white(void)
 //Ver si la zona donde apunta el raton (gunstick) esta pasando el electron. Usado en magnum light phaser
 int gunstick_view_electron(void)
 {
-   //ver electron
+    //ver electron
 
-   //x inicialmente esta posicionada dentro de pantalla... sin contar border
-   int x=t_estados % screen_testados_linea;
-   int y=t_estados/screen_testados_linea;
+    //x inicialmente esta posicionada dentro de pantalla... sin contar border
+    int x=t_estados % screen_testados_linea;
+    int y=t_estados/screen_testados_linea;
 
-   //restamos zona no visible superior
-   //printf ("y calculada: %d t_scanline_draw: %d\n",y,t_scanline_draw);
-   y -=screen_invisible_borde_superior;
+    //restamos zona no visible superior
+    //printf ("y calculada: %d t_scanline_draw: %d\n",y,t_scanline_draw);
+    y -=screen_invisible_borde_superior;
 
-   x=x+screen_testados_total_borde_izquierdo;
+    x=x+screen_testados_total_borde_izquierdo;
 
-   if (x>=screen_testados_linea) {
+    if (x>=screen_testados_linea) {
         y++;
         x=x-screen_testados_linea;
-   }
+    }
 
    //x esta en t_estados. pasamos a pixeles
 
-   x=x*2;
+    x=x*2;
 
-   debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %d x: %d y: %d. gun is at x: %d y: %d",t_estados,x,y,gunstick_x,gunstick_y);
+    debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %d x: %d y: %d. gun is at x: %d y: %d",t_estados,x,y,gunstick_x,gunstick_y);
 
     //aproximacion. solo detectamos coordenada y. Parece que los juegos no hacen barrido de toda la x.
     //TODO. los juegos que leen pistola asi no funcionan
@@ -473,16 +473,16 @@ int gunstick_view_electron(void)
         debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
 
         //Proteccion para que no se salga de putpixel_cache
-           //dimensiones putpixel_cache
-            int ancho,alto;
+        //dimensiones putpixel_cache
+        int ancho,alto;
 
-            ancho=screen_get_emulated_display_width_no_zoom();
-            alto=screen_get_emulated_display_height_no_zoom();
+        ancho=screen_get_emulated_display_width_no_zoom();
+        alto=screen_get_emulated_display_height_no_zoom();
 
-            if (x<ancho && y<alto) {
+        if (x<ancho && y<alto) {
 
             //Ver si hay algo en blanco cerca de donde se ha disparado
-                                              int indice_cache;
+                                                int indice_cache;
                         //x=gunstick_x;
 
             int rango_y;
@@ -498,22 +498,22 @@ int gunstick_view_electron(void)
                 x=gunstick_x-gunstick_range_x/2;
                 if (x<0) x=0;
 
-                                indice_cache=(get_total_ancho_rainbow()*y)+x;
+                indice_cache=(get_total_ancho_rainbow()*y)+x;
 
                 int rango_x;
                 z80_byte color;
                 for (rango_x=gunstick_range_x;rango_x>0;rango_x--) {
 
-                                    color=putpixel_cache[indice_cache];
+                    color=putpixel_cache[indice_cache];
 
-                                        //color blanco con o sin brillo
+                    //color blanco con o sin brillo
                     //si no es color valido
                     if (color>15) return 0;
 
                     int maskbrillo=7;
                     if (gunstick_solo_brillo) maskbrillo=15;
 
-                                        if ( (color&maskbrillo)==maskbrillo) {
+                    if ( (color&maskbrillo)==maskbrillo) {
                         debug_printf (VERBOSE_DEBUG,"White zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
                         return 1;
                     }
