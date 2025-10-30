@@ -29,6 +29,7 @@ Mejorado debug cpu:
 - Mostrar cuando la memoria se ha modificado por la última execución de instrucción en vistas 5 y 6
 - Tecla directa (t) para evaluar expresiones
 
+Corregida lectura de puerto BFFD en Spectrum +2A/+3
 Agregado carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido descomprimir archivos tar y rar con espacios en el nombre
 Corregido temporizador por defecto en Mac OS X cuando no se usa driver cocoa

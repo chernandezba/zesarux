@@ -916,12 +916,13 @@ void ay_chip_siguiente_ciclo(void)
 z80_byte in_port_ay(z80_byte puerto_h)
 {
 
-        if (puerto_h==0xFF) {
+    if (puerto_h==0xFF) {
 
 		int r=ay_3_8912_registro_sel[ay_chip_selected] & 15;
 		//evitamos valores fuera de rango
 
 		if (r==14) {
+            //printf("Leyendo registro 14 de ay chip. gunstick\n");
 			//debug_printf (VERBOSE_INFO,"registro chip ay: %d",r);
             //gunstick
             if (gunstick_emulation==GUNSTICK_AYCHIP) {
@@ -955,7 +956,7 @@ z80_byte in_port_ay(z80_byte puerto_h)
 		valor_retorno &=ay_mascara_registros[r];
 
 		return valor_retorno;
-        }
+    }
 
 	return 255;
 }

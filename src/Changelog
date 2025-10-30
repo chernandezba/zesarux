@@ -29,6 +29,7 @@ Improved debug cpu:
 - Show when memory is modified by last opcode execution on views 5 and 6
 - Direct key (t) to evaluate expressions
 
+Fixed reading port BFFD on Spectrum +2A/+3
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver
