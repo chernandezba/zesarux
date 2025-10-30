@@ -6503,6 +6503,9 @@ Bit	Purpose
   			sprintf (buf_linea,"\nAY-3-8912 chip %d:\n",j);
   			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
+  			sprintf (buf_linea,"\nSelected register: %d\n",ay_3_8912_registro_sel[j]);
+  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
 
                   	int i;
   	                for (i=0;i<16;i++) {
