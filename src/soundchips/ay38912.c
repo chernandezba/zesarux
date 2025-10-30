@@ -923,28 +923,30 @@ z80_byte in_port_ay(z80_byte puerto_h)
 
 		if (r==14) {
 			//debug_printf (VERBOSE_INFO,"registro chip ay: %d",r);
-	               //gunstick
-        	       if (gunstick_emulation==GUNSTICK_AYCHIP) {
-
-                	        z80_byte acumulado=255;
-                        	if (mouse_left!=0) {
-
-	                            acumulado &=(255-32);
-
-        	                    if (!gunstick_view_electron()) acumulado &=(255-16);
-        	                    //if (!gunstick_view_electron()) acumulado |=temp_gunstick_electron;
+            //gunstick
+            if (gunstick_emulation==GUNSTICK_AYCHIP) {
 
 
-                	        }
+                z80_byte acumulado=255;
 
-				//si no pulsado boton
-				else acumulado=(255-16);
+                /*
 
-                        	ay_3_8912_registros[ay_chip_selected][14]=acumulado;
+                bit4 = light sensor   (0=None, 1=Light)
+                bit5 = trigger button (0=Pressed, 1=Released)
+
+                */
+                if (mouse_left) {
+                    acumulado &=(255-32);
+                }
+
+                if (!gunstick_view_electron()) acumulado &=(255-16);
+
+
+                ay_3_8912_registros[ay_chip_selected][14]=acumulado;
 
 				//printf ("temp. valor aychip gunstick : %d\n",acumulado);
 
-        	        }
+            }
 
 		}
 		z80_byte valor_retorno=ay_3_8912_registros[ay_chip_selected][r];
