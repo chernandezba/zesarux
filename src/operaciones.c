@@ -6929,7 +6929,13 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	if (puerto_l==0xFD) {
 		if (puerto_h==0xFF) {
 			activa_ay_chip_si_conviene();
-			if (ay_chip_present.v==1) return in_port_ay(puerto_h);
+			if (ay_chip_present.v==1) return in_port_ay(0xFF);
+		}
+
+        //BFFD 10............0. R   Spectrum +2A/+3 Mirror of Port FFFDh (+2A/+3 only)
+		if (puerto_h==0xBF && MACHINE_IS_SPECTRUM_P2A_P3) {
+			activa_ay_chip_si_conviene();
+			if (ay_chip_present.v==1) return in_port_ay(0xFF);
 		}
 
 		//Puertos disco +3
