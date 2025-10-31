@@ -934,17 +934,17 @@ z80_byte in_port_ay(z80_byte puerto_h)
                 //Con menu abierto no leer nada
                 if (!zxvision_key_not_sent_emulated_mach() ) {
 
-                /*
+                    /*
 
-                bit4 = light sensor   (0=None, 1=Light)
-                bit5 = trigger button (0=Pressed, 1=Released)
+                    bit4 = light sensor   (0=None, 1=Light)
+                    bit5 = trigger button (0=Pressed, 1=Released)
 
-                */
-                if (mouse_left) {
-                    acumulado &=(255-32);
-                }
+                    */
+                    if (mouse_left) {
+                        acumulado &=(255-32);
+                    }
 
-                if (!gunstick_view_electron()) acumulado &=(255-16);
+                    if (!gunstick_view_electron()) acumulado &=(255-16);
 
                 }
 
