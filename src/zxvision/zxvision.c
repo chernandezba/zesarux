@@ -3928,12 +3928,12 @@ int switchzxdesktop_button_visible_timer=0;
 int zxvision_if_lower_button_switch_zxdesktop_enabled(void)
 {
 
-    //con emulacion de kempston mouse, no se dispara evento de abrir menu al pulsar con raton, por tanto,
+    //con emulacion de kempston mouse o gunstick, no se dispara evento de abrir menu al pulsar con raton, por tanto,
     //no se puede gestionar pulsaciones sobre el boton de switch
 
     if (si_complete_video_driver() && scr_driver_can_ext_desktop() &&
         menu_footer && zxdesktop_switch_button_enabled.v && !ventana_fullscreen &&
-        mouse_menu_disabled.v==0 && kempston_mouse_emulation.v==0) return 1;
+        mouse_menu_disabled.v==0 && kempston_mouse_emulation.v==0 && !gunstick_emulation) return 1;
     else return 0;
 }
 
