@@ -163,8 +163,9 @@ int gunstick_emulation=0;
 int gunstick_x,gunstick_y;
 
 //rangos de deteccion de electron, para pistola magnum light gun
+//Rango x 32 , y 8 va algo bien (aunque lejos de perfecto) en Acid
 int gunstick_range_x=64;
-int gunstick_range_y=8;
+int gunstick_range_y=1;
 
 int gunstick_y_offset=0;
 
@@ -459,7 +460,7 @@ int gunstick_view_electron(void)
 
     debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %d x: %d y: %d. gun is at x: %d y: %d",t_estados,x,y,gunstick_x,gunstick_y);
 
-    //printf ("electron is at t_estados: %6d x: %3d y: %3d. gun is at x: %3d y: %3d\n",t_estados,x,y,gunstick_x,gunstick_y);
+    printf ("electron is at t_estados: %6d x: %3d y: %3d. gun is at x: %3d y: %3d\n",t_estados,x,y,gunstick_x,gunstick_y);
 
     //aproximacion. solo detectamos coordenada y. Parece que los juegos no hacen barrido de toda la x.
     //TODO. los juegos que leen pistola asi no funcionan
@@ -469,8 +470,19 @@ int gunstick_view_electron(void)
     int dif=y-gunstick_y;
     if (dif<0) dif=-dif;
 
+    //Si el electrón no ha llegado donde está el mouse, retornar 0
+    if (x<gunstick_x) {
+        printf("Electron is NOT on gunstick, it's to the LEFT. return FALSE\n");
+        return 0;
+    }
+
     int dif_x=x-gunstick_x;
     if (dif_x<0) dif_x=-dif_x;
+
+    if (dif_x>gunstick_range_x) {
+        printf("Electron is NOT on gunstick, it's to the RIGHT. return FALSE\n");
+        return 0;
+    }
 
     //if (dif<gunstick_range_y && dif_x<gunstick_range_x) {
         //printf("Dif x %d y %d\n",dif_x,dif);
@@ -488,6 +500,7 @@ int gunstick_view_electron(void)
         if (x<ancho && y<alto) {
 
             //No mirar color. si coincide el electron por donde lee el programa, dar por bueno
+            printf("Electron is on gunstick. return TRUE\n");
             return 1;
 
             //Ver si hay algo en blanco cerca de donde se ha disparado
@@ -537,6 +550,7 @@ int gunstick_view_electron(void)
 
     }
 
+printf("Electron is NOT on gunstick, it's on other scanline. return FALSE\n");
   return 0;
 
 
