@@ -118,6 +118,7 @@ RE, RF: Registros de AY-RS232 para midi externo
 #include "audio.h"
 #include "debug.h"
 #include "joystick.h"
+#include "zxvision.h"
 
 
 //Indica si esta presente el chip o no
@@ -930,6 +931,9 @@ z80_byte in_port_ay(z80_byte puerto_h)
 
                 z80_byte acumulado=255;
 
+                //Con menu abierto no leer nada
+                if (!zxvision_key_not_sent_emulated_mach() ) {
+
                 /*
 
                 bit4 = light sensor   (0=None, 1=Light)
@@ -941,6 +945,8 @@ z80_byte in_port_ay(z80_byte puerto_h)
                 }
 
                 if (!gunstick_view_electron()) acumulado &=(255-16);
+
+                }
 
 
                 ay_3_8912_registros[ay_chip_selected][14]=acumulado;
