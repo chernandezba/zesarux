@@ -69,3 +69,10 @@ o porque utiliza gunstick_view_electron en magnum pero gunstick_view_white en el
 Sobretodo activar real video!! (para poder ver las lineas de efectos al disparar) y rangos en principio por defecto
 
 mirar si condicion mejor : if (dif<gunstick_range_y && dif_x<gunstick_range_x) {
+
+esto no esta bien:
+
+if (x>=screen_testados_linea) {
+    y++;
+    x=x-screen_testados_linea;
+}

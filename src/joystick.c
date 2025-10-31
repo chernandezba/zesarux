@@ -459,7 +459,7 @@ int gunstick_view_electron(void)
 
     debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %d x: %d y: %d. gun is at x: %d y: %d",t_estados,x,y,gunstick_x,gunstick_y);
 
-    //printf ("electron is at t_estados: %d x: %d y: %d. gun is at x: %d y: %d\n",t_estados,x,y,gunstick_x,gunstick_y);
+    //printf ("electron is at t_estados: %6d x: %3d y: %3d. gun is at x: %3d y: %3d\n",t_estados,x,y,gunstick_x,gunstick_y);
 
     //aproximacion. solo detectamos coordenada y. Parece que los juegos no hacen barrido de toda la x.
     //TODO. los juegos que leen pistola asi no funcionan
