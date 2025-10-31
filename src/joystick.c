@@ -486,8 +486,8 @@ int gunstick_view_electron(void)
 
         if (x<ancho && y<alto) {
 
-            //temp
-            //return 1;
+            //No mirar color. si coincide el electron por donde lee el programa, dar por bueno
+            return 1;
 
             //Ver si hay algo en blanco cerca de donde se ha disparado
             int indice_cache;
