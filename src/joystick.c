@@ -473,6 +473,7 @@ int gunstick_view_electron(void)
     if (dif_x<0) dif_x=-dif_x;
 
     //if (dif<gunstick_range_y && dif_x<gunstick_range_x) {
+        //printf("Dif x %d y %d\n",dif_x,dif);
     if (dif<gunstick_range_y) {
 
         debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
