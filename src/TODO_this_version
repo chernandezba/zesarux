@@ -21,6 +21,8 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
 ->quizá es culpa del autoframeskip?
 
+*cuando raton está arriba del todo pero usando las teclas, que no interprete la posición del raton al seleccionar menus con el teclado,
+al abrir con f5 por ejemplo
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
