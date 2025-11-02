@@ -96,3 +96,5 @@ Lo mismo sirve para Microdrive y otros dispositivos.
 De hecho el setting no es fast autoload. Ese es para acelerar reset y load
 Sería un nuevo setting de acelerate loaders comun (ahora solo hay uno en tape settings). O accelerate loading
 Quiza setting dentro de tape ya no tiene sentido (hacer que el de accelerate real tape sea el comun)
+
+-acelerar carga de dsk tambien aplica a grabar, porque al grabar se leen datos...
