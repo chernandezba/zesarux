@@ -80,6 +80,7 @@ Por tanto en un archivo ddh se tendrán los sectores sin usar (y por tanto ocupa
 #include "menu_items.h"
 #include "mem128.h"
 #include "audio.h"
+#include "timer.h"
 
 
 z80_bit hilow_enabled={0};
@@ -2550,6 +2551,8 @@ void hilow_raw_write_byte(int posicion,z80_byte valor)
 
 z80_byte hilow_raw_read_byte(int posicion)
 {
+    timer_storage_common_accelerate_loading();
+
     if (hilow_raw_en_zona_blanca(posicion)) return 0;
 
     z80_byte *puntero_audio=hilow_get_audio_buffer();
