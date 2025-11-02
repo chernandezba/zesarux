@@ -263,6 +263,12 @@ z80_bit ql_flp1_follow_mdv1={0};
 //Si dispositivo ql win1_ es igual a mdv1_
 z80_bit ql_win1_alias_mdv1={1};
 
+
+//
+// Storage Settings
+//
+
+
 //
 // Display Settings
 //

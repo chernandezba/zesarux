@@ -4392,7 +4392,7 @@ int util_write_configfile(void)
   if (tape_loading_simulate_fast.v)           ADD_STRING_CONFIG,"--simulaterealloadfast");
   if (tzx_suppress_pause.v)                   ADD_STRING_CONFIG,"--deletetzxpauses");
 
-  if (accelerate_loaders.v)                   ADD_STRING_CONFIG,"--realloadfast");
+  if (accelerate_realtape_loaders.v)                   ADD_STRING_CONFIG,"--realloadfast");
 
 
   if (screen_gray_mode&1)                     ADD_STRING_CONFIG,"--blue");

@@ -102,7 +102,7 @@ int autoload_spectrum_loadpp_mode;
 //z80_bit autodetect_loaders={1};
 
 //Si hay que acelerar rutinas de cargadores
-z80_bit accelerate_loaders={0};
+z80_bit accelerate_realtape_loaders={0};
 
 //Si hay que autorebobinar cinta
 z80_bit tape_auto_rewind={0};
@@ -3256,7 +3256,7 @@ loader_detect_loader( void )
 
   }
 
-  if( accelerate_loaders.v && realtape_playing.v )
+  if( accelerate_realtape_loaders.v && realtape_playing.v )
     check_for_acceleration();
 
 }

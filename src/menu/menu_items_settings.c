@@ -11482,9 +11482,9 @@ void menu_standard_to_real_tape_fallback(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_realtape_accelerate_loaders(MENU_ITEM_PARAMETERS)
+void menu_realtape_accelerate_realtape_loaders(MENU_ITEM_PARAMETERS)
 {
-    accelerate_loaders.v ^=1;
+    accelerate_realtape_loaders.v ^=1;
 
 }
 
@@ -11688,9 +11688,9 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         }
 
         if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_accelerate_loaders,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_accelerate_realtape_loaders,NULL,
                 "A~~ccelerate loaders","A~~celerar cargadores","A~~ccelerar carregadors");
-            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ",(accelerate_loaders.v==1 ? 'X' : ' '));
+            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ",(accelerate_realtape_loaders.v==1 ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_settings_tape,'c');
             menu_add_item_menu_tooltip(array_menu_settings_tape,"Set top speed setting when loading a real tape");
             menu_add_item_menu_ayuda(array_menu_settings_tape,"Set top speed setting when loading a real tape");

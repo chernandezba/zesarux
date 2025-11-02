@@ -6849,7 +6849,7 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
     }*/
 
     //Si esta cinta insertada en realtape, acelerar
-    if (accelerate_loaders.v && realtape_inserted.v && realtape_playing.v) {
+    if (accelerate_realtape_loaders.v && realtape_inserted.v && realtape_playing.v) {
         //Mirar que esta haciendo
         tape_check_known_loaders();
 
