@@ -1319,6 +1319,7 @@ void hilow_read_directory_sector(void)
 void hilow_trap_read(void)
 {
 
+    timer_storage_common_accelerate_loading();
     //int i;
     //temp_debug_mem_registers();
 
@@ -2551,7 +2552,6 @@ void hilow_raw_write_byte(int posicion,z80_byte valor)
 
 z80_byte hilow_raw_read_byte(int posicion)
 {
-    timer_storage_common_accelerate_loading();
 
     if (hilow_raw_en_zona_blanca(posicion)) return 0;
 
@@ -2633,6 +2633,7 @@ void hilow_raw_move(void)
 
     else {
         //leyendo
+        if (hilow_cinta_en_movimiento) timer_storage_common_accelerate_loading();
         last_raw_audio_data_read=hilow_raw_read_byte(hilow_posicion_cabezal);
         if (hilow_hear_load_sound.v) hilow_ultimo_sample_sonido=last_raw_audio_data_read;
     }
