@@ -793,8 +793,30 @@ int timer_condicion_top_speed(void)
 }
 
 
+//Contador en frames que indica que está activa la carga rápida
+int timer_storage_common_accelerate_loading_counter=0;
 
+void timer_storage_common_accelerate_loading(void)
+{
+    //TODO setting para acelerar
+    //if (!efwwfe) return;
+    timer_storage_common_accelerate_loading_counter=10;
+    if (top_speed_timer.v) return;
+    printf("Enabling turbo\n");
+    top_speed_timer.v=1;
+}
 
+void timer_storage_common_accelerate_loading_decrease_counter(void)
+{
+    if (!timer_storage_common_accelerate_loading_counter) return;
+
+    printf("Decrease counter\n");
+
+    timer_storage_common_accelerate_loading_counter--;
+    if (!timer_storage_common_accelerate_loading_counter) {
+        top_speed_timer.v=0;
+    }
+}
 
 
 void timer_pause_waiting_end_frame(void)
@@ -1150,6 +1172,8 @@ void timer_check_interrupt(void)
                 }
             }
         }
+
+        timer_storage_common_accelerate_loading_decrease_counter();
 
         if (z88_pendiente_cerrar_tapa_timer) {
             z88_pendiente_cerrar_tapa_timer--;

@@ -111,6 +111,7 @@ http://dunfield.classiccmp.org/r/765.pdf
 #include "screen.h"
 #include "settings.h"
 #include "pcw.h"
+#include "timer.h"
 
 z80_bit pd765_enabled={0};
 
@@ -1667,6 +1668,9 @@ field are not checked when SK = 1.
 
    sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente;
 
+
+    //Acelerar la carga si conviene
+    timer_storage_common_accelerate_loading();
 
     z80_byte sector_fisico;
 
