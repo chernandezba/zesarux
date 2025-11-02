@@ -41,6 +41,7 @@
 #include "menu_items.h"
 #include "menu_items_storage.h"
 #include "settings.h"
+#include "timer.h"
 
 
 z80_bit betadisk_enabled={0};
@@ -600,6 +601,7 @@ A=0 read, A=255 write
 			if (reg_a==0) {
                 z80_byte byte_leido=betadisk_get_byte_disk(pista,sector,byte_en_sector);
                 poke_byte_no_time(destino,byte_leido);
+                timer_storage_common_accelerate_loading();
 			}
 
 			if (reg_a==255) {

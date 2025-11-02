@@ -1779,7 +1779,7 @@ dandanator.o: storage/dandanator.c storage/dandanator.h cpu.h debug.h utils.h op
 gs.o: soundchips/gs.c soundchips/gs.h cpu.h debug.h utils.h operaciones.h contend.h audio/audio.h
 	\$(CC) \$(CFLAGS) -c soundchips/gs.c
 
-betadisk.o: storage/betadisk.c storage/betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tsconf.h menu/menu_items.h menu/menu_items_storage.h settings.h
+betadisk.o: storage/betadisk.c storage/betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tsconf.h menu/menu_items.h menu/menu_items_storage.h settings.h timer.h
 	\$(CC) \$(CFLAGS) -c storage/betadisk.c
 
 codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h video/screen.h machines/tbblue.h assemble.h expression_parser.h audio/audio.h zrcp/zeng.h zrcp/zeng_online.h network.h settings.h atomic.h machines/cpc.h timer.h audio/audio_ayplayer.h
