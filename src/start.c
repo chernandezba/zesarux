@@ -1464,7 +1464,7 @@ printf("\n"
         "--noautoload                No autoload file on Spectrum, ZX80 or ZX81\n"
         "--fastautoload              Do the autoload process at top speed\n"
         "--noautoselectfileopt       Do not autoselect emulation options for known files\n"
-        "--accelerate-loading         Accelerate loading files\n"
+        "--accelerate-loading        Accelerate loading files\n"
 
 
 
