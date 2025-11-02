@@ -36,6 +36,7 @@
 #include "mem128.h"
 #include "screen.h"
 #include "zesarux.h"
+#include "timer.h"
 
 z80_bit if1_enabled={0};
 z80_byte *if1_memory_pointer;
@@ -435,6 +436,9 @@ z80_byte interface1_get_value_port(z80_byte funcion)
             value=microdrive_raw_read_port_e7();
             return value;
         }
+
+        //Acelerar la carga si conviene
+        timer_storage_common_accelerate_loading();
 
 
         if (microdrive_current_is_raw()) {
