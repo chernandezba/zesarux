@@ -3785,6 +3785,7 @@ int util_write_configfile(void)
 
   if (fast_autoload.v)			      ADD_STRING_CONFIG,"--fastautoload");
 
+  if (storage_accelerate_loading.v)           ADD_STRING_CONFIG,"--accelerate-loading");
 
   if (ay_speech_enabled.v==0)                 ADD_STRING_CONFIG,"--disableayspeech");
   if (ay_envelopes_enabled.v==0)              ADD_STRING_CONFIG,"--disableenvelopes");

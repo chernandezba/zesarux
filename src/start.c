@@ -1458,6 +1458,18 @@ printf("\n"
 
         "\n"
         "\n"
+        "Storage Settings\n"
+        "-----------------------\n"
+        "\n"
+        "--noautoload                No autoload file on Spectrum, ZX80 or ZX81\n"
+        "--fastautoload              Do the autoload process at top speed\n"
+        "--noautoselectfileopt       Do not autoselect emulation options for known files\n"
+        "--accelerate-loading         Accelerate loading files\n"
+
+
+
+        "\n"
+        "\n"
         "Storage - +3 Disk Settings\n"
         "--------------------------\n"
         "\n"
@@ -1638,9 +1650,6 @@ printf("\n"
         "Storage - Tape Settings\n"
         "-----------------------\n"
         "\n"
-        "--noautoload                No autoload tape file on Spectrum, ZX80 or ZX81\n"
-        "--fastautoload              Do the autoload process at top speed\n"
-        "--noautoselectfileopt       Do not autoselect emulation options for known snap and tape files\n"
         "--no-fallbacktorealtape     Disable fallback to real tape setting\n"
         "--anyflagloading            Enables tape load routine to load without knowing block flag\n"
         "--autorewind                Autorewind tape when reaching end of tape\n"
@@ -3514,6 +3523,11 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--fastautoload")) {
                                 fast_autoload.v=1;
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--accelerate-loading")) {
+                storage_accelerate_loading.v=1;
+            }
+
 
 
             //eprom y flash cards de z88 hacen lo mismo que quickload

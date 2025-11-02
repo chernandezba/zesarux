@@ -78,3 +78,22 @@ if (x>=screen_testados_linea) {
     y++;
     x=x-screen_testados_linea;
 }
+
+
+-Acelerar carga de disco
+
+Puedo hacer simplemente que cuando haya leído por ejemplo 1 sector, lo acelere
+
+Y deje de acelerarlo por ejemplo cuando haya pasado un segundo (o menos) sin pedir leer nada
+
+Que dependa de setting fast auto load
+Cada vez que pide sector, pone variable a 50
+En cada frame, decremento esa variable
+Si llega a 0, quitar top speed
+
+
+Lo mismo sirve para Microdrive y otros dispositivos. Podría reusar contadores
+
+De hecho el setting no es fast autoload. Ese es para acelerar reset y load
+Sería un nuevo setting de acelerate loaders comun (ahora solo hay uno en tape settings). O accelerate loading
+Quiza setting dentro de tape ya no tiene sentido

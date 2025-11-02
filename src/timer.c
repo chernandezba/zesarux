@@ -798,11 +798,13 @@ int timer_storage_common_accelerate_loading_counter=0;
 
 void timer_storage_common_accelerate_loading(void)
 {
-    //TODO setting para acelerar
-    //if (!efwwfe) return;
+
+    if (storage_accelerate_loading.v==0) return;
     timer_storage_common_accelerate_loading_counter=10;
     if (top_speed_timer.v) return;
-    printf("Enabling turbo\n");
+
+    debug_printf(VERBOSE_INFO,"Setting top speed because accelerate loading setting");
+    //printf("Enabling turbo\n");
     top_speed_timer.v=1;
 }
 
@@ -810,7 +812,7 @@ void timer_storage_common_accelerate_loading_decrease_counter(void)
 {
     if (!timer_storage_common_accelerate_loading_counter) return;
 
-    printf("Decrease counter\n");
+    //printf("Decrease counter\n");
 
     timer_storage_common_accelerate_loading_counter--;
     if (!timer_storage_common_accelerate_loading_counter) {

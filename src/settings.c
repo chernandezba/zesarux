@@ -268,6 +268,7 @@ z80_bit ql_win1_alias_mdv1={1};
 // Storage Settings
 //
 
+z80_bit storage_accelerate_loading={0};
 
 //
 // Display Settings

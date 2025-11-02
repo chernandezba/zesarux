@@ -6749,6 +6749,15 @@ void menu_settings_storage(MENU_ITEM_PARAMETERS)
             "to run them. If you disable this, the database nor the .config files are read");
 
 
+        menu_add_item_menu_en_es_ca(array_menu_settings_storage,MENU_OPCION_NORMAL,NULL,NULL,
+            "A~~ccelerate loading","A~~celerar carga","A~~ccelerar càrrega");
+        menu_add_item_menu_prefijo_format(array_menu_settings_storage,"[%c] ",(storage_accelerate_loading.v ? 'X' : ' ' ) );
+        menu_add_item_menu_opcion_conmuta(array_menu_settings_storage,&storage_accelerate_loading);
+        menu_add_item_menu_shortcut(array_menu_settings_storage,'c');
+        menu_add_item_menu_tooltip(array_menu_settings_storage,"Accelerate loading");
+        menu_add_item_menu_ayuda(array_menu_settings_storage,"Accelerate loading");
+
+
         if (!MACHINE_IS_Z88 && !MACHINE_IS_CHLOE && !MACHINE_IS_QL) {
             menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

@@ -210,5 +210,7 @@ extern z80_bit scr_sdl_force_size;
 extern int scr_sdl_force_size_width;
 extern int scr_sdl_force_size_height;
 
+extern z80_bit storage_accelerate_loading;
+
 #endif
 

@@ -7,6 +7,7 @@ Added f-key/icon to trigger an action ("SendKeysMenu") to send keys to menu, for
 Allow SDL driver to use a 8-bit color palette
 Allow SDL driver force window size
 Allow DESTDIR environment varieble on make install step
+Allow to accelerate loading of diskette, microdrive, etc
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
