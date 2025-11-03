@@ -803,8 +803,7 @@ void timer_storage_common_accelerate_loading(void)
     timer_storage_common_accelerate_loading_counter=10;
     if (top_speed_timer.v) return;
 
-    debug_printf(VERBOSE_INFO,"Setting top speed because accelerate loading setting");
-    printf("Enabling turbo on loading\n");
+    //printf("Enabling turbo on loading\n");
     top_speed_timer.v=1;
 }
 
@@ -832,8 +831,7 @@ void timer_storage_common_accelerate_saving(void)
     timer_storage_common_accelerate_saving_counter=10;
     if (top_speed_timer.v) return;
 
-    debug_printf(VERBOSE_INFO,"Setting top speed because accelerate saving setting");
-    printf("Enabling turbo on saving\n");
+    //printf("Enabling turbo on saving\n");
     top_speed_timer.v=1;
 }
 

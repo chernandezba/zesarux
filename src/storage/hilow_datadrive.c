@@ -1177,6 +1177,18 @@ void hilow_trap_write_verify(void)
 
         //printf("WRITE probably\n");
 
+        //Si estaba en turbo (debido a acelerado por carga, de leer el sector de directorio),
+        //pero la opcion de grabar acelerado no está, quitar
+
+        //primero quitamos
+        if (top_speed_timer.v) {
+            top_speed_timer.v=0;
+            //printf("Quitar turbo al grabar\n");
+        }
+
+        //luego ponemos turbo si conviene
+        timer_storage_common_accelerate_saving();
+
         z80_int dir_inicio=reg_ix;
         z80_int longitud=reg_de;
         z80_byte sector=reg_a;
@@ -1318,6 +1330,15 @@ void hilow_read_directory_sector(void)
 
 void hilow_trap_read(void)
 {
+
+    //Si estaba en turbo (debido a acelerado por grabación),
+    //pero la opcion de cargar acelerado no está, quitar
+
+    //primero quitamos
+    if (top_speed_timer.v) {
+        top_speed_timer.v=0;
+        //printf("Quitar turbo al cargar\n");
+    }
 
     timer_storage_common_accelerate_loading();
     //int i;
@@ -2616,6 +2637,19 @@ void hilow_raw_move(void)
     //Si escribir o leer
     //Bit 4 - Write Gate (1 = Write Enabled, 0 = Write Disabled)
     if (last_hilow_port_value & 0x10) {
+        //Si estaba en turbo (debido a acelerado por carga, de leer el sector de directorio),
+        //pero la opcion de grabar acelerado no está, quitar
+
+        //primero quitamos
+        if (top_speed_timer.v) {
+            top_speed_timer.v=0;
+            //printf("Quitar turbo al grabar\n");
+        }
+
+        //luego ponemos turbo si conviene
+        timer_storage_common_accelerate_saving();
+
+
         //printf("Escribiendo\n");
         //f0 y 10 para hacer igual que emulador x128
         z80_byte valor_escribir=0x10;
@@ -2633,7 +2667,17 @@ void hilow_raw_move(void)
 
     else {
         //leyendo
-        if (hilow_cinta_en_movimiento) timer_storage_common_accelerate_loading();
+        if (hilow_cinta_en_movimiento) {
+            //Si estaba en turbo (debido a acelerado por grabación),
+            //pero la opcion de cargar acelerado no está, quitar
+
+            //primero quitamos
+            if (top_speed_timer.v) {
+                top_speed_timer.v=0;
+                //printf("Quitar turbo al cargar\n");
+            }
+            timer_storage_common_accelerate_loading();
+        }
         last_raw_audio_data_read=hilow_raw_read_byte(hilow_posicion_cabezal);
         if (hilow_hear_load_sound.v) hilow_ultimo_sample_sonido=last_raw_audio_data_read;
     }
