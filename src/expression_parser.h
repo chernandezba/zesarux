@@ -108,6 +108,8 @@ enum token_parser_indice {
     TPI_V_VARIABLE8,
     TPI_V_VARIABLE9,
 
+    TPI_V_MOUSE_LEFT,
+
 	//de tipo registro
 
 	TPI_R_PC,

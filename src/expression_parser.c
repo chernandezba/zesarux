@@ -44,6 +44,7 @@
 #include "hilow_datadrive.h"
 #include "pd765.h"
 #include "superupgrade.h"
+#include "joystick.h"
 
 /*
 
@@ -203,6 +204,8 @@ token_parser_textos_indices tpti_variables[]={
     {TPI_V_VARIABLE7,"VAR7"},
     {TPI_V_VARIABLE8,"VAR8"},
     {TPI_V_VARIABLE9,"VAR9"},
+
+    {TPI_V_MOUSE_LEFT,"MOUSELEFT"},
 
 
     {TPI_FIN,""}
@@ -1194,6 +1197,11 @@ int exp_par_calculate_numvarreg(token_parser *token)
                 case TPI_V_VARIABLE7: return debug_user_variables[7]; break;
                 case TPI_V_VARIABLE8: return debug_user_variables[8]; break;
                 case TPI_V_VARIABLE9: return debug_user_variables[9]; break;
+
+                case TPI_V_MOUSE_LEFT:
+                    if (zxvision_key_not_sent_emulated_mach()) return 0;
+                    else return mouse_left;
+                break;
 
                 //interrupciones
                 case TPI_V_IFF1: return iff1.v; break;

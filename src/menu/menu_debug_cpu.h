@@ -112,6 +112,7 @@ extern int map_adventure_offset_y;
 "HILOWMAPPED: returns 1 if HiLow ROM & RAM is mapped\n" \
 "PD765PCN: current cylinder of PD765 floppy drive\n" \
 "VAR0, VAR1, ... VAR9: user variables, can be set with action let\n" \
+"MOUSELEFT: if left button mouse is pressed or not (when menu is opened, it always returns 0)\n" \
 "MRV: value returned on read memory operation\n" \
 "MWV: value written on write memory operation\n" \
 "MRA: address used on read memory operation\n" \
@@ -196,7 +197,7 @@ extern int map_adventure_offset_y;
 "menu or break or empty string: Breaks current execution of program\n" \
 "call address: Calls memory address, address is an expression\n" \
 "disassemble address: Dissassemble address, address is an expression\n" \
-"let varX=expression: Assign expression to a user variable, where X is in range 0..9\n"
+"let varX=expression: Assign expression to a user variable, where X is in range 0..9\n" \
 "printc expression: Print ascii character to console\n" \
 "printe expression: Print expression following the same syntax as breakpoints and evaluate expression\n" \
 "printregs: Print registers\n" \

@@ -1794,7 +1794,7 @@ chardevice.o: chardevice.c chardevice.h cpu.h debug.h compileoptions.h
 uartbridge.o: uartbridge.c uartbridge.h cpu.h debug.h utils.h chardevice.h video/screen.h
 	\$(CC) \$(CFLAGS) -c uartbridge.c
 
-expression_parser.o: expression_parser.c expression_parser.h cpu.h debug.h utils.h operaciones.h video/screen.h mem128.h cpus/scmp.h cpus/m68k.h machines/prism.h machines/tbblue.h storage/hilow_datadrive.h storage/pd765.h storage/superupgrade.h
+expression_parser.o: expression_parser.c expression_parser.h cpu.h debug.h utils.h operaciones.h video/screen.h mem128.h cpus/scmp.h cpus/m68k.h machines/prism.h machines/tbblue.h storage/hilow_datadrive.h storage/pd765.h storage/superupgrade.h joystick.h
 	\$(CC) \$(CFLAGS) -c expression_parser.c
 
 kartusho.o: storage/kartusho.c storage/kartusho.h cpu.h debug.h utils.h operaciones.h ula.h
