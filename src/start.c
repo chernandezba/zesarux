@@ -7625,6 +7625,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     //esto va aqui, asi podemos parsear el establecer set-breakpoint desde linea de comandos
     init_breakpoints_table();
     init_watches_table();
+    init_debug_user_variables();
 
     extended_stack_clear();
 

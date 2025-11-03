@@ -204,6 +204,10 @@ unsigned int anterior_debug_mmu_mwa=65536;
 unsigned int anterior_debug_mmu_mrv=65536;
 unsigned int anterior_debug_mmu_mwv=65536;
 
+//Variables usadas para acciones de debug, para el usuario
+int debug_user_variables[DEBUG_TOTAL_USER_VARIABLES];
+
+
 //Array usado en memory-breakpoints
 /*
 Es equivalente a MRA o MWA pero mucho mas rapido
@@ -627,6 +631,15 @@ void init_watches_table(void)
 
 }
 
+
+void init_debug_user_variables(void)
+{
+    int i;
+
+    for (i=0;i<DEBUG_TOTAL_USER_VARIABLES;i++) {
+        debug_user_variables[i]=0;
+    }
+}
 
 
 //Dibuja la pantalla de panico
@@ -6665,6 +6678,53 @@ void debug_run_action_breakpoint(char *comando)
       }
     }
 
+
+    //let VARX=valor
+    else if (!strcmp(comando_sin_parametros,"let")) {
+      breakpoint_action_parse_commands_argvc(parametros);
+      if (breakpoint_action_command_argc<1) debug_printf (VERBOSE_DEBUG,"Command needs one parameter");
+      else {
+
+        //buscar el "="
+        char *string_expresion=strchr(breakpoint_action_command_argv[0],'=');
+        if (string_expresion==NULL) {
+            debug_printf (VERBOSE_DEBUG,"Let command does not have = character");
+        }
+        else {
+            char *string_numero_variable=string_expresion;
+            string_numero_variable--;
+
+            string_expresion++;
+
+            //mirar que variable es
+            char *esvariable=util_strcasestr(breakpoint_action_command_argv[0],"var");
+            if (esvariable==NULL) {
+                debug_printf (VERBOSE_DEBUG,"Let command uses unknown variable");
+            }
+
+            else {
+
+                //Numero variable es el ultimo caracter
+                int numero_variable=(*string_numero_variable)-'0';
+                if (numero_variable<0 || numero_variable>=DEBUG_TOTAL_USER_VARIABLES) {
+                    debug_printf (VERBOSE_DEBUG,"Let command variable out of range");
+                }
+
+                else {
+
+                    int valor;
+
+                    valor=exp_par_evaluate_expression_to_number(string_expresion);
+                    debug_printf (VERBOSE_DEBUG,"Running let command %s",breakpoint_action_command_argv[0]);
+                    debug_user_variables[numero_variable]=valor;
+
+                }
+
+            }
+        }
+
+      }
+    }
 
 
     else if (!strcmp(comando_sin_parametros,"printc")) {

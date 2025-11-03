@@ -30,6 +30,7 @@ Mejorado debug cpu:
 - Vistas 5 y 6 usan un memptr diferente ("memptx")
 - Mostrar cuando la memoria se ha modificado por la última execución de instrucción en vistas 5 y 6
 - Tecla directa (t) para evaluar expresiones
+- Agregadas variables de usuario VAR0, VAR1, ... VAR9
 
 Corregida lectura de puerto BFFD en Spectrum +2A/+3
 Agregado carga con --tape y --realtape con autocarga de snapshot al inicio

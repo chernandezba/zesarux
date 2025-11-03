@@ -513,6 +513,11 @@ extern unsigned int anterior_debug_mmu_mwa;
 extern unsigned int anterior_debug_mmu_mrv;
 extern unsigned int anterior_debug_mmu_mwv;
 
+#define DEBUG_TOTAL_USER_VARIABLES 10
+extern int debug_user_variables[];
+
+extern void init_debug_user_variables(void);
+
 
 //4 MB maximo
 #define MEMORY_ZONE_DEBUG_MAX_SIZE 4194304

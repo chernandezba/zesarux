@@ -191,6 +191,19 @@ token_parser_textos_indices tpti_variables[]={
 
     {TPI_V_PD765_PCN,"PD765PCN"},
 
+    {TPI_V_TSTATES,"TSTATES"},
+
+    {TPI_V_VARIABLE0,"VAR0"},
+    {TPI_V_VARIABLE1,"VAR1"},
+    {TPI_V_VARIABLE2,"VAR2"},
+    {TPI_V_VARIABLE3,"VAR3"},
+    {TPI_V_VARIABLE4,"VAR4"},
+    {TPI_V_VARIABLE5,"VAR5"},
+    {TPI_V_VARIABLE6,"VAR6"},
+    {TPI_V_VARIABLE7,"VAR7"},
+    {TPI_V_VARIABLE8,"VAR8"},
+    {TPI_V_VARIABLE9,"VAR9"},
+
 
     {TPI_FIN,""}
 };
@@ -1171,6 +1184,16 @@ int exp_par_calculate_numvarreg(token_parser *token)
                 case TPI_V_SCANLINE: return t_scanline_draw; break;
 
 
+                case TPI_V_VARIABLE0: return debug_user_variables[0]; break;
+                case TPI_V_VARIABLE1: return debug_user_variables[1]; break;
+                case TPI_V_VARIABLE2: return debug_user_variables[2]; break;
+                case TPI_V_VARIABLE3: return debug_user_variables[3]; break;
+                case TPI_V_VARIABLE4: return debug_user_variables[4]; break;
+                case TPI_V_VARIABLE5: return debug_user_variables[5]; break;
+                case TPI_V_VARIABLE6: return debug_user_variables[6]; break;
+                case TPI_V_VARIABLE7: return debug_user_variables[7]; break;
+                case TPI_V_VARIABLE8: return debug_user_variables[8]; break;
+                case TPI_V_VARIABLE9: return debug_user_variables[9]; break;
 
                 //interrupciones
                 case TPI_V_IFF1: return iff1.v; break;
