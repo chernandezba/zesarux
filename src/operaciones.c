@@ -8561,10 +8561,10 @@ z80_byte lee_puerto_sms(z80_byte puerto_h,z80_byte puerto_l)
 
 
 //Extracted from Fuse emulator
-void set_value_beeper (int v)
+void set_value_beeper(int v)
 {
-  static int beeper_ampl[] = { 0, AMPLITUD_TAPE, AMPLITUD_BEEPER,
-                               AMPLITUD_BEEPER+AMPLITUD_TAPE };
+    static int beeper_ampl[] = { 0, AMPLITUD_TAPE, AMPLITUD_BEEPER,
+                                AMPLITUD_BEEPER+AMPLITUD_TAPE };
 /*
   if( tape_is_playing() ) {
     // Timex machines have no loading noise
@@ -8575,47 +8575,55 @@ void set_value_beeper (int v)
   }
 */
 
-  //Si estamos en rutina de SAVE, enviar sonido teniendo en cuenta como referencia el 0 y de ahi hacia arriba o abajo
-  //siempre que el parametro de filtro lo tengamos activo en el menu
-
-  //valores de PC en hacer out 254:
-  //rutina save : 1244, 1262, 1270, 1310. oscila solo bit MIC
-  //rutina load: 1374
-  //rutina beep: 995
-  if (reg_pc>1200 && reg_pc<1350 && output_beep_filter_on_rom_save.v) {
-		//Estamos en save.
-		//printf ("valor beeper: %d\n",v);
-		value_beeper=( v ? AMPLITUD_TAPE*2 : -AMPLITUD_TAPE*2);
-
-		//Si activamos modo alteracion beeper. Ideal para que se escuche mas alto y poder enviar a inves
-		/*
-		En audacity, despues de exportar con valor 122 de beeper, aplicar reduccion de ruido:
-		db 3, sensibilidad 0, suavidad 150 hz, ataque 0.15
-		Tambien se puede aplicar reduccion de agudos -5
-		Luego reproducir con volumen del pc al maximo
-		*/
-
-		if (output_beep_filter_alter_volume.v) {
-			//value_beeper=( v ? 122 : -122);
-			value_beeper=( v ? output_beep_filter_volume : -output_beep_filter_volume);
-		}
-
-
-
-  }
-
-  else {
-
-
 
 	//Por defecto el sonido se genera en negativo y de ahi oscila
-
-	//temp normal en fuse
 	value_beeper = -beeper_ampl[3] + beeper_ampl[v]*2;
 
 
+    //Si estamos en rutina de SAVE, enviar sonido teniendo en cuenta como referencia el 0 y de ahi hacia arriba o abajo
+    //siempre que el parametro de filtro lo tengamos activo en el menu
 
-  }
+    //valores de PC en hacer out 254:
+    //rutina save : 1244, 1262, 1270, 1310. oscila solo bit MIC
+    //rutina load: 1374
+    //rutina beep: 995
+    if (reg_pc>1200 && reg_pc<1350) {
+        //Estamos en save.
+
+        //Si estaba en turbo (debido a acelerado por carga, de leer el sector de directorio),
+        //pero la opcion de grabar acelerado no está, quitar
+
+        //primero quitamos
+        if (top_speed_timer.v) {
+            top_speed_timer.v=0;
+            //printf("Quitar turbo al grabar\n");
+        }
+
+        //luego ponemos turbo si conviene
+        timer_storage_common_accelerate_saving();
+
+
+        if (output_beep_filter_on_rom_save.v) {
+
+            //printf ("valor beeper: %d\n",v);
+            value_beeper=( v ? AMPLITUD_TAPE*2 : -AMPLITUD_TAPE*2);
+
+            //Si activamos modo alteracion beeper. Ideal para que se escuche mas alto y poder enviar a inves
+            /*
+            En audacity, despues de exportar con valor 122 de beeper, aplicar reduccion de ruido:
+            db 3, sensibilidad 0, suavidad 150 hz, ataque 0.15
+            Tambien se puede aplicar reduccion de agudos -5
+            Luego reproducir con volumen del pc al maximo
+            */
+
+            if (output_beep_filter_alter_volume.v) {
+                //value_beeper=( v ? 122 : -122);
+                value_beeper=( v ? output_beep_filter_volume : -output_beep_filter_volume);
+            }
+
+        }
+
+    }
 
 
 
