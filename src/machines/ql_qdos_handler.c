@@ -1126,11 +1126,24 @@ unsigned int ql_read_io_fline(unsigned int canal,unsigned int puntero_destino,un
 
 	ptr_archivo=qltraps_fopen_files[canal].qltraps_last_open_file_handler_unix;
 
+    //Si estaba en turbo (debido a acelerado por grabación),
+    //pero la opcion de cargar acelerado no está, quitar
+
+    //primero quitamos
+    if (top_speed_timer.v) {
+        top_speed_timer.v=0;
+        //printf("Quitar turbo al cargar\n");
+    }
+
+    //Acelerar la carga si conviene
+    timer_storage_common_accelerate_loading();
+
 	unsigned int total_leidos=0;
 	//Ir leyendo hasta codigo 10 o final de fichero
 	int salir=0;
 
 	while (!salir) {
+        //printf("Leyendo ql_read_io_fline\n");
 		int bytes_leidos=fgetc(ptr_archivo);
 		//Si negativo, asumimos final de fichero
 		if (bytes_leidos<0) {
@@ -1209,11 +1222,24 @@ unsigned int ql_read_io_edlin(unsigned int canal,unsigned int puntero_destino,un
 
 	ptr_archivo=qltraps_fopen_files[canal].qltraps_last_open_file_handler_unix;
 
+    //Si estaba en turbo (debido a acelerado por grabación),
+    //pero la opcion de cargar acelerado no está, quitar
+
+    //primero quitamos
+    if (top_speed_timer.v) {
+        top_speed_timer.v=0;
+        //printf("Quitar turbo al cargar\n");
+    }
+
+    //Acelerar la carga si conviene
+    timer_storage_common_accelerate_loading();
+
 	unsigned int total_leidos=0;
 	//Ir leyendo hasta codigo 10 o final de fichero
 	int salir=0;
 
 	while (!salir) {
+        //printf("Leyendo ql_read_io_edlin\n");
 		int bytes_leidos=fgetc(ptr_archivo);
 		//Si negativo, asumimos final de fichero
 		if (bytes_leidos<0) {
@@ -1256,10 +1282,23 @@ unsigned int ql_read_io_edlin(unsigned int canal,unsigned int puntero_destino,un
 void ql_load_binary_file(FILE *ptr_file,unsigned int valor_leido_direccion, unsigned int valor_leido_longitud)
 {
 
+    //Si estaba en turbo (debido a acelerado por grabación),
+    //pero la opcion de cargar acelerado no está, quitar
+
+    //primero quitamos
+    if (top_speed_timer.v) {
+        top_speed_timer.v=0;
+        //printf("Quitar turbo al cargar\n");
+    }
+
+    //Acelerar la carga si conviene
+    timer_storage_common_accelerate_loading();
+
     int leidos=1;
 
     z80_byte byte_leido;
     while (valor_leido_longitud>0 && leidos>0) {
+        //printf("Leyendo ql_load_binary_file\n");
             leidos=fread(&byte_leido,1,1,ptr_file);
             if (leidos>0) {
                     //poke_byte_no_time(valor_leido_direccion,byte_leido);
