@@ -6870,7 +6870,7 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
             if (top_speed_timer.v && storage_accelerate_loading.v) {
                 debug_printf (VERBOSE_DEBUG,"Resetting top speed");
                 top_speed_timer.v=0;
-                printf("Quitar turbo por deteccion de fin\n");
+                //printf("Quitar turbo por deteccion de fin\n");
             }
         }
 

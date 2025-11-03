@@ -816,7 +816,7 @@ void timer_storage_common_accelerate_loading_decrease_counter(void)
     timer_storage_common_accelerate_loading_counter--;
     if (!timer_storage_common_accelerate_loading_counter) {
         top_speed_timer.v=0;
-        printf("Quitar turbo por timer\n");
+        //printf("Quitar turbo por timer\n");
     }
 }
 
