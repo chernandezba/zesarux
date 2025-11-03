@@ -240,7 +240,7 @@ void return_envelope_name(int value,char *string)
 
 
 //Si hay que autoactivar chip AY en el caso que alguien lo use (lectura o escritura en el puerto AY)
-z80_bit autoenable_ay_chip={1};
+z80_bit autoenable_ay_chip={0};
 
 void init_chip_ay(void)
 {

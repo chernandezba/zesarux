@@ -127,7 +127,7 @@ extern char realtape_volumen;
 extern char realtape_wave_offset;
 
 //extern z80_bit autodetect_loaders;
-extern z80_bit accelerate_realtape_loaders;
+//extern z80_bit accelerate_realtape_loaders;
 extern z80_bit tape_auto_rewind;
 
 extern int tap_load_detect_ace(void);

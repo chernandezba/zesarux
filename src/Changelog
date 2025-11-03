@@ -8,6 +8,7 @@ Allow SDL driver to use a 8-bit color palette
 Allow SDL driver force window size
 Allow DESTDIR environment varieble on make install step
 Allow to accelerate loading of diskette, microdrive, etc
+Added config setting for autoenable ay chip on Spectrum models without ay chip
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)

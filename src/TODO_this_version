@@ -65,6 +65,9 @@ setting para compilar con clang
 
 -opciones lightgun que se puedan pasar por linea de comandos y se guarden en config
 ok-deberia ir solo con color blanco o cualquiera que no sea negro? o incluso cualquier color, no mirar el color
+
+-Posición electrón de magnum, que lo saque de miso sitio que cuando haciendo debug se ve el electrón  en pantalla.  Hacer función común
+
 -quiza en magnum no se detecta bien coordenada x o coincidencia con tal
 en el de dardos (pack b, ultimo juego) se ve que detecta bien la coordenada y
 o porque utiliza gunstick_view_electron en magnum pero gunstick_view_white en el resto de lighgun?
@@ -79,6 +82,11 @@ if (x>=screen_testados_linea) {
     x=x-screen_testados_linea;
 }
 
+-Acciones de debug para definir variables, incrementar y decrementar. Estas variables se pueden usar en breakpoints
+Así por ejemplo puedo activar puntos de paro desde que se pulsa el botón de ratón y durante un rato (mediante variable que se incrementa) hacer punto de paro a final de cada frame
+
+-Breakpoint de expresión al pulsar botón mouse
+
 
 -Acelerar carga de disco
 
@@ -91,10 +99,15 @@ Cada vez que pide sector, pone variable a 50
 En cada frame, decremento esa variable
 Si llega a 0, quitar top speed
 Lo mismo sirve para Microdrive y otros dispositivos.
--ok dsk, hilow, betadisk, microdrive
+-ok dsk, hilow, betadisk, microdrive, cinta
 
 De hecho el setting no es fast autoload. Ese es para acelerar reset y load
 Sería un nuevo setting de acelerate loaders comun (ahora solo hay uno en tape settings). O accelerate loading
 Quiza setting dentro de tape ya no tiene sentido (hacer que el de accelerate real tape sea el comun)
 
--acelerar carga de dsk tambien aplica a grabar, porque al grabar se leen datos...
+ok-acelerar carga de dsk tambien aplica a grabar, porque al grabar se leen datos...
+-acelerar grabación de cinta
+-grabación de microdrive, hilow, betadisk
+
+
+-opcion config para autoenable_ay_chip.

@@ -3786,6 +3786,7 @@ int util_write_configfile(void)
   if (fast_autoload.v)			      ADD_STRING_CONFIG,"--fastautoload");
 
   if (storage_accelerate_loading.v)           ADD_STRING_CONFIG,"--accelerate-loading");
+  if (storage_accelerate_saving.v)            ADD_STRING_CONFIG,"--accelerate-saving");
 
   if (ay_speech_enabled.v==0)                 ADD_STRING_CONFIG,"--disableayspeech");
   if (ay_envelopes_enabled.v==0)              ADD_STRING_CONFIG,"--disableenvelopes");
@@ -4331,6 +4332,8 @@ int util_write_configfile(void)
 
   if (ay3_stereo_mode>0)                      ADD_STRING_CONFIG,"--ay-stereo-mode %d",ay3_stereo_mode);
 
+  if (autoenable_ay_chip.v)                   ADD_STRING_CONFIG,"--ay-autoenable");
+
                                               ADD_STRING_CONFIG,"--ay-stereo-channel A %d",ay3_custom_stereo_A);
                                               ADD_STRING_CONFIG,"--ay-stereo-channel B %d",ay3_custom_stereo_B);
                                               ADD_STRING_CONFIG,"--ay-stereo-channel C %d",ay3_custom_stereo_C);
@@ -4393,7 +4396,7 @@ int util_write_configfile(void)
   if (tape_loading_simulate_fast.v)           ADD_STRING_CONFIG,"--simulaterealloadfast");
   if (tzx_suppress_pause.v)                   ADD_STRING_CONFIG,"--deletetzxpauses");
 
-  if (accelerate_realtape_loaders.v)                   ADD_STRING_CONFIG,"--realloadfast");
+  //if (accelerate_realtape_loaders.v)                   ADD_STRING_CONFIG,"--realloadfast");
 
 
   if (screen_gray_mode&1)                     ADD_STRING_CONFIG,"--blue");

@@ -1669,6 +1669,15 @@ field are not checked when SK = 1.
    sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente;
 
 
+    //Si estaba en turbo (debido a acelerado por grabación),
+    //pero la opcion de cargar acelerado no está, quitar
+
+    //primero quitamos
+    if (top_speed_timer.v) {
+        top_speed_timer.v=0;
+        //printf("Quitar turbo al cargar\n");
+    }
+
     //Acelerar la carga si conviene
     timer_storage_common_accelerate_loading();
 
@@ -2305,6 +2314,19 @@ void pd765_handle_command_start_write_data(void)
 
 void pd765_handle_command_write_data_put_sector_data_from_bus(int sector_size, int iniciosector)
 {
+
+    //Si estaba en turbo (debido a acelerado por carga, de leer el sector de directorio),
+    //pero la opcion de grabar acelerado no está, quitar
+
+    //primero quitamos
+    if (top_speed_timer.v) {
+        top_speed_timer.v=0;
+        //printf("Quitar turbo al grabar\n");
+    }
+
+    //luego ponemos turbo si conviene
+    timer_storage_common_accelerate_saving();
+
     int indice;
 
     for (indice=0;indice<sector_size;indice++) {

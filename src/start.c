@@ -820,6 +820,7 @@ void zesarux_cmdline_help_expert(void)
         "--disableenvelopes               Disable AY Envelopes\n"
         "--disablebeeper                  Disable Beeper\n"
         "--disablerealbeeper              Disable real Beeper sound\n"
+        "--ay-autoenable                  Enable AY Chip automatically when it is needed\n"
         "--totalaychips  n                Number of ay chips. Default 1\n"
         "--ay-stereo-mode n               Mode of AY stereo emulated: 0=Mono, 1=ACB, 2=ABC, 3=BAC, 4=Custom. Default Mono\n"
         "--ay-stereo-channel X n          Position of AY channel X (A, B or C) in case of Custom Stereo Mode. 0=Left, 1=Center, 2=Right\n"
@@ -1465,6 +1466,7 @@ printf("\n"
         "--fastautoload              Do the autoload process at top speed\n"
         "--noautoselectfileopt       Do not autoselect emulation options for known files\n"
         "--accelerate-loading        Accelerate loading files\n"
+        "--accelerate-saving         Accelerate saving files\n"
 
 
 
@@ -1656,7 +1658,7 @@ printf("\n"
         "--simulaterealload          Simulate real tape loading\n"
         "--simulaterealloadfast      Enable fast simulate real tape loading\n"
         "--deletetzxpauses           Do not follow pauses on TZX tapes\n"
-        "--realloadfast              Fast loading of real tape\n"
+        //"--realloadfast              Fast loading of real tape\n"
 
 
         "\n"
@@ -3528,7 +3530,9 @@ int parse_cmdline_options(int desde_commandline) {
                 storage_accelerate_loading.v=1;
             }
 
-
+            else if (!strcmp(argv[puntero_parametro],"--accelerate-saving")) {
+                storage_accelerate_saving.v=1;
+            }
 
             //eprom y flash cards de z88 hacen lo mismo que quickload
             else if (!strcmp(argv[puntero_parametro],"--slotcard")) {
@@ -5645,6 +5649,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--ay-autoenable")) {
+                autoenable_ay_chip.v=1;
+            }
+
             else if (!strcmp(argv[puntero_parametro],"--ay-stereo-mode")) {
                 int valor;
 
@@ -6070,9 +6078,9 @@ int parse_cmdline_options(int desde_commandline) {
                                 tzx_suppress_pause.v=1;
                         }
 
-
+                        //Por compatibilidad hacia atras
                         else if (!strcmp(argv[puntero_parametro],"--realloadfast")) {
-                                accelerate_realtape_loaders.v=1;
+                                storage_accelerate_loading.v=1;
                         }
 
                         else if (!strcmp(argv[puntero_parametro],"--blue")) {

@@ -6750,12 +6750,21 @@ void menu_settings_storage(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_settings_storage,MENU_OPCION_NORMAL,NULL,NULL,
-            "A~~ccelerate loading","A~~celerar carga","A~~ccelerar càrrega");
+            "Accelerate ~~load","Acelerar ~~load","Accelerar ~~load");
         menu_add_item_menu_prefijo_format(array_menu_settings_storage,"[%c] ",(storage_accelerate_loading.v ? 'X' : ' ' ) );
         menu_add_item_menu_opcion_conmuta(array_menu_settings_storage,&storage_accelerate_loading);
-        menu_add_item_menu_shortcut(array_menu_settings_storage,'c');
+        menu_add_item_menu_shortcut(array_menu_settings_storage,'l');
         menu_add_item_menu_tooltip(array_menu_settings_storage,"Accelerate loading");
         menu_add_item_menu_ayuda(array_menu_settings_storage,"Accelerate loading");
+
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_storage,MENU_OPCION_NORMAL,NULL,NULL,
+            "Accelerate ~~save","Acelerar ~~save","Accelerar ~~save");
+        menu_add_item_menu_prefijo_format(array_menu_settings_storage,"[%c] ",(storage_accelerate_saving.v ? 'X' : ' ' ) );
+        menu_add_item_menu_opcion_conmuta(array_menu_settings_storage,&storage_accelerate_saving);
+        menu_add_item_menu_shortcut(array_menu_settings_storage,'s');
+        menu_add_item_menu_tooltip(array_menu_settings_storage,"Accelerate saving");
+        menu_add_item_menu_ayuda(array_menu_settings_storage,"Accelerate saving");
 
 
         if (!MACHINE_IS_Z88 && !MACHINE_IS_CHLOE && !MACHINE_IS_QL) {
@@ -11491,11 +11500,13 @@ void menu_standard_to_real_tape_fallback(MENU_ITEM_PARAMETERS)
 
 }
 
+/*
 void menu_realtape_accelerate_realtape_loaders(MENU_ITEM_PARAMETERS)
 {
     accelerate_realtape_loaders.v ^=1;
 
 }
+*/
 
 void menu_realtape_loading_sound(MENU_ITEM_PARAMETERS)
 {
@@ -11696,6 +11707,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_settings_tape);
         }
 
+        /*
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_accelerate_realtape_loaders,NULL,
                 "A~~ccelerate loaders","A~~celerar cargadores","A~~ccelerar carregadors");
@@ -11705,6 +11717,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_settings_tape,"Set top speed setting when loading a real tape");
             menu_add_item_menu_es_avanzado(array_menu_settings_tape);
         }
+        */
 
 
         menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);

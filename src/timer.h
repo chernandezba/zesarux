@@ -143,5 +143,6 @@ extern void timer_get_elapsed_core_frame_post(void);
 extern long timer_get_current_seconds(void);
 
 extern void timer_storage_common_accelerate_loading(void);
+extern void timer_storage_common_accelerate_saving(void);
 
 #endif

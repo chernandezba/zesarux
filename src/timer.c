@@ -804,7 +804,7 @@ void timer_storage_common_accelerate_loading(void)
     if (top_speed_timer.v) return;
 
     debug_printf(VERBOSE_INFO,"Setting top speed because accelerate loading setting");
-    //printf("Enabling turbo\n");
+    printf("Enabling turbo on loading\n");
     top_speed_timer.v=1;
 }
 
@@ -817,8 +817,39 @@ void timer_storage_common_accelerate_loading_decrease_counter(void)
     timer_storage_common_accelerate_loading_counter--;
     if (!timer_storage_common_accelerate_loading_counter) {
         top_speed_timer.v=0;
+        printf("Quitar turbo por timer\n");
     }
 }
+
+
+//Contador en frames que indica que está activa la grabación rápida
+int timer_storage_common_accelerate_saving_counter=0;
+
+void timer_storage_common_accelerate_saving(void)
+{
+
+    if (storage_accelerate_saving.v==0) return;
+    timer_storage_common_accelerate_saving_counter=10;
+    if (top_speed_timer.v) return;
+
+    debug_printf(VERBOSE_INFO,"Setting top speed because accelerate saving setting");
+    //printf("Enabling turbo on saving\n");
+    top_speed_timer.v=1;
+}
+
+void timer_storage_common_accelerate_saving_decrease_counter(void)
+{
+    if (!timer_storage_common_accelerate_saving_counter) return;
+
+    //printf("Decrease counter\n");
+
+    timer_storage_common_accelerate_saving_counter--;
+    if (!timer_storage_common_accelerate_saving_counter) {
+        top_speed_timer.v=0;
+    }
+}
+
+
 
 
 void timer_pause_waiting_end_frame(void)
@@ -1176,6 +1207,7 @@ void timer_check_interrupt(void)
         }
 
         timer_storage_common_accelerate_loading_decrease_counter();
+        timer_storage_common_accelerate_saving_decrease_counter();
 
         if (z88_pendiente_cerrar_tapa_timer) {
             z88_pendiente_cerrar_tapa_timer--;

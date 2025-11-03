@@ -6849,7 +6849,7 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
     }*/
 
     //Si esta cinta insertada en realtape, acelerar
-    if (accelerate_realtape_loaders.v && realtape_inserted.v && realtape_playing.v) {
+    if (storage_accelerate_loading.v && realtape_inserted.v && realtape_playing.v) {
         //Mirar que esta haciendo
         tape_check_known_loaders();
 
@@ -6858,16 +6858,19 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
             //Si no estaba modo turbo, poner turbo
             if (top_speed_timer.v==0) {
                 debug_printf (VERBOSE_DEBUG,"Setting Top speed");
-                top_speed_timer.v=1;
+                //top_speed_timer.v=1;
+                //Usamos el comun, asi si no se detecta fin de cargador, se desactivara igualmente por timer
+                timer_storage_common_accelerate_loading();
                 draw_tape_text_top_speed();
             }
         }
 
         //Si no esta en cargador, pero estabamos en turbo, detener
         else {
-            if (top_speed_timer.v) {
+            if (top_speed_timer.v && storage_accelerate_loading.v) {
                 debug_printf (VERBOSE_DEBUG,"Resetting top speed");
                 top_speed_timer.v=0;
+                printf("Quitar turbo por deteccion de fin\n");
             }
         }
 
