@@ -85,6 +85,7 @@ if (x>=screen_testados_linea) {
 -Acciones de debug para definir variables, incrementar y decrementar. Estas variables se pueden usar en breakpoints
 Así por ejemplo puedo activar puntos de paro desde que se pulsa el botón de ratón y durante un rato (mediante variable que se incrementa) hacer punto de paro a final de cada frame
 
--Breakpoint de expresión al pulsar botón mouse
+-Breakpoint de expresión al pulsar botón mouse. Con esto puedo activar un contador y andar pausando
+pantalla al disparar en lightgun
 
 -poderse mover bien por el menu con teclado aunque raton esté arriba del todo
