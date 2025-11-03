@@ -833,7 +833,7 @@ void timer_storage_common_accelerate_saving(void)
     if (top_speed_timer.v) return;
 
     debug_printf(VERBOSE_INFO,"Setting top speed because accelerate saving setting");
-    //printf("Enabling turbo on saving\n");
+    printf("Enabling turbo on saving\n");
     top_speed_timer.v=1;
 }
 

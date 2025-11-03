@@ -367,7 +367,7 @@ void microdrive_raw_move(void)
 
         int microdrive_activo=microdrive_primer_motor_activo();
 
-
+        //Escribir
         //Si no hay ninguno activo, nada
         if (microdrive_activo>=0 && microdrive_status[microdrive_activo].microdrive_enabled) {
             //printf("Escribiendo %03XH\n",value_to_write);

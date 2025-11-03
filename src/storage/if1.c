@@ -437,6 +437,15 @@ z80_byte interface1_get_value_port(z80_byte funcion)
             return value;
         }
 
+        //Si estaba en turbo (debido a acelerado por grabación),
+        //pero la opcion de cargar acelerado no está, quitar
+
+        //primero quitamos
+        if (top_speed_timer.v) {
+            top_speed_timer.v=0;
+            //printf("Quitar turbo al cargar\n");
+        }
+
         //Acelerar la carga si conviene
         timer_storage_common_accelerate_loading();
 
@@ -445,8 +454,9 @@ z80_byte interface1_get_value_port(z80_byte funcion)
             value=microdrive_raw_read_port_e7();
         }
 
-
-        else value=mdr_next_byte();
+        else {
+            value=mdr_next_byte();
+        }
 
         interface1_last_read_e7=value;
 
@@ -492,6 +502,18 @@ void interface1_write_value_port(z80_byte funcion,z80_byte value)
         interface1_last_value_port_e7=value;
         DBG_PRINT_IF1 VERBOSE_PARANOID,"IF1: Saving byte to port E7 value %02XH",value);
         microdrive_footer_operating();
+
+        //Si estaba en turbo (debido a acelerado por carga, de leer el sector de directorio),
+        //pero la opcion de grabar acelerado no está, quitar
+
+        //primero quitamos
+        if (top_speed_timer.v) {
+            top_speed_timer.v=0;
+            //printf("Quitar turbo al grabar\n");
+        }
+
+        //luego ponemos turbo si conviene
+        timer_storage_common_accelerate_saving();
 
         if (microdrive_current_is_raw()) mdr_raw_write_byte(value);
         else mdr_write_byte(value);
