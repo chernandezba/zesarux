@@ -500,8 +500,8 @@ int gunstick_view_electron(void)
         if (x<ancho && y<alto) {
 
             //No mirar color. si coincide el electron por donde lee el programa, dar por bueno
-            printf("Electron is on gunstick. return TRUE\n");
-            return 1;
+            //printf("Electron is on gunstick. return TRUE\n");
+            //return 1;
 
             //Ver si hay algo en blanco cerca de donde se ha disparado
             int indice_cache;
@@ -517,7 +517,7 @@ int gunstick_view_electron(void)
             for (rango_y=gunstick_range_y;rango_y>0;rango_y--,y++) {
 
 
-                x=gunstick_x-gunstick_range_x/2;
+                x=gunstick_x; //-gunstick_range_x/2;
                 if (x<0) x=0;
 
                 indice_cache=(get_total_ancho_rainbow()*y)+x;
@@ -532,6 +532,7 @@ int gunstick_view_electron(void)
                     //si no es color valido
                     if (color>15) return 0;
 
+                    /*
                     int maskbrillo=7;
                     if (gunstick_solo_brillo) maskbrillo=15;
 
@@ -539,7 +540,13 @@ int gunstick_view_electron(void)
                     if ( (color&maskbrillo)==maskbrillo) {
                         debug_printf (VERBOSE_DEBUG,"White zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
                         return 1;
+                    }*/
+
+                    if (color!=0 && color!=8) {
+                        debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
+                        return 1;
                     }
+
                     indice_cache++;
 
                     //printf ("rango_x: %d rango_y: %d x: %d y: %d\n",rango_x,rango_y,x,y);
