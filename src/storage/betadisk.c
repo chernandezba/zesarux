@@ -601,12 +601,35 @@ A=0 read, A=255 write
 			if (reg_a==0) {
                 z80_byte byte_leido=betadisk_get_byte_disk(pista,sector,byte_en_sector);
                 poke_byte_no_time(destino,byte_leido);
+
+                //Si estaba en turbo (debido a acelerado por grabación),
+                //pero la opcion de cargar acelerado no está, quitar
+
+                //primero quitamos
+                if (top_speed_timer.v) {
+                    top_speed_timer.v=0;
+                    //printf("Quitar turbo al cargar\n");
+                }
+
+                //Acelerar la carga si conviene
                 timer_storage_common_accelerate_loading();
 			}
 
 			if (reg_a==255) {
                 z80_byte byte_leido=peek_byte_no_time(destino);
                 betadisk_put_byte_disk(pista,sector,byte_en_sector,byte_leido);
+
+                //Si estaba en turbo (debido a acelerado por carga, de leer el sector de directorio),
+                //pero la opcion de grabar acelerado no está, quitar
+
+                //primero quitamos
+                if (top_speed_timer.v) {
+                    top_speed_timer.v=0;
+                    //printf("Quitar turbo al grabar\n");
+                }
+
+                //luego ponemos turbo si conviene
+                timer_storage_common_accelerate_saving();
 			}
 
 			destino++;
