@@ -7,7 +7,7 @@ Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar tecl
 Permitir al driver SDL usar una paleta de color de 8 bits
 Permitir al driver SDL forzar el tamaño de la ventana
 Permitir variable de entorno DESTDIR en el paso make install
-Permitir acelerar carga de diskette, microdrive, etc
+Permitir acelerar carga y grabación de diskette, microdrive, etc
 Agregada opción de configuración para autoactivar chip AY en modelos de Spectrum sin chip ay
 
 Mejorado ZX Vision:

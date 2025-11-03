@@ -4474,36 +4474,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
         }
 
-        if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_filter_on_rom_save,NULL,"ROM SAVE filter");
-            menu_add_item_menu_spanish_format(array_menu_settings_audio,"Filtro SAVE en ROM");
-            menu_add_item_menu_catalan_format(array_menu_settings_audio,"Filtre SAVE a ROM");
-            menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(output_beep_filter_on_rom_save.v ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Apply filter on ROM save routines");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"It detects when on ROM save routines and alter audio output to use only "
-                    "the MIC bit of the FEH port");
-            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-//extern z80_bit output_beep_filter_alter_volume;
-//extern char output_beep_filter_volume;
-
-            if (output_beep_filter_on_rom_save.v) {
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_alter_volume,NULL,"[%c] Alter beeper volume",
-                (output_beep_filter_alter_volume.v ? 'X' : ' ') );
-
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Alter output beeper volume");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Alter output beeper volume. You can set to a maximum to "
-                            "send the audio to a real spectrum to load it");
-                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
-
-
-                if (output_beep_filter_alter_volume.v) {
-                    menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_volume,NULL,"[%d] Beeper volume",output_beep_filter_volume);
-                    menu_add_item_menu_es_avanzado(array_menu_settings_audio);
-                }
-            }
-
-        }
 
 
         menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_resample_1bit,NULL,"[%c] 1 bit filter",(audio_resample_1bit.v ? 'X' : ' '));
@@ -11729,6 +11700,37 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings_tape,"Autorewind tape when reaching end of tape");
         menu_add_item_menu_ayuda(array_menu_settings_tape,"Autorewind tape when reaching end of tape");
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_audio_beep_filter_on_rom_save,NULL,"ROM SAVE filter");
+            menu_add_item_menu_spanish_format(array_menu_settings_tape,"Filtro SAVE en ROM");
+            menu_add_item_menu_catalan_format(array_menu_settings_tape,"Filtre SAVE a ROM");
+            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ",(output_beep_filter_on_rom_save.v ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_tape,"Apply filter on ROM save routines");
+            menu_add_item_menu_ayuda(array_menu_settings_tape,"It detects when on ROM save routines and alter audio output to use only "
+                    "the MIC bit of the FEH port");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+
+//extern z80_bit output_beep_filter_alter_volume;
+//extern char output_beep_filter_volume;
+
+            if (output_beep_filter_on_rom_save.v) {
+                menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_audio_beep_alter_volume,NULL,"[%c] Alter beeper volume",
+                (output_beep_filter_alter_volume.v ? 'X' : ' ') );
+
+                menu_add_item_menu_tooltip(array_menu_settings_tape,"Alter output beeper volume");
+                menu_add_item_menu_ayuda(array_menu_settings_tape,"Alter output beeper volume. You can set to a maximum to "
+                            "send the audio to a real spectrum to load it");
+                menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+
+
+                if (output_beep_filter_alter_volume.v) {
+                    menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_audio_beep_volume,NULL,"[%d] Beeper volume",output_beep_filter_volume);
+                    menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+                }
+            }
+
+        }
 
 
         menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
