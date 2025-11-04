@@ -590,18 +590,18 @@ int gunstick_view_electron_colors(void)
     y=y-gunstick_y_offset;
 
     if (y<0) y=0;
-    for (rango_y=gunstick_range_y;rango_y>0;rango_y--,y++) {
+
 
 
         x=gunstick_x;
 
         int rango_x;
         z80_byte color;
-        for (rango_x=0;rango_x<gunstick_range_x;rango_x++) {
+
 
             printf("gunstick %3d %3d\n",x,y);
-            color=gunstick_view_pixel_color(x+rango_x-screen_testados_total_borde_izquierdo*2,
-                                            y+rango_y-screen_borde_superior);
+            color=gunstick_view_pixel_color(x-screen_testados_total_borde_izquierdo*2,
+                                            y-screen_borde_superior);
 
             if (color!=0 && color!=8) {
                 debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
@@ -609,8 +609,8 @@ int gunstick_view_electron_colors(void)
             }
 
 
-        }
-    }
+
+
 
 
     return 0;
@@ -678,32 +678,7 @@ int gunstick_view_electron(void)
 
     printf("Offsets electron %6d gunstick %6d offset %7d max_offset %6d\n",electron_offset,gunstick_offset,delta_offset,max_offset);
 
-/*
-    //rango de y
-    int dif_y=y-gunstick_y;
-    if (dif_y<0) dif_y=-dif_y;
 
-    if (dif_y>=gunstick_range_y) {
-        printf("Electron is NOT on gunstick, it's on other scanline. return FALSE\n");
-        return 0;
-    }
-
-    //Si el electrón no ha llegado donde está el mouse, retornar 0
-    if (x<gunstick_x) {
-        printf("Electron is NOT on gunstick, it's to the LEFT. return FALSE\n");
-        return 0;
-    }
-
-    int dif_x=x-gunstick_x;
-    if (dif_x<0) dif_x=-dif_x;
-
-
-
-    if (dif_x>gunstick_range_x) {
-        printf("Electron is NOT on gunstick, it's to the RIGHT (dif_x=%d). return FALSE\n",dif_x);
-        return 0;
-    }
-*/
 
 
 
