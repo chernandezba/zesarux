@@ -5242,6 +5242,7 @@ void menu_hardware_gunstick_range_x(MENU_ITEM_PARAMETERS)
 }
 */
 
+/*
 void menu_hardware_gunstick_range_y(MENU_ITEM_PARAMETERS)
 {
     if (gunstick_range_y==64) gunstick_range_y=0;
@@ -5250,6 +5251,7 @@ void menu_hardware_gunstick_range_y(MENU_ITEM_PARAMETERS)
         else gunstick_range_y *=2;
     }
 }
+*/
 
 /*
 void menu_hardware_gunstick_y_offset(MENU_ITEM_PARAMETERS)
@@ -6487,8 +6489,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_x,NULL," X Range: %d",gunstick_range_x);
                 //menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_y,NULL," Y Range: %d",gunstick_range_y);
-                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+                //menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_y,NULL," Y Range: %d",gunstick_range_y);
+                //menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
                 //menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_y_offset,NULL," Y Offset: %s%d",(gunstick_y_offset ? "-" : "" ), gunstick_y_offset);
                 //menu_add_item_menu_es_avanzado(array_menu_hardware_settings);

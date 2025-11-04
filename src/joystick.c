@@ -170,7 +170,7 @@ int gunstick_x,gunstick_y;
 //rangos de deteccion de electron, para pistola magnum light gun
 //Rango x 32 , y 8 va algo bien (aunque lejos de perfecto) en Acid
 //int gunstick_range_x=1;
-int gunstick_range_y=1;
+//int gunstick_range_y=1;
 
 //int gunstick_y_offset=0;
 
@@ -570,7 +570,7 @@ int gunstick_view_electron(void)
     int electron_offset=y*(screen_testados_linea*2)+x;
     int gunstick_offset=gunstick_y*(screen_testados_linea*2)+gunstick_x;
 
-    int max_offset=gunstick_range_y*(screen_testados_linea*2);
+    int max_offset=(screen_testados_linea*2);
     int delta_offset=electron_offset-gunstick_offset;
 
     printf("Offsets electron %6d gunstick %6d offset %7d max_offset %6d\n",electron_offset,gunstick_offset,delta_offset,max_offset);
