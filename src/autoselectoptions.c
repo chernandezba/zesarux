@@ -983,12 +983,12 @@ void set_snaptape_fileoptions(char *filename)
 
 	else if (!strcmp(md5file,"20f8175d7b08e23d94167d6003b3a16f")) {
                 split_game_name_info ("Target Plus. Enabling Gunstick - Kempston");
-		gunstick_emulation=GUNSTICK_KEMPSTON;
+		lightgun_emulation=GUNSTICK_KEMPSTON;
 	}
 
 	else if (!strcmp(md5file,"1edee139362708bbbeeffa123f046fe8")) {
                 split_game_name_info ("Bestial Warrior. Enabling Gunstick - Kempston");
-                gunstick_emulation=GUNSTICK_KEMPSTON;
+                lightgun_emulation=GUNSTICK_KEMPSTON;
         }
 
 	//programas que usan magnum light phaser
@@ -1011,7 +1011,7 @@ void set_snaptape_fileoptions(char *filename)
 
 	) {
                 split_game_name_info ("Game that uses Magnum Light Phaser - AYCHIP");
-                gunstick_emulation=GUNSTICK_AYCHIP;
+                lightgun_emulation=GUNSTICK_AYCHIP;
 		//mejor con realvideo
 		enable_rainbow();
 	}
@@ -1019,7 +1019,7 @@ void set_snaptape_fileoptions(char *filename)
 
 	else if (!strcmp(md5file,"15791c249f842589fa279dfd1f382e72")) {
                 split_game_name_info ("Jungle Warfare. Uses Magnum Light Phaser - AYCHIP only with bright");
-		gunstick_emulation=GUNSTICK_AYCHIP;
+		lightgun_emulation=GUNSTICK_AYCHIP;
 		gunstick_solo_brillo=1;
 		//mejor con realvideo
 		enable_rainbow();
@@ -1027,7 +1027,7 @@ void set_snaptape_fileoptions(char *filename)
 
 	else if (!strcmp(md5file,"6c9561f56463ca1f67d1c0aa9e0f6131")) {
                 split_game_name_info ("QS Armoury. Uses Magnum Light Phaser - AYCHIP, offset Y");
-		gunstick_emulation=GUNSTICK_AYCHIP;
+		lightgun_emulation=GUNSTICK_AYCHIP;
 		gunstick_range_x=32;
 		gunstick_range_y=8;
 		//gunstick_y_offset=24;
@@ -1039,12 +1039,12 @@ void set_snaptape_fileoptions(char *filename)
 
 	else if (!strcmp(md5file,"fc3891eaefa94544c01aa2b975df1811")) {
                 split_game_name_info ("Solo. Enabling Gunstick - Sinclair 1");
-                gunstick_emulation=GUNSTICK_SINCLAIR_1;
+                lightgun_emulation=GUNSTICK_SINCLAIR_1;
 	}
 
 	else if (!strcmp(md5file,"a294d38a0c44c11afb135ebc1d79e8e6")) {
                 split_game_name_info ("Trigger. Enabling Gunstick - Sinclair 1");
-                gunstick_emulation=GUNSTICK_SINCLAIR_1;
+                lightgun_emulation=GUNSTICK_SINCLAIR_1;
         }
 
 

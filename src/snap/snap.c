@@ -1357,8 +1357,8 @@ void load_zx_snapshot(char *archivo)
 			}
 
 			else {
-				gunstick_emulation=g;
-				debug_printf(VERBOSE_DEBUG,"Setting Lightgun type to: %s",gunstick_texto[gunstick_emulation]);
+				lightgun_emulation=g;
+				debug_printf(VERBOSE_DEBUG,"Setting Lightgun type to: %s",gunstick_texto[lightgun_emulation]);
 			}
 
 
@@ -4192,7 +4192,7 @@ void save_zx_snapshot(char *filename)
 		header[90]=joystick_emulation;
 
 		//gunstick type emulation
-		header[91]=gunstick_emulation;
+		header[91]=lightgun_emulation;
 
 	}
 

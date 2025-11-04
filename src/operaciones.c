@@ -6641,7 +6641,7 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
         }
 
         //gunstick
-        if (gunstick_emulation==GUNSTICK_SINCLAIR_2) {
+        if (lightgun_emulation==GUNSTICK_SINCLAIR_2) {
             if (mouse_left!=0) {
 
                 acumulado &=(255-1);
@@ -6695,7 +6695,7 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
 
 
         //gunstick
-        if (gunstick_emulation==GUNSTICK_SINCLAIR_1) {
+        if (lightgun_emulation==GUNSTICK_SINCLAIR_1) {
             if (mouse_left!=0) {
 
                 acumulado &=(255-1);
@@ -6765,7 +6765,7 @@ z80_byte get_kempston_value(void)
                         }
 
                        //gunstick
-                       if (gunstick_emulation==GUNSTICK_KEMPSTON) {
+                       if (lightgun_emulation==GUNSTICK_KEMPSTON) {
 
                                 if (mouse_left!=0) {
 
@@ -7144,7 +7144,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 //  bit4       = Light Sensor   (0=Light, 1=No Light)
 //  other bits = Must be "1"    (the programs use compare FDh to test if bit1=0)
 
-               if (gunstick_emulation==GUNSTICK_PORT_DF) {
+               if (lightgun_emulation==GUNSTICK_PORT_DF) {
 
                         z80_byte acumulado=255;
                         if (mouse_left!=0) {
@@ -7236,7 +7236,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	//En Inves, Si A5=0 solamente
         if ( (puerto_l & 32) ==0 && (MACHINE_IS_INVES) ) {
 
-                if (joystick_emulation==JOYSTICK_KEMPSTON || gunstick_emulation==GUNSTICK_KEMPSTON) {
+                if (joystick_emulation==JOYSTICK_KEMPSTON || lightgun_emulation==GUNSTICK_KEMPSTON) {
 			return get_kempston_value();
                 }
 
@@ -7246,7 +7246,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         //Si A5=A6=A7=0 y A0=1, kempston joystick. El tipico es el puerto 31 (00011111)
         if ( (puerto_l & (1+32+64+128)) == 1 && !(MACHINE_IS_INVES) ) {
 
-                if (joystick_emulation==JOYSTICK_KEMPSTON || gunstick_emulation==GUNSTICK_KEMPSTON) {
+                if (joystick_emulation==JOYSTICK_KEMPSTON || lightgun_emulation==GUNSTICK_KEMPSTON) {
 			return get_kempston_value();
                 }
 

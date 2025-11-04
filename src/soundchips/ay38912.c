@@ -926,7 +926,7 @@ z80_byte in_port_ay(z80_byte puerto_h)
             //printf("Leyendo registro 14 de ay chip. gunstick\n");
 			//debug_printf (VERBOSE_INFO,"registro chip ay: %d",r);
             //gunstick
-            if (gunstick_emulation==GUNSTICK_AYCHIP) {
+            if (lightgun_emulation==GUNSTICK_AYCHIP) {
 
 
                 z80_byte acumulado=255;
