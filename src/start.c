@@ -1277,6 +1277,9 @@ printf("\n"
         "--recreatedzx-also-on-menu  Use ZX Recreated mode also on menu\n"
         "--keyboard-issue2           Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
         "--keymap n                  Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
+
+        "--enable-lightgun           Enable lighgun emulation\n"
+
         "--enablekempstonmouse       Enable kempston mouse emulation\n"
         "--kempstonmouse-sens n      Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
         printf (
@@ -4119,6 +4122,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--enablekempstonmouse")) {
                 kempston_mouse_emulation.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--enable-lightgun")) {
+                lightgun_emulation_enabled.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--kempstonmouse-sens")) {

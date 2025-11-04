@@ -912,7 +912,7 @@ void ay_chip_siguiente_ciclo(void)
 
 }
 
-//int temp_gunstick_electron=1;
+
 //leer puerto
 z80_byte in_port_ay(z80_byte puerto_h)
 {
@@ -925,7 +925,7 @@ z80_byte in_port_ay(z80_byte puerto_h)
 		if (r==14) {
             //printf("Leyendo registro 14 de ay chip. gunstick\n");
 			//debug_printf (VERBOSE_INFO,"registro chip ay: %d",r);
-            //gunstick
+            //lightgun
             if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_AUX) {
 
 

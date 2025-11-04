@@ -3813,6 +3813,7 @@ int util_write_configfile(void)
   if (zxvision_topbar_menu_enabled.v)           ADD_STRING_CONFIG,"--enable-top-menu");
   if (zxvision_topbar_appears_move_mouse_top.v==0)     ADD_STRING_CONFIG,"--no-show-top-menu-move-top");
 
+  if (lightgun_emulation_enabled.v)             ADD_STRING_CONFIG,"--enable-lightgun");
 
   if (kempston_mouse_emulation.v)             ADD_STRING_CONFIG,"--enablekempstonmouse");
 

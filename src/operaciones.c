@@ -6640,7 +6640,7 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
             if ((puerto_especial_joystick&2)) acumulado &=(255-16);
         }
 
-        //gunstick
+        //lightgun
         if (lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_SINCLAIR_2) {
             if (mouse_left!=0) {
 
