@@ -289,7 +289,7 @@ __FEATURES__
 
 * ZX Printer emulation
 
-* Lightgun emulation: Almost perfect emulation of Gunstick from MHT Ingenieros S.L and experimental emulation of Magnum Light Phaser
+* Lightgun emulation: Emulates Gunstick from MHT Ingenieros S.L and Magnum Light Phaser
 
 * Kempston mouse emulation
 

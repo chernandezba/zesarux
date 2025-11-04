@@ -248,10 +248,10 @@ char *joystick_texto[]={
 
 char *gunstick_texto[]={
         "None",
-        "Sinclair 1",
-        "Sinclair 2",
-        "Kempston",
-    "AYChip",
+        "Gunstick Sinclair 1",
+        "Gunstick Sinclair 2",
+        "Gunstick Kempston",
+    "Magnum (AUX port)",
     "Port DFH"
 };
 

@@ -32,6 +32,7 @@ Mejorado debug cpu:
 - Tecla directa (t) para evaluar expresiones
 - Agregadas variables de usuario VAR0, VAR1, ... VAR9
 
+Corregida emulación de Magnum Light Phaser
 Corregida lectura de puerto BFFD en Spectrum +2A/+3
 Agregado carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido descomprimir archivos tar y rar con espacios en el nombre

@@ -32,6 +32,7 @@ Improved debug cpu:
 - Direct key (t) to evaluate expressions
 - Added user variables VAR0, VAR1, ... VAR9
 
+Fixed emulation of Magnum Light Phaser
 Fixed reading port BFFD on Spectrum +2A/+3
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name

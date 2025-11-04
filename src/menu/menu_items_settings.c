@@ -6470,7 +6470,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 
-
+        menu_add_item_menu_separator(array_menu_hardware_settings);
 
 
         if (MACHINE_IS_SPECTRUM) {
@@ -6480,8 +6480,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             //menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of lightgun is emulated with the mouse");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
-                    "Gunstick from MHT Ingenieros S.L: all types except AYChip\n\n"
-                    "Magnum Light Phaser (experimental): supported by AYChip type");
+                    "Gunstick from MHT Ingenieros S.L\n\n"
+                    "Magnum Light Phaser");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 
