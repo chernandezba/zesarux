@@ -257,6 +257,34 @@ char *lightgun_types_list[LIGHTGUN_TOTAL]={
     //"Port DFH"
 };
 
+void lightgun_print_types(void)
+{
+    int i;
+
+    for (i=0;i<LIGHTGUN_TOTAL;i++) {
+        printf ("%s",lightgun_types_list[i]);
+        if (i!=LIGHTGUN_TOTAL-1) printf (", ");
+    }
+}
+
+//Devuelve 0 si ok
+int lightgun_set_type(char *tipo)
+{
+
+    debug_printf (VERBOSE_INFO,"Setting lightgun type %s",tipo);
+
+    int i;
+    for (i=0;i<LIGHTGUN_TOTAL;i++) {
+        if (!strcasecmp(tipo,lightgun_types_list[i])) break;
+    }
+
+    if (i>=LIGHTGUN_TOTAL) {
+        return 1;
+    }
+
+    lightgun_emulation_type=i;
+    return 0;
+}
 
 void joystick_cycle_next_type_autofire(void)
 {

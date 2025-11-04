@@ -1279,6 +1279,13 @@ printf("\n"
         "--keymap n                  Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
 
         "--enable-lightgun           Enable lighgun emulation\n"
+        "--lightgunemulated type     Type of emulated lightgun. Type can be one of: ");
+
+    lightgun_print_types();
+        printf (" . Default: %s\n",lightgun_types_list[lightgun_emulation_type]);
+        printf ("  Note: if a lightgun type has spaces in its name, you must write it between \"\"\n");
+
+        printf(
 
         "--enablekempstonmouse       Enable kempston mouse emulation\n"
         "--kempstonmouse-sens n      Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
@@ -1296,7 +1303,7 @@ printf("\n"
         "--joystickemulated type         Type of emulated joystick. Type can be one of: ");
 
     joystick_print_types();
-        printf (" (default: %s).\n",joystick_texto[joystick_emulation]);
+        printf (" . Default: %s\n",joystick_texto[joystick_emulation]);
         printf ("  Note: if a joystick type has spaces in its name, you must write it between \"\"\n");
 
 
@@ -4126,6 +4133,14 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--enable-lightgun")) {
                 lightgun_emulation_enabled.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--lightgunemulated")) {
+                                siguiente_parametro_argumento();
+                if (lightgun_set_type(argv[puntero_parametro])) {
+                    debug_printf(VERBOSE_ERR,"Invalid lightgun %s",argv[puntero_parametro]);
+                }
+
             }
 
             else if (!strcmp(argv[puntero_parametro],"--kempstonmouse-sens")) {

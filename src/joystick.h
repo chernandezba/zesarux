@@ -84,6 +84,9 @@ extern int lightgun_emulation_type;
 //#define GUNSTICK_PORT_DF 5
 
 extern char *lightgun_types_list[];
+extern void lightgun_print_types(void);
+
+extern int lightgun_set_type(char *tipo);
 
 //extern z80_byte puerto_especial_gunstick;
 extern int lightgun_x;
