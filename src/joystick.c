@@ -400,76 +400,6 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
     }
 }
 
-int gunstick_view_electron_colors_by_putpixelcache(int x,int y)
-{
-    //Proteccion para que no se salga de putpixel_cache
-    //dimensiones putpixel_cache
-    int ancho,alto;
-
-    ancho=screen_get_emulated_display_width_no_zoom();
-    alto=screen_get_emulated_display_height_no_zoom();
-
-    if (x<ancho && y<alto) {
-
-        //No mirar color. si coincide el electron por donde lee el programa, dar por bueno
-        //printf("Electron is on gunstick. return TRUE\n");
-        //return 1;
-
-        //Ver si hay algo en blanco cerca de donde se ha disparado
-        int indice_cache;
-                    //x=gunstick_x;
-
-        int rango_y;
-        y=gunstick_y-gunstick_range_y/2;
-
-        //Restar offset
-        y=y-gunstick_y_offset;
-
-        if (y<0) y=0;
-        for (rango_y=gunstick_range_y;rango_y>0;rango_y--,y++) {
-
-
-            x=gunstick_x; //-gunstick_range_x/2;
-            if (x<0) x=0;
-
-            indice_cache=(get_total_ancho_rainbow()*y)+x;
-
-            int rango_x;
-            z80_byte color;
-            for (rango_x=gunstick_range_x;rango_x>0;rango_x--) {
-
-                color=putpixel_cache[indice_cache];
-
-                //color blanco con o sin brillo
-                //si no es color valido
-                //if (color>15) return 0;
-
-
-                /*
-                int maskbrillo=7;
-                if (gunstick_solo_brillo) maskbrillo=15;
-
-                //if ( (color&maskbrillo)>0) {
-                if ( (color&maskbrillo)==maskbrillo) {
-                    debug_printf (VERBOSE_DEBUG,"White zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
-                    return 1;
-                }*/
-
-                if (color!=0 && color!=8) {
-                    debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
-                    return 1;
-                }
-
-                indice_cache++;
-
-                //printf ("rango_x: %d rango_y: %d x: %d y: %d\n",rango_x,rango_y,x,y);
-
-            }
-        }
-    }
-
-    return 0;
-}
 
 
 //Ver si la zona donde apunta el raton (gunstick) esta en blanco. Usado en gunstick de MHT
@@ -617,21 +547,16 @@ int gunstick_view_electron(void)
     x=x+screen_testados_total_borde_izquierdo;
 
 
-    if (x>=screen_testados_linea) {
+    /*if (x>=screen_testados_linea) {
         y++;
         x=x-screen_testados_linea;
         printf("SALTADO LINEA\n");
-    }
+    }*/
 
 
    //x esta en t_estados. pasamos a pixeles
 
     x=x*2;
-
-
-
-
-
 
 
     debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d",
@@ -668,7 +593,7 @@ int gunstick_view_electron(void)
 
     debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
 
-    //return gunstick_view_electron_colors_by_putpixelcache(x,y);
+
     return gunstick_view_electron_colors();
 
 
