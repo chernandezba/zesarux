@@ -1360,7 +1360,7 @@ void load_zx_snapshot(char *archivo)
 			else {
                 lightgun_emulation_enabled.v=1;
 				lightgun_emulation_type=g;
-				debug_printf(VERBOSE_DEBUG,"Setting Lightgun type to: %s",gunstick_texto[lightgun_emulation_type]);
+				debug_printf(VERBOSE_DEBUG,"Setting Lightgun type to: %s",lightgun_types_list[lightgun_emulation_type]);
 			}
             */
 

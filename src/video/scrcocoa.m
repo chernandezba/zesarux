@@ -1191,8 +1191,8 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 - (void)leftrightmouseDown:(int)x y:(int)y
 {
     /*
-    gunstick_x=x;
-    gunstick_y=y;
+    lightgun_x=x;
+    lightgun_y=y;
 
     //0,0 en cocoa esta abajo a la izquierda
     //por tanto, para coordenada y, restamos del tope la coordenada y
@@ -1200,13 +1200,13 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 	tamanyo_y=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom();
 
 
-    gunstick_x=gunstick_x/zoom_x;
-    //gunstick_y=screen_get_window_size_height_no_zoom_border_en()-gunstick_y/zoom_y;
-    gunstick_y=tamanyo_y-gunstick_y/zoom_y;
+    lightgun_x=lightgun_x/zoom_x;
+    //lightgun_y=screen_get_window_size_height_no_zoom_border_en()-lightgun_y/zoom_y;
+    lightgun_y=tamanyo_y-lightgun_y/zoom_y;
 
-    printf("*gunstick x %d gunstick y %d\n",gunstick_x,gunstick_y);
+    printf("*gunstick x %d gunstick y %d\n",lightgun_x,lightgun_y);
 
-    debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", x, y,gunstick_x,gunstick_y);
+    debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", x, y,lightgun_x,lightgun_y);
     */
 
 }
@@ -1276,8 +1276,8 @@ int cocoa_raton_oculto=0;
 
 
 
-    gunstick_x=locationInView.x;
-    gunstick_y=locationInView.y;
+    lightgun_x=locationInView.x;
+    lightgun_y=locationInView.y;
 
     //0,0 en cocoa esta abajo a la izquierda
     //por tanto, para coordenada y, restamos del tope la coordenada y
@@ -1285,11 +1285,11 @@ int cocoa_raton_oculto=0;
 	tamanyo_y=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom();
 
 
-    gunstick_x=gunstick_x/zoom_x;
-    //gunstick_y=screen_get_window_size_height_no_zoom_border_en()-gunstick_y/zoom_y;
-    gunstick_y=tamanyo_y-gunstick_y/zoom_y;
+    lightgun_x=lightgun_x/zoom_x;
+    //lightgun_y=screen_get_window_size_height_no_zoom_border_en()-lightgun_y/zoom_y;
+    lightgun_y=tamanyo_y-lightgun_y/zoom_y;
 
-    //printf(" gunstick x %d gunstick y %d\n",gunstick_x,gunstick_y);
+    //printf(" gunstick x %d gunstick y %d\n",lightgun_x,lightgun_y);
 
 
 

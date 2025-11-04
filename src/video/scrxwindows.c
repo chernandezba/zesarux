@@ -1805,10 +1805,10 @@ void scrxwindows_actualiza_tablas_teclado(void)
 		    mouse_x=event.xbutton.x;
 		    mouse_y=event.xbutton.y;
 
-			gunstick_x=event.xbutton.x;
-			gunstick_y=event.xbutton.y;
-			gunstick_x=gunstick_x/zoom_x;
-			gunstick_y=gunstick_y/zoom_y;
+			lightgun_x=event.xbutton.x;
+			lightgun_y=event.xbutton.y;
+			lightgun_x=lightgun_x/zoom_x;
+			lightgun_y=lightgun_y/zoom_y;
 
 
 		    kempston_mouse_x=mouse_x/zoom_x;

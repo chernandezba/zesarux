@@ -1823,7 +1823,7 @@ void scrcurses_convert_mouse_xy(int curses_x,int curses_y)
 //y entre 0 y 295
 //0,0 esta arriba a la izquierda
 
-int gunstick_x,gunstick_y;
+int lightgun_x,lightgun_y;
 
 //Coordenadas x,y tal cual las retorna el driver de video, segun el tamanyo de ventana activo
 int mouse_x=0,mouse_y=0;
@@ -1870,11 +1870,11 @@ z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 
 	}
 
-	gunstick_x=curses_x*8;
-	gunstick_y=curses_y*8;
+	lightgun_x=curses_x*8;
+	lightgun_y=curses_y*8;
 
-	kempston_mouse_x=(gunstick_x)%256;
-	kempston_mouse_y=255-(gunstick_y)%256;
+	kempston_mouse_x=(lightgun_x)%256;
+	kempston_mouse_y=255-(lightgun_y)%256;
 }
 
 
@@ -2119,7 +2119,7 @@ void scrcurses_actualiza_tablas_teclado(void)
                     mouse_y=event.y;
                     scrcurses_convert_mouse_xy(mouse_x,mouse_y);
 
-                    //printf ("gunstick x: %d y: %d kempst x: %d y: %d\n",gunstick_x,gunstick_y,kempston_mouse_x,kempston_mouse_y);
+                    //printf ("gunstick x: %d y: %d kempst x: %d y: %d\n",lightgun_x,lightgun_y,kempston_mouse_x,kempston_mouse_y);
 
                 }
             break;

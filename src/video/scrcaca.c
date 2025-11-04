@@ -534,12 +534,12 @@ int pressrelease=1;
 		    mouse_x=cev.data.mouse.x;
 		    mouse_y=cev.data.mouse.y;
 
-	            gunstick_x=mouse_x*scrcaca_totalrealwidth/scrcaca_imgwidth;
-		    gunstick_y=mouse_y*scrcaca_totalrealheight/scrcaca_imgheight;
+	            lightgun_x=mouse_x*scrcaca_totalrealwidth/scrcaca_imgwidth;
+		    lightgun_y=mouse_y*scrcaca_totalrealheight/scrcaca_imgheight;
 
 
-		    kempston_mouse_x=gunstick_x;
-		    kempston_mouse_y=255-gunstick_y;
+		    kempston_mouse_x=lightgun_x;
+		    kempston_mouse_y=255-lightgun_y;
 
 
 		debug_printf(VERBOSE_PARANOID,"CACA_EVENT_MOUSE_MOTION X=%d Y=%d kempston mouse: x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);

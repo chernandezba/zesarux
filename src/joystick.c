@@ -167,14 +167,14 @@ int lightgun_emulation_type=0;
 //y entre 0 y 295
 //0,0 esta arriba a la izquierda
 
-int gunstick_x,gunstick_y;
+int lightgun_x,lightgun_y;
 
 //rangos de deteccion de electron, para pistola magnum light gun
 //Rango x 32 , y 8 va algo bien (aunque lejos de perfecto) en Acid
 //int gunstick_range_x=1;
 //int gunstick_range_y=1;
 
-//int gunstick_y_offset=0;
+//int lightgun_y_offset=0;
 
 //si detecta solo zonas con blanco y brillo 1. sino, detecta blanco sea con brillo o no
 //int gunstick_solo_brillo=0;
@@ -249,7 +249,7 @@ char *joystick_texto[]={
 };
 
 
-char *gunstick_texto[LIGHTGUN_TOTAL]={
+char *lightgun_types_list[LIGHTGUN_TOTAL]={
         "Gunstick Sinclair 1",
         "Gunstick Sinclair 2",
         "Gunstick Kempston",
@@ -425,10 +425,10 @@ int gunstick_view_white(void)
     ancho=screen_get_emulated_display_width_no_zoom();
     alto=screen_get_emulated_display_height_no_zoom();
 
-    if (gunstick_x<ancho && gunstick_y<alto) {
+    if (lightgun_x<ancho && lightgun_y<alto) {
         int indice_cache;
 
-        indice_cache=(get_total_ancho_rainbow()*gunstick_y)+gunstick_x;
+        indice_cache=(get_total_ancho_rainbow()*lightgun_y)+lightgun_x;
 
         z80_byte color=putpixel_cache[indice_cache];
 
@@ -506,12 +506,12 @@ int gunstick_view_electron_colors(void)
     //Ver si hay algo en blanco cerca de donde se ha disparado
 
 
-    y=gunstick_y;
+    y=lightgun_y;
 
     if (y<0) y=0;
 
 
-    x=gunstick_x;
+    x=lightgun_x;
 
     z80_byte color;
 
@@ -521,7 +521,7 @@ int gunstick_view_electron_colors(void)
                                     y-screen_borde_superior);
 
     if (color!=0 && color!=8) {
-        debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
+        debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",lightgun_x,lightgun_y,color);
         return 1;
     }
 
@@ -562,15 +562,15 @@ int gunstick_view_electron(void)
 
 
     debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d",
-        t_estados,x,y,gunstick_x,gunstick_y);
+        t_estados,x,y,lightgun_x,lightgun_y);
 
     printf ("electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d\n",
-        t_estados,x,y,gunstick_x,gunstick_y);
+        t_estados,x,y,lightgun_x,lightgun_y);
 
 
     //Nuevo calculo para saber si esta en rango. Mediante offset total
     int electron_offset=y*(screen_testados_linea*2)+x;
-    int gunstick_offset=gunstick_y*(screen_testados_linea*2)+gunstick_x;
+    int gunstick_offset=lightgun_y*(screen_testados_linea*2)+lightgun_x;
 
     int max_offset=(screen_testados_linea*2);
     int delta_offset=electron_offset-gunstick_offset;
@@ -593,7 +593,7 @@ int gunstick_view_electron(void)
 
     printf("Electron esta en rango de la pistola\n");
 
-    debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
+    debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",lightgun_y,y);
 
 
     return gunstick_view_electron_colors();

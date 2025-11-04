@@ -83,17 +83,17 @@ extern int lightgun_emulation_type;
 //Puerto DF como lightgun no implementado
 //#define GUNSTICK_PORT_DF 5
 
-extern char *gunstick_texto[];
+extern char *lightgun_types_list[];
 
 //extern z80_byte puerto_especial_gunstick;
-extern int gunstick_x;
-extern int gunstick_y;
+extern int lightgun_x;
+extern int lightgun_y;
 extern int gunstick_view_white(void);
 extern int gunstick_view_electron(void);
 
 //extern int gunstick_range_x;
 //extern int gunstick_range_y;
-//extern int gunstick_y_offset;
+//extern int lightgun_y_offset;
 //extern int gunstick_solo_brillo;
 
 

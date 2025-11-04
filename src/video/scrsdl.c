@@ -1507,10 +1507,10 @@ void scrsdl_actualiza_tablas_teclado(void)
             mouse_x=event.motion.x;
             mouse_y=event.motion.y;
 
-            gunstick_x=event.motion.x;
-            gunstick_y=event.motion.y;
-            gunstick_x=gunstick_x/zoom_x;
-            gunstick_y=gunstick_y/zoom_y;
+            lightgun_x=event.motion.x;
+            lightgun_y=event.motion.y;
+            lightgun_x=lightgun_x/zoom_x;
+            lightgun_y=lightgun_y/zoom_y;
 
             kempston_mouse_x=mouse_x/zoom_x;
             kempston_mouse_y=255-mouse_y/zoom_y;

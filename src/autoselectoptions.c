@@ -1030,7 +1030,7 @@ void set_snaptape_fileoptions(char *filename)
 		lightgun_emulation_type=MAGNUM_AUX;
 		gunstick_range_x=32;
 		gunstick_range_y=8;
-		//gunstick_y_offset=24;
+		//lightgun_y_offset=24;
 		//mejor con realvideo
 		enable_rainbow();
 	}

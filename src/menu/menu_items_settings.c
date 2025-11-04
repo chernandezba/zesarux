@@ -5224,7 +5224,7 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
+void menu_hardware_lightgun(MENU_ITEM_PARAMETERS)
 {
 
     lightgun_emulation_type++;
@@ -5232,7 +5232,7 @@ void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
 }
 
 /*
-void menu_hardware_gunstick_range_x(MENU_ITEM_PARAMETERS)
+void menu_hardware_lightgun_range_x(MENU_ITEM_PARAMETERS)
 {
     if (gunstick_range_x>=512) gunstick_range_x=1;
     else {
@@ -5244,7 +5244,7 @@ void menu_hardware_gunstick_range_x(MENU_ITEM_PARAMETERS)
 */
 
 /*
-void menu_hardware_gunstick_range_y(MENU_ITEM_PARAMETERS)
+void menu_hardware_lightgun_range_y(MENU_ITEM_PARAMETERS)
 {
     if (gunstick_range_y==64) gunstick_range_y=0;
     else {
@@ -5255,22 +5255,22 @@ void menu_hardware_gunstick_range_y(MENU_ITEM_PARAMETERS)
 */
 
 /*
-void menu_hardware_gunstick_y_offset(MENU_ITEM_PARAMETERS)
+void menu_hardware_lightgun_y_offset(MENU_ITEM_PARAMETERS)
 {
-    if (gunstick_y_offset==32) gunstick_y_offset=0;
-    else gunstick_y_offset +=4;
+    if (lightgun_y_offset==32) lightgun_y_offset=0;
+    else lightgun_y_offset +=4;
 }
 */
 
 /*
-void menu_hardware_gunstick_solo_brillo(MENU_ITEM_PARAMETERS)
+void menu_hardware_lightgun_solo_brillo(MENU_ITEM_PARAMETERS)
 {
     gunstick_solo_brillo ^=1;
 }
 */
 
 /*
-int menu_hardware_gunstick_aychip_cond(void)
+int menu_hardware_lightgun_aychip_cond(void)
 {
     if (lightgun_emulation_type==MAGNUM_AUX) return 1;
     else return 0;
@@ -6484,8 +6484,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
             if (lightgun_emulation_enabled.v) {
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,
-                    "    Type [%s]",gunstick_texto[lightgun_emulation_type]);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun,NULL,
+                    "    Type [%s]",lightgun_types_list[lightgun_emulation_type]);
                 menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of lightgun is emulated with the mouse");
                 menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
                         "Gunstick from MHT Ingenieros S.L\n\n"
@@ -6494,17 +6494,17 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             }
 
             /*
-            if (menu_hardware_gunstick_aychip_cond()) {
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_x,NULL," X Range: %d",gunstick_range_x);
+            if (menu_hardware_lightgun_aychip_cond()) {
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_x,NULL," X Range: %d",gunstick_range_x);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_y,NULL," Y Range: %d",gunstick_range_y);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_y,NULL," Y Range: %d",gunstick_range_y);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_y_offset,NULL," Y Offset: %s%d",(gunstick_y_offset ? "-" : "" ), gunstick_y_offset);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_y_offset,NULL," Y Offset: %s%d",(lightgun_y_offset ? "-" : "" ), lightgun_y_offset);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_solo_brillo,NULL," Detect only white bright: %s",(gunstick_solo_brillo ? "On" : "Off"));
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_solo_brillo,NULL," Detect only white bright: %s",(gunstick_solo_brillo ? "On" : "Off"));
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
             }
             */
