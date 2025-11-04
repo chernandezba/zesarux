@@ -584,29 +584,26 @@ int gunstick_view_electron_colors(void)
     //Ver si hay algo en blanco cerca de donde se ha disparado
 
     int rango_y;
-    y=gunstick_y-gunstick_range_y/2;
-
-    //Restar offset
-    y=y-gunstick_y_offset;
+    y=gunstick_y; //-gunstick_range_y/2;
 
     if (y<0) y=0;
 
 
 
-        x=gunstick_x;
+    x=gunstick_x;
 
-        int rango_x;
-        z80_byte color;
+    int rango_x;
+    z80_byte color;
 
 
-            printf("gunstick %3d %3d\n",x,y);
-            color=gunstick_view_pixel_color(x-screen_testados_total_borde_izquierdo*2,
-                                            y-screen_borde_superior);
+    printf("gunstick %3d %3d\n",x,y);
+    color=gunstick_view_pixel_color(x-screen_testados_total_borde_izquierdo*2,
+                                    y-screen_borde_superior);
 
-            if (color!=0 && color!=8) {
-                debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
-                return 1;
-            }
+    if (color!=0 && color!=8) {
+        debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
+        return 1;
+    }
 
 
 
