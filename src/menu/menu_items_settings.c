@@ -5232,7 +5232,7 @@ void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_gunstick_range_x(MENU_ITEM_PARAMETERS)
 {
-    if (gunstick_range_x>=256) gunstick_range_x=1;
+    if (gunstick_range_x>=512) gunstick_range_x=1;
     else {
         if (gunstick_range_x<32) gunstick_range_x *=2;
         else if (gunstick_range_x<100) gunstick_range_x +=5;
@@ -5242,8 +5242,11 @@ void menu_hardware_gunstick_range_x(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_gunstick_range_y(MENU_ITEM_PARAMETERS)
 {
-        if (gunstick_range_y==64) gunstick_range_y=1;
+    if (gunstick_range_y==64) gunstick_range_y=0;
+    else {
+        if (gunstick_range_y==0) gunstick_range_y++;
         else gunstick_range_y *=2;
+    }
 }
 
 void menu_hardware_gunstick_y_offset(MENU_ITEM_PARAMETERS)

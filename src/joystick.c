@@ -169,7 +169,7 @@ int gunstick_x,gunstick_y;
 
 //rangos de deteccion de electron, para pistola magnum light gun
 //Rango x 32 , y 8 va algo bien (aunque lejos de perfecto) en Acid
-int gunstick_range_x=32;
+int gunstick_range_x=1;
 int gunstick_range_y=1;
 
 int gunstick_y_offset=0;
@@ -623,7 +623,7 @@ int gunstick_view_electron_colors(void)
 int gunstick_view_electron(void)
 {
     //ver electron
-/*
+
     //x inicialmente esta posicionada dentro de pantalla... sin contar border
     int x=t_estados % screen_testados_linea;
     int y=t_estados/screen_testados_linea;
@@ -646,7 +646,7 @@ int gunstick_view_electron(void)
 
     x=x*2;
 
-*/
+
 
         int si_salta_linea;
         int new_x,new_y;
@@ -656,8 +656,10 @@ int gunstick_view_electron(void)
 
 
 
-        int x=new_x;
-        int y=new_y+si_salta_linea;
+        //int x=new_x;
+        //int y=new_y+si_salta_linea;
+
+
 
 
     debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d new x %3d new y %3d. gun is at x: %3d y: %3d",
@@ -667,7 +669,16 @@ int gunstick_view_electron(void)
         t_estados,x,y,new_x,new_y+si_salta_linea,gunstick_x,gunstick_y);
 
 
+    //Nuevo calculo para saber si esta en rango. Mediante offset total
+    int electron_offset=y*(screen_testados_linea*2)+x;
+    int gunstick_offset=gunstick_y*(screen_testados_linea*2)+gunstick_x;
 
+    int max_offset=gunstick_range_y*(screen_testados_linea*2)+gunstick_range_x;
+    int delta_offset=electron_offset-gunstick_offset;
+
+    printf("Offsets electron %6d gunstick %6d offset %7d max_offset %6d\n",electron_offset,gunstick_offset,delta_offset,max_offset);
+
+/*
     //rango de y
     int dif_y=y-gunstick_y;
     if (dif_y<0) dif_y=-dif_y;
@@ -692,17 +703,26 @@ int gunstick_view_electron(void)
         printf("Electron is NOT on gunstick, it's to the RIGHT (dif_x=%d). return FALSE\n",dif_x);
         return 0;
     }
+*/
 
 
 
+    if (delta_offset<0) {
+        printf("No ha llegado aun el electron a donde esta la pistola\n");
+        return 0;
+    }
+
+    if (delta_offset>max_offset) {
+        printf("Electron esta muy lejos de la pistola\n");
+        return 0;
+    }
+
+    printf("Electron esta en rango de la pistola\n");
 
     debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
 
     //return gunstick_view_electron_colors_by_putpixelcache(x,y);
     return gunstick_view_electron_colors();
-
-
-
 
 
   //}
