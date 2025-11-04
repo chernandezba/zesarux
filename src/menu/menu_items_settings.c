@@ -5235,6 +5235,7 @@ void menu_hardware_gunstick_range_x(MENU_ITEM_PARAMETERS)
     if (gunstick_range_x>=256) gunstick_range_x=1;
     else {
         if (gunstick_range_x<32) gunstick_range_x *=2;
+        else if (gunstick_range_x<100) gunstick_range_x +=5;
         else gunstick_range_x=gunstick_range_x+20;
     }
 }

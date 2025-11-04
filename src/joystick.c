@@ -155,7 +155,10 @@ void joystick_possible_tab_key(int pressrelease)
     handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_TAB,UTIL_KEY_TAB,pressrelease);
 }
 
-int gunstick_emulation=0;
+//int gunstick_emulation=0;
+
+//temp
+int gunstick_emulation=GUNSTICK_AYCHIP;
 
 //Coordenadas x,y en formato scanlines y pixeles totales, es decir,
 //x entre 0 y 351
@@ -166,7 +169,7 @@ int gunstick_x,gunstick_y;
 
 //rangos de deteccion de electron, para pistola magnum light gun
 //Rango x 32 , y 8 va algo bien (aunque lejos de perfecto) en Acid
-int gunstick_range_x=64;
+int gunstick_range_x=32;
 int gunstick_range_y=1;
 
 int gunstick_y_offset=0;
@@ -620,7 +623,7 @@ int gunstick_view_electron_colors(void)
 int gunstick_view_electron(void)
 {
     //ver electron
-
+/*
     //x inicialmente esta posicionada dentro de pantalla... sin contar border
     int x=t_estados % screen_testados_linea;
     int y=t_estados/screen_testados_linea;
@@ -631,22 +634,39 @@ int gunstick_view_electron(void)
 
     x=x+screen_testados_total_borde_izquierdo;
 
+
     if (x>=screen_testados_linea) {
         y++;
         x=x-screen_testados_linea;
+        printf("SALTADO LINEA\n");
     }
+
 
    //x esta en t_estados. pasamos a pixeles
 
     x=x*2;
 
-    debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %d x: %d y: %d. gun is at x: %d y: %d",t_estados,x,y,gunstick_x,gunstick_y);
+*/
 
-    //printf ("electron is at t_estados: %6d x: %3d y: %3d. gun is at x: %3d y: %3d\n",t_estados,x,y,gunstick_x,gunstick_y);
+        int si_salta_linea;
+        int new_x,new_y;
+        new_x=screen_get_x_coordinate_tstates(&si_salta_linea);
 
-    //aproximacion. solo detectamos coordenada y. Parece que los juegos no hacen barrido de toda la x.
-    //TODO. los juegos que leen pistola asi no funcionan
-    //if (y==gunstick_y) return 1;
+        new_y=screen_get_y_coordinate_tstates();
+
+
+
+        int x=new_x;
+        int y=new_y+si_salta_linea;
+
+
+    debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d new x %3d new y %3d. gun is at x: %3d y: %3d",
+        t_estados,x,y,new_x,new_y+si_salta_linea,gunstick_x,gunstick_y);
+
+    printf ("electron is at t_estados: %6d x: %3d y: %3d new x %3d new y %3d. gun is at x: %3d y: %3d\n",
+        t_estados,x,y,new_x,new_y+si_salta_linea,gunstick_x,gunstick_y);
+
+
 
     //rango de y
     int dif=y-gunstick_y;
