@@ -571,28 +571,16 @@ int gunstick_view_electron_colors(void)
 
     int x,y;
 
-    //Proteccion para que no se salga de putpixel_cache
-    //dimensiones putpixel_cache
-    int ancho,alto;
-
-    ancho=screen_get_emulated_display_width_no_zoom();
-    alto=screen_get_emulated_display_height_no_zoom();
-
-    //printf("## x %d y %d\n",x,y);
-
-
     //Ver si hay algo en blanco cerca de donde se ha disparado
 
-    int rango_y;
-    y=gunstick_y; //-gunstick_range_y/2;
+
+    y=gunstick_y;
 
     if (y<0) y=0;
 
 
-
     x=gunstick_x;
 
-    int rango_x;
     z80_byte color;
 
 
@@ -604,9 +592,6 @@ int gunstick_view_electron_colors(void)
         debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",gunstick_x,gunstick_y,color);
         return 1;
     }
-
-
-
 
 
 
@@ -645,25 +630,15 @@ int gunstick_view_electron(void)
 
 
 
-        int si_salta_linea;
-        int new_x,new_y;
-        new_x=screen_get_x_coordinate_tstates(&si_salta_linea);
-
-        new_y=screen_get_y_coordinate_tstates();
-
-
-
-        //int x=new_x;
-        //int y=new_y+si_salta_linea;
 
 
 
 
-    debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d new x %3d new y %3d. gun is at x: %3d y: %3d",
-        t_estados,x,y,new_x,new_y+si_salta_linea,gunstick_x,gunstick_y);
+    debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d",
+        t_estados,x,y,gunstick_x,gunstick_y);
 
-    printf ("electron is at t_estados: %6d x: %3d y: %3d new x %3d new y %3d. gun is at x: %3d y: %3d\n",
-        t_estados,x,y,new_x,new_y+si_salta_linea,gunstick_x,gunstick_y);
+    printf ("electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d\n",
+        t_estados,x,y,gunstick_x,gunstick_y);
 
 
     //Nuevo calculo para saber si esta en rango. Mediante offset total
