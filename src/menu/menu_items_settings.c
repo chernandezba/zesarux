@@ -5226,8 +5226,9 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
 {
+
+    lightgun_emulation_type++;
     if (lightgun_emulation_type==LIGHTGUN_TOTAL) lightgun_emulation_type=0;
-    else lightgun_emulation_type++;
 }
 
 /*
@@ -5268,11 +5269,13 @@ void menu_hardware_gunstick_solo_brillo(MENU_ITEM_PARAMETERS)
 }
 */
 
+/*
 int menu_hardware_gunstick_aychip_cond(void)
 {
     if (lightgun_emulation_type==MAGNUM_AUX) return 1;
     else return 0;
 }
+*/
 
 void menu_hardware_autofire_enable(MENU_ITEM_PARAMETERS)
 {
@@ -6475,29 +6478,36 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM) {
 
-            if (lightgun_emulation_type==0) menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[ ] Lightgun");
-            else menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[%s] Lightgun",gunstick_texto[lightgun_emulation_type-1]);
-            //menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of lightgun is emulated with the mouse");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
-                    "Gunstick from MHT Ingenieros S.L\n\n"
-                    "Magnum Light Phaser");
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,NULL,NULL,"[%c] Lightgun",
+                (lightgun_emulation_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_opcion_conmuta(array_menu_hardware_settings,&lightgun_emulation_enabled);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
+            if (lightgun_emulation_enabled.v) {
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,
+                    "    Type [%s]",gunstick_texto[lightgun_emulation_type]);
+                menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of lightgun is emulated with the mouse");
+                menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
+                        "Gunstick from MHT Ingenieros S.L\n\n"
+                        "Magnum Light Phaser");
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            }
 
+            /*
             if (menu_hardware_gunstick_aychip_cond()) {
-                //menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_x,NULL," X Range: %d",gunstick_range_x);
-                //menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_x,NULL," X Range: %d",gunstick_range_x);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                //menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_y,NULL," Y Range: %d",gunstick_range_y);
-                //menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_y,NULL," Y Range: %d",gunstick_range_y);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                //menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_y_offset,NULL," Y Offset: %s%d",(gunstick_y_offset ? "-" : "" ), gunstick_y_offset);
-                //menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_y_offset,NULL," Y Offset: %s%d",(gunstick_y_offset ? "-" : "" ), gunstick_y_offset);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                //menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_solo_brillo,NULL," Detect only white bright: %s",(gunstick_solo_brillo ? "On" : "Off"));
-                //menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-        }
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_solo_brillo,NULL," Detect only white bright: %s",(gunstick_solo_brillo ? "On" : "Off"));
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            }
+            */
 
 
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse,NULL,"[%c] Kempston Mou~~se emulation",(kempston_mouse_emulation.v==1 ? 'X' : ' '));

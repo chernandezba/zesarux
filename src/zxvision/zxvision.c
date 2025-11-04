@@ -3933,7 +3933,7 @@ int zxvision_if_lower_button_switch_zxdesktop_enabled(void)
 
     if (si_complete_video_driver() && scr_driver_can_ext_desktop() &&
         menu_footer && zxdesktop_switch_button_enabled.v && !ventana_fullscreen &&
-        mouse_menu_disabled.v==0 && kempston_mouse_emulation.v==0 && !lightgun_emulation_type) return 1;
+        mouse_menu_disabled.v==0 && kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) return 1;
     else return 0;
 }
 

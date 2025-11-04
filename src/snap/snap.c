@@ -1350,16 +1350,19 @@ void load_zx_snapshot(char *archivo)
                         }
 
 
-			//Gunstick type
+			//Gunstick type. Esto ya no lo soportamos
+            /*
 			z80_byte g=zx_header[91];
 			if (g>=LIGHTGUN_TOTAL) {
 				debug_printf (VERBOSE_ERR,"Lightgun type out of range: %d",g);
 			}
 
 			else {
+                lightgun_emulation_enabled.v=1;
 				lightgun_emulation_type=g;
-				debug_printf(VERBOSE_DEBUG,"Setting Lightgun type to: %s",gunstick_texto[lightgun_emulation_type-1]);
+				debug_printf(VERBOSE_DEBUG,"Setting Lightgun type to: %s",gunstick_texto[lightgun_emulation_type]);
 			}
+            */
 
 
 		}
@@ -4191,8 +4194,8 @@ void save_zx_snapshot(char *filename)
 		//joystick type emulation
 		header[90]=joystick_emulation;
 
-		//gunstick type emulation
-		header[91]=lightgun_emulation_type;
+		//gunstick type emulation. esto ya no lo soportamos
+		//header[91]=lightgun_emulation_type;
 
 	}
 

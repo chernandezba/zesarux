@@ -155,6 +155,8 @@ void joystick_possible_tab_key(int pressrelease)
     handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_TAB,UTIL_KEY_TAB,pressrelease);
 }
 
+z80_bit lightgun_emulation_enabled={0};
+
 int lightgun_emulation_type=0;
 
 //temp
@@ -245,6 +247,7 @@ char *joystick_texto[]={
     "PCW Cascade",
     "PCW DKTronics"
 };
+
 
 char *gunstick_texto[LIGHTGUN_TOTAL]={
         "Gunstick Sinclair 1",
