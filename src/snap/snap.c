@@ -1352,7 +1352,7 @@ void load_zx_snapshot(char *archivo)
 
 			//Gunstick type
 			z80_byte g=zx_header[91];
-			if (g>GUNSTICK_TOTAL) {
+			if (g>LIGHTGUN_TOTAL) {
 				debug_printf (VERBOSE_ERR,"Lightgun type out of range: %d",g);
 			}
 

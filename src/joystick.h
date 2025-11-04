@@ -73,7 +73,7 @@ extern void joystick_release_fire(int si_enviar_zeng_event,int fire_button);
 
 extern int lightgun_emulation;
 
-#define GUNSTICK_TOTAL 4
+#define LIGHTGUN_TOTAL 4
 #define GUNSTICK_SINCLAIR_1 1
 #define GUNSTICK_SINCLAIR_2 2
 #define GUNSTICK_KEMPSTON 3

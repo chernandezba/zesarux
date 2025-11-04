@@ -5226,7 +5226,7 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
 {
-        if (lightgun_emulation==GUNSTICK_TOTAL) lightgun_emulation=0;
+    if (lightgun_emulation==LIGHTGUN_TOTAL) lightgun_emulation=0;
     else lightgun_emulation++;
 }
 
