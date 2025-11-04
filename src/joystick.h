@@ -90,7 +90,10 @@ extern int gunstick_y;
 extern int gunstick_view_white(void);
 extern int gunstick_view_electron(void);
 
-extern int gunstick_range_x,gunstick_range_y,gunstick_y_offset,gunstick_solo_brillo;
+//extern int gunstick_range_x;
+extern int gunstick_range_y;
+//extern int gunstick_y_offset;
+//extern int gunstick_solo_brillo;
 
 
 
