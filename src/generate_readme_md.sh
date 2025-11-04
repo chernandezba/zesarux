@@ -30,7 +30,7 @@ Also tested on:
 * FiwixOS
 * Sortix
 
-Also an experimental [Docker image](https://hub.docker.com/r/chernandezba/zesarux) 
+Also a [Docker image](https://hub.docker.com/r/chernandezba/zesarux)
 
 ZEsarUX has won the "Best Emulator" award from Retrogaming Total blog on 2015 and 2017
 
