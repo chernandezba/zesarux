@@ -246,13 +246,12 @@ char *joystick_texto[]={
     "PCW DKTronics"
 };
 
-char *gunstick_texto[]={
-        "None",
+char *gunstick_texto[LIGHTGUN_TOTAL]={
         "Gunstick Sinclair 1",
         "Gunstick Sinclair 2",
         "Gunstick Kempston",
-    "Magnum (AUX port)",
-    "Port DFH"
+    "Magnum (AUX port)"
+    //"Port DFH"
 };
 
 
