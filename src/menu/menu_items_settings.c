@@ -5270,7 +5270,7 @@ void menu_hardware_gunstick_solo_brillo(MENU_ITEM_PARAMETERS)
 
 int menu_hardware_gunstick_aychip_cond(void)
 {
-    if (lightgun_emulation==GUNSTICK_AYCHIP) return 1;
+    if (lightgun_emulation==MAGNUM_AUX) return 1;
     else return 0;
 }
 

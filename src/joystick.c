@@ -158,7 +158,7 @@ void joystick_possible_tab_key(int pressrelease)
 int lightgun_emulation=0;
 
 //temp
-//int lightgun_emulation=GUNSTICK_AYCHIP;
+//int lightgun_emulation=MAGNUM_AUX;
 
 //Coordenadas x,y en formato scanlines y pixeles totales, es decir,
 //x entre 0 y 351

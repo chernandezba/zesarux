@@ -77,7 +77,7 @@ extern int lightgun_emulation;
 #define GUNSTICK_SINCLAIR_1 1
 #define GUNSTICK_SINCLAIR_2 2
 #define GUNSTICK_KEMPSTON 3
-#define GUNSTICK_AYCHIP 4
+#define MAGNUM_AUX 4
 
 //Puerto DF como lightgun no implementado
 //#define GUNSTICK_PORT_DF 5

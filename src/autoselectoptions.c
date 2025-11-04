@@ -1011,7 +1011,7 @@ void set_snaptape_fileoptions(char *filename)
 
 	) {
                 split_game_name_info ("Game that uses Magnum Light Phaser - AYCHIP");
-                lightgun_emulation=GUNSTICK_AYCHIP;
+                lightgun_emulation=MAGNUM_AUX;
 		//mejor con realvideo
 		enable_rainbow();
 	}
@@ -1019,7 +1019,7 @@ void set_snaptape_fileoptions(char *filename)
 
 	else if (!strcmp(md5file,"15791c249f842589fa279dfd1f382e72")) {
                 split_game_name_info ("Jungle Warfare. Uses Magnum Light Phaser - AYCHIP only with bright");
-		lightgun_emulation=GUNSTICK_AYCHIP;
+		lightgun_emulation=MAGNUM_AUX;
 		gunstick_solo_brillo=1;
 		//mejor con realvideo
 		enable_rainbow();
@@ -1027,7 +1027,7 @@ void set_snaptape_fileoptions(char *filename)
 
 	else if (!strcmp(md5file,"6c9561f56463ca1f67d1c0aa9e0f6131")) {
                 split_game_name_info ("QS Armoury. Uses Magnum Light Phaser - AYCHIP, offset Y");
-		lightgun_emulation=GUNSTICK_AYCHIP;
+		lightgun_emulation=MAGNUM_AUX;
 		gunstick_range_x=32;
 		gunstick_range_y=8;
 		//gunstick_y_offset=24;
