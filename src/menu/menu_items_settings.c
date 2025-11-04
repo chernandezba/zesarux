@@ -5226,8 +5226,8 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
 {
-    if (lightgun_emulation==LIGHTGUN_TOTAL) lightgun_emulation=0;
-    else lightgun_emulation++;
+    if (lightgun_emulation_type==LIGHTGUN_TOTAL) lightgun_emulation_type=0;
+    else lightgun_emulation_type++;
 }
 
 /*
@@ -5270,7 +5270,7 @@ void menu_hardware_gunstick_solo_brillo(MENU_ITEM_PARAMETERS)
 
 int menu_hardware_gunstick_aychip_cond(void)
 {
-    if (lightgun_emulation==MAGNUM_AUX) return 1;
+    if (lightgun_emulation_type==MAGNUM_AUX) return 1;
     else return 0;
 }
 
@@ -6475,8 +6475,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM) {
 
-            if (lightgun_emulation==0) menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[ ] Lightgun");
-            else menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[%s] Lightgun",gunstick_texto[lightgun_emulation-1]);
+            if (lightgun_emulation_type==0) menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[ ] Lightgun");
+            else menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick,NULL,"[%s] Lightgun",gunstick_texto[lightgun_emulation_type-1]);
             //menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of lightgun is emulated with the mouse");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"

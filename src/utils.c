@@ -7220,7 +7220,7 @@ void util_set_reset_key_chloe(void)
 int si_menu_mouse_activado(void)
 {
   //if (kempston_mouse_emulation.v) return 0;
-  //if (lightgun_emulation) return 0;
+  //if (lightgun_emulation_type) return 0;
   if (mouse_menu_disabled.v) return 0;
 
   return 1;
@@ -7276,7 +7276,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
         if (si_menu_mouse_activado() ) {
           //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston o gunstick
           if (menu_abierto==0) {
-                  if (kempston_mouse_emulation.v==0 && !lightgun_emulation) {
+                  if (kempston_mouse_emulation.v==0 && !lightgun_emulation_type) {
                       if (mouse_menu_ignore_click_open.v==0) {
                           menu_fire_event_open_menu();
                           menu_was_open_by_left_mouse_button.v=1;
@@ -7328,7 +7328,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
         if (si_menu_mouse_activado()) {
           //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
           if (menu_abierto==0) {
-                  if (kempston_mouse_emulation.v==0 && !lightgun_emulation) {
+                  if (kempston_mouse_emulation.v==0 && !lightgun_emulation_type) {
                       if (mouse_menu_ignore_click_open.v==0) {
                         menu_fire_event_open_menu();
 

@@ -155,10 +155,10 @@ void joystick_possible_tab_key(int pressrelease)
     handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_TAB,UTIL_KEY_TAB,pressrelease);
 }
 
-int lightgun_emulation=0;
+int lightgun_emulation_type=0;
 
 //temp
-//int lightgun_emulation=MAGNUM_AUX;
+//int lightgun_emulation_type=MAGNUM_AUX;
 
 //Coordenadas x,y en formato scanlines y pixeles totales, es decir,
 //x entre 0 y 351
