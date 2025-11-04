@@ -26,6 +26,7 @@ al abrir con f5 por ejemplo
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
+*poderse mover bien por el menu con teclado aunque raton esté arriba del todo
 
 ----------Fin top bar menu----------
 ----------------------------------------
@@ -63,29 +64,13 @@ Parece que curses no tiene soporte para eventos de ratón
 setting para compilar con clang
 
 
--opciones lightgun que se puedan pasar por linea de comandos y se guarden en config
-ok-deberia ir solo con color blanco o cualquiera que no sea negro? o incluso cualquier color, no mirar el color
+-lightgun
+* parametros config de customconfigfile
+* definir .config a los juegos de lightgun que hay en extras. Ver autoselectoptions.c
 
--Posición electrón de magnum, que lo saque de mismo sitio que cuando haciendo debug se ve el electrón  en pantalla.  Hacer función común
-
--quiza en magnum no se detecta bien coordenada x o coincidencia con tal
-en el de dardos (pack b, ultimo juego) se ve que detecta bien la coordenada y
-o porque utiliza gunstick_view_electron en magnum pero gunstick_view_white en el resto de lighgun?
-Sobretodo activar real video!! (para poder ver las lineas de efectos al disparar) y rangos en principio por defecto
-
-mirar si condicion mejor : if (dif<gunstick_range_y && dif_x<gunstick_range_x) {
-
-esto no esta bien:
-
-if (x>=screen_testados_linea) {
-    y++;
-    x=x-screen_testados_linea;
-}
-
--Acciones de debug para definir variables, incrementar y decrementar. Estas variables se pueden usar en breakpoints
+ok -Acciones de debug para definir variables, incrementar y decrementar. Estas variables se pueden usar en breakpoints
 Así por ejemplo puedo activar puntos de paro desde que se pulsa el botón de ratón y durante un rato (mediante variable que se incrementa) hacer punto de paro a final de cada frame
 
--Breakpoint de expresión al pulsar botón mouse. Con esto puedo activar un contador y andar pausando
+ok -Breakpoint de expresión al pulsar botón mouse. Con esto puedo activar un contador y andar pausando
 pantalla al disparar en lightgun
 
--poderse mover bien por el menu con teclado aunque raton esté arriba del todo
