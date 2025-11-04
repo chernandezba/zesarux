@@ -672,7 +672,10 @@ int gunstick_view_electron(void)
     int dif_y=y-gunstick_y;
     if (dif_y<0) dif_y=-dif_y;
 
-
+    if (dif_y>=gunstick_range_y) {
+        printf("Electron is NOT on gunstick, it's on other scanline. return FALSE\n");
+        return 0;
+    }
 
     //Si el electrón no ha llegado donde está el mouse, retornar 0
     if (x<gunstick_x) {
@@ -683,23 +686,22 @@ int gunstick_view_electron(void)
     int dif_x=x-gunstick_x;
     if (dif_x<0) dif_x=-dif_x;
 
+
+
     if (dif_x>gunstick_range_x) {
         printf("Electron is NOT on gunstick, it's to the RIGHT (dif_x=%d). return FALSE\n",dif_x);
         return 0;
     }
 
 
-    if (dif_y<gunstick_range_y) {
 
-        debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
 
-        //return gunstick_view_electron_colors_by_putpixelcache(x,y);
-        return gunstick_view_electron_colors();
+    debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",gunstick_y,y);
 
-    }
+    //return gunstick_view_electron_colors_by_putpixelcache(x,y);
+    return gunstick_view_electron_colors();
 
-    printf("Electron is NOT on gunstick, it's on other scanline. return FALSE\n");
-  return 0;
+
 
 
 
