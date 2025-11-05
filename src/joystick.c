@@ -160,8 +160,7 @@ z80_bit lightgun_emulation_enabled={0};
 
 int lightgun_emulation_type=0;
 
-//temp
-//int lightgun_emulation_type=MAGNUM_AUX;
+z80_bit lightgun_scope={0};
 
 //Coordenadas x,y en formato scanlines y pixeles totales, es decir,
 //x entre 0 y 351
@@ -648,7 +647,11 @@ void lightgun_draw_scope(void)
 {
     if (lightgun_emulation_enabled.v==0) return;
 
+    if (lightgun_scope.v==0) return;
+
     if (rainbow_enabled.v==0) return;
+
+    if (menu_abierto) return;
 
     int ancho_rainbow=get_total_ancho_rainbow();
     int alto_rainbow=get_total_alto_rainbow();

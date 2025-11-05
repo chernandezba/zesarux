@@ -1279,6 +1279,7 @@ printf("\n"
         "--keymap n                  Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
 
         "--enable-lightgun           Enable lighgun emulation\n"
+        "--lightgun-scope            Show lightgun scope\n"
         "--lightgunemulated type     Type of emulated lightgun. Type can be one of: ");
 
     lightgun_print_types();
@@ -4133,6 +4134,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--enable-lightgun")) {
                 lightgun_emulation_enabled.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--lightgun-scope")) {
+                lightgun_scope.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--lightgunemulated")) {

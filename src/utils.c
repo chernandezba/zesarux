@@ -3814,6 +3814,8 @@ int util_write_configfile(void)
   if (zxvision_topbar_appears_move_mouse_top.v==0)     ADD_STRING_CONFIG,"--no-show-top-menu-move-top");
 
   if (lightgun_emulation_enabled.v)             ADD_STRING_CONFIG,"--enable-lightgun");
+  if (lightgun_scope.v)                         ADD_STRING_CONFIG,"--lightgun-scope");
+
                                                 ADD_STRING_CONFIG,"--lightgunemulated \"%s\"",lightgun_types_list[lightgun_emulation_type]);
 
   if (kempston_mouse_emulation.v)             ADD_STRING_CONFIG,"--enablekempstonmouse");

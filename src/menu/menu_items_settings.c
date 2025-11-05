@@ -6491,6 +6491,12 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                         "Gunstick from MHT Ingenieros S.L\n\n"
                         "Magnum Light Phaser");
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
+                menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                    "Show scope","Mostrar mirilla","Mostrar mira");
+                menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",(lightgun_scope.v? 'X' : ' '));
+                menu_add_item_menu_opcion_conmuta(array_menu_hardware_settings,&lightgun_scope);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
             }
 
             /*
