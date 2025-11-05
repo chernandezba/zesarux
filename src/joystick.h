@@ -83,6 +83,8 @@ extern int lightgun_emulation_type;
 //Puerto DF como lightgun no implementado
 //#define GUNSTICK_PORT_DF 5
 
+extern void lightgun_draw_scope(void);
+
 extern char *lightgun_types_list[];
 extern void lightgun_print_types(void);
 

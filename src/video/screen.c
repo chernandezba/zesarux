@@ -10260,8 +10260,14 @@ void cpu_loop_refresca_pantalla(void)
     stats_frames_total++;
 
 
-	if (rainbow_enabled.v) screen_add_watermark_rainbow();
-	else screen_add_watermark_no_rainbow();
+	if (rainbow_enabled.v) {
+        screen_add_watermark_rainbow();
+        lightgun_draw_scope();
+    }
+	else {
+        screen_add_watermark_no_rainbow();
+    }
+
 
 	//Si esta en top speed, solo 1 frame
 	if (timer_condicion_top_speed() ) {

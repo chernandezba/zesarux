@@ -281,6 +281,8 @@ extern char *bitmap_button_ext_desktop_my_machine_pentagon[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_next[];
 extern char *bitmap_button_ext_desktop_my_machine_sam[];
 
+extern char *bitmap_button_ext_desktop_mirilla_lightgun[];
+
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
 #define EXT_DESKTOP_BUTTONS_ANCHO 26

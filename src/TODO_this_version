@@ -67,6 +67,26 @@ setting para compilar con clang
 -lightgun
 * parametros config de customconfigfile
 * definir .config a los juegos de lightgun que hay en extras. Ver autoselectoptions.c
+* mostrar sprite mirilla en posición de ratón. prueba en cpu_loop_refresca_pantalla:
+
+if (rainbow_enabled.v) screen_add_watermark_rainbow();
+else screen_add_watermark_no_rainbow();
+
+//temp
+#include "joystick.h"
+if (rainbow_enabled.v) {
+    int ancho_rainbow=get_total_ancho_rainbow();
+    int alto_rainbow=get_total_alto_rainbow();
+    int offset_x=10;
+    int offset_y=10;
+    //margen en los laterales para poder poner la mirilla centrada
+    if (lightgun_x>=offset_x && lightgun_y>=offset_y &&
+        lightgun_x<=ancho_rainbow-ZESARUX_ASCII_LOGO_ANCHO+offset_x && lightgun_y<=alto_rainbow-ZESARUX_ASCII_LOGO_ALTO+offset_y) {
+    screen_put_asciibitmap_generic(bitmap_button_ext_desktop_exit,rainbow_buffer,lightgun_x-offset_x,lightgun_y-offset_y,
+        ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, get_total_ancho_rainbow(),screen_generic_putpixel_indexcolour,1,0,0);
+    }
+}
+
 
 ok -Acciones de debug para definir variables, incrementar y decrementar. Estas variables se pueden usar en breakpoints
 Así por ejemplo puedo activar puntos de paro desde que se pulsa el botón de ratón y durante un rato (mediante variable que se incrementa) hacer punto de paro a final de cada frame

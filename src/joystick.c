@@ -31,6 +31,7 @@
 #include "zeng.h"
 #include "mem128.h"
 #include "ula.h"
+#include "menu_bitmaps.h"
 
 #ifdef COMPILE_CURSES
         #include "scrcurses.h"
@@ -639,5 +640,24 @@ void joystick_print_types(void)
     for (i=0;i<=JOYSTICK_TOTAL;i++) {
         printf ("%s",joystick_texto[i]);
         if (i!=JOYSTICK_TOTAL) printf (", ");
+    }
+}
+
+//dibujar la mirilla
+void lightgun_draw_scope(void)
+{
+    if (lightgun_emulation_enabled.v==0) return;
+
+    if (rainbow_enabled.v==0) return;
+
+    int ancho_rainbow=get_total_ancho_rainbow();
+    int alto_rainbow=get_total_alto_rainbow();
+    int offset_x=13;
+    int offset_y=13;
+    //margen en los laterales para poder poner la mirilla centrada
+    if (lightgun_x>=offset_x && lightgun_y>=offset_y &&
+        lightgun_x<=ancho_rainbow-ZESARUX_ASCII_LOGO_ANCHO+offset_x && lightgun_y<=alto_rainbow-ZESARUX_ASCII_LOGO_ALTO+offset_y) {
+    screen_put_asciibitmap_generic(bitmap_button_ext_desktop_mirilla_lightgun,rainbow_buffer,lightgun_x-offset_x,lightgun_y-offset_y,
+        ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, get_total_ancho_rainbow(),screen_generic_putpixel_indexcolour,1,0,0);
     }
 }

@@ -7569,4 +7569,34 @@ char *bitmap_button_ext_desktop_zengonline[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
 };
 
+//11.3 radio en basic
+char *bitmap_button_ext_desktop_mirilla_lightgun[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"          xxxxxxx         ",
+	"        xx       xx       ",
+	"      xx           xx     ",
+	"     x               x    ",
+	"    x      wwwww      x   ",
+	"    x      wxxxw      x   ",
+	"   x       wxxxw       x  ",
+	"   x       wxxxw       x  ",
+	"  x        wxxxw        x ",	//10
+	"  x   wwwwwwxxxwwwwww   x ",
+	"  x   wxxxxxwwwxxxxxw   x ",
+	"  x   wxxxxxw wxxxxxw   x ",
+	"  x   wxxxxxwwwxxxxxw   x ",
+	"  x   wwwwwwxxxwwwwww   x ",
+	"  x        wxxxw        x ",
+	"   x       wxxxw       x  ",
+	"   x       wxxxw       x  ",
+	"    x      wxxxw      x   ",
+	"    x      wwwww      x   ",    //20
+	"     x               x    ",
+	"      xx           xx     ",
+	"        xx       xx       ",
+	"          xxxxxxx         ",
+	"                          " 	 //25
+};
 
