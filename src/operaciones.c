@@ -7128,45 +7128,29 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	}
 
 
-	//Puerto DF parece leerse desde juego Bestial Warrior en el menu, aunque dentro del juego no se lee
-	//Quiza hace referencia a la Stack Light Rifle
+    if ( lightgun_emulation_enabled.v && lightgun_emulation_type==STACK_LIGHT_RIFLE && puerto_l==0xdf) {
+        //lightgun.
+        //Stack Light Rifle (Stack Computer Services Ltd) (1983)
+        //connects to expansion port, accessed by reading from Port DFh:
 
-	//Dejarlo comentado dado que entra en conflicto con kempston mouse
-
-	/*
-
-	if ( puerto_l==0xdf) {
-		//gunstick.
-//Stack Light Rifle (Stack Computer Services Ltd) (1983)
-//connects to expansion port, accessed by reading from Port DFh:
-
-//  bit1       = Trigger Button (0=Pressed, 1=Released)
-//  bit4       = Light Sensor   (0=Light, 1=No Light)
-//  other bits = Must be "1"    (the programs use compare FDh to test if bit1=0)
-
-               if (lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_PORT_DF) {
-
-                        z80_byte acumulado=255;
-                        if (mouse_left!=0) {
-
-                            acumulado &=(255-2);
-
-                            if (gunstick_view_white()) acumulado &=(255-16);
+        //  bit1       = Trigger Button (0=Pressed, 1=Released)
+        //  bit4       = Light Sensor   (0=Light, 1=No Light)
+        //  other bits = Must be "1"    (the programs use compare FDh to test if bit1=0)
 
 
-                        }
+        z80_byte acumulado=255;
+        if (mouse_left) {
+            acumulado &=(255-2);
+        }
 
-			printf ("gunstick acumulado: %d\n",acumulado);
+        if (gunstick_view_electron()) acumulado &=(255-16);
 
-                        return acumulado;
-                }
+        //printf ("gunstick acumulado: %d\n",acumulado);
+        return acumulado;
 
-		//puerto kempston tambien es DF en kempston mouse
-		//else return idle_bus_port(puerto_l+256*puerto_h);
+    }
 
-	}
 
-	*/
 
 	//kempston mouse. Solo con menu cerrado
 	if ( kempston_mouse_emulation.v  &&  (puerto_l&32) == 0  &&  ( (puerto_h&7)==3 || (puerto_h&7)==7 || (puerto_h&2)==2 ) ) {

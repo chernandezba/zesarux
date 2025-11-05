@@ -167,17 +167,10 @@ z80_bit lightgun_scope={0};
 //y entre 0 y 295
 //0,0 esta arriba a la izquierda
 
-int lightgun_x,lightgun_y;
+int lightgun_x=0;
+int lightgun_y=0;
 
-//rangos de deteccion de electron, para pistola magnum light gun
-//Rango x 32 , y 8 va algo bien (aunque lejos de perfecto) en Acid
-//int gunstick_range_x=1;
-//int gunstick_range_y=1;
 
-//int lightgun_y_offset=0;
-
-//si detecta solo zonas con blanco y brillo 1. sino, detecta blanco sea con brillo o no
-//int gunstick_solo_brillo=0;
 
 //Coordenadas x,y tal cual las retorna el driver de video, segun el tamanyo de ventana activo
 //en xwindows, normalmente entre
@@ -250,11 +243,11 @@ char *joystick_texto[]={
 
 
 char *lightgun_types_list[LIGHTGUN_TOTAL]={
-        "Gunstick Sinclair 1",
-        "Gunstick Sinclair 2",
-        "Gunstick Kempston",
-    "Magnum (AUX port)"
-    //"Port DFH"
+    "Gunstick Sinclair 1",
+    "Gunstick Sinclair 2",
+    "Gunstick Kempston",
+    "Magnum (AUX port)",
+    "Stack Light Rifle"
 };
 
 void lightgun_print_types(void)

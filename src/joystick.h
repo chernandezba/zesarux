@@ -75,11 +75,12 @@ extern z80_bit lightgun_emulation_enabled;
 extern int lightgun_emulation_type;
 extern z80_bit lightgun_scope;
 
-#define LIGHTGUN_TOTAL 4
+#define LIGHTGUN_TOTAL 5
 #define GUNSTICK_SINCLAIR_1 0
 #define GUNSTICK_SINCLAIR_2 1
 #define GUNSTICK_KEMPSTON 2
 #define MAGNUM_AUX 3
+#define STACK_LIGHT_RIFLE 4
 
 //Puerto DF como lightgun no implementado
 //#define GUNSTICK_PORT_DF 5
