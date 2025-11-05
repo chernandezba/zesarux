@@ -430,46 +430,6 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
     }
 }
 
-
-
-//Ver si la zona donde apunta el raton (gunstick) esta en blanco. Usado en gunstick de MHT
-int gunstick_view_white(void)
-{
-
-//Si curses
-#ifdef COMPILE_CURSES
-    if (!strcmp(scr_new_driver_name,"curses")) {
-        return (scrcurses_return_gunstick_view_white() );
-    }
-#endif
-
-    //ver zona en blanco
-    //Proteccion para que no se salga de putpixel_cache
-    //dimensiones putpixel_cache
-    int ancho,alto;
-    //ancho=LEFT_BORDER_NO_ZOOM+ANCHO_PANTALLA+RIGHT_BORDER_NO_ZOOM;
-    //alto=TOP_BORDER_NO_ZOOM+ALTO_PANTALLA+BOTTOM_BORDER_NO_ZOOM;
-
-    ancho=screen_get_emulated_display_width_no_zoom();
-    alto=screen_get_emulated_display_height_no_zoom();
-
-    if (lightgun_x<ancho && lightgun_y<alto) {
-        int indice_cache;
-
-        indice_cache=(get_total_ancho_rainbow()*lightgun_y)+lightgun_x;
-
-        z80_byte color=putpixel_cache[indice_cache];
-
-        //color blanco con o sin brillo
-        if (color==15 || color==7) {
-            debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
 int gunstick_view_pixel_color(int x,int y)
 {
 
@@ -525,6 +485,83 @@ int gunstick_view_pixel_color(int x,int y)
     return color;
 
 }
+
+//Ver si la zona donde apunta el raton (gunstick) esta en blanco. Usado en gunstick de MHT
+int old_gunstick_view_white(void)
+{
+
+//Si curses
+#ifdef COMPILE_CURSES
+    if (!strcmp(scr_new_driver_name,"curses")) {
+        return (scrcurses_return_gunstick_view_white() );
+    }
+#endif
+
+    //ver zona en blanco
+    //Proteccion para que no se salga de putpixel_cache
+    //dimensiones putpixel_cache
+    int ancho,alto;
+    //ancho=LEFT_BORDER_NO_ZOOM+ANCHO_PANTALLA+RIGHT_BORDER_NO_ZOOM;
+    //alto=TOP_BORDER_NO_ZOOM+ALTO_PANTALLA+BOTTOM_BORDER_NO_ZOOM;
+
+    ancho=screen_get_emulated_display_width_no_zoom();
+    alto=screen_get_emulated_display_height_no_zoom();
+
+    if (lightgun_x<ancho && lightgun_y<alto) {
+        int indice_cache;
+
+        indice_cache=(get_total_ancho_rainbow()*lightgun_y)+lightgun_x;
+
+        z80_byte color=putpixel_cache[indice_cache];
+
+        //color blanco con o sin brillo
+        if (color==15 || color==7) {
+            debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+//Ver si la zona donde apunta el raton (gunstick) esta en blanco. Usado en gunstick de MHT
+int gunstick_view_white(void)
+{
+
+//Si curses
+#ifdef COMPILE_CURSES
+    if (!strcmp(scr_new_driver_name,"curses")) {
+        return (scrcurses_return_gunstick_view_white() );
+    }
+#endif
+
+    //ver zona en blanco
+    //Proteccion para que no se salga de putpixel_cache
+    //dimensiones putpixel_cache
+    int ancho,alto;
+
+
+    ancho=screen_get_emulated_display_width_no_zoom();
+    alto=screen_get_emulated_display_height_no_zoom();
+
+
+    int color;
+
+
+    color=gunstick_view_pixel_color(lightgun_x-screen_testados_total_borde_izquierdo*2,
+                                    lightgun_y-screen_borde_superior);
+
+    //color blanco con o sin brillo
+    if (color==15 || color==7) {
+        debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
+        return 1;
+    }
+
+
+    else return 0;
+}
+
+
 
 int gunstick_view_electron_colors(void)
 {

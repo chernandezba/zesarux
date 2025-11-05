@@ -6359,6 +6359,15 @@ void menu_hardware_joystick_barato(MENU_ITEM_PARAMETERS)
     joystick_barato ^=1;
 }
 
+void menu_hardware_lightgun_scope(MENU_ITEM_PARAMETERS)
+{
+    lightgun_scope.v ^=1;
+
+	//necesita real video
+	enable_rainbow();
+
+}
+
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 {
@@ -6492,10 +6501,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                         "Magnum Light Phaser");
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_scope,NULL,
                     "Show scope","Mostrar mirilla","Mostrar mira");
                 menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",(lightgun_scope.v? 'X' : ' '));
-                menu_add_item_menu_opcion_conmuta(array_menu_hardware_settings,&lightgun_scope);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
             }
 
