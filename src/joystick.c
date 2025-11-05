@@ -657,10 +657,16 @@ void lightgun_draw_scope(void)
     int alto_rainbow=get_total_alto_rainbow();
     int offset_x=13;
     int offset_y=13;
+
+    //bitmap_button_ext_desktop_mirilla_lightgun_disparada
+    char **bitmap=bitmap_button_ext_desktop_mirilla_lightgun;
+
+    if (mouse_left) bitmap=bitmap_button_ext_desktop_mirilla_lightgun_disparada;
+
     //margen en los laterales para poder poner la mirilla centrada
     if (lightgun_x>=offset_x && lightgun_y>=offset_y &&
         lightgun_x<=ancho_rainbow-ZESARUX_ASCII_LOGO_ANCHO+offset_x && lightgun_y<=alto_rainbow-ZESARUX_ASCII_LOGO_ALTO+offset_y) {
-    screen_put_asciibitmap_generic(bitmap_button_ext_desktop_mirilla_lightgun,rainbow_buffer,lightgun_x-offset_x,lightgun_y-offset_y,
+    screen_put_asciibitmap_generic(bitmap,rainbow_buffer,lightgun_x-offset_x,lightgun_y-offset_y,
         ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, get_total_ancho_rainbow(),screen_generic_putpixel_indexcolour,1,0,0);
     }
 }

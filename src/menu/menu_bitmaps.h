@@ -282,6 +282,7 @@ extern char *bitmap_button_ext_desktop_my_machine_spectrum_next[];
 extern char *bitmap_button_ext_desktop_my_machine_sam[];
 
 extern char *bitmap_button_ext_desktop_mirilla_lightgun[];
+extern char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 

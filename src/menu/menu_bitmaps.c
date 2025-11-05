@@ -7600,34 +7600,34 @@ char *bitmap_button_ext_desktop_mirilla_lightgun[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"          wwwxwww         " 	 //25
 };
 
-/*
-char *bitmap_button_ext_desktop_mirilla_lightgun[EXT_DESKTOP_BUTTONS_ANCHO]={
+
+char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
-  	"             x            ",
-	"          xxxxxxx         ",
-	"        xx   x   xx       ",
-	"      xx     x     xx     ",
-	"     x     xxxxx     x    ",
-	"    x   xxx     xxx   x   ",
-	"    x  x     x     x  x   ",
-	"   x  x      x      x  x  ",
-	"   x  x      x      x  x  ",
-	"  x   x      x      x   x ",	//10
-	"  x  x       x       x  x ",
-	"  x  x               x  x ",
-	" xxxxx xxxxx   xxxxx xxxxx",
-	"  x  x               x  x ",
-	"  x  x       x       x  x ",
-	"  x   x      x      x   x ",
-	"   x  x      x      x  x  ",
-	"   x  x      x      x  x  ",
-	"    x  x     x     x  x   ",
-	"    x   xxx     xxx   x   ",    //20
-	"     x     xxxxx     x    ",
-	"      xx     x     xx     ",
-	"        xx   x   xx       ",
-	"          xxxxxxx         ",
-	"             x            " 	 //25
+  	"          wwwrwww         ",
+	"        wwrrrrrrrww       ",
+	"      wwrr   r   rrww     ",
+	"     wrr   wwrww   rrw    ",
+	"    wr  wwwrrrrrwww  rw   ",
+	"   wr  wrrr  w  rrrw  rw  ",
+	"   wr wr    wrw    rw rw  ",
+	"  wr wr     wrw     rw rw ",
+	"  wr wr     wrw     rw rw ",
+	" wr  wr     wrw     rw  rw",	//10
+	" wr wr      wrw      rw rw",
+	" wr wr wwwww r wwwww rw rw",
+	" rrrrrwrrrrrr rrrrrrwrrrrr",
+	" wr wr wwwww r wwwww rw rw",
+	" wr wr      wrw      rw rw",
+	" wr  wr     wrw     rw  rw",
+	"  wr wr     wrw     rw rw ",
+	"  wr wr     wrw     rw rw ",
+	"   wr wr    wrw    rw rw  ",
+	"   wr  wrrr  w  rrrw  rw  ",    //20
+	"    wr  wwwrrrrrwww  rw   ",
+	"     wrr   wwrww   rrw    ",
+	"      wwrr   r   rrww     ",
+	"        wwrrrrrrrww       ",
+	"          wwwrwww         " 	 //25
 };
-*/
+

@@ -64,6 +64,7 @@
 #include "textspeech.h"
 #include "zeng_online_client.h"
 #include "tape.h"
+#include "joystick.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
