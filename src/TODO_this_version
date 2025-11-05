@@ -65,8 +65,5 @@ setting para compilar con clang
 
 
 -lightgun
-* parametros config de customconfigfile
-* definir .config a los juegos de lightgun que hay en extras. Ver autoselectoptions.c
-ok * mostrar sprite mirilla en posición de ratón. prueba en cpu_loop_refresca_pantalla:
 
 

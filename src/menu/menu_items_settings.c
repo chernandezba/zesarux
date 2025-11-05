@@ -6503,7 +6503,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_scope,NULL,
                     "Show scope","Mostrar mirilla","Mostrar mira");
-                menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",(lightgun_scope.v? 'X' : ' '));
+                menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c]  ",(lightgun_scope.v? 'X' : ' '));
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
             }
 

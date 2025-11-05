@@ -430,12 +430,11 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
     }
 }
 
+//Retornar color de un pixel de la memoria de pantalla del Spectrum
+//si fuera de pantalla, retornar color del border
 int gunstick_view_pixel_color(int x,int y)
 {
 
-    //
-    // ESTA RUTINA FUNCIONA BIEN. NO TOCAR!!!
-    //
 
     if (x>255 || y>191 || x<0 || y<0) {
 
@@ -536,14 +535,6 @@ int gunstick_view_white(void)
 #endif
 
     //ver zona en blanco
-    //Proteccion para que no se salga de putpixel_cache
-    //dimensiones putpixel_cache
-    int ancho,alto;
-
-
-    ancho=screen_get_emulated_display_width_no_zoom();
-    alto=screen_get_emulated_display_height_no_zoom();
-
 
     int color;
 
@@ -557,28 +548,25 @@ int gunstick_view_white(void)
         return 1;
     }
 
-
-    else return 0;
+    else {
+        return 0;
+    }
 }
 
 
 
-int gunstick_view_electron_colors(void)
+int gunstick_view_electron_color(void)
 {
 
     int x,y;
 
     //Ver si hay algo en blanco cerca de donde se ha disparado
 
-
+    x=lightgun_x;
     y=lightgun_y;
 
-    if (y<0) y=0;
 
-
-    x=lightgun_x;
-
-    z80_byte color;
+    int color;
 
 
     printf("gunstick %3d %3d\n",x,y);
@@ -615,13 +603,6 @@ int gunstick_view_electron(void)
     x=x+screen_testados_total_borde_izquierdo;
 
 
-    /*if (x>=screen_testados_linea) {
-        y++;
-        x=x-screen_testados_linea;
-        printf("SALTADO LINEA\n");
-    }*/
-
-
    //x esta en t_estados. pasamos a pixeles
 
     x=x*2;
@@ -645,8 +626,6 @@ int gunstick_view_electron(void)
 
 
 
-
-
     if (delta_offset<0) {
         printf("No ha llegado aun el electron a donde esta la pistola\n");
         return 0;
@@ -662,10 +641,10 @@ int gunstick_view_electron(void)
     debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",lightgun_y,y);
 
 
-    return gunstick_view_electron_colors();
+    return gunstick_view_electron_color();
 
 
-  //}
+
 
 }
 
