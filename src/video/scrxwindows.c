@@ -1763,7 +1763,6 @@ void scrxwindows_actualiza_tablas_teclado(void)
 		case ButtonPress:
 
 			if ( event.xbutton.button == 1 ) {
-				//mouse_left=1;
 				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
 			}
 			if ( event.xbutton.button == 3 ) {

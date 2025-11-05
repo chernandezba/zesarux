@@ -1820,7 +1820,6 @@ void scrcurses_actualiza_tablas_teclado(void)
 						//coordenadas (0,0) arriba a la izquierda
 						if (event.bstate & BUTTON1_PRESSED) {
 							util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
-							//mouse_left=1;
 						}
 						if (event.bstate & BUTTON3_PRESSED) {
 							util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);

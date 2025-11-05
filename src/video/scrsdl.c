@@ -1526,7 +1526,6 @@ void scrsdl_actualiza_tablas_teclado(void)
 			debug_printf (VERBOSE_PARANOID,"Mouse Button Press. x=%d y=%d", event.button.x, event.button.y);
 
             if ( event.button.button == SDL_BUTTON_LEFT ) {
-				//mouse_left=1;
 				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
 			}
             if ( event.button.button == SDL_BUTTON_RIGHT ) {

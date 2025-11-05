@@ -553,7 +553,6 @@ int pressrelease=1;
 	break;
 	case CACA_EVENT_MOUSE_PRESS:
 		util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
-		//mouse_left=1;
 	break;
 	case CACA_EVENT_MOUSE_RELEASE:
 		util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
