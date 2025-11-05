@@ -7573,30 +7573,30 @@ char *bitmap_button_ext_desktop_zengonline[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_mirilla_lightgun[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
-  	"                          ",
+  	"            xxx           ",
 	"          xxxxxxx         ",
-	"        xx       xx       ",
-	"      xx           xx     ",
+	"        xx  xxx  xx       ",
+	"      xx    xxx    xx     ",
 	"     x               x    ",
-	"    x      wwwww      x   ",
-	"    x      wxxxw      x   ",
-	"   x       wxxxw       x  ",
-	"   x       wxxxw       x  ",
-	"  x        wxxxw        x ",	//10
-	"  x   wwwwwwxxxwwwwww   x ",
-	"  x   wxxxxxwwwxxxxxw   x ",
-	"  x   wxxxxxw wxxxxxw   x ",
-	"  x   wxxxxxwwwxxxxxw   x ",
-	"  x   wwwwwwxxxwwwwww   x ",
-	"  x        wxxxw        x ",
-	"   x       wxxxw       x  ",
-	"   x       wxxxw       x  ",
-	"    x      wxxxw      x   ",
-	"    x      wwwww      x   ",    //20
+	"    x                 x   ",
+	"    x        x        x   ",
+	"   x         x         x  ",
+	"   x         x         x  ",
+	"  x          x          x ",	//10
+	"  x          x          x ",
+	" xxxx                 xxx ",
+	" xxxx  xxxxx R xxxxx  xxxx",
+	" xxxx                 xxx ",
+	"  x          x          x ",
+	"  x          x          x ",
+	"   x         x         x  ",
+	"   x         x         x  ",
+	"    x        x        x   ",
+	"    x                 x   ",    //20
 	"     x               x    ",
-	"      xx           xx     ",
-	"        xx       xx       ",
+	"      xx    xxx    xx     ",
+	"        xx  xxx  xx       ",
 	"          xxxxxxx         ",
-	"                          " 	 //25
+	"            xxx           " 	 //25
 };
 
