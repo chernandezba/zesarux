@@ -45561,9 +45561,10 @@ void menu_inicio_bucle_main(void)
 
 
 
-                        //TODO: llegamos aqui y vemos el raton en la zona del topbar y asumimos que se ha pulsado
+                        //llegamos aqui y vemos el raton en la zona del topbar y asumimos que se ha pulsado
                         //Pero no miramos que se haya pulsado el boton, porque aunque se hubiera pulsado, se espera a que se libere
                         //y por tanto aqui no se estaria pulsando. Se generaria un posible falso positivo de menu_topbarmenu_pressed_bar
+                        //El falso positivo se solventa desde top menu mediante zxvision_topmenu_was_open_by_left_mouse_button.v
                         //Entonces miramos si se ha pulsado flecha izquierda o derecha
                         if (!ultimo_menu_salido_con_flecha_izquierda && !ultimo_menu_salido_con_flecha_derecha) {
                             menu_topbarmenu_pressed_bar=1;

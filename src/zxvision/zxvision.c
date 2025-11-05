@@ -28037,7 +28037,11 @@ void menu_inicio(void)
             //Ver si se ha pulsado en botones de zx desktop
             if (menu_was_open_by_left_mouse_button.v) {
                 debug_printf(VERBOSE_DEBUG,"Menu was open by left mouse button");
+                //printf("poner a 0 menu_was_open_by_left_mouse_button.v desde menu_inicio\n");
                 menu_was_open_by_left_mouse_button.v=0;
+
+                //Esto es para topmenu
+                zxvision_topmenu_was_open_by_left_mouse_button=1;
 
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
                     //printf("llamar a if mouse in logo desde 26928\n");

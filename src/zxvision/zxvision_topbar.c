@@ -421,6 +421,8 @@ void zxvision_topbar_check_pressed_window(void)
     }
 }
 
+int zxvision_topmenu_was_open_by_left_mouse_button=0;
+
 void menu_topbarmenu(void)
 {
     DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Entering Top Menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d",
@@ -482,8 +484,19 @@ void menu_topbarmenu(void)
         //o se haya pulsado flecha izquierda o derecha en menus abiertos
         //Moverse por los titulos superiores
         int salir_linea_superior=0;
-        while (!salir_linea_superior && !menu_topbarmenu_pressed_bar && !ultimo_menu_salido_con_flecha_izquierda && !ultimo_menu_salido_con_flecha_derecha) {
+        //printf("menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
+        //printf("menu_was_open_by_left_mouse_button.v %d\n",menu_was_open_by_left_mouse_button.v);
+        //printf("zxvision_topmenu_was_open_by_left_mouse_button %d\n",zxvision_topmenu_was_open_by_left_mouse_button);
 
+        //Aqui solventamos un falso positivo de menu_topbarmenu_pressed_bar. No se ha abierto pulsando mouse,
+        //por tanto hay que quedarse en la barra de arriba
+        if (zxvision_topmenu_was_open_by_left_mouse_button==0) menu_topbarmenu_pressed_bar=0;
+
+        zxvision_topmenu_was_open_by_left_mouse_button=0;
+
+
+        while (!salir_linea_superior && !menu_topbarmenu_pressed_bar && !ultimo_menu_salido_con_flecha_izquierda && !ultimo_menu_salido_con_flecha_derecha) {
+            //printf("Entrado en bucle top bar\n");
             //dibujar_cursor_topbar=1;
 
             DBG_PRINT_ZXVISION_TOPMENU VERBOSE_PARANOID,"ZXVISION_TOPMENU: Menu selected %d Total Menus %d",dibujar_cursor_topbar_pos_cursor,total_menus);
