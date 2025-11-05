@@ -598,7 +598,8 @@ int gunstick_view_electron_colors(void)
 
 
 
-//Ver si la zona donde apunta el raton (gunstick) esta pasando el electron. Usado en magnum light phaser
+//Ver si la zona donde apunta el raton (gunstick) esta pasando el electron y hay color blanco
+//Usado en magnum light phaser
 int gunstick_view_electron(void)
 {
     //ver electron
