@@ -12586,6 +12586,19 @@ void parse_customfile_options(void)
             realjoystick_clear_events_array();
         }
 
+        else if (!strcmp(argv[puntero_parametro],"--enable-lightgun")) {
+            lightgun_emulation_enabled.v=1;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--lightgunemulated")) {
+                            siguiente_parametro_argumento();
+            if (lightgun_set_type(argv[puntero_parametro])) {
+                debug_printf(VERBOSE_ERR,"Invalid lightgun %s",argv[puntero_parametro]);
+            }
+
+        }
+
+
         else if (!strcmp(argv[puntero_parametro],"--steering-wheel-enable")) {
             realjoystick_steering_enabled.v=1;
         }
@@ -12838,6 +12851,9 @@ void customconfig_help(void)
     "--text-keyboard-length n\n"
     "--text-keyboard-finalspc\n"
     "--cleareventlist\n"
+
+    "--enable-lightgun\n"
+    "--lightgunemulated type\n"
 
     "--steering-wheel-address n        Memory address where the game stores the wheel position\n"
     "--steering-wheel-min-value n      Minimum value stored on address (usually when wheel on maximum left position)\n"
