@@ -64,6 +64,7 @@
 #include "screen.h"
 #include "realjoystick.h"
 #include "zxvision.h"
+#include "zxvision_topbar.h"
 #include "menu_file_viewer_browser.h"
 #include "menu_filesel.h"
 #include "menu_debug_cpu.h"
@@ -7279,6 +7280,11 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
         //printf ("Leido press release mouse\n");
         if (si_menu_mouse_activado() ) {
           //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston o gunstick
+
+
+            //printf("Poner a 1 zxvision_topmenu_was_open_by_left_mouse_button desde utils\n");
+            zxvision_topmenu_was_open_by_left_mouse_button=1;
+
           if (menu_abierto==0) {
                   if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
                       if (mouse_menu_ignore_click_open.v==0) {

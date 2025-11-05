@@ -28041,6 +28041,7 @@ void menu_inicio(void)
                 menu_was_open_by_left_mouse_button.v=0;
 
                 //Esto es para topmenu
+                //printf("Poner a 1 zxvision_topmenu_was_open_by_left_mouse_button desde menu_inicio\n");
                 zxvision_topmenu_was_open_by_left_mouse_button=1;
 
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {

@@ -487,6 +487,8 @@ void menu_topbarmenu(void)
         //printf("menu_topbarmenu_pressed_bar %d\n",menu_topbarmenu_pressed_bar);
         //printf("menu_was_open_by_left_mouse_button.v %d\n",menu_was_open_by_left_mouse_button.v);
         //printf("zxvision_topmenu_was_open_by_left_mouse_button %d\n",zxvision_topmenu_was_open_by_left_mouse_button);
+        //printf("ultimo_menu_salido_con_flecha_izquierda %d ultimo_menu_salido_con_flecha_derecha %d\n",
+        //    ultimo_menu_salido_con_flecha_izquierda,ultimo_menu_salido_con_flecha_derecha);
 
         //Aqui solventamos un falso positivo de menu_topbarmenu_pressed_bar. No se ha abierto pulsando mouse,
         //por tanto hay que quedarse en la barra de arriba
@@ -494,6 +496,7 @@ void menu_topbarmenu(void)
 
         zxvision_topmenu_was_open_by_left_mouse_button=0;
 
+        //printf("2zxvision_topmenu_was_open_by_left_mouse_button %d salir_linea_superior %d\n",zxvision_topmenu_was_open_by_left_mouse_button,salir_linea_superior);
 
         while (!salir_linea_superior && !menu_topbarmenu_pressed_bar && !ultimo_menu_salido_con_flecha_izquierda && !ultimo_menu_salido_con_flecha_derecha) {
             //printf("Entrado en bucle top bar\n");
@@ -701,6 +704,9 @@ void menu_topbarmenu(void)
 
                 //hemos pulsado en topbar, nos mantenemos
                 salir_topbar=0;
+
+                //Importante resetear esto
+                zxvision_topmenu_was_open_by_left_mouse_button=0;
 
                 switch(pos_cursor) {
                     case 0:
