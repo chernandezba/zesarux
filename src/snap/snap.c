@@ -4194,7 +4194,7 @@ void save_zx_snapshot(char *filename)
 		//joystick type emulation
 		header[90]=joystick_emulation;
 
-		//gunstick type emulation. esto ya no lo soportamos
+		//lightgun type emulation. esto ya no lo soportamos
 		//header[91]=lightgun_emulation_type;
 
 	}

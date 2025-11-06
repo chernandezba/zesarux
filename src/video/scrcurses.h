@@ -35,7 +35,7 @@ extern void scrcurses_messages_debug(char *s);
 extern void scrcurses_inicializa_colores(void);
 
 extern void scrcurses_z88_draw_lower_screen(void);
-extern int scrcurses_return_gunstick_view_white(void);
+extern int scrcurses_return_lightgun_view_white(void);
 extern void scrcurses_fade_color(int color);
 
 

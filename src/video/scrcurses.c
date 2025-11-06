@@ -2148,7 +2148,7 @@ void scrcurses_actualiza_tablas_teclado(void)
 
 }
 
-int scrcurses_return_gunstick_view_white(void)
+int scrcurses_return_lightgun_view_white(void)
 {
 
 	//printf ("view white\n");

@@ -923,7 +923,7 @@ z80_byte in_port_ay(z80_byte puerto_h)
 		//evitamos valores fuera de rango
 
 		if (r==14) {
-            //printf("Leyendo registro 14 de ay chip. gunstick\n");
+            //printf("Leyendo registro 14 de ay chip. lightgun\n");
 			//debug_printf (VERBOSE_INFO,"registro chip ay: %d",r);
             //lightgun
             if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_AUX) {
@@ -944,14 +944,14 @@ z80_byte in_port_ay(z80_byte puerto_h)
                         acumulado &=(255-32);
                     }
 
-                    if (!gunstick_view_electron()) acumulado &=(255-16);
+                    if (!lightgun_view_electron()) acumulado &=(255-16);
 
                 }
 
 
                 ay_3_8912_registros[ay_chip_selected][14]=acumulado;
 
-				//printf ("temp. valor aychip gunstick : %d\n",acumulado);
+				//printf ("temp. valor aychip lightgun : %d\n",acumulado);
 
             }
 

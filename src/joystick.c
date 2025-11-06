@@ -212,14 +212,14 @@ int mouse_wheel_horizontal=0;
 
 //Coordenadas x,y de retorno a puerto kempston
 //Entre 0 y 255 las dos. Coordenada Y hacia abajo resta
-//se toma como base el mismo formato que gunstick x e y pero con modulo % 256
+//se toma como base el mismo formato que lightgun x e y pero con modulo % 256
 z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 
 
 //Mascara de bits (desde 7 hasta 0): Fire4 Fire3 Fire2 Fire1 Up Down Left Right
 z80_byte puerto_especial_joystick=0;
 
-//z80_byte puerto_especial_gunstick=0; //Fire 0 o 1
+
 
 char *joystick_texto[]={
     "None",
@@ -425,7 +425,7 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
 
 //Retornar color de un pixel de la memoria de pantalla del Spectrum
 //si fuera de pantalla, retornar color del border
-int gunstick_view_pixel_color(int x,int y)
+int lightgun_view_pixel_color(int x,int y)
 {
 
 
@@ -478,14 +478,14 @@ int gunstick_view_pixel_color(int x,int y)
 
 }
 
-//Ver si la zona donde apunta el raton (gunstick) esta en blanco. Usado en gunstick de MHT
-int old_gunstick_view_white(void)
+//Ver si la zona donde apunta el raton (lightgun) esta en blanco. Usado en Gunstick de MHT
+int old_lightgun_view_white(void)
 {
 
 //Si curses
 #ifdef COMPILE_CURSES
     if (!strcmp(scr_new_driver_name,"curses")) {
-        return (scrcurses_return_gunstick_view_white() );
+        return (scrcurses_return_lightgun_view_white() );
     }
 #endif
 
@@ -517,13 +517,13 @@ int old_gunstick_view_white(void)
 }
 
 //Ver si la zona donde apunta el raton (gunstick) esta en blanco. Usado en gunstick de MHT
-int gunstick_view_white(void)
+int lightgun_view_white(void)
 {
 
 //Si curses
 #ifdef COMPILE_CURSES
     if (!strcmp(scr_new_driver_name,"curses")) {
-        return (scrcurses_return_gunstick_view_white() );
+        return (scrcurses_return_lightgun_view_white() );
     }
 #endif
 
@@ -532,7 +532,7 @@ int gunstick_view_white(void)
     int color;
 
 
-    color=gunstick_view_pixel_color(lightgun_x-screen_testados_total_borde_izquierdo*2,
+    color=lightgun_view_pixel_color(lightgun_x-screen_testados_total_borde_izquierdo*2,
                                     lightgun_y-screen_borde_superior);
 
     //color blanco con o sin brillo
@@ -548,7 +548,7 @@ int gunstick_view_white(void)
 
 
 
-int gunstick_view_electron_color(void)
+int lightgun_view_electron_color(void)
 {
 
     int x,y;
@@ -562,12 +562,12 @@ int gunstick_view_electron_color(void)
     int color;
 
 
-    printf("gunstick %3d %3d\n",x,y);
-    color=gunstick_view_pixel_color(x-screen_testados_total_borde_izquierdo*2,
+    printf("lightgun %3d %3d\n",x,y);
+    color=lightgun_view_pixel_color(x-screen_testados_total_borde_izquierdo*2,
                                     y-screen_borde_superior);
 
     if (color!=0 && color!=8) {
-        debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. gunstick x: %d y: %d, color=%d",lightgun_x,lightgun_y,color);
+        debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. lightgun x: %d y: %d, color=%d",lightgun_x,lightgun_y,color);
         return 1;
     }
 
@@ -579,9 +579,10 @@ int gunstick_view_electron_color(void)
 
 
 
-//Ver si la zona donde apunta el raton (gunstick) esta pasando el electron y hay color blanco
-//Usado en magnum light phaser
-int gunstick_view_electron(void)
+//Ver si la zona donde apunta el raton (lightgun) esta pasando el electron (o si ha pasado hace poco rato) y hay color blanco
+//Como máximo el electron puede haber pasado hace 1 scanline (64 microsegundos máximo)
+//Usado en magnum light phaser y stack light rifle
+int lightgun_view_electron(void)
 {
     //ver electron
 
@@ -609,13 +610,14 @@ int gunstick_view_electron(void)
 
 
     //Nuevo calculo para saber si esta en rango. Mediante offset total
+    //Contamos rango en pixeles (de ahí los *2)
     int electron_offset=y*(screen_testados_linea*2)+x;
     int gunstick_offset=lightgun_y*(screen_testados_linea*2)+lightgun_x;
 
     int max_offset=(screen_testados_linea*2);
     int delta_offset=electron_offset-gunstick_offset;
 
-    printf("Offsets electron %6d gunstick %6d offset %7d max_offset %6d\n",electron_offset,gunstick_offset,delta_offset,max_offset);
+    printf("Offsets electron %6d lightgun %6d offset %7d max_offset %6d\n",electron_offset,gunstick_offset,delta_offset,max_offset);
 
 
 
@@ -631,10 +633,10 @@ int gunstick_view_electron(void)
 
     printf("Electron esta en rango de la pistola\n");
 
-    debug_printf (VERBOSE_DEBUG,"gunstick y (%d) is in range of electron (%d)",lightgun_y,y);
+    debug_printf (VERBOSE_DEBUG,"lightgun y (%d) is in range of electron (%d)",lightgun_y,y);
 
 
-    return gunstick_view_electron_color();
+    return lightgun_view_electron_color();
 
 
 

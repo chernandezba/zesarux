@@ -95,8 +95,8 @@ extern int lightgun_set_type(char *tipo);
 //extern z80_byte puerto_especial_gunstick;
 extern int lightgun_x;
 extern int lightgun_y;
-extern int gunstick_view_white(void);
-extern int gunstick_view_electron(void);
+extern int lightgun_view_white(void);
+extern int lightgun_view_electron(void);
 
 //extern int gunstick_range_x;
 //extern int gunstick_range_y;

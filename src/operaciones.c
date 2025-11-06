@@ -6646,7 +6646,7 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
 
                 acumulado &=(255-1);
 
-                if (gunstick_view_white()) acumulado &=(255-4);
+                if (lightgun_view_white()) acumulado &=(255-4);
 
 
             }
@@ -6700,7 +6700,7 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
 
                 acumulado &=(255-1);
 
-                if (gunstick_view_white()) acumulado &=(255-4);
+                if (lightgun_view_white()) acumulado &=(255-4);
 
 
             }
@@ -6771,7 +6771,7 @@ z80_byte get_kempston_value(void)
 
                                     acumulado |=16;
 
-                                    if (gunstick_view_white()) acumulado |=4;
+                                    if (lightgun_view_white()) acumulado |=4;
 
                                 }
                         }
@@ -7143,7 +7143,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
             acumulado &=(255-2);
         }
 
-        if (gunstick_view_electron()) acumulado &=(255-16);
+        if (lightgun_view_electron()) acumulado &=(255-16);
 
         //printf ("gunstick acumulado: %d\n",acumulado);
         return acumulado;

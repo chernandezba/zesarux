@@ -7279,7 +7279,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
         //printf ("Leido press release mouse\n");
         if (si_menu_mouse_activado() ) {
-          //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston o gunstick
+          //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston o lightgun
 
 
             //printf("Poner a 1 zxvision_topmenu_was_open_by_left_mouse_button desde utils\n");
