@@ -26,7 +26,7 @@ Mejorado ZX Desktop:
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
 Mejorado icono de Papelera
-Mejorada precisión decimnal de valores de ventana de Basic Variables
+Mejorada precisión decimal de valores de ventana de Basic Variables
 Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix
 Mejorado debug cpu:
 - Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
