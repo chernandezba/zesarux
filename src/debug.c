@@ -8699,9 +8699,10 @@ z80_byte debug_view_basic_variables_util_invert_nibble(z80_byte valor)
 }
 */
 
-#define VARIABLE_NUMBERS_MULTIPLICADOR 10000000000
+#define VARIABLE_NUMBERS_MULTIPLICADOR 10000000000L
 
-void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit exponente_final,z80_64bit total_mantissa,int signo_exponente,int signo_valor_final)
+void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit exponente_final,z80_64bit total_mantissa,
+    int signo_exponente,int signo_valor_final)
 {
 
     z80_64bit entero;
@@ -8739,8 +8740,8 @@ void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit expo
 
     //printf("entero: %d\n",entero);
 
-    if (signo_valor_final<0) sprintf(buffer,"-%lld.%04lld",entero,decimales);
-    else sprintf(buffer,"%lld.%04lld",entero,decimales);
+    if (signo_valor_final<0) sprintf(buffer,"-%lld.%010lld",entero,decimales);  //Esos %0.. depende de la cantidad de ceros de VARIABLE_NUMBERS_MULTIPLICADOR
+    else sprintf(buffer,"%lld.%010lld",entero,decimales);
 
 }
 
