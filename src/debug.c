@@ -8829,6 +8829,16 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         if (mant3 & 2)  total_mantissa  +=      119;  //1000000000 * 0,00000011920929
         if (mant3 & 1)  total_mantissa  +=       59;  //1000000000 * 0,000000059604645
 
+        z80_byte mant4=peek_byte_no_time(dir+4);
+        if (mant4 & 128) total_mantissa +=       29;  //1000000000 * 0,000000029802322
+        if (mant4 & 64) total_mantissa  +=       14;  //1000000000 * 0,000000014901161
+        if (mant4 & 32) total_mantissa  +=        7;  //1000000000 * 0,000000007450581
+        if (mant4 & 16) total_mantissa  +=        3;  //1000000000 * 0,00000000372529
+        if (mant4 & 8)  total_mantissa  +=        1;  //1000000000 * 0,000000001862645
+        if (mant4 & 4)  total_mantissa  +=        0;  //1000000000 * 0,000000000931323
+        if (mant4 & 2)  total_mantissa  +=        0;  //1000000000 * 0,000000000931323
+        if (mant4 & 1)  total_mantissa  +=        0;  //1000000000 * 0,000000000232831
+
         //Cualquiera de los otros bits son aproximaciones de 0.000xx y no tenemos precision (contando enteros X 1000000000) para usarlos
         //por tanto los descarto
 
