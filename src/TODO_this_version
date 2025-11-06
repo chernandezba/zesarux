@@ -67,3 +67,8 @@ setting para compilar con clang
 *rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo en programa aparte, mostrando coordenada y en pantalla
 *emulación de otros sistemas opticos, como TROJAN LIGHT PEN (PRO ZX 128 + 2A / 3 +). Ver documento en extras
 *renombrar funciones y simbolos que sean gunstick* (y no sean exclusivos de la Gunstick como tal) a lightgun*
+
+
+-config setting para aymidi_rs232_enabled.v
+if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que ser dependiente de ese setting?
+desactivado por defecto

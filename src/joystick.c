@@ -432,7 +432,7 @@ int lightgun_view_pixel_color(int x,int y)
     if (x>255 || y>191 || x<0 || y<0) {
 
         int color=out_254 & 7;
-        printf("out of range. border color %d\n",color);
+        //printf("out of range. border color %d\n",color);
         //retornar color border
         return color;
     }
@@ -445,7 +445,7 @@ int lightgun_view_pixel_color(int x,int y)
 
     int bit_pixel=x % 8;
 
-    printf("dpixel %d datributo %d\n",dir_pixel,dir_atributo);
+    //printf("dpixel %d datributo %d\n",dir_pixel,dir_atributo);
 
 
     z80_byte *screen_atributo=get_base_mem_pantalla_attributes();
@@ -472,7 +472,7 @@ int lightgun_view_pixel_color(int x,int y)
     if (pix) color=tinta;
     else color=papel;
 
-    printf("## x %3d y %3d color %d\n",x,y,color);
+    //printf("## x %3d y %3d color %d\n",x,y,color);
 
     return color;
 
@@ -508,7 +508,7 @@ int old_lightgun_view_white(void)
 
         //color blanco con o sin brillo
         if (color==15 || color==7) {
-            debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
+            //debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
             return 1;
         }
     }
@@ -537,7 +537,7 @@ int lightgun_view_white(void)
 
     //color blanco con o sin brillo
     if (color==15 || color==7) {
-        debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
+        //debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
         return 1;
     }
 
@@ -562,12 +562,12 @@ int lightgun_view_electron_color(void)
     int color;
 
 
-    printf("lightgun %3d %3d\n",x,y);
+    //printf("lightgun %3d %3d\n",x,y);
     color=lightgun_view_pixel_color(x-screen_testados_total_borde_izquierdo*2,
                                     y-screen_borde_superior);
 
     if (color!=0 && color!=8) {
-        debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. lightgun x: %d y: %d, color=%d",lightgun_x,lightgun_y,color);
+        //debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. lightgun x: %d y: %d, color=%d",lightgun_x,lightgun_y,color);
         return 1;
     }
 
@@ -602,11 +602,11 @@ int lightgun_view_electron(void)
     x=x*2;
 
 
-    debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d",
-        t_estados,x,y,lightgun_x,lightgun_y);
+    //debug_printf (VERBOSE_PARANOID,"electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d",
+    //    t_estados,x,y,lightgun_x,lightgun_y);
 
-    printf ("electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d\n",
-        t_estados,x,y,lightgun_x,lightgun_y);
+    //printf ("electron is at t_estados: %6d x: %3d y: %3d . gun is at x: %3d y: %3d\n",
+    //    t_estados,x,y,lightgun_x,lightgun_y);
 
 
     //Nuevo calculo para saber si esta en rango. Mediante offset total
@@ -617,23 +617,23 @@ int lightgun_view_electron(void)
     int max_offset=(screen_testados_linea*2);
     int delta_offset=electron_offset-lightgun_offset;
 
-    printf("Offsets electron %6d lightgun %6d offset %7d max_offset %6d\n",electron_offset,lightgun_offset,delta_offset,max_offset);
+    //printf("Offsets electron %6d lightgun %6d offset %7d max_offset %6d\n",electron_offset,lightgun_offset,delta_offset,max_offset);
 
 
 
     if (delta_offset<0) {
-        printf("No ha llegado aun el electron a donde esta la pistola\n");
+        //printf("No ha llegado aun el electron a donde esta la pistola\n");
         return 0;
     }
 
     if (delta_offset>max_offset) {
-        printf("Electron esta muy lejos de la pistola\n");
+        //printf("Electron esta muy lejos de la pistola\n");
         return 0;
     }
 
-    printf("Electron esta en rango de la pistola\n");
+    //printf("Electron esta en rango de la pistola\n");
 
-    debug_printf (VERBOSE_DEBUG,"lightgun y (%d) is in range of electron (%d)",lightgun_y,y);
+    //debug_printf (VERBOSE_DEBUG,"lightgun y (%d) is in range of electron (%d)",lightgun_y,y);
 
 
     return lightgun_view_electron_color();
