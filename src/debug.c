@@ -8699,7 +8699,7 @@ z80_byte debug_view_basic_variables_util_invert_nibble(z80_byte valor)
 }
 */
 
-#define VARIABLE_NUMBERS_MULTIPLICADOR 10000000
+#define VARIABLE_NUMBERS_MULTIPLICADOR 1000000000
 
 void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit exponente_final,int total_mantissa,int signo_exponente,int signo_valor_final)
 {
@@ -8786,7 +8786,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         int signo_valor_final=+1;
 
         //Aproximacion muy bruta
-        int total_mantissa=5000000;  //0.5
+        int total_mantissa=500000000;  //0.5
 
         z80_byte mant1=peek_byte_no_time(dir+1);
 
@@ -8799,37 +8799,37 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         if (mant1 & 128) signo_valor_final=-1;  //Valor negativo
 
         //                              0.0000
-        if (mant1 & 64) total_mantissa += 2500000;  //10000000 * 0.25
-        if (mant1 & 32) total_mantissa += 1250000;  //10000000 * 0.125
-        if (mant1 & 16) total_mantissa +=  625000;  //10000000 * 0.0625
-        if (mant1 & 8)  total_mantissa +=  312500;  //10000000 * 0.03125
-        if (mant1 & 4)  total_mantissa +=  156250;  //10000000 * 0.015625
-        if (mant1 & 2)  total_mantissa +=   78125;  //10000000 * 0.0078125
-        if (mant1 & 1)  total_mantissa +=   39062;  //10000000 * 0.00390625
+        if (mant1 & 64) total_mantissa += 250000000;  //1000000000 * 0.25
+        if (mant1 & 32) total_mantissa += 125000000;  //1000000000 * 0.125
+        if (mant1 & 16) total_mantissa +=  62500000;  //1000000000 * 0.0625
+        if (mant1 & 8)  total_mantissa +=  31250000;  //1000000000 * 0.03125
+        if (mant1 & 4)  total_mantissa +=  15625000;  //1000000000 * 0.015625
+        if (mant1 & 2)  total_mantissa +=   7812500;  //1000000000 * 0.0078125
+        if (mant1 & 1)  total_mantissa +=   3906250;  //1000000000 * 0.00390625
 
         z80_byte mant2=peek_byte_no_time(dir+2);
 
         //                               0.0000
-        if (mant2 & 128) total_mantissa +=   19531;  //10000000 * 0,001953125
-        if (mant2 & 64) total_mantissa  +=    9765;  //10000000 * 0,0009765625
-        if (mant2 & 32) total_mantissa  +=    4882;  //10000000 * 0,00048828125
-        if (mant2 & 16) total_mantissa  +=    2441;  //10000000 * 0,000244140625
-        if (mant2 & 8)  total_mantissa  +=    1220;  //10000000 * 0,0001220703125
-        if (mant2 & 4)  total_mantissa  +=     610;  //10000000 * 0,00006103515625
-        if (mant2 & 2)  total_mantissa  +=     305;  //10000000 * 0,000030517578125
-        if (mant2 & 1)  total_mantissa  +=     152;  //10000000 * 0,000015258789063
+        if (mant2 & 128) total_mantissa +=   1953125;  //1000000000 * 0,001953125
+        if (mant2 & 64) total_mantissa  +=    976562;  //1000000000 * 0,0009765625
+        if (mant2 & 32) total_mantissa  +=    488281;  //1000000000 * 0,00048828125
+        if (mant2 & 16) total_mantissa  +=    244140;  //1000000000 * 0,000244140625
+        if (mant2 & 8)  total_mantissa  +=    122070;  //1000000000 * 0,0001220703125
+        if (mant2 & 4)  total_mantissa  +=     61035;  //1000000000 * 0,00006103515625
+        if (mant2 & 2)  total_mantissa  +=     30517;  //1000000000 * 0,000030517578125
+        if (mant2 & 1)  total_mantissa  +=     15258;  //1000000000 * 0,000015258789063
 
         z80_byte mant3=peek_byte_no_time(dir+3);
-        if (mant3 & 128) total_mantissa +=     76;  //10000000 * 0,000007629394531
-        if (mant3 & 64) total_mantissa  +=     38;  //10000000 * 0,000003814697266
-        if (mant3 & 32) total_mantissa  +=     19;  //10000000 * 0,000001907348633
-        if (mant3 & 16) total_mantissa  +=      9;  //10000000 * 0,000000953674316
-        if (mant3 & 8)  total_mantissa  +=      4;  //10000000 * 0,000000476837158
-        if (mant3 & 4)  total_mantissa  +=      2;  //10000000 * 0,000000238418579
-        if (mant3 & 2)  total_mantissa  +=      1;  //10000000 * 0,00000011920929
-        if (mant3 & 1)  total_mantissa  +=      0;  //10000000 * 0,000000059604645
+        if (mant3 & 128) total_mantissa +=     7629;  //1000000000 * 0,000007629394531
+        if (mant3 & 64) total_mantissa  +=     3814;  //1000000000 * 0,000003814697266
+        if (mant3 & 32) total_mantissa  +=     1907;  //1000000000 * 0,000001907348633
+        if (mant3 & 16) total_mantissa  +=      953;  //1000000000 * 0,000000953674316
+        if (mant3 & 8)  total_mantissa  +=      476;  //1000000000 * 0,000000476837158
+        if (mant3 & 4)  total_mantissa  +=      238;  //1000000000 * 0,000000238418579
+        if (mant3 & 2)  total_mantissa  +=      119;  //1000000000 * 0,00000011920929
+        if (mant3 & 1)  total_mantissa  +=       59;  //1000000000 * 0,000000059604645
 
-        //Cualquiera de los otros bits son aproximaciones de 0.000xx y no tenemos precision (contando enteros X 10000000) para usarlos
+        //Cualquiera de los otros bits son aproximaciones de 0.000xx y no tenemos precision (contando enteros X 1000000000) para usarlos
         //por tanto los descarto
 
 
@@ -8857,12 +8857,12 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         //printf("exponente %d mantissa %d signo %d\n",exponente,total_mantissa,signo_valor_final);
         if (exponente>18) {
             if (signo_exponente>0) {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d X 2^%d)/10000000",total_mantissa,exponente);
-                else sprintf(buffer_linea,"(float)(%d X 2^%d)/10000000",total_mantissa,exponente);
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d X 2^%d)/1000000000",total_mantissa,exponente);
+                else sprintf(buffer_linea,"(float)(%d X 2^%d)/1000000000",total_mantissa,exponente);
             }
             else {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d / 2^%d)/10000000",total_mantissa,exponente);
-                else sprintf(buffer_linea,"(float)(%d / 2^%d)/10000000",total_mantissa,exponente);
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d / 2^%d)/1000000000",total_mantissa,exponente);
+                else sprintf(buffer_linea,"(float)(%d / 2^%d)/1000000000",total_mantissa,exponente);
             }
             return;
         }
