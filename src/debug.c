@@ -8699,6 +8699,7 @@ z80_byte debug_view_basic_variables_util_invert_nibble(z80_byte valor)
 }
 */
 
+#define VARIABLE_NUMBERS_MULTIPLICADOR 10000
 
 void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit exponente_final,int total_mantissa,int signo_exponente,int signo_valor_final)
 {
@@ -8715,9 +8716,9 @@ void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit expo
         z80_64bit multiplicado=exponente_final*total_mantissa;
 
         //Sacar decimales
-        entero=multiplicado/10000;
+        entero=multiplicado/VARIABLE_NUMBERS_MULTIPLICADOR;
 
-        decimales=entero*10000;
+        decimales=entero*VARIABLE_NUMBERS_MULTIPLICADOR;
 
         decimales=multiplicado-decimales;
 
@@ -8727,10 +8728,10 @@ void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit expo
     else {
         z80_64bit division=total_mantissa/exponente_final;
 
-        entero=division/10000;
+        entero=division/VARIABLE_NUMBERS_MULTIPLICADOR;
 
 
-        decimales=entero*10000;
+        decimales=entero*VARIABLE_NUMBERS_MULTIPLICADOR;
 
         decimales=division-decimales;
 
