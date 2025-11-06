@@ -8699,7 +8699,7 @@ z80_byte debug_view_basic_variables_util_invert_nibble(z80_byte valor)
 }
 */
 
-#define VARIABLE_NUMBERS_MULTIPLICADOR 10000
+#define VARIABLE_NUMBERS_MULTIPLICADOR 100000
 
 void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit exponente_final,int total_mantissa,int signo_exponente,int signo_valor_final)
 {
@@ -8748,7 +8748,7 @@ void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit expo
 Funcion para mostrar el valor numérico en pantalla
 
 Toda la parte de coma flotante se puede mejorar y corregir mucho, he evitado usar variables tipo float de C,
-esta todo obtenido mediante enteros de 32 bits, trabajando con tablas de mantisa multiplicadas por 10000
+esta todo obtenido mediante enteros de 32 bits, trabajando con tablas de mantisa multiplicadas por 100000
 Además sólo tengo en cuenta 16 de los 32 bits posibles de la mantisa, por tanto los valores muchas veces son aproximados
 NO se debe tomar como una función perfecta sino como algo que nos da un indicativo del valor APROXIMADO de la variable en coma flotante
 y no da siempre un valor exacto
@@ -8786,7 +8786,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         int signo_valor_final=+1;
 
         //Aproximacion muy bruta
-        int total_mantissa=5000;  //0.5
+        int total_mantissa=50000;  //0.5
 
         z80_byte mant1=peek_byte_no_time(dir+1);
 
@@ -8799,24 +8799,24 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         if (mant1 & 128) signo_valor_final=-1;  //Valor negativo
 
         //                              0.0000
-        if (mant1 & 64) total_mantissa += 2500;  //10000 * 0.25
-        if (mant1 & 32) total_mantissa += 1250;  //10000 * 0.125
-        if (mant1 & 16) total_mantissa +=  625;  //10000 * 0.0625
-        if (mant1 & 8)  total_mantissa +=  312;  //10000 * 0.03125
-        if (mant1 & 4)  total_mantissa +=  156;  //10000 * 0.015625
-        if (mant1 & 2)  total_mantissa +=   78;  //10000 * 0.0078125
-        if (mant1 & 1)  total_mantissa +=   39;  //10000 * 0.00390625
+        if (mant1 & 64) total_mantissa += 25000;  //100000 * 0.25
+        if (mant1 & 32) total_mantissa += 12500;  //100000 * 0.125
+        if (mant1 & 16) total_mantissa +=  6250;  //100000 * 0.0625
+        if (mant1 & 8)  total_mantissa +=  3125;  //100000 * 0.03125
+        if (mant1 & 4)  total_mantissa +=  1562;  //100000 * 0.015625
+        if (mant1 & 2)  total_mantissa +=   781;  //100000 * 0.0078125
+        if (mant1 & 1)  total_mantissa +=   390;  //100000 * 0.00390625
 
         z80_byte mant2=peek_byte_no_time(dir+2);
 
         //                               0.0000
-        if (mant2 & 128) total_mantissa +=   19;  //10000 * 0.00195
-        if (mant2 & 64) total_mantissa  +=   10;  //10000 * 0.00097
-        if (mant2 & 32) total_mantissa  +=    5;  //10000 * 0.00048
-        if (mant2 & 16) total_mantissa  +=    2;  //10000 * 0.00024
-        if (mant2 & 8)  total_mantissa  +=    1;  //10000 * 0.00012
+        if (mant2 & 128) total_mantissa +=   195;  //100000 * 0.00195
+        if (mant2 & 64) total_mantissa  +=    97;  //100000 * 0.00097
+        if (mant2 & 32) total_mantissa  +=    48;  //100000 * 0.00048
+        if (mant2 & 16) total_mantissa  +=    24;  //100000 * 0.00024
+        if (mant2 & 8)  total_mantissa  +=    12;  //100000 * 0.00012
 
-        //Cualquiera de los otros bits son aproximaciones de 0.00xx y no tenemos precision (contando enteros X 10000) para usarlos
+        //Cualquiera de los otros bits son aproximaciones de 0.000xx y no tenemos precision (contando enteros X 100000) para usarlos
         //por tanto los descarto
 
 
@@ -8844,12 +8844,12 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         //printf("exponente %d mantissa %d signo %d\n",exponente,total_mantissa,signo_valor_final);
         if (exponente>18) {
             if (signo_exponente>0) {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d X 2^%d)/10000",total_mantissa,exponente);
-                else sprintf(buffer_linea,"(float)(%d X 2^%d)/10000",total_mantissa,exponente);
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d X 2^%d)/100000",total_mantissa,exponente);
+                else sprintf(buffer_linea,"(float)(%d X 2^%d)/100000",total_mantissa,exponente);
             }
             else {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d / 2^%d)/10000",total_mantissa,exponente);
-                else sprintf(buffer_linea,"(float)(%d / 2^%d)/10000",total_mantissa,exponente);
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d / 2^%d)/100000",total_mantissa,exponente);
+                else sprintf(buffer_linea,"(float)(%d / 2^%d)/100000",total_mantissa,exponente);
             }
             return;
         }
@@ -8867,7 +8867,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         char buffer_valor_total[100];
         debug_view_basic_variables_util_final_division(buffer_valor_total,exponente_final,total_mantissa,signo_exponente,signo_valor_final);
 
-        //valor_total=(exponente_final*total_mantissa)/10000;
+        //valor_total=(exponente_final*total_mantissa)/100000;
 
         /*printf("(float) Exp:%02XH Mant: %02X%02X%02X%02XH Aprox: %s\n",
             peek_byte_no_time(dir),
