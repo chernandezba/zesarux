@@ -8707,7 +8707,6 @@ void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit expo
 
     z80_64bit entero;
 
-
     z80_64bit decimales;
 
     if (signo_exponente>0) {
@@ -8749,10 +8748,8 @@ void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit expo
 Funcion para mostrar el valor numérico en pantalla
 
 Toda la parte de coma flotante se puede mejorar y corregir mucho, he evitado usar variables tipo float de C,
-esta todo obtenido mediante enteros de 32 bits, trabajando con tablas de mantisa multiplicadas por 100000
-Además sólo tengo en cuenta 16 de los 32 bits posibles de la mantisa, por tanto los valores muchas veces son aproximados
-NO se debe tomar como una función perfecta sino como algo que nos da un indicativo del valor APROXIMADO de la variable en coma flotante
-y no da siempre un valor exacto
+esta todo obtenido mediante enteros de 64 bits, trabajando con tablas de mantisa multiplicadas por 10000000000
+Creo que luego para que el valor lo mostrase perfecto habría que realizar alguna función de redondeo
 */
 void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
 {
@@ -8809,8 +8806,6 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         if (mant1 & 1)  total_mantissa +=   39062500;  //10000000000 * 0.00390625
 
         z80_byte mant2=peek_byte_no_time(dir+2);
-
-        //                               0.0000
         if (mant2 & 128) total_mantissa +=   19531250;  //10000000000 * 0,001953125
         if (mant2 & 64) total_mantissa  +=    9765625;  //10000000000 * 0,0009765625
         if (mant2 & 32) total_mantissa  +=    4882812;  //10000000000 * 0,00048828125
@@ -8840,8 +8835,8 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         if (mant4 & 2)  total_mantissa  +=         4;  //10000000000 * 0,000000000465661
         if (mant4 & 1)  total_mantissa  +=         2;  //10000000000 * 0,000000000232831
 
-        //Cualquiera de los otros bits son aproximaciones de 0.000xx y no tenemos precision (contando enteros X 10000000000) para usarlos
-        //por tanto los descarto
+
+
 
 
         int exponente=peek_byte_no_time(dir);
@@ -8861,6 +8856,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         z80_64bit exponente_final=1;
         int i;
 
+        //printf("exp %d totmant %lld mant %02X %02X %02X %02X signoexp %d\n",exponente,total_mantissa,mant1,mant2,mant3,mant4,signo_exponente);
 
         //mirar si esto excede un valor final mayor de 63 bits aprox (antes 31 bits)
         //mantisa maxima 10000000000 aprox
@@ -8885,6 +8881,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
             exponente_final=exponente_final<<1;
         }
 
+        //printf("exp final %lld\n",exponente_final);
 
         //int valor_total;
 
