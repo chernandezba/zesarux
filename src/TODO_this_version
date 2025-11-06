@@ -25,7 +25,7 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
-*poderse mover bien por el menu con teclado aunque raton esté arriba del todo
+ok *poderse mover bien por el menu con teclado aunque raton esté arriba del todo
 
 ----------Fin top bar menu----------
 ----------------------------------------
@@ -64,9 +64,10 @@ setting para compilar con clang
 
 
 -lightgun
-*rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo en programa aparte, mostrando coordenada y en pantalla
+*rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
+en programa aparte, mostrando coordenada y en pantalla
 *emulación de otros sistemas opticos, como TROJAN LIGHT PEN (PRO ZX 128 + 2A / 3 +). Ver documento en extras
-*renombrar funciones y simbolos que sean gunstick* (y no sean exclusivos de la Gunstick como tal) a lightgun*
+
 
 
 -config setting para aymidi_rs232_enabled.v
@@ -74,3 +75,6 @@ if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que s
 desactivado por defecto
 con operation wolf de la magnum escribe muchos mensajes en consola (paranoid) aun desactivando el settting.
 Es necesario tanto print?
+
+
+--view basic variables: mejorar precisión en valores float, aumentando cantidad de bits que se tienen en cuenta

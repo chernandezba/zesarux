@@ -316,7 +316,7 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 *unkatris.wav, no es capaz de convertirlo. Quiza esto quiero que siga siendo asi, esa señal no tiene transiciones a valor 0 por ejemplo
 
 
--view basic variables: mejorar precisión en valores float, aumentando cantidad de bits que se tienen en cuenta
+
 
 -Captura sonido a archivo de disco
 *opcion para archivo de salida en ventana de captura

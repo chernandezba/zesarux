@@ -8700,19 +8700,19 @@ z80_byte debug_view_basic_variables_util_invert_nibble(z80_byte valor)
 */
 
 
-void  debug_view_basic_variables_util_final_division(char *buffer,int exponente_final,int total_mantissa,int signo_exponente,int signo_valor_final)
+void  debug_view_basic_variables_util_final_division(char *buffer,z80_64bit exponente_final,int total_mantissa,int signo_exponente,int signo_valor_final)
 {
 
-    int entero;
+    z80_64bit entero;
 
 
-    int decimales;
+    z80_64bit decimales;
 
     if (signo_exponente>0) {
 
 
 
-        int multiplicado=exponente_final*total_mantissa;
+        z80_64bit multiplicado=exponente_final*total_mantissa;
 
         //Sacar decimales
         entero=multiplicado/10000;
@@ -8725,7 +8725,7 @@ void  debug_view_basic_variables_util_final_division(char *buffer,int exponente_
     }
 
     else {
-        int division=total_mantissa/exponente_final;
+        z80_64bit division=total_mantissa/exponente_final;
 
         entero=division/10000;
 
@@ -8738,8 +8738,8 @@ void  debug_view_basic_variables_util_final_division(char *buffer,int exponente_
 
     //printf("entero: %d\n",entero);
 
-    if (signo_valor_final<0) sprintf(buffer,"-%d.%04d",entero,decimales);
-    else sprintf(buffer,"%d.%04d",entero,decimales);
+    if (signo_valor_final<0) sprintf(buffer,"-%lld.%04lld",entero,decimales);
+    else sprintf(buffer,"%lld.%04lld",entero,decimales);
 
 }
 
@@ -8833,7 +8833,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         }
 
 
-        int exponente_final=1;
+        z80_64bit exponente_final=1;
         int i;
 
 
