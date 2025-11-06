@@ -3928,7 +3928,7 @@ int switchzxdesktop_button_visible_timer=0;
 int zxvision_if_lower_button_switch_zxdesktop_enabled(void)
 {
 
-    //con emulacion de kempston mouse o gunstick, no se dispara evento de abrir menu al pulsar con raton, por tanto,
+    //con emulacion de kempston mouse o lightgun, no se dispara evento de abrir menu al pulsar con raton, por tanto,
     //no se puede gestionar pulsaciones sobre el boton de switch
 
     if (si_complete_video_driver() && scr_driver_can_ext_desktop() &&

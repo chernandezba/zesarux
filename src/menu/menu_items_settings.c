@@ -5234,11 +5234,11 @@ void menu_hardware_lightgun(MENU_ITEM_PARAMETERS)
 /*
 void menu_hardware_lightgun_range_x(MENU_ITEM_PARAMETERS)
 {
-    if (gunstick_range_x>=512) gunstick_range_x=1;
+    if (lightgun_range_x>=512) lightgun_range_x=1;
     else {
-        if (gunstick_range_x<32) gunstick_range_x *=2;
-        else if (gunstick_range_x<100) gunstick_range_x +=5;
-        else gunstick_range_x=gunstick_range_x+20;
+        if (lightgun_range_x<32) lightgun_range_x *=2;
+        else if (lightgun_range_x<100) lightgun_range_x +=5;
+        else lightgun_range_x=lightgun_range_x+20;
     }
 }
 */
@@ -5246,10 +5246,10 @@ void menu_hardware_lightgun_range_x(MENU_ITEM_PARAMETERS)
 /*
 void menu_hardware_lightgun_range_y(MENU_ITEM_PARAMETERS)
 {
-    if (gunstick_range_y==64) gunstick_range_y=0;
+    if (lightgun_range_y==64) lightgun_range_y=0;
     else {
-        if (gunstick_range_y==0) gunstick_range_y++;
-        else gunstick_range_y *=2;
+        if (lightgun_range_y==0) lightgun_range_y++;
+        else lightgun_range_y *=2;
     }
 }
 */
@@ -5265,7 +5265,7 @@ void menu_hardware_lightgun_y_offset(MENU_ITEM_PARAMETERS)
 /*
 void menu_hardware_lightgun_solo_brillo(MENU_ITEM_PARAMETERS)
 {
-    gunstick_solo_brillo ^=1;
+    lightgun_solo_brillo ^=1;
 }
 */
 
@@ -6509,16 +6509,16 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
             /*
             if (menu_hardware_lightgun_aychip_cond()) {
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_x,NULL," X Range: %d",gunstick_range_x);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_x,NULL," X Range: %d",lightgun_range_x);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_y,NULL," Y Range: %d",gunstick_range_y);
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_y,NULL," Y Range: %d",lightgun_range_y);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
                 menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_y_offset,NULL," Y Offset: %s%d",(lightgun_y_offset ? "-" : "" ), lightgun_y_offset);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_solo_brillo,NULL," Detect only white bright: %s",(gunstick_solo_brillo ? "On" : "Off"));
+                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_solo_brillo,NULL," Detect only white bright: %s",(lightgun_solo_brillo ? "On" : "Off"));
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
             }
             */

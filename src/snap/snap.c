@@ -1350,7 +1350,7 @@ void load_zx_snapshot(char *archivo)
                         }
 
 
-			//Gunstick type. Esto ya no lo soportamos
+			//lightgun type. Esto ya no lo soportamos
             /*
 			z80_byte g=zx_header[91];
 			if (g>=LIGHTGUN_TOTAL) {

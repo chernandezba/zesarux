@@ -516,7 +516,7 @@ int old_lightgun_view_white(void)
     return 0;
 }
 
-//Ver si la zona donde apunta el raton (gunstick) esta en blanco. Usado en gunstick de MHT
+//Ver si la zona donde apunta el raton (lightgun) esta en blanco. Usado en Gunstick de MHT
 int lightgun_view_white(void)
 {
 
@@ -612,12 +612,12 @@ int lightgun_view_electron(void)
     //Nuevo calculo para saber si esta en rango. Mediante offset total
     //Contamos rango en pixeles (de ahí los *2)
     int electron_offset=y*(screen_testados_linea*2)+x;
-    int gunstick_offset=lightgun_y*(screen_testados_linea*2)+lightgun_x;
+    int lightgun_offset=lightgun_y*(screen_testados_linea*2)+lightgun_x;
 
     int max_offset=(screen_testados_linea*2);
-    int delta_offset=electron_offset-gunstick_offset;
+    int delta_offset=electron_offset-lightgun_offset;
 
-    printf("Offsets electron %6d lightgun %6d offset %7d max_offset %6d\n",electron_offset,gunstick_offset,delta_offset,max_offset);
+    printf("Offsets electron %6d lightgun %6d offset %7d max_offset %6d\n",electron_offset,lightgun_offset,delta_offset,max_offset);
 
 
 

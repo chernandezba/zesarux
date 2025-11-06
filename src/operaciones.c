@@ -6640,7 +6640,7 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
             if ((puerto_especial_joystick&2)) acumulado &=(255-16);
         }
 
-        //lightgun
+        //gunstick
         if (lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_SINCLAIR_2) {
             if (mouse_left!=0) {
 
@@ -7145,7 +7145,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
         if (lightgun_view_electron()) acumulado &=(255-16);
 
-        //printf ("gunstick acumulado: %d\n",acumulado);
+
         return acumulado;
 
     }

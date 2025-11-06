@@ -1580,7 +1580,7 @@ return 0;
 }
 
 
-//Convierte coordenadas mouse curses a gunstick, kempston mouse
+//Convierte coordenadas mouse curses a lightgun, kempston mouse
 void scrcurses_convert_mouse_xy(int curses_x,int curses_y)
 {
 
@@ -1597,7 +1597,7 @@ int mouse_x=0,mouse_y=0;
 
 //Coordenadas x,y de retorno a puerto kempston
 //Entre 0 y 255 las dos. Coordenada Y hacia abajo resta
-//se toma como base el mismo formato que gunstick x e y pero con modulo % 256
+//se toma como base el mismo formato que lightgun x e y pero con modulo % 256
 z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 
 */
@@ -1846,7 +1846,7 @@ void scrcurses_actualiza_tablas_teclado(void)
 						mouse_y=event.y;
 						scrcurses_convert_mouse_xy(mouse_x,mouse_y);
 
-						//printf ("gunstick x: %d y: %d kempst x: %d y: %d\n",lightgun_x,lightgun_y,kempston_mouse_x,kempston_mouse_y);
+						//printf ("lightgun x: %d y: %d kempst x: %d y: %d\n",lightgun_x,lightgun_y,kempston_mouse_x,kempston_mouse_y);
 
 					}
 				break;
