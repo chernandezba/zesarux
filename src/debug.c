@@ -8858,11 +8858,11 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
 
         //printf("exp %d totmant %lld mant %02X %02X %02X %02X signoexp %d\n",exponente,total_mantissa,mant1,mant2,mant3,mant4,signo_exponente);
 
-        //mirar si esto excede un valor final mayor de 63 bits aprox (antes 31 bits)
+        //mirar si esto excede un valor final mayor de 63 bits aprox (antes 31 bits), reservando el ultimo bit para el signo
         //mantisa maxima 10000000000 aprox
-        //1<<63 / 10000000000 = 922337203. usa hasta bit 29
-        //printf("exponente %d mantissa %d signo %d\n",exponente,total_mantissa,signo_valor_final);
-        if (exponente>28) {
+        //1<<62 / 10000000000 = 461168601. usa hasta bit 28
+        //printf("exponente %d mantissa %lld signo %d\n",exponente,total_mantissa,signo_valor_final);
+        if (exponente>27) {
             if (signo_exponente>0) {
                 if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%lld X 2^%d)/10000000000",total_mantissa,exponente);
                 else sprintf(buffer_linea,"(float)(%lld X 2^%d)/10000000000",total_mantissa,exponente);
