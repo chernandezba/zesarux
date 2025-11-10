@@ -303,8 +303,8 @@ void joystick_set_right(int si_enviar_zeng_event)
 {
     joystick_clear_leftright();
 
-        //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
-        puerto_especial_joystick |=1;
+    //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+    puerto_especial_joystick |=1;
     debug_printf(VERBOSE_DEBUG,"joystick_set_right");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_RIGHT,1);
@@ -312,7 +312,7 @@ void joystick_set_right(int si_enviar_zeng_event)
 
 void joystick_release_right(int si_enviar_zeng_event)
 {
-        puerto_especial_joystick &=255-1;
+    puerto_especial_joystick &=255-1;
     debug_printf(VERBOSE_DEBUG,"joystick_release_right");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_RIGHT,0);
@@ -323,8 +323,8 @@ void joystick_set_left(int si_enviar_zeng_event)
 {
     joystick_clear_leftright();
 
-        //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
-        puerto_especial_joystick |=2;
+    //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+    puerto_especial_joystick |=2;
     debug_printf(VERBOSE_DEBUG,"joystick_set_left");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_LEFT,1);
@@ -332,7 +332,7 @@ void joystick_set_left(int si_enviar_zeng_event)
 
 void joystick_release_left(int si_enviar_zeng_event)
 {
-        puerto_especial_joystick &=255-2;
+    puerto_especial_joystick &=255-2;
     debug_printf(VERBOSE_DEBUG,"joystick_release_left");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_LEFT,0);
@@ -344,8 +344,8 @@ void joystick_set_down(int si_enviar_zeng_event)
 {
     joystick_clear_leftright();
 
-        //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
-        puerto_especial_joystick |=4;
+    //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+    puerto_especial_joystick |=4;
     debug_printf(VERBOSE_DEBUG,"joystick_set_down");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_DOWN,1);
@@ -353,7 +353,7 @@ void joystick_set_down(int si_enviar_zeng_event)
 
 void joystick_release_down(int si_enviar_zeng_event)
 {
-        puerto_especial_joystick &=255-4;
+    puerto_especial_joystick &=255-4;
     debug_printf(VERBOSE_DEBUG,"joystick_release_down");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_DOWN,0);
@@ -363,8 +363,8 @@ void joystick_set_up(int si_enviar_zeng_event)
 {
     joystick_clear_leftright();
 
-        //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
-        puerto_especial_joystick |=8;
+    //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+    puerto_especial_joystick |=8;
     debug_printf(VERBOSE_DEBUG,"joystick_set_up");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_UP,1);
@@ -372,7 +372,7 @@ void joystick_set_up(int si_enviar_zeng_event)
 
 void joystick_release_up(int si_enviar_zeng_event)
 {
-        puerto_especial_joystick &=255-8;
+    puerto_especial_joystick &=255-8;
     debug_printf(VERBOSE_DEBUG,"joystick_release_up");
 
     if (si_enviar_zeng_event) zeng_send_key_event(UTIL_KEY_JOY_UP,0);
@@ -415,7 +415,6 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
 //si fuera de pantalla, retornar color del border
 int lightgun_view_pixel_color(int x,int y)
 {
-
 
     if (x>255 || y>191 || x<0 || y<0) {
 
