@@ -79,17 +79,6 @@ int joystick_barato=0;
 
 //Que tecla actua como el Fire del joystick. Por defecto, Home
 //Si es <0, no actua ninguna tecla
-//#define JOYSTICK_KEY_FIRE_IS_HOME 0
-//#define JOYSTICK_KEY_FIRE_IS_RIGHTALT 1
-//#define JOYSTICK_KEY_FIRE_IS_RIGHTCTRL 2
-//#define JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT 3
-//int joystick_defined_key_fire=JOYSTICK_KEY_FIRE_IS_HOME;
-
-//Para los otros 3 posibles botones de joystick
-//int joystick_defined_key_fire2=-1;
-//int joystick_defined_key_fire3=-1;
-//int joystick_defined_key_fire4=-1;
-
 //Para los 4 botones de joystick
 int joystick_defined_key_fire_array[4]={JOYSTICK_KEY_FIRE_IS_HOME,-1,-1,-1};
 
@@ -282,20 +271,19 @@ int lightgun_set_type(char *tipo)
 void joystick_cycle_next_type_autofire(void)
 {
 
-
-                //desactivamos autofire
-                joystick_autofire_frequency=0;
-                //y ponemos tecla fire a 0, por si se habia quedado activa
-                puerto_especial_joystick=0;
+    //desactivamos autofire
+    joystick_autofire_frequency=0;
+    //y ponemos tecla fire a 0, por si se habia quedado activa
+    puerto_especial_joystick=0;
 
 }
 
 void joystick_cycle_next_type(void)
 {
-        if (joystick_emulation==JOYSTICK_TOTAL) joystick_emulation=0;
-        else joystick_emulation++;
+    if (joystick_emulation==JOYSTICK_TOTAL) joystick_emulation=0;
+    else joystick_emulation++;
 
-        joystick_cycle_next_type_autofire();
+    joystick_cycle_next_type_autofire();
 
 }
 
@@ -670,7 +658,6 @@ void lightgun_draw_scope(void)
     int offset_x=13;
     int offset_y=13;
 
-    //bitmap_button_ext_desktop_mirilla_lightgun_disparada
     char **bitmap=bitmap_button_ext_desktop_mirilla_lightgun;
 
     if (mouse_left) bitmap=bitmap_button_ext_desktop_mirilla_lightgun_disparada;
