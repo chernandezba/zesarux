@@ -4141,7 +4141,7 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
             else if (!strcmp(argv[puntero_parametro],"--lightgunemulated")) {
-                                siguiente_parametro_argumento();
+                siguiente_parametro_argumento();
                 if (lightgun_set_type(argv[puntero_parametro])) {
                     debug_printf(VERBOSE_ERR,"Invalid lightgun %s",argv[puntero_parametro]);
                 }
