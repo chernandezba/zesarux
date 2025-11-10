@@ -511,6 +511,18 @@ void menu_topbarmenu(void)
 
             //printf("tecla leida: %d\n",tecla_leida);
 
+            //z80_byte puerto_especial2=255; //   F5 F4 F3 F2 F1
+            //Si está multitask o no, o si hay ventanas abiertas... tecla_leida será 0, 2 o 3, depende del caso
+            //Podria simplemente leer que se ha pulsado F5 mediante puerto_especial2, pero prefiero
+            //asegurarme que no se haya pulsado alguna otra tecla, por eso me aseguro de los valores esperados para tecla_leida
+            if ((puerto_especial2 & 0x10)==0 && (tecla_leida==0 || tecla_leida==2 || tecla_leida==3)) {
+                //Si se pulsa F5 estando en la topbar, es lo mismo que pulsar z: Se despliega menú principal
+                DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Pressed F5 while in topbar, same as pressing z: open main menu");
+                //printf("Pulsado F5\n");
+                tecla_leida='z';
+            }
+
+
             //Si se ha pulsado tecla F5 estando aqui, se quedaria esta variable activada que
             //provocaria que para salir del menu hubiera que pulsar ESC dos veces
             //Ponerlo a 0 si no hay ningun evento de boton etc, lo cual
