@@ -418,6 +418,9 @@ int lightgun_view_pixel_color(int x,int y)
 
     if (x>255 || y>191 || x<0 || y<0) {
 
+        //TODO: esto obviamente lee un solo color para todo el border,
+        //si el juego está cambiando el color del border en el mismo frame (franjas por ejemplo u otros efectos)
+        //no funcionará
         int color=out_254 & 7;
         //printf("out of range. border color %d\n",color);
         //retornar color border
