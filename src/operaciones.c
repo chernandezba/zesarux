@@ -6782,8 +6782,8 @@ z80_byte get_kempston_value(void)
                         }
 
                         //magnum kempston
-                        //Ejemplo bronx street cop
-                        //en principio cualquiera de magnum pero cargado en spectrum 48k (porque no tiene puerto AUX)
+                        //Ejemplo billy the kid, bronx street cop, jungle warfare
+                        //en principio muchos de magnum pero cargado en spectrum 48k (porque no tiene puerto AUX)
                        if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_KEMPSTON) {
                                 if (zxvision_key_not_sent_emulated_mach() ) return 8+16;
 
