@@ -6848,7 +6848,7 @@ z80_byte get_last_bit_6_feh(void)
     //printf("last valor: %d\n",last_bit_6_feh);
 
     if (lightgun_emulation_enabled.v && lightgun_emulation_type==TROJAN_LIGHT_PEN_EAR && !zxvision_key_not_sent_emulated_mach()) {
-        int luz=lightgun_view_electron(); //white();
+        int luz=lightgun_view_electron();
         //int boton=mouse_left;
         int final=luz; // ^ boton;
         //printf("final: %d\n",final);
@@ -6859,16 +6859,19 @@ z80_byte get_last_bit_6_feh(void)
 
     //Magnum al puerto MIC. Por ejemplo Billy the kid soporta este, también soporta Defender light gun y Magnum puerto AUX
     //Billy the kid tiene autodetección de cual de las 3 pistolas está conectada
+    //Jungle Warfare también
+    //Bronx Street Cop también
+    //F-16 Fighting Falcon también
     if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_EAR) {
         if (zxvision_key_not_sent_emulated_mach()) return 64;
 
-        int luz=lightgun_view_electron(); //white();
+        int luz=lightgun_view_electron();
         int boton=mouse_left;
         int final=luz ^ boton;
         //printf("final: %d\n",final);
         if (!final) valor=valor|64;
         else valor=(valor & (255-64));
-        printf("valor final: %d\n",valor);
+        //printf("valor final: %d\n",valor);
     }
 
     return valor;
