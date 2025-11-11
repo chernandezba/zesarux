@@ -5224,11 +5224,51 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 
 }
 
+/*
 void menu_hardware_lightgun(MENU_ITEM_PARAMETERS)
 {
 
     lightgun_emulation_type++;
     if (lightgun_emulation_type==LIGHTGUN_TOTAL) lightgun_emulation_type=0;
+}
+*/
+
+void menu_hardware_lightgun(MENU_ITEM_PARAMETERS)
+{
+
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=lightgun_emulation_type;
+
+
+    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+    int i;
+
+    for (i=0;i<LIGHTGUN_TOTAL;i++) {
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,lightgun_types_list[i]);
+
+    }
+
+    menu_add_item_menu_separator(array_menu_common);
+
+    menu_add_ESC_item(array_menu_common);
+
+    retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Optical Input");
+
+
+
+    if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
+        lightgun_emulation_type=opcion_seleccionada;
+        //Al volver de esta manera, hay que indicar al index_search que se "va atras" un menu
+        //Esto ya se llama por defecto en gestion de menu, cuando se pulsa ESC o flecha atras,
+        //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
+        //zxvision_index_delete_last_submenu_path();
+    }
+
 }
 
 /*
@@ -6497,10 +6537,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             if (lightgun_emulation_enabled.v) {
                 menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun,NULL,
                     "    Type [%s]",lightgun_types_list[lightgun_emulation_type]);
-                menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of lightgun is emulated with the mouse");
-                menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
-                        "Gunstick from MHT Ingenieros S.L\n\n"
-                        "Magnum Light Phaser");
+                menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of Optical Input is emulated with the mouse");
+                menu_add_item_menu_ayuda(array_menu_hardware_settings,"Decide which kind of Optical Input is emulated with the mouse");
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_scope,NULL,
