@@ -6794,7 +6794,7 @@ z80_byte get_kempston_value(void)
                                     acumulado &=(255-8);
                                 }
 
-                                if (!lightgun_view_white()) acumulado |=16;
+                                if (lightgun_view_electron()) acumulado |=16;
                                 else acumulado &=(255-16);
 
                         }
