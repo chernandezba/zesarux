@@ -6756,16 +6756,21 @@ z80_byte get_kempston_value(void)
 
                         z80_byte acumulado=0;
 
-                        //si estamos con menu abierto, no retornar nada
-                        if (zxvision_key_not_sent_emulated_mach() ) return 0;
 
                         if (joystick_emulation==JOYSTICK_KEMPSTON) {
+                            //si estamos con menu abierto, no retornar nada
+                            if (zxvision_key_not_sent_emulated_mach() ) return 0;
+
                                 //mapeo de ese puerto especial es igual que kempston
                                 acumulado=puerto_especial_joystick;
+
+
                         }
 
                        //gunstick
                        if (lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON) {
+
+                                if (zxvision_key_not_sent_emulated_mach() ) return 0;
 
                                 if (mouse_left!=0) {
 
@@ -6774,6 +6779,24 @@ z80_byte get_kempston_value(void)
                                     if (lightgun_view_white()) acumulado |=4;
 
                                 }
+                        }
+
+                        //magnum kempston
+                        //Ejemplo bronx street cop
+                        //en principio cualquiera de magnum pero cargado en spectrum 48k (porque no tiene puerto AUX)
+                       if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_KEMPSTON) {
+                                if (zxvision_key_not_sent_emulated_mach() ) return 255;
+
+                                if (!mouse_left) {
+                                    acumulado |=8;
+                                }
+                                else {
+                                    acumulado &=(255-8);
+                                }
+
+                                if (!lightgun_view_white()) acumulado |=16;
+                                else acumulado &=(255-16);
+
                         }
 
                         return acumulado;
