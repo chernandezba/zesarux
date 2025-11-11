@@ -145,6 +145,7 @@ void joystick_possible_tab_key(int pressrelease)
     handle_pressed_a_fire_key(JOYSTICK_KEY_FIRE_IS_TAB,UTIL_KEY_TAB,pressrelease);
 }
 
+//Emulación de pistolas ópticas, lapices ópticos, etc
 z80_bit lightgun_emulation_enabled={0};
 
 int lightgun_emulation_type=0;
@@ -237,7 +238,7 @@ char *lightgun_types_list[LIGHTGUN_TOTAL]={
     "Gunstick Kempston",
     "Magnum (AUX port)",
     "Stack Light Rifle",
-    "Trojan Light Pen (MIC port)"
+    "Trojan Light Pen (EAR port)"
 };
 
 void lightgun_print_types(void)

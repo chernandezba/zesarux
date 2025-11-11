@@ -3814,10 +3814,10 @@ int util_write_configfile(void)
   if (zxvision_topbar_menu_enabled.v)           ADD_STRING_CONFIG,"--enable-top-menu");
   if (zxvision_topbar_appears_move_mouse_top.v==0)     ADD_STRING_CONFIG,"--no-show-top-menu-move-top");
 
-  if (lightgun_emulation_enabled.v)             ADD_STRING_CONFIG,"--enable-lightgun");
-  if (lightgun_scope.v)                         ADD_STRING_CONFIG,"--lightgun-scope");
+  if (lightgun_emulation_enabled.v)             ADD_STRING_CONFIG,"--enable-optical-input");
+  if (lightgun_scope.v)                         ADD_STRING_CONFIG,"--opticalinput-scope");
 
-                                                ADD_STRING_CONFIG,"--lightgunemulated \"%s\"",lightgun_types_list[lightgun_emulation_type]);
+                                                ADD_STRING_CONFIG,"--opticalinputtype \"%s\"",lightgun_types_list[lightgun_emulation_type]);
 
   if (kempston_mouse_emulation.v)             ADD_STRING_CONFIG,"--enablekempstonmouse");
 
@@ -12592,11 +12592,11 @@ void parse_customfile_options(void)
             realjoystick_clear_events_array();
         }
 
-        else if (!strcmp(argv[puntero_parametro],"--enable-lightgun")) {
+        else if (!strcmp(argv[puntero_parametro],"--enable-optical-input")) {
             lightgun_emulation_enabled.v=1;
         }
 
-        else if (!strcmp(argv[puntero_parametro],"--lightgunemulated")) {
+        else if (!strcmp(argv[puntero_parametro],"--opticalinputtype")) {
                             siguiente_parametro_argumento();
             if (lightgun_set_type(argv[puntero_parametro])) {
                 debug_printf(VERBOSE_ERR,"Invalid lightgun %s",argv[puntero_parametro]);
@@ -12858,8 +12858,8 @@ void customconfig_help(void)
     "--text-keyboard-finalspc\n"
     "--cleareventlist\n"
 
-    "--enable-lightgun\n"
-    "--lightgunemulated type\n"
+    "--enable-optical-input\n"
+    "--opticalinputtype type\n"
 
     "--steering-wheel-address n        Memory address where the game stores the wheel position\n"
     "--steering-wheel-min-value n      Minimum value stored on address (usually when wheel on maximum left position)\n"

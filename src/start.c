@@ -1278,9 +1278,9 @@ printf("\n"
         "--keyboard-issue2           Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
         "--keymap n                  Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
 
-        "--enable-lightgun           Enable lighgun emulation\n"
-        "--lightgun-scope            Show lightgun scope\n"
-        "--lightgunemulated type     Type of emulated lightgun. Type can be one of: ");
+        "--enable-optical-input      Enable optical input emulation\n"
+        "--opticalinput-scope        Show optical input scope\n"
+        "--opticalinputtype type     Type of emulated optical input. Type can be one of: ");
 
     lightgun_print_types();
         printf (" . Default: %s\n",lightgun_types_list[lightgun_emulation_type]);
@@ -4132,15 +4132,15 @@ int parse_cmdline_options(int desde_commandline) {
                 kempston_mouse_emulation.v=1;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--enable-lightgun")) {
+            else if (!strcmp(argv[puntero_parametro],"--enable-optical-input")) {
                 lightgun_emulation_enabled.v=1;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--lightgun-scope")) {
+            else if (!strcmp(argv[puntero_parametro],"--opticalinput-scope")) {
                 lightgun_scope.v=1;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--lightgunemulated")) {
+            else if (!strcmp(argv[puntero_parametro],"--opticalinputtype")) {
                 siguiente_parametro_argumento();
                 if (lightgun_set_type(argv[puntero_parametro])) {
                     debug_printf(VERBOSE_ERR,"Invalid lightgun %s",argv[puntero_parametro]);
