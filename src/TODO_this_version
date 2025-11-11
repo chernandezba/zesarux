@@ -93,3 +93,6 @@ así se puede saber en emulación cuanto tiempo ha pasado desde un punto de paro
 if ( lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON && puerto_l==0xdf) {
     return get_kempston_value();
 }
+
+-en lightgun leer mejor de rainbow buffer en vez de atributos de pantalla,
+cuando real video está activado. esto proporciona mejor funcionamiento

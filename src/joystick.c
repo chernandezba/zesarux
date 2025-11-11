@@ -411,9 +411,33 @@ void joystick_release_fire(int si_enviar_zeng_event,int fire_button)
     }
 }
 
+//Retornar color de la pantalla, teniendo rainbow activo
+//De momento esto no funciona, juegos con la magnum no van bien con este método
+int lightgun_view_pixel_color_rainbow(int x,int y)
+{
+    int ancho,alto;
+
+    ancho=get_total_ancho_rainbow();
+    alto=get_total_alto_rainbow();
+
+    if (x>=0 && y>=0 && x<ancho && y<alto) {
+        int indice;
+
+        indice=(ancho*y)+x;
+
+        int color=rainbow_buffer[indice];
+
+        printf("x %d y %d color %d\n",x,y,color);
+
+        return color;
+    }
+
+    else return 0;
+}
+
 //Retornar color de un pixel de la memoria de pantalla del Spectrum
 //si fuera de pantalla, retornar color del border
-int lightgun_view_pixel_color(int x,int y)
+int lightgun_view_pixel_color_no_rainbow(int x,int y)
 {
 
     if (x>255 || y>191 || x<0 || y<0) {
@@ -522,7 +546,7 @@ int lightgun_view_white(void)
     int color;
 
 
-    color=lightgun_view_pixel_color(lightgun_x-screen_testados_total_borde_izquierdo*2,
+    color=lightgun_view_pixel_color_no_rainbow(lightgun_x-screen_testados_total_borde_izquierdo*2,
                                     lightgun_y-screen_borde_superior);
 
     //color blanco con o sin brillo
@@ -553,8 +577,18 @@ int lightgun_view_electron_color(void)
 
 
     //printf("lightgun %3d %3d\n",x,y);
-    color=lightgun_view_pixel_color(x-screen_testados_total_borde_izquierdo*2,
+    /*
+    if (rainbow_enabled.v) {
+        color=lightgun_view_pixel_color_rainbow(x,y);
+    }
+    else {
+        color=lightgun_view_pixel_color_no_rainbow(x-screen_testados_total_borde_izquierdo*2,
                                     y-screen_borde_superior);
+    }
+    */
+
+    color=lightgun_view_pixel_color_no_rainbow(x-screen_testados_total_borde_izquierdo*2,
+                                y-screen_borde_superior);
 
     if (color!=0 && color!=8) {
         //debug_printf (VERBOSE_DEBUG,"Non black zone detected on lightgun. lightgun x: %d y: %d, color=%d",lightgun_x,lightgun_y,color);
