@@ -289,7 +289,7 @@ __FEATURES__
 
 * ZX Printer emulation
 
-* Optical Input emulation: Emulates Gunstick from MHT Ingenieros S.L, Magnum Light Phaser, Stack Light Rifle, Trojan Light Pen
+* Optical Input emulation: Emulates Gunstick from MHT Ingenieros S.L, Magnum Light Phaser, Stack Light Rifle, Defender Light Gun, Trojan Light Pen
 
 * Kempston mouse emulation
 

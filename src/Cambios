@@ -10,6 +10,7 @@ Permitir variable de entorno DESTDIR en el paso make install
 Permitir acelerar carga y grabación de diskette, microdrive, etc
 Agregada opción de configuración para autoactivar chip AY en modelos de Spectrum sin chip ay
 Agregado emulación de Stack Light Rifle
+Agregado emulación de Defender Light Gun
 Agregada emulación de Trojan Light Pen
 Agregada mirilla de lightgun
 

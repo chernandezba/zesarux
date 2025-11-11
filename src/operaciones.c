@@ -6856,6 +6856,18 @@ z80_byte get_last_bit_6_feh(void)
         else valor=(valor & (255-64));
     }
 
+
+    //Magnum al puerto MIC. Por ejemplo Billy the kid soporta este, también soporta Defender light gun y Magnum puerto AUX
+    if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_EAR && !zxvision_key_not_sent_emulated_mach()) {
+        int luz=lightgun_view_electron(); //white();
+        int boton=mouse_left;
+        int final=luz ^ boton;
+        //printf("final: %d\n",final);
+        if (!final) valor=valor|64;
+        else valor=(valor & (255-64));
+        printf("valor final: %d\n",valor);
+    }
+
     return valor;
 }
 
