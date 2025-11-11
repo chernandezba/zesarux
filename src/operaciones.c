@@ -6784,7 +6784,7 @@ z80_byte get_kempston_value(void)
                         //magnum kempston
                         //Ejemplo billy the kid, bronx street cop, jungle warfare
                         //en principio muchos de magnum pero cargado en spectrum 48k (porque no tiene puerto AUX)
-                       if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_KEMPSTON) {
+                       if (lightgun_emulation_enabled.v && lightgun_emulation_type==DEFENDER_LIGHTGUN) {
                                 if (zxvision_key_not_sent_emulated_mach() ) return 8+16;
 
                                 if (!mouse_left) {
@@ -7253,7 +7253,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         if ( (puerto_l & 32) ==0 && (MACHINE_IS_INVES) ) {
 
                 if (joystick_emulation==JOYSTICK_KEMPSTON ||
-                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==MAGNUM_KEMPSTON))
+                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==DEFENDER_LIGHTGUN))
                  ) {
 			return get_kempston_value();
                 }
@@ -7265,7 +7265,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         if ( (puerto_l & (1+32+64+128)) == 1 && !(MACHINE_IS_INVES) ) {
 
                 if (joystick_emulation==JOYSTICK_KEMPSTON ||
-                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==MAGNUM_KEMPSTON))
+                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==DEFENDER_LIGHTGUN))
                  ) {
 			return get_kempston_value();
                 }

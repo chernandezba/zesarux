@@ -237,7 +237,7 @@ char *lightgun_types_list[LIGHTGUN_TOTAL]={
     "Gunstick Sinclair 2",
     "Gunstick Kempston",
     "Magnum (AUX port)",
-    "Magnum (Kempston)",
+    "Defender Light Gun",
     "Stack Light Rifle",
     "Trojan Light Pen (EAR port)"
 };

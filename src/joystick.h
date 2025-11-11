@@ -80,7 +80,7 @@ extern z80_bit lightgun_scope;
 #define GUNSTICK_SINCLAIR_2 1
 #define GUNSTICK_KEMPSTON 2
 #define MAGNUM_AUX 3
-#define MAGNUM_KEMPSTON 4
+#define DEFENDER_LIGHTGUN 4
 #define STACK_LIGHT_RIFLE 5
 #define TROJAN_LIGHT_PEN_EAR 6
 
