@@ -6785,7 +6785,7 @@ z80_byte get_kempston_value(void)
                         //Ejemplo bronx street cop
                         //en principio cualquiera de magnum pero cargado en spectrum 48k (porque no tiene puerto AUX)
                        if (lightgun_emulation_enabled.v && lightgun_emulation_type==MAGNUM_KEMPSTON) {
-                                if (zxvision_key_not_sent_emulated_mach() ) return 255;
+                                if (zxvision_key_not_sent_emulated_mach() ) return 8+16;
 
                                 if (!mouse_left) {
                                     acumulado |=8;
@@ -7252,7 +7252,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	//En Inves, Si A5=0 solamente
         if ( (puerto_l & 32) ==0 && (MACHINE_IS_INVES) ) {
 
-                if (joystick_emulation==JOYSTICK_KEMPSTON || (lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON)) {
+                if (joystick_emulation==JOYSTICK_KEMPSTON ||
+                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==MAGNUM_KEMPSTON))
+                 ) {
 			return get_kempston_value();
                 }
 
@@ -7262,7 +7264,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         //Si A5=A6=A7=0 y A0=1, kempston joystick. El tipico es el puerto 31 (00011111)
         if ( (puerto_l & (1+32+64+128)) == 1 && !(MACHINE_IS_INVES) ) {
 
-                if (joystick_emulation==JOYSTICK_KEMPSTON || (lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON)) {
+                if (joystick_emulation==JOYSTICK_KEMPSTON ||
+                    (lightgun_emulation_enabled.v && (lightgun_emulation_type==GUNSTICK_KEMPSTON || lightgun_emulation_type==MAGNUM_KEMPSTON))
+                 ) {
 			return get_kempston_value();
                 }
 
