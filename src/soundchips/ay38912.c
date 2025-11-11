@@ -932,7 +932,11 @@ z80_byte in_port_ay(z80_byte puerto_h)
                 z80_byte acumulado=255;
 
                 //Con menu abierto no leer nada
-                if (!zxvision_key_not_sent_emulated_mach() ) {
+                if (zxvision_key_not_sent_emulated_mach() ) {
+                    acumulado &=(255-16);
+                }
+
+                else {
 
                     /*
 
@@ -944,7 +948,9 @@ z80_byte in_port_ay(z80_byte puerto_h)
                         acumulado &=(255-32);
                     }
 
-                    if (!lightgun_view_electron()) acumulado &=(255-16);
+                    if (!lightgun_view_electron()) {
+                        acumulado &=(255-16);
+                    }
 
                 }
 
