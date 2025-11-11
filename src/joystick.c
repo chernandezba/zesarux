@@ -240,7 +240,8 @@ char *lightgun_types_list[LIGHTGUN_TOTAL]={
     "Magnum (EAR port)",
     "Defender Light Gun",
     "Stack Light Rifle",
-    "Trojan Light Pen (EAR port)"
+    "Trojan Light Pen (EAR port)",
+    "Datel Lightwriter"
 };
 
 void lightgun_print_types(void)

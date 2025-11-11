@@ -75,7 +75,7 @@ extern z80_bit lightgun_emulation_enabled;
 extern int lightgun_emulation_type;
 extern z80_bit lightgun_scope;
 
-#define LIGHTGUN_TOTAL 8
+#define LIGHTGUN_TOTAL 9
 #define GUNSTICK_SINCLAIR_1 0
 #define GUNSTICK_SINCLAIR_2 1
 #define GUNSTICK_KEMPSTON 2
@@ -84,6 +84,7 @@ extern z80_bit lightgun_scope;
 #define DEFENDER_LIGHTGUN 5
 #define STACK_LIGHT_RIFLE 6
 #define TROJAN_LIGHT_PEN_EAR 7
+#define DATEL_LIGHTWRITER 8
 
 
 extern void lightgun_draw_scope(void);

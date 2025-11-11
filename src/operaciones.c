@@ -7270,6 +7270,23 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	}
 
+    //Datel Lightwriter
+    if (puerto_l==0x3f && lightgun_emulation_enabled.v && lightgun_emulation_type==DATEL_LIGHTWRITER) {
+            z80_byte acumulado=0;
+            if (zxvision_key_not_sent_emulated_mach() ) return acumulado;
+
+
+
+            if (!lightgun_view_electron()) acumulado |=1;
+
+            //printf("acumulado: %d\n",acumulado);
+
+            return acumulado;
+
+
+    }
+
+
 	//If you read from a port that activates both the keyboard and a joystick port (e.g. Kempston), the joystick takes priority.
 
         //kempston joystick en Inves
