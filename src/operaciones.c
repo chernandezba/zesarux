@@ -6818,6 +6818,15 @@ z80_byte get_last_bit_6_feh(void)
 
     //printf("last valor: %d\n",last_bit_6_feh);
 
+    if (lightgun_emulation_enabled.v && lightgun_emulation_type==TROJAN_LIGHT_PEN_EAR && !zxvision_key_not_sent_emulated_mach()) {
+        int luz=lightgun_view_electron(); //white();
+        //int boton=mouse_left;
+        int final=luz; // ^ boton;
+        //printf("final: %d\n",final);
+        if (final) valor=valor|64;
+        else valor=(valor & (255-64));
+    }
+
     return valor;
 }
 

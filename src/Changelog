@@ -10,6 +10,7 @@ Allow DESTDIR environment varieble on make install step
 Allow to accelerate loading and saving of diskette, microdrive, etc
 Added config setting for autoenable ay chip on Spectrum models without ay chip
 Added emulation of Stack Light Rifle
+Added emulation of Trojan Light Pen
 Added lightgun scope
 
 Improved ZX Vision:

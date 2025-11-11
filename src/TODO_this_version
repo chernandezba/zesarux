@@ -80,7 +80,6 @@ con operation wolf de la magnum escribe muchos mensajes en consola (paranoid) au
 Es necesario tanto print?
 
 
---view basic variables: mejorar precisión en valores float, aumentando cantidad de bits que se tienen en cuenta
 
 -poder hacer que con menu abierto, se envien eventos de teclado, pistola etc a máquina emulada.
 Util si estamos en debug cpu y queremos que un juego lea el boton del ratón (emulando lightgun) y/o luz de pistola
@@ -94,5 +93,3 @@ if ( lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON 
     return get_kempston_value();
 }
 
--en lightgun leer mejor de rainbow buffer en vez de atributos de pantalla,
-cuando real video está activado. esto proporciona mejor funcionamiento
