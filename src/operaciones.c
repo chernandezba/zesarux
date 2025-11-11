@@ -6785,7 +6785,9 @@ z80_byte get_kempston_value(void)
                         //Ejemplo billy the kid, bronx street cop, jungle warfare
                         //en principio muchos de magnum pero cargado en spectrum 48k (porque no tiene puerto AUX)
                        if (lightgun_emulation_enabled.v && lightgun_emulation_type==DEFENDER_LIGHTGUN) {
-                                if (zxvision_key_not_sent_emulated_mach() ) return 8+16;
+                                acumulado=8+16;
+
+                                if (zxvision_key_not_sent_emulated_mach() ) return acumulado;
 
                                 if (!mouse_left) {
                                     acumulado |=8;
@@ -6794,8 +6796,12 @@ z80_byte get_kempston_value(void)
                                     acumulado &=(255-8);
                                 }
 
-                                if (lightgun_view_electron()) acumulado |=16;
-                                else acumulado &=(255-16);
+                                if (lightgun_view_electron()) {
+                                    acumulado |=16;
+                                }
+                                else {
+                                    acumulado &=(255-16);
+                                }
 
                         }
 
