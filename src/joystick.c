@@ -241,7 +241,8 @@ char *lightgun_types_list[LIGHTGUN_TOTAL]={
     "Defender Light Gun",
     "Stack Light Rifle",
     "Trojan Light Pen (EAR port)",
-    "Datel Lightwriter"
+    "Datel Lightwriter",
+    "Spectrum Doodler"
 };
 
 void lightgun_print_types(void)

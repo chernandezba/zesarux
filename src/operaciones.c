@@ -7285,30 +7285,48 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
     }
 
-    //Pruebas Spectrum Doodler Lightpen. Obtiene la posicion tal cual
-    //Tecla shift en programa: muestra cursor
-    /*
-    if (puerto_l==0x7f  ) {
+    //Spectrum Doodler Lightpen. El dispositivo retorna la posición en pantalla,
+    //el software no tiene que averiguar nada, sólo leer las coordenadas
+    //Creo que el lapiz como tal no tiene botón, aunque creo que si que detecta si el lapiz está tocando la pantalla
+    //(bit 7 del puerto 0x7f). Por tanto lo que hago es que si se pulsa clic izquierdo del ratón, es como si tocase la pantalla
+    //Para que el usuario pueda mover el ratón por la pantalla sin accionar (sin pulsar boton)
+    //Aunque el programa incluido de ejemplo puede detectar la posición sin hacer presión con el lapiz, pulsando la tecla shift
+    //Rango: x: 64-192 (128 margen) y: 29-127 (92 rango)?
+    if (puerto_l==0x7f && lightgun_emulation_enabled.v && lightgun_emulation_type==SPECTRUM_DOODLER) {
 
             if (zxvision_key_not_sent_emulated_mach() ) return 0;
-            z80_byte acumulado=(lightgun_y & 127)+128;
+            int pos_y=lightgun_y-screen_borde_superior;
+            pos_y /=2;
+            pos_y +=29;
+            if (pos_y<0) pos_y=0;
+            if (pos_y>127) pos_y=127;
 
-            if (mouse_left) acumulado -=128;
+            z80_byte acumulado=pos_y;
 
-            printf("y: %d\n",acumulado & 127);
+            if (mouse_left) acumulado |=128;
+            else acumulado &=(255-128);
+
+            //printf("y: %d\n",acumulado & 127);
 
             return acumulado;
     }
 
-    //Pruebas Spectrum Doodler Lightpen
-    if (puerto_l==191) {
+    //Spectrum Doodler Lightpen
+    if (puerto_l==191 && lightgun_emulation_enabled.v && lightgun_emulation_type==SPECTRUM_DOODLER) {
             if (zxvision_key_not_sent_emulated_mach() ) return 0;
+            int pos_x=lightgun_x-screen_testados_total_borde_izquierdo*2;
+            pos_x /=2;
+            pos_x +=64;
+            if (pos_x<0) pos_x=0;
+            if (pos_x>255) pos_x=255;
 
-            printf("x: %d\n",lightgun_x);
+            z80_byte acumulado=pos_x;
 
-            return lightgun_x;
+            //printf("x: %d\n",acumulado);
+
+            return acumulado;
     }
-    */
+
 
 
 	//If you read from a port that activates both the keyboard and a joystick port (e.g. Kempston), the joystick takes priority.
