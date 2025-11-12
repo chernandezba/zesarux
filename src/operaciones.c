@@ -7328,6 +7328,14 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
     }
 
 
+    //Al parecer el gunstick kempston también se lee por puerto DF
+    //Bestial warrior por ejemplo lo usa
+    //Tambien shooting range mix 1
+    if (puerto_l==0xDF && lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON)  {
+        //printf("Leyendo puerto DF\n");
+        return get_kempston_value();
+    }
+
 
 	//If you read from a port that activates both the keyboard and a joystick port (e.g. Kempston), the joystick takes priority.
 

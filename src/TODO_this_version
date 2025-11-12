@@ -91,5 +91,3 @@ así se puede saber en emulación cuanto tiempo ha pasado desde un punto de paro
 if ( lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON && puerto_l==0xdf) {
     return get_kempston_value();
 }
-
--posicion del electrón en Inves tanto al ver el electron desde debug cpu como  con las pistolas opticas, es siempre mas abajo....
