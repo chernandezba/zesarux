@@ -38,6 +38,7 @@ Improved debug cpu:
 - Show when memory is modified by last opcode execution on views 5 and 6
 - Direct key (t) to evaluate expressions
 - Added user variables VAR0, VAR1, ... VAR9
+- Added video frames counter
 
 Fixed emulation of Magnum Light Phaser
 Fixed reading port BFFD on Spectrum +2A/+3

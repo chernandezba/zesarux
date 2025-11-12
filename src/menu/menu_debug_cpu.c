@@ -2094,6 +2094,8 @@ z80_byte debug_antes_peek_hl,debug_antes_peek_hl_2;
 z80_byte debug_antes_peek_de,debug_antes_peek_de_2;
 z80_byte debug_antes_peek_bc,debug_antes_peek_bc_2;
 
+unsigned int debug_antes_frames_video_total_infinito;
+
 #define DEBUG_CPU_VISTAS_HEXADECIMAL_LONGITUD_LINEA 8
 //mas que suficiente 50 lineas
 #define DEBUG_CPU_VISTAS_HEXADECIMAL_MAX_LINEAS_DIFERENCIAS 50
@@ -2157,6 +2159,8 @@ void menu_debug_value_registers_modified_copy(void)
 
     debug_antes_peek_bc=peek_byte_z80_moto(BC);
     debug_antes_peek_bc_2=peek_byte_z80_moto(BC+1);
+
+    debug_antes_frames_video_total_infinito=frames_video_total_infinito;
 
     menu_debug_registers_diferencias_vistas_hexadecimal_copy();
 }
@@ -2611,6 +2615,17 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
 
             case 16:
                 sprintf (textoregistros,"FRAMES %u",frames_video_total_infinito);
+
+                if (cpu_step_mode.v) {
+                    if (frames_video_total_infinito!=debug_antes_frames_video_total_infinito) {
+                        *columnas_modificadas |=(8<<16);
+                        *columnas_modificadas |=(9<<20);
+                        *columnas_modificadas |=(10<<24);
+                        *columnas_modificadas |=(11L<<28);
+                        *columnas_modificadas |=(12L<<32);
+                        *columnas_modificadas |=(13L<<36);
+                    }
+                }
             break;
 
             case 17:
