@@ -1687,9 +1687,9 @@ void menu_debug_registers_change_ptr(void)
 #define MOD_WRITE_NN_MEM16   (1<<27)
 
 //Para (IX+d),(IY+d), lectura
-#define MOD_READ_IXIY_d_MEM8 (1<<28)
+#define MOD_READ_IXIY_d_MEM8 (1L<<28)
 //Para (IX+d),(IY+d), escritura
-#define MOD_WRITE_IXIY_d_MEM8 (1<<28)
+#define MOD_WRITE_IXIY_d_MEM8 (1L<<28)
 
 //Para IN A,(N)
 #define MOD_READ_IN_A_N (1<<29)
@@ -2270,7 +2270,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                         *columnas_modificadas |=(4<<16);
                         *columnas_modificadas |=(5<<20);
                         *columnas_modificadas |=(6<<24);
-                        *columnas_modificadas |=(7<<28);
+                        *columnas_modificadas |=(7L<<28);
                     }
                 }
             break;
@@ -2288,7 +2288,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if (Z80_FLAGS!=debug_antes_reg_f) {
                         *columnas_modificadas |=(6<<24);
-                        *columnas_modificadas |=(7<<28);
+                        *columnas_modificadas |=(7L<<28);
                     }
 
                     if (reg_a_shadow!=debug_antes_reg_a_shadow) {
@@ -2316,7 +2316,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                         *columnas_modificadas |=(3<<24);
                     }
                     if ((Z80_FLAGS & 0x10)!=(debug_antes_reg_f & 0x10)) {
-                        *columnas_modificadas |=(4<<28);
+                        *columnas_modificadas |=(4L<<28);
                     }
                     if ((Z80_FLAGS & 0x08)!=(debug_antes_reg_f & 0x08)) {
                         *columnas_modificadas |=(5L<<32);
@@ -2347,7 +2347,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if (reg_l!=debug_antes_reg_l) {
                         *columnas_modificadas |=(6<<24);
-                        *columnas_modificadas |=(7<<28);
+                        *columnas_modificadas |=(7L<<28);
                     }
                     if (reg_h_shadow!=debug_antes_reg_h_shadow) {
                         *columnas_modificadas |=(9L<<32);
@@ -2373,7 +2373,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if (reg_e!=debug_antes_reg_e) {
                         *columnas_modificadas |=(6<<24);
-                        *columnas_modificadas |=(7<<28);
+                        *columnas_modificadas |=(7L<<28);
                     }
                     if (reg_d_shadow!=debug_antes_reg_d_shadow) {
                         *columnas_modificadas |=(9L<<32);
@@ -2399,7 +2399,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if (reg_c!=debug_antes_reg_c) {
                         *columnas_modificadas |=(6<<24);
-                        *columnas_modificadas |=(7<<28);
+                        *columnas_modificadas |=(7L<<28);
                     }
                     if (reg_b_shadow!=debug_antes_reg_b_shadow) {
                         *columnas_modificadas |=(9L<<32);
@@ -2424,7 +2424,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if ((reg_ix & 0x00FF)!=(debug_antes_reg_ix & 0x00FF)) {
                         *columnas_modificadas |=(6<<24);
-                        *columnas_modificadas |=(7<<28);
+                        *columnas_modificadas |=(7L<<28);
                     }
                 }
             break;
@@ -2441,7 +2441,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if ((reg_iy & 0x00FF)!=(debug_antes_reg_iy & 0x00FF)) {
                         *columnas_modificadas |=(6<<24);
-                        *columnas_modificadas |=(7<<28);
+                        *columnas_modificadas |=(7L<<28);
                     }
                 }
             break;
@@ -2496,7 +2496,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if (peek_hl_2!=debug_antes_peek_hl_2) {
                         *columnas_modificadas |=(9<<24);
-                        *columnas_modificadas |=(10<<28);
+                        *columnas_modificadas |=(10L<<28);
                     }
                 }
             break;
@@ -2516,7 +2516,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if (peek_de_2!=debug_antes_peek_de_2) {
                         *columnas_modificadas |=(9<<24);
-                        *columnas_modificadas |=(10<<28);
+                        *columnas_modificadas |=(10L<<28);
                     }
                 }
             break;
@@ -2536,7 +2536,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     }
                     if (peek_bc_2!=debug_antes_peek_bc_2) {
                         *columnas_modificadas |=(9<<24);
-                        *columnas_modificadas |=(10<<28);
+                        *columnas_modificadas |=(10L<<28);
                     }
                 }
             break;
