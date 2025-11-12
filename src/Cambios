@@ -42,7 +42,7 @@ Mejorado debug cpu:
 
 Corregida emulación de Magnum Light Phaser
 Corregida lectura de puerto BFFD en Spectrum +2A/+3
-Agregado carga con --tape y --realtape con autocarga de snapshot al inicio
+Corregida carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido descomprimir archivos tar y rar con espacios en el nombre
 Corregido temporizador por defecto en Mac OS X cuando no se usa driver cocoa
 Corregido compilación sin pthreads
