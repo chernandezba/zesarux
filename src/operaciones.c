@@ -6965,7 +6965,6 @@ z80_byte betadisk_temp_puerto_7f=0;
 
 
 
-z80_byte temp_tsconf_first_sd_0=1;
 
 
 //Devuelve valor puerto para maquinas Spectrum
@@ -7285,6 +7284,31 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 
     }
+
+    //Pruebas Spectrum Doodler Lightpen. Obtiene la posicion tal cual
+    //Tecla shift en programa: muestra cursor
+    /*
+    if (puerto_l==0x7f  ) {
+
+            if (zxvision_key_not_sent_emulated_mach() ) return 0;
+            z80_byte acumulado=(lightgun_y & 127)+128;
+
+            if (mouse_left) acumulado -=128;
+
+            printf("y: %d\n",acumulado & 127);
+
+            return acumulado;
+    }
+
+    //Pruebas Spectrum Doodler Lightpen
+    if (puerto_l==191) {
+            if (zxvision_key_not_sent_emulated_mach() ) return 0;
+
+            printf("x: %d\n",lightgun_x);
+
+            return lightgun_x;
+    }
+    */
 
 
 	//If you read from a port that activates both the keyboard and a joystick port (e.g. Kempston), the joystick takes priority.
