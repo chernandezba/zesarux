@@ -2640,7 +2640,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             case 20:
             case 21:
                 //Mostrar en una linea, dos bloques de memoria mapeadas
-                offset_bloque=linea-17;  //este 17 debe coincidir con el primer case de este bloque
+                offset_bloque=linea-18;  //IMPORTANTE!! este 18 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
 
                 offset_bloque *=2; //2 bloques por cada linea
