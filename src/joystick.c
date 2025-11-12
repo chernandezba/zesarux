@@ -622,7 +622,8 @@ int lightgun_view_electron(void)
 
     //restamos zona no visible superior
     //if (y!=t_scanline_draw) printf ("y calculada: %d t_scanline_draw: %d\n",y,t_scanline_draw);
-    //la y calculada es t_scanline_draw (quizá 1 linea de diferencia), pero en Inves esto cambia completamente
+    //la y calculada es t_scanline_draw (quizá 1 linea de diferencia), pero en Inves esto cambia completamente,
+    //y en algunos programas/juegos no leerá bien la posición en Inves, como es de esperar
     if (MACHINE_IS_INVES) y=t_scanline_draw;
 
     y -=screen_invisible_borde_superior;
