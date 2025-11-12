@@ -26,7 +26,6 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
 
-ok-que al pulsar dos veces F5, abra el menu Z. Así si quiero salir, puedo hacer de manera rápida: F5, F5, F10
 
 -ayuda de topbar. indicar por ejemplo que pulsando dos veces F5 se abre menú principal
 
@@ -93,4 +92,4 @@ if ( lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON 
     return get_kempston_value();
 }
 
--posicion del electro en Inves tanto al ver el electron desde debug cpu como  con las pistolas opticas, es siempre mas abajo....
+-posicion del electrón en Inves tanto al ver el electron desde debug cpu como  con las pistolas opticas, es siempre mas abajo....

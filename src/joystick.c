@@ -621,7 +621,10 @@ int lightgun_view_electron(void)
     int y=t_estados/screen_testados_linea;
 
     //restamos zona no visible superior
-    //printf ("y calculada: %d t_scanline_draw: %d\n",y,t_scanline_draw);
+    //if (y!=t_scanline_draw) printf ("y calculada: %d t_scanline_draw: %d\n",y,t_scanline_draw);
+    //la y calculada es t_scanline_draw (quizá 1 linea de diferencia), pero en Inves esto cambia completamente
+    if (MACHINE_IS_INVES) y=t_scanline_draw;
+
     y -=screen_invisible_borde_superior;
 
     x=x+screen_testados_total_borde_izquierdo;
