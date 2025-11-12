@@ -401,6 +401,8 @@ extern int framescreen_saltar;
 extern int next_frame_skip_render_scanlines;
 extern int ultimo_fps;
 
+extern unsigned int frames_video_total_infinito;
+
 //vofile
 extern char *vofilename;
 extern void init_vofile(void);

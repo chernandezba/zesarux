@@ -2610,16 +2610,20 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             break;
 
             case 16:
+                sprintf (textoregistros,"FRAMES %u",frames_video_total_infinito);
+            break;
+
+            case 17:
                 if (z80_halt_signal.v) strcpy(textoregistros,"CPU HALT");
                 else if (z80_wait_signal.v) strcpy(textoregistros,"CPU WAIT");
             break;
 
 
             //Páginas memoria
-            case 17:
             case 18:
             case 19:
             case 20:
+            case 21:
                 //Mostrar en una linea, dos bloques de memoria mapeadas
                 offset_bloque=linea-17;  //este 17 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
@@ -2679,7 +2683,6 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             break;
 
             //Mostrar puerto leido, y filas de teclas si puerto XXFEH en Spectrum
-            case 21:
             case 22:
             case 23:
             case 24:
@@ -2688,6 +2691,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             case 27:
             case 28:
             case 29:
+            case 30:
                 //printf("registros_modificados: %XH\n",registros_modificados);
                 if (registros_modificados & MOD_READ_IN_A_N) {
                     //puerto

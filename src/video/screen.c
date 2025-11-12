@@ -9005,11 +9005,13 @@ void screen_store_scanline_rainbow_solo_border(void)
 
 }
 
-
-
+//Contador total de frames de video, no se resetea nunca
+unsigned int frames_video_total_infinito=0;
 
 void siguiente_frame_pantalla(void)
 {
+
+    frames_video_total_infinito++;
 
 	frames_total++;
         if (frames_total==50) {

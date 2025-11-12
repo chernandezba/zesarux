@@ -87,7 +87,4 @@ Quizá con una opción y sólo si está el foco en ventana de debug CPU
 -en debug cpu que diga en algún sitio un contador de frame (0..49) y/o contador de tiempo total (horas:minutos:segundos:frame)
 así se puede saber en emulación cuanto tiempo ha pasado desde un punto de paro hasta otro
 
--gunstick kempston tambien se lee por puerto DF? Por ejemplo el shooting range usa ese. bestial warrior también
-if ( lightgun_emulation_enabled.v && lightgun_emulation_type==GUNSTICK_KEMPSTON && puerto_l==0xdf) {
-    return get_kempston_value();
-}
+
