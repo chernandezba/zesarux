@@ -26346,7 +26346,7 @@ zxvision_window *menu_snapshot_in_ram_browse_window;
 int menu_snapshot_in_ram_browse_snap_selected=0;
 
 
-//TODO: cambiar esto por una funcion comun de menu_filesel_overlay_draw_preview_scr
+//TODO: cambiar esto por una funcion comun de menu_filesel_overlay_draw_preview_scr, que admita zxvision_window *w
 void menu_snapshot_in_ram_browse_draw_preview_scr(int xorigen,int yorigen,int ancho,int alto,int reducir)
 {
     //printf("draw preview %d\n",contador_segundo);
@@ -26480,15 +26480,14 @@ void menu_snapshot_in_ram_browse_overlay(void)
 		if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
 
         //TODO obtener pantalla del snapshot
-        //de momento copia cutre
-        memcpy(buf_pantalla,puntero_memoria,longitud);
+        //de momento copia cutre, de un snapshot sin comprimir y al offset donde empieza la pantalla (214)
+        int longitud_pantalla=6912;
+        if (longitud<6912) longitud_pantalla=longitud;
+        memcpy(buf_pantalla,&puntero_memoria[214],longitud_pantalla);
 
 		//int leidos=lee_archivo(archivo_scr,(char *)buf_pantalla,6912);
 
 		//if (leidos<=0) return;
-
-
-
 
 
 		//Asignamos primero buffer intermedio
@@ -26580,6 +26579,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
             menu_filesel_overlay_assign_memory_preview(256,192);
             menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+
+            menu_snapshot_in_ram_browse_draw_preview_scr(menu_char_width*1,menu_char_height*2,256,192,0);
 
             free(buffer_intermedio);
 
