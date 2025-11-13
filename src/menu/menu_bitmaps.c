@@ -3700,7 +3700,37 @@ char *bitmap_button_ext_desktop_snapinramffw[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  xxxxxxxxxxxxxxxxxxxxxx  "  //25
 };
 
+char *bitmap_button_ext_desktop_snapinramsave[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "  xxxxxxxxxxxxxxxxxxxxxx  ", //0
+  	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxccccccccccccccccccccxxx",
+	"xxxccccccccccccccccccccxxx",
+	"xxxccccGGGccccccGGGccccxxx",
+	"xxxcccGccGGccccGGccGcccxxx",
+	"xxxccGccccGccccGccccGccxxx",
+	"xxxccGccccGccccGccccGccxxx",
+	"xxxcccGccGGYccYGGccGcccxxx",
+	"xxxccccGGGYYYYYYGGGccccxxx",	//10
+	"xxxcccccccYYYYYYcccccccxxx",
+	"xxxccccccccYYYYccccccccxxx",
+	"xxxcccccccccYYcccccccccxxx",
+	"xxxcccccccccYYcccccccccxxx",
+	"xxxccccccccGGGGccccccccxxx",
+	"xxxcccccccGGccGGcccccccxxx",
+	"xxxcccccccGccccGcccccccxxx",
+	"xxxcccccccGccccGcccccccxxx",
+	"xxxccccccccGccGccccccccxxx",
+	"xxxcccccccccGGcccccccccxxx", //20
+	"xxxccccccccccccccccccccxxx",
+	"xxxccccccccccccccccccccxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+	"  xxxxxxxxxxxxxxxxxxxxxx  "  //25
+};
 
+/*
 char *bitmap_button_ext_desktop_snapinramsave[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "  xxxxxxxxxxxxxxxx   xx   ", //0
@@ -3730,6 +3760,7 @@ char *bitmap_button_ext_desktop_snapinramsave[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxxxxxxxxxxxxxxxxxxxxxxx ",
 	"  xxxxxxxxxxxxxxxxxxxxxx  "  //25
 };
+*/
 
 char *bitmap_button_ext_desktop_pause[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
