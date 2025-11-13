@@ -26472,6 +26472,28 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 		debug_printf(VERBOSE_DEBUG,"Rendering Spectrum SCR");
 
+
+        //La manera mas facil ahora es usar la función de convertir archivo zsf en scr
+        //aunque obviamente escribirá en disco dos archivos temporales,
+        //se trata de hacer lo mas eficiente posible, que solo se escriban estos archivos cuando sea necesario
+        /*int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
+
+            char dir_name_sin_barras[PATH_MAX];
+    if (es_directorio) {
+        strcpy(dir_name_sin_barras,dir_name);
+        util_normalize_file_name_for_temp_dir(dir_name_sin_barras);
+        sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),dir_name_sin_barras);*/
+
+        char temp_zsf_file[PATH_MAX];
+        char temp_scr_file[PATH_MAX];
+        sprintf(temp_zsf_file,"%s/snap_browse_temp.zsf",get_tmpdir_base());
+        sprintf(temp_scr_file,"%s/snap_browse_temp.scr",get_tmpdir_base());
+
+        util_save_file(puntero_memoria,longitud,temp_zsf_file);
+        util_convert_zsf_to_scr(temp_zsf_file,temp_scr_file);
+
+
+
 		//buffer lectura archivo
 		z80_byte *buf_pantalla;
 
@@ -26479,11 +26501,13 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 		if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
 
+        lee_archivo(temp_scr_file,(char *)buf_pantalla,6912);
+
         //TODO obtener pantalla del snapshot
         //de momento copia cutre, de un snapshot sin comprimir y al offset donde empieza la pantalla (214)
-        int longitud_pantalla=6912;
-        if (longitud<6912) longitud_pantalla=longitud;
-        memcpy(buf_pantalla,&puntero_memoria[214],longitud_pantalla);
+        //int longitud_pantalla=6912;
+        //if (longitud<6912) longitud_pantalla=longitud;
+        //memcpy(buf_pantalla,&puntero_memoria[214],longitud_pantalla);
 
 		//int leidos=lee_archivo(archivo_scr,(char *)buf_pantalla,6912);
 
