@@ -18708,9 +18708,9 @@ void menu_display_load_screen(MENU_ITEM_PARAMETERS)
 
 
     if (menu_filesel("Select Screen File",filtros,screen_load_file)==1) {
-    load_screen(screen_load_file);
-            //Y salimos de todos los menus
-            salir_todos_menus=1;
+        load_screen(screen_load_file);
+        //Y salimos de todos los menus
+        salir_todos_menus=1;
 
     }
 
