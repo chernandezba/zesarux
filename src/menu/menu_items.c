@@ -26641,10 +26641,12 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
             case 8:
                 if (menu_snapshot_in_ram_browse_snap_selected>0) menu_snapshot_in_ram_browse_snap_selected--;
+                ventana->must_clear_cache_on_draw_once=1;
             break;
 
             case 9:
                 if (menu_snapshot_in_ram_browse_snap_selected<snapshots_in_ram_total_elements-1) menu_snapshot_in_ram_browse_snap_selected++;
+                ventana->must_clear_cache_on_draw_once=1;
             break;
 
 
