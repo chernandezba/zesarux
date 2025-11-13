@@ -57,4 +57,11 @@ extern int menu_filesel_readdir_mmc_image(const char *directorio, struct dirent 
               int (*filter)(const struct dirent *),
               int (*compar)(const struct dirent **, const struct dirent **));
 
+struct s_filesel_preview_mem {
+	int color;
+    int color_flash; //color si en ese momento hay parpadeo
+};
+
+extern struct s_filesel_preview_mem *menu_filesel_overlay_last_preview_memory;
+
 #endif

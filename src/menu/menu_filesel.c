@@ -4312,10 +4312,7 @@ int menu_filesel_overlay_valor_contador_segundo_anterior;
 
 //Estructura de memoria para mostrar previews. coordenadas, color
 
-struct s_filesel_preview_mem {
-	int color;
-    int color_flash; //color si en ese momento hay parpadeo
-};
+
 
 //Datos del ultimo preview mostrado
 
