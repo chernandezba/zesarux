@@ -26343,6 +26343,8 @@ Y definirla en zxvision_known_window_names_array
 
 zxvision_window *menu_snapshot_in_ram_browse_window;
 
+int menu_snapshot_in_ram_browse_snap_selected=0;
+
 
 void menu_snapshot_in_ram_browse_overlay(void)
 {
@@ -26355,6 +26357,32 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+
+
+
+    if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
+        int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
+
+        if (indice>=0) {
+
+            z80_byte *puntero_memoria;
+            int longitud;
+
+            puntero_memoria=snapshots_in_ram[indice].memoria;
+            longitud=snapshots_in_ram[indice].longitud;
+
+            printf("Snap %d puntero %p longitud %d\n",
+                menu_snapshot_in_ram_browse_snap_selected,
+                puntero_memoria,
+                longitud
+            );
+
+            //load_zsf_snapshot_file_mem(NULL,puntero_memoria,longitud,0,0);
+
+
+        }
+    }
+
 
 
     //Mostrar contenido
@@ -26433,7 +26461,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
         return;
     }
 
-    int snap_selected=0;
+
 
     do {
 
@@ -26441,10 +26469,11 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
         if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
 
-            int indice=snapshot_in_ram_get_element(snap_selected);
+            int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
 
             zxvision_print_string_defaults_fillspc_format(ventana,1,0,"%4d: %02d:%02d:%02d",
-                snap_selected,snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
+                menu_snapshot_in_ram_browse_snap_selected,
+                snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
 
 
         }
@@ -26455,11 +26484,11 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
         switch (tecla) {
 
             case 8:
-                if (snap_selected>0) snap_selected--;
+                if (menu_snapshot_in_ram_browse_snap_selected>0) menu_snapshot_in_ram_browse_snap_selected--;
             break;
 
             case 9:
-                if (snap_selected<snapshots_in_ram_total_elements-1) snap_selected++;
+                if (menu_snapshot_in_ram_browse_snap_selected<snapshots_in_ram_total_elements-1) menu_snapshot_in_ram_browse_snap_selected++;
             break;
 
 
