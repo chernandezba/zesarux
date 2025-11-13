@@ -4344,7 +4344,7 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
 	menu_filesel_overlay_last_preview_height=height;
 }
 
-void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int alto,int reducir)
+void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen,int yorigen,int ancho,int alto,int reducir)
 {
     //printf("draw preview %d\n",contador_segundo);
     int x,y;
@@ -4428,7 +4428,8 @@ void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int
 
             //Por si acaso comprobar rangos
             if (color_final<0 || color_final>=EMULATOR_TOTAL_PALETTE_COLOURS) color_final=0;
-            zxvision_putpixel(menu_filesel_overlay_window,xorigen+xdestino,yorigen+ydestino,color_final);
+            //zxvision_putpixel(menu_filesel_overlay_window,xorigen+xdestino,yorigen+ydestino,color_final);
+            zxvision_putpixel(w,xorigen+xdestino,yorigen+ydestino,color_final);
         }
     }
 }
@@ -4624,7 +4625,7 @@ void menu_filesel_overlay_draw_preview(void)
     yorigen *=menu_char_height;
 
 
-    menu_filesel_overlay_draw_preview_scr(xorigen,yorigen,menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height,reducir);
+    menu_filesel_overlay_draw_preview_scr(menu_filesel_overlay_window,xorigen,yorigen,menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height,reducir);
 
     menu_filesel_overlay_draw_preview_sombra_recuadro(xorigen,yorigen,ancho_miniatura,alto_miniatura);
 
