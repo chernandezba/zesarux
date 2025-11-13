@@ -33586,8 +33586,6 @@ void menu_debug_reset(MENU_ITEM_PARAMETERS)
         reset_cpu();
 
     }
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -33614,8 +33612,7 @@ void menu_debug_hard_reset(MENU_ITEM_PARAMETERS)
     if (menu_confirm_yesno("Hard Reset CPU")==1) {
             hard_reset_cpu();
     }
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
+
 
 }
 
@@ -33629,8 +33626,6 @@ void menu_debug_nmi(MENU_ITEM_PARAMETERS)
 
     }
 
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -34730,8 +34725,6 @@ void menu_debug_set_pc_zero(MENU_ITEM_PARAMETERS)
         reg_pc=0;
     }
 
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -35505,6 +35498,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial(&array_menu_debug,"~~Reset",MENU_OPCION_NORMAL,menu_debug_reset,NULL);
         menu_add_item_menu_shortcut(array_menu_debug,'r');
         menu_add_item_menu_genera_ventana(array_menu_debug);
+        menu_add_item_menu_se_cerrara(array_menu_debug);
 
         //Agregar una acción de solo hacer PC=0 en casos, por ejemplo, en que hay divide en modo mapram y no queremos
         //que se reinicialice toda la maquina y perder ese mapeo
@@ -35518,6 +35512,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 "losing the mapping");
             menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
+            menu_add_item_menu_se_cerrara(array_menu_debug);
         }
 
 
@@ -35536,6 +35531,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 "On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine"
                 );
             menu_add_item_menu_genera_ventana(array_menu_debug);
+            menu_add_item_menu_se_cerrara(array_menu_debug);
         }
 
         if (!CPU_IS_MOTOROLA) {
@@ -35543,6 +35539,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_spanish(array_menu_debug,"Generar ~~NMI");
             menu_add_item_menu_shortcut(array_menu_debug,'n');
             menu_add_item_menu_genera_ventana(array_menu_debug);
+            menu_add_item_menu_se_cerrara(array_menu_debug);
 
             if (MACHINE_IS_TBBLUE && multiface_enabled.v && (tbblue_registers[6]&8) ) {
                 menu_add_item_menu(array_menu_debug,"Generate Multiface NMI",MENU_OPCION_NORMAL,menu_debug_nmi_multiface_tbblue,NULL);
@@ -41002,8 +40999,6 @@ void menu_run_mantransfer(MENU_ITEM_PARAMETERS)
     push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
     reg_pc=16384+0x32;
 
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -41021,6 +41016,7 @@ void menu_mantransfer(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_run_mantransfer,
                 NULL,"Run ~~Mantransfer");
         menu_add_item_menu_spanish_catalan(array_menu_common,"Ejecutar ~~Mantransfer","Executar ~~Mantransfer");
+        menu_add_item_menu_se_cerrara(array_menu_common);
         menu_add_item_menu_shortcut(array_menu_common,'m');
 
         menu_add_item_menu_tooltip(array_menu_common,"Run mantransfer, which dumps ram memory contents (snapshot) to Spectrum Tape\n"

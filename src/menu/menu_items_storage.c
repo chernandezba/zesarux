@@ -255,8 +255,6 @@ void menu_storage_kartusho_emulation(MENU_ITEM_PARAMETERS)
 void menu_storage_kartusho_press_button(MENU_ITEM_PARAMETERS)
 {
     kartusho_press_button();
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -286,6 +284,7 @@ void menu_kartusho(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_press_button,menu_storage_kartusho_press_button_cond,"~~Press button");
              menu_add_item_menu_prefijo(array_menu_kartusho,"    ");
+             menu_add_item_menu_se_cerrara(array_menu_kartusho);
             menu_add_item_menu_shortcut(array_menu_kartusho,'p');
                         menu_add_item_menu_tooltip(array_menu_kartusho,"Press button");
                         menu_add_item_menu_ayuda(array_menu_kartusho,"Press button");
@@ -503,8 +502,6 @@ void menu_storage_ifrom_emulation(MENU_ITEM_PARAMETERS)
 void menu_storage_ifrom_press_button(MENU_ITEM_PARAMETERS)
 {
     ifrom_press_button();
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -534,6 +531,7 @@ void menu_ifrom(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_ifrom,MENU_OPCION_NORMAL,menu_storage_ifrom_press_button,menu_storage_ifrom_press_button_cond,"~~Press button");
             menu_add_item_menu_prefijo(array_menu_ifrom,"    ");
+            menu_add_item_menu_se_cerrara(array_menu_ifrom);
             menu_add_item_menu_shortcut(array_menu_ifrom,'p');
                         menu_add_item_menu_tooltip(array_menu_ifrom,"Press button");
                         menu_add_item_menu_ayuda(array_menu_ifrom,"Press button");
@@ -3375,8 +3373,6 @@ void menu_storage_dandanator_emulation(MENU_ITEM_PARAMETERS)
 void menu_storage_dandanator_press_button(MENU_ITEM_PARAMETERS)
 {
     dandanator_press_button();
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -3406,6 +3402,7 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_dandanator,MENU_OPCION_NORMAL,menu_storage_dandanator_press_button,menu_storage_dandanator_press_button_cond,"~~Press button");
             menu_add_item_menu_prefijo(array_menu_dandanator,"    ");
+            menu_add_item_menu_se_cerrara(array_menu_dandanator);
             menu_add_item_menu_shortcut(array_menu_dandanator,'p');
                         menu_add_item_menu_tooltip(array_menu_dandanator,"Press button");
                         menu_add_item_menu_ayuda(array_menu_dandanator,"Press button");
@@ -11330,13 +11327,11 @@ void menu_storage_dsk_pd765_silent_write_protection(MENU_ITEM_PARAMETERS)
 void menu_pcw_boot_cpm(MENU_ITEM_PARAMETERS)
 {
     pcw_boot_cpm();
-    salir_todos_menus=1;
 }
 
 void menu_pcw_boot_locoscript(MENU_ITEM_PARAMETERS)
 {
     pcw_boot_locoscript();
-    salir_todos_menus=1;
 }
 
 void menu_pcw_boot_cpm_reinsert_previous(MENU_ITEM_PARAMETERS)
@@ -11413,6 +11408,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_PCW) {
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
                 NULL,"    Boot CP/M now","    Boot CP/M ahora","    Boot CP/M ara");
+            menu_add_item_menu_se_cerrara(array_menu_plusthreedisk);
             menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot CP/M");
             menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot CP/M");
 
@@ -11430,6 +11426,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,NULL,
                 "    Boot LocoScript now","    Boot LocoScript ahora","    Boot LocoScript ara");
+            menu_add_item_menu_se_cerrara(array_menu_plusthreedisk);
             menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot LocoScript");
             menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot LocoScript");
 

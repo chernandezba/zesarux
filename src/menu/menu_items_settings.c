@@ -5209,7 +5209,7 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 
     menu_add_ESC_item(array_menu_common);
 
-    retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Joystick");
+    retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Joystick");
 
 
 
@@ -5221,6 +5221,8 @@ void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
         //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
         //zxvision_index_delete_last_submenu_path();
     }
+
+    //salir_todos_menus=1;
 
 }
 
@@ -5257,9 +5259,9 @@ void menu_hardware_lightgun(MENU_ITEM_PARAMETERS)
 
     menu_add_ESC_item(array_menu_common);
 
-    retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Optical Input");
+    retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Optical Input");
 
-
+    //printf("salir_todos_menus despues de llamada a menu_dibuja_menu_dialogo_no_title_lang: %d\n",salir_todos_menus);
 
     if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
         lightgun_emulation_type=opcion_seleccionada;
@@ -5268,6 +5270,8 @@ void menu_hardware_lightgun(MENU_ITEM_PARAMETERS)
         //pero en este caso, se sale con la aceptacion de la opcion, y no es ni ESC ni flecha atras
         //zxvision_index_delete_last_submenu_path();
     }
+
+    //salir_todos_menus=1;
 
 }
 
@@ -6427,6 +6431,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                 "Emulated ~~Joystick","~~Joystick emulado","~~Joystick emulat");
             menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
             menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
+            menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
+            menu_add_item_menu_genera_ventana(array_menu_hardware_settings);
             menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
                     menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");
                     menu_add_item_menu_ayuda(array_menu_hardware_settings,"Joystick is emulated with:\n"
@@ -6539,6 +6545,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                     "    Type [%s]",lightgun_types_list[lightgun_emulation_type]);
                 menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of Optical Input is emulated with the mouse");
                 menu_add_item_menu_ayuda(array_menu_hardware_settings,"Decide which kind of Optical Input is emulated with the mouse");
+                menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
+                menu_add_item_menu_genera_ventana(array_menu_hardware_settings);
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_scope,NULL,

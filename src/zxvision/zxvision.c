@@ -21180,6 +21180,9 @@ int ultimo_menu_salido_con_flecha_derecha=0;
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
 
+    //Conservar estado de salir_todos_menus si está activo
+    //int antes_salir_todos_menus=salir_todos_menus;
+
     //printf ("inicio menu. menu_dibuja_submenu_primer_submenu=%p\n",menu_dibuja_submenu_primer_submenu);
 
     char *titulo;
@@ -21204,7 +21207,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //desactivamos salir_todos_menus, por si viene activado de un menu anterior, por ejemplo:
     //menu->Audio->Waveform: ahi se quedaria salir_todos_menus=1
     //Y entonces al por ejemplo cambiar tipo onda en waveform, se cerraria todo
-    salir_todos_menus=0;
+    //Realmente solo hacerlo cuando es un menu tabulado
+    //printf("tabulado: %d\n",m->es_menu_tabulado);
+    if (m->es_menu_tabulado) salir_todos_menus=0;
 
     ultimo_menu_salido_con_flecha_izquierda=0;
     ultimo_menu_salido_con_flecha_derecha=0;
@@ -22530,6 +22535,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //printf("Conmutar variable directamente desde menu\n");
             item_seleccionado->opcion_conmuta->v ^=1;
         }
+
+        //printf("salir_todos_menus al final de menu_dibuja_menu_dialogo_no_title_lang: %d\n",salir_todos_menus);
 
         return MENU_RETORNO_NORMAL;
     }
