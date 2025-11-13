@@ -53,6 +53,7 @@ extern void snapshots_in_ram_reset(void);
 extern int snapshot_in_ram_enabled_timer_timeout;
 
 extern z80_bit snapshot_in_ram_enabled;
+extern z80_bit snapshot_in_ram_timer_enabled;
 
 extern int snapshot_in_ram_get_element(int indice);
 

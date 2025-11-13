@@ -26335,8 +26335,15 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_enable,NULL,"[%c] Enabled",
         (snapshot_in_ram_enabled.v ? 'X' : ' ' ));
 
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"[%c] Automatic",
+            (snapshot_in_ram_timer_enabled.v ? 'X' : ' ' ));
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&snapshot_in_ram_timer_enabled);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_interval,NULL,"[%d] Interval (seconds)",snapshot_in_ram_interval_seconds);
+        if (snapshot_in_ram_timer_enabled.v) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_interval,NULL,"[%d]  Interval (seconds)",snapshot_in_ram_interval_seconds);
+        }
+
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_maximum,NULL,"[%d] Maximum snapshots",snapshots_in_ram_maximum);
         menu_add_item_menu_tooltip(array_menu_common,"Maximum snapshots to keep in memory");

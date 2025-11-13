@@ -96,6 +96,9 @@ int snapshot_in_ram_rewind_cuantos_pasado=0;
 
 z80_bit snapshot_in_ram_enabled={0};
 
+//Habilitar snapshots a cada inervalo de tiempo
+z80_bit snapshot_in_ram_timer_enabled={0};
+
 
 //Crea un snapshot en ram y retorna puntero asociado a dicha memoria asignada
 //mete en *longitud la longitud de dicho snapshot
@@ -183,6 +186,8 @@ int snapshot_increment_index(int indice)
 void snapshot_add_in_ram(void)
 {
     if (snapshot_in_ram_enabled.v==0) return;
+
+    if (snapshot_in_ram_timer_enabled.v==0) return;
 
     //Hacerlo 1 vez cada 50 frames
     snapshot_in_ram_frames_counter++;
