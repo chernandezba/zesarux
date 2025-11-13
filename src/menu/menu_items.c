@@ -26346,9 +26346,9 @@ zxvision_window *menu_snapshot_in_ram_browse_window;
 int menu_snapshot_in_ram_browse_snap_selected=0;
 
 
-void menu_snapshot_in_ram_browse_render_one_screen(int snapshot)
+void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int offset_y)
 {
-            int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
+            int indice=snapshot_in_ram_get_element(snapshot);
 
         if (indice>=0) {
 
@@ -26499,7 +26499,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot)
             menu_filesel_overlay_assign_memory_preview(256,192);
             menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
-            menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,menu_char_width*1,menu_char_height*2,256,192,0);
+            menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0);
 
             free(buffer_intermedio);
 
@@ -26524,165 +26524,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
-        int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
-
-        if (indice>=0) {
-
-            z80_byte *puntero_memoria;
-            int longitud;
-
-            puntero_memoria=snapshots_in_ram[indice].memoria;
-            longitud=snapshots_in_ram[indice].longitud;
-
-            printf("Snap %d puntero %p longitud %d\n",
-                menu_snapshot_in_ram_browse_snap_selected,
-                puntero_memoria,
-                longitud
-            );
-
-		//Leemos el archivo en memoria
-
-
-
-        //La manera mas facil ahora es usar la función de convertir archivo zsf en scr
-        //aunque obviamente escribirá en disco dos archivos temporales,
-        //se trata de hacer lo mas eficiente posible, que solo se escriban estos archivos cuando sea necesario
-        /*int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
-
-            char dir_name_sin_barras[PATH_MAX];
-    if (es_directorio) {
-        strcpy(dir_name_sin_barras,dir_name);
-        util_normalize_file_name_for_temp_dir(dir_name_sin_barras);
-        sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),dir_name_sin_barras);*/
-
-        char temp_zsf_file[PATH_MAX];
-        char temp_scr_file[PATH_MAX];
-        sprintf(temp_zsf_file,"%s/snap_browse_temp.zsf",get_tmpdir_base());
-        sprintf(temp_scr_file,"%s/snap_browse_temp.scr",get_tmpdir_base());
-
-        util_save_file(puntero_memoria,longitud,temp_zsf_file);
-        util_convert_zsf_to_scr(temp_zsf_file,temp_scr_file);
-
-
-
-		//buffer lectura archivo
-		z80_byte *buf_pantalla;
-
-		buf_pantalla=malloc(6912);
-
-		if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
-
-        lee_archivo(temp_scr_file,(char *)buf_pantalla,6912);
-
-        //TODO obtener pantalla del snapshot
-        //de momento copia cutre, de un snapshot sin comprimir y al offset donde empieza la pantalla (214)
-        //int longitud_pantalla=6912;
-        //if (longitud<6912) longitud_pantalla=longitud;
-        //memcpy(buf_pantalla,&puntero_memoria[214],longitud_pantalla);
-
-		//int leidos=lee_archivo(archivo_scr,(char *)buf_pantalla,6912);
-
-		//if (leidos<=0) return;
-
-
-		//Asignamos primero buffer intermedio
-		int *buffer_intermedio;
-
-		int ancho=256;
-		int alto=192;
-
-
-		int elementos=ancho*alto;
-
-		buffer_intermedio=malloc(sizeof(int)*elementos);
-
-		if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
-
-
-		int x,y,bit_counter;
-
-		z80_int offset_lectura=0;
-		for (y=0;y<192;y++) {
-			for (x=0;x<32;x++) {
-				z80_byte leido;
-				int offset_orig=screen_addr_table[y*32+x];
-				//fread(&leido,1,1,ptr_scrfile);
-				leido=buf_pantalla[offset_orig];
-
-				//int xdestino,ydestino;
-
-				//esta funcion no es muy rapida pero....
-				//util_spectrumscreen_get_xy(offset_lectura,&xdestino,&ydestino);
-
-				offset_lectura++;
-
-				int offset_destino=y*256+x*8;
-
-				int tinta;
-				int papel;
-
-				z80_byte atributo;
-
-				int pos_attr;
-
-				//pos_attr=(ydestino/8)*32+(xdestino/8);
-
-				pos_attr=6144+((y/8)*32)+x;
-				//printf("%d\n",pos_attr);
-
-				atributo=buf_pantalla[pos_attr];
-
-				//atributo=56;
-
-				tinta=(atributo)&7;
-				papel=(atributo>>3)&7;
-
-				if (atributo & 64) {
-					tinta +=8;
-					papel +=8;
-				}
-
-
-
-				for (bit_counter=0;bit_counter<8;bit_counter++) {
-
-					//de momento solo 0 o 1
-					int color_sin_flash=(leido & 128 ? tinta : papel);
-
-                    int color_con_flash;
-                    if (atributo&128) {
-                        color_con_flash=(leido & 128 ? papel : tinta);
-                    }
-                    else {
-                        color_con_flash=(leido & 128 ? tinta : papel);
-                    }
-
-
-
-                    //Codificamos en el nibble bajo el color sin flash, y en el nibble alto el color con flash
-					buffer_intermedio[offset_destino+bit_counter]=color_sin_flash | (color_con_flash << 4);
-					leido=leido << 1;
-				}
-			}
-		}
-
-
-
-		free(buf_pantalla);
-
-
-
-            menu_filesel_overlay_assign_memory_preview(256,192);
-            menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
-
-            menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,menu_char_width*1,menu_char_height*2,256,192,0);
-
-            free(buffer_intermedio);
-
-            //load_zsf_snapshot_file_mem(NULL,puntero_memoria,longitud,0,0);
-
-
-        }
+        menu_snapshot_in_ram_browse_render_one_screen(menu_snapshot_in_ram_browse_snap_selected,menu_char_width*1,menu_char_height*2);
     }
 
 
