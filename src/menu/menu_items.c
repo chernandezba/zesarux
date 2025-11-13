@@ -26509,6 +26509,8 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
         }
 }
 
+int menu_snapshot_in_ram_browse_forzar_dibujado=1;
+
 void menu_snapshot_in_ram_browse_overlay(void)
 {
 
@@ -26518,12 +26520,9 @@ void menu_snapshot_in_ram_browse_overlay(void)
     if (menu_snapshot_in_ram_browse_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
 
-
-    if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
+    if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0 && menu_snapshot_in_ram_browse_forzar_dibujado) {
         int total_capas=5;
         int offset_x=menu_char_width*1;
         int offset_y=menu_char_height*2;
@@ -26536,6 +26535,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
             offset_x +=menu_char_width;
             offset_y +=menu_char_height;
         }
+
+        menu_snapshot_in_ram_browse_forzar_dibujado=0;
 
     }
 
@@ -26644,6 +26645,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     menu_snapshot_in_ram_browse_snap_selected--;
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
+                    menu_snapshot_in_ram_browse_forzar_dibujado=1;
                 }
             break;
 
@@ -26652,6 +26654,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     menu_snapshot_in_ram_browse_snap_selected++;
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
+                    menu_snapshot_in_ram_browse_forzar_dibujado=1;
                 }
             break;
 
