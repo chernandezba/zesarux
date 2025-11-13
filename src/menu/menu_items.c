@@ -26622,7 +26622,11 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
     do {
 
+        menu_snapshot_in_ram_browse_forzar_dibujado=1;
 
+        zxvision_cls(ventana);
+
+        zxvision_draw_window_contents(ventana);
 
         if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
 
