@@ -17470,8 +17470,8 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_online_browse_zx81,NULL,"~~ZX81 online browser");
             menu_add_item_menu_spanish(array_menu_common,"Navegador online ~~ZX81");
             menu_add_item_menu_shortcut(array_menu_common,'z');
-            menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_tooltip(array_menu_common,"Connects to the www.zx81.nl site to download ZX81 games. Many thanks to ZXwebmaster for allowing it");
             menu_add_item_menu_ayuda(array_menu_common,"Connects to the www.zx81.nl site to download ZX81 games. Many thanks to ZXwebmaster for allowing it");
 
@@ -20165,6 +20165,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Here you have an on screen keyboard but uses words instead of just letters. "
             "It's useful to play Text Adventures, you can redefine your own words");
         menu_add_item_menu_genera_ventana(array_menu_common);
+        menu_add_item_menu_se_cerrara(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_unpaws_ungac,NULL,
             "~~Extract words to Adv. Keyb.","~~Extraer palabras a Tecl. Av.","~~Extreure paraules a Tecl. Av.");
@@ -33638,8 +33639,6 @@ void menu_debug_nmi_multiface_tbblue(MENU_ITEM_PARAMETERS)
 
     }
 
-    //Y salimos de todos los menus
-    salir_todos_menus=1;
 
 }
 
@@ -35544,6 +35543,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             if (MACHINE_IS_TBBLUE && multiface_enabled.v && (tbblue_registers[6]&8) ) {
                 menu_add_item_menu(array_menu_debug,"Generate Multiface NMI",MENU_OPCION_NORMAL,menu_debug_nmi_multiface_tbblue,NULL);
                 menu_add_item_menu_genera_ventana(array_menu_debug);
+                menu_add_item_menu_se_cerrara(array_menu_debug);
             }
         }
 

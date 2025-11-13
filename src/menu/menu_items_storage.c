@@ -11468,13 +11468,14 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
             "Disk ~~Info","Disk ~~Info","Disk ~~Info");
         menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'i');
-        menu_add_item_menu_genera_ventana(array_menu_plusthreedisk);
+        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info_tracks_list,menu_storage_dskplusthree_info_cond,
             "Tracks ~~list","~~Lista Pistas","~~Llista Pistes");
         menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'l');
-        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO);
+        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
         menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_expand,menu_storage_dskplusthree_info_cond,
             "View Expanded","Ver Expandido","Veure Expandit");
@@ -11488,7 +11489,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'f');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Format Viewer");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Format Viewer");
-        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO);
+        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_ES_AVANZADO);
 
         menu_add_item_menu_separator(array_menu_plusthreedisk);
 
@@ -11496,8 +11497,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
             "~~Visual Floppy","~~Visual Floppy","~~Visual Floppy");
         menu_add_item_menu_prefijo(array_menu_plusthreedisk,"    ");
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
-        menu_add_item_menu_se_cerrara(array_menu_plusthreedisk);
-        menu_add_item_menu_genera_ventana(array_menu_plusthreedisk);
+        menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
         //menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
 
