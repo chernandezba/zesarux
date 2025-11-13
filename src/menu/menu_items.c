@@ -26358,11 +26358,11 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
             puntero_memoria=snapshots_in_ram[indice].memoria;
             longitud=snapshots_in_ram[indice].longitud;
 
-            printf("Snap %d puntero %p longitud %d\n",
+            /*printf("Snap %d puntero %p longitud %d\n",
                 menu_snapshot_in_ram_browse_snap_selected,
                 puntero_memoria,
                 longitud
-            );
+            );*/
 
 		//Leemos el archivo en memoria
 
@@ -26371,13 +26371,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
         //La manera mas facil ahora es usar la función de convertir archivo zsf en scr
         //aunque obviamente escribirá en disco dos archivos temporales,
         //se trata de hacer lo mas eficiente posible, que solo se escriban estos archivos cuando sea necesario
-        /*int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
-            char dir_name_sin_barras[PATH_MAX];
-    if (es_directorio) {
-        strcpy(dir_name_sin_barras,dir_name);
-        util_normalize_file_name_for_temp_dir(dir_name_sin_barras);
-        sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),dir_name_sin_barras);*/
 
         char temp_zsf_file[PATH_MAX];
         char temp_scr_file[PATH_MAX];
@@ -26519,10 +26513,16 @@ void menu_snapshot_in_ram_browse_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_snapshot_in_ram_browse_window->is_minimized) return;
 
+    //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
+    if (menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents) {
+        menu_snapshot_in_ram_browse_forzar_dibujado=1;
 
+        menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents=0;
+    }
 
 
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0 && menu_snapshot_in_ram_browse_forzar_dibujado) {
+        printf("Forzar dibujado\n");
         int total_capas=5;
         int offset_x=menu_char_width*1;
         int offset_y=menu_char_height*2;
@@ -26645,7 +26645,6 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     menu_snapshot_in_ram_browse_snap_selected--;
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
-                    menu_snapshot_in_ram_browse_forzar_dibujado=1;
                 }
             break;
 
@@ -26654,7 +26653,6 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     menu_snapshot_in_ram_browse_snap_selected++;
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
-                    menu_snapshot_in_ram_browse_forzar_dibujado=1;
                 }
             break;
 
