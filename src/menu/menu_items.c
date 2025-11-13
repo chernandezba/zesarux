@@ -26346,95 +26346,7 @@ zxvision_window *menu_snapshot_in_ram_browse_window;
 int menu_snapshot_in_ram_browse_snap_selected=0;
 
 
-//TODO: cambiar esto por una funcion comun de menu_filesel_overlay_draw_preview_scr, que admita zxvision_window *w
-void menu_snapshot_in_ram_browse_draw_preview_scr(int xorigen,int yorigen,int ancho,int alto,int reducir)
-{
-    //printf("draw preview %d\n",contador_segundo);
-    int x,y;
-    int contador=0;
 
-    int incremento=1;
-
-    if (reducir) incremento=2;
-
-    for (y=0;y<alto;y+=incremento) {
-        for (x=0;x<ancho;x+=incremento) {
-
-            int color_final;
-            int xdestino,ydestino;
-
-            if (reducir) {
-                int colores_cuadricula[4];
-
-                //Sacar los 4 colores de la cuadricula de 2x2
-                int offset_orig;
-                offset_orig=y*ancho+x;
-                if (estado_parpadeo.v) colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
-
-                offset_orig=y*ancho+x+1;
-                if (estado_parpadeo.v) colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
-
-                offset_orig=(y*ancho+1)+x;
-                if (estado_parpadeo.v) colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
-
-                offset_orig=(y*ancho+1)+x+1;
-                if (estado_parpadeo.v) colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
-
-
-
-                //Dado que partimos de una pantalla de spectrum, en una cuadricula de 2x2 habran como mucho 2 colores diferentes
-                //Ver cual de los dos se repite mas
-
-                //Asumimos el primer color, para simplificar la comparacion mas abajo
-                int color_final1=colores_cuadricula[0];
-                //Segundo color inicialmente a nada valido
-                int color_final2=-1;
-
-                int veces_color_final1=0;
-                int veces_color_final2=0;
-
-                int i;
-
-                for (i=0;i<4;i++) {
-
-                    if (colores_cuadricula[i]==color_final1) {
-                        veces_color_final1++;
-                    }
-                    else {
-                        color_final2=colores_cuadricula[i];
-                        veces_color_final2++;
-                    }
-
-                }
-
-
-
-                if (veces_color_final1>veces_color_final2) color_final=color_final1;
-                else color_final=color_final2;
-
-                xdestino=x/2;
-                ydestino=y/2;
-
-            }
-
-            else {
-                if (estado_parpadeo.v) color_final=menu_filesel_overlay_last_preview_memory[contador].color_flash;
-                else color_final=menu_filesel_overlay_last_preview_memory[contador].color;
-                contador++;
-                xdestino=x;
-                ydestino=y;
-            }
-
-            //Por si acaso comprobar rangos
-            if (color_final<0 || color_final>=EMULATOR_TOTAL_PALETTE_COLOURS) color_final=0;
-            zxvision_putpixel(menu_snapshot_in_ram_browse_window,xorigen+xdestino,yorigen+ydestino,color_final);
-        }
-    }
-}
 
 void menu_snapshot_in_ram_browse_overlay(void)
 {
@@ -26604,7 +26516,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
             menu_filesel_overlay_assign_memory_preview(256,192);
             menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
-            menu_snapshot_in_ram_browse_draw_preview_scr(menu_char_width*1,menu_char_height*2,256,192,0);
+            menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,menu_char_width*1,menu_char_height*2,256,192,0);
 
             free(buffer_intermedio);
 

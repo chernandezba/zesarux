@@ -27,6 +27,8 @@
 //Para usar PATH_MAX
 #include "zesarux.h"
 
+#include "zxvision.h"
+
 
 
 extern z80_bit menu_filesel_hide_dirs;
@@ -63,5 +65,8 @@ struct s_filesel_preview_mem {
 };
 
 extern struct s_filesel_preview_mem *menu_filesel_overlay_last_preview_memory;
+extern void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen,int yorigen,int ancho,int alto,int reducir);
+extern void menu_filesel_overlay_assign_memory_preview(int width,int height);
+extern void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int alto);
 
 #endif
