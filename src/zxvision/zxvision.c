@@ -173,6 +173,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     //Snaps
     {"SnapInRAMRewind",F_FUNCION_REWIND,bitmap_button_ext_desktop_snapinramrewind,""},
     {"SnapInRAMFFW",F_FUNCION_FFW,bitmap_button_ext_desktop_snapinramffw,""},
+    {"SnapInRAMSave",F_FUNCION_SNAP_RAM_SAVE,bitmap_button_ext_desktop_snapinramsave,""},
 
     //ventanas directas a menus
     {"SmartLoad",F_FUNCION_SMARTLOAD,bitmap_button_ext_desktop_smartload,""},

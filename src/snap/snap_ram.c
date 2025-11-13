@@ -183,22 +183,12 @@ int snapshot_increment_index(int indice)
 
 
 //Agregar snapshot en siguiente elemento de la lista
-void snapshot_add_in_ram(void)
+void snapshot_add_in_ram_save(void)
 {
-    if (snapshot_in_ram_enabled.v==0) return;
-
-    if (snapshot_in_ram_timer_enabled.v==0) return;
-
-    //Hacerlo 1 vez cada 50 frames
-    snapshot_in_ram_frames_counter++;
-
-    if ((snapshot_in_ram_frames_counter %50)!=0) return;
-
-    snapshot_in_ram_interval_seconds_counter++;
-
-    if (snapshot_in_ram_interval_seconds_counter<snapshot_in_ram_interval_seconds) return;
-
-    snapshot_in_ram_interval_seconds_counter=0;
+    if (snapshot_in_ram_enabled.v==0) {
+        debug_printf(VERBOSE_ERR,"Snapshots in RAM are not enabled. Go to menu Snapshot->Snapshots to RAM and enable it");
+        return;
+    }
 
     //Indice de donde escribir el snapshot
     int indice_a_escribir;
@@ -234,6 +224,27 @@ void snapshot_add_in_ram(void)
 
     snapshot_in_ram_rewind_cuantos_pasado++;
 
+}
+
+//Agregar snapshot en siguiente elemento de la lista, por timer
+void snapshot_add_in_ram(void)
+{
+    if (snapshot_in_ram_enabled.v==0) return;
+
+    if (snapshot_in_ram_timer_enabled.v==0) return;
+
+    //Hacerlo 1 vez cada 50 frames
+    snapshot_in_ram_frames_counter++;
+
+    if ((snapshot_in_ram_frames_counter %50)!=0) return;
+
+    snapshot_in_ram_interval_seconds_counter++;
+
+    if (snapshot_in_ram_interval_seconds_counter<snapshot_in_ram_interval_seconds) return;
+
+    snapshot_in_ram_interval_seconds_counter=0;
+
+    snapshot_add_in_ram_save();
 }
 
 //Retorna un indice a elemento snapshot dentro de la lista

@@ -56,5 +56,6 @@ extern z80_bit snapshot_in_ram_enabled;
 extern z80_bit snapshot_in_ram_timer_enabled;
 
 extern int snapshot_in_ram_get_element(int indice);
+extern void snapshot_add_in_ram_save(void);
 
 #endif
