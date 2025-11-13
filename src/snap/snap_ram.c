@@ -300,10 +300,6 @@ int snapshot_in_ram_load(int posicion)
 
     load_zsf_snapshot_file_mem(NULL,puntero_memoria,longitud,0,0);
 
-                    //z80_byte *temp_puntero;
-                    //int temp_temp_longitud;
-                //    load_zsf_snapshot_file_mem(NULL,temp_puntero,temp_temp_longitud,0);
-                //}
 
     return 0;
 
