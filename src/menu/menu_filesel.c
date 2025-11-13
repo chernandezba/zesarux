@@ -4399,7 +4399,7 @@ void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int
 
                 int i;
 
-                for (i=0;i<3;i++) {
+                for (i=0;i<4;i++) {
 
                     if (colores_cuadricula[i]==color_final1) {
                         veces_color_final1++;
