@@ -12294,7 +12294,7 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_zxdesktop_set_userdef_buttons_functions);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&zxdesktop_set_userdef_buttons_functions_opcion_seleccionada,&item_seleccionado,array_menu_zxdesktop_set_userdef_buttons_functions,"Set Buttons" );
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&zxdesktop_set_userdef_buttons_functions_opcion_seleccionada,&item_seleccionado,array_menu_zxdesktop_set_userdef_buttons_functions,"Set Buttons" );
 
 
 
@@ -12342,7 +12342,7 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
     //cerrar menu precedente. Esto se comporta como una ventana y no como un menu
-    salir_todos_menus=1;
+    //salir_todos_menus=1;
 }
 
 
@@ -13104,8 +13104,6 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-    //Esto es como una ventana y por tanto cerrar menus precedentes
-    salir_todos_menus=1;
 }
 
 void menu_ext_desk_settings_configurable_icons_enabled(MENU_ITEM_PARAMETERS)
@@ -13209,6 +13207,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
             menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
+            menu_add_item_menu_se_cerrara(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,
                 menu_ext_desktop_cond,"~~Height");
@@ -13225,6 +13224,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
             menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
+            menu_add_item_menu_se_cerrara(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
@@ -13305,7 +13305,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                     //menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
                     menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
                     menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
-
+                    menu_add_item_menu_se_cerrara(array_menu_ext_desktop_settings);
 
                 }
 
@@ -13418,6 +13418,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu_se_cerrara(array_menu_ext_desktop_settings);
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
                 menu_add_item_menu_genera_ventana(array_menu_ext_desktop_settings);
+                menu_add_item_menu_se_cerrara(array_menu_ext_desktop_settings);
 
             }
 

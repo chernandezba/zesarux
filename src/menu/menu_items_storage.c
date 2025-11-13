@@ -3101,8 +3101,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             "~~Visual Real Tape","Cinta Real ~~Visual","Cinta Real ~~Visual");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
         menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
-        menu_add_item_menu_se_cerrara(array_menu_tape_settings);
         menu_add_item_menu_genera_ventana(array_menu_tape_settings);
+        menu_add_item_menu_se_cerrara(array_menu_tape_settings);
         menu_add_item_menu_tooltip(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
         menu_add_item_menu_ayuda(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
 
@@ -3110,8 +3110,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_cassette_tape,NULL,
             "~~Visual Casette Tape","Cinta Casette ~~Visual","Cinta Casette ~~Visual");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-        menu_add_item_menu_se_cerrara(array_menu_tape_settings);
         menu_add_item_menu_genera_ventana(array_menu_tape_settings);
+        menu_add_item_menu_se_cerrara(array_menu_tape_settings);
 
 
         }
@@ -3122,8 +3122,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_convert_audio_to_zx81,NULL,
                 "Convert Audio to ZX81","Convertir Audio a ZX81","Convertir Audio a ZX81");
             menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
-            menu_add_item_menu_se_cerrara(array_menu_tape_settings);
             menu_add_item_menu_genera_ventana(array_menu_tape_settings);
+            menu_add_item_menu_se_cerrara(array_menu_tape_settings);
         }
 #endif
 
@@ -5950,22 +5950,22 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
                 "Fo~~rmat","Fo~~rmatear","Fo~~rmatejar");
             menu_add_item_menu_prefijo(array_menu_hilow,"    ");
             menu_add_item_menu_shortcut(array_menu_hilow,'r');
-            menu_add_item_menu_se_cerrara(array_menu_hilow);
             menu_add_item_menu_genera_ventana(array_menu_hilow);
+            menu_add_item_menu_se_cerrara(array_menu_hilow);
 
             menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,
                 "~~Browse","~~Browse","~~Browse");
             menu_add_item_menu_prefijo(array_menu_hilow,"    ");
             menu_add_item_menu_shortcut(array_menu_hilow,'b');
-            menu_add_item_menu_se_cerrara(array_menu_hilow);
             menu_add_item_menu_genera_ventana(array_menu_hilow);
+            menu_add_item_menu_se_cerrara(array_menu_hilow);
 
             menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,
                 "~~Chkdsk","~~Chkdsk","~~Chkdsk");
             menu_add_item_menu_prefijo(array_menu_hilow,"    ");
             menu_add_item_menu_shortcut(array_menu_hilow,'c');
-            menu_add_item_menu_se_cerrara(array_menu_hilow);
             menu_add_item_menu_genera_ventana(array_menu_hilow);
+            menu_add_item_menu_se_cerrara(array_menu_hilow);
 
 
             menu_add_item_menu_separator(array_menu_hilow);
@@ -5975,8 +5975,8 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_hilow_visual_datadrive,NULL,
                 "Visual Data Drive","Visual Data Drive","Visual Data Drive");
             menu_add_item_menu_prefijo(array_menu_hilow,"    ");
-            menu_add_item_menu_se_cerrara(array_menu_hilow);
             menu_add_item_menu_genera_ventana(array_menu_hilow);
+            menu_add_item_menu_se_cerrara(array_menu_hilow);
         }
 
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_expand,menu_storage_hilow_emulation_cond,
@@ -5991,8 +5991,8 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_hilow_convert_audio,NULL,
             "Convert Audio","Convertir Audio","Convertir Audio");
         menu_add_item_menu_prefijo(array_menu_hilow,"    ");
-        menu_add_item_menu_se_cerrara(array_menu_hilow);
         menu_add_item_menu_genera_ventana(array_menu_hilow);
+        menu_add_item_menu_se_cerrara(array_menu_hilow);
 
         menu_add_item_menu_separator(array_menu_hilow);
 #endif
@@ -9458,29 +9458,29 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_browse,NULL,
                             "Microdrive browse","Explorar microdrive","Explorar microdrive");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
-                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_map,NULL,
                             "Microdrive map","Mapa microdrive","Mapa microdrive");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
-                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_sectors_info,NULL,
                             "Sectors info","Info Sectores","Info Sectors");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
-                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage_microdrive_chkdsk,NULL,
                             "Chkdsk","Chkdsk","Chkdsk");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
-                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
                 }
 
@@ -9488,22 +9488,22 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_map,NULL,
                             "Microdrive raw map","Mapa raw microdrive","Mapa raw microdrive");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
-                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_full_erase,NULL,
                             "Full erase","Borrado completo","Borrat complet");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
-                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_microdrive_raw_enlarge,NULL,
                             "Stretch","Estiramiento","Estirament");
                     menu_add_item_menu_prefijo(array_menu_common,"    ");
-                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
                     menu_add_item_menu_valor_opcion(array_menu_common,i);
                     menu_add_item_menu_es_avanzado(array_menu_common);
                 }
@@ -9513,8 +9513,8 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
                         "Emulate bad sectors","Emular sectores erroneos","Emular sectors erronis");
                 menu_add_item_menu_prefijo(array_menu_common,"    ");
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
-                menu_add_item_menu_se_cerrara(array_menu_common);
                 menu_add_item_menu_genera_ventana(array_menu_common);
+                menu_add_item_menu_se_cerrara(array_menu_common);
                 menu_add_item_menu_es_avanzado(array_menu_common);
 
             }
@@ -9522,8 +9522,8 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_visual_microdrive_previo,NULL,
                     "Visual Microdrive","Visual Microdrive","Visual Microdrive");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
-            menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
             if (microdrive_status[i].microdrive_file_name[0]) {
@@ -10569,8 +10569,8 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
             "Visual Floppy","Visual Floppy","Visual Floppy");
         menu_add_item_menu_prefijo(array_menu_betadisk,"    ");
-        menu_add_item_menu_se_cerrara(array_menu_betadisk);
         menu_add_item_menu_genera_ventana(array_menu_betadisk);
+        menu_add_item_menu_se_cerrara(array_menu_betadisk);
 
         menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
