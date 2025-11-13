@@ -26524,7 +26524,19 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
-        menu_snapshot_in_ram_browse_render_one_screen(menu_snapshot_in_ram_browse_snap_selected,menu_char_width*1,menu_char_height*2);
+        int total_capas=5;
+        int offset_x=menu_char_width*1;
+        int offset_y=menu_char_height*2;
+        int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas;
+        if (inicio_snap<0) inicio_snap=0;
+
+        for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected;inicio_snap++,total_capas--) {
+            menu_snapshot_in_ram_browse_render_one_screen(inicio_snap,offset_x,offset_y);
+
+            offset_x +=menu_char_width;
+            offset_y +=menu_char_height;
+        }
+
     }
 
 
