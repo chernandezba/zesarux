@@ -9956,6 +9956,11 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"processswitcher",     "proc swtch",   menu_process_switcher,bitmap_button_ext_desktop_processswitcher},
     {"viewsensors",         "sensors",      menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
     {"shortcutshelper",     "shrtcuthlp",   menu_shortcuts_window,bitmap_button_ext_desktop_shortcutshelper},
+    {"snapshotinrambrowse", "sna ram brws", menu_snapshot_in_ram_browse,bitmap_button_ext_desktop_snapinrambrowse},
+
+
+
+
     {"inspectrumanalyzer",  "spec anlys",   menu_input_spectrum_analyzer,bitmap_button_ext_desktop_inspectrumanalyzer},
     {"specnextaudiodac",    "next DAC",menu_specnext_audio_dac,bitmap_button_ext_desktop_nextdac},
     {"sprites",             "sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},

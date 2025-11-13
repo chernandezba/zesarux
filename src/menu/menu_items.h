@@ -52,6 +52,7 @@ extern void menu_debug_hexdump(MENU_ITEM_PARAMETERS);
 extern void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS);
 extern void menu_osd_adventure_keyboard_next(void);
 extern void menu_display_total_palette(MENU_ITEM_PARAMETERS);
+extern void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS);
 
 extern int menu_sound_wave_llena;
 
