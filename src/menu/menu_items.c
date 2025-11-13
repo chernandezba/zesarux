@@ -26433,17 +26433,33 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
         return;
     }
 
+    int snap_selected=0;
+
     do {
 
+
+
+        if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
+
+            int indice=snapshot_in_ram_get_element(snap_selected);
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"%4d: %02d:%02d:%02d",
+                snap_selected,snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
+
+
+        }
 
         tecla=zxvision_common_getkey_refresh();
 
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
+            case 8:
+                if (snap_selected>0) snap_selected--;
+            break;
+
+            case 9:
+                if (snap_selected<snapshots_in_ram_total_elements-1) snap_selected++;
             break;
 
 
