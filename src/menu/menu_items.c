@@ -26737,6 +26737,8 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
         return;
     }
 
+    ventana->writing_inverse_color=1;
+    ventana->can_mouse_send_hotkeys=1;
 
 
     do {
@@ -26751,7 +26753,9 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
             int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"%4d: %02d:%02d:%02d Lenght: %d",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z: Previous ~~x: Next ~~r: Restore");
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d",
                 menu_snapshot_in_ram_browse_snap_selected,
                 snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo,
                 snapshots_in_ram[indice].longitud
@@ -26765,7 +26769,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 
-            case 8:
+            case 'z':
                 if (menu_snapshot_in_ram_browse_snap_selected>0) {
                     menu_snapshot_in_ram_browse_snap_selected--;
                     //para limpiar capas que puedan quedar de mas
@@ -26775,7 +26779,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                 }
             break;
 
-            case 9:
+            case 'x':
                 if (menu_snapshot_in_ram_browse_snap_selected<snapshots_in_ram_total_elements-1) {
                     menu_snapshot_in_ram_browse_snap_selected++;
                     //para limpiar capas que puedan quedar de mas
@@ -26785,6 +26789,11 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                 }
             break;
 
+            case 'r':
+                if (menu_confirm_yesno("Confirm restore snapshot")) {
+                    snapshot_in_ram_load(menu_snapshot_in_ram_browse_snap_selected);
+                }
+            break;
 
 
             //Salir con ESC
