@@ -26532,6 +26532,10 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 }
 
 int menu_snapshot_in_ram_browse_forzar_dibujado=1;
+
+//Para hacer la animación de las miniaturas
+//Nota mental: hay que invertir demasiado tiempo en hacer que la animación quede visualmente bonita,
+//el resultado ha sido bueno pero quizá no lo volvería a hacer
 int animacion_activa=0;
 int animacion_activa_incremento=0;
 
@@ -26584,10 +26588,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
                 inicio_snap++,total_capas--,contador_capa++) {
 
             //Para que no deje rastro
-            if (util_get_absolute(animacion_activa_incremento)>0) w->must_clear_cache_on_draw_once=1;
-            //zxvision_cls(w);
+            if (animacion_activa) w->must_clear_cache_on_draw_once=1;
 
-            //zxvision_draw_window_contents(w);
 
             int final_x=offset_x;
             int final_y=offset_y;
@@ -26600,10 +26602,14 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
             //a la derecha
             if (animacion_activa_incremento>0) {
-                final_x +=animacion_activa_incremento-menu_char_width;
-                final_y +=animacion_activa_incremento-menu_char_height;
+                final_x +=animacion_activa_incremento-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
+                final_y +=animacion_activa_incremento-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
             }
 
+            //Determinar como aparecen y desaparecen la pantalla de mas adelante y mas atrás
+            //Lo ideal seria aplicar transparencias, pero como para esa parte no puedo aplicarla,
+            //hago que tanto la pantalla y el marco que la envuelve aparezcan mas o menos "punteadas" segun
+            //en que transición estén
             int tramado=0;
 
             //Si se mueve a la izquierda, aparecer una capa mas momentaneamente
@@ -26648,15 +26654,13 @@ void menu_snapshot_in_ram_browse_overlay(void)
         if (animacion_activa) {
             if (animacion_activa_incremento<0) {
                 animacion_activa_incremento++;
-                if (animacion_activa_incremento==0) {
-                    animacion_activa=0;
-                }
             }
             else {
                 animacion_activa_incremento--;
-                if (animacion_activa_incremento==0) {
-                    animacion_activa=0;
-                }
+            }
+
+            if (animacion_activa_incremento==0) {
+                animacion_activa=0;
             }
             menu_snapshot_in_ram_browse_forzar_dibujado=1;
         }
