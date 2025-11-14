@@ -112,7 +112,8 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 ok *poder ver miniatura al hacer browse de snapshots
 ok *animacion que se desplacen todos. revisar codigo y limpiar
 *Poder grabar snap de RAM a disco
-*Miniatura snap puede interferir con la del file browser
+*Miniatura snap puede interferir con la del file browser: con file browser abierto, si lo muevo y habia una miniatura, pasara a verse
+la miniatura que muestre Time Machine
 
 
 -opcion para compressed ZSF o no

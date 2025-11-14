@@ -26233,6 +26233,7 @@ void menu_debug_show_symbol_table(MENU_ITEM_PARAMETERS)
     free(menu_debug_show_symbol_table_texto_browser);
 }
 
+//Vieja funcion para navegar entre los snapshots, no usada
 void menu_snapshot_rewind_browse_select(MENU_ITEM_PARAMETERS)
 {
     //Aplicar ese snapshot
@@ -26241,6 +26242,7 @@ void menu_snapshot_rewind_browse_select(MENU_ITEM_PARAMETERS)
     menu_generic_message_splash("Load Snapshot","OK Snapshot loaded from RAM");
 }
 
+//Vieja funcion para navegar entre los snapshots, no usada
 void menu_snapshot_rewind_browse(MENU_ITEM_PARAMETERS)
 {
     if (snapshot_in_ram_enabled.v==0) return;
@@ -26739,6 +26741,58 @@ void menu_snapshot_in_ram_browse_save_to_disk(int id_snapshot)
 
 }
 
+int menu_snapshot_in_ram_browse_browse(void)
+{
+    if (snapshot_in_ram_enabled.v==0) return -1;
+
+    if (snapshots_in_ram_total_elements==0) {
+        menu_error_message("Snapshot list empty");
+        return -1;
+    }
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        //Inicializar el ultimo a 0 siempre
+        int snapshot_rewind_browse_opcion_seleccionada=0;
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+
+        int i;
+        for (i=0;i<snapshots_in_ram_total_elements;i++) {
+
+            int indice=snapshot_in_ram_get_element(i);
+
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_browse_select,NULL,"%4d: %02d:%02d:%02d",
+                i,snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
+
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+        }
+
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&snapshot_rewind_browse_opcion_seleccionada,&item_seleccionado,array_menu_common,"Browse Snapshots");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            return item_seleccionado.valor_opcion;
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    return -1;
+}
+
 
 void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 {
@@ -26762,15 +26816,15 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("snapshotinrambrowse",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=51;
+            alto_ventana=36;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
         }
 
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Snap RAM Browse",
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Time Machine",
             "snapshotinrambrowse",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
@@ -26820,7 +26874,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
             int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z: Previous ~~x: Next ~~r: Restore ~~s: Save");
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z: Previous ~~x: Next ~~r: Restore ~~s: Save ~~b: Browse");
 
             zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d",
                 menu_snapshot_in_ram_browse_snap_selected,
@@ -26832,6 +26886,8 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
         }
 
         tecla=zxvision_common_getkey_refresh();
+
+        int browsed_snapshot;
 
 
         switch (tecla) {
@@ -26864,6 +26920,11 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
             case 's':
                 menu_snapshot_in_ram_browse_save_to_disk(menu_snapshot_in_ram_browse_snap_selected);
+            break;
+
+            case 'b':
+                browsed_snapshot=menu_snapshot_in_ram_browse_browse();
+                if (browsed_snapshot>=0) menu_snapshot_in_ram_browse_snap_selected=browsed_snapshot;
             break;
 
 
@@ -26936,14 +26997,16 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
         if (snapshot_in_ram_enabled.v) {
             menu_add_item_menu_separator(array_menu_common);
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_in_ram_save,NULL,"Save");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_in_ram_save,NULL,"Save snapshot to RAM");
             menu_add_item_menu_se_cerrara(array_menu_common);
 
+            /*
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_browse,NULL,"Browse");
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
+            */
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_in_ram_browse,NULL,"New Browse");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_in_ram_browse,NULL,"Time Machine");
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
         }
