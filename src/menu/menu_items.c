@@ -26332,13 +26332,7 @@ void menu_snapshot_in_ram_save(MENU_ITEM_PARAMETERS)
 }
 
 
-/*
-Inicio de Template de ventana de menu que se puede enviar a background
-Sustituir "snapshot_in_ram_browse" por el nombre de la ventana
-Sustituir "snapshotinrambrowse" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
-Sustituir "Window title" por el titulo de la ventana
-Y definirla en zxvision_known_window_names_array
-*/
+
 
 
 zxvision_window *menu_snapshot_in_ram_browse_window;
@@ -26404,15 +26398,6 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
         lee_archivo(temp_scr_file,(char *)buf_pantalla,6912);
 
-        //TODO obtener pantalla del snapshot
-        //de momento copia cutre, de un snapshot sin comprimir y al offset donde empieza la pantalla (214)
-        //int longitud_pantalla=6912;
-        //if (longitud<6912) longitud_pantalla=longitud;
-        //memcpy(buf_pantalla,&puntero_memoria[214],longitud_pantalla);
-
-		//int leidos=lee_archivo(archivo_scr,(char *)buf_pantalla,6912);
-
-		//if (leidos<=0) return;
 
 
 		//Asignamos primero buffer intermedio
@@ -26502,30 +26487,28 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
 
 
-            menu_filesel_overlay_assign_memory_preview(256,192);
-            menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+        menu_filesel_overlay_assign_memory_preview(256,192);
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
-            menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0,tramado);
+        menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0,tramado);
 
-            menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;
+        menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;
 
-            //recuadro
-            //horizontal arriba
-            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x+256,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        //recuadro
+        //horizontal arriba
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x+256,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
-            //vertical izquierda
-            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x-1,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        //vertical izquierda
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x-1,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
-            //horizontal abajop
-            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y+192,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        //horizontal abajop
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y+192,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
-            //vertical derecha
-            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+256,offset_y-1,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        //vertical derecha
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+256,offset_y-1,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
 
-            free(buffer_intermedio);
-
-            //load_zsf_snapshot_file_mem(NULL,puntero_memoria,longitud,0,0);
+        free(buffer_intermedio);
 
 
         }
@@ -26539,7 +26522,8 @@ int menu_snapshot_in_ram_browse_forzar_dibujado=1;
 int animacion_activa=0;
 int animacion_activa_incremento=0;
 
-#define MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS 8
+//10 pixeles y 10 transiciones entre cada pantalla
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS 10
 
 void menu_snapshot_in_ram_browse_overlay(void)
 {
@@ -26584,6 +26568,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
         int contador_capa=0;
 
+        //Mostrar las pantallas de los diferentes snapshots
         for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected;
                 inicio_snap++,total_capas--,contador_capa++) {
 
@@ -26645,8 +26630,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
             menu_snapshot_in_ram_browse_render_one_screen(inicio_snap,final_x,final_y,tramado);
 
-            offset_x +=menu_char_width;
-            offset_y +=menu_char_height;
+            offset_x +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
+            offset_y +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
         }
 
         menu_snapshot_in_ram_browse_forzar_dibujado=0;
