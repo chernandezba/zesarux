@@ -26345,8 +26345,20 @@ zxvision_window *menu_snapshot_in_ram_browse_window;
 
 int menu_snapshot_in_ram_browse_snap_selected=0;
 
+int menu_snapshot_in_ram_browse_linea_punteada_tramado=0;
 
-void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int offset_y)
+void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,int color)
+{
+    int dibujar=1;
+
+    if (menu_snapshot_in_ram_browse_linea_punteada_tramado) {
+        if (((x+y) % menu_snapshot_in_ram_browse_linea_punteada_tramado)!=0) dibujar=0;
+    }
+
+    if (dibujar) zxvision_putpixel(w,x,y,color);
+}
+
+void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int offset_y,int tramado)
 {
             int indice=snapshot_in_ram_get_element(snapshot);
 
@@ -26493,7 +26505,23 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
             menu_filesel_overlay_assign_memory_preview(256,192);
             menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
-            menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0);
+            menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0,tramado);
+
+            menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;
+
+            //recuadro
+            //horizontal arriba
+            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x+256,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+
+            //vertical izquierda
+            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x-1,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+
+            //horizontal abajop
+            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y+192,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+
+            //vertical derecha
+            zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+256,offset_y-1,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+
 
             free(buffer_intermedio);
 
@@ -26507,6 +26535,8 @@ int menu_snapshot_in_ram_browse_forzar_dibujado=1;
 int animacion_activa=0;
 int animacion_activa_incremento=0;
 
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS 8
+
 void menu_snapshot_in_ram_browse_overlay(void)
 {
 
@@ -26514,6 +26544,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_snapshot_in_ram_browse_window->is_minimized) return;
+
+    zxvision_window *w=menu_snapshot_in_ram_browse_window;
 
     //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
     if (menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents) {
@@ -26529,22 +26561,83 @@ void menu_snapshot_in_ram_browse_overlay(void)
         int offset_x=menu_char_width*1;
         int offset_y=menu_char_height*2;
         int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas;
+
+
+
+        //Si se mueve a la izquierda, aparecer una capa mas momentaneamente por delante
+        if (animacion_activa_incremento<0) {
+            total_capas++;
+        }
+
+        //Si se mueve a la derecha, aparecer una capa mas momentaneamente por detras
+        if (animacion_activa_incremento>0) {
+            inicio_snap--;
+            total_capas++;
+        }
+
+
         if (inicio_snap<0) inicio_snap=0;
 
+        int contador_capa=0;
 
+        for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected;
+                inicio_snap++,total_capas--,contador_capa++) {
 
+            //Para que no deje rastro
+            if (util_get_absolute(animacion_activa_incremento)>0) w->must_clear_cache_on_draw_once=1;
+            //zxvision_cls(w);
 
-
-        for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected;inicio_snap++,total_capas--) {
+            //zxvision_draw_window_contents(w);
 
             int final_x=offset_x;
             int final_y=offset_y;
-            if (animacion_activa) {
+
+            //a la izquierda
+            if (animacion_activa_incremento<0) {
                 final_x +=animacion_activa_incremento;
                 final_y +=animacion_activa_incremento;
             }
 
-            menu_snapshot_in_ram_browse_render_one_screen(inicio_snap,final_x,final_y);
+            //a la derecha
+            if (animacion_activa_incremento>0) {
+                final_x +=animacion_activa_incremento-menu_char_width;
+                final_y +=animacion_activa_incremento-menu_char_height;
+            }
+
+            int tramado=0;
+
+            //Si se mueve a la izquierda, aparecer una capa mas momentaneamente
+            if (animacion_activa_incremento<0) {
+                //la ultima, tramada
+                if (total_capas==1) {
+                    //va desapareciendo
+                    tramado=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS+animacion_activa_incremento;
+                }
+
+                //la primera tambien tramada
+                if (contador_capa==0) {
+                    //va apareciendo
+                    tramado=animacion_activa_incremento+1;
+                }
+            }
+
+            //Similar para la derecha
+            if (animacion_activa_incremento>0) {
+                //la ultima, tramada
+                if (total_capas==1) {
+                    //va apareciendo
+                    tramado=animacion_activa_incremento+1;
+                }
+
+                //la primera tambien tramada
+                if (contador_capa==0) {
+                    //va desapareciendo
+                    tramado=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS-animacion_activa_incremento;
+                }
+            }
+
+
+            menu_snapshot_in_ram_browse_render_one_screen(inicio_snap,final_x,final_y,tramado);
 
             offset_x +=menu_char_width;
             offset_y +=menu_char_height;
@@ -26682,7 +26775,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
                     animacion_activa=1;
-                    animacion_activa_incremento=-8;
+                    animacion_activa_incremento=-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
                 }
             break;
 
@@ -26692,7 +26785,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
                     animacion_activa=1;
-                    animacion_activa_incremento=+8;
+                    animacion_activa_incremento=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
                 }
             break;
 

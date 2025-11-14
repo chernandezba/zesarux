@@ -107,9 +107,12 @@ en caso contrario, copiar tal cual la ram de origen en destino, repitiendo si es
 quiza icono ramdisk que englobe snapshots y otras cosas
 
 -snapshots en ram
-*icono para browse snapshots
-ok *icono para guardar snapshot
+*icono para browse snapshots. mejorarlo
+*icono para guardar snapshot. mejorarlo
 ok *poder ver miniatura al hacer browse de snapshots
-animacion que se desplacen todos
+*animacion que se desplacen todos. revisar codigo y limpiar
+*Poder grabar snap de RAM a disco
+*Miniatura snap puede interferir con la del file browser
+
 
 -opcion para compressed ZSF o no
