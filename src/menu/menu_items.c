@@ -26544,6 +26544,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
     //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
     if (menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents) {
+        printf("dirty\n");
         menu_snapshot_in_ram_browse_forzar_dibujado=1;
 
         menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents=0;
@@ -26551,7 +26552,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0 && menu_snapshot_in_ram_browse_forzar_dibujado) {
-        printf("Forzar dibujado\n");
+        printf("Forzar dibujado %d\n",contador_segundo);
         int total_capas=5;
         int offset_x=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X; //menu_char_width*1;
         int offset_y=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y; //menu_char_height*2;
@@ -26865,16 +26866,15 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
     do {
 
         menu_snapshot_in_ram_browse_forzar_dibujado=1;
-
         zxvision_cls(ventana);
-
         zxvision_draw_window_contents(ventana);
 
         if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
 
             int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z: Previous ~~x: Next ~~r: Restore ~~s: Save ~~b: Browse");
+            //Nota: texto teclas con acciones pegado sin espacios, para que se pueda seleccionar la accion pulsando con el raton
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z:Previous ~~x:Next ~~r:Restore ~~s:Save ~~b:Browse");
 
             zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d",
                 menu_snapshot_in_ram_browse_snap_selected,
