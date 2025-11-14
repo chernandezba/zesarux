@@ -26673,6 +26673,73 @@ void menu_snapshot_in_ram_browse_overlay(void)
 zxvision_window zxvision_window_snapshot_in_ram_browse;
 
 
+void menu_snapshot_in_ram_browse_save_to_disk(int id_snapshot)
+{
+
+    char *filtros[2]={"zsf",0};
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+
+    //Obtenemos directorio de ultimo snapshot grabado (el de menu snapshot save tal cual)
+    //si no hay directorio, vamos a rutas predefinidas
+    if (snapshot_save_file[0]==0) menu_chdir_sharedfiles();
+
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(snapshot_save_file,directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
+
+
+    int ret;
+
+    ret=menu_filesel_save("Snapshot file",filtros,snapshot_save_file);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+    if (ret==1) {
+
+        //Ver si archivo existe y preguntar
+        struct stat buf_stat;
+
+        if (stat(snapshot_save_file, &buf_stat)==0) {
+            if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
+        }
+
+
+        int indice=snapshot_in_ram_get_element(id_snapshot);
+
+        if (indice<0) {
+            menu_error_message("Error getting snapshot");
+            return;
+        }
+
+
+        z80_byte *puntero_memoria;
+        int longitud;
+
+        puntero_memoria=snapshots_in_ram[indice].memoria;
+        longitud=snapshots_in_ram[indice].longitud;
+
+        util_save_file(puntero_memoria,longitud,snapshot_save_file);
+
+        //Si ha ido bien la grabacion
+        if (!if_pending_error_message) menu_generic_message_splash("Save Snapshot","OK. Snapshot saved");
+
+    }
+
+}
+
+
 void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 {
     menu_espera_no_tecla();
@@ -26753,7 +26820,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
             int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z: Previous ~~x: Next ~~r: Restore");
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z: Previous ~~x: Next ~~r: Restore ~~s: Save");
 
             zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d",
                 menu_snapshot_in_ram_browse_snap_selected,
@@ -26793,6 +26860,10 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                 if (menu_confirm_yesno("Confirm restore snapshot")) {
                     snapshot_in_ram_load(menu_snapshot_in_ram_browse_snap_selected);
                 }
+            break;
+
+            case 's':
+                menu_snapshot_in_ram_browse_save_to_disk(menu_snapshot_in_ram_browse_snap_selected);
             break;
 
 
