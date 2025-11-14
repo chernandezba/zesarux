@@ -111,10 +111,11 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 *icono para guardar snapshot. mejorarlo
 ok *poder ver miniatura al hacer browse de snapshots
 ok *animacion que se desplacen todos. revisar codigo y limpiar
-*Poder grabar snap de RAM a disco
+ok *Poder grabar snap de RAM a disco
 *Miniatura snap puede interferir con la del file browser: con file browser abierto, si lo muevo y habia una miniatura, pasara a verse
 la miniatura que muestre Time Machine
 *en menu_snapshot_in_ram_browse_render_one_screen, codigo repetido para render, mismo usado en filesel. funcion comun?
+*intentar optimizar la rutina: por ejemplo que no tenga que guardar en disco el zsf y el scr
 
 
 -opcion para compressed ZSF o no
