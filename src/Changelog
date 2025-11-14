@@ -15,7 +15,10 @@ Added emulation of Trojan Light Pen
 Added emulation of Datel Lightwriter
 Added emulation of Spectrum Doodler Lightpen
 Added lightgun scope
-Allow to save snapshots in RAM; you could do it before automatically at fixed intervals, now you can save it whenever you want
+
+Improved Snapshots in RAM:
+- Browse visually all the stored snapshots in RAM, like on a "Time Machine"
+- Allow to save snapshots in RAM; you could do it before automatically at fixed intervals, now you can save it whenever you want
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
