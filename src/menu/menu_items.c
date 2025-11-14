@@ -26354,7 +26354,7 @@ void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,i
 
 void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int offset_y,int tramado)
 {
-            int indice=snapshot_in_ram_get_element(snapshot);
+        int indice=snapshot_in_ram_get_element(snapshot);
 
         if (indice>=0) {
 
@@ -26525,6 +26525,11 @@ int animacion_activa_incremento=0;
 //10 pixeles y 10 transiciones entre cada pantalla
 #define MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS 10
 
+
+//sumar MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS para que la que aparece por debajo al desplazar no entre en la zona del texto
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X (1*(menu_char_width)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y (2*(menu_char_height)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
+
 void menu_snapshot_in_ram_browse_overlay(void)
 {
 
@@ -26546,8 +26551,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0 && menu_snapshot_in_ram_browse_forzar_dibujado) {
         printf("Forzar dibujado\n");
         int total_capas=5;
-        int offset_x=menu_char_width*1;
-        int offset_y=menu_char_height*2;
+        int offset_x=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X; //menu_char_width*1;
+        int offset_y=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y; //menu_char_height*2;
         int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas;
 
 
@@ -26746,9 +26751,11 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
             int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"%4d: %02d:%02d:%02d",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"%4d: %02d:%02d:%02d Lenght: %d",
                 menu_snapshot_in_ram_browse_snap_selected,
-                snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
+                snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo,
+                snapshots_in_ram[indice].longitud
+            );
 
 
         }
