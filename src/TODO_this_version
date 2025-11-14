@@ -109,6 +109,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 -snapshots en ram
 *icono para browse snapshots
 ok *icono para guardar snapshot
-*poder ver miniatura al hacer browse de snapshots
+ok *poder ver miniatura al hacer browse de snapshots
+animacion que se desplacen todos
 
 -opcion para compressed ZSF o no

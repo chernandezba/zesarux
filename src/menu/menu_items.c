@@ -26504,6 +26504,8 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 }
 
 int menu_snapshot_in_ram_browse_forzar_dibujado=1;
+int animacion_activa=0;
+int animacion_activa_incremento=0;
 
 void menu_snapshot_in_ram_browse_overlay(void)
 {
@@ -26529,8 +26531,20 @@ void menu_snapshot_in_ram_browse_overlay(void)
         int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas;
         if (inicio_snap<0) inicio_snap=0;
 
+
+
+
+
         for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected;inicio_snap++,total_capas--) {
-            menu_snapshot_in_ram_browse_render_one_screen(inicio_snap,offset_x,offset_y);
+
+            int final_x=offset_x;
+            int final_y=offset_y;
+            if (animacion_activa) {
+                final_x +=animacion_activa_incremento;
+                final_y +=animacion_activa_incremento;
+            }
+
+            menu_snapshot_in_ram_browse_render_one_screen(inicio_snap,final_x,final_y);
 
             offset_x +=menu_char_width;
             offset_y +=menu_char_height;
@@ -26538,7 +26552,25 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
         menu_snapshot_in_ram_browse_forzar_dibujado=0;
 
+        if (animacion_activa) {
+            if (animacion_activa_incremento<0) {
+                animacion_activa_incremento++;
+                if (animacion_activa_incremento==0) {
+                    animacion_activa=0;
+                }
+            }
+            else {
+                animacion_activa_incremento--;
+                if (animacion_activa_incremento==0) {
+                    animacion_activa=0;
+                }
+            }
+            menu_snapshot_in_ram_browse_forzar_dibujado=1;
+        }
+
     }
+
+
 
 
 
@@ -26649,6 +26681,8 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     menu_snapshot_in_ram_browse_snap_selected--;
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
+                    animacion_activa=1;
+                    animacion_activa_incremento=-8;
                 }
             break;
 
@@ -26657,6 +26691,8 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                     menu_snapshot_in_ram_browse_snap_selected++;
                     //para limpiar capas que puedan quedar de mas
                     ventana->must_clear_cache_on_draw_once=1;
+                    animacion_activa=1;
+                    animacion_activa_incremento=+8;
                 }
             break;
 
