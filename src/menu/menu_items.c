@@ -26816,8 +26816,8 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
     if (!zxvision_if_window_already_exists(ventana)) {
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (!util_find_window_geometry("snapshotinrambrowse",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=51;
+        if (!util_find_window_geometry("timemachine",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=45;
             alto_ventana=36;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -26826,7 +26826,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Time Machine",
-            "snapshotinrambrowse",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            "timemachine",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
 
