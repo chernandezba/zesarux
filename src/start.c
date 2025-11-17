@@ -7658,6 +7658,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     last_filesused_clear();
     menu_first_aid_init();
+    
+    snapshots_in_ram_reset();
 
     main_leezx81_init_semaphore();
 

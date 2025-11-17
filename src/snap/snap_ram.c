@@ -142,6 +142,8 @@ void snapshots_in_ram_reset(void)
     snapshots_in_ram_total_elements=0;
     snapshots_in_ram_index_to_write=0;
     snapshot_in_ram_rewind_initialized=0;
+    
+    snaps_ram_cache_init();
 }
 
 //Meter un snapshot en elemento de la lista

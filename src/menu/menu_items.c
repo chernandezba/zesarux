@@ -26354,11 +26354,110 @@ void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,i
     if (dibujar) zxvision_putpixel(w,x,y,color);
 }
 
+struct s_snaps_ram_cache {
+	int usado;
+	int snapshot;
+	int *memoria;
+	int contador_uso;
+};
+
+#define SNAPS_RAM_CACHE_TOTAL 10
+
+struct s_snaps_ram_cache snaps_ram_cache[SNAPS_RAM_CACHE_TOTAL];
+
+void snaps_ram_cache_init(void)
+{
+	int i;
+	for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
+		snaps_ram_cache[i].usado=0;
+	}
+}
+
+int snaps_ram_cache_search(int snapshot)
+{
+	int i;
+	
+	for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
+		if (snaps_ram_cache[i].usado && snaps_ram_cache[i].snapshot==snapshot) {
+			printf("return snap %d at %d\n",snapshot,i);
+			return i;
+		}
+	}
+	
+	return -1;
+}
+		
+void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
+{
+	//buscar si hay uno libre
+	int i;
+	int libre=0;
+	
+	for (i=0;i<SNAPS_RAM_CACHE_TOTAL && !libre;i++) {
+		if (snaps_ram_cache[i].usado==0) {
+			printf("found free snap at pos %d\n",i);
+			libre=1;
+			break;
+		}
+	}
+	
+	if (!libre) {
+		//buscar el menos usado y reemplazarlo
+		int id_menos=0;
+		int contador_menos_uso=snaps_ram_cache[0].contador_uso;
+		
+		for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
+			if (snaps_ram_cache[i].contador_uso<contador_menos_uso) {
+				id_menos=i;
+				contador_menos_uso=snaps_ram_cache[i].contador_uso;
+			}
+		}
+		printf("Freeing snap %d uses %d\n",id_menos,contador_menos_uso);
+		free(snaps_ram_cache[id_menos].memoria);
+		i=id_menos;
+	}
+	
+	//Asignamos primero buffer intermedio
+	/*
+	int *buffer_intermedio;
+
+	int ancho=256;
+	int alto=192;
+
+
+		int elementos=ancho*alto;
+		
+
+
+		buffer_intermedio=malloc(sizeof(int)*elementos);
+
+		if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
+	*/
+		
+	printf("Adding snap %d at pos %d\n",snapshot,i);
+	snaps_ram_cache[i].memoria=buffer_intermedio;
+	snaps_ram_cache[i].snapshot=snapshot;
+	snaps_ram_cache[i].contador_uso=0;
+	snaps_ram_cache[i].usado=1;
+
+}
+
 void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int offset_y,int tramado)
 {
         int indice=snapshot_in_ram_get_element(snapshot);
 
         if (indice>=0) {
+			
+			//buscar snapshot en cache
+			int id_cache=snaps_ram_cache_search(snapshot);
+			
+		if (id_cache>=0) {
+			snaps_ram_cache[id_cache].usado++;
+			menu_filesel_preview_no_reduce_scr(snaps_ram_cache[id_cache].memoria,256,192);
+		}
+		
+		else
+		{			
 
             z80_byte *puntero_memoria;
             int longitud;
@@ -26410,6 +26509,8 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
 
 		int elementos=ancho*alto;
+		
+
 
 		buffer_intermedio=malloc(sizeof(int)*elementos);
 
@@ -26487,10 +26588,15 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
 		free(buf_pantalla);
 
-
+		//guardar en cache buffer_intermedio por id de snapshot
+		snaps_ram_cache_add(snapshot,buffer_intermedio);
 
         menu_filesel_overlay_assign_memory_preview(256,192);
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+        
+        free(buffer_intermedio);
+        
+		}
 
         menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0,tramado);
 
@@ -26510,7 +26616,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
         zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+256,offset_y-1,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
 
-        free(buffer_intermedio);
+        
 
 
         }
