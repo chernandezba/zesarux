@@ -118,6 +118,7 @@ la miniatura que muestre Time Machine
 ok cache *intentar optimizar la rutina: por ejemplo que no tenga que guardar en disco el zsf y el scr
 *si no puede generar miniatura (por ejemplo en QL) que salga en negro (ahora sale la ultima generada)
 *convert zsf a scr que pueda hacerlo con zx81, zx80 (igual que ahora hace con los .p y .o)
+*miniatura pequeña si no cabe grande
 
 -opcion para compressed ZSF o no que se guarde en config
 

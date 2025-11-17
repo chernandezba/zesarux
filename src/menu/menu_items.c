@@ -26793,7 +26793,7 @@ zxvision_window zxvision_window_snapshot_in_ram_browse;
 void menu_snapshot_in_ram_browse_save_to_disk(int id_snapshot)
 {
 
-    char *filtros[2]={"zsf",0};
+    char *filtros[]={"zsf",0};
 
 
     //guardamos directorio actual
@@ -26943,6 +26943,8 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
             "timemachine",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
+        //para que llegue hasta la derecha la animación de capas
+        ventana->can_use_all_width=1;
 
     }
 
