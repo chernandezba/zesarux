@@ -26591,6 +26591,15 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
         
         int reducir=0;
+        
+        int recuadro_ancho=256;
+        int recuadro_alto=192;
+        
+        
+        if (reducir) {
+			recuadro_ancho /=2;
+			recuadro_alto /=2;
+		}
 
         menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,
 			256,192,reducir,tramado);
@@ -26599,16 +26608,20 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
         //recuadro
         //horizontal arriba
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x+256,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,
+			offset_x+recuadro_ancho,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //vertical izquierda
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,offset_x-1,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,
+			offset_x-1,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //horizontal abajop
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y+192,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y+recuadro_alto,
+			offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //vertical derecha
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+256,offset_y-1,offset_x+256,offset_y+192,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+recuadro_ancho,offset_y-1
+			,offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
 
         
