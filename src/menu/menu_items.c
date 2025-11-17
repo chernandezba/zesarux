@@ -26427,69 +26427,9 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
 		if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
 
+		menu_filesel_preview_convert_scr_spec_to_buf(buf_pantalla,buffer_intermedio);
 
-		int x,y,bit_counter;
-
-		z80_int offset_lectura=0;
-		for (y=0;y<192;y++) {
-			for (x=0;x<32;x++) {
-				z80_byte leido;
-				int offset_orig=screen_addr_table[y*32+x];
-
-				leido=buf_pantalla[offset_orig];
-
-
-				offset_lectura++;
-
-				int offset_destino=y*256+x*8;
-
-				int tinta;
-				int papel;
-
-				z80_byte atributo;
-
-				int pos_attr;
-
-
-				pos_attr=6144+((y/8)*32)+x;
-				//printf("%d\n",pos_attr);
-
-				atributo=buf_pantalla[pos_attr];
-
-
-				tinta=(atributo)&7;
-				papel=(atributo>>3)&7;
-
-				if (atributo & 64) {
-					tinta +=8;
-					papel +=8;
-				}
-
-
-
-				for (bit_counter=0;bit_counter<8;bit_counter++) {
-
-					
-					int color_sin_flash=(leido & 128 ? tinta : papel);
-
-                    int color_con_flash;
-                    if (atributo&128) {
-                        color_con_flash=(leido & 128 ? papel : tinta);
-                    }
-                    else {
-                        color_con_flash=color_sin_flash;
-                    }
-
-
-                    //Codificamos en el nibble bajo el color sin flash, y en el nibble alto el color con flash
-					buffer_intermedio[offset_destino+bit_counter]=color_sin_flash | (color_con_flash << 4);
-					leido=leido << 1;
-				}
-			}
-		}
-
-
-
+		
 		free(buf_pantalla);
 
 		//guardar en cache buffer_intermedio por id de snapshot

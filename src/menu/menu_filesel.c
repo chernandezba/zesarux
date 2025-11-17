@@ -4859,7 +4859,7 @@ int menu_filesel_preview_render_scr_ql_count_flash_bits(z80_byte *buf_pantalla)
     return total_bit_flash;
 }
 
-void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,z80_int *dest)  
+void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,int *dest)  
 {
 	
 			int x,y,bit_counter;
