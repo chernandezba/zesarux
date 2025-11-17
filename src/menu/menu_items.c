@@ -26355,9 +26355,13 @@ void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,i
 }
 
 struct s_snaps_ram_cache {
+    //en uso o no
 	int usado;
+    //id del snapshot
 	int snapshot;
+    //memoria del preview
 	int *memoria;
+    //cuando se ha creado
 	unsigned int cuando_creado;
 };
 
@@ -26365,6 +26369,7 @@ struct s_snaps_ram_cache {
 
 struct s_snaps_ram_cache snaps_ram_cache[SNAPS_RAM_CACHE_TOTAL];
 
+//contador de "tiempo" para saber en cada entrada de cache cual es mas antigua
 int snaps_ram_cache_cuando_creado=0;
 
 void snaps_ram_cache_init(void)
@@ -26381,7 +26386,7 @@ int snaps_ram_cache_search(int snapshot)
 	
 	for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
 		if (snaps_ram_cache[i].usado && snaps_ram_cache[i].snapshot==snapshot) {
-			printf("return snap %d at %d\n",snapshot,i);
+			printf("return snap cache preview %d at %d\n",snapshot,i);
 			return i;
 		}
 	}
@@ -26395,9 +26400,9 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
 	int i;
 	int libre=0;
 	
-	for (i=0;i<SNAPS_RAM_CACHE_TOTAL && !libre;i++) {
+	for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
 		if (snaps_ram_cache[i].usado==0) {
-			printf("found free snap at pos %d\n",i);
+			printf("found free snap cache preview at pos %d\n",i);
 			libre=1;
 			break;
 		}
@@ -26405,6 +26410,7 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
 	
 	if (!libre) {
 		//buscar el mas antiguo y reemplazarlo
+        //asumimos el primero por ejemplo
 		int id_mas_antiguo=0;
 		unsigned int cuando_creado=snaps_ram_cache[0].cuando_creado;
 		
@@ -26414,29 +26420,13 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
 				cuando_creado=snaps_ram_cache[i].cuando_creado;
 			}
 		}
-		printf("Freeing snap %d creado %d\n",id_mas_antiguo,cuando_creado);
+		printf("Freeing snap cache preview %d created %d\n",id_mas_antiguo,cuando_creado);
 		free(snaps_ram_cache[id_mas_antiguo].memoria);
 		i=id_mas_antiguo;
 	}
 	
-	//Asignamos primero buffer intermedio
-	/*
-	int *buffer_intermedio;
-
-	int ancho=256;
-	int alto=192;
-
-
-		int elementos=ancho*alto;
 		
-
-
-		buffer_intermedio=malloc(sizeof(int)*elementos);
-
-		if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
-	*/
-		
-	printf("Adding snap %d at pos %d\n",snapshot,i);
+	printf("Adding snap cache preview %d at pos %d\n",snapshot,i);
 	snaps_ram_cache[i].memoria=buffer_intermedio;
 	snaps_ram_cache[i].snapshot=snapshot;
 	snaps_ram_cache[i].cuando_creado=snaps_ram_cache_cuando_creado++;
@@ -26449,14 +26439,15 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
         int indice=snapshot_in_ram_get_element(snapshot);
 
         if (indice>=0) {
+            
+            int *buffer_intermedio;
 			
 			//buscar snapshot en cache
 			int id_cache=snaps_ram_cache_search(snapshot);
 			
-		if (id_cache>=0) {
-			snaps_ram_cache[id_cache].usado++;
-			menu_filesel_preview_no_reduce_scr(snaps_ram_cache[id_cache].memoria,256,192);
-		}
+            if (id_cache>=0) {
+                buffer_intermedio=snaps_ram_cache[id_cache].memoria;
+            }
 		
 		else
 		{			
@@ -26504,7 +26495,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
 
 		//Asignamos primero buffer intermedio
-		int *buffer_intermedio;
+		
 
 		int ancho=256;
 		int alto=192;
@@ -26594,11 +26585,13 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 		snaps_ram_cache_add(snapshot,buffer_intermedio);
 
         menu_filesel_overlay_assign_memory_preview(256,192);
-        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+        
         
         //free(buffer_intermedio);
         
 		}
+        
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
         menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0,tramado);
 
