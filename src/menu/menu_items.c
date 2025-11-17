@@ -26361,16 +26361,16 @@ struct s_snaps_ram_cache {
 	int snapshot;
     //memoria del preview
 	int *memoria;
-    //cuando se ha creado
-	unsigned int cuando_creado;
+    //ultimo acceso
+	unsigned int ultimo_acceso;
 };
 
 #define SNAPS_RAM_CACHE_TOTAL 10
 
 struct s_snaps_ram_cache snaps_ram_cache[SNAPS_RAM_CACHE_TOTAL];
 
-//contador de "tiempo" para saber en cada entrada de cache cual es mas antigua
-int snaps_ram_cache_cuando_creado=0;
+//contador de "tiempo" para saber en cada entrada de cache cual es mas antigua usada
+int snaps_ram_cache_cuando_acceso=0;
 
 void snaps_ram_cache_init(void)
 {
@@ -26412,15 +26412,15 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
 		//buscar el mas antiguo y reemplazarlo
         //asumimos el primero por ejemplo
 		int id_mas_antiguo=0;
-		unsigned int cuando_creado=snaps_ram_cache[0].cuando_creado;
+		unsigned int cuando_acceso=snaps_ram_cache[0].ultimo_acceso;
 		
 		for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
-			if (snaps_ram_cache[i].cuando_creado<cuando_creado) {
+			if (snaps_ram_cache[i].ultimo_acceso<cuando_acceso) {
 				id_mas_antiguo=i;
-				cuando_creado=snaps_ram_cache[i].cuando_creado;
+				cuando_acceso=snaps_ram_cache[i].ultimo_acceso;
 			}
 		}
-		printf("Freeing snap cache preview %d created %d\n",id_mas_antiguo,cuando_creado);
+		printf("Freeing snap cache preview %d accessed %d\n",id_mas_antiguo,cuando_acceso);
 		free(snaps_ram_cache[id_mas_antiguo].memoria);
 		i=id_mas_antiguo;
 	}
@@ -26429,7 +26429,7 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
 	printf("Adding snap cache preview %d at pos %d\n",snapshot,i);
 	snaps_ram_cache[i].memoria=buffer_intermedio;
 	snaps_ram_cache[i].snapshot=snapshot;
-	snaps_ram_cache[i].cuando_creado=snaps_ram_cache_cuando_creado++;
+	snaps_ram_cache[i].ultimo_acceso=snaps_ram_cache_cuando_acceso++;
 	snaps_ram_cache[i].usado=1;
 
 }
@@ -26447,6 +26447,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 			
             if (id_cache>=0) {
                 buffer_intermedio=snaps_ram_cache[id_cache].memoria;
+                snaps_ram_cache[id_cache].ultimo_acceso=snaps_ram_cache_cuando_acceso++;
             }
 		
 		else
