@@ -100,6 +100,75 @@ z80_bit snapshot_in_ram_enabled={0};
 z80_bit snapshot_in_ram_timer_enabled={0};
 
 
+
+struct s_snaps_ram_cache snaps_ram_cache[SNAPS_RAM_CACHE_TOTAL];
+
+//contador de "tiempo" para saber en cada entrada de cache cual es mas antigua usada
+int snaps_ram_cache_cuando_acceso=0;
+
+void snaps_ram_cache_init(void)
+{
+	int i;
+	for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
+		snaps_ram_cache[i].usado=0;
+	}
+}
+
+int snaps_ram_cache_search(int snapshot)
+{
+	int i;
+	
+	for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
+		if (snaps_ram_cache[i].usado && snaps_ram_cache[i].snapshot==snapshot) {
+			printf("return snap cache preview %d at %d\n",snapshot,i);
+			return i;
+		}
+	}
+	
+	return -1;
+}
+		
+void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
+{
+	//buscar si hay uno libre
+	int i;
+	int libre=0;
+	
+	for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
+		if (snaps_ram_cache[i].usado==0) {
+			printf("found free snap cache preview at pos %d\n",i);
+			libre=1;
+			break;
+		}
+	}
+	
+	if (!libre) {
+		//buscar el mas antiguo y reemplazarlo
+        //asumimos el primero por ejemplo
+		int id_mas_antiguo=0;
+		unsigned int cuando_acceso=snaps_ram_cache[0].ultimo_acceso;
+		
+		for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
+			if (snaps_ram_cache[i].ultimo_acceso<cuando_acceso) {
+				id_mas_antiguo=i;
+				cuando_acceso=snaps_ram_cache[i].ultimo_acceso;
+			}
+		}
+		printf("Freeing snap cache preview %d accessed %d\n",id_mas_antiguo,cuando_acceso);
+		free(snaps_ram_cache[id_mas_antiguo].memoria);
+		i=id_mas_antiguo;
+	}
+	
+		
+	printf("Adding snap cache preview %d at pos %d\n",snapshot,i);
+	snaps_ram_cache[i].memoria=buffer_intermedio;
+	snaps_ram_cache[i].snapshot=snapshot;
+	snaps_ram_cache[i].ultimo_acceso=snaps_ram_cache_cuando_acceso++;
+	snaps_ram_cache[i].usado=1;
+
+}
+
+
 //Crea un snapshot en ram y retorna puntero asociado a dicha memoria asignada
 //mete en *longitud la longitud de dicho snapshot
 z80_byte *save_zsf_snapshot_to_ram(int *p_longitud)

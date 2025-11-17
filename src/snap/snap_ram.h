@@ -58,4 +58,23 @@ extern z80_bit snapshot_in_ram_timer_enabled;
 extern int snapshot_in_ram_get_element(int indice);
 extern void snapshot_add_in_ram_save(void);
 
+
+struct s_snaps_ram_cache {
+    //en uso o no
+	int usado;
+    //id del snapshot
+	int snapshot;
+    //memoria del preview
+	int *memoria;
+    //ultimo acceso
+	unsigned int ultimo_acceso;
+};
+
+
+#define SNAPS_RAM_CACHE_TOTAL 10
+extern struct s_snaps_ram_cache snaps_ram_cache[];
+extern int snaps_ram_cache_cuando_acceso;
+extern int snaps_ram_cache_search(int snapshot);
+extern void snaps_ram_cache_add(int snapshot,int *buffer_intermedio);
+
 #endif
