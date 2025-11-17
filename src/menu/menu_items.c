@@ -26518,13 +26518,9 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 			for (x=0;x<32;x++) {
 				z80_byte leido;
 				int offset_orig=screen_addr_table[y*32+x];
-				//fread(&leido,1,1,ptr_scrfile);
+
 				leido=buf_pantalla[offset_orig];
 
-				//int xdestino,ydestino;
-
-				//esta funcion no es muy rapida pero....
-				//util_spectrumscreen_get_xy(offset_lectura,&xdestino,&ydestino);
 
 				offset_lectura++;
 
@@ -26537,14 +26533,12 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
 				int pos_attr;
 
-				//pos_attr=(ydestino/8)*32+(xdestino/8);
 
 				pos_attr=6144+((y/8)*32)+x;
 				//printf("%d\n",pos_attr);
 
 				atributo=buf_pantalla[pos_attr];
 
-				//atributo=56;
 
 				tinta=(atributo)&7;
 				papel=(atributo>>3)&7;
@@ -26585,12 +26579,14 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 		//guardar en cache buffer_intermedio por id de snapshot
 		snaps_ram_cache_add(snapshot,buffer_intermedio);
 
-        menu_filesel_overlay_assign_memory_preview(256,192);
+        
         
         
         //free(buffer_intermedio);
         
 		}
+		
+		menu_filesel_overlay_assign_memory_preview(256,192);
         
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
