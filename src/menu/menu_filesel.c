@@ -5175,7 +5175,7 @@ const int ql_colortable_original[8]={
                         color_con_flash=(leido & 128 ? papel : tinta);
                     }
                     else {
-                        color_con_flash=(leido & 128 ? tinta : papel);
+                        color_con_flash=color_sin_flash;
                     }
 
 

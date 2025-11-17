@@ -73,7 +73,6 @@ struct s_snaps_ram_cache {
 
 #define SNAPS_RAM_CACHE_TOTAL 10
 extern struct s_snaps_ram_cache snaps_ram_cache[];
-extern int snaps_ram_cache_cuando_acceso;
 extern int snaps_ram_cache_search(int snapshot);
 extern void snaps_ram_cache_add(int snapshot,int *buffer_intermedio);
 

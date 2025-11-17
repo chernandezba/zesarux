@@ -26335,8 +26335,6 @@ void menu_snapshot_in_ram_save(MENU_ITEM_PARAMETERS)
 
 
 
-
-
 zxvision_window *menu_snapshot_in_ram_browse_window;
 
 int menu_snapshot_in_ram_browse_snap_selected=0;
@@ -26357,22 +26355,20 @@ void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,i
 
 void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int offset_y,int tramado)
 {
-        int indice=snapshot_in_ram_get_element(snapshot);
+    int indice=snapshot_in_ram_get_element(snapshot);
 
-        if (indice>=0) {
+    if (indice>=0) {
             
-            int *buffer_intermedio;
+        int *buffer_intermedio;
 			
-			//buscar snapshot en cache
-			int id_cache=snaps_ram_cache_search(snapshot);
+		//buscar snapshot en cache
+		int id_cache=snaps_ram_cache_search(snapshot);
 			
-            if (id_cache>=0) {
-                buffer_intermedio=snaps_ram_cache[id_cache].memoria;
-                snaps_ram_cache[id_cache].ultimo_acceso=snaps_ram_cache_cuando_acceso++;
-            }
+        if (id_cache>=0) {
+            buffer_intermedio=snaps_ram_cache[id_cache].memoria;
+        }
 		
-		else
-		{			
+		else {			
 
             z80_byte *puntero_memoria;
             int longitud;
@@ -26473,7 +26469,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 
 				for (bit_counter=0;bit_counter<8;bit_counter++) {
 
-					//de momento solo 0 o 1
+					
 					int color_sin_flash=(leido & 128 ? tinta : papel);
 
                     int color_con_flash;
@@ -26481,9 +26477,8 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
                         color_con_flash=(leido & 128 ? papel : tinta);
                     }
                     else {
-                        color_con_flash=(leido & 128 ? tinta : papel);
+                        color_con_flash=color_sin_flash;
                     }
-
 
 
                     //Codificamos en el nibble bajo el color sin flash, y en el nibble alto el color con flash
@@ -26500,8 +26495,6 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 		//guardar en cache buffer_intermedio por id de snapshot
 		snaps_ram_cache_add(snapshot,buffer_intermedio);
 
-        
-        
         
         //free(buffer_intermedio);
         
@@ -26543,10 +26536,6 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
         //vertical derecha
         zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+recuadro_ancho,offset_y-1
 			,offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
-
-
-        
-
 
         }
 }
