@@ -26358,12 +26358,14 @@ struct s_snaps_ram_cache {
 	int usado;
 	int snapshot;
 	int *memoria;
-	int contador_uso;
+	unsigned int cuando_creado;
 };
 
 #define SNAPS_RAM_CACHE_TOTAL 10
 
 struct s_snaps_ram_cache snaps_ram_cache[SNAPS_RAM_CACHE_TOTAL];
+
+int snaps_ram_cache_cuando_creado=0;
 
 void snaps_ram_cache_init(void)
 {
@@ -26402,19 +26404,19 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
 	}
 	
 	if (!libre) {
-		//buscar el menos usado y reemplazarlo
-		int id_menos=0;
-		int contador_menos_uso=snaps_ram_cache[0].contador_uso;
+		//buscar el mas antiguo y reemplazarlo
+		int id_mas_antiguo=0;
+		unsigned int cuando_creado=snaps_ram_cache[0].cuando_creado;
 		
 		for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
-			if (snaps_ram_cache[i].contador_uso<contador_menos_uso) {
-				id_menos=i;
-				contador_menos_uso=snaps_ram_cache[i].contador_uso;
+			if (snaps_ram_cache[i].cuando_creado<cuando_creado) {
+				id_mas_antiguo=i;
+				cuando_creado=snaps_ram_cache[i].cuando_creado;
 			}
 		}
-		printf("Freeing snap %d uses %d\n",id_menos,contador_menos_uso);
-		free(snaps_ram_cache[id_menos].memoria);
-		i=id_menos;
+		printf("Freeing snap %d creado %d\n",id_mas_antiguo,cuando_creado);
+		free(snaps_ram_cache[id_mas_antiguo].memoria);
+		i=id_mas_antiguo;
 	}
 	
 	//Asignamos primero buffer intermedio
@@ -26437,7 +26439,7 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
 	printf("Adding snap %d at pos %d\n",snapshot,i);
 	snaps_ram_cache[i].memoria=buffer_intermedio;
 	snaps_ram_cache[i].snapshot=snapshot;
-	snaps_ram_cache[i].contador_uso=0;
+	snaps_ram_cache[i].cuando_creado=snaps_ram_cache_cuando_creado++;
 	snaps_ram_cache[i].usado=1;
 
 }
@@ -26594,7 +26596,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
         menu_filesel_overlay_assign_memory_preview(256,192);
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
         
-        free(buffer_intermedio);
+        //free(buffer_intermedio);
         
 		}
 
