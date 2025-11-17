@@ -26589,8 +26589,11 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
 		menu_filesel_overlay_assign_memory_preview(256,192);
         
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+        
+        int reducir=0;
 
-        menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,256,192,0,tramado);
+        menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,
+			256,192,reducir,tramado);
 
         menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;
 
