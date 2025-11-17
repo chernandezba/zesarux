@@ -4859,6 +4859,76 @@ int menu_filesel_preview_render_scr_ql_count_flash_bits(z80_byte *buf_pantalla)
     return total_bit_flash;
 }
 
+void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,z80_int *dest)  
+{
+	
+			int x,y,bit_counter;
+
+		z80_int offset_lectura=0;
+		for (y=0;y<192;y++) {
+			for (x=0;x<32;x++) {
+				z80_byte leido;
+				int offset_orig=screen_addr_table[y*32+x];
+				
+				leido=orig[offset_orig];
+
+			
+
+				offset_lectura++;
+
+				int offset_destino=y*256+x*8;
+
+				int tinta;
+				int papel;
+
+				z80_byte atributo;
+
+				int pos_attr;
+
+				
+
+				pos_attr=6144+((y/8)*32)+x;
+				//printf("%d\n",pos_attr);
+
+				atributo=orig[pos_attr];
+
+				
+				tinta=(atributo)&7;
+				papel=(atributo>>3)&7;
+
+				if (atributo & 64) {
+					tinta +=8;
+					papel +=8;
+				}
+
+
+
+				for (bit_counter=0;bit_counter<8;bit_counter++) {
+
+					
+					int color_sin_flash=(leido & 128 ? tinta : papel);
+
+                    int color_con_flash;
+                    if (atributo&128) {
+                        color_con_flash=(leido & 128 ? papel : tinta);
+                    }
+                    else {
+                        color_con_flash=color_sin_flash;
+                    }
+
+
+
+                    //Codificamos en el nibble bajo el color sin flash, y en el nibble alto el color con flash
+					dest[offset_destino+bit_counter]=color_sin_flash | (color_con_flash << 4);
+					leido=leido << 1;
+				}
+			}
+		}
+
+
+	
+}
+
 void menu_filesel_preview_render_scr(char *archivo_scr)
 {
 			//printf("es pantalla\n");
@@ -5127,13 +5197,10 @@ const int ql_colortable_original[8]={
 			for (x=0;x<32;x++) {
 				z80_byte leido;
 				int offset_orig=screen_addr_table[y*32+x];
-				//fread(&leido,1,1,ptr_scrfile);
+				
 				leido=buf_pantalla[offset_orig];
 
-				//int xdestino,ydestino;
-
-				//esta funcion no es muy rapida pero....
-				//util_spectrumscreen_get_xy(offset_lectura,&xdestino,&ydestino);
+			
 
 				offset_lectura++;
 
@@ -5146,15 +5213,14 @@ const int ql_colortable_original[8]={
 
 				int pos_attr;
 
-				//pos_attr=(ydestino/8)*32+(xdestino/8);
+				
 
 				pos_attr=6144+((y/8)*32)+x;
 				//printf("%d\n",pos_attr);
 
 				atributo=buf_pantalla[pos_attr];
 
-				//atributo=56;
-
+				
 				tinta=(atributo)&7;
 				papel=(atributo>>3)&7;
 
@@ -5167,7 +5233,7 @@ const int ql_colortable_original[8]={
 
 				for (bit_counter=0;bit_counter<8;bit_counter++) {
 
-					//de momento solo 0 o 1
+					
 					int color_sin_flash=(leido & 128 ? tinta : papel);
 
                     int color_con_flash;
