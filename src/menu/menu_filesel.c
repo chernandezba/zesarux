@@ -4961,22 +4961,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
         if (leidos<=0) return;
 
-        int total_bits_flash=menu_filesel_preview_render_scr_ql_count_flash_bits(buf_pantalla);
 
-        //Si se pasa de un umbral de flash en toda la pantalla, podemos pensar que realmente
-        //es una pantalla en modo 0 y que por tanto es sin flash. Aun asi la renderizaremos
-        //como pantalla en modo 8 pero sin poner flash, que sera molesto
-        //TODO: en este caso podriamos renderizar como modo 0 (512x256 4 colores) pero
-        //un preview de 512x256 queda demasiado grande, ademas para que la relacion de aspecto fuese
-        //buena, se tendria que hacer de 512x512. Luego, podriamos pensar que si el preview se hace a mitad
-        //256x256 se tendria que ver bien, pero la reducción que hacemos del preview a la mitad no es un algoritmo bueno...
-        int desactivar_flash;
-
-        //Es un umbral detectado viendo muchas imagenes en modo 0 que se activa el parpadeo sin tener que hacerlo
-        //en cambio con una imagen con modo 8 con parpadeo intencionado (una linea de texto) no se llega a ese umbral
-        //y por tanto hara parpadeo
-        if (total_bits_flash>10000) desactivar_flash=1;
-        else desactivar_flash=0;
 
         //Asignamos primero buffer intermedio
         int *buffer_intermedio;
@@ -4993,6 +4978,23 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
         if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
 
 
+
+        int total_bits_flash=menu_filesel_preview_render_scr_ql_count_flash_bits(buf_pantalla);
+
+        //Si se pasa de un umbral de flash en toda la pantalla, podemos pensar que realmente
+        //es una pantalla en modo 0 y que por tanto es sin flash. Aun asi la renderizaremos
+        //como pantalla en modo 8 pero sin poner flash, que sera molesto
+        //TODO: en este caso podriamos renderizar como modo 0 (512x256 4 colores) pero
+        //un preview de 512x256 queda demasiado grande, ademas para que la relacion de aspecto fuese
+        //buena, se tendria que hacer de 512x512. Luego, podriamos pensar que si el preview se hace a mitad
+        //256x256 se tendria que ver bien, pero la reducción que hacemos del preview a la mitad no es un algoritmo bueno...
+        int desactivar_flash;
+
+        //Es un umbral detectado viendo muchas imagenes en modo 0 que se activa el parpadeo sin tener que hacerlo
+        //en cambio con una imagen con modo 8 con parpadeo intencionado (una linea de texto) no se llega a ese umbral
+        //y por tanto hara parpadeo
+        if (total_bits_flash>10000) desactivar_flash=1;
+        else desactivar_flash=0;
 
 ////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
         int total_alto;
@@ -5154,55 +5156,55 @@ const int ql_colortable_original[8]={
         return;
     }
 
-        //Leemos el archivo en memoria
+    //Leemos el archivo en memoria
 
 
-        debug_printf(VERBOSE_DEBUG,"Rendering Spectrum SCR");
+    debug_printf(VERBOSE_DEBUG,"Rendering Spectrum SCR");
 
-        //buffer lectura archivo
-        z80_byte *buf_pantalla;
+    //buffer lectura archivo
+    z80_byte *buf_pantalla;
 
-        buf_pantalla=malloc(6912);
+    buf_pantalla=malloc(6912);
 
-        if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
+    if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
 
-        int leidos=lee_archivo(archivo_scr,(char *)buf_pantalla,6912);
+    int leidos=lee_archivo(archivo_scr,(char *)buf_pantalla,6912);
 
-        if (leidos<=0) return;
+    if (leidos<=0) return;
 
-        //fread(buf_pantalla,1,6912,ptr_scrfile);
+    //fread(buf_pantalla,1,6912,ptr_scrfile);
 
-        //fclose(ptr_scrfile);
-
-
-
-        //Asignamos primero buffer intermedio
-        int *buffer_intermedio;
-
-        int ancho=256;
-        int alto=192;
+    //fclose(ptr_scrfile);
 
 
-        int elementos=ancho*alto;
 
-        buffer_intermedio=malloc(sizeof(int)*elementos);
+    //Asignamos primero buffer intermedio
+    int *buffer_intermedio;
 
-        if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
-
-
-        menu_filesel_preview_convert_scr_spec_to_buf(buf_pantalla,buffer_intermedio);
+    int ancho=256;
+    int alto=192;
 
 
-        free(buf_pantalla);
+    int elementos=ancho*alto;
+
+    buffer_intermedio=malloc(sizeof(int)*elementos);
+
+    if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
 
 
-        //Ahora siempre se lee el preview a tamaño completo,
-        //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
-        menu_filesel_overlay_assign_memory_preview(256,192);
+    menu_filesel_preview_convert_scr_spec_to_buf(buf_pantalla,buffer_intermedio);
 
-        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
-        free(buffer_intermedio);
+    free(buf_pantalla);
+
+
+    //Ahora siempre se lee el preview a tamaño completo,
+    //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
+    menu_filesel_overlay_assign_memory_preview(256,192);
+
+    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+
+    free(buffer_intermedio);
 
 }
 
