@@ -26374,6 +26374,9 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
         //buscar snapshot en cache
         int id_cache=snaps_ram_cache_search(snapshot);
 
+        int ancho=256;
+        int alto=192;
+
         if (id_cache>=0) {
             buffer_intermedio=snaps_ram_cache[id_cache].memoria;
         }
@@ -26409,25 +26412,30 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
             util_save_file(puntero_memoria,longitud,temp_zsf_file);
             util_convert_zsf_to_scr(temp_zsf_file,temp_scr_file);
 
+            long long tamanyo_scr=get_file_size(temp_scr_file);
 
+            if (tamanyo_scr<6912) return;
 
             //buffer lectura archivo
             z80_byte *buf_pantalla;
 
-            buf_pantalla=malloc(6912);
+            buf_pantalla=malloc(tamanyo_scr);
 
             if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
 
-            lee_archivo(temp_scr_file,(char *)buf_pantalla,6912);
+            lee_archivo(temp_scr_file,(char *)buf_pantalla,tamanyo_scr);
 
 
 
             //Asignamos primero buffer intermedio
 
 
-            int ancho=256;
-            int alto=192;
 
+
+            if (tamanyo_scr==32768) {
+                //QL
+                alto=256;
+            }
 
             int elementos=ancho*alto;
 
@@ -26437,7 +26445,14 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
 
             if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
 
-            menu_filesel_preview_convert_scr_spec_to_buf(buf_pantalla,buffer_intermedio);
+
+            if (tamanyo_scr==32768) {
+                //QL
+                menu_filesel_preview_convert_scr_ql_to_buf(buf_pantalla,buffer_intermedio);
+            }
+            else {
+                menu_filesel_preview_convert_scr_spec_to_buf(buf_pantalla,buffer_intermedio);
+            }
 
 
             free(buf_pantalla);
@@ -26450,7 +26465,8 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
 
         }
 
-        menu_filesel_overlay_assign_memory_preview(256,192);
+        //Maximo para 256x256 de QL
+        menu_filesel_overlay_assign_memory_preview(256,256);
 
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 

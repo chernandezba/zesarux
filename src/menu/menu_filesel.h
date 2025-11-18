@@ -69,5 +69,6 @@ extern void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen
 extern void menu_filesel_overlay_assign_memory_preview(int width,int height);
 extern void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int alto);
 extern void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,int *dest);
+extern void menu_filesel_preview_convert_scr_ql_to_buf(z80_byte *orig,int *dest);
 
 #endif
