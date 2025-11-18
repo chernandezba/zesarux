@@ -868,6 +868,8 @@ extern int util_convert_z80_to_scr(char *filename,char *archivo_destino);
 
 extern int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_vacia);
 
+extern int util_convert_zx80ram_to_scr(char *filename,char *archivo_destino,int *p_pantalla_vacia);
+
 extern int util_convert_zsf_to_scr(char *filename,char *archivo_destino);
 
 extern int util_convert_any_to_scr(char *filename,char *archivo_destino);

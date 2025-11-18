@@ -19455,6 +19455,20 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     util_convert_p_to_scr(tempscr,archivo_destino,NULL);
                 }
 
+                //Si es ZX80, hay que hacer un paso intermedio. Renderizar pantalla de ZX80 como SCR
+                else if (last_machine_id_read==MACHINE_ID_ZX80) {
+                    char archivo_sin_directorio[256];
+
+                    util_get_file_no_directory(filename,archivo_sin_directorio);
+
+                    char tempscr[PATH_MAX];
+
+                    sprintf (tempscr,"%s/temp_%s.zx80ram",get_tmpdir_base(),archivo_sin_directorio);
+
+                    util_save_file(&buffer_memoria[offset_pantalla],block_lenght,tempscr);
+                    util_convert_zx80ram_to_scr(tempscr,archivo_destino,NULL);
+                }
+
                 else  {
                     util_save_file(&buffer_memoria[offset_pantalla],6912,archivo_destino);
                 }
@@ -19927,6 +19941,213 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
     return 0;
 
 }
+
+
+void util_convert_zx80ram_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pantalla_destino)
+{
+
+    //Validar origen
+    if (y<0 || x<0 || y>23 || x>32) {
+        //printf ("x o y fuera de rango\n");
+        return;
+    }
+
+    //printf ("x %d y %d car %d\n",x,y,caracter);
+
+    z80_int direccion=screen_addr_table[(y*8*32)+x];
+
+
+    int inverso=0;
+
+    if (caracter & 128) {
+        caracter -=128;
+        inverso=1;
+    }
+
+
+    int scanline;
+
+    int offset_caracter=caracter*8;
+
+
+    for (scanline=0;scanline<8;scanline++) {
+        //Validar origen
+        if (offset_caracter>=512) {
+            //printf("offset caracter %d fuera de rango\n",caracter);
+            return;
+        }
+
+        z80_byte byte_leido=char_set_zx80_no_ascii[offset_caracter++];
+
+        //Validar destino
+        if (direccion>=6912) {
+            //printf("offset destino %d fuera de rango\n",direccion);
+            return;
+        }
+
+        if (inverso) byte_leido ^=255;
+
+        pantalla_destino[direccion]=byte_leido;
+
+        direccion +=256;
+
+
+    }
+}
+
+//Convertir ram de zx80 a pantalla SCR de Spectrum
+//pantalla_vacia puntero a variable, se pondra la variable a 1 si la pantalla esta vacia. Puntero a NULL si no queremos usar esto
+//Nota: parece que los snapshot de zx80 (.o) no guardan nunca la pantalla, por lo que un conversor de .o a .scr no tiene sentido
+int util_convert_zx80ram_to_scr(char *filename,char *archivo_destino,int *p_pantalla_vacia)
+{
+    //Asumimos que la pantalla esta vacia
+    int pantalla_vacia=1;
+
+    if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
+
+    z80_byte *buffer_lectura;
+
+    long long int bytes_to_load=get_file_size(filename);
+
+    if (bytes_to_load<20) return 1; //Tamaño muy pequeño
+
+    buffer_lectura=malloc(bytes_to_load);
+
+    if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+
+    FILE *ptr_pfile;
+
+
+
+    //int leidos;
+
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
+            debug_printf(VERBOSE_ERR,"Error opening %s",filename);
+            return 1;
+    }
+
+
+
+    //Load File
+
+    zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+
+
+
+    zvfs_fclose(in_fatfs,ptr_pfile,&fil);
+
+
+//        //puntero pantalla en DFILE
+    /*
+    video_pointer=peek_word_no_time(0x400C);
+
+
+    y snap se carga en:
+
+    puntero_inicio=memoria_spectrum+0x4009;
+
+    por tanto desde el offset de un .p file es en la posicion 3
+
+    Luego restar a eso 9 bytes
+
+
+    el primer byte es 118 . saltarlo
+    */
+
+    int normal_snapshot_load_addr=0x4000;
+
+
+
+    int offset_puntero=0x400C-normal_snapshot_load_addr;
+
+    z80_int video_pointer=buffer_lectura[offset_puntero]+256*buffer_lectura[offset_puntero+1];
+
+
+
+
+    video_pointer -=normal_snapshot_load_addr;
+
+
+
+    //Asignamos 6912 bytes para la pantalla
+    z80_byte *buffer_pantalla;
+
+    buffer_pantalla=malloc(6912);
+
+    if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+    //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
+    int i;
+
+    for (i=0;i<6144;i++) {
+        buffer_pantalla[i]=0;
+    }
+
+    for (;i<6912;i++) {
+        buffer_pantalla[i]=56+64;
+    }
+
+
+    //se supone que el primer byte es 118 . saltarlo
+    video_pointer++;
+    int y=0;
+    int x=0;
+    z80_byte caracter;
+
+    //printf("video_pointer %d\n",video_pointer);
+
+    while (y<24 && video_pointer<bytes_to_load) {
+        //printf("video_pointer %d\n",video_pointer);
+        caracter=buffer_lectura[video_pointer++];
+        if (caracter==118) {
+            y++;
+            x=0;
+        }
+        else {
+            //z80_bit inverse;
+            //printf("byte: %d\n",caracter);
+
+            if (caracter) pantalla_vacia=0;
+
+            util_convert_zx80ram_to_scr_putchar(caracter,x,y,buffer_pantalla);
+
+            //caracter=da_codigo81(caracter,&inverse);
+            //printf ("%c",caracter);
+
+            x++;
+
+            if (x==32) {
+                //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
+                video_pointer++;
+                x=0;
+                y++;
+            }
+        }
+    }
+
+    //Grabar pantalla
+    util_save_file(buffer_pantalla,6912,archivo_destino);
+
+    free(buffer_pantalla);
+    free(buffer_lectura);
+
+
+    if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
+
+    return 0;
+
+}
+
+
 
 
 z80_byte *util_convert_memory_to_txt_basic_listing_last_memory;
