@@ -26352,23 +26352,33 @@ void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,i
     if (dibujar) zxvision_putpixel(w,x,y,color);
 }
 
+//10 pixeles y 10 transiciones entre cada pantalla
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS 10
 
-void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int offset_y,int tramado)
+//Cantidad de capas (previews de snapshots) a mostrar
+#define MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS 5
+
+//sumar MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS para que la que aparece por debajo al desplazar no entre en la zona del texto
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X (1*(menu_char_width)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y (2*(menu_char_height)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
+
+
+void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapshot,int offset_x,int offset_y,int tramado)
 {
     int indice=snapshot_in_ram_get_element(snapshot);
 
     if (indice>=0) {
-            
+
         int *buffer_intermedio;
-			
+
 		//buscar snapshot en cache
 		int id_cache=snaps_ram_cache_search(snapshot);
-			
+
         if (id_cache>=0) {
             buffer_intermedio=snaps_ram_cache[id_cache].memoria;
         }
-		
-		else {			
+
+		else {
 
             z80_byte *puntero_memoria;
             int longitud;
@@ -26382,102 +26392,128 @@ void menu_snapshot_in_ram_browse_render_one_screen(int snapshot,int offset_x,int
                 longitud
             );*/
 
-		//Leemos el archivo en memoria
+            //Leemos el archivo en memoria
 
 
 
-        //La manera mas facil ahora es usar la función de convertir archivo zsf en scr
-        //aunque obviamente escribirá en disco dos archivos temporales,
-        //se trata de hacer lo mas eficiente posible, que solo se escriban estos archivos cuando sea necesario
+            //La manera mas facil ahora es usar la función de convertir archivo zsf en scr
+            //aunque obviamente escribirá en disco dos archivos temporales,
+            //se trata de hacer lo mas eficiente posible, que solo se escriban estos archivos cuando sea necesario
 
 
-        char temp_zsf_file[PATH_MAX];
-        char temp_scr_file[PATH_MAX];
-        sprintf(temp_zsf_file,"%s/snap_browse_temp.zsf",get_tmpdir_base());
-        sprintf(temp_scr_file,"%s/snap_browse_temp.scr",get_tmpdir_base());
+            char temp_zsf_file[PATH_MAX];
+            char temp_scr_file[PATH_MAX];
+            sprintf(temp_zsf_file,"%s/snap_browse_temp.zsf",get_tmpdir_base());
+            sprintf(temp_scr_file,"%s/snap_browse_temp.scr",get_tmpdir_base());
 
-        util_save_file(puntero_memoria,longitud,temp_zsf_file);
-        util_convert_zsf_to_scr(temp_zsf_file,temp_scr_file);
-
-
-
-		//buffer lectura archivo
-		z80_byte *buf_pantalla;
-
-		buf_pantalla=malloc(6912);
-
-		if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
-
-        lee_archivo(temp_scr_file,(char *)buf_pantalla,6912);
+            util_save_file(puntero_memoria,longitud,temp_zsf_file);
+            util_convert_zsf_to_scr(temp_zsf_file,temp_scr_file);
 
 
 
-		//Asignamos primero buffer intermedio
-		
+            //buffer lectura archivo
+            z80_byte *buf_pantalla;
 
-		int ancho=256;
-		int alto=192;
+            buf_pantalla=malloc(6912);
+
+            if (buf_pantalla==NULL) cpu_panic("Can not allocate buffer for screen read");
+
+            lee_archivo(temp_scr_file,(char *)buf_pantalla,6912);
 
 
-		int elementos=ancho*alto;
-		
+
+            //Asignamos primero buffer intermedio
 
 
-		buffer_intermedio=malloc(sizeof(int)*elementos);
+            int ancho=256;
+            int alto=192;
 
-		if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
 
-		menu_filesel_preview_convert_scr_spec_to_buf(buf_pantalla,buffer_intermedio);
+            int elementos=ancho*alto;
 
-		
-		free(buf_pantalla);
 
-		//guardar en cache buffer_intermedio por id de snapshot
-		snaps_ram_cache_add(snapshot,buffer_intermedio);
 
-        
-        //free(buffer_intermedio);
-        
+            buffer_intermedio=malloc(sizeof(int)*elementos);
+
+            if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
+
+            menu_filesel_preview_convert_scr_spec_to_buf(buf_pantalla,buffer_intermedio);
+
+
+            free(buf_pantalla);
+
+            //guardar en cache buffer_intermedio por id de snapshot
+            snaps_ram_cache_add(snapshot,buffer_intermedio);
+
+
+            //free(buffer_intermedio);
+
 		}
-		
+
 		menu_filesel_overlay_assign_memory_preview(256,192);
-        
+
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
-        
+
         int reducir=0;
-        
+
         int recuadro_ancho=256;
         int recuadro_alto=192;
-        
-        
+
+        //Calcular si cabe en la ventana todos los previews en grande, y si no, reducirlos a mitad
+        /*
+        //10 pixeles y 10 transiciones entre cada pantalla
+        #define MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS 10
+
+        //Cantidad de capas (previews de snapshots) a mostrar
+        #define MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS 5
+
+        //sumar MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS para que la que aparece por debajo al desplazar no entre en la zona del texto
+        #define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X (1*(menu_char_width)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
+        #define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y (2*(menu_char_height)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
+        */
+
+        int espacio_ancho=((MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS*MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)+256);
+        int espacio_alto=((MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS*MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)+192);
+        int total_ancho_previews=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X+espacio_ancho;
+        int total_alto_previews=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y+espacio_alto;
+
+        printf("total_ancho_previews %d width %d total_alto_previews %d alto %d\n",
+            total_ancho_previews,w->visible_width*menu_char_width,total_alto_previews,w->visible_height*menu_char_height);
+
+        //Se pierde 1 de alto
+        if (total_ancho_previews>w->visible_width*menu_char_width || total_alto_previews+(1*menu_char_height)>w->visible_height*menu_char_height) {
+            reducir=1;
+        }
+
+
         if (reducir) {
 			recuadro_ancho /=2;
 			recuadro_alto /=2;
 		}
 
-        menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_browse_window,offset_x,offset_y,
+        menu_filesel_overlay_draw_preview_scr(w,offset_x,offset_y,
 			256,192,reducir,tramado);
 
         menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;
 
         //recuadro
         //horizontal arriba
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,
+        zxvision_draw_line(w,offset_x-1,offset_y-1,
 			offset_x+recuadro_ancho,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //vertical izquierda
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y-1,
+        zxvision_draw_line(w,offset_x-1,offset_y-1,
 			offset_x-1,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //horizontal abajop
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x-1,offset_y+recuadro_alto,
+        zxvision_draw_line(w,offset_x-1,offset_y+recuadro_alto,
 			offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //vertical derecha
-        zxvision_draw_line(menu_snapshot_in_ram_browse_window,offset_x+recuadro_ancho,offset_y-1
+        zxvision_draw_line(w,offset_x+recuadro_ancho,offset_y-1
 			,offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
-        }
+    }
 }
 
 int menu_snapshot_in_ram_browse_forzar_dibujado=1;
@@ -26488,13 +26524,7 @@ int menu_snapshot_in_ram_browse_forzar_dibujado=1;
 int animacion_activa=0;
 int animacion_activa_incremento=0;
 
-//10 pixeles y 10 transiciones entre cada pantalla
-#define MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS 10
 
-
-//sumar MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS para que la que aparece por debajo al desplazar no entre en la zona del texto
-#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X (1*(menu_char_width)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
-#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y (2*(menu_char_height)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
 
 void menu_snapshot_in_ram_browse_overlay(void)
 {
@@ -26517,7 +26547,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0 && menu_snapshot_in_ram_browse_forzar_dibujado) {
         printf("Forzar dibujado %d\n",contador_segundo);
-        int total_capas=5;
+        int total_capas=MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS;
         int offset_x=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X; //menu_char_width*1;
         int offset_y=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y; //menu_char_height*2;
         int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas;
@@ -26600,7 +26630,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
             }
 
 
-            menu_snapshot_in_ram_browse_render_one_screen(inicio_snap,final_x,final_y,tramado);
+            menu_snapshot_in_ram_browse_render_one_screen(menu_snapshot_in_ram_browse_window,inicio_snap,final_x,final_y,tramado);
 
             offset_x +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
             offset_y +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
