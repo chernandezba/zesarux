@@ -19441,7 +19441,23 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 //compruebo por si acaso que block_lenght sea suficiente
                 if (last_machine_id_read==MACHINE_ID_INVES && block_lenght>16384+6912) offset_pantalla=16384;
 
-                util_save_file(&buffer_memoria[offset_pantalla],6912,archivo_destino);
+                //Si es ZX81, hay que hacer un paso intermedio. Renderizar pantalla de ZX81 como SCR
+                if (last_machine_id_read==MACHINE_ID_ZX81) {
+                    char archivo_sin_directorio[256];
+
+                    util_get_file_no_directory(filename,archivo_sin_directorio);
+
+                    char tempscr[PATH_MAX];
+
+                    sprintf (tempscr,"%s/temp_%s.zx81ram",get_tmpdir_base(),archivo_sin_directorio);
+
+                    util_save_file(&buffer_memoria[offset_pantalla],block_lenght,tempscr);
+                    util_convert_p_to_scr(tempscr,archivo_destino,NULL);
+                }
+
+                else  {
+                    util_save_file(&buffer_memoria[offset_pantalla],6912,archivo_destino);
+                }
 
                 free(buffer_memoria);
 
@@ -19741,6 +19757,7 @@ void util_convert_p_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *panta
 
 //Convertir .P y .81 y .P81 a pantalla SCR de Spectrum
 //pantalla_vacia puntero a variable, se pondra la variable a 1 si la pantalla esta vacia. Puntero a NULL si no queremos usar esto
+//Tambien vale un .ZX81RAM que es un formato inventado con toda la ram del zx81
 int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_vacia)
 {
         //Asumimos que la pantalla esta vacia
@@ -19827,6 +19844,11 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
 
        int normal_snapshot_load_addr=0x4009;
 
+       //para memoria ram en crudo tal cual
+       if (!util_compare_file_extension(filename,"zx81ram")) {
+            normal_snapshot_load_addr=0x4000;
+       }
+
        int offset_puntero=0x400C-normal_snapshot_load_addr;
 
        z80_int video_pointer=buffer_lectura[offset_puntero]+256*buffer_lectura[offset_puntero+1];
@@ -19868,7 +19890,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
 
                 //Ver rango
                 if (video_pointer>=bytes_to_load) {
-                    //printf("video pointer incorrecto\n");
+                    //printf("video pointer incorrecto %XH\n",video_pointer);
                     return 1;
                 }
 
@@ -19899,6 +19921,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
 
                         util_convert_p_to_scr_putchar(caracter,x,y,buffer_pantalla);
 
+
                         //caracter=da_codigo81(caracter,&inverse);
                         //printf ("%c",caracter);
 
@@ -19906,7 +19929,10 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
 
                         if (x==32) {
                                 //Ver rango
-                                if (video_pointer>=bytes_to_load) return 1;
+                                if (video_pointer>=bytes_to_load) {
+                                    //printf("puntero llega al final\n");
+                                    return 1;
+                                }
 
                                 if (buffer_lectura[video_pointer]!=118) {
                                         //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);

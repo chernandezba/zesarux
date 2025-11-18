@@ -4433,7 +4433,7 @@ void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen,int yo
             int dibujar=1;
 
             if (tramado) {
-                int calculo_tramado=x+y;
+                //int calculo_tramado=x+y;
                 //if ( ((x+y) % tramado)!=0) dibujar=0;
                 if ( (x % tramado)!=0 || (y % tramado)!=0 ) dibujar=0;
             }
