@@ -16492,6 +16492,31 @@ void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destin
 
 }
 
+void util_save_append_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file)
+{
+
+
+    FILE *ptr_destination_file;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+    if (zvfs_fopen_write_append(destination_file,&in_fatfs,&ptr_destination_file,&fil)<0) {
+        debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
+        return;
+    }
+
+
+    zvfs_fwrite(in_fatfs,origin,tamanyo_origen,ptr_destination_file,&fil);
+
+    zvfs_fclose(in_fatfs,ptr_destination_file,&fil);
+
+
+}
+
 //Leer hasta numero de bytes concreto
 int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
 {
@@ -19363,6 +19388,10 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
         int i;
 
+        int offset_pantalla;
+
+        z80_byte *buffer_memoria;
+
         switch(block_id) {
 
             case ZSF_MACHINEID:
@@ -19385,7 +19414,74 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 }
             break;
 
+            case ZSF_QL_RAMBLOCK:
+                /*
+                A ram binary block for a QL, of 16kb
+                Byte Fields:
+                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+                    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+                1,2: Block start address (currently unused)
+                3,4: Block lenght
+                5: ram block id
+                6 and next bytes: data bytes
+                */
 
+                i=0;
+
+                //Hay que leer dos bloques de estos
+
+                block_flags=block_data[i];
+
+                //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 6 bytes
+
+
+                i++;
+                block_start=value_8_to_16(block_data[i+1],block_data[i]);
+                i +=2;
+                block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+                i+=2;
+
+                ram_page=block_data[i];
+                i++;
+
+                //segundo bloque de pantalla. podemos salir
+                if (ram_page==1) salir=1;
+
+                if (block_lenght==0) block_lenght=65536;
+
+                debug_printf (VERBOSE_DEBUG,"Block start: %d Length: %d Compressed: %s Length_source: %d",block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+                //printf ("Block start: %d Length: %d Compressed: %d Length_source: %d\n",block_start,block_lenght,block_flags&1,longitud_original);
+
+
+                longitud_original -=6;
+
+                //Asignamos memoria temporal para el bloque
+
+
+                //Por si acaso, el doble de lo que en teoria se necesita
+                buffer_memoria=malloc(block_lenght*2);
+
+                if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");
+
+
+                load_zsf_snapshot_block_data_addr(&block_data[i],buffer_memoria,block_lenght,longitud_original,block_flags&1);
+
+                offset_pantalla=0;
+
+                //printf("lenght: %d\n",block_lenght);
+
+                if (block_lenght>=16384) {
+                    if (ram_page==0) {
+                        util_save_file(&buffer_memoria[offset_pantalla],16384,archivo_destino);
+                    }
+                    else {
+                        util_save_append_file(&buffer_memoria[offset_pantalla],16384,archivo_destino);
+                    }
+                }
+
+                free(buffer_memoria);
+
+            break;
 
 
             case ZSF_RAMBLOCK:
@@ -19423,7 +19519,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 longitud_original -=5;
 
                 //Asignamos memoria temporal para el bloque
-                z80_byte *buffer_memoria;
+
 
                 //Por si acaso, el doble de lo que en teoria se necesita
                 buffer_memoria=malloc(block_lenght*2);
@@ -19433,7 +19529,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
                 load_zsf_snapshot_block_data_addr(&block_data[i],buffer_memoria,block_lenght,longitud_original,block_flags&1);
 
-                int offset_pantalla=0;
+                offset_pantalla=0;
 
                 //printf("lenght: %d\n",block_lenght);
 

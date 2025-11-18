@@ -15,7 +15,7 @@ Added emulation of Trojan Light Pen
 Added emulation of Datel Lightwriter
 Added emulation of Spectrum Doodler Lightpen
 Added lightgun scope
-Added ZSF snapshot previews for ZX80 and ZX81 machines
+Added ZSF snapshot previews for QL, ZX80 and ZX81 machines
 
 Improved Snapshots in RAM:
 - Browse visually all the stored snapshots in RAM, like on a "Time Machine"

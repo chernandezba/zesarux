@@ -821,6 +821,7 @@ extern int util_extract_rzx(char *filename,char *tempdir,char *z80_destination,c
 extern int util_convert_rzx_to_z80(char *filename,char *archivo_destino);
 
 extern void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file);
+extern void util_save_append_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file);
 extern int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer);
 
 extern void util_string_replace_char(char *s,char orig,char dest);
