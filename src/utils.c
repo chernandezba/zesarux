@@ -19872,11 +19872,11 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
     int i;
 
     for (i=0;i<6144;i++) {
-            buffer_pantalla[i]=0;
+        buffer_pantalla[i]=0;
     }
 
     for (;i<6912;i++) {
-            buffer_pantalla[i]=56+64;
+        buffer_pantalla[i]=56+64;
     }
 
 
@@ -19886,44 +19886,20 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
     int x=0;
     z80_byte caracter;
 
-    int salir=0;
 
-    while (y<24 && !salir) {
-        //printf ("y: %d\n",y);
-
-        //Ver rango
-        if (video_pointer>=bytes_to_load) {
-            //printf("video pointer incorrecto %XH\n",video_pointer);
-            return 1;
-        }
-
+    while (y<24 && video_pointer<bytes_to_load) {
         caracter=buffer_lectura[video_pointer++];
         if (caracter==118) {
-                //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
-                        /*for (;x<32;x++) {
-                                printf (" ");
-                                util_convert_p_to_scr_putchar(' ' ,x,y,buffer_pantalla);
-            //puntero_printchar_caracter(' ');
-                        }*/
-                        y++;
-
-
-
-                        //printf ("\n");
-        //puntero_printchar_caracter('\n');
-
-
-                        x=0;
+            y++;
+            x=0;
         }
         else {
             //z80_bit inverse;
-
             //printf("byte: %d\n",caracter);
 
             if (caracter) pantalla_vacia=0;
 
             util_convert_p_to_scr_putchar(caracter,x,y,buffer_pantalla);
-
 
             //caracter=da_codigo81(caracter,&inverse);
             //printf ("%c",caracter);
@@ -19931,29 +19907,12 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_v
             x++;
 
             if (x==32) {
-                    //Ver rango
-                    if (video_pointer>=bytes_to_load) {
-                        //printf("puntero llega al final\n");
-                        return 1;
-                    }
-
-                    if (buffer_lectura[video_pointer]!=118) {
-                            //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
-                    }
-                    //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
-                    video_pointer++;
-                    x=0;
-                    y++;
-
-
-                            //printf ("\n");
-            //puntero_printchar_caracter('\n');
-
+                //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
+                video_pointer++;
+                x=0;
+                y++;
             }
-
         }
-
-
     }
 
     //Grabar pantalla
