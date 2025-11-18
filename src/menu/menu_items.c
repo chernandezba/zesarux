@@ -36456,6 +36456,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_debug,'u');
             //No activamos menu_add_item_menu_se_cerrara porque si no, al pulsar Recent->Space, se cierran todas las ventanas
             //haremos salir_todos_menus al final de menu_debug_file_utils
+            //TODO: quiza hacer que la rutina en Recent, no salga con salir_todos_menus=1
             //menu_add_item_menu_se_cerrara(array_menu_debug);
             menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_tooltip(array_menu_debug,"Some file utilities. NOTE: Shortcuts must be chosen pressing Shift+Key");
