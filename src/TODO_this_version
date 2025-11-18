@@ -119,6 +119,7 @@ ok cache *intentar optimizar la rutina: por ejemplo que no tenga que guardar en 
 *si no puede generar miniatura (por ejemplo en QL) que salga en negro (ahora sale la ultima generada)
 ok *convert zsf a scr que pueda hacerlo con zx81
 *convert zsf a scr que pueda hacerlo con zx80
+*convert zsf a scr que pueda hacerlo con ql
 ok *miniatura pequeña si no cabe grande
 
 -opcion para compressed ZSF o no que se guarde en config
