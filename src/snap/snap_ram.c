@@ -129,7 +129,7 @@ int snaps_ram_cache_search(int snapshot)
     return -1;
 }
 
-void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
+void snaps_ram_cache_add(int snapshot,int *buffer_intermedio,int alto)
 {
     //buscar si hay uno libre
     int i;
@@ -165,6 +165,7 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio)
     snaps_ram_cache[i].memoria=buffer_intermedio;
     snaps_ram_cache[i].snapshot=snapshot;
     snaps_ram_cache[i].ultimo_acceso=snaps_ram_cache_cuando_acceso++;
+    snaps_ram_cache[i].alto=alto;
     snaps_ram_cache[i].usado=1;
 
 }

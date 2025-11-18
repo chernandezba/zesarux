@@ -68,12 +68,14 @@ struct s_snaps_ram_cache {
 	int *memoria;
     //ultimo acceso
 	unsigned int ultimo_acceso;
+    //para distinguir preview alto de spectrum o ql
+    int alto;
 };
 
 
 #define SNAPS_RAM_CACHE_TOTAL 10
 extern struct s_snaps_ram_cache snaps_ram_cache[];
 extern int snaps_ram_cache_search(int snapshot);
-extern void snaps_ram_cache_add(int snapshot,int *buffer_intermedio);
+extern void snaps_ram_cache_add(int snapshot,int *buffer_intermedio,int alto);
 
 #endif

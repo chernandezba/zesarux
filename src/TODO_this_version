@@ -119,9 +119,7 @@ ok cache *intentar optimizar la rutina: por ejemplo que no tenga que guardar en 
 *si no puede generar miniatura (por ejemplo en QL) que salga en negro (ahora sale la ultima generada)
 ok *convert zsf a scr que pueda hacerlo con zx81
 ok *convert zsf a scr que pueda hacerlo con zx80
-*convert zsf a scr que pueda hacerlo con ql -> no seria un scr de spectrum sino de ql
-usar menu_filesel_preview_convert_scr_ql_to_buf en vez de menu_filesel_preview_convert_scr_spec_to_buf. como sabe que es snapshot de ql?
-funcion para extraer los primeros 32 kb de ram de un snapshot de ZSF de QL (usando conversion de zsf a ql screen)
+*convert zsf a scr que pueda hacerlo con ql -> acabar de revisar
 
 ok *miniatura pequeña si no cabe grande
 

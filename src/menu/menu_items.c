@@ -26379,6 +26379,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
 
         if (id_cache>=0) {
             buffer_intermedio=snaps_ram_cache[id_cache].memoria;
+            alto=snaps_ram_cache[id_cache].alto;
         }
 
         else {
@@ -26458,7 +26459,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
             free(buf_pantalla);
 
             //guardar en cache buffer_intermedio por id de snapshot
-            snaps_ram_cache_add(snapshot,buffer_intermedio);
+            snaps_ram_cache_add(snapshot,buffer_intermedio,alto);
 
 
             //free(buffer_intermedio);
@@ -26468,12 +26469,12 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
         //Maximo para 256x256 de QL
         menu_filesel_overlay_assign_memory_preview(256,256);
 
-        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,alto);
 
         int reducir=0;
 
         int recuadro_ancho=256;
-        int recuadro_alto=192;
+        int recuadro_alto=alto;
 
         //Calcular si cabe en la ventana todos los previews en grande, y si no, reducirlos a mitad
         /*
@@ -26489,7 +26490,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
         */
 
         int espacio_ancho=((MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS*MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)+256);
-        int espacio_alto=((MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS*MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)+192);
+        int espacio_alto=((MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS*MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)+alto);
         int total_ancho_previews=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X+espacio_ancho;
         int total_alto_previews=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y+espacio_alto;
 
@@ -26508,7 +26509,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
         }
 
         menu_filesel_overlay_draw_preview_scr(w,offset_x,offset_y,
-            256,192,reducir,tramado);
+            256,alto,reducir,tramado);
 
         menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;
 
