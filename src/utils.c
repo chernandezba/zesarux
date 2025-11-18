@@ -19760,209 +19760,212 @@ void util_convert_p_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *panta
 //Tambien vale un .ZX81RAM que es un formato inventado con toda la ram del zx81
 int util_convert_p_to_scr(char *filename,char *archivo_destino,int *p_pantalla_vacia)
 {
-        //Asumimos que la pantalla esta vacia
-        int pantalla_vacia=1;
+    //Asumimos que la pantalla esta vacia
+    int pantalla_vacia=1;
 
-        if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
+    if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
 
-        //snapshot .P y .P81 a SCR
-        z80_byte *buffer_lectura;
+    //snapshot .P y .P81 a SCR
+    z80_byte *buffer_lectura;
 
-        long long int bytes_to_load=get_file_size(filename);
+    long long int bytes_to_load=get_file_size(filename);
 
-        if (bytes_to_load<20) return 1; //Tamaño muy pequeño
+    if (bytes_to_load<20) return 1; //Tamaño muy pequeño
 
-        buffer_lectura=malloc(bytes_to_load);
+    buffer_lectura=malloc(bytes_to_load);
 
-        if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
-
-
-        FILE *ptr_pfile;
+    if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot reading");
 
 
-
-        //int leidos;
-
-
-        //Soporte para FatFS
-        FIL fil;        /* File object */
-        //FRESULT fr;     /* FatFs return code */
-
-        int in_fatfs;
+    FILE *ptr_pfile;
 
 
-        if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
-                debug_printf(VERBOSE_ERR,"Error opening %s",filename);
-                return 1;
+
+    //int leidos;
+
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
+            debug_printf(VERBOSE_ERR,"Error opening %s",filename);
+            return 1;
+    }
+
+    //Saltar el nombre del principio si es un .p81
+    if (!util_compare_file_extension(filename,"p81")) {
+        z80_byte byte_leido=0;
+        while (bytes_to_load>0 && (byte_leido&128)==0) {
+            //printf("saltando byte\n");
+            zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
+            bytes_to_load--;
         }
-
-        //Saltar el nombre del principio si es un .p81
-        if (!util_compare_file_extension(filename,"p81")) {
-            z80_byte byte_leido=0;
-            while (bytes_to_load>0 && (byte_leido&128)==0) {
-                //printf("saltando byte\n");
-                zvfs_fread(in_fatfs,&byte_leido,1,ptr_pfile,&fil);
-                bytes_to_load--;
-            }
-        }
+    }
 
 
-        //Load File
+    //Load File
 
-        /*
-        ptr_pfile=fopen(filename,"rb");
-        if (ptr_pfile==NULL) {
-                debug_printf(VERBOSE_ERR,"Error opening %s",filename);
-                return 1;
-        }
-        */
+    /*
+    ptr_pfile=fopen(filename,"rb");
+    if (ptr_pfile==NULL) {
+            debug_printf(VERBOSE_ERR,"Error opening %s",filename);
+            return 1;
+    }
+    */
 
-        //leidos=zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
-        zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
-        //leidos=fread(buffer_lectura,1,bytes_to_load,ptr_pfile);
+    //leidos=zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+    zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+    //leidos=fread(buffer_lectura,1,bytes_to_load,ptr_pfile);
 
 
-        zvfs_fclose(in_fatfs,ptr_pfile,&fil);
-        //fclose(ptr_pfile);
+    zvfs_fclose(in_fatfs,ptr_pfile,&fil);
+    //fclose(ptr_pfile);
 
 //        //puntero pantalla en DFILE
-        /*
-        video_pointer=peek_word_no_time(0x400C);
+    /*
+    video_pointer=peek_word_no_time(0x400C);
 
 
-        y snap se carga en:
+    y snap se carga en:
 
-        puntero_inicio=memoria_spectrum+0x4009;
+    puntero_inicio=memoria_spectrum+0x4009;
 
-        por tanto desde el offset de un .p file es en la posicion 3
+    por tanto desde el offset de un .p file es en la posicion 3
 
-        Luego restar a eso 9 bytes
-
-
-        el primer byte es 118 . saltarlo
-        */
-
-       int normal_snapshot_load_addr=0x4009;
-
-       //para memoria ram en crudo tal cual
-       if (!util_compare_file_extension(filename,"zx81ram")) {
-            normal_snapshot_load_addr=0x4000;
-       }
-
-       int offset_puntero=0x400C-normal_snapshot_load_addr;
-
-       z80_int video_pointer=buffer_lectura[offset_puntero]+256*buffer_lectura[offset_puntero+1];
-
-       //Nota: parece que los snapshot de zx80 (.o) no guardan nunca la pantalla, por lo que un conversor de .o a .scr no tiene sentido
-       //aunque en ese caso bastaria con poner ormal_snapshot_load_addr=0x4000
+    Luego restar a eso 9 bytes
 
 
-       video_pointer -=normal_snapshot_load_addr;
+    el primer byte es 118 . saltarlo
+    */
 
-       //char_set_zx81_no_ascii
+    int normal_snapshot_load_addr=0x4009;
 
-       //Asignamos 6912 bytes para la pantalla
-        z80_byte *buffer_pantalla;
+    //para memoria ram en crudo tal cual
+    if (!util_compare_file_extension(filename,"zx81ram")) {
+        normal_snapshot_load_addr=0x4000;
+    }
 
-        buffer_pantalla=malloc(6912);
+    int offset_puntero=0x400C-normal_snapshot_load_addr;
 
-        if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+    z80_int video_pointer=buffer_lectura[offset_puntero]+256*buffer_lectura[offset_puntero+1];
 
-        //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
-        int i;
+    //Nota: parece que los snapshot de zx80 (.o) no guardan nunca la pantalla, por lo que un conversor de .o a .scr no tiene sentido
+    //aunque en ese caso bastaria con poner ormal_snapshot_load_addr=0x4000
 
-        for (i=0;i<6144;i++) {
-                buffer_pantalla[i]=0;
+
+    video_pointer -=normal_snapshot_load_addr;
+
+    //char_set_zx81_no_ascii
+
+    //Asignamos 6912 bytes para la pantalla
+    z80_byte *buffer_pantalla;
+
+    buffer_pantalla=malloc(6912);
+
+    if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
+
+    //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
+    int i;
+
+    for (i=0;i<6144;i++) {
+            buffer_pantalla[i]=0;
+    }
+
+    for (;i<6912;i++) {
+            buffer_pantalla[i]=56+64;
+    }
+
+
+    //se supone que el primer byte es 118 . saltarlo
+    video_pointer++;
+    int y=0;
+    int x=0;
+    z80_byte caracter;
+
+    int salir=0;
+
+    while (y<24 && !salir) {
+        //printf ("y: %d\n",y);
+
+        //Ver rango
+        if (video_pointer>=bytes_to_load) {
+            //printf("video pointer incorrecto %XH\n",video_pointer);
+            return 1;
         }
 
-        for (;i<6912;i++) {
-                buffer_pantalla[i]=56+64;
+        caracter=buffer_lectura[video_pointer++];
+        if (caracter==118) {
+                //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
+                        /*for (;x<32;x++) {
+                                printf (" ");
+                                util_convert_p_to_scr_putchar(' ' ,x,y,buffer_pantalla);
+            //puntero_printchar_caracter(' ');
+                        }*/
+                        y++;
+
+
+
+                        //printf ("\n");
+        //puntero_printchar_caracter('\n');
+
+
+                        x=0;
         }
+        else {
+            //z80_bit inverse;
+
+            //printf("byte: %d\n",caracter);
+
+            if (caracter) pantalla_vacia=0;
+
+            util_convert_p_to_scr_putchar(caracter,x,y,buffer_pantalla);
 
 
-       //se supone que el primer byte es 118 . saltarlo
-        video_pointer++;
-        int y=0;
-        int x=0;
-        z80_byte caracter;
-        while (y<24) {
-                //printf ("y: %d\n",y);
+            //caracter=da_codigo81(caracter,&inverse);
+            //printf ("%c",caracter);
 
-                //Ver rango
-                if (video_pointer>=bytes_to_load) {
-                    //printf("video pointer incorrecto %XH\n",video_pointer);
-                    return 1;
-                }
+            x++;
 
-                caracter=buffer_lectura[video_pointer++];
-                if (caracter==118) {
-                        //rellenar con espacios hasta final de linea. Dado que ya hemos borrado el buffer de pantalla a 0 , esto no hace falta
-                                /*for (;x<32;x++) {
-                                        printf (" ");
-                                        util_convert_p_to_scr_putchar(' ' ,x,y,buffer_pantalla);
-                    //puntero_printchar_caracter(' ');
-                                }*/
-                                y++;
+            if (x==32) {
+                    //Ver rango
+                    if (video_pointer>=bytes_to_load) {
+                        //printf("puntero llega al final\n");
+                        return 1;
+                    }
+
+                    if (buffer_lectura[video_pointer]!=118) {
+                            //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
+                    }
+                    //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
+                    video_pointer++;
+                    x=0;
+                    y++;
 
 
+                            //printf ("\n");
+            //puntero_printchar_caracter('\n');
 
-                                //printf ("\n");
-                //puntero_printchar_caracter('\n');
+            }
 
-
-                                x=0;
-                }
-                else {
-                        //z80_bit inverse;
-
-                        //printf("byte: %d\n",caracter);
-
-                        if (caracter) pantalla_vacia=0;
-
-                        util_convert_p_to_scr_putchar(caracter,x,y,buffer_pantalla);
-
-
-                        //caracter=da_codigo81(caracter,&inverse);
-                        //printf ("%c",caracter);
-
-                        x++;
-
-                        if (x==32) {
-                                //Ver rango
-                                if (video_pointer>=bytes_to_load) {
-                                    //printf("puntero llega al final\n");
-                                    return 1;
-                                }
-
-                                if (buffer_lectura[video_pointer]!=118) {
-                                        //debug_printf (VERBOSE_DEBUG,"End of line %d is not 118 opcode. Is: 0x%x",y,memoria_spectrum[video_pointer]);
-                                }
-                                //saltamos el HALT que debe haber en el caso de linea con 32 caracteres
-                                video_pointer++;
-                                x=0;
-                                y++;
-
-
-                                //printf ("\n");
-                //puntero_printchar_caracter('\n');
-
-                        }
-
-                }
+        }
 
 
     }
 
-        //Grabar pantalla
-        util_save_file(buffer_pantalla,6912,archivo_destino);
+    //Grabar pantalla
+    util_save_file(buffer_pantalla,6912,archivo_destino);
 
-        free(buffer_pantalla);
-        free(buffer_lectura);
+    free(buffer_pantalla);
+    free(buffer_lectura);
 
 
-        if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
+    if (p_pantalla_vacia!=NULL) *p_pantalla_vacia=pantalla_vacia;
 
-        return 0;
+    return 0;
 
 }
 
