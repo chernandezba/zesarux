@@ -4859,6 +4859,168 @@ int menu_filesel_preview_render_scr_ql_count_flash_bits(z80_byte *buf_pantalla)
     return total_bit_flash;
 }
 
+
+void menu_filesel_preview_convert_scr_ql_to_buf(z80_byte *orig,int *dest)
+{
+    int total_bits_flash=menu_filesel_preview_render_scr_ql_count_flash_bits(orig);
+
+    //Si se pasa de un umbral de flash en toda la pantalla, podemos pensar que realmente
+    //es una pantalla en modo 0 y que por tanto es sin flash. Aun asi la renderizaremos
+    //como pantalla en modo 8 pero sin poner flash, que sera molesto
+    //TODO: en este caso podriamos renderizar como modo 0 (512x256 4 colores) pero
+    //un preview de 512x256 queda demasiado grande, ademas para que la relacion de aspecto fuese
+    //buena, se tendria que hacer de 512x512. Luego, podriamos pensar que si el preview se hace a mitad
+    //256x256 se tendria que ver bien, pero la reducción que hacemos del preview a la mitad no es un algoritmo bueno...
+    int desactivar_flash;
+
+    //Es un umbral detectado viendo muchas imagenes en modo 0 que se activa el parpadeo sin tener que hacerlo
+    //en cambio con una imagen con modo 8 con parpadeo intencionado (una linea de texto) no se llega a ese umbral
+    //y por tanto hara parpadeo
+    if (total_bits_flash>10000) desactivar_flash=1;
+    else desactivar_flash=0;
+
+////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
+    int total_alto;
+    int total_ancho;
+    int x,y;
+
+    unsigned int color1;
+    //unsigned int color2;
+
+    z80_byte green,red,blue;
+
+    z80_byte byte_leido_h,byte_leido_l;
+
+
+    int memoria_pantalla_ql=0;
+
+    int offset_destino=0;
+
+
+    total_alto=256;
+    total_ancho=512;
+
+    int flashing_color;
+
+    for (y=0;y<total_alto;y++){
+        //Al principio de cada linea, flash es siempre 0
+        int ql_linea_flashing=0;
+        for (x=0;x<256;) {
+
+/*
+In 512-pixel mode, two bits per pixel are used, and the GREEN and BLUE signals are tied together, giving a choice of four colours:
+black, white, green and red. On a monochrome screen, this will translate as a four level greyscale.
+In 256-pixel mode, four bits per pixel are used: one bit each for Red, Green and Blue, and one bit for flashing.
+The flash bit operates as a toggle: when set for the first time, it freezes the background colour at the value set by R, G and B,
+and starts flashing at the next bit in the line; when set for the second time, it stops flashing.
+Flashing is always cleared at the beginning of a raster line.
+
+
+Addressing for display memory starts at the bottom of dynamic RAM and progresses in the order of the raster
+scan - from left to right and from top to bottom of the picture. Each word in display memory is formatted as follows:
+
+High byte (A0=0)						Low Byte (A0=1)						Mode
+D7 D6 D5 D4 D3 D2 D1 D0			D7 D6 D5 D4 D3 D2 D1 D0
+G7 G6 G5 G4 G3 G2 G1 G0			R7 R6 R5 R4 R3 R2 R1 R0		512-pixel
+G3 F3 G2 F2 G1 F1 G0 F0			R3 B3 R2 B2 R1 B1 R0 B0		256-pixel
+
+
+R, G, Band F in the above refer to Red, Green, Blue and Flash. The numbering is such that a binary
+word appears written as it will appear on the display: ie R0 is the value of Red for the rightmost pixel,
+that is the last pixel to be shifted out onto the raster.
+10.3 Display Control Register
+This is a write-only register, which is at $18063 in the QL .
+One of its bits is available through the Qdos MT.DMODE trap: bit 3, which is 0 for 512-pixel mode and 1 for 256-pixel mode.
+The other two bits of the display control register are not supported by Qdos, these being bit 1 of the display
+control register, which can be used to blank the display completely, and bit 7, which can be used to switch the base of
+screen memory from $20000 to $28000. Future versions of Qdos may allow the system variables to be
+initialised at $30000 to take advantage of this dual- screen feature: the present version does not.
+Bits 0,2,4,5 and 6 of the display control register should never be set to anything other than zero, as they are
+reserved and may have unpredictable results in future versions of the QL hardware.
+*/
+            //En modo 256x256 hay parpadeo
+
+
+            byte_leido_h=orig[memoria_pantalla_ql];
+            memoria_pantalla_ql++;
+
+            byte_leido_l=orig[memoria_pantalla_ql];
+            memoria_pantalla_ql++;
+
+
+            int npixel;
+            for (npixel=7;npixel>=0;npixel-=2) {
+
+                //G3 F3 G2 F2 G1 F1 G0 F0                 R3 B3 R2 B2 R1 B1 R0 B0         256-pixel
+
+
+                green=((byte_leido_h)>>npixel)&1;
+                red=((byte_leido_l)>>npixel)&1;
+                blue=((byte_leido_l)>>(npixel-1))&1;
+
+
+/*
+//colores para QL
+const int ql_colortable_original[8]={
+0x000000, //Negro
+0x0000ff, //Azul
+0xff0000, //Rojo
+0xff00ff, //Magenta
+0x00ff00, //Verde
+0x00ffff, //Cyan
+0xffff00, //Amarillo
+0xffffff  //Blanco
+};
+*/
+
+                color1=green*4+red*2+blue;	// GRB
+                //printf ("estado parpadeo: %d\n",estado_parpadeo.v);
+
+                //TODO: estoy usando colores de la paleta del Spectrum en vez del QL,
+                //esto es culpa de la manera de almacenar el color con flash y sin flash, que va metido en los 8 bits bajos,
+                //aun siendo un int, no uso los 8 bits altos
+                //Aunque usase los 8 bits bajos para color sin flash y los altos para color con flash, el numero de color
+                //estaria limitado a 0-255, eso vale para Spectrum pero el numero de color en la paleta de QL es mayor que 256
+
+                //Entonces la mejor solucion es meter el numero de color de spectrum con brillo, que al final
+                //son los mismos valores RGB que uso para QL
+                color1 +=8;
+
+                int color_con_flash;
+                int color_sin_flash;
+
+                color_con_flash=color_sin_flash=color1;
+
+                if (ql_linea_flashing && estado_parpadeo.v && !desactivar_flash) {
+                    //color1=flashing_color;
+                    color_con_flash=flashing_color;
+                }
+
+
+
+                dest[offset_destino++]=color_sin_flash | (color_con_flash << 4);
+                x++;
+
+                //ql_putpixel_zoom(x++,y,color1);
+
+
+                //Ver si cambia valor bit flash
+                int bit_flashing=((byte_leido_h)>>(npixel-1))&1;
+                if (bit_flashing) {
+                    ql_linea_flashing ^=1;
+                    flashing_color=color1;
+                }
+
+
+            }
+        }
+    }
+////// Fin Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
+
+
+
+}
+
 void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,int *dest)
 {
 
@@ -4977,167 +5139,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
         if (buffer_intermedio==NULL)  cpu_panic("Cannot allocate memory for reduce buffer");
 
-
-
-        int total_bits_flash=menu_filesel_preview_render_scr_ql_count_flash_bits(buf_pantalla);
-
-        //Si se pasa de un umbral de flash en toda la pantalla, podemos pensar que realmente
-        //es una pantalla en modo 0 y que por tanto es sin flash. Aun asi la renderizaremos
-        //como pantalla en modo 8 pero sin poner flash, que sera molesto
-        //TODO: en este caso podriamos renderizar como modo 0 (512x256 4 colores) pero
-        //un preview de 512x256 queda demasiado grande, ademas para que la relacion de aspecto fuese
-        //buena, se tendria que hacer de 512x512. Luego, podriamos pensar que si el preview se hace a mitad
-        //256x256 se tendria que ver bien, pero la reducción que hacemos del preview a la mitad no es un algoritmo bueno...
-        int desactivar_flash;
-
-        //Es un umbral detectado viendo muchas imagenes en modo 0 que se activa el parpadeo sin tener que hacerlo
-        //en cambio con una imagen con modo 8 con parpadeo intencionado (una linea de texto) no se llega a ese umbral
-        //y por tanto hara parpadeo
-        if (total_bits_flash>10000) desactivar_flash=1;
-        else desactivar_flash=0;
-
-////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
-        int total_alto;
-        int total_ancho;
-        int x,y;
-
-        unsigned int color1;
-        //unsigned int color2;
-
-        z80_byte green,red,blue;
-
-        z80_byte byte_leido_h,byte_leido_l;
-
-
-        int memoria_pantalla_ql=0;
-
-        int offset_destino=0;
-
-
-        total_alto=256;
-        total_ancho=512;
-
-        int flashing_color;
-
-        for (y=0;y<total_alto;y++){
-            //Al principio de cada linea, flash es siempre 0
-            int ql_linea_flashing=0;
-            for (x=0;x<256;) {
-
-    /*
-    In 512-pixel mode, two bits per pixel are used, and the GREEN and BLUE signals are tied together, giving a choice of four colours:
-    black, white, green and red. On a monochrome screen, this will translate as a four level greyscale.
-    In 256-pixel mode, four bits per pixel are used: one bit each for Red, Green and Blue, and one bit for flashing.
-    The flash bit operates as a toggle: when set for the first time, it freezes the background colour at the value set by R, G and B,
-    and starts flashing at the next bit in the line; when set for the second time, it stops flashing.
-    Flashing is always cleared at the beginning of a raster line.
-
-
-    Addressing for display memory starts at the bottom of dynamic RAM and progresses in the order of the raster
-    scan - from left to right and from top to bottom of the picture. Each word in display memory is formatted as follows:
-
-    High byte (A0=0)						Low Byte (A0=1)						Mode
-    D7 D6 D5 D4 D3 D2 D1 D0			D7 D6 D5 D4 D3 D2 D1 D0
-    G7 G6 G5 G4 G3 G2 G1 G0			R7 R6 R5 R4 R3 R2 R1 R0		512-pixel
-    G3 F3 G2 F2 G1 F1 G0 F0			R3 B3 R2 B2 R1 B1 R0 B0		256-pixel
-
-
-    R, G, Band F in the above refer to Red, Green, Blue and Flash. The numbering is such that a binary
-    word appears written as it will appear on the display: ie R0 is the value of Red for the rightmost pixel,
-    that is the last pixel to be shifted out onto the raster.
-    10.3 Display Control Register
-    This is a write-only register, which is at $18063 in the QL .
-    One of its bits is available through the Qdos MT.DMODE trap: bit 3, which is 0 for 512-pixel mode and 1 for 256-pixel mode.
-    The other two bits of the display control register are not supported by Qdos, these being bit 1 of the display
-    control register, which can be used to blank the display completely, and bit 7, which can be used to switch the base of
-    screen memory from $20000 to $28000. Future versions of Qdos may allow the system variables to be
-    initialised at $30000 to take advantage of this dual- screen feature: the present version does not.
-    Bits 0,2,4,5 and 6 of the display control register should never be set to anything other than zero, as they are
-    reserved and may have unpredictable results in future versions of the QL hardware.
-    */
-                //En modo 256x256 hay parpadeo
-
-
-                byte_leido_h=buf_pantalla[memoria_pantalla_ql];
-                memoria_pantalla_ql++;
-
-                byte_leido_l=buf_pantalla[memoria_pantalla_ql];
-                memoria_pantalla_ql++;
-
-
-                int npixel;
-                for (npixel=7;npixel>=0;npixel-=2) {
-
-                    //G3 F3 G2 F2 G1 F1 G0 F0                 R3 B3 R2 B2 R1 B1 R0 B0         256-pixel
-
-
-                    green=((byte_leido_h)>>npixel)&1;
-                    red=((byte_leido_l)>>npixel)&1;
-                    blue=((byte_leido_l)>>(npixel-1))&1;
-
-
-/*
-//colores para QL
-const int ql_colortable_original[8]={
-0x000000, //Negro
-0x0000ff, //Azul
-0xff0000, //Rojo
-0xff00ff, //Magenta
-0x00ff00, //Verde
-0x00ffff, //Cyan
-0xffff00, //Amarillo
-0xffffff  //Blanco
-};
-*/
-
-                    color1=green*4+red*2+blue;	// GRB
-                    //printf ("estado parpadeo: %d\n",estado_parpadeo.v);
-
-                    //TODO: estoy usando colores de la paleta del Spectrum en vez del QL,
-                    //esto es culpa de la manera de almacenar el color con flash y sin flash, que va metido en los 8 bits bajos,
-                    //aun siendo un int, no uso los 8 bits altos
-                    //Aunque usase los 8 bits bajos para color sin flash y los altos para color con flash, el numero de color
-                    //estaria limitado a 0-255, eso vale para Spectrum pero el numero de color en la paleta de QL es mayor que 256
-
-                    //Entonces la mejor solucion es meter el numero de color de spectrum con brillo, que al final
-                    //son los mismos valores RGB que uso para QL
-                    color1 +=8;
-
-                    int color_con_flash;
-                    int color_sin_flash;
-
-                    color_con_flash=color_sin_flash=color1;
-
-                    if (ql_linea_flashing && estado_parpadeo.v && !desactivar_flash) {
-                        //color1=flashing_color;
-                        color_con_flash=flashing_color;
-                    }
-
-
-
-                    buffer_intermedio[offset_destino++]=color_sin_flash | (color_con_flash << 4);
-                    x++;
-
-                    //ql_putpixel_zoom(x++,y,color1);
-
-
-                    //Ver si cambia valor bit flash
-                    int bit_flashing=((byte_leido_h)>>(npixel-1))&1;
-                    if (bit_flashing) {
-                        ql_linea_flashing ^=1;
-                        flashing_color=color1;
-                    }
-
-
-                }
-            }
-        }
-    ////// Fin Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
-
-
-
-
-
+        menu_filesel_preview_convert_scr_ql_to_buf(buf_pantalla,buffer_intermedio);
 
 
         free(buf_pantalla);
