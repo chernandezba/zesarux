@@ -35284,6 +35284,8 @@ void menu_debug_file_utils(MENU_ITEM_PARAMETERS)
         zvfs_chdir(directorio_actual);
     }
 
+    salir_todos_menus=1;
+
 }
 
 
@@ -36452,7 +36454,9 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_file_utils,NULL,
                 "File ~~utilities","~~Utilidades de archivos","~~Utilitats d'arxius");
             menu_add_item_menu_shortcut(array_menu_debug,'u');
-            menu_add_item_menu_se_cerrara(array_menu_debug);
+            //No activamos menu_add_item_menu_se_cerrara porque si no, al pulsar Recent->Space, se cierran todas las ventanas
+            //haremos salir_todos_menus al final de menu_debug_file_utils
+            //menu_add_item_menu_se_cerrara(array_menu_debug);
             menu_add_item_menu_genera_ventana(array_menu_debug);
             menu_add_item_menu_tooltip(array_menu_debug,"Some file utilities. NOTE: Shortcuts must be chosen pressing Shift+Key");
             menu_add_item_menu_ayuda(array_menu_debug,"Some file utilities.\nNOTE: Shortcuts in file utilities must be chosen by pressing Shift+Key, "
