@@ -26371,14 +26371,14 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
 
         int *buffer_intermedio;
 
-		//buscar snapshot en cache
-		int id_cache=snaps_ram_cache_search(snapshot);
+        //buscar snapshot en cache
+        int id_cache=snaps_ram_cache_search(snapshot);
 
         if (id_cache>=0) {
             buffer_intermedio=snaps_ram_cache[id_cache].memoria;
         }
 
-		else {
+        else {
 
             z80_byte *puntero_memoria;
             int longitud;
@@ -26448,9 +26448,9 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
 
             //free(buffer_intermedio);
 
-		}
+        }
 
-		menu_filesel_overlay_assign_memory_preview(256,192);
+        menu_filesel_overlay_assign_memory_preview(256,192);
 
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
 
@@ -26487,31 +26487,31 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
 
 
         if (reducir) {
-			recuadro_ancho /=2;
-			recuadro_alto /=2;
-		}
+            recuadro_ancho /=2;
+            recuadro_alto /=2;
+        }
 
         menu_filesel_overlay_draw_preview_scr(w,offset_x,offset_y,
-			256,192,reducir,tramado);
+            256,192,reducir,tramado);
 
         menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;
 
         //recuadro
         //horizontal arriba
         zxvision_draw_line(w,offset_x-1,offset_y-1,
-			offset_x+recuadro_ancho,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+            offset_x+recuadro_ancho,offset_y-1,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //vertical izquierda
         zxvision_draw_line(w,offset_x-1,offset_y-1,
-			offset_x-1,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+            offset_x-1,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //horizontal abajop
         zxvision_draw_line(w,offset_x-1,offset_y+recuadro_alto,
-			offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+            offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
         //vertical derecha
         zxvision_draw_line(w,offset_x+recuadro_ancho,offset_y-1
-			,offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
+            ,offset_x+recuadro_ancho,offset_y+recuadro_alto,ESTILO_GUI_TINTA_NORMAL,menu_snapshot_in_ram_browse_linea_punteada);
 
     }
 }
