@@ -4327,7 +4327,7 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
 {
 
     //Liberar si conviene
-    if (menu_filesel_overlay_last_preview_memory==NULL) free(menu_filesel_overlay_last_preview_memory);
+    if (menu_filesel_overlay_last_preview_memory!=NULL) free(menu_filesel_overlay_last_preview_memory);
 
 
     int elementos=width*height;
