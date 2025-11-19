@@ -26508,7 +26508,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
             recuadro_alto /=2;
         }
 
-        menu_filesel_overlay_draw_preview_scr(w,offset_x,offset_y,
+        menu_filesel_overlay_draw_preview_scr(menu_filesel_overlay_last_preview_memory,w,offset_x,offset_y,
             256,alto,reducir,tramado);
 
         menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;

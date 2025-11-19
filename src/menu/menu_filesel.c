@@ -4344,7 +4344,8 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
     menu_filesel_overlay_last_preview_height=height;
 }
 
-void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen,int yorigen,int ancho,int alto,int reducir,int tramado)
+void menu_filesel_overlay_draw_preview_scr(struct s_filesel_preview_mem *preview_mem,zxvision_window *w,
+int xorigen,int yorigen,int ancho,int alto,int reducir,int tramado)
 {
     //printf("draw preview %d\n",contador_segundo);
     int x,y;
@@ -4366,20 +4367,20 @@ void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen,int yo
                 //Sacar los 4 colores de la cuadricula de 2x2
                 int offset_orig;
                 offset_orig=y*ancho+x;
-                if (estado_parpadeo.v) colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[0]=preview_mem[offset_orig].color_flash;
+                else colores_cuadricula[0]=preview_mem[offset_orig].color;
 
                 offset_orig=y*ancho+x+1;
-                if (estado_parpadeo.v) colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[1]=preview_mem[offset_orig].color_flash;
+                else colores_cuadricula[1]=preview_mem[offset_orig].color;
 
                 offset_orig=(y*ancho+1)+x;
-                if (estado_parpadeo.v) colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[2]=preview_mem[offset_orig].color_flash;
+                else colores_cuadricula[2]=preview_mem[offset_orig].color;
 
                 offset_orig=(y*ancho+1)+x+1;
-                if (estado_parpadeo.v) colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
-                else colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[3]=preview_mem[offset_orig].color_flash;
+                else colores_cuadricula[3]=preview_mem[offset_orig].color;
 
 
 
@@ -4419,8 +4420,8 @@ void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen,int yo
             }
 
             else {
-                if (estado_parpadeo.v) color_final=menu_filesel_overlay_last_preview_memory[contador].color_flash;
-                else color_final=menu_filesel_overlay_last_preview_memory[contador].color;
+                if (estado_parpadeo.v) color_final=preview_mem[contador].color_flash;
+                else color_final=preview_mem[contador].color;
                 contador++;
                 xdestino=x;
                 ydestino=y;
@@ -4634,7 +4635,7 @@ void menu_filesel_overlay_draw_preview(void)
     yorigen *=menu_char_height;
 
 
-    menu_filesel_overlay_draw_preview_scr(menu_filesel_overlay_window,xorigen,yorigen,
+    menu_filesel_overlay_draw_preview_scr(menu_filesel_overlay_last_preview_memory,menu_filesel_overlay_window,xorigen,yorigen,
         menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height,reducir,0);
 
     menu_filesel_overlay_draw_preview_sombra_recuadro(xorigen,yorigen,ancho_miniatura,alto_miniatura);
