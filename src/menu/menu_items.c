@@ -26363,6 +26363,26 @@ void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,i
 #define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y (2*(menu_char_height)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
 
 
+//Puntero a la previsualizacion
+struct s_filesel_preview_mem *menu_snapshot_in_ram_last_preview_memory=NULL;
+
+
+void menu_snapshot_in_ram_assign_memory_preview(int width,int height)
+{
+
+    //Liberar si conviene
+    if (menu_snapshot_in_ram_last_preview_memory!=NULL) free(menu_snapshot_in_ram_last_preview_memory);
+
+
+    int elementos=width*height;
+
+    int total_mem=elementos*sizeof(struct s_filesel_preview_mem);
+
+    menu_snapshot_in_ram_last_preview_memory=util_malloc(total_mem,"Cannot allocate memory for image preview");
+
+
+}
+
 void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapshot,int offset_x,int offset_y,int tramado)
 {
     int indice=snapshot_in_ram_get_element(snapshot);
@@ -26467,9 +26487,9 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
         }
 
         //Maximo para 256x256 de QL
-        menu_filesel_overlay_assign_memory_preview(256,256);
+        menu_snapshot_in_ram_assign_memory_preview(256,256);
 
-        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,alto,menu_filesel_overlay_last_preview_memory);
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,alto,menu_snapshot_in_ram_last_preview_memory);
 
         int reducir=0;
 
@@ -26508,7 +26528,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
             recuadro_alto /=2;
         }
 
-        menu_filesel_overlay_draw_preview_scr(menu_filesel_overlay_last_preview_memory,w,offset_x,offset_y,
+        menu_filesel_overlay_draw_preview_scr(menu_snapshot_in_ram_last_preview_memory,w,offset_x,offset_y,
             256,alto,reducir,tramado);
 
         menu_snapshot_in_ram_browse_linea_punteada_tramado=tramado;

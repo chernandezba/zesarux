@@ -110,9 +110,8 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 *icono para browse snapshots. mejorarlo
 *icono para guardar snapshot. mejorarlo
 
-*Miniatura snap puede interferir con la del file browser: con file browser abierto, si lo muevo y habia una miniatura, pasara a verse
+ok *Miniatura snap puede interferir con la del file browser: con file browser abierto, si lo muevo y habia una miniatura, pasara a verse
 la miniatura que muestre Time Machine
-*en menu_snapshot_in_ram_browse_render_one_screen, codigo repetido para render, mismo usado en filesel. funcion comun?
 
 *transiciones con menos de 5 capas se ven raras?
 
