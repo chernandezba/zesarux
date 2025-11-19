@@ -4334,11 +4334,8 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
 
     int total_mem=elementos*sizeof(struct s_filesel_preview_mem);
 
-    menu_filesel_overlay_last_preview_memory=malloc(total_mem);
+    menu_filesel_overlay_last_preview_memory=util_malloc(total_mem,"Cannot allocate memory for image preview");
 
-    if (menu_filesel_overlay_last_preview_memory==NULL) cpu_panic("Cannot allocate memory for image preview");
-
-    //printf("Asignar ancho y alto %d %d\n",width,height);
 
 
 }
