@@ -3853,7 +3853,7 @@ void menu_filesel_cambiar_unidad_common(char *destino)
 
                 menu_add_item_menu(array_menu_filesel_unidad,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 menu_add_ESC_item(array_menu_filesel_unidad);
-                retorno_menu=menu_dibuja_menu_no_title_lang(&menu_filesel_unidad_opcion_seleccionada,&item_seleccionado,array_menu_filesel_unidad,"Select Drive" );
+                retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&menu_filesel_unidad_opcion_seleccionada,&item_seleccionado,array_menu_filesel_unidad,"Select Drive" );
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     strcpy(destino,item_seleccionado.texto_opcion);
@@ -6686,7 +6686,13 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 
                 if (tecla=='D') {
+
+                    //conservar estado de salir todos menus, por si se sale de drivers con ESC, que no se habilite
+                    int antes_salir_todos_menus=salir_todos_menus;
+
                     releer_directorio=menu_filesel_cambiar_unidad_o_volumen();
+
+                    salir_todos_menus=antes_salir_todos_menus;
 
                 }
 
@@ -6694,7 +6700,13 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
                     //Archivos y carpetas recientes
                     int tipo;
+
+                    //conservar estado de salir todos menus, por si se sale de recent con ESC, que no se habilite
+                    int antes_salir_todos_menus=salir_todos_menus;
+
                     char *archivo_reciente=menu_filesel_recent_files_folders(&tipo);
+
+                    salir_todos_menus=antes_salir_todos_menus;
 
 
                     if (archivo_reciente!=NULL) {
@@ -6969,8 +6981,13 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                     //printf ("conmutar filtros\n");
                     if (tecla==13 || (tecla==0 && mouse_left)) {
 
+                        //conservar estado de salir todos menus, por si se sale de filters con ESC, que no se habilite
+                        int antes_salir_todos_menus=salir_todos_menus;
+
                         //cambiar filtros
                         menu_filesel_select_filters();
+
+                        salir_todos_menus=antes_salir_todos_menus;
 
                             zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
                         releer_directorio=1;

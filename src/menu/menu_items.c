@@ -26555,7 +26555,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
     //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
     if (menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents) {
-        printf("dirty\n");
+        //printf("dirty\n");
         menu_snapshot_in_ram_browse_forzar_dibujado=1;
 
         menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents=0;
