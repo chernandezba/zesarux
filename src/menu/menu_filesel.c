@@ -4769,7 +4769,7 @@ void menu_filesel_preview_reduce_scr_color(int *buffer_intermedio,int ancho, int
 
 
 //Copia imagen preview sin reducir
-void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int alto)
+void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int alto,struct s_filesel_preview_mem *preview_memory)
 {
 
 
@@ -4785,8 +4785,8 @@ void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int al
             int color_sin_flash=color & 0xF;
             int color_con_flash=(color >> 4) & 0xF;
 
-            menu_filesel_overlay_last_preview_memory[offset_final].color=color_sin_flash;
-            menu_filesel_overlay_last_preview_memory[offset_final].color_flash=color_con_flash;
+            preview_memory[offset_final].color=color_sin_flash;
+            preview_memory[offset_final].color_flash=color_con_flash;
 
             offset_final++;
         }
@@ -5151,7 +5151,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
         //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
         menu_filesel_overlay_assign_memory_preview(ancho,alto);
 
-        menu_filesel_preview_no_reduce_scr(buffer_intermedio,ancho,alto);
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,ancho,alto,menu_filesel_overlay_last_preview_memory);
 
         free(buffer_intermedio);
 
@@ -5204,7 +5204,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
     //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
     menu_filesel_overlay_assign_memory_preview(256,192);
 
-    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);
+    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192,menu_filesel_overlay_last_preview_memory);
 
     free(buffer_intermedio);
 

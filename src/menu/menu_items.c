@@ -26469,7 +26469,7 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
         //Maximo para 256x256 de QL
         menu_filesel_overlay_assign_memory_preview(256,256);
 
-        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,alto);
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,alto,menu_filesel_overlay_last_preview_memory);
 
         int reducir=0;
 

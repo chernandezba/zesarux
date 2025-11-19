@@ -67,7 +67,7 @@ struct s_filesel_preview_mem {
 extern struct s_filesel_preview_mem *menu_filesel_overlay_last_preview_memory;
 extern void menu_filesel_overlay_draw_preview_scr(zxvision_window *w,int xorigen,int yorigen,int ancho,int alto,int reducir,int tramado);
 extern void menu_filesel_overlay_assign_memory_preview(int width,int height);
-extern void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int alto);
+extern void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int alto,struct s_filesel_preview_mem *preview_memory);
 extern void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,int *dest);
 extern void menu_filesel_preview_convert_scr_ql_to_buf(z80_byte *orig,int *dest);
 
