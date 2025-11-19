@@ -4340,8 +4340,7 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
 
     //printf("Asignar ancho y alto %d %d\n",width,height);
 
-    menu_filesel_overlay_last_preview_width=width;
-    menu_filesel_overlay_last_preview_height=height;
+
 }
 
 void menu_filesel_overlay_draw_preview_scr(struct s_filesel_preview_mem *preview_mem,zxvision_window *w,
@@ -5152,6 +5151,9 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
         //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
         menu_filesel_overlay_assign_memory_preview(ancho,alto);
 
+        menu_filesel_overlay_last_preview_width=ancho;
+        menu_filesel_overlay_last_preview_height=alto;
+
         menu_filesel_preview_no_reduce_scr(buffer_intermedio,ancho,alto,menu_filesel_overlay_last_preview_memory);
 
         free(buffer_intermedio);
@@ -5204,6 +5206,9 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
     //Ahora siempre se lee el preview a tamaño completo,
     //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
     menu_filesel_overlay_assign_memory_preview(256,192);
+
+    menu_filesel_overlay_last_preview_width=256;
+    menu_filesel_overlay_last_preview_height=192;
 
     menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192,menu_filesel_overlay_last_preview_memory);
 
