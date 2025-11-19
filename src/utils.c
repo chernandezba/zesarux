@@ -19254,6 +19254,38 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     return 0;
 }
 
+void util_convert_zsf_to_scr_clear_scr(char *archivo_destino)
+{
+    //De momento generamos ese archivo de pantalla en negro, por si no puede sacar la pantalla
+    z80_byte *buffer_pantalla_temp;
+
+    buffer_pantalla_temp=util_malloc(6912,"Can not allocate memory for convert to scr");
+
+    //Pixeles a 0. Atributos a tinta 0 papel 7
+    int i;
+
+    for (i=0;i<6144;i++) {
+        buffer_pantalla_temp[i]=0;
+    }
+
+    for (;i<6912;i++) {
+        buffer_pantalla_temp[i]=56;
+    }
+
+    //Y metemos texto que diga que no hay preview
+    char *mensaje="Can not extract screen";
+
+    int x=0;
+    int y=0;
+    for (i=0;mensaje[i];i++,x++) {
+        util_convert_txt_to_scr_putchar(mensaje[i],x,y,buffer_pantalla_temp);
+    }
+
+    util_save_file(buffer_pantalla_temp,6912,archivo_destino);
+
+    free(buffer_pantalla_temp);
+}
+
 int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 //,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode)
 {
@@ -19327,6 +19359,12 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
     //Ultimo machine id leido
     z80_byte last_machine_id_read=0;
+
+
+    //De momento generamos ese archivo de pantalla en negro, por si no puede sacar la pantalla,
+    //al menos que el archivo se cree pero en negro
+    util_convert_zsf_to_scr_clear_scr(archivo_destino);
+
 
     while (!zvfs_feof(in_fatfs,ptr_zsf_file,&fil) && !salir) {
         //Read header block

@@ -824,6 +824,8 @@ extern void util_save_file(z80_byte *origin, long long int tamanyo_origen, char 
 extern void util_save_append_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file);
 extern int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer);
 
+extern void util_convert_txt_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *pantalla_destino);
+
 extern void util_string_replace_char(char *s,char orig,char dest);
 
 extern int util_add_string_newline(char *destination,char *text_to_add);
