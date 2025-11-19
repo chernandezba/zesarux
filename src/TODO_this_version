@@ -120,6 +120,7 @@ ok cache *intentar optimizar la rutina: por ejemplo que no tenga que guardar en 
 ok *convert zsf a scr que pueda hacerlo con zx81
 ok *convert zsf a scr que pueda hacerlo con zx80
 *convert zsf a scr que pueda hacerlo con ql -> acabar de revisar
+*transiciones con menos de 5 capas se ven raras?
 
 ok *miniatura pequeña si no cabe grande
 
