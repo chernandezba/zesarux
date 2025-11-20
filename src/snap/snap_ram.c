@@ -120,7 +120,7 @@ int snaps_ram_cache_search(int snapshot)
 
     for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
         if (snaps_ram_cache[i].usado && snaps_ram_cache[i].snapshot==snapshot) {
-            printf("return snap cache preview %d at %d\n",snapshot,i);
+            //printf("return snap cache preview %d at %d\n",snapshot,i);
             snaps_ram_cache[i].ultimo_acceso=snaps_ram_cache_cuando_acceso++;
             return i;
         }

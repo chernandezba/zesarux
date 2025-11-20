@@ -26517,8 +26517,8 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
         int total_ancho_previews=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X+espacio_ancho;
         int total_alto_previews=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y+espacio_alto;
 
-        printf("total_ancho_previews %d width %d total_alto_previews %d alto %d\n",
-            total_ancho_previews,w->visible_width*menu_char_width,total_alto_previews,w->visible_height*menu_char_height);
+        //printf("total_ancho_previews %d width %d total_alto_previews %d alto %d\n",
+        //    total_ancho_previews,w->visible_width*menu_char_width,total_alto_previews,w->visible_height*menu_char_height);
 
         //Se pierde 1 de alto
         if (total_ancho_previews>w->visible_width*menu_char_width || total_alto_previews+(1*menu_char_height)>w->visible_height*menu_char_height) {
@@ -26586,13 +26586,13 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0 && menu_snapshot_in_ram_browse_forzar_dibujado) {
-        printf("Forzar dibujado %d\n",contador_segundo);
+        //printf("Forzar dibujado %d\n",contador_segundo);
         int total_capas=MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS;
         int offset_x=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X; //menu_char_width*1;
         int offset_y=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y; //menu_char_height*2;
-        int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas;
+        int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas+1;
 
-
+        printf("Pre inicio_snap: %d\n",inicio_snap);
 
         //Si se mueve a la izquierda, aparecer una capa mas momentaneamente por delante
         if (animacion_activa_incremento<0) {
@@ -26609,6 +26609,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
         if (inicio_snap<0) inicio_snap=0;
 
         int contador_capa=0;
+
+        printf("Snap elegido: %d inicio_snap: %d\n",menu_snapshot_in_ram_browse_snap_selected,inicio_snap);
 
         //Mostrar las pantallas de los diferentes snapshots
         for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected;
@@ -26671,6 +26673,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 
             menu_snapshot_in_ram_browse_render_one_screen(menu_snapshot_in_ram_browse_window,inicio_snap,final_x,final_y,tramado);
+
+            printf("Mostrando snap %d\n",inicio_snap);
 
             offset_x +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
             offset_y +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
