@@ -26233,8 +26233,8 @@ void menu_debug_show_symbol_table(MENU_ITEM_PARAMETERS)
     free(menu_debug_show_symbol_table_texto_browser);
 }
 
-//Vieja funcion para navegar entre los snapshots, no usada
-void menu_snapshot_rewind_browse_select(MENU_ITEM_PARAMETERS)
+
+void menu_snapshots_in_ram_browse_select(MENU_ITEM_PARAMETERS)
 {
     //Aplicar ese snapshot
     snapshot_in_ram_load(valor_opcion);
@@ -26242,8 +26242,10 @@ void menu_snapshot_rewind_browse_select(MENU_ITEM_PARAMETERS)
     menu_generic_message_splash("Load Snapshot","OK Snapshot loaded from RAM");
 }
 
+/*
+
 //Vieja funcion para navegar entre los snapshots, no usada
-void menu_snapshot_rewind_browse(MENU_ITEM_PARAMETERS)
+void menu_snapshots_in_ram_browse(MENU_ITEM_PARAMETERS)
 {
     if (snapshot_in_ram_enabled.v==0) return;
 
@@ -26271,7 +26273,7 @@ void menu_snapshot_rewind_browse(MENU_ITEM_PARAMETERS)
 
 
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_browse_select,NULL,"%4d: %02d:%02d:%02d",
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_browse_select,NULL,"%4d: %02d:%02d:%02d",
                 i,snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
 
             menu_add_item_menu_valor_opcion(array_menu_common,i);
@@ -26299,19 +26301,20 @@ void menu_snapshot_rewind_browse(MENU_ITEM_PARAMETERS)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
+*/
 
-void menu_snapshot_rewind_enable(MENU_ITEM_PARAMETERS)
+void menu_snapshots_in_ram_enable(MENU_ITEM_PARAMETERS)
 {
     snapshot_in_ram_enabled.v ^=1;
 }
 
-void menu_snapshot_rewind_interval(MENU_ITEM_PARAMETERS)
+void menu_snapshots_in_ram_interval(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf_numero_enhanced("Snapshot interval",&snapshot_in_ram_interval_seconds,3,+1,1,99,0);
 }
 
 
-void menu_snapshot_rewind_maximum(MENU_ITEM_PARAMETERS)
+void menu_snapshots_in_ram_maximum(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf_numero_enhanced("Maximum snapshots",&snapshots_in_ram_maximum,5,+1,1,MAX_TOTAL_SNAPSHOTS_IN_RAM,0);
 
@@ -26320,7 +26323,7 @@ void menu_snapshot_rewind_maximum(MENU_ITEM_PARAMETERS)
     menu_warn_message("Snapshot list has been cleared due to list resize");
 }
 
-void menu_snapshot_rewind_timer_timeout(MENU_ITEM_PARAMETERS)
+void menu_snapshots_in_ram_timer_timeout(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf_numero_enhanced("Rewind timeout",&snapshot_in_ram_enabled_timer_timeout,3,+1,1,99,0);
 }
@@ -26799,7 +26802,7 @@ int menu_snapshot_in_ram_browse_browse(void)
             int indice=snapshot_in_ram_get_element(i);
 
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_browse_select,NULL,"%4d: %02d:%02d:%02d",
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_browse_select,NULL,"%4d: %02d:%02d:%02d",
                 i,snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
 
             menu_add_item_menu_valor_opcion(array_menu_common,i);
@@ -26992,11 +26995,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-//TODO: para nada esto es rewind, sino Snapshot in RAM
-void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
+void menu_snapshots_in_ram(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
     menu_item item_seleccionado;
@@ -27005,7 +27004,7 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_enable,NULL,"[%c] Enabled",
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_enable,NULL,"[%c] Enabled",
         (snapshot_in_ram_enabled.v ? 'X' : ' ' ));
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"[%c] Automatic",
@@ -27013,17 +27012,17 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_opcion_conmuta(array_menu_common,&snapshot_in_ram_timer_enabled);
 
         if (snapshot_in_ram_timer_enabled.v) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_interval,NULL,"[%d]  Interval (seconds)",snapshot_in_ram_interval_seconds);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_interval,NULL,"[%d]  Interval (seconds)",snapshot_in_ram_interval_seconds);
         }
 
         menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_maximum,NULL,"[%d] Maximum snapshots",snapshots_in_ram_maximum);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_maximum,NULL,"[%d] Maximum snapshots",snapshots_in_ram_maximum);
         menu_add_item_menu_tooltip(array_menu_common,"Maximum snapshots to keep in memory");
         menu_add_item_menu_ayuda(array_menu_common,"Maximum snapshots to keep in memory. When reached the maximum, the oldest will be deleted");
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_timer_timeout,NULL,"[%d] Rewind timeout (seconds)",snapshot_in_ram_enabled_timer_timeout);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_timer_timeout,NULL,"[%d] Rewind timeout (seconds)",snapshot_in_ram_enabled_timer_timeout);
         menu_add_item_menu_tooltip(array_menu_common,"After this time pressed rewind action, the rewind position is reset to current");
         menu_add_item_menu_ayuda(array_menu_common,"After this time pressed rewind action, the rewind position is reset to current");
 
@@ -27034,7 +27033,7 @@ void menu_snapshot_rewind(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
 
             /*
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_rewind_browse,NULL,"Browse");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_browse,NULL,"Browse");
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
             */
@@ -37146,7 +37145,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_rewind,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshots_in_ram,NULL,
             "Snapshots to ~~RAM","Instantáneas a ~~RAM","Instantànies a ~~RAM");
         menu_add_item_menu_shortcut(array_menu_snapshot,'r');
         menu_add_item_menu_tooltip(array_menu_snapshot,"Options to keep last snapshots in RAM");
