@@ -345,6 +345,8 @@ z80_bit command_line_ayplayer_start_playlist={0};
 
 z80_bit command_line_start_zeng_online_server={0};
 
+z80_bit command_line_snapshots_in_ram={0};
+
 //z80_bit parameter_disable_allbetawarningsleep={0};
 
 //Fin command_line flags
@@ -1446,7 +1448,9 @@ printf("\n"
         "--zsf-save-rom              Include ROM contents in saved ZSF snapshot. Useful when running custom roms. Only available for Spectrum/Clones models 16k/48k/128k/+2/+2A/+3\n"
         "--no-close-after-smartload  Do not close menu after SmartLoad\n"
         "--z88-not-sync-clock-snap   Do not sync PC clock to Z88 clock after loading a snapshot\n"
-        "--snapram-interval n        Generate a snapshot in ram every n seconds\n"
+        "--snapram-enable            Enable snapshots in ram\n"
+        "--snapram-automatic         Enable automatic snapshots in ram\n"
+        "--snapram-interval n        Interval in seconds to generate automatic snapshots in ram\n"
         "--snapram-max n             Maximum snapshots to keep in memory\n"
         "--snapram-rewind-timeout n  After this time pressed rewind action, the rewind position is reset to current\n"
 
@@ -4307,6 +4311,14 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--z88-not-sync-clock-snap")) {
                 sync_clock_to_z88.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--snapram-enable")) {
+                command_line_snapshots_in_ram.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--snapram-automatic")) {
+                snapshot_in_ram_timer_enabled.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--snapram-interval")) {
@@ -7658,7 +7670,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     last_filesused_clear();
     menu_first_aid_init();
-    
+
     snapshots_in_ram_reset();
 
     main_leezx81_init_semaphore();
@@ -8257,6 +8269,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         ay_player_start_playing_all_items();
     }
 
+    if (command_line_snapshots_in_ram.v) {
+        snapshot_in_ram_enabled.v=1;
+    }
 
 
     //Si la version actual es mas nueva que la anterior mostrar changelog

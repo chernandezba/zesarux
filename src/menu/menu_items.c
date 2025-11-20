@@ -26909,7 +26909,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
             //Nota: texto teclas con acciones pegado sin espacios, para que se pueda seleccionar la accion pulsando con el raton
             zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z:Previous ~~x:Next ~~r:Restore ~~s:Save ~~b:Browse");
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d bytes",
                 menu_snapshot_in_ram_browse_snap_selected,
                 snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo,
                 snapshots_in_ram[indice].longitud

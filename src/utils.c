@@ -3958,6 +3958,8 @@ int util_write_configfile(void)
 
   if (sync_clock_to_z88.v==0)                   ADD_STRING_CONFIG,"--z88-not-sync-clock-snap");
 
+  if (snapshot_in_ram_enabled.v)                ADD_STRING_CONFIG,"--snapram-enable");
+  if (snapshot_in_ram_timer_enabled.v)          ADD_STRING_CONFIG,"--snapram-automatic");
                                                 ADD_STRING_CONFIG,"--snapram-interval %d",snapshot_in_ram_interval_seconds);
                                                 ADD_STRING_CONFIG,"--snapram-max %d",snapshots_in_ram_maximum);
                                                 ADD_STRING_CONFIG,"--snapram-rewind-timeout %d",snapshot_in_ram_enabled_timer_timeout);
