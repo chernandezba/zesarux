@@ -26905,20 +26905,30 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
         zxvision_cls(ventana);
         zxvision_draw_window_contents(ventana);
 
-        if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0) {
+        if (snapshot_in_ram_enabled.v==0) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"Snapshots in RAM setting is not enabled");
+        }
 
-            int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
+        else {
 
-            //Nota: texto teclas con acciones pegado sin espacios, para que se pueda seleccionar la accion pulsando con el raton
-            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z:Previous ~~x:Next ~~r:Restore ~~s:Save ~~b:Browse");
+            if (snapshots_in_ram_total_elements>0) {
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d bytes",
-                menu_snapshot_in_ram_browse_snap_selected,
-                snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo,
-                snapshots_in_ram[indice].longitud
-            );
+                int indice=snapshot_in_ram_get_element(menu_snapshot_in_ram_browse_snap_selected);
+
+                //Nota: texto teclas con acciones pegado sin espacios, para que se pueda seleccionar la accion pulsando con el raton
+                zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z:Previous ~~x:Next ~~r:Restore ~~s:Save ~~b:Browse");
+
+                zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d bytes",
+                    menu_snapshot_in_ram_browse_snap_selected,
+                    snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo,
+                    snapshots_in_ram[indice].longitud
+                );
 
 
+            }
+            else {
+                zxvision_print_string_defaults_fillspc_format(ventana,1,0,"No snapshots in RAM yet");
+            }
         }
 
         tecla=zxvision_common_getkey_refresh();
