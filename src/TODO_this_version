@@ -110,14 +110,11 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 *icono para browse snapshots. mejorarlo
 *icono para guardar snapshot. mejorarlo
 
-ok *Miniatura snap puede interferir con la del file browser: con file browser abierto, si lo muevo y habia una miniatura, pasara a verse
-la miniatura que muestre Time Machine
+
 
 *transiciones con menos de 5 capas se ven raras?
 
 
 
-
 -opcion para compressed ZSF o no que se guarde en config
 
--file utilities: ir a recent files , pulsar espacio y cierra recent. algo tiene que ver con salir todos menus
