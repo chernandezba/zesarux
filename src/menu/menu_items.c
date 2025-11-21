@@ -26340,7 +26340,8 @@ void menu_snapshot_in_ram_save(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_snapshot_in_ram_browse_window;
 
-int menu_snapshot_in_ram_browse_snap_selected=0;
+//-1 indica que hay que posicionarse en el mas reciente
+int menu_snapshot_in_ram_browse_snap_selected=-1;
 
 int menu_snapshot_in_ram_browse_linea_punteada_tramado=0;
 
@@ -26363,7 +26364,7 @@ void menu_snapshot_in_ram_browse_linea_punteada(zxvision_window *w,int x,int y,i
 
 //sumar MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS para que la que aparece por debajo al desplazar no entre en la zona del texto
 #define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X (1*(menu_char_width)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
-#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y (2*(menu_char_height)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
+#define MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y (3*(menu_char_height)+MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS)
 
 
 //Puntero a la previsualizacion
@@ -26564,7 +26565,7 @@ int menu_snapshot_in_ram_browse_forzar_dibujado=1;
 int animacion_activa=0;
 int animacion_activa_incremento=0;
 
-
+int menu_snapshot_in_ram_browse_overlay_segundo_anterior=0;
 
 void menu_snapshot_in_ram_browse_overlay(void)
 {
@@ -26577,13 +26578,28 @@ void menu_snapshot_in_ram_browse_overlay(void)
     zxvision_window *w=menu_snapshot_in_ram_browse_window;
 
     //redibujarla entera cuando se haya movido, o alguna por encima , etc etc
-    if (menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents) {
+    if (w->dirty_user_must_draw_contents) {
         //printf("dirty\n");
         menu_snapshot_in_ram_browse_forzar_dibujado=1;
 
-        menu_snapshot_in_ram_browse_window->dirty_user_must_draw_contents=0;
+        w->dirty_user_must_draw_contents=0;
     }
 
+    //esto hara ejecutar esto 2 veces por segundo
+    if ( ((contador_segundo%500) == 0 && menu_snapshot_in_ram_browse_overlay_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+        printf("refresh %d\n",contador_segundo);
+        menu_snapshot_in_ram_browse_overlay_segundo_anterior=contador_segundo;
+
+        if (snapshot_in_ram_enabled.v) {
+            int antes_dirty=w->dirty_user_must_draw_contents;
+            //Para el usuario mostrar id comenzando desde 1, es menos confuso
+            zxvision_print_string_defaults_fillspc_format(w,1,2,"Total snapshots: %4d",
+                snapshots_in_ram_total_elements);
+            //Este print habilita el parametro dirty... pero no queremos que recargue las miniaturas solo por haber escrito esto
+            //restauramos parametro dirty
+            w->dirty_user_must_draw_contents=antes_dirty;
+        }
+    }
 
     if (snapshot_in_ram_enabled.v && snapshots_in_ram_total_elements>0 && menu_snapshot_in_ram_browse_forzar_dibujado) {
         //printf("Forzar dibujado %d\n",contador_segundo);
@@ -26794,8 +26810,7 @@ int menu_snapshot_in_ram_browse_browse(void)
     int retorno_menu;
     do {
 
-        //Inicializar el ultimo a 0 siempre
-        int snapshot_rewind_browse_opcion_seleccionada=0;
+        int snapshot_rewind_browse_opcion_seleccionada=menu_snapshot_in_ram_browse_snap_selected;
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
@@ -26805,9 +26820,9 @@ int menu_snapshot_in_ram_browse_browse(void)
 
             int indice=snapshot_in_ram_get_element(i);
 
-
+            //para el usuario mostrar id empezando en 1, es menos confuso
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_snapshots_in_ram_browse_select,NULL,"%4d: %02d:%02d:%02d",
-                i,snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
+                i+1,snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo);
 
             menu_add_item_menu_valor_opcion(array_menu_common,i);
         }
@@ -26856,7 +26871,7 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("timemachine",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=45;
-            alto_ventana=36;
+            alto_ventana=37;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
@@ -26902,6 +26917,10 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
     ventana->writing_inverse_color=1;
     ventana->can_mouse_send_hotkeys=1;
 
+    if (menu_snapshot_in_ram_browse_snap_selected<0) {
+        //posicionarse en el mas reciente
+        menu_snapshot_in_ram_browse_snap_selected=snapshots_in_ram_total_elements-1;
+    }
 
     do {
 
@@ -26922,8 +26941,9 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
                 //Nota: texto teclas con acciones pegado sin espacios, para que se pueda seleccionar la accion pulsando con el raton
                 zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~z:Previous ~~x:Next ~~r:Restore ~~s:Save ~~b:Browse");
 
+                //Para el usuario mostrar id comenzando desde 1, es menos confuso
                 zxvision_print_string_defaults_fillspc_format(ventana,1,1,"Id: %4d Time: %02d:%02d:%02d Lenght: %d bytes",
-                    menu_snapshot_in_ram_browse_snap_selected,
+                    menu_snapshot_in_ram_browse_snap_selected+1,
                     snapshots_in_ram[indice].hora,snapshots_in_ram[indice].minuto,snapshots_in_ram[indice].segundo,
                     snapshots_in_ram[indice].longitud
                 );
@@ -27001,6 +27021,8 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
 
     else {
         zxvision_destroy_window(ventana);
+        //Indicar que tiene que posicionarse en el snapshot mas reciente al volver a abrir ventana
+        menu_snapshot_in_ram_browse_snap_selected=-1;
     }
 
 
