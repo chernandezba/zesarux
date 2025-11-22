@@ -26593,8 +26593,8 @@ void menu_snapshot_in_ram_browse_overlay(void)
         if (snapshot_in_ram_enabled.v) {
             int antes_dirty=w->dirty_user_must_draw_contents;
             //Para el usuario mostrar id comenzando desde 1, es menos confuso
-            zxvision_print_string_defaults_fillspc_format(w,1,2,"Total snapshots: %4d",
-                snapshots_in_ram_total_elements);
+            zxvision_print_string_defaults_fillspc_format(w,1,2,"Total snapshots: %4d Total size: %lld KiB",
+                snapshots_in_ram_total_elements,snapshots_in_ram_total_size/1024);
             //Este print habilita el parametro dirty... pero no queremos que recargue las miniaturas solo por haber escrito esto
             //restauramos parametro dirty
             w->dirty_user_must_draw_contents=antes_dirty;

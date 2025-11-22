@@ -41,6 +41,7 @@ struct s_snapshots_in_ram {
 
 extern struct s_snapshots_in_ram snapshots_in_ram[];
 extern int snapshots_in_ram_total_elements;
+extern z80_64bit snapshots_in_ram_total_size;
 extern int snapshot_in_ram_load(int posicion);
 //extern int snapshot_in_ram_pending_message_footer;
 extern void snapshot_add_in_ram(void);

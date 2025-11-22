@@ -61,6 +61,9 @@ int snapshots_in_ram_first_element=0;
 //total de elementos en la lista
 int snapshots_in_ram_total_elements=0;
 
+//total de tamaño ocupado. Para estadisticas
+z80_64bit snapshots_in_ram_total_size=0;
+
 //indice del elemento a escribir. Se podria deducir mediante el primero y el total, pero asi es mas facil usarlo
 int snapshots_in_ram_index_to_write=0;
 
@@ -229,6 +232,8 @@ void snapshot_to_ram_element(int indice)
     snapshots_in_ram[indice].memoria=puntero;
     snapshots_in_ram[indice].longitud=longitud;
 
+    snapshots_in_ram_total_size +=longitud;
+
     //fecha grabacion
     //agregar hora, minutos, segundos
     time_t tiempo = time(NULL);
@@ -271,6 +276,8 @@ void snapshot_add_in_ram_save(void)
         z80_byte *memoria_liberar;
         memoria_liberar=snapshots_in_ram[snapshots_in_ram_first_element].memoria;
         debug_printf (VERBOSE_DEBUG,"Freeing oldest snapshot because the list is full");
+
+        snapshots_in_ram_total_size -=snapshots_in_ram[snapshots_in_ram_first_element].longitud;
         free(memoria_liberar);
 
         //Y el primero avanza
