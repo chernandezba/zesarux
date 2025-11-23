@@ -26610,9 +26610,12 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
         printf("Pre inicio_snap: %d\n",inicio_snap);
 
+        int una_capa_mas=0;
+
         //Si se mueve a la izquierda, aparecer una capa mas momentaneamente por delante
         if (animacion_activa_incremento<0) {
             total_capas++;
+            una_capa_mas=1;
         }
 
         //Si se mueve a la derecha, aparecer una capa mas momentaneamente por detras
@@ -26629,9 +26632,15 @@ void menu_snapshot_in_ram_browse_overlay(void)
         printf("Snap elegido: %d inicio_snap: %d\n",menu_snapshot_in_ram_browse_snap_selected,inicio_snap);
 
         //Mostrar las pantallas de los diferentes snapshots
-        for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected;
+        for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected+una_capa_mas;
                 inicio_snap++,total_capas--,contador_capa++) {
 
+            int ultima_capa=0;
+            if (total_capas==1 || inicio_snap==snapshots_in_ram_total_elements-1 || inicio_snap==menu_snapshot_in_ram_browse_snap_selected+una_capa_mas) {
+                ultima_capa=1;
+            }
+
+            printf("total_capas: %d animacion_activa_incremento: %d\n",total_capas,animacion_activa_incremento);
             //Para que no deje rastro
             if (animacion_activa) w->must_clear_cache_on_draw_once=1;
 
@@ -26660,8 +26669,9 @@ void menu_snapshot_in_ram_browse_overlay(void)
             //Si se mueve a la izquierda, aparecer una capa mas momentaneamente
             if (animacion_activa_incremento<0) {
                 //la ultima, tramada
-                if (total_capas==1) {
+                if (ultima_capa/*total_capas==1*/) {
                     //va desapareciendo
+                    printf("Desaparecer primera capa\n");
                     tramado=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS+animacion_activa_incremento;
                 }
 
@@ -26675,7 +26685,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
             //Similar para la derecha
             if (animacion_activa_incremento>0) {
                 //la ultima, tramada
-                if (total_capas==1) {
+                if (ultima_capa/*total_capas==1*/) {
                     //va apareciendo
                     tramado=animacion_activa_incremento+1;
                 }

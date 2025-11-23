@@ -110,8 +110,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 -snapshots en ram
 *icono para browse snapshots. mejorarlo
 *icono para guardar snapshot. mejorarlo
-*transiciones con menos de 5 capas se ven raras?
-*quiza en total snapshots que diga tambien total de ram consumido con todos los snapshots
+*transiciones con menos de 5 capas se ven raras? la primera no hace transición al aparecer o desaparecer
 
 
 -opcion para compressed ZSF o no que se guarde en config
