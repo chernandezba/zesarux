@@ -701,8 +701,8 @@ void lightgun_draw_scope(void)
 
     int ancho_rainbow=get_total_ancho_rainbow();
     int alto_rainbow=get_total_alto_rainbow();
-    int offset_x=13;
-    int offset_y=13;
+    int offset_x=ZESARUX_ASCII_LOGO_ANCHO/2;
+    int offset_y=ZESARUX_ASCII_LOGO_ALTO/2;
 
     char **bitmap=bitmap_button_ext_desktop_mirilla_lightgun;
 
