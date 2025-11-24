@@ -1,35 +1,10 @@
 --------------------------------------------------
 --------------top bar menu----------
 
-*busqueda indexada. que cuando se haya abierto top bar agregue automaticamente "Main Menu" a todos, siempre que no venga indicado
-claro. o no, porque si hay top bar, "Storage" menu por ejemplo es un menu directo sin tener que pasar por Main Menu
-Excepto por el main menu mismo, sino agregaria "Main Menu->Main Menu"
-->lo hace mal, parcialmente: ejemplo:
-Main Menu-> Settings
-pero:
-Settings Menu-> Accessibility Settings
-->pero sucede lo mismo sin topbar y desplegando menus desde los botones superiores
-->Pero no puedo agregar "Main Menu" de manera sistemática a todos, por ejemplo al pulsar
-boton derecho en zx desktop e ir a settings, se genera menu inicial  "ZX Desktop Settings". Si se agregase Main Menu quedaria:
-"Main Menu-> ZX Desktop Settings", lo cual es incorrecto, lo correcto es:
-"Main Menu-> Settings-> ZX Desktop Settings"
-Creo que es dificil de solventar eso y sucede en los menus que se genera el indice de manera automática, en cambio
-todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecerá correctamente
-->La solución seria que todos usasen menu_add_item_menu_index_full_path com por ejemplo en "Snapshots to RAM menu"
-
--Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
-        menu_add_item_menu_index_full_path(array_menu_settings_debug,
-            "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
-Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
-pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
-
-
 *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
 ->quizá es culpa del autoframeskip?
 
-
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
-
 
 ----------Fin top bar menu----------
 ----------------------------------------
@@ -46,13 +21,6 @@ Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer
 Probar mas sistemas unix alternativos
 
 
-
-DESTDIR deberia ir en generate_install.sh o en install.sh? Creo que en el último
-Realmente es para el "make install" y tal y como está ahora seria suficiente
-
-
--Quizá texto corto de iconos podría mostrar mas letras, ahora está pensado para que no sobresalga el texto del ancho del icono,
-pero queda bastante espacio aun para el icono a la derecha. ah o no, si quito autoorder es justo el espacio
 
 -Ayuda para algunos tipos de iconos o acciones, como send keys menú: send keys por ejemplo tiene el caracter "@" que indica tecla ESC
 
@@ -95,3 +63,10 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 -snapshots en ram
 *icono para browse snapshots. mejorarlo
 *icono para guardar snapshot. mejorarlo
+
+
+-Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
+        menu_add_item_menu_index_full_path(array_menu_settings_debug,
+            "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
+Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
+pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no

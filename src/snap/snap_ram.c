@@ -140,7 +140,7 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio,int alto)
 
     for (i=0;i<SNAPS_RAM_CACHE_TOTAL;i++) {
         if (snaps_ram_cache[i].usado==0) {
-            printf("found free snap cache preview at pos %d\n",i);
+            //printf("found free snap cache preview at pos %d\n",i);
             libre=1;
             break;
         }
@@ -158,13 +158,13 @@ void snaps_ram_cache_add(int snapshot,int *buffer_intermedio,int alto)
                 cuando_acceso=snaps_ram_cache[i].ultimo_acceso;
             }
         }
-        printf("Freeing snap cache preview %d accessed %d\n",id_mas_antiguo,cuando_acceso);
+        //printf("Freeing snap cache preview %d accessed %d\n",id_mas_antiguo,cuando_acceso);
         free(snaps_ram_cache[id_mas_antiguo].memoria);
         i=id_mas_antiguo;
     }
 
 
-    printf("Adding snap cache preview %d at pos %d\n",snapshot,i);
+    //printf("Adding snap cache preview %d at pos %d\n",snapshot,i);
     snaps_ram_cache[i].memoria=buffer_intermedio;
     snaps_ram_cache[i].snapshot=snapshot;
     snaps_ram_cache[i].ultimo_acceso=snaps_ram_cache_cuando_acceso++;

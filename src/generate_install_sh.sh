@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#allows to use DESTDIR for adding a prefix to the install path
+
 INSTALLPREFIX=`grep INSTALL_PREFIX compileoptions.h | cut -d '"' -f2`
 if [ -n "$DESTDIR" ]; then
 	INSTALLPREFIX="$DESTDIR/$INSTALLPREFIX"

@@ -26620,7 +26620,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
     //esto hara ejecutar esto 2 veces por segundo
     if ( ((contador_segundo%500) == 0 && menu_snapshot_in_ram_browse_overlay_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
-        printf("refresh %d\n",contador_segundo);
+        //printf("refresh %d\n",contador_segundo);
         menu_snapshot_in_ram_browse_overlay_segundo_anterior=contador_segundo;
 
         if (snapshot_in_ram_enabled.v) {
@@ -26641,7 +26641,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
         int offset_y=MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_Y; //menu_char_height*2;
         int inicio_snap=menu_snapshot_in_ram_browse_snap_selected-total_capas+1;
 
-        printf("Pre inicio_snap: %d\n",inicio_snap);
+        //printf("Pre inicio_snap: %d\n",inicio_snap);
 
         int una_capa_mas=0;
 
@@ -26662,7 +26662,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
 
 
-        printf("Snap elegido: %d inicio_snap: %d\n",menu_snapshot_in_ram_browse_snap_selected,inicio_snap);
+        //printf("Snap elegido: %d inicio_snap: %d\n",menu_snapshot_in_ram_browse_snap_selected,inicio_snap);
 
         //Desplazar las capas al animar
         int movimiento=1;
@@ -26682,7 +26682,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
                 inicio_snap++,total_capas--) {
 
 
-            printf("total_capas: %d animacion_activa_incremento: %d\n",total_capas,animacion_activa_incremento);
+            //printf("total_capas: %d animacion_activa_incremento: %d\n",total_capas,animacion_activa_incremento);
 
             //Para que no deje rastro
             if (animacion_activa) w->must_clear_cache_on_draw_once=1;
@@ -26712,7 +26712,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
             menu_snapshot_in_ram_browse_render_one_screen(menu_snapshot_in_ram_browse_window,inicio_snap,final_x,final_y,tramado);
 
-            printf("Mostrando snap %d\n",inicio_snap);
+            //printf("Mostrando snap %d\n",inicio_snap);
 
             offset_x +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
             offset_y +=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
