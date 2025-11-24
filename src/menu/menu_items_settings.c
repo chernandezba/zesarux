@@ -2842,7 +2842,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_enable_topbar_menu,NULL,
             "Enable Top Menu","Activar Menú Superior","Activar Menú Superior");
         menu_add_item_menu_tooltip(array_menu_common,"Enable a Top Menu");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable a Top Menu. It disables the upper buttons");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable a Top Menu. It disables the upper buttons. "
+            "Pressing F5 one opens the Top Menu, pressing F5 twice opens the Main Menu"
+            );
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_menu_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
@@ -3765,6 +3767,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_settings_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         //menu_add_item_menu(array_menu_settings_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_settings_debug);
+
+        menu_add_item_menu_index_full_path(array_menu_settings_debug,
+            "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
 
         retorno_menu=menu_dibuja_menu(&settings_debug_opcion_seleccionada,&item_seleccionado,array_menu_settings_debug,
             "Debug Settings","Opciones Debug","Opcions Debug" );

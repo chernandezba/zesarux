@@ -42,6 +42,21 @@ Luego flags para ver ascii o ver hexa o quitar espacios en hexa, etc
 
 -remote command: poder hacer dump de codigo fuente de lineas concretas
 
+-nuevo sistema de hotswap
+*conservar ram y rom antes
+*apuntarse tamaño de rom y ram antes
+
+en cuanto a la rom:
+si máquina destino tiene mismo tamaño de rom, dejar la de destino
+si máquina destino tiene rom mas grande, copiar la de origen repitiendo
+si máquina destino tiene rom mas pequeña, dejar la de destino (ver hotswap_128k_to_48k, hotswap_p2a_to_128)
+
+en cuanto a la ram:
+si máquina origen 48k ram y destino tiene 128k, copiar la de origen toda seguida a páginas destino 5,2,0 (ver hotswap_any_machine_to_spec128)
+si máquina origen 128k ram y destino tiene 48k ram, copiar ram de origen páginas 5,2,0 a destino toda seguida (ver hotswap_any_machine_to_spec48)
+en caso contrario, copiar tal cual la ram de origen en destino, repitiendo si es necesario para llenarla
+*considerar caso de Inves que tiene 64kb de ram, y los primeros 16kb "no sirven"
+
 -funciones ram refresh se deberian implementar con nested core:
 void set_peek_byte_function_ram_refresh(void)
 {
