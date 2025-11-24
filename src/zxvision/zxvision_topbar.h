@@ -31,5 +31,6 @@ extern int if_menu_topbarmenu_enabled_and_pressed_bar(void);
 extern void reset_topbar_overlay_we_are_on_topbar(void);
 
 extern int zxvision_topmenu_was_open_by_left_mouse_button;
+extern int get_pos_y_mouse_topbar(void);
 
 #endif

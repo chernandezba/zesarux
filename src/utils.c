@@ -7281,19 +7281,37 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
         //printf ("Leido press release mouse\n");
         if (si_menu_mouse_activado() ) {
-          //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston o lightgun
 
 
             //printf("Poner a 1 zxvision_topmenu_was_open_by_left_mouse_button desde utils\n");
             zxvision_topmenu_was_open_by_left_mouse_button=1;
 
           if (menu_abierto==0) {
-                  if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
-                      if (mouse_menu_ignore_click_open.v==0) {
-                          menu_fire_event_open_menu();
-                          menu_was_open_by_left_mouse_button.v=1;
-                      }
-                  }
+
+                if (mouse_menu_ignore_click_open.v==0) {
+
+                    int abrir_menu=0;
+
+                    //Con top menu, solo se abre si se pulsa arriba del todo
+                    if (zxvision_topbar_menu_enabled.v) {
+                        if (get_pos_y_mouse_topbar()==0) abrir_menu=1;
+                    }
+
+                    //Sin top menu, se abre pulsando en cualquier parte, siempre que no este kempston ni lightgun habilitado
+                    else {
+                        if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
+                            abrir_menu=1;
+                        }
+                    }
+
+                    if (abrir_menu) {
+                        //printf("Raton pulsado. abrir menu\n");
+                        menu_fire_event_open_menu();
+                        menu_was_open_by_left_mouse_button.v=1;
+                    }
+                }
+
+
           }
           else {
             //Si esta menu abierto, es como enviar enter, pero cuando no esta la ventana en background
