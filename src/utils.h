@@ -879,9 +879,7 @@ extern int util_convert_any_to_scr(char *filename,char *archivo_destino);
 
 extern int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_destino);
 
-extern int util_get_absolute(int valor);
 
-extern int util_get_sign(int valor);
 
 extern int input_file_keyboard_is_playing(void);
 
@@ -1074,7 +1072,8 @@ extern void util_copy_files_to_mmc_doit(void);
 extern z80_byte util_get_byte_protect(z80_byte *memoria,int total_size,int offset);
 extern void util_memcpy_protect_origin(z80_byte *destino,z80_byte *memoria,int total_size,int offset,int total_copiar);
 
-extern int util_abs(int v);
+extern int util_get_absolute(int valor);
+extern int util_get_sign(int valor);
 extern int util_sign(int v);
 extern int util_smaller(int a,int b);
 extern int util_get_cosine(int degrees);

@@ -15123,8 +15123,8 @@ void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, vo
  int x,y,dx,dy,dx1,dy1,px,py,xe,ye,i;
  dx=x2-x1;
  dy=y2-y1;
- dx1=util_abs(dx);
- dy1=util_abs(dy);
+ dx1=util_get_absolute(dx);
+ dy1=util_get_absolute(dy);
  px=2*dy1-dx1;
  py=2*dx1-dy1;
  if(dy1<=dx1)
@@ -17209,8 +17209,8 @@ void zxvision_handle_mouse_events_drag_icon(void)
             int mouse_pixel_x_zoom=mouse_pixel_x*zoom_x;
             int mouse_pixel_y_zoom=mouse_pixel_y*zoom_y;
 
-            int deltax=util_abs(zxvision_posicion_inicial_mover_icono_x-mouse_pixel_x_zoom);
-            int deltay=util_abs(zxvision_posicion_inicial_mover_icono_y-mouse_pixel_y_zoom);
+            int deltax=util_get_absolute(zxvision_posicion_inicial_mover_icono_x-mouse_pixel_x_zoom);
+            int deltay=util_get_absolute(zxvision_posicion_inicial_mover_icono_y-mouse_pixel_y_zoom);
 
             if (deltax>10 || deltay>10) {
                 zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
@@ -17221,8 +17221,8 @@ void zxvision_handle_mouse_events_drag_icon(void)
 
             //Refrescar pantalla si se ha movido lo suficiente
 
-            deltax=util_abs(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
-            deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
+            deltax=util_get_absolute(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
+            deltay=util_get_absolute(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
 
 
             if (deltax>0 || deltay>0) {

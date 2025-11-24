@@ -1249,7 +1249,7 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
                 if (realjoystick_steering_two_addresses.v) {
                     //Derecha primera direccion
                     //Izquierda segunda direccion
-                    valor_volante=(util_abs(valor_volante)*multiplicador)/32768;
+                    valor_volante=(util_get_absolute(valor_volante)*multiplicador)/32768;
                     if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
                     if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
 

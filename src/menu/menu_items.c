@@ -38879,9 +38879,9 @@ void menu_realtape_record_input_analize_buffer(zxvision_window *w)
         max_volumen,min_volumen,frecuencia,flancos_positivos,flancos_negativos,MENU_REALTAPE_RECORD_INPUT_BUFFER_SIZE);
 
         //deducciones
-        if (util_abs(frecuencia-800)<100) printf("Deducimos Tono guia\n");
-        if (util_abs(frecuencia-1000)<100) printf("Mayoria unos\n");
-        if (util_abs(frecuencia-2000)<100) printf("Mayoria ceros\n");
+        if (util_get_absolute(frecuencia-800)<100) printf("Deducimos Tono guia\n");
+        if (util_get_absolute(frecuencia-1000)<100) printf("Mayoria unos\n");
+        if (util_get_absolute(frecuencia-2000)<100) printf("Mayoria ceros\n");
 
 
         if (frecuencia>900 && frecuencia<2100) printf("Deducimos 0/1 de spectrum\n");

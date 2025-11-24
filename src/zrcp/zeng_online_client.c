@@ -5678,7 +5678,7 @@ int zec_autoadjust_differentials_equal(int a,int b)
     //Si A=12, B=9, margen=3: no es igual
     //Si A=9, B=12, margen=3: no es igual
     //Si A=12, B=8, margen=3: no es igual
-    if (util_abs(a-b)<ZEC_AUTOADJUST_MARGIN_COMPARISON) return 1;
+    if (util_get_absolute(a-b)<ZEC_AUTOADJUST_MARGIN_COMPARISON) return 1;
     else return 0;
 }
 

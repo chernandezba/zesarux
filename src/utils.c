@@ -17413,6 +17413,20 @@ int util_get_absolute(int valor)
         return valor;
 }
 
+int util_sign(int v)
+{
+    if (v<0) return -1;
+    else return +1;
+}
+
+int util_smaller(int a,int b)
+{
+    if (a<b) return a;
+    else return b;
+}
+
+
+
 
 //Devolver signo de valor
 int util_get_sign(int valor)
@@ -24019,23 +24033,7 @@ void util_memcpy_protect_origin(z80_byte *destino,z80_byte *memoria,int total_si
 
 }
 
-int util_abs(int v)
-{
-    if (v<0) return -v;
-    else return v;
-}
 
-int util_sign(int v)
-{
-    if (v<0) return -1;
-    else return +1;
-}
-
-int util_smaller(int a,int b)
-{
-    if (a<b) return a;
-    else return b;
-}
 
 
 int util_cosine_table[91]={
@@ -24175,12 +24173,12 @@ int util_get_acosine(int cosine)
     int acosine;
 
     for (i=1;i<91;i++) {
-        if (util_abs(cosine)==util_cosine_table[i]) {
+        if (util_get_absolute(cosine)==util_cosine_table[i]) {
             acosine=i;
             break;
         }
 
-        if (util_abs(cosine)>util_cosine_table[i]) {
+        if (util_get_absolute(cosine)>util_cosine_table[i]) {
             acosine=i-1;
             break;
         }
