@@ -26707,40 +26707,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
             //Lo ideal seria aplicar transparencias, pero como para esa parte no puedo aplicarla,
             //hago que tanto la pantalla y el marco que la envuelve aparezcan mas o menos "punteadas" segun
             //en que transición estén
-            int tramado=0;
-
-            //Si se mueve a la izquierda, aparecer una capa mas momentaneamente
-            if (animacion_activa_incremento<0) {
-                //la ultima, tramada
-                if (ultima_capa/*total_capas==1*/) {
-                    //va desapareciendo
-                    printf("Desaparecer primera capa\n");
-                    tramado=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS+animacion_activa_incremento;
-                }
-
-                //la primera tambien tramada
-                if (contador_capa==0 && movimiento) {
-                    //va apareciendo
-                    tramado=animacion_activa_incremento+1;
-                }
-            }
-
-            //Similar para la derecha
-            if (animacion_activa_incremento>0) {
-                //la ultima, tramada
-                if (ultima_capa/*total_capas==1*/) {
-                    //va apareciendo
-                    tramado=animacion_activa_incremento+1;
-                }
-
-                //la primera tambien tramada
-                if (contador_capa==0 && movimiento) {
-                    //va desapareciendo
-                    tramado=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS-animacion_activa_incremento;
-                }
-            }
-
-            tramado=menu_snapshot_in_ram_browse_devuelve_tramado(final_x-MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X);
+            int tramado=menu_snapshot_in_ram_browse_devuelve_tramado(final_x-MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X);
 
             menu_snapshot_in_ram_browse_render_one_screen(menu_snapshot_in_ram_browse_window,inicio_snap,final_x,final_y,tramado);
 
