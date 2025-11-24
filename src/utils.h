@@ -91,20 +91,20 @@ extern void input_file_keyboard_close(void);
 
 
 #ifdef EMULATE_CPU_STATS
-	extern unsigned int stats_codsinpr[];
-	extern unsigned int stats_codpred[];
-	extern unsigned int stats_codprcb[];
-	extern unsigned int stats_codprdd[];
-	extern unsigned int stats_codprfd[];
-	extern unsigned int stats_codprddcb[];
-	extern unsigned int stats_codprfdcb[];
+    extern unsigned int stats_codsinpr[];
+    extern unsigned int stats_codpred[];
+    extern unsigned int stats_codprcb[];
+    extern unsigned int stats_codprdd[];
+    extern unsigned int stats_codprfd[];
+    extern unsigned int stats_codprddcb[];
+    extern unsigned int stats_codprfdcb[];
 
-	extern void util_stats_increment_counter(unsigned int *stats_array,int index);
-	extern unsigned int util_stats_get_counter(unsigned int *stats_array,int index);
-	extern void util_stats_set_counter(unsigned int *stats_array,int index,unsigned int value);
-	extern void util_stats_init(void);
-	extern int util_stats_find_max_counter(unsigned int *stats_array);
-	extern unsigned int util_stats_sum_all_counters(void);
+    extern void util_stats_increment_counter(unsigned int *stats_array,int index);
+    extern unsigned int util_stats_get_counter(unsigned int *stats_array,int index);
+    extern void util_stats_set_counter(unsigned int *stats_array,int index,unsigned int value);
+    extern void util_stats_init(void);
+    extern int util_stats_find_max_counter(unsigned int *stats_array);
+    extern unsigned int util_stats_sum_all_counters(void);
 
 #endif
 
@@ -162,8 +162,8 @@ extern char *string_machines_list_description;
 #define MAX_MACHINE_NAME 40
 
 struct s_machines_info {
-	char nombre_maquina[MAX_MACHINE_NAME];
-	int machine_id;
+    char nombre_maquina[MAX_MACHINE_NAME];
+    int machine_id;
     enum machine_families_list family_id;
     int fabricante;
 };
@@ -299,8 +299,8 @@ extern int util_get_configfile_name(char *configfile);
 //valores usados en funcion util_set_reset_mouse
 enum util_mouse_buttons
 {
-	UTIL_MOUSE_LEFT_BUTTON,
-	UTIL_MOUSE_RIGHT_BUTTON
+    UTIL_MOUSE_LEFT_BUTTON,
+    UTIL_MOUSE_RIGHT_BUTTON
 };
 
 
@@ -309,74 +309,74 @@ extern void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 //valores usados en funcion util_set_reset_key
 enum util_teclas
 {
-	UTIL_KEY_NONE=0,  //None se usa en teclado chloe
+    UTIL_KEY_NONE=0,  //None se usa en teclado chloe
 
-	UTIL_KEY_SPACE=128,  //128 en adelante para no entrar en conflicto con teclas ascii <128
-	UTIL_KEY_ENTER,
+    UTIL_KEY_SPACE=128,  //128 en adelante para no entrar en conflicto con teclas ascii <128
+    UTIL_KEY_ENTER,
     UTIL_KEY_HOME,
     UTIL_KEY_END,
     UTIL_KEY_DEL,
-	UTIL_KEY_SHIFT_L,
-	UTIL_KEY_SHIFT_R,
-	UTIL_KEY_CAPS_SHIFT,
-	UTIL_KEY_ALT_L,
-	UTIL_KEY_ALT_R,
-	UTIL_KEY_CONTROL_L,
-	UTIL_KEY_CONTROL_R,
-	UTIL_KEY_BACKSPACE,
-	UTIL_KEY_FIRE,
-	UTIL_KEY_LEFT,
-	UTIL_KEY_RIGHT,
-	UTIL_KEY_DOWN,
-	UTIL_KEY_UP,
-	UTIL_KEY_TAB,
-	UTIL_KEY_CAPS_LOCK,
-	UTIL_KEY_COMMA,
-	UTIL_KEY_PERIOD,
-	UTIL_KEY_F1,
-	UTIL_KEY_F2,
-	UTIL_KEY_F3,
-	UTIL_KEY_F4,
-	UTIL_KEY_F5,
-	UTIL_KEY_F6,
-	UTIL_KEY_F7,
-	UTIL_KEY_F8,
-	UTIL_KEY_F9,
-	UTIL_KEY_F10,
-	UTIL_KEY_F11,
-	UTIL_KEY_F12,
-	UTIL_KEY_F13,
-	UTIL_KEY_F14,
-	UTIL_KEY_F15,
-	UTIL_KEY_ESC,
-	UTIL_KEY_PAGE_UP,
-	UTIL_KEY_PAGE_DOWN,
-	UTIL_KEY_KP_PLUS,
+    UTIL_KEY_SHIFT_L,
+    UTIL_KEY_SHIFT_R,
+    UTIL_KEY_CAPS_SHIFT,
+    UTIL_KEY_ALT_L,
+    UTIL_KEY_ALT_R,
+    UTIL_KEY_CONTROL_L,
+    UTIL_KEY_CONTROL_R,
+    UTIL_KEY_BACKSPACE,
+    UTIL_KEY_FIRE,
+    UTIL_KEY_LEFT,
+    UTIL_KEY_RIGHT,
+    UTIL_KEY_DOWN,
+    UTIL_KEY_UP,
+    UTIL_KEY_TAB,
+    UTIL_KEY_CAPS_LOCK,
+    UTIL_KEY_COMMA,
+    UTIL_KEY_PERIOD,
+    UTIL_KEY_F1,
+    UTIL_KEY_F2,
+    UTIL_KEY_F3,
+    UTIL_KEY_F4,
+    UTIL_KEY_F5,
+    UTIL_KEY_F6,
+    UTIL_KEY_F7,
+    UTIL_KEY_F8,
+    UTIL_KEY_F9,
+    UTIL_KEY_F10,
+    UTIL_KEY_F11,
+    UTIL_KEY_F12,
+    UTIL_KEY_F13,
+    UTIL_KEY_F14,
+    UTIL_KEY_F15,
+    UTIL_KEY_ESC,
+    UTIL_KEY_PAGE_UP,
+    UTIL_KEY_PAGE_DOWN,
+    UTIL_KEY_KP_PLUS,
     UTIL_KEY_KP_NUMLOCK,
     UTIL_KEY_KP_DIVIDE,
     UTIL_KEY_KP_MULTIPLY,
     UTIL_KEY_KP_MINUS,
-	UTIL_KEY_KP0,
-	UTIL_KEY_KP1,
-	UTIL_KEY_KP2,
-	UTIL_KEY_KP3,
-	UTIL_KEY_KP4,
-	UTIL_KEY_KP5,
-	UTIL_KEY_KP6,
-	UTIL_KEY_KP7,
-	UTIL_KEY_KP8,
-	UTIL_KEY_KP9,
-	UTIL_KEY_KP_COMMA,
-	UTIL_KEY_KP_ENTER,
-	UTIL_KEY_WINKEY_L,
+    UTIL_KEY_KP0,
+    UTIL_KEY_KP1,
+    UTIL_KEY_KP2,
+    UTIL_KEY_KP3,
+    UTIL_KEY_KP4,
+    UTIL_KEY_KP5,
+    UTIL_KEY_KP6,
+    UTIL_KEY_KP7,
+    UTIL_KEY_KP8,
+    UTIL_KEY_KP9,
+    UTIL_KEY_KP_COMMA,
+    UTIL_KEY_KP_ENTER,
+    UTIL_KEY_WINKEY_L,
     UTIL_KEY_WINKEY_R,
 
-	//Estos 5 son para enviar eventos de joystick mediante ZENG
-	UTIL_KEY_JOY_FIRE,
-	UTIL_KEY_JOY_UP,
-	UTIL_KEY_JOY_DOWN,
-	UTIL_KEY_JOY_LEFT,
-	UTIL_KEY_JOY_RIGHT,
+    //Estos 5 son para enviar eventos de joystick mediante ZENG
+    UTIL_KEY_JOY_FIRE,
+    UTIL_KEY_JOY_UP,
+    UTIL_KEY_JOY_DOWN,
+    UTIL_KEY_JOY_LEFT,
+    UTIL_KEY_JOY_RIGHT,
 
     //Esta es para enviar mediante ZENG una orden de reset todas teclas. Usado en driver curses
     UTIL_KEY_RESET_ALL,
@@ -396,16 +396,16 @@ enum util_teclas
 enum util_teclas_z88_keymap
 {
         UTIL_KEY_Z88_MINUS,
-	UTIL_KEY_Z88_EQUAL,
-	UTIL_KEY_Z88_BACKSLASH,
-	UTIL_KEY_Z88_BRACKET_LEFT,
-	UTIL_KEY_Z88_BRACKET_RIGHT,
-	UTIL_KEY_Z88_SEMICOLON,
-	UTIL_KEY_Z88_APOSTROPHE,
-	UTIL_KEY_Z88_POUND,
-	UTIL_KEY_Z88_COMMA,
-	UTIL_KEY_Z88_PERIOD,
-	UTIL_KEY_Z88_SLASH
+    UTIL_KEY_Z88_EQUAL,
+    UTIL_KEY_Z88_BACKSLASH,
+    UTIL_KEY_Z88_BRACKET_LEFT,
+    UTIL_KEY_Z88_BRACKET_RIGHT,
+    UTIL_KEY_Z88_SEMICOLON,
+    UTIL_KEY_Z88_APOSTROPHE,
+    UTIL_KEY_Z88_POUND,
+    UTIL_KEY_Z88_COMMA,
+    UTIL_KEY_Z88_PERIOD,
+    UTIL_KEY_Z88_SLASH
 };
 
 
@@ -433,9 +433,9 @@ enum util_teclas_cpc_keymap
 {
         UTIL_KEY_CPC_MINUS,
         UTIL_KEY_CPC_CIRCUNFLEJO,
-	UTIL_KEY_CPC_ARROBA,
+    UTIL_KEY_CPC_ARROBA,
         UTIL_KEY_CPC_BRACKET_LEFT,
-	UTIL_KEY_CPC_COLON,
+    UTIL_KEY_CPC_COLON,
         UTIL_KEY_CPC_SEMICOLON,
         UTIL_KEY_CPC_BRACKET_RIGHT,
         UTIL_KEY_CPC_COMMA,
@@ -574,12 +574,12 @@ extern int util_enhanced_convert_raw_to_p_p81_memoria_tamanyo;
 
 struct s_pokfile
 {
-        int indice_accion;
-        char texto[MAX_LENGTH_LINE_POKE_FILE+1];
-	z80_byte banco;
-	z80_int direccion;
-	z80_byte valor;
-	z80_byte valor_orig;
+    int indice_accion;
+    char texto[MAX_LENGTH_LINE_POKE_FILE+1];
+    z80_byte banco;
+    z80_int direccion;
+    z80_byte valor;
+    z80_byte valor_orig;
 };
 
 
@@ -674,9 +674,9 @@ typedef struct s_tecla_redefinida tecla_redefinida;
 //Tabla para subzonas. Se usa en array y un elemento de 0,0,"" indica el ultimo elemento
 struct s_subzone_info
 {
-	int inicio;
-	int fin;
-	char nombre[33];
+    int inicio;
+    int fin;
+    char nombre[33];
 };
 
 typedef struct s_subzone_info subzone_info;
@@ -685,8 +685,8 @@ typedef struct s_subzone_info subzone_info;
 //Tabla para guardar configuracion de geometria de ventanas
 struct s_saved_config_window_geometry
 {
-	char nombre[MAX_NAME_WINDOW_GEOMETRY];
-	int x,y,ancho,alto,is_minimized,is_maximized,width_before_max_min_imize,height_before_max_min_imize;
+    char nombre[MAX_NAME_WINDOW_GEOMETRY];
+    int x,y,ancho,alto,is_minimized,is_maximized,width_before_max_min_imize,height_before_max_min_imize;
 };
 
 typedef struct s_saved_config_window_geometry saved_config_window_geometry;
