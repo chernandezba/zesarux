@@ -7349,50 +7349,50 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
             }
         break;
 
-    case UTIL_MOUSE_RIGHT_BUTTON:
-      if (pressrelease) {
-        mouse_right=1;
-        //Si esta menu abierto, hace como ESC
+        case UTIL_MOUSE_RIGHT_BUTTON:
+            if (pressrelease) {
+                mouse_right=1;
+                //Si esta menu abierto, hace como ESC
 
-        if (si_menu_mouse_activado()) {
-          //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
-          if (menu_abierto==0) {
-                  if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
-                      if (mouse_menu_ignore_click_open.v==0) {
-                        menu_fire_event_open_menu();
+                if (si_menu_mouse_activado()) {
+                    //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
+                    if (menu_abierto==0) {
+                        if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
+                            if (mouse_menu_ignore_click_open.v==0) {
+                                menu_fire_event_open_menu();
 
-                        if (menu_mouse_right_send_esc.v==0) menu_was_open_by_right_mouse_button.v=1;
-                      }
-                  }
-          }
-          else {
-            //Si esta menu abierto, es como enviar ESC si setting menu_mouse_right_send_esc.v
-            if (zxvision_keys_event_not_send_to_machine && menu_mouse_right_send_esc.v) {
-                    //y si se pulsa dentro de ventana
-                    //no ver dentro ventana
-                    //if (si_menu_mouse_en_ventana() ) {
-                    util_set_reset_key(UTIL_KEY_ESC,1);
-                    //}
+                                if (menu_mouse_right_send_esc.v==0) menu_was_open_by_right_mouse_button.v=1;
+                            }
+                        }
+                    }
+                    else {
+                        //Si esta menu abierto, es como enviar ESC si setting menu_mouse_right_send_esc.v
+                        if (zxvision_keys_event_not_send_to_machine && menu_mouse_right_send_esc.v) {
+                            //y si se pulsa dentro de ventana
+                            //no ver dentro ventana
+                            //if (si_menu_mouse_en_ventana() ) {
+                            util_set_reset_key(UTIL_KEY_ESC,1);
+                            //}
+                        }
+                    }
+                }
+
             }
-          }
-        }
+            else {
+                mouse_right=0;
+                //Si esta menu abierto, hace como ESC si setting menu_mouse_right_send_esc.v
+                if (si_menu_mouse_activado() && menu_mouse_right_send_esc.v) {
+                    if (menu_abierto) util_set_reset_key(UTIL_KEY_ESC,0);
+                }
 
-      }
-      else {
-        mouse_right=0;
-        //Si esta menu abierto, hace como ESC si setting menu_mouse_right_send_esc.v
-        if (si_menu_mouse_activado() && menu_mouse_right_send_esc.v) {
-          if (menu_abierto) util_set_reset_key(UTIL_KEY_ESC,0);
-        }
+                mouse_pressed_close_window=0;
+                mouse_pressed_background_window=0;
+                mouse_pressed_hotkey_window=0;
+                mouse_pressed_hotkey_window_key=0;
+            }
+        break;
 
-        mouse_pressed_close_window=0;
-        mouse_pressed_background_window=0;
-        mouse_pressed_hotkey_window=0;
-        mouse_pressed_hotkey_window_key=0;
-      }
-    break;
-
-  }
+    }
 
 
 }
