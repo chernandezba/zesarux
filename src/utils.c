@@ -7291,17 +7291,19 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
                             int abrir_menu=0;
 
-                            //Con top menu, solo se abre si se pulsa arriba del todo
-                            if (zxvision_topbar_menu_enabled.v) {
-                                if (get_pos_y_mouse_topbar()==0) abrir_menu=1;
+
+                            //Si no está ni kempston ni lightgun, se abre menu pulsando en cualquier sitio
+                            if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
+                                abrir_menu=1;
                             }
 
-                            //Sin top menu, se abre pulsando en cualquier parte, siempre que no este kempston ni lightgun habilitado
                             else {
-                                if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
-                                    abrir_menu=1;
+                                //Si hay alguno de los dos activado y tenemos topbar, se abrira menu topbar si estamos arriba del todo
+                                if (zxvision_topbar_menu_enabled.v) {
+                                    if (get_pos_y_mouse_topbar()==0) abrir_menu=1;
                                 }
                             }
+
 
                             if (abrir_menu) {
                                 //printf("Raton pulsado. abrir menu\n");
