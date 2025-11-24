@@ -7274,81 +7274,80 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
     util_generate_random_noise(pressrelease);
 
-  switch(boton)
-  {
-    case UTIL_MOUSE_LEFT_BUTTON:
-      if (pressrelease) {
+    switch(boton) {
+        case UTIL_MOUSE_LEFT_BUTTON:
+            if (pressrelease) {
 
-        //printf ("Leido press release mouse\n");
-        if (si_menu_mouse_activado() ) {
+                //printf ("Leido press release mouse\n");
+                if (si_menu_mouse_activado() ) {
 
 
-            //printf("Poner a 1 zxvision_topmenu_was_open_by_left_mouse_button desde utils\n");
-            zxvision_topmenu_was_open_by_left_mouse_button=1;
+                    //printf("Poner a 1 zxvision_topmenu_was_open_by_left_mouse_button desde utils\n");
+                    zxvision_topmenu_was_open_by_left_mouse_button=1;
 
-          if (menu_abierto==0) {
+                    if (menu_abierto==0) {
 
-                if (mouse_menu_ignore_click_open.v==0) {
+                        if (mouse_menu_ignore_click_open.v==0) {
 
-                    int abrir_menu=0;
+                            int abrir_menu=0;
 
-                    //Con top menu, solo se abre si se pulsa arriba del todo
-                    if (zxvision_topbar_menu_enabled.v) {
-                        if (get_pos_y_mouse_topbar()==0) abrir_menu=1;
-                    }
+                            //Con top menu, solo se abre si se pulsa arriba del todo
+                            if (zxvision_topbar_menu_enabled.v) {
+                                if (get_pos_y_mouse_topbar()==0) abrir_menu=1;
+                            }
 
-                    //Sin top menu, se abre pulsando en cualquier parte, siempre que no este kempston ni lightgun habilitado
-                    else {
-                        if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
-                            abrir_menu=1;
+                            //Sin top menu, se abre pulsando en cualquier parte, siempre que no este kempston ni lightgun habilitado
+                            else {
+                                if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
+                                    abrir_menu=1;
+                                }
+                            }
+
+                            if (abrir_menu) {
+                                //printf("Raton pulsado. abrir menu\n");
+                                menu_fire_event_open_menu();
+                                menu_was_open_by_left_mouse_button.v=1;
+                            }
                         }
-                    }
 
-                    if (abrir_menu) {
-                        //printf("Raton pulsado. abrir menu\n");
-                        menu_fire_event_open_menu();
-                        menu_was_open_by_left_mouse_button.v=1;
+
+                    }
+                    else {
+                        //Si esta menu abierto, es como enviar enter, pero cuando no esta la ventana en background
+                        if (zxvision_keys_event_not_send_to_machine) {
+                            //y si se pulsa dentro de ventana
+                            if (si_menu_mouse_en_ventana() ) {
+                            //util_set_reset_key(UTIL_KEY_ENTER,1);  //Ya no enviamos enter al pulsar boton mouse
+                            }
+                        }
                     }
                 }
 
+                mouse_left=1;
+                //printf ("left button pressed\n");
 
-          }
-          else {
-            //Si esta menu abierto, es como enviar enter, pero cuando no esta la ventana en background
-            if (zxvision_keys_event_not_send_to_machine) {
-                    //y si se pulsa dentro de ventana
-                    if (si_menu_mouse_en_ventana() ) {
-                    //util_set_reset_key(UTIL_KEY_ENTER,1);  //Ya no enviamos enter al pulsar boton mouse
-                    }
             }
-          }
-        }
+            else {
 
-        mouse_left=1;
-        //printf ("left button pressed\n");
+                if (si_menu_mouse_activado()) {
 
-      }
-      else {
+                    if (menu_abierto==1) {
+                        //Si esta menu abierto, es como enviar enter
+                        //util_set_reset_key(UTIL_KEY_ENTER,0); //Ya no enviamos enter al pulsar boton mouse
+                    }
+                }
 
-        if (si_menu_mouse_activado()) {
+                //printf ("left button released\n");
+                mouse_left=0;
+                //printf ("reseteamos mouse_pressed_close_window desde utils ventana\n");
+                //puerto_especial1 |=1;
+                mouse_pressed_close_window=0;
+                mouse_pressed_background_window=0;
+                mouse_pressed_hotkey_window=0;
+                mouse_pressed_hotkey_window_key=0;
 
-          if (menu_abierto==1) {
-            //Si esta menu abierto, es como enviar enter
-            //util_set_reset_key(UTIL_KEY_ENTER,0); //Ya no enviamos enter al pulsar boton mouse
-          }
-        }
-
-        //printf ("left button released\n");
-        mouse_left=0;
-        //printf ("reseteamos mouse_pressed_close_window desde utils ventana\n");
-        //puerto_especial1 |=1;
-        mouse_pressed_close_window=0;
-        mouse_pressed_background_window=0;
-        mouse_pressed_hotkey_window=0;
-        mouse_pressed_hotkey_window_key=0;
-
-      }
-    break;
+            }
+        break;
 
     case UTIL_MOUSE_RIGHT_BUTTON:
       if (pressrelease) {
