@@ -26698,8 +26698,9 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
             //a la derecha
             if (animacion_activa_incremento>0 && movimiento) {
-                final_x +=animacion_activa_incremento-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
-                final_y +=animacion_activa_incremento-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
+                int incremento=animacion_activa_incremento-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
+                final_x +=incremento;
+                final_y +=incremento;
             }
 
             //Determinar como aparecen y desaparecen la pantalla de mas adelante y mas atrás
