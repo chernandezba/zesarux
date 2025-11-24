@@ -26560,8 +26560,10 @@ void menu_snapshot_in_ram_browse_render_one_screen(zxvision_window *w,int snapsh
 int menu_snapshot_in_ram_browse_forzar_dibujado=1;
 
 //Para hacer la animación de las miniaturas
-//Nota mental: hay que invertir demasiado tiempo en hacer que la animación quede visualmente bonita,
+//Nota mental: he invertido demasiado tiempo en hacer que la animación quede visualmente bonita,
 //el resultado ha sido bueno pero quizá no lo volvería a hacer
+//Al final las animaciones se han conseguido mediante pruebas de acierto y error, de lo cual no me
+//siento muy orgulloso
 int animacion_activa=0;
 int animacion_activa_incremento=0;
 
@@ -26631,10 +26633,26 @@ void menu_snapshot_in_ram_browse_overlay(void)
 
         printf("Snap elegido: %d inicio_snap: %d\n",menu_snapshot_in_ram_browse_snap_selected,inicio_snap);
 
+        //Desplazar las capas al animar
+        int movimiento=1;
+
+        //Si hay menos snapshots a mostrar que las capas totales
+        if (menu_snapshot_in_ram_browse_snap_selected<MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS) {
+            movimiento=0;
+
+            //Si va a la izquierda y hay las mismas que a mostrar
+            if (menu_snapshot_in_ram_browse_snap_selected+1==MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS && animacion_activa_incremento<0) {
+                movimiento=1;
+            }
+        }
+
         //Mostrar las pantallas de los diferentes snapshots
         for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected+una_capa_mas;
                 inicio_snap++,total_capas--,contador_capa++) {
 
+            //TODO: Esto es un horror, para determinar que la capa a dibujar es la ultima, tengo que evaluar
+            //casi la condicion del for y ver si es la ultima iteracion
+            //Seguro que hay una mejor manera de hacer esto (y en general todo el efecto de animación) pero ahora no se me ocurre
             int ultima_capa=0;
             if (total_capas==1 || inicio_snap==snapshots_in_ram_total_elements-1 || inicio_snap==menu_snapshot_in_ram_browse_snap_selected+una_capa_mas) {
                 ultima_capa=1;
@@ -26649,13 +26667,13 @@ void menu_snapshot_in_ram_browse_overlay(void)
             int final_y=offset_y;
 
             //a la izquierda
-            if (animacion_activa_incremento<0) {
+            if (animacion_activa_incremento<0 && movimiento) {
                 final_x +=animacion_activa_incremento;
                 final_y +=animacion_activa_incremento;
             }
 
             //a la derecha
-            if (animacion_activa_incremento>0) {
+            if (animacion_activa_incremento>0 && movimiento) {
                 final_x +=animacion_activa_incremento-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
                 final_y +=animacion_activa_incremento-MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
             }
@@ -26676,7 +26694,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
                 }
 
                 //la primera tambien tramada
-                if (contador_capa==0) {
+                if (contador_capa==0 && movimiento) {
                     //va apareciendo
                     tramado=animacion_activa_incremento+1;
                 }
@@ -26691,7 +26709,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
                 }
 
                 //la primera tambien tramada
-                if (contador_capa==0) {
+                if (contador_capa==0 && movimiento) {
                     //va desapareciendo
                     tramado=MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS-animacion_activa_incremento;
                 }
