@@ -7303,13 +7303,8 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                                     if (get_pos_y_mouse_topbar()==0) abrir_menu=1;
                                 }
 
-
-                                //con kempston mouse o lightgun, se abre si pulsamos fuera de la zona de pantalla
-                                //emulada y cuando zx desktop esta activado
-                                if (if_zxdesktop_enabled_and_driver_allows()) {
-                                    //printf("Mouse in emulated display: %d\n",zxvision_mouse_in_emulated_machine());
-                                    if (!zxvision_mouse_in_emulated_machine()) abrir_menu=1;
-                                }
+                                //con kempston mouse o lightgun, se abre si pulsamos fuera de la zona de pantalla emulada
+                                if (!zxvision_mouse_in_emulated_machine()) abrir_menu=1;
 
                             }
 
