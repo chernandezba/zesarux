@@ -24031,7 +24031,7 @@ int util_sign(int v)
     else return +1;
 }
 
-int util_menor(int a,int b)
+int util_smaller(int a,int b)
 {
     if (a<b) return a;
     else return b;

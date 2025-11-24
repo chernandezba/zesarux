@@ -25,8 +25,6 @@ todos aquellos que usan la llamada a menu_add_item_menu_index_full_path aparecer
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
 
-*quiza no deberia activarse el menu solo pulsando en cualquier sitio, requeriria estar el raton arriba del todo.
-porque aunque se vaya a la barra de arriba al pulsar, el raton igualmente hay que moverlo hasta arriba para hacer algo
 
 -ayuda de topbar. indicar por ejemplo que pulsando dos veces F5 se abre menú principal
 
