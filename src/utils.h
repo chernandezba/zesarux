@@ -1074,7 +1074,6 @@ extern void util_memcpy_protect_origin(z80_byte *destino,z80_byte *memoria,int t
 
 extern int util_get_absolute(int valor);
 extern int util_get_sign(int valor);
-extern int util_sign(int v);
 extern int util_smaller(int a,int b);
 extern int util_get_cosine(int degrees);
 extern int util_get_sine(int degrees);

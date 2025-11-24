@@ -17413,10 +17413,12 @@ int util_get_absolute(int valor)
         return valor;
 }
 
-int util_sign(int v)
+//Devolver signo de valor
+int util_get_sign(int valor)
 {
-    if (v<0) return -1;
-    else return +1;
+    if (valor<0) return -1;
+
+    return +1;
 }
 
 int util_smaller(int a,int b)
@@ -17426,15 +17428,6 @@ int util_smaller(int a,int b)
 }
 
 
-
-
-//Devolver signo de valor
-int util_get_sign(int valor)
-{
-    if (valor<0) return -1;
-
-    return +1;
-}
 
 
 
