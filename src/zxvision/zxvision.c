@@ -16740,6 +16740,30 @@ void zxvision_set_next_menu_position_from_current_mouse(void)
     zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
 }
 
+//Dice si raton dentro de pantalla emulada
+int zxvision_mouse_in_emulated_machine(void)
+{
+
+    int mouse_pixel_x,mouse_pixel_y;
+    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+    //multiplicamos por zoom
+    mouse_pixel_x *=zoom_x;
+    mouse_pixel_y *=zoom_y;
+
+    //si esta dentro de pantalla emulada
+    int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
+    int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
+
+    if (mouse_pixel_x<ancho_maquina && mouse_pixel_y<alto_maquina) {
+        return 1;
+    }
+
+    return 0;
+
+}
+
+
 //Dice si raton en zona de zxdesktop, o sea:
 //No en pantalla emulada
 //No en footer

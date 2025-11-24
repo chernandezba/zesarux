@@ -7293,8 +7293,6 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
 
                             //Si no está ni kempston ni lightgun, se abre menu pulsando en cualquier sitio
-                            //TODO: con zx desktop activo, deberia abrir solo si se pulsa en zona que no es pantalla emulada
-                            //Si se pulsa en pantalla emulada, deberia enviar evento de pulsación a kempston mouse o a lightgun
                             if (kempston_mouse_emulation.v==0 && lightgun_emulation_enabled.v==0) {
                                 abrir_menu=1;
                             }
@@ -7304,6 +7302,15 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                                 if (zxvision_topbar_menu_enabled.v) {
                                     if (get_pos_y_mouse_topbar()==0) abrir_menu=1;
                                 }
+
+
+                                //con kempston mouse o lightgun, se abre si pulsamos fuera de la zona de pantalla
+                                //emulada y cuando zx desktop esta activado
+                                if (if_zxdesktop_enabled_and_driver_allows()) {
+                                    //printf("Mouse in emulated display: %d\n",zxvision_mouse_in_emulated_machine());
+                                    if (!zxvision_mouse_in_emulated_machine()) abrir_menu=1;
+                                }
+
                             }
 
 
