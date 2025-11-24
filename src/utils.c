@@ -3952,7 +3952,7 @@ int util_write_configfile(void)
 
   if (automount_esxdos_nex.v==0)                ADD_STRING_CONFIG,"--nex-no-automount-esxdos");
 
-
+  if (zsf_force_uncompressed)                   ADD_STRING_CONFIG,"--zsf-uncompressed");
   if (zsf_snap_save_rom.v)                      ADD_STRING_CONFIG,"--zsf-save-rom");
 
   if (no_close_menu_after_smartload.v)          ADD_STRING_CONFIG,"--no-close-after-smartload");

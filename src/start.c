@@ -68,6 +68,7 @@
 #include "mem128.h"
 #include "zx8081.h"
 #include "snap.h"
+#include "snap_zsf.h"
 #include "zxvision.h"
 #include "menu_debug_cpu.h"
 #include "core_spectrum.h"
@@ -1445,6 +1446,7 @@ printf("\n"
         "--tempdir path              Folder to save temporary files. Folder must exist and have read and write permissions\n"
         "--snap-no-change-machine    Do not change machine when loading sna or z80 snapshots. Just load it on memory\n"
         "--nex-no-automount-esxdos   Do not mount esxdos folder when opening .nex/.snx files\n"
+        "--zsf-uncompressed          Save uncompressed ZSF snapshots\n"
         "--zsf-save-rom              Include ROM contents in saved ZSF snapshot. Useful when running custom roms. Only available for Spectrum/Clones models 16k/48k/128k/+2/+2A/+3\n"
         "--no-close-after-smartload  Do not close menu after SmartLoad\n"
         "--z88-not-sync-clock-snap   Do not sync PC clock to Z88 clock after loading a snapshot\n"
@@ -4299,6 +4301,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--nex-no-automount-esxdos")) {
                 automount_esxdos_nex.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zsf-uncompressed")) {
+                zsf_force_uncompressed=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zsf-save-rom")) {

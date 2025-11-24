@@ -108,8 +108,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 -snapshots en ram
 *icono para browse snapshots. mejorarlo
 *icono para guardar snapshot. mejorarlo
-ok acabar de probar bien *transiciones con menos de 5 capas se ven raras? la primera no hace transición al aparecer o desaparecer
 
 
--opcion para compressed ZSF o no que se guarde en config
+ok -opcion para compressed ZSF o no que se guarde en config
 
