@@ -35996,9 +35996,9 @@ void menu_view_gosub_stack_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_view_gosub_stack_window->is_minimized) return;
 
-    if (!MACHINE_IS_SPECTRUM) {
+    if (!MACHINE_IS_SPECTRUM && !MACHINE_IS_ZX8081) {
         zxvision_cls(menu_view_gosub_stack_window);
-        zxvision_print_string_defaults_fillspc_format(menu_view_gosub_stack_window,1,0,"Only available on Spectrum");
+        zxvision_print_string_defaults_fillspc_format(menu_view_gosub_stack_window,1,0,"Only available on Spectrum and ZX80/81");
     }
 
     else {

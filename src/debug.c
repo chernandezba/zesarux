@@ -9560,6 +9560,49 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
 }
 
+int debug_view_basic_gosub_stack_start_mark_spectrum(inicio_direccion)
+{
+    if (
+        (peek_byte_no_time(inicio_direccion)==0x03 && peek_byte_no_time(inicio_direccion+1)==0x13) ||
+        (peek_byte_no_time(inicio_direccion)==0xb4 && peek_byte_no_time(inicio_direccion+1)==0x12) ) {
+            return 1;
+        }
+
+    else return 0;
+}
+
+int debug_view_basic_gosub_stack_start_mark_zx81(inicio_direccion)
+{
+    if (
+
+        (peek_byte_no_time(inicio_direccion)==0x1c && peek_byte_no_time(inicio_direccion+1)==0x04) ||
+        (peek_byte_no_time(inicio_direccion)==0x30 && peek_byte_no_time(inicio_direccion+1)==0x04) ||
+        (peek_byte_no_time(inicio_direccion)==0x36 && peek_byte_no_time(inicio_direccion+1)==0x04) ||
+        (peek_byte_no_time(inicio_direccion)==0x8d && peek_byte_no_time(inicio_direccion+1)==0x04) ||
+        (peek_byte_no_time(inicio_direccion)==0x97 && peek_byte_no_time(inicio_direccion+1)==0x04) ||
+        (peek_byte_no_time(inicio_direccion)==0xd1 && peek_byte_no_time(inicio_direccion+1)==0x04) ||
+        (peek_byte_no_time(inicio_direccion)==0xcf && peek_byte_no_time(inicio_direccion+1)==0x04) ||
+        (peek_byte_no_time(inicio_direccion)==0x0f && peek_byte_no_time(inicio_direccion+1)==0x06) ||
+        (peek_byte_no_time(inicio_direccion)==0x26 && peek_byte_no_time(inicio_direccion+1)==0x06) ||
+        (peek_byte_no_time(inicio_direccion)==0x37 && peek_byte_no_time(inicio_direccion+1)==0x06) ||
+        (peek_byte_no_time(inicio_direccion)==0x76 && peek_byte_no_time(inicio_direccion+1)==0x06)
+
+        //(peek_byte_no_time(inicio_direccion)==0x8b && peek_byte_no_time(inicio_direccion+1)==0x02)
+
+    )
+        {
+            z80_byte a=peek_byte_no_time(inicio_direccion-2);
+            z80_byte b=peek_byte_no_time(inicio_direccion-1);
+            if ( (a!=0xcf && b!=0x04) && (a!=0xcf && b!=0x04)) {
+            printf("%02XH %02XH\n",a,b);
+            }
+
+            printf("Found stack mark at %XH\n",inicio_direccion);
+            return 1;
+        }
+
+    else return 0;
+}
 
 int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 {
@@ -9581,17 +9624,26 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 
     int inicio_direccion=reg_sp;
 
+    if (MACHINE_IS_ZX81) {
+        inicio_direccion -=2;
+    }
+
     int i;
 
     int encontrado=0;
 
+    printf("Start searching at %XH\n",inicio_direccion);
+
     for (i=0;i<32 && !encontrado;i++) {
-        if (
-            (peek_byte_no_time(inicio_direccion)==0x03 && peek_byte_no_time(inicio_direccion+1)==0x13) ||
-            (peek_byte_no_time(inicio_direccion)==0xb4 && peek_byte_no_time(inicio_direccion+1)==0x12) ) {
-                encontrado=1;
-                inicio_direccion +=2;
-            }
+        printf("%XH: %02XH\n",inicio_direccion,peek_byte_no_time(inicio_direccion));
+        if (MACHINE_IS_SPECTRUM && debug_view_basic_gosub_stack_start_mark_spectrum(inicio_direccion)) {
+            encontrado=1;
+            inicio_direccion +=2;
+        }
+        else if (MACHINE_IS_ZX81 && debug_view_basic_gosub_stack_start_mark_zx81(inicio_direccion)) {
+            encontrado=1;
+            inicio_direccion +=2;
+        }
         else {
             inicio_direccion++;
         }
@@ -9601,6 +9653,10 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 
     if (!encontrado) {
         strcpy (results_buffer,"Stack start not found");
+        printf("-------Stack start not found---------\n");
+        /*menu_set_menu_abierto(1);
+        util_set_reset_key(UTIL_KEY_F5,1);
+        sleep(5);*/
         return 0;
     }
 
@@ -9609,17 +9665,36 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 
     int vacio=1;
 
+    int max_ram=65535;
+
+    if (MACHINE_IS_ZX8081) {
+        max_ram=ramtop_zx8081;
+    }
+
 
     while (!salir) {
         //Byte 3E (el byte alto del primer word) indica el final
-        if (peek_byte_no_time(inicio_direccion+1)==0x3E || inicio_direccion>65535) salir=1;
+        if (peek_byte_no_time(inicio_direccion+1)==0x3E || inicio_direccion>max_ram) salir=1;
         else {
             z80_int linea=peek_byte_no_time(inicio_direccion)+256*peek_byte_no_time(inicio_direccion+1);
             z80_byte sentencia=peek_byte_no_time(inicio_direccion+2);
-            inicio_direccion+=3;
+
+            if (MACHINE_IS_SPECTRUM) {
+                inicio_direccion+=3;
+            }
+
+            //ZX80, ZX81
+            else inicio_direccion+=2;
             //printf("Linea: %d sentencia: %d\n",linea,sentencia);
 
-            sprintf (buffer_linea,"%4d:%d\n",linea,sentencia);
+            if (MACHINE_IS_SPECTRUM) {
+                sprintf (buffer_linea,"%4d:%d\n",linea,sentencia);
+            }
+
+            else {
+                sprintf (buffer_linea,"%4d\n",linea);
+            }
+
             resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
             vacio=0;
 

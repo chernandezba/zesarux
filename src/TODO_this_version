@@ -10,6 +10,12 @@
 ----------------------------------------
 
 
+-Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
+        menu_add_item_menu_index_full_path(array_menu_settings_debug,
+            "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
+Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
+pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
+
 -Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
 
 
@@ -65,8 +71,6 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 *icono para guardar snapshot. mejorarlo
 
 
--Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
-        menu_add_item_menu_index_full_path(array_menu_settings_debug,
-            "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
-Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
-pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
+
+
+-ver gosub stack en zx80, zx81

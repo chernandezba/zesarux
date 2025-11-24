@@ -348,7 +348,7 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 -convertir todos tabs a espacios en archivos de código fuente: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
 
 
--ver gosub stack en zx80, zx81
+
 
 -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
 

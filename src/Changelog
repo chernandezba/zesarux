@@ -16,6 +16,7 @@ Added emulation of Datel Lightwriter
 Added emulation of Spectrum Doodler Lightpen
 Added lightgun scope
 Added ZSF snapshot previews for QL, ZX80 and ZX81 machines
+Allow to see GO SUB stack of ZX81
 
 Improved Snapshots in RAM:
 - Browse visually all the stored snapshots in RAM, like on a "Time Machine"
