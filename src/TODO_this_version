@@ -112,6 +112,9 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 *icono para guardar snapshot. mejorarlo
 ok acabar de probar bien *transiciones con menos de 5 capas se ven raras? la primera no hace transición al aparecer o desaparecer
 
+-nuevo algoritmo para animación pantallas snapshots:
+*rutina para renderizar uno. y si coordenadas <0 o >100 (5 capas*10 intervalo, o menos de 5 si hay menos snapshots), sale punteado. Mientras mas lejos del limite, mas punteado
+*dibujar 7 (5+2, 1 delante y uno detras)
 
 -opcion para compressed ZSF o no que se guarde en config
 

@@ -26569,6 +26569,27 @@ int animacion_activa_incremento=0;
 
 int menu_snapshot_in_ram_browse_overlay_segundo_anterior=0;
 
+//total_mostrar_snaps: sin mostrar la de delante y detras
+int menu_snapshot_in_ram_browse_devuelve_tramado(int x)
+{
+    int tramado=0;
+
+    if (x<0) {
+        tramado=util_abs(x);
+    }
+
+    //Cuando hay menos capas que el maximo, simplemente no hay efectos de transición
+    int limite_x=(MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS-1)*MENU_SNAPSHOT_IN_RAM_BROWSE_TOTAL_TRANSITIONS;
+
+    if (x>=limite_x) {
+        tramado=util_abs(x-limite_x);
+    }
+    printf("x %d limite_x %d\n",x,limite_x);
+
+
+    return tramado;
+}
+
 void menu_snapshot_in_ram_browse_overlay(void)
 {
 
@@ -26646,6 +26667,10 @@ void menu_snapshot_in_ram_browse_overlay(void)
             }
         }
 
+
+        int capas_mostrar=util_menor(snapshots_in_ram_total_elements-inicio_snap,(menu_snapshot_in_ram_browse_snap_selected/*+una_capa_mas*/+1)-inicio_snap);
+        //if (capas_mostrar>MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS) capas_mostrar=MENU_SNAPSHOT_IN_RAM_TOTAL_CAPAS;
+
         //Mostrar las pantallas de los diferentes snapshots
         for (;total_capas>0 && inicio_snap<snapshots_in_ram_total_elements && inicio_snap<=menu_snapshot_in_ram_browse_snap_selected+una_capa_mas;
                 inicio_snap++,total_capas--,contador_capa++) {
@@ -26715,6 +26740,7 @@ void menu_snapshot_in_ram_browse_overlay(void)
                 }
             }
 
+            tramado=menu_snapshot_in_ram_browse_devuelve_tramado(final_x-MENU_SNAPSHOT_IN_RAM_BROWSE_INITIAL_X);
 
             menu_snapshot_in_ram_browse_render_one_screen(menu_snapshot_in_ram_browse_window,inicio_snap,final_x,final_y,tramado);
 
