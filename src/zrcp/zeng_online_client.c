@@ -40,6 +40,7 @@ Functions starting with zoc_ means: zeng online client
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "network.h"
 #include "compileoptions.h"
 #include "zeng_online.h"

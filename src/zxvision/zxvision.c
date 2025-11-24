@@ -64,6 +64,7 @@
 #include "timer.h"
 #include "operaciones.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "joystick.h"
 #include "ula.h"
 #include "realjoystick.h"

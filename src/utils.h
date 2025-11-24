@@ -1072,14 +1072,9 @@ extern void util_copy_files_to_mmc_doit(void);
 extern z80_byte util_get_byte_protect(z80_byte *memoria,int total_size,int offset);
 extern void util_memcpy_protect_origin(z80_byte *destino,z80_byte *memoria,int total_size,int offset,int total_copiar);
 
-extern int util_get_absolute(int valor);
-extern int util_get_sign(int valor);
-extern int util_smaller(int a,int b);
-extern int util_get_cosine(int degrees);
-extern int util_get_sine(int degrees);
+
+
 extern int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items,int case_insensitive);
-extern z80_64bit util_sqrt(z80_64bit number,int *result_type);
-extern int util_get_acosine(int cosine);
 
 extern void util_print_minutes_seconds(int segundos_totales, char *texto);
 

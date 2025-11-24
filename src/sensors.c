@@ -29,6 +29,8 @@
 #include "debug.h"
 #include "ay38912.h"
 #include "sn76489an.h"
+#include "utils.h"
+#include "utils_math.h"
 #include "screen.h"
 #include "zxvision.h"
 #include "timer.h"

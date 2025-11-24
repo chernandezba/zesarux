@@ -30,6 +30,7 @@
 #include "debug.h"
 #include "screen.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "zx8081.h"
 #include "jupiterace.h"
 #include "autoselectoptions.h"

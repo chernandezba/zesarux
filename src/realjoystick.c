@@ -43,6 +43,7 @@
 #include "joystick.h"
 #include "zxvision.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "screen.h"
 #include "compileoptions.h"
 #include "snap_ram.h"

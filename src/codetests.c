@@ -33,6 +33,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "operaciones.h"
 #include "timer.h"
 #include "ula.h"

@@ -67,6 +67,7 @@
 #include "operaciones.h"
 #include "disassemble.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "contend.h"
 #include "joystick.h"
 #include "ula.h"
