@@ -12315,7 +12315,7 @@ void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS)
 
                 int indice=item_seleccionado.valor_opcion & 0xFF;
 
-                menu_ventana_scanf("Extra info",defined_buttons_functions_array_parameters[indice],PATH_MAX);
+                menu_ventana_scanf("Parameters",defined_buttons_functions_array_parameters[indice],PATH_MAX);
 
             }
 
@@ -12425,7 +12425,7 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
                 int indice=item_seleccionado.valor_opcion & 0xFF;
 
-                menu_ventana_scanf("Extra info",defined_f_functions_keys_array_parameters[indice],PATH_MAX);
+                menu_ventana_scanf("Parameters",defined_f_functions_keys_array_parameters[indice],PATH_MAX);
 
             }
 

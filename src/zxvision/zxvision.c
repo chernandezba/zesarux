@@ -6374,6 +6374,7 @@ void menu_draw_ext_desktop_configurable_icons(void)
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        //printf("Leyendo si dibujando icono %d\n",i);
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
             //printf("Dibujando icono %d\n",i);
             menu_ext_desktop_draw_configurable_icon(i,0);
