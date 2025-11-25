@@ -9564,7 +9564,11 @@ int debug_view_basic_gosub_stack_start_mark_spectrum(inicio_direccion)
 {
     if (
         (peek_byte_no_time(inicio_direccion)==0x03 && peek_byte_no_time(inicio_direccion+1)==0x13) ||
-        (peek_byte_no_time(inicio_direccion)==0xb4 && peek_byte_no_time(inicio_direccion+1)==0x12) ) {
+        (peek_byte_no_time(inicio_direccion)==0xa9 && peek_byte_no_time(inicio_direccion+1)==0x12) ||
+        (peek_byte_no_time(inicio_direccion)==0xe9 && peek_byte_no_time(inicio_direccion+1)==0x12) ||
+        (peek_byte_no_time(inicio_direccion)==0xec && peek_byte_no_time(inicio_direccion+1)==0x12) ||
+        (peek_byte_no_time(inicio_direccion)==0xb4 && peek_byte_no_time(inicio_direccion+1)==0x12)
+        ) {
             return 1;
         }
 
@@ -9630,17 +9634,14 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
     int lineas_total=0;
 
    /*
-    Desde sp en adelante (como mucho 32 en adelante)
+    Desde sp en adelante (unos cuantos bytes en adelante)
     03h 13h: inicio marca, o b4h 12h
     luego linea little endian, sentencia
     Nota: este método para encontrar el inicio no es infalible, lo he encontrado mediante pruebas
     */
 
-    int inicio_direccion=reg_sp;
+    int inicio_direccion=reg_sp-2;
 
-    if (MACHINE_IS_ZX81) {
-        inicio_direccion -=2;
-    }
 
     int i;
 
@@ -9648,7 +9649,7 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 
     printf("Start searching at %XH\n",inicio_direccion);
 
-    for (i=0;i<32 && !encontrado;i++) {
+    for (i=0;i<36 && !encontrado;i++) {
         printf("%XH: %02XH\n",inicio_direccion,peek_byte_no_time(inicio_direccion));
         if (MACHINE_IS_SPECTRUM && debug_view_basic_gosub_stack_start_mark_spectrum(inicio_direccion)) {
             encontrado=1;
