@@ -3069,8 +3069,9 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_insert,menu_realtape_cond,
-            "Inserted","Insertado","Insertat");
+            "I~~nserted","I~~nsertado","I~~nsertat");
         menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (realtape_inserted.v==1 ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_tape_settings,'n');
         menu_add_item_menu_tooltip(array_menu_tape_settings,"Insert the file");
         menu_add_item_menu_ayuda(array_menu_tape_settings,"Insert the file");
 
