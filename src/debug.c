@@ -9588,7 +9588,7 @@ int debug_view_basic_gosub_stack_start_mark_zx80(inicio_direccion)
     )
         {
 
-            printf("Found stack mark at %XH\n",inicio_direccion);
+            //printf("Found stack mark at %XH\n",inicio_direccion);
             return 1;
         }
 
@@ -9615,7 +9615,7 @@ int debug_view_basic_gosub_stack_start_mark_zx81(inicio_direccion)
     )
         {
 
-            printf("Found stack mark at %XH\n",inicio_direccion);
+            //printf("Found stack mark at %XH\n",inicio_direccion);
             return 1;
         }
 
@@ -9647,10 +9647,16 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 
     int encontrado=0;
 
-    printf("Start searching at %XH\n",inicio_direccion);
+    //printf("Start searching at %XH\n",inicio_direccion);
 
     for (i=0;i<36 && !encontrado;i++) {
-        printf("%XH: %02XH\n",inicio_direccion,peek_byte_no_time(inicio_direccion));
+        //printf("%XH: %02XH\n",inicio_direccion,peek_byte_no_time(inicio_direccion));
+
+        //Estas funciones de buscar el inicio de stack de gosub la unica magia que hacen es que miran
+        //en la pila dos bytes que suele haber antes del principio del stack de gosub,
+        //que no es mas que llamadas (CALL) en la rom. Se puede ver que se detectan direcciones cercanas
+        //12a9 o 12e9 por ejemplo, que es por donde se está ejecutando la rom en el interprete de basic
+        //(12A2: THE 'MAIN EXECUTION' LOOP)
         if (MACHINE_IS_SPECTRUM && debug_view_basic_gosub_stack_start_mark_spectrum(inicio_direccion)) {
             encontrado=1;
             inicio_direccion +=2;
@@ -9672,10 +9678,7 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 
     if (!encontrado) {
         strcpy (results_buffer,"Stack start not found");
-        printf("-------Stack start not found---------\n");
-        /*menu_set_menu_abierto(1);
-        util_set_reset_key(UTIL_KEY_F5,1);
-        sleep(5);*/
+        //printf("-------Stack start not found---------\n");
         return 0;
     }
 
