@@ -296,7 +296,8 @@ y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se pued
 Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
 los traps que tenemos ahora
 
--En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese
+-En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese: aun configurando 10000 iconos maximo,
+no hay diferencia al menos al mover un icono (eso leyendo los 10000). Por tanto en principio no vale la pena contar hasta el ultimo usado
 
 
 -Conversion de audio datos ZX81

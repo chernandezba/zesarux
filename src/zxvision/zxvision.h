@@ -794,7 +794,7 @@ struct s_zxdesktop_configurable_icon {
 
 typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;
 
-#define MAX_ZXDESKTOP_CONFIGURABLE_ICONS 100
+#define MAX_ZXDESKTOP_CONFIGURABLE_ICONS 200
 
 extern zxdesktop_configurable_icon zxdesktop_configurable_icons_list[];
 
