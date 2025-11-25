@@ -3110,7 +3110,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_cassette_tape,NULL,
-            "~~Visual Casette Tape","Cinta Casette ~~Visual","Cinta Casette ~~Visual");
+            "Visual Casette Tape","Cinta Casette Visual","Cinta Casette Visual");
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
         menu_add_item_menu_genera_ventana(array_menu_tape_settings);
         menu_add_item_menu_se_cerrara(array_menu_tape_settings);
