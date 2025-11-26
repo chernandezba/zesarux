@@ -4165,7 +4165,7 @@ void zxdesktop_switchdesktop_timer_event(void)
 }
 
 
-
+int menu_putstring_footer_era_utf=0;
 
 void menu_putstring_footer(int x,int y,char *texto,int tinta,int papel)
 {
@@ -4175,7 +4175,23 @@ void menu_putstring_footer(int x,int y,char *texto,int tinta,int papel)
     //}
 
     while ( (*texto)!=0) {
-        new_menu_putchar_footer(x++,y,*texto,tinta,papel);
+        char caracter=*texto;
+
+        if (menu_putstring_footer_era_utf) {
+            caracter=menu_escribe_texto_convert_utf(menu_putstring_footer_era_utf,caracter);
+            menu_putstring_footer_era_utf=0;
+        }
+
+        //Si no, ver si entra un prefijo utf
+        else {
+            if (menu_es_prefijo_utf(caracter)) {
+                menu_putstring_footer_era_utf=caracter;
+            }
+        }
+
+        new_menu_putchar_footer(x,y,caracter,tinta,papel);
+
+        if (!menu_putstring_footer_era_utf) x++;
         texto++;
     }
 
@@ -8265,6 +8281,7 @@ int si_menu_muestra_caracteres_extendidos(void)
     else return si_complete_video_driver();
 }
 
+//TODO: solo soportamos utf-8 de 2 bytes, de momento no usamos de mas longitud, pero hay que tenerlo en cuenta para el futuro
 unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned char caracter)
 {
 
