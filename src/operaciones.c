@@ -5370,7 +5370,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
             //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
             hsync_generator_active.v=0;
-            printf("Disabling the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
+            //printf("Disabling the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
 
 
             modificado_border.v=1;
@@ -7869,7 +7869,7 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
         //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
         hsync_generator_active.v=1;
-        printf("Enabling  the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
+        //printf("Enabling  the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
 
         modificado_border.v=1;
 
