@@ -4164,29 +4164,7 @@ void zxdesktop_switchdesktop_timer_event(void)
     }
 }
 
-//Retorna posicion en el texto para una longitud x en caracteres, considerando si hay prefijos utf
-int zxvision_get_pos_character(char *texto,int pos_character)
-{
-    int pos_byte=0;
 
-    while (*texto) {
-        if (!menu_es_prefijo_utf(*texto)) pos_byte++;
-        texto++;
-    }
-    return pos_byte;
-}
-
-//Retorna longitud en caracteres, considerando si hay prefijos utf
-int zxvision_strlen_utf(char *texto)
-{
-    int longitud=0;
-
-    while (*texto) {
-        if (!menu_es_prefijo_utf(*texto)) longitud++;
-        texto++;
-    }
-    return longitud;
-}
 
 
 void menu_putstring_footer(int x,int y,char *texto,int tinta,int papel)

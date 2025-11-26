@@ -25803,3 +25803,28 @@ int util_get_random(void)
     return valor_random;
 
 }
+
+
+//Retorna posicion en el texto para una longitud x en caracteres, considerando si hay prefijos utf
+int util_get_pos_character_in_string(char *texto,int pos_character)
+{
+    int pos_byte=0;
+
+    while (*texto) {
+        if (!menu_es_prefijo_utf(*texto)) pos_byte++;
+        texto++;
+    }
+    return pos_byte;
+}
+
+//Retorna longitud en caracteres, considerando si hay prefijos utf
+int util_strlen_utf(char *texto)
+{
+    int longitud=0;
+
+    while (*texto) {
+        if (!menu_es_prefijo_utf(*texto)) longitud++;
+        texto++;
+    }
+    return longitud;
+}

@@ -1154,4 +1154,7 @@ extern void labels_load(char *archivo);
 
 extern void labeltree_free(labeltree *l);
 
+extern int util_get_pos_character_in_string(char *texto,int pos_character);
+extern int util_strlen_utf(char *texto);
+
 #endif

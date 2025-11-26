@@ -301,8 +301,6 @@ extern int forzar_no_mostrar_caracteres_extendidos;
 
 extern unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned char caracter);
 extern int menu_es_prefijo_utf(z80_byte caracter);
-extern int zxvision_get_pos_character(char *texto,int pos_character);
-extern int zxvision_strlen_utf(char *texto);
 
 extern void menu_ventana_draw_vertical_perc_bar(zxvision_window *w,int x,int y,int ancho,int alto,int porcentaje,int estilo_invertido);
 extern void menu_ventana_draw_horizontal_perc_bar(zxvision_window *w,int x,int y,int ancho,int alto,int porcentaje,int estilo_invertido);
