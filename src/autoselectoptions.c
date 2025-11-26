@@ -1352,6 +1352,13 @@ void desplaza_texto(int *indice, char *cadena_entera, char *cadena_mostrada)
 {
 
 	int i=*indice;
+
+    //Soporte utf
+    char caracter=cadena_entera[i];
+    if (menu_es_prefijo_utf(caracter)) {
+        i++;
+    }
+
 	i++;
 
 	*indice=i;

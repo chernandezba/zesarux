@@ -4165,7 +4165,7 @@ void zxdesktop_switchdesktop_timer_event(void)
 }
 
 
-int menu_putstring_footer_era_utf=0;
+
 
 void menu_putstring_footer(int x,int y,char *texto,int tinta,int papel)
 {
@@ -4173,6 +4173,8 @@ void menu_putstring_footer(int x,int y,char *texto,int tinta,int papel)
     //if (y==0) {
     //    printf("print a footer: %s\n",texto);
     //}
+
+    int menu_putstring_footer_era_utf=0;
 
     while ( (*texto)!=0) {
         char caracter=*texto;
