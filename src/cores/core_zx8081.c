@@ -282,6 +282,12 @@ void cpu_core_loop_zx8081(void)
 			t_scanline++;
 
 			generar_zx8081_horiz_sync();
+            //Generar NMI si conviene
+            if (MACHINE_IS_ZX81_TYPE) {
+                if (nmi_generator_active.v==1) {
+                    generate_nmi();
+                }
+            }
 
 
                         //Envio sonido

@@ -455,44 +455,36 @@ void generar_zx8081_vsync(void) {
 void generar_zx8081_horiz_sync(void) {
 
 
-                        if (video_zx8081_linecntr_enabled.v==1)
-                        	video_zx8081_linecntr++;
+    if (video_zx8081_linecntr_enabled.v==1) video_zx8081_linecntr++;
 
 
-                        //Cuadrar t_estados a cada linea multiple de 207
-                        //Esto sirve para tener una imagen estable en horizontal.... sino no hay manera
+    //Cuadrar t_estados a cada linea multiple de 207
+    //Esto sirve para tener una imagen estable en horizontal.... sino no hay manera
 
-                        if (video_zx8081_estabilizador_imagen.v) {
-                                int t_estados_en_linea=t_estados%screen_testados_linea;
-                                t_estados -=t_estados_en_linea;
+    if (video_zx8081_estabilizador_imagen.v) {
+        int t_estados_en_linea=t_estados%screen_testados_linea;
+        t_estados -=t_estados_en_linea;
 
-				//printf ("t_estados sobran: %d\n",t_estados_en_linea);
-                        }
-
-
-                        //siguiente linea
-
-                        video_zx8081_caracter_en_linea_actual=0;
-
-                        t_scanline_draw++;
+    //printf ("t_estados sobran: %d\n",t_estados_en_linea);
+    }
 
 
-                        t_scanline_draw_timeout++;
+    //siguiente linea
 
-                        //si han pasado muchas lineas, resetear
-                        if (t_scanline_draw_timeout>=timeout_linea_vsync) {
-                                //printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
-                                generar_zx8081_vsync();
-                                video_zx8081_linecntr_enabled.v=1;
-                        }
+    video_zx8081_caracter_en_linea_actual=0;
+
+    t_scanline_draw++;
 
 
-                       //Generar NMI si conviene
-                       if (MACHINE_IS_ZX81_TYPE) {
-                                 if (nmi_generator_active.v==1) {
-					generate_nmi();
-                                 }
-                       }
+    t_scanline_draw_timeout++;
+
+    //si han pasado muchas lineas, resetear
+    if (t_scanline_draw_timeout>=timeout_linea_vsync) {
+        //printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
+        generar_zx8081_vsync();
+        video_zx8081_linecntr_enabled.v=1;
+    }
+
 
 }
 

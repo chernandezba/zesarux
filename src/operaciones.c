@@ -5371,7 +5371,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
             hsync_generator_active.v=0;
             //printf("Disabling the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
-
+            //generar_zx8081_horiz_sync();
 
             modificado_border.v=1;
 
