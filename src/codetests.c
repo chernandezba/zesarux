@@ -2829,6 +2829,56 @@ void codetests_leading_zeroes(void)
     codetests_leading_zeroes_check("-1234.567890001000","-1234.567890001");
 }
 
+void codetests_utf8(void)
+{
+    char *texto="12345áéíóú";
+
+    int longitud=util_strlen_utf(texto);
+
+    if (longitud!=10) {
+        printf("Error strlen utf8. Got [%d] Expected: 10\n",longitud);
+        exit(1);
+    }
+
+    int pos=util_get_pos_character_in_string(texto,0);
+    if (pos!=0) {
+        printf("Error pos utf8. Got [%d] Expected: 0\n",pos);
+        exit(1);
+    }
+
+    pos=util_get_pos_character_in_string(texto,1);
+    if (pos!=1) {
+        printf("Error pos utf8. Got [%d] Expected: 1\n",pos);
+        exit(1);
+    }
+
+    pos=util_get_pos_character_in_string(texto,5);
+    if (pos!=5) {
+        printf("Error pos utf8. Got [%d] Expected: 5\n",pos);
+        exit(1);
+    }
+
+    //despues de la á
+    pos=util_get_pos_character_in_string(texto,6);
+    if (pos!=7) {
+        printf("Error pos utf8. Got [%d] Expected: 7\n",pos);
+        exit(1);
+    }
+
+    //despues de la óu
+    pos=util_get_pos_character_in_string(texto,9);
+    if (pos!=13) {
+        printf("Error pos utf8. Got [%d] Expected: 13\n",pos);
+        exit(1);
+    }
+
+    //al final
+    pos=util_get_pos_character_in_string(texto,10);
+    if (pos!=15) {
+        printf("Error pos utf8. Got [%d] Expected: 15\n",pos);
+        exit(1);
+    }
+}
 
 void codetests_main(int main_argc,char *main_argv[])
 {
@@ -2963,6 +3013,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning leading zeroes tests\n");
     codetests_leading_zeroes();
+
+    printf("\nRunning utf8 string tests\n");
+    codetests_utf8();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();

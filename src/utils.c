@@ -25805,14 +25805,23 @@ int util_get_random(void)
 }
 
 
-//Retorna posicion en el texto para una longitud x en caracteres, considerando si hay prefijos utf
+//Retorna posicion (indice al byte) en el texto para una posicion pos_character en caracteres, considerando si hay prefijos utf
 int util_get_pos_character_in_string(char *texto,int pos_character)
 {
     int pos_byte=0;
 
-    while (*texto) {
-        if (!menu_es_prefijo_utf(*texto)) pos_byte++;
+    while (*texto && pos_character) {
+
+        //printf("caracter %c\n",(*texto >=32 && *texto<=127 ? *texto : '.'));
+
+        //printf("antes pos_byte %d pos_character %d\n",pos_byte,pos_character);
+        if (!menu_es_prefijo_utf(*texto)) {
+            pos_character--;
+        }
         texto++;
+        pos_byte++;
+
+        //printf("despues pos_byte %d pos_character %d\n",pos_byte,pos_character);
     }
     return pos_byte;
 }
