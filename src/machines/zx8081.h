@@ -89,8 +89,8 @@ A true VSync basically has a pulse of 2.5 scan lines (2.5 * 64us = 160us = 517.5
 */
 
 #define DEFAULT_MINIMO_DURACION_VSYNC 518
-
-
+#define PERMITIDO_MINIMO_DURACION_VSYNC 100
+#define PERMITIDO_MAXIMO_DURACION_VSYNC 999
 
 //Para ilena
 //#define DEFAULT_MINIMO_DURACION_VSYNC 550

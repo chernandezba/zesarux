@@ -6955,7 +6955,7 @@ void menu_display_timex_video(MENU_ITEM_PARAMETERS)
 void menu_display_minimo_vsync(MENU_ITEM_PARAMETERS)
 {
 
-        menu_hardware_advanced_input_value(100,999,"Minimum vsync length",&minimo_duracion_vsync);
+        menu_hardware_advanced_input_value(PERMITIDO_MINIMO_DURACION_VSYNC,PERMITIDO_MAXIMO_DURACION_VSYNC,"Minimum vsync length",&minimo_duracion_vsync);
 }
 
 void menu_display_timex_video_512192(MENU_ITEM_PARAMETERS)

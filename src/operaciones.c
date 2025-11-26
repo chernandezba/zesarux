@@ -5371,7 +5371,6 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
             hsync_generator_active.v=0;
             //printf("Disabling the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
-            //generar_zx8081_horiz_sync();
 
             modificado_border.v=1;
 
@@ -7871,6 +7870,11 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
         hsync_generator_active.v=1;
         //printf("Enabling  the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
 
+        //Nota: parece como si las señales las enviase al reves:
+        //Disabling the HSYNC generator on t-state 195 scanline 117
+        //Enabling  the HSYNC generator on t-state 204 scanline 117
+        //generar_zx8081_horiz_sync();
+
         modificado_border.v=1;
 
 
@@ -7905,10 +7909,11 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 	if (video_zx8081_linecntr_enabled.v==0) {
 		if (longitud_pulso_vsync >= minimo_duracion_vsync) {
 			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
-			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
-				//printf ("admitido final pulso vsync\n");
 
-		                if (!simulate_lost_vsync.v) {
+			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
+				//printf ("admitido final pulso vsync en linea %d\n",t_scanline_draw_timeout);
+
+                if (!simulate_lost_vsync.v) {
 
 
 
@@ -7924,10 +7929,14 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 
 
 			}
+
+            else {
+                //printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
+            }
 		}
 
 		else {
-			//printf ("no admitimos pulso vsync, duracion: %d\n",longitud_pulso_vsync);
+			//printf ("no admitimos pulso vsync por duracion menor a esperado, duracion: %d esperado %d\n",longitud_pulso_vsync,minimo_duracion_vsync);
 		}
 
 	}
