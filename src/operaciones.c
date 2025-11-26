@@ -5268,68 +5268,68 @@ void bit_bit_cb_reg(z80_byte numerobit, z80_byte *registro)
 z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
 
-	debug_fired_in=1;
-	z80_byte valor;
+    debug_fired_in=1;
+    z80_byte valor;
 
-	z80_int puerto=value_8_to_16(puerto_h,puerto_l);
+    z80_int puerto=value_8_to_16(puerto_h,puerto_l);
 
-	//xx1D Zebra Joystick                          - - - F R L D U   (0=Pressed)
-	if ( puerto_l==0x1d) {
-		 if (joystick_emulation==JOYSTICK_ZEBRA) {
-			z80_byte valor_joystick=255;
-			//si estamos con menu abierto, no retornar nada
-			if (zxvision_key_not_sent_emulated_mach() ) return valor_joystick;
+    //xx1D Zebra Joystick                          - - - F R L D U   (0=Pressed)
+    if ( puerto_l==0x1d) {
+        if (joystick_emulation==JOYSTICK_ZEBRA) {
+            z80_byte valor_joystick=255;
+            //si estamos con menu abierto, no retornar nada
+            if (zxvision_key_not_sent_emulated_mach() ) return valor_joystick;
 
-			//z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+            //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
 
-			if ((puerto_especial_joystick&1)) valor_joystick &=(255-8);
-			if ((puerto_especial_joystick&2)) valor_joystick &=(255-4);
-			if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);
-			if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
-			if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
+            if ((puerto_especial_joystick&1)) valor_joystick &=(255-8);
+            if ((puerto_especial_joystick&2)) valor_joystick &=(255-4);
+            if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);
+            if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
+            if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
 
-                        return valor_joystick;
-                }
-		return 255;
+            return valor_joystick;
+        }
+        return 255;
 	}
 
 	//xxDF Mikro-Gen Digital Joystick (Port DFh) - - - F L R D U   (0=Pressed)
 
-        else if ( puerto_l==0xdf) {
-                 if (joystick_emulation==JOYSTICK_MIKROGEN) {
-                        z80_byte valor_joystick=255;
-                        //si estamos con menu abierto, no retornar nada
-                        if (zxvision_key_not_sent_emulated_mach() ) return valor_joystick;
+    else if ( puerto_l==0xdf) {
+        if (joystick_emulation==JOYSTICK_MIKROGEN) {
+            z80_byte valor_joystick=255;
+            //si estamos con menu abierto, no retornar nada
+            if (zxvision_key_not_sent_emulated_mach() ) return valor_joystick;
 
-                        //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
+            //z80_byte puerto_especial_joystick=0; //Fire Up Down Left Right
 
-                        if ((puerto_especial_joystick&1)) valor_joystick &=(255-4);
-                        if ((puerto_especial_joystick&2)) valor_joystick &=(255-8);
-                        if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);
-                        if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
-                        if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
+            if ((puerto_especial_joystick&1)) valor_joystick &=(255-4);
+            if ((puerto_especial_joystick&2)) valor_joystick &=(255-8);
+            if ((puerto_especial_joystick&4)) valor_joystick &=(255-2);
+            if ((puerto_especial_joystick&8)) valor_joystick &=(255-1);
+            if ((puerto_especial_joystick&16)) valor_joystick &=(255-16);
 
-                        return valor_joystick;
-                }
-                return 255;
+            return valor_joystick;
         }
+        return 255;
+    }
 
 	//zx printer
-        else if (puerto_l==0xFB) {
-                if (zxprinter_enabled.v==1) {
-                        return zxprinter_get_port();
-                }
-
-
-                else return 255;
+    else if (puerto_l==0xFB) {
+        if (zxprinter_enabled.v==1) {
+                return zxprinter_get_port();
         }
+
+
+        else return 255;
+    }
 
 	//zxpand
 	else if (puerto_l==0x07 && zxpand_enabled.v) {
-        	//printf ("In Port ZXpand 0x%X asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
-		z80_byte valor_retorno=zxpand_read(puerto_h);
-		//printf ("Returning value 0x%X\n",valor_retorno);
-		return valor_retorno;
+        //printf ("In Port ZXpand 0x%X asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+        z80_byte valor_retorno=zxpand_read(puerto_h);
+        //printf ("Returning value 0x%X\n",valor_retorno);
+        return valor_retorno;
 	}
 
 
@@ -5337,7 +5337,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	else if ( (puerto_l&1)==0) {
 
 
-                if (nmi_generator_active.v==0) {
+        if (nmi_generator_active.v==0) {
 
 			//printf ("lee puerto. t_estados=%d t_scanline_draw_timeout: %d\n",t_estados,t_scanline_draw_timeout);
 
@@ -5367,13 +5367,17 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 			video_zx8081_linecntr_enabled.v=0;
 
 
-                        //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
-                        hsync_generator_active.v=0;
-                        modificado_border.v=1;
+            //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
+
+            hsync_generator_active.v=0;
+            printf("Disabling the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
 
 
-                	//y ponemos a low la salida del altavoz
-	                bit_salida_sonido_zx8081.v=0;
+            modificado_border.v=1;
+
+
+            //y ponemos a low la salida del altavoz
+            bit_salida_sonido_zx8081.v=0;
 
 			set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
 
@@ -5391,7 +5395,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 		}
 
-                //Teclado
+        //Teclado
 
 		//probamos a enviar lo mismo que con teclado de spectrum
 		valor=lee_puerto_teclado(puerto_h);
@@ -5417,26 +5421,26 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 		//printf ("valor: %d\n",valor);
 
-            int leer_cinta_real=0;
+        int leer_cinta_real=0;
 
-            if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+        if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
 
-            if (audio_can_record_input()) {
-                if (audio_is_recording_input) {
-                    leer_cinta_real=1;
-                }
+        if (audio_can_record_input()) {
+            if (audio_is_recording_input) {
+                leer_cinta_real=1;
             }
+        }
 
-            if (leer_cinta_real) {
-			    if (realtape_get_current_bit_playing()) {
-                                valor=valor|128;
-                                //printf ("1 ");
-                        }
-                        else {
-                                valor=(valor & (255-128));
-                                //printf ("0 ");
-                        }
-            }
+        if (leer_cinta_real) {
+            if (realtape_get_current_bit_playing()) {
+                            valor=valor|128;
+                            //printf ("1 ");
+                    }
+                    else {
+                            valor=(valor & (255-128));
+                            //printf ("0 ");
+                    }
+        }
 
 
 		return valor;
@@ -5448,7 +5452,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	if (hardware_debug_port.v) {
 		if (puerto==ZESARUX_ZXI_ZX8081_PORT_REGISTER) return zesarux_zxi_read_last_register();
 		if (puerto==ZESARUX_ZXI_ZX8081_PORT_DATA)     return zesarux_zxi_read_register_value();
-    	}
+    }
 
 
 
@@ -5467,7 +5471,6 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 			return 0;
 		}
 	}
-
 
 
 
@@ -7866,6 +7869,8 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
         //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
         hsync_generator_active.v=1;
+        printf("Enabling  the HSYNC generator on t-state %d scanline %d\n",t_estados % screen_testados_linea,t_scanline_draw);
+
         modificado_border.v=1;
 
 

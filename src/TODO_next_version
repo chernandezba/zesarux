@@ -139,8 +139,6 @@ Y sin barra título
 --- Fin Documentar ---
 
 
--quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
-
 
 -buscador opciones menu: creo que lo mejor es que cada menu indique, al crearse, la ruta donde se ubican
 Por ejemplo "Betadisk" está en Main Menu->Storage->Betadisk

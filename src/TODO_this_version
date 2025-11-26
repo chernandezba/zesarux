@@ -72,3 +72,11 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
+
+
+
+
+-quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
+
+3. IN A,FE  - turns off the HSYNC generator (only if NMI is off)
+(only if NMI is off)...
