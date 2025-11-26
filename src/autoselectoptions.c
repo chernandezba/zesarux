@@ -1339,10 +1339,11 @@ void autoselect_options_put_footer(void)
 
 void tape_options_corta_a_32(char *s)
 {
-	                int longitud_mensaje=strlen(s);
+	                int longitud_mensaje=zxvision_strlen_utf(s);
                         //Ver si longitud excede 32
                         if (longitud_mensaje>32) {
-                                s[32]=0;
+                            int pos=zxvision_get_pos_character(s,32);
+                            s[pos]=0;
                         }
 
 }
@@ -1365,7 +1366,9 @@ void desplaza_texto(int *indice, char *cadena_entera, char *cadena_mostrada)
 	//printf ("indice: %d\n",i);
 	//Y copiamos 32 caracteres
 	sprintf (cadena_mostrada,"%s",&cadena_entera[i]);
-	cadena_mostrada[32]=0;
+
+    int pos=zxvision_get_pos_character(cadena_mostrada,32);
+	cadena_mostrada[pos]=0;
 }
 
 
