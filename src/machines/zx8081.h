@@ -85,7 +85,10 @@ extern int zx8081_detect_vsync_sound_counter;
 //#define DEFAULT_MINIMO_DURACION_VSYNC 800
 
 /*Nuevo valor estandard, en teoria son
-A true VSync basically has a pulse of 2.5 scan lines (2.5 * 64us = 160us = 517.5 T-states at 3.25MHz). Either side are scan lines containing pre and post equalizing pulses, but these can be ignored. A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX81 generates the pulse in software, it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
+A true VSync basically has a pulse of 2.5 scan lines (2.5 * 64us = 160us = 517.5 T-states at 3.25MHz).
+Either side are scan lines containing pre and post equalizing pulses, but these can be ignored.
+A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX81 generates the pulse in software,
+it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
 */
 
 #define DEFAULT_MINIMO_DURACION_VSYNC 518

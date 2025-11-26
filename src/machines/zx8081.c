@@ -427,7 +427,8 @@ int video_zx8081_caracter_en_linea_actual=0;
 z80_bit video_zx8081_estabilizador_imagen;
 
 
-void generar_zx8081_vsync(void) {
+void generar_zx8081_vsync(void)
+{
 
 
 
