@@ -434,7 +434,7 @@ void generar_zx8081_vsync(void)
 
 	//printf ("vsync total de zx81 t_estados: %d\n",t_estados);
 
-    //printf("Set t_scanline_draw to 0 on generar_zx8081_vsync\n");
+    printf("Set t_scanline_draw to 0 on generar_zx8081_vsync\n");
 	t_scanline_draw=0;
 	t_scanline_draw_timeout=0;
 
@@ -452,6 +452,8 @@ void generar_zx8081_vsync(void)
 
 
 }
+
+int temp_referencia_hsync=0;
 
 void generar_zx8081_horiz_sync(void) {
 
@@ -474,7 +476,12 @@ void generar_zx8081_horiz_sync(void) {
 
     video_zx8081_caracter_en_linea_actual=0;
 
+    if (hsync_generator_active.v) {
+    printf("increase t_scanline_draw on generar_zx8081_horiz_sync() t_estados %d\n",t_estados);
     t_scanline_draw++;
+    }
+
+    temp_referencia_hsync=t_estados;
 
 
     t_scanline_draw_timeout++;
@@ -606,7 +613,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
             //para evitar las lineas superiores
             //TODO. cuadrar esto con valores de borde invisible superior
 
-            //printf("store graphics to y: %d caracter: %d\n",y,caracter);
+            printf("store graphics to y: %d caracter: %d\n",y,caracter);
 
             //Posible modo wrx, y excluir valores de I usados en chr$128 y udg
             if (reg_i>=33 && reg_i!=0x31 && reg_i!=0x30 && wrx_present.v==0 && autodetect_wrx.v) {
@@ -692,6 +699,9 @@ z80_byte fetch_opcode_zx81_graphics(void)
                     x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
                 }
 
+                extern int temp_referencia_hsync;
+
+                x=((t_estados-temp_referencia_hsync)*2-24) % get_total_ancho_rainbow();
 
                 //Obtener tipo de letra de rom original, haciendo shadow de los 4kb primeros a los segundos
                 //if (zxpand_enabled.v && MACHINE_IS_ZX80 && direccion_sprite<8192) sprite=memoria_spectrum[direccion_sprite&4095];
@@ -743,7 +753,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                     //si linea no coincide con entrelazado, volvemos
                     if (if_store_scanline_interlace(y) ) {
-                        //printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
+                        printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
                         screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
                     }
 
