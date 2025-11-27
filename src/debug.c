@@ -9560,7 +9560,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
 }
 
-int debug_view_basic_gosub_stack_start_mark_spectrum(inicio_direccion)
+int debug_view_basic_gosub_stack_start_mark_spectrum(int inicio_direccion)
 {
     if (
         (peek_byte_no_time(inicio_direccion)==0x03 && peek_byte_no_time(inicio_direccion+1)==0x13) ||
@@ -9575,7 +9575,7 @@ int debug_view_basic_gosub_stack_start_mark_spectrum(inicio_direccion)
     else return 0;
 }
 
-int debug_view_basic_gosub_stack_start_mark_zx80(inicio_direccion)
+int debug_view_basic_gosub_stack_start_mark_zx80(int inicio_direccion)
 {
     if (
 
@@ -9595,7 +9595,7 @@ int debug_view_basic_gosub_stack_start_mark_zx80(inicio_direccion)
     else return 0;
 }
 
-int debug_view_basic_gosub_stack_start_mark_zx81(inicio_direccion)
+int debug_view_basic_gosub_stack_start_mark_zx81(int inicio_direccion)
 {
     if (
 
@@ -9641,7 +9641,6 @@ int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
     */
 
     int inicio_direccion=reg_sp-2;
-
 
     int i;
 
