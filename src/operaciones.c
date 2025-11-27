@@ -7946,15 +7946,6 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 
 	video_zx8081_linecntr_enabled.v=1;
 
-	//modo slow ?¿
-	/*
-	if (nmi_generator_active.v==1) {
-		video_zx8081_lnctr_adjust.v=1;
-	}
-	else {
-		video_zx8081_lnctr_adjust.v=0;
-	}
-	*/
 
  	video_zx8081_ula_video_output=0;
 

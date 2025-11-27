@@ -12757,13 +12757,12 @@ void parse_customfile_options(void)
                                 enable_gigascreen();
         }
 
-
+        //Deprecated
         else if (!strcmp(argv[puntero_parametro],"--enablezx8081lnctradjust")) {
-            video_zx8081_lnctr_adjust.v=1;
         }
 
+        //Deprecated
         else if (!strcmp(argv[puntero_parametro],"--disablezx8081lnctradjust")) {
-            video_zx8081_lnctr_adjust.v=0;
         }
 
         else if (!strcmp(argv[puntero_parametro],"--frameskip")) {
@@ -22576,7 +22575,6 @@ void util_save_game_config(char *filename)
         if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
                                                     ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
 
-        if (video_zx8081_lnctr_adjust.v)            ADD_STRING_CONFIG,"--enablezx8081lnctradjust");
   }
 
 

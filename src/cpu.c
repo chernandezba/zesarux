@@ -1065,9 +1065,7 @@ void reset_cpu(void)
 		timeout_linea_vsync=NORMAL_TIMEOUT_LINEA_VSYNC;
 		chroma81_port_7FEF=0;
 
-		//Prueba ajuste por defecto, para intentar eliminar lnctr
-		//if (MACHINE_IS_ZX80) video_zx8081_lnctr_adjust.v=0;
-		//else if (MACHINE_IS_ZX81) video_zx8081_lnctr_adjust.v=1;
+
 
 		//Si zxpand, habilitar overlay rom
 		if (zxpand_enabled.v) {
@@ -2061,8 +2059,8 @@ void set_machine_params(void)
 
     //Reseteos para ZX80/81
 
-    //offset_zx8081_t_coordx=0;
-    video_zx8081_lnctr_adjust.v=0;
+
+
 
 
 
@@ -2817,7 +2815,7 @@ void set_machine_params(void)
             fetch_opcode=fetch_opcode_zx81;
 
 
-            //video_zx8081_lnctr_adjust.v=0;
+
 
 		break;
 
@@ -2852,7 +2850,7 @@ void set_machine_params(void)
             fetch_opcode=fetch_opcode_zx81;
 
 
-            //video_zx8081_lnctr_adjust.v=1;
+
 
 		break;
 

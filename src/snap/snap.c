@@ -1192,18 +1192,6 @@ void load_zx_snapshot(char *archivo)
                         }
 
 
-			//LNCTR video adjust
-                        //if ( (bits_estado3 &2) ) {
-                        //        debug_printf(VERBOSE_DEBUG,"LNCTR video adjust enabled on zx snapshot");
-                        //        video_zx8081_lnctr_adjust.v=1;
-                        //}
-
-                        //else {
-                        //        debug_printf(VERBOSE_DEBUG,"LNCTR video adjust disabled on zx snapshot");
-                        //        video_zx8081_lnctr_adjust.v=0;
-                        //}
-
-
 
                         //VSYNC sound
                         if ( (bits_estado3 &4) ) {

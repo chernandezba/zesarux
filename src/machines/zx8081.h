@@ -120,20 +120,7 @@ extern z80_bit ram_in_32768;
 //WRX hi-res mode
 extern z80_bit wrx_present;
 
-//extern z80_bit wrx_mueve_primera_columna;
 
-
-//extern z80_bit hrg_enabled;
-
-
-//extern int offset_zx8081_t_estados;
-extern int offset_zx8081_t_coordx;
-extern z80_bit video_zx8081_lnctr_adjust;
-
-//extern z80_bit manic_miner_game;
-
-//Para el estabilizador de imagen
-extern int video_zx8081_caracter_en_linea_actual;
 
 //extern int video_zx8081_decremento_x_cuando_mayor;
 

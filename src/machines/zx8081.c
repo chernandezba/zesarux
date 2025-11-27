@@ -224,8 +224,7 @@ z80_bit wrx_present;
 //offset ajustable para t_estados a final de linea con wrx. normalmente 8
 //int offset_zx8081_t_estados;
 
-//offset ajustable para coordenada x con wrx. normalmente 0
-int offset_zx8081_t_coordx;
+
 
 
 //A partir de que linea hay un timeout y se fuerza vsync
@@ -235,7 +234,7 @@ int timeout_linea_vsync;
 int minimo_duracion_vsync;
 
 
-z80_bit video_zx8081_lnctr_adjust;
+
 
 
 
@@ -419,11 +418,6 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
 
 
 
-//se usa solo para el estabilizador de imagen
-int video_zx8081_caracter_en_linea_actual=0;
-
-
-
 
 void generar_zx8081_vsync(void)
 {
@@ -503,7 +497,6 @@ void generar_zx8081_horiz_sync(void) {
 
     //siguiente linea
 
-    video_zx8081_caracter_en_linea_actual=0;
 
     t_scanline_draw++;
 
@@ -691,29 +684,9 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 }
 
 
-                //TODO. Parche. Ajustar linea y linecntr. Para que no "salte"
-                //z80_byte cdflag=memoria_spectrum[0x403B];
 
-                //Quiza se deberia hacer esto solo cuando reg_i apunta a zona de ROM
-                //pero resulta que Manic miner y otros usan reg_i apuntando a ROM.. y por tanto aplicaria
-                //el ajuste para slow y se ve mal
-                //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1 && reg_i == 0x1e) {
-                //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1) {
-
-                /*
-                if ( video_zx8081_lnctr_adjust.v==1) {
-                    direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
-                }
-
-                else {
-                    direccion_sprite=((reg_i&254)*256)+caracter*8+(video_zx8081_linecntr & 7);
-                }
-                */
 
                 direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
-
-
-
 
 
                 x=(zx8081_video_electron_position_x_testados-12)*2;
@@ -737,8 +710,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
             }
 
-            //ajustar para determinados juegos
-            x=x+offset_zx8081_t_coordx;
 
 
 
@@ -748,7 +719,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
             }
 
 
-            //printf ("fetch y: %d x: %d\n",y,video_zx8081_caracter_en_linea_actual);
             int totalancho=get_total_ancho_rainbow();
 
 
@@ -786,7 +756,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
             }
 
 
-			//video_zx8081_caracter_en_linea_actual++;
 		}
 
 

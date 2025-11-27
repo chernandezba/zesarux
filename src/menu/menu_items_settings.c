@@ -6880,10 +6880,7 @@ void menu_display_inves_ula_bright_error(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_display_slow_adjust(MENU_ITEM_PARAMETERS)
-{
-    video_zx8081_lnctr_adjust.v ^=1;
-}
+
 
 
 
@@ -7122,15 +7119,7 @@ void menu_display_zx8081_wrx(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_display_x_offset(MENU_ITEM_PARAMETERS)
-{
 
-    //offset_zx8081_t_coordx +=8;
-    //    if (offset_zx8081_t_coordx>=30*8) offset_zx8081_t_coordx=-30*8;
-
-    menu_ventana_scanf_numero_enhanced("X offset",&offset_zx8081_t_coordx,5,+8,-30*8,30*8,1);
-
-}
 
 
 int menu_display_emulate_zx8081_cond(void)
@@ -8109,29 +8098,6 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         if (menu_cond_zx8081_realvideo()) {
-
-
-
-
-
-            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_slow_adjust,menu_cond_zx8081_realvideo,"[%c] ~~LNCTR video adjust", (video_zx8081_lnctr_adjust.v==1 ? 'X' : ' '));
-            //l repetida con load screen, pero como esa es de spectrum, no coinciden
-            menu_add_item_menu_shortcut(array_menu_settings_display,'l');
-            menu_add_item_menu_tooltip(array_menu_settings_display,"LNCTR video adjust");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"LNCTR video adjust change sprite offset when drawing video images. "
-                "If you see your hi-res image is not displayed well, try changing it");
-
-
-
-
-
-            menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_x_offset,menu_cond_zx8081_realvideo,"Video x_offset [%d]",offset_zx8081_t_coordx);
-            menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Video horizontal image offset");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"Video horizontal image offset, usually you don't need to change this");
-            menu_add_item_menu_es_avanzado(array_menu_settings_display);
-
-
             menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_minimo_vsync,menu_cond_zx8081_realvideo,"Video min. vsync length [%d]",minimo_duracion_vsync);
             menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
             menu_add_item_menu_tooltip(array_menu_settings_display,"Video minimum vsync length in t-states");

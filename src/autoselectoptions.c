@@ -749,7 +749,7 @@ void set_snaptape_fileoptions(char *filename)
                 enable_rainbow();
                 ram_in_8192.v=1;
                 enable_wrx();
-		video_zx8081_lnctr_adjust.v=1;
+
 
         }
 
@@ -832,19 +832,19 @@ void set_snaptape_fileoptions(char *filename)
 	else if (!strcmp(md5file,"318ccb1ef3e937807b84644c7f696d3b")) {
                 split_game_name_info ("Noice-SomewhatLessLimitedCapabilities. Enabling Real Video, enabling lnctr video adjust");
                 enable_rainbow();
-                video_zx8081_lnctr_adjust.v=1;
+
         }
 
 	else if (!strcmp(md5file,"34a9c4af6022c59a9f961580b065ef64")) {
                 split_game_name_info ("REVENGE. Enabling Real Video, enabling lnctr video adjust");
                 enable_rainbow();
-                video_zx8081_lnctr_adjust.v=1;
+
         }
 
 	else if (!strcmp(md5file,"5de8a521ebfde9a8ca35e3a047da73f7")) {
                 split_game_name_info ("CRUSH. Enabling Real Video, enabling lnctr video adjust");
                 enable_rainbow();
-                video_zx8081_lnctr_adjust.v=1;
+
         }
 
 	else if (!strcmp(md5file,"cb03d99b26b0d04336ded001595ce3c4")) {
@@ -858,7 +858,7 @@ void set_snaptape_fileoptions(char *filename)
 	else if (!strcmp(md5file,"02d1ab0cf7d0251c12dafa9838d84af5")) {
                 split_game_name_info ("No Limits demo. Enabling Real Video, enabling lnctr video adjust");
                 enable_rainbow();
-                video_zx8081_lnctr_adjust.v=1;
+
         }
 
 
@@ -921,13 +921,13 @@ void set_snaptape_fileoptions(char *filename)
 	else if (!strcmp(md5file,"493817d98b6d96356df1e1c3f93866e9")) {
                 split_game_name_info ("HighRes. Enabling Real Video");
                 enable_rainbow();
-		video_zx8081_lnctr_adjust.v=1;
+
         }
 
 	else if (!strcmp(md5file,"2e4901caa2e103cf08f074c296fb30a1")) {
                 split_game_name_info ("HighResolution A1. Enabling Real Video, enabling lnctr video adjust");
 		enable_rainbow();
-		video_zx8081_lnctr_adjust.v=1;
+
 	}
 
 
