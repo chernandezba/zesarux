@@ -445,9 +445,9 @@ void generar_zx8081_vsync(void)
 
 }
 
-void generar_zx8081_hsync(void) {
+void generar_zx8081_hsync(void)
+{
 
-    if (hsync_generator_active.v==0) return;
 
     //printf("x a 0\n");
     zx8081_video_electron_position_x_testados=0;
@@ -457,9 +457,6 @@ void generar_zx8081_hsync(void) {
     //zx8081_video_electron_position_x_testados_testados_antes=-1;
 
     if (video_zx8081_linecntr_enabled.v==1) video_zx8081_linecntr++;
-
-
-
 
 
     //siguiente linea
@@ -508,6 +505,11 @@ void adjust_zx8081_electron_position(void)
     int tlinea=t_estados % screen_testados_linea;
     int y=t_estados / screen_testados_linea;
     //if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
+
+
+    //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300
+    //Esto sirve en los modos FAST y en SAVE/LOAD
+    if (zx8081_video_electron_position_x_testados>300) generar_zx8081_hsync();
 }
 
 

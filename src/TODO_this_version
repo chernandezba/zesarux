@@ -116,19 +116,15 @@ https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-d
 
 
 -nuevo render zx81
-*orquesta, sound.p, beatles.p: franjas deberia haber un timeout hsync?
+ok *orquesta, sound.p, beatles.p: franjas deberia haber un timeout hsync?
 *algunos pseudo hi res tiemblan en horizontal
-*wrx ok?
-*chr ok?
+ok *wrx ok?
+ok *chr ok?
 *no se deberia decrementar t_estados nunca
-*rutina de save no hace franjas ni sonido correcto
-*rutina de load?
-*eliminar ajustes de horizontal stabilization, lnctr counter
-*modo fast extraño. se desplaza en horizontal en el prompt. no se queda en negro con un bucle infinito. lo mismo aplica para zx80
+ok *rutina de save no hace franjas ni sonido correcto
+ok *rutina de load?
+ok *eliminar ajustes de horizontal stabilization, lnctr counter
+*modo fast extraño. se desplaza en horizontal en el prompt. no se queda en negro con un bucle infinito.
+*zx80 tiembla. mismo con modo fast en prompt
 *pink panther lineas desplazadas. quiza en vsync hay que ajustar zx8081_video_electron_position_x?
-*quiza hsync cuando se lanza, hay que tener en cuenta mejor cuando acaba? o no, porque acaba controlado por la ula, no tiene sentido controlar eso,
-probablemente el -12 al calcular la posicion al renderizar graficos en fetch_opcode_zx81_graphics:
-x=(zx8081_video_electron_position_x_testados-12)*2;
-tenga que ver con el final del hsync propiamente
-
-sera que no está ejecutando, en ZX80, los opcodes que le corresponden, pues el contador de electron X si que va bien
+*valor arbitrario para hsync timeout: if (zx8081_video_electron_position_x_testados>300)
