@@ -464,6 +464,9 @@ void generar_zx8081_vsync(void)
     //t_estados +=417;
 
 
+    //417 t_estados desfasado... o tambien se puede ver como 417-207-207=3 t-estados
+    //con esto la imagen no se desplaza pero a cada pulsacion de tecla se desplaza
+    //t_estados +=3;
 
 }
 

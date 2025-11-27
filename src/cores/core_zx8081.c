@@ -552,6 +552,8 @@ void cpu_core_loop_zx8081(void)
                 //Ajuste tiempos en zx80/81
                 t_estados -=6;
                 //printf("IM0/1 generada\n");
+                //extern int temp_ajuste;
+                //t_estados +=temp_ajuste;
 
             }
             else {
