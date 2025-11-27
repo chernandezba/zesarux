@@ -273,339 +273,311 @@ void cpu_core_loop_zx8081(void)
     }
 
 
-		//Esto representa final de scanline
+    //Esto representa final de scanline
 
-		//normalmente
-		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+    //normalmente
+    if ( (t_estados/screen_testados_linea)>t_scanline  ) {
 
-            //Indicamos que no hemos pasado el medio scanline
-            core_zx8081_medio_scanline=0;
+        //Indicamos que no hemos pasado el medio scanline
+        core_zx8081_medio_scanline=0;
 
-			t_scanline++;
+        t_scanline++;
 
-            //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
-			generar_zx8081_horiz_sync();
+        //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
+        generar_zx8081_horiz_sync();
 
-            //Ademas en ZX81 genera una NMI cada 64 microsegundos
-            if (MACHINE_IS_ZX81_TYPE) {
-                if (nmi_generator_active.v==1) {
-                    generate_nmi();
-                }
+        //Ademas en ZX81 genera una NMI cada 64 microsegundos
+        if (MACHINE_IS_ZX81_TYPE) {
+            if (nmi_generator_active.v==1) {
+                generate_nmi();
+            }
+        }
+
+
+        //Envio sonido
+        audio_valor_enviar_sonido=0;
+        audio_valor_enviar_sonido +=da_output_ay();
+
+        if (zx8081_vsync_sound.v==1) {
+            if (beeper_real_enabled==0) {
+                    audio_valor_enviar_sonido += da_amplitud_speaker_zx8081();
+            }
+
+            else {
+                    audio_valor_enviar_sonido += get_value_beeper_sum_array();
+                    beeper_new_line();
+            }
+        }
+
+        else {
+            //Si no hay vsync sound, beeper sound off, forzamos que hay silencio de beepr
+            beeper_silence_detection_counter=SILENCE_DETECTION_MAX;
+        }
+
+
+        int leer_cinta_real=0;
+
+        if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
+
+        if (audio_can_record_input()) {
+            if (audio_is_recording_input) {
+                leer_cinta_real=1;
+            }
+        }
+
+
+        if (leer_cinta_real) {
+            realtape_get_byte();
+            //audio_valor_enviar_sonido += get_realtape_last_value();
+            if (realtape_loading_sound.v) {
+                reset_silence_detection_counter();
+                audio_valor_enviar_sonido /=2;
+                audio_valor_enviar_sonido += get_realtape_last_value()/2;
+                //Sonido alterado cuando top speed
+                if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
+            }
+        }
+
+        //Ajustar volumen
+        if (audiovolume!=100) {
+            audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
+        }
+
+        audio_send_mono_sample(audio_valor_enviar_sonido);
+
+
+        ay_chip_siguiente_ciclo();
+
+        //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
+        //esperar para ver si se ha generado una interrupcion 1/50
+
+        //Final de frame
+
+        if (t_estados>=screen_testados_total) {
+
+            //Siguiente frame de pantalla
+            timer_get_elapsed_core_frame_post();
+
+
+
+            t_scanline=0;
+
+            //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
+            //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
+            //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
+            //este completo; esto es necesario para Z88
+
+            int linea_estados=t_estados/screen_testados_linea;
+
+            while (linea_estados<312) {
+                audio_send_mono_sample(audio_valor_enviar_sonido);
+                linea_estados++;
+            }
+
+            if (convert_audio_to_zx81_thread_running) {
+                menu_convert_audio_to_zx81_get_audio_buffer();
             }
 
 
-                        //Envio sonido
-
-                        audio_valor_enviar_sonido=0;
-
-                        audio_valor_enviar_sonido +=da_output_ay();
+            t_estados -=screen_testados_total;
 
 
+            //temp
+            //t_estados=0;
 
-                        if (zx8081_vsync_sound.v==1) {
+            //temporal
+            //ajuste para que casi se quede quieto en horizontal
+            //t_estados +=3;
 
-	                        if (beeper_real_enabled==0) {
-        	                        audio_valor_enviar_sonido += da_amplitud_speaker_zx8081();
-                	        }
+            //extern int temp_ajuste;
 
-                        	else {
-                                	audio_valor_enviar_sonido += get_value_beeper_sum_array();
-	                                beeper_new_line();
-        	                }
+            //t_estados +=temp_ajuste;
 
+            cpu_loop_refresca_pantalla();
 
-                        }
+            vofile_send_frame(rainbow_buffer);
 
-			else {
-				//Si no hay vsync sound, beeper sound off, forzamos que hay silencio de beepr
-				beeper_silence_detection_counter=SILENCE_DETECTION_MAX;
-			}
+            siguiente_frame_pantalla();
 
 
-            int leer_cinta_real=0;
+            if (debug_registers) scr_debug_registers();
 
-            if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
-
-            if (audio_can_record_input()) {
-                if (audio_is_recording_input) {
-                    leer_cinta_real=1;
-                }
+            //Hacer esto aun en esta maquina porque ese parpadeo tambien se usa en menu (cursor parpadeante)
+            contador_parpadeo--;
+            //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+            if (!contador_parpadeo) {
+                    contador_parpadeo=16;
+                    toggle_flash_state();
             }
 
 
-            if (leer_cinta_real) {
-                realtape_get_byte();
-                //audio_valor_enviar_sonido += get_realtape_last_value();
-                if (realtape_loading_sound.v) {
-                    reset_silence_detection_counter();
-                    audio_valor_enviar_sonido /=2;
-                    audio_valor_enviar_sonido += get_realtape_last_value()/2;
-                    //Sonido alterado cuando top speed
-                    if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
-                }
+
+            if (!interrupcion_timer_generada.v) {
+                //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
+                esperando_tiempo_final_t_estados.v=1;
             }
 
-                        //Ajustar volumen
-                        if (audiovolume!=100) {
-                                audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
-                        }
+            else {
+                //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
+                //printf ("demasiado\n");
+                esperando_tiempo_final_t_estados.v=0;
+            }
 
-			audio_send_mono_sample(audio_valor_enviar_sonido);
+            core_end_frame_check_zrcp_zeng_snap.v=1;
 
+            //snapshot en ram
+            snapshot_add_in_ram();
 
-                        ay_chip_siguiente_ciclo();
-
-			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
-			//esperar para ver si se ha generado una interrupcion 1/50
-
-			//Final de frame
-
-			if (t_estados>=screen_testados_total) {
-
-                                //Siguiente frame de pantalla
-                                timer_get_elapsed_core_frame_post();
-
-
-
-				t_scanline=0;
-
-                                //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
-                                //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-				//Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
-				//este completo; esto es necesario para Z88
-
-                                int linea_estados=t_estados/screen_testados_linea;
-
-                while (linea_estados<312) {
-					audio_send_mono_sample(audio_valor_enviar_sonido);
-                    linea_estados++;
-                }
-
-                if (convert_audio_to_zx81_thread_running) {
-                    menu_convert_audio_to_zx81_get_audio_buffer();
-                }
-
-
-				t_estados -=screen_testados_total;
-
-
-                //temp
-                //t_estados=0;
-
-                //temporal
-                //ajuste para que casi se quede quieto en horizontal
-                //t_estados +=3;
-
-                            //extern int temp_ajuste;
-
-                            //t_estados +=temp_ajuste;
-
-				cpu_loop_refresca_pantalla();
-
-
-				vofile_send_frame(rainbow_buffer);
-
-				siguiente_frame_pantalla();
-
-
-				if (debug_registers) scr_debug_registers();
-
-                                //Hacer esto aun en esta maquina porque ese parpadeo tambien se usa en menu (cursor parpadeante)
-                                contador_parpadeo--;
-                                //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-                                if (!contador_parpadeo) {
-                                        contador_parpadeo=16;
-                                        toggle_flash_state();
-                                }
-
-
-
-				if (!interrupcion_timer_generada.v) {
-					//Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
-					esperando_tiempo_final_t_estados.v=1;
-				}
-
-				else {
-					//Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
-					//printf ("demasiado\n");
-					esperando_tiempo_final_t_estados.v=0;
-				}
-
-				core_end_frame_check_zrcp_zeng_snap.v=1;
-
-                //snapshot en ram
-                snapshot_add_in_ram();
-
-				//para el detector de vsync sound
-				if (zx8081_detect_vsync_sound.v) {
-					if (zx8081_detect_vsync_sound_counter==0) {
-						//caso normal con vsync
-                                                //hay vsync el suficiente tiempo. desactivar sonido
-                                                        //printf ("hay vsync el suficiente tiempo. desactivar sonido\n");
-                                                        zx8081_vsync_sound.v=0;
-
-					}
-
-					else {
-						//no hay vsync. por tanto hay sonido
-						//printf ("no hay vsync completo. hay sonido. contador: %d\n",zx8081_detect_vsync_sound_counter);
-						zx8081_vsync_sound.v=1;
-
-					}
-					if (zx8081_detect_vsync_sound_counter<ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX) zx8081_detect_vsync_sound_counter++;
-
-				}
-
-
-			}
-
-
-
-			//Inicializar siguiente linea. Esto es importante que este aqui despues de
-			//una posible actualizacion de pantalla, para que no se vea la linea blanca inicializada
-			if (rainbow_enabled.v==1) {
-                                init_zx8081_scanline();
-                        }
-		}
-
-		if (esperando_tiempo_final_t_estados.v) {
-			timer_pause_waiting_end_frame();
-		}
-
-
-
-              //Interrupcion de 1/50s. mapa teclas activas y joystick
-                if (interrupcion_fifty_generada.v) {
-                        interrupcion_fifty_generada.v=0;
-
-                        //y de momento actualizamos tablas de teclado segun tecla leida
-                        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
-                       scr_actualiza_tablas_teclado();
-
-
-                       //lectura de joystick
-                       realjoystick_main();
-
-                        //printf ("temp conta fifty: %d\n",tempcontafifty++);
-                }
-
-
-                //Interrupcion de procesador y marca final de frame
-                if (interrupcion_timer_generada.v) {
-                        interrupcion_timer_generada.v=0;
-                        esperando_tiempo_final_t_estados.v=0;
-                        interlaced_numero_frame++;
-                        //printf ("%d\n",interlaced_numero_frame);
-
-                        //Para calcular lo que se tarda en ejecutar todo un frame
-                        timer_get_elapsed_core_frame_pre();
+            //para el detector de vsync sound
+            if (zx8081_detect_vsync_sound.v) {
+                if (zx8081_detect_vsync_sound_counter==0) {
+                    //caso normal con vsync
+                    //hay vsync el suficiente tiempo. desactivar sonido
+                    //printf ("hay vsync el suficiente tiempo. desactivar sonido\n");
+                    zx8081_vsync_sound.v=0;
 
                 }
 
+                else {
+                    //no hay vsync. por tanto hay sonido
+                    //printf ("no hay vsync completo. hay sonido. contador: %d\n",zx8081_detect_vsync_sound_counter);
+                    zx8081_vsync_sound.v=1;
 
-		//Interrupcion de cpu. gestion im0/1/2. Esto se hace al cambio de bit6 de R en zx80/81
-		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+                }
+                if (zx8081_detect_vsync_sound_counter<ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX) zx8081_detect_vsync_sound_counter++;
 
-			debug_fired_interrupt=1;
-
-            z80_adjust_flags_interrupt_block_opcode();
-
-                        //ver si esta en HALT
-                        if (z80_halt_signal.v) {
-                                        z80_halt_signal.v=0;
-                                        //reg_pc++;
-
-                        }
-
-			if (1==1) {
-
-					if (interrupcion_non_maskable_generada.v) {
-						debug_anota_retorno_step_nmi();
-						interrupcion_non_maskable_generada.v=0;
+            }
 
 
-						//NMI wait 14 estados
-						t_estados += 14;
+        }
 
 
 
+        //Inicializar siguiente linea. Esto es importante que este aqui despues de
+        //una posible actualizacion de pantalla, para que no se vea la linea blanca inicializada
+        if (rainbow_enabled.v==1) {
+            init_zx8081_scanline();
+        }
+    }
 
-
-												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
-
-
-						reg_r++;
-						iff1.v=0;
-						//printf ("Calling NMI with pc=0x%x\n",reg_pc);
-
-						//Otros 6 estados
-						t_estados += 6;
-
-						//Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
-						reg_pc= 0x66;
-
-						//temp
-
-						t_estados -=15;
-
-
-					}
-
-					//else {
-					if (1==1) {
-
-
-					//justo despues de EI no debe generar interrupcion
-					//e interrupcion nmi tiene prioridad
-						if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
-						debug_anota_retorno_step_maskable();
-						//Tratar interrupciones maskable
-
-
-                                                //INT wait 10 estados. Valor de pruebas
-                                                t_estados += 10;
-
-						interrupcion_maskable_generada.v=0;
+    if (esperando_tiempo_final_t_estados.v) {
+        timer_pause_waiting_end_frame();
+    }
 
 
 
-						push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+    //Interrupcion de 1/50s. mapa teclas activas y joystick
+    if (interrupcion_fifty_generada.v) {
+        interrupcion_fifty_generada.v=0;
 
-						reg_r++;
-
-						//desactivar interrupciones al generar una
-						iff1.v=iff2.v=0;
-
-
-
-						//IM0/1
-						if (im_mode==0 || im_mode==1) {
-							cpu_common_jump_im01();
-
-							//Ajuste tiempos en zx80/81
-							t_estados -=6;
-                            //printf("IM0/1 generada\n");
-
-						}
-						else {
-						//IM 2.
-
-							z80_int temp_i;
-							z80_byte dir_l,dir_h;
-							temp_i=get_im2_interrupt_vector();
-							dir_l=peek_byte(temp_i++);
-							dir_h=peek_byte(temp_i);
-							reg_pc=value_8_to_16(dir_h,dir_l);
-							t_estados += 7 ;
-                            //printf("IM2 generada\n");
-
-						}
-
-					}
-				}
+        //y de momento actualizamos tablas de teclado segun tecla leida
+        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
+        scr_actualiza_tablas_teclado();
 
 
-			}
+        //lectura de joystick
+        realjoystick_main();
+
+    }
+
+
+    //Interrupcion de procesador y marca final de frame
+    if (interrupcion_timer_generada.v) {
+        interrupcion_timer_generada.v=0;
+        esperando_tiempo_final_t_estados.v=0;
+        interlaced_numero_frame++;
+
+        //Para calcular lo que se tarda en ejecutar todo un frame
+        timer_get_elapsed_core_frame_pre();
+
+    }
+
+
+    //Interrupcion de cpu. gestion im0/1/2. Esto se hace al cambio de bit6 de R en zx80/81
+    if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+
+        debug_fired_interrupt=1;
+
+        z80_adjust_flags_interrupt_block_opcode();
+
+        //ver si esta en HALT
+        if (z80_halt_signal.v) {
+            z80_halt_signal.v=0;
+        }
+
+
+
+        if (interrupcion_non_maskable_generada.v) {
+            debug_anota_retorno_step_nmi();
+            interrupcion_non_maskable_generada.v=0;
+
+            //NMI wait 14 estados
+            t_estados += 14;
+
+            push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+
+
+            reg_r++;
+            iff1.v=0;
+            //printf ("Calling NMI with pc=0x%x\n",reg_pc);
+
+            //Otros 6 estados
+            t_estados += 6;
+
+            //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
+            reg_pc= 0x66;
+
+            //temp
+            t_estados -=15;
+
+        }
+
+
+        //justo despues de EI no debe generar interrupcion
+        //e interrupcion nmi tiene prioridad
+        if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
+            debug_anota_retorno_step_maskable();
+
+            //Tratar interrupciones maskable
+            //INT wait 10 estados. Valor de pruebas
+            t_estados += 10;
+
+            interrupcion_maskable_generada.v=0;
+
+            push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+
+            reg_r++;
+
+            //desactivar interrupciones al generar una
+            iff1.v=iff2.v=0;
+
+
+
+            //IM0/1
+            if (im_mode==0 || im_mode==1) {
+                cpu_common_jump_im01();
+
+                //Ajuste tiempos en zx80/81
+                t_estados -=6;
+                //printf("IM0/1 generada\n");
+
+            }
+            else {
+            //IM 2.
+
+                z80_int temp_i;
+                z80_byte dir_l,dir_h;
+                temp_i=get_im2_interrupt_vector();
+                dir_l=peek_byte(temp_i++);
+                dir_h=peek_byte(temp_i);
+                reg_pc=value_8_to_16(dir_h,dir_l);
+                t_estados += 7 ;
+                //printf("IM2 generada\n");
+
+            }
+
+        }
+
 
     }
 
