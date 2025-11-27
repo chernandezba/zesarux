@@ -494,7 +494,7 @@ void adjust_zx8081_electron_position(void)
         }
         else {
             int delta=t_estados-zx8081_video_electron_position_x_testados_testados_antes;
-            if (delta<0 || delta>23) printf("delta: %d\n",delta);
+            //if (delta<0 || delta>23) printf("delta: %d\n",delta);
             zx8081_video_electron_position_x_testados +=delta;
         }
     }
