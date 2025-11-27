@@ -5350,14 +5350,14 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 				//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
 				if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
 					inicio_pulso_vsync_t_estados=t_estados;
-					//printf ("admitido inicio pulso vsync: t_estados: %d linea: %d\n",inicio_pulso_vsync_t_estados,t_scanline_draw_timeout);
+					//printf ("admitido inicio pulso vsync: t_estados: %6d linea: %d\n",inicio_pulso_vsync_t_estados,t_scanline_draw_timeout);
 
 					//video_zx8081_linecntr=0;
 					//video_zx8081_linecntr_enabled.v=0;
 				}
 
 				else {
-					//printf ("no se admite inicio pulso vsync : t_estados: %d linea: %d\n",inicio_pulso_vsync_t_estados,t_scanline_draw_timeout);
+					//printf ("NO se admite inicio pulso vsync : t_estados: %6d linea: %d\n",inicio_pulso_vsync_t_estados,t_scanline_draw_timeout);
 				}
 
 			}
@@ -7900,10 +7900,14 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
         //Calcular cuanto ha tardado el vsync
         int longitud_pulso_vsync;
 
-        if (t_estados>inicio_pulso_vsync_t_estados) longitud_pulso_vsync=t_estados-inicio_pulso_vsync_t_estados;
+        if (t_estados>inicio_pulso_vsync_t_estados) {
+            longitud_pulso_vsync=t_estados-inicio_pulso_vsync_t_estados;
+        }
 
         //contador de t_estados ha dado la vuelta. estamos al reves
-        else longitud_pulso_vsync=screen_testados_total-inicio_pulso_vsync_t_estados+t_estados;
+        else {
+            longitud_pulso_vsync=screen_testados_total-inicio_pulso_vsync_t_estados+t_estados;
+        }
 
         //printf ("escribe puerto. final vsync  t_estados=%d. diferencia: %d t_scanline_draw: %d t_scanline_draw_timeout: %d\n",t_estados,longitud_pulso_vsync,t_scanline_draw,t_scanline_draw_timeout);
 
@@ -7925,6 +7929,7 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 
 					}
 
+                    //printf("vsync 1\n");
 					generar_zx8081_vsync();
 					vsync_per_second++;
 				}

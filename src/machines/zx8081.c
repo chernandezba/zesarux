@@ -437,11 +437,18 @@ void generar_zx8081_vsync(void)
 	//lo ideal seria tener un contador de tiempo para la ULA separado del de la cpu... pero para no complicarlo mas,
 	//nos ayudamos del contador de tiempo de la cpu
 
-    /*
-        int t_estados_en_linea=t_estados%screen_testados_linea;
-        t_estados -=t_estados_en_linea;
-    */
+    //Metodo 1 para que la imagen no se desplace continuamente
+    //texto desfasado 1 scanline
+    //int t_estados_en_linea=t_estados%screen_testados_linea;
+    //t_estados -=t_estados_en_linea;
 
+    //Metodo 2 para que la imagen no se desplace continuamente
+    //Parece que se vea bien pero hace cosas raras:
+    //Caracter "punto" al hacer un reset de zx81, arriba del todo
+    //Texto tiembla en vertical con clocktest.p
+        //int t_estados_en_linea=t_estados%screen_testados_linea;
+        //int sumar=screen_testados_linea-t_estados_en_linea;
+        //t_estados +=sumar;
 
 }
 
@@ -470,6 +477,7 @@ void generar_zx8081_hsync(void)
     //si han pasado muchas lineas, resetear
     if (t_scanline_draw_timeout>=timeout_linea_vsync) {
         //printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
+        //printf("vsync 2-\n");
         generar_zx8081_vsync();
         video_zx8081_linecntr_enabled.v=1;
     }
