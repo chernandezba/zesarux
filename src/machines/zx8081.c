@@ -580,18 +580,15 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 	if( (reg_pc&0x8000) ) {
 
-
 		//se esta ejecutando la zona de pantalla
 
         z80_byte caracter;
-
 
 		if (op&64 || z80_halt_signal.v) {
 			caracter=0;
 			//Otros caracteres no validos (y el HALT) generan video display a 0
 
 			return op;
-
 		}
 
 		else {
@@ -601,13 +598,11 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 
 		//Si no esta el modo real zx8081, no hacer esto
-		if (rainbow_enabled.v==1) {
+		if (rainbow_enabled.v) {
 
 
 			z80_byte sprite;
 			int x;
-
-			//int t_estados_en_linea=t_estados % screen_testados_linea;
 
 
             //poner caracter en pantalla de video highmem
@@ -616,8 +611,8 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 
             if (caracter&128) {
-                    caracter_inverse.v=1;
-                    caracter=caracter&127;
+                caracter_inverse.v=1;
+                caracter=caracter&127;
             }
             else caracter_inverse.v=0;
 
@@ -652,7 +647,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 direccion_sprite=(reg_i<<8) | (reg_r_bit7 & 128) | ((reg_r) & 127);
 
 
-
                 x=(zx8081_video_electron_position_x_testados-12)*2;
 
                 //printf ("direccion_sprite: %d\n",direccion_sprite);
@@ -683,8 +677,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 }
 
 
-
-
                 direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
 
 
@@ -693,14 +685,16 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                 //if (y==50) printf("0store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
 
-                //Obtener tipo de letra de rom original, haciendo shadow de los 4kb primeros a los segundos
-                //if (zxpand_enabled.v && MACHINE_IS_ZX80 && direccion_sprite<8192) sprite=memoria_spectrum[direccion_sprite&4095];
 
                 //Obteniendo tipo de letra de rom de zxpand en el caso del zx80
-                if (zxpand_enabled.v && MACHINE_IS_ZX80_TYPE && direccion_sprite<8192) sprite=zxpand_memory_pointer[direccion_sprite];
+                if (zxpand_enabled.v && MACHINE_IS_ZX80_TYPE && direccion_sprite<8192) {
+                    sprite=zxpand_memory_pointer[direccion_sprite];
+                }
 
-                //printf ("direccion_sprite: %d\n",direccion_sprite);
-                else      sprite=memoria_spectrum[direccion_sprite];
+                else {
+                    sprite=memoria_spectrum[direccion_sprite];
+                }
+
                 //aunque este en modo zxpand, la tabla de caracteres siempre sale de la rom principal
                 //por eso hacemos sprite=memoria_spectrum[direccion_sprite]; y zxpand rom esta en otro puntero de memoria
                 //sprite=peek_byte_zx80_no_time(direccion_sprite);
@@ -708,8 +702,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 if (caracter_inverse.v) sprite=sprite^255;
 
             }
-
-
 
 
             if (border_enabled.v==0) {
@@ -720,21 +712,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
             int totalancho=get_total_ancho_rainbow();
 
-
-            //valores negativos vienen por la derecha
-            /*
-            if (x<0) {
-                x=totalancho-screen_total_borde_derecho-screen_total_borde_izquierdo+x;
-            }
-            */
-
-            //valores mayores por la derecha
-            /*
-            if (x>=totalancho ) {
-                //x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo-video_zx8081_decremento_x_cuando_mayor;
-                x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo;
-            }
-            */
 
 
             if (y>=0 && y<get_total_alto_rainbow() ) {
