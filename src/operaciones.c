@@ -7875,7 +7875,7 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
         //Nota: parece como si las señales las enviase al reves:
         //Disabling the HSYNC generator on t-state 195 scanline 117
         //Enabling  the HSYNC generator on t-state 204 scanline 117
-        //generar_zx8081_horiz_sync();
+        //generar_zx8081_hsync();
 
         modificado_border.v=1;
 

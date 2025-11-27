@@ -448,37 +448,7 @@ void generar_zx8081_vsync(void)
 
 }
 
-void adjust_zx8081_electron_position(void)
-{
-
-    //if (zx8081_video_electron_position_x_testados_testados_antes<0) {
-    if (0) {
-        //Viene de un hsync
-        //printf("Viene de hsync. x=%d\n",zx8081_video_electron_position_x_testados);
-    }
-
-    else {
-
-        if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
-            //printf("Ha habido vsync\n");
-            zx8081_video_electron_position_x_testados=0;
-        }
-        else {
-            int delta=t_estados-zx8081_video_electron_position_x_testados_testados_antes;
-            if (delta<0 || delta>23) printf("delta: %d\n",delta);
-            zx8081_video_electron_position_x_testados +=delta;
-        }
-    }
-
-    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
-
-    //temp
-    int tlinea=t_estados % screen_testados_linea;
-    int y=t_estados / screen_testados_linea;
-    //if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
-}
-
-void generar_zx8081_horiz_sync(void) {
+void generar_zx8081_hsync(void) {
 
     if (hsync_generator_active.v==0) return;
 
@@ -512,6 +482,38 @@ void generar_zx8081_horiz_sync(void) {
 
 
 }
+
+void adjust_zx8081_electron_position(void)
+{
+
+    //if (zx8081_video_electron_position_x_testados_testados_antes<0) {
+    if (0) {
+        //Viene de un hsync
+        //printf("Viene de hsync. x=%d\n",zx8081_video_electron_position_x_testados);
+    }
+
+    else {
+
+        if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
+            //printf("Ha habido vsync\n");
+            zx8081_video_electron_position_x_testados=0;
+        }
+        else {
+            int delta=t_estados-zx8081_video_electron_position_x_testados_testados_antes;
+            if (delta<0 || delta>23) printf("delta: %d\n",delta);
+            zx8081_video_electron_position_x_testados +=delta;
+        }
+    }
+
+    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
+
+    //temp
+    int tlinea=t_estados % screen_testados_linea;
+    int y=t_estados / screen_testados_linea;
+    //if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
+}
+
+
 
 int da_amplitud_speaker_zx8081(void)
 {

@@ -103,7 +103,7 @@ extern int zx8081_video_electron_position_x_testados_testados_antes;
 #define ZX8081_LINEAS_SUP_NO_USABLES 8
 
 extern void generar_zx8081_vsync(void);
-extern void generar_zx8081_horiz_sync(void);
+extern void generar_zx8081_hsync(void);
 
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;
