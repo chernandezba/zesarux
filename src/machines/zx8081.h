@@ -36,7 +36,6 @@ extern z80_bit hsync_generator_active;
 extern z80_bit video_fast_mode_emulation;
 extern z80_byte video_fast_mode_next_frame_black;
 
-//extern z80_bit video_zx8081_shows_vsync_on_display;
 
 extern z80_bit simulate_lost_vsync;
 
@@ -57,9 +56,7 @@ extern int zx8081_detect_vsync_sound_counter;
 
 #define ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX 7
 
-//extern z80_bit beta_zx8081_video;
 
-//extern int temp_final_linea;
 
 
 //a partir de cuantos frames refrescados con hsync=0 hay que decir que la pantalla queda en negro

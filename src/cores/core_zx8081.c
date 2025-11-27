@@ -60,15 +60,15 @@ void init_zx8081_scanline_y_x(int y,int x,int ancho)
 //inicializamos valores, para border
 	if (border_enabled.v==0) y=y-screen_borde_superior;
 
-        if (y>=0 && y<get_total_alto_rainbow() ) {
-                if (if_store_scanline_interlace(y)) {
-                        //en principio zona blanca (border) -> 0
-                        z80_byte sprite;
-                        sprite=video_zx8081_ula_video_output;
+    if (y>=0 && y<get_total_alto_rainbow() ) {
+        if (if_store_scanline_interlace(y)) {
+            //en principio zona blanca (border) -> 0
+            z80_byte sprite;
+            sprite=video_zx8081_ula_video_output;
 
-                        for (;ancho>0;x+=8,ancho-=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
-                }
+            for (;ancho>0;x+=8,ancho-=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
         }
+    }
 
 
 }
@@ -76,19 +76,20 @@ void init_zx8081_scanline_y_x(int y,int x,int ancho)
 void init_zx8081_scanline_y_solo_display(int y)
 {
 
-//inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
+    //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
 	if (border_enabled.v==0) y=y-screen_borde_superior;
-        if (y>=0 && y<get_total_alto_rainbow() ) {
-                if (if_store_scanline_interlace(y)) {
-                        int x;
-                        //en principio zona blanca (border) -> 0
-                        z80_byte sprite;
-                        sprite=video_zx8081_ula_video_output;
+
+    if (y>=0 && y<get_total_alto_rainbow() ) {
+        if (if_store_scanline_interlace(y)) {
+            int x;
+            //en principio zona blanca (border) -> 0
+            z80_byte sprite;
+            sprite=video_zx8081_ula_video_output;
 
 
-                        for (x=48;x<48+256;x+=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
-                }
+            for (x=48;x<48+256;x+=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
         }
+    }
 
 
 }
@@ -97,21 +98,20 @@ void init_zx8081_scanline_y_solo_display(int y)
 void init_zx8081_scanline_y(int y)
 {
 
-//inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
+    //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
 	if (border_enabled.v==0) y=y-screen_borde_superior;
-        if (y>=0 && y<get_total_alto_rainbow() ) {
+    if (y>=0 && y<get_total_alto_rainbow() ) {
 		if (if_store_scanline_interlace(y)) {
 
+            int x;
+            //en principio zona blanca (border) -> 0
+            z80_byte sprite;
+            sprite=video_zx8081_ula_video_output;
 
-	                int x;
-        	        //en principio zona blanca (border) -> 0
-	                z80_byte sprite;
-        	        sprite=video_zx8081_ula_video_output;
 
-
-                	for (x=0;x<get_total_ancho_rainbow();x+=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
+            for (x=0;x<get_total_ancho_rainbow();x+=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
 		}
-        }
+    }
 
 
 }
@@ -121,12 +121,11 @@ void init_zx8081_scanline_y(int y)
 void init_zx8081_scanline(void)
 {
 
+    int y=t_scanline_draw-ZX8081_LINEAS_SUP_NO_USABLES;
+    //para evitar las lineas superiores
+    //TODO. cuadrar esto con valores de borde invisible superior
 
-int y=t_scanline_draw-ZX8081_LINEAS_SUP_NO_USABLES;
-//para evitar las lineas superiores
-//TODO. cuadrar esto con valores de borde invisible superior
-
-init_zx8081_scanline_y(y);
+    init_zx8081_scanline_y(y);
 
 
 }
@@ -399,8 +398,8 @@ void cpu_core_loop_zx8081(void)
             contador_parpadeo--;
             //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
             if (!contador_parpadeo) {
-                    contador_parpadeo=16;
-                    toggle_flash_state();
+                contador_parpadeo=16;
+                toggle_flash_state();
             }
 
 
