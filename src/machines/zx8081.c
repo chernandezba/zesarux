@@ -442,9 +442,6 @@ void generar_zx8081_vsync(void)
         t_estados -=t_estados_en_linea;
     */
 
-//temp corregir desplazamiento en zx80
-//zx8081_video_electron_position_x_testados=0;
-//zx8081_video_electron_position_x_testados_testados_antes=t_estados;
 
 }
 
