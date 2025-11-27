@@ -231,21 +231,14 @@ void cpu_core_loop_zx8081(void)
             codsinpr[byte_leido_core_zx8081]  () ;
 
 
-
             if (iff1.v) {
-
-                //solo cuando cambia de 1 a 0
+                //solo cuando cambia de 1 a 0 bit 6 de R
                 if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
-
                     interrupcion_maskable_generada.v=1;
-
                 }
             }
 
-
         }
-
-
 
     }
 
@@ -559,7 +552,7 @@ void cpu_core_loop_zx8081(void)
 
                 //Ajuste tiempos en zx80/81
                 t_estados -=6;
-                //printf("IM0/1 generada\n");
+                printf("IM0/1 generada\n");
 
             }
             else {
