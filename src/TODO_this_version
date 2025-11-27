@@ -80,3 +80,25 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 
 3. IN A,FE  - turns off the HSYNC generator (only if NMI is off)
 (only if NMI is off)...
+
+Creo que la clave está en:
+
+The ULA generates a HSYNC pulse independend of the CPU timing and the ULA LCNTR is incremented
+Ah pero eso ya lo hago asi...
+
+https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-display-system/
+
+    Each character code (CHR$) byte in DFILE is addressed by the CPU PC, on the rising edge T2 data is loaded from DFILE into the ULA : bits 0-5 into a 6 bit ULA address latch while bit 7 is loaded into 1 bit ULA video invert latch
+    On the falling edge of T2, the ULA forces all CPU data lines to zero.
+    On the rising edge of T3 the low data lines are interpreted by the CPU as a NOP instruction.
+    During T3/4, the CPU executes the Refresh cycle and ROM address lines are generated with I register on A9-A15, the ULA 6 bit character code register on A3-A8, and the ULA modulo 8 line counter on line A0-A2.
+    On the falling edge of T4, pattern data from the ROM is loaded into ULA video shift register and 8 video pixels are shifted out at 6.5MHz
+    If character code bit 7 latch in ULA equals 1, video pixels are inverted.
+    The CPU increments the program counter and fetches the next character code.
+    This repeats until a HALT (Sinclair) is fetched.
+    HALT opcode bit 6 = 1 and is therefore executed (no NOP)
+    The ULA generates a HSYNC pulse independend of the CPU timing and the ULA LCNTR is incremented
+    The halted CPU continues to execute NOPs, incrementing register R and samples the INT input on the rising edge of each T4.
+    When A6, which is hardwired to INT, goes low during refresh time, (bit 6 of the R reg = 0), the Z80 executes the INT routine (below 32K)
+    CPU returns from INT and resumes „excution“ of DFILE CHR$ codes.
+    The process repeats 192 times and then INT routine returns to the main video routine, turns on the NMI generator and switches back to the application code.
