@@ -454,7 +454,7 @@ void adjust_zx8081_electron_position(void)
     //if (zx8081_video_electron_position_x_testados_testados_antes<0) {
     if (0) {
         //Viene de un hsync
-        printf("Viene de hsync. x=%d\n",zx8081_video_electron_position_x_testados);
+        //printf("Viene de hsync. x=%d\n",zx8081_video_electron_position_x_testados);
     }
 
     else {
@@ -475,7 +475,7 @@ void adjust_zx8081_electron_position(void)
     //temp
     int tlinea=t_estados % screen_testados_linea;
     int y=t_estados / screen_testados_linea;
-    if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
+    //if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
 }
 
 void generar_zx8081_horiz_sync(void) {

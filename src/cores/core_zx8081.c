@@ -140,113 +140,114 @@ int core_zx8081_medio_scanline=0;
 void cpu_core_loop_zx8081(void)
 {
 
-                debug_get_t_stados_parcial_pre();
+    debug_get_t_stados_parcial_pre();
 
-		timer_check_interrupt();
-
-
-                if (chardetect_detect_char_enabled.v) chardetect_detect_char();
-                if (chardetect_printchar_enabled.v) chardetect_printchar();
-
-        //if (reg_pc==0x0808) printf("Char: %d\n",reg_a);
-
-		//Autoload
-		//Si hay cinta insertada
-		if (  (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0 || (realtape_inserted.v==1)
-
-		) {
-			//Y si hay que hacer autoload
-			if (initial_tap_load.v==1 && initial_tap_sequence==0) {
-
-				//Para zx80
-		                if (MACHINE_IS_ZX80_TYPE && reg_pc==0x0283) {
-        		                debug_printf (VERBOSE_INFO,"Autoload tape");
-                		        initial_tap_sequence=1;
-		                }
+    timer_check_interrupt();
 
 
-				//Para zx81
-                		if (MACHINE_IS_ZX81_TYPE && reg_pc==0x0487) {
-	                	        debug_printf (VERBOSE_INFO,"Autoload tape");
-        	                	initial_tap_sequence=1;
-	                	}
-			}
-		}
+    if (chardetect_detect_char_enabled.v) chardetect_detect_char();
+    if (chardetect_printchar_enabled.v) chardetect_printchar();
 
 
-		//Interceptar rutina de carga
 
-			if (new_tap_load_detect_zx8081()) {
-				audio_playing.v=0;
+    //Autoload
+    //Si hay cinta insertada
+    if (  (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0 || (realtape_inserted.v==1) ) {
+        //Y si hay que hacer autoload
+        if (initial_tap_load.v==1 && initial_tap_sequence==0) {
 
-				draw_tape_text();
+            //Para zx80
+            if (MACHINE_IS_ZX80_TYPE && reg_pc==0x0283) {
+                    debug_printf (VERBOSE_INFO,"Autoload tape");
+                    initial_tap_sequence=1;
+            }
 
-				if (MACHINE_IS_ZX80_TYPE) new_tape_load_zx80();
-				else new_tape_load_zx81();
 
-	                        //audio_playing.v=1;
-        	                timer_reset();
+            //Para zx81
+            if (MACHINE_IS_ZX81_TYPE && reg_pc==0x0487) {
+                    debug_printf (VERBOSE_INFO,"Autoload tape");
+                    initial_tap_sequence=1;
+            }
+        }
+    }
 
-			}
 
-			else	if (new_tap_save_detect_zx8081()) {
-        	                	audio_playing.v=0;
+    //Interceptar rutina de carga
 
-					draw_tape_text();
+    if (new_tap_load_detect_zx8081()) {
+        audio_playing.v=0;
 
-	        	                if (MACHINE_IS_ZX80_TYPE) new_tape_save_zx80();
-        	        	        else new_tape_save_zx81();
+        draw_tape_text();
 
-                	        	//audio_playing.v=1;
-	                        	timer_reset();
+        if (MACHINE_IS_ZX80_TYPE) new_tape_load_zx80();
+        else new_tape_load_zx81();
 
-        	        }
+        //audio_playing.v=1;
+        timer_reset();
 
-		else {
-			if (esperando_tiempo_final_t_estados.v==0) {
+    }
 
-                adjust_zx8081_electron_position();
+    else if (new_tap_save_detect_zx8081()) {
+        audio_playing.v=0;
 
-				byte_leido_core_zx8081=fetch_opcode();
+        draw_tape_text();
 
-				contend_read( reg_pc, 4 );
+        if (MACHINE_IS_ZX80_TYPE) new_tape_save_zx80();
+        else new_tape_save_zx81();
+
+        //audio_playing.v=1;
+        timer_reset();
+
+    }
+
+    else {
+        if (esperando_tiempo_final_t_estados.v==0) {
+
+            adjust_zx8081_electron_position();
+
+            byte_leido_core_zx8081=fetch_opcode();
+
+            contend_read( reg_pc, 4 );
 
 #ifdef EMULATE_CPU_STATS
-                                util_stats_increment_counter(stats_codsinpr,byte_leido_core_zx8081);
+            util_stats_increment_counter(stats_codsinpr,byte_leido_core_zx8081);
 #endif
 
 
 
-                //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-                if (z80_halt_signal.v) {
-                    byte_leido_core_zx8081=0;
+            //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+            if (z80_halt_signal.v) {
+                byte_leido_core_zx8081=0;
+            }
+            else {
+                reg_pc++;
+            }
+
+            reg_r_antes_zx8081=reg_r;
+
+            reg_r++;
+
+            z80_no_ejecutado_block_opcodes();
+            codsinpr[byte_leido_core_zx8081]  () ;
+
+
+
+            if (iff1.v) {
+
+                //solo cuando cambia de 1 a 0
+                if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
+
+                    interrupcion_maskable_generada.v=1;
+
                 }
-                else {
-                    reg_pc++;
-                }
+            }
 
-				reg_r_antes_zx8081=reg_r;
 
-				reg_r++;
-
-                        z80_no_ejecutado_block_opcodes();
-	                	codsinpr[byte_leido_core_zx8081]  () ;
+        }
 
 
 
-				if (iff1.v==1) {
-
-					//solo cuando cambia de 1 a 0
-					if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
-
-						interrupcion_maskable_generada.v=1;
-
-					}
-				}
-
-
-                        }
-                }
+    }
 
 
     //A mitad de scanline
