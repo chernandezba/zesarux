@@ -95,11 +95,6 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 #define PERMITIDO_MINIMO_DURACION_VSYNC 100
 #define PERMITIDO_MAXIMO_DURACION_VSYNC 999
 
-//Para ilena
-//#define DEFAULT_MINIMO_DURACION_VSYNC 550
-
-//Para HERO, 167
-//#define MINIMO_DURACION_VSYNC 160
 
 extern int zx8081_video_electron_position_x_testados;
 extern int zx8081_video_electron_position_x_testados_testados_antes;
@@ -120,9 +115,7 @@ extern z80_bit ram_in_32768;
 //WRX hi-res mode
 extern z80_bit wrx_present;
 
-
-
-//extern int video_zx8081_decremento_x_cuando_mayor;
+extern void adjust_zx8081_electron_position(void);
 
 
 extern void enable_wrx(void);
@@ -144,7 +137,6 @@ extern int inicio_pulso_vsync_t_estados;
 
 extern int minimo_duracion_vsync;
 
-//extern z80_bit ejecutado_zona_pantalla;
 
 extern int vsync_per_second;
 extern int last_vsync_per_second;
