@@ -7917,7 +7917,7 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
 
 			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
-				//printf ("admitido final pulso vsync en linea %d\n",t_scanline_draw_timeout);
+				printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
 
                 if (!simulate_lost_vsync.v) {
 

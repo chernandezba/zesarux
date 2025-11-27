@@ -450,6 +450,21 @@ void generar_zx8081_vsync(void)
         //int sumar=screen_testados_linea-t_estados_en_linea;
         //t_estados +=sumar;
 
+    //Metodo 3 con ajuste de mitad
+    /*int t_estados_en_linea=t_estados%screen_testados_linea;
+    if (t_estados_en_linea<screen_testados_linea/2) {
+        t_estados -=t_estados_en_linea;
+    }
+    else {
+        int sumar=screen_testados_linea-t_estados_en_linea;
+        t_estados +=sumar;
+    }*/
+
+    //t_estados=0;
+    //t_estados +=417;
+
+
+
 }
 
 void generar_zx8081_hsync(void)

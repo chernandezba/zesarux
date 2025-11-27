@@ -128,3 +128,12 @@ ok *eliminar ajustes de horizontal stabilization, lnctr counter
 *zx80 tiembla. mismo con modo fast en prompt
 *pink panther lineas desplazadas. quiza en vsync hay que ajustar zx8081_video_electron_position_x?
 *valor arbitrario para hsync timeout: if (zx8081_video_electron_position_x_testados>300)
+
+//Metodo 3 con ajuste de mitad. Basic estable
+Breakout va lento
+doble breakout se ve desplazado
+dstar tiembla al moverse
+qs defenda 1 scanline desplazado
+xtricator tiembla
+
+Parece que el vsync llega siempre 417 ciclos antes de lo que deberia
