@@ -81,10 +81,18 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 3. IN A,FE  - turns off the HSYNC generator (only if NMI is off)
 (only if NMI is off)...
 
-Creo que la clave está en:
+Creo que la clave está en generar hsync al llegar a un halt
+Y luego.. la nmi cuando se genera?
 
-The ULA generates a HSYNC pulse independend of the CPU timing and the ULA LCNTR is incremented
-Ah pero eso ya lo hago asi...
+https://quix.us/timex/rigter/ZX@20Video@20Tutorial.html
+
+5. ZX81 VIDEO HARDWARE
+
+The ZX81 video hardware consists of the Z80 CPU, ROM, RAM and the larger part of the ZX81 Sinclair Logic Chip (usually called the ULA) as shown in FIG 1 with all relevant connections including the isolation resistors R. For simplicity only the 2K RAM is shown. The ULA contains a 6.5 MHz crystal oscillator and a frequency divider, which generates horizontal sync pulses at the video output and NMI pulses on the NMI output. The HSYNC and the NMI outputs can be controlled with the following I/O operations.
+
+2. While the CPU executes the application code, the CPU is interrupted every 64 us by the NMI generator at the same time the ULA generates a horizontal sync pulse
+
+Pues en teoria generar la hsync y la nmi al mismo tiempo
 
 https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-display-system/
 
@@ -95,9 +103,12 @@ https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-d
     On the falling edge of T4, pattern data from the ROM is loaded into ULA video shift register and 8 video pixels are shifted out at 6.5MHz
     If character code bit 7 latch in ULA equals 1, video pixels are inverted.
     The CPU increments the program counter and fetches the next character code.
+
+
     This repeats until a HALT (Sinclair) is fetched.
     HALT opcode bit 6 = 1 and is therefore executed (no NOP)
     The ULA generates a HSYNC pulse independend of the CPU timing and the ULA LCNTR is incremented
+
     The halted CPU continues to execute NOPs, incrementing register R and samples the INT input on the rising edge of each T4.
     When A6, which is hardwired to INT, goes low during refresh time, (bit 6 of the R reg = 0), the Z80 executes the INT routine (below 32K)
     CPU returns from INT and resumes „excution“ of DFILE CHR$ codes.
