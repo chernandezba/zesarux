@@ -9126,6 +9126,9 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[6] |= 128;
                                         svi_keyboard_table[7] |=4;
                                         pcw_keyboard_table[0] |=1;
+
+                                        //temp_ajuste--;
+                                        //printf("Ajuste %d\n",temp_ajuste);
                                 }
                         break;
 
@@ -9149,6 +9152,9 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                                    pcw_keyboard_table[0] |=1;
                                    pcw_keyboard_table[2] |=32;
+
+                                   //temp_ajuste++;
+                                   //printf("Ajuste %d\n",temp_ajuste);
                                  }
                 break;
 

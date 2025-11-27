@@ -5995,12 +5995,13 @@ void screen_store_scanline_char_zx8081(int x,int y,z80_byte byte_leido,z80_byte 
 
 
         for (bit=0;bit<8;bit++) {
-		if (byte_leido & 128 ) color=colortinta;
-		else color=colorpapel;
+            if (byte_leido & 128 ) color=colortinta;
+            else color=colorpapel;
 
-		rainbow_buffer[y*get_total_ancho_rainbow()+x+bit]=color;
 
-		byte_leido=(byte_leido&127)<<1;
+            rainbow_buffer[y*get_total_ancho_rainbow()+x+bit]=color;
+
+            byte_leido=(byte_leido&127)<<1;
 
         }
 

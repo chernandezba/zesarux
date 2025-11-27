@@ -101,7 +101,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 //Para HERO, 167
 //#define MINIMO_DURACION_VSYNC 160
 
-
+extern int zx8081_video_electron_position_x_testados;
+extern int zx8081_video_electron_position_x_testados_testados_antes;
 
 //TODO en teoria esto son 7.5 lineas
 #define ZX8081_LINEAS_SUP_NO_USABLES 8

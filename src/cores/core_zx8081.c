@@ -205,6 +205,7 @@ void cpu_core_loop_zx8081(void)
 		else {
 			if (esperando_tiempo_final_t_estados.v==0) {
 
+                adjust_zx8081_electron_position();
 
 				byte_leido_core_zx8081=fetch_opcode();
 
@@ -281,11 +282,10 @@ void cpu_core_loop_zx8081(void)
 
 			t_scanline++;
 
-
+            //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
 			generar_zx8081_horiz_sync();
 
-
-            //Generar NMI si conviene
+            //Ademas en ZX81 genera una NMI cada 64 microsegundos
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
                     generate_nmi();
@@ -386,6 +386,18 @@ void cpu_core_loop_zx8081(void)
 
 
 				t_estados -=screen_testados_total;
+
+
+                //temp
+                //t_estados=0;
+
+                //temporal
+                //ajuste para que casi se quede quieto en horizontal
+                //t_estados +=3;
+
+                            //extern int temp_ajuste;
+
+                            //t_estados +=temp_ajuste;
 
 				cpu_loop_refresca_pantalla();
 
@@ -571,6 +583,8 @@ void cpu_core_loop_zx8081(void)
 
 							//Ajuste tiempos en zx80/81
 							t_estados -=6;
+                            //printf("IM0/1 generada\n");
+
 						}
 						else {
 						//IM 2.
@@ -582,6 +596,7 @@ void cpu_core_loop_zx8081(void)
 							dir_h=peek_byte(temp_i);
 							reg_pc=value_8_to_16(dir_h,dir_l);
 							t_estados += 7 ;
+                            //printf("IM2 generada\n");
 
 						}
 

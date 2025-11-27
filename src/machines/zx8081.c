@@ -148,6 +148,9 @@ Despues de ?(), en posicion 18:
 z80_bit nmi_generator_active;
 z80_bit hsync_generator_active;
 
+int zx8081_video_electron_position_x_testados=0;
+int zx8081_video_electron_position_x_testados_testados_antes=0;
+
 //indica si se simula la pantalla negra del modo fast
 z80_bit video_fast_mode_emulation;
 
@@ -445,16 +448,57 @@ void generar_zx8081_vsync(void)
 	//lo ideal seria tener un contador de tiempo para la ULA separado del de la cpu... pero para no complicarlo mas,
 	//nos ayudamos del contador de tiempo de la cpu
 
+    /*
         int t_estados_en_linea=t_estados%screen_testados_linea;
         t_estados -=t_estados_en_linea;
+    */
 
+//temp corregir desplazamiento en zx80
+//zx8081_video_electron_position_x_testados=0;
+//zx8081_video_electron_position_x_testados_testados_antes=t_estados;
 
+}
 
+void adjust_zx8081_electron_position(void)
+{
 
+    //if (zx8081_video_electron_position_x_testados_testados_antes<0) {
+    if (0) {
+        //Viene de un hsync
+        printf("Viene de hsync. x=%d\n",zx8081_video_electron_position_x_testados);
+    }
+
+    else {
+
+        if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
+            //printf("Ha habido vsync\n");
+            zx8081_video_electron_position_x_testados=0;
+        }
+        else {
+            int delta=t_estados-zx8081_video_electron_position_x_testados_testados_antes;
+            if (delta<0 || delta>23) printf("delta: %d\n",delta);
+            zx8081_video_electron_position_x_testados +=delta;
+        }
+    }
+
+    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
+
+    //temp
+    int tlinea=t_estados % screen_testados_linea;
+    int y=t_estados / screen_testados_linea;
+    if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
 }
 
 void generar_zx8081_horiz_sync(void) {
 
+    if (hsync_generator_active.v==0) return;
+
+    //printf("x a 0\n");
+    zx8081_video_electron_position_x_testados=0;
+    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
+
+    //temp
+    //zx8081_video_electron_position_x_testados_testados_antes=-1;
 
     if (video_zx8081_linecntr_enabled.v==1) video_zx8081_linecntr++;
 
@@ -462,12 +506,12 @@ void generar_zx8081_horiz_sync(void) {
     //Cuadrar t_estados a cada linea multiple de 207
     //Esto sirve para tener una imagen estable en horizontal.... sino no hay manera
 
-    if (video_zx8081_estabilizador_imagen.v) {
+    /*if (video_zx8081_estabilizador_imagen.v) {
         int t_estados_en_linea=t_estados%screen_testados_linea;
         t_estados -=t_estados_en_linea;
 
     //printf ("t_estados sobran: %d\n",t_estados_en_linea);
-    }
+    }*/
 
 
     //siguiente linea
@@ -584,7 +628,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 			z80_byte sprite;
 			int x;
 
-			int t_estados_en_linea=t_estados % screen_testados_linea;
+			//int t_estados_en_linea=t_estados % screen_testados_linea;
 
 
             //poner caracter en pantalla de video highmem
@@ -628,6 +672,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                 direccion_sprite=(reg_i<<8) | (reg_r_bit7 & 128) | ((reg_r) & 127);
 
+                /*
                 if (video_zx8081_estabilizador_imagen.v==0) {
                     x=(t_estados_en_linea)*2;
                 }
@@ -635,6 +680,9 @@ z80_byte fetch_opcode_zx81_graphics(void)
                     //Estabilizador de imagen, para que no "tiemble"
                     x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
                 }
+                */
+
+                x=(zx8081_video_electron_position_x_testados-12)*2;
 
                 //printf ("direccion_sprite: %d\n",direccion_sprite);
                 sprite=memoria_spectrum[direccion_sprite];
@@ -673,6 +721,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1 && reg_i == 0x1e) {
                 //if ( machine_type==21 && (cdflag & 128) && video_zx8081_slow_adjust.v==1) {
 
+                /*
                 if ( video_zx8081_lnctr_adjust.v==1) {
                     direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
                 }
@@ -680,9 +729,12 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 else {
                     direccion_sprite=((reg_i&254)*256)+caracter*8+(video_zx8081_linecntr & 7);
                 }
+                */
+
+                direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
 
 
-
+                /*
                 if (video_zx8081_estabilizador_imagen.v==0) {
                     x=t_estados_en_linea*2-24;
                 }
@@ -691,7 +743,14 @@ z80_byte fetch_opcode_zx81_graphics(void)
                     //Estabilizador de imagen, para que no "tiemble"
                     x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
                 }
+                */
 
+
+
+                x=(zx8081_video_electron_position_x_testados-12)*2;
+                //printf("x: %d y: %d zx8081_video_electron_position_x_testados %d\n",x,y,zx8081_video_electron_position_x_testados);
+
+                //if (y==50) printf("0store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
 
                 //Obtener tipo de letra de rom original, haciendo shadow de los 4kb primeros a los segundos
                 //if (zxpand_enabled.v && MACHINE_IS_ZX80 && direccion_sprite<8192) sprite=memoria_spectrum[direccion_sprite&4095];
@@ -723,16 +782,21 @@ z80_byte fetch_opcode_zx81_graphics(void)
             //printf ("fetch y: %d x: %d\n",y,video_zx8081_caracter_en_linea_actual);
             int totalancho=get_total_ancho_rainbow();
 
+
             //valores negativos vienen por la derecha
+            /*
             if (x<0) {
                 x=totalancho-screen_total_borde_derecho-screen_total_borde_izquierdo+x;
             }
+            */
 
             //valores mayores por la derecha
+            /*
             if (x>=totalancho ) {
                 //x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo-video_zx8081_decremento_x_cuando_mayor;
                 x=x-totalancho+screen_total_borde_derecho+screen_total_borde_izquierdo;
             }
+            */
 
 
             if (y>=0 && y<get_total_alto_rainbow() ) {
@@ -743,7 +807,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                     //si linea no coincide con entrelazado, volvemos
                     if (if_store_scanline_interlace(y) ) {
-                        //printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
+                        //if (y==50) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
                         screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
                     }
 
@@ -753,7 +817,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
             }
 
 
-			video_zx8081_caracter_en_linea_actual++;
+			//video_zx8081_caracter_en_linea_actual++;
 		}
 
 
