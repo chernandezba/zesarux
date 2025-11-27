@@ -12414,8 +12414,8 @@ void parse_customfile_options(void)
                                 minimo_duracion_vsync=valor;
                 }
 
+        //Deprecated
         else if (!strcmp(argv[puntero_parametro],"--no-horiz-stabilization")) {
-                        video_zx8081_estabilizador_imagen.v=0;
         }
 
         else if (!strcmp(argv[puntero_parametro],"--programname")) {
@@ -12863,7 +12863,6 @@ void customconfig_help(void)
     "--wrx\n"
     "--chroma81\n"
     "--vsync-minimum-length n \n"
-    "--no-horiz-stabilization          Disable Horizontal Stabilization\n"
     "--gigascreen                      Enable GigaScreen emulation\n"
     "--enablezx8081lnctradjust         Enable LNCTR adjust on ZX80/81\n"
     "--disablezx8081lnctradjust        Disable LNCTR adjust on ZX80/81\n"
@@ -22576,7 +22575,7 @@ void util_save_game_config(char *filename)
         if (wrx_present.v)                          ADD_STRING_CONFIG,"--wrx");
         if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
                                                     ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
-        if (video_zx8081_estabilizador_imagen.v==0) ADD_STRING_CONFIG,"--no-horiz-stabilization");
+
         if (video_zx8081_lnctr_adjust.v)            ADD_STRING_CONFIG,"--enablezx8081lnctradjust");
   }
 

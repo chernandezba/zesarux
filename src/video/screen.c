@@ -10404,7 +10404,6 @@ void enable_rainbow(void) {
 		screen_set_parameters_slow_machines();
 	}
 
-        video_zx8081_estabilizador_imagen.v=1;
 
 
 		/*Modos rainbow usan putpixel cache. Vaciarla por lo que pudiera haber antes

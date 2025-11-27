@@ -7572,7 +7572,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     wrx_present.v=0;
     zx8081_vsync_sound.v=0;
     //video_zx8081_shows_vsync_on_display.v=0;
-    video_zx8081_estabilizador_imagen.v=1;
+
     //video_zx8081_decremento_x_cuando_mayor=8;
 
     //19KB (3+16)

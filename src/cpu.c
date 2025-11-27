@@ -2064,7 +2064,7 @@ void set_machine_params(void)
     //offset_zx8081_t_coordx=0;
     video_zx8081_lnctr_adjust.v=0;
 
-    video_zx8081_estabilizador_imagen.v=1;
+
 
     disable_wrx();
     //wrx_present.v=0;

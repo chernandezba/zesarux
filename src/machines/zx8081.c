@@ -237,12 +237,7 @@ int minimo_duracion_vsync;
 
 z80_bit video_zx8081_lnctr_adjust;
 
-//Ajuste solo para manic miner y para tetrishr. Desplazar coordenada x que normalmente solo se hace en WRX
-//z80_bit manic_miner_game;
 
-z80_bit video_zx8081_estabilizador_imagen;
-
-//int video_zx8081_decremento_x_cuando_mayor;
 
 //Inicio del pulso vsync. Para saber si al final del pulso se admite como vsync o no
 int inicio_pulso_vsync_t_estados;
@@ -427,7 +422,7 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
 //se usa solo para el estabilizador de imagen
 int video_zx8081_caracter_en_linea_actual=0;
 
-z80_bit video_zx8081_estabilizador_imagen;
+
 
 
 void generar_zx8081_vsync(void)
@@ -503,15 +498,7 @@ void generar_zx8081_horiz_sync(void) {
     if (video_zx8081_linecntr_enabled.v==1) video_zx8081_linecntr++;
 
 
-    //Cuadrar t_estados a cada linea multiple de 207
-    //Esto sirve para tener una imagen estable en horizontal.... sino no hay manera
 
-    /*if (video_zx8081_estabilizador_imagen.v) {
-        int t_estados_en_linea=t_estados%screen_testados_linea;
-        t_estados -=t_estados_en_linea;
-
-    //printf ("t_estados sobran: %d\n",t_estados_en_linea);
-    }*/
 
 
     //siguiente linea
@@ -672,15 +659,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                 direccion_sprite=(reg_i<<8) | (reg_r_bit7 & 128) | ((reg_r) & 127);
 
-                /*
-                if (video_zx8081_estabilizador_imagen.v==0) {
-                    x=(t_estados_en_linea)*2;
-                }
-                else {
-                    //Estabilizador de imagen, para que no "tiemble"
-                    x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
-                }
-                */
+
 
                 x=(zx8081_video_electron_position_x_testados-12)*2;
 
@@ -734,16 +713,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
 
 
-                /*
-                if (video_zx8081_estabilizador_imagen.v==0) {
-                    x=t_estados_en_linea*2-24;
-                }
-
-                else {
-                    //Estabilizador de imagen, para que no "tiemble"
-                    x=(video_zx8081_caracter_en_linea_actual+6)*8; //+offset_zx8081_t_coordx;
-                }
-                */
 
 
 

@@ -1182,16 +1182,13 @@ void load_zx_snapshot(char *archivo)
 			z80_byte bits_estado3=zx_header[73];
 
 
-                        //Horizontal stabilization
+                        //Horizontal stabilization. Deprecated
                         if ( (bits_estado3 &1) ) {
-				//Al activar realvideo se activa siempre esto tambien. Por eso, por si acaso, lo hacemos despues
                                 debug_printf(VERBOSE_DEBUG,"Horizontal Stabilization enabled on zx snapshot");
-				video_zx8081_estabilizador_imagen.v=1;
                         }
 
                         else {
                                 debug_printf(VERBOSE_DEBUG,"Horizontal Stabilization disabled on zx snapshot");
-				video_zx8081_estabilizador_imagen.v=0;
                         }
 
 
@@ -4141,7 +4138,7 @@ void save_zx_snapshot(char *filename)
 		//keymap de momento solo 0 o 1
 		int bit_estado_keymap=(z88_cpc_keymap_type == 1 ? 128 : 0);
 
-		bits_estado3=(video_zx8081_estabilizador_imagen.v) | (zx8081_vsync_sound.v <<2) | (chardetect_printchar_enabled.v <<3) | (stdout_simpletext_automatic_redraw.v << 4) | (chardetect_second_trap_sum32.v << 5) | (kempston_mouse_emulation.v << 6) | bit_estado_keymap;
+		bits_estado3= (zx8081_vsync_sound.v <<2) | (chardetect_printchar_enabled.v <<3) | (stdout_simpletext_automatic_redraw.v << 4) | (chardetect_second_trap_sum32.v << 5) | (kempston_mouse_emulation.v << 6) | bit_estado_keymap;
 
 		header[73]=bits_estado3;
 

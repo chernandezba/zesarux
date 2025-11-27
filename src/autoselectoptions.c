@@ -326,8 +326,6 @@ void set_snaptape_fileoptions_init_footers(void)
 
 //Que cosas se resetean al cargar cinta/snapshot?
 //En set_machine_params (se llama cuando hay cambio de maquina o tambien desde smartload) se hace:
-//video_zx8081_lnctr_adjust.v=0;
-//video_zx8081_estabilizador_imagen.v=1;
 //disable_wrx();
 //zx8081_vsync_sound.v=0;
 //minimo_duracion_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
@@ -691,7 +689,7 @@ void set_snaptape_fileoptions(char *filename)
                 enable_rainbow();
                 ram_in_8192.v=1;
                 enable_wrx();
-		video_zx8081_estabilizador_imagen.v=0;
+
 		//offset_zx8081_t_estados=3;
         }
 

@@ -291,11 +291,7 @@ int menu_cond_zx8081_wrx(void)
         return wrx_present.v;
 }
 
-int menu_cond_zx8081_wrx_no_stabilization(void)
-{
-    if (menu_cond_zx8081_wrx()==0) return 0;
-    return !video_zx8081_estabilizador_imagen.v;
-}
+
 
 int menu_cond_zx8081_no_realvideo(void)
 {
@@ -6891,10 +6887,7 @@ void menu_display_slow_adjust(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_display_estabilizador_imagen(MENU_ITEM_PARAMETERS)
-{
-    video_zx8081_estabilizador_imagen.v ^=1;
-}
+
 
 void menu_display_interlace(MENU_ITEM_PARAMETERS)
 {
@@ -8117,13 +8110,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         if (menu_cond_zx8081_realvideo()) {
 
-        //z80_bit video_zx8081_estabilizador_imagen;
 
-            menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_estabilizador_imagen,menu_cond_zx8081_realvideo,
-                "Horizontal stabilization","Estabilización Horizontal","Estabilització Horitzontal");
-            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (video_zx8081_estabilizador_imagen.v==1 ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_display,"Horizontal image stabilization");
-            menu_add_item_menu_ayuda(array_menu_settings_display,"Horizontal image stabilization. Usually enabled.");
+
 
 
             menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_slow_adjust,menu_cond_zx8081_realvideo,"[%c] ~~LNCTR video adjust", (video_zx8081_lnctr_adjust.v==1 ? 'X' : ' '));

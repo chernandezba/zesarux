@@ -137,7 +137,6 @@ extern int video_zx8081_caracter_en_linea_actual;
 
 //extern int video_zx8081_decremento_x_cuando_mayor;
 
-extern z80_bit video_zx8081_estabilizador_imagen;
 
 extern void enable_wrx(void);
 extern void disable_wrx(void);
