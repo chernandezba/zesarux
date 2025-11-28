@@ -348,6 +348,8 @@ void cpu_core_loop_zx8081(void)
         if (t_estados>=screen_testados_total) {
 
             //Siguiente frame de pantalla
+            //Aunque el ZX80/81 tienen su propio sistema para dibujar la pantalla por tanto
+            //en este momento no implica ni vsync ni nada parecido
             timer_get_elapsed_core_frame_post();
 
 

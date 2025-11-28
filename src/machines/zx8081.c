@@ -431,9 +431,9 @@ void generar_zx8081_vsync(void)
 	t_scanline_draw_timeout=0;
 
 
-        //Cuadrar t_estados a cada linea multiple de 207
-        //Esto sirve para tener una imagen estable en horizontal....
-        //sino no habria manera posible de sincronizar la imagen en zx80 .. (en zx81 se ayuda de la nmi)
+    //Cuadrar t_estados a cada linea multiple de 207
+    //Esto sirve para tener una imagen estable en horizontal....
+    //sino no habria manera posible de sincronizar la imagen en zx80 .. (en zx81 se ayuda de la nmi)
 	//lo ideal seria tener un contador de tiempo para la ULA separado del de la cpu... pero para no complicarlo mas,
 	//nos ayudamos del contador de tiempo de la cpu
 
@@ -446,20 +446,27 @@ void generar_zx8081_vsync(void)
     //Parece que se vea bien pero hace cosas raras:
     //Caracter "punto" al hacer un reset de zx81, arriba del todo
     //Texto tiembla en vertical con clocktest.p
-        //int t_estados_en_linea=t_estados%screen_testados_linea;
-        //int sumar=screen_testados_linea-t_estados_en_linea;
-        //t_estados +=sumar;
+    //int t_estados_en_linea=t_estados%screen_testados_linea;
+    //int sumar=screen_testados_linea-t_estados_en_linea;
+    //t_estados +=sumar;
 
     //Metodo 3 con ajuste de mitad
-    /*int t_estados_en_linea=t_estados%screen_testados_linea;
-    if (t_estados_en_linea<screen_testados_linea/2) {
-        t_estados -=t_estados_en_linea;
-    }
-    else {
-        int sumar=screen_testados_linea-t_estados_en_linea;
-        t_estados +=sumar;
-    }*/
+    //Metodo 3 con ajuste de mitad. Basic estable
+    //Breakout va lento
+    //doble breakout se ve desplazado
+    //dstar tiembla al moverse
+    //qs defenda 1 scanline desplazado
+    //xtricator tiembla
+    //int t_estados_en_linea=t_estados%screen_testados_linea;
+    //if (t_estados_en_linea<screen_testados_linea/2) {
+    //    t_estados -=t_estados_en_linea;
+    //}
+    //else {
+    //    int sumar=screen_testados_linea-t_estados_en_linea;
+    //    t_estados +=sumar;
+    //}
 
+    //Otros metodos mas esotéricos
     //t_estados=0;
     //t_estados +=417;
 
@@ -528,8 +535,8 @@ void adjust_zx8081_electron_position(void)
     zx8081_video_electron_position_x_testados_testados_antes=t_estados;
 
     //temp
-    int tlinea=t_estados % screen_testados_linea;
-    int y=t_estados / screen_testados_linea;
+    //int tlinea=t_estados % screen_testados_linea;
+    //int y=t_estados / screen_testados_linea;
     //if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
 
 
@@ -607,8 +614,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
     op=peek_byte_zx80_no_time(reg_pc&0x7fff);
 
 	if( (reg_pc&0x8000) ) {
-
-		//se esta ejecutando la zona de pantalla
+        //se esta ejecutando la zona de pantalla
 
         z80_byte caracter;
 

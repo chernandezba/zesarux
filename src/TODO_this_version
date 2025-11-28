@@ -129,12 +129,7 @@ ok *eliminar ajustes de horizontal stabilization, lnctr counter
 *pink panther lineas desplazadas. quiza en vsync hay que ajustar zx8081_video_electron_position_x?
 *valor arbitrario para hsync timeout: if (zx8081_video_electron_position_x_testados>300)
 
-//Metodo 3 con ajuste de mitad. Basic estable
-Breakout va lento
-doble breakout se ve desplazado
-dstar tiembla al moverse
-qs defenda 1 scanline desplazado
-xtricator tiembla
+
 
 Parece que el vsync llega siempre 417 ciclos antes de lo que deberia
 Tambien puede ser 417-207-207=3 . una instruccion que se lanza una unica vez en todo el frame de pantalla que tenga que tardar 3 ciclos mas de lo que tarda
@@ -147,3 +142,30 @@ halt no
 
 Creo que , por una parte, hay que incrementar t_estados en 3 al recibir un vsync (o al total de frame?)
 Y por otra, ver cuando se desincroniza la pantalla, centrarla donde corresponde. como hacer eso??
+
+Quizá es culpa de in o out.. igual en algun caso tarda mas o menos… no se. Alguna especie de puertos con contencion?
+
+Que se lanza al pulsar una tecla
+Que hace que se desplace el texto en horizontal?
+
+O quizá puedo detectar si empieza a renderizar texto y no esta en coordenada x inicial, que la ajuste (eso solo 1 vez por cada frame de video)
+
+O quizá vsync tiene que sumar testados para que sea múltiple de 4(por ejemplo)-> hace lo mismo
+
+ok revisado A final de frame no se debería hacer nada especial. Sonido y poco más. Pero no representa necesariamente final de frame de vídeo de zx81
+
+O quizá pos x electrón solo actualizar després de instrucciones de código propiamente. Y no con incrementos por interrupción por ejemplo  -> hace lo mismo
+
+incrementar pos solo con fetch -> hace lo mismo
+
+hacer que el primer fetch de linea ponga coordenada electron a 0 -> hace lo mismo
+
+rehacer rutina de render de scanline -> creo que no cambiaria nada, creo que la rutina está bien
+
+El problema tiene que ser que hay algun opcode que no tiene bien los timings
+O que parece que a principio de scanline no salta donde corresponde (que quizá esto es culpa de los timings)
+
+->probar debugando rutina de escribir en pantalla viendo donde apunta electron_x en cada momento, a ver que se me ocurre...
+Mi teoria es que no salta a la dirección correcta (>C000H la que sea), o salta algunos caracteres antes de que comience una linea (por alguna razón que no se),
+de ahi vendria el desplazamiento de caracteres. Quizá esto sea misma consecuencia de los timings
+
