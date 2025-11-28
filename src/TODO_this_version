@@ -137,3 +137,10 @@ qs defenda 1 scanline desplazado
 xtricator tiembla
 
 Parece que el vsync llega siempre 417 ciclos antes de lo que deberia
+Tambien puede ser 417-207-207=3 . una instruccion que se lanza una unica vez en todo el frame de pantalla que tenga que tardar 3 ciclos mas de lo que tarda
+
+set 7,h NO. falla timing test si aumento 3 estados
+dec (iy+dd) no
+in a,(c) no
+out (nn),a no
+halt no

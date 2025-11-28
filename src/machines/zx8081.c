@@ -422,7 +422,7 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
 void generar_zx8081_vsync(void)
 {
 
-
+//debug_printf(VERBOSE_ERR,"Abrir menu");
 
 	//printf ("vsync total de zx81 t_estados: %d\n",t_estados);
 
