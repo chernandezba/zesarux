@@ -144,3 +144,6 @@ dec (iy+dd) no
 in a,(c) no
 out (nn),a no
 halt no
+
+Creo que , por una parte, hay que incrementar t_estados en 3 al recibir un vsync (o al total de frame?)
+Y por otra, ver cuando se desincroniza la pantalla, centrarla donde corresponde. como hacer eso??
