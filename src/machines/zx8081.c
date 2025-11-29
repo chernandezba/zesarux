@@ -577,37 +577,29 @@ void zx8081_if_admited_vsync(void)
 void adjust_zx8081_electron_position(void)
 {
 
-    //if (zx8081_video_electron_position_x_testados_testados_antes<0) {
-    if (0) {
-        //Viene de un hsync
-        //printf("Viene de hsync. x=%d\n",zx8081_video_electron_position_x_testados);
-    }
 
+
+    int delta=0;
+
+    if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
+        printf("Ha dado la vuelta---------\n");
+        delta=(screen_testados_total-zx8081_video_electron_position_x_testados_testados_antes)+t_estados;
+    }
     else {
+        delta=t_estados-zx8081_video_electron_position_x_testados_testados_antes;
+        //if (delta<0 || delta>23) printf("delta: %d\n",delta);
 
-        if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
-            //printf("Ha dado la vuelta\n");
-            zx8081_video_electron_position_x_testados=0;
-        }
-        else {
-            int delta=t_estados-zx8081_video_electron_position_x_testados_testados_antes;
-            //if (delta<0 || delta>23) printf("delta: %d\n",delta);
-            zx8081_video_electron_position_x_testados +=delta;
-        }
     }
+    zx8081_video_electron_position_x_testados +=delta;
 
     zx8081_video_electron_position_x_testados_testados_antes=t_estados;
 
-    //temp
-    //int tlinea=t_estados % screen_testados_linea;
-    //int y=t_estados / screen_testados_linea;
-    //if (y==111 && tlinea<20) printf("tlinea %3d x %3d y %3d\n",tlinea,zx8081_video_electron_position_x_testados,y);
+
 
 
     //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300
     //Esto sirve en los modos FAST y en SAVE/LOAD
     if (zx8081_video_electron_position_x_testados>300) generar_zx8081_hsync();
-
 
 
 }
