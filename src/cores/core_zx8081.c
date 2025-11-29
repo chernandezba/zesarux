@@ -206,7 +206,7 @@ void cpu_core_loop_zx8081(void)
 
             //pulso vsync calcular longitud
             if (vsync_generator_active.v) {
-                printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
+                //printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
                 int delta=0;
                 if (t_estados<longitud_pulso_vsync_t_estados_antes) {
                     //dado la vuelta
