@@ -304,7 +304,9 @@ int video_zx8081_linecntr=0;
 
 //z80_bit video_zx8081_linecntr_enabled;
 
-//se supone que es el siguiente valor que tendra una linea entera segun la ULA, util para emular fast/slow
+//el siguiente valor que tendra una linea entera segun la ULA
+//con vsync , voltaje 0v, color negro, este valor a 255
+//sin vsync , voltaje "normal", color blanco, este valor a 0
 z80_byte video_zx8081_ula_video_output;
 
 //simular franjas de carga y sonido. De momento solo para ZX80/81

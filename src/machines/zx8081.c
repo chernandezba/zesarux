@@ -876,9 +876,9 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     printf("vsync generator on\n");
 
 
-    //reset to bit 3
-    video_zx8081_linecntr &=(255-8);
 
+    video_zx8081_linecntr=0;
+    video_zx8081_ula_video_output=255;
 
 
     if (nmi_generator_active.v==0) {
@@ -905,7 +905,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         }
 
 
-        video_zx8081_ula_video_output=255;
+
 
 
         //ejecutado_zona_pantalla.v=0;
