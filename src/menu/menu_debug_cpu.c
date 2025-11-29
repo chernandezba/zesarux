@@ -4209,7 +4209,9 @@ int menu_debug_registers_subview_type=0;
             // Video zx80/81
             //
             if (MACHINE_IS_ZX8081) {
-                sprintf (textoregistros,"LNCTR: %x LCNTR %s ULAV: %s",(video_zx8081_linecntr &7),(video_zx8081_linecntr_enabled.v ? "On" : "Off"),
+                //sprintf (textoregistros,"LNCTR: %x LCNTR %s ULAV: %s",(video_zx8081_linecntr &7),(video_zx8081_linecntr_enabled.v ? "On" : "Off"),
+                //    (video_zx8081_ula_video_output == 0 ? "+5V" : "0V"));
+                sprintf (textoregistros,"LNCTR: %x ULAV: %s",(video_zx8081_linecntr &7),
                     (video_zx8081_ula_video_output == 0 ? "+5V" : "0V"));
                 //menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
                 zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);

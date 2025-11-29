@@ -489,7 +489,7 @@ void generar_zx8081_hsync(void)
     //temp
     //zx8081_video_electron_position_x_testados_testados_antes=-1;
 
-    if (video_zx8081_linecntr_enabled.v==1) video_zx8081_linecntr++;
+    if (1/*video_zx8081_linecntr_enabled.v==1*/) video_zx8081_linecntr++;
 
 
     //siguiente linea
@@ -505,7 +505,7 @@ void generar_zx8081_hsync(void)
         //printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
         //printf("vsync 2-\n");
         generar_zx8081_vsync();
-        video_zx8081_linecntr_enabled.v=1;
+        //video_zx8081_linecntr_enabled.v=1;
     }
 
 

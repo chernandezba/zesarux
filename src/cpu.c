@@ -302,7 +302,7 @@ int anterior_porcentaje_velocidad_emulador=100;
 //en modo slow del zx81 hay un "offset" para que se ajuste a la pantalla
 int video_zx8081_linecntr=0;
 
-z80_bit video_zx8081_linecntr_enabled;
+//z80_bit video_zx8081_linecntr_enabled;
 
 //se supone que es el siguiente valor que tendra una linea entera segun la ULA, util para emular fast/slow
 z80_byte video_zx8081_ula_video_output;
