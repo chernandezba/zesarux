@@ -5336,7 +5336,11 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	//Puerto con A0 cero
 	else if ( (puerto_l&1)==0) {
 
-        if (vsync_generator_active.v==0) inicio_pulso_vsync_t_estados=t_estados;
+        if (vsync_generator_active.v==0) {
+            longitud_pulso_vsync=0;
+            longitud_pulso_vsync_t_estados_antes=t_estados;
+
+        }
 
         vsync_generator_active.v=1;
         printf("vsync generator on\n");

@@ -131,7 +131,9 @@ extern z80_int zx8081_get_total_ram_with_rampacks(void);
 
 extern int da_amplitud_speaker_zx8081(void);
 
-extern int inicio_pulso_vsync_t_estados;
+//extern int inicio_pulso_vsync_t_estados;
+extern int longitud_pulso_vsync;
+extern int longitud_pulso_vsync_t_estados_antes;
 
 extern int minimo_duracion_vsync;
 

@@ -239,8 +239,10 @@ int minimo_duracion_vsync;
 
 
 
-//Inicio del pulso vsync. Para saber si al final del pulso se admite como vsync o no
-int inicio_pulso_vsync_t_estados;
+//longitud del pulso vsync en t-estados
+int longitud_pulso_vsync=0;
+//t-estados anterior de ejecutar un opcode para saber lo que durara el vsync total
+int longitud_pulso_vsync_t_estados_antes=0;
 
 
 int vsync_per_second;
@@ -513,17 +515,6 @@ void generar_zx8081_hsync(void)
 
 int zx8081_get_vsync_length(void)
 {
-    //Calcular cuanto ha tardado el vsync
-    int longitud_pulso_vsync;
-
-    if (t_estados>inicio_pulso_vsync_t_estados) {
-        longitud_pulso_vsync=t_estados-inicio_pulso_vsync_t_estados;
-    }
-
-    //contador de t_estados ha dado la vuelta. estamos al reves
-    else {
-        longitud_pulso_vsync=screen_testados_total-inicio_pulso_vsync_t_estados+t_estados;
-    }
 
     return longitud_pulso_vsync;
 
@@ -593,7 +584,7 @@ void adjust_zx8081_electron_position(void)
     else {
 
         if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
-            //printf("Ha habido vsync\n");
+            //printf("Ha dado la vuelta\n");
             zx8081_video_electron_position_x_testados=0;
         }
         else {
@@ -614,6 +605,9 @@ void adjust_zx8081_electron_position(void)
     //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300
     //Esto sirve en los modos FAST y en SAVE/LOAD
     if (zx8081_video_electron_position_x_testados>300) generar_zx8081_hsync();
+
+
+
 }
 
 
