@@ -422,6 +422,7 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
 
 
 
+
 void zx8081_reset_electron_line_by_vsync(void)
 {
 
@@ -534,13 +535,11 @@ void zx8081_if_admited_vsync(void)
 
 
 
-	if (1/*video_zx8081_linecntr_enabled.v==0*/) {
-
 		if (longitud_pulso_vsync >= minimo_duracion_vsync) {
 			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
 
-			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
-				//printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
+			if (1/*t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC*/) {
+				printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
 
                 if (!simulate_lost_vsync.v) {
 
@@ -569,7 +568,7 @@ void zx8081_if_admited_vsync(void)
 			//printf ("no admitimos pulso vsync por duracion menor a esperado, duracion: %d esperado %d\n",longitud_pulso_vsync,minimo_duracion_vsync);
 		}
 
-	}
+
 }
 
 void adjust_zx8081_electron_position(void)
