@@ -527,6 +527,8 @@ void zx8081_if_admited_vsync(void)
 
     if (vsync_generator_active.v==0) return;
 
+    video_zx8081_linecntr=0;
+
     //Calcular cuanto ha tardado el vsync
     int longitud_pulso_vsync=zx8081_get_vsync_length();
 
@@ -869,7 +871,6 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     if (vsync_generator_active.v==0) {
         longitud_pulso_vsync=0;
         longitud_pulso_vsync_t_estados_antes=t_estados;
-
     }
 
     vsync_generator_active.v=1;
@@ -877,40 +878,37 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
 
 
-    video_zx8081_linecntr=0;
+    //video_zx8081_linecntr=0;
     video_zx8081_ula_video_output=255;
 
-
     if (nmi_generator_active.v==0) {
-
-        //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
-
         hsync_generator_active.v=0;
         printf("hsync generator off\n");
-        //printf("Disabling the HSYNC generator on t-state %d t-states %d scanline_draw %d contador_segundo %d\n",
-        //    t_estados % screen_testados_linea,t_estados,t_scanline_draw,contador_segundo);
-
-        modificado_border.v=1;
-
-
-        //y ponemos a low la salida del altavoz
-        bit_salida_sonido_zx8081.v=0;
-
-        set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
-
-
-        if (zx8081_vsync_sound.v==1) {
-            //solo resetea contador de silencio cuando esta activo el vsync sound - beeper
-            reset_beeper_silence_detection_counter();
-        }
-
-
-
-
-
-        //ejecutado_zona_pantalla.v=0;
-
     }
+
+
+    //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
+
+    //printf("Disabling the HSYNC generator on t-state %d t-states %d scanline_draw %d contador_segundo %d\n",
+    //    t_estados % screen_testados_linea,t_estados,t_scanline_draw,contador_segundo);
+
+    modificado_border.v=1;
+
+
+    //y ponemos a low la salida del altavoz
+    bit_salida_sonido_zx8081.v=0;
+
+    set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
+
+
+    if (zx8081_vsync_sound.v==1) {
+        //solo resetea contador de silencio cuando esta activo el vsync sound - beeper
+        reset_beeper_silence_detection_counter();
+    }
+
+
+
+
 
     //Teclado
 
@@ -1005,7 +1003,9 @@ void zx8081_out_any_port_video_stuff(void)
 
     vsync_generator_active.v=0;
     printf("vsync generator off\n");
-    video_zx8081_linecntr=0;
+
+    //no estoy seguro de esto
+    //video_zx8081_linecntr=0;
 
 
  	video_zx8081_ula_video_output=0;

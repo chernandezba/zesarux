@@ -171,3 +171,6 @@ de ahi vendria el desplazamiento de caracteres. Quizá esto sea misma consecuenc
 
 vsync_per_second no se usa=??
 revisar vsync sound porque puede que no vaya bien ahora, o vsync detect sound
+no estoy seguro de cuando se resetea video_zx8081_linecntr,
+o se pone a 0 al liberar vsync, o continuamente se pone a 0 cuando esta el vsync activo
+en cualquier caso creo que el resultado final es el mismo
