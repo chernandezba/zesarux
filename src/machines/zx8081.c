@@ -506,7 +506,7 @@ void generar_zx8081_hsync(void)
 
     //si han pasado muchas lineas, resetear
     if (t_scanline_draw_timeout>=timeout_linea_vsync) {
-        //printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
+        printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
         //printf("vsync 2-\n");
         zx8081_reset_electron_line_by_vsync();
         //video_zx8081_linecntr_enabled.v=1;
@@ -985,14 +985,6 @@ void zx8081_out_any_port_video_stuff(void)
 
  	video_zx8081_ula_video_output=0;
 
-
-    //printf("Enabling  the HSYNC generator on t-state %d t-states %d scanline_draw %d contador_segundo %d\n",
-    //    t_estados % screen_testados_linea,t_estados,t_scanline_draw,contador_segundo);
-
-    //Nota: parece como si las señales las enviase al reves:
-    //Disabling the HSYNC generator on t-state 195 scanline 117
-    //Enabling  the HSYNC generator on t-state 204 scanline 117
-    //generar_zx8081_hsync();
 
     modificado_border.v=1;
 
