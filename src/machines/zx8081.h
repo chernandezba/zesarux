@@ -102,6 +102,8 @@ extern int zx8081_video_electron_position_x_testados_testados_antes;
 
 extern void zx8081_reset_electron_line_by_vsync(void);
 extern void generar_zx8081_hsync(void);
+extern int zx8081_read_port_a0_low(z80_byte puerto_h);
+extern void zx8081_if_admited_vsync(void);
 
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;

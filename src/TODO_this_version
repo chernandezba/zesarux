@@ -170,3 +170,4 @@ Mi teoria es que no salta a la dirección correcta (>C000H la que sea), o salta 
 de ahi vendria el desplazamiento de caracteres. Quizá esto sea misma consecuencia de los timings
 
 vsync_per_second no se usa=??
+revisar vsync sound porque puede que no vaya bien ahora, o vsync detect sound

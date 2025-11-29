@@ -1604,7 +1604,7 @@ esxdos_handler.o: storage/esxdos_handler.c storage/esxdos_handler.h cpu.h operac
 tbblue.o: machines/tbblue.c machines/tbblue.h cpu.h mem128.h debug.h contend.h utils.h zxvision/zxvision.h storage/divmmc.h storage/diviface.h video/screen.h machines/timex.h audio/audio.h datagear.h soundchips/ay38912.h copy_interfaces/multiface.h uartbridge.h settings.h joystick.h operaciones.h
 	\$(CC) \$(CFLAGS) -c machines/tbblue.c
 
-zx8081.o: machines/zx8081.c machines/zx8081.h cpu.h video/screen.h debug.h audio/audio.h cores/core_zx8081.h operaciones.h zxvision/zxvision.h ula.h storage/zxpand.h
+zx8081.o: machines/zx8081.c machines/zx8081.h cpu.h video/screen.h debug.h audio/audio.h cores/core_zx8081.h operaciones.h zxvision/zxvision.h ula.h storage/zxpand.h storage/tape.h
 	\$(CC) \$(CFLAGS) -c machines/zx8081.c
 
 jupiterace.o: machines/jupiterace.c machines/jupiterace.h cpu.h video/screen.h debug.h audio/audio.h cores/core_ace.h operaciones.h zxvision/zxvision.h

@@ -106,7 +106,7 @@ z80_byte (*fetch_opcode)(void);
 
 void (*push_valor)(z80_int valor,z80_byte tipo);
 
-z80_byte lee_puerto_teclado(z80_byte puerto_h);
+
 z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l);
 
 void set_value_beeper (int v);
@@ -5269,7 +5269,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
 
     debug_fired_in=1;
-    z80_byte valor;
+    //z80_byte valor;
 
     z80_int puerto=value_8_to_16(puerto_h,puerto_l);
 
@@ -5335,104 +5335,7 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	//Puerto con A0 cero
 	else if ( (puerto_l&1)==0) {
-
-        if (vsync_generator_active.v==0) {
-            longitud_pulso_vsync=0;
-            longitud_pulso_vsync_t_estados_antes=t_estados;
-
-        }
-
-        vsync_generator_active.v=1;
-        printf("vsync generator on\n");
-
-
-        //reset to bit 3
-        video_zx8081_linecntr &=(255-8);
-
-
-
-        if (nmi_generator_active.v==0) {
-
-            //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
-
-            hsync_generator_active.v=0;
-            printf("hsync generator off\n");
-            //printf("Disabling the HSYNC generator on t-state %d t-states %d scanline_draw %d contador_segundo %d\n",
-            //    t_estados % screen_testados_linea,t_estados,t_scanline_draw,contador_segundo);
-
-            modificado_border.v=1;
-
-
-            //y ponemos a low la salida del altavoz
-            bit_salida_sonido_zx8081.v=0;
-
-			set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
-
-
-			if (zx8081_vsync_sound.v==1) {
-				//solo resetea contador de silencio cuando esta activo el vsync sound - beeper
-				reset_beeper_silence_detection_counter();
-			}
-
-
-			video_zx8081_ula_video_output=255;
-
-
-			//ejecutado_zona_pantalla.v=0;
-
-		}
-
-        //Teclado
-
-		//probamos a enviar lo mismo que con teclado de spectrum
-		valor=lee_puerto_teclado(puerto_h);
-
-/*
-  Bit  Expl.
-  0-4  Keyboard column bits (0=Pressed)
-  5    Not used             (1)
-  6    Display Refresh Rate (0=60Hz, 1=50Hz)
-  7    Cassette input       (0=Normal, 1=Pulse)
-*/
-		//decimos que no hay pulso de carga. 50 Hz refresco
-
-		valor = (valor & 31) | (32+64);
-
-		//valor &= (255-128);
-
-
-		//decimos que hay pulso de carga, alternado
-		//if (reg_b!=0) temp_cinta_zx81=128;
-		//else temp_cinta_zx81=0;
-		//valor |=temp_cinta_zx81;
-
-		//printf ("valor: %d\n",valor);
-
-        int leer_cinta_real=0;
-
-        if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
-
-        if (audio_can_record_input()) {
-            if (audio_is_recording_input) {
-                leer_cinta_real=1;
-            }
-        }
-
-        if (leer_cinta_real) {
-            if (realtape_get_current_bit_playing()) {
-                            valor=valor|128;
-                            //printf ("1 ");
-                    }
-                    else {
-                            valor=(valor & (255-128));
-                            //printf ("0 ");
-                    }
-        }
-
-
-		return valor;
-
-
+        return zx8081_read_port_a0_low(puerto_h);
 	}
 
 	//ZEsarUX ZXI ports

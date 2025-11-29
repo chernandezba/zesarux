@@ -237,7 +237,7 @@ extern void poke_byte_vacio(z80_int dir GCC_UNUSED,z80_byte valor GCC_UNUSED);
 extern z80_byte lee_puerto_vacio(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l GCC_UNUSED);
 extern void out_port_vacio(z80_int puerto GCC_UNUSED,z80_byte value GCC_UNUSED);
 extern z80_byte fetch_opcode_vacio(void);
-
+extern z80_byte lee_puerto_teclado(z80_byte puerto_h);
 
 
 extern void (*poke_byte)(z80_int dir,z80_byte valor);
