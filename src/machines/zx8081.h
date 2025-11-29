@@ -33,6 +33,7 @@ extern z80_byte da_codigo81_solo_letras(z80_byte codigo,z80_bit *inverse);
 
 extern z80_bit nmi_generator_active;
 extern z80_bit hsync_generator_active;
+extern z80_bit vsync_generator_active;
 extern z80_bit video_fast_mode_emulation;
 extern z80_byte video_fast_mode_next_frame_black;
 

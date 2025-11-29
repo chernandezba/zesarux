@@ -5336,6 +5336,13 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	//Puerto con A0 cero
 	else if ( (puerto_l&1)==0) {
 
+        vsync_generator_active.v=1;
+        printf("vsync generator on\n");
+
+        //reset to bit 3
+        video_zx8081_linecntr &=(255-8);
+
+
 
         if (nmi_generator_active.v==0) {
 
@@ -5363,13 +5370,14 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 			}
 
 
-			video_zx8081_linecntr=0;
+			//video_zx8081_linecntr=0;
 			video_zx8081_linecntr_enabled.v=0;
 
 
             //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
             hsync_generator_active.v=0;
+            printf("hsync generator off\n");
             //printf("Disabling the HSYNC generator on t-state %d t-states %d scanline_draw %d contador_segundo %d\n",
             //    t_estados % screen_testados_linea,t_estados,t_scanline_draw,contador_segundo);
 
@@ -7869,6 +7877,7 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
         //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
         hsync_generator_active.v=1;
+        printf("hsync generator on--\n");
         //printf("Enabling  the HSYNC generator on t-state %d t-states %d scanline_draw %d contador_segundo %d\n",
         //    t_estados % screen_testados_linea,t_estados,t_scanline_draw,contador_segundo);
 
@@ -7911,13 +7920,17 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 
         //printf ("escribe puerto. final vsync  t_estados=%d. diferencia: %d t_scanline_draw: %d t_scanline_draw_timeout: %d\n",t_estados,longitud_pulso_vsync,t_scanline_draw,t_scanline_draw_timeout);
 
+    vsync_generator_active.v=0;
+    printf("vsync generator off\n");
+    video_zx8081_linecntr=0;
 
 	if (video_zx8081_linecntr_enabled.v==0) {
+
 		if (longitud_pulso_vsync >= minimo_duracion_vsync) {
 			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
 
 			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
-				printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
+				//printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
 
                 if (!simulate_lost_vsync.v) {
 

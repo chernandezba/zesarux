@@ -147,6 +147,7 @@ Despues de ?(), en posicion 18:
 
 z80_bit nmi_generator_active;
 z80_bit hsync_generator_active;
+z80_bit vsync_generator_active={0};
 
 int zx8081_video_electron_position_x_testados=0;
 int zx8081_video_electron_position_x_testados_testados_antes=0;
