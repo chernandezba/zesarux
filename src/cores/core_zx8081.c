@@ -275,6 +275,8 @@ void cpu_core_loop_zx8081(void)
 
         t_scanline++;
 
+        zx8081_if_admited_vsync();
+
         //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
         if (hsync_generator_active.v) generar_zx8081_hsync();
 

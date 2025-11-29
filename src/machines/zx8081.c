@@ -532,6 +532,8 @@ int zx8081_get_vsync_length(void)
 void zx8081_if_admited_vsync(void)
 {
 
+    if (vsync_generator_active.v==0) return;
+
     //Calcular cuanto ha tardado el vsync
     int longitud_pulso_vsync=zx8081_get_vsync_length();
 

@@ -169,3 +169,4 @@ O que parece que a principio de scanline no salta donde corresponde (que quizá 
 Mi teoria es que no salta a la dirección correcta (>C000H la que sea), o salta algunos caracteres antes de que comience una linea (por alguna razón que no se),
 de ahi vendria el desplazamiento de caracteres. Quizá esto sea misma consecuencia de los timings
 
+vsync_per_second no se usa=??

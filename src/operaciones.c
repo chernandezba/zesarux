@@ -5336,8 +5336,11 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	//Puerto con A0 cero
 	else if ( (puerto_l&1)==0) {
 
+        if (vsync_generator_active.v==0) inicio_pulso_vsync_t_estados=t_estados;
+
         vsync_generator_active.v=1;
         printf("vsync generator on\n");
+
 
         //reset to bit 3
         video_zx8081_linecntr &=(255-8);
@@ -5345,34 +5348,6 @@ z80_byte lee_puerto_zx80_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 
         if (nmi_generator_active.v==0) {
-
-			//printf ("lee puerto. t_estados=%d t_scanline_draw_timeout: %d\n",t_estados,t_scanline_draw_timeout);
-
-			//si es inicio vsync, guardar tiempo inicial
-
-			//if (video_zx8081_linecntr_enabled.v==1) {
-
-
-				//solo admitir inicio vsync hacia el final de pantalla o hacia principio
-				//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
-				if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
-					inicio_pulso_vsync_t_estados=t_estados;
-					//printf ("admitido inicio pulso vsync: t_estados: %6d linea: %d\n",inicio_pulso_vsync_t_estados,t_scanline_draw_timeout);
-
-					//video_zx8081_linecntr=0;
-					//video_zx8081_linecntr_enabled.v=0;
-				}
-
-				else {
-					//printf ("NO se admite inicio pulso vsync : t_estados: %6d linea: %d\n",inicio_pulso_vsync_t_estados,t_scanline_draw_timeout);
-				}
-
-			//}
-
-
-			//video_zx8081_linecntr=0;
-			//video_zx8081_linecntr_enabled.v=0;
-
 
             //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
@@ -7908,11 +7883,6 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
     vsync_generator_active.v=0;
     printf("vsync generator off\n");
     video_zx8081_linecntr=0;
-
-
-    zx8081_if_admited_vsync();
-
-
 
 
  	video_zx8081_ula_video_output=0;
