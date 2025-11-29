@@ -422,7 +422,7 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
 
 
 
-void generar_zx8081_vsync(void)
+void zx8081_reset_electron_line_by_vsync(void)
 {
 
 //debug_printf(VERBOSE_ERR,"Abrir menu");
@@ -506,7 +506,7 @@ void generar_zx8081_hsync(void)
     if (t_scanline_draw_timeout>=timeout_linea_vsync) {
         //printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
         //printf("vsync 2-\n");
-        generar_zx8081_vsync();
+        zx8081_reset_electron_line_by_vsync();
         //video_zx8081_linecntr_enabled.v=1;
     }
 
@@ -553,7 +553,7 @@ void zx8081_if_admited_vsync(void)
 					}
 
                     //printf("vsync 1\n");
-					generar_zx8081_vsync();
+					zx8081_reset_electron_line_by_vsync();
 					vsync_per_second++;
 				}
 

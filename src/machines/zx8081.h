@@ -100,7 +100,7 @@ extern int zx8081_video_electron_position_x_testados_testados_antes;
 //TODO en teoria esto son 7.5 lineas
 #define ZX8081_LINEAS_SUP_NO_USABLES 8
 
-extern void generar_zx8081_vsync(void);
+extern void zx8081_reset_electron_line_by_vsync(void);
 extern void generar_zx8081_hsync(void);
 
 //8k de RAM en 8192-163783
