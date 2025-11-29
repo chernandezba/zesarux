@@ -36,7 +36,7 @@ extern z80_bit hsync_generator_active;
 extern z80_bit vsync_generator_active;
 extern z80_bit video_fast_mode_emulation;
 extern z80_byte video_fast_mode_next_frame_black;
-
+extern int zx8081_get_vsync_length(void);
 
 extern z80_bit simulate_lost_vsync;
 

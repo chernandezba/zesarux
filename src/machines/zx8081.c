@@ -511,6 +511,74 @@ void generar_zx8081_hsync(void)
 
 }
 
+int zx8081_get_vsync_length(void)
+{
+    //Calcular cuanto ha tardado el vsync
+    int longitud_pulso_vsync;
+
+    if (t_estados>inicio_pulso_vsync_t_estados) {
+        longitud_pulso_vsync=t_estados-inicio_pulso_vsync_t_estados;
+    }
+
+    //contador de t_estados ha dado la vuelta. estamos al reves
+    else {
+        longitud_pulso_vsync=screen_testados_total-inicio_pulso_vsync_t_estados+t_estados;
+    }
+
+    return longitud_pulso_vsync;
+
+}
+
+void zx8081_if_admited_vsync(void)
+{
+
+    //Calcular cuanto ha tardado el vsync
+    int longitud_pulso_vsync=zx8081_get_vsync_length();
+
+
+
+        //printf ("escribe puerto. final vsync  t_estados=%d. diferencia: %d t_scanline_draw: %d t_scanline_draw_timeout: %d\n",t_estados,longitud_pulso_vsync,t_scanline_draw,t_scanline_draw_timeout);
+
+
+
+	if (1/*video_zx8081_linecntr_enabled.v==0*/) {
+
+		if (longitud_pulso_vsync >= minimo_duracion_vsync) {
+			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
+
+			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
+				//printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
+
+                if (!simulate_lost_vsync.v) {
+
+
+
+					if (zx8081_detect_vsync_sound.v) {
+						//printf ("vsync total de zx8081 t_estados: %d\n",t_estados);
+						if (zx8081_detect_vsync_sound_counter>0) zx8081_detect_vsync_sound_counter--;
+
+					}
+
+                    //printf("vsync 1\n");
+					generar_zx8081_vsync();
+					vsync_per_second++;
+				}
+
+
+			}
+
+            else {
+                //printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
+            }
+		}
+
+		else {
+			//printf ("no admitimos pulso vsync por duracion menor a esperado, duracion: %d esperado %d\n",longitud_pulso_vsync,minimo_duracion_vsync);
+		}
+
+	}
+}
+
 void adjust_zx8081_electron_position(void)
 {
 

@@ -7905,74 +7905,19 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 	}
 
 
-
-        //Calcular cuanto ha tardado el vsync
-        int longitud_pulso_vsync;
-
-        if (t_estados>inicio_pulso_vsync_t_estados) {
-            longitud_pulso_vsync=t_estados-inicio_pulso_vsync_t_estados;
-        }
-
-        //contador de t_estados ha dado la vuelta. estamos al reves
-        else {
-            longitud_pulso_vsync=screen_testados_total-inicio_pulso_vsync_t_estados+t_estados;
-        }
-
-        //printf ("escribe puerto. final vsync  t_estados=%d. diferencia: %d t_scanline_draw: %d t_scanline_draw_timeout: %d\n",t_estados,longitud_pulso_vsync,t_scanline_draw,t_scanline_draw_timeout);
-
     vsync_generator_active.v=0;
     printf("vsync generator off\n");
     video_zx8081_linecntr=0;
 
-	if (1/*video_zx8081_linecntr_enabled.v==0*/) {
 
-		if (longitud_pulso_vsync >= minimo_duracion_vsync) {
-			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
-
-			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
-				//printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
-
-                if (!simulate_lost_vsync.v) {
+    zx8081_if_admited_vsync();
 
 
-
-					if (zx8081_detect_vsync_sound.v) {
-						//printf ("vsync total de zx8081 t_estados: %d\n",t_estados);
-						if (zx8081_detect_vsync_sound_counter>0) zx8081_detect_vsync_sound_counter--;
-
-					}
-
-                    //printf("vsync 1\n");
-					generar_zx8081_vsync();
-					vsync_per_second++;
-				}
-
-
-			}
-
-            else {
-                //printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
-            }
-		}
-
-		else {
-			//printf ("no admitimos pulso vsync por duracion menor a esperado, duracion: %d esperado %d\n",longitud_pulso_vsync,minimo_duracion_vsync);
-		}
-
-	}
-
-
-	//video_zx8081_linecntr_enabled.v=1;
 
 
  	video_zx8081_ula_video_output=0;
 
-	//Prueba para no tener que usar ajuste lnctr
-	//con esto: modo zx80 lnctr desactivado y zx81 activado y todos juegos se ven bien. PERO modo fast zx81 se ve mal
-	//video_zx8081_linecntr=0;
 
-
-	//prueba if (nmi_generator_active.v==1) video_zx8081_linecntr=0;
 
 
 }
