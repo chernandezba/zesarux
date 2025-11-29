@@ -965,3 +965,49 @@ Bit  Expl.
 
 
 }
+
+void zx8081_out_any_port_video_stuff(void)
+{
+
+	//printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
+
+
+        //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
+
+        hsync_generator_active.v=1;
+        printf("hsync generator on--\n");
+        //printf("Enabling  the HSYNC generator on t-state %d t-states %d scanline_draw %d contador_segundo %d\n",
+        //    t_estados % screen_testados_linea,t_estados,t_scanline_draw,contador_segundo);
+
+        //Nota: parece como si las señales las enviase al reves:
+        //Disabling the HSYNC generator on t-state 195 scanline 117
+        //Enabling  the HSYNC generator on t-state 204 scanline 117
+        //generar_zx8081_hsync();
+
+        modificado_border.v=1;
+
+
+	//reseteamos contador de deteccion de modo fast-pantalla negra. Para modo no-realvideo
+	video_fast_mode_next_frame_black=0;
+
+
+	//y ponemos a high la salida del altavoz
+	bit_salida_sonido_zx8081.v=1;
+
+	set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
+
+
+	if (zx8081_vsync_sound.v==1) {
+		//solo resetea contador de silencio cuando esta activo el vsync sound - beeper
+		reset_beeper_silence_detection_counter();
+	}
+
+
+    vsync_generator_active.v=0;
+    printf("vsync generator off\n");
+    video_zx8081_linecntr=0;
+
+
+ 	video_zx8081_ula_video_output=0;
+
+}
