@@ -592,6 +592,10 @@ void adjust_zx8081_electron_position(void)
         //if (delta<0 || delta>23) printf("delta: %d\n",delta);
 
     }
+    if (delta>100) {
+        printf("delta %d\n",delta);
+        sleep(1);
+    }
     zx8081_video_electron_position_x_testados +=delta;
 
     zx8081_video_electron_position_x_testados_testados_antes=t_estados;
@@ -601,8 +605,9 @@ void adjust_zx8081_electron_position(void)
 
         zx8081_video_electron_position_x_testados -=screen_testados_linea;
 
-        //if (hsync_generator_active.v && vsync_generator_active.v==0)
-        generar_zx8081_hsync();
+        if (hsync_generator_active.v && vsync_generator_active.v==0) {
+            generar_zx8081_hsync();
+        }
 
         //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
         //Pero creo que si vsync no esta activo. si vsync activo, tiene preferencia vsync?
@@ -840,6 +845,9 @@ z80_byte fetch_opcode_zx81_graphics(void)
                     }
 
 
+                }
+                else {
+                    printf("x fuera de rango: %d\n",x);
                 }
 
             }
