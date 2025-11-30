@@ -122,7 +122,7 @@ void init_zx8081_scanline(void)
 {
 
     int y=t_scanline_draw-ZX8081_LINEAS_SUP_NO_USABLES;
-    printf("init y: %d\n",y);
+    //printf("init y: %d\n",y);
     //para evitar las lineas superiores
     //TODO. cuadrar esto con valores de borde invisible superior
 
@@ -223,7 +223,7 @@ void cpu_core_loop_zx8081(void)
 
             }
 
-            zx8081_if_admited_vsync();
+
 
             byte_leido_core_zx8081=fetch_opcode();
 
@@ -251,6 +251,7 @@ void cpu_core_loop_zx8081(void)
             codsinpr[byte_leido_core_zx8081]  () ;
 
             adjust_zx8081_electron_position();
+            zx8081_if_admited_vsync();
 
 
             if (iff1.v) {

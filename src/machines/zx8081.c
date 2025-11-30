@@ -546,7 +546,7 @@ void zx8081_if_admited_vsync(void)
 			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
 
 			if (1/*t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC*/) {
-				//printf ("admitido final pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
+				printf ("admitido pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
 
                 if (!simulate_lost_vsync.v) {
 
@@ -567,7 +567,7 @@ void zx8081_if_admited_vsync(void)
 			}
 
             else {
-                //printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
+                printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
             }
 		}
 
@@ -586,7 +586,7 @@ void adjust_zx8081_electron_position(void)
     int delta=0;
 
     if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
-        printf("Ha dado la vuelta---------\n");
+        //printf("Ha dado la vuelta---------\n");
         delta=(screen_testados_total-zx8081_video_electron_position_x_testados_testados_antes)+t_estados;
     }
     else {
@@ -598,30 +598,37 @@ void adjust_zx8081_electron_position(void)
         printf("delta %d\n",delta);
         //sleep(1);
     }
-    //printf("delta %d\n",delta);
+
     zx8081_video_electron_position_x_testados +=delta;
+
+    //printf("delta %d zx8081_video_electron_position_x_testados %d\n",delta,zx8081_video_electron_position_x_testados);
 
     zx8081_video_electron_position_x_testados_testados_antes=t_estados;
 
 
     if (zx8081_video_electron_position_x_testados>=screen_testados_linea) {
 
+        //printf("Fin de linea en %d\n",zx8081_video_electron_position_x_testados);
+
         zx8081_video_electron_position_x_testados -=screen_testados_linea;
 
-        if (hsync_generator_active.v && vsync_generator_active.v==0) {
+        if (hsync_generator_active.v/* && vsync_generator_active.v==0*/) {
             generar_zx8081_hsync();
-        }
 
-        //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
-        //Pero creo que si vsync no esta activo. si vsync activo, tiene preferencia vsync?
-        //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
+            //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
+            //Pero creo que si vsync no esta activo. si vsync activo, tiene preferencia vsync?
+            //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
 
-        //Ademas en ZX81 genera una NMI cada 64 microsegundos
-        if (MACHINE_IS_ZX81_TYPE) {
-            if (nmi_generator_active.v==1) {
-                generate_nmi();
+            //Ademas en ZX81 genera una NMI cada 64 microsegundos
+            if (MACHINE_IS_ZX81_TYPE) {
+                if (nmi_generator_active.v==1) {
+                    //printf("nmi en t_estados %d\n",t_estados);
+                    generate_nmi();
+                }
             }
         }
+
+
     }
 
 
@@ -802,7 +809,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 
                 x=(zx8081_video_electron_position_x_testados-12)*2;
-                if (y==48) printf("x: %3d y: %3d zx8081_video_electron_position_x_testados %d\n",x,y,zx8081_video_electron_position_x_testados);
+                //if (y==48) printf("x: %3d y: %3d zx8081_video_electron_position_x_testados %d\n",x,y,zx8081_video_electron_position_x_testados);
 
                 //if (y==50) printf("0store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
 
@@ -843,7 +850,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                     //si linea no coincide con entrelazado, volvemos
                     if (if_store_scanline_interlace(y) ) {
-                        if (y==48) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
+                        //if (y==48) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
                         screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
                     }
 
@@ -895,7 +902,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         longitud_pulso_vsync=0;
         longitud_pulso_vsync_t_estados_antes=t_estados;
         vsync_generator_active.v=1;
-        //printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
+        printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
 
@@ -904,7 +911,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
-        //printf("hsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
+        printf("hsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
 
@@ -995,12 +1002,12 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
-        //printf("hsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
+        printf("hsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
     if (vsync_generator_active.v) {
         vsync_generator_active.v=0;
-        //printf("vsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
+        printf("vsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
     //no estoy seguro de esto
