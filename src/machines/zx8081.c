@@ -596,8 +596,9 @@ void adjust_zx8081_electron_position(void)
     }
     if (delta>100) {
         printf("delta %d\n",delta);
-        sleep(1);
+        //sleep(1);
     }
+    //printf("delta %d\n",delta);
     zx8081_video_electron_position_x_testados +=delta;
 
     zx8081_video_electron_position_x_testados_testados_antes=t_estados;
