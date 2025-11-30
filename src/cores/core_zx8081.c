@@ -306,11 +306,11 @@ void cpu_core_loop_zx8081(void)
         //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
-        /*if (MACHINE_IS_ZX81_TYPE) {
+        if (MACHINE_IS_ZX81_TYPE) {
             if (nmi_generator_active.v==1) {
                 generate_nmi();
             }
-        }*/
+        }
 
 
         //Envio sonido
