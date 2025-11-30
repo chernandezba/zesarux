@@ -437,7 +437,7 @@ void zx8081_reset_electron_line_by_vsync(void)
 
 
     zx8081_video_electron_position_x_testados=0;
-    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
+
 
     //Cuadrar t_estados a cada linea multiple de 207
     //Esto sirve para tener una imagen estable en horizontal....
@@ -491,7 +491,7 @@ void generar_zx8081_hsync(void)
 
     //printf("x a 0\n");
     zx8081_video_electron_position_x_testados=0;
-    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
+
 
 
 
@@ -601,7 +601,19 @@ void adjust_zx8081_electron_position(void)
 
         zx8081_video_electron_position_x_testados -=screen_testados_linea;
 
-        if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
+        //if (hsync_generator_active.v && vsync_generator_active.v==0)
+        generar_zx8081_hsync();
+
+        //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
+        //Pero creo que si vsync no esta activo. si vsync activo, tiene preferencia vsync?
+        //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
+
+        //Ademas en ZX81 genera una NMI cada 64 microsegundos
+        if (MACHINE_IS_ZX81_TYPE) {
+            if (nmi_generator_active.v==1) {
+                generate_nmi();
+            }
+        }
     }
 
 
@@ -778,7 +790,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
                 }
 
 
-                direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr-1) & 7);
+                direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr) & 7);
 
 
                 x=(zx8081_video_electron_position_x_testados-12)*2;
