@@ -863,7 +863,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         longitud_pulso_vsync=0;
         longitud_pulso_vsync_t_estados_antes=t_estados;
         vsync_generator_active.v=1;
-        printf("vsync generator on\n");
+        printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
 
@@ -872,7 +872,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
-        printf("hsync generator off\n");
+        printf("hsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
 
@@ -963,12 +963,12 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
-        printf("hsync generator on--\n");
+        printf("hsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
     if (vsync_generator_active.v) {
         vsync_generator_active.v=0;
-        printf("vsync generator off\n");
+        printf("vsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
     //no estoy seguro de esto
