@@ -436,7 +436,7 @@ void zx8081_reset_electron_line_by_vsync(void)
 	t_scanline_draw_timeout=0;
 
 
-    zx8081_video_electron_position_x_testados=0;
+    //zx8081_video_electron_position_x_testados=0;
 
 
     //Cuadrar t_estados a cada linea multiple de 207
@@ -553,9 +553,9 @@ void zx8081_if_admited_vsync(void)
 
 
 		if (longitud >= minimo_duracion_vsync) {
-			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
 
-			if (1/*t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC*/) {
+
+			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
 				//printf ("admitido pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
 
                 if (!simulate_lost_vsync.v) {
@@ -578,7 +578,7 @@ void zx8081_if_admited_vsync(void)
 			}
 
             else {
-                printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
+                //printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
             }
 		}
 
@@ -623,7 +623,8 @@ void adjust_zx8081_electron_position(void)
 
         zx8081_video_electron_position_x_testados -=screen_testados_linea;
 
-        if (hsync_generator_active.v/* && vsync_generator_active.v==0*/) {
+        //Lanzamos hsync ya sea por timeout o porque este activado hsync
+        if (hsync_generator_active.v /*  && vsync_generator_active.v==0*/) {
             generar_zx8081_hsync();
 
             //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
@@ -922,6 +923,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         longitud_pulso_vsync_t_estados_antes=t_estados;
         vsync_generator_active.v=1;
         printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
+        zx8081_video_electron_position_x_testados=0;
     }
 
 
@@ -1027,6 +1029,7 @@ void zx8081_out_any_port_video_stuff(void)
     if (vsync_generator_active.v) {
         vsync_generator_active.v=0;
         printf("vsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
+        zx8081_video_electron_position_x_testados=0;
     }
 
     //no estoy seguro de esto
