@@ -56,7 +56,7 @@
 
 void init_zx8081_scanline_y_x(int y,int x,int ancho)
 {
-
+return;
 //inicializamos valores, para border
 	if (border_enabled.v==0) y=y-screen_borde_superior;
 
@@ -75,7 +75,7 @@ void init_zx8081_scanline_y_x(int y,int x,int ancho)
 
 void init_zx8081_scanline_y_solo_display(int y)
 {
-
+return;
     //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
 	if (border_enabled.v==0) y=y-screen_borde_superior;
 
@@ -97,7 +97,7 @@ void init_zx8081_scanline_y_solo_display(int y)
 
 void init_zx8081_scanline_y(int y)
 {
-
+y++;
     //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
 	if (border_enabled.v==0) y=y-screen_borde_superior;
     if (y>=0 && y<get_total_alto_rainbow() ) {
@@ -122,6 +122,7 @@ void init_zx8081_scanline(void)
 {
 
     int y=t_scanline_draw-ZX8081_LINEAS_SUP_NO_USABLES;
+    printf("init y: %d\n",y);
     //para evitar las lineas superiores
     //TODO. cuadrar esto con valores de borde invisible superior
 

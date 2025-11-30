@@ -503,6 +503,8 @@ void generar_zx8081_hsync(void)
 
     t_scanline_draw++;
 
+    if (t_scanline_draw==56) printf("scanlinedraw : %d\n",t_scanline_draw);
+
 
     t_scanline_draw_timeout++;
 
@@ -799,7 +801,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 
                 x=(zx8081_video_electron_position_x_testados-12)*2;
-                //printf("x: %d y: %d zx8081_video_electron_position_x_testados %d\n",x,y,zx8081_video_electron_position_x_testados);
+                if (y==48) printf("x: %3d y: %3d zx8081_video_electron_position_x_testados %d\n",x,y,zx8081_video_electron_position_x_testados);
 
                 //if (y==50) printf("0store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
 
@@ -840,7 +842,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
                     //si linea no coincide con entrelazado, volvemos
                     if (if_store_scanline_interlace(y) ) {
-                        //if (y==50) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
+                        if (y==48) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
                         screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
                     }
 
@@ -892,7 +894,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         longitud_pulso_vsync=0;
         longitud_pulso_vsync_t_estados_antes=t_estados;
         vsync_generator_active.v=1;
-        printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
+        //printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
 
@@ -901,7 +903,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
-        printf("hsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
+        //printf("hsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
 
@@ -992,12 +994,12 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
-        printf("hsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
+        //printf("hsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
     if (vsync_generator_active.v) {
         vsync_generator_active.v=0;
-        printf("vsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
+        //printf("vsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
     }
 
     //no estoy seguro de esto
