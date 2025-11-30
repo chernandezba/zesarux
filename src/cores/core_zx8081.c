@@ -97,7 +97,7 @@ return;
 
 void init_zx8081_scanline_y(int y)
 {
-y++;
+
     //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
 	if (border_enabled.v==0) y=y-screen_borde_superior;
     if (y>=0 && y<get_total_alto_rainbow() ) {
@@ -236,7 +236,7 @@ void cpu_core_loop_zx8081(void)
 
             //pulso vsync calcular longitud
             if (vsync_generator_active.v) {
-                printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
+                //printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
                 int delta=0;
                 if (t_estados<longitud_pulso_vsync_t_estados_antes) {
                     //dado la vuelta
@@ -308,11 +308,13 @@ void cpu_core_loop_zx8081(void)
         //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
+        /*
         if (MACHINE_IS_ZX81_TYPE) {
             if (nmi_generator_active.v==1) {
                 generate_nmi();
             }
         }
+        */
 
 
         //Envio sonido
@@ -476,11 +478,7 @@ void cpu_core_loop_zx8081(void)
 
 
 
-        //Inicializar siguiente linea. Esto es importante que este aqui despues de
-        //una posible actualizacion de pantalla, para que no se vea la linea blanca inicializada
-        if (rainbow_enabled.v==1) {
-            init_zx8081_scanline();
-        }
+
     }
 
     if (esperando_tiempo_final_t_estados.v) {

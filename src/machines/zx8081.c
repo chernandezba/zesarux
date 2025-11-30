@@ -431,7 +431,7 @@ void zx8081_reset_electron_line_by_vsync(void)
 
 	//printf ("vsync total de zx81 t_estados: %d\n",t_estados);
 
-    printf("Set t_scanline_draw to 0 on generar_zx8081_vsync\n");
+    //printf("Set t_scanline_draw to 0 on generar_zx8081_vsync\n");
 	t_scanline_draw=0;
 	t_scanline_draw_timeout=0;
 
@@ -509,6 +509,7 @@ void generar_zx8081_hsync(void)
     t_scanline_draw_timeout++;
 
     //si han pasado muchas lineas, resetear
+
     /*
     if (t_scanline_draw_timeout>=timeout_linea_vsync) {
         printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
@@ -517,6 +518,13 @@ void generar_zx8081_hsync(void)
         //video_zx8081_linecntr_enabled.v=1;
     }
     */
+
+
+    //Inicializar siguiente linea. Esto es importante que este aqui despues de
+    //una posible actualizacion de pantalla, para que no se vea la linea blanca inicializada
+    if (rainbow_enabled.v==1) {
+        init_zx8081_scanline();
+    }
 
 
 }
@@ -536,7 +544,7 @@ void zx8081_if_admited_vsync(void)
 
 
     //Calcular cuanto ha tardado el vsync
-    int longitud_pulso_vsync=zx8081_get_vsync_length();
+    int longitud=zx8081_get_vsync_length();
 
 
 
@@ -544,7 +552,7 @@ void zx8081_if_admited_vsync(void)
 
 
 
-		if (longitud_pulso_vsync >= minimo_duracion_vsync) {
+		if (longitud >= minimo_duracion_vsync) {
 			//if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC || t_scanline_draw_timeout<=3) {
 
 			if (1/*t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC*/) {
@@ -623,14 +631,14 @@ void adjust_zx8081_electron_position(void)
             //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
 
             //Ademas en ZX81 genera una NMI cada 64 microsegundos
-            /*
+
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
                     //printf("nmi en t_estados %d\n",t_estados);
                     generate_nmi();
                 }
             }
-            */
+
         }
 
 
@@ -639,11 +647,13 @@ void adjust_zx8081_electron_position(void)
 
     //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300
     //Esto sirve en los modos FAST y en SAVE/LOAD
+    /*
     if (zx8081_video_electron_position_x_testados>300 && hsync_generator_active.v==0) {
         printf("hsync timeout\n");
         zx8081_video_electron_position_x_testados -=300;
         generar_zx8081_hsync();
     }
+    */
 
 
 }
