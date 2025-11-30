@@ -436,6 +436,9 @@ void zx8081_reset_electron_line_by_vsync(void)
 	t_scanline_draw_timeout=0;
 
 
+    zx8081_video_electron_position_x_testados=0;
+    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
+
     //Cuadrar t_estados a cada linea multiple de 207
     //Esto sirve para tener una imagen estable en horizontal....
     //sino no habria manera posible de sincronizar la imagen en zx80 .. (en zx81 se ayuda de la nmi)
@@ -594,6 +597,12 @@ void adjust_zx8081_electron_position(void)
     zx8081_video_electron_position_x_testados_testados_antes=t_estados;
 
 
+    if (zx8081_video_electron_position_x_testados>=screen_testados_linea) {
+
+        zx8081_video_electron_position_x_testados -=screen_testados_linea;
+
+        if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
+    }
 
 
     //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300

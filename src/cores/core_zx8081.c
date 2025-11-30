@@ -299,7 +299,7 @@ void cpu_core_loop_zx8081(void)
 
         //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
         //Pero creo que si vsync no esta activo. si vsync activo, tiene preferencia vsync?
-        if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
+        //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
         if (MACHINE_IS_ZX81_TYPE) {
