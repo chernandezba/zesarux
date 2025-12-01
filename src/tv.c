@@ -110,8 +110,11 @@ void tv_time_event_store_chunk_image(int delta)
     //TODO incrementar esto 1 a 1 en bucle
     tv_x +=delta;
 
-    //Y despues de esto, ponemos a 0 por probar, el sprite
-    zx80801_last_sprite_video=0xff;
+    //Dejar el valor por defecto si la ula de la maquina no envia nada
+    //Esto es dependiente del hardware
+    if (MACHINE_IS_ZX8081) {
+        zx80801_last_sprite_video=video_zx8081_ula_video_output;
+    }
 
 }
 
