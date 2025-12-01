@@ -729,8 +729,6 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
         //printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
-        //tv_disable_hsync();
-        //sleep(1);
     }
 
 
