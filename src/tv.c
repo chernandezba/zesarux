@@ -66,7 +66,7 @@ void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int 
 
 void tv_time_event_store_chunk_image(int delta)
 {
-    if (0/*rainbow_enabled.v*/) {
+    if (rainbow_enabled.v) {
 
         int y=tv_y;
 
@@ -74,7 +74,7 @@ void tv_time_event_store_chunk_image(int delta)
         y=y-screen_invisible_borde_superior;
 
 
-        int x=tv_x;
+        int x=tv_x*2;
 
         //temp
         //x=128;
@@ -96,7 +96,7 @@ void tv_time_event_store_chunk_image(int delta)
                 if (if_store_scanline_interlace(y) ) {
 
                     z80_byte sprite=zx80801_last_sprite_video;
-                    sprite=0x01;
+                    //sprite=0x01;
                     //screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
                     tv_time_event_store_chunk_image_sprite(x,y,sprite,0,15);
                 }
@@ -108,7 +108,7 @@ void tv_time_event_store_chunk_image(int delta)
     }
 
     //TODO incrementar esto 1 a 1 en bucle
-    tv_x +=delta*2;
+    tv_x +=delta;
 
 }
 
@@ -116,7 +116,8 @@ void tv_time_event_store_chunk_image(int delta)
 void tv_time_event(int delta)
 {
     //Hacer todo lo que corresponda desde tv_time hasta tv_time+delta-1
-    if (tv_vsync_signal==0 && tv_hsync_signal==0) printf("tv_time: %6d x: %3d y: %3d hsync %d vsync %d\n",tv_time,tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
+    //if (tv_vsync_signal==0 && tv_hsync_signal==0)
+    printf("TV x: %3d y: %3d hsync %d vsync %d\n",tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
 
 
     tv_time_event_store_chunk_image(delta);
@@ -150,7 +151,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                 int total_lineas=screen_testados_total/screen_testados_linea;
                 //Si no se va mas alla del limite
                 if (tv_y<=total_lineas) {
-                    printf("Incrementar Y por hsync. y antes: %d\n",tv_y);
+                    //printf("Incrementar Y por hsync. y antes: %d\n",tv_y);
                     //sleep(1);
                     tv_y++;
                 }
@@ -172,7 +173,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 void tv_enable_hsync(void)
 {
     if (tv_hsync_signal==0) {
-        printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
@@ -182,7 +183,7 @@ void tv_enable_hsync(void)
 void tv_disable_hsync(void)
 {
     if (tv_hsync_signal) {
-        printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=0;
     }
@@ -192,7 +193,7 @@ void tv_enable_vsync(void)
 {
 
     if (tv_vsync_signal==0) {
-        printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
         //sleep(1);
@@ -203,7 +204,7 @@ void tv_disable_vsync(void)
 {
 
     if (tv_vsync_signal) {
-        printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=0;
         //sleep(1);
     }

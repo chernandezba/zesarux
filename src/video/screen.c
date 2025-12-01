@@ -5956,56 +5956,7 @@ void save_screen(char *screen_save_file)
 }
 
 
-//Guardar en buffer rainbow una linea del caracter de zx8081. usado en modo de video real
-void screen_store_scanline_char_zx8081(int x,int y,z80_byte byte_leido,z80_byte caracter,int inverse)
-{
-	int bit;
-        z80_byte color;
 
-	z80_byte colortinta=0;
-	z80_byte colorpapel=15;
-
-	//Si modo chroma81 y lo ha activado
-
-	if (color_es_chroma() ) {
-		//ver modo
-		if ((chroma81_port_7FEF&16)!=0) {
-			//1 attribute file
-			chroma81_return_mode1_colour(reg_pc,&colortinta,&colorpapel);
-			//printf ("modo 1\n");
-		}
-		else {
-			//0 character code
-			//tablas colores van primero para los 64 normales y luego para los 64 inversos
-			if (inverse) {
-				caracter +=64;
-			}
-
-			z80_int d=caracter*8+0xc000;
-			d=d+(y&7);
-			z80_byte leido=peek_byte_no_time(d);
-			colortinta=leido&15;
-			colorpapel=(leido>>4)&15;
-
-			//printf ("modo 0\n");
-
-		}
-	}
-
-
-
-        for (bit=0;bit<8;bit++) {
-            if (byte_leido & 128 ) color=colortinta;
-            else color=colorpapel;
-
-
-            rainbow_buffer[y*get_total_ancho_rainbow()+x+bit]=color;
-
-            byte_leido=(byte_leido&127)<<1;
-
-        }
-
-}
 
 void screen_store_scanline_char_zx8081_border_scanline(int x,int y,z80_byte byte_leido)
 {

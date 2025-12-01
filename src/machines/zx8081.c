@@ -485,10 +485,13 @@ void zx8081_reset_electron_line_by_vsync(void)
 }
 */
 
+int pending_disable_hsync=0;
+
 void generar_zx8081_hsync(void)
 {
 
     tv_enable_hsync();
+    pending_disable_hsync=1;
 
 
     //printf("x a 0\n");
@@ -602,8 +605,15 @@ void zx8081_if_admited_vsync(void)
 
 }
 
+
+
 void adjust_zx8081_electron_position(int delta)
 {
+
+    printf("EL x: %3d y: %3d hsync %d vsync %d\n",
+        zx8081_video_electron_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
+
+    if (pending_disable_hsync) tv_disable_hsync();
 
     //pulso vsync calcular longitud
     if (vsync_generator_active.v) {
@@ -729,6 +739,61 @@ int color_es_chroma(void)
 }
 
 z80_byte zx80801_last_sprite_video;
+
+
+//Guardar en buffer rainbow una linea del caracter de zx8081. usado en modo de video real
+void screen_store_scanline_char_zx8081(int x,int y,z80_byte byte_leido,z80_byte caracter,int inverse)
+{
+	int bit;
+        z80_byte color;
+
+	z80_byte colortinta=0;
+	z80_byte colorpapel=15;
+
+zx80801_last_sprite_video=byte_leido;
+return;
+
+	//Si modo chroma81 y lo ha activado
+
+	if (color_es_chroma() ) {
+		//ver modo
+		if ((chroma81_port_7FEF&16)!=0) {
+			//1 attribute file
+			chroma81_return_mode1_colour(reg_pc,&colortinta,&colorpapel);
+			//printf ("modo 1\n");
+		}
+		else {
+			//0 character code
+			//tablas colores van primero para los 64 normales y luego para los 64 inversos
+			if (inverse) {
+				caracter +=64;
+			}
+
+			z80_int d=caracter*8+0xc000;
+			d=d+(y&7);
+			z80_byte leido=peek_byte_no_time(d);
+			colortinta=leido&15;
+			colorpapel=(leido>>4)&15;
+
+			//printf ("modo 0\n");
+
+		}
+	}
+
+
+
+        for (bit=0;bit<8;bit++) {
+            if (byte_leido & 128 ) color=colortinta;
+            else color=colorpapel;
+
+
+            rainbow_buffer[y*get_total_ancho_rainbow()+x+bit]=color;
+
+            byte_leido=(byte_leido&127)<<1;
+
+        }
+
+}
 
 //Tratamiento de los gráficos zx81 al hacer fetch
 z80_byte fetch_opcode_zx81_graphics(void)
