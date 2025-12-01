@@ -66,49 +66,52 @@ void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int 
 
 void tv_time_event_store_chunk_image(int delta)
 {
+
+
     if (rainbow_enabled.v) {
 
-        int y=tv_y;
+
+    int y=tv_y;
 
 
-        y=y-screen_invisible_borde_superior;
+    y=y-screen_invisible_borde_superior;
 
 
-        int x=tv_x*2;
+    int xorig=tv_x*2;
+    int xmax=xorig+delta*2;
 
-        //temp
-        //x=128;
-        //y=88;
-
-        //if (y>=0) printf("store sprite x: %d y: %d\n",x,y);
 
         int totalancho=get_total_ancho_rainbow();
 
 
 
         if (y>=0 && y<get_total_alto_rainbow() ) {
+            int x;
 
+            for (x=xorig;x<xmax;x+=8) {
 
+                if (x>=0 && x<totalancho )  {
 
-            if (x>=0 && x<totalancho )  {
+                    //si linea no coincide con entrelazado, volvemos
+                    if (if_store_scanline_interlace(y) ) {
 
-                //si linea no coincide con entrelazado, volvemos
-                if (if_store_scanline_interlace(y) ) {
-
-                    z80_byte sprite=zx80801_last_sprite_video;
-                    //sprite=0x01;
-                    //screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
-                    tv_time_event_store_chunk_image_sprite(x,y,sprite,0,15);
+                        //Este bloque es dependiente de la maquina
+                        if (MACHINE_IS_ZX8081) {
+                            z80_byte sprite=zx80801_last_sprite_video;
+                            tv_time_event_store_chunk_image_sprite(x,y,sprite,0,15);
+                        }
+                    }
                 }
-            }
-            else {
-                //printf("x fuera de rango: %d\n",x);
+                else {
+                    //printf("x fuera de rango: %d\n",x);
+                }
             }
         }
     }
 
-    //TODO incrementar esto 1 a 1 en bucle
     tv_x +=delta;
+
+
 
     //Dejar el valor por defecto si la ula de la maquina no envia nada
     //Esto es dependiente del hardware
