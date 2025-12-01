@@ -505,7 +505,7 @@ void generar_zx8081_hsync(void)
 
     t_scanline_draw++;
 
-    if (t_scanline_draw==56) printf("scanlinedraw : %d\n",t_scanline_draw);
+    //if (t_scanline_draw==56) printf("scanlinedraw : %d\n",t_scanline_draw);
 
 
     t_scanline_draw_timeout++;
@@ -622,7 +622,7 @@ void adjust_zx8081_electron_position(int delta)
 
     if (zx8081_video_electron_position_x_testados>=screen_testados_linea) {
 
-        if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",zx8081_video_electron_position_x_testados);
+        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",zx8081_video_electron_position_x_testados);
 
         zx8081_video_electron_position_x_testados -=screen_testados_linea;
 
@@ -884,7 +884,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
                         //if (y==48) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
 
                         //TODO: esto hay que pasarlo al modulo de TV
-                        //screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
+                        screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
                     }
 
 
@@ -948,7 +948,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         hsync_generator_active.v=0;
         printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         tv_disable_hsync();
-        sleep(1);
+        //sleep(1);
     }
 
 

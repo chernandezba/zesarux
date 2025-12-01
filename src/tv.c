@@ -66,16 +66,21 @@ void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int 
 
 void tv_time_event_store_chunk_image(int delta)
 {
-    if (rainbow_enabled.v) {
+    if (0/*rainbow_enabled.v*/) {
 
-        int y=tv_y-screen_invisible_borde_superior;
+        int y=tv_y;
+
+
+        y=y-screen_invisible_borde_superior;
+
+
         int x=tv_x;
 
         //temp
         //x=128;
         //y=88;
 
-        if (y>=0) printf("store sprite x: %d y: %d\n",x,y);
+        //if (y>=0) printf("store sprite x: %d y: %d\n",x,y);
 
         int totalancho=get_total_ancho_rainbow();
 
@@ -124,7 +129,7 @@ Either side are scan lines containing pre and post equalizing pulses, but these 
 A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX81 generates the pulse in software,
 it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
     */
-   //TODO ver longitud vsync
+
     if (tv_vsync_signal) {
         tv_vsync_signal_length+=delta;
 
