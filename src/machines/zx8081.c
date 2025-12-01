@@ -452,7 +452,7 @@ void ula_zx8081_time_event(int delta)
         if (hsync_generator_active.v ) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
-                    //printf("nmi en t_estados %d conteo x: %d\n",t_estados,ula_zx8081_position_x_testados);
+                    printf("nmi en t_estados %d conteo x: %d\n",t_estados,ula_zx8081_position_x_testados);
                     generate_nmi();
                 }
             }
