@@ -72,11 +72,6 @@ extern int zx8081_detect_vsync_sound_counter;
 
 
 
-
-
-extern int zx8081_video_electron_position_x_testados;
-extern int zx8081_video_electron_position_x_testados_testados_antes;
-
 //TODO en teoria esto son 7.5 lineas
 #define ZX8081_LINEAS_SUP_NO_USABLES 8
 
@@ -89,6 +84,8 @@ extern void zx8081_if_admited_vsync(void);
 extern z80_byte zx80801_last_sprite_video;
 extern int zx80801_last_sprite_video_tinta;
 extern int zx80801_last_sprite_video_papel;
+
+extern void ula_zx8081_time_event(int delta);
 
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;

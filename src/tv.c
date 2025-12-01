@@ -32,6 +32,12 @@
 #include "zxvision.h"
 #include "ula.h"
 
+/*
+
+TV (CRT) emulation routines.
+This module emulates a TV, it's only used on ZX80 and ZX81 but could be used on more machines in the future, like CPC for example
+
+*/
 
 /*
 
@@ -78,23 +84,14 @@ void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int 
 void tv_time_event_store_chunk_image(int delta)
 {
 
-
     if (rainbow_enabled.v) {
-
-
         int y=tv_y;
-
-
         y=y-screen_invisible_borde_superior;
-
 
         int xorig=tv_x*2;
         int xmax=xorig+delta*2;
 
-
         int totalancho=get_total_ancho_rainbow();
-
-
 
         if (y>=0 && y<get_total_alto_rainbow() ) {
             int x;

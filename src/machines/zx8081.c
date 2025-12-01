@@ -33,6 +33,7 @@
 #include "ula.h"
 #include "zxpand.h"
 #include "tape.h"
+#include "tv.h"
 
 //http://nocash.emubase.de/zxdocs.htm#zx80zx81videointerruptsintsandnmis
 
@@ -151,8 +152,8 @@ z80_bit hsync_generator_active;
 //z80_bit vsync_generator_active={0};
 
 //Para lanzar los hsync del hsync generator
-int zx8081_video_electron_position_x_testados=0;
-int zx8081_video_electron_position_x_testados_testados_antes=0;
+int ula_zx8081_position_x_testados=0;
+int ula_zx8081_position_x_testados_testados_antes=0;
 
 //indica si se simula la pantalla negra del modo fast
 z80_bit video_fast_mode_emulation;
@@ -404,7 +405,7 @@ void generar_zx8081_hsync(void)
     pending_disable_hsync=1;
 
 
-    zx8081_video_electron_position_x_testados=0;
+    ula_zx8081_position_x_testados=0;
     video_zx8081_linecntr++;
 
 
@@ -427,23 +428,23 @@ void ula_zx8081_time_event(int delta)
 {
 
     //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
-    //    zx8081_video_electron_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
+    //    ula_zx8081_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
 
     if (pending_disable_hsync) tv_disable_hsync();
 
 
-    zx8081_video_electron_position_x_testados +=delta;
+    ula_zx8081_position_x_testados +=delta;
 
-    //printf("delta %d zx8081_video_electron_position_x_testados %d\n",delta,zx8081_video_electron_position_x_testados);
+    //printf("delta %d ula_zx8081_position_x_testados %d\n",delta,ula_zx8081_position_x_testados);
 
-    zx8081_video_electron_position_x_testados_testados_antes=t_estados;
+    ula_zx8081_position_x_testados_testados_antes=t_estados;
 
 
-    if (zx8081_video_electron_position_x_testados>=screen_testados_linea) {
+    if (ula_zx8081_position_x_testados>=screen_testados_linea) {
 
-        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",zx8081_video_electron_position_x_testados);
+        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx8081_position_x_testados);
 
-        zx8081_video_electron_position_x_testados -=screen_testados_linea;
+        ula_zx8081_position_x_testados -=screen_testados_linea;
 
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
         //si hay vsync no hay hsync
@@ -730,7 +731,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     if (!tv_is_vsync_enabled()) {
         //vsync_generator_active.v=1;
         //printf("vsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
-        //zx8081_video_electron_position_x_testados=0;
+        //ula_zx8081_position_x_testados=0;
         tv_enable_vsync();
         //sleep(1);
     }
@@ -841,7 +842,7 @@ void zx8081_out_any_port_video_stuff(void)
     if (tv_is_vsync_enabled()) {
         //vsync_generator_active.v=0;
         //printf("vsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
-        zx8081_video_electron_position_x_testados=0;
+        ula_zx8081_position_x_testados=0;
         tv_disable_vsync();
     }
 
