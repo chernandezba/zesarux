@@ -448,20 +448,20 @@ void ula_zx8081_time_event(int delta)
 
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
         //si hay vsync no hay hsync
-        if (hsync_generator_active.v  && !tv_is_vsync_enabled()) {
+        if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
             generar_zx8081_hsync();
         }
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
         //if (hsync_generator_active.v && vsync_generator_active.v==0) {
-        //if (hsync_generator_active.v) {
+        if (hsync_generator_active.v) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
                     printf("nmi en t_estados %d\n",t_estados);
                     generate_nmi();
                 }
             }
-        //}
+        }
 
 
 
@@ -737,7 +737,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
         //printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
-        tv_disable_hsync();
+        //tv_disable_hsync();
         //sleep(1);
     }
 
