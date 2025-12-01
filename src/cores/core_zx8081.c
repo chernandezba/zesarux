@@ -206,12 +206,6 @@ void cpu_core_loop_zx8081(void)
     else {
         if (esperando_tiempo_final_t_estados.v==0) {
 
-
-
-
-
-
-
             byte_leido_core_zx8081=fetch_opcode();
 
             contend_read( reg_pc, 4 );
@@ -249,7 +243,7 @@ void cpu_core_loop_zx8081(void)
             }
             core_zx8081_t_estados_antes=t_estados;
 
-            adjust_zx8081_electron_position(delta);
+            ula_zx8081_time_event(delta);
             tv_time_event(delta);
 
 

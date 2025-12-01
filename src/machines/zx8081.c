@@ -404,7 +404,6 @@ void generar_zx8081_hsync(void)
     pending_disable_hsync=1;
 
 
-    //printf("x a 0\n");
     zx8081_video_electron_position_x_testados=0;
     video_zx8081_linecntr++;
 
@@ -424,16 +423,13 @@ void zx8081_if_admited_vsync(void)
 
 
 
-void adjust_zx8081_electron_position(int delta)
+void ula_zx8081_time_event(int delta)
 {
 
     //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
     //    zx8081_video_electron_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
 
     if (pending_disable_hsync) tv_disable_hsync();
-
-
-
 
 
     zx8081_video_electron_position_x_testados +=delta;
@@ -453,11 +449,6 @@ void adjust_zx8081_electron_position(int delta)
         //si hay vsync no hay hsync
         if (hsync_generator_active.v  && !tv_is_vsync_enabled()) {
             generar_zx8081_hsync();
-
-            //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
-            //Pero creo que si vsync no esta activo. si vsync activo, tiene preferencia vsync?
-            //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
-
         }
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
@@ -474,10 +465,6 @@ void adjust_zx8081_electron_position(int delta)
 
 
     }
-
-
-
-
 
 
     zx8081_if_admited_vsync();
