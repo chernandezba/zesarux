@@ -421,7 +421,10 @@ void ula_zx8081_time_event(int delta)
     //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
     //    ula_zx8081_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
 
-    if (pending_disable_hsync) tv_disable_hsync();
+    if (pending_disable_hsync) {
+        pending_disable_hsync=0;
+        tv_disable_hsync();
+    }
 
 
     ula_zx8081_position_x_testados +=delta;
@@ -445,7 +448,7 @@ void ula_zx8081_time_event(int delta)
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
         //if (hsync_generator_active.v && vsync_generator_active.v==0) {
-        if (hsync_generator_active.v) {
+        if (hsync_generator_active.v ) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
                     printf("nmi en t_estados %d\n",t_estados);
@@ -453,7 +456,6 @@ void ula_zx8081_time_event(int delta)
                 }
             }
         }
-
 
 
     }
