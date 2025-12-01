@@ -619,8 +619,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 		}
 
 
-		//Si no esta el modo real zx8081, no hacer esto
-		if (rainbow_enabled.v) {
+
 
 
 			z80_byte sprite;
@@ -730,11 +729,11 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 
 
-		}
+
 
 
 		//Si no modo real video
-		else {
+		if (rainbow_enabled.v==0) {
 			//Intentar autodetectar si hay que activar realvideo
 			if (autodetect_rainbow.v) {
 				if (MACHINE_IS_ZX80_TYPE) {
