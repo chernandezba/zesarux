@@ -150,6 +150,7 @@ z80_bit nmi_generator_active;
 z80_bit hsync_generator_active;
 z80_bit vsync_generator_active={0};
 
+//Para lanzar los hsync del hsync generator
 int zx8081_video_electron_position_x_testados=0;
 int zx8081_video_electron_position_x_testados_testados_antes=0;
 
@@ -433,14 +434,7 @@ void generar_zx8081_hsync(void)
 
     //printf("x a 0\n");
     zx8081_video_electron_position_x_testados=0;
-
-
-
-
     video_zx8081_linecntr++;
-
-
-
 
 
 }
