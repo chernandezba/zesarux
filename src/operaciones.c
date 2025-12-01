@@ -7759,26 +7759,15 @@ void out_port_zx81_no_time(z80_int puerto,z80_byte value)
 	debug_fired_out=1;
 
 	if ((puerto&0xFF)==0xfd) {
-		//debug_printf (VERBOSE_DEBUG,"Disabling NMI generator\n");
 		nmi_generator_active.v=0;
-		//return;
 	}
 
-        if ((puerto&0xFF)==0xfe) {
-		//debug_printf (VERBOSE_DEBUG,"Enabling NMI generator\n");
-                nmi_generator_active.v=1;
-		//return;
-        }
+    if ((puerto&0xFF)==0xfe) {
+        nmi_generator_active.v=1;
+    }
 
 
-	//TODO
-	//Con el luego wrx/nucinv16.p esto NO da imagen estable
-	//para imagen estable, los if de antes no deben finalizar con return, es decir,
-	//se debe activar/desactivar nmi y luego lanzar la sentencia out_port_zx80_no_time(puerto,value);
-	//para wrx/nucinv16.p se hace el truco de bajar el timeout de vsync
 	out_port_zx80_no_time(puerto,value);
-
-
 
 }
 
