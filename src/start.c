@@ -1077,7 +1077,7 @@ printf (
         "--enablezgx                            Enable ZGX Sprite chip\n"
         "--autodetectwrx                        Enable WRX autodetect setting on ZX80/ZX81\n"
         "--wrx                                  Enable WRX mode on ZX80/ZX81\n"
-        "--vsync-minimum-length n               Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
+        //"--vsync-minimum-length n               Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
         "--chroma81                             Enable Chroma81 support on ZX80/ZX81\n"
         "--videozx8081 n                        Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
         "--videofastblack                       Emulate black screen on fast mode on ZX80/ZX81\n"
@@ -4006,15 +4006,9 @@ int parse_cmdline_options(int desde_commandline) {
                                 command_line_wrx.v=1;
             }
 
+            //deprecated
             else if (!strcmp(argv[puntero_parametro],"--vsync-minimum-length")) {
                 siguiente_parametro_argumento();
-                int valor=atoi(argv[puntero_parametro]);
-                if (valor<PERMITIDO_MINIMO_DURACION_VSYNC || valor>PERMITIDO_MAXIMO_DURACION_VSYNC) {
-                        debug_printf (VERBOSE_ERR,"Invalid vsync length value");
-                }
-                else {
-                    command_line_vsync_minimum_lenght=valor;
-                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--chroma81")) {
@@ -8357,7 +8351,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     //Poner esto aqui porque se resetea al establecer parametros maquina en set_machine_params
     if (command_line_vsync_minimum_lenght) {
-        minimo_duracion_vsync=command_line_vsync_minimum_lenght;
+        //minimo_duracion_vsync=command_line_vsync_minimum_lenght;
     }
 
 

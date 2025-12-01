@@ -1065,7 +1065,7 @@ void reset_cpu(void)
 		//algunos reseteos para zx80/81
 		nmi_generator_active.v=0;
                 hsync_generator_active.v=0;
-		timeout_linea_vsync=NORMAL_TIMEOUT_LINEA_VSYNC;
+		//timeout_linea_vsync=NORMAL_TIMEOUT_LINEA_VSYNC;
 		chroma81_port_7FEF=0;
 
 
@@ -2072,7 +2072,7 @@ void set_machine_params(void)
     //wrx_mueve_primera_columna.v=1;
     zx8081_vsync_sound.v=0;
     //video_zx8081_decremento_x_cuando_mayor=8;
-    minimo_duracion_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
+    //minimo_duracion_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
 
     //normalmente excepto +2a
     port_from_ula=port_from_ula_48k;

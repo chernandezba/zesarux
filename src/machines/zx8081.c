@@ -148,7 +148,7 @@ Despues de ?(), en posicion 18:
 
 z80_bit nmi_generator_active;
 z80_bit hsync_generator_active;
-z80_bit vsync_generator_active={0};
+//z80_bit vsync_generator_active={0};
 
 //Para lanzar los hsync del hsync generator
 int zx8081_video_electron_position_x_testados=0;
@@ -415,7 +415,7 @@ void generar_zx8081_hsync(void)
 void zx8081_if_admited_vsync(void)
 {
 
-    if (vsync_generator_active.v==0) return;
+    if (!tv_is_vsync_enabled()) return;
 
     video_zx8081_linecntr=0;
 
@@ -451,7 +451,7 @@ void adjust_zx8081_electron_position(int delta)
 
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
         //si hay vsync no hay hsync
-        if (hsync_generator_active.v  && vsync_generator_active.v==0) {
+        if (hsync_generator_active.v  && !tv_is_vsync_enabled()) {
             generar_zx8081_hsync();
 
             //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
@@ -762,8 +762,8 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
     z80_byte valor;
 
-    if (vsync_generator_active.v==0) {
-        vsync_generator_active.v=1;
+    if (!tv_is_vsync_enabled()) {
+        //vsync_generator_active.v=1;
         //printf("vsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         //zx8081_video_electron_position_x_testados=0;
         tv_enable_vsync();
@@ -873,8 +873,8 @@ void zx8081_out_any_port_video_stuff(void)
         //tv_enable_hsync();
     }
 
-    if (vsync_generator_active.v) {
-        vsync_generator_active.v=0;
+    if (tv_is_vsync_enabled()) {
+        //vsync_generator_active.v=0;
         //printf("vsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         zx8081_video_electron_position_x_testados=0;
         tv_disable_vsync();

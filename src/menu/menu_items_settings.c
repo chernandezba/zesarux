@@ -6943,11 +6943,13 @@ void menu_display_timex_video(MENU_ITEM_PARAMETERS)
     else enable_timex_video();
 }
 
+/*
 void menu_display_minimo_vsync(MENU_ITEM_PARAMETERS)
 {
 
         menu_hardware_advanced_input_value(PERMITIDO_MINIMO_DURACION_VSYNC,PERMITIDO_MAXIMO_DURACION_VSYNC,"Minimum vsync length",&minimo_duracion_vsync);
 }
+*/
 
 void menu_display_timex_video_512192(MENU_ITEM_PARAMETERS)
 {
@@ -8099,11 +8101,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         if (menu_cond_zx8081_realvideo()) {
+            /*
             menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_minimo_vsync,menu_cond_zx8081_realvideo,"Video min. vsync length [%d]",minimo_duracion_vsync);
             menu_add_item_menu_prefijo(array_menu_settings_display,"    ");
             menu_add_item_menu_tooltip(array_menu_settings_display,"Video minimum vsync length in t-states");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Video minimum vsync length in t-states");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
+            */
 
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,

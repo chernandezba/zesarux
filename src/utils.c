@@ -3868,7 +3868,7 @@ int util_write_configfile(void)
   if (ram_in_49152.v)                         ADD_STRING_CONFIG,"--zx8081ram16KC000");
   if (autodetect_wrx.v)                       ADD_STRING_CONFIG,"--autodetectwrx");
   if (wrx_present.v)                          ADD_STRING_CONFIG,"--wrx");
-                                              ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
+                                              //ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
   if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
 
 
@@ -12406,14 +12406,9 @@ void parse_customfile_options(void)
                         enable_chroma81();
         }
 
+                //deprecated
                 else if (!strcmp(argv[puntero_parametro],"--vsync-minimum-length")) {
                                 siguiente_parametro_argumento();
-                                int valor=atoi(argv[puntero_parametro]);
-                                if (valor<PERMITIDO_MINIMO_DURACION_VSYNC || valor>PERMITIDO_MAXIMO_DURACION_VSYNC) {
-                                        debug_printf (VERBOSE_ERR,"Invalid vsync length value");
-                                        return;
-                                }
-                                minimo_duracion_vsync=valor;
                 }
 
         //Deprecated
@@ -22575,7 +22570,7 @@ void util_save_game_config(char *filename)
         if (ram_in_49152.v)                         ADD_STRING_CONFIG,"--zx8081ram16KC000");
         if (wrx_present.v)                          ADD_STRING_CONFIG,"--wrx");
         if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
-                                                    ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
+                                                    //ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
 
   }
 
