@@ -514,10 +514,12 @@ void generar_zx8081_hsync(void)
     if (t_scanline_draw_timeout>=timeout_linea_vsync) {
         printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
         //printf("vsync 2-\n");
-        zx8081_reset_electron_line_by_vsync();
-        //video_zx8081_linecntr_enabled.v=1;
+        //zx8081_reset_electron_line_by_vsync();
+                    t_scanline_draw=0;
+	                t_scanline_draw_timeout=0;
     }
     */
+
 
 
     //Inicializar siguiente linea. Esto es importante que este aqui despues de
@@ -643,13 +645,13 @@ void adjust_zx8081_electron_position(int delta)
 
     //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300
     //Esto sirve en los modos FAST y en SAVE/LOAD
-    /*
+
     if (zx8081_video_electron_position_x_testados>300 && hsync_generator_active.v==0) {
         printf("hsync timeout\n");
         zx8081_video_electron_position_x_testados -=300;
         generar_zx8081_hsync();
     }
-    */
+
 
 
     zx8081_if_admited_vsync();
