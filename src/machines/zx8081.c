@@ -728,16 +728,10 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
     z80_byte valor;
 
-    if (!tv_is_vsync_enabled()) {
-        //vsync_generator_active.v=1;
-        //printf("vsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
-        //ula_zx8081_position_x_testados=0;
-        tv_enable_vsync();
-        //sleep(1);
-    }
+
+    tv_enable_vsync();
 
 
-    //video_zx8081_linecntr=0;
     video_zx8081_ula_video_output=255;
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
@@ -766,10 +760,6 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         //solo resetea contador de silencio cuando esta activo el vsync sound - beeper
         reset_beeper_silence_detection_counter();
     }
-
-
-
-
 
     //Teclado
 
