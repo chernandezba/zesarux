@@ -193,19 +193,13 @@ z80_bit autodetect_chroma81={1};
 z80_byte chroma81_port_7FEF;
 
 
-//modo real(beta) de video para zx80/81
-//z80_bit beta_zx8081_video;
 
-//opcion de mostrar vsync en pantalla (franjas de carga / grabacion)
-//z80_bit video_zx8081_shows_vsync_on_display;
 
 //Opcion para simular perdida de vsync
 z80_bit simulate_lost_vsync;
 
 
 
-//Esto indica que se ha llegado a final de linea en rainbow, y siguiente escritura de "pantalla" debe tener lnctr=0
-//int temp_final_linea=1;
 
 //8k de RAM en 8192-16383
 z80_bit ram_in_8192;
@@ -219,22 +213,6 @@ z80_bit ram_in_32768;
 //WRX hi-res mode
 z80_bit wrx_present;
 
-//z80_bit wrx_mueve_primera_columna;
-
-//HRG hi-res mode
-//z80_bit hrg_enabled;
-
-//offset ajustable para t_estados a final de linea con wrx. normalmente 8
-//int offset_zx8081_t_estados;
-
-
-
-
-//A partir de que linea hay un timeout y se fuerza vsync
-int timeout_linea_vsync;
-
-//Duracion minima de vsync para que se tenga en cuenta
-int minimo_duracion_vsync;
 
 
 
