@@ -149,6 +149,7 @@
 #include "pcw.h"
 #include "lec.h"
 #include "zxmmcplus.h"
+#include "tv.h"
 
 
 #ifdef COMPILE_STDOUT

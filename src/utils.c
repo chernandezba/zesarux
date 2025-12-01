@@ -167,6 +167,7 @@
 #include "lec.h"
 #include "zxmmcplus.h"
 #include "enhanced_zx81_read.h"
+#include "tv.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;

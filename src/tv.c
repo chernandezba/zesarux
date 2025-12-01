@@ -71,14 +71,14 @@ void tv_time_event_store_chunk_image(int delta)
     if (rainbow_enabled.v) {
 
 
-    int y=tv_y;
+        int y=tv_y;
 
 
-    y=y-screen_invisible_borde_superior;
+        y=y-screen_invisible_borde_superior;
 
 
-    int xorig=tv_x*2;
-    int xmax=xorig+delta*2;
+        int xorig=tv_x*2;
+        int xmax=xorig+delta*2;
 
 
         int totalancho=get_total_ancho_rainbow();

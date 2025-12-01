@@ -137,6 +137,7 @@
 #include "snap_zx8081.h"
 #include "menu_bitmaps.h"
 #include "pcw.h"
+#include "tv.h"
 
 
 

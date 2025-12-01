@@ -161,6 +161,7 @@
 #include "microdrive_raw.h"
 #include "debug_nested_functions.h"
 #include "zxmmcplus.h"
+#include "tv.h"
 
 
 #ifdef COMPILE_STDOUT

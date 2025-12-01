@@ -24,6 +24,28 @@
 
 #include "cpu.h"
 
+//VSYNC pulse tiene que ser al menos 400us
+//VSYNC dura 6.25 lineas:
+//64 us-> una linea -> 207 t_estados
+//400 us-> 6.25 lineas -> 1293 t_estados
+//tomamos 1100 t_estados como buenos
+
+//#define MINIMO_DURACION_VSYNC 1100
+
+//Normal. Para manic miner, minimo 800
+//#define DEFAULT_MINIMO_DURACION_VSYNC 800
+
+/*Nuevo valor estandard, en teoria son
+A true VSync basically has a pulse of 2.5 scan lines (2.5 * 64us = 160us = 517.5 T-states at 3.25MHz).
+Either side are scan lines containing pre and post equalizing pulses, but these can be ignored.
+A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX81 generates the pulse in software,
+it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
+*/
+
+#define DEFAULT_MINIMO_DURACION_VSYNC 518
+#define PERMITIDO_MINIMO_DURACION_VSYNC 100
+#define PERMITIDO_MAXIMO_DURACION_VSYNC 999
+
 extern void tv_time_event(int delta);
 
 #endif
