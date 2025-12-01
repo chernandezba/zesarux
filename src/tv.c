@@ -109,7 +109,7 @@ void tv_time_event_store_chunk_image(int delta)
                         //Este bloque es dependiente de la maquina
                         if (MACHINE_IS_ZX8081) {
                             z80_byte sprite=zx80801_last_sprite_video;
-                            tv_time_event_store_chunk_image_sprite(x,y,sprite,0,15);
+                            tv_time_event_store_chunk_image_sprite(x,y,sprite,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
                         }
                     }
                 }

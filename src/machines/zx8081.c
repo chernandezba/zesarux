@@ -531,7 +531,7 @@ void disable_chroma81(void)
 }
 
 
-void chroma81_return_mode1_colour(z80_int dir,z80_byte *colortinta,z80_byte *colorpapel)
+void chroma81_return_mode1_colour(z80_int dir,int *colortinta,int *colorpapel)
 {
                         //1 attribute file
 			z80_byte c=peek_byte_no_time(dir|0x8000);
@@ -544,7 +544,9 @@ int color_es_chroma(void)
 	return (chroma81.v && (chroma81_port_7FEF & 32) ? 1 : 0);
 }
 
-z80_byte zx80801_last_sprite_video;
+z80_byte zx80801_last_sprite_video=0;
+int zx80801_last_sprite_video_tinta=0;
+int zx80801_last_sprite_video_papel=0;
 
 
 //Guardar en buffer rainbow una linea del caracter de zx8081. usado en modo de video real
@@ -553,18 +555,18 @@ void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int
 	int bit;
     z80_byte color;
 
+    zx80801_last_sprite_video_tinta=0;
+    zx80801_last_sprite_video_papel=15;
 
 
-zx80801_last_sprite_video=byte_leido;
-return;
 
 	//Si modo chroma81 y lo ha activado
-    /*
+
 	if (color_es_chroma() ) {
 		//ver modo
 		if ((chroma81_port_7FEF&16)!=0) {
 			//1 attribute file
-			chroma81_return_mode1_colour(reg_pc,&colortinta,&colorpapel);
+			chroma81_return_mode1_colour(reg_pc,&zx80801_last_sprite_video_tinta,&zx80801_last_sprite_video_papel);
 			//printf ("modo 1\n");
 		}
 		else {
@@ -575,18 +577,19 @@ return;
 			}
 
 			z80_int d=caracter*8+0xc000;
-			d=d+(y&7);
+			d=d+(video_zx8081_linecntr&7);
 			z80_byte leido=peek_byte_no_time(d);
-			colortinta=leido&15;
-			colorpapel=(leido>>4)&15;
+			zx80801_last_sprite_video_tinta=leido&15;
+			zx80801_last_sprite_video_papel=(leido>>4)&15;
 
 			//printf ("modo 0\n");
 
 		}
 	}
-    */
 
 
+    zx80801_last_sprite_video=byte_leido;
+    return;
 
 }
 
@@ -721,7 +724,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 
 
-                        screen_store_scanline_char_zx8081(sprite,caracter,caracter_inverse.v);
+            screen_store_scanline_char_zx8081(sprite,caracter,caracter_inverse.v);
 
 
 

@@ -87,6 +87,8 @@ extern void zx8081_out_any_port_video_stuff(void);
 extern void zx8081_if_admited_vsync(void);
 
 extern z80_byte zx80801_last_sprite_video;
+extern int zx80801_last_sprite_video_tinta;
+extern int zx80801_last_sprite_video_papel;
 
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;
@@ -141,7 +143,6 @@ extern void enable_chroma81(void);
 
 extern void disable_chroma81(void);
 
-extern void chroma81_return_mode1_colour(z80_int dir,z80_byte *colortinta,z80_byte *colorpapel);
 
 extern int color_es_chroma(void);
 
