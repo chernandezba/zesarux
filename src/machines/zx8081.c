@@ -619,117 +619,93 @@ z80_byte fetch_opcode_zx81_graphics(void)
 		}
 
 
+        z80_byte sprite;
 
 
 
-			z80_byte sprite;
-			int x;
+        //poner caracter en pantalla de video highmem
+        z80_bit caracter_inverse;
+        z80_int direccion_sprite;
 
 
-            //poner caracter en pantalla de video highmem
-            z80_bit caracter_inverse;
-            z80_int direccion_sprite;
+        if (caracter&128) {
+            caracter_inverse.v=1;
+            caracter=caracter&127;
+        }
+        else caracter_inverse.v=0;
 
 
-            if (caracter&128) {
-                caracter_inverse.v=1;
-                caracter=caracter&127;
+
+
+        //Posible modo wrx, y excluir valores de I usados en chr$128 y udg
+        if (reg_i>=33 && reg_i!=0x31 && reg_i!=0x30 && wrx_present.v==0 && autodetect_wrx.v) {
+            //posible modo wrx
+            debug_printf(VERBOSE_INFO,"Autoenabling wrx so the program seems to need it (I register>32). Also enable 8K RAM in 2000H");
+            enable_wrx();
+
+            //algunos juegos requieren que este ram pack este presente antes de activar wrx... sino no funcionara
+            //pero igualmente, por si acaso, lo activamos aqui
+            ram_in_8192.v=1;
+
+        }
+
+
+        //Modos WRX
+        if (wrx_present.v==1 && reg_i>=32 ) {
+
+            //printf ("reg_i en zona WRX\n");
+
+            direccion_sprite=(reg_i<<8) | (reg_r_bit7 & 128) | ((reg_r) & 127);
+
+            sprite=memoria_spectrum[direccion_sprite];
+
+            if (caracter_inverse.v) sprite=sprite^255;
+
+        }
+
+
+        else {
+
+            //chr$128
+            if (reg_i==0x31) {
+                if (caracter_inverse.v) {
+                    //El bit de inverse es para acceder a los 64 caracteres siguientes
+                    caracter=caracter | 64;
+                    //Pero sigue indicando inverse
+                    //caracter_inverse.v=0;
+
+                }
             }
-            else caracter_inverse.v=0;
 
-
-            //para evitar las lineas superiores
-            //TODO. cuadrar esto con valores de borde invisible superior
-
-            //printf("store graphics to y: %d caracter: %d\n",y,caracter);
-
-            //Posible modo wrx, y excluir valores de I usados en chr$128 y udg
-            if (reg_i>=33 && reg_i!=0x31 && reg_i!=0x30 && wrx_present.v==0 && autodetect_wrx.v) {
-                //posible modo wrx
-                debug_printf(VERBOSE_INFO,"Autoenabling wrx so the program seems to need it (I register>32). Also enable 8K RAM in 2000H");
-                enable_wrx();
-
-                //algunos juegos requieren que este ram pack este presente antes de activar wrx... sino no funcionara
-                //pero igualmente, por si acaso, lo activamos aqui
-                ram_in_8192.v=1;
-
+            //Otros interfaces que tambien hacen 128 caracteres aunque no siguen la norma del registro I,
+            //como el SD81 Booster de Alejandro Valero
+            if (caracter_inverse.v && force_zx81_chr_128.v) {
+                caracter=caracter | 64;
             }
 
 
-            //Modos WRX
-            if (wrx_present.v==1 && reg_i>=32 ) {
-
-                //printf ("reg_i en zona WRX\n");
-
-                direccion_sprite=(reg_i<<8) | (reg_r_bit7 & 128) | ((reg_r) & 127);
+            direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr) & 7);
 
 
-                x=(zx8081_video_electron_position_x_testados-12)*2;
-
-                //printf ("direccion_sprite: %d\n",direccion_sprite);
-                sprite=memoria_spectrum[direccion_sprite];
-
-                if (caracter_inverse.v) sprite=sprite^255;
-
+            //Obteniendo tipo de letra de rom de zxpand en el caso del zx80
+            if (zxpand_enabled.v && MACHINE_IS_ZX80_TYPE && direccion_sprite<8192) {
+                sprite=zxpand_memory_pointer[direccion_sprite];
             }
-
 
             else {
-
-                //chr$128
-                if (reg_i==0x31) {
-                    if (caracter_inverse.v) {
-                        //El bit de inverse es para acceder a los 64 caracteres siguientes
-                        caracter=caracter | 64;
-                        //Pero sigue indicando inverse
-                        //caracter_inverse.v=0;
-
-                    }
-                }
-
-                //Otros interfaces que tambien hacen 128 caracteres aunque no siguen la norma del registro I,
-                //como el SD81 Booster de Alejandro Valero
-                if (caracter_inverse.v && force_zx81_chr_128.v) {
-                    caracter=caracter | 64;
-                }
-
-
-                direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr) & 7);
-
-
-                x=(zx8081_video_electron_position_x_testados-12)*2;
-                //if (y==48) printf("x: %3d y: %3d zx8081_video_electron_position_x_testados %d\n",x,y,zx8081_video_electron_position_x_testados);
-
-                //if (y==50) printf("0store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
-
-
-                //Obteniendo tipo de letra de rom de zxpand en el caso del zx80
-                if (zxpand_enabled.v && MACHINE_IS_ZX80_TYPE && direccion_sprite<8192) {
-                    sprite=zxpand_memory_pointer[direccion_sprite];
-                }
-
-                else {
-                    sprite=memoria_spectrum[direccion_sprite];
-                }
-
-                //aunque este en modo zxpand, la tabla de caracteres siempre sale de la rom principal
-                //por eso hacemos sprite=memoria_spectrum[direccion_sprite]; y zxpand rom esta en otro puntero de memoria
-                //sprite=peek_byte_zx80_no_time(direccion_sprite);
-
-                if (caracter_inverse.v) sprite=sprite^255;
-
+                sprite=memoria_spectrum[direccion_sprite];
             }
 
+            //aunque este en modo zxpand, la tabla de caracteres siempre sale de la rom principal
+            //por eso hacemos sprite=memoria_spectrum[direccion_sprite]; y zxpand rom esta en otro puntero de memoria
+            //sprite=peek_byte_zx80_no_time(direccion_sprite);
+
+            if (caracter_inverse.v) sprite=sprite^255;
+
+        }
 
 
-
-            screen_store_scanline_char_zx8081(sprite,caracter,caracter_inverse.v);
-
-
-
-
-
-
+        screen_store_scanline_char_zx8081(sprite,caracter,caracter_inverse.v);
 
 
 		//Si no modo real video
