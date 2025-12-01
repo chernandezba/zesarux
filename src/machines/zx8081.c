@@ -422,69 +422,6 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
 
 
 
-/*
-void zx8081_reset_electron_line_by_vsync(void)
-{
-
-//debug_printf(VERBOSE_ERR,"Abrir menu");
-
-	//printf ("vsync total de zx81 t_estados: %d\n",t_estados);
-
-    //printf("Set t_scanline_draw to 0 on generar_zx8081_vsync\n");
-	t_scanline_draw=0;
-	t_scanline_draw_timeout=0;
-
-
-    //zx8081_video_electron_position_x_testados=0;
-
-
-    //Cuadrar t_estados a cada linea multiple de 207
-    //Esto sirve para tener una imagen estable en horizontal....
-    //sino no habria manera posible de sincronizar la imagen en zx80 .. (en zx81 se ayuda de la nmi)
-	//lo ideal seria tener un contador de tiempo para la ULA separado del de la cpu... pero para no complicarlo mas,
-	//nos ayudamos del contador de tiempo de la cpu
-
-    //Metodo 1 para que la imagen no se desplace continuamente
-    //texto desfasado 1 scanline
-    //int t_estados_en_linea=t_estados%screen_testados_linea;
-    //t_estados -=t_estados_en_linea;
-
-    //Metodo 2 para que la imagen no se desplace continuamente
-    //Parece que se vea bien pero hace cosas raras:
-    //Caracter "punto" al hacer un reset de zx81, arriba del todo
-    //Texto tiembla en vertical con clocktest.p
-    //int t_estados_en_linea=t_estados%screen_testados_linea;
-    //int sumar=screen_testados_linea-t_estados_en_linea;
-    //t_estados +=sumar;
-
-    //Metodo 3 con ajuste de mitad
-    //Metodo 3 con ajuste de mitad. Basic estable
-    //Breakout va lento
-    //doble breakout se ve desplazado
-    //dstar tiembla al moverse
-    //qs defenda 1 scanline desplazado
-    //xtricator tiembla
-    //int t_estados_en_linea=t_estados%screen_testados_linea;
-    //if (t_estados_en_linea<screen_testados_linea/2) {
-    //    t_estados -=t_estados_en_linea;
-    //}
-    //else {
-    //    int sumar=screen_testados_linea-t_estados_en_linea;
-    //    t_estados +=sumar;
-    //}
-
-    //Otros metodos mas esotéricos
-    //t_estados=0;
-    //t_estados +=417;
-
-
-    //417 t_estados desfasado... o tambien se puede ver como 417-207-207=3 t-estados
-    //con esto la imagen no se desplaza pero a cada pulsacion de tecla se desplaza
-    //t_estados +=3;
-
-}
-*/
-
 int pending_disable_hsync=0;
 
 void generar_zx8081_hsync(void)
@@ -500,39 +437,7 @@ void generar_zx8081_hsync(void)
 
 
 
-    if (1/*video_zx8081_linecntr_enabled.v==1*/) video_zx8081_linecntr++;
-
-
-    //siguiente linea
-
-
-    t_scanline_draw++;
-
-    //if (t_scanline_draw==56) printf("scanlinedraw : %d\n",t_scanline_draw);
-
-
-    t_scanline_draw_timeout++;
-
-    //si han pasado muchas lineas, resetear
-
-    /*
-    if (t_scanline_draw_timeout>=timeout_linea_vsync) {
-        printf ("Reset scanline por timeout. linea=%d\n",t_scanline_draw_timeout);
-        //printf("vsync 2-\n");
-        //zx8081_reset_electron_line_by_vsync();
-                    t_scanline_draw=0;
-	                t_scanline_draw_timeout=0;
-    }
-    */
-
-
-
-    //Inicializar siguiente linea. Esto es importante que este aqui despues de
-    //una posible actualizacion de pantalla, para que no se vea la linea blanca inicializada
-    if (rainbow_enabled.v==1) {
-        //init_zx8081_scanline();
-    }
-
+    video_zx8081_linecntr++;
 
 
 
@@ -566,36 +471,31 @@ void zx8081_if_admited_vsync(void)
 		if (longitud >= minimo_duracion_vsync/* && longitud<2000*/) {
 
 
-			if (1/*t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC*/) {
-				//printf ("admitido pulso vsync en linea %3d longitud pulso %d\n",t_scanline_draw_timeout,longitud);
 
 
-                if (!simulate_lost_vsync.v) {
+            if (!simulate_lost_vsync.v) {
 
 
 
-					if (zx8081_detect_vsync_sound.v) {
-						//printf ("vsync total de zx8081 t_estados: %d\n",t_estados);
-						if (zx8081_detect_vsync_sound_counter>0) zx8081_detect_vsync_sound_counter--;
+                if (zx8081_detect_vsync_sound.v) {
+                    //printf ("vsync total de zx8081 t_estados: %d\n",t_estados);
+                    if (zx8081_detect_vsync_sound_counter>0) zx8081_detect_vsync_sound_counter--;
 
-					}
+                }
 
-                    //printf("vsync 1\n");
-					//zx8081_reset_electron_line_by_vsync();
-                    t_scanline_draw=0;
-	                t_scanline_draw_timeout=0;
-                    //zx8081_video_electron_position_x_testados=0;
-
-                    video_zx8081_linecntr=0;
-					vsync_per_second++;
-				}
+                //printf("vsync 1\n");
+                //zx8081_reset_electron_line_by_vsync();
 
 
-			}
+                //zx8081_video_electron_position_x_testados=0;
 
-            else {
-                //printf ("no admitido final pulso vsync porque linea es inferior a 280 (%d)\n",t_scanline_draw_timeout);
+                video_zx8081_linecntr=0;
+
             }
+
+
+
+
 		}
 
 		else {
@@ -663,14 +563,7 @@ void adjust_zx8081_electron_position(int delta)
     }
 
 
-    //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300
-    //Esto sirve en los modos FAST y en SAVE/LOAD
 
-    /*if (zx8081_video_electron_position_x_testados>300 && hsync_generator_active.v==0) {
-        printf("hsync timeout\n");
-        zx8081_video_electron_position_x_testados -=300;
-        generar_zx8081_hsync();
-    */
 
 
 
@@ -829,11 +722,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
             }
             else caracter_inverse.v=0;
 
-            //printf ("fetch caracter: %d\n",caracter);
-            int y=t_scanline_draw;
 
-            //TODO
-            y -=ZX8081_LINEAS_SUP_NO_USABLES;
             //para evitar las lineas superiores
             //TODO. cuadrar esto con valores de borde invisible superior
 
@@ -1079,8 +968,6 @@ void zx8081_out_any_port_video_stuff(void)
         tv_disable_vsync();
     }
 
-    //no estoy seguro de esto
-    //video_zx8081_linecntr=0;
 
  	video_zx8081_ula_video_output=0;
 

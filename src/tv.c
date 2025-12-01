@@ -32,6 +32,15 @@
 #include "zxvision.h"
 #include "ula.h"
 
+
+/*
+
+TODO
+
+vsync_per_second
+
+*/
+
 //Contador de tiempo del CRT, para saber donde esta
 int tv_time=0;
 
