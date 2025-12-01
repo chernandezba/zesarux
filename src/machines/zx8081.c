@@ -610,8 +610,8 @@ void zx8081_if_admited_vsync(void)
 void adjust_zx8081_electron_position(int delta)
 {
 
-    printf("EL x: %3d y: %3d hsync %d vsync %d\n",
-        zx8081_video_electron_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
+    //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
+    //    zx8081_video_electron_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
 
     if (pending_disable_hsync) tv_disable_hsync();
 
@@ -742,19 +742,18 @@ z80_byte zx80801_last_sprite_video;
 
 
 //Guardar en buffer rainbow una linea del caracter de zx8081. usado en modo de video real
-void screen_store_scanline_char_zx8081(int x,int y,z80_byte byte_leido,z80_byte caracter,int inverse)
+void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int inverse)
 {
 	int bit;
-        z80_byte color;
+    z80_byte color;
 
-	z80_byte colortinta=0;
-	z80_byte colorpapel=15;
+
 
 zx80801_last_sprite_video=byte_leido;
 return;
 
 	//Si modo chroma81 y lo ha activado
-
+    /*
 	if (color_es_chroma() ) {
 		//ver modo
 		if ((chroma81_port_7FEF&16)!=0) {
@@ -779,19 +778,9 @@ return;
 
 		}
 	}
+    */
 
 
-
-        for (bit=0;bit<8;bit++) {
-            if (byte_leido & 128 ) color=colortinta;
-            else color=colorpapel;
-
-
-            rainbow_buffer[y*get_total_ancho_rainbow()+x+bit]=color;
-
-            byte_leido=(byte_leido&127)<<1;
-
-        }
 
 }
 
@@ -928,37 +917,12 @@ z80_byte fetch_opcode_zx81_graphics(void)
             }
 
 
-            if (border_enabled.v==0) {
-                y=y-screen_borde_superior;
-                x=x-screen_total_borde_izquierdo;
-            }
 
 
-            int totalancho=get_total_ancho_rainbow();
-
-            zx80801_last_sprite_video=sprite;
-
-            if (y>=0 && y<get_total_alto_rainbow() ) {
-
-                //printf("x: %d\n",x);
-
-                if (x>=0 && x<totalancho )  {
-
-                    //si linea no coincide con entrelazado, volvemos
-                    if (if_store_scanline_interlace(y) ) {
-                        //if (y==48) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
-
-                        //TODO: esto hay que pasarlo al modulo de TV
-                        screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
-                    }
+                        screen_store_scanline_char_zx8081(sprite,caracter,caracter_inverse.v);
 
 
-                }
-                else {
-                    printf("x fuera de rango: %d\n",x);
-                }
 
-            }
 
 
 		}
@@ -999,7 +963,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     if (vsync_generator_active.v==0) {
         longitud_pulso_vsync=0;
         vsync_generator_active.v=1;
-        printf("vsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        //printf("vsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         //zx8081_video_electron_position_x_testados=0;
         tv_enable_vsync();
         //sleep(1);
@@ -1011,7 +975,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
-        printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        //printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         tv_disable_hsync();
         //sleep(1);
     }
@@ -1104,13 +1068,13 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
-        printf("hsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        //printf("hsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         //tv_enable_hsync();
     }
 
     if (vsync_generator_active.v) {
         vsync_generator_active.v=0;
-        printf("vsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        //printf("vsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         zx8081_video_electron_position_x_testados=0;
         tv_disable_vsync();
     }

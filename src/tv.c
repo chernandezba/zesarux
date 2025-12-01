@@ -110,6 +110,9 @@ void tv_time_event_store_chunk_image(int delta)
     //TODO incrementar esto 1 a 1 en bucle
     tv_x +=delta;
 
+    //Y despues de esto, ponemos a 0 por probar, el sprite
+    zx80801_last_sprite_video=0xff;
+
 }
 
 //Funcion mas importante, evento de tiempo
@@ -117,7 +120,7 @@ void tv_time_event(int delta)
 {
     //Hacer todo lo que corresponda desde tv_time hasta tv_time+delta-1
     //if (tv_vsync_signal==0 && tv_hsync_signal==0)
-    printf("TV x: %3d y: %3d hsync %d vsync %d\n",tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
+    //printf("TV x: %3d y: %3d hsync %d vsync %d\n",tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
 
 
     tv_time_event_store_chunk_image(delta);

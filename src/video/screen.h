@@ -388,8 +388,7 @@ extern void clear_putpixel_cache(void);
 
 extern void init_cache_putpixel(void);
 
-//extern void screen_store_scanline_char_zx8081(int x,int y,z80_byte byte_leido);
-extern void screen_store_scanline_char_zx8081(int x,int y,z80_byte byte_leido,z80_byte caracter,int inverse);
+
 extern void screen_store_scanline_char_zx8081_border_scanline(int x,int y,z80_byte byte_leido);
 
 extern void siguiente_frame_pantalla(void);
