@@ -406,6 +406,7 @@ void generar_zx8081_hsync(void)
 
 
     ula_zx8081_position_x_testados=0;
+    ula_zx8081_position_x_testados_testados_antes=t_estados;
     video_zx8081_linecntr++;
 
 
@@ -451,7 +452,7 @@ void ula_zx8081_time_event(int delta)
         if (hsync_generator_active.v ) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
-                    printf("nmi en t_estados %d conteo x: %d\n",t_estados,ula_zx8081_position_x_testados);
+                    //printf("nmi en t_estados %d conteo x: %d\n",t_estados,ula_zx8081_position_x_testados);
                     generate_nmi();
                 }
             }
@@ -533,8 +534,6 @@ int zx80801_last_sprite_video_papel=0;
 //Guardar en buffer rainbow una linea del caracter de zx8081. usado en modo de video real
 void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int inverse)
 {
-	int bit;
-    z80_byte color;
 
     zx80801_last_sprite_video_tinta=0;
     zx80801_last_sprite_video_papel=15;
@@ -815,6 +814,8 @@ void zx8081_out_any_port_video_stuff(void)
 
 
     ula_zx8081_position_x_testados=0;
+    ula_zx8081_position_x_testados_testados_antes=t_estados;
+
     tv_disable_vsync();
 
 
