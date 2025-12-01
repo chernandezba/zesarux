@@ -451,39 +451,7 @@ void zx8081_if_admited_vsync(void)
 
     if (vsync_generator_active.v==0) return;
 
-
-
-    //Calcular cuanto ha tardado el vsync
-    int longitud=zx8081_get_vsync_length();
-
-
-
-        //printf ("escribe puerto. final vsync  t_estados=%d. diferencia: %d t_scanline_draw: %d t_scanline_draw_timeout: %d\n",t_estados,longitud_pulso_vsync,t_scanline_draw,t_scanline_draw_timeout);
-
-
-
-		if (longitud >= minimo_duracion_vsync/* && longitud<2000*/) {
-
-
-
-
-            if (!simulate_lost_vsync.v) {
-
-
-
-
-                video_zx8081_linecntr=0;
-
-            }
-
-
-
-
-		}
-
-		else {
-			//printf ("no admitimos pulso vsync por duracion menor a esperado, duracion: %d esperado %d\n",longitud_pulso_vsync,minimo_duracion_vsync);
-		}
+    video_zx8081_linecntr=0;
 
 
 }
