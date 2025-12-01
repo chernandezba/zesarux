@@ -593,22 +593,19 @@ void zx8081_if_admited_vsync(void)
 
 }
 
-void adjust_zx8081_electron_position(void)
+void adjust_zx8081_electron_position(int delta)
 {
 
+    //pulso vsync calcular longitud
+    if (vsync_generator_active.v) {
+        //printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
 
+        longitud_pulso_vsync +=delta;
 
-    int delta=0;
-
-    if (t_estados<zx8081_video_electron_position_x_testados_testados_antes) {
-        //printf("Ha dado la vuelta---------\n");
-        delta=(screen_testados_total-zx8081_video_electron_position_x_testados_testados_antes)+t_estados;
-    }
-    else {
-        delta=t_estados-zx8081_video_electron_position_x_testados_testados_antes;
-        //if (delta<0 || delta>23) printf("delta: %d\n",delta);
+        longitud_pulso_vsync_t_estados_antes=t_estados;
 
     }
+
 
 
     zx8081_video_electron_position_x_testados +=delta;
@@ -657,6 +654,8 @@ void adjust_zx8081_electron_position(void)
     }
     */
 
+
+    zx8081_if_admited_vsync();
 
 }
 

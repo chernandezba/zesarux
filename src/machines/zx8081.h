@@ -116,7 +116,7 @@ extern z80_bit ram_in_32768;
 //WRX hi-res mode
 extern z80_bit wrx_present;
 
-extern void adjust_zx8081_electron_position(void);
+extern void adjust_zx8081_electron_position(int delta);
 
 
 extern void enable_wrx(void);

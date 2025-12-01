@@ -53,6 +53,7 @@
 #include "zeng_online_client.h"
 #include "menu_items_storage.h"
 
+int core_zx8081_t_estados_antes=0;
 
 void init_zx8081_scanline_y_x(int y,int x,int ancho)
 {
@@ -234,26 +235,20 @@ void cpu_core_loop_zx8081(void)
             z80_no_ejecutado_block_opcodes();
             codsinpr[byte_leido_core_zx8081]  () ;
 
-            //pulso vsync calcular longitud
-            if (vsync_generator_active.v) {
-                //printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
-                int delta=0;
-                if (t_estados<longitud_pulso_vsync_t_estados_antes) {
-                    //dado la vuelta
-                    delta=(screen_testados_total-longitud_pulso_vsync_t_estados_antes)+t_estados;
-                }
-                else {
-                    delta=t_estados-longitud_pulso_vsync_t_estados_antes;
-                }
 
-                longitud_pulso_vsync +=delta;
-
-                longitud_pulso_vsync_t_estados_antes=t_estados;
-
+            //calcular t_estados pasados desde ejecucion anterior
+            int delta=0;
+            if (t_estados<core_zx8081_t_estados_antes) {
+                //dado la vuelta
+                delta=(screen_testados_total-core_zx8081_t_estados_antes)+t_estados;
             }
+            else {
+                delta=t_estados-core_zx8081_t_estados_antes;
+            }
+            core_zx8081_t_estados_antes=t_estados;
 
-            adjust_zx8081_electron_position();
-            zx8081_if_admited_vsync();
+            adjust_zx8081_electron_position(delta);
+
 
 
             if (iff1.v) {

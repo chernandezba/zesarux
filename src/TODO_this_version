@@ -176,3 +176,5 @@ o se pone a 0 al liberar vsync, o continuamente se pone a 0 cuando esta el vsync
 en cualquier caso creo que el resultado final es el mismo
 
 revisar tscaline_draw_timeout para que funcione modo fast en negro
+
+view variables interfiere en render!! con breakout por ejemplo
