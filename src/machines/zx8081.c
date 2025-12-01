@@ -573,6 +573,7 @@ void zx8081_if_admited_vsync(void)
 					//zx8081_reset_electron_line_by_vsync();
                     t_scanline_draw=0;
 	                t_scanline_draw_timeout=0;
+                    //zx8081_video_electron_position_x_testados=0;
 
                     video_zx8081_linecntr=0;
 					vsync_per_second++;
@@ -622,7 +623,7 @@ void adjust_zx8081_electron_position(int delta)
         zx8081_video_electron_position_x_testados -=screen_testados_linea;
 
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
-        if (hsync_generator_active.v /*  && vsync_generator_active.v==0*/) {
+        if (hsync_generator_active.v  /*&& vsync_generator_active.v==0*/) {
             generar_zx8081_hsync();
 
             //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
@@ -631,13 +632,17 @@ void adjust_zx8081_electron_position(int delta)
 
             //Ademas en ZX81 genera una NMI cada 64 microsegundos
 
+
+
+        }
+
+        if (hsync_generator_active.v /*&& vsync_generator_active.v==0*/) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
                     //printf("nmi en t_estados %d\n",t_estados);
                     generate_nmi();
                 }
             }
-
         }
 
 
