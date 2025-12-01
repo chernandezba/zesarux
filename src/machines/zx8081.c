@@ -412,15 +412,6 @@ void generar_zx8081_hsync(void)
 }
 
 
-void zx8081_if_admited_vsync(void)
-{
-
-    if (!tv_is_vsync_enabled()) return;
-
-    video_zx8081_linecntr=0;
-
-
-}
 
 
 
@@ -467,8 +458,8 @@ void ula_zx8081_time_event(int delta)
 
     }
 
+    if (tv_is_vsync_enabled()) video_zx8081_linecntr=0;
 
-    zx8081_if_admited_vsync();
 
 }
 
