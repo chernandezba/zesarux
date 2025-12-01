@@ -471,17 +471,6 @@ void zx8081_if_admited_vsync(void)
 
 
 
-                if (zx8081_detect_vsync_sound.v) {
-                    //printf ("vsync total de zx8081 t_estados: %d\n",t_estados);
-                    if (zx8081_detect_vsync_sound_counter>0) zx8081_detect_vsync_sound_counter--;
-
-                }
-
-                //printf("vsync 1\n");
-                //zx8081_reset_electron_line_by_vsync();
-
-
-                //zx8081_video_electron_position_x_testados=0;
 
                 video_zx8081_linecntr=0;
 
