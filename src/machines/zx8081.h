@@ -106,6 +106,8 @@ extern int zx8081_read_port_a0_low(z80_byte puerto_h);
 extern void zx8081_out_any_port_video_stuff(void);
 extern void zx8081_if_admited_vsync(void);
 
+extern z80_byte zx80801_last_sprite_video;
+
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;
 

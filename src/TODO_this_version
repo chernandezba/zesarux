@@ -178,3 +178,11 @@ en cualquier caso creo que el resultado final es el mismo
 revisar tscaline_draw_timeout para que funcione modo fast en negro
 
 view variables interfiere en render!! con breakout por ejemplo
+
+MINIMA_LINEA_ADMITIDO_VSYNC no tiene sentido . vsync se tiene que admitir siempre
+
+mazogs activa vsync en linea 2.... y no lo quita aparentemente
+hsync y la nmi se lanzan cuando hay vsync? no deberian
+1 GOTO 1 deja colgado ZX81
+vsync tiene limite? si se puede quedar siempre con vsync,
+luego

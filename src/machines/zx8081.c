@@ -488,6 +488,8 @@ void zx8081_reset_electron_line_by_vsync(void)
 void generar_zx8081_hsync(void)
 {
 
+    tv_enable_hsync();
+
 
     //printf("x a 0\n");
     zx8081_video_electron_position_x_testados=0;
@@ -525,8 +527,12 @@ void generar_zx8081_hsync(void)
     //Inicializar siguiente linea. Esto es importante que este aqui despues de
     //una posible actualizacion de pantalla, para que no se vea la linea blanca inicializada
     if (rainbow_enabled.v==1) {
-        init_zx8081_scanline();
+        //init_zx8081_scanline();
     }
+
+
+
+
 
 
 }
@@ -554,11 +560,12 @@ void zx8081_if_admited_vsync(void)
 
 
 
-		if (longitud >= minimo_duracion_vsync) {
+		if (longitud >= minimo_duracion_vsync/* && longitud<2000*/) {
 
 
-			if (t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC) {
-				//printf ("admitido pulso vsync en linea %3d testados_linea %3d t_estados %6d\n",t_scanline_draw_timeout,t_estados % screen_testados_linea,t_estados);
+			if (1/*t_scanline_draw_timeout>MINIMA_LINEA_ADMITIDO_VSYNC*/) {
+				//printf ("admitido pulso vsync en linea %3d longitud pulso %d\n",t_scanline_draw_timeout,longitud);
+
 
                 if (!simulate_lost_vsync.v) {
 
@@ -615,12 +622,13 @@ void adjust_zx8081_electron_position(int delta)
 
     if (zx8081_video_electron_position_x_testados>=screen_testados_linea) {
 
-        //printf("Fin de linea en %d\n",zx8081_video_electron_position_x_testados);
+        if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",zx8081_video_electron_position_x_testados);
 
         zx8081_video_electron_position_x_testados -=screen_testados_linea;
 
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
-        if (hsync_generator_active.v  /*&& vsync_generator_active.v==0*/) {
+        //si hay vsync no hay hsync
+        if (hsync_generator_active.v  && vsync_generator_active.v==0) {
             generar_zx8081_hsync();
 
             //La ULA genera un hsync exactamente cada 64 microsegundos, tanto en ZX80 como ZX81
@@ -630,14 +638,16 @@ void adjust_zx8081_electron_position(int delta)
         }
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
-        if (hsync_generator_active.v /*&& vsync_generator_active.v==0*/) {
+        //if (hsync_generator_active.v && vsync_generator_active.v==0) {
+        //if (hsync_generator_active.v) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
-                    //printf("nmi en t_estados %d\n",t_estados);
+                    printf("nmi en t_estados %d\n",t_estados);
                     generate_nmi();
                 }
             }
-        }
+        //}
+
 
 
     }
@@ -646,11 +656,11 @@ void adjust_zx8081_electron_position(int delta)
     //Si ha pasado mucho rato sin hsync, forzarlo. Valor arbitrario 300
     //Esto sirve en los modos FAST y en SAVE/LOAD
 
-    if (zx8081_video_electron_position_x_testados>300 && hsync_generator_active.v==0) {
+    /*if (zx8081_video_electron_position_x_testados>300 && hsync_generator_active.v==0) {
         printf("hsync timeout\n");
         zx8081_video_electron_position_x_testados -=300;
         generar_zx8081_hsync();
-    }
+    */
 
 
 
@@ -717,6 +727,8 @@ int color_es_chroma(void)
 {
 	return (chroma81.v && (chroma81_port_7FEF & 32) ? 1 : 0);
 }
+
+z80_byte zx80801_last_sprite_video;
 
 //Tratamiento de los gráficos zx81 al hacer fetch
 z80_byte fetch_opcode_zx81_graphics(void)
@@ -859,7 +871,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
             int totalancho=get_total_ancho_rainbow();
 
-
+            zx80801_last_sprite_video=sprite;
 
             if (y>=0 && y<get_total_alto_rainbow() ) {
 
@@ -870,7 +882,9 @@ z80_byte fetch_opcode_zx81_graphics(void)
                     //si linea no coincide con entrelazado, volvemos
                     if (if_store_scanline_interlace(y) ) {
                         //if (y==48) printf("store graphics to y: %d x: %d sprite: %d\n",y,x,sprite);
-                        screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
+
+                        //TODO: esto hay que pasarlo al modulo de TV
+                        //screen_store_scanline_char_zx8081(x,y,sprite,caracter,caracter_inverse.v);
                     }
 
 
@@ -920,8 +934,10 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     if (vsync_generator_active.v==0) {
         longitud_pulso_vsync=0;
         vsync_generator_active.v=1;
-        printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
-        zx8081_video_electron_position_x_testados=0;
+        printf("vsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        //zx8081_video_electron_position_x_testados=0;
+        tv_enable_vsync();
+        //sleep(1);
     }
 
 
@@ -930,7 +946,9 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
-        printf("hsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
+        printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        tv_disable_hsync();
+        sleep(1);
     }
 
 
@@ -1021,13 +1039,15 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
-        printf("hsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
+        printf("hsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        //tv_enable_hsync();
     }
 
     if (vsync_generator_active.v) {
         vsync_generator_active.v=0;
-        printf("vsync generator off en t_scanline_draw=%d\n",t_scanline_draw);
+        printf("vsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         zx8081_video_electron_position_x_testados=0;
+        tv_disable_vsync();
     }
 
     //no estoy seguro de esto

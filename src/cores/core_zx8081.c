@@ -52,6 +52,8 @@
 #include "snap_ram.h"
 #include "zeng_online_client.h"
 #include "menu_items_storage.h"
+#include "tv.h"
+
 
 int core_zx8081_t_estados_antes=0;
 
@@ -98,7 +100,7 @@ return;
 
 void init_zx8081_scanline_y(int y)
 {
-
+return;
     //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
 	if (border_enabled.v==0) y=y-screen_borde_superior;
     if (y>=0 && y<get_total_alto_rainbow() ) {
@@ -121,7 +123,7 @@ void init_zx8081_scanline_y(int y)
 
 void init_zx8081_scanline(void)
 {
-
+return;
     int y=t_scanline_draw-ZX8081_LINEAS_SUP_NO_USABLES;
     //printf("init y: %d\n",y);
     //para evitar las lineas superiores
@@ -248,6 +250,7 @@ void cpu_core_loop_zx8081(void)
             core_zx8081_t_estados_antes=t_estados;
 
             adjust_zx8081_electron_position(delta);
+            tv_time_event(delta);
 
 
 
