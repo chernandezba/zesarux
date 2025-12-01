@@ -240,12 +240,6 @@ int minimo_duracion_vsync;
 
 
 
-
-//longitud del pulso vsync en t-estados
-int longitud_pulso_vsync=0;
-
-
-
 int vsync_per_second;
 int last_vsync_per_second;
 
@@ -439,12 +433,6 @@ void generar_zx8081_hsync(void)
 
 }
 
-int zx8081_get_vsync_length(void)
-{
-
-    return longitud_pulso_vsync;
-
-}
 
 void zx8081_if_admited_vsync(void)
 {
@@ -466,11 +454,7 @@ void adjust_zx8081_electron_position(int delta)
 
     if (pending_disable_hsync) tv_disable_hsync();
 
-    //pulso vsync calcular longitud
-    if (vsync_generator_active.v) {
-        //printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
-        longitud_pulso_vsync +=delta;
-    }
+
 
 
 
@@ -801,7 +785,6 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     z80_byte valor;
 
     if (vsync_generator_active.v==0) {
-        longitud_pulso_vsync=0;
         vsync_generator_active.v=1;
         //printf("vsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
         //zx8081_video_electron_position_x_testados=0;
