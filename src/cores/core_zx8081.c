@@ -57,83 +57,6 @@
 
 int core_zx8081_t_estados_antes=0;
 
-void init_zx8081_scanline_y_x(int y,int x,int ancho)
-{
-return;
-//inicializamos valores, para border
-	if (border_enabled.v==0) y=y-screen_borde_superior;
-
-    if (y>=0 && y<get_total_alto_rainbow() ) {
-        if (if_store_scanline_interlace(y)) {
-            //en principio zona blanca (border) -> 0
-            z80_byte sprite;
-            sprite=video_zx8081_ula_video_output;
-
-            for (;ancho>0;x+=8,ancho-=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
-        }
-    }
-
-
-}
-
-void init_zx8081_scanline_y_solo_display(int y)
-{
-return;
-    //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
-	if (border_enabled.v==0) y=y-screen_borde_superior;
-
-    if (y>=0 && y<get_total_alto_rainbow() ) {
-        if (if_store_scanline_interlace(y)) {
-            int x;
-            //en principio zona blanca (border) -> 0
-            z80_byte sprite;
-            sprite=video_zx8081_ula_video_output;
-
-
-            for (x=48;x<48+256;x+=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
-        }
-    }
-
-
-}
-
-
-void init_zx8081_scanline_y(int y)
-{
-return;
-    //inicializamos valores, para border o fast mode. TODO. esto es una aproximacion
-	if (border_enabled.v==0) y=y-screen_borde_superior;
-    if (y>=0 && y<get_total_alto_rainbow() ) {
-		if (if_store_scanline_interlace(y)) {
-
-            int x;
-            //en principio zona blanca (border) -> 0
-            z80_byte sprite;
-            sprite=video_zx8081_ula_video_output;
-
-
-            for (x=0;x<get_total_ancho_rainbow();x+=8) screen_store_scanline_char_zx8081_border_scanline(x,y,sprite);
-		}
-    }
-
-
-}
-
-
-
-void init_zx8081_scanline(void)
-{
-return;
-    int y=t_scanline_draw-ZX8081_LINEAS_SUP_NO_USABLES;
-    //printf("init y: %d\n",y);
-    //para evitar las lineas superiores
-    //TODO. cuadrar esto con valores de borde invisible superior
-
-    init_zx8081_scanline_y(y);
-
-
-}
-
 
 z80_byte byte_leido_core_zx8081;
 
@@ -399,16 +322,6 @@ void cpu_core_loop_zx8081(void)
             t_estados -=screen_testados_total;
 
 
-            //temp
-            //t_estados=0;
-
-            //temporal
-            //ajuste para que casi se quede quieto en horizontal
-            //t_estados +=3;
-
-            //extern int temp_ajuste;
-
-            //t_estados +=temp_ajuste;
 
             cpu_loop_refresca_pantalla();
 
@@ -541,7 +454,10 @@ void cpu_core_loop_zx8081(void)
             reg_pc= 0x66;
 
             //temp
-            t_estados -=15;
+            //t_estados -=15;
+
+            //Esto se ha testeado a mano con el clocktest.p, no tiene por que estar bien
+            t_estados +=7;
 
         }
 
@@ -570,8 +486,10 @@ void cpu_core_loop_zx8081(void)
             if (im_mode==0 || im_mode==1) {
                 cpu_common_jump_im01();
 
+
                 //Ajuste tiempos en zx80/81
-                t_estados -=6;
+                //???
+                t_estados -=4;
                 //printf("IM0/1 generada\n");
                 //extern int temp_ajuste;
                 //t_estados +=temp_ajuste;
