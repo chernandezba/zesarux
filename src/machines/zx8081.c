@@ -242,8 +242,7 @@ int minimo_duracion_vsync;
 
 //longitud del pulso vsync en t-estados
 int longitud_pulso_vsync=0;
-//t-estados anterior de ejecutar un opcode para saber lo que durara el vsync total
-int longitud_pulso_vsync_t_estados_antes=0;
+
 
 
 int vsync_per_second;
@@ -600,11 +599,7 @@ void adjust_zx8081_electron_position(int delta)
     //pulso vsync calcular longitud
     if (vsync_generator_active.v) {
         //printf("longitud pulso vsync: %d\n",longitud_pulso_vsync);
-
         longitud_pulso_vsync +=delta;
-
-        longitud_pulso_vsync_t_estados_antes=t_estados;
-
     }
 
 
@@ -630,12 +625,9 @@ void adjust_zx8081_electron_position(int delta)
             //Pero creo que si vsync no esta activo. si vsync activo, tiene preferencia vsync?
             //if (hsync_generator_active.v && vsync_generator_active.v==0) generar_zx8081_hsync();
 
-            //Ademas en ZX81 genera una NMI cada 64 microsegundos
-
-
-
         }
 
+        //Ademas en ZX81 genera una NMI cada 64 microsegundos
         if (hsync_generator_active.v /*&& vsync_generator_active.v==0*/) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
@@ -925,7 +917,6 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (vsync_generator_active.v==0) {
         longitud_pulso_vsync=0;
-        longitud_pulso_vsync_t_estados_antes=t_estados;
         vsync_generator_active.v=1;
         printf("vsync generator on  en t_scanline_draw=%d\n",t_scanline_draw);
         zx8081_video_electron_position_x_testados=0;
