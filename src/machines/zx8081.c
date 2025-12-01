@@ -777,13 +777,6 @@ Bit  Expl.
 
     valor = (valor & 31) | (32+64);
 
-    //valor &= (255-128);
-
-
-    //decimos que hay pulso de carga, alternado
-    //if (reg_b!=0) temp_cinta_zx81=128;
-    //else temp_cinta_zx81=0;
-    //valor |=temp_cinta_zx81;
 
     //printf ("valor: %d\n",valor);
 
@@ -825,16 +818,11 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
-        //printf("hsync generator on  en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
-        //tv_enable_hsync();
     }
 
-    if (tv_is_vsync_enabled()) {
-        //vsync_generator_active.v=0;
-        //printf("vsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
-        ula_zx8081_position_x_testados=0;
-        tv_disable_vsync();
-    }
+
+    ula_zx8081_position_x_testados=0;
+    tv_disable_vsync();
 
 
  	video_zx8081_ula_video_output=0;
