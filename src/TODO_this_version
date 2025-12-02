@@ -200,3 +200,10 @@ Parece que durante vsync no envia hsync, como se deberia esperar
 
 -Cuando lanza nmi no debería poner el contador a 0, sino quitarle -207 para compensar exceso
 Aunque esto no parece ser el problema de parpadeo en mazogs. Pero tenerlo en cuenta para más adelante
+
+
+-Ajuste temporal
+if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return; (con MINIMA_LINEA_ADMITIDO_VSYNC=300)
+Esto da imagen casi estable en Mazogs y 3d monster maze. Sin embargo, da vsync timeout en qs defenda
+Creo que el problema es mas de timings al disparar la nmi, que no el tema de no aceptar vsync por debajo de cierta posición Y
+Aunque con esto, el save aparece franjas en toda la pantalla (quizá esto no es así en máquina real)
