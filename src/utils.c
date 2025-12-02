@@ -9131,6 +9131,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                                         //temp_ajuste--;
                                         //printf("Ajuste %d\n",temp_ajuste);
+                                        //usleep(500000);
                                 }
                         break;
 
@@ -9157,6 +9158,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                                    //temp_ajuste++;
                                    //printf("Ajuste %d\n",temp_ajuste);
+                                   //usleep(500000);
                                  }
                 break;
 
