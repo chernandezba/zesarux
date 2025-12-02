@@ -291,7 +291,7 @@ void tv_enable_vsync(void)
     //if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return;
 
     if (tv_vsync_signal==0) {
-        printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
         //sleep(1);
