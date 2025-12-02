@@ -179,10 +179,21 @@ revisar tscaline_draw_timeout para que funcione modo fast en negro
 
 view variables interfiere en render!! con breakout por ejemplo
 
-MINIMA_LINEA_ADMITIDO_VSYNC no tiene sentido . vsync se tiene que admitir siempre
+
 
 mazogs activa vsync en linea 2.... y no lo quita aparentemente
 hsync y la nmi se lanzan cuando hay vsync? no deberian
 1 GOTO 1 deja colgado ZX81
 vsync tiene limite? si se puede quedar siempre con vsync,
 luego
+
+franjas grabacion save no aparecen bien. probablemente por gestion de hsync timeout o vsync timeout
+
+tiene sentido simulate_lost_hsync?
+
+si se activa simular vsync, se ven franjas de grabacion
+quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0/1 al casette) no es correcta y por eso no engancha vsync nunca
+
+
+VSYNC es realmente secuencia de señal vsync + pulsos hsync. como envia esto el ZX81 realmente?
+Parece que durante vsync no envia hsync, como se deberia esperar

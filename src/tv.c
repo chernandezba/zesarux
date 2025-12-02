@@ -129,6 +129,29 @@ void tv_time_event_store_chunk_image(int delta)
 
 }
 
+void tv_increase_line(void)
+{
+
+    tv_y++;
+
+    //controlar vsync timeout
+    int total_lineas=screen_testados_total/screen_testados_linea;
+    //Si no se va mas alla del limite
+    //El oscilador "libre" es de 50 hz
+    //if (tv_y>(total_lineas*120)/100) {
+
+    //le damos un pelin mas de margen
+    if (tv_y>=total_lineas+10) {
+        printf("vsync timeout en %d\n",tv_y);
+        //sleep(1);
+
+        //vsync solo mueve la y, no la X?
+        //tv_x=0;
+
+        tv_y=0;
+    }
+}
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -148,32 +171,85 @@ A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX
 it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
     */
 
+    int ejecutando_vsync=0;
+
     if (tv_vsync_signal) {
         tv_vsync_signal_length+=delta;
+        /*
+        Qué sucede si hay VSync pero NO HSync
 
-        if (tv_vsync_signal_length>DEFAULT_MINIMO_DURACION_VSYNC) {
-            //printf("TV vsync\n");
-            tv_x=0;
-            tv_y=0;
+        El nivel de vídeo baja (aparenta un pulso vertical)
+
+        El TV no recibe HSync dentro del intervalo
+
+        La rampa vertical entra en free-run (corre a su frecuencia natural, no sincronizada)
+
+        Resultado:
+
+        El haz no llega arriba,
+
+        La imagen “rueda” o se fragmenta
+
+        Se ven bandas horizontales o patrones inestables
+
+        Este es exactamente el comportamiento del ZX81 en modo FAST: el nivel de vídeo baja como VSync,
+        pero no hay HSync, así que la TV no reinicia la rampa vertical.
+        */
+
+        //cuando el vsync es mayor de cierto valor, ya no se admite
+        //esto es lo que sucede en modo fast, esta siempre vsync y al final el haz de electrones "se libera" y sigue dibujando
+        //la pantalla en negro
+
+        if (tv_hsync_signal) {
+            printf("*** hsync dentro de vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
+            sleep(1);
         }
+
+        //TODO En principio vsync necesita hsync. Esto es lo que provoca que al hacer save, la imagen no se vaya arriba
+
+        if (tv_vsync_signal_length>DEFAULT_MINIMO_DURACION_VSYNC && tv_vsync_signal_length<PERMITIDO_MAXIMO_DURACION_VSYNC) {
+            printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
+
+
+            //vsync solo mueve la y, no la X?
+            //tv_x=0;
+
+            tv_y=0;
+            ejecutando_vsync=1;
+        }
+
     }
 
     else {
 
         //Hay hsync?
-        if (tv_hsync_signal) {
+        if (tv_hsync_signal && !ejecutando_vsync) {
             tv_x=0;
             if (tv_hsync_signal_pending) {
                 tv_hsync_signal_pending=0;
-                int total_lineas=screen_testados_total/screen_testados_linea;
-                //Si no se va mas alla del limite
-                if (tv_y<=total_lineas) {
-                    //printf("Incrementar Y por hsync. y antes: %d\n",tv_y);
-                    //sleep(1);
-                    tv_y++;
-                }
+                tv_increase_line();
             }
         }
+
+    }
+
+    //controlar hsync timeout
+    //TODO: valor arbitrario de timeout
+    /*
+    Oscila aproximadamente a la frecuencia horizontal estándar (≈15.734 kHz en NTSC, ≈15.625 kHz en PAL)
+    //screen_testados_total=screen_testados_linea*screen_scanlines;
+    //eso son 20 ms. 50 hz
+    //Al final es justo lo que tarda el scanline
+
+    */
+    //if (tv_x>(screen_testados_linea*110)/100 && !ejecutando_vsync) {
+
+    //le damos un pelin mas de margen, si no, juegos como el ZX80 kong tiemblan
+    //O el QS defenda no se ve completo por debajo
+    if (tv_x>=screen_testados_linea+100 && !ejecutando_vsync) {
+        //printf("hsync timeout en %d\n",tv_y);
+        tv_x=0;
+        tv_increase_line();
     }
 
 
@@ -190,7 +266,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 void tv_enable_hsync(void)
 {
     if (tv_hsync_signal==0) {
-        //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
@@ -200,7 +276,7 @@ void tv_enable_hsync(void)
 void tv_disable_hsync(void)
 {
     if (tv_hsync_signal) {
-        //printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=0;
     }
@@ -208,9 +284,10 @@ void tv_disable_hsync(void)
 
 void tv_enable_vsync(void)
 {
+    if (simulate_lost_vsync.v) return;
 
     if (tv_vsync_signal==0) {
-        //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
         //sleep(1);
@@ -221,7 +298,7 @@ void tv_disable_vsync(void)
 {
 
     if (tv_vsync_signal) {
-        //printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=0;
         //sleep(1);
     }

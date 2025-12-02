@@ -44,7 +44,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
 #define DEFAULT_MINIMO_DURACION_VSYNC 518
 #define PERMITIDO_MINIMO_DURACION_VSYNC 100
-#define PERMITIDO_MAXIMO_DURACION_VSYNC 999
+#define PERMITIDO_MAXIMO_DURACION_VSYNC 2000
 
 extern void tv_time_event(int delta);
 
