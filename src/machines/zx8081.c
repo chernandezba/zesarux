@@ -149,7 +149,7 @@ Despues de ?(), en posicion 18:
 
 z80_bit nmi_generator_active;
 z80_bit hsync_generator_active;
-//z80_bit vsync_generator_active={0};
+z80_bit zx8081_vsync_generator={0};
 
 //Para lanzar los hsync del hsync generator
 int ula_zx8081_position_x_testados=0;
@@ -461,7 +461,7 @@ void ula_zx8081_time_event(int delta)
 
     }
 
-    if (tv_is_vsync_enabled()) video_zx8081_linecntr=0;
+    if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
 
 
 }
@@ -716,12 +716,14 @@ z80_byte fetch_opcode_zx81_graphics(void)
 }
 
 
+
 int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
     z80_byte valor;
 
 
     tv_enable_vsync();
+    zx8081_vsync_generator.v=1;
 
 
     video_zx8081_ula_video_output=255;
@@ -815,6 +817,7 @@ void zx8081_out_any_port_video_stuff(void)
     ula_zx8081_position_x_testados_testados_antes=t_estados;
 
     tv_disable_vsync();
+    zx8081_vsync_generator.v=0;
 
 
  	video_zx8081_ula_video_output=0;

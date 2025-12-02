@@ -304,7 +304,3 @@ void tv_disable_vsync(void)
     }
 }
 
-int tv_is_vsync_enabled(void)
-{
-    return tv_vsync_signal;
-}
