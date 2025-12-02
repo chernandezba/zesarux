@@ -405,7 +405,10 @@ void generar_zx8081_hsync(void)
     pending_disable_hsync=1;
 
 
+    //Necesario para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
     ula_zx8081_position_x_testados=0;
+
+
     ula_zx8081_position_x_testados_testados_antes=t_estados;
     video_zx8081_linecntr++;
 

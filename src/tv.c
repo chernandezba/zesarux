@@ -288,7 +288,7 @@ void tv_enable_vsync(void)
     if (simulate_lost_vsync.v) return;
 
     //no admitir vsync si electron no esta por debajo de posicion ...?
-    if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return;
+    //if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return;
 
     if (tv_vsync_signal==0) {
         printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
