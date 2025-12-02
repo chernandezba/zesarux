@@ -197,3 +197,6 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 
 VSYNC es realmente secuencia de señal vsync + pulsos hsync. como envia esto el ZX81 realmente?
 Parece que durante vsync no envia hsync, como se deberia esperar
+
+-Cuando lanza nmi no debería poner el contador a 0, sino quitarle -207 para compensar exceso
+Aunque esto no parece ser el problema de parpadeo en mazogs. Pero tenerlo en cuenta para más adelante

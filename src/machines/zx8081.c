@@ -414,7 +414,7 @@ void generar_zx8081_hsync(void)
 
 
 
-
+int temp_anterior_nmi=0;
 
 void ula_zx8081_time_event(int delta)
 {
@@ -452,8 +452,12 @@ void ula_zx8081_time_event(int delta)
         if (hsync_generator_active.v ) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
-                    //printf("nmi en t_estados %d conteo x: %d\n",t_estados,ula_zx8081_position_x_testados);
+                    int dif=t_estados-temp_anterior_nmi;
+                    if (dif>=0) {
+                        printf("nmi en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
+                    }
                     generate_nmi();
+                    temp_anterior_nmi=t_estados;
                 }
             }
         }

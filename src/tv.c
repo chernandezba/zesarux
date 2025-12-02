@@ -201,14 +201,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         //la pantalla en negro
 
         if (tv_hsync_signal) {
-            printf("*** hsync dentro de vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
-            sleep(1);
+            //printf("*** hsync dentro de vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
         }
 
         //TODO En principio vsync necesita hsync. Esto es lo que provoca que al hacer save, la imagen no se vaya arriba
 
         if (tv_vsync_signal_length>DEFAULT_MINIMO_DURACION_VSYNC && tv_vsync_signal_length<PERMITIDO_MAXIMO_DURACION_VSYNC) {
-            printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
+            //printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
 
 
             //vsync solo mueve la y, no la X?
@@ -266,7 +265,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 void tv_enable_hsync(void)
 {
     if (tv_hsync_signal==0) {
-        printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
@@ -276,7 +275,7 @@ void tv_enable_hsync(void)
 void tv_disable_hsync(void)
 {
     if (tv_hsync_signal) {
-        printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=0;
     }
@@ -287,7 +286,7 @@ void tv_enable_vsync(void)
     if (simulate_lost_vsync.v) return;
 
     if (tv_vsync_signal==0) {
-        printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
         //sleep(1);
@@ -298,9 +297,14 @@ void tv_disable_vsync(void)
 {
 
     if (tv_vsync_signal) {
-        printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=0;
         //sleep(1);
     }
+}
+
+int tv_get_y(void)
+{
+    return tv_y;
 }
 
