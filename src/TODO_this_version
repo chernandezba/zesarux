@@ -210,3 +210,9 @@ if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return; (con MINIMA_LINEA_ADMITIDO_VSYNC=3
 Esto da imagen casi estable en Mazogs y 3d monster maze. Sin embargo, da vsync timeout en qs defenda
 Creo que el problema es mas de timings al disparar la nmi, que no el tema de no aceptar vsync por debajo de cierta posición Y
 Aunque con esto, el save aparece franjas en toda la pantalla (quizá esto no es así en máquina real)
+*O que la nmi solo deberia dispararse cuando:
+if (hsync_generator_active.v && zx8081_vsync_generator.v==0) {
+
+->Creo que todo el problema de mazogs etc y los demas de zx81 que se ven mal, es que
+la cpu (el juego) no sabe donde empieza vsync, porque a veces lanza nmi hasta linea 8 y luego no vuelve hasta la 138, cuando
+lo normal? seria lanzar hasta 56 y luego volver en la 187??

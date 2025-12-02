@@ -452,7 +452,7 @@ void ula_zx8081_time_event(int delta)
 
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
         //if (hsync_generator_active.v && vsync_generator_active.v==0) {
-        if (hsync_generator_active.v ) {
+        if (hsync_generator_active.v /*&& zx8081_vsync_generator.v==0*/) {
             if (MACHINE_IS_ZX81_TYPE) {
                 if (nmi_generator_active.v==1) {
                     int dif=t_estados-temp_anterior_nmi;
