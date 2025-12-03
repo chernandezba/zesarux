@@ -233,3 +233,4 @@ Quizá la solución sigue pasando por disparar la nmi desde el controlador de tv
 
 -disparo la nmi desde tv cuando hace hsync? se va a negro. aunque no se bloquea, solo que no se ve
 -digo que nmi no se tiene que lanzar si hay vsync? se pone en negro, no lanza nmis
+-en tv permitir hsync aunque este vsync? no cambia nada
