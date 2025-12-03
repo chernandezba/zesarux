@@ -532,6 +532,8 @@ void zx81_nmi_generator_time_event(int delta)
             generar_zx8081_hsync();
         }
 
+
+
         zx8081_nmi_generator_time_event_t_estados -=screen_testados_linea;
     }
 }
