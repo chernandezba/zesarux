@@ -234,3 +234,12 @@ Quizá la solución sigue pasando por disparar la nmi desde el controlador de tv
 -disparo la nmi desde tv cuando hace hsync? se va a negro. aunque no se bloquea, solo que no se ve
 -digo que nmi no se tiene que lanzar si hay vsync? se pone en negro, no lanza nmis
 -en tv permitir hsync aunque este vsync? no cambia nada
+
+
+-Ver rom rutinas nmi y tiempos
+https://k1.spdns.de/Vintage/Sinclair/80/Sinclair%20ZX81/ROMs/zx81%20version%202%20%27improved%27%20rom%20source.htm
+En especial:
+
+HALT                    ; (1) HALT synchronizes with NMI.
+; Used with special hardware connected to the
+; Z80 HALT and WAIT lines to take 1 clock cycle.

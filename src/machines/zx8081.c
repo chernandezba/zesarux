@@ -531,7 +531,13 @@ void zx81_nmi_generator_time_event(int delta)
             printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
             generar_zx8081_hsync();
         }
-
+/*
+Al generar nmi,
+/Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
+This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
+the End of Line character, which will not happen on the non-visible lines.
+Creo que no tengo que hacer nada con la señal wait, esto es solo para un Z80 real
+*/
 
 
         zx8081_nmi_generator_time_event_t_estados -=screen_testados_linea;
