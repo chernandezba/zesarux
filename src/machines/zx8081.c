@@ -498,8 +498,8 @@ temp_extend_debug=0;
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
         //si hay vsync no hay hsync
         if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
-            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
-            generar_zx8081_hsync();
+            //printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+            //generar_zx8081_hsync();
         }
 
 
@@ -525,6 +525,11 @@ void zx81_nmi_generator_time_event(int delta)
         if (nmi_generator_active.v) {
             printf("Generate nmi\n");
             generate_nmi();
+        }
+
+        if (hsync_generator_active.v) {
+            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+            generar_zx8081_hsync();
         }
 
         zx8081_nmi_generator_time_event_t_estados -=screen_testados_linea;
