@@ -176,7 +176,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     int ejecutando_vsync=0;
 
     if (tv_vsync_signal && nmi_generator_active.v && hsync_generator_active.v) {
-        printf("####---- vsync y nmi generator y hsync generator en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+        //printf("####---- vsync y nmi generator y hsync generator en t_estados %6d Y=%d\n",t_estados,tv_get_y());
     }
 
     if (temp_extend_debug) printf("tv hsync pending en t_estados %6d Y=%d\n",t_estados,tv_get_y());

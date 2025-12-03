@@ -449,9 +449,9 @@ void cpu_core_loop_zx8081(void)
             debug_anota_retorno_step_nmi();
             interrupcion_non_maskable_generada.v=0;
 
-            //NMI wait 14 estados
-            t_estados += 14;
 
+
+            //6 T
             push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
 
@@ -459,20 +459,18 @@ void cpu_core_loop_zx8081(void)
             iff1.v=0;
             //printf ("Calling NMI with pc=0x%x\n",reg_pc);
 
-            //Otros 6 estados
-            t_estados += 6;
 
-            //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
             reg_pc= 0x66;
 
             //temp
             //t_estados -=15;
 
-            //Esto se ha testeado a mano con el clocktest.p, no tiene por que estar bien
-            //t_estados +=2;
-            t_estados -=1;
-extern int temp_ajuste;
+
+            extern int temp_ajuste;
             //t_estados +=temp_ajuste;
+
+            //First the NMI servicing, similar to CALL            =  17 clock cycles.
+            t_estados += 11;
 
         }
 
