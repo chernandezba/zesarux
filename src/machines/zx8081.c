@@ -406,7 +406,10 @@ void generar_zx8081_hsync(void)
 
 
     //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
-    ula_zx8081_position_x_testados=0;
+    //TODO: esto se deberia hacer tanto para ZX80 como ZX81
+    if (MACHINE_IS_ZX80_TYPE) {
+        ula_zx8081_position_x_testados=0;
+    }
 
 
     ula_zx8081_position_x_testados_testados_antes=t_estados;
@@ -455,9 +458,13 @@ temp_extend_debug=0;
             generar_zx8081_hsync();
         }
 
+        /*
+
+        Generamos NMI desde zx8081_nmi_generator_time_event
+
         //Ademas en ZX81 genera una NMI cada 64 microsegundos
         //if (hsync_generator_active.v && vsync_generator_active.v==0) {
-        if (hsync_generator_active.v /*&& zx8081_vsync_generator.v==0*/) {
+
             if (MACHINE_IS_ZX81_TYPE) {
                 int dif=t_estados-temp_anterior_nmi;
 
@@ -470,7 +477,7 @@ temp_extend_debug=0;
 
                     printf("2) nmi      en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
 
-                    generate_nmi();
+                    //generate_nmi();
                     temp_anterior_nmi=t_estados;
 
                     temp_extend_debug=1;
@@ -479,11 +486,54 @@ temp_extend_debug=0;
             }
         }
 
+        */
+
 
     }
 
     if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
 
+
+}
+
+int zx8081_nmi_generator_time_event_t_estados=0;
+
+void zx8081_nmi_generator_time_event(int delta)
+{
+    if (!MACHINE_IS_ZX81_TYPE) return;
+
+    zx8081_nmi_generator_time_event_t_estados+=delta;
+
+    if (zx8081_nmi_generator_time_event_t_estados>=screen_testados_linea) {
+
+        printf("NMI generator. passed 64 microsec en t_estados %6d\n",t_estados);
+
+        if (nmi_generator_active.v) {
+            printf("Generate nmi\n");
+            generate_nmi();
+        }
+
+        zx8081_nmi_generator_time_event_t_estados -=screen_testados_linea;
+    }
+}
+
+void zx81_enable_nmi_generator(void)
+{
+
+    printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+    nmi_generator_active.v=1;
+
+    zx8081_nmi_generator_time_event_t_estados=0;
+
+
+}
+
+void zx81_disable_nmi_generator(void)
+{
+    printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+    nmi_generator_active.v=0;
+
+    zx8081_nmi_generator_time_event_t_estados=0;
 
 }
 

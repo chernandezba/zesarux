@@ -167,6 +167,7 @@ void cpu_core_loop_zx8081(void)
             core_zx8081_t_estados_antes=t_estados;
 
             ula_zx8081_time_event(delta);
+            zx8081_nmi_generator_time_event(delta);
             tv_time_event(delta);
 
 
@@ -457,7 +458,7 @@ void cpu_core_loop_zx8081(void)
             //t_estados -=15;
 
             //Esto se ha testeado a mano con el clocktest.p, no tiene por que estar bien
-            t_estados +=7;
+            t_estados +=2;
 
         }
 
