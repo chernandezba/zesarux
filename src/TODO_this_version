@@ -216,3 +216,10 @@ if (hsync_generator_active.v && zx8081_vsync_generator.v==0) {
 ->Creo que todo el problema de mazogs etc y los demas de zx81 que se ven mal, es que
 la cpu (el juego) no sabe donde empieza vsync, porque a veces lanza nmi hasta linea 8 y luego no vuelve hasta la 138, cuando
 lo normal? seria lanzar hasta 56 y luego volver en la 187??
+
+-Quizá algo que sucede a final de frame de TV (o de core) que descontrola la nmi?
+Algún contador de t estados?
+
+O quizá la nmi se dispara algo más tarde de que empiece el hsync. Tendría lógica porque el hsync ¿necesita? una secuencia de pulsos y pasa un tiempo hasta que se acepta
+
+Quizá la solución sigue pasando por disparar la nmi desde el controlador de tv
