@@ -466,7 +466,8 @@ void cpu_core_loop_zx8081(void)
             //t_estados -=15;
 
             //Esto se ha testeado a mano con el clocktest.p, no tiene por que estar bien
-            t_estados +=2;
+            //t_estados +=2;
+            t_estados -=1;
 extern int temp_ajuste;
             t_estados +=temp_ajuste;
 
