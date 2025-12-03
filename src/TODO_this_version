@@ -230,3 +230,6 @@ Quizá la solución sigue pasando por disparar la nmi desde el controlador de tv
 2) nmi      en t_estados  59126 (dif    219) y:   34 conteo x:      0
 1) poss nmi en t_estados  59341 (dif    215) y:   35 conteo x:      0
 2) nmi      en t_estados  59341 (dif    215) y:   35 conteo x:      0
+
+-disparo la nmi desde tv cuando hace hsync? se va a negro. aunque no se bloquea, solo que no se ve
+-digo que nmi no se tiene que lanzar si hay vsync? se pone en negro, no lanza nmis
