@@ -399,3 +399,4 @@ probablemente porque el alto es multiple de 8 y queda menos de una fila abajo si
 -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 
 
+-en debug cpu que diga los t-estados que tarda cada instrucción. tener en cuenta también memoria contenida...
