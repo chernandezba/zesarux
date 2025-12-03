@@ -421,7 +421,11 @@ int temp_anterior_nmi=0;
 
 void ula_zx8081_time_event(int delta)
 {
+    extern int temp_extend_debug;
 
+extern int tv_hsync_signal_pending;
+extern int tv_vsync_signal;
+temp_extend_debug=0;
     //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
     //    ula_zx8081_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
 
@@ -447,6 +451,7 @@ void ula_zx8081_time_event(int delta)
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
         //si hay vsync no hay hsync
         if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
+            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
             generar_zx8081_hsync();
         }
 
@@ -455,7 +460,11 @@ void ula_zx8081_time_event(int delta)
         if (hsync_generator_active.v /*&& zx8081_vsync_generator.v==0*/) {
             if (MACHINE_IS_ZX81_TYPE) {
                 int dif=t_estados-temp_anterior_nmi;
+
+
                 printf("1) poss nmi en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
+
+                //if (nmi_generator_active.v==1 && zx8081_vsync_generator.v==0) {
                 if (nmi_generator_active.v==1) {
 
 
@@ -463,7 +472,10 @@ void ula_zx8081_time_event(int delta)
 
                     generate_nmi();
                     temp_anterior_nmi=t_estados;
+
+                    temp_extend_debug=1;
                 }
+
             }
         }
 

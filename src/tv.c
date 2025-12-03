@@ -152,6 +152,8 @@ void tv_increase_line(void)
     }
 }
 
+int temp_extend_debug=0;
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -173,7 +175,14 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
     int ejecutando_vsync=0;
 
+    if (tv_vsync_signal && nmi_generator_active.v && hsync_generator_active.v) {
+        printf("####---- vsync y nmi generator y hsync generator en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+    }
+
+    if (temp_extend_debug) printf("tv hsync pending en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+
     if (tv_vsync_signal) {
+        if (temp_extend_debug) printf("tv vsync enabled en t_estados %6d Y=%d\n",t_estados,tv_get_y());
         tv_vsync_signal_length+=delta;
         /*
         Qué sucede si hay VSync pero NO HSync
@@ -223,13 +232,17 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
     else {
 
+        if (temp_extend_debug) printf("tv no hay vsync en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+
         //Hay hsync?
         if (tv_hsync_signal && !ejecutando_vsync) {
+            if (temp_extend_debug) printf("tv hsync signal en t_estados %6d Y=%d\n",t_estados,tv_get_y());
             tv_x=0;
             if (tv_hsync_signal_pending) {
                 tv_hsync_signal_pending=0;
-                printf("3) tv hsync en t_estados %6d Y=%d\n\n",t_estados,tv_get_y());
+                printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
                 tv_increase_line();
+
             }
         }
 
@@ -268,10 +281,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 void tv_enable_hsync(void)
 {
     if (tv_hsync_signal==0) {
-        //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
+    }
+    else {
+        printf("Received hsync but was already enabled\n");
     }
 }
 

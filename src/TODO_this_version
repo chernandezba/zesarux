@@ -223,3 +223,10 @@ Algún contador de t estados?
 O quizá la nmi se dispara algo más tarde de que empiece el hsync. Tendría lógica porque el hsync ¿necesita? una secuencia de pulsos y pasa un tiempo hasta que se acepta
 
 Quizá la solución sigue pasando por disparar la nmi desde el controlador de tv
+
+-nmi sin hsync???
+
+1) poss nmi en t_estados  59126 (dif    219) y:   34 conteo x:      0
+2) nmi      en t_estados  59126 (dif    219) y:   34 conteo x:      0
+1) poss nmi en t_estados  59341 (dif    215) y:   35 conteo x:      0
+2) nmi      en t_estados  59341 (dif    215) y:   35 conteo x:      0
