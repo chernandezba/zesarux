@@ -142,6 +142,9 @@ void cpu_core_loop_zx8081(void)
             //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
             if (z80_halt_signal.v) {
                 byte_leido_core_zx8081=0;
+
+                //Ese halt tiene que durar 1 t estado
+                if (MACHINE_IS_ZX81 && interrupcion_non_maskable_generada.v) t_estados -=3;
             }
             else {
                 reg_pc++;
@@ -469,7 +472,7 @@ void cpu_core_loop_zx8081(void)
             //t_estados +=2;
             t_estados -=1;
 extern int temp_ajuste;
-            t_estados +=temp_ajuste;
+            //t_estados +=temp_ajuste;
 
         }
 
@@ -503,8 +506,8 @@ extern int temp_ajuste;
                 //???
                 t_estados -=6;
                 //printf("IM0/1 generada\n");
-                //extern int temp_ajuste;
-                //t_estados +=temp_ajuste;
+                extern int temp_ajuste;
+                t_estados +=temp_ajuste;
 
             }
             else {

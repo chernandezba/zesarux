@@ -237,9 +237,18 @@ Quizá la solución sigue pasando por disparar la nmi desde el controlador de tv
 
 
 -Ver rom rutinas nmi y tiempos
+http://blog.tynemouthsoftware.co.uk/2023/10/how-the-zx81-generates-video.html
+/Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
+This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
+the End of Line character, which will not happen on the non-visible lines.
+
+
 https://k1.spdns.de/Vintage/Sinclair/80/Sinclair%20ZX81/ROMs/zx81%20version%202%20%27improved%27%20rom%20source.htm
 En especial:
 
 HALT                    ; (1) HALT synchronizes with NMI.
 ; Used with special hardware connected to the
 ; Z80 HALT and WAIT lines to take 1 clock cycle.
+
+
+->le pongo que cada halt tarde 1 t-estado cuando se ha lanzado nmi
