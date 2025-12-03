@@ -502,36 +502,6 @@ temp_extend_debug=0;
             generar_zx8081_hsync();
         }
 
-        /*
-
-        Generamos NMI desde zx8081_nmi_generator_time_event
-
-        //Ademas en ZX81 genera una NMI cada 64 microsegundos
-        //if (hsync_generator_active.v && vsync_generator_active.v==0) {
-
-            if (MACHINE_IS_ZX81_TYPE) {
-                int dif=t_estados-temp_anterior_nmi;
-
-
-                printf("1) poss nmi en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
-
-                //if (nmi_generator_active.v==1 && zx8081_vsync_generator.v==0) {
-                if (nmi_generator_active.v==1) {
-
-
-                    printf("2) nmi      en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
-
-                    //generate_nmi();
-                    temp_anterior_nmi=t_estados;
-
-                    temp_extend_debug=1;
-                }
-
-            }
-        }
-
-        */
-
 
     }
 
