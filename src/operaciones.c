@@ -7759,10 +7759,12 @@ void out_port_zx81_no_time(z80_int puerto,z80_byte value)
 	debug_fired_out=1;
 
 	if ((puerto&0xFF)==0xfd) {
+        printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
 		nmi_generator_active.v=0;
 	}
 
     if ((puerto&0xFF)==0xfe) {
+        printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
         nmi_generator_active.v=1;
     }
 

@@ -405,7 +405,7 @@ void generar_zx8081_hsync(void)
     pending_disable_hsync=1;
 
 
-    //Necesario para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
+    //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
     ula_zx8081_position_x_testados=0;
 
 
@@ -454,11 +454,13 @@ void ula_zx8081_time_event(int delta)
         //if (hsync_generator_active.v && vsync_generator_active.v==0) {
         if (hsync_generator_active.v /*&& zx8081_vsync_generator.v==0*/) {
             if (MACHINE_IS_ZX81_TYPE) {
+                int dif=t_estados-temp_anterior_nmi;
+                printf("1) poss nmi en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
                 if (nmi_generator_active.v==1) {
-                    int dif=t_estados-temp_anterior_nmi;
-                    if (dif>=0) {
-                        printf("nmi en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
-                    }
+
+
+                    printf("2) nmi      en t_estados %6d (dif %6d) y: %4d conteo x: %6d\n",t_estados,dif,tv_get_y(),ula_zx8081_position_x_testados);
+
                     generate_nmi();
                     temp_anterior_nmi=t_estados;
                 }
