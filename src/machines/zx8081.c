@@ -153,7 +153,7 @@ z80_bit zx8081_vsync_generator={0};
 
 //Para lanzar los hsync del hsync generator
 int ula_zx8081_position_x_testados=0;
-int ula_zx8081_position_x_testados_testados_antes=0;
+
 
 //indica si se simula la pantalla negra del modo fast
 z80_bit video_fast_mode_emulation;
@@ -412,7 +412,7 @@ void generar_zx8081_hsync(void)
     }
 
 
-    ula_zx8081_position_x_testados_testados_antes=t_estados;
+
     video_zx8081_linecntr++;
 
 
@@ -422,7 +422,7 @@ void generar_zx8081_hsync(void)
 
 int temp_anterior_nmi=0;
 
-void ula_zx8081_time_event(int delta)
+void ula_zx80_time_event(int delta)
 {
     extern int temp_extend_debug;
 
@@ -442,7 +442,51 @@ temp_extend_debug=0;
 
     //printf("delta %d ula_zx8081_position_x_testados %d\n",delta,ula_zx8081_position_x_testados);
 
-    ula_zx8081_position_x_testados_testados_antes=t_estados;
+
+
+
+    if (ula_zx8081_position_x_testados>=screen_testados_linea) {
+
+        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx8081_position_x_testados);
+
+        ula_zx8081_position_x_testados -=screen_testados_linea;
+
+        //Lanzamos hsync ya sea por timeout o porque este activado hsync
+        //si hay vsync no hay hsync
+        if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
+            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+            generar_zx8081_hsync();
+        }
+
+
+    }
+
+    if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
+
+
+}
+
+void ula_zx81_time_event(int delta)
+{
+    extern int temp_extend_debug;
+
+extern int tv_hsync_signal_pending;
+extern int tv_vsync_signal;
+temp_extend_debug=0;
+    //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
+    //    ula_zx8081_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
+
+    if (pending_disable_hsync) {
+        pending_disable_hsync=0;
+        tv_disable_hsync();
+    }
+
+
+    ula_zx8081_position_x_testados +=delta;
+
+    //printf("delta %d ula_zx8081_position_x_testados %d\n",delta,ula_zx8081_position_x_testados);
+
+
 
 
     if (ula_zx8081_position_x_testados>=screen_testados_linea) {
@@ -496,11 +540,11 @@ temp_extend_debug=0;
 
 }
 
+
 int zx8081_nmi_generator_time_event_t_estados=0;
 
-void zx8081_nmi_generator_time_event(int delta)
+void zx81_nmi_generator_time_event(int delta)
 {
-    if (!MACHINE_IS_ZX81_TYPE) return;
 
     zx8081_nmi_generator_time_event_t_estados+=delta;
 
@@ -523,7 +567,7 @@ void zx81_enable_nmi_generator(void)
     printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=1;
 
-    zx8081_nmi_generator_time_event_t_estados=0;
+    //zx8081_nmi_generator_time_event_t_estados=0;
 
 
 }
@@ -533,7 +577,7 @@ void zx81_disable_nmi_generator(void)
     printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=0;
 
-    zx8081_nmi_generator_time_event_t_estados=0;
+    //zx8081_nmi_generator_time_event_t_estados=0;
 
 }
 
@@ -797,6 +841,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     zx8081_vsync_generator.v=1;
 
 
+
     video_zx8081_ula_video_output=255;
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
@@ -885,7 +930,7 @@ void zx8081_out_any_port_video_stuff(void)
 
 
     ula_zx8081_position_x_testados=0;
-    ula_zx8081_position_x_testados_testados_antes=t_estados;
+
 
     tv_disable_vsync();
     zx8081_vsync_generator.v=0;

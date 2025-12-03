@@ -166,8 +166,16 @@ void cpu_core_loop_zx8081(void)
             }
             core_zx8081_t_estados_antes=t_estados;
 
-            ula_zx8081_time_event(delta);
-            zx8081_nmi_generator_time_event(delta);
+            //TODO: al final ula_zx80_time_event y ula_zx81_time_event deberian ser lo mismo
+            if (MACHINE_IS_ZX80_TYPE) {
+                ula_zx80_time_event(delta);
+            }
+            if (MACHINE_IS_ZX81_TYPE) {
+                ula_zx81_time_event(delta);
+                zx81_nmi_generator_time_event(delta);
+            }
+
+
             tv_time_event(delta);
 
 
@@ -459,6 +467,8 @@ void cpu_core_loop_zx8081(void)
 
             //Esto se ha testeado a mano con el clocktest.p, no tiene por que estar bien
             t_estados +=2;
+extern int temp_ajuste;
+            t_estados +=temp_ajuste;
 
         }
 
