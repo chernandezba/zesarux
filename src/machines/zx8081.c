@@ -929,7 +929,9 @@ void zx8081_out_any_port_video_stuff(void)
     }
 
 
-    ula_zx8081_position_x_testados=0;
+    if (MACHINE_IS_ZX80_TYPE) {
+        ula_zx8081_position_x_testados=0;
+    }
 
 
     tv_disable_vsync();
