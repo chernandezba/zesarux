@@ -467,10 +467,14 @@ void cpu_core_loop_zx8081(void)
 
 
             extern int temp_ajuste;
-            //t_estados +=temp_ajuste;
+            t_estados +=temp_ajuste;
 
             //First the NMI servicing, similar to CALL            =  17 clock cycles.
             t_estados += 11;
+
+            if (MACHINE_IS_ZX81_TYPE) {
+                t_estados +=3;
+            }
 
         }
 
@@ -505,7 +509,7 @@ void cpu_core_loop_zx8081(void)
                 t_estados -=6;
                 //printf("IM0/1 generada\n");
                 extern int temp_ajuste;
-                t_estados +=temp_ajuste;
+                //t_estados +=temp_ajuste;
 
                 //En ZX81
                 if (MACHINE_IS_ZX81_TYPE) {

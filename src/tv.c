@@ -154,6 +154,8 @@ void tv_increase_line(void)
 
 int temp_extend_debug=0;
 
+int tv_linea_inicio_vsync=0;
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -223,8 +225,20 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                 //vsync solo mueve la y, no la X?
                 //tv_x=0;
 
-                tv_y=0;
-                ejecutando_vsync=1;
+                int sync=1;
+
+                if (MACHINE_IS_ZX81_TYPE) {
+                    if (tv_linea_inicio_vsync<MINIMA_LINEA_ADMITIDO_VSYNC) {
+                        printf("Intento de inicio sync en %d\n",tv_linea_inicio_vsync);
+                        sync=0;
+                    }
+                }
+
+                if (sync) {
+
+                    tv_y=0;
+                    ejecutando_vsync=1;
+                }
             //}
         }
 
@@ -309,10 +323,13 @@ void tv_enable_vsync(void)
     //TODO: esta emulación de TV no debería depender de la máquina
     //es probable que los timings de ZX81 no estén bien y por eso sucede eso
     if (MACHINE_IS_ZX81_TYPE) {
+        /*
         if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) {
             printf("TV tried to enable vsync x: %6d y: %6d\n",tv_x,tv_y);
             return;
         }
+        */
+        tv_linea_inicio_vsync=tv_y;
     }
 
     if (tv_vsync_signal==0) {
