@@ -561,7 +561,7 @@ void zx81_nmi_generator_time_event(int delta)
     zx81_nmi_generator_time_event_t_estados+=delta;
 
     if (zx81_nmi_generator_time_event_t_estados>=screen_testados_linea) {
-
+        zx81_nmi_generator_time_event_t_estados -=screen_testados_linea;
         //printf("NMI generator. passed 64 microsec en t_estados %6d\n",t_estados);
 
         if (nmi_generator_active.v) {
@@ -570,7 +570,6 @@ void zx81_nmi_generator_time_event(int delta)
         }
 
         if (hsync_generator_active.v) {
-            //printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
             generar_zx8081_hsync();
         }
 /*
@@ -582,7 +581,7 @@ Creo que no tengo que hacer nada con la señal wait, esto es solo para un Z80 re
 */
 
 
-        zx81_nmi_generator_time_event_t_estados -=screen_testados_linea;
+
     }
 }
 
