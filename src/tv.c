@@ -156,6 +156,10 @@ int temp_extend_debug=0;
 
 int tv_linea_inicio_vsync=0;
 
+int debug_first_vsync=0;
+
+extern int contador_segundo;
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -227,15 +231,20 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
                 int sync=1;
 
+                /*
                 if (MACHINE_IS_ZX81_TYPE) {
                     if (tv_linea_inicio_vsync<MINIMA_LINEA_ADMITIDO_VSYNC) {
                         printf("Intento de inicio sync en %d\n",tv_linea_inicio_vsync);
                         sync=0;
                     }
                 }
+                */
 
                 if (sync) {
-
+                    if (debug_first_vsync) {
+                        debug_first_vsync=0;
+                        printf("TV fired           vsync x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
+                    }
                     tv_y=0;
                     ejecutando_vsync=1;
                 }
@@ -318,21 +327,28 @@ void tv_enable_vsync(void)
 {
     if (simulate_lost_vsync.v) return;
 
-    //no admitir vsync si electron no esta por debajo de posicion ...?
-    //Para estabilizar mazogs. lo hago solo para ZX81 por no romper la imagen en ZX80
-    //TODO: esta emulación de TV no debería depender de la máquina
-    //es probable que los timings de ZX81 no estén bien y por eso sucede eso
-    if (MACHINE_IS_ZX81_TYPE) {
-        /*
-        if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) {
-            printf("TV tried to enable vsync x: %6d y: %6d\n",tv_x,tv_y);
-            return;
-        }
-        */
-        tv_linea_inicio_vsync=tv_y;
-    }
 
     if (tv_vsync_signal==0) {
+
+        //no admitir vsync si electron no esta por debajo de posicion ...?
+        //Para estabilizar mazogs. lo hago solo para ZX81 por no romper la imagen en ZX80
+        //TODO: esta emulación de TV no debería depender de la máquina
+        //es probable que los timings de ZX81 no estén bien y por eso sucede eso
+        if (MACHINE_IS_ZX81_TYPE) {
+
+            if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) {
+                printf("TV tried to enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+                return;
+            }
+            else {
+                printf("TV Enabled vsync         x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
+            }
+
+            tv_linea_inicio_vsync=tv_y;
+
+            debug_first_vsync=1;
+        }
+
         //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
