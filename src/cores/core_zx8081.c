@@ -535,14 +535,14 @@ void cpu_core_loop_zx8081(void)
 
     }
 
-	//Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
-	if (core_end_frame_check_zrcp_zeng_snap.v) {
-		core_end_frame_check_zrcp_zeng_snap.v=0;
-		check_pending_zrcp_put_snapshot();
-		zeng_send_snapshot_if_needed();
+    //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+    if (core_end_frame_check_zrcp_zeng_snap.v) {
+        core_end_frame_check_zrcp_zeng_snap.v=0;
+        check_pending_zrcp_put_snapshot();
+        zeng_send_snapshot_if_needed();
 
         zeng_online_client_end_frame_from_core_functions();
-	}
+    }
 
     debug_get_t_stados_parcial_post();
 
