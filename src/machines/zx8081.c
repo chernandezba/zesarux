@@ -152,8 +152,6 @@ z80_bit hsync_generator_active;
 z80_bit zx8081_vsync_generator={0};
 
 //Para lanzar los hsync del hsync generator
-int ula_zx8081_position_x_testados=0;
-
 int ula_zx80_position_x_testados=0;
 
 //indica si se simula la pantalla negra del modo fast
@@ -535,8 +533,7 @@ void ula_zx81_time_event(int delta)
 extern int tv_hsync_signal_pending;
 extern int tv_vsync_signal;
 temp_extend_debug=0;
-    //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
-    //    ula_zx8081_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
+
 
     if (pending_disable_hsync) {
         pending_disable_hsync=0;
@@ -544,28 +541,6 @@ temp_extend_debug=0;
     }
 
 
-    ula_zx8081_position_x_testados +=delta;
-
-    //printf("delta %d ula_zx8081_position_x_testados %d\n",delta,ula_zx8081_position_x_testados);
-
-
-
-
-    if (ula_zx8081_position_x_testados>=screen_testados_linea) {
-
-        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx8081_position_x_testados);
-
-        ula_zx8081_position_x_testados -=screen_testados_linea;
-
-        //Lanzamos hsync ya sea por timeout o porque este activado hsync
-        //si hay vsync no hay hsync
-        if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
-            //printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
-            //generar_zx8081_hsync();
-        }
-
-
-    }
 
     if (zx8081_vsync_generator.v) {
         video_zx8081_linecntr=0;
