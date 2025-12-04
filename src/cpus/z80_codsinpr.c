@@ -1189,8 +1189,8 @@ void instruccion_118()
     //Indicar en que scanline se ha producido un halt
     if (debug_settings_show_fired_halt.v) core_spectrum_executed_halt_in_this_scanline=1;
 
-
-    if (MACHINE_IS_ZX81  && interrupcion_non_maskable_generada.v) t_estados -=3;
+    //que el halt dure 1t estado
+    if (MACHINE_IS_ZX81  /*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
 }
 
 void instruccion_119()

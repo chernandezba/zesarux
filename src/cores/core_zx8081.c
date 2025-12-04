@@ -144,7 +144,7 @@ void cpu_core_loop_zx8081(void)
                 byte_leido_core_zx8081=0;
 
                 //Ese halt tiene que durar 1 t estado
-                if (MACHINE_IS_ZX81 && interrupcion_non_maskable_generada.v) t_estados -=3;
+                if (MACHINE_IS_ZX81 /*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
             }
             else {
                 reg_pc++;
@@ -506,6 +506,11 @@ void cpu_core_loop_zx8081(void)
                 //printf("IM0/1 generada\n");
                 extern int temp_ajuste;
                 t_estados +=temp_ajuste;
+
+                //En ZX81
+                if (MACHINE_IS_ZX81_TYPE) {
+                    t_estados +=3;
+                }
 
             }
             else {
