@@ -505,7 +505,12 @@ temp_extend_debug=0;
 
     }
 
-    if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
+    if (zx8081_vsync_generator.v) {
+        video_zx8081_linecntr=0;
+
+    //temp. Esto no deberia ser asi, pero es una manera cutre de que se vean bien las lineas dentro de un caracter
+        video_zx8081_linecntr=7;
+    }
 
 
 }
@@ -520,15 +525,15 @@ void zx81_nmi_generator_time_event(int delta)
 
     if (zx8081_nmi_generator_time_event_t_estados>=screen_testados_linea) {
 
-        printf("NMI generator. passed 64 microsec en t_estados %6d\n",t_estados);
+        //printf("NMI generator. passed 64 microsec en t_estados %6d\n",t_estados);
 
         if (nmi_generator_active.v) {
-            printf("Generate nmi\n");
+            //printf("Generate nmi\n");
             generate_nmi();
         }
 
         if (hsync_generator_active.v) {
-            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+            //printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
             generar_zx8081_hsync();
         }
 /*
@@ -547,7 +552,7 @@ Creo que no tengo que hacer nada con la señal wait, esto es solo para un Z80 re
 void zx81_enable_nmi_generator(void)
 {
 
-    printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+    //printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=1;
 
     //zx8081_nmi_generator_time_event_t_estados=0;
@@ -557,7 +562,7 @@ void zx81_enable_nmi_generator(void)
 
 void zx81_disable_nmi_generator(void)
 {
-    printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+    //printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=0;
 
     //zx8081_nmi_generator_time_event_t_estados=0;

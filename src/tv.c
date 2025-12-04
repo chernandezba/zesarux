@@ -240,7 +240,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
             tv_x=0;
             if (tv_hsync_signal_pending) {
                 tv_hsync_signal_pending=0;
-                printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
+                //printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
                 tv_increase_line();
 
             }
@@ -281,13 +281,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 void tv_enable_hsync(void)
 {
     if (tv_hsync_signal==0) {
-        printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
     }
     else {
-        printf("Received hsync but was already enabled\n");
+        //printf("Received hsync but was already enabled\n");
     }
 }
 
@@ -305,10 +305,15 @@ void tv_enable_vsync(void)
     if (simulate_lost_vsync.v) return;
 
     //no admitir vsync si electron no esta por debajo de posicion ...?
-    //if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return;
+    //Para estabilizar mazogs. lo hago solo para ZX81 por no romper la imagen en ZX80
+    //TODO: esta emulación de TV no debería depender de la máquina
+    //es probable que los timings de ZX81 no estén bien y por eso sucede eso
+    if (MACHINE_IS_ZX81_TYPE) {
+        if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return;
+    }
 
     if (tv_vsync_signal==0) {
-        //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
         //sleep(1);
