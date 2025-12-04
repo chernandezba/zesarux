@@ -393,7 +393,7 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
         return caracteres_zx81_no_artistic[codigo];
 }
 
-
+int zx8081_nmi_generator_time_event_t_estados=0;
 
 
 int pending_disable_hsync=0;
@@ -516,7 +516,7 @@ temp_extend_debug=0;
 }
 
 
-int zx8081_nmi_generator_time_event_t_estados=0;
+
 
 void zx81_nmi_generator_time_event(int delta)
 {
