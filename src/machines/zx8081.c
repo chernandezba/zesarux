@@ -93,13 +93,13 @@ z80_byte   caracteres_zx81[]=" ''^.|/p#_^\"f$:?()><=+-*/;,."
 
 //Caracteres sin interrogantes ni nada, para funciones ocr a speech
 z80_byte   caracteres_zx80_solo_letras[]=
-			   " \"           $:?()-+*/=><;,."
+               " \"           $:?()-+*/=><;,."
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 z80_byte   caracteres_zx81_solo_letras[]=
-			  //01234567890 12345678901234567
-			   "           \" $:?()><=+-*/;,."
-			  //890123456789012345678901234567890123
+              //01234567890 12345678901234567
+               "           \" $:?()><=+-*/;,."
+              //890123456789012345678901234567890123
                            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 //Pasar de ascii a zx81. Empezando por el 32
@@ -223,18 +223,18 @@ int last_vsync_per_second;
 
 z80_byte ascii_to_zx81(z80_byte c)
 {
-	//?
-	if (c<32 || c>127) return 15;
+    //?
+    if (c<32 || c>127) return 15;
 
-	else return caracteres_ascii_zx81[c-32];
+    else return caracteres_ascii_zx81[c-32];
 }
 
 z80_byte ascii_to_zx80(z80_byte c)
 {
-	//?
-	if (c<32 || c>127) return 15;
+    //?
+    if (c<32 || c>127) return 15;
 
-	else return caracteres_ascii_zx80[c-32];
+    else return caracteres_ascii_zx80[c-32];
 }
 
 //z80_bit ejecutado_zona_pantalla;
@@ -244,25 +244,25 @@ z80_byte ascii_to_zx80(z80_byte c)
 void enable_wrx(void)
 {
   if (!MACHINE_IS_ZX8081) {
-		debug_printf (VERBOSE_INFO,"ZXpand can only be enabled on ZX80/81");
-		return;
-	}
+        debug_printf (VERBOSE_INFO,"ZXpand can only be enabled on ZX80/81");
+        return;
+    }
 
-	if (wrx_present.v==0) {
-		screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling WRX video mode");
-		debug_printf (VERBOSE_INFO,"Enabling WRX video mode");
-	}
+    if (wrx_present.v==0) {
+        screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling WRX video mode");
+        debug_printf (VERBOSE_INFO,"Enabling WRX video mode");
+    }
 
-	wrx_present.v=1;
+    wrx_present.v=1;
 }
 
 //Desactivar wrx
 void disable_wrx(void)
 {
-	if (wrx_present.v==1) {
-	        wrx_present.v=0;
-		debug_printf (VERBOSE_INFO,"Disabling WRX video mode");
-	}
+    if (wrx_present.v==1) {
+            wrx_present.v=0;
+        debug_printf (VERBOSE_INFO,"Disabling WRX video mode");
+    }
 }
 
 
@@ -270,23 +270,23 @@ void disable_wrx(void)
 
 void enable_ram_in_32768(void)
 {
-	ram_in_32768.v=1;
+    ram_in_32768.v=1;
 
-	//decimos la RAM para BASIC
-	//debug_printf (VERBOSE_INFO,"Setting BASIC RAMTOP to 49152");
-	//memoria_spectrum[16389]=192;
+    //decimos la RAM para BASIC
+    //debug_printf (VERBOSE_INFO,"Setting BASIC RAMTOP to 49152");
+    //memoria_spectrum[16389]=192;
 }
 
 void enable_ram_in_49152(void)
 {
 
-	//si habilitamos esta, tambien la de 32768
-	ram_in_32768.v=1;
-	enable_ram_in_32768();
+    //si habilitamos esta, tambien la de 32768
+    ram_in_32768.v=1;
+    enable_ram_in_32768();
         ram_in_49152.v=1;
 
         //decimos la RAM para BASIC
-	//debug_printf (VERBOSE_INFO,"Setting BASIC RAMTOP to 65535");
+    //debug_printf (VERBOSE_INFO,"Setting BASIC RAMTOP to 65535");
         //memoria_spectrum[16389]=255;
 }
 
@@ -309,10 +309,10 @@ z80_int zx8081_get_total_ram_with_rampacks(void)
 
 z80_int get_ramtop_with_rampacks(void)
 {
-	//retorna la ramtop teniendo en cuenta los rampack
-	if (ram_in_49152.v==1) return 65535;
-	if (ram_in_32768.v==1) return 49151;
-	return ramtop_zx8081;
+    //retorna la ramtop teniendo en cuenta los rampack
+    if (ram_in_49152.v==1) return 65535;
+    if (ram_in_32768.v==1) return 49151;
+    return ramtop_zx8081;
 }
 
 
@@ -321,20 +321,20 @@ z80_int get_ramtop_with_rampacks(void)
 void set_ramtop_with_rampacks(void)
 {
 
-	z80_int r;
+    z80_int r;
 
-	if (MACHINE_IS_ZX80_TYPE) return;
+    if (MACHINE_IS_ZX80_TYPE) return;
 
-	//Solo si hay expansiones de memoria
-	if (ram_in_32768.v==1 || ram_in_49152.v==1) {
-		r=get_ramtop_with_rampacks();
-		r++;
-		if (r==0) r=65535;
+    //Solo si hay expansiones de memoria
+    if (ram_in_32768.v==1 || ram_in_49152.v==1) {
+        r=get_ramtop_with_rampacks();
+        r++;
+        if (r==0) r=65535;
 
-		debug_printf (VERBOSE_INFO,"Setting BASIC RAMTOP to %d",r);
-		memoria_spectrum[16389]=value_16_to_8h(r);
-		memoria_spectrum[16388]=value_16_to_8l(r);
-	}
+        debug_printf (VERBOSE_INFO,"Setting BASIC RAMTOP to %d",r);
+        memoria_spectrum[16389]=value_16_to_8h(r);
+        memoria_spectrum[16388]=value_16_to_8l(r);
+    }
 }
 
 
@@ -348,14 +348,14 @@ z80_byte da_codigo81(z80_byte codigo,z80_bit *inverse)
   else inverse->v=0;
 
   if (MACHINE_IS_ZX80_TYPE) {
-	//zx80
-	if (texto_artistico.v==1) return (codigo<64 ? caracteres_zx80[codigo] : '~');
-	else return (codigo<64 ? caracteres_zx80_no_artistic[codigo] : '~');
-	}
+    //zx80
+    if (texto_artistico.v==1) return (codigo<64 ? caracteres_zx80[codigo] : '~');
+    else return (codigo<64 ? caracteres_zx80_no_artistic[codigo] : '~');
+    }
   else {
-	//zx81
-	if (texto_artistico.v==1) return (codigo<64 ? caracteres_zx81[codigo] : '~');
-	else return (codigo<64 ? caracteres_zx81_no_artistic[codigo] : '~');
+    //zx81
+    if (texto_artistico.v==1) return (codigo<64 ? caracteres_zx81[codigo] : '~');
+    else return (codigo<64 ? caracteres_zx81_no_artistic[codigo] : '~');
   }
 
 }
@@ -373,18 +373,18 @@ z80_byte da_codigo81_solo_letras(z80_byte codigo,z80_bit *inverse)
 
   if (MACHINE_IS_ZX80_TYPE) {
         //zx80
-	return (codigo<64 ? caracteres_zx80_solo_letras[codigo] : ' ');
+    return (codigo<64 ? caracteres_zx80_solo_letras[codigo] : ' ');
         }
   else {
         //zx81
-	return (codigo<64 ? caracteres_zx81_solo_letras[codigo] : ' ');
+    return (codigo<64 ? caracteres_zx81_solo_letras[codigo] : ' ');
   }
 
 }
 
 z80_byte da_codigo_zx80_no_artistic(z80_byte codigo)
 {
-	return caracteres_zx80_no_artistic[codigo];
+    return caracteres_zx80_no_artistic[codigo];
 }
 
 z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
@@ -404,52 +404,52 @@ int da_amplitud_speaker_zx8081(void)
 //Establece tamanyo ram (sin contar ram packs) de zx80/81. Valor entre 1 y 16
 void set_zx8081_ramtop(z80_byte valor)
 {
-	if (valor<1 || valor>16) {
-		cpu_panic("Cannot set ZX80/81 RAM");
-	}
+    if (valor<1 || valor>16) {
+        cpu_panic("Cannot set ZX80/81 RAM");
+    }
 
-	ramtop_zx8081=16383+1024*valor;
+    ramtop_zx8081=16383+1024*valor;
 }
 
 
 void enable_chroma81(void)
 {
 
-	if (!MACHINE_IS_ZX8081) return;
+    if (!MACHINE_IS_ZX8081) return;
 
 
-	//en drivers stdout o curses, no habilitar colores, aunque dejamos si que dejamos habilitar las paginas de ram y el rainbow
-	if (!strcmp(scr_new_driver_name,"curses") || !strcmp(scr_new_driver_name,"stdout")) {
-		debug_printf (VERBOSE_WARN,"Chroma 81 is not supported on curses or stdout drivers");
-	}
-	else {
-		if (chroma81.v==0) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling Chroma81 video mode");
-		chroma81.v=1;
-	}
+    //en drivers stdout o curses, no habilitar colores, aunque dejamos si que dejamos habilitar las paginas de ram y el rainbow
+    if (!strcmp(scr_new_driver_name,"curses") || !strcmp(scr_new_driver_name,"stdout")) {
+        debug_printf (VERBOSE_WARN,"Chroma 81 is not supported on curses or stdout drivers");
+    }
+    else {
+        if (chroma81.v==0) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling Chroma81 video mode");
+        chroma81.v=1;
+    }
 
 
         ram_in_8192.v=1;
         enable_ram_in_49152();
-	enable_rainbow();
+    enable_rainbow();
 }
 
 void disable_chroma81(void)
 {
-	chroma81.v=0;
+    chroma81.v=0;
 }
 
 
 void chroma81_return_mode1_colour(z80_int dir,int *colortinta,int *colorpapel)
 {
                         //1 attribute file
-			z80_byte c=peek_byte_no_time(dir|0x8000);
+            z80_byte c=peek_byte_no_time(dir|0x8000);
                         *colortinta=c&15;
                         *colorpapel=(c>>4)&15;
 }
 
 int color_es_chroma(void)
 {
-	return (chroma81.v && (chroma81_port_7FEF & 32) ? 1 : 0);
+    return (chroma81.v && (chroma81_port_7FEF & 32) ? 1 : 0);
 }
 
 
@@ -470,32 +470,32 @@ void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int
 
 
 
-	//Si modo chroma81 y lo ha activado
+    //Si modo chroma81 y lo ha activado
 
-	if (color_es_chroma() ) {
-		//ver modo
-		if ((chroma81_port_7FEF&16)!=0) {
-			//1 attribute file
-			chroma81_return_mode1_colour(reg_pc,&zx80801_last_sprite_video_tinta,&zx80801_last_sprite_video_papel);
-			//printf ("modo 1\n");
-		}
-		else {
-			//0 character code
-			//tablas colores van primero para los 64 normales y luego para los 64 inversos
-			if (inverse) {
-				caracter +=64;
-			}
+    if (color_es_chroma() ) {
+        //ver modo
+        if ((chroma81_port_7FEF&16)!=0) {
+            //1 attribute file
+            chroma81_return_mode1_colour(reg_pc,&zx80801_last_sprite_video_tinta,&zx80801_last_sprite_video_papel);
+            //printf ("modo 1\n");
+        }
+        else {
+            //0 character code
+            //tablas colores van primero para los 64 normales y luego para los 64 inversos
+            if (inverse) {
+                caracter +=64;
+            }
 
-			z80_int d=caracter*8+0xc000;
-			d=d+(video_zx8081_linecntr&7);
-			z80_byte leido=peek_byte_no_time(d);
-			zx80801_last_sprite_video_tinta=leido&15;
-			zx80801_last_sprite_video_papel=(leido>>4)&15;
+            z80_int d=caracter*8+0xc000;
+            d=d+(video_zx8081_linecntr&7);
+            z80_byte leido=peek_byte_no_time(d);
+            zx80801_last_sprite_video_tinta=leido&15;
+            zx80801_last_sprite_video_papel=(leido>>4)&15;
 
-			//printf ("modo 0\n");
+            //printf ("modo 0\n");
 
-		}
-	}
+        }
+    }
 
 
     zx80801_last_sprite_video=byte_leido;
@@ -507,26 +507,26 @@ void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int
 z80_byte fetch_opcode_zx81_graphics(void)
 {
 
-	z80_byte op;
+    z80_byte op;
 
     op=peek_byte_zx80_no_time(reg_pc&0x7fff);
 
-	if( (reg_pc&0x8000) ) {
+    if( (reg_pc&0x8000) ) {
         //se esta ejecutando la zona de pantalla
 
         z80_byte caracter;
 
-		if (op&64 || z80_halt_signal.v) {
-			caracter=0;
-			//Otros caracteres no validos (y el HALT) generan video display a 0
+        if (op&64 || z80_halt_signal.v) {
+            caracter=0;
+            //Otros caracteres no validos (y el HALT) generan video display a 0
 
-			return op;
-		}
+            return op;
+        }
 
-		else {
-			caracter=op;
-			op=0;
-		}
+        else {
+            caracter=op;
+            op=0;
+        }
 
 
         z80_byte sprite;
@@ -618,30 +618,30 @@ z80_byte fetch_opcode_zx81_graphics(void)
         screen_store_scanline_char_zx8081(sprite,caracter,caracter_inverse.v);
 
 
-		//Si no modo real video
-		if (rainbow_enabled.v==0) {
-			//Intentar autodetectar si hay que activar realvideo
-			if (autodetect_rainbow.v) {
-				if (MACHINE_IS_ZX80_TYPE) {
-					//ZX80
-					if (reg_i!=0x0e) {
-						debug_printf(VERBOSE_INFO,"Autoenabling realvideo so the program seems to need it (I register on ZX80 != 0x0e)");
-						enable_rainbow();
-					}
-				}
-				if (MACHINE_IS_ZX81_TYPE) {
-					//ZX81
-					if (reg_i!=0x1e) {
-						debug_printf(VERBOSE_INFO,"Autoenabling realvideo so the program seems to need it (I register on ZX81 != 0x1e)");
-						enable_rainbow();
-					}
-				}
-			}
+        //Si no modo real video
+        if (rainbow_enabled.v==0) {
+            //Intentar autodetectar si hay que activar realvideo
+            if (autodetect_rainbow.v) {
+                if (MACHINE_IS_ZX80_TYPE) {
+                    //ZX80
+                    if (reg_i!=0x0e) {
+                        debug_printf(VERBOSE_INFO,"Autoenabling realvideo so the program seems to need it (I register on ZX80 != 0x0e)");
+                        enable_rainbow();
+                    }
+                }
+                if (MACHINE_IS_ZX81_TYPE) {
+                    //ZX81
+                    if (reg_i!=0x1e) {
+                        debug_printf(VERBOSE_INFO,"Autoenabling realvideo so the program seems to need it (I register on ZX81 != 0x1e)");
+                        enable_rainbow();
+                    }
+                }
+            }
 
-		}
-	}
+        }
+    }
 
-	return op;
+    return op;
 
 }
 
@@ -876,7 +876,7 @@ Bit  Expl.
 void zx8081_out_any_port_video_stuff(void)
 {
 
-	//printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
+    //printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
 
 
     //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
@@ -901,20 +901,20 @@ void zx8081_out_any_port_video_stuff(void)
     modificado_border.v=1;
 
 
-	//reseteamos contador de deteccion de modo fast-pantalla negra. Para modo no-realvideo
-	video_fast_mode_next_frame_black=0;
+    //reseteamos contador de deteccion de modo fast-pantalla negra. Para modo no-realvideo
+    video_fast_mode_next_frame_black=0;
 
 
-	//y ponemos a high la salida del altavoz
-	bit_salida_sonido_zx8081.v=1;
+    //y ponemos a high la salida del altavoz
+    bit_salida_sonido_zx8081.v=1;
 
-	set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
+    set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
 
 
-	if (zx8081_vsync_sound.v==1) {
-		//solo resetea contador de silencio cuando esta activo el vsync sound - beeper
-		reset_beeper_silence_detection_counter();
-	}
+    if (zx8081_vsync_sound.v==1) {
+        //solo resetea contador de silencio cuando esta activo el vsync sound - beeper
+        reset_beeper_silence_detection_counter();
+    }
 
 
 }
