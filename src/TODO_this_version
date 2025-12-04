@@ -73,167 +73,25 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
 
+------
 
+- Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
+Y tiempos para hsync y nmi se basan en t-estados y en alterar t-estados artificialmente, esto no es correcto
 
-
--quiza hsync_generator_active.v en zx80/81, que no se usa practicamente, puede servir para estabilizar la imagen en horizontal
-
-3. IN A,FE  - turns off the HSYNC generator (only if NMI is off)
-(only if NMI is off)...
-
-Creo que la clave está en generar hsync al llegar a un halt
-Y luego.. la nmi cuando se genera?
-
-https://quix.us/timex/rigter/ZX@20Video@20Tutorial.html
-
-5. ZX81 VIDEO HARDWARE
-
-The ZX81 video hardware consists of the Z80 CPU, ROM, RAM and the larger part of the ZX81 Sinclair Logic Chip (usually called the ULA) as shown in FIG 1 with all relevant connections including the isolation resistors R. For simplicity only the 2K RAM is shown. The ULA contains a 6.5 MHz crystal oscillator and a frequency divider, which generates horizontal sync pulses at the video output and NMI pulses on the NMI output. The HSYNC and the NMI outputs can be controlled with the following I/O operations.
-
-2. While the CPU executes the application code, the CPU is interrupted every 64 us by the NMI generator at the same time the ULA generates a horizontal sync pulse
-
-Pues en teoria generar la hsync y la nmi al mismo tiempo
-
-https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-display-system/
-
-    Each character code (CHR$) byte in DFILE is addressed by the CPU PC, on the rising edge T2 data is loaded from DFILE into the ULA : bits 0-5 into a 6 bit ULA address latch while bit 7 is loaded into 1 bit ULA video invert latch
-    On the falling edge of T2, the ULA forces all CPU data lines to zero.
-    On the rising edge of T3 the low data lines are interpreted by the CPU as a NOP instruction.
-    During T3/4, the CPU executes the Refresh cycle and ROM address lines are generated with I register on A9-A15, the ULA 6 bit character code register on A3-A8, and the ULA modulo 8 line counter on line A0-A2.
-    On the falling edge of T4, pattern data from the ROM is loaded into ULA video shift register and 8 video pixels are shifted out at 6.5MHz
-    If character code bit 7 latch in ULA equals 1, video pixels are inverted.
-    The CPU increments the program counter and fetches the next character code.
-
-
-    This repeats until a HALT (Sinclair) is fetched.
-    HALT opcode bit 6 = 1 and is therefore executed (no NOP)
-    The ULA generates a HSYNC pulse independend of the CPU timing and the ULA LCNTR is incremented
-
-    The halted CPU continues to execute NOPs, incrementing register R and samples the INT input on the rising edge of each T4.
-    When A6, which is hardwired to INT, goes low during refresh time, (bit 6 of the R reg = 0), the Z80 executes the INT routine (below 32K)
-    CPU returns from INT and resumes „excution“ of DFILE CHR$ codes.
-    The process repeats 192 times and then INT routine returns to the main video routine, turns on the NMI generator and switches back to the application code.
-
-
--nuevo render zx81
-ok *orquesta, sound.p, beatles.p: franjas deberia haber un timeout hsync?
-*algunos pseudo hi res tiemblan en horizontal
-ok *wrx ok?
-ok *chr ok?
-*no se deberia decrementar t_estados nunca
-ok *rutina de save no hace franjas ni sonido correcto
-ok *rutina de load?
-ok *eliminar ajustes de horizontal stabilization, lnctr counter
-*modo fast extraño. se desplaza en horizontal en el prompt. no se queda en negro con un bucle infinito.
-*zx80 tiembla. mismo con modo fast en prompt
-*pink panther lineas desplazadas. quiza en vsync hay que ajustar zx8081_video_electron_position_x?
-*valor arbitrario para hsync timeout: if (zx8081_video_electron_position_x_testados>300)
-
-
-
-Parece que el vsync llega siempre 417 ciclos antes de lo que deberia
-Tambien puede ser 417-207-207=3 . una instruccion que se lanza una unica vez en todo el frame de pantalla que tenga que tardar 3 ciclos mas de lo que tarda
-
-set 7,h NO. falla timing test si aumento 3 estados
-dec (iy+dd) no
-in a,(c) no
-out (nn),a no
-halt no
-
-Creo que , por una parte, hay que incrementar t_estados en 3 al recibir un vsync (o al total de frame?)
-Y por otra, ver cuando se desincroniza la pantalla, centrarla donde corresponde. como hacer eso??
-
-Quizá es culpa de in o out.. igual en algun caso tarda mas o menos… no se. Alguna especie de puertos con contencion?
-
-Que se lanza al pulsar una tecla
-Que hace que se desplace el texto en horizontal?
-
-O quizá puedo detectar si empieza a renderizar texto y no esta en coordenada x inicial, que la ajuste (eso solo 1 vez por cada frame de video)
-
-O quizá vsync tiene que sumar testados para que sea múltiple de 4(por ejemplo)-> hace lo mismo
-
-ok revisado A final de frame no se debería hacer nada especial. Sonido y poco más. Pero no representa necesariamente final de frame de vídeo de zx81
-
-O quizá pos x electrón solo actualizar després de instrucciones de código propiamente. Y no con incrementos por interrupción por ejemplo  -> hace lo mismo
-
-incrementar pos solo con fetch -> hace lo mismo
-
-hacer que el primer fetch de linea ponga coordenada electron a 0 -> hace lo mismo
-
-rehacer rutina de render de scanline -> creo que no cambiaria nada, creo que la rutina está bien
-
-El problema tiene que ser que hay algun opcode que no tiene bien los timings
-O que parece que a principio de scanline no salta donde corresponde (que quizá esto es culpa de los timings)
-
-->probar debugando rutina de escribir en pantalla viendo donde apunta electron_x en cada momento, a ver que se me ocurre...
-Mi teoria es que no salta a la dirección correcta (>C000H la que sea), o salta algunos caracteres antes de que comience una linea (por alguna razón que no se),
-de ahi vendria el desplazamiento de caracteres. Quizá esto sea misma consecuencia de los timings
-
-vsync_per_second no se usa=??
-revisar vsync sound porque puede que no vaya bien ahora, o vsync detect sound
-no estoy seguro de cuando se resetea video_zx8081_linecntr,
-o se pone a 0 al liberar vsync, o continuamente se pone a 0 cuando esta el vsync activo
-en cualquier caso creo que el resultado final es el mismo
-
-revisar tscaline_draw_timeout para que funcione modo fast en negro
-
-view variables interfiere en render!! con breakout por ejemplo
-
-
-
-mazogs activa vsync en linea 2.... y no lo quita aparentemente
-hsync y la nmi se lanzan cuando hay vsync? no deberian
-1 GOTO 1 deja colgado ZX81
-vsync tiene limite? si se puede quedar siempre con vsync,
-luego
-
-franjas grabacion save no aparecen bien. probablemente por gestion de hsync timeout o vsync timeout
-
-tiene sentido simulate_lost_hsync?
-
+-view variables interfiere en render!! con breakout por ejemplo
+-revisar tscaline_draw_timeout para que funcione modo fast en negro, con modo no-realvideo
+-franjas grabacion save no aparecen bien. probablemente por gestion de hsync timeout o vsync timeout
 si se activa simular vsync, se ven franjas de grabacion
 quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0/1 al casette) no es correcta y por eso no engancha vsync nunca
+-tiene sentido simulate_lost_hsync?
+
+Info video:
+
+https://quix.us/timex/rigter/ZX@20Video@20Tutorial.html
 
 
 VSYNC es realmente secuencia de señal vsync + pulsos hsync. como envia esto el ZX81 realmente?
 Parece que durante vsync no envia hsync, como se deberia esperar
-
--Cuando lanza nmi no debería poner el contador a 0, sino quitarle -207 para compensar exceso
-Aunque esto no parece ser el problema de parpadeo en mazogs. Pero tenerlo en cuenta para más adelante
-Pero con este cambio, breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
-Quiza ese -207 es como deberia ser, y el problema de breakout y space invaders 1k y 3k es por fallo de timings en el Z80
-de alguna instrucción. O de como se dispara la interrupción mascarable al cambiar el bit 6 de R
-
-
--Ajuste temporal
-if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return; (con MINIMA_LINEA_ADMITIDO_VSYNC=300)
-Esto da imagen casi estable en Mazogs y 3d monster maze. Sin embargo, da vsync timeout en qs defenda
-Creo que el problema es mas de timings al disparar la nmi, que no el tema de no aceptar vsync por debajo de cierta posición Y
-Aunque con esto, el save aparece franjas en toda la pantalla (quizá esto no es así en máquina real)
-*O que la nmi solo deberia dispararse cuando:
-if (hsync_generator_active.v && zx8081_vsync_generator.v==0) {
-
-->Creo que todo el problema de mazogs etc y los demas de zx81 que se ven mal, es que
-la cpu (el juego) no sabe donde empieza vsync, porque a veces lanza nmi hasta linea 8 y luego no vuelve hasta la 138, cuando
-lo normal? seria lanzar hasta 56 y luego volver en la 187??
-
--Quizá algo que sucede a final de frame de TV (o de core) que descontrola la nmi?
-Algún contador de t estados?
-
-O quizá la nmi se dispara algo más tarde de que empiece el hsync. Tendría lógica porque el hsync ¿necesita? una secuencia de pulsos y pasa un tiempo hasta que se acepta
-
-Quizá la solución sigue pasando por disparar la nmi desde el controlador de tv
-
--nmi sin hsync???
-
-1) poss nmi en t_estados  59126 (dif    219) y:   34 conteo x:      0
-2) nmi      en t_estados  59126 (dif    219) y:   34 conteo x:      0
-1) poss nmi en t_estados  59341 (dif    215) y:   35 conteo x:      0
-2) nmi      en t_estados  59341 (dif    215) y:   35 conteo x:      0
-
--disparo la nmi desde tv cuando hace hsync? se va a negro. aunque no se bloquea, solo que no se ve
--digo que nmi no se tiene que lanzar si hay vsync? se pone en negro, no lanza nmis
--en tv permitir hsync aunque este vsync? no cambia nada
 
 
 -Ver rom rutinas nmi y tiempos
@@ -252,7 +110,5 @@ HALT                    ; (1) HALT synchronizes with NMI.
 
 
 ->le pongo que cada halt tarde 1 t-estado cuando se ha lanzado nmi
-
-
 
 -Modo FAST del ZX81 no se ve bien

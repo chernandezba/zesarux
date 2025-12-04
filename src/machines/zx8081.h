@@ -152,6 +152,7 @@ extern z80_byte ascii_to_zx80(z80_byte c);
 extern z80_int zx8081_get_standard_ram(void);
 
 extern void ula_zx80_time_event(int delta);
+extern void ula_zx81_time_event(int delta);
 extern void zx81_enable_nmi_generator(void);
 extern void zx81_disable_nmi_generator(void);
 
