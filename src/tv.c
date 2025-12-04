@@ -247,6 +247,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                     }
                     tv_y=0;
                     ejecutando_vsync=1;
+                    video_zx8081_ula_video_output=255;
                 }
             //}
         }
@@ -320,6 +321,7 @@ void tv_disable_hsync(void)
         //printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=0;
+        video_zx8081_ula_video_output=0;
     }
 }
 

@@ -830,7 +830,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
 
 
-    video_zx8081_ula_video_output=255;
+    //video_zx8081_ula_video_output=255;
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
@@ -926,7 +926,7 @@ void zx8081_out_any_port_video_stuff(void)
     zx8081_vsync_generator.v=0;
 
 
- 	video_zx8081_ula_video_output=0;
+    //video_zx8081_ula_video_output=0;
 
 
     modificado_border.v=1;
