@@ -68,7 +68,9 @@ extern int zx8081_detect_vsync_sound_counter;
 #define NORMAL_TIMEOUT_LINEA_VSYNC 400
 
 //normalmente 280
-#define MINIMA_LINEA_ADMITIDO_VSYNC 300
+
+//A partir de vsync si inicia en 305 , mazogs da imagen estable
+#define MINIMA_LINEA_ADMITIDO_VSYNC 305
 //#define MINIMA_LINEA_ADMITIDO_VSYNC 100
 
 

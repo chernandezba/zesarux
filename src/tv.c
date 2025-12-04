@@ -309,11 +309,14 @@ void tv_enable_vsync(void)
     //TODO: esta emulación de TV no debería depender de la máquina
     //es probable que los timings de ZX81 no estén bien y por eso sucede eso
     if (MACHINE_IS_ZX81_TYPE) {
-        if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) return;
+        if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) {
+            printf("TV tried to enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+            return;
+        }
     }
 
     if (tv_vsync_signal==0) {
-        printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
+        //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
         //sleep(1);
