@@ -45,7 +45,6 @@ TODO
 
 vsync_per_second
 zx8081_detect_vsync_sound
-simulate_lost_vsync
 
 */
 
