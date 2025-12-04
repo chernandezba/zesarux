@@ -453,7 +453,7 @@ int color_es_chroma(void)
 }
 
 
-int zx81_nmi_generator_time_event_t_estados=0;
+int ula_zx81_time_event_t_estados=0;
 
 
 int pending_disable_hsync=0;
@@ -546,11 +546,11 @@ void ula_zx81_time_event(int delta)
 
 
 
-    zx81_nmi_generator_time_event_t_estados+=delta;
+    ula_zx81_time_event_t_estados+=delta;
 
-    if (zx81_nmi_generator_time_event_t_estados>=screen_testados_linea) {
-        zx81_nmi_generator_time_event_t_estados -=screen_testados_linea;
-        //printf("NMI generator. passed 64 microsec en t_estados %6d\n",t_estados);
+    if (ula_zx81_time_event_t_estados>=screen_testados_linea) {
+        ula_zx81_time_event_t_estados -=screen_testados_linea;
+
 
         if (nmi_generator_active.v) {
             //printf("Generate nmi\n");
@@ -565,7 +565,7 @@ Al generar nmi,
 /Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
 This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
 the End of Line character, which will not happen on the non-visible lines.
-Creo que no tengo que hacer nada con la señal wait, esto es solo para un Z80 real
+->Esto se resuelve haciendo que el HALT en Z80 tarde 1 t-estado
 */
 
 
@@ -579,7 +579,7 @@ void zx81_enable_nmi_generator(void)
     //printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=1;
 
-    //zx81_nmi_generator_time_event_t_estados=0;
+    //ula_zx81_time_event_t_estados=0;
 
 
 }
@@ -589,7 +589,7 @@ void zx81_disable_nmi_generator(void)
     //printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=0;
 
-    //zx81_nmi_generator_time_event_t_estados=0;
+    //ula_zx81_time_event_t_estados=0;
 
 }
 
