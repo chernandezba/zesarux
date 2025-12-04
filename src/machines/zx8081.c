@@ -393,6 +393,67 @@ z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
         return caracteres_zx81_no_artistic[codigo];
 }
 
+
+
+int da_amplitud_speaker_zx8081(void)
+{
+                                if (bit_salida_sonido_zx8081.v) return amplitud_speaker_actual_zx8081;
+                                else return -amplitud_speaker_actual_zx8081;
+}
+
+
+//Establece tamanyo ram (sin contar ram packs) de zx80/81. Valor entre 1 y 16
+void set_zx8081_ramtop(z80_byte valor)
+{
+	if (valor<1 || valor>16) {
+		cpu_panic("Cannot set ZX80/81 RAM");
+	}
+
+	ramtop_zx8081=16383+1024*valor;
+}
+
+
+void enable_chroma81(void)
+{
+
+	if (!MACHINE_IS_ZX8081) return;
+
+
+	//en drivers stdout o curses, no habilitar colores, aunque dejamos si que dejamos habilitar las paginas de ram y el rainbow
+	if (!strcmp(scr_new_driver_name,"curses") || !strcmp(scr_new_driver_name,"stdout")) {
+		debug_printf (VERBOSE_WARN,"Chroma 81 is not supported on curses or stdout drivers");
+	}
+	else {
+		if (chroma81.v==0) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling Chroma81 video mode");
+		chroma81.v=1;
+	}
+
+
+        ram_in_8192.v=1;
+        enable_ram_in_49152();
+	enable_rainbow();
+}
+
+void disable_chroma81(void)
+{
+	chroma81.v=0;
+}
+
+
+void chroma81_return_mode1_colour(z80_int dir,int *colortinta,int *colorpapel)
+{
+                        //1 attribute file
+			z80_byte c=peek_byte_no_time(dir|0x8000);
+                        *colortinta=c&15;
+                        *colorpapel=(c>>4)&15;
+}
+
+int color_es_chroma(void)
+{
+	return (chroma81.v && (chroma81_port_7FEF & 32) ? 1 : 0);
+}
+
+
 int zx8081_nmi_generator_time_event_t_estados=0;
 
 
@@ -571,63 +632,6 @@ void zx81_disable_nmi_generator(void)
 
 
 
-int da_amplitud_speaker_zx8081(void)
-{
-                                if (bit_salida_sonido_zx8081.v) return amplitud_speaker_actual_zx8081;
-                                else return -amplitud_speaker_actual_zx8081;
-}
-
-
-//Establece tamanyo ram (sin contar ram packs) de zx80/81. Valor entre 1 y 16
-void set_zx8081_ramtop(z80_byte valor)
-{
-	if (valor<1 || valor>16) {
-		cpu_panic("Cannot set ZX80/81 RAM");
-	}
-
-	ramtop_zx8081=16383+1024*valor;
-}
-
-
-void enable_chroma81(void)
-{
-
-	if (!MACHINE_IS_ZX8081) return;
-
-
-	//en drivers stdout o curses, no habilitar colores, aunque dejamos si que dejamos habilitar las paginas de ram y el rainbow
-	if (!strcmp(scr_new_driver_name,"curses") || !strcmp(scr_new_driver_name,"stdout")) {
-		debug_printf (VERBOSE_WARN,"Chroma 81 is not supported on curses or stdout drivers");
-	}
-	else {
-		if (chroma81.v==0) screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling Chroma81 video mode");
-		chroma81.v=1;
-	}
-
-
-        ram_in_8192.v=1;
-        enable_ram_in_49152();
-	enable_rainbow();
-}
-
-void disable_chroma81(void)
-{
-	chroma81.v=0;
-}
-
-
-void chroma81_return_mode1_colour(z80_int dir,int *colortinta,int *colorpapel)
-{
-                        //1 attribute file
-			z80_byte c=peek_byte_no_time(dir|0x8000);
-                        *colortinta=c&15;
-                        *colorpapel=(c>>4)&15;
-}
-
-int color_es_chroma(void)
-{
-	return (chroma81.v && (chroma81_port_7FEF & 32) ? 1 : 0);
-}
 
 z80_byte zx80801_last_sprite_video=0;
 int zx80801_last_sprite_video_tinta=0;
