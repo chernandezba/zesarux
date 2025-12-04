@@ -453,146 +453,6 @@ int color_es_chroma(void)
 }
 
 
-int ula_zx81_time_event_t_estados=0;
-
-
-int pending_disable_hsync=0;
-
-void generar_zx8081_hsync(void)
-{
-
-    tv_enable_hsync();
-    pending_disable_hsync=1;
-
-
-    //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
-    //TODO: esto se deberia hacer tanto para ZX80 como ZX81
-    if (MACHINE_IS_ZX80_TYPE) {
-        ula_zx80_position_x_testados=0;
-    }
-
-
-
-    video_zx8081_linecntr++;
-
-
-}
-
-
-
-int temp_anterior_nmi=0;
-
-void ula_zx80_time_event(int delta)
-{
-    extern int temp_extend_debug;
-
-extern int tv_hsync_signal_pending;
-extern int tv_vsync_signal;
-temp_extend_debug=0;
-    //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
-    //    ula_zx80_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
-
-    if (pending_disable_hsync) {
-        pending_disable_hsync=0;
-        tv_disable_hsync();
-    }
-
-
-    ula_zx80_position_x_testados +=delta;
-
-    //printf("delta %d ula_zx80_position_x_testados %d\n",delta,ula_zx80_position_x_testados);
-
-
-
-
-    if (ula_zx80_position_x_testados>=screen_testados_linea) {
-
-        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx80_position_x_testados);
-
-        ula_zx80_position_x_testados -=screen_testados_linea;
-
-        //Lanzamos hsync ya sea por timeout o porque este activado hsync
-        //si hay vsync no hay hsync
-        if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
-            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
-            generar_zx8081_hsync();
-        }
-
-
-    }
-
-    if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
-
-
-}
-
-
-void ula_zx81_time_event(int delta)
-{
-
-    if (pending_disable_hsync) {
-        pending_disable_hsync=0;
-        tv_disable_hsync();
-    }
-
-
-
-    if (zx8081_vsync_generator.v) {
-        video_zx8081_linecntr=0;
-
-    //temp. Esto no deberia ser asi, pero es una manera cutre de que se vean bien las lineas dentro de un caracter
-        video_zx8081_linecntr=7;
-    }
-
-
-
-    ula_zx81_time_event_t_estados+=delta;
-
-    if (ula_zx81_time_event_t_estados>=screen_testados_linea) {
-        ula_zx81_time_event_t_estados -=screen_testados_linea;
-
-
-        if (nmi_generator_active.v) {
-            //printf("Generate nmi\n");
-            generate_nmi();
-        }
-
-        if (hsync_generator_active.v) {
-            generar_zx8081_hsync();
-        }
-/*
-Al generar nmi,
-/Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
-This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
-the End of Line character, which will not happen on the non-visible lines.
-->Esto se resuelve haciendo que el HALT en Z80 tarde 1 t-estado
-*/
-
-
-
-    }
-}
-
-void zx81_enable_nmi_generator(void)
-{
-
-    //printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
-    nmi_generator_active.v=1;
-
-    //ula_zx81_time_event_t_estados=0;
-
-
-}
-
-void zx81_disable_nmi_generator(void)
-{
-    //printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
-    nmi_generator_active.v=0;
-
-    //ula_zx81_time_event_t_estados=0;
-
-}
-
 
 
 
@@ -782,6 +642,146 @@ z80_byte fetch_opcode_zx81_graphics(void)
 	}
 
 	return op;
+
+}
+
+int ula_zx81_time_event_t_estados=0;
+
+
+int pending_disable_hsync=0;
+
+void generar_zx8081_hsync(void)
+{
+
+    tv_enable_hsync();
+    pending_disable_hsync=1;
+
+
+    //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
+    //TODO: esto se deberia hacer tanto para ZX80 como ZX81
+    if (MACHINE_IS_ZX80_TYPE) {
+        ula_zx80_position_x_testados=0;
+    }
+
+
+
+    video_zx8081_linecntr++;
+
+
+}
+
+
+
+int temp_anterior_nmi=0;
+
+void ula_zx80_time_event(int delta)
+{
+    extern int temp_extend_debug;
+
+extern int tv_hsync_signal_pending;
+extern int tv_vsync_signal;
+temp_extend_debug=0;
+    //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
+    //    ula_zx80_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
+
+    if (pending_disable_hsync) {
+        pending_disable_hsync=0;
+        tv_disable_hsync();
+    }
+
+
+    ula_zx80_position_x_testados +=delta;
+
+    //printf("delta %d ula_zx80_position_x_testados %d\n",delta,ula_zx80_position_x_testados);
+
+
+
+
+    if (ula_zx80_position_x_testados>=screen_testados_linea) {
+
+        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx80_position_x_testados);
+
+        ula_zx80_position_x_testados -=screen_testados_linea;
+
+        //Lanzamos hsync ya sea por timeout o porque este activado hsync
+        //si hay vsync no hay hsync
+        if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
+            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+            generar_zx8081_hsync();
+        }
+
+
+    }
+
+    if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
+
+
+}
+
+
+void ula_zx81_time_event(int delta)
+{
+
+    if (pending_disable_hsync) {
+        pending_disable_hsync=0;
+        tv_disable_hsync();
+    }
+
+
+
+    if (zx8081_vsync_generator.v) {
+        video_zx8081_linecntr=0;
+
+    //temp. Esto no deberia ser asi, pero es una manera cutre de que se vean bien las lineas dentro de un caracter
+        video_zx8081_linecntr=7;
+    }
+
+
+
+    ula_zx81_time_event_t_estados+=delta;
+
+    if (ula_zx81_time_event_t_estados>=screen_testados_linea) {
+        ula_zx81_time_event_t_estados -=screen_testados_linea;
+
+
+        if (nmi_generator_active.v) {
+            //printf("Generate nmi\n");
+            generate_nmi();
+        }
+
+        if (hsync_generator_active.v) {
+            generar_zx8081_hsync();
+        }
+/*
+Al generar nmi,
+/Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
+This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
+the End of Line character, which will not happen on the non-visible lines.
+->Esto se resuelve haciendo que el HALT en Z80 tarde 1 t-estado
+*/
+
+
+
+    }
+}
+
+void zx81_enable_nmi_generator(void)
+{
+
+    //printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+    nmi_generator_active.v=1;
+
+    //ula_zx81_time_event_t_estados=0;
+
+
+}
+
+void zx81_disable_nmi_generator(void)
+{
+    //printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+    nmi_generator_active.v=0;
+
+    //ula_zx81_time_event_t_estados=0;
 
 }
 
