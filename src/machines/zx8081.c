@@ -527,7 +527,7 @@ temp_extend_debug=0;
 }
 
 
-void zx81_nmi_generator_time_event(int delta)
+void ula_zx81_time_event(int delta)
 {
 
     if (pending_disable_hsync) {
