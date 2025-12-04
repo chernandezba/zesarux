@@ -336,6 +336,7 @@ void tv_enable_vsync(void)
         //Para estabilizar mazogs. lo hago solo para ZX81 por no romper la imagen en ZX80
         //TODO: esta emulación de TV no debería depender de la máquina
         //es probable que los timings de ZX81 no estén bien y por eso sucede eso
+
         if (MACHINE_IS_ZX81_TYPE) {
 
             if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) {
@@ -350,6 +351,7 @@ void tv_enable_vsync(void)
 
             debug_first_vsync=1;
         }
+
 
         //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=1;
