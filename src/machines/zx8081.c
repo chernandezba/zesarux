@@ -526,14 +526,9 @@ temp_extend_debug=0;
 
 }
 
-void ula_zx81_time_event(int delta)
+
+void zx81_nmi_generator_time_event(int delta)
 {
-    extern int temp_extend_debug;
-
-extern int tv_hsync_signal_pending;
-extern int tv_vsync_signal;
-temp_extend_debug=0;
-
 
     if (pending_disable_hsync) {
         pending_disable_hsync=0;
@@ -550,13 +545,6 @@ temp_extend_debug=0;
     }
 
 
-}
-
-
-
-
-void zx81_nmi_generator_time_event(int delta)
-{
 
     zx81_nmi_generator_time_event_t_estados+=delta;
 

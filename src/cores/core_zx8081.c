@@ -174,7 +174,6 @@ void cpu_core_loop_zx8081(void)
                 ula_zx80_time_event(delta);
             }
             if (MACHINE_IS_ZX81_TYPE) {
-                ula_zx81_time_event(delta);
                 zx81_nmi_generator_time_event(delta);
             }
 
