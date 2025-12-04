@@ -253,9 +253,6 @@ HALT                    ; (1) HALT synchronizes with NMI.
 
 ->le pongo que cada halt tarde 1 t-estado cuando se ha lanzado nmi
 
-video_zx8081_ula_video_output creo que al final se está poniendo como valor de caracter (caracter 0 o 255)
-Pero mas bien deberia ser asignarlo a un valor de sprite (vacio o lleno) para que sea mas coherente
-O sea funciona pero de rebote
 
 
 -Modo FAST del ZX81 no se ve bien
