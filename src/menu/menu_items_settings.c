@@ -9842,41 +9842,40 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"TO DELETE");
 
 
-        if (!MACHINE_IS_Z88) {
 
 
-            if (menu_cond_realvideo() ) {
-                if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
-                        "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
-                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (video_interlaced_mode.v==1 ? 'X' : ' '));
-                    menu_add_item_menu_shortcut(array_menu_common,'i');
-                    menu_add_item_menu_tooltip(array_menu_common,"Enable interlaced mode");
-                    menu_add_item_menu_ayuda(array_menu_common,"Interlaced mode draws the screen like the machine on a real TV: "
-                        "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
-                        "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
-                        "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
-                    menu_add_item_menu_es_avanzado(array_menu_common);
-                }
-
-
-                if (video_interlaced_mode.v) {
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace_scanlines,NULL,"[%c] S~~canlines", (video_interlaced_scanlines.v==1 ? 'X' : ' '));
-                    menu_add_item_menu_shortcut(array_menu_common,'c');
-                    menu_add_item_menu_tooltip(array_menu_common,"Enable scanlines on interlaced mode");
-                    menu_add_item_menu_ayuda(array_menu_common,"Scanlines draws odd lines a bit darker than even lines");
-                    menu_add_item_menu_es_avanzado(array_menu_common);
-                }
-
-                if (menu_cond_zx8081_realvideo()) {
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
-                        "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
-                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
-                    menu_add_item_menu_es_avanzado(array_menu_common);
-                }
-
+        if (menu_cond_realvideo() ) {
+            if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
+                    "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
+                menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (video_interlaced_mode.v==1 ? 'X' : ' '));
+                menu_add_item_menu_shortcut(array_menu_common,'i');
+                menu_add_item_menu_tooltip(array_menu_common,"Enable interlaced mode");
+                menu_add_item_menu_ayuda(array_menu_common,"Interlaced mode draws the screen like the machine on a real TV: "
+                    "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
+                    "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
+                    "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
+                menu_add_item_menu_es_avanzado(array_menu_common);
             }
+
+
+            if (video_interlaced_mode.v) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace_scanlines,NULL,"[%c] S~~canlines", (video_interlaced_scanlines.v==1 ? 'X' : ' '));
+                menu_add_item_menu_shortcut(array_menu_common,'c');
+                menu_add_item_menu_tooltip(array_menu_common,"Enable scanlines on interlaced mode");
+                menu_add_item_menu_ayuda(array_menu_common,"Scanlines draws odd lines a bit darker than even lines");
+                menu_add_item_menu_es_avanzado(array_menu_common);
+            }
+
+            if (menu_cond_zx8081_realvideo()) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
+                    "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
+                menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
+                menu_add_item_menu_es_avanzado(array_menu_common);
+            }
+
         }
+
 
 
         menu_add_item_menu_separator(array_menu_common);

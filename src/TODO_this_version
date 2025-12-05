@@ -129,3 +129,8 @@ Estado video zx81:
 
 -nolimits.81: inicio mal. posiblemente use combinacion de fast
 -sllc.81: falta un scanline de cada char?
+
+->si en todas las condiciones de MACHINE_IS_ZX81_TYPE o MACHINE_IS_ZX80_TYPE uso una macro que es:
+#define MACHINE_ZX81_LIKE_ZX80 (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v==0)
+para que actue ZX81 como ZX80, funciona bien modo fast.
+pero luego manic se ve mal , igual que pacman y tetrishr
