@@ -117,3 +117,15 @@ HALT                    ; (1) HALT synchronizes with NMI.
 
 -Ajustar menu settings->TV para al menos una opción? O que no salga si la máquina emulada no tiene opciones
 -Meter ajustes de TV (hsync internal frequency-para timeout, vsync internal frequency-para timeout) y otros, en menú settings-Tv
+
+Estado video zx81:
+-modo fast: error
+-juegos sin efectos hires: ok
+-wrx: ok
+-chrs128: ok
+-hrg: ok
+-udg: ok. aunque interc-u.o raro al principio. quizá usa fast?
+-pseudo hi res: manic mal. pacman en el juego mal. tetrishr mal
+
+-nolimits.81: inicio mal. posiblemente use combinacion de fast
+-sllc.81: falta un scanline de cada char?
