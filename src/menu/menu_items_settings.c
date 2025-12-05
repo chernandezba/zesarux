@@ -232,6 +232,7 @@ int settings_danger_zone_opcion_seleccionada=0;
 int hardware_realjoystick_steering_opcion_seleccionada=0;
 int settings_apps_opcion_seleccionada=0;
 int settings_windows_features_opcion_seleccionada=0;
+int settings_tv_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -7948,7 +7949,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         if (!MACHINE_IS_Z88) {
 
 
+
             if (menu_cond_realvideo() ) {
+                /*
                 if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
                         "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
@@ -7970,7 +7973,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_ayuda(array_menu_settings_display,"Scanlines draws odd lines a bit darker than even lines");
                     menu_add_item_menu_es_avanzado(array_menu_settings_display);
                 }
-
+                */
 
                 if (MACHINE_IS_SPECTRUM) {
                     menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_gigascreen,NULL,"[%c] ~~Gigascreen",(gigascreen_enabled.v==1 ? 'X' : ' '));
@@ -8109,11 +8112,12 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
             */
 
-
+            /*
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
                 "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
+            */
 
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,
                 "Autodetect WRX","Autodetectar WRX","Autodetectar WRX");
@@ -8396,13 +8400,20 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_settings_display,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_settings_display);
 
+        /*
         menu_add_item_menu_index_full_path(array_menu_settings_display,
             "Main Menu-> Settings-> Emulated Display","Menú Principal-> Opciones-> Display emulado","Menú Principal-> Opcions-> Display emulat");
 
         retorno_menu=menu_dibuja_menu(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,
             "Emulated Display Settings","Opciones Display emulado","Opcions Display emulat");
+        */
 
 
+        menu_add_item_menu_index_full_path(array_menu_settings_display,
+            "Main Menu-> Settings-> Video","Menú Principal-> Opciones-> Video","Menú Principal-> Opcions-> Video");
+
+        retorno_menu=menu_dibuja_menu(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,
+            "Video Settings","Opciones Video","Opcions Video");
 
         //NOTA: no llamar por numero de opcion dado que hay opciones que ocultamos (relacionadas con real video)
 
@@ -9819,6 +9830,88 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_settings_tv(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"TO DELETE");
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+
+
+        if (!MACHINE_IS_Z88) {
+
+
+            if (menu_cond_realvideo() ) {
+                if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
+                        "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
+                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (video_interlaced_mode.v==1 ? 'X' : ' '));
+                    menu_add_item_menu_shortcut(array_menu_common,'i');
+                    menu_add_item_menu_tooltip(array_menu_common,"Enable interlaced mode");
+                    menu_add_item_menu_ayuda(array_menu_common,"Interlaced mode draws the screen like the machine on a real TV: "
+                        "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
+                        "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
+                        "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+                }
+
+
+                if (video_interlaced_mode.v) {
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace_scanlines,NULL,"[%c] S~~canlines", (video_interlaced_scanlines.v==1 ? 'X' : ' '));
+                    menu_add_item_menu_shortcut(array_menu_common,'c');
+                    menu_add_item_menu_tooltip(array_menu_common,"Enable scanlines on interlaced mode");
+                    menu_add_item_menu_ayuda(array_menu_common,"Scanlines draws odd lines a bit darker than even lines");
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+                }
+
+                if (menu_cond_zx8081_realvideo()) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
+                        "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
+                    menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
+                    menu_add_item_menu_es_avanzado(array_menu_common);
+                }
+
+            }
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> TV","Menú Principal-> Opciones-> TV","Menú Principal-> Opcions-> TV");
+
+        retorno_menu=menu_dibuja_menu(&settings_tv_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "TV Settings","Opciones TV","Opcions TV");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
 
 //menu settings
 void menu_settings(MENU_ITEM_PARAMETERS)
@@ -9869,12 +9962,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);
         menu_add_item_menu_es_avanzado(array_menu_settings);
 
-        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
-            "Emulated ~~Display","~~Display emulado","~~Display emulat");
-        menu_add_item_menu_shortcut(array_menu_settings,'d');
-        menu_add_item_menu_tooltip(array_menu_settings,"Settings for the emulated display");
-        menu_add_item_menu_ayuda(array_menu_settings,"Settings for the emulated display");
-        menu_add_item_menu_tiene_submenu(array_menu_settings);
+
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_external_tools_config,NULL,
             "E~~xternal tools paths","Rutas utilidades e~~xternas","Rutes utilitats e~~xternes");
@@ -9972,6 +10060,24 @@ void menu_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_settings);
         }
         */
+
+
+        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_tv,NULL,
+            "TV","TV","TV");
+        menu_add_item_menu_tooltip(array_menu_settings,"TV settings");
+        menu_add_item_menu_ayuda(array_menu_settings,"TV settings");
+        menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
+
+
+        //menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
+        //    "Emulated ~~Display","~~Display emulado","~~Display emulat");
+        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
+            "Vi~~deo","Vi~~deo","Vi~~deo");
+        menu_add_item_menu_shortcut(array_menu_settings,'d');
+        menu_add_item_menu_tooltip(array_menu_settings,"Video settings");
+        menu_add_item_menu_ayuda(array_menu_settings,"Video settings");
+        menu_add_item_menu_tiene_submenu(array_menu_settings);
 
         if (scr_driver_can_ext_desktop() ) {
             menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ext_desktop_settings,NULL,"ZX Des~~ktop");

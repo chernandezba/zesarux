@@ -112,3 +112,8 @@ HALT                    ; (1) HALT synchronizes with NMI.
 ->le pongo que cada halt tarde 1 t-estado cuando se ha lanzado nmi
 
 -Modo FAST del ZX81 no se ve bien
+
+---
+
+-Ajustar menu settings->TV para al menos una opción? O que no salga si la máquina emulada no tiene opciones
+-Meter ajustes de TV (hsync internal frequency-para timeout, vsync internal frequency-para timeout) y otros, en menú settings-Tv
