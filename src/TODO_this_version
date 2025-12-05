@@ -136,3 +136,4 @@ para que actue ZX81 como ZX80, funciona bien modo fast.
 pero luego manic se ve mal , igual que pacman y tetrishr
 
 fast: quitando el t_estados +=3; de la maskable y lo que el halt dure 1 estado, mejora pero se mueve en horizontal (problema con el lanzamiento de vsync o hsync???)
+
