@@ -36,6 +36,7 @@
 #include "compileoptions.h"
 #include "snap_rzx.h"
 #include "esxdos_handler.h"
+#include "zx8081.h"
 
 z80_int *registro_ixiy;
 
@@ -1190,7 +1191,7 @@ void instruccion_118()
     if (debug_settings_show_fired_halt.v) core_spectrum_executed_halt_in_this_scanline=1;
 
     //que el halt dure 1t estado
-    if (MACHINE_IS_ZX81  /*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
+    if (MACHINE_IS_ZX81 && nmi_generator_active.v /*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
 }
 
 void instruccion_119()
