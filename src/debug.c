@@ -220,10 +220,10 @@ Valores:
 z80_byte mem_breakpoint_array[65536];
 
 char *mem_breakpoint_types_strings[]={
-	"Disabled",
-	"Read",
-	"Write",
-	"Read & Write"
+    "Disabled",
+    "Read",
+    "Write",
+    "Read & Write"
 };
 
 /*
@@ -367,8 +367,8 @@ char *zx80_rom_tokens[]={
 
 
 struct s_z88_basic_rom_tokens {
-	z80_byte index;
-	char token[20];
+    z80_byte index;
+    char token[20];
 };
 
 
@@ -559,7 +559,7 @@ unsigned int registro_sr=m68k_get_reg(NULL, M68K_REG_SR);
                         );
   }
 
-			//printf ("128k. p32765=%d p8189=%d\n\r",puerto_32765,puerto_8189);
+            //printf ("128k. p32765=%d p8189=%d\n\r",puerto_32765,puerto_8189);
 
 
 }
@@ -580,40 +580,40 @@ z80_int debug_core_lanzado_inter_retorno_pc_maskable=0;
 void clear_mem_breakpoints(void)
 {
 
-	int i;
+    int i;
 
-	for (i=0;i<65536;i++) {
-		mem_breakpoint_array[i]=0;
-	}
+    for (i=0;i<65536;i++) {
+        mem_breakpoint_array[i]=0;
+    }
 }
 
 void init_breakpoints_table(void)
 {
-	int i;
+    int i;
 
-	//for (i=0;i<MAX_BREAKPOINTS;i++) debug_breakpoints_array[i]=-1;
+    //for (i=0;i<MAX_BREAKPOINTS;i++) debug_breakpoints_array[i]=-1;
 
-	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-		//debug_breakpoints_conditions_array[i][0]=0;
-
-
-		debug_breakpoints_conditions_array_tokens[i][0].tipo=TPT_FIN;
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+        //debug_breakpoints_conditions_array[i][0]=0;
 
 
-	    	debug_breakpoints_actions_array[i][0]=0;
-		debug_breakpoints_conditions_saltado[i]=0;
-		debug_breakpoints_conditions_enabled[i]=0;
+        debug_breakpoints_conditions_array_tokens[i][0].tipo=TPT_FIN;
+
+
+            debug_breakpoints_actions_array[i][0]=0;
+        debug_breakpoints_conditions_saltado[i]=0;
+        debug_breakpoints_conditions_enabled[i]=0;
         debug_breakpoints_pass_count[i]=0;
         debug_breakpoints_pass_count_counter[i]=0;
 
-		optimized_breakpoint_array[i].optimized=0;
-	}
+        optimized_breakpoint_array[i].optimized=0;
+    }
 
         //for (i=0;i<MAX_BREAKPOINTS_PEEK;i++) debug_breakpoints_peek_array[i]=-1;
 
 
-	clear_mem_breakpoints();
-	last_active_breakpoint=0;
+    clear_mem_breakpoints();
+    last_active_breakpoint=0;
 
 
 }
@@ -621,12 +621,12 @@ void init_breakpoints_table(void)
 
 void init_watches_table(void)
 {
-	int i;
+    int i;
 
-	for (i=0;i<DEBUG_MAX_WATCHES;i++) {
-		debug_watches_array[i][0].tipo=TPT_FIN;
+    for (i=0;i<DEBUG_MAX_WATCHES;i++) {
+        debug_watches_array[i][0].tipo=TPT_FIN;
         debug_watches_labels_array[i][0]=0;
-	}
+    }
 
 
 }
@@ -648,25 +648,25 @@ void screen_show_panic_screen(int xmax, int ymax)
 
     //int colores_rainbow[]={2+8,6+8,4+8,5+8,0};
 
-	int x,y;
+    int x,y;
 
 
-	int total_colores=5;
-	int grueso_colores=8; //grueso de 8 pixeles cada franja
+    int total_colores=5;
+    int grueso_colores=8; //grueso de 8 pixeles cada franja
 
-	//printf ("Filling colour bars up to %dX%d\n",xmax,ymax);
+    //printf ("Filling colour bars up to %dX%d\n",xmax,ymax);
 
 
-	for (x=0;x<xmax;x++) {
+    for (x=0;x<xmax;x++) {
         int color=0;
-		for (y=0;y<ymax;y++) {
-			//scr_putpixel(x,y,(color&15) );
+        for (y=0;y<ymax;y++) {
+            //scr_putpixel(x,y,(color&15) );
             scr_putpixel(x,y,screen_colores_rainbow[(color%total_colores)] );
 
-			if ((y%grueso_colores)==grueso_colores-1) color++;
+            if ((y%grueso_colores)==grueso_colores-1) color++;
 
-		}
-	}
+        }
+    }
 }
 
 //Funcion para mostrar traza de llamadas, muy util para debugar
@@ -695,7 +695,7 @@ void debug_exec_show_backtrace(void)
 void cpu_panic_printf_mensaje(char *mensaje)
 {
 
-	char buffer[1024];
+    char buffer[1024];
 
         printf ("\n\n ZEsarUX kernel panic: %s \n",mensaje);
         print_registers(buffer);
@@ -782,27 +782,27 @@ void cpu_panic_printchar(unsigned char c)
 
 void cpu_panic_printstring(char *message)
 {
-	while (*message) {
-		cpu_panic_printchar(*message);
-		message++;
-	}
+    while (*message) {
+        cpu_panic_printchar(*message);
+        message++;
+    }
 }
 
 //Abortar ejecucion del emulador con kernel panic
 void cpu_panic(char *mensaje)
 {
-	char buffer[1024];
+    char buffer[1024];
 
-	//Liberar bloqueo de semaforo de print, por si acaso
-	debug_printf_sem_init();
+    //Liberar bloqueo de semaforo de print, por si acaso
+    debug_printf_sem_init();
 
-	//por si acaso, antes de hacer nada mas, vamos con el printf, para que muestre el error (si es que el driver de video lo permite)
-	//hacemos pantalla de panic en xwindows y fbdev, y despues de finalizar el driver, volvemos a mostrar error
-	cpu_panic_printf_mensaje(mensaje);
+    //por si acaso, antes de hacer nada mas, vamos con el printf, para que muestre el error (si es que el driver de video lo permite)
+    //hacemos pantalla de panic en xwindows y fbdev, y despues de finalizar el driver, volvemos a mostrar error
+    cpu_panic_printf_mensaje(mensaje);
 
-	debug_exec_show_backtrace();
+    debug_exec_show_backtrace();
 
-	snap_dump_zsf_on_cpu_panic();
+    snap_dump_zsf_on_cpu_panic();
 
     cpu_panic_last_x=cpu_panic_last_y=0;
 
@@ -810,20 +810,20 @@ void cpu_panic(char *mensaje)
     cpu_panic_current_papel=1;
 
 
-	if (scr_end_pantalla!=NULL) {
+    if (scr_end_pantalla!=NULL) {
 
-		//si es xwindows o fbdev, mostramos panic mas mono
-		if (si_complete_video_driver() ) {
-			//quitar splash text por si acaso
-			menu_splash_segundos=1;
-			reset_welcome_message();
-
-
+        //si es xwindows o fbdev, mostramos panic mas mono
+        if (si_complete_video_driver() ) {
+            //quitar splash text por si acaso
+            menu_splash_segundos=1;
+            reset_welcome_message();
 
 
-			//no tiene sentido tener el menu overlay abierto... o si?
 
-			menu_overlay_activo=0;
+
+            //no tiene sentido tener el menu overlay abierto... o si?
+
+            menu_overlay_activo=0;
 
             cpu_panic_xmax=screen_get_emulated_display_width_zoom_border_en();
             cpu_panic_ymax=screen_get_emulated_display_height_zoom_border_en();
@@ -840,34 +840,34 @@ void cpu_panic(char *mensaje)
 
             if (cpu_panic_xmax>=desired_width && cpu_panic_ymax>=desired_height) cpu_panic_pixel_zoom=2;
 
-			screen_show_panic_screen(cpu_panic_xmax,cpu_panic_ymax);
+            screen_show_panic_screen(cpu_panic_xmax,cpu_panic_ymax);
 
-			print_registers(buffer);
+            print_registers(buffer);
 
             //Maximo 32 caracteres, aunque aprovechamos todo (border incluso) pero hay que considerar
             //por ejemplo pantalla sin border con zoom 1, en ese caso habra un minimo de 256 de ancho (32 caracteres de ancho)
                                  //01234567890123456789012345678901
             cpu_panic_printstring("******************************\n");
-			cpu_panic_printstring("*  ZEsarUX kernel panic  :-( *\n");
+            cpu_panic_printstring("*  ZEsarUX kernel panic  :-( *\n");
             cpu_panic_printstring("******************************\n");
             cpu_panic_printstring("\n\n");
             cpu_panic_printstring("Panic message:\n");
-			cpu_panic_printstring(mensaje);
+            cpu_panic_printstring(mensaje);
 
             cpu_panic_printstring("\n\nCPU registers:\n");
 
 
-			//los registros los mostramos dos lineas por debajo de la ultima usada
-			cpu_panic_printstring(buffer);
+            //los registros los mostramos dos lineas por debajo de la ultima usada
+            cpu_panic_printstring(buffer);
 
             cpu_panic_printstring("\n");
 
-			if (dumped_debug_dump_zsf_on_cpu_panic.v) {
-				cpu_panic_printstring("\nDumped cpu panic snapshot:\n");
-				cpu_panic_printstring(dump_snapshot_panic_name);
-				cpu_panic_printstring("\non current directory");
-				printf ("Dumped cpu panic snapshot: %s on current directory\n",dump_snapshot_panic_name);
-			}
+            if (dumped_debug_dump_zsf_on_cpu_panic.v) {
+                cpu_panic_printstring("\nDumped cpu panic snapshot:\n");
+                cpu_panic_printstring(dump_snapshot_panic_name);
+                cpu_panic_printstring("\non current directory");
+                printf ("Dumped cpu panic snapshot: %s on current directory\n",dump_snapshot_panic_name);
+            }
                                      //01234567890123456789012345678901
             cpu_panic_printstring("\nHave a nice day ;)\n");
 
@@ -899,16 +899,16 @@ void cpu_panic(char *mensaje)
             }
 
 
-			scr_end_pantalla();
-		}
+            scr_end_pantalla();
+        }
 
-		else {
-			scr_end_pantalla();
-		}
-	}
+        else {
+            scr_end_pantalla();
+        }
+    }
 
 
-	exit(1);
+    exit(1);
 }
 
 
@@ -916,7 +916,7 @@ void cpu_panic(char *mensaje)
 void debug_tiempo_inicial(void)
 {
 
-	gettimeofday(&debug_timer_antes, NULL);
+    gettimeofday(&debug_timer_antes, NULL);
 
 }
 
@@ -924,9 +924,9 @@ void debug_tiempo_inicial(void)
 void debug_tiempo_final(void)
 {
 
-	long debug_timer_mtime, debug_timer_seconds, debug_timer_useconds;
+    long debug_timer_mtime, debug_timer_seconds, debug_timer_useconds;
 
-	gettimeofday(&debug_timer_ahora, NULL);
+    gettimeofday(&debug_timer_ahora, NULL);
 
         debug_timer_seconds  = debug_timer_ahora.tv_sec  - debug_timer_antes.tv_sec;
         debug_timer_useconds = debug_timer_ahora.tv_usec - debug_timer_antes.tv_usec;
@@ -940,7 +940,7 @@ z_atomic_semaphore debug_printf_semaforo;
 
 void debug_printf_sem_init(void)
 {
-	z_atomic_reset(&debug_printf_semaforo);
+    z_atomic_reset(&debug_printf_semaforo);
 }
 
 
@@ -1178,10 +1178,10 @@ int debug_printf_check_exclude_include(unsigned int clase_mensaje)
 
 void debug_printf (int debuglevel, const char * format , ...)
 {
-	//Adquirir lock
-	while(z_atomic_test_and_set(&debug_printf_semaforo)) {
-		//printf("Esperando a liberar lock en debug_printf\n");
-	}
+    //Adquirir lock
+    while(z_atomic_test_and_set(&debug_printf_semaforo)) {
+        //printf("Esperando a liberar lock en debug_printf\n");
+    }
 
 
 
@@ -1206,102 +1206,102 @@ void debug_printf (int debuglevel, const char * format , ...)
     //Mensajes con VERBOSE_ERR, siempre se ven, independientemente de cual sea la class
     if (debuglevel==VERBOSE_ERR) mostrar_mensaje=1;
 
-  	int copia_verbose_level;
+      int copia_verbose_level;
 
-  	copia_verbose_level=verbose_level;
+      copia_verbose_level=verbose_level;
 
     //VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW siempre muestra el mensaje y no indica en el texto la prioridad (Error, Warning, etc del mensaje)
 
-  	if ((mostrar_mensaje) && (debuglevel<=copia_verbose_level || debuglevel==VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW)) {
-		//tamaño del buffer bastante mas grande que el valor constante definido
-	    char buffer_final[DEBUG_MAX_MESSAGE_LENGTH*2];
-	    char buffer_inicial[DEBUG_MAX_MESSAGE_LENGTH*2+64];
-	    char *verbose_message;
-	    va_list args;
-	    va_start (args, format);
-    	vsprintf (buffer_inicial,format, args);
-    	va_end (args);
+      if ((mostrar_mensaje) && (debuglevel<=copia_verbose_level || debuglevel==VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW)) {
+        //tamaño del buffer bastante mas grande que el valor constante definido
+        char buffer_final[DEBUG_MAX_MESSAGE_LENGTH*2];
+        char buffer_inicial[DEBUG_MAX_MESSAGE_LENGTH*2+64];
+        char *verbose_message;
+        va_list args;
+        va_start (args, format);
+        vsprintf (buffer_inicial,format, args);
+        va_end (args);
 
-		//TODO: controlar maximo mensaje
-
-
-    	switch (debuglevel) {
-			case VERBOSE_ERR:
-				verbose_message=VERBOSE_MESSAGE_ERR;
-			break;
-
-			case VERBOSE_WARN:
-				verbose_message=VERBOSE_MESSAGE_WARN;
-			break;
-
-			case VERBOSE_INFO:
-				verbose_message=VERBOSE_MESSAGE_INFO;
-			break;
-
-			case VERBOSE_DEBUG:
-				verbose_message=VERBOSE_MESSAGE_DEBUG;
-			break;
-
-        	case VERBOSE_PARANOID:
-            	verbose_message=VERBOSE_MESSAGE_PARANOID;
-        	break;
+        //TODO: controlar maximo mensaje
 
 
-			default:
-				verbose_message="UNKNOWNVERBOSELEVEL";
-			break;
+        switch (debuglevel) {
+            case VERBOSE_ERR:
+                verbose_message=VERBOSE_MESSAGE_ERR;
+            break;
 
-    	}
+            case VERBOSE_WARN:
+                verbose_message=VERBOSE_MESSAGE_WARN;
+            break;
+
+            case VERBOSE_INFO:
+                verbose_message=VERBOSE_MESSAGE_INFO;
+            break;
+
+            case VERBOSE_DEBUG:
+                verbose_message=VERBOSE_MESSAGE_DEBUG;
+            break;
+
+            case VERBOSE_PARANOID:
+                verbose_message=VERBOSE_MESSAGE_PARANOID;
+            break;
+
+
+            default:
+                verbose_message="UNKNOWNVERBOSELEVEL";
+            break;
+
+        }
 
         if (debuglevel==VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW) {
             sprintf (buffer_final,"%s",buffer_inicial);
         }
 
-    	else sprintf (buffer_final,"%s%s",verbose_message,buffer_inicial);
+        else sprintf (buffer_final,"%s%s",verbose_message,buffer_inicial);
 
         //lanzarlo a consola a traves del driver de video. Siempre que verbose no sea only_debug_console_window
         if (debuglevel!=VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW) {
-    	    if (scr_messages_debug!=NULL) scr_messages_debug (buffer_final);
-    	    else printf ("%s\n",buffer_final);
+            if (scr_messages_debug!=NULL) scr_messages_debug (buffer_final);
+            else printf ("%s\n",buffer_final);
         }
 
-		//Si tambien queremos mostrar log en consola,
-		//esto es un caso un tanto especial pues la mayoria de drivers ya muestra mensajes en consola,
-		//excepto curses, caca y aa lib, pues muestran 1 solo mensaje dentro de la interfaz del emulador
-		//En esos casos puede ser necesario que el mensaje salga tal cual en consola, con scroll, aunque se desplace toda la interfaz
-		//pero ayudara a que se vean los mensajes
-		if (debug_always_show_messages_in_console.v) printf ("%s\n",buffer_final);
+        //Si tambien queremos mostrar log en consola,
+        //esto es un caso un tanto especial pues la mayoria de drivers ya muestra mensajes en consola,
+        //excepto curses, caca y aa lib, pues muestran 1 solo mensaje dentro de la interfaz del emulador
+        //En esos casos puede ser necesario que el mensaje salga tal cual en consola, con scroll, aunque se desplace toda la interfaz
+        //pero ayudara a que se vean los mensajes
+        if (debug_always_show_messages_in_console.v) printf ("%s\n",buffer_final);
 
 
         //Y mostrarlo tambien en la unnamed_console
         debug_unnamed_console_print(buffer_final);
 
-    	//Hacer aparecer menu, siempre que el driver no sea null ni.. porque no inicializado tambien? no inicializado
-    	if (debuglevel==VERBOSE_ERR) {
+        //Hacer aparecer menu, siempre que el driver no sea null ni.. porque no inicializado tambien? no inicializado
+        if (debuglevel==VERBOSE_ERR) {
 
-			//en el caso de simpletext y null, no aparecera ventana igualmente, pero el error ya se vera por consola
-			//en stdout si que "dibuja" la ventana por consola, para que se envie a speech
-        	if (
-				//!strcmp(scr_new_driver_name,"stdout") ||
-        		!strcmp(scr_new_driver_name,"simpletext") ||
-        		!strcmp(scr_new_driver_name,"null")
-			)
-			{
-				//nada
-			}
+            //en el caso de simpletext y null, no aparecera ventana igualmente, pero el error ya se vera por consola
+            //en stdout si que "dibuja" la ventana por consola, para que se envie a speech
+            if (
+                //!strcmp(scr_new_driver_name,"stdout") ||
+                !strcmp(scr_new_driver_name,"simpletext") ||
+                !strcmp(scr_new_driver_name,"null")
+            )
+            {
+                //nada
+            }
 
-        	else {
-	        	sprintf (pending_error_message,"%s",buffer_inicial);
-    	    	if_pending_error_message=1;
-        		menu_fire_event_open_menu();
-			}
-    	}
+            else {
+                sprintf (pending_error_message,"%s",buffer_inicial);
+                if_pending_error_message=1;
+                menu_fire_event_open_menu();
+            }
+        }
 
-	}
+    }
 
 
-	//Liberar lock
-	z_atomic_reset(&debug_printf_semaforo);
+    //Liberar lock
+    z_atomic_reset(&debug_printf_semaforo);
 
 }
 
@@ -1343,32 +1343,32 @@ int debug_nested_id_peek_byte_no_time;
 void set_peek_byte_function_debug(void)
 {
 
-	debug_printf(VERBOSE_INFO,"Enabling debug on MMU");
+    debug_printf(VERBOSE_INFO,"Enabling debug on MMU");
 
-	//peek_byte_no_time
-	//peek_byte_no_time_no_debug=peek_byte_no_time;
-	//peek_byte_no_time=peek_byte_no_time_debug;
+    //peek_byte_no_time
+    //peek_byte_no_time_no_debug=peek_byte_no_time;
+    //peek_byte_no_time=peek_byte_no_time_debug;
 
-	//peek_byte_time
-	//peek_byte_no_debug=peek_byte;
-	//peek_byte=peek_byte_debug;
+    //peek_byte_time
+    //peek_byte_no_debug=peek_byte;
+    //peek_byte=peek_byte_debug;
 
-	//poke_byte_no_time
-	//poke_byte_no_time_no_debug=poke_byte_no_time;
-	//poke_byte_no_time=poke_byte_no_time_debug;
+    //poke_byte_no_time
+    //poke_byte_no_time_no_debug=poke_byte_no_time;
+    //poke_byte_no_time=poke_byte_no_time_debug;
 
-	//poke_byte
-	//poke_byte_no_debug=poke_byte;
-	//poke_byte=poke_byte_debug;
+    //poke_byte
+    //poke_byte_no_debug=poke_byte;
+    //poke_byte=poke_byte_debug;
 
-	//out port
-	//TODO. funciones out y lee_puerto de aqui habra que meterlas en una lista nested si se empiezan a usar en mas sitios...
-	out_port_no_debug=out_port;
-	out_port=out_port_debug;
+    //out port
+    //TODO. funciones out y lee_puerto de aqui habra que meterlas en una lista nested si se empiezan a usar en mas sitios...
+    out_port_no_debug=out_port;
+    out_port=out_port_debug;
 
-	//lee puerto
-	lee_puerto_no_debug=lee_puerto;
-	lee_puerto=lee_puerto_debug;
+    //lee puerto
+    lee_puerto_no_debug=lee_puerto;
+    lee_puerto=lee_puerto_debug;
 
         debug_nested_id_poke_byte=debug_nested_poke_byte_add(poke_byte_debug,"Debug poke_byte");
         debug_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(poke_byte_no_time_debug,"Debug poke_byte_no_time");
@@ -1380,16 +1380,16 @@ void set_peek_byte_function_debug(void)
 
 void reset_peek_byte_function_debug(void)
 {
-	debug_printf(VERBOSE_INFO,"Clearing debug on MMU");
+    debug_printf(VERBOSE_INFO,"Clearing debug on MMU");
 
-	//peek_byte_no_time=peek_byte_no_time_no_debug;
-	//peek_byte=peek_byte_no_debug;
+    //peek_byte_no_time=peek_byte_no_time_no_debug;
+    //peek_byte=peek_byte_no_debug;
 
-	//poke_byte_no_time=poke_byte_no_time_no_debug;
-	//poke_byte=poke_byte_no_debug;
+    //poke_byte_no_time=poke_byte_no_time_no_debug;
+    //poke_byte=poke_byte_no_debug;
 
-	out_port=out_port_no_debug;
-	lee_puerto=lee_puerto_no_debug;
+    out_port=out_port_no_debug;
+    lee_puerto=lee_puerto_no_debug;
 
 
         debug_nested_poke_byte_del(debug_nested_id_poke_byte);
@@ -1403,41 +1403,41 @@ void reset_peek_byte_function_debug(void)
 z80_byte peek_byte_no_time_debug (z80_int dir,z80_byte value GCC_UNUSED)
 {
 
-	z80_byte valor;
+    z80_byte valor;
 
-	anterior_debug_mmu_mra=debug_mmu_mra;
-	debug_mmu_mra=dir;
+    anterior_debug_mmu_mra=debug_mmu_mra;
+    debug_mmu_mra=dir;
 
-	//valor=peek_byte_no_time_no_debug(dir);
-	valor=debug_nested_peek_byte_no_time_call_previous(debug_nested_id_peek_byte_no_time,dir);
+    //valor=peek_byte_no_time_no_debug(dir);
+    valor=debug_nested_peek_byte_no_time_call_previous(debug_nested_id_peek_byte_no_time,dir);
 
     anterior_debug_mmu_mrv=debug_mmu_mrv;
-	debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
+    debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
 
 
 
-	return valor;
+    return valor;
 }
 
 
 z80_byte peek_byte_debug (z80_int dir,z80_byte value GCC_UNUSED)
 {
-	z80_byte valor;
+    z80_byte valor;
 
-	anterior_debug_mmu_mra=debug_mmu_mra;
-	debug_mmu_mra=dir;
+    anterior_debug_mmu_mra=debug_mmu_mra;
+    debug_mmu_mra=dir;
 
         //valor=peek_byte_no_debug(dir);
-	valor=debug_nested_peek_byte_call_previous(debug_nested_id_peek_byte,dir);
+    valor=debug_nested_peek_byte_call_previous(debug_nested_id_peek_byte,dir);
 
     anterior_debug_mmu_mrv=debug_mmu_mrv;
-	debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
+    debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
 
 
-	//cpu_core_loop_debug_check_breakpoints();
+    //cpu_core_loop_debug_check_breakpoints();
 
 
-	return valor;
+    return valor;
 
 }
 
@@ -1445,12 +1445,12 @@ z80_byte peek_byte_debug (z80_int dir,z80_byte value GCC_UNUSED)
 z80_byte poke_byte_no_time_debug(z80_int dir,z80_byte value)
 {
     anterior_debug_mmu_mwv=debug_mmu_mwv;
-	debug_mmu_mwv=value;
-	anterior_debug_mmu_mwa=debug_mmu_mwa;
-	debug_mmu_mwa=dir;
+    debug_mmu_mwv=value;
+    anterior_debug_mmu_mwa=debug_mmu_mwa;
+    debug_mmu_mwa=dir;
 
-	//poke_byte_no_time_no_debug(dir,value);
-	debug_nested_poke_byte_no_time_call_previous(debug_nested_id_poke_byte_no_time,dir,value);
+    //poke_byte_no_time_no_debug(dir,value);
+    debug_nested_poke_byte_no_time_call_previous(debug_nested_id_poke_byte_no_time,dir,value);
 
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
@@ -1460,12 +1460,12 @@ z80_byte poke_byte_no_time_debug(z80_int dir,z80_byte value)
 z80_byte poke_byte_debug(z80_int dir,z80_byte value)
 {
     anterior_debug_mmu_mwv=debug_mmu_mwv;
-	debug_mmu_mwv=value;
-	anterior_debug_mmu_mwa=debug_mmu_mwa;
-	debug_mmu_mwa=dir;
+    debug_mmu_mwv=value;
+    anterior_debug_mmu_mwa=debug_mmu_mwa;
+    debug_mmu_mwa=dir;
 
-	//poke_byte_no_debug(dir,value);
-	debug_nested_poke_byte_call_previous(debug_nested_id_poke_byte,dir,value);
+    //poke_byte_no_debug(dir,value);
+    debug_nested_poke_byte_call_previous(debug_nested_id_poke_byte,dir,value);
 
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
@@ -1476,12 +1476,12 @@ void out_port_debug(z80_int puerto,z80_byte value)
         debug_mmu_pwv=value;
         debug_mmu_pwa=puerto;
 
-	out_port_no_debug(puerto,value);
+    out_port_no_debug(puerto,value);
 }
 
 z80_byte lee_puerto_debug(z80_byte puerto_h,z80_byte puerto_l)
 {
-	z80_byte valor;
+    z80_byte valor;
 
         debug_mmu_pra=value_8_to_16(puerto_h,puerto_l);
 
@@ -1490,26 +1490,26 @@ z80_byte lee_puerto_debug(z80_byte puerto_h,z80_byte puerto_l)
         debug_mmu_prv=valor;
 
 
-	return valor;
+    return valor;
 }
 
 
 void do_breakpoint_exception(char *message)
 {
-	if (strlen(message)>MAX_MESSAGE_CATCH_BREAKPOINT-1) {
-		cpu_panic("do_breakpoint_exception: strlen>MAX_MESSAGE_CATCH_BREAKPOINT");
-	}
+    if (strlen(message)>MAX_MESSAGE_CATCH_BREAKPOINT-1) {
+        cpu_panic("do_breakpoint_exception: strlen>MAX_MESSAGE_CATCH_BREAKPOINT");
+    }
 
-	sprintf(catch_breakpoint_message,"%s",message);
-	debug_printf (VERBOSE_INFO,"Catch breakpoint: %s",message);
+    sprintf(catch_breakpoint_message,"%s",message);
+    debug_printf (VERBOSE_INFO,"Catch breakpoint: %s",message);
 }
 
 
 //Mostrar mensaje que ha hecho saltar el breakpoint y ejecutar accion (por defecto abrir menu)
 void cpu_core_loop_debug_breakpoint(char *message)
 {
-	//menu_set_menu_abierto(1);
-	do_breakpoint_exception(message);
+    //menu_set_menu_abierto(1);
+    do_breakpoint_exception(message);
 
     if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
         menu_breakpoint_exception.v=1;
@@ -1549,7 +1549,7 @@ void cpu_core_loop_debug_breakpoint(char *message)
 #define BREAKPOINT_MAX_OPERADORES 3
 
 char *breakpoint_cond_operadores[BREAKPOINT_MAX_OPERADORES]={
-	" and ", " or ", " xor "
+    " and ", " or ", " xor "
 };
 
 
@@ -1607,47 +1607,47 @@ Optimizando expresiones PC=XXXX, MRA=XXXX, MWA=XXXX, optimizado basado en lo com
 int debug_breakpoint_condition_optimized(int indice)
 {
 
-	int tipo_optimizacion;
+    int tipo_optimizacion;
 
     tipo_optimizacion=optimized_breakpoint_array[indice].operator;
 
-	unsigned int valor;
-	unsigned int valor_variable;
+    unsigned int valor;
+    unsigned int valor_variable;
 
-	valor=optimized_breakpoint_array[indice].valor;
+    valor=optimized_breakpoint_array[indice].valor;
 
-	//Segun el tipo
-	switch (tipo_optimizacion) {
-		case OPTIMIZED_BRK_TYPE_PC:
-			valor_variable=reg_pc;
-		break;
+    //Segun el tipo
+    switch (tipo_optimizacion) {
+        case OPTIMIZED_BRK_TYPE_PC:
+            valor_variable=reg_pc;
+        break;
 
-		case OPTIMIZED_BRK_TYPE_MRA:
-			valor_variable=debug_mmu_mra;
-		break;
+        case OPTIMIZED_BRK_TYPE_MRA:
+            valor_variable=debug_mmu_mra;
+        break;
 
-		case OPTIMIZED_BRK_TYPE_MWA:
-			valor_variable=debug_mmu_mwa;
-		break;
+        case OPTIMIZED_BRK_TYPE_MWA:
+            valor_variable=debug_mmu_mwa;
+        break;
 
-		default:
-			return 0;
-		break;
-	}
+        default:
+            return 0;
+        break;
+    }
 
-	if (valor_variable==valor) {
-		debug_printf (VERBOSE_DEBUG,"Fired optimized breakpoint. Optimizer type: %d value: %04XH",tipo_optimizacion,valor);
-		return 1;
-	}
+    if (valor_variable==valor) {
+        debug_printf (VERBOSE_DEBUG,"Fired optimized breakpoint. Optimizer type: %d value: %04XH",tipo_optimizacion,valor);
+        return 1;
+    }
 
-	//printf ("NOT return variable is ok from optimizer tipo: %d valor: %d\n",tipo_optimizacion,valor);
+    //printf ("NOT return variable is ok from optimizer tipo: %d valor: %d\n",tipo_optimizacion,valor);
 
-	return 0;
+    return 0;
 }
 
 void debug_set_mem_breakpoint(z80_int dir,z80_byte brkp_type)
 {
-	mem_breakpoint_array[dir]=brkp_type;
+    mem_breakpoint_array[dir]=brkp_type;
 }
 
 
@@ -1656,13 +1656,13 @@ void debug_set_mem_breakpoint(z80_int dir,z80_byte brkp_type)
 int cpu_core_loop_debug_check_mem_brkp_aux(unsigned int dir, z80_byte tipo_mascara, unsigned int anterior_dir)
 {
 
-	//dir no deberia estar fuera de rango 0...65535. Pero por si acaso...
-	if (dir<0 || dir>65535) return 0;
+    //dir no deberia estar fuera de rango 0...65535. Pero por si acaso...
+    if (dir<0 || dir>65535) return 0;
 
-	if (mem_breakpoint_array[dir] & tipo_mascara) {
-		//Coincide condicion
+    if (mem_breakpoint_array[dir] & tipo_mascara) {
+        //Coincide condicion
 
-		int saltar_breakpoint=0;
+        int saltar_breakpoint=0;
 
                 //Setting de saltar siempre
                 if (debug_breakpoints_cond_behaviour.v==0) saltar_breakpoint=1;
@@ -1672,9 +1672,9 @@ int cpu_core_loop_debug_check_mem_brkp_aux(unsigned int dir, z80_byte tipo_masca
                         if (dir != anterior_dir) saltar_breakpoint=1;
                 }
 
-		return saltar_breakpoint;
-	}
-	else return 0;
+        return saltar_breakpoint;
+    }
+    else return 0;
 }
 
 void cpu_core_loop_debug_check_mem_breakpoints(void)
@@ -1693,37 +1693,37 @@ int anterior_debug_mmu_mra=-1;
 int anterior_debug_mmu_mwa=-1;
 */
 
-	//Probar mra
-	if (cpu_core_loop_debug_check_mem_brkp_aux(debug_mmu_mra,1,anterior_debug_mmu_mra)) {
-		//Hacer saltar breakpoint MRA
-		//printf ("Saltado breakpoint MRA en %04XH PC=%04XH\n",debug_mmu_mra,reg_pc);
-		catch_breakpoint_index=-1;
+    //Probar mra
+    if (cpu_core_loop_debug_check_mem_brkp_aux(debug_mmu_mra,1,anterior_debug_mmu_mra)) {
+        //Hacer saltar breakpoint MRA
+        //printf ("Saltado breakpoint MRA en %04XH PC=%04XH\n",debug_mmu_mra,reg_pc);
+        catch_breakpoint_index=-1;
 
 
-		char buffer_mensaje[100];
-		sprintf(buffer_mensaje,"Memory Breakpoint Read Address: %04XH",debug_mmu_mra);
+        char buffer_mensaje[100];
+        sprintf(buffer_mensaje,"Memory Breakpoint Read Address: %04XH",debug_mmu_mra);
                 cpu_core_loop_debug_breakpoint(buffer_mensaje);
 
-		//Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a peek_debug y por tanto no
-		//cambiaria esto. Aunque es absurdo porque al leer opcodes siempre esta cambiando MRA. por tanto lo comento, solo
-		//tiene sentido para mwa
-		//anterior_debug_mmu_mra=debug_mmu_mra;
+        //Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a peek_debug y por tanto no
+        //cambiaria esto. Aunque es absurdo porque al leer opcodes siempre esta cambiando MRA. por tanto lo comento, solo
+        //tiene sentido para mwa
+        //anterior_debug_mmu_mra=debug_mmu_mra;
 
-	}
+    }
 
-	//Probar mwa
+    //Probar mwa
     if (cpu_core_loop_debug_check_mem_brkp_aux(debug_mmu_mwa,2,anterior_debug_mmu_mwa)) {
                 //Hacer saltar breakpoint MWA
                 //printf ("Saltado breakpoint MWA en %04XH PC=%04XH\n",debug_mmu_mwa,reg_pc);
-		catch_breakpoint_index=-1;
+        catch_breakpoint_index=-1;
 
-		char buffer_mensaje[100];
-		sprintf(buffer_mensaje,"Memory Breakpoint Write Address: %04XH",debug_mmu_mwa);
+        char buffer_mensaje[100];
+        sprintf(buffer_mensaje,"Memory Breakpoint Write Address: %04XH",debug_mmu_mwa);
                 cpu_core_loop_debug_breakpoint(buffer_mensaje);
 
-		//Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a poke_debug y por tanto no
-		//cambiaria esto
-		anterior_debug_mmu_mwa=debug_mmu_mwa;
+        //Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a poke_debug y por tanto no
+        //cambiaria esto
+        anterior_debug_mmu_mwa=debug_mmu_mwa;
 
         }
 
@@ -1734,44 +1734,44 @@ int anterior_debug_mmu_mwa=-1;
 //Establece variable al ultimo activo+1
 void debug_set_last_active_breakpoint(void)
 {
-	int i;
-	for (i=MAX_BREAKPOINTS_CONDITIONS-1;i>=0;i--) {
-		if (debug_breakpoints_conditions_enabled[i]) {
-			//Esta activado, pero tiene contenido?
+    int i;
+    for (i=MAX_BREAKPOINTS_CONDITIONS-1;i>=0;i--) {
+        if (debug_breakpoints_conditions_enabled[i]) {
+            //Esta activado, pero tiene contenido?
 
 
 
-			if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
-				last_active_breakpoint=i+1;
-				debug_printf (VERBOSE_DEBUG,"Last active breakpoint +1: %d",last_active_breakpoint);
-				return;
-			}
+            if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
+                last_active_breakpoint=i+1;
+                debug_printf (VERBOSE_DEBUG,"Last active breakpoint +1: %d",last_active_breakpoint);
+                return;
+            }
 
 
 
 
-		}
+        }
 
-	}
+    }
 
-	last_active_breakpoint=0; //no hay breakpoints activos
-	debug_printf (VERBOSE_DEBUG,"Last active breakpoint +1: %d",last_active_breakpoint);
+    last_active_breakpoint=0; //no hay breakpoints activos
+    debug_printf (VERBOSE_DEBUG,"Last active breakpoint +1: %d",last_active_breakpoint);
 }
 
 
 //conmutar enabled/disabled
 void debug_breakpoints_conditions_toggle(int indice)
 {
-	//printf ("Ejecutada funcion para espacio, condicion: %d\n",valor_opcion);
+    //printf ("Ejecutada funcion para espacio, condicion: %d\n",valor_opcion);
 
-	debug_breakpoints_conditions_enabled[indice] ^=1;
+    debug_breakpoints_conditions_enabled[indice] ^=1;
 
-	//si queda activo, decir que no ha saltado aun ese breakpoint
-	if (debug_breakpoints_conditions_enabled[indice]) {
-		debug_breakpoints_conditions_saltado[indice]=0;
-	}
+    //si queda activo, decir que no ha saltado aun ese breakpoint
+    if (debug_breakpoints_conditions_enabled[indice]) {
+        debug_breakpoints_conditions_saltado[indice]=0;
+    }
 
-	debug_set_last_active_breakpoint();
+    debug_set_last_active_breakpoint();
 }
 
 
@@ -1793,43 +1793,43 @@ void debug_breakpoints_conditions_disable(int indice)
 //Comprobar condiciones. Usando nuevo breakpoint parser.  Solo lo hacemos en core_loop
 void cpu_core_loop_debug_check_breakpoints(void)
 {
-	//Condicion de debug
-	if (debug_breakpoints_enabled.v) {
+    //Condicion de debug
+    if (debug_breakpoints_enabled.v) {
 
-		//Comprobar los mem-breakpoints
-		cpu_core_loop_debug_check_mem_breakpoints();
+        //Comprobar los mem-breakpoints
+        cpu_core_loop_debug_check_mem_breakpoints();
 
-		int i;
+        int i;
 
-		//Breakpoint de condicion
-		//for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-		for (i=0;i<last_active_breakpoint;i++) {
-			//Si ese breakpoint esta activo
-			if (debug_breakpoints_conditions_enabled[i]) {
-				if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
+        //Breakpoint de condicion
+        //for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+        for (i=0;i<last_active_breakpoint;i++) {
+            //Si ese breakpoint esta activo
+            if (debug_breakpoints_conditions_enabled[i]) {
+                if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
 
-					int se_cumple_breakpoint;
-					//printf ("Checking breakpoint %d\n",i);
-					//Si esta optimizado
+                    int se_cumple_breakpoint;
+                    //printf ("Checking breakpoint %d\n",i);
+                    //Si esta optimizado
 
-					if (optimized_breakpoint_array[i].optimized) {
-						//printf ("Parsing optimized breakpoint\n");
-						se_cumple_breakpoint=debug_breakpoint_condition_optimized(i);
-					}
-					else {
-						//se_cumple_breakpoint=debug_breakpoint_condition_loop(&debug_breakpoints_conditions_array[i][0],0);
-						int error_code;
-						se_cumple_breakpoint=exp_par_evaluate_token(debug_breakpoints_conditions_array_tokens[i],MAX_PARSER_TOKENS_NUM,&error_code);
-						//Nota: aqui no comprobamos error_code, gestionamos el valor de retorno tal cual vuelve, haya habido o no error
-					}
+                    if (optimized_breakpoint_array[i].optimized) {
+                        //printf ("Parsing optimized breakpoint\n");
+                        se_cumple_breakpoint=debug_breakpoint_condition_optimized(i);
+                    }
+                    else {
+                        //se_cumple_breakpoint=debug_breakpoint_condition_loop(&debug_breakpoints_conditions_array[i][0],0);
+                        int error_code;
+                        se_cumple_breakpoint=exp_par_evaluate_token(debug_breakpoints_conditions_array_tokens[i],MAX_PARSER_TOKENS_NUM,&error_code);
+                        //Nota: aqui no comprobamos error_code, gestionamos el valor de retorno tal cual vuelve, haya habido o no error
+                    }
 
-					if ( se_cumple_breakpoint ) {
-						//Si condicion pasa de false a true o bien el comportamiento por defecto es saltar siempre
+                    if ( se_cumple_breakpoint ) {
+                        //Si condicion pasa de false a true o bien el comportamiento por defecto es saltar siempre
 
                         //printf("debug_breakpoints_cond_behaviour.v = %d debug_breakpoints_conditions_saltado[i] = %d\n",
                         //    debug_breakpoints_cond_behaviour.v , debug_breakpoints_conditions_saltado[i]);
 
-						if (debug_breakpoints_cond_behaviour.v==0 || debug_breakpoints_conditions_saltado[i]==0) {
+                        if (debug_breakpoints_cond_behaviour.v==0 || debug_breakpoints_conditions_saltado[i]==0) {
                             //printf("breakpoint saltado\n");
                             //printf("PC=%04XH\n",reg_pc);
 
@@ -1872,15 +1872,15 @@ void cpu_core_loop_debug_check_breakpoints(void)
                                 cpu_core_loop_debug_breakpoint(buffer_mensaje);
 
                             }
-						}
-            		}
-					else {
-						//No se cumple condicion. Indicarlo que esa condicion esta false
-						debug_breakpoints_conditions_saltado[i]=0;
-					}
-    	    	}
-			}
-    	}
+                        }
+                    }
+                    else {
+                        //No se cumple condicion. Indicarlo que esa condicion esta false
+                        debug_breakpoints_conditions_saltado[i]=0;
+                    }
+                }
+            }
+        }
 
     }
 
@@ -1905,23 +1905,23 @@ int debug_nested_id_core;
 z80_byte cpu_core_loop_debug(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
 
-	debug_fired_out=0;
-	//Si se ejecuta un out en el core (justo despues que esto) se activara dicha variable
+    debug_fired_out=0;
+    //Si se ejecuta un out en el core (justo despues que esto) se activara dicha variable
 
-	debug_fired_in=0;
-	//Si se ejecuta un in en el core (justo despues que esto) se activara dicha variable
+    debug_fired_in=0;
+    //Si se ejecuta un in en el core (justo despues que esto) se activara dicha variable
 
-	debug_fired_interrupt=0;
-	//Si se lanza una interrupcion en el core (justo despues que esto) se activara dicha variable
+    debug_fired_interrupt=0;
+    //Si se lanza una interrupcion en el core (justo despues que esto) se activara dicha variable
 
 
-  	//Llamamos al core normal
-	debug_nested_core_call_previous(debug_nested_id_core);
+      //Llamamos al core normal
+    debug_nested_core_call_previous(debug_nested_id_core);
 
 
   //Evaluamos condiciones debug
 
-	//Condiciones enterrom y exitrom
+    //Condiciones enterrom y exitrom
 /*
 //Avisa cuando se ha entrado o salido de rom. Solo salta una vez el breakpoint
 //0: no esta en rom
@@ -1935,30 +1935,30 @@ int debug_enterrom=0;
 int debug_exitrom=0;
 */
 
-	if (reg_pc<16384) {
-		//no ha salido de rom
-		debug_exitrom=0;
+    if (reg_pc<16384) {
+        //no ha salido de rom
+        debug_exitrom=0;
 
-		//ver si hay que avisar de un enterrom
-		if (debug_enterrom==0) debug_enterrom=1;
-	}
+        //ver si hay que avisar de un enterrom
+        if (debug_enterrom==0) debug_enterrom=1;
+    }
 
-	if (reg_pc>16383) {
-		//no esta en rom
-		debug_enterrom=0;
+    if (reg_pc>16383) {
+        //no esta en rom
+        debug_enterrom=0;
 
-		//ver si hay que avisar de un exitrom
-		if (debug_exitrom==0) debug_exitrom=1;
-	}
+        //ver si hay que avisar de un exitrom
+        if (debug_exitrom==0) debug_exitrom=1;
+    }
 
-	cpu_core_loop_debug_check_breakpoints();
-
-
+    cpu_core_loop_debug_check_breakpoints();
 
 
 
-	//Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-	return 0;
+
+
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+    return 0;
 
 }
 
@@ -2065,37 +2065,37 @@ void set_cpu_core_loop(void)
 
     }
 
-	/*
+    /*
         //Activar core de debug si es necesario
         if (debug_cpu_core_loop.v) {
                 debug_printf(VERBOSE_INFO,"Enabling debug on cpu core");
                 cpu_core_loop_no_debug=cpu_core_loop;
                 cpu_core_loop=cpu_core_loop_debug;
         }
-	*/
+    */
 
 }
 
 
 void set_cpu_core_loop_debug(void)
 {
-	debug_printf(VERBOSE_INFO,"Enabling debug on cpu core");
-	debug_nested_id_core=debug_nested_core_add(cpu_core_loop_debug,"Debug core");
+    debug_printf(VERBOSE_INFO,"Enabling debug on cpu core");
+    debug_nested_id_core=debug_nested_core_add(cpu_core_loop_debug,"Debug core");
 }
 
 void reset_cpu_core_loop_debug(void)
 {
-	debug_printf(VERBOSE_INFO,"Disabling debug on cpu core");
-	debug_nested_core_del(debug_nested_id_core);
+    debug_printf(VERBOSE_INFO,"Disabling debug on cpu core");
+    debug_nested_core_del(debug_nested_id_core);
 }
 
 
 
 void breakpoints_enable(void)
 {
-	debug_breakpoints_enabled.v=1;
-	//debug_cpu_core_loop.v=1;
-	set_peek_byte_function_debug();
+    debug_breakpoints_enabled.v=1;
+    //debug_cpu_core_loop.v=1;
+    set_peek_byte_function_debug();
 
         set_cpu_core_loop_debug();
 
@@ -2104,9 +2104,9 @@ void breakpoints_enable(void)
 
 void breakpoints_disable(void)
 {
-	debug_breakpoints_enabled.v=0;
-	//debug_cpu_core_loop.v=0;
-	reset_peek_byte_function_debug();
+    debug_breakpoints_enabled.v=0;
+    //debug_cpu_core_loop.v=0;
+    reset_peek_byte_function_debug();
 
         reset_cpu_core_loop_debug();
 
@@ -2203,147 +2203,147 @@ z80_bit cpu_trans_log_ignore_repeated_ldxr={0};
 //TODO: esto podria usar funcion util_rotate_files
 void transaction_log_rotate_files(int archivos)
 {
-	//Primero cerrar archivo
-	transaction_log_close_file();
+    //Primero cerrar archivo
+    transaction_log_close_file();
 
-	//Borrar el ultimo
-	char buffer_last_file[PATH_MAX];
+    //Borrar el ultimo
+    char buffer_last_file[PATH_MAX];
 
-	sprintf(buffer_last_file,"%s.%d",transaction_log_filename,archivos);
+    sprintf(buffer_last_file,"%s.%d",transaction_log_filename,archivos);
 
-	debug_printf (VERBOSE_DEBUG,"Erasing oldest transaction log file %s",buffer_last_file);
+    debug_printf (VERBOSE_DEBUG,"Erasing oldest transaction log file %s",buffer_last_file);
 
-	util_delete(buffer_last_file);
+    util_delete(buffer_last_file);
 
-	//Y renombrar, el penultimo al ultimo, el antepenultimo al penultimo, etc
-	//con 10 archivos:
-	//ren file.9 file.10
-	//ren file.8 file.9
-	//ren file.7 file.8
-	//...
-	//ren file.1 file.2
-	//ren file file.1 esto a mano
-	int i;
+    //Y renombrar, el penultimo al ultimo, el antepenultimo al penultimo, etc
+    //con 10 archivos:
+    //ren file.9 file.10
+    //ren file.8 file.9
+    //ren file.7 file.8
+    //...
+    //ren file.1 file.2
+    //ren file file.1 esto a mano
+    int i;
 
-	for (i=archivos-1;i>=0;i--) {
-		char buffer_file_orig[PATH_MAX];
-		char buffer_file_dest[PATH_MAX];
+    for (i=archivos-1;i>=0;i--) {
+        char buffer_file_orig[PATH_MAX];
+        char buffer_file_dest[PATH_MAX];
 
-		//Caso especial ultimo (seria el .0)
-		if (i==0) {
-			strcpy(buffer_file_orig,transaction_log_filename);
-		}
-		else {
-			sprintf(buffer_file_orig,"%s.%d",transaction_log_filename,i);
-		}
+        //Caso especial ultimo (seria el .0)
+        if (i==0) {
+            strcpy(buffer_file_orig,transaction_log_filename);
+        }
+        else {
+            sprintf(buffer_file_orig,"%s.%d",transaction_log_filename,i);
+        }
 
-		sprintf(buffer_file_dest,"%s.%d",transaction_log_filename,i+1);
+        sprintf(buffer_file_dest,"%s.%d",transaction_log_filename,i+1);
 
-		debug_printf (VERBOSE_DEBUG,"Renaming transaction log file %s -> %s",buffer_file_orig,buffer_file_dest);
-		rename(buffer_file_orig,buffer_file_dest);
-	}
+        debug_printf (VERBOSE_DEBUG,"Renaming transaction log file %s -> %s",buffer_file_orig,buffer_file_dest);
+        rename(buffer_file_orig,buffer_file_dest);
+    }
 
 
-	//Y finalmente truncar
-	transaction_log_truncate();
+    //Y finalmente truncar
+    transaction_log_truncate();
 
-	//Y tenemos que abrirlo a mano
-	transaction_log_open_file();
+    //Y tenemos que abrirlo a mano
+    transaction_log_open_file();
 }
 
 void transaction_log_rotate_by_size(void)
 {
 
 
-	if (cpu_transaction_log_rotate_enabled.v==0) return;
+    if (cpu_transaction_log_rotate_enabled.v==0) return;
 
-	if (cpu_transaction_log_rotate_size==0) return; //no rotar si vale 0
+    if (cpu_transaction_log_rotate_size==0) return; //no rotar si vale 0
 
-	//Obtener tamanyo archivo a ver si hay que rotar o no
-	//nota: dado que el flush en mac por ejemplo se hace muy de vez en cuando, ver el tamanyo del archivo
-	//tal cual con la estructura en memoria, no mirando el archivo en disco
+    //Obtener tamanyo archivo a ver si hay que rotar o no
+    //nota: dado que el flush en mac por ejemplo se hace muy de vez en cuando, ver el tamanyo del archivo
+    //tal cual con la estructura en memoria, no mirando el archivo en disco
 
-	//ftell es muy lento
-	//long tamanyo=ftell(ptr_transaction_log);
-
-
-	long tamanyo=transaction_log_tamanyo_escrito;
-
-	//printf ("posicion: (tamanyo) %ld\n",tamanyo);
-
-	//Si hay que rotar
+    //ftell es muy lento
+    //long tamanyo=ftell(ptr_transaction_log);
 
 
-	long tamanyo_a_rotar=cpu_transaction_log_rotate_size;
+    long tamanyo=transaction_log_tamanyo_escrito;
 
-	//Pasar tamanyo a bytes
-	tamanyo_a_rotar *=1024;
-	tamanyo_a_rotar *=1024;
+    //printf ("posicion: (tamanyo) %ld\n",tamanyo);
 
-	if (tamanyo>=tamanyo_a_rotar) {
-		debug_printf (VERBOSE_DEBUG,"Rotating transaction log. File size %ld exceeds maximum %ld",tamanyo,tamanyo_a_rotar);
-		transaction_log_rotate_files(cpu_transaction_log_rotated_files);
-	}
+    //Si hay que rotar
+
+
+    long tamanyo_a_rotar=cpu_transaction_log_rotate_size;
+
+    //Pasar tamanyo a bytes
+    tamanyo_a_rotar *=1024;
+    tamanyo_a_rotar *=1024;
+
+    if (tamanyo>=tamanyo_a_rotar) {
+        debug_printf (VERBOSE_DEBUG,"Rotating transaction log. File size %ld exceeds maximum %ld",tamanyo,tamanyo_a_rotar);
+        transaction_log_rotate_files(cpu_transaction_log_rotated_files);
+    }
 }
 
 void transaction_log_rotate_by_lines(void)
 {
 
 
-	if (cpu_transaction_log_rotate_enabled.v==0) return;
+    if (cpu_transaction_log_rotate_enabled.v==0) return;
 
-	if (cpu_transaction_log_rotate_lines==0) return; //no rotar si vale 0
-
-
-	long tamanyo=transaction_log_tamanyo_lineas;
-
-	//printf ("posicion: (tamanyo) %ld\n",tamanyo);
-
-	//Si hay que rotar
+    if (cpu_transaction_log_rotate_lines==0) return; //no rotar si vale 0
 
 
-	long tamanyo_a_rotar=cpu_transaction_log_rotate_lines;
+    long tamanyo=transaction_log_tamanyo_lineas;
 
-	if (tamanyo>=tamanyo_a_rotar) {
-		debug_printf (VERBOSE_DEBUG,"Rotating transaction log. File lines %ld exceeds maximum %ld",tamanyo,tamanyo_a_rotar);
-		transaction_log_rotate_files(cpu_transaction_log_rotated_files);
-	}
+    //printf ("posicion: (tamanyo) %ld\n",tamanyo);
+
+    //Si hay que rotar
+
+
+    long tamanyo_a_rotar=cpu_transaction_log_rotate_lines;
+
+    if (tamanyo>=tamanyo_a_rotar) {
+        debug_printf (VERBOSE_DEBUG,"Rotating transaction log. File lines %ld exceeds maximum %ld",tamanyo,tamanyo_a_rotar);
+        transaction_log_rotate_files(cpu_transaction_log_rotated_files);
+    }
 }
 
 
 
 int transaction_log_set_rotate_number(int numero)
 {
-	if (numero<1 || numero>999) {
+    if (numero<1 || numero>999) {
         return 1;
-	}
+    }
 
 
-	cpu_transaction_log_rotated_files=numero;
-	return 0;
+    cpu_transaction_log_rotated_files=numero;
+    return 0;
 }
 
 
 int transaction_log_set_rotate_size(int numero)
 {
-	if (numero<0 || numero>9999) {
+    if (numero<0 || numero>9999) {
         return 1;
-	}
+    }
 
 
-	cpu_transaction_log_rotate_size=numero;
-	return 0;
+    cpu_transaction_log_rotate_size=numero;
+    return 0;
 }
 
 int transaction_log_set_rotate_lines(int numero)
 {
-	if (numero<0 || numero>2147483647) { //maximo 2^31-1
+    if (numero<0 || numero>2147483647) { //maximo 2^31-1
         return 1;
-	}
+    }
 
 
-	cpu_transaction_log_rotate_lines=numero;
-	return 0;
+    cpu_transaction_log_rotate_lines=numero;
+    return 0;
 }
 
 
@@ -2352,141 +2352,141 @@ z80_byte cpu_core_loop_transaction_log(z80_int dir GCC_UNUSED, z80_byte value GC
 {
 
 
-	//Si la cpu ha acabado un ciclo y esta esperando final de frame, no hacer nada
-	if (esperando_tiempo_final_t_estados.v==0) {
+    //Si la cpu ha acabado un ciclo y esta esperando final de frame, no hacer nada
+    if (esperando_tiempo_final_t_estados.v==0) {
 
-		int index=0;
+        int index=0;
 
         if (cpu_transaction_log_store_datetime.v) {
 
-	                //fecha grabacion
-			/*
-        	        time_t tiempo = time(NULL);
-                	struct tm tm = *localtime(&tiempo);
+                    //fecha grabacion
+            /*
+                    time_t tiempo = time(NULL);
+                    struct tm tm = *localtime(&tiempo);
 
-			//funciones localtime no son tan precisas como gettimeofday
-			//parece que localtime tarda unos milisegundos en actualizar los segundos
-			//y aparecen tiempos como
-			//10:00:01.9999
-			//10:00:01.0003   <-aqui deberia haber saltado el segundo
-			//10:00:01.0005
-			//10:00:02.0008
+            //funciones localtime no son tan precisas como gettimeofday
+            //parece que localtime tarda unos milisegundos en actualizar los segundos
+            //y aparecen tiempos como
+            //10:00:01.9999
+            //10:00:01.0003   <-aqui deberia haber saltado el segundo
+            //10:00:01.0005
+            //10:00:02.0008
 
-			/
-			*/
+            /
+            */
 
-			int longitud=debug_get_timestamp(&transaction_log_line_to_store[index]);
+            int longitud=debug_get_timestamp(&transaction_log_line_to_store[index]);
 
-			index +=longitud;
+            index +=longitud;
 
-			//Agregar espacio
-			transaction_log_line_to_store[index++]=' ';
-			transaction_log_line_to_store[index++]=0;
+            //Agregar espacio
+            transaction_log_line_to_store[index++]=' ';
+            transaction_log_line_to_store[index++]=0;
 
         }
 
-		if (cpu_transaction_log_store_tstates.v) {
-			sprintf (&transaction_log_line_to_store[index],"%05d ",t_estados);
-			index +=6;
-		}
+        if (cpu_transaction_log_store_tstates.v) {
+            sprintf (&transaction_log_line_to_store[index],"%05d ",t_estados);
+            index +=6;
+        }
 
     menu_z80_moto_int registro_pc=get_pc_register();
     registro_pc=adjust_address_space_cpu(registro_pc);
 
-		if (cpu_transaction_log_store_address.v) {
+        if (cpu_transaction_log_store_address.v) {
       if (CPU_IS_MOTOROLA) {
         sprintf (&transaction_log_line_to_store[index],"%05X ",registro_pc);
         index +=6;
       }
-			else {
+            else {
         sprintf (&transaction_log_line_to_store[index],"%04X ",registro_pc);
-			  index +=5;
+              index +=5;
       }
-		}
+        }
 
 
 
 
 
-	        if (cpu_transaction_log_store_opcode.v) {
-			debugger_disassemble(&transaction_log_line_to_store[index],32,&transaction_log_longitud_opcode,registro_pc);
-			int len=strlen(&transaction_log_line_to_store[index]);
-			index +=len;
-			transaction_log_line_to_store[index++]=' ';
-        	}
+            if (cpu_transaction_log_store_opcode.v) {
+            debugger_disassemble(&transaction_log_line_to_store[index],32,&transaction_log_longitud_opcode,registro_pc);
+            int len=strlen(&transaction_log_line_to_store[index]);
+            index +=len;
+            transaction_log_line_to_store[index++]=' ';
+            }
 
 
-		//Si es halt lo ultimo
-		if (cpu_trans_log_ignore_repeated_halt.v) {
-			if (CPU_IS_Z80) {
-				z80_byte opcode=peek_byte_no_time(registro_pc);
-				if (opcode==118) {
-					if (cpu_trans_log_last_was_halt<2) cpu_trans_log_last_was_halt++;
-					//printf ("halts %d\n",cpu_trans_log_last_was_halt);
+        //Si es halt lo ultimo
+        if (cpu_trans_log_ignore_repeated_halt.v) {
+            if (CPU_IS_Z80) {
+                z80_byte opcode=peek_byte_no_time(registro_pc);
+                if (opcode==118) {
+                    if (cpu_trans_log_last_was_halt<2) cpu_trans_log_last_was_halt++;
+                    //printf ("halts %d\n",cpu_trans_log_last_was_halt);
 
-				}
-				else {
-					cpu_trans_log_last_was_halt=0;
-				}
+                }
+                else {
+                    cpu_trans_log_last_was_halt=0;
+                }
 
-			}
-			else {
-				cpu_trans_log_last_was_halt=0;
-			}
-		}
+            }
+            else {
+                cpu_trans_log_last_was_halt=0;
+            }
+        }
 
-		if (cpu_transaction_log_store_registers.v) {
-			print_registers(&transaction_log_line_to_store[index]);
-                	int len=strlen(&transaction_log_line_to_store[index]);
-	                index +=len;
-        	        transaction_log_line_to_store[index++]=' ';
-	        }
+        if (cpu_transaction_log_store_registers.v) {
+            print_registers(&transaction_log_line_to_store[index]);
+                    int len=strlen(&transaction_log_line_to_store[index]);
+                    index +=len;
+                    transaction_log_line_to_store[index++]=' ';
+            }
 
-		//salto de linea
-		transaction_log_line_to_store[index++]=10;
+        //salto de linea
+        transaction_log_line_to_store[index++]=10;
 
-		//Si esta NULL es que no se ha abierto correctamente, y aqui no deberiamos llegar nunca
-		if (ptr_transaction_log!=NULL) {
+        //Si esta NULL es que no se ha abierto correctamente, y aqui no deberiamos llegar nunca
+        if (ptr_transaction_log!=NULL) {
 
-			//Si era halt los dos ultimos y hay que ignorarlo
-			if (cpu_trans_log_ignore_repeated_halt.v && cpu_trans_log_last_was_halt>1) {
-				//no hacer log
-			}
-			else {
+            //Si era halt los dos ultimos y hay que ignorarlo
+            if (cpu_trans_log_ignore_repeated_halt.v && cpu_trans_log_last_was_halt>1) {
+                //no hacer log
+            }
+            else {
 
-				fwrite(transaction_log_line_to_store,1,index,ptr_transaction_log);
+                fwrite(transaction_log_line_to_store,1,index,ptr_transaction_log);
 
-				transaction_log_tamanyo_escrito +=index;
+                transaction_log_tamanyo_escrito +=index;
 
-				transaction_log_tamanyo_lineas++;
-			}
-		}
-
-
+                transaction_log_tamanyo_lineas++;
+            }
+        }
 
 
-		//Rotar log si conviene por tamanyo
-		transaction_log_rotate_by_size();
 
-		//Rotar log si conviene por lineas
-		transaction_log_rotate_by_lines();
 
-	}
+        //Rotar log si conviene por tamanyo
+        transaction_log_rotate_by_size();
 
-	//Llamar a core anterior
-	debug_nested_core_call_previous(transaction_log_nested_id_core);
+        //Rotar log si conviene por lineas
+        transaction_log_rotate_by_lines();
 
-	//Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+    }
 
-	return 0;
+    //Llamar a core anterior
+    debug_nested_core_call_previous(transaction_log_nested_id_core);
+
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+
+    return 0;
 }
 
 void transaction_log_close_file(void)
 {
-	if (ptr_transaction_log!=NULL) {
-		fclose(ptr_transaction_log);
-		ptr_transaction_log=NULL;
-	}
+    if (ptr_transaction_log!=NULL) {
+        fclose(ptr_transaction_log);
+        ptr_transaction_log=NULL;
+    }
 }
 
 //Retorna 1 si error
@@ -2499,20 +2499,20 @@ int transaction_log_open_file(void)
   //Si el archivo existia, inicializar tamanyo, no poner a 0
 
   if (si_existe_archivo(transaction_log_filename)) {
-	 transaction_log_tamanyo_escrito=get_file_size(transaction_log_filename);
+     transaction_log_tamanyo_escrito=get_file_size(transaction_log_filename);
 
 
-	 //tiempo antes
-	//char tiempo[200];
-	//debug_get_timestamp(tiempo);
-	//printf ("tiempo antes leer archivo: %s\n",tiempo);
+     //tiempo antes
+    //char tiempo[200];
+    //debug_get_timestamp(tiempo);
+    //printf ("tiempo antes leer archivo: %s\n",tiempo);
 
-	transaction_log_tamanyo_lineas=get_file_lines(transaction_log_filename);
+    transaction_log_tamanyo_lineas=get_file_lines(transaction_log_filename);
 
-	//debug_get_timestamp(tiempo);
-	//printf ("tiempo despues leer archivo: %s\n",tiempo);
+    //debug_get_timestamp(tiempo);
+    //printf ("tiempo despues leer archivo: %s\n",tiempo);
 
-	 //tiempo despues
+     //tiempo despues
 
   }
 
@@ -2520,20 +2520,20 @@ int transaction_log_open_file(void)
 
   ptr_transaction_log=fopen(transaction_log_filename,"ab");
   if (!ptr_transaction_log) {
- 		debug_printf (VERBOSE_ERR,"Unable to open Transaction log");
-		debug_nested_core_del(transaction_log_nested_id_core);
-		return 1;
-	}
+         debug_printf (VERBOSE_ERR,"Unable to open Transaction log");
+        debug_nested_core_del(transaction_log_nested_id_core);
+        return 1;
+    }
 
 
 
-	return 0;
+    return 0;
 }
 
 void transaction_log_truncate(void)
 {
 
- 	if (ptr_transaction_log) {
+     if (ptr_transaction_log) {
         transaction_log_close_file();
         util_truncate_file(transaction_log_filename);
         transaction_log_open_file();
@@ -2550,18 +2550,18 @@ void transaction_log_truncate_rotated(void)
 
 
 
-	int archivos=cpu_transaction_log_rotated_files;
-	int i;
+    int archivos=cpu_transaction_log_rotated_files;
+    int i;
 
-	for (i=1;i<=archivos;i++) {
+    for (i=1;i<=archivos;i++) {
 
-		char buffer_file_dest[PATH_MAX];
+        char buffer_file_dest[PATH_MAX];
 
-		sprintf(buffer_file_dest,"%s.%d",transaction_log_filename,i);
+        sprintf(buffer_file_dest,"%s.%d",transaction_log_filename,i);
 
-		debug_printf (VERBOSE_DEBUG,"Truncating rotated transaction log file %s",buffer_file_dest);
-		util_truncate_file(buffer_file_dest);
-	}
+        debug_printf (VERBOSE_DEBUG,"Truncating rotated transaction log file %s",buffer_file_dest);
+        util_truncate_file(buffer_file_dest);
+    }
 
 
 }
@@ -2569,34 +2569,34 @@ void transaction_log_truncate_rotated(void)
 void set_cpu_core_transaction_log(void)
 {
         debug_printf(VERBOSE_INFO,"Enabling Transaction Log");
-	if (cpu_transaction_log_enabled.v) {
-		debug_printf(VERBOSE_INFO,"Already enabled");
-		return;
-	}
+    if (cpu_transaction_log_enabled.v) {
+        debug_printf(VERBOSE_INFO,"Already enabled");
+        return;
+    }
 
-	transaction_log_nested_id_core=debug_nested_core_add(cpu_core_loop_transaction_log,"Transaction Log Core");
-
-
-	if (transaction_log_open_file()) return;
+    transaction_log_nested_id_core=debug_nested_core_add(cpu_core_loop_transaction_log,"Transaction Log Core");
 
 
+    if (transaction_log_open_file()) return;
 
-	cpu_transaction_log_enabled.v=1;
+
+
+    cpu_transaction_log_enabled.v=1;
 
 }
 
 void reset_cpu_core_transaction_log(void)
 {
   debug_printf(VERBOSE_INFO,"Disabling Transaction Log");
-	if (cpu_transaction_log_enabled.v==0) {
-		debug_printf(VERBOSE_INFO,"Already disabled");
-		return;
-	}
+    if (cpu_transaction_log_enabled.v==0) {
+        debug_printf(VERBOSE_INFO,"Already disabled");
+        return;
+    }
 
-	debug_nested_core_del(transaction_log_nested_id_core);
-	cpu_transaction_log_enabled.v=0;
+    debug_nested_core_del(transaction_log_nested_id_core);
+    cpu_transaction_log_enabled.v=0;
 
-	transaction_log_close_file();
+    transaction_log_close_file();
 
 }
 
@@ -2610,19 +2610,19 @@ z80_byte cpu_core_loop_code_coverage(z80_int dir GCC_UNUSED, z80_byte value GCC_
 {
 
 
-	//hacer cosas antes...
-	//printf ("running cpu code coverage addr: %04XH\n",reg_pc);
+    //hacer cosas antes...
+    //printf ("running cpu code coverage addr: %04XH\n",reg_pc);
 
-	int indice=reg_pc & 0xffff;
+    int indice=reg_pc & 0xffff;
 
-	cpu_code_coverage_array[indice]=1;
+    cpu_code_coverage_array[indice]=1;
 
-	//Llamar a core anterior
-	debug_nested_core_call_previous(cpu_code_coverage_nested_id_core);
+    //Llamar a core anterior
+    debug_nested_core_call_previous(cpu_code_coverage_nested_id_core);
 
-	//Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
 
-	return 0;
+    return 0;
 }
 
 
@@ -2633,16 +2633,16 @@ void set_cpu_core_code_coverage_enable(void)
 {
     debug_printf(VERBOSE_INFO,"Enabling Cpu code coverage");
 
-	if (cpu_code_coverage_enabled.v) {
-		debug_printf(VERBOSE_INFO,"Already enabled");
-		return;
-	}
+    if (cpu_code_coverage_enabled.v) {
+        debug_printf(VERBOSE_INFO,"Already enabled");
+        return;
+    }
 
-	cpu_code_coverage_nested_id_core=debug_nested_core_add(cpu_core_loop_code_coverage,"CPU code coverage Core");
+    cpu_code_coverage_nested_id_core=debug_nested_core_add(cpu_core_loop_code_coverage,"CPU code coverage Core");
 
 
 
-	cpu_code_coverage_enabled.v=1;
+    cpu_code_coverage_enabled.v=1;
 
 
 
@@ -2660,13 +2660,13 @@ void set_cpu_core_code_coverage(void)
 void reset_cpu_core_code_coverage(void)
 {
   debug_printf(VERBOSE_INFO,"Disabling Cpu code coverage");
-	if (cpu_code_coverage_enabled.v==0) {
-		debug_printf(VERBOSE_INFO,"Already disabled");
-		return;
-	}
+    if (cpu_code_coverage_enabled.v==0) {
+        debug_printf(VERBOSE_INFO,"Already disabled");
+        return;
+    }
 
-	debug_nested_core_del(cpu_code_coverage_nested_id_core);
-	cpu_code_coverage_enabled.v=0;
+    debug_nested_core_del(cpu_code_coverage_nested_id_core);
+    cpu_code_coverage_enabled.v=0;
 
 
 }
@@ -2685,25 +2685,25 @@ struct s_extended_stack_item extended_stack_array_items[EXTENDED_STACK_SIZE];
 char *extended_stack_get_string_type(z80_byte tipo)
 {
 
-	//Algunas comprobaciones por si acaso
-	if (tipo>=TOTAL_PUSH_VALUE_TYPES) {
-		//Si se sale de rango, devolver default
-		return push_value_types_strings[0];
-	}
+    //Algunas comprobaciones por si acaso
+    if (tipo>=TOTAL_PUSH_VALUE_TYPES) {
+        //Si se sale de rango, devolver default
+        return push_value_types_strings[0];
+    }
 
-	else return push_value_types_strings[tipo];
+    else return push_value_types_strings[tipo];
 
 }
 
 void extended_stack_clear(void)
 {
 
-	int i;
+    int i;
 
-	for (i=0;i<EXTENDED_STACK_SIZE;i++) {
-		extended_stack_array_items[i].valor=0;
-		extended_stack_array_items[i].tipo=0;
-	}
+    for (i=0;i<EXTENDED_STACK_SIZE;i++) {
+        extended_stack_array_items[i].valor=0;
+        extended_stack_array_items[i].tipo=0;
+    }
 
 }
 
@@ -2711,19 +2711,19 @@ void extended_stack_clear(void)
 z80_byte push_valor_extended_stack(z80_int valor,z80_byte tipo)
 {
 
-	//printf ("Putting in stack value: %04XH type: %d (%s) SP=%04XH\n",valor,tipo,extended_stack_get_string_type(tipo),reg_sp);
+    //printf ("Putting in stack value: %04XH type: %d (%s) SP=%04XH\n",valor,tipo,extended_stack_get_string_type(tipo),reg_sp);
 
-	extended_stack_array_items[reg_sp-1].valor=value_16_to_8h(valor);
-	extended_stack_array_items[reg_sp-1].tipo=tipo;
+    extended_stack_array_items[reg_sp-1].valor=value_16_to_8h(valor);
+    extended_stack_array_items[reg_sp-1].tipo=tipo;
 
-	extended_stack_array_items[reg_sp-2].valor=value_16_to_8l(valor);
-	extended_stack_array_items[reg_sp-2].tipo=tipo;
+    extended_stack_array_items[reg_sp-2].valor=value_16_to_8l(valor);
+    extended_stack_array_items[reg_sp-2].tipo=tipo;
 
 
-	debug_nested_push_valor_call_previous(extended_stack_nested_id_core,valor,tipo);
+    debug_nested_push_valor_call_previous(extended_stack_nested_id_core,valor,tipo);
 
-	//Para que no se queje el compilador
-	return 0;
+    //Para que no se queje el compilador
+    return 0;
 
 }
 
@@ -2731,16 +2731,16 @@ void set_extended_stack(void)
 {
     debug_printf(VERBOSE_INFO,"Enabling Extended stack");
 
-	if (extended_stack_enabled.v) {
-		debug_printf(VERBOSE_INFO,"Already enabled");
-		return;
-	}
+    if (extended_stack_enabled.v) {
+        debug_printf(VERBOSE_INFO,"Already enabled");
+        return;
+    }
 
-	extended_stack_nested_id_core=debug_nested_push_valor_add(push_valor_extended_stack,"Extended stack");
+    extended_stack_nested_id_core=debug_nested_push_valor_add(push_valor_extended_stack,"Extended stack");
 
 
 
-	extended_stack_enabled.v=1;
+    extended_stack_enabled.v=1;
 
 
 }
@@ -2748,13 +2748,13 @@ void set_extended_stack(void)
 void reset_extended_stack(void)
 {
   debug_printf(VERBOSE_INFO,"Disabling Extended stack");
-	if (extended_stack_enabled.v==0) {
-		debug_printf(VERBOSE_INFO,"Already disabled");
-		return;
-	}
+    if (extended_stack_enabled.v==0) {
+        debug_printf(VERBOSE_INFO,"Already disabled");
+        return;
+    }
 
-	debug_nested_push_valor_del(extended_stack_nested_id_core);
-	extended_stack_enabled.v=0;
+    debug_nested_push_valor_del(extended_stack_nested_id_core);
+    extended_stack_enabled.v=0;
 
 
 }
@@ -2799,11 +2799,11 @@ void cpu_history_legacy_regs_bin_to_string(z80_byte *p,char *destino)
     }
 
 
-	//Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
+    //Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
   sprintf (destino,"PC=%02x%02x SP=%02x%02x AF=%02x%02x BC=%02x%02x HL=%02x%02x DE=%02x%02x IX=%02x%02x IY=%02x%02x "
-  				   "AF'=%02x%02x BC'=%02x%02x HL'=%02x%02x DE'=%02x%02x "
-				   "I=%02x R=%02x IM%d IFF%c%c (PC)=%02x%02x%02x%02x (SP)=%02x%02x "
-				   "MMU=%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x %s",
+                     "AF'=%02x%02x BC'=%02x%02x HL'=%02x%02x DE'=%02x%02x "
+                   "I=%02x R=%02x IM%d IFF%c%c (PC)=%02x%02x%02x%02x (SP)=%02x%02x "
+                   "MMU=%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x %s",
   p[1],p[0], 	//pc
   p[3],p[2], 	//sp
   p[5],p[4], 	//af
@@ -2871,11 +2871,11 @@ void cpu_history_extended_regs_bin_to_string(z80_byte *p,char *destino)
     }
 
 
-	//Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
+    //Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
   sprintf (destino,"PC=%02x%02x SP=%02x%02x AF=%02x%02x BC=%02x%02x HL=%02x%02x DE=%02x%02x IX=%02x%02x IY=%02x%02x "
-  				   "AF'=%02x%02x BC'=%02x%02x HL'=%02x%02x DE'=%02x%02x "
-				   "I=%02x R=%02x IM%d IFF%c%c (PC)=%02x%02x%02x%02x (SP)=%02x%02x "
-				   "MMU=%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x 3FFD=%02x 1FFD=%02x %s",
+                     "AF'=%02x%02x BC'=%02x%02x HL'=%02x%02x DE'=%02x%02x "
+                   "I=%02x R=%02x IM%d IFF%c%c (PC)=%02x%02x%02x%02x (SP)=%02x%02x "
+                   "MMU=%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x 3FFD=%02x 1FFD=%02x %s",
   p[1],p[0], 	//pc
   p[3],p[2], 	//sp
   p[5],p[4], 	//af
@@ -2933,13 +2933,13 @@ int cpu_history_reg_pc_bin_to_int(z80_byte *p)
 //Funcion para leer byte preservando variable MRA
 z80_byte peek_byte_no_time_no_change_mra(z80_int dir)
 {
-	unsigned int antes_debug_mmu_mra=debug_mmu_mra;
+    unsigned int antes_debug_mmu_mra=debug_mmu_mra;
 
-	z80_byte value=peek_byte_no_time(dir);
+    z80_byte value=peek_byte_no_time(dir);
 
-	debug_mmu_mra=antes_debug_mmu_mra;
+    debug_mmu_mra=antes_debug_mmu_mra;
 
-	return value;
+    return value;
 
 }
 
@@ -2970,46 +2970,46 @@ void cpu_history_regs_to_bin_aux_exsp(z80_byte *p)
 void cpu_history_regs_to_bin(z80_byte *p)
 {
 
-	p[0]=value_16_to_8l(reg_pc);
-	p[1]=value_16_to_8h(reg_pc);
+    p[0]=value_16_to_8l(reg_pc);
+    p[1]=value_16_to_8h(reg_pc);
 
-	p[2]=value_16_to_8l(reg_sp);
-	p[3]=value_16_to_8h(reg_sp);
+    p[2]=value_16_to_8l(reg_sp);
+    p[3]=value_16_to_8h(reg_sp);
 
-	p[4]=Z80_FLAGS;
-	p[5]=reg_a;
+    p[4]=Z80_FLAGS;
+    p[5]=reg_a;
 
-	p[6]=reg_c;
-	p[7]=reg_b;
+    p[6]=reg_c;
+    p[7]=reg_b;
 
-	p[8]=reg_l;
-	p[9]=reg_h;
+    p[8]=reg_l;
+    p[9]=reg_h;
 
-	p[10]=reg_e;
-	p[11]=reg_d;
+    p[10]=reg_e;
+    p[11]=reg_d;
 
-	p[12]=value_16_to_8l(reg_ix);
-	p[13]=value_16_to_8h(reg_ix);
+    p[12]=value_16_to_8l(reg_ix);
+    p[13]=value_16_to_8h(reg_ix);
 
-	p[14]=value_16_to_8l(reg_iy);
-	p[15]=value_16_to_8h(reg_iy);
+    p[14]=value_16_to_8l(reg_iy);
+    p[15]=value_16_to_8h(reg_iy);
 
-	p[16]=Z80_FLAGS_SHADOW;
-	p[17]=reg_a_shadow;
+    p[16]=Z80_FLAGS_SHADOW;
+    p[17]=reg_a_shadow;
 
-	p[18]=reg_c_shadow;
-	p[19]=reg_b_shadow;
+    p[18]=reg_c_shadow;
+    p[19]=reg_b_shadow;
 
-	p[20]=reg_l_shadow;
-	p[21]=reg_h_shadow;
+    p[20]=reg_l_shadow;
+    p[21]=reg_h_shadow;
 
-	p[22]=reg_e_shadow;
-	p[23]=reg_d_shadow;
+    p[22]=reg_e_shadow;
+    p[23]=reg_d_shadow;
 
-	p[24]=reg_i;
-  	p[25]=(reg_r&127)|(reg_r_bit7&128);
-  	p[26]=im_mode;
-	p[27]=iff1.v | (iff2.v<<1);
+    p[24]=reg_i;
+      p[25]=(reg_r&127)|(reg_r_bit7&128);
+      p[26]=im_mode;
+    p[27]=iff1.v | (iff2.v<<1);
 
     p[28]=peek_byte_no_time_no_change_mra(reg_pc);
     p[29]=peek_byte_no_time_no_change_mra(reg_pc+1);
@@ -3019,15 +3019,15 @@ void cpu_history_regs_to_bin(z80_byte *p)
     p[32]=peek_byte_no_time_no_change_mra(reg_sp);
     p[33]=peek_byte_no_time_no_change_mra(reg_sp+1);
 
-	//MMU. Desde p34
-	int i;
+    //MMU. Desde p34
+    int i;
 
-	for (i=0;i<8;i++) {
-		//Low byte
-		p[34+i*2]=value_16_to_8l(debug_paginas_memoria_mapeadas[i]);
-		//High byte
-		p[34+i*2+1]=value_16_to_8h(debug_paginas_memoria_mapeadas[i]);
-	}
+    for (i=0;i<8;i++) {
+        //Low byte
+        p[34+i*2]=value_16_to_8l(debug_paginas_memoria_mapeadas[i]);
+        //High byte
+        p[34+i*2+1]=value_16_to_8h(debug_paginas_memoria_mapeadas[i]);
+    }
 
     //57,58: puertos paginacion 32765, 8189
     p[57]=puerto_32765;
@@ -3054,8 +3054,8 @@ void cpu_history_regs_to_bin(z80_byte *p)
     z80_int puntero;
 
 
-	z80_byte *pref203_registro;
-	//z80_byte pref203_numerobit;
+    z80_byte *pref203_registro;
+    //z80_byte pref203_numerobit;
 
     z80_int *cual_registro_ixiy;
 
@@ -3283,9 +3283,9 @@ void cpu_history_regs_to_bin(z80_byte *p)
                 break;
 
                 default:
-				switch(opcode1 & 56) {
+                switch(opcode1 & 56) {
 
-					case 0:
+                    case 0:
                     case 8:
                     case 16:
                     case 24:
@@ -3305,11 +3305,11 @@ void cpu_history_regs_to_bin(z80_byte *p)
                             //printf("Storing on history %XH with value %XH coming from opcode CB%XH type ROTATION (HL)\n",HL,value1,opcode1);
                         }
 
-					break;
+                    break;
 
 
-				}
-			break;
+                }
+            break;
             }
 
 
@@ -3426,34 +3426,34 @@ z80_bit cpu_history_started={0};
 
 int cpu_history_increment_pointer(int indice)
 {
-	//Si va mas alla del final, retornar 0
-	indice++;
+    //Si va mas alla del final, retornar 0
+    indice++;
 
-	if (indice>=cpu_history_max_elements) indice=0;
-	return indice;
+    if (indice>=cpu_history_max_elements) indice=0;
+    return indice;
 }
 
 void cpu_history_init_buffer(void)
 {
-	cpu_history_primer_elemento=0;
-	cpu_history_total_elementos=0;
-	cpu_history_siguiente_posicion=0;
+    cpu_history_primer_elemento=0;
+    cpu_history_total_elementos=0;
+    cpu_history_siguiente_posicion=0;
 
 
-	if (cpu_history_memory_buffer!=NULL) {
-		free(cpu_history_memory_buffer);
-		//TODO: liberar buffer al inicializar cpu_core en set_machine
-	}
+    if (cpu_history_memory_buffer!=NULL) {
+        free(cpu_history_memory_buffer);
+        //TODO: liberar buffer al inicializar cpu_core en set_machine
+    }
 
 
-	cpu_history_memory_buffer=malloc(cpu_history_max_elements*CPU_HISTORY_REGISTERS_SIZE);
-	if (cpu_history_memory_buffer==NULL) cpu_panic("Can not allocate memory for cpu history");
+    cpu_history_memory_buffer=malloc(cpu_history_max_elements*CPU_HISTORY_REGISTERS_SIZE);
+    if (cpu_history_memory_buffer==NULL) cpu_panic("Can not allocate memory for cpu history");
 
 }
 
 long long int cpu_history_get_offset_index(int indice)
 {
-	return indice*CPU_HISTORY_REGISTERS_SIZE;
+    return indice*CPU_HISTORY_REGISTERS_SIZE;
 }
 
 //int temp_conta=0;
@@ -3461,139 +3461,139 @@ long long int cpu_history_get_offset_index(int indice)
 void cpu_history_add_element(void)
 {
 
-	//-Insertar elemento: Meter contenido en posicion indicada por indice de siguiente posicion. Incrementar indice y si va mas alla del final, poner a 0
-	//printf ("Insertando elemento en posicion %d. Primer elemento: %d Total_elementos: %d\n",
-	//		cpu_history_siguiente_posicion,cpu_history_primer_elemento,cpu_history_total_elementos);
+    //-Insertar elemento: Meter contenido en posicion indicada por indice de siguiente posicion. Incrementar indice y si va mas alla del final, poner a 0
+    //printf ("Insertando elemento en posicion %d. Primer elemento: %d Total_elementos: %d\n",
+    //		cpu_history_siguiente_posicion,cpu_history_primer_elemento,cpu_history_total_elementos);
 
 
-	//Obtener posicion en memoria
-	long long int offset_memoria;
-	offset_memoria=cpu_history_get_offset_index(cpu_history_siguiente_posicion);
+    //Obtener posicion en memoria
+    long long int offset_memoria;
+    offset_memoria=cpu_history_get_offset_index(cpu_history_siguiente_posicion);
 
-	//printf ("Offset en memoria: %ld\n",offset_memoria);
+    //printf ("Offset en memoria: %ld\n",offset_memoria);
 
-	//Meter registros en memoria
-	cpu_history_regs_to_bin(&cpu_history_memory_buffer[offset_memoria]);
+    //Meter registros en memoria
+    cpu_history_regs_to_bin(&cpu_history_memory_buffer[offset_memoria]);
 
 
-	cpu_history_siguiente_posicion=cpu_history_increment_pointer(cpu_history_siguiente_posicion);
+    cpu_history_siguiente_posicion=cpu_history_increment_pointer(cpu_history_siguiente_posicion);
 
-	//Si total elementos es menor que maximo, incrementar
-	if (cpu_history_total_elementos<cpu_history_max_elements) cpu_history_total_elementos++;
+    //Si total elementos es menor que maximo, incrementar
+    if (cpu_history_total_elementos<cpu_history_max_elements) cpu_history_total_elementos++;
 
-	//Si total elementos es igual que maximo, no incrementar y aumentar posicion de indice del primer elemento. Si va mas alla del final, poner a 0
-	else {
-		cpu_history_primer_elemento=cpu_history_increment_pointer(cpu_history_primer_elemento);
-	}
+    //Si total elementos es igual que maximo, no incrementar y aumentar posicion de indice del primer elemento. Si va mas alla del final, poner a 0
+    else {
+        cpu_history_primer_elemento=cpu_history_increment_pointer(cpu_history_primer_elemento);
+    }
 
-	//temp_conta++;
-	//if (temp_conta==100) cpu_history_started.v=0;
+    //temp_conta++;
+    //if (temp_conta==100) cpu_history_started.v=0;
 
 
 }
 
 int cpu_history_get_array_pos_element(int indice)
 {
-	//Retorna indice a posicion de un elemento teniendo en cuenta que el primero (indice=0) sera donde apunte cpu_history_primer_elemento
-	//Aplicar retorno a 0 si se "da la vuelta"
+    //Retorna indice a posicion de un elemento teniendo en cuenta que el primero (indice=0) sera donde apunte cpu_history_primer_elemento
+    //Aplicar retorno a 0 si se "da la vuelta"
 
-	if (cpu_history_primer_elemento+indice<cpu_history_max_elements) {
-		//No da la vuelta. Retornar tal cual
-		//TODO: ver si no pide por un elemento mas alla del total escritos
-		return cpu_history_primer_elemento+indice;
-	}
-	else {
-		//Ha dado la vuelta.
-		int indice_final=cpu_history_primer_elemento+indice-cpu_history_max_elements;
-		return indice_final;
-		//Ejemplo:
-		//array de 3. primero es el 1 y pedimos el 2
-		//tiene que retornar el 0:
-		//1+2-3=0
-		//array de 3. primero es el 2 y pedimos el 2
-		//tiene que retornar el 1:
-		//2+2-3=1
-		//primero+indice-maximo
-	}
+    if (cpu_history_primer_elemento+indice<cpu_history_max_elements) {
+        //No da la vuelta. Retornar tal cual
+        //TODO: ver si no pide por un elemento mas alla del total escritos
+        return cpu_history_primer_elemento+indice;
+    }
+    else {
+        //Ha dado la vuelta.
+        int indice_final=cpu_history_primer_elemento+indice-cpu_history_max_elements;
+        return indice_final;
+        //Ejemplo:
+        //array de 3. primero es el 1 y pedimos el 2
+        //tiene que retornar el 0:
+        //1+2-3=0
+        //array de 3. primero es el 2 y pedimos el 2
+        //tiene que retornar el 1:
+        //2+2-3=1
+        //primero+indice-maximo
+    }
 }
 
 //Nota: este comando se mantiene solo por compabilidad con Dezog (comando cpu-history get)
 void cpu_history_legacy_get_registers_element(int indice,char *string_destino)
 {
 
-	if (indice<0) {
-		strcpy(string_destino,"ERROR: index out of range");
-		return;
-	}
+    if (indice<0) {
+        strcpy(string_destino,"ERROR: index out of range");
+        return;
+    }
 
-	if (indice>=cpu_history_total_elementos) {
-		sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
-		return;
-	}
+    if (indice>=cpu_history_total_elementos) {
+        sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
+        return;
+    }
 
-	int posicion=cpu_history_get_array_pos_element(indice);
+    int posicion=cpu_history_get_array_pos_element(indice);
 
-	long long int offset_memoria=cpu_history_get_offset_index(posicion);
+    long long int offset_memoria=cpu_history_get_offset_index(posicion);
 
-	cpu_history_legacy_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
+    cpu_history_legacy_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
 }
 
 void cpu_history_get_registers_extended_element(int indice,char *string_destino)
 {
 
-	if (indice<0) {
-		strcpy(string_destino,"ERROR: index out of range");
-		return;
-	}
+    if (indice<0) {
+        strcpy(string_destino,"ERROR: index out of range");
+        return;
+    }
 
-	if (indice>=cpu_history_total_elementos) {
-		sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
-		return;
-	}
+    if (indice>=cpu_history_total_elementos) {
+        sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
+        return;
+    }
 
-	int posicion=cpu_history_get_array_pos_element(indice);
+    int posicion=cpu_history_get_array_pos_element(indice);
 
-	long long int offset_memoria=cpu_history_get_offset_index(posicion);
+    long long int offset_memoria=cpu_history_get_offset_index(posicion);
 
-	cpu_history_extended_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
+    cpu_history_extended_regs_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
 }
 
 void cpu_history_get_pc_register_element(int indice,char *string_destino)
 {
 
-	if (indice<0) {
-		strcpy(string_destino,"ERROR: index can't be negative");
-		return;
-	}
+    if (indice<0) {
+        strcpy(string_destino,"ERROR: index can't be negative");
+        return;
+    }
 
-	if (indice>=cpu_history_total_elementos) {
-		sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
-		return;
-	}
+    if (indice>=cpu_history_total_elementos) {
+        sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
+        return;
+    }
 
-	int posicion=cpu_history_get_array_pos_element(indice);
+    int posicion=cpu_history_get_array_pos_element(indice);
 
-	long long int offset_memoria=cpu_history_get_offset_index(posicion);
+    long long int offset_memoria=cpu_history_get_offset_index(posicion);
 
-	cpu_history_reg_pc_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
+    cpu_history_reg_pc_bin_to_string(&cpu_history_memory_buffer[offset_memoria],string_destino);
 }
 
 int cpu_history_get_pc_register_element_to_int(int indice)
 {
 
-	if (indice<0) {
-		return -1;
-	}
+    if (indice<0) {
+        return -1;
+    }
 
-	if (indice>=cpu_history_total_elementos) {
-		return -1;
-	}
+    if (indice>=cpu_history_total_elementos) {
+        return -1;
+    }
 
-	int posicion=cpu_history_get_array_pos_element(indice);
+    int posicion=cpu_history_get_array_pos_element(indice);
 
-	long long int offset_memoria=cpu_history_get_offset_index(posicion);
+    long long int offset_memoria=cpu_history_get_offset_index(posicion);
 
-	return cpu_history_reg_pc_bin_to_int(&cpu_history_memory_buffer[offset_memoria]);
+    return cpu_history_reg_pc_bin_to_int(&cpu_history_memory_buffer[offset_memoria]);
 }
 
 //Buscar si direccion pc esta en el historial
@@ -3639,21 +3639,21 @@ int cpu_history_find_pc(int direccion_to_find,int max_elements_to_find)
 void cpu_history_regs_bin_restore(int indice)
 {
 
-	if (indice<0) {
-		//strcpy(string_destino,"ERROR: index out of range");
-		return;
-	}
+    if (indice<0) {
+        //strcpy(string_destino,"ERROR: index out of range");
+        return;
+    }
 
-	if (indice>=cpu_history_total_elementos) {
-		//sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
-		return;
-	}
+    if (indice>=cpu_history_total_elementos) {
+        //sprintf(string_destino,"ERROR: index beyond total elements (%d)",cpu_history_total_elementos);
+        return;
+    }
 
 
 
-	int posicion=cpu_history_get_array_pos_element(indice);
+    int posicion=cpu_history_get_array_pos_element(indice);
 
-	long long int offset_memoria=cpu_history_get_offset_index(posicion);
+    long long int offset_memoria=cpu_history_get_offset_index(posicion);
 
 
     z80_byte *p;
@@ -3662,11 +3662,11 @@ void cpu_history_regs_bin_restore(int indice)
 
 
 
-	//Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
+    //Nota: funcion print_registers escribe antes BC que AF. Aqui ponemos AF antes, que es mas lógico
   /*sprintf (destino,"PC=%02x%02x SP=%02x%02x AF=%02x%02x BC=%02x%02x HL=%02x%02x DE=%02x%02x IX=%02x%02x IY=%02x%02x "
-  				   "AF'=%02x%02x BC'=%02x%02x HL'=%02x%02x DE'=%02x%02x "
-				   "I=%02x R=%02x IM%d IFF%c%c (PC)=%02x%02x%02x%02x (SP)=%02x%02x "
-				   "MMU=%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",*/
+                     "AF'=%02x%02x BC'=%02x%02x HL'=%02x%02x DE'=%02x%02x "
+                   "I=%02x R=%02x IM%d IFF%c%c (PC)=%02x%02x%02x%02x (SP)=%02x%02x "
+                   "MMU=%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",*/
 
   reg_pc=value_8_to_16(p[1],p[0]);  	//pc
   reg_sp=value_8_to_16(p[3],p[2]), 	//sp
@@ -3805,131 +3805,131 @@ void cpu_history_regs_bin_restore(int indice)
 int cpu_history_get_total_elements(void)
 {
 
-	return cpu_history_total_elementos;
+    return cpu_history_total_elementos;
 }
 
 int cpu_history_get_max_size(void)
 {
-	return cpu_history_max_elements;
+    return cpu_history_max_elements;
 }
 
 int cpu_history_set_max_size(int total)
 {
-	if (total<1 || total>CPU_HISTORY_MAX_ALLOWED_ELEMENTS) return -1;
-	else {
-		cpu_history_max_elements=total;
-		cpu_history_init_buffer();
-		return 0;
-	}
+    if (total<1 || total>CPU_HISTORY_MAX_ALLOWED_ELEMENTS) return -1;
+    else {
+        cpu_history_max_elements=total;
+        cpu_history_init_buffer();
+        return 0;
+    }
 }
 
 z80_byte cpu_core_loop_history(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
 
 
-	//hacer cosas antes...
-	//printf ("running cpu history addr: %04XH\n",reg_pc);
+    //hacer cosas antes...
+    //printf ("running cpu history addr: %04XH\n",reg_pc);
 
 
 
-	if (cpu_history_started.v) {
+    if (cpu_history_started.v) {
 
-		//Prueba comparar legacy registers con nuevo
-		/*
-		printf ("array elemento en posicion %d. Primer elemento: %d Total_elementos: %d\n",cpu_history_siguiente_posicion,cpu_history_primer_elemento,cpu_history_total_elementos);
-
-
-		char registros_string_legacgy[1024];
-		print_registers(registros_string_legacgy);
-		printf ("Legacy registers: %s\n",registros_string_legacgy);
+        //Prueba comparar legacy registers con nuevo
+        /*
+        printf ("array elemento en posicion %d. Primer elemento: %d Total_elementos: %d\n",cpu_history_siguiente_posicion,cpu_history_primer_elemento,cpu_history_total_elementos);
 
 
-		//Guardar en binario y obtener de nuevo
-		char registros_history_string[1024];
-		z80_byte registers_history_binary[CPU_HISTORY_REGISTERS_SIZE];
-
-		//Guardar en binario
-		cpu_history_regs_to_bin(registers_history_binary);
-		//Obtener en string
-		cpu_history_legacy_regs_bin_to_string(registers_history_binary,registros_history_string);
-		printf ("Newbin registers: %s\n",registros_history_string);
-		*/
+        char registros_string_legacgy[1024];
+        print_registers(registros_string_legacgy);
+        printf ("Legacy registers: %s\n",registros_string_legacgy);
 
 
-		//Ver si hay que ignorar repetidos
+        //Guardar en binario y obtener de nuevo
+        char registros_history_string[1024];
+        z80_byte registers_history_binary[CPU_HISTORY_REGISTERS_SIZE];
 
-		//Si es halt lo ultimo
-		if (cpu_trans_log_ignore_repeated_halt.v) {
-			if (CPU_IS_Z80) {
-					z80_byte opcode=peek_byte_no_time(reg_pc);
-					if (opcode==118) {
-							if (cpu_trans_log_last_was_halt<2) cpu_trans_log_last_was_halt++;
-							//printf ("halts %d\n",cpu_trans_log_last_was_halt);
-
-					}
-					else {
-							cpu_trans_log_last_was_halt=0;
-					}
-
-			}
-			else {
-					cpu_trans_log_last_was_halt=0;
-			}
-		}
-
-		//Si es ldir o lddr lo ultimo
-		if (cpu_trans_log_ignore_repeated_ldxr.v) {
-			if (CPU_IS_Z80) {
-					z80_byte op_preffix=peek_byte_no_time(reg_pc);
-					z80_byte opcode=peek_byte_no_time(reg_pc+1);
-					if (op_preffix==237 && (opcode==176 || opcode==184)) {
-							if (cpu_trans_log_last_was_ldxr<2) cpu_trans_log_last_was_ldxr++;
-					}
-					else {
-							cpu_trans_log_last_was_ldxr=0;
-					}
-
-			}
-			else {
-					cpu_trans_log_last_was_ldxr=0;
-			}
-		}
-
-		int ignorar=0;
-
-		//Si era halt los dos ultimos y hay que ignorarlo
-		if (cpu_trans_log_ignore_repeated_halt.v && cpu_trans_log_last_was_halt>1) {
-			//no hacer log
-			ignorar=1;
-		}
+        //Guardar en binario
+        cpu_history_regs_to_bin(registers_history_binary);
+        //Obtener en string
+        cpu_history_legacy_regs_bin_to_string(registers_history_binary,registros_history_string);
+        printf ("Newbin registers: %s\n",registros_history_string);
+        */
 
 
-		//Si era ldir/lddr los dos ultimos y hay que ignorarlo
-		if (cpu_trans_log_ignore_repeated_ldxr.v && cpu_trans_log_last_was_ldxr>1) {
-			//no hacer log
-			ignorar=1;
-		}
+        //Ver si hay que ignorar repetidos
+
+        //Si es halt lo ultimo
+        if (cpu_trans_log_ignore_repeated_halt.v) {
+            if (CPU_IS_Z80) {
+                    z80_byte opcode=peek_byte_no_time(reg_pc);
+                    if (opcode==118) {
+                            if (cpu_trans_log_last_was_halt<2) cpu_trans_log_last_was_halt++;
+                            //printf ("halts %d\n",cpu_trans_log_last_was_halt);
+
+                    }
+                    else {
+                            cpu_trans_log_last_was_halt=0;
+                    }
+
+            }
+            else {
+                    cpu_trans_log_last_was_halt=0;
+            }
+        }
+
+        //Si es ldir o lddr lo ultimo
+        if (cpu_trans_log_ignore_repeated_ldxr.v) {
+            if (CPU_IS_Z80) {
+                    z80_byte op_preffix=peek_byte_no_time(reg_pc);
+                    z80_byte opcode=peek_byte_no_time(reg_pc+1);
+                    if (op_preffix==237 && (opcode==176 || opcode==184)) {
+                            if (cpu_trans_log_last_was_ldxr<2) cpu_trans_log_last_was_ldxr++;
+                    }
+                    else {
+                            cpu_trans_log_last_was_ldxr=0;
+                    }
+
+            }
+            else {
+                    cpu_trans_log_last_was_ldxr=0;
+            }
+        }
+
+        int ignorar=0;
+
+        //Si era halt los dos ultimos y hay que ignorarlo
+        if (cpu_trans_log_ignore_repeated_halt.v && cpu_trans_log_last_was_halt>1) {
+            //no hacer log
+            ignorar=1;
+        }
 
 
-		if (!ignorar) {
+        //Si era ldir/lddr los dos ultimos y hay que ignorarlo
+        if (cpu_trans_log_ignore_repeated_ldxr.v && cpu_trans_log_last_was_ldxr>1) {
+            //no hacer log
+            ignorar=1;
+        }
 
-		cpu_history_add_element();
 
-		}
+        if (!ignorar) {
 
-		else {
-			//printf ("Ignorando instruccion repetida en pc=%04XH %02X%02X\n",reg_pc,peek_byte_no_time(reg_pc),peek_byte_no_time(reg_pc+1));
-		}
+        cpu_history_add_element();
 
-		//printf ("\n");
-	}
+        }
 
-	//Llamar a core anterior
-	debug_nested_core_call_previous(cpu_history_nested_id_core);
+        else {
+            //printf ("Ignorando instruccion repetida en pc=%04XH %02X%02X\n",reg_pc,peek_byte_no_time(reg_pc),peek_byte_no_time(reg_pc+1));
+        }
 
-	//Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+        //printf ("\n");
+    }
 
-	return 0;
+    //Llamar a core anterior
+    debug_nested_core_call_previous(cpu_history_nested_id_core);
+
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+
+    return 0;
 }
 
 
@@ -3939,16 +3939,16 @@ void set_cpu_core_history_enable(void)
 {
     debug_printf(VERBOSE_INFO,"Enabling Cpu history");
 
-	if (cpu_history_enabled.v) {
-		debug_printf(VERBOSE_INFO,"Already enabled");
-		return;
-	}
+    if (cpu_history_enabled.v) {
+        debug_printf(VERBOSE_INFO,"Already enabled");
+        return;
+    }
 
 
 
-	cpu_history_nested_id_core=debug_nested_core_add(cpu_core_loop_history,"CPU history Core");
+    cpu_history_nested_id_core=debug_nested_core_add(cpu_core_loop_history,"CPU history Core");
 
-	cpu_history_enabled.v=1;
+    cpu_history_enabled.v=1;
 
 
 
@@ -3965,21 +3965,21 @@ void set_cpu_core_history(void)
 
 void reset_cpu_core_history(void)
 {
-	debug_printf(VERBOSE_INFO,"Disabling Cpu history");
-	if (cpu_history_enabled.v==0) {
-		debug_printf(VERBOSE_INFO,"Already disabled");
-		return;
-	}
+    debug_printf(VERBOSE_INFO,"Disabling Cpu history");
+    if (cpu_history_enabled.v==0) {
+        debug_printf(VERBOSE_INFO,"Already disabled");
+        return;
+    }
 
-	debug_nested_core_del(cpu_history_nested_id_core);
-	cpu_history_enabled.v=0;
+    debug_nested_core_del(cpu_history_nested_id_core);
+    cpu_history_enabled.v=0;
 
-	/*if (cpu_history_memory_buffer!=NULL) {
-		free(cpu_history_memory_buffer);
-		cpu_history_memory_buffer=NULL;
+    /*if (cpu_history_memory_buffer!=NULL) {
+        free(cpu_history_memory_buffer);
+        cpu_history_memory_buffer=NULL;
 
-		//TODO: liberar buffer al inicializar cpu_core en set_machine
-	}*/
+        //TODO: liberar buffer al inicializar cpu_core en set_machine
+    }*/
 
 }
 
@@ -4010,8 +4010,8 @@ void debug_get_t_stados_parcial_post(void)
 //Para saltar los step by step
 void debug_anota_retorno_step_nmi(void)
 {
-	debug_core_lanzado_inter.v=1;
-	debug_core_lanzado_inter_retorno_pc_nmi=reg_pc;
+    debug_core_lanzado_inter.v=1;
+    debug_core_lanzado_inter_retorno_pc_nmi=reg_pc;
 }
 
 void debug_anota_retorno_step_maskable(void)
@@ -4033,77 +4033,77 @@ Linkar con librerias unwind
 
 int getFileAndLine (unw_word_t addr, char *file, size_t flen, int *line)
 {
-	static char buf[256];
-	char *p;
+    static char buf[256];
+    char *p;
 
-	// prepare command to be executed
-	// our program need to be passed after the -e parameter
-	sprintf (buf, "/usr/bin/addr2line -C -e zesarux -f -i %lx", addr);
+    // prepare command to be executed
+    // our program need to be passed after the -e parameter
+    sprintf (buf, "/usr/bin/addr2line -C -e zesarux -f -i %lx", addr);
 
-	printf("%s\n",buf);
+    printf("%s\n",buf);
 
-	FILE* f = popen (buf, "r");
+    FILE* f = popen (buf, "r");
 
-	if (f == NULL)
-	{
-		perror (buf);
-		return 0;
-	}
+    if (f == NULL)
+    {
+        perror (buf);
+        return 0;
+    }
 
-	// get function name
-	fgets (buf, 256, f);
+    // get function name
+    fgets (buf, 256, f);
 
-	// get file and line
-	fgets (buf, 256, f);
+    // get file and line
+    fgets (buf, 256, f);
 
-	if (buf[0] != '?')
-	{
-		int l;
-		char *p = buf;
+    if (buf[0] != '?')
+    {
+        int l;
+        char *p = buf;
 
-		// file name is until ':'
-		while (*p != ':')
-		{
-			p++;
-		}
+        // file name is until ':'
+        while (*p != ':')
+        {
+            p++;
+        }
 
-		*p++ = 0;
-		// after file name follows line number
-		strcpy (file , buf);
-		sscanf (p,"%d", line);
-	}
-	else
-	{
-		strcpy (file,"unkown");
-		*line = 0;
-	}
+        *p++ = 0;
+        // after file name follows line number
+        strcpy (file , buf);
+        sscanf (p,"%d", line);
+    }
+    else
+    {
+        strcpy (file,"unkown");
+        *line = 0;
+    }
 
-	pclose(f);
+    pclose(f);
 }
 
 void show_backtrace (void)
 {
-	char name[256];
-	unw_cursor_t cursor; unw_context_t uc;
-	unw_word_t ip, sp, offp;
+    char name[256];
+    unw_cursor_t cursor; unw_context_t uc;
+    unw_word_t ip, sp, offp;
 
-	unw_getcontext(&uc);
-	unw_init_local(&cursor, &uc);
+    unw_getcontext(&uc);
+    unw_init_local(&cursor, &uc);
 
-	while (unw_step(&cursor) > 0)
-	{
-		char file[256];
-		int line = 0;
+    while (unw_step(&cursor) > 0)
+    {
+        char file[256];
+        int line = 0;
 
-		name[0] = '\0';
-		unw_get_proc_name(&cursor, name, 256, &offp);
-		unw_get_reg(&cursor, UNW_REG_IP, &ip);
-		unw_get_reg(&cursor, UNW_REG_SP, &sp);
+        name[0] = '\0';
+        unw_get_proc_name(&cursor, name, 256, &offp);
+        unw_get_reg(&cursor, UNW_REG_IP, &ip);
+        unw_get_reg(&cursor, UNW_REG_SP, &sp);
 
-		//printf ("%s ip = %lx, sp = %lx\n", name, (long) ip, (long) sp);
-		getFileAndLine((long)ip, file, 256, &line);
-		printf("%s in file %s line %d\n", name, file, line);
-	}
+        //printf ("%s ip = %lx, sp = %lx\n", name, (long) ip, (long) sp);
+        getFileAndLine((long)ip, file, 256, &line);
+        printf("%s in file %s line %d\n", name, file, line);
+    }
 }
 
 */
@@ -4133,14 +4133,14 @@ Resumiendo: todas deberían llamar a las anteriores
 //Retorna: puntero a elemento asignado
 debug_nested_function_element *debug_nested_alloc_element(void)
 {
-	debug_nested_function_element *puntero;
-	//Asignar memoria
-	puntero=malloc(sizeof(debug_nested_function_element));
+    debug_nested_function_element *puntero;
+    //Asignar memoria
+    puntero=malloc(sizeof(debug_nested_function_element));
         if (puntero==NULL) {
                 cpu_panic ("No enough memory to create nested element");
         }
 
-	return puntero;
+    return puntero;
 
 }
 
@@ -4149,18 +4149,18 @@ debug_nested_function_element *debug_nested_alloc_element(void)
 void debug_nested_fill(debug_nested_function_element *estructura,char *function_name, int id, debug_nested_function funcion, debug_nested_function_element *next,debug_nested_function_element *previous)
 {
 
-	if (strlen(function_name)>MAX_DEBUG_FUNCTION_NAME) {
-		cpu_panic("Nested function name too large");
-	}
+    if (strlen(function_name)>MAX_DEBUG_FUNCTION_NAME) {
+        cpu_panic("Nested function name too large");
+    }
 
-	strcpy(estructura->function_name,function_name);
-	estructura->id=id;
-	estructura->funcion=funcion;
-	estructura->next=next;
-	estructura->previous=previous;
+    strcpy(estructura->function_name,function_name);
+    estructura->id=id;
+    estructura->funcion=funcion;
+    estructura->next=next;
+    estructura->previous=previous;
 
-	debug_printf (VERBOSE_DEBUG,"Filling nested function. ID: %d Name: %s",id,function_name);
-	//printf ("Filling nested function. ID: %d Name: %s\n",id,function_name);
+    debug_printf (VERBOSE_DEBUG,"Filling nested function. ID: %d Name: %s",id,function_name);
+    //printf ("Filling nested function. ID: %d Name: %s\n",id,function_name);
 
 }
 
@@ -4168,23 +4168,23 @@ void debug_nested_fill(debug_nested_function_element *estructura,char *function_
 debug_nested_function_element *debug_nested_find_id(debug_nested_function_element *e,int id)
 {
 
-	if (e==NULL) {
-		debug_printf (VERBOSE_DEBUG,"Pointer is NULL when calling to debug_nested_find_id");
-		return NULL;
-	}
+    if (e==NULL) {
+        debug_printf (VERBOSE_DEBUG,"Pointer is NULL when calling to debug_nested_find_id");
+        return NULL;
+    }
 
-	int salir=0;
-	do {
-		if (e->id==id) return e;
+    int salir=0;
+    do {
+        if (e->id==id) return e;
 
-		//Hay siguiente?
-		if (e->next!=NULL) e=e->next;
-		else salir=1;
-	} while (!salir);
+        //Hay siguiente?
+        if (e->next!=NULL) e=e->next;
+        else salir=1;
+    } while (!salir);
 
 
-	//No encontrado
-	return NULL;
+    //No encontrado
+    return NULL;
 }
 
 //Buscar un nombre de funcion dentro de una lista
@@ -4208,120 +4208,120 @@ debug_nested_function_element *debug_nested_find_function_name(debug_nested_func
 //Buscar primer identificador libre. Empezando desde 0
 int debug_nested_find_free_id(debug_nested_function_element *e)
 {
-	int id;
+    int id;
 
-	for (id=0;id<MAX_DEBUG_NESTED_ELEMENTS;id++) {
-		if (debug_nested_find_id(e,id)==NULL) {
-			//ID no encontrado. retornamos ese
-			return id;
-		}
+    for (id=0;id<MAX_DEBUG_NESTED_ELEMENTS;id++) {
+        if (debug_nested_find_id(e,id)==NULL) {
+            //ID no encontrado. retornamos ese
+            return id;
+        }
 
-	}
+    }
 
-	//Si no hay ids libres, cpu_panic
-	cpu_panic("Maximum nested elements reached");
+    //Si no hay ids libres, cpu_panic
+    cpu_panic("Maximum nested elements reached");
 
-	//Para que no se queje el compilador. Aqui no llega nunca
-	return 0;
+    //Para que no se queje el compilador. Aqui no llega nunca
+    return 0;
 }
 
 debug_nested_function_element *debug_nested_find_last(debug_nested_function_element *e)
 {
-	//debug_nested_function_element *last;
+    //debug_nested_function_element *last;
 
-	//last=e;
+    //last=e;
 
-	while (e->next!=NULL) {
-		if (e->next!=NULL) e=e->next;
-	}
+    while (e->next!=NULL) {
+        if (e->next!=NULL) e=e->next;
+    }
 
-	return e;
+    return e;
 }
 
 
 //Agregar un elemento a la lista. Retorna id
 int debug_nested_add(debug_nested_function_element *e,char *function_name, debug_nested_function funcion)
 {
-	int id;
-	debug_nested_function_element *last_element;
-	debug_nested_function_element *new_element;
+    int id;
+    debug_nested_function_element *last_element;
+    debug_nested_function_element *new_element;
 
-	//Obtener id libre
-	id=debug_nested_find_free_id(e);
-	//printf ("New id on add: %d\n",id);
+    //Obtener id libre
+    id=debug_nested_find_free_id(e);
+    //printf ("New id on add: %d\n",id);
 
-	//Buscar ultimo elemento
-	last_element=debug_nested_find_last(e);
+    //Buscar ultimo elemento
+    last_element=debug_nested_find_last(e);
 
-	//Asignar uno nuevo
-	new_element=debug_nested_alloc_element();
+    //Asignar uno nuevo
+    new_element=debug_nested_alloc_element();
 
-	//Indicar puntero del anterior hacia el siguiente
-	last_element->next=new_element;
+    //Indicar puntero del anterior hacia el siguiente
+    last_element->next=new_element;
 
-	//Y llenar valores del actual
-	debug_nested_fill(new_element,function_name, id, funcion, NULL, last_element);
+    //Y llenar valores del actual
+    debug_nested_fill(new_element,function_name, id, funcion, NULL, last_element);
 
-	debug_printf (VERBOSE_DEBUG,"Adding nested function id: %d name: %d",id,function_name);
+    debug_printf (VERBOSE_DEBUG,"Adding nested function id: %d name: %d",id,function_name);
 
-	return id;
+    return id;
 }
 
 
 //Pide puntero al puntero inicial de la lista
 void debug_nested_del(debug_nested_function_element **puntero,int id)
 {
-	debug_nested_function_element *e;
+    debug_nested_function_element *e;
 
-	e=*puntero;
+    e=*puntero;
 
-	//Si puntero es nulo, no hacer nada
-	if (e==NULL) {
-		debug_printf (VERBOSE_DEBUG,"Nested pointer NULL calling to debug_nested_del. Not deleting anything");
-		return;
-	}
+    //Si puntero es nulo, no hacer nada
+    if (e==NULL) {
+        debug_printf (VERBOSE_DEBUG,"Nested pointer NULL calling to debug_nested_del. Not deleting anything");
+        return;
+    }
 
-	//Primero buscar elemento
-	debug_nested_function_element *borrar;
+    //Primero buscar elemento
+    debug_nested_function_element *borrar;
 
-	//Elemento anterior al que buscamos
-	debug_nested_function_element *anterior;
-	//Elemento siguiente al que buscamos
-	debug_nested_function_element *siguiente;
+    //Elemento anterior al que buscamos
+    debug_nested_function_element *anterior;
+    //Elemento siguiente al que buscamos
+    debug_nested_function_element *siguiente;
 
-	borrar=debug_nested_find_id(e,id);
+    borrar=debug_nested_find_id(e,id);
 
-	//Si NULL, no encontrado
-	if (borrar==NULL) {
-		debug_printf (VERBOSE_DEBUG,"Nested element to delete with id %d not found",id);
-		//printf ("Nested element to delete with id %d not found\n",id);
-		return;
-	}
+    //Si NULL, no encontrado
+    if (borrar==NULL) {
+        debug_printf (VERBOSE_DEBUG,"Nested element to delete with id %d not found",id);
+        //printf ("Nested element to delete with id %d not found\n",id);
+        return;
+    }
 
-	//Anterior
-	anterior=borrar->previous;
+    //Anterior
+    anterior=borrar->previous;
 
-	//Siguiente
-	siguiente=borrar->next;
+    //Siguiente
+    siguiente=borrar->next;
 
-	//Si hay anterior, asignarle el siguiente
-	if (anterior) {
-		anterior->next=siguiente;
-	}
+    //Si hay anterior, asignarle el siguiente
+    if (anterior) {
+        anterior->next=siguiente;
+    }
 
-	//Si no hay anterior, quiere decir que es el inicial. Reasignar puntero inicial
-	else {
-		*puntero=siguiente;
-	}
+    //Si no hay anterior, quiere decir que es el inicial. Reasignar puntero inicial
+    else {
+        *puntero=siguiente;
+    }
 
-	//Si hay siguiente, asignarle el anterior
-	if (siguiente) {
-		siguiente->previous=anterior;
-	}
+    //Si hay siguiente, asignarle el anterior
+    if (siguiente) {
+        siguiente->previous=anterior;
+    }
 
-	//Liberar memoria
-	debug_printf (VERBOSE_DEBUG,"Freeing element id %d name %s",borrar->id,borrar->function_name);
-	free(borrar);
+    //Liberar memoria
+    debug_printf (VERBOSE_DEBUG,"Freeing element id %d name %s",borrar->id,borrar->function_name);
+    free(borrar);
 }
 
 //Funcion generica que gestiona las llamadas a los elementos anidados
@@ -4334,7 +4334,7 @@ z80_byte debug_nested_generic_handler(debug_nested_function_element *e,z80_int d
 
         //Y llamar a su funcion. Dado que son funciones genericas, enviar parametros sin sentido
         //if (t_estados<20) printf ("Calling last element function name: %s\n",last->function_name);
-	z80_byte resultado;
+    z80_byte resultado;
         resultado=last->funcion(dir,value);
 
         return resultado;
@@ -4348,8 +4348,8 @@ z80_byte debug_nested_generic_handler(debug_nested_function_element *e,z80_int d
 //
 z80_byte debug_test_funcion(z80_int dir, z80_byte value)
 {
-	//Prueba simple
-	return dir+value*2;
+    //Prueba simple
+    return dir+value*2;
 
 }
 
@@ -4358,7 +4358,7 @@ void debug_test_needed_adelante(debug_nested_function_element *e,char *result)
 {
 char buffer[1024];
 
-	//printf ("Recorriendo list adelante\n");
+    //printf ("Recorriendo list adelante\n");
         int contador=0;
         do {
                 sprintf (buffer,"Element: %p (%d) id: %d name: %s pointer function: %p previous: %p next: %p\n",e,contador,e->id,e->function_name,e->funcion, e->previous,e->next);
@@ -4373,7 +4373,7 @@ char buffer[1024];
 void debug_test_needed_atras(debug_nested_function_element *e,int contador)
 {
 
-	printf ("Recorriendo list atras\n");
+    printf ("Recorriendo list atras\n");
         //Buscar ultimo
         e=debug_nested_find_last(e);
 
@@ -4391,54 +4391,54 @@ const int debug_test_needed_max=100;
 void debug_test_nested(void)
 {
 
-	printf ("Allocating list\n");
+    printf ("Allocating list\n");
 
-	//Creamos el inicial
-	debug_nested_function_element *lista_inicial;
-	//debug_nested_function_element *e;
-	lista_inicial=debug_nested_alloc_element();
-	//e=lista_inicial;
+    //Creamos el inicial
+    debug_nested_function_element *lista_inicial;
+    //debug_nested_function_element *e;
+    lista_inicial=debug_nested_alloc_element();
+    //e=lista_inicial;
 
-	//Le metemos datos
+    //Le metemos datos
 
-	//Primer identificador cero
-	debug_nested_fill(lista_inicial,"Pruebas",0, debug_test_funcion, NULL, NULL);
+    //Primer identificador cero
+    debug_nested_fill(lista_inicial,"Pruebas",0, debug_test_funcion, NULL, NULL);
 
-	//Asignar otros mas
-	int i;
-	char nombre_funcion[30];
-	for (i=0;i<debug_test_needed_max-1;i++) {
-		sprintf (nombre_funcion,"Pruebas%d",i);
-		int nuevo_id=debug_nested_add(lista_inicial,nombre_funcion,debug_test_funcion);
-		printf ("contador: %d nuevo_id: %d\n",i,nuevo_id);
-	}
+    //Asignar otros mas
+    int i;
+    char nombre_funcion[30];
+    for (i=0;i<debug_test_needed_max-1;i++) {
+        sprintf (nombre_funcion,"Pruebas%d",i);
+        int nuevo_id=debug_nested_add(lista_inicial,nombre_funcion,debug_test_funcion);
+        printf ("contador: %d nuevo_id: %d\n",i,nuevo_id);
+    }
 
-	//Recorrer array hacia adelante e ir mostrando
-	debug_test_needed_adelante(lista_inicial,NULL);
+    //Recorrer array hacia adelante e ir mostrando
+    debug_test_needed_adelante(lista_inicial,NULL);
 
-	//Recorrer array hacia atras e ir mostrando
-	debug_test_needed_atras(lista_inicial,debug_test_needed_max-1);
-
-
-	//Borrar a peticion de usuario
-	int elemento_a_borrar;
-	int salir=0;
-
-	do {
-		printf ("Id a borrar: ");
-		scanf ("%d",&elemento_a_borrar);
-		if (elemento_a_borrar<0 || elemento_a_borrar>debug_test_needed_max-1) salir=1;
-		else {
-			debug_nested_del(&lista_inicial,elemento_a_borrar);
-			debug_test_needed_adelante(lista_inicial,NULL);
-		}
-	} while (!salir);
+    //Recorrer array hacia atras e ir mostrando
+    debug_test_needed_atras(lista_inicial,debug_test_needed_max-1);
 
 
-	printf ("\n\nEliminando elemento con id 4\n\n");
-	debug_nested_del(&lista_inicial,4);
+    //Borrar a peticion de usuario
+    int elemento_a_borrar;
+    int salir=0;
 
-	//Y volver a recorrer array
+    do {
+        printf ("Id a borrar: ");
+        scanf ("%d",&elemento_a_borrar);
+        if (elemento_a_borrar<0 || elemento_a_borrar>debug_test_needed_max-1) salir=1;
+        else {
+            debug_nested_del(&lista_inicial,elemento_a_borrar);
+            debug_test_needed_adelante(lista_inicial,NULL);
+        }
+    } while (!salir);
+
+
+    printf ("\n\nEliminando elemento con id 4\n\n");
+    debug_nested_del(&lista_inicial,4);
+
+    //Y volver a recorrer array
         //Recorrer array hacia adelante e ir mostrando
         debug_test_needed_adelante(lista_inicial,NULL);
 
@@ -4446,18 +4446,18 @@ void debug_test_nested(void)
         debug_test_needed_atras(lista_inicial,debug_test_needed_max-1);
 
 
-	//Prueba llamar a funcion
-	z80_byte resultado=lista_inicial->funcion(10,2);
-	printf ("Resultado funcion asignada: %d\n",resultado);
+    //Prueba llamar a funcion
+    z80_byte resultado=lista_inicial->funcion(10,2);
+    printf ("Resultado funcion asignada: %d\n",resultado);
 
-	//Ir eliminando todos los ids
-	for (i=0;i<debug_test_needed_max;i++) {
-		printf ("\nEliminando id %d\n",i);
-		debug_nested_del(&lista_inicial,i);
-		//Mostrar
-		if (lista_inicial!=NULL) debug_test_needed_adelante(lista_inicial,NULL);
-		else printf ("(lista vacia)\n");
-	}
+    //Ir eliminando todos los ids
+    for (i=0;i<debug_test_needed_max;i++) {
+        printf ("\nEliminando id %d\n",i);
+        debug_nested_del(&lista_inicial,i);
+        //Mostrar
+        if (lista_inicial!=NULL) debug_test_needed_adelante(lista_inicial,NULL);
+        else printf ("(lista vacia)\n");
+    }
 }
 
 
@@ -4492,56 +4492,56 @@ debug_nested_function_element *nested_list_core;
 //Funcion que gestiona las llamadas a los cores anidados
 void cpu_core_loop_nested_handler(void)
 {
-	debug_nested_generic_handler(nested_list_core,0,0);
+    debug_nested_generic_handler(nested_list_core,0,0);
 }
 
 
 //Agregar un core sobre el actual. Devuelve id de elemento de lista que la funcion que llama debe guardar
 int debug_nested_core_add(debug_nested_function funcion,char *nombre)
 {
-	//Si es el primero, crear elemento inicial y cambio de core
-	//if (nested_list_core==NULL) {
-	if (cpu_core_loop!=cpu_core_loop_nested_handler) {
+    //Si es el primero, crear elemento inicial y cambio de core
+    //if (nested_list_core==NULL) {
+    if (cpu_core_loop!=cpu_core_loop_nested_handler) {
 
-		debug_printf (VERBOSE_DEBUG,"Adding first core to nested list");
+        debug_printf (VERBOSE_DEBUG,"Adding first core to nested list");
 
-        	//Creamos el inicial
-	        nested_list_core=debug_nested_alloc_element();
+            //Creamos el inicial
+            nested_list_core=debug_nested_alloc_element();
 
-        	//Le metemos datos
-        	//Primer identificador cero
-	        debug_nested_fill(nested_list_core,nombre,0,funcion, NULL, NULL);
+            //Le metemos datos
+            //Primer identificador cero
+            debug_nested_fill(nested_list_core,nombre,0,funcion, NULL, NULL);
 
-		cpu_core_loop_no_nested=cpu_core_loop;
-		cpu_core_loop=cpu_core_loop_nested_handler;
+        cpu_core_loop_no_nested=cpu_core_loop;
+        cpu_core_loop=cpu_core_loop_nested_handler;
 
-		return 0;
-	}
+        return 0;
+    }
 
-	else {
-		return debug_nested_add(nested_list_core,nombre,funcion);
-	}
+    else {
+        return debug_nested_add(nested_list_core,nombre,funcion);
+    }
 
 }
 
 void debug_nested_core_del(int id)
 {
-	//Eliminar id
-	//Si se elimina el primero de la lista, hay que reasignar puntero inicial y poner el no_nested a NULL
+    //Eliminar id
+    //Si se elimina el primero de la lista, hay que reasignar puntero inicial y poner el no_nested a NULL
 
-	//Si esta a NULL, no hacer nada
-	if (cpu_core_loop!=cpu_core_loop_nested_handler) {
-		debug_printf (VERBOSE_DEBUG,"Core nested is not enabled. Not deleting anything");
-		return;
-	}
+    //Si esta a NULL, no hacer nada
+    if (cpu_core_loop!=cpu_core_loop_nested_handler) {
+        debug_printf (VERBOSE_DEBUG,"Core nested is not enabled. Not deleting anything");
+        return;
+    }
 
-	debug_nested_del(&nested_list_core,id);
+    debug_nested_del(&nested_list_core,id);
 
-	if (nested_list_core==NULL) {
-		//lista vacia. asignar core normal
-		debug_printf (VERBOSE_DEBUG,"Core nested empty. Assign normal core");
-		cpu_core_loop=cpu_core_loop_no_nested;
-	}
+    if (nested_list_core==NULL) {
+        //lista vacia. asignar core normal
+        debug_printf (VERBOSE_DEBUG,"Core nested empty. Assign normal core");
+        cpu_core_loop=cpu_core_loop_no_nested;
+    }
 }
 
 
@@ -4549,38 +4549,38 @@ void debug_nested_core_del(int id)
 void debug_nested_core_call_previous(int id)
 {
 
-	//if (t_estados<20) printf ("Calling previous core to id %d\n",id);
+    //if (t_estados<20) printf ("Calling previous core to id %d\n",id);
 
-	//Si no hay anterior, quiere decir que hay que llamar al core original
-	//Ver si solo 1 elemento en la lista (esto acelera la busqueda)
-	if (nested_list_core->next==NULL) {
-		//Solo un elemento. Llamar al core original
-		//if (t_estados<20) printf ("Only one element in list. Calling original function\n");
-		cpu_core_loop_no_nested();
-	}
+    //Si no hay anterior, quiere decir que hay que llamar al core original
+    //Ver si solo 1 elemento en la lista (esto acelera la busqueda)
+    if (nested_list_core->next==NULL) {
+        //Solo un elemento. Llamar al core original
+        //if (t_estados<20) printf ("Only one element in list. Calling original function\n");
+        cpu_core_loop_no_nested();
+    }
 
-	else {
-		debug_nested_function_element *actual;
-		actual=debug_nested_find_id(nested_list_core,id);
-		//Si no existe id, error grave
-		if (actual==NULL) cpu_panic ("Core id does not exist when searching previous on list");
+    else {
+        debug_nested_function_element *actual;
+        actual=debug_nested_find_id(nested_list_core,id);
+        //Si no existe id, error grave
+        if (actual==NULL) cpu_panic ("Core id does not exist when searching previous on list");
 
-		//Llamar a funcion de elemento anterior
-		actual=actual->previous;
+        //Llamar a funcion de elemento anterior
+        actual=actual->previous;
 
-		//Hay anterior?
-		if (actual==NULL) {
-			//No hay anterior. Llamar al core original
-	                cpu_core_loop_no_nested();
-			//if (t_estados<20) printf ("No previous element in list. Calling original function\n");
-        	}
+        //Hay anterior?
+        if (actual==NULL) {
+            //No hay anterior. Llamar al core original
+                    cpu_core_loop_no_nested();
+            //if (t_estados<20) printf ("No previous element in list. Calling original function\n");
+            }
 
-		else {
-			//Hay anterior. Llamarlo
-			//if (t_estados<20) printf ("Calling previous element in list. Name: %s\n",actual->function_name);
-			actual->funcion(0,0); //los parametros 0,0 no se usan, se hace solo porque es una funcion generica de dos variables
-		}
-	}
+        else {
+            //Hay anterior. Llamarlo
+            //if (t_estados<20) printf ("Calling previous element in list. Name: %s\n",actual->function_name);
+            actual->funcion(0,0); //los parametros 0,0 no se usan, se hace solo porque es una funcion generica de dos variables
+        }
+    }
 }
 
 
@@ -4611,7 +4611,7 @@ void debug_nested_cores_pokepeek_init(void)
         nested_list_poke_byte_no_time=NULL;
         nested_list_peek_byte=NULL;
         nested_list_peek_byte_no_time=NULL;
-		nested_list_push_valor=NULL;
+        nested_list_push_valor=NULL;
 }
 
 
@@ -4649,35 +4649,35 @@ void debug_dump_nested_functions(char *result)
   apuntan a los normales y no a kartusho (como debe ser)
   */
 
-	if (nested_list_core!=NULL && cpu_core_loop==cpu_core_loop_nested_handler) {
-		debug_dump_nested_print (result,"\nNested Core functions\n");
-		debug_test_needed_adelante(nested_list_core,result);
-	}
+    if (nested_list_core!=NULL && cpu_core_loop==cpu_core_loop_nested_handler) {
+        debug_dump_nested_print (result,"\nNested Core functions\n");
+        debug_test_needed_adelante(nested_list_core,result);
+    }
 
-	if (nested_list_poke_byte!=NULL && poke_byte==poke_byte_nested_handler) {
-		debug_dump_nested_print (result,"\nNested poke_byte functions\n");
-		debug_test_needed_adelante(nested_list_poke_byte,result);
-	}
+    if (nested_list_poke_byte!=NULL && poke_byte==poke_byte_nested_handler) {
+        debug_dump_nested_print (result,"\nNested poke_byte functions\n");
+        debug_test_needed_adelante(nested_list_poke_byte,result);
+    }
 
-	if (nested_list_poke_byte_no_time!=NULL && poke_byte_no_time==poke_byte_no_time_nested_handler) {
-		debug_dump_nested_print (result,"\nNested poke_byte_no_time functions\n");
-		debug_test_needed_adelante(nested_list_poke_byte_no_time,result);
-	}
+    if (nested_list_poke_byte_no_time!=NULL && poke_byte_no_time==poke_byte_no_time_nested_handler) {
+        debug_dump_nested_print (result,"\nNested poke_byte_no_time functions\n");
+        debug_test_needed_adelante(nested_list_poke_byte_no_time,result);
+    }
 
-	if (nested_list_peek_byte!=NULL && peek_byte==peek_byte_nested_handler) {
-		debug_dump_nested_print (result,"\nNested peek_byte functions\n");
-		debug_test_needed_adelante(nested_list_peek_byte,result);
-	}
+    if (nested_list_peek_byte!=NULL && peek_byte==peek_byte_nested_handler) {
+        debug_dump_nested_print (result,"\nNested peek_byte functions\n");
+        debug_test_needed_adelante(nested_list_peek_byte,result);
+    }
 
-	if (nested_list_peek_byte_no_time!=NULL && peek_byte_no_time==peek_byte_no_time_nested_handler) {
-		debug_dump_nested_print (result,"\nNested peek_byte_no_time functions\n");
-		debug_test_needed_adelante(nested_list_peek_byte_no_time,result);
-	}
+    if (nested_list_peek_byte_no_time!=NULL && peek_byte_no_time==peek_byte_no_time_nested_handler) {
+        debug_dump_nested_print (result,"\nNested peek_byte_no_time functions\n");
+        debug_test_needed_adelante(nested_list_peek_byte_no_time,result);
+    }
 
-	if (nested_list_push_valor!=NULL && push_valor==push_valor_nested_handler) {
-		debug_dump_nested_print (result,"\nNested push_valor functions\n");
-		debug_test_needed_adelante(nested_list_push_valor,result);
-	}
+    if (nested_list_push_valor!=NULL && push_valor==push_valor_nested_handler) {
+        debug_dump_nested_print (result,"\nNested push_valor functions\n");
+        debug_test_needed_adelante(nested_list_push_valor,result);
+    }
 
 }
 
@@ -4688,53 +4688,53 @@ void debug_dump_nested_functions(char *result)
 
 int debug_change_register(char *texto)
 {
-	//Primero buscar hasta caracter =
-	char texto_registro[100];
-	unsigned int valor_registro;
+    //Primero buscar hasta caracter =
+    char texto_registro[100];
+    unsigned int valor_registro;
 
-	texto_registro[0]=0;
+    texto_registro[0]=0;
 
-	int i;
+    int i;
 
-	for (i=0;texto[i] && texto[i]!='=';i++) {
-		texto_registro[i]=texto[i];
-	}
+    for (i=0;texto[i] && texto[i]!='=';i++) {
+        texto_registro[i]=texto[i];
+    }
 
-	if (texto[i]==0) return 1; //Llegado hasta final de cadena y no hay igual
-	texto_registro[i]=0;
+    if (texto[i]==0) return 1; //Llegado hasta final de cadena y no hay igual
+    texto_registro[i]=0;
 
-	//Saltamos el =
-	i++;
+    //Saltamos el =
+    i++;
 
-	if (texto[i]==0) return 2; //No hay nada despues del igual
+    if (texto[i]==0) return 2; //No hay nada despues del igual
 
-	//Parsear valor, es una expresion tal cual
-	//valor_registro=parse_string_to_number(&texto[i]);
+    //Parsear valor, es una expresion tal cual
+    //valor_registro=parse_string_to_number(&texto[i]);
     valor_registro=exp_par_evaluate_expression_to_number(&texto[i]);
 
   if (CPU_IS_SCMP) {
 
   }
 
-	//Cambiar registros
+    //Cambiar registros
   //Motorola
-	else if (CPU_IS_MOTOROLA) {
+    else if (CPU_IS_MOTOROLA) {
 
 
     if (!strcasecmp(texto_registro,"PC")) {
-			m68k_set_reg(M68K_REG_PC,valor_registro);
-			return 0;
-		}
+            m68k_set_reg(M68K_REG_PC,valor_registro);
+            return 0;
+        }
 
     else if (!strcasecmp(texto_registro,"D0")) {
-			m68k_set_reg(M68K_REG_D0,valor_registro);
-			return 0;
-		}
+            m68k_set_reg(M68K_REG_D0,valor_registro);
+            return 0;
+        }
 
     else if (!strcasecmp(texto_registro,"D1")) {
-			m68k_set_reg(M68K_REG_D1,valor_registro);
-			return 0;
-		}
+            m68k_set_reg(M68K_REG_D1,valor_registro);
+            return 0;
+        }
 
     else if (!strcasecmp(texto_registro,"D2")) {
       m68k_set_reg(M68K_REG_D2,valor_registro);
@@ -4808,26 +4808,26 @@ int debug_change_register(char *texto)
 
 //TODO el resto de registros...
 
-	}
+    }
 
   //Z80
-	else {
-		if (!strcasecmp(texto_registro,"PC")) {
-			reg_pc=valor_registro;
-			return 0;
-		}
+    else {
+        if (!strcasecmp(texto_registro,"PC")) {
+            reg_pc=valor_registro;
+            return 0;
+        }
 
-		else if (!strcasecmp(texto_registro,"SP")) {
+        else if (!strcasecmp(texto_registro,"SP")) {
                         reg_sp=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"IX")) {
+        else if (!strcasecmp(texto_registro,"IX")) {
                         reg_ix=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"IY")) {
+        else if (!strcasecmp(texto_registro,"IY")) {
                         reg_iy=valor_registro;
                         return 0;
                 }
@@ -4842,17 +4842,17 @@ int debug_change_register(char *texto)
 
 
 
-		else if (!strcasecmp(texto_registro,"BC")) {
+        else if (!strcasecmp(texto_registro,"BC")) {
                         reg_bc=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"DE")) {
+        else if (!strcasecmp(texto_registro,"DE")) {
                         reg_de=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"HL")) {
+        else if (!strcasecmp(texto_registro,"HL")) {
                         reg_hl=valor_registro;
                         return 0;
                 }
@@ -4885,27 +4885,27 @@ int debug_change_register(char *texto)
 
 
 
-		else if (!strcasecmp(texto_registro,"A")) {
+        else if (!strcasecmp(texto_registro,"A")) {
                         reg_a=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"B")) {
+        else if (!strcasecmp(texto_registro,"B")) {
                         reg_b=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"C")) {
+        else if (!strcasecmp(texto_registro,"C")) {
                         reg_c=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"D")) {
+        else if (!strcasecmp(texto_registro,"D")) {
                         reg_d=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"E")) {
+        else if (!strcasecmp(texto_registro,"E")) {
                         reg_e=valor_registro;
                         return 0;
                 }
@@ -4915,12 +4915,12 @@ int debug_change_register(char *texto)
                                     return 0;
                             }
 
-		else if (!strcasecmp(texto_registro,"H")) {
+        else if (!strcasecmp(texto_registro,"H")) {
                         reg_h=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"L")) {
+        else if (!strcasecmp(texto_registro,"L")) {
                         reg_l=valor_registro;
                         return 0;
                 }
@@ -4971,154 +4971,154 @@ else if (!strcasecmp(texto_registro,"L'")) {
 
 
 
-		else if (!strcasecmp(texto_registro,"I")) {
+        else if (!strcasecmp(texto_registro,"I")) {
                         reg_i=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"R")) {
+        else if (!strcasecmp(texto_registro,"R")) {
                         reg_r=(valor_registro&127);
-			reg_r_bit7=(valor_registro&128);
+            reg_r_bit7=(valor_registro&128);
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"IFF1")) {
+        else if (!strcasecmp(texto_registro,"IFF1")) {
                     iff1.v=valor_registro;
                         return 0;
                 }
 
-		else if (!strcasecmp(texto_registro,"IFF2")) {
+        else if (!strcasecmp(texto_registro,"IFF2")) {
                     iff2.v=valor_registro;
                         return 0;
                 }
 
 
-	}
+    }
 
-	return 3;
+    return 3;
 
 }
 
 void debug_set_breakpoint_optimized(int breakpoint_index,char *condicion)
 {
-	//de momento suponemos que no esta optimizado
-	optimized_breakpoint_array[breakpoint_index].optimized=0;
+    //de momento suponemos que no esta optimizado
+    optimized_breakpoint_array[breakpoint_index].optimized=0;
 
-	//Si no es Z80, no optimizar
-	if (!CPU_IS_Z80) {
-		debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: CPU is not Z80. Not optimized");
-		return;
-	}
+    //Si no es Z80, no optimizar
+    if (!CPU_IS_Z80) {
+        debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: CPU is not Z80. Not optimized");
+        return;
+    }
 
-	//Aqui asumimos los siguientes:
-	//PC=VALOR
-	//MWA=VALOR
-	//MRA=VALOR
+    //Aqui asumimos los siguientes:
+    //PC=VALOR
+    //MWA=VALOR
+    //MRA=VALOR
 
-	//Minimo 4 caracteres
-	int longitud=strlen(condicion);
-	if (longitud<4) {
-		debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: length<4. Not optimized");
-		return;
-	}
+    //Minimo 4 caracteres
+    int longitud=strlen(condicion);
+    if (longitud<4) {
+        debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: length<4. Not optimized");
+        return;
+    }
 
-	//Copiamos los 3 primeros caracteres
-	char variable[4];
-	int i;
-	for (i=0;i<3;i++) variable[i]=condicion[i];
+    //Copiamos los 3 primeros caracteres
+    char variable[4];
+    int i;
+    for (i=0;i<3;i++) variable[i]=condicion[i];
 
-	/*
-	+#define OPTIMIZED_BRK_TYPE_PC 0
+    /*
+    +#define OPTIMIZED_BRK_TYPE_PC 0
 +#define OPTIMIZED_BRK_TYPE_MWA 1
 +#define OPTIMIZED_BRK_TYPE_MRA 2
 */
-	int tipo_optimizacion=OPTIMIZED_BRK_TYPE_NINGUNA;
-	int posicion_igual;
+    int tipo_optimizacion=OPTIMIZED_BRK_TYPE_NINGUNA;
+    int posicion_igual;
 
-	//Ver si variable de 2 o 3 caracteres
-	if (variable[2]=='=') {
-		posicion_igual=2;
-		variable[2]=0;
+    //Ver si variable de 2 o 3 caracteres
+    if (variable[2]=='=') {
+        posicion_igual=2;
+        variable[2]=0;
 
-		//Comparar con admitidos
-		if (!strcasecmp(variable,"PC")) tipo_optimizacion=OPTIMIZED_BRK_TYPE_PC;
+        //Comparar con admitidos
+        if (!strcasecmp(variable,"PC")) tipo_optimizacion=OPTIMIZED_BRK_TYPE_PC;
 
-	}
-
-	else if (condicion[3]=='=') {
-		//3 caracteres
-		posicion_igual=3;
-		variable[3]=0;
-
-		//Comparar con admitidos
-		if (!strcasecmp(variable,"MWA")) tipo_optimizacion=OPTIMIZED_BRK_TYPE_MWA;
-		if (!strcasecmp(variable,"MRA")) tipo_optimizacion=OPTIMIZED_BRK_TYPE_MRA;
-
-	}
-
-	else {
-		debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: not detected = on 3th or 4th position. Not optimized");
-		return; //Volver sin mas, no se puede optimizar
-	}
-
-	if (tipo_optimizacion==OPTIMIZED_BRK_TYPE_NINGUNA) {
-		debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: not detected known optimizable register/variable. Not optimized");
-		return;
-	}
-
-	//Sabemos el tipo de optimizacion
-	debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Detected possible optimized type=%d",tipo_optimizacion);
-
-	//Ver si lo que hay al otro lado es un valor y nada mas
-	//Buscar si hay un espacio copiando en destino
-	char valor_comparar[MAX_BREAKPOINT_CONDITION_LENGTH];
-
-	int index_destino=0;
-
-	for (i=posicion_igual+1;condicion[i]!=' ' && condicion[i];i++,index_destino++) {
-		valor_comparar[index_destino]=condicion[i];
-	}
-
-	valor_comparar[index_destino]=0;
-
-	//Si ha acabado con un espacio, no optimizar
-	if (condicion[i]==' ') {
-		debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Space after number. Not optimized");
-		return;
     }
 
-	//Ver si eso que hay a la derecha del igual es una variable
-	//int si_cond_opcode=0;
-	unsigned int valor;
+    else if (condicion[3]=='=') {
+        //3 caracteres
+        posicion_igual=3;
+        variable[3]=0;
+
+        //Comparar con admitidos
+        if (!strcasecmp(variable,"MWA")) tipo_optimizacion=OPTIMIZED_BRK_TYPE_MWA;
+        if (!strcasecmp(variable,"MRA")) tipo_optimizacion=OPTIMIZED_BRK_TYPE_MRA;
+
+    }
+
+    else {
+        debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: not detected = on 3th or 4th position. Not optimized");
+        return; //Volver sin mas, no se puede optimizar
+    }
+
+    if (tipo_optimizacion==OPTIMIZED_BRK_TYPE_NINGUNA) {
+        debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: not detected known optimizable register/variable. Not optimized");
+        return;
+    }
+
+    //Sabemos el tipo de optimizacion
+    debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Detected possible optimized type=%d",tipo_optimizacion);
+
+    //Ver si lo que hay al otro lado es un valor y nada mas
+    //Buscar si hay un espacio copiando en destino
+    char valor_comparar[MAX_BREAKPOINT_CONDITION_LENGTH];
+
+    int index_destino=0;
+
+    for (i=posicion_igual+1;condicion[i]!=' ' && condicion[i];i++,index_destino++) {
+        valor_comparar[index_destino]=condicion[i];
+    }
+
+    valor_comparar[index_destino]=0;
+
+    //Si ha acabado con un espacio, no optimizar
+    if (condicion[i]==' ') {
+        debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Space after number. Not optimized");
+        return;
+    }
+
+    //Ver si eso que hay a la derecha del igual es una variable
+    //int si_cond_opcode=0;
+    unsigned int valor;
 
     //old parser valor=cpu_core_loop_debug_registro(valor_comparar,&si_cond_opcode);
-	int final_numero;
-	//printf ("Comprobar si [%s] es numero\n",valor_comparar);
-	int result_is_number;
-	result_is_number=exp_par_is_number(valor_comparar,&final_numero);
-	debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Testing expression [%s] to see if it's a single number",valor_comparar);
+    int final_numero;
+    //printf ("Comprobar si [%s] es numero\n",valor_comparar);
+    int result_is_number;
+    result_is_number=exp_par_is_number(valor_comparar,&final_numero);
+    debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Testing expression [%s] to see if it's a single number",valor_comparar);
 
-	if (result_is_number<=0) {
-			//Resulta que es una variable, no un numero . no optimizar
-			debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Value is a variable. Not optimized");
-			return;
+    if (result_is_number<=0) {
+            //Resulta que es una variable, no un numero . no optimizar
+            debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Value is a variable. Not optimized");
+            return;
     }
 
-	//Ver si el final del numero ya es el final de texto
-	if (valor_comparar[final_numero]!=0) {
-		debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: More characters left after the number. Not optimized");
-		return;
-	}
+    //Ver si el final del numero ya es el final de texto
+    if (valor_comparar[final_numero]!=0) {
+        debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: More characters left after the number. Not optimized");
+        return;
+    }
 
-	//Pues tenemos que suponer que es un valor. Parsearlo y meterlo en array de optimizacion
-	valor=parse_string_to_number(valor_comparar);
+    //Pues tenemos que suponer que es un valor. Parsearlo y meterlo en array de optimizacion
+    valor=parse_string_to_number(valor_comparar);
 
-	optimized_breakpoint_array[breakpoint_index].optimized=1;
-	optimized_breakpoint_array[breakpoint_index].operator=tipo_optimizacion;
-	optimized_breakpoint_array[breakpoint_index].valor=valor;
+    optimized_breakpoint_array[breakpoint_index].optimized=1;
+    optimized_breakpoint_array[breakpoint_index].operator=tipo_optimizacion;
+    optimized_breakpoint_array[breakpoint_index].valor=valor;
 
-	debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Set optimized breakpoint operator index %d type %d value %04XH",
-				breakpoint_index,tipo_optimizacion,valor);
+    debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Set optimized breakpoint operator index %d type %d value %04XH",
+                breakpoint_index,tipo_optimizacion,valor);
 
 
 }
@@ -5136,41 +5136,41 @@ int debug_set_breakpoint(int breakpoint_index,char *condicion,int pass_count)
     }
 
 
-	int result=exp_par_exp_to_tokens(condicion,debug_breakpoints_conditions_array_tokens[breakpoint_index]);
-	if (result<0) {
-		debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo=TPT_FIN; //Inicializarlo vacio
-		debug_printf (VERBOSE_ERR,"Error adding breakpoint [%s]",condicion);
-		return 1;
-	}
+    int result=exp_par_exp_to_tokens(condicion,debug_breakpoints_conditions_array_tokens[breakpoint_index]);
+    if (result<0) {
+        debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo=TPT_FIN; //Inicializarlo vacio
+        debug_printf (VERBOSE_ERR,"Error adding breakpoint [%s]",condicion);
+        return 1;
+    }
 
-	//Ver si se puede evaluar la expresion resultante. Aqui basicamente generara error
-	//cuando haya un parentesis sin cerrar
-	int error_evaluate;
+    //Ver si se puede evaluar la expresion resultante. Aqui basicamente generara error
+    //cuando haya un parentesis sin cerrar
+    int error_evaluate;
 
-	//Si no es token vacio
-	if (debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo!=TPT_FIN) {
-		exp_par_evaluate_token(debug_breakpoints_conditions_array_tokens[breakpoint_index],MAX_PARSER_TOKENS_NUM,&error_evaluate);
-		if (error_evaluate) {
-			debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo=TPT_FIN; //Inicializarlo vacio
-			debug_printf (VERBOSE_ERR,"Error adding breakpoint, can not be evaluated [%s]",condicion);
-			return 1;
-		}
-	}
+    //Si no es token vacio
+    if (debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo!=TPT_FIN) {
+        exp_par_evaluate_token(debug_breakpoints_conditions_array_tokens[breakpoint_index],MAX_PARSER_TOKENS_NUM,&error_evaluate);
+        if (error_evaluate) {
+            debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo=TPT_FIN; //Inicializarlo vacio
+            debug_printf (VERBOSE_ERR,"Error adding breakpoint, can not be evaluated [%s]",condicion);
+            return 1;
+        }
+    }
 
 
 
-  	debug_breakpoints_conditions_saltado[breakpoint_index]=0;
-  	debug_breakpoints_conditions_enabled[breakpoint_index]=1;
+      debug_breakpoints_conditions_saltado[breakpoint_index]=0;
+      debug_breakpoints_conditions_enabled[breakpoint_index]=1;
     debug_breakpoints_pass_count[breakpoint_index]=pass_count;
     debug_breakpoints_pass_count_counter[breakpoint_index]=0;
 
-	//Llamamos al optimizador
-	debug_set_breakpoint_optimized(breakpoint_index,condicion);
+    //Llamamos al optimizador
+    debug_set_breakpoint_optimized(breakpoint_index,condicion);
 
-	//Miramos cual es el ultimo breakpoint activo
-	debug_set_last_active_breakpoint();
+    //Miramos cual es el ultimo breakpoint activo
+    debug_set_last_active_breakpoint();
 
-	return 0;
+    return 0;
 
 }
 
@@ -5184,11 +5184,11 @@ void debug_set_watch(int watch_index,char *condicion)
     }
 
 
-	int result=exp_par_exp_to_tokens(condicion,debug_watches_array[watch_index]);
-	if (result<0) {
-		debug_watches_array[watch_index][0].tipo=TPT_FIN; //Inicializarlo vacio
-		debug_printf (VERBOSE_ERR,"Error adding watch [%s]",condicion);
-	}
+    int result=exp_par_exp_to_tokens(condicion,debug_watches_array[watch_index]);
+    if (result<0) {
+        debug_watches_array[watch_index][0].tipo=TPT_FIN; //Inicializarlo vacio
+        debug_printf (VERBOSE_ERR,"Error adding watch [%s]",condicion);
+    }
 
 
 }
@@ -5226,41 +5226,41 @@ void debug_set_breakpoint_action(int breakpoint_index,char *accion)
 void debug_delete_all_repeated_breakpoint(char *texto)
 {
 
-	int posicion=0;
+    int posicion=0;
 
-	//char breakpoint_add[64];
+    //char breakpoint_add[64];
 
-	//debug_get_daad_breakpoint_string(breakpoint_add);
+    //debug_get_daad_breakpoint_string(breakpoint_add);
 
-	do {
-		//Si hay breakpoint ahi, quitarlo
-		posicion=debug_find_breakpoint_activeornot(texto);
-		if (posicion>=0) {
-			debug_printf (VERBOSE_DEBUG,"Clearing breakpoint at index %d",posicion);
-			debug_clear_breakpoint(posicion);
-		}
-	} while (posicion>=0);
+    do {
+        //Si hay breakpoint ahi, quitarlo
+        posicion=debug_find_breakpoint_activeornot(texto);
+        if (posicion>=0) {
+            debug_printf (VERBOSE_DEBUG,"Clearing breakpoint at index %d",posicion);
+            debug_clear_breakpoint(posicion);
+        }
+    } while (posicion>=0);
 
-	//Y salir
+    //Y salir
 }
 
 //Poner un breakpoint si no estaba como existente y activo y ademas activar breakpoints
 //Nota: quiza tendria que haber otra funcion que detecte que existe pero si no esta activo, que solo lo active sin agregar otro repetido
 void debug_add_breakpoint_ifnot_exists(char *breakpoint_add)
 {
-	//Si no hay breakpoint ahi, ponerlo y
-	int posicion=debug_find_breakpoint(breakpoint_add);
-	if (posicion<0) {
+    //Si no hay breakpoint ahi, ponerlo y
+    int posicion=debug_find_breakpoint(breakpoint_add);
+    if (posicion<0) {
 
         if (debug_breakpoints_enabled.v==0) {
                 debug_breakpoints_enabled.v=1;
 
                 breakpoints_enable();
-    	}
-		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",breakpoint_add);
+        }
+        debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",breakpoint_add);
 
-		debug_add_breakpoint_free(breakpoint_add,"");
-	}
+        debug_add_breakpoint_free(breakpoint_add,"");
+    }
 }
 
 char *betabasic_tokens[]={
@@ -5336,9 +5336,9 @@ int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show
 int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
 {
 
-	  	z80_int dir;
+          z80_int dir;
 
-  	debug_printf (VERBOSE_INFO,"Start Basic: %d. End Basic: %d",dir_inicio_linea,final_basic);
+      debug_printf (VERBOSE_INFO,"Start Basic: %d. End Basic: %d",dir_inicio_linea,final_basic);
 
           int index_buffer;
 
@@ -5348,14 +5348,14 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
 
           int salir=0;
 
-  	z80_int numero_linea;
+      z80_int numero_linea;
 
-  	z80_int longitud_linea;
+      z80_int longitud_linea;
 
-  	//deberia ser un byte, pero para hacer tokens de pi,rnd, inkeys en zx81, que en el array estan en posicion al final
-  	z80_int byte_leido;
+      //deberia ser un byte, pero para hacer tokens de pi,rnd, inkeys en zx81, que en el array estan en posicion al final
+      z80_int byte_leido;
 
-  	int lo_ultimo_es_un_token;
+      int lo_ultimo_es_un_token;
 
     if (show_current_line) {
         int linea,sentencia;
@@ -5376,133 +5376,133 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
     }
 
 
-  	while (dir_inicio_linea<final_basic && salir==0) {
-  		lo_ultimo_es_un_token=0;
-  		dir=dir_inicio_linea;
-  		//obtener numero linea. orden inverso
-  		//numero_linea=(peek_byte_no_time(dir++))*256 + peek_byte_no_time(dir++);
+      while (dir_inicio_linea<final_basic && salir==0) {
+          lo_ultimo_es_un_token=0;
+          dir=dir_inicio_linea;
+          //obtener numero linea. orden inverso
+          //numero_linea=(peek_byte_no_time(dir++))*256 + peek_byte_no_time(dir++);
 
         //agregar direccion si hay el setting habilitado para esto
         if (show_address) {
-  		    sprintf (&results_buffer[index_buffer],";%5d\n",dir);
-  		    index_buffer +=7;
+              sprintf (&results_buffer[index_buffer],";%5d\n",dir);
+              index_buffer +=7;
         }
 
-  		numero_linea=(lee_byte_function(dir++))*256;
-  		numero_linea +=lee_byte_function(dir++);
+          numero_linea=(lee_byte_function(dir++))*256;
+          numero_linea +=lee_byte_function(dir++);
 
-  		//escribir numero linea
+          //escribir numero linea
         //Permitir hasta 5 digitos por programas que tienen lineas especiales mas alla de la 9999, como por ejemplo timeline.tap
-  		sprintf (&results_buffer[index_buffer],"%5d",numero_linea);
-  		index_buffer +=5;
+          sprintf (&results_buffer[index_buffer],"%5d",numero_linea);
+          index_buffer +=5;
 
-  		//obtener longitud linea. orden normal. zx80 no tiene esto
-  		if (tipo!=1) {
+          //obtener longitud linea. orden normal. zx80 no tiene esto
+          if (tipo!=1) {
 
-  			//longitud_linea=(peek_byte_no_time(dir++))+256*peek_byte_no_time(dir++);
-  			longitud_linea=(lee_byte_function(dir++));
-  			longitud_linea += 256*lee_byte_function(dir++);
+              //longitud_linea=(peek_byte_no_time(dir++))+256*peek_byte_no_time(dir++);
+              longitud_linea=(lee_byte_function(dir++));
+              longitud_linea += 256*lee_byte_function(dir++);
 
-  			debug_printf (VERBOSE_DEBUG,"Line length: %d",longitud_linea);
+              debug_printf (VERBOSE_DEBUG,"Line length: %d",longitud_linea);
 
-  		}
+          }
 
-  		else longitud_linea=65535;
+          else longitud_linea=65535;
 
-  		//asignamos ya siguiente direccion.
-  		dir_inicio_linea=dir+longitud_linea;
+          //asignamos ya siguiente direccion.
+          dir_inicio_linea=dir+longitud_linea;
 
         //printf("longitud_linea: %d\n",longitud_linea);
 
-  		while (longitud_linea>0) {
-  			byte_leido=lee_byte_function(dir++);
-  			longitud_linea--;
+          while (longitud_linea>0) {
+              byte_leido=lee_byte_function(dir++);
+              longitud_linea--;
 
-  			if (tipo==1 || tipo==2) {
-  				//numero
-  				if (byte_leido==126) byte_leido=14;
+              if (tipo==1 || tipo==2) {
+                  //numero
+                  if (byte_leido==126) byte_leido=14;
 
-  				else if (byte_leido==118) byte_leido=13;
-
-
-  				//Convertimos a ASCII
-  				else {
-
-  					if (tipo==2) {
-  						if (byte_leido>=64 && byte_leido<=66) {
-  							//tokens EN ZX81, 64=RND, 65=PI, 66=INKEY$
-
-  							//para que no haga conversion de byte leido, sino token
-  							byte_leido=byte_leido-64+256;
-  						}
-  					}
+                  else if (byte_leido==118) byte_leido=13;
 
 
+                  //Convertimos a ASCII
+                  else {
 
-  					if (byte_leido>=128 && byte_leido<=191) {
-  						//inverso
-  						byte_leido-=128;
-  					}
+                      if (tipo==2) {
+                          if (byte_leido>=64 && byte_leido<=66) {
+                              //tokens EN ZX81, 64=RND, 65=PI, 66=INKEY$
+
+                              //para que no haga conversion de byte leido, sino token
+                              byte_leido=byte_leido-64+256;
+                          }
+                      }
 
 
 
-  					if (byte_leido<=63) {
-  						if (tipo==2) byte_leido=da_codigo_zx81_no_artistic(byte_leido);
-  						else byte_leido=da_codigo_zx80_no_artistic(byte_leido);
-  					}
-
-  					//Entre 64 y 127, es codigo desconocido
-  					else if (byte_leido>=64 && byte_leido<=127) {
-  						byte_leido='?';
-  					}
-  				}
+                      if (byte_leido>=128 && byte_leido<=191) {
+                          //inverso
+                          byte_leido-=128;
+                      }
 
 
 
-  			}
+                      if (byte_leido<=63) {
+                          if (tipo==2) byte_leido=da_codigo_zx81_no_artistic(byte_leido);
+                          else byte_leido=da_codigo_zx80_no_artistic(byte_leido);
+                      }
 
-
-  			if (byte_leido>=32 && byte_leido<=127) {
-  				results_buffer[index_buffer++]=byte_leido;
-  				lo_ultimo_es_un_token=0;
-  			}
-
-  			else if (byte_leido>=inicio_tokens) {
-
-  				if (tipo==0 || tipo==1) {
-  					//si lo de antes no es un token, meter espacio
-  					if (lo_ultimo_es_un_token==0) {
-  						results_buffer[index_buffer++]=' ';
-  					}
-  				}
-
-
-  				int indice_token=byte_leido-inicio_tokens;
-  				//printf ("byte_leido: %d inicio_tokens: %d indice token: %d\n",byte_leido,inicio_tokens,indice_token);
-  				sprintf (&results_buffer[index_buffer],"%s ",dir_tokens[indice_token]);
-  				index_buffer +=strlen(dir_tokens[indice_token])+1;
-  				lo_ultimo_es_un_token=1;
-  			}
+                      //Entre 64 y 127, es codigo desconocido
+                      else if (byte_leido>=64 && byte_leido<=127) {
+                          byte_leido='?';
+                      }
+                  }
 
 
 
-  			else if (byte_leido==14) {
-  				//representacion numero. saltar
-  				dir +=5;
-  				longitud_linea -=5;
-  				lo_ultimo_es_un_token=0;
-  			}
+              }
 
 
-  			else if (byte_leido==13) {
-  				//ignorar salto de linea excepto en zx80
-  				if (tipo==1) {
-  					longitud_linea=0;
-  					dir_inicio_linea=dir;
-  				}
-  			}
+              if (byte_leido>=32 && byte_leido<=127) {
+                  results_buffer[index_buffer++]=byte_leido;
+                  lo_ultimo_es_un_token=0;
+              }
 
-  			else {
+              else if (byte_leido>=inicio_tokens) {
+
+                  if (tipo==0 || tipo==1) {
+                      //si lo de antes no es un token, meter espacio
+                      if (lo_ultimo_es_un_token==0) {
+                          results_buffer[index_buffer++]=' ';
+                      }
+                  }
+
+
+                  int indice_token=byte_leido-inicio_tokens;
+                  //printf ("byte_leido: %d inicio_tokens: %d indice token: %d\n",byte_leido,inicio_tokens,indice_token);
+                  sprintf (&results_buffer[index_buffer],"%s ",dir_tokens[indice_token]);
+                  index_buffer +=strlen(dir_tokens[indice_token])+1;
+                  lo_ultimo_es_un_token=1;
+              }
+
+
+
+              else if (byte_leido==14) {
+                  //representacion numero. saltar
+                  dir +=5;
+                  longitud_linea -=5;
+                  lo_ultimo_es_un_token=0;
+              }
+
+
+              else if (byte_leido==13) {
+                  //ignorar salto de linea excepto en zx80
+                  if (tipo==1) {
+                      longitud_linea=0;
+                      dir_inicio_linea=dir;
+                  }
+              }
+
+              else {
                 //Si keywords betabasic
                 if (byte_leido>=129 && byte_leido<=164 && mostrar_betabasic==1) {
                     int indice=byte_leido-129;
@@ -5512,8 +5512,8 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
                     lo_ultimo_es_un_token=1;
                 }
 
-  				else results_buffer[index_buffer++]='?';
-  			}
+                  else results_buffer[index_buffer++]='?';
+              }
 
 
 
@@ -5539,11 +5539,11 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
         }
 
 
-  		//meter dos saltos de linea. Porque????
-  		results_buffer[index_buffer++]='\n';
-  		//results_buffer[index_buffer++]='\n';
+          //meter dos saltos de linea. Porque????
+          results_buffer[index_buffer++]='\n';
+          //results_buffer[index_buffer++]='\n';
 
-  	}
+      }
 
 
           results_buffer[index_buffer]=0;
@@ -5554,30 +5554,30 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
 void debug_view_z88_print_token(z80_byte index,char *texto_destino)
 {
 
-	int salir=0;
-	int i;
+    int salir=0;
+    int i;
 
-	for (i=0;!salir;i++) {
-		if (z88_basic_rom_tokens[i].index==1) {
-			sprintf (texto_destino,"?TOKEN%02XH?",index);
-			salir=1;
-		}
+    for (i=0;!salir;i++) {
+        if (z88_basic_rom_tokens[i].index==1) {
+            sprintf (texto_destino,"?TOKEN%02XH?",index);
+            salir=1;
+        }
 
-		if (z88_basic_rom_tokens[i].index==index) {
-			strcpy (texto_destino,z88_basic_rom_tokens[i].token);
-			salir=1;
-		}
-	}
+        if (z88_basic_rom_tokens[i].index==index) {
+            strcpy (texto_destino,z88_basic_rom_tokens[i].token);
+            salir=1;
+        }
+    }
 
 }
 
 void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,int final_basic,
-	z80_byte (*lee_byte_function)(z80_int dir) )
+    z80_byte (*lee_byte_function)(z80_int dir) )
 {
 
-	  	z80_int dir;
+          z80_int dir;
 
-  	debug_printf (VERBOSE_INFO,"Start Basic: %d. End Basic: %d",dir_inicio_linea,final_basic);
+      debug_printf (VERBOSE_INFO,"Start Basic: %d. End Basic: %d",dir_inicio_linea,final_basic);
 
           int index_buffer;
 
@@ -5587,85 +5587,85 @@ void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,
 
           int salir=0;
 
-  	z80_int numero_linea;
+      z80_int numero_linea;
 
-  	z80_byte longitud_linea;
+      z80_byte longitud_linea;
 
-  	//deberia ser un byte, pero para hacer tokens de pi,rnd, inkeys en zx81, que en el array estan en posicion al final
-  	z80_int byte_leido;
+      //deberia ser un byte, pero para hacer tokens de pi,rnd, inkeys en zx81, que en el array estan en posicion al final
+      z80_int byte_leido;
 
-  	//int lo_ultimo_es_un_token;
-
-
-  	while (dir_inicio_linea<final_basic && salir==0) {
-  		//lo_ultimo_es_un_token=0;
-  		dir=dir_inicio_linea;
-  		//obtener numero linea. orden inverso
-  		//numero_linea=(peek_byte_no_time(dir++))*256 + peek_byte_no_time(dir++);
-		longitud_linea=(lee_byte_function(dir++));
-		//debug_printf (VERBOSE_DEBUG,"Line length: %d",longitud_linea);
-
-  		numero_linea=lee_byte_function(dir++);
-  		numero_linea +=(lee_byte_function(dir++))*256;
-
-		if (numero_linea==65535) {
-			salir=1;
-		}
-
-		else {
-
-  			//escribir numero linea
-  			sprintf (&results_buffer[index_buffer],"%5d ",numero_linea);
-  			index_buffer +=6;
+      //int lo_ultimo_es_un_token;
 
 
-	  		//asignamos ya siguiente direccion.
-  			dir_inicio_linea=dir+longitud_linea;
+      while (dir_inicio_linea<final_basic && salir==0) {
+          //lo_ultimo_es_un_token=0;
+          dir=dir_inicio_linea;
+          //obtener numero linea. orden inverso
+          //numero_linea=(peek_byte_no_time(dir++))*256 + peek_byte_no_time(dir++);
+        longitud_linea=(lee_byte_function(dir++));
+        //debug_printf (VERBOSE_DEBUG,"Line length: %d",longitud_linea);
 
-			//descontar los 3 bytes
-			longitud_linea -=3;
-			dir_inicio_linea -=3;
+          numero_linea=lee_byte_function(dir++);
+          numero_linea +=(lee_byte_function(dir++))*256;
 
-  			while (longitud_linea>0) {
-  				byte_leido=lee_byte_function(dir++);
-  				longitud_linea--;
+        if (numero_linea==65535) {
+            salir=1;
+        }
 
-				if (byte_leido>=32 && byte_leido<=126) {
-					results_buffer[index_buffer++]=byte_leido;
-				}
+        else {
 
-				else if (byte_leido>=128) {
-					//token
-					char buffer_token[20];
-					debug_view_z88_print_token(byte_leido,buffer_token);
-	  				sprintf (&results_buffer[index_buffer],"%s",buffer_token);
-  					index_buffer +=strlen(buffer_token);
-  					//lo_ultimo_es_un_token=1;
-  				}
+              //escribir numero linea
+              sprintf (&results_buffer[index_buffer],"%5d ",numero_linea);
+              index_buffer +=6;
 
 
-	  			else if (byte_leido==13) {
-  				}
+              //asignamos ya siguiente direccion.
+              dir_inicio_linea=dir+longitud_linea;
 
-  				else {
-  					results_buffer[index_buffer++]='?';
-  				}
+            //descontar los 3 bytes
+            longitud_linea -=3;
+            dir_inicio_linea -=3;
+
+              while (longitud_linea>0) {
+                  byte_leido=lee_byte_function(dir++);
+                  longitud_linea--;
+
+                if (byte_leido>=32 && byte_leido<=126) {
+                    results_buffer[index_buffer++]=byte_leido;
+                }
+
+                else if (byte_leido>=128) {
+                    //token
+                    char buffer_token[20];
+                    debug_view_z88_print_token(byte_leido,buffer_token);
+                      sprintf (&results_buffer[index_buffer],"%s",buffer_token);
+                      index_buffer +=strlen(buffer_token);
+                      //lo_ultimo_es_un_token=1;
+                  }
 
 
-	  			//controlar maximo
-  				//1024 bytes de margen
-  				if (index_buffer>MAX_TEXTO_GENERIC_MESSAGE-1024) {
-                          	debug_printf (VERBOSE_ERR,"Too many results to show. Showing only the first ones");
-                  	        //forzar salir
-  					longitud_linea=0;
-          	                salir=1;
-  	            }
+                  else if (byte_leido==13) {
+                  }
+
+                  else {
+                      results_buffer[index_buffer++]='?';
+                  }
 
 
-  			}
+                  //controlar maximo
+                  //1024 bytes de margen
+                  if (index_buffer>MAX_TEXTO_GENERIC_MESSAGE-1024) {
+                              debug_printf (VERBOSE_ERR,"Too many results to show. Showing only the first ones");
+                              //forzar salir
+                      longitud_linea=0;
+                              salir=1;
+                  }
 
 
-	  	}
+              }
+
+
+          }
 
         //controlar maximo
         //1024 bytes de margen
@@ -5676,11 +5676,11 @@ void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,
         }
 
 
-  		//meter dos saltos de linea
-  		results_buffer[index_buffer++]='\n';
-  		results_buffer[index_buffer++]='\n';
+          //meter dos saltos de linea
+          results_buffer[index_buffer++]='\n';
+          results_buffer[index_buffer++]='\n';
 
-  	}
+      }
 
 
           results_buffer[index_buffer]=0;
@@ -5692,29 +5692,29 @@ void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,
 void debug_view_basic_prepare_parameters(view_basic_parameters *parameters)
 {
 
-  	char **dir_tokens;
-  	int inicio_tokens;
+      char **dir_tokens;
+      int inicio_tokens;
 
 
-  	int dir_inicio_linea;
-  	int final_basic;
+      int dir_inicio_linea;
+      int final_basic;
 
-	int tipo=0; //Asumimos spectrum
+    int tipo=0; //Asumimos spectrum
 
 
 
-  	if (MACHINE_IS_SPECTRUM) {
-  		//Spectrum
+      if (MACHINE_IS_SPECTRUM) {
+          //Spectrum
 
-  		//PROG
-  		dir_inicio_linea=peek_byte_no_time(23635)+256*peek_byte_no_time(23636);
+          //PROG
+          dir_inicio_linea=peek_byte_no_time(23635)+256*peek_byte_no_time(23636);
 
-  		//VARS
-  		final_basic=peek_byte_no_time(23627)+256*peek_byte_no_time(23628);
+          //VARS
+          final_basic=peek_byte_no_time(23627)+256*peek_byte_no_time(23628);
 
-  		dir_tokens=spectrum_rom_tokens;
+          dir_tokens=spectrum_rom_tokens;
 
-  		inicio_tokens=163;
+          inicio_tokens=163;
 
         if (debug_view_basic_show_betabasic.v) {
             //SPECTRUM y PLAY no salen. son de betabasic
@@ -5722,25 +5722,25 @@ void debug_view_basic_prepare_parameters(view_basic_parameters *parameters)
             dir_tokens=&spectrum_rom_tokens[2];
         }
 
-  	}
+      }
 
-  	else if (MACHINE_IS_ZX81_TYPE) {
-  		//ZX81
-  		dir_inicio_linea=16509;
+      else if (MACHINE_IS_ZX81_TYPE) {
+          //ZX81
+          dir_inicio_linea=16509;
 
-  		//D_FILE
-  		final_basic=peek_byte_no_time(0x400C)+256*peek_byte_no_time(0x400D);
+          //D_FILE
+          final_basic=peek_byte_no_time(0x400C)+256*peek_byte_no_time(0x400D);
 
-  		dir_tokens=zx81_rom_tokens;
+          dir_tokens=zx81_rom_tokens;
 
-  		inicio_tokens=192;
+          inicio_tokens=192;
 
-		tipo=2;
-  	}
+        tipo=2;
+      }
 
           //else if (MACHINE_IS_ZX80) {
     else  {
-  		//ZX80
+          //ZX80
                   dir_inicio_linea=16424;
 
                   //VARS
@@ -5750,7 +5750,7 @@ void debug_view_basic_prepare_parameters(view_basic_parameters *parameters)
 
                   inicio_tokens=213;
 
-		tipo=1;
+        tipo=1;
     }
 
 
@@ -5773,7 +5773,7 @@ void debug_view_basic(char *results_buffer)
     debug_view_basic_prepare_parameters(&parameters);
 
 
-	debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
+    debug_view_basic_from_memory(results_buffer,parameters.dir_inicio_linea,parameters.final_basic,parameters.dir_tokens,
         parameters.inicio_tokens,peek_byte_no_time,parameters.tipo,debug_view_basic_show_address.v,1,
         debug_view_basic_show_betabasic.v,MAX_TEXTO_GENERIC_MESSAGE,1);
 
@@ -5784,7 +5784,7 @@ void debug_get_ioports(char *stats_buffer)
 {
 
           //int index_op,
-  	int index_buffer;
+      int index_buffer;
 
 
 
@@ -5799,9 +5799,9 @@ void debug_get_ioports(char *stats_buffer)
     }
 
 
-  	if (MACHINE_IS_SPECTRUM) {
-  		sprintf (buf_linea,"Spectrum FE port: %02X\n",out_254_original_value);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      if (MACHINE_IS_SPECTRUM) {
+          sprintf (buf_linea,"Spectrum FE port: %02X\n",out_254_original_value);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         if (if1_enabled.v) {
             sprintf (buf_linea,"Interface1:\n");
@@ -5972,31 +5972,31 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             }
         }
 
-  		//Spectra
-  		if (spectra_enabled.v) {
-  			sprintf (buf_linea,"Spectra video mode register: %02X\n",spectra_display_mode_register);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  		}
+          //Spectra
+          if (spectra_enabled.v) {
+              sprintf (buf_linea,"Spectra video mode register: %02X\n",spectra_display_mode_register);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          }
 
-  		//ULAplus
-  		if (ulaplus_enabled.v) {
-  			sprintf (buf_linea,"ULAplus video mode register: %02X\n",ulaplus_mode);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  			sprintf (buf_linea,"ULAplus extended video mode register: %02X\n",ulaplus_extended_mode);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  		}
+          //ULAplus
+          if (ulaplus_enabled.v) {
+              sprintf (buf_linea,"ULAplus video mode register: %02X\n",ulaplus_mode);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+              sprintf (buf_linea,"ULAplus extended video mode register: %02X\n",ulaplus_extended_mode);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          }
 
-  		//Timex Video
-  		if (timex_video_emulation.v) {
-  			sprintf (buf_linea,"Timex FF port: %02X\n",timex_port_ff);
+          //Timex Video
+          if (timex_video_emulation.v) {
+              sprintf (buf_linea,"Timex FF port: %02X\n",timex_port_ff);
                           sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
                   }
 
         //ZXMMC+
         if (zxmmcplus_enabled.v) {
-  			sprintf (buf_linea,"ZXMMC+ 7F port: %02X\n",zxmmcplus_port_7f_value);
+              sprintf (buf_linea,"ZXMMC+ 7F port: %02X\n",zxmmcplus_port_7f_value);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  			sprintf (buf_linea," Page: %02d R%cM %s %s\n",
+              sprintf (buf_linea," Page: %02d R%cM %s %s\n",
                 zxmmcplus_port_7f_value  & 31,
                 (zxmmcplus_port_7f_value & 32 ? 'O' : 'A'),
                 (zxmmcplus_port_7f_value & 64 ? "PAGE_IN" : "       "),
@@ -6005,37 +6005,37 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 
-  	}
+      }
 
-  	if (MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_CHLOE_280SE || MACHINE_IS_PRISM) {
-  		sprintf (buf_linea,"Timex F4 port: %02X\n",timex_port_f4);
+      if (MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_CHLOE_280SE || MACHINE_IS_PRISM) {
+          sprintf (buf_linea,"Timex F4 port: %02X\n",timex_port_f4);
                   sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
           }
 
-  	if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_128_P2 || TBBLUE_MACHINE_P2A) {
+      if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_128_P2 || TBBLUE_MACHINE_P2A) {
 
-		//En el caso de zxuno, no mostrar si paginacion desactivada por DI7FFD
-		int mostrar=1;
+        //En el caso de zxuno, no mostrar si paginacion desactivada por DI7FFD
+        int mostrar=1;
 
-		if (MACHINE_IS_ZXUNO && zxuno_get_devcontrol_di7ffd()) mostrar=0;
+        if (MACHINE_IS_ZXUNO && zxuno_get_devcontrol_di7ffd()) mostrar=0;
 
-		if (mostrar) {
+        if (mostrar) {
             sprintf (buf_linea,"Spectrum 7FFD port: %02X\n",puerto_32765);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-		}
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
     }
 
-  	if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_P2A) {
-		//En el caso de zxuno, no mostrar si paginacion desactivada por DI1FFD
-		int mostrar=1;
+      if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_PRISM || superupgrade_enabled.v || MACHINE_IS_CHROME || TBBLUE_MACHINE_P2A) {
+        //En el caso de zxuno, no mostrar si paginacion desactivada por DI1FFD
+        int mostrar=1;
 
-		if (MACHINE_IS_ZXUNO && zxuno_get_devcontrol_di1ffd()) mostrar=0;
+        if (MACHINE_IS_ZXUNO && zxuno_get_devcontrol_di1ffd()) mostrar=0;
 
-		if (mostrar) {
-  			sprintf (buf_linea,"Spectrum 1FFD port: %02X\n",puerto_8189);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-		}
-  	}
+        if (mostrar) {
+              sprintf (buf_linea,"Spectrum 1FFD port: %02X\n",puerto_8189);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
+      }
 
     if (MACHINE_IS_PCW) {
         int i;
@@ -6090,8 +6090,8 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
     }
 
     if (pd765_enabled.v) {
-  		sprintf (buf_linea,"\nPD765 status:\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"\nPD765 status:\n");
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Motor: %s\n",(pd765_motor_status ? "On" : "Off"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -6158,40 +6158,40 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
     }
 
-	if (diviface_enabled.v) {
-  		sprintf (buf_linea,"Diviface control port: %02X\n",diviface_control_register);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  		sprintf (buf_linea,"Diviface automatic paging: %s\n",(diviface_paginacion_automatica_activa.v ? "Yes" : "No")  );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-	}
+    if (diviface_enabled.v) {
+          sprintf (buf_linea,"Diviface control port: %02X\n",diviface_control_register);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"Diviface automatic paging: %s\n",(diviface_paginacion_automatica_activa.v ? "Yes" : "No")  );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    }
 
     if (ide_enabled.v) {
-  		sprintf (buf_linea,"ATA Registers\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"ATA Registers\n");
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Data:          %02X\n",ide_get_data_register() );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Data:          %02X\n",ide_get_data_register() );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Error:         %02X\n",ide_get_error_register() );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Error:         %02X\n",ide_get_error_register() );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Sector Count:  %02X\n",ide_register_sector_count );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Sector Count:  %02X\n",ide_register_sector_count );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Sector Number: %02X\n",ide_register_sector_number );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Sector Number: %02X\n",ide_register_sector_number );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Cylinder Low:  %02X\n",ide_register_cylinder_low );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Cylinder Low:  %02X\n",ide_register_cylinder_low );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Cylinder High: %02X\n",ide_register_cylinder_high );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Cylinder High: %02X\n",ide_register_cylinder_high );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Drive/Head:    %02X\n",ide_register_drive_head );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Drive/Head:    %02X\n",ide_register_drive_head );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea," Status:        %02X\n",ide_status_register );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea," Status:        %02X\n",ide_status_register );
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
     }
 
@@ -6213,49 +6213,49 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
       sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
     }
 
-  	if (MACHINE_IS_TBBLUE) {
-		sprintf (buf_linea,"\nTBBlue port 123b:   %02X\n",tbblue_port_123b);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      if (MACHINE_IS_TBBLUE) {
+        sprintf (buf_linea,"\nTBBlue port 123b:   %02X\n",tbblue_port_123b);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-		sprintf (buf_linea,"TBBlue port 123b_2: %02X\n",tbblue_port_123b_second_byte);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        sprintf (buf_linea,"TBBlue port 123b_2: %02X\n",tbblue_port_123b_second_byte);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  								sprintf (buf_linea,"TBBlue last register: %02X\n",tbblue_last_register);
-  								sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                                  sprintf (buf_linea,"TBBlue last register: %02X\n",tbblue_last_register);
+                                  sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-  								sprintf (buf_linea,"TBBlue Registers:\n");
-  								sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                                  sprintf (buf_linea,"TBBlue Registers:\n");
+                                  sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  								int index_ioport;
-  								for (index_ioport=0;index_ioport<256;index_ioport++) {
-  									//sprintf (buf_linea,"%02X : %02X \n",index_ioport,tbblue_registers[index_ioport]);
-  									sprintf (buf_linea,"%02X : %02X \n",index_ioport,tbblue_get_value_port_register(index_ioport) );
-  									sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
-  									index_buffer +=strlen(buf_linea);
-  								}
-  	}
+                                  int index_ioport;
+                                  for (index_ioport=0;index_ioport<256;index_ioport++) {
+                                      //sprintf (buf_linea,"%02X : %02X \n",index_ioport,tbblue_registers[index_ioport]);
+                                      sprintf (buf_linea,"%02X : %02X \n",index_ioport,tbblue_get_value_port_register(index_ioport) );
+                                      sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
+                                      index_buffer +=strlen(buf_linea);
+                                  }
+      }
 
-	if (MACHINE_IS_TSCONF) {
+    if (MACHINE_IS_TSCONF) {
 
-  								sprintf (buf_linea,"TSConf Registers:\n");
-  								sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                                  sprintf (buf_linea,"TSConf Registers:\n");
+                                  sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  								int index_ioport;
-  								for (index_ioport=0;index_ioport<256;index_ioport++) {
-  									sprintf (buf_linea,"%02X : %02X \n",index_ioport,tsconf_af_ports[index_ioport] );
-  									sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
-  									index_buffer +=strlen(buf_linea);
-  								}
-  	}
+                                  int index_ioport;
+                                  for (index_ioport=0;index_ioport<256;index_ioport++) {
+                                      sprintf (buf_linea,"%02X : %02X \n",index_ioport,tsconf_af_ports[index_ioport] );
+                                      sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
+                                      index_buffer +=strlen(buf_linea);
+                                  }
+      }
 
-  	//Registros ULA2 de Prism, paginacion, etc
-  	if (MACHINE_IS_PRISM) {
+      //Registros ULA2 de Prism, paginacion, etc
+      if (MACHINE_IS_PRISM) {
 
-  		sprintf (buf_linea,"\nPrism EE3B port: %02X\n",prism_rom_page);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"\nPrism EE3B port: %02X\n",prism_rom_page);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"ULA2:\n");
+          sprintf (buf_linea,"ULA2:\n");
                   sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
                   int i;
@@ -6271,38 +6271,38 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
 
 
-  	if (sn_chip_present.v) {
+      if (sn_chip_present.v) {
 
-  			sprintf (buf_linea,"\nSN76489AN chip:\n");
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-
-			int i;
-			for (i=0;i<10;i++) {
-					sprintf (buf_linea,"%02X:  %02X\n",i,sn_chip_registers[i]);
-					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}
+              sprintf (buf_linea,"\nSN76489AN chip:\n");
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-  	}
+            int i;
+            for (i=0;i<10;i++) {
+                    sprintf (buf_linea,"%02X:  %02X\n",i,sn_chip_registers[i]);
+                    sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
 
-  	if (MACHINE_IS_Z88) {
-  		sprintf (buf_linea,"Z88 Blink:\n\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"SBR:  %04X\n",blink_sbr);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      }
 
-  		int i;
-  		for (i=0;i<4;i++) {
-  			sprintf (buf_linea,"PB%d:  %04X\n",i,blink_pixel_base[i]);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  		}
+      if (MACHINE_IS_Z88) {
+          sprintf (buf_linea,"Z88 Blink:\n\n");
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		for (i=0;i<5;i++) {
-  			sprintf (buf_linea,"TIM%d: %04X\n",i,blink_tim[i]);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  		}
+          sprintf (buf_linea,"SBR:  %04X\n",blink_sbr);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+          int i;
+          for (i=0;i<4;i++) {
+              sprintf (buf_linea,"PB%d:  %04X\n",i,blink_pixel_base[i]);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          }
+
+          for (i=0;i<5;i++) {
+              sprintf (buf_linea,"TIM%d: %04X\n",i,blink_tim[i]);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          }
 
         //Segundos y minutos transcurridos segun el tim
         int doscienteavo_segundo=blink_tim[0];
@@ -6310,120 +6310,120 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         int minutos=blink_tim[2]+(blink_tim[3]*256)+(blink_tim[4]*65536);
 
         sprintf (buf_linea,"TIM[FULL]: %d:%02d.%03d\n",minutos,segundos,doscienteavo_segundo);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-  		sprintf (buf_linea,"COM:  %02X\n",blink_com);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"COM:  %02X\n",blink_com);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"INT:  %02X\n",blink_int);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"INT:  %02X\n",blink_int);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"STA:  %02X\n",blink_sta);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"STA:  %02X\n",blink_sta);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"EPR:  %02X\n",blink_epr);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"EPR:  %02X\n",blink_epr);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"TMK:  %02X\n",blink_tmk);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"TMK:  %02X\n",blink_tmk);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"TSTA: %02X\n",blink_tsta);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  	}
+          sprintf (buf_linea,"TSTA: %02X\n",blink_tsta);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      }
 
-  	if (MACHINE_IS_ZXUNO) {
+      if (MACHINE_IS_ZXUNO) {
                   sprintf (buf_linea,"\nZX-Uno FC3B port: %02X\n",last_port_FC3B);
                   sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"ZX-Uno Registers:\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"ZX-Uno Registers:\n");
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		int index_ioport;
-  		for (index_ioport=0;index_ioport<256;index_ioport++) {
-  			sprintf (buf_linea,"%02X : %02X \n",index_ioport,zxuno_ports[index_ioport]);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
-  			index_buffer +=strlen(buf_linea);
-  		}
+          int index_ioport;
+          for (index_ioport=0;index_ioport<256;index_ioport++) {
+              sprintf (buf_linea,"%02X : %02X \n",index_ioport,zxuno_ports[index_ioport]);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea);
+              index_buffer +=strlen(buf_linea);
+          }
 
-		//Registros DMA
-  		sprintf (buf_linea,"\nZX-Uno DMA Registers:\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        //Registros DMA
+          sprintf (buf_linea,"\nZX-Uno DMA Registers:\n");
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"DMASRC:  %02X%02X\n",zxuno_dmareg[0][1],zxuno_dmareg[0][0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"DMASRC:  %02X%02X\n",zxuno_dmareg[0][1],zxuno_dmareg[0][0]);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"DMADST:  %02X%02X\n",zxuno_dmareg[1][1],zxuno_dmareg[1][0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"DMADST:  %02X%02X\n",zxuno_dmareg[1][1],zxuno_dmareg[1][0]);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"DMAPRE:  %02X%02X\n",zxuno_dmareg[2][1],zxuno_dmareg[2][0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"DMAPRE:  %02X%02X\n",zxuno_dmareg[2][1],zxuno_dmareg[2][0]);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"DMALEN:  %02X%02X\n",zxuno_dmareg[3][1],zxuno_dmareg[3][0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"DMALEN:  %02X%02X\n",zxuno_dmareg[3][1],zxuno_dmareg[3][0]);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"DMAPROB: %02X%02X\n",zxuno_dmareg[4][1],zxuno_dmareg[4][0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"DMAPROB: %02X%02X\n",zxuno_dmareg[4][1],zxuno_dmareg[4][0]);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"DMACTRL: %02X\n",zxuno_ports[0xa0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"DMACTRL: %02X\n",zxuno_ports[0xa0]);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"DMASTAT: %02X\n",zxuno_ports[0xa6]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"DMASTAT: %02X\n",zxuno_ports[0xa6]);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  	}
+      }
 
-  	if (MACHINE_IS_ZX8081) {
-  		sprintf (buf_linea,"ZX80/81 last out port value: %02X\n",zx8081_last_port_write_value);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  		sprintf (buf_linea,"ZX80/81 HSYNC generator: %s\n",(hsync_generator_active.v ? "On" : "Off"));
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  		sprintf (buf_linea,"ZX80/81 VSYNC generator: %s\n",(zx8081_vsync_generator.v ? "On" : "Off"));
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      if (MACHINE_IS_ZX8081) {
+          sprintf (buf_linea,"ZX80/81 last out port value: %02X\n",zx8081_last_port_write_value);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"ZX80/81 HSYNC generator: %s\n",(hsync_generator_active.v ? "On" : "Off"));
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"ZX80/81 VSYNC generator: %s\n",(zx8081_vsync_generator.v ? "On" : "Off"));
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         if (MACHINE_IS_ZX81_TYPE) {
             sprintf (buf_linea,"ZX81 NMI generator: %s\n",(nmi_generator_active.v ? "On" : "Off"));
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
-  	}
+      }
 
-  	if (MACHINE_IS_MSX) {
-  		sprintf (buf_linea,"PPI Port A: %02X\n",msx_ppi_register_a);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      if (MACHINE_IS_MSX) {
+          sprintf (buf_linea,"PPI Port A: %02X\n",msx_ppi_register_a);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"PPI Port B: %02X\n",msx_ppi_register_b);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"PPI Port B: %02X\n",msx_ppi_register_b);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"PPI Port C: %02X\n",msx_ppi_register_c);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"PPI Port C: %02X\n",msx_ppi_register_c);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"PPI Mode Port: %02X\n",msx_ppi_mode_port);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  	}
+          sprintf (buf_linea,"PPI Mode Port: %02X\n",msx_ppi_mode_port);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      }
 
-  	if (MACHINE_IS_SVI) {
-  		sprintf (buf_linea,"PPI Port A: %02X\n",svi_ppi_register_a);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      if (MACHINE_IS_SVI) {
+          sprintf (buf_linea,"PPI Port A: %02X\n",svi_ppi_register_a);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"PPI Port B: %02X\n",svi_ppi_register_b);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"PPI Port B: %02X\n",svi_ppi_register_b);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  		sprintf (buf_linea,"PPI Port C: %02X\n",svi_ppi_register_c);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  	}
+          sprintf (buf_linea,"PPI Port C: %02X\n",svi_ppi_register_c);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      }
 
-	if (MACHINE_HAS_VDP_9918A) {
-  			sprintf (buf_linea,"\nVDP 9918A chip:\n");
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    if (MACHINE_HAS_VDP_9918A) {
+              sprintf (buf_linea,"\nVDP 9918A chip:\n");
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-			int i;
-			for (i=0;i<16;i++) {
-					sprintf (buf_linea,"%02X:  %02X\n",i,vdp_9918a_registers[i]);
-					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}
-	}
+            int i;
+            for (i=0;i<16;i++) {
+                    sprintf (buf_linea,"%02X:  %02X\n",i,vdp_9918a_registers[i]);
+                    sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
+    }
 
-	if (MACHINE_IS_SMS) {
+    if (MACHINE_IS_SMS) {
         sprintf (buf_linea,"\nMapper registers:\n");
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
@@ -6441,16 +6441,16 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
 
     }
 
-	if (MACHINE_IS_CPC) {
-  			sprintf (buf_linea,"\nCRTC Registers:\n");
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    if (MACHINE_IS_CPC) {
+              sprintf (buf_linea,"\nCRTC Registers:\n");
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-			int i;
-			for (i=0;i<32;i++) {
-					sprintf (buf_linea,"%02X:  %02X\n",i,cpc_crtc_registers[i]);
-					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}
+            int i;
+            for (i=0;i<32;i++) {
+                    sprintf (buf_linea,"%02X:  %02X\n",i,cpc_crtc_registers[i]);
+                    sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
 
 
             sprintf (buf_linea,"\nPPI Port A:  %02X\n",cpc_ppi_ports[0]);
@@ -6466,27 +6466,27 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-			sprintf (buf_linea,"\nGate Registers:\n");
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea,"\nGate Registers:\n");
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
 
-			for (i=0;i<4;i++) {
-					sprintf (buf_linea,"%02X:  %02X\n",i,cpc_gate_registers[i]);
-					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}
+            for (i=0;i<4;i++) {
+                    sprintf (buf_linea,"%02X:  %02X\n",i,cpc_gate_registers[i]);
+                    sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            }
 
-			sprintf (buf_linea,"\nPort DF: %02XH\n",cpc_port_df);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea,"\nPort DF: %02XH\n",cpc_port_df);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-	}
+    }
 
 
 
     if (MACHINE_IS_QL) {
         int value_rtc=(ql_zx8032_readbyte(0x18000)<<24) | (ql_zx8032_readbyte(0x18001)<<16) | (ql_zx8032_readbyte(0x18002)<<8) | ql_zx8032_readbyte(0x18003);
-  		sprintf (buf_linea,"PC_CLOCK: %0d\n",value_rtc);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+          sprintf (buf_linea,"PC_CLOCK: %0d\n",value_rtc);
+          sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"PC_INTR: %02X\n",ql_pc_intr);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -6517,25 +6517,25 @@ Bit	Purpose
 
     }
 
-  	if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
-  		int chips=ay_retorna_numero_chips();
-  		int j;
-  		for (j=0;j<chips;j++) {
-  			sprintf (buf_linea,"\nAY-3-8912 chip %d:\n",j);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+      if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
+          int chips=ay_retorna_numero_chips();
+          int j;
+          for (j=0;j<chips;j++) {
+              sprintf (buf_linea,"\nAY-3-8912 chip %d:\n",j);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-  			sprintf (buf_linea,"\nSelected register: %d\n",ay_3_8912_registro_sel[j]);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+              sprintf (buf_linea,"\nSelected register: %d\n",ay_3_8912_registro_sel[j]);
+              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-                  	int i;
-  	                for (i=0;i<16;i++) {
-          	                sprintf (buf_linea,"%02X:  %02X\n",i,ay_3_8912_registros[j][i]);
-                  	        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  	                }
+                      int i;
+                      for (i=0;i<16;i++) {
+                              sprintf (buf_linea,"%02X:  %02X\n",i,ay_3_8912_registros[j][i]);
+                              sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+                      }
 
-  		}
-  	}
+          }
+      }
 
 
     stats_buffer[index_buffer]=0;
@@ -6619,11 +6619,11 @@ void debug_run_action_breakpoint(char *comando)
     //Separar parametros
     //breakpoint_action_parse_commands_argvc(parametros);
 
-	//debug_printf (VERBOSE_DEBUG,"Total parameters: %d",breakpoint_action_command_argc);
+    //debug_printf (VERBOSE_DEBUG,"Total parameters: %d",breakpoint_action_command_argc);
 
-	//for (i=0;i<breakpoint_action_command_argc;i++) {
-	//	debug_printf (VERBOSE_DEBUG,"Parameter %d : [%s]",i,breakpoint_action_command_argv[i]);
-	//}
+    //for (i=0;i<breakpoint_action_command_argc;i++) {
+    //	debug_printf (VERBOSE_DEBUG,"Parameter %d : [%s]",i,breakpoint_action_command_argv[i]);
+    //}
 
     //Gestion parametros
     if (!strcmp(comando_sin_parametros,"write")) {
@@ -6755,10 +6755,10 @@ void debug_run_action_breakpoint(char *comando)
         debug_printf (VERBOSE_DEBUG,"Running printe command : %s",parametros);
         //char resultado_expresion[256];
         //debug_watches_loop(parametros,resultado_expresion);
-  		char salida[MAX_BREAKPOINT_CONDITION_LENGTH];
-		char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
+          char salida[MAX_BREAKPOINT_CONDITION_LENGTH];
+        char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
 
-		exp_par_evaluate_expression(parametros,salida,string_detoken);
+        exp_par_evaluate_expression(parametros,salida,string_detoken);
 
         printf ("%s\n",salida);
       }
@@ -6800,8 +6800,8 @@ void debug_run_action_breakpoint(char *comando)
       if (parametros[0]==0) debug_printf (VERBOSE_DEBUG,"Command needs one parameter");
       else {
         debug_printf (VERBOSE_DEBUG,"Running putv command : %s",parametros);
-		z80_byte resultado;
-		resultado=exp_par_evaluate_expression_to_number(parametros);
+        z80_byte resultado;
+        resultado=exp_par_evaluate_expression_to_number(parametros);
         debug_memory_zone_debug_write_value(resultado);
       }
     }
@@ -7127,21 +7127,21 @@ void debug_registers_get_mem_page_baseconf_extended(z80_byte segmento,char *text
 int debug_get_memory_pages_extended(debug_memory_segment *segmentos)
 {
 
-	//Por si caso, inicializamos todos los strings a ""
-	//debug_memory_segment segmentos[MAX_DEBUG_MEMORY_SEGMENTS];
-	int i;
-	for (i=0;i<MAX_DEBUG_MEMORY_SEGMENTS;i++) {
-		segmentos[i].longname[0]=0;
-		segmentos[i].shortname[0]=0;
-	}
+    //Por si caso, inicializamos todos los strings a ""
+    //debug_memory_segment segmentos[MAX_DEBUG_MEMORY_SEGMENTS];
+    int i;
+    for (i=0;i<MAX_DEBUG_MEMORY_SEGMENTS;i++) {
+        segmentos[i].longname[0]=0;
+        segmentos[i].shortname[0]=0;
+    }
 
-	//Por defecto
-	int segmentos_totales=2;
+    //Por defecto
+    int segmentos_totales=2;
 
-	strcpy(segmentos[0].longname,"System ROM");
-	strcpy(segmentos[0].shortname,"ROM");
-	segmentos[0].start=0;
-	segmentos[0].length=16384;
+    strcpy(segmentos[0].longname,"System ROM");
+    strcpy(segmentos[0].shortname,"ROM");
+    segmentos[0].start=0;
+    segmentos[0].length=16384;
 
     strcpy(segmentos[1].longname,"System RAM");
     strcpy(segmentos[1].shortname,"RAM");
@@ -7158,14 +7158,14 @@ struct s_debug_memory_segment {
         //texto largo del nombre del segmento
         char longname[100];
 
-	//texto corto
-	char shortname[32];
+    //texto corto
+    char shortname[32];
 
-	//Primera direccion del segmento
-	int start;
+    //Primera direccion del segmento
+    int start;
 
-	//Longitud del segmento
-	int length;
+    //Longitud del segmento
+    int length;
 
 
 };
@@ -7177,14 +7177,14 @@ typedef struct s_debug_memory_segment debug_memory_segment;
 
    //Paginas memoria
       if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 ||  superupgrade_enabled.v || MACHINE_IS_CHROME) {
-		segmentos_totales=4;
+        segmentos_totales=4;
                                   int pagina;
 
         for (pagina=0;pagina<4;pagina++) {
 
                            debug_registers_get_mem_page_extended(pagina,segmentos[pagina].longname,segmentos[pagina].shortname);
-				segmentos[pagina].length=16384;
-				segmentos[pagina].start=16384*pagina;
+                segmentos[pagina].length=16384;
+                segmentos[pagina].start=16384*pagina;
 
           }
 
@@ -7192,7 +7192,7 @@ typedef struct s_debug_memory_segment debug_memory_segment;
 
 
 
-	if (MACHINE_IS_TBBLUE) {
+    if (MACHINE_IS_TBBLUE) {
         int pagina;
         //4 paginas, texto 5 caracteres max
         segmentos_totales=8;
@@ -7314,9 +7314,9 @@ typedef struct s_debug_memory_segment debug_memory_segment;
 
 /*
    if (tbblue_bootrom.v) {
-											strcpy (segmentos[pagina].shortname,"RO");
-											strcpy (segmentos[pagina].longname,"ROM");
-										}
+                                            strcpy (segmentos[pagina].shortname,"RO");
+                                            strcpy (segmentos[pagina].longname,"ROM");
+                                        }
                                                                             else {
                                                                                     z80_byte romram_page=(tbblue_registers[4]&31);
                                                                                     sprintf (segmentos[pagina].shortname,"SR%d",romram_page);
@@ -7585,7 +7585,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
         //Informacion VRAM en PRISM
         else {
-  				//char texto_vram[32];
+                  //char texto_vram[32];
 
             //Paginas RAM en PRISM
             //char texto_paginas[8][4];
@@ -7662,7 +7662,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         }
     }
 
-  			  //Paginas RAM en TIMEX
+                //Paginas RAM en TIMEX
     if (MACHINE_IS_TIMEX_TS_TC_2068) {
         segmentos_totales=8;
         //char texto_paginas[8][3];
@@ -7695,7 +7695,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
     }
 
-  			//Paginas RAM en CPC
+              //Paginas RAM en CPC
   //#define CPC_MEMORY_TYPE_ROM 0
   //#define CPC_MEMORY_TYPE_RAM 1
 
@@ -7909,7 +7909,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
     }
 
 
-	return segmentos_totales;
+    return segmentos_totales;
 
 }
 
@@ -7918,15 +7918,15 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 void debug_get_paging_screen_state(char *s)
 {
 
-	//por defecto
-	*s=0;
+    //por defecto
+    *s=0;
 
-	if (!MACHINE_IS_SPECTRUM) return;
+    if (!MACHINE_IS_SPECTRUM) return;
 
-	if (MACHINE_IS_SPECTRUM_16_48) return;
+    if (MACHINE_IS_SPECTRUM_16_48) return;
 
 
-	sprintf (s,"SCR%d %s", ( (puerto_32765&8) ? 7 : 5) ,  ( (puerto_32765&32) ? "PDI" : "PEN"  ) );
+    sprintf (s,"SCR%d %s", ( (puerto_32765&8) ? 7 : 5) ,  ( (puerto_32765&32) ? "PDI" : "PEN"  ) );
 
 
 }
@@ -7938,7 +7938,7 @@ int si_cpu_step_over_jpret(void)
         if (CPU_IS_MOTOROLA || CPU_IS_SCMP) return 0;
         z80_byte opcode=peek_byte_no_time(reg_pc);
 
-	debug_printf(VERBOSE_DEBUG,"cpu step over, first opcode at %04XH is %02XH",reg_pc,opcode);
+    debug_printf(VERBOSE_DEBUG,"cpu step over, first opcode at %04XH is %02XH",reg_pc,opcode);
 
         switch (opcode)
         {
@@ -8039,20 +8039,20 @@ int debug_get_opcode_length(unsigned int direccion)
 //Retorna 1 si es
 int debug_text_is_pc_condition(char *cond)
 {
-	if (cond[0]=='P' || cond[0]=='p') {
-				if (cond[1]=='C' || cond[1]=='c') {
-					if (cond[2]=='=') {
-						//Ahora a partir de aqui ver que no haya ningun espacio
-						int j;
+    if (cond[0]=='P' || cond[0]=='p') {
+                if (cond[1]=='C' || cond[1]=='c') {
+                    if (cond[2]=='=') {
+                        //Ahora a partir de aqui ver que no haya ningun espacio
+                        int j;
 
-						for (j=3;cond[j];j++) {
-							if (cond[j]==' ') return 0;
-						}
-						return 1;
-					}
-				}
-	}
-	return 0;
+                        for (j=3;cond[j];j++) {
+                            if (cond[j]==' ') return 0;
+                        }
+                        return 1;
+                    }
+                }
+    }
+    return 0;
 }
 
 //Retorna si el breakpoint indicado es de tipo PC=XXXX y action="" y esta activado
@@ -8060,26 +8060,26 @@ int debug_text_is_pc_condition(char *cond)
 //Retorna 1 si es
 int debug_return_brk_pc_condition(int indice)
 {
-	if (debug_breakpoints_enabled.v==0) return -1;
+    if (debug_breakpoints_enabled.v==0) return -1;
 
-	char *cond;
+    char *cond;
 
-	int i=indice;
+    int i=indice;
 
-		if (debug_breakpoints_conditions_enabled[i]) {
-			if (debug_breakpoints_actions_array[i][0]!=0) return 0;
-
-
-			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-			cond=buffer_temp;
+        if (debug_breakpoints_conditions_enabled[i]) {
+            if (debug_breakpoints_actions_array[i][0]!=0) return 0;
 
 
-			return debug_text_is_pc_condition(cond);
-		}
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+            cond=buffer_temp;
 
 
-	return 0;
+            return debug_text_is_pc_condition(cond);
+        }
+
+
+    return 0;
 }
 
 //Retorna si el breakpoint indicado es de tipo PC=XXXX y action=""
@@ -8087,26 +8087,26 @@ int debug_return_brk_pc_condition(int indice)
 //Retorna 1 si es
 int debug_return_brk_pc_condition_enabled_or_not(int indice)
 {
-	if (debug_breakpoints_enabled.v==0) return -1;
+    if (debug_breakpoints_enabled.v==0) return -1;
 
-	char *cond;
+    char *cond;
 
-	int i=indice;
-
-
-			if (debug_breakpoints_actions_array[i][0]!=0) return 0;
+    int i=indice;
 
 
-			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-			cond=buffer_temp;
+            if (debug_breakpoints_actions_array[i][0]!=0) return 0;
 
 
-			return debug_text_is_pc_condition(cond);
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+            cond=buffer_temp;
+
+
+            return debug_text_is_pc_condition(cond);
 
 
 
-	return 0;
+    return 0;
 }
 
 //Retorna si hay breakpoint tipo PC=XXXX donde XXXX coincide con direccion y action=""
@@ -8116,27 +8116,27 @@ int debug_return_brk_pc_condition_enabled_or_not(int indice)
 int debug_return_brk_pc_dir_condition_enabled_or_not(menu_z80_moto_int direccion)
 {
 
-	if (debug_breakpoints_enabled.v==0) return -1;
+    if (debug_breakpoints_enabled.v==0) return -1;
 
-	char *cond;
+    char *cond;
 
-	int i;
-	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-			if (debug_return_brk_pc_condition_enabled_or_not(i)) {
-
-
-			//TODO: esto se podria mejorar analizando los tokens
-			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-			cond=buffer_temp;
+    int i;
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+            if (debug_return_brk_pc_condition_enabled_or_not(i)) {
 
 
-				menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
-				if (valor==direccion) return i;
-			}
-	}
+            //TODO: esto se podria mejorar analizando los tokens
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+            cond=buffer_temp;
 
-	return -1;
+
+                menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
+                if (valor==direccion) return i;
+            }
+    }
+
+    return -1;
 }
 
 //Retorna si hay breakpoint tipo PC=XXXX donde XXXX coincide con direccion y action=""
@@ -8146,110 +8146,110 @@ int debug_return_brk_pc_dir_condition_enabled_or_not(menu_z80_moto_int direccion
 int debug_return_brk_pc_dir_condition(menu_z80_moto_int direccion)
 {
 
-	if (debug_breakpoints_enabled.v==0) return -1;
+    if (debug_breakpoints_enabled.v==0) return -1;
 
-	char *cond;
+    char *cond;
 
-	int i;
-	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-			if (debug_return_brk_pc_condition(i)) {
-
-
-			//TODO: esto se podria mejorar analizando los tokens
-			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-			cond=buffer_temp;
+    int i;
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+            if (debug_return_brk_pc_condition(i)) {
 
 
-				menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
-				if (valor==direccion) return i;
-			}
-	}
+            //TODO: esto se podria mejorar analizando los tokens
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+            cond=buffer_temp;
 
-	return -1;
+
+                menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
+                if (valor==direccion) return i;
+            }
+    }
+
+    return -1;
 }
 
 //Retorna lista de breakpoints de tipo PC=dir
 int debug_return_brk_pc_dir_list(menu_z80_moto_int *lista)
 {
 
-	if (debug_breakpoints_enabled.v==0) return 0;
+    if (debug_breakpoints_enabled.v==0) return 0;
 
-	char *cond;
+    char *cond;
 
     int total_breakpoints=0;
 
-	int i;
-	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-			if (debug_return_brk_pc_condition(i)) {
+    int i;
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+            if (debug_return_brk_pc_condition(i)) {
 
 
-			//TODO: esto se podria mejorar analizando los tokens
-			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-			cond=buffer_temp;
+            //TODO: esto se podria mejorar analizando los tokens
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+            cond=buffer_temp;
 
 
-				menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
-				//printf("direccion: %d\n",valor);
+                menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
+                //printf("direccion: %d\n",valor);
                 lista[total_breakpoints]=valor;
                 total_breakpoints++;
-			}
-	}
+            }
+    }
 
-	return total_breakpoints;
+    return total_breakpoints;
 }
 
 //Retorna primera posicion en array de breakpoint libres. -1 si no hay
 int debug_find_free_breakpoint(void)
 {
-	int i;
-	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+    int i;
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
 
-			if (debug_breakpoints_conditions_array_tokens[i][0].tipo==TPT_FIN) return i;
+            if (debug_breakpoints_conditions_array_tokens[i][0].tipo==TPT_FIN) return i;
 
-	}
+    }
 
-	return -1;
+    return -1;
 }
 
 //Retorna primera posicion en array que coindice con breakpoint y que este activado
 int debug_find_breakpoint(char *to_find)
 {
 
-	if (debug_breakpoints_enabled.v==0) return -1;
+    if (debug_breakpoints_enabled.v==0) return -1;
 
-	int i;
-	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-		if (debug_breakpoints_conditions_enabled[i]) {
+    int i;
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+        if (debug_breakpoints_conditions_enabled[i]) {
 
-			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-			if  (!strcasecmp(buffer_temp,to_find)) return i;
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+            if  (!strcasecmp(buffer_temp,to_find)) return i;
 
-		}
-	}
+        }
+    }
 
-	return -1;
+    return -1;
 }
 
 //Retorna primera posicion en array que coindice con breakpoint,este activo o no
 int debug_find_breakpoint_activeornot(char *to_find)
 {
 
-	int i;
-	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+    int i;
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
 
-			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
 
-			//printf ("%d temp: [%s] comp: [%s]\n",i,buffer_temp,to_find);
+            //printf ("%d temp: [%s] comp: [%s]\n",i,buffer_temp,to_find);
 
-			if (!strcasecmp(buffer_temp,to_find)) return i;
+            if (!strcasecmp(buffer_temp,to_find)) return i;
 
-	}
+    }
 
-	return -1;
+    return -1;
 }
 
 
@@ -8259,36 +8259,36 @@ int debug_find_breakpoint_activeornot(char *to_find)
 
 int debug_add_breakpoint_free(char *breakpoint, char *action)
 {
-	int posicion=debug_find_free_breakpoint();
-	if (posicion<0) {
-		debug_printf (VERBOSE_ERR,"No free breakpoint entry");
-		return -1;
-	}
+    int posicion=debug_find_free_breakpoint();
+    if (posicion<0) {
+        debug_printf (VERBOSE_ERR,"No free breakpoint entry");
+        return -1;
+    }
 
-	debug_set_breakpoint(posicion,breakpoint,0);
-	debug_set_breakpoint_action(posicion,action);
+    debug_set_breakpoint(posicion,breakpoint,0);
+    debug_set_breakpoint_action(posicion,action);
 
-	return posicion;
+    return posicion;
 
 }
 
 void debug_clear_breakpoint(int indice)
 {
-	//Elimina una linea de breakpoint. Pone condicion vacia y enabled a 0
-	debug_set_breakpoint(indice,"",0);
-	debug_set_breakpoint_action(indice,"");
-	//debug_breakpoints_conditions_enabled[indice]=0;
-	debug_breakpoints_conditions_disable(indice);
+    //Elimina una linea de breakpoint. Pone condicion vacia y enabled a 0
+    debug_set_breakpoint(indice,"",0);
+    debug_set_breakpoint_action(indice,"");
+    //debug_breakpoints_conditions_enabled[indice]=0;
+    debug_breakpoints_conditions_disable(indice);
 }
 
 void debug_get_stack_moto(menu_z80_moto_int p,int items, char *texto)
 {
-	int i;
-  	for (i=0;i<items;i++) {
-		//menu_z80_moto_int valor=16777216*peek_byte_z80_moto(p)+65536*peek_byte_z80_moto(p+1)+256*peek_byte_z80_moto(p+2)+256*peek_byte_z80_moto(p+3);
-		sprintf(&texto[i*9],"%02X%02X%02X%02X ",peek_byte_z80_moto(p+i*4),peek_byte_z80_moto(p+i*4+1),
+    int i;
+      for (i=0;i<items;i++) {
+        //menu_z80_moto_int valor=16777216*peek_byte_z80_moto(p)+65536*peek_byte_z80_moto(p+1)+256*peek_byte_z80_moto(p+2)+256*peek_byte_z80_moto(p+3);
+        sprintf(&texto[i*9],"%02X%02X%02X%02X ",peek_byte_z80_moto(p+i*4),peek_byte_z80_moto(p+i*4+1),
             peek_byte_z80_moto(p+i*4+2),peek_byte_z80_moto(p+i*4+3) );
-	}
+    }
 }
 
 z80_int debug_get_stack_z80_value(int i)
@@ -8302,23 +8302,23 @@ z80_int debug_get_stack_z80_value(int i)
 void debug_get_stack_values(int items, char *texto)
 {
 
-	//Por si acaso, por defecto
-	texto[0]=0;
+    //Por si acaso, por defecto
+    texto[0]=0;
 
-	if (CPU_IS_Z80) {
-		int i;
-  		for (i=0;i<items;i++) {
-			z80_int valor=debug_get_stack_z80_value(i);
-			sprintf(&texto[i*5],"%04X ",valor);
-		  }
+    if (CPU_IS_Z80) {
+        int i;
+          for (i=0;i<items;i++) {
+            z80_int valor=debug_get_stack_z80_value(i);
+            sprintf(&texto[i*5],"%04X ",valor);
+          }
 
-	}
+    }
 
-	if (CPU_IS_MOTOROLA) {
-		//int i;
-		menu_z80_moto_int p=m68k_get_reg(NULL, M68K_REG_SP);
-		debug_get_stack_moto(p,items,texto);
-	}
+    if (CPU_IS_MOTOROLA) {
+        //int i;
+        menu_z80_moto_int p=m68k_get_reg(NULL, M68K_REG_SP);
+        debug_get_stack_moto(p,items,texto);
+    }
 
 
 }
@@ -8327,14 +8327,14 @@ void debug_get_stack_values(int items, char *texto)
 void debug_get_user_stack_values(int items, char *texto)
 {
 
-	//Por si acaso, por defecto
-	texto[0]=0;
+    //Por si acaso, por defecto
+    texto[0]=0;
 
-	if (CPU_IS_MOTOROLA) {
-		//int i;
-		menu_z80_moto_int p=m68k_get_reg(NULL, M68K_REG_USP);
-		debug_get_stack_moto(p,items,texto);
-	}
+    if (CPU_IS_MOTOROLA) {
+        //int i;
+        menu_z80_moto_int p=m68k_get_reg(NULL, M68K_REG_USP);
+        debug_get_stack_moto(p,items,texto);
+    }
 
 
 }
@@ -8343,10 +8343,10 @@ void debug_get_user_stack_values(int items, char *texto)
 void debug_get_t_estados_parcial(char *buffer_estadosparcial)
 {
 
-			int estadosparcial=debug_t_estados_parcial;
+            int estadosparcial=debug_t_estados_parcial;
 
-			if (estadosparcial>999999999) sprintf (buffer_estadosparcial,"%s","OVERFLOW");
-			else sprintf (buffer_estadosparcial,"%09u",estadosparcial);
+            if (estadosparcial>999999999) sprintf (buffer_estadosparcial,"%s","OVERFLOW");
+            else sprintf (buffer_estadosparcial,"%09u",estadosparcial);
 }
 
 
@@ -8356,27 +8356,27 @@ int memory_zone_current_size=0;
 
 void debug_memory_zone_debug_reset(void)
 {
-	memory_zone_current_size=0;
+    memory_zone_current_size=0;
 }
 
 void debug_memory_zone_debug_write_value(z80_byte valor)
 {
-	if (memory_zone_debug_ptr==NULL) {
-		debug_printf (VERBOSE_DEBUG,"Allocating memory for debug memory zone");
-		memory_zone_debug_ptr=malloc(MEMORY_ZONE_DEBUG_MAX_SIZE);
-		if (memory_zone_debug_ptr==NULL) {
-			cpu_panic ("Can not allocate memory for debug memory zone");
-		}
-	}
+    if (memory_zone_debug_ptr==NULL) {
+        debug_printf (VERBOSE_DEBUG,"Allocating memory for debug memory zone");
+        memory_zone_debug_ptr=malloc(MEMORY_ZONE_DEBUG_MAX_SIZE);
+        if (memory_zone_debug_ptr==NULL) {
+            cpu_panic ("Can not allocate memory for debug memory zone");
+        }
+    }
 
-	//Si aun hay espacio disponible
-	if (memory_zone_current_size<MEMORY_ZONE_DEBUG_MAX_SIZE) {
-		memory_zone_debug_ptr[memory_zone_current_size]=valor;
-		memory_zone_current_size++;
-	}
-	//else {
-	//	printf ("Memory zone full\n");
-	//}
+    //Si aun hay espacio disponible
+    if (memory_zone_current_size<MEMORY_ZONE_DEBUG_MAX_SIZE) {
+        memory_zone_debug_ptr[memory_zone_current_size]=valor;
+        memory_zone_current_size++;
+    }
+    //else {
+    //	printf ("Memory zone full\n");
+    //}
 }
 
 
@@ -8386,29 +8386,29 @@ int debug_get_timestamp(char *destino)
 {
 
 
-	struct timeval tv;
-	struct tm* ptm;
-	long microseconds;
+    struct timeval tv;
+    struct tm* ptm;
+    long microseconds;
 
 
-	// 2015/01/01 11:11:11.999999"
-	// 12345678901234567890123456
-	const int longitud_timestamp=26;
+    // 2015/01/01 11:11:11.999999"
+    // 12345678901234567890123456
+    const int longitud_timestamp=26;
 
-	/* Obtain the time of day, and convert it to a tm struct. */
-	gettimeofday (&tv, NULL);
-	ptm = localtime (&tv.tv_sec);
-	/* Format the date and time, down to a single second. */
-	char time_string[40];
+    /* Obtain the time of day, and convert it to a tm struct. */
+    gettimeofday (&tv, NULL);
+    ptm = localtime (&tv.tv_sec);
+    /* Format the date and time, down to a single second. */
+    char time_string[40];
 
-	strftime (time_string, sizeof(time_string), "%Y/%m/%d %H:%M:%S", ptm);
+    strftime (time_string, sizeof(time_string), "%Y/%m/%d %H:%M:%S", ptm);
 
-	microseconds = tv.tv_usec;
-		/* Print the formatted time, in seconds, followed by a decimal point and the microseconds. */
-	sprintf (destino,"%s.%06ld ", time_string, microseconds);
+    microseconds = tv.tv_usec;
+        /* Print the formatted time, in seconds, followed by a decimal point and the microseconds. */
+    sprintf (destino,"%s.%06ld ", time_string, microseconds);
 
 
-	return longitud_timestamp;
+    return longitud_timestamp;
 
 
 }
@@ -8416,10 +8416,10 @@ int debug_get_timestamp(char *destino)
 
 int remote_is_number_or_letter(char c)
 {
-	if (c>='0' && c<='9') return 1;
-	if (c>='A' && c<='Z') return 1;
-	if (c>='a' && c<='z') return 1;
-	return 0;
+    if (c>='0' && c<='9') return 1;
+    if (c>='A' && c<='Z') return 1;
+    if (c>='a' && c<='z') return 1;
+    return 0;
 
 }
 
@@ -8427,11 +8427,11 @@ int remote_is_number_or_letter(char c)
 int remote_string_contains_label(char *string, char *label)
 {
 
-	char *coincide;
-	coincide=util_strcasestr(string, label);
+    char *coincide;
+    coincide=util_strcasestr(string, label);
 
-	if (coincide==string) return 1;
-	else return 0;
+    if (coincide==string) return 1;
+    else return 0;
 
 
 }
@@ -8454,39 +8454,39 @@ int debug_load_source_code_skip_columns=0;
 
 int remote_find_label_source_code(char *label_to_find)
 {
-	int linea=0;
-	/*
+    int linea=0;
+    /*
 //Puntero a indices en archivo parsed source (lineas sin comentarios, con codigo real)
 int *remote_parsed_source_code_indexes_pointer=NULL;
 //Tamanyo de ese array
 int remote_parsed_source_code_indexes_total;
-	*/
+    */
 
-	for (linea=0;linea<remote_parsed_source_code_indexes_total;linea++) {
-		//Comparar label
-		int indice=remote_parsed_source_code_indexes_pointer[linea];
-		char *puntero=&remote_raw_source_code_pointer[indice+debug_load_source_code_skip_columns];
-		if (remote_string_contains_label(puntero,label_to_find)) {
-		     //temp
-        	     //printf ("%s\n",puntero);
-		     return linea;
-		}
-	}
+    for (linea=0;linea<remote_parsed_source_code_indexes_total;linea++) {
+        //Comparar label
+        int indice=remote_parsed_source_code_indexes_pointer[linea];
+        char *puntero=&remote_raw_source_code_pointer[indice+debug_load_source_code_skip_columns];
+        if (remote_string_contains_label(puntero,label_to_find)) {
+             //temp
+                 //printf ("%s\n",puntero);
+             return linea;
+        }
+    }
 
-	return -1;
+    return -1;
 
 }
 
 char remote_get_raw_source_code_char(int posicion)
 {
-	if (posicion>remote_tamanyo_archivo_raw_source_code) return 0;
-	else return remote_raw_source_code_pointer[posicion];
+    if (posicion>remote_tamanyo_archivo_raw_source_code) return 0;
+    else return remote_raw_source_code_pointer[posicion];
 }
 
 int remote_is_char_10_or_13(char c)
 {
-	if (c==10 || c==13) return 1;
-	return 0;
+    if (c==10 || c==13) return 1;
+    return 0;
 }
 
 //Retorna indice a array de lineas. -1 si no existe
@@ -8522,128 +8522,128 @@ void load_source_code_eject(void)
 int remote_load_source_code(char *archivo)
 {
 
-	if (!si_existe_archivo(archivo)) {
-		debug_printf(VERBOSE_ERR,"ERROR. File %s not found",archivo);
-		return 1;
-	}
+    if (!si_existe_archivo(archivo)) {
+        debug_printf(VERBOSE_ERR,"ERROR. File %s not found",archivo);
+        return 1;
+    }
 
     strcpy(last_source_code_file,archivo);
 
-	remote_tamanyo_archivo_raw_source_code=0;
+    remote_tamanyo_archivo_raw_source_code=0;
 
-	//Desasignar memoria si conviene
-	if (remote_raw_source_code_pointer!=NULL) free(remote_raw_source_code_pointer);
+    //Desasignar memoria si conviene
+    if (remote_raw_source_code_pointer!=NULL) free(remote_raw_source_code_pointer);
 
-	//Ver tamanyo archivo
-	long long int tamanyo;
+    //Ver tamanyo archivo
+    long long int tamanyo;
 
-	tamanyo=get_file_size(archivo);
+    tamanyo=get_file_size(archivo);
 
-	remote_raw_source_code_pointer=malloc(tamanyo+1); //y el 0 del final
+    remote_raw_source_code_pointer=malloc(tamanyo+1); //y el 0 del final
 
-	if (remote_raw_source_code_pointer==NULL) {
-		debug_printf(VERBOSE_ERR,"ERROR. Can not allocate memory to load source code file\n");
-		return 1;
-	}
+    if (remote_raw_source_code_pointer==NULL) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can not allocate memory to load source code file\n");
+        return 1;
+    }
 
-	FILE *ptr_sourcecode;
-	int leidos;
+    FILE *ptr_sourcecode;
+    int leidos;
 
-	ptr_sourcecode=fopen(archivo,"rb");
+    ptr_sourcecode=fopen(archivo,"rb");
 
-	if (ptr_sourcecode==NULL) {
-		debug_printf(VERBOSE_ERR,"ERROR. Can not open source code file\n");
-		return 1;
-	}
+    if (ptr_sourcecode==NULL) {
+        debug_printf(VERBOSE_ERR,"ERROR. Can not open source code file\n");
+        return 1;
+    }
 
-	leidos=fread(remote_raw_source_code_pointer,1,tamanyo,ptr_sourcecode);
-	fclose(ptr_sourcecode);
+    leidos=fread(remote_raw_source_code_pointer,1,tamanyo,ptr_sourcecode);
+    fclose(ptr_sourcecode);
 
-	//El 0 del final
-	remote_raw_source_code_pointer[tamanyo]=0;
+    //El 0 del final
+    remote_raw_source_code_pointer[tamanyo]=0;
 
-	if (leidos!=tamanyo) {
-		debug_printf(VERBOSE_ERR,"ERROR reading source code file\n");
-		return 1;
-	}
-
-
-	remote_tamanyo_archivo_raw_source_code=tamanyo;
+    if (leidos!=tamanyo) {
+        debug_printf(VERBOSE_ERR,"ERROR reading source code file\n");
+        return 1;
+    }
 
 
-	//Contar maximo de lineas aproximadas. Segun cuantos codigos 10 o 13
-	int remote_raw_max_source_code_lineas=1;
+    remote_tamanyo_archivo_raw_source_code=tamanyo;
 
-	int puntero;
-	char c;
 
-	for (puntero=0;puntero<remote_tamanyo_archivo_raw_source_code;puntero++) {
-		c=remote_get_raw_source_code_char(puntero);
-		if (remote_is_char_10_or_13(c) ) remote_raw_max_source_code_lineas++;
-	}
+    //Contar maximo de lineas aproximadas. Segun cuantos codigos 10 o 13
+    int remote_raw_max_source_code_lineas=1;
 
-	debug_printf(VERBOSE_DEBUG,"Maximum raw source code lines: %d",remote_raw_max_source_code_lineas);
+    int puntero;
+    char c;
 
-	//Crear indice a lineas en raw source
+    for (puntero=0;puntero<remote_tamanyo_archivo_raw_source_code;puntero++) {
+        c=remote_get_raw_source_code_char(puntero);
+        if (remote_is_char_10_or_13(c) ) remote_raw_max_source_code_lineas++;
+    }
 
-	//Asignamos memoria para esos indices
-	//Desasignar si conviene
-	if (remote_raw_source_code_indexes_pointer!=NULL) {
-		debug_printf(VERBOSE_DEBUG,"Freeing previous memory to hold indexes to raw source code file");
-		free (remote_raw_source_code_indexes_pointer);
-	}
+    debug_printf(VERBOSE_DEBUG,"Maximum raw source code lines: %d",remote_raw_max_source_code_lineas);
 
-	remote_raw_source_code_indexes_pointer=malloc(sizeof(int)*remote_raw_max_source_code_lineas);
+    //Crear indice a lineas en raw source
 
-	if (remote_raw_source_code_indexes_pointer==NULL) cpu_panic("Can not allocate memory to index source code file");
+    //Asignamos memoria para esos indices
+    //Desasignar si conviene
+    if (remote_raw_source_code_indexes_pointer!=NULL) {
+        debug_printf(VERBOSE_DEBUG,"Freeing previous memory to hold indexes to raw source code file");
+        free (remote_raw_source_code_indexes_pointer);
+    }
 
-	remote_raw_source_code_indexes_total=0;
-	//Primera linea
-	remote_raw_source_code_indexes_pointer[remote_raw_source_code_indexes_total++]=0;
+    remote_raw_source_code_indexes_pointer=malloc(sizeof(int)*remote_raw_max_source_code_lineas);
 
-	int puntero_raw=0;
+    if (remote_raw_source_code_indexes_pointer==NULL) cpu_panic("Can not allocate memory to index source code file");
 
-	while (puntero_raw<remote_tamanyo_archivo_raw_source_code) {
-		//Buscar primer codigo 10 o 13
-		while (puntero_raw<remote_tamanyo_archivo_raw_source_code && !remote_is_char_10_or_13(remote_get_raw_source_code_char(puntero_raw))) {
+    remote_raw_source_code_indexes_total=0;
+    //Primera linea
+    remote_raw_source_code_indexes_pointer[remote_raw_source_code_indexes_total++]=0;
+
+    int puntero_raw=0;
+
+    while (puntero_raw<remote_tamanyo_archivo_raw_source_code) {
+        //Buscar primer codigo 10 o 13
+        while (puntero_raw<remote_tamanyo_archivo_raw_source_code && !remote_is_char_10_or_13(remote_get_raw_source_code_char(puntero_raw))) {
 
             //Quitar codigos no deseados, como tabulador
             if (remote_raw_source_code_pointer[puntero_raw]==9) remote_raw_source_code_pointer[puntero_raw]=' ';
 
-			puntero_raw++;
-		}
+            puntero_raw++;
+        }
 
-		if (puntero_raw<remote_tamanyo_archivo_raw_source_code) {
-			//Buscar siguiente codigo no 10 o 13
-			while (puntero_raw<remote_tamanyo_archivo_raw_source_code && remote_is_char_10_or_13(remote_get_raw_source_code_char(puntero_raw))) {
-					//Metemos 0 en esa posicion
-					remote_raw_source_code_pointer[puntero_raw]=0;
-                        		puntero_raw++;
-                	}
+        if (puntero_raw<remote_tamanyo_archivo_raw_source_code) {
+            //Buscar siguiente codigo no 10 o 13
+            while (puntero_raw<remote_tamanyo_archivo_raw_source_code && remote_is_char_10_or_13(remote_get_raw_source_code_char(puntero_raw))) {
+                    //Metemos 0 en esa posicion
+                    remote_raw_source_code_pointer[puntero_raw]=0;
+                                puntero_raw++;
+                    }
 
-			if (puntero_raw<remote_tamanyo_archivo_raw_source_code) {
-				//Aqui tenemos puntero a siguiente linea
-				remote_raw_source_code_indexes_pointer[remote_raw_source_code_indexes_total++]=puntero_raw;
-			}
-		}
-	}
+            if (puntero_raw<remote_tamanyo_archivo_raw_source_code) {
+                //Aqui tenemos puntero a siguiente linea
+                remote_raw_source_code_indexes_pointer[remote_raw_source_code_indexes_total++]=puntero_raw;
+            }
+        }
+    }
 
-	debug_printf(VERBOSE_DEBUG,"Total effective raw source code lines: %d",remote_raw_source_code_indexes_total);
+    debug_printf(VERBOSE_DEBUG,"Total effective raw source code lines: %d",remote_raw_source_code_indexes_total);
 
-	//Mostramos cada linea
-	int i;
-	for (i=0;i<remote_raw_source_code_indexes_total;i++) {
-		int indice=remote_raw_source_code_indexes_pointer[i];
-		debug_printf (VERBOSE_DEBUG,"Full source line %d : index: %d contents: %s",i,indice,&remote_raw_source_code_pointer[indice]);
-	}
+    //Mostramos cada linea
+    int i;
+    for (i=0;i<remote_raw_source_code_indexes_total;i++) {
+        int indice=remote_raw_source_code_indexes_pointer[i];
+        debug_printf (VERBOSE_DEBUG,"Full source line %d : index: %d contents: %s",i,indice,&remote_raw_source_code_pointer[indice]);
+    }
 
-	//Crear indice a lineas en source code efectivas (lineas con codigo no comentarios)
-	/*
+    //Crear indice a lineas en source code efectivas (lineas con codigo no comentarios)
+    /*
 
 int *remote_parsed_source_code_indexes_pointer=NULL;
 int remote_parsed_source_code_indexes_total;
 
-	*/
+    */
         //Asignamos memoria para esos indices
         //Desasignar si conviene
         if (remote_parsed_source_code_indexes_pointer!=NULL) {
@@ -8660,30 +8660,30 @@ int remote_parsed_source_code_indexes_total;
         //Primera linea
         //remote_parsed_source_code_indexes_pointer[remote_parsed_source_code_indexes_total++]=0;
 
-	//linea leida raw
-	int linea_raw=0;
+    //linea leida raw
+    int linea_raw=0;
 
-	//Bucle hasta maximo de lineas raw (remote_raw_source_code_indexes_total)
-	//Por cada linea, saltar las que no empiezan por alfanumerico (e ignorando primeros espacios o tabs)
+    //Bucle hasta maximo de lineas raw (remote_raw_source_code_indexes_total)
+    //Por cada linea, saltar las que no empiezan por alfanumerico (e ignorando primeros espacios o tabs)
 
-	for (linea_raw=0;linea_raw<remote_raw_source_code_indexes_total;linea_raw++) {
-		//Saltar primeros espacios o tabs
-		int puntero_raw=remote_raw_source_code_indexes_pointer[linea_raw];
+    for (linea_raw=0;linea_raw<remote_raw_source_code_indexes_total;linea_raw++) {
+        //Saltar primeros espacios o tabs
+        int puntero_raw=remote_raw_source_code_indexes_pointer[linea_raw];
 
-		char *texto=&remote_raw_source_code_pointer[puntero_raw];
-		while (*texto==' ' || *texto=='\t') {
-			texto++;
-		}
+        char *texto=&remote_raw_source_code_pointer[puntero_raw];
+        while (*texto==' ' || *texto=='\t') {
+            texto++;
+        }
 
-		if (*texto!=0) {
+        if (*texto!=0) {
 
-			//Ver si empieza con alfanumerico
-			if (remote_is_number_or_letter(*texto)) {
-				remote_parsed_source_code_indexes_pointer[remote_parsed_source_code_indexes_total++]=puntero_raw;
-			}
+            //Ver si empieza con alfanumerico
+            if (remote_is_number_or_letter(*texto)) {
+                remote_parsed_source_code_indexes_pointer[remote_parsed_source_code_indexes_total++]=puntero_raw;
+            }
 
-		}
-	}
+        }
+    }
 
         debug_printf(VERBOSE_DEBUG,"Total effective parsed source code lines: %d",remote_parsed_source_code_indexes_total);
 
@@ -9172,9 +9172,9 @@ z80_int debug_view_basic_variables_get_start(void)
 {
     z80_int vars_pointer=debug_view_basic_variables_get_vars_pointer();
 
-	z80_int dir;
+    z80_int dir;
 
-  	dir=peek_word_no_time(vars_pointer);
+      dir=peek_word_no_time(vars_pointer);
 
     return dir;
 }
@@ -9204,9 +9204,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
     z80_int vars_pointer=debug_view_basic_variables_get_vars_pointer();
 
-	z80_int dir;
+    z80_int dir;
 
-  	dir=peek_word_no_time(vars_pointer);
+      dir=peek_word_no_time(vars_pointer);
     char buffer_linea[MAX_DEBUG_BASIC_VARIABLES_LINE_LENGTH+1];
 
     sprintf(buffer_linea,"VARS(%d)=%d\n\n",vars_pointer,dir);
@@ -9261,7 +9261,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
     z80_int limite=debug_get_eline_value()-1;
 
-  	while (peek_byte_no_time(dir)!=128 && !salir && dir<limite) {
+      while (peek_byte_no_time(dir)!=128 && !salir && dir<limite) {
         //printf("variables %d (%02XH)\n",dir,peek_byte_no_time(dir) );
         z80_int dir_antes=dir;
         sprintf (buffer_linea,"%d: ",dir);
@@ -9559,7 +9559,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
         }
 
 
-  	}
+      }
 
     sprintf (buffer_linea,"%d: End variables",dir);
     util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
@@ -9775,7 +9775,7 @@ z80_byte far_peek_byte(int dir)
 
         dir &=maximo;
         return memoria_spectrum[dir];
-	}
+    }
 
     if (MACHINE_IS_ZXUNO) {
         //512 KB SRAM
@@ -9813,7 +9813,7 @@ z80_byte far_peek_byte(int dir)
 
     //TODO: resto de maquinas con mas de 64 kb: TSConf, etc
 
-	//Cualquier otra cosa, un peek normal
+    //Cualquier otra cosa, un peek normal
     return peek_byte_z80_moto(dir);
 }
 
@@ -9832,91 +9832,91 @@ int timesensors_started=0;
 
 void timesensor_call_pre(enum timesensor_id id)
 {
-	if (!timesensors_started) return;
+    if (!timesensors_started) return;
 
-	timer_stats_current_time(&timesensors_array[id].tiempo_antes);
+    timer_stats_current_time(&timesensors_array[id].tiempo_antes);
 }
 
 void timesensor_call_post(enum timesensor_id id)
 {
 
-	if (!timesensors_started) return;
+    if (!timesensors_started) return;
 
 
-	long diferencia=timer_stats_diference_time(&timesensors_array[id].tiempo_antes,&timesensors_array[id].tiempo_despues);
+    long diferencia=timer_stats_diference_time(&timesensors_array[id].tiempo_antes,&timesensors_array[id].tiempo_despues);
 
 
-	//Y agregar
+    //Y agregar
 
-	int indice=timesensors_array[id].index_metrics;
+    int indice=timesensors_array[id].index_metrics;
 
-	if (indice<MAX_TIMESENSORS_METRICS) {
-		timesensors_array[id].metrics[indice]=diferencia;
+    if (indice<MAX_TIMESENSORS_METRICS) {
+        timesensors_array[id].metrics[indice]=diferencia;
 
-		timesensors_array[id].index_metrics++;
+        timesensors_array[id].index_metrics++;
 
-		printf ("Agregando metrics valor: %ld\n",diferencia);
-	}
+        printf ("Agregando metrics valor: %ld\n",diferencia);
+    }
 }
 
 long timesensor_call_mediatime(enum timesensor_id id)
 {
 
-	long acumulado=0;
-	int total=timesensors_array[id].index_metrics;
+    long acumulado=0;
+    int total=timesensors_array[id].index_metrics;
 
-	int i;
+    int i;
 
-	printf ("Calculando la media para id. %d total: %d\n",id,total);
+    printf ("Calculando la media para id. %d total: %d\n",id,total);
 
-	if (total==0) return 0;
+    if (total==0) return 0;
 
-	//Sumar todos
-	for (i=0;i<total;i++) {
-		printf ("Sumando %ld\n",timesensors_array[id].metrics[i]);
-		acumulado +=timesensors_array[id].metrics[i];
-	}
+    //Sumar todos
+    for (i=0;i<total;i++) {
+        printf ("Sumando %ld\n",timesensors_array[id].metrics[i]);
+        acumulado +=timesensors_array[id].metrics[i];
+    }
 
-	printf ("suma. %ld\n",acumulado);
+    printf ("suma. %ld\n",acumulado);
 
-	//y dividir
-	acumulado /=total;
+    //y dividir
+    acumulado /=total;
 
-	printf ("total. %ld\n",acumulado);
+    printf ("total. %ld\n",acumulado);
 
-	return acumulado;
+    return acumulado;
 }
 
 
 long timesensor_call_maxtime(enum timesensor_id id)
 {
 
-	long maximo=0;
-	int total=timesensors_array[id].index_metrics;
+    long maximo=0;
+    int total=timesensors_array[id].index_metrics;
 
-	int i;
+    int i;
 
-	printf ("Calculando maximo para id. %d total: %d\n",id,total);
+    printf ("Calculando maximo para id. %d total: %d\n",id,total);
 
-	for (i=0;i<total;i++) {
-		long actual=timesensors_array[id].metrics[i];;
-		if (actual>maximo) maximo=actual;
-	}
+    for (i=0;i<total;i++) {
+        long actual=timesensors_array[id].metrics[i];;
+        if (actual>maximo) maximo=actual;
+    }
 
-	printf ("maximo. %ld\n",maximo);
+    printf ("maximo. %ld\n",maximo);
 
 
 
-	return maximo;
+    return maximo;
 }
 
 void timesensor_call_init(void)
 {
-	int i;
+    int i;
 
-	for (i=0;i<MAX_TIMESENSORS;i++) {
-		timesensors_array[i].index_metrics=0;
-	}
+    for (i=0;i<MAX_TIMESENSORS;i++) {
+        timesensors_array[i].index_metrics=0;
+    }
 }
 
 
