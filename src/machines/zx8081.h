@@ -69,8 +69,9 @@ extern int zx8081_detect_vsync_sound_counter;
 
 //normalmente 280
 
-//A partir de vsync si inicia en 305 , mazogs da imagen estable
-#define MINIMA_LINEA_ADMITIDO_VSYNC 305
+//A partir de vsync si inicia en 304 , mazogs da imagen estable
+//nucinv16.p necesita 304 maximo. mas , pierde vsync
+#define MINIMA_LINEA_ADMITIDO_VSYNC 304
 //#define MINIMA_LINEA_ADMITIDO_VSYNC 100
 
 
