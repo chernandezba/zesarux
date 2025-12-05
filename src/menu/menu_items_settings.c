@@ -9840,8 +9840,6 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
     do {
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"TO DELETE");
-        menu_add_item_menu_tiene_submenu(array_menu_common);
-
 
 
         if (!MACHINE_IS_Z88) {
