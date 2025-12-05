@@ -662,7 +662,7 @@ void generar_zx8081_hsync(void)
     if (MACHINE_IS_ZX80_TYPE) {
         ula_zx80_position_x_testados=0;
     }
-
+ula_zx81_time_event_t_estados=0;
 
 
     video_zx8081_linecntr++;
@@ -733,7 +733,7 @@ void ula_zx81_time_event(int delta)
         video_zx8081_linecntr=0;
 
     //temp. Esto no deberia ser asi, pero es una manera cutre de que se vean bien las lineas dentro de un caracter
-        video_zx8081_linecntr=7;
+        //video_zx8081_linecntr=7;
     }
 
 
@@ -890,7 +890,7 @@ void zx8081_out_any_port_video_stuff(void)
         ula_zx80_position_x_testados=0;
     }
 
-
+ula_zx81_time_event_t_estados=0;
     tv_disable_vsync();
     zx8081_vsync_generator.v=0;
 
