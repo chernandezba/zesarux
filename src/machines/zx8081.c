@@ -163,6 +163,8 @@ z80_byte video_fast_mode_next_frame_black;
 //Esto solo sirve para mostrar en menu debug i/o ports
 z80_byte zx8081_last_port_write_value;
 
+//Para que al hacer hotswap de ZX80 a ZX81, el ZX81 resultante no tenga nmi generator
+//Eso permite que juegos como Breakout y otros se pueda hacer hotswap a ZX81
 z80_bit hotswapped_zx80_to_zx81={0};
 
 z80_int ramtop_zx8081;
