@@ -30689,6 +30689,9 @@ void hotswap_zx80_to_zx81(MENU_ITEM_PARAMETERS)
 {
     hotswap_zx8080_to_zx8081_common(MACHINE_ID_ZX81);
 
+    //Y decir que no hay el nmi_generator, que no lo tiene el ZX80
+    hotswapped_zx80_to_zx81.v=1;
+
     menu_warn_message("Note that ROM data are the same as the previous machine");
 
 }

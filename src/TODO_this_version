@@ -137,3 +137,15 @@ pero luego manic se ve mal , igual que pacman y tetrishr
 
 fast: quitando el t_estados +=3; de la maskable y lo que el halt dure 1 estado, mejora pero se mueve en horizontal (problema con el lanzamiento de vsync o hsync???)
 
+-commit antes cambios zx81: before apply changes to improve ZX81 fast mode etc
+carpeta pruebas_antes_mejor_zx81/
+
+ajustar esto:
+
+    //Para que la imagen esté centrada. En slow:
+    ula_zx81_time_event_t_estados=screen_total_borde_izquierdo;
+
+    //En fast:
+    ula_zx81_time_event_t_estados=0;
+
+-temblor de mazogs quiza es porque el line counter no siempre se pone a 0 en el mismo momento

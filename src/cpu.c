@@ -2062,7 +2062,7 @@ void set_machine_params(void)
 
     //Reseteos para ZX80/81
 
-
+    hotswapped_zx80_to_zx81.v=0;
 
 
 

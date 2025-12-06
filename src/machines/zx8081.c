@@ -163,7 +163,7 @@ z80_byte video_fast_mode_next_frame_black;
 //Esto solo sirve para mostrar en menu debug i/o ports
 z80_byte zx8081_last_port_write_value;
 
-
+z80_bit hotswapped_zx80_to_zx81={0};
 
 z80_int ramtop_zx8081;
 
@@ -767,6 +767,7 @@ the End of Line character, which will not happen on the non-visible lines.
 
 void zx81_enable_nmi_generator(void)
 {
+    if (hotswapped_zx80_to_zx81.v) return;
 
     //printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=1;
@@ -890,7 +891,16 @@ void zx8081_out_any_port_video_stuff(void)
         ula_zx80_position_x_testados=0;
     }
 
-ula_zx81_time_event_t_estados=0;
+    //Para que la imagen esté centrada. En slow:
+    ula_zx81_time_event_t_estados=screen_total_borde_izquierdo;
+
+    //En fast:
+    ula_zx81_time_event_t_estados=0;
+
+    //temporal
+    ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
+
+
     tv_disable_vsync();
     zx8081_vsync_generator.v=0;
 

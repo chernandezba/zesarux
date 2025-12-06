@@ -58,7 +58,7 @@ extern int zx8081_detect_vsync_sound_counter;
 
 #define ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX 7
 
-
+extern z80_bit hotswapped_zx80_to_zx81;
 
 
 //a partir de cuantos frames refrescados con hsync=0 hay que decir que la pantalla queda en negro
