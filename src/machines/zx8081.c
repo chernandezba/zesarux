@@ -160,7 +160,7 @@ z80_bit zx8081_vsync_generator={0};
 //tiempo en t-estados. Para calcularla: (207/64)*valor en microsegundos
 int hsync_total_duration=0;
 
-int hsync_duration_counter=4;
+int hsync_duration_counter=0;
 
 //Para lanzar los hsync del hsync generator
 int ula_zx80_position_x_testados=0;
