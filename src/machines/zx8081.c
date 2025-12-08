@@ -151,6 +151,17 @@ z80_bit nmi_generator_active;
 z80_bit hsync_generator_active;
 z80_bit zx8081_vsync_generator={0};
 
+//Tiempo total de hsync:
+//12 microsegundos:
+//1.65 front porch
+//4.7 hsync pulse
+//5.7 back porch
+//TODO: esto deberia ser 39 t-estados (12 microsec)  pero entonces algunos juegos están muy a la izquierda
+//tiempo en t-estados. Para calcularla: (207/64)*valor en microsegundos
+int hsync_total_duration=0;
+
+int hsync_duration_counter=4;
+
 //Para lanzar los hsync del hsync generator
 int ula_zx80_position_x_testados=0;
 
@@ -657,14 +668,14 @@ void generar_zx8081_hsync(void)
 
     tv_enable_hsync();
     pending_disable_hsync=1;
+    hsync_duration_counter=0;
 
 
     //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
-    //TODO: esto se deberia hacer tanto para ZX80 como ZX81
     if (MACHINE_IS_ZX80_TYPE) {
         ula_zx80_position_x_testados=0;
     }
-ula_zx81_time_event_t_estados=0;
+    ula_zx81_time_event_t_estados=0;
 
 
     video_zx8081_linecntr++;
@@ -687,8 +698,12 @@ temp_extend_debug=0;
     //    ula_zx80_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
 
     if (pending_disable_hsync) {
-        pending_disable_hsync=0;
-        tv_disable_hsync();
+        hsync_duration_counter +=delta;
+        if (hsync_duration_counter>=hsync_total_duration) {
+            //printf("disable hsync\n");
+            pending_disable_hsync=0;
+            tv_disable_hsync();
+        }
     }
 
 
@@ -707,8 +722,8 @@ temp_extend_debug=0;
 
         //Lanzamos hsync ya sea por timeout o porque este activado hsync
         //si hay vsync no hay hsync
-        if (hsync_generator_active.v  /*&& !tv_is_vsync_enabled()*/) {
-            printf("generate hsync en t_estados %6d y: %4d\n",t_estados,tv_get_y());
+        if (hsync_generator_active.v) {
+            printf("generate hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
             generar_zx8081_hsync();
         }
 
@@ -725,18 +740,14 @@ void ula_zx81_time_event(int delta)
 {
 
     if (pending_disable_hsync) {
-        pending_disable_hsync=0;
-        tv_disable_hsync();
+        hsync_duration_counter +=delta;
+        if (hsync_duration_counter>=hsync_total_duration) {
+            //printf("disable hsync\n");
+            pending_disable_hsync=0;
+            tv_disable_hsync();
+        }
     }
 
-
-
-    if (zx8081_vsync_generator.v) {
-        video_zx8081_linecntr=0;
-
-    //temp. Esto no deberia ser asi, pero es una manera cutre de que se vean bien las lineas dentro de un caracter
-        //video_zx8081_linecntr=7;
-    }
 
 
 
@@ -762,9 +773,17 @@ the End of Line character, which will not happen on the non-visible lines.
 ->Esto se resuelve haciendo que el HALT en Z80 tarde 1 t-estado
 */
 
-
-
     }
+
+
+    if (zx8081_vsync_generator.v) {
+        video_zx8081_linecntr=0;
+
+    //temp. Esto no deberia ser asi, pero es una manera cutre de que se vean bien las lineas dentro de un caracter
+        //video_zx8081_linecntr=7;
+    }
+
+
 }
 
 void zx81_enable_nmi_generator(void)
