@@ -149,3 +149,6 @@ ajustar esto:
     ula_zx81_time_event_t_estados=0;
 
 -temblor de mazogs quiza es porque el line counter no siempre se pone a 0 en el mismo momento
+
+-manic miner, pacman: se ven centrados si pongo el valor correcto de hsync_total_duration=39; y con
+ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2; al hacer out
