@@ -158,7 +158,7 @@ z80_bit zx8081_vsync_generator={0};
 //5.7 back porch
 //TODO: esto deberia ser 39 t-estados (12 microsec)  pero entonces algunos juegos están muy a la izquierda
 //tiempo en t-estados. Para calcularla: (207/64)*valor en microsegundos
-int hsync_total_duration=0;
+int hsync_total_duration=4;
 
 int hsync_duration_counter=0;
 
