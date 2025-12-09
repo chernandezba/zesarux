@@ -804,7 +804,7 @@ void zx81_enable_nmi_generator(void)
     //printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=1;
 
-    //ula_zx81_time_event_t_estados=0;
+
 
 
 }
@@ -814,7 +814,7 @@ void zx81_disable_nmi_generator(void)
     //printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=0;
 
-    //ula_zx81_time_event_t_estados=0;
+
 
 }
 
@@ -937,7 +937,7 @@ void zx8081_out_any_port_video_stuff(void)
     zx8081_vsync_generator.v=0;
 
 
-    //video_zx8081_ula_video_output=0;
+
 
 
     modificado_border.v=1;
