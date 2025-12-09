@@ -66,7 +66,7 @@ extern z80_bit hotswapped_zx80_to_zx81;
 
 //normalmente 400
 //309 para wrx/nucinv16.p
-#define NORMAL_TIMEOUT_LINEA_VSYNC 400
+//#define NORMAL_TIMEOUT_LINEA_VSYNC 400
 
 //normalmente 280
 

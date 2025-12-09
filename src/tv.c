@@ -254,7 +254,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                 if (sync) {
                     if (debug_first_vsync) {
                         debug_first_vsync=0;
-                        printf("TV fired           vsync x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
+                        //printf("TV fired           vsync x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
                     }
                     tv_y=0;
                     ejecutando_vsync=1;
@@ -364,7 +364,7 @@ void tv_enable_vsync(void)
                 return;
             }
             else {
-                //printf("TV Enabled vsync         x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
+                printf("TV Enabled vsync         x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
             }
 
             tv_linea_inicio_vsync=tv_y;
