@@ -259,6 +259,9 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                     tv_y=0;
                     ejecutando_vsync=1;
                     video_zx8081_ula_video_output=255;
+
+                    //Con esto Mazogs se ve bien pero pacman o manic miner no
+                    //video_zx8081_linecntr=0;
                 }
             //}
         }
@@ -353,6 +356,7 @@ void tv_enable_vsync(void)
         //TODO: esta emulación de TV no debería depender de la máquina
         //es probable que los timings de ZX81 no estén bien y por eso sucede eso
 
+
         if (MACHINE_IS_ZX81_TYPE) {
 
             if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) {
@@ -360,13 +364,14 @@ void tv_enable_vsync(void)
                 return;
             }
             else {
-                printf("TV Enabled vsync         x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
+                //printf("TV Enabled vsync         x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
             }
 
             tv_linea_inicio_vsync=tv_y;
 
             debug_first_vsync=1;
         }
+
 
 
         //printf("TV enable vsync x: %6d y: %6d\n",tv_x,tv_y);
@@ -382,6 +387,7 @@ void tv_disable_vsync(void)
     if (tv_vsync_signal) {
         //printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=0;
+        //video_zx8081_linecntr=0;
         //sleep(1);
     }
 }
