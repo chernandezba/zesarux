@@ -464,6 +464,8 @@ void cpu_core_loop_zx8081(void)
 
             if (MACHINE_IS_ZX81_TYPE) {
                 t_estados +=3;
+                //Ajuste para que clocktest.p sea lo mas cercano a 100%
+                t_estados +=7;
             }
 
         }
