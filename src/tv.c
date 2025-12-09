@@ -152,7 +152,7 @@ void tv_increase_line(void)
     //if (tv_y>(total_lineas*120)/100) {
 
     //le damos un pelin mas de margen
-    if (tv_y>=total_lineas+10) {
+    if (tv_y>=total_lineas+5) {
         printf("vsync timeout en %d\n",tv_y);
         //sleep(1);
 
