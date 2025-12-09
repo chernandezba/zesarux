@@ -171,6 +171,8 @@ int debug_first_vsync=0;
 
 extern int contador_segundo;
 
+int ejecutando_vsync=0;
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -178,8 +180,16 @@ void tv_time_event(int delta)
     //if (tv_vsync_signal==0 && tv_hsync_signal==0)
     //printf("TV x: %3d y: %3d hsync %d vsync %d\n",tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
 
+    int move_electron=1;
 
-    tv_time_event_store_chunk_image(delta);
+    if (tv_vsync_signal && ejecutando_vsync) {
+        printf("Do not move electron on x=%d y=%d\n",tv_x,tv_y);
+        move_electron=0;
+    }
+
+    if (move_electron) {
+        tv_time_event_store_chunk_image(delta);
+    }
 
     //Hay vsync? Y siempre que dure mas de xxx tiempo
     /*
@@ -190,7 +200,7 @@ A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX
 it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
     */
 
-    int ejecutando_vsync=0;
+    ejecutando_vsync=0;
 
     if (tv_vsync_signal && nmi_generator_active.v && hsync_generator_active.v) {
         //printf("####---- vsync y nmi generator y hsync generator en t_estados %6d Y=%d\n",t_estados,tv_get_y());
