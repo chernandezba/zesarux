@@ -688,7 +688,7 @@ void generar_zx81_hsync(void)
     hsync_duration_counter=0;
 
 
-    ula_zx81_time_event_t_estados=0;
+    //ula_zx81_time_event_t_estados=0;
 
     video_zx8081_linecntr++;
 
@@ -924,10 +924,10 @@ void zx8081_out_any_port_video_stuff(void)
     }
 
     //Para que la imagen esté centrada. En slow:
-    ula_zx81_time_event_t_estados=screen_total_borde_izquierdo;
+    //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo;
 
     //En fast:
-    ula_zx81_time_event_t_estados=0;
+    //ula_zx81_time_event_t_estados=0;
 
     //temporal. valor algo arbitrario
     ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
