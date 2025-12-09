@@ -302,7 +302,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     //le damos un pelin mas de margen, si no, juegos como el ZX80 kong tiemblan
     //O el QS defenda no se ve completo por debajo
     if (tv_x>=screen_testados_linea+100 && !ejecutando_vsync) {
-        //printf("hsync timeout en %d\n",tv_y);
+        printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
         tv_x=0;
         tv_increase_line();
     }
@@ -387,6 +387,7 @@ void tv_disable_vsync(void)
     if (tv_vsync_signal) {
         //printf("TV disable vsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_vsync_signal=0;
+        //Con esto el titulo del menu de pacman se ve bien pero en el juego no
         //video_zx8081_linecntr=0;
         //sleep(1);
     }
