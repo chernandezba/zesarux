@@ -178,7 +178,7 @@ void cpu_core_loop_zx8081(void)
             }
 
 
-            tv_time_event(delta);
+
 
 
 
