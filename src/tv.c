@@ -309,9 +309,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     */
     //if (tv_x>(screen_testados_linea*110)/100 && !ejecutando_vsync) {
 
-    //le damos un pelin mas de margen, si no, juegos como el ZX80 kong tiemblan
-    //O el QS defenda no se ve completo por debajo
-    if (tv_x>=screen_testados_linea+100 && !ejecutando_vsync) {
+    //le damos un pelin mas de margen, si no el QS defenda no se ve completo por debajo
+    if (tv_x>=screen_testados_linea+65 && !ejecutando_vsync) {
         printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
         tv_x=0;
         tv_increase_line();
