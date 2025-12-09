@@ -715,7 +715,7 @@ temp_extend_debug=0;
 
 
     if (ula_zx80_position_x_testados>=screen_testados_linea-hsync_total_duration) {
-        printf("Tiempo previo hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
+        //printf("Tiempo previo hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
     }
 
 
@@ -727,7 +727,8 @@ temp_extend_debug=0;
 
         //Lanzamos hsync
         if (hsync_generator_active.v) {
-            printf("generate hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
+            printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
+                t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,delta,tv_get_y());
             generar_zx8081_hsync();
 
             //Y desactivamos hsync al momento
@@ -839,7 +840,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
-        //printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
     }
 
 
@@ -915,7 +916,7 @@ void zx8081_out_any_port_video_stuff(void)
     //printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
 
 
-    //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
+    printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
