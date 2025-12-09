@@ -663,7 +663,7 @@ int ula_zx81_time_event_t_estados=0;
 
 int pending_disable_hsync=0;
 
-void generar_zx8081_hsync(void)
+void generar_zx80_hsync(void)
 {
 
     tv_enable_hsync();
@@ -672,17 +672,28 @@ void generar_zx8081_hsync(void)
 
 
     //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
-    if (MACHINE_IS_ZX80_TYPE) {
-        ula_zx80_position_x_testados=0;
-    }
-    ula_zx81_time_event_t_estados=0;
-
+    ula_zx80_position_x_testados=0;
 
     video_zx8081_linecntr++;
 
 
 }
 
+
+void generar_zx81_hsync(void)
+{
+
+    tv_enable_hsync();
+    pending_disable_hsync=1;
+    hsync_duration_counter=0;
+
+
+    ula_zx81_time_event_t_estados=0;
+
+    video_zx8081_linecntr++;
+
+
+}
 
 
 int temp_anterior_nmi=0;
@@ -729,7 +740,7 @@ temp_extend_debug=0;
         if (hsync_generator_active.v) {
             printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
                 t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,delta,tv_get_y());
-            generar_zx8081_hsync();
+            generar_zx80_hsync();
 
             //Y desactivamos hsync al momento
             pending_disable_hsync=0;
@@ -774,7 +785,7 @@ void ula_zx81_time_event(int delta)
         }
 
         if (hsync_generator_active.v) {
-            generar_zx8081_hsync();
+            generar_zx81_hsync();
 
             //Y desactivamos hsync al momento
             pending_disable_hsync=0;
