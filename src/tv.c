@@ -183,7 +183,7 @@ void tv_time_event(int delta)
     int move_electron=1;
 
     if (tv_vsync_signal && ejecutando_vsync) {
-        printf("Do not move electron on x=%d y=%d\n",tv_x,tv_y);
+        //printf("Do not move electron on x=%d y=%d\n",tv_x,tv_y);
         move_electron=0;
     }
 

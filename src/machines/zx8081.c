@@ -922,6 +922,7 @@ void zx8081_out_any_port_video_stuff(void)
     //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo;
 
     //En fast:
+    //Deberia ser este el valor que se asigna
     //ula_zx81_time_event_t_estados=0;
 
     //temporal. valor algo arbitrario
