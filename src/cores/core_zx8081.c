@@ -129,6 +129,10 @@ void cpu_core_loop_zx8081(void)
     else {
         if (esperando_tiempo_final_t_estados.v==0) {
 
+            zx80801_last_sprite_video=video_zx8081_ula_video_output;
+            zx80801_last_sprite_video_tinta=0;
+            zx80801_last_sprite_video_papel=15;
+
             byte_leido_core_zx8081=fetch_opcode();
 
             contend_read( reg_pc, 4 );

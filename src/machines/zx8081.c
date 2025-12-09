@@ -663,10 +663,10 @@ int ula_zx81_time_event_t_estados=0;
 
 int pending_disable_hsync=0;
 
-void generar_zx80_hsync(int delta)
+void generar_zx80_hsync(void)
 {
 
-    tv_enable_hsync(delta);
+    tv_enable_hsync();
     pending_disable_hsync=1;
     hsync_duration_counter=0;
 
@@ -683,7 +683,7 @@ void generar_zx80_hsync(int delta)
 void generar_zx81_hsync(void)
 {
 
-    tv_enable_hsync(0);
+    tv_enable_hsync();
     pending_disable_hsync=1;
     hsync_duration_counter=0;
 
@@ -700,59 +700,48 @@ int temp_anterior_nmi=0;
 
 void ula_zx80_time_event(int delta)
 {
-    extern int temp_extend_debug;
 
-extern int tv_hsync_signal_pending;
-extern int tv_vsync_signal;
-temp_extend_debug=0;
-    //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
-    //    ula_zx80_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
+    int i;
 
-    /*
-    if (pending_disable_hsync) {
-        hsync_duration_counter +=delta;
-        if (hsync_duration_counter>=hsync_total_duration) {
-            //printf("disable hsync\n");
-            pending_disable_hsync=0;
-            tv_disable_hsync();
-        }
-    }
-    */
+    for (i=0;i<delta;i++) {
+
+        ula_zx80_position_x_testados +=1;
+
+        //printf("delta %d ula_zx80_position_x_testados %d\n",delta,ula_zx80_position_x_testados);
 
 
-    ula_zx80_position_x_testados +=delta;
-
-    //printf("delta %d ula_zx80_position_x_testados %d\n",delta,ula_zx80_position_x_testados);
-
-
-    if (ula_zx80_position_x_testados>=screen_testados_linea-hsync_total_duration) {
-        //printf("Tiempo previo hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
-    }
-
-
-    if (ula_zx80_position_x_testados>=screen_testados_linea) {
-
-        //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx80_position_x_testados);
-
-        ula_zx80_position_x_testados -=screen_testados_linea;
-
-        //Lanzamos hsync
-        if (hsync_generator_active.v) {
-            printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
-                t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,delta,tv_get_y());
-            generar_zx80_hsync(ula_zx80_position_x_testados);
-
-            //Y desactivamos hsync al momento
-            pending_disable_hsync=0;
-            tv_disable_hsync();
+        if (ula_zx80_position_x_testados>=screen_testados_linea-hsync_total_duration) {
+            //printf("Tiempo previo hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
         }
 
 
+        if (ula_zx80_position_x_testados>=screen_testados_linea) {
+
+            //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx80_position_x_testados);
+
+            ula_zx80_position_x_testados -=screen_testados_linea;
+
+            //Lanzamos hsync
+            if (hsync_generator_active.v) {
+                //printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
+                //    t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,1,tv_get_y());
+                generar_zx80_hsync();
+
+                //Y desactivamos hsync al momento
+                pending_disable_hsync=0;
+                tv_disable_hsync();
+            }
+
+
+        }
+
+        if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
+
+
+        tv_time_event(1);
+
+
     }
-
-    if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
-
-    tv_time_event(delta);
 
 
 }
@@ -855,7 +844,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
-        printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
+        //printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
     }
 
 
@@ -931,7 +920,7 @@ void zx8081_out_any_port_video_stuff(void)
     //printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
 
 
-    printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
+    //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;

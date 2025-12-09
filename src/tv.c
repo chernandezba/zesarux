@@ -63,22 +63,19 @@ int tv_vsync_signal_length=0;
 int tv_hsync_signal=0;
 int tv_hsync_signal_pending=0;
 
-//Cuantos t-estados han pasado desde que se debia lanzar el hsync
-int tv_hsync_signal_pending_testates=0;
+
 
 void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int colortinta,int colorpapel)
 {
-    int bit,color;
+    int color;
 
-    for (bit=0;bit<8;bit++) {
-        if (byte_leido & 128 ) color=colortinta;
-        else color=colorpapel;
 
-        rainbow_buffer[y*get_total_ancho_rainbow()+x+bit]=color;
+    if (byte_leido & 128 ) color=colortinta;
+    else color=colorpapel;
 
-        byte_leido=(byte_leido&127)<<1;
+    rainbow_buffer[y*get_total_ancho_rainbow()+x]=color;
 
-    }
+
 }
 
 
@@ -98,7 +95,9 @@ void tv_time_event_store_chunk_image(int delta)
         if (y>=0 && y<get_total_alto_rainbow() ) {
             int x;
 
-            for (x=xorig;x<xmax;x+=8) {
+            //if (y==42) printf("x %3d xmax %3d y %3d sprite %02XH\n",xorig,xmax,y,zx80801_last_sprite_video);
+
+            for (x=xorig;x<xmax;x++) {
 
                 if (x>=0 && x<totalancho )  {
 
@@ -107,8 +106,13 @@ void tv_time_event_store_chunk_image(int delta)
 
                         //Este bloque es dependiente de la maquina
                         if (MACHINE_IS_ZX8081) {
-                            z80_byte sprite=zx80801_last_sprite_video;
-                            tv_time_event_store_chunk_image_sprite(x,y,sprite,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
+                            //if (y==42) printf("x %3d bit %3d delta %d\n",x,bit_inicio,delta);
+                            tv_time_event_store_chunk_image_sprite(x,y,zx80801_last_sprite_video,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
+
+                            //Rotar circular
+                            int bit_alto=(zx80801_last_sprite_video & 128 ? 1 : 0);
+                            zx80801_last_sprite_video=zx80801_last_sprite_video<<1;
+                            zx80801_last_sprite_video |=bit_alto;
                         }
                     }
                 }
@@ -125,11 +129,14 @@ void tv_time_event_store_chunk_image(int delta)
 
     //Dejar el valor por defecto si la ula de la maquina no envia nada
     //Esto es dependiente del hardware
+    //TODO fix
+    /*
     if (MACHINE_IS_ZX8081) {
         zx80801_last_sprite_video=video_zx8081_ula_video_output;
         zx80801_last_sprite_video_tinta=0;
         zx80801_last_sprite_video_papel=15;
     }
+    */
 
 }
 
@@ -273,7 +280,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
             tv_hsync_signal_pending=0;
             //printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
             tv_increase_line();
-            tv_x=tv_hsync_signal_pending_testates;
+            tv_x=0;
         }
 
     }
@@ -311,14 +318,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 //En parametro delta decimos cuantos t-estados han pasado desde que se debia lanzar el hsync
 //Ejemplo: si es 0, es ahora mismo
 //Si es 1, el hsync viene de un t-estado antes
-void tv_enable_hsync(int delta)
+void tv_enable_hsync(void)
 {
     if (tv_hsync_signal==0) {
         //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
-        tv_hsync_signal_pending_testates=delta;
     }
     else {
         //printf("Received hsync but was already enabled\n");
