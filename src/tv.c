@@ -63,6 +63,9 @@ int tv_vsync_signal_length=0;
 int tv_hsync_signal=0;
 int tv_hsync_signal_pending=0;
 
+//Cuantos t-estados han pasado desde que se debia lanzar el hsync
+int tv_hsync_signal_pending_testates=0;
+
 void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int colortinta,int colorpapel)
 {
     int bit,color;
@@ -270,7 +273,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
             tv_hsync_signal_pending=0;
             //printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
             tv_increase_line();
-            tv_x=0;
+            tv_x=tv_hsync_signal_pending_testates;
         }
 
     }
@@ -305,13 +308,17 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
 }
 
-void tv_enable_hsync(void)
+//En parametro delta decimos cuantos t-estados han pasado desde que se debia lanzar el hsync
+//Ejemplo: si es 0, es ahora mismo
+//Si es 1, el hsync viene de un t-estado antes
+void tv_enable_hsync(int delta)
 {
     if (tv_hsync_signal==0) {
         //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
+        tv_hsync_signal_pending_testates=delta;
     }
     else {
         //printf("Received hsync but was already enabled\n");
