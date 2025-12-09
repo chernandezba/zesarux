@@ -754,31 +754,31 @@ void ula_zx81_time_event(int delta)
 
     for (i=0;i<delta;i++) {
 
-    ula_zx81_time_event_t_estados+=1;
+        ula_zx81_time_event_t_estados+=1;
 
-    if (ula_zx81_time_event_t_estados>=screen_testados_linea) {
-        ula_zx81_time_event_t_estados -=screen_testados_linea;
+        if (ula_zx81_time_event_t_estados>=screen_testados_linea) {
+            ula_zx81_time_event_t_estados -=screen_testados_linea;
 
 
-        if (nmi_generator_active.v) {
-            //printf("Generate nmi\n");
-            generate_nmi();
-        }
+            if (nmi_generator_active.v) {
+                //printf("Generate nmi\n");
+                generate_nmi();
+            }
 
-        if (hsync_generator_active.v) {
-            generar_zx81_hsync();
+            if (hsync_generator_active.v) {
+                generar_zx81_hsync();
 
-            //Y desactivamos hsync al momento
-            pending_disable_hsync=0;
-            tv_disable_hsync();
-        }
-    /*
-    Al generar nmi,
-    /Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
-    This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
-    the End of Line character, which will not happen on the non-visible lines.
-    ->Esto se resuelve haciendo que el HALT en Z80 tarde 1 t-estado
-    */
+                //Y desactivamos hsync al momento
+                pending_disable_hsync=0;
+                tv_disable_hsync();
+            }
+            /*
+            Al generar nmi,
+            /Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
+            This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
+            the End of Line character, which will not happen on the non-visible lines.
+            ->Esto se resuelve haciendo que el HALT en Z80 tarde 1 t-estado
+            */
 
         }
 
