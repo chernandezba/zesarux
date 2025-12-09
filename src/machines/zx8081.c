@@ -783,12 +783,7 @@ void ula_zx81_time_event(int delta)
         }
 
 
-        if (zx8081_vsync_generator.v) {
-            video_zx8081_linecntr=0;
-
-        //temp. Esto no deberia ser asi, pero es una manera cutre de que se vean bien las lineas dentro de un caracter
-            //video_zx8081_linecntr=7;
-        }
+        if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
 
         tv_time_event(1);
 
