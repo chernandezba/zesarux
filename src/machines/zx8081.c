@@ -158,7 +158,7 @@ z80_bit zx8081_vsync_generator={0};
 //5.7 back porch
 //TODO: esto deberia ser 39 t-estados (12 microsec)  pero entonces algunos juegos están muy a la izquierda
 //tiempo en t-estados. Para calcularla: (207/64)*valor en microsegundos
-int hsync_total_duration=4;
+int hsync_total_duration=39;
 
 int hsync_duration_counter=0;
 
@@ -697,6 +697,7 @@ temp_extend_debug=0;
     //printf("EL x: %3d y: %3d hsync %d vsync %d\n",
     //    ula_zx80_position_x_testados,t_scanline_draw,hsync_generator_active.v,vsync_generator_active.v);
 
+    /*
     if (pending_disable_hsync) {
         hsync_duration_counter +=delta;
         if (hsync_duration_counter>=hsync_total_duration) {
@@ -705,6 +706,7 @@ temp_extend_debug=0;
             tv_disable_hsync();
         }
     }
+    */
 
 
     ula_zx80_position_x_testados +=delta;
@@ -712,6 +714,9 @@ temp_extend_debug=0;
     //printf("delta %d ula_zx80_position_x_testados %d\n",delta,ula_zx80_position_x_testados);
 
 
+    if (ula_zx80_position_x_testados>=screen_testados_linea-hsync_total_duration) {
+        printf("Tiempo previo hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
+    }
 
 
     if (ula_zx80_position_x_testados>=screen_testados_linea) {
@@ -720,11 +725,14 @@ temp_extend_debug=0;
 
         ula_zx80_position_x_testados -=screen_testados_linea;
 
-        //Lanzamos hsync ya sea por timeout o porque este activado hsync
-        //si hay vsync no hay hsync
+        //Lanzamos hsync
         if (hsync_generator_active.v) {
             printf("generate hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
             generar_zx8081_hsync();
+
+            //Y desactivamos hsync al momento
+            pending_disable_hsync=0;
+            tv_disable_hsync();
         }
 
 
@@ -739,6 +747,7 @@ temp_extend_debug=0;
 void ula_zx81_time_event(int delta)
 {
 
+    /*
     if (pending_disable_hsync) {
         hsync_duration_counter +=delta;
         if (hsync_duration_counter>=hsync_total_duration) {
@@ -747,6 +756,7 @@ void ula_zx81_time_event(int delta)
             tv_disable_hsync();
         }
     }
+    */
 
 
 
@@ -764,6 +774,10 @@ void ula_zx81_time_event(int delta)
 
         if (hsync_generator_active.v) {
             generar_zx8081_hsync();
+
+            //Y desactivamos hsync al momento
+            pending_disable_hsync=0;
+            tv_disable_hsync();
         }
 /*
 Al generar nmi,

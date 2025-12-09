@@ -263,12 +263,14 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         if (tv_hsync_signal && !ejecutando_vsync) {
             if (temp_extend_debug) printf("tv hsync signal en t_estados %6d Y=%d\n",t_estados,tv_get_y());
             tv_x=0;
-            if (tv_hsync_signal_pending) {
-                tv_hsync_signal_pending=0;
-                //printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
-                tv_increase_line();
 
-            }
+        }
+
+        if (tv_hsync_signal_pending) {
+            tv_hsync_signal_pending=0;
+            //printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
+            tv_increase_line();
+            tv_x=0;
         }
 
     }
