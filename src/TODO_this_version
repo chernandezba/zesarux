@@ -154,3 +154,4 @@ ajustar esto:
 
 
 -temp_llegado_vsync. Parche feo. Lo que deberia hacerse es que no entrase esa primera linea de basura (Manic miner, pacman etc)
+Corregir tambien el valor arbitrario de ula_zx81_time_event_t_estados en zx8081_out_any_port_video_stuff

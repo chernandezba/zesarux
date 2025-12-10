@@ -777,7 +777,10 @@ void ula_zx81_time_event(int delta)
 
         ula_zx81_time_event_t_estados+=1;
 
-        if (ula_zx81_time_event_t_estados>=screen_testados_linea) {
+            extern int temp_ajuste;
+
+
+        if (ula_zx81_time_event_t_estados>=screen_testados_linea-temp_ajuste) {
             ula_zx81_time_event_t_estados -=screen_testados_linea;
 
 
