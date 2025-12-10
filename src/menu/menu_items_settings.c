@@ -9835,6 +9835,11 @@ void menu_settings_tv_line_period(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Max Line Period",&tv_max_line_period,3,+1,10,99,0);
 }
 
+void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Max Lines",&tv_max_lines,4,+1,200,399,0);
+}
+
 void menu_settings_tv(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -9867,6 +9872,12 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
 
 
         if (MACHINE_IS_ZX8081) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_max_lines,NULL,
+                "Max Lines","Max Líneas","Max Línies");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%d]",tv_max_lines);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_line_period,NULL,
                 "Max Line Period","Max Periodo de Línea","Max Periode de Línia");
             menu_add_item_menu_prefijo(array_menu_common,"    ");

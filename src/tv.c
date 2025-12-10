@@ -68,6 +68,9 @@ int tv_hsync_signal_pending=0;
 //Estos 84 sirve para que el juego de QS Defenda se vean hasta las ultimas lineas del final
 int tv_max_line_period=84;
 
+//Maximo de lineas antes de lanzar un vsync interno si no se recibe dicha señal
+int tv_max_lines=316;
+
 void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int colortinta,int colorpapel)
 {
     int color;
@@ -139,13 +142,13 @@ void tv_increase_line(void)
     tv_y++;
 
     //controlar vsync timeout
-    int total_lineas=screen_testados_total/screen_testados_linea;
+    //int total_lineas=screen_testados_total/screen_testados_linea;
     //Si no se va mas alla del limite
     //El oscilador "libre" es de 50 hz
     //if (tv_y>(total_lineas*120)/100) {
 
     //le damos un pelin mas de margen
-    if (tv_y>=total_lineas+5) {
+    if (tv_y>tv_max_lines) {
         printf("vsync timeout en %d\n",tv_y);
         //sleep(1);
 
@@ -318,7 +321,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     //Finalmente avanzar el tiempo
     tv_time +=delta;
 
-    //Si da la vuelta, truncar
+    //Si da la vuelta, truncar - ha pasado 20 milisegundos
     if (tv_time>=screen_testados_total) {
         tv_time -=screen_testados_total;
     }
