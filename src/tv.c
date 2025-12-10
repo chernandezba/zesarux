@@ -63,7 +63,10 @@ int tv_vsync_signal_length=0;
 int tv_hsync_signal=0;
 int tv_hsync_signal_pending=0;
 
-
+//maximo tiempo que puede durar una linea, en microsegundos, si no llega señal de hsync
+//habitualmente deberia de ser de 64 microsegundos
+//Estos 84 sirve para que el juego de QS Defenda se vean hasta las ultimas lineas del final
+int tv_max_line_period=84;
 
 void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int colortinta,int colorpapel)
 {
@@ -303,8 +306,10 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
 
     //le damos un pelin mas de margen, si no el QS defenda no se ve completo por debajo
-    if (tv_x>=screen_testados_linea+65 && !ejecutando_vsync) {
-        //printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
+    int microsec_max=(tv_max_line_period*screen_testados_linea)/64;
+
+    if (tv_x>=microsec_max && !ejecutando_vsync) {
+        printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
         tv_x=0;
         tv_increase_line();
     }

@@ -53,5 +53,6 @@ extern void tv_disable_hsync(void);
 extern void tv_enable_vsync(void);
 extern void tv_disable_vsync(void);
 extern int tv_get_y(void);
+extern int tv_max_line_period;
 
 #endif

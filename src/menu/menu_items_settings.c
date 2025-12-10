@@ -9830,6 +9830,11 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_settings_tv_line_period(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Max Line Period",&tv_max_line_period,3,+1,10,99,0);
+}
+
 void menu_settings_tv(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -9862,6 +9867,12 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
 
 
         if (MACHINE_IS_ZX8081) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_line_period,NULL,
+                "Max Line Period","Max Periodo de Línea","Max Periode de Línia");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_max_line_period);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
                 "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
