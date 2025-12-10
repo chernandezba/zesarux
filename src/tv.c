@@ -236,37 +236,37 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         //TODO En principio vsync necesita hsync. Esto es lo que provoca que al hacer save, la imagen no se vaya arriba
 
         if (tv_vsync_signal_length>DEFAULT_MINIMO_DURACION_VSYNC && tv_vsync_signal_length<PERMITIDO_MAXIMO_DURACION_VSYNC) {
-            //if (tv_y>=300) {
-                //printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
+
+            //printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
 
 
-                //vsync solo mueve la y, no la X?
-                //tv_x=0;
+            //vsync solo mueve la y, no la X?
+            //tv_x=0;
 
-                int sync=1;
+            int sync=1;
 
-                /*
-                if (MACHINE_IS_ZX81_TYPE) {
-                    if (tv_linea_inicio_vsync<MINIMA_LINEA_ADMITIDO_VSYNC) {
-                        printf("Intento de inicio sync en %d\n",tv_linea_inicio_vsync);
-                        sync=0;
-                    }
+            /*
+            if (MACHINE_IS_ZX81_TYPE) {
+                if (tv_linea_inicio_vsync<MINIMA_LINEA_ADMITIDO_VSYNC) {
+                    printf("Intento de inicio sync en %d\n",tv_linea_inicio_vsync);
+                    sync=0;
                 }
-                */
+            }
+            */
 
-                if (sync) {
-                    if (debug_first_vsync) {
-                        debug_first_vsync=0;
-                        //printf("TV fired           vsync x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
-                    }
-                    tv_y=0;
-                    ejecutando_vsync=1;
-                    video_zx8081_ula_video_output=255;
-
-                    //Con esto Mazogs se ve bien pero pacman o manic miner no
-                    //video_zx8081_lcntr=0;
+            if (sync) {
+                if (debug_first_vsync) {
+                    debug_first_vsync=0;
+                    //printf("TV fired           vsync x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
                 }
-            //}
+                tv_y=0;
+                ejecutando_vsync=1;
+                video_zx8081_ula_video_output=255;
+
+                //Con esto Mazogs se ve bien pero pacman o manic miner no
+                //video_zx8081_lcntr=0;
+            }
+
         }
 
     }
@@ -300,7 +300,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     //Al final es justo lo que tarda el scanline
 
     */
-    //if (tv_x>(screen_testados_linea*110)/100 && !ejecutando_vsync) {
+
 
     //le damos un pelin mas de margen, si no el QS defenda no se ve completo por debajo
     if (tv_x>=screen_testados_linea+65 && !ejecutando_vsync) {
@@ -327,7 +327,6 @@ void tv_enable_hsync(void)
 {
     if (tv_hsync_signal==0) {
         //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
-        //sleep(1);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
     }
@@ -340,7 +339,6 @@ void tv_disable_hsync(void)
 {
     if (tv_hsync_signal) {
         //printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
-        //sleep(1);
         tv_hsync_signal=0;
         video_zx8081_ula_video_output=0;
     }
@@ -379,7 +377,6 @@ void tv_enable_vsync(void)
         printf("TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
-        //sleep(1);
     }
 }
 
