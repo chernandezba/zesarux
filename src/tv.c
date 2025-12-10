@@ -84,14 +84,16 @@ void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int 
 
 }
 
-
+int tv_return_effective_y_coordinate(int y)
+{
+    return y-screen_invisible_borde_superior;
+}
 
 void tv_time_event_store_chunk_image(int delta)
 {
 
     if (rainbow_enabled.v) {
-        int y=tv_y;
-        y=y-screen_invisible_borde_superior;
+        int y=tv_return_effective_y_coordinate(tv_y);
 
         int xorig=tv_x*2;
         int xmax=xorig+delta*2;
