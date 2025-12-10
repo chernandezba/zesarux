@@ -169,6 +169,9 @@ extern int contador_segundo;
 
 int ejecutando_vsync=0;
 
+
+int temp_llegado_vsync=0;
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -271,6 +274,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
                 //Con esto Mazogs se ve bien pero pacman o manic miner no
                 //video_zx8081_lcntr=0;
+
+                temp_llegado_vsync=1;
             }
 
         }
@@ -312,7 +317,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     int microsec_max=(tv_max_line_period*screen_testados_linea)/64;
 
     if (tv_x>=microsec_max && !ejecutando_vsync) {
-        printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
+        //printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
         tv_x=0;
         tv_increase_line();
     }
@@ -382,7 +387,7 @@ void tv_enable_vsync(void)
 
 
 
-        printf("TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+        //printf("TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
     }
@@ -392,7 +397,7 @@ void tv_disable_vsync(void)
 {
 
     if (tv_vsync_signal) {
-        printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
+        //printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
         tv_vsync_signal=0;
         //Con esto el titulo del menu de pacman se ve bien pero en el juego no
         //video_zx8081_lcntr=0;

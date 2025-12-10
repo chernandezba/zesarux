@@ -474,7 +474,6 @@ int zx80801_last_sprite_video_tinta=0;
 int zx80801_last_sprite_video_papel=0;
 
 
-//Guardar en buffer rainbow una linea del caracter de zx8081. usado en modo de video real
 void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int inverse)
 {
 
@@ -526,6 +525,21 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
     if( (reg_pc&0x8000) ) {
         //se esta ejecutando la zona de pantalla
+
+        //Parche feo. La primera linea de scan despues de vsync es de basura, por eso la metemos a scan 7
+        //La siguiente ya sera buena
+        //TODO:  no ajustar esto en modo FAST del zx81
+        extern int temp_llegado_vsync;
+        if (temp_llegado_vsync) {
+            temp_llegado_vsync=0;
+            printf("LCNTR era %d\n",video_zx8081_lcntr);
+
+            if (MACHINE_IS_ZX81_TYPE) {
+                video_zx8081_lcntr=7;
+            }
+
+        }
+
 
         z80_byte caracter;
 
@@ -930,6 +944,8 @@ void zx8081_out_any_port_video_stuff(void)
 
     //temporal. valor algo arbitrario
     ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
+
+    ula_zx81_time_event_t_estados=16;
 
 
     tv_disable_vsync();
