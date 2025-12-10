@@ -210,7 +210,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
     if (tv_vsync_signal) {
         //Aqui da imagen correcta en mazogs pero incorrecta en juego de manic miner
-        //video_zx8081_linecntr=0;
+        //video_zx8081_lcntr=0;
 
         if (temp_extend_debug) printf("tv vsync enabled en t_estados %6d Y=%d\n",t_estados,tv_get_y());
         tv_vsync_signal_length+=delta;
@@ -274,7 +274,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                     video_zx8081_ula_video_output=255;
 
                     //Con esto Mazogs se ve bien pero pacman o manic miner no
-                    //video_zx8081_linecntr=0;
+                    //video_zx8081_lcntr=0;
                 }
             //}
         }
@@ -400,7 +400,7 @@ void tv_disable_vsync(void)
         printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
         tv_vsync_signal=0;
         //Con esto el titulo del menu de pacman se ve bien pero en el juego no
-        //video_zx8081_linecntr=0;
+        //video_zx8081_lcntr=0;
     }
 }
 

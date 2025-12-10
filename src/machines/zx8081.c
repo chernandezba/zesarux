@@ -500,7 +500,7 @@ void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int
             }
 
             z80_int d=caracter*8+0xc000;
-            d=d+(video_zx8081_linecntr&7);
+            d=d+(video_zx8081_lcntr&7);
             z80_byte leido=peek_byte_no_time(d);
             zx80801_last_sprite_video_tinta=leido&15;
             zx80801_last_sprite_video_papel=(leido>>4)&15;
@@ -607,7 +607,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
             }
 
 
-            direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_linecntr) & 7);
+            direccion_sprite=((reg_i&254)*256)+caracter*8+( (video_zx8081_lcntr) & 7);
 
 
             //Obteniendo tipo de letra de rom de zxpand en el caso del zx80
@@ -674,7 +674,7 @@ void generar_zx80_hsync(void)
     //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
     //ula_zx80_position_x_testados=0;
 
-    video_zx8081_linecntr++;
+    video_zx8081_lcntr++;
 
 
 }
@@ -690,7 +690,7 @@ void generar_zx81_hsync(void)
 
     //ula_zx81_time_event_t_estados=0;
 
-    video_zx8081_linecntr++;
+    video_zx8081_lcntr++;
 
 
 }
@@ -735,7 +735,7 @@ void ula_zx80_time_event(int delta)
 
         }
 
-        if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
+        if (zx8081_vsync_generator.v) video_zx8081_lcntr=0;
 
 
         tv_time_event(1);
@@ -783,7 +783,7 @@ void ula_zx81_time_event(int delta)
         }
 
 
-        if (zx8081_vsync_generator.v) video_zx8081_linecntr=0;
+        if (zx8081_vsync_generator.v) video_zx8081_lcntr=0;
 
         tv_time_event(1);
 
@@ -824,7 +824,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     zx8081_vsync_generator.v=1;
 
 
-    //video_zx8081_linecntr=0;
+    //video_zx8081_lcntr=0;
 
 
     //Para debug saber donde hay posible inicio vsync
@@ -936,7 +936,7 @@ void zx8081_out_any_port_video_stuff(void)
     zx8081_vsync_generator.v=0;
 
     //Aqui da imagen correcta en manic miner pero no en basic
-    //video_zx8081_linecntr=0;
+    //video_zx8081_lcntr=0;
 
 
     modificado_border.v=1;

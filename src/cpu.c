@@ -299,11 +299,9 @@ int anterior_porcentaje_velocidad_emulador=100;
 
 
 
-//linea actual (scanline) segun cuantas interrupciones maskables se han generado
-//en modo slow del zx81 hay un "offset" para que se ajuste a la pantalla
-int video_zx8081_linecntr=0;
+//linea actual (scanline) del caracter mostrado
+int video_zx8081_lcntr=0;
 
-//z80_bit video_zx8081_linecntr_enabled;
 
 //el siguiente valor que tendra una linea entera segun la ULA
 //con vsync , voltaje 0v, color negro, este valor a 255

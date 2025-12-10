@@ -272,8 +272,7 @@ extern void cold_start_cpu_registers(void);
 
 extern z80_byte *devuelve_reg_offset(z80_byte valor);
 
-extern int video_zx8081_linecntr;
-extern z80_bit video_zx8081_linecntr_enabled;
+extern int video_zx8081_lcntr;
 
 extern z80_byte video_zx8081_ula_video_output;
 
