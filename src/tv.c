@@ -138,6 +138,46 @@ void tv_time_event_store_chunk_image(int delta)
 
 }
 
+void tv_draw_black_line(int y)
+{
+
+    if (rainbow_enabled.v) {
+
+        int totalancho=get_total_ancho_rainbow();
+
+        if (y>=0 && y<get_total_alto_rainbow() ) {
+            int x;
+
+            //if (y==42) printf("x %3d xmax %3d y %3d sprite %02XH\n",xorig,xmax,y,zx80801_last_sprite_video);
+
+            for (x=0;x<totalancho;x++) {
+
+
+                //si linea no coincide con entrelazado, volvemos
+                if (if_store_scanline_interlace(y) ) {
+                    int color=2;
+
+                    rainbow_buffer[y*totalancho+x]=color;
+                }
+
+
+            }
+        }
+    }
+
+
+}
+
+void tv_draw_black_lines_beyond_vsync(int y)
+{
+    y=tv_return_effective_y_coordinate(y);
+    int total_alto=get_total_alto_rainbow();
+
+    for (;y<total_alto;y++) {
+        tv_draw_black_line(y);
+    }
+}
+
 void tv_increase_line(void)
 {
 
@@ -270,6 +310,12 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                     debug_first_vsync=0;
                     //printf("TV fired           vsync x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
                 }
+
+                //Debug de a partir que linea se ha hecho vsync
+                if (tv_y>100) {
+                    tv_draw_black_lines_beyond_vsync(tv_y);
+                }
+
                 tv_y=0;
                 ejecutando_vsync=1;
                 video_zx8081_ula_video_output=255;
