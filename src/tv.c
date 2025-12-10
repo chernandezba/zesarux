@@ -138,7 +138,7 @@ void tv_time_event_store_chunk_image(int delta)
 
 }
 
-void tv_draw_black_line(int y)
+void tv_draw_black_line(int x_inicio,int y)
 {
 
     if (rainbow_enabled.v) {
@@ -150,7 +150,7 @@ void tv_draw_black_line(int y)
 
             //if (y==42) printf("x %3d xmax %3d y %3d sprite %02XH\n",xorig,xmax,y,zx80801_last_sprite_video);
 
-            for (x=0;x<totalancho;x++) {
+            for (x=x_inicio;x<totalancho;x++) {
 
 
                 //si linea no coincide con entrelazado, volvemos
@@ -174,7 +174,7 @@ void tv_draw_black_lines_beyond_vsync(int y)
     int total_alto=get_total_alto_rainbow();
 
     for (;y<total_alto;y++) {
-        tv_draw_black_line(y);
+        tv_draw_black_line(0,y);
     }
 }
 
@@ -196,6 +196,9 @@ void tv_increase_line(void)
 
         //vsync solo mueve la y, no la X?
         //tv_x=0;
+        if (tv_y>100) {
+            tv_draw_black_lines_beyond_vsync(tv_y);
+        }
 
         tv_y=0;
     }
