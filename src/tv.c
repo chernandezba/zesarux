@@ -127,16 +127,6 @@ void tv_time_event_store_chunk_image(int delta)
 
 
 
-    //Dejar el valor por defecto si la ula de la maquina no envia nada
-    //Esto es dependiente del hardware
-    //TODO fix
-    /*
-    if (MACHINE_IS_ZX8081) {
-        zx80801_last_sprite_video=video_zx8081_ula_video_output;
-        zx80801_last_sprite_video_tinta=0;
-        zx80801_last_sprite_video_papel=15;
-    }
-    */
 
 }
 
