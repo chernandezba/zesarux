@@ -824,6 +824,9 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     zx8081_vsync_generator.v=1;
 
 
+    //video_zx8081_linecntr=0;
+
+
     //Para debug saber donde hay posible inicio vsync
     //O es inicio vsync o simplemente se lee teclado
     //Valor un tanto random que genera punteado en pantalla
@@ -932,8 +935,8 @@ void zx8081_out_any_port_video_stuff(void)
     tv_disable_vsync();
     zx8081_vsync_generator.v=0;
 
-
-
+    //Aqui da imagen correcta en manic miner pero no en basic
+    //video_zx8081_linecntr=0;
 
 
     modificado_border.v=1;
