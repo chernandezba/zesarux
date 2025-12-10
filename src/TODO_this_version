@@ -153,4 +153,4 @@ ajustar esto:
 -borrar los temp_ajuste de F3 y F4 cuando no hagan falta
 
 
--temp_llegado_vsync. Parche feo
+-temp_llegado_vsync. Parche feo. Lo que deberia hacerse es que no entrase esa primera linea de basura (Manic miner, pacman etc)

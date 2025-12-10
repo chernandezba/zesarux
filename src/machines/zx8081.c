@@ -526,16 +526,23 @@ z80_byte fetch_opcode_zx81_graphics(void)
     if( (reg_pc&0x8000) ) {
         //se esta ejecutando la zona de pantalla
 
-        //Parche feo. La primera linea de scan despues de vsync es de basura, por eso la metemos a scan 7
+        //Parche horrorosamente feo. La primera linea de scan despues de vsync es de basura, por eso la metemos a scan 7
         //La siguiente ya sera buena
-        //TODO:  no ajustar esto en modo FAST del zx81
         extern int temp_llegado_vsync;
         if (temp_llegado_vsync) {
             temp_llegado_vsync=0;
             printf("LCNTR era %d\n",video_zx8081_lcntr);
 
             if (MACHINE_IS_ZX81_TYPE) {
-                video_zx8081_lcntr=7;
+                if (peek_byte_no_time(0x403b) & 0x40) {
+                    printf("slow mode\n");
+                    video_zx8081_lcntr=7;
+                }
+                else {
+                    //no ajustar esto en modo FAST del zx81
+                    printf("fast mode\n");
+                }
+
             }
 
         }
