@@ -1684,8 +1684,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
         if (menu_footer) {
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_fps,NULL,"[%c] Show F~~PS",(screen_show_fps.v ? 'X' : ' ') );
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c] Mostrar F~~PS",(screen_show_fps.v ? 'X' : ' ') );
+            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_fps,NULL,"[%c]  Show F~~PS",(screen_show_fps.v ? 'X' : ' ') );
+            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c]  Mostrar F~~PS",(screen_show_fps.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_window_settings,'p');
             menu_add_item_menu_tooltip(array_menu_window_settings,"Show FPS on footer");
             menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the current FPS");
@@ -1699,7 +1699,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         if (menu_footer) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_usage,NULL,
                 "Show ~~CPU usage","Mostrar uso ~~CPU","Mostrar us ~~CPU");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_show_cpu_usage.v ? 'X' : ' ') );
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(screen_show_cpu_usage.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_window_settings,'c');
             menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU usage on footer");
             menu_add_item_menu_ayuda(array_menu_window_settings,"It tells you how much host cpu machine is using ZEsarUX. So it's better to have it low. "
@@ -1711,8 +1711,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         //temperatura cpu solo se ve en Linux
 #ifdef __linux__
         if (menu_footer) {
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_temp,NULL,"[%c] Show CPU temperature",(screen_show_cpu_temp.v ? 'X' : ' ') );
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c] Mostrar temperatura CPU",(screen_show_cpu_temp.v ? 'X' : ' ') );
+            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_temp,NULL,"[%c]  Show CPU temperature",(screen_show_cpu_temp.v ? 'X' : ' ') );
+            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c]  Mostrar temperatura CPU",(screen_show_cpu_temp.v ? 'X' : ' ') );
             //menu_add_item_menu_shortcut(array_menu_window_settings,'c');
             menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU temperature on footer");
             menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the temperature of the main CPU");
