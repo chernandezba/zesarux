@@ -809,6 +809,7 @@ void ula_zx81_time_event(int delta)
 
         if (zx8081_vsync_generator.v) {
             //printf("Set LCNTR to zero\n");
+            //printf("Set LCNTR to zero on time_event tv_y=%d\n",tv_get_y() );
             video_zx8081_lcntr=0;
         }
 
