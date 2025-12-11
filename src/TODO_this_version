@@ -154,6 +154,7 @@ ajustar esto:
 
 
 -temp_llegado_vsync. Parche feo. Lo que deberia hacerse es que no entrase esa primera linea de basura (Manic miner, pacman etc)
+O quiza es que está todo desplazado 1 scanline, fijarse que manic miner muestra una linea al final de basura tambien
 Corregir tambien el valor arbitrario de ula_zx81_time_event_t_estados en zx8081_out_any_port_video_stuff
 
 -Ver si se tiene logica el disparar hsync y el uso de la variable tv_hsync_signal_pending
