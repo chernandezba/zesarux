@@ -95,6 +95,16 @@ Info video:
 
 https://quix.us/timex/rigter/ZX@20Video@20Tutorial.html
 
+https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-display-system/
+
+http://blog.tynemouthsoftware.co.uk/2023/10/how-the-zx81-generates-video.html
+
+http://www.fruitcake.plus.com/Sinclair/ZX80/FlickerFree/ZX80_DisplayMechanism.htm
+
+http://searle.x10host.com/zx80/zx80nmiV3.html
+
+https://k1.spdns.de/Vintage/Sinclair/80/Sinclair%20ZX81/ROMs/zx81%20version%202%20%27improved%27%20rom%20source.htm
+
 
 VSYNC es realmente secuencia de señal vsync + pulsos hsync. como envia esto el ZX81 realmente?
 Parece que durante vsync no envia hsync, como se deberia esperar
