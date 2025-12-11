@@ -535,12 +535,12 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
             if (MACHINE_IS_ZX81_TYPE) {
                 if (peek_byte_no_time(0x403b) & 0x40) {
-                    printf("slow mode\n");
+                    //printf("slow mode\n");
                     video_zx8081_lcntr=7;
                 }
                 else {
                     //no ajustar esto en modo FAST del zx81
-                    printf("fast mode\n");
+                    //printf("fast mode\n");
                 }
 
             }
@@ -807,7 +807,10 @@ void ula_zx81_time_event(int delta)
         }
 
 
-        if (zx8081_vsync_generator.v) video_zx8081_lcntr=0;
+        if (zx8081_vsync_generator.v) {
+            //printf("Set LCNTR to zero\n");
+            video_zx8081_lcntr=0;
+        }
 
         tv_time_event(1);
 
@@ -846,6 +849,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     tv_enable_vsync();
     zx8081_vsync_generator.v=1;
+    printf("Set LCNTR to zero on enable vsync generator tv_y=%d\n",tv_get_y() );
 
 
     //video_zx8081_lcntr=0;
