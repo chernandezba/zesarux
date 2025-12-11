@@ -6411,8 +6411,8 @@ void menu_hardware_lightgun_scope(MENU_ITEM_PARAMETERS)
 {
     lightgun_scope.v ^=1;
 
-	//necesita real video
-	enable_rainbow();
+    //necesita real video
+    enable_rainbow();
 
 }
 
