@@ -528,6 +528,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
         //Parche horrorosamente feo. La primera linea de scan despues de vsync es de basura, por eso la metemos a scan 7
         //La siguiente ya sera buena
+        //Esto sorprendentemente funciona bien en todos los juegos
         extern int temp_llegado_vsync;
         if (temp_llegado_vsync) {
             temp_llegado_vsync=0;
