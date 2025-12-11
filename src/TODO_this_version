@@ -148,6 +148,11 @@ ajustar esto:
     //En fast:
     ula_zx81_time_event_t_estados=0;
 
+    //temporal. valor algo arbitrario
+    ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
+
+    ula_zx81_time_event_t_estados=16;
+
 -temblor de mazogs quiza es porque el line counter no siempre se pone a 0 en el mismo momento
 
 -borrar los temp_ajuste de F3 y F4 cuando no hagan falta
