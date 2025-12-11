@@ -73,9 +73,11 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
 
+- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados. Me sirve para confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81
+
 ------
 
-- Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
+#####  Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
 Y tiempos para hsync y nmi se basan en t-estados y en alterar t-estados artificialmente, esto no es correcto
 
 -view variables interfiere en render!! con breakout por ejemplo
@@ -137,8 +139,6 @@ pero luego manic se ve mal , igual que pacman y tetrishr
 
 fast: quitando el t_estados +=3; de la maskable y lo que el halt dure 1 estado, mejora pero se mueve en horizontal (problema con el lanzamiento de vsync o hsync???)
 
--commit antes cambios zx81: before apply changes to improve ZX81 fast mode etc
-carpeta pruebas_antes_mejor_zx81/
 
 ajustar esto:
 
@@ -163,3 +163,5 @@ O quiza es que está todo desplazado 1 scanline, fijarse que manic miner muestra
 Corregir tambien el valor arbitrario de ula_zx81_time_event_t_estados en zx8081_out_any_port_video_stuff
 
 -Ver si se tiene logica el disparar hsync y el uso de la variable tv_hsync_signal_pending
+
+-Color rojo para zona de vsync no usada: color temporal, al final deberia ser en negro
