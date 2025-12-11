@@ -850,7 +850,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     tv_enable_vsync();
     zx8081_vsync_generator.v=1;
-    printf("Set LCNTR to zero on enable vsync generator tv_y=%d\n",tv_get_y() );
+    printf("Set vsync generator tv_y=%d\n",tv_get_y() );
 
 
     //video_zx8081_lcntr=0;
