@@ -530,6 +530,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
         //La siguiente ya sera buena
         //Esto sorprendentemente funciona bien en todos los juegos
         extern int temp_llegado_vsync;
+        /*
         if (temp_llegado_vsync) {
             temp_llegado_vsync=0;
             printf("LCNTR era %d\n",video_zx8081_lcntr);
@@ -547,6 +548,7 @@ z80_byte fetch_opcode_zx81_graphics(void)
             }
 
         }
+        */
 
 
         z80_byte caracter;

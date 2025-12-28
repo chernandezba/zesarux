@@ -176,6 +176,25 @@ ajustar esto:
 O quiza es que está todo desplazado 1 scanline, fijarse que manic miner muestra una linea al final de basura tambien
 Corregir tambien el valor arbitrario de ula_zx81_time_event_t_estados en zx8081_out_any_port_video_stuff
 
+-quiza reg_r no se incrementa al generar interrupción??. afecta esto al timing realmente de ZX8081?
+-parece que zxsp dispara la interrupción del reg_r despues que haya tenido valor 81h. Supuestamente:
+INT                     Reading an opcode when refresh register R.D6=0 triggers an interrupt immediately after this M1 cycle.
+-comprobar de nuevo cuantos t-estados se incrementan con interrupcion maskable. 13 tiene ZXSP. 7 tiene Fuse. Yo hago 4
+
+zxsp. desde dec c hasta dec c
+37650
+37857
+=207
+
+zesarux
+35334
+35550
+=216
+
+-Supuestamente ZX80 ya están bien los timings. desde dec c a dec c salta 207. corregidos t-estados al disparar interrupcion
+y punto de salto de interrupción al cambiar bit 6 de reg r
+En teoria quedaria ajustar timing de nmi para ZX81 y validar todo en ZX81
+
 -Ver si se tiene logica el disparar hsync y el uso de la variable tv_hsync_signal_pending
 
 -Color rojo para zona de vsync no usada: color temporal, al final deberia ser en negro

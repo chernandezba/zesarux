@@ -62,6 +62,9 @@ z80_byte byte_leido_core_zx8081;
 
 int core_zx8081_medio_scanline=0;
 
+//la generada por cambio bit 6 registro R
+z80_bit pendiente_maskable_generada={0};
+
 //bucle principal de ejecucion de la cpu de zx80/81
 void cpu_core_loop_zx8081(void)
 {
@@ -183,13 +186,17 @@ void cpu_core_loop_zx8081(void)
 
 
 
-
+    if (pendiente_maskable_generada.v) {
+        pendiente_maskable_generada.v=0;
+        interrupcion_maskable_generada.v=1;
+    }
 
 
             if (iff1.v) {
                 //solo cuando cambia de 1 a 0 bit 6 de R
                 if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
-                    interrupcion_maskable_generada.v=1;
+                    //interrupcion_maskable_generada.v=1;
+                    pendiente_maskable_generada.v=1;
                 }
             }
 
@@ -474,15 +481,22 @@ void cpu_core_loop_zx8081(void)
         //justo despues de EI no debe generar interrupcion
         //e interrupcion nmi tiene prioridad
         if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
+            printf("1. %d\n",t_estados);
             debug_anota_retorno_step_maskable();
+            printf("2. %d\n",t_estados);
 
             //Tratar interrupciones maskable
             //INT wait 10 estados. Valor de pruebas
-            t_estados += 10;
+            //t_estados += 10;
+
+            printf("3. %d\n",t_estados);
 
             interrupcion_maskable_generada.v=0;
 
+            //+6 t-estados
             push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+
+            printf("4. %d\n",t_estados);
 
             reg_r++;
 
@@ -493,15 +507,21 @@ void cpu_core_loop_zx8081(void)
 
             //IM0/1
             if (im_mode==0 || im_mode==1) {
+                //+7 t-estados
                 cpu_common_jump_im01();
+
+                printf("5. %d\n",t_estados);
 
 
                 //Ajuste tiempos en zx80/81
                 //???
-                t_estados -=6;
+                //t_estados -=6;
                 //printf("IM0/1 generada\n");
                 extern int temp_ajuste;
                 //t_estados +=temp_ajuste;
+                //t_estados +=3;
+
+                printf("6. %d\n",t_estados);
 
 
             }
