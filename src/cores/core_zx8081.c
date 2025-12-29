@@ -464,11 +464,11 @@ void cpu_core_loop_zx8081(void)
 
 
 
-            t_estados += 5;
+            t_estados += 4;
 
             printf("4. nmi %d\n",t_estados);
 
-
+            //TODO: sumar wait cycles (minimo 1, maximo 16)
         }
 
 

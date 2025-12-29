@@ -270,6 +270,12 @@ setup_waitmap en:
 
 static constexpr int32 WAITMAP_POS = +1; // +1 wg. test position in Z80.run()
 
+Ojo que si minimo ya sumamos 1, eso se sumara a los 11 ya que se tienen de nmi y por tanto minimo seran 12? Pero la minima nmi en zxsp ha sido de 11
+Dice:
+if (cc >= cc_nmi) // timing: 4+1,3,3
+
+ese +1 ya es de la tabla. por tanto de base deberiamos considerar 10 ciclos, no 11
+
 
 -Ver si se tiene logica el disparar hsync y el uso de la variable tv_hsync_signal_pending
 
