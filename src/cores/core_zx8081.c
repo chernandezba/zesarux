@@ -443,13 +443,16 @@ void cpu_core_loop_zx8081(void)
 
 
         if (interrupcion_non_maskable_generada.v) {
+            printf("Generada nmi\n");
+            printf("1. nmi %d\n",t_estados);
             debug_anota_retorno_step_nmi();
+            printf("2. nmi %d\n",t_estados);
             interrupcion_non_maskable_generada.v=0;
-
 
 
             //6 T
             push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+            printf("3. nmi %d\n",t_estados);
 
 
             reg_r++;
@@ -459,21 +462,12 @@ void cpu_core_loop_zx8081(void)
 
             reg_pc= 0x66;
 
-            //temp
-            //t_estados -=15;
 
 
-            extern int temp_ajuste;
-            //t_estados +=temp_ajuste;
+            t_estados += 5;
 
-            //First the NMI servicing, similar to CALL            =  17 clock cycles.
-            t_estados += 11;
+            printf("4. nmi %d\n",t_estados);
 
-            if (MACHINE_IS_ZX81_TYPE) {
-                t_estados +=3;
-                //Ajuste para que clocktest.p sea lo mas cercano a 100%
-                t_estados +=7;
-            }
 
         }
 
@@ -481,22 +475,22 @@ void cpu_core_loop_zx8081(void)
         //justo despues de EI no debe generar interrupcion
         //e interrupcion nmi tiene prioridad
         if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
-            printf("1. %d\n",t_estados);
+            printf("1. maskable %d\n",t_estados);
             debug_anota_retorno_step_maskable();
-            printf("2. %d\n",t_estados);
+            printf("2. maskable %d\n",t_estados);
 
             //Tratar interrupciones maskable
             //INT wait 10 estados. Valor de pruebas
             //t_estados += 10;
 
-            printf("3. %d\n",t_estados);
+            printf("3. maskable %d\n",t_estados);
 
             interrupcion_maskable_generada.v=0;
 
             //+6 t-estados
             push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
-            printf("4. %d\n",t_estados);
+            printf("4. maskable %d\n",t_estados);
 
             reg_r++;
 
@@ -510,7 +504,7 @@ void cpu_core_loop_zx8081(void)
                 //+7 t-estados
                 cpu_common_jump_im01();
 
-                printf("5. %d\n",t_estados);
+                printf("5. maskable %d\n",t_estados);
 
 
                 //Ajuste tiempos en zx80/81
@@ -521,7 +515,7 @@ void cpu_core_loop_zx8081(void)
                 //t_estados +=temp_ajuste;
                 //t_estados +=3;
 
-                printf("6. %d\n",t_estados);
+                printf("6. maskable %d\n",t_estados);
 
 
             }
