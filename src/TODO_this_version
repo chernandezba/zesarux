@@ -193,7 +193,83 @@ zesarux
 
 -Supuestamente ZX80 ya están bien los timings. desde dec c a dec c salta 207. corregidos t-estados al disparar interrupcion
 y punto de salto de interrupción al cambiar bit 6 de reg r
-En teoria quedaria ajustar timing de nmi para ZX81 y validar todo en ZX81
+En teoria quedaria ajustar timing de nmi para ZX81 y validar todo en ZX81:
+
+NMI and WAIT
+
+NMI is enabled by OUT(FE) and disabled by OUT(FD).
+
+If NMI is enabled, then NMI is active at the same time as the HSYNC pulse.
+IF NMI is raised early enough during an OUT(FD) instruction then the NMI is still accepted after the instruction.
+It must be active 1cc before the end of the instruction. but it is in a race condition with the HSYNC output which
+toggles at full cc. The HSYNC counter output runs through some gates which combine into the HSYNC signal, so it
+probably toggles after /NMI is tested by the CPU. Therefore the HSYNC must go active at instruction_end-2cc to be seen.
+
+If NMI is active then WAIT is active at the same time, except if HALT is true during HALT opcode repetitions.
+This applies to opcode fetch, memory read & write, input, output, NMIACK and INTACK (IO cycle and pushes).
+The waitmap scheme is normal, not like the Sinclair ZX Spectrum with many superfluous wait cycles e.g. in 'jr'.
+WAIT is tested at cc+1.5 in memory and cc+2.5 in io access. Therefore it must be asserted at cc+1 or cc+2 respectively.
+WAIT is tested at cc+3.5 in INT acknowledge cycle.
+WAIT is tested at cc+1.5 in NMI acknowledge cycle. (as in any opcode fetch cycle)
+->creo que el problema es que la nmi no se lanza siempre cuando la hsync, sino algún ciclo mas tarde, dependiendo de un waitmap
+esto no aplica si está en halt (/* ZX81 has a waitmap for /WAIT during /NMI             */
+/* but /WAIT is suppressed if /HALT is active.  */)=
+al disparar nmi:
+
+#define GET_INSTR_FOR_NMI()                       \
+  do {                                            \
+        cc_nmi     = machine->nmiAtCycle(cc);         \
+        PgInfo& pg = getPage(pc);                     \
+        z32                = pg.both_r(pc) & options;         \
+        if (z32 & cpu_waitmap) { CC_WAIT_R(cc + 2); } \
+        cc += 5;                                      \
+        r += 1;                                       \
+  }
+#define CC_WAIT_R(CC) cc += pg.waitmap_r[(CC) % pg.waitmap_r_size]
+
+
+void UlaZx81::setup_waitmap(int32 cc_hsync)
+{
+        // when NMI is enabled then /NMI and /WAIT are asserted for 16cc at the same time as HSYNC.
+        // the Z80 emulation will use cc % 207 to peek into the waitmap[].
+        // the NMI will start at cc_nmi => waitmap[cc_nmi%207 to cc_nmi%207+15] must be set.
+
+        // the waitmap must be updated
+        // - when the NMI is enabled
+        // - when the cc timebase is shifted in videoFrameEnd()
+        // - when the HSYNC generator is restarted in interruptAtCycle()
+
+        cc_hsync += waitmap_size;
+        assert(cc_hsync >= 0);
+        cc_hsync %= waitmap_size;
+
+        if (waitmap[cc_hsync] == 16) // quick test whether it is already set as required
+                return;
+        clear_waitmap(); // clear old wait positions
+
+        // circularly fill in 16cc delay for the first cc of the NMI pulse to 1cc for the last:
+        int i = 0;
+        for (; i < min(int(waitmap_size) - cc_hsync, 16); i++) {
+            waitmap[cc_hsync + i] = uint8(16 - i);
+        }
+        for (; i < 16; i++) {
+            waitmap[cc_hsync - int(waitmap_size) + i] = uint8(16 - i);
+        }
+
+Mete esos 16 valores pero en cualquier parte del array que tiene total de 207 posiciones
+Empezando desde el parametro cc_hsync en adelante. Si llega al final pues volvera al principio
+
+        16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
+}
+(waitmap_size=207)
+
+setup_waitmap en:
+-reset hsync: setup_waitmap(cc_hsync_next + WAITMAP_POS);
+-enable nmi: setup_waitmap(cc_hsync + WAITMAP_POS);
+-video frame end: setup_waitmap(cc_hsync + WAITMAP_POS);
+
+static constexpr int32 WAITMAP_POS = +1; // +1 wg. test position in Z80.run()
+
 
 -Ver si se tiene logica el disparar hsync y el uso de la variable tv_hsync_signal_pending
 
