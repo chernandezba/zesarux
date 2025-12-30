@@ -284,6 +284,8 @@ Creo que ese fallo es de alguna otra cosa...
 ->o el problema viene de funcion tv_enable_vsync de tv.c, la condicion que hay para zx81. creo que vsync no se está generando en sitio correcto
 --> el problema venia porque solo lanza vsync cuando nmi está off. Corregido
 
+cuando hace vsync deberia lanzar hsync tambien?
+
 Acabar de revisar
 int zx8081_read_port_a0_low(z80_byte puerto_h)
 
