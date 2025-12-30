@@ -455,8 +455,29 @@ void tv_disable_vsync(void)
     }
 }
 
+int tv_get_x(void)
+{
+    return tv_x;
+}
+
 int tv_get_y(void)
 {
     return tv_y;
+}
+
+
+int tv_get_time(void)
+{
+    return tv_time;
+}
+
+int tv_get_vsync_signal(void)
+{
+    return tv_vsync_signal;
+}
+
+int tv_get_hsync_signal(void)
+{
+    return tv_hsync_signal;
 }
 

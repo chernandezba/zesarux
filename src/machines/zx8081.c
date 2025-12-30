@@ -850,6 +850,8 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
     z80_byte valor;
 
+    //Solo se lanzan vsync cuando el nmi generator está off. Si no fuese así, se pretendería enviar vsync
+    //en algunos juegos cuando se lee el teclado y el electron está en la zona del borde superior o inferior
     if (nmi_generator_active.v==0) {
         tv_enable_vsync();
         zx8081_vsync_generator.v=1;
