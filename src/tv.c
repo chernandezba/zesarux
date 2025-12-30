@@ -421,7 +421,7 @@ void tv_enable_vsync(void)
         //es probable que los timings de ZX81 no estén bien y por eso sucede eso
 
 
-        if (MACHINE_IS_ZX81_TYPE) {
+        /*if (MACHINE_IS_ZX81_TYPE) {
 
             if (tv_y<MINIMA_LINEA_ADMITIDO_VSYNC) {
                 //printf("TV tried to enable vsync x: %6d y: %6d\n",tv_x,tv_y);
@@ -434,7 +434,7 @@ void tv_enable_vsync(void)
             tv_linea_inicio_vsync=tv_y;
 
             debug_first_vsync=1;
-        }
+        }*/
 
 
 
