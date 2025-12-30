@@ -79,6 +79,8 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 
 - Poder ver los t-estados que tarda una instrucción, en vista de debug cpu
 
+-Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
+
 ------
 
 #####  Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
@@ -280,3 +282,7 @@ ese +1 ya es de la tabla. por tanto de base deberiamos considerar 10 ciclos, no 
 -Ver si se tiene logica el disparar hsync y el uso de la variable tv_hsync_signal_pending
 
 -Color rojo para zona de vsync no usada: color temporal, al final deberia ser en negro
+
+-Disparo de interrupciones se debería hacer similar a zxsp, que se pueda hacer step :
+*opcode
+*si se activa nmi o maskable, que se ejecute en el siguiente step
