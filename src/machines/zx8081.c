@@ -964,7 +964,7 @@ void zx8081_out_any_port_video_stuff(void)
     //ula_zx81_time_event_t_estados=0;
 
     //temporal. valor algo arbitrario
-    ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
+    //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
 
     ula_zx81_time_event_t_estados=16;
 
@@ -972,8 +972,6 @@ void zx8081_out_any_port_video_stuff(void)
     tv_disable_vsync();
     zx8081_vsync_generator.v=0;
 
-    //Aqui da imagen correcta en manic miner pero no en basic
-    //video_zx8081_lcntr=0;
 
 
     modificado_border.v=1;
