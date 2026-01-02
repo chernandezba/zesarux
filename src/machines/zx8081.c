@@ -724,6 +724,9 @@ void ula_zx80_time_event(int delta)
             ula_zx80_position_x_testados -=screen_testados_linea;
 
             //Lanzamos hsync
+            //NO. Esto se hace desde ACK de la interrupción
+
+            if (0) {
             if (hsync_generator_active.v) {
                 //printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
                 //    t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,1,tv_get_y());
@@ -733,6 +736,8 @@ void ula_zx80_time_event(int delta)
                 pending_disable_hsync=0;
                 tv_disable_hsync();
             }
+            }
+
 
 
         }
