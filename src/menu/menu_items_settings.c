@@ -6416,6 +6416,13 @@ void menu_hardware_lightgun_scope(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_lightgun_vertical_threshold(MENU_ITEM_PARAMETERS)
+{
+    lightgun_vertical_threshold+=2;
+    if (lightgun_vertical_threshold>10) lightgun_vertical_threshold=0;
+}
+
+
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 {
@@ -6555,8 +6562,17 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_scope,NULL,
                     "Show scope","Mostrar mirilla","Mostrar mira");
-                menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c]  ",(lightgun_scope.v? 'X' : ' '));
+                menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c]  ",(lightgun_scope.v ? 'X' : ' '));
                 menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
+                //En principio esto solo para unos pocos juegos
+                if (lightgun_emulation_type==MAGNUM_AUX || lightgun_emulation_type==MAGNUM_EAR) {
+                    //lightgun_vertical_threshold
+                    menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_vertical_threshold,NULL,
+                        "Scanline threshold","Rango de scanline","Rang de scanline");
+                    menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d]  ",lightgun_vertical_threshold);
+                    menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+                }
             }
 
             /*

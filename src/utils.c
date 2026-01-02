@@ -3820,6 +3820,8 @@ int util_write_configfile(void)
   if (lightgun_scope.v)                         ADD_STRING_CONFIG,"--opticalinput-scope");
 
                                                 ADD_STRING_CONFIG,"--opticalinputtype \"%s\"",lightgun_types_list[lightgun_emulation_type]);
+                                                ADD_STRING_CONFIG,"--opticalinput-scan-threshold %d",lightgun_vertical_threshold);
+
 
   if (kempston_mouse_emulation.v)             ADD_STRING_CONFIG,"--enablekempstonmouse");
 

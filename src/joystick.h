@@ -74,6 +74,7 @@ extern void joystick_release_fire(int si_enviar_zeng_event,int fire_button);
 extern z80_bit lightgun_emulation_enabled;
 extern int lightgun_emulation_type;
 extern z80_bit lightgun_scope;
+extern int lightgun_vertical_threshold;
 
 #define LIGHTGUN_TOTAL 10
 #define GUNSTICK_SINCLAIR_1 0

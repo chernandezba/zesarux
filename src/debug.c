@@ -6386,27 +6386,28 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 
-        //Info debug de TV de momento solo cuando máquinas ZX80/81
-        if (MACHINE_IS_ZX81_TYPE) {
-            sprintf (buf_linea,"\nTV Registers:\n");
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-            sprintf (buf_linea,"Electron X: %d\n",tv_get_x());
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-            sprintf (buf_linea,"Electron Y: %d\n",tv_get_y());
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-            sprintf (buf_linea,"HSYNC: %s\n",(tv_get_hsync_signal() ? "On" : "Off"));
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-            sprintf (buf_linea,"VSYNC: %s\n",(tv_get_vsync_signal() ? "On" : "Off"));
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
-            sprintf (buf_linea,"Time counter: %d\n",tv_get_time());
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        }
       }
+
+    //Info debug de TV de momento solo cuando máquinas ZX80/81
+    if (MACHINE_IS_ZX8081) {
+        sprintf (buf_linea,"\nTV Registers:\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"Electron X: %d\n",tv_get_x());
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"Electron Y: %d\n",tv_get_y());
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"HSYNC: %s\n",(tv_get_hsync_signal() ? "On" : "Off"));
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"VSYNC: %s\n",(tv_get_vsync_signal() ? "On" : "Off"));
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"Time counter: %d\n",tv_get_time());
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    }
 
       if (MACHINE_IS_MSX) {
           sprintf (buf_linea,"PPI Port A: %02X\n",msx_ppi_register_a);

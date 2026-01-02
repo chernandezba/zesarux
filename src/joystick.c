@@ -152,6 +152,9 @@ int lightgun_emulation_type=0;
 
 z80_bit lightgun_scope={0};
 
+//En principio esto solo es necesario en Acid Killer
+int lightgun_vertical_threshold=0;
+
 //Coordenadas x,y en formato scanlines y pixeles totales, es decir,
 //x entre 0 y 351
 //y entre 0 y 295
@@ -606,7 +609,32 @@ int lightgun_view_electron_color(void)
     return 0;
 }
 
+int lightgun_view_electron_check_offset(int electron_offset,int lightgun_offset)
+{
+    int max_offset=(screen_testados_linea*2);
+    int delta_offset=electron_offset-lightgun_offset;
 
+    //printf("Offsets electron %6d lightgun %6d offset %7d max_offset %6d\n",electron_offset,lightgun_offset,delta_offset,max_offset);
+
+
+
+    if (delta_offset<0) {
+        //printf("No ha llegado aun el electron a donde esta la pistola\n");
+        return 0;
+    }
+
+    if (delta_offset>max_offset) {
+        //printf("Electron esta muy lejos de la pistola\n");
+        return 0;
+    }
+
+    //printf("Electron esta en rango de la pistola\n");
+
+    //debug_printf (VERBOSE_DEBUG,"lightgun y (%d) is in range of electron (%d)",lightgun_y,y);
+
+
+    return lightgun_view_electron_color();
+}
 
 
 //Ver si la zona donde apunta el raton (lightgun) esta pasando el electron (o si ha pasado hace poco rato) y hay color blanco
@@ -643,35 +671,29 @@ int lightgun_view_electron(void)
     //    t_estados,x,y,lightgun_x,lightgun_y);
 
 
-    //Nuevo calculo para saber si esta en rango. Mediante offset total
-    //Contamos rango en pixeles (de ahí los *2)
     int electron_offset=y*(screen_testados_linea*2)+x;
-    int lightgun_offset=lightgun_y*(screen_testados_linea*2)+lightgun_x;
-
-    int max_offset=(screen_testados_linea*2);
-    int delta_offset=electron_offset-lightgun_offset;
-
-    //printf("Offsets electron %6d lightgun %6d offset %7d max_offset %6d\n",electron_offset,lightgun_offset,delta_offset,max_offset);
 
 
+    if (!lightgun_vertical_threshold) {
 
-    if (delta_offset<0) {
-        //printf("No ha llegado aun el electron a donde esta la pistola\n");
-        return 0;
+        //Nuevo calculo para saber si esta en rango. Mediante offset total
+        //Contamos rango en pixeles (de ahí los *2)
+
+        int lightgun_offset=lightgun_y*(screen_testados_linea*2)+lightgun_x;
+
+        return lightgun_view_electron_check_offset(electron_offset,lightgun_offset);
     }
 
-    if (delta_offset>max_offset) {
-        //printf("Electron esta muy lejos de la pistola\n");
+    else {
+        int umbral_vertical=lightgun_vertical_threshold;
+        int pistola_y=lightgun_y-umbral_vertical/2;
+        for (;umbral_vertical>0;umbral_vertical--,pistola_y++) {
+            int lightgun_offset=pistola_y*(screen_testados_linea*2)+lightgun_x;
+            int coincide=lightgun_view_electron_check_offset(electron_offset,lightgun_offset);
+            if (coincide) return coincide;
+        }
         return 0;
     }
-
-    //printf("Electron esta en rango de la pistola\n");
-
-    //debug_printf (VERBOSE_DEBUG,"lightgun y (%d) is in range of electron (%d)",lightgun_y,y);
-
-
-    return lightgun_view_electron_color();
-
 
 
 

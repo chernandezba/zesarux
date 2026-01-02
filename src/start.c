@@ -1282,9 +1282,10 @@ printf("\n"
         "--keyboard-issue2           Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
         "--keymap n                  Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
 
-        "--enable-optical-input      Enable optical input emulation\n"
-        "--opticalinput-scope        Show optical input scope\n"
-        "--opticalinputtype type     Type of emulated optical input. Type can be one of: ");
+        "--enable-optical-input          Enable optical input emulation\n"
+        "--opticalinput-scope            Show optical input scope\n"
+        "--opticalinput-scan-threshold n Scanline Threshold, only used on Magnum (value from 0 to 10)\n"
+        "--opticalinputtype type         Type of emulated optical input. Type can be one of: ");
 
     lightgun_print_types();
         printf (" . Default: %s\n",lightgun_types_list[lightgun_emulation_type]);
@@ -4140,6 +4141,17 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--opticalinput-scope")) {
                 lightgun_scope.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--opticalinput-scan-threshold")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<0 || valor>10) {
+                    debug_printf(VERBOSE_ERR,"Invalid Optical Input Scanline Threshold value\n");
+                }
+                else {
+                    lightgun_vertical_threshold=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--opticalinputtype")) {

@@ -46,6 +46,7 @@ setting para compilar con clang
 en programa aparte, mostrando coordenada y en pantalla
 *emulación de otros sistemas opticos, como TROJAN LIGHT PEN (PRO ZX 128 + 2A / 3 +). Ver documento en extras
 
+ok-lightgun: magnum. poder tener margen de mas de 1 scanline (para el acid killer por ejemplo)
 
 
 -config setting para aymidi_rs232_enabled.v
@@ -129,7 +130,6 @@ HALT                    ; (1) HALT synchronizes with NMI.
 
 ->le pongo que cada halt tarde 1 t-estado cuando se ha lanzado nmi
 
--Modo FAST del ZX81 no se ve bien
 
 ---
 
@@ -304,3 +304,6 @@ con void UlaZx81::input(Time now, int32 cc, uint16 addr, uint8& byte, uint8& mas
 -starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
 
 -en tv_time_event, si hay vsync, deberia hacerse tv_x=0 ?
+
+-liberado_vsync, primer_caracter: parche horroroso para centrar imagen. En ZX80 parece que va bien (o no?),
+en ZX81 no : modos fast y slow lo hacen distinto
