@@ -94,6 +94,9 @@ extern int zx80801_last_sprite_video_papel;
 
 extern void ula_zx8081_time_event(int delta);
 
+extern int ula_zx81_time_event_t_estados;
+extern int ula_zx80_position_x_testados;
+
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;
 

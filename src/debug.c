@@ -6384,6 +6384,13 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         if (MACHINE_IS_ZX81_TYPE) {
             sprintf (buf_linea,"ZX81 NMI generator: %s\n",(nmi_generator_active.v ? "On" : "Off"));
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+            sprintf (buf_linea,"ZX81 HSYNC counter: %d\n",ula_zx81_time_event_t_estados);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
+
+        if (MACHINE_IS_ZX80_TYPE) {
+            sprintf (buf_linea,"ZX80 HSYNC counter: %d\n",ula_zx80_position_x_testados);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 
       }
