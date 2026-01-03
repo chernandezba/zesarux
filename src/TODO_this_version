@@ -312,3 +312,101 @@ en ZX81 no : modos fast y slow lo hacen distinto
 no deberiamos usar ula_zx80_position_x_testados
 En cambio ZX81 si que dispara hsync desde contador, y no desde ACK.
 Supuestamente en ZX81: the INTACK (/IORQ & /M1) signal resets the counter of the HSYNC generator
+O sea:
+-contador ula_zx81_time_event_t_estados no dispara hsync, solo nmi
+-en int ack de nmi, generar hsync
+-en int ack de no nmi, generar hsync y reset ula_zx81_time_event_t_estados. ver cuando hace hsync el zxsp
+Con esto, se ven bien todos excepto WRX y pseudo hi res
+
+diff --git a/src/cores/core_zx8081.c b/src/cores/core_zx8081.c
+index 0746a75c..aea83a46 100644
+--- a/src/cores/core_zx8081.c
++++ b/src/cores/core_zx8081.c
+@@ -430,7 +430,7 @@ void cpu_core_loop_zx8081(void)
+
+     //Interrupcion de cpu. gestion im0/1/2. Esto se hace al cambio de bit6 de R en zx80/81
+     if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+-
++extern int pending_disable_hsync;
+         debug_fired_interrupt=1;
+
+         z80_adjust_flags_interrupt_block_opcode();
+@@ -473,6 +473,16 @@ void cpu_core_loop_zx8081(void)
+
+
+             //printf("5. nmi %d\n",t_estados);
++
++            if (MACHINE_IS_ZX81_TYPE) {
++                if (hsync_generator_active.v) {
++                    generar_zx81_hsync();
++
++                    //Y desactivamos hsync al momento
++                    pending_disable_hsync=0;
++                    tv_disable_hsync();
++                }
++            }
+         }
+
+
+@@ -550,6 +560,18 @@ void cpu_core_loop_zx8081(void)
+                 tv_disable_hsync();
+             }
+
++            if (MACHINE_IS_ZX81_TYPE) {
++                if (hsync_generator_active.v) {
++                    generar_zx81_hsync();
++
++                    //Y desactivamos hsync al momento
++                    pending_disable_hsync=0;
++                    tv_disable_hsync();
++                }
++
++                ula_zx81_time_event_t_estados=0;
++            }
++
+         }
+
+
+diff --git a/src/machines/zx8081.c b/src/machines/zx8081.c
+index c34c4404..c09ef7f6 100644
+--- a/src/machines/zx8081.c
++++ b/src/machines/zx8081.c
+@@ -775,13 +775,13 @@ void ula_zx81_time_event(int delta)
+                 generate_nmi();
+             }
+
+-            if (hsync_generator_active.v) {
++            /*if (hsync_generator_active.v) {
+                 generar_zx81_hsync();
+
+                 //Y desactivamos hsync al momento
+                 pending_disable_hsync=0;
+                 tv_disable_hsync();
+-            }
++            }*/
+             /*
+             Al generar nmi,
+             /Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
+@@ -949,7 +949,7 @@ void zx8081_out_any_port_video_stuff(void)
+     //temporal. valor algo arbitrario
+     //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
+
+-    ula_zx81_time_event_t_estados=16;
++    //ula_zx81_time_event_t_estados=16;
+
+
+     tv_disable_vsync();
+diff --git a/src/tv.c b/src/tv.c
+index d0191035..3aabf4be 100644
+--- a/src/tv.c
++++ b/src/tv.c
+@@ -101,6 +101,8 @@ void tv_time_event_store_chunk_image(int delta)
+         //asi estaria hsync activo todo ese tiempo (tiempo screen_invisible_borde_derecho) y al liberarlo, la tv_x seria 0
+         if (MACHINE_IS_ZX80_TYPE) xorig -=screen_invisible_borde_derecho;
+
++        if (MACHINE_IS_ZX81_TYPE) xorig -=screen_invisible_borde_derecho;
++
+         int xmax=xorig+delta*2;
+
+         int totalancho=get_total_ancho_rainbow();
+iMac-de-Cesar:src cesarhernandez$
