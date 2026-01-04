@@ -475,14 +475,6 @@ void cpu_core_loop_zx8081(void)
 
             //printf("5. nmi %d\n",t_estados);
 
-            if (MACHINE_IS_ZX81_TYPE && hsync_generator_active.v && nmi_generator_active.v) {
-                generar_zx81_hsync();
-
-                //Y desactivamos hsync al momento
-                extern int pending_disable_hsync;
-                pending_disable_hsync=0;
-                tv_disable_hsync();
-            }
         }
 
 
@@ -560,18 +552,7 @@ void cpu_core_loop_zx8081(void)
                 tv_disable_hsync();
             }
 
-            if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v==0 && hsync_generator_active.v) {
-                //printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
-                //    t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,1,tv_get_y());
-                generar_zx81_hsync();
 
-                //Y desactivamos hsync al momento
-                extern int pending_disable_hsync;
-                pending_disable_hsync=0;
-                tv_disable_hsync();
-
-                ula_zx81_time_event_t_estados=0;
-            }
 
         }
 

@@ -410,3 +410,7 @@ index d0191035..3aabf4be 100644
 
          int totalancho=get_total_ancho_rainbow();
 iMac-de-Cesar:src cesarhernandez$
+
+
+-ZX81 parece en manic miner y en demos WRX que usaria metodo de hsync por registro R (ACK) pero las interrupciones están deshabilitadas
+Por tanto seguramente la hsync se lance siempre desde contador
