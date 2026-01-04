@@ -775,13 +775,15 @@ void ula_zx81_time_event(int delta)
                 generate_nmi();
             }
 
-            if (hsync_generator_active.v) {
+            /*
+            if (hsync_generator_active.v && nmi_generator_active.v) {
                 generar_zx81_hsync();
 
                 //Y desactivamos hsync al momento
                 pending_disable_hsync=0;
                 tv_disable_hsync();
             }
+            */
             /*
             Al generar nmi,
             /Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
@@ -949,7 +951,7 @@ void zx8081_out_any_port_video_stuff(void)
     //temporal. valor algo arbitrario
     //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
 
-    ula_zx81_time_event_t_estados=16;
+    ula_zx81_time_event_t_estados=0;
 
 
     tv_disable_vsync();

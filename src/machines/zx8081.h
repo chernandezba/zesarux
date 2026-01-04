@@ -98,6 +98,7 @@ extern int ula_zx81_time_event_t_estados;
 extern int ula_zx80_position_x_testados;
 
 extern void generar_zx80_hsync(void);
+extern void generar_zx81_hsync(void);
 
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;
