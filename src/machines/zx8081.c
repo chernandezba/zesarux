@@ -837,6 +837,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     //Solo se lanzan vsync cuando el nmi generator está off. Si no fuese así, se pretendería enviar vsync
     //en algunos juegos cuando se lee el teclado y el electrón está en la zona del borde superior o inferior
+    //Eso pasaba en Mazogs por ejemplo
     if (nmi_generator_active.v==0) {
         tv_enable_vsync();
         zx8081_vsync_generator.v=1;
@@ -950,6 +951,9 @@ void zx8081_out_any_port_video_stuff(void)
 
     //temporal. valor algo arbitrario
     //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
+
+    printf("Disable vsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d\n",
+        ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v);
 
     ula_zx81_time_event_t_estados=16;
 

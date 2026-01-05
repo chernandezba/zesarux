@@ -430,7 +430,7 @@ void cpu_core_loop_zx8081(void)
 
     //Interrupcion de cpu. gestion im0/1/2. Esto se hace al cambio de bit6 de R en zx80/81
     if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
-        printf("Generada maskable o nmi\n");
+        //printf("Generada maskable o nmi\n");
 
         debug_fired_interrupt=1;
 
@@ -444,7 +444,7 @@ void cpu_core_loop_zx8081(void)
 
 
         if (interrupcion_non_maskable_generada.v) {
-            printf("Generada nmi\n");
+            //printf("Generada nmi\n");
             //printf("1. nmi %d\n",t_estados);
             debug_anota_retorno_step_nmi();
             //printf("2. nmi %d\n",t_estados);
@@ -481,7 +481,7 @@ void cpu_core_loop_zx8081(void)
         //justo despues de EI no debe generar interrupcion
         //e interrupcion nmi tiene prioridad
         if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
-            printf("1. maskable %d\n",t_estados);
+            //printf("1. maskable %d\n",t_estados);
             debug_anota_retorno_step_maskable();
             //printf("2. maskable %d\n",t_estados);
 

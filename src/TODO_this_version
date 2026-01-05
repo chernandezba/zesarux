@@ -417,3 +417,7 @@ Por tanto seguramente la hsync se lance siempre desde contador
 Cuando se hace out, ula_zx81_time_event_t_estados=16 esto no está bien...
 Quiza problema con halt y los t_estados que tarda...
 O quiza el problema viene de vsync. Jugar a cambiar ula_zx81_time_event_t_estados al inicio de vsync o al final
+hsync generator no se puede desactivar?
+
+Quiza en zx8081_out_any_port_video_stuff cambiar ula_zx81_time_event_t_estados=16; solo cuando está zx8081_vsync_generator.v
+Esto permite hacer ese ajuste solo cuando hay el primer vsync a principio de frame
