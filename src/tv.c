@@ -101,7 +101,8 @@ void tv_time_event_store_chunk_image(int delta)
         //asi estaria hsync activo todo ese tiempo (tiempo screen_invisible_borde_derecho) y al liberarlo, la tv_x seria 0
         if (MACHINE_IS_ZX80_TYPE) xorig -=screen_invisible_borde_derecho;
 
-        //if (MACHINE_IS_ZX81_TYPE) xorig -=screen_invisible_borde_derecho;
+        //TODO: poner valor correcto de esto
+        if (MACHINE_IS_ZX81_TYPE) xorig -=(screen_invisible_borde_derecho/2);
 
         int xmax=xorig+delta*2;
 
