@@ -938,9 +938,6 @@ void zx8081_out_any_port_video_stuff(void)
     }
 
 
-    if (MACHINE_IS_ZX80_TYPE) {
-        ula_zx80_position_x_testados=0;
-    }
 
     //Para que la imagen esté centrada. En slow:
     //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo;
@@ -956,6 +953,10 @@ void zx8081_out_any_port_video_stuff(void)
         ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
 
     if (zx8081_vsync_generator.v) {
+        if (MACHINE_IS_ZX80_TYPE) {
+            ula_zx80_position_x_testados=0;
+        }
+
         ula_zx81_time_event_t_estados=16;
 
         tv_disable_vsync();
