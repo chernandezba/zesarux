@@ -421,3 +421,13 @@ hsync generator no se puede desactivar?
 
 Quiza en zx8081_out_any_port_video_stuff cambiar ula_zx81_time_event_t_estados=16; solo cuando está zx8081_vsync_generator.v
 Esto permite hacer ese ajuste solo cuando hay el primer vsync a principio de frame
+
+
+
+When an interrupt is accepted by the CPU it activates M1 and IORQ simultaneously, which is called the INTACK.
+This condition resets the HSYNC counter.
+
+Corregir:
+-nmi: generar hsync
+-ack de maskable: generar hsync, reset hsync counter
+quitar el reset de  ula_zx81_time_event_t_estados=16; en out
