@@ -7758,11 +7758,13 @@ void out_port_zx81_no_time(z80_int puerto,z80_byte value)
 
 	debug_fired_out=1;
 
-	if ((puerto&0xFF)==0xfd) {
+    // A1=0 , A0=1: disable nmi
+	if ((puerto&3)==1) {
         zx81_disable_nmi_generator();
 	}
 
-    if ((puerto&0xFF)==0xfe) {
+    //A1=1 , A0=0: enable nmi
+    if ((puerto&3)==2) {
         zx81_enable_nmi_generator();
     }
 
