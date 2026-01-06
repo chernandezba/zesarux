@@ -955,11 +955,12 @@ void zx8081_out_any_port_video_stuff(void)
     printf("Disable vsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
         ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
 
-    ula_zx81_time_event_t_estados=16;
+    if (zx8081_vsync_generator.v) {
+        ula_zx81_time_event_t_estados=16;
 
-
-    tv_disable_vsync();
-    zx8081_vsync_generator.v=0;
+        tv_disable_vsync();
+        zx8081_vsync_generator.v=0;
+    }
 
 
 
