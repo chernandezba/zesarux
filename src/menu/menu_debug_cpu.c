@@ -57,6 +57,7 @@
 #include "ay38912.h"
 #include "realjoystick.h"
 #include "utils_text_adventure.h"
+#include "tv.h"
 
 //Opciones seleccionadas de menus
 int mem_breakpoints_opcion_seleccionada=0;
@@ -5806,23 +5807,31 @@ int i;
 for (i=0;i<224*2/4;i++) printf ("%02X ",scanline_buffer[i]);
 printf ("\n");
 */
+        int x,y;
+        int si_salta_linea=0;
 
-        if (MACHINE_IS_SPECTRUM) {
-            screen_store_scanline_rainbow_solo_border();
-            screen_store_scanline_rainbow_solo_display();
+        if (MACHINE_IS_ZX8081) {
+            x=tv_get_x()*2;
+            y=tv_get_y()-screen_invisible_borde_superior;
         }
 
-        //Obtener posicion x e y e indicar posicion visualmente
+        else {
 
-        int si_salta_linea;
-        int x,y;
-        x=screen_get_x_coordinate_tstates(&si_salta_linea);
+            if (MACHINE_IS_SPECTRUM) {
+                screen_store_scanline_rainbow_solo_border();
+                screen_store_scanline_rainbow_solo_display();
+            }
 
-        y=screen_get_y_coordinate_tstates();
+            //Obtener posicion x e y e indicar posicion visualmente
 
-        //En caso de TBBLUE, doble de ancho
+            x=screen_get_x_coordinate_tstates(&si_salta_linea);
 
-        if (MACHINE_IS_TBBLUE) x*=2;
+            y=screen_get_y_coordinate_tstates();
+
+            //En caso de TBBLUE, doble de ancho
+
+            if (MACHINE_IS_TBBLUE) x*=2;
+        }
 
         menu_debug_registers_show_scan_pos_putcursor(x,y+si_salta_linea);
 
