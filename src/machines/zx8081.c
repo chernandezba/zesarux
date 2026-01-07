@@ -711,8 +711,8 @@ void generar_zx81_hsync(int tiempo)
 
     if (!hsync_duration_counter) {
 
-        //printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
-        //    ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
+        printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
+            ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
 
         tv_enable_hsync();
 
@@ -753,6 +753,7 @@ void ula_zx81_time_event(int delta)
 
 
             if (hsync_generator_active.v) {
+                printf("hsync desde generator\n");
                 generar_zx81_hsync(16);
                 video_zx8081_lcntr++;
             }
@@ -908,7 +909,11 @@ void zx8081_out_any_port_video_stuff(void)
     //nucinv16.p salta la imagen si activo esto
     //en cambio manic miner y otros se ven bien
     //al menos manic miner necesita hsync porque no usa interrupciones para ello
+    if (!hsync_duration_counter) {
+        printf("hsync desde out\n");
     generar_zx81_hsync(16);
+
+    }
 
     //probado con demo sllc.81
 
