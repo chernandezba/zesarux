@@ -668,31 +668,43 @@ int pending_disable_hsync=0;
 void generar_zx80_hsync(void)
 {
 
-    tv_enable_hsync();
-    pending_disable_hsync=1;
-    hsync_duration_counter=0;
+    if (!hsync_duration_counter) {
+        tv_enable_hsync();
+        //pending_disable_hsync=1;
+        //video_zx8081_lcntr++;
+    }
+
+
+
+    hsync_duration_counter=48;
 
 
     //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
     //ula_zx80_position_x_testados=0;
 
-    video_zx8081_lcntr++;
+
 
 
 }
 
 
-void generar_zx81_hsync(void)
+void generar_zx81_hsync(int tiempo)
 {
 
-    tv_enable_hsync();
-    pending_disable_hsync=1;
-    hsync_duration_counter=0;
+    if (!hsync_duration_counter) {
 
+        printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
+            ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
+
+        tv_enable_hsync();
+        //pending_disable_hsync=1;
+        //video_zx8081_lcntr++;
+    }
+
+    hsync_duration_counter=tiempo;
 
     //ula_zx81_time_event_t_estados=0;
 
-    video_zx8081_lcntr++;
 
 
 }
@@ -707,7 +719,7 @@ void ula_zx80_time_event(int delta)
 
     for (i=0;i<delta;i++) {
 
-        ula_zx80_position_x_testados +=1;
+        ula_zx80_position_x_testados ++;
 
         //printf("delta %d ula_zx80_position_x_testados %d\n",delta,ula_zx80_position_x_testados);
 
@@ -716,6 +728,18 @@ void ula_zx80_time_event(int delta)
             //printf("Tiempo previo hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
         }
 
+
+        if (hsync_duration_counter) {
+            extern int tv_x;
+            extern int tv_y;
+            //printf("Set tv_x to 0 on ula_zx80_position_x_testados %3d hsync_duration_counter %3d tv_x %3d tv_y %3d\n",
+            //    ula_zx80_position_x_testados,hsync_duration_counter,tv_x,tv_y);
+
+            hsync_duration_counter--;
+            if (!hsync_duration_counter) {
+                tv_disable_hsync();
+            }
+        }
 
         if (ula_zx80_position_x_testados>=screen_testados_linea) {
 
@@ -761,10 +785,20 @@ void ula_zx81_time_event(int delta)
 
     for (i=0;i<delta;i++) {
 
-        ula_zx81_time_event_t_estados+=1;
+        ula_zx81_time_event_t_estados++;
 
 
+        if (hsync_duration_counter) {
+            extern int tv_x;
+            extern int tv_y;
+            //printf("Set tv_x to 0 on ula_zx80_position_x_testados %3d hsync_duration_counter %3d tv_x %3d tv_y %3d\n",
+            //    ula_zx80_position_x_testados,hsync_duration_counter,tv_x,tv_y);
 
+            hsync_duration_counter--;
+            if (!hsync_duration_counter) {
+                tv_disable_hsync();
+            }
+        }
 
         if (ula_zx81_time_event_t_estados>=screen_testados_linea) {
             ula_zx81_time_event_t_estados -=screen_testados_linea;
@@ -777,11 +811,12 @@ void ula_zx81_time_event(int delta)
 
 
             if (hsync_generator_active.v) {
-                generar_zx81_hsync();
+                generar_zx81_hsync(16);
+                video_zx8081_lcntr++;
 
                 //Y desactivamos hsync al momento
-                pending_disable_hsync=0;
-                tv_disable_hsync();
+                //pending_disable_hsync=0;
+                //tv_disable_hsync();
             }
 
             /*
@@ -833,6 +868,21 @@ void zx81_disable_nmi_generator(void)
 
 int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
+
+    if (MACHINE_IS_ZX81_TYPE) {
+    //TODO: hsync pero sin saltar linea
+    //deduzco que hacemos esto porque hay un hsync activo desde el hsync generator y no quiero que salte coordenada y
+    extern int tv_x;
+
+    //necesario? Manic y otros tiembla la imagen
+    //if (nmi_generator_active.v) {
+        printf("X\n");
+        //generar_zx81_hsync();
+    //}
+    //valor probado con demo sllc.81
+    //tv_x=16;
+    }
+
     z80_byte valor;
 
     //Solo se lanzan vsync cuando el nmi generator está off. Si no fuese así, se pretendería enviar vsync
@@ -928,6 +978,20 @@ Bit  Expl.
 void zx8081_out_any_port_video_stuff(void)
 {
 
+    if (MACHINE_IS_ZX81_TYPE) {
+    //TODO: hsync pero sin saltar linea
+    //deduzco que hacemos esto porque hay un hsync activo desde el hsync generator y no quiero que salte coordenada y
+
+    //nucinv16.p salta la imagen si activo esto
+    //en cambio manic miner y otros se ven bien
+    //al menos manic miner necesita hsync porque no usa interrupciones para ello
+    generar_zx81_hsync(16);
+
+    extern int tv_x;
+    //valor probado con demo sllc.81
+    //tv_x=16;
+    }
+
     //printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
 
 
@@ -953,14 +1017,16 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (zx8081_vsync_generator.v) {
 
-        printf("Disable vsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
-            ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
+        //printf("Disable vsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
+        //    ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
 
         if (MACHINE_IS_ZX80_TYPE) {
             ula_zx80_position_x_testados=0;
         }
 
-        ula_zx81_time_event_t_estados=16;
+        if (MACHINE_IS_ZX81_TYPE) {
+        ula_zx81_time_event_t_estados=0;
+        }
 
         tv_disable_vsync();
         zx8081_vsync_generator.v=0;
