@@ -442,6 +442,7 @@ void cpu_core_loop_zx8081(void)
             //TODO: esto se ha probado a base de prueba y error para que los modos fast y slow queden centrados igual
             //si no, modos fast y slow difieren en 2 columnas de caracteres
             //Probablemente hay algun error en algun sitio (de hsync) y esto no deberia hacer falta
+            //Quiza es cosa del waitmapm que la nmi tiene que durar mas t-estados
             if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v) t_estados +=9;
 
             z80_halt_signal.v=0;
