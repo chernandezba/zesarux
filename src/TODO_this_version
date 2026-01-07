@@ -430,9 +430,12 @@ This condition resets the HSYNC counter.
 Corregir:
 -nmi: generar hsync
 -ack de maskable: generar hsync, reset hsync counter
-quitar el reset de  ula_zx81_time_event_t_estados=16; en out
+
 
 
 -recuperar hsync_duration_counter y hsync_total_duration
 No se si valor fijo o lo tiene que hacer mientras dura el ciclo de int ack y nmi ack
 ver run_hsync de zxsp
+
+
+-aydemo: quiza no interpretar puertos ay como hsync/vsync

@@ -7703,12 +7703,20 @@ void out_port_zx80_no_time(z80_int puerto,z80_byte value)
 	//Bi-Pak ZON-X81 Sound
 		if (puerto_l==0xDF || puerto_l==0xCF) {
 			activa_ay_chip_si_conviene();
-			if (ay_chip_present.v==1) out_port_ay(65533,value);
+			if (ay_chip_present.v==1) {
+                out_port_ay(65533,value);
+                //no interpretar los out como acciones sobre el video
+                return;
+            }
 		}
 
 		if (puerto_l==0x0F || puerto_l==0x1F) {
 			activa_ay_chip_si_conviene();
-			if (ay_chip_present.v==1) out_port_ay(49149,value);
+			if (ay_chip_present.v==1) {
+                out_port_ay(49149,value);
+                //no interpretar los out como acciones sobre el video
+                return;
+            }
 		}
 
 
