@@ -151,7 +151,7 @@ void cpu_core_loop_zx8081(void)
                 byte_leido_core_zx8081=0;
 
                 //Ese halt tiene que durar 1 t estado
-                if (MACHINE_IS_ZX81 && nmi_generator_active.v/*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
+                if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v/*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
             }
             else {
                 reg_pc++;
@@ -438,6 +438,12 @@ void cpu_core_loop_zx8081(void)
 
         //ver si esta en HALT
         if (z80_halt_signal.v) {
+            //Si estaba en halt y que se forzaba a 1 t-estado, este ultimo le hacemos durar 9 t-estados
+            //TODO: esto se ha probado a base de prueba y error para que los modos fast y slow queden centrados igual
+            //si no, modos fast y slow difieren en 2 columnas de caracteres
+            //Probablemente hay algun error en algun sitio (de hsync) y esto no deberia hacer falta
+            if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v) t_estados +=9;
+
             z80_halt_signal.v=0;
         }
 

@@ -1191,7 +1191,7 @@ void instruccion_118()
     if (debug_settings_show_fired_halt.v) core_spectrum_executed_halt_in_this_scanline=1;
 
     //que el halt dure 1t estado
-    if (MACHINE_IS_ZX81 && nmi_generator_active.v /*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
+    if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v /*&& interrupcion_non_maskable_generada.v*/) t_estados -=3;
 }
 
 void instruccion_119()
