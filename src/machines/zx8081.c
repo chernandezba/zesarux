@@ -709,6 +709,10 @@ int ula_zx81_time_event_t_estados=0;
 void generar_zx81_hsync(int tiempo)
 {
 
+    //Si electron esta hacia la izquierda, no hacer hsync
+    if (tv_get_x()<100) return;
+
+
     if (!hsync_duration_counter) {
 
         printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
