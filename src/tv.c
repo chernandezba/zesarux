@@ -146,6 +146,7 @@ void tv_time_event_store_chunk_image(int delta)
 
 }
 
+//TODO: de momento linea roja
 void tv_draw_black_line(int x_inicio,int y)
 {
 
@@ -186,8 +187,16 @@ void tv_draw_black_lines_beyond_vsync(int y)
     }
 }
 
+void tv_draw_black_line_beyond_hsync(int y)
+{
+    y=tv_return_effective_y_coordinate(y);
+
+    tv_draw_black_line(tv_x*2,y);
+}
+
 void tv_increase_line(void)
 {
+    //tv_draw_black_line_beyond_hsync(tv_y);
 
     tv_y++;
 
@@ -360,8 +369,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
     if (tv_x>=microsec_max && !ejecutando_vsync) {
         //printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
-        tv_x=0;
         tv_increase_line();
+        tv_x=0;
     }
 
 
