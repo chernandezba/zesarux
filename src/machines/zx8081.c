@@ -162,8 +162,6 @@ int hsync_total_duration=39;
 
 int hsync_duration_counter=0;
 
-//Para lanzar los hsync del hsync generator
-int ula_zx80_position_x_testados=0;
 
 //indica si se simula la pantalla negra del modo fast
 z80_bit video_fast_mode_emulation;
@@ -670,19 +668,9 @@ void generar_zx80_hsync(void)
 
     if (!hsync_duration_counter) {
         tv_enable_hsync();
-        //pending_disable_hsync=1;
-        //video_zx8081_lcntr++;
     }
 
-
-
     hsync_duration_counter=48;
-
-
-    //Necesario poner a 0 para imagen correcta en breakout y space invaders 1k y 3k se ven mal la primera linea de sprites de cada caracter
-    //ula_zx80_position_x_testados=0;
-
-
 
 
 }
@@ -719,52 +707,15 @@ void ula_zx80_time_event(int delta)
 
     for (i=0;i<delta;i++) {
 
-        ula_zx80_position_x_testados ++;
-
-        //printf("delta %d ula_zx80_position_x_testados %d\n",delta,ula_zx80_position_x_testados);
-
-
-        if (ula_zx80_position_x_testados>=screen_testados_linea-hsync_total_duration) {
-            //printf("Tiempo previo hsync en t_estados %6d (%d) y: %4d\n",t_estados,t_estados % screen_testados_linea,tv_get_y());
-        }
 
 
         if (hsync_duration_counter) {
-            extern int tv_x;
-            extern int tv_y;
-            //printf("Set tv_x to 0 on ula_zx80_position_x_testados %3d hsync_duration_counter %3d tv_x %3d tv_y %3d\n",
-            //    ula_zx80_position_x_testados,hsync_duration_counter,tv_x,tv_y);
-
             hsync_duration_counter--;
             if (!hsync_duration_counter) {
                 tv_disable_hsync();
             }
         }
 
-        if (ula_zx80_position_x_testados>=screen_testados_linea) {
-
-            //if (hsync_generator_active.v  && vsync_generator_active.v==0) printf("Fin de linea en %d\n",ula_zx80_position_x_testados);
-
-            ula_zx80_position_x_testados -=screen_testados_linea;
-
-            //Lanzamos hsync
-            //NO. Esto se hace desde ACK de la interrupción
-
-            if (0) {
-            if (hsync_generator_active.v) {
-                //printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
-                //    t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,1,tv_get_y());
-                generar_zx80_hsync();
-
-                //Y desactivamos hsync al momento
-                pending_disable_hsync=0;
-                tv_disable_hsync();
-            }
-            }
-
-
-
-        }
 
         if (zx8081_vsync_generator.v) video_zx8081_lcntr=0;
 
@@ -789,11 +740,6 @@ void ula_zx81_time_event(int delta)
 
 
         if (hsync_duration_counter) {
-            extern int tv_x;
-            extern int tv_y;
-            //printf("Set tv_x to 0 on ula_zx80_position_x_testados %3d hsync_duration_counter %3d tv_x %3d tv_y %3d\n",
-            //    ula_zx80_position_x_testados,hsync_duration_counter,tv_x,tv_y);
-
             hsync_duration_counter--;
             if (!hsync_duration_counter) {
                 tv_disable_hsync();
@@ -1020,9 +966,6 @@ void zx8081_out_any_port_video_stuff(void)
         //printf("Disable vsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
         //    ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
 
-        if (MACHINE_IS_ZX80_TYPE) {
-            ula_zx80_position_x_testados=0;
-        }
 
         if (MACHINE_IS_ZX81_TYPE) {
         ula_zx81_time_event_t_estados=0;

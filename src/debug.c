@@ -6391,10 +6391,7 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         }
 
-        if (MACHINE_IS_ZX80_TYPE) {
-            //sprintf (buf_linea,"ZX80 HSYNC counter: %d\n",ula_zx80_position_x_testados);
-            //sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        }
+
 
       }
 

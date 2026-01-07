@@ -540,17 +540,9 @@ void cpu_core_loop_zx8081(void)
             }
 
             //ZX80 lanza hsync al hacer ack de interrupción
-            //TODO: validar esto bien y quitar estos extern de aqui tan feos
             if (MACHINE_IS_ZX80_TYPE && hsync_generator_active.v) {
-                //printf("generate hsync en t_estados %6d (%d) ula_zx80_position_x_testados %3d delta %3d y: %4d\n",
-                //    t_estados,t_estados % screen_testados_linea,ula_zx80_position_x_testados,1,tv_get_y());
                 generar_zx80_hsync();
                 video_zx8081_lcntr++;
-
-                //Y desactivamos hsync al momento
-                //extern int pending_disable_hsync;
-                //pending_disable_hsync=0;
-                //tv_disable_hsync();
             }
 
 
