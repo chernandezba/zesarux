@@ -658,10 +658,10 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 }
 
-int ula_zx81_time_event_t_estados=0;
 
 
-int pending_disable_hsync=0;
+
+
 
 void generar_zx80_hsync(void)
 {
@@ -674,31 +674,6 @@ void generar_zx80_hsync(void)
 
 
 }
-
-
-void generar_zx81_hsync(int tiempo)
-{
-
-    if (!hsync_duration_counter) {
-
-        printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
-            ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
-
-        tv_enable_hsync();
-        //pending_disable_hsync=1;
-        //video_zx8081_lcntr++;
-    }
-
-    hsync_duration_counter=tiempo;
-
-    //ula_zx81_time_event_t_estados=0;
-
-
-
-}
-
-
-
 
 void ula_zx80_time_event(int delta)
 {
@@ -727,6 +702,27 @@ void ula_zx80_time_event(int delta)
 
 
 }
+
+
+int ula_zx81_time_event_t_estados=0;
+
+void generar_zx81_hsync(int tiempo)
+{
+
+    if (!hsync_duration_counter) {
+
+        printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
+            ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
+
+        tv_enable_hsync();
+
+    }
+
+    hsync_duration_counter=tiempo;
+
+
+}
+
 
 
 void ula_zx81_time_event(int delta)
@@ -759,26 +755,13 @@ void ula_zx81_time_event(int delta)
             if (hsync_generator_active.v) {
                 generar_zx81_hsync(16);
                 video_zx8081_lcntr++;
-
-                //Y desactivamos hsync al momento
-                //pending_disable_hsync=0;
-                //tv_disable_hsync();
             }
 
-            /*
-            Al generar nmi,
-            /Wait is also pulled low, to ensure the Z80 is in the correct T-State when the NMI is serviced.
-            This is gated by the /Halt signal, which would always be high as that is normally triggered by processing
-            the End of Line character, which will not happen on the non-visible lines.
-            ->Esto se resuelve haciendo que el HALT en Z80 tarde 1 t-estado
-            */
 
         }
 
 
         if (zx8081_vsync_generator.v) {
-            //printf("Set LCNTR to zero\n");
-            //printf("Set LCNTR to zero on time_event tv_y=%d\n",tv_get_y() );
             video_zx8081_lcntr=0;
         }
 
@@ -797,16 +780,12 @@ void zx81_enable_nmi_generator(void)
     nmi_generator_active.v=1;
 
 
-
-
 }
 
 void zx81_disable_nmi_generator(void)
 {
     //printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=0;
-
-
 
 }
 
@@ -816,17 +795,16 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
 
     if (MACHINE_IS_ZX81_TYPE) {
-    //TODO: hsync pero sin saltar linea
-    //deduzco que hacemos esto porque hay un hsync activo desde el hsync generator y no quiero que salte coordenada y
-    extern int tv_x;
+    //hsync pero sin saltar linea
+
 
     //necesario? Manic y otros tiembla la imagen
     //if (nmi_generator_active.v) {
         printf("X\n");
         //generar_zx81_hsync();
     //}
-    //valor probado con demo sllc.81
-    //tv_x=16;
+    //testeado con demo sllc.81
+
     }
 
     z80_byte valor;
@@ -841,7 +819,6 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     }
 
 
-    //video_zx8081_lcntr=0;
 
 
     //Para debug saber donde hay posible inicio vsync
@@ -933,9 +910,8 @@ void zx8081_out_any_port_video_stuff(void)
     //al menos manic miner necesita hsync porque no usa interrupciones para ello
     generar_zx81_hsync(16);
 
-    extern int tv_x;
-    //valor probado con demo sllc.81
-    //tv_x=16;
+    //probado con demo sllc.81
+
     }
 
     //printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
@@ -948,19 +924,6 @@ void zx8081_out_any_port_video_stuff(void)
     }
 
 
-
-    //Para que la imagen esté centrada. En slow:
-    //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo;
-
-    //En fast:
-    //Deberia ser este el valor que se asigna
-    //ula_zx81_time_event_t_estados=0;
-
-    //temporal. valor algo arbitrario
-    //ula_zx81_time_event_t_estados=screen_total_borde_izquierdo/2;
-
-
-
     if (zx8081_vsync_generator.v) {
 
         //printf("Disable vsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
@@ -968,6 +931,7 @@ void zx8081_out_any_port_video_stuff(void)
 
 
         if (MACHINE_IS_ZX81_TYPE) {
+        //Para que la imagen esté centrada
         ula_zx81_time_event_t_estados=0;
         }
 
