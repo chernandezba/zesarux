@@ -1028,17 +1028,22 @@ Pero si hago LOAD "nombre", me inserta siempre un standart tape nombre.p, por ta
 no puedo cargar de real tape cuando uso load "nombre"
 Deberia haber alguna opcion para evitar esos traps de cinta
 
--timings de display seguramente incorrectos. Esta suponiendo inicio scanline en zona izquierda. es normal? aplica a funciones de repintado y
-tambien a screen_get_x_coordinate_tstates
 
 -nuevo core segun http://www.sinclairzxworld.com/viewtopic.php?f=7&t=1780&sid=4a25aa27ef1c6d926f2d9c78f92052c9
 nuevo_core_zx8081/core_zx8081.c
-Andy is right. Horizontal syncs in a ZX81 are generated at a constant 207-cycle interval (63.7 usec / scanline), and this only gets reset by an interrupt acknowledge (Z80 /IORQ and /M1 both active). Unlike vertical syncs which are software-generated (the same way as in a ZX80, in fact) and don't affect hsync generator in any way.
-The hsync counter is free running and reset all 207 cycles. It is additionally reset with a INT ACK. But if not INT ACK is present the hsync still appears every 207 clock cycles. This can not be turned off. This INT ACK reset is used for synchronization of display output only. The hsync pulse is delayed 16 clock cycles to the tv output and kept 16 clock cylces long as far as I know. It differs a bit to ZX80 logic.
+Andy is right. Horizontal syncs in a ZX81 are generated at a constant 207-cycle interval (63.7 usec / scanline),
+and this only gets reset by an interrupt acknowledge (Z80 /IORQ and /M1 both active). Unlike vertical syncs which
+are software-generated (the same way as in a ZX80, in fact) and don't affect hsync generator in any way.
+The hsync counter is free running and reset all 207 cycles. It is additionally reset with a INT ACK.
+But if not INT ACK is present the hsync still appears every 207 clock cycles. This can not be turned off.
+This INT ACK reset is used for synchronization of display output only. The hsync pulse is delayed 16 clock cycles
+to the tv output and kept 16 clock cylces long as far as I know. It differs a bit to ZX80 logic.
 
 The NMI is touched with every hsync pulse (synchronous). You can switch off the NMI but not the hsync.
 
-The hsync counter is a hardware divider/counter. It works completely independently of the CPU. It is always on and always counting. As Pokemon and others have said, when it overflows, it automatically resets and restarts. It is also possible to reset and restart it as described above.
+The hsync counter is a hardware divider/counter. It works completely independently of the CPU.
+It is always on and always counting. As Pokemon and others have said, when it overflows, it automatically resets and restarts.
+It is also possible to reset and restart it as described above.
 
 -HighResolution.A.* no siempre van
 
@@ -1047,25 +1052,6 @@ The hsync counter is a hardware divider/counter. It works completely independent
 -real video off consume mas cpu que real video on. normal?
 
 -cargar .p snap grabado de zx81 como snap luego solo carga como snapshot pero no como cinta. tambien falla al cargar ese snapshot como cinta en eightone
-
--LINECNTR adjust. con pruebas a forzar contador a 0 en out_port_zx80_no_time, se ven bien todos los juegos excepto:
-biplot, voyage: estos dos solo en el texto del menu
-HR-GALAX.P en instrucciones al pulsar una tecla
-HighRes.p despues de verse las caras en modo grafico y parar con break
-xtricator ok
-pacman bien tanto pantalla inicial como juego
-->Y falla modo FAST!
-
--Para intentar eliminar modo LINECNTR, probar:
--zx80
--zx81 slow
--zx81 fast
--zx81 hires
--manic miner por ejemplo pone modo fast pero el ajuste de linea es el mismo que modo slow
--La clave estaria en distinguir modo fast de slow, a nivel de sync de pantalla
--A nivel de registro I creo que no hay diferencia entre un juego que necesita dicho ajuste y otro que no
--Tampoco parece haber diferencia entre nmi_generator_active a 1 o 0
--Quiza el problema es cuando se ejecuta generar_zx8081_horiz_sync, y esto igual tiene que ver con problemas con t-estados de instrucciones
 
 
 
