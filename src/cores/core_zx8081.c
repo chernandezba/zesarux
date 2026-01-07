@@ -545,12 +545,14 @@ void cpu_core_loop_zx8081(void)
                 video_zx8081_lcntr++;
             }
 
+
             /*
             if (MACHINE_IS_ZX81_TYPE && hsync_generator_active.v && nmi_generator_active.v==0) {
                 generar_zx81_hsync(16);
                 ula_zx81_time_event_t_estados=0;
             }
             */
+
 
 
         }

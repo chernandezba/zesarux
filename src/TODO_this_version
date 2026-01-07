@@ -425,11 +425,11 @@ Esto permite hacer ese ajuste solo cuando hay el primer vsync a principio de fra
 
 
 When an interrupt is accepted by the CPU it activates M1 and IORQ simultaneously, which is called the INTACK.
-This condition resets the HSYNC counter.
+mal-> This condition resets the HSYNC counter.
 
 Corregir:
--nmi: generar hsync
--ack de maskable: generar hsync, reset hsync counter
+ok -nmi: generar hsync
+mal -ack de maskable: generar hsync, reset hsync counter
 
 
 
@@ -437,5 +437,6 @@ Corregir:
 No se si valor fijo o lo tiene que hacer mientras dura el ciclo de int ack y nmi ack
 ver run_hsync de zxsp
 
-
--aydemo: quiza no interpretar puertos ay como hsync/vsync
+-probar diferentes valores de hsync para los sitios en que se lanza, a ver si ya coincide columna para slow/fast
+-nucinv16.p tiembla
+-hero.81 no hace vsync

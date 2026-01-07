@@ -711,8 +711,8 @@ void generar_zx81_hsync(int tiempo)
 
     if (!hsync_duration_counter) {
 
-        printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
-            ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
+        //printf("Enable hsync con ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
+        //    ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
 
         tv_enable_hsync();
 
@@ -800,7 +800,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     //necesario? Manic y otros tiembla la imagen
     //if (nmi_generator_active.v) {
-        printf("X\n");
+
         //generar_zx81_hsync();
     //}
     //testeado con demo sllc.81
