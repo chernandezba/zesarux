@@ -158,6 +158,7 @@ void tv_draw_black_line(int x_inicio,int y)
             int x;
 
             //if (y==42) printf("x %3d xmax %3d y %3d sprite %02XH\n",xorig,xmax,y,zx80801_last_sprite_video);
+            //printf("x_inicio %d totalancho %d\n",x_inicio,totalancho);
 
             for (x=x_inicio;x<totalancho;x++) {
 
@@ -189,6 +190,7 @@ void tv_draw_black_lines_beyond_vsync(int y)
 
 void tv_draw_black_line_beyond_hsync(int y)
 {
+    //printf("tv_x %d\n",tv_x);
     y=tv_return_effective_y_coordinate(y);
 
     tv_draw_black_line(tv_x*2,y);
@@ -196,7 +198,6 @@ void tv_draw_black_line_beyond_hsync(int y)
 
 void tv_increase_line(void)
 {
-    //tv_draw_black_line_beyond_hsync(tv_y);
 
     tv_y++;
 
@@ -393,6 +394,7 @@ void tv_enable_hsync(void)
         //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
+        tv_draw_black_line_beyond_hsync(tv_y);
     }
     else {
         //printf("Received hsync but was already enabled\n");
