@@ -440,3 +440,4 @@ ver run_hsync de zxsp
 -probar diferentes valores de hsync para los sitios en que se lanza, a ver si ya coincide columna para slow/fast
 -nucinv16.p tiembla
 -hero.81 no hace vsync
+-scanline en modo slow se escribe el primero en y=59. en modo fast es y=57

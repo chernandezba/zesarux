@@ -909,11 +909,11 @@ void zx8081_out_any_port_video_stuff(void)
     //nucinv16.p salta la imagen si activo esto
     //en cambio manic miner y otros se ven bien
     //al menos manic miner necesita hsync porque no usa interrupciones para ello
-    if (!hsync_duration_counter) {
-        printf("hsync desde out\n");
+
+    //    printf("hsync desde out\n");
     generar_zx81_hsync(16);
 
-    }
+
 
     //probado con demo sllc.81
 
