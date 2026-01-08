@@ -297,7 +297,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
         //TODO En principio vsync necesita hsync. Esto es lo que provoca que al hacer save, la imagen no se vaya arriba
 
-        if (tv_vsync_signal_length>DEFAULT_MINIMO_DURACION_VSYNC && tv_vsync_signal_length<PERMITIDO_MAXIMO_DURACION_VSYNC) {
+        if (tv_vsync_signal_length>=DEFAULT_MINIMO_DURACION_VSYNC && tv_vsync_signal_length<PERMITIDO_MAXIMO_DURACION_VSYNC) {
 
             //printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
 

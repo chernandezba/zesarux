@@ -42,7 +42,8 @@ A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX
 it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
 */
 
-#define DEFAULT_MINIMO_DURACION_VSYNC 518
+//Con 518 ok. Pero HERO.81 requiere 160
+#define DEFAULT_MINIMO_DURACION_VSYNC 160
 #define PERMITIDO_MINIMO_DURACION_VSYNC 100
 #define PERMITIDO_MAXIMO_DURACION_VSYNC 2000
 
