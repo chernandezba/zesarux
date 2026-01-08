@@ -63,6 +63,8 @@ int tv_vsync_signal_length=0;
 int tv_hsync_signal=0;
 int tv_hsync_signal_pending=0;
 
+int tv_minimum_accepted_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
+
 //maximo tiempo que puede durar una linea, en microsegundos, si no llega señal de hsync
 //habitualmente deberia de ser de 64 microsegundos
 //Estos 84 sirve para que el juego de QS Defenda se vean hasta las ultimas lineas del final
@@ -297,7 +299,11 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
         //TODO En principio vsync necesita hsync. Esto es lo que provoca que al hacer save, la imagen no se vaya arriba
 
-        if (tv_vsync_signal_length>=DEFAULT_MINIMO_DURACION_VSYNC && tv_vsync_signal_length<PERMITIDO_MAXIMO_DURACION_VSYNC) {
+        int minimo_t_estados=(tv_minimum_accepted_vsync*screen_testados_linea)/64;
+        //printf("minimo %d\n",minimo_t_estados);
+        int maximo_t_estados=(PERMITIDO_MAXIMO_DURACION_VSYNC*screen_testados_linea)/64;
+
+        if (tv_vsync_signal_length>=minimo_t_estados && tv_vsync_signal_length<maximo_t_estados) {
 
             //printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
 

@@ -6960,13 +6960,7 @@ void menu_display_timex_video(MENU_ITEM_PARAMETERS)
     else enable_timex_video();
 }
 
-/*
-void menu_display_minimo_vsync(MENU_ITEM_PARAMETERS)
-{
 
-        menu_hardware_advanced_input_value(PERMITIDO_MINIMO_DURACION_VSYNC,PERMITIDO_MAXIMO_DURACION_VSYNC,"Minimum vsync length",&minimo_duracion_vsync);
-}
-*/
 
 void menu_display_timex_video_512192(MENU_ITEM_PARAMETERS)
 {
@@ -9856,6 +9850,12 @@ void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Max Lines",&tv_max_lines,4,+1,200,399,0);
 }
 
+
+void menu_settings_tv_minimum_accepted_vsync(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0);
+}
+
 void menu_settings_tv(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -9898,6 +9898,12 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
                 "Max Line Period","Max Periodo de Línea","Max Periode de Línia");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_max_line_period);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_minimum_accepted_vsync,NULL,
+                "Minimum vsync","Mínimo vsync","Mínim vsync");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_minimum_accepted_vsync);
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,

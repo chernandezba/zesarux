@@ -42,12 +42,18 @@ A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX
 it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
 */
 
-//Con 518 ok. Pero HERO.81 requiere 160
-#define DEFAULT_MINIMO_DURACION_VSYNC 160
-#define PERMITIDO_MINIMO_DURACION_VSYNC 100
-#define PERMITIDO_MAXIMO_DURACION_VSYNC 2000
+//En t-estados:
+//Con 518 ok. Pero HERO.81 usa 160
+//En microsec:
+// 160 t-estados = 49 microsec
+// 518 t-estados = 160 microsec
+#define DEFAULT_MINIMO_DURACION_VSYNC 49
+
+#define PERMITIDO_MAXIMO_DURACION_VSYNC 618
 
 extern void tv_time_event(int delta);
+
+extern int tv_minimum_accepted_vsync;
 
 extern void tv_enable_hsync(void);
 extern void tv_disable_hsync(void);
