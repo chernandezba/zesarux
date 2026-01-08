@@ -12864,8 +12864,6 @@ void customconfig_help(void)
     "--chroma81\n"
     "--vsync-minimum-length n \n"
     "--gigascreen                      Enable GigaScreen emulation\n"
-    "--enablezx8081lnctradjust         Enable LNCTR adjust on ZX80/81\n"
-    "--disablezx8081lnctradjust        Disable LNCTR adjust on ZX80/81\n"
     "--redefinekey src dest\n"
     "--clearredefinekey                Clear redefine key table\n"
     "--joystickemulated type\n"
