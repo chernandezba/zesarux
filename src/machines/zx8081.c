@@ -660,9 +660,6 @@ z80_byte fetch_opcode_zx81_graphics(void)
 
 
 
-
-
-
 void generar_zx80_hsync(void)
 {
 
@@ -681,8 +678,6 @@ void ula_zx80_time_event(int delta)
     int i;
 
     for (i=0;i<delta;i++) {
-
-
 
         if (hsync_duration_counter) {
             hsync_duration_counter--;
@@ -889,15 +884,15 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
 
     if (MACHINE_IS_ZX81_TYPE) {
-    //hsync pero sin saltar linea
+        //hsync pero sin saltar linea
 
 
-    //necesario? Manic y otros tiembla la imagen
-    //if (nmi_generator_active.v) {
+        //necesario? Manic y otros tiembla la imagen
+        //if (nmi_generator_active.v) {
 
-        //generar_zx81_hsync();
-    //}
-    //testeado con demo sllc.81
+            //generar_zx81_hsync();
+        //}
+        //testeado con demo sllc.81
 
     }
 
@@ -914,8 +909,8 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
     {
-            int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
-            t_estados += d;
+        int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
+        t_estados += d;
     }
 
 
@@ -1000,19 +995,19 @@ void zx8081_out_any_port_video_stuff(void)
 {
 
     if (MACHINE_IS_ZX81_TYPE) {
-    //TODO: hsync pero sin saltar linea
-    //deduzco que hacemos esto porque hay un hsync activo desde el hsync generator y no quiero que salte coordenada y
+        //TODO: hsync pero sin saltar linea
+        //deduzco que hacemos esto porque hay un hsync activo desde el hsync generator y no quiero que salte coordenada y
 
-    //nucinv16.p salta la imagen si activo esto
-    //en cambio manic miner y otros se ven bien
-    //al menos manic miner necesita hsync porque no usa interrupciones para ello
+        //nucinv16.p salta la imagen si activo esto
+        //en cambio manic miner y otros se ven bien
+        //al menos manic miner necesita hsync porque no usa interrupciones para ello
 
-    //    printf("hsync desde out\n");
-    generar_zx81_hsync(16);
+        //    printf("hsync desde out\n");
+        generar_zx81_hsync(16);
 
 
 
-    //probado con demo sllc.81
+        //probado con demo sllc.81
 
     }
 
@@ -1033,9 +1028,9 @@ void zx8081_out_any_port_video_stuff(void)
 
 
         if (MACHINE_IS_ZX81_TYPE) {
-        //Para que la imagen esté centrada
-        ula_zx81_time_event_t_estados=0;
-        reset_hsync_setup_waitmap(t_estados+2,2);
+            //Para que la imagen esté centrada
+            ula_zx81_time_event_t_estados=0;
+            reset_hsync_setup_waitmap(t_estados+2,2);
         }
 
         tv_disable_vsync();
@@ -1044,8 +1039,8 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
     {
-            int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
-            t_estados += d;
+        int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
+        t_estados += d;
     }
 
     modificado_border.v=1;
