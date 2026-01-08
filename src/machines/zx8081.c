@@ -712,7 +712,7 @@ const int waitmap_size = 207;
 int waitmap[waitmap_size];
 int cc_hsync_period = 207;
 
-//TODO: esto se recalcula cuando se lanza hsync
+
 int cc_hsync_next=16;
 
 void clear_waitmap(void)
@@ -741,14 +741,22 @@ void setup_waitmap(int cc_hsync)
 
         // circularly fill in 16cc delay for the first cc of the NMI pulse to 1cc for the last:
         int i = 0;
-        for (; i < util_min(waitmap_size - cc_hsync, 16); i++) { waitmap[cc_hsync + i] = 16 - i; }
-        for (; i < 16; i++) { waitmap[cc_hsync - waitmap_size + i] = 16 - i; }
+        for (; i < util_min(waitmap_size - cc_hsync, 16); i++) {
+            //printf("valor %d\n",16-i);
+            int valor=16-i;
+            waitmap[cc_hsync + i] = valor;
+        }
+        for (; i < 16; i++) {
+            int valor=16-i;
+            waitmap[cc_hsync - waitmap_size + i] = valor;
+            //printf("valor %d\n",16-i);
+        }
 
-    /*
+
     for (i=0;i<waitmap_size;i++) {
-        printf("Waitmap %3d: %d\n",i,waitmap[i]);
+        //printf("Waitmap %3d: %d\n",i,waitmap[i]);
     }
-    */
+
 
 }
 

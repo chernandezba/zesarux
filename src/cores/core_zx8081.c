@@ -454,10 +454,7 @@ void cpu_core_loop_zx8081(void)
             //o lo que es lo mismo, sincronizarse luego el hsync con la interrupción por registro R
             int sumar_estados = waitmap [t_estados % waitmap_size];
 
-            printf("sumar %d\n",sumar_estados);
-
-            if (sumar_estados<0 || sumar_estados>16) sleep(5);
-
+            //printf("sumar %d\n",sumar_estados);
 
             t_estados +=sumar_estados;
 
