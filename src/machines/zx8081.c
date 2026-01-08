@@ -703,6 +703,74 @@ void ula_zx80_time_event(int delta)
 
 }
 
+//
+// Start waitmap code
+//
+int WAITMAP_POS = +1; // +1 wg. test position in Z80.run()
+int NMI_POS     = +2; // +2 = waitmap_pos+1 => max. 13 wait cycles
+const int waitmap_size = 207;
+int waitmap[waitmap_size];
+int cc_hsync_period = 207;
+
+//TODO: esto se recalcula cuando se lanza hsync
+int cc_hsync_next=16;
+
+void clear_waitmap(void)
+{
+    memset(waitmap, 0, waitmap_size);
+}
+
+void setup_waitmap(int cc_hsync)
+{
+        // when NMI is enabled then /NMI and /WAIT are asserted for 16cc at the same time as HSYNC.
+        // the Z80 emulation will use cc % 207 to peek into the waitmap[].
+        // the NMI will start at cc_nmi => waitmap[cc_nmi%207 to cc_nmi%207+15] must be set.
+
+        // the waitmap must be updated
+        // - when the NMI is enabled
+        // - when the cc timebase is shifted in videoFrameEnd()
+        // - when the HSYNC generator is restarted in interruptAtCycle()
+
+        cc_hsync += waitmap_size;
+
+        cc_hsync %= waitmap_size;
+
+        if (waitmap[cc_hsync] == 16) // quick test whether it is already set as required
+                return;
+        clear_waitmap(); // clear old wait positions
+
+        // circularly fill in 16cc delay for the first cc of the NMI pulse to 1cc for the last:
+        int i = 0;
+        for (; i < util_min(waitmap_size - cc_hsync, 16); i++) { waitmap[cc_hsync + i] = 16 - i; }
+        for (; i < 16; i++) { waitmap[cc_hsync - waitmap_size + i] = 16 - i; }
+
+    /*
+    for (i=0;i<waitmap_size;i++) {
+        printf("Waitmap %3d: %d\n",i,waitmap[i]);
+    }
+    */
+
+}
+
+void reset_hsync_setup_waitmap(int cc, int dur)
+{
+        // reset the HSYNC counter.
+        // the reset input is activated by an INT acknowledge cycle of the cpu.
+        // the HSYNC counter is kept in reset while the INTACK signal is active.
+        // => the alignment of the NMI changes => the waitmap needs to be updated
+
+
+        cc_hsync_next = cc + dur + 16;
+
+        if (nmi_generator_active.v)
+        {
+                setup_waitmap(cc_hsync_next + WAITMAP_POS);
+        }
+}
+
+//
+// End waitmap code
+//
 
 int ula_zx81_time_event_t_estados=0;
 
@@ -753,6 +821,7 @@ void ula_zx81_time_event(int delta)
             if (nmi_generator_active.v) {
                 //printf("Generate nmi\n");
                 generate_nmi();
+                reset_hsync_setup_waitmap(t_estados+2,2);
             }
 
 
@@ -784,6 +853,8 @@ void zx81_enable_nmi_generator(void)
     //printf("   nmi on   en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=1;
 
+    int cc_hsync = hsync_duration_counter ? cc_hsync_next - 16 + cc_hsync_period : cc_hsync_next;
+    setup_waitmap(cc_hsync + WAITMAP_POS);
 
 }
 

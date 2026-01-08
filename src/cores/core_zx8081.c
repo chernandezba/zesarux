@@ -444,6 +444,28 @@ void cpu_core_loop_zx8081(void)
 
 
         if (interrupcion_non_maskable_generada.v) {
+            // NMI starts with a dummy opcode fetch
+            t_estados += 4;
+
+            // sumar wait cycles (minimo 1, maximo 16) - waitmap
+
+            //Esto influye en el modo slow, cuando se transiciona del borde superior, donde se usa nmi, a la zona de caracteres,
+            //donde se usa interrupciones por registro R, ese halt (en la rom direccion 79H) permite sincronizar la nmi con el hsync,
+            //o lo que es lo mismo, sincronizarse luego el hsync con la interrupción por registro R
+            int sumar_estados = waitmap [t_estados % waitmap_size];
+
+            printf("sumar %d\n",sumar_estados);
+
+            if (sumar_estados<0 || sumar_estados>16) sleep(5);
+
+
+            t_estados +=sumar_estados;
+
+            //esto se ha probado a base de prueba y error para que los modos fast y slow queden centrados igual
+            //si no, modos fast y slow difieren en 2 columnas de caracteres
+            //t_estados +=9;
+
+
             //printf("Generada nmi\n");
             //printf("1. nmi %d\n",t_estados);
             debug_anota_retorno_step_nmi();
@@ -465,24 +487,7 @@ void cpu_core_loop_zx8081(void)
 
 
 
-            t_estados += 4;
 
-            //printf("4. nmi %d\n",t_estados);
-
-            //TODO: sumar wait cycles (minimo 1, maximo 16) - waitmap
-
-
-
-            //printf("5. nmi %d\n",t_estados);
-            //TODO: esto se ha probado a base de prueba y error para que los modos fast y slow queden centrados igual
-            //si no, modos fast y slow difieren en 2 columnas de caracteres
-            //Probablemente esto es debido a que hay que implementar el waitmap de nmi, no siempre son estos 9 estados,
-            //pero al menos para centrar modos slow y fast si que de momento vale temporalmente
-            t_estados +=9;
-
-            //Esto influye en el modo slow, cuando se transiciona del borde superior, donde se usa nmi, a la zona de caracteres,
-            //donde se usa interrupciones por registro R, ese halt (en la rom direccion 79H) permite sincronizar la nmi con el hsync,
-            //o lo que es lo mismo, sincronizarse luego el hsync con la interrupción por registro R
 
         }
 
