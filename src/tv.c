@@ -141,7 +141,7 @@ void tv_time_event_store_chunk_image(int delta)
 
 }
 
-//TODO: de momento linea roja
+//Renderizar zonas que quedan mas alla de vsync y hsync
 void tv_draw_black_line(int x_inicio,int y)
 {
 
@@ -160,7 +160,13 @@ void tv_draw_black_line(int x_inicio,int y)
 
                 //si linea no coincide con entrelazado, volvemos
                 if (if_store_scanline_interlace(y) ) {
-                    int color=2;
+                    int color;
+
+                    if (video_zx8081_ula_video_output) color=zx80801_last_sprite_video_tinta;
+                    else color=zx80801_last_sprite_video_papel;
+
+                    //TODO: opcion debug para mostrarlo en rojo
+                    //color=2;
 
                     rainbow_buffer[y*totalancho+x]=color;
                 }
