@@ -735,7 +735,7 @@ void setup_waitmap(int cc_hsync)
 
         cc_hsync %= waitmap_size;
 
-        if (waitmap[cc_hsync] == 16) // quick test whether it is already set as required
+        if (get_waitmap_value(cc_hsync) == 16) // quick test whether it is already set as required
                 return;
         clear_waitmap(); // clear old wait positions
 
@@ -774,6 +774,11 @@ void reset_hsync_setup_waitmap(int cc, int dur)
         {
                 setup_waitmap(cc_hsync_next + WAITMAP_POS);
         }
+}
+
+int get_waitmap_value(int pos)
+{
+    return waitmap[pos % waitmap_size];
 }
 
 //
@@ -906,7 +911,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
     {
-            int d = waitmap[(t_estados + 2 + WAITMAP_POS) % waitmap_size];
+            int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
             t_estados += d;
     }
 
@@ -1036,7 +1041,7 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
     {
-            int d = waitmap[(t_estados + 2 + WAITMAP_POS) % waitmap_size];
+            int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
             t_estados += d;
     }
 

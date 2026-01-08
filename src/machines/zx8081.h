@@ -167,6 +167,6 @@ extern void zx81_enable_nmi_generator(void);
 extern void zx81_disable_nmi_generator(void);
 
 extern const int waitmap_size;
-extern int waitmap[];
+extern int get_waitmap_value(int pos);
 
 #endif
