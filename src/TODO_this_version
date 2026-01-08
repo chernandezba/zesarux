@@ -433,5 +433,6 @@ ok -nucinv16.p tiembla
 -hero.81 no hace vsync
 ok -scanline en modo slow se escribe el primero en y=59. en modo fast es y=57
 
+-revisar waitmap y activarlo en pausa nmi. o dejar el 9 tal cual
 
 Revisar settings de config y custom file config de ZX80 y ZX81 que ya no se usen. Dejarlas como deprecated
