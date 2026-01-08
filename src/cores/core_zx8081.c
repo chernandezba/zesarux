@@ -452,17 +452,17 @@ void cpu_core_loop_zx8081(void)
             //Esto influye en el modo slow, cuando se transiciona del borde superior, donde se usa nmi, a la zona de caracteres,
             //donde se usa interrupciones por registro R, ese halt (en la rom direccion 79H) permite sincronizar la nmi con el hsync,
             //o lo que es lo mismo, sincronizarse luego el hsync con la interrupción por registro R
-            //int sumar_estados = waitmap [t_estados % waitmap_size];
+            int sumar_estados = waitmap [t_estados % waitmap_size];
 
-            //printf("sumar %d\n",sumar_estados);
+            printf("sumar %d\n",sumar_estados);
 
             //De momento no sumamos waitmap, no funciona bien
-            //t_estados +=sumar_estados;
+            t_estados +=sumar_estados;
 
             //esto se ha probado a base de prueba y error para que los modos fast y slow queden centrados igual
             //si no, modos fast y slow difieren en 2 columnas de caracteres
             //TODO: lo ideal seria sumar el valor de waitmap
-            t_estados +=9;
+            //t_estados +=9;
 
 
             //printf("Generada nmi\n");

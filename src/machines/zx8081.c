@@ -871,6 +871,8 @@ void zx81_disable_nmi_generator(void)
     //printf("   nmi off  en t_estados %6d y: %4d\n",t_estados,tv_get_y());
     nmi_generator_active.v=0;
 
+    clear_waitmap();
+
 }
 
 
@@ -902,7 +904,11 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         //printf("Set vsync generator tv_y=%d\n",tv_get_y() );
     }
 
-
+    if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
+    {
+            int d = waitmap[(t_estados + 2 + WAITMAP_POS) % waitmap_size];
+            t_estados += d;
+    }
 
 
     //Para debug saber donde hay posible inicio vsync
@@ -1021,13 +1027,18 @@ void zx8081_out_any_port_video_stuff(void)
         if (MACHINE_IS_ZX81_TYPE) {
         //Para que la imagen esté centrada
         ula_zx81_time_event_t_estados=0;
+        reset_hsync_setup_waitmap(t_estados+2,2);
         }
 
         tv_disable_vsync();
         zx8081_vsync_generator.v=0;
     }
 
-
+    if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
+    {
+            int d = waitmap[(t_estados + 2 + WAITMAP_POS) % waitmap_size];
+            t_estados += d;
+    }
 
     modificado_border.v=1;
 
