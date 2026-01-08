@@ -778,6 +778,9 @@ void reset_hsync_setup_waitmap(int cc, int dur)
 
 int get_waitmap_value(int pos)
 {
+    //TODO. no sumamos waitmap. no funciona bien
+    return 0;
+
     return waitmap[pos % waitmap_size];
 }
 
