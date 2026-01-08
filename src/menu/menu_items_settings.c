@@ -3541,6 +3541,10 @@ void menu_debug_verbose_filter(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_debug_settings_show_zones_beyond_sync(MENU_ITEM_PARAMETERS)
+{
+    menu_debug_show_zones_beyond_sync.v ^=1;
+}
 
 //menu debug settings
 void menu_settings_debug(MENU_ITEM_PARAMETERS)
@@ -3587,6 +3591,14 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( menu_debug_registers_if_showscan.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
+
+        if (MACHINE_IS_ZX8081 && rainbow_enabled.v) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_zones_beyond_sync,NULL,
+                "Show zones beyond sync","Mostrar zonas mas alla de sync","Veure zones mes enllà de sync");
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( menu_debug_show_zones_beyond_sync.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows zones beyond hsync or vsync in red color");
+            menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows zones beyond hsync or vsync in red color");
+        }
 
 
         if (MACHINE_IS_SPECTRUM) {

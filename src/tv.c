@@ -31,6 +31,7 @@
 #include "operaciones.h"
 #include "zxvision.h"
 #include "ula.h"
+#include "settings.h"
 
 /*
 
@@ -165,8 +166,8 @@ void tv_draw_line_beyond_syncs(int x_inicio,int y)
                     if (video_zx8081_ula_video_output) color=zx80801_last_sprite_video_tinta;
                     else color=zx80801_last_sprite_video_papel;
 
-                    //TODO: opcion debug para mostrarlo en rojo
-                    //color=2;
+                    //opcion debug para mostrarlo en rojo
+                    if (menu_debug_show_zones_beyond_sync.v) color=2;
 
                     rainbow_buffer[y*totalancho+x]=color;
                 }
@@ -210,7 +211,7 @@ void tv_increase_line(void)
 
     //le damos un pelin mas de margen
     if (tv_y>tv_max_lines) {
-        printf("vsync timeout en %d\n",tv_y);
+        //printf("vsync timeout en %d\n",tv_y);
         //sleep(1);
 
         //vsync solo mueve la y, no la X?

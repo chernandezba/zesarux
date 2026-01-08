@@ -119,6 +119,8 @@
 
 z80_bit menu_debug_registers_if_showscan={0};
 
+z80_bit menu_debug_show_zones_beyond_sync={0};
+
 //Si muestra en que scanline se ha disparado un halt
 z80_bit debug_settings_show_fired_halt={0};
 

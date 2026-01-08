@@ -1607,7 +1607,7 @@ tbblue.o: machines/tbblue.c machines/tbblue.h cpu.h mem128.h debug.h contend.h u
 zx8081.o: machines/zx8081.c machines/zx8081.h cpu.h video/screen.h debug.h audio/audio.h cores/core_zx8081.h operaciones.h zxvision/zxvision.h ula.h storage/zxpand.h storage/tape.h tv.h
 	\$(CC) \$(CFLAGS) -c machines/zx8081.c
 
-tv.o: tv.c tv.h cpu.h machines/zx8081.h video/screen.h debug.h cores/core_zx8081.h operaciones.h zxvision/zxvision.h ula.h
+tv.o: tv.c tv.h cpu.h machines/zx8081.h video/screen.h debug.h cores/core_zx8081.h operaciones.h zxvision/zxvision.h ula.h settings.h
 	\$(CC) \$(CFLAGS) -c tv.c
 
 jupiterace.o: machines/jupiterace.c machines/jupiterace.h cpu.h video/screen.h debug.h audio/audio.h cores/core_ace.h operaciones.h zxvision/zxvision.h
