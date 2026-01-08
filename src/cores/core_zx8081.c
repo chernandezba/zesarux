@@ -465,28 +465,16 @@ void cpu_core_loop_zx8081(void)
             t_estados +=9;
 
 
-            //printf("Generada nmi\n");
-            //printf("1. nmi %d\n",t_estados);
             debug_anota_retorno_step_nmi();
-            //printf("2. nmi %d\n",t_estados);
             interrupcion_non_maskable_generada.v=0;
-
 
             //6 T
             push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
-            //printf("3. nmi %d\n",t_estados);
-
 
             reg_r++;
             iff1.v=0;
-            //printf ("Calling NMI with pc=0x%x\n",reg_pc);
-
 
             reg_pc= 0x66;
-
-
-
-
 
         }
 
