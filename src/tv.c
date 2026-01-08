@@ -224,11 +224,11 @@ void tv_increase_line(void)
     }
 }
 
-int temp_extend_debug=0;
+
 
 int tv_linea_inicio_vsync=0;
 
-int debug_first_vsync=0;
+
 
 int ejecutando_vsync=0;
 
@@ -267,13 +267,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         //printf("####---- vsync y nmi generator y hsync generator en t_estados %6d Y=%d\n",t_estados,tv_get_y());
     }
 
-    if (temp_extend_debug) printf("tv hsync pending en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+    //printf("tv hsync pending en t_estados %6d Y=%d\n",t_estados,tv_get_y());
 
     if (tv_vsync_signal) {
         //Aqui da imagen correcta en mazogs pero incorrecta en juego de manic miner
         //video_zx8081_lcntr=0;
 
-        if (temp_extend_debug) printf("tv vsync enabled en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+        //printf("tv vsync enabled en t_estados %6d Y=%d\n",t_estados,tv_get_y());
         tv_vsync_signal_length+=delta;
         /*
         Qué sucede si hay VSync pero NO HSync
@@ -318,22 +318,14 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
             //vsync solo mueve la y, no la X?
             //tv_x=0;
 
+            //Debug de a partir que linea se ha hecho vsync
+            if (tv_y>100) {
+                tv_draw_lines_beyond_vsync(tv_y);
+            }
 
-                if (debug_first_vsync) {
-                    debug_first_vsync=0;
-                    //printf("TV fired           vsync x: %6d y: %6d contador %d\n",tv_x,tv_y,contador_segundo);
-                }
-
-                //Debug de a partir que linea se ha hecho vsync
-                if (tv_y>100) {
-                    tv_draw_lines_beyond_vsync(tv_y);
-                }
-
-                tv_y=0;
-                ejecutando_vsync=1;
-                video_zx8081_ula_video_output=255;
-
-
+            tv_y=0;
+            ejecutando_vsync=1;
+            video_zx8081_ula_video_output=255;
 
         }
 
@@ -341,11 +333,10 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
     else {
 
-        if (temp_extend_debug) printf("tv no hay vsync en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+        //printf("tv no hay vsync en t_estados %6d Y=%d\n",t_estados,tv_get_y());
 
         //Hay hsync?
         if (tv_hsync_signal && !ejecutando_vsync) {
-            //if (temp_extend_debug)
             //printf("tv hsync signal en tv_time %6d Y=%d\n",tv_time,tv_get_y());
             tv_x=0;
 
