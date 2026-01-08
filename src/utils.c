@@ -25827,3 +25827,9 @@ int util_strlen_utf(char *texto)
     }
     return longitud;
 }
+
+int util_min(int a,int b)
+{
+    if (a<b) return a;
+    else return b;
+}
