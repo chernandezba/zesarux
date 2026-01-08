@@ -7636,7 +7636,7 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 
 }
 
-int temp_ajuste=0;
+
 
 //componente de "ruido" para random consistente en
 //-tiempo entre pulsacion y liberacion de una tecla y de boton de raton
@@ -9131,9 +9131,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         svi_keyboard_table[7] |=4;
                                         pcw_keyboard_table[0] |=1;
 
-                                        temp_ajuste--;
-                                        printf("Ajuste %d\n",temp_ajuste);
-                                        usleep(100000);
+
                                 }
                         break;
 
@@ -9158,9 +9156,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                    pcw_keyboard_table[0] |=1;
                                    pcw_keyboard_table[2] |=32;
 
-                                   temp_ajuste++;
-                                   printf("Ajuste %d\n",temp_ajuste);
-                                   usleep(100000);
+
                                  }
                 break;
 

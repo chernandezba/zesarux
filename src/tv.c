@@ -212,7 +212,7 @@ void tv_increase_line(void)
     //le damos un pelin mas de margen
     if (tv_y>tv_max_lines) {
         //printf("vsync timeout en %d\n",tv_y);
-        //sleep(1);
+
 
         //vsync solo mueve la y, no la X?
         //tv_x=0;

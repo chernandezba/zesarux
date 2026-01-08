@@ -530,8 +530,7 @@ void cpu_core_loop_zx8081(void)
                 //???
                 //t_estados -=6;
                 //printf("IM0/1 generada\n");
-                extern int temp_ajuste;
-                //t_estados +=temp_ajuste;
+
                 //t_estados +=3;
 
                 //printf("6. maskable %d\n",t_estados);
