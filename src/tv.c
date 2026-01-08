@@ -142,7 +142,7 @@ void tv_time_event_store_chunk_image(int delta)
 }
 
 //Renderizar zonas que quedan mas alla de vsync y hsync
-void tv_draw_black_line(int x_inicio,int y)
+void tv_draw_line_beyond_syncs(int x_inicio,int y)
 {
 
     if (rainbow_enabled.v) {
@@ -179,22 +179,22 @@ void tv_draw_black_line(int x_inicio,int y)
 
 }
 
-void tv_draw_black_lines_beyond_vsync(int y)
+void tv_draw_lines_beyond_vsync(int y)
 {
     y=tv_return_effective_y_coordinate(y);
     int total_alto=get_total_alto_rainbow();
 
     for (;y<total_alto;y++) {
-        tv_draw_black_line(0,y);
+        tv_draw_line_beyond_syncs(0,y);
     }
 }
 
-void tv_draw_black_line_beyond_hsync(int y)
+void tv_draw_line_beyond_hsync(int y)
 {
     //printf("tv_x %d\n",tv_x);
     y=tv_return_effective_y_coordinate(y);
 
-    tv_draw_black_line(tv_x*2,y);
+    tv_draw_line_beyond_syncs(tv_x*2,y);
 }
 
 void tv_increase_line(void)
@@ -216,7 +216,7 @@ void tv_increase_line(void)
         //vsync solo mueve la y, no la X?
         //tv_x=0;
         if (tv_y>100) {
-            tv_draw_black_lines_beyond_vsync(tv_y);
+            tv_draw_lines_beyond_vsync(tv_y);
         }
 
         tv_y=0;
@@ -325,7 +325,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
                 //Debug de a partir que linea se ha hecho vsync
                 if (tv_y>100) {
-                    tv_draw_black_lines_beyond_vsync(tv_y);
+                    tv_draw_lines_beyond_vsync(tv_y);
                 }
 
                 tv_y=0;
@@ -399,7 +399,7 @@ void tv_enable_hsync(void)
         //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_hsync_signal=1;
         tv_hsync_signal_pending=1;
-        tv_draw_black_line_beyond_hsync(tv_y);
+        tv_draw_line_beyond_hsync(tv_y);
     }
     else {
         //printf("Received hsync but was already enabled\n");
