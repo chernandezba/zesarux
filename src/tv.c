@@ -97,13 +97,6 @@ void tv_time_event_store_chunk_image(int delta)
 
         int xorig=tv_x*2;
 
-        //TODO: realmente lo que habria que hacer es que el pulso de hsync dure el tiempo necesario (y no solo un ciclo)
-        //asi estaria hsync activo todo ese tiempo (tiempo screen_invisible_borde_derecho) y al liberarlo, la tv_x seria 0
-        //if (MACHINE_IS_ZX80_TYPE) xorig -=screen_invisible_borde_derecho;
-
-        //TODO: poner valor correcto de esto
-        //if (MACHINE_IS_ZX81_TYPE) xorig -=(screen_invisible_borde_derecho/2);
-
         int xmax=xorig+delta*2;
 
         int totalancho=get_total_ancho_rainbow();
