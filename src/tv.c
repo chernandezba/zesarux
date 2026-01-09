@@ -64,7 +64,11 @@ int tv_vsync_signal_length=0;
 int tv_hsync_signal=0;
 int tv_hsync_signal_pending=0;
 
+//minima longitud aceptada de vsync para tenerse en cuenta
 int tv_minimum_accepted_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
+
+//intervalo, en porcentaje sobre 20ms, cada cuanto se acepta un vsync (contando desde principio a principio de siguiente vsync)
+int tv_vsync_interval=90;
 
 //maximo tiempo que puede durar una linea, en microsegundos, si no llega señal de hsync
 //habitualmente deberia de ser de 64 microsegundos
@@ -430,7 +434,7 @@ void tv_enable_vsync(void)
 
 
     if (tv_vsync_signal==0) {
-        int minimo=(screen_testados_total*90)/100;
+        int minimo=(screen_testados_total*tv_vsync_interval)/100;
         printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
         //con 10% menos del tiempo de frame total, ya sirve como vsync
 
