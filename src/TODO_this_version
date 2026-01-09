@@ -129,3 +129,7 @@ ok? *orquesta,mazogs en pantalla inicial tiene parpadeo arriba y abajo
 seguro de que alguna vez se salga de rango y genere segfault)
 
 -Revisar settings de config y custom file config de ZX80 y ZX81 que ya no se usen. Dejarlas como deprecated
+
+-settings de TV agregar config settings
+
+-para manic miner parece que minimo vsync interval 73%. pacman, tetris, madjump mal con este setting

@@ -54,6 +54,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 extern void tv_time_event(int delta);
 
 extern int tv_minimum_accepted_vsync;
+extern int tv_vsync_minimum_accepted_interval;
 
 extern void tv_enable_hsync(void);
 extern void tv_disable_hsync(void);

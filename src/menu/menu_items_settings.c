@@ -9868,6 +9868,13 @@ void menu_settings_tv_minimum_accepted_vsync(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0);
 }
 
+void menu_settings_tv_vsync_minimum_accepted_interval(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ventana_scanf_numero_enhanced("Minimum vsync interval",&tv_vsync_minimum_accepted_interval,4,+5,1,100,0);
+
+}
+
 void menu_settings_tv(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -9916,6 +9923,15 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
                 "Minimum vsync","Mínimo vsync","Mínim vsync");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_minimum_accepted_vsync);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_vsync_minimum_accepted_interval,NULL,
+                "Minimum vsync interval","Mínimo intervalo vsync","Mínim interval vsync");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%3d %%]",tv_vsync_minimum_accepted_interval);
+            menu_add_item_menu_tooltip(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
+            menu_add_item_menu_ayuda(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
