@@ -435,15 +435,18 @@ void tv_enable_vsync(void)
 
     if (tv_vsync_signal==0) {
         int minimo=(screen_testados_total*tv_vsync_minimum_accepted_interval)/100;
-        printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
+        printf("Try to enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+        //printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
         //con 10% menos del tiempo de frame total, ya sirve como vsync
 
         if (last_vsync_time_passed<minimo) {
-            printf("no se llega al minimo de %d\n",minimo);
+            printf("no se llega al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
             return;
         }
 
-        printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+        printf("Llegado al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
+
+        //printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
         last_vsync_time_passed=0;
