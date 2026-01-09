@@ -47,7 +47,7 @@ en programa aparte, mostrando coordenada y en pantalla
 *emulación de otros sistemas opticos, como TROJAN LIGHT PEN (PRO ZX 128 + 2A / 3 +). Ver documento en extras
 
 ok-lightgun: magnum. poder tener margen de mas de 1 scanline (para el acid killer por ejemplo)
-
+-magnun: acid killer, ver por que no funciona en mitad derecha
 
 -config setting para aymidi_rs232_enabled.v
 if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que ser dependiente de ese setting?
@@ -120,6 +120,10 @@ https://k1.spdns.de/Vintage/Sinclair/80/Sinclair%20ZX81/ROMs/zx81%20version%202%
 
 
 -Revisar franjas de load y save
+*video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
+*vsync deberia tener un minimo. por debajo de ahi, no hacer sync, eso permite que las franjas ocupen toda la pantalla
+ok? *orquesta,mazogs en pantalla inicial tiene parpadeo arriba y abajo
+
 
 -revisar waitmap y activarlo en pausa nmi. o dejar el 9 tal cual. si no se usa, desactivar funciones de uso de waitmap (no estoy
 seguro de que alguna vez se salga de rango y genere segfault)

@@ -119,6 +119,9 @@ void tv_time_event_store_chunk_image(int delta)
                         //Este bloque es dependiente de la maquina
                         if (MACHINE_IS_ZX8081) {
                             //if (y==42) printf("x %3d bit %3d delta %d\n",x,bit_inicio,delta);
+                            //printf("Store x %3d y %3d sprite %02XH tinta %3d papel %3d\n",
+                            //    x,y,zx80801_last_sprite_video,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
+
                             tv_time_event_store_chunk_image_sprite(x,y,zx80801_last_sprite_video,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
 
                             //Rotar circular
@@ -162,6 +165,10 @@ void tv_draw_line_beyond_syncs(int x_inicio,int y)
                 //si linea no coincide con entrelazado, volvemos
                 if (if_store_scanline_interlace(y) ) {
                     int color;
+
+                    //video_zx8081_ula_video_output color negro: 255
+                    //tinta normalmente a 0
+                    //papel normalmente a 15
 
                     if (video_zx8081_ula_video_output) color=zx80801_last_sprite_video_tinta;
                     else color=zx80801_last_sprite_video_papel;
@@ -232,7 +239,7 @@ int tv_linea_inicio_vsync=0;
 
 int ejecutando_vsync=0;
 
-
+int last_vsync_counter=0;
 
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
@@ -325,7 +332,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
             tv_y=0;
             ejecutando_vsync=1;
-            video_zx8081_ula_video_output=255;
+            //video_zx8081_ula_video_output=255;
 
         }
 
@@ -380,6 +387,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         tv_time -=screen_testados_total;
     }
 
+    last_vsync_counter +=delta;
+
 }
 
 //En parametro delta decimos cuantos t-estados han pasado desde que se debia lanzar el hsync
@@ -403,19 +412,36 @@ void tv_disable_hsync(void)
     if (tv_hsync_signal) {
         //printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_hsync_signal=0;
-        video_zx8081_ula_video_output=0;
+        //video_zx8081_ula_video_output=0;
     }
 }
+
+
 
 void tv_enable_vsync(void)
 {
     if (simulate_lost_vsync.v) return;
 
+    //Parche prueba para que no haga vsync al hacer SAVE
+    //Juegos afectados. QS defenda (ZX80), space invaders 1k, HERO.81, orquesta, SAVE
+    //if (tv_y<280) return;
+    //Habria que contar que el tiempo pasado entre cada vsync sea cercano a 20 ms
+
 
     if (tv_vsync_signal==0) {
-        //printf("TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+        int minimo=(screen_testados_total*90)/100;
+        printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_counter,screen_testados_total,minimo);
+        //con 10% menos del tiempo de frame total, ya sirve como vsync
+
+        if (last_vsync_counter<minimo) {
+            printf("no se llega al minimo de %d\n",minimo);
+            return;
+        }
+
+        printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
+        last_vsync_counter=0;
     }
 }
 
@@ -423,7 +449,7 @@ void tv_disable_vsync(void)
 {
 
     if (tv_vsync_signal) {
-        //printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
+        printf("-TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
         tv_vsync_signal=0;
         //Con esto el titulo del menu de pacman se ve bien pero en el juego no
         //video_zx8081_lcntr=0;

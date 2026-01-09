@@ -3594,10 +3594,10 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_ZX8081 && rainbow_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_zones_beyond_sync,NULL,
-                "Show zones beyond sync","Mostrar zonas mas alla de sync","Veure zones mes enllà de sync");
+                "Highlight zones beyond sync","Destacar zonas mas alla de sync","Destacar zones mes enllà de sync");
             menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( menu_debug_show_zones_beyond_sync.v ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows zones beyond hsync or vsync in red color");
-            menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows zones beyond hsync or vsync in red color");
+            menu_add_item_menu_tooltip(array_menu_settings_debug,"Highlight zones beyond hsync or vsync in red color");
+            menu_add_item_menu_ayuda(array_menu_settings_debug,"Highlight zones beyond hsync or vsync in red color");
         }
 
 
