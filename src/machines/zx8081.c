@@ -703,8 +703,8 @@ void ula_zx80_time_event(int delta)
 //
 int WAITMAP_POS = +1; // +1 wg. test position in Z80.run()
 int NMI_POS     = +2; // +2 = waitmap_pos+1 => max. 13 wait cycles
-const int waitmap_size = 207;
-int waitmap[waitmap_size];
+
+int waitmap[WAITMAP_SIZE];
 int cc_hsync_period = 207;
 
 
@@ -712,7 +712,7 @@ int cc_hsync_next=16;
 
 void clear_waitmap(void)
 {
-    memset(waitmap, 0, waitmap_size);
+    memset(waitmap, 0, WAITMAP_SIZE);
 }
 
 void setup_waitmap(int cc_hsync)
@@ -726,9 +726,9 @@ void setup_waitmap(int cc_hsync)
         // - when the cc timebase is shifted in videoFrameEnd()
         // - when the HSYNC generator is restarted in interruptAtCycle()
 
-        cc_hsync += waitmap_size;
+        cc_hsync += WAITMAP_SIZE;
 
-        cc_hsync %= waitmap_size;
+        cc_hsync %= WAITMAP_SIZE;
 
         if (get_waitmap_value(cc_hsync) == 16) // quick test whether it is already set as required
                 return;
@@ -736,19 +736,19 @@ void setup_waitmap(int cc_hsync)
 
         // circularly fill in 16cc delay for the first cc of the NMI pulse to 1cc for the last:
         int i = 0;
-        for (; i < util_min(waitmap_size - cc_hsync, 16); i++) {
+        for (; i < util_min(WAITMAP_SIZE - cc_hsync, 16); i++) {
             //printf("valor %d\n",16-i);
             int valor=16-i;
             waitmap[cc_hsync + i] = valor;
         }
         for (; i < 16; i++) {
             int valor=16-i;
-            waitmap[cc_hsync - waitmap_size + i] = valor;
+            waitmap[cc_hsync - WAITMAP_SIZE + i] = valor;
             //printf("valor %d\n",16-i);
         }
 
 
-    for (i=0;i<waitmap_size;i++) {
+    for (i=0;i<WAITMAP_SIZE;i++) {
         //printf("Waitmap %3d: %d\n",i,waitmap[i]);
     }
 
@@ -776,7 +776,7 @@ int get_waitmap_value(int pos)
     //TODO. no sumamos waitmap. no funciona bien
     return 0;
 
-    return waitmap[pos % waitmap_size];
+    return waitmap[pos % WAITMAP_SIZE];
 }
 
 //
@@ -910,7 +910,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
     {
-        int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
+        int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % WAITMAP_SIZE);
         t_estados += d;
     }
 
@@ -1041,7 +1041,7 @@ void zx8081_out_any_port_video_stuff(void)
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
     {
-        int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % waitmap_size);
+        int d = get_waitmap_value((t_estados + 2 + WAITMAP_POS) % WAITMAP_SIZE);
         t_estados += d;
     }
 
