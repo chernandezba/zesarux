@@ -239,7 +239,8 @@ int tv_linea_inicio_vsync=0;
 
 int ejecutando_vsync=0;
 
-int last_vsync_counter=0;
+//Cuanto ha pasado desde el inicio del ultimo vsync
+int last_vsync_time_passed=0;
 
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
@@ -387,7 +388,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         tv_time -=screen_testados_total;
     }
 
-    last_vsync_counter +=delta;
+    last_vsync_time_passed +=delta;
 
 }
 
@@ -430,10 +431,10 @@ void tv_enable_vsync(void)
 
     if (tv_vsync_signal==0) {
         int minimo=(screen_testados_total*90)/100;
-        printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_counter,screen_testados_total,minimo);
+        printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
         //con 10% menos del tiempo de frame total, ya sirve como vsync
 
-        if (last_vsync_counter<minimo) {
+        if (last_vsync_time_passed<minimo) {
             printf("no se llega al minimo de %d\n",minimo);
             return;
         }
@@ -441,7 +442,7 @@ void tv_enable_vsync(void)
         printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
-        last_vsync_counter=0;
+        last_vsync_time_passed=0;
     }
 }
 
