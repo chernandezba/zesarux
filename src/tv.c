@@ -246,6 +246,8 @@ int ejecutando_vsync=0;
 //Cuanto ha pasado desde el inicio del ultimo vsync
 int last_vsync_time_passed=0;
 
+int primer_inicio_vsync=0;
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -322,7 +324,25 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         //printf("minimo %d\n",minimo_t_estados);
         int maximo_t_estados=(PERMITIDO_MAXIMO_DURACION_VSYNC*screen_testados_linea)/64;
 
-        if (tv_vsync_signal_length>=minimo_t_estados && tv_vsync_signal_length<maximo_t_estados) {
+        int se_cumple_minimo_intervalo=1;
+
+
+        //Para empezarse a aceptar vsync tiene que ser mayor que un minimo y ademas, desde el anterior inicio de vsync
+        //hasta este, debe pasar casi 20 ms (90% de ese valor, por defecto)
+        int minimo=0;
+        if (!primer_inicio_vsync) {
+            minimo=(screen_testados_total*tv_vsync_minimum_accepted_interval)/100;
+            //printf("Try to enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+            //printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
+            //con 10% menos del tiempo de frame total, ya sirve como vsync
+
+            if (last_vsync_time_passed<minimo) {
+                //printf("no se llega al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
+                se_cumple_minimo_intervalo=0;
+            }
+        }
+
+        if (tv_vsync_signal_length>=minimo_t_estados && tv_vsync_signal_length<maximo_t_estados && se_cumple_minimo_intervalo) {
 
             //printf("TV vsync en %d length %d\n",tv_y,tv_vsync_signal_length);
 
@@ -338,6 +358,15 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
             tv_y=0;
             ejecutando_vsync=1;
             //video_zx8081_ula_video_output=255;
+
+            if (!primer_inicio_vsync) {
+                primer_inicio_vsync=1;
+                printf("-Llegado al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
+
+
+                printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+                last_vsync_time_passed=0;
+            }
 
         }
 
@@ -434,6 +463,7 @@ void tv_enable_vsync(void)
 
 
     if (tv_vsync_signal==0) {
+        /*
         int minimo=(screen_testados_total*tv_vsync_minimum_accepted_interval)/100;
         printf("Try to enable vsync x: %3d y: %3d\n",tv_x,tv_y);
         //printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
@@ -446,21 +476,28 @@ void tv_enable_vsync(void)
 
         printf("-Llegado al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
 
+
         //printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+        */
         tv_vsync_signal=1;
         tv_vsync_signal_length=0;
+
+       /*
         last_vsync_time_passed=0;
+        */
     }
+
 }
 
 void tv_disable_vsync(void)
 {
 
     if (tv_vsync_signal) {
-        printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
+        //printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
         tv_vsync_signal=0;
         //Con esto el titulo del menu de pacman se ve bien pero en el juego no
         //video_zx8081_lcntr=0;
+        primer_inicio_vsync=0;
     }
 }
 
