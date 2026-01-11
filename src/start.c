@@ -7591,6 +7591,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     video_fast_mode_emulation.v=0;
 
     simulate_lost_vsync.v=0;
+    simulate_lost_hsync.v=0;
 
 
     last_x_atributo=0;

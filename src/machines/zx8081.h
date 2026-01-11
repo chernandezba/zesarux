@@ -40,6 +40,7 @@ extern z80_byte video_fast_mode_next_frame_black;
 extern int zx8081_get_vsync_length(void);
 
 extern z80_bit simulate_lost_vsync;
+extern z80_bit simulate_lost_hsync;
 
 extern z80_byte fetch_opcode_zx81_graphics(void);
 

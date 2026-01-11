@@ -209,7 +209,8 @@ z80_byte chroma81_port_7FEF;
 //Opcion para simular perdida de vsync
 z80_bit simulate_lost_vsync;
 
-
+//Opcion para simular perdida de hsync
+z80_bit simulate_lost_hsync;
 
 
 //8k de RAM en 8192-16383

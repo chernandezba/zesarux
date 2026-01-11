@@ -7797,6 +7797,11 @@ void menu_display_lost_vsync(MENU_ITEM_PARAMETERS)
     simulate_lost_vsync.v ^=1;
 }
 
+void menu_display_lost_hsync(MENU_ITEM_PARAMETERS)
+{
+    simulate_lost_hsync.v ^=1;
+}
+
 void menu_display_flash_color(MENU_ITEM_PARAMETERS)
 {
     spectrum_flash_color_mode.v ^=1;
@@ -9937,6 +9942,11 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
                 "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_hsync,NULL,
+                "Simulate lost HSYNC","Simular pérdida de HSYNC","Simular pèrdua de HSYNC");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_hsync.v==1 ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_common);
         }
 

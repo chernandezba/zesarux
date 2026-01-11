@@ -430,6 +430,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 //Si es 1, el hsync viene de un t-estado antes
 void tv_enable_hsync(void)
 {
+    if (simulate_lost_hsync.v) return;
+
     if (tv_hsync_signal==0) {
         //printf("TV enable hsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_hsync_signal=1;
