@@ -375,7 +375,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                     //Cambiar de estado
                     tv_vsync_status=VSYNC_ACCEPTING;
 
-                    printf("Cambiar a tv_vsync_status=VSYNC_ACCEPTING\n");
+                    //printf("Cambiar a tv_vsync_status=VSYNC_ACCEPTING\n");
 
                 }
 
@@ -394,13 +394,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
                 if (tv_vsync_signal_length>maximo_t_estados) {
 
-                    printf("-Llegado al maximo de %d\n",maximo_t_estados);
+                    //printf("-Llegado al maximo de %d\n",maximo_t_estados);
 
 
                     //Cambiar de estado
                     tv_vsync_status=VSYNC_EXCEEDED_LENGTH;
 
-                    printf("Cambiar a tv_vsync_status=VSYNC_EXCEEDED_LENGTH\n");
+                    //printf("Cambiar a tv_vsync_status=VSYNC_EXCEEDED_LENGTH\n");
 
                 }
 
@@ -509,8 +509,8 @@ void tv_enable_vsync(void)
         printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
 
         tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET;
-        printf("Cambiar a tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET\n");
-        //tv_vsync_signal=1;
+        //printf("Cambiar a tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET\n");
+
         tv_vsync_signal_length=0;
 
     }
@@ -525,7 +525,7 @@ void tv_disable_vsync(void)
 
         tv_vsync_status=VSYNC_DISABLED;
 
-        printf("Cambiar a tv_vsync_status=VSYNC_DISABLED\n");
+        //printf("Cambiar a tv_vsync_status=VSYNC_DISABLED\n");
 
 
     }
