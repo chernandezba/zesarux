@@ -299,14 +299,8 @@ void tv_time_event(int delta)
     //if (tv_vsync_signal==0 && tv_hsync_signal==0)
     //printf("TV x: %3d y: %3d hsync %d vsync %d\n",tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
 
-    int move_electron=1;
 
-    if (tv_vsync_status==VSYNC_ACCEPTING) {
-        //printf("Do not move electron on x=%d y=%d\n",tv_x,tv_y);
-        move_electron=0;
-    }
-
-    if (move_electron) {
+    if (tv_vsync_status!=VSYNC_ACCEPTING) {
         tv_time_event_store_chunk_image(delta);
     }
 
@@ -319,12 +313,9 @@ A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX
 it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
     */
 
-    //ejecutando_vsync=0;
 
 
     if (tv_vsync_status!=VSYNC_DISABLED) {
-        //Aqui da imagen correcta en mazogs pero incorrecta en juego de manic miner
-        //video_zx8081_lcntr=0;
 
         //printf("tv vsync enabled en t_estados %6d Y=%d\n",t_estados,tv_get_y());
         tv_vsync_signal_length+=delta;
@@ -419,9 +410,6 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                 //Cualquier otro caso, no hacer nada
             break;
         }
-
-
-
 
     }
 
