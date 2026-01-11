@@ -6409,7 +6409,7 @@ Bit 0 - Cassette Motion (0 = Moving, 1 = Stopped)
         sprintf (buf_linea,"HSYNC: %s\n",(tv_get_hsync_signal() ? "On" : "Off"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-        sprintf (buf_linea,"VSYNC: %s\n",(tv_get_vsync_signal() ? "On" : "Off"));
+        sprintf (buf_linea,"VSYNC: %s\n",tv_get_vsync_signal_status_string());
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Time counter: %d\n",tv_get_time());

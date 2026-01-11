@@ -266,6 +266,37 @@ enum tv_vsync_status_list {
 
 enum tv_vsync_status_list tv_vsync_status=VSYNC_DISABLED;
 
+const char *string_tv_vsync_status_disabled="off";
+const char *string_tv_vsync_status_received_not_accepted_yet="on_small";
+const char *string_tv_vsync_status_accepting="on_accepting";
+const char *string_tv_vsync_status_exceeded_length="on_exceed_lenght";
+const char *string_tv_vsync_status_undefined="undefined";
+
+const char *tv_get_vsync_signal_status_string(void)
+{
+    switch (tv_vsync_status) {
+        case VSYNC_DISABLED:
+            return string_tv_vsync_status_disabled;
+        break;
+
+        case VSYNC_RECEIVED_NOT_ACCEPTED_YET:
+            return string_tv_vsync_status_received_not_accepted_yet;
+        break;
+
+        case VSYNC_ACCEPTING:
+            return string_tv_vsync_status_accepting;
+        break;
+
+        case VSYNC_EXCEEDED_LENGTH:
+            return string_tv_vsync_status_exceeded_length;
+        break;
+
+        default:
+            return string_tv_vsync_status_undefined;
+        break;
+    }
+}
+
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
 {
@@ -373,6 +404,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                 tv_y=0;
 
                 //Si se pasa longitud vsync
+                //Esto pasa por ejemplo al hacer modo fast y "1 goto 1"
 
                 if (tv_vsync_signal_length>maximo_t_estados) {
 
@@ -671,23 +703,6 @@ void tv_enable_vsync(void)
     //Habria que contar que el tiempo pasado entre cada vsync sea cercano a 20 ms
 
     if (tv_vsync_status==VSYNC_DISABLED) {
-    //if (tv_vsync_signal==0) {
-        /*
-        int minimo=(screen_testados_total*tv_vsync_minimum_accepted_interval)/100;
-        printf("Try to enable vsync x: %3d y: %3d\n",tv_x,tv_y);
-        //printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
-        //con 10% menos del tiempo de frame total, ya sirve como vsync
-
-        if (last_vsync_time_passed<minimo) {
-            printf("no se llega al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
-            return;
-        }
-
-        printf("-Llegado al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
-
-
-
-        */
 
         printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
 
@@ -696,9 +711,6 @@ void tv_enable_vsync(void)
         //tv_vsync_signal=1;
         tv_vsync_signal_length=0;
 
-       /*
-        last_vsync_time_passed=0;
-        */
     }
 
 }
@@ -708,12 +720,12 @@ void tv_disable_vsync(void)
 
     if (tv_vsync_status!=VSYNC_DISABLED) {
         printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
-        //tv_vsync_signal=0;
+
         tv_vsync_status=VSYNC_DISABLED;
 
         printf("Cambiar a tv_vsync_status=VSYNC_DISABLED\n");
 
-        //primer_inicio_vsync=0;
+
     }
 }
 
@@ -733,11 +745,15 @@ int tv_get_time(void)
     return tv_time;
 }
 
+/*
 int tv_get_vsync_signal(void)
 {
     if (tv_vsync_status==VSYNC_DISABLED) return 0;
     else return 1;
 }
+*/
+
+
 
 int tv_get_hsync_signal(void)
 {

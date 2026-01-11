@@ -64,7 +64,7 @@ extern void tv_disable_vsync(void);
 extern int tv_get_x(void);
 extern int tv_get_y(void);
 extern int tv_get_time(void);
-extern int tv_get_vsync_signal(void);
+extern const char *tv_get_vsync_signal_status_string(void);
 extern int tv_get_hsync_signal(void);
 
 
