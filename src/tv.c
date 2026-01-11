@@ -253,12 +253,14 @@ Estados vsync:
 1: no recibido ningun vsync
 2: recibido vsync pero no llegado al minimo y/o no ha pasado intervalo minimo entre cada vsync aceptado
 3: recibido vsync, llegado al minimo y pasado intervalo minimo entre cada vsync aceptado. Por tanto se esta establecieno tv_y=0
+4: recibido vsync pero excedido duracion maxima
 */
 
 enum tv_vsync_status_list {
     VSYNC_DISABLED,
     VSYNC_RECEIVED_NOT_ACCEPTED_YET,
-    VSYNC_ACCEPTING
+    VSYNC_ACCEPTING,
+    VSYNC_EXCEEDED_LENGTH
 };
 
 
@@ -326,14 +328,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         //la pantalla en negro
 
         int minimo_t_estados;
-        int maximo_t_estados;
+        int maximo_t_estados=(PERMITIDO_MAXIMO_DURACION_VSYNC*screen_testados_linea)/64;
         int minimo_entre_vsyncs;
 
         switch (tv_vsync_status) {
             case VSYNC_RECEIVED_NOT_ACCEPTED_YET:
                 minimo_t_estados=(tv_minimum_accepted_vsync*screen_testados_linea)/64;
                 //printf("minimo %d\n",minimo_t_estados);
-                maximo_t_estados=(PERMITIDO_MAXIMO_DURACION_VSYNC*screen_testados_linea)/64;
 
 
                 //Para empezarse a aceptar vsync tiene que ser mayor que un minimo y ademas, desde el anterior inicio de vsync
@@ -372,7 +373,6 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                 tv_y=0;
 
                 //Si se pasa longitud vsync
-                maximo_t_estados=(PERMITIDO_MAXIMO_DURACION_VSYNC*screen_testados_linea)/64;
 
                 if (tv_vsync_signal_length>maximo_t_estados) {
 
@@ -380,15 +380,16 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
 
                     //Cambiar de estado
-                    tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET;
+                    tv_vsync_status=VSYNC_EXCEEDED_LENGTH;
 
-                    printf("Cambiar a tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET\n");
+                    printf("Cambiar a tv_vsync_status=VSYNC_EXCEEDED_LENGTH\n");
 
                 }
 
             break;
 
             default:
+                //Cualquier otro caso, no hacer nada
             break;
         }
 
