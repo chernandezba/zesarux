@@ -890,8 +890,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 
         //necesario? Manic y otros tiembla la imagen
         //if (nmi_generator_active.v) {
-
-            //generar_zx81_hsync();
+        //    generar_zx81_hsync(16);
         //}
         //testeado con demo sllc.81
 
