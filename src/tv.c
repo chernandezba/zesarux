@@ -58,7 +58,7 @@ int tv_y=0;
 int tv_x=0;
 
 //Señales del CRT
-int tv_vsync_signal=0;
+//int tv_vsync_signal=0;
 int tv_vsync_signal_length=0;
 
 int tv_hsync_signal=0;
@@ -241,12 +241,28 @@ int tv_linea_inicio_vsync=0;
 
 
 
-int ejecutando_vsync=0;
+//int ejecutando_vsync=0;
 
 //Cuanto ha pasado desde el inicio del ultimo vsync
 int last_vsync_time_passed=0;
 
-int primer_inicio_vsync=0;
+//int primer_inicio_vsync=0;
+/*
+
+Estados vsync:
+1: no recibido ningun vsync
+2: recibido vsync pero no llegado al minimo y/o no ha pasado intervalo minimo entre cada vsync aceptado
+3: recibido vsync, llegado al minimo y pasado intervalo minimo entre cada vsync aceptado. Por tanto se esta establecieno tv_y=0
+*/
+
+enum tv_vsync_status_list {
+    VSYNC_DISABLED,
+    VSYNC_RECEIVED_NOT_ACCEPTED_YET,
+    VSYNC_ACCEPTING
+};
+
+
+enum tv_vsync_status_list tv_vsync_status=VSYNC_DISABLED;
 
 //Funcion mas importante, evento de tiempo
 void tv_time_event(int delta)
@@ -257,7 +273,7 @@ void tv_time_event(int delta)
 
     int move_electron=1;
 
-    if (tv_vsync_signal && ejecutando_vsync) {
+    if (tv_vsync_status==VSYNC_ACCEPTING) {
         //printf("Do not move electron on x=%d y=%d\n",tv_x,tv_y);
         move_electron=0;
     }
@@ -275,15 +291,10 @@ A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX
 it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
     */
 
-    ejecutando_vsync=0;
+    //ejecutando_vsync=0;
 
-    if (tv_vsync_signal && nmi_generator_active.v && hsync_generator_active.v) {
-        //printf("####---- vsync y nmi generator y hsync generator en t_estados %6d Y=%d\n",t_estados,tv_get_y());
-    }
 
-    //printf("tv hsync pending en t_estados %6d Y=%d\n",t_estados,tv_get_y());
-
-    if (tv_vsync_signal) {
+    if (tv_vsync_status!=VSYNC_DISABLED) {
         //Aqui da imagen correcta en mazogs pero incorrecta en juego de manic miner
         //video_zx8081_lcntr=0;
 
@@ -309,6 +320,199 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
         Este es exactamente el comportamiento del ZX81 en modo FAST: el nivel de vídeo baja como VSync,
         pero no hay HSync, así que la TV no reinicia la rampa vertical.
         */
+
+        //cuando el vsync es mayor de cierto valor, ya no se admite
+        //esto es lo que sucede en modo fast, esta siempre vsync y al final el haz de electrones "se libera" y sigue dibujando
+        //la pantalla en negro
+
+        int minimo_t_estados;
+        int maximo_t_estados;
+        int minimo_entre_vsyncs;
+
+        switch (tv_vsync_status) {
+            case VSYNC_RECEIVED_NOT_ACCEPTED_YET:
+                minimo_t_estados=(tv_minimum_accepted_vsync*screen_testados_linea)/64;
+                //printf("minimo %d\n",minimo_t_estados);
+                maximo_t_estados=(PERMITIDO_MAXIMO_DURACION_VSYNC*screen_testados_linea)/64;
+
+
+                //Para empezarse a aceptar vsync tiene que ser mayor que un minimo y ademas, desde el anterior inicio de vsync
+                //hasta este, debe pasar casi 20 ms (90% de ese valor, por defecto)
+                minimo_entre_vsyncs=(screen_testados_total*tv_vsync_minimum_accepted_interval)/100;
+                    //printf("Try to enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+                    //printf("--- delta: %6d total frame %6d minimo vsync %d\n",last_vsync_time_passed,screen_testados_total,minimo);
+                    //con 10% menos del tiempo de frame total, ya sirve como vsync
+
+                //printf("tv_vsync_signal_length %d minimo_t_estados %d maximo_t_estados %d last_vsync_time_passed %d\n",
+                //    tv_vsync_signal_length,minimo_t_estados,maximo_t_estados,last_vsync_time_passed);
+
+                if (tv_vsync_signal_length>=minimo_t_estados && tv_vsync_signal_length<maximo_t_estados && last_vsync_time_passed>=minimo_entre_vsyncs) {
+
+                    printf("-Llegado al minimo de %d (%d)\n",minimo_entre_vsyncs,last_vsync_time_passed);
+
+
+                    printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+                    last_vsync_time_passed=0;
+
+                    //Cambiar de estado
+                    tv_vsync_status=VSYNC_ACCEPTING;
+
+                    printf("Cambiar a tv_vsync_status=VSYNC_ACCEPTING\n");
+
+                }
+
+            break;
+
+            case VSYNC_ACCEPTING:
+                //Debug de a partir que linea se ha hecho vsync
+                if (tv_y>100) {
+                    tv_draw_lines_beyond_vsync(tv_y);
+                }
+
+                tv_y=0;
+
+                //Si se pasa longitud vsync
+                maximo_t_estados=(PERMITIDO_MAXIMO_DURACION_VSYNC*screen_testados_linea)/64;
+
+                if (tv_vsync_signal_length>maximo_t_estados) {
+
+                    printf("-Llegado al maximo de %d\n",maximo_t_estados);
+
+
+                    //Cambiar de estado
+                    tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET;
+
+                    printf("Cambiar a tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET\n");
+
+                }
+
+            break;
+
+            default:
+            break;
+        }
+
+
+
+
+    }
+
+    else {
+
+        //printf("tv no hay vsync en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+
+        //Hay hsync?
+        if (tv_hsync_signal && tv_vsync_status!=VSYNC_ACCEPTING) {
+            //printf("tv hsync signal en tv_time %6d Y=%d\n",tv_time,tv_get_y());
+            tv_x=0;
+
+        }
+
+        if (tv_hsync_signal_pending) {
+            tv_hsync_signal_pending=0;
+            //printf("3) tv hsync fired en t_estados %6d Y=%d tv_vsync_signal=%d\n",t_estados,tv_get_y(),tv_vsync_signal);
+            tv_increase_line();
+            tv_x=0;
+        }
+
+    }
+
+    //controlar hsync timeout
+    //TODO: valor arbitrario de timeout
+    /*
+    Oscila aproximadamente a la frecuencia horizontal estándar (≈15.734 kHz en NTSC, ≈15.625 kHz en PAL)
+    //screen_testados_total=screen_testados_linea*screen_scanlines;
+    //eso son 20 ms. 50 hz
+    //Al final es justo lo que tarda el scanline
+
+    */
+
+
+    //le damos un pelin mas de margen, si no el QS defenda no se ve completo por debajo
+    int microsec_max=(tv_max_line_period*screen_testados_linea)/64;
+
+    if (tv_x>=microsec_max && tv_vsync_status!=VSYNC_ACCEPTING) {
+        //printf("hsync timeout en x=%d y=%d\n",tv_x,tv_y);
+        tv_increase_line();
+        tv_x=0;
+    }
+
+
+    //Finalmente avanzar el tiempo
+    tv_time +=delta;
+
+    //Si da la vuelta, truncar - ha pasado 20 milisegundos
+    if (tv_time>=screen_testados_total) {
+        tv_time -=screen_testados_total;
+    }
+
+    last_vsync_time_passed +=delta;
+
+}
+
+
+/*
+//Funcion mas importante, evento de tiempo
+void old_tv_time_event(int delta)
+{
+    //Hacer todo lo que corresponda desde tv_time hasta tv_time+delta-1
+    //if (tv_vsync_signal==0 && tv_hsync_signal==0)
+    //printf("TV x: %3d y: %3d hsync %d vsync %d\n",tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
+
+    int move_electron=1;
+
+    if (tv_vsync_signal && ejecutando_vsync) {
+        //printf("Do not move electron on x=%d y=%d\n",tv_x,tv_y);
+        move_electron=0;
+    }
+
+    if (move_electron) {
+        tv_time_event_store_chunk_image(delta);
+    }
+
+    //Hay vsync? Y siempre que dure mas de xxx tiempo
+
+    //en PAL:
+    //A true VSync basically has a pulse of 2.5 scan lines (2.5 * 64us = 160us = 517.5 T-states at 3.25MHz).
+//Either side are scan lines containing pre and post equalizing pulses, but these can be ignored.
+//A VSync of 160us worked for my analogue TV using the RF connection. Since the ZX81 generates the pulse in software,
+//it can produce any length VSync it wants. It is then a matter of whether the TV is tolerant enough to accept it.
+
+
+    ejecutando_vsync=0;
+
+    if (tv_vsync_signal && nmi_generator_active.v && hsync_generator_active.v) {
+        //printf("####---- vsync y nmi generator y hsync generator en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+    }
+
+    //printf("tv hsync pending en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+
+    if (tv_vsync_signal) {
+        //Aqui da imagen correcta en mazogs pero incorrecta en juego de manic miner
+        //video_zx8081_lcntr=0;
+
+        //printf("tv vsync enabled en t_estados %6d Y=%d\n",t_estados,tv_get_y());
+        tv_vsync_signal_length+=delta;
+
+        //Qué sucede si hay VSync pero NO HSync
+
+        //El nivel de vídeo baja (aparenta un pulso vertical)
+
+        //El TV no recibe HSync dentro del intervalo
+
+        //La rampa vertical entra en free-run (corre a su frecuencia natural, no sincronizada)
+
+        //Resultado:
+
+        //El haz no llega arriba,
+
+        //La imagen “rueda” o se fragmenta
+
+        //Se ven bandas horizontales o patrones inestables
+
+        //Este es exactamente el comportamiento del ZX81 en modo FAST: el nivel de vídeo baja como VSync,
+        //pero no hay HSync, así que la TV no reinicia la rampa vertical.
+
 
         //cuando el vsync es mayor de cierto valor, ya no se admite
         //esto es lo que sucede en modo fast, esta siempre vsync y al final el haz de electrones "se libera" y sigue dibujando
@@ -394,13 +598,13 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
     //controlar hsync timeout
     //TODO: valor arbitrario de timeout
-    /*
-    Oscila aproximadamente a la frecuencia horizontal estándar (≈15.734 kHz en NTSC, ≈15.625 kHz en PAL)
+
+    //Oscila aproximadamente a la frecuencia horizontal estándar (≈15.734 kHz en NTSC, ≈15.625 kHz en PAL)
     //screen_testados_total=screen_testados_linea*screen_scanlines;
     //eso son 20 ms. 50 hz
     //Al final es justo lo que tarda el scanline
 
-    */
+
 
 
     //le damos un pelin mas de margen, si no el QS defenda no se ve completo por debajo
@@ -424,6 +628,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     last_vsync_time_passed +=delta;
 
 }
+
+*/
 
 //En parametro delta decimos cuantos t-estados han pasado desde que se debia lanzar el hsync
 //Ejemplo: si es 0, es ahora mismo
@@ -463,8 +669,8 @@ void tv_enable_vsync(void)
     //if (tv_y<280) return;
     //Habria que contar que el tiempo pasado entre cada vsync sea cercano a 20 ms
 
-
-    if (tv_vsync_signal==0) {
+    if (tv_vsync_status==VSYNC_DISABLED) {
+    //if (tv_vsync_signal==0) {
         /*
         int minimo=(screen_testados_total*tv_vsync_minimum_accepted_interval)/100;
         printf("Try to enable vsync x: %3d y: %3d\n",tv_x,tv_y);
@@ -479,9 +685,14 @@ void tv_enable_vsync(void)
         printf("-Llegado al minimo de %d (%d)\n",minimo,last_vsync_time_passed);
 
 
-        //printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+
         */
-        tv_vsync_signal=1;
+
+        printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+
+        tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET;
+        printf("Cambiar a tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET\n");
+        //tv_vsync_signal=1;
         tv_vsync_signal_length=0;
 
        /*
@@ -494,12 +705,14 @@ void tv_enable_vsync(void)
 void tv_disable_vsync(void)
 {
 
-    if (tv_vsync_signal) {
-        //printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
-        tv_vsync_signal=0;
-        //Con esto el titulo del menu de pacman se ve bien pero en el juego no
-        //video_zx8081_lcntr=0;
-        primer_inicio_vsync=0;
+    if (tv_vsync_status!=VSYNC_DISABLED) {
+        printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
+        //tv_vsync_signal=0;
+        tv_vsync_status=VSYNC_DISABLED;
+
+        printf("Cambiar a tv_vsync_status=VSYNC_DISABLED\n");
+
+        //primer_inicio_vsync=0;
     }
 }
 
@@ -521,7 +734,8 @@ int tv_get_time(void)
 
 int tv_get_vsync_signal(void)
 {
-    return tv_vsync_signal;
+    if (tv_vsync_status==VSYNC_DISABLED) return 0;
+    else return 1;
 }
 
 int tv_get_hsync_signal(void)
