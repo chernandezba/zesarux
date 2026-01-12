@@ -100,6 +100,8 @@ extern int ula_zx81_time_event_t_estados;
 extern void generar_zx80_hsync(void);
 extern void generar_zx81_hsync(int tiempo);
 
+extern z80_bit aszmic_rom_video_adjust;
+
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;
 

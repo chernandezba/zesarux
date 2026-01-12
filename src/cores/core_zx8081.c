@@ -487,10 +487,6 @@ void cpu_core_loop_zx8081(void)
             //printf("2. maskable %d\n",t_estados);
 
             //Tratar interrupciones maskable
-            //INT wait 10 estados. Valor de pruebas
-            //t_estados += 10;
-
-            //printf("3. maskable %d\n",t_estados);
 
             interrupcion_maskable_generada.v=0;
 
@@ -504,24 +500,14 @@ void cpu_core_loop_zx8081(void)
             //desactivar interrupciones al generar una
             iff1.v=iff2.v=0;
 
-
+            if (MACHINE_IS_ZX81_TYPE && aszmic_rom_video_adjust.v) {
+                t_estados--;
+            }
 
             //IM0/1
             if (im_mode==0 || im_mode==1) {
                 //+7 t-estados
                 cpu_common_jump_im01();
-
-                //printf("5. maskable %d\n",t_estados);
-
-
-                //Ajuste tiempos en zx80/81
-                //???
-                //t_estados -=6;
-                //printf("IM0/1 generada\n");
-
-                //t_estados +=3;
-
-                //printf("6. maskable %d\n",t_estados);
 
 
             }
@@ -535,7 +521,6 @@ void cpu_core_loop_zx8081(void)
                 dir_h=peek_byte(temp_i);
                 reg_pc=value_8_to_16(dir_h,dir_l);
                 t_estados += 7 ;
-                //printf("IM2 generada\n");
 
             }
 
@@ -544,9 +529,6 @@ void cpu_core_loop_zx8081(void)
                 generar_zx80_hsync();
                 video_zx8081_lcntr++;
             }
-
-
-
 
 
         }
