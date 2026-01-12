@@ -137,3 +137,4 @@ seguro de que alguna vez se salga de rango y genere segfault)
 Probar tambien QS defenda (ZX80), space invaders 1k, HERO.81, orquesta, SAVE
 
 -aszmice rom no se ve bien, sincroniza mal en horizontal. en zx81 mal, en zx80 bien. quizá va derivado de que el zx80 el hsync lo lanza desde la interrupción
+-hero.81 va mal con nuevo esquema para aszmice rom
