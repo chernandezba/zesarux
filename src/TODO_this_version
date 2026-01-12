@@ -115,7 +115,6 @@ https://k1.spdns.de/Vintage/Sinclair/80/Sinclair%20ZX81/ROMs/zx81%20version%202%
 *opcode
 *si se activa nmi o maskable, que se ejecute en el siguiente step
 
--int ack genera hsync?
 
 -starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
 
@@ -136,5 +135,8 @@ seguro de que alguna vez se salga de rango y genere segfault)
 -para manic miner parece que minimo vsync interval 73% con algoritmo anterior. pacman, tetris, madjump, bipods.. parece que todos los pseudo hires mal con este setting
 Probar tambien QS defenda (ZX80), space invaders 1k, HERO.81, orquesta, SAVE
 
--aszmice rom no se ve bien, sincroniza mal en horizontal. en zx81 mal, en zx80 bien. quizá va derivado de que el zx80 el hsync lo lanza desde la interrupción
--hero.81 va mal con nuevo esquema para aszmice rom
+ok agrego setting específico -aszmice rom no se ve bien, sincroniza mal en horizontal. en zx81 mal, en zx80 bien
+
+-quitar prints de debug de codigo tv, zx8081.c, core_zx8081.c
+
+-en settings de linea de comandos, separar en tv settings, video settings y Main window settings

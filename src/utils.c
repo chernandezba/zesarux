@@ -12858,7 +12858,7 @@ void customconfig_help(void)
     "--enablezgx\n"
     "--wrx\n"
     "--chroma81\n"
-    "--vsync-minimum-length n \n"
+    //deprecated "--vsync-minimum-length n \n"
     "--gigascreen                      Enable GigaScreen emulation\n"
     "--redefinekey src dest\n"
     "--clearredefinekey                Clear redefine key table\n"

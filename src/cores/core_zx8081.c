@@ -530,6 +530,8 @@ void cpu_core_loop_zx8081(void)
                 video_zx8081_lcntr++;
             }
 
+            //TODO: no está claro si desde ZX81 también se deberia hacer hsync aqui. Yo lo probé
+            //en su momento y entonces empiezan a verse mal algunos juegos
 
         }
 
