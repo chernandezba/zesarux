@@ -82,6 +82,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
+-Opción para maximizar siempre una ventana al abrirla (cualquier ventana) y/o poder elegir qué ventanas maximizar
 ------
 
 #####  Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
@@ -134,3 +135,5 @@ seguro de que alguna vez se salga de rango y genere segfault)
 
 -para manic miner parece que minimo vsync interval 73% con algoritmo anterior. pacman, tetris, madjump, bipods.. parece que todos los pseudo hires mal con este setting
 Probar tambien QS defenda (ZX80), space invaders 1k, HERO.81, orquesta, SAVE
+
+-aszmice rom no se ve bien, sincroniza mal en horizontal. en zx81 mal, en zx80 bien. quizá va derivado de que el zx80 el hsync lo lanza desde la interrupción

@@ -147,6 +147,9 @@ Despues de ?(), en posicion 18:
 */
 
 
+//
+//Inicio variables para generación de video
+//
 z80_bit nmi_generator_active;
 z80_bit hsync_generator_active;
 z80_bit zx8081_vsync_generator={0};
@@ -158,10 +161,43 @@ z80_bit zx8081_vsync_generator={0};
 //5.7 back porch
 //TODO: esto deberia ser 39 t-estados (12 microsec)  pero entonces algunos juegos están muy a la izquierda
 //tiempo en t-estados. Para calcularla: (207/64)*valor en microsegundos
-int hsync_total_duration=39;
+//int hsync_total_duration=39;
 
 int hsync_duration_counter=0;
 
+
+z80_byte zx80801_last_sprite_video=0;
+int zx80801_last_sprite_video_tinta=0;
+int zx80801_last_sprite_video_papel=0;
+
+int ula_zx81_time_event_t_estados=0;
+
+
+z80_bit force_zx81_chr_128={0};
+
+
+z80_bit autodetect_wrx;
+
+//WRX hi-res mode
+z80_bit wrx_present;
+
+//chroma enabled
+z80_bit chroma81={0};
+
+z80_bit autodetect_chroma81={1};
+
+//chroma port
+z80_byte chroma81_port_7FEF;
+
+//
+//Fin variables para generación de video
+//
+
+//Opcion para simular perdida de vsync
+z80_bit simulate_lost_vsync;
+
+//Opcion para simular perdida de hsync
+z80_bit simulate_lost_hsync;
 
 //indica si se simula la pantalla negra del modo fast
 z80_bit video_fast_mode_emulation;
@@ -190,27 +226,6 @@ z80_bit zx8081_detect_vsync_sound={0};
 //maximo valor de esto: ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX
 int zx8081_detect_vsync_sound_counter=ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX;
 
-z80_bit force_zx81_chr_128={0};
-
-
-z80_bit autodetect_wrx;
-
-//chroma enabled
-z80_bit chroma81={0};
-
-z80_bit autodetect_chroma81={1};
-
-//chroma port
-z80_byte chroma81_port_7FEF;
-
-
-
-
-//Opcion para simular perdida de vsync
-z80_bit simulate_lost_vsync;
-
-//Opcion para simular perdida de hsync
-z80_bit simulate_lost_hsync;
 
 
 //8k de RAM en 8192-16383
@@ -221,12 +236,6 @@ z80_bit ram_in_49152;
 
 //16k de RAM en 32767-49152
 z80_bit ram_in_32768;
-
-//WRX hi-res mode
-z80_bit wrx_present;
-
-
-
 
 
 
@@ -249,7 +258,6 @@ z80_byte ascii_to_zx80(z80_byte c)
     else return caracteres_ascii_zx80[c-32];
 }
 
-//z80_bit ejecutado_zona_pantalla;
 
 
 //Activar wrx y offset de t_estados
@@ -465,12 +473,6 @@ int color_es_chroma(void)
 }
 
 
-
-
-
-z80_byte zx80801_last_sprite_video=0;
-int zx80801_last_sprite_video_tinta=0;
-int zx80801_last_sprite_video_papel=0;
 
 
 void screen_store_scanline_char_zx8081(z80_byte byte_leido,z80_byte caracter,int inverse)
@@ -784,7 +786,7 @@ int get_waitmap_value(int pos)
 // End waitmap code
 //
 
-int ula_zx81_time_event_t_estados=0;
+
 
 void generar_zx81_hsync(int tiempo)
 {
@@ -885,7 +887,6 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
 
     if (MACHINE_IS_ZX81_TYPE) {
-        //hsync pero sin saltar linea
 
 
         //necesario? Manic y otros tiembla la imagen
@@ -996,19 +997,8 @@ void zx8081_out_any_port_video_stuff(void)
 {
 
     if (MACHINE_IS_ZX81_TYPE) {
-        //TODO: hsync pero sin saltar linea
-        //deduzco que hacemos esto porque hay un hsync activo desde el hsync generator y no quiero que salte coordenada y
 
-        //nucinv16.p salta la imagen si activo esto
-        //en cambio manic miner y otros se ven bien
-        //al menos manic miner necesita hsync porque no usa interrupciones para ello
-
-        //    printf("hsync desde out\n");
         generar_zx81_hsync(16);
-
-
-
-        //probado con demo sllc.81
 
     }
 

@@ -1062,7 +1062,9 @@ void reset_cpu(void)
 	if (MACHINE_IS_ZX8081) {
 		//algunos reseteos para zx80/81
 		nmi_generator_active.v=0;
-                hsync_generator_active.v=0;
+        zx8081_vsync_generator.v=0;
+        hsync_generator_active.v=0;
+        ula_zx81_time_event_t_estados=0;
 		//timeout_linea_vsync=NORMAL_TIMEOUT_LINEA_VSYNC;
 		chroma81_port_7FEF=0;
 

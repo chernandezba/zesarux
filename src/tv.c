@@ -82,12 +82,10 @@ void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int 
 {
     int color;
 
-
     if (byte_leido & 128 ) color=colortinta;
     else color=colorpapel;
 
     rainbow_buffer[y*get_total_ancho_rainbow()+x]=color;
-
 
 }
 
@@ -111,8 +109,6 @@ void tv_time_event_store_chunk_image(int delta)
         if (y>=0 && y<get_total_alto_rainbow() ) {
             int x;
 
-            //if (y==42) printf("x %3d xmax %3d y %3d sprite %02XH\n",xorig,xmax,y,zx80801_last_sprite_video);
-
             for (x=xorig;x<xmax;x++) {
 
                 if (x>=0 && x<totalancho )  {
@@ -135,9 +131,7 @@ void tv_time_event_store_chunk_image(int delta)
                         }
                     }
                 }
-                else {
-                    //printf("x fuera de rango: %d\n",x);
-                }
+
             }
         }
     }
@@ -160,8 +154,6 @@ void tv_draw_line_beyond_syncs(int x_inicio,int y)
         if (y>=0 && y<get_total_alto_rainbow() ) {
             int x;
 
-            //if (y==42) printf("x %3d xmax %3d y %3d sprite %02XH\n",xorig,xmax,y,zx80801_last_sprite_video);
-            //printf("x_inicio %d totalancho %d\n",x_inicio,totalancho);
 
             for (x=x_inicio;x<totalancho;x++) {
 
@@ -434,7 +426,6 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
     }
 
     //controlar hsync timeout
-    //TODO: valor arbitrario de timeout
     /*
     Oscila aproximadamente a la frecuencia horizontal estándar (≈15.734 kHz en NTSC, ≈15.625 kHz en PAL)
     //screen_testados_total=screen_testados_linea*screen_scanlines;
@@ -468,9 +459,6 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
 
 
-//En parametro delta decimos cuantos t-estados han pasado desde que se debia lanzar el hsync
-//Ejemplo: si es 0, es ahora mismo
-//Si es 1, el hsync viene de un t-estado antes
 void tv_enable_hsync(void)
 {
     if (simulate_lost_hsync.v) return;
@@ -489,7 +477,6 @@ void tv_disable_hsync(void)
     if (tv_hsync_signal) {
         //printf("TV disable hsync x: %6d y: %6d\n",tv_x,tv_y);
         tv_hsync_signal=0;
-        //video_zx8081_ula_video_output=0;
     }
 }
 
