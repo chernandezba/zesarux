@@ -1079,6 +1079,8 @@ printf (
         "--wrx                                  Enable WRX mode on ZX80/ZX81\n"
         //"--vsync-minimum-length n               Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
         "--chroma81                             Enable Chroma81 support on ZX80/ZX81\n"
+        "--zx81-aszmic-rom-video-adjust         Fixes video display when using ASZMIC ROM on ZX81\n"
+
         "--videozx8081 n                        Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
         "--videofastblack                       Emulate black screen on fast mode on ZX80/ZX81\n"
         "--no-ocr-alternatechars                Disable looking for an alternate character set other than the ROM default on OCR functions\n"
@@ -4014,6 +4016,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--chroma81")) {
                                 command_line_chroma81.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zx81-aszmic-rom-video-adjust")) {
+                aszmic_rom_video_adjust.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--romfile")) {

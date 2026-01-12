@@ -8209,8 +8209,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_aszmic_rom_video_adjust,NULL,
                     "ASZMIC ROM adjust","ASZMIC ROM ajuste","ASZMIC ROM ajustament");
                 menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(aszmic_rom_video_adjust.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_settings_display,"Fixes video display when using ASZMIC ROM");
-                menu_add_item_menu_ayuda(array_menu_settings_display,"Fixes video display when using ASZMIC ROM");
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Fixes video display when using ASZMIC ROM on ZX81");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"Fixes video display when using ASZMIC ROM on ZX81");
                 menu_add_item_menu_es_avanzado(array_menu_settings_display);
             }
 
