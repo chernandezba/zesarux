@@ -5539,18 +5539,22 @@ void scr_refresca_pantalla_y_border_zx8081(void)
 
 
         //simulacion pantalla negra fast
-        if (0/*hsync_generator_active.v==0*/) {
+        if (video_fast_mode_emulation.v) {
+            if ((peek_byte_no_time(16443) & 128)==0) {
+                    //printf("FAST %d\n",contador_segundo);
+                //if (hsync_generator_active.v==0) {
 
-                if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
-			video_fast_mode_next_frame_black++;
-		}
-
-		if (video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
-                        debug_printf(VERBOSE_DEBUG,"Detected fast mode");
-			//forzar refresco de border
-                        modificado_border.v=1;
-
+                        if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
+                    video_fast_mode_next_frame_black++;
                 }
+
+                if (video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
+                                debug_printf(VERBOSE_DEBUG,"Detected fast mode");
+                    //forzar refresco de border
+                                modificado_border.v=1;
+
+                        }
+            }
         }
 
 
