@@ -343,7 +343,7 @@ void cpu_core_loop_zx8081(void)
 
             //Hacer esto aun en esta maquina porque ese parpadeo tambien se usa en menu (cursor parpadeante)
             contador_parpadeo--;
-            //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+
             if (!contador_parpadeo) {
                 contador_parpadeo=16;
                 toggle_flash_state();
@@ -406,7 +406,6 @@ void cpu_core_loop_zx8081(void)
         interrupcion_fifty_generada.v=0;
 
         //y de momento actualizamos tablas de teclado segun tecla leida
-        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
         scr_actualiza_tablas_teclado();
 
 
@@ -482,9 +481,8 @@ void cpu_core_loop_zx8081(void)
         //justo despues de EI no debe generar interrupcion
         //e interrupcion nmi tiene prioridad
         if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
-            //printf("1. maskable %d\n",t_estados);
+
             debug_anota_retorno_step_maskable();
-            //printf("2. maskable %d\n",t_estados);
 
             //Tratar interrupciones maskable
 
@@ -493,7 +491,6 @@ void cpu_core_loop_zx8081(void)
             //+6 t-estados
             push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
-            //printf("4. maskable %d\n",t_estados);
 
             reg_r++;
 
@@ -509,8 +506,8 @@ void cpu_core_loop_zx8081(void)
                 //+7 t-estados
                 cpu_common_jump_im01();
 
-
             }
+
             else {
             //IM 2.
 

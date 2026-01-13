@@ -35,20 +35,28 @@
 #include "tape.h"
 #include "tv.h"
 
-//http://nocash.emubase.de/zxdocs.htm#zx80zx81videointerruptsintsandnmis
-
-//http://www.user.dccnet.com/wrigter/index_files/ZX%20Video%20Tutorial.htm
 
 /*
 
-Info general sobre ZX80 y ZX81
+Información referencia
 
-Dibujan la pantalla mediante rutinas de software. En el emulador no se hace asi, el pintado de pantalla es tarea del driver de video,
-que lee los caracteres de pantalla del zx80/81 y los dibuja. Por tanto, no se soportan modos de video de alta resolucion
+https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-display-system/
 
-Diferencias entre ZX80 y ZX81:
--ZX81 tiene un generador de NMI, que genera NMI cuando está activo cada 64 microsegundos (cada final de frame de pantalla).Podria ignorar el generador, pero sirve para bajar la velocidad real del zx81 (en modo slow). Tambien he visto que el mazogs, cuando genera el laberinto, si no hay nmis no acaba nunca
--ZX80 siempre esta en modo fast, y por tanto presenta parpadeo?¿
+https://github.com/Megatokio/zxsp
+
+http://nocash.emubase.de/zxdocs.htm#zx80zx81videointerruptsintsandnmis
+
+http://www.user.dccnet.com/wrigter/index_files/ZX%20Video%20Tutorial.htm
+
+https://quix.us/timex/rigter/ZX@20Video@20Tutorial.html
+
+http://blog.tynemouthsoftware.co.uk/2023/10/how-the-zx81-generates-video.html
+
+http://www.fruitcake.plus.com/Sinclair/ZX80/FlickerFree/ZX80_DisplayMechanism.htm
+
+http://searle.x10host.com/zx80/zx80nmiV3.html
+
+https://k1.spdns.de/Vintage/Sinclair/80/Sinclair%20ZX81/ROMs/zx81%20version%202%20%27improved%27%20rom%20source.htm
 
 */
 
@@ -410,15 +418,15 @@ z80_byte da_codigo_zx80_no_artistic(z80_byte codigo)
 
 z80_byte da_codigo_zx81_no_artistic(z80_byte codigo)
 {
-        return caracteres_zx81_no_artistic[codigo];
+    return caracteres_zx81_no_artistic[codigo];
 }
 
 
 
 int da_amplitud_speaker_zx8081(void)
 {
-                                if (bit_salida_sonido_zx8081.v) return amplitud_speaker_actual_zx8081;
-                                else return -amplitud_speaker_actual_zx8081;
+    if (bit_salida_sonido_zx8081.v) return amplitud_speaker_actual_zx8081;
+    else return -amplitud_speaker_actual_zx8081;
 }
 
 
@@ -449,8 +457,8 @@ void enable_chroma81(void)
     }
 
 
-        ram_in_8192.v=1;
-        enable_ram_in_49152();
+    ram_in_8192.v=1;
+    enable_ram_in_49152();
     enable_rainbow();
 }
 
@@ -462,10 +470,10 @@ void disable_chroma81(void)
 
 void chroma81_return_mode1_colour(z80_int dir,int *colortinta,int *colorpapel)
 {
-                        //1 attribute file
-            z80_byte c=peek_byte_no_time(dir|0x8000);
-                        *colortinta=c&15;
-                        *colorpapel=(c>>4)&15;
+    //1 attribute file
+    z80_byte c=peek_byte_no_time(dir|0x8000);
+    *colortinta=c&15;
+    *colorpapel=(c>>4)&15;
 }
 
 int color_es_chroma(void)
@@ -529,18 +537,17 @@ z80_byte fetch_opcode_zx81_graphics(void)
         //se esta ejecutando la zona de pantalla
 
 
-
-
         z80_byte caracter;
 
-        if (op&64 || z80_halt_signal.v) {
-            caracter=0;
+        if ( (op & 64) || z80_halt_signal.v) {
+            //caracter=0;
             //Otros caracteres no validos (y el HALT) generan video display a 0
 
             return op;
         }
 
         else {
+            //ejecutará NOP
             caracter=op;
             op=0;
         }
@@ -704,6 +711,8 @@ void ula_zx80_time_event(int delta)
 
 //
 // Start waitmap code
+// Note: code borrowed from ZXSP emulator. Thanks!
+// But is not in use yet
 //
 int WAITMAP_POS = +1; // +1 wg. test position in Z80.run()
 int NMI_POS     = +2; // +2 = waitmap_pos+1 => max. 13 wait cycles
@@ -978,18 +987,16 @@ Bit  Expl.
 
     if (leer_cinta_real) {
         if (realtape_get_current_bit_playing()) {
-                        valor=valor|128;
-                        //printf ("1 ");
-                }
-                else {
-                        valor=(valor & (255-128));
-                        //printf ("0 ");
-                }
+            valor=valor|128;
+            //printf ("1 ");
+        }
+        else {
+            valor=(valor & (255-128));
+            //printf ("0 ");
+        }
     }
 
-
     return valor;
-
 
 
 }

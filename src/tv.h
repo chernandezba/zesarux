@@ -71,4 +71,22 @@ extern int tv_get_hsync_signal(void);
 extern int tv_max_line_period;
 extern int tv_max_lines;
 
+/*
+
+Estados vsync:
+1: no recibido ningun vsync
+2: recibido vsync pero no llegado al minimo y/o no ha pasado intervalo minimo entre cada vsync aceptado
+3: recibido vsync, llegado al minimo y pasado intervalo minimo entre cada vsync aceptado. Por tanto se esta establecieno tv_y=0
+4: recibido vsync pero excedido duracion maxima
+*/
+
+enum tv_vsync_status_list {
+    VSYNC_DISABLED,
+    VSYNC_RECEIVED_NOT_ACCEPTED_YET,
+    VSYNC_ACCEPTING,
+    VSYNC_EXCEEDED_LENGTH
+};
+
+
+
 #endif

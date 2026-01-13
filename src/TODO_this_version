@@ -129,16 +129,15 @@ ok? *orquesta,mazogs en pantalla inicial tiene parpadeo arriba y abajo
 seguro de que alguna vez se salga de rango y genere segfault)
 
 -Revisar settings de config y custom file config de ZX80 y ZX81 que ya no se usen. Dejarlas como deprecated
-
 -en changelog indicar settings deprecated
 
--settings de TV agregar config settings
 
 -para manic miner parece que minimo vsync interval 73% con algoritmo anterior. pacman, tetris, madjump, bipods.. parece que todos los pseudo hires mal con este setting
 Probar tambien QS defenda (ZX80), space invaders 1k, HERO.81, orquesta, SAVE
 
 ok agrego setting específico -aszmice rom no se ve bien, sincroniza mal en horizontal. en zx81 mal, en zx80 bien
 
--quitar prints de debug de codigo tv, zx8081.c, core_zx8081.c
+ok -quitar prints de debug de codigo tv, zx8081.c, core_zx8081.c
 
 -en settings de linea de comandos, separar en tv settings, video settings y Main window settings
+-settings de TV agregar config settings

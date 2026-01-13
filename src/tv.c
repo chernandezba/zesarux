@@ -234,23 +234,6 @@ void tv_increase_line(void)
 int last_vsync_time_passed=0;
 
 
-/*
-
-Estados vsync:
-1: no recibido ningun vsync
-2: recibido vsync pero no llegado al minimo y/o no ha pasado intervalo minimo entre cada vsync aceptado
-3: recibido vsync, llegado al minimo y pasado intervalo minimo entre cada vsync aceptado. Por tanto se esta establecieno tv_y=0
-4: recibido vsync pero excedido duracion maxima
-*/
-
-enum tv_vsync_status_list {
-    VSYNC_DISABLED,
-    VSYNC_RECEIVED_NOT_ACCEPTED_YET,
-    VSYNC_ACCEPTING,
-    VSYNC_EXCEEDED_LENGTH
-};
-
-
 enum tv_vsync_status_list tv_vsync_status=VSYNC_DISABLED;
 
 const char *string_tv_vsync_status_disabled="off";
@@ -358,10 +341,10 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 
                 if (tv_vsync_signal_length>=minimo_t_estados && tv_vsync_signal_length<maximo_t_estados && last_vsync_time_passed>=minimo_entre_vsyncs) {
 
-                    printf("-Llegado al minimo de %d (%d)\n",minimo_entre_vsyncs,last_vsync_time_passed);
+                    //printf("-Llegado al minimo de %d (%d)\n",minimo_entre_vsyncs,last_vsync_time_passed);
 
 
-                    printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+                    //printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
                     last_vsync_time_passed=0;
 
                     //Cambiar de estado
@@ -493,7 +476,7 @@ void tv_enable_vsync(void)
 
     if (tv_vsync_status==VSYNC_DISABLED) {
 
-        printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
+        //printf("-TV enable vsync x: %3d y: %3d\n",tv_x,tv_y);
 
         tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET;
         //printf("Cambiar a tv_vsync_status=VSYNC_RECEIVED_NOT_ACCEPTED_YET\n");
@@ -508,7 +491,7 @@ void tv_disable_vsync(void)
 {
 
     if (tv_vsync_status!=VSYNC_DISABLED) {
-        printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
+        //printf("TV disable vsync x: %3d y: %3d length: %d\n",tv_x,tv_y,tv_vsync_signal_length);
 
         tv_vsync_status=VSYNC_DISABLED;
 
