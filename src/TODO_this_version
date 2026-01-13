@@ -86,29 +86,11 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 ------
 
 #####  Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
-Y tiempos para hsync y nmi se basan en t-estados y en alterar t-estados artificialmente, esto no es correcto
+-view variables interfiere en render!!??? con breakout por ejemplo
 
--view variables interfiere en render!! con breakout por ejemplo
--revisar tscaline_draw_timeout para que funcione modo fast en negro, con modo no-realvideo
 -franjas grabacion save no aparecen bien. probablemente por gestion de hsync timeout o vsync timeout
 si se activa simular vsync, se ven franjas de grabacion
 quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0/1 al casette) no es correcta y por eso no engancha vsync nunca
--tiene sentido simulate_lost_hsync?
-
-Info video:
-
-https://quix.us/timex/rigter/ZX@20Video@20Tutorial.html
-
-https://8bit-museum.de/heimcomputer-2/sinclair/sinclair-scans/scans-zx81-video-display-system/
-
-http://blog.tynemouthsoftware.co.uk/2023/10/how-the-zx81-generates-video.html
-
-http://www.fruitcake.plus.com/Sinclair/ZX80/FlickerFree/ZX80_DisplayMechanism.htm
-
-http://searle.x10host.com/zx80/zx80nmiV3.html
-
-https://k1.spdns.de/Vintage/Sinclair/80/Sinclair%20ZX81/ROMs/zx81%20version%202%20%27improved%27%20rom%20source.htm
-
 
 
 -Disparo de interrupciones se debería hacer similar a zxsp, que se pueda hacer step :
@@ -132,14 +114,9 @@ seguro de que alguna vez se salga de rango y genere segfault)
 -en changelog indicar settings deprecated
 
 
--para manic miner parece que minimo vsync interval 73% con algoritmo anterior. pacman, tetris, madjump, bipods.. parece que todos los pseudo hires mal con este setting
-Probar tambien QS defenda (ZX80), space invaders 1k, HERO.81, orquesta, SAVE
-
-ok agrego setting específico -aszmice rom no se ve bien, sincroniza mal en horizontal. en zx81 mal, en zx80 bien
-
-ok -quitar prints de debug de codigo tv, zx8081.c, core_zx8081.c
-
 -en settings de linea de comandos, separar en tv settings, video settings y Main window settings
 -settings de TV agregar config settings
 
 -aszmic rom adjust opción ya no necesaria?
+
+-ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
