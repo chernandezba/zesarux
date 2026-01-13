@@ -482,6 +482,10 @@ void cpu_core_loop_zx8081(void)
         //e interrupcion nmi tiene prioridad
         if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
 
+            //TODO: no está claro si desde ZX81 también se deberia hacer hsync aqui y/o solo reset del contador hsync (ula_zx81_time_event_t_estados).
+            //Yo lo probé en su momento y entonces empiezan a verse mal algunos juegos
+            //ula_zx81_time_event_t_estados=0;
+
             debug_anota_retorno_step_maskable();
 
             //Tratar interrupciones maskable
@@ -527,8 +531,8 @@ void cpu_core_loop_zx8081(void)
                 video_zx8081_lcntr++;
             }
 
-            //TODO: no está claro si desde ZX81 también se deberia hacer hsync aqui. Yo lo probé
-            //en su momento y entonces empiezan a verse mal algunos juegos
+
+
 
         }
 
