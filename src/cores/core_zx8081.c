@@ -485,6 +485,7 @@ void cpu_core_loop_zx8081(void)
             if (MACHINE_IS_ZX81_TYPE) {
                 //TODO: se deberia mantener durante 16 estados, pero hago 32 o si no, no se ve bien
                 generate_zx81_delayed_hsync(32,16);
+                ula_zx81_time_event_t_estados=0;
             }
 
             debug_anota_retorno_step_maskable();
