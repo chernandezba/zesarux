@@ -5541,9 +5541,6 @@ void scr_refresca_pantalla_y_border_zx8081(void)
         //simulacion pantalla negra fast
         if (video_fast_mode_emulation.v) {
 
-                    //printf("FAST %d\n",contador_segundo);
-                //if (hsync_generator_active.v==0) {
-
                 if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
                     video_fast_mode_next_frame_black++;
                 }
