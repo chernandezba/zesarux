@@ -796,7 +796,14 @@ int get_waitmap_value(int pos)
 // End waitmap code
 //
 
+int delayed_hsync_after=0;
+int delayed_hsync_enable_for_states=0;
 
+void generate_zx81_delayed_hsync(int tiempo,int generate_after)
+{
+    delayed_hsync_enable_for_states=tiempo;
+    delayed_hsync_after=generate_after;
+}
 
 void generar_zx81_hsync(int tiempo)
 {
@@ -830,6 +837,15 @@ void ula_zx81_time_event(int delta)
 
         ula_zx81_time_event_t_estados++;
 
+        if (delayed_hsync_after) {
+            delayed_hsync_after--;
+            if (!delayed_hsync_after/* && !hsync_duration_counter*/) {
+                generar_zx81_hsync(delayed_hsync_enable_for_states);
+                video_zx8081_lcntr++;
+                ula_zx81_time_event_t_estados=0;
+            }
+        }
+
 
         if (hsync_duration_counter) {
             hsync_duration_counter--;
@@ -849,7 +865,7 @@ void ula_zx81_time_event(int delta)
             }
 
 
-            if (hsync_generator_active.v) {
+            if (1 /*hsync_generator_active.v && !hsync_duration_counter*/) {
                 //printf("hsync desde generator\n");
                 generar_zx81_hsync(16);
                 video_zx8081_lcntr++;

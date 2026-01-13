@@ -482,9 +482,10 @@ void cpu_core_loop_zx8081(void)
         //e interrupcion nmi tiene prioridad
         if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
 
-            //TODO: no está claro si desde ZX81 también se deberia hacer hsync aqui y/o solo reset del contador hsync (ula_zx81_time_event_t_estados).
-            //Yo lo probé en su momento y entonces empiezan a verse mal algunos juegos
-            //ula_zx81_time_event_t_estados=0;
+            if (MACHINE_IS_ZX81_TYPE) {
+                //TODO: se deberia mantener durante 16 estados, pero hago 32 o si no, no se ve bien
+                generate_zx81_delayed_hsync(32,16);
+            }
 
             debug_anota_retorno_step_maskable();
 
@@ -526,7 +527,7 @@ void cpu_core_loop_zx8081(void)
             }
 
             //ZX80 lanza hsync al hacer ack de interrupción
-            if (MACHINE_IS_ZX80_TYPE && hsync_generator_active.v) {
+            if (MACHINE_IS_ZX80_TYPE /* && hsync_generator_active.v */) {
                 generar_zx80_hsync();
                 video_zx8081_lcntr++;
             }
