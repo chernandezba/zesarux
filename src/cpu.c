@@ -1063,7 +1063,7 @@ void reset_cpu(void)
 		//algunos reseteos para zx80/81
 		nmi_generator_active.v=0;
         zx8081_vsync_generator.v=0;
-        hsync_generator_active.v=0;
+        //hsync_generator_active.v=0;
         ula_zx81_time_event_t_estados=0;
 		//timeout_linea_vsync=NORMAL_TIMEOUT_LINEA_VSYNC;
 		chroma81_port_7FEF=0;
@@ -2807,7 +2807,7 @@ void set_machine_params(void)
             out_port=out_port_zx80;
 
             nmi_generator_active.v=0;
-            hsync_generator_active.v=0;
+            //hsync_generator_active.v=0;
 
             debug_printf (VERBOSE_INFO,"Emulating ZX80 with %d KB (ramtop=%d)",(ramtop_zx8081-16383)/1024,ramtop_zx8081);
             //printf ("ramtop: %d\n",ramtop_zx8081);
@@ -2842,7 +2842,7 @@ void set_machine_params(void)
             out_port=out_port_zx81;
 
             nmi_generator_active.v=0;
-            hsync_generator_active.v=0;
+            //hsync_generator_active.v=0;
 
             debug_printf (VERBOSE_INFO,"Emulating ZX81 with %d KB (ramtop=%d)",(ramtop_zx8081-16383)/1024,ramtop_zx8081);
             //printf ("ramtop: %d\n",ramtop_zx8081);
@@ -2868,8 +2868,6 @@ void set_machine_params(void)
 
             out_port=out_port_ace;
 
-            //nmi_generator_active.v=0;
-            //hsync_generator_active.v=0;
 
             debug_printf (VERBOSE_INFO,"Emulating Jupiter Ace with %d KB (ramtop=%d)",(ramtop_ace-16383)/1024+3,ramtop_ace);
             screen_testados_linea=208;

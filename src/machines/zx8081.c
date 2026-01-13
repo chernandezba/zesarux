@@ -159,7 +159,7 @@ Despues de ?(), en posicion 18:
 //Inicio variables para generación de video
 //
 z80_bit nmi_generator_active;
-z80_bit hsync_generator_active;
+//z80_bit hsync_generator_active;
 z80_bit zx8081_vsync_generator={0};
 
 //Tiempo total de hsync:
@@ -947,10 +947,12 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     //Valor un tanto random que genera punteado en pantalla
     //video_zx8081_ula_video_output=0x11;
 
+    /*
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
         hsync_generator_active.v=0;
         //printf("hsync generator off en t_scanline_draw=%d t_estados: %d\n",t_scanline_draw,t_estados);
     }
+    */
 
 
     //printf("Disabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
@@ -1031,9 +1033,11 @@ void zx8081_out_any_port_video_stuff(void)
 
     //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);
 
+    /*
     if (hsync_generator_active.v==0) {
         hsync_generator_active.v=1;
     }
+    */
 
 
     if (zx8081_vsync_generator.v) {

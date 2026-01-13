@@ -1007,7 +1007,7 @@ void new_load_zx81_set_common_registers(z80_int ramtopvalue)
 
     //suponemos que esta esto activo . TODO: detectar modo fast/slow por las variables de sistema
     nmi_generator_active.v=1;
-    hsync_generator_active.v=1;
+    //hsync_generator_active.v=1;
 
 
 

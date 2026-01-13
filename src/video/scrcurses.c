@@ -598,7 +598,7 @@ void scrcurses_refresca_pantalla_zx81(void)
 
 
         //simulacion pantalla negra fast
-        if (hsync_generator_active.v==0) {
+        if (0/*hsync_generator_active.v==0*/) {
 
                 if (video_fast_mode_next_frame_black!=LIMIT_FAST_FRAME_BLACK) {
                         video_fast_mode_next_frame_black++;

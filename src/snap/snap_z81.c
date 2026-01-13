@@ -214,7 +214,8 @@ void load_snap_zx81(FILE *f)
                 if (!strcmp(tok,"NMI")) {
 			nmi_generator_active.v = hex2dec(get_token(f));
 		}
-                if (!strcmp(tok,"HSYNC")) hsync_generator_active.v = hex2dec(get_token(f));
+            //TODO: este "HSYNC" deberia habilitar probablemente la señal hsync pero... durante cuanto tiempo?
+                //if (!strcmp(tok,"HSYNC")) hsync_generator_active.v = hex2dec(get_token(f));
                 if (!strcmp(tok,"ROW")) nada = hex2dec(get_token(f));
         }
 

@@ -2485,7 +2485,7 @@ void load_zsf_zx8081_conf(z80_byte *header)
   ram_in_49152.v=(header[1]>>4)&1;
   ram_in_32768.v=(header[1]>>3)&1;
   ram_in_8192.v=(header[1]>>2)&1;
-  hsync_generator_active.v=(header[1]>>1)&1;
+  //hsync_generator_active.v=(header[1]>>1)&1;
   nmi_generator_active.v=header[1]&1;
 
 
@@ -4303,7 +4303,7 @@ Byte fields:
     z80_byte flags1;
     z80_byte flags2=0;
 
-    flags1=(ram_in_49152.v<<4)|(ram_in_32768.v<<3)|(ram_in_8192.v<<2)|(hsync_generator_active.v<<1)|nmi_generator_active.v;
+    flags1=(ram_in_49152.v<<4)|(ram_in_32768.v<<3)|(ram_in_8192.v<<2) /*|(hsync_generator_active.v<<1)*/ |nmi_generator_active.v;
 
     zx8081confblock[1]=flags1;
     zx8081confblock[2]=flags2;

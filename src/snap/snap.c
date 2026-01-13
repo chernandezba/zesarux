@@ -1090,7 +1090,7 @@ void load_zx_snapshot(char *archivo)
 	        z80_byte bits_estado2=zx_header[72];
 
         	nmi_generator_active.v=bits_estado2 &1;
-	        hsync_generator_active.v=(bits_estado2>>1)&1;
+	        //hsync_generator_active.v=(bits_estado2>>1)&1;
 
 
 		//Algun parametro por defecto que no esta en version anterior a la 4
@@ -4109,10 +4109,10 @@ void save_zx_snapshot(char *filename)
         	//z80_byte bits_estado2=header[72];
 	        z80_byte bits_estado2=0;
 
-		//bits_estado2=(nmi_generator_active.v) + (2*hsync_generator_active.v) + (4*rainbow_enabled.v) + (8*wrx_present.v) + (16*ram_in_8192.v);
+
 
 		//z80_byte pruebas=(nmi_generator_active.v) + (2*hsync_generator_active.v) + (4*rainbow_enabled.v) + (8*wrx_present.v) + (16*ram_in_8192.v) + (32*ram_in_32768.v)+ (64*ram_in_49152.v) + (128*ay_chip_present.v);
-		bits_estado2=(nmi_generator_active.v) | (hsync_generator_active.v<<1) | (rainbow_enabled.v<<2) | (wrx_present.v<<3) | (ram_in_8192.v<<4) | (ram_in_32768.v<<5) | (ram_in_49152.v<<6) | (ay_chip_present.v<<7);
+		bits_estado2=(nmi_generator_active.v) /*| (hsync_generator_active.v<<1)*/ | (rainbow_enabled.v<<2) | (wrx_present.v<<3) | (ram_in_8192.v<<4) | (ram_in_32768.v<<5) | (ram_in_49152.v<<6) | (ay_chip_present.v<<7);
 
 
 		//printf ("bits_estado2: %d pruebas: %d\n",bits_estado2,pruebas);
