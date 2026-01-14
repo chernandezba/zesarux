@@ -1730,7 +1730,8 @@ printf("\n"
         "------------\n"
         "\n"
 
-        "--tv-minimum-accepted-vsync n    Minimum accepted vsync length, in microseconds\n"
+        "--tv-minimum-accepted-vsync-length n    Minimum accepted vsync length, in microseconds\n"
+        "--tv-minimum-accepted-vsync-interval n  Minimum accepted vsync interval (in %% of 20ms) between every vsync start\n"
 
 
         "\n"
@@ -4022,16 +4023,28 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--tv-minimum-accepted-vsync")) {
+            else if (!strcmp(argv[puntero_parametro],"--tv-minimum-accepted-vsync-length")) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<10 || valor>999) {
-                    debug_printf(VERBOSE_ERR,"Invalid --tv-minimum-accepted-vsync value");
+                    debug_printf(VERBOSE_ERR,"Invalid --tv-minimum-accepted-vsync-length value");
                 }
                 else {
                     tv_minimum_accepted_vsync=valor;
                 }
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--tv-minimum-accepted-vsync-interval")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<1 || valor>100) {
+                    debug_printf(VERBOSE_ERR,"Invalid --tv-minimum-accepted-vsync-interval value");
+                }
+                else {
+                    tv_vsync_minimum_accepted_interval=valor;
+                }
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--chroma81")) {
                                 command_line_chroma81.v=1;
