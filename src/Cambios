@@ -35,6 +35,11 @@ Mejorado ZX Desktop:
 - Permitir cambiar el color de fondo de iconos, botones inferiores y superiores
 - Agregada opción para añadir un contorno a los iconos
 
+Mejorada emulación de ZX80 y ZX81:
+- Todo el código de temporización y pantalla se ha reescrito y corregido, cerca de 100% perfecto
+- Eliminadas opciones de configuración: --vsync-minimum-length, --no-horiz-stabilization, --enablezx8081lnctradjust, --disablezx8081lnctradjust
+- Eliminadas opciones del menú GUI settings: Estabilización Horizontal, lnctr video adjust, Video x_offset
+
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
 Mejorado icono de Papelera

@@ -107,8 +107,6 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 -revisar waitmap y activarlo en pausa nmi. o dejar el 9 tal cual. si no se usa, desactivar funciones de uso de waitmap (no estoy
 seguro de que alguna vez se salga de rango y genere segfault)
 
--Revisar settings de config y custom file config de ZX80 y ZX81 que ya no se usen. Dejarlas como deprecated
--en changelog indicar settings deprecated
 
 
 -en settings de linea de comandos, separar en tv settings, video settings y Main window settings
