@@ -102,7 +102,7 @@ extern void generar_zx81_hsync(int tiempo);
 
 extern void generate_zx81_delayed_hsync(int tiempo,int generate_after);
 
-extern z80_bit aszmic_rom_video_adjust;
+
 
 //8k de RAM en 8192-163783
 extern z80_bit ram_in_8192;

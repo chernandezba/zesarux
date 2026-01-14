@@ -245,8 +245,7 @@ z80_bit ram_in_49152;
 //16k de RAM en 32767-49152
 z80_bit ram_in_32768;
 
-//TODO: esto es un ajuste feo. probablemente haya algún error en los timings de las interrupciones maskables
-z80_bit aszmic_rom_video_adjust={0};
+
 
 int vsync_per_second;
 int last_vsync_per_second;

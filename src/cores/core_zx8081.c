@@ -508,9 +508,15 @@ void cpu_core_loop_zx8081(void)
             //desactivar interrupciones al generar una
             iff1.v=iff2.v=0;
 
+            //Prueba de ajuste para corregir problemas de video con la ASZMIC ROM
+            //Actualmente el fallo con esa rom es:
+            //Usandola combinada con la SPROM, en modo gráfico, la imagen suele temblar al dibujar en pantalla y/o leer del teclado
+            //Este ajuste no lo corregia, por tanto lo desactivamos
+            /*
             if (MACHINE_IS_ZX81_TYPE && aszmic_rom_video_adjust.v) {
                 t_estados--;
             }
+            */
 
             //IM0/1
             if (im_mode==0 || im_mode==1) {
