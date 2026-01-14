@@ -9890,7 +9890,7 @@ void menu_settings_tv_minimum_accepted_vsync(MENU_ITEM_PARAMETERS)
 void menu_settings_tv_vsync_minimum_accepted_interval(MENU_ITEM_PARAMETERS)
 {
 
-    menu_ventana_scanf_numero_enhanced("Minimum vsync interval",&tv_vsync_minimum_accepted_interval,4,+5,1,100,0);
+    menu_ventana_scanf_numero_enhanced_default("Minimum vsync interval",&tv_vsync_minimum_accepted_interval,4,+5,1,100,0,DEFAULT_MINIMUM_VSYNC_ACCEPTED_INTERVAL);
 
 }
 

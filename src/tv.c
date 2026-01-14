@@ -68,7 +68,7 @@ int tv_hsync_signal_pending=0;
 int tv_minimum_accepted_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
 
 //intervalo, en porcentaje sobre 20ms, cada cuanto se acepta un vsync (contando desde principio a principio de siguiente vsync)
-int tv_vsync_minimum_accepted_interval=90;
+int tv_vsync_minimum_accepted_interval=DEFAULT_MINIMUM_VSYNC_ACCEPTED_INTERVAL;
 
 //maximo tiempo que puede durar una linea, en microsegundos, si no llega señal de hsync
 //habitualmente deberia de ser de 64 microsegundos

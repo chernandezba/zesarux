@@ -49,6 +49,8 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 // 518 t-estados = 160 microsec
 #define DEFAULT_MINIMO_DURACION_VSYNC 49
 
+#define DEFAULT_MINIMUM_VSYNC_ACCEPTED_INTERVAL 90
+
 #define PERMITIDO_MAXIMO_DURACION_VSYNC 618
 
 extern void tv_time_event(int delta);
