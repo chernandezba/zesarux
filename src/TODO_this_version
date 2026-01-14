@@ -91,6 +91,9 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 -franjas grabacion save no aparecen bien. probablemente por gestion de hsync timeout o vsync timeout
 si se activa simular vsync, se ven franjas de grabacion
 quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0/1 al casette) no es correcta y por eso no engancha vsync nunca
+-Revisar franjas de load y save
+*video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
+
 
 
 -Disparo de interrupciones se debería hacer similar a zxsp, que se pueda hacer step :
@@ -99,12 +102,6 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 
 
 -starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
-
-
--Revisar franjas de load y save
-*video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
-*vsync deberia tener un minimo. por debajo de ahi, no hacer sync, eso permite que las franjas ocupen toda la pantalla
-ok? *orquesta,mazogs en pantalla inicial tiene parpadeo arriba y abajo
 
 
 -revisar waitmap y activarlo en pausa nmi. o dejar el 9 tal cual. si no se usa, desactivar funciones de uso de waitmap (no estoy
@@ -120,3 +117,5 @@ seguro de que alguna vez se salga de rango y genere segfault)
 -aszmic rom adjust opción ya no necesaria?
 
 -ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
+
+-revisar generate_zx81_delayed_hsync que se esté haciendo bien
