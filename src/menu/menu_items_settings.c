@@ -9873,12 +9873,12 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
 void menu_settings_tv_line_period(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Max Line Period",&tv_max_line_period,3,+1,10,99,0);
+    menu_ventana_scanf_numero_enhanced_default("Max Line Period",&tv_max_line_period,3,+1,10,99,0,DEFAULT_MAX_LINE_PERIOD);
 }
 
 void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Max Lines",&tv_max_lines,4,+1,200,399,0);
+    menu_ventana_scanf_numero_enhanced_default("Max Lines",&tv_max_lines,4,+1,200,399,0,DEFAULT_TV_MAX_LINES);
 }
 
 

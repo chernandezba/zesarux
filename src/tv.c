@@ -73,10 +73,10 @@ int tv_vsync_minimum_accepted_interval=DEFAULT_MINIMUM_VSYNC_ACCEPTED_INTERVAL;
 //maximo tiempo que puede durar una linea, en microsegundos, si no llega señal de hsync
 //habitualmente deberia de ser de 64 microsegundos
 //Estos 84 sirve para que el juego de QS Defenda se vean hasta las ultimas lineas del final
-int tv_max_line_period=84;
+int tv_max_line_period=DEFAULT_MAX_LINE_PERIOD;
 
 //Maximo de lineas antes de lanzar un vsync interno si no se recibe dicha señal
-int tv_max_lines=316;
+int tv_max_lines=DEFAULT_TV_MAX_LINES;
 
 void tv_time_event_store_chunk_image_sprite(int x,int y,z80_byte byte_leido,int colortinta,int colorpapel)
 {
