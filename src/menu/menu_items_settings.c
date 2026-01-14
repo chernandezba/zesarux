@@ -9873,7 +9873,7 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
 void menu_settings_tv_line_period(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced_default("Max Line Period",&tv_max_line_period,3,+1,10,99,0,DEFAULT_MAX_LINE_PERIOD);
+    menu_ventana_scanf_numero_enhanced_default("Max Line Period",&tv_max_line_period,3,+1,10,99,0,DEFAULT_TV_MAX_LINE_PERIOD);
 }
 
 void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
@@ -9884,13 +9884,13 @@ void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
 
 void menu_settings_tv_minimum_accepted_vsync(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced_default("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0,DEFAULT_MINIMO_DURACION_VSYNC);
+    menu_ventana_scanf_numero_enhanced_default("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0,DEFAULT_TV_MINIMO_DURACION_VSYNC);
 }
 
 void menu_settings_tv_vsync_minimum_accepted_interval(MENU_ITEM_PARAMETERS)
 {
 
-    menu_ventana_scanf_numero_enhanced_default("Minimum vsync interval",&tv_vsync_minimum_accepted_interval,4,+5,1,100,0,DEFAULT_MINIMUM_VSYNC_ACCEPTED_INTERVAL);
+    menu_ventana_scanf_numero_enhanced_default("Minimum vsync interval",&tv_vsync_minimum_accepted_interval,4,+5,1,100,0,DEFAULT_TV_MINIMUM_VSYNC_ACCEPTED_INTERVAL);
 
 }
 

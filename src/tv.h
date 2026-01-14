@@ -47,11 +47,11 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
 //En microsec:
 // 160 t-estados = 49 microsec
 // 518 t-estados = 160 microsec
-#define DEFAULT_MINIMO_DURACION_VSYNC 49
+#define DEFAULT_TV_MINIMO_DURACION_VSYNC 49
 
-#define DEFAULT_MINIMUM_VSYNC_ACCEPTED_INTERVAL 90
+#define DEFAULT_TV_MINIMUM_VSYNC_ACCEPTED_INTERVAL 90
 
-#define DEFAULT_MAX_LINE_PERIOD 84
+#define DEFAULT_TV_MAX_LINE_PERIOD 84
 
 #define DEFAULT_TV_MAX_LINES 316
 
