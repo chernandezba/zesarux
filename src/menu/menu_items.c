@@ -24645,7 +24645,7 @@ void menu_ql_data_size_headerless(MENU_ITEM_PARAMETERS)
 
 
 
-    int retorno=menu_ventana_scanf_numero("Data size",string_data_size,7,+4096,0,131072,1);
+    int retorno=menu_ventana_scanf_numero("Data size",string_data_size,7,+4096,0,131072,1,NULL);
     if (retorno>=0) {
         int valor=parse_string_to_number(string_data_size);
 

@@ -25833,21 +25833,26 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
     zxvision_scanf(ventana,texto,max_length,max_length,x_texto_input,0,1,0,0);
 }
 
-void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *texto,int x_boton_menos,int x_boton_mas,int x_texto_input,int x_boton_ok,int x_boton_cancel)
+void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *texto,int x_boton_menos,int x_boton_mas,
+    int x_texto_input,int x_boton_ok,int x_boton_cancel,int x_boton_default)
 {
-            //Borrar linea entera
-        zxvision_print_string_defaults_fillspc(ventana,x_boton_menos,0,"");
+    //Borrar linea entera
+    zxvision_print_string_defaults_fillspc(ventana,x_boton_menos,0,"");
 
-        //Escribir - +
-        zxvision_print_string_defaults(ventana,x_boton_menos,0,"-");
-        zxvision_print_string_defaults(ventana,x_boton_mas,0,"+");
+    //Escribir - +
+    zxvision_print_string_defaults(ventana,x_boton_menos,0,"-");
+    zxvision_print_string_defaults(ventana,x_boton_mas,0,"+");
 
-        //Escribir numero
-        zxvision_print_string_defaults(ventana,x_texto_input,0,texto);
+    //Escribir numero
+    zxvision_print_string_defaults(ventana,x_texto_input,0,texto);
 
-        zxvision_print_string_defaults(ventana,x_boton_ok,2,"<OK>");
+    zxvision_print_string_defaults(ventana,x_boton_ok,2,"<OK>");
 
-        zxvision_print_string_defaults(ventana,x_boton_cancel,2,"<Cancel>");
+    zxvision_print_string_defaults(ventana,x_boton_cancel,2,"<Cancel>");
+
+    if (x_boton_default>=0) {
+        zxvision_print_string_defaults(ventana,x_boton_default,2,"<Reset Default>");
+    }
 }
 
 //busca donde apunta el mouse y retorna opcion seleccionada
@@ -25891,7 +25896,7 @@ Si que se controla al pulsar botones de + y -
 */
 
 //Retorna -1 si pulsado ESC
-int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular)
+int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
@@ -25940,8 +25945,11 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     int x_boton_ok=1;
     int x_boton_cancel=x_boton_ok+5;
 
+    int x_boton_default=x_boton_cancel+9;
+    if (default_value==NULL) x_boton_default=-1;
+
     //Dibujar texto interior
-    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel);
+    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
 
     //Dibujar ventana antes de scanf
     zxvision_draw_window(&ventana);
@@ -25961,12 +25969,13 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     do {
 
-
-
         //Escribir primero numero
 
         //Dibujar texto interior
-        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel);
+        int xdef=x_boton_default;
+        if (default_value==NULL) xdef=-1;
+
+        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
 
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-");
@@ -25985,6 +25994,11 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,"<Cancel>");
         menu_add_item_menu_tabulado(array_menu_common,x_boton_cancel,2);
+
+        if (default_value!=NULL) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Reset Default>");
+            menu_add_item_menu_tabulado(array_menu_common,x_boton_default,2);
+        }
 
 
         //Antes de abrir el menu, ajustar la opcion seleccionada cuando ha salido del input de numero
@@ -26053,6 +26067,16 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                         debe_ajustar_cursor_segun_mouse=1;
                     }
 
+                    //Boton set default
+                    if (comun_opcion_seleccionada==5 && default_value!=NULL) {
+
+                        sprintf(texto,"%d",*default_value);
+
+
+                        //Pero ajustar el mouse si apunta a alguna opcion
+                        debe_ajustar_cursor_segun_mouse=1;
+                    }
+
 
 
             }
@@ -26070,15 +26094,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     else return 0;
 }
 
-//Similar a menu_ventana_scanf_numero pero evita tener que crear el buffer de char temporal
-//Y ademas muestra error si limites se exceden
-//Retorna -1 si pulsado ESC o valor fuera de rango
-//Si se ha pulsado ESC o si se exceden los limites, no se modifica *variable
-//max_length: maxima longitud, contando caracter 0 del final
-//minimo: valor minimo admitido
-//maximo: valor maximo admitido
-//circular: si al pasar umbral, se resetea al otro umbral
-int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular)
+int menu_ventana_scanf_numero_enhanced_common(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {
 
     //Asignar memoria para el buffer
@@ -26089,7 +26105,7 @@ int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length
 
     sprintf(buf_texto,"%d",*variable);
 
-    int ret=menu_ventana_scanf_numero(titulo,buf_texto,max_length,incremento,minimo,maximo,circular);
+    int ret=menu_ventana_scanf_numero(titulo,buf_texto,max_length,incremento,minimo,maximo,circular,default_value);
     //Si no pulsado ESC
     if (ret>=0) {
 
@@ -26112,9 +26128,27 @@ int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length
 
 }
 
+//Similar a menu_ventana_scanf_numero pero evita tener que crear el buffer de char temporal
+//Y ademas muestra error si limites se exceden
+//Retorna -1 si pulsado ESC o valor fuera de rango
+//Si se ha pulsado ESC o si se exceden los limites, no se modifica *variable
+//max_length: maxima longitud, contando caracter 0 del final
+//minimo: valor minimo admitido
+//maximo: valor maximo admitido
+//circular: si al pasar umbral, se resetea al otro umbral
+int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular)
+{
+
+    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,NULL);
+
+}
 
 
-
+//Igual que menu_ventana_scanf_numero_enhanced pero pudiendo especificar valor por defecto
+int menu_ventana_scanf_numero_enhanced_default(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular,int default_value)
+{
+    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,&default_value);
+}
 
 
 

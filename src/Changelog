@@ -25,8 +25,9 @@ Improved Snapshots in RAM:
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
-- Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision
+- Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision, TV
 - Added shortcuts helper action to create icon to trigger recorded keys
+- Some settings dialogs can reset value to defaults
 - Restored maximized windows on startup, will be restored to the maximum size available
 
 Improved ZX Desktop:

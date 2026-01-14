@@ -846,7 +846,7 @@ void menu_interface_zoom(MENU_ITEM_PARAMETERS)
 
     sprintf (string_zoom,"%d",zoom_x);
 
-    int retorno=menu_ventana_scanf_numero("Window Zoom",string_zoom,2,+1,1,9,0);
+    int retorno=menu_ventana_scanf_numero("Window Zoom",string_zoom,2,+1,1,9,0,NULL);
     if (retorno>=0) {
         temp_zoom=parse_string_to_number(string_zoom);
 
@@ -865,7 +865,7 @@ void menu_interface_zoom_width(MENU_ITEM_PARAMETERS)
 
     sprintf (string_zoom,"%d",zoom_x);
 
-    int retorno=menu_ventana_scanf_numero("Window Zoom Width",string_zoom,2,+1,1,9,0);
+    int retorno=menu_ventana_scanf_numero("Window Zoom Width",string_zoom,2,+1,1,9,0,NULL);
     if (retorno>=0) {
         temp_zoom=parse_string_to_number(string_zoom);
 
@@ -884,7 +884,7 @@ void menu_interface_zoom_height(MENU_ITEM_PARAMETERS)
 
     sprintf (string_zoom,"%d",zoom_y);
 
-    int retorno=menu_ventana_scanf_numero("Window Zoom Height",string_zoom,2,+1,1,9,0);
+    int retorno=menu_ventana_scanf_numero("Window Zoom Height",string_zoom,2,+1,1,9,0,NULL);
     if (retorno>=0) {
         temp_zoom=parse_string_to_number(string_zoom);
 
@@ -9884,7 +9884,7 @@ void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
 
 void menu_settings_tv_minimum_accepted_vsync(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0);
+    menu_ventana_scanf_numero_enhanced_default("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0,DEFAULT_MINIMO_DURACION_VSYNC);
 }
 
 void menu_settings_tv_vsync_minimum_accepted_interval(MENU_ITEM_PARAMETERS)
