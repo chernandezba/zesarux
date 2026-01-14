@@ -9923,7 +9923,7 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_line_period,NULL,
-                "Max Line Period","Max Periodo de Línea","Max Periode de Línia");
+                "Max Scanline Period","Max Periodo de Scanline","Max Periode de Scanline");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_max_line_period);
             menu_add_item_menu_es_avanzado(array_menu_common);
