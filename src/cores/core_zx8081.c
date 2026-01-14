@@ -486,6 +486,10 @@ void cpu_core_loop_zx8081(void)
                 //printf("hsync desde interrupt\n");
                 //TODO: se deberia mantener durante 16 estados, pero hago 32 o si no, no se ve bien
                 generate_zx81_delayed_hsync(32,16);
+
+                //cuando se genera la delayed hsync se vuelve a resetear este contador, puede parecer redundante,
+                //pero creo que de alguna manera, al resetearlo aquí, evitamos que se lance otro hsync derivado
+                //del propio contador cuando llega a 207, así no se lanza dos veces seguidas
                 ula_zx81_time_event_t_estados=0;
             }
 
