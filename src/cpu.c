@@ -3276,7 +3276,7 @@ void rom_load(char *romfilename)
             else romfilename="tbblue_loader.rom";
             break;
 
-            case 20:
+            case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
             romfilename="48es.rom";
             break;
 
