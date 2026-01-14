@@ -529,7 +529,7 @@ void cpu_core_loop_zx8081(void)
             }
 
             //ZX80 lanza hsync al hacer ack de interrupción
-            if (MACHINE_IS_ZX80_TYPE /* && hsync_generator_active.v */) {
+            if (MACHINE_IS_ZX80_TYPE) {
                 generar_zx80_hsync();
                 video_zx8081_lcntr++;
             }

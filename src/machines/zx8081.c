@@ -845,7 +845,7 @@ void ula_zx81_time_event(int delta)
 
         if (delayed_hsync_after) {
             delayed_hsync_after--;
-            if (!delayed_hsync_after/* && !hsync_duration_counter*/) {
+            if (!delayed_hsync_after) {
 
                 //printf("Generar delayed hsync. ula_zx81_time_event_t_estados=%3d tv_x=%3d tv_y=%3d zx8081_vsync_generator.v=%d nmi_generator.v=%d\n",
                 //    ula_zx81_time_event_t_estados,tv_get_x(),tv_get_y(),zx8081_vsync_generator.v,nmi_generator_active.v);
@@ -876,12 +876,9 @@ void ula_zx81_time_event(int delta)
             }
 
 
-            if (1 /*hsync_generator_active.v && !hsync_duration_counter*/) {
-                //printf("hsync desde generator\n");
-                generar_zx81_hsync(16);
-                video_zx8081_lcntr++;
-            }
-
+            //printf("hsync desde generator\n");
+            generar_zx81_hsync(16);
+            video_zx8081_lcntr++;
 
         }
 
