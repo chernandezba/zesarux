@@ -483,6 +483,7 @@ void cpu_core_loop_zx8081(void)
         if (interrupcion_maskable_generada.v && byte_leido_core_zx8081!=251) {
 
             if (MACHINE_IS_ZX81_TYPE) {
+                //printf("hsync desde interrupt\n");
                 //TODO: se deberia mantener durante 16 estados, pero hago 32 o si no, no se ve bien
                 generate_zx81_delayed_hsync(32,16);
                 ula_zx81_time_event_t_estados=0;
