@@ -1730,8 +1730,10 @@ printf("\n"
         "------------\n"
         "\n"
 
-        "--tv-minimum-accepted-vsync-length n    Minimum accepted vsync length, in microseconds\n"
-        "--tv-minimum-accepted-vsync-interval n  Minimum accepted vsync interval (in %% of 20ms) between every vsync start\n"
+        "--tv-maximum-scanlines n                Maximum scanlines (counting even non visible scanlines). Range from 200 to 399\n"
+        "--tv-maximum-scanline-period n          Maximum scanline duration, in microseconds. Range from 10 to 99\n"
+        "--tv-minimum-accepted-vsync-length n    Minimum accepted vsync length, in microseconds. Range from 10 to 999\n"
+        "--tv-minimum-accepted-vsync-interval n  Minimum accepted vsync interval (in %% of 20ms) between every vsync start. Range from 1 to 100\n"
 
 
         "\n"
@@ -4042,6 +4044,28 @@ int parse_cmdline_options(int desde_commandline) {
                 }
                 else {
                     tv_vsync_minimum_accepted_interval=valor;
+                }
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--tv-maximum-scanlines")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<200 || valor>399) {
+                    debug_printf(VERBOSE_ERR,"Invalid --tv-maximum-scanlines value");
+                }
+                else {
+                    tv_max_lines=valor;
+                }
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--tv-maximum-scanline-period")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<10 || valor>99) {
+                    debug_printf(VERBOSE_ERR,"Invalid --tv-maximum-scanline-period value");
+                }
+                else {
+                    tv_max_line_period=valor;
                 }
             }
 

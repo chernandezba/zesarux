@@ -9928,8 +9928,8 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
                 "Max Scanline Period","Max Periodo de Scanline","Max Periode de Scanline");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_max_line_period);
-            menu_add_item_menu_tooltip(array_menu_common,"Maximum scanline length, in microseconds");
-            menu_add_item_menu_ayuda(array_menu_common,"Maximum scanline length, in microseconds");
+            menu_add_item_menu_tooltip(array_menu_common,"Maximum scanline duration, in microseconds");
+            menu_add_item_menu_ayuda(array_menu_common,"Maximum scanline duration, in microseconds");
             menu_add_item_menu_es_avanzado(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_minimum_accepted_vsync,NULL,
