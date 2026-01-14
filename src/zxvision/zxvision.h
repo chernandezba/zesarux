@@ -493,6 +493,7 @@ extern void zxvision_minimize_window(zxvision_window *w);
 extern void zxvision_toggle_minimize_window(zxvision_window *w);
 extern void zxvision_maximize_window(zxvision_window *w);
 extern void zxvision_toggle_maximize_window(zxvision_window *w);
+extern void zxvision_handle_maximize_maximize(zxvision_window *w);
 extern void zxvision_handle_maximize(zxvision_window *w);
 
 extern int zxvision_show_minimized(zxvision_window *w);

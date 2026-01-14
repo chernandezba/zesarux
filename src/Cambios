@@ -27,6 +27,7 @@ Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto)
 - Reordenadas opciones & nuevo menú: revisa opciones -> Display Emulado, General, Ventana Principal, ZX Vision
 - Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas
+- Ventanas restauradas al inicio como maximizadas, se restaurarán al tamaño máximo disponible
 
 Mejorado ZX Desktop:
 - Permitir definir valores pequeños para el ancho del ZX Desktop

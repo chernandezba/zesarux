@@ -27,6 +27,7 @@ Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
 - Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision
 - Added shortcuts helper action to create icon to trigger recorded keys
+- Restored maximized windows on startup, will be restored to the maximum size available
 
 Improved ZX Desktop:
 - Allow to set small values for ZX Desktop width size

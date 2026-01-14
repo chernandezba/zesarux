@@ -11330,10 +11330,17 @@ void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width
 
     //indicar nombre del grabado de geometria
     strcpy(w->geometry_name,geometry_name);
-    //restaurar estado minimizado de ventana
+    //restaurar estado minimizado y maximizado de ventana
     w->is_minimized=is_minimized;
     w->is_maximized=is_maximized;
 
+    //Y si decia que estaba maximizada, pues la maximizamos
+    //Esto por ejemplo permite que las ventanas que se guarden en la config maximizadas,
+    //siempre aparezcan como maximizadas, aunque haya cambiado el tamaño del zx desktop por ejemplo
+    //Por tanto el tamaño que se le diga que tiene al crearla puede que se cambie el maximizar, que crezca
+    if (w->is_maximized) {
+        zxvision_handle_maximize_maximize(w);
+    }
 
 }
 
@@ -16235,7 +16242,89 @@ int zxvision_show_minimized(zxvision_window *w)
     return 1;
 }
 
+void zxvision_handle_maximize_maximize(zxvision_window *w)
+{
+    debug_printf (VERBOSE_DEBUG,"Maximize window");
 
+    //printf ("visible width %d\n",max_width);
+    //Almacenar ultima posicion en caso que se haya movido
+    w->x_before_max_min_imize=w->x;
+    w->y_before_max_min_imize=w->y;
+
+    int max_width;
+    int max_height;
+    int xinicial;
+    int yinicial;
+
+    //Tratar esto diferente si hay zx desktop activado y si la apertura de ventanas es en zx desktop
+    //En ese caso obtiene el maximo que cabe en zxdesktop
+    if (if_zxdesktop_enabled_and_driver_allows() && screen_ext_desktop_place_menu) {
+        //printf("zx desktop enabled\n");
+        xinicial=menu_origin_x();
+        yinicial=0;
+
+        max_width=menu_get_width_characters_ext_desktop();
+        max_height=scr_get_menu_height();
+
+
+
+        //Si hay botones parte superior zxdesktop, origen_y lo incrementamos
+        if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
+            yinicial=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
+            max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
+        }
+
+        //O si hay top bar
+        else if (zxvision_topbar_menu_enabled.v) {
+            yinicial=1;
+            //Le quitamos la linea superior
+            max_height--;
+        }
+
+
+
+        if (menu_zxdesktop_lower_buttons_enabled.v) {
+            //Y quitamos ese alto disponible para no sobreescribir botones inferiores
+            max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
+        }
+
+
+    }
+
+    //En este caso obtiene el maximo total en pantalla
+    else {
+        //printf("zx desktop disabled\n");
+        xinicial=0;
+        yinicial=0;
+        max_width=scr_get_menu_width();
+        max_height=scr_get_menu_height();
+    }
+
+    //Cuando restauramos ventanas maximizadas al inicio, podemos tener un tamaño de ventana mas grande de lo que cabe
+    //porque se haya reducido el zx desktop. Por tanto, antes de moverlas a su posicion final (evitando que no nos deje moverla porque no quepa),
+    //movemos a 0,0, cambiamos tamaño,
+    //y luego ya movemos a posicion final
+
+    //Lo hago asi para que no implique redraw
+    w->x=0;
+    w->y=0;
+
+    zxvision_set_visible_width(w,max_width);
+    zxvision_set_visible_height(w,max_height);
+
+    //printf("x inicial: %d\n",xinicial);
+    zxvision_set_x_position(w,xinicial);
+    zxvision_set_y_position(w,yinicial);
+
+
+    w->is_maximized=1;
+
+    //printf("x final: %d\n",w->x);
+
+}
+
+
+//Accion de maximizar o minimizar
 void zxvision_handle_maximize(zxvision_window *w)
 {
 
@@ -16275,66 +16364,7 @@ void zxvision_handle_maximize(zxvision_window *w)
         }
 
         else {
-            debug_printf (VERBOSE_DEBUG,"Maximize window");
-            int max_width;
-            int max_height;
-            int xinicial;
-            int yinicial;
-
-            //Tratar esto diferente si hay zx desktop activado y si la apertura de ventanas es en zx desktop
-            //En ese caso obtiene el maximo que cabe en zxdesktop
-            if (if_zxdesktop_enabled_and_driver_allows() && screen_ext_desktop_place_menu) {
-                xinicial=menu_origin_x();
-                yinicial=0;
-
-                max_width=menu_get_width_characters_ext_desktop();
-                max_height=scr_get_menu_height();
-
-
-
-                //Si hay botones parte superior zxdesktop, origen_y lo incrementamos
-                if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
-                    yinicial=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
-                    max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
-                }
-
-                //O si hay top bar
-                else if (zxvision_topbar_menu_enabled.v) {
-                    yinicial=1;
-                    //Le quitamos la linea superior
-                    max_height--;
-                }
-
-
-
-                if (menu_zxdesktop_lower_buttons_enabled.v) {
-                    //Y quitamos ese alto disponible para no sobreescribir botones inferiores
-                    max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
-                }
-
-
-            }
-
-            //En este caso obtiene el maximo total en pantalla
-            else {
-                xinicial=0;
-                yinicial=0;
-                max_width=scr_get_menu_width();
-                max_height=scr_get_menu_height();
-            }
-
-
-            //printf ("visible width %d\n",max_width);
-            //Almacenar ultima posicion en caso que se haya movido
-            w->x_before_max_min_imize=w->x;
-            w->y_before_max_min_imize=w->y;
-
-            zxvision_set_x_position(w,xinicial);
-            zxvision_set_y_position(w,yinicial);
-            zxvision_set_visible_width(w,max_width);
-            zxvision_set_visible_height(w,max_height);
-
-            w->is_maximized=1;
+            zxvision_handle_maximize_maximize(w);
         }
 
         zxvision_draw_window(w);
