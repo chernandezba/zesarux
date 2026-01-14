@@ -9932,6 +9932,8 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
                 "Minimum vsync","Mínimo vsync","Mínim vsync");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_minimum_accepted_vsync);
+            menu_add_item_menu_tooltip(array_menu_common,"Minimum accepted vsync length, in microseconds");
+            menu_add_item_menu_ayuda(array_menu_common,"Minimum accepted vsync length, in microseconds");
             menu_add_item_menu_es_avanzado(array_menu_common);
 
 

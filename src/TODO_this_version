@@ -111,14 +111,12 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 seguro de que alguna vez se salga de rango y genere segfault)
 
 
-
 -en settings de linea de comandos, separar en tv settings, video settings y Main window settings
 -settings de TV agregar config settings
 
 
-
 -ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
 
-ok-Poder resetear settings por defecto, en especial TV por ejemplo
+
 
 -Opción para "apagar" la TV. útil?

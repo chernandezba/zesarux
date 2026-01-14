@@ -3873,6 +3873,7 @@ int util_write_configfile(void)
                                               //ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
   if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
 
+                                            ADD_STRING_CONFIG,"--tv-minimum-accepted-vsync %d",tv_minimum_accepted_vsync);
 
   if (setting_set_machine_enable_custom_rom && custom_romfile[0]!=0) {
         ADD_STRING_CONFIG,"--romfile \"%s\"",custom_romfile);

@@ -1726,6 +1726,15 @@ printf("\n"
 
         "\n"
         "\n"
+        "TV Settings\n"
+        "------------\n"
+        "\n"
+
+        "--tv-minimum-accepted-vsync n    Minimum accepted vsync length, in microseconds\n"
+
+
+        "\n"
+        "\n"
         "ULA Settings\n"
         "------------\n"
         "\n"
@@ -4013,6 +4022,17 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--tv-minimum-accepted-vsync")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<10 || valor>999) {
+                    debug_printf(VERBOSE_ERR,"Invalid --tv-minimum-accepted-vsync value");
+                }
+                else {
+                    tv_minimum_accepted_vsync=valor;
+                }
+            }
+
             else if (!strcmp(argv[puntero_parametro],"--chroma81")) {
                                 command_line_chroma81.v=1;
             }
@@ -4150,7 +4170,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>10) {
-                    debug_printf(VERBOSE_ERR,"Invalid Optical Input Scanline Threshold value\n");
+                    debug_printf(VERBOSE_ERR,"Invalid Optical Input Scanline Threshold value");
                 }
                 else {
                     lightgun_vertical_threshold=valor;

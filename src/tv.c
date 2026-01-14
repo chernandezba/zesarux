@@ -64,7 +64,7 @@ int tv_vsync_signal_length=0;
 int tv_hsync_signal=0;
 int tv_hsync_signal_pending=0;
 
-//minima longitud aceptada de vsync para tenerse en cuenta
+//minima longitud aceptada de vsync para tenerse en cuenta, en microsegundos
 int tv_minimum_accepted_vsync=DEFAULT_TV_MINIMO_DURACION_VSYNC;
 
 //intervalo, en porcentaje sobre 20ms, cada cuanto se acepta un vsync (contando desde principio a principio de siguiente vsync)
