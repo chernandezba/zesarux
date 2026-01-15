@@ -98,15 +98,33 @@ void tv_time_event_store_chunk_image(int delta)
 {
 
     if (rainbow_enabled.v) {
+        int xorig=tv_x*2;
         int y=tv_return_effective_y_coordinate(tv_y);
 
-        int xorig=tv_x*2;
+        //TODO: esto se hace completamente a mano, sirve para ZX80 y ZX81
+        if (border_enabled.v==0) {
+            if (MACHINE_IS_ZX80) {
+                xorig=xorig-screen_total_borde_derecho;
+                y=y-screen_borde_superior+8;
+            }
+
+            if (MACHINE_IS_ZX81) {
+                xorig=xorig-screen_total_borde_derecho-2;
+                y=y-screen_borde_superior+7;
+            }
+        }
+
+
 
         int xmax=xorig+delta*2;
 
         int totalancho=get_total_ancho_rainbow();
 
-        if (y>=0 && y<get_total_alto_rainbow() ) {
+        int totalalto=get_total_alto_rainbow();
+
+        //printf("ancho %d alto %d\n",totalancho,totalalto);
+
+        if (y>=0 && y<totalalto) {
             int x;
 
             for (x=xorig;x<xmax;x++) {
