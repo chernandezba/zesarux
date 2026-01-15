@@ -927,6 +927,16 @@ printf (
 #endif
 
 
+        "\n"
+        "\n"
+        "Configuration File Settings\n"
+        "---------------------------\n"
+        "\n"
+
+        "--saveconf-on-exit         Always save configuration when exiting emulator\n"
+        "--no-saveconf-on-exit      Do not save configuration when exiting emulator (default setting). Can be used to override a previous --saveconf-on-exit for example\n"
+        "--load-additional-config   Loads an additional .zesaruxdevrc config file (if exists) after loading .zesaruxrc and parsing command line settings\n"
+
 
         "\n"
         "\n"
@@ -1113,31 +1123,21 @@ printf (
         "\n"
 
 
-
-        "--disable-flash                                Disable flash\n"
-
-
-
-        "--ignoremouseclickopenmenu                     Ignore mouse clicking to open menu or ZX Desktop buttons\n"
-        "--limitopenmenu                                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"
         "--advancedmenus                                Show advanced menu items\n"
         "--simplemenus                                  Show very simple menus\n"
         "--language language                            Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
         "--online-download-path p                       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
 
-#ifndef MINGW
-        "--no-cpu-usage                                 Do not show host CPU usage on footer\n"
-#endif
-
+        "--disable-search-menu                          Disable search menu feature (enabled by default)\n"
+        "--enable-search-menu                           Enable search menu feature (enabled by default)\n"
 
         "--nowelcomemessage                             Disable welcome logo & message\n"
         "--fastwelcomemessage                           Sets fast welcome message\n"
+        "--quickexit                                    Exit emulator quickly: no yes/no confirmation and no fadeout\n"
+
         "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default only on X version)\n"
         "--disable-xanniversary-logo                    Disable X Anniversary logo. It's the default behaviour, only kept here for backwards compatibility\n"
         "--disablemenufileutils                         Disable File Utilities menu\n"
-        "--disable-search-menu                          Disable search menu feature (enabled by default)\n"
-        "--enable-search-menu                           Enable search menu feature\n"
-        "--load-additional-config                       Loads an additional .zesaruxdevrc config file (if exists) after loading .zesaruxrc and parsing command line settings\n"
 
 
         "\n"
@@ -1296,6 +1296,9 @@ printf (
         "--disablefooter                                Disable window footer\n"
         "--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
         "--no-fps                                       Do not show FPS on footer\n"
+#ifndef MINGW
+        "--no-cpu-usage                                 Do not show host CPU usage on footer\n"
+#endif
 
         "\n"
         "\n"
@@ -1681,6 +1684,7 @@ printf (
         "--wrx                                  Enable WRX mode on ZX80/ZX81\n"
         //"--vsync-minimum-length n               Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
         "--chroma81                             Enable Chroma81 support on ZX80/ZX81\n"
+        "--disable-flash                        Disable flash\n"
 
         "--videozx8081 n                        Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
         "--videofastblack                       Emulate black screen on fast mode on ZX80/ZX81\n"
@@ -1859,6 +1863,9 @@ printf("\n"
         "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
         "--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
         "--disablemenumouse                       Disable mouse on emulator menu\n"
+        "--ignoremouseclickopenmenu               Ignore mouse clicking to open menu or ZX Desktop buttons\n"
+        "--limitopenmenu                          Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"
+
         "--enable-top-menu                     Enable Top Menu\n"
         "--no-show-top-menu-move-top           Do not show Top Menu when moving mouse to top\n"
 
@@ -1952,9 +1959,7 @@ printf (
         "-------------\n"
         "\n"
 
-        "--saveconf-on-exit                       Always save configuration when exiting emulator\n"
-        "--no-saveconf-on-exit                    Do not save configuration when exiting emulator (default setting). Can be used to override a previous --saveconf-on-exit for example\n"
-        "--quickexit                              Exit emulator quickly: no yes/no confirmation and no fadeout\n"
+
         "--exit-after n                           Exit emulator after n seconds\n"
         "--disable-first-start-wizard             Disable first start wizard\n"
         "--last-version s                         String which identifies last build version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
