@@ -80,6 +80,8 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 
 - Poder ver los t-estados que tarda una instrucción, en vista de debug cpu
 
+- Poder definir que step over cuando hay RST8, vuelva en PC+1 o PC+2, para saltar byte que suele venir después
+
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
 
@@ -93,7 +95,6 @@ si se activa simular vsync, se ven franjas de grabacion
 quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0/1 al casette) no es correcta y por eso no engancha vsync nunca
 -Revisar franjas de load y save
 *video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
-
 
 
 -Disparo de interrupciones se debería hacer similar a zxsp, que se pueda hacer step :
@@ -110,9 +111,6 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 -revisar waitmap y activarlo en pausa nmi. o dejar el 9 tal cual. si no se usa, desactivar funciones de uso de waitmap (no estoy
 seguro de que alguna vez se salga de rango y genere segfault)
 
-
--en settings de linea de comandos, separar en tv settings, video settings y Main window settings
-->completar main window settings
 
 -ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
 
