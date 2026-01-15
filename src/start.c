@@ -1101,7 +1101,7 @@ printf (
 
 
         printf (
-        "\n"
+        "\n\n"
 
         "--def-f-function-parameters key extra-info  Define extra info associated to an action of a F key"
 
@@ -1830,7 +1830,7 @@ printf("\n"
 
 
         printf (
-        "\n"
+        "\n\n"
 
         "--def-button-function button action    Define Button to do an action. action can be: ");
 
@@ -1841,7 +1841,7 @@ printf("\n"
 
 
 
-        printf("\n"
+        printf("\n\n"
 
         "--def-button-function-parameters button extra-info  Define extra info associated to an action of a button\n"
 
