@@ -3409,7 +3409,7 @@ if (util_get_configfile_name(configfile)==0)  {
     struct tm tm = *localtime(&tiempo);
 
 
-    sprintf(creator_buffer,";ZEsarUX configuration file created from ZEsarUX %s on %02d/%02d/%04d %02d:%02d:%02d\n\n",
+    sprintf(creator_buffer,";ZEsarUX configuration file written from ZEsarUX %s on %02d/%02d/%04d %02d:%02d:%02d\n\n",
         EMULATOR_VERSION,tm.tm_mday,tm.tm_mon+1,tm.tm_year + 1900,tm.tm_hour,tm.tm_min,tm.tm_sec);
 
 
@@ -3422,7 +3422,7 @@ if (util_get_configfile_name(configfile)==0)  {
     ";--verbose 2\n"
     ";Options can be written in quotation marks, for example:\n"
     ";--joystickemulated \"OPQA Space\"\n"
-    ";Options can be written on the same line or different lines, like:\n"
+    ";Options can be written on the same line or on different lines, like:\n"
     ";--verbose 2 --machine 128k\n"
     ";Or:\n"
     ";--verbose 2\n"
