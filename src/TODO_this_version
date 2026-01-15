@@ -82,7 +82,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
--Opción para maximizar siempre una ventana al abrirla (cualquier ventana) y/o poder elegir qué ventanas maximizar
+
 ------
 
 #####  Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
@@ -112,13 +112,10 @@ seguro de que alguna vez se salga de rango y genere segfault)
 
 
 -en settings de linea de comandos, separar en tv settings, video settings y Main window settings
-
-
-ok -settings de TV agregar config settings
-
+->completar main window settings
 
 -ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
 
-
-
 -Opción para "apagar" la TV. útil?
+
+-ZX81 con disable border no se ve bien

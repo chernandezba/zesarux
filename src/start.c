@@ -1054,112 +1054,6 @@ printf (
 
         "\n"
         "\n"
-        "Display Settings\n"
-        "----------------\n"
-        "\n"
-
-        "--realvideo                            Enable real video display - for Spectrum (rainbow and other advanced effects) and ZX80/81 (non standard & hi-res modes)\n"
-        "--no-detect-realvideo                  Disable real video autodetection\n"
-        "--tbblue-legacy-hicolor                Allow legacy hi-color effects on pixel/attribute display zone\n"
-        "--tbblue-legacy-border                 Allow legacy border effects on tbblue machine\n"
-        "--tbblue-no-sprite-optimization        Disable tbblue sprite render optimization\n"
-
-        //"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
-
-        "--snoweffect                           Enable snow effect support for Spectrum\n"
-        "--enablegigascreen                     Enable Gigascreen video support\n"
-        "--enableinterlaced                     Enable Interlaced video support\n"
-        "--enableulaplus                        Enable ULAplus video modes\n"
-        "--enablespectra                        Enable Spectra video modes\n"
-        "--enabletimexvideo                     Enable Timex video modes\n"
-        "--disablerealtimex512                  Disable real Timex mode 512x192. In this case, it's scalled to 256x192 but allows scanline effects\n"
-        "--enable16c                            Enable 16C video mode support\n"
-        "--enablezgx                            Enable ZGX Sprite chip\n"
-        "--autodetectwrx                        Enable WRX autodetect setting on ZX80/ZX81\n"
-        "--wrx                                  Enable WRX mode on ZX80/ZX81\n"
-        //"--vsync-minimum-length n               Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
-        "--chroma81                             Enable Chroma81 support on ZX80/ZX81\n"
-
-        "--videozx8081 n                        Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
-        "--videofastblack                       Emulate black screen on fast mode on ZX80/ZX81\n"
-        "--no-ocr-alternatechars                Disable looking for an alternate character set other than the ROM default on OCR functions\n"
-        "--z88-hide-shortcuts                   Hide Z88 shortcuts from the display\n"
-        "--scr file                             Load Screen File at startup\n"
-        "--arttextthresold n                    Pixel threshold for artistic emulation for curses & stdout & simpletext (1..16. 4=normal)\n"
-        "--disablearttext                       Disable artistic emulation for curses & stdout & simpletext\n"
-        "--allpixeltotext                       Enable all pixel to text mode\n"
-        "--allpixeltotext-scale n               All pixel to text mode scale\n"
-        "--allpixeltotext-invert                All pixel to text mode invert mode\n"
-        "--allpixeltotext-width n               All pixel to text max width (in chars) (minimum 1, maximum 9999)\n"
-        "--allpixeltotext-x-offset n            All pixel to text X-Offset (in chars) (minimum 0, maximum 9999)\n"
-        "--allpixeltotext-height n              All pixel to text max height (in chars) (minimum 1, maximum 9999)\n"
-        "--allpixeltotext-y-offset n            All pixel to text Y-Offset (in chars) (minimum 0, maximum 9999)\n"
-        "--text-keyboard-add text               Add a string to the Adventure Text OSD Keyboard. The first addition erases the default text keyboard.\n"
-        " You can use hotkeys by using double character ~~ just before the letter, for example:\n"
-        " --text-keyboard-add ~~north   --text-keyboard-add e~~xamine\n");
-
-printf (
-        "--text-keyboard-length n               Define the duration for every key press on the Adventure Text OSD Keyboard, in 1/50 seconds (default %d). Minimum 10, maximum 100\n"
-        "The half of this value, the key will be pressed, the other half, released. Example: --text-keyboard-length 50 to last 1 second\n",
-        DEFAULT_ADV_KEYBOARD_KEY_LENGTH);
-
-printf (
-        "--text-keyboard-finalspc               Sends a space after every word on the Adventure Text OSD Keyboard\n"
-        "--textimageprogram p                   Specify a path to a program or script to be sent the emulator text shown to generate images\n"
-        "--textimage-method-location s          Set the method to detect location text, one of: ");
-
-        textadv_location_print_method_strings();
-
-printf("\n"
-        "--textimage-min-time-between-images n  Minimum time (in miliseconds) between every image to avoid too much cost usage by external API\n"
-        "--textimage-min-no-char-time n         After that time (in miliseconds) without receiving any character, we can guess it's the end of the location description. Increase it if the descriptions are not full read\n"
-        "--textimage-min-after-room-time n      After change room and after that time (in miliseconds), we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read\n"
-        "--textimage-total-count n              Define the total executions of the textimageprogram, used only for your own information\n"
-        "--red                                  Force display mode with red colour\n"
-        "--green                                Force display mode with green colour\n"
-        "--blue                                 Force display mode with blue colour\n"
-        "  Note: You can combine colours, for example, --red --green for Yellow display, or --red --green --blue for Gray display\n"
-        "--inversevideo                         Inverse display colours\n"
-        "--realpalette                          Use real Spectrum colour palette according to info by Richard Atkinson\n"
-
-#ifdef COMPILE_AA
-        "--aaslow                               Use slow rendering on aalib\n"
-#endif
-
-
-
-#ifdef COMPILE_CURSESW
-        "--curses-ext-utf                       Use extended utf characters to have 64x48 display, only on Spectrum and curses drivers\n"
-#endif
-
-
-        "--autoredrawstdout                     Enable automatic display redraw for stdout & simpletext drivers\n"
-        "--sendansi                             Sends ANSI terminal control escape sequences for stdout & simpletext drivers, to use colours and cursor control\n"
-        "--textfps n                            Sets FPS for stdout and simpletext text drivers\n"
-
-
-
-
-
-#ifdef COMPILE_FBDEV
-        "--no-use-ttyfbdev                      Do not use a tty on fbdev driver. It disables keyboard\n"
-        "--no-use-ttyrawfbdev                   Do not use keyboard on raw mode for fbdev driver\n"
-        "--use-all-res-fbdev                    Use all virtual resolution on fbdev driver. Experimental feature\n"
-        "--decimal-full-scale-fbdev             Use non integer zoom to fill the display with full screen mode on fbdev driver\n"
-        "--fbdev-double-buffer                  Use double buffer to avoid flickering on menu but uses more cpu\n"
-#ifdef EMULATE_RASPBERRY
-        "--fbdev-no-res-change                  Avoid resolution change on Raspberry Pi full screen mode\n"
-        "--fbdev-margin-width n                 Increment fbdev width size on n pixels on Raspberry Pi full screen mode\n"
-        "--fbdev-margin-height n                Increment fbdev width height on n pixels on Raspberry Pi full screen mode\n"
-#endif
-
-#endif
-
-
-
-
-        "\n"
-        "\n"
         "External Tools\n"
         "--------------\n"
         "\n"
@@ -1168,8 +1062,6 @@ printf("\n"
         "--tool-gunzip-path p  Set external tool gunzip path. Path can not include spaces\n"
         "--tool-tar-path p     Set external tool tar path. Path can not include spaces\n"
         "--tool-unrar-path p   Set external tool unrar path. Path can not include spaces\n"
-
-
 
 
 
@@ -1220,29 +1112,16 @@ printf("\n"
         "----------------\n"
         "\n"
 
-        "--zoomx n                                      Horizontal Zoom Factor\n"
-        "--zoomy n                                      Vertical Zoom Factor\n"
-        "--zoom-allow-different-xy                      Allow Zoom horizontal different to vertical\n"
-        "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 
-        "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
-        "--reduce-050                                   Reduce display size to half\n"
-        "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
-        "--reduce-display-offset-x n                    Destination offset x on reduced display\n"
-        "--reduce-display-offset-y n                    Destination offset y on reduced display\n"
 
         "--frameskip n                                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
         "--no-frameskip-zxdesktop-back                  Disable apply frameskip drawing ZX Desktop Background\n"
         "--disable-autoframeskip                        Disable autoframeskip\n"
         "--no-autoframeskip-moving-win                  Disable autoframeskip even when moving windows\n"
         "--disable-flash                                Disable flash\n"
-        "--fullscreen                                   Enable full screen\n"
-        "--zxdesktop-disable-on-fullscreen              Disable ZX Desktop when going to full screen\n"
-        "--zxdesktop-no-restore-win-after-fullscreen    Do not restore windows after disabling full screen, when --zxdesktop-disable-on-fullscreen setting is set\n"
-        "--disable-border-on-fullscreen                 Disable Border when going to full screen\n"
-        "--disable-footer-on-fullscreen                 Disable Footer when going to full screen\n"
-        "--disableborder                                Disable Border\n"
-        "--disablefooter                                Disable window footer\n"
+
+
+
         "--ignoremouseclickopenmenu                     Ignore mouse clicking to open menu or ZX Desktop buttons\n"
         "--limitopenmenu                                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"
         "--advancedmenus                                Show advanced menu items\n"
@@ -1254,8 +1133,7 @@ printf("\n"
         "--no-cpu-usage                                 Do not show host CPU usage on footer\n"
 #endif
 
-        "--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
-        "--no-fps                                       Do not show FPS on footer\n"
+
         "--nowelcomemessage                             Disable welcome logo & message\n"
         "--fastwelcomemessage                           Sets fast welcome message\n"
         "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default only on X version)\n"
@@ -1389,6 +1267,34 @@ printf("\n"
 
 
         printf(
+
+
+        "\n"
+        "\n"
+        "Main Window Settings\n"
+        "--------------------------\n"
+        "\n"
+
+        "--fullscreen                                   Enable full screen\n"
+        "--zxdesktop-disable-on-fullscreen              Disable ZX Desktop when going to full screen\n"
+        "--zxdesktop-no-restore-win-after-fullscreen    Do not restore windows after disabling full screen, when --zxdesktop-disable-on-fullscreen setting is set\n"
+        "--disable-border-on-fullscreen                 Disable Border when going to full screen\n"
+        "--disable-footer-on-fullscreen                 Disable Footer when going to full screen\n"
+        "--disableborder                                Disable Border\n"
+        "--disablefooter                                Disable window footer\n"
+        "--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
+        "--no-fps                                       Do not show FPS on footer\n"
+        "--zoomx n                                      Horizontal Zoom Factor\n"
+        "--zoomy n                                      Vertical Zoom Factor\n"
+        "--zoom-allow-different-xy                      Allow Zoom horizontal different to vertical\n"
+        "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
+
+        "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
+        "--reduce-050                                   Reduce display size to half\n"
+        "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
+        "--reduce-display-offset-x n                    Destination offset x on reduced display\n"
+        "--reduce-display-offset-y n                    Destination offset y on reduced display\n"
+
         "\n"
         "\n"
         "Network\n"
@@ -1748,6 +1654,93 @@ printf("\n"
 
         "\n"
         "\n"
+        "Video Settings\n"
+        "----------------\n"
+        "\n"
+
+        "--realvideo                            Enable real video display - for Spectrum (rainbow and other advanced effects) and ZX80/81 (non standard & hi-res modes)\n"
+        "--no-detect-realvideo                  Disable real video autodetection\n"
+        "--tbblue-legacy-hicolor                Allow legacy hi-color effects on pixel/attribute display zone\n"
+        "--tbblue-legacy-border                 Allow legacy border effects on tbblue machine\n"
+        "--tbblue-no-sprite-optimization        Disable tbblue sprite render optimization\n"
+
+        //"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
+
+        "--snoweffect                           Enable snow effect support for Spectrum\n"
+        "--enablegigascreen                     Enable Gigascreen video support\n"
+        "--enableinterlaced                     Enable Interlaced video support\n"
+        "--enableulaplus                        Enable ULAplus video modes\n"
+        "--enablespectra                        Enable Spectra video modes\n"
+        "--enabletimexvideo                     Enable Timex video modes\n"
+        "--disablerealtimex512                  Disable real Timex mode 512x192. In this case, it's scalled to 256x192 but allows scanline effects\n"
+        "--enable16c                            Enable 16C video mode support\n"
+        "--enablezgx                            Enable ZGX Sprite chip\n"
+        "--autodetectwrx                        Enable WRX autodetect setting on ZX80/ZX81\n"
+        "--wrx                                  Enable WRX mode on ZX80/ZX81\n"
+        //"--vsync-minimum-length n               Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
+        "--chroma81                             Enable Chroma81 support on ZX80/ZX81\n"
+
+        "--videozx8081 n                        Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
+        "--videofastblack                       Emulate black screen on fast mode on ZX80/ZX81\n"
+        "--no-ocr-alternatechars                Disable looking for an alternate character set other than the ROM default on OCR functions\n"
+        "--z88-hide-shortcuts                   Hide Z88 shortcuts from the display\n"
+        "--scr file                             Load Screen File at startup\n"
+        "--arttextthresold n                    Pixel threshold for artistic emulation for curses & stdout & simpletext (1..16. 4=normal)\n"
+        "--disablearttext                       Disable artistic emulation for curses & stdout & simpletext\n"
+        "--allpixeltotext                       Enable all pixel to text mode\n"
+        "--allpixeltotext-scale n               All pixel to text mode scale\n"
+        "--allpixeltotext-invert                All pixel to text mode invert mode\n"
+        "--allpixeltotext-width n               All pixel to text max width (in chars) (minimum 1, maximum 9999)\n"
+        "--allpixeltotext-x-offset n            All pixel to text X-Offset (in chars) (minimum 0, maximum 9999)\n"
+        "--allpixeltotext-height n              All pixel to text max height (in chars) (minimum 1, maximum 9999)\n"
+        "--allpixeltotext-y-offset n            All pixel to text Y-Offset (in chars) (minimum 0, maximum 9999)\n"
+        "--text-keyboard-add text               Add a string to the Adventure Text OSD Keyboard. The first addition erases the default text keyboard.\n"
+        " You can use hotkeys by using double character ~~ just before the letter, for example:\n"
+        " --text-keyboard-add ~~north   --text-keyboard-add e~~xamine\n");
+
+printf (
+        "--text-keyboard-length n               Define the duration for every key press on the Adventure Text OSD Keyboard, in 1/50 seconds (default %d). Minimum 10, maximum 100\n"
+        "The half of this value, the key will be pressed, the other half, released. Example: --text-keyboard-length 50 to last 1 second\n",
+        DEFAULT_ADV_KEYBOARD_KEY_LENGTH);
+
+printf (
+        "--text-keyboard-finalspc               Sends a space after every word on the Adventure Text OSD Keyboard\n"
+        "--textimageprogram p                   Specify a path to a program or script to be sent the emulator text shown to generate images\n"
+        "--textimage-method-location s          Set the method to detect location text, one of: ");
+
+        textadv_location_print_method_strings();
+
+printf("\n"
+        "--textimage-min-time-between-images n  Minimum time (in miliseconds) between every image to avoid too much cost usage by external API\n"
+        "--textimage-min-no-char-time n         After that time (in miliseconds) without receiving any character, we can guess it's the end of the location description. Increase it if the descriptions are not full read\n"
+        "--textimage-min-after-room-time n      After change room and after that time (in miliseconds), we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read\n"
+        "--textimage-total-count n              Define the total executions of the textimageprogram, used only for your own information\n"
+        "--red                                  Force display mode with red colour\n"
+        "--green                                Force display mode with green colour\n"
+        "--blue                                 Force display mode with blue colour\n"
+        "  Note: You can combine colours, for example, --red --green for Yellow display, or --red --green --blue for Gray display\n"
+        "--inversevideo                         Inverse display colours\n"
+        "--realpalette                          Use real Spectrum colour palette according to info by Richard Atkinson\n"
+
+#ifdef COMPILE_AA
+        "--aaslow                               Use slow rendering on aalib\n"
+#endif
+
+
+
+#ifdef COMPILE_CURSESW
+        "--curses-ext-utf                       Use extended utf characters to have 64x48 display, only on Spectrum and curses drivers\n"
+#endif
+
+
+        "--autoredrawstdout                     Enable automatic display redraw for stdout & simpletext drivers\n"
+        "--sendansi                             Sends ANSI terminal control escape sequences for stdout & simpletext drivers, to use colours and cursor control\n"
+        "--textfps n                            Sets FPS for stdout and simpletext text drivers\n"
+
+
+
+        "\n"
+        "\n"
         "Video Driver Settings\n"
         "---------------------\n"
         "\n"
@@ -1763,6 +1756,19 @@ printf("\n"
         "--changeslowparameters      Change some performance parameters (frameskip, realvideo, etc) "
         "on slow machines like raspberry, etc\n"
 
+#ifdef COMPILE_FBDEV
+        "--no-use-ttyfbdev                      Do not use a tty on fbdev driver. It disables keyboard\n"
+        "--no-use-ttyrawfbdev                   Do not use keyboard on raw mode for fbdev driver\n"
+        "--use-all-res-fbdev                    Use all virtual resolution on fbdev driver. Experimental feature\n"
+        "--decimal-full-scale-fbdev             Use non integer zoom to fill the display with full screen mode on fbdev driver\n"
+        "--fbdev-double-buffer                  Use double buffer to avoid flickering on menu but uses more cpu\n"
+#ifdef EMULATE_RASPBERRY
+        "--fbdev-no-res-change                  Avoid resolution change on Raspberry Pi full screen mode\n"
+        "--fbdev-margin-width n                 Increment fbdev width size on n pixels on Raspberry Pi full screen mode\n"
+        "--fbdev-margin-height n                Increment fbdev width height on n pixels on Raspberry Pi full screen mode\n"
+#endif
+
+#endif
 
 
         "\n"
