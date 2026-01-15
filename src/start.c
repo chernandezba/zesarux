@@ -1267,6 +1267,15 @@ printf (
 
         "\n"
         "\n"
+        "Hardware - ULA Settings\n"
+        "-----------------------\n"
+        "\n"
+
+        "--ula-data-bus n   Sets the ula data bus value\n"
+
+
+        "\n"
+        "\n"
         "Main Window Settings\n"
         "--------------------------\n"
         "\n"
@@ -1340,8 +1349,6 @@ printf (
         "--watermark-only-when-device-activity  If watermark is enabled, it's only shown when loading and saving\n"
         "--watermark-no-rotate-device-activity  Do not rotate watermark colors when loading or saving\n"
         "--nosplash                             Disable all splash texts\n"
-
-
 
 
 
@@ -1647,13 +1654,6 @@ printf (
         "--tv-minimum-accepted-vsync-interval n  Minimum accepted vsync interval (in %% of 20ms) between every vsync start. Range from 1 to 100\n"
 
 
-        "\n"
-        "\n"
-        "ULA Settings\n"
-        "------------\n"
-        "\n"
-
-        "--ula-data-bus n            Sets the ula data bus value\n"
 
 
 
