@@ -19,6 +19,12 @@ Added ZSF snapshot previews for QL, ZX80 and ZX81 machines
 Allow to see GO SUB stack of ZX80 and ZX81
 Allow utf-8 characters on footer
 
+Improved ZX80 and ZX81 emulation:
+- All timing and video code has been rewritten and fixed, near 100% perfect
+- Removed configuration settings: --vsync-minimum-length, --no-horiz-stabilization, --enablezx8081lnctradjust, --disablezx8081lnctradjust
+- Removed menu settings: Horizontal Stabilization, lnctr video adjust, Video x_offset
+- Improved vsync sound detection
+
 Improved Snapshots in RAM:
 - Browse visually all the stored snapshots in RAM, like on a "Time Machine"
 - Allow to save snapshots in RAM; you could do it before automatically at fixed intervals, now you can save it whenever you want
@@ -35,12 +41,6 @@ Improved ZX Desktop:
 - Add setting to disallow enabling ZX Desktop
 - Allow to change background color for icons, lower and upper buttons
 - Added setting to add a stroke on icons
-
-Improved ZX80 and ZX81 emulation:
-- All timing and video code has been rewritten and fixed, near 100% perfect
-- Removed configuration settings: --vsync-minimum-length, --no-horiz-stabilization, --enablezx8081lnctradjust, --disablezx8081lnctradjust
-- Removed menu settings: Horizontal Stabilization, lnctr video adjust, Video x_offset
-- Improved vsync sound detection
 
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved ZX Life: allow to speed up game, fix behaviour on board limits
