@@ -837,6 +837,7 @@ printf (
         "\n"
         "--audiovolume n                  Sets the audio output volume to percentage n\n"
         "--zx8081vsyncsound               Enable vsync/tape sound on ZX80/81\n"
+        "--zx8081vsyncsounddetection      Enable vsync/tape sound detection on ZX80/81\n"
         "--ayplayer-add-dir d             Add directory containing AY files to playlist\n"
         "--ayplayer-load-playlist f       Load playlist file\n"
         "--ayplayer-start-playlist        Start playing playlist when start ZEsarUX\n"
@@ -4011,6 +4012,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--zx8081vsyncsound")) {
                 command_line_zx8081_vsync_sound.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zx8081vsyncsounddetection")) {
+                zx8081_detect_vsync_sound.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zx8081ram8K2000")) {
@@ -7650,7 +7655,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     ram_in_32768.v=0;
     ram_in_49152.v=0;
     wrx_present.v=0;
-    zx8081_vsync_sound.v=0;
+    //zx8081_vsync_sound.v=0;
     //video_zx8081_shows_vsync_on_display.v=0;
 
     //video_zx8081_decremento_x_cuando_mayor=8;

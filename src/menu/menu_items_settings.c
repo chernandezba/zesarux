@@ -4427,8 +4427,8 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
             //sound on zx80/81
 
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_zx8081_detect_vsync_sound,menu_cond_zx8081,"[%c] Detect VSYNC Sound",(zx8081_detect_vsync_sound.v ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Tries to detect when vsync sound is played. This feature is experimental");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"Tries to detect when vsync sound is played. This feature is experimental");
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Detect when vsync sound is played");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Detect when vsync sound is played");
 
 
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_sound_zx8081,menu_cond_zx8081,"[%c] VSYNC Sound", (zx8081_vsync_sound.v==1 ? 'X' : ' '));

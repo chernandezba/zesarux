@@ -40,6 +40,7 @@ Improved ZX80 and ZX81 emulation:
 - All timing and video code has been rewritten and fixed, near 100% perfect
 - Removed configuration settings: --vsync-minimum-length, --no-horiz-stabilization, --enablezx8081lnctradjust, --disablezx8081lnctradjust
 - Removed menu settings: Horizontal Stabilization, lnctr video adjust, Video x_offset
+- Improved vsync sound detection
 
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved ZX Life: allow to speed up game, fix behaviour on board limits

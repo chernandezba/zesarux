@@ -57,7 +57,6 @@ extern z80_bit zx8081_detect_vsync_sound;
 
 extern int zx8081_detect_vsync_sound_counter;
 
-#define ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX 7
 
 extern z80_bit hotswapped_zx80_to_zx81;
 
@@ -170,6 +169,8 @@ extern void ula_zx80_time_event(int delta);
 extern void ula_zx81_time_event(int delta);
 extern void zx81_enable_nmi_generator(void);
 extern void zx81_disable_nmi_generator(void);
+
+extern void zx8081_timer_vsync_detection(void);
 
 #define WAITMAP_SIZE 207
 extern int get_waitmap_value(int pos);

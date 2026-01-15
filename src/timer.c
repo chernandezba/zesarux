@@ -1470,6 +1470,8 @@ void timer_check_interrupt(void)
 
             timer_get_cpu_use();
 
+            zx8081_timer_vsync_detection();
+
 
             //escritura de contenido de flash de superupgrade a disco
             superupgrade_flush_flash_to_disk();

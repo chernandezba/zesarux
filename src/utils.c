@@ -3865,6 +3865,8 @@ int util_write_configfile(void)
                                             ADD_STRING_CONFIG,"--allpixeltotext-y-offset %d",scr_refresca_pantalla_tsconf_text_offset_y);
 
   if (zx8081_vsync_sound.v)                   ADD_STRING_CONFIG,"--zx8081vsyncsound");
+  if (zx8081_detect_vsync_sound.v)            ADD_STRING_CONFIG,"--zx8081vsyncsounddetection");
+
   if (ram_in_8192.v)                          ADD_STRING_CONFIG,"--zx8081ram8K2000");
   if (ram_in_32768.v)                         ADD_STRING_CONFIG,"--zx8081ram16K8000");
   if (ram_in_49152.v)                         ADD_STRING_CONFIG,"--zx8081ram16KC000");

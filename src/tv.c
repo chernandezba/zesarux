@@ -40,14 +40,7 @@ This module emulates a TV, it's only used on ZX80 and ZX81 but could be used on 
 
 */
 
-/*
 
-TODO
-
-vsync_per_second
-zx8081_detect_vsync_sound
-
-*/
 
 //Contador de tiempo del CRT, para saber donde esta
 int tv_time=0;

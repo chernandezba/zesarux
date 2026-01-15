@@ -245,7 +245,7 @@ void cpu_core_loop_zx8081(void)
         audio_valor_enviar_sonido=0;
         audio_valor_enviar_sonido +=da_output_ay();
 
-        if (zx8081_vsync_sound.v==1) {
+        if (zx8081_vsync_sound.v) {
             if (beeper_real_enabled==0) {
                     audio_valor_enviar_sonido += da_amplitud_speaker_zx8081();
             }
@@ -369,21 +369,24 @@ void cpu_core_loop_zx8081(void)
 
             //para el detector de vsync sound
             if (zx8081_detect_vsync_sound.v) {
-                if (zx8081_detect_vsync_sound_counter==0) {
+                //printf("counter: %d\n",zx8081_detect_vsync_sound_counter);
+
+                //0,1,2 frames con vsync fuera de sitio no se consideran sonido, para evitar falsos positivos
+                if (zx8081_detect_vsync_sound_counter<=2) {
                     //caso normal con vsync
                     //hay vsync el suficiente tiempo. desactivar sonido
-                    //printf ("hay vsync el suficiente tiempo. desactivar sonido\n");
+                    //printf ("desactivar sonido\n");
                     zx8081_vsync_sound.v=0;
 
                 }
 
                 else {
                     //no hay vsync. por tanto hay sonido
-                    //printf ("no hay vsync completo. hay sonido. contador: %d\n",zx8081_detect_vsync_sound_counter);
+                    //printf ("activar sonido. contador: %d\n",zx8081_detect_vsync_sound_counter);
                     zx8081_vsync_sound.v=1;
 
                 }
-                if (zx8081_detect_vsync_sound_counter<ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX) zx8081_detect_vsync_sound_counter++;
+
 
             }
 

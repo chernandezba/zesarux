@@ -226,13 +226,13 @@ z80_int ramtop_zx8081;
 z80_bit zx8081_vsync_sound;
 
 
-//deteccion de perdida de vsync y por tanto se oye sonido
+//deteccion sonido vsync
+//TODO: da falsos positivos en modo fast, en manic miner, en pacman, nolimits, sllc
 z80_bit zx8081_detect_vsync_sound={0};
 
-//en cuanto un frame no tiene vsync, incrementamos aqui, y si vale>0, se activa vsync sound
-//cuando se recibe un vsync completo de frame, se decrementa esto. cuando llega a 0 , se desactiva vsync sound
-//maximo valor de esto: ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX
-int zx8081_detect_vsync_sound_counter=ZX8081_DETECT_VSYNC_SOUND_COUNTER_MAX;
+
+int zx8081_detect_vsync_sound_counter_debe_incrementar=0;
+int zx8081_detect_vsync_sound_counter=0;
 
 
 
@@ -940,6 +940,15 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         zx8081_vsync_generator.v=1;
         //printf("Set vsync generator tv_y=%d\n",tv_get_y() );
         video_zx8081_ula_video_output=255;
+
+        if (zx8081_detect_vsync_sound.v) {
+            //si hay vsync en zonas no habituales (principio o fin) asumimos que puede generar sonido
+            int y=tv_get_y();
+
+            //maximo 5 segundos activos desde ultima deteccion de sonido
+            if (y>50 && y<200) zx8081_detect_vsync_sound_counter_debe_incrementar=1;
+        }
+
     }
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)
@@ -976,7 +985,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
 
 
-    if (zx8081_vsync_sound.v==1) {
+    if (zx8081_vsync_sound.v) {
         //solo resetea contador de silencio cuando esta activo el vsync sound - beeper
         reset_beeper_silence_detection_counter();
     }
@@ -1083,10 +1092,38 @@ void zx8081_out_any_port_video_stuff(void)
     set_value_beeper_on_array(da_amplitud_speaker_zx8081() );
 
 
-    if (zx8081_vsync_sound.v==1) {
+    if (zx8081_vsync_sound.v) {
         //solo resetea contador de silencio cuando esta activo el vsync sound - beeper
         reset_beeper_silence_detection_counter();
     }
 
 
+}
+
+
+void zx8081_timer_vsync_detection(void)
+{
+    if (zx8081_detect_vsync_sound.v) {
+
+        //para que solo se tengan en cuenta los vsync 1 por cada segundo
+        //y un maximo de x segundos
+        if (zx8081_detect_vsync_sound_counter_debe_incrementar) {
+            if (zx8081_detect_vsync_sound_counter<10) {
+                zx8081_detect_vsync_sound_counter++;
+            }
+            debug_printf(VERBOSE_DEBUG,"Detect vsync sound. Counter=%d",zx8081_detect_vsync_sound_counter);
+        }
+        else {
+
+            if (zx8081_detect_vsync_sound_counter>0) {
+                zx8081_detect_vsync_sound_counter--;
+                debug_printf(VERBOSE_DEBUG,"Detect vsync sound. Counter=%d",zx8081_detect_vsync_sound_counter);
+            }
+
+        }
+
+        zx8081_detect_vsync_sound_counter_debe_incrementar=0;
+
+        //printf("counter: %d\n",zx8081_detect_vsync_sound_counter);
+    }
 }

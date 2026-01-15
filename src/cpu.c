@@ -2070,7 +2070,7 @@ void set_machine_params(void)
     disable_wrx();
     //wrx_present.v=0;
     //wrx_mueve_primera_columna.v=1;
-    zx8081_vsync_sound.v=0;
+    //zx8081_vsync_sound.v=0;
     //video_zx8081_decremento_x_cuando_mayor=8;
     //minimo_duracion_vsync=DEFAULT_MINIMO_DURACION_VSYNC;
 
