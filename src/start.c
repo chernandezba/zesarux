@@ -1114,10 +1114,6 @@ printf (
 
 
 
-        "--frameskip n                                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
-        "--no-frameskip-zxdesktop-back                  Disable apply frameskip drawing ZX Desktop Background\n"
-        "--disable-autoframeskip                        Disable autoframeskip\n"
-        "--no-autoframeskip-moving-win                  Disable autoframeskip even when moving windows\n"
         "--disable-flash                                Disable flash\n"
 
 
@@ -1281,12 +1277,15 @@ printf (
         "--disable-border-on-fullscreen                 Disable Border when going to full screen\n"
         "--disable-footer-on-fullscreen                 Disable Footer when going to full screen\n"
         "--disableborder                                Disable Border\n"
-        "--disablefooter                                Disable window footer\n"
-        "--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
-        "--no-fps                                       Do not show FPS on footer\n"
+        "--frameskip n                                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
+        "--no-frameskip-zxdesktop-back                  Disable apply frameskip drawing ZX Desktop Background\n"
+        "--disable-autoframeskip                        Disable autoframeskip\n"
+        "--no-autoframeskip-moving-win                  Disable autoframeskip even when moving objects\n"
+
+        "--zoom-allow-different-xy                      Allow Zoom horizontal different to vertical\n"
         "--zoomx n                                      Horizontal Zoom Factor\n"
         "--zoomy n                                      Vertical Zoom Factor\n"
-        "--zoom-allow-different-xy                      Allow Zoom horizontal different to vertical\n"
+
         "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
@@ -1294,6 +1293,9 @@ printf (
         "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
         "--reduce-display-offset-x n                    Destination offset x on reduced display\n"
         "--reduce-display-offset-y n                    Destination offset y on reduced display\n"
+        "--disablefooter                                Disable window footer\n"
+        "--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
+        "--no-fps                                       Do not show FPS on footer\n"
 
         "\n"
         "\n"
