@@ -1123,21 +1123,21 @@ printf (
         "\n"
 
 
-        "--advancedmenus                                Show advanced menu items\n"
-        "--simplemenus                                  Show very simple menus\n"
-        "--language language                            Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
-        "--online-download-path p                       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
+        "--advancedmenus                Show advanced menu items\n"
+        "--simplemenus                  Show very simple menus\n"
+        "--language language            Select menu language. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
+        "--online-download-path p       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
 
-        "--disable-search-menu                          Disable search menu feature (enabled by default)\n"
-        "--enable-search-menu                           Enable search menu feature (enabled by default)\n"
+        "--disable-search-menu          Disable search menu feature (enabled by default)\n"
+        "--enable-search-menu           Enable search menu feature (enabled by default)\n"
 
-        "--nowelcomemessage                             Disable welcome logo & message\n"
-        "--fastwelcomemessage                           Sets fast welcome message\n"
-        "--quickexit                                    Exit emulator quickly: no yes/no confirmation and no fadeout\n"
+        "--nowelcomemessage             Disable welcome logo & message\n"
+        "--fastwelcomemessage           Sets fast welcome message\n"
+        "--quickexit                    Exit emulator quickly: no yes/no confirmation and no fadeout\n"
 
-        "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default only on X version)\n"
-        "--disable-xanniversary-logo                    Disable X Anniversary logo. It's the default behaviour, only kept here for backwards compatibility\n"
-        "--disablemenufileutils                         Disable File Utilities menu\n"
+        "--enable-xanniversary-logo     Enable X Anniversary logo (enabled by default only on X version)\n"
+        "--disable-xanniversary-logo    Disable X Anniversary logo. It's the default behaviour, only kept here for backwards compatibility\n"
+        "--disablemenufileutils         Disable File Utilities menu\n"
 
 
         "\n"
@@ -1146,16 +1146,16 @@ printf (
         "-----------------\n"
         "\n"
 
-        "--emulatorspeed n           Set Emulator speed in percentage\n"
-        "--printerbitmapfile f       Sends printer output to image file. Supported formats: pbm, txt\n"
-        "--printertextfile f         Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
-        "--redefinekey src dest      Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
-        "                            Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
-        "                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-        "--recreatedzx               Enable support for Recreated ZX Spectrum Keyboard\n"
-        "--recreatedzx-also-on-menu  Use ZX Recreated mode also on menu\n"
-        "--keyboard-issue2           Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
-        "--keymap n                  Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
+        "--emulatorspeed n               Set Emulator speed in percentage\n"
+        "--printerbitmapfile f           Sends printer output to image file. Supported formats: pbm, txt\n"
+        "--printertextfile f             Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
+        "--redefinekey src dest          Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
+        "                                Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
+        "                                (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+        "--recreatedzx                   Enable support for Recreated ZX Spectrum Keyboard\n"
+        "--recreatedzx-also-on-menu      Use ZX Recreated mode also on menu\n"
+        "--keyboard-issue2               Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
+        "--keymap n                      Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
 
         "--enable-optical-input          Enable optical input emulation\n"
         "--opticalinput-scope            Show optical input scope\n"
@@ -1168,10 +1168,10 @@ printf (
 
         printf(
 
-        "--enablekempstonmouse       Enable kempston mouse emulation\n"
-        "--kempstonmouse-sens n      Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
+        "--enablekempstonmouse           Enable kempston mouse emulation\n"
+        "--kempstonmouse-sens n          Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
         printf (
-        "--tbblue-machine-id n       Set machine id n for Spectrum Next\n"
+        "--tbblue-machine-id n           Set machine id n for Spectrum Next\n"
 
 
 
@@ -1616,9 +1616,9 @@ printf (
         "-------------------------\n"
         "\n"
 
-        "--enable-zxpand                 Enable ZXpand emulation\n"
-        "--zxpand-root-dir p             Set ZXpand root directory for sd/mmc filesystem. Uses current directory by default.\n"
-        "                                Note: ZXpand does not use --mmc-file setting\n"
+        "--enable-zxpand        Enable ZXpand emulation\n"
+        "--zxpand-root-dir p    Set ZXpand root directory for sd/mmc filesystem. Uses current directory by default.\n"
+        "                       Note: ZXpand does not use --mmc-file setting\n"
 
 
         "\n"
@@ -1866,8 +1866,8 @@ printf("\n"
         "--ignoremouseclickopenmenu               Ignore mouse clicking to open menu or ZX Desktop buttons\n"
         "--limitopenmenu                          Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"
 
-        "--enable-top-menu                     Enable Top Menu\n"
-        "--no-show-top-menu-move-top           Do not show Top Menu when moving mouse to top\n"
+        "--enable-top-menu                        Enable Top Menu\n"
+        "--no-show-top-menu-move-top              Do not show Top Menu when moving mouse to top\n"
 
         //"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
 
