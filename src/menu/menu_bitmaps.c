@@ -3702,14 +3702,14 @@ char *bitmap_button_ext_desktop_snapinramffw[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_snapinramsave[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
-    "  xxxxxxxxxxxxxxxxxxxxxx  ", //0
-  	" xxxxxxxxxxxxxxxxxxxxxxxx ",
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxxccccccccccccccccccccxxx",
-	"xxxccccccccccccccccccccxxx",
-	"xxxccccGGGccccccGGGccccxxx",
-	"xxxcccGccGGccccGGccGcccxxx",
-	"xxxccGccccGccccGccccGccxxx",
+    "  xxxxxxxxxxxxxxxx   BB   ", //0
+  	" xxxxxxxxxxxxxxxxx   BB   ",
+	"xxxxxxxxxxxxxxxxxx   BB   ",
+	"xxxccccccccccccccc   BB   ",
+	"xxxccccccccccccccc BBBBBB ",
+	"xxxccccGGGccccccGGG BBBB  ",
+	"xxxcccGccGGccccGGccG BB   ",
+	"xxxccGccccGccccGccccG     ",
 	"xxxccGccccGccccGccccGccxxx",
 	"xxxcccGccGGYccYGGccGcccxxx",
 	"xxxccccGGGYYYYYYGGGccccxxx",	//10
@@ -3769,23 +3769,23 @@ char *bitmap_button_ext_desktop_snapinrambrowse[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxccccccccccccccccccccxxx",
 	"xxxccccccccccccccccccccxxx",
-	"xxxccccGGGccccccGGGccccxxx",
-	"xxxcccGccGGccccGGccGcccxxx",
-	"xxxccGccccGccccGccccGccxxx",
-	"xxxccGccccGccccGccccGccxxx",
-	"xxxcccGccGGYccYGGccGcccxxx",
-	"xxxccccGGGYYYYYYGGGccccxxx",	//10
+	"xxxccccrrrccccccrrrccccxxx",
+	"xxxcccrccrrccccrrccrcccxxx",
+	"xxxccrccccrccccrccccrccxxx",
+	"xxxccrccccrccccrccccrccxxx",
+	"xxxcccrccrrYccYrrccrcccxxx",
+	"xxxccccrrrYYYYYYrrrccccxxx",	//10
 	"xxxcccccccYYYYYYcccccccxxx",
 	"xxxccccccccYYYYccccccccxxx",
 	"xxxcccccccccYYcccccccccxxx",
 	"xxxcccccccccYYcccccccccxxx",
-	"xxxccccccccGGGGccccccccxxx",
-	"xxxcccccccGGccGGcccccccxxx",
-	"xxxccxxxxcGccccGcccccccxxx",
-	"xxxcccccccGccccGcccccccxxx",
-	"xxxccxxxxccGccGccccccccxxx",
-	"xxxcccccccccGGcccccccccxxx", //20
-	"xxxccxxxxccccccccccccccxxx",
+	"xxxccccccccrrrrccccccccxxx",
+	"xxxcccccccrrccrrcccccccxxx",
+	"xxxccBBBBcrccccrcccccccxxx",
+	"xxxcccccccrccccrcccccccxxx",
+	"xxxccBBBBccrccrccccccccxxx",
+	"xxxcccccccccrrcccccccccxxx", //20
+	"xxxccBBBBccccccccccccccxxx",
 	"xxxccccccccccccccccccccxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	" xxxxxxxxxxxxxxxxxxxxxxxx ",
