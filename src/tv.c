@@ -362,6 +362,7 @@ it can produce any length VSync it wants. It is then a matter of whether the TV 
                     tv_vsync_status=VSYNC_ACCEPTING;
 
                     //printf("Cambiar a tv_vsync_status=VSYNC_ACCEPTING\n");
+                    vsync_per_second++;
 
                 }
 
