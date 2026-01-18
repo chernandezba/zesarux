@@ -64,12 +64,9 @@ Quizá con una opción y sólo si está el foco en ventana de debug CPU
 
 -revisar los salir_todos_menus=1 que se puedan cambiar por   menu_add_item_menu_se_cerrara( en el item de menu
 
--icono para snapshots in ram. Poder guardar snap en ram manualmente, no solo a intervalos.
-quiza icono ramdisk que englobe snapshots y otras cosas
+-icono para snapshots in ram
+quiza icono ramdisk que englobe snapshots y otras cosas???
 
--snapshots en ram
-*icono para browse snapshots. mejorarlo
-*icono para guardar snapshot. mejorarlo
 
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname

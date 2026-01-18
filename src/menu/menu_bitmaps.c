@@ -3730,37 +3730,6 @@ char *bitmap_button_ext_desktop_snapinramsave[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  xxxxxxxxxxxxxxxxxxxxxx  "  //25
 };
 
-/*
-char *bitmap_button_ext_desktop_snapinramsave[EXT_DESKTOP_BUTTONS_ANCHO]={
-   //01234567890123456789012345
-    "  xxxxxxxxxxxxxxxx   xx   ", //0
-  	" xxxxxxxxxxxxxxxxx   xx   ",
-	"xxxxxxxxxxxxxxxxxx   xx   ",
-	"xxxccccccccccccccc   xx   ",
-	"xxxccccccccccccccc xxxxxx ",
-	"xxxccccrrrccccccrr  xxxx  ",
-	"xxxcccrccrrccccrrc   xx   ",
-	"xxxccrccccrccccrcc        ",
-	"xxxccrccccrccccrccccrccxxx",
-	"xxxcccrccrrYccYrrccrcccxxx",
-	"xxxccccrrrYYYYYYrrrccccxxx",	//10
-	"xxxcccccccYYYYYYcccccccxxx",
-	"xxxccccccccYYYYccccccccxxx",
-	"xxxcccccccccYYcccccccccxxx",
-	"xxxcccccccccYYcccccccccxxx",
-	"xxxccccccccrrrrccccccccxxx",
-	"xxxcccccccrrccrrcccccccxxx",
-	"xxxcccccccrccccrcccccccxxx",
-	"xxxcccccccrccccrcccccccxxx",
-	"xxxccccccccrccrccccccccxxx",
-	"xxxcccccccccrrcccccccccxxx", //20
-	"xxxccccccccccccccccccccxxx",
-	"xxxccccccccccccccccccccxxx",
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	" xxxxxxxxxxxxxxxxxxxxxxxx ",
-	"  xxxxxxxxxxxxxxxxxxxxxx  "  //25
-};
-*/
 
 char *bitmap_button_ext_desktop_snapinrambrowse[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
