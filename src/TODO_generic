@@ -92,7 +92,6 @@ rpi2 no? quizá es porque no he usado parámetro fullscreen y por tanto no ha re
 Incluir bmp a sprite y bmp a prism en utils
 
 
--Mas archivos auto config pues versión Windows no tiene ssl
 
 -en fbdev, con --no-use-ttyrawfbdev, enviar F6 y F7 en Z88 tal y como se hace en curses, por ejemplo (diamond, square).
 he intentado meterlo en :

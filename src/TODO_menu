@@ -204,7 +204,7 @@ complementario: quizá en todos los overlay que no necesiten redibujar siempre, 
 Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
 -poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
-
+->pero habria que implementar tambien acentos, eñes, etc
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
@@ -263,8 +263,6 @@ if (must_return) return;
 -Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
 
 -Activar multitarea ventanas por defecto ? Si no hay configuración anterior?
-
--menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
 
 -Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
 Considerar algun modo de dibujado mas rapido -> solventado con frameskip en zx desktop
@@ -332,7 +330,6 @@ Este callback se le pasara el puntero a ventana y quizá eventos de ratón: que 
 -menus zxvision:
 --porque menus tabulados no rellenan con espacios? ah porque antes siempre se borraba texto con espacios al dibujar menu?
 
--ventanas zxvision que puedan salir parcialmente fuera de pantalla.  seria tenerlas por debajo del limite de la ventana
 
 -zxvision_putpixel deja escribir pixeles mas alla de total_width o height. Esto no es un error en si
 Lo hace realmente con visible_width y visible_height
@@ -366,7 +363,6 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 -hora / fecha inicio ventana. Y que se mantenga en sucesivos arranques?
 
 -filesel: Quizá campos pulsables que se vean distintos?
-Preview archivos txt: renderizarlos como pantalla con tipo de letra del spectrum
 
 
 -Acción joystick menú tab
@@ -584,7 +580,6 @@ Info de tamaño ventana. Y tamaño ventana sin zoom
 
 -poder hacer hotswap de una maquina a zx-uno
 
--insistir en el tema de hotswap de zx81 a zx80 (de zx80 a zx81 ya se puede, conservando la rom del zx80)
 
 -joystick derecha para tab. solo en menu
 

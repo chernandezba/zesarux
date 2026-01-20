@@ -87,6 +87,14 @@ tener en cuenta también memoria contenida...
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
+-zxpand. 
+-sound tracker de andy rea se cuelga. porque? stcplay , gasman y sound_demo usan el mismo player
+requiere ramtop en 24999 y CONFIG "M=H"
+carpeta aux_zesarux/zx81/sound_demo  tambien
+
+
+-insistir en el tema de hotswap de zx81 a zx80 (de zx80 a zx81 ya se puede, conservando la rom del zx80)
+se tendria que conservar rom de zx81
 ------
 
 #####  Cambio rutinas video ZX80/81

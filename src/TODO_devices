@@ -216,9 +216,6 @@ ser siempre en mayusculas. Carpetas siempre se muestran pero no se podran accede
 debido a funcion setjoy. los valores de joystick deben volver incorrectos y hacen que puerto BC (registro B) se corrompa
 (ver docs/zxpand_cmdr.txt)
 
--sound tracker de andy rea se cuelga. porque? stcplay , gasman y sound_demo usan el mismo player
-requiere ramtop en 24999 y CONFIG "M=H"
-carpeta aux_zesarux/zx81/sound_demo  tambien
 
 -Zxpand+ nuevo firmware?
 https://github.com/charlierobson/ZXpand-Vitamins/wiki/ZXpand---Online-Manual

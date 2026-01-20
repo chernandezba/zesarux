@@ -113,7 +113,6 @@ http://www.dilwyn.me.uk/downloads.html
 
 -Pendiente todo lo relacionado con texto: drivers modo texto para curses, stdout, ocr, input spool file, etc
 
--Trap de F1 y F2 servirá para cuando se quiera hacer autoload. Por tanto no quitar estos traps
 
 -Combinación de teclas de QL que... resetea el IPC? Mencionado en manual
 
@@ -337,7 +336,7 @@ Solo afecta a chloe
 -Exrom debe estar replicado todos los 8kb?
 
 -Timings. Parece que 60 Hz , 263 scanlines (contador desde 0 hasta 262). Ver documento en extras/docs/ts2068. Ese pdf extraido de http://www.polylith.com/~brendan/ClassicComputers/Timex/image/TS2068TM.PDF
--Agregar UK2068
+-Agregar UK2068 (Unipolbrit Komputer para Polonia)
 
 
 -------------
@@ -1128,7 +1127,6 @@ tarjeta que probaba Thierry:
 
 -Z88. Dejar algún programa de ejemplo con formato .bas y binario. Quizá el whatnow esta así?
 
--Z88 teclado virtual para Z88 y/o resto de modelos
 
 -Z88. Probar a compilar programas con z88dk
 
@@ -1136,8 +1134,6 @@ tarjeta que probaba Thierry:
 
 
 ------
-
-
 
 
 
