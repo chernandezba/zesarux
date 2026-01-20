@@ -1009,6 +1009,7 @@ printf (
         "--show-display-debug                Shows emulated screen on every key action on debug registers menu\n"
         "--show-electron-debug               Shows TV electron position when debugging, using a coloured line\n"
         "--show-basic-address                Shows location address of every basic line on menu View Basic\n"
+        "--step-over-rst8-plus-two           When step over RST 8, it will stop on PC+2\n"
         "--show-invalid-opcode               If running invalid cpu opcodes will generate a warning message\n"
 
 );
@@ -6609,6 +6610,10 @@ int parse_cmdline_options(int desde_commandline) {
 
         else if (!strcmp(argv[puntero_parametro],"--show-electron-debug")) {
                       menu_debug_registers_if_showscan.v=1;
+        }
+        
+        else if (!strcmp(argv[puntero_parametro],"--step-over-rst8-plus-two")) {
+                      debug_step_over_rst8_plus_two.v=1;
         }
 
         else if (!strcmp(argv[puntero_parametro],"--show-basic-address")) {

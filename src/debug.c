@@ -8032,7 +8032,7 @@ void debug_cpu_step_over(void)
         }
       }
   }
-  printf("direccion final: %04XH\n",direccion_final);
+  //printf("direccion final: %04XH\n",direccion_final);
 
   direccion_final=adjust_address_space_cpu(direccion_final);
 

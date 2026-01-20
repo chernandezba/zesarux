@@ -4178,6 +4178,8 @@ int util_write_configfile(void)
 
 
   if (menu_debug_registers_if_showscan.v)     ADD_STRING_CONFIG,"--show-electron-debug");
+  
+  if (debug_step_over_rst8_plus_two.v)		  ADD_STRING_CONFIG,"--step-over-rst8-plus-two");
 
   if (debug_view_basic_show_address.v)        ADD_STRING_CONFIG,"--show-basic-address");
 
