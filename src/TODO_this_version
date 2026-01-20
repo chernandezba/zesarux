@@ -71,7 +71,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas???
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
 
-- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados. 
+ok- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados. 
 Me sirve para confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81
 
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
