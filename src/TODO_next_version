@@ -140,9 +140,6 @@ Y sin barra título
 
 
 
--buscador opciones menu: creo que lo mejor es que cada menu indique, al crearse, la ruta donde se ubican
-Por ejemplo "Betadisk" está en Main Menu->Storage->Betadisk
-
 
 
 -menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado (F8), pero solo cuando es driver texto. Pero la gestion de teclado cuando se pulsa F8 es un tanto especial, porque
@@ -347,8 +344,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 
-
-
 ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
 Esto es porque primero se llama a tape_init() que inserta la cinta y posteriormente a autoload_snapshot();
 quiza tape_init() tendria que ir despues de autoload_snapshot() pero hay que validarlo bien todo antes
@@ -398,5 +393,3 @@ probablemente porque el alto es multiple de 8 y queda menos de una fila abajo si
 
 -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 
-
--en debug cpu que diga los t-estados que tarda cada instrucción. tener en cuenta también memoria contenida...

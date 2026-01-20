@@ -31,7 +31,6 @@ el problema reside en que si hay una zona de código que no llegamos a ejecutar 
 desensamblará el código. Por lo que su uso va a ser muy minoritario....
 Si al final es saber por donde se ha estado ejecutando un programa, se puede usar el transaction log.
 
--poder configurar lightgun por linea de comandos
 
 -It would be interesting if an emulator could provide FIFOs or shared memory that the host operating system could
  read/write to that were made available to the emulated machine.
@@ -69,13 +68,11 @@ Modo de vídeo timex /Spectra/etc
 
 -instruccion o puerto para cargar stream de bytes externos
 
--timer con SDL
 
 -temporizador con tarjeta de sonido?
 
 probado - Variable traps que se activa por si hay load o save- hará que vaya más rápido
 
--Lec-80 rom y Soporte 80 kb
 
 -Que algunas tareas como store scanline se hagan en thread aparte. Problema: que la mayoria de datos de ese scanline
 pueden variar mientras se está ejecutando el thread con el loop del siguiente scanline

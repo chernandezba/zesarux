@@ -8,9 +8,8 @@
 Implica leer memoria para sacar el stack. Conviene hacerlo después de un panic?
 
 Menu debugger:
--Doble ptr, uno para codigo y otro para memoria
 
--posicion electron no va bien en: zx81, tsconf. Revisar otras maquinas. En 48k funciona bien
+-posicion electron no va bien en: tsconf. Revisar otras maquinas. En 48k, zx80, zx81 funciona bien
 
 --En debug cpu que diga tiempos de opcodes y/o en que t estado se ejecutan
 
@@ -35,17 +34,6 @@ En ese mismo OSD, si pulsamos una tecla en el OSD, se quedara colgado, pues no v
 
 -breakpoints que se disparen cuando se cumpla una condición N veces:
 *shortcut desde ventana menu debug cpu para cambiarlo?
-*para el futuro, para poder soportar:
-a)     "== 5" — Break exactly on the 5th hit.
-b)     ">= 10" — Break on the 10th hit and beyond.
-c)     "% 3 == 0" — Break on every 3rd hit.
-De momento solo soporto a). Se podría crear una pseudovariable (CURRENTHIT) que tome el valor de cada contador del breakpoint evaluado.
-O sea si se está evaluando el primero, darle el valor del contador del primer breakpoint; si el segundo, con el segundo, etc.
-Luego en el parámetro de pass count, en vez de indicarle un numero, indicarle una expresión:
-CURRENTHIT=3
-o
-CURRENTHIT >= 3
-etc.
 
 
 -Desensamblador, que permita copiar código assembler a texto

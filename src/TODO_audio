@@ -24,19 +24,6 @@ caso 1 esta gestionado por el emulador y hace fallback a audionull. caso 2 provo
 probado agregando pausas al finalizar pero falla igualmente
 
 
-- En Mac, parece que timer mediante pthreads no va bien, se oye "lento". En cambio sin pthreads SI que va bien
-->pasa porque usleep tarda mas de lo que se dice: Ejemplo: usleep (500) deberia tardar medio milisegundo y tarda mas. Si se hace
-en bucle para que tarde 10 segundos , tarda unos 14 segundos:
-	int i;
-	for (i=0;i<20*1000;i++) {
-		usleep(500);
-	}
-en cambio un usleep de 10000000 tarda 10 segundos exactos. Parece que tiene problemas con valores pequeños en tiempo
-en developer apple dice:
- "The actual time slept may be longer, due to
-     system latencies and possible limitations in the timer resolution of the
-     hardware."
-
 
 - En Mac, snap_tests/test3200z88.zx se oye entrecortado. En Linux por ejemplo con pulse se oye continuo (con algun cortecito de vez en cuando)
 

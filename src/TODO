@@ -189,7 +189,6 @@ entonces en el servidor, en el archivo de update de la estable, ya habré actual
 - meter en extras de docs Benchmark legacy tbblue: de momento está en el código, en el menú como comentarios
 
 
--quiza un "code estatistics": total lines, total comments, total todos (en codigo y en archivos TODO_*, etc)
 
 -quizá imagenes zxuno.mmc y tbblue.mmc que se generen:
 -- de una carpeta del proyecto, que se cree un archivo mmc mediante herramientas de acceso chan fat fs y luego una copia recursiva. y la partición como crearla?
@@ -289,8 +288,7 @@ incluso con $NNNN
 
 -Cinta de juegos y programas zx81 pasar a digital
 
--Otros componentes mas extraños, como "descubrir" puntuaciones actuales en un juego u otros parámetros,
-como descubrir rutinas de pintado de sprites
+-Otros componentes mas extraños, como "descubrir" rutinas de pintado de sprites
 *rutinas de pintado de sprites: quiza detectar cambios en pantalla al pulsar teclas. y ver desde donde se realizan esos cambios en pantalla
 * de momento hay algo preliminar: ver spritefinder
 
@@ -409,13 +407,6 @@ al final se reduce a enviar la tecla cada 20 ms por ejemplo, por tanto, es pract
 -spool: Ver si se puede hacer turbo en Ace, z88, zx80 y zx81
 -spool: poder enviar sentencia especial, tipo \s para enviar shift, o \y para enviar symbol, etc
 -spool: spool file activado se comporta mal al pulsar en botones de menu. aun peor si se usa modo turbo spool
-
-
-
-- lightgun. magnum light phaser no va bien
--magnum, con sinclair pack 2 (el primero) hay que dejar pulsado boton para que funcione
-->en rookie, no va si seleccionamos realvideo
-duracion del pulso de deteccion del electron?
 
 
 -Línea de comandos, parámetros que son de activar/desactivar, soportar:

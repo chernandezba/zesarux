@@ -77,6 +77,9 @@ Me sirve para confeccionar una lista de los juegos a testear en las pruebas de v
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
 
 - Poder ver los t-estados que tarda una instrucción, en vista de debug cpu
+Pero tiene que ver si se cumple o no condiciones, en instrucciones con condición
+tener en cuenta también memoria contenida...
+
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
@@ -86,7 +89,7 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 ------
 
-#####  Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada
+#####  Cambio rutinas video ZX80/81
 -view variables interfiere en render!!??? con breakout por ejemplo
 
 -franjas grabacion save no aparecen bien. probablemente por gestion de hsync timeout o vsync timeout
@@ -111,4 +114,4 @@ seguro de que alguna vez se salga de rango y genere segfault)
 
 -ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
 
--Opción para "apagar" la TV. útil?
+-Opción para "apagar" la TV. útil? solo es pura curiosidad. no sirve de nada, lo único que genera es pantalla negra
