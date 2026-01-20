@@ -122,6 +122,8 @@ extern z80_bit debug_view_basic_show_betabasic;
 
 extern z80_bit debug_watches_show_decimal;
 
+extern z80_bit debug_step_over_rst8_plus_two;
+
 extern int gui_language;
 
 extern int zxdesktop_disable_on_full_screen;

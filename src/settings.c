@@ -137,6 +137,11 @@ z80_bit debug_shows_invalid_opcode={0};
 //1: salta el breakpoint cuando la condicion pasa de false a true
 z80_bit debug_breakpoints_cond_behaviour={1};
 
+//Si un step over de un rst 8 esperará que se vuelva 2 direcciones por encima de rst 8
+//espacialmente util al usar con esxdos (ya sea con el esxdos handler o con divmmc)
+//para que tenga en cuenta el byte que viene despues de rst 8
+z80_bit debug_step_over_rst8_plus_two={0};
+
 //Opciones al hacer debug, en este caso, al ejecutar comandos paso a paso
 //Ver ayuda de comando set-debug-settings para entender significado
 int remote_debug_settings=1;

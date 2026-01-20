@@ -3546,6 +3546,11 @@ void menu_debug_settings_show_zones_beyond_sync(MENU_ITEM_PARAMETERS)
     menu_debug_show_zones_beyond_sync.v ^=1;
 }
 
+void menu_debug_step_over_rst8_plus_two(MENU_ITEM_PARAMETERS)
+{
+	debug_step_over_rst8_plus_two.v ^=1;
+}
+
 //menu debug settings
 void menu_settings_debug(MENU_ITEM_PARAMETERS)
 {
@@ -3610,6 +3615,19 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         }
 
 
+		if (MACHINE_IS_SPECTRUM) {
+			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_step_over_rst8_plus_two,NULL,
+				"Step Over RST8 +2","Step Over RST8 +2","Step Over RST8 +2");
+			menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",
+				(debug_step_over_rst8_plus_two.v ? 'X' : ' ') );
+			menu_add_item_menu_tooltip(array_menu_settings_debug,"When step over RST 8, it will stop on PC+2");
+			menu_add_item_menu_ayuda(array_menu_settings_debug,"When step over RST 8, it will stop on PC+2. "
+				"Useful when debugging esxdos calls; following byte to RST 8 must be >=128. "
+				"Note: when using esxdos handler, this is always the behaviour, no matter this setting"
+			);
+		}
+        
+        
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,
             "~~Breakp. behaviour","Comportamiento ~~Breakp.","Comportament ~~Breakp.");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");

@@ -8020,7 +8020,7 @@ void debug_cpu_step_over(void)
 
   //En el caso de Spectrum, si es un RST 8 y está esxdos habilitado, hay que descartar el byte siguiente
   if (MACHINE_IS_SPECTRUM) {
-      if (esxdos_handler_enabled.v) {
+      if (esxdos_handler_enabled.v || debug_step_over_rst8_plus_two.v) {
         z80_byte opcode=peek_byte_no_time(direccion);
         if (opcode==207) {
             //Y siempre que byte siguiente sea un comando de esxdos (>=128)
@@ -8032,6 +8032,7 @@ void debug_cpu_step_over(void)
         }
       }
   }
+  printf("direccion final: %04XH\n",direccion_final);
 
   direccion_final=adjust_address_space_cpu(direccion_final);
 
