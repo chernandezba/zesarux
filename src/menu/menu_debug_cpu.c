@@ -1617,7 +1617,7 @@ void menu_debug_registers_change_ptr(void)
     }
 
     //menu_ventana_scanf("Value?",string_address,10);
-    int tecla=zxvision_scanf_history("Value?",string_address,10,menu_debug_registers_change_ptr_historial);
+    int tecla=zxvision_scanf_history("Memptr?",string_address,10,menu_debug_registers_change_ptr_historial);
 
     //No sale con ESC
     if (tecla!=2) {
