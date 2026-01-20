@@ -20,8 +20,6 @@ el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos
 
 
 
--Joystick SDL: Soporte joystick SDL2
-
 -sdl2 peta con easter-egg en linux
 
 -Drag drop con menú abierto en sdl2 no parece funcionar bien
@@ -51,8 +49,6 @@ http://www.worldofspectrum.org/forums/discussion/44669/clashbasher-a-new-interfa
 
 -Pantalla completa con resolución menor de lo habitual en sdl peta con seg fault
 
--lightgun no se deberian leer cuando menu abierto:
-upara lightgun la mayoria de puertos son teclado o kempston, en que ya se controla menu abierto. en puerto DF seria la excepcion
 
 -Poder activar dos drivers de video a la vez, en especial un grafico (sdl, x11) y otro de texto (stdout o simpletext).
 

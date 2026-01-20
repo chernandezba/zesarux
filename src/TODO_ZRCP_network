@@ -79,4 +79,3 @@ En ese caso no hacer mas alla de 500 por ejemplo
 Quiza por el sprintf (pending_error_message
  para que no se pudiera escribir desde dos sitios?
 
--semáforos en Windows. Como? De momento no hace bloqueo si es Windows
