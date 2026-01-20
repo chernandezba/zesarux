@@ -2615,7 +2615,8 @@ char quickload_file[PATH_MAX];
 //Ultimos archivos cargados desde smartload
 char last_files_used_array[MAX_LAST_FILESUSED][PATH_MAX];
 
-
+//archivo que guarda el historial de archivos cargados con smartload
+char smartload_history_file[PATH_MAX]="";
 
 
 //Interrumpe el core y le dice que hay que abrir el menu

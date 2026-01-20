@@ -1361,6 +1361,7 @@ printf (
         "\n"
 
         "--smartloadpath path        Select initial smartload path\n"
+        "--smartloadhistoryfile f    Defines a file to store the history of quickload\n"
         "--addlastfile file          Add a file to the last files used\n"
         "--quicksavepath path        Select path for quicksave & continous autosave\n"
         "--autoloadsnap              Load last snapshot on start\n"
@@ -4106,6 +4107,12 @@ int parse_cmdline_options(int desde_commandline) {
                 sprintf(quickload_file,"%s/",argv[puntero_parametro]);
 
                                 quickfile=quickload_file;
+                        }
+                        
+                        
+                        else if (!strcmp(argv[puntero_parametro],"--smartloadhistoryfile")) {
+                                siguiente_parametro_argumento();
+                strcpy(smartload_history_file,argv[puntero_parametro]);
                         }
 
                         else if (!strcmp(argv[puntero_parametro],"--addlastfile")) {

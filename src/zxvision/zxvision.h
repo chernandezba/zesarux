@@ -1328,6 +1328,7 @@ extern int mouse_movido;
 
 extern char *quickfile;
 extern char quickload_file[];
+extern char smartload_history_file[];
 
 extern z80_bit menu_button_smartload;
 extern z80_bit menu_button_osdkeyboard;

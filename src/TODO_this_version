@@ -71,17 +71,15 @@ quiza icono ramdisk que englobe snapshots y otras cosas???
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
 
-- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados. Me sirve para confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81
+- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados. 
+Me sirve para confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81
 
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
 
 - Poder ver los t-estados que tarda una instrucción, en vista de debug cpu
 
-- Poder definir que step over cuando hay RST8, vuelva en PC+1 o PC+2, para saltar byte que suele venir después
-
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
--al cambiar memptr en debug cpu, la ventana que pregunta dice: value? cambiar a memptr
 
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
