@@ -3889,6 +3889,8 @@ int util_write_configfile(void)
     util_get_dir(quickload_file,buffer_temp);
      ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
   }
+  
+  if (smartload_history_file[0]) ADD_STRING_CONFIG,"--smartloadhistoryfile \"%s\"",smartload_history_file);
 
   //Archivos recientes de smartload. Recorremos desde abajo hasta arriba
     for (i=MAX_LAST_FILESUSED-1;i>=0;i--) {
