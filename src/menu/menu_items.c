@@ -45289,7 +45289,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
                 //agregar nombre archivo a archivo de historial
                 if (smartload_history_file[0]) {
 					util_save_append_file(quickload_file,strlen(quickload_file),smartload_history_file);
-					util_save_append_file(quickload_file,1,"\n");
+					util_save_append_file("\n",1,smartload_history_file);
 				}
         }
 
