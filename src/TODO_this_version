@@ -81,7 +81,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas???
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
-
+-al cambiar memptr en debug cpu, la ventana que pregunta dice: value? cambiar a memptr
 ------
 
 #####  Cambio rutinas video ZX80/81: hsync_generator_active.v no se usaba para nada

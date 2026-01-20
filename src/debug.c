@@ -8018,7 +8018,7 @@ void debug_cpu_step_over(void)
 
   unsigned int direccion_final=direccion+longitud_opcode;
 
-  //En el caso de Spectrum, si es un RST 8 y en caso de esxdos, hay que descartar el byte siguiente
+  //En el caso de Spectrum, si es un RST 8 y está esxdos habilitado, hay que descartar el byte siguiente
   if (MACHINE_IS_SPECTRUM) {
       if (esxdos_handler_enabled.v) {
         z80_byte opcode=peek_byte_no_time(direccion);
