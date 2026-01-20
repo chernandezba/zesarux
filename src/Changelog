@@ -52,6 +52,7 @@ Improved debug cpu:
 - Views 5 and 6 use a different memptr ("memptx")
 - Show when memory is modified by last opcode execution on views 5 and 6
 - Direct key (t) to evaluate expressions
+- Added setting to stop on PC+2 when step over RST 8, useful when debugging esxdos calls 
 - Added user variables VAR0, VAR1, ... VAR9
 - Added video frames counter
 
