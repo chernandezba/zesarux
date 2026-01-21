@@ -45249,7 +45249,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
         //printf ("antes menu_filesel\n");
 
         ret=menu_filesel("Smart load",filtros,quickload_file);
-        
+
         //printf("quickload_file: %s\n",quickload_file);
 
         //printf ("despues menu_filesel\n");
@@ -45285,11 +45285,11 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
                 //Y salimos de todos los menus si conviene
                 if (no_close_menu_after_smartload.v==0) salir_todos_menus=1;
-                
+
                 //agregar nombre archivo a archivo de historial
                 if (smartload_history_file[0]) {
-					util_save_append_file(quickload_file,strlen(quickload_file),smartload_history_file);
-					util_save_append_file("\n",1,smartload_history_file);
+					util_save_append_file((z80_byte *)quickload_file,strlen(quickload_file),smartload_history_file);
+					util_save_append_file((z80_byte *)"\n",1,smartload_history_file);
 				}
         }
 
