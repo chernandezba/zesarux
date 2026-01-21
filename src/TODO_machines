@@ -1017,6 +1017,9 @@ Quizá demo raster zxuno falla porque la interrupción tarda demasiado...
 
 -Zx99 interface para zx81
 
+-ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
+Poco usada
+
 -------------
 
 
@@ -1060,6 +1063,18 @@ y el input f$ lo cuelga.
 
 
 -insistir en el tema de hotswap de zx81 a zx80 (de zx80 a zx81 ya se puede, conservando la rom del zx80)
+
+-revisar waitmap y activarlo al generar nmi, comparar con zxsp. Ahora mismo suma 9. si no se usa, desactivar funciones de uso de waitmap (no estoy
+seguro de que alguna vez se salga de rango y genere segfault). Con esto supuestamente tendria 100% de perfección de timing
+(a comprobar con ClckFreq.p)
+
+-Disparo de interrupciones se debería hacer similar a zxsp, al hacer debug paso a paso:
+o sea que el disparo de la nmi ocupe un solo paso del step to step que se pueda hacer step.
+Ejemplo:
+-step (procesa opcode)
+-step (procesa opcode)
+(si llega la nmi):
+-step (solo procesa la nmi)
 
 --------------------
 

@@ -77,8 +77,10 @@ Me sirve para confeccionar una lista de los juegos a testear en las pruebas de v
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
 
 - Poder ver los t-estados que tarda una instrucción, en vista de debug cpu
-Pero tiene que ver si se cumple o no condiciones, en instrucciones con condición
-tener en cuenta también memoria contenida...
+Pero tiene que ver si se cumple o no condiciones, en instrucciones con condición (eso ya se obtiene ahora, en la info de "satisfy" condition)
+*tener en cuenta también memoria contenida?
+*visualizar también desglose de tiempos? ejemplo push af/bc/de/hl = 11 (5,3,3)
+https://www.cpcwiki.eu/index.php/Z80
 
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
@@ -86,7 +88,6 @@ tener en cuenta también memoria contenida...
 
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
-
 
 
 
@@ -102,19 +103,11 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 *video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
 
 
--Disparo de interrupciones se debería hacer similar a zxsp, que se pueda hacer step :
-*opcode
-*si se activa nmi o maskable, que se ejecute en el siguiente step
-
-
 -Listado de juegos a comprobar en ZX80 y ZX81, meterlo en los scripts de test:
 -ZX80: la mayoria
 -ZX81: mazogs, 3dmonster maze, y los de hires: pseudo (manic, pacman), udg, wrx, chr$
 -starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
 
--revisar waitmap y activarlo en pausa nmi. o dejar el 9 tal cual. si no se usa, desactivar funciones de uso de waitmap (no estoy
-seguro de que alguna vez se salga de rango y genere segfault)
 
--ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
 
 -Opción para "apagar" la TV. útil? solo es pura curiosidad. no sirve de nada, lo único que genera es pantalla negra
