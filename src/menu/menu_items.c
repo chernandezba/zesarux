@@ -45288,9 +45288,9 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
                 //agregar nombre archivo a archivo de historial
                 if (smartload_history_file[0]) {
-					util_save_append_file((z80_byte *)quickload_file,strlen(quickload_file),smartload_history_file);
-					util_save_append_file((z80_byte *)"\n",1,smartload_history_file);
-				}
+                    util_save_append_file((z80_byte *)quickload_file,strlen(quickload_file),smartload_history_file);
+                    util_save_append_file((z80_byte *)"\n",1,smartload_history_file);
+                }
         }
 
     //printf ("tapefile: %p %s\n",tapefile,tapefile);
