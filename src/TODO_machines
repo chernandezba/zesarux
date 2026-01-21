@@ -1053,6 +1053,10 @@ It is also possible to reset and restart it as described above.
 -cargar .p snap grabado de zx81 como snap luego solo carga como snapshot pero no como cinta. tambien falla al cargar ese snapshot como cinta en eightone
 
 
+-zxpand.
+tanto stcplay, gasman, sound_demo (usan el mismo player, de Andy Rea) presentan linea de caracteres desplazada (problema tipico del linectr)
+-stcplay funciona si se lanzan comandos de carga desde comando directo basic (y no desde linea)
+y el input f$ lo cuelga.
 
 --------------------
 

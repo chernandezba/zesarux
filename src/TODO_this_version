@@ -71,7 +71,7 @@ quiza icono ramdisk que englobe snapshots y otras cosas???
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
 
-ok- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados. 
+ok- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados.
 Me sirve para confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81
 
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
@@ -87,14 +87,13 @@ tener en cuenta también memoria contenida...
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
--zxpand. 
--sound tracker de andy rea se cuelga. porque? stcplay , gasman y sound_demo usan el mismo player
-requiere ramtop en 24999 y CONFIG "M=H"
-carpeta aux_zesarux/zx81/sound_demo  tambien
-
+-zxpand.
+tanto stcplay, gasman, sound_demo (usan el mismo player, de Andy Rea) presentan linea de caracteres desplazada (problema tipico del linectr)
+-stcplay funciona si se lanzan comandos de carga desde comando directo basic (y no desde linea)
+y el input f$ lo cuelga.
 
 -insistir en el tema de hotswap de zx81 a zx80 (de zx80 a zx81 ya se puede, conservando la rom del zx80)
-se tendria que conservar rom de zx81
+
 ------
 
 #####  Cambio rutinas video ZX80/81
