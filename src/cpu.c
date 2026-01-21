@@ -299,14 +299,7 @@ int anterior_porcentaje_velocidad_emulador=100;
 
 
 
-//linea actual (scanline) del caracter mostrado
-int video_zx8081_lcntr=0;
 
-
-//el siguiente valor que tendra una linea entera segun la ULA
-//con vsync , voltaje 0v, color negro, este valor a 255
-//sin vsync , voltaje "normal", color blanco, este valor a 0
-z80_byte video_zx8081_ula_video_output;
 
 //simular franjas de carga y sonido. De momento solo para ZX80/81
 z80_bit tape_loading_simulate;

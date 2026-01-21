@@ -1058,6 +1058,9 @@ tanto stcplay, gasman, sound_demo (usan el mismo player, de Andy Rea) presentan 
 -stcplay funciona si se lanzan comandos de carga desde comando directo basic (y no desde linea)
 y el input f$ lo cuelga.
 
+
+-insistir en el tema de hotswap de zx81 a zx80 (de zx80 a zx81 ya se puede, conservando la rom del zx80)
+
 --------------------
 
 

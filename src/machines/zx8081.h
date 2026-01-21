@@ -92,6 +92,9 @@ extern z80_byte zx80801_last_sprite_video;
 extern int zx80801_last_sprite_video_tinta;
 extern int zx80801_last_sprite_video_papel;
 
+extern int video_zx8081_lcntr;
+extern z80_byte video_zx8081_ula_video_output;
+
 extern void ula_zx8081_time_event(int delta);
 
 extern int ula_zx81_time_event_t_estados;

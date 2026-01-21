@@ -173,6 +173,14 @@ z80_bit zx8081_vsync_generator={0};
 
 int hsync_duration_counter=0;
 
+//linea actual (scan 0-7) del caracter mostrado
+int video_zx8081_lcntr=0;
+
+
+//el siguiente valor que tendra una linea entera segun la ULA
+//con vsync , voltaje 0v, color negro, este valor a 255
+//sin vsync , voltaje "normal", color blanco, este valor a 0
+z80_byte video_zx8081_ula_video_output;
 
 z80_byte zx80801_last_sprite_video=0;
 int zx80801_last_sprite_video_tinta=0;

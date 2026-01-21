@@ -87,12 +87,8 @@ tener en cuenta también memoria contenida...
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
--zxpand.
-tanto stcplay, gasman, sound_demo (usan el mismo player, de Andy Rea) presentan linea de caracteres desplazada (problema tipico del linectr)
--stcplay funciona si se lanzan comandos de carga desde comando directo basic (y no desde linea)
-y el input f$ lo cuelga.
 
--insistir en el tema de hotswap de zx81 a zx80 (de zx80 a zx81 ya se puede, conservando la rom del zx80)
+
 
 ------
 
