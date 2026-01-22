@@ -91,6 +91,7 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 -ver timing opcodes:
 *opcion en debug para activarlo o no (por defecto no)
+*opcodes next
 
 ------
 
