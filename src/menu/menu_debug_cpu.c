@@ -58,6 +58,7 @@
 #include "realjoystick.h"
 #include "utils_text_adventure.h"
 #include "tv.h"
+#include "debug_timings.h"
 
 //Opciones seleccionadas de menus
 int mem_breakpoints_opcion_seleccionada=0;
@@ -3772,6 +3773,48 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                     if (tiene_pc && tiene_brk) buffer_linea[0]='+'; //Cuando coinciden breakpoint y cursor
 
 
+                    //Para buffer timing
+
+                    char buffer_timings[32];
+                    buffer_timings[0]=0;
+
+                    //TODO: opcion para activarlo o no
+                    if (1) {
+
+                        //temp
+                        //strcpy(buffer_timings,"20T (4,4,3,3,3,3)");
+                        //Deberia quedar a la derecha de texto satisfy
+                        z80_byte byte1=peek_byte_no_time(puntero_dir);
+                        z80_byte byte2=peek_byte_no_time(puntero_dir+1);
+                        z80_byte byte4=peek_byte_no_time(puntero_dir+3);
+                        struct s_opcodes_times *tabla_tiempo=debug_get_timing_opcode(byte1,byte2,byte4);
+
+                        int *tiempos;
+
+                        if (cumple_condicion) {
+                            tiempos=tabla_tiempo->times_condition_triggered;
+                        }
+                        else {
+                            tiempos=tabla_tiempo->times_condition_not_triggered;
+                        }
+
+                        int i;
+                        int pos_buffer=5; //saltar "XXT ("
+                        int total_tiempos=0;
+                        for (i=0;i<MAX_TIEMPOS_OPCODES && tiempos[i];i++) {
+                            sprintf(&buffer_timings[pos_buffer],"%d,",tiempos[i]);
+                            total_tiempos +=tiempos[i];
+                            pos_buffer +=2;
+                        }
+                        //Parentesis del final
+                        strcpy(&buffer_timings[pos_buffer-1], ")" );
+
+                        sprintf(buffer_timings,"%2dT ",total_tiempos);
+                        //y cambiar el 0 del final metido ahora por un parentesis
+                        buffer_timings[4]='(';
+                    }
+
+
                     if (esta_en_historial) {
                         //buffer_linea[0]='h';
 
@@ -3827,7 +3870,7 @@ int menu_debug_registers_subview_type=0;
                         buffer_espacios[0]=0;
                     }
 
-                    sprintf(&buffer_linea[1],"%04X %s %s %s",puntero_dir,dumpassembler,buffer_espacios,buffer_condicion);
+                    sprintf(&buffer_linea[1],"%04X %s %s %s %s",puntero_dir,dumpassembler,buffer_espacios,buffer_condicion,buffer_timings);
 
                     //Guardar las direcciones de cada linea
                     //menu_debug_lines_addresses[i]=puntero_dir;

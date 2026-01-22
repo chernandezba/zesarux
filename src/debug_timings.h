@@ -24,13 +24,15 @@
 
 #include "cpu.h"
 
+#define MAX_TIEMPOS_OPCODES 7
+
 //Tablas de tiempos de instrucciones
 struct s_opcodes_times {
-    //Usado en todos opcodes. En opcodes con condición, cuando se cumple condición
-    int times_condition_triggered[7];
+    //Usado en todos opcodes. Y Usado en opcodes con condición, cuando no se cumple condición.
+    int times_condition_not_triggered[MAX_TIEMPOS_OPCODES];
 
-    //Usado en opcodes con condición, cuando no se cumple condición.
-    int times_condition_not_triggered[7];
+    //Usado en opcodes con condición, cuando se cumple condición
+    int times_condition_triggered[MAX_TIEMPOS_OPCODES];
 };
 
 extern struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z80_byte byte4);
