@@ -1,0 +1,682 @@
+/*
+    ZEsarUX  ZX Second-Emulator And Released for UniX
+    Copyright (C) 2013 Cesar Hernandez Bano
+
+    This file is part of ZEsarUX.
+
+    ZEsarUX is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+#include "debug.h"
+#include "debug_timings.h"
+
+struct s_opcodes_times debug_times_opcodes_no_preffix[256]={
+{ {4,0} , {0} }, // NOP                     ; 00
+{ {4,0} , {0} }, // LD BC,NN                ; 01 XX XX
+{ {4,0} , {0} }, // LD (BC),A               ; 02
+{ {4,0} , {0} }, // INC BC                  ; 03
+{ {4,0} , {0} }, // INC B                   ; 04
+{ {4,0} , {0} }, // DEC B                   ; 05
+{ {4,0} , {0} }, // LD B,N                  ; 06 XX
+{ {4,0} , {0} }, // RLCA                    ; 07
+{ {4,0} , {0} }, // EX AF,AF'               ; 08
+{ {4,0} , {0} }, // ADD HL,BC               ; 09
+{ {4,0} , {0} }, // LD A,(BC)               ; 0A
+{ {4,0} , {0} }, // DEC BC                  ; 0B
+{ {4,0} , {0} }, // INC C                   ; 0C
+{ {4,0} , {0} }, // DEC C                   ; 0D
+{ {4,0} , {0} }, // LD C,N                  ; 0E XX
+{ {4,0} , {0} }, // RRCA                    ; 0F
+{ {4,0} , {0} }, // DJNZ $+2                ; 10
+{ {4,0} , {0} }, // LD DE,NN                ; 11 XX XX
+{ {4,0} , {0} }, // LD (DE),A               ; 12
+{ {4,0} , {0} }, // INC DE                  ; 13
+{ {4,0} , {0} }, // INC D                   ; 14
+{ {4,0} , {0} }, // DEC D                   ; 15
+{ {4,0} , {0} }, // LD D,N                  ; 16 XX
+{ {4,0} , {0} }, // RLA                     ; 17
+{ {4,0} , {0} }, // JR $+2                  ; 18
+{ {4,0} , {0} }, // ADD HL,DE               ; 19
+{ {4,0} , {0} }, // LD A,(DE)               ; 1A
+{ {4,0} , {0} }, // DEC DE                  ; 1B
+{ {4,0} , {0} }, // INC E                   ; 1C
+{ {4,0} , {0} }, // DEC E                   ; 1D
+{ {4,0} , {0} }, // LD E,N                  ; 1E XX
+{ {4,0} , {0} }, // RRA                     ; 1F
+{ {4,0} , {0} }, // JR NZ,$+2               ; 20
+{ {4,0} , {0} }, // LD HL,NN                ; 21 XX XX
+{ {4,0} , {0} }, // LD (NN),HL              ; 22 XX XX
+{ {4,0} , {0} }, // INC HL                  ; 23
+{ {4,0} , {0} }, // INC H                   ; 24
+{ {4,0} , {0} }, // DEC H                   ; 25
+{ {4,0} , {0} }, // LD H,N                  ; 26 XX
+{ {4,0} , {0} }, // DAA                     ; 27
+{ {4,0} , {0} }, // JR Z,$+2                ; 28
+{ {4,0} , {0} }, // ADD HL,HL               ; 29
+{ {4,0} , {0} }, // LD HL,(NN)              ; 2A XX XX
+{ {4,0} , {0} }, // DEC HL                  ; 2B
+{ {4,0} , {0} }, // INC L                   ; 2C
+{ {4,0} , {0} }, // DEC L                   ; 2D
+{ {4,0} , {0} }, // LD L,N                  ; 2E XX
+{ {4,0} , {0} }, // CPL                     ; 2F
+{ {4,0} , {0} }, // JR NC,$+2               ; 30
+{ {4,0} , {0} }, // LD SP,NN                ; 31 XX XX
+{ {4,0} , {0} }, // LD (NN),A               ; 32 XX XX
+{ {4,0} , {0} }, // INC SP                  ; 33
+{ {4,0} , {0} }, // INC (HL)                ; 34
+{ {4,0} , {0} }, // DEC (HL)                ; 35
+{ {4,0} , {0} }, // LD (HL),N               ; 36 XX
+{ {4,0} , {0} }, // SCF                     ; 37
+{ {4,0} , {0} }, // JR C,$+2                ; 38
+{ {4,0} , {0} }, // ADD HL,SP               ; 39
+{ {4,0} , {0} }, // LD A,(NN)               ; 3A XX XX
+{ {4,0} , {0} }, // DEC SP                  ; 3B
+{ {4,0} , {0} }, // INC A                   ; 3C
+{ {4,0} , {0} }, // DEC A                   ; 3D
+{ {4,0} , {0} }, // LD A,N                  ; 3E XX
+{ {4,0} , {0} }, // CCF                     ; 3F
+{ {4,0} , {0} }, // LD B,B                  ; 40
+{ {4,0} , {0} }, // LD B,C                  ; 41
+{ {4,0} , {0} }, // LD B,D                  ; 42
+{ {4,0} , {0} }, // LD B,E                  ; 43
+{ {4,0} , {0} }, // LD B,H                  ; 44
+{ {4,0} , {0} }, // LD B,L                  ; 45
+{ {4,0} , {0} }, // LD B,(HL)               ; 46
+{ {4,0} , {0} }, // LD B,A                  ; 47
+{ {4,0} , {0} }, // LD C,B                  ; 48
+{ {4,0} , {0} }, // LD C,C                  ; 49
+{ {4,0} , {0} }, // LD C,D                  ; 4A
+{ {4,0} , {0} }, // LD C,E                  ; 4B
+{ {4,0} , {0} }, // LD C,H                  ; 4C
+{ {4,0} , {0} }, // LD C,L                  ; 4D
+{ {4,0} , {0} }, // LD C,(HL)               ; 4E
+{ {4,0} , {0} }, // LD C,A                  ; 4F
+{ {4,0} , {0} }, // LD D,B                  ; 50
+{ {4,0} , {0} }, // LD D,C                  ; 51
+{ {4,0} , {0} }, // LD D,D                  ; 52
+{ {4,0} , {0} }, // LD D,E                  ; 53
+{ {4,0} , {0} }, // LD D,H                  ; 54
+{ {4,0} , {0} }, // LD D,L                  ; 55
+{ {4,0} , {0} }, // LD D,(HL)               ; 56
+{ {4,0} , {0} }, // LD D,A                  ; 57
+{ {4,0} , {0} }, // LD E,B                  ; 58
+{ {4,0} , {0} }, // LD E,C                  ; 59
+{ {4,0} , {0} }, // LD E,D                  ; 5A
+{ {4,0} , {0} }, // LD E,E                  ; 5B
+{ {4,0} , {0} }, // LD E,H                  ; 5C
+{ {4,0} , {0} }, // LD E,L                  ; 5D
+{ {4,0} , {0} }, // LD E,(HL)               ; 5E
+{ {4,0} , {0} }, // LD E,A                  ; 5F
+{ {4,0} , {0} }, // LD H,B                  ; 60
+{ {4,0} , {0} }, // LD H,C                  ; 61
+{ {4,0} , {0} }, // LD H,D                  ; 62
+{ {4,0} , {0} }, // LD H,E                  ; 63
+{ {4,0} , {0} }, // LD H,H                  ; 64
+{ {4,0} , {0} }, // LD H,L                  ; 65
+{ {4,0} , {0} }, // LD H,(HL)               ; 66
+{ {4,0} , {0} }, // LD H,A                  ; 67
+{ {4,0} , {0} }, // LD L,B                  ; 68
+{ {4,0} , {0} }, // LD L,C                  ; 69
+{ {4,0} , {0} }, // LD L,D                  ; 6A
+{ {4,0} , {0} }, // LD L,E                  ; 6B
+{ {4,0} , {0} }, // LD L,H                  ; 6C
+{ {4,0} , {0} }, // LD L,L                  ; 6D
+{ {4,0} , {0} }, // LD L,(HL)               ; 6E
+{ {4,0} , {0} }, // LD L,A                  ; 6F
+{ {4,0} , {0} }, // LD (HL),B               ; 70
+{ {4,0} , {0} }, // LD (HL),C               ; 71
+{ {4,0} , {0} }, // LD (HL),D               ; 72
+{ {4,0} , {0} }, // LD (HL),E               ; 73
+{ {4,0} , {0} }, // LD (HL),H               ; 74
+{ {4,0} , {0} }, // LD (HL),L               ; 75
+{ {4,0} , {0} }, // HALT                    ; 76
+{ {4,0} , {0} }, // LD (HL),A               ; 77
+{ {4,0} , {0} }, // LD A,B                  ; 78
+{ {4,0} , {0} }, // LD A,C                  ; 79
+{ {4,0} , {0} }, // LD A,D                  ; 7A
+{ {4,0} , {0} }, // LD A,E                  ; 7B
+{ {4,0} , {0} }, // LD A,H                  ; 7C
+{ {4,0} , {0} }, // LD A,L                  ; 7D
+{ {4,0} , {0} }, // LD A,(HL)               ; 7E
+{ {4,0} , {0} }, // LD A,A                  ; 7F
+{ {4,0} , {0} }, // ADD A,B                 ; 80
+{ {4,0} , {0} }, // ADD A,C                 ; 81
+{ {4,0} , {0} }, // ADD A,D                 ; 82
+{ {4,0} , {0} }, // ADD A,E                 ; 83
+{ {4,0} , {0} }, // ADD A,H                 ; 84
+{ {4,0} , {0} }, // ADD A,L                 ; 85
+{ {4,0} , {0} }, // ADD A,(HL)              ; 86
+{ {4,0} , {0} }, // ADD A,A                 ; 87
+{ {4,0} , {0} }, // ADC A,B                 ; 88
+{ {4,0} , {0} }, // ADC A,C                 ; 89
+{ {4,0} , {0} }, // ADC A,D                 ; 8A
+{ {4,0} , {0} }, // ADC A,E                 ; 8B
+{ {4,0} , {0} }, // ADC A,H                 ; 8C
+{ {4,0} , {0} }, // ADC A,L                 ; 8D
+{ {4,0} , {0} }, // ADC A,(HL)              ; 8E
+{ {4,0} , {0} }, // ADC A,A                 ; 8F
+{ {4,0} , {0} }, // SUB B                   ; 90
+{ {4,0} , {0} }, // SUB C                   ; 91
+{ {4,0} , {0} }, // SUB D                   ; 92
+{ {4,0} , {0} }, // SUB E                   ; 93
+{ {4,0} , {0} }, // SUB H                   ; 94
+{ {4,0} , {0} }, // SUB L                   ; 95
+{ {4,0} , {0} }, // SUB (HL)                ; 96
+{ {4,0} , {0} }, // SUB A                   ; 97
+{ {4,0} , {0} }, // SBC B                   ; 98
+{ {4,0} , {0} }, // SBC C                   ; 99
+{ {4,0} , {0} }, // SBC D                   ; 9A
+{ {4,0} , {0} }, // SBC E                   ; 9B
+{ {4,0} , {0} }, // SBC H                   ; 9C
+{ {4,0} , {0} }, // SBC L                   ; 9D
+{ {4,0} , {0} }, // SBC (HL)                ; 9E
+{ {4,0} , {0} }, // SBC A                   ; 9F
+{ {4,0} , {0} }, // AND B                   ; A0
+{ {4,0} , {0} }, // AND C                   ; A1
+{ {4,0} , {0} }, // AND D                   ; A2
+{ {4,0} , {0} }, // AND E                   ; A3
+{ {4,0} , {0} }, // AND H                   ; A4
+{ {4,0} , {0} }, // AND L                   ; A5
+{ {4,0} , {0} }, // AND (HL)                ; A6
+{ {4,0} , {0} }, // AND A                   ; A7
+{ {4,0} , {0} }, // XOR B                   ; A8
+{ {4,0} , {0} }, // XOR C                   ; A9
+{ {4,0} , {0} }, // XOR D                   ; AA
+{ {4,0} , {0} }, // XOR E                   ; AB
+{ {4,0} , {0} }, // XOR H                   ; AC
+{ {4,0} , {0} }, // XOR L                   ; AD
+{ {4,0} , {0} }, // XOR (HL)                ; AE
+{ {4,0} , {0} }, // XOR A                   ; AF
+{ {4,0} , {0} }, // OR B                    ; B0
+{ {4,0} , {0} }, // OR C                    ; B1
+{ {4,0} , {0} }, // OR D                    ; B2
+{ {4,0} , {0} }, // OR E                    ; B3
+{ {4,0} , {0} }, // OR H                    ; B4
+{ {4,0} , {0} }, // OR L                    ; B5
+{ {4,0} , {0} }, // OR (HL)                 ; B6
+{ {4,0} , {0} }, // OR A                    ; B7
+{ {4,0} , {0} }, // CP B                    ; B8
+{ {4,0} , {0} }, // CP C                    ; B9
+{ {4,0} , {0} }, // CP D                    ; BA
+{ {4,0} , {0} }, // CP E                    ; BB
+{ {4,0} , {0} }, // CP H                    ; BC
+{ {4,0} , {0} }, // CP L                    ; BD
+{ {4,0} , {0} }, // CP (HL)                 ; BE
+{ {4,0} , {0} }, // CP A                    ; BF
+{ {4,0} , {0} }, // RET NZ                  ; C0
+{ {4,0} , {0} }, // POP BC                  ; C1
+{ {4,0} , {0} }, // JP NZ,$+3               ; C2
+{ {4,0} , {0} }, // JP $+3                  ; C3
+{ {4,0} , {0} }, // CALL NZ,NN              ; C4 XX XX
+{ {4,0} , {0} }, // PUSH BC                 ; C5
+{ {4,0} , {0} }, // ADD A,N                 ; C6 XX
+{ {4,0} , {0} }, // RST 0                   ; C7
+{ {4,0} , {0} }, // RET Z                   ; C8
+{ {4,0} , {0} }, // RET                     ; C9
+{ {4,0} , {0} }, // JP Z,$+3                ; CA
+
+{ {0} , {0} },   // Prefijo CB como tal no se lee desde aqui
+
+{ {4,0} , {0} }, // CALL Z,NN               ; CC XX XX
+{ {4,0} , {0} }, // CALL NN                 ; CD XX XX
+{ {4,0} , {0} }, // ADC A,N                 ; CE XX
+{ {4,0} , {0} }, // RST 8H                  ; CF
+{ {4,0} , {0} }, // RET NC                  ; D0
+{ {4,0} , {0} }, // POP DE                  ; D1
+{ {4,0} , {0} }, // JP NC,$+3               ; D2
+{ {4,0} , {0} }, // OUT (N),A               ; D3 XX
+{ {4,0} , {0} }, // CALL NC,NN              ; D4 XX XX
+{ {4,0} , {0} }, // PUSH DE                 ; D5
+{ {4,0} , {0} }, // SUB N                   ; D6 XX
+{ {4,0} , {0} }, // RST 10H                 ; D7
+{ {4,0} , {0} }, // RET C                   ; D8
+{ {4,0} , {0} }, // EXX                     ; D9
+{ {4,0} , {0} }, // JP C,$+3                ; DA
+{ {4,0} , {0} }, // IN A,(N)                ; DB XX
+{ {4,0} , {0} }, // CALL C,NN               ; DC XX XX
+
+{ {0} , {0} },   // Prefijo DD como tal no se lee desde aqui
+
+{ {4,0} , {0} }, // SBC A,N                 ; DE XX
+{ {4,0} , {0} }, // RST 18H                 ; DF
+{ {4,0} , {0} }, // RET PO                  ; E0
+{ {4,0} , {0} }, // POP HL                  ; E1
+{ {4,0} , {0} }, // JP PO,$+3               ; E2
+{ {4,0} , {0} }, // EX (SP),HL              ; E3
+{ {4,0} , {0} }, // CALL PO,NN              ; E4 XX XX
+{ {4,0} , {0} }, // PUSH HL                 ; E5
+{ {4,0} , {0} }, // AND N                   ; E6 XX
+{ {4,0} , {0} }, // RST 20H                 ; E7
+{ {4,0} , {0} }, // RET PE                  ; E8
+{ {4,0} , {0} }, // JP (HL)                 ; E9
+{ {4,0} , {0} }, // JP PE,$+3               ; EA
+{ {4,0} , {0} }, // EX DE,HL                ; EB
+{ {4,0} , {0} }, // CALL PE,NN              ; EC XX XX
+
+{ {0} , {0} },   // Prefijo ED como tal no se lee desde aqui
+
+{ {4,0} , {0} }, // XOR N                   ; EE XX
+{ {4,0} , {0} }, // RST 28H                 ; EF
+{ {4,0} , {0} }, // RET P                   ; F0
+{ {4,0} , {0} }, // POP AF                  ; F1
+{ {4,0} , {0} }, // JP P,$+3                ; F2
+{ {4,0} , {0} }, // DI                      ; F3
+{ {4,0} , {0} }, // CALL P,NN               ; F4 XX XX
+{ {4,0} , {0} }, // PUSH AF                 ; F5
+{ {4,0} , {0} }, // OR N                    ; F6 XX
+{ {4,0} , {0} }, // RST 30H                 ; F7
+{ {4,0} , {0} }, // RET M                   ; F8
+{ {4,0} , {0} }, // LD SP,HL                ; F9
+{ {4,0} , {0} }, // JP M,$+3                ; FA
+{ {4,0} , {0} }, // EI                      ; FB
+{ {4,0} , {0} }, // CALL M,NN               ; FC XX XX
+
+{ {0} , {0} },   // Prefijo FD como tal no se lee desde aqui
+
+{ {4,0} , {0} }, // CP N                    ; FE XX
+{ {4,0} , {0} }  // RST 38H                 ; FF
+};
+
+
+struct s_opcodes_times debug_times_opcodes_cb_preffix[]={
+{ {4,0} , {0} }, // RLC B                   ; CB 00
+{ {4,0} , {0} }, // RLC C                   ; CB 01
+{ {4,0} , {0} }, // RLC D                   ; CB 02
+{ {4,0} , {0} }, // RLC E                   ; CB 03
+{ {4,0} , {0} }, // RLC H                   ; CB 04
+{ {4,0} , {0} }, // RLC L                   ; CB 05
+{ {4,0} , {0} }, // RLC (HL)                ; CB 06
+{ {4,0} , {0} }, // RLC A                   ; CB 07
+{ {4,0} , {0} }, // RRC B                   ; CB 08
+{ {4,0} , {0} }, // RRC C                   ; CB 09
+{ {4,0} , {0} }, // RRC D                   ; CB 0A
+{ {4,0} , {0} }, // RRC E                   ; CB 0B
+{ {4,0} , {0} }, // RRC H                   ; CB 0C
+{ {4,0} , {0} }, // RRC L                   ; CB 0D
+{ {4,0} , {0} }, // RRC (HL)                ; CB 0E
+{ {4,0} , {0} }, // RRC A                   ; CB 0F
+{ {4,0} , {0} }, // RL  B                   ; CB 10
+{ {4,0} , {0} }, // RL  C                   ; CB 11
+{ {4,0} , {0} }, // RL  D                   ; CB 12
+{ {4,0} , {0} }, // RL  E                   ; CB 13
+{ {4,0} , {0} }, // RL  H                   ; CB 14
+{ {4,0} , {0} }, // RL  L                   ; CB 15
+{ {4,0} , {0} }, // RL  (HL)                ; CB 16
+{ {4,0} , {0} }, // RL  A                   ; CB 17
+{ {4,0} , {0} }, // RR  B                   ; CB 18
+{ {4,0} , {0} }, // RR  C                   ; CB 19
+{ {4,0} , {0} }, // RR  D                   ; CB 1A
+{ {4,0} , {0} }, // RR  E                   ; CB 1B
+{ {4,0} , {0} }, // RR  H                   ; CB 1C
+{ {4,0} , {0} }, // RR  L                   ; CB 1D
+{ {4,0} , {0} }, // RR  (HL)                ; CB 1E
+{ {4,0} , {0} }, // RR  A                   ; CB 1F
+{ {4,0} , {0} }, // SLA B                   ; CB 20
+{ {4,0} , {0} }, // SLA C                   ; CB 21
+{ {4,0} , {0} }, // SLA D                   ; CB 22
+{ {4,0} , {0} }, // SLA E                   ; CB 23
+{ {4,0} , {0} }, // SLA H                   ; CB 24
+{ {4,0} , {0} }, // SLA L                   ; CB 25
+{ {4,0} , {0} }, // SLA (HL)                ; CB 26
+{ {4,0} , {0} }, // SLA A                   ; CB 27
+{ {4,0} , {0} }, // SRA B                   ; CB 28
+{ {4,0} , {0} }, // SRA C                   ; CB 29
+{ {4,0} , {0} }, // SRA D                   ; CB 2A
+{ {4,0} , {0} }, // SRA E                   ; CB 2B
+{ {4,0} , {0} }, // SRA H                   ; CB 2C
+{ {4,0} , {0} }, // SRA L                   ; CB 2D
+{ {4,0} , {0} }, // SRA (HL)                ; CB 2E
+{ {4,0} , {0} }, // SRA A                   ; CB 2F
+{ {4,0} , {0} }, // SRL B                   ; CB 38
+{ {4,0} , {0} }, // SRL C                   ; CB 39
+{ {4,0} , {0} }, // SRL D                   ; CB 3A
+{ {4,0} , {0} }, // SRL E                   ; CB 3B
+{ {4,0} , {0} }, // SRL H                   ; CB 3C
+{ {4,0} , {0} }, // SRL L                   ; CB 3D
+{ {4,0} , {0} }, // SRL (HL)                ; CB 3E
+{ {4,0} , {0} }, // SRL A                   ; CB 3F
+{ {4,0} , {0} }, // BIT 0,B                 ; CB 40
+{ {4,0} , {0} }, // BIT 0,C                 ; CB 41
+{ {4,0} , {0} }, // BIT 0,D                 ; CB 42
+{ {4,0} , {0} }, // BIT 0,E                 ; CB 43
+{ {4,0} , {0} }, // BIT 0,H                 ; CB 44
+{ {4,0} , {0} }, // BIT 0,L                 ; CB 45
+{ {4,0} , {0} }, // BIT 0,(HL)              ; CB 46
+{ {4,0} , {0} }, // BIT 0,A                 ; CB 47
+{ {4,0} , {0} }, // BIT 1,B                 ; CB 48
+{ {4,0} , {0} }, // BIT 1,C                 ; CB 49
+{ {4,0} , {0} }, // BIT 1,D                 ; CB 4A
+{ {4,0} , {0} }, // BIT 1,E                 ; CB 4B
+{ {4,0} , {0} }, // BIT 1,H                 ; CB 4C
+{ {4,0} , {0} }, // BIT 1,L                 ; CB 4D
+{ {4,0} , {0} }, // BIT 1,(HL)              ; CB 4E
+{ {4,0} , {0} }, // BIT 1,A                 ; CB 4F
+{ {4,0} , {0} }, // BIT 2,B                 ; CB 50
+{ {4,0} , {0} }, // BIT 2,C                 ; CB 51
+{ {4,0} , {0} }, // BIT 2,D                 ; CB 52
+{ {4,0} , {0} }, // BIT 2,E                 ; CB 53
+{ {4,0} , {0} }, // BIT 2,H                 ; CB 54
+{ {4,0} , {0} }, // BIT 2,L                 ; CB 55
+{ {4,0} , {0} }, // BIT 2,(HL)              ; CB 56
+{ {4,0} , {0} }, // BIT 2,A                 ; CB 57
+{ {4,0} , {0} }, // BIT 3,B                 ; CB 58
+{ {4,0} , {0} }, // BIT 3,C                 ; CB 59
+{ {4,0} , {0} }, // BIT 3,D                 ; CB 5A
+{ {4,0} , {0} }, // BIT 3,E                 ; CB 5B
+{ {4,0} , {0} }, // BIT 3,H                 ; CB 5C
+{ {4,0} , {0} }, // BIT 3,L                 ; CB 5D
+{ {4,0} , {0} }, // BIT 3,(HL)              ; CB 5E
+{ {4,0} , {0} }, // BIT 3,A                 ; CB 5F
+{ {4,0} , {0} }, // BIT 4,B                 ; CB 60
+{ {4,0} , {0} }, // BIT 4,C                 ; CB 61
+{ {4,0} , {0} }, // BIT 4,D                 ; CB 62
+{ {4,0} , {0} }, // BIT 4,E                 ; CB 63
+{ {4,0} , {0} }, // BIT 4,H                 ; CB 64
+{ {4,0} , {0} }, // BIT 4,L                 ; CB 65
+{ {4,0} , {0} }, // BIT 4,(HL)              ; CB 66
+{ {4,0} , {0} }, // BIT 4,A                 ; CB 67
+{ {4,0} , {0} }, // BIT 5,B                 ; CB 68
+{ {4,0} , {0} }, // BIT 5,C                 ; CB 69
+{ {4,0} , {0} }, // BIT 5,D                 ; CB 6A
+{ {4,0} , {0} }, // BIT 5,E                 ; CB 6B
+{ {4,0} , {0} }, // BIT 5,H                 ; CB 6C
+{ {4,0} , {0} }, // BIT 5,L                 ; CB 6D
+{ {4,0} , {0} }, // BIT 5,(HL)              ; CB 6E
+{ {4,0} , {0} }, // BIT 5,A                 ; CB 6F
+{ {4,0} , {0} }, // BIT 6,B                 ; CB 70
+{ {4,0} , {0} }, // BIT 6,C                 ; CB 71
+{ {4,0} , {0} }, // BIT 6,D                 ; CB 72
+{ {4,0} , {0} }, // BIT 6,E                 ; CB 73
+{ {4,0} , {0} }, // BIT 6,H                 ; CB 74
+{ {4,0} , {0} }, // BIT 6,L                 ; CB 75
+{ {4,0} , {0} }, // BIT 6,(HL)              ; CB 76
+{ {4,0} , {0} }, // BIT 6,A                 ; CB 77
+{ {4,0} , {0} }, // BIT 7,B                 ; CB 78
+{ {4,0} , {0} }, // BIT 7,C                 ; CB 79
+{ {4,0} , {0} }, // BIT 7,D                 ; CB 7A
+{ {4,0} , {0} }, // BIT 7,E                 ; CB 7B
+{ {4,0} , {0} }, // BIT 7,H                 ; CB 7C
+{ {4,0} , {0} }, // BIT 7,L                 ; CB 7D
+{ {4,0} , {0} }, // BIT 7,(HL)              ; CB 7E
+{ {4,0} , {0} }, // BIT 7,A                 ; CB 7F
+{ {4,0} , {0} }, // RES 0,B                 ; CB 80
+{ {4,0} , {0} }, // RES 0,C                 ; CB 81
+{ {4,0} , {0} }, // RES 0,D                 ; CB 82
+{ {4,0} , {0} }, // RES 0,E                 ; CB 83
+{ {4,0} , {0} }, // RES 0,H                 ; CB 84
+{ {4,0} , {0} }, // RES 0,L                 ; CB 85
+{ {4,0} , {0} }, // RES 0,(HL)              ; CB 86
+{ {4,0} , {0} }, // RES 0,A                 ; CB 87
+{ {4,0} , {0} }, // RES 1,B                 ; CB 88
+{ {4,0} , {0} }, // RES 1,C                 ; CB 89
+{ {4,0} , {0} }, // RES 1,D                 ; CB 8A
+{ {4,0} , {0} }, // RES 1,E                 ; CB 8B
+{ {4,0} , {0} }, // RES 1,H                 ; CB 8C
+{ {4,0} , {0} }, // RES 1,L                 ; CB 8D
+{ {4,0} , {0} }, // RES 1,(HL)              ; CB 8E
+{ {4,0} , {0} }, // RES 1,A                 ; CB 8F
+{ {4,0} , {0} }, // RES 2,B                 ; CB 90
+{ {4,0} , {0} }, // RES 2,C                 ; CB 91
+{ {4,0} , {0} }, // RES 2,D                 ; CB 92
+{ {4,0} , {0} }, // RES 2,E                 ; CB 93
+{ {4,0} , {0} }, // RES 2,H                 ; CB 94
+{ {4,0} , {0} }, // RES 2,L                 ; CB 95
+{ {4,0} , {0} }, // RES 2,(HL)              ; CB 96
+{ {4,0} , {0} }, // RES 2,A                 ; CB 97
+{ {4,0} , {0} }, // RES 3,B                 ; CB 98
+{ {4,0} , {0} }, // RES 3,C                 ; CB 99
+{ {4,0} , {0} }, // RES 3,D                 ; CB 9A
+{ {4,0} , {0} }, // RES 3,E                 ; CB 9B
+{ {4,0} , {0} }, // RES 3,H                 ; CB 9C
+{ {4,0} , {0} }, // RES 3,L                 ; CB 9D
+{ {4,0} , {0} }, // RES 3,(HL)              ; CB 9E
+{ {4,0} , {0} }, // RES 3,A                 ; CB 9F
+{ {4,0} , {0} }, // RES 4,B                 ; CB A0
+{ {4,0} , {0} }, // RES 4,C                 ; CB A1
+{ {4,0} , {0} }, // RES 4,D                 ; CB A2
+{ {4,0} , {0} }, // RES 4,E                 ; CB A3
+{ {4,0} , {0} }, // RES 4,H                 ; CB A4
+{ {4,0} , {0} }, // RES 4,L                 ; CB A5
+{ {4,0} , {0} }, // RES 4,(HL)              ; CB A6
+{ {4,0} , {0} }, // RES 4,A                 ; CB A7
+{ {4,0} , {0} }, // RES 5,B                 ; CB A8
+{ {4,0} , {0} }, // RES 5,C                 ; CB A9
+{ {4,0} , {0} }, // RES 5,D                 ; CB AA
+{ {4,0} , {0} }, // RES 5,E                 ; CB AB
+{ {4,0} , {0} }, // RES 5,H                 ; CB AC
+{ {4,0} , {0} }, // RES 5,L                 ; CB AD
+{ {4,0} , {0} }, // RES 5,(HL)              ; CB AE
+{ {4,0} , {0} }, // RES 5,A                 ; CB AF
+{ {4,0} , {0} }, // RES 6,B                 ; CB B0
+{ {4,0} , {0} }, // RES 6,C                 ; CB B1
+{ {4,0} , {0} }, // RES 6,D                 ; CB B2
+{ {4,0} , {0} }, // RES 6,E                 ; CB B3
+{ {4,0} , {0} }, // RES 6,H                 ; CB B4
+{ {4,0} , {0} }, // RES 6,L                 ; CB B5
+{ {4,0} , {0} }, // RES 6,(HL)              ; CB B6
+{ {4,0} , {0} }, // RES 6,A                 ; CB B7
+{ {4,0} , {0} }, // RES 7,B                 ; CB B8
+{ {4,0} , {0} }, // RES 7,C                 ; CB B9
+{ {4,0} , {0} }, // RES 7,D                 ; CB BA
+{ {4,0} , {0} }, // RES 7,E                 ; CB BB
+{ {4,0} , {0} }, // RES 7,H                 ; CB BC
+{ {4,0} , {0} }, // RES 7,L                 ; CB BD
+{ {4,0} , {0} }, // RES 7,(HL)              ; CB BE
+{ {4,0} , {0} }, // RES 7,A                 ; CB BF
+{ {4,0} , {0} }, // SET 0,B                 ; CB C0
+{ {4,0} , {0} }, // SET 0,C                 ; CB C1
+{ {4,0} , {0} }, // SET 0,D                 ; CB C2
+{ {4,0} , {0} }, // SET 0,E                 ; CB C3
+{ {4,0} , {0} }, // SET 0,H                 ; CB C4
+{ {4,0} , {0} }, // SET 0,L                 ; CB C5
+{ {4,0} , {0} }, // SET 0,(HL)              ; CB C6
+{ {4,0} , {0} }, // SET 0,A                 ; CB C7
+{ {4,0} , {0} }, // SET 1,B                 ; CB C8
+{ {4,0} , {0} }, // SET 1,C                 ; CB C9
+{ {4,0} , {0} }, // SET 1,D                 ; CB CA
+{ {4,0} , {0} }, // SET 1,E                 ; CB CB
+{ {4,0} , {0} }, // SET 1,H                 ; CB CC
+{ {4,0} , {0} }, // SET 1,L                 ; CB CD
+{ {4,0} , {0} }, // SET 1,(HL)              ; CB CE
+{ {4,0} , {0} }, // SET 1,A                 ; CB CF
+{ {4,0} , {0} }, // SET 2,B                 ; CB D0
+{ {4,0} , {0} }, // SET 2,C                 ; CB D1
+{ {4,0} , {0} }, // SET 2,D                 ; CB D2
+{ {4,0} , {0} }, // SET 2,E                 ; CB D3
+{ {4,0} , {0} }, // SET 2,H                 ; CB D4
+{ {4,0} , {0} }, // SET 2,L                 ; CB D5
+{ {4,0} , {0} }, // SET 2,(HL)              ; CB D6
+{ {4,0} , {0} }, // SET 2,A                 ; CB D7
+{ {4,0} , {0} }, // SET 3,B                 ; CB D8
+{ {4,0} , {0} }, // SET 3,C                 ; CB D9
+{ {4,0} , {0} }, // SET 3,D                 ; CB DA
+{ {4,0} , {0} }, // SET 3,E                 ; CB DB
+{ {4,0} , {0} }, // SET 3,H                 ; CB DC
+{ {4,0} , {0} }, // SET 3,L                 ; CB DD
+{ {4,0} , {0} }, // SET 3,(HL)              ; CB DE
+{ {4,0} , {0} }, // SET 3,A                 ; CB DF
+{ {4,0} , {0} }, // SET 4,B                 ; CB E0
+{ {4,0} , {0} }, // SET 4,C                 ; CB E1
+{ {4,0} , {0} }, // SET 4,D                 ; CB E2
+{ {4,0} , {0} }, // SET 4,E                 ; CB E3
+{ {4,0} , {0} }, // SET 4,H                 ; CB E4
+{ {4,0} , {0} }, // SET 4,L                 ; CB E5
+{ {4,0} , {0} }, // SET 4,(HL)              ; CB E6
+{ {4,0} , {0} }, // SET 4,A                 ; CB E7
+{ {4,0} , {0} }, // SET 5,B                 ; CB E8
+{ {4,0} , {0} }, // SET 5,C                 ; CB E9
+{ {4,0} , {0} }, // SET 5,D                 ; CB EA
+{ {4,0} , {0} }, // SET 5,E                 ; CB EB
+{ {4,0} , {0} }, // SET 5,H                 ; CB EC
+{ {4,0} , {0} }, // SET 5,L                 ; CB ED
+{ {4,0} , {0} }, // SET 5,(HL)              ; CB EE
+{ {4,0} , {0} }, // SET 5,A                 ; CB EF
+{ {4,0} , {0} }, // SET 6,B                 ; CB F0
+{ {4,0} , {0} }, // SET 6,C                 ; CB F1
+{ {4,0} , {0} }, // SET 6,D                 ; CB F2
+{ {4,0} , {0} }, // SET 6,E                 ; CB F3
+{ {4,0} , {0} }, // SET 6,H                 ; CB F4
+{ {4,0} , {0} }, // SET 6,L                 ; CB F5
+{ {4,0} , {0} }, // SET 6,(HL)              ; CB F6
+{ {4,0} , {0} }, // SET 6,A                 ; CB F7
+{ {4,0} , {0} }, // SET 7,B                 ; CB F8
+{ {4,0} , {0} }, // SET 7,C                 ; CB F9
+{ {4,0} , {0} }, // SET 7,D                 ; CB FA
+{ {4,0} , {0} }, // SET 7,E                 ; CB FB
+{ {4,0} , {0} }, // SET 7,H                 ; CB FC
+{ {4,0} , {0} }, // SET 7,L                 ; CB FD
+{ {4,0} , {0} }, // SET 7,(HL)              ; CB FE
+{ {4,0} , {0} }, // SET 7,A                 ; CB FF
+};
+
+struct s_opcodes_times debug_times_opcodes_ed_preffix[]={
+{ {4,0} , {0} }, // IN B,(C)                ; ED 40
+{ {4,0} , {0} }, // OUT (C),B               ; ED 41
+{ {4,0} , {0} }, // SBC HL,BC               ; ED 42
+{ {4,0} , {0} }, // LD (NN),BC              ; ED 43 XX XX
+{ {4,0} , {0} }, // NEG                     ; ED 44
+{ {4,0} , {0} }, // RETN                    ; ED 45
+{ {4,0} , {0} }, // IM 0                    ; ED 46
+{ {4,0} , {0} }, // LD I,A                  ; ED 47
+{ {4,0} , {0} }, // IN C,(C)                ; ED 48
+{ {4,0} , {0} }, // OUT (C),C               ; ED 49
+{ {4,0} , {0} }, // ADC HL,BC               ; ED 4A
+{ {4,0} , {0} }, // LD BC,(NN)              ; ED 4B XX XX
+{ {4,0} , {0} }, // RETI                    ; ED 4D
+{ {4,0} , {0} }, // IN D,(C)                ; ED 50
+{ {4,0} , {0} }, // OUT (C),D               ; ED 51
+{ {4,0} , {0} }, // SBC HL,DE               ; ED 52
+{ {4,0} , {0} }, // LD (NN),DE              ; ED 53 XX XX
+{ {4,0} , {0} }, // IM 1                    ; ED 56
+{ {4,0} , {0} }, // LD A,I                  ; ED 57
+{ {4,0} , {0} }, // IN E,(C)                ; ED 58
+{ {4,0} , {0} }, // OUT (C),E               ; ED 59
+{ {4,0} , {0} }, // ADC HL,DE               ; ED 5A
+{ {4,0} , {0} }, // LD DE,(NN)              ; ED 5B XX XX
+{ {4,0} , {0} }, // IM 2                    ; ED 5E
+{ {4,0} , {0} }, // IN H,(C)                ; ED 60
+{ {4,0} , {0} }, // OUT (C),H               ; ED 61
+{ {4,0} , {0} }, // SBC HL,HL               ; ED 62
+{ {4,0} , {0} }, // RRD                     ; ED 67
+{ {4,0} , {0} }, // IN L,(C)                ; ED 68
+{ {4,0} , {0} }, // OUT (C),L               ; ED 69
+{ {4,0} , {0} }, // ADC HL,HL               ; ED 6A
+{ {4,0} , {0} }, // RLD                     ; ED 6F
+{ {4,0} , {0} }, // SBC HL,SP               ; ED 72
+{ {4,0} , {0} }, // LD (NN),SP              ; ED 73 XX XX
+{ {4,0} , {0} }, // IN A,(C)                ; ED 78
+{ {4,0} , {0} }, // OUT (C),A               ; ED 79
+{ {4,0} , {0} }, // ADC HL,SP               ; ED 7A
+{ {4,0} , {0} }, // LD SP,(NN)              ; ED 7B XX XX
+{ {4,0} , {0} }, // LDI                     ; ED A0
+{ {4,0} , {0} }, // CPI                     ; ED A1
+{ {4,0} , {0} }, // INI                     ; ED A2
+{ {4,0} , {0} }, // OUTI                    ; ED A3
+{ {4,0} , {0} }, // LDD                     ; ED A8
+{ {4,0} , {0} }, // CPD                     ; ED A9
+{ {4,0} , {0} }, // IND                     ; ED AA
+{ {4,0} , {0} }, // OUTD                    ; ED AB
+{ {4,0} , {0} }, // LDIR                    ; ED B0
+{ {4,0} , {0} }, // CPIR                    ; ED B1
+{ {4,0} , {0} }, // INIR                    ; ED B2
+{ {4,0} , {0} }, // OTIR                    ; ED B3
+{ {4,0} , {0} }, // LDDR                    ; ED B8
+{ {4,0} , {0} }, // CPDR                    ; ED B9
+{ {4,0} , {0} }, // INDR                    ; ED BA
+{ {4,0} , {0} }, // OTDR                    ; ED BB
+
+};
+
+
+struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[]={
+{ {4,0} , {0} }, // ADD IX,BC               ; DD 09
+{ {4,0} , {0} }, // ADD IX,DE               ; DD 19
+{ {4,0} , {0} }, // LD IX,NN                ; DD 21 XX XX
+{ {4,0} , {0} }, // LD (NN),IX              ; DD 22 XX XX
+{ {4,0} , {0} }, // INC IX                  ; DD 23
+{ {4,0} , {0} }, // ADD IX,IX               ; DD 29
+{ {4,0} , {0} }, // LD IX,(NN)              ; DD 2A XX XX
+{ {4,0} , {0} }, // DEC IX                  ; DD 2B
+{ {4,0} , {0} }, // INC (IX+N)              ; DD 34 XX
+{ {4,0} , {0} }, // DEC (IX+N)              ; DD 35 XX
+{ {4,0} , {0} }, // LD (IX+N),N             ; DD 36 XX XX
+{ {4,0} , {0} }, // ADD IX,SP               ; DD 39
+{ {4,0} , {0} }, // LD B,(IX+N)             ; DD 46 XX
+{ {4,0} , {0} }, // LD C,(IX+N)             ; DD 4E XX
+{ {4,0} , {0} }, // LD D,(IX+N)             ; DD 56 XX
+{ {4,0} , {0} }, // LD E,(IX+N)             ; DD 5E XX
+{ {4,0} , {0} }, // LD H,(IX+N)             ; DD 66 XX
+{ {4,0} , {0} }, // LD L,(IX+N)             ; DD 6E XX
+{ {4,0} , {0} }, // LD (IX+N),B             ; DD 70 XX
+{ {4,0} , {0} }, // LD (IX+N),C             ; DD 71 XX
+{ {4,0} , {0} }, // LD (IX+N),D             ; DD 72 XX
+{ {4,0} , {0} }, // LD (IX+N),E             ; DD 73 XX
+{ {4,0} , {0} }, // LD (IX+N),H             ; DD 74 XX
+{ {4,0} , {0} }, // LD (IX+N),L             ; DD 75 XX
+{ {4,0} , {0} }, // LD (IX+N),A             ; DD 77 XX
+{ {4,0} , {0} }, // LD A,(IX+N)             ; DD 7E XX
+{ {4,0} , {0} }, // ADD A,(IX+N)            ; DD 86 XX
+{ {4,0} , {0} }, // ADC A,(IX+N)            ; DD 8E XX
+{ {4,0} , {0} }, // SUB (IX+N)              ; DD 96 XX
+{ {4,0} , {0} }, // SBC A,(IX+N)            ; DD 9E XX
+{ {4,0} , {0} }, // AND (IX+N)              ; DD A6 XX
+{ {4,0} , {0} }, // XOR (IX+N)              ; DD AE XX
+{ {4,0} , {0} }, // OR (IX+N)               ; DD B6 XX
+{ {4,0} , {0} }, // CP (IX+N)               ; DD BE XX
+
+{ {4,0} , {0} }, // POP IX                  ; DD E1
+{ {4,0} , {0} }, // EX (SP),IX              ; DD E3
+{ {4,0} , {0} }, // PUSH IX                 ; DD E5
+{ {4,0} , {0} }, // JP (IX)                 ; DD E9
+{ {4,0} , {0} }, // LD SP,IX                ; DD F9
+};
+
+struct s_opcodes_times debug_times_opcodes_dd_fd_cb_preffix[]={
+{ {4,0} , {0} }, // RLC (IX+N)              ; DD CB XX 06
+{ {4,0} , {0} }, // RRC (IX+N)              ; DD CB XX 0E
+{ {4,0} , {0} }, // RL (IX+N)               ; DD CB XX 16
+{ {4,0} , {0} }, // RR (IX+N)               ; DD CB XX 1E
+{ {4,0} , {0} }, // SLA (IX+N)              ; DD CB XX 26
+{ {4,0} , {0} }, // SRA (IX+N)              ; DD CB XX 2E
+{ {4,0} , {0} }, // BIT 0,(IX+N)            ; DD CB XX 46
+{ {4,0} , {0} }, // BIT 1,(IX+N)            ; DD CB XX 4E
+{ {4,0} , {0} }, // BIT 2,(IX+N)            ; DD CB XX 56
+{ {4,0} , {0} }, // BIT 3,(IX+N)            ; DD CB XX 5E
+{ {4,0} , {0} }, // BIT 4,(IX+N)            ; DD CB XX 66
+{ {4,0} , {0} }, // BIT 5,(IX+N)            ; DD CB XX 6E
+{ {4,0} , {0} }, // BIT 6,(IX+N)            ; DD CB XX 76
+{ {4,0} , {0} }, // BIT 7,(IX+N)            ; DD CB XX 7E
+{ {4,0} , {0} }, // RES 0,(IX+N)            ; DD CB XX 86
+{ {4,0} , {0} }, // RES 1,(IX+N)            ; DD CB XX 8E
+{ {4,0} , {0} }, // RES 2,(IX+N)            ; DD CB XX 96
+{ {4,0} , {0} }, // RES 3,(IX+N)            ; DD CB XX 9E
+{ {4,0} , {0} }, // RES 4,(IX+N)            ; DD CB XX A6
+{ {4,0} , {0} }, // RES 5,(IX+N)            ; DD CB XX AE
+{ {4,0} , {0} }, // RES 6,(IX+N)            ; DD CB XX B6
+{ {4,0} , {0} }, // RES 7,(IX+N)            ; DD CB XX BE
+{ {4,0} , {0} }, // SET 0,(IX+N)            ; DD CB XX C6
+{ {4,0} , {0} }, // SET 1,(IX+N)            ; DD CB XX CE
+{ {4,0} , {0} }, // SET 2,(IX+N)            ; DD CB XX D6
+{ {4,0} , {0} }, // SET 3,(IX+N)            ; DD CB XX DE
+{ {4,0} , {0} }, // SET 4,(IX+N)            ; DD CB XX E6
+{ {4,0} , {0} }, // SET 5,(IX+N)            ; DD CB XX EE
+{ {4,0} , {0} }, // SET 6,(IX+N)            ; DD CB XX F6
+{ {4,0} , {0} }, // SET 7,(IX+N)            ; DD CB XX FE
+};
