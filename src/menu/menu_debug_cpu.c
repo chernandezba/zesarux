@@ -3784,6 +3784,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                         //temp
                         //strcpy(buffer_timings,"20T (4,4,3,3,3,3)");
                         //Deberia quedar a la derecha de texto satisfy
+                        //TODO: usar menu_debug_get_mapped_byte
                         z80_byte byte1=peek_byte_no_time(puntero_dir);
                         z80_byte byte2=peek_byte_no_time(puntero_dir+1);
                         z80_byte byte4=peek_byte_no_time(puntero_dir+3);
@@ -3791,7 +3792,12 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
                         int *tiempos;
 
-                        if (cumple_condicion) {
+                        int timing_cumple_condicion=0;
+
+                        char buffer_temporal[32];
+                        timing_cumple_condicion=menu_debug_get_condicion_satisfy(byte1,buffer_temporal);
+
+                        if (timing_cumple_condicion) {
                             tiempos=tabla_tiempo->times_condition_triggered;
                         }
                         else {
