@@ -1,5 +1,7 @@
 ZEsarUX 13 - xxx edition. 15 Enero 2026
 
+* Cosas nuevas agregadas:
+
 Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Permitir drag&drop de archivos comprimidos
 Permitir reducir pantalla a la mitad
@@ -20,11 +22,23 @@ Permitir ver GO SUB stack de ZX80 y ZX81
 Permitir caracteres utf-8 en footer
 Permitir grabar historial de smartload en un archivo
 
+* Mejoras:
+
 Mejorada emulación de ZX80 y ZX81:
 - Todo el código de temporización y pantalla se ha reescrito y corregido, cerca de 100% perfecto
 - Eliminadas opciones de configuración: --vsync-minimum-length, --no-horiz-stabilization, --enablezx8081lnctradjust, --disablezx8081lnctradjust
 - Eliminadas opciones del menú GUI settings: Estabilización Horizontal, lnctr video adjust, Video x_offset
 - Mejorada detección de sonido por vsync
+
+Mejorado Debug CPU:
+- Permitir mostrar tiempos de cada instrucción (opción no activada por defecto)
+- Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
+- Vistas 5 y 6 usan un memptr diferente ("memptx")
+- Mostrar cuando la memoria se ha modificado por la última execución de instrucción en vistas 5 y 6
+- Tecla directa (t) para evaluar expresiones
+- Agregada opción para detenerse en PC+2 al hacer step over en RST 8, útil al debugar llamadas de esxdos
+- Agregadas variables de usuario VAR0, VAR1, ... VAR9
+- Agregado contador de frames de video
 
 Mejorado Snapshots en RAM:
 - Navegar de manera visual por todos los snapshots en RAM, como en una "Máquina del Tiempo"
@@ -48,14 +62,8 @@ Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites d
 Mejorado icono de Papelera
 Mejorada precisión decimal de valores de ventana de Basic Variables
 Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix
-Mejorado debug cpu:
-- Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
-- Vistas 5 y 6 usan un memptr diferente ("memptx")
-- Mostrar cuando la memoria se ha modificado por la última execución de instrucción en vistas 5 y 6
-- Tecla directa (t) para evaluar expresiones
-- Agregada opción para detenerse en PC+2 al hacer step over en RST 8, útil al debugar llamadas de esxdos
-- Agregadas variables de usuario VAR0, VAR1, ... VAR9
-- Agregado contador de frames de video
+
+* Correcciones:
 
 Corregida emulación de Magnum Light Phaser
 Corregida lectura de puerto BFFD en Spectrum +2A/+3

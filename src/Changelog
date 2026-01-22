@@ -1,5 +1,7 @@
 ZEsarUX 13 - xxx edition. 15 January 2026
 
+* New things added:
+
 Added setting to automatically order icons on ZX Desktop
 Allow drag&drop of compressed files
 Allow to reduce display to half
@@ -20,11 +22,23 @@ Allow to see GO SUB stack of ZX80 and ZX81
 Allow utf-8 characters on footer
 Allow to save smartload history on a file
 
+* Improvements:
+
 Improved ZX80 and ZX81 emulation:
 - All timing and video code has been rewritten and fixed, near 100% perfect
 - Removed configuration settings: --vsync-minimum-length, --no-horiz-stabilization, --enablezx8081lnctradjust, --disablezx8081lnctradjust
 - Removed menu settings: Horizontal Stabilization, lnctr video adjust, Video x_offset
 - Improved vsync sound detection
+
+Improved Debug CPU:
+- Allow to show opcode timings (setting not enabled by default)
+- Show when registers values are modified by last opcode execution
+- Views 5 and 6 use a different memptr ("memptx")
+- Show when memory is modified by last opcode execution on views 5 and 6
+- Direct key (t) to evaluate expressions
+- Added setting to stop on PC+2 when step over RST 8, useful when debugging esxdos calls
+- Added user variables VAR0, VAR1, ... VAR9
+- Added video frames counter
 
 Improved Snapshots in RAM:
 - Browse visually all the stored snapshots in RAM, like on a "Time Machine"
@@ -48,14 +62,8 @@ Improved ZX Life: allow to speed up game, fix behaviour on board limits
 Improved Trash icon
 Improved decimal precision of Basic Variables window values
 Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix
-Improved debug cpu:
-- Show when registers values are modified by last opcode execution
-- Views 5 and 6 use a different memptr ("memptx")
-- Show when memory is modified by last opcode execution on views 5 and 6
-- Direct key (t) to evaluate expressions
-- Added setting to stop on PC+2 when step over RST 8, useful when debugging esxdos calls 
-- Added user variables VAR0, VAR1, ... VAR9
-- Added video frames counter
+
+* Fixes:
 
 Fixed emulation of Magnum Light Phaser
 Fixed reading port BFFD on Spectrum +2A/+3
