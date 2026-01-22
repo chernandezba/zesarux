@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "cpu.h"
 #include "debug.h"
 #include "debug_timings.h"
 
@@ -679,4 +679,16 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_cb_preffix[]={
 { {4,0} , {0} }, // SET 5,(IX+N)            ; DD CB XX EE
 { {4,0} , {0} }, // SET 6,(IX+N)            ; DD CB XX F6
 { {4,0} , {0} }, // SET 7,(IX+N)            ; DD CB XX FE
+};
+
+//Retornar indice a tabla donde están los timings
+//Entrada:
+// byte1: primer byte
+// byte2: segundo byte
+// byte4: cuarto byte (usado en instrucciones DD/FD  + CB
+struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z80_byte byte4)
+{
+    //temp
+    int indice=byte1;
+    return &debug_times_opcodes_no_preffix[indice];
 };

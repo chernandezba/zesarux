@@ -22,6 +22,7 @@
 #ifndef DEBUG_TIMINGS_H
 #define DEBUG_TIMINGS_H
 
+#include "cpu.h"
 
 //Tablas de tiempos de instrucciones
 struct s_opcodes_times {
@@ -31,5 +32,7 @@ struct s_opcodes_times {
     //Usado en opcodes con condición, cuando no se cumple condición.
     int times_condition_not_triggered[7];
 };
+
+extern struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z80_byte byte4);
 
 #endif
