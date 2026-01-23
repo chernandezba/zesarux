@@ -1210,6 +1210,9 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
         tabla=debug_times_opcodes_dd_fd_preffix;
         indice=byte2;
 
+        //Opcode con prefijo DD/FD pero no existente. Por tanto se ejecuta mismo opcode
+        //que si no tuviera prefijo. Le metemos 4 estados al principio y copiamos timings
+        //de mismo opcode pero sin prefijo
         if (tabla[indice].times_condition_not_triggered[0]==SPECIAL_TIMING_VALUE_DDFD_INEXISTENT) {
             debug_times_opcodes_generado_dd_para_inexistentes.times_condition_not_triggered[0]=4;
             debug_times_opcodes_generado_dd_para_inexistentes.times_condition_triggered[0]=4;

@@ -95,9 +95,14 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr
 ok *opcodes dd/fd
 ok *opcodes dd/fd - no documentados de ixh, ixl ,etc
-
 *opcodes dd/fd + cb
 
+-en evaluación de condiciones si cumple o no, en debug cpu (texto "satisfy") no interpreta opcodes
+que van precedidos por DD/FD, ejemplo:
+8000h DEFB DD
+8001h JR NZ,XXX
+
+En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto de satisfy o no, por que no lo tiene como opcode valido (aunque si lo es)
 
 ------
 
