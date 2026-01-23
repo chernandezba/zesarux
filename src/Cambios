@@ -67,6 +67,7 @@ Mejorado código para permitir compilar en otros sistemas Unix, como AROS, Fiwix
 
 Corregida emulación de Magnum Light Phaser
 Corregida lectura de puerto BFFD en Spectrum +2A/+3
+Corregida emulación de opcode DD/FD+EB: EX DE,HL en vez de EX DE,IX/IY
 Corregida carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido descomprimir archivos tar y rar con espacios en el nombre
 Corregido temporizador por defecto en Mac OS X cuando no se usa driver cocoa

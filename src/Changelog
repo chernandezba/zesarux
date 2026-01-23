@@ -67,6 +67,7 @@ Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sor
 
 Fixed emulation of Magnum Light Phaser
 Fixed reading port BFFD on Spectrum +2A/+3
+Fixed emulation of DD/FD+EB opcode: EX DE,HL instead of EX DE,IX/IY
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver

@@ -1917,7 +1917,7 @@ z80_long_int debug_modified_registers_dd_fd_list[256]={
     0,0,0,0,0,0,0,0,
     //224 NOPD
     0,MOD_REG_IX|MOD_REG_SP,0,MOD_REG_IX,0,MOD_REG_SP,0,0,
-    0,0,0,MOD_REG_IX|MOD_REG_DE,0,0,0,0,
+    0,0,0,MOD_REG_HL|MOD_REG_DE,0,0,0,0,
     //240 NOPD
     0,0,0,0,0,0,0,0,
     0,MOD_REG_SP,0,0,0,0,0,0,

@@ -1121,7 +1121,7 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // JP (IX)                ; DD E9
 { {4,4,0} , {0} }, // NOP                ; EA
-{ {4,4,0} , {0} }, // EX DE,IX                ; DD EB
+{ {4,4,0} , {0} }, // EX DE,HL                ; DD EB
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;

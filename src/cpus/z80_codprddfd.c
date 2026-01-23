@@ -2044,16 +2044,20 @@ void instruccion_ddfd_234 ()
 
 void instruccion_ddfd_235 ()
 {
-//coddd235:               ;EX DE,IX
+//coddd235:
+//EX DE,HL
 
-	z80_int reg_temp_de,reg_temp_de_orig;
 
-	reg_temp_de_orig=DE;
+        z80_byte h,l;
 
-	reg_temp_de=*registro_ixiy;
-	DE=reg_temp_de;
+        h=reg_h;
+        l=reg_l;
 
-	*registro_ixiy=reg_temp_de_orig;
+        reg_h=reg_d;
+        reg_l=reg_e;
+
+        reg_d=h;
+        reg_e=l;
 
 
 }
