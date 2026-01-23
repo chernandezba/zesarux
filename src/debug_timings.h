@@ -24,7 +24,10 @@
 
 #include "cpu.h"
 
-#define MAX_TIEMPOS_OPCODES 7
+#define SPECIAL_TIMING_VALUE_DDFD_INEXISTENT 221
+
+//7 maximo pero 1 mas para tiempos de ddfd de opcodes inexistentes, que se generan con un valor mas al principio
+#define MAX_TIEMPOS_OPCODES 8
 
 //Tablas de tiempos de instrucciones
 struct s_opcodes_times {

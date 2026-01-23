@@ -92,16 +92,13 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 -ver timing opcodes:
 *opcion en debug para activarlo o no (por defecto no)
 *opcodes next
-ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr: considerar si cumple BC o no. tenerlo en cuenta tambien para condiciones satisfy
-de momento en timings considero el caso que cumple (habra que mover el timing en la tabla de no cumple a cumple)
-*opcodes dd/fd
-*opcodes dd/fd - no documentados de ixh, ixl ,etc
+ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr
+ok *opcodes dd/fd
+ok *opcodes dd/fd - no documentados de ixh, ixl ,etc
+
 *opcodes dd/fd + cb
 
 
--emulación de opcodes dd/fd que no existen: deberia parsearlos como si no tuviera prefijo dd/fd
-(se podria hacer reg_pc--, reg_r-- y saltar a tabla de sin prefijo
-->esto ya se hace . pero los timings..?
 ------
 
 #####  Cambio rutinas video ZX80/81

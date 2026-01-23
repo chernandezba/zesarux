@@ -878,49 +878,54 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 };
 
 
-// Hechos: ADD IX,rr
+struct s_opcodes_times debug_times_opcodes_generado_dd_para_inexistentes;
+
+//Opcodes inexistentes se indican con timing SPECIAL_TIMING_VALUE,
+//esto es un valor especial que le dice a la funcion de tiempos que el tiempo total
+//es 4+ mismo tiempo que sin opcode dd/fd, pues es la manera de funcionar del z80,
+//con opcodes con prefijo dd/fd que no existen, se ejecuta el opcode como si no tuviera prefijo
 struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
-{ {4,4,0} , {0} }, // NOP                ; DD 00
-{ {4,4,0} , {0} }, // NOP                ; DD 01
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ; DD 00
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ; DD 01
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent      ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent       ;
 { {4,4,4,3,0} , {0} }, // ADD IX,BC               ; DD 09
-{ {4,4,0} , {0} }, // NOP                ; DD 0A
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ; DD 0F
-{ {4,4,0} , {0} }, // NOP                ; DD 10
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ; DD 0A
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ; DD 0F
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ; DD 10
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, // inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,4,3,0} , {0} }, // ADD IX,DE               ; DD 19
-{ {4,4,0} , {0} }, // NOP                ; DD 1A
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ; DD 20
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ; DD 1A
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ; DD 20
 { {4,4,3,3,0} , {0} }, // LD IX,NN                ; DD 21 XX XX
 { {4,4,3,3,3,3,0} , {0} }, // LD (NN),IX              ; DD 22 XX XX
 { {4,6,0} , {0} }, // INC IX                  ; DD 23
 { {4,4,0} , {0} }, // INC IXh                ; DD 24
 { {4,4,0} , {0} }, // DEC IXh                ;
 { {4,4,3,0} , {0} }, // LD IXh,N                ; DD 26
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 
 { {4,4,4,3,0} , {0} }, // ADD IX,IX               ; DD 29
 { {4,4,3,3,3,3,0} , {0} }, // LD IX,(NN)              ; DD 2A XX XX
@@ -928,59 +933,59 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,0} , {0} }, // INC IXl                ;
 { {4,4,0} , {0} }, // DEC IXl                ;
 { {4,4,3,0} , {0} }, // LD IXl,N                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,3,5,4,3,0} , {0} }, // INC (IX+N)              ; DD 34 XX
 { {4,4,3,5,4,3,0} , {0} }, // DEC (IX+N)              ; DD 35 XX
 { {4,4,3,5,3,0} , {0} }, // LD (IX+N),N             ; DD 36 XX XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,4,3,0} , {0} }, // ADD IX,SP               ; DD 39
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // LD B,IXh                ; DD 44
 { {4,4,0} , {0} }, // LD B,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // LD B,(IX+N)             ; DD 46 XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // LD C,IXh                ;
 { {4,4,0} , {0} }, // LD C,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // LD C,(IX+N)             ; DD 4E XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // LD D,IXh                ;
 { {4,4,0} , {0} }, // LD D,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // LD D,(IX+N)             ; DD 56 XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // LD E,IXh                ;
 { {4,4,0} , {0} }, // LD E,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // LD E,(IX+N)             ; DD 5E XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // LD IXh,IXh                ;
 { {4,4,0} , {0} }, // LD IXh,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // LD H,(IX+N)             ; DD 66 XX
@@ -999,149 +1004,149 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,3,5,3,0} , {0} }, // LD (IX+N),E             ; DD 73 XX
 { {4,4,3,5,3,0} , {0} }, // LD (IX+N),H             ; DD 74 XX
 { {4,4,3,5,3,0} , {0} }, // LD (IX+N),L             ; DD 75 XX
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,3,5,3,0} , {0} }, // LD (IX+N),A             ; DD 77 XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // LD A,IXh                ;
 { {4,4,0} , {0} }, // LD A,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // LD A,(IX+N)             ; DD 7E XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // ADD A,IXh                ;
 { {4,4,0} , {0} }, // ADD A,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // ADD A,(IX+N)            ; DD 86 XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // ADC A,IXh                ;
 { {4,4,0} , {0} }, // ADC A,IXl          ;
 { {4,4,3,5,3,0} , {0} }, // ADC A,(IX+N)            ; DD 8E XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // SUB IXh                ;
 { {4,4,0} , {0} }, // SUB IXl            ;
 { {4,4,3,5,3,0} , {0} }, // SUB (IX+N)              ; DD 96 XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // SBC A,IXh                ;
 { {4,4,0} , {0} }, // SBC A,IXl                ;
 { {4,4,3,5,3,0} , {0} }, // SBC A,(IX+N)            ; DD 9E XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // AND IXh                ;
 { {4,4,0} , {0} }, // AND IXl                ;
 { {4,4,3,5,3,0} , {0} }, // AND (IX+N)              ; DD A6 XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // XOR IXh                ;
 { {4,4,0} , {0} }, // XOR IXl                ;
 { {4,4,3,5,3,0} , {0} }, // XOR (IX+N)              ; DD AE XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // OR IXh                ;
 { {4,4,0} , {0} }, // OR IXl                ;
 { {4,4,3,5,3,0} , {0} }, // OR (IX+N)               ; DD B6 XX
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // CP IXh                ;
 { {4,4,0} , {0} }, // CP IXl                ;
 { {4,4,3,5,3,0} , {0} }, // CP (IX+N)               ; DD BE XX
 
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 
 { {4,4,3,3,0} , {0} }, // POP IX                  ; DD E1
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,3,4,3,5,0} , {0} }, // EX (SP),IX              ; DD E3
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,5,3,3,0} , {0} }, // PUSH IX                 ; DD E5
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // JP (IX)                ; DD E9
-{ {4,4,0} , {0} }, // NOP                ; EA
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ; EA
 { {4,4,0} , {0} }, // EX DE,HL                ; DD EB
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,6,0} , {0} }, // LD SP,IX                ; DD F9
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 };
 
 struct s_opcodes_times debug_times_opcodes_dd_fd_cb_preffix[]={
@@ -1204,6 +1209,21 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
     if (byte1==0xDD || byte1==0xFD) {
         tabla=debug_times_opcodes_dd_fd_preffix;
         indice=byte2;
+
+        if (tabla[indice].times_condition_not_triggered[0]==SPECIAL_TIMING_VALUE_DDFD_INEXISTENT) {
+            debug_times_opcodes_generado_dd_para_inexistentes.times_condition_not_triggered[0]=4;
+            debug_times_opcodes_generado_dd_para_inexistentes.times_condition_triggered[0]=4;
+            int i;
+
+            for (i=0;i<MAX_TIEMPOS_OPCODES-1;i++) {
+                debug_times_opcodes_generado_dd_para_inexistentes.times_condition_not_triggered[i+1]=
+                    debug_times_opcodes_no_preffix[indice].times_condition_not_triggered[i];
+                debug_times_opcodes_generado_dd_para_inexistentes.times_condition_triggered[i+1]=
+                    debug_times_opcodes_no_preffix[indice].times_condition_triggered[i];
+            }
+            return &debug_times_opcodes_generado_dd_para_inexistentes;
+        }
+
     }
 
 
