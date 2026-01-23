@@ -1200,5 +1200,11 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
         indice=byte2;
     }
 
+    if (byte1==0xDD || byte1==0xFD) {
+        tabla=debug_times_opcodes_dd_fd_preffix;
+        indice=byte2;
+    }
+
+
     return &tabla[indice];
 };
