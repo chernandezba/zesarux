@@ -2046,22 +2046,7 @@ void instruccion_ddfd_234 ()
 
 void instruccion_ddfd_235 ()
 {
-//coddd235:
-//EX DE,HL
-
-
-        z80_byte h,l;
-
-        h=reg_h;
-        l=reg_l;
-
-        reg_h=reg_d;
-        reg_l=reg_e;
-
-        reg_d=h;
-        reg_e=l;
-
-
+    invalid_opcode_ddfd("221/253 235");
 }
 
 void instruccion_ddfd_236 ()

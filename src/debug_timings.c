@@ -1126,7 +1126,7 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {4,4,0} , {0} }, // JP (IX)                ; DD E9
 { {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ; EA
-{ {4,4,0} , {0} }, // EX DE,HL                ; DD EB
+{ {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ; DD EB
 { {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 { {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
