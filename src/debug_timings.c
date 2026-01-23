@@ -878,6 +878,7 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 };
 
 
+// Hechos: ADD IX,rr
 struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ; DD 00
 { {4,4,0} , {0} }, // NOP                ; DD 01
@@ -888,7 +889,7 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // ADD IX,BC               ; DD 09
+{ {4,4,4,3,0} , {0} }, // ADD IX,BC               ; DD 09
 { {4,4,0} , {0} }, // NOP                ; DD 0A
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
@@ -904,7 +905,7 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // ADD IX,DE               ; DD 19
+{ {4,4,4,3,0} , {0} }, // ADD IX,DE               ; DD 19
 { {4,4,0} , {0} }, // NOP                ; DD 1A
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
@@ -921,7 +922,7 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 
-{ {4,4,0} , {0} }, // ADD IX,IX               ; DD 29
+{ {4,4,4,3,0} , {0} }, // ADD IX,IX               ; DD 29
 { {4,4,0} , {0} }, // LD IX,(NN)              ; DD 2A XX XX
 { {4,4,0} , {0} }, // DEC IX                  ; DD 2B
 { {4,4,0} , {0} }, // NOP                ;
@@ -937,7 +938,7 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {4,4,0} , {0} }, // LD (IX+N),N             ; DD 36 XX XX
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // ADD IX,SP               ; DD 39
+{ {4,4,4,3,0} , {0} }, // ADD IX,SP               ; DD 39
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
