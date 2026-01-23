@@ -3065,7 +3065,7 @@ int menu_debug_if_flag(int numero_flag)
 //Segun el opcode mira si se cumple condicion y mete en buffer la condicion que se cumple
 //Si no, no mete nada
 //Retorna 0 si no se cumple, 1 si se cumple
-int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
+int menu_debug_get_condicion_satisfy(z80_byte opcode,z80_byte byte2,char *buffer)
 {
     if (!CPU_IS_Z80) return 0;
 
@@ -3111,6 +3111,29 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
         sprintf(buffer,"-> satisfy %s",string_conditions[condicion]);
         return 1;
     }
+
+    //LDIR, LDDR
+    if (opcode==237 && (byte2==176 || byte2==184) && BC!=1) {
+        sprintf(buffer,"-> satisfy BC=%04X",BC);
+        return 1;
+    }
+
+    //INIR, INDR, OTIR, OTDR
+    if (opcode==237 && (byte2==178 || byte2==186 || byte2==179 || byte2==187) && reg_b!=1) {
+        sprintf(buffer,"-> satisfy B=%02X",reg_b);
+        return 1;
+    }
+
+    //CPIR, CPDR
+    if (opcode==237 && (byte2==177 || byte2==185) && BC!=1) {
+        z80_byte valor_memoria=peek_byte_no_time(HL);
+        if (valor_memoria!=reg_a) {
+            sprintf(buffer,"-> satisfy BC=%04X && (HL)=%02X",BC,valor_memoria);
+            return 1;
+        }
+    }
+
+    //Nota: no evaluamos cpir, cpdr, pues depende de contenido de hl y registro bc, demasiado liado
 
     return 0;
 }
@@ -3752,13 +3775,15 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                         if (indice_debug_cpu_backwards_history && cpu_step_mode.v) buffer_linea[0]='^';
 
                         //Meteremos texto, si conviene, de si se cumple condición o no
-                        z80_byte opcode_fires;
+                        z80_byte opcode_fires,opcode_byte2;
                         int direccion_condicion=menu_debug_memory_pointer_copia;
 
 
                         direccion_condicion=adjust_address_memory_size(direccion_condicion);
-                        opcode_fires=menu_debug_get_mapped_byte(direccion_condicion);
-                        cumple_condicion=menu_debug_get_condicion_satisfy(opcode_fires,buffer_condicion);
+                        opcode_fires=menu_debug_get_mapped_byte(direccion_condicion++);
+                        direccion_condicion=adjust_address_memory_size(direccion_condicion);
+                        opcode_byte2=menu_debug_get_mapped_byte(direccion_condicion++);
+                        cumple_condicion=menu_debug_get_condicion_satisfy(opcode_fires,opcode_byte2,buffer_condicion);
                         //strcpy(buffer_condicion," (satisfy NZ)");
                     }
                     if (tiene_brk) {
@@ -3779,7 +3804,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                     buffer_timings[0]=0;
 
                     //TODO: opcion para activarlo o no
-                    if (1) {
+                    if (CPU_IS_Z80) {
 
                         //temp
                         //strcpy(buffer_timings,"20T (4,4,3,3,3,3)");
@@ -3795,7 +3820,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                         int timing_cumple_condicion=0;
 
                         char buffer_temporal[32];
-                        timing_cumple_condicion=menu_debug_get_condicion_satisfy(byte1,buffer_temporal);
+                        timing_cumple_condicion=menu_debug_get_condicion_satisfy(byte1,byte2,buffer_temporal);
 
                         if (timing_cumple_condicion) {
                             tiempos=tabla_tiempo->times_condition_triggered;
