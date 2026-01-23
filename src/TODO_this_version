@@ -95,6 +95,7 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr: considerar si cumple BC o no. tenerlo en cuenta tambien para condiciones satisfy
 de momento en timings considero el caso que cumple (habra que mover el timing en la tabla de no cumple a cumple)
 *opcodes dd/fd
+*opcodes dd/fd - no documentados de ixh, ixl ,etc
 *opcodes dd/fd + cb
 
 ------
