@@ -40,6 +40,8 @@ void invalid_opcode_ddfd(char *s)
 	//En este caso, retroceder 1 instruccion y volver a parsear. Es como ejecutar la instruccion pero sin prefijo DD/FD
 	reg_pc--;
 	reg_r--;
+    //Quitamos el timing adicional del fetch que se ha hecho del opcode inexistente
+    t_estados -=4;
 
 
 }

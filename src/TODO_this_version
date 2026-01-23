@@ -98,6 +98,10 @@ de momento en timings considero el caso que cumple (habra que mover el timing en
 *opcodes dd/fd - no documentados de ixh, ixl ,etc
 *opcodes dd/fd + cb
 
+
+-emulación de opcodes dd/fd que no existen: deberia parsearlos como si no tuviera prefijo dd/fd
+(se podria hacer reg_pc--, reg_r-- y saltar a tabla de sin prefijo
+->esto ya se hace . pero los timings..?
 ------
 
 #####  Cambio rutinas video ZX80/81
