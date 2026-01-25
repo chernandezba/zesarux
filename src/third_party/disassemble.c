@@ -1041,12 +1041,15 @@ disassemble_ddfd_cb( int address, char offset,
     snprintf( buffer, buflen, "BIT %d,%s", ( b >> 3 ) & 0x07, buffer2 );
     *length = 1;
   } else {
+    //RES, SET
     if( ( b & 0x07 ) == 0x06 ) {
+      //(IX/IY+d)
       ix_iy_offset( buffer2, 40, use_hl, offset );
       snprintf( buffer, buflen, "%s %d,%s", bit_op( b ), bit_op_bit( b ),
 		buffer2 );
       *length = 1;
     } else {
+      //(IX/IY+d) and store result on register
       source_reg( address, USE_HL, buffer2, 40 );
       ix_iy_offset( buffer3, 40, use_hl, offset );
       snprintf( buffer, buflen, "LD %s,%s %d %s", buffer2, bit_op( b ), bit_op_bit( b ), buffer3 );
