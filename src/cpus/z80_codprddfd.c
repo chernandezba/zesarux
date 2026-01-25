@@ -1802,7 +1802,8 @@ void instruccion_ddfd_203 ()
 		switch (pref_ddfd_203_opcode_leido & 192) {
 			case 64:
                                 //printf ("aquibit ");
-                                registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
+                                //registro no usado para nada
+                                //registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
                                 numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
                                 bit_bit_ixiy_desp_reg(numerobit,offset_xycb);
 			break;
