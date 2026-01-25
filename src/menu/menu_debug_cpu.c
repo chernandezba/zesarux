@@ -1964,6 +1964,10 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
             opcode=menu_debug_get_mapped_byte(direccion);
             modificados=debug_modified_registers_cb_list[opcode];
             //En este caso tambien se agregan flags de lectura o escritura de (ix/iy+d)
+
+            //quitarle el de (HL)
+            if (modificados & MOD_REG_HL_MEM) modificados ^= MOD_REG_HL_MEM;
+
             if (opcode>=0x40 && opcode<=0x80) {
                 //lectura de bits BIT 0,(IX+d)...
                 modificados |=MOD_READ_IXIY_d_MEM8;
@@ -2602,6 +2606,10 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
 
                     sprintf (textoregistros,"(%s%s) %02X",texto_ix_iy,string_offset,
                         peek_byte_z80_moto(puntero));
+
+                    //TODO: me gustaria que saliera todo (IX+d) en color inverso, pero solo las primeras 4 columnas salen asi
+                    //las siguientes restantes salen en rojo para valores de registros
+                    *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
                 }
 
 
