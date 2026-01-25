@@ -1149,37 +1149,94 @@ struct s_opcodes_times debug_times_opcodes_dd_fd_preffix[256]={
 { {SPECIAL_TIMING_VALUE_DDFD_INEXISTENT,0} , {0} }, //  inexistent                ;
 };
 
-struct s_opcodes_times debug_times_opcodes_dd_fd_cb_preffix[]={
-{ {4,0} , {0} }, // RLC (IX+N)              ; DD CB XX 06
-{ {4,0} , {0} }, // RRC (IX+N)              ; DD CB XX 0E
-{ {4,0} , {0} }, // RL (IX+N)               ; DD CB XX 16
-{ {4,0} , {0} }, // RR (IX+N)               ; DD CB XX 1E
-{ {4,0} , {0} }, // SLA (IX+N)              ; DD CB XX 26
-{ {4,0} , {0} }, // SRA (IX+N)              ; DD CB XX 2E
-{ {4,0} , {0} }, // BIT 0,(IX+N)            ; DD CB XX 46
-{ {4,0} , {0} }, // BIT 1,(IX+N)            ; DD CB XX 4E
-{ {4,0} , {0} }, // BIT 2,(IX+N)            ; DD CB XX 56
-{ {4,0} , {0} }, // BIT 3,(IX+N)            ; DD CB XX 5E
-{ {4,0} , {0} }, // BIT 4,(IX+N)            ; DD CB XX 66
-{ {4,0} , {0} }, // BIT 5,(IX+N)            ; DD CB XX 6E
-{ {4,0} , {0} }, // BIT 6,(IX+N)            ; DD CB XX 76
-{ {4,0} , {0} }, // BIT 7,(IX+N)            ; DD CB XX 7E
-{ {4,0} , {0} }, // RES 0,(IX+N)            ; DD CB XX 86
-{ {4,0} , {0} }, // RES 1,(IX+N)            ; DD CB XX 8E
-{ {4,0} , {0} }, // RES 2,(IX+N)            ; DD CB XX 96
-{ {4,0} , {0} }, // RES 3,(IX+N)            ; DD CB XX 9E
-{ {4,0} , {0} }, // RES 4,(IX+N)            ; DD CB XX A6
-{ {4,0} , {0} }, // RES 5,(IX+N)            ; DD CB XX AE
-{ {4,0} , {0} }, // RES 6,(IX+N)            ; DD CB XX B6
-{ {4,0} , {0} }, // RES 7,(IX+N)            ; DD CB XX BE
-{ {4,0} , {0} }, // SET 0,(IX+N)            ; DD CB XX C6
-{ {4,0} , {0} }, // SET 1,(IX+N)            ; DD CB XX CE
-{ {4,0} , {0} }, // SET 2,(IX+N)            ; DD CB XX D6
-{ {4,0} , {0} }, // SET 3,(IX+N)            ; DD CB XX DE
-{ {4,0} , {0} }, // SET 4,(IX+N)            ; DD CB XX E6
-{ {4,0} , {0} }, // SET 5,(IX+N)            ; DD CB XX EE
-{ {4,0} , {0} }, // SET 6,(IX+N)            ; DD CB XX F6
-{ {4,0} , {0} }, // SET 7,(IX+N)            ; DD CB XX FE
+struct s_opcodes_times debug_times_opcodes_dd_fd_cb_preffix[256]={
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N),B
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N),C
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N),D
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N),E
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N),H
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N),L
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N)              ; DD CB XX 06
+{ {4,4,3,5,4,3,0} , {0} }, // RLC (IX+N),A
+
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N),B
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N),C
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N),D
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N),E
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N),H
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N),L
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N)              ; DD CB XX 0E
+{ {4,4,3,5,4,3,0} , {0} }, // RRC (IX+N),A
+
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N),B
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N),C
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N),D
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N),E
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N),H
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N),L
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N)               ; DD CB XX 16
+{ {4,4,3,5,4,3,0} , {0} }, // RL (IX+N),A
+
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N),B
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N),C
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N),D
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N),E
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N),H
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N),L
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N)               ; DD CB XX 1E
+{ {4,4,3,5,4,3,0} , {0} }, // RR (IX+N),A
+
+{ {4,4,3,5,4,3,0} , {0} }, // SLA (IX+N)              ; DD CB XX 26
+
+{ {4,4,3,5,4,3,0} , {0} }, // SRA (IX+N)              ; DD CB XX 2E
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 0,(IX+N)            ; DD CB XX 46
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 1,(IX+N)            ; DD CB XX 4E
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 2,(IX+N)            ; DD CB XX 56
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 3,(IX+N)            ; DD CB XX 5E
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 4,(IX+N)            ; DD CB XX 66
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 5,(IX+N)            ; DD CB XX 6E
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 6,(IX+N)            ; DD CB XX 76
+
+{ {4,4,3,5,4,0} , {0} }, // BIT 7,(IX+N)            ; DD CB XX 7E
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 0,(IX+N)            ; DD CB XX 86
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 1,(IX+N)            ; DD CB XX 8E
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 2,(IX+N)            ; DD CB XX 96
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 3,(IX+N)            ; DD CB XX 9E
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 4,(IX+N)            ; DD CB XX A6
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 5,(IX+N)            ; DD CB XX AE
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 6,(IX+N)            ; DD CB XX B6
+
+{ {4,4,3,5,4,3,0} , {0} }, // RES 7,(IX+N)            ; DD CB XX BE
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 0,(IX+N)            ; DD CB XX C6
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 1,(IX+N)            ; DD CB XX CE
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 2,(IX+N)            ; DD CB XX D6
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 3,(IX+N)            ; DD CB XX DE
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 4,(IX+N)            ; DD CB XX E6
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 5,(IX+N)            ; DD CB XX EE
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 6,(IX+N)            ; DD CB XX F6
+
+{ {4,4,3,5,4,3,0} , {0} }, // SET 7,(IX+N)            ; DD CB XX FE
 };
 
 //Retornar indice a tabla donde están los timings
