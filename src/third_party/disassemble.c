@@ -1049,7 +1049,7 @@ disassemble_ddfd_cb( int address, char offset,
     } else {
       source_reg( address, USE_HL, buffer2, 40 );
       ix_iy_offset( buffer3, 40, use_hl, offset );
-      snprintf( buffer, buflen, "LD %s,%s %s", buffer2, bit_op( b ), buffer3 );
+      snprintf( buffer, buflen, "LD %s,%s %d %s", buffer2, bit_op( b ), bit_op_bit( b ), buffer3 );
       *length = 1;
     }
   }
