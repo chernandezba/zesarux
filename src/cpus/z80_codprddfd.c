@@ -1776,95 +1776,95 @@ void instruccion_ddfd_203 ()
 
 //Prefijo DD o FD + CB
 
-            contend_read(reg_pc, 3);
-        offset_xycb=peek_byte_no_time(reg_pc);
-        reg_pc++;
-        contend_read( reg_pc, 3 );
-        pref_ddfd_203_opcode_leido=peek_byte_no_time(reg_pc);
+    contend_read(reg_pc, 3);
+    offset_xycb=peek_byte_no_time(reg_pc);
+    reg_pc++;
+    contend_read( reg_pc, 3 );
+    pref_ddfd_203_opcode_leido=peek_byte_no_time(reg_pc);
 
 #ifdef EMULATE_CPU_STATS
 //Ver si es DD o FD
-        //printf ("%x ix %x iy %x\n",registro_ixiy,&reg_ix,&reg_iy);
-        if (registro_ixiy==&reg_ix) {
-            util_stats_increment_counter(stats_codprddcb,pref_ddfd_203_opcode_leido);
-        }
-                else {
-            util_stats_increment_counter(stats_codprfdcb,pref_ddfd_203_opcode_leido);
-        }
+    //printf ("%x ix %x iy %x\n",registro_ixiy,&reg_ix,&reg_iy);
+    if (registro_ixiy==&reg_ix) {
+        util_stats_increment_counter(stats_codprddcb,pref_ddfd_203_opcode_leido);
+    }
+            else {
+        util_stats_increment_counter(stats_codprfdcb,pref_ddfd_203_opcode_leido);
+    }
 #endif
 
 
-                contend_read_no_mreq( reg_pc, 1 );
-        contend_read_no_mreq( reg_pc, 1 );
-                reg_pc++;
+    contend_read_no_mreq( reg_pc, 1 );
+    contend_read_no_mreq( reg_pc, 1 );
+    reg_pc++;
 
 
-        switch (pref_ddfd_203_opcode_leido & 192) {
-            case 64:
-                                //printf ("aquibit ");
-                                //registro no usado para nada
-                                //registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
-                                numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
-                                bit_bit_ixiy_desp_reg(numerobit,offset_xycb);
-            break;
+    switch (pref_ddfd_203_opcode_leido & 192) {
+        case 64:
+            //BIT
+            //registro no usado para nada
+            //registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
+            numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
+            bit_bit_ixiy_desp_reg(numerobit,offset_xycb);
+        break;
 
-            case 128:
-                //printf ("aquires ");
-                registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
-                numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
-                res_bit_ixiy_desp_reg(numerobit,offset_xycb,registro);
-            break;
-            case 192:
-                        //printf ("aquiset ");
-                        registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
-                        numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
-                        set_bit_ixiy_desp_reg(numerobit,offset_xycb,registro);
-            break;
+        case 128:
+            //RES
+            registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
+            numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
+            res_bit_ixiy_desp_reg(numerobit,offset_xycb,registro);
+        break;
+        case 192:
+            //SET
+            registro=devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7);
+            numerobit=(pref_ddfd_203_opcode_leido >> 3) & 7;
+            set_bit_ixiy_desp_reg(numerobit,offset_xycb,registro);
+        break;
 
-            default:
-                switch(pref_ddfd_203_opcode_leido & 56) {
+        default:
+            switch(pref_ddfd_203_opcode_leido & 56) {
 
-                    case 0:
-                        rlc_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 0:
+                    rlc_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
-                    case 8:
-                        rrc_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 8:
+                    rrc_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
-                    case 16:
-                        rl_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 16:
+                    rl_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
-                    case 24:
-                        rr_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 24:
+                    rr_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
-                    case 32:
-                        sla_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 32:
+                    sla_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
-                    case 40:
-                        sra_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 40:
+                    sra_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
-                    case 48:
-                        sls_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 48:
+                    sls_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
-                    case 56:
-                        srl_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
-                    break;
+                case 56:
+                    srl_ixiy_desp_reg(offset_xycb,devuelve_reg_offset(pref_ddfd_203_opcode_leido & 7) );
+                break;
 
 
-                    default:
-                    //Aqui no deberia llegar nunca
-                    cpu_panic ("Opcode DD/FD + CB. Invalid mask instruction");
-                    break;
-                }
-            break;
+                default:
+                //Aqui no deberia llegar nunca
+                cpu_panic ("Opcode DD/FD + CB. Invalid mask instruction");
+                break;
+            }
+        break;
 
-        }
+    }
 
 
 }
