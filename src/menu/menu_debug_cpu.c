@@ -1691,12 +1691,12 @@ void menu_debug_registers_change_ptr(void)
 //Para (IX+d),(IY+d), lectura
 #define MOD_READ_IXIY_d_MEM8 (1L<<28)
 //Para (IX+d),(IY+d), escritura
-#define MOD_WRITE_IXIY_d_MEM8 (1L<<28)
+#define MOD_WRITE_IXIY_d_MEM8 (1L<<29)
 
 //Para IN A,(N)
-#define MOD_READ_IN_A_N (1<<29)
+#define MOD_READ_IN_A_N (1<<30)
 //Para IN r,(C)
-#define MOD_READ_IN_R_C (1<<30)
+#define MOD_READ_IN_R_C (1<<31)
 
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
@@ -1968,12 +1968,14 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
             //quitarle el de (HL)
             if (modificados & MOD_REG_HL_MEM) modificados ^= MOD_REG_HL_MEM;
 
-            if (opcode>=0x40 && opcode<=0x80) {
+            if (opcode>=0x40 && opcode<0x80) {
                 //lectura de bits BIT 0,(IX+d)...
+                //printf("Read\n");
                 modificados |=MOD_READ_IXIY_d_MEM8;
             }
             else {
                 //resto son escrituras RLC (IX+d)...
+                //printf("Write\n");
                 modificados |=MOD_WRITE_IXIY_d_MEM8;
             }
         }
@@ -2607,9 +2609,11 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     sprintf (textoregistros,"(%s%s) %02X",texto_ix_iy,string_offset,
                         peek_byte_z80_moto(puntero));
 
-                    //TODO: me gustaria que saliera todo (IX+d) en color inverso, pero solo las primeras 4 columnas salen asi
-                    //las siguientes restantes salen en rojo para valores de registros
-                    *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+                    if (registros_modificados & MOD_WRITE_IXIY_d_MEM8) {
+                        //TODO: me gustaria que saliera todo (IX+d) en color inverso, pero solo las primeras 4 columnas salen asi
+                        //las siguientes restantes se usan para valores de registros y salen en rojo
+                        *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);
+                    }
                 }
 
 
