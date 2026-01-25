@@ -69,6 +69,7 @@ Fixed emulation of Magnum Light Phaser
 Fixed reading port BFFD on Spectrum +2A/+3
 Fixed emulation of DD/FD+EB opcode: EX DE,HL instead of EX DE,IX/IY
 Fixed timing of inexistent DD/FD opcodes
+Fixed disassemble of undocumented opcodes dd/fd + cb + res/set (ix+d) where the result is also stored on a register
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver
