@@ -96,7 +96,7 @@ ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr
 ok *opcodes ed, cb
 ok *opcodes dd/fd
 ok *opcodes dd/fd - no documentados de ixh, ixl ,etc
-*opcodes dd/fd + cb
+ok *opcodes dd/fd + cb
 
 -en evaluación de condiciones si cumple o no, en debug cpu (texto "satisfy") no interpreta opcodes
 que van precedidos por DD/FD, ejemplo:
