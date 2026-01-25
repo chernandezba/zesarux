@@ -1467,24 +1467,30 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
     }
 
     if (byte1==0xDD || byte1==0xFD) {
-        tabla=debug_times_opcodes_dd_fd_preffix;
-        indice=byte2;
+        if (byte2==0xcb) {
+            tabla=debug_times_opcodes_dd_fd_cb_preffix;
+            indice=byte4;
+        }
+        else {
+            tabla=debug_times_opcodes_dd_fd_preffix;
+            indice=byte2;
 
-        //Opcode con prefijo DD/FD pero no existente. Por tanto se ejecuta mismo opcode
-        //que si no tuviera prefijo. Le metemos 4 estados al principio y copiamos timings
-        //de mismo opcode pero sin prefijo
-        if (tabla[indice].times_condition_not_triggered[0]==SPECIAL_TIMING_VALUE_DDFD_INEXISTENT) {
-            debug_times_opcodes_generado_dd_para_inexistentes.times_condition_not_triggered[0]=4;
-            debug_times_opcodes_generado_dd_para_inexistentes.times_condition_triggered[0]=4;
-            int i;
+            //Opcode con prefijo DD/FD pero no existente. Por tanto se ejecuta mismo opcode
+            //que si no tuviera prefijo. Le metemos 4 estados al principio y copiamos timings
+            //de mismo opcode pero sin prefijo
+            if (tabla[indice].times_condition_not_triggered[0]==SPECIAL_TIMING_VALUE_DDFD_INEXISTENT) {
+                debug_times_opcodes_generado_dd_para_inexistentes.times_condition_not_triggered[0]=4;
+                debug_times_opcodes_generado_dd_para_inexistentes.times_condition_triggered[0]=4;
+                int i;
 
-            for (i=0;i<MAX_TIEMPOS_OPCODES-1;i++) {
-                debug_times_opcodes_generado_dd_para_inexistentes.times_condition_not_triggered[i+1]=
-                    debug_times_opcodes_no_preffix[indice].times_condition_not_triggered[i];
-                debug_times_opcodes_generado_dd_para_inexistentes.times_condition_triggered[i+1]=
-                    debug_times_opcodes_no_preffix[indice].times_condition_triggered[i];
+                for (i=0;i<MAX_TIEMPOS_OPCODES-1;i++) {
+                    debug_times_opcodes_generado_dd_para_inexistentes.times_condition_not_triggered[i+1]=
+                        debug_times_opcodes_no_preffix[indice].times_condition_not_triggered[i];
+                    debug_times_opcodes_generado_dd_para_inexistentes.times_condition_triggered[i+1]=
+                        debug_times_opcodes_no_preffix[indice].times_condition_triggered[i];
+                }
+                return &debug_times_opcodes_generado_dd_para_inexistentes;
             }
-            return &debug_times_opcodes_generado_dd_para_inexistentes;
         }
 
     }
