@@ -3815,8 +3815,7 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
                     char buffer_timings[32];
                     buffer_timings[0]=0;
 
-                    //TODO: opcion para activarlo o no
-                    if (CPU_IS_Z80) {
+                    if (CPU_IS_Z80 && debug_show_timing_opcodes.v) {
 
                         //temp
                         //strcpy(buffer_timings,"20T (4,4,3,3,3,3)");

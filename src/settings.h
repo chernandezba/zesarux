@@ -36,6 +36,8 @@ extern z80_bit debug_settings_show_screen;
 
 extern z80_bit debug_settings_show_fired_halt;
 
+extern z80_bit debug_show_timing_opcodes;
+
 extern int debug_registers;
 
 extern z80_bit debug_shows_invalid_opcode;

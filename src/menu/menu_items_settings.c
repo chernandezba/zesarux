@@ -3551,6 +3551,11 @@ void menu_debug_step_over_rst8_plus_two(MENU_ITEM_PARAMETERS)
 	debug_step_over_rst8_plus_two.v ^=1;
 }
 
+void menu_debug_show_timing_opcodes(MENU_ITEM_PARAMETERS)
+{
+    debug_show_timing_opcodes.v ^=1;
+}
+
 //menu debug settings
 void menu_settings_debug(MENU_ITEM_PARAMETERS)
 {
@@ -3626,8 +3631,14 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 				"Note: when using esxdos handler, this is always the behaviour, no matter this setting"
 			);
 		}
-        
-        
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_show_timing_opcodes,NULL,
+            "Show timing opcodes","Mostrar tiempos opcodes","Veure temps opcodes");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",
+            (debug_show_timing_opcodes.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"Show timings of opcodes on Debug CPU window");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"Show timings of opcodes on Debug CPU window");
+
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,
             "~~Breakp. behaviour","Comportamiento ~~Breakp.","Comportament ~~Breakp.");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"    ");
