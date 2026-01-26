@@ -90,7 +90,7 @@ https://www.cpcwiki.eu/index.php/Z80
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
 -ver timing opcodes:
-*opcion en debug para activarlo o no (por defecto no)
+ok *opcion en debug para activarlo o no (por defecto no)
 *opcodes next
 ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr
 ok *opcodes ed, cb
