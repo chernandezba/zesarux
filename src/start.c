@@ -1010,6 +1010,7 @@ printf (
         "--show-electron-debug               Shows TV electron position when debugging, using a coloured line\n"
         "--show-basic-address                Shows location address of every basic line on menu View Basic\n"
         "--step-over-rst8-plus-two           When step over RST 8, it will stop on PC+2\n"
+        "--debug-show-timing-opcodes         Show timings of opcodes on Debug CPU window\n"
         "--show-invalid-opcode               If running invalid cpu opcodes will generate a warning message\n"
 
 );
@@ -4108,8 +4109,8 @@ int parse_cmdline_options(int desde_commandline) {
 
                                 quickfile=quickload_file;
                         }
-                        
-                        
+
+
                         else if (!strcmp(argv[puntero_parametro],"--smartloadhistoryfile")) {
                                 siguiente_parametro_argumento();
                 strcpy(smartload_history_file,argv[puntero_parametro]);
@@ -6618,9 +6619,13 @@ int parse_cmdline_options(int desde_commandline) {
         else if (!strcmp(argv[puntero_parametro],"--show-electron-debug")) {
                       menu_debug_registers_if_showscan.v=1;
         }
-        
+
         else if (!strcmp(argv[puntero_parametro],"--step-over-rst8-plus-two")) {
                       debug_step_over_rst8_plus_two.v=1;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--debug-show-timing-opcodes")) {
+                      debug_show_timing_opcodes.v=1;
         }
 
         else if (!strcmp(argv[puntero_parametro],"--show-basic-address")) {

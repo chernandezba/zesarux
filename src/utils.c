@@ -3889,7 +3889,7 @@ int util_write_configfile(void)
     util_get_dir(quickload_file,buffer_temp);
      ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
   }
-  
+
   if (smartload_history_file[0]) ADD_STRING_CONFIG,"--smartloadhistoryfile \"%s\"",smartload_history_file);
 
   //Archivos recientes de smartload. Recorremos desde abajo hasta arriba
@@ -4180,8 +4180,10 @@ int util_write_configfile(void)
 
 
   if (menu_debug_registers_if_showscan.v)     ADD_STRING_CONFIG,"--show-electron-debug");
-  
+
   if (debug_step_over_rst8_plus_two.v)		  ADD_STRING_CONFIG,"--step-over-rst8-plus-two");
+
+  if (debug_show_timing_opcodes.v)            ADD_STRING_CONFIG,"--debug-show-timing-opcodes");
 
   if (debug_view_basic_show_address.v)        ADD_STRING_CONFIG,"--show-basic-address");
 
