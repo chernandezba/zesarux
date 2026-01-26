@@ -3817,13 +3817,18 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
                     if (CPU_IS_Z80 && debug_show_timing_opcodes.v) {
 
-                        //temp
-                        //strcpy(buffer_timings,"20T (4,4,3,3,3,3)");
-                        //Deberia quedar a la derecha de texto satisfy
-                        //TODO: usar menu_debug_get_mapped_byte
-                        z80_byte byte1=peek_byte_no_time(puntero_dir);
-                        z80_byte byte2=peek_byte_no_time(puntero_dir+1);
-                        z80_byte byte4=peek_byte_no_time(puntero_dir+3);
+                        int direccion_opcodes_timings=puntero_dir;
+
+                        direccion_opcodes_timings=adjust_address_memory_size(direccion_opcodes_timings);
+                        z80_byte byte1=menu_debug_get_mapped_byte(direccion_opcodes_timings++);
+
+                        direccion_opcodes_timings=adjust_address_memory_size(direccion_opcodes_timings);
+                        z80_byte byte2=menu_debug_get_mapped_byte(direccion_opcodes_timings++);
+                        direccion_opcodes_timings++;
+
+                        direccion_opcodes_timings=adjust_address_memory_size(direccion_opcodes_timings);
+                        z80_byte byte4=menu_debug_get_mapped_byte(direccion_opcodes_timings);
+
                         struct s_opcodes_times *tabla_tiempo=debug_get_timing_opcode(byte1,byte2,byte4);
 
                         int *tiempos;
