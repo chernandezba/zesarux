@@ -1464,6 +1464,12 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
     if (byte1==0xED) {
         tabla=debug_times_opcodes_ed_preffix;
         indice=byte2;
+
+        //Caso Next
+        if (MACHINE_IS_TBBLUE && (tabla[indice].times_condition_not_triggered[0] & SPECIAL_TIMING_VALUE_NEXT)) {
+
+            //TODO
+        }
     }
 
     if (byte1==0xDD || byte1==0xFD) {

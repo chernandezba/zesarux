@@ -91,7 +91,9 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 -ver timing opcodes:
 ok *opcion en debug para activarlo o no (por defecto no)
-*opcodes next
+*opcodes next. Ver como marcar opcodes que sean next, si es con valor especial,
+luego si máquina no es next tiene que quitar ese valor especial....
+En ambos casos usar dos tablas temporales?
 ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr
 ok *opcodes ed, cb
 ok *opcodes dd/fd
