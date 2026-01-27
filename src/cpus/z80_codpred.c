@@ -311,10 +311,12 @@ void instruccion_ed_41 ()
     // aritmetic barrel-shift right of DE, B (5 bits) times
     int shift_amount = reg_b & 31;
     int de_is_negative = (1<<15) & DE;  // extract top bit
-    if (0 == shift_amount) return;
-    if (15 <= shift_amount) {           // 15+ shifts set DE either to 0 or ~0
+    if (shift_amount == 0) return;
+
+    if (shift_amount >= 15) {           // 15+ shifts set DE either to 0 or ~0
         DE = de_is_negative ? ~0 : 0;
-    } else {                            // for shift amount 1..14 do the shifting
+    }
+    else {                            // for shift amount 1..14 do the shifting
         z80_int de_bottom_part = DE >> shift_amount;
         z80_int de_upper_part = 0;      // 0 for positive/zero values
         if (de_is_negative) {           // negative values have to fill vacant top bits with ones
@@ -334,10 +336,12 @@ void instruccion_ed_42 ()
     //BSRL DE,B   ED 2A: DE = unsigned(DE)>>(B&31), no flags
     // logical barrel-shift right of DE, B (5 bits) times
     int shift_amount = reg_b & 31;
-    if (0 == shift_amount) return;
-    if (16 <= shift_amount) {           // 16+ shifts set DE to 0
+    if (shift_amount == 0) return;
+
+    if (shift_amount >= 16) {           // 16+ shifts set DE to 0
         DE = 0;
-    } else {                            // for shift amount 1..15 do the shifting
+    }
+    else {                            // for shift amount 1..15 do the shifting
         DE = DE >> shift_amount;        // DE is unsigned short, C shift is OK
     }
 }
@@ -352,10 +356,12 @@ void instruccion_ed_43 ()
     //BSRF DE,B   ED 2B: DE = ~(unsigned(~DE)>>(B&31)), no flags
     // barrel-shift right of DE, B (5 bits) times, setting top bits with one
     int shift_amount = reg_b & 31;
-    if (0 == shift_amount) return;
-    if (16 <= shift_amount) {           // 16+ shifts set DE to ~0
+    if (shift_amount == 0) return;
+
+    if (shift_amount >= 16) {           // 16+ shifts set DE to ~0
         DE = ~0;
-    } else {                            // for shift amount 1..15 do the shifting and setting
+    }
+    else {                            // for shift amount 1..15 do the shifting and setting
         z80_int de_bottom_part = DE >> shift_amount;
         z80_int de_upper_part = 0xFFFF << (16-shift_amount);
         DE = de_upper_part | de_bottom_part;
@@ -372,7 +378,7 @@ void instruccion_ed_44 ()
     //BRLC DE,B   ED 2C: DE = DE<<(B&15) | DE>>(16-B&15), no flags
     // barrel-roll left without carry of DE, B (4 bits) times
     int rolls_amount = reg_b & 15;
-    if (0 < rolls_amount) {
+    if (rolls_amount > 0) {
         z80_int de_upper_part = DE<<rolls_amount;
         z80_int de_bottom_part = DE>>(16-rolls_amount);
         DE = de_upper_part | de_bottom_part;
@@ -396,15 +402,15 @@ void instruccion_ed_47 ()
 
 void instruccion_ed_48 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-		//mul  d,e          ED 30          4+4  D*E = DE
+    if (MACHINE_IS_TBBLUE) {
+        //mul  d,e          ED 30          4+4  D*E = DE
                 z80_int resultado=reg_d*reg_e;
 
-		reg_d=value_16_to_8h(resultado);
-		reg_e=value_16_to_8l(resultado);
-        }
+        reg_d=value_16_to_8h(resultado);
+        reg_e=value_16_to_8l(resultado);
+    }
 
-        else invalid_opcode_ed("237 48");
+    else invalid_opcode_ed("237 48");
 }
 
 void instruccion_ed_49 ()
