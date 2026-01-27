@@ -642,15 +642,15 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {SPECIAL_TIMING_VALUE_NEXT,4,4,3,0} , {SPECIAL_TIMING_VALUE_NEXT,0} }, // TEST N  (Next)  ; ED 27                ; ED 27
 
-{ {4,4,0} , {0} }, // NOP                ; ED 28
+{ {4,4,0} , {0} }, // BSLA DE,B (Next)   ; ED 28
+{ {4,4,0} , {0} }, // BSRA DE,B (Next)   ; ED 29
+{ {4,4,0} , {0} }, // BSRL DE,B (Next)   ;
+{ {4,4,0} , {0} }, // BSRF DE,B (Next)   ;
+{ {4,4,0} , {0} }, // BRLC DE,B (Next)   ; ED 2C
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // MUL  D,E (Next)    ; ED 30
 { {4,4,0} , {0} }, // NOP                ;
 
 { {4,4,0} , {0} }, // NOP                ; ED 32
