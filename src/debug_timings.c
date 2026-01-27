@@ -636,11 +636,11 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // SWAPNIB (Next)     ; ED 23
+{ {4,4,0} , {0} }, // MIRROR A (Next)    ;
+{ {4,4,0} , {0} }, // LD HL,SP (Next)    ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,0} , {SPECIAL_TIMING_VALUE_NEXT,0} }, // TEST N  (Next)  ; ED 27                ; ED 27
 
 { {4,4,0} , {0} }, // NOP                ; ED 28
 { {4,4,0} , {0} }, // NOP                ;
@@ -879,6 +879,8 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 
 
 struct s_opcodes_times debug_times_opcodes_generado_dd_para_inexistentes;
+
+struct s_opcodes_times debug_times_opcodes_generado_ed_para_next;
 
 //Opcodes inexistentes se indican con timing SPECIAL_TIMING_VALUE,
 //esto es un valor especial que le dice a la funcion de tiempos que el tiempo total
@@ -1466,9 +1468,32 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
         indice=byte2;
 
         //Caso Next
-        if (MACHINE_IS_TBBLUE && (tabla[indice].times_condition_not_triggered[0] & SPECIAL_TIMING_VALUE_NEXT)) {
+        if (tabla[indice].times_condition_not_triggered[0] & SPECIAL_TIMING_VALUE_NEXT) {
 
-            //TODO
+            if (MACHINE_IS_TBBLUE) {
+                //Timing tal cual saltando el valor especial
+                int i;
+
+                for (i=0;i<MAX_TIEMPOS_OPCODES-1;i++) {
+                    debug_times_opcodes_generado_ed_para_next.times_condition_not_triggered[i]=
+                        debug_times_opcodes_ed_preffix[indice].times_condition_not_triggered[i+1];
+                    debug_times_opcodes_generado_ed_para_next.times_condition_triggered[i]=
+                        debug_times_opcodes_ed_preffix[indice].times_condition_triggered[i+1];
+                }
+            }
+            else {
+                //Le decimos mismo timing que un ED,00
+                int i;
+
+                for (i=0;i<MAX_TIEMPOS_OPCODES;i++) {
+                    debug_times_opcodes_generado_ed_para_next.times_condition_not_triggered[i]=
+                        debug_times_opcodes_ed_preffix[0].times_condition_not_triggered[i];
+                    debug_times_opcodes_generado_ed_para_next.times_condition_triggered[i]=
+                        debug_times_opcodes_ed_preffix[0].times_condition_triggered[i];
+                }
+            }
+
+            return &debug_times_opcodes_generado_ed_para_next;
         }
     }
 

@@ -25,7 +25,7 @@
 #include "cpu.h"
 
 #define SPECIAL_TIMING_VALUE_DDFD_INEXISTENT -1
-#define SPECIAL_TIMING_VALUE_NEXT 128
+#define SPECIAL_TIMING_VALUE_NEXT -2
 
 //7 maximo pero 1 mas para tiempos de ddfd de opcodes inexistentes, que se generan con un valor mas al principio
 #define MAX_TIEMPOS_OPCODES 8
