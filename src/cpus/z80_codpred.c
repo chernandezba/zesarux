@@ -290,10 +290,12 @@ void instruccion_ed_40 ()
     //BSLA DE,B   ED 28: DE = DE<<(B&31), no flags
     // barrel-shift left of DE, B (5 bits) times
     int shift_amount = reg_b & 31;
-    if (0 == shift_amount) return;
-    if (16 <= shift_amount) {           // 16+ shifts set DE to zero
+    if (shift_amount == 0) return;
+
+    if (shift_amount >= 16) {           // 16+ shifts set DE to zero
         DE = 0;
-    } else {
+    }
+    else {
         DE = DE << shift_amount;
     }
 }
