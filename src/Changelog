@@ -39,6 +39,7 @@ Improved Debug CPU:
 - Added setting to stop on PC+2 when step over RST 8, useful when debugging esxdos calls
 - Added user variables VAR0, VAR1, ... VAR9
 - Added video frames counter
+- Reassign option key 'x' ("switch view mode") to 'y' ("change layout")
 
 Improved Snapshots in RAM:
 - Browse visually all the stored snapshots in RAM, like on a "Time Machine"

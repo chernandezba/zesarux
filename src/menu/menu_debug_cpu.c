@@ -5492,12 +5492,12 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                     menu_get_legend_short_long(s,ancho_visible,
                             //01234567890123456789012345678901
                             // StM DAsm En:Stp StOvr CntSt Md
-                            "~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt H~~x",
+                            "~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt l~~y",
                                 //          10        20        30        40        50        60
                                 //012345678901234567890123456789012345678901234567890123456789012
                             //     StepMode DisAssemble Enter:Step StepOver ContinuosStep Mode
 
-                            "~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep He~~x"
+                            "~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep la~~yout"
 
                     );
 
@@ -5529,11 +5529,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
                             //01234567890123456789012345678901
                             // Stepmode Disassem Assem Mode
-                            "~~StepMode ~~Disassem ~~Assem He~~x",
+                            "~~StepMode ~~Disassem ~~Assem l~~y",
 
                             //012345678901234567890123456789012345678901234567890123456789012
                             // StepMode Disassemble Assemble Mode
-                            "~~StepMode ~~Disassemble ~~Assemble He~~x"
+                            "~~StepMode ~~Disassemble ~~Assemble la~~yout"
                     );
 
 
@@ -8900,7 +8900,7 @@ void menu_debug_help(void)
         "\n"
         "o: Ejecutar hasta volver de la siguiente instrucción, útil por ejemplo para volver justo después de un CALL\n"
         "\n"
-        "x: Cambiar entre los diferentes modos de la vista 1\n"
+        "y: Cambiar entre diferentes disposiciones de la vista 1\n"
         "\n"
         "r: Modificar registros\n"
         "\n"
@@ -9024,7 +9024,7 @@ void menu_debug_help(void)
         "\n"
         "o: Executar fins a tornar de la següent instrucció, útil per exemple per tornar just després d'un CALL\n"
         "\n"
-        "x: Canviar entre els diferents modes de la vista 1\n"
+        "y: Canviar entre diferents disposicions de la vista 1\n"
         "\n"
         "r: Modificar registres\n"
         "\n"
@@ -9149,7 +9149,7 @@ void menu_debug_help(void)
         "\n"
         "o: Run until returning from the next opcode, useful, for example, to return after a CALL opcode\n"
         "\n"
-        "x: Switch between different modes of view 1\n"
+        "y: Switch between different layouts of view 1\n"
         "\n"
         "r: Modify registers\n"
         "\n"
@@ -9687,7 +9687,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }
 
-                if (tecla=='x' && menu_debug_registers_current_view==1) {
+                if (tecla=='y' && menu_debug_registers_current_view==1) {
                     menu_debug_next_dis_show_hexa();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -10233,7 +10233,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 
-                if (tecla=='x' && menu_debug_registers_current_view==1) {
+                if (tecla=='y' && menu_debug_registers_current_view==1) {
                     menu_debug_next_dis_show_hexa();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
