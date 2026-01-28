@@ -71,16 +71,10 @@ quiza icono ramdisk que englobe snapshots y otras cosas???
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
 
-ok- Smartload history file: que se guarde en un archivo las rutas de todos los archivos cargados.
-Me sirve para confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81
+-confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81 usando Smartload history file
 
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
 
-- Poder ver los t-estados que tarda una instrucción, en vista de debug cpu
-Pero tiene que ver si se cumple o no condiciones, en instrucciones con condición (eso ya se obtiene ahora, en la info de "satisfy" condition)
-*tener en cuenta también memoria contenida?
-*visualizar también desglose de tiempos? ejemplo push af/bc/de/hl = 11 (5,3,3)
-https://www.cpcwiki.eu/index.php/Z80
 
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
@@ -89,16 +83,7 @@ https://www.cpcwiki.eu/index.php/Z80
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
--ver timing opcodes:
-ok *opcion en debug para activarlo o no (por defecto no)
-*opcodes next. Ver como marcar opcodes que sean next, si es con valor especial,
-luego si máquina no es next tiene que quitar ese valor especial....
-En ambos casos usar dos tablas temporales?
-ok *opcodes ldir ,lddr, cpir, cpdr, inir, indr, otir, otdr
-ok *opcodes ed, cb
-ok *opcodes dd/fd
-ok *opcodes dd/fd - no documentados de ixh, ixl ,etc
-ok *opcodes dd/fd + cb
+
 
 -en evaluación de condiciones si cumple o no, en debug cpu (texto "satisfy") no interpreta opcodes
 que van precedidos por DD/FD, ejemplo:
@@ -124,7 +109,9 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 -ZX81: mazogs, 3dmonster maze, y los de hires: pseudo (manic, pacman), udg, wrx, chr$
 -starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
 
+##### Fin Cambio rutinas video ZX80/81
 
+------
 
 -Opción para "apagar" la TV. útil? solo es pura curiosidad. no sirve de nada, lo único que genera es pantalla negra
 
@@ -134,3 +121,7 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 -Compilar binario universal https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary
 
 -Revisar todos opcodes de next que salgan en disassemble
+
+-Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
+
+-Probar compilar contra ssl en mac desde homebrew
