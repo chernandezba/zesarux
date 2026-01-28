@@ -129,7 +129,7 @@ struct s_tbblue_extended_string_opcode {
     int sumar_longitud;
 };
 
-#define TOTAL_TBBLUE_EXTENDED_OPCODES 32
+#define TOTAL_TBBLUE_EXTENDED_OPCODES 33
 
 struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLUE_EXTENDED_OPCODES]={
     {"SWAPNIB",             0x23,0,0,0},
@@ -158,6 +158,7 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
     {"PIXELDN",             0x93,0,0,0},
     {"PIXELAD",             0x94,0,0,0},
     {"SETAE",               0x95,0,0,0},
+    {"JP (C)",              0x98,0,0,0},
     {"LDIX",                0xA4,0,0,0},
     {"LDWS",                0xA5,0,0,0},
     {"LDIRX",               0xB4,0,0,0},

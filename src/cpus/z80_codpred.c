@@ -1780,8 +1780,8 @@ void instruccion_ed_148 ()
 void instruccion_ed_149 ()
 {
         if (MACHINE_IS_TBBLUE) {
-                //ED 95   DE holding the Y,X. Bits 0-2 of X (E) map to BIT 7 to 0 and store in A
                 //SETAE : A = 2^(7 - E&0x7)  The bottom 3 bits of E is a bit number and 7-that_bit is the bit set in A.
+                //ED 95   DE holding the Y,X. Bits 0-2 of X (E) map to BIT 7 to 0 and store in A
                 z80_byte numero_bit=reg_e & 7;
                 z80_byte resultado=128;
                 if (numero_bit>0) resultado=resultado>>numero_bit;
@@ -1813,7 +1813,7 @@ void instruccion_ed_152 ()
     // IN (C) part
     z80_int in_valor = (z80_int)lee_puerto(reg_b,reg_c);    // read + extend to 16b
 
-        //Si se ha activado wait
+    //Si se ha activado wait
     if (z80_wait_signal.v) {
         //Retroceder pc
         reg_pc--;
@@ -1822,12 +1822,12 @@ void instruccion_ed_152 ()
 
     else {
 
-    // combine it into new PC, keeping two top bits from current PC (pointing at next instruction)
-    in_valor <<= 6;
-    reg_pc = (reg_pc&0xC000) | in_valor;
-#ifdef EMULATE_MEMPTR
-    set_memptr(reg_pc);     // not sure how this actually works, needs Cesar review
-#endif
+        // combine it into new PC, keeping two top bits from current PC (pointing at next instruction)
+        in_valor <<= 6;
+        reg_pc = (reg_pc&0xC000) | in_valor;
+    #ifdef EMULATE_MEMPTR
+        set_memptr(reg_pc);     // not sure how this actually works, needs Cesar review
+    #endif
     }
 }
 

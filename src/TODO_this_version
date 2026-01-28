@@ -132,3 +132,5 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
 
 -Compilar binario universal https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary
+
+-Revisar todos opcodes de next que salgan en disassemble

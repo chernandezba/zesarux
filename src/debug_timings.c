@@ -596,7 +596,7 @@ struct s_opcodes_times debug_times_opcodes_cb_preffix[256]={
 { {4,4,0} , {0} }, // SET 7,A                 ; CB FF
 };
 
-
+//Nota: hay muchos opcodes de Next que tienen mismo timing 4,4 como si fueran un nop, por eso no los defino como Next, porque es igual
 struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ; ED 00
 { {4,4,0} , {0} }, // NOP                ;
@@ -753,15 +753,15 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {SPECIAL_TIMING_VALUE_NEXT,4,5,3,4,0} , {0} }, // OUTINB (Next)                ; ED 90
-{ {4,4,0} , {0} }, // NOP                ; ED 91
-{ {4,4,0} , {0} }, // NOP                ; ED 92
-{ {4,4,0} , {0} }, // NOP                ; ED 93
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // nextreg reg,val (Next)                ; ED 91
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,0} , {0} }, // nextreg reg,a (Next)                ; ED 92
+{ {4,4,0} , {0} }, // pixeldn (Next)                ; ED 93
 
-{ {4,4,0} , {0} }, // NOP                ; ED 94
+{ {4,4,0} , {0} }, // pixelad (Next)                ; ED 94
+{ {4,4,0} , {0} }, // SETAE (Next)                ; ED 95
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,4,0} , {0} }, // JP (C) (Next)                ; ED 98
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
@@ -775,7 +775,7 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,3,5,0} , {0} }, // CPI                     ; ED A1
 { {4,5,4,3,0} , {0} }, // INI                     ; ED A2
 { {4,5,3,4,0} , {0} }, // OUTI                    ; ED A3
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {0} }, // LDIX (Next)                ; ED A4
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
