@@ -776,14 +776,14 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,5,4,3,0} , {0} }, // INI                     ; ED A2
 { {4,5,3,4,0} , {0} }, // OUTI                    ; ED A3
 { {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {0} }, // LDIX (Next)                ; ED A4
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // LDWS (Next)                ; ED A5
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,3,5,0} , {0} }, // LDD                     ; ED A8
 { {4,4,3,5,0} , {0} }, // CPD                     ; ED A9
 { {4,5,4,3,0} , {0} }, // IND                     ; ED AA
 { {4,5,3,4,0} , {0} }, // OUTD                    ; ED AB
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {0} }, // LDDX                ; ED AC
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
@@ -791,7 +791,9 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,3,5,0} , {4,4,3,5,5,0} }, // CPIR                    ; ED B1
 { {4,5,4,3,0} , {4,5,4,3,5,0} }, // INIR                    ; ED B2
 { {4,5,3,4,0} , {4,5,3,4,5,0} }, // OTIR                    ; ED B3
-{ {4,4,0} , {0} }, // NOP                ;
+
+//TODO: habria que implementar condición de "satisfy" cuando if byte == A then skips byte
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {4,4,3,5,5,0} }, // LDIRX (NExt)                ; ED B4
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;

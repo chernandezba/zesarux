@@ -2047,7 +2047,7 @@ void instruccion_ed_165 ()
 
 		inc_8bit(reg_d);
 	}
-	//Total T-estados = 8+3+3=14
+	//Total T-estados = 4+4+3+3=14
 
         else invalid_opcode_ed("237 165");
 
@@ -2495,7 +2495,7 @@ void instruccion_ed_182 ()
 {
         if (MACHINE_IS_TBBLUE) {
                 //LDIRSCALE ED B6 as LDIR but 24 bit source pointer HLA' takes high 16 bits as address
-                //??? no entiendo que hace
+                //TODO no entiendo que hace
 
                 invalid_opcode_ed("Unimplemented tbblue LDIRSCALE");
 
