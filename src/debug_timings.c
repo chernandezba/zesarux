@@ -640,7 +640,7 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // MIRROR A (Next)    ;
 { {4,4,0} , {0} }, // LD HL,SP (Next)    ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,0} , {SPECIAL_TIMING_VALUE_NEXT,0} }, // TEST N  (Next)  ; ED 27                ; ED 27
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,0} , {0} }, // TEST N  (Next)  ; ED 27                ; ED 27
 
 { {4,4,0} , {0} }, // BSLA DE,B (Next)   ; ED 28
 { {4,4,0} , {0} }, // BSRA DE,B (Next)   ; ED 29
@@ -793,15 +793,15 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,5,3,4,0} , {4,5,3,4,5,0} }, // OTIR                    ; ED B3
 
 //TODO: habria que implementar condición de "satisfy" cuando if byte == A then skips byte
-{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {4,4,3,5,5,0} }, // LDIRX (NExt)                ; ED B4
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {4,4,3,5,5,0} }, // LDIRX (Next)                ; ED B4
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {4,4,3,5,5,0} }, // LDPIRX (Next)                ; ED B7
 { {4,4,3,5,0} , {4,4,3,5,5,0} }, // LDDR                    ; ED B8
 { {4,4,3,5,0} , {4,4,3,5,5,0} }, // CPDR                    ; ED B9
 { {4,5,4,3,0} , {4,5,4,3,5,0} }, // INDR                    ; ED BA
 { {4,5,3,4,0} , {4,5,3,4,5,0} }, // OTDR                    ; ED BB
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,5,0} , {4,4,3,5,5,0} }, // LDDRX (Next)        ; ED BC
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
@@ -1470,17 +1470,17 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
         indice=byte2;
 
         //Caso Next
-        if (tabla[indice].times_condition_not_triggered[0] & SPECIAL_TIMING_VALUE_NEXT) {
+        if (tabla[indice].times_condition_not_triggered[0] == SPECIAL_TIMING_VALUE_NEXT) {
 
             if (MACHINE_IS_TBBLUE) {
-                //Timing tal cual saltando el valor especial
+                //Timing tal cual saltando el valor especial (solo presente en condicion not triggered)
                 int i;
 
                 for (i=0;i<MAX_TIEMPOS_OPCODES-1;i++) {
                     debug_times_opcodes_generado_ed_para_next.times_condition_not_triggered[i]=
                         debug_times_opcodes_ed_preffix[indice].times_condition_not_triggered[i+1];
                     debug_times_opcodes_generado_ed_para_next.times_condition_triggered[i]=
-                        debug_times_opcodes_ed_preffix[indice].times_condition_triggered[i+1];
+                        debug_times_opcodes_ed_preffix[indice].times_condition_triggered[i];
                     //printf("Copy to %d from %d\n",i,i+1);
                 }
             }
