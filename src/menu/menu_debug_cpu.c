@@ -5620,7 +5620,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
                             //01234567890123456789012345678901
                             // ClrTstPart Write VScr MemZn 99
-                sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite ~~VScr Ev~~t Mem~~Zn %d",menu_debug_memory_zone);
+                sprintf (buffer_intermedio_short,"ClTst~~Part Wr~~ite ~~VScr Ev~~t M~~Zn %d",menu_debug_memory_zone);
                             //012345678901234567890123456789012345678901234567890123456789012
                             // ClearTstatesPartial Write ViewScreen MemoryZone 99
                 sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
@@ -5631,7 +5631,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
             else {
                             //01234567890123456789012345678901
                             // Clrtstpart Write MemZone 99
-                sprintf (buffer_intermedio_short,"ClrTst~~Part Wr~~ite Ev~~t Mem~~Zone %d",menu_debug_memory_zone);
+                sprintf (buffer_intermedio_short,"ClTst~~Part Wr~~ite Ev~~t Mem~~Zone %d",menu_debug_memory_zone);
 
                             //012345678901234567890123456789012345678901234567890123456789012
                             // ClearTstatesPartial Write MemoryZone 99
