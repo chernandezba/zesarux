@@ -127,3 +127,8 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 
 
 -Opción para "apagar" la TV. útil? solo es pura curiosidad. no sirve de nada, lo único que genera es pantalla negra
+
+
+-Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
+
+-Compilar binario universal https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary

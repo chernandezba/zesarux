@@ -446,7 +446,7 @@ void instruccion_ed_51 ()
 void instruccion_ed_52 ()
 {
         if (MACHINE_IS_TBBLUE) {
-                //add  hl,$0000     ED 34 LO HI     Add XXXX to HL
+                //add  hl,NNNN     ED 34 LO HI     Add NNNN to HL
 
 
                 z80_int operador;
@@ -462,7 +462,7 @@ void instruccion_ed_52 ()
 
 void instruccion_ed_53 ()
 {        if (MACHINE_IS_TBBLUE) {
-                //add  de,$0000     ED 35 LO HI     Add XXXX to DE
+                //add  de,NNNN     ED 35 LO HI     Add NNNN to DE
 
 
                 z80_int operador;
@@ -478,7 +478,7 @@ void instruccion_ed_53 ()
 
 void instruccion_ed_54 ()
 {        if (MACHINE_IS_TBBLUE) {
-                //add  bc,$0000     ED 36 LO HI     Add XXXX to BC
+                //add  bc,NNNN     ED 36 LO HI     Add NNNN to BC
 
 
                 z80_int operador;
@@ -508,7 +508,7 @@ void instruccion_ed_55 ()
 void instruccion_ed_56 ()
 {
         if (MACHINE_IS_TBBLUE) {
-                //dec dehl          ED 37          4+4 decrement 32bit DEHL
+                //dec dehl          ED 38          4+4 decrement 32bit DEHL
                 z80_long_int dehl= (DE << 16) | HL;
                 dehl--;
                 HL=dehl & 0xFFFF;
@@ -547,7 +547,7 @@ void instruccion_ed_58 ()
 void instruccion_ed_59 ()
 {
         if (MACHINE_IS_TBBLUE) {
-                //add dehl,$0000    ED 3B LO HI    4+4 Add $0000 to 32bit DEHL
+                //add dehl,NNNN    ED 3B LO HI    4+4 Add NNNN to 32bit DEHL
                 z80_long_int dehl= (DE << 16) | HL;
 
                 z80_int operador=0;
@@ -1652,7 +1652,7 @@ void instruccion_ed_143 ()
 void instruccion_ed_144 ()
 {
         if (MACHINE_IS_TBBLUE) {
-                //ED 90  OUTINB As OUTI but B is not incremented
+                //ED 90  OUTINB:  As OUTI but B is not incremented
 	z80_byte value,aux;
 
         contend_read_no_mreq( IR, 1 );

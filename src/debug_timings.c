@@ -651,21 +651,21 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // MUL  D,E (Next)    ; ED 30
-{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // add  hl,a (Next)                ;
 
-{ {4,4,0} , {0} }, // NOP                ; ED 32
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // add  de,a (Next)                ; ED 32
+{ {4,4,0} , {0} }, // add  bc,a (Next)                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add  hl,NNNN (Next)                ; ED 34
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add  de,NNNN (Next)                ; ED 35
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add  bc,NNNN (Next)                ; ED 36
+{ {4,4,0} , {0} }, // inc dehl (Next)                ;
+{ {4,4,0} , {0} }, // dec dehl  (Next)              ; ED 38
+{ {4,4,0} , {0} }, // add dehl,a (Next)                ;
+{ {4,4,0} , {0} }, // add dehl,bc (Next)                ; ED 3A
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add dehl,NNNN (Next)                ; ED 3B
 
-{ {4,4,0} , {0} }, // NOP                ; ED 3C
-{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // sub dehl,a (Next)                ; ED 3C
+{ {4,4,0} , {0} }, // sub dehl,bc (Next)                ; ED 3D
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 
@@ -746,16 +746,16 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 
-{ {4,4,0} , {0} }, // NOP                ; ED 8A
+{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,3,3,0} , {0} }, // push NN (Next)                ; ED 8A
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
-{ {4,4,0} , {0} }, // NOP                ;
+{ {SPECIAL_TIMING_VALUE_NEXT,4,5,3,4,0} , {0} }, // OUTINB (Next)                ; ED 90
+{ {4,4,0} , {0} }, // NOP                ; ED 91
+{ {4,4,0} , {0} }, // NOP                ; ED 92
+{ {4,4,0} , {0} }, // NOP                ; ED 93
 
 { {4,4,0} , {0} }, // NOP                ; ED 94
 { {4,4,0} , {0} }, // NOP                ;
@@ -1479,6 +1479,7 @@ struct s_opcodes_times *debug_get_timing_opcode(z80_byte byte1,z80_byte byte2,z8
                         debug_times_opcodes_ed_preffix[indice].times_condition_not_triggered[i+1];
                     debug_times_opcodes_generado_ed_para_next.times_condition_triggered[i]=
                         debug_times_opcodes_ed_preffix[indice].times_condition_triggered[i+1];
+                    //printf("Copy to %d from %d\n",i,i+1);
                 }
             }
             else {
