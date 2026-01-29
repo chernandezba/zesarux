@@ -1274,6 +1274,8 @@ extern z80_bit menu_show_submenus_tree;
 extern z80_bit auto_frameskip_even_when_movin_windows;
 extern z80_bit frameskip_draw_zxdesktop_background;
 
+extern void zxvision_zxdesktop_set_no_frameskip_next(void);
+
 extern int if_pending_error_message;
 extern char pending_error_message[];
 

@@ -1,7 +1,7 @@
 --------------------------------------------------
 --------------top bar menu----------
 
-*en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
+ok *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
 ->quizá es culpa del autoframeskip?
 
 *menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
@@ -125,3 +125,5 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 -Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
 
 -Probar compilar contra ssl en mac desde homebrew
+
+-Estadísticas de conexiones en servidor: darwin intel/arm, doble grep

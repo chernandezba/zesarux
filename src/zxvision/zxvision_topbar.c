@@ -133,6 +133,9 @@ void topbar_make_topbar_invisible(void)
 
     if (topbar_overlay_we_are_on_topbar) return;
 
+    //Siguiente refresco de zxdesktop no hay framedrop, para forzar que se vea el cambio de desaparecer el top menu
+    zxvision_zxdesktop_set_no_frameskip_next();
+
     //Para borrar el texto de topbar
     cls_menu_overlay();
 

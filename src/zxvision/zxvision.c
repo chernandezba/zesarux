@@ -7331,6 +7331,12 @@ void menu_draw_ext_desktop(void)
 
 }
 
+void zxvision_zxdesktop_set_no_frameskip_next(void)
+{
+    //Siguiente refresco de zxdesktop no hay framedrop
+    no_next_frameskip_draw_zxdesktop_background.v=1;
+}
+
 
 //refresco de pantalla, avisando cambio de border,
 void menu_refresca_pantalla(void)
