@@ -1,10 +1,9 @@
 --------------------------------------------------
 --------------top bar menu----------
 
-ok *en alguna ocasión no se desactiva topbar, se queda siempre visible aunque estemos en el Basic y con el foco ahí.
-->quizá es culpa del autoframeskip?
 
-*menus de topbar deben salir con traducción también? aunque ocupará mas caracteres...
+ok *menus de topbar deben salir con traducción también
+-alguna manera de poder reducir el texto sin tener que reducir del todo...
 
 ----------Fin top bar menu----------
 ----------------------------------------

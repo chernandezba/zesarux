@@ -63,10 +63,17 @@ int topbarmenu_mostrar_hotkeys_por_timer=0;
 int posiciones_menus[20];
 
 //lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
-                                                  //01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
-                                                  //0         1         2         3         4         5         6         7         8         9         10
-char topbar_string_linea_menus_with_zxdesktop[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
-char topbar_string_linea_menus_without_zxdesktop[]="Z SL Sna Mch Aud Dsp Sto Dbg Net Win Set Hlp";
+                                                          //012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+                                                          //0         1         2         3         4         5         6         7         8         9         10
+char topbar_string_linea_menus_with_zxdesktop_english[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
+char topbar_string_linea_menus_without_zxdesktop_english[]="Z SL Sna Mch Aud Dsp Sto Dbg Net Win Set Hlp";
+
+char topbar_string_linea_menus_with_zxdesktop_spanish[]=   "Z  CargaAstuta  Instantanea  Maquina  Audio  Display  Almacenamiento  Debug  Network  Windows  Opciones  Help";
+char topbar_string_linea_menus_without_zxdesktop_spanish[]="Z CA Ins Mqu Aud Dsp Alm Dbg Net Win Opc Hlp";
+
+char topbar_string_linea_menus_with_zxdesktop_catalan[]=   "Z  CarregaAstuta  Instantania  Maquina  Audio  Display  Emmagatzematge  Debug  Network  Windows  Opcions  Help";
+char topbar_string_linea_menus_without_zxdesktop_catalan[]="Z CA Ins Mqu Aud Dsp Emm Dbg Net Win Opc Hlp";
+
 
 //tecla Z para primer menu ZEsarUX
 //tecla S para Smartload
@@ -246,8 +253,16 @@ z80_byte menu_topbarmenu_get_key(void)
 
 char *menu_topbar_get_text_topbar(void)
 {
-    if (if_zxdesktop_enabled_and_driver_allows() ) return topbar_string_linea_menus_with_zxdesktop;
-    else return topbar_string_linea_menus_without_zxdesktop;
+    if (if_zxdesktop_enabled_and_driver_allows() ) {
+        if (gui_language==GUI_LANGUAGE_SPANISH) return topbar_string_linea_menus_with_zxdesktop_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return topbar_string_linea_menus_with_zxdesktop_catalan;
+        else return topbar_string_linea_menus_with_zxdesktop_english;
+    }
+    else {
+        if (gui_language==GUI_LANGUAGE_SPANISH) return topbar_string_linea_menus_without_zxdesktop_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return topbar_string_linea_menus_without_zxdesktop_catalan;
+        else return topbar_string_linea_menus_without_zxdesktop_english;
+    }
 }
 
 
