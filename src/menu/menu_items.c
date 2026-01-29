@@ -1433,7 +1433,7 @@ void menu_zxvision_test(MENU_ITEM_PARAMETERS)
 
 
     //Rebotar
-    int contador=0;
+    //int contador=0;
 
     int xpos=0;
     int ypos=0;
@@ -1520,7 +1520,7 @@ void menu_zxvision_test(MENU_ITEM_PARAMETERS)
             incy=-incy;
         }
 
-        contador++;
+        //contador++;
 
         if (tecla!=0) menu_espera_no_tecla();
 
@@ -15706,7 +15706,7 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 
     //leer linea a linea
     char buffer_linea[1024];
-    int i=0;
+    //int i=0;
     int salir=0;
     do {
         int leidos;
@@ -15751,7 +15751,7 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
                 total_items++;
             }
         }
-        i++;
+        //i++;
         mem=next_mem;
         //}
 
@@ -16275,7 +16275,7 @@ void menu_online_browse_zxinfowos_query(char *query_result,char *hostname,char *
 
             //leer linea a linea
             char buffer_linea[1024];
-            int i=0;
+            //int i=0;
             //int salir=0;
 
             int existe_id;
@@ -16441,7 +16441,7 @@ Pueden salir antes id o antes title. En bucle leer los dos y cuando estén los d
                     }
                 }
 
-                i++;
+                //i++;
                 mem=next_mem;
 
 
