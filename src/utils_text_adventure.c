@@ -1252,8 +1252,9 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
     z80_byte *mem_diccionario=gac_diccionario_array;
 
 
-
-    int curexit, scrap; // keeps a count of the number of entries in the dictionary
+    // keeps a count of the number of entries in the dictionary
+    //int curexit;
+    int scrap;
 
     int len; //temporary char variables
     int current=0; // the current token
@@ -1293,7 +1294,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
          len-=2;
 
          // exits
-         curexit=0;
+         //curexit=0;
          do
          {
             scrap=peek_byte_no_time(puntero++);
@@ -1366,7 +1367,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                 }
 
                len-=2;
-               curexit++;
+               //curexit++;
             }
          } while (scrap != 0);
 

@@ -1960,13 +1960,13 @@ void zxpand_process(int waswrite)
 				{
 					// get EEPROM data; global data contains start,count
 					z80_byte i = 0;
-	 				z80_byte j = 2;
-	 				z80_byte k = zxpand_globaldata[0] + 5;
+	 				//z80_byte j = 2;
+	 				//z80_byte k = zxpand_globaldata[0] + 5;
 	 				while (i < zxpand_globaldata[1])
 	 				{
 		 				//zxpand_globaldata[j] = ReadEEPROM(k);
-		 				++j;
-		 				++k;
+		 				//++j;
+		 				//++k;
 		 				++i;
 					}
 					zxpand_latd = 0x40;
@@ -2076,13 +2076,13 @@ void zxpand_process(int waswrite)
 				else if (pd == 0xbe)
 				{
 					z80_byte i = 0;
-	 				z80_byte j = 2;
-	 				z80_byte k = zxpand_globaldata[0] + 5;
+	 				//z80_byte j = 2;
+	 				//z80_byte k = zxpand_globaldata[0] + 5;
 	 				while(i < zxpand_globaldata[1])
 	 				{
 		 				//WriteEEPROM(k, zxpand_globaldata[j]);
-		 				++j;
-		 				++k;
+		 				//++j;
+		 				//++k;
 		 				++i;
 					}
 					zxpand_latd = 0x40;
