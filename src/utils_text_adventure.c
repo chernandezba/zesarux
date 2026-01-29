@@ -898,15 +898,16 @@ char gac_punctuation[]="\0 .,-!?:";
 void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_diccionario)
 {
    int low, high, end=0;
-   int len, first, i, punc;
+   //int len, first;
+   int i, punc;
    char working[255],scrap[1];
 
    //result=calloc(1,255);
 
    memset(result,'\0',254);
    memset(working,'\0',254);
-   first=1;
-   len=0;
+   //first=1;
+   //len=0;
    do
    {
       low=peek_byte_no_time(puntero++);
@@ -937,7 +938,7 @@ void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_di
          //if (!first) strncpy(working," ",1);
          //strncat(working,dictionary[(high & 0x7)*256 + low],255);
          strncat(working,buffer_palabra,255);
-         first=0;
+         //first=0;
 
          if (high & GAC_TOKEN_LOWERCASE)
          {  // token is lowercase
@@ -982,34 +983,37 @@ object_struct **objects;
 int startptr, endptr;
 */
 
-   int object,size, weight, start, scrap; // keeps a count of the number of entries in the dictionary
-   int j, len; //temporary char variables
-   int current=0; // the current token
+   int object,size, weight; // keeps a count of the number of entries in the dictionary
+   //int start,scrap;
+   //int j, len; //temporary char variables
+   //int current=0; // the current token
    int fileptr; // temporary save the start of the previous object
 
     //Por si no lo acaba encontrando, por defecto cadena vacia
    if (nombre_objeto!=NULL) nombre_objeto[0]=0;
 
    //fseek(infile, startptr, SEEK_SET);
-   j=puntero;
+   //j=puntero;
    do
    {
       fileptr=puntero;
       object=peek_byte_no_time(puntero++);
       size=peek_byte_no_time(puntero++);
       weight=peek_byte_no_time(puntero++);
-      start=peek_byte_no_time(puntero++);
-      scrap=peek_byte_no_time(puntero++);
-      start+=scrap<<8;
+      //start=
+      peek_byte_no_time(puntero++);
+      //scrap=
+      peek_byte_no_time(puntero++);
+      //start+=scrap<<8;
       size-=3;
-      j+=5;
+      //j+=5;
       if (object!=0 && size!=0)
       {
          //objects[current]->object=object;
          //objects[current]->weight=weight;
          //objects[current]->start=start;
          //objects[current]->location=start;
-         len=0;
+         //len=0;
          //strcat(objects[current]->description,readstring(infile, size));
 
             char buffer_palabra[256];
@@ -1050,9 +1054,9 @@ int startptr, endptr;
 
             }
 
-         j+=size;
-         j+=3;
-         current++;
+         //j+=size;
+         //j+=3;
+         //current++;
       }
       // move up to next object
       //fseek(infile,fileptr+size+5,SEEK_SET);

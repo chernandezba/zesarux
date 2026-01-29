@@ -23219,9 +23219,9 @@ void util_get_host_url(char *url, char *host)
         else encontrado=url;
 
         //Copiar hasta la primera / o final de string
-        int i=0;
+        //int i=0;
 
-        for (i=0;(*encontrado)!=0 && (*encontrado)!='/';i++,host++,encontrado++) {
+        for (;(*encontrado)!=0 && (*encontrado)!='/';host++,encontrado++) {
                 *host=*encontrado;
         }
 
