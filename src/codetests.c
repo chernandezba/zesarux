@@ -2818,6 +2818,8 @@ void codetests_leading_zeroes(void)
 {
     codetests_leading_zeroes_check("1","1");
     codetests_leading_zeroes_check("11","11");
+    codetests_leading_zeroes_check("10","10");
+    codetests_leading_zeroes_check("100.","100.");
     codetests_leading_zeroes_check("11.0","11");
     codetests_leading_zeroes_check("22.02","22.02");
     codetests_leading_zeroes_check("33.0400","33.04");

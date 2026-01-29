@@ -5719,10 +5719,10 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
     //if (ancho_boton>=(6+EXT_DESKTOP_BUTTONS_ANCHO*2)) nivel_zoom=2;
 
 
-    int x;
-    int contador_boton=0;
+    //int x;
+    int contador_boton;
 
-    for (x=xinicio;contador_boton<total_botones;x+=ancho_boton,contador_boton++) {
+    for (contador_boton=0;contador_boton<total_botones;contador_boton++) {
         menu_draw_ext_desktop_one_button_background(contador_boton,0);
     }
 
@@ -15155,7 +15155,7 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
 //Funcion para trazar una linea usando algoritmo de bresenham
 void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) )
 {
- int x,y,dx,dy,dx1,dy1,px,py,xe,ye,i;
+ int x,y,dx,dy,dx1,dy1,px,py,xe,ye;
  dx=x2-x1;
  dy=y2-y1;
  dx1=util_get_absolute(dx);
@@ -15177,7 +15177,7 @@ void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, vo
    xe=x1;
   }
   fun_putpixel(w,x,y,c);
-  for(i=0;x<xe;i++)
+  while(x<xe)
   {
    x=x+1;
    if(px<0)
@@ -15214,7 +15214,7 @@ void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, vo
    ye=y1;
   }
   fun_putpixel(w,x,y,c);
-  for(i=0;y<ye;i++)
+  while(y<ye)
   {
    y=y+1;
    if(py<=0)
@@ -25979,8 +25979,8 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         //Escribir primero numero
 
         //Dibujar texto interior
-        int xdef=x_boton_default;
-        if (default_value==NULL) xdef=-1;
+        //int xdef=x_boton_default;
+        //if (default_value==NULL) xdef=-1;
 
         menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
 

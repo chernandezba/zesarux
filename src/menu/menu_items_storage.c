@@ -8573,7 +8573,7 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
     //if (microdrive_raw_map_forzar_dibujado) printf("Forzar redibujado\n");
     //else printf("no forzar redibujado\n");
 
-    int total_pixeles_dibujados=0;
+    //int total_pixeles_dibujados=0;
 
     int dibujar_cabezal_lectura=0;
 
@@ -8795,9 +8795,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
             }
 
             menu_microdrive_raw_map_draw_putpixel(w,microdrive_raw_map_zoom,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
-            if (dibujar_pixel) {
-                total_pixeles_dibujados++;
-            }
+
+            //if (dibujar_pixel) {
+            //    total_pixeles_dibujados++;
+            //}
 
 
 
@@ -8820,9 +8821,10 @@ void menu_microdrive_raw_map_draw(zxvision_window *w)
                 }
 
                 menu_microdrive_raw_map_draw_putpixel(w,1,x+offset_x,y+offset_y,color,dato_leido,dibujar_pixel);
-                if (dibujar_pixel) {
-                    total_pixeles_dibujados++;
-                }
+
+                //if (dibujar_pixel) {
+                //    total_pixeles_dibujados++;
+                //}
 
 
 
@@ -10911,7 +10913,7 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
                     strcpy (buffer_numeros,"9");
                     menu_ventana_scanf("Sectors per track?",buffer_numeros,2);
                     int sectores_pista=parse_string_to_number(buffer_numeros);
-                    if (sectores_pista<1 && sectores_pista>9) {
+                    if (sectores_pista<1 || sectores_pista>9) {
                         debug_printf(VERBOSE_ERR,"Invalid sectors per track number");
                         return;
                     }

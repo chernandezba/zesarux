@@ -4799,7 +4799,7 @@ int menu_filesel_preview_render_scr_ql_count_flash_bits(z80_byte *buf_pantalla)
 
 ////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
         int total_alto;
-        int total_ancho;
+        //int total_ancho;
         int x,y;
 
 
@@ -4812,7 +4812,7 @@ int menu_filesel_preview_render_scr_ql_count_flash_bits(z80_byte *buf_pantalla)
         int total_bit_flash=0;
 
         total_alto=256;
-        total_ancho=512;
+        //total_ancho=512;
 
 
 
@@ -4878,7 +4878,7 @@ void menu_filesel_preview_convert_scr_ql_to_buf(z80_byte *orig,int *dest)
 
 ////// Trocito extraido de scr_refresca_pantalla_ql y adaptado al preview
     int total_alto;
-    int total_ancho;
+    //int total_ancho;
     int x,y;
 
     unsigned int color1;
@@ -4895,7 +4895,7 @@ void menu_filesel_preview_convert_scr_ql_to_buf(z80_byte *orig,int *dest)
 
 
     total_alto=256;
-    total_ancho=512;
+    //total_ancho=512;
 
     int flashing_color;
 
@@ -5023,7 +5023,7 @@ void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,int *dest)
 
             int x,y,bit_counter;
 
-        z80_int offset_lectura=0;
+        //z80_int offset_lectura=0;
         for (y=0;y<192;y++) {
             for (x=0;x<32;x++) {
                 z80_byte leido;
@@ -5033,7 +5033,7 @@ void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,int *dest)
 
 
 
-                offset_lectura++;
+                //offset_lectura++;
 
                 int offset_destino=y*256+x*8;
 

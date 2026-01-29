@@ -16883,7 +16883,8 @@ int util_count_lines(char *texto)
 }
 
 //Quitar los ceros a la derecha decimales de una string
-void util_quitar_ceros_decimales(char *numero)
+/*
+void old_bad_util_quitar_ceros_decimales(char *numero)
 {
     int i=strlen(numero)-1;
 
@@ -16908,7 +16909,37 @@ void util_quitar_ceros_decimales(char *numero)
         if (numero[longitud-1]=='.') numero[longitud-1]=0;
     }
 }
+*/
 
+//Quitar los ceros a la derecha decimales de una string
+void util_quitar_ceros_decimales(char *numero)
+{
+
+    //Si no tiene decimales, no hay nada que quitar
+    if (strchr(numero,'.')==NULL) return;
+
+
+    int longitud;
+
+    //Si acaba en punto, no quitar nada
+    longitud=strlen(numero);
+    if (longitud>=1) {
+        if (numero[longitud-1]=='.') return;
+    }
+
+
+    int i=strlen(numero)-1;
+
+    for (;i>=0 && numero[i]=='0';i--) {
+        numero[i]=0;
+    }
+
+    //Ver si al truncar acaba en punto y quitar ese punto
+    longitud=strlen(numero);
+    if (longitud>=1) {
+        if (numero[longitud-1]=='.') numero[longitud-1]=0;
+    }
+}
 
 //De una cadena de bytes, lo muestra como hexadecimal, sin espacios. Retorna cadena acabada en 0
 //Completa con espacios hasta longitud

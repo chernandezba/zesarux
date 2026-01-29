@@ -1931,12 +1931,13 @@ void z88_load_hybrid_eprom_card(char *archivo, int slot)
         FILE *ptr_hybridfile;
         ptr_hybridfile=fopen(archivo,"rb");
         //maximo 512 KB. Leemos saltando los primeros 512 kb en slot destino
-	z80_long_int leidos=fread(z88_puntero_memoria+z88_memory_slots[slot].offset_total+512*1024,1,512*1024,ptr_hybridfile);
+	//z80_long_int leidos
+        fread(z88_puntero_memoria+z88_memory_slots[slot].offset_total+512*1024,1,512*1024,ptr_hybridfile);
         fclose(ptr_hybridfile);
 
 	//no uso para nada leidos (de momento). Hago lo siguiente para que no se queje el compilador
-	leidos++;
-	leidos--;
+	//leidos++;
+	//leidos--;
 
 
         //metemos cartucho

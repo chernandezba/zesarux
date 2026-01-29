@@ -6172,8 +6172,8 @@ void tbblue_do_tile_putpixel(z80_byte pixel_color,z80_byte transparent_colour,z8
         pixel_color |=tpal;
 
         //Vemos lo que hay en la capa
-        z80_int color_previo_capa;
-        color_previo_capa=*puntero_a_layer;
+        //z80_int color_previo_capa;
+        //color_previo_capa=*puntero_a_layer;
 
         //Lo normal es ula over tilemap
         //Al llegar aqui, la ula ya está renderizada en su capa
@@ -7303,9 +7303,9 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites,int capatiles)
 
         for (i=0;i<ancho_rainbow;i++) {
 
-            int estamos_borde_derizq=0;
+            //int estamos_borde_derizq=0;
 
-            if (i<final_borde_izquierdo || i>=inicio_borde_derecho) estamos_borde_derizq=1;
+            //if (i<final_borde_izquierdo || i>=inicio_borde_derecho) estamos_borde_derizq=1;
 
             color = tbblue_layer_layer2[i];
 
