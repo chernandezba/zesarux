@@ -46009,7 +46009,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_item item_seleccionado;
 
             menu_add_item_menu_en_es_ca_inicial(&array_menu_principal,MENU_OPCION_NORMAL,menu_smartload,NULL,
-                "~~Smart load","Carga ingenio~~sa","Càrrega enginyo~~sa");
+                "~~Smart load","Carga a~~stuta","Càrrega a~~stuta");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
             //El menu smartload hara cerrar todas las ventanas o no dependiendo de setting no_close_menu_after_smartload
             //menu_add_item_menu_se_cerrara(array_menu_principal);
