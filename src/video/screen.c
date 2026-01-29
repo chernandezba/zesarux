@@ -6130,7 +6130,7 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
 
 
         //Para modo interlace
-        int y=t_scanline_draw;
+        //int y=t_scanline_draw;
 
         z80_int color_border;
         z80_int color_border_prism;
@@ -6182,7 +6182,7 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
                         }
 
                         //Se llega a siguiente linea
-                        if (indice_border==inicio_retrace_horiz) y++;
+                        //if (indice_border==inicio_retrace_horiz) y++;
                 }
 
                 x+=t_estados_por_pixel;
@@ -6239,7 +6239,7 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 	z80_byte border_leido;
 
 	//Para modo interlace
-	int y=t_scanline_draw;
+	//int y=t_scanline_draw;
 
 	z80_int color_border;
 
@@ -6353,7 +6353,7 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 
 			//Se llega a siguiente linea
 			if (indice_border==inicio_retrace_horiz) {
-				y++;
+				//y++;
 				//En caso de tbblue hay que saltar una linea mas en buffer rainbow, ya que hacemos doble de alto
 				if (MACHINE_IS_TBBLUE) {
 					puntero_buf_rainbow +=ancho_rainbow;
@@ -11938,7 +11938,7 @@ void screen_text_repinta_pantalla_ace(void)
                 //Eliminar bit de caracter inverso
                 letra=letra&127;
 
-                if (letra>31 || letra<128) printf ("%c",letra);
+                if (letra>31 && letra<127) printf ("%c",letra);
                 else printf (".");
 
                 columna++;

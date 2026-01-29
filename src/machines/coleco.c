@@ -218,7 +218,7 @@ void coleco_insert_rom_cartridge(char *filename)
 
     int salir=0;
 
-    int bloques_totales=0;
+    //int bloques_totales=0;
 
 	for (bloque=0;bloque<2 && !salir;bloque++) {
         /*
@@ -238,7 +238,7 @@ When the system finds a header, it selects the ROM slot only on the memory page 
             //coleco_memory_slots[1][1+bloque]=COLECO_SLOT_MEMORY_TYPE_ROM;
             debug_printf (VERBOSE_INFO,"Loaded 16kb bytes of rom at slot 1 block %d",bloque);
 
-            bloques_totales++;
+            //bloques_totales++;
 
         }
         else {

@@ -2067,6 +2067,7 @@ char realtape_wave_offset=0;
 //5= O
 //6= TAP
 //7= PZX
+//TODO: creo que no sirve de mucho esta variable...
 int realtape_tipo=0;
 
 
@@ -2119,7 +2120,7 @@ void realtape_get_byte_cont(void)
 {
 
     //RWA, SMP, WAV, TZX, P, O, TAP, PZX
-	if (realtape_tipo>=0 || realtape_tipo<=7) {
+	if (realtape_tipo>=0 && realtape_tipo<=7) {
 		realtape_get_byte_rwa();
 		return;
 	}

@@ -299,7 +299,7 @@ int zx8081_lee_onda(unsigned char *longitud)
 {
 
 
-	int debug_leidos=0;
+	//int debug_leidos=0;
 	unsigned char veces;
 	int byte,byte_ant;
 
@@ -321,7 +321,7 @@ int zx8081_lee_onda(unsigned char *longitud)
 			return -1;
 		}
 		byte=zx8081_lee_byte();
-		debug_leidos++;
+		//debug_leidos++;
 
 		//Parche para soportar conversiones no muy buenas de smp a rwa, en que se repite el ultimo byte de vez en cuando
 		//Desactivado Parche, pues entonces lo que sucede es que con archivos rwa
@@ -351,7 +351,7 @@ int zx8081_lee_onda(unsigned char *longitud)
 
 	*longitud=veces+1;
 	//printf ("longitud despues de esperar cambio: %d leidos: %d\n",*longitud,debug_leidos);
-	debug_leidos=0;
+	//debug_leidos=0;
 
 	//A partir de ahora leer la longitud hasta que el cambio no sea brusco
 
@@ -397,7 +397,7 @@ int zx8081_lee_onda(unsigned char *longitud)
 
 		(*longitud)++;
 		byte_ant=byte;
-		debug_leidos++;
+		//debug_leidos++;
 	} while (1);
 
 

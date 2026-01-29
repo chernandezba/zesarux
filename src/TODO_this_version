@@ -125,4 +125,4 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 
 -Probar compilar contra ssl en mac desde homebrew
 
--Estadísticas de conexiones en servidor: darwin intel/arm, doble grep
+ok -Estadísticas de conexiones en servidor: darwin intel/arm, doble grep
