@@ -2614,7 +2614,7 @@ void easter_egg_random_pixels_front(void)
 
   int max_iteraciones=50*10; //50 frames, 10 segundos
 
-  int valor_si_transparente=0;
+  //int valor_si_transparente=0;
 
   //5 segundos
   for (iteraciones=0;iteraciones<max_iteraciones;iteraciones++) {
@@ -2644,7 +2644,7 @@ void easter_egg_random_pixels_front(void)
       for (entropia=0;entropia<y;entropia++) easter_egg_get_random();
     }
 
-    if (iteraciones>=max_iteraciones/2) valor_si_transparente++;
+    //if (iteraciones>=max_iteraciones/2) valor_si_transparente++;
 
     easter_egg_flush_display();
     usleep(1000000/50);

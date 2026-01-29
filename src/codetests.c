@@ -1892,10 +1892,11 @@ void codetests_get_pixel_color_scr(void)
         for (x=0;x<256;x++) {
             for (y=0;y<192;y++) {
                 //printf("%d %d\n",x,y);
-                int color=util_get_pixel_color_scr(buffer_get_pixel,x,y);
+                //int color=
+                util_get_pixel_color_scr(buffer_get_pixel,x,y);
 
                 //Esto solo para que no se queje el compilador de variable no usada
-                color++;
+                //color++;
             }
         }
 

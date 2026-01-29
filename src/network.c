@@ -1309,7 +1309,7 @@ int zsock_read_all_until_newline_streamaudio(int indice_tabla,z80_byte *buffer,i
 
 
 	int pos_destino=0;
-	int total_leidos=0;
+	//int total_leidos=0;
 	int leido_command_prompt=0;
 	int reintentos=0;
 
@@ -1340,7 +1340,7 @@ int zsock_read_all_until_newline_streamaudio(int indice_tabla,z80_byte *buffer,i
                     }
 
                     max_buffer -=leidos;
-                    total_leidos +=leidos;
+                    //total_leidos +=leidos;
                     pos_destino +=leidos;
 				}
 			}

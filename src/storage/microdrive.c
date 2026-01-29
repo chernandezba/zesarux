@@ -870,13 +870,13 @@ int mdr_get_info_file(z80_byte *origen,int total_sectors,char *nombre,int tamany
 
                         //Grabar ese bloque
                         //Si es record 0, saltar 9 bytes de la cabecera de datos
-                        int offset_a_grabar=30;
+                        //int offset_a_grabar=30;
                         //int tamanyo_restar=512;
 
                         z80_int rec_length=origen[offset_sector+17]+256*origen[offset_sector+18];
 
                         if (record_segment==0 && file->esprintfile==0) {
-                            offset_a_grabar+=9;
+                            //offset_a_grabar+=9;
                             rec_length-=9;
                         }
 

@@ -581,7 +581,7 @@ A=0 read, A=255 write
 
 
 
-	int leidos=0;
+	//int leidos=0;
 
 	for (;numero_sectores>0;numero_sectores--) {
 		for (byte_en_sector=0;byte_en_sector<betadisk_bytes_por_sector;byte_en_sector++) {
@@ -634,7 +634,7 @@ A=0 read, A=255 write
 
 			destino++;
 
-			leidos++;
+			//leidos++;
 		}
 		sector++;
         if (sector>=betadisk_sectores_por_pista) {

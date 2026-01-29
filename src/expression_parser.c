@@ -433,7 +433,7 @@ int exp_par_is_token_parser_textos_indices(char *texto,token_parser_textos_indic
 {
     //printf ("llamando a exp_par_is_token_parser_textos_indices con texto [%s]\n",texto);
 
-    int i=0;
+    //int i=0;
 
     while (textos_indices->indice!=TPI_FIN) {
         //printf ("i %d\n",i);
@@ -441,7 +441,7 @@ int exp_par_is_token_parser_textos_indices(char *texto,token_parser_textos_indic
             //printf ("es texto %s indice %d\n",textos_indices->texto,textos_indices->indice);
             return textos_indices->indice;
         }
-        i++;
+        //i++;
         textos_indices++;
     }
 
