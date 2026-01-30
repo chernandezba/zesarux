@@ -923,6 +923,17 @@ void zx81_disable_nmi_generator(void)
 }
 
 
+//con vsync , voltaje 0v, color negro, este valor a 255
+
+void zx8081_set_video_voltage_sync(void)
+{
+    video_zx8081_ula_video_output=255;
+}
+
+void zx8081_set_video_voltage_no_sync(void)
+{
+    video_zx8081_ula_video_output=0;
+}
 
 int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
@@ -947,7 +958,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
         tv_enable_vsync();
         zx8081_vsync_generator.v=1;
         //printf("Set vsync generator tv_y=%d\n",tv_get_y() );
-        video_zx8081_ula_video_output=255;
+        zx8081_set_video_voltage_sync();
 
         if (zx8081_detect_vsync_sound.v) {
             //si hay vsync en zonas no habituales (principio o fin) asumimos que puede generar sonido
@@ -1075,7 +1086,7 @@ void zx8081_out_any_port_video_stuff(void)
 
         tv_disable_vsync();
         zx8081_vsync_generator.v=0;
-        video_zx8081_ula_video_output=0;
+        zx8081_set_video_voltage_no_sync();
     }
 
     if (MACHINE_IS_ZX81_TYPE && nmi_generator_active.v)

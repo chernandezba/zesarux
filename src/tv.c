@@ -177,6 +177,7 @@ void tv_draw_line_beyond_syncs(int x_inicio,int y)
                     //tinta normalmente a 0
                     //papel normalmente a 15
 
+                    //Nota: esto es dependiente de la máquina a emular
                     if (video_zx8081_ula_video_output) color=zx80801_last_sprite_video_tinta;
                     else color=zx80801_last_sprite_video_papel;
 
