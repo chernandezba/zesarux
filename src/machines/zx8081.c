@@ -178,9 +178,9 @@ int video_zx8081_lcntr=0;
 
 
 //el siguiente valor que tendra una linea entera segun la ULA
-//con vsync , voltaje 0v, color negro, este valor a 255
-//sin vsync , voltaje "normal", color blanco, este valor a 0
-z80_byte video_zx8081_ula_video_output;
+//zx8081_ula_video_in_sync=1 : con vsync , voltaje 0v, color negro
+//zx8081_ula_video_in_sync=0 : sin vsync , voltaje "normal" (1V?), color blanco
+int zx8081_ula_video_in_sync=0;
 
 z80_byte zx80801_last_sprite_video=0;
 int zx80801_last_sprite_video_tinta=0;
@@ -927,17 +927,17 @@ void zx81_disable_nmi_generator(void)
 
 void zx8081_set_video_voltage_sync(void)
 {
-    video_zx8081_ula_video_output=255;
+    zx8081_ula_video_in_sync=1;
 }
 
 void zx8081_set_video_voltage_no_sync(void)
 {
-    video_zx8081_ula_video_output=0;
+    zx8081_ula_video_in_sync=0;
 }
 
 int zx8081_is_video_voltage_in_sync(void)
 {
-    return (video_zx8081_ula_video_output ? 1 : 0);
+    return (zx8081_ula_video_in_sync ? 1 : 0);
 }
 
 int zx8081_read_port_a0_low(z80_byte puerto_h)

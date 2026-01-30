@@ -95,7 +95,7 @@ extern int zx80801_last_sprite_video_papel;
 extern int zx8081_is_video_voltage_in_sync(void);
 
 extern int video_zx8081_lcntr;
-extern z80_byte video_zx8081_ula_video_output;
+
 
 extern void ula_zx8081_time_event(int delta);
 
