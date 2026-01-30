@@ -94,13 +94,9 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 ------
 
 #####  Cambio rutinas video ZX80/81
--view variables interfiere en render!!??? con breakout por ejemplo
+-view variables interfiere en render!??? con breakout por ejemplo
 
--franjas grabacion save no aparecen bien. probablemente por gestion de hsync timeout o vsync timeout
-si se activa simular vsync, se ven franjas de grabacion
-quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0/1 al casette) no es correcta y por eso no engancha vsync nunca
--Revisar franjas de load y save
-*video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
+-video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
 
 
 -Listado de juegos a comprobar en ZX80 y ZX81, meterlo en los scripts de test:
@@ -124,5 +120,3 @@ quiza es que al grabar, la señal de vsync "artificial" (generada de sacar los 0
 -Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
 
 -Probar compilar contra ssl en mac desde homebrew
-
-ok -Estadísticas de conexiones en servidor: darwin intel/arm, doble grep

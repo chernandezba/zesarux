@@ -1010,6 +1010,7 @@ Quizá demo raster zxuno falla porque la interrupción tarda demasiado...
 
 --- Mejoras especificos de zx80/81: ---
 
+-Revisar franjas de load y save, no salen igual que otros emuladores o máquinas reales
 
 -texto inverso en zx-80/81 con extension ansi y drivers de texto
 
