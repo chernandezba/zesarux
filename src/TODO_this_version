@@ -96,8 +96,6 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 #####  Cambio rutinas video ZX80/81
 -view variables interfiere en render!??? con breakout por ejemplo
 
--video_zx8081_ula_video_output deberia ser algun parametro de la tv. algo como 0/1 por defecto cuando no hay señal de "sprites"
-
 
 -Listado de juegos a comprobar en ZX80 y ZX81, meterlo en los scripts de test:
 -ZX80: la mayoria
@@ -114,6 +112,8 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
 
 -Compilar binario universal https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary
+->tendria que hacer compilación de cada archivo .c en dos .o, uno para cada arquitectura. Demasiado complicado.
+Lo mas fácil es generar dos binarios en dos entornos diferentes (uno en Mac silicon y el otro en Mac intel - o -target x86_64 en silicon)
 
 -Revisar todos opcodes de next que salgan en disassemble
 

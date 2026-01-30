@@ -2182,9 +2182,12 @@ fi
 
 
 if [ "$MAINSOURCE" = "scrcocoa" ]; then
+
+#Nota: antes indicaba clang explícitamente (y sin CFLAGS), pero dado que gcc y clang es el mismo binario en Mac, es mas coherente así, además que ahora puede usar O3 por ejemplo
+
 cat >> Makefile << _EOF
 scrcocoa.o: video/scrcocoa.m joystick.h compileoptions.h cpu.h start.h video/screen.h charset.h debug.h utils.h timer.h zxvision/zxvision.h machines/cpc.h machines/prism.h machines/sam.h machines/ql.h settings.h machines/msx.h machines/svi.h machines/coleco.h machines/sg1000.h machines/sms.h realjoystick.h machines/pcw.h
-	clang -I. -Iaudio -Ivideo -Icores -Imenu -Isnap -Icopy_interfaces -Imachines -I zxvision video/scrcocoa.m -c -o scrcocoa.o
+	\$(CC) \$(CFLAGS) -I. -Iaudio -Ivideo -Icores -Imenu -Isnap -Icopy_interfaces -Imachines -I zxvision video/scrcocoa.m -c -o scrcocoa.o
 
 _EOF
 
