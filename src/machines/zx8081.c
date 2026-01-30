@@ -935,6 +935,11 @@ void zx8081_set_video_voltage_no_sync(void)
     video_zx8081_ula_video_output=0;
 }
 
+int zx8081_is_video_voltage_in_sync(void)
+{
+    return (video_zx8081_ula_video_output ? 1 : 0);
+}
+
 int zx8081_read_port_a0_low(z80_byte puerto_h)
 {
 
@@ -1060,7 +1065,6 @@ void zx8081_out_any_port_video_stuff(void)
 
     }
 
-    //printf ("Sending vsync with hsync_generator_active : %d video_zx8081_ula_video_output: %d\n",hsync_generator_active.v,video_zx8081_ula_video_output);
 
 
     //printf("Enabling the HSYNC generator t_scanline_draw=%d\n",t_scanline_draw);

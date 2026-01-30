@@ -132,7 +132,7 @@ void cpu_core_loop_zx8081(void)
     else {
         if (esperando_tiempo_final_t_estados.v==0) {
 
-            if (video_zx8081_ula_video_output) zx80801_last_sprite_video=255;
+            if (zx8081_is_video_voltage_in_sync()) zx80801_last_sprite_video=255;
             else zx80801_last_sprite_video=0;
 
             zx80801_last_sprite_video_tinta=0;

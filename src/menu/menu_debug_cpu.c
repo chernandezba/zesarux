@@ -4301,7 +4301,7 @@ int menu_debug_registers_subview_type=0;
             //
             if (MACHINE_IS_ZX8081) {
                 sprintf (textoregistros,"LCNTR: %x ULAV: %s",(video_zx8081_lcntr &7),
-                    (video_zx8081_ula_video_output == 0 ? "+5V" : "0V"));
+                    (zx8081_is_video_voltage_in_sync() == 0 ? "+5V" : "0V"));
                 //menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
                 zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
             }
