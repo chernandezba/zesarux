@@ -966,10 +966,7 @@ int zx8081_read_port_a0_low(z80_byte puerto_h)
     }
 
 
-    //Para debug saber donde hay posible inicio vsync
-    //O es inicio vsync o simplemente se lee teclado
-    //Valor un tanto random que genera punteado en pantalla
-    //video_zx8081_ula_video_output=0x11;
+
 
     /*
     if (nmi_generator_active.v==0 && hsync_generator_active.v) {
