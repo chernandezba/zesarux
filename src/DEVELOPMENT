@@ -368,6 +368,14 @@ make
 make macapp
 
 
+** Versión para Mac Intel compilado desde Mac Arm ("Silicon")
+
+export CFLAGS="-mmacosx-version-min=10.13 -O3 -arch x86_64"
+export LDFLAGS="-mmacosx-version-min=10.13 -O3 -arch x86_64"
+
+Nota: Validado que ese binario generado desde Mac Silicon funciona en Mac Intel (en un macOS Catalina 10.15.7)
+
+
 
 
 **Windows
