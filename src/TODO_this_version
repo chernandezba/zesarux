@@ -114,9 +114,9 @@ ok -vista debug cpu 2: Info debug de sync voltage..: dice 0v y 5v? Creo que es 1
 Además en el módulo de tv hay que hacer que cuando se active una señal, se desactive la otra si está activada
 En ZX80/81:
 
--activar vsync: al leer puerto y nmi generator es off
--desactivar vsync: out a puerto
--activar hsync: en zx81 cada final de scanline. desactivar cuando pasa 16 ciclos.
+*activar vsync: al leer puerto y nmi generator es off
+*desactivar vsync: out a puerto
+*activar hsync: en zx81 cada final de scanline. desactivar cuando pasa 16 ciclos.
 en zx80: en ack de interrupción activar. desactivar cuando pasa 48 ciclos
 
 ->La lógica de la tv no permite generar hsync y vsync a la vez
