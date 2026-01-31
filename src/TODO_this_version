@@ -107,7 +107,6 @@ ok -vista debug cpu 2: Info debug de sync voltage..: dice 0v y 5v? Creo que es 1
 -Si toda imagen se basa en una única señal de voltaje (sync , “pixeles” etc) es posible que haya transición entre pixeles y vsync o hsync por ejemplo, y eso hace que el load y save se vea diferente en ZEsarUX que en máquina real o en zxsp?
 
 
--Quizá mi función nueva de sync o no sync no es correcta. Igual quiere decir 1 Voltio o 0
 
 -Si la señal de hsync y vsync tienen mismo voltaje, entonces cuando se lanza hsync o vsync el color en pantalla sería el mismo?
 

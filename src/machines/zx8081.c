@@ -178,8 +178,10 @@ int video_zx8081_lcntr=0;
 
 
 //el siguiente valor que tendra una linea entera segun la ULA
-//zx8081_ula_video_in_sync=1 : con vsync , voltaje 0v, color negro
-//zx8081_ula_video_in_sync=0 : sin vsync , voltaje "normal" (1V?), color blanco
+//zx8081_ula_video_in_sync=1 : con sync , voltaje 0v, color negro
+//zx8081_ula_video_in_sync=0 : sin sync , voltaje "normal" (1V), color blanco
+//sync (ya sea hsync o vsync) es 0V. Depende de lo que dure ese 0V será hsync o vsync (esta duración no la implemento
+//ni aqui ni en el módulo de emulación de tv)
 int zx8081_ula_video_in_sync=0;
 
 z80_byte zx80801_last_sprite_video=0;

@@ -4300,8 +4300,8 @@ int menu_debug_registers_subview_type=0;
             // Video zx80/81
             //
             if (MACHINE_IS_ZX8081) {
-                sprintf (textoregistros,"LCNTR: %x ULAV: %s",(video_zx8081_lcntr &7),
-                    (zx8081_is_video_voltage_in_sync() == 0 ? "+1V" : "0V"));
+                sprintf (textoregistros,"LCNTR: %x TV Volt: %s",(video_zx8081_lcntr &7),
+                    (zx8081_is_video_voltage_in_sync() ? "0V" : "1V"));
                 //menu_escribe_linea_opcion(linea++,-1,1,textoregistros);
                 zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
             }
