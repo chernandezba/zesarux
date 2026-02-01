@@ -94,18 +94,10 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 ------
 
 #####  Cambio rutinas video ZX80/81
--view variables interfiere en render!??? con breakout por ejemplo
-
 
 -Listado de juegos a comprobar en ZX80 y ZX81, meterlo en los scripts de test:
--ZX80: la mayoria
--ZX81: mazogs, 3dmonster maze, y los de hires: pseudo (manic, pacman), udg, wrx, chr$
--starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
-
-
-
-
--Si la señal de hsync y vsync tienen mismo voltaje, entonces cuando se lanza hsync o vsync el color en pantalla sería el mismo?
+*ZX80: la mayoria
+*ZX81: mazogs, 3dmonster maze, y los de hires: pseudo (manic, pacman), udg, wrx, chr$, starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
 
 
 ##### Fin Cambio rutinas video ZX80/81
