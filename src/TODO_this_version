@@ -102,26 +102,10 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 -ZX81: mazogs, 3dmonster maze, y los de hires: pseudo (manic, pacman), udg, wrx, chr$
 -starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
 
-ok -vista debug cpu 2: Info debug de sync voltage..: dice 0v y 5v? Creo que es 1 en vez de 5
-
--Si toda imagen se basa en una única señal de voltaje (sync , “pixeles” etc) es posible que haya transición entre pixeles y vsync o hsync por ejemplo, y eso hace que el load y save se vea diferente en ZEsarUX que en máquina real o en zxsp?
 
 
 
 -Si la señal de hsync y vsync tienen mismo voltaje, entonces cuando se lanza hsync o vsync el color en pantalla sería el mismo?
-
--Y si no pueden estar las dos señales a la vez, como lo gestiona la ula de zx81?
-Además en el módulo de tv hay que hacer que cuando se active una señal, se desactive la otra si está activada
-En ZX80/81:
-
-*activar vsync: al leer puerto y nmi generator es off
-*desactivar vsync: out a puerto
-*activar hsync: en zx81 cada final de scanline. desactivar cuando pasa 16 ciclos.
-en zx80: en ack de interrupción activar. desactivar cuando pasa 48 ciclos
-
-->La lógica de la tv no permite generar hsync y vsync a la vez
-->Quizá el zx80/81 permite que, si se activa hsync y vsync, si por ejemplo luego desactiva hsync, vsync siga generándose,
-por tanto mejor no hacer que la tv desactive una señal al activar la otra
 
 
 ##### Fin Cambio rutinas video ZX80/81

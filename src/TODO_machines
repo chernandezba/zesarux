@@ -1029,6 +1029,9 @@ la música de ORQUESTA llenan toda la pantalla
 *si no desactivo una señal al activar la otra (lo que se hace actualmente), Manic Miner sincroniza bien aunque las franjas
 de grabación de un SAVE o la música de ORQUESTA, no llenan toda la pantalla
 
+-Si toda imagen se basa en una única señal de voltaje (sync , “pixeles” etc) es posible que haya transición entre
+pixeles y vsync o hsync por ejemplo, y eso hace que el load y save se vea diferente en ZEsarUX que en máquina real o en zxsp?
+
 -------------
 
 
