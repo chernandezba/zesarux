@@ -1021,6 +1021,14 @@ Quizá demo raster zxuno falla porque la interrupción tarda demasiado...
 -ARX hires extension? https://k1.spdns.de/Vintage/Sinclair/80/Doityourself/ARX%20hires%20extension/
 Poco usada
 
+-En ZX80/81 cuando se activa vsync, se deberia desactivar hsync. Y si se activa hsync, se deberia desactivar vsync.
+Esto es porque no se pueden generar las dos señales a la vez (el módulo de TV eso ya lo impide)
+Pero sucede:
+*si desactivo una señal al activar la otra, Manic Miner no sincroniza por vsync. Y las franjas de grabación de un SAVE o
+la música de ORQUESTA llenan toda la pantalla
+*si no desactivo una señal al activar la otra (lo que se hace actualmente), Manic Miner sincroniza bien aunque las franjas
+de grabación de un SAVE o la música de ORQUESTA, no llenan toda la pantalla
+
 -------------
 
 

@@ -286,6 +286,9 @@ void tv_time_event(int delta)
     //if (tv_vsync_signal==0 && tv_hsync_signal==0)
     //printf("TV x: %3d y: %3d hsync %d vsync %d\n",tv_x,tv_y,tv_hsync_signal,tv_vsync_signal);
 
+    //Nota: es imposible generar vsync y hsync a la vez, al final se trata de mismo voltaje de sync
+    //pero una señal dura mas que la otra. Por tanto, la propia emulación de la TV impide que se tengan las dos a la vez,
+    //aunque la máquina emulada pretenda activar las dos a la vez
 
     if (tv_vsync_status!=VSYNC_ACCEPTING) {
         tv_time_event_store_chunk_image(delta);
