@@ -43,7 +43,6 @@ setting para compilar con clang
 -lightgun
 *rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
 en programa aparte, mostrando coordenada y en pantalla
-*emulación de otros sistemas opticos, como TROJAN LIGHT PEN (PRO ZX 128 + 2A / 3 +). Ver documento en extras
 
 ok-lightgun: magnum. poder tener margen de mas de 1 scanline (para el acid killer por ejemplo)
 -magnun: acid killer, ver por que no funciona en mitad derecha
@@ -62,9 +61,6 @@ Quizá con una opción y sólo si está el foco en ventana de debug CPU
 
 
 -revisar los salir_todos_menus=1 que se puedan cambiar por   menu_add_item_menu_se_cerrara( en el item de menu
-
--icono para snapshots in ram
-quiza icono ramdisk que englobe snapshots y otras cosas???
 
 
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
@@ -119,3 +115,7 @@ Lo mas fácil es generar dos binarios en dos entornos diferentes (uno en Mac sil
 
 -Probar compilar contra ssl en mac desde homebrew
 
+-Cambiar scripts docker para usar amd64:
+Ejemplo:
+docker run --rm -it --platform linux/amd64 rofrano/vagrant-provider:debian bash
+Alguno para arm? Aparte de raspberry...
