@@ -122,3 +122,24 @@ Alguno para arm? Aparte de raspberry...
 
 
 -Mac app dice que binario está dañado y no se puede abrir
+quitar atributo cuarentena:
+xattr -dr com.apple.quarantine ZEsarUX_macos-silicon-13-Beta1.dmg
+Si se quita en el dmg al descomprimirlo ya no se propaga
+Pero si no se quita (ya sea dmg o zip) al descomprimirlo se propaga dentro
+
+Posibles soluciones:
+
+1) distribuir por zip: pasa igual
+2) pagar cuenta developer
+3) por zip y con script instalación
+
+#!/bin/bash
+DIR="$(cd "$(dirname "$0")"; pwd)"
+
+echo "Quitando restricciones de macOS..."
+xattr -dr com.apple.quarantine "$DIR/MiApp.app"
+
+echo "Abriendo la aplicación..."
+open "$DIR/MiApp.app"
+---
+

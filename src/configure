@@ -2058,6 +2058,15 @@ windows:
 	echo
 	echo "Generated file is: ZEsarUX_windows-\$(EMULATOR_VERSION).zip"
 
+macappzip: all
+	mkdir -p ZEsarUX_mac-\$(EMULATOR_VERSION)/zesarux.app
+	cp -r macos/apptemplate/* ZEsarUX_mac-\$(EMULATOR_VERSION)/zesarux.app/
+	cp zesarux ZEsarUX_mac-\$(EMULATOR_VERSION)/zesarux.app/Contents/MacOS/zesarux
+	cp -a \$(COMMONFILES) ZEsarUX_mac-\$(EMULATOR_VERSION)/zesarux.app/Contents/Resources/
+	rm -f ZEsarUX_macos-\$(EMULATOR_VERSION).zip
+	zip -r ZEsarUX_macos-\$(EMULATOR_VERSION).zip ZEsarUX_mac-\$(EMULATOR_VERSION)/
+	echo "Generated file is: ZEsarUX_macos-\$(EMULATOR_VERSION).zip"
+
 macapp: all
 	mkdir -p macos/zesarux.app
 	cp -r macos/apptemplate/* macos/zesarux.app/
