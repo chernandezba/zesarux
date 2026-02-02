@@ -119,3 +119,6 @@ Lo mas fácil es generar dos binarios en dos entornos diferentes (uno en Mac sil
 Ejemplo:
 docker run --rm -it --platform linux/amd64 rofrano/vagrant-provider:debian bash
 Alguno para arm? Aparte de raspberry...
+
+
+-Mac app dice que binario está dañado y no se puede abrir
