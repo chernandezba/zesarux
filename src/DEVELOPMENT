@@ -329,38 +329,17 @@ make
 make rpi
 
 
-** Mac
+** Mac Arm ("Silicon")
 
-Generar dos binarios de Mac:
-(-Quizá versión legacy de Mac ya no tiene sentido. Requiere Mac OS reciente y los cflags O2 estarán soportados en todos los recientes )
-ZEsarUX-version-macos-legacy.dmg.gz
-Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio.
-
-con comandos:
-Versión sin optimizaciones, sin SSL:
-
-export CFLAGS="-mmacosx-version-min=10.13"
-export LDFLAGS="-mmacosx-version-min=10.13"
-
-./configure --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
-make clean
-make
-make macapp
-
-Y
-
-
-ZEsarUX-version-macos.dmg.gz
+ZEsarUX-version-macos-silicon.dmg
 Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio.
 con comandos:
 Versión con optimizaciones, sin SSL:
 
 
-export CFLAGS="-O3"
-export LDFLAGS="-O3"
+export CFLAGS="-mmacosx-version-min=11.0 -O3"
+export LDFLAGS="-mmacosx-version-min=11.0 -O3"
 
-#Al menos poner un 10.x dos versiones inferior al que yo tenga, suponiendo que funcione bien...
-#-Use otool -l /path/to/binary and inspect the LC_VERSION_MIN_MACOSX load command;
 
 ./configure --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
 make clean
@@ -368,13 +347,24 @@ make
 make macapp
 
 
-** Versión para Mac Intel compilado desde Mac Arm ("Silicon")
+** Mac Intel compilado desde Mac Arm ("Silicon")
+
+
+Nota: Validado que ese binario generado desde Mac Silicon funciona en Mac Intel (en un macOS Catalina 10.15.7)
+
+ZEsarUX-version-macos-intel.dmg
+Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio.
+con comandos:
+Versión con optimizaciones, sin SSL:
 
 export CFLAGS="-mmacosx-version-min=10.13 -O3 -arch x86_64"
 export LDFLAGS="-mmacosx-version-min=10.13 -O3 -arch x86_64"
 
-Nota: Validado que ese binario generado desde Mac Silicon funciona en Mac Intel (en un macOS Catalina 10.15.7)
 
+./configure --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
+make clean
+make
+make macapp
 
 
 
