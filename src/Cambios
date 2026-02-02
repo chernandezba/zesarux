@@ -18,6 +18,7 @@ Agregada emulación de Datel Lightwriter
 Agregada emulación de Spectrum Doodler Lightpen
 Agregada mirilla de lightgun
 Agregada vista previa de snapshots ZSF de máquinas QL, ZX80 y ZX81
+Agregada versión para macos Silicon
 Permitir ver GO SUB stack de ZX80 y ZX81
 Permitir caracteres utf-8 en footer
 Permitir grabar historial de smartload en un archivo
