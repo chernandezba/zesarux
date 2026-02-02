@@ -6585,8 +6585,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM) {
 
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_barato,NULL,
-                "Optical Input","Entrada Óptica","Entrada Óptica");
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Optical Input","Entrada óptica","Entrada òptica");
             menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",
                 (lightgun_emulation_enabled.v ? 'X' : ' '));
             menu_add_item_menu_opcion_conmuta(array_menu_hardware_settings,&lightgun_emulation_enabled);
