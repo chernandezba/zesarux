@@ -99,6 +99,10 @@ help() {
 	echo "Note: all docker actions get source code from git except localrun and localsh"
 }
 
+
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
+#export DOCKER_DEFAULT_PLATFORM=linux/arm64
+
 if [ $# == 0 ]; then
 	help
 	exit 1
