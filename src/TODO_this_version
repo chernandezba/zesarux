@@ -87,18 +87,7 @@ que van precedidos por DD/FD, ejemplo:
 
 En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto de satisfy o no, por que no lo tiene como opcode valido (aunque si lo es)
 
-------
 
-#####  Cambio rutinas video ZX80/81
-
--Listado de juegos a comprobar en ZX80 y ZX81, meterlo en los scripts de test:
-*ZX80: la mayoria
-*ZX81: mazogs, 3dmonster maze, y los de hires: pseudo (manic, pacman), udg, wrx, chr$, starfigh.81 creo que es muy sensible a timings, si la nmi tarda mas, va muy lento
-
-
-##### Fin Cambio rutinas video ZX80/81
-
-------
 
 -Opción para "apagar" la TV. útil? solo es pura curiosidad. no sirve de nada, lo único que genera es pantalla negra
 
@@ -121,25 +110,4 @@ docker run --rm -it --platform linux/amd64 rofrano/vagrant-provider:debian bash
 Alguno para arm? Aparte de raspberry...
 
 
--Mac app dice que binario está dañado y no se puede abrir
-quitar atributo cuarentena:
-xattr -dr com.apple.quarantine ZEsarUX_macos-silicon-13-Beta1.dmg
-Si se quita en el dmg al descomprimirlo ya no se propaga
-Pero si no se quita (ya sea dmg o zip) al descomprimirlo se propaga dentro
-
-Posibles soluciones:
-
-1) distribuir por zip: pasa igual
-2) pagar cuenta developer
-3) por zip y con script instalación
-
-#!/bin/bash
-DIR="$(cd "$(dirname "$0")"; pwd)"
-
-echo "Quitando restricciones de macOS..."
-xattr -dr com.apple.quarantine "$DIR/MiApp.app"
-
-echo "Abriendo la aplicación..."
-open "$DIR/MiApp.app"
----
 

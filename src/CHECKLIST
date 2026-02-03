@@ -20,6 +20,10 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -ejecutar tests/games_tests.sh
 
+-ejecutar tests/games_tests_zx80.sh
+
+-ejecutar tests/games_tests_zx81.sh
+
 -ejecutar tests/automatic_test_cycle_machines.sh
 
 -probar cambio idioma menu y ver diferentes menus
