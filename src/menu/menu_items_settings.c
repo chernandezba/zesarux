@@ -13088,6 +13088,14 @@ void menu_zxdesktop_set_configurable_icons_create_link_to_machine(MENU_ITEM_PARA
 
 }
 
+void menu_zxdesktop_set_configurable_icons_modify_help_sendkeys(MENU_ITEM_PARAMETERS)
+{
+    menu_generic_message("Help SendKeysMenu","This icon opens the menu and simulate pressing keys specified on the icon parameters\n"
+        "You can, for example, send keys 'la' to open Help Menu-> About\n"
+        "There's a special key, @, that simulates pressing ESC to close menus");
+
+}
+
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
 
@@ -13181,6 +13189,12 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_create_link_to_machine,
                 NULL,"Create Icon on ZX Desktop","Crear Icono en ZX Desktop","Crear Icona a ZX Desktop");
 
+        }
+
+        //Si icono es send keys, agregar ayuda
+        if (id_funcion==F_FUNCION_SEND_KEYS_MENU) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_modify_help_sendkeys,NULL,
+                "Help","Ayuda","Ajuda");
         }
 
         //Si icono es Papelera
