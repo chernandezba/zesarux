@@ -1175,7 +1175,7 @@ extern void menu_warn_message(char *texto);
 extern void menu_error_message(char *texto);
 extern void menu_error_message_format(const char * format , ...);
 
-extern void menu_generic_message(char *titulo, const char * texto);
+extern void zxvision_generic_message(char *titulo, const char * texto);
 extern void menu_generic_message_format(char *titulo, const char * format , ...);
 extern void menu_generic_message_splash(char *titulo, const char * texto);
 extern void menu_generic_message_warn(char *titulo, const char * texto);

@@ -3876,7 +3876,7 @@ void util_daad_get_condact_message(char *buffer)
 	}
 
 
-	menu_generic_message("Message",buffer);
+	zxvision_generic_message("Message",buffer);
 
 
 }

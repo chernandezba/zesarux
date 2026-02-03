@@ -722,7 +722,7 @@ void menu_mem_breakpoints_list(MENU_ITEM_PARAMETERS)
 
         results_buffer[index_buffer]=0;
 
-        menu_generic_message("List Memory Breakpoints",results_buffer);
+        zxvision_generic_message("List Memory Breakpoints",results_buffer);
 
         free(results_buffer);
 }
@@ -731,7 +731,7 @@ void menu_mem_breakpoints_clear(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Clear Mem breakpoints")) {
         clear_mem_breakpoints();
-        menu_generic_message("Clear Mem breakpoints","OK. All memory breakpoints cleared");
+        zxvision_generic_message("Clear Mem breakpoints","OK. All memory breakpoints cleared");
     }
 }
 
@@ -740,7 +740,7 @@ void menu_clear_all_breakpoints(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Delete all breakpoints")) {
         init_breakpoints_table();
-        menu_generic_message("Delete all breakpoints","OK. All breakpoints deleted");
+        zxvision_generic_message("Delete all breakpoints","OK. All breakpoints deleted");
     }
 }
 
@@ -862,7 +862,7 @@ void menu_breakpoints_conditions_set_cancel(MENU_ITEM_PARAMETERS)
 
 void menu_breakpoints_conditions_help(MENU_ITEM_PARAMETERS)
 {
-    menu_generic_message("Help","Set a condition breakpoint, its action and the pass count.\n"
+    zxvision_generic_message("Help","Set a condition breakpoint, its action and the pass count.\n"
         HELP_MESSAGE_CONDITION_BREAKPOINT
         "\n\n\n"
         HELP_MESSAGE_BREAKPOINT_ACTION
@@ -6096,7 +6096,7 @@ void menu_debug_daad_view_messages(MENU_ITEM_PARAMETERS)
 
     if (resultado) menu_warn_message("Reached maximum text size. Showing only allowed text");
 
-    menu_generic_message(window_title,texto);
+    zxvision_generic_message(window_title,texto);
 
     free(texto);
 }
@@ -6117,7 +6117,7 @@ void menu_debug_daad_connections(void)
     util_textdaventure_dump_connections(texto,MAX_TEXTO_GENERIC_MESSAGE);
 
 
-    menu_generic_message("Connections",texto);
+    zxvision_generic_message("Connections",texto);
 
     free(texto);
 }
@@ -6133,7 +6133,7 @@ void menu_debug_gac_view_objects(MENU_ITEM_PARAMETERS)
 
     util_gac_dump_objects_from_menu(texto);
 
-    menu_generic_message("GAC objects",texto);
+    zxvision_generic_message("GAC objects",texto);
 
     free(texto);
 }
@@ -6149,7 +6149,7 @@ void menu_debug_gac_view_dictionary(MENU_ITEM_PARAMETERS)
 
     util_gac_dump_diccionario(texto);
 
-    menu_generic_message("GAC dictionary",texto);
+    zxvision_generic_message("GAC dictionary",texto);
 
     free(texto);
 }
@@ -6183,7 +6183,7 @@ void menu_debug_gac_view_verbs_etc(MENU_ITEM_PARAMETERS)
     }
 
 
-    menu_generic_message(buffer_titulo,texto);
+    zxvision_generic_message(buffer_titulo,texto);
 
     free(texto);
 }
@@ -6203,7 +6203,7 @@ void menu_debug_gac_view_locations(MENU_ITEM_PARAMETERS)
     util_gac_dump_locations(texto,MAX_TEXTO_GENERIC_MESSAGE);
 
 
-    menu_generic_message("GAC locations",texto);
+    zxvision_generic_message("GAC locations",texto);
 
     free(texto);
 }
@@ -6223,7 +6223,7 @@ void menu_debug_gac_view_messages(MENU_ITEM_PARAMETERS)
     util_gac_dump_messages(texto,MAX_TEXTO_GENERIC_MESSAGE);
 
 
-    menu_generic_message("GAC messages",texto);
+    zxvision_generic_message("GAC messages",texto);
 
     free(texto);
 }
@@ -6388,7 +6388,7 @@ void menu_debug_daad_get_condact_message(void)
     char buffer[256];
 
     util_daad_get_condact_message(buffer);
-    menu_generic_message("Message",buffer);
+    zxvision_generic_message("Message",buffer);
 
 
 }
@@ -7805,7 +7805,7 @@ void menu_debug_daad_view_graphics_render_list_commands(MENU_ITEM_PARAMETERS)
 
     menu_debug_daad_view_graphics_list_commands_aux(menu_debug_daad_view_graphics_render_localizacion,texto,0);
 
-    menu_generic_message("Graphics commands",texto);
+    zxvision_generic_message("Graphics commands",texto);
 
     free(texto);
 }
@@ -8623,7 +8623,7 @@ void menu_debug_cpu_history_select(MENU_ITEM_PARAMETERS)
     char string_mensaje[2048];
     sprintf(string_mensaje,"%s\n\n%s",string_destino_registros,string_disassemble);
 
-    //menu_generic_message("Registers",string_mensaje);
+    //zxvision_generic_message("Registers",string_mensaje);
 
 
     int opcion_seleccionada=zxvision_menu_generic_message_two_buttons("Registers", string_mensaje,"<GO to PC>", "<OK>");
@@ -8840,7 +8840,7 @@ int menu_debug_registers_print_main_step(zxvision_window *ventana)
 void menu_debug_help(void)
 {
     if (gui_language==GUI_LANGUAGE_SPANISH) {
-        menu_generic_message("Ayuda",
+        zxvision_generic_message("Ayuda",
         "En esta ventana de Debug CPU se pueden tener diferentes vistas (seleccionables con las teclas 1-8), cada una mostrando diferente información:\n"
         "1 - Vista por defecto. Se muestra una zona superior con desensamblado de instrucciones y registros. Esta zona se puede cambiar mediante tecla m, "
         "la cual conmuta en vista de desensamblado, vista hexadecimal, vista ascii, y vista de desensamblado sin registros.\n"
@@ -8964,7 +8964,7 @@ void menu_debug_help(void)
     }
 
     else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        menu_generic_message("Ajuda",
+        zxvision_generic_message("Ajuda",
         "En aquesta finestra de Debug CPU es poden tenir diferents vistes (seleccionables amb les tecles 1-8), cadascuna mostrant diferent informació:\n"
         "1 - Vista per defecte. Es mostra una zona superior amb desensamblat d'instruccions i registres. Aquesta zona es pot canviar mitjançant tecla m, "
         "la qual commuta en vista de desassemblat, vista hexadecimal, vista ascii, i vista de desassemblat sense registres.\n"
@@ -9089,7 +9089,7 @@ void menu_debug_help(void)
 
 
     else {
-        menu_generic_message("Help",
+        zxvision_generic_message("Help",
         "This Debug CPU window can show different views (chosen with keys 1-8), each of them showing different information:\n"
         "1 - Default view. You see a top section with opcodes disassembly and registers. This section can be changed pressing key m, "
         "switching from: disassembly, hexadecimal, ascii, and disassembly without registers.\n"
@@ -12481,7 +12481,7 @@ void menu_debug_textadventure_map_incdec_zoom(zxvision_window *ventana,int incde
 void menu_debug_text_adventure_help(void)
 {
     if (gui_language==GUI_LANGUAGE_SPANISH) {
-        menu_generic_message("Ayuda",
+        zxvision_generic_message("Ayuda",
         "Esta ventana es un mapa de la aventura conversacional. Se genera automaticamente sin necesidad de visitar cada posicion (localidad).\n"
         "ZEsarUX se encarga de visitar el mapeado de localidades entero nada mas cargar el juego, utilizando un algoritmo recursivo, "
         "donde se genera un mapa en cuadricula y se van ubicando cada localidad.\n"
@@ -12515,7 +12515,7 @@ void menu_debug_text_adventure_help(void)
     }
 
     else if (gui_language==GUI_LANGUAGE_CATALAN) {
-        menu_generic_message("Ajuda",
+        zxvision_generic_message("Ajuda",
         "Aquesta finestra és un mapa de l'aventura conversacional. Es genera automàticament sense necessitat de visitar cada posició (localitat).\n"
         "ZEsarUX s'encarrega de visitar el mapejat de localitats sencer tot just carregar el joc, utilitzant un algoritme recursiu,"
         "on es genera un mapa en quadrícula i es van ubicant cada localitat.\n"
@@ -12549,7 +12549,7 @@ void menu_debug_text_adventure_help(void)
     }
 
     else {
-        menu_generic_message("Help",
+        zxvision_generic_message("Help",
         "This window is a map of the text adventure. It is generated automatically without the need to visit each position (location).\n"
         "ZEsarUX takes care of visiting the entire location map as soon as the game loads, using a recursive algorithm, "
         "where a grid map is generated and each location is located.\n"

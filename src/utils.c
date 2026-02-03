@@ -23028,7 +23028,7 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
     if (mem_after_headers!=NULL && http_code==200) {
         //temp limite
         //mem_after_headers[10000]=0;
-        //menu_generic_message("Games",mem_after_headers);
+        //zxvision_generic_message("Games",mem_after_headers);
         //char texto_final[30000];
 
         //int indice_destino=0;

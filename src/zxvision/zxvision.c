@@ -9281,7 +9281,7 @@ void menu_muestra_pending_error_message(void)
     if (if_pending_error_message) {
         if_pending_error_message=0;
         debug_printf (VERBOSE_INFO,"Showing pending error message on menu");
-        //menu_generic_message("ERROR",pending_error_message);
+        //zxvision_generic_message("ERROR",pending_error_message);
         menu_error_message(pending_error_message);
     }
 }
@@ -20374,7 +20374,7 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 
 
                 if (texto_ayuda!=NULL) {
-                    menu_generic_message(titulo_texto,texto_ayuda);
+                    zxvision_generic_message(titulo_texto,texto_ayuda);
                 }
                 else {
                     printf ("Item has no %s\n",titulo_texto);
@@ -20829,7 +20829,7 @@ void menu_dibuja_menu_help_tooltip(char *texto, int si_tooltip)
             zxvision_generic_message_tooltip("Tooltip" , 0, 0 ,0,1,0,NULL,0,0, "%s",texto);
         }
 
-        else menu_generic_message("Help",texto);
+        else zxvision_generic_message("Help",texto);
 
         //Restauramos funcion anterior de overlay
         //set_menu_overlay_function(previous_function);
@@ -21325,7 +21325,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 /*
         if (if_pending_error_message) {
                 if_pending_error_message=0;
-                menu_generic_message("ERROR",pending_error_message);
+                zxvision_generic_message("ERROR",pending_error_message);
         }
 */
 
@@ -25304,7 +25304,7 @@ void menu_generic_message_format(char *titulo, const char * texto_format , ...)
     free(texto);
 }
 
-void menu_generic_message(char *titulo, const char * texto)
+void zxvision_generic_message(char *titulo, const char * texto)
 {
 
         //menu_generic_message_tooltip(titulo, 0, 0, 0, NULL, "%s", texto);
@@ -28008,7 +28008,7 @@ void menu_inicio(void)
                     if (quickload(quickload_file)) {
                         debug_printf (VERBOSE_ERR,"Unknown file format");
 
-                        //menu_generic_message("ERROR","Unknown file format");
+                        //zxvision_generic_message("ERROR","Unknown file format");
                     }
                 }
                 menu_muestra_pending_error_message(); //Si se genera un error derivado del quickload

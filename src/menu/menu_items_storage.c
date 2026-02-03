@@ -2557,7 +2557,7 @@ int menu_convert_audio_to_zx81_window_running=0;
 void menu_convert_audio_to_zx81_help(void)
 {
 
-    menu_generic_message("Help",
+    zxvision_generic_message("Help",
         "This tool reads from a ZX81 audio file and converts it to digital format (.p, .p81).\n"
         "The input audio file can be a .raw file (in this case: any sample frequency, mono, 8 bit, unsigned), "
         "a .rwa file (15600 Hz, mono, 8 bit, unsigned) "
@@ -3243,7 +3243,7 @@ void menu_timexcart_load(MENU_ITEM_PARAMETERS)
 void menu_timexcart_eject(MENU_ITEM_PARAMETERS)
 {
     timex_empty_dock_space();
-    menu_generic_message("Eject Cartridge","OK. Cartridge ejected");
+    zxvision_generic_message("Eject Cartridge","OK. Cartridge ejected");
 }
 
 
@@ -4560,7 +4560,7 @@ void menu_hilow_convert_help(void)
 {
 
 
-        menu_generic_message("Help",
+        zxvision_generic_message("Help",
         "This tool reads from a HiLow Tape Audio file and converts it to Data Drive Hilow image file (.ddh) that can be used on ZEsarUX.\n"
         "The input audio file can be a .raw file (in this case: 44100 Hz, mono, 8 bit, unsigned) but also a .wav file (you will need sox utility configured to read .wav).\n"
         "The input audio file must be divided on two files: one from the side A, and the other one from the side B.\n"
@@ -9003,7 +9003,7 @@ void microdrive_raw_map_edit_index(void)
 void microdrive_raw_map_help(void)
 {
 
-    menu_generic_message("Help",
+    zxvision_generic_message("Help",
     "This window is a raw map of the microdrive. It means that you can see positions on microdrive where data is stored but also "
     "zones that don't have any data (gaps, zones when the head has erased the data but not written anything)\n"
     "\n"

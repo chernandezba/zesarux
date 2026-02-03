@@ -594,7 +594,7 @@ void menu_debug_poke_pok_file_select(char *pokfile)
 
                 }
 
-                if (result_poke==0) menu_generic_message("Poke","OK. Poke applied");
+                if (result_poke==0) zxvision_generic_message("Poke","OK. Poke applied");
             }
 
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
@@ -790,7 +790,7 @@ void menu_cpu_full_stats(unsigned int *stats_table,char *title,z80_byte preffix1
 
     stats_buffer[index_buffer]=0;
 
-    menu_generic_message(title,stats_buffer);
+    zxvision_generic_message(title,stats_buffer);
 
     free(stats_buffer);
 
@@ -10964,7 +10964,7 @@ void menu_cpu_transaction_log_truncate(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Truncate log file")) {
         transaction_log_truncate();
-        menu_generic_message("Truncate log file","OK. Log truncated");
+        zxvision_generic_message("Truncate log file","OK. Log truncated");
     }
 }
 
@@ -16823,12 +16823,12 @@ void menu_network_http_request(MENU_ITEM_PARAMETERS)
             if (mem_after_headers) {
                 menu_generic_message_format("Http code","%d",http_code);
                 mem_mensaje=mem_after_headers;
-                //menu_generic_message("Response",mem_after_headers);
+                //zxvision_generic_message("Response",mem_after_headers);
             }
         }
         else {
             mem_mensaje=mem;
-            //menu_generic_message("Response",mem);
+            //zxvision_generic_message("Response",mem);
         }
     }
 
@@ -16847,7 +16847,7 @@ void menu_network_http_request(MENU_ITEM_PARAMETERS)
             mem_mensaje[max_longitud]=0;
         }
 
-        menu_generic_message("Response",mem_mensaje);
+        zxvision_generic_message("Response",mem_mensaje);
 
     }
 
@@ -17630,7 +17630,7 @@ void menu_divmmc_rom_file(MENU_ITEM_PARAMETERS)
 
         }
 
-                menu_generic_message("Change DIVMMC ROM","OK. Remember to enable DIVMMC paging to load the firmware");
+                zxvision_generic_message("Change DIVMMC ROM","OK. Remember to enable DIVMMC paging to load the firmware");
 }
 
 void menu_storage_diviface_eprom_write_jumper(MENU_ITEM_PARAMETERS)
@@ -18476,7 +18476,7 @@ void menu_divide_rom_file(MENU_ITEM_PARAMETERS)
 
         }
 
-                menu_generic_message("Change DIVIDE ROM","OK. Remember to enable DIVIDE paging to load the firmware");
+                zxvision_generic_message("Change DIVIDE ROM","OK. Remember to enable DIVIDE paging to load the firmware");
 }
 
 void menu_storage_ide_write_protect(MENU_ITEM_PARAMETERS)
@@ -27172,7 +27172,7 @@ void menu_find_bytes_clear_results(MENU_ITEM_PARAMETERS)
 {
         menu_find_bytes_clear_results_process();
 
-        menu_generic_message("Clear Results","OK. Results cleared");
+        zxvision_generic_message("Clear Results","OK. Results cleared");
 }
 
 /*
@@ -27213,7 +27213,7 @@ void old_delete_menu_find_bytes_view_results(MENU_ITEM_PARAMETERS)
 
         results_buffer[index_buffer]=0;
 
-        menu_generic_message("View Results",results_buffer);
+        zxvision_generic_message("View Results",results_buffer);
 }
 */
 
@@ -27701,10 +27701,10 @@ void menu_find_lives_initial(MENU_ITEM_PARAMETERS)
     //Si estamos en estado 0
     if (menu_find_lives_state==0) {
         if (total_items_found==0) {
-             menu_generic_message("Find lives","Sorry, no lives counter found");
+             zxvision_generic_message("Find lives","Sorry, no lives counter found");
         }
         else {
-            menu_generic_message("Find lives","Ok. Continue playing game and come back when you lose a life");
+            zxvision_generic_message("Find lives","Ok. Continue playing game and come back when you lose a life");
             menu_find_lives_state=1;
         }
     }
@@ -27712,11 +27712,11 @@ void menu_find_lives_initial(MENU_ITEM_PARAMETERS)
     //Si estamos en estado 1
     else if (menu_find_lives_state==1) {
         if (total_items_found==0) {
-            menu_generic_message("Find lives","Sorry, I haven't found any addresses. The process has been restarted");
+            zxvision_generic_message("Find lives","Sorry, I haven't found any addresses. The process has been restarted");
             menu_find_lives_state=0;
         }
         else if (total_items_found!=1) {
-             menu_generic_message("Find lives","Sorry, no unique address found. You may want to try again losing another live or maybe manually find it on the Find bytes menu");
+             zxvision_generic_message("Find lives","Sorry, no unique address found. You may want to try again losing another live or maybe manually find it on the Find bytes menu");
         }
         else {
 
@@ -27735,7 +27735,7 @@ void menu_find_lives_initial(MENU_ITEM_PARAMETERS)
 
             menu_find_lives_state=2;
 
-            menu_generic_message("Find lives","Great. Memory pointer found");
+            zxvision_generic_message("Find lives","Great. Memory pointer found");
         }
     }
 
@@ -32103,7 +32103,7 @@ void menu_about_read_file(char *title,char *aboutfile,int show_err_if_big)
 
     if (buffer_memory==NULL) return;
 
-    menu_generic_message(title,buffer_memory);
+    zxvision_generic_message(title,buffer_memory);
 
     free(buffer_memory);
 
@@ -32194,7 +32194,7 @@ void menu_about_donate(MENU_ITEM_PARAMETERS)
     }
 
     else {
-        menu_generic_message("Donate",buffer_memory);
+        zxvision_generic_message("Donate",buffer_memory);
     }
 
 
@@ -32513,7 +32513,7 @@ void menu_about_compile_info(MENU_ITEM_PARAMETERS)
         char buffer[MAX_COMPILE_INFO_LENGTH];
         get_compile_info(buffer);
 
-    menu_generic_message("Compile info",
+    zxvision_generic_message("Compile info",
         buffer
     );
 }
@@ -32523,7 +32523,7 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
 {
 
     if (!menu_cond_stdout() ) {
-        menu_generic_message("Help",
+        zxvision_generic_message("Help",
             "On Menu:\n"
             "Use cursor keys to move\n"
             "Press F1 (or h on some video drivers) on an option to see its help\n"
@@ -32609,7 +32609,7 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
     }
 
     else {
-        menu_generic_message("Help","Press h<num> to see help for <num> option, for example: h3\n"
+        zxvision_generic_message("Help","Press h<num> to see help for <num> option, for example: h3\n"
                 "Press t<num> to see tooltip for <num> option\n"
                 "Unavailable options may be hidden, or disabled, which are shown with x cursor\n"
                 "ESC text gives you to the previous menu\n"
@@ -32625,7 +32625,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
 {
 
 
-        menu_generic_message("Background Windows Help",
+        zxvision_generic_message("Background Windows Help",
             "When you enable Background Windows (from Settings-> ZX Vision), "
             "some features are added to the ZX Desktop and some behaviour is modified. \n"
             "\n"
@@ -33210,7 +33210,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
     //Final del asistente
     sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
-    menu_generic_message(start_wizard_window_title,mensaje_fin);
+    zxvision_generic_message(start_wizard_window_title,mensaje_fin);
     salir_todos_menus=1;
 
 }
@@ -35420,7 +35420,7 @@ void menu_write_message(MENU_ITEM_PARAMETERS)
     buffer_texto[0]=0;
     menu_ventana_scanf("Just write...",buffer_texto,256);
 
-    menu_generic_message("Your message",buffer_texto);
+    zxvision_generic_message("Your message",buffer_texto);
 
 
 }
@@ -35449,7 +35449,7 @@ void menu_debug_timesensors(MENU_ITEM_PARAMETERS)
         sprintf (&timesensors_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
     }
 
-    menu_generic_message("Sensors",timesensors_buffer);
+    zxvision_generic_message("Sensors",timesensors_buffer);
 
     free(timesensors_buffer);
 
@@ -35723,7 +35723,7 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
-    menu_generic_message("Machine Information",text_buffer);
+    zxvision_generic_message("Machine Information",text_buffer);
 
     free(text_buffer);
 }
@@ -37113,7 +37113,7 @@ void menu_snapshot_add_note(MENU_ITEM_PARAMETERS)
 
 void menu_snapshot_view_loaded_note(MENU_ITEM_PARAMETERS)
 {
-    menu_generic_message("Loaded note",snap_zsf_note_loaded);
+    zxvision_generic_message("Loaded note",snap_zsf_note_loaded);
 }
 
 void menu_snapshot(MENU_ITEM_PARAMETERS)
@@ -37355,7 +37355,7 @@ void menu_msxcart_eject(MENU_ITEM_PARAMETERS)
     else if (MACHINE_IS_SMS) sms_empty_romcartridge_space();
     else if (MACHINE_IS_SVI) svi_empty_romcartridge_space();
     else msx_empty_romcartridge_space();
-    menu_generic_message("Eject Cartridge","OK. Cartridge ejected");
+    zxvision_generic_message("Eject Cartridge","OK. Cartridge ejected");
 }
 
 void menu_sms_mapper_type(MENU_ITEM_PARAMETERS)
@@ -38146,7 +38146,7 @@ void menu_z88_slot_erase_eprom_flash(MENU_ITEM_PARAMETERS)
 {
         if (menu_confirm_yesno("Erase Card")==1) {
         z88_erase_eprom_flash();
-        menu_generic_message("Erase Card","OK. Card erased");
+        zxvision_generic_message("Erase Card","OK. Card erased");
         }
 }
 
@@ -38249,7 +38249,7 @@ void menu_z88_slot_copy_to_eprom_flash(MENU_ITEM_PARAMETERS)
 
 
         if (z88_eprom_flash_fwrite(nombre_eprom,datos,leidos)==0) {
-            menu_generic_message("Copy File","OK. File copied to Card");
+            zxvision_generic_message("Copy File","OK. File copied to Card");
         }
 
         free(datos);
@@ -38426,7 +38426,7 @@ void menu_z88_slot_copy_from_eprom(MENU_ITEM_PARAMETERS)
 
                                   fclose(ptr_file_save);
                 }
-    menu_generic_message("Copy File","OK. File copied from Card to Disk");
+    zxvision_generic_message("Copy File","OK. File copied from Card to Disk");
 
 
 
@@ -40480,7 +40480,7 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
                     //menu_generic_message_splash("Empty buffer","Buffer has been emptied");
 
 
-                    menu_generic_message("Empty buffer","Buffer has been emptied");
+                    zxvision_generic_message("Empty buffer","Buffer has been emptied");
                 }
             break;
 
@@ -42440,7 +42440,7 @@ void menu_cpc_additional_roms_info(MENU_ITEM_PARAMETERS)
     }
 
 
-    menu_generic_message("ROM Information",text_buffer);
+    zxvision_generic_message("ROM Information",text_buffer);
 
 
 
@@ -45977,7 +45977,7 @@ void menu_search(MENU_ITEM_PARAMETERS)
 
     if (text_buffer[0]==0) strcpy(text_buffer,"(Nothing)");
 
-    menu_generic_message("Search results",text_buffer);
+    zxvision_generic_message("Search results",text_buffer);
 
     free(text_buffer);
 }

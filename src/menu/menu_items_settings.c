@@ -1252,11 +1252,11 @@ void menu_full_index_search(MENU_ITEM_PARAMETERS)
         menu_dibuja_menu_recorrer_menus=1;
 
         if (zxvision_topbar_menu_enabled.v) {
-            menu_generic_message("Full index scan","Press a key. Then open Main Menu (Z) and enjoy the party...");
+            zxvision_generic_message("Full index scan","Press a key. Then open Main Menu (Z) and enjoy the party...");
         }
 
         else {
-            menu_generic_message("Full index scan","Press a key. Then press F5 and enjoy the party...");
+            zxvision_generic_message("Full index scan","Press a key. Then press F5 and enjoy the party...");
         }
 
         force_menu_dibuja_menu_recorrer_menus=1;
@@ -2059,7 +2059,7 @@ void menu_interface_restore_windows_geometry(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Restore windows geometry")) {
         util_clear_all_windows_geometry();
-        menu_generic_message("Restore windows geometry","OK. All windows restored to their default positions and sizes");
+        zxvision_generic_message("Restore windows geometry","OK. All windows restored to their default positions and sizes");
     }
 }
 
@@ -2188,7 +2188,7 @@ void menu_interface_restore_first_aid(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Restore all first aid") ) {
         menu_first_aid_restore_all();
-        menu_generic_message("Restore messages","OK. Restored all first aid messages");
+        zxvision_generic_message("Restore messages","OK. Restored all first aid messages");
     }
 }
 
@@ -5889,8 +5889,8 @@ void menu_hardware_zxprinter_copy(MENU_ITEM_PARAMETERS)
     }
 
 
-    if (menu_multitarea) menu_generic_message("COPY","OK. COPY executed");
-    else menu_generic_message("COPY","Register PC set to the COPY routine. Return to the emulator to let the COPY routine to be run");
+    if (menu_multitarea) zxvision_generic_message("COPY","OK. COPY executed");
+    else zxvision_generic_message("COPY","Register PC set to the COPY routine. Return to the emulator to let the COPY routine to be run");
 
 
 }
@@ -11392,7 +11392,7 @@ void menu_hardware_realjoystick_set_defaults(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno_texto("Set to defaults","Sure?")==1) {
         realjoystick_new_set_default_functions();
-        menu_generic_message("Set to defaults","OK. Events and keys tables set to default values");
+        zxvision_generic_message("Set to defaults","OK. Events and keys tables set to default values");
     }
 }
 
@@ -11400,7 +11400,7 @@ void menu_hardware_realjoystick_set_defaults(MENU_ITEM_PARAMETERS)
 void menu_hardware_realjoystick_native(MENU_ITEM_PARAMETERS)
 {
     no_native_linux_realjoystick.v ^=1;
-    menu_generic_message("Linux native driver","OK. You must reopen ZEsarUX to apply this setting");
+    zxvision_generic_message("Linux native driver","OK. You must reopen ZEsarUX to apply this setting");
 }
 
 void menu_hardware_realjoystick_steering_enable(MENU_ITEM_PARAMETERS)
@@ -13090,7 +13090,7 @@ void menu_zxdesktop_set_configurable_icons_create_link_to_machine(MENU_ITEM_PARA
 
 void menu_zxdesktop_set_configurable_icons_modify_help_sendkeys(MENU_ITEM_PARAMETERS)
 {
-    menu_generic_message("Help SendKeysMenu","This icon opens the menu and simulate pressing keys specified on the icon parameters\n"
+    zxvision_generic_message("Help SendKeysMenu","This icon opens the menu and simulate pressing keys specified on the icon parameters\n"
         "You can, for example, send keys 'la' to open Help Menu-> About\n"
         "There's a special key, @, that simulates pressing ESC to close menus");
 

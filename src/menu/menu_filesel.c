@@ -2655,7 +2655,7 @@ void menu_filesel_copy_recursive_start(char *archivo,char *nombre_final,int simu
         }
 
         else {
-            menu_generic_message("Copy folder","OK. Folder copied");
+            zxvision_generic_message("Copy folder","OK. Folder copied");
         }
 
 
@@ -2670,7 +2670,7 @@ void menu_filesel_copy_recursive_start(char *archivo,char *nombre_final,int simu
     //No se si hay alguien que compile sin soporte de threads, pero al menos, avisarle y mostrarle un ok cuando finalice
     menu_warn_message("Copying folder may take a while. Press Enter and wait please");
     menu_filesel_copy_recursive_withflag(archivo,nombre_final,simular);
-    menu_generic_message("Copy folder","OK. Folder copied");
+    zxvision_generic_message("Copy folder","OK. Folder copied");
 
 }
 
@@ -2800,11 +2800,11 @@ void file_utils_move_rename_copy_file_post(char *archivo,int rename_move)
                 //Copiar con ventana de progreso
                 menu_filesel_copy_recursive_start(archivo,nombre_final,0);
 
-                //menu_generic_message("Copy folder","OK. Folder copied");
+                //zxvision_generic_message("Copy folder","OK. Folder copied");
             }
             else {
                 util_copy_file(archivo,nombre_final);
-                menu_generic_message("Copy file","OK. File copied");
+                zxvision_generic_message("Copy file","OK. File copied");
 
             }
 
@@ -2812,7 +2812,7 @@ void file_utils_move_rename_copy_file_post(char *archivo,int rename_move)
         //Rename
         else if (rename_move==1) {
             zvfs_rename(archivo,nombre_final);
-            menu_generic_message("Rename file","OK. File renamed");
+            zxvision_generic_message("Rename file","OK. File renamed");
         }
         //Move
         else {
@@ -2829,7 +2829,7 @@ void file_utils_move_rename_copy_file_post(char *archivo,int rename_move)
                 }
 
                 zvfs_rename(archivo,nombre_final);
-                menu_generic_message("Move folder","OK. Folder moved");
+                zxvision_generic_message("Move folder","OK. Folder moved");
 
             }
 
@@ -2837,7 +2837,7 @@ void file_utils_move_rename_copy_file_post(char *archivo,int rename_move)
                 //En el caso de archivos, para que podamos hacer move entre local y mmc, hacemos como un copy pero luego borramos origen
                 util_copy_file(archivo,nombre_final);
                 zvfs_delete(archivo);
-                menu_generic_message("Move file","OK. File moved");
+                zxvision_generic_message("Move file","OK. File moved");
             }
 
 
@@ -2897,7 +2897,7 @@ void file_utils_delete(char *nombre)
 
         menu_filesel_delete_recursive(nombre,0);
 
-        menu_generic_message("Delete","OK. Folder has been deleted");
+        zxvision_generic_message("Delete","OK. Folder has been deleted");
 
     }
     else {
@@ -2908,7 +2908,7 @@ void file_utils_delete(char *nombre)
             menu_error_message("Error deleting item");
         }
         else {
-            menu_generic_message("Delete","OK. File deleted");
+            zxvision_generic_message("Delete","OK. File deleted");
         }
 
 

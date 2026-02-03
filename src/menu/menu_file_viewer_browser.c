@@ -175,7 +175,7 @@ void menu_file_viewer_gens_show(char *file_read_memory,int longitud)
 
     results_buffer[index_buffer]=0;
 
-    menu_generic_message("GENS file",results_buffer);
+    zxvision_generic_message("GENS file",results_buffer);
 
     free(results_buffer);
 
@@ -241,7 +241,7 @@ void menu_file_viewer_sped_show(char *file_read_memory,int longitud)
 
         results_buffer[index_buffer]=0;
 
-        menu_generic_message("SPED file",results_buffer);
+        zxvision_generic_message("SPED file",results_buffer);
 
         free(results_buffer);
 
@@ -465,7 +465,7 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 
 		if (avisolimite) debug_printf (VERBOSE_ERR,"Read max text buffer: %d bytes. Showing only these",leidos);
 
-		//menu_generic_message(title,file_read_memory);
+		//zxvision_generic_message(title,file_read_memory);
         //Desactivar parseo de caracteres especiales ~~, $$ etc
         zxvision_generic_message_tooltip(title , 1, 0 , 0, 0, 0, NULL, 1, 0, "%s", file_read_memory);
 	}

@@ -272,7 +272,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
     }
 
     if (zeng_remote_list_rooms_buffer[0]!=0) {
-        //menu_generic_message("Rooms",zeng_remote_list_rooms_buffer);
+        //zxvision_generic_message("Rooms",zeng_remote_list_rooms_buffer);
 
         //Mostrar latencia
         if (menu_show_advanced_items.v) {
@@ -877,7 +877,7 @@ int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master,int agregar
     }
 
 
-    //menu_generic_message("Joined users",zeng_remote_list_users_buffer);
+    //zxvision_generic_message("Joined users",zeng_remote_list_users_buffer);
 
     //Cada linea:
     //nickname
