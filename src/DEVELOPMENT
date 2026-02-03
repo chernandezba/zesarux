@@ -364,7 +364,7 @@ export LDFLAGS="-mmacosx-version-min=10.13 -O3 -arch x86_64"
 ./configure --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile
 make clean
 make
-make macapp
+make macapplegacy
 
 
 

@@ -2079,6 +2079,7 @@ macapp: all
 	hdiutil attach -mountpoint macos/tempmount macos/zesarux-noncompressed.dmg
 	cp -R macos/zesarux.app macos/tempmount
 	ln -s /Applications/ macos/tempmount/Applications
+	cp macos/importante_despues_de_instalar.rtf macos/important_after_install.rtf macos/tempmount/
 	sleep 5
 	hdiutil detach macos/tempmount
 	#gzip macos/zesarux-noncompressed.dmg
@@ -2086,6 +2087,27 @@ macapp: all
 	hdiutil convert macos/zesarux-noncompressed.dmg -format UDBZ -o macos/ZEsarUX_macos-\$(EMULATOR_VERSION).dmg
 	rm -f macos/zesarux-noncompressed.dmg
 	echo "Generated file is: macos/ZEsarUX_macos-\$(EMULATOR_VERSION).dmg"
+
+macapplegacy: all
+	mkdir -p macos/zesarux.app
+	cp -r macos/apptemplate/* macos/zesarux.app/
+	cp zesarux macos/zesarux.app/Contents/MacOS/zesarux
+	cp -a \$(COMMONFILES) macos/zesarux.app/Contents/Resources/
+	rm -f macos/zesarux-noncompressed.dmg
+	rm -f macos/zesarux-noncompressed.dmg.gz
+	rm -f macos/ZEsarUX_macos-\$(EMULATOR_VERSION).dmg
+	hdiutil create -megabytes 128 -fs HFS+ -volname ZEsarUX macos/zesarux-noncompressed.dmg
+	hdiutil attach -mountpoint macos/tempmount macos/zesarux-noncompressed.dmg
+	cp -R macos/zesarux.app macos/tempmount
+	ln -s /Applications/ macos/tempmount/Applications
+	sleep 5
+	hdiutil detach macos/tempmount
+	#gzip macos/zesarux-noncompressed.dmg
+	#UDBZ - UDIF bzip2-compressed image (Mac OS X 10.4+ only)
+	hdiutil convert macos/zesarux-noncompressed.dmg -format UDBZ -o macos/ZEsarUX_macos-\$(EMULATOR_VERSION).dmg
+	rm -f macos/zesarux-noncompressed.dmg
+	echo "Generated file is: macos/ZEsarUX_macos-\$(EMULATOR_VERSION).dmg"
+
 
 
 #CC32=$CCOMPILER \$(CFLAGS) -m32
