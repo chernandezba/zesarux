@@ -2,6 +2,7 @@ ZEsarUX 13 Beta 1 - xxx edition. 2 Febrero 2026
 
 * Cosas nuevas agregadas:
 
+Agregada versión para macos Silicon
 Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Permitir drag&drop de archivos comprimidos
 Permitir reducir pantalla a la mitad
@@ -18,7 +19,6 @@ Agregada emulación de Datel Lightwriter
 Agregada emulación de Spectrum Doodler Lightpen
 Agregada mirilla de lightgun
 Agregada vista previa de snapshots ZSF de máquinas QL, ZX80 y ZX81
-Agregada versión para macos Silicon
 Permitir ver GO SUB stack de ZX80 y ZX81
 Permitir caracteres utf-8 en footer
 Permitir grabar historial de smartload en un archivo
