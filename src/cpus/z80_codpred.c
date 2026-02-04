@@ -2494,10 +2494,51 @@ void instruccion_ed_181 ()
 void instruccion_ed_182 ()
 {
         if (MACHINE_IS_TBBLUE) {
-                //LDIRSCALE ED B6 as LDIR but 24 bit source pointer HLA' takes high 16 bits as address
-                //TODO no entiendo que hace
+                //LDIRSCALE ED B6
+                /*
+                Lee un byte de memoria en la dirección HL
 
-                invalid_opcode_ed("Unimplemented tbblue LDIRSCALE");
+                Si el byte es distinto de A, lo escribe en la dirección DE
+
+                Usa los registros alternativos (BC', HL', DE') para:
+
+                Sumar BC' a HL'
+
+                Sumar DE' a DE
+
+                Repite el proceso mientras BC ≠ 0
+
+                */
+        z80_byte byte_leido;
+
+        byte_leido=peek_byte(HL);
+        if (byte_leido!=reg_a) poke_byte(DE,byte_leido);
+
+        contend_write_no_mreq( DE, 1 );
+	contend_write_no_mreq( DE, 1 );
+
+	BC--;
+
+        Z80_FLAGS &=(255-FLAG_H-FLAG_N-FLAG_PV-FLAG_3-FLAG_5);
+
+        if (byte_leido & 8 ) Z80_FLAGS |=FLAG_3;
+
+        if (byte_leido & 2 ) Z80_FLAGS |=FLAG_5;
+
+        if (BC) {
+	  Z80_FLAGS |=FLAG_PV;
+          contend_write_no_mreq( DE, 1 );
+	  contend_write_no_mreq( DE, 1 );
+          contend_write_no_mreq( DE, 1 );
+	  contend_write_no_mreq( DE, 1 );
+          contend_write_no_mreq( DE, 1 );
+          reg_pc -=2;
+
+          z80_ejecutada_instruccion_bloque_ld_cp=1;
+        }
+        HL++; DE++;
+
+
 
         }
 
