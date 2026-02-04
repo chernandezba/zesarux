@@ -2496,6 +2496,13 @@ void instruccion_ed_182 ()
         if (MACHINE_IS_TBBLUE) {
                 //LDIRSCALE ED B6
                 /*
+                --read byte from ( reg_HL_s (15 downto 0))
+                --if byte != A put byte in ( reg_DE_s(15 downto 0))
+                --add BC' ( from exx ) to HL_A' and store in HL_A'
+                --DE <= DE + DE'
+                --loop BC
+
+
                 Lee un byte de memoria en la dirección HL
 
                 Si el byte es distinto de A, lo escribe en la dirección DE
