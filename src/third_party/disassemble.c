@@ -167,7 +167,8 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
     {"LDWS",                0xA5,0,0,0},
     {"LDDX",                0xAC,0,0,0},
     {"LDIRX",               0xB4,0,0,0},
-    {"LDIRSCALE (invalid)", 0xB6,0,0,0},
+    // * porque no está implementado aún
+    {"LDIRSCALE (*)",       0xB6,0,0,0},
     {"LDPIRX",              0xB7,0,0,0},
     {"LDDRX",               0xBC,0,0,0}
 };
