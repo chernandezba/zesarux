@@ -129,7 +129,7 @@ struct s_tbblue_extended_string_opcode {
     int sumar_longitud;
 };
 
-#define TOTAL_TBBLUE_EXTENDED_OPCODES 33
+#define TOTAL_TBBLUE_EXTENDED_OPCODES 38
 
 struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLUE_EXTENDED_OPCODES]={
     {"SWAPNIB",             0x23,0,0,0},
@@ -137,6 +137,10 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
     {"LD HL,SP",            0x25,0,0,0},
     {"TEST %02X",           0x27,8,0,1},
     {"BSLA DE,B",           0x28,0,0,0},
+    {"BSRA DE,B",           0x29,0,0,0},
+    {"BSRL DE,B",           0x2A,0,0,0},
+    {"BSRF DE,B",           0x2B,0,0,0},
+    {"BRLC DE,B",           0x2C,0,0,0},
     {"MUL",                 0x30,0,0,0},
     {"ADD HL,A",            0x31,0,0,0},
     {"ADD DE,A",            0x32,0,0,0},
@@ -161,10 +165,11 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
     {"JP (C)",              0x98,0,0,0},
     {"LDIX",                0xA4,0,0,0},
     {"LDWS",                0xA5,0,0,0},
-    {"LDIRX",               0xB4,0,0,0},
     {"LDDX",                0xAC,0,0,0},
-    {"LDDRX",               0xBC,0,0,0},
-    {"LDPIRX",              0xB7,0,0,0}
+    {"LDIRX",               0xB4,0,0,0},
+    {"LDIRSCALE (invalid)", 0xB6,0,0,0},
+    {"LDPIRX",              0xB7,0,0,0},
+    {"LDDRX",               0xBC,0,0,0}
 };
 
 void debugger_handle_extended_tbblue_opcodes(char *buffer, unsigned int address, int *sumar_longitud)

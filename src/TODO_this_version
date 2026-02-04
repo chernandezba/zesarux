@@ -99,7 +99,6 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 ->tendria que hacer compilación de cada archivo .c en dos .o, uno para cada arquitectura. Demasiado complicado.
 Lo mas fácil es generar dos binarios en dos entornos diferentes (uno en Mac silicon y el otro en Mac intel - o -target x86_64 en silicon)
 
--Revisar todos opcodes de next que salgan en disassemble
 
 -Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
 
@@ -111,4 +110,4 @@ docker run --rm -it --platform linux/amd64 rofrano/vagrant-provider:debian bash
 Alguno para arm? Aparte de raspberry...
 
 
-
+-scanline inicial que se ve en negro en Next al pulsar teclas
