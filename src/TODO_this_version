@@ -105,5 +105,17 @@ Alguno para arm? Aparte de raspberry...
 -scanline inicial que se ve en negro en Next al pulsar teclas
 
 -Dialogo al sobreescribir un archivo (por ejemplo en tape output) si está top menu activado, sale mensaje arriba del todo
+->al abrir filesel llamar a zxvision_reset_set_next_menu_position()
+Pero no seria mejor llamar ahí desde otro sitio central? Desde donde se sepa que el menu se cierra
+->Mejor: todo aquel que llame a filesel desde opcion de menu debe activar flag:
+
+menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA);
+y también MENU_ITEM_FLAG_SE_CERRARA ? Eso corrige el problema de que el menu reaparece, al acabar de seleccionar el archivo, y fijado en la parte izquierda
+Pero al cerrar, el usuario no ve que ha seleccionado ese archivo, que igual quiere activar algunas otras opciones , por ejemplo quizá despues de seleccionar un dsk, el usuario
+puede querer activar el write protect y eso le implica tener que reabrir el menu
+-> de momento solo en testeo al seleccionar tape input y output (en void menu_storage_tape(MENU_ITEM_PARAMETERS) )
+
+
+->Hay que revisar TODOS los que seleccionan un archivo desde item de menu
 
 -Pantalla completa en Mac no va bien

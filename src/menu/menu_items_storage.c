@@ -2977,6 +2977,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_open,NULL,"~~Input [%s]",string_tape_load_shown);
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
         menu_add_item_menu_shortcut(array_menu_tape_settings,'i');
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA);
 
 
         //sprintf (string_tape_load_inserted,"[%c] Input tape inserted",((tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0 ? 'X' : ' '));
@@ -3008,6 +3009,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_out_open,NULL,"~~Output [%s]",string_tape_save_shown);
         menu_add_item_menu_prefijo(array_menu_tape_settings,"    ");
         menu_add_item_menu_shortcut(array_menu_tape_settings,'o');
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA);
 
         //sprintf (string_tape_save_inserted,"[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
         //menu_add_item_menu(array_menu_tape_settings,string_tape_save_inserted,MENU_OPCION_NORMAL,menu_tape_output_insert,menu_tape_output_insert_cond);

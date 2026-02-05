@@ -386,6 +386,7 @@ void menu_topbarmenu_preexit(void)
     salir_todos_menus=1;
 
     zxvision_reset_set_next_menu_position();
+    //printf("fin menu_topbarmenu_preexit\n");
 }
 
 int menu_topbarmenu_crear_indice_posiciones(void)
