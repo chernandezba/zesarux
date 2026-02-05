@@ -61,7 +61,7 @@ Quizá con una opción y sólo si está el foco en ventana de debug CPU
 -Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
 *testear con --programname
 
--confeccionar una lista de los juegos a testear en las pruebas de video de ZX80 y ZX81 usando Smartload history file
+
 
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
 
@@ -84,8 +84,6 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 
 
 
--Opción para "apagar" la TV. útil? solo es pura curiosidad. no sirve de nada, lo único que genera es pantalla negra
-
 
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
 
@@ -107,3 +105,5 @@ Alguno para arm? Aparte de raspberry...
 -scanline inicial que se ve en negro en Next al pulsar teclas
 
 -Dialogo al sobreescribir un archivo (por ejemplo en tape output) si está top menu activado, sale mensaje arriba del todo
+
+-Pantalla completa en Mac no va bien

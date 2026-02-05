@@ -54,12 +54,12 @@ z80_byte disassemble_array[DISASSEMBLE_ARRAY_LENGTH];
 
 z80_byte disassemble_peek_byte(int address)
 {
-	if (disassemble_peek_si_spectrum_ram.v==1) {
-		address=adjust_address_memory_size(address);
-		return menu_debug_get_mapped_byte(address);
-		//return peek_byte_no_time(address);
-	}
-	else return disassemble_array[address];
+    if (disassemble_peek_si_spectrum_ram.v==1) {
+        address=adjust_address_memory_size(address);
+        return menu_debug_get_mapped_byte(address);
+        //return peek_byte_no_time(address);
+    }
+    else return disassemble_array[address];
 }
 
 int debugger_output_base=16;
@@ -68,53 +68,53 @@ int debugger_output_base=16;
 enum hl_type { USE_HL, USE_IX, USE_IY };
 
 static void disassemble_main( int address, char *buffer,
-			      size_t buflen, size_t *length,
-			      enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_00xxxxxx( int address, char *buffer,
-				  size_t buflen, size_t *length,
-				  enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_00xxx010( int address, char *buffer,
-				  size_t buflen, size_t *length,
-				  enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_00xxx110( int address, char *buffer,
-				  size_t buflen, size_t *length,
-				  enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_11xxxxxx( int address, char *buffer,
-				  size_t buflen, size_t *length,
-				  enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_11xxx001( z80_byte b, char *buffer,
-				  size_t buflen, size_t *length,
-				  enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_11xxx011( int address, char *buffer,
-				  size_t buflen, size_t *length,
-				  enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_11xxx101( int address, char *buffer,
-				  size_t buflen, size_t *length,
-				  enum hl_type use_hl );
+                  size_t buflen, size_t *length,
+                  enum hl_type use_hl );
 static void disassemble_cb( int address, char *buffer,
-			    size_t buflen, size_t *length );
+                size_t buflen, size_t *length );
 static void disassemble_ed( int address, char *buffer,
-			    size_t buflen, size_t *length );
+                size_t buflen, size_t *length );
 static void disassemble_ddfd_cb( int address, char offset,
-				 enum hl_type use_hl, char *buffer,
-				 size_t buflen, size_t *length );
+                 enum hl_type use_hl, char *buffer,
+                 size_t buflen, size_t *length );
 
 static void get_byte( char *buffer, size_t buflen, z80_byte b );
 static void get_word( char *buffer, size_t buflen, int address );
 static void get_offset( char *buffer, size_t buflen, z80_int address,
-			z80_byte offset );
+            z80_byte offset );
 
 static const char *reg_pair( z80_byte b, enum hl_type use_hl );
 static const char *hl_ix_iy( enum hl_type use_hl );
 static void ix_iy_offset( char *buffer, size_t buflen, enum hl_type use_hl,
-			  z80_byte offset );
+              z80_byte offset );
 
 static int source_reg( int address, enum hl_type use_hl,
-		       char *buffer, size_t buflen );
+               char *buffer, size_t buflen );
 static int dest_reg( int address, enum hl_type use_hl,
-		     char *buffer, size_t buflen );
+             char *buffer, size_t buflen );
 static int single_reg( int i, enum hl_type use_hl, z80_byte offset,
-		       char *buffer, size_t buflen );
+               char *buffer, size_t buflen );
 
 static const char *addition_op( z80_byte b );
 static const char *condition( z80_byte b );
@@ -165,85 +165,85 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
 
 void debugger_handle_extended_tbblue_opcodes(char *buffer, unsigned int address, int *sumar_longitud)
 {
-	if (MACHINE_IS_TBBLUE) {
-		if (!strcmp(buffer,"NOPD")) {
-			if (disassemble_peek_byte(address)==237) {
-				z80_byte opcode=disassemble_peek_byte(address+1);
+    if (MACHINE_IS_TBBLUE) {
+        if (!strcmp(buffer,"NOPD")) {
+            if (disassemble_peek_byte(address)==237) {
+                z80_byte opcode=disassemble_peek_byte(address+1);
 
                 z80_byte parm1=disassemble_peek_byte(address+2);
                 z80_byte parm2=disassemble_peek_byte(address+3);
 
-				int i;
-				for (i=0;i<TOTAL_TBBLUE_EXTENDED_OPCODES;i++) {
-					if (tbblue_extended_string_opcode[i].opcode==opcode) {
+                int i;
+                for (i=0;i<TOTAL_TBBLUE_EXTENDED_OPCODES;i++) {
+                    if (tbblue_extended_string_opcode[i].opcode==opcode) {
 
                         //Opcode con un parametro de 8 bits
                         if (tbblue_extended_string_opcode[i].parm1_bits==8 && tbblue_extended_string_opcode[i].parm2_bits==0) {
-						    sprintf(buffer,tbblue_extended_string_opcode[i].text,parm1);
+                            sprintf(buffer,tbblue_extended_string_opcode[i].text,parm1);
                         }
 
                         //Opcode con dos parametros de 8 bits
                         else if (tbblue_extended_string_opcode[i].parm1_bits==8 && tbblue_extended_string_opcode[i].parm2_bits==8) {
-						    sprintf(buffer,tbblue_extended_string_opcode[i].text,parm1,parm2);
+                            sprintf(buffer,tbblue_extended_string_opcode[i].text,parm1,parm2);
                         }
 
                         //Opcode con un parametro de 16 bits
                         else if (tbblue_extended_string_opcode[i].parm1_bits==16 && tbblue_extended_string_opcode[i].parm2_bits==0) {
-						    sprintf(buffer,tbblue_extended_string_opcode[i].text,parm2*256+parm1);
+                            sprintf(buffer,tbblue_extended_string_opcode[i].text,parm2*256+parm1);
                         }
 
                         else {
-						    strcpy(buffer,tbblue_extended_string_opcode[i].text);
+                            strcpy(buffer,tbblue_extended_string_opcode[i].text);
                         }
 
                         *sumar_longitud=tbblue_extended_string_opcode[i].sumar_longitud;
-					}
+                    }
 
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 }
 
 
 void debugger_disassemble_crear_rep_spaces(char *origen)
 {
-	//Quita espacios repetidos de la cadena de texto
-	char *destino;
+    //Quita espacios repetidos de la cadena de texto
+    char *destino;
 
-	destino=origen;
+    destino=origen;
 
-	int repetido=0;
-	char caracter;
-	while (*origen) {
-		caracter=*origen;
+    int repetido=0;
+    char caracter;
+    while (*origen) {
+        caracter=*origen;
 
-		if (caracter!=' ') {
-			repetido=0;
-			*destino=caracter;
-			destino++;
-		}
+        if (caracter!=' ') {
+            repetido=0;
+            *destino=caracter;
+            destino++;
+        }
 
-		else {
-			//No Habia otro?
-			if (repetido==0) {
-				repetido=1;
-				*destino=caracter;
-                 	       destino++;
-	                }
+        else {
+            //No Habia otro?
+            if (repetido==0) {
+                repetido=1;
+                *destino=caracter;
+                            destino++;
+                    }
 
-			else {
-				//Habia otro
-				//No hacemos nada
-			}
+            else {
+                //Habia otro
+                //No hacemos nada
+            }
 
-		}
+        }
 
-		origen++;
+        origen++;
 
-	}
+    }
 
-	*destino=0;
+    *destino=0;
 }
 
 
@@ -251,45 +251,45 @@ void debugger_disassemble_crear_rep_spaces(char *origen)
 /* A very thin wrapper to avoid exposing the USE_HL constant */
 void
 debugger_disassemble( char *buffer, size_t buflen, size_t *length,
-		      unsigned int address )
+              unsigned int address )
 {
-	disassemble_peek_si_spectrum_ram.v=1;
-	disassemble_show_value.v=1;
-	disassemble_ddfd_anidado=0;
+    disassemble_peek_si_spectrum_ram.v=1;
+    disassemble_show_value.v=1;
+    disassemble_ddfd_anidado=0;
 
-	//Caso para MK14
-	if (CPU_IS_SCMP) {
-		unsigned char op=disassemble_peek_byte(address);
-		unsigned char arg=disassemble_peek_byte(address+1);
-		int longitud=scmp_CPU_DISASSEMBLE( address , op, arg, buffer);
-		*length=longitud;
-		return;
-	}
+    //Caso para MK14
+    if (CPU_IS_SCMP) {
+        unsigned char op=disassemble_peek_byte(address);
+        unsigned char arg=disassemble_peek_byte(address+1);
+        int longitud=scmp_CPU_DISASSEMBLE( address , op, arg, buffer);
+        *length=longitud;
+        return;
+    }
 
-	//Caso para QL
-	if (CPU_IS_MOTOROLA) {
-		char buffer_temporal[256];
-		//address=adjust_address_space_cpu(address);
-		int longitud=m68k_disassemble(buffer_temporal, address, M68K_CPU_TYPE_68000);
-		buffer_temporal[buflen-1]=0; //forzar maximo longitud
+    //Caso para QL
+    if (CPU_IS_MOTOROLA) {
+        char buffer_temporal[256];
+        //address=adjust_address_space_cpu(address);
+        int longitud=m68k_disassemble(buffer_temporal, address, M68K_CPU_TYPE_68000);
+        buffer_temporal[buflen-1]=0; //forzar maximo longitud
 
-		//Quitamos espacios de mas
-		debugger_disassemble_crear_rep_spaces(buffer_temporal);
+        //Quitamos espacios de mas
+        debugger_disassemble_crear_rep_spaces(buffer_temporal);
 
-		strcpy(buffer,buffer_temporal);
-		*length=longitud;
-		return;
-	}
+        strcpy(buffer,buffer_temporal);
+        *length=longitud;
+        return;
+    }
 
-	//Caso para copper
-	if (menu_debug_memory_zone==MEMORY_ZONE_NUM_TBBLUE_COPPER) {
-		//Casos WAIT, MOVE, NOOP, HALT
+    //Caso para copper
+    if (menu_debug_memory_zone==MEMORY_ZONE_NUM_TBBLUE_COPPER) {
+        //Casos WAIT, MOVE, NOOP, HALT
 
 
     *length=2;
 
-		z80_byte op=disassemble_peek_byte(address);
-		z80_byte arg=disassemble_peek_byte(address+1);
+        z80_byte op=disassemble_peek_byte(address);
+        z80_byte arg=disassemble_peek_byte(address+1);
 
     //Special case of "value 0 to port 0" works as "no operation" (duration 1 CLOCK)
     if (op==0 && arg==0) {
@@ -303,29 +303,29 @@ debugger_disassemble( char *buffer, size_t buflen, size_t *length,
       return;
     }
 
-		if (op&128) {
-			//wait
-			int raster=arg|((op&1)<<8);
-			int horiz=((op>>1)&63);
+        if (op&128) {
+            //wait
+            int raster=arg|((op&1)<<8);
+            int horiz=((op>>1)&63);
 
-			sprintf (buffer,"WAIT %d,%d",raster,horiz);
-		}
-		else {
-			//move
-			int registro=op&127;
-			int value=arg;
-			sprintf (buffer,"MOVE %d,%d",registro,value);
-		}
+            sprintf (buffer,"WAIT %d,%d",raster,horiz);
+        }
+        else {
+            //move
+            int registro=op&127;
+            int value=arg;
+            sprintf (buffer,"MOVE %d,%d",registro,value);
+        }
 
 
-		return;
-	}
+        return;
+    }
 
   //Caso para contacts de daad
   if (menu_debug_memory_zone==MEMORY_ZONE_NUM_DAAD_CONDACTS) {
 
-		z80_byte op=disassemble_peek_byte(address);
-		z80_byte arg1=disassemble_peek_byte(address+1);
+        z80_byte op=disassemble_peek_byte(address);
+        z80_byte arg1=disassemble_peek_byte(address+1);
     z80_byte arg2=disassemble_peek_byte(address+2);
 
     //Palabra del vocabulario
@@ -352,27 +352,27 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
   if (indireccion) arg_vocabulary=util_daad_get_flag_value(arg_vocabulary);
 
 //Si parametros son vocabularios
-	//{1,"NOUN2  "}, //  69 $45
-	if (op==69) {
-		util_daad_locate_word(arg_vocabulary,2,buffer_vocabulary);
-	}
+    //{1,"NOUN2  "}, //  69 $45
+    if (op==69) {
+        util_daad_locate_word(arg_vocabulary,2,buffer_vocabulary);
+    }
 
   //{1,"ADJECT1"}, //  16 $10
   //{1,"ADJECT2"}, //  70 $46
-  	if (op==16 || op==70) {
-		util_daad_locate_word(arg_vocabulary,3,buffer_vocabulary);
-	}
+      if (op==16 || op==70) {
+        util_daad_locate_word(arg_vocabulary,3,buffer_vocabulary);
+    }
 
 
-  	//{1,"ADVERB "}, //  17 $11
+      //{1,"ADVERB "}, //  17 $11
     if (op==17) {
-		util_daad_locate_word(arg_vocabulary,1,buffer_vocabulary);
-	}
+        util_daad_locate_word(arg_vocabulary,1,buffer_vocabulary);
+    }
 
     //{1,"PREP   "}, //  68 $44
-	if (op==68) {
-		util_daad_locate_word(arg_vocabulary,4,buffer_vocabulary);
-	}
+    if (op==68) {
+        util_daad_locate_word(arg_vocabulary,4,buffer_vocabulary);
+    }
 
   int vocabulario_encontrado=0;
 
@@ -410,8 +410,8 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
   //Caso para contacts de daad
   if (menu_debug_memory_zone==MEMORY_ZONE_NUM_PAWS_CONDACTS) {
 
-		z80_byte op=disassemble_peek_byte(address);
-		z80_byte arg1=disassemble_peek_byte(address+1);
+        z80_byte op=disassemble_peek_byte(address);
+        z80_byte arg1=disassemble_peek_byte(address+1);
     z80_byte arg2=disassemble_peek_byte(address+2);
 
     //Palabra del vocabulario
@@ -438,27 +438,27 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
   if (indireccion) arg_vocabulary=util_daad_get_flag_value(arg_vocabulary);
 
 //Si parametros son vocabularios
-	//{1,"NOUN2  "}, //  69 $45
-	if (op==69) {
-		util_paws_locate_word(arg_vocabulary,2,buffer_vocabulary);
-	}
+    //{1,"NOUN2  "}, //  69 $45
+    if (op==69) {
+        util_paws_locate_word(arg_vocabulary,2,buffer_vocabulary);
+    }
 
   //{1,"ADJECT1"}, //  16 $10
   //{1,"ADJECT2"}, //  70 $46
-  	if (op==16 || op==70) {
-		util_paws_locate_word(arg_vocabulary,3,buffer_vocabulary);
-	}
+      if (op==16 || op==70) {
+        util_paws_locate_word(arg_vocabulary,3,buffer_vocabulary);
+    }
 
 
-  	//{1,"ADVERB "}, //  17 $11
+      //{1,"ADVERB "}, //  17 $11
     if (op==17) {
-		util_paws_locate_word(arg_vocabulary,1,buffer_vocabulary);
-	}
+        util_paws_locate_word(arg_vocabulary,1,buffer_vocabulary);
+    }
 
     //{1,"PREP   "}, //  68 $44
-	if (op==68) {
-		util_paws_locate_word(arg_vocabulary,4,buffer_vocabulary);
-	}
+    if (op==68) {
+        util_paws_locate_word(arg_vocabulary,4,buffer_vocabulary);
+    }
 
   int vocabulario_encontrado=0;
 
@@ -494,11 +494,11 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
 
 
 
-	disassemble_main( address, buffer, buflen, length, USE_HL );
+    disassemble_main( address, buffer, buflen, length, USE_HL );
 
-	//gestionar casos de opcodes extendidos de Next
+    //gestionar casos de opcodes extendidos de Next
   int sumar_longitud=0;
-	debugger_handle_extended_tbblue_opcodes(buffer,address,&sumar_longitud);
+    debugger_handle_extended_tbblue_opcodes(buffer,address,&sumar_longitud);
   *length +=sumar_longitud;
 }
 
@@ -506,14 +506,14 @@ primer parámetro tiene indirección, cosa que en lo que a ti afecta, solo te su
 
 void debugger_disassemble_array (char *buffer, size_t buflen, size_t *length, unsigned address )
 {
-	disassemble_peek_si_spectrum_ram.v=0;
-	disassemble_show_value.v=0;
-	disassemble_ddfd_anidado=0;
-	disassemble_main( address, buffer, buflen, length, USE_HL );
+    disassemble_peek_si_spectrum_ram.v=0;
+    disassemble_show_value.v=0;
+    disassemble_ddfd_anidado=0;
+    disassemble_main( address, buffer, buflen, length, USE_HL );
 
-	//gestionar casos de opcodes extendidos de Next
+    //gestionar casos de opcodes extendidos de Next
   int sumar_longitud=0;
-	debugger_handle_extended_tbblue_opcodes(buffer,address,&sumar_longitud);
+    debugger_handle_extended_tbblue_opcodes(buffer,address,&sumar_longitud);
   *length +=sumar_longitud;
 
 }
@@ -522,7 +522,7 @@ void debugger_disassemble_array (char *buffer, size_t buflen, size_t *length, un
 /* Disassemble one instruction */
 static void
 disassemble_main( int address, char *buffer, size_t buflen,
-		  size_t *length, enum hl_type use_hl )
+          size_t *length, enum hl_type use_hl )
 {
 
   z80_byte b;
@@ -566,7 +566,7 @@ disassemble_main( int address, char *buffer, size_t buflen,
 /* Disassemble something of the form 00xxxxxx */
 static void
 disassemble_00xxxxxx( int address, char *buffer, size_t buflen,
-		      size_t *length, enum hl_type use_hl )
+              size_t *length, enum hl_type use_hl )
 {
   const char *opcode_00xxx000[] = {
     "NOP", "EX AF,AF'", "DJNZ ", "JR ", "JR NZ,", "JR Z,", "JR NC,", "JR C,"
@@ -626,7 +626,7 @@ disassemble_00xxxxxx( int address, char *buffer, size_t buflen,
 
   case 0x09:
     snprintf( buffer, buflen, "ADD %s,%s", hl_ix_iy( use_hl ),
-	      reg_pair( b, use_hl ) );
+          reg_pair( b, use_hl ) );
     *length = 1;
     break;
 
@@ -645,7 +645,7 @@ disassemble_00xxxxxx( int address, char *buffer, size_t buflen,
 /* Disassemble something of the form 00xxx010 */
 static void
 disassemble_00xxx010( int address, char *buffer, size_t buflen,
-		      size_t *length, enum hl_type use_hl )
+              size_t *length, enum hl_type use_hl )
 {
   char buffer2[40];
   z80_byte b = disassemble_peek_byte( address );
@@ -673,7 +673,7 @@ disassemble_00xxx010( int address, char *buffer, size_t buflen,
 /* Disassemble something of the form 00xxx110 */
 static void
 disassemble_00xxx110( int address, char *buffer, size_t buflen,
-		      size_t *length, enum hl_type use_hl )
+              size_t *length, enum hl_type use_hl )
 {
   char buffer2[40];
   z80_byte b = disassemble_peek_byte( address );
@@ -701,7 +701,7 @@ disassemble_00xxx110( int address, char *buffer, size_t buflen,
 /* Disassemble something of the form 11xxxxxx */
 static void
 disassemble_11xxxxxx( int address, char *buffer, size_t buflen,
-		      size_t *length, enum hl_type use_hl )
+              size_t *length, enum hl_type use_hl )
 {
   char buffer2[40];
   z80_byte b = disassemble_peek_byte( address );
@@ -752,7 +752,7 @@ disassemble_11xxxxxx( int address, char *buffer, size_t buflen,
 /* Disassemble something for the form 11xxx001 */
 static void
 disassemble_11xxx001( z80_byte b, char *buffer, size_t buflen,
-		      size_t *length, enum hl_type use_hl )
+              size_t *length, enum hl_type use_hl )
 {
   switch( ( b >> 3 ) - 0x18 ) {
 
@@ -778,7 +778,7 @@ disassemble_11xxx001( z80_byte b, char *buffer, size_t buflen,
 /* Disassemble something for the form 11xxx011 */
 static void
 disassemble_11xxx011( int address, char *buffer, size_t buflen,
-		      size_t *length, enum hl_type use_hl )
+              size_t *length, enum hl_type use_hl )
 {
   char buffer2[40];
   z80_byte b = disassemble_peek_byte( address );
@@ -794,7 +794,7 @@ disassemble_11xxx011( int address, char *buffer, size_t buflen,
     if( use_hl != USE_HL ) {
       char offset = disassemble_peek_byte( address + 1 );
       disassemble_ddfd_cb( address+2, offset, use_hl, buffer, buflen,
-			   length );
+               length );
       (*length) += 2;
     } else {
       disassemble_cb( address+1, buffer, buflen, length ); (*length)++;
@@ -833,7 +833,7 @@ disassemble_11xxx011( int address, char *buffer, size_t buflen,
 /* Disassemble something for the form 11xxx101 */
 static void
 disassemble_11xxx101( int address, char *buffer, size_t buflen,
-		      size_t *length, enum hl_type use_hl )
+              size_t *length, enum hl_type use_hl )
 {
   char buffer2[40];
   z80_byte b = disassemble_peek_byte( address );
@@ -854,23 +854,23 @@ z80_byte opc=( b >> 3 ) - 0x18;
 
   case 0x03:
   case 0x07:
-	//Prefijo 221/253
-	//Proteccion para evitar desbordamientos de pila cuando hay valores del prefijo repetidos
-	//printf ("%d\n",disassemble_ddfd_anidado);
-	if ( disassemble_ddfd_anidado>0) {
-		snprintf( buffer, buflen, "NOPD" );
-		debug_printf (VERBOSE_DEBUG,"Reached maximum DD/FD prefixes");
-		*length=0; //Al volver la longitud se incrementara
-	}
-	else {
-		disassemble_ddfd_anidado++;
-		//printf ("anidar\n");
-		if (opc==0x03) disassemble_main( address+1, buffer, buflen, length, USE_IX );
-		if (opc==0x07) disassemble_main( address+1, buffer, buflen, length, USE_IY );
-		(*length)++;
-		//printf ("desanidar\n");
-		disassemble_ddfd_anidado--;
-	}
+    //Prefijo 221/253
+    //Proteccion para evitar desbordamientos de pila cuando hay valores del prefijo repetidos
+    //printf ("%d\n",disassemble_ddfd_anidado);
+    if ( disassemble_ddfd_anidado>0) {
+        snprintf( buffer, buflen, "NOPD" );
+        debug_printf (VERBOSE_DEBUG,"Reached maximum DD/FD prefixes");
+        *length=0; //Al volver la longitud se incrementara
+    }
+    else {
+        disassemble_ddfd_anidado++;
+        //printf ("anidar\n");
+        if (opc==0x03) disassemble_main( address+1, buffer, buflen, length, USE_IX );
+        if (opc==0x07) disassemble_main( address+1, buffer, buflen, length, USE_IY );
+        (*length)++;
+        //printf ("desanidar\n");
+        disassemble_ddfd_anidado--;
+    }
     break;
 
   case 0x05:
@@ -893,7 +893,7 @@ z80_byte opc=( b >> 3 ) - 0x18;
 /* Disassemble an instruction after a CB prefix */
 static void
 disassemble_cb( int address, char *buffer, size_t buflen,
-		size_t *length )
+        size_t *length )
 {
   char buffer2[40];
   z80_byte b = disassemble_peek_byte( address );
@@ -905,7 +905,7 @@ disassemble_cb( int address, char *buffer, size_t buflen,
     *length = 1;
   } else {
     snprintf( buffer, buflen, "%s %d,%s", bit_op( b ), bit_op_bit( b ),
-	      buffer2 );
+          buffer2 );
     *length = 1;
   }
 }
@@ -913,7 +913,7 @@ disassemble_cb( int address, char *buffer, size_t buflen,
 /* Disassemble an instruction after an ED prefix */
 static void
 disassemble_ed( int address, char *buffer, size_t buflen,
-		size_t *length )
+        size_t *length )
 {
   z80_byte b;
   char buffer2[40];
@@ -943,19 +943,19 @@ disassemble_ed( int address, char *buffer, size_t buflen,
 
     case 0x00: case 0x08:
       if( b == 0x70 ) {
-	snprintf( buffer, buflen, "IN F,(C)" ); *length = 1;
+    snprintf( buffer, buflen, "IN F,(C)" ); *length = 1;
       } else {
-	dest_reg( address, USE_HL, buffer2, 40 );
-	snprintf( buffer, buflen, "IN %s,(C)", buffer2 ); *length = 1;
+    dest_reg( address, USE_HL, buffer2, 40 );
+    snprintf( buffer, buflen, "IN %s,(C)", buffer2 ); *length = 1;
       }
       break;
 
     case 0x01: case 0x09:
       if( b == 0x71 ) {
-	snprintf( buffer, buflen, "OUT (C),0" ); *length = 1;
+    snprintf( buffer, buflen, "OUT (C),0" ); *length = 1;
       } else {
-	dest_reg( address, USE_HL, buffer2, 40 );
-	snprintf( buffer, buflen, "OUT (C),%s", buffer2 ); *length = 1;
+    dest_reg( address, USE_HL, buffer2, 40 );
+    snprintf( buffer, buflen, "OUT (C),%s", buffer2 ); *length = 1;
       }
       break;
 
@@ -976,9 +976,9 @@ disassemble_ed( int address, char *buffer, size_t buflen,
 
     case 0x05: case 0x0d:
       if( b == 0x4d ) {
-	snprintf( buffer, buflen, "RETI" ); *length = 1;
+    snprintf( buffer, buflen, "RETI" ); *length = 1;
       } else {
-	snprintf( buffer, buflen, "RETN" ); *length = 1;
+    snprintf( buffer, buflen, "RETN" ); *length = 1;
       }
       break;
 
@@ -1015,8 +1015,8 @@ disassemble_ed( int address, char *buffer, size_t buflen,
 /* Disassemble an instruction after DD/FD CB prefixes */
 static void
 disassemble_ddfd_cb( int address, char offset,
-		     enum hl_type use_hl, char *buffer, size_t buflen,
-		     size_t *length )
+             enum hl_type use_hl, char *buffer, size_t buflen,
+             size_t *length )
 {
   z80_byte b = disassemble_peek_byte( address );
   char buffer2[40], buffer3[40];
@@ -1030,7 +1030,7 @@ disassemble_ddfd_cb( int address, char offset,
       source_reg( address, USE_HL, buffer2, 40 );
       ix_iy_offset( buffer3, 40, use_hl, offset );
       snprintf( buffer, buflen, "LD %s,%s %s", buffer2,
-		rotate_op( b ), buffer3 );
+        rotate_op( b ), buffer3 );
       *length = 1;
     }
   } else if( b < 0x80 ) {
@@ -1043,7 +1043,7 @@ disassemble_ddfd_cb( int address, char offset,
       //(IX/IY+d)
       ix_iy_offset( buffer2, 40, use_hl, offset );
       snprintf( buffer, buflen, "%s %d,%s", bit_op( b ), bit_op_bit( b ),
-		buffer2 );
+        buffer2 );
       *length = 1;
     } else {
       //(IX/IY+d) and store result on register
@@ -1059,8 +1059,8 @@ disassemble_ddfd_cb( int address, char offset,
 static void
 get_byte( char *buffer, size_t buflen, z80_byte b )
 {
-	if (disassemble_show_value.v==1)  snprintf( buffer, buflen, debugger_output_base == 10 ? "%d" : "%02X", b );
-	else snprintf( buffer, buflen, "NN" );
+    if (disassemble_show_value.v==1)  snprintf( buffer, buflen, debugger_output_base == 10 ? "%d" : "%02X", b );
+    else snprintf( buffer, buflen, "NN" );
 }
 
 /* Get a text representation of an (LSB) two-byte number */
@@ -1079,7 +1079,7 @@ get_word( char *buffer, size_t buflen, int address )
 /* Get a text representation of ( 'address' + 'offset' ) */
 static void
 get_offset( char *buffer, size_t buflen, z80_int address,
-	    z80_byte offset )
+        z80_byte offset )
 {
   address += ( offset >= 0x80 ? offset-0x100 : offset );
   if (disassemble_show_value.v==1) snprintf( buffer, buflen, debugger_output_base == 10 ? "%d" : "%04X", address );
@@ -1115,7 +1115,7 @@ hl_ix_iy( enum hl_type use_hl )
 /* Get a text representation of '(IX+03)' or similar things */
 static void
 ix_iy_offset( char *buffer, size_t buflen, enum hl_type use_hl,
-	      z80_byte offset )
+          z80_byte offset )
 {
 
 
@@ -1133,7 +1133,7 @@ if (disassemble_show_value.v==1) {
 }
 
 else {
-	snprintf( buffer, buflen, "(%s+dd)", hl_ix_iy( use_hl ) );
+    snprintf( buffer, buflen, "(%s+dd)", hl_ix_iy( use_hl ) );
 }
 
 
@@ -1142,26 +1142,26 @@ else {
 /* Get an 8-bit register, based on bits 0-2 of the opcode at 'address' */
 static int
 source_reg( int address, enum hl_type use_hl, char *buffer,
-	    size_t buflen )
+        size_t buflen )
 {
   return single_reg( disassemble_peek_byte( address ) & 0x07, use_hl,
-		     disassemble_peek_byte( address + 1 ), buffer, buflen );
+             disassemble_peek_byte( address + 1 ), buffer, buflen );
 }
 
 /* Get an 8-bit register, based on bits 3-5 of the opcode at 'address' */
 static int
 dest_reg( int address, enum hl_type use_hl, char *buffer,
-	  size_t buflen )
+      size_t buflen )
 {
   return single_reg( ( disassemble_peek_byte( address ) >> 3 ) & 0x07, use_hl,
-		     disassemble_peek_byte( address + 1 ), buffer, buflen );
+             disassemble_peek_byte( address + 1 ), buffer, buflen );
 }
 
 /* Get an 8-bit register name, including (HL). Also substitutes
    IXh, IXl and (IX+nn) and the IY versions if appropriate */
 static int
 single_reg( int i, enum hl_type use_hl, z80_byte offset,
-	    char *buffer, size_t buflen )
+        char *buffer, size_t buflen )
 {
   char buffer2[40];
 
@@ -1192,7 +1192,7 @@ static const char *
 addition_op( z80_byte b )
 {
   const char *ops[] = { "ADD A,%s", "ADC A,%s", "SUB %s", "SBC A,%s",
-			"AND %s",   "XOR %s",   "OR %s",  "CP %s"     };
+            "AND %s",   "XOR %s",   "OR %s",  "CP %s"     };
   return ops[ ( b >> 3 ) & 0x07 ];
 }
 
