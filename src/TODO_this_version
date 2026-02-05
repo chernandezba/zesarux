@@ -106,4 +106,4 @@ Alguno para arm? Aparte de raspberry...
 
 -scanline inicial que se ve en negro en Next al pulsar teclas
 
-ok -Revisar opcodes de next que ya no existen, desde t80n.vhd y t80n_mcode.vhd y https://wiki.specnext.dev/Extended_Z80_instruction_set
+-Dialogo al sobreescribir un archivo (por ejemplo en tape output) si está top menu activado, sale mensaje arriba del todo
