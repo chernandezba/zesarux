@@ -638,7 +638,7 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // SWAPNIB (Next)     ; ED 23
 { {4,4,0} , {0} }, // MIRROR A (Next)    ;
-{ {4,4,0} , {0} }, // LD HL,SP (Next)    ;
+{ {4,4,0} , {0} }, // NOP    ;
 { {4,4,0} , {0} }, // NOP                ;
 { {SPECIAL_TIMING_VALUE_NEXT,4,4,3,0} , {0} }, // TEST N  (Next)  ; ED 27                ; ED 27
 
@@ -658,14 +658,14 @@ struct s_opcodes_times debug_times_opcodes_ed_preffix[256]={
 { {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add  hl,NNNN (Next)                ; ED 34
 { {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add  de,NNNN (Next)                ; ED 35
 { {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add  bc,NNNN (Next)                ; ED 36
-{ {4,4,0} , {0} }, // inc dehl (Next)                ;
-{ {4,4,0} , {0} }, // dec dehl  (Next)              ; ED 38
-{ {4,4,0} , {0} }, // add dehl,a (Next)                ;
-{ {4,4,0} , {0} }, // add dehl,bc (Next)                ; ED 3A
-{ {SPECIAL_TIMING_VALUE_NEXT,4,4,3,3,0} , {0} }, // add dehl,NNNN (Next)                ; ED 3B
+{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // NOP              ;
+{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // NOP                ;
 
-{ {4,4,0} , {0} }, // sub dehl,a (Next)                ; ED 3C
-{ {4,4,0} , {0} }, // sub dehl,bc (Next)                ; ED 3D
+{ {4,4,0} , {0} }, // NOP                ;
+{ {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 { {4,4,0} , {0} }, // NOP                ;
 

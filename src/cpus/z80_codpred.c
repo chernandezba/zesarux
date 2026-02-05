@@ -252,11 +252,7 @@ void instruccion_ed_36 ()
 
 void instruccion_ed_37 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //ld  hl,sp         ED 25          4+4 transfer SP to HL
-                HL=reg_sp;
-        }
-        else invalid_opcode_ed("237 37");
+        invalid_opcode_ed("237 37");
 }
 
 void instruccion_ed_38 ()
@@ -494,98 +490,37 @@ void instruccion_ed_54 ()
 
 void instruccion_ed_55 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //inc dehl          ED 37          4+4 increment 32bit DEHL
-                z80_long_int dehl= (DE << 16) | HL;
-                dehl++;
-                HL=dehl & 0xFFFF;
-                DE=(dehl>>16) & 0xFFFF;
-        }
-
-        else invalid_opcode_ed("237 55");
+    invalid_opcode_ed("237 55");
 }
 
 void instruccion_ed_56 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //dec dehl          ED 38          4+4 decrement 32bit DEHL
-                z80_long_int dehl= (DE << 16) | HL;
-                dehl--;
-                HL=dehl & 0xFFFF;
-                DE=(dehl>>16) & 0xFFFF;
-        }
-
-        else invalid_opcode_ed("237 56");
+    invalid_opcode_ed("237 56");
 }
 
 void instruccion_ed_57 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //add dehl,a        ED 39          4+4 Add A to 32bit DEHL
-                z80_long_int dehl= (DE << 16) | HL;
-                dehl +=reg_a;
-                HL=dehl & 0xFFFF;
-                DE=(dehl>>16) & 0xFFFF;
-        }
-
-        else invalid_opcode_ed("237 57");
+        invalid_opcode_ed("237 57");
 }
 
 void instruccion_ed_58 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //add dehl,bc       ED 3A           Add BC to 32bit DEHL
-                z80_long_int dehl= (DE << 16) | HL;
-                dehl +=BC;
-                HL=dehl & 0xFFFF;
-                DE=(dehl>>16) & 0xFFFF;
-        }
-
-        else invalid_opcode_ed("237 58");
+        invalid_opcode_ed("237 58");
 }
 
 void instruccion_ed_59 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //add dehl,NNNN    ED 3B LO HI    4+4 Add NNNN to 32bit DEHL
-                z80_long_int dehl= (DE << 16) | HL;
-
-                z80_int operador=0;
-                operador |= lee_byte_pc();
-                operador |= (lee_byte_pc()<<8);
-
-                dehl +=operador;
-                HL=dehl & 0xFFFF;
-                DE=(dehl>>16) & 0xFFFF;
-        }
-
-        else invalid_opcode_ed("237 59");
+        invalid_opcode_ed("237 59");
 }
 
 void instruccion_ed_60 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //sub dehl,a        ED 3C          4+4 Subtract A from 32bit DEHL
-                z80_long_int dehl= (DE << 16) | HL;
-                dehl -=reg_a;
-                HL=dehl & 0xFFFF;
-                DE=(dehl>>16) & 0xFFFF;
-        }
-
-        else invalid_opcode_ed("237 60");
+        invalid_opcode_ed("237 60");
 }
 
 void instruccion_ed_61 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //sub dehl,bc       ED 3D          4+4 Subtract BC from 32bit DEHL
-                z80_long_int dehl= (DE << 16) | HL;
-                dehl -=BC;
-                HL=dehl & 0xFFFF;
-                DE=(dehl>>16) & 0xFFFF;
-        }
-
-        else invalid_opcode_ed("237 61");
+        invalid_opcode_ed("237 61");
 }
 
 void instruccion_ed_62 ()
@@ -2493,63 +2428,7 @@ void instruccion_ed_181 ()
 
 void instruccion_ed_182 ()
 {
-        if (MACHINE_IS_TBBLUE) {
-                //LDIRSCALE ED B6
-                /*
-                --read byte from ( reg_HL_s (15 downto 0))
-                --if byte != A put byte in ( reg_DE_s(15 downto 0))
-                --add BC' ( from exx ) to HL_A' and store in HL_A'
-                --DE <= DE + DE'
-                --loop BC
-
-
-                Lee un byte de memoria en la dirección HL
-
-                Si el byte es distinto de A, lo escribe en la dirección DE
-
-                Usa los registros alternativos (BC', HL', DE') para:
-
-                Sumar BC' a HL'
-
-                Sumar DE' a DE
-
-                Repite el proceso mientras BC ≠ 0
-
-                */
-        z80_byte byte_leido;
-
-        byte_leido=peek_byte(HL);
-        if (byte_leido!=reg_a) poke_byte(DE,byte_leido);
-
-        contend_write_no_mreq( DE, 1 );
-	contend_write_no_mreq( DE, 1 );
-
-	BC--;
-
-        Z80_FLAGS &=(255-FLAG_H-FLAG_N-FLAG_PV-FLAG_3-FLAG_5);
-
-        if (byte_leido & 8 ) Z80_FLAGS |=FLAG_3;
-
-        if (byte_leido & 2 ) Z80_FLAGS |=FLAG_5;
-
-        if (BC) {
-	  Z80_FLAGS |=FLAG_PV;
-          contend_write_no_mreq( DE, 1 );
-	  contend_write_no_mreq( DE, 1 );
-          contend_write_no_mreq( DE, 1 );
-	  contend_write_no_mreq( DE, 1 );
-          contend_write_no_mreq( DE, 1 );
-          reg_pc -=2;
-
-          z80_ejecutada_instruccion_bloque_ld_cp=1;
-        }
-        HL++; DE++;
-
-
-
-        }
-
-        else invalid_opcode_ed("237 182");
+    invalid_opcode_ed("237 182");
 }
 
 void instruccion_ed_183 ()

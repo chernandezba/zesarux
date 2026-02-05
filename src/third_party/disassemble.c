@@ -129,12 +129,11 @@ struct s_tbblue_extended_string_opcode {
     int sumar_longitud;
 };
 
-#define TOTAL_TBBLUE_EXTENDED_OPCODES 38
+#define TOTAL_TBBLUE_EXTENDED_OPCODES 29
 
 struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLUE_EXTENDED_OPCODES]={
     {"SWAPNIB",             0x23,0,0,0},
     {"MIRROR A",            0x24,0,0,0},
-    {"LD HL,SP",            0x25,0,0,0},
     {"TEST %02X",           0x27,8,0,1},
     {"BSLA DE,B",           0x28,0,0,0},
     {"BSRA DE,B",           0x29,0,0,0},
@@ -148,13 +147,6 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
     {"ADD HL,%04X",         0x34,16,0,2},
     {"ADD DE,%04X",         0x35,16,0,2},
     {"ADD BC,%04X",         0x36,16,0,2},
-    {"INC DEHL",            0x37,0,0,0},
-    {"DEC DEHL",            0x38,0,0,0},
-    {"ADD DEHL,A",          0x39,0,0,0},
-    {"ADD DEHL,BC",         0x3A,0,0,0},
-    {"ADD DEHL,%04X",       0x3B,16,0,2},
-    {"SUB DEHL,A",          0x3C,0,0,0},
-    {"SUB DEHL,BC",         0x3D,0,0,0},
     {"PUSH %04X",           0x8A,16,0,2},
     {"OUTINB",              0x90,0,0,0},
     {"NEXTREG %02X,%02X",   0x91,8,8,2},
@@ -167,8 +159,6 @@ struct s_tbblue_extended_string_opcode tbblue_extended_string_opcode[TOTAL_TBBLU
     {"LDWS",                0xA5,0,0,0},
     {"LDDX",                0xAC,0,0,0},
     {"LDIRX",               0xB4,0,0,0},
-    // * porque no está implementado aún
-    {"LDIRSCALE (*)",       0xB6,0,0,0},
     {"LDPIRX",              0xB7,0,0,0},
     {"LDDRX",               0xBC,0,0,0}
 };
