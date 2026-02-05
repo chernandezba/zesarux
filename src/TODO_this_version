@@ -106,4 +106,4 @@ Alguno para arm? Aparte de raspberry...
 
 -scanline inicial que se ve en negro en Next al pulsar teclas
 
--Revisar opcodes de next que ya no existen, desde t80n.vhd y t80n_mcode.vhd y https://wiki.specnext.dev/Extended_Z80_instruction_set
+ok -Revisar opcodes de next que ya no existen, desde t80n.vhd y t80n_mcode.vhd y https://wiki.specnext.dev/Extended_Z80_instruction_set
