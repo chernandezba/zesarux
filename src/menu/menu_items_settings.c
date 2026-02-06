@@ -2812,21 +2812,21 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char width");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Ancho de caracter de menú","Ample de caracter de menú");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Char width");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Ancho de caracter","Ample de caracter");
         menu_add_item_menu_sufijo_format(array_menu_common," [%d]",menu_char_width);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
         //menu_add_item_menu_shortcut(array_menu_common,'i');
-        menu_add_item_menu_tooltip(array_menu_common,"Menu character width");
-        menu_add_item_menu_ayuda(array_menu_common,"Menu character width. You can reduce it so allowing more text columns in a window");
+        menu_add_item_menu_tooltip(array_menu_common,"Character width");
+        menu_add_item_menu_ayuda(array_menu_common,"Character width. You can reduce it so allowing more text columns in a window");
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charheight,NULL,"Menu char height");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Altura de caracter de menú","Alçada de caracter de menú");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charheight,NULL,"Char height");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Altura de caracter","Alçada de caracter");
         menu_add_item_menu_sufijo_format(array_menu_common," [%d]",menu_char_height);
         menu_add_item_menu_prefijo(array_menu_common,"    ");
-        menu_add_item_menu_tooltip(array_menu_common,"Menu character height");
-        menu_add_item_menu_ayuda(array_menu_common,"Menu character height. You can reduce it so allowing more text rows in a window");
+        menu_add_item_menu_tooltip(array_menu_common,"Character height");
+        menu_add_item_menu_ayuda(array_menu_common,"Character height. You can reduce it so allowing more text rows in a window");
 
 
 
@@ -6758,7 +6758,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_realjoystick,menu_hardware_realjoystick_cond,
-            "~~Real joystick settings","Opciones joystick ~~real","Opcions joystick ~~real");
+            "~~Real joystick","Joystick ~~real","Joystick ~~real");
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'r');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Settings for the real joystick");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Settings for the real joystick");
@@ -11688,7 +11688,11 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_hardware_realjoystick);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&hardware_realjoystick_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick,"Real joystick support" );
+
+        menu_add_item_menu_index_full_path(array_menu_hardware_realjoystick,
+            "Main Menu-> Settings-> Hardware-> Real joystick","Menú Principal-> Opciones-> Hardware-> Joystick real","Menú Principal-> Opcions-> Hardware-> Joystick real");
+
+        retorno_menu=menu_dibuja_menu(&hardware_realjoystick_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick,"Real joystick","Joystick real","Joystick real");
 
 
 

@@ -36368,8 +36368,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             "Load Symbol Table","Cargar Tabla Símbolos","Carregar Taula Símbols");
         menu_add_item_menu_se_cerrara(array_menu_debug);
         menu_add_item_menu_genera_ventana(array_menu_debug);
-        menu_add_item_menu_tooltip(array_menu_debug,"Load symbol table");
-        menu_add_item_menu_ayuda(array_menu_debug,"Load symbol table. Format for every line is:\n"
+        menu_add_item_menu_tooltip(array_menu_debug,"Load symbol table; symbols can be evaluated as values and used on breakpoints");
+        menu_add_item_menu_ayuda(array_menu_debug,"Load symbol table; symbols can be evaluated as values and used on breakpoints. Format for every line is:\n"
             "LABEL[spaces, tabs, :]VALUE");
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
