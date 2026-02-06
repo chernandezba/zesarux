@@ -32402,6 +32402,8 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
         "Video Driver: %s\nAvailable video drivers: %s\n\nAudio Driver: %s\nAvailable audio drivers: %s\n\n"
         "Current directory: %s\n\n"
         "Executable path: %s\n\n"
+        "ZEsarUX version: %s\n"
+        "ZENG Online Protocol version: %d\n"
         "OS: %s on %s\n"
         "Start time: %s\n"
         "Uptime %d secs (%d mins)\n"
@@ -32411,6 +32413,8 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
         scr_new_driver_name,string_video_drivers,audio_new_driver_name,string_audio_drivers,
         directorio_actual,
         zesarux_path_location,
+        EMULATOR_VERSION,
+        ZENG_ONLINE_PROTOCOL_VERSION,
         os_release_name,running_machine_hardware_name,
         hora_inicio,
         uptime_seconds,uptime_seconds/60,mensaje_total_uptime,mensaje_cpu_usage);
