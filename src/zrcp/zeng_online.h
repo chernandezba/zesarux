@@ -34,7 +34,7 @@
         #include <unistd.h>
 #endif
 
-
+//Cuando se cambie alguna funcionalidad en el protocolo de ZENG Online que lo haga incompatible con versiones anteriores, incrementar este número
 #define ZENG_ONLINE_PROTOCOL_VERSION 1
 
 //Maximo nombre para una habitacion
