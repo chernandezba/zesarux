@@ -973,6 +973,10 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         }
     }
 
+    else if (!strcmp(comando_argv[0],"get-protocol-version")) {
+        escribir_socket_format(misocket,"%d",ZENG_ONLINE_PROTOCOL_VERSION);
+    }
+
     else if (!strcmp(comando_argv[0],"list-rooms")) {
         if (!zeng_online_enabled) {
             escribir_socket(misocket,"ERROR. ZENG Online is not enabled");

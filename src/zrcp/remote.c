@@ -933,6 +933,7 @@ struct s_items_ayuda items_ayuda[]={
     "get-key-profile-assign creator_pass n p         Gets assigned profile (p) keys for room n to user uuid.\n"
     "get-message user_pass n                         Gets the broadcast message from room\n"
     "get-message-id user_pass n                      Gets the broadcast message id from room\n"
+    "get-protocol-version                            Gets the ZENG Online protocol version number\n"
     "get-snapshot user_pass n                        This command returns the last snapshot from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "get-snapshot-id user_pass n                     This command returns the last snapshot id from room n, returns ERROR if no snapshot there. Requires user_pass\n"
     "get-kicked-user user_pass n                     This command returns the last kicked user, returning its uuid\n"
