@@ -34,6 +34,9 @@
         #include <unistd.h>
 #endif
 
+
+#define ZENG_ONLINE_PROTOCOL_VERSION 1
+
 //Maximo nombre para una habitacion
 //Si se cambia esto, ajustar nombre con espacios en init_zeng_online_rooms, para que quede 30 de longitud,
 //Y en cabecera de list-rooms

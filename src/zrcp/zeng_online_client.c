@@ -429,7 +429,7 @@ int zeng_online_client_list_rooms_connect(void)
     DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Sending get-version");
 
     //Enviar un get-version
-    int escritos=z_sock_write_string(indice_socket,"get-version\n");
+    int escritos=z_sock_write_string(indice_socket,"zeng-online get-protocol-version\n");
 
     if (escritos<0) {
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: ERROR. Can't send get-version: %s",z_sock_get_error(escritos));
@@ -441,7 +441,7 @@ int zeng_online_client_list_rooms_connect(void)
     leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
     if (leidos>0) {
         buffer[leidos]=0; //fin de texto
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for get-version (length %d): \n[\n%s\n]",leidos,buffer);
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_DEBUG,"ZENG Online Client: Received text for zeng-online get-protocol-version (length %d): \n[\n%s\n]",leidos,buffer);
     }
 
     if (leidos<0) {
@@ -461,9 +461,17 @@ int zeng_online_client_list_rooms_connect(void)
 
     //Comprobar que version remota sea como local
     char myversion[30];
-    util_get_emulator_version_number(myversion);
+    sprintf(myversion,"%d",ZENG_ONLINE_PROTOCOL_VERSION);
+
     if (strcasecmp(myversion,buffer)) {
-        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Local and remote ZEsarUX versions do not match");
+        //Decimos la versión remota, vigilando que no aparezca ningún caracter extraño, y limitando a 3 caracteres máximo
+        buffer[3]=0;
+        int i;
+        for (i=0;buffer[i];i++) {
+            if (buffer[i]<32 || buffer[i]>126) buffer[i]='.';
+        }
+
+        DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_ERR,"ZENG Online Client: Local and remote ZENG Online protocol versions do not match (local: %s remote: %s)",myversion,buffer);
         //printf("Local %s remote %s\n",myversion,buffer);
         return 0;
     }
