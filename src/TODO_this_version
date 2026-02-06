@@ -130,3 +130,6 @@ Además si se reabre el menú puede ser confuso para el usuario, ha abierto un m
 ok en running info -En algun menu/ventana que diga la versión de protocolo ZENG Online
 
 -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
+
+-aviso al linkear en mac silicon, es importante?
+ld: warning: reducing alignment of section __DATA,__common from 0x8000 to 0x4000 because it exceeds segment maximum alignment
