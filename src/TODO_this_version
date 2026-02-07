@@ -104,6 +104,8 @@ Alguno para arm? Aparte de raspberry...
 
 -scanline inicial que se ve en negro en Next al pulsar teclas
 
+
+######Dialogo al sobreescribir un archivo######
 -Dialogo al sobreescribir un archivo (por ejemplo en tape output) si está top menu activado, sale mensaje arriba del todo
 ->al abrir filesel llamar a zxvision_reset_set_next_menu_position()
 Pero no seria mejor llamar ahí desde otro sitio central? Desde donde se sepa que el menu se cierra
@@ -116,10 +118,12 @@ Pero al cerrar, el usuario no ve que ha seleccionado ese archivo, que igual quie
 puede querer activar el write protect y eso le implica tener que reabrir el menu (o no? quizá no necesita tocar nada despues de seleccionar el archivo)
 Además si se reabre el menú puede ser confuso para el usuario, ha abierto un menu, se ha cerrado, pero reabre solo? Por no decir que pierde la posicion de la ventana de ese submenu (con MENU_ITEM_FLAG_GENERA_VENTANA)
 
--> de momento solo en testeo al seleccionar tape input y output (en void menu_storage_tape(MENU_ITEM_PARAMETERS) )
+-> de momento solo en testeo al seleccionar tape input y output (en void menu_storage_tape(MENU_ITEM_PARAMETERS) ) y en CF2 Floppy
 -> estudiar los diferentes menu donde se seleccionan archivos y ver si tiene sentido que el menú se reabra después de seleccionar archivo
 ->otra alternativa seria convertir ese submenu en una ventana de dialogo con opciones... pero igual seria también confuso para el usuario, ¿un menu que se separa de los menus?
 ->Hay que revisar TODOS los que seleccionan un archivo desde item de menu
+######FIN Dialogo al sobreescribir un archivo######
+
 
 -Pantalla completa en Mac no va bien
 
@@ -134,3 +138,5 @@ ld: warning: reducing alignment of section __DATA,__common from 0x8000 to 0x4000
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
 
 -Zeng opción para enviar mensaje a un usuario concreto
+
+-Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
