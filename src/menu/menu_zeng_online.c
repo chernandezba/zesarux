@@ -2025,7 +2025,7 @@ void menu_zeng_online_status_window_overlay(void)
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Streaming displays received: %d",zoc_streaming_display_received_counter);
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++," Full: %d (%d %%)",zoc_streaming_display_full_received_counter,porcentaje_full_displays);
                 zxvision_print_string_defaults_fillspc_format(w,1,linea++," Differential: %d (%d %%)",zoc_streaming_display_differential_received_counter,100-porcentaje_full_displays);
-                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display quality: %d ",zoc_slave_differential_displays_limit_full);
+                zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Display quality: %d (lower=better)",zoc_slave_differential_displays_limit_full);
 
                 int porcentaje_no_silence=0;
                 if (zoc_streaming_audio_received_counter!=0) {
