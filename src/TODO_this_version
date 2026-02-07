@@ -119,8 +119,6 @@ Además si se reabre el menú puede ser confuso para el usuario, ha abierto un m
 -> de momento solo en testeo al seleccionar tape input y output (en void menu_storage_tape(MENU_ITEM_PARAMETERS) )
 -> estudiar los diferentes menu donde se seleccionan archivos y ver si tiene sentido que el menú se reabra después de seleccionar archivo
 ->otra alternativa seria convertir ese submenu en una ventana de dialogo con opciones... pero igual seria también confuso para el usuario, ¿un menu que se separa de los menus?
-
-
 ->Hay que revisar TODOS los que seleccionan un archivo desde item de menu
 
 -Pantalla completa en Mac no va bien
