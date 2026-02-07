@@ -125,9 +125,12 @@ Además si se reabre el menú puede ser confuso para el usuario, ha abierto un m
 
 -Botones flechas para extender zx desktop, desaparece el de extender cuando llega a 640
 
-ok en running info -En algun menu/ventana que diga la versión de protocolo ZENG Online
-
 -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
 
 -aviso al linkear en mac silicon, es importante?
 ld: warning: reducing alignment of section __DATA,__common from 0x8000 to 0x4000 because it exceeds segment maximum alignment
+
+-En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
+Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
+
+-Zeng opción para enviar mensaje a un usuario concreto
