@@ -15240,7 +15240,7 @@ void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, vo
 
 //Funcion para trazar una linea usando algoritmo de bresenham, igual el algoritmo a zxvision_draw_line
 //pero usada por el dibujado de triangulos, con mas parametros
-void zxvision_draw_line_for_filled_triangle(zxvision_window *w,int x1,int y1,int x2,int y2,int c, int min_x,int min_y,int ancho,int *buffer,
+void zxvision_draw_line_for_filled_triangle(int x1,int y1,int x2,int y2,int min_x,int min_y,int ancho,int *buffer,
     void (*fun_putpixel) (int x,int y,int min_x,int min_y,int ancho,int *buffer) )
 {
  int x,y,dx,dy,dx1,dy1,px,py,xe,ye;
@@ -30707,19 +30707,15 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
 
     int *buffer_pixeles_aristas=util_malloc_fill(ancho*alto*sizeof(int),"Can not allocate memory for pixel buffer",0);
 
-    //TODO: como hacer que la funcion de pixel al dibujar linea sepa donde esta el buffer y los minimos de coordenadas?
-    //Solución: crear otra función de draw_line que tenga esos parámetros
-    //zxvision_draw_line_for_filled_triangle
-
     //Dibujamos los 3 vertices del triangulo
     //de x1,y1 a x2,y2
     //de x1,y1 a x3,y3
     //de x2,y2 a x3,y3
 
 
-    zxvision_draw_line_for_filled_triangle(w,x1,y1,x2,y2,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
-    zxvision_draw_line_for_filled_triangle(w,x1,y1,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
-    zxvision_draw_line_for_filled_triangle(w,x2,y2,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
+    zxvision_draw_line_for_filled_triangle(x1,y1,x2,y2,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
+    zxvision_draw_line_for_filled_triangle(x1,y1,x3,y3,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
+    zxvision_draw_line_for_filled_triangle(x2,y2,x3,y3,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
 
 
     //Ahora vamos a hacer render desde posicion Y menor (en coordenadas de zxvision el 0,0 esta arriba del todo)
