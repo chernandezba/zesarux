@@ -30653,7 +30653,13 @@ void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,
 }
 
 
-void zxvision_draw_filled_triangle_putpixel(int x,int y,int min_x,int min_y,int ancho,int *buffer)
+
+void zxvision_draw_filled_triangle_putpixel(zxvision_window *w,int x,int y,int color)
+{
+    zxvision_putpixel(w,x,y,color);
+}
+
+void zxvision_draw_filled_triangle_putpixel_buffer(int x,int y,int min_x,int min_y,int ancho,int *buffer)
 {
     //Simplemente indicar en el buffer que usamos esa posicion
 
@@ -30711,11 +30717,51 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
     //de x2,y2 a x3,y3
 
 
-    zxvision_draw_line_for_filled_triangle(w,x1,y1,x2,y2,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel);
-    zxvision_draw_line_for_filled_triangle(w,x1,y1,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel);
-    zxvision_draw_line_for_filled_triangle(w,x2,y2,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel);
+    zxvision_draw_line_for_filled_triangle(w,x1,y1,x2,y2,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
+    zxvision_draw_line_for_filled_triangle(w,x1,y1,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
+    zxvision_draw_line_for_filled_triangle(w,x2,y2,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
 
 
+    //Ahora vamos a hacer render desde posicion Y menor (en coordenadas de zxvision el 0,0 esta arriba del todo)
+    int y;
+    for (y=min_y;y<=max_y;y++) {
+        //Buscamos posicion x menor, eso dice el area del triangulo donde empieza por la izquierda
+        int x;
+        int izquierda=-1;
+        for (x=min_x;x<=max_x;x++) {
+            int offset_buffer=(y-min_y)*ancho+(x-min_x);
+            if (buffer_pixeles_aristas[offset_buffer]) {
+                izquierda=x;
+                break;
+            }
+        }
+
+        //Buscamos posicion y mayor, eso dice el area del triangulo donde empieza por la derecha
+        int derecha=-1;
+        for (x=max_x;x>=min_x;x--) {
+            int offset_buffer=(y-min_y)*ancho+(x-min_x);
+            if (buffer_pixeles_aristas[offset_buffer]) {
+                derecha=x;
+                break;
+            }
+        }
+
+        if (izquierda!=-1 && derecha!=-1) {
+            //temp. de momento solo poner pixel en aristas
+            //zxvision_putpixel(w,izquierda,y,color_relleno);
+            //temp. de momento solo poner pixel en aristas
+            //zxvision_putpixel(w,derecha,y,color_relleno);
+
+
+            zxvision_draw_line(w,izquierda,y,derecha,y,color_relleno,zxvision_draw_filled_triangle_putpixel);
+
+        }
+    }
+
+    //Finalmente dibujamos las aristas
+    zxvision_draw_line(w,x1,y1,x2,y2,color_aristas,zxvision_draw_filled_triangle_putpixel);
+    zxvision_draw_line(w,x1,y1,x3,y3,color_aristas,zxvision_draw_filled_triangle_putpixel);
+    zxvision_draw_line(w,x2,y2,x3,y3,color_aristas,zxvision_draw_filled_triangle_putpixel);
 
     free(buffer_pixeles_aristas);
 

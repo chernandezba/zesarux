@@ -36254,14 +36254,14 @@ void menu_debug_3d_test_overlay(void)
     //Print....
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
 
-    int x1=0;
-    int y1=0;
+    int x1=5;
+    int y1=5;
 
-    int x2=30;
-    int y2=10;
+    int x2=5+30;
+    int y2=5+10;
 
-    int x3=60;
-    int y3=90;
+    int x3=5;
+    int y3=5+10+10;
 
     zxvision_draw_filled_triangle(menu_debug_3d_test_window,2,6,x1,y1,x2,y2,x3,y3);
 
