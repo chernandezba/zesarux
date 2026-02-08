@@ -575,8 +575,11 @@ extern int zxvision_mouse_in_emulated_machine(void);
 extern void zxvision_putpixel(zxvision_window *w,int x,int y,int color);
 extern void zxvision_putpixel_no_zoom(zxvision_window *w,int x,int y,int color);
 extern void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) );
+extern void zxvision_draw_line_for_filled_triangle(zxvision_window *w,int x1,int y1,int x2,int y2,int c, int min_x,int min_y,int ancho,int *buffer,
+    void (*fun_putpixel) (int x,int y,int min_x,int min_y,int ancho,int *buffer) );
 extern void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int limite_grados);
 extern void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados);
+extern void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3);
 extern void zxvision_print_vectorial_text(zxvision_window *w,int x,int y,int text_zoom,int color,char *texto,
     void (*fun_putpixel) (zxvision_window *w,int parm_x,int parm_y,int parm_color) );
 

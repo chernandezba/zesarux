@@ -15238,6 +15238,94 @@ void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, vo
  }
 }
 
+//Funcion para trazar una linea usando algoritmo de bresenham, igual el algoritmo a zxvision_draw_line
+//pero usada por el dibujado de triangulos, con mas parametros
+void zxvision_draw_line_for_filled_triangle(zxvision_window *w,int x1,int y1,int x2,int y2,int c, int min_x,int min_y,int ancho,int *buffer,
+    void (*fun_putpixel) (int x,int y,int min_x,int min_y,int ancho,int *buffer) )
+{
+ int x,y,dx,dy,dx1,dy1,px,py,xe,ye;
+ dx=x2-x1;
+ dy=y2-y1;
+ dx1=util_get_absolute(dx);
+ dy1=util_get_absolute(dy);
+ px=2*dy1-dx1;
+ py=2*dx1-dy1;
+ if(dy1<=dx1)
+ {
+  if(dx>=0)
+  {
+   x=x1;
+   y=y1;
+   xe=x2;
+  }
+  else
+  {
+   x=x2;
+   y=y2;
+   xe=x1;
+  }
+  fun_putpixel(x,y,min_x,min_y,ancho,buffer);
+  while(x<xe)
+  {
+   x=x+1;
+   if(px<0)
+   {
+    px=px+2*dy1;
+   }
+   else
+   {
+    if((dx<0 && dy<0) || (dx>0 && dy>0))
+    {
+     y=y+1;
+    }
+    else
+    {
+     y=y-1;
+    }
+    px=px+2*(dy1-dx1);
+   }
+   fun_putpixel(x,y,min_x,min_y,ancho,buffer);
+  }
+ }
+ else
+ {
+  if(dy>=0)
+  {
+   x=x1;
+   y=y1;
+   ye=y2;
+  }
+  else
+  {
+   x=x2;
+   y=y2;
+   ye=y1;
+  }
+  fun_putpixel(x,y,min_x,min_y,ancho,buffer);
+  while(y<ye)
+  {
+   y=y+1;
+   if(py<=0)
+   {
+    py=py+2*dx1;
+   }
+   else
+   {
+    if((dx<0 && dy<0) || (dx>0 && dy>0))
+    {
+     x=x+1;
+    }
+    else
+    {
+     x=x-1;
+    }
+    py=py+2*(dx1-dy1);
+   }
+   fun_putpixel(x,y,min_x,min_y,ancho,buffer);
+  }
+ }
+}
+
 //Funcion para trazar un arco
 void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados)
 {
@@ -30565,13 +30653,24 @@ void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,
 }
 
 
+void zxvision_draw_filled_triangle_putpixel(int x,int y,int min_x,int min_y,int ancho,int *buffer)
+{
+    //Simplemente indicar en el buffer que usamos esa posicion
 
+    int offset_x=x-min_x;
+    int offset_y=y-min_y;
+
+
+    int offset_final=offset_y*ancho+offset_x;
+
+    buffer[offset_final]=1;
+}
 
 void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3)
 {
 
     /*
-    Almacenar en una estructura en memoria los pixeles usados por las aristas, sin dibujarlos inicialmente
+    Almacenar en una buffer en memoria los pixeles usados por las aristas, sin dibujarlos inicialmente
     Para el relleno, empezar desde abajo hacia arriba, dibujando lineas horizontales, viendo valor minimo x y maximo x para la posición y correspondiente
     Y finalmente si que dibujamos las aristas
     */
@@ -30591,6 +30690,33 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
     if (x2>max_x) max_x=x2;
     if (x3>max_x) max_x=x3;
 
+    int max_y=y1;
+    if (y2>max_y) max_y=y2;
+    if (y3>max_y) max_y=y3;
 
+
+    //Creamos el buffer de pixeles usados, como un cuadrado desde los minimos hasta los maximos
+    int ancho=max_x-min_x+1;
+    int alto=max_y-min_y+1;
+
+    int *buffer_pixeles_aristas=util_malloc_fill(ancho*alto*sizeof(int),"Can not allocate memory for pixel buffer",0);
+
+    //TODO: como hacer que la funcion de pixel al dibujar linea sepa donde esta el buffer y los minimos de coordenadas?
+    //Solución: crear otra función de draw_line que tenga esos parámetros
+    //zxvision_draw_line_for_filled_triangle
+
+    //Dibujamos los 3 vertices del triangulo
+    //de x1,y1 a x2,y2
+    //de x1,y1 a x3,y3
+    //de x2,y2 a x3,y3
+
+
+    zxvision_draw_line_for_filled_triangle(w,x1,y1,x2,y2,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel);
+    zxvision_draw_line_for_filled_triangle(w,x1,y1,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel);
+    zxvision_draw_line_for_filled_triangle(w,x2,y2,x3,y3,color_aristas,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel);
+
+
+
+    free(buffer_pixeles_aristas);
 
 }
