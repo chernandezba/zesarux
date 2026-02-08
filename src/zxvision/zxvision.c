@@ -30563,3 +30563,34 @@ void zxvision_vecdraw_init(struct zxvision_vectorial_draw *d,zxvision_window *w,
     d->drawarc=zxvision_vecdraw_arc;
     d->drawfilledrectangle=zxvision_vecdraw_drawfilledrectangle;
 }
+
+
+
+
+void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3)
+{
+
+    /*
+    Almacenar en una estructura en memoria los pixeles usados por las aristas, sin dibujarlos inicialmente
+    Para el relleno, empezar desde abajo hacia arriba, dibujando lineas horizontales, viendo valor minimo x y maximo x para la posición y correspondiente
+    Y finalmente si que dibujamos las aristas
+    */
+
+    //Buscamos minimo x
+    int min_x=x1;
+    if (x2<min_x) min_x=x2;
+    if (x3<min_x) min_x=x3;
+
+    //Buscamos minimo y
+    int min_y=y1;
+    if (y2<min_y) min_y=y2;
+    if (y3<min_y) min_y=y3;
+
+    //Y maximos x,y
+    int max_x=x1;
+    if (x2>max_x) max_x=x2;
+    if (x3>max_x) max_x=x3;
+
+
+
+}

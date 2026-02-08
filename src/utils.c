@@ -25844,3 +25844,11 @@ int util_min(int a,int b)
     if (a<b) return a;
     else return b;
 }
+
+//Intercambiar dos valores)
+void util_swap(int *a,int *b)
+{
+    int temp=*a;
+    *a=*b;
+    *b=temp;
+}
