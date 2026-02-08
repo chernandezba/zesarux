@@ -15935,6 +15935,23 @@ void zxvision_widgets_draw_sierpinsky(zxvision_window *ventana,int xinicio_widge
 
 }
 
+void zxvision_widgets_draw_triangle(zxvision_window *ventana,int xinicio_widget,int yinicio_widget,int percentaje,int color)
+{
+
+    int i;
+
+    int ancho=64;
+    int alto_total=48;
+    int alto_triangulo=(alto_total*percentaje)/100;
+
+    zxvision_draw_filled_triangle(ventana,color,0,
+            xinicio_widget,yinicio_widget+alto_total,
+            xinicio_widget+ancho-1,yinicio_widget+alto_total,
+            xinicio_widget+ancho/2,yinicio_widget+alto_total-alto_triangulo);
+
+}
+
+
 char *zxvision_widget_types_names[ZXVISION_TOTAL_WIDGET_TYPES]={
     "Speedometer",
     "Speaker",
@@ -15947,7 +15964,8 @@ char *zxvision_widget_types_names[ZXVISION_TOTAL_WIDGET_TYPES]={
     "Sphere",
     "Volume",
     "Only Value",
-    "Sierpinsky"
+    "Sierpinsky",
+    "Triangle"
 };
 
 void widget_list_print(void)
@@ -16128,6 +16146,15 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
         int yorigen_widget=(fila_texto*menu_char_height)+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto;
 
         zxvision_widgets_draw_sierpinsky(ventana,xorigen_widget,yorigen_widget,media_cpu_perc,color_pixeles);
+
+    }
+
+    if (tipo==ZXVISION_WIDGET_TYPE_TRIANGLE) {
+
+        int xorigen_widget=(columna_texto*menu_char_width);
+        int yorigen_widget=(fila_texto*menu_char_height)+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto;
+
+        zxvision_widgets_draw_triangle(ventana,xorigen_widget,yorigen_widget,media_cpu_perc,color_pixeles);
 
     }
 
@@ -30672,6 +30699,7 @@ void zxvision_draw_filled_triangle_putpixel_buffer(int x,int y,int min_x,int min
     buffer[offset_final]=1;
 }
 
+//Coordenadas en el plano 2D
 void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3)
 {
 
@@ -30762,3 +30790,9 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
     free(buffer_pixeles_aristas);
 
 }
+
+//Coordenadas en el plano 2d
+//void zxvision_draw_filled_pyramid(zxvision_window *w,int color_relleno,int color_aristas,
+
+
+//Para poder ocultar caras no visibles, tengo que tener un buffer donde diga si se usa un pixel, indicando si está delante o detrás
