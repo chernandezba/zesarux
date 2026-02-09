@@ -11655,7 +11655,9 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'e');
         menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
         menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
-        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA);
+        //no queremos que se cierre la ventana cuando se ha asignado un evento, dejarla abierta por si se quiere asignar mas
+        //menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
 
