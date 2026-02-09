@@ -15780,7 +15780,7 @@ void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,in
 
 
 //Conversion de coordenadas 3D a 2D. Simple sin calculo coseno, da mejor perspectiva que el anterior que usa coseno y seno
-void zxvision_widgets_draw_particles_3d_convert_simple(int x,int y,int z,int *xfinal,int *yfinal)
+void zxvision_widgets_convert_3d_2d_simple(int x,int y,int z,int *xfinal,int *yfinal)
 {
 
 
@@ -15867,7 +15867,7 @@ void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget
             int xplano,yplano;
             //zxvision_widgets_draw_particles_3d_convert(xdestino,ydestino,z/100,&xplano,&yplano);
 
-            zxvision_widgets_draw_particles_3d_convert_simple(xdestino,ydestino,z/100,&xplano,&yplano);
+            zxvision_widgets_convert_3d_2d_simple(xdestino,ydestino,z/100,&xplano,&yplano);
             //if (yplano<0) printf("%d %d\n",xplano,yplano);
             zxvision_putpixel(ventana,x_centro_widget+xplano,ycentro_widget-yplano,color); //es -yplano porque si y es positiva, restamos (hacia arriba, pues el 0 de la y esta arriba del todo)
 
@@ -15957,7 +15957,7 @@ void zxvision_widgets_draw_sphere(zxvision_window *ventana,int xinicio_widget,in
 
             int xplano,yplano;
 
-            zxvision_widgets_draw_particles_3d_convert_simple(xdestino,ydestino,z,&xplano,&yplano);
+            zxvision_widgets_convert_3d_2d_simple(xdestino,ydestino,z,&xplano,&yplano);
 
             zxvision_putpixel(ventana,x_centro_widget+xplano,ycentro_widget-yplano,color); //es -yplano porque si y es positiva, restamos (hacia arriba, pues el 0 de la y esta arriba del todo)
 
