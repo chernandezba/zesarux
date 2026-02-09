@@ -15416,6 +15416,14 @@ void zxvision_draw_line_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int
     fun_putpixel(w,x1, y1, z1,color);
 }
 
+
+void zxvision_draw_triangle_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int y1, int z1,int x2,int y2,int z2,int color,void (*fun_putpixel) (zxvision_window *w,int x,int y,int z,int color) )
+{
+    zxvision_draw_line_3d(w,x0,y0,z0,x1,y1,z1,color,fun_putpixel);
+    zxvision_draw_line_3d(w,x0,y0,z0,x2,y2,z2,color,fun_putpixel);
+    zxvision_draw_line_3d(w,x1,y1,z1,x2,y2,z2,color,fun_putpixel);
+}
+
 //Funcion para trazar un arco
 void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados)
 {

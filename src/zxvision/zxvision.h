@@ -585,6 +585,7 @@ extern void zxvision_print_vectorial_text(zxvision_window *w,int x,int y,int tex
 
 extern void zxvision_draw_line_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int y1, int z1,int color,void (*fun_putpixel) (zxvision_window *w,int x,int y,int z,int color) );
 extern void zxvision_widgets_draw_particles_3d_convert_simple(int x,int y,int z,int *xfinal,int *yfinal);
+extern void zxvision_draw_triangle_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int y1, int z1,int x2,int y2,int z2,int color,void (*fun_putpixel) (zxvision_window *w,int x,int y,int z,int color) );
 
 #define ZXVISION_TOTAL_WIDGET_TYPES 13
 #define ZXVISION_WIDGET_TYPE_SPEEDOMETER 0
