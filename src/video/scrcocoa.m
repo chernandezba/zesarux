@@ -114,12 +114,12 @@ IOHIDManagerRef hidManager;
 int cocoa_enviar_caps_contador=0;
 
 
-void kbd_mouse_event (int a,int b,int c,int d)
+void kbd_mouse_event (int a GCC_UNUSED,int b GCC_UNUSED,int c GCC_UNUSED,int d GCC_UNUSED)
 {
 }
 
 
-void kbd_put_keycode(int a)
+void kbd_put_keycode(int a GCC_UNUSED)
 {
 }
 
@@ -130,7 +130,7 @@ return 1;
 }
 
 
-void kbd_put_keysym(int a)
+void kbd_put_keysym(int a GCC_UNUSED)
 {
 }
 
@@ -480,7 +480,8 @@ int pendiente_z88_draw_lower=0;
 
 @implementation ZesaruxCocoaWindow
 
-void joystickWasAdded(void* inContext, IOReturn inResult, void* inSender, IOHIDDeviceRef device) {
+
+void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDDeviceRef device) {
     debug_printf(VERBOSE_INFO,"Joystick has been plugged");
 
     uint vendor=0,product=0;
@@ -532,7 +533,7 @@ NSLog(@"\nONTRAK device Model: %@\nSerial Number:%@\n",
 
 }
 
-void joystickWasRemoved(void* inContext, IOReturn inResult, void* inSender, IOHIDDeviceRef device) {
+void joystickWasRemoved(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDDeviceRef device GCC_UNUSED) {
     debug_printf(VERBOSE_INFO,"Joystick has been unplugged");
 
     if (realjoystick_present.v) {
@@ -545,7 +546,7 @@ void joystickWasRemoved(void* inContext, IOReturn inResult, void* inSender, IOHI
     }
 }
 
-void joystickAction(void* inContext, IOReturn inResult, void* inSender, IOHIDValueRef value) {
+void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDValueRef value) {
     //printf("Gamepad talked!\n");
     IOHIDElementRef element = IOHIDValueGetElement(value);
     //NSLog(@"Element: %@", element);
@@ -764,7 +765,8 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
     IOHIDManagerRegisterDeviceMatchingCallback(hidManager, joystickWasAdded, (void*)self);
     IOHIDManagerRegisterDeviceRemovalCallback(hidManager, joystickWasRemoved, (void*)self);
     IOHIDManagerScheduleWithRunLoop(hidManager, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-    IOReturn tIOReturn = IOHIDManagerOpen(hidManager, kIOHIDOptionsTypeNone);
+    //IOReturn tIOReturn =
+    IOHIDManagerOpen(hidManager, kIOHIDOptionsTypeNone);
     IOHIDManagerRegisterInputValueCallback(hidManager, joystickAction, (void*)self);
 
     strcpy(realjoystick_driver_name,"Mac OS");
@@ -1599,7 +1601,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 
 
-//- (void) gestionTecla:(NSEvent *)event pressrelease:(int)pressrelease
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease
 {
     //COCOA_DEBUG("ZesaruxCocoaView: gestionTecla\n");
@@ -1615,12 +1616,11 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 	*/
 
 
-
 	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
 
-    int buttons = 0;
-    int cocoakeycode;
-    NSPoint p = [event locationInWindow];
+    //int buttons = 0;
+    UInt16 cocoakeycode;
+    //NSPoint p = [event locationInWindow];
     cocoakeycode=[event keyCode];
     //printf ("cocoakeycode tecla %d pressrelease: %d\n",cocoakeycode,pressrelease);
 
@@ -1628,7 +1628,9 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
     //printf ("gestionTecla.tecla: %d contador: %d\n",cocoakeycode,temp_cocoa_contador++);
 
 	//printf ("sizeof array: %d\n",sizeof(keymap));
-	if (cocoakeycode<sizeof(keymap)/sizeof(int) ) {
+
+
+	if (cocoakeycode<(sizeof(keymap)/sizeof(int)) ) {
 		teclareal=keymap[cocoakeycode];
 	}
 
@@ -2090,10 +2092,11 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
     pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd_l=pulsadocmd_r=0;
 
-    int event_keycode,event_type,event_modifier_flags;
-    NSPoint p = [event locationInWindow];
+    int event_keycode,event_modifier_flags;
+    //int event_type;
+    //NSPoint p = [event locationInWindow];
 
-	event_type=[event type];
+	//event_type=[event type];
 	event_keycode=[event keyCode];
 	event_modifier_flags=[event modifierFlags];
 
@@ -2330,7 +2333,7 @@ int previous_timer_sleep_machine=0;
 
 
 //- (int)startTimer
-- (void)  startTimer:(id)sender;
+- (void)  startTimer:(id)sender
 {
     //printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
 
@@ -2386,7 +2389,7 @@ int previous_timer_sleep_machine=0;
 }
 
 //- (void)stopTimer
-- (void)  stopTimer:(id)sender;
+- (void)  stopTimer:(id)sender
 {
 
     //printf("--scrcocoa stopTimer\n");
@@ -2540,8 +2543,9 @@ int previous_timer_sleep_machine=0;
 {
     //COCOA_DEBUG("ZesaruxCocoaAppController: startEmulationWithArgc\n");
 
-    int status;
-    status = zesarux_main(argc, argv);
+    //int status;
+    //status =
+    zesarux_main(argc, argv);
 
    //porque hay un exit aqui?? quiza del main de zesarux no se deba volver nunca, dejar el bucle como pthread y listo
    // exit(status);
@@ -3181,7 +3185,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
 
 }
 
-z80_byte scrcocoa_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
+z80_byte scrcocoa_lee_puerto(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l GCC_UNUSED)
 {
 	return 255;
 }
@@ -3321,18 +3325,18 @@ int scrcocoa_init (void) {
 
     //printf ("scrcocoa_init\n");
 
-    int soyelmainthread;
+    //int soyelmainthread;
 
     if ([NSThread isMainThread]) {
             //printf ("Soy el main thread\n");
-            soyelmainthread=1;
+            //soyelmainthread=1;
     }
 
     else {
             //printf ("No soy el main thread\n");
             //Esto solo se puede hacer desde el main thread
             //dispatch_sync(dispatch_get_main_queue(), cocoaView toggleFullScreen:nil);
-            soyelmainthread=0;
+            //soyelmainthread=0;
     }
 
     //Inicializaciones necesarias
