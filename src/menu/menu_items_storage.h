@@ -69,6 +69,10 @@ extern void menu_esxdos_traps(MENU_ITEM_PARAMETERS);
 extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
 extern void menu_zxmmcplus(MENU_ITEM_PARAMETERS);
 extern void menu_convert_audio_to_zx81(MENU_ITEM_PARAMETERS);
+extern void menu_storage_mmc_file(MENU_ITEM_PARAMETERS);
+extern void menu_storage_ide_emulation(MENU_ITEM_PARAMETERS);
+extern void menu_storage_ide_file(MENU_ITEM_PARAMETERS);
+extern void menu_storage_divide_ide_ports_emulation(MENU_ITEM_PARAMETERS);
 
 extern int convert_audio_to_zx81_thread_running;
 extern char menu_convert_audio_to_zx81_get_last_sample(void);
