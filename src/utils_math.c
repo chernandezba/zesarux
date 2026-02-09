@@ -25,6 +25,7 @@
 
 #include <stdio.h>
 
+#include "utils_math.h"
 #include "debug.h"
 #include "cpu.h"
 

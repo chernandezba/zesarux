@@ -1159,6 +1159,4 @@ extern int util_strlen_utf(char *texto);
 
 extern int util_min(int a,int b);
 
-extern void util_swap(int *a,int *b);
-
 #endif

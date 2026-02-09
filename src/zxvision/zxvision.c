@@ -15327,7 +15327,8 @@ void zxvision_draw_line_for_filled_triangle(int x1,int y1,int x2,int y2,int min_
 }
 
 
-
+//Función no usada. Para trazar una linea entre dos puntos en coordenadas 3D
+/*
 void zxvision_draw_line_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int y1, int z1,int color,void (*fun_putpixel) (zxvision_window *w,int x,int y,int z,int color) )
 {
     int dx = util_get_absolute(x1 - x0);
@@ -15416,13 +15417,8 @@ void zxvision_draw_line_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int
     fun_putpixel(w,x1, y1, z1,color);
 }
 
+*/
 
-void zxvision_draw_triangle_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int y1, int z1,int x2,int y2,int z2,int color,void (*fun_putpixel) (zxvision_window *w,int x,int y,int z,int color) )
-{
-    zxvision_draw_line_3d(w,x0,y0,z0,x1,y1,z1,color,fun_putpixel);
-    zxvision_draw_line_3d(w,x0,y0,z0,x2,y2,z2,color,fun_putpixel);
-    zxvision_draw_line_3d(w,x1,y1,z1,x2,y2,z2,color,fun_putpixel);
-}
 
 //Funcion para trazar un arco
 void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados)
@@ -16038,8 +16034,8 @@ void zxvision_widgets_draw_triangle(zxvision_window *ventana,int xinicio_widget,
 
     int i;
 
-    int ancho=64;
-    int alto_total=48;
+    int ancho=65; //ancho impar para que el centro quede bien dividido
+    int alto_total=65/2; //para que al 100% del sensor, quede una rampa completamente diagonal 1/1
     int alto_triangulo=(alto_total*percentaje)/100;
 
     zxvision_draw_filled_triangle(ventana,color,0,
@@ -30838,7 +30834,7 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
     //de x1,y1 a x3,y3
     //de x2,y2 a x3,y3
 
-
+    //Meter en buffer
     zxvision_draw_line_for_filled_triangle(x1,y1,x2,y2,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
     zxvision_draw_line_for_filled_triangle(x1,y1,x3,y3,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
     zxvision_draw_line_for_filled_triangle(x2,y2,x3,y3,min_x,min_y,ancho,buffer_pixeles_aristas,zxvision_draw_filled_triangle_putpixel_buffer);
@@ -30874,7 +30870,7 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
             //temp. de momento solo poner pixel en aristas
             //zxvision_putpixel(w,derecha,y,color_relleno);
 
-
+            //Rellenar
             zxvision_draw_line(w,izquierda,y,derecha,y,color_relleno,zxvision_draw_filled_triangle_putpixel);
 
         }
@@ -30889,8 +30885,3 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
 
 }
 
-//Coordenadas en el plano 2d
-//void zxvision_draw_filled_pyramid(zxvision_window *w,int color_relleno,int color_aristas,
-
-
-//Para poder ocultar caras no visibles, tengo que tener un buffer donde diga si se usa un pixel, indicando si está delante o detrás

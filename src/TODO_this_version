@@ -140,3 +140,6 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 -Zeng opción para enviar mensaje a un usuario concreto
 
 -Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
+
+-ocultar pixeles de un triangulo en 3d rasterizado en 2d:
+tener un buffer de 3 dimensiones que diga cada pixel usado (guardando pixel x,y del plano 2d, Y del plano 3d que es el que da la profundidad). Para ello, cuando se renderiza en 2d un triangulo relleno, obtener, de cada pixel 2d, su coordenada 3d y meterlo en buffer, siempre que no exista. Si no existe, se muestra pixel en pantalla. Si existe, no se muestra
