@@ -52,6 +52,7 @@ Improved ZX Vision:
 - Added shortcuts helper action to create icon to trigger recorded keys
 - Some settings dialogs can reset value to defaults
 - Restored maximized windows on startup, will be restored to the maximum size available
+- New widget type Triangle on View Sensors
 
 Improved ZX Desktop:
 - Allow to set small values for ZX Desktop width size

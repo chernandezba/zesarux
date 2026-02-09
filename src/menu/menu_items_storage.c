@@ -275,6 +275,7 @@ void menu_kartusho(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_shortcut(array_menu_kartusho,'r');
                         menu_add_item_menu_tooltip(array_menu_kartusho,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_kartusho,"ROM Emulation file");
+                        menu_add_item_menu_add_flags(array_menu_kartusho,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
                                     menu_add_item_menu_format(array_menu_kartusho,MENU_OPCION_NORMAL,menu_storage_kartusho_emulation,menu_storage_kartusho_emulation_cond,"[%c] ~~Kartusho Enabled", (kartusho_enabled.v ? 'X' : ' '));
@@ -398,6 +399,7 @@ void menu_superupgrade(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_shortcut(array_menu_superupgrade,'f');
                         menu_add_item_menu_tooltip(array_menu_superupgrade,"Flash Emulation file");
                         menu_add_item_menu_ayuda(array_menu_superupgrade,"Flash Emulation file");
+                        menu_add_item_menu_add_flags(array_menu_superupgrade,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
                         menu_add_item_menu_format(array_menu_superupgrade,MENU_OPCION_NORMAL,menu_storage_superupgrade_emulation,menu_storage_superupgrade_emulation_cond,"[%c] ~~Superupgrade Enabled", (superupgrade_enabled.v ? 'X' : ' '));
@@ -522,6 +524,7 @@ void menu_ifrom(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_shortcut(array_menu_ifrom,'r');
                         menu_add_item_menu_tooltip(array_menu_ifrom,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_ifrom,"ROM Emulation file");
+                        menu_add_item_menu_add_flags(array_menu_ifrom,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
                                     menu_add_item_menu_format(array_menu_ifrom,MENU_OPCION_NORMAL,menu_storage_ifrom_emulation,menu_storage_ifrom_emulation_cond,"[%c] ~~iFrom Enabled", (ifrom_enabled.v ? 'X' : ' '));
@@ -3068,6 +3071,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_tape_settings,'f');
         menu_add_item_menu_tooltip(array_menu_tape_settings,"File to use as the input audio");
         menu_add_item_menu_ayuda(array_menu_tape_settings,"File to use as the input audio. File can be an audio file but also a tap, tzx, etc");
+        menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
         menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_insert,menu_realtape_cond,
@@ -3396,6 +3400,7 @@ void menu_dandanator(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_shortcut(array_menu_dandanator,'r');
                         menu_add_item_menu_tooltip(array_menu_dandanator,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_dandanator,"ROM Emulation file");
+                        menu_add_item_menu_add_flags(array_menu_dandanator,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
                         menu_add_item_menu_format(array_menu_dandanator,MENU_OPCION_NORMAL,menu_storage_dandanator_emulation,menu_storage_dandanator_emulation_cond,"[%c] Dandanator ~~Enabled", (dandanator_enabled.v ? 'X' : ' '));
@@ -3529,6 +3534,7 @@ void menu_samram(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_shortcut(array_menu_samram,'r');
                         menu_add_item_menu_tooltip(array_menu_samram,"ROM Emulation file");
                         menu_add_item_menu_ayuda(array_menu_samram,"ROM Emulation file");
+                        menu_add_item_menu_add_flags(array_menu_samram,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
                                     menu_add_item_menu_format(array_menu_samram,MENU_OPCION_NORMAL,menu_storage_samram_emulation,menu_storage_samram_emulation_cond,"[%c] ~~Samram Enabled", (samram_enabled.v ? 'X' : ' '));
@@ -5854,6 +5860,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_hilow,'f');
         menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
         menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
+        menu_add_item_menu_add_flags(array_menu_hilow,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
 
@@ -9420,6 +9427,7 @@ void menu_interface1(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_valor_opcion(array_menu_common,i);
             menu_add_item_menu_tooltip(array_menu_common,"Microdrive Emulation file");
             menu_add_item_menu_ayuda(array_menu_common,"Microdrive Emulation file");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
             //Truco para que parezca que se usa llamada a condicion de los 4 microdrives diferentes, sin
@@ -10508,6 +10516,7 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_betadisk,'t');
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation file");
         menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation file");
+        menu_add_item_menu_add_flags(array_menu_betadisk,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
         menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_emulation,menu_storage_trd_emulation_cond,

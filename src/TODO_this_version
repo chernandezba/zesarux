@@ -122,6 +122,8 @@ Además si se reabre el menú puede ser confuso para el usuario, ha abierto un m
 -> estudiar los diferentes menu donde se seleccionan archivos y ver si tiene sentido que el menú se reabra después de seleccionar archivo
 ->otra alternativa seria convertir ese submenu en una ventana de dialogo con opciones... pero igual seria también confuso para el usuario, ¿un menu que se separa de los menus?
 ->Hay que revisar TODOS los que seleccionan un archivo desde item de menu
+*ok tape input, tape output, real tape
+*ok dsk
 ######FIN Dialogo al sobreescribir un archivo######
 
 
@@ -141,5 +143,3 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
 
--ocultar pixeles de un triangulo en 3d rasterizado en 2d:
-tener un buffer de 3 dimensiones que diga cada pixel usado (guardando pixel x,y del plano 2d, Y del plano 3d que es el que da la profundidad). Para ello, cuando se renderiza en 2d un triangulo relleno, obtener, de cada pixel 2d, su coordenada 3d y meterlo en buffer, siempre que no exista. Si no existe, se muestra pixel en pantalla. Si existe, no se muestra
