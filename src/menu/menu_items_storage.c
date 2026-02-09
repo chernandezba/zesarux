@@ -12207,6 +12207,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
                 menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
+                menu_add_item_menu_add_flags(array_menu_mmc_divmmc,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
             }
             else {
@@ -12637,6 +12638,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_ide_divide,'i');
         menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation file");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation file");
+        menu_add_item_menu_add_flags(array_menu_ide_divide,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
         menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_emulation,menu_storage_ide_emulation_cond,
