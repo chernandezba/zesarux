@@ -36239,8 +36239,21 @@ void menu_debug_view_basic(MENU_ITEM_PARAMETERS)
 
 
 
-zxvision_window *menu_debug_3d_test_window;
 
+
+
+void menu_debug_3d_test_overlay_putpixel_3d(zxvision_window *w,int x,int y,int z,int color)
+{
+    int xplano,yplano;
+
+    zxvision_widgets_draw_particles_3d_convert_simple(x,y,z,&xplano,&yplano);
+
+    //posicion y arriba del todo, invertir
+    zxvision_putpixel(w,xplano,30-yplano,color);
+}
+
+
+zxvision_window *menu_debug_3d_test_window;
 
 void menu_debug_3d_test_overlay(void)
 {
@@ -36263,8 +36276,40 @@ void menu_debug_3d_test_overlay(void)
     int x3=5;
     int y3=5+10+10;
 
-    zxvision_draw_filled_triangle(menu_debug_3d_test_window,2,6,x1,y1,x2,y2,x3,y3);
+    //zxvision_draw_filled_triangle(menu_debug_3d_test_window,2,6,x1,y1,x2,y2,x3,y3);
 
+    /*
+                +z
+
+                ^
+                |
+                |
+                |
+                |
+            0,0 |
+                \
+               / \
+              /   \
+             /     \
+            /       \
+           y         x
+    */
+
+    //Tirar lineas en cada eje
+    zxvision_draw_line_3d(menu_debug_3d_test_window,
+            20, 0, 0,
+            40, 0, 0,
+            2,menu_debug_3d_test_overlay_putpixel_3d);
+
+    zxvision_draw_line_3d(menu_debug_3d_test_window,
+            20, 0, 0,
+            20, 20, 0,
+            6,menu_debug_3d_test_overlay_putpixel_3d);
+
+    zxvision_draw_line_3d(menu_debug_3d_test_window,
+            20, 0, 0,
+            20, 0, 20,
+            5,menu_debug_3d_test_overlay_putpixel_3d);
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_debug_3d_test_window);

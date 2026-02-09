@@ -15326,6 +15326,96 @@ void zxvision_draw_line_for_filled_triangle(int x1,int y1,int x2,int y2,int min_
  }
 }
 
+
+
+void zxvision_draw_line_3d(zxvision_window *w,int x0, int y0, int z0,int x1, int y1, int z1,int color,void (*fun_putpixel) (zxvision_window *w,int x,int y,int z,int color) )
+{
+    int dx = util_get_absolute(x1 - x0);
+    int dy = util_get_absolute(y1 - y0);
+    int dz = util_get_absolute(z1 - z0);
+
+    int xs = (x1 > x0) ? 1 : -1;
+    int ys = (y1 > y0) ? 1 : -1;
+    int zs = (z1 > z0) ? 1 : -1;
+
+    // X es el eje dominante
+    if (dx >= dy && dx >= dz) {
+        int p1 = 2 * dy - dx;
+        int p2 = 2 * dz - dx;
+
+        while (x0 != x1) {
+            // Aquí dibujas el punto (x0, y0, z0)
+            fun_putpixel(w,x0, y0, z0,color);
+
+            x0 += xs;
+
+            if (p1 >= 0) {
+                y0 += ys;
+                p1 -= 2 * dx;
+            }
+
+            if (p2 >= 0) {
+                z0 += zs;
+                p2 -= 2 * dx;
+            }
+
+            p1 += 2 * dy;
+            p2 += 2 * dz;
+        }
+    }
+    // Y es el eje dominante
+    else if (dy >= dx && dy >= dz) {
+        int p1 = 2 * dx - dy;
+        int p2 = 2 * dz - dy;
+
+        while (y0 != y1) {
+            fun_putpixel(w, x0, y0, z0,color);
+
+            y0 += ys;
+
+            if (p1 >= 0) {
+                x0 += xs;
+                p1 -= 2 * dy;
+            }
+
+            if (p2 >= 0) {
+                z0 += zs;
+                p2 -= 2 * dy;
+            }
+
+            p1 += 2 * dx;
+            p2 += 2 * dz;
+        }
+    }
+    // Z es el eje dominante
+    else {
+        int p1 = 2 * dy - dz;
+        int p2 = 2 * dx - dz;
+
+        while (z0 != z1) {
+            fun_putpixel(w,x0, y0, z0,color);
+
+            z0 += zs;
+
+            if (p1 >= 0) {
+                y0 += ys;
+                p1 -= 2 * dz;
+            }
+
+            if (p2 >= 0) {
+                x0 += xs;
+                p2 -= 2 * dz;
+            }
+
+            p1 += 2 * dy;
+            p2 += 2 * dx;
+        }
+    }
+
+    // Dibuja el último punto
+    fun_putpixel(w,x1, y1, z1,color);
+}
+
 //Funcion para trazar un arco
 void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados)
 {
