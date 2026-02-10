@@ -123,8 +123,11 @@ Además si se reabre el menú puede ser confuso para el usuario, ha abierto un m
 ->otra alternativa seria convertir ese submenu en una ventana de dialogo con opciones... pero igual seria también confuso para el usuario, ¿un menu que se separa de los menus?
 ->Hay que revisar TODOS los que seleccionan un archivo desde item de menu
 *ok todos de spectrum
+
 -Al insertar imagenes (dsk, tap, etc) ver en que casos debería activar tambien, por ejemplo insertar hilow y habilitar hilow. Ver en que casos no es conveniente habilitar,
 y quizá que salga un aviso en los casos en que no lo habilita
+-ok corregido ide
+
 ######FIN Dialogo al sobreescribir un archivo######
 
 
@@ -134,11 +137,7 @@ y quizá que salga un aviso en los casos en que no lo habilita
 
 -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
 
--aviso al linkear en mac silicon, es importante?
-ld: warning: reducing alignment of section __DATA,__common from 0x8000 to 0x4000 because it exceeds segment maximum alignment
 
--En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
-Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
 
 -Zeng opción para enviar mensaje a un usuario concreto
 
@@ -146,4 +145,8 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -Copy (desde fuera de ZEsarUX) y paste dentro como spool file (pulsaciones de teclas)
 
--Teclas que en debug cpu no están disponible en modo no-step, como rEt, quitarlas de la leyenda en modo no-step
+ok-Teclas que en debug cpu no están disponible en modo no-step, como rEt, quitarlas de la leyenda en modo no-step
+
+
+-En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
+Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas

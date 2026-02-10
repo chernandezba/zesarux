@@ -12508,6 +12508,9 @@ void menu_storage_ide_file(MENU_ITEM_PARAMETERS)
                         }
                 }
 
+                //Y habilitar ide
+                ide_enable();
+
 
         }
         //Sale con ESC

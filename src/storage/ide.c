@@ -328,6 +328,8 @@ void ide_reset(void)
 
 void ide_enable(void)
 {
+    if (ide_enabled.v) return;
+
         debug_printf (VERBOSE_INFO,"Enabling ide");
         ide_enabled.v=1;
 
@@ -342,6 +344,7 @@ void ide_enable(void)
 
 void ide_disable(void)
 {
+    if (ide_enabled.v==0) return;
 
 	//Hacer flush si hay algun cambio
 	ide_flush_flash_to_disk();
