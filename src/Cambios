@@ -42,6 +42,7 @@ Mejorado Debug CPU:
 - Agregadas variables de usuario VAR0, VAR1, ... VAR9
 - Agregado contador de frames de video
 - Reasignar tecla de opción 'x' ("cambiar modo de vista") a 'y' ("cambiar disposición")
+- Reasignar tecla de opción 'e' (RET) a 'E'
 
 Mejorado Snapshots en RAM:
 - Navegar de manera visual por todos los snapshots en RAM, como en una "Máquina del Tiempo"

@@ -5450,11 +5450,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 menu_get_legend_short_long(s,ancho_visible,
                             //01234567890123456789012345678901
                             // Chr brk wtch Togl Run Runto Ret
-                              "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RunR~^ET R~~et",
+                              "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RunR~~eT R~^Et",
 
                             // Changeregisters breakpoints watch Toggle Run Runto Ret
                             //012345678901234567890123456789012345678901234567890123456789012
-                              "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto RunR~^ET R~~et"
+                              "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto RunR~~eT R~^Et"
                 );
             }
 
@@ -8799,9 +8799,9 @@ void menu_debug_help(void)
         "\n"
         "u: Ejecutar hasta que se llegue a la posición indicada por el puntero\n"
         "\n"
-        "E: Ejecutar hasta que la cpu encuentra un opcode de retorno (cualquier RET, RETI, RETN o RET with condición verdadera)\n"
+        "e: Ejecutar hasta que la cpu encuentra un opcode de retorno (cualquier RET, RETI, RETN o RET with condición verdadera)\n"
         "\n"
-        "e: Ejecutar la instrucción RET, que provocará alterar registros PC y SP\n"
+        "E: Ejecutar la instrucción RET, que provocará alterar registros PC y SP\n"
         "\n"
         "p: Resetear contador de t-estados parcial. Dicho contador se encuentra visible en las vistas 2, 3 y 5\n"
         "\n"
@@ -8925,9 +8925,9 @@ void menu_debug_help(void)
         "\n"
         "u: Executar fins que s'arribi a la posició indicada pel punter\n"
         "\n"
-        "E: Executar fins que la cpu troba una instrucció de retorn (qualsevol RET, RETI, RETN o RET amb condició verdadera)\n"
+        "e: Executar fins que la cpu troba una instrucció de retorn (qualsevol RET, RETI, RETN o RET amb condició verdadera)\n"
         "\n"
-        "e: Executar la instrucció RET, que provocarà alterar registres PC i SP\n"
+        "E: Executar la instrucció RET, que provocarà alterar registres PC i SP\n"
         "\n"
         "p: Resetejar comptador de t-estats parcial. Aquest comptador es troba visible a les vistes 2, 3 i 5\n"
         "\n"
@@ -9052,9 +9052,9 @@ void menu_debug_help(void)
         "\n"
         "u: Run until the cpu reaches the current pointer position\n"
         "\n"
-        "E: Run until the cpu finds a return opcode (any RET, RETI, RETN or RET with true condition)\n"
+        "e: Run until the cpu finds a return opcode (any RET, RETI, RETN or RET with true condition)\n"
         "\n"
-        "e: Run a RET opcode, which will alter PC and SP registers\n"
+        "E: Run a RET opcode, which will alter PC and SP registers\n"
         "\n"
         "p: Reset t-states partial counter. That counter can be seen on views 2, 3 and 5\n"
         "\n"
@@ -9664,13 +9664,6 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 
-                if (tecla=='E') {
-                    debug_cpu_run_until_ret();
-                    //Decimos que no hay tecla pulsada
-                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                }
-
-
                 //Establecer PC con valor de PTR
                 if (tecla=='P') {
                     char buffer_temp[32];
@@ -10244,7 +10237,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
                 //Ret
-                if (tecla=='e' && menu_debug_registers_current_view==1) {
+                if (tecla=='E' && menu_debug_registers_current_view==1) {
                     menu_debug_ret();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -10327,8 +10320,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     }
                 }
 
-
-                if (tecla=='E') {
+                //Ejecutar hasta encontrar un ret
+                if (tecla=='e') {
                     debug_cpu_run_until_ret();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;

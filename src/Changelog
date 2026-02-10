@@ -42,6 +42,7 @@ Improved Debug CPU:
 - Added user variables VAR0, VAR1, ... VAR9
 - Added video frames counter
 - Reassign option key 'x' ("switch view mode") to 'y' ("change layout")
+- Reassign option key 'e' (RET) to 'E'
 
 Improved Snapshots in RAM:
 - Browse visually all the stored snapshots in RAM, like on a "Time Machine"
