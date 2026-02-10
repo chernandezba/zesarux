@@ -10406,7 +10406,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     if (cpu_history_enabled.v && cpu_history_started.v) {
                         int direccion=menu_debug_cpu_find_previous_address(menu_debug_memory_pointer);
                         if (direccion>=0) menu_debug_memory_pointer=direccion;
-                        //printf("direccion: %d\n",direccion);
+                        //printf("direccion: %X\n",direccion);
                     }
 
                     //Decimos que no hay tecla pulsada

@@ -126,6 +126,44 @@
 
 
 
+/*
+valores de teclas especiales:
+2  ESC
+3  Tecla de background
+4  shift+cursor left
+5  shift+cursor right
+6  shift+cursor up
+8  cursor left
+9  cursor right
+10 cursor down
+11 cursor up
+12 Delete o joystick left
+13 Enter o joystick fire
+15 SYM+MAY(TAB)
+21 F1
+24 PgUp
+25 PgDn
+26 Home
+27 End
+
+Joystick izquierda funcionara como Delete, no como cursor left. Resto de direcciones de joystick (up, down, right) se mapean como cursores
+
+*/
+
+/*
+Teclas que tienen que retornar estas funciones para todas las maquinas posibles: spectrum, zx80/81, z88, cpc, sam, etc:
+
+Letras y numeros
+
+.  , : / - + < > = ' ( ) "
+
+
+Hay drivers que retornan otros simbolos adicionales, por ejemplo en Z88 el ;. Esto es porque debe retornar ":" y estos : se obtienen mediante
+mayusculas + tecla ";"
+
+*/
+
+
 int zxvision_switch_to_window_on_open_menu=0;
 char zxvision_switch_to_window_on_open_menu_name[MAX_NAME_WINDOW_GEOMETRY];
 
@@ -2704,47 +2742,8 @@ static char menu_array_keys_65278[]="zxcv";
 static char menu_array_keys_32766[]="mnb";
 
 
-/*
-valores de teclas especiales:
-2  ESC
-3  Tecla de background
-4  shift+cursor left
-5  shift+cursor right
-6  shift+cursor up
-8  cursor left
-9  cursor right
-10 cursor down
-11 cursor up
-12 Delete o joystick left
-13 Enter o joystick fire
-15 SYM+MAY(TAB)
-21 F1
-24 PgUp
-25 PgDn
-26 Home
-27 End
-
-Joystick izquierda funcionara como Delete, no como cursor left. Resto de direcciones de joystick (up, down, right) se mapean como cursores
-
-*/
-
-/*
-Teclas que tienen que retornar estas funciones para todas las maquinas posibles: spectrum, zx80/81, z88, cpc, sam, etc:
-
-Letras y numeros
-
-.  , : / - + < > = ' ( ) "
 
 
-Hay drivers que retornan otros simbolos adicionales, por ejemplo en Z88 el ;. Esto es porque debe retornar ":" y estos : se obtienen mediante
-mayusculas + tecla ";"
-
-*/
-
-
-
-//z80_byte puerto_especial2=255; //   F5 F4 F3 F2 F1
-//z80_byte puerto_especial3=255; //  F10 F9 F8 F7 F6
 
 //tecla F desde 1 hasta 10
 
