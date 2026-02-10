@@ -1667,7 +1667,8 @@ printf (
         "----------------\n"
         "\n"
 
-        "--realvideo                            Enable real video display - for Spectrum (rainbow and other advanced effects) and ZX80/81 (non standard & hi-res modes)\n"
+        "--realvideo                            Enable real video display - for Spectrum (rainbow and other advanced effects), ZX80/81 (non standard & hi-res modes) and other machines\n"
+        "--no-realvideo                         Disable real video display (setting by default)\n"
         "--no-detect-realvideo                  Disable real video autodetection\n"
         "--tbblue-legacy-hicolor                Allow legacy hi-color effects on pixel/attribute display zone\n"
         "--tbblue-legacy-border                 Allow legacy border effects on tbblue machine\n"
@@ -5697,6 +5698,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--realvideo")) {
                 enable_rainbow();
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--no-realvideo")) {
+                disable_rainbow();
             }
 
             else if (!strcmp(argv[puntero_parametro],"--no-detect-realvideo")) {
