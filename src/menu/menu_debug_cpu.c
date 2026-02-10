@@ -5566,11 +5566,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 menu_get_legend_short_long(s,ancho_visible,
                             //01234567890123456789012345678901
                             // Chr brk wtch Togl Run Runto Ret
-                              "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt R~~et",
+                              "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RunR~^ET R~~et",
 
                             // Changeregisters breakpoints watch Toggle Run Runto Ret
                             //012345678901234567890123456789012345678901234567890123456789012
-                              "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto R~~et"
+                              "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto RunR~^ET R~~et"
                 );
             }
 
@@ -9774,6 +9774,13 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 
+                if (tecla=='E') {
+                    debug_cpu_run_until_ret();
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                }
+
+
                 //Establecer PC con valor de PTR
                 if (tecla=='P') {
                     char buffer_temp[32];
@@ -10431,6 +10438,13 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 
+                if (tecla=='E') {
+                    debug_cpu_run_until_ret();
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                    //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+                    si_ejecuta_una_instruccion=0;
+                }
 
                 //Siguiente breakpoint tipo pc=dir
                 if (tecla=='B' && debug_breakpoints_enabled.v) {
