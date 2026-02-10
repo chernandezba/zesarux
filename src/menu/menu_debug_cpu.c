@@ -5445,16 +5445,20 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
             }
 
             if (menu_debug_registers_current_view==1) {
-
-                menu_get_legend_short_long(s,ancho_visible,
-                    //01234567890123456789012345678901
-                    // Chr brk wtch Togl Run Runto Ret
-                    "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RuR~~eT R~^Et",
-
-                    // Changeregisters breakpoints watch Toggle Run Runto Ret
-                    //012345678901234567890123456789012345678901234567890123456789012
-                    "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto RunR~~eT R~^Et"
-                );
+                //Modo step mode
+                if (cpu_step_mode.v) {
+                    menu_get_legend_short_long(s,ancho_visible,
+                        "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RuR~~eT R~^Et",
+                        "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto RunR~~eT R~^Et"
+                    );
+                }
+                //Modo no step
+                else {
+                    menu_get_legend_short_long(s,ancho_visible,
+                        "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt",
+                        "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto"
+                    );
+                }
             }
 
             else {
