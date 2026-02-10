@@ -5345,14 +5345,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
         //Primera linea
         case 0:
-
-
             if (menu_debug_registers_current_view==8) {
                 if (util_gac_detect()) {
                     *s=0;
                     return;
                 }
-
 
                 char step_condact_buffer[32];
                 if (!util_daad_is_in_parser() && !util_paws_is_in_parser()) {
@@ -5373,58 +5370,28 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 if (menu_debug_registers_current_view==1) {
 
                     menu_get_legend_short_long(s,ancho_visible,
-                        //01234567890123456789012345678901
-                        // StM DAsm En:Stp StOvr CntSt Md
                         "~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt l~~y",
-                            //          10        20        30        40        50        60
-                            //012345678901234567890123456789012345678901234567890123456789012
-                        //     StepMode DisAssemble Enter:Step StepOver ContinuosStep Mode
-
                         "~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep la~~yout"
-
                     );
-
-
                 }
 
                 else {
-
                     menu_get_legend_short_long(s,ancho_visible,
-                        //01234567890123456789012345678901
-                        // StpM DAsm Ent:Stp Stovr ContSt
                         "~~StpM ~~D~~Asm ~~E~~n~~t:Stp St~~Ovr ~~ContSt",
-                            //          10        20        30        40        50        60
-                            //012345678901234567890123456789012345678901234567890123456789012
-                        //     StepMode Disassemble Enter:Step StepOver ContinuosStep
-
                         "~~StepMode ~~Dis~~Assemble ~~E~~nter:Step Step~~Over ~~ContinousStep"
-
                     );
-
                 }
             }
 
             //Modo NO step mode
             else {
                 if (menu_debug_registers_current_view==1) {
-
                     menu_get_legend_short_long(s,ancho_visible,
-
-                        //01234567890123456789012345678901
-                        // Stepmode Disassem Assem Mode
                         "~~StepMode ~~Disassem ~~Assem l~~y",
-
-                        //012345678901234567890123456789012345678901234567890123456789012
-                        // StepMode Disassemble Assemble Mode
                         "~~StepMode ~~Disassemble ~~Assemble la~~yout"
                     );
-
-
-
                 }
                 else {
-                    //01234567890123456789012345678901
-                    // Stepmode Disassemble Assemble
                     sprintf(s,"~~StepMode ~~Disassemble ~~Assemble");
                 }
             }
@@ -5433,8 +5400,6 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
         //Segunda linea
         case 1:
-
-
             if (menu_debug_registers_current_view==8) {
                 //de momento solo el run to parse en daad. en quill o paws no tiene sentido, dado que no usan el condacto "PARSE"
                 //solo se usa en psi en paws
@@ -5462,25 +5427,16 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
             }
 
             else {
-
                 menu_get_legend_short_long(s,ancho_visible,
-                    //01234567890123456789012345678901
-                    // changeReg Breakpoints Watches
                     "Change~~reg ~~breakpoints ~~watches",
-
-                    // Changeregisters breakpoints watches
-                    //012345678901234567890123456789012345678901234567890123456789012
                     "Change~~registers ~~breakpoints ~~watches"
-
                 );
-
             }
         break;
 
 
         //Tercera linea
         case 2:
-
             if (menu_debug_registers_current_view==8) {
 
                 char buffer_temp_graphics[100];
@@ -5501,31 +5457,17 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
             char buffer_intermedio_short[128];
             char buffer_intermedio_long[128];
 
-
-
             if (cpu_step_mode.v) {
-
-                            //01234567890123456789012345678901
-                            // ClrTstPart Write VScr MemZn 99
-                sprintf (buffer_intermedio_short,"ClTst~~Part Wr~~ite ~~VScr Ev~~t M~~Zn %d",menu_debug_memory_zone);
-                            //012345678901234567890123456789012345678901234567890123456789012
-                            // ClearTstatesPartial Write ViewScreen MemoryZone 99
+                sprintf (buffer_intermedio_short,"ClTst~~Par Wr~~ite ~~VScr Ev~~t M~~Zn %d",menu_debug_memory_zone);
                 sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
-
 
                 menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
             }
             else {
-                            //01234567890123456789012345678901
-                            // Clrtstpart Write MemZone 99
-                sprintf (buffer_intermedio_short,"ClTst~~Part Wr~~ite Ev~~t Mem~~Zone %d",menu_debug_memory_zone);
-
-                            //012345678901234567890123456789012345678901234567890123456789012
-                            // ClearTstatesPartial Write MemoryZone 99
+                sprintf (buffer_intermedio_short,"ClTst~~Par Wr~~ite Ev~~t Mem~~Zone %d",menu_debug_memory_zone);
                 sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite Evalua~~te Memory~~Zone %d",menu_debug_memory_zone);
 
                 menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
-
             }
         break;
 
@@ -5536,51 +5478,19 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 s[0]=0;
             }
             else {
-                /*
-                char string_nextpcbr[32];
-                char string_backwards[32];
-
-                if (debug_breakpoints_enabled.v) strcpy(string_nextpcbr," nextpc~^Brk");
-                else string_nextpcbr[0]=0;
-
-
-                if (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v) {
-                    strcpy(string_backwards," back~^Step");
-                    //printf("hay backstep\n");
-                }
-
-                else {
-                    //printf("NO hay backstep\n");
-                    string_backwards[0]=0;
-                }
-
-                char string_history[32];
-                if (CPU_IS_Z80) strcpy(string_history," cpu~^Hist");
-                else string_history[0]=0;
-
-
-                sprintf(s,"set~^Pc=ptr%s%s%s",string_nextpcbr,string_history,string_backwards);
-                */
-
-
-
                 sprintf (buffer_intermedio_short,"~^Pc=ptr%s%s%s%s ~~F~~1:help",
                     ( debug_breakpoints_enabled.v ? " nxtpc~^Br" : "" ),
                     (CPU_IS_Z80 ? " st~~k" : ""),
                     (CPU_IS_Z80 ? " cpu~^Hst" : ""),
                     (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " b~^Stp bru~^N ~^s~^h+~^u~^p hist" : "")
-
                 );
-
 
                 sprintf (buffer_intermedio_long,"set~^Pc=ptr%s%s%s%s ~~F~~1:help",
                     ( debug_breakpoints_enabled.v ? " nextpc~^Brk" : "" ),
                     (CPU_IS_Z80 ? " stac~~k" : ""),
                     (CPU_IS_Z80 ? " cpu~^Hist" : ""),
                     (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " back~^Step backru~^N ~^s~^h+~^u~^p history" : "")
-
                 );
-
 
                 menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
             }
