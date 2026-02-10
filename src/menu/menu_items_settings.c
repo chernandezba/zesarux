@@ -12671,8 +12671,10 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
     screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
 
 
-    //Cerrar ventamas y olvidar geometria ventanas
-    zxvision_window_delete_all_windows_and_clear_geometry();
+    //Cerrar ventamas y olvidar geometria ventanas, cuando quitamos zx desktop
+    if (!screen_ext_desktop_enabled) {
+        zxvision_window_delete_all_windows_and_clear_geometry();
+    }
 
     if (screen_ext_desktop_enabled) {
         //Reordenar iconos por si habia alguno antes

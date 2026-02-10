@@ -61,6 +61,7 @@ Mejorado ZX Desktop:
 - Agregar opción para prohibir activar ZX Desktop
 - Permitir cambiar el color de fondo de iconos, botones inferiores y superiores
 - Agregada opción para añadir un contorno a los iconos
+- Ventanas no se cierran al activar ZX Desktop
 
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero

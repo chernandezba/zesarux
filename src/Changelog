@@ -61,6 +61,7 @@ Improved ZX Desktop:
 - Add setting to disallow enabling ZX Desktop
 - Allow to change background color for icons, lower and upper buttons
 - Added setting to add a stroke on icons
+- Windows are not closed when enabling ZX Desktop
 
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved ZX Life: allow to speed up game, fix behaviour on board limits

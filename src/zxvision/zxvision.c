@@ -10118,9 +10118,6 @@ void zxvision_restore_windows_on_startup_aux_launch_window(int indice)
 }
 
 //Restaurar una sola ventana. Funcion utilizada en otros sitios y no desde la restauracion en startup
-//De momento no usada
-
-
 void zxvision_restore_one_window(char *ventana_a_restaurar)
 {
     if (!menu_allow_background_windows) return;
