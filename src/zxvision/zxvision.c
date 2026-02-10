@@ -16032,7 +16032,6 @@ void zxvision_widgets_draw_sierpinsky(zxvision_window *ventana,int xinicio_widge
 void zxvision_widgets_draw_triangle(zxvision_window *ventana,int xinicio_widget,int yinicio_widget,int percentaje,int color)
 {
 
-    int i;
 
     int ancho=65; //ancho impar para que el centro quede bien dividido
     int alto_total=65/2; //para que al 100% del sensor, quede una rampa completamente diagonal 1/1
@@ -16490,14 +16489,6 @@ void zxvision_handle_maximize_maximize(zxvision_window *w)
             max_height-=(EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8);
         }
 
-        //O si hay top bar
-        else if (zxvision_topbar_menu_enabled.v) {
-            yinicial=1;
-            //Le quitamos la linea superior
-            max_height--;
-        }
-
-
 
         if (menu_zxdesktop_lower_buttons_enabled.v) {
             //Y quitamos ese alto disponible para no sobreescribir botones inferiores
@@ -16514,6 +16505,14 @@ void zxvision_handle_maximize_maximize(zxvision_window *w)
         yinicial=0;
         max_width=scr_get_menu_width();
         max_height=scr_get_menu_height();
+    }
+
+
+    //si hay top bar, aplica independientemente si se tiene zx desktop o no
+    if (zxvision_topbar_menu_enabled.v) {
+        yinicial=1;
+        //Le quitamos la linea superior
+        max_height--;
     }
 
     //Cuando restauramos ventanas maximizadas al inicio, podemos tener un tamaño de ventana mas grande de lo que cabe
@@ -19071,15 +19070,16 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
             origen_y=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
         }
 
-        if (zxvision_topbar_menu_enabled.v) {
-            origen_y=1;
-        }
 
         if (menu_zxdesktop_lower_buttons_enabled.v) {
             //Y quitamos ese alto disponible para no sobreescribir botones inferiores
             yfinal-=EXT_DESKTOP_BUTTONS_TOTAL_SIZE/8;
         }
 
+    }
+
+    if (zxvision_topbar_menu_enabled.v) {
+        origen_y=1;
     }
 
     //printf("origen y: %d\n",origen_y);
