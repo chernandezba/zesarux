@@ -5352,8 +5352,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                     *s=0;
                     return;
                 }
-                            //01234567890123456789012345678901
-                            // chReg Brkp. Toggle Runto Watch
+
 
                 char step_condact_buffer[32];
                 if (!util_daad_is_in_parser() && !util_paws_is_in_parser()) {
@@ -5374,14 +5373,14 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 if (menu_debug_registers_current_view==1) {
 
                     menu_get_legend_short_long(s,ancho_visible,
-                            //01234567890123456789012345678901
-                            // StM DAsm En:Stp StOvr CntSt Md
-                            "~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt l~~y",
-                                //          10        20        30        40        50        60
-                                //012345678901234567890123456789012345678901234567890123456789012
-                            //     StepMode DisAssemble Enter:Step StepOver ContinuosStep Mode
+                        //01234567890123456789012345678901
+                        // StM DAsm En:Stp StOvr CntSt Md
+                        "~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt l~~y",
+                            //          10        20        30        40        50        60
+                            //012345678901234567890123456789012345678901234567890123456789012
+                        //     StepMode DisAssemble Enter:Step StepOver ContinuosStep Mode
 
-                            "~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep la~~yout"
+                        "~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep la~~yout"
 
                     );
 
@@ -5391,14 +5390,14 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 else {
 
                     menu_get_legend_short_long(s,ancho_visible,
-                            //01234567890123456789012345678901
-                            // StpM DAsm Ent:Stp Stovr ContSt
-                            "~~StpM ~~D~~Asm ~~E~~n~~t:Stp St~~Ovr ~~ContSt",
-                                //          10        20        30        40        50        60
-                                //012345678901234567890123456789012345678901234567890123456789012
-                            //     StepMode Disassemble Enter:Step StepOver ContinuosStep
+                        //01234567890123456789012345678901
+                        // StpM DAsm Ent:Stp Stovr ContSt
+                        "~~StpM ~~D~~Asm ~~E~~n~~t:Stp St~~Ovr ~~ContSt",
+                            //          10        20        30        40        50        60
+                            //012345678901234567890123456789012345678901234567890123456789012
+                        //     StepMode Disassemble Enter:Step StepOver ContinuosStep
 
-                            "~~StepMode ~~Dis~~Assemble ~~E~~nter:Step Step~~Over ~~ContinousStep"
+                        "~~StepMode ~~Dis~~Assemble ~~E~~nter:Step Step~~Over ~~ContinousStep"
 
                     );
 
@@ -5411,21 +5410,21 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
                     menu_get_legend_short_long(s,ancho_visible,
 
-                            //01234567890123456789012345678901
-                            // Stepmode Disassem Assem Mode
-                            "~~StepMode ~~Disassem ~~Assem l~~y",
+                        //01234567890123456789012345678901
+                        // Stepmode Disassem Assem Mode
+                        "~~StepMode ~~Disassem ~~Assem l~~y",
 
-                            //012345678901234567890123456789012345678901234567890123456789012
-                            // StepMode Disassemble Assemble Mode
-                            "~~StepMode ~~Disassemble ~~Assemble la~~yout"
+                        //012345678901234567890123456789012345678901234567890123456789012
+                        // StepMode Disassemble Assemble Mode
+                        "~~StepMode ~~Disassemble ~~Assemble la~~yout"
                     );
 
 
 
                 }
                 else {
-                            //01234567890123456789012345678901
-                            // Stepmode Disassemble Assemble
+                    //01234567890123456789012345678901
+                    // Stepmode Disassemble Assemble
                     sprintf(s,"~~StepMode ~~Disassemble ~~Assemble");
                 }
             }
@@ -5448,26 +5447,26 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
             if (menu_debug_registers_current_view==1) {
 
                 menu_get_legend_short_long(s,ancho_visible,
-                            //01234567890123456789012345678901
-                            // Chr brk wtch Togl Run Runto Ret
-                              "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RuR~~eT R~^Et",
+                    //01234567890123456789012345678901
+                    // Chr brk wtch Togl Run Runto Ret
+                    "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RuR~~eT R~^Et",
 
-                            // Changeregisters breakpoints watch Toggle Run Runto Ret
-                            //012345678901234567890123456789012345678901234567890123456789012
-                              "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto RunR~~eT R~^Et"
+                    // Changeregisters breakpoints watch Toggle Run Runto Ret
+                    //012345678901234567890123456789012345678901234567890123456789012
+                    "Change~~registers ~~breakpoints ~~watches Togg~~l~^Le Ru~~n R~~unto RunR~~eT R~^Et"
                 );
             }
 
             else {
 
                 menu_get_legend_short_long(s,ancho_visible,
-                            //01234567890123456789012345678901
-                            // changeReg Breakpoints Watches
-                              "Change~~reg ~~breakpoints ~~watches",
+                    //01234567890123456789012345678901
+                    // changeReg Breakpoints Watches
+                    "Change~~reg ~~breakpoints ~~watches",
 
-                            // Changeregisters breakpoints watches
-                            //012345678901234567890123456789012345678901234567890123456789012
-                              "Change~~registers ~~breakpoints ~~watches"
+                    // Changeregisters breakpoints watches
+                    //012345678901234567890123456789012345678901234567890123456789012
+                    "Change~~registers ~~breakpoints ~~watches"
 
                 );
 
