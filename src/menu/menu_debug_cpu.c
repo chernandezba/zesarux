@@ -5450,7 +5450,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 menu_get_legend_short_long(s,ancho_visible,
                             //01234567890123456789012345678901
                             // Chr brk wtch Togl Run Runto Ret
-                              "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RunR~~eT R~^Et",
+                              "Ch~~r ~~brk ~~wtch Tog~~l~^L Ru~~n R~~unt RuR~~eT R~^Et",
 
                             // Changeregisters breakpoints watch Toggle Run Runto Ret
                             //012345678901234567890123456789012345678901234567890123456789012

@@ -144,6 +144,8 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
 
--Run hasta encontrar un RET
+-Teclas que en debug cpu no están disponible en modo no-step, como rEt, quitarlas de la leyenda en modo no-step
 
 -Copy (desde fuera de ZEsarUX) y paste dentro como spool file (pulsaciones de teclas)
+
+-reubicar ventanas, maximizar, etc: si no hay zx desktop pero hay top menu, la primera linea no deberia usarse para ubicar ventanas (pues está el top menu)
