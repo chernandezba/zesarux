@@ -128,45 +128,45 @@ La tabla ulaplus_rgb_table tiene para cada valor posible de rgb de ula plus su c
 //Esta ulaplus_rgb_table solo se utiliza directamente una sola vez, y es al inicializar la tabla de colores del emulador, que se queda en el offset ULAPLUS_INDEX_FIRST_COLOR
 void init_ulaplus_table(void)
 {
-	debug_printf (VERBOSE_DEBUG,"Initializing ULAplus rgb color table conversion");
-	//Cada componente r,g,b de ulaplus se pasa a 8 bits, sumando tendremos color de 24 bits
-	//Componentes red y green son de 3 bits, y b es de 2 bits
-	//Maximo r,g: 3 bits a 1 -> 7. maximo en 8 bits: 255 . 255/7=36.42
-	//Valor para 2 por ejemplo = 2 * 36.42 = 72.85
+    debug_printf (VERBOSE_DEBUG,"Initializing ULAplus rgb color table conversion");
+    //Cada componente r,g,b de ulaplus se pasa a 8 bits, sumando tendremos color de 24 bits
+    //Componentes red y green son de 3 bits, y b es de 2 bits
+    //Maximo r,g: 3 bits a 1 -> 7. maximo en 8 bits: 255 . 255/7=36.42
+    //Valor para 2 por ejemplo = 2 * 36.42 = 72.85
 
-	//Minitablas de conversion de 3 bits a 8 bits
-	z80_byte color_3_to_8[8]={
-	0,36,73,109,146,182,219,255
-	};
+    //Minitablas de conversion de 3 bits a 8 bits
+    z80_byte color_3_to_8[8]={
+    0,36,73,109,146,182,219,255
+    };
 
-	int color,color32;
-	z80_byte r,g,b;
-	z80_byte r8,g8,b8;
+    int color,color32;
+    z80_byte r,g,b;
+    z80_byte r8,g8,b8;
 
-	for (color=0;color<256;color++) {
-		r=(color>>2)&7;
-		g=(color>>5)&7;
+    for (color=0;color<256;color++) {
+        r=(color>>2)&7;
+        g=(color>>5)&7;
 
-		//componente b es un tanto esoterico
-		//The missing lowest blue bit is set to OR of the other two blue bits (Bb becomes 000 for 00, and Bb1 for anything else)
-		b=(color&3);
-		b=(b<<1);
-		if (b) b=b|1;
+        //componente b es un tanto esoterico
+        //The missing lowest blue bit is set to OR of the other two blue bits (Bb becomes 000 for 00, and Bb1 for anything else)
+        b=(color&3);
+        b=(b<<1);
+        if (b) b=b|1;
 
-		//Pasamos cada componente de 3 bits a su correspondiente de 8 bits
-		r8=color_3_to_8[r];
-		g8=color_3_to_8[g];
-		b8=color_3_to_8[b];
+        //Pasamos cada componente de 3 bits a su correspondiente de 8 bits
+        r8=color_3_to_8[r];
+        g8=color_3_to_8[g];
+        b8=color_3_to_8[b];
 
-		color32=(r8<<16)|(g8<<8)|b8;
-		ulaplus_rgb_table[color]=color32;
+        color32=(r8<<16)|(g8<<8)|b8;
+        ulaplus_rgb_table[color]=color32;
 
-		debug_printf (VERBOSE_PARANOID,"ULAplus RGB 0x%02X is 0x%06X 32 bit RGB",color,color32);
-	}
+        debug_printf (VERBOSE_PARANOID,"ULAplus RGB 0x%02X is 0x%06X 32 bit RGB",color,color32);
+    }
 
-	debug_printf (VERBOSE_DEBUG,"Initializing ULAplus 64 colour table to black");
-	int i;
-	for (i=0;i<64;i++) ulaplus_palette_table[i]=0;
+    debug_printf (VERBOSE_DEBUG,"Initializing ULAplus 64 colour table to black");
+    int i;
+    for (i=0;i<64;i++) ulaplus_palette_table[i]=0;
 
 }
 
@@ -176,43 +176,43 @@ void init_ulaplus_table(void)
 //Entrada: indice entre 0...63 y color formato rgb8 de ulaplus
 void ulaplus_change_palette_colour(z80_byte index,z80_byte color)
 {
-	//Actualizamos entrada en tabla ulaplus
+    //Actualizamos entrada en tabla ulaplus
     //printf ("change ulaplus color index: %d value: %02XH\n",index,color);
-	ulaplus_palette_table[index]=color;
+    ulaplus_palette_table[index]=color;
 
 }
 
 
 void disable_ulaplus(void)
 {
-	debug_printf (VERBOSE_INFO,"Disabling ULAplus");
-	ulaplus_presente.v=0;
+    debug_printf (VERBOSE_INFO,"Disabling ULAplus");
+    ulaplus_presente.v=0;
 
 }
 
 void enable_ulaplus(void)
 {
 
-  if (!MACHINE_IS_SPECTRUM) {
-    debug_printf(VERBOSE_INFO,"Can not enable ULAplus on non Spectrum machine");
-    return;
-  }
+    if (!MACHINE_IS_SPECTRUM) {
+        debug_printf(VERBOSE_INFO,"Can not enable ULAplus on non Spectrum machine");
+        return;
+    }
 
-        if (MACHINE_IS_TBBLUE) {
-                //Ulaplus no está para tbblue
-                return;
-        }
-        debug_printf (VERBOSE_INFO,"Enabling ULAplus");
-        ulaplus_presente.v=1;
+    if (MACHINE_IS_TBBLUE) {
+        //Ulaplus no está para tbblue
+        return;
+    }
+    debug_printf (VERBOSE_INFO,"Enabling ULAplus");
+    ulaplus_presente.v=1;
 
-        //son excluyentes
-        //disable_interlace();
-	disable_scanlines();
-	disable_gigascreen();
-	spectra_disable();
+    //son excluyentes
+    //disable_interlace();
+    disable_scanlines();
+    disable_gigascreen();
+    spectra_disable();
 
-        //necesita real video
-        enable_rainbow();
+    //necesita real video
+    enable_rainbow();
 
 }
 
@@ -249,7 +249,7 @@ void ulaplus_set_mode(z80_byte value)
                                                 debug_printf (VERBOSE_DEBUG,"Unknown ulaplus mode %d",ulaplus_mode);
                                         break;
 
-				}
+                }
 }
 
 
@@ -258,34 +258,34 @@ void ulaplus_set_extended_mode(z80_byte value)
 {
                                 /*
 
-				Implementado mediante registro 40H de zxuno:
-				 el bit 1 indicaría, si está a 1, que se va a usar el modo radastaniano y el resto de bits, del 2 al 7, tienen un significado que me reservo por el momento. Si el bit 1 está a 0, entonces estaríamos en modos cesarianos, y el significado del resto de bits, del 2 al 7, queda a tu antojo. En ambos casos, el bit 0 indica, si está a 1, que se habilite el modo (el que sea). Si está a 0, se ignoran el resto de bits, del 1 al 7.
+                Implementado mediante registro 40H de zxuno:
+                 el bit 1 indicaría, si está a 1, que se va a usar el modo radastaniano y el resto de bits, del 2 al 7, tienen un significado que me reservo por el momento. Si el bit 1 está a 0, entonces estaríamos en modos cesarianos, y el significado del resto de bits, del 2 al 7, queda a tu antojo. En ambos casos, el bit 0 indica, si está a 1, que se habilite el modo (el que sea). Si está a 0, se ignoran el resto de bits, del 1 al 7.
 
-				Registro 40H
+                Registro 40H
 
-				Modo Radastan 128x96
-				7 6 5 4 3 2 1 0
-				R R R R R R 1 1
+                Modo Radastan 128x96
+                7 6 5 4 3 2 1 0
+                R R R R R R 1 1
 
-				R: Reservado
+                R: Reservado
 
-				Modos ZEsarUX:
-				7 6 5 4 3  2  1 0
-				R R R R Z1 Z0 0 1
+                Modos ZEsarUX:
+                7 6 5 4 3  2  1 0
+                R R R R Z1 Z0 0 1
 
-				R: Reservado
-				Z0, Z1: Bits bajo y alto de los modos ZEsarUX:
-				0: 256x96  (valor del registro: 1)
+                R: Reservado
+                Z0, Z1: Bits bajo y alto de los modos ZEsarUX:
+                0: 256x96  (valor del registro: 1)
                                 1: 128x192 (valor del registro: 5)
                                 2: 256x192 (valor del registro: 9)
-				3: no definido
+                3: no definido
                                 */
 
                                 z80_byte ulaplus_mode_anterior=ulaplus_extended_mode;
 
                                 ulaplus_extended_mode=(value&255);
 
-				//printf ("ulaplus extended mode: %d\n",ulaplus_extended_mode);
+                //printf ("ulaplus extended mode: %d\n",ulaplus_extended_mode);
 
                                 switch (ulaplus_extended_mode) {
                                         case 0:
@@ -299,7 +299,7 @@ void ulaplus_set_extended_mode(z80_byte value)
 
                                         case 3:
                                                 ulaplus_enabled.v=1;
-					        debug_printf (VERBOSE_DEBUG,"Enabling linear mode Radastan. 128x96");
+                            debug_printf (VERBOSE_DEBUG,"Enabling linear mode Radastan. 128x96");
                                                 if (ulaplus_extended_mode!=ulaplus_mode_anterior) {
                                                         screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling linear mode Radastan. 128x96");
                                                 }
@@ -344,41 +344,41 @@ void ulaplus_set_extended_mode(z80_byte value)
 
 z80_byte ulaplus_return_port_ff3b(void)
 {
-		//Retornar valor para el registro escogido, siempre considerando registros entre 0..63 o el registro 64
-		/* Recordemos:
-		Bits 0-5: Select the register sub-group
-		Bits 6-7: Select the register group. Two groups are currently available:
+        //Retornar valor para el registro escogido, siempre considerando registros entre 0..63 o el registro 64
+        /* Recordemos:
+        Bits 0-5: Select the register sub-group
+        Bits 6-7: Select the register group. Two groups are currently available:
 
-		00 - palette group
-		When this group is selected, the sub-group determines the entry in the palette table (0-63).
+        00 - palette group
+        When this group is selected, the sub-group determines the entry in the palette table (0-63).
 
-		01 - mode group
-		...
+        01 - mode group
+        ...
 
-		0xFF3B is the data port (read/write)
+        0xFF3B is the data port (read/write)
 
-		When the palette group is selected, the byte written will describe the color.
+        When the palette group is selected, the byte written will describe the color.
 
-		When the mode group is selected, the byte output will be interpreted as follows:
+        When the mode group is selected, the byte output will be interpreted as follows:
 
-		Bit 0: ULAplus palette on (1) / off (0)
-		....
+        Bit 0: ULAplus palette on (1) / off (0)
+        ....
 
-		Por tanto al seleccionar 01-mode group (valor X1XXXXXXB) (mascara 64), al enviar valor a puerto ff3b se dice si se activa ulaplus o no -
-		valor de variable ulaplus_mode
-		*/
-		z80_byte indice=ulaplus_last_send_BF3B;
-		if (indice&64) return ulaplus_mode;
-		return ulaplus_palette_table[indice&63];
+        Por tanto al seleccionar 01-mode group (valor X1XXXXXXB) (mascara 64), al enviar valor a puerto ff3b se dice si se activa ulaplus o no -
+        valor de variable ulaplus_mode
+        */
+        z80_byte indice=ulaplus_last_send_BF3B;
+        if (indice&64) return ulaplus_mode;
+        return ulaplus_palette_table[indice&63];
 }
 
 
 void ulaplus_write_port(z80_int puerto,z80_byte value)
 {
-	z80_byte puerto_h=puerto>>8;
+    z80_byte puerto_h=puerto>>8;
 
 //register port
-	if (puerto_h==0xbf) {
+    if (puerto_h==0xbf) {
 /*
 
 I/O ports
@@ -420,29 +420,29 @@ Implementations that support the Timex video modes use the #FF register as the p
 
 
 */
-		ulaplus_last_send_BF3B=value;
-	}
+        ulaplus_last_send_BF3B=value;
+    }
 
-	//data port
-	if (puerto_h==0xff) {
-		ulaplus_last_send_FF3B=value;
-		if ( (ulaplus_last_send_BF3B&(64+128))==0) {
-			//establecer color
-			ulaplus_change_palette_colour((ulaplus_last_send_BF3B&63),value);
-
-                        //Esto solo afecta en modo timex 512x192 con real 512x192 setting, dado
-                        //que el border viene refrescado desde rutina normal sin real video
-                        modificado_border.v=1;
-
-		}
-
-		if ( (ulaplus_last_send_BF3B&(64+128))==64) {
-			//establecer modo
-			ulaplus_set_mode(value);
+    //data port
+    if (puerto_h==0xff) {
+        ulaplus_last_send_FF3B=value;
+        if ( (ulaplus_last_send_BF3B&(64+128))==0) {
+            //establecer color
+            ulaplus_change_palette_colour((ulaplus_last_send_BF3B&63),value);
 
                         //Esto solo afecta en modo timex 512x192 con real 512x192 setting, dado
                         //que el border viene refrescado desde rutina normal sin real video
                         modificado_border.v=1;
-		}
-	}
+
+        }
+
+        if ( (ulaplus_last_send_BF3B&(64+128))==64) {
+            //establecer modo
+            ulaplus_set_mode(value);
+
+                        //Esto solo afecta en modo timex 512x192 con real 512x192 setting, dado
+                        //que el border viene refrescado desde rutina normal sin real video
+                        modificado_border.v=1;
+        }
+    }
 }
