@@ -5700,6 +5700,7 @@ int parse_cmdline_options(int desde_commandline) {
                 enable_rainbow();
             }
 
+            //Esto tiene sentido por ejemplo si tienes en archivo de config habilitado real video y quieres desactivarlo al lanzar, por consola, sin tener que editar la config
             else if (!strcmp(argv[puntero_parametro],"--no-realvideo")) {
                 disable_rainbow();
             }
