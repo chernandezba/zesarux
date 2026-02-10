@@ -10234,7 +10234,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
                 //Ejecutar hasta encontrar un ret
-                if (tecla=='e') {
+                if (tecla=='e' && menu_debug_registers_current_view==1) {
                     debug_cpu_run_until_ret();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
