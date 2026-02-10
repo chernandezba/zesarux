@@ -225,6 +225,8 @@ void menu_kartusho_rom_file(MENU_ITEM_PARAMETERS)
                         }
                 }
 
+                kartusho_enable();
+
 
         }
         //Sale con ESC
@@ -350,6 +352,8 @@ void menu_superupgrade_rom_file(MENU_ITEM_PARAMETERS)
                         }
                 }
 
+                superupgrade_enable(1);
+
 
         }
         //Sale con ESC
@@ -473,6 +477,8 @@ void menu_ifrom_rom_file(MENU_ITEM_PARAMETERS)
                                 return;
                         }
                 }
+
+                ifrom_enable();
 
 
         }
@@ -3350,6 +3356,8 @@ void menu_dandanator_rom_file(MENU_ITEM_PARAMETERS)
             }
         }
 
+        dandanator_enable();
+
 
     }
     //Sale con ESC
@@ -3775,6 +3783,7 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
             hilow_load_device_file();
         }
 
+        hilow_enable();
 
     }
     //Sale con ESC

@@ -69,6 +69,7 @@ Mejorado icono de Papelera
 Mejorada precisión decimal de valores de ventana de Basic Variables
 Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix
 Mejorado ZENG Online protocol: permitir conectar cliente y servidor con diferentes versiones de ZEsarUX (siempre que sean compatibles)
+Mejorado inserción de archivos de dispositivos (archivos .mmc, archivos .ide, etc): ahora se habilitan automáticamente después de insertarlos
 
 * Correcciones:
 

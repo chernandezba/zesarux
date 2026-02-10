@@ -69,6 +69,7 @@ Improved Trash icon
 Improved decimal precision of Basic Variables window values
 Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix
 Improved ZENG Online protocol: allow to connect different client and server ZEsarUX versions (if they are compatible)
+Improved inserting device files (mmc files, ide files, etc): now they are automatically enabled after inserting them
 
 * Fixes:
 

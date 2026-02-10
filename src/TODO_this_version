@@ -126,7 +126,9 @@ Además si se reabre el menú puede ser confuso para el usuario, ha abierto un m
 
 -Al insertar imagenes (dsk, tap, etc) ver en que casos debería activar tambien, por ejemplo insertar hilow y habilitar hilow. Ver en que casos no es conveniente habilitar,
 y quizá que salga un aviso en los casos en que no lo habilita
--ok corregido ide
+Y revisar que eso puede afectar a como se insertan desde botón derecho de cada dispositivo
+-ok corregido tape input standard, real tape, ide, mmc
+ok betadisk, ifrom, kartusho, superupgrade, zxmmc+
 
 ######FIN Dialogo al sobreescribir un archivo######
 
