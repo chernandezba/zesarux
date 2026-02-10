@@ -633,6 +633,8 @@ void mmc_reset(void)
 
 void mmc_enable(int tarjeta)
 {
+    if (mmc_enabled[tarjeta].v) return;
+
         debug_printf (VERBOSE_INFO,"Enabling mmc");
         mmc_enabled[tarjeta].v=1;
 
@@ -647,6 +649,8 @@ void mmc_enable(int tarjeta)
 
 void mmc_disable(int tarjeta)
 {
+
+    if (mmc_enabled[tarjeta].v==0) return;
 
 	//Hacer flush si hay algun cambio
 	mmc_flush_flash_to_disk();

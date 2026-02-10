@@ -46226,7 +46226,7 @@ void zxdesktop_lowericon_mmc_accion_boton_derecho_common(int tarjeta)
                 //printf("File: [%s]\n",mmc_file_name);
                 //Si no se ha dejado archivo en blanco (salido con ESC)
                 if (mmc_file_name[tarjeta][0]) {
-                    menu_storage_mmc_emulation(tarjeta);
+                    if (mmc_enabled[tarjeta].v==0) mmc_enable(tarjeta);
                     //Y si no estan los puertos divmmc, habilitarlos tambien (se deshabilitan al desactivar mmc)
                     if (divmmc_mmc_ports_enabled.v==0) menu_storage_divmmc_mmc_ports_emulation(0);
                 }
@@ -46285,7 +46285,8 @@ void zxdesktop_lowericon_ide_accion_boton_derecho(void)
                 //printf("file: [%s]\n",ide_file_name);
                 //Si no se ha dejado archivo en blanco (salido con ESC)
                 if (ide_file_name[0]) {
-                    menu_storage_ide_emulation(0);
+                    if (ide_enabled.v==0) ide_enable();
+
                     //Y si no estan los puertos divide, habilitarlos tambien (se deshabilitan al desactivar ide)
                     if (divide_ide_ports_enabled.v==0) menu_storage_divide_ide_ports_emulation(0);
                 }

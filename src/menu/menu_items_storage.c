@@ -11914,7 +11914,7 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
         zvfs_chdir(directorio_actual);
 
 
-        if (ret==1) {
+    if (ret==1) {
         if (!si_existe_archivo(mmc_file_name[tarjeta_seleccionada])) {
             if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
                                 mmc_file_name[tarjeta_seleccionada][0]=0;
@@ -11970,15 +11970,18 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
         }
 
-
-        }
-        //Sale con ESC
-        else {
-                //Quitar nombre
-                mmc_file_name[tarjeta_seleccionada][0]=0;
+        //Y habilitar MMC
+        mmc_enable(tarjeta_seleccionada);
 
 
-        }
+    }
+    //Sale con ESC
+    else {
+            //Quitar nombre
+            mmc_file_name[tarjeta_seleccionada][0]=0;
+
+
+    }
 }
 
 void menu_storage_divmmc_diviface_total_ram(MENU_ITEM_PARAMETERS)
