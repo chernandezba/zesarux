@@ -7970,6 +7970,126 @@ void debug_get_paging_screen_state(char *s)
 
 }
 
+//Indica si se cumple el flag indicado o no
+//Entrada: numero flag: 0=NZ, 1=Z, etc
+int debug_if_flag(int numero_flag)
+{
+    switch(numero_flag)
+    {
+        case 0:
+            if( !(Z80_FLAGS & FLAG_Z) ) return 1;
+        break;
+
+        case 1:
+            if( Z80_FLAGS & FLAG_Z ) return 1;
+        break;
+
+        case 2:
+            if( !(Z80_FLAGS & FLAG_C) ) return 1;
+        break;
+
+        case 3:
+            if( Z80_FLAGS & FLAG_C ) return 1;
+        break;
+
+        case 4:
+            if( !(Z80_FLAGS & FLAG_PV) ) return 1;
+        break;
+
+        case 5:
+            if( Z80_FLAGS & FLAG_PV ) return 1;
+        break;
+
+        case 6:
+            if( !(Z80_FLAGS & FLAG_S) ) return 1;
+        break;
+
+        case 7:
+            if( Z80_FLAGS & FLAG_S ) return 1;
+        break;
+
+
+    }
+
+    return 0;
+}
+
+//Segun el opcode mira si se cumple condicion y mete en buffer la condicion que se cumple
+//Si no, no mete nada
+//Retorna 0 si no se cumple, 1 si se cumple
+int debug_get_condicion_satisfy(z80_byte opcode,z80_byte byte2,char *buffer)
+{
+    if (!CPU_IS_Z80) return 0;
+
+    //Asumimos no condicion
+    int condicion=-1;
+
+    char *string_conditions[]={
+        "NZ","Z","NC","C","PO","PE","P","M"
+    };
+
+    //JR CC, dis
+    //001cc000
+    if ((opcode & (1+2+4+32+64+128))==32) {
+        condicion=(opcode>>3)&3;
+    }
+
+    //RET CC
+    //11ccc000
+    if ((opcode & (1+2+4+64+128))==64+128) {
+        condicion=(opcode>>3)&7;
+    }
+
+    //JP CC, NN
+    //11ccc010
+    if ((opcode & (1+2+4+64+128))==2+64+128) {
+        condicion=(opcode>>3)&7;
+    }
+
+    //CALL CC, NN
+    //11ccc100
+    if ((opcode & (1+2+4+64+128))==4+64+128) {
+        condicion=(opcode>>3)&7;
+    }
+
+
+    //Caso DJNZ dis, que no usa flag
+    if (opcode==16 && reg_b!=1) {
+        sprintf(buffer,"-> satisfy B=%02X",reg_b);
+        return 1;
+    }
+
+    if (condicion>=0 && debug_if_flag(condicion)) {
+        sprintf(buffer,"-> satisfy %s",string_conditions[condicion]);
+        return 1;
+    }
+
+    //LDIR, LDDR
+    if (opcode==237 && (byte2==176 || byte2==184) && BC!=1) {
+        sprintf(buffer,"-> satisfy BC=%04X",BC);
+        return 1;
+    }
+
+    //INIR, INDR, OTIR, OTDR
+    if (opcode==237 && (byte2==178 || byte2==186 || byte2==179 || byte2==187) && reg_b!=1) {
+        sprintf(buffer,"-> satisfy B=%02X",reg_b);
+        return 1;
+    }
+
+    //CPIR, CPDR
+    if (opcode==237 && (byte2==177 || byte2==185) && BC!=1) {
+        z80_byte valor_memoria=peek_byte_no_time(HL);
+        if (valor_memoria!=reg_a) {
+            sprintf(buffer,"-> satisfy BC=%04X && (HL)=%02X",BC,valor_memoria);
+            return 1;
+        }
+    }
+
+    //Nota: no evaluamos cpir, cpdr, pues depende de contenido de hl y registro bc, demasiado liado
+
+    return 0;
+}
+
 
 
 int si_cpu_step_over_jpret(void)
@@ -8010,25 +8130,29 @@ int si_cpu_step_over_jpret(void)
 
 }
 
+//Volver si opcode es ret y además se cumple condición en caso de ret condicionales
 int opcode_is_ret(z80_byte byte1,z80_byte byte2)
 {
     if (CPU_IS_MOTOROLA || CPU_IS_SCMP) return 0;
 
 
+    char buffer_temporal[32];
+
     switch (byte1)
     {
+        case 0xC9: // RET
+                return 1;
+        break;
 
         case 0xC0: // RET NZ
         case 0xC8: // RET Z
-        case 0xC9: // RET
         case 0xD0: // RET NC
         case 0xD8: // RET C
         case 0xE0: // RET PO
         case 0xE8: // RET PE
         case 0xF0: // RET P
         case 0xF8: // RET M
-
-                return 1;
+            if (debug_get_condicion_satisfy(byte1,byte2,buffer_temporal)) return 1;
         break;
 
 
