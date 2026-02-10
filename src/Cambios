@@ -33,6 +33,7 @@ Mejorada emulación de ZX80 y ZX81:
 
 Mejorado Debug CPU:
 - Permitir mostrar tiempos de cada instrucción (opción no activada por defecto)
+- Agregada función para ejecutar hasta que la cpu encuentra un opcode de retorno (cualquier RET, RETI, RETN o RET with condición verdadera)
 - Mostrar cuando los valores de registros se han modificado por la última execución de instrucción
 - Vistas 5 y 6 usan un memptr diferente ("memptx")
 - Mostrar cuando la memoria se ha modificado por la última execución de instrucción en vistas 5 y 6

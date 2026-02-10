@@ -33,6 +33,7 @@ Improved ZX80 and ZX81 emulation:
 
 Improved Debug CPU:
 - Allow to show opcode timings (setting not enabled by default)
+- Added function to run until the cpu finds a return opcode (any RET, RETI, RETN or RET with true condition)
 - Show when registers values are modified by last opcode execution
 - Views 5 and 6 use a different memptr ("memptx")
 - Show when memory is modified by last opcode execution on views 5 and 6

@@ -8239,15 +8239,15 @@ void debug_cpu_run_until_ret(void)
     z80_byte byte1,byte2;
 
     while (!salir) {
+        //Al ponerlo aquí arriba hacemos que el primer opcode siempre se ejecute, así podemos ir ejecutando esta acción cada vez que veamos un RET
+        //sin tener que ejecutarla manualmente con cpu step
+        cpu_core_loop();
+
         unsigned int direccion=get_pc_register();
         byte1=peek_byte_no_time(direccion);
         byte2=peek_byte_no_time(direccion+1);
         if (opcode_is_ret(byte1,byte2)) {
             salir=1;
-        }
-
-        else {
-            cpu_core_loop();
         }
 
         if (menu_abierto) salir=1;
