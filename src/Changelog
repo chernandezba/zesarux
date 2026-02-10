@@ -79,6 +79,7 @@ Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver
 Fixed non-pthreads compilation
 Fixed possible divide by 0 when getting bad cpu usage on Linux
+Removed some old/non-existent - Z80N Next opcodes
 
 ----
 

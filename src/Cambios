@@ -79,6 +79,7 @@ Corregido descomprimir archivos tar y rar con espacios en el nombre
 Corregido temporizador por defecto en Mac OS X cuando no se usa driver cocoa
 Corregido compilación sin pthreads
 Corregido posible división por 0 al obtener erróneamente el uso de cpu en Linux
+Eliminados algunos opcodes viejos/inexistentes de Next Z80N
 
 ----
 

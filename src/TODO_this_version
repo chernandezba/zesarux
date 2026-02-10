@@ -123,6 +123,8 @@ Además si se reabre el menú puede ser confuso para el usuario, ha abierto un m
 ->otra alternativa seria convertir ese submenu en una ventana de dialogo con opciones... pero igual seria también confuso para el usuario, ¿un menu que se separa de los menus?
 ->Hay que revisar TODOS los que seleccionan un archivo desde item de menu
 *ok todos de spectrum
+-Al insertar imagenes (dsk, tap, etc) ver en que casos debería activar tambien, por ejemplo insertar hilow y habilitar hilow. Ver en que casos no es conveniente habilitar,
+y quizá que salga un aviso en los casos en que no lo habilita
 ######FIN Dialogo al sobreescribir un archivo######
 
 
@@ -142,3 +144,6 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
 
+-Run hasta encontrar un RET
+
+-Copy (desde fuera de ZEsarUX) y paste dentro como spool file (pulsaciones de teclas)

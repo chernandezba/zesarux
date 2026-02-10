@@ -8010,6 +8010,48 @@ int si_cpu_step_over_jpret(void)
 
 }
 
+int opcode_is_ret(z80_byte byte1,z80_byte byte2)
+{
+    if (CPU_IS_MOTOROLA || CPU_IS_SCMP) return 0;
+
+
+    switch (byte1)
+    {
+
+        case 0xC0: // RET NZ
+        case 0xC8: // RET Z
+        case 0xC9: // RET
+        case 0xD0: // RET NC
+        case 0xD8: // RET C
+        case 0xE0: // RET PO
+        case 0xE8: // RET PE
+        case 0xF0: // RET P
+        case 0xF8: // RET M
+
+                return 1;
+        break;
+
+
+        case 0xED:
+            switch(byte2)
+            {
+                case 69: //RETN
+                case 77: //RETI
+                case 85: //RETN*
+                case 93: //RETN*
+                case 101: //RETN*
+                case 109: //RETN*
+                case 117: //RETN*
+                case 125: //RETN*
+                    return 1;
+                break;
+            }
+        break;
+    }
+
+    return 0;
+
+}
 
 void debug_cpu_step_over(void)
 {
@@ -8059,6 +8101,40 @@ void debug_cpu_step_over(void)
 
 
   debug_printf(VERBOSE_DEBUG,"End Step over");
+}
+
+
+
+void debug_cpu_run_until_ret(void)
+{
+
+    //Parar hasta RET o cuando se produzca algun evento de apertura de menu, como un breakpoint
+    int antes_menu_abierto=menu_abierto;
+    menu_set_menu_abierto(0);
+    int salir=0;
+    z80_byte byte1,byte2;
+
+    while (!salir) {
+        unsigned int direccion=get_pc_register();
+        byte1=peek_byte_no_time(direccion);
+        byte2=peek_byte_no_time(direccion+1);
+        if (opcode_is_ret(byte1,byte2)) {
+            salir=1;
+        }
+
+        else {
+            cpu_core_loop();
+        }
+
+        if (menu_abierto) salir=1;
+    }
+
+    //Si antes no estaba menu abierto, dejar el estado final (sea que se haya abierto el menu o no)
+    //Si antes estaba el menu abierto, dejarlo abierto
+    if (antes_menu_abierto) menu_abierto=antes_menu_abierto;
+
+
+    debug_printf(VERBOSE_DEBUG,"End Run until RET");
 }
 
 
