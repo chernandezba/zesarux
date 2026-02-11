@@ -166,6 +166,9 @@ tiene este parametro. Por lo general, lo que son acciones (sin ventanas de confi
 * si disparar la accion, se cerraran todos los menus, agregarle menu_add_item_menu_se_cerrara
 * si solo visible con items avanzados, agregarle menu_add_item_menu_es_avanzado
 
+* si una funcion utiliza menus tabulados, y no es una ventana como tal (por ejemplo menu_ventana_scanf_numero), debe guardar estado al entrar de salir_todos_menus
+y restaurarlo al salir, porque el uso de menus tabulados cambia salir_todos_menus a 0
+
 -----------------------------------------
 Sobre indexado de menus
 

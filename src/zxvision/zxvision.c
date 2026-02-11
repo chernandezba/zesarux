@@ -26110,6 +26110,10 @@ Si que se controla al pulsar botones de + y -
 //Retorna -1 si pulsado ESC
 int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {
+    //dado que utilizamos un menu tabulado, se resetearia estado de salir_todos_menus. Esto es especialmente critico en algunos
+    //menus en los que interesa que se cierren despues de pasar por aqui, como al seleccionar un microdrive rmd que no existe, y se pide tamaño
+    int antes_salir_todos_menus=salir_todos_menus;
+
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
     //Lo gestiona la propia rutina de menu_ventana_scanf
@@ -26300,6 +26304,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     zxvision_destroy_window(&ventana);
 
 
+    salir_todos_menus=antes_salir_todos_menus;
 
     if (comun_opcion_seleccionada==4 || retorno_menu==MENU_RETORNO_ESC) return -1; //Pulsado Cancel
 

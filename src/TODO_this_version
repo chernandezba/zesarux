@@ -105,32 +105,16 @@ Alguno para arm? Aparte de raspberry...
 -scanline inicial que se ve en negro en Next al pulsar teclas
 
 
-######Dialogo al sobreescribir un archivo######
--Dialogo al sobreescribir un archivo (por ejemplo en tape output) si está top menu activado, sale mensaje arriba del todo
-->al abrir filesel llamar a zxvision_reset_set_next_menu_position()
-Pero no seria mejor llamar ahí desde otro sitio central? Desde donde se sepa que el menu se cierra
-->Mejor: todo aquel que llame a filesel desde opcion de menu debe activar flag:
+-Al insertar imagenes (dsk, tap, etc) ver:
+-todo aquel que llame a filesel desde opcion de menu debe activar flag:
 
 menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA);
+aparte del
+menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_SE_CERRARA);
 
-y también MENU_ITEM_FLAG_SE_CERRARA ? Eso corrige el problema de que el menu reaparece, al acabar de seleccionar el archivo, y fijado en la parte izquierda
-Pero al cerrar, el usuario no ve que ha seleccionado ese archivo, que igual quiere activar algunas otras opciones , por ejemplo quizá despues de seleccionar un dsk, el usuario
-puede querer activar el write protect y eso le implica tener que reabrir el menu (o no? quizá no necesita tocar nada despues de seleccionar el archivo)
-Además si se reabre el menú puede ser confuso para el usuario, ha abierto un menu, se ha cerrado, pero reabre solo? Por no decir que pierde la posicion de la ventana de ese submenu (con MENU_ITEM_FLAG_GENERA_VENTANA)
-
--> de momento solo en testeo al seleccionar tape input y output (en void menu_storage_tape(MENU_ITEM_PARAMETERS) ) y en CF2 Floppy
--> estudiar los diferentes menu donde se seleccionan archivos y ver si tiene sentido que el menú se reabra después de seleccionar archivo
-->otra alternativa seria convertir ese submenu en una ventana de dialogo con opciones... pero igual seria también confuso para el usuario, ¿un menu que se separa de los menus?
-->Hay que revisar TODOS los que seleccionan un archivo desde item de menu
-*ok todos de spectrum
-
--Al insertar imagenes (dsk, tap, etc) ver en que casos debería activar tambien, por ejemplo insertar hilow y habilitar hilow. Ver en que casos no es conveniente habilitar,
+-Si hay dispositivos que al insertarlos no se habilitan automáticamente, hacer que se habilitan. Ver en que casos no es conveniente habilitar,
 y quizá que salga un aviso en los casos en que no lo habilita
-Y revisar que eso puede afectar a como se insertan desde botón derecho de cada dispositivo
--ok corregido tape input standard, real tape, ide, mmc
-ok betadisk, ifrom, kartusho, superupgrade, zxmmc+
-
-######FIN Dialogo al sobreescribir un archivo######
+-> Están todos?
 
 
 -Pantalla completa en Mac no va bien
