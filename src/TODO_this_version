@@ -54,25 +54,13 @@ Util si estamos en debug cpu y queremos que un juego lea el boton del ratón (em
 Quizá con una opción y sólo si está el foco en ventana de debug CPU
 
 
-
--revisar los salir_todos_menus=1 que se puedan cambiar por   menu_add_item_menu_se_cerrara( en el item de menu
-
-
--Soportar uft-8 en el footer, que sirva para texto footer normal pero tambien con opciones de --programsettingsinfo de archivos .config.
-*testear con --programname
-
-
-
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
-
-
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
 
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
-
 
 
 -en evaluación de condiciones si cumple o no, en debug cpu (texto "satisfy") no interpreta opcodes
