@@ -107,7 +107,6 @@ Alguno para arm? Aparte de raspberry...
 
 -Al insertar imagenes (dsk, tap, etc) ver:
 -todo aquel que llame a filesel desde opcion de menu debe activar flag:
-
 menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA);
 aparte del
 menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_SE_CERRARA);

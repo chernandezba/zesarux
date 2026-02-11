@@ -108,7 +108,7 @@ void menu_zeng_online_join_room_print(zxvision_window *w)
 
 int menu_zeng_online_join_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_join_room_thread_running;
+    return !zeng_online_client_join_room_thread_running;
 }
 
 void menu_zeng_join_room_aux(int room_number,char *creator_password)
@@ -155,22 +155,22 @@ void menu_zeng_online_stop_threads_common_print(zxvision_window *w)
 
 int menu_zeng_online_leave_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_leave_room_thread_running;
+    return !zeng_online_client_leave_room_thread_running;
 }
 
 int menu_zeng_online_autojoin_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_autojoin_room_thread_running;
+    return !zeng_online_client_autojoin_room_thread_running;
 }
 
 int menu_zeng_online_disable_autojoin_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_disable_autojoin_room_thread_running;
+    return !zeng_online_client_disable_autojoin_room_thread_running;
 }
 
 int menu_zeng_online_stop_master_thread_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_stop_master_thread_thread_running;
+    return !zeng_online_client_stop_master_thread_thread_running;
 }
 
 //Contador por si el snapshot pedido nunca llega (por ejemplo que el master aun no lo haya enviado y de error al recibirlo)
@@ -185,73 +185,73 @@ int menu_zeng_online_get_snapshot_applied_cond(zxvision_window *w GCC_UNUSED)
     //en 5 segundos, timeout
     if (menu_zeng_online_get_snapshot_applied_cond_counter>5*50) return 1;
 
-	return zeng_online_client_get_snapshot_applied_finished;
+    return zeng_online_client_get_snapshot_applied_finished;
 }
 
 int menu_zeng_online_stop_slave_thread_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_stop_slave_thread_thread_running;
+    return !zeng_online_client_stop_slave_thread_thread_running;
 }
 
 int menu_zeng_online_write_message_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_write_message_room_thread_running;
+    return !zeng_online_client_write_message_room_thread_running;
 }
 
 int menu_zeng_online_kick_user_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_kick_user_thread_running;
+    return !zeng_online_client_kick_user_thread_running;
 }
 
 int menu_zeng_online_max_players_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_max_players_room_thread_running;
+    return !zeng_online_client_max_players_room_thread_running;
 }
 
 int menu_zeng_online_rename_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_rename_room_thread_running;
+    return !zeng_online_client_rename_room_thread_running;
 }
 
 int menu_zeng_online_allow_message_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_allow_message_room_thread_running;
+    return !zeng_online_client_allow_message_room_thread_running;
 }
 
 int menu_zeng_online_get_profile_keys_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_get_profile_keys_thread_running;
+    return !zeng_online_client_get_profile_keys_thread_running;
 }
 
 int menu_zeng_online_send_profile_keys_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_send_profile_keys_thread_running;
+    return !zeng_online_client_send_profile_keys_thread_running;
 }
 
 int menu_zeng_online_destroy_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_destroy_room_thread_running;
+    return !zeng_online_client_destroy_room_thread_running;
 }
 
 int menu_zeng_online_list_rooms_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_list_rooms_thread_running;
+    return !zeng_online_client_list_rooms_thread_running;
 }
 
 int menu_zeng_online_list_users_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_list_users_thread_running;
+    return !zeng_online_client_list_users_thread_running;
 }
 
 int menu_zeng_online_join_list_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_join_list_thread_running;
+    return !zeng_online_client_join_list_thread_running;
 }
 
 
 int menu_zeng_online_authorize_join_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_authorize_join_thread_running;
+    return !zeng_online_client_authorize_join_thread_running;
 }
 
 int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int *current_players,int *max_players,char *room_name)
@@ -664,7 +664,7 @@ void menu_zeng_online_create_room_print(zxvision_window *w)
 
 int menu_zeng_online_create_room_cond(zxvision_window *w GCC_UNUSED)
 {
-	return !zeng_online_client_create_room_thread_running;
+    return !zeng_online_client_create_room_thread_running;
 }
 
 void menu_zoc_join_master_aux(int room_number)
@@ -1445,11 +1445,11 @@ void menu_zeng_online_restricted_keys_edit_keyboard(MENU_ITEM_PARAMETERS)
 
         }
 
-		//Nombre de ventana solo aparece en el caso de stdout
+        //Nombre de ventana solo aparece en el caso de stdout
         retorno_menu=menu_dibuja_menu_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"OSD Adventure KB" );
 
 
-	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+    //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
@@ -2181,7 +2181,7 @@ zxvision_window zxvision_window_zeng_online_status_window;
 
 void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
 {
-	menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
     if (!menu_multitarea) {
         menu_warn_message("This window needs multitask enabled");
@@ -2191,10 +2191,10 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_zeng_online_status_window;
 
-	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	//zxvision_delete_window_if_exists(ventana);
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
 
     //Crear ventana si no existe
     if (!zxvision_if_window_already_exists(ventana)) {
@@ -2221,12 +2221,12 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }
 
-	zxvision_draw_window(ventana);
+    zxvision_draw_window(ventana);
 
-	z80_byte tecla;
+    z80_byte tecla;
 
 
-	int salir=0;
+    int salir=0;
 
 
     menu_zeng_online_status_window_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
@@ -2246,7 +2246,7 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
     do {
 
 
-		tecla=zxvision_common_getkey_refresh();
+        tecla=zxvision_common_getkey_refresh();
 
 
         switch (tecla) {
@@ -2266,15 +2266,15 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
     } while (salir==0);
 
 
-	util_add_window_geometry_compact(ventana);
+    util_add_window_geometry_compact(ventana);
 
-	if (tecla==3) {
-		zxvision_message_put_window_background();
-	}
+    if (tecla==3) {
+        zxvision_message_put_window_background();
+    }
 
-	else {
-		zxvision_destroy_window(ventana);
-	}
+    else {
+        zxvision_destroy_window(ventana);
+    }
 
 
 }
