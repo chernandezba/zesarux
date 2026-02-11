@@ -147,8 +147,8 @@ ok betadisk, ifrom, kartusho, superupgrade, zxmmc+
 
 -Copy (desde fuera de ZEsarUX) y paste dentro como spool file (pulsaciones de teclas)
 
-ok-Teclas que en debug cpu no están disponible en modo no-step, como rEt, quitarlas de la leyenda en modo no-step
-
 
 -En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
+
+-revisar parpadeos en linux en top buttons al moverse por los menus

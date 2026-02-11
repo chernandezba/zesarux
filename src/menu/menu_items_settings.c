@@ -1732,7 +1732,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
                 "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
-            menu_add_item_menu_se_cerrara(array_menu_window_settings);
+            //no decir que se cierre porque si no al pulsar en el video driver, se cerraria
+            //menu_add_item_menu_se_cerrara(array_menu_window_settings);
             menu_add_item_menu_genera_ventana(array_menu_window_settings);
         }
 
