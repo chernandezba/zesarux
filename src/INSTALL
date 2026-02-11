@@ -1,10 +1,10 @@
 ZEsarUX Installation Instructions
 ---------------------------------
 
-This file explains how to install ZEsarUX on Unix systems: GNU/Linux, FreeBSD, Mac OS X, Raspberry, Haiku
+This file explains how to install ZEsarUX on Unix systems: GNU/Linux, FreeBSD, Mac OS X, Raspberry, Haiku, AROS, FiwixOS, Sortix, Minix3
 Note that most of the information that applies to Linux also applies to FreeBSD.
 
-For Haiku, AROS, FiwixOS or Sortix instructions, see near the end of this file
+For Haiku, AROS, FiwixOS, Sortix or Minix3 instructions, see near the end of this file
 
 For Windows specific instructions please see the INSTALLWINDOWS file.
 
