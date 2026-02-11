@@ -2031,7 +2031,11 @@ void scrcurses_actualiza_tablas_teclado(void)
             break;
 
             case KEY_END:
+#ifndef MINIX3
                     util_set_reset_key(UTIL_KEY_END,1);
+#else
+                    util_set_reset_key(UTIL_KEY_F5,1);
+#endif
             break;
 
             case KEY_LEFT:

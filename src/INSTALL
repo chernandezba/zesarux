@@ -300,6 +300,20 @@ sh ./configure --disable-pthreads --other-unix
 make
 
 
+Note for Minix3
+---------------
+
+- Compile:
+
+export LIBS="-lcurses"
+export CFLAGS="-DMINIX3 -DCURSES_NOT_NCURSES"
+
+./configure --c-compiler clang
+make
+
+- F5 is usually mapped on Minix3 to dump kernel environment, so in this case, to open
+ZEsarUX menu, use the End key
+
 
 Utilities
 ---------
