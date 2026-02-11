@@ -138,17 +138,15 @@ ok betadisk, ifrom, kartusho, superupgrade, zxmmc+
 -Botones flechas para extender zx desktop, desaparece el de extender cuando llega a 640
 
 -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
-
-
-
 -Zeng opción para enviar mensaje a un usuario concreto
+-En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
+Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
+
 
 -Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
 
 -Copy (desde fuera de ZEsarUX) y paste dentro como spool file (pulsaciones de teclas)
 
 
--En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
-Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
-
 -revisar parpadeos en linux en top buttons al moverse por los menus
+->parece que solo pasa con driver xwindow, con sdl no pasa

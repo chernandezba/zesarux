@@ -10854,39 +10854,39 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 
     dskplusthree_disable();
 
-        char *filtros[2];
+    char *filtros[2];
 
-        filtros[0]="dsk";
-        filtros[1]=0;
+    filtros[0]="dsk";
+    filtros[1]=0;
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-              //Obtenemos directorio de dskplusthree
-        //si no hay directorio, vamos a rutas predefinidas
-        if (dskplusthree_file_name[0]==0) menu_chdir_sharedfiles();
+            //Obtenemos directorio de dskplusthree
+    //si no hay directorio, vamos a rutas predefinidas
+    if (dskplusthree_file_name[0]==0) menu_chdir_sharedfiles();
 
-        else {
-                char directorio[PATH_MAX];
-                util_get_dir(dskplusthree_file_name,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(dskplusthree_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                        zvfs_chdir(directorio);
-                }
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
         }
+    }
 
     char dskfile[PATH_MAX];
     dskfile[0]=0;
 
-        int ret=menu_filesel("Select DSK File",filtros,dskfile);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
+    int ret=menu_filesel("Select DSK File",filtros,dskfile);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
-        if (ret==1) {
+    if (ret==1) {
 
         if (!si_existe_archivo(dskfile)) {
 
@@ -10941,8 +10941,6 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
                     }
 
 
-
-
                     int opcion=menu_simple_six_choices("Sector size?","One of:","256","512","1024","2048","4096","8192");
                     if (opcion<1) return;
 
@@ -10954,18 +10952,13 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
                     //4096, //5
                     //8192, //6
 
-
                     int sector_size=128<<opcion;
-
-
 
                     dsk_create(dskfile,pistas,caras,sectores_pista,sector_size);
 
                 }
 
             }
-
-
 
         }
         dsk_insert_disk(dskfile);
@@ -10977,12 +10970,12 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
         //plus3dos_traps.v=1;
 
 
-        }
-        //Sale con ESC
-        else {
-                //Quitar nombre
-                dskplusthree_file_name[0]=0;
-        }
+    }
+    //Sale con ESC
+    else {
+        //Quitar nombre
+        dskplusthree_file_name[0]=0;
+    }
 }
 
 void menu_storage_plusthreedisk_traps(MENU_ITEM_PARAMETERS)
