@@ -67,7 +67,7 @@ Improved editing joystick to events/keys (allow to unasign easily)
 Improved ZX Life: allow to speed up game, fix behaviour on board limits
 Improved Trash icon
 Improved decimal precision of Basic Variables window values
-Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix
+Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix, Minix3
 Improved ZENG Online protocol: allow to connect different client and server ZEsarUX versions (if they are compatible)
 Improved inserting device files (mmc files, ide files, etc): now they are automatically enabled after inserting them
 

@@ -27,14 +27,6 @@ Probar mas sistemas unix alternativos
 
 
 
--Para Minix:
-curses enlazar contra -lcurses y no -lncurses
-Poder definir otra tecla para abrir el menu, F5 lanza comandos del sistema
-Por ejemplo en driver curses defino tecla END como si fuera F5
-Parece que curses no tiene soporte para eventos de ratón
-
-
-
 -lightgun
 *rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
 en programa aparte, mostrando coordenada y en pantalla

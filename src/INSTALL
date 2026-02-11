@@ -305,7 +305,6 @@ Note for Minix3
 
 - Compile:
 
-export LIBS="-lcurses"
 export CFLAGS="-DMINIX3 -DCURSES_NOT_NCURSES"
 
 ./configure --c-compiler clang

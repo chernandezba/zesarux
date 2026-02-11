@@ -67,7 +67,7 @@ Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
 Mejorado icono de Papelera
 Mejorada precisión decimal de valores de ventana de Basic Variables
-Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix
+Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix, Minix3
 Mejorado ZENG Online protocol: permitir conectar cliente y servidor con diferentes versiones de ZEsarUX (siempre que sean compatibles)
 Mejorado inserción de archivos de dispositivos (archivos .mmc, archivos .ide, etc): ahora se habilitan automáticamente después de insertarlos
 

@@ -736,7 +736,13 @@ _EOF
 			#nota: no debemos linkar contra las dos a la vez
 
 		if [ "$OPTIONOBJCURSESW" = "" ]; then
-        	LIBS="-lncurses $LIBS"
+			# si se usa la vieja curses (no ncurses)
+			echo -n "$CFLAGS"|grep -q CURSES_NOT_NCURSES
+			if [ $? == 0 ]; then
+	        		LIBS="-lcurses $LIBS"
+			else
+	        		LIBS="-lncurses $LIBS"
+			fi
         	fi
 	fi
 
