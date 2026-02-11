@@ -1750,8 +1750,9 @@ int scrcurses_init (void) {
 	//enviar todas teclas y no gestionar ni CTRL+C
 	raw();
 
+#ifndef CURSES_NOT_NCURSES
 	mousemask(ALL_MOUSE_EVENTS, NULL);
-
+#endif
 
 	curs_set(0);
 
@@ -1942,9 +1943,9 @@ void scrcurses_actualiza_tablas_teclado(void)
 	//inicializar botones de raton a nada
 	mouse_left=mouse_right=0;
 
-
+#ifndef CURSES_NOT_NCURSES
 	MEVENT event;
-
+#endif
 
 
     if (c!=ERR) {
@@ -2085,6 +2086,7 @@ void scrcurses_actualiza_tablas_teclado(void)
             break;
 
 
+#ifndef CURSES_NOT_NCURSES
             //Mouse
             case KEY_MOUSE:
                 //printf ("evento mouse\n");
@@ -2123,7 +2125,7 @@ void scrcurses_actualiza_tablas_teclado(void)
                 }
             break;
 
-
+#endif
 
 			default:
                 ascii_to_keyboard_port(c);
