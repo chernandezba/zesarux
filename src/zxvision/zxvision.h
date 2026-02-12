@@ -200,6 +200,9 @@ struct s_zxvision_window {
     //O en AY Player porque el texto del titulo de la cancion puede ir mas alla del ancho para hacer scroll automatico
     int do_not_warn_tried_write_beyond_size;
 
+    //Para indicar caracteres escritos mas alla del ancho o alto de ventana y mostrar el marco de la ventana, al seleccionarla, de color rojo
+    int current_window_char_written_beyond_size_width,current_window_char_written_beyond_size_height;
+
     //Posicion del cursor y si esta visible
     int visible_cursor;
     int cursor_line;
@@ -1428,7 +1431,7 @@ struct s_estilos_gui {
         int solo_mayusculas; //para ZX80/81
 
 
-        int papel_seleccionado;
+        int papel_seleccionado; //papel seleccionado y también color del marco de la ventana al redimensionar
         int tinta_seleccionado;
 
         int papel_no_disponible; //Colores cuando una opción no esta disponible

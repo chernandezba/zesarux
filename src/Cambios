@@ -54,6 +54,7 @@ Mejorado ZX Vision:
 - Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas
 - Algunos diálogos de ajustes pueden resetearse a valores por defecto
 - Ventanas restauradas al inicio como maximizadas, se restaurarán al tamaño máximo disponible
+- Cambiado color del borde de ventanas al arrastrar para redimensionarlas: color de Aviso cuando la ventana necesita aumentarse de tamaño (porque hay texto mas allá del tamaño actual), y en caso contrario, color Seleccionado
 - Nuevo tipo de widget Triángulo en Ver Sensores
 
 Mejorado ZX Desktop:

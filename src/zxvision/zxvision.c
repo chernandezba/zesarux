@@ -7954,30 +7954,7 @@ void normal_overlay_texto_menu_final(void)
 
 }
 
-/*
-void old_normal_overlay_texto_menu_final(void)
-{
 
-    if (cuadrado_activo && ventana_tipo_activa) {
-        menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color);
-
-    }
-
-    //Dibujar ventanas en background pero solo si menu está abierto, esto evita que aparezcan las ventanas cuando hay un
-    //mensaje de splash y el menú está cerrado
-    if (menu_allow_background_windows &&
-      (menu_abierto || overlay_visible_when_menu_closed)
-    ) {
-        //printf("redrawing windows on normal_overlay\n");
-        //Conservar estado de tecla pulsada o no para el speech
-        int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
-        menu_draw_background_windows_overlay_after_normal();
-        menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
-    }
-
-
-}
-*/
 
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
 z80_byte debug_zxvision_cache_overlay_caracter=33;
@@ -9175,7 +9152,7 @@ margenx_izq=TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 //Indica que el raton esta encima de la zona de redimensionado y por tanto se dibuja diferente
 int ventana_marca_redimensionado_raton_encima=0;
 
-//dibuja cuadrado (4 lineas) usado en los menus para xwindows y fbdev
+//dibuja cuadrado (4 lineas) usado en entorno de menu gráfico (obviamente curses, stdout etc quedan excluidos)
 //Entrada: x1,y1 punto superior izquierda,x2,y2 punto inferior derecha en resolucion de zx spectrum. Color
 //nota: realmente no es un cuadrado porque el titulo ya hace de franja superior
 void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado)
@@ -9188,8 +9165,30 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
 
     //Si ratón está encima de la zona de redimensionado
     if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v) {
-        color=ESTILO_GUI_COLOR_AVISO;
-        color_marca_redimensionado=ESTILO_GUI_COLOR_AVISO;
+        color=ESTILO_GUI_PAPEL_SELECCIONADO;
+
+
+        //Poner otro color si llega al minimo y maximo necesario por la ventana
+        //Aunque tried_write_beyond_size se pondra a 0 en cuanto
+        zxvision_window *w=zxvision_current_window;
+        if (w!=NULL) {
+            //printf("Beyond: %d,%d current %d,%d\n",
+            //        w->current_window_char_written_beyond_size_width,w->current_window_char_written_beyond_size_height,w->total_width,w->total_height);
+            if (w->do_not_warn_tried_write_beyond_size==0) {
+                if (w->current_window_char_written_beyond_size_width>0 || w->current_window_char_written_beyond_size_height>0) {
+
+                    //printf("actual: %d,%d minimo: %d,%d\n",w->total_width,w->total_height,w->current_window_char_written_beyond_size_width,w->current_window_char_written_beyond_size_height);
+                    if (w->total_width-1<w->current_window_char_written_beyond_size_width || w->total_height-1<w->current_window_char_written_beyond_size_height) {
+                        color=ESTILO_GUI_COLOR_AVISO;
+                    }
+                }
+            }
+        }
+
+
+
+
+        color_marca_redimensionado=color;
     }
 
     //Para poner una marca en la ventana indicando si es de tipo zxvision
@@ -11004,6 +11003,9 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     w->tried_write_beyond_size=0;
 
     w->do_not_warn_tried_write_beyond_size=0;
+
+    w->current_window_char_written_beyond_size_width=0;
+    w->current_window_char_written_beyond_size_height=0;
 
     w->visible_cursor=0;
     w->cursor_line=0;
@@ -14766,6 +14768,24 @@ void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter
         if (letra_escribir!=32 && (x>=w->total_width || y>=w->total_height)) {
             //Indicar que se intentó escribir mas alla del limite de la ventana, siempre que caracter no sea espacio
             //printf("pasa limites. caracter %c (%d)\n",letra_escribir,letra_escribir);
+            if (w->tried_write_beyond_size==0) {
+                w->current_window_char_written_beyond_size_width=x;
+                w->current_window_char_written_beyond_size_height=y;
+            }
+            else {
+                if (x>w->current_window_char_written_beyond_size_width) {
+                    if (x>=w->total_width) {
+                        w->current_window_char_written_beyond_size_width=x;
+                    }
+                }
+                if (y>w->current_window_char_written_beyond_size_height) {
+                    if (y>=w->total_height) {
+                        w->current_window_char_written_beyond_size_height=y;
+                    }
+                }
+            }
+
+
             w->tried_write_beyond_size=1;
 
             //Si es la ventana actual, avisar al momento
