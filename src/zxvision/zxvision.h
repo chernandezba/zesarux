@@ -1858,8 +1858,8 @@ extern void zxvision_reset_visible_cursor(zxvision_window *ventana);
 
 extern z80_bit menu_current_drive_mmc_image;
 
-//Ancho limite hasta el que se hace incrementos de 128 desde item de menu. Luego se salta a tamaño 2560
-#define ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS 1280
+//Ancho limite hasta el que se hace incrementos de 128 desde item de menu
+#define ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS 2560
 #define ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS 640
 
 //Limite admitido desde menu
