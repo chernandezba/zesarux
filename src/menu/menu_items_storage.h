@@ -73,6 +73,7 @@ extern void menu_storage_mmc_file(MENU_ITEM_PARAMETERS);
 extern void menu_storage_ide_emulation(MENU_ITEM_PARAMETERS);
 extern void menu_storage_ide_file(MENU_ITEM_PARAMETERS);
 extern void menu_storage_divide_ide_ports_emulation(MENU_ITEM_PARAMETERS);
+extern void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS);
 
 extern int convert_audio_to_zx81_thread_running;
 extern char menu_convert_audio_to_zx81_get_last_sample(void);

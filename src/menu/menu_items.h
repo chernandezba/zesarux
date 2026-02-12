@@ -185,7 +185,6 @@ extern void menu_audio_chip_info(MENU_ITEM_PARAMETERS);
 
 
 
-extern void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS);
 
