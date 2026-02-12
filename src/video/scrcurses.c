@@ -56,7 +56,7 @@
 #include "zeng_online_client.h"
 
 #ifdef COMPILE_CURSESW
-	#include "cursesw_ext.h"
+    #include "cursesw_ext.h"
 #endif
 
 
@@ -86,7 +86,7 @@ int curses_last_message_length=0;
 
 void scrcurses_z88_cpc_load_keymap(void)
 {
-	debug_printf (VERBOSE_INFO,"Loading keymap");
+    debug_printf (VERBOSE_INFO,"Loading keymap");
 }
 
 void scrcurses_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
@@ -108,10 +108,10 @@ void scrcurses_putpixel_final(int x,int y,unsigned int color)
 void scrcurses_putpixel(int x,int y,unsigned int color)
 {
 
-	//Para que no se queje el compilador de variable no usada
-	x++;
-	y++;
-	color++;
+    //Para que no se queje el compilador de variable no usada
+    x++;
+    y++;
+    color++;
 }
 
 
@@ -122,8 +122,8 @@ void scrcurses_messages_debug(char *s)
 //si hay un mensaje anterior, asegurarnos que se borra antes,
 //comprobando el de mayor longitud
 if (curses_last_message_length) {
-	int t=strlen(curses_last_message_shown);
-	if (t>curses_last_message_length) curses_last_message_length=t;
+    int t=strlen(curses_last_message_shown);
+    if (t>curses_last_message_length) curses_last_message_length=t;
 }
 
 else curses_last_message_length=strlen(curses_last_message_shown);
@@ -141,22 +141,22 @@ curses_last_message_shown_timer=250;
 void scrcurses_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
-	int brillo;
+    int brillo;
 
-	tinta=tinta&15;
-	papel=papel&15;
+    tinta=tinta&15;
+    papel=papel&15;
 
 
-	//brillo para papel o tinta
-	//tinta=(tinta&7);
+    //brillo para papel o tinta
+    //tinta=(tinta&7);
 
-	if (papel>7 || tinta>7) {
-		brillo=A_BOLD;
-		papel=(papel&7);
-		tinta=(tinta&7);
-	}
+    if (papel>7 || tinta>7) {
+        brillo=A_BOLD;
+        papel=(papel&7);
+        tinta=(tinta&7);
+    }
 
-	//Parece que en curses de mac solo se ven letras con brillo cuando tinta=papel
+    //Parece que en curses de mac solo se ven letras con brillo cuando tinta=papel
 
 
         else brillo=0;
@@ -164,14 +164,14 @@ void scrcurses_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
         attron(COLOR_PAIR(tinta+papel*8+1));
 
 
-	if (MACHINE_IS_Z88) {
-	move(y,x);
-	}
-	else {
-	move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
-	}
+    if (MACHINE_IS_Z88) {
+    move(y,x);
+    }
+    else {
+    move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
+    }
 
-	addch(caracter|brillo);
+    addch(caracter|brillo);
 
 }
 
@@ -203,12 +203,12 @@ void scrcurses_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel
 
         attron(COLOR_PAIR(tinta+papel*8+1));
 
-	y +=CURSES_LINE_FOOTER;
+    y +=CURSES_LINE_FOOTER;
 
-	x +=CURSES_IZQ_BORDER*border_enabled.v;
+    x +=CURSES_IZQ_BORDER*border_enabled.v;
 
 
-	move(y,x);
+    move(y,x);
 
         addch(caracter|brillo);
 }
@@ -220,8 +220,8 @@ void scrcurses_blank_footer(void)
 
         int brillo;
 
-	z80_byte tinta=WINDOW_FOOTER_INK;
-	z80_byte papel=WINDOW_FOOTER_PAPER;
+    z80_byte tinta=WINDOW_FOOTER_INK;
+    z80_byte papel=WINDOW_FOOTER_PAPER;
 
 
         //brillo para papel o tinta
@@ -242,8 +242,8 @@ void scrcurses_blank_footer(void)
 
         for (y=0;y<3;y++) {
                 for (x=0;x<32+(2*CURSES_IZQ_BORDER)*border_enabled.v;x++) {
-			move(y+CURSES_LINE_FOOTER,x);
-			addch(' '|brillo);
+            move(y+CURSES_LINE_FOOTER,x);
+            addch(' '|brillo);
                 }
         }
 }
@@ -253,11 +253,11 @@ void scrcurses_blank_footer(void)
 void scrcurses_debug_registers(void)
 {
 
-	char texto_debug[2048];
-	print_registers(texto_debug);
+    char texto_debug[2048];
+    print_registers(texto_debug);
 
-	attron(COLOR_PAIR(0+7*8+1));
-	mvaddstr(CURSES_LINE_DEBUG_REGISTERS, 0, texto_debug);
+    attron(COLOR_PAIR(0+7*8+1));
+    mvaddstr(CURSES_LINE_DEBUG_REGISTERS, 0, texto_debug);
 
 }
 
@@ -303,7 +303,7 @@ void asigna_color (int x,int y,int *brillo,int *parpadeo)
 {
 
         int offset;
-	unsigned char atributo;
+    unsigned char atributo;
 
         offset=6144;
 
@@ -313,11 +313,11 @@ void asigna_color (int x,int y,int *brillo,int *parpadeo)
 
 //      printf ("%d ",offset);
 
-	atributo=scrcurses_screen[offset];
+    atributo=scrcurses_screen[offset];
 
-	if (scr_refresca_sin_colores.v) atributo=56;
+    if (scr_refresca_sin_colores.v) atributo=56;
 
-	asigna_color_atributo(atributo,brillo,parpadeo);
+    asigna_color_atributo(atributo,brillo,parpadeo);
 
 /*
 
@@ -327,21 +327,21 @@ void asigna_color (int x,int y,int *brillo,int *parpadeo)
 
 
 
-	//parpadeo
-	//no hacemos parpadeo mediante A_BLINK
-	*parpadeo=0;
+    //parpadeo
+    //no hacemos parpadeo mediante A_BLINK
+    *parpadeo=0;
         //if (scrcurses_screen[offset] & 128) *parpadeo=A_BLINK;
         //else *parpadeo=0;
 
-	if (atributo & 128) {
-		//hay parpadeo
-		if (estado_parpadeo.v) {
-			//estado de inversion de color
-			copia_paper=paper;
-			paper=ink;
-			ink=copia_paper;
-		}
-	}
+    if (atributo & 128) {
+        //hay parpadeo
+        if (estado_parpadeo.v) {
+            //estado de inversion de color
+            copia_paper=paper;
+            paper=ink;
+            ink=copia_paper;
+        }
+    }
 
 
         if (atributo & 64) *brillo=A_BOLD;
@@ -387,22 +387,22 @@ The  top three bits ( 010 ) of the high byte don't change.
 
 void scrcurses_refresca_border_comun(z80_byte color)
 {
-	int x,y;
-	//z80_byte color=out_254 & 7;
+    int x,y;
+    //z80_byte color=out_254 & 7;
 
 
 
         attron(COLOR_PAIR(0+color*8+1));
 
 
-	//parte superior
-	for (y=0;y<CURSES_TOP_BORDER;y++) {
-		for (x=0;x<32+CURSES_IZQ_BORDER*2;x++) {
+    //parte superior
+    for (y=0;y<CURSES_TOP_BORDER;y++) {
+        for (x=0;x<32+CURSES_IZQ_BORDER*2;x++) {
                                 move(y,x);
                                 addch(' ');
-		}
-	}
-	//parte inferior
+        }
+    }
+    //parte inferior
         for (y=24+CURSES_TOP_BORDER;y<24+CURSES_TOP_BORDER*2;y++) {
                 for (x=0;x<32+CURSES_IZQ_BORDER*2;x++) {
                                 move(y,x);
@@ -413,12 +413,12 @@ void scrcurses_refresca_border_comun(z80_byte color)
 
         //laterales
         for (y=0;y<24;y++) {
-		for (x=0;x<CURSES_IZQ_BORDER;x++) {
-			move(y+CURSES_TOP_BORDER,x);
-			addch(' ');
-			move(y+CURSES_TOP_BORDER,CURSES_IZQ_BORDER+32+x);
-			addch(' ');
-		}
+        for (x=0;x<CURSES_IZQ_BORDER;x++) {
+            move(y+CURSES_TOP_BORDER,x);
+            addch(' ');
+            move(y+CURSES_TOP_BORDER,CURSES_IZQ_BORDER+32+x);
+            addch(' ');
+        }
         }
 
 
@@ -463,9 +463,9 @@ void scrcurses_refresca_border_sam_mode2(z80_byte color)
 
 
 void scrcurses_refresca_border(void) {
-	z80_byte color;
-	color=out_254 & 7;
-	if (scr_refresca_sin_colores.v) color=7;
+    z80_byte color;
+    color=out_254 & 7;
+    if (scr_refresca_sin_colores.v) color=7;
         scrcurses_refresca_border_comun(color);
 }
 
@@ -475,45 +475,45 @@ void scrcurses_putchar_zx8081(int x,int y, z80_byte caracter)
 {
 
 
-	z80_bit inverse;
+    z80_bit inverse;
 
-	//Caso especial para Jupiter ACE
-	if (MACHINE_IS_ACE) {
-		if (caracter>=128) {
-			inverse.v=0;
-			caracter -=128;
-		}
-		else inverse.v=1;
+    //Caso especial para Jupiter ACE
+    if (MACHINE_IS_ACE) {
+        if (caracter>=128) {
+            inverse.v=0;
+            caracter -=128;
+        }
+        else inverse.v=1;
 
                 if (!inverse.v) attron(COLOR_PAIR(0+7*8+1));
                 else attron(COLOR_PAIR(7+0*8+1));
 
 
-	}
+    }
 
 
-	else {
+    else {
 
-		//Para ZX80/81
-
-
-		caracter=da_codigo81(caracter,&inverse);
-		if (!inverse.v) attron(COLOR_PAIR(0+7*8+1));
-		else attron(COLOR_PAIR(7+0*8+1));
+        //Para ZX80/81
 
 
-		//simular modo fast
-		if (video_fast_mode_emulation.v==1 && video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
-			attron(COLOR_PAIR(1));
-			move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
-			addch(' ');
-			return;
-		}
-
-	}
+        caracter=da_codigo81(caracter,&inverse);
+        if (!inverse.v) attron(COLOR_PAIR(0+7*8+1));
+        else attron(COLOR_PAIR(7+0*8+1));
 
 
-	move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
+        //simular modo fast
+        if (video_fast_mode_emulation.v==1 && video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
+            attron(COLOR_PAIR(1));
+            move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
+            addch(' ');
+            return;
+        }
+
+    }
+
+
+    move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
 
         addch(caracter);
 
@@ -534,29 +534,29 @@ void prueba_scrcurses_putchar_zx8081(int x,int y, z80_byte caracter)
 {
 
 
-	z80_bit inverse;
+    z80_bit inverse;
 
-	//Caso especial para Jupiter ACE
-	if (MACHINE_IS_ACE) {
-		if (caracter>=128) {
-			inverse.v=0;
-			caracter -=128;
-		}
-		else inverse.v=1;
+    //Caso especial para Jupiter ACE
+    if (MACHINE_IS_ACE) {
+        if (caracter>=128) {
+            inverse.v=0;
+            caracter -=128;
+        }
+        else inverse.v=1;
 
                 if (!inverse.v) attron(COLOR_PAIR(0+7*8+1));
                 else attron(COLOR_PAIR(7+0*8+1));
 
 
-	}
+    }
 
 
-	else {
+    else {
 
-		//Para ZX80/81
+        //Para ZX80/81
         int going_to_use_cursesw=0;
 #ifdef COMPILE_CURSESW
-	//Solo usarlo si esta compilado y el setting esta activo
+    //Solo usarlo si esta compilado y el setting esta activo
         if (use_scrcursesw.v) going_to_use_cursesw=1;
 #endif
 
@@ -569,23 +569,23 @@ void prueba_scrcurses_putchar_zx8081(int x,int y, z80_byte caracter)
         return;
     }
 
-		caracter=da_codigo81(caracter,&inverse);
-		if (!inverse.v) attron(COLOR_PAIR(0+7*8+1));
-		else attron(COLOR_PAIR(7+0*8+1));
+        caracter=da_codigo81(caracter,&inverse);
+        if (!inverse.v) attron(COLOR_PAIR(0+7*8+1));
+        else attron(COLOR_PAIR(7+0*8+1));
 
 
-		//simular modo fast
-		if (video_fast_mode_emulation.v==1 && video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
-			attron(COLOR_PAIR(1));
-			move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
-			addch(' ');
-			return;
-		}
+        //simular modo fast
+        if (video_fast_mode_emulation.v==1 && video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
+            attron(COLOR_PAIR(1));
+            move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
+            addch(' ');
+            return;
+        }
 
-	}
+    }
 
 
-	move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
+    move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
 
     addch(caracter);
 
@@ -627,12 +627,12 @@ void scrcurses_refresca_pantalla_zx81(void)
 
 
 
-	scr_refresca_pantalla_zx8081();
+    scr_refresca_pantalla_zx8081();
 
 
 
 
-	//refresh();
+    //refresh();
 
 
 }
@@ -667,7 +667,7 @@ void scrcurses_refresca_pantalla_no_rainbow(void)
 
     int brillo,parpadeo;
 
-	//char caracteres_artisticos[]=" ''\".|/r.\\|7_LJ#";
+    //char caracteres_artisticos[]=" ''\".|/r.\\|7_LJ#";
 
     scrcurses_screen=get_base_mem_pantalla();
 
@@ -722,7 +722,7 @@ void scrcurses_refresca_pantalla_no_rainbow(void)
 
                 int going_to_use_cursesw=0;
 #ifdef COMPILE_CURSESW
-	//Solo usarlo si esta compilado y el setting esta activo
+    //Solo usarlo si esta compilado y el setting esta activo
                     if (use_scrcursesw.v) going_to_use_cursesw=1;
 #endif
 
@@ -763,34 +763,34 @@ void scrcurses_refresca_pantalla_chloe(void)
 
         //char caracteres_artisticos[]=" ''\".|/r.\\|7_LJ#";
 
-	z80_byte *chloe_screen;
+    z80_byte *chloe_screen;
 
           chloe_screen=chloe_home_ram_mem_table[7];
 
-	chloe_screen += (0xd800-0xc000); //text display in offset d800 in ram 7
+    chloe_screen += (0xd800-0xc000); //text display in offset d800 in ram 7
 
-	//Colores chloe
-	//int papel=get_timex_paper_mode6_color();
-	//int tinta=get_timex_ink_mode6_color();
-	int brillo=0;
-	int parpadeo=0;
+    //Colores chloe
+    //int papel=get_timex_paper_mode6_color();
+    //int tinta=get_timex_ink_mode6_color();
+    int brillo=0;
+    int parpadeo=0;
 
-	//unsigned char atributo=brillo*64+papel*8+tinta;
+    //unsigned char atributo=brillo*64+papel*8+tinta;
 
-	unsigned char atributo_ega=peek_byte_no_time(23693);
-	//High four bits are foreground, low four bits are background
-	int papel=atributo_ega&7;
-	int tinta=(atributo_ega>>4)&7;
-	//En curses solo tenemos 8 colores. Descartamos brillo pues no lo hace bien la consola
+    unsigned char atributo_ega=peek_byte_no_time(23693);
+    //High four bits are foreground, low four bits are background
+    int papel=atributo_ega&7;
+    int tinta=(atributo_ega>>4)&7;
+    //En curses solo tenemos 8 colores. Descartamos brillo pues no lo hace bien la consola
 
 
 
-	papel=screen_ega_to_spectrum_colour(papel);
-	tinta=screen_ega_to_spectrum_colour(tinta);
+    papel=screen_ega_to_spectrum_colour(papel);
+    tinta=screen_ega_to_spectrum_colour(tinta);
 
-	unsigned char atributo=tinta+papel*8;
+    unsigned char atributo=tinta+papel*8;
 
-	//in normal video do OUT 255,6. and you can do COLOR f,b
+    //in normal video do OUT 255,6. and you can do COLOR f,b
 
           for (y=0;y<24;y++) {
                 for (x=0;x<80;x++,chloe_screen++) {
@@ -798,26 +798,26 @@ void scrcurses_refresca_pantalla_chloe(void)
 
                         caracter=*chloe_screen;
 
-			brillo=0;
-			inv=0;
+            brillo=0;
+            inv=0;
 
 
 
                         if (colores) {
                           //(x,y,&brillo,&parpadeo);
-			  asigna_color_atributo(atributo,&brillo,&parpadeo);
+              asigna_color_atributo(atributo,&brillo,&parpadeo);
                         }
                         else {
                           brillo=0;
                         }
 
 
-			if (caracter==0) {
-				//caracter='C'; //copyright character
-				caracter=' '; //blank space until it is fixed in the rom
-			}
+            if (caracter==0) {
+                //caracter='C'; //copyright character
+                caracter=' '; //blank space until it is fixed in the rom
+            }
 
-			if (caracter<32 || caracter>126) caracter='?';
+            if (caracter<32 || caracter>126) caracter='?';
 
 
                                 move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
@@ -833,7 +833,7 @@ void scrcurses_refresca_pantalla_chloe(void)
 
 void sam_temp_debug_char(z80_byte *buffer_letra)
 {
-	int i,j;
+    int i,j;
                                 int bit;
                                 for (i=0;i<8;i++) {
                                         bit=*buffer_letra;
@@ -872,29 +872,29 @@ void scrcurses_refresca_pantalla_sam_modo_013_fun_caracter(int x,int y,int brill
 
 void scrcurses_refresca_pantalla_sam_modo_013(int modo)
 {
-	scr_refresca_pantalla_sam_modo_013(modo,scrcurses_refresca_pantalla_sam_modo_013_fun_color,scrcurses_refresca_pantalla_sam_modo_013_fun_caracter);
+    scr_refresca_pantalla_sam_modo_013(modo,scrcurses_refresca_pantalla_sam_modo_013_fun_color,scrcurses_refresca_pantalla_sam_modo_013_fun_caracter);
 }
 
 void scrcurses_refresca_pantalla_sam_modo_2(void)
 {
-	scr_refresca_pantalla_sam_modo_2(scrcurses_refresca_pantalla_sam_modo_013_fun_color,scrcurses_refresca_pantalla_sam_modo_013_fun_caracter);
+    scr_refresca_pantalla_sam_modo_2(scrcurses_refresca_pantalla_sam_modo_013_fun_color,scrcurses_refresca_pantalla_sam_modo_013_fun_caracter);
 }
 
 
 
 void scrcurses_refresca_pantalla_sam(void)
 {
-	z80_byte modo_video=(sam_vmpr>>5)&3;
+    z80_byte modo_video=(sam_vmpr>>5)&3;
 
-	                 if (border_enabled.v) {
+                     if (border_enabled.v) {
                         //ver si hay que refrescar border
                         if (modificado_border.v)
                         {
-				if (modo_video!=2) {
-                                	scrcurses_refresca_border_comun(sam_border&7);
-				}
+                if (modo_video!=2) {
+                                    scrcurses_refresca_border_comun(sam_border&7);
+                }
 
-				else scrcurses_refresca_border_sam_mode2(sam_border&7);
+                else scrcurses_refresca_border_sam_mode2(sam_border&7);
 
                                 modificado_border.v=0;
                         }
@@ -902,23 +902,23 @@ void scrcurses_refresca_pantalla_sam(void)
                 }
 
 
-	switch (modo_video) {
-		case 0:
-			scrcurses_refresca_pantalla_sam_modo_013(0);
-		break;
+    switch (modo_video) {
+        case 0:
+            scrcurses_refresca_pantalla_sam_modo_013(0);
+        break;
 
-		case 1:
-			scrcurses_refresca_pantalla_sam_modo_013(1);
-		break;
+        case 1:
+            scrcurses_refresca_pantalla_sam_modo_013(1);
+        break;
 
-		case 2:
-			scrcurses_refresca_pantalla_sam_modo_2();
-		break;
+        case 2:
+            scrcurses_refresca_pantalla_sam_modo_2();
+        break;
 
-		case 3:
-			scrcurses_refresca_pantalla_sam_modo_013(3);
-		break;
-	}
+        case 3:
+            scrcurses_refresca_pantalla_sam_modo_013(3);
+        break;
+    }
 }
 
 
@@ -934,39 +934,39 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
     //char caracteres_artisticos[]=" ''\".|/r.\\|7_LJ#";
 
 
-	z80_int direccion;
+    z80_int direccion;
 
-	//Tabla de caracteres para ZX80,81
+    //Tabla de caracteres para ZX80,81
     if (MACHINE_IS_ZX80_TYPE) direccion=0x0E00;
     else direccion=0x1E00;
 
-	z80_byte inverse;
+    z80_byte inverse;
 
-	//Nuestro caracter en pantalla a comparar con tabla de caracteres
-	z80_byte caracter_sprite[8];
+    //Nuestro caracter en pantalla a comparar con tabla de caracteres
+    z80_byte caracter_sprite[8];
 
-	//Alto de pantalla total en curses
-	int alto=24;
-	alto=alto+2*CURSES_TOP_BORDER*border_enabled.v;
+    //Alto de pantalla total en curses
+    int alto=24;
+    alto=alto+2*CURSES_TOP_BORDER*border_enabled.v;
 
-	//Ancho de pantalla total en curses
-	int ancho=32;
-	ancho=ancho+2*CURSES_IZQ_BORDER*border_enabled.v;
+    //Ancho de pantalla total en curses
+    int ancho=32;
+    ancho=ancho+2*CURSES_IZQ_BORDER*border_enabled.v;
 
-	//Posicion en pantalla rainbow / 8
-	//0,0 indica inicio de rainbow
-	int yinicial=0;
-	int xinicial=0;
+    //Posicion en pantalla rainbow / 8
+    //0,0 indica inicio de rainbow
+    int yinicial=0;
+    int xinicial=0;
 
-	//Nos situamos en el pequeño border definido para curses
-	yinicial=yinicial+screen_borde_superior*border_enabled.v/8-CURSES_TOP_BORDER*border_enabled.v;
+    //Nos situamos en el pequeño border definido para curses
+    yinicial=yinicial+screen_borde_superior*border_enabled.v/8-CURSES_TOP_BORDER*border_enabled.v;
 
-	xinicial=xinicial+screen_total_borde_izquierdo*border_enabled.v/8-CURSES_IZQ_BORDER*border_enabled.v;
+    xinicial=xinicial+screen_total_borde_izquierdo*border_enabled.v/8-CURSES_IZQ_BORDER*border_enabled.v;
 
-	//Posicion en pantalla curses
-	int xencurses,yencurses;
+    //Posicion en pantalla curses
+    int xencurses,yencurses;
 
-	for (y=yinicial,yencurses=0;y<yinicial+alto;y++,yencurses++) {
+    for (y=yinicial,yencurses=0;y<yinicial+alto;y++,yencurses++) {
         for (x=xinicial,xencurses=0;x<xinicial+ancho;x++,xencurses++) {
 
             int spritelin;
@@ -1063,15 +1063,15 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
 void scrcurses_refresca_pantalla_z88_new_line(struct s_z88_return_character_atributes *z88_caracter)
 {
 
-	//Para que no se queje el compilador de no usado
-	if (z88_caracter) {}
+    //Para que no se queje el compilador de no usado
+    if (z88_caracter) {}
 
 }
 
 void scrcurses_refresca_pantalla_z88_print_char(struct s_z88_return_character_atributes *z88_caracter)
 {
 
-	int caracter=z88_caracter->ascii_caracter;
+    int caracter=z88_caracter->ascii_caracter;
 
 
                                 //Gestion inverse
@@ -1099,10 +1099,10 @@ void scrcurses_refresca_pantalla_z88_print_char(struct s_z88_return_character_at
                         //Si caracter no es nulo
 
                         if (z88_caracter->null_caracter==0) {
-				//attron(COLOR_PAIR(7+0*8+1));
-				attron(COLOR_PAIR(0+7*8+1));
-				move(z88_caracter->y,z88_caracter->x);
-				addch(caracter);
+                //attron(COLOR_PAIR(7+0*8+1));
+                attron(COLOR_PAIR(0+7*8+1));
+                move(z88_caracter->y,z88_caracter->x);
+                addch(caracter);
                         }
 
 }
@@ -1180,14 +1180,14 @@ void scrcurses_refresca_pantalla_common_fun_caracter(int x,int y,int brillo, uns
 
                           //addch('~'|brillo);
 
-								int going_to_use_cursesw=0;
+                                int going_to_use_cursesw=0;
 #ifdef COMPILE_CURSESW
-	//Solo usarlo si esta compilado y el setting esta activo
-								if (use_scrcursesw.v) going_to_use_cursesw=1;
+    //Solo usarlo si esta compilado y el setting esta activo
+                                if (use_scrcursesw.v) going_to_use_cursesw=1;
 #endif
 
 
-								if (going_to_use_cursesw) {
+                                if (going_to_use_cursesw) {
 #ifdef COMPILE_CURSESW
 
 //parche horrible para sacar valor_get_pixel desde el caracter ascii
@@ -1208,14 +1208,14 @@ if (valor_get_pixel>15) valor_get_pixel=15;
 
 
 
-									cursesw_ext_print_pixel(valor_get_pixel);
+                                    cursesw_ext_print_pixel(valor_get_pixel);
 #endif
-								}
+                                }
 
-								else {
-                                	if (inv) addch(caracter | WA_REVERSE | brillo );
-                                	else addch(caracter|brillo);
-								}
+                                else {
+                                    if (inv) addch(caracter | WA_REVERSE | brillo );
+                                    else addch(caracter|brillo);
+                                }
 
 
 
@@ -1230,14 +1230,14 @@ if (valor_get_pixel>15) valor_get_pixel=15;
 void scrcurses_refresca_pantalla_cpc(void)
 {
 
-	if (border_enabled.v) {
+    if (border_enabled.v) {
                         //ver si hay que refrescar border
                         if (modificado_border.v)
                         {
                                 //TODO
                                 modificado_border.v=0;
                         }
-	}
+    }
 
 
 scr_refresca_pantalla_cpc_text(scrcurses_refresca_pantalla_cpc_fun_color,scrcurses_refresca_pantalla_cpc_fun_caracter,scrcurses_refresca_pantalla_cpc_fun_saltolinea);
@@ -1248,94 +1248,94 @@ void scrcurses_refresca_pantalla_vdp9918(void)
 {
 z80_byte video_mode=vdp_9918a_get_video_mode();
 
-	//printf ("video_mode: %d\n",video_mode);
+    //printf ("video_mode: %d\n",video_mode);
 
 
-	int x,y;
+    int x,y;
 
-	z80_int direccion_name_table;
-	//z80_byte byte_leido;
+    z80_int direccion_name_table;
+    //z80_byte byte_leido;
     //z80_byte byte_color;
-	//int color=0;
+    //int color=0;
 
-	//int zx,zy;
+    //int zx,zy;
 
-	//z80_byte ink,paper;
-
-
-	//z80_int pattern_base_address; //=2048; //TODO: Puesto a pelo
-	z80_int pattern_name_table; //=0; //TODO: puesto a pelo
-
-	pattern_name_table=vdp_9918a_get_pattern_name_table(); //(vdp_9918a_registers[2]&15) * 0x400;
+    //z80_byte ink,paper;
 
 
+    //z80_int pattern_base_address; //=2048; //TODO: Puesto a pelo
+    z80_int pattern_name_table; //=0; //TODO: puesto a pelo
 
-	//pattern_base_address=(vdp_9918a_registers[4]&7) * 0x800;
+    pattern_name_table=vdp_9918a_get_pattern_name_table(); //(vdp_9918a_registers[2]&15) * 0x400;
 
 
-	//z80_int pattern_color_table=(vdp_9918a_registers[3]) * 0x40;
+
+    //pattern_base_address=(vdp_9918a_registers[4]&7) * 0x800;
+
+
+    //z80_int pattern_color_table=(vdp_9918a_registers[3]) * 0x40;
 
     //z80_int sprite_attribute_table=(vdp_9918a_registers[5]) * 0x80;
 
 
 
-	//z80_byte *screen=get_base_mem_pantalla();
+    //z80_byte *screen=get_base_mem_pantalla();
 
 
 
-	int chars_in_line;
-	//int char_width;
+    int chars_in_line;
+    //int char_width;
 
-	z80_byte *vram=get_base_mem_pantalla();
-
-
-
-
-		//pattern_base_address=0; //TODO: Puesto a pelo
-		//"screen 1": Text, characters of 8 x 8	, 32 x 24 characters
-		//video_mode: 0
+    z80_byte *vram=get_base_mem_pantalla();
 
 
 
-		if (video_mode==4) {
-			chars_in_line=40;
-			//char_width=6;
 
-			//En modo texto 40x24, color tinta y papel fijos
-
-			//ink=(vdp_9918a_registers[7]>>4)&15;
-			//paper=(vdp_9918a_registers[7])&15;
-		}
+        //pattern_base_address=0; //TODO: Puesto a pelo
+        //"screen 1": Text, characters of 8 x 8	, 32 x 24 characters
+        //video_mode: 0
 
 
 
-		else {
-			chars_in_line=32;
-			//char_width=8;
-		}
+        if (video_mode==4) {
+            chars_in_line=40;
+            //char_width=6;
+
+            //En modo texto 40x24, color tinta y papel fijos
+
+            //ink=(vdp_9918a_registers[7]>>4)&15;
+            //paper=(vdp_9918a_registers[7])&15;
+        }
 
 
-		direccion_name_table=pattern_name_table;
+
+        else {
+            chars_in_line=32;
+            //char_width=8;
+        }
+
+
+        direccion_name_table=pattern_name_table;
 
         for (y=0;y<24;y++) {
-			for (x=0;x<chars_in_line;x++) {
+            for (x=0;x<chars_in_line;x++) {
 
 
-				z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table++);
+                z80_byte caracter=vdp_9918a_read_vram_byte(vram,direccion_name_table++);
 
-				//en spectravideo, caracteres estan restados 32
-				if (MACHINE_IS_SVI) caracter +=32;
+                //en spectravideo, caracteres estan restados 32
+                if (MACHINE_IS_SVI) caracter +=32;
 
-				if (caracter<32 || caracter>126) caracter=' ';
+                if (caracter<32 || caracter>126) caracter=' ';
 
                 move(y,x);
 
-				 addch(caracter);
+                 addch(caracter);
 
 
 
 
-   	}
+       }
 
 
 
@@ -1343,7 +1343,7 @@ z80_byte video_mode=vdp_9918a_get_video_mode();
 
 
 
-	}
+    }
 
 
 
@@ -1358,18 +1358,18 @@ void scrcurses_refresca_pantalla_solo_driver(void)
 
 void scrcurses_refresca_pantalla(void)
 {
-	//int i;
-	//char c;
-	//int brillo,parpadeo;
+    //int i;
+    //char c;
+    //int brillo,parpadeo;
 
 
 
-	//char my_string[2];
-	//char caracter;
-	//int x,y;
-	//unsigned char inv;
+    //char my_string[2];
+    //char caracter;
+    //int x,y;
+    //unsigned char inv;
 
-	//int valor_get_pixel;
+    //int valor_get_pixel;
 
 
     if (sem_screen_refresh_reallocate_layers) {
@@ -1388,20 +1388,20 @@ void scrcurses_refresca_pantalla(void)
     }
 
 
-	else if (MACHINE_IS_ZX8081) {
+    else if (MACHINE_IS_ZX8081) {
 
         if (rainbow_enabled.v==0) {
-			//modo clasico. sin rainbow
-			scrcurses_refresca_pantalla_zx81();
-		}
+            //modo clasico. sin rainbow
+            scrcurses_refresca_pantalla_zx81();
+        }
 
         else {
             //modo rainbow - real video.
-			scrcurses_refresca_pantalla_zx8081_rainbow();
-		}
-	}
+            scrcurses_refresca_pantalla_zx8081_rainbow();
+        }
+    }
 
-	else if (MACHINE_IS_TSCONF) {
+    else if (MACHINE_IS_TSCONF) {
         //Si es modo texto, hacer este refresh:
         z80_byte modo_video=tsconf_get_video_mode_display();
         if (modo_video==3) {
@@ -1434,45 +1434,45 @@ void scrcurses_refresca_pantalla(void)
         }
 
 
-	}
+    }
 
-	else if (MACHINE_IS_CHLOE) {
-		scrcurses_refresca_pantalla_chloe();
-	}
+    else if (MACHINE_IS_CHLOE) {
+        scrcurses_refresca_pantalla_chloe();
+    }
 
-	//para maquinas con chip vdp9918
-	else if (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS) {
-	scrcurses_refresca_pantalla_vdp9918();
-	}
-
-
-	else if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TSCONF) {
-
-	        if (rainbow_enabled.v==0) {
-        		//modo clasico. sin rainbow
+    //para maquinas con chip vdp9918
+    else if (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS) {
+    scrcurses_refresca_pantalla_vdp9918();
+    }
 
 
+    else if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TSCONF) {
 
-			if (border_enabled.v) {
-				//ver si hay que refrescar border
-				if (modificado_border.v)
-				{
-					scrcurses_refresca_border();
-					modificado_border.v=0;
-				}
-
-		  	}
-
-			scrcurses_refresca_pantalla_no_rainbow();
-
-
-		}
-
-		else {
+            if (rainbow_enabled.v==0) {
+                //modo clasico. sin rainbow
 
 
 
-			if (border_enabled.v) {
+            if (border_enabled.v) {
+                //ver si hay que refrescar border
+                if (modificado_border.v)
+                {
+                    scrcurses_refresca_border();
+                    modificado_border.v=0;
+                }
+
+              }
+
+            scrcurses_refresca_pantalla_no_rainbow();
+
+
+        }
+
+        else {
+
+
+
+            if (border_enabled.v) {
                 //ver si hay que refrescar border
                 if (modificado_border.v)
                 {
@@ -1492,68 +1492,68 @@ void scrcurses_refresca_pantalla(void)
 
 
 
-	else if (MACHINE_IS_Z88) {
-		//Si esta vofile activo, hay que dibujar dentro del buffer rainbow
-		if (vofile_inserted.v) {
-			set_z88_putpixel_zoom_function();
-			screen_z88_refresca_pantalla_comun();
-		}
+    else if (MACHINE_IS_Z88) {
+        //Si esta vofile activo, hay que dibujar dentro del buffer rainbow
+        if (vofile_inserted.v) {
+            set_z88_putpixel_zoom_function();
+            screen_z88_refresca_pantalla_comun();
+        }
 
-		scrcurses_refresca_pantalla_z88();
-	}
+        scrcurses_refresca_pantalla_z88();
+    }
 
 
-	else if (MACHINE_IS_ACE) {
-		scrcurses_refresca_pantalla_ace();
-	}
+    else if (MACHINE_IS_ACE) {
+        scrcurses_refresca_pantalla_ace();
+    }
 
-	else if (MACHINE_IS_SAM) {
+    else if (MACHINE_IS_SAM) {
                 scrcurses_refresca_pantalla_sam();
         }
 
-	else if (MACHINE_IS_CPC) {
-		scrcurses_refresca_pantalla_cpc();
-	}
+    else if (MACHINE_IS_CPC) {
+        scrcurses_refresca_pantalla_cpc();
+    }
 
 
-	if (curses_last_message_shown_timer) {
-	        curses_last_message_shown_timer--;
+    if (curses_last_message_shown_timer) {
+            curses_last_message_shown_timer--;
 
 
 
-		if (curses_last_message_shown_timer==0) {
-			//borrar mensaje con espacios
-	        	attron(COLOR_PAIR(7+1));
-			int mensaje_long=strlen(curses_last_message_shown);
-			for (;mensaje_long;mensaje_long--)
-				mvaddstr(CURSES_LINE_MESSAGES, mensaje_long-1, " ");
-		}
+        if (curses_last_message_shown_timer==0) {
+            //borrar mensaje con espacios
+                attron(COLOR_PAIR(7+1));
+            int mensaje_long=strlen(curses_last_message_shown);
+            for (;mensaje_long;mensaje_long--)
+                mvaddstr(CURSES_LINE_MESSAGES, mensaje_long-1, " ");
+        }
 
-		else  {
+        else  {
 
-			//borramos lo que queda del texto anterior
-			attron(COLOR_PAIR(7+1));
-			if (curses_last_message_length) {
+            //borramos lo que queda del texto anterior
+            attron(COLOR_PAIR(7+1));
+            if (curses_last_message_length) {
 
-		                for (;curses_last_message_length;curses_last_message_length--)
-	                        	mvaddstr(CURSES_LINE_MESSAGES, curses_last_message_length-1, " ");
-			}
+                        for (;curses_last_message_length;curses_last_message_length--)
+                                mvaddstr(CURSES_LINE_MESSAGES, curses_last_message_length-1, " ");
+            }
 
-			//y mostramos el mensaje
-	        	attron(COLOR_PAIR(0+7*8+1));
-			mvaddstr(CURSES_LINE_MESSAGES, 0, curses_last_message_shown);
+            //y mostramos el mensaje
+                attron(COLOR_PAIR(0+7*8+1));
+            mvaddstr(CURSES_LINE_MESSAGES, 0, curses_last_message_shown);
 
-		}
-	}
+        }
+    }
 
-	screen_render_menu_overlay_if_active();
+    screen_render_menu_overlay_if_active();
 
 
     //Escribir footer
     draw_middle_footer();
 
 
-	refresh();
+    refresh();
 
 
 sem_screen_refresh_reallocate_layers=0;
@@ -1565,43 +1565,43 @@ sem_screen_refresh_reallocate_layers=0;
 unsigned char retorna_color_curses (unsigned char c)
 {
 
-	switch (c) {
+    switch (c) {
 
-		case 0:
-		return COLOR_BLACK;
-		break;
+        case 0:
+        return COLOR_BLACK;
+        break;
 
-		case 1:
-		return COLOR_BLUE;
-		break;
+        case 1:
+        return COLOR_BLUE;
+        break;
 
-		case 2:
-		return COLOR_RED;
-		break;
+        case 2:
+        return COLOR_RED;
+        break;
 
-		case 3:
-		return COLOR_MAGENTA;
-		break;
+        case 3:
+        return COLOR_MAGENTA;
+        break;
 
-		case 4:
-		return COLOR_GREEN;
-		break;
+        case 4:
+        return COLOR_GREEN;
+        break;
 
-		case 5:
-		return COLOR_CYAN;
-		break;
+        case 5:
+        return COLOR_CYAN;
+        break;
 
-		case 6:
-		return COLOR_YELLOW;
-		break;
+        case 6:
+        return COLOR_YELLOW;
+        break;
 
-		case 7:
-		return COLOR_WHITE;
-		break;
+        case 7:
+        return COLOR_WHITE;
+        break;
 
-		default:
-		return COLOR_BLACK;
-	}
+        default:
+        return COLOR_BLACK;
+    }
 
 }
 
@@ -1609,16 +1609,16 @@ unsigned char retorna_color_curses (unsigned char c)
 void scrcurses_inicializa_colores(void)
 {
 
-	int color=1;
-	int paper,ink;
-	for (paper=0;paper<8;paper++) {
+    int color=1;
+    int paper,ink;
+    for (paper=0;paper<8;paper++) {
 
-		for (ink=0;ink<8;ink++)	{
-			if (inverse_video.v==0) init_pair (color,retorna_color_curses(ink),retorna_color_curses(paper));
-			else init_pair (color,retorna_color_curses(7-ink),retorna_color_curses(7-paper));
-			color++;
-		}
-	}
+        for (ink=0;ink<8;ink++)	{
+            if (inverse_video.v==0) init_pair (color,retorna_color_curses(ink),retorna_color_curses(paper));
+            else init_pair (color,retorna_color_curses(7-ink),retorna_color_curses(7-paper));
+            color++;
+        }
+    }
 
 
 }
@@ -1626,7 +1626,7 @@ void scrcurses_inicializa_colores(void)
 
 void scrcurses_fade_color(int color)
 {
-	if (color>=1 && color<=64) init_pair(color,COLOR_BLACK,COLOR_BLACK);
+    if (color>=1 && color<=64) init_pair(color,COLOR_BLACK,COLOR_BLACK);
 
 }
 
@@ -1638,23 +1638,23 @@ void scrcurses_fade_color(int color)
 
 void scrcurses_end(void)
 {
-	debug_printf (VERBOSE_INFO,"Closing curses video driver");
-	clear();
-	endwin();
+    debug_printf (VERBOSE_INFO,"Closing curses video driver");
+    clear();
+    endwin();
 
-	//Al finalizar curses deja todo bien excepto el flushing de stdout... todas las llamadas a printf deberan tener un
-	//fflush(stdout); sino no se vera el texto
+    //Al finalizar curses deja todo bien excepto el flushing de stdout... todas las llamadas a printf deberan tener un
+    //fflush(stdout); sino no se vera el texto
 
 }
 
 void scrcurses_set_fullscreen(void)
 {
-	debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
+    debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
 }
 
 void scrcurses_reset_fullscreen(void)
 {
-	debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
+    debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
 }
 
 
@@ -1671,23 +1671,23 @@ int last_x_detectedchar_print=0;
 
 void scrcurses_detectedchar_print(z80_byte caracter)
 {
-	//attron(COLOR_PAIR(tinta+papel*8+1));
-	attron(COLOR_PAIR(0+7*8+1));
+    //attron(COLOR_PAIR(tinta+papel*8+1));
+    attron(COLOR_PAIR(0+7*8+1));
 
 
-	move(CURSES_LINE_FOOTER+3,last_x_detectedchar_print);
-	if (caracter>=32) addch(caracter);
+    move(CURSES_LINE_FOOTER+3,last_x_detectedchar_print);
+    if (caracter>=32) addch(caracter);
 
-	last_x_detectedchar_print++;
-	if (last_x_detectedchar_print==32 || caracter=='\n') {
-		last_x_detectedchar_print=0;
-		//borrar esa zona
-		int x;
-		for (x=0;x<32;x++) {
-			move (CURSES_LINE_FOOTER+3,x);
-			addch(' ');
-		}
-	}
+    last_x_detectedchar_print++;
+    if (last_x_detectedchar_print==32 || caracter=='\n') {
+        last_x_detectedchar_print=0;
+        //borrar esa zona
+        int x;
+        for (x=0;x<32;x++) {
+            move (CURSES_LINE_FOOTER+3,x);
+            addch(' ');
+        }
+    }
 
         //printf ("%c",caracter);
         //flush de salida standard
@@ -1716,65 +1716,65 @@ int scrcurses_driver_can_ext_desktop (void)
 
 int scrcurses_init (void) {
 
-	debug_printf (VERBOSE_INFO,"Init Curses Video Driver");
+    debug_printf (VERBOSE_INFO,"Init Curses Video Driver");
 
 
-	/*  Initialize ncurses  */
+    /*  Initialize ncurses  */
 
 
-	if ( (mainwin = initscr()) == NULL ) {
-		debug_printf (VERBOSE_ERR,"Error initialising ncurses.");
-		return 1;
-	}
+    if ( (mainwin = initscr()) == NULL ) {
+        debug_printf (VERBOSE_ERR,"Error initialising ncurses.");
+        return 1;
+    }
 
-	nodelay(mainwin,TRUE);
-	keypad(mainwin,TRUE);
+    nodelay(mainwin,TRUE);
+    keypad(mainwin,TRUE);
 
 
         //cbreak();
-	//cbreak overrides raw
+    //cbreak overrides raw
     noecho();
 
-	//pruebas para que el teclado del zx80/81 vaya mejor... sin exito
-	intrflush(mainwin,TRUE);
+    //pruebas para que el teclado del zx80/81 vaya mejor... sin exito
+    intrflush(mainwin,TRUE);
 
 
 
-	wtimeout(mainwin,0);
+    wtimeout(mainwin,0);
 
-	//Por alguna razón que desconozco, esto se hacia en el pasado y hacía que pudiera leer tecla ESC (esperando 1 segundo)
-	//Pero en algún momento esto dejó de funcionar, de manera que si descomento el código, no puedo leer ESC nunca,
-	//no salta el timeout
-	//notimeout(mainwin, TRUE);
+    //Por alguna razón que desconozco, esto se hacia en el pasado y hacía que pudiera leer tecla ESC (esperando 1 segundo)
+    //Pero en algún momento esto dejó de funcionar, de manera que si descomento el código, no puedo leer ESC nunca,
+    //no salta el timeout
+    //notimeout(mainwin, TRUE);
 
-	//enviar todas teclas y no gestionar ni CTRL+C
-	raw();
+    //enviar todas teclas y no gestionar ni CTRL+C
+    raw();
 
 #ifndef CURSES_NOT_NCURSES
-	mousemask(ALL_MOUSE_EVENTS, NULL);
+    mousemask(ALL_MOUSE_EVENTS, NULL);
 #endif
 
-	curs_set(0);
+    curs_set(0);
 
-	if(has_colors() == FALSE)
-	{
+    if(has_colors() == FALSE)
+    {
 
-		colores=0;
-	}
+        colores=0;
+    }
 
-	else {
+    else {
 //		if (COLOR_PAIRS>=8*8) {
-			colores=1;
-			start_color();
-			scrcurses_inicializa_colores();
-			scr_tiene_colores=1;
+            colores=1;
+            start_color();
+            scrcurses_inicializa_colores();
+            scr_tiene_colores=1;
 //		}
 
 //		else colores=0;
-	}
+    }
 
 #ifdef COMPILE_CURSESW
-	cursesw_ext_init();
+    cursesw_ext_init();
 #endif
 
 
@@ -1836,46 +1836,46 @@ z80_byte kempston_mouse_x=0,kempston_mouse_y=0;
 
 */
 
-	//Como el border en curses no es de tamanyo real ni proporcional al real, hay que comprobar si el cursor
-	//esta en el border o no
+    //Como el border en curses no es de tamanyo real ni proporcional al real, hay que comprobar si el cursor
+    //esta en el border o no
 
-	if (border_enabled.v==0) {
-		//Sumar borde superior e inferior
-		curses_x +=screen_total_borde_izquierdo/8;
-		curses_y +=screen_borde_superior/8;
-	}
+    if (border_enabled.v==0) {
+        //Sumar borde superior e inferior
+        curses_x +=screen_total_borde_izquierdo/8;
+        curses_y +=screen_borde_superior/8;
+    }
 
 
-	else {
-		//Sumar trozo del border correspondiente
+    else {
+        //Sumar trozo del border correspondiente
 
-		int border_izq_entre_ocho=screen_total_borde_izquierdo/8;
-		int border_arr_entre_ocho=screen_borde_superior/8;
+        int border_izq_entre_ocho=screen_total_borde_izquierdo/8;
+        int border_arr_entre_ocho=screen_borde_superior/8;
 
-		if (curses_x<CURSES_IZQ_BORDER) {
-			//Dentro del border
-			curses_x = (curses_x*border_izq_entre_ocho)/CURSES_IZQ_BORDER;
-		}
-		else {
-			curses_x=(curses_x-CURSES_IZQ_BORDER)+border_izq_entre_ocho;
-		}
+        if (curses_x<CURSES_IZQ_BORDER) {
+            //Dentro del border
+            curses_x = (curses_x*border_izq_entre_ocho)/CURSES_IZQ_BORDER;
+        }
+        else {
+            curses_x=(curses_x-CURSES_IZQ_BORDER)+border_izq_entre_ocho;
+        }
 
 
                 if (curses_y<CURSES_TOP_BORDER) {
-			//Dentro del border
+            //Dentro del border
                         curses_y = (curses_y*border_arr_entre_ocho)/CURSES_TOP_BORDER;
                 }
                 else {
                         curses_y=(curses_y-CURSES_TOP_BORDER)+border_arr_entre_ocho;
                 }
 
-	}
+    }
 
-	lightgun_x=curses_x*8;
-	lightgun_y=curses_y*8;
+    lightgun_x=curses_x*8;
+    lightgun_y=curses_y*8;
 
-	kempston_mouse_x=(lightgun_x)%256;
-	kempston_mouse_y=255-(lightgun_y)%256;
+    kempston_mouse_x=(lightgun_x)%256;
+    kempston_mouse_y=255-(lightgun_y)%256;
 }
 
 
@@ -1925,7 +1925,7 @@ void scrcurses_actualiza_tablas_teclado(void)
         if (menu_abierto) reset_keys=1;
     }
 
-	if (reset_keys) reset_keyboard_ports();
+    if (reset_keys) reset_keyboard_ports();
 
     //soporte zeng. liberamos la ultima tecla pulsada
     //TODO: no llevamos control de otras teclas, como backspace o cursores, que acaban llamando a util_set_reset_key y este a zeng
@@ -1940,11 +1940,11 @@ void scrcurses_actualiza_tablas_teclado(void)
         scrcurses_pendiente_reset_zeng=0;
     }
 
-	//inicializar botones de raton a nada
-	mouse_left=mouse_right=0;
+    //inicializar botones de raton a nada
+    mouse_left=mouse_right=0;
 
 #ifndef CURSES_NOT_NCURSES
-	MEVENT event;
+    MEVENT event;
 #endif
 
 
@@ -1956,9 +1956,9 @@ void scrcurses_actualiza_tablas_teclado(void)
         scrcurses_contador_notecla=0;
 
 
-		notificar_tecla_interrupcion_si_z88();
+        notificar_tecla_interrupcion_si_z88();
 
-		if (c==27) {
+        if (c==27) {
             //ALT
             //printf ("Alt\n");
 
@@ -1970,19 +1970,19 @@ void scrcurses_actualiza_tablas_teclado(void)
                 util_set_reset_key(UTIL_KEY_ESC,1);
 
             }
-		}
+        }
 
-		//simular esc en menu con @
-		if (c=='@' && menu_abierto) {
-		  util_set_reset_key(UTIL_KEY_ESC,1);
-		  return;
-		}
+        //simular esc en menu con @
+        if (c=='@' && menu_abierto) {
+          util_set_reset_key(UTIL_KEY_ESC,1);
+          return;
+        }
 
-		if (c==KEY_F(1)) {
+        if (c==KEY_F(1)) {
             util_set_reset_key(UTIL_KEY_F1,1);
-		}
+        }
 
-		else if (c==KEY_F(2)) {
+        else if (c==KEY_F(2)) {
             util_set_reset_key(UTIL_KEY_F2,1);
         }
 
@@ -1999,8 +1999,8 @@ void scrcurses_actualiza_tablas_teclado(void)
         }
 
 
-		//F6 es Ctrl /diamond
-		//F7 es Alt / square
+        //F6 es Ctrl /diamond
+        //F7 es Alt / square
         else if (c==KEY_F(6)) {
                 util_set_reset_key(UTIL_KEY_CONTROL_L,1);
         }
@@ -2024,7 +2024,7 @@ void scrcurses_actualiza_tablas_teclado(void)
 
 
 
-		switch (c) {
+        switch (c) {
 
             case KEY_HOME:
                     joystick_possible_home_key(1);
@@ -2131,7 +2131,7 @@ void scrcurses_actualiza_tablas_teclado(void)
 
 #endif
 
-			default:
+            default:
                 ascii_to_keyboard_port(c);
 
                 //Soporte zeng. Dado que scrcurses no utiliza funcion util_set_reset_key para enviar la tecla,
@@ -2147,44 +2147,44 @@ void scrcurses_actualiza_tablas_teclado(void)
 
                     zeng_send_key_event(tecla_zeng_enviar,1);
                 }
-			break;
+            break;
 
-		}
-	}
+        }
+    }
 
 }
 
 int scrcurses_return_lightgun_view_white(void)
 {
 
-	//printf ("view white\n");
+    //printf ("view white\n");
 
-	chtype caracter;
+    chtype caracter;
 
-	move(mouse_y,mouse_x);
+    move(mouse_y,mouse_x);
 
-	caracter=inch();
+    caracter=inch();
 
-	int color=((caracter & A_COLOR)>>8)-1;
-	//printf ("color: %d\n",color);
+    int color=((caracter & A_COLOR)>>8)-1;
+    //printf ("color: %d\n",color);
 
-	int tinta=(color&7);
-	int papel=(color>>3)&7;
+    int tinta=(color&7);
+    int papel=(color>>3)&7;
 
-	//int brillo=(  (caracter & A_BOLD) ? 1 : 0 );
+    //int brillo=(  (caracter & A_BOLD) ? 1 : 0 );
 
-	//printf ("tinta: %d papel: %d brillo: %d\n",tinta,papel,brillo);
+    //printf ("tinta: %d papel: %d brillo: %d\n",tinta,papel,brillo);
 
-	//color blanco con o sin brillo
-	//sea tinta o papel. esto es muy aproximado, en juegos como targetplus funciona bien,
-	//pero no en solo.tzx
-	if (papel==7 || tinta==7) {
-		debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
-		//printf ("white zone detected on lightgun\n");
-		return 1;
-	}
+    //color blanco con o sin brillo
+    //sea tinta o papel. esto es muy aproximado, en juegos como targetplus funciona bien,
+    //pero no en solo.tzx
+    if (papel==7 || tinta==7) {
+        debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
+        //printf ("white zone detected on lightgun\n");
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -2198,9 +2198,9 @@ z80_byte scrcurses_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
         puerto_l=puerto_h;
 
 
-	//en ncurses no se usa
+    //en ncurses no se usa
 
-	return 255;
+    return 255;
 }
 
 
@@ -2208,7 +2208,7 @@ z80_byte scrcurses_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
 
 void scrcurses_z88_draw_lower_screen(void)
 {
-	int x,y;
+    int x,y;
 
         //attron(COLOR_PAIR(tinta+papel*8+1));
         attron(COLOR_PAIR(7+0*8+1));
@@ -2216,8 +2216,8 @@ void scrcurses_z88_draw_lower_screen(void)
 
                 for (y=8;y<24;y++) {
                         for (x=0;x<106;x++) {
-				move(y,x);
-				addch (' ');
+                move(y,x);
+                addch (' ');
                         }
                 }
 

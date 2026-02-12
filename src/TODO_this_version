@@ -16,7 +16,6 @@ Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer
 Probar mas sistemas unix alternativos
 
 
-
 -lightgun
 *rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
 en programa aparte, mostrando coordenada y en pantalla
@@ -53,10 +52,7 @@ que van precedidos por DD/FD, ejemplo:
 En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto de satisfy o no, por que no lo tiene como opcode valido (aunque si lo es)
 
 
-
-
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
-
 
 
 -Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
@@ -69,7 +65,6 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 
 -Pantalla completa en Mac no va bien
 
--Botones flechas para extender zx desktop, desaparece el de extender cuando llega a 640
 
 -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
 -Zeng opción para enviar mensaje a un usuario concreto
