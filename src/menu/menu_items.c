@@ -36012,9 +36012,9 @@ void menu_msxcart(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_inicial(&array_menu_msxcart,"~~Load Cartridge",MENU_OPCION_NORMAL,menu_msxcart_load,NULL);
                 menu_add_item_menu_shortcut(array_menu_msxcart,'l');
-                menu_add_item_menu_tooltip(array_menu_msxcart,"Load msx Cartridge");
-                menu_add_item_menu_ayuda(array_menu_msxcart,"Supported msx cartridge formats on load:\n"
-                                        "DCK");
+                menu_add_item_menu_tooltip(array_menu_msxcart,"Load Cartridge");
+                menu_add_item_menu_ayuda(array_menu_msxcart,"Load Cartridge");
+                menu_add_item_menu_add_flags(array_menu_msxcart,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_GENERA_VENTANA);
 
                 if (MACHINE_IS_SMS && sms_cartridge_inserted.v) {
 
@@ -36525,6 +36525,7 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
         }
     }
 
+    salir_todos_menus=1;
 
 }
 

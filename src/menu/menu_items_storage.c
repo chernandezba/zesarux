@@ -13002,6 +13002,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_tooltip(array_menu_common,"Directory used for mdv1 emulation");
             menu_add_item_menu_ayuda(array_menu_common,"Directory used for mdv1 emulation");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_GENERA_VENTANA);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv1_enable,menu_ql_mdv1_emulation_cond,
                 "Enabled","Activado","Activat");
@@ -13031,6 +13032,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_tooltip(array_menu_common,"Directory used for mdv2 emulation");
             menu_add_item_menu_ayuda(array_menu_common,"Directory used for mdv2 emulation");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_GENERA_VENTANA);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_mdv2_enable,menu_ql_mdv2_emulation_cond,
                 "Enabled","Activado","Activat");
@@ -13053,6 +13055,7 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo(array_menu_common,"    ");
             menu_add_item_menu_tooltip(array_menu_common,"Directory used for flp1 emulation");
             menu_add_item_menu_ayuda(array_menu_common,"Directory used for flp1 emulation");
+            menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_SE_CERRARA | MENU_ITEM_FLAG_GENERA_VENTANA);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_ql_flp1_enable,menu_ql_flp1_emulation_cond,
                 "Enabled","Activado","Activat");
