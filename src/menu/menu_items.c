@@ -41998,6 +41998,13 @@ void gamelife_timer_counter_event(void)
     }
 }
 
+int gamelife_generation_by_music=0;
+
+//Si antes ha sobrepasado el limite
+int gamelife_generation_by_music_antes_sobrepasa=0;
+
+char gamelife_generation_by_music_channel='A';
+
 void gamelife_next_generation(void)
 {
 /*
@@ -42008,8 +42015,46 @@ Aislamiento: si tiene solo un vecino alrededor o ninguno.
 Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
 */
 
-    //Nuevas generaciones 1 cada segundo
-    if (last_gamelife_timer_counter==gamelife_timer_counter) return;
+    if (gamelife_generation_by_music) {
+        //Utilizamos los sensores, que tienen umbrales ("color rojo") que es lo que hará pasar de frame en el gamelife
+        char sensor_name[SENSORS_MAX_SHORT_NAME];
+        sprintf(sensor_name,"ay_vol_chip0_chan_%c",gamelife_generation_by_music_channel);
+        int sensor_id=sensor_find(sensor_name);
+
+        if (sensor_id<0) return;
+
+
+        int media_cpu_perc=sensor_get_percentaje_value_by_id(sensor_id);
+
+
+        int upper_warning_perc=sensors_array[sensor_id].upper_warning_perc;
+
+        int sobrepasa=0;
+
+        if (media_cpu_perc>upper_warning_perc) {
+            sobrepasa=1;
+        }
+
+        //se mueve de generación cuando pasa de 0 a 1 (o sea, un "golpe" de volumen)
+        int copia_antes=gamelife_generation_by_music_antes_sobrepasa;
+        gamelife_generation_by_music_antes_sobrepasa=sobrepasa;
+
+        //si ahora no sobrepasa, nada
+        if (!sobrepasa) return;
+
+        //Si antes sobrepasaba, nada. tiene que pasar de no sobrepasar a sobrepasar
+        if (copia_antes) return;
+
+    }
+
+
+    else {
+
+
+        //Nuevas generaciones 1 cada segundo
+        if (last_gamelife_timer_counter==gamelife_timer_counter) return;
+
+    }
 
     if (gamelife_paused) return;
 
@@ -42215,7 +42260,7 @@ void menu_toy_zxlife_overlay(void)
 
     if (
         ((contador_segundo % conteo_refresco) == 0 && menu_toy_zxlife_contador_segundo_anterior!=contador_segundo_infinito) ||
-        menu_toy_zxlife_draw_force_overlay
+        menu_toy_zxlife_draw_force_overlay || gamelife_generation_by_music
 
     )
 
@@ -42456,8 +42501,10 @@ void menu_toys_zxlife_fps(MENU_ITEM_PARAMETERS)
     //1, 2, 5, 10,25,50    FPS
     //50,25,10,5, 2 ,1     gamelife_timer_counter_total_frames
 
-    int opcion=menu_simple_six_choices("Speed FPS","Select","1 FPS","2 FPS","5 FPS","10 FPS","25 FPS","50 FPS");
+    int opcion=menu_simple_nine_choices("Speed FPS","Select","1 FPS","2 FPS","5 FPS","10 FPS","25 FPS","50 FPS","AY Chip Channel A","AY Chip Channel B","AY Chip Channel C");
     if (!opcion) return;
+
+    gamelife_generation_by_music=0;
 
     switch(opcion) {
         case 1:
@@ -42482,6 +42529,21 @@ void menu_toys_zxlife_fps(MENU_ITEM_PARAMETERS)
 
         case 6:
            gamelife_timer_counter_total_frames=1;
+        break;
+
+        case 7:
+            gamelife_generation_by_music=1;
+            gamelife_generation_by_music_channel='A';
+        break;
+
+        case 8:
+            gamelife_generation_by_music=1;
+            gamelife_generation_by_music_channel='B';
+        break;
+
+        case 9:
+            gamelife_generation_by_music=1;
+            gamelife_generation_by_music_channel='C';
         break;
 
     }
@@ -42596,11 +42658,20 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
         x+=9;
 
+        char string_fps[40];
 
-        int game_fps=50/gamelife_timer_counter_total_frames;
-        //printf("fps: %d\n",game_fps);
+        if (gamelife_generation_by_music) {
+            sprintf(string_fps,"CH%c",gamelife_generation_by_music_channel);
+        }
+        else {
+            int game_fps=50/gamelife_timer_counter_total_frames;
+            sprintf(string_fps,"%2d",game_fps);
+        }
+
+
+
         menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_fps,NULL,
-            "[%2d] ~~FPS",game_fps);
+            "[%s] ~~FPS",string_fps);
         menu_add_item_menu_shortcut(array_menu_zxlife,'f');
         menu_add_item_menu_ayuda(array_menu_zxlife,"Game speed");
         menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
