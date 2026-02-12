@@ -370,7 +370,7 @@ extern z80_bit avoid_christmas_mode;
 
 
 #define OVERLAY_SCREEN_MAX_WIDTH 256
-#define OVERLAY_SCREEN_MAX_HEIGTH 128
+#define OVERLAY_SCREEN_MAX_HEIGTH 144
 
 //Tamanyo inicial maximo. Aunque luego se puede hacer mas grande
 /*
