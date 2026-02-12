@@ -12,10 +12,6 @@ pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer?
 
 
--algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
-Probar mas sistemas unix alternativos
-
-
 -lightgun
 *rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
 en programa aparte, mostrando coordenada y en pantalla
@@ -44,16 +40,7 @@ Quizá con una opción y sólo si está el foco en ventana de debug CPU
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
 
--en evaluación de condiciones si cumple o no, en debug cpu (texto "satisfy") no interpreta opcodes
-que van precedidos por DD/FD, ejemplo:
-8000h DEFB DD
-8001h JR NZ,XXX
-
-En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto de satisfy o no, por que no lo tiene como opcode valido (aunque si lo es)
-
-
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
-
 
 -Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
 

@@ -12,16 +12,17 @@ Allow SDL driver force window size
 Allow DESTDIR environment varieble on make install step
 Allow to accelerate loading and saving of diskette, microdrive, etc
 Added config setting for autoenable ay chip on Spectrum models without ay chip
-Added emulation of Stack Light Rifle
-Added emulation of Defender Light Gun
-Added emulation of Trojan Light Pen
-Added emulation of Datel Lightwriter
-Added emulation of Spectrum Doodler Lightpen
-Added lightgun scope
 Added ZSF snapshot previews for QL, ZX80 and ZX81 machines
 Allow to see GO SUB stack of ZX80 and ZX81
 Allow utf-8 characters on footer
 Allow to save smartload history on a file
+Added lightgun scope
+Added emulation of Optical Devices:
+- Stack Light Rifle
+- Defender Light Gun
+- Trojan Light Pen
+- Datel Lightwriter
+- Spectrum Doodler Lightpen
 
 * Improvements:
 

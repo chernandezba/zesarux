@@ -20,6 +20,14 @@ action: prints hello ; menu
 
 -cuando hay breakpoint pc en otras vistas, tambien mostrarlo
 
+-en evaluación de condiciones si cumple o no, en debug cpu (texto "satisfy") no interpreta opcodes
+que van precedidos por DD/FD, ejemplo:
+8000h DEFB DD
+8001h JR NZ,XXX
+Esos opcodes son válidos, en principio no es una instrucción definida con prefijo DD y por tanto el Z80 la interpreta como si no tuviera prefijo DD
+En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto de satisfy o no, por que no lo tiene como opcode valido (aunque si lo es)
+
+
 -Menú debug cpu extra debug con extended debug, code coverage etc
 
 -al cambiar de core reduced o no, si habia breakpoints, aparecen como activos aunque realmente el core no esta usando el debug core (se ha perdido el nested)
