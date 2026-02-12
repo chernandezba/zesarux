@@ -5404,7 +5404,7 @@ int mostrar_betabasic,int maximo_guardar,int si_mostrar_aviso_limite )
               longitud_linea=(lee_byte_function(dir++));
               longitud_linea += 256*lee_byte_function(dir++);
 
-              debug_printf (VERBOSE_DEBUG,"Line length: %d",longitud_linea);
+              debug_printf (VERBOSE_DEBUG,"Basic line length: %d",longitud_linea);
 
           }
 

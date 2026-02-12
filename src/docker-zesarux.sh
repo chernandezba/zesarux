@@ -100,8 +100,8 @@ help() {
 }
 
 
+#en maquina fisica arm, que genere dockers amd64 (x86_64)
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
-#export DOCKER_DEFAULT_PLATFORM=linux/arm64
 
 if [ $# == 0 ]; then
 	help

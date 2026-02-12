@@ -38,6 +38,12 @@ la posición del ratón no la lee correctamente, seguramente por culpa del facto
 -asociar archivos tap, tzx etc en Mac a ZEsarUX
 
 
+
+-Compilar binario universal https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary
+->tendria que hacer compilación de cada archivo .c en dos .o, uno para cada arquitectura. Demasiado complicado.
+Lo mas fácil es generar dos binarios en dos entornos diferentes (uno en Mac silicon y el otro en Mac intel - o -target x86_64 en silicon)
+
+
 ----Mac SSL
 
 

@@ -34640,7 +34640,9 @@ void menu_view_gosub_stack_overlay(void)
             //Mostrar una a una todas las lineas
 
             //Ajustar alto ventana. Al menos una linea aunque solo sea para mostrar error
-            zxvision_set_total_height(menu_view_gosub_stack_window,lineas+1);
+            if (menu_view_gosub_stack_window->total_height!=lineas+1) {
+                zxvision_set_total_height(menu_view_gosub_stack_window,lineas+1);
+            }
 
             char buffer_linea[MENU_VIEW_GOSUB_STACK_MAX_LINE_LENGTH+1];
             char *puntero_leer=results_buffer;

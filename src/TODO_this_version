@@ -1,13 +1,3 @@
---------------------------------------------------
---------------top bar menu----------
-
-
--menus de topbar en diferentes idiomas: alguna manera de poder reducir el texto sin tener que reducir del todo...
-Para evitar tener un ZX Desktop muy grande al poner en Español o Catalán
-
-----------Fin top bar menu----------
-----------------------------------------
-
 
 -Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
         menu_add_item_menu_index_full_path(array_menu_settings_debug,
@@ -67,33 +57,14 @@ En vista de desensamblado, en 8000h aparece como jr nz,xxx pero no aparece texto
 
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
 
--Compilar binario universal https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary
-->tendria que hacer compilación de cada archivo .c en dos .o, uno para cada arquitectura. Demasiado complicado.
-Lo mas fácil es generar dos binarios en dos entornos diferentes (uno en Mac silicon y el otro en Mac intel - o -target x86_64 en silicon)
 
 
 -Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
 
 -Probar compilar contra ssl en mac desde homebrew
 
--Cambiar scripts docker para usar amd64:
-Ejemplo:
-docker run --rm -it --platform linux/amd64 rofrano/vagrant-provider:debian bash
-Alguno para arm? Aparte de raspberry...
-
 
 -scanline inicial que se ve en negro en Next al pulsar teclas
-
-
--Al insertar imagenes (dsk, tap, etc) ver:
--todo aquel que llame a filesel desde opcion de menu debe activar flag:
-menu_add_item_menu_add_flags(array_menu_tape_settings,MENU_ITEM_FLAG_GENERA_VENTANA);
-aparte del
-menu_add_item_menu_add_flags(array_menu_plusthreedisk,MENU_ITEM_FLAG_SE_CERRARA);
-
--Si hay dispositivos que al insertarlos no se habilitan automáticamente, hacer que se habilitan. Ver en que casos no es conveniente habilitar,
-y quizá que salga un aviso en los casos en que no lo habilita
--> Están todos?
 
 
 -Pantalla completa en Mac no va bien
