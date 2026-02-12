@@ -42661,11 +42661,11 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
         char string_fps[40];
 
         if (gamelife_generation_by_music) {
-            sprintf(string_fps,"CH%c",gamelife_generation_by_music_channel);
+            sprintf(string_fps,"ch%c",gamelife_generation_by_music_channel);
         }
         else {
             int game_fps=50/gamelife_timer_counter_total_frames;
-            sprintf(string_fps,"%2d",game_fps);
+            sprintf(string_fps,"%3d",game_fps);
         }
 
 
@@ -42675,7 +42675,7 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_zxlife,'f');
         menu_add_item_menu_ayuda(array_menu_zxlife,"Game speed");
         menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
-        x+=9;
+        x+=10;
 
         menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_edit,NULL,
             "~~Edit");

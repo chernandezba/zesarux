@@ -65,8 +65,12 @@ Improved ZX Desktop:
 - Added setting to add a stroke on icons
 - Windows are not closed when enabling ZX Desktop
 
+Improved ZX Life:
+- Each generation of the game can advance to the rhythm of the AY chip's music
+- Allow to speed up game
+- Fix behaviour on board limits
+
 Improved editing joystick to events/keys (allow to unasign easily)
-Improved ZX Life: allow to speed up game, fix behaviour on board limits
 Improved Trash icon
 Improved decimal precision of Basic Variables window values
 Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix, Minix3

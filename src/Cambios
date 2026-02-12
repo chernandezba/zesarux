@@ -65,8 +65,12 @@ Mejorado ZX Desktop:
 - Agregada opción para añadir un contorno a los iconos
 - Ventanas no se cierran al activar ZX Desktop
 
+Mejorado ZX Life:
+- Cada generación del juego puede avanzar al ritmo de la música del chip AY
+- Permitir acelerar juego
+- Corregir comportamiento en límites del tablero
+
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
-Mejorado ZX Life: permitir acelerar juego, corregir comportamiento en límites del tablero
 Mejorado icono de Papelera
 Mejorada precisión decimal de valores de ventana de Basic Variables
 Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix, Minix3
