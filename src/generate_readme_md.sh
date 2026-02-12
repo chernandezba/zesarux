@@ -13,7 +13,7 @@ Available releases for [download](https://github.com/chernandezba/zesarux/releas
 * GNU/Linux 32/64 Bits
 * FreeBSD 64 Bits
 * Haiku OS
-* Mac OS X
+* macOS Silicon/Intel
 * Windows
 * Raspberry pi (raspbian)
 
@@ -28,6 +28,7 @@ Other by 3rd party:
 Also tested on:
 * AROS Research Operating System (Amiga Compatible)
 * FiwixOS
+* Minix3
 * Sortix
 
 Also a [Docker image](https://hub.docker.com/r/chernandezba/zesarux)
