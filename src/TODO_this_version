@@ -70,4 +70,5 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 -en ayuda indicar lo del marco rojo (con esquina parpadeando también) cuando se escribe mas alla del tamaño
 *color palettes siempre avisa de escritura mas alla
 
--se deberia comprobar do_not_warn_tried_write_beyond_size en zxvision_check_print_beyond_limits? si no se avisa no tiene sentido hacer nada de ahi
+
+-Estilo solarized light/dark dependiendo la hora del dia

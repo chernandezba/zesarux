@@ -9173,7 +9173,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
         if (w!=NULL) {
             //printf("Beyond: %d,%d current %d,%d\n",
             //        w->current_window_char_written_beyond_size_width,w->current_window_char_written_beyond_size_height,w->total_width,w->total_height);
-            if (w->do_not_warn_tried_write_beyond_size==0) {
+
                 if (w->current_window_char_written_beyond_size_width>0 || w->current_window_char_written_beyond_size_height>0) {
 
                     //printf("actual: %d,%d minimo: %d,%d\n",w->total_width,w->total_height,w->current_window_char_written_beyond_size_width,w->current_window_char_written_beyond_size_height);
@@ -9181,7 +9181,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
                         color=ESTILO_GUI_COLOR_AVISO;
                     }
                 }
-            }
+
         }
 
 
@@ -13167,9 +13167,9 @@ void zxvision_draw_scroll_bars(zxvision_window *w)
 
 void zxvision_set_mark_tried_write_beyond_size(zxvision_window *w)
 {
-    if (w->do_not_warn_tried_write_beyond_size==0) {
+
         cuadrado_activo_marca_redimensionado_aviso=1;
-    }
+
 }
 
 void zxvision_draw_window(zxvision_window *w)
@@ -14762,6 +14762,8 @@ void zxvision_set_attr(zxvision_window *w,int x,int y,int tinta,int papel,int pa
 //x,y en coordenadas de caracter
 void zxvision_check_print_beyond_limits(zxvision_window *w,int x,int y)
 {
+    if (w->do_not_warn_tried_write_beyond_size) return;
+
     if (x>=w->total_width || y>=w->total_height) {
         //Indicar que se intentó escribir mas alla del limite de la ventana, siempre que caracter no sea espacio
         //printf("pasa limites. caracter %c (%d)\n",letra_escribir,letra_escribir);
