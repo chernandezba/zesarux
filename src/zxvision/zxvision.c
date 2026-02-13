@@ -14337,6 +14337,31 @@ int zxvision_send_message_window(char *geometry_name,char *message)
 
 }
 
+//Llamar a la funcion de ayuda de mensajes de una ventana
+//Retorna:
+//-1 si ventana no abierta
+//-2 si ventana no tiene funcion de ayuda
+//0 si ok
+int zxvision_call_help_send_message_window(char *geometry_name)
+{
+
+    zxvision_window *buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
+
+    if (buscar_ventana_abierta==NULL) return -1;
+
+
+    if (buscar_ventana_abierta->help_send_message_function==NULL) {
+        return -2;
+    }
+    else {
+        buscar_ventana_abierta->help_send_message_function();
+    }
+
+    //En teoria aqui no llegara nunca, pero para que no se queje el compilador
+    return 0;
+
+}
+
 
 //Dice si las coordenadas indicadas coinciden con cualquiera de las ventanas que estén en las ventanas de debajo de la indicada
 //Retorna la ventana implicada, o NULL si no

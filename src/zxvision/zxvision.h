@@ -445,6 +445,7 @@ extern int zxvision_if_pressed_buttons_or_icons_or_desktop(void);
 extern zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y);
 extern zxvision_window *zxvision_find_window_in_background(char *geometry_name);
 extern int zxvision_send_message_window(char *geometry_name,char *message);
+extern int zxvision_call_help_send_message_window(char *geometry_name);
 extern zxvision_window *zxvision_coords_in_any_window(int x,int y);
 
 extern int clicked_on_background_windows;

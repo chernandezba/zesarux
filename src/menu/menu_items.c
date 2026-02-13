@@ -6922,6 +6922,14 @@ int menu_audio_new_ayplayer_send_message_function(ZXVISION_WINDOW_SEND_MESSAGE_F
     return 0;
 }
 
+void menu_audio_new_ayplayer_help_send_message_function(void)
+{
+    menu_generic_message_format("Help messages","This is a BETA feature. You can send the following messages:\n"
+        "previous track: jump to previous track\n"
+        "next track: jump to next track\n"
+    );
+}
+
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 {
 
@@ -6931,7 +6939,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
         return;
     }
 
-     menu_espera_no_tecla();
+    menu_espera_no_tecla();
     menu_reset_counters_tecla_repeticion();
 
     //zxvision_window ventana;
@@ -6994,6 +7002,9 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
     //definicion de recepcion de mensajes de esta ventana
     ventana->send_message_function=menu_audio_new_ayplayer_send_message_function;
+
+    //funcion de ayuda de mensajes de esta ventana
+    ventana->help_send_message_function=menu_audio_new_ayplayer_help_send_message_function;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -34062,11 +34073,19 @@ void debug_send_message_window(MENU_ITEM_PARAMETERS)
     ventana[0]=0;
     menu_ventana_scanf("Window name",ventana,256);
 
+
+    int retorno=zxvision_call_help_send_message_window(ventana);
+    if (retorno==-1) {
+        menu_error_message("Window not opened");
+        return;
+    }
+
+
     char mensaje[256];
     mensaje[0]=0;
-    menu_ventana_scanf("Message",mensaje,256);
+    menu_ventana_scanf("Message to send",mensaje,256);
 
-    int retorno=zxvision_send_message_window(ventana,mensaje);
+    retorno=zxvision_send_message_window(ventana,mensaje);
 
     switch (retorno) {
         case -1:
