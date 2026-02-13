@@ -79,10 +79,11 @@ Quizá llama a la función que crea la ventana con algún flag específico
 *uno que recibe ese mensaje enviado por char * . Retornara 0 si ok, no 0 si error
 *otro que retorna ayuda de los comandos que el usuario puede enviar
 *funcion para enviar esos mensajes. si hay error al enviar (retorno no 0), no mostrar en ventana ni nada al usuario
---menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
+ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
 --diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
 --nuevo icono que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
 --no se si ayuda de mensajes a enviar tiene que ser una funcion como tal (que abra una ventana con la ayuda) o bien retornar un char * con el mensaje de ayuda
+--funcion en zrcp para enviar mensajes a ventanas
 ->implementado con     int (*send_message_function) (ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS);
     void (*help_send_message_function) (void);
     ayplayer admite dos mensajes

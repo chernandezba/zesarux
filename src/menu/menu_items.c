@@ -6914,6 +6914,13 @@ int menu_audio_new_ayplayer_send_message_function(ZXVISION_WINDOW_SEND_MESSAGE_F
     else if (!strcasecmp(message,"previous track")) {
         ay_player_previous_track();
     }
+    else if (!strcasecmp(message,"next file")) {
+        ay_player_next_file();
+    }
+    else if (!strcasecmp(message,"previous file")) {
+        ay_player_previous_file();
+    }
+
     else {
         //Invalid message
         return 1;
@@ -6927,6 +6934,8 @@ void menu_audio_new_ayplayer_help_send_message_function(void)
     menu_generic_message_format("Help messages","This is a BETA feature. You can send the following messages:\n"
         "previous track: jump to previous track\n"
         "next track: jump to next track\n"
+        "previous file: jump to previous file\n"
+        "next file: jump to next file\n"
     );
 }
 
@@ -34067,25 +34076,25 @@ void menu_write_message(MENU_ITEM_PARAMETERS)
 
 }
 
+char debug_send_message_window_ventana[256]="";
+char debug_send_message_window_mensaje[256]="";
+
 void debug_send_message_window(MENU_ITEM_PARAMETERS)
 {
-    char ventana[256];
-    ventana[0]=0;
-    menu_ventana_scanf("Window name",ventana,256);
+
+    menu_ventana_scanf("Window name",debug_send_message_window_ventana,256);
 
 
-    int retorno=zxvision_call_help_send_message_window(ventana);
+    int retorno=zxvision_call_help_send_message_window(debug_send_message_window_ventana);
     if (retorno==-1) {
         menu_error_message("Window not opened");
         return;
     }
 
 
-    char mensaje[256];
-    mensaje[0]=0;
-    menu_ventana_scanf("Message to send",mensaje,256);
+    menu_ventana_scanf("Message to send",debug_send_message_window_mensaje,256);
 
-    retorno=zxvision_send_message_window(ventana,mensaje);
+    retorno=zxvision_send_message_window(debug_send_message_window_ventana,debug_send_message_window_mensaje);
 
     switch (retorno) {
         case -1:
