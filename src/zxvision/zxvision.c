@@ -183,8 +183,7 @@ int zxvision_draw_icon_papelera_abierta=0;
 //Ancho de caracter de menu
 int menu_char_width=8;
 
-//Alto de caracter de menu. De momento siempre fijo a 8 pero es conveniente que las rutinas siempre usen esta variable en vez de suponer
-//siempre 8, por si en un futuro cambia
+//Alto de caracter de menu
 int menu_char_height=8;
 
 int menu_last_cpu_use=0;
@@ -14758,6 +14757,41 @@ void zxvision_set_attr(zxvision_window *w,int x,int y,int tinta,int papel,int pa
 
 }
 
+//Funcion que indica que se ha intentado escribir en la ventana mas alla de los limites de su tamaño,
+//esto se refleja en color rojo en el marco de la ventana al cambiar su tamaño y también en la zona de redimensionado de abajo a la derecha
+//x,y en coordenadas de caracter
+void zxvision_check_print_beyond_limits(zxvision_window *w,int x,int y)
+{
+    if (x>=w->total_width || y>=w->total_height) {
+        //Indicar que se intentó escribir mas alla del limite de la ventana, siempre que caracter no sea espacio
+        //printf("pasa limites. caracter %c (%d)\n",letra_escribir,letra_escribir);
+        if (w->tried_write_beyond_size==0) {
+            w->current_window_char_written_beyond_size_width=x;
+            w->current_window_char_written_beyond_size_height=y;
+        }
+        else {
+            if (x>w->current_window_char_written_beyond_size_width) {
+                if (x>=w->total_width) {
+                    w->current_window_char_written_beyond_size_width=x;
+                }
+            }
+            if (y>w->current_window_char_written_beyond_size_height) {
+                if (y>=w->total_height) {
+                    w->current_window_char_written_beyond_size_height=y;
+                }
+            }
+        }
+
+
+        w->tried_write_beyond_size=1;
+
+        //Si es la ventana actual, avisar al momento
+        if (zxvision_current_window==w) {
+            zxvision_set_mark_tried_write_beyond_size(w);
+        }
+    }
+}
+
 //Escribir caracter en la memoria de la ventana
 void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter)
 {
@@ -14765,33 +14799,8 @@ void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter
     if (x>=w->total_width || x<0 || y>=w->total_height || y<0) {
 
         z80_byte letra_escribir=caracter->caracter;
-        if (letra_escribir!=32 && (x>=w->total_width || y>=w->total_height)) {
-            //Indicar que se intentó escribir mas alla del limite de la ventana, siempre que caracter no sea espacio
-            //printf("pasa limites. caracter %c (%d)\n",letra_escribir,letra_escribir);
-            if (w->tried_write_beyond_size==0) {
-                w->current_window_char_written_beyond_size_width=x;
-                w->current_window_char_written_beyond_size_height=y;
-            }
-            else {
-                if (x>w->current_window_char_written_beyond_size_width) {
-                    if (x>=w->total_width) {
-                        w->current_window_char_written_beyond_size_width=x;
-                    }
-                }
-                if (y>w->current_window_char_written_beyond_size_height) {
-                    if (y>=w->total_height) {
-                        w->current_window_char_written_beyond_size_height=y;
-                    }
-                }
-            }
-
-
-            w->tried_write_beyond_size=1;
-
-            //Si es la ventana actual, avisar al momento
-            if (zxvision_current_window==w) {
-                zxvision_set_mark_tried_write_beyond_size(w);
-            }
+        if (letra_escribir!=32) {
+            zxvision_check_print_beyond_limits(w,x,y);
         }
 
         return;
@@ -15088,25 +15097,30 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
     //Obtener coordenadas en pixeles de zona ventana dibujable
     int window_pixel_start_x=(w->x)*menu_char_width;
     int window_pixel_start_y=((w->y)+1)*menu_char_height;
+
+    //Limites maximos
     int window_pixel_final_x=window_pixel_start_x+((w->visible_width)-zxvision_get_minus_width_byscrollvbar(w))*menu_char_width;
     int window_pixel_final_y=window_pixel_start_y+((w->visible_height)-2)*menu_char_height;
 
     //Obtener coordenada x,y final donde va a parar
-    int xfinal=x+window_pixel_start_x-(w->offset_x)*menu_char_width;
-    int yfinal=y+window_pixel_start_y-(w->offset_y)*menu_char_height;
+    int x_con_offset=x-(w->offset_x)*menu_char_width;
+    int y_con_offset=y-(w->offset_y)*menu_char_height;
+
+    int xfinal=x_con_offset+window_pixel_start_x;
+    int yfinal=y_con_offset+window_pixel_start_y;
 
     //Ver si esta dentro de rango
     if (xfinal>=window_pixel_start_x && xfinal<window_pixel_final_x && yfinal>=window_pixel_start_y && yfinal<window_pixel_final_y) {
 
-    //Chapucilla para evitar que las ventanas en background sobreescriban a las de arriba
-    //if (!zxvision_coords_in_front_window(w,xfinal/menu_char_width,yfinal/8)) {
-    if (!zxvision_coords_in_superior_windows(w,xfinal/menu_char_width,yfinal/menu_char_height)) {
-        menu_scr_putpixel(xfinal,yfinal,color);
-    }
+        //Para evitar que las ventanas en background sobreescriban a las de arriba
+        if (!zxvision_coords_in_superior_windows(w,xfinal/menu_char_width,yfinal/menu_char_height)) {
+            menu_scr_putpixel(xfinal,yfinal,color);
+        }
 
     }
     else {
         //printf ("pixel out of window %d %d\n",x,y);
+        zxvision_check_print_beyond_limits(w,x_con_offset/menu_char_width,y_con_offset/menu_char_height);
     }
 }
 
@@ -23963,12 +23977,12 @@ void menu_testeo_scanf_numero(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_dibuja_rectangulo_relleno(zxvision_window *w,int x, int y, int ancho, int alto, int color)
+void zxvision_dibuja_rectangulo_relleno(zxvision_window *w,int x, int y, int ancho, int alto, int color)
 {
     int x1,y1;
 
     for (y1=y;y1<y+alto;y1++) {
-        for (x1=x;x1<=x+ancho;x1++) {
+        for (x1=x;x1<x+ancho;x1++) {
             zxvision_putpixel(w,x1,y1,color);
         }
     }

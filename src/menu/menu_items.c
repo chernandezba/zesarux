@@ -10131,7 +10131,7 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
 
                         //printf("ancho: %d\n",ancho_ventana);
 
-                        menu_dibuja_rectangulo_relleno(menu_display_total_palette_draw_barras_window,
+                        zxvision_dibuja_rectangulo_relleno(menu_display_total_palette_draw_barras_window,
                             posicion_barra_color_x*menu_char_width,posicion_barra_color_y*menu_char_height,
                             menu_char_width*(ancho_ventana-longitud_texto-3),menu_char_height,indice_color_final_rgb);
                     }
@@ -10206,7 +10206,6 @@ void menu_display_total_palette_cursor_abajo(void)
 void menu_display_total_palette_crea_ventana(zxvision_window *ventana,int xventana,int yventana,int ancho_ventana,int alto_ventana,
     int is_minimized,int is_maximized,int ancho_antes_minimize,int alto_antes_minimize)
 {
-    //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Colour palettes");
 
     zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Colour palettes",
         "displaypalettes",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
