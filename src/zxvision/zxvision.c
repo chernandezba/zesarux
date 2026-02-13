@@ -14308,6 +14308,36 @@ zxvision_window *zxvision_find_window_in_background(char *geometry_name)
 }
 
 
+//Enviar mensaje a una ventana
+//Retorna:
+//-1 si ventana no abierta
+//-2 si ventana no admite envio de mensajes
+//0 si ok
+//si no ok, codigo de retorno de la funcion de envio de mensaje de la propia ventana
+int zxvision_send_message_window(char *geometry_name,char *message)
+{
+
+    zxvision_window *buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
+
+    if (buscar_ventana_abierta==NULL) return -1;
+
+
+    if (buscar_ventana_abierta->send_message_function==NULL) {
+        return -2;
+    }
+    else {
+        int retorno=buscar_ventana_abierta->send_message_function(message);
+        if (retorno) {
+            return retorno;
+        }
+    }
+
+    //En teoria aqui no llegara nunca, pero para que no se queje el compilador
+    return 0;
+
+}
+
+
 //Dice si las coordenadas indicadas coinciden con cualquiera de las ventanas que estén en las ventanas de debajo de la indicada
 //Retorna la ventana implicada, o NULL si no
 zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y)

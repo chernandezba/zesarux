@@ -34044,6 +34044,38 @@ void menu_write_message(MENU_ITEM_PARAMETERS)
 
 }
 
+void debug_send_message_window(MENU_ITEM_PARAMETERS)
+{
+    char ventana[256];
+    ventana[0]=0;
+    menu_ventana_scanf("Window name",ventana,256);
+
+    char mensaje[256];
+    mensaje[0]=0;
+    menu_ventana_scanf("Message",mensaje,256);
+
+    int retorno=zxvision_send_message_window(ventana,mensaje);
+
+    switch (retorno) {
+        case -1:
+            menu_error_message("Window not opened");
+        break;
+
+        case -2:
+            menu_error_message("Window does not accept messages");
+        break;
+
+        case 0:
+            //OK. nada
+        break;
+
+        default:
+            menu_error_message_format("Error sending message, return code: %d",retorno);
+        break;
+    }
+
+
+}
 
 #ifdef TIMESENSORS_ENABLED
 
@@ -35219,7 +35251,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_debug);
 
 
-
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,debug_send_message_window,NULL,
+            "Send message to a window (BETA)","Enviar mensaje a una ventana (BETA)","Enviar un missatge a una finestra (BETA)");
+        menu_add_item_menu_se_cerrara(array_menu_debug);
+        menu_add_item_menu_genera_ventana(array_menu_debug);
+        menu_add_item_menu_tooltip(array_menu_debug,"Send message to a window");
+        menu_add_item_menu_ayuda(array_menu_debug,"Send message to a window");
+        menu_add_item_menu_es_avanzado(array_menu_debug);
 
 #ifdef TIMESENSORS_ENABLED
 
