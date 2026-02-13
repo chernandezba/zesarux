@@ -190,23 +190,17 @@ pues si van a menu anterior, al abrir ese menu ya detectan error pendiente y lo 
 deja la ventana de ZEsarUX en un estado inconsistente
 Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta acabado de iniciar aun
 
--vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
-
 
 -si tiene que avisar de nueva version disponible en github, parece que no sale aviso si salta un first aid de inicio (testeado en windows)
 
 -Zumbido ZEsarUX en versión Windows a que se debe? A detector de silencio? lo he llegado a escuchar en haiku, con callback new
 
 
-
-
 -Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
 "Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
 
 
--Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
-El como acepta ese evento de momento es una incógnita
-Quizá llama a la función que crea la ventana con algún flag específico
+
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80

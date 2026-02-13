@@ -11023,6 +11023,9 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     //Funcion de overlay inicializada a NULL
     w->overlay_function=NULL;
 
+    w->send_message_function=NULL;
+    w->help_send_message_function=NULL;
+
 
     zxvision_set_draw_window_parameters(w);
 

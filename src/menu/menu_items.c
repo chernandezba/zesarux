@@ -6904,7 +6904,11 @@ void menu_audio_new_ayplayer_pause(MENU_ITEM_PARAMETERS)
 }
 
 
-
+int menu_audio_new_ayplayer_send_message_function(ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS)
+{
+    printf("mensaje: %s\n",message);
+    return 0;
+}
 
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 {
@@ -6976,6 +6980,8 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
     zxvision_set_window_overlay(ventana,menu_audio_new_ayplayer_overlay);
 
 
+    //definicion de recepcion de mensajes de esta ventana
+    ventana->send_message_function=menu_audio_new_ayplayer_send_message_function;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui

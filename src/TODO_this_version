@@ -69,3 +69,16 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 
 -Estilo solarized light/dark dependiendo la hora del dia
+
+-vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
+
+-Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
+El como acepta ese evento de momento es una incógnita
+Quizá llama a la función que crea la ventana con algún flag específico
+--en zxvision_window, dos nuevos punteros:
+*uno que recibe ese mensaje enviado por char * . Retornara 0 si ok, no 0 si error
+*otro que retorna ayuda de los comandos que el usuario puede enviar
+*funcion para enviar esos mensajes. si hay error al enviar (retorno no 0), no mostrar en ventana ni nada al usuario
+--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
+--diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
+--nuevo icono que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar

@@ -100,6 +100,8 @@ extern int stats_normal_overlay_menu_drawn_chars;
 
 #define ZXVISION_MAX_WINDOW_TITLE 256
 
+#define ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS char *message
+
 //Nuevas ventanas zxvision
 struct s_zxvision_window {
     overlay_screen *memory;
@@ -227,6 +229,12 @@ struct s_zxvision_window {
 
     //Puntero a funcion de overlay
     void (*overlay_function) (void);
+
+    //Puntero para envio de mensajes a esa ventana
+    int (*send_message_function) (ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS);
+
+    //Puntero para ayuda de mensajes aceptados en esa ventana
+    void (*help_send_message_function) (void);
 
     //Lo siguiente solo usado por los submenus
     struct s_zxvision_window *submenu_next;
