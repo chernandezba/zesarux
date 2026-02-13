@@ -6906,7 +6906,19 @@ void menu_audio_new_ayplayer_pause(MENU_ITEM_PARAMETERS)
 
 int menu_audio_new_ayplayer_send_message_function(ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS)
 {
-    printf("mensaje: %s\n",message);
+    //printf("mensaje: %s\n",message);
+
+    if (!strcasecmp(message,"next track")) {
+        ay_player_next_track();
+    }
+    else if (!strcasecmp(message,"previous track")) {
+        ay_player_previous_track();
+    }
+    else {
+        //Invalid message
+        return 1;
+    }
+
     return 0;
 }
 
