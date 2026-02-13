@@ -67,8 +67,5 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 -revisar parpadeos en linux en top buttons al moverse por los menus
 ->parece que solo pasa con driver xwindow, con sdl no pasa
 
--en ayuda indicar lo del marco rojo (con esquina parpadeando también) cuando se escribe mas alla del tamaño
-*color palettes siempre avisa de escritura mas alla
-
 
 -Estilo solarized light/dark dependiendo la hora del dia

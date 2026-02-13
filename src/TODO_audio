@@ -23,7 +23,7 @@ Aborted
 caso 1 esta gestionado por el emulador y hace fallback a audionull. caso 2 provoca la salida directa del programa
 probado agregando pausas al finalizar pero falla igualmente
 
-
+-pulse creo que se escucharia mejor si se usase función callback
 
 - En Mac, snap_tests/test3200z88.zx se oye entrecortado. En Linux por ejemplo con pulse se oye continuo (con algun cortecito de vez en cuando)
 

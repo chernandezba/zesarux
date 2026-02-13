@@ -31187,8 +31187,8 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
             "- Click out of the window and press shift key to put the focus on the emulated machine and send there keyboard presses\n"
             "- Can also be moved with the keyboard: Shift+QAOP\n"
             "- Can also be resized with the keyboard: Shift+WSKL\n"
-            "- Note: If the resize zone of the window (bottom-right) flashes in red colour, means that the window needs "
-            "to be enlarged, because there is text beyond current size.\n"
+            "- Note: If the resize zone of the window (bottom-right) flashes in red colour and/or window border is in red when mouse over the bottom-right zone, "
+            "means that the window needs to be enlarged, because there is text or image beyond current size.\n"
 
             "\n"
 
