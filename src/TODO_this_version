@@ -86,5 +86,5 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 --funcion en zrcp para enviar mensajes a ventanas
 ->implementado con     int (*send_message_function) (ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS);
     void (*help_send_message_function) (void);
-    ayplayer admite dos mensajes
+    ayplayer admite varios mensajes
     opcion en menu debug para enviar mensajes
