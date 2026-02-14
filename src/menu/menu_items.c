@@ -18576,6 +18576,46 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
 }
 
 
+char menu_windows_send_message_ventana[256]="";
+char menu_windows_send_message_mensaje[256]="";
+
+void menu_windows_send_message(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ventana_scanf("Window name",menu_windows_send_message_ventana,256);
+
+
+    int retorno=zxvision_call_help_send_message_window(menu_windows_send_message_ventana);
+    if (retorno==-1) {
+        menu_error_message("Window not opened");
+        return;
+    }
+
+
+    menu_ventana_scanf("Message to send",menu_windows_send_message_mensaje,256);
+
+    retorno=zxvision_send_message_window(menu_windows_send_message_ventana,menu_windows_send_message_mensaje);
+
+    switch (retorno) {
+        case -1:
+            menu_error_message("Window not opened");
+        break;
+
+        case -2:
+            menu_error_message("Window does not accept messages");
+        break;
+
+        case 0:
+            //OK. nada
+        break;
+
+        default:
+            menu_error_message_format("Error sending message, return code: %d",retorno);
+        break;
+    }
+
+
+}
 
 
 void menu_windows(MENU_ITEM_PARAMETERS)
@@ -18664,6 +18704,20 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_close_all,NULL,
             "Close all windows","Cerrar todas las ventanas","Tancar totes les finestres");
         menu_add_item_menu_se_cerrara(array_menu_common);
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_windows_send_message,NULL,
+            "Send message to a window (BETA)","Enviar mensaje a una ventana (BETA)","Enviar un missatge a una finestra (BETA)");
+        menu_add_item_menu_se_cerrara(array_menu_common);
+        menu_add_item_menu_genera_ventana(array_menu_common);
+        menu_add_item_menu_tooltip(array_menu_common,"Send message to a window");
+        menu_add_item_menu_ayuda(array_menu_common,"Send message to a window");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
 
 
         menu_add_item_menu_separator(array_menu_common);
@@ -34078,46 +34132,7 @@ void menu_write_message(MENU_ITEM_PARAMETERS)
 
 }
 
-char debug_send_message_window_ventana[256]="";
-char debug_send_message_window_mensaje[256]="";
 
-void debug_send_message_window(MENU_ITEM_PARAMETERS)
-{
-
-    menu_ventana_scanf("Window name",debug_send_message_window_ventana,256);
-
-
-    int retorno=zxvision_call_help_send_message_window(debug_send_message_window_ventana);
-    if (retorno==-1) {
-        menu_error_message("Window not opened");
-        return;
-    }
-
-
-    menu_ventana_scanf("Message to send",debug_send_message_window_mensaje,256);
-
-    retorno=zxvision_send_message_window(debug_send_message_window_ventana,debug_send_message_window_mensaje);
-
-    switch (retorno) {
-        case -1:
-            menu_error_message("Window not opened");
-        break;
-
-        case -2:
-            menu_error_message("Window does not accept messages");
-        break;
-
-        case 0:
-            //OK. nada
-        break;
-
-        default:
-            menu_error_message_format("Error sending message, return code: %d",retorno);
-        break;
-    }
-
-
-}
 
 #ifdef TIMESENSORS_ENABLED
 
@@ -35293,13 +35308,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_debug);
 
 
-        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,debug_send_message_window,NULL,
-            "Send message to a window (BETA)","Enviar mensaje a una ventana (BETA)","Enviar un missatge a una finestra (BETA)");
-        menu_add_item_menu_se_cerrara(array_menu_debug);
-        menu_add_item_menu_genera_ventana(array_menu_debug);
-        menu_add_item_menu_tooltip(array_menu_debug,"Send message to a window");
-        menu_add_item_menu_ayuda(array_menu_debug,"Send message to a window");
-        menu_add_item_menu_es_avanzado(array_menu_debug);
+
 
 #ifdef TIMESENSORS_ENABLED
 
