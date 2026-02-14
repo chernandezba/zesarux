@@ -2513,6 +2513,11 @@ void menu_interface_allow_windows_beyond_limit(MENU_ITEM_PARAMETERS)
     zxvision_allow_windows_beyond_limit.v ^=1;
 }
 
+void menu_settings_apps_ay_piano_grafico(MENU_ITEM_PARAMETERS)
+{
+    setting_mostrar_ay_piano_grafico.v ^=1;
+}
+
 
 
 void menu_settings_apps(MENU_ITEM_PARAMETERS)
@@ -2546,6 +2551,16 @@ void menu_settings_apps(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_force_left_bottom.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_common,"Process switcher is always located on left-bottom");
         menu_add_item_menu_ayuda(array_menu_common,"Process switcher is always located on left-bottom");
+
+        if (si_complete_video_driver() ) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_apps_ay_piano_grafico,NULL,"    Piano Type");
+            menu_add_item_menu_spanish_catalan(array_menu_common,"    Tipo Piano","    Tipus Piano");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%s]",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
+            menu_add_item_menu_tooltip(array_menu_common,"Shows AY/Beeper Piano window with graphic or with text");
+            menu_add_item_menu_ayuda(array_menu_common,"Shows AY/Beeper Piano window with graphic or with text");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+        }
 
 
         menu_add_item_menu_separator(array_menu_common);
@@ -4031,10 +4046,6 @@ void menu_audio_zx8081_detect_vsync_sound(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_setting_ay_piano_grafico(MENU_ITEM_PARAMETERS)
-{
-    setting_mostrar_ay_piano_grafico.v ^=1;
-}
 
 
 void menu_aofile_insert(MENU_ITEM_PARAMETERS)
@@ -4529,16 +4540,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
-        if (si_complete_video_driver() ) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"    ~~Piano Type");
-            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Tipo ~~Piano","    Tipus ~~Piano");
-            menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%s]",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
-            menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Shows AY/Beeper Piano window with graphic or with text");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"Shows AY/Beeper Piano window with graphic or with text");
-            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-        }
 
 
         char string_aofile_shown[10];
@@ -4638,6 +4640,8 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
         if (ay_chip_present.v || sn_chip_present.v || i8049_chip_present) {
+                menu_add_item_menu_separator(array_menu_settings_audio);
+
                 menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_direct_midi_output,audio_midi_available,"Audio Chip to ~~MIDI Output");
                 menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Audio Chip a salida ~~MIDI","Audio Xip a sortida ~~MIDI");
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Direct Audio Chip (AY, SN or i8049) music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.");
