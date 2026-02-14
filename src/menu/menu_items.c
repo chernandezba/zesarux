@@ -18658,25 +18658,9 @@ void menu_windows(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_genera_ventana(array_menu_common);
         }
 
+
+
         menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all,NULL,
-            "~~Reduce all windows","~~Reducir todas las ventanas","~~Reduir totes les finestres");
-        menu_add_item_menu_tooltip(array_menu_common,"Reduce windows to maximum size 20x10");
-        menu_add_item_menu_ayuda(array_menu_common,"Reduce windows to maximum size 20x10");
-        menu_add_item_menu_shortcut(array_menu_common,'r');
-        menu_add_item_menu_se_cerrara(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all,NULL,
-            "M~~inimize all windows","M~~inimizar todas las ventanas","M~~inimitzar totes les finestres");
-        menu_add_item_menu_shortcut(array_menu_common,'i');
-        menu_add_item_menu_se_cerrara(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_rearrange_all,NULL,
-            "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
-        menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
-        menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
-        menu_add_item_menu_se_cerrara(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_cascade_all,NULL,
             "~~Cascade all windows","~~Cascada todas ventanas","~~Cascada totes les finestres");
@@ -18685,24 +18669,47 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'c');
         menu_add_item_menu_se_cerrara(array_menu_common);
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_rearrange_all,NULL,
+            "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
+        menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
+        menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
+        menu_add_item_menu_se_cerrara(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all,NULL,
+            "~~Reduce all windows","~~Reducir todas las ventanas","~~Reduir totes les finestres");
+        menu_add_item_menu_tooltip(array_menu_common,"Reduce windows to maximum size 20x10");
+        menu_add_item_menu_ayuda(array_menu_common,"Reduce windows to maximum size 20x10");
+        menu_add_item_menu_shortcut(array_menu_common,'r');
+        menu_add_item_menu_se_cerrara(array_menu_common);
+
+
+
         menu_add_item_menu_separator(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all_rearrange,NULL,
+            "Reduce+rearrange all windows","Reducir+reubicar todas las ventanas","Reduir+reubicar totes les finestres");
+        menu_add_item_menu_se_cerrara(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all_rearrange,NULL,
+            "Minimize+rearrange all windows","Minimizar+reubicar todas ventanas","Minimitzar+reubicar totes les finestres");
+        menu_add_item_menu_se_cerrara(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all,NULL,
+            "M~~inimize all windows","M~~inimizar todas las ventanas","M~~inimitzar totes les finestres");
+        menu_add_item_menu_shortcut(array_menu_common,'i');
+        menu_add_item_menu_se_cerrara(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_maximize_all,NULL,
             "M~~aximize all windows","M~~aximizar todas las ventanas","M~~aximitzar totes les finestres");
         menu_add_item_menu_shortcut(array_menu_common,'a');
         menu_add_item_menu_se_cerrara(array_menu_common);
-
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all_rearrange,NULL,
-            "Reduce+rearrange all windows","Reducir+reubicar todas las ventanas","Reduir+reubicar totes les finestres");
-        menu_add_item_menu_se_cerrara(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all_rearrange,NULL,
-            "Minimize+rearrange all windows","Minimizar+reubicar todas ventanas","Minimitzar+reubicar totes les finestres");
-        menu_add_item_menu_se_cerrara(array_menu_common);
-
-
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_close_all,NULL,
             "Close all windows","Cerrar todas las ventanas","Tancar totes les finestres");
