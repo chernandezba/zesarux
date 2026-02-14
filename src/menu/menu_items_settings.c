@@ -4385,7 +4385,82 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
+        menu_add_item_menu_separator(array_menu_settings_audio);
 
+        if (!MACHINE_IS_ZX8081 && !MACHINE_IS_QL) {
+
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beeper,NULL,"[%c] Beepe~~r",(beeper_enabled.v==1 ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_settings_audio,'r');
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable or disable beeper output");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Enable or disable beeper output");
+
+        }
+
+
+
+        if (MACHINE_IS_ZX8081) {
+            //sound on zx80/81
+
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_zx8081_detect_vsync_sound,menu_cond_zx8081,"[%c] Detect VSYNC Sound",(zx8081_detect_vsync_sound.v ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Detect when vsync sound is played");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Detect when vsync sound is played");
+
+
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_sound_zx8081,menu_cond_zx8081,"[%c] VSYNC Sound", (zx8081_vsync_sound.v==1 ? 'X' : ' '));
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Enables or disables VSYNC sound on ZX80 and ZX81");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"This method uses the VSYNC signal on the TV to make sound");
+
+
+        }
+
+
+
+        int mostrar_real_beeper=0;
+
+        if (MACHINE_IS_ZX8081) {
+            if (zx8081_vsync_sound.v) mostrar_real_beeper=1;
+        }
+
+        else {
+            if (beeper_enabled.v) mostrar_real_beeper=1;
+        }
+
+        if (mostrar_real_beeper && !MACHINE_IS_QL) {
+
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beeper_real,NULL,"[%c] Real ~~Beeper",(beeper_real_enabled==1 ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_settings_audio,'b');
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable or disable Real Beeper enhanced sound. ");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Real beeper produces beeper sound more realistic but uses a bit more cpu. Needs beeper enabled (or vsync sound on zx80/81)");
+        }
+
+
+        if (MACHINE_IS_ACE) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ace_mic,NULL,
+                "[%c] MIC sound",(ace_sound_mic.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear MIC output");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear MIC output");
+        }
+
+        if (MACHINE_IS_CPC) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_cpc_mic,NULL,
+                "[%c] Cassette Out sound",(cpc_sound_cassette_out.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+        }
+
+        if (MACHINE_IS_MSX) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_msx_mic,NULL,
+                "[%c] Cassette Out sound",(msx_sound_cassette_out.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+        }
+
+        if (MACHINE_IS_SVI) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_svi_mic,NULL,
+                "[%c] Cassette Out sound",(svi_sound_cassette_out.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
+        }
 
 
         if (MACHINE_IS_SPECTRUM) {
@@ -4441,84 +4516,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu_separator(array_menu_settings_audio);
 
-
-        if (!MACHINE_IS_ZX8081 && !MACHINE_IS_QL) {
-
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beeper,NULL,"[%c] Beepe~~r",(beeper_enabled.v==1 ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_settings_audio,'r');
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable or disable beeper output");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"Enable or disable beeper output");
-
-        }
-
-
-
-        if (MACHINE_IS_ZX8081) {
-            //sound on zx80/81
-
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_zx8081_detect_vsync_sound,menu_cond_zx8081,"[%c] Detect VSYNC Sound",(zx8081_detect_vsync_sound.v ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Detect when vsync sound is played");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"Detect when vsync sound is played");
-
-
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_sound_zx8081,menu_cond_zx8081,"[%c] VSYNC Sound", (zx8081_vsync_sound.v==1 ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Enables or disables VSYNC sound on ZX80 and ZX81");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"This method uses the VSYNC signal on the TV to make sound");
-
-
-        }
-
-
-
-
-        int mostrar_real_beeper=0;
-
-        if (MACHINE_IS_ZX8081) {
-            if (zx8081_vsync_sound.v) mostrar_real_beeper=1;
-        }
-
-        else {
-            if (beeper_enabled.v) mostrar_real_beeper=1;
-        }
-
-        if (mostrar_real_beeper && !MACHINE_IS_QL) {
-
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beeper_real,NULL,"[%c] Real ~~Beeper",(beeper_real_enabled==1 ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_settings_audio,'b');
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable or disable Real Beeper enhanced sound. ");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"Real beeper produces beeper sound more realistic but uses a bit more cpu. Needs beeper enabled (or vsync sound on zx80/81)");
-        }
-
-
-        if (MACHINE_IS_ACE) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ace_mic,NULL,
-                "[%c] MIC sound",(ace_sound_mic.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear MIC output");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear MIC output");
-        }
-
-        if (MACHINE_IS_CPC) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_cpc_mic,NULL,
-                "[%c] Cassette Out sound",(cpc_sound_cassette_out.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
-        }
-
-        if (MACHINE_IS_MSX) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_msx_mic,NULL,
-                "[%c] Cassette Out sound",(msx_sound_cassette_out.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
-        }
-
-        if (MACHINE_IS_SVI) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_svi_mic,NULL,
-                "[%c] Cassette Out sound",(svi_sound_cassette_out.v ? 'X' : ' '));
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
-        }
 
 
 
