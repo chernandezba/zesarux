@@ -18641,6 +18641,7 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_common);
         menu_add_item_menu_tooltip(array_menu_common,"Get information about processes and manage them");
         menu_add_item_menu_ayuda(array_menu_common,"Get information about processes and manage them");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_process_switcher,NULL,
             "~~Process switcher","~~Process switcher","~~Process switcher");

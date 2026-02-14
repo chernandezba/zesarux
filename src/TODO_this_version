@@ -84,10 +84,14 @@ Quizá llama a la función que crea la ventana con algún flag específico
 ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
 --diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
 --nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
---no se si ayuda de mensajes a enviar tiene que ser una funcion como tal (que abra una ventana con la ayuda) o bien retornar un char * con el mensaje de ayuda
 --funcion en zrcp para enviar mensajes a ventanas
 --ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
-->implementado con     int (*send_message_function) (ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS);
-    void (*help_send_message_function) (void);
+->implementado con
+    int (*send_message_function) (ZXVISION_WINDOW_SEND_MESSAGE_FUNCTION_PARAMETERS);
+    char *help_send_message;
     ayplayer admite varios mensajes
-    opcion en menu debug para enviar mensajes
+    opcion en menu Windows para enviar mensajes
+
+
+
+-Settings-> Audio, Video y TV deberian estar en submenu hardware?
