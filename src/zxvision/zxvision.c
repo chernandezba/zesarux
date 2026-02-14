@@ -11024,7 +11024,7 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     w->overlay_function=NULL;
 
     w->send_message_function=NULL;
-    w->help_send_message_function=NULL;
+    w->help_send_message=NULL;
 
 
     zxvision_set_draw_window_parameters(w);
@@ -14337,27 +14337,29 @@ int zxvision_send_message_window(char *geometry_name,char *message)
 
 }
 
-//Llamar a la funcion de ayuda de mensajes de una ventana
+//Retornar la funcion de ayuda de mensajes de una ventana
 //Retorna:
 //-1 si ventana no abierta
 //-2 si ventana no tiene funcion de ayuda
-//0 si ok
-int zxvision_call_help_send_message_window(char *geometry_name)
+//0 si ok. y En help_message modifica el puntero a donde esta el mensaje. En cualquiera de los otros casos, help_message=NULL
+int zxvision_return_help_send_message_window(char *geometry_name,char **help_message)
 {
+
+    //de momento
+    *help_message=NULL;
 
     zxvision_window *buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
 
     if (buscar_ventana_abierta==NULL) return -1;
 
 
-    if (buscar_ventana_abierta->help_send_message_function==NULL) {
+    if (buscar_ventana_abierta->help_send_message==NULL) {
         return -2;
     }
     else {
-        buscar_ventana_abierta->help_send_message_function();
+        *help_message=buscar_ventana_abierta->help_send_message;
     }
 
-    //En teoria aqui no llegara nunca, pero para que no se queje el compilador
     return 0;
 
 }

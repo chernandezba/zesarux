@@ -6929,15 +6929,11 @@ int menu_audio_new_ayplayer_send_message_function(ZXVISION_WINDOW_SEND_MESSAGE_F
     return 0;
 }
 
-void menu_audio_new_ayplayer_help_send_message_function(void)
-{
-    menu_generic_message_format("Help messages","This is a BETA feature. You can send the following messages:\n"
+char *menu_audio_new_ayplayer_help_send_message="This is a BETA feature. You can send the following messages:\n"
         "previous track: jump to previous track\n"
         "next track: jump to next track\n"
         "previous file: jump to previous file\n"
-        "next file: jump to next file\n"
-    );
-}
+        "next file: jump to next file\n";
 
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 {
@@ -7013,7 +7009,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
     ventana->send_message_function=menu_audio_new_ayplayer_send_message_function;
 
     //funcion de ayuda de mensajes de esta ventana
-    ventana->help_send_message_function=menu_audio_new_ayplayer_help_send_message_function;
+    ventana->help_send_message=menu_audio_new_ayplayer_help_send_message;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -18584,13 +18580,19 @@ void menu_windows_send_message(MENU_ITEM_PARAMETERS)
 
     menu_ventana_scanf("Window name",menu_windows_send_message_ventana,256);
 
+    //TODO: se podria detectar antes si ventana no acepta mensajes e indicarlo al usuario
+    //como de momento esta ventana es algo beta, no se como quedará al final
 
-    int retorno=zxvision_call_help_send_message_window(menu_windows_send_message_ventana);
+    char *help_message;
+    int retorno=zxvision_return_help_send_message_window(menu_windows_send_message_ventana,&help_message);
     if (retorno==-1) {
         menu_error_message("Window not opened");
         return;
     }
 
+    if (retorno==0 && help_message!=NULL) {
+        menu_generic_message_format("Send messages help","%s",help_message);
+    }
 
     menu_ventana_scanf("Message to send",menu_windows_send_message_mensaje,256);
 
