@@ -4321,11 +4321,11 @@ void menu_audio_svi_mic(MENU_ITEM_PARAMETERS)
 
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_settings_audio;
+    menu_item *array_menu_settings_audio;
     menu_item item_seleccionado;
     int retorno_menu;
 
-        do {
+    do {
 
         //hotkeys usadas: vuacpdrbfoilh
 
@@ -4375,19 +4375,12 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-        if (si_complete_video_driver() ) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"    ~~Piano Type");
-            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Tipo ~~Piano","    Tipus ~~Piano");
-            menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%s]",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
-            menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
-            menu_add_item_menu_tooltip(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
-            menu_add_item_menu_ayuda(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
-            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
-
-        }
 
 
         if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_separator(array_menu_settings_audio);
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_general_sound_enable,NULL,"[%c] General Sound", (gs_enabled.v ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
@@ -4401,12 +4394,10 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-
-
         //TBBLUE tiene su propio DAC
         if (MACHINE_IS_SPECTRUM && !MACHINE_IS_TBBLUE) {
 
-            menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_settings_audio);
             menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
             char string_audiodac[32];
@@ -4419,7 +4410,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 }
 
                 menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_enable,NULL,
-                    "[%c] ~~DAC Enabled",(audiodac_enabled.v ? 'X' : ' ' ));
+                    "[%c] ~~DAC",(audiodac_enabled.v ? 'X' : ' ' ));
                 menu_add_item_menu_shortcut(array_menu_settings_audio,'d');
                 menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
@@ -4439,7 +4430,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         }
 
 
-    menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    menu_add_item_menu_separator(array_menu_settings_audio);
 
 
         if (!MACHINE_IS_ZX8081 && !MACHINE_IS_QL) {
@@ -4489,38 +4480,51 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_settings_audio,"Real beeper produces beeper sound more realistic but uses a bit more cpu. Needs beeper enabled (or vsync sound on zx80/81)");
         }
 
-        menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         if (MACHINE_IS_ACE) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ace_mic,NULL,
-                "[%c] Enable MIC",(ace_sound_mic.v ? 'X' : ' '));
+                "[%c] MIC sound",(ace_sound_mic.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear MIC output");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear MIC output");
         }
 
         if (MACHINE_IS_CPC) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_cpc_mic,NULL,
-                "[%c] Enable Cassette Out sound",(cpc_sound_cassette_out.v ? 'X' : ' '));
+                "[%c] Cassette Out sound",(cpc_sound_cassette_out.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
         }
 
         if (MACHINE_IS_MSX) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_msx_mic,NULL,
-                "[%c] Enable Cassette Out sound",(msx_sound_cassette_out.v ? 'X' : ' '));
+                "[%c] Cassette Out sound",(msx_sound_cassette_out.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
         }
 
         if (MACHINE_IS_SVI) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_svi_mic,NULL,
-                "[%c] Enable Cassette Out sound",(svi_sound_cassette_out.v ? 'X' : ' '));
+                "[%c] Cassette Out sound",(svi_sound_cassette_out.v ? 'X' : ' '));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Allow to hear Cassette Out sound");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Allow to hear Cassette Out sound");
         }
 
 
 
+        menu_add_item_menu_separator(array_menu_settings_audio);
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+
+
+
+
+        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
+        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_settings_audio,'l');
+        menu_add_item_menu_tooltip(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
         menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_resample_1bit,NULL,"[%c] 1 bit filter",(audio_resample_1bit.v ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_settings_audio,"Resample audio output to 1 bit only");
@@ -4528,8 +4532,16 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
-        menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+        if (si_complete_video_driver() ) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"    ~~Piano Type");
+            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Tipo ~~Piano","    Tipus ~~Piano");
+            menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%s]",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
+            menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Shows AY/Beeper Piano window with graphic or with text");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Shows AY/Beeper Piano window with graphic or with text");
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+        }
 
 
         char string_aofile_shown[10];
@@ -4552,15 +4564,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
-        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
-        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
-        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
-        menu_add_item_menu_shortcut(array_menu_settings_audio,'l');
-        menu_add_item_menu_tooltip(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
-        menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
-        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
-
-        menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_audio);
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
         menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"Change Audio Driv~~er");
@@ -4574,7 +4578,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
             if (!strcmp(audio_new_driver_name,"sdl")) {
-                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_settings_audio);
                 menu_add_item_menu(array_menu_settings_audio,"--- Audio SDL settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audiosdl_callback_type,NULL,
@@ -4584,13 +4588,13 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
 
-                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_settings_audio);
 
             }
 
 
             if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
-                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_settings_audio);
                 menu_add_item_menu(array_menu_settings_audio,"--- One Bit Speaker settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_tipo_speaker,NULL,
@@ -4629,7 +4633,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_ayuda(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
                 }
 
-                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu_separator(array_menu_settings_audio);
 
             }
 
@@ -4664,11 +4668,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-
-        menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings_audio);
 
         menu_add_ESC_item(array_menu_settings_audio);
 
