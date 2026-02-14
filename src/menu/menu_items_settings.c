@@ -4368,9 +4368,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
         }
 
-            else if (MACHINE_IS_QL) {
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_i8049_chip_present,NULL,"[%c] i8049 sound chip", (i8049_chip_present ? 'X' : ' '));
-            }
+        else if (MACHINE_IS_QL) {
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_i8049_chip_present,NULL,"[%c] i8049 sound chip", (i8049_chip_present ? 'X' : ' '));
+        }
 
 
 
@@ -4430,7 +4430,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         }
 
 
-    menu_add_item_menu_separator(array_menu_settings_audio);
+        menu_add_item_menu_separator(array_menu_settings_audio);
 
 
         if (!MACHINE_IS_ZX8081 && !MACHINE_IS_QL) {
@@ -4515,9 +4515,6 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
-
-
-
         menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
         menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
         menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
@@ -4577,94 +4574,94 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
-            if (!strcmp(audio_new_driver_name,"sdl")) {
-                menu_add_item_menu_separator(array_menu_settings_audio);
-                menu_add_item_menu(array_menu_settings_audio,"--- Audio SDL settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
+        if (!strcmp(audio_new_driver_name,"sdl")) {
+            menu_add_item_menu_separator(array_menu_settings_audio);
+            menu_add_item_menu(array_menu_settings_audio,"--- Audio SDL settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audiosdl_callback_type,NULL,
-                    "Callback Type","Tipo Callback","Tipus Callback");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
-                    (audiosdl_use_new_callback.v ? "New" : "Old"));
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
+            menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audiosdl_callback_type,NULL,
+                "Callback Type","Tipo Callback","Tipus Callback");
+            menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
+                (audiosdl_use_new_callback.v ? "New" : "Old"));
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
 
-                menu_add_item_menu_separator(array_menu_settings_audio);
+            menu_add_item_menu_separator(array_menu_settings_audio);
 
+        }
+
+
+        if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
+            menu_add_item_menu_separator(array_menu_settings_audio);
+            menu_add_item_menu(array_menu_settings_audio,"--- One Bit Speaker settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+            menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_tipo_speaker,NULL,
+                "Speaker Type","Tipo Speaker","Tipus Speaker");
+            menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
+                (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER ? "PC Speaker" : "Raspberry GPIO"));
+
+            if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_gpio_pin,NULL,
+                    "GPIO Pinout number","GPIO Pinout number","GPIO Pinout number");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audioonebitspeaker_rpi_gpio_pin);
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Which GPIO port is the speaker connected to");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Which GPIO port is the speaker connected to");
             }
 
 
-            if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
-                menu_add_item_menu_separator(array_menu_settings_audio);
-                menu_add_item_menu(array_menu_settings_audio,"--- One Bit Speaker settings ---",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_tipo_speaker,NULL,
-                    "Speaker Type","Tipo Speaker","Tipus Speaker");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
-                    (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER ? "PC Speaker" : "Raspberry GPIO"));
-
-                if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
-                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_gpio_pin,NULL,
-                        "GPIO Pinout number","GPIO Pinout number","GPIO Pinout number");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audioonebitspeaker_rpi_gpio_pin);
-                    menu_add_item_menu_tooltip(array_menu_settings_audio,"Which GPIO port is the speaker connected to");
-                    menu_add_item_menu_ayuda(array_menu_settings_audio,"Which GPIO port is the speaker connected to");
-                }
+            menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_intensive_cpu,NULL,
+                "Improved sound","Sonido mejorado","So millorat");
+            menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_intensive_cpu_usage ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Improved sound but uses more cpu");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Improved sound but uses more cpu");
 
 
-                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_intensive_cpu,NULL,
-                    "Improved sound","Sonido mejorado","So millorat");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_intensive_cpu_usage ? 'X' : ' ' ));
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Improved sound but uses more cpu");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Improved sound but uses more cpu");
+            menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_agudo_filtro,NULL,
+                "Hi Freq filter","Hi Freq filtro","Hi Freq filtre");
+            menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_agudo_filtro ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_settings_audio,"Filter to avoid high frequency sounds");
+            menu_add_item_menu_ayuda(array_menu_settings_audio,"Filter to avoid high frequency sounds");
 
-
-                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_agudo_filtro,NULL,
-                    "Hi Freq filter","Hi Freq filtro","Hi Freq filtre");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_agudo_filtro ? 'X' : ' ' ));
-                menu_add_item_menu_tooltip(array_menu_settings_audio,"Filter to avoid high frequency sounds");
-                menu_add_item_menu_ayuda(array_menu_settings_audio,"Filter to avoid high frequency sounds");
-
-                if (audioonebitspeaker_agudo_filtro) {
-                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_agudo_filtro_limite,NULL,
-                    "Limit","Límite","Límit");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d Hz] ",
-                        FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audioonebitspeaker_agudo_filtro_limite);
-                    menu_add_item_menu_tooltip(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
-                    menu_add_item_menu_ayuda(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
-                }
-
-                menu_add_item_menu_separator(array_menu_settings_audio);
-
+            if (audioonebitspeaker_agudo_filtro) {
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_agudo_filtro_limite,NULL,
+                "Limit","Límite","Límit");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d Hz] ",
+                    FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audioonebitspeaker_agudo_filtro_limite);
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
             }
 
+            menu_add_item_menu_separator(array_menu_settings_audio);
+
+        }
 
 
 
-            if (ay_chip_present.v || sn_chip_present.v || i8049_chip_present) {
-                    menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_direct_midi_output,audio_midi_available,"Audio Chip to ~~MIDI Output");
-                    menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Audio Chip a salida ~~MIDI","Audio Xip a sortida ~~MIDI");
-                    menu_add_item_menu_tooltip(array_menu_settings_audio,"Direct Audio Chip (AY, SN or i8049) music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.");
+
+        if (ay_chip_present.v || sn_chip_present.v || i8049_chip_present) {
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_direct_midi_output,audio_midi_available,"Audio Chip to ~~MIDI Output");
+                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Audio Chip a salida ~~MIDI","Audio Xip a sortida ~~MIDI");
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Direct Audio Chip (AY, SN or i8049) music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.");
 
 
 
 #ifdef COMPILE_ALSA
 
-                    menu_add_item_menu_ayuda(array_menu_settings_audio,"Direct Audio Chip music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.\n"
-                        "On Linux you can simulate an external midi device by using timidity. If you have it installed, it may probably be running in memory as "
-                        "an alsa sequencer client. If not, run it with the command line:\n"
-                        "timidity -iA -Os -B2,8 -EFreverb=0\n"
-                        "Running timidity that way, would probably require that you use another audio driver in ZEsarUX different than alsa, "
-                        "unless you have alsa software mixing enabled"
-                    );
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Direct Audio Chip music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.\n"
+                    "On Linux you can simulate an external midi device by using timidity. If you have it installed, it may probably be running in memory as "
+                    "an alsa sequencer client. If not, run it with the command line:\n"
+                    "timidity -iA -Os -B2,8 -EFreverb=0\n"
+                    "Running timidity that way, would probably require that you use another audio driver in ZEsarUX different than alsa, "
+                    "unless you have alsa software mixing enabled"
+                );
 
 #else
-                    menu_add_item_menu_ayuda(array_menu_settings_audio,"Direct Audio Chip music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Direct Audio Chip music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.");
 #endif
 
-                    menu_add_item_menu_shortcut(array_menu_settings_audio,'m');
-                    menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
+                menu_add_item_menu_shortcut(array_menu_settings_audio,'m');
+                menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
 
-            }
+        }
 
 
 
