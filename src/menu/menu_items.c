@@ -17806,6 +17806,7 @@ void menu_display_window_list_info(zxvision_window *w)
         "Immutable: %s\n"
         "Can be resized: %s\n"
         "Can be minimized: %s\n"
+        "Can receive messages: %s\n"
         ,
         w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,memory_used/1024,
         w->offset_x,w->offset_y,
@@ -17814,7 +17815,8 @@ void menu_display_window_list_info(zxvision_window *w)
         (w->always_visible ? "Yes" : "No"),
         (w->not_altered_by_massive_changes ? "Yes" : "No"),
         (w->can_be_resized ? "Yes" : "No"),
-        (w->can_be_minimized ? "Yes" : "No")
+        (w->can_be_minimized ? "Yes" : "No"),
+        (w->send_message_function!=NULL ? "Yes" : "No")
     );
 
 

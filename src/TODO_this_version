@@ -72,6 +72,8 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
+-poder ver la tabla de contienda al debugar
+
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
 El como acepta ese evento de momento es una incógnita
 Quizá llama a la función que crea la ventana con algún flag específico
