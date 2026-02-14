@@ -4552,6 +4552,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings_audio,"Saves the generated sound to a file");
         menu_add_item_menu_ayuda(array_menu_settings_audio,"You can save .raw format and if compiled with sndfile, to .wav format. "
                     "You can see the file parameters on the console enabling verbose debug level to 2 minimum");
+        menu_add_item_menu_add_flags(array_menu_settings_audio,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
