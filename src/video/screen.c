@@ -4807,10 +4807,10 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
         //int fila;
         //int columna;
 
-	//Para gigascreen, valores que se encontraran en el buffer rainbow seran entre 0 y 15
+        //Para gigascreen, valores que se encontraran en el buffer rainbow seran entre 0 y 15
         z80_byte color_pixel_one,color_pixel_two;
 
-	int color_pixel_final;
+	    int color_pixel_final;
         z80_int *puntero_one,*puntero_two;
 
         puntero_one=rainbow_buffer_one;
@@ -4829,47 +4829,45 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
         int dibujar;
 
         for (y=0;y<alto;y++) {
-                for (x=0;x<ancho;x+=8) {
-                        dibujar=1;
+            for (x=0;x<ancho;x+=8) {
+                dibujar=1;
 
-                        //Ver si esa zona esta ocupada por texto de menu u overlay
+                //Ver si esa zona esta ocupada por texto de menu u overlay
 
-                        if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
-
-
-                                //normalmente a 48
-                                //int screen_total_borde_izquierdo;
-
-                                if (!scr_ver_si_refrescar_por_menu_activo( (x-margenx_izq)/8, (y-margeny_arr)/8) )
-                                        dibujar=0;
-
-                        }
-                        if (dibujar==1) {
-
-                                        for (bit=0;bit<8;bit++) {
+                if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
 
 
-                                                //printf ("x: %d y: %d\n",x,y);
+                        //normalmente a 48
+                        //int screen_total_borde_izquierdo;
 
-                                                color_pixel_one=*puntero_one++;
-						color_pixel_two=*puntero_two++;
-
-
-						color_pixel_final=get_gigascreen_color(color_pixel_one,color_pixel_two);
-
-
-                                                scr_putpixel_zoom_rainbow(x+bit,y,color_pixel_final);
-                                        }
-                        }
-                        else {
-				puntero_one+=8;
-				puntero_two+=8;
-			}
+                        if (!scr_ver_si_refrescar_por_menu_activo( (x-margenx_izq)/8, (y-margeny_arr)/8) )
+                                dibujar=0;
 
                 }
+                if (dibujar==1) {
+
+                    for (bit=0;bit<8;bit++) {
+
+
+                        //printf ("x: %d y: %d\n",x,y);
+
+                        color_pixel_one=*puntero_one++;
+                        color_pixel_two=*puntero_two++;
+
+
+                        color_pixel_final=get_gigascreen_color(color_pixel_one,color_pixel_two);
+
+
+                        scr_putpixel_zoom_rainbow(x+bit,y,color_pixel_final);
+                    }
+                }
+                else {
+                    puntero_one+=8;
+                    puntero_two+=8;
+			    }
+
+            }
         }
-
-
 
 
 	}

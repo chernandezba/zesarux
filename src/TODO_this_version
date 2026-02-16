@@ -105,3 +105,5 @@ y poner bien el #define store_value_rainbow(p,x) *p++=x; en screen.h
 *corregir lo mismo en  TSConf... alguno mas? render gigascreen?
 ->ok spectrum
 ->ok prism
+->ok tsconf
+->ok gigascreen
