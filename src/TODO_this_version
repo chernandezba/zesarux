@@ -102,4 +102,6 @@ ok-primer scanline next se ve mal. parece que solo pasa si esta la limitacion de
 ok *en modos turbo>1, avanza igual en x que con turbo 1. error! se deberia hacer funcion auxiliar que diga en que posicion x esta dado un t-estado
 *testeo bien el rainbow, en spectrum, next etc y cuando esté bien, quitar las llamadas a store_value_rainbow_debug_check_rainbow
 y poner bien el #define store_value_rainbow(p,x) *p++=x; en screen.h
-*corregir lo mismo en Prism, TSConf... alguno mas?
+*corregir lo mismo en Prism, TSConf... alguno mas? render gigascreen?
+->ok spectrum
+->ok prism

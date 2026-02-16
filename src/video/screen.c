@@ -6130,11 +6130,17 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
 {
 
 
-        int ancho_pantalla=256;
-        if (MACHINE_IS_PRISM) ancho_pantalla=PRISM_DISPLAY_WIDTH;
+        int ancho_pantalla=PRISM_DISPLAY_WIDTH;
 
-        int t_pixeles_por_estado=2;
-        if (MACHINE_IS_PRISM) t_pixeles_por_estado=6;
+        int t_pixeles_por_estado=6;
+
+        t_pixeles_por_estado /=cpu_turbo_speed;
+        if (t_pixeles_por_estado==0) t_pixeles_por_estado=1;
+
+        //TODO: esto esta hecho un poco a ojo, para que llene bien el border
+        if (cpu_turbo_speed==4) {
+            t_pixeles_por_estado=3;
+        }
 
         int indice_border=t_scanline*screen_testados_linea;
         int inicio_retrace_horiz=indice_border+(ancho_pantalla+screen_total_borde_derecho)/t_pixeles_por_estado;
@@ -6148,13 +6154,10 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
 	z80_int border_leido_prism;
 
 
-        //Para modo interlace
-        //int y=t_scanline_draw;
 
         z80_int color_border;
         z80_int color_border_prism;
 
-	//z80_int color;
 
 	z80_byte palette=prism_ula2_registers[4];
 
@@ -6166,6 +6169,10 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
 
 	color_border=screen_store_scanline_rainbow_border_get_colour(ultimo_numero_color_border,palette,color_border_prism);
 
+    //cuenta los t-estados de pixeles que se muestran en borde (excluye zonas invisibles/retrazo)
+    int offset_t_estados_pixeles_efectivos=0;
+
+    int pos_rainbow=0;
 
         //Hay que recorrer el array del border para la linea actual
         int final_border_linea=indice_border+screen_testados_linea;
@@ -6196,12 +6203,37 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
  //si nos pasamos de border izquierdo
                         if ( (indice_border<inicio_retrace_horiz || indice_border>=final_retrace_horiz) ) {
                                 //Por cada t_estado van 6 pixeles en prism
-                                        int jj;
-	                                for (jj=0;jj<t_pixeles_por_estado;jj++) store_value_rainbow(puntero_buf_rainbow,color_border);
-                        }
 
-                        //Se llega a siguiente linea
-                        //if (indice_border==inicio_retrace_horiz) y++;
+                                        pos_rainbow=offset_t_estados_pixeles_efectivos;
+
+                                        //Con turbo=1, son 6 pixeles por cada estado
+                                        //Con turbo=2, 3 pixel por t-estado
+                                        //Con turbo=4, 1.5 pixel por t-estado , decimal, habra problemas
+                                        //Con turbo=8, 0.5 pixel por t-estado
+
+                                        //TODO: esto esta hecho un poco a ojo, para que llene bien el border
+                                        if (cpu_turbo_speed==4) {
+                                            pos_rainbow=(pos_rainbow*6)/2;
+                                        }
+                                        else {
+                                            pos_rainbow=(pos_rainbow*6)/cpu_turbo_speed;
+                                        }
+
+                                        int jj;
+	                                for (jj=0;jj<t_pixeles_por_estado;jj++) {
+
+
+                                        //store_value_rainbow(puntero_buf_rainbow,color_border);
+
+                                        store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
+                                        puntero_buf_rainbow[pos_rainbow]=color_border;
+
+                                        pos_rainbow++;
+
+                                    }
+
+                                    offset_t_estados_pixeles_efectivos++;
+                        }
                 }
 
                 x+=t_pixeles_por_estado;
@@ -6210,13 +6242,20 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
 
 	//Debido a desajustes con estados por linea en prism, si no agregamos esto, se queda una zona en negro entre el borde izquierdo y la pantalla central
 	//Estos dos para zona donde hay borde izquierdo y derecho
-	store_value_rainbow(puntero_buf_rainbow,color_border);
-	store_value_rainbow(puntero_buf_rainbow,color_border);
+	//store_value_rainbow(puntero_buf_rainbow,color_border);
+	//store_value_rainbow(puntero_buf_rainbow,color_border);
+    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
+    puntero_buf_rainbow[pos_rainbow++]=color_border;
+    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
+    puntero_buf_rainbow[pos_rainbow++]=color_border;
 
 	//Y estos para la primera linea de pantalla
-	store_value_rainbow(puntero_buf_rainbow,color_border);
-	store_value_rainbow(puntero_buf_rainbow,color_border);
-
+	//store_value_rainbow(puntero_buf_rainbow,color_border);
+	//store_value_rainbow(puntero_buf_rainbow,color_border);
+    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
+    puntero_buf_rainbow[pos_rainbow++]=color_border;
+    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
+    puntero_buf_rainbow[pos_rainbow++]=color_border;
 
 
 
