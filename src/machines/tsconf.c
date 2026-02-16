@@ -1533,7 +1533,11 @@ void tsconf_store_scanline_border_supinf_izqder(int tipo)
 
 	   	if (tipo==0) {
                 for (x=0;x<ancho_linea;x++) {
+                    store_value_rainbow_debug_check_rainbow(destino);
+
 					*destino=color;
+
+                    store_value_rainbow_debug_check_rainbow(&destino[ancho_linea]);
 					destino[ancho_linea]=color; //doble pixel en altura
 
 					destino++;
@@ -1548,11 +1552,17 @@ void tsconf_store_scanline_border_supinf_izqder(int tipo)
                 for (x=0;x<ancho_border;x++) {
 
 					//izq
+                    store_value_rainbow_debug_check_rainbow(destino);
 					*destino=color;
+
+                    store_value_rainbow_debug_check_rainbow(&destino[ancho_linea]);
 					destino[ancho_linea]=color; //doble pixel en altura
 
 					//der
+                    store_value_rainbow_debug_check_rainbow(&destino[ancho_border+tsconf_current_pixel_width*2]);
 					destino[ancho_border+tsconf_current_pixel_width*2]=color;
+
+                    store_value_rainbow_debug_check_rainbow(&destino[ancho_border+tsconf_current_pixel_width*2+ancho_linea]);
 					destino[ancho_border+tsconf_current_pixel_width*2+ancho_linea]=color;    //doble pixel en altura
 
 					destino++;

@@ -929,6 +929,8 @@ extern void store_value_rainbow_debug(z80_int **p, z80_int valor);
 #define store_value_rainbow(p,x) store_value_rainbow_debug(&p,x);
 
 
+extern void store_value_rainbow_debug_check_rainbow(z80_int *puntero_buf_rainbow);
+
 extern z80_bit spectrum_1648_use_real_palette;
 
 extern int scr_ver_si_refrescar_por_menu_activo(int x,int fila);
