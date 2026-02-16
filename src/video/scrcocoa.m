@@ -979,8 +979,17 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ancho, alto, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
 }
 
+int cocoa_renderizando=0;
+
 - (void)render {
 
+    //Impedir que se llame cuando se esta dentro. Esto puede pasar si se genera un cpu_panic aqui dentro y el propio cpu_panic vuelve a llamar aqui
+    if (cocoa_renderizando) {
+        //printf("###############################No permitir render anidado\n");
+        return;
+    }
+
+    cocoa_renderizando=1;
 
     // CGLLockContext([[self openGLContext] CGLContextObj]);
 
@@ -1055,6 +1064,7 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
 
     // CGLUnlockContext([[self openGLContext] CGLContextObj]);
+    cocoa_renderizando=0;
 }
 
 
