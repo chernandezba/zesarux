@@ -1778,37 +1778,37 @@ void screen_prism_refresca_rainbow(void) {
 
 	int ancho,alto;
 
-        ancho=get_total_ancho_rainbow();
-        alto=get_total_alto_rainbow();
+    ancho=get_total_ancho_rainbow();
+    alto=get_total_alto_rainbow();
 
-        int x,y,bit;
+    int x,y,bit;
 
-        //margenes de zona interior de pantalla. Para overlay menu
-        int margenx_izq=screen_total_borde_izquierdo*border_enabled.v;
-        int margenx_der=screen_total_borde_izquierdo*border_enabled.v+512;
-        int margeny_arr=screen_borde_superior*border_enabled.v;
-        int margeny_aba=screen_borde_superior*border_enabled.v+384;
+    //margenes de zona interior de pantalla. Para overlay menu
+    int margenx_izq=screen_total_borde_izquierdo*border_enabled.v;
+    int margenx_der=screen_total_borde_izquierdo*border_enabled.v+512;
+    int margeny_arr=screen_borde_superior*border_enabled.v;
+    int margeny_aba=screen_borde_superior*border_enabled.v+384;
 
 
-        //para overlay menu tambien
-        //int fila;
-        //int columna;
+    //para overlay menu tambien
+    //int fila;
+    //int columna;
 
-        z80_int color_pixel;
-        z80_int *puntero;
+    z80_int color_pixel;
+    z80_int *puntero;
 
-        puntero=rainbow_buffer;
-        int dibujar;
+    puntero=rainbow_buffer;
+    int dibujar;
 
 	int menu_x,menu_y;
 
-        for (y=0;y<alto;y++) {
-                for (x=0;x<ancho;x+=8) {
-                        dibujar=1;
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x+=8) {
+            dibujar=1;
 
-                        //Ver si esa zona esta ocupada por texto de menu u overlay
+            //Ver si esa zona esta ocupada por texto de menu u overlay
 
-                        if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
+            if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
 
 
 
@@ -1822,25 +1822,25 @@ void screen_prism_refresca_rainbow(void) {
 				//else if (menu_y>23) dibujar=1;
 				if (scr_ver_si_refrescar_por_menu_activo(menu_x,menu_y)) dibujar=1;
 
-                        }
+            }
 
 
-                        if (dibujar==1) {
+            if (dibujar==1) {
 
-                                        for (bit=0;bit<8;bit++) {
+                for (bit=0;bit<8;bit++) {
 
 
-                                                //printf ("prism refresca x: %d y: %d\n",x,y);
+                    //printf ("prism refresca x: %d y: %d\n",x,y);
 
-                                                color_pixel=*puntero++;
+                    color_pixel=*puntero++;
 
-                                                scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
-                                        }
-                        }
-                        else puntero+=8;
-
+                    scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
                 }
+            }
+            else puntero+=8;
+
         }
+    }
 
 
 }
