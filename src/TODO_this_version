@@ -107,5 +107,11 @@ y poner bien el #define store_value_rainbow(p,x) *p++=x; en screen.h
 ->ok prism
 ->ok tsconf
 ->ok gigascreen
+ok *spectra
+ok *z88
+ok *cpc?
+ok *zxuno - demo dma con turbo
+ok*16c
+ok *vdp: master, sg1000, coleco, msx, spectravideo
 
 *cuando esté bien, quitar las llamadas a store_value_rainbow_debug_check_rainbow

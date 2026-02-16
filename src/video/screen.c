@@ -3595,7 +3595,7 @@ int scr_get_pixel_rainbow(int x,int y)
 
 	z80_int *puntero_buf_rainbow;
 
-        puntero_buf_rainbow=&rainbow_buffer[ y*get_total_ancho_rainbow()+x ];
+    puntero_buf_rainbow=&rainbow_buffer[ y*get_total_ancho_rainbow()+x ];
 
 	byte_leido=(*puntero_buf_rainbow)&15;
 	if (byte_leido==0) return 1;
