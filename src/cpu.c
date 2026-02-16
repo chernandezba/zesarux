@@ -689,8 +689,9 @@ void cpu_set_turbo_speed(void)
 	//printf ("Calculated t-scanline according to t-states: %d\n",t_estados / screen_testados_linea);
 
 
+        //Se cambia el turbo, esto no afecta al rainbow buffer
+        //init_rainbow();
 
-        init_rainbow();
         init_cache_putpixel();
 
     do_not_run_init_z88_memory_slots=0;
