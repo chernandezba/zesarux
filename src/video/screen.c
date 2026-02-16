@@ -916,40 +916,43 @@ int putpixel_cache_size=0;
 
 //funcion con debug. usada en el macro con debug
 
+void store_value_rainbow_debug_check_rainbow(z80_int *puntero_buf_rainbow)
+{
+    int ancho,alto,tamanyo;
+
+    ancho=screen_get_emulated_display_width_no_zoom();
+    alto=screen_get_emulated_display_height_no_zoom();
+
+
+    tamanyo=ancho*alto;
+
+    //Asignamos mas bytes dado que la ultima linea de pantalla genera datos (de borde izquierdo) mas alla de donde corresponde
+    //Y en Next y otras maquinas es doble de alto, por tanto se suman dos lineas
+    tamanyo=tamanyo+ancho*2;
+
+
+	if (puntero_buf_rainbow==NULL) {
+        cpu_panic("puntero_buf_rainbow NULL");
+		return;
+	}
+
+	if (puntero_buf_rainbow>=(rainbow_buffer+tamanyo)) {
+		printf ("puntero_buf_rainbow mayor limite final: %d (max %d) turbo: %d\n",puntero_buf_rainbow-rainbow_buffer,tamanyo,cpu_turbo_speed);
+        cpu_panic("desde temp_check_rainbow Intento de escribir en rainbow buffer mas alla del limite");
+	}
+
+	if (puntero_buf_rainbow<rainbow_buffer) {
+        printf ("puntero_buf_rainbow menor que inicial: -%d\n",rainbow_buffer-puntero_buf_rainbow);
+        cpu_panic ("puntero_buf_rainbow menor que inicial");
+    }
+}
+
 void store_value_rainbow_debug(z80_int **p, z80_int valor)
 {
 	z80_int *puntero_buf_rainbow;
 	puntero_buf_rainbow=*p;
 
-        int ancho,alto,tamanyo;
-
-	ancho=screen_get_emulated_display_width_no_zoom();
-	alto=screen_get_emulated_display_height_no_zoom();
-
-
-        tamanyo=ancho*alto*2;
-
-        //Asignamos mas bytes dado que la ultima linea de pantalla genera datos (de borde izquierdo) mas alla de donde corresponde
-        tamanyo=tamanyo+ancho;
-
-	tamanyo*=MAX_CPU_TURBO_SPEED;
-
-
-	if (puntero_buf_rainbow==NULL) {
-		printf ("puntero_buf_rainbow NULL\n");
-		return ;
-	}
-
-	if (puntero_buf_rainbow>(rainbow_buffer+tamanyo)) {
-		//printf ("puntero_buf_rainbow mayor limite final: %d (max %d)\n",puntero_buf_rainbow-rainbow_buffer,tamanyo);
-		return;
-	}
-
-	if (puntero_buf_rainbow<rainbow_buffer) {
-                //printf ("puntero_buf_rainbow menor que inicial: -%d\n",rainbow_buffer-puntero_buf_rainbow);
-                return;
-        }
-
+    store_value_rainbow_debug_check_rainbow(puntero_buf_rainbow);
 
 	*puntero_buf_rainbow=valor;
 	(*p)++;
@@ -1055,33 +1058,49 @@ void recalcular_get_total_alto_rainbow(void)
 //esas dos funciones, get_total_ancho_rainbow y get_total_alto_rainbow ahora son macros definidos en screen.h
 
 
+int anterior_tamanyo_rainbow=-1;
+
 void init_rainbow(void)
 {
 
-        if (rainbow_buffer_one!=NULL) {
-                debug_printf (VERBOSE_INFO,"Freeing previous rainbow video buffer");
-                free(rainbow_buffer_one);
-		free(rainbow_buffer_two);
-        }
 
 
-	int ancho,alto,tamanyo;
+    int ancho,alto,tamanyo;
 
 
 
-        ancho=screen_get_emulated_display_width_no_zoom();
-        alto=screen_get_emulated_display_height_no_zoom();
+    ancho=screen_get_emulated_display_width_no_zoom();
+    alto=screen_get_emulated_display_height_no_zoom();
 
 
-	tamanyo=ancho*alto*2; //buffer de 16 bits (*2 bytes)
+	tamanyo=ancho*alto*sizeof(z80_int);
 
-	//Asignamos mas bytes dado que la ultima linea de pantalla genera datos (de borde izquierdo) mas alla de donde corresponde
-	tamanyo=tamanyo+ancho;
 
-	tamanyo*=MAX_CPU_TURBO_SPEED;
+    //Asignamos mas bytes dado que la ultima linea de pantalla genera datos (de borde izquierdo) mas alla de donde corresponde
+    //Y en Next y otras maquinas es doble de alto, por tanto se suman dos lineas
+    tamanyo=tamanyo+ancho*2;
 
 	debug_printf (VERBOSE_INFO,"Initializing two rainbow video buffer of size: %d x %d , %d bytes each",ancho,alto,tamanyo);
 
+    printf("Initializing two rainbow video buffer of size: %d x %d , %d bytes each\n",ancho,alto,tamanyo);
+
+
+    //Si tamaño igual que anterior, no tocar nada
+
+    if (rainbow_buffer_one!=NULL) {
+        if (anterior_tamanyo_rainbow==tamanyo) {
+            printf("Mismo tamanyo rainbow_buffer que antes. no reasignar memoria. contador_segundo_infinito:%d\n",contador_segundo_infinito);
+            return;
+        }
+
+        debug_printf (VERBOSE_INFO,"Freeing previous rainbow video buffer");
+        free(rainbow_buffer_one);
+        free(rainbow_buffer_two);
+    }
+
+
+
+    anterior_tamanyo_rainbow=tamanyo;
 
 
 	rainbow_buffer_one=malloc(tamanyo);
@@ -6114,12 +6133,12 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
         int ancho_pantalla=256;
         if (MACHINE_IS_PRISM) ancho_pantalla=PRISM_DISPLAY_WIDTH;
 
-        int t_estados_por_pixel=2;
-        if (MACHINE_IS_PRISM) t_estados_por_pixel=6;
+        int t_pixeles_por_estado=2;
+        if (MACHINE_IS_PRISM) t_pixeles_por_estado=6;
 
         int indice_border=t_scanline*screen_testados_linea;
-        int inicio_retrace_horiz=indice_border+(ancho_pantalla+screen_total_borde_derecho)/t_estados_por_pixel;
-        int final_retrace_horiz=inicio_retrace_horiz+screen_invisible_borde_derecho/t_estados_por_pixel;
+        int inicio_retrace_horiz=indice_border+(ancho_pantalla+screen_total_borde_derecho)/t_pixeles_por_estado;
+        int final_retrace_horiz=inicio_retrace_horiz+screen_invisible_borde_derecho/t_pixeles_por_estado;
         //printf ("indice border: %d inicio_retrace_horiz: %d final_retrace_horiz: %d\n",indice_border,inicio_retrace_horiz,final_retrace_horiz);
 
         //X inicial de nuestro bucle. Siempre empieza en la zona de display-> al acabar borde izquierdo
@@ -6178,14 +6197,14 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
                         if ( (indice_border<inicio_retrace_horiz || indice_border>=final_retrace_horiz) ) {
                                 //Por cada t_estado van 6 pixeles en prism
                                         int jj;
-	                                for (jj=0;jj<t_estados_por_pixel;jj++) store_value_rainbow(puntero_buf_rainbow,color_border);
+	                                for (jj=0;jj<t_pixeles_por_estado;jj++) store_value_rainbow(puntero_buf_rainbow,color_border);
                         }
 
                         //Se llega a siguiente linea
                         //if (indice_border==inicio_retrace_horiz) y++;
                 }
 
-                x+=t_estados_por_pixel;
+                x+=t_pixeles_por_estado;
 
         }
 
@@ -6224,13 +6243,16 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 
 
 	int ancho_pantalla=256;
-	//if (MACHINE_IS_PRISM) ancho_pantalla=PRISM_DISPLAY_WIDTH;
 
-	int t_estados_por_pixel=2;
+	int t_pixeles_por_estado=2;
+
+    t_pixeles_por_estado /=cpu_turbo_speed;
+
+    if (t_pixeles_por_estado==0) t_pixeles_por_estado=1;
 
 	int indice_border=t_scanline*screen_testados_linea;
-	int inicio_retrace_horiz=indice_border+(ancho_pantalla+screen_total_borde_derecho)/t_estados_por_pixel;
-	int final_retrace_horiz=inicio_retrace_horiz+screen_invisible_borde_derecho/t_estados_por_pixel;
+	int inicio_retrace_horiz=indice_border+(ancho_pantalla+screen_total_borde_derecho)/t_pixeles_por_estado;
+	int final_retrace_horiz=inicio_retrace_horiz+screen_invisible_borde_derecho/t_pixeles_por_estado;
 	//printf ("indice border: %d inicio_retrace_horiz: %d final_retrace_horiz: %d\n",indice_border,inicio_retrace_horiz,final_retrace_horiz);
 
 	//X inicial de nuestro bucle. Siempre empieza en la zona de display-> al acabar borde izquierdo
@@ -6279,6 +6301,11 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 
 	//Hay que recorrer el array del border para la linea actual
 	int final_border_linea=indice_border+screen_testados_linea;
+    //printf("inicio border %d final_border_linea: %d resta: %d\n",indice_border,final_border_linea,final_border_linea-indice_border);
+
+    //cuenta los t-estados de pixeles que se muestran en borde (excluye zonas invisibles/retrazo)
+    int offset_t_estados_pixeles_efectivos=0;
+
 	for (;indice_border<final_border_linea;indice_border++) {
 		//obtenemos si hay cambio de border. En tbblue puede que no esté activado
 		if (MACHINE_IS_TBBLUE && tbblue_store_scanlines_border.v==0) {
@@ -6330,7 +6357,16 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 
 			//si nos pasamos de border izquierdo
 			if ( (indice_border<inicio_retrace_horiz || indice_border>=final_retrace_horiz) ) {
-				//Por cada t_estado van 2 pixeles normalmente
+                //Nota: en la ultima scanline, empieza desde ultima linea abajo del todo y salta hasta el borde izquierdo de la siguiente linea
+                //(que no existe) y por tanto podria generar segmentation fault al escribir mas alla  del rainbow buffer, pero
+                //simplemente lo que hemos hecho que el rainbow buffer tenga dos lineas de mas (1 linea pero soportando maquinas con doble de alto, como Next)
+                //asi se puede escribir en esa linea siguiente que no existe y no peta nada
+
+				//Por cada t_estado van 2 pixeles normalmente (224 t-estados, 448 pixeles - aunque varios ocultos) -> 448/224
+                //TODO: en modos turbo esto no va asi.
+                //ejemplo turbo 2: 448 t-estados -> 1 pixel por t-estado
+                //ejemplo turbo 4: 896 t-estados -> 0.5 pixel por t-estado!
+                //ejemplo turbo 8: 1792 t-estados -> 0.25 pixel por t-estado!
 					int jj;
                     z80_int color_final_border=color_border;
 
@@ -6339,30 +6375,68 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 
                     if (core_spectrum_executed_halt_in_this_scanline) color_final_border ^=7;
 
-					for (jj=0;jj<t_estados_por_pixel;jj++) {
-						store_value_rainbow(puntero_buf_rainbow,color_final_border);
+
+                    int pos_rainbow=offset_t_estados_pixeles_efectivos;
+
+                    //Con turbo=1, son 2 pixeles por cada estado
+                    //Con turbo=2, 1 pixel por t-estado
+                    //Con turbo=4, 0.5 pixel por t-estado
+                    //Con turbo=8, 0.25 pixel por t-estado
+                    pos_rainbow=(pos_rainbow*2)/cpu_turbo_speed;
+
+                    //En tbblue pixeles el doble de grandes
+                    if (MACHINE_IS_TBBLUE) pos_rainbow *=2;
+
+
+					for (jj=0;jj<t_pixeles_por_estado;jj++) {
+                        //printf("Store\n");
+                        //if (x>300*cpu_turbo_speed) printf("x: %d indice_border %d inicio_retrace_horiz %d final_retrace_horiz %d\n",x,indice_border,inicio_retrace_horiz,final_retrace_horiz);
+                        store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
+                        puntero_buf_rainbow[pos_rainbow]=color_final_border;
+
+                        //En tbblue pixeles el doble de grandes
 						if (MACHINE_IS_TBBLUE) {
-							puntero_buf_rainbow[ancho_rainbow]=color_final_border; //pixel de abajo a la derecha
-							puntero_buf_rainbow[ancho_rainbow-1]=color_final_border; //pixel de abajo
-							store_value_rainbow(puntero_buf_rainbow,color_final_border); //pixel de derecha y incrementamos
+                            store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow+ancho_rainbow]);
+                            puntero_buf_rainbow[pos_rainbow+ancho_rainbow]=color_final_border; //pixel de abajo a la izquierda
+
+                            store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow+ancho_rainbow+1]);
+                            puntero_buf_rainbow[pos_rainbow+ancho_rainbow+1]=color_final_border; //pixel de abajo a la derecha
+
+                            store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow+1]); //pixel de derecha
+                            puntero_buf_rainbow[pos_rainbow+1]=color_final_border;
+
+                            //Incrementamos
+                            pos_rainbow++;
 						}
 
 
+                        pos_rainbow++;
+
+
 					}
+
+                    offset_t_estados_pixeles_efectivos++;
+
 			}
 
 			//Se llega a siguiente linea
 			if (indice_border==inicio_retrace_horiz) {
 				//y++;
 				//En caso de tbblue hay que saltar una linea mas en buffer rainbow, ya que hacemos doble de alto
+
+                //Creo que esto sobra directamente
 				if (MACHINE_IS_TBBLUE) {
-					puntero_buf_rainbow +=ancho_rainbow;
+                    //printf("salto\n");
+					//puntero_buf_rainbow +=ancho_rainbow;
 				}
 			}
+
+
 		}
 
-		//Por cada t_estado van 2 pixeles
-		x+=t_estados_por_pixel;
+		x+=t_pixeles_por_estado;
+
+
 
 	}
 
@@ -8740,6 +8814,8 @@ void screen_store_scanline_rainbow_border_tbblue_supinf(void)
 	puntero_buf_rainbow=&rainbow_buffer[scanline_copia*get_total_ancho_rainbow()*2+x*2]; //*2 porque es doble de alto
 
 	//Empezamos desde x en zona display, o sea, justo despues del ancho del borde izquierdo
+    //printf("scanline_copia: %d offset: %d\n",scanline_copia,scanline_copia*get_total_ancho_rainbow()*2+x*2);
+
 	screen_store_scanline_rainbow_border_comun(puntero_buf_rainbow,x );
 
 

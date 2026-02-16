@@ -46,9 +46,7 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 -Probar compilar contra ssl en mac desde homebrew
 
-
 -scanline inicial que se ve en negro en Next al pulsar teclas
-
 
 -Pantalla completa en Mac no va bien
 
@@ -73,6 +71,7 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
 -poder ver la tabla de contienda al debugar
+->pero la contienda no solo depende de la direccion de PC, también de IR, no sé si es muy util poder ver esta tabla
 
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
 El como acepta ese evento de momento es una incógnita
@@ -94,4 +93,13 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 
 
 
--Settings-> Audio, Video y TV deberian estar en submenu hardware?
+-Settings-> Audio, Video, storage y TV deberian estar en submenu hardware?
+
+
+ok-primer scanline next se ve mal. parece que solo pasa si esta la limitacion de cpu
+
+->Problema es screen_store_scanline_rainbow_border_comun que :
+ok *en modos turbo>1, avanza igual en x que con turbo 1. error! se deberia hacer funcion auxiliar que diga en que posicion x esta dado un t-estado
+*testeo bien el rainbow, en spectrum, next etc y cuando esté bien, quitar las llamadas a store_value_rainbow_debug_check_rainbow
+y poner bien el #define store_value_rainbow(p,x) *p++=x; en screen.h
+*corregir lo mismo en Prism, TSConf... alguno mas?

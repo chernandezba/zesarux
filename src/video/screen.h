@@ -919,12 +919,14 @@ agregando duplicidad de funciones sin verdadera necesidad...
 
 
 
+extern void store_value_rainbow_debug(z80_int **p, z80_int valor);
+
 
 //Funcion normal
-#define store_value_rainbow(p,x) *p++=x;
+//#define store_value_rainbow(p,x) *p++=x;
 
 //Funcion con debug
-//#define store_value_rainbow(p,x) store_value_rainbow_debug(&p,x);
+#define store_value_rainbow(p,x) store_value_rainbow_debug(&p,x);
 
 
 extern z80_bit spectrum_1648_use_real_palette;
