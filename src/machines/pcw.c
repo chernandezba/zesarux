@@ -360,12 +360,44 @@ int pcw_convert_rgb_24_to_rgb_15(int rgb24)
     return rgb15;
 }
 
-#define PCW_COLOUR_START_MODE1_RGB15 2
-#define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+(4*4))
+#define PCW_COLORS_IN_MODE0 2
+#define PCW_COLORS_IN_MODE1 (4*4)
+#define PCW_COLORS_IN_MODE2_3 16
+
+#define PCW_COLOUR_START_MODE1_RGB15 PCW_COLORS_IN_MODE0
+#define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+PCW_COLORS_IN_MODE1)
+#define PCW_COLOUR_START_MODE3_RGB15 (PCW_COLOUR_START_MODE2_RGB15+PCW_COLORS_IN_MODE1)
+
+typedef struct {
+    int offset,total_colores;
+} pcw_colores_paletas;
+
+pcw_colores_paletas lista_pcw_colores_paletas[4]={
+    {0,PCW_COLORS_IN_MODE0},
+    {PCW_COLOUR_START_MODE1_RGB15,PCW_COLORS_IN_MODE1},
+    {PCW_COLOUR_START_MODE2_RGB15,PCW_COLORS_IN_MODE2_3},
+    {PCW_COLOUR_START_MODE3_RGB15,PCW_COLORS_IN_MODE2_3}
+};
 
 //La paleta de trabajo es esta, en 15 bits, que al final se obtendran colores de paleta de tsconf de 15 bits
 //Cuando el pcw modifica algun color de la paleta, se hace sobre esta paleta de 15 bits
 int pcw_rgb_table_15_bits[PCW_TOTAL_PALETTE_COLOURS];
+
+//Resetear paleta asociada a un modo concreto
+void pcw_init_colour_palette_mode(int mode)
+{
+    if (mode>=4) mode=0;
+
+    int colores=lista_pcw_colores_paletas[mode].total_colores;
+    int offset=lista_pcw_colores_paletas[mode].offset;
+
+    int i;
+    for (i=0;i<colores;i++) {
+        int rgb_24=pcw_rgb_table[offset+i];
+        int rgb_15=pcw_convert_rgb_24_to_rgb_15(rgb_24);
+        pcw_rgb_table_15_bits[offset+i]=rgb_15;
+    }
+}
 
 //Convertir los colores rgb24 a rgb15
 void pcw_init_colour_palette(void)
@@ -415,8 +447,8 @@ int pcw_get_rgb_color_mode1(int i)
     return indice_color_rgb24;
 }
 
-//Retorna el color en modo 2
-int pcw_get_rgb_color_mode2(int i)
+//Retorna el color en modo 2 y 3
+int pcw_get_rgb_color_mode2_3(int i)
 {
 
 
@@ -455,7 +487,7 @@ void pcw_refresca_putpixel_mode2(int x,int y,int color)
 {
     y*=2;
 
-    int color_final=pcw_get_rgb_color_mode2(color);
+    int color_final=pcw_get_rgb_color_mode2_3(color);
 
     scr_putpixel_zoom(x,y,color_final);
     scr_putpixel_zoom(x,y+1,color_final);
@@ -1319,7 +1351,7 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
             //Ejemplo de juego que usa color modo 1: knight lore
             if (pcw_video_mode==0) color=pcw_get_rgb_color_mode0(border_col);
             else if (pcw_video_mode==1) color=pcw_get_rgb_color_mode1(border_col*3);
-            else color=pcw_get_rgb_color_mode2(border_col*15);
+            else color=pcw_get_rgb_color_mode2_3(border_col*15);
 
 
             scr_refresca_border_pcw(color);
@@ -1606,11 +1638,16 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
         else if (funcion==0) {
             //Cambio modo
             int modo=value & 0x7F;
+            if (modo>=4) modo=0;
             //7 bits indican el numero de modo. Aunque solo hay modos desde 0 a 4. 4 no soportado en ZEsarUX
 
             //TODO: bit 7 de value. Si a 0, se resetea paleta por defecto. A 1, no se resetea a paleta por defecto
+            if ((value & 128)==0) {
+                //printf("Reset paleta\n");
 
-            if (modo>=4) modo=0;
+                pcw_init_colour_palette_mode(modo);
+            }
+
 
             pcw_video_mode=modo;
 
