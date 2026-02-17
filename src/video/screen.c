@@ -5090,8 +5090,6 @@ void scr_refresca_pantalla_comun(void)
                 for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
 
 
-			//Ver en casos en que puede que haya menu activo y hay que hacer overlay
-			if (scr_ver_si_refrescar_por_menu_activo(x,fila)) {
 
                 	        byte_leido=screen[direccion];
 	                        attribute=screen[dir_atributo];
@@ -5147,7 +5145,7 @@ void scr_refresca_pantalla_comun(void)
 
 	                                byte_leido=byte_leido<<1;
         	                }
-			}
+
 
 			//temp
 			//else {
@@ -5174,9 +5172,9 @@ void scr_refresca_pantalla_comun(void)
 void scr_mk14_linea(int x,int y,int longitud,int incx,int incy,int color)
 {
 	while (longitud) {
-		if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) {
-			scr_putpixel_zoom(x,y,color);
-		}
+
+        scr_putpixel_zoom(x,y,color);
+
 		x +=incx;
 		y +=incy;
 
@@ -5271,59 +5269,37 @@ void scr_refresca_pantalla_y_border_mk14(void)
 {
 
 	if (border_enabled.v) {
-					//ver si hay que refrescar border
-					if (modificado_border.v)
-					{
-//printf ("refrescamos border\n");
-									scr_refresca_border_comun_spectrumzx8081(7);
-									modificado_border.v=0;
-//sleep (1);
-					}
+        //ver si hay que refrescar border
+        if (modificado_border.v)
+        {
+
+            scr_refresca_border_comun_spectrumzx8081(7);
+            modificado_border.v=0;
+
+        }
 
 	}
 
-	int x,y,bit;
 
-        int color=0;
-        int fila;
+	int x,y;
 
 
-	z80_byte x_hi;
-
-        for (y=0;y<192;y++) {
-
-                fila=y/8;
-
-                for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
+    for (y=0;y<192;y++) {
+        for (x=0;x<256;x++) {
+            scr_putpixel_zoom(x,y,7);
+        }
+    }
 
 
-									//Ver en casos en que puede que haya menu activo y hay que hacer overlay
-									if (scr_ver_si_refrescar_por_menu_activo(x,fila)) {
+    //Dibujar digitos
+    int i;
+    x=0;
+    y=0;
+    for (i=MK14_DIGITS-1;i>=0;i--) {
+        scr_mk14_draw_led(mk14_ledstat[i],x,y,2);
 
-                	 for (bit=0;bit<8;bit++) {
-
-											color=7;
-											scr_putpixel_zoom(x_hi+bit,y,color);
-
-
-        	         }
-								 }
-
-
-              }
-
-      }
-
-
-			//Dibujar digitos
-			int i;
-			x=0;
-			y=0;
-			for (i=MK14_DIGITS-1;i>=0;i--) {
-				scr_mk14_draw_led(mk14_ledstat[i],x,y,2);
-
-				x += 14;
-			}
+        x += 14;
+    }
 
 }
 
