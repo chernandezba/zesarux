@@ -6465,6 +6465,162 @@ void menu_hardware_lightgun_vertical_threshold(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_settings_tv_line_period(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced_default("Max Line Period",&tv_max_line_period,3,+1,10,99,0,DEFAULT_TV_MAX_LINE_PERIOD);
+}
+
+void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced_default("Max Lines",&tv_max_lines,4,+1,200,399,0,DEFAULT_TV_MAX_LINES);
+}
+
+
+void menu_settings_tv_minimum_accepted_vsync(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced_default("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0,DEFAULT_TV_MINIMO_DURACION_VSYNC);
+}
+
+void menu_settings_tv_vsync_minimum_accepted_interval(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ventana_scanf_numero_enhanced_default("Minimum vsync interval",&tv_vsync_minimum_accepted_interval,4,+5,1,100,0,DEFAULT_TV_MINIMUM_VSYNC_ACCEPTED_INTERVAL);
+
+}
+
+
+void menu_display_interlace(MENU_ITEM_PARAMETERS)
+{
+    if (video_interlaced_mode.v) disable_interlace();
+    else enable_interlace();
+}
+
+
+void menu_display_interlace_scanlines(MENU_ITEM_PARAMETERS)
+{
+    if (video_interlaced_scanlines.v) disable_scanlines();
+    else enable_scanlines();
+}
+
+void menu_display_lost_vsync(MENU_ITEM_PARAMETERS)
+{
+    simulate_lost_vsync.v ^=1;
+}
+
+void menu_display_lost_hsync(MENU_ITEM_PARAMETERS)
+{
+    simulate_lost_hsync.v ^=1;
+}
+
+void menu_settings_tv(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
+            "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (video_interlaced_mode.v==1 ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'i');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable interlaced mode");
+        menu_add_item_menu_ayuda(array_menu_common,"Interlaced mode draws the screen like the machine on a real TV: "
+            "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
+            "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
+            "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+        if (video_interlaced_mode.v) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace_scanlines,NULL,"[%c] S~~canlines", (video_interlaced_scanlines.v==1 ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_common,'c');
+            menu_add_item_menu_tooltip(array_menu_common,"Enable scanlines on interlaced mode");
+            menu_add_item_menu_ayuda(array_menu_common,"Scanlines draws odd lines a bit darker than even lines");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+        }
+
+
+        if (MACHINE_IS_ZX8081) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_max_lines,NULL,
+                "Max Scanlines","Max Scanlines","Max Scanlines");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%d]",tv_max_lines);
+            menu_add_item_menu_tooltip(array_menu_common,"Maximum scanlines (counting even non visible scanlines)");
+            menu_add_item_menu_ayuda(array_menu_common,"Maximum scanlines (counting even non visible scanlines)");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_line_period,NULL,
+                "Max Scanline Period","Max Periodo de Scanline","Max Periode de Scanline");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_max_line_period);
+            menu_add_item_menu_tooltip(array_menu_common,"Maximum scanline duration, in microseconds");
+            menu_add_item_menu_ayuda(array_menu_common,"Maximum scanline duration, in microseconds");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_minimum_accepted_vsync,NULL,
+                "Minimum vsync","Mínimo vsync","Mínim vsync");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_minimum_accepted_vsync);
+            menu_add_item_menu_tooltip(array_menu_common,"Minimum accepted vsync length, in microseconds");
+            menu_add_item_menu_ayuda(array_menu_common,"Minimum accepted vsync length, in microseconds");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_vsync_minimum_accepted_interval,NULL,
+                "Minimum vsync interval","Mínimo intervalo vsync","Mínim interval vsync");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common,": [%3d %%]",tv_vsync_minimum_accepted_interval);
+            menu_add_item_menu_tooltip(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
+            menu_add_item_menu_ayuda(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
+                "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_hsync,NULL,
+                "Simulate lost HSYNC","Simular pérdida de HSYNC","Simular pèrdua de HSYNC");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_hsync.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_common);
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> TV","Menú Principal-> Opciones-> TV","Menú Principal-> Opcions-> TV");
+
+        retorno_menu=menu_dibuja_menu(&settings_tv_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "TV Settings","Opciones TV","Opcions TV");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 {
@@ -6697,15 +6853,21 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_speed,NULL,
-            "Emulator Spee~~d","Veloci~~dad Emulador","Velocitat Emula~~dor");
+            "Emulator Speed","Velocidad Emulador","Velocitat Emulador");
         menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
         menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%3d%%]",porcentaje_velocidad_emulador);
-        menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
+        //menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change the emulator Speed");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Changes all the emulator speed by setting a different interval between display frames. "
         "Also changes audio frequency");
 
         menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_audio,NULL,"A~~udio");
+        menu_add_item_menu_shortcut(array_menu_hardware_settings,'u');
+        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Audio settings");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Audio settings");
+        menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_settings,NULL,
@@ -6777,12 +6939,27 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
-        // De momento esto desactivado
-        /*
-        if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_if1_settings,NULL,"Interface 1: %s",(if1_enabled.v ? "Yes" : "No") );
+        if (menu_cond_realvideo() &&
+            (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081)
+        ) {
+
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_tv,NULL,
+                "TV","TV","TV");
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"TV settings");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"TV settings");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
-        */
+
+
+        //menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
+        //    "Emulated ~~Display","~~Display emulado","~~Display emulat");
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
+            "Vi~~deo","Vi~~deo","Vi~~deo");
+        menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
+        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Video settings");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Video settings");
+        menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
 
 
@@ -6946,18 +7123,6 @@ void menu_display_inves_ula_bright_error(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_display_interlace(MENU_ITEM_PARAMETERS)
-{
-    if (video_interlaced_mode.v) disable_interlace();
-    else enable_interlace();
-}
-
-
-void menu_display_interlace_scanlines(MENU_ITEM_PARAMETERS)
-{
-    if (video_interlaced_scanlines.v) disable_scanlines();
-    else enable_scanlines();
-}
 
 void menu_display_gigascreen(MENU_ITEM_PARAMETERS)
 {
@@ -7822,15 +7987,7 @@ void menu_display_force_zx81_chr_128(MENU_ITEM_PARAMETERS)
     force_zx81_chr_128.v ^=1;
 }
 
-void menu_display_lost_vsync(MENU_ITEM_PARAMETERS)
-{
-    simulate_lost_vsync.v ^=1;
-}
 
-void menu_display_lost_hsync(MENU_ITEM_PARAMETERS)
-{
-    simulate_lost_hsync.v ^=1;
-}
 
 void menu_display_flash_color(MENU_ITEM_PARAMETERS)
 {
@@ -9890,135 +10047,7 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_settings_tv_line_period(MENU_ITEM_PARAMETERS)
-{
-    menu_ventana_scanf_numero_enhanced_default("Max Line Period",&tv_max_line_period,3,+1,10,99,0,DEFAULT_TV_MAX_LINE_PERIOD);
-}
 
-void menu_settings_tv_max_lines(MENU_ITEM_PARAMETERS)
-{
-    menu_ventana_scanf_numero_enhanced_default("Max Lines",&tv_max_lines,4,+1,200,399,0,DEFAULT_TV_MAX_LINES);
-}
-
-
-void menu_settings_tv_minimum_accepted_vsync(MENU_ITEM_PARAMETERS)
-{
-    menu_ventana_scanf_numero_enhanced_default("Minimum vsync",&tv_minimum_accepted_vsync,4,+1,10,999,0,DEFAULT_TV_MINIMO_DURACION_VSYNC);
-}
-
-void menu_settings_tv_vsync_minimum_accepted_interval(MENU_ITEM_PARAMETERS)
-{
-
-    menu_ventana_scanf_numero_enhanced_default("Minimum vsync interval",&tv_vsync_minimum_accepted_interval,4,+5,1,100,0,DEFAULT_TV_MINIMUM_VSYNC_ACCEPTED_INTERVAL);
-
-}
-
-void menu_settings_tv(MENU_ITEM_PARAMETERS)
-{
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-
-
-    do {
-
-
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,
-            "~~Interlaced mode","Modo ~~Interlaced","Mode ~~Interlaced");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (video_interlaced_mode.v==1 ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_common,'i');
-        menu_add_item_menu_tooltip(array_menu_common,"Enable interlaced mode");
-        menu_add_item_menu_ayuda(array_menu_common,"Interlaced mode draws the screen like the machine on a real TV: "
-            "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
-            "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
-            "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-
-        if (video_interlaced_mode.v) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace_scanlines,NULL,"[%c] S~~canlines", (video_interlaced_scanlines.v==1 ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_common,'c');
-            menu_add_item_menu_tooltip(array_menu_common,"Enable scanlines on interlaced mode");
-            menu_add_item_menu_ayuda(array_menu_common,"Scanlines draws odd lines a bit darker than even lines");
-            menu_add_item_menu_es_avanzado(array_menu_common);
-        }
-
-
-        if (MACHINE_IS_ZX8081) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_max_lines,NULL,
-                "Max Scanlines","Max Scanlines","Max Scanlines");
-            menu_add_item_menu_prefijo(array_menu_common,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_common,": [%d]",tv_max_lines);
-            menu_add_item_menu_tooltip(array_menu_common,"Maximum scanlines (counting even non visible scanlines)");
-            menu_add_item_menu_ayuda(array_menu_common,"Maximum scanlines (counting even non visible scanlines)");
-            menu_add_item_menu_es_avanzado(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_line_period,NULL,
-                "Max Scanline Period","Max Periodo de Scanline","Max Periode de Scanline");
-            menu_add_item_menu_prefijo(array_menu_common,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_max_line_period);
-            menu_add_item_menu_tooltip(array_menu_common,"Maximum scanline duration, in microseconds");
-            menu_add_item_menu_ayuda(array_menu_common,"Maximum scanline duration, in microseconds");
-            menu_add_item_menu_es_avanzado(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_minimum_accepted_vsync,NULL,
-                "Minimum vsync","Mínimo vsync","Mínim vsync");
-            menu_add_item_menu_prefijo(array_menu_common,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_common,": [%d] microsec",tv_minimum_accepted_vsync);
-            menu_add_item_menu_tooltip(array_menu_common,"Minimum accepted vsync length, in microseconds");
-            menu_add_item_menu_ayuda(array_menu_common,"Minimum accepted vsync length, in microseconds");
-            menu_add_item_menu_es_avanzado(array_menu_common);
-
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_tv_vsync_minimum_accepted_interval,NULL,
-                "Minimum vsync interval","Mínimo intervalo vsync","Mínim interval vsync");
-            menu_add_item_menu_prefijo(array_menu_common,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_common,": [%3d %%]",tv_vsync_minimum_accepted_interval);
-            menu_add_item_menu_tooltip(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
-            menu_add_item_menu_ayuda(array_menu_common,"Minimum accepted vsync interval (in % of 20ms) between every vsync start");
-            menu_add_item_menu_es_avanzado(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_vsync,NULL,
-                "Simulate lost VSYNC","Simular pérdida de VSYNC","Simular pèrdua de VSYNC");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_vsync.v==1 ? 'X' : ' '));
-            menu_add_item_menu_es_avanzado(array_menu_common);
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_lost_hsync,NULL,
-                "Simulate lost HSYNC","Simular pérdida de HSYNC","Simular pèrdua de HSYNC");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(simulate_lost_hsync.v==1 ? 'X' : ' '));
-            menu_add_item_menu_es_avanzado(array_menu_common);
-        }
-
-
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_ESC_item(array_menu_common);
-
-
-        menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Settings-> TV","Menú Principal-> Opciones-> TV","Menú Principal-> Opcions-> TV");
-
-        retorno_menu=menu_dibuja_menu(&settings_tv_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "TV Settings","Opciones TV","Opcions TV");
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                //Si este menu lo definimos como un menu tabulado,
-                //si hay alguna accion disparada en la que se haya pulsado ESC,
-                //no queremos que cierre este menu
-                //salir_todos_menus=0;
-
-            }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-}
 
 
 //menu settings
@@ -10038,11 +10067,14 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings,"Accessibility settings, to use text-to-speech facilities on ZEsarUX menu and games");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
+        /*
+        Movido a settings->hardware
         menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_audio,NULL,"A~~udio");
         menu_add_item_menu_shortcut(array_menu_settings,'u');
         menu_add_item_menu_tooltip(array_menu_settings,"Audio settings");
         menu_add_item_menu_ayuda(array_menu_settings,"Audio settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        */
 
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_config_file,NULL,
             "Configu~~ration file","Archivo configu~~ración","Arxiu configu~~ració");
@@ -10169,6 +10201,9 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         }
         */
 
+        /*
+        Movido a settings->hardware
+
         if (menu_cond_realvideo() &&
             (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081)
         ) {
@@ -10190,6 +10225,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings,"Video settings");
         menu_add_item_menu_ayuda(array_menu_settings,"Video settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+
+        */
 
         if (scr_driver_can_ext_desktop() ) {
             menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ext_desktop_settings,NULL,"ZX Des~~ktop");
