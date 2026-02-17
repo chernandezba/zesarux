@@ -2046,30 +2046,5 @@ void screen_store_scanline_rainbow_vdp_9918a_border_and_display(z80_int *scanlin
 //Comun a todas las maquinas que usan este chip VDP
 void vdp_9918a_scr_refresca_pantalla_y_border_rainbow(void)
 {
-
-	int ancho,alto;
-
-	ancho=get_total_ancho_rainbow();
-	alto=get_total_alto_rainbow();
-
-	int x,y;
-
-
-	z80_int color_pixel;
-	z80_int *puntero;
-
-	puntero=rainbow_buffer;
-
-
-	for (y=0;y<alto;y++) {
-
-		for (x=0;x<ancho;x++) {
-
-            color_pixel=*puntero++;
-            scr_putpixel_zoom_rainbow(x,y,color_pixel);
-
-		}
-
-	}
-
+	scr_refresca_pantalla_rainbow_comun();
 }

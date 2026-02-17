@@ -5046,7 +5046,6 @@ void scr_refresca_pantalla_rainbow_comun(void)
             scr_putpixel_zoom_rainbow(x,y,color_pixel);
         }
     }
-
 }
 
 
