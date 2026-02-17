@@ -3962,7 +3962,7 @@ BITS INK PAPER BORDER
 
                         //Ver en casos en que puede que haya menu activo y hay que hacer overlay
 			//if (1==1) {
-                        if (scr_ver_si_refrescar_por_menu_activo(x/2,fila)) {
+
 
                                 byte_leido=screen[direccion+incremento_offset];
 
@@ -3988,7 +3988,7 @@ BITS INK PAPER BORDER
 
                                         byte_leido=byte_leido<<1;
                                 }
-                        }
+
 
 			incremento_offset ^=8192;
 
@@ -4698,27 +4698,13 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
 {
 	if ((interlaced_numero_frame&1)==0) {
 
-
-
-
-		//printf ("refresco con gigascreen\n");
-
-        //aqui no tiene sentido (o si?) el modo simular video zx80/81 en spectrum
         int ancho,alto;
 
         ancho=get_total_ancho_rainbow();
         alto=get_total_alto_rainbow();
 
-        int x,y,bit;
+        int x,y;
 
-        //margenes de zona interior de pantalla. Para overlay menu
-        int margenx_izq=screen_total_borde_izquierdo*border_enabled.v;
-        int margenx_der=screen_total_borde_izquierdo*border_enabled.v+256;
-        int margeny_arr=screen_borde_superior*border_enabled.v;
-        int margeny_aba=screen_borde_superior*border_enabled.v+192;
-        //para overlay menu tambien
-        //int fila;
-        //int columna;
 
         //Para gigascreen, valores que se encontraran en el buffer rainbow seran entre 0 y 15
         z80_byte color_pixel_one,color_pixel_two;
@@ -4737,51 +4723,18 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
 				puntero_two=new_scalled_rainbow_buffer_gigascren_two;
         }
 
-
-
-        int dibujar;
-
         for (y=0;y<alto;y++) {
-            for (x=0;x<ancho;x+=8) {
-                dibujar=1;
+            for (x=0;x<ancho;x++) {
 
-                //Ver si esa zona esta ocupada por texto de menu u overlay
+                color_pixel_one=*puntero_one++;
+                color_pixel_two=*puntero_two++;
 
-                if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
+                color_pixel_final=get_gigascreen_color(color_pixel_one,color_pixel_two);
 
-
-                        //normalmente a 48
-                        //int screen_total_borde_izquierdo;
-
-                        if (!scr_ver_si_refrescar_por_menu_activo( (x-margenx_izq)/8, (y-margeny_arr)/8) )
-                                dibujar=0;
-
-                }
-                if (dibujar==1) {
-
-                    for (bit=0;bit<8;bit++) {
-
-
-                        //printf ("x: %d y: %d\n",x,y);
-
-                        color_pixel_one=*puntero_one++;
-                        color_pixel_two=*puntero_two++;
-
-
-                        color_pixel_final=get_gigascreen_color(color_pixel_one,color_pixel_two);
-
-
-                        scr_putpixel_zoom_rainbow(x+bit,y,color_pixel_final);
-                    }
-                }
-                else {
-                    puntero_one+=8;
-                    puntero_two+=8;
-			    }
+                scr_putpixel_zoom_rainbow(x,y,color_pixel_final);
 
             }
         }
-
 
 	}
 
