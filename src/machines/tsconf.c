@@ -2980,7 +2980,6 @@ void screen_tsconf_refresca_rainbow(void) {
         }
     }
 
-
 }
 
 

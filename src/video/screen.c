@@ -1787,7 +1787,6 @@ void screen_prism_refresca_rainbow(void) {
         }
     }
 
-
 }
 
 
@@ -5112,13 +5111,9 @@ void scr_refresca_pantalla_rainbow_comun(void)
 			puntero +=ancho;
 		}
 		else {
-		    for (x=0;x<ancho;x+=8) {
-
-                for (bit=0;bit<8;bit++) {
-                    color_pixel=*puntero++;
-                    scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
-                }
-
+		    for (x=0;x<ancho;x++) {
+                color_pixel=*puntero++;
+                scr_putpixel_zoom_rainbow(x,y,color_pixel);
 		    }
 		}
 	}
