@@ -6830,7 +6830,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             */
 
 
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse,NULL,"[%c] Kempston Mou~~se emulation",(kempston_mouse_emulation.v==1 ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse,NULL,"[%c] Kempston Mou~~se",(kempston_mouse_emulation.v==1 ? 'X' : ' '));
 
             menu_add_item_menu_shortcut(array_menu_hardware_settings,'s');
 
@@ -6845,10 +6845,10 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         }
 
         if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_datagear_dma,NULL,"[%c] Datagear DMA emulation",(datagear_dma_emulation.v==1 ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_datagear_dma,NULL,"[%c] Datagear DMA",(datagear_dma_emulation.v==1 ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1 emulation",(dinamic_sd1.v ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1",(dinamic_sd1.v ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
@@ -6882,8 +6882,6 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                                     tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
             menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
             menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
-
-
 
 
             menu_add_item_menu_separator(array_menu_hardware_settings);
@@ -6948,19 +6946,10 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_memory_settings,NULL,
             "~~Memory","~~Memoria","~~Memoria");
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'m');
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
-
-
-
-
-
-
 
 
 
@@ -6980,8 +6969,6 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Settings for the real joystick");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Settings for the real joystick");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
-
-
 
 
 
@@ -7017,8 +7004,6 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Video settings");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Video settings");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
-
-
 
 
 
