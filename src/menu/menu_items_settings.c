@@ -6871,7 +6871,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_settings,NULL,
-            "~~CPU settings","Opciones ~~CPU","Opcions ~~CPU");
+            "~~CPU","~~CPU","~~CPU");
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'c');
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change some CPU settings");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change some CPU settings");
@@ -6880,7 +6880,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         //Keyboard settings
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_keyboard_settings,NULL,
-            "~~Keyboard settings","Opciones te~~klado","Opcions te~~klat");
+            "~~Keyboard","te~~klado","te~~klat");
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'k');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Hardware settings");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Hardware settings");
@@ -6892,7 +6892,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_memory_settings,NULL,
-            "~~Memory Settings","Opciones ~~Memoria","Opcions ~~Memoria");
+            "~~Memory","~~Memoria","~~Memoria");
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'m');
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
@@ -6929,15 +6929,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_ula_settings,NULL,
-                "U~~LA settings","Opciones U~~LA","Opcions U~~LA");
-            menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change some ULA settings");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change some ULA settings");
-            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-        }
+
 
         if (menu_cond_realvideo() &&
             (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081)
@@ -6947,6 +6939,16 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                 "TV","TV","TV");
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"TV settings");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"TV settings");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+        }
+
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_ula_settings,NULL,
+                "U~~LA","U~~LA","U~~LA");
+            menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change some ULA settings");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change some ULA settings");
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
