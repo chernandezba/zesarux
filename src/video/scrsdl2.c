@@ -318,7 +318,6 @@ void scrsdl_refresca_pantalla(void)
         if (MACHINE_IS_ZX8081) {
 
 
-                //scr_refresca_pantalla_rainbow_comun();
                 scrsdl_refresca_pantalla_zx81();
         }
 

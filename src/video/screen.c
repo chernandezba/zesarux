@@ -1801,7 +1801,7 @@ void screen_prism_refresca_pantalla(void) {
 
                 else {
                         //modo rainbow - real video
-                        //en spectrum normal era: scr_refresca_pantalla_rainbow_comun();
+
 
 
 			screen_prism_refresca_rainbow();
@@ -1820,8 +1820,6 @@ void screen_tbblue_refresca_pantalla(void)
 
     else {
         //modo rainbow - real video
-        //en spectrum normal era: scr_refresca_pantalla_rainbow_comun();
-        //scr_refresca_pantalla_rainbow_comun(); //Se puede usar esta funcion comun a todos
 
         screen_tbblue_refresca_rainbow();
     }
@@ -5066,14 +5064,12 @@ void scr_refresca_pantalla_rainbow_comun(void)
 	//Si es modo timex 512x192, llamar a otra funcion
 	if (timex_si_modo_512_y_zoom_par() ) {
 		//Si zoom x par
-					if (timex_mode_512192_real.v) {
-						scr_refresca_pantalla_timex_512x192();
-						return;
-					}
+        if (timex_mode_512192_real.v) {
+            scr_refresca_pantalla_timex_512x192();
+            return;
+        }
 	}
 
-
-	//aqui no tiene sentido (o si?) el modo simular video zx80/81 en spectrum
 	int ancho,alto;
 
 	ancho=get_total_ancho_rainbow();

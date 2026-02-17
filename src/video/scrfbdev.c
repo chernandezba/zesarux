@@ -456,7 +456,6 @@ void scrfbdev_refresca_pantalla(void)
 	if (MACHINE_IS_ZX8081) {
 
 
-		//scr_refresca_pantalla_rainbow_comun();
 		scrfbdev_refresca_pantalla_zx81();
 	}
 

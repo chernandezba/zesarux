@@ -1372,11 +1372,6 @@ void scr_tsconf_putpixel_text_mode(int x,int y,unsigned color)
 {
 	y*=2;
 
-	int border_x=tsconf_current_border_width*2;
-	int border_y=tsconf_current_border_height*2;
-
-	int menu_x=(x+border_x)/8;
-	int menu_y=(y+border_y)/8;
 
 
 		scr_tsconf_putpixel_sum_border(x,y,color);
@@ -1390,11 +1385,7 @@ void scr_tsconf_putpixel_zx_mode(int x,int y,unsigned color)
 	y*=2;
 	x*=2;
 
-	int border_x=tsconf_current_border_width*2;
-	int border_y=tsconf_current_border_height*2;
 
-	int menu_x=(x+border_x)/8;
-	int menu_y=(y+border_y)/8;
 
 
         scr_tsconf_putpixel_sum_border(x,y,color);
@@ -2706,8 +2697,6 @@ void scr_tsconf_putpixel_zoom_border(int x,int y, unsigned int color)
 	x*=2;
 	y*=2;
 
-    int menu_x=x/8;
-    int menu_y=y/8;
 
 
 
