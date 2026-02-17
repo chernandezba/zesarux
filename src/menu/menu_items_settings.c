@@ -233,6 +233,7 @@ int hardware_realjoystick_steering_opcion_seleccionada=0;
 int settings_apps_opcion_seleccionada=0;
 int settings_windows_features_opcion_seleccionada=0;
 int settings_tv_opcion_seleccionada=0;
+int hardware_joystick_settings_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -6621,30 +6622,30 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
 
 
 
-//menu hardware settings
-void menu_hardware_settings(MENU_ITEM_PARAMETERS)
+
+void menu_hardware_joystick_settings(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_hardware_settings;
+        menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
         do {
 
-            menu_add_item_menu_inicial(&array_menu_hardware_settings,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+            menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 
 
 
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
                 "Emulated ~~Joystick","~~Joystick emulado","~~Joystick emulat");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-            menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
-            menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
-            menu_add_item_menu_genera_ventana(array_menu_hardware_settings);
-            menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
-                    menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");
-                    menu_add_item_menu_ayuda(array_menu_hardware_settings,"Joystick is emulated with:\n"
+            menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%s]",joystick_texto[joystick_emulation]);
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_shortcut(array_menu_common,'j');
+                    menu_add_item_menu_tooltip(array_menu_common,"Decide which joystick type is emulated");
+                    menu_add_item_menu_ayuda(array_menu_common,"Joystick is emulated with:\n"
                     "-A real joystick connected to an USB port\n"
                     "-Cursor keys on the keyboard for the directions and Home key for fire"
             );
@@ -6659,9 +6660,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         int i;
         for (i=0;i<4;i++) {
 
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,
                 "Fire key","Tecla disparo","Tecla foc");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
+            menu_add_item_menu_prefijo_format(array_menu_common,"    ");
 
             int indice_fire=joystick_defined_key_fire_array[i];
 
@@ -6671,73 +6672,112 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             //else if (i==2) indice_fire=joystick_defined_key_fire3;
             //else if (i==3) indice_fire=joystick_defined_key_fire4;
 
-            if (indice_fire<0) menu_add_item_menu_sufijo_format(array_menu_hardware_settings," %d [None]",i+1);
-            else menu_add_item_menu_sufijo_format(array_menu_hardware_settings," %d [%s]",i+1,joystick_defined_fire_texto[indice_fire]);
-            menu_add_item_menu_valor_opcion(array_menu_hardware_settings,i);
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
+            if (indice_fire<0) menu_add_item_menu_sufijo_format(array_menu_common," %d [None]",i+1);
+            else menu_add_item_menu_sufijo_format(array_menu_common," %d [%s]",i+1,joystick_defined_fire_texto[indice_fire]);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+            menu_add_item_menu_tooltip(array_menu_common,"Define which key triggers the fire function for the joystick");
+            menu_add_item_menu_ayuda(array_menu_common,"Define which key triggers the fire function for the joystick. "
                 "Not all video drivers support reading all keys. Only kempston joystick allows more than one fire button");
         }
 
         if (MACHINE_IS_SMS) {
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_sms_swap_controls,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_sms_swap_controls,NULL,
                 "SMS swap controls","SMS intercambiar controles","SMS intercanviar controls");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
                 (sms_swap_controls.v ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Swap controls player 1 <-> player 2");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Swap controls player 1 <-> player 2");
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            menu_add_item_menu_tooltip(array_menu_common,"Swap controls player 1 <-> player 2");
+            menu_add_item_menu_ayuda(array_menu_common,"Swap controls player 1 <-> player 2");
+            menu_add_item_menu_es_avanzado(array_menu_common);
         }
 
 
-        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire_enable,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_autofire_enable,NULL,
                 "Joystick ~~Autofire","Joystick ~~Autodisparo","Joystick ~~Autofoc");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",(joystick_autofire_frequency ? 'X' : ' ' ));
-        menu_add_item_menu_shortcut(array_menu_hardware_settings,'a');
-        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Enable joystick autofire");
-        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Enable joystick autofire");
-        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(joystick_autofire_frequency ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_common,'a');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable joystick autofire");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable joystick autofire");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 
         if (joystick_autofire_frequency) {
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire_frequency,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_autofire_frequency,NULL,
             "Autofire frequency","Frecuencia Autodisparo","Freqüència Autofoc");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"     ");
-            menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d Hz]",50/joystick_autofire_frequency);
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Frequency for the joystick autofire");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Times per second (Hz) the joystick fire is auto-switched from pressed to not pressed and viceversa. "
+            menu_add_item_menu_prefijo_format(array_menu_common,"     ");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%d Hz]",50/joystick_autofire_frequency);
+            menu_add_item_menu_tooltip(array_menu_common,"Frequency for the joystick autofire");
+            menu_add_item_menu_ayuda(array_menu_common,"Times per second (Hz) the joystick fire is auto-switched from pressed to not pressed and viceversa. "
                                             "Autofire can only be enabled on Kempston, Fuller, Zebra and Mikrogen; Sinclair, Cursor, and OPQA can not have "
                                             "autofire because this function can interfiere with the menu (it might think a key is pressed)");
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_common);
         }
 
 
-        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,
             "Joystick AutoLeftRight","Joystick AutoIzqDer","Joystick AutoEsqDreta");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-        menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d Hz]",50/joystick_autoleftright_frequency);
-        menu_add_item_menu_tooltip(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
-        menu_add_item_menu_ayuda(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
-        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%d Hz]",50/joystick_autoleftright_frequency);
+        menu_add_item_menu_tooltip(array_menu_common,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
+        menu_add_item_menu_ayuda(array_menu_common,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 
-        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_barato,NULL,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_joystick_barato,NULL,
             "Cheap Joystick","Joystick Barato","Joystick Barat");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",(joystick_barato ? 'X': ' ' ));
-        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Emulates a cheap device which puts values in the bus, affecting interrupts");
-        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Emulates a cheap device which puts values in the bus, affecting interrupts. "
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(joystick_barato ? 'X': ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Emulates a cheap device which puts values in the bus, affecting interrupts");
+        menu_add_item_menu_ayuda(array_menu_common,"Emulates a cheap device which puts values in the bus, affecting interrupts. "
             "Usually cheap devices only check for IORQ signal but don't check for read signal so they put joystick value "
             "on any IORQ signal, even when an interrupt is triggered; so the interrupt vector is formed by I*256+value in the bus. "
             "Also, these devices check for A5=0 for kempston joystick (next address to execute after the interrupt), but I don't check A5.\n"
             "Some games/programs that will fail enabling this: Pussy.tap (ULAPlus/Timex demo by Miguel Angel Rodriguez Jodar), "
             "Simulador de raton (Antonio Bermudez, 1991, Microhobby), The Humans"
             );
-        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
-        menu_add_item_menu_separator(array_menu_hardware_settings);
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware -> Joystick","Menú Principal-> Opciones-> Hardware -> Joystick","Menú Principal-> Opcions-> Hardware -> Joystick");
+
+        retorno_menu=menu_dibuja_menu(&hardware_joystick_settings_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Joystick Settings","Opciones Joystick","Opcions Joystick" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    }
+        }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
+
+//menu hardware settings
+void menu_hardware_settings(MENU_ITEM_PARAMETERS)
+{
+        menu_item *array_menu_hardware_settings;
+    menu_item item_seleccionado;
+    int retorno_menu;
+        do {
+
+        menu_add_item_menu_inicial(&array_menu_hardware_settings,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 
         if (MACHINE_IS_SPECTRUM) {
@@ -6813,7 +6853,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         }
 
 
-          if (MACHINE_IS_TBBLUE) {
+        if (MACHINE_IS_TBBLUE) {
 
             menu_add_item_menu_separator(array_menu_hardware_settings);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
@@ -6878,6 +6918,17 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
+
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_settings,NULL,
+            "~~Joystick","~~Joystick","~~Joystick");
+        menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change Joystick settings");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change Joystick settings");
+        menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+
+
+
+
         //Keyboard settings
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_keyboard_settings,NULL,
             "~~Keyboard","te~~klado","te~~klat");
@@ -6912,7 +6963,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX81_TYPE) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_printers,NULL,
-                "~~Printing emulation","Emulación im~~presora","Emulació im~~pressora");
+                "~~Printer","Im~~presora","Im~~pressora");
             menu_add_item_menu_shortcut(array_menu_hardware_settings,'p');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
         }
