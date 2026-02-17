@@ -1308,7 +1308,6 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
     if (border_enabled.v) {
         if (modificado_border.v) {
 
-
             int border_col=0;
 
             //Reverse video
@@ -1595,9 +1594,13 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
 
         else {
             //Cambio modo
-            if (value>=4) value=0;
+            int modo=value & 0x7F; //7 bits indican el numero de modo. Aunque solo hay modos desde 0 a 4. 4 no soportado en ZEsarUX
 
-            pcw_video_mode=value;
+            //TODO: bit 7 de value. Si a 0, se resetea paleta por defecto. A 1, no se resetea a paleta por defecto
+
+            if (modo>=4) modo=0;
+
+            pcw_video_mode=modo;
 
             char buffer_mensaje[256];
             sprintf(buffer_mensaje,"Setting video mode %s",pcw_video_mode_names[pcw_video_mode]);
