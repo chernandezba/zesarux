@@ -1378,11 +1378,10 @@ void scr_tsconf_putpixel_text_mode(int x,int y,unsigned color)
 	int menu_x=(x+border_x)/8;
 	int menu_y=(y+border_y)/8;
 
-	//Suponemos que y e y+1 van a estar dentro de una cuadricula igual los dos, por tanto la comprobacion siguiente solo la hacemos una vez
-	if (scr_ver_si_refrescar_por_menu_activo(menu_x,menu_y)) {
+
 		scr_tsconf_putpixel_sum_border(x,y,color);
 		scr_tsconf_putpixel_sum_border(x,y+1,color);
-	}
+
 }
 
 //Hace putpixel pero teniendo en cuenta tamanyo de 2x2
@@ -1397,13 +1396,12 @@ void scr_tsconf_putpixel_zx_mode(int x,int y,unsigned color)
 	int menu_x=(x+border_x)/8;
 	int menu_y=(y+border_y)/8;
 
-	//Suponemos que x, x+1 e y e y+1 van a estar dentro de una cuadricula igual los dos, por tanto la comprobacion siguiente solo la hacemos una vez
-	if (scr_ver_si_refrescar_por_menu_activo(menu_x,menu_y)){
+
         scr_tsconf_putpixel_sum_border(x,y,color);
         scr_tsconf_putpixel_sum_border(x,y+1,color);
         scr_tsconf_putpixel_sum_border(x+1,y,color);
         scr_tsconf_putpixel_sum_border(x+1,y+1,color);
-    }
+
 
 
 }
@@ -1467,10 +1465,10 @@ void scr_tsconf_putsprite_comun(z80_byte *puntero,int alto,int x,int y,z80_bit i
 								else {
 									color=tsconf_return_cram_color(tsconf_return_cram_palette_offset()+color);
 
-									//if (scr_ver_si_refrescar_por_menu_activo((x+bit)/8,y/8)) {
+
 
 										scr_tsconf_putpixel_text_mode(x+bit,y,TSCONF_INDEX_FIRST_COLOR+color);
-									//}
+
 								}
 
            }
@@ -2712,13 +2710,12 @@ void scr_tsconf_putpixel_zoom_border(int x,int y, unsigned int color)
     int menu_y=y/8;
 
 
-    //Suponemos que x, x+1 e y e y+1 van a estar dentro de una cuadricula igual los dos, por tanto la comprobacion siguiente solo la hacemos una vez
-    if (scr_ver_si_refrescar_por_menu_activo(menu_x,menu_y)){
+
         scr_putpixel_zoom(x,y,color);
         scr_putpixel_zoom(x+1,y,color);
         scr_putpixel_zoom(x,y+1,color);
         scr_putpixel_zoom(x+1,y+1,color);
-    }
+
 }
 
 void scr_refresca_border_tsconf_cont(void)
@@ -2816,7 +2813,7 @@ void scr_tsconf_refresca_pantalla_zxmode_no_rainbow_comun(void)
 
 			//Ver en casos en que puede que haya menu activo y hay que hacer overlay
 			if (1==1) {
-			//if (scr_ver_si_refrescar_por_menu_activo(x,fila)) {
+
 
                 	        byte_leido=screen[direccion];
 	                        attribute=screen[dir_atributo];
@@ -2905,7 +2902,7 @@ void scr_tsconf_refresca_pantalla_16c_256c_no_rainbow(int modo)
 
 			//Ver en casos en que puede que haya menu activo y hay que hacer overlay
             if (1==1) {
-			//if (scr_ver_si_refrescar_por_menu_activo(x,fila)) {
+
 
                 if (modo==1) { //16c
                     color=screen[puntero++];
@@ -2969,53 +2966,20 @@ void screen_tsconf_refresca_rainbow(void) {
     ancho=get_total_ancho_rainbow();
     alto=get_total_alto_rainbow();
 
-    //printf ("ancho: %d alto: %d\n",ancho,alto);
 
-    int x,y,bit;
+    int x,y;
 
-    //margenes de zona interior de pantalla. Para overlay menu
-    /*int margenx_izq=screen_total_borde_izquierdo*border_enabled.v;
-       int margenx_der=screen_total_borde_izquierdo*border_enabled.v+512;
-       int margeny_arr=screen_borde_superior*border_enabled.v;
-        int margeny_aba=screen_borde_superior*border_enabled.v+384;*/
-
-    //en tsconf menu no aparece con margen de border. Sale tal cual desde 0,0
-
-    //para overlay menu tambien
 
     z80_int color_pixel;
     z80_int *puntero;
 
     puntero=rainbow_buffer;
-    int dibujar;
 
-    int menu_x,menu_y;
 
     for (y=0;y<alto;y++) {
-        for (x=0;x<ancho;x+=8) {
-            dibujar=1;
-
-            //Ver si esa zona esta ocupada por texto de menu u overlay.
-            // Como tsconf usa menu doble de tamanyo, multiplicamos por valor de menu_gui_zoom que sera 2 siempre (seria lo mismo
-            //que poner y<384 && x<512, pero queda mas explicativo en este caso y se puede usar el mismo if para diferentes maquinas
-            if (y<192*menu_gui_zoom && x<256*menu_gui_zoom) {
-                dibujar=0;
-				menu_x=x/8;
-				menu_y=y/8;
-
-				if (scr_ver_si_refrescar_por_menu_activo(menu_x,menu_y)) dibujar=1;
-            }
-
-
-            if (dibujar==1) {
-                //printf ("dibujamos en X: %d y: %d\n",x,y);
-                for (bit=0;bit<8;bit++) {
-                    color_pixel=*puntero++;
-                    scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
-                }
-            }
-            else puntero+=8;
-
+        for (x=0;x<ancho;x++) {
+            color_pixel=*puntero++;
+            scr_putpixel_zoom_rainbow(x,y,color_pixel);
         }
     }
 

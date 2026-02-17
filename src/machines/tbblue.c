@@ -8459,18 +8459,11 @@ int tbblue_is_writable_segment_mmu_rom_space(z80_int dir)
 void screen_tbblue_refresca_pantalla_comun_tbblue(int x,int y,unsigned int color)
 {
 
-    int dibujar=0;
+    scr_putpixel_zoom(x,y,color);
+    scr_putpixel_zoom(x,y+1,color);
+    scr_putpixel_zoom(x+1,y,color);
+    scr_putpixel_zoom(x+1,y+1,color);
 
-    //if (x>255) dibujar=1;
-    //else if (y>191) dibujar=1;
-    if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) dibujar=1;
-
-    if (dibujar) {
-        scr_putpixel_zoom(x,y,color);
-        scr_putpixel_zoom(x,y+1,color);
-        scr_putpixel_zoom(x+1,y,color);
-        scr_putpixel_zoom(x+1,y+1,color);
-    }
 }
 
 

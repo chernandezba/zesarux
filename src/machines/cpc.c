@@ -1697,17 +1697,8 @@ void scr_cpc_return_ancho_alto(int *an,int *al,int *al_car,int *off_x)
 //Hace putpixel en y e y+1, ya que pantalla cpc es de 640x200 pero hacemos 640x400 la ventana
 void cpc_putpixel_zoom(int x,int y,unsigned int color)
 {
-
-	int dibujar=0;
-
-	//if (x>255) dibujar=1;
-	//else if (y>191) dibujar=1;
-	if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) dibujar=1;
-
-	if (dibujar) {
-		scr_putpixel_zoom(x,y,color);
-		scr_putpixel_zoom(x,y+1,color);
-	}
+    scr_putpixel_zoom(x,y,color);
+    scr_putpixel_zoom(x,y+1,color);
 }
 
 void cpc_putpixel_border(int x,int y,unsigned int color)
