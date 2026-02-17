@@ -934,7 +934,7 @@ extern void store_value_rainbow_debug_check_rainbow(z80_int *puntero_buf_rainbow
 
 extern z80_bit spectrum_1648_use_real_palette;
 
-extern int scr_ver_si_refrescar_por_menu_activo(int x,int fila);
+
 
 extern void tsconf_fast_tilesprite_render(void);
 

@@ -3710,50 +3710,7 @@ for (y=0;y<192;y+=8) {
 }
 
 
-//Esta funcion ya no tiene sentido. Escribir siempre, retorna 1
-//Retorna 0 si no hay que refrescar esa zona
-//Pese a que en cada driver de video, cuando refresca pantalla, luego llama a overlay menu
-//Pero en xwindows, se suele producir un refresco por parte del servidor X que provoc
-//parpadeo entre la pantalla de spectrum y el menu
-//por tanto, es preferible que si esa zona de pantalla de spectrum esta ocupada por algun texto del menu, no repintar para no borrar texto del menu
-//Esto incluye tambien el texto de splash del inicio
-//No incluiria cualquier otra funcion de overlay diferente del menu o el splash
-int scr_ver_si_refrescar_por_menu_activo(int x GCC_UNUSED,int fila GCC_UNUSED)
-{
 
-
-	//Esta funcion ya no tiene sentido. Escribir siempre
-	return 1;
-
-    /*
-	x /=menu_gui_zoom;
-	fila /=menu_gui_zoom;
-
-
-	if (x>31 || fila>23) return 1;
-
-
-
-	//Ver en casos en que puede que haya menu activo y hay que hacer overlay
-  if (screen_refresh_menu==1) {
-		if (menu_overlay_activo==1) {
-                                        //hay menu activo. no refrescar esa coordenada si hay texto del menu
-			int pos=fila*32+x;
-
-			if (overlay_usado_screen_array[pos]) {
-                                        //if (overlay_screen_array[pos].caracter!=0) {
-                                                //no hay que repintar en esa zona
-				return 0;
-			}
-
-
-
-		}
-	}
-	return 1;
-    */
-
-}
 
 //putpixel escalandolo a zoom 1 -> no zoom
 //por tanto, (0,0) = dentro de pantalla
@@ -10377,26 +10334,6 @@ void t_scanline_next_line(void)
 
 }
 
-int scr_ver_si_refrescar_por_menu_activo_z88(int x,int fila)
-{
-
-	//Usado en refresco de z88
-	//sin rainbow se llama a la funcion normal
-	//con rainbow, siempre debe hacer putpixel, que esto va al buffer rainbow. importante luego para que en video out no
-	//aparezcan rectangulos negros al abrir el menu
-	if (rainbow_enabled.v) return 1;
-
-	else {
-		/* Curiosidad:
-		primero esto estaba mal y en vez del return y la funcion estaba solo la funcion, asi:
-		scr_ver_si_refrescar_por_menu_activo(x,fila);
-		Esto curiosamente deberia retornar un valor indefinido, pero en dos maquinas Linux, retornan el valor correcto de la funcion
-		En cambio en mac os x, no retornaba valor correcto
-		*/
-
-		return scr_ver_si_refrescar_por_menu_activo(x,fila);
-	}
-}
 
 void screen_z88_return_sbr(z88_dir *dir)
 {
@@ -10555,9 +10492,9 @@ void screen_z88_dibujar_udg(z88_dir *tabla_caracter,int x,int y,int ancho,int in
                                         ymenu=(y+offsety)/8;
 
                                         if (xmenu>=0 && ymenu>=0 /*&& xmenu<=31 && ymenu<=23*/) {
-                                                if (scr_ver_si_refrescar_por_menu_activo_z88(xmenu,ymenu)) {
+
                                                         scr_putpixel_zoom_z88(x+offsetx,y+offsety,colorblanco);
-                                                }
+
                                         }
                                         else scr_putpixel_zoom_z88(x+offsetx,y+offsety,colorblanco);
 
@@ -10610,9 +10547,9 @@ void screen_z88_dibujar_udg(z88_dir *tabla_caracter,int x,int y,int ancho,int in
                         xmenu=(x+offsetx)/8;
                         ymenu=(y+offsety)/8;
                         if (xmenu>=0 && ymenu>=0 /*&& xmenu<=31 && ymenu<=23*/) {
-                                if (scr_ver_si_refrescar_por_menu_activo_z88(xmenu,ymenu)) {
+
                                         scr_putpixel_zoom_z88(x+offsetx,y+offsety,color);
-                                }
+
                         }
 
 			else scr_putpixel_zoom_z88(x+offsetx,y+offsety,color);
@@ -10698,9 +10635,9 @@ void screen_z88_refresca_pantalla_comun(void)
         	                xmenu=x/8;
 	                        ymenu=y/8;
 	                        if (xmenu>=0 && ymenu>=0 /*&& xmenu<=31 && ymenu<=23*/) {
-        	                        if (scr_ver_si_refrescar_por_menu_activo_z88(xmenu,ymenu)) {
+
 						scr_putpixel_zoom_z88(x,y,Z88_PXCOLSCROFF);
-					}
+
 				}
 				else {
                                 	scr_putpixel_zoom_z88(x,y,Z88_PXCOLSCROFF);
