@@ -1512,6 +1512,15 @@ void pcw_boot_check_dsk_not_bootable(void)
 void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
 {
 
+    /*
+    El puerto $80 se usa para mandar un valor para elegir registro.
+    En puerto $81 es para los datos asociados; ambos soportan lectura y escritura
+
+    Internamente hay 3 registros de estado (llamémoslos est0, est1 y est2).
+    Cuando se escribe en el puerto $80, el primero (est0, función) son los 4 bits más significativos del valor enviado al puerto $80,
+    el segundo (est1, índice) los 4 menos significativos del valor enviado al puerto $80 y el último (est2, subíndice, sólo usado para paleta de 24 bits) se pone a 0.
+    */
+
     if (puerto_l==0x80) {
         pcw_last_port_80_value=value;
 
@@ -1526,8 +1535,10 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
     if (puerto_l==0x81) {
         pcw_last_port_81_value=value;
 
+        z80_byte funcion=(pcw_last_port_80_value >>4) & 0xF;
 
-        if (pcw_last_port_80_value & 0x20) {
+
+        if (funcion==2) {
             //Cambio color paleta mediante indice a colores
 
             int indice_a_color;
@@ -1548,7 +1559,7 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             if (pcw_last_index_color_change>=16) pcw_last_index_color_change=0;
         }
 
-        else if (pcw_last_port_80_value & 0x10) {
+        else if (funcion==1) {
             //Cambio color paleta mediante RGB
 
 
@@ -1592,9 +1603,10 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             }
         }
 
-        else {
+        else if (funcion==0) {
             //Cambio modo
-            int modo=value & 0x7F; //7 bits indican el numero de modo. Aunque solo hay modos desde 0 a 4. 4 no soportado en ZEsarUX
+            int modo=value & 0x7F;
+            //7 bits indican el numero de modo. Aunque solo hay modos desde 0 a 4. 4 no soportado en ZEsarUX
 
             //TODO: bit 7 de value. Si a 0, se resetea paleta por defecto. A 1, no se resetea a paleta por defecto
 
