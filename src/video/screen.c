@@ -183,7 +183,7 @@ char scr_new_driver_name[100];
 
 void scr_tsconf_putpixel_zx_mode(int x,int y,unsigned color);
 void scr_refresca_border_tsconf_cont(void);
-void screen_tsconf_refresca_rainbow(void);
+
 
 //esto se usa para curses y stdout, tambien afecta
 //a que los caracteres no imprimibles de zx8081 se muestren como ? o como caracteres simulados
@@ -5052,8 +5052,34 @@ void screen_add_watermark_no_rainbow(void)
 
 }
 
-//Refresco pantalla con rainbow
+//Simple render obteniendo imagen del rainbow buffer, usado por varias maquinas
 void scr_refresca_pantalla_rainbow_comun(void)
+{
+
+	int ancho,alto;
+
+    ancho=get_total_ancho_rainbow();
+    alto=get_total_alto_rainbow();
+
+    int x,y;
+
+    z80_int color_pixel;
+    z80_int *puntero;
+
+    puntero=rainbow_buffer;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+            color_pixel=*puntero++;
+            scr_putpixel_zoom_rainbow(x,y,color_pixel);
+        }
+    }
+
+}
+
+
+//Refresco pantalla con rainbow
+void scr_refresca_pantalla_rainbow_comun_spectrum(void)
 {
 
 	if (gigascreen_enabled.v) {
@@ -5448,8 +5474,8 @@ void scr_refresca_pantalla_y_border_zx8081(void)
 {
 
 
-        //modo caracteres alta resolucion- rainbow - metodo nuevo
-        if (rainbow_enabled.v==1) {
+    //modo caracteres alta resolucion- rainbow - metodo nuevo
+    if (rainbow_enabled.v==1) {
 		scr_refresca_pantalla_rainbow_comun();
 		return;
 	}
@@ -10753,16 +10779,12 @@ void screen_z88_refresca_pantalla(void)
 
 	set_z88_putpixel_zoom_function();
 
-                if (rainbow_enabled.v==0) {
-			screen_z88_refresca_pantalla_comun();
-		}
+    //Primero render "inteligente" que sabe que tiene que enviarlo al rainbow buffer o a pantalla como pixeles
+    screen_z88_refresca_pantalla_comun();
 
-                else {
-                        //modo realvideo
-			screen_z88_refresca_pantalla_comun();
-
-			scr_refresca_pantalla_rainbow_comun();
-                }
+    if (rainbow_enabled.v) {
+        scr_refresca_pantalla_rainbow_comun();
+    }
 
 }
 

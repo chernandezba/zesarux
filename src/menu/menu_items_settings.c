@@ -8004,7 +8004,6 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         }
 
-
         if (!MACHINE_IS_Z88) {
 
 

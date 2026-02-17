@@ -122,6 +122,7 @@ extern void scr_refresca_pantalla_y_border_mk14(void);
 extern z80_int *putpixel_cache;
 
 extern void scr_refresca_pantalla_rainbow_comun(void);
+extern void scr_refresca_pantalla_rainbow_comun_spectrum(void);
 
 extern void (*scr_putchar_zx8081) (int x,int y, z80_byte caracter);
 extern void scr_refresca_pantalla_zx8081(void);

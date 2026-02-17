@@ -275,7 +275,7 @@ void scrcaca_refresca_pantalla(void)
 
                 else {
                         //modo rainbow - real video
-                        scr_refresca_pantalla_rainbow_comun();
+                        scr_refresca_pantalla_rainbow_comun_spectrum();
                 }
 
 		}
