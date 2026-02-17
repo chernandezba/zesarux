@@ -6901,6 +6901,15 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Changes all the emulator speed by setting a different interval between display frames. "
         "Also changes audio frequency");
 
+        if (MACHINE_IS_Z88) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,
+                "Sync Z88 clock","Sincronizar reloj Z88","Sincronitzar rellotge Z88");
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Sync Z88 clock to the current time");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+            menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
+        }
+
         menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_audio,NULL,"A~~udio");
@@ -6951,13 +6960,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        if (MACHINE_IS_Z88) {
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,
-                "Sync Z88 clock","Sincronizar reloj Z88","Sincronitzar rellotge Z88");
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Sync Z88 clock to the current time");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-        }
+
 
 
 
