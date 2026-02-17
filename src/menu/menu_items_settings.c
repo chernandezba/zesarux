@@ -5954,7 +5954,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_hardware_printers,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_hardware_printers);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&hardware_printers_opcion_seleccionada,&item_seleccionado,array_menu_hardware_printers,"Printing emulation" );
+        retorno_menu=menu_dibuja_menu_no_title_lang(&hardware_printers_opcion_seleccionada,&item_seleccionado,array_menu_hardware_printers,"Printer settings" );
 
 
 
@@ -6912,8 +6912,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_audio,NULL,"A~~udio");
-        menu_add_item_menu_shortcut(array_menu_hardware_settings,'u');
+        menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_audio,NULL,"~~Audio");
+        menu_add_item_menu_shortcut(array_menu_hardware_settings,'a');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Audio settings");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Audio settings");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
@@ -6990,17 +6990,18 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         ) {
 
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_tv,NULL,
-                "TV","TV","TV");
+                "~~TV","~~TV","~~TV");
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"TV settings");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"TV settings");
+            menu_add_item_menu_shortcut(array_menu_hardware_settings,'t');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_ula_settings,NULL,
-                "U~~LA","U~~LA","U~~LA");
-            menu_add_item_menu_shortcut(array_menu_hardware_settings,'l');
+                "~~ULA","~~ULA","~~ULA");
+            menu_add_item_menu_shortcut(array_menu_hardware_settings,'u');
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change some ULA settings");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change some ULA settings");
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
@@ -7011,8 +7012,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
         //    "Emulated ~~Display","~~Display emulado","~~Display emulat");
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_display,NULL,
-            "Vi~~deo","Vi~~deo","Vi~~deo");
-        menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
+            "~~Video","~~Video","~~Video");
+        menu_add_item_menu_shortcut(array_menu_hardware_settings,'v');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Video settings");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Video settings");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
