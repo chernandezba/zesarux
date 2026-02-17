@@ -115,3 +115,8 @@ ok*16c
 ok *vdp: master, sg1000, coleco, msx, spectravideo
 
 *cuando esté bien, quitar las llamadas a store_value_rainbow_debug_check_rainbow
+
+*al cambiar de next (por ejemplo en juego celeste.nex con turbo 4) a spectrum, border refresca mal
+creo que la variable de cpu_speed se queda mal
+
+*eliminar el uso de scr_ver_si_refrescar_por_menu_activo

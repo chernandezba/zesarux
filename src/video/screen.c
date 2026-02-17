@@ -5137,28 +5137,12 @@ void scr_refresca_pantalla_rainbow_comun(void)
 
 	int x,y,bit;
 
-	//margenes de zona interior de pantalla. Para overlay menu
-	int margenx_izq=screen_total_borde_izquierdo*border_enabled.v;
-	int margenx_der=screen_total_borde_izquierdo*border_enabled.v+256;
-	int margeny_arr=screen_borde_superior*border_enabled.v;
-	int margeny_aba=screen_borde_superior*border_enabled.v+192;
 
-	if (MACHINE_IS_Z88) {
-		margenx_izq=0;
-		margenx_der=256;
-		margeny_arr=0;
-		margeny_aba=192;
-	}
-
-	//para overlay menu tambien
-	//int fila;
-	//int columna;
 
 	z80_int color_pixel;
 	z80_int *puntero;
 
 	puntero=rainbow_buffer;
-	int dibujar;
 
 
 	//Si se reduce la pantalla 0.75
@@ -5167,9 +5151,6 @@ void scr_refresca_pantalla_rainbow_comun(void)
 		puntero=new_scalled_rainbow_buffer;
 	}
 	//Fin reduccion pantalla 0.75
-
-
-
 
 
 	for (y=0;y<alto;y++) {
@@ -5186,31 +5167,16 @@ void scr_refresca_pantalla_rainbow_comun(void)
 			puntero +=ancho;
 		}
 		else {
-		for (x=0;x<ancho;x+=8) {
-			dibujar=1;
+		    for (x=0;x<ancho;x+=8) {
 
-			//Ver si esa zona esta ocupada por texto de menu u overlay
+                for (bit=0;bit<8;bit++) {
+                    color_pixel=*puntero++;
+                    scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
+                }
 
-			if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
-				if (!scr_ver_si_refrescar_por_menu_activo( (x-margenx_izq)/8, (y-margeny_arr)/8) )
-					dibujar=0;
-			}
-
-
-			if (dibujar==1) {
-					for (bit=0;bit<8;bit++) {
-						color_pixel=*puntero++;
-						scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
-					}
-			}
-			else puntero+=8;
-
-		}
+		    }
 		}
 	}
-
-	//timex_ugly_hack_last_hires=0;
-
 
 
 }
