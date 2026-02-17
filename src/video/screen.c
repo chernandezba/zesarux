@@ -1637,19 +1637,11 @@ void screen_prism_refresca_no_rainbow_border(int color)
 
 void screen_prism_refresca_pantalla_comun_prism(int x,int y,unsigned int color)
 {
-
-        int dibujar=0;
-
-        //if (x>255) dibujar=1;
-        //else if (y>191) dibujar=1;
-        if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) dibujar=1;
-
-        if (dibujar) {
 		scr_putpixel_zoom(x,y,color);
-                scr_putpixel_zoom(x,y+1,color);
-                scr_putpixel_zoom(x+1,y,color);
-                scr_putpixel_zoom(x+1,y+1,color);
-        }
+        scr_putpixel_zoom(x,y+1,color);
+        scr_putpixel_zoom(x+1,y,color);
+        scr_putpixel_zoom(x+1,y+1,color);
+
 }
 
 
@@ -1781,64 +1773,17 @@ void screen_prism_refresca_rainbow(void) {
     ancho=get_total_ancho_rainbow();
     alto=get_total_alto_rainbow();
 
-    int x,y,bit;
-
-    //margenes de zona interior de pantalla. Para overlay menu
-    int margenx_izq=screen_total_borde_izquierdo*border_enabled.v;
-    int margenx_der=screen_total_borde_izquierdo*border_enabled.v+512;
-    int margeny_arr=screen_borde_superior*border_enabled.v;
-    int margeny_aba=screen_borde_superior*border_enabled.v+384;
-
-
-    //para overlay menu tambien
-    //int fila;
-    //int columna;
+    int x,y;
 
     z80_int color_pixel;
     z80_int *puntero;
 
     puntero=rainbow_buffer;
-    int dibujar;
-
-	int menu_x,menu_y;
 
     for (y=0;y<alto;y++) {
-        for (x=0;x<ancho;x+=8) {
-            dibujar=1;
-
-            //Ver si esa zona esta ocupada por texto de menu u overlay
-
-            if (y>=margeny_arr && y<margeny_aba && x>=margenx_izq && x<margenx_der) {
-
-
-
-                                //normalmente a 48
-                                //int screen_total_borde_izquierdo;
-
-				dibujar=0;
-				menu_x=(x-margenx_izq)/8;
-				menu_y=(y-margeny_arr)/8;
-				//if (menu_x>31) dibujar=1;
-				//else if (menu_y>23) dibujar=1;
-				if (scr_ver_si_refrescar_por_menu_activo(menu_x,menu_y)) dibujar=1;
-
-            }
-
-
-            if (dibujar==1) {
-
-                for (bit=0;bit<8;bit++) {
-
-
-                    //printf ("prism refresca x: %d y: %d\n",x,y);
-
-                    color_pixel=*puntero++;
-
-                    scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
-                }
-            }
-            else puntero+=8;
-
+        for (x=0;x<ancho;x++) {
+            color_pixel=*puntero++;
+            scr_putpixel_zoom_rainbow(x,y,color_pixel);
         }
     }
 
