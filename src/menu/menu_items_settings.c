@@ -2973,7 +2973,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,
-            "M~~ultitask menu","Menu m~~ultitarea","Menu m~~ultitasca");
+            "M~~ultitask menu","Menú m~~ultitarea","Menú m~~ultitasca");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (menu_multitarea==1 ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'u');
         menu_add_item_menu_tooltip(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
@@ -2982,7 +2982,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         if (menu_multitarea) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,
-                "Sto~~p emulation on menu","Sto~~p emulación en menu","Sto~~p emulació al menu");
+                "Sto~~p emulation on menu","Sto~~p emulación en menú","Sto~~p emulació al menú");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_emulation_paused_on_menu ? 'X' : ' ' ));
             menu_add_item_menu_es_avanzado(array_menu_common);
             menu_add_item_menu_shortcut(array_menu_common,'p');
