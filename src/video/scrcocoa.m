@@ -3000,7 +3000,6 @@ void scrcocoa_refresca_pantalla(void)
     scr_driver_redraw_desktop_windows();
 
     if (MACHINE_IS_ZX8081) {
-        //scr_refresca_pantalla_rainbow_comun();
         scrcocoa_refresca_pantalla_zx81();
     }
 
@@ -3038,7 +3037,7 @@ void scrcocoa_refresca_pantalla(void)
 
                 else {
                 //modo rainbow - real video
-                        scr_refresca_pantalla_rainbow_comun();
+                        scr_refresca_pantalla_rainbow_comun_spectrum();
                 }
 
 		}
