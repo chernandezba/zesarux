@@ -4748,34 +4748,34 @@ void scr_refresca_pantalla_rainbow_unalinea_timex(int y)
 	//printf ("timex modo 512x192 linea y: %d\n",y);
 	//return;
 
-	        int x,bit;
-        z80_int direccion;
-        z80_byte byte_leido;
-        int fila;
-        //int zx,zy;
+    int x,bit;
+    z80_int direccion;
+    z80_byte byte_leido;
+    int fila;
+    //int zx,zy;
 
-        int col6;
-        int tin6, pap6;
-
-
-       z80_byte *screen=get_base_mem_pantalla();
-
-        //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-        int x_hi;
+    int col6;
+    int tin6, pap6;
 
 
-                                tin6=get_timex_ink_mode6_color();
+    z80_byte *screen=get_base_mem_pantalla();
+
+    //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
+    int x_hi;
 
 
-                                //Obtenemos color
-                                pap6=get_timex_paper_mode6_color();
+    tin6=get_timex_ink_mode6_color();
 
 
-                                //Poner brillo1
-                                tin6 +=8;
-                                pap6 +=8;
+    //Obtenemos color
+    pap6=get_timex_paper_mode6_color();
 
-                                if (ulaplus_presente.v && ulaplus_enabled.v) {
+
+    //Poner brillo1
+    tin6 +=8;
+    pap6 +=8;
+
+    if (ulaplus_presente.v && ulaplus_enabled.v) {
                                         //Colores en ulaplus en este modo son:
                                         /*
 BITS INK PAPER BORDER
@@ -4789,63 +4789,48 @@ BITS INK PAPER BORDER
 111 31 24 24
                                         */
 
-                                        tin6 +=16;
-                                        pap6 +=16;
+        tin6 +=16;
+        pap6 +=16;
 
 
-					tin6=ulaplus_palette_table[tin6]+ULAPLUS_INDEX_FIRST_COLOR;
-                                        pap6=ulaplus_palette_table[pap6]+ULAPLUS_INDEX_FIRST_COLOR;
-                                }
+        tin6=ulaplus_palette_table[tin6]+ULAPLUS_INDEX_FIRST_COLOR;
+        pap6=ulaplus_palette_table[pap6]+ULAPLUS_INDEX_FIRST_COLOR;
+    }
 
-                z80_int incremento_offset=0;
+    z80_int incremento_offset=0;
 
-
-
-                direccion=screen_addr_table[(y<<5)];
+    direccion=screen_addr_table[(y<<5)];
 
 
-                fila=y/8;
-                for (x=0,x_hi=0;x<64;x++,x_hi +=8) {
+    fila=y/8;
+    for (x=0,x_hi=0;x<64;x++,x_hi +=8) {
+
+        byte_leido=screen[direccion+incremento_offset];
 
 
-                        //Ver en casos en que puede que haya menu activo y hay que hacer overlay
-                        //if (1==1) {
-                        if (scr_ver_si_refrescar_por_menu_activo(x/2,fila)) {
-
-                                byte_leido=screen[direccion+incremento_offset];
+        for (bit=0;bit<8;bit++) {
+                if (byte_leido&128) col6=tin6;
+                else col6=pap6;
 
 
-                                for (bit=0;bit<8;bit++) {
-                                        if (byte_leido&128) col6=tin6;
-                                        else col6=pap6;
-
-
-                                        //printf ("color: %d\n",col6);
-
-                                        //scr_putpixel(offsetx+x_hi+bit,offsety+y,col6);
-                                        //printf ("x: %d y: %d\n",x_hi+bit,y*2);
-
-
-                                        if (video_interlaced_mode.v==0) {
-                                                scr_putpixel_zoom_timex_mode6(x_hi+bit,y,col6);
-                                        }
-
-                                        else {
-
-
-scr_putpixel_zoom_timex_mode6_interlaced(x_hi+bit,y,col6);
-                                        }
-
-                                        byte_leido=byte_leido<<1;
-                                }
-                        }
-
-                        incremento_offset ^=8192;
-
-
-                        if (incremento_offset==0) direccion++;
-                        //printf ("direccion:%d\n",direccion);
+                if (video_interlaced_mode.v==0) {
+                        scr_putpixel_zoom_timex_mode6(x_hi+bit,y,col6);
                 }
+
+                else {
+                    scr_putpixel_zoom_timex_mode6_interlaced(x_hi+bit,y,col6);
+                }
+
+                byte_leido=byte_leido<<1;
+        }
+
+
+        incremento_offset ^=8192;
+
+
+        if (incremento_offset==0) direccion++;
+        //printf ("direccion:%d\n",direccion);
+    }
 
 
 
