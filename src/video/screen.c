@@ -3668,8 +3668,7 @@ z80_bit inversebit;
 for (y=0;y<192;y+=8) {
 	for (x=0;x<256;x+=8) {
 
-                //Ver en casos en que puede que haya menu activo y hay que hacer overlay
-               if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) {
+
 
 			caracter=compare_char(&screen[  calcula_offset_screen(x/8,y/8)  ] , &inv);
 
@@ -3703,7 +3702,7 @@ for (y=0;y<192;y+=8) {
 				if (scr_get_4pixel(x,y+4)>=umbral_simulate_screen_zx8081) scr_simular_video_zx8081_put4pixel(x,y+4,0);
 				else scr_simular_video_zx8081_put4pixel(x,y+4,15);
 			}
-		}
+
 
 	}
 }
