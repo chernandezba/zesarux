@@ -11594,21 +11594,16 @@ void scr_refresca_pantalla_ace(void)
 	//La tabla de caracteres esta en la direccion 2C00H, los primeros 32 bytes son UDG y graficos predefinidos
 	//Caracteres por defecto son en color inverso. Si bit 7 esta a 1, caracteres son en negro sobre blanco
 
-
 	z80_int direccion=0x2400;
 
 	int x,y;
 	z80_byte caracter;
-	//z80_bit inverse;
-
-	//z80_int puntero_tabla;
 
 	for (y=0;y<24;y++) {
 		for (x=0;x<32;x++) {
 			caracter=peek_byte_no_time(direccion++);
 
-
-			if (scr_ver_si_refrescar_por_menu_activo(x,y)) scr_putchar_zx8081(x,y,caracter);
+			scr_putchar_zx8081(x,y,caracter);
 		}
 	}
 
@@ -11657,16 +11652,9 @@ void scr_refresca_pantalla_y_border_ace(void)
 void sam_putpixel_zoom(int x,int y,unsigned int color)
 {
 
-        int dibujar=0;
+    scr_putpixel_zoom(x,y,SAM_INDEX_FIRST_COLOR+  (  (sam_palette[color&15]) & 127) );
+    scr_putpixel_zoom(x,y+1,SAM_INDEX_FIRST_COLOR+(  (sam_palette[color&15]) & 127) );
 
-        //if (x>255) dibujar=1;
-        //else if (y>191) dibujar=1;
-        if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) dibujar=1;
-
-        if (dibujar) {
-                scr_putpixel_zoom(x,y,SAM_INDEX_FIRST_COLOR+  (  (sam_palette[color&15]) & 127) );
-                scr_putpixel_zoom(x,y+1,SAM_INDEX_FIRST_COLOR+(  (sam_palette[color&15]) & 127) );
-        }
 }
 
 //Retorna byte pantalla
