@@ -1638,10 +1638,11 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
         else if (funcion==0) {
             //Cambio modo
             int modo=value & 0x7F;
+            //printf("Cambio a modo %d\n",modo);
             if (modo>=4) modo=0;
             //7 bits indican el numero de modo. Aunque solo hay modos desde 0 a 4. 4 no soportado en ZEsarUX
 
-            //TODO: bit 7 de value. Si a 0, se resetea paleta por defecto. A 1, no se resetea a paleta por defecto
+            //bit 7 de value. Si a 0, se resetea paleta por defecto. A 1, no se resetea a paleta por defecto
             if ((value & 128)==0) {
                 //printf("Reset paleta\n");
 
