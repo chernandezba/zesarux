@@ -1647,6 +1647,15 @@ void zxvision_calculate_style_nightday(void)
     else zxvision_cambiar_estilo_noche_dia_es_dia=1;
 }
 
+void zxvision_apply_style_if_nightday(void)
+{
+    char buffer_estilo[GUI_STYLE_NAME_MAX_LENGTH];
+
+    zxvision_get_name_style_day_night(buffer_estilo);
+
+    zxvision_change_gui_style_select_by_name(buffer_estilo);
+}
+
 void zxvision_timer_check_if_nightday_change_style(void)
 {
     if (zxvision_change_gui_style_day_night.v==0) return;
@@ -1681,17 +1690,11 @@ void zxvision_timer_check_if_nightday_change_style(void)
             menu_set_menu_abierto(1);
         }
         else {
-            //Si ya estaba abierto el menu, no se aplica, requiere que esté cerrado
-            //Podria forzar el cierre pero interrumpe al usuario de manera extraña
-            //Optamos por cambiar el estilo pero sin refrescar todas las ventanas, que eso no requiere cerrar el menu
-            char buffer_estilo[GUI_STYLE_NAME_MAX_LENGTH];
-
-            zxvision_get_name_style_day_night(buffer_estilo);
-
-            int id_estilo=menu_get_gui_index_by_name(buffer_estilo);
-            if (id_estilo<0) return;
-
-            zxvision_change_gui_style(id_estilo);
+            //Si ya estaba abierto el menu, hacemos lo mismo pero sin tener que forzado disparar el menu
+            //Nota: podria parecer que aqui se viene desde el timer con otro thread diferente del principal, pero no,
+            //el timer se lanza desde el thread principal, no hay peligro en refrescar todas las ventanas pues el mismo thread que el que
+            //esta gestionando el menu
+            zxvision_apply_style_if_nightday();
         }
 
     }
@@ -27704,11 +27707,7 @@ void menu_inicio(void)
     if (zxvision_cambiar_estilo_noche_dia_activar) {
         zxvision_cambiar_estilo_noche_dia_activar=0;
 
-        char buffer_estilo[GUI_STYLE_NAME_MAX_LENGTH];
-
-        zxvision_get_name_style_day_night(buffer_estilo);
-
-        zxvision_change_gui_style_select_by_name(buffer_estilo);
+        zxvision_apply_style_if_nightday();
 
         menu_set_menu_abierto(0);
         return;
