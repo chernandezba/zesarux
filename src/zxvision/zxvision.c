@@ -1646,7 +1646,7 @@ void zxvision_timer_check_if_nightday_change_style(void)
 
     if ((zxvision_cambiar_estilo_noche_dia_counter % 60)!=0) return;
 
-    printf("Ha pasado un minuto. Comprobar estilo\n");
+    debug_printf(VERBOSE_INFO,"Checking GUI style if day or night");
 
     zxvision_calculate_style_nightday();
 
@@ -1663,7 +1663,8 @@ void zxvision_timer_check_if_nightday_change_style(void)
     }
 
     if (zxvision_cambiar_estilo_noche_dia_es_dia!=actual_es_dia) {
-        printf("Cambiar estilo a dia=%d\n",zxvision_cambiar_estilo_noche_dia_es_dia);
+        debug_printf(VERBOSE_INFO,"Changing to %s GUI style",(zxvision_cambiar_estilo_noche_dia_es_dia ? "day" : "night"));
+        //printf("Cambiar estilo a dia=%d\n",zxvision_cambiar_estilo_noche_dia_es_dia);
         zxvision_cambiar_estilo_noche_dia_activar=1;
         menu_set_menu_abierto(1);
     }

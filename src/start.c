@@ -1929,6 +1929,7 @@ printf (
 
 printf (
         "\n"
+        "--gui-style-day-night                    Change to Solarized Light/Dark depending on current hour\n"
         "--charset s                              Set Charset. This setting must be after --gui-style (if used). Available: ");
 
         charset_retorna_nombres();
@@ -6303,8 +6304,10 @@ int parse_cmdline_options(int desde_commandline) {
                 }
 
                 zxvision_change_gui_style(indice);
+            }
 
-
+            else if (!strcmp(argv[puntero_parametro],"--gui-style-day-night")) {
+                zxvision_change_gui_style_day_night.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--charset")) {
