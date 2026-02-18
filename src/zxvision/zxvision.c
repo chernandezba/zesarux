@@ -30295,6 +30295,37 @@ void zxvision_change_gui_style(int estilo)
     set_charset_from_gui();
 }
 
+void zxvision_change_gui_style_select_id(int estilo)
+{
+
+    zxvision_change_gui_style(estilo);
+
+    menu_init_footer();
+
+
+    //Recolorear ventanas sin tener que reabrirlas (que es lo que hace menu_interface_change_gui_style_apply)
+    zxvision_reapply_style_colours_all_windows();
+
+    //Redibujar barra de titulo y marco
+    zxvision_redraw_all_windows();
+}
+
+//Cambia al estilo indicado por una string. retorna 0 si ok, no 0 si error
+int zxvision_change_gui_style_select_by_name(char *estilo)
+{
+
+    int i;
+    for (i=0;i<ESTILOS_GUI;i++) {
+        if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,estilo)) {
+            zxvision_change_gui_style_select_id(i);
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo
 void menu_adjust_gui_style_to_driver(void)
 {

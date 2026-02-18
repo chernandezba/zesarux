@@ -20,6 +20,9 @@ action: prints hello ; menu
 
 -cuando hay breakpoint pc en otras vistas, tambien mostrarlo
 
+-poder ver la tabla de contienda al debugar
+->pero la contienda no solo depende de la direccion de PC, también de IR, no sé si es muy util poder ver esta tabla
+
 -en evaluación de condiciones si cumple o no, en debug cpu (texto "satisfy") no interpreta opcodes
 que van precedidos por DD/FD, ejemplo:
 8000h DEFB DD

@@ -1794,17 +1794,8 @@ void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS)
 void menu_interface_change_gui_style_select(struct s_menu_item *item_seleccionado)
 {
 
-    zxvision_change_gui_style(item_seleccionado->valor_opcion);
+    zxvision_change_gui_style_select_id(item_seleccionado->valor_opcion);
 
-    menu_init_footer();
-
-    //zxvision_restart_all_background_windows();
-
-    //Recolorear ventanas sin tener que reabrirlas (que es lo que hace menu_interface_change_gui_style_apply)
-    zxvision_reapply_style_colours_all_windows();
-
-    //Redibujar barra de titulo y marco
-    zxvision_redraw_all_windows();
 }
 
 void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)

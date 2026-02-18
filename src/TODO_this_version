@@ -70,8 +70,7 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
--poder ver la tabla de contienda al debugar
-->pero la contienda no solo depende de la direccion de PC, también de IR, no sé si es muy util poder ver esta tabla
+
 
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
 El como acepta ese evento de momento es una incógnita
@@ -93,28 +92,8 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 
 
 
--Settings-> Audio, Video, storage y TV deberian estar en submenu hardware?
-
-
-ok-primer scanline next se ve mal. parece que solo pasa si esta la limitacion de cpu
-
-->Problema es screen_store_scanline_rainbow_border_comun que :
-ok *en modos turbo>1, avanza igual en x que con turbo 1. error! se deberia hacer funcion auxiliar que diga en que posicion x esta dado un t-estado
-*testeo bien el rainbow, en spectrum, next etc y
-y poner bien el #define store_value_rainbow(p,x) *p++=x; en screen.h
-*corregir lo mismo en  TSConf... alguno mas? render gigascreen?
-->ok spectrum
-->ok prism
-->ok tsconf
-->ok gigascreen
-ok *spectra
-ok *z88
-ok *cpc?
-ok *zxuno - demo dma con turbo
-ok*16c
-ok *vdp: master, sg1000, coleco, msx, spectravideo
-
-*cuando esté bien, quitar las llamadas a store_value_rainbow_debug_check_rainbow
+-correcciones al renderizar en rainbow_buffer
+*acabar de probar bien todas máquinas y cuando esté bien, quitar las llamadas a store_value_rainbow_debug_check_rainbow
 
 *al cambiar de next (por ejemplo en juego celeste.nex con turbo 4) a spectrum, border refresca mal
 creo que la variable de cpu_speed se queda mal
