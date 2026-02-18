@@ -2050,6 +2050,9 @@ void set_machine_params(void)
     screen_invisible_borde_derecho=96;
     screen_testados_linea=224;
 
+    //Se inician máquinas, los t-estados van siempre a velocidad turbo 1X
+    cpu_turbo_speed=1;
+
     //Reseteos para ZX80/81
 
     hotswapped_zx80_to_zx81.v=0;
