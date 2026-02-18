@@ -1953,11 +1953,7 @@ void set_machine_params(void)
 
     input_file_keyboard_turbo.v=0;
 
-    //Modo turbo no. No, parece que cambiarlo aqui sin mas no provoca cambios cuando se hace smartload
-    //no tocarlo, dejamos que el usuario se encargue de ponerlo a 1 si quiere
-    //printf ("Setting cpu speed to 1\n");
-    //sleep (3);
-    //cpu_turbo_speed=1;
+
 
     //en spectrum, 32. en pentagon, 36
     cpu_duracion_pulso_interrupcion=32;
