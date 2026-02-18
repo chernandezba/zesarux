@@ -1427,11 +1427,13 @@ extern void draw_middle_footer(void);
 
 extern z80_int menu_mouse_frame_counter;
 
+#define GUI_STYLE_NAME_MAX_LENGTH 20
+
 struct s_estilos_gui {
 
         int require_complete_video_driver;
 
-        char nombre_estilo[20];
+        char nombre_estilo[GUI_STYLE_NAME_MAX_LENGTH];
         int papel_normal;
         int tinta_normal;
 
