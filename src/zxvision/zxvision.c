@@ -1631,10 +1631,10 @@ void zxvision_calculate_style_nightday(void)
     struct tm tm = *localtime(&tiempo);
 
     //Determinar si toca dia o noche
-    zxvision_cambiar_estilo_noche_dia_es_dia=1;
 
     //De 20:00 a 07:59, tema de noche
     if (tm.tm_hour>=20 || tm.tm_hour<=7) zxvision_cambiar_estilo_noche_dia_es_dia=0;
+    else zxvision_cambiar_estilo_noche_dia_es_dia=1;
 }
 
 void zxvision_timer_check_if_nightday_change_style(void)
@@ -1644,8 +1644,7 @@ void zxvision_timer_check_if_nightday_change_style(void)
     //Comprobarlo cada minuto. Aqui se entra cada segundo
     zxvision_cambiar_estilo_noche_dia_counter++;
 
-    //temp if ((zxvision_cambiar_estilo_noche_dia_counter % 60)!=0) return;
-    if ((zxvision_cambiar_estilo_noche_dia_counter % 10)!=0) return;
+    if ((zxvision_cambiar_estilo_noche_dia_counter % 60)!=0) return;
 
     printf("Ha pasado un minuto. Comprobar estilo\n");
 
@@ -10477,6 +10476,18 @@ void zxvision_change_space_colour(zxvision_window *w,int papel)
     }
 }
 
+void zxvision_reapply_style_colours_one_window(zxvision_window *w)
+{
+    if (w==NULL) return;
+
+    w->dirty_must_draw_contents=1;
+    w->dirty_user_must_draw_contents=1;
+    w->default_paper=ESTILO_GUI_PAPEL_NORMAL;
+
+    //Cambiar color caracter espacio
+    zxvision_change_space_colour(w,ESTILO_GUI_PAPEL_NORMAL);
+
+}
 
 
 //Funcion para reaplicar colores en las ventanas existentes
@@ -10495,18 +10506,16 @@ void zxvision_reapply_style_colours_all_windows(void)
 
 
     while (pointer_window!=zxvision_current_window && pointer_window!=NULL) {
-
-
-        pointer_window->dirty_must_draw_contents=1;
-        pointer_window->dirty_user_must_draw_contents=1;
-        pointer_window->default_paper=ESTILO_GUI_PAPEL_NORMAL;
-
-        //Cambiar color caracter espacio
-        zxvision_change_space_colour(pointer_window,ESTILO_GUI_PAPEL_NORMAL);
+        zxvision_reapply_style_colours_one_window(pointer_window);
 
         //El resto de colores se refrescaran por si solos cuando el overlay de cada ventana diga que hay que refrescar
 
         pointer_window=pointer_window->next_window;
+    }
+
+    //Y a la ventana actual
+    if (pointer_window!=NULL && pointer_window==zxvision_current_window) {
+        zxvision_reapply_style_colours_one_window(pointer_window);
     }
 
 
