@@ -2014,8 +2014,11 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_day_night,NULL,
             "Change day/night","Cambio dia/noche","Canvi dia/nit");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zxvision_change_gui_style_day_night.v ? 'X' : ' ') );
-        menu_add_item_menu_tooltip(array_menu_common,"Change to Solarized Light/Dark depending on current hour");
-        menu_add_item_menu_ayuda(array_menu_common,"Change to Solarized Light/Dark depending on current hour");
+        menu_add_item_menu_tooltip(array_menu_common,"Change automatically to Solarized Light/Dark GUI style depending on current hour");
+        menu_add_item_menu_ayuda(array_menu_common,"Change automatically to Solarized Light/Dark GUI style depending on current hour.\n"
+            "From 08:00 to 19:59 will apply Solarized Light.\n"
+            "From 20:00 to 07:59 will apply Solarized Dark"
+        );
 
 
         menu_add_item_menu_separator(array_menu_common);

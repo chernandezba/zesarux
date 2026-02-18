@@ -1929,7 +1929,7 @@ printf (
 
 printf (
         "\n"
-        "--gui-style-day-night                    Change to Solarized Light/Dark depending on current hour\n"
+        "--gui-style-day-night                    Change automatically to Solarized Light/Dark GUI style depending on current hour\n"
         "--charset s                              Set Charset. This setting must be after --gui-style (if used). Available: ");
 
         charset_retorna_nombres();

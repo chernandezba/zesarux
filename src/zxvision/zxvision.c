@@ -1662,11 +1662,15 @@ void zxvision_timer_check_if_nightday_change_style(void)
         actual_es_dia=0;
     }
 
+
     if (zxvision_cambiar_estilo_noche_dia_es_dia!=actual_es_dia) {
         debug_printf(VERBOSE_INFO,"Changing to %s GUI style",(zxvision_cambiar_estilo_noche_dia_es_dia ? "day" : "night"));
         //printf("Cambiar estilo a dia=%d\n",zxvision_cambiar_estilo_noche_dia_es_dia);
         zxvision_cambiar_estilo_noche_dia_activar=1;
         menu_set_menu_abierto(1);
+        //Si ya estaba abierto el menu, no se aplica, requiere que esté cerrado
+        //Podria forzar el cierre pero interrumpe al usuario de manera extraña
+        //Optamos por cambiar el estilo pero sin refrescar todas las ventanas, que eso no requiere cerrar el menu
     }
 }
 
