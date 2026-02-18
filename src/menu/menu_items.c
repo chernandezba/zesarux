@@ -46880,6 +46880,15 @@ void menu_template_menu(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'n');
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface007,NULL,
+            "Process switcher immutable","Process switcher inmutable","Process switcher inmutable");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_immutable.v ? 'X' : ' ') );
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL, menu_interface007,NULL,
+            "Show fired breakp.","Ver breakp. disparado","Veure breakp. disparat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%c]",(setting_process_switcher_immutable.v ? 'X' : ' ') );
+
         if (MACHINE_IS_SPECTRUM_16_48) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mantransfer,NULL,"M~~antransfer");
             menu_add_item_menu_shortcut(array_menu_common,'a');
