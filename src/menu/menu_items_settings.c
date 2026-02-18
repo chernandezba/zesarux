@@ -1924,11 +1924,14 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 
 void menu_interface_change_gui_day_night(MENU_ITEM_PARAMETERS)
 {
+    zxvision_change_gui_style_day_night.v ^=1;
+
     if (zxvision_change_gui_style_day_night.v) {
-        //TODO: cambiar al estilo que toque ahora dia/noche
+        //cambiar al estilo que toque ahora dia/noche
+        zxvision_calculate_style_nightday();
+        zxvision_change_gui_style_select_by_day_night();
     }
 
-    zxvision_change_gui_style_day_night.v ^=1;
 }
 
 void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
@@ -1947,58 +1950,60 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        int i;
-        for (i=0;i<ESTILOS_GUI;i++) {
+        if (zxvision_change_gui_style_day_night.v==0) {
+            int i;
+            for (i=0;i<ESTILOS_GUI;i++) {
 
-            if (!si_complete_video_driver() && definiciones_estilos_gui[i].require_complete_video_driver) {
-                //El estilo requiere video driver completo. Siguiente
-                //printf ("no puedo seleccionar: %s\n",definiciones_estilos_gui[i].nombre_estilo);
+                if (!si_complete_video_driver() && definiciones_estilos_gui[i].require_complete_video_driver) {
+                    //El estilo requiere video driver completo. Siguiente
+                    //printf ("no puedo seleccionar: %s\n",definiciones_estilos_gui[i].nombre_estilo);
 
 
-                //Y ademas movemos el cursor al principio, pues hemos quitado uno al menos de la lista y el cursor no correspondera
-                //common_opcion_seleccionada=0;
+                    //Y ademas movemos el cursor al principio, pues hemos quitado uno al menos de la lista y el cursor no correspondera
+                    //common_opcion_seleccionada=0;
+                }
+
+                else {
+                    if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"ZEsarUX Plus")) {
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--My favorites--");
+                        conteo_items_menus++;
+                    }
+
+                    if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"CPC")) {
+                        menu_add_item_menu_separator(array_menu_common);
+                        conteo_items_menus++;
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--OS/Computers/Apps--");
+                        conteo_items_menus++;
+                    }
+
+                    if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"Bloody")) {
+                        menu_add_item_menu_separator(array_menu_common);
+                        conteo_items_menus++;
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--15 colour based--");
+                        conteo_items_menus++;
+                    }
+
+                    if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"Clean")) {
+                        menu_add_item_menu_separator(array_menu_common);
+                        conteo_items_menus++;
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Misc--");
+                        conteo_items_menus++;
+                    }
+
+                    if (i==estilo_gui_activo) common_opcion_seleccionada=conteo_items_menus;
+
+
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_apply,NULL,definiciones_estilos_gui[i].nombre_estilo);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+                    //Llamar a la funcion de cambio de estilo simplemente al mover el cursor y sin tener que pulsar enter
+                    menu_add_item_menu_seleccionado(array_menu_common,menu_interface_change_gui_style_select);
+                    conteo_items_menus++;
+                }
+
             }
 
-            else {
-                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"ZEsarUX Plus")) {
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--My favorites--");
-                    conteo_items_menus++;
-                }
-
-                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"CPC")) {
-                    menu_add_item_menu_separator(array_menu_common);
-                    conteo_items_menus++;
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--OS/Computers/Apps--");
-                    conteo_items_menus++;
-                }
-
-                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"Bloody")) {
-                    menu_add_item_menu_separator(array_menu_common);
-                    conteo_items_menus++;
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--15 colour based--");
-                    conteo_items_menus++;
-                }
-
-                if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"Clean")) {
-                    menu_add_item_menu_separator(array_menu_common);
-                    conteo_items_menus++;
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Misc--");
-                    conteo_items_menus++;
-                }
-
-                if (i==estilo_gui_activo) common_opcion_seleccionada=conteo_items_menus;
-
-
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_apply,NULL,definiciones_estilos_gui[i].nombre_estilo);
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
-                //Llamar a la funcion de cambio de estilo simplemente al mover el cursor y sin tener que pulsar enter
-                menu_add_item_menu_seleccionado(array_menu_common,menu_interface_change_gui_style_select);
-                conteo_items_menus++;
-            }
-
+            menu_add_item_menu_separator(array_menu_common);
         }
-
-        menu_add_item_menu_separator(array_menu_common);
 
         //Y opcion para probar estilo
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_test,NULL,"Style ~~info");
@@ -2008,7 +2013,6 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_day_night,NULL,"[%c] Change day/night",
             (zxvision_change_gui_style_day_night.v ? 'X' : ' ') );
-
 
 
         menu_add_item_menu_separator(array_menu_common);

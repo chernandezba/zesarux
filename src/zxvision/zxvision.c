@@ -1615,17 +1615,57 @@ int colores_franja_cpc_oscuro[]={2,4,1,6+8};
 
 int estilo_gui_activo=0;
 
-int zxvision_cambiar_estilo_noche_dia=0;
+//Si se tiene que disparar la accion para cambiar el estilo dia/noche desde timer
+int zxvision_cambiar_estilo_noche_dia_activar=0;
 
-int temp_counter=0;
+//Contador para comprobarlo cada 60 veces (cada minuto)
+int zxvision_cambiar_estilo_noche_dia_counter=0;
+
+//Dice si se aplica el tema de dia (1) o noche (0)
+int zxvision_cambiar_estilo_noche_dia_es_dia=0;
+
+void zxvision_calculate_style_nightday(void)
+{
+    //Obtener hora
+    time_t tiempo = time(NULL);
+    struct tm tm = *localtime(&tiempo);
+
+    //Determinar si toca dia o noche
+    zxvision_cambiar_estilo_noche_dia_es_dia=1;
+
+    //De 20:00 a 07:59, tema de noche
+    if (tm.tm_hour>=20 || tm.tm_hour<=7) zxvision_cambiar_estilo_noche_dia_es_dia=0;
+}
 
 void zxvision_timer_check_if_nightday_change_style(void)
 {
     if (zxvision_change_gui_style_day_night.v==0) return;
 
-    temp_counter++;
-    if (temp_counter==10) {
-        zxvision_cambiar_estilo_noche_dia=1;
+    //Comprobarlo cada minuto. Aqui se entra cada segundo
+    zxvision_cambiar_estilo_noche_dia_counter++;
+
+    //temp if ((zxvision_cambiar_estilo_noche_dia_counter % 60)!=0) return;
+    if ((zxvision_cambiar_estilo_noche_dia_counter % 10)!=0) return;
+
+    printf("Ha pasado un minuto. Comprobar estilo\n");
+
+    zxvision_calculate_style_nightday();
+
+    //Ver tema actual. Si no está con el tema que deberia, cambiarlo en zxvision_cambiar_estilo_noche_dia_es_dia y abrir menu
+    //Asumimos que no está ni con light ni dark
+    int actual_es_dia=-1;
+
+    if (!strcasecmp(definiciones_estilos_gui[estilo_gui_activo].nombre_estilo,"Solarized Light")) {
+        actual_es_dia=1;
+    }
+
+    if (!strcasecmp(definiciones_estilos_gui[estilo_gui_activo].nombre_estilo,"Solarized Dark")) {
+        actual_es_dia=0;
+    }
+
+    if (zxvision_cambiar_estilo_noche_dia_es_dia!=actual_es_dia) {
+        printf("Cambiar estilo a dia=%d\n",zxvision_cambiar_estilo_noche_dia_es_dia);
+        zxvision_cambiar_estilo_noche_dia_activar=1;
         menu_set_menu_abierto(1);
     }
 }
@@ -27624,9 +27664,14 @@ void menu_inicio(void)
 
     int indice_abrir_ventana_sin_multitarea=-1;
 
-    if (zxvision_cambiar_estilo_noche_dia) {
-        zxvision_change_gui_style_select_by_name("Solarized Dark");
-        zxvision_cambiar_estilo_noche_dia=0;
+    if (zxvision_cambiar_estilo_noche_dia_activar) {
+        zxvision_cambiar_estilo_noche_dia_activar=0;
+        if (zxvision_cambiar_estilo_noche_dia_es_dia) {
+            zxvision_change_gui_style_select_by_name("Solarized Light");
+        }
+        else {
+            zxvision_change_gui_style_select_by_name("Solarized Dark");
+        }
 
         menu_set_menu_abierto(0);
         return;
@@ -30345,6 +30390,16 @@ int zxvision_change_gui_style_select_by_name(char *estilo)
 
 }
 
+//Cambia al estilo Solarized segun si dia o noche
+void zxvision_change_gui_style_select_by_day_night(void)
+{
+    if (zxvision_cambiar_estilo_noche_dia_es_dia) {
+        zxvision_change_gui_style_select_by_name("Solarized Light");
+    }
+    else {
+        zxvision_change_gui_style_select_by_name("Solarized Dark");
+    }
+}
 
 
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo
