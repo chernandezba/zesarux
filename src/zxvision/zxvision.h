@@ -574,6 +574,7 @@ extern int total_restore_window_array_elements;
 extern void zxvision_change_gui_style(int estilo);
 extern void zxvision_change_gui_style_select_id(int estilo);
 extern int zxvision_change_gui_style_select_by_name(char *estilo);
+extern void zxvision_timer_check_if_nightday_change_style(void);
 
 extern int zxvision_currently_restoring_windows_on_start;
 extern void zxvision_restore_windows_on_startup(void);

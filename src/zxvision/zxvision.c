@@ -1615,6 +1615,21 @@ int colores_franja_cpc_oscuro[]={2,4,1,6+8};
 
 int estilo_gui_activo=0;
 
+int zxvision_cambiar_estilo_noche_dia=0;
+
+int temp_counter=0;
+
+void zxvision_timer_check_if_nightday_change_style(void)
+{
+    if (zxvision_change_gui_style_day_night.v==0) return;
+
+    temp_counter++;
+    if (temp_counter==10) {
+        zxvision_cambiar_estilo_noche_dia=1;
+        menu_set_menu_abierto(1);
+    }
+}
+
 estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
     //Este es una mezcla de Amiga, OS/2 y Atari
     {1,"ZEsarUX Plus",AMIGAOS_COLOUR_blue,ZESARUX_PLUS_COLOUR_WHITE,
@@ -27609,6 +27624,14 @@ void menu_inicio(void)
 
     int indice_abrir_ventana_sin_multitarea=-1;
 
+    if (zxvision_cambiar_estilo_noche_dia) {
+        zxvision_change_gui_style_select_by_name("Solarized Dark");
+        zxvision_cambiar_estilo_noche_dia=0;
+
+        menu_set_menu_abierto(0);
+        return;
+    }
+
 
     if (zxvision_switch_to_window_on_open_menu) {
         //printf("zxvision_switch_to_window_on_open_menu\n");
@@ -30314,14 +30337,12 @@ void zxvision_change_gui_style_select_id(int estilo)
 int zxvision_change_gui_style_select_by_name(char *estilo)
 {
 
-    int i;
-    for (i=0;i<ESTILOS_GUI;i++) {
-        if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,estilo)) {
-            zxvision_change_gui_style_select_id(i);
-            return 0;
-        }
-    }
-    return 1;
+    int id_estilo=menu_get_gui_index_by_name(estilo);
+    if (id_estilo<0) return 1;
+
+    zxvision_change_gui_style_select_id(id_estilo);
+    return 0;
+
 }
 
 

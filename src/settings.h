@@ -61,6 +61,7 @@ extern z80_bit hardware_debug_port;
 extern char zesarux_zxi_hardware_debug_file[];
 extern z80_bit setting_mostrar_visualmem_grafico;
 
+extern z80_bit zxvision_change_gui_style_day_night;
 
 extern z80_bit autosave_snapshot_on_exit;
 extern z80_bit autoload_snapshot_on_start;

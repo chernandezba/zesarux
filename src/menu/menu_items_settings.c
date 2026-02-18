@@ -1922,6 +1922,15 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
     zxvision_destroy_window(&ventana);
 }
 
+void menu_interface_change_gui_day_night(MENU_ITEM_PARAMETERS)
+{
+    if (zxvision_change_gui_style_day_night.v) {
+        //TODO: cambiar al estilo que toque ahora dia/noche
+    }
+
+    zxvision_change_gui_style_day_night.v ^=1;
+}
+
 void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
 {
     int common_opcion_seleccionada=0; //estilo_gui_activo;
@@ -1994,6 +2003,11 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
         //Y opcion para probar estilo
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style_test,NULL,"Style ~~info");
         menu_add_item_menu_shortcut(array_menu_common,'i');
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_day_night,NULL,"[%c] Change day/night",
+            (zxvision_change_gui_style_day_night.v ? 'X' : ' ') );
 
 
 

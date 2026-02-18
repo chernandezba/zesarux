@@ -66,7 +66,7 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 ->parece que solo pasa con driver xwindow, con sdl no pasa
 
 
--Estilo solarized light/dark dependiendo la hora del dia
+
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
@@ -103,3 +103,8 @@ creo que la variable de cpu_speed se queda mal
 ok ya estaba*poder forzar un modo por menu
 ok*bit 7 para resetear o no paleta al cambiar un modo
 ok *comentar codigo segun https://amstrad.es/forum/viewtopic.php?t=4809&start=75#p87482
+
+
+-Estilo solarized light/dark dependiendo la hora del dia
+*deteccion hora. rangos hora fijos? 08:00-20:00  dia?
+*desactivar lista estilos si setting activo?

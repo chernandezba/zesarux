@@ -1355,7 +1355,7 @@ void timer_check_interrupt(void)
             //resetear texto splash
             reset_welcome_message();
 
-
+            zxvision_timer_check_if_nightday_change_style();
 
             //temporizador de carga de cinta para escribir texto loading en pantalla
             /*if (tape_loading_counter) {
