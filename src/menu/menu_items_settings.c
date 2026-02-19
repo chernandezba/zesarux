@@ -234,6 +234,10 @@ int settings_apps_opcion_seleccionada=0;
 int settings_windows_features_opcion_seleccionada=0;
 int settings_tv_opcion_seleccionada=0;
 int hardware_joystick_settings_opcion_seleccionada=0;
+int hardware_settings_optical_input_opcion_seleccionada=0;
+int hardware_settings_mouse_opcion_seleccionada=0;
+int hardware_settings_dma_opcion_seleccionada=0;
+int hardware_settings_spectrum_next_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -1283,6 +1287,16 @@ void menu_setting_quickexit(MENU_ITEM_PARAMETERS)
     quickexit.v ^=1;
 }
 
+void menu_cpu_speed(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Emulator Speed (%)",&porcentaje_velocidad_emulador,5,+25,1,9999,0);
+
+
+    set_emulator_speed();
+
+}
+
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -1349,6 +1363,18 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
       menu_add_item_menu_separator(array_menu_window_settings);
 
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_cpu_speed,NULL,
+            "Emulator Speed","Velocidad Emulador","Velocitat Emulador");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"    ");
+        menu_add_item_menu_sufijo_format(array_menu_window_settings," [%3d%%]",porcentaje_velocidad_emulador);
+        //menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Change the emulator Speed");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Changes all the emulator speed by setting a different interval between display frames. "
+        "Also changes audio frequency");
+
+
+        menu_add_item_menu_separator(array_menu_window_settings);
 
 
            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_logo_type,NULL,
@@ -5987,14 +6013,6 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_cpu_speed(MENU_ITEM_PARAMETERS)
-{
-    menu_ventana_scanf_numero_enhanced("Emulator Speed (%)",&porcentaje_velocidad_emulador,5,+25,1,9999,0);
-
-
-    set_emulator_speed();
-
-}
 
 
 
@@ -6782,137 +6800,290 @@ void menu_hardware_joystick_settings(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_settings_spectrum_next(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_tbblue_fast_boot_mode,NULL,"[%c] Next fast boot mode",
+        (tbblue_fast_boot_mode.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
+        menu_add_item_menu_ayuda(array_menu_common,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_tbblue_rtc_traps,NULL,"[%c] Next RTC traps",(tbblue_use_rtc_traps ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_common,"Allows RTC trap for NextOS ROM");
+        menu_add_item_menu_ayuda(array_menu_common,"Allows RTC trap for NextOS ROM and any program that uses RTC.SYS");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"Next machine id [%02X]",tbblue_machine_id);
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_tbblue_board_id,NULL,"Next board id [%02X]",tbblue_board_id);
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
+
+        //menu_hardware_tbblue_core_version
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_tbblue_core_version,NULL,"Next core version [%d.%d.%d]",
+                                tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
+        menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+        menu_add_item_menu_add_flags(array_menu_common,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware-> Spectrum Next","Menú Principal-> Opciones-> Hardware-> Spectrum Next","Menú Principal-> Opcions-> Hardware-> Spectrum Next");
+
+        retorno_menu=menu_dibuja_menu(&hardware_settings_spectrum_next_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Spectrum Next Settings","Opciones Spectrum Next","Opciones Spectrum Next" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+void menu_hardware_settings_anticopy_devices(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1",(dinamic_sd1.v ? 'X' : ' '));
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware-> Anticopy Devices","Menú Principal-> Opciones-> Hardware-> Dispositivos anticopia","Menú Principal-> Opcions-> Hardware-> Dispositius anticopia");
+
+        retorno_menu=menu_dibuja_menu(&hardware_settings_dma_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Anticopy Devices Settings","Opciones Dispositivos anticopia","Opciones Dispositius anticopia" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+void menu_hardware_settings_dma(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_datagear_dma,NULL,"[%c] Datagear DMA",(datagear_dma_emulation.v==1 ? 'X' : ' '));
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware-> DMA","Menú Principal-> Opciones-> Hardware-> DMA","Menú Principal-> Opcions-> Hardware-> DMA");
+
+        retorno_menu=menu_dibuja_menu(&hardware_settings_dma_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "DMA Settings","Opciones DMA","Opciones DMA" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+void menu_hardware_settings_mouse(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse,NULL,"[%c] Kempston Mou~~se",(kempston_mouse_emulation.v==1 ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'s');
+
+        if (kempston_mouse_emulation.v) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,
+                "Mouse Sensitivity");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%2d]",kempston_mouse_factor_sensibilidad);
+            menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+            menu_add_item_menu_es_avanzado(array_menu_common);
+        }
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware-> Mouse","Menú Principal-> Opciones-> Hardware-> Mouse","Menú Principal-> Opcions-> Hardware-> Mouse");
+
+        retorno_menu=menu_dibuja_menu(&hardware_settings_mouse_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Mouse Settings","Opciones Mouse","Opciones Mouse" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
+
+void menu_hardware_settings_optical_input(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        //menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "Enabled","Activado","Activat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+            (lightgun_emulation_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&lightgun_emulation_enabled);
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+        if (lightgun_emulation_enabled.v) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_lightgun,NULL,
+                "    Type [%s]",lightgun_types_list[lightgun_emulation_type]);
+            menu_add_item_menu_tooltip(array_menu_common,"Decide which kind of Optical Input is emulated with the mouse");
+            menu_add_item_menu_ayuda(array_menu_common,"Decide which kind of Optical Input is emulated with the mouse");
+            menu_add_item_menu_se_cerrara(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_lightgun_scope,NULL,
+                "Show scope","Mostrar mirilla","Mostrar mira");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c]  ",(lightgun_scope.v ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            //En principio esto solo para unos pocos juegos
+            if (lightgun_emulation_type==MAGNUM_AUX || lightgun_emulation_type==MAGNUM_EAR) {
+                //lightgun_vertical_threshold
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_lightgun_vertical_threshold,NULL,
+                    "Scanline threshold","Rango de scanline","Rang de scanline");
+                menu_add_item_menu_prefijo_format(array_menu_common,"[%d]  ",lightgun_vertical_threshold);
+                menu_add_item_menu_es_avanzado(array_menu_common);
+            }
+        }
+
+        /*
+        if (menu_hardware_lightgun_aychip_cond()) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_x,NULL," X Range: %d",lightgun_range_x);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_y,NULL," Y Range: %d",lightgun_range_y);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_lightgun_y_offset,NULL," Y Offset: %s%d",(lightgun_y_offset ? "-" : "" ), lightgun_y_offset);
+            menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_lightgun_solo_brillo,NULL," Detect only white bright: %s",(lightgun_solo_brillo ? "On" : "Off"));
+            menu_add_item_menu_es_avanzado(array_menu_common);
+        }
+        */
+
+
+
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Hardware-> Optical Input","Menú Principal-> Opciones-> Hardware-> Entrada óptica","Menú Principal-> Opcions-> Hardware-> Entrada óptica");
+
+        retorno_menu=menu_dibuja_menu(&hardware_settings_optical_input_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Optical Input Settings","Opciones Entrada óptica","Opciones Entrada óptica" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
 
 
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_hardware_settings;
+    menu_item *array_menu_hardware_settings;
     menu_item item_seleccionado;
     int retorno_menu;
-        do {
+    do {
 
         menu_add_item_menu_inicial(&array_menu_hardware_settings,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 
-        if (MACHINE_IS_SPECTRUM) {
 
-            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,NULL,NULL,
-                "Optical Input","Entrada óptica","Entrada òptica");
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c] ",
-                (lightgun_emulation_enabled.v ? 'X' : ' '));
-            menu_add_item_menu_opcion_conmuta(array_menu_hardware_settings,&lightgun_emulation_enabled);
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-            if (lightgun_emulation_enabled.v) {
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun,NULL,
-                    "    Type [%s]",lightgun_types_list[lightgun_emulation_type]);
-                menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which kind of Optical Input is emulated with the mouse");
-                menu_add_item_menu_ayuda(array_menu_hardware_settings,"Decide which kind of Optical Input is emulated with the mouse");
-                menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
-                menu_add_item_menu_genera_ventana(array_menu_hardware_settings);
-                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-                menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_scope,NULL,
-                    "Show scope","Mostrar mirilla","Mostrar mira");
-                menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%c]  ",(lightgun_scope.v ? 'X' : ' '));
-                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-                //En principio esto solo para unos pocos juegos
-                if (lightgun_emulation_type==MAGNUM_AUX || lightgun_emulation_type==MAGNUM_EAR) {
-                    //lightgun_vertical_threshold
-                    menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_vertical_threshold,NULL,
-                        "Scanline threshold","Rango de scanline","Rang de scanline");
-                    menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d]  ",lightgun_vertical_threshold);
-                    menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-                }
-            }
-
-            /*
-            if (menu_hardware_lightgun_aychip_cond()) {
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_x,NULL," X Range: %d",lightgun_range_x);
-                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_range_y,NULL," Y Range: %d",lightgun_range_y);
-                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_y_offset,NULL," Y Offset: %s%d",(lightgun_y_offset ? "-" : "" ), lightgun_y_offset);
-                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_lightgun_solo_brillo,NULL," Detect only white bright: %s",(lightgun_solo_brillo ? "On" : "Off"));
-                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-            }
-            */
-
-
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse,NULL,"[%c] Kempston Mou~~se",(kempston_mouse_emulation.v==1 ? 'X' : ' '));
-
-            menu_add_item_menu_shortcut(array_menu_hardware_settings,'s');
-
-            if (kempston_mouse_emulation.v) {
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,
-                "Mouse Sensitivity");
-            menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%2d]",kempston_mouse_factor_sensibilidad);
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-            }
-
-        }
-
-        if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_datagear_dma,NULL,"[%c] Datagear DMA",(datagear_dma_emulation.v==1 ? 'X' : ' '));
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1",(dinamic_sd1.v ? 'X' : ' '));
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-        }
-
-
-        if (MACHINE_IS_TBBLUE) {
-
-            menu_add_item_menu_separator(array_menu_hardware_settings);
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_fast_boot_mode,NULL,"[%c] Next fast boot mode",
-            (tbblue_fast_boot_mode.v ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_rtc_traps,NULL,"[%c] Next RTC traps",(tbblue_use_rtc_traps ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM and any program that uses RTC.SYS");
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"Next machine id [%02X]",tbblue_machine_id);
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
-
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_board_id,NULL,"Next board id [%02X]",tbblue_board_id);
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
-
-            //menu_hardware_tbblue_core_version
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_core_version,NULL,"Next core version [%d.%d.%d]",
-                                    tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
-            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-            menu_add_item_menu_add_flags(array_menu_hardware_settings,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_ES_AVANZADO | MENU_ITEM_FLAG_SE_CERRARA);
-
-
-            menu_add_item_menu_separator(array_menu_hardware_settings);
-            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
-
-        }
-
-
-        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_speed,NULL,
-            "Emulator Speed","Velocidad Emulador","Velocitat Emulador");
-        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"    ");
-        menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%3d%%]",porcentaje_velocidad_emulador);
-        //menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
-        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change the emulator Speed");
-        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Changes all the emulator speed by setting a different interval between display frames. "
-        "Also changes audio frequency");
 
         if (MACHINE_IS_Z88) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,
@@ -6921,9 +7092,16 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
             menu_add_item_menu_se_cerrara(array_menu_hardware_settings);
+            menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         }
 
-        menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_anticopy_devices,NULL,
+                "Anticopy Devices","Dispositivos anticopia","Dispositius anticopia");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        }
+
 
         menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_audio,NULL,"~~Audio");
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'a');
@@ -6939,6 +7117,14 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Change some CPU settings");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
+
+
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_dma,NULL,
+                "~~DMA","~~DMA","~~DMA");
+            menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        }
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_settings,NULL,
@@ -6968,6 +7154,20 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_mouse,NULL,
+                "Mouse","Mouse","Mouse");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        }
+
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_optical_input,NULL,
+                "~~Optical Input","Entrada ~~óptica","Entrada ~~optica");
+            menu_add_item_menu_shortcut(array_menu_hardware_settings,'o');
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        }
+
+
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX81_TYPE) {
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_printers,NULL,
                 "~~Printer","Im~~presora","Im~~pressora");
@@ -6986,6 +7186,11 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
 
+        if (MACHINE_IS_TBBLUE) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_spectrum_next,NULL,
+                "Spectrum Next","Spectrum Next","Spectrum Next");
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        }
 
         if (menu_cond_realvideo() &&
             (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081)
@@ -7043,9 +7248,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                     }
         }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
