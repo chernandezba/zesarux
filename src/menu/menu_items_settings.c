@@ -6536,6 +6536,11 @@ void menu_display_interlace_scanlines(MENU_ITEM_PARAMETERS)
     else enable_scanlines();
 }
 
+void menu_display_interlace_scanlines_aggressive(MENU_ITEM_PARAMETERS)
+{
+    video_interlaced_scanlines_aggressive.v ^=1;
+}
+
 void menu_display_lost_vsync(MENU_ITEM_PARAMETERS)
 {
     simulate_lost_vsync.v ^=1;
@@ -6574,6 +6579,13 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_common,"Enable scanlines on interlaced mode");
             menu_add_item_menu_ayuda(array_menu_common,"Scanlines draws odd lines a bit darker than even lines");
             menu_add_item_menu_es_avanzado(array_menu_common);
+
+            if (video_interlaced_scanlines.v) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_interlace_scanlines_aggressive,NULL," [%c] Aggressive", (video_interlaced_scanlines_aggressive.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_common,"Scanline effect is more noticeable, odd lines are drawn black");
+                menu_add_item_menu_ayuda(array_menu_common,"Scanline effect is more noticeable, odd lines are drawn black");
+                menu_add_item_menu_es_avanzado(array_menu_common);
+            }
         }
 
 

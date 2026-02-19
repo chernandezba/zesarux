@@ -22592,7 +22592,8 @@ void util_save_game_config(char *filename)
   if (rainbow_enabled.v)                      ADD_STRING_CONFIG,"--realvideo");
   if (video_interlaced_mode.v)                ADD_STRING_CONFIG,"--enableinterlaced");
 
-
+  if (video_interlaced_scanlines.v)             ADD_STRING_CONFIG,"--enableinterlaced-scanlines");
+  if (video_interlaced_scanlines_aggressive.v)  ADD_STRING_CONFIG,"--enableinterlaced-scanlines-aggressive");
 
 
 //Estas solo si es Spectrum

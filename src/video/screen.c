@@ -766,6 +766,9 @@ z80_bit video_interlaced_mode;
 //si esta activo el scanlines mode. requiere interlaced
 z80_bit video_interlaced_scanlines={0};
 
+//entre cada scanline, linea negra
+z80_bit video_interlaced_scanlines_aggressive={0};
+
 //si esta activo gigascreen
 z80_bit gigascreen_enabled={0};
 
@@ -1897,7 +1900,10 @@ void scr_putpixel_zoom_rainbow_interlaced_zoom_two(int x,int y,unsigned int colo
 	int zyinicial=( (interlaced_numero_frame & 1)==1 ? 1 : 0);
 
 	//interlaced mode, linea impar mas oscura
-	if (zyinicial && video_interlaced_scanlines.v) color +=16;
+	if (zyinicial && video_interlaced_scanlines.v) {
+        if (video_interlaced_scanlines_aggressive.v) color=0;
+        else color +=16;
+    }
 
 	//printf ("%d\n",zyinicial);
 

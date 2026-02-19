@@ -212,6 +212,7 @@ extern z80_byte interlaced_numero_frame;
 extern z80_bit video_interlaced_mode;
 
 extern z80_bit video_interlaced_scanlines;
+extern z80_bit video_interlaced_scanlines_aggressive;
 
 extern z80_bit gigascreen_enabled;
 
