@@ -46,7 +46,6 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 -Probar compilar contra ssl en mac desde homebrew
 
--scanline inicial que se ve en negro en Next al pulsar teclas
 
 -Pantalla completa en Mac no va bien
 
@@ -64,8 +63,6 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -revisar parpadeos en linux en top buttons al moverse por los menus
 ->parece que solo pasa con driver xwindow, con sdl no pasa
-
-
 
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink

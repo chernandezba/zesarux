@@ -44,7 +44,6 @@ no genera codigo de tecla al pulsar esas extendidas
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
 
-
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
 -fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
 
@@ -79,13 +78,11 @@ menu_download_file
 de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
 
 
-
 -Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
 Asi se podría redimensionar siempre sin que se descuadren los textos anteriores . hecho?
 
 
 -Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
-
 
 
 -soporte libretro:
@@ -140,8 +137,6 @@ Y sin barra título
 
 
 
-
-
 -menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado (F8), pero solo cuando es driver texto. Pero la gestion de teclado cuando se pulsa F8 es un tanto especial, porque
 envia la tecla abajo y vale en cualquier parte de menu. Quiza en F8 se deberia conservar el viejo de texto aun
 
@@ -155,7 +150,6 @@ aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> bl
 
 -con no border on full screen & no footer on full screen, al salir de full screen a veces peta
 parece que es la llamada a menu_interface_border
-
 
 
 
@@ -178,9 +172,7 @@ pues si van a menu anterior, al abrir ese menu ya detectan error pendiente y lo 
 -En MSX y SVI no estoy usando usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
 
 
-
 -Visual real tape: con cinta cdt de CPC (zynaps.cdt) dice que hay bloques de spectrum y no es asi
-
 
 
 -poder grabar a cinta desde MSX en archivo .cas. Revisar otras máquinas que se pueda hacer
@@ -198,7 +190,6 @@ Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta 
 
 -Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
 "Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
-
 
 
 
@@ -299,7 +290,6 @@ y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es co
 
 
 
-
 -Captura sonido a archivo de disco
 *opcion para archivo de salida en ventana de captura
 
@@ -309,6 +299,7 @@ abra watches con watch DE, IX etc para la carga
 abra vista basic
 defina también tamaños de esas ventanas?
 Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargando o copiando desde cinta
+->quiza esto se podria hacer con envio de mensajes entre las dos ventanas (*send_message_function...)
 
 
 -SDL2 no deja cambiar a zoom 2 redimensionando con ratón
@@ -328,7 +319,6 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 -convertir todos tabs a espacios en archivos de código fuente: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
-
 
 
 
