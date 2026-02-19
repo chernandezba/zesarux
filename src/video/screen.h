@@ -138,7 +138,7 @@ extern int umbral_simulate_screen_zx8081;
 extern int scr_get_4pixel(int x,int y);
 extern int scr_get_4pixel_rainbow(int x,int y);
 
-extern int if_store_scanline_interlace(int y);
+//extern int if_store_scanline_interlace(int y);
 
 extern void convertir_color_spectrum_paleta_to_rgb(z80_int valor,int *r,int *g,int *b);
 

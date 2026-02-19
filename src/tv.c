@@ -124,23 +124,22 @@ void tv_time_event_store_chunk_image(int delta)
 
                 if (x>=0 && x<totalancho )  {
 
-                    //si linea no coincide con entrelazado, volvemos
-                    if (if_store_scanline_interlace(y) ) {
 
-                        //Este bloque es dependiente de la maquina
-                        if (MACHINE_IS_ZX8081) {
-                            //if (y==42) printf("x %3d bit %3d delta %d\n",x,bit_inicio,delta);
-                            //printf("Store x %3d y %3d sprite %02XH tinta %3d papel %3d\n",
-                            //    x,y,zx80801_last_sprite_video,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
 
-                            tv_time_event_store_chunk_image_sprite(x,y,zx80801_last_sprite_video,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
+                    //Este bloque es dependiente de la maquina
+                    if (MACHINE_IS_ZX8081) {
+                        //if (y==42) printf("x %3d bit %3d delta %d\n",x,bit_inicio,delta);
+                        //printf("Store x %3d y %3d sprite %02XH tinta %3d papel %3d\n",
+                        //    x,y,zx80801_last_sprite_video,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
 
-                            //Rotar circular
-                            int bit_alto=(zx80801_last_sprite_video & 128 ? 1 : 0);
-                            zx80801_last_sprite_video=zx80801_last_sprite_video<<1;
-                            zx80801_last_sprite_video |=bit_alto;
-                        }
+                        tv_time_event_store_chunk_image_sprite(x,y,zx80801_last_sprite_video,zx80801_last_sprite_video_tinta,zx80801_last_sprite_video_papel);
+
+                        //Rotar circular
+                        int bit_alto=(zx80801_last_sprite_video & 128 ? 1 : 0);
+                        zx80801_last_sprite_video=zx80801_last_sprite_video<<1;
+                        zx80801_last_sprite_video |=bit_alto;
                     }
+
                 }
 
             }
@@ -169,23 +168,22 @@ void tv_draw_line_beyond_syncs(int x_inicio,int y)
             for (x=x_inicio;x<totalancho;x++) {
 
 
-                //si linea no coincide con entrelazado, volvemos
-                if (if_store_scanline_interlace(y) ) {
-                    int color;
 
-                    //zx8081_is_video_voltage_in_sync(): color negro
-                    //tinta normalmente a 0
-                    //papel normalmente a 15
+                int color;
 
-                    //Nota: esto es dependiente de la máquina a emular
-                    if (zx8081_is_video_voltage_in_sync() ) color=zx80801_last_sprite_video_tinta;
-                    else color=zx80801_last_sprite_video_papel;
+                //zx8081_is_video_voltage_in_sync(): color negro
+                //tinta normalmente a 0
+                //papel normalmente a 15
 
-                    //opcion debug para mostrarlo en rojo
-                    if (menu_debug_show_zones_beyond_sync.v) color=2;
+                //Nota: esto es dependiente de la máquina a emular
+                if (zx8081_is_video_voltage_in_sync() ) color=zx80801_last_sprite_video_tinta;
+                else color=zx80801_last_sprite_video_papel;
 
-                    rainbow_buffer[y*totalancho+x]=color;
-                }
+                //opcion debug para mostrarlo en rojo
+                if (menu_debug_show_zones_beyond_sync.v) color=2;
+
+                rainbow_buffer[y*totalancho+x]=color;
+
 
 
             }

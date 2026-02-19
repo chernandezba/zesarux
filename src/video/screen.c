@@ -813,6 +813,7 @@ int if_store_scanline_interlace(int y)
 }
 */
 
+/*
 int if_store_scanline_interlace(int y)
 {
 
@@ -821,6 +822,7 @@ int if_store_scanline_interlace(int y)
 
 	return 1;
 }
+*/
 
 //Retorna 1 si el driver grafico es completo
 int si_complete_video_driver(void)
@@ -8211,7 +8213,7 @@ void screen_store_scanline_rainbow_solo_display(void)
 
 
 	//si linea no coincide con entrelazado, volvemos
-	if (if_store_scanline_interlace(t_scanline_draw)==0) return;
+	//if (if_store_scanline_interlace(t_scanline_draw)==0) return;
 
   if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
 
@@ -8742,8 +8744,6 @@ void screen_store_scanline_rainbow_solo_border(void)
 	}
 
 
-        //si linea no coincide con entrelazado, volvemos
-        //if (if_store_scanline_interlace(t_scanline_draw)==0) return;
 
 
         //zona de border superior o inferior. Dibujar desde posicion x donde acaba el ancho izquierdo de borde, linea horizontal
