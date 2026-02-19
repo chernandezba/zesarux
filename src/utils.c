@@ -4340,6 +4340,8 @@ int util_write_configfile(void)
 
   if (gigascreen_enabled.v)                   ADD_STRING_CONFIG,"--enablegigascreen");
   if (video_interlaced_mode.v)                ADD_STRING_CONFIG,"--enableinterlaced");
+  if (video_interlaced_scanlines.v)             ADD_STRING_CONFIG,"--enableinterlaced-scanlines");
+  if (video_interlaced_scanlines_aggressive.v)  ADD_STRING_CONFIG,"--enableinterlaced-scanlines-aggressive");
 
   if (ulaplus_presente.v)                     ADD_STRING_CONFIG,"--enableulaplus");
   if (spectra_enabled.v)                      ADD_STRING_CONFIG,"--enablespectra");
@@ -22592,8 +22594,7 @@ void util_save_game_config(char *filename)
   if (rainbow_enabled.v)                      ADD_STRING_CONFIG,"--realvideo");
   if (video_interlaced_mode.v)                ADD_STRING_CONFIG,"--enableinterlaced");
 
-  if (video_interlaced_scanlines.v)             ADD_STRING_CONFIG,"--enableinterlaced-scanlines");
-  if (video_interlaced_scanlines_aggressive.v)  ADD_STRING_CONFIG,"--enableinterlaced-scanlines-aggressive");
+
 
 
 //Estas solo si es Spectrum
