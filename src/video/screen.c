@@ -3819,39 +3819,35 @@ void scr_putpixel_zoom_timex_mode6_interlaced(int x,int y,unsigned int color)
 
 void scr_refresca_pantalla_timex_512x192(void)
 {
-        int x,y,bit;
-        z80_int direccion;
-        z80_byte byte_leido;
-        //int fila;
-        //int zx,zy;
+    int x,y,bit;
+    z80_int direccion;
+    z80_byte byte_leido;
+    //int fila;
+    //int zx,zy;
 
-        int col6;
-        int tin6, pap6;
-
-
+    int col6;
+    int tin6, pap6;
 
 
+    z80_byte *screen=get_base_mem_pantalla();
 
-       z80_byte *screen=get_base_mem_pantalla();
-
-        //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-        int x_hi;
+    int x_hi;
 
 
-				tin6=get_timex_ink_mode6_color();
+    tin6=get_timex_ink_mode6_color();
 
 
-                //Obtenemos color
-                pap6=get_timex_paper_mode6_color();
+    //Obtenemos color
+    pap6=get_timex_paper_mode6_color();
 
-				//printf ("antes tin6: %d pap6: %d\n",tin6,pap6);
+    //printf ("antes tin6: %d pap6: %d\n",tin6,pap6);
 
 
-				//Poner brillo1
-				tin6 +=8;
-				pap6 +=8;
+    //Poner brillo1
+    tin6 +=8;
+    pap6 +=8;
 
-				if (ulaplus_presente.v && ulaplus_enabled.v) {
+    if (ulaplus_presente.v && ulaplus_enabled.v) {
 					//Colores en ulaplus en este modo son:
 					/*
 BITS INK PAPER BORDER
@@ -3865,91 +3861,76 @@ BITS INK PAPER BORDER
 111  31 24 24
 					*/
 
-					tin6 +=16;
-					pap6 +=16;
+        tin6 +=16;
+        pap6 +=16;
 
-					//printf ("tin6: %d pap 6: %d\n",tin6,pap6);
+        //printf ("tin6: %d pap 6: %d\n",tin6,pap6);
 
-					tin6=ulaplus_palette_table[tin6]+ULAPLUS_INDEX_FIRST_COLOR;
-					pap6=ulaplus_palette_table[pap6]+ULAPLUS_INDEX_FIRST_COLOR;
-					//printf ("P tin6: %d pap 6: %d\n",tin6,pap6);
+        tin6=ulaplus_palette_table[tin6]+ULAPLUS_INDEX_FIRST_COLOR;
+        pap6=ulaplus_palette_table[pap6]+ULAPLUS_INDEX_FIRST_COLOR;
+        //printf ("P tin6: %d pap 6: %d\n",tin6,pap6);
 
-				}
+    }
 
-				//Si tbblue
-				if (MACHINE_IS_TBBLUE) {
-					z80_byte attribute_temp=(pap6&7)*8  + (tin6&7) + 64;
-					z80_int tinta_temp=tin6;
-					z80_int papel_temp=pap6;
-					get_pixel_color_tbblue(attribute_temp,&tinta_temp,&papel_temp);
+    //Si tbblue
+    if (MACHINE_IS_TBBLUE) {
+        z80_byte attribute_temp=(pap6&7)*8  + (tin6&7) + 64;
+        z80_int tinta_temp=tin6;
+        z80_int papel_temp=pap6;
+        get_pixel_color_tbblue(attribute_temp,&tinta_temp,&papel_temp);
 
-					tin6=tinta_temp;
-					pap6=papel_temp;
-					tin6=RGB9_INDEX_FIRST_COLOR+tbblue_get_palette_active_ula(tin6);
-					pap6=RGB9_INDEX_FIRST_COLOR+tbblue_get_palette_active_ula(pap6);
-					//printf ("attr: %d tin6: %d pap6: %d\n",attribute_temp,tin6,pap6);
-				}
+        tin6=tinta_temp;
+        pap6=papel_temp;
+        tin6=RGB9_INDEX_FIRST_COLOR+tbblue_get_palette_active_ula(tin6);
+        pap6=RGB9_INDEX_FIRST_COLOR+tbblue_get_palette_active_ula(pap6);
+        //printf ("attr: %d tin6: %d pap6: %d\n",attribute_temp,tin6,pap6);
+    }
 
-		z80_int incremento_offset=0;
+    z80_int incremento_offset=0;
 
 
 	//Refrescar border si conviene
 	if (border_enabled.v) {
-                        //ver si hay que refrescar border
-                        if (modificado_border.v)
-                        {
-                                //printf ("refrescamos border\n");
-                                scr_refresca_border_comun_spectrumzx8081(pap6);
-                                modificado_border.v=0;
-                        }
-
+        //ver si hay que refrescar border
+        if (modificado_border.v) {
+                scr_refresca_border_comun_spectrumzx8081(pap6);
+                modificado_border.v=0;
         }
 
+    }
 
 
-        for (y=0;y<192;y++) {
-                direccion=screen_addr_table[(y<<5)];
+    for (y=0;y<192;y++) {
+        direccion=screen_addr_table[(y<<5)];
+
+        for (x=0,x_hi=0;x<64;x++,x_hi +=8) {
+
+            byte_leido=screen[direccion+incremento_offset];
+
+            for (bit=0;bit<8;bit++) {
+                if (byte_leido&128) col6=tin6;
+                else col6=pap6;
 
 
+                if (video_interlaced_mode.v==0) {
+                    scr_putpixel_zoom_timex_mode6(x_hi+bit,y,col6);
+                }
 
-                for (x=0,x_hi=0;x<64;x++,x_hi +=8) {
+                else {
+                    scr_putpixel_zoom_timex_mode6_interlaced(x_hi+bit,y,col6);
+                }
 
-
-
-                                byte_leido=screen[direccion+incremento_offset];
-
-
-                                for (bit=0;bit<8;bit++) {
-					if (byte_leido&128) col6=tin6;
-					else col6=pap6;
-
-
-					//printf ("color: %d\n",col6);
-
-                                        //scr_putpixel(offsetx+x_hi+bit,offsety+y,col6);
-					//printf ("x: %d y: %d\n",x_hi+bit,y*2);
-
-
-					if (video_interlaced_mode.v==0) {
-						scr_putpixel_zoom_timex_mode6(x_hi+bit,y,col6);
-					}
-
-					else {
-						scr_putpixel_zoom_timex_mode6_interlaced(x_hi+bit,y,col6);
-					}
-
-                                        byte_leido=byte_leido<<1;
-                                }
+                byte_leido=byte_leido<<1;
+            }
 
 
 			incremento_offset ^=8192;
 
-
-                        if (incremento_offset==0) direccion++;
-			//printf ("direccion:%d\n",direccion);
-                }
+            if (incremento_offset==0) direccion++;
 
         }
+
+    }
 
 }
 
