@@ -242,8 +242,7 @@ int hardware_settings_spectrum_next_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
-//void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS);
-//void menu_settings_tape(MENU_ITEM_PARAMETERS);
+void menu_settings_storage(MENU_ITEM_PARAMETERS);
 
 //aofile. aofilename apuntara aqui
 char aofilename_file[PATH_MAX];
@@ -7204,15 +7203,21 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
         }
 
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_storage,NULL,
+            "S~~torage","Almacenamien~~to","Emmagatzema~~tge");
+        menu_add_item_menu_shortcut(array_menu_hardware_settings,'t');
+        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Storage settings");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Storage settings");
+        menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+
         if (menu_cond_realvideo() &&
             (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081)
         ) {
 
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_settings_tv,NULL,
-                "~~TV","~~TV","~~TV");
+                "TV","TV","TV");
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"TV settings");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"TV settings");
-            menu_add_item_menu_shortcut(array_menu_hardware_settings,'t');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
@@ -7354,6 +7359,10 @@ void menu_settings_storage(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_ESC_item(array_menu_settings_storage);
+
+        menu_add_item_menu_index_full_path(array_menu_settings_storage,
+            "Main Menu-> Settings-> Hardware-> Storage","Menú Principal-> Opciones-> Hardware-> Almacenamiento","Menú Principal-> Opcions-> Hardware-> Emmagatzematgea");
+
 
         retorno_menu=menu_dibuja_menu(&settings_storage_opcion_seleccionada,&item_seleccionado,array_menu_settings_storage,
             "Storage Settings","Opciones Almacenamiento","Opcions Emmagatzematge" );
@@ -10455,12 +10464,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 
 #endif
 
-        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_storage,NULL,
-            "S~~torage","Almacenamien~~to","Emmagatzema~~tge");
-        menu_add_item_menu_shortcut(array_menu_settings,'t');
-        menu_add_item_menu_tooltip(array_menu_settings,"Storage settings");
-        menu_add_item_menu_ayuda(array_menu_settings,"Storage settings");
-        menu_add_item_menu_tiene_submenu(array_menu_settings);
+
 
         /*
         if (MACHINE_IS_SPECTRUM) {
