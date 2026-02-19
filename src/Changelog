@@ -56,7 +56,7 @@ Improved ZX Vision:
 - Moved some settings to settings -> Hardware
 - Added shortcuts helper action to create icon to trigger recorded keys
 - Some settings dialogs can reset value to defaults
-- Restored maximized windows on startup, will be restored to the maximum size available
+- Maximized windows that are restored on startup, will be restored to the maximum size available
 - Allow to select dark or light GUI style depending on current hour
 - Changed charset for styles Solarized Dark and Light: now uses the same as AtariTOS
 - Changed windows border color when dragging for resizing: Warning color when a window has to be enlarged (because there is text beyond current size), otherwise Selected color
@@ -77,8 +77,8 @@ Improved ZX Life:
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved Trash icon
 Improved decimal precision of Basic Variables window values
-Improve code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix, Minix3
-Improved ZENG Online protocol: allow to connect different client and server ZEsarUX versions (if they are compatible)
+Improved code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix, Minix3
+Improved ZENG Online protocol: allow to connect different ZEsarUX client and server versions (if they are compatible)
 Improved inserting device files (mmc files, ide files, etc): now they are automatically enabled after inserting them
 
 * Fixes:
