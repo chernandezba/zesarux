@@ -105,7 +105,3 @@ ok*bit 7 para resetear o no paleta al cambiar un modo
 ok *comentar codigo segun https://amstrad.es/forum/viewtopic.php?t=4809&start=75#p87482
 
 
--Estilo solarized light/dark dependiendo la hora del dia
-*deteccion hora. rangos hora fijos? 08:00-20:00  dia?
-*desactivar lista estilos si setting activo?
-*aplicar estilo (sin redibujar ventanas) cuando menu abierto
