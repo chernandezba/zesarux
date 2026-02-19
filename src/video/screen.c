@@ -937,12 +937,12 @@ void store_value_rainbow_debug_check_rainbow(z80_int *puntero_buf_rainbow)
 	}
 
 	if (puntero_buf_rainbow>=(rainbow_buffer+tamanyo)) {
-		printf ("puntero_buf_rainbow mayor limite final: %d (max %d) turbo: %d\n",puntero_buf_rainbow-rainbow_buffer,tamanyo,cpu_turbo_speed);
+		//printf ("puntero_buf_rainbow mayor limite final: %d (max %d) turbo: %d\n",puntero_buf_rainbow-rainbow_buffer,tamanyo,cpu_turbo_speed);
         cpu_panic("desde temp_check_rainbow Intento de escribir en rainbow buffer mas alla del limite");
 	}
 
 	if (puntero_buf_rainbow<rainbow_buffer) {
-        printf ("puntero_buf_rainbow menor que inicial: -%d\n",rainbow_buffer-puntero_buf_rainbow);
+        //printf ("puntero_buf_rainbow menor que inicial: -%d\n",rainbow_buffer-puntero_buf_rainbow);
         cpu_panic ("puntero_buf_rainbow menor que inicial");
     }
 }
@@ -1082,14 +1082,12 @@ void init_rainbow(void)
 
 	debug_printf (VERBOSE_INFO,"Initializing two rainbow video buffer of size: %d x %d , %d bytes each",ancho,alto,tamanyo);
 
-    printf("Initializing two rainbow video buffer of size: %d x %d , %d bytes each\n",ancho,alto,tamanyo);
-
 
     //Si tamaño igual que anterior, no tocar nada
 
     if (rainbow_buffer_one!=NULL) {
         if (anterior_tamanyo_rainbow==tamanyo) {
-            printf("Mismo tamanyo rainbow_buffer que antes. no reasignar memoria. contador_segundo_infinito:%d\n",contador_segundo_infinito);
+            debug_printf (VERBOSE_INFO,"Previous rainbow buffer is the same size as current, do not reassign");
             return;
         }
 
@@ -3824,7 +3822,7 @@ void scr_refresca_pantalla_timex_512x192(void)
         int x,y,bit;
         z80_int direccion;
         z80_byte byte_leido;
-        int fila;
+        //int fila;
         //int zx,zy;
 
         int col6;
@@ -3913,12 +3911,9 @@ BITS INK PAPER BORDER
                 direccion=screen_addr_table[(y<<5)];
 
 
-                fila=y/8;
+
                 for (x=0,x_hi=0;x<64;x++,x_hi +=8) {
 
-
-                        //Ver en casos en que puede que haya menu activo y hay que hacer overlay
-			//if (1==1) {
 
 
                                 byte_leido=screen[direccion+incremento_offset];
@@ -4708,7 +4703,7 @@ void scr_refresca_pantalla_rainbow_unalinea_timex(int y)
     int x,bit;
     z80_int direccion;
     z80_byte byte_leido;
-    int fila;
+    //int fila;
     //int zx,zy;
 
     int col6;
@@ -4759,7 +4754,7 @@ BITS INK PAPER BORDER
     direccion=screen_addr_table[(y<<5)];
 
 
-    fila=y/8;
+
     for (x=0,x_hi=0;x<64;x++,x_hi +=8) {
 
         byte_leido=screen[direccion+incremento_offset];
@@ -4966,7 +4961,7 @@ void scr_refresca_pantalla_rainbow_comun_spectrum(void)
 	ancho=get_total_ancho_rainbow();
 	alto=get_total_alto_rainbow();
 
-	int x,y,bit;
+	int x,y;
 
 
 
