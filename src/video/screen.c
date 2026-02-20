@@ -1911,7 +1911,7 @@ int scr_putpixel_dither_get_black_pixels(int color)
 
 
     //A partir de cierto umbral, todo en negro
-    if (porcen>86) porcen=100;
+    //if (porcen>95) porcen=100;
 
     cuantos_escribir=(multiplicador*porcen)/100;
 
