@@ -2188,6 +2188,64 @@ int scr_get_index_cache_putpixel_no_rainbow(int x,int y)
     return indice_cache;
 }
 
+void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
+{
+    int offsetx,offsety;
+
+	if (MACHINE_IS_Z88) {
+		offsetx=0;
+		offsety=0;
+	}
+
+	else if (MACHINE_IS_CPC) {
+		offsetx=CPC_LEFT_BORDER*border_enabled.v;
+        offsety=CPC_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_PCW) {
+		offsetx=PCW_LEFT_BORDER*border_enabled.v;
+        offsety=PCW_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_PRISM) {
+		offsetx=PRISM_LEFT_BORDER*border_enabled.v;
+        offsety=PRISM_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_TSCONF) {
+		offsetx=TSCONF_LEFT_BORDER*border_enabled.v;
+        offsety=TSCONF_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_TBBLUE) {
+		offsetx=TBBLUE_LEFT_BORDER*border_enabled.v;
+        offsety=TBBLUE_TOP_BORDER*border_enabled.v;
+	}
+
+    else if (MACHINE_IS_SAM) {
+        offsetx=SAM_LEFT_BORDER*border_enabled.v;
+        offsety=SAM_TOP_BORDER*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_QL) {
+        offsetx=QL_LEFT_BORDER*border_enabled.v;
+        offsety=QL_TOP_BORDER*border_enabled.v;
+    }
+
+    else if (MACHINE_IS_ZX8081ACE) {
+        offsetx=LEFT_BORDER*border_enabled.v;
+        offsety=ZX8081ACE_TOP_BORDER*border_enabled.v;
+    }
+
+	else {
+        offsetx=LEFT_BORDER*border_enabled.v;
+        offsety=TOP_BORDER*border_enabled.v;
+	}
+
+    *p_offset_x=offsetx;
+    *p_offset_y=offsety;
+}
+
 //putpixel escalandolo al zoom necesario y teniendo en cuenta el border
 //por tanto, (0,0) = dentro de pantalla
 void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
@@ -2203,68 +2261,19 @@ void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
 	putpixel_cache[indice_cache]=color;
 #endif
 
-        int zx,zy;
+    int zx,zy;
 	int offsetx,offsety;
 
-	if (MACHINE_IS_Z88) {
-		offsetx=0;
-		offsety=0;
-	}
+    scr_get_offset_putpixel_no_rainbow(&offsetx,&offsety);
 
-	else if (MACHINE_IS_CPC) {
-		offsetx=CPC_LEFT_BORDER*border_enabled.v;
-                offsety=CPC_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_PCW) {
-		offsetx=PCW_LEFT_BORDER*border_enabled.v;
-        offsety=PCW_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_PRISM) {
-		offsetx=PRISM_LEFT_BORDER*border_enabled.v;
-                offsety=PRISM_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_TSCONF) {
-		offsetx=TSCONF_LEFT_BORDER*border_enabled.v;
-                offsety=TSCONF_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_TBBLUE) {
-		offsetx=TBBLUE_LEFT_BORDER*border_enabled.v;
-                offsety=TBBLUE_TOP_BORDER*border_enabled.v;
-	}
-
-        else if (MACHINE_IS_SAM) {
-                offsetx=SAM_LEFT_BORDER*border_enabled.v;
-                offsety=SAM_TOP_BORDER*border_enabled.v;
-        }
-
-				else if (MACHINE_IS_QL) {
-								offsetx=QL_LEFT_BORDER*border_enabled.v;
-								offsety=QL_TOP_BORDER*border_enabled.v;
-				}
-
-				else if (MACHINE_IS_ZX8081ACE) {
-								offsetx=LEFT_BORDER*border_enabled.v;
-								offsety=ZX8081ACE_TOP_BORDER*border_enabled.v;
-				}
-
-	else {
-	        offsetx=LEFT_BORDER*border_enabled.v;
-        	offsety=TOP_BORDER*border_enabled.v;
-	}
-        int xzoom=x*zoom_x;
-        int yzoom=y*zoom_y;
-
-
+    int xzoom=x*zoom_x;
+    int yzoom=y*zoom_y;
 
 	//Escalado a zoom indicado
-        for (zx=0;zx<zoom_x;zx++) {
-        	for (zy=0;zy<zoom_y;zy++) {
-                	scr_putpixel(offsetx+xzoom+zx,offsety+yzoom+zy,color);
-		}
+    for (zx=0;zx<zoom_x;zx++) {
+        for (zy=0;zy<zoom_y;zy++) {
+            scr_putpixel(offsetx+xzoom+zx,offsety+yzoom+zy,color);
+        }
 	}
 }
 
@@ -2287,73 +2296,24 @@ void scr_putpixel_zoom_mas_de_uno_dither(int x,int y,unsigned int color)
     int zx,zy;
 	int offsetx,offsety;
 
-	if (MACHINE_IS_Z88) {
-		offsetx=0;
-		offsety=0;
-	}
+    scr_get_offset_putpixel_no_rainbow(&offsetx,&offsety);
 
-	else if (MACHINE_IS_CPC) {
-		offsetx=CPC_LEFT_BORDER*border_enabled.v;
-                offsety=CPC_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_PCW) {
-		offsetx=PCW_LEFT_BORDER*border_enabled.v;
-        offsety=PCW_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_PRISM) {
-		offsetx=PRISM_LEFT_BORDER*border_enabled.v;
-                offsety=PRISM_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_TSCONF) {
-		offsetx=TSCONF_LEFT_BORDER*border_enabled.v;
-                offsety=TSCONF_TOP_BORDER*border_enabled.v;
-	}
-
-	else if (MACHINE_IS_TBBLUE) {
-		offsetx=TBBLUE_LEFT_BORDER*border_enabled.v;
-                offsety=TBBLUE_TOP_BORDER*border_enabled.v;
-	}
-
-        else if (MACHINE_IS_SAM) {
-                offsetx=SAM_LEFT_BORDER*border_enabled.v;
-                offsety=SAM_TOP_BORDER*border_enabled.v;
-        }
-
-				else if (MACHINE_IS_QL) {
-								offsetx=QL_LEFT_BORDER*border_enabled.v;
-								offsety=QL_TOP_BORDER*border_enabled.v;
-				}
-
-				else if (MACHINE_IS_ZX8081ACE) {
-								offsetx=LEFT_BORDER*border_enabled.v;
-								offsety=ZX8081ACE_TOP_BORDER*border_enabled.v;
-				}
-
-	else {
-	        offsetx=LEFT_BORDER*border_enabled.v;
-        	offsety=TOP_BORDER*border_enabled.v;
-	}
-        int xzoom=x*zoom_x;
-        int yzoom=y*zoom_y;
-
+    int xzoom=x*zoom_x;
+    int yzoom=y*zoom_y;
 
     int cuantos_escribir=scr_putpixel_dither_get_black_pixels(color);
 
     //Empezar en negro y luego el resto en blanco
     color=0;
 
-
 	//Escalado a zoom indicado
-        for (zx=0;zx<zoom_x;zx++) {
-        	for (zy=0;zy<zoom_y;zy++) {
+    for (zx=0;zx<zoom_x;zx++) {
+        for (zy=0;zy<zoom_y;zy++) {
             if (!cuantos_escribir) color=7;
             cuantos_escribir--;
 
             scr_putpixel(offsetx+xzoom+zx,offsety+yzoom+zy,color);
-		}
+        }
 	}
 }
 
@@ -2365,65 +2325,16 @@ void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
 #ifdef PUTPIXELCACHE
     int indice_cache=scr_get_index_cache_putpixel_no_rainbow(x,y);
 
-        if (putpixel_cache[indice_cache]==color) return;
+    if (putpixel_cache[indice_cache]==color) return;
 
-        //printf ("scr_putpixel_zoom color %d not in cache: x %d y %d indice_cache=%d contenido=%d\n",color,x,y,indice_cache,putpixel_cache[indice_cache]);
-        //put_putpixel_cache(indice_cache,color);
-        putpixel_cache[indice_cache]=color;
+    //printf ("scr_putpixel_zoom color %d not in cache: x %d y %d indice_cache=%d contenido=%d\n",color,x,y,indice_cache,putpixel_cache[indice_cache]);
+    //put_putpixel_cache(indice_cache,color);
+    putpixel_cache[indice_cache]=color;
 #endif
 
-	        int offsetx,offsety;
+    int offsetx,offsety;
 
-
-	if (MACHINE_IS_Z88) {
-		offsetx=0;
-		offsety=0;
-	}
-
-	else if (MACHINE_IS_CPC) {
-                offsetx=CPC_LEFT_BORDER*border_enabled.v;
-                offsety=CPC_TOP_BORDER*border_enabled.v;
-        }
-
-	else if (MACHINE_IS_PCW) {
-                offsetx=PCW_LEFT_BORDER*border_enabled.v;
-                offsety=PCW_TOP_BORDER*border_enabled.v;
-        }
-
-	else if (MACHINE_IS_PRISM) {
-                offsetx=PRISM_LEFT_BORDER*border_enabled.v;
-                offsety=PRISM_TOP_BORDER*border_enabled.v;
-        }
-
-				else if (MACHINE_IS_TSCONF) {
-			                offsetx=TSCONF_LEFT_BORDER*border_enabled.v;
-			                offsety=TSCONF_TOP_BORDER*border_enabled.v;
-			        }
-
-				else if (MACHINE_IS_TBBLUE) {
-			                offsetx=TBBLUE_LEFT_BORDER*border_enabled.v;
-			                offsety=TBBLUE_TOP_BORDER*border_enabled.v;
-			        }
-
-        else if (MACHINE_IS_SAM) {
-                offsetx=SAM_LEFT_BORDER*border_enabled.v;
-                offsety=SAM_TOP_BORDER*border_enabled.v;
-        }
-
-				else if (MACHINE_IS_QL) {
-								offsetx=QL_LEFT_BORDER*border_enabled.v;
-								offsety=QL_TOP_BORDER*border_enabled.v;
-				}
-
-				else if (MACHINE_IS_ZX8081ACE) {
-								offsetx=LEFT_BORDER*border_enabled.v;
-								offsety=ZX8081ACE_TOP_BORDER*border_enabled.v;
-				}
-
-	else {
-        offsetx=LEFT_BORDER*border_enabled.v;
-        offsety=TOP_BORDER*border_enabled.v;
-	}
+    scr_get_offset_putpixel_no_rainbow(&offsetx,&offsety);
 
 	scr_putpixel(offsetx+x,offsety+y,color);
 }
