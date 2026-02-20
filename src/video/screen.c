@@ -2145,13 +2145,8 @@ void scr_putpixel_zoom_rainbow_uno(int x,int y,unsigned int color)
 	scr_putpixel(x,y,color);
 }
 
-
-//putpixel escalandolo al zoom necesario y teniendo en cuenta el border
-//por tanto, (0,0) = dentro de pantalla
-void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
+int scr_get_index_cache_putpixel_no_rainbow(int x,int y)
 {
-
-#ifdef PUTPIXELCACHE
 	int indice_cache;
 
 	if (MACHINE_IS_Z88) {
@@ -2189,6 +2184,17 @@ void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
 	else {
 		indice_cache=(get_total_ancho_rainbow()*(screen_borde_superior*border_enabled.v+y)) + screen_total_borde_izquierdo*border_enabled.v+x;
 	}
+
+    return indice_cache;
+}
+
+//putpixel escalandolo al zoom necesario y teniendo en cuenta el border
+//por tanto, (0,0) = dentro de pantalla
+void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
+{
+
+#ifdef PUTPIXELCACHE
+	int indice_cache=scr_get_index_cache_putpixel_no_rainbow(x,y);
 
 	if (putpixel_cache[indice_cache]==color) return;
 
@@ -2269,43 +2275,7 @@ void scr_putpixel_zoom_mas_de_uno_dither(int x,int y,unsigned int color)
 {
 
 #ifdef PUTPIXELCACHE
-	int indice_cache;
-
-	if (MACHINE_IS_Z88) {
-		indice_cache=(get_total_ancho_rainbow()*(y)) + x;
-	}
-
-	else if (MACHINE_IS_CPC) {
-		indice_cache=(get_total_ancho_rainbow()*(CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
-
-	else if (MACHINE_IS_PCW) {
-		indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
-
-	else if (MACHINE_IS_PRISM) {
-		indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
-
-				else if (MACHINE_IS_TSCONF) {
-					indice_cache=(get_total_ancho_rainbow()*(TSCONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TSCONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-			        }
-
-				else if (MACHINE_IS_TBBLUE) {
-					indice_cache=(get_total_ancho_rainbow()*(TBBLUE_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-			        }
-
-	else if (MACHINE_IS_SAM) {
-                indice_cache=(get_total_ancho_rainbow()*(SAM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + SAM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
-
-				else if (MACHINE_IS_QL) {
-											indice_cache=(get_total_ancho_rainbow()*(QL_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-							}
-
-	else {
-		indice_cache=(get_total_ancho_rainbow()*(screen_borde_superior*border_enabled.v+y)) + screen_total_borde_izquierdo*border_enabled.v+x;
-	}
+	int indice_cache=scr_get_index_cache_putpixel_no_rainbow(x,y);
 
 	if (putpixel_cache[indice_cache]==color) return;
 
@@ -2393,60 +2363,7 @@ void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
 {
 
 #ifdef PUTPIXELCACHE
-        int indice_cache;
-
-	if (MACHINE_IS_Z88) {
-		indice_cache=(get_total_ancho_rainbow()*(y)) + x;
-	}
-
-	else if (MACHINE_IS_CPC) {
-                indice_cache=(get_total_ancho_rainbow()*(CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-		//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
-		//printf ("get_total_ancho_rainbow_cached: %d\n",get_total_ancho_rainbow_cached);
-		//sleep(1);
-        }
-
-	else if (MACHINE_IS_PCW) {
-                indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-		//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
-		//printf ("get_total_ancho_rainbow_cached: %d\n",get_total_ancho_rainbow_cached);
-		//sleep(1);
-        }
-
-	else if (MACHINE_IS_PRISM) {
-                indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-		//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
-		//printf ("get_total_ancho_rainbow_cached: %d\n",get_total_ancho_rainbow_cached);
-		//sleep(1);
-        }
-
-				else if (MACHINE_IS_TSCONF) {
-            indice_cache=(get_total_ancho_rainbow()*(TSCONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TSCONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-
-	        }
-
-				else if (MACHINE_IS_TBBLUE) {
-            indice_cache=(get_total_ancho_rainbow()*(TBBLUE_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-
-	        }
-
-        else if (MACHINE_IS_SAM) {
-                indice_cache=(get_total_ancho_rainbow()*(SAM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + SAM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-                //printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
-                //printf ("get_total_ancho_rainbow_cached: %d\n",get_total_ancho_rainbow_cached);
-                //sleep(1);
-        }
-
-				else if (MACHINE_IS_QL) {
-								indice_cache=(get_total_ancho_rainbow()*(QL_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-								//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
-								//printf ("get_total_ancho_rainbow_cached: %d\n",get_total_ancho_rainbow_cached);
-								//sleep(1);
-				}
-
-	else {
-        	indice_cache=(get_total_ancho_rainbow()*(screen_borde_superior*border_enabled.v+y)) + screen_total_borde_izquierdo*border_enabled.v+x;
-	}
+    int indice_cache=scr_get_index_cache_putpixel_no_rainbow(x,y);
 
         if (putpixel_cache[indice_cache]==color) return;
 
