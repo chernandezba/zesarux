@@ -17,6 +17,7 @@ Permitir ver GO SUB stack de ZX80 y ZX81
 Permitir caracteres utf-8 en footer
 Permitir grabar historial de smartload en un archivo
 Agregado efecto scanlines agresivo
+Agregado modo de color en blanco y negro con tramado
 Agregada mirilla de lightgun
 Agregada emulación de Dispositivos Ópticos:
 - Stack Light Rifle

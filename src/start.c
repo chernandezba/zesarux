@@ -1733,6 +1733,7 @@ printf("\n"
         "--blue                                  Force display mode with blue colour\n"
         "  Note: You can combine colours, for example, --red --green for Yellow display, or --red --green --blue for Gray display\n"
         "--inversevideo                          Inverse display colours\n"
+        "--dithering                             Only black and white colors with dithering, and only for basic Spectrum colors (0-15). And requires Real video and zoom >=2\n"
         "--realpalette                           Use real Spectrum colour palette according to info by Richard Atkinson\n"
 
 #ifdef COMPILE_AA
@@ -6254,6 +6255,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--inversevideo")) {
                                 inverse_video.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--dithering")) {
+                video_dither_mode.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--realpalette")) {

@@ -214,6 +214,8 @@ extern z80_bit video_interlaced_mode;
 extern z80_bit video_interlaced_scanlines;
 extern z80_bit video_interlaced_scanlines_aggressive;
 
+extern z80_bit video_dither_mode;
+
 extern z80_bit gigascreen_enabled;
 
 extern z80_bit pentagon_16c_mode_available;

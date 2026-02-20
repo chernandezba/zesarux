@@ -99,3 +99,7 @@ ok ya estaba*poder forzar un modo por menu
 ok*bit 7 para resetear o no paleta al cambiar un modo
 ok *comentar codigo segun https://amstrad.es/forum/viewtopic.php?t=4809&start=75#p87482
 
+ok falta border -dither tambien para no realvideo
+
+-calculos de offset y  indice_cache de scr_putpixel_zoom_mas_de_uno se repiten en varias funciones (al menos en esa y la de dither). unificar
+-refrescar pantalla sin realvideo, border no hace dither

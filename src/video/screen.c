@@ -763,6 +763,9 @@ z80_byte interlaced_numero_frame=0;
 //si esta activo el modo entrelazado
 z80_bit video_interlaced_mode;
 
+//si esta activo el modo dither
+z80_bit video_dither_mode={0};
+
 //si esta activo el scanlines mode. requiere interlaced
 z80_bit video_interlaced_scanlines={0};
 
@@ -1893,6 +1896,185 @@ void scr_putpixel_zoom_rainbow_mas_de_uno(int x,int y,unsigned int color)
 
 }
 
+int scr_putpixel_dither_get_black_pixels(int color)
+{
+    int multiplicador=zoom_x*zoom_y;
+
+    int color_rgb=spectrum_colortable[color];
+
+    int r=(color_rgb>>16) & 0xFF;
+    int g=(color_rgb>>8 ) & 0xFF;
+    int b=(color_rgb    ) & 0xFF;
+    int gris=rgb_to_grey(r,g,b);
+
+
+
+
+    int cuantos_escribir=0;
+
+    //valor gris entre 0...255
+    //pasar a 0 100
+    int porcen=100-((gris*100)/255);
+
+    //temp
+    //porcen=10;
+
+    //A partir de cierto umbral, todo en negro
+    if (porcen>86) porcen=100;
+
+    cuantos_escribir=(multiplicador*porcen)/100;
+
+    //if (porcen>86) cuantos_escribir=multiplicador;
+
+    //printf("cuantos %d gris %d porcen %d %% rgb %d %d %d\n",cuantos_escribir,gris,porcen,r,g,b);
+
+    return cuantos_escribir;
+}
+
+void scr_putpixel_zoom_rainbow_mas_de_uno_dither(int x,int y,unsigned int color)
+{
+
+    int multiplicador=zoom_x*zoom_y;
+
+    //Al menos 4 puntos por cada pixel para poder hacer dither
+
+    if (multiplicador<4) {
+        scr_putpixel_zoom_rainbow_mas_de_uno(x,y,color);
+        return;
+    }
+
+
+
+#ifdef PUTPIXELCACHE
+	int indice_cache;
+
+	indice_cache=(get_total_ancho_rainbow()*y)+x;
+
+	if (putpixel_cache[indice_cache]==color) return;
+
+	//printf ("not in cache: x %d y %d\n",x,y);
+	//put_putpixel_cache(indice_cache,color);
+	putpixel_cache[indice_cache]=color;
+#endif
+
+
+    int cuantos_escribir=scr_putpixel_dither_get_black_pixels(color);
+
+    //Empezar en negro y luego el resto en blanco
+    color=0;
+
+    int zx,zy;
+    int xzoom=x*zoom_x;
+    int yzoom=y*zoom_y;
+
+
+    //Escalado a zoom indicado
+    for (zx=0;zx<zoom_x;zx++) {
+        for (zy=0;zy<zoom_y;zy++) {
+            if (!cuantos_escribir) color=7;
+            cuantos_escribir--;
+
+            scr_putpixel(xzoom+zx,yzoom+zy,color);
+        }
+    }
+
+}
+
+void orig_scr_putpixel_zoom_rainbow_mas_de_uno_dither(int x,int y,unsigned int color)
+{
+
+    int multiplicador=zoom_x*zoom_y;
+
+    //Al menos 4 puntos por cada pixel para poder hacer dither
+
+
+    if (multiplicador<4 || color>15) {
+        scr_putpixel_zoom_rainbow_mas_de_uno(x,y,color);
+        return;
+    }
+
+
+
+#ifdef PUTPIXELCACHE
+	int indice_cache;
+
+	indice_cache=(get_total_ancho_rainbow()*y)+x;
+
+	if (putpixel_cache[indice_cache]==color) return;
+
+	//printf ("not in cache: x %d y %d\n",x,y);
+	//put_putpixel_cache(indice_cache,color);
+	putpixel_cache[indice_cache]=color;
+#endif
+
+
+
+
+    int zx,zy;
+    int xzoom=x*zoom_x;
+    int yzoom=y*zoom_y;
+
+
+    int cuantos_escribir=0;
+
+
+    color &=7; //quitar brillo
+
+    //Si color=0, todo pixeles a 0
+    //Si color=7, todo pixeles a 7
+
+    //Para color 0, escribir cuantos_escribir=7
+    //Para color 7, escribir cuantos_escribir=0
+    int indice=7-color;
+
+    switch(indice) {
+        case 7:
+            cuantos_escribir=multiplicador; //Zoom 3*3-> 100%. Zoom 2*2 -> 4
+        break;
+
+        case 6:
+            cuantos_escribir=(multiplicador*86)/100;  //85.68%//Zoom 3*3-> 8. //Zoom 2*2-> 4
+        break;
+
+        case 5:
+            cuantos_escribir=(multiplicador*71)/100; //Zoom 3*3-> 8 71.4%
+        break;
+
+        case 4:
+            cuantos_escribir=(multiplicador*57)/100; //Zoom 3*3-> 8 57.12%
+        break;
+
+        case 3:
+            cuantos_escribir=(multiplicador*42)/100; //Zoom 3*3-> 8 42.84%
+        break;
+
+        case 2:
+            cuantos_escribir=(multiplicador*29)/100; //Zoom 3*3-> 8 28.56 %
+        break;
+
+        case 1:
+            cuantos_escribir=(multiplicador*14)/100; //Zoom 3*3-> 8  14.28%
+        break;
+
+        case 0:
+            cuantos_escribir=0;
+        break;
+    }
+
+
+    color=0;
+
+    //Escalado a zoom indicado
+    for (zx=0;zx<zoom_x;zx++) {
+        for (zy=0;zy<zoom_y;zy++) {
+            if (!cuantos_escribir) color=7;
+            cuantos_escribir--;
+
+            scr_putpixel(xzoom+zx,yzoom+zy,color);
+        }
+    }
+
+}
 
 //putpixel con zoom y multiple de 2 y teniendo en cuenta el interlaced
 void scr_putpixel_zoom_rainbow_interlaced_zoom_two(int x,int y,unsigned int color)
@@ -2080,6 +2262,131 @@ void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
 	}
 }
 
+
+//putpixel escalandolo al zoom necesario y teniendo en cuenta el border
+//por tanto, (0,0) = dentro de pantalla
+void scr_putpixel_zoom_mas_de_uno_dither(int x,int y,unsigned int color)
+{
+
+#ifdef PUTPIXELCACHE
+	int indice_cache;
+
+	if (MACHINE_IS_Z88) {
+		indice_cache=(get_total_ancho_rainbow()*(y)) + x;
+	}
+
+	else if (MACHINE_IS_CPC) {
+		indice_cache=(get_total_ancho_rainbow()*(CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+        }
+
+	else if (MACHINE_IS_PCW) {
+		indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+        }
+
+	else if (MACHINE_IS_PRISM) {
+		indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+        }
+
+				else if (MACHINE_IS_TSCONF) {
+					indice_cache=(get_total_ancho_rainbow()*(TSCONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TSCONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+			        }
+
+				else if (MACHINE_IS_TBBLUE) {
+					indice_cache=(get_total_ancho_rainbow()*(TBBLUE_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+			        }
+
+	else if (MACHINE_IS_SAM) {
+                indice_cache=(get_total_ancho_rainbow()*(SAM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + SAM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+        }
+
+				else if (MACHINE_IS_QL) {
+											indice_cache=(get_total_ancho_rainbow()*(QL_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+							}
+
+	else {
+		indice_cache=(get_total_ancho_rainbow()*(screen_borde_superior*border_enabled.v+y)) + screen_total_borde_izquierdo*border_enabled.v+x;
+	}
+
+	if (putpixel_cache[indice_cache]==color) return;
+
+	//printf ("scr_putpixel_zoom not in cache: x %d y %d indice_cache=%d \n",x,y,indice_cache);
+	//put_putpixel_cache(indice_cache,color);
+	putpixel_cache[indice_cache]=color;
+#endif
+
+    int zx,zy;
+	int offsetx,offsety;
+
+	if (MACHINE_IS_Z88) {
+		offsetx=0;
+		offsety=0;
+	}
+
+	else if (MACHINE_IS_CPC) {
+		offsetx=CPC_LEFT_BORDER*border_enabled.v;
+                offsety=CPC_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_PCW) {
+		offsetx=PCW_LEFT_BORDER*border_enabled.v;
+        offsety=PCW_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_PRISM) {
+		offsetx=PRISM_LEFT_BORDER*border_enabled.v;
+                offsety=PRISM_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_TSCONF) {
+		offsetx=TSCONF_LEFT_BORDER*border_enabled.v;
+                offsety=TSCONF_TOP_BORDER*border_enabled.v;
+	}
+
+	else if (MACHINE_IS_TBBLUE) {
+		offsetx=TBBLUE_LEFT_BORDER*border_enabled.v;
+                offsety=TBBLUE_TOP_BORDER*border_enabled.v;
+	}
+
+        else if (MACHINE_IS_SAM) {
+                offsetx=SAM_LEFT_BORDER*border_enabled.v;
+                offsety=SAM_TOP_BORDER*border_enabled.v;
+        }
+
+				else if (MACHINE_IS_QL) {
+								offsetx=QL_LEFT_BORDER*border_enabled.v;
+								offsety=QL_TOP_BORDER*border_enabled.v;
+				}
+
+				else if (MACHINE_IS_ZX8081ACE) {
+								offsetx=LEFT_BORDER*border_enabled.v;
+								offsety=ZX8081ACE_TOP_BORDER*border_enabled.v;
+				}
+
+	else {
+	        offsetx=LEFT_BORDER*border_enabled.v;
+        	offsety=TOP_BORDER*border_enabled.v;
+	}
+        int xzoom=x*zoom_x;
+        int yzoom=y*zoom_y;
+
+
+    int cuantos_escribir=scr_putpixel_dither_get_black_pixels(color);
+
+    //Empezar en negro y luego el resto en blanco
+    color=0;
+
+
+	//Escalado a zoom indicado
+        for (zx=0;zx<zoom_x;zx++) {
+        	for (zy=0;zy<zoom_y;zy++) {
+            if (!cuantos_escribir) color=7;
+            cuantos_escribir--;
+
+            scr_putpixel(offsetx+xzoom+zx,offsety+yzoom+zy,color);
+		}
+	}
+}
+
 //putpixel escalandolo a zoom 1 -> no zoom
 //por tanto, (0,0) = dentro de pantalla
 void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
@@ -2218,6 +2525,12 @@ void set_putpixel_zoom(void)
 		scr_putpixel_zoom=scr_putpixel_zoom_mas_de_uno;
                 scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_interlaced_zoom_two;
 		debug_printf (VERBOSE_INFO,"Setting putpixel functions to interlaced zoom multiple of two");
+	}
+
+	else if (video_dither_mode.v) {
+		scr_putpixel_zoom=scr_putpixel_zoom_mas_de_uno_dither;
+		scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_mas_de_uno_dither;
+		debug_printf (VERBOSE_INFO,"Setting putpixel functions to variable zoom with dither");
 	}
 
 	else {
