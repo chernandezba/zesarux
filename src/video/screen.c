@@ -2244,9 +2244,13 @@ int scr_putpixel_dither_zoom_uno_get_color(int x,int y,int color)
 
     //4 tipos de trama: negro, blanco, diagonales negras con espacio mas ancho blanco, diagonales blancas con espacio mas ancho negro
     //Obviamente no tenemos muchos colores tramados pero no queda tan mal
-    int trama=(porcen*4)/100;
 
-    if ((x+y) % 4 < trama) color=0;
+    //tramas totales es este valor+1
+    int umbral=4;
+
+    int trama=(porcen*umbral)/100;
+
+    if ((x+y) % umbral < trama) color=0;
     else color=7;
 
     return color;
