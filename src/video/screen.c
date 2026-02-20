@@ -2238,6 +2238,20 @@ void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
     *p_offset_y=offsety;
 }
 
+int scr_putpixel_dither_zoom_uno_get_color(int x,int y,int color)
+{
+    int porcen=scr_putpixel_dither_get_black_pixels_get_porc(color);
+
+    //4 tipos de trama: negro, blanco, diagonales negras con espacio mas ancho blanco, diagonales blancas con espacio mas ancho negro
+    //Obviamente no tenemos muchos colores tramados pero no queda tan mal
+    int trama=(porcen*4)/100;
+
+    if ((x+y) % 4 < trama) color=0;
+    else color=7;
+
+    return color;
+}
+
 //putpixel escalandolo con zoom 1 - sin escalado
 //y con cache
 //por tanto, (0,0) = arriba izquierda del border
@@ -2255,14 +2269,7 @@ void scr_putpixel_zoom_rainbow_uno_dither(int x,int y,unsigned int color)
     putpixel_cache[indice_cache]=color;
 #endif
 
-    int porcen=scr_putpixel_dither_get_black_pixels_get_porc(color);
-
-    //4 tipos de trama: negro, blanco, diagonales negras con espacio mas ancho blanco, diagonales blancas con espacio mas ancho negro
-    //Obviamente no tenemos muchos colores tramados pero no queda tan mal
-    int trama=(porcen*4)/100;
-
-    if ((x+y) % 4 < trama) color=0;
-    else color=7;
+    color=scr_putpixel_dither_zoom_uno_get_color(x,y,color);
 
 	scr_putpixel(x,y,color);
 }
@@ -2288,14 +2295,7 @@ void scr_putpixel_zoom_uno_dither(int x,int y,unsigned int color)
 
     scr_get_offset_putpixel_no_rainbow(&offsetx,&offsety);
 
-    int porcen=scr_putpixel_dither_get_black_pixels_get_porc(color);
-
-    //4 tipos de trama: negro, blanco, diagonales negras con espacio mas ancho blanco, diagonales blancas con espacio mas ancho negro
-    //Obviamente no tenemos muchos colores tramados pero no queda tan mal
-    int trama=(porcen*4)/100;
-
-    if ((x+y) % 4 < trama) color=0;
-    else color=7;
+    color=scr_putpixel_dither_zoom_uno_get_color(x,y,color);
 
 	scr_putpixel(offsetx+x,offsety+y,color);
 }
