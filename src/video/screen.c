@@ -1536,11 +1536,10 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
 {
 //      printf ("Refresco border\n");
 
-        int x,y;
+    int x,y;
 
 	//simular modo fast
-        if (MACHINE_IS_ZX8081 && video_fast_mode_emulation.v==1 && video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
-
+    if (MACHINE_IS_ZX8081 && video_fast_mode_emulation.v==1 && video_fast_mode_next_frame_black==LIMIT_FAST_FRAME_BLACK) {
 		//printf ("color border 0\n");
 		color=0;
 	}
@@ -1553,31 +1552,28 @@ void scr_refresca_border_comun_spectrumzx8081(unsigned int color)
 	//color +=spectrum_palette_offset;
 
 
-        //parte superior
-        for (y=0;y<topborder;y++) {
-                for (x=0;x<ANCHO_PANTALLA*zoom_x+LEFT_BORDER*2;x++) {
-                                scr_putpixel(x,y,color);
-                }
+    //parte superior
+    for (y=0;y<topborder;y++) {
+        for (x=0;x<ANCHO_PANTALLA*zoom_x+LEFT_BORDER*2;x++) {
+            scr_putpixel(x,y,color);
         }
+    }
 
-        //parte inferior
-        for (y=0;y<BOTTOM_BORDER;y++) {
-                for (x=0;x<ANCHO_PANTALLA*zoom_x+LEFT_BORDER*2;x++) {
-                                scr_putpixel(x,topborder+y+ALTO_PANTALLA*zoom_y,color);
-
-
-                }
+    //parte inferior
+    for (y=0;y<BOTTOM_BORDER;y++) {
+        for (x=0;x<ANCHO_PANTALLA*zoom_x+LEFT_BORDER*2;x++) {
+            scr_putpixel(x,topborder+y+ALTO_PANTALLA*zoom_y,color);
         }
+    }
 
 
-        //laterales
-        for (y=0;y<ALTO_PANTALLA*zoom_y;y++) {
-                for (x=0;x<LEFT_BORDER;x++) {
-                        scr_putpixel(x,topborder+y,color);
-                        scr_putpixel(LEFT_BORDER+ANCHO_PANTALLA*zoom_x+x,topborder+y,color);
-                }
-
+    //laterales
+    for (y=0;y<ALTO_PANTALLA*zoom_y;y++) {
+        for (x=0;x<LEFT_BORDER;x++) {
+            scr_putpixel(x,topborder+y,color);
+            scr_putpixel(LEFT_BORDER+ANCHO_PANTALLA*zoom_x+x,topborder+y,color);
         }
+    }
 
 
 }
@@ -1907,24 +1903,17 @@ int scr_putpixel_dither_get_black_pixels(int color)
     int b=(color_rgb    ) & 0xFF;
     int gris=rgb_to_grey(r,g,b);
 
-
-
-
     int cuantos_escribir=0;
 
     //valor gris entre 0...255
     //pasar a 0 100
     int porcen=100-((gris*100)/255);
 
-    //temp
-    //porcen=10;
 
     //A partir de cierto umbral, todo en negro
     if (porcen>86) porcen=100;
 
     cuantos_escribir=(multiplicador*porcen)/100;
-
-    //if (porcen>86) cuantos_escribir=multiplicador;
 
     //printf("cuantos %d gris %d porcen %d %% rgb %d %d %d\n",cuantos_escribir,gris,porcen,r,g,b);
 
@@ -2346,7 +2335,7 @@ void set_putpixel_zoom(void)
 	//zoom_y multiple de dos (valor par) y interlaced
 	else if (zoom_y>=2 && (zoom_y&1)==0 && video_interlaced_mode.v) {
 		scr_putpixel_zoom=scr_putpixel_zoom_mas_de_uno;
-                scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_interlaced_zoom_two;
+        scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_interlaced_zoom_two;
 		debug_printf (VERBOSE_INFO,"Setting putpixel functions to interlaced zoom multiple of two");
 	}
 
