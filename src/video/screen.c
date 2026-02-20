@@ -2153,33 +2153,33 @@ int scr_get_index_cache_putpixel_no_rainbow(int x,int y)
 		indice_cache=(get_total_ancho_rainbow()*(y)) + x;
 	}
 
-	else if (MACHINE_IS_CPC) {
-		indice_cache=(get_total_ancho_rainbow()*(CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
+    else if (MACHINE_IS_CPC) {
+        indice_cache=(get_total_ancho_rainbow()*(CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
 
-	else if (MACHINE_IS_PCW) {
-		indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
+    else if (MACHINE_IS_PCW) {
+        indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
 
-	else if (MACHINE_IS_PRISM) {
-		indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
+    else if (MACHINE_IS_PRISM) {
+        indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
 
-				else if (MACHINE_IS_TSCONF) {
-					indice_cache=(get_total_ancho_rainbow()*(TSCONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TSCONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-			        }
+    else if (MACHINE_IS_TSCONF) {
+        indice_cache=(get_total_ancho_rainbow()*(TSCONF_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TSCONF_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
 
-				else if (MACHINE_IS_TBBLUE) {
-					indice_cache=(get_total_ancho_rainbow()*(TBBLUE_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-			        }
+    else if (MACHINE_IS_TBBLUE) {
+        indice_cache=(get_total_ancho_rainbow()*(TBBLUE_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
 
-	else if (MACHINE_IS_SAM) {
-                indice_cache=(get_total_ancho_rainbow()*(SAM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + SAM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-        }
+    else if (MACHINE_IS_SAM) {
+        indice_cache=(get_total_ancho_rainbow()*(SAM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + SAM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
 
-				else if (MACHINE_IS_QL) {
-											indice_cache=(get_total_ancho_rainbow()*(QL_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
-							}
+    else if (MACHINE_IS_QL) {
+        indice_cache=(get_total_ancho_rainbow()*(QL_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + QL_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+    }
 
 	else {
 		indice_cache=(get_total_ancho_rainbow()*(screen_borde_superior*border_enabled.v+y)) + screen_total_borde_izquierdo*border_enabled.v+x;
