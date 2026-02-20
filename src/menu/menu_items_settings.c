@@ -1490,8 +1490,8 @@ void menu_colour_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_video_dither_mode,NULL,"[%c] ~~Dithering",(video_dither_mode.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_colour_settings,'d');
-        menu_add_item_menu_tooltip(array_menu_colour_settings,"Only black and white colors with dithering, and only for basic Spectrum colors (0-15)");
-        menu_add_item_menu_ayuda(array_menu_colour_settings,"Only black and white colors with dithering, and only for basic Spectrum colors (0-15). And requires Real video and zoom >=2");
+        menu_add_item_menu_tooltip(array_menu_colour_settings,"Only black and white colors with dithering, and requires zoom >=2");
+        menu_add_item_menu_ayuda(array_menu_colour_settings,"Only black and white colors with dithering, and requires zoom >=2");
 
         if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48) {
             menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_real_1648_palette,NULL,"[%c] R~~eal palette",(spectrum_1648_use_real_palette.v ? 'X' : ' ') );
