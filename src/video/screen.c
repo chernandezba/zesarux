@@ -1882,17 +1882,17 @@ void scr_putpixel_zoom_rainbow_mas_de_uno(int x,int y,unsigned int color)
 	putpixel_cache[indice_cache]=color;
 #endif
 
-        int zx,zy;
-        int xzoom=x*zoom_x;
-        int yzoom=y*zoom_y;
+    int zx,zy;
+    int xzoom=x*zoom_x;
+    int yzoom=y*zoom_y;
 
 
-        //Escalado a zoom indicado
-        for (zx=0;zx<zoom_x;zx++) {
-        	for (zy=0;zy<zoom_y;zy++) {
-                        scr_putpixel(xzoom+zx,yzoom+zy,color);
-                }
+    //Escalado a zoom indicado
+    for (zx=0;zx<zoom_x;zx++) {
+        for (zy=0;zy<zoom_y;zy++) {
+            scr_putpixel(xzoom+zx,yzoom+zy,color);
         }
+    }
 
 }
 
@@ -1980,7 +1980,8 @@ void scr_putpixel_zoom_rainbow_mas_de_uno_dither(int x,int y,unsigned int color)
 
 }
 
-void orig_scr_putpixel_zoom_rainbow_mas_de_uno_dither(int x,int y,unsigned int color)
+//funcion vieja que solo soportaba dither para los colores 0...15
+void todelete_scr_putpixel_zoom_rainbow_mas_de_uno_dither(int x,int y,unsigned int color)
 {
 
     int multiplicador=zoom_x*zoom_y;
@@ -2092,35 +2093,31 @@ void scr_putpixel_zoom_rainbow_interlaced_zoom_two(int x,int y,unsigned int colo
 	y=y*2;
 
 #ifdef PUTPIXELCACHE
-        int indice_cache;
+    int indice_cache;
 
 
-	//putpixel cache en caso de interlaced zoom y*2 tiene doble de alto
-        indice_cache=(get_total_ancho_rainbow()*(y+zyinicial) )+x;
+    //putpixel cache en caso de interlaced zoom y*2 tiene doble de alto
+    indice_cache=(get_total_ancho_rainbow()*(y+zyinicial) )+x;
 
 
-        if (putpixel_cache[indice_cache]==color) return;
+    if (putpixel_cache[indice_cache]==color) return;
 
-        //printf ("not in cache: x %d y %d\n",x,y);
-        //put_putpixel_cache(indice_cache,color);
-        putpixel_cache[indice_cache]=color;
+    putpixel_cache[indice_cache]=color;
 #endif
 
-        int zx,zy;
-        int xzoom=x*zoom_x;
+    int zx,zy;
+    int xzoom=x*zoom_x;
 
 	int zoom_y_result=zoom_y/2;
-        int yzoom=(y+zyinicial)*zoom_y_result;
+    int yzoom=(y+zyinicial)*zoom_y_result;
 
 
-
-        //Escalado a zoom indicado
-        for (zx=0;zx<zoom_x;zx++) {
-                for (zy=0;zy<zoom_y_result;zy++) {
-                        scr_putpixel(xzoom+zx,yzoom+zy,color);
-                }
-		//scr_putpixel(xzoom+zx,y,color);
+    //Escalado a zoom indicado
+    for (zx=0;zx<zoom_x;zx++) {
+        for (zy=0;zy<zoom_y_result;zy++) {
+            scr_putpixel(xzoom+zx,yzoom+zy,color);
         }
+    }
 
 }
 
@@ -2131,15 +2128,13 @@ void scr_putpixel_zoom_rainbow_uno(int x,int y,unsigned int color)
 {
 
 #ifdef PUTPIXELCACHE
-        int indice_cache;
+    int indice_cache;
 
-        indice_cache=(get_total_ancho_rainbow()*y)+x;
+    indice_cache=(get_total_ancho_rainbow()*y)+x;
 
-        if (putpixel_cache[indice_cache]==color) return;
+    if (putpixel_cache[indice_cache]==color) return;
 
-        //printf ("not in cache: x %d y %d\n",x,y);
-        //put_putpixel_cache(indice_cache,color);
-        putpixel_cache[indice_cache]=color;
+    putpixel_cache[indice_cache]=color;
 #endif
 
 	scr_putpixel(x,y,color);
