@@ -1892,9 +1892,8 @@ void scr_putpixel_zoom_rainbow_mas_de_uno(int x,int y,unsigned int color)
 
 }
 
-int scr_putpixel_dither_get_black_pixels(int color)
+int scr_putpixel_dither_get_black_pixels_get_porc(int color)
 {
-    int multiplicador=zoom_x*zoom_y;
 
     int color_rgb=spectrum_colortable[color];
 
@@ -1903,15 +1902,27 @@ int scr_putpixel_dither_get_black_pixels(int color)
     int b=(color_rgb    ) & 0xFF;
     int gris=rgb_to_grey(r,g,b);
 
-    int cuantos_escribir=0;
 
     //valor gris entre 0...255
     //pasar a 0 100
     int porcen=100-((gris*100)/255);
 
 
+    return porcen;
+}
+
+int scr_putpixel_dither_get_black_pixels(int color)
+{
+
+    int porcen=scr_putpixel_dither_get_black_pixels_get_porc(color);
+
+    int cuantos_escribir=0;
+
+
     //A partir de cierto umbral, todo en negro
     //if (porcen>95) porcen=100;
+
+    int multiplicador=zoom_x*zoom_y;
 
     cuantos_escribir=(multiplicador*porcen)/100;
 
@@ -1928,8 +1939,8 @@ void scr_putpixel_zoom_rainbow_mas_de_uno_dither(int x,int y,unsigned int color)
     //Al menos 4 puntos por cada pixel para poder hacer dither
 
     if (multiplicador<4) {
-        scr_putpixel_zoom_rainbow_mas_de_uno(x,y,color);
-        return;
+        //scr_putpixel_zoom_rainbow_mas_de_uno(x,y,color);
+        //return;
     }
 
 
@@ -2110,9 +2121,6 @@ void scr_putpixel_zoom_rainbow_interlaced_zoom_two(int x,int y,unsigned int colo
 
 }
 
-//putpixel escalandolo con zoom 1 - sin escalado
-//y con cache
-//por tanto, (0,0) = arriba izquierda del border
 void scr_putpixel_zoom_rainbow_uno(int x,int y,unsigned int color)
 {
 
@@ -2230,6 +2238,69 @@ void scr_get_offset_putpixel_no_rainbow(int *p_offset_x,int *p_offset_y)
     *p_offset_y=offsety;
 }
 
+//putpixel escalandolo con zoom 1 - sin escalado
+//y con cache
+//por tanto, (0,0) = arriba izquierda del border
+//con dither
+void scr_putpixel_zoom_rainbow_uno_dither(int x,int y,unsigned int color)
+{
+
+#ifdef PUTPIXELCACHE
+    int indice_cache;
+
+    indice_cache=(get_total_ancho_rainbow()*y)+x;
+
+    if (putpixel_cache[indice_cache]==color) return;
+
+    putpixel_cache[indice_cache]=color;
+#endif
+
+    int porcen=scr_putpixel_dither_get_black_pixels_get_porc(color);
+
+    //4 tipos de trama: negro, blanco, diagonales negras con espacio mas ancho blanco, diagonales blancas con espacio mas ancho negro
+    //Obviamente no tenemos muchos colores tramados pero no queda tan mal
+    int trama=(porcen*4)/100;
+
+    if ((x+y) % 4 < trama) color=0;
+    else color=7;
+
+	scr_putpixel(x,y,color);
+}
+
+
+//putpixel escalandolo a zoom 1 -> no zoom
+//por tanto, (0,0) = dentro de pantalla
+//con dither
+void scr_putpixel_zoom_uno_dither(int x,int y,unsigned int color)
+{
+
+#ifdef PUTPIXELCACHE
+    int indice_cache=scr_get_index_cache_putpixel_no_rainbow(x,y);
+
+    if (putpixel_cache[indice_cache]==color) return;
+
+    //printf ("scr_putpixel_zoom color %d not in cache: x %d y %d indice_cache=%d contenido=%d\n",color,x,y,indice_cache,putpixel_cache[indice_cache]);
+    //put_putpixel_cache(indice_cache,color);
+    putpixel_cache[indice_cache]=color;
+#endif
+
+    int offsetx,offsety;
+
+    scr_get_offset_putpixel_no_rainbow(&offsetx,&offsety);
+
+    int porcen=scr_putpixel_dither_get_black_pixels_get_porc(color);
+
+    //4 tipos de trama: negro, blanco, diagonales negras con espacio mas ancho blanco, diagonales blancas con espacio mas ancho negro
+    //Obviamente no tenemos muchos colores tramados pero no queda tan mal
+    int trama=(porcen*4)/100;
+
+    if ((x+y) % 4 < trama) color=0;
+    else color=7;
+
+	scr_putpixel(offsetx+x,offsety+y,color);
+}
+
+
 //putpixel escalandolo al zoom necesario y teniendo en cuenta el border
 //por tanto, (0,0) = dentro de pantalla
 void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
@@ -2326,6 +2397,23 @@ void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
 
 void set_putpixel_zoom(void)
 {
+
+	if (video_dither_mode.v) {
+        if (zoom_x==1 && zoom_y==1) {
+            scr_putpixel_zoom=scr_putpixel_zoom_uno_dither;
+            scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_uno_dither;
+            debug_printf (VERBOSE_INFO,"Setting putpixel functions to variable zoom with dither");
+        }
+        else if (video_dither_mode.v) {
+            scr_putpixel_zoom=scr_putpixel_zoom_mas_de_uno_dither;
+            scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_mas_de_uno_dither;
+            debug_printf (VERBOSE_INFO,"Setting putpixel functions to variable zoom with dither");
+        }
+
+        return;
+	}
+
+
 	if (zoom_x==1 && zoom_y==1) {
 		scr_putpixel_zoom=scr_putpixel_zoom_uno;
 		scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_uno;
@@ -2337,12 +2425,6 @@ void set_putpixel_zoom(void)
 		scr_putpixel_zoom=scr_putpixel_zoom_mas_de_uno;
         scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_interlaced_zoom_two;
 		debug_printf (VERBOSE_INFO,"Setting putpixel functions to interlaced zoom multiple of two");
-	}
-
-	else if (video_dither_mode.v) {
-		scr_putpixel_zoom=scr_putpixel_zoom_mas_de_uno_dither;
-		scr_putpixel_zoom_rainbow=scr_putpixel_zoom_rainbow_mas_de_uno_dither;
-		debug_printf (VERBOSE_INFO,"Setting putpixel functions to variable zoom with dither");
 	}
 
 	else {
