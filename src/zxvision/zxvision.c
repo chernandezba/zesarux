@@ -9854,6 +9854,141 @@ z80_byte menu_retorna_caracter_background(void)
 }
 
 
+void menu_dibuja_ventana_titulo(zxvision_window *w)
+{
+
+    int x=w->x;
+    int y=w->y;
+    int ancho=w->visible_width;
+    int alto=w->visible_height;
+    char *titulo_original_utf=w->window_title;
+
+
+    //Convertir de cadena utf con posibles acentos a caracteres internos
+    char titulo_original[ZXVISION_MAX_WINDOW_TITLE];
+    util_convert_utf_charset(titulo_original_utf,(z80_byte *)titulo_original,strlen(titulo_original_utf));
+
+
+    //Pasar titulo a string temporal. Agregamos un espacio al final en estilos que no rellenan toda la barra de titulo (como BeOS)
+    char titulo[ZXVISION_MAX_WINDOW_TITLE];
+
+    sprintf(titulo,"%s%s",titulo_original,(ESTILO_GUI_NO_RELLENAR_TITULO ? " " : "")  );
+
+    printf("dibuja_ventana %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
+
+    //Si redimensionando, mostrar en titulo el tamaño de la ventana
+    if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima) {
+        sprintf(titulo,"%d X %d",w->visible_width,w->visible_height);
+    }
+
+    //printf ("valor menu_speech_tecla_pulsada: %d\n",menu_speech_tecla_pulsada);
+
+    int i,j;
+
+
+    //printf ("x derecha: %d\n",xderecha);
+
+    //if (menu_char_width!=8) xderecha++; //?????
+
+    //contenido en blanco normalmente en estilo ZEsarUX
+    //Sin usar cache
+    //Para evitar por ejemplo que ventanas como daad graphics, que aparecen encima de otra ventana tipo visualmem o audio chip piano con pixeles,
+    //que esos pixeles no se metan "dentro" de la ventana de daad graphics
+    for (i=0;i<alto-1;i++) {
+        for (j=0;j<ancho;j++) {
+            putchar_menu_overlay_parpadeo_cache_or_not(x+j,y+i+1,' ',ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,0);
+        }
+    }
+
+
+
+    int color_tinta_titulo;
+    int color_papel_titulo;
+
+
+    if (ventana_tipo_activa) {
+        color_tinta_titulo=ESTILO_GUI_TINTA_TITULO;
+        color_papel_titulo=ESTILO_GUI_PAPEL_TITULO;
+    }
+
+    else {
+        color_tinta_titulo=ESTILO_GUI_TINTA_TITULO_INACTIVA;
+        color_papel_titulo=ESTILO_GUI_PAPEL_TITULO_INACTIVA;
+    }
+
+    z80_byte caracter_espacio_titulo=menu_retorna_caracter_espacio_titulo();
+
+    //si ventana es background o no es ventana activa, caracter fondo titulo es siempre espacio
+    if (ventana_es_background || !ventana_tipo_activa) caracter_espacio_titulo=' ';
+
+    //titulo
+    //primero franja toda negra normalmente en estilo ZEsarUX
+    for (i=0;i<ancho;i++) {
+        if (ESTILO_GUI_NO_RELLENAR_TITULO) {
+            //Caso del estilo BeOS, si estan los botones de antes, al irse la ventana a background,
+            //hay que borrar botones
+            deletechar_menu_overlay(x+i,y);
+        }
+        else {
+            putchar_menu_overlay(x+i,y,caracter_espacio_titulo,color_tinta_titulo,color_papel_titulo);
+        }
+    }
+
+
+    int ancho_mostrar_titulo=menu_dibuja_ventana_ret_ancho_titulo(ancho,titulo);
+
+    char titulo_mostrar[ZXVISION_MAX_WINDOW_TITLE];
+    z80_byte caracter_cerrar=menu_retorna_caracter_cerrar();
+
+
+
+    if (menu_hide_close_button.v || ventana_es_background || !ventana_tipo_activa) {
+        //strcpy(titulo_mostrar,titulo);
+        //Ancho del titulo sera igual, aun sin el boton de cerrar
+        sprintf (titulo_mostrar,"%c%c%s",caracter_espacio_titulo,caracter_espacio_titulo,titulo);
+    }
+    else {
+        sprintf (titulo_mostrar,"%c%c%s",caracter_cerrar,caracter_espacio_titulo,titulo);
+    }
+
+
+    //y luego el texto. titulo mostrar solo lo que cabe de ancho
+
+
+    //Boton de cerrado
+
+
+
+        for (i=0;i<ancho_mostrar_titulo && titulo_mostrar[i];i++) {
+            char caracter_mostrar=titulo_mostrar[i];
+
+            putchar_menu_overlay(x+i,y,caracter_mostrar,color_tinta_titulo,color_papel_titulo);
+        }
+
+        //Indicar posicion del boton minimizar
+        //A la derecha de este hay otro mas (el de maximizar)
+        current_win_minimize_button_position=i+1;
+
+        if (current_win_minimize_button_position+1>=ancho) current_win_minimize_button_position=ancho-2;
+
+
+
+        //y las franjas de color
+    if (ESTILO_GUI_MUESTRA_RAINBOW && ventana_tipo_activa) {
+        //en el caso de drivers completos, hacerlo real
+        menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
+
+    }
+
+
+
+        char buffer_titulo[100];
+        sprintf (buffer_titulo,"Window: %s",titulo);
+        menu_textspeech_send_text(buffer_titulo);
+
+
+
+}
 
 //dibuja ventana de menu, con:
 //titulo
@@ -9861,6 +9996,58 @@ z80_byte menu_retorna_caracter_background(void)
 //recuadro de lineas
 //Entrada: x,y posicion inicial. ancho, alto. Todo coordenadas en caracteres 0..31 y 0..23
 void menu_dibuja_ventana(zxvision_window *w)
+{
+
+    int x=w->x;
+    int y=w->y;
+    int ancho=w->visible_width;
+    int alto=w->visible_height;
+    char *titulo_original_utf=w->window_title;
+
+    //Para draw below windows, no mostrar error pendiente cuando esta dibujando ventanas de debajo
+    //Ni cuando estamos restaurando ventanas en startup (si no se hiciera y hay error pendiente al restaurar ventanas,
+    //provoca que se quede el emulador aqui medio colgado y no habilita zxdesktop ni funciona correctamente)
+    if (!no_dibuja_ventana_muestra_pending_error_message && !zxvision_currently_restoring_windows_on_start) menu_muestra_pending_error_message();
+
+    //En el caso de stdout, solo escribimos el texto
+    if (menu_es_stdout()) {
+        printf ("%s\n",titulo_original_utf);
+        scrstdout_menu_print_speech_macro(titulo_original_utf);
+        printf ("------------------------\n\n");
+        //paso de curses a stdout deja stdout que no hace flush nunca. forzar
+        fflush(stdout);
+        return;
+    }
+
+
+    //printf ("valor menu_speech_tecla_pulsada: %d\n",menu_speech_tecla_pulsada);
+
+    //valores en pixeles
+    int xpixel,ypixel,anchopixel,altopixel;
+
+
+    //guardamos valores globales de la ventana mostrada
+    current_win_x=x;
+    current_win_y=y;
+    current_win_ancho=ancho;
+    current_win_alto=alto;
+
+    xpixel=x*menu_char_width;
+    ypixel=(y+1)*menu_char_height; //La barra de titulo no tendra linea como tal
+    anchopixel=ancho*menu_char_width;
+    altopixel=alto*menu_char_height;
+
+    int xderecha=xpixel+anchopixel-1;
+
+    menu_establece_cuadrado(xpixel,ypixel,xderecha,ypixel+altopixel-1-menu_char_height,ESTILO_GUI_COLOR_RECUADRO);
+
+    menu_dibuja_ventana_titulo(w);
+
+    menu_dibuja_ventana_botones();
+
+}
+
+void old_menu_dibuja_ventana(zxvision_window *w)
 {
 
     int x=w->x;
