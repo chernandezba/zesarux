@@ -9866,7 +9866,7 @@ z80_byte menu_retorna_caracter_background(void)
     else return caracter;
 }
 
-//Dibujar titulo y las franjas de color
+//Dibujar titulo
 void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
 {
 
@@ -9969,10 +9969,12 @@ void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
 
 
     //y las franjas de color
+    /*
     if (ESTILO_GUI_MUESTRA_RAINBOW && ventana_tipo_activa) {
         //en el caso de drivers completos, hacerlo real
         menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
     }
+    */
 
 
 
@@ -10035,6 +10037,12 @@ void menu_dibuja_ventana(zxvision_window *w)
     menu_establece_cuadrado(xpixel,ypixel,xderecha,ypixel+altopixel-1-menu_char_height,ESTILO_GUI_COLOR_RECUADRO);
 
     menu_dibuja_ventana_titulo(w,w->window_title);
+
+    //y las franjas de color
+    if (ESTILO_GUI_MUESTRA_RAINBOW && ventana_tipo_activa) {
+        //en el caso de drivers completos, hacerlo real
+        menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
+    }
 
     menu_dibuja_ventana_botones();
 
