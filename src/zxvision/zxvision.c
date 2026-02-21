@@ -9290,6 +9290,12 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
     //solo hacerlo en el caso de drivers completos
     if (si_complete_video_driver() ) {
 
+        //TODO: se dibuja zona punteada cuando mouse_is_dragging, esto es un error, porque cualquier acción de arrastrar algo en la ventana,
+        //ocasiona que se dibuje punteado, no solo al arrastrar la ventana propiamente
+        //Solo que no se nota porque el dibujado punteado consiste en no dibujar 1 de cada 2 pixeles, y como ya están dibujados, su efecto no se nota
+        //Pero tendria que hacerse mirando algún otro tipo de condición, por ejemplo se podria mirar ventana_marca_redimensionado_raton_encima
+
+        printf("dibuja_cuadrado %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
 
         //parte inferior
         for (x=x1;x<=x2;x++) {
@@ -9854,8 +9860,14 @@ z80_byte menu_retorna_caracter_background(void)
 //contenido blanco
 //recuadro de lineas
 //Entrada: x,y posicion inicial. ancho, alto. Todo coordenadas en caracteres 0..31 y 0..23
-void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original_utf)
+void menu_dibuja_ventana(zxvision_window *w)
 {
+
+    int x=w->x;
+    int y=w->y;
+    int ancho=w->visible_width;
+    int alto=w->visible_height;
+    char *titulo_original_utf=w->window_title;
 
     //Para draw below windows, no mostrar error pendiente cuando esta dibujando ventanas de debajo
     //Ni cuando estamos restaurando ventanas en startup (si no se hiciera y hay error pendiente al restaurar ventanas,
@@ -9881,6 +9893,13 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original_ut
     char titulo[ZXVISION_MAX_WINDOW_TITLE];
 
     sprintf(titulo,"%s%s",titulo_original,(ESTILO_GUI_NO_RELLENAR_TITULO ? " " : "")  );
+
+    printf("dibuja_ventana %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
+
+    //Si redimensionando, mostrar en titulo el tamaño de la ventana
+    if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima) {
+        sprintf(titulo,"%d X %d",w->visible_width,w->visible_height);
+    }
 
     //printf ("valor menu_speech_tecla_pulsada: %d\n",menu_speech_tecla_pulsada);
 
@@ -13275,7 +13294,7 @@ void zxvision_draw_window(zxvision_window *w)
 
     if (!zxvision_show_minimized(w)) return;
 
-    menu_dibuja_ventana(w->x,w->y,w->visible_width,w->visible_height,w->window_title);
+    menu_dibuja_ventana(w);
 
 
     //Ver si se puede redimensionar
@@ -24313,34 +24332,7 @@ int menu_generic_message_final_abajo(int primera_linea,int alto_ventana,int indi
 }
 
 
-//dibuja ventana simple, una sola linea de texto interior, sin esperar tecla
-/*
-void menu_simple_ventana(char *titulo,char *texto)
-{
 
-
-    unsigned int ancho_ventana=strlen(titulo);
-    if (strlen(texto)>ancho_ventana) ancho_ventana=strlen(texto);
-
-    int alto_ventana=3;
-
-    ancho_ventana +=2;
-
-    //(unsigned int) para evitar el warning al compilar de: comparison of integers of different signs: 'unsigned int' and 'int' [-Wsign-compare]
-    if (ancho_ventana>(unsigned int)ZXVISION_MAX_ANCHO_VENTANA) {
-        cpu_panic("window width too big");
-    }
-
-        int xventana=menu_center_x()-ancho_ventana/2;
-        int yventana=menu_center_y()-alto_ventana/2;
-
-
-        menu_dibuja_ventana(xventana,yventana,ancho_ventana,alto_ventana,titulo);
-
-    menu_escribe_linea_opcion(0,-1,1,texto);
-
-}
-*/
 
 void menu_copy_clipboard(char *texto)
 {

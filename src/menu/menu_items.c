@@ -8738,7 +8738,7 @@ void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS)
 
           //Hay que redibujar la ventana desde este bucle
           if (!initial_test) {
-              //menu_dibuja_ventana(ADVENTURE_KB_X,y_ventana,ADVENTURE_KB_ANCHO,alto_ventana,"OSD Adventure Keyboard");
+
               zxvision_set_y_position(&ventana,y_ventana);
               zxvision_set_visible_height(&ventana,alto_ventana);
 
