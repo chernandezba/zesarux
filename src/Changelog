@@ -60,6 +60,7 @@ Improved ZX Vision:
 - Maximized windows that are restored on startup, will be restored to the maximum size available
 - Allow to select dark or light GUI style depending on current hour
 - Changed charset for styles Solarized Dark and Light: now uses the same as AtariTOS
+- Show window size when resizing
 - Changed windows border color when dragging for resizing: Warning color when a window has to be enlarged (because there is text beyond current size), otherwise Selected color
 - New widget type Triangle on View Sensors
 

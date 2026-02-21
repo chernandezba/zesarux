@@ -188,6 +188,8 @@ int menu_char_height=8;
 
 int menu_last_cpu_use=0;
 
+void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf);
+
 defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"Default",F_FUNCION_DEFAULT,bitmap_button_ext_desktop_userdefined,""},  //no mover nunca de sitio el default para que sea siempre la posicion 0
     {"Nothing",F_FUNCION_NOTHING,bitmap_button_ext_desktop_nothing,""},
@@ -9295,7 +9297,18 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
         //Solo que no se nota porque el dibujado punteado consiste en no dibujar 1 de cada 2 pixeles, y como ya están dibujados, su efecto no se nota
         //Pero tendria que hacerse mirando algún otro tipo de condición, por ejemplo se podria mirar ventana_marca_redimensionado_raton_encima
 
-        printf("dibuja_cuadrado %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
+        //printf("dibuja_cuadrado %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
+        if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima) {
+            zxvision_window *w=zxvision_current_window;
+            if (w!=NULL) {
+                char titulo[ZXVISION_MAX_WINDOW_TITLE];
+
+                sprintf(titulo,"%d X %d",w->visible_width,w->visible_height);
+
+                menu_dibuja_ventana_titulo(w,titulo);
+            }
+
+        }
 
         //parte inferior
         for (x=x1;x<=x2;x++) {
@@ -9853,15 +9866,14 @@ z80_byte menu_retorna_caracter_background(void)
     else return caracter;
 }
 
-
-void menu_dibuja_ventana_titulo(zxvision_window *w)
+//Dibujar titulo y las franjas de color
+void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
 {
 
     int x=w->x;
     int y=w->y;
     int ancho=w->visible_width;
     int alto=w->visible_height;
-    char *titulo_original_utf=w->window_title;
 
 
     //Convertir de cadena utf con posibles acentos a caracteres internos
@@ -9874,21 +9886,11 @@ void menu_dibuja_ventana_titulo(zxvision_window *w)
 
     sprintf(titulo,"%s%s",titulo_original,(ESTILO_GUI_NO_RELLENAR_TITULO ? " " : "")  );
 
-    printf("dibuja_ventana %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
-
-    //Si redimensionando, mostrar en titulo el tamaño de la ventana
-    if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima) {
-        sprintf(titulo,"%d X %d",w->visible_width,w->visible_height);
-    }
 
     //printf ("valor menu_speech_tecla_pulsada: %d\n",menu_speech_tecla_pulsada);
 
     int i,j;
 
-
-    //printf ("x derecha: %d\n",xderecha);
-
-    //if (menu_char_width!=8) xderecha++; //?????
 
     //contenido en blanco normalmente en estilo ZEsarUX
     //Sin usar cache
@@ -9899,7 +9901,6 @@ void menu_dibuja_ventana_titulo(zxvision_window *w)
             putchar_menu_overlay_parpadeo_cache_or_not(x+j,y+i+1,' ',ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,0);
         }
     }
-
 
 
     int color_tinta_titulo;
@@ -9955,37 +9956,29 @@ void menu_dibuja_ventana_titulo(zxvision_window *w)
     //y luego el texto. titulo mostrar solo lo que cabe de ancho
 
 
-    //Boton de cerrado
+    for (i=0;i<ancho_mostrar_titulo && titulo_mostrar[i];i++) {
+        char caracter_mostrar=titulo_mostrar[i];
+
+        putchar_menu_overlay(x+i,y,caracter_mostrar,color_tinta_titulo,color_papel_titulo);
+    }
+
+    //Indicar posicion del boton minimizar
+    current_win_minimize_button_position=i+1;
+
+    if (current_win_minimize_button_position+1>=ancho) current_win_minimize_button_position=ancho-2;
 
 
-
-        for (i=0;i<ancho_mostrar_titulo && titulo_mostrar[i];i++) {
-            char caracter_mostrar=titulo_mostrar[i];
-
-            putchar_menu_overlay(x+i,y,caracter_mostrar,color_tinta_titulo,color_papel_titulo);
-        }
-
-        //Indicar posicion del boton minimizar
-        //A la derecha de este hay otro mas (el de maximizar)
-        current_win_minimize_button_position=i+1;
-
-        if (current_win_minimize_button_position+1>=ancho) current_win_minimize_button_position=ancho-2;
-
-
-
-        //y las franjas de color
+    //y las franjas de color
     if (ESTILO_GUI_MUESTRA_RAINBOW && ventana_tipo_activa) {
         //en el caso de drivers completos, hacerlo real
         menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
-
     }
 
 
 
-        char buffer_titulo[100];
-        sprintf (buffer_titulo,"Window: %s",titulo);
-        menu_textspeech_send_text(buffer_titulo);
-
+    char buffer_titulo[100];
+    sprintf (buffer_titulo,"Window: %s",titulo);
+    menu_textspeech_send_text(buffer_titulo);
 
 
 }
@@ -10041,7 +10034,7 @@ void menu_dibuja_ventana(zxvision_window *w)
 
     menu_establece_cuadrado(xpixel,ypixel,xderecha,ypixel+altopixel-1-menu_char_height,ESTILO_GUI_COLOR_RECUADRO);
 
-    menu_dibuja_ventana_titulo(w);
+    menu_dibuja_ventana_titulo(w,w->window_title);
 
     menu_dibuja_ventana_botones();
 
@@ -10081,12 +10074,6 @@ void old_menu_dibuja_ventana(zxvision_window *w)
 
     sprintf(titulo,"%s%s",titulo_original,(ESTILO_GUI_NO_RELLENAR_TITULO ? " " : "")  );
 
-    printf("dibuja_ventana %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
-
-    //Si redimensionando, mostrar en titulo el tamaño de la ventana
-    if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima) {
-        sprintf(titulo,"%d X %d",w->visible_width,w->visible_height);
-    }
 
     //printf ("valor menu_speech_tecla_pulsada: %d\n",menu_speech_tecla_pulsada);
 
