@@ -10,10 +10,6 @@
 --sdl2: si se pone width de ZX desktop que no cabe en pantalla, se queda reabriendo continuamente la ventana
 
 
-- En ZX desktop a veces al iniciar o activar sale primero en negro. Al redimensionar ventana tambien por ejemplo
-
--redraws de zxdesktop en determinados cambios (redimensionado/cierre ventana?) donde se queda a veces en negro
-
 
 -visual datadrive/visualcassettetape
 *indicar C60 o lo que sea. letras vectoriales?
@@ -385,7 +381,6 @@ Y cierra menus pero no sale
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
 
--a veces al cambiar numero chips en settings-audio-ay chips se cuelga
 
 -Mientras hay splash de inicio, si se pulsa F5, aparece por un momento overlays de ventanas, cuando F5 esta asignada a "Nothing"
 
@@ -486,7 +481,6 @@ https://github.com/lavoiesl/osx-cpu-temp
 
 
 
-
 -Permitir teclas numericas como atajos. Para ello hay que reasignar gestion de teclas cursores que las convierte a '6' y '7'
 
 -Al insertar mmc o ide debe ir primero a rutas shared, tal y como hace smartload por ejemplo. y tambien ir a ultima ruta al abrir selector archivos
@@ -554,7 +548,8 @@ la vista 1 sera ventana grande pero con alto total reducido. Parecido a lo que s
 
 -mejorar render paws/gac/daad/quill:
 *uso atributos igual que spectrum: 8x8 paper+tinta
-*implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
+*implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo).
+algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
 
 -text adventure map: texto en mapa deberia seguir char filter. Pero char filter

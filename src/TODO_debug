@@ -43,8 +43,7 @@ En ese mismo OSD, si pulsamos una tecla en el OSD, se quedara colgado, pues no v
 -Si un breakpoint de menu y otro de accion (prints por ejemplo) coinciden al mismo tiempo, solo salta el breakpoint de menu
 ->problema que el breakpoint que ha saltado, indicado por la variable catch_breakpoint_index, solo puede ser uno cada vez...
 
--breakpoints que se disparen cuando se cumpla una condición N veces:
-*shortcut desde ventana menu debug cpu para cambiarlo?
+
 
 
 -Desensamblador, que permita copiar código assembler a texto

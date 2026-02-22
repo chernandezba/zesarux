@@ -100,3 +100,6 @@ ok*bit 7 para resetear o no paleta al cambiar un modo
 ok *comentar codigo segun https://amstrad.es/forum/viewtopic.php?t=4809&start=75#p87482
 
 -modo dither, sin realvideo, no lo hace en el border
+
+-poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
+esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker

@@ -25,6 +25,7 @@ Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta d
 
 -sonido simulado de datos de floppy: de manera similar al microdrive, generamos sonido segun los bytes leidos. Pero para eso se necesita
 que lea/escriba a velocidad real (o sea mas lento que como hace ahora). Ahora las transferencias de sectores se hacen de golpe cada sector
+-Sonido de lectura y escritura de floppy +3, según codificación. Manchester? Mfm?
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
 
@@ -42,7 +43,7 @@ que lea/escriba a velocidad real (o sea mas lento que como hace ahora). Ahora la
 -PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 -implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
 
--Sonido de lectura y escritura de floppy +3, según codificación. Manchester? Mfm?
+
 -----------------------
 
 
@@ -58,7 +59,7 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 
 -betadisk: nmi no parece guardar el snapshot, aunque lo intenta
 
--para siguiente version: revisar betadisk. quiza demos de generalsound en scl/trd fallan por eso:
+-evisar betadisk. quiza demos de generalsound en scl/trd fallan por eso:
 * revisar puertos de estado: FF, 1F, etc...
 * rutinas de salto a la rom de betadisk desde Chase HQ, quiza un trap para esa rutina?
 

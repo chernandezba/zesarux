@@ -5,7 +5,6 @@
 -nombre ultimo juego cargado en titulo ventana
 
 
-
 -Modo sin colores que ya hay ahora pero cogiendo 4 o 16 colores del pixel tal cual
 
 -setting para desactivar realvideo cuando se haga reset
@@ -17,7 +16,6 @@ el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos
 -al guardar opciones de zoom en configuracion, se guarda solo --zoom en vez de --zoomx y --zoomy. Por que?
 
 -watermark sin realvideo no hace zoom. importante???
-
 
 
 -sdl2 peta con easter-egg en linux
@@ -48,7 +46,6 @@ http://www.worldofspectrum.org/forums/discussion/44669/clashbasher-a-new-interfa
 -Splash en drivers stdout? -> no tiene sentido
 
 -Pantalla completa con resolución menor de lo habitual en sdl peta con seg fault
-
 
 -Poder activar dos drivers de video a la vez, en especial un grafico (sdl, x11) y otro de texto (stdout o simpletext).
 
