@@ -123,3 +123,4 @@ hay que implementar tambien los caracteres de botones de ventana por ejemplo
 salir el tooltip al momento, sin esperar ese timer
 *que permita mas de una linea de texto?
 *quiza texto muy grande. Usar set de caracteres de 4x4? Pero entonces ya no se puede usar putchar_menu_overlay_parpadeo, sino que hay que hacerlo con putpixel
+o hacerlo con set caracteres normal pero escribiendo con 5 de ancho por ejemplo, pero igualmente habria que hacerlo con putpixel
