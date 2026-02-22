@@ -107,8 +107,19 @@ Para que quiero esa estadística? Se podria simplemente que el Dockerfile al eje
 eso se envía en las estadísticas
 
 
--tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
+
 
 -poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
 ->pero habria que implementar tambien acentos, eñes, etc. El problema no son acentos (se podria pasar a caracteres sin acentos) sino que
 hay que implementar tambien los caracteres de botones de ventana por ejemplo
+
+
+-tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
+*que solo salgan si esta el setting de tooltips en menu (ahora hay un setting aparte, no deberia)
+*que detecten que boton (superior o inferior de dispositivo)
+*texto como aparece? Con un recuadro alrededor para no mezclarse con texto ya existente de menus o ventanas abiertas?
+*indicar de alguna manera a que boton hace referencia? con una flechita o quiza alterando el color del boton
+*que se active cuando lleve mas de unos segundos el raton ahi, como con los tooltips de menu. cuando ha pasado ese tiempo, si me muevo a otro boton, deberia
+salir el tooltip al momento, sin esperar ese timer
+*que permita mas de una linea de texto?
+*quiza texto muy grande. Usar set de caracteres de 4x4? Pero entonces ya no se puede usar putchar_menu_overlay_parpadeo, sino que hay que hacerlo con putpixel

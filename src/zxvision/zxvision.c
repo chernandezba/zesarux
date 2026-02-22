@@ -8042,7 +8042,7 @@ void tooltip_buttons_timer_event(void)
 
     if (!movido) return;
 
-    //temp
+    //Si esta encima de algun boton
     if (get_pos_y_mouse_tooltip_buttons()==0) {
         tooltip_buttons_visible.v=1;
     }
@@ -8063,33 +8063,6 @@ void tooltip_buttons_timer_event(void)
         tooltip_buttons_visible.v=0;
     }
 
-    return;
-
-    /*
-    //No estaba visible
-    if (tooltip_buttons_visible.v==0) {
-        if (movido && get_pos_y_mouse_topbar()==0 && zxvision_mouse_in_zesarux_window()) {
-            tooltip_buttons_visible.v=1;
-        }
-    }
-
-    //Estaba visible
-    else {
-        if (movido && get_pos_y_mouse_topbar()==0) {
-            switchtopbar_button_visible_timer=0;
-        }
-
-        else {
-            switchtopbar_button_visible_timer++;
-
-            //en 2 segundos (50*2 frames) desaparece
-            if (switchtopbar_button_visible_timer==MAX_SWITCH_TOPBAR_VISIBLE_TIMER) {
-                tooltip_buttons_visible.v=0;
-            }
-        }
-
-    }
-    */
 }
 
 
@@ -8099,10 +8072,14 @@ void tooltip_buttons_text_overlay(void)
     if (setting_tooltip_buttons_enabled.v==0) return;
 
     if (tooltip_buttons_visible.v) {
-        char *prueba_tooltip="Tooltip de boton";
+        char *prueba_tooltip="Open the main menu";
+
+        if (get_pos_x_mouse_tooltip_buttons()>=48) {
+            prueba_tooltip="Smart load tapes, snapshots, disks, etc";
+        }
 
         int i;
-        int x=44;
+        int x=get_pos_x_mouse_tooltip_buttons();
 
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
