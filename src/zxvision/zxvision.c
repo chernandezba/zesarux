@@ -8001,6 +8001,121 @@ void menu_draw_background_windows_overlay_after_normal(void)
 }
 
 
+int previous_tooltip_buttons_timer_event_mouse_x=-1;
+int previous_tooltip_buttons_timer_event_mouse_y=-1;
+
+z80_bit tooltip_buttons_visible={0};
+
+//Si esta activado el setting
+z80_bit setting_tooltip_buttons_enabled={0};
+
+//Retorna la fila donde está el ratón
+int get_pos_y_mouse_tooltip_buttons(void)
+{
+    int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
+
+    return posicion_y;
+}
+
+int get_pos_x_mouse_tooltip_buttons(void)
+{
+    int columna_posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
+    return columna_posicion_x;
+}
+
+
+//Ocultar o mostrar tooltips
+void tooltip_buttons_timer_event(void)
+{
+
+    if (setting_tooltip_buttons_enabled.v==0) return;
+
+    int movido=0;
+
+    if (previous_tooltip_buttons_timer_event_mouse_x!=mouse_x || previous_tooltip_buttons_timer_event_mouse_y!=mouse_y)
+    {
+        movido=1;
+    }
+
+    previous_tooltip_buttons_timer_event_mouse_x=mouse_x;
+    previous_tooltip_buttons_timer_event_mouse_y=mouse_y;
+
+    if (!movido) return;
+
+    //temp
+    if (get_pos_y_mouse_tooltip_buttons()==0) {
+        tooltip_buttons_visible.v=1;
+    }
+    else {
+        //Si estaba visible, quitar
+        if (tooltip_buttons_visible.v) {
+            tooltip_buttons_visible.v=0;
+
+            //Siguiente refresco de zxdesktop no hay framedrop, para forzar que se vea el cambio de desaparecer el top menu
+            zxvision_zxdesktop_set_no_frameskip_next();
+
+            //Para borrar el texto de topbar
+            cls_menu_overlay();
+
+            zxvision_redraw_all_windows();
+        }
+
+        tooltip_buttons_visible.v=0;
+    }
+
+    return;
+
+    /*
+    //No estaba visible
+    if (tooltip_buttons_visible.v==0) {
+        if (movido && get_pos_y_mouse_topbar()==0 && zxvision_mouse_in_zesarux_window()) {
+            tooltip_buttons_visible.v=1;
+        }
+    }
+
+    //Estaba visible
+    else {
+        if (movido && get_pos_y_mouse_topbar()==0) {
+            switchtopbar_button_visible_timer=0;
+        }
+
+        else {
+            switchtopbar_button_visible_timer++;
+
+            //en 2 segundos (50*2 frames) desaparece
+            if (switchtopbar_button_visible_timer==MAX_SWITCH_TOPBAR_VISIBLE_TIMER) {
+                tooltip_buttons_visible.v=0;
+            }
+        }
+
+    }
+    */
+}
+
+
+
+void tooltip_buttons_text_overlay(void)
+{
+    if (setting_tooltip_buttons_enabled.v==0) return;
+
+    if (tooltip_buttons_visible.v) {
+        char *prueba_tooltip="Tooltip de boton";
+
+        int i;
+        int x=44;
+
+        int tinta=ESTILO_GUI_TINTA_NORMAL;
+        int papel=ESTILO_GUI_PAPEL_NORMAL;
+
+        for (i=0;prueba_tooltip[i];i++,x++) {
+            char caracter_escribir=prueba_tooltip[i];
+            putchar_menu_overlay_parpadeo(x,4,' ',tinta,papel,0);
+            putchar_menu_overlay_parpadeo(x,5,caracter_escribir,tinta,papel,0);
+            putchar_menu_overlay_parpadeo(x,6,' ',tinta,papel,0);
+        }
+    }
+}
+
 void normal_overlay_texto_menu_final(void)
 {
 
@@ -8036,6 +8151,9 @@ void normal_overlay_texto_menu_final(void)
 
     //Dibujar topbar
     topbar_text_overlay();
+
+    //Dibujar tooltips botones
+    tooltip_buttons_text_overlay();
 
 
 }

@@ -1314,6 +1314,8 @@ void timer_check_interrupt(void)
         //Ocultación/activación topbar
         topbar_timer_event();
 
+        tooltip_buttons_timer_event();
+
         pd765_handle_speed_motor();
 
         hilow_timer_events();

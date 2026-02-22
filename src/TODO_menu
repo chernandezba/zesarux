@@ -43,8 +43,6 @@ Esto puede comportar problemas por variables que no se resetean correctamente (q
 se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
--tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas
-
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
@@ -202,8 +200,7 @@ complementario: quizá en todos los overlay que no necesiten redibujar siempre, 
 ->Realmente hay pocas ventanas que tengan overlay de pixeles estaticos
 Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
--poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
-->pero habria que implementar tambien acentos, eñes, etc
+
 
 -opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
 
@@ -478,7 +475,6 @@ https://github.com/lavoiesl/osx-cpu-temp
 
 
 -Mouse: para que no haga framedrop al moverse sobre un menu, quiza se deberia considerar cada x frames de tiempo.
-
 
 
 -Permitir teclas numericas como atajos. Para ello hay que reasignar gestion de teclas cursores que las convierte a '6' y '7'

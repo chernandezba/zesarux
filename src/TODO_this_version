@@ -103,3 +103,12 @@ ok *comentar codigo segun https://amstrad.es/forum/viewtopic.php?t=4809&start=75
 
 -poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
+Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
+eso se envía en las estadísticas
+
+
+-tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
+
+-poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
+->pero habria que implementar tambien acentos, eñes, etc. El problema no son acentos (se podria pasar a caracteres sin acentos) sino que
+hay que implementar tambien los caracteres de botones de ventana por ejemplo
