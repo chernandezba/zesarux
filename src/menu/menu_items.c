@@ -44785,6 +44785,34 @@ void menu_switch_simple_menus(MENU_ITEM_PARAMETERS)
 
 
 
+char *tooltips_menu_inicio_main_menu="Main ZEsarUX menu";
+char *tooltips_menu_inicio_smartload="Smart load tapes, snapshots, floppies, memory cards, cartridges...";
+char *tooltips_menu_inicio_snapshot="Load or save snapshots";
+char *tooltips_menu_inicio_unknown="";
+
+char *menu_inicio_retorna_tooltip(enum tooltips_menu_inicio id_tooltip)
+{
+    switch (id_tooltip) {
+        case TOOLTIP_MAIN_MENU:
+            return tooltips_menu_inicio_main_menu;
+        break;
+
+        case TOOLTIP_SMARTLOAD:
+            return tooltips_menu_inicio_smartload;
+        break;
+
+        case TOOLTIP_SNAPSHOT:
+            return tooltips_menu_inicio_snapshot;
+        break;
+
+        default:
+            return tooltips_menu_inicio_unknown;
+        break;
+    }
+
+    return tooltips_menu_inicio_unknown;
+}
+
 //TODO: Esta variable de entrada salir_menu para que se usa en entrada???
 int menu_inicio_mostrar_main_menu(int salir_menu)
 {
@@ -44807,7 +44835,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             //menu_add_item_menu_se_cerrara(array_menu_principal);
             menu_add_item_menu_genera_ventana(array_menu_principal);
             menu_add_item_menu_es_sencillo(array_menu_principal);
-            menu_add_item_menu_tooltip(array_menu_principal,"Smart load tapes, snapshots, floppies, memory cards, cartridges...");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_SMARTLOAD));
             menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
                 "-Binary tapes are inserted as standard tapes and loaded quickly\n"
                 "-Audio tapes are loaded as real tapes\n"
@@ -44821,7 +44849,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_snapshot,NULL,
                 "S~~napshot","I~~nstantánea","I~~nstantània");
             menu_add_item_menu_shortcut(array_menu_principal,'n');
-            menu_add_item_menu_tooltip(array_menu_principal,"Load or save snapshots");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_SNAPSHOT));
             menu_add_item_menu_ayuda(array_menu_principal,"Load or save different snapshot images. Snapshot images are loaded or saved at once");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 

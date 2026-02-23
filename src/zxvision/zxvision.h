@@ -324,6 +324,8 @@ extern void menu_espera_tecla_timeout_window_splash(void);
 extern void menu_espera_tecla_o_wheel(void);
 extern void menu_espera_tecla_timeout_tooltip(void);
 
+extern int zxvision_which_upper_button_is_mouse(void);
+
 extern int f_functions;
 extern char *string_esc_closes_menus;
 

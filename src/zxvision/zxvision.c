@@ -8053,11 +8053,6 @@ int get_pos_x_mouse_tooltip_mouse(void)
     return columna_posicion_x;
 }
 
-char *prueba_tooltip_mouse=" Prueba de texto ";
-
-char *prueba_tooltip_mouse2=" Smartload cosas ";
-
-
 
 int tooltips_mouse_id_ultimo_tooltip=-1;
 char *tooltips_mouse_ultimo_texto_tooltip;
@@ -8112,15 +8107,12 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
     //asumimos que no apunta a ninguno
     tooltip->id_tooltip=-1;
 
-    if (get_pos_y_mouse_tooltip_mouse()==0) {
-        if (get_pos_x_mouse_tooltip_mouse()<45) {
-            tooltip->id_tooltip=0;
-            tooltip->texto_tooltip=prueba_tooltip_mouse;
-        }
-        else {
-            tooltip->id_tooltip=1;
-            tooltip->texto_tooltip=prueba_tooltip_mouse2;
-        }
+    //botones superiores
+    int boton=zxvision_which_upper_button_is_mouse();
+
+    if (boton>=0) {
+        tooltip->id_tooltip=boton;
+        tooltip->texto_tooltip=menu_inicio_retorna_tooltip(boton);
     }
 
 }
