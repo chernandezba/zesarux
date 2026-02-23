@@ -8075,9 +8075,6 @@ void tooltip_mouse_text_overlay(void)
     if (setting_tooltip_mouse_enabled.v==0) return;
 
     if (tooltip_mouse_visible.v) {
-        char *prueba_tooltip;
-
-        prueba_tooltip=tooltips_mouse_ultimo_texto_tooltip;
 
         int i;
         int x=tooltips_mouse_ultima_pos_x_tooltip;
@@ -8088,8 +8085,8 @@ void tooltip_mouse_text_overlay(void)
         //Dibujar flechita
         tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL);
 
-        for (i=0;prueba_tooltip[i];i++,x+=5) {
-            char caracter_escribir=prueba_tooltip[i];
+        for (i=0;tooltips_mouse_ultimo_texto_tooltip[i];i++,x+=5) {
+            char caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i];
 
             tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height,' ',tinta,papel);
             tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height*2,caracter_escribir,tinta,papel);
@@ -8109,6 +8106,9 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
     //botones superiores
     int boton=zxvision_which_upper_button_is_mouse();
+
+    //Boton cerrar solo si menu abierto
+    if (boton==TOOLTIP_CLOSE && !menu_abierto) boton=-1;
 
     if (boton>=0) {
         tooltip->id_tooltip=boton;
@@ -8149,7 +8149,7 @@ void tooltips_mouse_timer_event(void)
     struct s_tooltip_mouse tooltip;
     tooltips_mouse_timer_event_which_element(&tooltip);
 
-    if (tooltip.id_tooltip==-1) {
+    if (tooltip.id_tooltip<0) {
         //Si estaba visible, quitar
         if (tooltip_mouse_visible.v) {
             tooltips_mouse_timer_event_redraw();
@@ -8165,7 +8165,7 @@ void tooltips_mouse_timer_event(void)
 
     if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip) {
         //Borrar el anterior
-        if (tooltips_mouse_id_ultimo_tooltip!=-1) {
+        if (tooltips_mouse_id_ultimo_tooltip>=0) {
             tooltips_mouse_timer_event_redraw();
         }
 
@@ -17404,7 +17404,7 @@ int zxvision_if_pressed_buttons_or_icons_or_desktop(void)
     else return 0;
 }
 
-//Dice en que boton superior está el raton. -1 si no está en ninguno
+//Dice en que boton superior está el raton. Retorna < 0 si no está en ninguno
 int zxvision_which_upper_button_is_mouse(void)
 {
     int mouse_pixel_x,mouse_pixel_y;
