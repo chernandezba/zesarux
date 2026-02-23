@@ -8055,18 +8055,9 @@ int get_pos_x_mouse_tooltip_mouse(void)
 
 char *prueba_tooltip_mouse="Prueba de texto";
 
-//Dice a que elemento apunta el raton
-void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
-{
-    //asumimos que no apunta a ninguno
-    tooltip->id_tooltip=-1;
+char *prueba_tooltip_mouse2="Smartload cosas";
 
-    if (get_pos_y_mouse_tooltip_mouse()==0) {
-        tooltip->id_tooltip=0;
-        tooltip->texto_tooltip=prueba_tooltip_mouse;
-    }
 
-}
 
 int tooltips_mouse_id_ultimo_tooltip=-1;
 char *tooltips_mouse_ultimo_texto_tooltip;
@@ -8074,7 +8065,7 @@ int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
 
 
 
-void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w,int x,int y,int color)
+void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w GCC_UNUSED,int x,int y,int color)
 {
     scr_putpixel_gui_zoom(x,y,color,menu_gui_zoom);
 }
@@ -8115,6 +8106,36 @@ void tooltip_mouse_text_overlay(void)
 }
 
 
+//Dice a que elemento apunta el raton
+void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
+{
+    //asumimos que no apunta a ninguno
+    tooltip->id_tooltip=-1;
+
+    if (get_pos_y_mouse_tooltip_mouse()==0) {
+        if (get_pos_x_mouse_tooltip_mouse()<45) {
+            tooltip->id_tooltip=0;
+            tooltip->texto_tooltip=prueba_tooltip_mouse;
+        }
+        else {
+            tooltip->id_tooltip=1;
+            tooltip->texto_tooltip=prueba_tooltip_mouse2;
+        }
+    }
+
+}
+
+void tooltips_mouse_timer_event_redraw(void)
+{
+    //Siguiente refresco de zxdesktop no hay framedrop, para forzar que se vea el cambio de desaparecer el top menu
+    zxvision_zxdesktop_set_no_frameskip_next();
+
+    //Para borrar el texto de topbar
+    cls_menu_overlay();
+
+    zxvision_redraw_all_windows();
+}
+
 //Ocultar o mostrar tooltips
 void tooltips_mouse_timer_event(void)
 {
@@ -8139,24 +8160,23 @@ void tooltips_mouse_timer_event(void)
     if (tooltip.id_tooltip==-1) {
         //Si estaba visible, quitar
         if (tooltip_mouse_visible.v) {
-
-            //Siguiente refresco de zxdesktop no hay framedrop, para forzar que se vea el cambio de desaparecer el top menu
-            zxvision_zxdesktop_set_no_frameskip_next();
-
-            //Para borrar el texto de topbar
-            cls_menu_overlay();
-
-            zxvision_redraw_all_windows();
+            tooltips_mouse_timer_event_redraw();
         }
 
         tooltip_mouse_visible.v=0;
+        tooltips_mouse_id_ultimo_tooltip=-1;
 
         return;
     }
 
     tooltip_mouse_visible.v=1;
 
-    if (tooltip.id_tooltip!=tooltips_mouse_id_ultimo_tooltip) {
+    if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip) {
+        //Borrar el anterior
+        if (tooltips_mouse_id_ultimo_tooltip!=-1) {
+            tooltips_mouse_timer_event_redraw();
+        }
+
         tooltips_mouse_id_ultimo_tooltip=tooltip.id_tooltip;
         tooltips_mouse_ultimo_texto_tooltip=tooltip.texto_tooltip;
         tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
