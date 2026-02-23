@@ -8053,9 +8053,9 @@ int get_pos_x_mouse_tooltip_mouse(void)
     return columna_posicion_x;
 }
 
-char *prueba_tooltip_mouse="Prueba de texto";
+char *prueba_tooltip_mouse=" Prueba de texto ";
 
-char *prueba_tooltip_mouse2="Smartload cosas";
+char *prueba_tooltip_mouse2=" Smartload cosas ";
 
 
 
@@ -8091,14 +8091,14 @@ void tooltip_mouse_text_overlay(void)
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
         //Dibujar flechita
-        tooltip_mouse_draw_arrow(x,4*8,ESTILO_GUI_PAPEL_NORMAL);
+        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL);
 
         for (i=0;prueba_tooltip[i];i++,x+=5) {
             char caracter_escribir=prueba_tooltip[i];
 
-            tooltip_mouse_print_char(x,5*8,' ',tinta,papel);
-            tooltip_mouse_print_char(x,6*8,caracter_escribir,tinta,papel);
-            tooltip_mouse_print_char(x,7*8,' ',tinta,papel);
+            tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height,' ',tinta,papel);
+            tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height*2,caracter_escribir,tinta,papel);
+            tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height*3,' ',tinta,papel);
         }
 
 
@@ -8180,6 +8180,7 @@ void tooltips_mouse_timer_event(void)
         tooltips_mouse_id_ultimo_tooltip=tooltip.id_tooltip;
         tooltips_mouse_ultimo_texto_tooltip=tooltip.texto_tooltip;
         tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
+        tooltips_mouse_ultima_pos_y_tooltip=4*menu_char_height;
     }
 
 }
