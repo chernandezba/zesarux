@@ -44788,6 +44788,17 @@ void menu_switch_simple_menus(MENU_ITEM_PARAMETERS)
 char *tooltips_menu_inicio_main_menu="Main ZEsarUX menu";
 char *tooltips_menu_inicio_smartload="Smart load tapes, snapshots, floppies, memory cards, cartridges...";
 char *tooltips_menu_inicio_snapshot="Load or save snapshots";
+char *tooltips_menu_inicio_machine="Change active machine";
+char *tooltips_menu_inicio_audio="Audio related actions";
+char *tooltips_menu_inicio_display="Display related actions";
+char *tooltips_menu_inicio_storage="Select storage mediums, like tape, MMC, IDE, etc";
+char *tooltips_menu_inicio_debug="Debug tools";
+char *tooltips_menu_inicio_network="Network related actions";
+char *tooltips_menu_inicio_windows="Window management";
+char *tooltips_menu_inicio_settings="General Settings";
+char *tooltips_menu_inicio_help="Help menu";
+char *tooltips_menu_inicio_close="Close menu";
+char *tooltips_menu_inicio_exit="Exit ZEsarUX";
 char *tooltips_menu_inicio_unknown="";
 
 char *menu_inicio_retorna_tooltip(enum tooltips_menu_inicio id_tooltip)
@@ -44803,6 +44814,50 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menu_inicio id_tooltip)
 
         case TOOLTIP_SNAPSHOT:
             return tooltips_menu_inicio_snapshot;
+        break;
+
+        case TOOLTIP_MACHINE:
+            return tooltips_menu_inicio_machine;
+        break;
+
+        case TOOLTIP_AUDIO:
+            return tooltips_menu_inicio_audio;
+        break;
+
+        case TOOLTIP_DISPLAY:
+            return tooltips_menu_inicio_display;
+        break;
+
+        case TOOLTIP_STORAGE:
+            return tooltips_menu_inicio_storage;
+        break;
+
+        case TOOLTIP_DEBUG:
+            return tooltips_menu_inicio_debug;
+        break;
+
+        case TOOLTIP_NETWORK:
+            return tooltips_menu_inicio_network;
+        break;
+
+        case TOOLTIP_WINDOWS:
+            return tooltips_menu_inicio_windows;
+        break;
+
+        case TOOLTIP_SETTINGS:
+            return tooltips_menu_inicio_settings;
+        break;
+
+        case TOOLTIP_HELP:
+            return tooltips_menu_inicio_help;
+        break;
+
+        case TOOLTIP_CLOSE:
+            return tooltips_menu_inicio_close;
+        break;
+
+        case TOOLTIP_EXIT:
+            return tooltips_menu_inicio_exit;
         break;
 
         default:
@@ -44858,7 +44913,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
                 "~~Machine","~~Máquina","~~Màquina");
             menu_add_item_menu_shortcut(array_menu_principal,'m');
             menu_add_item_menu_es_sencillo(array_menu_principal);
-            menu_add_item_menu_tooltip(array_menu_principal,"Change active machine");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_MACHINE));
             menu_add_item_menu_ayuda(array_menu_principal,"You can switch to another machine. It also resets the machine");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
@@ -44875,7 +44930,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
 
             menu_add_item_menu(array_menu_principal,"~~Audio",MENU_OPCION_NORMAL,menu_audio,NULL);
             menu_add_item_menu_shortcut(array_menu_principal,'a');
-            menu_add_item_menu_tooltip(array_menu_principal,"Audio related actions");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_AUDIO));
             menu_add_item_menu_ayuda(array_menu_principal,"Audio related actions");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
@@ -44890,21 +44945,21 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_storage,NULL,
                 "S~~torage","Almacenamien~~to","Emmagatzema~~tge");
             menu_add_item_menu_shortcut(array_menu_principal,'t');
-            menu_add_item_menu_tooltip(array_menu_principal,"Select storage mediums, like tape, MMC, IDE, etc");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_STORAGE));
             menu_add_item_menu_ayuda(array_menu_principal,"Select storage mediums, like tape, MMC, IDE, etc");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
 
             menu_add_item_menu(array_menu_principal,"D~~ebug",MENU_OPCION_NORMAL,menu_debug_main,NULL);
             menu_add_item_menu_shortcut(array_menu_principal,'e');
-            menu_add_item_menu_tooltip(array_menu_principal,"Debug tools");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_DEBUG));
             menu_add_item_menu_ayuda(array_menu_principal,"Tools to debug the machine");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
 
             menu_add_item_menu(array_menu_principal,"Netw~~ork",MENU_OPCION_NORMAL,menu_network,NULL);
             menu_add_item_menu_shortcut(array_menu_principal,'o');
-            menu_add_item_menu_tooltip(array_menu_principal,"Network related actions");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_NETWORK));
             menu_add_item_menu_ayuda(array_menu_principal,"Network related actions");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
@@ -44912,7 +44967,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             if (menu_allow_background_windows) {
                 menu_add_item_menu(array_menu_principal,"~~Windows",MENU_OPCION_NORMAL,menu_windows,NULL);
                 menu_add_item_menu_shortcut(array_menu_principal,'w');
-                menu_add_item_menu_tooltip(array_menu_principal,"Window management");
+                menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_WINDOWS));
                 menu_add_item_menu_ayuda(array_menu_principal,"Window management");
                 menu_add_item_menu_tiene_submenu(array_menu_principal);
             }
@@ -44924,7 +44979,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_settings,NULL,
                 "Sett~~ings","Opc~~iones","Opc~~ions");
             menu_add_item_menu_shortcut(array_menu_principal,'i');
-            menu_add_item_menu_tooltip(array_menu_principal,"General Settings");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_SETTINGS));
             menu_add_item_menu_ayuda(array_menu_principal,"General Settings");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
@@ -44960,7 +45015,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
 
             menu_add_item_menu(array_menu_principal,"He~~lp",MENU_OPCION_NORMAL,menu_help,NULL);
             menu_add_item_menu_shortcut(array_menu_principal,'l');
-            menu_add_item_menu_tooltip(array_menu_principal,"Help menu");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_HELP));
             menu_add_item_menu_ayuda(array_menu_principal,"Some help and related files");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
@@ -44978,7 +45033,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s",(f_functions==1 ? "F10 ": "") );
             menu_add_item_menu_es_sencillo(array_menu_principal);
             menu_add_item_menu_genera_ventana(array_menu_principal);
-            menu_add_item_menu_tooltip(array_menu_principal,"Exit ZEsarUX");
+            menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_EXIT));
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
 
 
