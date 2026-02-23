@@ -1831,7 +1831,13 @@ extern int force_next_menu_position_y;
 
 extern void zxdesktop_switchdesktop_timer_event(void);
 
-extern void tooltip_buttons_timer_event(void);
+extern void tooltips_mouse_timer_event(void);
+
+struct s_tooltip_mouse {
+    int id_tooltip;
+    char *texto_tooltip;
+    //TODO: algo que indique donde está el boton que hace referencia, o al menos, coordenada Y por debajo (para botones superiores) o por arriba (para botones inferiores) donde acaba el botón
+};
 
 extern void enable_zxdesktop_and_background(void);
 

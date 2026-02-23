@@ -8001,15 +8001,15 @@ void menu_draw_background_windows_overlay_after_normal(void)
 }
 
 
-int previous_tooltip_buttons_timer_event_mouse_x=-1;
-int previous_tooltip_buttons_timer_event_mouse_y=-1;
+int previous_tooltip_mouse_timer_event_mouse_x=-1;
+int previous_tooltip_mouse_timer_event_mouse_y=-1;
 
-z80_bit tooltip_buttons_visible={0};
+z80_bit tooltip_mouse_visible={0};
 
 //Si esta activado el setting
-z80_bit setting_tooltip_buttons_enabled={1};
+z80_bit setting_tooltip_mouse_enabled={1};
 
-void tooltip_buttons_print_char(int x,int y,unsigned char c,int tinta,int papel)
+void tooltip_mouse_print_char(int x,int y,unsigned char c,int tinta,int papel)
 {
     //char_set_msx
     if (c<32 || c>MAX_CHARSET_GRAPHIC) c='?';
@@ -8032,7 +8032,7 @@ void tooltip_buttons_print_char(int x,int y,unsigned char c,int tinta,int papel)
 }
 
 //Retorna la fila donde está el ratón
-int get_pos_y_mouse_tooltip_buttons(void)
+int get_pos_y_mouse_tooltip_mouse(void)
 {
     int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
@@ -8040,46 +8040,105 @@ int get_pos_y_mouse_tooltip_buttons(void)
 }
 
 //Retornar coordenada x en pixeles donde está el ratón
-int get_pos_x_pixel_mouse_tooltip_buttons(void)
+int get_pos_x_pixel_mouse_tooltip_mouse(void)
 {
     int x=mouse_x/menu_gui_zoom/zoom_x;
     return x;
 }
 
 //Retornar columna donde está el ratón
-int get_pos_x_mouse_tooltip_buttons(void)
+int get_pos_x_mouse_tooltip_mouse(void)
 {
     int columna_posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
     return columna_posicion_x;
 }
 
+char *prueba_tooltip_mouse="Prueba de texto";
+
+//Dice a que elemento apunta el raton
+void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
+{
+    //asumimos que no apunta a ninguno
+    tooltip->id_tooltip=-1;
+
+    if (get_pos_y_mouse_tooltip_mouse()==0) {
+        tooltip->id_tooltip=0;
+        tooltip->texto_tooltip=prueba_tooltip_mouse;
+    }
+
+}
+
+int tooltips_mouse_id_ultimo_tooltip=-1;
+char *tooltips_mouse_ultimo_texto_tooltip;
+int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
+
+
+
+void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w,int x,int y,int color)
+{
+    scr_putpixel_gui_zoom(x,y,color,menu_gui_zoom);
+}
+
+void tooltip_mouse_draw_arrow(int x,int y,int color)
+{
+    zxvision_draw_filled_triangle(NULL,color,color,x,y+7,x+4,y,x+4+4,y+7,tooltip_mouse_draw_arrow_putpixel);
+}
+
+void tooltip_mouse_text_overlay(void)
+{
+    if (setting_tooltip_mouse_enabled.v==0) return;
+
+    if (tooltip_mouse_visible.v) {
+        char *prueba_tooltip;
+
+        prueba_tooltip=tooltips_mouse_ultimo_texto_tooltip;
+
+        int i;
+        int x=tooltips_mouse_ultima_pos_x_tooltip;
+
+        int tinta=ESTILO_GUI_TINTA_NORMAL;
+        int papel=ESTILO_GUI_PAPEL_NORMAL;
+
+        //Dibujar flechita
+        tooltip_mouse_draw_arrow(x,4*8,ESTILO_GUI_PAPEL_NORMAL);
+
+        for (i=0;prueba_tooltip[i];i++,x+=5) {
+            char caracter_escribir=prueba_tooltip[i];
+
+            tooltip_mouse_print_char(x,5*8,' ',tinta,papel);
+            tooltip_mouse_print_char(x,6*8,caracter_escribir,tinta,papel);
+            tooltip_mouse_print_char(x,7*8,' ',tinta,papel);
+        }
+
+
+    }
+}
+
 
 //Ocultar o mostrar tooltips
-void tooltip_buttons_timer_event(void)
+void tooltips_mouse_timer_event(void)
 {
 
-    if (setting_tooltip_buttons_enabled.v==0) return;
+    if (setting_tooltip_mouse_enabled.v==0) return;
 
     int movido=0;
 
-    if (previous_tooltip_buttons_timer_event_mouse_x!=mouse_x || previous_tooltip_buttons_timer_event_mouse_y!=mouse_y)
+    if (previous_tooltip_mouse_timer_event_mouse_x!=mouse_x || previous_tooltip_mouse_timer_event_mouse_y!=mouse_y)
     {
         movido=1;
     }
 
-    previous_tooltip_buttons_timer_event_mouse_x=mouse_x;
-    previous_tooltip_buttons_timer_event_mouse_y=mouse_y;
+    previous_tooltip_mouse_timer_event_mouse_x=mouse_x;
+    previous_tooltip_mouse_timer_event_mouse_y=mouse_y;
 
     if (!movido) return;
 
-    //Si esta encima de algun boton
-    if (get_pos_y_mouse_tooltip_buttons()==0) {
-        tooltip_buttons_visible.v=1;
-    }
-    else {
+    struct s_tooltip_mouse tooltip;
+    tooltips_mouse_timer_event_which_element(&tooltip);
+
+    if (tooltip.id_tooltip==-1) {
         //Si estaba visible, quitar
-        if (tooltip_buttons_visible.v) {
-            tooltip_buttons_visible.v=0;
+        if (tooltip_mouse_visible.v) {
 
             //Siguiente refresco de zxdesktop no hay framedrop, para forzar que se vea el cambio de desaparecer el top menu
             zxvision_zxdesktop_set_no_frameskip_next();
@@ -8090,58 +8149,22 @@ void tooltip_buttons_timer_event(void)
             zxvision_redraw_all_windows();
         }
 
-        tooltip_buttons_visible.v=0;
+        tooltip_mouse_visible.v=0;
+
+        return;
+    }
+
+    tooltip_mouse_visible.v=1;
+
+    if (tooltip.id_tooltip!=tooltips_mouse_id_ultimo_tooltip) {
+        tooltips_mouse_id_ultimo_tooltip=tooltip.id_tooltip;
+        tooltips_mouse_ultimo_texto_tooltip=tooltip.texto_tooltip;
+        tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
     }
 
 }
 
-void tooltip_buttons_draw_arrow_putpixel(zxvision_window *w,int x,int y,int color)
-{
-    scr_putpixel_gui_zoom(x,y,color,menu_gui_zoom);
-}
 
-void tooltip_buttons_draw_arrow(int x,int y,int color)
-{
-    zxvision_draw_filled_triangle(NULL,color,color,x,y+7,x+4,y,x+4+4,y+7,tooltip_buttons_draw_arrow_putpixel);
-}
-
-void tooltip_buttons_text_overlay(void)
-{
-    if (setting_tooltip_buttons_enabled.v==0) return;
-
-    if (tooltip_buttons_visible.v) {
-        char *prueba_tooltip=" Open the main menu yyjjqqppABCDEFGHIJKLMNOPQRSTUVWXYZ ";
-
-        if (get_pos_x_mouse_tooltip_buttons()>=48) {
-            prueba_tooltip=" Smart load tapes, snapshots, disks, etc ";
-        }
-
-        int i;
-        int x=get_pos_x_mouse_tooltip_buttons();
-
-        //temp
-        x=get_pos_x_pixel_mouse_tooltip_buttons();
-
-        int tinta=ESTILO_GUI_TINTA_NORMAL;
-        int papel=ESTILO_GUI_PAPEL_NORMAL;
-
-        //Dibujar flechita
-        tooltip_buttons_draw_arrow(x,4*8,ESTILO_GUI_PAPEL_NORMAL);
-
-        for (i=0;prueba_tooltip[i];i++,x+=5) {
-            char caracter_escribir=prueba_tooltip[i];
-            //putchar_menu_overlay_parpadeo(x,4,' ',tinta,papel,0);
-            //putchar_menu_overlay_parpadeo(x,5,caracter_escribir,tinta,papel,0);
-            //putchar_menu_overlay_parpadeo(x,6,' ',tinta,papel,0);
-
-            tooltip_buttons_print_char(x,5*8,' ',tinta,papel);
-            tooltip_buttons_print_char(x,6*8,caracter_escribir,tinta,papel);
-            tooltip_buttons_print_char(x,7*8,' ',tinta,papel);
-        }
-
-
-    }
-}
 
 void normal_overlay_texto_menu_final(void)
 {
@@ -8180,7 +8203,7 @@ void normal_overlay_texto_menu_final(void)
     topbar_text_overlay();
 
     //Dibujar tooltips botones
-    tooltip_buttons_text_overlay();
+    tooltip_mouse_text_overlay();
 
 
 }
