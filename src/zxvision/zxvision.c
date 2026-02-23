@@ -17412,6 +17412,37 @@ int zxvision_if_pressed_buttons_or_icons_or_desktop(void)
     else return 0;
 }
 
+//Dice en que boton superior está el raton. -1 si no está en ninguno
+int zxvision_which_upper_button_is_mouse(void)
+{
+    int mouse_pixel_x,mouse_pixel_y;
+    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+    //multiplicamos por zoom
+    mouse_pixel_x *=zoom_x;
+    mouse_pixel_y *=zoom_y;
+
+    //Si esta en zona botones de zx desktop. Y si estan habilitados
+
+    if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
+        int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
+        menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
+
+        if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
+            mouse_pixel_y>=0 && mouse_pixel_y<alto_boton
+        ) {
+            //printf ("Pulsado en zona botones del ext desktop\n");
+
+            //en que boton?
+            int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
+
+            return numero_boton;
+        }
+    }
+
+    return -1;
+}
+
 //Funcion de detectar si raton en botones upper, lower o iconos de desktop, pero ademas
 //con variable activar_accion que dice si se dispara la accion que habilita ese boton
 //Esa variable sirve para que en casos que solo queremos comprobar que el raton esta ahi pero sin disparar la accion
@@ -17436,18 +17467,11 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(int activar_accion)
 
 
         //Si esta en zona botones de zx desktop. Y si estan habilitados
-
         if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
-            int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
-            menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
+            int numero_boton=zxvision_which_upper_button_is_mouse();
 
-            if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
-                mouse_pixel_y>=0 && mouse_pixel_y<alto_boton
-            ) {
-                //printf ("Pulsado en zona botones del ext desktop\n");
+            if (numero_boton>=0) {
 
-                //en que boton?
-                int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
                 DBG_PRINT_ZXVISION_EVENTS VERBOSE_DEBUG,"ZXVISION_EVENTS: zxvision_if_mouse_in_zlogo_or_buttons_desktop. Upper button pressed: %d",numero_boton);
                 if (activar_accion) {
                     menu_pressed_zxdesktop_button_which=numero_boton;
