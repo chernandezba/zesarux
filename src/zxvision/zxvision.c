@@ -8007,7 +8007,29 @@ int previous_tooltip_buttons_timer_event_mouse_y=-1;
 z80_bit tooltip_buttons_visible={0};
 
 //Si esta activado el setting
-z80_bit setting_tooltip_buttons_enabled={0};
+z80_bit setting_tooltip_buttons_enabled={1};
+
+void tooltip_buttons_print_char(int x,int y,unsigned char c,int tinta,int papel)
+{
+    //char_set_msx
+    if (c<32 || c>MAX_CHARSET_GRAPHIC) c='?';
+
+    int offset_char=(c-32)*8;
+
+    int bit;
+    int linea;
+
+    //Este charset de MSX se puede ver bien con 5 pixeles de ancho
+    for (linea=0;linea<8;linea++) {
+        z80_byte grafico=char_set_msx[offset_char++];
+        for (bit=0;bit<5;bit++) {
+            int color=(grafico & 128 ? tinta : papel);
+            scr_putpixel_gui_zoom(x+bit,y+linea,color,menu_gui_zoom);
+
+            grafico=grafico<<1;
+        }
+    }
+}
 
 //Retorna la fila donde está el ratón
 int get_pos_y_mouse_tooltip_buttons(void)
@@ -8017,6 +8039,14 @@ int get_pos_y_mouse_tooltip_buttons(void)
     return posicion_y;
 }
 
+//Retornar coordenada x en pixeles donde está el ratón
+int get_pos_x_pixel_mouse_tooltip_buttons(void)
+{
+    int x=mouse_x/menu_gui_zoom/zoom_x;
+    return x;
+}
+
+//Retornar columna donde está el ratón
 int get_pos_x_mouse_tooltip_buttons(void)
 {
     int columna_posicion_x=mouse_x/menu_char_width/menu_gui_zoom/zoom_x;
@@ -8065,31 +8095,51 @@ void tooltip_buttons_timer_event(void)
 
 }
 
+void tooltip_buttons_draw_arrow_putpixel(zxvision_window *w,int x,int y,int color)
+{
+    scr_putpixel_gui_zoom(x,y,color,menu_gui_zoom);
+}
 
+void tooltip_buttons_draw_arrow(int x,int y,int color)
+{
+    zxvision_draw_filled_triangle(NULL,color,color,x,y+7,x+4,y,x+4+4,y+7,tooltip_buttons_draw_arrow_putpixel);
+}
 
 void tooltip_buttons_text_overlay(void)
 {
     if (setting_tooltip_buttons_enabled.v==0) return;
 
     if (tooltip_buttons_visible.v) {
-        char *prueba_tooltip="Open the main menu";
+        char *prueba_tooltip=" Open the main menu yyjjqqppABCDEFGHIJKLMNOPQRSTUVWXYZ ";
 
         if (get_pos_x_mouse_tooltip_buttons()>=48) {
-            prueba_tooltip="Smart load tapes, snapshots, disks, etc";
+            prueba_tooltip=" Smart load tapes, snapshots, disks, etc ";
         }
 
         int i;
         int x=get_pos_x_mouse_tooltip_buttons();
 
+        //temp
+        x=get_pos_x_pixel_mouse_tooltip_buttons();
+
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
-        for (i=0;prueba_tooltip[i];i++,x++) {
+        //Dibujar flechita
+        tooltip_buttons_draw_arrow(x,4*8,ESTILO_GUI_PAPEL_NORMAL);
+
+        for (i=0;prueba_tooltip[i];i++,x+=5) {
             char caracter_escribir=prueba_tooltip[i];
-            putchar_menu_overlay_parpadeo(x,4,' ',tinta,papel,0);
-            putchar_menu_overlay_parpadeo(x,5,caracter_escribir,tinta,papel,0);
-            putchar_menu_overlay_parpadeo(x,6,' ',tinta,papel,0);
+            //putchar_menu_overlay_parpadeo(x,4,' ',tinta,papel,0);
+            //putchar_menu_overlay_parpadeo(x,5,caracter_escribir,tinta,papel,0);
+            //putchar_menu_overlay_parpadeo(x,6,' ',tinta,papel,0);
+
+            tooltip_buttons_print_char(x,5*8,' ',tinta,papel);
+            tooltip_buttons_print_char(x,6*8,caracter_escribir,tinta,papel);
+            tooltip_buttons_print_char(x,7*8,' ',tinta,papel);
         }
+
+
     }
 }
 
@@ -16520,7 +16570,7 @@ void zxvision_widgets_draw_triangle(zxvision_window *ventana,int xinicio_widget,
     int alto_total=65/2; //para que al 100% del sensor, quede una rampa completamente diagonal 1/1
     int alto_triangulo=(alto_total*percentaje)/100;
 
-    zxvision_draw_filled_triangle(ventana,color,0,
+    zxvision_draw_filled_triangle_habitual(ventana,color,0,
             xinicio_widget,yinicio_widget+alto_total,
             xinicio_widget+ancho-1,yinicio_widget+alto_total,
             xinicio_widget+ancho/2,yinicio_widget+alto_total-alto_triangulo);
@@ -31303,7 +31353,7 @@ void zxvision_draw_filled_triangle_putpixel_buffer(int x,int y,int min_x,int min
 }
 
 //Coordenadas en el plano 2D
-void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3)
+void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3,void (*fun_putpixel) (zxvision_window *w,int x,int y,int color))
 {
 
     /*
@@ -31374,23 +31424,23 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
         }
 
         if (izquierda!=-1 && derecha!=-1) {
-            //temp. de momento solo poner pixel en aristas
-            //zxvision_putpixel(w,izquierda,y,color_relleno);
-            //temp. de momento solo poner pixel en aristas
-            //zxvision_putpixel(w,derecha,y,color_relleno);
-
             //Rellenar
-            zxvision_draw_line(w,izquierda,y,derecha,y,color_relleno,zxvision_draw_filled_triangle_putpixel);
-
+            zxvision_draw_line(w,izquierda,y,derecha,y,color_relleno,fun_putpixel);
         }
     }
 
     //Finalmente dibujamos las aristas
-    zxvision_draw_line(w,x1,y1,x2,y2,color_aristas,zxvision_draw_filled_triangle_putpixel);
-    zxvision_draw_line(w,x1,y1,x3,y3,color_aristas,zxvision_draw_filled_triangle_putpixel);
-    zxvision_draw_line(w,x2,y2,x3,y3,color_aristas,zxvision_draw_filled_triangle_putpixel);
+    zxvision_draw_line(w,x1,y1,x2,y2,color_aristas,fun_putpixel);
+    zxvision_draw_line(w,x1,y1,x3,y3,color_aristas,fun_putpixel);
+    zxvision_draw_line(w,x2,y2,x3,y3,color_aristas,fun_putpixel);
 
     free(buffer_pixeles_aristas);
 
 }
 
+
+//Coordenadas en el plano 2D
+void zxvision_draw_filled_triangle_habitual(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3)
+{
+    zxvision_draw_filled_triangle(w,color_relleno,color_aristas,x1,y1,x2,y2,x3,y3,zxvision_draw_filled_triangle_putpixel);
+}
