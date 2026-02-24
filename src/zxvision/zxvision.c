@@ -8109,11 +8109,19 @@ void tooltip_mouse_text_overlay(void)
             ypos -=(alto_caracter-1);
         }
 
+
         int longitud_escribir=strlen(tooltips_mouse_ultimo_texto_tooltip);
+        //Le ponemos espacios delante y detras
+        longitud_escribir +=2;
 
         for (i=0;i<longitud_escribir;i++,x+=5) {
 
-            char caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i];
+            char caracter_escribir;
+
+            //primer y ultimo caracter son espacios
+            if (i==0) caracter_escribir=' ';
+            else if (tooltips_mouse_ultimo_texto_tooltip[i-1]==0) caracter_escribir=' ';
+            else caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i-1];
 
             tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter,' ',tinta,papel);
             tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*2,caracter_escribir,tinta,papel);
