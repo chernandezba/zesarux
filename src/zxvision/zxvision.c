@@ -8346,6 +8346,7 @@ void tooltips_mouse_timer_event(void)
     }
 
     if (movido) {
+        tooltips_mouse_frames_counter=0;
         //Si se mueve y no estaba activo, esperar a contador
         if (!tooltip_mouse_visible.v && tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
             //Borrar el anterior
@@ -8361,7 +8362,7 @@ void tooltips_mouse_timer_event(void)
         }
     }
 
-    tooltips_mouse_frames_counter=0;
+    //tooltips_mouse_frames_counter=0;
 
     printf("buscar tooltip %d\n",contador_segundo);
 
