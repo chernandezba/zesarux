@@ -8006,8 +8006,6 @@ int previous_tooltip_mouse_timer_event_mouse_y=-1;
 
 z80_bit tooltip_mouse_visible={0};
 
-//Si esta activado el setting
-z80_bit setting_tooltip_mouse_enabled={1};
 
 void tooltip_mouse_putpixel(int x,int y,int color)
 {
@@ -8121,7 +8119,7 @@ void tooltip_mouse_draw_filled_rectangle(int xinicio,int yinicio,int ancho,int a
 
 void tooltip_mouse_text_overlay(void)
 {
-    if (setting_tooltip_mouse_enabled.v==0) return;
+    if (tooltip_enabled.v==0) return;
 
     if (tooltip_mouse_visible.v) {
 
@@ -8319,16 +8317,15 @@ void tooltips_mouse_timer_event_redraw(void)
 int tooltips_mouse_frames_counter=0;
 
 
-//Ocultar o mostrar tooltips
-//TODO: esta funcion es mejorable: se quiso hacer con una maquina de estados pero era exageradamente complicada
 
 int tooltips_mouse_timer_bloqueo_incremento=0;
 
-
+//Ocultar o mostrar tooltips
+//TODO: esta funcion es mejorable: se quiso hacer con una maquina de estados pero era exageradamente complicada
 void tooltips_mouse_timer_event(void)
 {
 
-    if (setting_tooltip_mouse_enabled.v==0) return;
+    if (tooltip_enabled.v==0) return;
 
     int movido=0;
 
