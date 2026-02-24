@@ -8103,16 +8103,21 @@ void tooltip_mouse_text_overlay(void)
 
         int ypos=tooltips_mouse_ultima_pos_y_tooltip;
 
+        int alto_caracter=8; //Alto fijo para este charset
+
         if (tooltips_mouse_direccion_tooltip==-1) {
-            ypos -=(menu_char_height-1);
+            ypos -=(alto_caracter-1);
         }
 
-        for (i=0;tooltips_mouse_ultimo_texto_tooltip[i];i++,x+=5) {
+        int longitud_escribir=strlen(tooltips_mouse_ultimo_texto_tooltip);
+
+        for (i=0;i<longitud_escribir;i++,x+=5) {
+
             char caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i];
 
-            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*menu_char_height,' ',tinta,papel);
-            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*menu_char_height*2,caracter_escribir,tinta,papel);
-            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*menu_char_height*3,' ',tinta,papel);
+            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter,' ',tinta,papel);
+            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*2,caracter_escribir,tinta,papel);
+            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*3,' ',tinta,papel);
         }
 
 

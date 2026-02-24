@@ -116,19 +116,19 @@ hay que implementar tambien los caracteres de botones de ventana por ejemplo
 
 -tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
 *que solo salgan si esta el setting de tooltips en menu (ahora hay un setting aparte, no deberia)
-*que detecten que boton (superior o inferior de dispositivo)
+ok *que detecten que boton (superior o inferior de dispositivo)
 *texto como aparece? Con un recuadro alrededor para no mezclarse con texto ya existente de menus o ventanas abiertas?
-*indicar de alguna manera a que boton hace referencia? con una flechita o quiza alterando el color del boton
+ok *indicar de alguna manera a que boton hace referencia? con una flechita o quiza alterando el color del boton
 *que se active cuando lleve mas de unos segundos el raton ahi, como con los tooltips de menu. cuando ha pasado ese tiempo, si me muevo a otro boton, deberia
 salir el tooltip al momento, sin esperar ese timer
 *que permita mas de una linea de texto?
-*quiza texto muy grande. Usar set de caracteres de 4x4? Pero entonces ya no se puede usar putchar_menu_overlay_parpadeo, sino que hay que hacerlo con putpixel
+ok *quiza texto muy grande. Usar set de caracteres de 4x4? Pero entonces ya no se puede usar putchar_menu_overlay_parpadeo, sino que hay que hacerlo con putpixel
 o hacerlo con set caracteres normal pero escribiendo con 5 de ancho por ejemplo, pero igualmente habria que hacerlo con putpixel. charset de msx por ejemplo queda bien con 5 de ancho
 O tambien se podria usar el set de caracteres vectorial...
 Si hago tooltip con putpixel, quedará por encima de otra función de overlay que por ejemplo dibuje una forma de onda? Debería quedar por encima de cualquier otra cosa
 Tooltips mensajes que sean los mismos que los ítems de menú principal
 
-*una función auxiliar que diga que id de tooltip tiene que mostrar. si función principal (desde timer) llama a esa auxiliar y retorna mismo id de tooltip anterior, mantener mismo mensaje y posición del mensaje anterior
+ok *una función auxiliar que diga que id de tooltip tiene que mostrar. si función principal (desde timer) llama a esa auxiliar y retorna mismo id de tooltip anterior, mantener mismo mensaje y posición del mensaje anterior
 si es diferente, mostrar nuevo mensaje
 esa función auxiliar podria retornar salida en una estructura:
 struct {
@@ -142,7 +142,8 @@ char *ultimo_texto_tooltip;
 int ultima_pos_x_tooltip,ultima_pos_y_tooltip;
 funcion llamada desde overlay mostrara mensaje segun las variables ultimo_texto_tooltip, ultima_pos_x_tooltip, ultima_pos_y_tooltip;
 *calculo correcto de donde van los tooltips (en y, esta puesto a ojo) y en x (no es preciso, quiza cuenta ancho de caracter)
-acabar de rellenar tooltips en array zdesktop_lowericons_array *tooltips de inferiores, definir en la estructura de botones inferiores
+
+ok acabar de rellenar tooltips en array zdesktop_lowericons_array *tooltips de inferiores, definir en la estructura de botones inferiores
 *ponerle un marco alrededor del tooltip, porque se funde con otras ventanas por debajo, o ponerlo en otro color que no se funda
-*asociar tooltips de menu storage a nuevos tooltips de dispositivos (llamando a menu_inicio_retorna_tooltip);
+ok *asociar tooltips de menu storage a nuevos tooltips de dispositivos (llamando a menu_inicio_retorna_tooltip);
 *ver que no haya ventana encima de un boton para no abrir el tooltip
