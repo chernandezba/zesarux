@@ -8081,7 +8081,11 @@ void tooltip_mouse_draw_arrow(int x,int y,int color,int direccion )
          x
     */
 
-    zxvision_draw_filled_triangle(NULL,color,color,x,y+direccion*7,x+4,y,x+4+4,y+direccion*7,tooltip_mouse_draw_arrow_putpixel);
+    zxvision_draw_filled_triangle(NULL,color,color,
+        x,y+direccion*7,
+        x+4,y,
+        x+4+4,y+direccion*7,
+        tooltip_mouse_draw_arrow_putpixel);
 
 
 }
@@ -8094,6 +8098,9 @@ void tooltip_mouse_text_overlay(void)
 
         int i;
         int x=tooltips_mouse_ultima_pos_x_tooltip;
+
+        //Para que la punta de la flecha apunte a donde estaba el mouse
+        x -=4;
 
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
