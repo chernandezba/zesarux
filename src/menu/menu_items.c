@@ -41333,7 +41333,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu_shortcut(array_menu_storage,'s');
                 menu_add_item_menu_valor_opcion(array_menu_storage,i);
 
-                menu_add_item_menu_tooltip(array_menu_storage,"Z88 Memory Slots");
+                menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_CARTRIDGE_Z88));
                 menu_add_item_menu_ayuda(array_menu_storage,"Selects Memory Slots to use on Z88");
                 menu_add_item_menu_tiene_submenu(array_menu_storage);
             }
@@ -41378,7 +41378,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"3\" CF2 F~~loppy");
             menu_add_item_menu_shortcut(array_menu_storage,'l');
-            menu_add_item_menu_tooltip(array_menu_storage,"3\" Compact Floppy Disc emulation");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_COMPACT_FLOPPY));
             menu_add_item_menu_ayuda(array_menu_storage,"3\" Compact Floppy Disc emulation, used on Spectrum +3, Amstrad CPC 6128,664, Amstrad PCW");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41392,7 +41392,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_TIMEX_TS_TC_2068) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_timexcart,NULL,"Timex ~~Cartridge");
             menu_add_item_menu_shortcut(array_menu_storage,'c');
-            menu_add_item_menu_tooltip(array_menu_storage,"Timex Cartridge Settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_CARTRIDGE_TS2068));
             menu_add_item_menu_ayuda(array_menu_storage,"Timex Cartridge Settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41402,7 +41402,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_MSX) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_msxcart,NULL,"MSX ~~Cartridge");
             menu_add_item_menu_shortcut(array_menu_storage,'c');
-            menu_add_item_menu_tooltip(array_menu_storage,"MSX Cartridge Settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_CARTRIDGE_MSX));
             menu_add_item_menu_ayuda(array_menu_storage,"MSX Cartridge Settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41410,7 +41410,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_COLECO) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_msxcart,NULL,"Coleco ~~Cartridge");
             menu_add_item_menu_shortcut(array_menu_storage,'c');
-            menu_add_item_menu_tooltip(array_menu_storage,"Coleco Cartridge Settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_CARTRIDGE_COLECO));
             menu_add_item_menu_ayuda(array_menu_storage,"Coleco Cartridge Settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41419,7 +41419,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SG1000) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_msxcart,NULL,"SG-1000 ~~Cartridge");
             menu_add_item_menu_shortcut(array_menu_storage,'c');
-            menu_add_item_menu_tooltip(array_menu_storage,"SG-1000 Cartridge Settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_CARTRIDGE_SG1000));
             menu_add_item_menu_ayuda(array_menu_storage,"SG-1000 Cartridge Settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41427,7 +41427,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SMS) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_msxcart,NULL,"SMS ~~Cartridge");
             menu_add_item_menu_shortcut(array_menu_storage,'c');
-            menu_add_item_menu_tooltip(array_menu_storage,"SMS Cartridge Settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_CARTRIDGE_SMS));
             menu_add_item_menu_ayuda(array_menu_storage,"SMS Cartridge Settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41435,7 +41435,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SVI) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_msxcart,NULL,"SVI ~~Cartridge");
             menu_add_item_menu_shortcut(array_menu_storage,'c');
-            menu_add_item_menu_tooltip(array_menu_storage,"SVI Cartridge Settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_CARTRIDGE_SVI));
             menu_add_item_menu_ayuda(array_menu_storage,"SVI Cartridge Settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41475,7 +41475,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_hilow,NULL,"~~HiLow Data Drive");
             menu_add_item_menu_shortcut(array_menu_storage,'h');
-            menu_add_item_menu_tooltip(array_menu_storage,"HiLow settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_HILOW));
             menu_add_item_menu_ayuda(array_menu_storage,"HiLow settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41485,7 +41485,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_ide_divide,NULL,"~~IDE");
             menu_add_item_menu_shortcut(array_menu_storage,'i');
-            menu_add_item_menu_tooltip(array_menu_storage,"IDE, DivIDE and 8-bit simple settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_IDE));
             menu_add_item_menu_ayuda(array_menu_storage,"IDE, DivIDE and 8-bit simple settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 
@@ -41505,7 +41505,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128_P2) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_interface1,NULL,"IF1/~~Microdrive");
             menu_add_item_menu_shortcut(array_menu_storage,'m');
-            menu_add_item_menu_tooltip(array_menu_storage,"Interface1 and Microdrive settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_MICRODRIVE));
             menu_add_item_menu_ayuda(array_menu_storage,"Interface1 and Microdrive settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41531,7 +41531,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
             //menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,13);
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_mmc_divmmc,NULL,"~~SD/MMC");
             menu_add_item_menu_shortcut(array_menu_storage,'s');
-            menu_add_item_menu_tooltip(array_menu_storage,"SD, MMC, DivMMC and ZXMMC settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_MMC));
             menu_add_item_menu_ayuda(array_menu_storage,"SD, MMC, DivMMC and ZXMMC settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41568,7 +41568,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_dandanator,NULL,
                 "%s D~~andanator",(MACHINE_IS_SPECTRUM ? "ZX" : "CPC")  );
             menu_add_item_menu_shortcut(array_menu_storage,'a');
-            menu_add_item_menu_tooltip(array_menu_storage,"Dandanator settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_DANDANATOR));
             menu_add_item_menu_ayuda(array_menu_storage,"Dandanator settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 
@@ -41577,7 +41577,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_zxmmcplus,NULL,"ZXMMC+");
-            menu_add_item_menu_tooltip(array_menu_storage,"ZXMMC+ settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_ZXMMCPLUS_FLASH));
             menu_add_item_menu_ayuda(array_menu_storage,"ZXMMC+ settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -41586,7 +41586,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_ZX8081) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_zxpand,NULL,"ZX~~pand emulation");
             menu_add_item_menu_shortcut(array_menu_storage,'p');
-            menu_add_item_menu_tooltip(array_menu_storage,"ZXpand emulation");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_ZXPAND));
             menu_add_item_menu_ayuda(array_menu_storage,"ZXpand emulation");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 
@@ -41597,6 +41597,8 @@ void menu_storage(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_zxuno_spi_flash,NULL,"~~ZX-Uno Flash");
             menu_add_item_menu_shortcut(array_menu_storage,'z');
             menu_add_item_menu_tiene_submenu(array_menu_storage);
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_ZXUNO_FLASH));
+            menu_add_item_menu_ayuda(array_menu_storage,"ZX-Uno Flash");
         }
 
         if (MACHINE_IS_SPECTRUM) {
@@ -44804,12 +44806,12 @@ char *tooltips_devices_standard_tape="Standard tape storage";
 char *tooltips_devices_real_tape="Real tape storage";
 char *tooltips_devices_betadisk="Betadisk and TR-DOS";
 char *tooltips_devices_microdrive="Microdrive used on Spectrum and QL";
-char *tooltips_devices_dandanator="Dandanator rom for Spectrum and CPC";
+char *tooltips_devices_dandanator="Dandanator cartridge for Spectrum and CPC";
 char *tooltips_devices_cartridge_ts2068="Timex Cartridge Settings";
 char *tooltips_devices_cartridge_z88="Z88 Memory Slots";
 char *tooltips_devices_zxuno_flash="ZXUno Flash settings";
 char *tooltips_devices_zxmmcplus_flash="ZXMMC+ settings";
-char *tooltips_devices_hilow="HiLow settings";
+char *tooltips_devices_hilow="HiLow Data Drive";
 char *tooltips_devices_cartridge_sms="Master System cartridge";;
 char *tooltips_devices_cartridge_sg1000="SG1000 cartridge";
 char *tooltips_devices_cartridge_coleco="Colecovision cartridge";
