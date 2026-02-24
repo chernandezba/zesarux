@@ -8250,17 +8250,15 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
     menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);
 
-    int hay_ventana_encima=0;
+    //Si hay ventana encima de donde esta el raton, no puede apuntar a ningun boton, está oculto, por tanto, no hay tooltip
+    if (zxvision_coords_in_any_window(absolute_mouse_x,absolute_mouse_y)!=NULL) return;
 
-    if (zxvision_coords_in_any_window(absolute_mouse_x,absolute_mouse_y)!=NULL) hay_ventana_encima=1;
-
-    if (hay_ventana_encima) return;
 
     //botones superiores
     int boton=zxvision_which_upper_button_is_mouse();
 
 
-    if (boton>=0 && !hay_ventana_encima) {
+    if (boton>=0) {
         printf("boton %d\n",boton);
         int id_tooltip=tooltips_mouse_retorna_tooltip_botones_superiores(boton);
 
@@ -8279,7 +8277,7 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
     //botones inferiores
     boton=zxvision_which_lower_button_is_mouse();
 
-    if (boton>=0 && !hay_ventana_encima) {
+    if (boton>=0) {
         //por si acaso texto por defecto
         tooltip->texto_tooltip=menu_inicio_retorna_tooltip(0);
 
