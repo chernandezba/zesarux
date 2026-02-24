@@ -8081,11 +8081,12 @@ void tooltip_mouse_draw_arrow(int x,int y,int color_dentro,int color_aristas,int
          x
     */
 
+    //La arista de la base del triangulo no la dibujamos, para que quede del mismo color que el interior y se fusione con el rectangulo
     zxvision_draw_filled_triangle(NULL,color_dentro,color_aristas,
-        x,y+direccion*7,
+        x,y+direccion*8,
         x+4,y,
-        x+4+4,y+direccion*7,
-        tooltip_mouse_draw_arrow_putpixel);
+        x+4+4,y+direccion*8,
+        tooltip_mouse_draw_arrow_putpixel,2);
 
 
 }
@@ -8128,7 +8129,7 @@ void tooltip_mouse_text_overlay(void)
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
         //Dibujar flechita
-        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
+        //tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
 
         int alto_caracter=8; //Alto fijo para este charset
         int ancho_caracter=5;
@@ -8149,6 +8150,8 @@ void tooltip_mouse_text_overlay(void)
 
         //dos mas de ancho
         tooltip_mouse_draw_filled_rectangle(x,rectangulo_ypos,(longitud_escribir+2)*ancho_caracter,alto_caracter*3,papel,ESTILO_GUI_COLOR_RECUADRO);
+
+        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
 
         //1 espacio a la izquierda
         x+=ancho_caracter;
@@ -31619,7 +31622,9 @@ void zxvision_draw_filled_triangle_putpixel_buffer(int x,int y,int min_x,int min
 }
 
 //Coordenadas en el plano 2D
-void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3,void (*fun_putpixel) (zxvision_window *w,int x,int y,int color))
+//arista_no_dibujar: que numero de arista no dibujar (1,2,o 3). Establecer a -1 para que se dibjen todas
+void zxvision_draw_filled_triangle(zxvision_window *w,
+    int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3,void (*fun_putpixel) (zxvision_window *w,int x,int y,int color),int arista_no_dibujar)
 {
 
     /*
@@ -31696,9 +31701,9 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
     }
 
     //Finalmente dibujamos las aristas
-    zxvision_draw_line(w,x1,y1,x2,y2,color_aristas,fun_putpixel);
-    zxvision_draw_line(w,x1,y1,x3,y3,color_aristas,fun_putpixel);
-    zxvision_draw_line(w,x2,y2,x3,y3,color_aristas,fun_putpixel);
+    if (arista_no_dibujar!=1) zxvision_draw_line(w,x1,y1,x2,y2,color_aristas,fun_putpixel);
+    if (arista_no_dibujar!=2) zxvision_draw_line(w,x1,y1,x3,y3,color_aristas,fun_putpixel);
+    if (arista_no_dibujar!=3) zxvision_draw_line(w,x2,y2,x3,y3,color_aristas,fun_putpixel);
 
     free(buffer_pixeles_aristas);
 
@@ -31708,5 +31713,5 @@ void zxvision_draw_filled_triangle(zxvision_window *w,int color_relleno,int colo
 //Coordenadas en el plano 2D
 void zxvision_draw_filled_triangle_habitual(zxvision_window *w,int color_relleno,int color_aristas,int x1,int y1,int x2,int y2,int x3,int y3)
 {
-    zxvision_draw_filled_triangle(w,color_relleno,color_aristas,x1,y1,x2,y2,x3,y3,zxvision_draw_filled_triangle_putpixel);
+    zxvision_draw_filled_triangle(w,color_relleno,color_aristas,x1,y1,x2,y2,x3,y3,zxvision_draw_filled_triangle_putpixel,-1);
 }
