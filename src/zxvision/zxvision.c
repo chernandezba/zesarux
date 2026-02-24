@@ -8349,6 +8349,7 @@ void tooltips_mouse_timer_event(void)
             //Borrar el anterior
             printf("movido, no llega a contador, desactivamos %d\n",contador_segundo);
             if (tooltips_mouse_id_ultimo_tooltip>=0) {
+                //TODO: creo que aqui no entra nunca...
                 printf("movido, no llega a contador, borramos el anterior----------- %d\n",contador_segundo);
                 tooltips_mouse_timer_event_redraw();
             }
