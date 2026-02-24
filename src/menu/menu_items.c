@@ -31757,9 +31757,9 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
     char *mensaje_firstaid_english="Do you want to enable 'First aid' help messages? They are help messages that appear on starting ZEsarUX "
         "and also when opening some menus";
 
-    char *mensaje_tooltips_spanish="Quieres activar mensajes de ayuda 'Tooltips'? Son mensajes de ayuda que aparecen al elegir entradas de menús";
-    char *mensaje_tooltips_catalan="Vols activar missatges d'ajuda 'Tooltips'? Son missatges d'ajuda que apareixen al escollir entrades de menús";
-    char *mensaje_tooltips_english="Do you want to enable 'Tooltips' help messages? They are help messages that appear on selecting menu items";
+    char *mensaje_tooltips_spanish="Quieres activar mensajes de ayuda 'Tooltips'? Son mensajes de ayuda que aparecen al elegir entradas de menús o botones";
+    char *mensaje_tooltips_catalan="Vols activar missatges d'ajuda 'Tooltips'? Son missatges d'ajuda que apareixen al escollir entrades de menús o botones";
+    char *mensaje_tooltips_english="Do you want to enable 'Tooltips' help messages? They are help messages that appear on selecting menu items or buttons";
 
 
     char *mensaje_atajos_spanish="Quieres activar la visualización de los atajos de teclado? Permite seleccionar entradas de menú pulsando simplemente una tecla";
