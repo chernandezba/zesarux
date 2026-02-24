@@ -117,9 +117,9 @@ hay que implementar tambien los caracteres de botones de ventana por ejemplo
 -tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
 *que solo salgan si esta el setting de tooltips en menu (ahora hay un setting aparte, no deberia)
 ok *que detecten que boton (superior o inferior de dispositivo)
-*texto como aparece? Con un recuadro alrededor para no mezclarse con texto ya existente de menus o ventanas abiertas?
+ok *texto como aparece? Con un recuadro alrededor para no mezclarse con texto ya existente de menus o ventanas abiertas?
 ok *indicar de alguna manera a que boton hace referencia? con una flechita o quiza alterando el color del boton
-*que se active cuando lleve mas de unos segundos el raton ahi, como con los tooltips de menu. cuando ha pasado ese tiempo, si me muevo a otro boton, deberia
+ok *que se active cuando lleve mas de unos segundos el raton ahi, como con los tooltips de menu. cuando ha pasado ese tiempo, si me muevo a otro boton, deberia
 salir el tooltip al momento, sin esperar ese timer
 *que permita mas de una linea de texto?
 ok *quiza texto muy grande. Usar set de caracteres de 4x4? Pero entonces ya no se puede usar putchar_menu_overlay_parpadeo, sino que hay que hacerlo con putpixel
@@ -141,9 +141,10 @@ int id_ultimo_tooltip;
 char *ultimo_texto_tooltip;
 int ultima_pos_x_tooltip,ultima_pos_y_tooltip;
 funcion llamada desde overlay mostrara mensaje segun las variables ultimo_texto_tooltip, ultima_pos_x_tooltip, ultima_pos_y_tooltip;
-*calculo correcto de donde van los tooltips (en y, esta puesto a ojo)
+
 
 ok acabar de rellenar tooltips en array zdesktop_lowericons_array *tooltips de inferiores, definir en la estructura de botones inferiores
-*ponerle un marco alrededor del tooltip, porque se funde con otras ventanas por debajo, o ponerlo en otro color que no se funda
+ok *ponerle un marco alrededor del tooltip, porque se funde con otras ventanas por debajo, o ponerlo en otro color que no se funda
 ok *asociar tooltips de menu storage a nuevos tooltips de dispositivos (llamando a menu_inicio_retorna_tooltip);
-*ver que no haya ventana encima de un boton para no abrir el tooltip
+ok *ver que no haya ventana encima de un boton para no abrir el tooltip
+*calculo correcto de donde van los tooltips (en y, esta puesto a ojo)
