@@ -8009,6 +8009,11 @@ z80_bit tooltip_mouse_visible={0};
 //Si esta activado el setting
 z80_bit setting_tooltip_mouse_enabled={1};
 
+void tooltip_mouse_putpixel(int x,int y,int color)
+{
+    scr_putpixel_gui_zoom(x*menu_gui_zoom,y*menu_gui_zoom,color,menu_gui_zoom);
+}
+
 void tooltip_mouse_print_char(int x,int y,unsigned char c,int tinta,int papel)
 {
     //char_set_msx
@@ -8024,7 +8029,8 @@ void tooltip_mouse_print_char(int x,int y,unsigned char c,int tinta,int papel)
         z80_byte grafico=char_set_msx[offset_char++];
         for (bit=0;bit<5;bit++) {
             int color=(grafico & 128 ? tinta : papel);
-            scr_putpixel_gui_zoom(x+bit,y+linea,color,menu_gui_zoom);
+            tooltip_mouse_putpixel(x+bit,y+linea,color);
+            //printf("ZOOM %d\n",menu_gui_zoom);
 
             grafico=grafico<<1;
         }
@@ -8062,7 +8068,7 @@ int tooltips_mouse_direccion_tooltip=+1;
 
 void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w GCC_UNUSED,int x,int y,int color)
 {
-    scr_putpixel_gui_zoom(x,y,color,menu_gui_zoom);
+    tooltip_mouse_putpixel(x,y,color);
 }
 
 void tooltip_mouse_draw_arrow(int x,int y,int color_dentro,int color_aristas,int direccion )
@@ -8097,18 +8103,18 @@ void tooltip_mouse_draw_filled_rectangle(int xinicio,int yinicio,int ancho,int a
     int x,y;
     for (x=xinicio;x<xinicio+ancho;x++) {
         for (y=yinicio;y<yinicio+alto;y++) {
-            scr_putpixel_gui_zoom(x,y,color_relleno,menu_gui_zoom);
+            tooltip_mouse_putpixel(x,y,color_relleno);
         }
     }
 
     for (x=xinicio;x<xinicio+ancho;x++) {
-        scr_putpixel_gui_zoom(x,yinicio,color_marco,menu_gui_zoom);
-        scr_putpixel_gui_zoom(x,yinicio+alto-1,color_marco,menu_gui_zoom);
+        tooltip_mouse_putpixel(x,yinicio,color_marco);
+        tooltip_mouse_putpixel(x,yinicio+alto-1,color_marco);
     }
 
     for (y=yinicio;y<yinicio+alto;y++) {
-        scr_putpixel_gui_zoom(xinicio,y,color_marco,menu_gui_zoom);
-        scr_putpixel_gui_zoom(xinicio+ancho-1,y,color_marco,menu_gui_zoom);
+        tooltip_mouse_putpixel(xinicio,y,color_marco);
+        tooltip_mouse_putpixel(xinicio+ancho-1,y,color_marco);
     }
 
 }
@@ -8164,7 +8170,6 @@ void tooltip_mouse_text_overlay(void)
 
             tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*2,caracter_escribir,tinta,papel);
         }
-
 
     }
 }
@@ -8308,16 +8313,12 @@ void tooltips_mouse_timer_event_redraw(void)
     zxvision_redraw_all_windows();
 }
 
-//TOOLTIP_SECONDS
+
 int tooltips_mouse_frames_counter=0;
-//Cuando esta el raton mas de TOOLTIP_SECONDS sin moverse, se activan los tooltips
-//int tooltips_mouse_visible_por_timer=0;
+
 
 //Ocultar o mostrar tooltips
-//TODO: esta funcion es mejorable: cuando el raton esta quieto, cada 4 segundos (TOOLTIP_SECONDS) evalua siempre
-//si hay un tooltip debajo o no, cuando lo que deberia hacer es:
-//Si no se ha movido, no reevaluar. Solo reevaluar si se ha movido
-//Tampoco es un gran problema que lo reevalue, pero...
+//TODO: esta funcion es mejorable: se quiso hacer con una maquina de estados pero era exageradamente complicada
 
 int tooltips_mouse_timer_bloqueo_incremento=0;
 
@@ -8416,12 +8417,21 @@ void tooltips_mouse_timer_event(void)
 
 
         if (tooltip.direccion_tooltip==+1) {
-            //Para botones superiores. TODO posicion exacta
-            tooltips_mouse_ultima_pos_y_tooltip=4*menu_char_height;
+
+            int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
+            menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
+
+            //Para botones superiores.
+            tooltips_mouse_ultima_pos_y_tooltip=alto_boton/zoom_y/menu_gui_zoom;
+
         }
         else {
-            //Para botones inferiores. TODO posicion exacta
-            tooltips_mouse_ultima_pos_y_tooltip=42*menu_char_height;
+
+            int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
+            menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+
+            //Para botones inferiores.
+            tooltips_mouse_ultima_pos_y_tooltip=yinicio_botones/zoom_y/menu_gui_zoom;
         }
 
         tooltips_mouse_direccion_tooltip=tooltip.direccion_tooltip;
