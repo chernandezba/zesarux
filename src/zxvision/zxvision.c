@@ -8308,6 +8308,11 @@ void tooltips_mouse_timer_event_redraw(void)
     zxvision_redraw_all_windows();
 }
 
+//TOOLTIP_SECONDS
+int tooltips_mouse_frames_counter=0;
+//Cuando esta el raton mas de TOOLTIP_SECONDS sin moverse, se activan los tooltips
+//int tooltips_mouse_visible_por_timer=0;
+
 //Ocultar o mostrar tooltips
 void tooltips_mouse_timer_event(void)
 {
@@ -8324,7 +8329,30 @@ void tooltips_mouse_timer_event(void)
     previous_tooltip_mouse_timer_event_mouse_x=mouse_x;
     previous_tooltip_mouse_timer_event_mouse_y=mouse_y;
 
-    if (!movido) return;
+    if (!movido) {
+        tooltips_mouse_frames_counter++;
+        if (tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
+            return;
+        }
+
+    }
+
+    if (movido) {
+        //Si se mueve y no estaba activo, esperar a contador
+        if (!tooltip_mouse_visible.v && tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
+            //Borrar el anterior
+            if (tooltips_mouse_id_ultimo_tooltip>=0) {
+                tooltips_mouse_timer_event_redraw();
+            }
+            tooltip_mouse_visible.v=0;
+            tooltips_mouse_id_ultimo_tooltip=-1;
+            return;
+        }
+    }
+
+    tooltips_mouse_frames_counter=0;
+
+    printf("buscar tooltip %d\n",contador_segundo);
 
     struct s_tooltip_mouse tooltip;
     tooltips_mouse_timer_event_which_element(&tooltip);
