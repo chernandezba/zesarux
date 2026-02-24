@@ -8314,6 +8314,10 @@ int tooltips_mouse_frames_counter=0;
 //int tooltips_mouse_visible_por_timer=0;
 
 //Ocultar o mostrar tooltips
+//TODO: esta funcion es mejorable: cuando el raton esta quieto, cada 4 segundos (TOOLTIP_SECONDS) evalua siempre
+//si hay un tooltip debajo o no, cuando lo que deberia hacer es:
+//Si no se ha movido, no reevaluar. Solo reevaluar si se ha movido
+//Tampoco es un gran problema que lo reevalue, pero...
 void tooltips_mouse_timer_event(void)
 {
 
@@ -8378,6 +8382,8 @@ void tooltips_mouse_timer_event(void)
         tooltip_mouse_visible.v=0;
         tooltips_mouse_id_ultimo_tooltip=-1;
 
+        tooltips_mouse_frames_counter=0;
+
         return;
     }
 
@@ -8409,7 +8415,6 @@ void tooltips_mouse_timer_event(void)
     }
 
 }
-
 
 
 void normal_overlay_texto_menu_final(void)
