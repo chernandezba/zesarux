@@ -53,6 +53,7 @@ Improved Snapshots in RAM:
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
+- Added tooltips for upper bottons (menu buttons) and lower buttons (device buttons)
 - Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision, TV
 - Moved some settings to settings -> Hardware
 - Added shortcuts helper action to create icon to trigger recorded keys
