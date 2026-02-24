@@ -8057,7 +8057,7 @@ int get_pos_x_mouse_tooltip_mouse(void)
 int tooltips_mouse_id_ultimo_tooltip=-1;
 char *tooltips_mouse_ultimo_texto_tooltip;
 int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
-
+int tooltips_mouse_direccion_tooltip=+1;
 
 
 void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w GCC_UNUSED,int x,int y,int color)
@@ -8065,9 +8065,25 @@ void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w GCC_UNUSED,int x,int y
     scr_putpixel_gui_zoom(x,y,color,menu_gui_zoom);
 }
 
-void tooltip_mouse_draw_arrow(int x,int y,int color)
-{
-    zxvision_draw_filled_triangle(NULL,color,color,x,y+7,x+4,y,x+4+4,y+7,tooltip_mouse_draw_arrow_putpixel);
+void tooltip_mouse_draw_arrow(int x,int y,int color,int direccion )
+{   /*
+    direccion=+1
+
+         x
+        xxx
+       xxxxx
+      xxxxxxx
+
+    direccion=-1
+      xxxxxxx
+       xxxxx
+        xxx
+         x
+    */
+
+    zxvision_draw_filled_triangle(NULL,color,color,x,y+direccion*7,x+4,y,x+4+4,y+direccion*7,tooltip_mouse_draw_arrow_putpixel);
+
+
 }
 
 void tooltip_mouse_text_overlay(void)
@@ -8083,18 +8099,94 @@ void tooltip_mouse_text_overlay(void)
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
         //Dibujar flechita
-        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL);
+        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,tooltips_mouse_direccion_tooltip);
+
+        int ypos=tooltips_mouse_ultima_pos_y_tooltip;
+
+        if (tooltips_mouse_direccion_tooltip==-1) {
+            ypos -=(menu_char_height-1);
+        }
 
         for (i=0;tooltips_mouse_ultimo_texto_tooltip[i];i++,x+=5) {
             char caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i];
 
-            tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height,' ',tinta,papel);
-            tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height*2,caracter_escribir,tinta,papel);
-            tooltip_mouse_print_char(x,tooltips_mouse_ultima_pos_y_tooltip+menu_char_height*3,' ',tinta,papel);
+            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*menu_char_height,' ',tinta,papel);
+            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*menu_char_height*2,caracter_escribir,tinta,papel);
+            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*menu_char_height*3,' ',tinta,papel);
         }
 
 
     }
+}
+
+//Retorna el tooltip de botones superiores. Podria ser el mismo orden (boton 0=TOOLTIP_MAIN_MENU=0, boton 1=TOOLTIP_SMARTLOAD=1)
+//pero por si acaso hago una función por si en un futuro aparecen otros botones entre medio u otras condiciones
+int tooltips_mouse_retorna_tooltip_botones_superiores(int boton)
+{
+
+    switch(boton) {
+        case 0:
+            return TOOLTIP_MAIN_MENU;
+        break;
+
+        case 1:
+            return TOOLTIP_SMARTLOAD;
+        break;
+
+        case 2:
+            return TOOLTIP_SNAPSHOT;
+        break;
+
+        case 3:
+            return TOOLTIP_MACHINE;
+        break;
+
+        case 4:
+            return TOOLTIP_AUDIO;
+        break;
+
+        case 5:
+            return TOOLTIP_DISPLAY;
+        break;
+
+        case 6:
+            return TOOLTIP_STORAGE;
+        break;
+
+        case 7:
+            return TOOLTIP_DEBUG;
+        break;
+
+        case 8:
+            return TOOLTIP_NETWORK;
+        break;
+
+        case 9:
+            return TOOLTIP_WINDOWS;
+        break;
+
+        case 10:
+            return TOOLTIP_SETTINGS;
+        break;
+
+        case 11:
+            return TOOLTIP_HELP;
+        break;
+
+        case 12:
+            return TOOLTIP_CLOSE;
+        break;
+
+        case 13:
+            return TOOLTIP_EXIT;
+        break;
+
+        default:
+            return TOOLTIP_MAIN_MENU;
+        break;
+    }
+
+    return TOOLTIP_MAIN_MENU;
 }
 
 
@@ -8107,12 +8199,41 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
     //botones superiores
     int boton=zxvision_which_upper_button_is_mouse();
 
-    //Boton cerrar solo si menu abierto
-    if (boton==TOOLTIP_CLOSE && !menu_abierto) boton=-1;
+    if (boton>=0) {
+        printf("boton %d\n",boton);
+        int id_tooltip=tooltips_mouse_retorna_tooltip_botones_superiores(boton);
+
+        //Boton cerrar solo si menu abierto
+        if (id_tooltip==TOOLTIP_CLOSE && !menu_abierto) {
+            id_tooltip=-1;
+            return;
+        }
+
+        tooltip->id_tooltip=id_tooltip;
+        tooltip->texto_tooltip=menu_inicio_retorna_tooltip(id_tooltip);
+        tooltip->direccion_tooltip=+1;
+        return;
+    }
+
+    //botones inferiores
+    boton=zxvision_which_lower_button_is_mouse();
 
     if (boton>=0) {
-        tooltip->id_tooltip=boton;
-        tooltip->texto_tooltip=menu_inicio_retorna_tooltip(boton);
+        //por si acaso texto por defecto
+        tooltip->texto_tooltip=menu_inicio_retorna_tooltip(0);
+
+        tooltip->id_tooltip=100+boton; //100 en adelante para que no se mezclen con los superiores
+        printf("boton %d\n",boton);
+
+        int indice_icono=zxdesktop_lowericon_find_index(boton);
+        printf("indice_icono %d\n",indice_icono);
+        if (indice_icono>=0) {
+            enum tooltips_menus_inicio_storage tooltip_boton=zdesktop_lowericons_array[indice_icono].tooltip;
+            tooltip->texto_tooltip=menu_inicio_retorna_tooltip(tooltip_boton);
+        }
+
+        tooltip->direccion_tooltip=-1;
+        return;
     }
 
 }
@@ -8163,6 +8284,8 @@ void tooltips_mouse_timer_event(void)
 
     tooltip_mouse_visible.v=1;
 
+    printf("tooltip.id_tooltip %d\n",tooltip.id_tooltip);
+
     if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip) {
         //Borrar el anterior
         if (tooltips_mouse_id_ultimo_tooltip>=0) {
@@ -8172,7 +8295,18 @@ void tooltips_mouse_timer_event(void)
         tooltips_mouse_id_ultimo_tooltip=tooltip.id_tooltip;
         tooltips_mouse_ultimo_texto_tooltip=tooltip.texto_tooltip;
         tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
-        tooltips_mouse_ultima_pos_y_tooltip=4*menu_char_height;
+
+
+        if (tooltip.direccion_tooltip==+1) {
+            //Para botones superiores. TODO posicion exacta
+            tooltips_mouse_ultima_pos_y_tooltip=4*menu_char_height;
+        }
+        else {
+            //Para botones inferiores. TODO posicion exacta
+            tooltips_mouse_ultima_pos_y_tooltip=42*menu_char_height;
+        }
+
+        tooltips_mouse_direccion_tooltip=tooltip.direccion_tooltip;
     }
 
 }
@@ -17435,6 +17569,49 @@ int zxvision_which_upper_button_is_mouse(void)
     return -1;
 }
 
+//Dice en que boton inferior está el raton. Retorna < 0 si no está en ninguno
+int zxvision_which_lower_button_is_mouse(void)
+{
+
+    int mouse_pixel_x,mouse_pixel_y;
+    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+    //multiplicamos por zoom
+    mouse_pixel_x *=zoom_x;
+    mouse_pixel_y *=zoom_y;
+
+    if (menu_zxdesktop_lower_buttons_enabled.v) {
+        int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
+        menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+
+        if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
+            mouse_pixel_y>=yinicio_botones && mouse_pixel_y<yinicio_botones+alto_boton
+        ) {
+            //printf ("Pulsado en zona lower icons del ext desktop\n");
+
+            //en que boton?
+            int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
+            //printf("boton pulsado: %d\n",numero_boton);
+
+            //Buscar indice array
+            int indice_array=zxdesktop_lowericon_find_index(numero_boton);
+
+            if (indice_array>=0) {
+
+                return numero_boton;
+            }
+
+            else {
+                //printf ("boton NO esta visible\n");
+            }
+
+
+        }
+    }
+
+    return -1;
+}
+
 //Funcion de detectar si raton en botones upper, lower o iconos de desktop, pero ademas
 //con variable activar_accion que dice si se dispara la accion que habilita ese boton
 //Esa variable sirve para que en casos que solo queremos comprobar que el raton esta ahi pero sin disparar la accion
@@ -17482,45 +17659,27 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_if_trigger(int activar_accion)
         //Si esta en zona de iconos lower de zx desktop. Y si estan habilitados
 
         if (menu_zxdesktop_lower_buttons_enabled.v) {
-            int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
-            menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
 
-            if (mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones &&
-                mouse_pixel_y>=yinicio_botones && mouse_pixel_y<yinicio_botones+alto_boton
-            ) {
-                //printf ("Pulsado en zona lower icons del ext desktop\n");
+            int numero_boton=zxvision_which_lower_button_is_mouse();
 
-                //en que boton?
-                int numero_boton=(mouse_pixel_x-xinicio_botones)/ancho_boton;
-                //printf("boton pulsado: %d\n",numero_boton);
+            if (numero_boton>=0) {
 
-                //Buscar indice array
-                int indice_array=zxdesktop_lowericon_find_index(numero_boton);
+                //printf ("boton esta visible\n");
+                DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Lower icon pressed: %d",numero_boton);
 
-                if (indice_array>=0) {
+                    if (activar_accion) {
+                        menu_pressed_zxdesktop_lower_icon_which=numero_boton;
 
+                        //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
+                        //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
+                        //pero se usa al abrirse el menu_inicio con boton derecho
 
+                        if (mouse_right) menu_pressed_zxdesktop_lower_icon_which_right_button=1;
+                    }
 
-                    //printf ("boton esta visible\n");
-                    DBG_PRINT_ZXVISION_EVENTS VERBOSE_INFO,"ZXVISION_EVENTS: Lower icon pressed: %d",numero_boton);
-
-                        if (activar_accion) {
-                            menu_pressed_zxdesktop_lower_icon_which=numero_boton;
-
-                            //Puede ser un poco redundante que desde aqui tambien miremos boton derecho,
-                            //porque se llama desde zxvision_if_mouse_in_zlogo_or_buttons_desktop al pulsar boton izquierdo
-                            //pero se usa al abrirse el menu_inicio con boton derecho
-
-                            if (mouse_right) menu_pressed_zxdesktop_lower_icon_which_right_button=1;
-                        }
-
-                        return 1;
-                }
-                else {
-                    //printf ("boton NO esta visible\n");
-                }
-
+                    return 1;
             }
+
         }
 
 

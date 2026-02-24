@@ -41444,7 +41444,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_betadisk,NULL,"~~Betadisk");
             menu_add_item_menu_shortcut(array_menu_storage,'b');
-            menu_add_item_menu_tooltip(array_menu_storage,"Betadisk settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_BETADISK));
             menu_add_item_menu_ayuda(array_menu_storage,"Betadisk settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -44800,8 +44800,29 @@ char *tooltips_menu_inicio_help="Help menu";
 char *tooltips_menu_inicio_close="Close menu";
 char *tooltips_menu_inicio_exit="Exit ZEsarUX";
 char *tooltips_menu_inicio_unknown="";
+char *tooltips_devices_standard_tape="Standard tape storage";
+char *tooltips_devices_real_tape="Real tape storage";
+char *tooltips_devices_betadisk="Betadisk and TR-DOS";
+char *tooltips_devices_microdrive="Microdrive used on Spectrum and QL";
+char *tooltips_devices_dandanator="Dandanator rom for Spectrum and CPC";
+char *tooltips_devices_cartridge_ts2068="Timex Cartridge Settings";
+char *tooltips_devices_cartridge_z88="Z88 Memory Slots";
+char *tooltips_devices_zxuno_flash="ZXUno Flash settings";
+char *tooltips_devices_zxmmcplus_flash="ZXMMC+ settings";
+char *tooltips_devices_hilow="HiLow settings";
+char *tooltips_devices_cartridge_sms="Master System cartridge";;
+char *tooltips_devices_cartridge_sg1000="SG1000 cartridge";
+char *tooltips_devices_cartridge_coleco="Colecovision cartridge";
+char *tooltips_devices_cartridge_svi="Spectravideo cartridge";
+char *tooltips_devices_cartridge_msx="MSX cartridge";
+char *tooltips_devices_zxpand="ZXPand";
+char *tooltips_devices_ide="IDE, DivIDE and 8-bit simple settings";
+char *tooltips_devices_mmc="SD, MMC, DivMMC and ZXMMC settings";
+char *tooltips_devices_compact_floppy="3\" Compact Floppy Disc emulation";
+char *tooltips_devices_floppy_ql="QL Floppy";
 
-char *menu_inicio_retorna_tooltip(enum tooltips_menu_inicio id_tooltip)
+
+char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip)
 {
     switch (id_tooltip) {
         case TOOLTIP_MAIN_MENU:
@@ -44859,6 +44880,91 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menu_inicio id_tooltip)
         case TOOLTIP_EXIT:
             return tooltips_menu_inicio_exit;
         break;
+
+        case TOOLTIP_STANDARD_TAPE:
+            return tooltips_devices_standard_tape;
+        break;
+
+        case TOOLTIP_REAL_TAPE:
+            return tooltips_devices_real_tape;
+        break;
+
+        case TOOLTIP_BETADISK:
+            return tooltips_devices_betadisk;
+        break;
+
+        case TOOLTIP_MICRODRIVE:
+            return tooltips_devices_microdrive;
+        break;
+
+        case TOOLTIP_DANDANATOR:
+            return tooltips_devices_dandanator;
+        break;
+
+
+        case TOOLTIP_CARTRIDGE_TS2068:
+            return tooltips_devices_cartridge_ts2068;
+        break;
+
+        case TOOLTIP_CARTRIDGE_Z88:
+            return tooltips_devices_cartridge_z88;
+        break;
+
+        case TOOLTIP_ZXUNO_FLASH:
+            return tooltips_devices_zxuno_flash;
+        break;
+
+        case TOOLTIP_ZXMMCPLUS_FLASH:
+            return tooltips_devices_zxmmcplus_flash;
+        break;
+
+
+        case TOOLTIP_HILOW:
+            return tooltips_devices_hilow;
+        break;
+
+
+        case TOOLTIP_CARTRIDGE_SMS:
+            return tooltips_devices_cartridge_sms;
+        break;
+
+        case TOOLTIP_CARTRIDGE_SG1000:
+            return tooltips_devices_cartridge_sg1000;
+        break;
+
+        case TOOLTIP_CARTRIDGE_COLECO:
+            return tooltips_devices_cartridge_coleco;
+        break;
+
+        case TOOLTIP_CARTRIDGE_SVI:
+            return tooltips_devices_cartridge_svi;
+        break;
+
+        case TOOLTIP_CARTRIDGE_MSX:
+            return tooltips_devices_cartridge_msx;
+        break;
+
+
+        case TOOLTIP_ZXPAND:
+            return tooltips_devices_zxpand;
+        break;
+
+        case TOOLTIP_IDE:
+            return tooltips_devices_ide;
+        break;
+
+        case TOOLTIP_MMC:
+            return tooltips_devices_mmc;
+        break;
+
+        case TOOLTIP_COMPACT_FLOPPY:
+            return tooltips_devices_compact_floppy;
+        break;
+
+        case TOOLTIP_FLOPPY_QL:
+            return tooltips_devices_floppy_ql;
+        break;
+
 
         default:
             return tooltips_menu_inicio_unknown;
@@ -46660,110 +46766,110 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //cinta standard
     { zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,
         zxdesktop_lowericon_cassete_std_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_cassette_std_active,bitmap_lowericon_ext_desktop_cassette_std_inactive,&zxdesktop_icon_tape_inverse},
+        bitmap_lowericon_ext_desktop_cassette_std_active,bitmap_lowericon_ext_desktop_cassette_std_inactive,&zxdesktop_icon_tape_inverse,TOOLTIP_STANDARD_TAPE},
 
     //cinta real
     { zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,
         zxdesktop_lowericon_cassete_real_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_cassette_active,bitmap_lowericon_ext_desktop_cassette_inactive,&zxdesktop_icon_tape_real_inverse},
+        bitmap_lowericon_ext_desktop_cassette_active,bitmap_lowericon_ext_desktop_cassette_inactive,&zxdesktop_icon_tape_real_inverse,TOOLTIP_REAL_TAPE},
 
     //MDV1
     { zxdesktop_lowericon_mdv1_is_visible, zxdesktop_lowericon_mdv1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
-        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse},
+        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv1_inverse,TOOLTIP_MICRODRIVE},
 
     //MDV2
     { zxdesktop_lowericon_mdv2_is_visible, zxdesktop_lowericon_mdv2_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
-        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse},
+        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv2_inverse,TOOLTIP_MICRODRIVE},
 
     //MDV3
     { zxdesktop_lowericon_mdv3_is_visible, zxdesktop_lowericon_mdv3_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
-        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv3_inverse},
+        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv3_inverse,TOOLTIP_MICRODRIVE},
 
     //MDV4
     { zxdesktop_lowericon_mdv4_is_visible, zxdesktop_lowericon_mdv4_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
-        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv4_inverse},
+        bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv4_inverse,TOOLTIP_MICRODRIVE},
 
     //Floppy QL.
     { zxdesktop_lowericon_flp1_is_visible, zxdesktop_lowericon_flp1_is_active, zxdesktop_lowericon_mdv_flp_accion,NULL,
-        bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse},
+        bitmap_lowericon_ext_desktop_flp_active,bitmap_lowericon_ext_desktop_flp_inactive,&zxdesktop_icon_flp1_inverse,TOOLTIP_FLOPPY_QL},
 
     //floppy +3
     { zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,
     zxdesktop_lowericon_plus3_flp_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse},
+        bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse,TOOLTIP_COMPACT_FLOPPY},
 
     //betadisk
     { zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,
         zxdesktop_lowericon_betadisk_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_betadisk_active,bitmap_lowericon_ext_desktop_betadisk_inactive,&zxdesktop_icon_betadisk_inverse},
+        bitmap_lowericon_ext_desktop_betadisk_active,bitmap_lowericon_ext_desktop_betadisk_inactive,&zxdesktop_icon_betadisk_inverse,TOOLTIP_BETADISK},
 
     //MMC
     { zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,
         zxdesktop_lowericon_mmc_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse},
+        bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse,TOOLTIP_MMC},
 
     //MMC segunda tarjeta
     { zxdesktop_lowericon_mmc_is_visible_second, zxdesktop_lowericon_mmc_is_active_second, zxdesktop_lowericon_mmc_accion,
         zxdesktop_lowericon_mmc_accion_boton_derecho_second,
-        bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse_second},
+        bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse_second,TOOLTIP_MMC},
 
     //IDE
     { zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,
         zxdesktop_lowericon_ide_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_ide_active,bitmap_lowericon_ext_desktop_ide_inactive,&zxdesktop_icon_ide_inverse},
+        bitmap_lowericon_ext_desktop_ide_active,bitmap_lowericon_ext_desktop_ide_inactive,&zxdesktop_icon_ide_inverse,TOOLTIP_IDE},
 
     //ZXPand
     { zxdesktop_lowericon_zxpand_is_visible, zxdesktop_lowericon_zxpand_is_active, zxdesktop_lowericon_zxpand_accion,NULL,
-        bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_zxpand_inverse},
+        bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_zxpand_inverse,TOOLTIP_ZXPAND},
 
     //Cartuchos msx, coleco, svi, sg1000, sms
     { zxdesktop_lowericon_cartridge_msx_is_visible, zxdesktop_lowericon_cartridge_msx_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
-        bitmap_lowericon_ext_desktop_msx_cart_active,bitmap_lowericon_ext_desktop_msx_cart_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_msx_cart_active,bitmap_lowericon_ext_desktop_msx_cart_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_MSX},
 
     { zxdesktop_lowericon_cartridge_svi_is_visible, zxdesktop_lowericon_cartridge_svi_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
-        bitmap_lowericon_ext_desktop_svi_active,bitmap_lowericon_ext_desktop_svi_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_svi_active,bitmap_lowericon_ext_desktop_svi_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_SVI},
 
     { zxdesktop_lowericon_cartridge_coleco_is_visible, zxdesktop_lowericon_cartridge_coleco_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
-        bitmap_lowericon_ext_desktop_coleco_active,bitmap_lowericon_ext_desktop_coleco_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_coleco_active,bitmap_lowericon_ext_desktop_coleco_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_COLECO},
 
     { zxdesktop_lowericon_cartridge_sg1000_is_visible, zxdesktop_lowericon_cartridge_sg1000_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
-        bitmap_lowericon_ext_desktop_sg1000_active,bitmap_lowericon_ext_desktop_sg1000_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_sg1000_active,bitmap_lowericon_ext_desktop_sg1000_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_SG1000},
 
     { zxdesktop_lowericon_cartridge_sms_is_visible, zxdesktop_lowericon_cartridge_sms_is_active, zxdesktop_lowericon_cartridge_accion,NULL,
-        bitmap_lowericon_ext_desktop_sms_active,bitmap_lowericon_ext_desktop_sms_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_sms_active,bitmap_lowericon_ext_desktop_sms_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_SMS},
 
     //Cartuchos Timex TS2068
     { zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,NULL,
-        bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_TS2068},
 
 
     //3 Cartuchos de Z88.
     { zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,NULL,
-        bitmap_lowericon_ext_desktop_z88_slot_one_active,bitmap_lowericon_ext_desktop_z88_slot_one_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_z88_slot_one_active,bitmap_lowericon_ext_desktop_z88_slot_one_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_Z88},
 
     { zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_2_is_active, zxdesktop_lowericon_z88_cart_2_accion,NULL,
-        bitmap_lowericon_ext_desktop_z88_slot_two_active,bitmap_lowericon_ext_desktop_z88_slot_two_inactive,&zxdesktop_common_icon_no_inverse},
+        bitmap_lowericon_ext_desktop_z88_slot_two_active,bitmap_lowericon_ext_desktop_z88_slot_two_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_Z88},
 
     { zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_3_is_active, zxdesktop_lowericon_z88_cart_3_accion,NULL,
-        bitmap_lowericon_ext_desktop_z88_slot_three_active,bitmap_lowericon_ext_desktop_z88_slot_three_inactive,&z88_slot3_activity_indicator},
+        bitmap_lowericon_ext_desktop_z88_slot_three_active,bitmap_lowericon_ext_desktop_z88_slot_three_inactive,&z88_slot3_activity_indicator,TOOLTIP_CARTRIDGE_Z88},
 
     //zxuno flash. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,NULL,
-        bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse},
+        bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse,TOOLTIP_ZXUNO_FLASH},
 
     //zxmmc+ flash. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_zxmmcplusflash_is_visible, zxdesktop_lowericon_zxmmcplusflash_is_active, zxdesktop_lowericon_zxmmcplusflash_accion,NULL,
-        bitmap_lowericon_ext_desktop_zxmmcplusflash,bitmap_lowericon_ext_desktop_zxmmcplusflash,&zxdesktop_icon_zxmmcplusflash_inverse},
+        bitmap_lowericon_ext_desktop_zxmmcplusflash,bitmap_lowericon_ext_desktop_zxmmcplusflash,&zxdesktop_icon_zxmmcplusflash_inverse,TOOLTIP_ZXMMCPLUS_FLASH},
 
     //cartucho dandanator
     { zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
         zxdesktop_lowericon_dandanator_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_dandanator_active,bitmap_lowericon_ext_desktop_dandanator_inactive,&zxdesktop_icon_dandanator_inverse},
+        bitmap_lowericon_ext_desktop_dandanator_active,bitmap_lowericon_ext_desktop_dandanator_inactive,&zxdesktop_icon_dandanator_inverse,TOOLTIP_DANDANATOR},
 
     //cinta HiLow
     { zxdesktop_lowericon_hilow_is_visible, zxdesktop_lowericon_hilow_is_active,zxdesktop_lowericon_hilow_accion,
         zxdesktop_lowericon_hilow_accion_boton_derecho,
-        bitmap_lowericon_ext_desktop_hilow_active,bitmap_lowericon_ext_desktop_hilow_inactive,&zxdesktop_icon_hilow_inverse},
+        bitmap_lowericon_ext_desktop_hilow_active,bitmap_lowericon_ext_desktop_hilow_inactive,&zxdesktop_icon_hilow_inverse,TOOLTIP_HILOW},
 
 };
 

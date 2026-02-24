@@ -359,24 +359,9 @@ extern void menu_generic_visualtape(zxvision_window *w,
     int temblor,int semaforos_hilow,int pestanyas_escritura);
 
 
-enum tooltips_menu_inicio {
-    TOOLTIP_MAIN_MENU=0,
-    TOOLTIP_SMARTLOAD,
-    TOOLTIP_SNAPSHOT,
-    TOOLTIP_MACHINE,
-    TOOLTIP_AUDIO,
-    TOOLTIP_DISPLAY,
-    TOOLTIP_STORAGE,
-    TOOLTIP_DEBUG,
-    TOOLTIP_NETWORK,
-    TOOLTIP_WINDOWS,
-    TOOLTIP_SETTINGS,
-    TOOLTIP_HELP,
-    TOOLTIP_CLOSE,
-    TOOLTIP_EXIT
-};
 
-extern char *menu_inicio_retorna_tooltip(enum tooltips_menu_inicio id_tooltip);
+
+extern char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip);
 
 
 #endif

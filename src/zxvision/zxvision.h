@@ -325,6 +325,7 @@ extern void menu_espera_tecla_o_wheel(void);
 extern void menu_espera_tecla_timeout_tooltip(void);
 
 extern int zxvision_which_upper_button_is_mouse(void);
+extern int zxvision_which_lower_button_is_mouse(void);
 
 extern int f_functions;
 extern char *string_esc_closes_menus;
@@ -1833,13 +1834,6 @@ extern int force_next_menu_position_y;
 
 extern void zxdesktop_switchdesktop_timer_event(void);
 
-extern void tooltips_mouse_timer_event(void);
-
-struct s_tooltip_mouse {
-    int id_tooltip;
-    char *texto_tooltip;
-    //TODO: algo que indique donde está el boton que hace referencia, o al menos, coordenada Y por debajo (para botones superiores) o por arriba (para botones inferiores) donde acaba el botón
-};
 
 extern void enable_zxdesktop_and_background(void);
 
@@ -1855,6 +1849,58 @@ extern int zxdesktop_draw_scrfile_mix_background;
 
 extern int gamelife_timer_counter;
 
+extern void tooltips_mouse_timer_event(void);
+struct s_tooltip_mouse {
+    //id de tooltip para que la funcion que mira que tooltip esta indicando el raton, sepa si se indica al mismo u a otro
+    //Para los botones superiores, empieza en 0
+    //Los inferiores, empieza en 100 en adelante, y no tienen por que estar en orden
+    int id_tooltip;
+
+    char *texto_tooltip;
+    int direccion_tooltip; //+1 hacia abajo (para botones superiores), -1 para arriba (para botones inferiores)
+};
+
+enum tooltips_menus_inicio_storage {
+    //Los de los botones superiores, no tienen por que estar en orden
+    //de hecho los mezclo expresamente para no asumir que tengan que estar ordenados
+    TOOLTIP_MAIN_MENU=0,
+    TOOLTIP_AUDIO,
+    TOOLTIP_DISPLAY,
+    TOOLTIP_NETWORK,
+    TOOLTIP_WINDOWS,
+    TOOLTIP_SMARTLOAD,
+    TOOLTIP_SETTINGS,
+    TOOLTIP_MACHINE,
+    TOOLTIP_HELP,
+    TOOLTIP_CLOSE,
+    TOOLTIP_SNAPSHOT,
+    TOOLTIP_EXIT,
+    TOOLTIP_DEBUG,
+    TOOLTIP_STORAGE,
+
+    //Para los asociados a dispositivos (botones inferiores) no tiene por que estar en orden
+    TOOLTIP_STANDARD_TAPE,
+    TOOLTIP_DANDANATOR,
+    TOOLTIP_REAL_TAPE,
+    TOOLTIP_BETADISK,
+    TOOLTIP_MICRODRIVE,
+    TOOLTIP_FLOPPY_QL,
+    TOOLTIP_COMPACT_FLOPPY,
+    TOOLTIP_MMC,
+    TOOLTIP_IDE,
+    TOOLTIP_ZXPAND,
+    TOOLTIP_CARTRIDGE_MSX,
+    TOOLTIP_CARTRIDGE_SVI,
+    TOOLTIP_CARTRIDGE_COLECO,
+    TOOLTIP_CARTRIDGE_SG1000,
+    TOOLTIP_CARTRIDGE_SMS,
+    TOOLTIP_CARTRIDGE_TS2068,
+    TOOLTIP_CARTRIDGE_Z88,
+    TOOLTIP_ZXUNO_FLASH,
+    TOOLTIP_ZXMMCPLUS_FLASH,
+    TOOLTIP_HILOW
+};
+
 struct s_zxdesktop_lowericons_info {
     int (*is_visible)(void);
     int (*is_active)(void);
@@ -1863,6 +1909,8 @@ struct s_zxdesktop_lowericons_info {
     char **bitmap_active;
     char **bitmap_inactive;
     int *icon_is_inverse;
+    //id de tooltip asociado
+    enum tooltips_menus_inicio_storage tooltip;
 };
 
 
