@@ -8065,7 +8065,7 @@ void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w GCC_UNUSED,int x,int y
     scr_putpixel_gui_zoom(x,y,color,menu_gui_zoom);
 }
 
-void tooltip_mouse_draw_arrow(int x,int y,int color,int direccion )
+void tooltip_mouse_draw_arrow(int x,int y,int color_dentro,int color_aristas,int direccion )
 {   /*
     direccion=+1
 
@@ -8081,12 +8081,34 @@ void tooltip_mouse_draw_arrow(int x,int y,int color,int direccion )
          x
     */
 
-    zxvision_draw_filled_triangle(NULL,color,color,
+    zxvision_draw_filled_triangle(NULL,color_dentro,color_aristas,
         x,y+direccion*7,
         x+4,y,
         x+4+4,y+direccion*7,
         tooltip_mouse_draw_arrow_putpixel);
 
+
+}
+
+void tooltip_mouse_draw_filled_rectangle(int xinicio,int yinicio,int ancho,int alto,int color_relleno,int color_marco)
+{
+
+    int x,y;
+    for (x=xinicio;x<xinicio+ancho;x++) {
+        for (y=yinicio;y<yinicio+alto;y++) {
+            scr_putpixel_gui_zoom(x,y,color_relleno,menu_gui_zoom);
+        }
+    }
+
+    for (x=xinicio;x<xinicio+ancho;x++) {
+        scr_putpixel_gui_zoom(x,yinicio,color_marco,menu_gui_zoom);
+        scr_putpixel_gui_zoom(x,yinicio+alto-1,color_marco,menu_gui_zoom);
+    }
+
+    for (y=yinicio;y<yinicio+alto;y++) {
+        scr_putpixel_gui_zoom(xinicio,y,color_marco,menu_gui_zoom);
+        scr_putpixel_gui_zoom(xinicio+ancho-1,y,color_marco,menu_gui_zoom);
+    }
 
 }
 
@@ -8106,33 +8128,38 @@ void tooltip_mouse_text_overlay(void)
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
         //Dibujar flechita
-        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,tooltips_mouse_direccion_tooltip);
+        tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
+
+        int alto_caracter=8; //Alto fijo para este charset
+        int ancho_caracter=5;
 
         int ypos=tooltips_mouse_ultima_pos_y_tooltip;
 
-        int alto_caracter=8; //Alto fijo para este charset
+        int rectangulo_ypos=ypos+tooltips_mouse_direccion_tooltip*alto_caracter;
+
 
         if (tooltips_mouse_direccion_tooltip==-1) {
+            rectangulo_ypos=ypos-alto_caracter*4+1;
             ypos -=(alto_caracter-1);
         }
 
 
         int longitud_escribir=strlen(tooltips_mouse_ultimo_texto_tooltip);
-        //Le ponemos espacios delante y detras
-        longitud_escribir +=2;
 
-        for (i=0;i<longitud_escribir;i++,x+=5) {
+
+        //dos mas de ancho
+        tooltip_mouse_draw_filled_rectangle(x,rectangulo_ypos,(longitud_escribir+2)*ancho_caracter,alto_caracter*3,papel,ESTILO_GUI_COLOR_RECUADRO);
+
+        //1 espacio a la izquierda
+        x+=ancho_caracter;
+
+        for (i=0;i<longitud_escribir;i++,x+=ancho_caracter) {
 
             char caracter_escribir;
 
-            //primer y ultimo caracter son espacios
-            if (i==0) caracter_escribir=' ';
-            else if (tooltips_mouse_ultimo_texto_tooltip[i-1]==0) caracter_escribir=' ';
-            else caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i-1];
+            caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i];
 
-            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter,' ',tinta,papel);
             tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*2,caracter_escribir,tinta,papel);
-            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*3,' ',tinta,papel);
         }
 
 

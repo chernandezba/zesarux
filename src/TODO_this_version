@@ -141,7 +141,7 @@ int id_ultimo_tooltip;
 char *ultimo_texto_tooltip;
 int ultima_pos_x_tooltip,ultima_pos_y_tooltip;
 funcion llamada desde overlay mostrara mensaje segun las variables ultimo_texto_tooltip, ultima_pos_x_tooltip, ultima_pos_y_tooltip;
-*calculo correcto de donde van los tooltips (en y, esta puesto a ojo) y en x (no es preciso, quiza cuenta ancho de caracter)
+*calculo correcto de donde van los tooltips (en y, esta puesto a ojo)
 
 ok acabar de rellenar tooltips en array zdesktop_lowericons_array *tooltips de inferiores, definir en la estructura de botones inferiores
 *ponerle un marco alrededor del tooltip, porque se funde con otras ventanas por debajo, o ponerlo en otro color que no se funda
