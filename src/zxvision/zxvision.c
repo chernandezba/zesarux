@@ -8318,6 +8318,10 @@ int tooltips_mouse_frames_counter=0;
 //si hay un tooltip debajo o no, cuando lo que deberia hacer es:
 //Si no se ha movido, no reevaluar. Solo reevaluar si se ha movido
 //Tampoco es un gran problema que lo reevalue, pero...
+
+int tooltips_mouse_timer_bloqueo_incremento=0;
+
+
 void tooltips_mouse_timer_event(void)
 {
 
@@ -8336,6 +8340,11 @@ void tooltips_mouse_timer_event(void)
     printf("timer %d\n",tooltips_mouse_frames_counter);
 
     if (!movido) {
+        if (tooltips_mouse_timer_bloqueo_incremento) {
+            printf("Bloqueo de incremento. Salir\n");
+            return;
+        }
+
         tooltips_mouse_frames_counter++;
         if (tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
             return;
@@ -8350,6 +8359,7 @@ void tooltips_mouse_timer_event(void)
     }
 
     if (movido) {
+        tooltips_mouse_timer_bloqueo_incremento=0;
         tooltips_mouse_frames_counter=0;
         //Si se mueve y no estaba activo, esperar a contador
         if (!tooltip_mouse_visible.v && tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
@@ -8369,6 +8379,9 @@ void tooltips_mouse_timer_event(void)
     //tooltips_mouse_frames_counter=0;
 
     printf("buscar tooltip %d\n",contador_segundo);
+
+    //Tanto si encuentra como si no, bloqueamos incremento contador
+    tooltips_mouse_timer_bloqueo_incremento=1;
 
     struct s_tooltip_mouse tooltip;
     tooltips_mouse_timer_event_which_element(&tooltip);
