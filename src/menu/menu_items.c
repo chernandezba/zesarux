@@ -31886,7 +31886,7 @@ void menu_first_start_wizard_language(MENU_ITEM_PARAMETERS)
 
 
     //Preguntar si tooltips
-    int opcion_activar_tooltips=0;
+    int opcion_activar_tooltips=1;
     sprintf(start_wizard_window_title,"%s %d/%d",menu_get_string_language("Welcome"),current_step++,start_wizard_total_steps);
     zxvision_menu_generic_message_setting(start_wizard_window_title,mensaje_tooltips,
         menu_get_string_language("Enabled"),&opcion_activar_tooltips);

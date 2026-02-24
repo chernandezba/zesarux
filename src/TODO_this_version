@@ -148,3 +148,4 @@ ok *ponerle un marco alrededor del tooltip, porque se funde con otras ventanas p
 ok *asociar tooltips de menu storage a nuevos tooltips de dispositivos (llamando a menu_inicio_retorna_tooltip);
 ok *ver que no haya ventana encima de un boton para no abrir el tooltip
 ok *calculo correcto de donde van los tooltips (en y, esta puesto a ojo)
+*si el tooltip sale por la derecha, que desplace texto
