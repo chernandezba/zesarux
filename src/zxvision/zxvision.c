@@ -8334,6 +8334,12 @@ void tooltips_mouse_timer_event(void)
         if (tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
             return;
         }
+        //Si estaba visible, no hay cambio
+        if (tooltip_mouse_visible.v) {
+            printf("no se mueve, hay tooltip visible, no hacer nada %d\n",contador_segundo);
+            tooltips_mouse_frames_counter=0;
+            return;
+        }
 
     }
 
@@ -8341,7 +8347,9 @@ void tooltips_mouse_timer_event(void)
         //Si se mueve y no estaba activo, esperar a contador
         if (!tooltip_mouse_visible.v && tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
             //Borrar el anterior
+            printf("movido, no llega a contador, desactivamos %d\n",contador_segundo);
             if (tooltips_mouse_id_ultimo_tooltip>=0) {
+                printf("movido, no llega a contador, borramos el anterior----------- %d\n",contador_segundo);
                 tooltips_mouse_timer_event_redraw();
             }
             tooltip_mouse_visible.v=0;
