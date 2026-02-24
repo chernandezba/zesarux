@@ -8329,6 +8329,8 @@ void tooltips_mouse_timer_event(void)
     previous_tooltip_mouse_timer_event_mouse_x=mouse_x;
     previous_tooltip_mouse_timer_event_mouse_y=mouse_y;
 
+    printf("timer %d\n",tooltips_mouse_frames_counter);
+
     if (!movido) {
         tooltips_mouse_frames_counter++;
         if (tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
