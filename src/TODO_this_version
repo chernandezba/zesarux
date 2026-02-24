@@ -147,4 +147,4 @@ ok acabar de rellenar tooltips en array zdesktop_lowericons_array *tooltips de i
 ok *ponerle un marco alrededor del tooltip, porque se funde con otras ventanas por debajo, o ponerlo en otro color que no se funda
 ok *asociar tooltips de menu storage a nuevos tooltips de dispositivos (llamando a menu_inicio_retorna_tooltip);
 ok *ver que no haya ventana encima de un boton para no abrir el tooltip
-*calculo correcto de donde van los tooltips (en y, esta puesto a ojo)
+ok *calculo correcto de donde van los tooltips (en y, esta puesto a ojo)

@@ -1859,6 +1859,8 @@ struct s_tooltip_mouse {
 
     char *texto_tooltip;
     int direccion_tooltip; //+1 hacia abajo (para botones superiores), -1 para arriba (para botones inferiores)
+
+    int numero_boton; //Usado solo para saber que boton pulsado y asignar coordenada x al tooltip
 };
 
 enum tooltips_menus_inicio_storage {

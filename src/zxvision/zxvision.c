@@ -8276,6 +8276,7 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
         tooltip->id_tooltip=id_tooltip;
         tooltip->texto_tooltip=menu_inicio_retorna_tooltip(id_tooltip);
         tooltip->direccion_tooltip=+1;
+        tooltip->numero_boton=boton;
         return;
     }
 
@@ -8297,6 +8298,7 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
         }
 
         tooltip->direccion_tooltip=-1;
+        tooltip->numero_boton=boton;
         return;
     }
 
@@ -8413,25 +8415,33 @@ void tooltips_mouse_timer_event(void)
 
         tooltips_mouse_id_ultimo_tooltip=tooltip.id_tooltip;
         tooltips_mouse_ultimo_texto_tooltip=tooltip.texto_tooltip;
-        tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
+        //tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
 
 
         if (tooltip.direccion_tooltip==+1) {
 
+            //Para botones superiores.
+
             int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
             menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
 
-            //Para botones superiores.
+
             tooltips_mouse_ultima_pos_y_tooltip=alto_boton/zoom_y/menu_gui_zoom;
+
+            tooltips_mouse_ultima_pos_x_tooltip=(xinicio_botones+tooltip.numero_boton*ancho_boton+ancho_boton/2)/zoom_y/menu_gui_zoom;
 
         }
         else {
 
+            //Para botones inferiores.
+
             int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
             menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
 
-            //Para botones inferiores.
+
             tooltips_mouse_ultima_pos_y_tooltip=yinicio_botones/zoom_y/menu_gui_zoom;
+
+            tooltips_mouse_ultima_pos_x_tooltip=(xinicio_botones+tooltip.numero_boton*ancho_boton+ancho_boton/2)/zoom_y/menu_gui_zoom;
         }
 
         tooltips_mouse_direccion_tooltip=tooltip.direccion_tooltip;
