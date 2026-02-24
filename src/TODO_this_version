@@ -149,3 +149,4 @@ ok *asociar tooltips de menu storage a nuevos tooltips de dispositivos (llamando
 ok *ver que no haya ventana encima de un boton para no abrir el tooltip
 ok *calculo correcto de donde van los tooltips (en y, esta puesto a ojo)
 *si el tooltip sale por la derecha, que desplace texto
+*revisar todos textos de tooltips, corregirlos o extenderlos
