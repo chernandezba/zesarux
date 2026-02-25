@@ -8129,6 +8129,11 @@ void tooltip_mouse_text_overlay(void)
         //Para que la punta de la flecha apunte a donde estaba el mouse
         x -=4;
 
+        printf("Ancho total: %d x: %d",scr_get_menu_width(),x/menu_char_width);
+
+        int x_inicial=x;
+        int total_ancho=scr_get_menu_width()*menu_char_width;
+
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
@@ -8151,22 +8156,32 @@ void tooltip_mouse_text_overlay(void)
 
         int longitud_escribir=strlen(tooltips_mouse_ultimo_texto_tooltip);
 
+        int x_cuadro=x_inicial;
+
+        //int x_inicial=x;
+        //int total_ancho=scr_get_menu_width()*menu_char_width;
+        int fin_cuadro=x_inicial+(longitud_escribir+2)*ancho_caracter;
+        if (fin_cuadro>total_ancho) {
+            printf("*****NO CABE***** %d %d\n",fin_cuadro,total_ancho);
+
+            x_cuadro=x_cuadro-(ancho_caracter*longitud_escribir);
+        }
 
         //dos mas de ancho
-        tooltip_mouse_draw_filled_rectangle(x,rectangulo_ypos,(longitud_escribir+2)*ancho_caracter,alto_caracter*3,papel,ESTILO_GUI_COLOR_RECUADRO);
+        tooltip_mouse_draw_filled_rectangle(x_cuadro,rectangulo_ypos,(longitud_escribir+2)*ancho_caracter,alto_caracter*3,papel,ESTILO_GUI_COLOR_RECUADRO);
 
         tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
 
         //1 espacio a la izquierda
-        x+=ancho_caracter;
+        x_cuadro+=ancho_caracter;
 
-        for (i=0;i<longitud_escribir;i++,x+=ancho_caracter) {
+        for (i=0;i<longitud_escribir;i++,x_cuadro+=ancho_caracter) {
 
             char caracter_escribir;
 
             caracter_escribir=tooltips_mouse_ultimo_texto_tooltip[i];
 
-            tooltip_mouse_print_char(x,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*2,caracter_escribir,tinta,papel);
+            tooltip_mouse_print_char(x_cuadro,ypos+tooltips_mouse_direccion_tooltip*alto_caracter*2,caracter_escribir,tinta,papel);
         }
 
     }
@@ -8317,7 +8332,7 @@ void tooltips_mouse_timer_event_redraw(void)
 int tooltips_mouse_frames_counter=0;
 
 
-
+//Para detener incremento de timer cuando raton no se ha movido y ha llegado al timeout
 int tooltips_mouse_timer_bloqueo_incremento=0;
 
 //Ocultar o mostrar tooltips
