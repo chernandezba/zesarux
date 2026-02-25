@@ -2619,14 +2619,15 @@ int z88_eprom_flash_fwrite(char *nombre,z80_byte *datos,z80_long_int longitud)
 void z88_debug_print_eprom_flash_file(z88_eprom_flash_file *file)
 {
 
-                        //Imprimir nombre, maximo 20 caracteres
-			const unsigned int max_nombre=20;
-			char buffer[max_nombre+1];
+            //Imprimir nombre, maximo 20 caracteres
+            #define Z88_PRINT_MAX_NOMBRE 20
+			//const unsigned int max_nombre=20;
+			char buffer[Z88_PRINT_MAX_NOMBRE+1];
 
 			//printf ("z88_debug_print_eprom_flash_file nombre: ");
                         unsigned int i;
 			z80_byte caracter;
-                        for (i=0;i<file->namelength && i<max_nombre;i++) {
+                        for (i=0;i<file->namelength && i<Z88_PRINT_MAX_NOMBRE;i++) {
 				caracter=file->name[i];
 				if (caracter<32 || caracter>127) caracter='.';
 				buffer[i]=caracter;

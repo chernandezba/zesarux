@@ -107,7 +107,7 @@ Para que quiero esa estadística? Se podria simplemente que el Dockerfile al eje
 eso se envía en las estadísticas
 
 
-
+-warnings en audio/audiocoreaudio.c
 
 -poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
 ->pero habria que implementar tambien acentos, eñes, etc. El problema no son acentos (se podria pasar a caracteres sin acentos) sino que
