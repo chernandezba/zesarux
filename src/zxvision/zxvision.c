@@ -5730,7 +5730,7 @@ void menu_draw_ext_desktop_dibujar_boton_pulsado(int boton)
     menu_draw_ext_desktop_one_button_bitmap(boton,1,0);
 }
 
-void menu_draw_ext_desktop_upper_buttons(int xinicio)
+void menu_draw_ext_desktop_upper_buttons(void)
 {
 
     /*
@@ -5831,11 +5831,12 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 }
 
-void menu_draw_ext_desktop_buttons(int xinicio)
+
+void menu_draw_ext_desktop_buttons(void)
 {
 
     if (menu_zxdesktop_upper_buttons_enabled.v && zxvision_topbar_menu_enabled.v==0) {
-        menu_draw_ext_desktop_upper_buttons(xinicio);
+        menu_draw_ext_desktop_upper_buttons();
     }
 
 
@@ -7405,7 +7406,7 @@ void menu_draw_ext_desktop(void)
 
     //Dibujar botones
     //if (menu_zxdesktop_buttons_enabled.v) {
-    menu_draw_ext_desktop_buttons(xstart_zxdesktop);
+    menu_draw_ext_desktop_buttons();
     //}
 
     //Dibujar iconos
@@ -13954,7 +13955,7 @@ void zxvision_draw_scroll_bars(zxvision_window *w)
     }
 }
 
-void zxvision_set_mark_tried_write_beyond_size(zxvision_window *w)
+void zxvision_set_mark_tried_write_beyond_size(void)
 {
 
         cuadrado_activo_marca_redimensionado_aviso=1;
@@ -13980,7 +13981,7 @@ void zxvision_draw_window(zxvision_window *w)
     cuadrado_activo_marca_redimensionado_aviso=0;
 
     if (w->tried_write_beyond_size) {
-        zxvision_set_mark_tried_write_beyond_size(w);
+        zxvision_set_mark_tried_write_beyond_size();
     }
 
 
@@ -15635,7 +15636,7 @@ void zxvision_check_print_beyond_limits(zxvision_window *w,int x,int y)
 
         //Si es la ventana actual, avisar al momento
         if (zxvision_current_window==w) {
-            zxvision_set_mark_tried_write_beyond_size(w);
+            zxvision_set_mark_tried_write_beyond_size();
         }
     }
 }
@@ -27820,6 +27821,7 @@ int menu_inicio_handle_button_presses_userdef(int boton)
     return 1;
 
 }
+
 
 //Mira si el boton pulsado esta redefinido por el usuario y lanza accion si conviene
 int old_delete_menu_inicio_handle_button_presses_userdef(int boton)
