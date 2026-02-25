@@ -117,3 +117,5 @@ hay que implementar tambien los caracteres de botones de ventana por ejemplo
 -tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
 ok *si el tooltip sale por la derecha, que desplace texto
 *revisar todos textos de tooltips, corregirlos o extenderlos
+*detectar si mouse desactivado en el menu
+*comprobar que si no se mueve raton y ha pasado el timeout, no se quede continuamente llamando a funcion de busqueda.
