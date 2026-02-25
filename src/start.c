@@ -2042,13 +2042,12 @@ printf (
 
 
 
-void segint_signal_handler(int sig)
+void segint_signal_handler(int sig GCC_UNUSED)
 {
 
     debug_printf (VERBOSE_INFO,"Sigint (CTRL+C) received");
 
-        //para evitar warnings al compilar
-        sig++;
+
 
     //No detener threads, porque si no, el end_emulator puede fallar por miles de razones...
 
@@ -2073,13 +2072,12 @@ void segint_signal_handler(int sig)
 
 }
 
-void segterm_signal_handler(int sig)
+void segterm_signal_handler(int sig GCC_UNUSED)
 {
 
         debug_printf (VERBOSE_INFO,"Sigterm received");
 
-        //para evitar warnings al compilar
-        sig++;
+
 
         //No detener threads, porque si no, el end_emulator puede fallar por miles de razones...
 
@@ -2107,54 +2105,38 @@ void segterm_signal_handler(int sig)
 
 
 
-void segfault_signal_handler(int sig)
+void segfault_signal_handler(int sig GCC_UNUSED)
 {
-    //para evitar warnings al compilar
-    sig++;
-
     cpu_panic("Segmentation fault");
 }
 
 
-void sigbus_signal_handler(int sig)
+void sigbus_signal_handler(int sig GCC_UNUSED)
 {
     //Saltara por ejemplo si empezamos a escribir en un puntero que no se ha inicializado
-    //para evitar warnings al compilar
-    sig++;
-
     cpu_panic("Bus error");
 }
 
 
-void sigpipe_signal_handler(int sig)
+void sigpipe_signal_handler(int sig GCC_UNUSED)
 {
     //Saltara por ejemplo cuando se escribe en un socket que se ha cerrado
-    //para evitar warnings al compilar
-    sig++;
-
     debug_printf (VERBOSE_DEBUG,"Received signal sigpipe");
-
-
 }
 
 
-void floatingpoint_signal_handler(int sig)
+void floatingpoint_signal_handler(int sig GCC_UNUSED)
 {
-        //para evitar warnings al compilar
-        sig++;
-
-        cpu_panic("Floating point exception");
+    cpu_panic("Floating point exception");
 }
 
 
 #ifdef USE_PTHREADS
-void *thread_main_loop_function(void *nada)
+void *thread_main_loop_function(void *nada GCC_UNUSED)
 {
         emulator_main_loop();
 
     //aqui no llega nunca, lo hacemos solo para que no se queje el compilador
-        nada=0;
-        nada++;
     return NULL;
 }
 #endif

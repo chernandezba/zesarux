@@ -3182,11 +3182,10 @@ z80_byte tsconf_zifi_read_error_reg(void)
 	return 0;
 }
 
-void tsconf_zifi_write_command_reg(z80_byte value)
+void tsconf_zifi_write_command_reg(z80_byte value GCC_UNUSED)
 {
 	//TODO: Ni idea que hacer con esto, aparentemente altera la fifo de conexion con la wifi
-	value=1; //Para que no se queje el compilador
-	value++;
+
 }
 
 

@@ -696,40 +696,7 @@ void chardetect_debug_char_table_routines_poke(z80_int dir)
 }
 
 
-//Para hacer debug de aventuras de texto, investigar desde donde se estan leyendo las tablas de caracteres
-//se llama aqui desde peek_byte
-void chardetect_debug_char_table_routines_peek(z80_int dir)
-{
 
-        //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales del CAAD
-
-        //Para ver quien accede a tabla de caracteres que hay hacia la 0xF000
-
-        /*
-         *      if (dir>0xF000 && reg_pc!=65525) {
-         *              printf ("dir: %d reg_pc: %d\n",dir,reg_pc);
-}
-*/
-
-        /*
-         *      //pruebas hobbit
-         *      if (dir>0x7890 && dir<0x7A00) {
-         *              printf ("dir: %d reg_pc: %d\n",dir,reg_pc);
-}
-*/
-
-        /*
-         *      //Para saber quien accede a la tabla de caracteres de la ROM
-         *      if (dir>=0x3d00 && dir<=0x3fff) {
-         *              printf ("accessing rom char table dir: %d reg_pc: %d\n",dir,reg_pc);
-}
-*/
-
-
-        //Para que no se queje el compilador de no usado
-        dir++; dir--;
-
-}
 
 //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
 //se llama aqui desde core_spectrum

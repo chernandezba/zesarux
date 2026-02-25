@@ -85,8 +85,7 @@ void scrnull_reset_fullscreen(void)
 
 void scrnull_detectedchar_print(z80_byte caracter)
 {
-	//para que no se queje el compilador de variable no usada
-	caracter++;
+
 }
 
 //Estos valores no deben ser mayores de OVERLAY_SCREEN_MAX_WIDTH y OVERLAY_SCREEN_MAX_HEIGTH

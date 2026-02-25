@@ -45,10 +45,6 @@ int audionull_init(void)
 void audionull_send_frame(char *buffer)
 {
 
-        //Para evitar warnings al compilar de unused parameter ‘buffer’ [-Wunused-parameter]
-        buffer=0;
-        buffer++;
-
 
 }
 

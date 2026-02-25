@@ -383,7 +383,7 @@ void timer_trigger_interrupt(void)
 }
 
 
-void *usleep_timer_function(void *nada)
+void *usleep_timer_function(void *nada GCC_UNUSED)
 {
 	while (1) {
 		timer_usleep(timer_sleep_machine);
@@ -397,9 +397,6 @@ void *usleep_timer_function(void *nada)
 
 	}
 
-	//para que no se queje el compilador de variable no usada
-	nada=0;
-	nada++;
 
 
 	return NULL;
