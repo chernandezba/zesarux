@@ -8427,15 +8427,24 @@ void tooltips_mouse_timer_event(void)
     //printf("tooltip.id_tooltip %d\n",tooltip.id_tooltip);
 
     if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip) {
+        printf("Cambia el anterior tooltip o no habia antes (%d %d)\n",tooltips_mouse_id_ultimo_tooltip,tooltip.id_tooltip);
         //Borrar el anterior
         if (tooltips_mouse_id_ultimo_tooltip>=0) {
             tooltips_mouse_timer_event_redraw();
         }
 
+
+
         tooltips_mouse_id_ultimo_tooltip=tooltip.id_tooltip;
         tooltips_mouse_ultimo_texto_tooltip=tooltip.texto_tooltip;
         //tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
 
+        /*if (textspeech_also_send_menu.v && textspeech_filter_program!=NULL) {
+            //Ese if no hace falta porque ya lo controla menu_textspeech_send_text
+            printf("Send tooltip to speech\n");
+            menu_textspeech_send_text("Tooltip");
+            menu_textspeech_send_text(tooltips_mouse_ultimo_texto_tooltip);
+        }*/
 
         if (tooltip.direccion_tooltip==+1) {
 
