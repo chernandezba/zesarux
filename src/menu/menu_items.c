@@ -31351,7 +31351,7 @@ void menu_help_background_windows(MENU_ITEM_PARAMETERS)
             "in background, that they are visible and can be interacted with them or not "
             "(enabling setting background windows+even when menu closed, shows windows in background but you can't interact with them). \n"
             "\n"
-            "We will refer to 'main menu' to the main ZEsarUX menu window (the one with Smartload, Machine, etc). \n"
+            "We will refer to 'main menu' to the ZEsarUX main menu window (the one with Smartload, Machine, etc). \n"
             "\n"
             "Windows that can be sent to background, have a button (exclamation mark !, or a shaded button) in the window title. \n"
             "Pressing that button (or F6 key) will send the window to the background and then, "
@@ -44787,7 +44787,7 @@ void menu_switch_simple_menus(MENU_ITEM_PARAMETERS)
 
 
 
-char *tooltips_menu_inicio_main_menu="Main ZEsarUX menu";
+char *tooltips_menu_inicio_main_menu="ZEsarUX main menu";
 char *tooltips_menu_inicio_smartload="Smart load tapes, snapshots, floppies, memory cards, cartridges...";
 char *tooltips_menu_inicio_snapshot="Load or save snapshots";
 char *tooltips_menu_inicio_machine="Change active machine";
