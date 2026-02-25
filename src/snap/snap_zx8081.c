@@ -1016,7 +1016,7 @@ void new_load_zx81_set_common_registers(z80_int ramtopvalue)
 
 
 //Rutina para cargar cinta de tipo SMP para zx80
-void new_snap_load_zx80_smp(char *archivo)
+void new_snap_load_zx80_smp(char *archivo GCC_UNUSED)
 {
         //Cargamos archivo en memoria
         snap_load_zx80_zx81_load_smp();
@@ -1024,15 +1024,12 @@ void new_snap_load_zx80_smp(char *archivo)
         //Y volvemos control al BASIC
         new_set_return_saveload_zx80();
 
-        //para que no se queje el compilador de variable no usada
-        archivo=0;
-        archivo++;
 }
 
 
 
 //Rutina para cargar cinta de tipo SMP para zx81
-void new_snap_load_zx81_smp(char *archivo)
+void new_snap_load_zx81_smp(char *archivo GCC_UNUSED)
 {
         //Cargamos archivo en memoria
         snap_load_zx80_zx81_load_smp();
@@ -1040,9 +1037,6 @@ void new_snap_load_zx81_smp(char *archivo)
         //Y volvemos control al BASIC
         new_set_return_saveload_zx81();
 
-        //para que no se queje el compilador de variable no usada
-        archivo=0;
-        archivo++;
 }
 
 
