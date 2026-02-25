@@ -8129,7 +8129,7 @@ void tooltip_mouse_text_overlay(void)
         //Para que la punta de la flecha apunte a donde estaba el mouse
         x -=4;
 
-        printf("Ancho total: %d x: %d",scr_get_menu_width(),x/menu_char_width);
+        //printf("Ancho total: %d x: %d\n",scr_get_menu_width(),x/menu_char_width);
 
         int x_inicial=x;
         int total_ancho=scr_get_menu_width()*menu_char_width;
@@ -8162,7 +8162,7 @@ void tooltip_mouse_text_overlay(void)
         //int total_ancho=scr_get_menu_width()*menu_char_width;
         int fin_cuadro=x_inicial+(longitud_escribir+2)*ancho_caracter;
         if (fin_cuadro>total_ancho) {
-            printf("*****NO CABE***** %d %d\n",fin_cuadro,total_ancho);
+            //printf("*****NO CABE***** %d %d\n",fin_cuadro,total_ancho);
 
             x_cuadro=x_cuadro-(ancho_caracter*longitud_escribir);
         }
@@ -8277,7 +8277,7 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
 
     if (boton>=0) {
-        printf("boton %d\n",boton);
+        //printf("boton %d\n",boton);
         int id_tooltip=tooltips_mouse_retorna_tooltip_botones_superiores(boton);
 
         //Boton cerrar solo si menu abierto
@@ -8301,10 +8301,10 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
         tooltip->texto_tooltip=menu_inicio_retorna_tooltip(0);
 
         tooltip->id_tooltip=100+boton; //100 en adelante para que no se mezclen con los superiores
-        printf("boton %d\n",boton);
+        //printf("boton %d\n",boton);
 
         int indice_icono=zxdesktop_lowericon_find_index(boton);
-        printf("indice_icono %d\n",indice_icono);
+        //printf("indice_icono %d\n",indice_icono);
         if (indice_icono>=0) {
             enum tooltips_menus_inicio_storage tooltip_boton=zdesktop_lowericons_array[indice_icono].tooltip;
             tooltip->texto_tooltip=menu_inicio_retorna_tooltip(tooltip_boton);
@@ -8352,13 +8352,14 @@ void tooltips_mouse_timer_event(void)
     previous_tooltip_mouse_timer_event_mouse_x=mouse_x;
     previous_tooltip_mouse_timer_event_mouse_y=mouse_y;
 
-    printf("timer %d\n",tooltips_mouse_frames_counter);
 
     if (!movido) {
         if (tooltips_mouse_timer_bloqueo_incremento) {
-            printf("Bloqueo de incremento. Salir\n");
+            //printf("Bloqueo de incremento. Salir\n");
             return;
         }
+
+        printf("timer %d\n",tooltips_mouse_frames_counter);
 
         tooltips_mouse_frames_counter++;
         if (tooltips_mouse_frames_counter<TOOLTIP_SECONDS*50) {
@@ -8373,7 +8374,9 @@ void tooltips_mouse_timer_event(void)
 
     }
 
-    if (movido) {
+    else {
+        printf("timer %d\n",tooltips_mouse_frames_counter);
+
         tooltips_mouse_timer_bloqueo_incremento=0;
         tooltips_mouse_frames_counter=0;
         //Si se mueve y no estaba activo, esperar a contador
@@ -8393,7 +8396,7 @@ void tooltips_mouse_timer_event(void)
 
     //tooltips_mouse_frames_counter=0;
 
-    printf("buscar tooltip %d\n",contador_segundo);
+    printf("Looking for tooltip on mouse position %d\n",contador_segundo);
 
     //Tanto si encuentra como si no, bloqueamos incremento contador
     tooltips_mouse_timer_bloqueo_incremento=1;
@@ -8417,7 +8420,7 @@ void tooltips_mouse_timer_event(void)
 
     tooltip_mouse_visible.v=1;
 
-    printf("tooltip.id_tooltip %d\n",tooltip.id_tooltip);
+    //printf("tooltip.id_tooltip %d\n",tooltip.id_tooltip);
 
     if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip) {
         //Borrar el anterior
