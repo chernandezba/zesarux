@@ -693,6 +693,7 @@ extern int menu_first_aid_must_show_startup;
 #define MAX_F_FUNCTIONS 75
 
 enum defined_f_function_ids {
+    //Valores siempre >=0. No usar negativos
     //reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
     F_FUNCION_DEFAULT=100,    //Empiezo a 100 por asegurarme de un cambio de codigo que todo vaya bien, temporalmente, en version 10.0. Luego se puede quitar
     F_FUNCION_NOTHING,
@@ -848,6 +849,7 @@ extern int menu_define_key_function(int tecla,char *funcion);
 extern int menu_define_key_function_extra_info(int tecla,char *extra_info);
 extern int menu_define_button_function(int tecla,char *funcion);
 extern void menu_inicio_handle_button_presses(void);
+extern int menu_inicio_return_button_userdef(int boton);
 extern void menu_inicio_handle_lower_icon_presses(void);
 extern void zxvision_helper_menu_shortcut_init(void);
 

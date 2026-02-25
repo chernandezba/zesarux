@@ -8290,6 +8290,16 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
         tooltip->id_tooltip=id_tooltip;
         tooltip->texto_tooltip=menu_inicio_retorna_tooltip(id_tooltip);
+
+        //Boton esta definido por el usuario?
+        int indice_tabla=menu_inicio_return_button_userdef(boton);
+        if (indice_tabla>=0) {
+            printf("user defined button\n");
+            //En ese caso el texto del tooltip simplemente es el texto de la funcion definida
+            tooltip->texto_tooltip=defined_direct_functions_array[indice_tabla].texto_funcion;
+        }
+
+
         tooltip->direccion_tooltip=+1;
         tooltip->numero_boton=boton;
         return;
@@ -27776,9 +27786,43 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
 }
 
+//Mira si el boton pulsado esta redefinido por el usuario
+//Retorna <0 si no esta. >=0 si esta redefinido, y retorna indice a tabla a la funcion mapeada
+int menu_inicio_return_button_userdef(int boton)
+{
+    boton--;
+
+    //El 0 no esta permitido
+    if (boton<0 || boton>=MAX_USERDEF_BUTTONS) return -1;
+
+    enum defined_f_function_ids accion;
+
+    int indice_tabla=defined_buttons_functions_array[boton];
+    accion=menu_da_accion_direct_functions_indice(indice_tabla);
+
+    printf("Boton: %d indice_tabla: %d accion: %d\n",boton,indice_tabla,accion);
+
+    if (accion!=F_FUNCION_DEFAULT) {
+        return indice_tabla;
+    }
+
+    return -1;
+
+}
 
 //Mira si el boton pulsado esta redefinido por el usuario y lanza accion si conviene
 int menu_inicio_handle_button_presses_userdef(int boton)
+{
+    int indice_tabla=menu_inicio_return_button_userdef(boton);
+    if (indice_tabla<0) return 0;
+
+    menu_process_f_functions_by_action_index(indice_tabla,1,boton); //Indicar que viene de boton redefinido por el usuario
+    return 1;
+
+}
+
+//Mira si el boton pulsado esta redefinido por el usuario y lanza accion si conviene
+int old_delete_menu_inicio_handle_button_presses_userdef(int boton)
 {
     boton--;
 
