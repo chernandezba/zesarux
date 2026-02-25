@@ -697,7 +697,7 @@ void chardetect_debug_char_table_routines_poke(z80_int dir)
 
 
 
-
+/*
 //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
 //se llama aqui desde core_spectrum
 void chardetect_debug_print_char_routine(void)
@@ -722,19 +722,17 @@ void chardetect_debug_print_char_routine(void)
         //if (reg_pc>=27490 && reg_pc<27520) {
 
         //Para mordons quest
-        /*if (reg_pc>=27850 && reg_pc<27999) {
-         *
-         *
-         *              if (reg_a=='A' || reg_a=='B') {
-         *                      printf ("reg_pc: %d reg_a: %d (%c)\n",reg_pc,reg_a,reg_a);
-         *
-         *                      //Y debugamos un trozo
-         *                      chardetect_disassemble_trozo(reg_pc-4);
-         *
-}
+        //if (reg_pc>=27850 && reg_pc<27999) {
+         //
+         //
+         //             if (reg_a=='A' || reg_a=='B') {
+         //                      printf ("reg_pc: %d reg_a: %d (%c)\n",reg_pc,reg_a,reg_a);
+         //
+         //                     //Y debugamos un trozo
+        //                      chardetect_disassemble_trozo(reg_pc-4);
+         //
 }
 */
-}
 
 
 
