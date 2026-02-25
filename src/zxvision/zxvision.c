@@ -8121,6 +8121,8 @@ void tooltip_mouse_text_overlay(void)
 {
     if (tooltip_enabled.v==0) return;
 
+    if (mouse_menu_disabled.v) return;
+
     if (tooltip_mouse_visible.v) {
 
         int i;
@@ -8341,6 +8343,8 @@ void tooltips_mouse_timer_event(void)
 {
 
     if (tooltip_enabled.v==0) return;
+
+    if (mouse_menu_disabled.v) return;
 
     int movido=0;
 
