@@ -7885,11 +7885,12 @@ void menu_draw_last_fps(void)
         //control de rango
         if (fps>50) fps=50;
 
-    const int ancho_maximo=6;
+        //const int ancho_maximo=6;
+        #define DRAW_FPS_ANCHO_MAXIMO 6
 
             //printf ("mostrando fps\n");
 
-        char buffer_fps[ancho_maximo+1];
+        char buffer_fps[DRAW_FPS_ANCHO_MAXIMO+1];
         sprintf (buffer_fps,"%02d FPS",fps);
 
         //primero liberar esas zonas
