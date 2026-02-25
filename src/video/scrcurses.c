@@ -91,27 +91,17 @@ void scrcurses_z88_cpc_load_keymap(void)
 
 void scrcurses_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
-    //Para que no se queje el compilador
-    x=y=color_rgb=0;
+
 }
 
 void scrcurses_putpixel_final(int x,int y,unsigned int color)
 {
-    //Para que no se queje el compilador
-    x=y=color=0;
+
 }
 
-
-
-//no hacer nada
-//Aqui en teoria solo se llama desde opcion de view waveform
 void scrcurses_putpixel(int x,int y,unsigned int color)
 {
 
-    //Para que no se queje el compilador de variable no usada
-    x++;
-    y++;
-    color++;
 }
 
 
@@ -119,19 +109,19 @@ void scrcurses_messages_debug(char *s)
 {
 
 
-//si hay un mensaje anterior, asegurarnos que se borra antes,
-//comprobando el de mayor longitud
-if (curses_last_message_length) {
-    int t=strlen(curses_last_message_shown);
-    if (t>curses_last_message_length) curses_last_message_length=t;
-}
+    //si hay un mensaje anterior, asegurarnos que se borra antes,
+    //comprobando el de mayor longitud
+    if (curses_last_message_length) {
+        int t=strlen(curses_last_message_shown);
+        if (t>curses_last_message_length) curses_last_message_length=t;
+    }
 
-else curses_last_message_length=strlen(curses_last_message_shown);
+    else curses_last_message_length=strlen(curses_last_message_shown);
 
-sprintf (curses_last_message_shown,"%s",s);
+    sprintf (curses_last_message_shown,"%s",s);
 
-//supuestamente 5 segundos (50*5)
-curses_last_message_shown_timer=250;
+    //supuestamente 5 segundos (50*5)
+    curses_last_message_shown_timer=250;
 
 
 
