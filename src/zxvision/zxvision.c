@@ -29939,7 +29939,7 @@ void set_welcome_message(void)
     set_splash_zesarux_logo_paso(splash_zesarux_logo_paso);
 
 
-        char texto_edition[40];
+        char texto_edition[200];
         sprintf(texto_edition," " EMULATOR_EDITION_NAME " ");
 
         int longitud_texto=strlen(texto_edition);
