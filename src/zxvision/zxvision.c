@@ -8054,9 +8054,9 @@ void tooltip_mouse_print_char(int x,int y,unsigned char c,int tinta,int papel)
     int bit;
     int linea;
 
-    //Este charset de MSX se puede ver bien con 5 pixeles de ancho
+
     for (linea=0;linea<8;linea++) {
-        z80_byte grafico=char_set_msx[offset_char++];
+        z80_byte grafico=char_set_zesarux_tiny[offset_char++];
         for (bit=0;bit<5;bit++) {
             int color=(grafico & 128 ? tinta : papel);
             tooltip_mouse_putpixel(x+bit,y+linea,color);
@@ -8175,7 +8175,7 @@ void tooltip_mouse_text_overlay(void)
         //tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
 
         int alto_caracter=8; //Alto fijo para este charset
-        int ancho_caracter=5;
+        int ancho_caracter=4;
 
         int ypos=tooltips_mouse_ultima_pos_y_tooltip;
 
