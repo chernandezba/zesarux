@@ -121,7 +121,7 @@ void charset_generate_zesarux_tiny(void)
 
     //TODO De momento no estan todos los caracteres
     //for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
-    for (i=32;i<=129;i++) {
+    for (i=32;i<=147;i++) {
         printf("i: %d\n",i);
         int linea;
         for (linea=0;linea<5;linea++) {
@@ -4368,6 +4368,7 @@ char *charset_icons_text[]={
 "x  ",
 "xxx",
 
+//Letra M
 "x x",
 "xxx",
 "xxx",
@@ -4398,7 +4399,7 @@ char *charset_icons_text[]={
 "xxx",
 "xxx",
 
-//82
+//82. Letra R
 "xx ",
 "x x",
 "xx ",
@@ -4490,6 +4491,7 @@ char *charset_icons_text[]={
 "   ",
 "   ",
 
+//Letras minusculas
 //a
 "   ",
 "xx ",
@@ -4701,59 +4703,132 @@ char *charset_icons_text[]={
 "x x",
 
 
-//CYRILLIC SMALL LETTER I и. 130
+//CYRILLIC SMALL LETTER I и. 130. Igual que N
+"x x",
+"xxx",
+"x x",
+"x x",
+"x x",
 
-
-//Cyrillic Ш - 131
-
+//Cyrillic Ш - 131. Igual que W, no veo manera fácil de mostrar ese caracter
+"   ",
+"x x",
+"xxx",
+"xxx",
+"xxx",
 
 //Cyrillic л - 132
-
+"   ",
+" xx",
+" xx",
+" xx",
+"xxx",
 
 //Cyrillic г - 133
-
+"   ",
+"xxx",
+"x  ",
+"x  ",
+"x  ",
 
 //Cyrillic ч - 134
-
+"x x",
+"x x",
+"xxx",
+"  x",
+"  x",
 
 //Cyrillic д - 135
-
+"xxx",
+"x x",
+"x x",
+"xxx",
+"x x",
 
 //Cyrillic я - 136
-
+" xx",
+"x x",
+" xx",
+"x x",
+"x x",
 
 //Letra minuscula r con anzuelo ɾ - 137
-
+"   ",
+"xxx",
+"x  ",
+"x  ",
+"xx ",
 
 //Greek Small Letter Theta θ - 138
-
+" x ",
+"x x",
+"xxx",
+"x x",
+" x ",
 
 //Caracter boton cierre BeOS - 139
-
+"xxx",
+"x x",
+"x x",
+"x x",
+"xxx",
 
 //Caracter boton cierre  - 140
-
+"xxx",
+"x x",
+" x ",
+"x x",
+"xxx",
 
 //Caracter logo apple - 141
-
+" x ",
+"xxx",
+" xx",
+"xxx",
+"xxx",
 
 //á a acentuada - 142
+"  x",
+"xx ",
+" xx",
+"x x",
+"xxx",
 
 
 //é e acentuada - 143
-
+"  x",
+" xx",
+"x x",
+"xx ",
+" xx",
 
 //í i acentuada - 144
-
+" xx",
+"   ",
+" x ",
+" x ",
+" x ",
 
 //ó o acentuada - 145
-
+" x ",
+"xxx",
+"x x",
+"x x",
+"xxx",
 
 //ú u acentuada - 146
-
+" x ",
+"x x",
+"x x",
+"x x",
+"xxx",
 
 //Ñ enye mayuscula - 147
-
+"xxx",
+"   ",
+"xxx",
+"x x",
+"x x",
 
 //Caracter fondo titulo estilo AtariTOS - 148
 

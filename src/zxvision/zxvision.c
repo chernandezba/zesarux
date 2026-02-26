@@ -1734,6 +1734,36 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         153 //caracter franja cambiado
     },
 
+    {1,"ZEsarUX Tiny",AMIGAOS_COLOUR_blue,ZESARUX_PLUS_COLOUR_WHITE,
+        0,1,1,0, 		//No mostrar cursor,mostrar recuadro,mostrar rainbow
+        5+8,0, 		//Colores para opcion seleccionada
+        AMIGAOS_COLOUR_blue,AMIGAOS_COLOUR_red,5+8,AMIGAOS_COLOUR_red, 	//Colores para opcion no disponible
+
+        0,ZESARUX_PLUS_COLOUR_WHITE,        	//Colores para el titulo ventana
+        0,              //Color recuadro
+        ZESARUX_PLUS_COLOUR_WHITE,OSDOS_COLOUR_GRAY_INACTIVE,        	//Colores para el titulo ventana inactiva
+
+        4,4+8,		//Colores waveform
+        7,		//Color para zona no usada en visualmem
+        7,      //color block visualtape
+        2,ZESARUX_PLUS_COLOUR_WHITE,		//Color para opcion marcada
+
+        ZESARUX_PLUS_COLOUR_FILESELECTOR,0, //Colores fileselector, zona seleccion archivos
+
+        154, //caracter de cerrar ventana
+        171, //caracter de minimizar ventana
+        172, //caracter de maximizar ventana
+        '=', //caracter de restaurar ventana
+        149, //caracter de background ventana
+        ' ', //caracter de fondo de titulo
+        2+8, //color de aviso
+        colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
+        5, //-1, //si texto inverso solo cambia color tinta
+        0, //rellenar titulo
+        char_set_zesarux_tiny,
+        153 //caracter franja cambiado
+    },
+
 
     {0,"ZEsarUX",7+8,0,
         0,1,1,0, 		//No mostrar cursor,mostrar recuadro,mostrar rainbow
