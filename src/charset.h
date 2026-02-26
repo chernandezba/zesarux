@@ -39,6 +39,7 @@ extern unsigned char char_set_msx[];
 extern unsigned char char_set_beos[];
 extern unsigned char char_set_dos[];
 extern unsigned char char_set_templeos[];
+extern unsigned char char_set_zesarux_tiny[];
 extern unsigned char char_set_customfile[];
 
 extern char char_set_customfile_path[];
@@ -58,6 +59,8 @@ extern void charset_retorna_nombres(void);
 extern int get_charset_id_by_name(char *nombre);
 
 extern void set_user_charset(void);
+
+extern void charset_generate_zesarux_tiny(void);
 
 #define MAX_CHARSET_GRAPHIC 173
 

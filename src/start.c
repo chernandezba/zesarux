@@ -3227,7 +3227,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--menucharwidth")) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
-                if (valor!=5 && valor!=6 && valor!=7 && valor!=8) {
+                if (valor!=4 && valor!=5 && valor!=6 && valor!=7 && valor!=8) {
                     printf ("Invalid value for character width\n");
                     exit(1);
                 }
@@ -7788,6 +7788,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     menu_first_aid_init();
 
     snapshots_in_ram_reset();
+
+    charset_generate_zesarux_tiny();
 
     main_leezx81_init_semaphore();
 

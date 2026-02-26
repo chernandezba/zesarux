@@ -1730,7 +1730,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
         5, //-1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
-        char_set_ataritos, //char_set_dos,
+        char_set_ataritos,
         153 //caracter franja cambiado
     },
 

@@ -63,6 +63,7 @@ struct s_charset_list charset_list[]={
     {"Sam Coupe",char_set_sam},
     {"TempleOS",char_set_templeos},
     {"Z88",char_set_z88},
+    {"ZEsarUXtiny",char_set_zesarux_tiny},
     {"ZX Spectrum",char_set_spectrum},
     {"CustomFile",char_set_customfile},
 
@@ -101,6 +102,47 @@ int get_charset_id_by_name(char *nombre)
 	}
 
     return -1;
+
+}
+
+void charset_generate_zesarux_tiny(void)
+{
+
+    //TODO: hasta que no tenga el charset completo, rellenamos el resto de caracteres que faltan usando otro charset
+    //Como mas parecido por ser letras pequeñas, uso el de MSX
+    memcpy(char_set_zesarux_tiny,char_set_retromac,TOTAL_ASCII_CHARSET_ELEMENTS);
+
+    //Convertir del formato string al bitmap
+    //char_set_zesarux_tiny
+    //3 de ancho, 5 de alto
+    int i;
+    int origen=0;
+    int destino=0;
+
+    //De momento solo hay hasta caracter 127
+    //for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
+    for (i=32;i<=127;i++) {
+        printf("i: %d\n",i);
+        int linea;
+        for (linea=0;linea<5;linea++) {
+            printf("linea: %d\n",linea);
+            z80_byte byte_escribir=0;
+            int bit;
+            char *string_linea=charset_icons_text[origen++];
+            for (bit=0;bit<3;bit++) {
+                if (string_linea[bit]!=' ') byte_escribir |=1;
+                byte_escribir=byte_escribir<<1;
+            }
+
+            byte_escribir=byte_escribir<<4;
+
+            char_set_zesarux_tiny[destino++]=byte_escribir;
+        }
+
+        char_set_zesarux_tiny[destino++]=0;
+        char_set_zesarux_tiny[destino++]=0;
+        char_set_zesarux_tiny[destino++]=0;
+    }
 
 }
 
@@ -4044,6 +4086,9 @@ unsigned char char_set_templeos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 };
 
 
+//Este es el charset_icons_text convertido al formato normal
+unsigned char char_set_zesarux_tiny[TOTAL_ASCII_CHARSET_ELEMENTS];
+
 char *charset_icons_text[]={
 
 //32
@@ -4135,8 +4180,8 @@ char *charset_icons_text[]={
 "   ",
 "   ",
 "   ",
-" xx",
-" xx",
+"   ",
+" x ",
 
 "  x",
 "  x",
@@ -4360,11 +4405,11 @@ char *charset_icons_text[]={
 "x x",
 "x x",
 
-"xxx",
+" xx",
 "x  ",
-"xxx",
+" x ",
 "  x",
-"xxx",
+"xx ",
 
 "xxx",
 " x ",
@@ -4386,9 +4431,9 @@ char *charset_icons_text[]={
 
 "x x",
 "x x",
+"xxx",
+"xxx",
 "x x",
-"xxx",
-"xxx",
 
 "x x",
 "x x",
@@ -4447,10 +4492,10 @@ char *charset_icons_text[]={
 
 //a
 "   ",
-" x ",
-"x x",
-"x x",
+"xx ",
 " xx",
+"x x",
+"xxx",
 
 "x  ",
 "x  ",
@@ -4471,9 +4516,9 @@ char *charset_icons_text[]={
 "xxx",
 
 "   ",
-"xxx",
-"xxx",
-"x  ",
+" xx",
+"x x",
+"xx ",
 " xx",
 
 //102
@@ -4556,10 +4601,10 @@ char *charset_icons_text[]={
 "x  ",
 "x  ",
 
+"   ",
 " xx",
-"x  ",
-" x ",
-"  x",
+"xx ",
+" xx",
 "xx ",
 
 " x ",
@@ -4582,9 +4627,9 @@ char *charset_icons_text[]={
 
 "   ",
 "x x",
-"x x",
 "xxx",
-" x ",
+"xxx",
+"xxx",
 
 "   ",
 "   ",
@@ -4625,12 +4670,17 @@ char *charset_icons_text[]={
 
 //126
 "   ",
+"   ",
 "xx ",
-"xxx",
-"  x",
+" xx",
 "   ",
 
-
+//127
+"xxx",
+"x x",
+"x x",
+"x x",
+"xxx",
 
 
 };

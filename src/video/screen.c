@@ -3147,7 +3147,7 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 	int saltar_pixeles_size7;
 	int saltar_pixeles_size6[2];
 	int saltar_pixeles_size5[3];
-
+    int saltar_pixeles_size4[4];
 
 	//Escalados por defecto
 	//Saltar primer pixel en caso tamaño 7
@@ -3161,6 +3161,12 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 	saltar_pixeles_size5[0]=0;
 	saltar_pixeles_size5[1]=6;
 	saltar_pixeles_size5[2]=7;
+
+	//Saltar primer pixel y ultimos pixeles en caso tamaño 4
+	saltar_pixeles_size4[0]=0;
+	saltar_pixeles_size4[1]=5;
+	saltar_pixeles_size4[2]=6;
+    saltar_pixeles_size4[3]=7;
 
 	//Segun tipo de letra
 	if (char_set==char_set_msx)	{
@@ -3262,6 +3268,22 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
         saltar_pixeles_size5[2]=7;
     }
 
+    if (char_set==char_set_zesarux_tiny) {
+        saltar_pixeles_size7=7;
+
+        saltar_pixeles_size6[0]=6;
+        saltar_pixeles_size6[1]=7;
+
+        saltar_pixeles_size5[0]=5;
+        saltar_pixeles_size5[1]=6;
+        saltar_pixeles_size5[2]=7;
+
+        saltar_pixeles_size4[0]=4;
+        saltar_pixeles_size4[1]=5;
+        saltar_pixeles_size4[2]=6;
+        saltar_pixeles_size4[3]=7;
+    }
+
 	//Los demas se ajustan bien al escalado por defecto
 
 
@@ -3286,6 +3308,13 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 	//Si 5, saltar tres pixeles
 	else if (menu_char_width==5) {
 		if (bit==saltar_pixeles_size5[0] || bit==saltar_pixeles_size5[1] || bit==saltar_pixeles_size5[2]) {
+			return 0;
+		}
+	}
+
+	//Si 4, saltar cuatro pixeles
+	else if (menu_char_width==4) {
+		if (bit==saltar_pixeles_size4[0] || bit==saltar_pixeles_size4[1] || bit==saltar_pixeles_size4[2] || bit==saltar_pixeles_size4[3]) {
 			return 0;
 		}
 	}
@@ -3323,6 +3352,13 @@ int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
         saltar_pixeles_size7=0;
 
         saltar_pixeles_size6[0]=0;
+        saltar_pixeles_size6[1]=7;
+    }
+
+    if (char_set==char_set_zesarux_tiny) {
+        saltar_pixeles_size7=7;
+
+        saltar_pixeles_size6[0]=6;
         saltar_pixeles_size6[1]=7;
     }
 
