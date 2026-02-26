@@ -122,10 +122,10 @@ void charset_generate_zesarux_tiny(void)
     //TODO De momento no estan todos los caracteres
     //for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
     for (i=32;i<=153;i++) {
-        printf("i: %d\n",i);
+        //printf("i: %d\n",i);
         int linea;
         for (linea=0;linea<5;linea++) {
-            printf("linea: %d\n",linea);
+            //printf("linea: %d\n",linea);
             z80_byte byte_escribir=0;
             int bit;
             char *string_linea=charset_icons_text[origen++];
@@ -136,10 +136,27 @@ void charset_generate_zesarux_tiny(void)
 
             byte_escribir=byte_escribir<<4;
 
+            //Si es la franja de color, reasignar a una franja de 4 pixeles efectivos de ancho y 6 de alto, para que no se vea corte
+            /*
+
+            "   x", //0x10
+            "  xx", //0x30
+            "  xx", //0x30
+            " xxx", //0x70
+            "xxxx", //0xF0
+            "xxxx", //0xF0
+            */
+            if (i==128) {
+                z80_byte franja[]={0x10,0x30,0x30,0x70,0xF0};
+                byte_escribir=franja[linea];
+            }
+
             char_set_zesarux_tiny[destino++]=byte_escribir;
         }
 
-        char_set_zesarux_tiny[destino++]=0;
+        if (i==128) char_set_zesarux_tiny[destino++]=0xF0;
+        else char_set_zesarux_tiny[destino++]=0;
+
         char_set_zesarux_tiny[destino++]=0;
         char_set_zesarux_tiny[destino++]=0;
     }
