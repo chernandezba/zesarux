@@ -121,7 +121,7 @@ void charset_generate_zesarux_tiny(void)
 
     //TODO De momento no estan todos los caracteres
     //for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
-    for (i=32;i<=153;i++) {
+    for (i=32;i<=162;i++) {
         //printf("i: %d\n",i);
         int linea;
         for (linea=0;linea<5;linea++) {
@@ -4891,31 +4891,67 @@ char *charset_icons_text[]={
 "xx ",
 
 //Caracter boton cierre estilo ZEsarUX plus - 154
-
+"xxx",
+"x x",
+" x ",
+"x x",
+"xxx",
 
 //Caracter boton cierre estilo Risc OS - 155
-
+"xxx",
+"x x",
+" x ",
+"x x",
+"xxx",
 
 //Caracter boton background estilo Risc OS - 156
-
+"xxx",
+"xx ",
+"xxx",
+"x x",
+"xxx",
 
 //Caracter boton maximizar y restaurar estilo Risc OS - 157
+"x  ",
+"   ",
+" xx",
+" xx",
+" xx",
 
-
-//Cedilla 158
-
+//Cedilla ç 158
+"xxx",
+"x  ",
+"x  ",
+"xxx",
+" x ",
 
 //à a acentuada abierta - 159
-
+"x  ",
+"xx ",
+" xx",
+"x x",
+"xxx",
 
 //è e acentuada abierta - 160
-
+"x  ",
+" xx",
+"x x",
+"xx ",
+" xx",
 
 //ò o acentuada abierta - 161
-
+"x  ",
+" xx",
+"x x",
+"x x",
+"xxx",
 
 //ü u con dieresis 162
-
+"x x",
+"   ",
+"x x",
+"x x",
+"xxx",
 
 //flecha abajo, para botones extender zx desktop - 163
 
