@@ -108,12 +108,7 @@ int get_charset_id_by_name(char *nombre)
 void charset_generate_zesarux_tiny(void)
 {
 
-    //TODO: hasta que no tenga el charset completo, rellenamos el resto de caracteres que faltan usando otro charset
-    //Como mas parecido por ser letras pequeñas, uso el de MSX
-    memcpy(char_set_zesarux_tiny,char_set_retromac,TOTAL_ASCII_CHARSET_ELEMENTS);
-
     //Convertir del formato string al bitmap
-    //char_set_zesarux_tiny
     //3 de ancho, 5 de alto
     int i;
     int origen=0;
@@ -4373,9 +4368,9 @@ char *charset_icons_text[]={
 "xxx",
 
 "x x",
+"x x",
 "xx ",
-"x  ",
-"xx ",
+"x x",
 "x x",
 
 "x  ",
@@ -4570,9 +4565,9 @@ char *charset_icons_text[]={
 "  x",
 "xx ",
 
-"   ",
-"   ",
+"x  ",
 "x x",
+"xx ",
 "xx ",
 "x x",
 
