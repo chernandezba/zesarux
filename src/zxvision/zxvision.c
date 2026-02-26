@@ -8095,6 +8095,8 @@ char *tooltips_mouse_ultimo_texto_tooltip;
 int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
 int tooltips_mouse_direccion_tooltip=+1;
 
+#define TOOLTIPS_MOUSE_ALTO_CARACTER 6
+#define TOOLTIPS_MOUSE_ANCHO_CARACTER 4
 
 void tooltip_mouse_draw_arrow_putpixel(zxvision_window *w GCC_UNUSED,int x,int y,int color)
 {
@@ -8117,11 +8119,13 @@ void tooltip_mouse_draw_arrow(int x,int y,int color_dentro,int color_aristas,int
          x
     */
 
+    int alto_caracter=TOOLTIPS_MOUSE_ALTO_CARACTER;
+
     //La arista de la base del triangulo no la dibujamos, para que quede del mismo color que el interior y se fusione con el rectangulo
     zxvision_draw_filled_triangle(NULL,color_dentro,color_aristas,
-        x,y+direccion*8,
+        x,y+direccion*alto_caracter,
         x+4,y,
-        x+4+4,y+direccion*8,
+        x+4+4,y+direccion*alto_caracter,
         tooltip_mouse_draw_arrow_putpixel,2);
 
 
@@ -8171,11 +8175,9 @@ void tooltip_mouse_text_overlay(void)
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
-        //Dibujar flechita
-        //tooltip_mouse_draw_arrow(x,tooltips_mouse_ultima_pos_y_tooltip,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,tooltips_mouse_direccion_tooltip);
 
-        int alto_caracter=8; //Alto fijo para este charset
-        int ancho_caracter=4;
+        int alto_caracter=TOOLTIPS_MOUSE_ALTO_CARACTER;
+        int ancho_caracter=TOOLTIPS_MOUSE_ANCHO_CARACTER;
 
         int ypos=tooltips_mouse_ultima_pos_y_tooltip;
 
@@ -8198,7 +8200,7 @@ void tooltip_mouse_text_overlay(void)
         if (fin_cuadro>total_ancho) {
             //printf("*****NO CABE***** %d %d\n",fin_cuadro,total_ancho);
 
-            x_cuadro=x_cuadro-(ancho_caracter*longitud_escribir);
+            x_cuadro=x_cuadro-(ancho_caracter*longitud_escribir)+1;
         }
 
         //dos mas de ancho
