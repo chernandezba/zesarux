@@ -275,7 +275,8 @@ void menu_topbarmenu_write_bar(void)
 
     //Aunque topbar en principio solo va a estar con drivers completos, por si acaso solo lo cambio en esos casos
     //asi seria compatible con curses por ejemplo, dejaria la "Z" normal
-    if (si_complete_video_driver() ) {
+    //Si ancho pequeño, tampoco mostrarla
+    if (si_complete_video_driver() && menu_char_width>=7) {
         //El primer caracter lo cambiamos por la Z pequeña del logo, que tiene colores
         topbar_string_linea_menus[0]=(unsigned char) CHAR_Z_LOGO_SMALL_TOPBAR;
     }
