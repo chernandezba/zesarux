@@ -31,7 +31,7 @@ extern unsigned char char_set_cpc[];
 extern unsigned char char_set_z88[];
 extern unsigned char char_set_sam[];
 extern unsigned char char_set_mansoftware[];
-extern unsigned char char_set_mansoftware2[];
+extern unsigned char char_set_mansoftware_west[];
 extern unsigned char char_set_ql[];
 extern unsigned char char_set_retromac[];
 extern unsigned char char_set_amigaos[];
