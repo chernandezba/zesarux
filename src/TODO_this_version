@@ -126,6 +126,6 @@ ok *si botones superiores reasignados, cambiar tooltip
 -incorporar otro charset de man software
 
 -charsets de 4x6
-*nuevo estilo gui que use tipografia tiny. "ZEsarUX Tiny"
-*tooltips mouse usar tipografia tinty
-*meter entrada en changelog
+ok *nuevo estilo gui que use tipografia tiny. "ZEsarUX Tiny"
+ok *tooltips mouse usar tipografia tinty
+ok *meter entrada en changelog

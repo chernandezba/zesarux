@@ -4814,22 +4814,22 @@ char *charset_icons_text[]={
 " xx",
 
 //í i acentuada - 144
-" xx",
-"   ",
+"  x",
 " x ",
+"   ",
 " x ",
 " x ",
 
 //ó o acentuada - 145
+"  x",
 " x ",
 "xxx",
-"x x",
 "x x",
 "xxx",
 
 //ú u acentuada - 146
+"  x",
 " x ",
-"x x",
 "x x",
 "x x",
 "xxx",
