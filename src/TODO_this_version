@@ -111,7 +111,9 @@ eso se envía en las estadísticas
 
 -tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
-
+*tooltips de iconos del ZX desktop? Aunque quizá ahora solo muestre el mismo nombre, pero por dejarlo preparado para futuros usos
+Y/o quizá definir tooltips más extensos para todos los iconos
+Así también al agregar icono nuevo, en la lista, se puede poner tooltip de menú con la info del icono
 
 -charsets de 4x6
 ok *nuevo estilo gui que use tipografia tiny. "ZEsarUX Tiny"
