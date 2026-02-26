@@ -1216,6 +1216,7 @@ extern void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_
 extern void menu_generic_message_tooltip(char *titulo, int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, const char * texto_format , ...);
 
 #define TOOLTIP_SECONDS 4
+#define TOOLTIP_MOUSE_SECONDS 3
 #define WINDOW_SPLASH_SECONDS 3
 
 extern void menu_add_ESC_item(menu_item *array_menu_item);
