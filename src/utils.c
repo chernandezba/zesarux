@@ -3577,6 +3577,10 @@ int util_write_configfile(void)
   if (menu_char_width!=8)		      ADD_STRING_CONFIG,"--menucharwidth %d",menu_char_width);
   if (menu_char_height!=8)		      ADD_STRING_CONFIG,"--menucharheight %d",menu_char_height);
 
+  if (screen_reduce_menu_ancho==2)      ADD_STRING_CONFIG,"--menu-half-width");
+  if (screen_reduce_menu_alto==2)       ADD_STRING_CONFIG,"--menu-half-height");
+
+
   if (screen_reduce_075.v)			ADD_STRING_CONFIG,"--reduce-075");
   if (screen_reduce_050.v)			ADD_STRING_CONFIG,"--reduce-050");
   if (screen_reduce_075_050_antialias.v==0)		ADD_STRING_CONFIG,"--reduce-display-no-antialias");

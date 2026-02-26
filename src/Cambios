@@ -56,6 +56,7 @@ Mejorado ZX Vision:
 - Agregado tooltips para botones superiores (de menús) e inferiores (de dispositivos)
 - Agregado soporte para tipos de letra de 4 pixeles de ancho
 - Agregado tipo de letra "ZEsarUXtiny" adecuado para configuración de charset 4x6 (el mismo que ya se usaba en los iconos)
+- Permitir reducir tamaño disponible menú a la mitad de la ventana principal
 - Reordenadas opciones & nuevo menú: revisa opciones -> Display Emulado, General, Ventana Principal, ZX Vision, TV
 - Movido varias opciones a opciones -> Hardware
 - Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas

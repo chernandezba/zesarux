@@ -1869,6 +1869,9 @@ printf("\n"
 
         "--menucharwidth n                        Character size width for menus valid values: 8,7,6 or 5\n"
         "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
+        "--menu-half-width                        Reduce menu width to half\n"
+        "--menu-half-height                       Reduce menu height to half\n"
+
         "--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
         "--disablemenumouse                       Disable mouse on emulator menu\n"
         "--ignoremouseclickopenmenu               Ignore mouse clicking to open menu or ZX Desktop buttons\n"
@@ -3242,6 +3245,14 @@ int parse_cmdline_options(int desde_commandline) {
                     exit(1);
                 }
                 menu_char_height=valor;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--menu-half-width")) {
+                screen_reduce_menu_ancho=2;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--menu-half-height")) {
+                screen_reduce_menu_alto=2;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zoom")) {
