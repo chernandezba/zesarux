@@ -121,7 +121,7 @@ void charset_generate_zesarux_tiny(void)
 
     //TODO De momento no estan todos los caracteres
     //for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
-    for (i=32;i<=147;i++) {
+    for (i=32;i<=153;i++) {
         printf("i: %d\n",i);
         int linea;
         for (linea=0;linea<5;linea++) {
@@ -4831,22 +4831,47 @@ char *charset_icons_text[]={
 "x x",
 
 //Caracter fondo titulo estilo AtariTOS - 148
-
+"xxx",
+"   ",
+"xxx",
+"   ",
+"xxx",
 
 //Caracter enviar a background estilo ZEsarUX plus - 149
-
+" x ",
+"x x",
+" x ",
+"x x",
+" x ",
 
 //Caracter minimizar estilo AtariTOS - 150
-
+"   ",
+"   ",
+"xxx",
+"   ",
+"   ",
 
 //Caracter restaurar estilo AtariTOS - 151
+"   ",
+"xxx",
+"   ",
+"xxx",
+"   ",
 
 
 //Caracter maximizar estilo AtariTOS - 152
-
+" x ",
+"x x",
+"x x",
+"x x",
+" x ",
 
 //Caracter franjas verticales colores titulo - 153
-
+"xx ",
+"xx ",
+"xx ",
+"xx ",
+"xx ",
 
 //Caracter boton cierre estilo ZEsarUX plus - 154
 
