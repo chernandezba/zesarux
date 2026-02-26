@@ -106,20 +106,12 @@ esto a nivel de estadística, permito saber en estadisticas web (enviando un par
 Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
 eso se envía en las estadísticas
 
-
 -warnings en audio/audiocoreaudio.c
 
 
 -tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
-ok *si el tooltip sale por la derecha, que desplace texto
-*revisar todos textos de tooltips, corregirlos o extenderlos
-ok *detectar si mouse desactivado en el menu
-ok *comprobar que si no se mueve raton y ha pasado el timeout, no se quede continuamente llamando a funcion de busqueda.
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
-*quiza que se active con menos tiempo que 4 segundos?
-ok *si botones superiores reasignados, cambiar tooltip
 
-ok -incorporar otro charset de man software
 
 -charsets de 4x6
 ok *nuevo estilo gui que use tipografia tiny. "ZEsarUX Tiny"
