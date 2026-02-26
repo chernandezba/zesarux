@@ -119,9 +119,8 @@ void charset_generate_zesarux_tiny(void)
     int origen=0;
     int destino=0;
 
-    //TODO De momento no estan todos los caracteres
-    //for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
-    for (i=32;i<=162;i++) {
+
+    for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
         //printf("i: %d\n",i);
         int linea;
         for (linea=0;linea<5;linea++) {
@@ -4695,11 +4694,11 @@ char *charset_icons_text[]={
 "   ",
 
 //127
+"  x",
 "xxx",
 "x x",
-"x x",
-"x x",
 "xxx",
+"  x",
 
 
 
@@ -4954,33 +4953,81 @@ char *charset_icons_text[]={
 "xxx",
 
 //flecha abajo, para botones extender zx desktop - 163
+" x ",
+" x ",
+" x ",
+"xxx",
+" x ",
 
 //flecha arriba, para botones extender zx desktop - 164
+" x ",
+"xxx",
+" x ",
+" x ",
+" x ",
+
 
 //flecha derecha, para botones extender zx desktop - 165
+"x  ",
+" x ",
+"xxx",
+" x ",
+"x  ",
 
 //flecha izquierda, para botones extender zx desktop - 166
-
+"  x",
+" x ",
+"xxx",
+" x ",
+"  x",
 
 //ï i con dieresis - 167
-
+"x x",
+"   ",
+" x ",
+" x ",
+" x ",
 
 //Á A mayúscula acento cerrado - 168
-
+"  x",
+"xxx",
+"x x",
+"xxx",
+"x x",
 
 //Caracter boton minimizar QNX - 169
-
+"   ",
+"   ",
+"   ",
+"   ",
+"xxx",
 
 //Caracter boton cierre QNX - 170
-
+"x x",
+"x x",
+" x ",
+"x x",
+"x x",
 
 //Caracter minimizar estilo ZEsarUX plus - 171
-
+"   ",
+"xxx",
+"x x",
+"xxx",
+"   ",
 
 //Caracter maximizar estilo ZEsarUX plus - 172
-
+"xxx",
+"x x",
+"x x",
+"x x",
+"xxx",
 
 //Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
-
+"xxx",
+"  x",
+" x ",
+"x  ",
+"xxx",
 
 };
