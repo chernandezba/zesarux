@@ -2772,9 +2772,17 @@ void menu_settings_windows_features(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_interface_reduce_menu_width_half(MENU_ITEM_PARAMETERS)
+{
+    if (screen_reduce_menu_ancho==1) screen_reduce_menu_ancho=2;
+    else screen_reduce_menu_ancho=1;
+}
 
-
-
+void menu_interface_reduce_menu_height_half(MENU_ITEM_PARAMETERS)
+{
+    if (screen_reduce_menu_alto==1) screen_reduce_menu_alto=2;
+    else screen_reduce_menu_alto=1;
+}
 
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
@@ -2895,8 +2903,19 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Character height. You can reduce it so allowing more text rows in a window");
 
 
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reduce_menu_width_half,NULL,"Reduce menu width to half");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Reducir ancho menú a la mitad","Reduir ample menú a la meitat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_reduce_menu_ancho==2 ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Reduce menu width to half");
+        menu_add_item_menu_ayuda(array_menu_common,"Reduce menu width to half");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
-
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reduce_menu_height_half,NULL,"Reduce menu height to half");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Reducir alto menú a la mitad","Reduir alt menú a la meitat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_reduce_menu_alto==2 ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Reduce menu height to half");
+        menu_add_item_menu_ayuda(array_menu_common,"Reduce menu height to half");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_separator(array_menu_common);
 

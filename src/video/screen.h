@@ -302,6 +302,8 @@ extern z80_bit screen_reduce_075_050_antialias;
 
 extern z80_bit screen_keep_both_zoom_equals;
 
+extern int screen_reduce_menu_ancho;
+extern int screen_reduce_menu_alto;
 
 //normalmente a 8
 extern int screen_invisible_borde_superior;

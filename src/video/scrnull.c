@@ -91,13 +91,13 @@ void scrnull_detectedchar_print(z80_byte caracter)
 //Estos valores no deben ser mayores de OVERLAY_SCREEN_MAX_WIDTH y OVERLAY_SCREEN_MAX_HEIGTH
 int scrnull_get_menu_width(void)
 {
-        return 32;
+        return 32/screen_reduce_menu_ancho;
 }
 
 
 int scrnull_get_menu_height(void)
 {
-        return 24;
+        return 24/screen_reduce_menu_alto;
 }
 
 /*

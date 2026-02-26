@@ -1610,7 +1610,7 @@ int scrsdl_get_menu_width(void)
 
         max +=screen_get_ext_desktop_width_no_zoom();
 
-        max=max/menu_char_width/menu_gui_zoom;
+        max=max/menu_char_width/menu_gui_zoom/screen_reduce_menu_ancho;
 
 
         if (max>OVERLAY_SCREEN_MAX_WIDTH) max=OVERLAY_SCREEN_MAX_WIDTH;
@@ -1627,7 +1627,7 @@ int scrsdl_get_menu_height(void)
 
         max +=screen_get_ext_desktop_height_no_zoom();
 
-        max=max/menu_char_height/menu_gui_zoom;
+        max=max/menu_char_height/menu_gui_zoom/screen_reduce_menu_alto;
 
         if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 

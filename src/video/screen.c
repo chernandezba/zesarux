@@ -116,6 +116,10 @@ z80_bit screen_reduce_075_050_antialias={1};
 //Si se debe mantener siempre zoom_x=zoom_y
 z80_bit screen_keep_both_zoom_equals={1};
 
+//Se divide el tamaño por estos valores
+//Poner a 2 por ejemplo para hacer que se tenga la mitad de ancho y/o alto
+int screen_reduce_menu_ancho=1;
+int screen_reduce_menu_alto=1;
 
 int screen_reduce_offset_x=0;
 int screen_reduce_offset_y=0;

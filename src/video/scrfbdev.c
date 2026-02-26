@@ -1877,7 +1877,7 @@ void scrfbdev_detectedchar_print(z80_byte caracter)
 //Estos valores no deben ser mayores de OVERLAY_SCREEN_MAX_WIDTH y OVERLAY_SCREEN_MAX_HEIGTH
 int scrfbdev_get_menu_width(void)
 {
-        int max=screen_get_emulated_display_width_no_zoom_border_en()/menu_char_width/menu_gui_zoom;
+        int max=screen_get_emulated_display_width_no_zoom_border_en()/menu_char_width/menu_gui_zoom/screen_reduce_menu_ancho;
         if (max>OVERLAY_SCREEN_MAX_WIDTH) max=OVERLAY_SCREEN_MAX_WIDTH;
 
                 //printf ("max x: %d %d\n",max,screen_get_emulated_display_width_no_zoom_border_en());
@@ -1888,7 +1888,7 @@ int scrfbdev_get_menu_width(void)
 
 int scrfbdev_get_menu_height(void)
 {
-        int max=screen_get_emulated_display_height_no_zoom_border_en()/8/menu_gui_zoom;
+        int max=screen_get_emulated_display_height_no_zoom_border_en()/8/menu_gui_zoom/screen_reduce_menu_alto;
         if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
                 //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
