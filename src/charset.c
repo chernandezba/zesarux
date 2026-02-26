@@ -119,9 +119,9 @@ void charset_generate_zesarux_tiny(void)
     int origen=0;
     int destino=0;
 
-    //De momento solo hay hasta caracter 127
+    //TODO De momento no estan todos los caracteres
     //for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
-    for (i=32;i<=127;i++) {
+    for (i=32;i<=129;i++) {
         printf("i: %d\n",i);
         int linea;
         for (linea=0;linea<5;linea++) {
@@ -4681,6 +4681,153 @@ char *charset_icons_text[]={
 "x x",
 "x x",
 "xxx",
+
+
+
+
+//caracter adicional para menu - franja de color de spectrum. 128
+"  x",
+"  x",
+" xx",
+" xx",
+"xxx",
+
+
+//129 enye minuscula
+"xxx",
+"   ",
+" x ",
+"x x",
+"x x",
+
+
+//CYRILLIC SMALL LETTER I и. 130
+
+
+//Cyrillic Ш - 131
+
+
+//Cyrillic л - 132
+
+
+//Cyrillic г - 133
+
+
+//Cyrillic ч - 134
+
+
+//Cyrillic д - 135
+
+
+//Cyrillic я - 136
+
+
+//Letra minuscula r con anzuelo ɾ - 137
+
+
+//Greek Small Letter Theta θ - 138
+
+
+//Caracter boton cierre BeOS - 139
+
+
+//Caracter boton cierre  - 140
+
+
+//Caracter logo apple - 141
+
+
+//á a acentuada - 142
+
+
+//é e acentuada - 143
+
+
+//í i acentuada - 144
+
+
+//ó o acentuada - 145
+
+
+//ú u acentuada - 146
+
+
+//Ñ enye mayuscula - 147
+
+
+//Caracter fondo titulo estilo AtariTOS - 148
+
+
+//Caracter enviar a background estilo ZEsarUX plus - 149
+
+
+//Caracter minimizar estilo AtariTOS - 150
+
+
+//Caracter restaurar estilo AtariTOS - 151
+
+
+//Caracter maximizar estilo AtariTOS - 152
+
+
+//Caracter franjas verticales colores titulo - 153
+
+
+//Caracter boton cierre estilo ZEsarUX plus - 154
+
+
+//Caracter boton cierre estilo Risc OS - 155
+
+
+//Caracter boton background estilo Risc OS - 156
+
+
+//Caracter boton maximizar y restaurar estilo Risc OS - 157
+
+
+//Cedilla 158
+
+
+//à a acentuada abierta - 159
+
+
+//è e acentuada abierta - 160
+
+
+//ò o acentuada abierta - 161
+
+
+//ü u con dieresis 162
+
+
+//flecha abajo, para botones extender zx desktop - 163
+
+//flecha arriba, para botones extender zx desktop - 164
+
+//flecha derecha, para botones extender zx desktop - 165
+
+//flecha izquierda, para botones extender zx desktop - 166
+
+
+//ï i con dieresis - 167
+
+
+//Á A mayúscula acento cerrado - 168
+
+
+//Caracter boton minimizar QNX - 169
+
+
+//Caracter boton cierre QNX - 170
+
+
+//Caracter minimizar estilo ZEsarUX plus - 171
+
+
+//Caracter maximizar estilo ZEsarUX plus - 172
+
+
+//Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
 
 
 };
