@@ -109,10 +109,6 @@ eso se envía en las estadísticas
 
 -warnings en audio/audiocoreaudio.c
 
--poder usar tipo de letra de los iconos en el menu. cuando se active char width a 4
-->pero habria que implementar tambien acentos, eñes, etc. El problema no son acentos (se podria pasar a caracteres sin acentos) sino que
-hay que implementar tambien los caracteres de botones de ventana por ejemplo
-
 
 -tooltips en botones superiores y en dispositivos inferiores, y en botones de ventanas. Hacer de manera parecida a como aparece top menu
 ok *si el tooltip sale por la derecha, que desplace texto
@@ -123,7 +119,7 @@ ok *comprobar que si no se mueve raton y ha pasado el timeout, no se quede conti
 *quiza que se active con menos tiempo que 4 segundos?
 ok *si botones superiores reasignados, cambiar tooltip
 
--incorporar otro charset de man software
+ok -incorporar otro charset de man software
 
 -charsets de 4x6
 ok *nuevo estilo gui que use tipografia tiny. "ZEsarUX Tiny"
