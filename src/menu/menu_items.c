@@ -31456,8 +31456,8 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
             menu_add_item_menu(array_menu_common,"SPG ~~loader (from unrealspeccy)",MENU_OPCION_NORMAL,menu_about_license_unrealspeccy,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'l');
 
-            menu_add_item_menu(array_menu_common,"Tom Thumb Charset",MENU_OPCION_NORMAL,menu_about_license_tom_thumb_charset,NULL);
-            menu_add_item_menu_shortcut(array_menu_common,'t');
+            menu_add_item_menu(array_menu_common,"Tom Thum~~b Charset",MENU_OPCION_NORMAL,menu_about_license_tom_thumb_charset,NULL);
+            menu_add_item_menu_shortcut(array_menu_common,'b');
 
             menu_add_item_menu(array_menu_common,"~~undaad",MENU_OPCION_NORMAL,menu_about_license_undaad,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'u');
