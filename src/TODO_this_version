@@ -116,6 +116,4 @@ Y/o quizá definir tooltips más extensos para todos los iconos
 Así también al agregar icono nuevo, en la lista, se puede poner tooltip de menú con la info del icono
 
 -charsets de 4x6
-ok *nuevo estilo gui que use tipografia tiny. "ZEsarUX Tiny"
-ok *tooltips mouse usar tipografia tinty
-ok *meter entrada en changelog
+*tema gui de pico-8 que use fuente tom thumb
