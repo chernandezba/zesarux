@@ -41,6 +41,7 @@ extern unsigned char char_set_beos[];
 extern unsigned char char_set_dos[];
 extern unsigned char char_set_templeos[];
 extern unsigned char char_set_zesarux_tiny[];
+extern unsigned char char_set_tom_thumb[];
 extern unsigned char char_set_customfile[];
 
 extern char char_set_customfile_path[];

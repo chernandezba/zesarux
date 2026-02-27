@@ -3288,6 +3288,24 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
         saltar_pixeles_size4[3]=7;
     }
 
+    if (char_set==char_set_tom_thumb) {
+        saltar_pixeles_size7=7;
+
+        saltar_pixeles_size6[0]=6;
+        saltar_pixeles_size6[1]=7;
+
+        saltar_pixeles_size5[0]=5;
+        saltar_pixeles_size5[1]=6;
+        saltar_pixeles_size5[2]=7;
+
+        saltar_pixeles_size4[0]=4;
+        saltar_pixeles_size4[1]=5;
+        saltar_pixeles_size4[2]=6;
+        saltar_pixeles_size4[3]=7;
+    }
+
+
+
 	//Los demas se ajustan bien al escalado por defecto
 
 
@@ -3360,6 +3378,14 @@ int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
     }
 
     if (char_set==char_set_zesarux_tiny) {
+        saltar_pixeles_size7=7;
+
+        saltar_pixeles_size6[0]=6;
+        saltar_pixeles_size6[1]=7;
+    }
+
+
+    if (char_set==char_set_tom_thumb) {
         saltar_pixeles_size7=7;
 
         saltar_pixeles_size6[0]=6;
