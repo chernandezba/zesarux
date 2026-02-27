@@ -4305,8 +4305,9 @@ unsigned char char_set_templeos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0x00,0x7E,0x04,0x08,0x10,0x20,0x7E,0x00,
 };
 
-//Los caracteres 32-127 salen del charset original
-//Los restantes, se copiaron desde zesarux_tiny
+//Los caracteres 32-127 salen del charset original. Son 3x6, rellenando dos bytes en blanco para hacerlo 8 de alto
+//La mayoria de letras no usan la sexta linea de pixeles, a excepción de alguna letra como la "p", la "q" o la "y" por poner algun ejemplo
+//Caracteres 128 en adelante se copiaron desde zesarux_tiny
 unsigned char char_set_tom_thumb[]={
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, //32
 0x40,0x40,0x40,0x00,0x40,0x00,0x00,0x00,
@@ -4459,6 +4460,9 @@ unsigned char char_set_tom_thumb[]={
 //Este es el charset_icons_text convertido al formato normal
 unsigned char char_set_zesarux_tiny[TOTAL_ASCII_CHARSET_ELEMENTS];
 
+
+//De este charset definido con strings se genera char_set_zesarux_tiny
+//Si hay que agregar nuevas letras, hay que hacerlo en este charset_icons_text
 char *charset_icons_text[]={
 
 //32
