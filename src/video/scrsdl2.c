@@ -344,7 +344,12 @@ void scrsdl_refresca_pantalla_solo_driver(void)
         //alto=scr_sdl_force_size_height;
     }
 
-    SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho * 4);
+    if (scr_sdl_8bits_color.v) {
+        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho);
+    }
+    else {
+        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho * 4);
+    }
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, scrsdl_texture, NULL, NULL);
     SDL_RenderPresent(renderer);
