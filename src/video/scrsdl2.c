@@ -117,9 +117,14 @@ int scrsdl_crea_ventana(void)
 
     SDL_SetWindowTitle(window,"ZEsarUX "EMULATOR_VERSION);
 
+    if (scr_sdl_8bits_color.v) {
+        scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB332, SDL_TEXTUREACCESS_STATIC, ancho, alto);
+    }
 
-    scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, alto);
-    //Uint32 *pixels = new Uint32[screen_get_window_size_width_zoom_border_en() * screen_get_window_size_height_zoom_border_en()];
+    else {
+        scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, alto);
+    }
+
     scrsdl_pixeles=malloc(ancho * alto *4);
 
 
@@ -148,6 +153,32 @@ void scrsdl_destruye_ventana(void)
     window=NULL;
 }
 
+//Putpixel RGB 8 bit
+void scrsdl_putpixel_final_rgb8(int x,int y,unsigned int color_rgb)
+{
+    int ancho=screen_get_window_size_width_zoom_border_en();
+    ancho +=screen_get_ext_desktop_width_zoom();
+
+    //controlar limites x,y
+    if (scr_sdl_force_size.v) {
+        ancho=scr_sdl_force_size_width;
+        int alto=scr_sdl_force_size_height;
+        if (x>=ancho || y>=alto) return;
+    }
+
+    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x);
+
+
+    //Usamos color rgb 8 bits: 3 bits Red, 3 bits Green, 2 bits Blue : RRRGGGBB
+    unsigned char r,g,b;
+    r=(color_rgb>>16) & 0xE0; //Mascara 11100000
+    g=(color_rgb>>11) & 0x1C; //Mascara 00011100
+    b=(color_rgb>> 6) & 0x03; //Mascara 00000011
+
+    *p = (r|g|b);
+}
+
+//Putpixel RGB 32 bit
 void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
     int ancho=screen_get_window_size_width_zoom_border_en();
@@ -1955,7 +1986,13 @@ int scrsdl_init (void) {
         //Inicializaciones necesarias
         scr_putpixel=scrsdl_putpixel;
         scr_putpixel_final=scrsdl_putpixel_final;
-        scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
+
+        if (scr_sdl_8bits_color.v) {
+            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb8;
+        }
+        else {
+            scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
+        }
 
         scr_get_menu_width=scrsdl_get_menu_width;
         scr_get_menu_height=scrsdl_get_menu_height;
