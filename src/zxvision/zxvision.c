@@ -2592,7 +2592,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         RISCOS_COLOUR_DARKBLUE,7+8, 		//Colores para opcion seleccionada
         7+8,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_RED, 	//Colores para opcion no disponible
 
-        RISCOS_COLOUR_RED,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana
+        PICO8_COLOR_LIGHT_PINK,PICO8_COLOR_MAGENTA,        	//Colores para el titulo ventana
         RISCOS_COLOUR_LIGHTBLUE,              //Color recuadro
         RISCOS_COLOUR_ORANGE,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana inactiva
 

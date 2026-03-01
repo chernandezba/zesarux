@@ -581,6 +581,42 @@ const int qnx_colortable_original[QNX_TOTAL_PALETTE_COLOURS]={
     0x8c8c8c //titulo ventana inactiva papel
 };
 
+const int pico8_colortable_original[PICO8_PALETTE_COLOURS]={
+0x000000,	//0, 0, 0	black
+0x1D2B53,	//29, 43, 83	dark-blue
+0x7E2553,	//126, 37, 83	dark-purple
+0x008751,	//0, 135, 81	dark-green
+0xAB5236,	//171, 82, 54	brown
+0x5F574F,	//95, 87, 79	dark-grey
+0xC2C3C7,	//194, 195, 199	light-grey
+0xFFF1E8,	//255, 241, 232	white
+0xFF004D,	//255, 0, 77	red
+0xFFA300,	//255, 163, 0	orange
+0xFFEC27,	//255, 236, 39	yellow
+0x00E436,	//0, 228, 54	green
+0x29ADFF,	//41, 173, 255	blue
+0x83769C,	//131, 118, 156	lavender
+0xFF77A8,	//255, 119, 168	pink
+0xFFCCAA,	//255, 204, 170	light-peach
+//Los siguientes son de picotron
+0x2463B0,	//36,99,176	true-blue
+0x00A5A1,	//0,165,161	teal
+0x654688,	//101,70,136	purple
+0x125359,	//18,83,89	dark-teal
+0x742F29,	//116,47,41	dark-brown
+0x452D32,	//69,45,50	darker-grey
+0xA28879,	//162,136,121	medium-grey
+0xFFACC5,	//255,172,197	light-pink
+0xB9003E,	//185,0,62	dark-red
+0xE26B02,	//226,107,2	dark-orange
+0x95F042,	//149,240,66	lime-green
+0x00B251,	//0,178,81	medium-green
+0x64DFF6,	//100,223,246	light-blue
+0xBD9ADF,	//189,154,223	mauve
+0xE40DAB,	//228,13,171	magenta
+0xFF8557	//255,133,87	peach
+};
+
 //Tabla con los colores extra del Spectra.
 //Valores para intensidades de color:
 /*
@@ -9934,6 +9970,11 @@ Bit 6 GRN1 most  significant bit of green.
     //Colores QNX
     for (i=0;i<QNX_TOTAL_PALETTE_COLOURS;i++) {
         screen_set_colour_normal(QNX_INDEX_FIRST_COLOR+i,qnx_colortable_original[i]);
+    }
+
+    //Colores Pico-8
+    for (i=0;i<PICO8_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(PICO8_FIRST_COLOR+i,pico8_colortable_original[i]);
     }
 
 		//}
