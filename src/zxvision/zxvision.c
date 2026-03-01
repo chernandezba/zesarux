@@ -1731,38 +1731,10 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         5, //-1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_ataritos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
-    {1,"ZEsarUX Tiny",AMIGAOS_COLOUR_blue,ZESARUX_PLUS_COLOUR_WHITE,
-        0,1,1,0, 		//No mostrar cursor,mostrar recuadro,mostrar rainbow
-        5+8,0, 		//Colores para opcion seleccionada
-        AMIGAOS_COLOUR_blue,AMIGAOS_COLOUR_red,5+8,AMIGAOS_COLOUR_red, 	//Colores para opcion no disponible
-
-        0,ZESARUX_PLUS_COLOUR_WHITE,        	//Colores para el titulo ventana
-        0,              //Color recuadro
-        ZESARUX_PLUS_COLOUR_WHITE,OSDOS_COLOUR_GRAY_INACTIVE,        	//Colores para el titulo ventana inactiva
-
-        4,4+8,		//Colores waveform
-        7,		//Color para zona no usada en visualmem
-        7,      //color block visualtape
-        2,ZESARUX_PLUS_COLOUR_WHITE,		//Color para opcion marcada
-
-        ZESARUX_PLUS_COLOUR_FILESELECTOR,0, //Colores fileselector, zona seleccion archivos
-
-        154, //caracter de cerrar ventana
-        171, //caracter de minimizar ventana
-        172, //caracter de maximizar ventana
-        '=', //caracter de restaurar ventana
-        149, //caracter de background ventana
-        ' ', //caracter de fondo de titulo
-        2+8, //color de aviso
-        colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
-        5, //-1, //si texto inverso solo cambia color tinta
-        0, //rellenar titulo
-        char_set_zesarux_tiny,
-        153 //caracter franja cambiado
-    },
 
 
     {0,"ZEsarUX",7+8,0,
@@ -1792,7 +1764,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     //Tema igual que ZEsarUX pero sin brillo. Y con color de visualmem cambiado
@@ -1824,7 +1797,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
 
@@ -1856,7 +1830,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"ManSoftware",7+8,0,
@@ -1886,7 +1861,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_mansoftware,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
 
@@ -1917,7 +1893,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_cpc,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
         //Solo vale en video driver completo por los colores usados (primer valor de la estructura)
@@ -1948,7 +1925,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_msx,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {0,"QL",7+8,0,
@@ -1978,7 +1956,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_ql,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"Sam",7+8,0,
@@ -2008,7 +1987,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_sam,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {1,"Z88",Z88_PXCOLOFF,Z88_PXCOLON,
@@ -2038,7 +2018,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_z88,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"ZX80/81",7+8,0,
@@ -2068,7 +2049,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {1,"AmigaOS",AMIGAOS_COLOUR_blue,7+8,
@@ -2098,7 +2080,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_amigaos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {1,"AtariTOS",ATARITOS_COLOUR_white,0,
@@ -2128,7 +2111,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_ataritos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {1,"BeOS",BEOS_COLOUR_grey_menu,0,
@@ -2158,7 +2142,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         BEOS_COLOUR_blue_hotkey, //si texto inverso solo cambia color tinta
         1, //NO rellenar titulo
         char_set_beos,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
 
@@ -2189,7 +2174,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {1,"QNX",QNX_COLOUR_GRAY,0,
@@ -2219,7 +2205,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         QNX_COLOUR_GREEN, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_beos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {1,"RetroMac",RETROMAC_COLOUR_paper,0,
@@ -2249,7 +2236,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         5, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_retromac,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     //Risc Os V.1 ("Arthur")
@@ -2284,7 +2272,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //-1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {0,"TempleOS",7+8,1,
@@ -2314,7 +2303,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_templeos,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"Borland",1,7+8,
@@ -2344,7 +2334,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         2+8, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {1,"TurboVision",TURBOVISION_COLOUR_white,TURBOVISION_COLOUR_black,
@@ -2374,7 +2365,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         TURBOVISION_COLOUR_red, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_dos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     {0,"Bloody",2,7,
@@ -2404,7 +2396,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"Grass",4,0,
@@ -2434,7 +2427,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"Ocean",1,7,
@@ -2464,7 +2458,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"Panther",3,7,
@@ -2494,7 +2489,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"Sky",5,0,
@@ -2524,7 +2520,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"Sunny",6,0,
@@ -2554,7 +2551,75 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
+    },
+
+    {1,"ZEsarUX Tiny",AMIGAOS_COLOUR_blue,ZESARUX_PLUS_COLOUR_WHITE,
+        0,1,1,0, 		//No mostrar cursor,mostrar recuadro,mostrar rainbow
+        5+8,0, 		//Colores para opcion seleccionada
+        AMIGAOS_COLOUR_blue,AMIGAOS_COLOUR_red,5+8,AMIGAOS_COLOUR_red, 	//Colores para opcion no disponible
+
+        0,ZESARUX_PLUS_COLOUR_WHITE,        	//Colores para el titulo ventana
+        0,              //Color recuadro
+        ZESARUX_PLUS_COLOUR_WHITE,OSDOS_COLOUR_GRAY_INACTIVE,        	//Colores para el titulo ventana inactiva
+
+        4,4+8,		//Colores waveform
+        7,		//Color para zona no usada en visualmem
+        7,      //color block visualtape
+        2,ZESARUX_PLUS_COLOUR_WHITE,		//Color para opcion marcada
+
+        ZESARUX_PLUS_COLOUR_FILESELECTOR,0, //Colores fileselector, zona seleccion archivos
+
+        154, //caracter de cerrar ventana
+        171, //caracter de minimizar ventana
+        172, //caracter de maximizar ventana
+        '=', //caracter de restaurar ventana
+        149, //caracter de background ventana
+        ' ', //caracter de fondo de titulo
+        2+8, //color de aviso
+        colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
+        5, //-1, //si texto inverso solo cambia color tinta
+        0, //rellenar titulo
+        char_set_zesarux_tiny,
+        153, //caracter franja cambiado
+        4,6
+    },
+
+
+    {1,"Pico-8",7+8,RISCOS_COLOUR_DARKBLUE,
+        0,1,0,0, 		//No mostrar cursor,mostrar recuadro,no mostrar rainbow
+        RISCOS_COLOUR_DARKBLUE,7+8, 		//Colores para opcion seleccionada
+        7+8,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_RED, 	//Colores para opcion no disponible
+
+        RISCOS_COLOUR_RED,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana
+        RISCOS_COLOUR_LIGHTBLUE,              //Color recuadro
+        RISCOS_COLOUR_ORANGE,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana inactiva
+
+        4,4+8,		//Colores waveform
+        7,		//Color para zona no usada en visualmem
+        7,      //color block visualtape
+        RISCOS_COLOUR_RED,7+8,		//Color para opcion marcada
+
+        7,0, //Colores fileselector, zona seleccion archivos
+
+        155, //caracter de cerrar ventana
+        '-', //caracter de minimizar ventana
+
+        //En RiscOS originalmente tiene la misma apariencia el botón de maximizar y el de restaurar
+        //aquí, para que no sea confuso, utilizo dos diferentes
+        152, //caracter de maximizar ventana
+        157, //caracter de restaurar ventana
+
+        156, //caracter de background ventana
+        ' ', //caracter de fondo de titulo
+        2+8, //color de aviso
+        colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
+        -1, //-1, //si texto inverso solo cambia color tinta
+        0, //rellenar titulo
+        char_set_tom_thumb,
+        153, //caracter franja cambiado
+        4,6
     },
 
     {0,"Clean",7,0,
@@ -2584,7 +2649,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     {0,"CleanInverse",0,7,
@@ -2614,7 +2680,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_spectrum,
-        0 //caracter franja normal
+        0, //caracter franja normal
+        8,8
     },
 
     // https://ethanschoonover.com/solarized/. Solo vale en video driver completo por los colores usados (primer valor de la estructura)
@@ -2646,7 +2713,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_ataritos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     },
 
     //Solo vale en video driver completo por los colores usados (primer valor de la estructura)
@@ -2678,7 +2746,8 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         -1, //si texto inverso solo cambia color tinta
         0, //rellenar titulo
         char_set_ataritos,
-        153 //caracter franja cambiado
+        153, //caracter franja cambiado
+        8,8
     }
 
 

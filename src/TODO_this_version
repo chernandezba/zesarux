@@ -115,7 +115,6 @@ eso se envía en las estadísticas
 Y/o quizá definir tooltips más extensos para todos los iconos
 Así también al agregar icono nuevo, en la lista, se puede poner tooltip de menú con la info del icono
 
--charsets de 4x6
-*tema gui de pico-8 o picotron que use fuente tom thumb. ver https://arnaught.neocities.org/blog/2025/03/14/year-of-the-picotron-desktop
 
--fadeout en sdl2 con modo de color 8 bit no se ve bien
+-tema gui de pico-8 o picotron que use fuente tom thumb. ver https://arnaught.neocities.org/blog/2025/03/14/year-of-the-picotron-desktop
+*de momento solo definicion tema sin colores finales

@@ -18,14 +18,14 @@ el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos
 -watermark sin realvideo no hace zoom. importante???
 
 
--sdl2 peta con easter-egg en linux
 
--Drag drop con menú abierto en sdl2 no parece funcionar bien
+
+-Soportar azerty en Sdl, en Cocoa, fbdev
 
 
 -Contador fps cuando speed es 200% debería mostrar 100 fps
 
--Soportar azerty en Sdl, en Cocoa, fbdev
+
 
 -OCR con colores y codigos ansi? para F4 y ZRCP
 
@@ -45,7 +45,7 @@ http://www.worldofspectrum.org/forums/discussion/44669/clashbasher-a-new-interfa
 
 -Splash en drivers stdout? -> no tiene sentido
 
--Pantalla completa con resolución menor de lo habitual en sdl peta con seg fault
+
 
 -Poder activar dos drivers de video a la vez, en especial un grafico (sdl, x11) y otro de texto (stdout o simpletext).
 
@@ -166,3 +166,15 @@ Ver funcion prueba_scrcurses_putchar_zx8081
 
 -x11: poder implementar X11_KeyRepeat de SDL1.2 para eliminar lectura de teclas repetidas
 de momento esto afecta a zeng online y se solventa con zoc_keys_tecla_repetida
+
+
+
+--sdl---
+
+-fadeout en sdl2 con modo de color 8 bit no se ve bien
+
+-sdl2 peta con easter-egg en linux
+
+-Drag drop con menú abierto en sdl2 no parece funcionar bien
+
+-Pantalla completa con resolución menor de lo habitual en sdl peta con seg fault

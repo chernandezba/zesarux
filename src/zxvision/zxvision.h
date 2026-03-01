@@ -1516,12 +1516,15 @@ struct s_estilos_gui {
     //tipo franjas: 0 normal, diferente de 0 indica que caracter usar
     z80_byte caracter_franja;
 
+    //tamaños de fuente preferidos
+    int char_width,char_height;
+
 };
 
 typedef struct s_estilos_gui estilos_gui;
 
 
-#define ESTILOS_GUI 32
+#define ESTILOS_GUI 33
 
 
 

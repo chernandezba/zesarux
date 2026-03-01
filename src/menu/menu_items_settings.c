@@ -2017,6 +2017,13 @@ void menu_interface_change_gui_style(MENU_ITEM_PARAMETERS)
                         conteo_items_menus++;
                     }
 
+                    if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"ZEsarUX Tiny")) {
+                        menu_add_item_menu_separator(array_menu_common);
+                        conteo_items_menus++;
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Tiny styles--");
+                        conteo_items_menus++;
+                    }
+
                     if (!strcasecmp(definiciones_estilos_gui[i].nombre_estilo,"Clean")) {
                         menu_add_item_menu_separator(array_menu_common);
                         conteo_items_menus++;
