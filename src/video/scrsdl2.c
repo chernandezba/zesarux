@@ -1988,7 +1988,7 @@ int scrsdl_init (void) {
         scr_putpixel_final=scrsdl_putpixel_final;
 
         if (scr_sdl_8bits_color.v) {
-            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb8;
+            scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb8;
         }
         else {
             scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
