@@ -501,3 +501,4 @@ z80_bit scr_sdl_8bits_color={0};
 z80_bit scr_sdl_force_size={0};
 int scr_sdl_force_size_width=800;
 int scr_sdl_force_size_height=600;
+z80_bit scr_sdl_hwsurface={0};

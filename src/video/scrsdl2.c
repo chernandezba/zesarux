@@ -96,8 +96,6 @@ int scrsdl_crea_ventana(void)
     if (scr_sdl_force_size.v) {
         ancho=scr_sdl_force_size_width;
         alto=scr_sdl_force_size_height;
-        //En FiwixOS este flag es necesario, tendrá que ver con el uso que hace SDL de la vgalib
-        //flags=SDL_HWSURFACE;
     }
 
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );

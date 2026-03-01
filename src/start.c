@@ -919,6 +919,7 @@ printf (
         "--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n"
         "--sdl-8bit-color            SDL use 8 bit color palette\n"
         "--sdl-force-win-size w h    SDL force window size to width (w) and heigth (h)\n"
+        "--sdl-hwsurface             SDL surface is stored in video memory instead of system memory\n"
 
 
         );
@@ -6193,6 +6194,10 @@ int parse_cmdline_options(int desde_commandline) {
                 scr_sdl_force_size_height=parse_string_to_number(argv[puntero_parametro]);
 
                 scr_sdl_force_size.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--sdl-hwsurface")) {
+                scr_sdl_hwsurface.v=1;
             }
 
             //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
