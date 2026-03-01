@@ -93,6 +93,13 @@ int scrsdl_crea_ventana(void)
     int alto=screen_get_window_size_height_zoom_border_en();
     alto +=screen_get_ext_desktop_height_zoom();
 
+    if (scr_sdl_force_size.v) {
+        ancho_ventana=scr_sdl_force_size_width;
+        alto_ventana=scr_sdl_force_size_height;
+        //En FiwixOS este flag es necesario, tendrá que ver con el uso que hace SDL de la vgalib
+        flags=SDL_HWSURFACE;
+    }
+
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
     if (SDL_CreateWindowAndRenderer(ancho,alto, flags, &window, &renderer)!=0) return 1;
@@ -147,6 +154,14 @@ void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
+
+    //controlar limites x,y
+    if (scr_sdl_force_size.v) {
+        ancho=scr_sdl_force_size_width;
+        alto=scr_sdl_force_size_height;
+        if (x>=ancho || y>=alto) return;
+    }
+
     Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x) * 4;
 
 
@@ -293,6 +308,12 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
+
+    //controlar limites x,y
+    if (scr_sdl_force_size.v) {
+        ancho=scr_sdl_force_size_width;
+        alto=scr_sdl_force_size_height;
+    }
 
     SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho * 4);
     SDL_RenderClear(renderer);
