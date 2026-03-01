@@ -1828,6 +1828,10 @@ void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS)
 void menu_interface_change_gui_style_select(struct s_menu_item *item_seleccionado)
 {
 
+    menu_char_width=definiciones_estilos_gui[item_seleccionado->valor_opcion].char_width;
+    menu_char_height=definiciones_estilos_gui[item_seleccionado->valor_opcion].char_height;
+
+
     zxvision_change_gui_style_select_id(item_seleccionado->valor_opcion);
 
 }
