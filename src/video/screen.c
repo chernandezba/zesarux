@@ -10130,6 +10130,12 @@ void scr_fadeout(void)
 	//en aalib va muy lento y no se por que. no hacerlo
 	if (!strcmp(scr_new_driver_name,"aa"))  return;
 
+    //En sdl2 con modo de color 8 bit no lo hace bien. No acabo de entender por que
+#ifdef COMPILE_SDL2
+    if (!strcmp(scr_new_driver_name,"sdl") && scr_sdl_8bits_color.v)  return;
+#endif
+
+
 	//Si tiene gigascreen, quitar, sino hace un efecto extranyo
 	disable_gigascreen();
 	disable_interlace();
