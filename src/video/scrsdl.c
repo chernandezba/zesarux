@@ -142,6 +142,12 @@ void scrsdl_putpixel_final_rgb_32(int x,int y,unsigned int color_rgb)
 {
     Uint8 *p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x * 4;
 
+    //controlar limites x,y
+    if (scr_sdl_force_size.v) {
+        int ancho=scr_sdl_force_size_width;
+        int alto=scr_sdl_force_size_height;
+        if (x>=ancho || y>=alto) return;
+    }
 
     //escribir de golpe los 32 bits.
 
