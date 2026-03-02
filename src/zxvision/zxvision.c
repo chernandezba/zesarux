@@ -8451,11 +8451,11 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
         int icono=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
 
-        printf ("En Icon %d mouse\n",icono);
+        //printf ("En Icon %d mouse\n",icono);
 
         //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
         if (icono>=0) {
-            printf ("Icon %d mouse\n",icono);
+            //printf ("Icon %d mouse\n",icono);
 
             tooltip->direccion_tooltip=-1;
             tooltip->id_tooltip=icono;
@@ -8511,7 +8511,7 @@ void tooltips_mouse_timer_event(void)
             return;
         }
 
-        printf("timer %d\n",tooltips_mouse_frames_counter);
+        //printf("timer %d\n",tooltips_mouse_frames_counter);
 
         tooltips_mouse_frames_counter++;
         if (tooltips_mouse_frames_counter<TOOLTIP_MOUSE_SECONDS*50) {
@@ -8527,17 +8527,17 @@ void tooltips_mouse_timer_event(void)
     }
 
     else {
-        printf("timer %d\n",tooltips_mouse_frames_counter);
+        //printf("timer %d\n",tooltips_mouse_frames_counter);
 
         tooltips_mouse_timer_bloqueo_incremento=0;
         tooltips_mouse_frames_counter=0;
         //Si se mueve y no estaba activo, esperar a contador
         if (!tooltip_mouse_visible.v && tooltips_mouse_frames_counter<TOOLTIP_MOUSE_SECONDS*50) {
             //Borrar el anterior
-            printf("movido, no llega a contador, desactivamos %d\n",contador_segundo);
+            //printf("movido, no llega a contador, desactivamos %d\n",contador_segundo);
             if (tooltips_mouse_id_ultimo_tooltip>=0) {
                 //TODO: creo que aqui no entra nunca...
-                printf("movido, no llega a contador, borramos el anterior----------- %d\n",contador_segundo);
+                printf("--movido, no llega a contador, borramos el anterior----------- %d\n",contador_segundo);
                 tooltips_mouse_timer_event_redraw();
             }
             tooltip_mouse_visible.v=0;
@@ -8548,7 +8548,7 @@ void tooltips_mouse_timer_event(void)
 
     //tooltips_mouse_frames_counter=0;
 
-    printf("Looking for tooltip on mouse position %d\n",contador_segundo);
+    //printf("Looking for tooltip on mouse position %d\n",contador_segundo);
 
     //Tanto si encuentra como si no, bloqueamos incremento contador
     tooltips_mouse_timer_bloqueo_incremento=1;
@@ -8558,6 +8558,7 @@ void tooltips_mouse_timer_event(void)
 
     if (tooltip.id_tooltip<0) {
         //Si estaba visible, quitar
+        printf("--Quitar tooltip\n");
         if (tooltip_mouse_visible.v) {
             tooltips_mouse_timer_event_redraw();
         }
@@ -8575,7 +8576,7 @@ void tooltips_mouse_timer_event(void)
     //printf("tooltip.id_tooltip %d\n",tooltip.id_tooltip);
 
     if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip || tooltips_mouse_tipo_ultimo_tooltip!=tooltip.tipo_tooltip) {
-        printf("Cambia el anterior tooltip o no habia antes (%d %d)\n",tooltips_mouse_id_ultimo_tooltip,tooltip.id_tooltip);
+        printf("--Cambia el anterior tooltip o no habia antes (%d %d)\n",tooltips_mouse_id_ultimo_tooltip,tooltip.id_tooltip);
         //Borrar el anterior
         if (tooltips_mouse_id_ultimo_tooltip>=0) {
             tooltips_mouse_timer_event_redraw();
@@ -8624,7 +8625,7 @@ void tooltips_mouse_timer_event(void)
         }
 
         if (tooltip.tipo_tooltip==TOOLTIP_MOUSE_TIPO_ICONOS) {
-            printf("tooltip icono\n");
+            //printf("tooltip icono\n");
             tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
 
             tooltips_mouse_ultima_pos_y_tooltip=get_pos_y_pixel_mouse_tooltip_mouse();
