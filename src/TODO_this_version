@@ -117,7 +117,6 @@ Así también al agregar icono nuevo, en la lista, se puede poner tooltip de men
 
 
 -tema gui de pico-8 o picotron que use fuente tom thumb. ver https://arnaught.neocities.org/blog/2025/03/14/year-of-the-picotron-desktop
-*de momento solo definicion tema sin colores finales
+ok *de momento solo definicion tema sin colores finales
 *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
 
--al pasar de tema de poco ancho a otro , la ventana se sale de su sitio, tendria que recalcularse
