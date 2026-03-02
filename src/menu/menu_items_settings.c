@@ -1827,9 +1827,33 @@ void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS)
 //Al seleccionar un estilo, sin tener que pulsar enter, se aplica sobre la marcha
 void menu_interface_change_gui_style_select(struct s_menu_item *item_seleccionado)
 {
+    //un poco de magia para reubicar la ventana en mismo sitio pese a cambios en char width
+    int pos_x_pixeles=-1;
+    int pos_y_pixeles=-1;
+
+    if (zxvision_current_window!=NULL) {
+        pos_x_pixeles=zxvision_current_window->x*menu_char_width;
+        pos_y_pixeles=zxvision_current_window->y*menu_char_height;
+    }
+
 
     menu_char_width=definiciones_estilos_gui[item_seleccionado->valor_opcion].char_width;
     menu_char_height=definiciones_estilos_gui[item_seleccionado->valor_opcion].char_height;
+
+    if (pos_x_pixeles>=0 && pos_y_pixeles>=0) {
+        int nueva_x=pos_x_pixeles/menu_char_width;
+        int nueva_y=pos_y_pixeles/menu_char_height;
+
+        //printf("Cambio a %d,%d\n",nueva_x,nueva_y);
+
+        if (zxvision_out_bonds(nueva_x,nueva_y,zxvision_current_window->visible_width,zxvision_current_window->visible_height)) {
+            nueva_x=menu_center_x()-zxvision_current_window->visible_width/2;
+            nueva_y=menu_center_y()-zxvision_current_window->visible_height/2;
+            //printf("Reasigno a %d,%d\n",nueva_x,nueva_y);
+        }
+        zxvision_set_xy_position(zxvision_current_window,nueva_x,nueva_y);
+
+    }
 
 
     zxvision_change_gui_style_select_id(item_seleccionado->valor_opcion);

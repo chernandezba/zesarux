@@ -1957,7 +1957,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0, //rellenar titulo
         char_set_ql,
         0, //caracter franja normal
-        8,8
+        6,8
     },
 
     {0,"Sam",7+8,0,
@@ -1988,7 +1988,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0, //rellenar titulo
         char_set_sam,
         0, //caracter franja normal
-        8,8
+        6,8
     },
 
     {1,"Z88",Z88_PXCOLOFF,Z88_PXCOLON,
@@ -2019,7 +2019,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0, //rellenar titulo
         char_set_z88,
         0, //caracter franja normal
-        8,8
+        7,8
     },
 
     {0,"ZX80/81",7+8,0,
@@ -2143,7 +2143,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1, //NO rellenar titulo
         char_set_beos,
         0, //caracter franja normal
-        8,8
+        7,8
     },
 
 
@@ -2237,7 +2237,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0, //rellenar titulo
         char_set_retromac,
         153, //caracter franja cambiado
-        8,8
+        6,8
     },
 
     //Risc Os V.1 ("Arthur")
@@ -2587,31 +2587,27 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
     },
 
 
-    {1,"Pico-8",PICO8_COLOR_FONDO,PICO8_COLOR_LAVENDER,
+    {1,"Pico-8",PICO8_COLOR_WHITE,PICO8_COLOR_DARK_BLUE,
         0,1,0,0, 		//No mostrar cursor,mostrar recuadro,no mostrar rainbow
-        RISCOS_COLOUR_DARKBLUE,7+8, 		//Colores para opcion seleccionada
-        7+8,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_RED, 	//Colores para opcion no disponible
+        PICO8_COLOR_DARK_BLUE,PICO8_COLOR_WHITE, 		//Colores para opcion seleccionada
+        PICO8_COLOR_WHITE,PICO8_COLOR_DARK_RED,PICO8_COLOR_DARK_RED,PICO8_COLOR_WHITE, 	//Colores para opcion no disponible
 
-        PICO8_COLOR_LIGHT_PINK,PICO8_COLOR_MAGENTA,        	//Colores para el titulo ventana
-        RISCOS_COLOUR_LIGHTBLUE,              //Color recuadro
-        RISCOS_COLOUR_ORANGE,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana inactiva
+        PICO8_COLOR_MAUVE,PICO8_COLOR_PURPLE,        	//Colores para el titulo ventana
+        PICO8_COLOR_BLACK,              //Color recuadro
+        PICO8_COLOR_LAVENDER,PICO8_COLOR_PURPLE,        	//Colores para el titulo ventana inactiva
 
-        4,4+8,		//Colores waveform
-        7,		//Color para zona no usada en visualmem
-        7,      //color block visualtape
-        RISCOS_COLOUR_RED,7+8,		//Color para opcion marcada
+        PICO8_COLOR_MEDIUM_GREEN,PICO8_COLOR_LIME_GREEN,		//Colores waveform
+        PICO8_COLOR_LIGHT_GREY,		//Color para zona no usada en visualmem
+        PICO8_COLOR_LIGHT_GREY,      //color block visualtape
+        PICO8_COLOR_GREEN,PICO8_COLOR_DARK_BLUE,		//Color para opcion marcada
 
-        7,0, //Colores fileselector, zona seleccion archivos
+        PICO8_COLOR_LIGHT_GREY,PICO8_COLOR_DARK_BLUE, //Colores fileselector, zona seleccion archivos
 
-        155, //caracter de cerrar ventana
-        '-', //caracter de minimizar ventana
-
-        //En RiscOS originalmente tiene la misma apariencia el botón de maximizar y el de restaurar
-        //aquí, para que no sea confuso, utilizo dos diferentes
-        152, //caracter de maximizar ventana
-        157, //caracter de restaurar ventana
-
-        156, //caracter de background ventana
+        154, //caracter de cerrar ventana
+        171, //caracter de minimizar ventana
+        172, //caracter de maximizar ventana
+        '=', //caracter de restaurar ventana
+        149, //caracter de background ventana
         ' ', //caracter de fondo de titulo
         2+8, //color de aviso
         colores_franja_speccy_brillo,colores_franja_speccy_oscuro,
@@ -14830,6 +14826,24 @@ void zxvision_set_y_position(zxvision_window *w,int y)
     zxvision_set_all_flag_dirty_must_draw_contents();
 
 }
+
+//Funcion que engloba las dos anteriores, en casos en que para que se acepte el cambio, hay que modificar las dos a la vez
+void zxvision_set_xy_position(zxvision_window *w,int x,int y)
+{
+    if (zxvision_out_bonds(x,y,w->visible_width,w->visible_height)) {
+        //printf("no admitido\n");
+        return;
+    }
+
+    w->x=x;
+    w->y=y;
+
+    zxvision_redraw_window_on_move(w);
+
+    zxvision_set_all_flag_dirty_must_draw_contents();
+
+}
+
 
 //copiar contenido al aumentar la ventana
 void zxvision_copy_contents_on_enlarge(overlay_screen *origen,overlay_screen *destino,int ancho_previo,int alto_previo,int ancho_final)
