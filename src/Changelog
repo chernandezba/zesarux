@@ -56,12 +56,14 @@ Improved ZX Vision:
 - Added tooltips for upper bottons (menu buttons) and lower buttons (device buttons)
 - Added support for 4 pixel wide charsets
 - Added charset "ZEsarUXtiny" adequate for 4x6 charset configuration (same charset already used on icons)
+- Added GUI Styles "ZEsarUX Tiny" and "Pico-8"
 - Allow to reduce available menu size to half size of Main Window
 - Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision, TV
 - Moved some settings to settings -> Hardware
 - Added shortcuts helper action to create icon to trigger recorded keys
 - Some settings dialogs can reset value to defaults
 - Maximized windows that are restored on startup, will be restored to the maximum size available
+- Allow to send messages to windows, to trigger actions. Can send messages from Windows menu or from Process Management Window
 - Allow to select dark or light GUI style depending on current hour
 - Changed charset for styles Solarized Dark and Light: now uses the same as AtariTOS
 - Show window size when resizing

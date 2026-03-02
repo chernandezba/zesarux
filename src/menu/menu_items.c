@@ -6920,6 +6920,9 @@ int menu_audio_new_ayplayer_send_message_function(ZXVISION_WINDOW_SEND_MESSAGE_F
     else if (!strcasecmp(message,"previous file")) {
         ay_player_previous_file();
     }
+    else if (!strcasecmp(message,"pause")) {
+        ay_player_pause_unpause();
+    }
 
     else {
         //Invalid message
@@ -6933,7 +6936,8 @@ char *menu_audio_new_ayplayer_help_send_message="This is a BETA feature. You can
         "previous track: jump to previous track\n"
         "next track: jump to next track\n"
         "previous file: jump to previous file\n"
-        "next file: jump to next file\n";
+        "next file: jump to next file\n"
+        "pause: pause/unpause file\n";
 
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 {

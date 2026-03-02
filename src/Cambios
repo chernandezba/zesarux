@@ -56,12 +56,14 @@ Mejorado ZX Vision:
 - Agregado tooltips para botones superiores (de menús) e inferiores (de dispositivos)
 - Agregado soporte para tipos de letra de 4 pixeles de ancho
 - Agregado tipo de letra "ZEsarUXtiny" adecuado para configuración de charset 4x6 (el mismo que ya se usaba en los iconos)
+- Agregado estilos de GUI "ZEsarUX Tiny" and "Pico-8"
 - Permitir reducir tamaño disponible menú a la mitad de la ventana principal
 - Reordenadas opciones & nuevo menú: revisa opciones -> Display Emulado, General, Ventana Principal, ZX Vision, TV
 - Movido varias opciones a opciones -> Hardware
 - Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas
 - Algunos diálogos de ajustes pueden resetearse a valores por defecto
 - Ventanas restauradas al inicio como maximizadas, se restaurarán al tamaño máximo disponible
+- Permitir enviar mensajes a ventanas, para disparar acciones. Se pueden enviar mensajes desde el menu Windows o desde la ventana de Gestión de Procesos
 - Permitir seleccionar estilo de GUI en oscuro o claro dependiendo de la hora actual
 - Cambiado set de caracteres para los estilos Solarized Dark y Light: ahora usa el mismo que AtariTOS
 - Mostrar tamaño ventana al redimensionar
