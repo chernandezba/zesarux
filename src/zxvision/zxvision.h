@@ -780,6 +780,8 @@ enum defined_f_function_ids {
 //Define teclas F que se pueden mapear a acciones y botones
 #define MAX_DEFINED_F_FUNCION_NAME_LENGTH 30
 
+#define MAX_DEFINED_F_FUNCION_TOOLTIP_LENGTH 50
+
 struct s_defined_f_function {
     char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH];
     enum defined_f_function_ids id_funcion;
@@ -788,6 +790,8 @@ struct s_defined_f_function {
 
     //Indica el nombre asociado a esa app/ventana (si es que es una ventana que se puede quedar en background)
     char geometry_name[MAX_NAME_WINDOW_GEOMETRY];
+
+    char texto_tooltip[MAX_DEFINED_F_FUNCION_TOOLTIP_LENGTH];
 
 };
 
