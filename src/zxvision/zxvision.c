@@ -191,110 +191,110 @@ int menu_last_cpu_use=0;
 void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf);
 
 defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
-    {"Default",F_FUNCION_DEFAULT,bitmap_button_ext_desktop_userdefined,"",""},  //no mover nunca de sitio el default para que sea siempre la posicion 0
-    {"Nothing",F_FUNCION_NOTHING,bitmap_button_ext_desktop_nothing,"",""},
-    {"OpenMenu",F_FUNCION_OPENMENU,zesarux_ascii_logo,"",""},
+    {"Default",F_FUNCION_DEFAULT,bitmap_button_ext_desktop_userdefined,"","Default action"},  //no mover nunca de sitio el default para que sea siempre la posicion 0
+    {"Nothing",F_FUNCION_NOTHING,bitmap_button_ext_desktop_nothing,"","Nothing"},
+    {"OpenMenu",F_FUNCION_OPENMENU,zesarux_ascii_logo,"","Open Menu"},
 
     //Actuar sobre la cpu y velocidad del emulador
-    {"Reset",F_FUNCION_RESET,bitmap_button_ext_desktop_reset,"",""},
-    {"HardReset",F_FUNCION_HARDRESET,bitmap_button_ext_desktop_hardreset,"",""},
-    {"NMI",F_FUNCION_NMI,bitmap_button_ext_desktop_nmi,"",""},
-    {"DebugCPU",F_FUNCION_DEBUGCPU,bitmap_button_ext_desktop_debugcpu,"debugcpu",""},
-    {"DebugCPUBreakpoints",F_FUNCION_DEBUGCPU_BREAKPOINTS,bitmap_button_ext_desktop_breakpoints,"",""},
-    {"DebugCPUViewAdv",F_FUNCION_DEBUGCPU_VIEW_ADVENTURE,bitmap_button_ext_desktop_debugcpu_view_adventure,"",""},
-    {"Poke",F_FUNCION_POKE,bitmap_button_ext_desktop_poke,"",""},
-    {"TextAdventureMap",F_FUNCION_TEXT_ADVENTURE_MAP,bitmap_button_ext_desktop_text_adventure_map,"textadvmap",""},
-    {"HexEditor",F_FUNCION_HEX_EDITOR,bitmap_button_ext_desktop_hexeditor,"hexeditor",""},
-    {"ViewSprites",F_FUNCION_VIEW_SPRITES,bitmap_button_ext_desktop_viewsprites,"sprites",""},
-    {"FileUtils",F_FUNCION_FILE_UTILITIES,bitmap_button_ext_desktop_fileutils,"",""},
-    {"Pause",F_FUNCION_PAUSE,bitmap_button_ext_desktop_pause,"",""},
-    {"TopSpeed",F_FUNCION_TOPSPEED,bitmap_button_ext_desktop_topspeed,"",""},
+    {"Reset",F_FUNCION_RESET,bitmap_button_ext_desktop_reset,"","Reset CPU"},
+    {"HardReset",F_FUNCION_HARDRESET,bitmap_button_ext_desktop_hardreset,"","Hard reset CPU"},
+    {"NMI",F_FUNCION_NMI,bitmap_button_ext_desktop_nmi,"","Generate NMI"},
+    {"DebugCPU",F_FUNCION_DEBUGCPU,bitmap_button_ext_desktop_debugcpu,"debugcpu","Debug CPU"},
+    {"DebugCPUBreakpoints",F_FUNCION_DEBUGCPU_BREAKPOINTS,bitmap_button_ext_desktop_breakpoints,"","Open Breakpoints"},
+    {"DebugCPUViewAdv",F_FUNCION_DEBUGCPU_VIEW_ADVENTURE,bitmap_button_ext_desktop_debugcpu_view_adventure,"","Debug Adventure"},
+    {"Poke",F_FUNCION_POKE,bitmap_button_ext_desktop_poke,"","Poke memory"},
+    {"TextAdventureMap",F_FUNCION_TEXT_ADVENTURE_MAP,bitmap_button_ext_desktop_text_adventure_map,"textadvmap","Text Adventure Map"},
+    {"HexEditor",F_FUNCION_HEX_EDITOR,bitmap_button_ext_desktop_hexeditor,"hexeditor","Hexadecimal Editor"},
+    {"ViewSprites",F_FUNCION_VIEW_SPRITES,bitmap_button_ext_desktop_viewsprites,"sprites","View Sprites"},
+    {"FileUtils",F_FUNCION_FILE_UTILITIES,bitmap_button_ext_desktop_fileutils,"","File Utilities"},
+    {"Pause",F_FUNCION_PAUSE,bitmap_button_ext_desktop_pause,"","Pause emulation"},
+    {"TopSpeed",F_FUNCION_TOPSPEED,bitmap_button_ext_desktop_topspeed,"","Top speed emulation"},
 
     //Snaps
-    {"SnapInRAMRewind",F_FUNCION_REWIND,bitmap_button_ext_desktop_snapinramrewind,"",""},
-    {"SnapInRAMFFW",F_FUNCION_FFW,bitmap_button_ext_desktop_snapinramffw,"",""},
-    {"SnapInRAMSave",F_FUNCION_SNAP_RAM_SAVE,bitmap_button_ext_desktop_snapinramsave,"",""},
+    {"SnapInRAMRewind",F_FUNCION_REWIND,bitmap_button_ext_desktop_snapinramrewind,"","Go backwards snapshot in memory"},
+    {"SnapInRAMFFW",F_FUNCION_FFW,bitmap_button_ext_desktop_snapinramffw,"","Go forward snapshot in memory"},
+    {"SnapInRAMSave",F_FUNCION_SNAP_RAM_SAVE,bitmap_button_ext_desktop_snapinramsave,"","Save snapshot in memory"},
 
     //ventanas directas a menus
-    {"SmartLoad",F_FUNCION_SMARTLOAD,bitmap_button_ext_desktop_smartload,"",""},
-    {"Quickload",F_FUNCION_QUICKLOAD,bitmap_button_ext_desktop_quickload,"",""},
-    {"Quicksave",F_FUNCION_QUICKSAVE,bitmap_button_ext_desktop_quicksave,"",""},
-    {"QuicksaveScreen",F_FUNCION_QUICKSAVE_SCREEN,bitmap_button_ext_desktop_quicksave_scr,"",""},
-    {"LoadBinary",F_FUNCION_LOADBINARY,bitmap_button_ext_desktop_loadbinary,"",""},
-    {"SaveBinary",F_FUNCION_SAVEBINARY,bitmap_button_ext_desktop_savebinary,"",""},
-    {"Settings",F_FUNCION_SETTINGS,bitmap_button_ext_desktop_settings,"",""},
+    {"SmartLoad",F_FUNCION_SMARTLOAD,bitmap_button_ext_desktop_smartload,"","Smart Load"},
+    {"Quickload",F_FUNCION_QUICKLOAD,bitmap_button_ext_desktop_quickload,"","Quick Load"},
+    {"Quicksave",F_FUNCION_QUICKSAVE,bitmap_button_ext_desktop_quicksave,"","Quick Save"},
+    {"QuicksaveScreen",F_FUNCION_QUICKSAVE_SCREEN,bitmap_button_ext_desktop_quicksave_scr,"","Quick Save Screen"},
+    {"LoadBinary",F_FUNCION_LOADBINARY,bitmap_button_ext_desktop_loadbinary,"","Load Binary file to memory"},
+    {"SaveBinary",F_FUNCION_SAVEBINARY,bitmap_button_ext_desktop_savebinary,"","Save memory to file"},
+    {"Settings",F_FUNCION_SETTINGS,bitmap_button_ext_desktop_settings,"","Open settings"},
     //menu audio
-    {"AudioChipRegisters",F_FUNCION_AUDIO_REGISTERS,bitmap_button_ext_desktop_audioregisters,"ayregisters",""},
-    {"AudioChipSheet",F_FUNCION_AUDIO_SHEET,bitmap_button_ext_desktop_audiosheet,"aysheet",""},
-    {"AudioChipPiano",F_FUNCION_AUDIO_PIANO,bitmap_button_ext_desktop_audiopiano,"aypiano",""},
-    {"WavePiano",F_FUNCION_WAVE_PIANO,bitmap_button_ext_desktop_wavepiano,"wavepiano",""},
-    {"Waveform",F_FUNCION_WAVEFORM,bitmap_button_ext_desktop_waveform,"waveform",""},
-    {"AYMixer",F_FUNCION_AYMIXER,bitmap_button_ext_desktop_aymixer,"",""},
-    {"AYPlayer",F_FUNCION_AYPLAYER,bitmap_button_ext_desktop_ayplayer,"ayplayer",""},
-    {"AYPlayerNextTrack",F_FUNCION_AYPLAYER_NEXT_TRACK,bitmap_button_ext_desktop_ayplayer_next_track,"",""},
-    {"AYPlayerPrevTrack",F_FUNCION_AYPLAYER_PREVIOUS_TRACK,bitmap_button_ext_desktop_ayplayer_previous_track,"",""},
-    {"AYPlayerNextFile",F_FUNCION_AYPLAYER_NEXT_FILE,bitmap_button_ext_desktop_ayplayer_next_file,"",""},
-    {"AYPlayerPrevFile",F_FUNCION_AYPLAYER_PREVIOUS_FILE,bitmap_button_ext_desktop_ayplayer_previous_file,"",""},
-    {"AYPlayerPause",F_FUNCION_AYPLAYER_PAUSE,bitmap_button_ext_desktop_ayplayer_pause,"",""},
-    {"VolumeDecrement",F_FUNCION_VOLUME_DECREMENT,bitmap_button_ext_desktop_volume_decrement,"",""},
-    {"VolumeIncrement",F_FUNCION_VOLUME_INCREMENT,bitmap_button_ext_desktop_volume_increment,"",""},
-    {"VolumeSilence",F_FUNCION_VOLUME_SILENCE,bitmap_button_ext_desktop_volume_silence,"",""},
+    {"AudioChipRegisters",F_FUNCION_AUDIO_REGISTERS,bitmap_button_ext_desktop_audioregisters,"ayregisters","Open Audio Chip Registers"},
+    {"AudioChipSheet",F_FUNCION_AUDIO_SHEET,bitmap_button_ext_desktop_audiosheet,"aysheet","Open Audio Chip Sheet"},
+    {"AudioChipPiano",F_FUNCION_AUDIO_PIANO,bitmap_button_ext_desktop_audiopiano,"aypiano","Open Audio Chip Piano"},
+    {"WavePiano",F_FUNCION_WAVE_PIANO,bitmap_button_ext_desktop_wavepiano,"wavepiano","Open Wave Piano"},
+    {"Waveform",F_FUNCION_WAVEFORM,bitmap_button_ext_desktop_waveform,"waveform","Open Waveform"},
+    {"AYMixer",F_FUNCION_AYMIXER,bitmap_button_ext_desktop_aymixer,"","Open AY Mixer"},
+    {"AYPlayer",F_FUNCION_AYPLAYER,bitmap_button_ext_desktop_ayplayer,"ayplayer","Open AY Player"},
+    {"AYPlayerNextTrack",F_FUNCION_AYPLAYER_NEXT_TRACK,bitmap_button_ext_desktop_ayplayer_next_track,"","Next Track on AY Player"},
+    {"AYPlayerPrevTrack",F_FUNCION_AYPLAYER_PREVIOUS_TRACK,bitmap_button_ext_desktop_ayplayer_previous_track,"","Previous Track on AY Player"},
+    {"AYPlayerNextFile",F_FUNCION_AYPLAYER_NEXT_FILE,bitmap_button_ext_desktop_ayplayer_next_file,"","Next File on AY Player"},
+    {"AYPlayerPrevFile",F_FUNCION_AYPLAYER_PREVIOUS_FILE,bitmap_button_ext_desktop_ayplayer_previous_file,"","Previous File on AY Player"},
+    {"AYPlayerPause",F_FUNCION_AYPLAYER_PAUSE,bitmap_button_ext_desktop_ayplayer_pause,"","Pause AY Player"},
+    {"VolumeDecrement",F_FUNCION_VOLUME_DECREMENT,bitmap_button_ext_desktop_volume_decrement,"","Decrement Audio Volume"},
+    {"VolumeIncrement",F_FUNCION_VOLUME_INCREMENT,bitmap_button_ext_desktop_volume_increment,"","Increment Audio Volume"},
+    {"VolumeSilence",F_FUNCION_VOLUME_SILENCE,bitmap_button_ext_desktop_volume_silence,"","Silence Audio"},
     //menu display
-    {"ColourPalettes",F_FUNCION_COLOUR_PALETTES,bitmap_button_ext_desktop_colour_palettes,"displaypalettes",""},
-    {"OSDKeyboard",F_FUNCION_OSDKEYBOARD,bitmap_button_ext_desktop_osdkeyboard,"",""},
-    {"OSDTextKeyboard",F_FUNCION_OSDTEXTKEYBOARD,bitmap_button_ext_desktop_osdadvkeyboard,"",""},
+    {"ColourPalettes",F_FUNCION_COLOUR_PALETTES,bitmap_button_ext_desktop_colour_palettes,"displaypalettes","View Colour Palettes"},
+    {"OSDKeyboard",F_FUNCION_OSDKEYBOARD,bitmap_button_ext_desktop_osdkeyboard,"","Open OSD Keyboard"},
+    {"OSDTextKeyboard",F_FUNCION_OSDTEXTKEYBOARD,bitmap_button_ext_desktop_osdadvkeyboard,"","Open OSD Text Keyboard"},
 
     //Realmente las dos siguientes actuan igual, solo les diferencia el bitmap,
     //y que cuando se crea SetMachine desde "New Icon" se asigna SetMachine con la maquina actual
-    {"MachineSelection",F_FUNCION_MACHINE_SELECTION,bitmap_button_ext_desktop_machine,"",""},
-    {"SetMachine",F_FUNCION_SET_MACHINE,bitmap_button_ext_desktop_set_machine,"",""},
+    {"MachineSelection",F_FUNCION_MACHINE_SELECTION,bitmap_button_ext_desktop_machine,"","Select Machine"},
+    {"SetMachine",F_FUNCION_SET_MACHINE,bitmap_button_ext_desktop_set_machine,"","Set Machine"},
 
     //joystick
-    {"JoyLeftRight",F_FUNCION_LEFTRIGHT_JOY,bitmap_button_ext_desktop_joyleftright,"",""},
+    {"JoyLeftRight",F_FUNCION_LEFTRIGHT_JOY,bitmap_button_ext_desktop_joyleftright,"","Switch Auto Left-Right Joystick"},
 
     //Switch de cosas
-    {"SwitchBorder",F_FUNCION_SWITCHBORDER,bitmap_button_ext_desktop_switchborder,"",""},
-    {"SwitchFullScr",F_FUNCION_SWITCHFULLSCREEN,bitmap_button_ext_desktop_fullscreen,"",""},
-    {"SwitchFooter",F_FUNCION_SWITCHFOOTER,bitmap_button_ext_desktop_switchfooter,"",""},
+    {"SwitchBorder",F_FUNCION_SWITCHBORDER,bitmap_button_ext_desktop_switchborder,"","Switch Border"},
+    {"SwitchFullScr",F_FUNCION_SWITCHFULLSCREEN,bitmap_button_ext_desktop_fullscreen,"","Switch Full Screen"},
+    {"SwitchFooter",F_FUNCION_SWITCHFOOTER,bitmap_button_ext_desktop_switchfooter,"","Switch Fotter"},
 
     //Actuar sobre storage
-    {"ReloadMMC",F_FUNCION_RELOADMMC,bitmap_button_ext_desktop_reloadmmc,"",""},
-    {"ReinsertStdTape",F_FUNCION_REINSERTSTDTAPE,bitmap_button_ext_desktop_reinserttape,"",""},
-    {"PauseUnpauseRealTape",F_FUNCION_PAUSEUNPAUSEREALTAPE,bitmap_button_ext_desktop_pauseunpausetape,"",""},
-    {"ReinsertRealTape",F_FUNCION_REINSERTREALTAPE,bitmap_button_ext_desktop_reinsertrealtape,"",""},
-    {"RewindRealTape",F_FUNCION_REWINDREALTAPE,bitmap_button_ext_desktop_rewindtape,"",""},
-    {"FFWDRealTape",F_FUNCION_FFWDREALTAPE,bitmap_button_ext_desktop_ffwdtape,"",""},
-    {"VisualRealTape",F_FUNCION_VISUALREALTAPE,bitmap_button_ext_desktop_visualrealtape,"visualrealtape",""},
+    {"ReloadMMC",F_FUNCION_RELOADMMC,bitmap_button_ext_desktop_reloadmmc,"","Reload MMC"},
+    {"ReinsertStdTape",F_FUNCION_REINSERTSTDTAPE,bitmap_button_ext_desktop_reinserttape,"","Reinsert Standard Tape"},
+    {"PauseUnpauseRealTape",F_FUNCION_PAUSEUNPAUSEREALTAPE,bitmap_button_ext_desktop_pauseunpausetape,"","Pause/Unpause Real Tape"},
+    {"ReinsertRealTape",F_FUNCION_REINSERTREALTAPE,bitmap_button_ext_desktop_reinsertrealtape,"","Reinsert Real Tape"},
+    {"RewindRealTape",F_FUNCION_REWINDREALTAPE,bitmap_button_ext_desktop_rewindtape,"","Rewind Real Tape"},
+    {"FFWDRealTape",F_FUNCION_FFWDREALTAPE,bitmap_button_ext_desktop_ffwdtape,"","Forward Real Tape"},
+    {"VisualRealTape",F_FUNCION_VISUALREALTAPE,bitmap_button_ext_desktop_visualrealtape,"visualrealtape","Open Visual Real Tape"},
 
     //Actuar sobre menus y ventanas
-    {"CloseAllMenus",F_FUNCION_CLOSE_ALL_MENUS,bitmap_button_ext_desktop_close_all_menus,"",""},
-    {"ExitEmulator",F_FUNCION_EXITEMULATOR,bitmap_button_ext_desktop_exit,"",""},
-    {"BackgroundWindow",F_FUNCION_BACKGROUND_WINDOW,bitmap_button_ext_desktop_backgroundwindow,"",""},
+    {"CloseAllMenus",F_FUNCION_CLOSE_ALL_MENUS,bitmap_button_ext_desktop_close_all_menus,"","Close All Menus"},
+    {"ExitEmulator",F_FUNCION_EXITEMULATOR,bitmap_button_ext_desktop_exit,"","Exit ZEsarUX"},
+    {"BackgroundWindow",F_FUNCION_BACKGROUND_WINDOW,bitmap_button_ext_desktop_backgroundwindow,"","Send Window to Background"},
     //Para el usuario, mejor esta descripcion de ShowBackgroundWindows en vez de overlay_windows
-    {"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_showbackgroundwindows,"",""},
+    {"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_showbackgroundwindows,"","Show Background Windows"},
     //Abrir una ventana cualquiera. Necesita nombre de la ventana en la extra info del icono
-    {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_openwindow,"",""},
+    {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_openwindow,"","Open a Window"},
     {"SendKeysMenu",F_FUNCION_SEND_KEYS_MENU,bitmap_button_ext_desktop_sendkeysmenu,"","Send keys to menu"},
 
 
     //Misc
-    {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage,"",""},
-    {"ZengOnline",F_FUNCION_ZENG_ONLINE,bitmap_button_ext_desktop_zengonline,"",""},
-    {"ZengOnlineMessage",F_FUNCION_ZENG_ONLINE_SENDMESSAGE,bitmap_button_ext_desktop_zengonlinemessage,"",""},
-    {"SpeccyOnline",F_FUNCION_ONLINE_SPECCY,bitmap_button_ext_desktop_speccy_online,"",""},
-    {"ZX81Online",F_FUNCION_ONLINE_ZX81,bitmap_button_ext_desktop_zx81_online,"",""},
-    {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr,"",""},
-    {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch,"",""},
-    {"TrashCan",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash,"",""},
+    {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage,"","Send a Message on ZENG"},
+    {"ZengOnline",F_FUNCION_ZENG_ONLINE,bitmap_button_ext_desktop_zengonline,"","Open ZENG Online menu"},
+    {"ZengOnlineMessage",F_FUNCION_ZENG_ONLINE_SENDMESSAGE,bitmap_button_ext_desktop_zengonlinemessage,"","Send a message on ZENG Online"},
+    {"SpeccyOnline",F_FUNCION_ONLINE_SPECCY,bitmap_button_ext_desktop_speccy_online,"","Open Speccy Online browser"},
+    {"ZX81Online",F_FUNCION_ONLINE_ZX81,bitmap_button_ext_desktop_zx81_online,"","Open ZX81 Online browser"},
+    {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr,"","Trigger OCR function on the emulated display"},
+    {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch,"","Switch ZX-Uno Prism video mode"},
+    {"TrashCan",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash,"","Trash Can"},
 
     //Estos solo tiene sentido cuando lleva asociado la ruta en la extra info del icono
     //Para un snapshot
-    {"LinkToSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot,"",""},
+    {"LinkToSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot,"","Link to a Snapshot"},
     //Para una cinta
-    {"LinkToTape",F_FUNCION_DESKTOP_TAPE,bitmap_button_ext_desktop_file_tape,"",""},
+    {"LinkToTape",F_FUNCION_DESKTOP_TAPE,bitmap_button_ext_desktop_file_tape,"","Link to a Tape"},
 
     //Para el resto
-    {"LinkToDefault",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload,"",""},
+    {"LinkToDefault",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload,"","Link to File"},
 
     {"MyMachine",F_FUNCION_DESKTOP_MY_MACHINE,bitmap_button_ext_desktop_my_machine_generic,"","The current machine"}
 };
