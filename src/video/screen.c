@@ -6302,13 +6302,7 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
                                         int jj;
 	                                for (jj=0;jj<t_pixeles_por_estado;jj++) {
 
-
-                                        //store_value_rainbow(puntero_buf_rainbow,color_border);
-
-                                        store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
-                                        puntero_buf_rainbow[pos_rainbow]=color_border;
-
-                                        pos_rainbow++;
+                                        store_value_rainbow(puntero_buf_rainbow,color_border);
 
                                     }
 
@@ -6322,20 +6316,14 @@ void screen_store_scanline_rainbow_border_comun_prism(z80_int *puntero_buf_rainb
 
 	//Debido a desajustes con estados por linea en prism, si no agregamos esto, se queda una zona en negro entre el borde izquierdo y la pantalla central
 	//Estos dos para zona donde hay borde izquierdo y derecho
-	//store_value_rainbow(puntero_buf_rainbow,color_border);
-	//store_value_rainbow(puntero_buf_rainbow,color_border);
-    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
-    puntero_buf_rainbow[pos_rainbow++]=color_border;
-    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
-    puntero_buf_rainbow[pos_rainbow++]=color_border;
+	store_value_rainbow(puntero_buf_rainbow,color_border);
+	store_value_rainbow(puntero_buf_rainbow,color_border);
+
 
 	//Y estos para la primera linea de pantalla
-	//store_value_rainbow(puntero_buf_rainbow,color_border);
-	//store_value_rainbow(puntero_buf_rainbow,color_border);
-    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
-    puntero_buf_rainbow[pos_rainbow++]=color_border;
-    store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
-    puntero_buf_rainbow[pos_rainbow++]=color_border;
+	store_value_rainbow(puntero_buf_rainbow,color_border);
+	store_value_rainbow(puntero_buf_rainbow,color_border);
+
 
 
 
@@ -6510,18 +6498,18 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 					for (jj=0;jj<t_pixeles_por_estado;jj++) {
                         //printf("Store\n");
                         //if (x>300*cpu_turbo_speed) printf("x: %d indice_border %d inicio_retrace_horiz %d final_retrace_horiz %d\n",x,indice_border,inicio_retrace_horiz,final_retrace_horiz);
-                        store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow]);
+
                         puntero_buf_rainbow[pos_rainbow]=color_final_border;
 
                         //En tbblue pixeles el doble de grandes
 						if (MACHINE_IS_TBBLUE) {
-                            store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow+ancho_rainbow]);
-                            puntero_buf_rainbow[pos_rainbow+ancho_rainbow]=color_final_border; //pixel de abajo a la izquierda
+                            //pixel de abajo a la izquierda
+                            puntero_buf_rainbow[pos_rainbow+ancho_rainbow]=color_final_border;
 
-                            store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow+ancho_rainbow+1]);
-                            puntero_buf_rainbow[pos_rainbow+ancho_rainbow+1]=color_final_border; //pixel de abajo a la derecha
+                            //pixel de abajo a la derecha
+                            puntero_buf_rainbow[pos_rainbow+ancho_rainbow+1]=color_final_border;
 
-                            store_value_rainbow_debug_check_rainbow(&puntero_buf_rainbow[pos_rainbow+1]); //pixel de derecha
+                            //pixel de derecha
                             puntero_buf_rainbow[pos_rainbow+1]=color_final_border;
 
                             //Incrementamos

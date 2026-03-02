@@ -8403,7 +8403,7 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
         //Boton esta definido por el usuario?
         int indice_tabla=menu_inicio_return_button_userdef(boton);
         if (indice_tabla>=0) {
-            printf("user defined button\n");
+            //printf("user defined button\n");
             //En ese caso el texto del tooltip simplemente es el texto de la funcion definida
             tooltip->texto_tooltip=defined_direct_functions_array[indice_tabla].texto_funcion;
         }
@@ -27986,7 +27986,7 @@ int menu_inicio_return_button_userdef(int boton)
     int indice_tabla=defined_buttons_functions_array[boton];
     accion=menu_da_accion_direct_functions_indice(indice_tabla);
 
-    printf("Boton: %d indice_tabla: %d accion: %d\n",boton,indice_tabla,accion);
+    //printf("Boton: %d indice_tabla: %d accion: %d\n",boton,indice_tabla,accion);
 
     if (accion!=F_FUNCION_DEFAULT) {
         return indice_tabla;

@@ -89,11 +89,6 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 
 
 
--correcciones al renderizar en rainbow_buffer
-*acabar de probar bien todas máquinas y cuando esté bien, quitar las llamadas a store_value_rainbow_debug_check_rainbow
-
-
-
 -PCW:
 ok ya estaba*poder forzar un modo por menu
 ok*bit 7 para resetear o no paleta al cambiar un modo
