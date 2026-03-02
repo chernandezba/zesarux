@@ -2587,7 +2587,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
     },
 
 
-    {1,"Pico-8",7+8,RISCOS_COLOUR_DARKBLUE,
+    {1,"Pico-8",PICO8_COLOR_FONDO,PICO8_COLOR_LAVENDER,
         0,1,0,0, 		//No mostrar cursor,mostrar recuadro,no mostrar rainbow
         RISCOS_COLOUR_DARKBLUE,7+8, 		//Colores para opcion seleccionada
         7+8,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_RED, 	//Colores para opcion no disponible

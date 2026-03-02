@@ -727,7 +727,7 @@ extern void screen_switch_rainbow_buffer(void);
 #define PCW_RGB8_PALETTE_COLOURS 256
 
 #define PICO8_FIRST_COLOR (PCW_RGB8_FIRST_COLOR+PCW_RGB8_PALETTE_COLOURS)
-#define PICO8_PALETTE_COLOURS 32
+#define PICO8_PALETTE_COLOURS 33
 /*
 pico-8
 0		#000000	0, 0, 0	black
@@ -765,11 +765,14 @@ picotron:
 30		#E40DAB	228,13,171	magenta
 31		#FF8557	255,133,87	peach
 
-
+32 #fef1e8 El del fondo
 */
+#define PICO8_COLOR_LAVENDER (PICO8_FIRST_COLOR+13)
 #define PICO8_COLOR_PINK (PICO8_FIRST_COLOR+14)
+#define PICO8_LIGHT_PEACH (PICO8_FIRST_COLOR+15)
 #define PICO8_COLOR_LIGHT_PINK (PICO8_FIRST_COLOR+23)
 #define PICO8_COLOR_MAGENTA (PICO8_FIRST_COLOR+30)
+#define PICO8_COLOR_FONDO (PICO8_FIRST_COLOR+32)
 
 //16 colores normales spectrum, 16 grises de modo scanline, 256 de gigascreen, 4 de z88, 16 de spectrum 17/48/+ real, 256 de ulaplus, 64 de spectra, 32 de CPC, 4096 de Prism, 128 de SAM, 256 de RGB8, 32768 de TSCONF, 16 de solarized
 //actualizar aqui y tambien estructura de total_palette_colours_array y #define TOTAL_PALETAS_COLORES

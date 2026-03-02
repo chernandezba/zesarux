@@ -614,7 +614,8 @@ const int pico8_colortable_original[PICO8_PALETTE_COLOURS]={
 0x64DFF6,	//100,223,246	light-blue
 0xBD9ADF,	//189,154,223	mauve
 0xE40DAB,	//228,13,171	magenta
-0xFF8557	//255,133,87	peach
+0xFF8557,	//255,133,87	peach
+0xfef1e8 //color fondo
 };
 
 //Tabla con los colores extra del Spectra.
