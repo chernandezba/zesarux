@@ -12544,6 +12544,7 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
         else menu_add_item_menu_format(array_menu_zxdesktop_set_userdef_button_func_action,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 
         menu_add_item_menu_tabulado(array_menu_zxdesktop_set_userdef_button_func_action,1,i);
+        menu_add_item_menu_tooltip(array_menu_zxdesktop_set_userdef_button_func_action,defined_direct_functions_array[i].texto_tooltip);
 
     }
 
