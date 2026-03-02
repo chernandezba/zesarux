@@ -17857,6 +17857,53 @@ zxvision_window zxvision_window_menu_window_list;
 //nombre de la ventana (geometry name) seleccionda
 char menu_display_window_list_selected_window[MAX_NAME_WINDOW_GEOMETRY]="";
 
+void menu_display_window_send_message(zxvision_window *ventana)
+{
+
+    //menu_ventana_scanf("Window name",menu_windows_send_message_ventana,256);
+
+    //TODO: se podria detectar antes si ventana no acepta mensajes e indicarlo al usuario
+    //como de momento esta ventana es algo beta, no se como quedará al final
+
+    char *help_message;
+    int retorno=zxvision_return_help_send_message_window(ventana->geometry_name,&help_message);
+    if (retorno==-1) {
+        menu_error_message("Window not opened");
+        return;
+    }
+
+    if (retorno==0 && help_message!=NULL) {
+        menu_generic_message_format("Send messages help","%s",help_message);
+    }
+
+    char mensaje[256]="";
+
+    menu_ventana_scanf("Message to send",mensaje,256);
+
+    retorno=zxvision_send_message_window(ventana->geometry_name,mensaje);
+
+    switch (retorno) {
+        case -1:
+            menu_error_message("Window not opened");
+        break;
+
+        case -2:
+            menu_error_message("Window does not accept messages");
+        break;
+
+        case 0:
+            //OK. nada
+        break;
+
+        default:
+            menu_error_message_format("Error sending message, return code: %d",retorno);
+        break;
+    }
+
+
+}
+
+
 void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 {
     zxvision_window *ventana;
@@ -17880,10 +17927,10 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     //printf("Ventana pulsada: %s\n",ventana->window_title);
 
 
-    int tipo=menu_simple_ten_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
+    int tipo=menu_simple_eleven_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
         (ventana->is_minimized ? "Unminimize" : "Minimize"),
         (ventana->is_maximized ? "Unmaximize" : "Maximize"),
-        "Switch always visible","Information","Close","Create link on ZX Desktop","Copy contents");
+        "Switch always visible","Send message","Information","Close","Create link on ZX Desktop","Copy contents");
 
     if (tipo==0) return; //ESC
 
@@ -17937,11 +17984,15 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
         break;
 
         case 7:
+            menu_display_window_send_message(ventana);
+        break;
+
+        case 8:
             menu_display_window_list_info(ventana);
         break;
 
 
-        case 8:
+        case 9:
             if (selected_ourself) {
                 debug_printf(VERBOSE_ERR,"Can not close ourself");
             }
@@ -17950,12 +18001,12 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
             }
         break;
 
-        case 9:
+        case 10:
             zxvision_create_link_desktop_from_window(ventana);
         break;
 
 
-        case 10:
+        case 11:
             zxvision_copy_contents_to_clipboard(ventana);
             menu_generic_message_splash("Clipboard","Text copied to ZEsarUX clipboard. Go to file utils and press P to paste to a file");
         break;

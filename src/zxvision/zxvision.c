@@ -26519,6 +26519,78 @@ int menu_simple_ten_choices(char *texto_ventana,char *texto_interior,char *opcio
 
 }
 
+//retorna 1 si opcion 1
+//retorna 2 si opcion 2
+//retorna 3 si opcion 3
+//retorna 4 si opcion 4
+//retorna 5 si opcion 5
+//retorna 6 si opcion 6
+//retorna 7 si opcion 7
+//retorna 8 si opcion 8
+//retorna 9 si opcion 9
+//retorna 10 si opcion 10
+//retorna 11 si opcion 11
+//retorna 0 si ESC
+int menu_simple_eleven_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,
+    char *opcion4,char *opcion5,char *opcion6,char *opcion7,char *opcion8,char *opcion9,char *opcion10,char *opcion11)
+{
+
+
+    menu_espera_no_tecla();
+
+
+    menu_item *array_menu_simple_nine_choices;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    //Siempre indicamos la primera opcion
+    int simple_eleven_choices_opcion_seleccionada=1;
+        do {
+
+            menu_add_item_menu_inicial_format(&array_menu_simple_nine_choices,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion2);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion3);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion4);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion5);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion6);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion7);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion8);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion9);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion10);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion11);
+
+            //separador adicional para que quede mas grande la ventana y mas mono
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+
+
+
+            retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&simple_eleven_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    return simple_eleven_choices_opcion_seleccionada;
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    return 0;
+
+
+}
+
 
 //Funcion para preguntar opcion de una lista, usando interfaz de menus
 //Entradas de lista finalizadas con NULL
