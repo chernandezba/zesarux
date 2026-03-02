@@ -8367,6 +8367,8 @@ int tooltips_mouse_retorna_tooltip_botones_superiores(int boton)
 
 char *string_tooltip_texto_desconocido="Unknown";
 
+char string_tooltip_open_window_text[PATH_MAX+100];
+
 //Dice a que elemento apunta el raton
 void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 {
@@ -8464,7 +8466,15 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
             int indice_funcion=zxdesktop_configurable_icons_list[icono].indice_funcion;
             if (indice_funcion>=0) {
-                tooltip->texto_tooltip=defined_direct_functions_array[indice_funcion].texto_tooltip;
+                //si funcion open window, decimos que ventana abre
+                if (defined_direct_functions_array[indice_funcion].id_funcion==F_FUNCION_OPEN_WINDOW) {
+                    sprintf(string_tooltip_open_window_text,"Open Window %s",zxdesktop_configurable_icons_list[icono].extra_info);
+                    tooltip->texto_tooltip=string_tooltip_open_window_text;
+                }
+
+                else {
+                    tooltip->texto_tooltip=defined_direct_functions_array[indice_funcion].texto_tooltip;
+                }
             }
             else {
                 tooltip->texto_tooltip=string_tooltip_texto_desconocido;
