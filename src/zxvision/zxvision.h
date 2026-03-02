@@ -1860,11 +1860,19 @@ extern int zxdesktop_draw_scrfile_mix_background;
 extern int gamelife_timer_counter;
 
 extern void tooltips_mouse_timer_event(void);
+
+enum tooltips_mouse_tipos {
+    TOOLTIP_MOUSE_TIPO_BOTONES,
+    TOOLTIP_MOUSE_TIPO_ICONOS
+};
+
 struct s_tooltip_mouse {
     //id de tooltip para que la funcion que mira que tooltip esta indicando el raton, sepa si se indica al mismo u a otro
     //Para los botones superiores, empieza en 0
     //Los inferiores, empieza en 100 en adelante, y no tienen por que estar en orden
     int id_tooltip;
+
+    enum tooltips_mouse_tipos tipo_tooltip;
 
     char *texto_tooltip;
     int direccion_tooltip; //+1 hacia abajo (para botones superiores), -1 para arriba (para botones inferiores)

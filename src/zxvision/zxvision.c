@@ -8132,12 +8132,19 @@ void tooltip_mouse_print_char(int x,int y,unsigned char c,int tinta,int papel)
     }
 }
 
+//Retornar coordenada y en pixeles donde está el ratón
+int get_pos_y_pixel_mouse_tooltip_mouse(void)
+{
+    int y=mouse_y/menu_gui_zoom/zoom_y;
+    return y;
+}
+
 //Retorna la fila donde está el ratón
 int get_pos_y_mouse_tooltip_mouse(void)
 {
-    int posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
+    int fila_posicion_y=mouse_y/menu_char_height/menu_gui_zoom/zoom_y;
 
-    return posicion_y;
+    return fila_posicion_y;
 }
 
 //Retornar coordenada x en pixeles donde está el ratón
@@ -8156,6 +8163,7 @@ int get_pos_x_mouse_tooltip_mouse(void)
 
 
 int tooltips_mouse_id_ultimo_tooltip=-1;
+enum tooltips_mouse_tipos tooltips_mouse_tipo_ultimo_tooltip=TOOLTIP_MOUSE_TIPO_BOTONES;
 char *tooltips_mouse_ultimo_texto_tooltip;
 int tooltips_mouse_ultima_pos_x_tooltip,tooltips_mouse_ultima_pos_y_tooltip;
 int tooltips_mouse_direccion_tooltip=+1;
@@ -8401,6 +8409,7 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
         tooltip->direccion_tooltip=+1;
         tooltip->numero_boton=boton;
+        tooltip->tipo_tooltip=TOOLTIP_MOUSE_TIPO_BOTONES;
         return;
     }
 
@@ -8423,7 +8432,37 @@ void tooltips_mouse_timer_event_which_element(struct s_tooltip_mouse *tooltip)
 
         tooltip->direccion_tooltip=-1;
         tooltip->numero_boton=boton;
+        tooltip->tipo_tooltip=TOOLTIP_MOUSE_TIPO_BOTONES;
         return;
+    }
+
+
+    //Ver si en iconos de ZX Desktop
+    //si pulsa en algun icono configurable
+    if (zxdesktop_configurable_icons_enabled_and_visible()) {
+
+        int mouse_pixel_x,mouse_pixel_y;
+        menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+        //multiplicamos por zoom
+        mouse_pixel_x *=zoom_x;
+        mouse_pixel_y *=zoom_y;
+
+
+        int icono=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+
+        printf ("En Icon %d mouse\n",icono);
+
+        //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
+        if (icono>=0) {
+            printf ("Icon %d mouse\n",icono);
+
+            tooltip->direccion_tooltip=-1;
+            tooltip->id_tooltip=icono;
+            tooltip->tipo_tooltip=TOOLTIP_MOUSE_TIPO_ICONOS;
+            tooltip->texto_tooltip=zxdesktop_configurable_icons_list[icono].text_icon;
+            return;
+        }
     }
 
 }
@@ -8535,7 +8574,7 @@ void tooltips_mouse_timer_event(void)
 
     //printf("tooltip.id_tooltip %d\n",tooltip.id_tooltip);
 
-    if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip) {
+    if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip || tooltips_mouse_tipo_ultimo_tooltip!=tooltip.tipo_tooltip) {
         printf("Cambia el anterior tooltip o no habia antes (%d %d)\n",tooltips_mouse_id_ultimo_tooltip,tooltip.id_tooltip);
         //Borrar el anterior
         if (tooltips_mouse_id_ultimo_tooltip>=0) {
@@ -8546,6 +8585,7 @@ void tooltips_mouse_timer_event(void)
 
         tooltips_mouse_id_ultimo_tooltip=tooltip.id_tooltip;
         tooltips_mouse_ultimo_texto_tooltip=tooltip.texto_tooltip;
+        tooltips_mouse_tipo_ultimo_tooltip=tooltip.tipo_tooltip;
         //tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
 
         /*if (textspeech_also_send_menu.v && textspeech_filter_program!=NULL) {
@@ -8555,30 +8595,39 @@ void tooltips_mouse_timer_event(void)
             menu_textspeech_send_text(tooltips_mouse_ultimo_texto_tooltip);
         }*/
 
-        if (tooltip.direccion_tooltip==+1) {
+        if (tooltip.tipo_tooltip==TOOLTIP_MOUSE_TIPO_BOTONES) {
+            if (tooltip.direccion_tooltip==+1) {
 
-            //Para botones superiores.
+                //Para botones superiores.
 
-            int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
-            menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
+                int ancho_boton,alto_boton,total_botones,xinicio_botones,xfinal_botones;
+                menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,&total_botones,&xinicio_botones,&xfinal_botones);
 
 
-            tooltips_mouse_ultima_pos_y_tooltip=alto_boton/zoom_y/menu_gui_zoom;
+                tooltips_mouse_ultima_pos_y_tooltip=alto_boton/zoom_y/menu_gui_zoom;
 
-            tooltips_mouse_ultima_pos_x_tooltip=(xinicio_botones+tooltip.numero_boton*ancho_boton+ancho_boton/2)/zoom_y/menu_gui_zoom;
+                tooltips_mouse_ultima_pos_x_tooltip=(xinicio_botones+tooltip.numero_boton*ancho_boton+ancho_boton/2)/zoom_y/menu_gui_zoom;
 
+            }
+            else {
+
+                //Para botones inferiores.
+
+                int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
+                menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+
+
+                tooltips_mouse_ultima_pos_y_tooltip=yinicio_botones/zoom_y/menu_gui_zoom;
+
+                tooltips_mouse_ultima_pos_x_tooltip=(xinicio_botones+tooltip.numero_boton*ancho_boton+ancho_boton/2)/zoom_y/menu_gui_zoom;
+            }
         }
-        else {
 
-            //Para botones inferiores.
+        if (tooltip.tipo_tooltip==TOOLTIP_MOUSE_TIPO_ICONOS) {
+            printf("tooltip icono\n");
+            tooltips_mouse_ultima_pos_x_tooltip=get_pos_x_pixel_mouse_tooltip_mouse();
 
-            int ancho_boton,alto_boton,xinicio_botones,xfinal_botones,yinicio_botones;
-            menu_ext_desktop_lower_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
-
-
-            tooltips_mouse_ultima_pos_y_tooltip=yinicio_botones/zoom_y/menu_gui_zoom;
-
-            tooltips_mouse_ultima_pos_x_tooltip=(xinicio_botones+tooltip.numero_boton*ancho_boton+ancho_boton/2)/zoom_y/menu_gui_zoom;
+            tooltips_mouse_ultima_pos_y_tooltip=get_pos_y_pixel_mouse_tooltip_mouse();
         }
 
         tooltips_mouse_direccion_tooltip=tooltip.direccion_tooltip;
