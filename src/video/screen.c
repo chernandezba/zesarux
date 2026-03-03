@@ -2628,8 +2628,8 @@ void scr_putpixel_layer_menu_no_zoom(int x,int y,int color)
 	int xdestino=xzoom;
 	int ydestino=yzoom;
 
-    int ancho_maximo_por_menu=scr_get_menu_width()*menu_char_width*menu_gui_zoom;
-    int alto_maximo_por_menu=scr_get_menu_height()*menu_char_height*menu_gui_zoom;
+    int ancho_maximo_por_menu=scr_get_menu_width()*menu_char_width*menu_gui_zoom*zoom_x;
+    int alto_maximo_por_menu=scr_get_menu_height()*menu_char_height*menu_gui_zoom*zoom_y;
 
     //Proteger que no se salga de rango
     if (
@@ -2669,8 +2669,8 @@ void scr_putpixel_layer_menu(int x,int y,int color)
 	int zx,zy;
 
 
-    int ancho_maximo_por_menu=scr_get_menu_width()*menu_char_width*menu_gui_zoom;
-    int alto_maximo_por_menu=scr_get_menu_height()*menu_char_height*menu_gui_zoom;
+    int ancho_maximo_por_menu=scr_get_menu_width()*menu_char_width*menu_gui_zoom*zoom_x;
+    int alto_maximo_por_menu=scr_get_menu_height()*menu_char_height*menu_gui_zoom*zoom_y;
 
 
 	//Escalado a zoom indicado
