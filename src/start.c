@@ -2858,7 +2858,7 @@ int parse_cmdline_options(int desde_commandline) {
                 !strcmp(argv[puntero_parametro],"--reduce-display-no-antialias")
 
                 ) {
-                screen_reduce_075_050_antialias.v=0;
+                screen_reduce_antialias.v=0;
             }
 
             else if (
