@@ -2627,55 +2627,42 @@ int main (int argc, const char * argv[]) {
     // Si se especifica un video driver diferente de cocoa, no inicializar GUI
 
     if (scrcocoa_non_cocoa_driver_set_cmd(argc,argv) ) {
-            //Y de aqui no salimos
-            printf ("Running ZEsarUX in non GUI mode because a non cocoa video driver is selected\n\n");
+        //Y de aqui no salimos
+        printf ("Running ZEsarUX in non GUI mode because a non cocoa video driver is selected\n\n");
 
+        zesarux_main(gArgc, gArgv);
 
-            zesarux_main(gArgc, gArgv);
-
-
-            //Bucle cerrado con sleep. El bucle main se ha lanzado como thread
-            while (1) {
-                    timer_sleep(1000);
-                    //printf ("bucle con sleep\n");
-            }
+        //Bucle cerrado con sleep. El bucle main se ha lanzado como thread
+        while (1) {
+            timer_sleep(1000);
+        }
 
     }
-
-
 
 
     CPSProcessSerNum PSN;
 
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     [NSApplication sharedApplication];
-//	NSApplication *application = [NSApplication sharedApplication];
+
+
 
 // de qemu
-        if (!CPSGetCurrentProcess(&PSN))
-                if (!CPSEnableForegroundOperation(&PSN,0x03,0x3C,0x2C,0x1103))
-                        if (!CPSSetFrontProcess(&PSN))
-                        [NSApplication sharedApplication];
 
-//de ejemplos
-/*
-ProcessSerialNumber psn;
+//Obtiene el identificador interno del proceso
+//Lo habilita como app de primer plano
+//Lo trae al frente
+//Inicializa NSApplication
 
-     GetCurrentProcess( &psn );
-     CPSEnableForegroundOperation( &psn );
-     SetFrontProcess( &psn );
-*/
+    if (!CPSGetCurrentProcess(&PSN))
+        if (!CPSEnableForegroundOperation(&PSN,0x03,0x3C,0x2C,0x1103))
+            if (!CPSSetFrontProcess(&PSN))
+                [NSApplication sharedApplication];
 
-//de ejemplo
-/*
-ProcessSerialNumber psn;
+//Alternativa:
+[NSApp activateIgnoringOtherApps:YES];
 
-if (!GetCurrentProcess(&psn))
-{
-    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
-    SetFrontProcess(&psn);
-}
-*/
+
 
     // Add menus
     NSMenu      *menu;
