@@ -108,3 +108,4 @@ ok *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
         if (!CPSEnableForegroundOperation(&PSN,0x03,0x3C,0x2C,0x1103))
             if (!CPSSetFrontProcess(&PSN))
                 [NSApplication sharedApplication];
+    O quiza que ese codigo solo se ejecute cuando se lanza por consola

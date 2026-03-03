@@ -2648,9 +2648,9 @@ int main (int argc, const char * argv[]) {
 
 
 
-//Codigo viejo usado para forzar aplicación en primer plano
-
-
+//Codigo viejo usado para forzar que la ventana de ZEsarUX aparezca
+//Esto en teoria solo es necesario al lanzarlo desde terminal
+//Si está como aplicación y hacemos doble click, no hace falta
 
 //Obtiene el identificador interno del proceso
 //Lo habilita como app de primer plano
