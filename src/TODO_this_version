@@ -103,7 +103,8 @@ ok *de momento solo definicion tema sin colores finales
 ok *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
 *temas que cambien background tambien?
 
-
-ok-Si se habilita "allow windows beyond limits", si la ventana principal de ZEsarUX es lo suficientemente grande, las ventanas de zxvision
-llegan al limite del menu, aun faltando espacio disponible de la ventana principal, y los pixeles salen de ese limite
-funciones scr_putpixel_layer_menu_no_zoom y scr_putpixel_layer_menu
+-Inicio macos. Sustituir todo este código que hace que la app se vea, por otra cosa moderna:
+    if (!CPSGetCurrentProcess(&PSN))
+        if (!CPSEnableForegroundOperation(&PSN,0x03,0x3C,0x2C,0x1103))
+            if (!CPSSetFrontProcess(&PSN))
+                [NSApplication sharedApplication];

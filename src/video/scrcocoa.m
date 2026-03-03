@@ -2647,7 +2647,10 @@ int main (int argc, const char * argv[]) {
 
 
 
-// de qemu
+
+//Codigo viejo usado para forzar aplicación en primer plano
+
+
 
 //Obtiene el identificador interno del proceso
 //Lo habilita como app de primer plano
@@ -2659,8 +2662,6 @@ int main (int argc, const char * argv[]) {
             if (!CPSSetFrontProcess(&PSN))
                 [NSApplication sharedApplication];
 
-//Alternativa:
-[NSApp activateIgnoringOtherApps:YES];
 
 
 
