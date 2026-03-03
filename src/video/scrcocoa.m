@@ -465,6 +465,7 @@ int pendiente_z88_draw_lower=0;
 - (void) ungrabMouse;
 - (void) startTimer:(id)sender;
 - (void) stopTimer:(id)sender;
+- (void) cocoa_update_window_title:(id)sender;
 - (void) toggleFullScreen:(id)sender;
 - (void) migestionEvento:(NSEvent *)event;
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease;
@@ -2314,9 +2315,9 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
     //COCOA_DEBUG("ZesaruxCocoaView: grabMouse\n");
 	//printf ("grabMouse\n");
 
-    if (!ventana_fullscreen) {
+    /*if (!ventana_fullscreen) {
             [normalWindow setTitle:@"ZEsarUX - fullscreen"];
-    }
+    }*/
     [NSCursor hide];
     CGAssociateMouseAndMouseCursorPosition(FALSE);
     isMouseGrabed = TRUE; // while isMouseGrabed = TRUE, ZesaruxCocoaApp sends all events to [cocoaView gestionEvento:]
@@ -2326,9 +2327,9 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 {
     //COCOA_DEBUG("ZesaruxCocoaView: ungrabMouse\n");
 
-    if (!ventana_fullscreen) {
+    /*if (!ventana_fullscreen) {
             [normalWindow setTitle:@"ZEsarUX "EMULATOR_VERSION ];
-    }
+    }*/
     [NSCursor unhide];
     CGAssociateMouseAndMouseCursorPosition(TRUE);
     isMouseGrabed = FALSE;
@@ -2416,6 +2417,14 @@ int previous_timer_sleep_machine=0;
     debug_printf(VERBOSE_DEBUG,"Stopped Mac timer");
 }
 
+
+- (void) cocoa_update_window_title:(id)sender
+{
+    //printf("cambio titulo\n");
+    NSString *nsTitle = [NSString stringWithUTF8String:get_window_title()];
+    [normalWindow setTitle:nsTitle];
+}
+
 - (void)timerTickHandler
 {
     //printf("timerTickHandler\n");
@@ -2485,7 +2494,16 @@ int previous_timer_sleep_machine=0;
             exit(1);
         }
         [normalWindow setAcceptsMouseMovedEvents:YES];
-        [normalWindow setTitle:[NSString stringWithFormat:@"ZEsarUX "EMULATOR_VERSION]];
+        //[normalWindow setTitle:[NSString stringWithFormat:@"ZEsarUX "EMULATOR_VERSION]];
+
+        //Tenemos que iniciar el titulo ventana aqui porque esto en cocoa se hace despues de inicializar la ventana y entonces no tendriamos titulo
+        set_default_window_title();
+
+        //scrcocoa_update_window_title();
+        [cocoaView performSelectorOnMainThread:@selector(cocoa_update_window_title:) withObject:nil waitUntilDone:YES];
+        //NSString *nsTitle = [NSString stringWithUTF8String:get_window_title()];
+        //[normalWindow setTitle:nsTitle];
+
         [normalWindow setContentView:cocoaView];
         //deprecated . mirar alternativa [normalWindow useOptimizedDrawing:YES];
         [normalWindow makeKeyAndOrderFront:self];
@@ -2741,13 +2759,13 @@ if (!GetCurrentProcess(&psn))
     [NSWindow setAllowsAutomaticWindowTabbing:NO];
 
     // Start the main event loop
-//	printf ("\n\nrun app\n\n");
+	//printf ("\n\nrun app\n\n");
 
 
     [NSApp run];
 
 
-//	printf ("fin app\n");
+	//printf ("fin app\n");
 
     [appController release];
     [pool release];
@@ -3253,6 +3271,15 @@ int scrcocoa_get_menu_height(void)
 }
 
 
+void scrcocoa_update_window_title(void)
+{
+
+    //printf("llamar a cambio titulo\n");
+
+    //Tiene que llamarlo desde el thread principal
+    [cocoaView performSelectorOnMainThread:@selector(cocoa_update_window_title:) withObject:nil waitUntilDone:YES];
+}
+
 /*
 int scrcocoa_driver_can_ext_desktop (void)
 {
@@ -3356,6 +3383,7 @@ int scrcocoa_init (void) {
     scr_get_menu_width=scrcocoa_get_menu_width;
     scr_get_menu_height=scrcocoa_get_menu_height;
     //scr_driver_can_ext_desktop=scrcocoa_driver_can_ext_desktop;
+    scr_update_window_title=scrcocoa_update_window_title;
 
     scr_putchar_zx8081=scrcocoa_putchar_zx8081;
     scr_debug_registers=scrcocoa_debug_registers;

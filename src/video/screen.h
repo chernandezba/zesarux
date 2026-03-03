@@ -68,6 +68,8 @@ extern void (*scr_putpixel_final) (int x,int y,unsigned int color);
 extern int (*scr_get_menu_width) (void);
 extern int (*scr_get_menu_height) (void);
 
+extern void (*scr_update_window_title) (void);
+
 //extern int (*scr_driver_can_ext_desktop) (void);
 extern int scr_driver_can_ext_desktop (void);
 
@@ -1113,5 +1115,14 @@ extern void scr_driver_redraw_desktop_windows(void);
 extern void scr_set_pending_redraw_desktop_windows(void);
 
 extern void scr_adjust_zoom_equals(int *p_zx,int *p_zy);
+
+#define ZESARUX_MAX_WINDOW_TITLE 100
+
+extern void set_window_title(char *texto);
+extern char *get_window_title(void);
+extern void set_default_window_title(void);
+
+extern void update_window_title(void);
+extern void set_window_title_and_update(char *texto);
 
 #endif

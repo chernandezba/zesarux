@@ -2017,6 +2017,23 @@ int scrxwindows_driver_can_ext_desktop (void)
 }
 */
 
+void scrxwindows_update_window_title(void)
+{
+	char *list[2];
+    //char buffer[20];
+	char buffer[ZESARUX_MAX_WINDOW_TITLE+1];
+	XTextProperty text;
+
+	list[0] = buffer;
+	list[1] = 0;
+
+	//sprintf( buffer, "ZEsarUX "EMULATOR_VERSION );
+    strcpy(buffer,get_window_title());
+
+	XStringListToTextProperty( list, 1, &text);
+	XSetWMName( dpy, ventana, &text );
+}
+
 
 int scrxwindows_init (void) {
 
@@ -2103,18 +2120,7 @@ int scrxwindows_init (void) {
 
 	XFlush(dpy);
 
-	char *list[2];
-	char buffer[20];
-	XTextProperty text;
-
-	list[0] = buffer;
-	list[1] = 0;
-
-	sprintf( buffer, "ZEsarUX "EMULATOR_VERSION );
-
-	XStringListToTextProperty( list, 1, &text);
-	XSetWMName( dpy, ventana, &text );
-
+	scrxwindows_update_window_title();
 
 
     //Inicializaciones necesarias
@@ -2134,6 +2140,7 @@ int scrxwindows_init (void) {
     scr_reset_fullscreen=scrxwindows_reset_fullscreen;
     scr_z88_cpc_load_keymap=scrxwindows_z88_cpc_load_keymap;
     scr_detectedchar_print=scrxwindows_detectedchar_print;
+    scr_update_window_title=scrxwindows_update_window_title;
     scr_tiene_colores=1;
     screen_refresh_menu=1;
 

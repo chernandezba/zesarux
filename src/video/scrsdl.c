@@ -69,7 +69,10 @@ SDL_Surface *sdl_screen;
 int scrsdl_debe_redimensionar=0;
 
 
-
+void scrsdl_update_window_title(void)
+{
+    SDL_WM_SetCaption(get_window_title(), "ZEsarUX");
+}
 
 int scrsdl_crea_ventana(void)
 {
@@ -122,7 +125,8 @@ int scrsdl_crea_ventana(void)
     scr_reallocate_layers_menu(ancho,alto);
 
     //establecer titulo ventana
-    SDL_WM_SetCaption("ZEsarUX " EMULATOR_VERSION , "ZEsarUX");
+    //SDL_WM_SetCaption("ZEsarUX " EMULATOR_VERSION , "ZEsarUX");
+    scrsdl_update_window_title();
 
     if (mouse_pointer_shown.v==0) SDL_ShowCursor(0);
 
@@ -1974,6 +1978,7 @@ int scrsdl_init (void) {
         scr_reset_fullscreen=scrsdl_reset_fullscreen;
 	scr_z88_cpc_load_keymap=scrsdl_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrsdl_detectedchar_print;
+        scr_update_window_title=scrsdl_update_window_title;
         scr_tiene_colores=1;
         screen_refresh_menu=1;
 

@@ -70,12 +70,12 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
-
 ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
 --diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
 --nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
 --funcion en zrcp para enviar mensajes a ventanas
 --ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
+--desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
 
 
 
@@ -101,4 +101,10 @@ eso se envía en las estadísticas
 -tema gui de pico-8
 ok *de momento solo definicion tema sin colores finales
 ok *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
+*temas que cambien background tambien?
 
+-titulo ventana
+*ok funcion comun para definir titulo
+*pendiente que drivers video tengan manera de cambiarlo en caliente. cambiarlo por ejemplo al insertar cinta y/o smartload. De momento solo esta en smartload
+*set_window_title que no permita caracteres <32 o >126, que los cambie por "."
+*implementar scr_update_window_title en todos drivers video, incluso en plantilla

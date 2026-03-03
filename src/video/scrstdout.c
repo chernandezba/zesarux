@@ -276,6 +276,7 @@ int scrstdout_init (void){
 	scr_z88_cpc_load_keymap=scrstdout_z88_cpc_load_keymap;
 
 	scr_detectedchar_print=scrstdout_detectedchar_print;
+    scr_update_window_title=NULL;
 
 	//activamos esto en stdout, para que se capture el texto, pero si no tenemos el automatic redraw activado,
 	//para evitar hacer redraw y a la vez hacer print de trap

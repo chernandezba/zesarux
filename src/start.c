@@ -8090,6 +8090,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     //Preparar los timers disponibles
     init_timer();
 
+    set_default_window_title();
+
     //Inicializamos Video antes que el resto de cosas.
     main_init_video();
 

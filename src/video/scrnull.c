@@ -133,6 +133,7 @@ debug_printf (VERBOSE_INFO,"Init Null Video Driver");
 	scr_reset_fullscreen=scrnull_reset_fullscreen;
 	scr_z88_cpc_load_keymap=scrnull_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrnull_detectedchar_print;
+    scr_update_window_title=NULL;
 
 
 return 0;

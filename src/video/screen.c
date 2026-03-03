@@ -151,6 +151,8 @@ void (*scr_putpixel_final) (int x,int y,unsigned int color);
 int (*scr_get_menu_width) (void);
 int (*scr_get_menu_height) (void);
 
+void (*scr_update_window_title) (void)=NULL;
+
 //int (*scr_driver_can_ext_desktop) (void);
 
 
@@ -16261,4 +16263,59 @@ void scr_adjust_zoom_equals(int *p_zx,int *p_zy)
     *p_zx=zx;
     *p_zy=zy;
 
+}
+
+char zesarux_window_title[ZESARUX_MAX_WINDOW_TITLE+1]="";
+
+void set_window_title(char *texto)
+{
+    //char buf_prefijo[100];
+    if (texto[0]!=0) {
+        strcpy(zesarux_window_title,"ZEsarUX " EMULATOR_VERSION " - ");
+        int longitud=strlen(zesarux_window_title);
+        //strncpy(&zesarux_window_title[longitud],texto,ZESARUX_MAX_WINDOW_TITLE-longitud);
+
+        int destino=longitud;
+        int origen=0;
+
+        for (;destino<ZESARUX_MAX_WINDOW_TITLE && texto[origen];destino++,origen++) {
+            unsigned char letra=texto[origen];
+
+            //No metamos caracteres en el título que no sean ascii
+            if (letra<32 || letra>126) letra='?';
+
+            zesarux_window_title[destino]=letra;
+        }
+
+        zesarux_window_title[destino]=0;
+    }
+    else {
+        strcpy(zesarux_window_title,"ZEsarUX " EMULATOR_VERSION);
+    }
+
+
+    //Si se ha salido del limite
+    zesarux_window_title[ZESARUX_MAX_WINDOW_TITLE]=0;
+}
+
+void set_default_window_title(void)
+{
+    set_window_title("");
+}
+
+char *get_window_title(void)
+{
+    return zesarux_window_title;
+}
+
+//Decirle al driver de video que tiene que actualizar el titulo
+void update_window_title(void)
+{
+    if (scr_update_window_title!=NULL) scr_update_window_title();
+}
+
+void set_window_title_and_update(char *texto)
+{
+    set_window_title(texto);
+    update_window_title();
 }

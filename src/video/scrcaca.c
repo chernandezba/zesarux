@@ -748,6 +748,7 @@ scr_putchar_footer=scrcaca_putchar_footer;
 
         scr_get_menu_width=scrcaca_get_menu_width;
         scr_get_menu_height=scrcaca_get_menu_height;
+        scr_update_window_title=NULL;
 //scr_driver_can_ext_desktop=scrcaca_driver_can_ext_desktop;
 
 scr_set_fullscreen=scrcaca_set_fullscreen;

@@ -88,6 +88,7 @@ Mejorada precisión decimal de valores de ventana de Basic Variables
 Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix, Minix3
 Mejorado ZENG Online protocol: permitir conectar cliente y servidor con diferentes versiones de ZEsarUX (siempre que sean compatibles)
 Mejorado inserción de archivos de dispositivos (archivos .mmc, archivos .ide, etc): ahora se habilitan automáticamente después de insertarlos
+Mejorado título de la ventana de ZEsarUX: unificar título en todos los diferentes drivers: SDL, X11, etc ...
 
 * Correcciones:
 

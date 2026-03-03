@@ -1787,6 +1787,7 @@ int scrcurses_init (void) {
     scr_reset_fullscreen=scrcurses_reset_fullscreen;
     scr_z88_cpc_load_keymap=scrcurses_z88_cpc_load_keymap;
     scr_detectedchar_print=scrcurses_detectedchar_print;
+    scr_update_window_title=NULL;
 
     //sprintf (curses_last_message_shown,"");
     curses_last_message_shown[0]=0x0;

@@ -284,6 +284,13 @@ int scrvideoname_driver_can_ext_desktop (void)
 }
 */
 
+void scrvideoname_update_window_title(void)
+{
+    //TODO: actualizar titulo de la ventana
+    //algo asi como:
+    //SDL_SetWindowTitle(window,get_window_title());
+}
+
 int scrvideoname_init (void) {
 
 	debug_printf (VERBOSE_INFO,"Init VIDEONAME_CAP Video Driver");
@@ -308,6 +315,7 @@ int scrvideoname_init (void) {
         scr_reset_fullscreen=scrvideoname_reset_fullscreen;
 	scr_z88_cpc_load_keymap=scrvideoname_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrvideoname_detectedchar_print;
+    scr_update_window_title=scrvideoname_update_window_title;
         scr_tiene_colores=1;
         screen_refresh_menu=1;
 

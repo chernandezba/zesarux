@@ -5631,6 +5631,10 @@ void quickload_common_set_spectrum(void)
 
 int quickload_continue(char *nombre) {
 
+    char buffer_nombre[PATH_MAX];
+    util_get_file_no_directory(nombre,buffer_nombre);
+    set_window_title_and_update(buffer_nombre);
+
     //Si hay cinta realtape insertada, quitarla
     if (realtape_inserted.v) realtape_eject();
 

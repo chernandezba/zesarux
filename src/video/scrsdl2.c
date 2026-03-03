@@ -73,6 +73,10 @@ SDL_Texture *scrsdl_texture;
 SDL_Renderer *renderer;
 
 
+void scrsdl_update_window_title(void)
+{
+    SDL_SetWindowTitle(window,get_window_title());
+}
 
 
 int scrsdl_crea_ventana(void)
@@ -115,7 +119,8 @@ int scrsdl_crea_ventana(void)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
 
-    SDL_SetWindowTitle(window,"ZEsarUX "EMULATOR_VERSION);
+    //SDL_SetWindowTitle(window,"ZEsarUX "EMULATOR_VERSION);
+    scrsdl_update_window_title();
 
     if (scr_sdl_8bits_color.v) {
         scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB332, SDL_TEXTUREACCESS_STATIC, ancho, alto);
@@ -2012,6 +2017,7 @@ int scrsdl_init (void) {
         scr_reset_fullscreen=scrsdl_reset_fullscreen;
 	scr_z88_cpc_load_keymap=scrsdl_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrsdl_detectedchar_print;
+        scr_update_window_title=scrsdl_update_window_title;
         scr_tiene_colores=1;
         screen_refresh_menu=1;
 

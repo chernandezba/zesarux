@@ -1923,6 +1923,7 @@ int scrfbdev_init (void){
 	scr_reset_fullscreen=scrfbdev_reset_fullscreen;
 	scr_z88_cpc_load_keymap=scrfbdev_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrfbdev_detectedchar_print;
+    scr_update_window_title=NULL;
 
 
 	//int ancho_minimo=ANCHO_PANTALLA+LEFT_BORDER_NO_ZOOM*2*border_enabled.v;
