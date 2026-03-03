@@ -174,9 +174,6 @@ pues indicando por linea de comandos no servirá de nada
 
 
 
--Mostrar juego cargado en titulo ventana. Desaparece al hacer reset. Que limite tiene el texto en los diferentes sistemas operativos?
-
-
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
 
