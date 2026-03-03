@@ -2628,8 +2628,15 @@ void scr_putpixel_layer_menu_no_zoom(int x,int y,int color)
 	int xdestino=xzoom;
 	int ydestino=yzoom;
 
+    int ancho_maximo_por_menu=scr_get_menu_width()*menu_char_width*menu_gui_zoom;
+    int alto_maximo_por_menu=scr_get_menu_height()*menu_char_height*menu_gui_zoom;
+
     //Proteger que no se salga de rango
-    if (xdestino>=ancho_layer_menu_machine/screen_reduce_menu_ancho || ydestino>=(alto_layer_menu_machine-WINDOW_FOOTER_SIZE*zoom_y)/screen_reduce_menu_alto || x<0 || y<0) {
+    if (
+        xdestino>=ancho_layer_menu_machine/screen_reduce_menu_ancho || ydestino>=(alto_layer_menu_machine-WINDOW_FOOTER_SIZE*zoom_y)/screen_reduce_menu_alto || x<0 || y<0 ||
+        xdestino>=ancho_maximo_por_menu || ydestino>=alto_maximo_por_menu
+
+        ) {
         //printf ("fuera de rango x/y scr_putpixel_layer_menu_no_zoom %d %d\n",xdestino,ydestino);
     }
 
@@ -2662,6 +2669,10 @@ void scr_putpixel_layer_menu(int x,int y,int color)
 	int zx,zy;
 
 
+    int ancho_maximo_por_menu=scr_get_menu_width()*menu_char_width*menu_gui_zoom;
+    int alto_maximo_por_menu=scr_get_menu_height()*menu_char_height*menu_gui_zoom;
+
+
 	//Escalado a zoom indicado
 	for (zx=0;zx<zoom_x;zx++) {
 		for (zy=0;zy<zoom_y;zy++) {
@@ -2669,7 +2680,10 @@ void scr_putpixel_layer_menu(int x,int y,int color)
 			int ydestino=yzoom+zy;
 
             //Proteger que no se salga de rango
-            if (xdestino>=ancho_layer_menu_machine/screen_reduce_menu_ancho || ydestino>=(alto_layer_menu_machine-WINDOW_FOOTER_SIZE*zoom_y)/screen_reduce_menu_alto || x<0 || y<0) {
+            if (
+                xdestino>=ancho_layer_menu_machine/screen_reduce_menu_ancho || ydestino>=(alto_layer_menu_machine-WINDOW_FOOTER_SIZE*zoom_y)/screen_reduce_menu_alto || x<0 || y<0 ||
+                xdestino>=ancho_maximo_por_menu || ydestino>=alto_maximo_por_menu
+                ) {
                 //printf ("fuera de rango x/y scr_putpixel_layer_menu %d %d\n",xdestino,ydestino);
             }
 
