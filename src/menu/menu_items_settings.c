@@ -2812,13 +2812,21 @@ void menu_settings_windows_features(MENU_ITEM_PARAMETERS)
 
 void menu_interface_reduce_menu_width_half(MENU_ITEM_PARAMETERS)
 {
-    if (screen_reduce_menu_ancho==1) screen_reduce_menu_ancho=2;
+    if (screen_reduce_menu_ancho==1) {
+        screen_reduce_menu_ancho=2;
+
+        zxvision_rearrange_background_windows(0,1);
+    }
     else screen_reduce_menu_ancho=1;
 }
 
 void menu_interface_reduce_menu_height_half(MENU_ITEM_PARAMETERS)
 {
-    if (screen_reduce_menu_alto==1) screen_reduce_menu_alto=2;
+    if (screen_reduce_menu_alto==1) {
+        screen_reduce_menu_alto=2;
+
+        zxvision_rearrange_background_windows(0,1);
+    }
     else screen_reduce_menu_alto=1;
 }
 
