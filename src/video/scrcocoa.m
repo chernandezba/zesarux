@@ -482,7 +482,8 @@ int pendiente_z88_draw_lower=0;
 @implementation ZesaruxCocoaWindow
 
 
-void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDDeviceRef device) {
+void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDDeviceRef device)
+{
     debug_printf(VERBOSE_INFO,"Joystick has been plugged");
 
     uint vendor=0,product=0;
@@ -534,7 +535,8 @@ NSLog(@"\nONTRAK device Model: %@\nSerial Number:%@\n",
 
 }
 
-void joystickWasRemoved(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDDeviceRef device GCC_UNUSED) {
+void joystickWasRemoved(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDDeviceRef device GCC_UNUSED)
+{
     debug_printf(VERBOSE_INFO,"Joystick has been unplugged");
 
     if (realjoystick_present.v) {
@@ -547,7 +549,8 @@ void joystickWasRemoved(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED
     }
 }
 
-void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDValueRef value) {
+void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDValueRef value)
+{
     //printf("Gamepad talked!\n");
     IOHIDElementRef element = IOHIDValueGetElement(value);
     //NSLog(@"Element: %@", element);
@@ -561,7 +564,7 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
     int usagePage = IOHIDElementGetUsagePage(element);
     //printf("Usagepage: %d kHIDPage_GenericDesktop %d kHIDPage_Button %d\n",usagePage,kHIDPage_GenericDesktop,kHIDPage_Button);
 
-  debug_printf(VERBOSE_DEBUG,"Joystick action: usagePage: %d usage: %d elementValue: %ld",usagePage,usage,elementValue);
+    debug_printf(VERBOSE_DEBUG,"Joystick action: usagePage: %d usage: %d elementValue: %ld",usagePage,usage,elementValue);
 
     int boton;
 
@@ -671,34 +674,16 @@ int scrcocoa_ultimo_estado_realjoystick_present=0;
 
     realjoystick_present.v=scrcocoa_ultimo_estado_realjoystick_present;
 
-
     hidManager = IOHIDManagerCreate( kCFAllocatorDefault, kIOHIDOptionsTypeNone);
 
-/*
-CFMutableDictionaryRef matchDict = CFDictionaryCreateMutable(
-                                                  kCFAllocatorDefault,
-                                                  2,
-                                                   &kCFTypeDictionaryKeyCallBacks,
-                                                   &kCFTypeDictionaryValueCallBacks);
-*/
+
 
 /*
-  NSMutableDictionary* criterion = [[NSMutableDictionary alloc] init];
-  [criterion setObject: [NSNumber numberWithInt: kHIDPage_GenericDesktop] forKey: (NSString*)CFSTR(kIOHIDDeviceUsagePageKey)];
-  [criterion setObject: [NSNumber numberWithInt: kHIDUsage_GD_GamePad] forKey: (NSString*)CFSTR(kIOHIDDeviceUsageKey)];
-  IOHIDManagerSetDeviceMatching(hidManager, criterion);*/
-
-
-    //printf("kHIDPage_GenericDesktop %d kHIDUsage_GD_Joystick %d\n",kHIDPage_GenericDesktop,kHIDUsage_GD_Joystick);
-
-    //NSLog(@"kIOHIDVendorIDKey %@",kHIDUsage_GD_Joystick);
-
-
 
 
     //Method 1
     //aparentemente esto solo vale para un tipo (joystick o gamepad)
-    /*
+
     int usagePage = 0x01; // general usage page ...
     int usage = 0x04; // joystick
 
@@ -709,11 +694,11 @@ CFMutableDictionaryRef matchDict = CFDictionaryCreateMutable(
 
     // Add key for device usage page - 0x01 for "Generic Desktop"
     //CFDictionarySetValue( matchDict, CFSTR( kIOHIDPrimaryUsagePageKey ), CFNumberCreate(kCFAllocatorDefault,
-      //      kCFNumberSInt32Type, &usagePage) );
+    //      kCFNumberSInt32Type, &usagePage) );
 
-//    // Add key for device usage - 0x04 for "Joystick"
+    //    // Add key for device usage - 0x04 for "Joystick"
     //CFDictionarySetValue( matchDict, CFSTR( kIOHIDPrimaryUsageKey ), CFNumberCreate(kCFAllocatorDefault,
-      //      kCFNumberSInt32Type, &usage) );
+    //      kCFNumberSInt32Type, &usage) );
 
     usagePage = kHIDPage_GenericDesktop; // general usage page
     usage = kHIDUsage_GD_Joystick; // joystick
@@ -721,21 +706,21 @@ CFMutableDictionaryRef matchDict = CFDictionaryCreateMutable(
     // Add key for device usage page - 0x01 for "Generic Desktop"
     //Para el joystick barato tambien necesita esto
     CFDictionarySetValue( matchDict, CFSTR( kIOHIDPrimaryUsagePageKey ), CFNumberCreate(kCFAllocatorDefault,
-            kCFNumberSInt32Type, &usagePage) );
+    kCFNumberSInt32Type, &usagePage) );
 
-//    // Add key for device usage - 0x04 for "Joystick"
+    //    // Add key for device usage - 0x04 for "Joystick"
     //Para el joystick barato
     CFDictionarySetValue( matchDict, CFSTR( kIOHIDPrimaryUsageKey ), CFNumberCreate(kCFAllocatorDefault,
-            kCFNumberSInt32Type, &usage) );
+    kCFNumberSInt32Type, &usage) );
 
     //Para el gamepad logic3
     CFDictionarySetValue( matchDict, CFSTR( kIOHIDPrimaryUsageKey ), CFNumberCreate(kCFAllocatorDefault,
-            kCFNumberSInt32Type, &usagegamepad) );
+    kCFNumberSInt32Type, &usagegamepad) );
 
 
-IOHIDManagerSetDeviceMatching(hidManager, matchDict);
+    IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
-  //END Method 1
+    //END Method 1
 
 */
 
@@ -758,9 +743,7 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
     IOHIDManagerSetDeviceMatchingMultiple(hidManager, (__bridge CFArrayRef)(@[gamepadCriterion,joystickCriterion]));
 
-  //END Method2
-
-
+    //END Method2
 
 
     IOHIDManagerRegisterDeviceMatchingCallback(hidManager, joystickWasAdded, (void*)self);
@@ -811,12 +794,12 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
     scr_adjust_zoom_equals(&zoom_x_calculado,&zoom_y_calculado);
 
     if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
-            //resize
-            debug_printf (VERBOSE_INFO,"Resizing window");
+        //resize
+        debug_printf (VERBOSE_INFO,"Resizing window");
 
-            zoom_x=zoom_x_calculado;
-            zoom_y=zoom_y_calculado;
-            set_putpixel_zoom();
+        zoom_x=zoom_x_calculado;
+        zoom_y=zoom_y_calculado;
+        set_putpixel_zoom();
     }
 
     pixel_screen_width = screen_get_window_size_width_zoom_border_en();
@@ -893,12 +876,10 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
     debug_printf(VERBOSE_INFO,"The window is going to be resized");
 
-
 }
 
 - (void)windowDidEndLiveResize:(NSNotification *)notification
 {
-
 
     /*if (pendingresize) {
         debug_printf (VERBOSE_INFO,"Another resize window operation is pending");
@@ -934,7 +915,6 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
 -(void)prepareOpenGL
 {
-    //printf ("prepareOpenGL\n");
 
   [super prepareOpenGL];
 
@@ -946,7 +926,6 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 -(void)createTexture
 {
 
-    //printf ("createTexture %ld %ld\n",pixel_screen_width, pixel_screen_height);
 
     NSInteger ancho;
     NSInteger alto;
@@ -1054,6 +1033,7 @@ int cocoa_renderizando=0;
     [[self openGLContext] flushBuffer];
 
     glFlush();
+
     /*
     The documentation for -[NSOpenGLContext flushBuffer] says:
 
@@ -1112,31 +1092,31 @@ int cocoa_renderizando=0;
 /*
 - (void)viewWillStartLiveResize
 {
-    printf ("viewWillStartLiveResize\n");
 
-        [ super viewWillStartLiveResize ];
+    [ super viewWillStartLiveResize ];
 }
 
 - (void)viewDidEndLiveResize
 {
-    printf ("viewDidEndLiveResize\n");
 
-        [ super viewDidEndLiveResize ];
+    [ super viewDidEndLiveResize ];
 }
 */
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender
 {
-//printf ("Salido drag drop\n");
+
 }
 
-- (BOOL)prepareForDragOperation:(id )sender {
+- (BOOL)prepareForDragOperation:(id )sender
+{
    return YES;
-} // end prepareForDragOperation
+}
 
 
 
-- (BOOL)performDragOperation:(id )sender {
+- (BOOL)performDragOperation:(id )sender
+{
 
     NSPasteboard *objeto_pboard = [sender draggingPasteboard];
 
@@ -1168,29 +1148,27 @@ int cocoa_renderizando=0;
 
 
 
-} // end performDragOperation
+}
 
 
 - (void)keyDown:(NSEvent *)event
 {
-[cocoaView gestionTecla:event:1] ;
+    [cocoaView gestionTecla:event:1];
 
 }
 
 - (void)keyUp:(NSEvent *)event
 {
-[cocoaView gestionTecla:event:0] ;
+    [cocoaView gestionTecla:event:0];
 }
 
 - (void)mouseUp:(NSEvent *)event
 {
-    //mouse_left=0;
     util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
 }
 
 - (void)rightMouseUp:(NSEvent *)event
 {
-  //mouse_right=0;
     util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
 }
 
@@ -1230,7 +1208,6 @@ int cocoa_renderizando=0;
     NSPoint locationInView = [self convertPoint:[event locationInWindow]
                                     fromView:nil];
 
-    //mouse_left=1;
     util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
 
     //0,0 en cocoa esta abajo a la izquierda
@@ -1248,7 +1225,6 @@ int cocoa_renderizando=0;
     NSPoint locationInView = [self convertPoint:[event locationInWindow]
             fromView:nil];
 
-    //mouse_right=1;
     util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
 
     //0,0 en cocoa esta abajo a la izquierda
@@ -1305,28 +1281,26 @@ int cocoa_raton_oculto=0;
     //printf(" gunstick x %d gunstick y %d\n",lightgun_x,lightgun_y);
 
 
-
-
     //si esta dentro de la ventana y hay que ocultar puntero
 
     if (mouse_pointer_shown.v==0) {
-            if (mouse_x>=0 && mouse_y>=0 &&
-                mouse_x<=(screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom()) &&
-                mouse_y<=screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom() ) {
-                    if (!cocoa_raton_oculto) {
-                            debug_printf (VERBOSE_PARANOID,"Mouse inside window and not hidden. Hide it");
-                            cocoa_raton_oculto=1;
-                            [NSCursor hide];
-                    }
-            }
+        if (mouse_x>=0 && mouse_y>=0 &&
+            mouse_x<=(screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom()) &&
+            mouse_y<=screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom() ) {
+                if (!cocoa_raton_oculto) {
+                    debug_printf (VERBOSE_PARANOID,"Mouse inside window and not hidden. Hide it");
+                    cocoa_raton_oculto=1;
+                    [NSCursor hide];
+                }
+        }
 
-            else {
-                    if (cocoa_raton_oculto) {
-                            debug_printf (VERBOSE_PARANOID,"Mouse outside window and hidden. Unhide it");
-                            cocoa_raton_oculto=0;
-                            [NSCursor unhide];
-                    }
+        else {
+            if (cocoa_raton_oculto) {
+                debug_printf (VERBOSE_PARANOID,"Mouse outside window and hidden. Unhide it");
+                cocoa_raton_oculto=0;
+                [NSCursor unhide];
             }
+        }
 
     }
 
@@ -1334,8 +1308,8 @@ int cocoa_raton_oculto=0;
         //Si se tiene que mostrar, pero se habia ocultado y ahora se ha vuelto a habilitar el setting
         if (cocoa_raton_oculto) {
             debug_printf (VERBOSE_PARANOID,"Mouse was hidden and the setting is now enabled. Unhide it");
-    cocoa_raton_oculto=0;
-    [NSCursor unhide];
+            cocoa_raton_oculto=0;
+            [NSCursor unhide];
         }
     }
 
@@ -1343,7 +1317,8 @@ int cocoa_raton_oculto=0;
     //debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
 }
 
-- (BOOL)acceptsFirstResponder {
+- (BOOL)acceptsFirstResponder
+{
     return YES;
 }
 
@@ -1367,7 +1342,8 @@ int cocoa_raton_oculto=0;
 
 
 
-- (void) flagsChanged:(NSEvent *)event {
+- (void) flagsChanged:(NSEvent *)event
+{
     [cocoaView migestionEvento:event];
 }
 
@@ -1418,12 +1394,12 @@ int cocoa_raton_oculto=0;
     }
 
     else {
-            cx = 0;
-            cy = 0;
-            cw = screen.width;
-            ch = screen.height;
-            cdx = 1.0;
-            cdy = 1.0;
+        cx = 0;
+        cy = 0;
+        cw = screen.width;
+        ch = screen.height;
+        cdx = 1.0;
+        cdy = 1.0;
     }
 
 }
@@ -1446,17 +1422,17 @@ int cocoa_raton_oculto=0;
     }
 
     while (sem_screen_refresh_reallocate_layers && timeout) {
-            //printf ("Se va a hacer resizeContentToWidth en medio de refresco. Esperar\n");
+        //printf ("Se va a hacer resizeContentToWidth en medio de refresco. Esperar\n");
 
-            //esto parece que solo sucede al inicio del programa? y solo en Cocoa?
-            //este tipo de cosas parece que solo sucede en cocoa pues el driver de video va con un thread aparte a su bola
-            //cuando genera error aqui entra por un resize de un evento "automatico" de cocoa
-            //esto es independiente de ZX Desktop, ya este habilitado o no, puede suceder esto
-            //si no controlase esto, acaba generando segmentation fault (pero parece que el segmentation fault solo cuando esta habilitado ZX Desktop)
+        //esto parece que solo sucede al inicio del programa? y solo en Cocoa?
+        //este tipo de cosas parece que solo sucede en cocoa pues el driver de video va con un thread aparte a su bola
+        //cuando genera error aqui entra por un resize de un evento "automatico" de cocoa
+        //esto es independiente de ZX Desktop, ya este habilitado o no, puede suceder esto
+        //si no controlase esto, acaba generando segmentation fault (pero parece que el segmentation fault solo cuando esta habilitado ZX Desktop)
 
-            usleep(10000); //0.01 segundo
+        usleep(10000); //0.01 segundo
 
-            timeout--;
+        timeout--;
     }
 
     //Si ha saltado el timeout despues de 100 intentos (100*0.01=1 segundo) y sigue reallocating, que pase lo que pase, pero que salga de ahi
@@ -1476,12 +1452,12 @@ int cocoa_raton_oculto=0;
 
     // update windows
     if (ventana_fullscreen) {
-            [[fullScreenWindow contentView] setFrame:[[NSScreen mainScreen] frame]];
+        [[fullScreenWindow contentView] setFrame:[[NSScreen mainScreen] frame]];
 
-            [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y - h + screen.height, w, h + [normalWindow frame].size.height - screen.height) display:NO animate:NO];
-    } else {
-
-            [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y - h + screen.height, w, h + [normalWindow frame].size.height - screen.height) display:YES animate:NO];
+        [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y - h + screen.height, w, h + [normalWindow frame].size.height - screen.height) display:NO animate:NO];
+    }
+    else {
+        [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y - h + screen.height, w, h + [normalWindow frame].size.height - screen.height) display:YES animate:NO];
     }
 
 
@@ -1532,7 +1508,8 @@ int cocoa_raton_oculto=0;
         }
 #endif
 
-    } else { // switch from desktop to fullscreen
+    }
+    else { // switch from desktop to fullscreen
         ventana_fullscreen = 1;
         [self grabMouse];
         [self setContentDimensions];
@@ -1548,39 +1525,40 @@ int cocoa_raton_oculto=0;
         //printf ("full screen desde enterFullScreenMode:[NSScreen mainScreen] withOptions:nil\n");
 
                 //temp [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], nil, nil], NSFullScreenModeSetting, nil]];
-        } else {
+        }
+        else {
 #endif
 
-        //Ocultar menu, dock
-        [NSMenu setMenuBarVisible:NO];
+            //Ocultar menu, dock
+            [NSMenu setMenuBarVisible:NO];
 
 
-        //TODO fullscreen. Esto llena la pantalla completamente, distorsionando
+            //TODO fullscreen. Esto llena la pantalla completamente, distorsionando
 
-        fullScreenWindow = [[NSWindow alloc] initWithContentRect:[[NSScreen mainScreen] frame]
-            styleMask:NSWindowStyleMaskBorderless
-            backing:NSBackingStoreBuffered
-            defer:NO];
-
-        //TODO fullscreen. Esto	pone el tamanyo que queremos, pero no oculta el resto de detras, por tanto no aparenta ser pantalla completa
-
-        /*
-            fullScreenWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect (0.0, 0.0, 1274.0, 1080.0)
-                styleMask:NSBorderlessWindowMask
+            fullScreenWindow = [[NSWindow alloc] initWithContentRect:[[NSScreen mainScreen] frame]
+                styleMask:NSWindowStyleMaskBorderless
                 backing:NSBackingStoreBuffered
                 defer:NO];
-        */
 
-        [fullScreenWindow setHasShadow:NO];
-        [fullScreenWindow setContentView:self];
-        [fullScreenWindow makeKeyAndOrderFront:self];
+            //TODO fullscreen. Esto	pone el tamanyo que queremos, pero no oculta el resto de detras, por tanto no aparenta ser pantalla completa
+
+            /*
+                fullScreenWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect (0.0, 0.0, 1274.0, 1080.0)
+                    styleMask:NSBorderlessWindowMask
+                    backing:NSBackingStoreBuffered
+                    defer:NO];
+            */
+
+            [fullScreenWindow setHasShadow:NO];
+            [fullScreenWindow setContentView:self];
+            [fullScreenWindow makeKeyAndOrderFront:self];
 
 
-    //esto parece que no hace nada [fullScreenWindow setResizeIncrements:NSMakeSize(1.0,1.0)];
+            //esto parece que no hace nada [fullScreenWindow setResizeIncrements:NSMakeSize(1.0,1.0)];
 
-        //printf ("full screen desde fullScreenWindow\n");
+            //printf ("full screen desde fullScreenWindow\n");
 
-        //printf ("[[NSScreen mainScreen] frame].size %f X %f\n",[[NSScreen mainScreen] frame].size.width,[[NSScreen mainScreen] frame].size.height);
+            //printf ("[[NSScreen mainScreen] frame].size %f X %f\n",[[NSScreen mainScreen] frame].size.width,[[NSScreen mainScreen] frame].size.height);
 
 #if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
         }
@@ -2158,7 +2136,9 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
             //printf ("Strange behaviour. Shift pressed but do not know if left or right. Asuminng left\n");
             pulsadoshift_l=1;
         }
+
     }
+
     if (event_modifier_flags & NSEventModifierFlagControl) {
         //printf ("Control key is pressed\n");
         //printf("event_modifier_flags %XH NSEventModifierFlagControl %XH\n",event_modifier_flags,NSEventModifierFlagControl);
@@ -2188,6 +2168,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
             pulsadoctrl_l=1;
         }
     }
+
     if (event_modifier_flags & NSEventModifierFlagOption) {
         //printf ("Alt key is pressed\n");
         //printf("event_modifier_flags %XH\n",event_modifier_flags);
@@ -2315,9 +2296,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
     //COCOA_DEBUG("ZesaruxCocoaView: grabMouse\n");
     //printf ("grabMouse\n");
 
-    /*if (!ventana_fullscreen) {
-            [normalWindow setTitle:@"ZEsarUX - fullscreen"];
-    }*/
+
     [NSCursor hide];
     CGAssociateMouseAndMouseCursorPosition(FALSE);
     isMouseGrabed = TRUE; // while isMouseGrabed = TRUE, ZesaruxCocoaApp sends all events to [cocoaView gestionEvento:]
@@ -2327,9 +2306,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 {
     //COCOA_DEBUG("ZesaruxCocoaView: ungrabMouse\n");
 
-    /*if (!ventana_fullscreen) {
-            [normalWindow setTitle:@"ZEsarUX "EMULATOR_VERSION ];
-    }*/
     [NSCursor unhide];
     CGAssociateMouseAndMouseCursorPosition(TRUE);
     isMouseGrabed = FALSE;
@@ -2399,7 +2375,7 @@ int previous_timer_sleep_machine=0;
 
 }
 
-//- (void)stopTimer
+
 - (void)  stopTimer:(id)sender
 {
 
@@ -2475,9 +2451,10 @@ int previous_timer_sleep_machine=0;
     if (self) {
 
         // create a view and add it to the window
-    //tamanyo inicial da un poco igual porque luego se redimensiona al tamanyo real necesario del ordenador emulado
+        //tamanyo inicial da un poco igual porque luego se redimensiona al tamanyo real necesario del ordenador emulado
         cocoaView = [[ZesaruxCocoaView alloc] initWithFrame:NSMakeRect(0.0, 0.0, 704.0, 656.0)];
-        if(!cocoaView) {
+
+        if (!cocoaView) {
             fprintf(stderr, "(cocoa) can't create a view\n");
             exit(1);
         }
@@ -2489,10 +2466,11 @@ int previous_timer_sleep_machine=0;
             backing:NSBackingStoreBuffered defer:NO];
 
 
-        if(!normalWindow) {
+        if (!normalWindow) {
             fprintf(stderr, "(cocoa) can't create window\n");
             exit(1);
         }
+
         [normalWindow setAcceptsMouseMovedEvents:YES];
         //[normalWindow setTitle:[NSString stringWithFormat:@"ZEsarUX "EMULATOR_VERSION]];
 
@@ -2510,18 +2488,18 @@ int previous_timer_sleep_machine=0;
         [normalWindow center];
 
 
-    //[normalWindow setResizeIncrements:NSMakeSize(screen_get_window_size_width_zoom_border_en(), screen_get_window_size_height_zoom_border_en()) ];
+        //[normalWindow setResizeIncrements:NSMakeSize(screen_get_window_size_width_zoom_border_en(), screen_get_window_size_height_zoom_border_en()) ];
 
         [normalWindow activaSelectores];
 
 
-/*
-[[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector(windowDidEndLiveResize:)
-      name:NSWindowDidEndLiveResizeNotification
-      object:normalWindow];
-*/
+        /*
+        [[NSNotificationCenter defaultCenter]
+            addObserver:self
+            selector:@selector(windowDidEndLiveResize:)
+            name:NSWindowDidEndLiveResizeNotification
+            object:normalWindow];
+        */
 
     }
     return self;
@@ -2531,8 +2509,10 @@ int previous_timer_sleep_machine=0;
 {
     //COCOA_DEBUG("ZesaruxCocoaAppController: dealloc\n");
 
-    if (cocoaView)
+    if (cocoaView) {
         [cocoaView release];
+    }
+
     [super dealloc];
 }
 
@@ -2540,7 +2520,7 @@ int previous_timer_sleep_machine=0;
 {
     //COCOA_DEBUG("ZesaruxCocoaAppController: applicationDidFinishLaunching\n");
 
-[self startEmulationWithArgc:gArgc argv:(char **)gArgv];
+    [self startEmulationWithArgc:gArgc argv:(char **)gArgv];
 
 }
 
@@ -2571,8 +2551,6 @@ int previous_timer_sleep_machine=0;
 {
     //COCOA_DEBUG("ZesaruxCocoaAppController: startEmulationWithArgc\n");
 
-    //int status;
-    //status =
     zesarux_main(argc, argv);
 
    //porque hay un exit aqui?? quiza del main de zesarux no se deba volver nunca, dejar el bucle como pthread y listo
@@ -2584,13 +2562,13 @@ int previous_timer_sleep_machine=0;
 {
     //COCOA_DEBUG("ZesaruxCocoaAppController: openPanelDidEnd\n");
 }
+
 - (void)toggleFullScreen:(id)sender
 {
     //COCOA_DEBUG("ZesaruxCocoaAppController: toggleFullScreen\n");
 
     [cocoaView toggleFullScreen:sender];
 }
-
 
 
 - (void) openzesaruxmenu:(id)sender
