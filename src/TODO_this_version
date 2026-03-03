@@ -103,8 +103,3 @@ ok *de momento solo definicion tema sin colores finales
 ok *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
 *temas que cambien background tambien?
 
--titulo ventana
-ok *funcion comun para definir titulo
-ok *pendiente que drivers video tengan manera de cambiarlo en caliente. cambiarlo por ejemplo al insertar cinta y/o smartload. De momento solo esta en smartload
-ok *set_window_title que no permita caracteres <32 o >126, que los cambie por "."
-ok *implementar scr_update_window_title en todos drivers video, incluso en plantilla
