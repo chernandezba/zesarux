@@ -2719,15 +2719,12 @@ int main (int argc, const char * argv[]) {
     [NSApp setDelegate:(id<NSApplicationDelegate>)appController];
 
     //[NSApp setDelegate:(ZesaruxCocoaAppController *)appController];
-//[application setDelegate:appController];
+    //[application setDelegate:appController];
 
     //No queremos el menu de view tab bar
     [NSWindow setAllowsAutomaticWindowTabbing:NO];
 
     // Start the main event loop
-    //printf ("\n\nrun app\n\n");
-
-
     [NSApp run];
 
 
@@ -2795,23 +2792,23 @@ void scrcocoa_putpixel(int x,int y,unsigned int color)
             return;
     }
 
-/*if (buffer_layer_machine==NULL) {
-        printf ("----buffer_layer_machine null running_realloc %d\n",running_realloc);
-        debug_exec_show_backtrace();
-        exit(1);
-}*/
+    /*if (buffer_layer_machine==NULL) {
+            printf ("----buffer_layer_machine null running_realloc %d\n",running_realloc);
+            debug_exec_show_backtrace();
+            exit(1);
+    }*/
 
 
-//temporal
-/*if (x>=ancho_layer_menu_machine || y>=alto_layer_menu_machine)  {
-        if (!mostrado_trace) {
-                printf ("out of range scrcocoa_putpixel x %d y %d limit %d %d\n",x,y,ancho_layer_menu_machine,alto_layer_menu_machine);
-                debug_exec_show_backtrace();
-                mostrado_trace=1;
-                sleep(1);
-        }
-        return;
-}*/
+    //temporal
+    /*if (x>=ancho_layer_menu_machine || y>=alto_layer_menu_machine)  {
+            if (!mostrado_trace) {
+                    printf ("out of range scrcocoa_putpixel x %d y %d limit %d %d\n",x,y,ancho_layer_menu_machine,alto_layer_menu_machine);
+                    debug_exec_show_backtrace();
+                    mostrado_trace=1;
+                    sleep(1);
+            }
+            return;
+    }*/
 
 
 
@@ -2893,21 +2890,21 @@ void old_scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pa
 void scrcocoa_set_fullscreen(void)
 {
 
-//[cocoaView toggleFullScreen:nil];
+    //[cocoaView toggleFullScreen:nil];
 
-/*
-A partir de OSX el capitan, la llamada
-[cocoaView toggleFullScreen:nil];
+    /*
+    A partir de OSX el capitan, la llamada
+    [cocoaView toggleFullScreen:nil];
 
 
-genera este aviso al salir:
-CoreAnimation: warning, deleted thread with uncommitted CATransaction; set CA_DEBUG_TRANSACTIONS=1 in environment to log backtraces.
+    genera este aviso al salir:
+    CoreAnimation: warning, deleted thread with uncommitted CATransaction; set CA_DEBUG_TRANSACTIONS=1 in environment to log backtraces.
 
-Aparte que no funciona el full screen desde GUI settings. La solucion tiene el formato:
-[cocoaView performSelectorOnMainThread:@selector(myCustomDrawing:)
-                           withObject:myCustomData
-                        waitUntilDone:YES];
-*/
+    Aparte que no funciona el full screen desde GUI settings. La solucion tiene el formato:
+    [cocoaView performSelectorOnMainThread:@selector(myCustomDrawing:)
+                            withObject:myCustomData
+                            waitUntilDone:YES];
+    */
 
 [cocoaView performSelectorOnMainThread:@selector(toggleFullScreen:) withObject:nil waitUntilDone:YES];
 
@@ -2917,8 +2914,8 @@ Aparte que no funciona el full screen desde GUI settings. La solucion tiene el f
 
 void scrcocoa_reset_fullscreen(void)
 {
-//[cocoaView toggleFullScreen:nil];
-//Mismo comentario que set_fullscreen
+    //[cocoaView toggleFullScreen:nil];
+    //Mismo comentario que set_fullscreen
 
     [cocoaView performSelectorOnMainThread:@selector(toggleFullScreen:) withObject:nil waitUntilDone:YES];
 
@@ -2942,12 +2939,11 @@ void scrcocoa_refresca_pantalla(void);
 
 void scrcocoa_refresca_pantalla_solo_driver(void)
 {
-// Prueba para cuando se redimensiona ventana desde el easter egg
-//if (pendingresize) scrcocoa_refresca_pantalla();
+    // Prueba para cuando se redimensiona ventana desde el easter egg
+    //if (pendingresize) scrcocoa_refresca_pantalla();
 
 
     [cocoaView render];
-
 
 }
 
@@ -3271,23 +3267,13 @@ void realjoystick_cocoa_main(void)
 
 
 
-
-
 int scrcocoa_init_timer(void)
 {
-
-    //printf("--scrcocoa scrcocoa_init_timer\n");
-
-    //debug_exec_show_backtrace();
 
 
     debug_printf(VERBOSE_DEBUG,"Initializing Mac timer for %d microsec",timer_sleep_machine);
 
-    //printf("Initializing timer Mac for %d microsec\n",timer_sleep_machine);
 
-
-
-    //return [cocoaView startTimer];
 
     //hay que iniciar el timer desde el hilo principal
     //nota: si se inicia el timer al arrancar ZEsarUX, ya estaremos en el hilo principal y la llamada podria ser simplemente:
@@ -3310,7 +3296,6 @@ int scrcocoa_init_timer(void)
 void scrcocoa_stop_timer(void)
 {
     debug_printf(VERBOSE_INFO,"Stopping Mac timer");
-    //printf("Stopping timer Mac\n");
 
     [cocoaView performSelectorOnMainThread:@selector(stopTimer:) withObject:nil waitUntilDone:YES];
     //[cocoaView stopTimer];
@@ -3325,7 +3310,6 @@ int scrcocoa_init (void) {
     //Esto tiene que ir al principio de inicializar driver para leer correctamente el tamaño de ventana
     screen_este_driver_permite_ext_desktop=1;
 
-    //printf ("scrcocoa_init\n");
 
     //int soyelmainthread;
 
@@ -3406,9 +3390,6 @@ int scrcocoa_init (void) {
     realjoystick_initialize_joystick();
 
 
-
-
-    //printf("Adding mac timer\n");
     timer_add_timer_to_top(available_timers,TIMER_MAC,"mac",scrcocoa_init_timer,scrcocoa_stop_timer);
 
 
