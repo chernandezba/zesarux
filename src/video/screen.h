@@ -1124,5 +1124,6 @@ extern void set_default_window_title(void);
 
 extern void update_window_title(void);
 extern void set_window_title_and_update(char *texto);
+extern void set_default_window_title_and_update(void);
 
 #endif

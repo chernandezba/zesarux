@@ -16319,3 +16319,9 @@ void set_window_title_and_update(char *texto)
     set_window_title(texto);
     update_window_title();
 }
+
+void set_default_window_title_and_update(void)
+{
+    set_default_window_title();
+    update_window_title();
+}

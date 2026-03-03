@@ -30139,6 +30139,8 @@ void menu_machine_set_machine_by_id(int id_maquina)
     cold_start_cpu_registers();
     reset_cpu();
 
+    set_default_window_title_and_update();
+
     //desactivar autoload
     //noautoload.v=1;
     //initial_tap_load.v=0;
@@ -33118,7 +33120,7 @@ void menu_debug_reset(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Reset CPU")==1) {
         reset_cpu();
-
+        set_default_window_title_and_update();
     }
 
 }
@@ -33145,6 +33147,7 @@ void menu_debug_hard_reset(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno("Hard Reset CPU")==1) {
             hard_reset_cpu();
+            set_default_window_title_and_update();
     }
 
 
