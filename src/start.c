@@ -1302,7 +1302,8 @@ printf (
         "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
-        "--reduce-050                                   Reduce display size to half\n"
+        "--reduce-050                                   Reduce display size to 1/2\n"
+        "--reduce-025                                   Reduce display size to 1/4\n"
         "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
         "--reduce-display-offset-x n                    Destination offset x on reduced display\n"
         "--reduce-display-offset-y n                    Destination offset y on reduced display\n"
@@ -2840,13 +2841,15 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
             else if (!strcmp(argv[puntero_parametro],"--reduce-075")) {
-                screen_reduce_075.v=1;
-                screen_reduce_050.v=0;
+                screen_reduction_factor=SCREEN_REDUCE_075;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--reduce-050")) {
-                screen_reduce_050.v=1;
-                screen_reduce_075.v=0;
+                screen_reduction_factor=SCREEN_REDUCE_050;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--reduce-025")) {
+                screen_reduction_factor=SCREEN_REDUCE_025;
             }
 
             else if (

@@ -5,7 +5,7 @@ ZEsarUX 13 Beta 1 - The Way of the Exploding Fist edition. 19 Febrero 2026
 Agregada versión para macOS Silicon
 Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Permitir drag&drop de archivos comprimidos
-Permitir reducir pantalla a la mitad
+Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)
 Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 Permitir al driver SDL usar una paleta de color de 8 bits
 Permitir al driver SDL forzar el tamaño de la ventana

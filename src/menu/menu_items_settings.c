@@ -899,17 +899,17 @@ void menu_interface_zoom_height(MENU_ITEM_PARAMETERS)
 
 void menu_window_settings_reduce_075(MENU_ITEM_PARAMETERS)
 {
-    if (screen_reduce_075.v==0 && screen_reduce_050.v==0) {
-        screen_reduce_075.v=1;
-        screen_reduce_050.v=0;
+    if (screen_reduction_factor==SCREEN_REDUCE_NONE) {
+        screen_reduction_factor=SCREEN_REDUCE_075;
     }
-    else if (screen_reduce_075.v==1 && screen_reduce_050.v==0) {
-        screen_reduce_075.v=0;
-        screen_reduce_050.v=1;
+    else if (screen_reduction_factor==SCREEN_REDUCE_075) {
+        screen_reduction_factor=SCREEN_REDUCE_050;
+    }
+    else if (screen_reduction_factor==SCREEN_REDUCE_050) {
+        screen_reduction_factor=SCREEN_REDUCE_025;
     }
     else {
-        screen_reduce_075.v=0;
-        screen_reduce_050.v=0;
+        screen_reduction_factor=SCREEN_REDUCE_NONE;
     }
 
     //Liberar buffers para borrar rastros de escalados 0.50/0.75
@@ -1685,19 +1685,22 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         }
 
         char string_reduce[10];
-        if (screen_reduce_075.v==0 && screen_reduce_050.v==0) strcpy (string_reduce," ");
-        else if (screen_reduce_075.v==1 && screen_reduce_050.v==0) strcpy (string_reduce,"0.75");
-        else strcpy (string_reduce,"0.50");
+        if (screen_reduction_factor==SCREEN_REDUCE_NONE) strcpy (string_reduce," ");
+        else if (screen_reduction_factor==SCREEN_REDUCE_075) strcpy (string_reduce,"0.75");
+        else if (screen_reduction_factor==SCREEN_REDUCE_050) strcpy (string_reduce,"0.50");
+        else strcpy (string_reduce,"0.25");
+
+
 
         menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,
             menu_window_settings_reduce_075,NULL,"[%s] R~~educe display",string_reduce);
         menu_add_item_menu_shortcut(array_menu_window_settings,'e');
-        menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75 or 0.5");
-        menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75 or 0.5. Enables realvideo. Reduce to 0.75 was used on a large bulb display for the RunZX 2018 event");
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75, 0.5 or 0.25");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75, 0.5 or 0.25. Enables realvideo. Reduce to 0.75 was used on a large bulb display for the RunZX 2018 event");
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
-        if (screen_reduce_075.v || screen_reduce_050.v) {
+        if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
             menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_antialias,NULL,"[%c]  Antialias",(screen_reduce_075_050_antialias.v ? 'X' : ' ') );
             menu_add_item_menu_tooltip(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");

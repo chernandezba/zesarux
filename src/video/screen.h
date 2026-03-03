@@ -1012,8 +1012,17 @@ extern void scr_refresca_pantalla_tsconf_text(void (*fun_color) (z80_byte color,
 
 extern void scr_refresca_pantalla_tsconf_text_textmode (void (*fun_color) (z80_byte color,int *brillo, int *parpadeo), void (*fun_caracter) (int x,int y,int brillo, unsigned char inv,z80_byte caracter ) , void (*fun_saltolinea) (void) , int factor_division);
 
-extern z80_bit screen_reduce_075;
-extern z80_bit screen_reduce_050;
+
+
+enum SCREEN_REDUCTIONS {
+    SCREEN_REDUCE_NONE,
+    SCREEN_REDUCE_075,
+    SCREEN_REDUCE_050,
+    SCREEN_REDUCE_025
+};
+
+extern enum SCREEN_REDUCTIONS screen_reduction_factor;
+
 extern void screen_scale_075_050_free_buffers(void);
 
 extern int screen_reduce_offset_x;
