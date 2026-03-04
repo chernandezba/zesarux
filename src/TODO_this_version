@@ -98,10 +98,6 @@ eso se envía en las estadísticas
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
 
 
--tema gui de pico-8
-ok *de momento solo definicion tema sin colores finales
-ok *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
-*temas que cambien background tambien?
 
 -Inicio macos. Sustituir todo este código que hace que la app se vea, por otra cosa moderna:
     if (!CPSGetCurrentProcess(&PSN))
@@ -110,11 +106,11 @@ ok *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
                 [NSApplication sharedApplication];
     O quiza que ese codigo solo se ejecute cuando se lanza por consola
     Dejar ese código antiguo para versiones macOS < 26
-->probarlo en macos < 26, dejarlo como codigo antiguo
+ok ->probarlo en macos < 26
 ->ver posibles fugas de memoria en macos < 26 al haber quitado el NSAutoreleasePool
-->probar con --vo xwindows por ejemplo
+ok ->probar con --vo xwindows por ejemplo
 
 
 
--revisar parseo de parámetros, que no haya ninguno (exceptuando alguna excepción extraña) que salga con un exit() en caso de error. La mayoria deberian mostrar el error pero iniciar ZEsarUX
+ok -revisar parseo de parámetros, que no haya ninguno (exceptuando alguna excepción extraña) que salga con un exit() en caso de error. La mayoria deberian mostrar el error pero iniciar ZEsarUX
 *revisar los else, que debajo si hay mas de una linea este con llaves

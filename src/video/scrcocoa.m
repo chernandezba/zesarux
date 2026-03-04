@@ -2551,7 +2551,6 @@ int main (int argc, const char * argv[]) {
         while (1) {
             timer_sleep(1000);
         }
-
     }
 
 
@@ -2729,38 +2728,16 @@ void scrcocoa_putpixel_final(int x,int y,unsigned int color)
 
 }
 
-//int mostrado_trace=0;
-
-//extern int running_realloc;
 
 void scrcocoa_putpixel(int x,int y,unsigned int color)
 {
 
 
     if (menu_overlay_activo==0) {
-            //Putpixel con menu cerrado
-            scrcocoa_putpixel_final(x,y,color);
-            return;
+        //Putpixel con menu cerrado
+        scrcocoa_putpixel_final(x,y,color);
+        return;
     }
-
-    /*if (buffer_layer_machine==NULL) {
-            printf ("----buffer_layer_machine null running_realloc %d\n",running_realloc);
-            debug_exec_show_backtrace();
-            exit(1);
-    }*/
-
-
-    //temporal
-    /*if (x>=ancho_layer_menu_machine || y>=alto_layer_menu_machine)  {
-            if (!mostrado_trace) {
-                    printf ("out of range scrcocoa_putpixel x %d y %d limit %d %d\n",x,y,ancho_layer_menu_machine,alto_layer_menu_machine);
-                    debug_exec_show_backtrace();
-                    mostrado_trace=1;
-                    sleep(1);
-            }
-            return;
-    }*/
-
 
 
     //Metemos pixel en layer adecuado
@@ -2806,9 +2783,7 @@ void scrcocoa_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 
 void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
-
     scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
-
 }
 
 
