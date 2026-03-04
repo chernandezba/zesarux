@@ -9769,9 +9769,15 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
     zxvision_print_string(ventana,startx,indice,tinta,papel,0,texto);
 
     //Si tiene submenu, mostrar caracter >
+    //A la penultima columna si aparece barra de scroll en la ultima columna, con espacio final para borrar posible caracter de debajo que hubiera
     if (tiene_submenu && menu_hide_submenu_indicator.v==0) {
         int ancho=ventana->visible_width;
-        zxvision_print_string(ventana,ancho-1,indice,tinta,papel,0,">");
+        if (zxvision_if_vertical_scroll_bar(ventana)) {
+            zxvision_print_string(ventana,ancho-2,indice,tinta,papel,0,"> ");
+        }
+        else {
+            zxvision_print_string(ventana,ancho-1,indice,tinta,papel,0,">");
+        }
     }
 
     //Si tiene dos colores
