@@ -917,7 +917,7 @@ printf (
         "--sdl-use-callback-new      SDL audio use new callback (usually better results on Windows)\n"
         "--sdl-use-callback-old      SDL audio use old callback\n"
         "--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n"
-        "--sdl-8bit-color            SDL use 8 bit color palette\n"
+        "--sdl-8bit-color            SDL initialize video mode with 8 bit color palette\n"
         "--sdl-force-win-size w h    SDL force window size to width (w) and heigth (h)\n"
         "--sdl-hwsurface             SDL surface is stored in video memory instead of system memory\n"
 

@@ -44,6 +44,8 @@ extern int screen_gray_mode;
 
 extern z80_bit inverse_video;
 
+extern int screen_rgb_8bit;
+
 
 extern void scr_refresca_border(void);
 

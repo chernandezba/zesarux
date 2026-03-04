@@ -719,6 +719,13 @@ The  top three bits ( 010 ) of the high byte don't change.
 //Funcion de poner pixel en pantalla de driver, teniendo como entrada el color en RGB
 void scrxwindows_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
+    if (screen_rgb_8bit) {
+        //Usamos color rgb 8 bits: 3 bits Red, 3 bits Green, 2 bits Blue : RRRGGGBB
+        //Nos quedamos con los bits mas significativos de cada componente
+        color_rgb &=0xE0E0C0; //11100000 11100000 11000000
+    }
+
+
 	XPutPixel(image,x,y,color_rgb);
 }
 

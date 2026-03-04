@@ -2700,6 +2700,12 @@ void scrcocoa_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
     unsigned int *p;
     p=(unsigned int *) &pixel_screen_data[index];
 
+    if (screen_rgb_8bit) {
+        //Usamos color rgb 8 bits: 3 bits Red, 3 bits Green, 2 bits Blue : RRRGGGBB
+        //Nos quedamos con los bits mas significativos de cada componente
+        color_rgb &=0xE0E0C0; //11100000 11100000 11000000
+    }
+
     //agregar alpha
     color_rgb |=0xFF000000;
     //Escribir de golpe los 32 bits

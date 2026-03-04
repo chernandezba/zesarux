@@ -657,6 +657,11 @@ int screen_simpletext_driver=0;
 
 z80_bit inverse_video;
 
+//Forzar color RGB de 8 bits
+//No confundir con scr_sdl_8bits_color, el SDL inicializa modo a 8 bit de color, en cambio
+//este parametro inicializa RGB 24 bits pero forzamos a 8 bit
+int screen_rgb_8bit=0;
+
 
 //Meter marca de agua en la derecha, abajo, en la zona de pantalla reducida
 int screen_watermark_position=3; //0: arriba izq 1: arriba der 2 abajo izq 3 abajo der
