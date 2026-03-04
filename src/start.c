@@ -3945,8 +3945,8 @@ int parse_cmdline_options(int desde_commandline) {
                                 machine_name=argv[puntero_parametro];
 
                 if (set_machine_type_by_name(machine_name)) {
-                    exit(1);
-                                }
+                    //maquina desconocida
+                }
 
             }
 
@@ -3972,9 +3972,9 @@ int parse_cmdline_options(int desde_commandline) {
                     int valor=parse_string_to_number(argv[puntero_parametro]);
                     if (valor<1 || valor>99) {
                                     debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-scale value\n");
-                                    exit(1);
-                            }
-                    screen_text_all_refresh_pixel_scale=valor;
+
+                    }
+                    else screen_text_all_refresh_pixel_scale=valor;
             }
 
 
@@ -3987,9 +3987,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9999) {
                                 debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-width value\n");
-                                exit(1);
-                        }
-                scr_refresca_pantalla_tsconf_text_max_ancho=valor;
+
+                }
+                else scr_refresca_pantalla_tsconf_text_max_ancho=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-x-offset")) {
@@ -3997,9 +3997,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>9999) {
                                 debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-x-offset value\n");
-                                exit(1);
-                        }
-                scr_refresca_pantalla_tsconf_text_offset_x=valor;
+
+                }
+                else scr_refresca_pantalla_tsconf_text_offset_x=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-height")) {
@@ -4007,9 +4007,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9999) {
                                 debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-height value\n");
-                                exit(1);
-                        }
-                scr_refresca_pantalla_tsconf_text_max_alto=valor;
+
+                }
+                else scr_refresca_pantalla_tsconf_text_max_alto=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-y-offset")) {
@@ -4017,9 +4017,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>9999) {
                                 debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-y-offset value\n");
-                                exit(1);
-                        }
-                scr_refresca_pantalla_tsconf_text_offset_y=valor;
+
+                }
+                else scr_refresca_pantalla_tsconf_text_offset_y=valor;
             }
 
 
@@ -4201,7 +4201,7 @@ int parse_cmdline_options(int desde_commandline) {
                 tecla_redefinida=parse_string_to_number(argv[puntero_parametro]);
 
                 if (util_add_redefinir_tecla(tecla_original,tecla_redefinida)) {
-                    exit(1);
+                    //exit(1);
                 }
             }
 
@@ -4222,9 +4222,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0 || valor>1) {
                        debug_printf (VERBOSE_ERR,"Invalid Keymap value\n");
-                    exit(1);
+
                 }
-                z88_cpc_keymap_type=valor;
+                else z88_cpc_keymap_type=valor;
             }
 
 
@@ -4265,9 +4265,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<1 || valor>MAX_KMOUSE_SENSITIVITY) {
                        debug_printf (VERBOSE_ERR,"Invalid Kempston Mouse Sensitivity value\n");
-                    exit(1);
+
                 }
-                kempston_mouse_factor_sensibilidad=valor;
+                else kempston_mouse_factor_sensibilidad=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--spectrum-reduced-core")) {
@@ -4316,24 +4316,29 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
             else if (!strcmp(argv[puntero_parametro],"--def-f-function-parameters")) {
+
+                //Poder continuar la carga aunque algun parametro esté mal
+                int error_parametros=0;
+
                 siguiente_parametro_argumento();
                 if (argv[puntero_parametro][0]!='F' && argv[puntero_parametro][0]!='f') {
-                    printf ("Unknown key\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Unknown key for f-function-parameters: %s",argv[puntero_parametro]);
+                    error_parametros=1;
                 }
 
                 int valor=atoi(&argv[puntero_parametro][1]);
 
                 if (valor<1 || valor>MAX_F_FUNCTIONS_KEYS) {
-                    debug_printf (VERBOSE_ERR,"Invalid key\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid key for f-function-parameters: %d",valor);
+                    error_parametros=1;
                 }
 
                 siguiente_parametro_argumento();
 
-                if (menu_define_key_function_extra_info(valor,argv[puntero_parametro])) {
-                    debug_printf (VERBOSE_ERR,"Invalid f-function action extra info: %s\n",argv[puntero_parametro]);
-                    exit(1);
+                if (!error_parametros) {
+                    if (menu_define_key_function_extra_info(valor,argv[puntero_parametro])) {
+                        debug_printf (VERBOSE_ERR,"Invalid f-function action extra info: %s",argv[puntero_parametro]);
+                    }
                 }
 
 
