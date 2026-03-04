@@ -2925,10 +2925,11 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>MENU_MAX_EXT_DESKTOP_FILL_NUMBER) {
-                    printf ("Invalid value for ZX Desktop fill type\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop fill type\n");
                 }
-                menu_ext_desktop_fill=valor;
+                else {
+                    menu_ext_desktop_fill=valor;
+                }
             }
 
             //Deprecated --zxdesktop-fill-solid-color
@@ -2940,10 +2941,11 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>15) {
-                    printf ("Invalid value for ZX Desktop primary fill solid color\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop primary fill solid color\n");
                 }
-                menu_ext_desktop_fill_first_color=valor;
+                else {
+                    menu_ext_desktop_fill_first_color=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-secondary-color")) {
@@ -2951,10 +2953,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<0 || valor>15) {
-                    printf ("Invalid value for ZX Desktop seconday fill solid color\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop seconday fill solid color\n");
                 }
-                menu_ext_desktop_fill_second_color=valor;
+                else menu_ext_desktop_fill_second_color=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-degraded-inverted")) {
@@ -3111,10 +3112,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<1 || valor>5) {
-                    printf ("Invalid value for ZX Desktop SCR scale factor\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid value for ZX Desktop SCR scale factor\n");
+
                 }
-                zxdesktop_draw_scrfile_scale_factor=valor;
+                else zxdesktop_draw_scrfile_scale_factor=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-disable-flash")) {
@@ -3275,12 +3276,13 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--frameskip")) {
                                 siguiente_parametro_argumento();
-                                frameskip=atoi(argv[puntero_parametro]);
-                if (frameskip>49 || frameskip<0) {
+                                int valor=atoi(argv[puntero_parametro]);
+                if (valor>49 || valor<0) {
                     printf ("Frameskip out of range\n");
-                    exit(1);
+
                 }
-    }
+                else frameskip=valor;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--disable-autoframeskip")) {
                     autoframeskip.v=0;
@@ -3323,11 +3325,12 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--verbose")) {
                                 siguiente_parametro_argumento();
-                                verbose_level=atoi(argv[puntero_parametro]);
-                if (verbose_level<0 || verbose_level>4) {
-                    printf ("Invalid Verbose level\n");
-                    exit(1);
+                                int valor=atoi(argv[puntero_parametro]);
+                if (valor<0 || valor>4) {
+                    debug_printf (VERBOSE_ERR,"Invalid Verbose level\n");
+
                 }
+                else verbose_level=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--debug-filter")) {
@@ -3341,8 +3344,7 @@ int parse_cmdline_options(int desde_commandline) {
                 }
 
                 else {
-                    printf("Invalid debug filter type\n");
-                    exit(1);
+                    debug_printf(VERBOSE_ERR,"Invalid debug filter type");
                 }
             }
 
@@ -3389,21 +3391,23 @@ int parse_cmdline_options(int desde_commandline) {
                         //Mantenida por compatibilidad hacia atras (ZEsarUX versiones anterior a 11)
                         else if (!strcmp(argv[puntero_parametro],"--cpuspeed")) {
                                 siguiente_parametro_argumento();
-                                porcentaje_velocidad_emulador=atoi(argv[puntero_parametro]);
-                                if (porcentaje_velocidad_emulador<1 || porcentaje_velocidad_emulador>9999) {
-                                        printf ("Invalid CPU percentage\n");
-                                        exit(1);
+                                int valor=atoi(argv[puntero_parametro]);
+                                if (valor<1 || valor>9999) {
+                                        debug_printf (VERBOSE_ERR,"Invalid CPU percentage");
+
                                 }
+                                else porcentaje_velocidad_emulador=valor;
                         }
 
 
             else if (!strcmp(argv[puntero_parametro],"--emulatorspeed")) {
                     siguiente_parametro_argumento();
-                    porcentaje_velocidad_emulador=atoi(argv[puntero_parametro]);
-                    if (porcentaje_velocidad_emulador<1 || porcentaje_velocidad_emulador>9999) {
-                            printf ("Invalid Emulator speed\n");
+                    int valor=atoi(argv[puntero_parametro]);
+                    if (valor<1 || valor>9999) {
+                            debug_printf (VERBOSE_ERR,"Invalid Emulator speed\n");
                             exit(1);
                     }
+                    else porcentaje_velocidad_emulador=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--denyturbozxunoboot")) {
@@ -3426,10 +3430,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<1 || valor>8) {
-                        printf ("Invalid value for tbblue-max-turbo-rom\n");
-                        exit(1);
+                        debug_printf (VERBOSE_ERR,"Invalid value for tbblue-max-turbo-rom\n");
+
                 }
-                tbblue_deny_turbo_rom_max_allowed=valor;
+                else tbblue_deny_turbo_rom_max_allowed=valor;
             }
 
 
@@ -3443,10 +3447,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<1 || valor>8) {
-                        printf ("Invalid value for tbblue-max-turbo-everywhere\n");
-                        exit(1);
+                        debug_printf (VERBOSE_ERR,"Invalid value for tbblue-max-turbo-everywhere");
+
                 }
-                tbblue_deny_turbo_everywhere_max_allowed=valor;
+                else tbblue_deny_turbo_everywhere_max_allowed=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--tbblue-fast-boot-mode")) {
@@ -3463,42 +3467,44 @@ int parse_cmdline_options(int desde_commandline) {
                 tbblue_initial_123b_port=atoi(argv[puntero_parametro]);
             }*/
 
-                        else if (!strcmp(argv[puntero_parametro],"--zx8081mem")) {
+            else if (!strcmp(argv[puntero_parametro],"--zx8081mem")) {
                                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<1 || valor>16) {
-                    printf ("Invalid RAM value\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid RAM value\n");
+
                 }
-                set_zx8081_ramtop(valor);
-                        }
+                else set_zx8081_ramtop(valor);
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--acemem")) {
-                                siguiente_parametro_argumento();
-                                int valor=atoi(argv[puntero_parametro]);
-                                if (valor!=3 && valor!=19 && valor!=35 && valor!=51) {
-                                        printf ("Invalid RAM value\n");
-                                        exit(1);
-                                }
-                                set_ace_ramtop(valor);
-                        }
+                siguiente_parametro_argumento();
+                int valor=atoi(argv[puntero_parametro]);
+                if (valor!=3 && valor!=19 && valor!=35 && valor!=51) {
+                        debug_printf (VERBOSE_ERR,"Invalid RAM value\n");
 
-                        else if (!strcmp(argv[puntero_parametro],"--videozx8081")) {
-                                siguiente_parametro_argumento();
-                                int valor=atoi(argv[puntero_parametro]);
-                                if (valor<1 || valor>16) {
-                                        printf ("Invalid threshold value\n");
-                                        exit(1);
-                                }
-                simulate_screen_zx8081.v=1;
-                umbral_simulate_screen_zx8081=valor;
-                        }
+                }
+                else set_ace_ramtop(valor);
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--videozx8081")) {
+                siguiente_parametro_argumento();
+                int valor=atoi(argv[puntero_parametro]);
+                if (valor<1 || valor>16) {
+                        debug_printf (VERBOSE_ERR,"Invalid threshold value\n");
+
+                }
+                else {
+                    simulate_screen_zx8081.v=1;
+                    umbral_simulate_screen_zx8081=valor;
+                }
+            }
 
 
             else if (!strcmp(argv[puntero_parametro],"--128kmem")) {
                                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
-                z80_byte multiplicador;
+                z80_byte multiplicador=0;
                 switch (valor) {
 
                     case 128:
@@ -3519,12 +3525,12 @@ int parse_cmdline_options(int desde_commandline) {
 
 
                     default:
-                        printf ("Invalid RAM value\n");
-                        exit(1);
+                        debug_printf (VERBOSE_ERR,"Invalid RAM value\n");
+
                     break;
                 }
 
-                mem_set_multiplicador_128(multiplicador);
+                if (multiplicador) mem_set_multiplicador_128(multiplicador);
       }
 
 
@@ -3533,10 +3539,10 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<128 || valor>ql_get_maximum_ram_kb()) {
-                    printf ("Invalid QL RAM Mem value\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid QL RAM Mem value\n");
+
                 }
-                ql_set_memory_size(valor);
+                else ql_set_memory_size(valor);
             }
 
             else if (!strcmp(argv[puntero_parametro],"--scr")) {
@@ -3602,8 +3608,8 @@ int parse_cmdline_options(int desde_commandline) {
                     quickload_nombre=argv[puntero_parametro];
                 }
                 else {
-                    printf ("Invalid extension for eprom/flash card\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid extension for eprom/flash card\n");
+
                 }
 
             }
@@ -3622,15 +3628,16 @@ int parse_cmdline_options(int desde_commandline) {
                     z88_slotcard_inicial_nombre=argv[puntero_parametro];
 
                     siguiente_parametro_argumento();
-                    z88_slotcard_inicial_slot=parse_string_to_number(argv[puntero_parametro]);
-                    if (z88_slotcard_inicial_slot<1 || z88_slotcard_inicial_slot>3) {
+                    int valor=parse_string_to_number(argv[puntero_parametro]);
+                    if (valor<1 || valor>3) {
                         printf("Invalid slot number\n");
-                        exit(1);
+
                     }
+                    else z88_slotcard_inicial_slot=valor;
                 }
                 else {
-                    printf ("Invalid extension for eprom/flash card\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid extension for eprom/flash card\n");
+
                 }
 
             }
@@ -3761,12 +3768,12 @@ int parse_cmdline_options(int desde_commandline) {
 
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor==1 || valor==2 || valor==5 || valor==10 || valor==25 || valor==50) {
-                    vofile_fps=50/valor;
-                }
+                                    vofile_fps=50/valor;
+                                }
 
-                else {
-                        printf ("Invalid FPS value\n");
-                                        exit(1);
+                                else {
+                                    debug_printf (VERBOSE_ERR,"Invalid FPS value\n");
+
                                 }
 
                         }
@@ -3894,10 +3901,10 @@ int parse_cmdline_options(int desde_commandline) {
                         siguiente_parametro_argumento();
                         int valor=parse_string_to_number(argv[puntero_parametro]);
                         if (valor<10 || valor>100) {
-                                        printf ("Invalid text-keyboard-length value\n");
-                                        exit(1);
-                                }
-                        adventure_keyboard_key_length=valor;
+                            debug_printf (VERBOSE_ERR,"Invalid text-keyboard-length value\n");
+
+                        }
+                        else adventure_keyboard_key_length=valor;
                 }
 
                 else if (!strcmp(argv[puntero_parametro],"--text-keyboard-finalspc")) {
@@ -3964,7 +3971,7 @@ int parse_cmdline_options(int desde_commandline) {
                     siguiente_parametro_argumento();
                     int valor=parse_string_to_number(argv[puntero_parametro]);
                     if (valor<1 || valor>99) {
-                                    printf ("Invalid --allpixeltotext-scale value\n");
+                                    debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-scale value\n");
                                     exit(1);
                             }
                     screen_text_all_refresh_pixel_scale=valor;
@@ -3979,7 +3986,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9999) {
-                                printf ("Invalid --allpixeltotext-width value\n");
+                                debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-width value\n");
                                 exit(1);
                         }
                 scr_refresca_pantalla_tsconf_text_max_ancho=valor;
@@ -3989,7 +3996,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>9999) {
-                                printf ("Invalid --allpixeltotext-x-offset value\n");
+                                debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-x-offset value\n");
                                 exit(1);
                         }
                 scr_refresca_pantalla_tsconf_text_offset_x=valor;
@@ -3999,7 +4006,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9999) {
-                                printf ("Invalid --allpixeltotext-height value\n");
+                                debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-height value\n");
                                 exit(1);
                         }
                 scr_refresca_pantalla_tsconf_text_max_alto=valor;
@@ -4009,7 +4016,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>9999) {
-                                printf ("Invalid --allpixeltotext-y-offset value\n");
+                                debug_printf (VERBOSE_ERR,"Invalid --allpixeltotext-y-offset value\n");
                                 exit(1);
                         }
                 scr_refresca_pantalla_tsconf_text_offset_y=valor;
@@ -4214,7 +4221,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0 || valor>1) {
-                       printf ("Invalid Keymap value\n");
+                       debug_printf (VERBOSE_ERR,"Invalid Keymap value\n");
                     exit(1);
                 }
                 z88_cpc_keymap_type=valor;
@@ -4257,7 +4264,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<1 || valor>MAX_KMOUSE_SENSITIVITY) {
-                       printf ("Invalid Kempston Mouse Sensitivity value\n");
+                       debug_printf (VERBOSE_ERR,"Invalid Kempston Mouse Sensitivity value\n");
                     exit(1);
                 }
                 kempston_mouse_factor_sensibilidad=valor;
@@ -4318,14 +4325,14 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(&argv[puntero_parametro][1]);
 
                 if (valor<1 || valor>MAX_F_FUNCTIONS_KEYS) {
-                    printf ("Invalid key\n");
+                    debug_printf (VERBOSE_ERR,"Invalid key\n");
                     exit(1);
                 }
 
                 siguiente_parametro_argumento();
 
                 if (menu_define_key_function_extra_info(valor,argv[puntero_parametro])) {
-                    printf ("Invalid f-function action extra info: %s\n",argv[puntero_parametro]);
+                    debug_printf (VERBOSE_ERR,"Invalid f-function action extra info: %s\n",argv[puntero_parametro]);
                     exit(1);
                 }
 
@@ -4361,7 +4368,7 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
 
                 if (valor<0 || valor>=MAX_USERDEF_BUTTONS) {
-                    printf ("Invalid button\n");
+                    debug_printf (VERBOSE_ERR,"Invalid button\n");
                     exit(1);
                 }
 
@@ -4430,7 +4437,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>99) {
-                    printf ("Invalid snapram-interval value. Must be between 1 and 99\n");
+                    debug_printf (VERBOSE_ERR,"Invalid snapram-interval value. Must be between 1 and 99\n");
                     exit(1);
                 }
                 snapshot_in_ram_interval_seconds=valor;
@@ -4440,7 +4447,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>MAX_TOTAL_SNAPSHOTS_IN_RAM) {
-                    printf ("Invalid snapram-max value. Must be between 1 and %d\n",MAX_TOTAL_SNAPSHOTS_IN_RAM);
+                    debug_printf (VERBOSE_ERR,"Invalid snapram-max value. Must be between 1 and %d\n",MAX_TOTAL_SNAPSHOTS_IN_RAM);
                     exit(1);
                 }
                 snapshots_in_ram_maximum=valor;
@@ -4450,7 +4457,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>99) {
-                    printf ("Invalid snapram-rewind-timeout value. Must be between 1 and 99\n");
+                    debug_printf (VERBOSE_ERR,"Invalid snapram-rewind-timeout value. Must be between 1 and 99\n");
                     exit(1);
                 }
                 snapshot_in_ram_enabled_timer_timeout=valor;
@@ -4484,7 +4491,7 @@ int parse_cmdline_options(int desde_commandline) {
                                 siguiente_parametro_argumento();
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<1 || valor>16) {
-                                        printf ("Invalid threshold value\n");
+                                        debug_printf (VERBOSE_ERR,"Invalid threshold value\n");
                                         exit(1);
                                 }
                                 umbral_arttext=valor;
@@ -4647,7 +4654,7 @@ int parse_cmdline_options(int desde_commandline) {
                                 siguiente_parametro_argumento();
                 textspeech_timeout_no_enter=parse_string_to_number(argv[puntero_parametro]);
                 if (textspeech_timeout_no_enter<0 || textspeech_timeout_no_enter>99) {
-                    printf ("Invalid value for textspeechtimeout\n");
+                    debug_printf (VERBOSE_ERR,"Invalid value for textspeechtimeout\n");
                     exit(1);
                 }
             }
@@ -4693,7 +4700,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--textimage-method-location")) {
                 siguiente_parametro_argumento();
                 if (textadv_location_set_method_by_string(argv[puntero_parametro])) {
-                    printf ("Invalid method for detecting location text\n");
+                    debug_printf (VERBOSE_ERR,"Invalid method for detecting location text\n");
                     exit(1);
                 }
             }
@@ -4907,7 +4914,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
                 if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
-                    printf ("Invalid microdrive number\n");
+                    debug_printf (VERBOSE_ERR,"Invalid microdrive number\n");
                     exit(1);
                 }
 
@@ -4942,7 +4949,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
                 if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
-                    printf ("Invalid microdrive number\n");
+                    debug_printf (VERBOSE_ERR,"Invalid microdrive number\n");
                     exit(1);
                 }
 
@@ -4958,7 +4965,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
                 if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
-                    printf ("Invalid microdrive number\n");
+                    debug_printf (VERBOSE_ERR,"Invalid microdrive number\n");
                     exit(1);
                 }
 
@@ -5145,7 +5152,7 @@ int parse_cmdline_options(int desde_commandline) {
                     break;
 
                     default:
-                        printf ("Invalid value for diviface ram size\n");
+                        debug_printf (VERBOSE_ERR,"Invalid value for diviface ram size\n");
                         exit(1);
                     break;
                 }
@@ -5494,7 +5501,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0) {
-                    printf ("Invalid margin height value\n");
+                    debug_printf (VERBOSE_ERR,"Invalid margin height value\n");
                     exit(1);
                 }
                 fbdev_margin_height=valor;
@@ -5503,7 +5510,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0) {
-                    printf ("Invalid margin width value\n");
+                    debug_printf (VERBOSE_ERR,"Invalid margin width value\n");
                     exit(1);
                 }
                 fbdev_margin_width=valor;
@@ -5619,7 +5626,7 @@ int parse_cmdline_options(int desde_commandline) {
                 }
 
                 if (!encontrado) {
-                        printf ("Invalid menu mix method\n");
+                        debug_printf (VERBOSE_ERR,"Invalid menu mix method\n");
                         exit (1);
 
                 }
@@ -5634,7 +5641,7 @@ int parse_cmdline_options(int desde_commandline) {
                     valor=atoi(argv[puntero_parametro]);
 
                     if (valor<0 || valor>95) {
-                        printf ("Invalid menu transparency value\n");
+                        debug_printf (VERBOSE_ERR,"Invalid menu transparency value\n");
                         exit (1);
                     }
 
@@ -5798,7 +5805,7 @@ int parse_cmdline_options(int desde_commandline) {
                     valor=atoi(argv[puntero_parametro]);
 
                     if (valor>MAX_AY_CHIPS || valor<1) {
-                        printf ("Invalid ay chip value\n");
+                        debug_printf (VERBOSE_ERR,"Invalid ay chip value\n");
                         exit (1);
                     }
 
@@ -5817,7 +5824,7 @@ int parse_cmdline_options(int desde_commandline) {
                     valor=atoi(argv[puntero_parametro]);
 
                     if (valor>5 || valor<0) {
-                        printf ("Invalid ay stereo mode value\n");
+                        debug_printf (VERBOSE_ERR,"Invalid ay stereo mode value\n");
                         exit (1);
                     }
                 ay3_stereo_mode=valor;
@@ -5831,7 +5838,7 @@ int parse_cmdline_options(int desde_commandline) {
                 canal=letra_mayuscula(canal);
 
                 if (canal!='A' && canal!='B' && canal!='C') {
-                    printf ("Invalid ay stereo channel\n");
+                    debug_printf (VERBOSE_ERR,"Invalid ay stereo channel\n");
                     exit(1);
                 }
 
@@ -5840,7 +5847,7 @@ int parse_cmdline_options(int desde_commandline) {
                 valor=atoi(argv[puntero_parametro]);
 
                 if (valor<0 || valor>2) {
-                    printf ("Invalid ay stereo channel position value\n");
+                    debug_printf (VERBOSE_ERR,"Invalid ay stereo channel position value\n");
                     exit(1);
                 }
 
@@ -5864,7 +5871,7 @@ int parse_cmdline_options(int desde_commandline) {
                     siguiente_parametro_argumento();
 
                     if (!audiodac_set_type(argv[puntero_parametro]) ) {
-                        printf ("Invalid audiodactype\n");
+                        debug_printf (VERBOSE_ERR,"Invalid audiodactype\n");
                         exit (1);
                     }
 
@@ -5880,7 +5887,7 @@ int parse_cmdline_options(int desde_commandline) {
                                 int valor=atoi(argv[puntero_parametro]);
 
                     if (valor>100 || valor<0) {
-                            printf ("Invalid volume value\n");
+                            debug_printf (VERBOSE_ERR,"Invalid volume value\n");
                     exit (1);
                 }
 
@@ -5926,7 +5933,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<1 || valor>1310) {
-                    printf ("Invalid length value. Must be between 1 and 1310\n");
+                    debug_printf (VERBOSE_ERR,"Invalid length value. Must be between 1 and 1310\n");
                     exit(1);
                 }
                 ay_player_limit_infinite_tracks=valor*50;
@@ -5936,7 +5943,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<1 || valor>1310) {
-                    printf ("Invalid length value. Must be between 1 and 1310\n");
+                    debug_printf (VERBOSE_ERR,"Invalid length value. Must be between 1 and 1310\n");
                     exit(1);
                 }
                 ay_player_limit_any_track=valor*50;
@@ -5946,7 +5953,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0 || valor>60) {
-                    printf ("Invalid length value. Must be between 0 and 60\n");
+                    debug_printf (VERBOSE_ERR,"Invalid length value. Must be between 0 and 60\n");
                     exit(1);
                 }
                 ay_player_add_to_track=valor;
@@ -5964,7 +5971,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>3) {
-                    printf ("Invalid audiopiano-zoom value. Must be between 1 and 3\n");
+                    debug_printf (VERBOSE_ERR,"Invalid audiopiano-zoom value. Must be between 1 and 3\n");
                     exit(1);
                 }
                 audiochip_piano_zoom_x=valor;
@@ -5980,7 +5987,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>255) {
-                    printf ("Invalid client value. Must be between 0 and 255\n");
+                    debug_printf (VERBOSE_ERR,"Invalid client value. Must be between 0 and 255\n");
                     exit(1);
                 }
                 audio_midi_client=valor;
@@ -5990,7 +5997,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>255) {
-                    printf ("Invalid port value. Must be between 0 and 255\n");
+                    debug_printf (VERBOSE_ERR,"Invalid port value. Must be between 0 and 255\n");
                     exit(1);
                 }
                 audio_midi_port=valor;
@@ -6059,7 +6066,7 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<1 || valor>15) {
-                        printf ("Invalid value for onebitspeaker-hifreq-filter-divider. Accepted values from 1 to 15\n");
+                        debug_printf (VERBOSE_ERR,"Invalid value for onebitspeaker-hifreq-filter-divider. Accepted values from 1 to 15\n");
                         exit(1);
                 }
                 audioonebitspeaker_agudo_filtro_limite=valor;
@@ -6070,7 +6077,7 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor!=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER && valor !=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
-                        printf ("Invalid value for --onebitspeaker-type\n");
+                        debug_printf (VERBOSE_ERR,"Invalid value for --onebitspeaker-type\n");
                         exit(1);
                 }
 
@@ -6090,7 +6097,7 @@ int parse_cmdline_options(int desde_commandline) {
                          siguiente_parametro_argumento();
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor!=2 && valor!=4) {
-                                        printf ("Invalid Alsa Period size\n");
+                                        debug_printf (VERBOSE_ERR,"Invalid Alsa Period size\n");
                                         exit(1);
                                 }
                                 alsa_periodsize=AUDIO_BUFFER_SIZE*valor;
@@ -6102,7 +6109,7 @@ int parse_cmdline_options(int desde_commandline) {
                                  siguiente_parametro_argumento();
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<4 || valor>10) {
-                                        printf ("Invalid Alsa Fifo Buffer size\n");
+                                        debug_printf (VERBOSE_ERR,"Invalid Alsa Fifo Buffer size\n");
                                         exit(1);
                                 }
                 fifo_alsa_buffer_size=AUDIO_BUFFER_SIZE*valor;
@@ -6120,7 +6127,7 @@ int parse_cmdline_options(int desde_commandline) {
                                 int valor=atoi(argv[puntero_parametro]);
                                 //if (valor!=2 && valor!=4 && valor!=1) {
                                 if (valor<1 || valor>4) {
-                                        printf ("Invalid Pulse Period size\n");
+                                        debug_printf (VERBOSE_ERR,"Invalid Pulse Period size\n");
                                         exit(1);
                                 }
                                 pulse_periodsize=AUDIO_BUFFER_SIZE*valor;
@@ -6131,7 +6138,7 @@ int parse_cmdline_options(int desde_commandline) {
                                  siguiente_parametro_argumento();
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<4 || valor>10) {
-                                        printf ("Invalid Pulse Fifo Buffer size\n");
+                                        debug_printf (VERBOSE_ERR,"Invalid Pulse Fifo Buffer size\n");
                                         exit(1);
                                 }
                                 fifo_pulse_buffer_size=AUDIO_BUFFER_SIZE*valor;
@@ -6148,7 +6155,7 @@ int parse_cmdline_options(int desde_commandline) {
                  siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<MIN_AUDIOCOREAUDIO_FIFO_MULTIPLIER || valor>MAX_AUDIOCOREAUDIO_FIFO_MULTIPLIER) {
-                                printf ("Invalid Coreaudio Fifo Buffer size\n");
+                                debug_printf (VERBOSE_ERR,"Invalid Coreaudio Fifo Buffer size\n");
                                 exit(1);
                 }
                 audiocoreaudio_fifo_buffer_size_multiplier=valor;
@@ -6160,7 +6167,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<128 || valor>2048) {
-                    printf ("Invalid SDL audio sample size\n");
+                    debug_printf (VERBOSE_ERR,"Invalid SDL audio sample size\n");
                     exit(1);
                 }
                 audiosdl_samples=valor;
@@ -6171,7 +6178,7 @@ int parse_cmdline_options(int desde_commandline) {
                          siguiente_parametro_argumento();
                         int valor=atoi(argv[puntero_parametro]);
                         if (valor<MIN_AUDIOSDL_FIFO_MULTIPLIER || valor>MAX_AUDIOSDL_FIFO_MULTIPLIER) {
-                                        printf ("Invalid SDL Fifo Buffer size\n");
+                                        debug_printf (VERBOSE_ERR,"Invalid SDL Fifo Buffer size\n");
                                         exit(1);
                         }
                         audiosdl_fifo_buffer_size_multiplier=valor;
@@ -6317,7 +6324,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int indice=menu_get_gui_index_by_name(argv[puntero_parametro]);
                 if (indice<0) {
-                    printf ("Invalid GUI style: %s\n",argv[puntero_parametro]);
+                    debug_printf (VERBOSE_ERR,"Invalid GUI style: %s\n",argv[puntero_parametro]);
                     exit(1);
                 }
 
@@ -6332,7 +6339,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int indice=get_charset_id_by_name(argv[puntero_parametro]);
                 if (indice<0) {
-                    printf ("Invalid charset: %s\n",argv[puntero_parametro]);
+                    debug_printf (VERBOSE_ERR,"Invalid charset: %s\n",argv[puntero_parametro]);
                     exit(1);
                 }
 
@@ -6366,7 +6373,7 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor>100 || valor<1) {
-                    printf ("Invalid keylength\n");
+                    debug_printf (VERBOSE_ERR,"Invalid keylength\n");
                    exit (1);
                 }
 
@@ -6389,7 +6396,7 @@ int parse_cmdline_options(int desde_commandline) {
             int valor=atoi(argv[puntero_parametro]);
 
             if (valor>65535 || valor<1) {
-                printf ("Invalid port value\n");
+                debug_printf (VERBOSE_ERR,"Invalid port value\n");
                 exit (1);
             }
 
@@ -6433,7 +6440,7 @@ int parse_cmdline_options(int desde_commandline) {
             siguiente_parametro_argumento();
             int valor=parse_string_to_number(argv[puntero_parametro]);
             if (valor<1 || valor>ZENG_ONLINE_MAX_ROOMS) {
-                printf ("Invalid max rooms value\n");
+                debug_printf (VERBOSE_ERR,"Invalid max rooms value\n");
                  exit (1);
              }
             zeng_online_current_max_rooms=valor;
@@ -6444,7 +6451,7 @@ int parse_cmdline_options(int desde_commandline) {
             siguiente_parametro_argumento();
             int valor=parse_string_to_number(argv[puntero_parametro]);
             if (valor<1 || valor>ZENG_ONLINE_MAX_PLAYERS_PER_ROOM) {
-                printf ("Invalid max players per rooms value\n");
+                debug_printf (VERBOSE_ERR,"Invalid max players per rooms value\n");
                  exit (1);
              }
             zeng_online_current_max_players_per_room=valor;
@@ -6480,7 +6487,7 @@ int parse_cmdline_options(int desde_commandline) {
              siguiente_parametro_argumento();
             int valor=parse_string_to_number(argv[puntero_parametro]);
             if (valor<0 || valor>2) {
-                 printf ("Invalid port value\n");
+                 debug_printf (VERBOSE_ERR,"Invalid port value\n");
                  exit (1);
              }
 
@@ -6727,7 +6734,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
-                    printf ("Invalid value %d for setting --joystickfirekey\n",valor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey\n",valor);
                     exit(1);
                 }
                 joystick_defined_key_fire_array[0]=valor;
@@ -6737,7 +6744,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
-                    printf ("Invalid value %d for setting --joystickfirekey2\n",valor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey2\n",valor);
                     exit(1);
                 }
                 joystick_defined_key_fire_array[1]=valor;
@@ -6747,7 +6754,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
-                    printf ("Invalid value %d for setting --joystickfirekey3\n",valor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey3\n",valor);
                     exit(1);
                 }
                 joystick_defined_key_fire_array[2]=valor;
@@ -6757,7 +6764,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
-                    printf ("Invalid value %d for setting --joystickfirekey4\n",valor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey4\n",valor);
                     exit(1);
                 }
                 joystick_defined_key_fire_array[3]=valor;
@@ -6793,7 +6800,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>32000) {
-                    printf ("Invalid value %d for setting --realjoystick-calibrate\n",valor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --realjoystick-calibrate\n",valor);
                     exit(1);
                 }
                 realjoystick_autocalibrate_value=valor;
@@ -6890,7 +6897,7 @@ int parse_cmdline_options(int desde_commandline) {
                              siguiente_parametro_argumento();
                              int valor=atoi(argv[puntero_parametro]);
                 if (valor<=0) {
-                    printf ("Invalid value %d for setting --exit-after\n",valor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --exit-after\n",valor);
                                      exit(1);
                 }
                 exit_emulator_after_seconds=valor;
@@ -6910,7 +6917,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>65535) {
-                        printf ("Invalid value %d for setting --zeng-remote-port\n",valor);
+                        debug_printf (VERBOSE_ERR,"Invalid value %d for setting --zeng-remote-port\n",valor);
                         exit(1);
                 }
 
@@ -6923,7 +6930,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9) {
-                        printf ("Invalid value %d for setting --zeng-snapshot-interval\n",valor);
+                        debug_printf (VERBOSE_ERR,"Invalid value %d for setting --zeng-snapshot-interval\n",valor);
                         exit(1);
                 }
 
@@ -6935,7 +6942,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9*50) {
-                        printf ("Invalid value %d for setting --zeng-snapshot-interval-frames\n",valor);
+                        debug_printf (VERBOSE_ERR,"Invalid value %d for setting --zeng-snapshot-interval-frames\n",valor);
                         exit(1);
                 }
 
@@ -7068,7 +7075,7 @@ int parse_cmdline_options(int desde_commandline) {
                 alto=parse_string_to_number(argv[puntero_parametro]);
 
                 if (x<0 || y<0 || ancho<0 || alto<0) {
-                    printf ("Invalid window geometry\n");
+                    debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
                     exit(1);
                 }
 
@@ -7097,7 +7104,7 @@ int parse_cmdline_options(int desde_commandline) {
                 alto=parse_string_to_number(argv[puntero_parametro]);
 
                 if (x<0 || y<0 || ancho<0 || alto<0) {
-                    printf ("Invalid window geometry\n");
+                    debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
                     exit(1);
                 }
 
@@ -7134,7 +7141,7 @@ int parse_cmdline_options(int desde_commandline) {
                 alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
                 if (x<0 || y<0 || ancho<0 || alto<0) {
-                    printf ("Invalid window geometry\n");
+                    debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
                     exit(1);
                 }
 
@@ -7172,7 +7179,7 @@ int parse_cmdline_options(int desde_commandline) {
                 alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
                 if (x<0 || y<0 || ancho<0 || alto<0) {
-                    printf ("Invalid window geometry\n");
+                    debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
                     exit(1);
                 }
 
@@ -7216,7 +7223,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                                  int valor=atoi(argv[puntero_parametro]);
                                 if (valor<1 || valor>3) {
-                                        printf ("Invalid value %d for setting --tonegenerator\n",valor);
+                                        debug_printf (VERBOSE_ERR,"Invalid value %d for setting --tonegenerator\n",valor);
                                         exit(1);
                                 }
                 audio_tone_generator=valor;
@@ -7235,7 +7242,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
                 if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
-                    printf ("Invalid value %d for setting --sensor-set\n",numero_sensor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set\n",numero_sensor);
                     exit(1);
                 }
 
@@ -7259,7 +7266,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
                 if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
-                    printf ("Invalid value %d for setting --sensor-set-widget\n",numero_sensor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set-widget\n",numero_sensor);
                     exit(1);
                 }
 
@@ -7283,7 +7290,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
                 if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
-                    printf ("Invalid value %d for setting --sensor-set-abs\n",numero_sensor);
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set-abs\n",numero_sensor);
                     exit(1);
                 }
 

@@ -114,8 +114,6 @@ ok *ver colores desde https://www.lexaloffle.com/bbs/?pid=p8x8-7#p
 ->ver posibles fugas de memoria en macos < 26 al haber quitado el NSAutoreleasePool
 ->probar con --vo xwindows por ejemplo
 
--no se generan los menus de ZEsarUX (los de Mac, de la barra de arriba)
 
-ok-en start, "Invalid value for character width". que valores incorrectos no hagan petar la emulación
 
 -revisar parseo de parámetros, que no haya ninguno (exceptuando alguna excepción extraña) que salga con un exit() en caso de error. La mayoria deberian mostrar el error pero iniciar ZEsarUX
