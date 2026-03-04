@@ -1571,6 +1571,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_window_settings,'b');
         }
 
+        menu_add_item_menu_separator(array_menu_window_settings);
+
         int fps;
         int divisor=frameskip+1;
         if (divisor==0) {
@@ -1640,6 +1642,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
         if (si_complete_video_driver() ) {
+
+            menu_add_item_menu_separator(array_menu_window_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_both_zoom_equals,NULL,
                 "Zoom horizontal equal to vertical","Zoom horizontal y vertical iguales","Zoom horitzontal i vertical iguals");
@@ -1713,6 +1717,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
 
+        menu_add_item_menu_separator(array_menu_window_settings);
 
         menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,NULL,"[%c] Window F~~ooter",(menu_footer ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_window_settings,'o');
@@ -7185,6 +7190,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_anticopy_devices,NULL,
                 "Anticopy Devices","Dispositivos anticopia","Dispositius anticopia");
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
 
@@ -7209,6 +7215,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                 "~~DMA","~~DMA","~~DMA");
             menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
 
@@ -7236,6 +7243,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             "~~Memory","~~Memoria","~~Memoria");
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'m');
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 
 
@@ -7250,6 +7258,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                 "~~Optical Input","Entrada ~~óptica","Entrada ~~optica");
             menu_add_item_menu_shortcut(array_menu_hardware_settings,'o');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
 
