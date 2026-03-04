@@ -749,7 +749,7 @@ int scrcocoa_ultimo_estado_realjoystick_present=0;
     IOHIDManagerRegisterDeviceMatchingCallback(hidManager, joystickWasAdded, (void*)self);
     IOHIDManagerRegisterDeviceRemovalCallback(hidManager, joystickWasRemoved, (void*)self);
     IOHIDManagerScheduleWithRunLoop(hidManager, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-    //IOReturn tIOReturn =
+
     IOHIDManagerOpen(hidManager, kIOHIDOptionsTypeNone);
     IOHIDManagerRegisterInputValueCallback(hidManager, joystickAction, (void*)self);
 
@@ -758,8 +758,6 @@ int scrcocoa_ultimo_estado_realjoystick_present=0;
 
 - (void)activaSelectores
 {
-
-    //printf ("ZesaruxCocoaWindow activaSelectores\n");
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidEndLiveResize:) name:NSWindowDidEndLiveResizeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillStartLiveResize:) name:NSWindowWillStartLiveResizeNotification object:nil];
@@ -836,7 +834,7 @@ int scrcocoa_ultimo_estado_realjoystick_present=0;
     [elview setFrame:NSMakeRect(0, 0, pixel_screen_width, pixel_screen_height)];
     [ [ laventana contentView ] resizeContentToWidth:(int)(pixel_screen_width) height:(int)(pixel_screen_height) ];
 
-   //printf ("resize: %d X %d\n",width,height);
+
 
 }
 
@@ -1040,7 +1038,8 @@ int cocoa_renderizando=0;
     Discussion
 
     If the receiver is not a double-buffered context, this call does nothing.
-    You can cause your context to be double-buffered by including NSOpenGLPFADoubleBuffer in your pixel format attributes. Alternatively, you can call glFlush() instead of -[NSOpenGLContext flushBuffer] and leave your context single-buffered.
+    You can cause your context to be double-buffered by including NSOpenGLPFADoubleBuffer in your pixel format attributes.
+    Alternatively, you can call glFlush() instead of -[NSOpenGLContext flushBuffer] and leave your context single-buffered.
     */
 
 
@@ -1064,7 +1063,7 @@ int cocoa_renderizando=0;
 
     }
 
-//Para drag-drop, ver http://juliuspaintings.co.uk/cgi-bin/paint_css/animatedPaint/072-NSView-drag-and-drop.pl
+
 
     [self registerForDraggedTypes:
     [NSArray arrayWithObjects:NSPasteboardTypeTIFF,NSPasteboardTypeFileURL,nil]];
@@ -1073,16 +1072,17 @@ int cocoa_renderizando=0;
     return self;
 }
 
+//Para drag-drop, ver http://juliuspaintings.co.uk/cgi-bin/paint_css/animatedPaint/072-NSView-drag-and-drop.pl
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
-//printf ("Entrando drag drop\n");
+
     if ((NSDragOperationGeneric & [sender draggingSourceOperationMask])
         == NSDragOperationGeneric) {
 
         return NSDragOperationGeneric;
 
-    } // end if
+    }
 
     // not a drag we can use
     return NSDragOperationNone;
@@ -1142,7 +1142,7 @@ int cocoa_renderizando=0;
     }
 
 
-    debug_printf(VERBOSE_DEBUG,"Can't find a file type in dragged item");
+    debug_printf(VERBOSE_DEBUG,"Can't find a file type for dragged item");
 
     return NO;
 
@@ -1181,24 +1181,7 @@ int cocoa_renderizando=0;
 
 - (void)leftrightmouseDown:(int)x y:(int)y
 {
-    /*
-    lightgun_x=x;
-    lightgun_y=y;
 
-    //0,0 en cocoa esta abajo a la izquierda
-    //por tanto, para coordenada y, restamos del tope la coordenada y
-    int tamanyo_y;
-    tamanyo_y=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom();
-
-
-    lightgun_x=lightgun_x/zoom_x;
-    //lightgun_y=screen_get_window_size_height_no_zoom_border_en()-lightgun_y/zoom_y;
-    lightgun_y=tamanyo_y-lightgun_y/zoom_y;
-
-    printf("*gunstick x %d gunstick y %d\n",lightgun_x,lightgun_y);
-
-    debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", x, y,lightgun_x,lightgun_y);
-    */
 
 }
 
@@ -1249,7 +1232,6 @@ int cocoa_raton_oculto=0;
 
     //printf("mouse moved. scr_driver_can_ext_desktop=%p\n",scr_driver_can_ext_desktop);
 
-    //check_if_pendiente_activar_este_timer();
 
     NSPoint locationInView = [self convertPoint:[event locationInWindow]
                                     fromView:nil];
@@ -1275,10 +1257,10 @@ int cocoa_raton_oculto=0;
 
 
     lightgun_x=lightgun_x/zoom_x;
-    //lightgun_y=screen_get_window_size_height_no_zoom_border_en()-lightgun_y/zoom_y;
+
     lightgun_y=tamanyo_y-lightgun_y/zoom_y;
 
-    //printf(" gunstick x %d gunstick y %d\n",lightgun_x,lightgun_y);
+
 
 
     //si esta dentro de la ventana y hay que ocultar puntero
@@ -1594,29 +1576,14 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 {
     //COCOA_DEBUG("ZesaruxCocoaView: gestionTecla\n");
 
-    //La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
-    //por tanto, cuando se esta pulsada, liberar teclas y volver
-    /*
-    if (scrcocoa_antespulsadocmd_l==1) {
-        //printf ("cmd key pressed. resetting all keys\n");
-        reset_keyboard_ports();
-        return;
-    }
-    */
 
-
-    //printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
-
-    //int buttons = 0;
     UInt16 cocoakeycode;
-    //NSPoint p = [event locationInWindow];
+
     cocoakeycode=[event keyCode];
     //printf ("cocoakeycode tecla %d pressrelease: %d\n",cocoakeycode,pressrelease);
 
     int teclareal=0;
-    //printf ("gestionTecla.tecla: %d contador: %d\n",cocoakeycode,temp_cocoa_contador++);
 
-    //printf ("sizeof array: %d\n",sizeof(keymap));
 
 
     if (cocoakeycode<(sizeof(keymap)/sizeof(int)) ) {
@@ -2073,8 +2040,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 - (void) migestionEvento:(NSEvent *)event
 {
-    //printf ("\nmigestionEvento\n");
-
 
     //asumimos teclas de control no pulsadas
     int pulsadoctrl_l,pulsadoctrl_r,pulsadoalt_l,pulsadoalt_r,pulsadoshift_l,pulsadoshift_r,pulsadocmd_l,pulsadocmd_r; //,pulsadocapslock;
@@ -2082,10 +2047,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
     pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd_l=pulsadocmd_r=0;
 
     int event_keycode,event_modifier_flags;
-    //int event_type;
-    //NSPoint p = [event locationInWindow];
 
-    //event_type=[event type];
     event_keycode=[event keyCode];
     event_modifier_flags=[event modifierFlags];
 
@@ -2119,7 +2081,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
         right shift: 0x20004
 
-*/
+        */
 
         if ( (event_modifier_flags & 0x20004)==0x20004) {
             //printf ("Right Shift key is pressed\n");
@@ -2218,9 +2180,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
         }
     }
 
-    //if (pulsadoctrl) printf ("Control key is pressed\n");
-    //else printf ("Control key is NOT pressed\n");
-
     //notificar cambios
     if (pulsadoshift_l!=scrcocoa_antespulsadoshift_l) {
         //printf ("notificar cambio shift left\n");
@@ -2287,16 +2246,11 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
     scrcocoa_antespulsadocmd_l=pulsadocmd_l;
     scrcocoa_antespulsadocmd_r=pulsadocmd_r;
 
-    //printf ("\nfin migestionEvento\n\n");
 
 }
 
 - (void) grabMouse
 {
-    //COCOA_DEBUG("ZesaruxCocoaView: grabMouse\n");
-    //printf ("grabMouse\n");
-
-
     [NSCursor hide];
     CGAssociateMouseAndMouseCursorPosition(FALSE);
     isMouseGrabed = TRUE; // while isMouseGrabed = TRUE, ZesaruxCocoaApp sends all events to [cocoaView gestionEvento:]
@@ -2304,8 +2258,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 - (void) ungrabMouse
 {
-    //COCOA_DEBUG("ZesaruxCocoaView: ungrabMouse\n");
-
     [NSCursor unhide];
     CGAssociateMouseAndMouseCursorPosition(TRUE);
     isMouseGrabed = FALSE;
@@ -2322,15 +2274,10 @@ int previous_timer_sleep_machine=0;
 //- (int)startTimer
 - (void)  startTimer:(id)sender
 {
-    //printf("--scrcocoa startTimer. cocoatimeractivo=%d\n",cocoatimeractivo);
-
-    //debug_printf(VERBOSE_DEBUG,"Initializing Mac timer for %d microsec",timer_sleep_machine);
 
     //Si lo lanzamos de nuevo pero esta vez con intervalo diferente, no soporta cambio de intervalo,
     //por tanto devolvemos error para que no use este tipo de timer
     //Esto pasa por ejemplo si estamos en maquina Spectrum y saltamos a Z88
-
-
 
     //hay intervalo previo. ver si son iguales
     if (previous_timer_sleep_machine>0) {
@@ -2346,10 +2293,6 @@ int previous_timer_sleep_machine=0;
 
     if (timer == nil)
     {
-        //printf("timer_sleep_machine %d\n",timer_sleep_machine);
-        //NSTimeInterval ti=timer_sleep_machine/1000000.0;
-        //printf("ti= %f\n",ti);
-
 
         //timer_sleep_machine en microsegundos. pasamos a segundos
 
@@ -2368,8 +2311,6 @@ int previous_timer_sleep_machine=0;
     }
 
     cocoatimeractivo=1;
-
-    //printf("Started Mac timer. timer=%p cocoatimeractivo=%d\n",timer,cocoatimeractivo);
 
     retorno_start_timer=1;
 
@@ -2396,17 +2337,13 @@ int previous_timer_sleep_machine=0;
 
 - (void) cocoa_update_window_title:(id)sender
 {
-    //printf("cambio titulo\n");
     NSString *nsTitle = [NSString stringWithUTF8String:get_window_title()];
     [normalWindow setTitle:nsTitle];
 }
 
 - (void)timerTickHandler
 {
-    //printf("timerTickHandler\n");
     if (!cocoatimeractivo) return;
-
-    //printf("timerTickHandler. %d\n",contador_segundo);
 
     timer_trigger_interrupt();
 }
@@ -2445,9 +2382,9 @@ int previous_timer_sleep_machine=0;
 @implementation ZesaruxCocoaAppController
 - (id) init
 {
-    //COCOA_DEBUG("ZesaruxCocoaAppController: init\n");
 
     self = [super init];
+
     if (self) {
 
         // create a view and add it to the window
@@ -2461,8 +2398,7 @@ int previous_timer_sleep_machine=0;
 
         // create a window
         normalWindow = [[ZesaruxCocoaWindow alloc] initWithContentRect:[cocoaView frame]
-            //styleMask:NSTitledWindowMask|NSMiniaturizableWindowMask|NSClosableWindowMask|NSResizableWindowMask
-                        styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskMiniaturizable|NSWindowStyleMaskClosable|NSWindowStyleMaskResizable
+            styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskMiniaturizable|NSWindowStyleMaskClosable|NSWindowStyleMaskResizable
             backing:NSBackingStoreBuffered defer:NO];
 
 
@@ -2472,34 +2408,17 @@ int previous_timer_sleep_machine=0;
         }
 
         [normalWindow setAcceptsMouseMovedEvents:YES];
-        //[normalWindow setTitle:[NSString stringWithFormat:@"ZEsarUX "EMULATOR_VERSION]];
 
         //Tenemos que iniciar el titulo ventana aqui porque esto en cocoa se hace despues de inicializar la ventana y entonces no tendriamos titulo
         set_default_window_title();
 
-        //scrcocoa_update_window_title();
         [cocoaView performSelectorOnMainThread:@selector(cocoa_update_window_title:) withObject:nil waitUntilDone:YES];
-        //NSString *nsTitle = [NSString stringWithUTF8String:get_window_title()];
-        //[normalWindow setTitle:nsTitle];
 
         [normalWindow setContentView:cocoaView];
-        //deprecated . mirar alternativa [normalWindow useOptimizedDrawing:YES];
         [normalWindow makeKeyAndOrderFront:self];
         [normalWindow center];
-
-
-        //[normalWindow setResizeIncrements:NSMakeSize(screen_get_window_size_width_zoom_border_en(), screen_get_window_size_height_zoom_border_en()) ];
-
         [normalWindow activaSelectores];
 
-
-        /*
-        [[NSNotificationCenter defaultCenter]
-            addObserver:self
-            selector:@selector(windowDidEndLiveResize:)
-            name:NSWindowDidEndLiveResizeNotification
-            object:normalWindow];
-        */
 
     }
     return self;
@@ -2526,12 +2445,12 @@ int previous_timer_sleep_machine=0;
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-    //COCOA_DEBUG("ZesaruxCocoaAppController: applicationWillTerminate\n");
+
 
     //Cuando llega aqui la ventana ya esta cerrada. No hacer nada de refresco de ventana
     no_fadeout_exit.v=1;
 
-    end_emulator();
+    end_emulator_autosave_snapshot();
     exit(0);
 }
 
@@ -2540,11 +2459,7 @@ int previous_timer_sleep_machine=0;
     return YES;
 }
 
-/*- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
-{
-    end_emulator();
-    return NSTerminateCancel;
-}*/
+
 
 
 - (void)startEmulationWithArgc:(int)argc argv:(char**)argv
@@ -2586,7 +2501,7 @@ int previous_timer_sleep_machine=0;
 @end
 
 
-
+/*
 // Dock Connection
 typedef struct CPSProcessSerNum
 {
@@ -2597,7 +2512,7 @@ typedef struct CPSProcessSerNum
 OSErr CPSGetCurrentProcess( CPSProcessSerNum *psn);
 OSErr CPSEnableForegroundOperation( CPSProcessSerNum *psn, UInt32 _arg2, UInt32 _arg3, UInt32 _arg4, UInt32 _arg5);
 OSErr CPSSetFrontProcess( CPSProcessSerNum *psn);
-
+*/
 
 //Retorna no 0 si se ha seleccionado un driver no cocoa por linea de comandos
 int scrcocoa_non_cocoa_driver_set_cmd(int argc, const char * argv[])
@@ -2896,32 +2811,6 @@ void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 
 }
 
-/*
-void old_scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
-{
-
-    int yorigen;
-
-
-    yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/menu_char_height;
-
-
-        //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
-    y +=yorigen;
-    //printf ("y: %d\n",y); entre 31,32 y 33 normalmente
-    z80_bit inverse;
-
-    inverse.v=0;
-
-    //128 y 129 corresponden a franja de menu y a letra enye minuscula
-    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
-    //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
-
-
-    scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
-
-}
-*/
 
 void scrcocoa_set_fullscreen(void)
 {
@@ -2975,9 +2864,6 @@ void scrcocoa_refresca_pantalla(void);
 
 void scrcocoa_refresca_pantalla_solo_driver(void)
 {
-    // Prueba para cuando se redimensiona ventana desde el easter egg
-    //if (pendingresize) scrcocoa_refresca_pantalla();
-
 
     [cocoaView render];
 
@@ -2988,7 +2874,6 @@ void scrcocoa_refresca_pantalla_solo_driver(void)
 void scrcocoa_refresca_pantalla(void)
 {
 
-        //printf ("inicio scrcocoa_refresca_pantalla\n");
 
     if (pendiente_z88_draw_lower) {
         screen_z88_draw_lower_screen();
@@ -3007,7 +2892,6 @@ void scrcocoa_refresca_pantalla(void)
 
     if (sem_screen_refresh_reallocate_layers) {
             //printf ("--Screen layers are being reallocated. return\n");
-            //debug_exec_show_backtrace();
             return;
     }
 
@@ -3109,7 +2993,7 @@ void scrcocoa_refresca_pantalla(void)
         scr_refresca_pantalla_y_border_sms();
     }
 
-        //printf ("%d\n",spectrum_colortable[1]);
+
 
     screen_render_menu_overlay_if_active();
 
