@@ -6914,15 +6914,15 @@ int parse_cmdline_options(int desde_commandline) {
             }
 
 
-                     else if (!strcmp(argv[puntero_parametro],"--exit-after")) {
-                             siguiente_parametro_argumento();
-                             int valor=atoi(argv[puntero_parametro]);
+            else if (!strcmp(argv[puntero_parametro],"--exit-after")) {
+                siguiente_parametro_argumento();
+                int valor=atoi(argv[puntero_parametro]);
                 if (valor<=0) {
                     debug_printf (VERBOSE_ERR,"Invalid value %d for setting --exit-after\n",valor);
-                                     exit(1);
+
                 }
-                exit_emulator_after_seconds=valor;
-                         }
+                else exit_emulator_after_seconds=valor;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--disable-first-start-wizard")) {
                 first_start_wizard_disabled=1;
@@ -6939,10 +6939,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>65535) {
                         debug_printf (VERBOSE_ERR,"Invalid value %d for setting --zeng-remote-port\n",valor);
-                        exit(1);
+
                 }
 
-                zeng_remote_port=valor;
+                else zeng_remote_port=valor;
             }
 
             //por compatibilidad hacia atras
@@ -6952,10 +6952,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9) {
                         debug_printf (VERBOSE_ERR,"Invalid value %d for setting --zeng-snapshot-interval\n",valor);
-                        exit(1);
+
                 }
 
-                zeng_frames_video_cada_snapshot=valor*50;
+                else zeng_frames_video_cada_snapshot=valor*50;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zeng-snapshot-interval-frames")) {
@@ -6964,10 +6964,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>9*50) {
                         debug_printf (VERBOSE_ERR,"Invalid value %d for setting --zeng-snapshot-interval-frames\n",valor);
-                        exit(1);
+
                 }
 
-                zeng_frames_video_cada_snapshot=valor;
+                else zeng_frames_video_cada_snapshot=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zeng-iam-master")) {
@@ -7097,10 +7097,10 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (x<0 || y<0 || ancho<0 || alto<0) {
                     debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
-                    exit(1);
+
                 }
 
-                util_add_window_geometry(nombre,x,y,ancho,alto,0,0,ancho,alto);  //mantenido por compatibilidad minimizado=maximizado=0, ancho alto antes de minimizado
+                else util_add_window_geometry(nombre,x,y,ancho,alto,0,0,ancho,alto);  //mantenido por compatibilidad minimizado=maximizado=0, ancho alto antes de minimizado
 
             }
 
@@ -7124,15 +7124,18 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 alto=parse_string_to_number(argv[puntero_parametro]);
 
+                siguiente_parametro_argumento();
+
                 if (x<0 || y<0 || ancho<0 || alto<0) {
                     debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
-                    exit(1);
+
                 }
 
-                siguiente_parametro_argumento();
-                is_minimized=parse_string_to_number(argv[puntero_parametro]);
+                else {
+                    is_minimized=parse_string_to_number(argv[puntero_parametro]);
 
-                util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho,alto); //mantenido por compatibilidad ancho y alto antes de minimizado
+                    util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho,alto); //mantenido por compatibilidad ancho y alto antes de minimizado
+                }
 
             }
 
@@ -7161,15 +7164,18 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
+                siguiente_parametro_argumento();
+
                 if (x<0 || y<0 || ancho<0 || alto<0) {
                     debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
-                    exit(1);
+
                 }
 
-                siguiente_parametro_argumento();
-                is_minimized=parse_string_to_number(argv[puntero_parametro]);
+                else {
+                    is_minimized=parse_string_to_number(argv[puntero_parametro]);
 
-                util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho_antes_minimized,alto_antes_minimized); //mantenido por compatibilidad
+                    util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho_antes_minimized,alto_antes_minimized); //mantenido por compatibilidad
+                }
 
             }
 
@@ -7242,12 +7248,12 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--tonegenerator")) {
                 siguiente_parametro_argumento();
-                                 int valor=atoi(argv[puntero_parametro]);
-                                if (valor<1 || valor>3) {
-                                        debug_printf (VERBOSE_ERR,"Invalid value %d for setting --tonegenerator\n",valor);
-                                        exit(1);
-                                }
-                audio_tone_generator=valor;
+                int valor=atoi(argv[puntero_parametro]);
+                if (valor<1 || valor>3) {
+                        debug_printf (VERBOSE_ERR,"Invalid value %d for setting --tonegenerator\n",valor);
+
+                }
+                else audio_tone_generator=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--enable-christmas-mode")) {
@@ -7312,10 +7318,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
                 if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
                     debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set-abs\n",numero_sensor);
-                    exit(1);
+
                 }
 
-                menu_debug_view_sensors_list_sensors[numero_sensor].valor_en_vez_de_perc=1;
+                else menu_debug_view_sensors_list_sensors[numero_sensor].valor_en_vez_de_perc=1;
 
             }
 
