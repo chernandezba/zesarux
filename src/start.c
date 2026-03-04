@@ -4374,12 +4374,14 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (valor<0 || valor>=MAX_USERDEF_BUTTONS) {
                     debug_printf (VERBOSE_ERR,"Invalid button\n");
-                    exit(1);
+
                 }
 
-                siguiente_parametro_argumento();
+                else {
+                    siguiente_parametro_argumento();
 
-                strcpy(defined_buttons_functions_array_parameters[valor],argv[puntero_parametro]);
+                    strcpy(defined_buttons_functions_array_parameters[valor],argv[puntero_parametro]);
+                }
 
 
             }
@@ -4443,9 +4445,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>99) {
                     debug_printf (VERBOSE_ERR,"Invalid snapram-interval value. Must be between 1 and 99\n");
-                    exit(1);
+
                 }
-                snapshot_in_ram_interval_seconds=valor;
+                else snapshot_in_ram_interval_seconds=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--snapram-max")) {
@@ -4453,9 +4455,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>MAX_TOTAL_SNAPSHOTS_IN_RAM) {
                     debug_printf (VERBOSE_ERR,"Invalid snapram-max value. Must be between 1 and %d\n",MAX_TOTAL_SNAPSHOTS_IN_RAM);
-                    exit(1);
+
                 }
-                snapshots_in_ram_maximum=valor;
+                else snapshots_in_ram_maximum=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--snapram-rewind-timeout")) {
@@ -4463,9 +4465,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>99) {
                     debug_printf (VERBOSE_ERR,"Invalid snapram-rewind-timeout value. Must be between 1 and 99\n");
-                    exit(1);
+
                 }
-                snapshot_in_ram_enabled_timer_timeout=valor;
+                else snapshot_in_ram_enabled_timer_timeout=valor;
             }
 
 
@@ -4497,9 +4499,9 @@ int parse_cmdline_options(int desde_commandline) {
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<1 || valor>16) {
                                         debug_printf (VERBOSE_ERR,"Invalid threshold value\n");
-                                        exit(1);
+
                                 }
-                                umbral_arttext=valor;
+                                else umbral_arttext=valor;
                         }
 
 
@@ -4564,8 +4566,8 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--chartrapfilter")) {
                 siguiente_parametro_argumento();
                 if (charfilter_set(argv[puntero_parametro])) {
-                    printf ("Unknown char filter\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Unknown char filter");
+
                 }
             }
 
@@ -4657,11 +4659,12 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--textspeechtimeout")) {
                                 siguiente_parametro_argumento();
-                textspeech_timeout_no_enter=parse_string_to_number(argv[puntero_parametro]);
-                if (textspeech_timeout_no_enter<0 || textspeech_timeout_no_enter>99) {
-                    debug_printf (VERBOSE_ERR,"Invalid value for textspeechtimeout\n");
-                    exit(1);
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<0 || valor>99) {
+                    debug_printf (VERBOSE_ERR,"Invalid value for textspeechtimeout");
+
                 }
+                else textspeech_timeout_no_enter=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--accessibility-gui-sounds")) {
@@ -4706,7 +4709,7 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 if (textadv_location_set_method_by_string(argv[puntero_parametro])) {
                     debug_printf (VERBOSE_ERR,"Invalid method for detecting location text\n");
-                    exit(1);
+
                 }
             }
 
@@ -4920,29 +4923,32 @@ int parse_cmdline_options(int desde_commandline) {
                 //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
                 if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
                     debug_printf (VERBOSE_ERR,"Invalid microdrive number\n");
-                    exit(1);
-                }
-
-                microdrive_seleccionado--;
-
-                siguiente_parametro_argumento();
-
-                //Si es ruta relativa, poner ruta absoluta
-                if (!si_ruta_absoluta(argv[puntero_parametro])) {
-                        //printf ("es ruta relativa\n");
-
-                        //TODO: quiza hacer esto con convert_relative_to_absolute pero esa funcion es para directorios,
-                        //no para directorios con archivo, por tanto quiza habria que hacer un paso intermedio separando
-                        //directorio de archivo
-                        char directorio_actual[PATH_MAX];
-                        getcwd(directorio_actual,PATH_MAX);
-
-                        sprintf (microdrive_status[microdrive_seleccionado].microdrive_file_name,"%s/%s",directorio_actual,argv[puntero_parametro]);
 
                 }
 
                 else {
-                    sprintf (microdrive_status[microdrive_seleccionado].microdrive_file_name,"%s",argv[puntero_parametro]);
+
+                    microdrive_seleccionado--;
+
+                    siguiente_parametro_argumento();
+
+                    //Si es ruta relativa, poner ruta absoluta
+                    if (!si_ruta_absoluta(argv[puntero_parametro])) {
+                            //printf ("es ruta relativa\n");
+
+                            //TODO: quiza hacer esto con convert_relative_to_absolute pero esa funcion es para directorios,
+                            //no para directorios con archivo, por tanto quiza habria que hacer un paso intermedio separando
+                            //directorio de archivo
+                            char directorio_actual[PATH_MAX];
+                            getcwd(directorio_actual,PATH_MAX);
+
+                            sprintf (microdrive_status[microdrive_seleccionado].microdrive_file_name,"%s/%s",directorio_actual,argv[puntero_parametro]);
+
+                    }
+
+                    else {
+                        sprintf (microdrive_status[microdrive_seleccionado].microdrive_file_name,"%s",argv[puntero_parametro]);
+                    }
                 }
 
             }
