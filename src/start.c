@@ -4961,12 +4961,14 @@ int parse_cmdline_options(int desde_commandline) {
                 //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
                 if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
                     debug_printf (VERBOSE_ERR,"Invalid microdrive number\n");
-                    exit(1);
                 }
 
-                microdrive_seleccionado--;
+                else {
 
-                microdrive_insert(microdrive_seleccionado);
+                    microdrive_seleccionado--;
+
+                    microdrive_insert(microdrive_seleccionado);
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zx-mdv-no-persistent-writes")) {
@@ -4977,12 +4979,14 @@ int parse_cmdline_options(int desde_commandline) {
                 //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
                 if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
                     debug_printf (VERBOSE_ERR,"Invalid microdrive number\n");
-                    exit(1);
+
                 }
+                else {
 
-                microdrive_seleccionado--;
+                    microdrive_seleccionado--;
 
-                microdrive_status[microdrive_seleccionado].microdrive_persistent_writes=0;
+                    microdrive_status[microdrive_seleccionado].microdrive_persistent_writes=0;
+                }
             }
 
 
