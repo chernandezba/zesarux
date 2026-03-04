@@ -1495,7 +1495,7 @@ void menu_colour_settings(MENU_ITEM_PARAMETERS)
             "8 bit color","Color 8 bit","Color 8 bit");
         menu_add_item_menu_prefijo_format(array_menu_colour_settings,"[%c] ",(screen_rgb_8bit ? 'X' : ' ' ) );
         menu_add_item_menu_tooltip(array_menu_colour_settings,"Draw colours using RGB 8 bit");
-        menu_add_item_menu_ayuda(array_menu_colour_settings,"Draw colours using RGB 8 bit");
+        menu_add_item_menu_ayuda(array_menu_colour_settings,"Draw colours using RGB 8 bit, but the internal palette still uses RGB 24 bit, it's just pixel colors are drawn using 8 bit");
 
 
         menu_add_item_menu_format(array_menu_colour_settings,MENU_OPCION_NORMAL,menu_interface_video_dither_mode,NULL,"[%c] ~~Dithering",(video_dither_mode.v ? 'X' : ' ') );

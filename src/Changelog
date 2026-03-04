@@ -18,6 +18,7 @@ Allow utf-8 characters on footer
 Allow to save smartload history on a file
 Added aggresive scanline effect
 Added black & white video dither mode
+Added RGB 8 bit color mode
 Added lightgun scope
 Added emulation of Optical Devices:
 - Stack Light Rifle

@@ -4433,6 +4433,7 @@ int util_write_configfile(void)
   if (screen_gray_mode&2)                     ADD_STRING_CONFIG,"--green");
   if (screen_gray_mode&4)                     ADD_STRING_CONFIG,"--red");
   if (inverse_video.v)                        ADD_STRING_CONFIG,"--inversevideo");
+  if (screen_rgb_8bit)                        ADD_STRING_CONFIG,"--rgb8bit-color");
   if (video_dither_mode.v)                    ADD_STRING_CONFIG,"--dithering");
   if (spectrum_1648_use_real_palette.v)       ADD_STRING_CONFIG,"--realpalette");
 

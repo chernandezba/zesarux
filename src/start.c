@@ -1735,6 +1735,7 @@ printf("\n"
         "--blue                                  Force display mode with blue colour\n"
         "  Note: You can combine colours, for example, --red --green for Yellow display, or --red --green --blue for Gray display\n"
         "--inversevideo                          Inverse display colours\n"
+        "--rgb8bit-color                         Draw colours using RGB 8 bit, but the internal palette still uses RGB 24 bit, it's just pixel colors are drawn using 8 bit\n"
         "--dithering                             Only black and white colors with dithering, and requires zoom >=2\n"
         "--realpalette                           Use real Spectrum colour palette according to info by Richard Atkinson\n"
 
@@ -6299,6 +6300,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--inversevideo")) {
                                 inverse_video.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--rgb8bit-color")) {
+                screen_rgb_8bit=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--dithering")) {

@@ -18,6 +18,7 @@ Permitir caracteres utf-8 en footer
 Permitir grabar historial de smartload en un archivo
 Agregado efecto scanlines agresivo
 Agregado modo de color en blanco y negro con tramado
+Agregado modo de color RGB 8 bit
 Agregada mirilla de lightgun
 Agregada emulación de Dispositivos Ópticos:
 - Stack Light Rifle
