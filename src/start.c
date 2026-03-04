@@ -5059,7 +5059,7 @@ int parse_cmdline_options(int desde_commandline) {
                 destination=argv[puntero_parametro];
 
                 if (util_copy_files_to_mmc_addlist(source,destination)) {
-                    exit(1);
+                    //exit(1);
                 }
             }
 
@@ -5168,7 +5168,6 @@ int parse_cmdline_options(int desde_commandline) {
 
                     default:
                         debug_printf (VERBOSE_ERR,"Invalid value for diviface ram size\n");
-                        exit(1);
                     break;
                 }
 
@@ -5517,18 +5516,18 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0) {
                     debug_printf (VERBOSE_ERR,"Invalid margin height value\n");
-                    exit(1);
+
                 }
-                fbdev_margin_height=valor;
+                else fbdev_margin_height=valor;
             }
             else if (!strcmp(argv[puntero_parametro],"--fbdev-margin-width")) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0) {
                     debug_printf (VERBOSE_ERR,"Invalid margin width value\n");
-                    exit(1);
+
                 }
-                fbdev_margin_width=valor;
+                else fbdev_margin_width=valor;
             }
 #endif
 
@@ -5619,8 +5618,8 @@ int parse_cmdline_options(int desde_commandline) {
                     gui_language=GUI_LANGUAGE_CATALAN;
                 }
                 else {
-                    printf("Invalid language\n");
-                    exit(1);
+                    debug_printf(VERBOSE_ERR,"Invalid language");
+
                 }
             }
 
@@ -5863,12 +5862,14 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (valor<0 || valor>2) {
                     debug_printf (VERBOSE_ERR,"Invalid ay stereo channel position value\n");
-                    exit(1);
-                }
 
-                if (canal=='A') ay3_custom_stereo_A=valor;
-                if (canal=='B') ay3_custom_stereo_B=valor;
-                if (canal=='C') ay3_custom_stereo_C=valor;
+                }
+                else {
+
+                    if (canal=='A') ay3_custom_stereo_A=valor;
+                    if (canal=='B') ay3_custom_stereo_B=valor;
+                    if (canal=='C') ay3_custom_stereo_C=valor;
+                }
 
             }
 
@@ -5949,9 +5950,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<1 || valor>1310) {
                     debug_printf (VERBOSE_ERR,"Invalid length value. Must be between 1 and 1310\n");
-                    exit(1);
+
                 }
-                ay_player_limit_infinite_tracks=valor*50;
+                else ay_player_limit_infinite_tracks=valor*50;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-any-length")) {
@@ -5959,9 +5960,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<1 || valor>1310) {
                     debug_printf (VERBOSE_ERR,"Invalid length value. Must be between 1 and 1310\n");
-                    exit(1);
+
                 }
-                ay_player_limit_any_track=valor*50;
+                else ay_player_limit_any_track=valor*50;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-add-to-track")) {
@@ -5969,9 +5970,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<0 || valor>60) {
                     debug_printf (VERBOSE_ERR,"Invalid length value. Must be between 0 and 60\n");
-                    exit(1);
+
                 }
-                ay_player_add_to_track=valor;
+                else ay_player_add_to_track=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-cpc")) {
@@ -5987,10 +5988,12 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<1 || valor>3) {
                     debug_printf (VERBOSE_ERR,"Invalid audiopiano-zoom value. Must be between 1 and 3\n");
-                    exit(1);
+
                 }
-                audiochip_piano_zoom_x=valor;
-                audiochip_piano_zoom_y=valor;
+                else {
+                    audiochip_piano_zoom_x=valor;
+                    audiochip_piano_zoom_y=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--enable-midi")) {
@@ -6003,9 +6006,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>255) {
                     debug_printf (VERBOSE_ERR,"Invalid client value. Must be between 0 and 255\n");
-                    exit(1);
+
                 }
-                audio_midi_client=valor;
+                else audio_midi_client=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--midi-port")) {
@@ -6013,9 +6016,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>255) {
                     debug_printf (VERBOSE_ERR,"Invalid port value. Must be between 0 and 255\n");
-                    exit(1);
+
                 }
-                audio_midi_port=valor;
+                else audio_midi_port=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--midi-raw-device")) {
@@ -6082,9 +6085,9 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (valor<1 || valor>15) {
                         debug_printf (VERBOSE_ERR,"Invalid value for onebitspeaker-hifreq-filter-divider. Accepted values from 1 to 15\n");
-                        exit(1);
+
                 }
-                audioonebitspeaker_agudo_filtro_limite=valor;
+                else audioonebitspeaker_agudo_filtro_limite=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-type")) {
@@ -6093,10 +6096,10 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (valor!=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER && valor !=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
                         debug_printf (VERBOSE_ERR,"Invalid value for --onebitspeaker-type\n");
-                        exit(1);
+
                 }
 
-                audioonebitspeaker_tipo_altavoz=valor;
+                else audioonebitspeaker_tipo_altavoz=valor;
             }
 
             //Este es solo de alsa pero por simplificar se parsea si se encuentra
@@ -6113,9 +6116,9 @@ int parse_cmdline_options(int desde_commandline) {
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor!=2 && valor!=4) {
                                         debug_printf (VERBOSE_ERR,"Invalid Alsa Period size\n");
-                                        exit(1);
+
                                 }
-                                alsa_periodsize=AUDIO_BUFFER_SIZE*valor;
+                                else alsa_periodsize=AUDIO_BUFFER_SIZE*valor;
             }
 
 
@@ -6125,9 +6128,9 @@ int parse_cmdline_options(int desde_commandline) {
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<4 || valor>10) {
                                         debug_printf (VERBOSE_ERR,"Invalid Alsa Fifo Buffer size\n");
-                                        exit(1);
+
                                 }
-                fifo_alsa_buffer_size=AUDIO_BUFFER_SIZE*valor;
+                                else fifo_alsa_buffer_size=AUDIO_BUFFER_SIZE*valor;
                         }
 
 
@@ -6143,9 +6146,9 @@ int parse_cmdline_options(int desde_commandline) {
                                 //if (valor!=2 && valor!=4 && valor!=1) {
                                 if (valor<1 || valor>4) {
                                         debug_printf (VERBOSE_ERR,"Invalid Pulse Period size\n");
-                                        exit(1);
+
                                 }
-                                pulse_periodsize=AUDIO_BUFFER_SIZE*valor;
+                                else pulse_periodsize=AUDIO_BUFFER_SIZE*valor;
                         }
 
 
@@ -6154,9 +6157,9 @@ int parse_cmdline_options(int desde_commandline) {
                                 int valor=atoi(argv[puntero_parametro]);
                                 if (valor<4 || valor>10) {
                                         debug_printf (VERBOSE_ERR,"Invalid Pulse Fifo Buffer size\n");
-                                        exit(1);
+
                                 }
-                                fifo_pulse_buffer_size=AUDIO_BUFFER_SIZE*valor;
+                                else fifo_pulse_buffer_size=AUDIO_BUFFER_SIZE*valor;
                         }
 
 
@@ -6171,9 +6174,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<MIN_AUDIOCOREAUDIO_FIFO_MULTIPLIER || valor>MAX_AUDIOCOREAUDIO_FIFO_MULTIPLIER) {
                                 debug_printf (VERBOSE_ERR,"Invalid Coreaudio Fifo Buffer size\n");
-                                exit(1);
+
                 }
-                audiocoreaudio_fifo_buffer_size_multiplier=valor;
+                else audiocoreaudio_fifo_buffer_size_multiplier=valor;
             }
 #endif
 
@@ -6183,9 +6186,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor<128 || valor>2048) {
                     debug_printf (VERBOSE_ERR,"Invalid SDL audio sample size\n");
-                    exit(1);
+
                 }
-                audiosdl_samples=valor;
+                else audiosdl_samples=valor;
             }
 
 
@@ -6194,9 +6197,9 @@ int parse_cmdline_options(int desde_commandline) {
                         int valor=atoi(argv[puntero_parametro]);
                         if (valor<MIN_AUDIOSDL_FIFO_MULTIPLIER || valor>MAX_AUDIOSDL_FIFO_MULTIPLIER) {
                                         debug_printf (VERBOSE_ERR,"Invalid SDL Fifo Buffer size\n");
-                                        exit(1);
+
                         }
-                        audiosdl_fifo_buffer_size_multiplier=valor;
+                        else audiosdl_fifo_buffer_size_multiplier=valor;
                     }
 
 #endif
@@ -6340,10 +6343,10 @@ int parse_cmdline_options(int desde_commandline) {
                 int indice=menu_get_gui_index_by_name(argv[puntero_parametro]);
                 if (indice<0) {
                     debug_printf (VERBOSE_ERR,"Invalid GUI style: %s\n",argv[puntero_parametro]);
-                    exit(1);
+
                 }
 
-                zxvision_change_gui_style(indice);
+                else zxvision_change_gui_style(indice);
             }
 
             else if (!strcmp(argv[puntero_parametro],"--gui-style-day-night")) {
@@ -6355,11 +6358,13 @@ int parse_cmdline_options(int desde_commandline) {
                 int indice=get_charset_id_by_name(argv[puntero_parametro]);
                 if (indice<0) {
                     debug_printf (VERBOSE_ERR,"Invalid charset: %s\n",argv[puntero_parametro]);
-                    exit(1);
+
                 }
 
-                user_charset=indice;
-                set_user_charset();
+                else {
+                    user_charset=indice;
+                    set_user_charset();
+                }
 
             }
 
@@ -6441,10 +6446,10 @@ int parse_cmdline_options(int desde_commandline) {
             siguiente_parametro_argumento();
             if (strlen(argv[puntero_parametro])>ZOC_MAX_NICKNAME_LENGTH) {
                 printf("Nickname too long. Maximum: %d characters\n",ZOC_MAX_NICKNAME_LENGTH);
-                exit(1);
+
             }
 
-            strcpy(zeng_online_nickname,argv[puntero_parametro]);
+            else strcpy(zeng_online_nickname,argv[puntero_parametro]);
          }
 
          else if (!strcmp(argv[puntero_parametro],"--zeng-online-server-allow-create")) {
@@ -6456,9 +6461,9 @@ int parse_cmdline_options(int desde_commandline) {
             int valor=parse_string_to_number(argv[puntero_parametro]);
             if (valor<1 || valor>ZENG_ONLINE_MAX_ROOMS) {
                 debug_printf (VERBOSE_ERR,"Invalid max rooms value\n");
-                 exit (1);
-             }
-            zeng_online_current_max_rooms=valor;
+
+            }
+            else zeng_online_current_max_rooms=valor;
          }
 
 
@@ -6519,10 +6524,10 @@ int parse_cmdline_options(int desde_commandline) {
 
              if (valor<0 || valor>MAX_BREAKPOINTS_CONDITIONS-1) {
                  printf("Index %d out of range setting breakpoint \"%s\"\n",valor+1,argv[puntero_parametro]);
-                 exit(1);
+
              }
 
-             debug_set_breakpoint(valor,argv[puntero_parametro],0);
+             else debug_set_breakpoint(valor,argv[puntero_parametro],0);
 
          }
 
@@ -6534,10 +6539,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             if (valor<0 || valor>MAX_BREAKPOINTS_CONDITIONS-1) {
                 printf("Index %d out of range disabling breakpoint\n",valor+1);
-                exit(1);
+
             }
 
-            debug_breakpoints_conditions_disable(valor);
+            else debug_breakpoints_conditions_disable(valor);
 
         }
 
@@ -6551,10 +6556,10 @@ int parse_cmdline_options(int desde_commandline) {
 
              if (valor<0 || valor>DEBUG_MAX_WATCHES-1) {
                  printf("Index %d out of range setting watch \"%s\"\n",valor+1,argv[puntero_parametro]);
-                 exit(1);
+
              }
 
-             debug_set_watch(valor,argv[puntero_parametro]);
+             else debug_set_watch(valor,argv[puntero_parametro]);
 
          }
 
@@ -6568,10 +6573,10 @@ int parse_cmdline_options(int desde_commandline) {
 
              if (valor<0 || valor>DEBUG_MAX_WATCHES-1) {
                  printf("Index %d out of range setting watch label \"%s\"\n",valor+1,argv[puntero_parametro]);
-                 exit(1);
+
              }
 
-            strcpy(debug_watches_labels_array[valor],argv[puntero_parametro]);
+            else strcpy(debug_watches_labels_array[valor],argv[puntero_parametro]);
 
          }
 
@@ -6587,10 +6592,10 @@ int parse_cmdline_options(int desde_commandline) {
              int valor=parse_string_to_number(argv[puntero_parametro]);
              if (valor<0 || valor>255) {
                  printf("Type %d out of range setting memory breakpoint at address %04XH\n",valor,direccion);
-                 exit(1);
+
              }
 
-             debug_set_mem_breakpoint(direccion,valor);
+             else debug_set_mem_breakpoint(direccion,valor);
 
          }
 
@@ -6604,12 +6609,13 @@ int parse_cmdline_options(int desde_commandline) {
 
              if (valor<0 || valor>MAX_BREAKPOINTS_CONDITIONS-1) {
                  printf("Index %d out of range setting breakpoint pass count \"%s\"\n",valor+1,argv[puntero_parametro]);
-                 exit(1);
+
              }
+             else {
+                int passcount=parse_string_to_number(argv[puntero_parametro]);
 
-             int passcount=parse_string_to_number(argv[puntero_parametro]);
-
-             debug_set_breakpoint_passcount(valor,passcount);
+                debug_set_breakpoint_passcount(valor,passcount);
+             }
 
          }
 
@@ -6623,10 +6629,10 @@ int parse_cmdline_options(int desde_commandline) {
 
              if (valor<0 || valor>MAX_BREAKPOINTS_CONDITIONS-1) {
                  printf("Index %d out of range setting breakpoint action \"%s\"\n",valor+1,argv[puntero_parametro]);
-                 exit(1);
+
              }
 
-             debug_set_breakpoint_action(valor,argv[puntero_parametro]);
+             else debug_set_breakpoint_action(valor,argv[puntero_parametro]);
 
 
 
@@ -6648,10 +6654,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             if (max_items<1 || max_items>CPU_HISTORY_MAX_ALLOWED_ELEMENTS) {
                 printf("Value for max history elements out of range\n");
-                exit(1);
+
             }
 
-            cpu_history_max_elements=max_items;
+            else cpu_history_max_elements=max_items;
         }
 
 
@@ -6729,10 +6735,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             if (valor<0 || valor>MAX_TEXTADVENTURE_MAP_ZOOM) {
                 printf("Text adventure zoom out of range\n");
-                exit(1);
+
             }
 
-            menu_debug_textadventure_map_connections_zoom=valor;
+            else menu_debug_textadventure_map_connections_zoom=valor;
 
         }
 
@@ -6740,7 +6746,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--joystickemulated")) {
                                 siguiente_parametro_argumento();
                 if (realjoystick_set_type(argv[puntero_parametro])) {
-                                        exit(1);
+                    //error
                 }
 
             }
@@ -6750,9 +6756,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
                     debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey\n",valor);
-                    exit(1);
+
                 }
-                joystick_defined_key_fire_array[0]=valor;
+                else joystick_defined_key_fire_array[0]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey2")) {
@@ -6760,9 +6766,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
                     debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey2\n",valor);
-                    exit(1);
+
                 }
-                joystick_defined_key_fire_array[1]=valor;
+                else joystick_defined_key_fire_array[1]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey3")) {
@@ -6770,9 +6776,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
                     debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey3\n",valor);
-                    exit(1);
+
                 }
-                joystick_defined_key_fire_array[2]=valor;
+                else joystick_defined_key_fire_array[2]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--joystickfirekey4")) {
@@ -6780,9 +6786,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor>=JOYSTICK_KEY_FIRE_TOTAL) {
                     debug_printf (VERBOSE_ERR,"Invalid value %d for setting --joystickfirekey4\n",valor);
-                    exit(1);
+
                 }
-                joystick_defined_key_fire_array[3]=valor;
+                else joystick_defined_key_fire_array[3]=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--sms-swap-controls")) {
@@ -6816,9 +6822,9 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
                 if (valor<0 || valor>32000) {
                     debug_printf (VERBOSE_ERR,"Invalid value %d for setting --realjoystick-calibrate\n",valor);
-                    exit(1);
+
                 }
-                realjoystick_autocalibrate_value=valor;
+                else realjoystick_autocalibrate_value=valor;
             }
 
 
@@ -6857,7 +6863,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 //Y definir el evento
                                 if (realjoystick_set_button_key(text_button,text_key)) {
-                                        exit(1);
+                                        //error
                                 }
 
             }
