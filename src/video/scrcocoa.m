@@ -2640,27 +2640,39 @@ int main (int argc, const char * argv[]) {
     }
 
 
-    CPSProcessSerNum PSN;
 
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    //Esto no hace falta. Asi como el [pool release] del final
+    //La memoria se libera correctamente con ARC
+    //NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+
+    //Necesaria para activar el menu en la barra de menús de macOS
     [NSApplication sharedApplication];
 
 
 
 
-//Codigo viejo usado para forzar que la ventana de ZEsarUX aparezca
-//Esto en teoria solo es necesario al lanzarlo desde terminal
-//Si está como aplicación y hacemos doble click, no hace falta
+//Codigo viejo usado para forzar que la ventana de ZEsarUX aparezca y tome el foco del teclado
+//Esto es codigo antiguo y no deberia hacer falta. Quitado en ZEsarUX 13
+//Alguna vez con iTerm había fallado, ZEsarUX arrancaba pero no generaba ventana.
+//Alternativas:
+// A) meterlo en una carpeta "prueba.app/Contents/MacOS/zesarux" tal cual, con eso ya arranca
+// B) lanzarlo con "open ./zesarux"
+// C) Si se usa iTerm, quitar permiso de "Acceso total al disco" y volver a probar
+
 
 //Obtiene el identificador interno del proceso
 //Lo habilita como app de primer plano
 //Lo trae al frente
 //Inicializa NSApplication
+/*
+CPSProcessSerNum PSN;
 
     if (!CPSGetCurrentProcess(&PSN))
         if (!CPSEnableForegroundOperation(&PSN,0x03,0x3C,0x2C,0x1103))
             if (!CPSSetFrontProcess(&PSN))
                 [NSApplication sharedApplication];
+*/
 
 
 
@@ -2724,6 +2736,18 @@ int main (int argc, const char * argv[]) {
     //No queremos el menu de view tab bar
     [NSWindow setAllowsAutomaticWindowTabbing:NO];
 
+
+    // Que pueda tener el foco del teclado
+    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+
+    //Mandar a primer plano, pero con la anterior ya no hace falta
+    //Ademas tampoco hace falta al lanzarla con doble click
+    //[NSApp activate];
+
+    //Esto en teoria no hace falta
+    //[[NSApp mainWindow] makeKeyAndOrderFront:nil];
+
+
     // Start the main event loop
     [NSApp run];
 
@@ -2731,7 +2755,9 @@ int main (int argc, const char * argv[]) {
     //printf ("fin app\n");
 
     [appController release];
-    [pool release];
+
+
+    //[pool release];
 
     return 0;
 }
