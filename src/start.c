@@ -6888,9 +6888,9 @@ int parse_cmdline_options(int desde_commandline) {
                 text_key=argv[puntero_parametro];
 
                             //Y definir el evento
-                                if (realjoystick_set_event_key(text_event,text_key)) {
-                    exit (1);
-                                }
+                if (realjoystick_set_event_key(text_event,text_key)) {
+                    //error
+                }
 
 
             }
