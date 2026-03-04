@@ -2676,21 +2676,23 @@ CPSProcessSerNum PSN;
 
 
 
-
-    // Add menus
+    //
+    // Add macOS menus
+    //
     NSMenu      *menu;
     NSMenuItem  *menuItem;
 
     [NSApp setMainMenu:[[NSMenu alloc] init]];
 
+    //
     // Application menu
+    //
     menu = [[NSMenu alloc] initWithTitle:@""];
     [menu addItemWithTitle:@"About ZEsarUX" action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]]; //Separator
+
     [menu addItemWithTitle:@"Hide ZEsarUX" action:@selector(hide:) keyEquivalent:@""];
     menuItem = (NSMenuItem *)[menu addItemWithTitle:@"Hide Others" action:@selector(hideOtherApplications:) keyEquivalent:@""];
-
-    //[menuItem setKeyEquivalentModifierMask:(NSAlternateKeyMask|NSCommandKeyMask)];
     [menuItem setKeyEquivalentModifierMask:(NSEventModifierFlagOption|NSEventModifierFlagCommand)];
 
     [menu addItemWithTitle:@"Show All" action:@selector(unhideAllApplications:) keyEquivalent:@""];
@@ -2699,22 +2701,30 @@ CPSProcessSerNum PSN;
     [menu addItemWithTitle:@"Quit ZEsarUX" action:@selector(terminate:) keyEquivalent:@""];
     menuItem = [[NSMenuItem alloc] initWithTitle:@"Apple" action:nil keyEquivalent:@""];
     [menuItem setSubmenu:menu];
-    [[NSApp mainMenu] addItem:menuItem];
-    [NSApp performSelector:@selector(setAppleMenu:) withObject:menu]; // Workaround (this method is private since 10.4+)
+    //[[NSApp mainMenu] addItem:menuItem];
+    NSMenu *mainMenu = [[NSMenu alloc] init];
+    [mainMenu addItem:menuItem];
+    // API pública, reemplaza setAppleMenu
+    [NSApp setMainMenu:mainMenu];
 
+    //[NSApp performSelector:@selector(setAppleMenu:) withObject:menu]; // Workaround (this method is private since 10.4+)
+
+    //
     // View menu
+    //
     menu = [[NSMenu alloc] initWithTitle:@"View"];
-    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(toggleFullScreen:) keyEquivalent:@""] autorelease]]; // Fullscreen
+    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(toggleFullScreen:) keyEquivalent:@""] autorelease]];
     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Open ZEsarUX menu" action:@selector(openzesaruxmenu:) keyEquivalent:@""] autorelease]];
 
     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
     [menuItem setSubmenu:menu];
     [[NSApp mainMenu] addItem:menuItem];
 
+    //
     // Window menu
+    //
     menu = [[NSMenu alloc] initWithTitle:@"Window"];
-    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Minimize" action:@selector(performMiniaturize:) keyEquivalent:@""] autorelease]]; // Miniaturize
-    //[menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Minimize" action:@selector(performMiniaturize:) ] autorelease]]; // Miniaturize
+    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Minimize" action:@selector(performMiniaturize:) keyEquivalent:@""] autorelease]];
     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Set Zoom 1" action:@selector(setzoomone:) keyEquivalent:@""] autorelease]];
 
     menuItem = [[[NSMenuItem alloc] initWithTitle:@"Window" action:nil keyEquivalent:@""] autorelease];
