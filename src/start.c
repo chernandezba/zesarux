@@ -3405,7 +3405,7 @@ int parse_cmdline_options(int desde_commandline) {
                     int valor=atoi(argv[puntero_parametro]);
                     if (valor<1 || valor>9999) {
                             debug_printf (VERBOSE_ERR,"Invalid Emulator speed\n");
-                            exit(1);
+
                     }
                     else porcentaje_velocidad_emulador=valor;
             }
@@ -4372,13 +4372,17 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int valor=atoi(argv[puntero_parametro]);
 
+                //Si da error de invalid button, ya habremos saltado el siguiente parametro y así facilitamos la carga
+                //de la configuración aunque este punto falle
+                siguiente_parametro_argumento();
+
                 if (valor<0 || valor>=MAX_USERDEF_BUTTONS) {
                     debug_printf (VERBOSE_ERR,"Invalid button\n");
 
                 }
 
                 else {
-                    siguiente_parametro_argumento();
+
 
                     strcpy(defined_buttons_functions_array_parameters[valor],argv[puntero_parametro]);
                 }
@@ -4920,6 +4924,8 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int microdrive_seleccionado=parse_string_to_number(argv[puntero_parametro]);
 
+                siguiente_parametro_argumento();
+
                 //aunque la emulacion soporta hasta 8, por el menu solo soportamos hasta 4
                 if (microdrive_seleccionado<1 || microdrive_seleccionado>MAX_MICRODRIVES_BY_CONFIG) {
                     debug_printf (VERBOSE_ERR,"Invalid microdrive number\n");
@@ -4929,8 +4935,6 @@ int parse_cmdline_options(int desde_commandline) {
                 else {
 
                     microdrive_seleccionado--;
-
-                    siguiente_parametro_argumento();
 
                     //Si es ruta relativa, poner ruta absoluta
                     if (!si_ruta_absoluta(argv[puntero_parametro])) {
@@ -5641,7 +5645,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (!encontrado) {
                         debug_printf (VERBOSE_ERR,"Invalid menu mix method\n");
-                        exit (1);
+
 
                 }
             }
@@ -5649,17 +5653,18 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--menu-transparency-perc")) {
 
-            int valor;
+                int valor;
 
-                    siguiente_parametro_argumento();
-                    valor=atoi(argv[puntero_parametro]);
+                siguiente_parametro_argumento();
+                valor=atoi(argv[puntero_parametro]);
 
-                    if (valor<0 || valor>95) {
-                        debug_printf (VERBOSE_ERR,"Invalid menu transparency value\n");
-                        exit (1);
-                    }
+                if (valor<0 || valor>95) {
+                    debug_printf (VERBOSE_ERR,"Invalid menu transparency value\n");
 
-        screen_menu_mix_transparency=valor;
+
+                }
+
+                else screen_menu_mix_transparency=valor;
 
             }
 
@@ -5815,15 +5820,15 @@ int parse_cmdline_options(int desde_commandline) {
 
                 int valor;
 
-                    siguiente_parametro_argumento();
-                    valor=atoi(argv[puntero_parametro]);
+                siguiente_parametro_argumento();
+                valor=atoi(argv[puntero_parametro]);
 
-                    if (valor>MAX_AY_CHIPS || valor<1) {
-                        debug_printf (VERBOSE_ERR,"Invalid ay chip value\n");
-                        exit (1);
-                    }
+                if (valor>MAX_AY_CHIPS || valor<1) {
+                    debug_printf (VERBOSE_ERR,"Invalid ay chip value\n");
 
-        set_total_ay_chips(valor);
+                }
+
+                else set_total_ay_chips(valor);
 
             }
 
@@ -5834,14 +5839,14 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--ay-stereo-mode")) {
                 int valor;
 
-                    siguiente_parametro_argumento();
-                    valor=atoi(argv[puntero_parametro]);
+                siguiente_parametro_argumento();
+                valor=atoi(argv[puntero_parametro]);
 
-                    if (valor>5 || valor<0) {
-                        debug_printf (VERBOSE_ERR,"Invalid ay stereo mode value\n");
-                        exit (1);
-                    }
-                ay3_stereo_mode=valor;
+                if (valor>5 || valor<0) {
+                    debug_printf (VERBOSE_ERR,"Invalid ay stereo mode value\n");
+
+                }
+                else ay3_stereo_mode=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ay-stereo-channel")) {
@@ -5888,7 +5893,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                     if (!audiodac_set_type(argv[puntero_parametro]) ) {
                         debug_printf (VERBOSE_ERR,"Invalid audiodactype\n");
-                        exit (1);
+
                     }
 
             }
@@ -5902,12 +5907,12 @@ int parse_cmdline_options(int desde_commandline) {
                                 siguiente_parametro_argumento();
                                 int valor=atoi(argv[puntero_parametro]);
 
-                    if (valor>100 || valor<0) {
-                            debug_printf (VERBOSE_ERR,"Invalid volume value\n");
-                    exit (1);
+                if (valor>100 || valor<0) {
+                    debug_printf (VERBOSE_ERR,"Invalid volume value\n");
+
                 }
 
-                    audiovolume=valor;
+                else audiovolume=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-add-dir")) {
@@ -6394,10 +6399,10 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (valor>100 || valor<1) {
                     debug_printf (VERBOSE_ERR,"Invalid keylength\n");
-                   exit (1);
+
                 }
 
-                input_file_keyboard_delay=valor;
+                else input_file_keyboard_delay=valor;
 
             }
 
@@ -6417,10 +6422,10 @@ int parse_cmdline_options(int desde_commandline) {
 
             if (valor>65535 || valor<1) {
                 debug_printf (VERBOSE_ERR,"Invalid port value\n");
-                exit (1);
+
             }
 
-            remote_protocol_port=valor;
+            else remote_protocol_port=valor;
          }
 
          else if (!strcmp(argv[puntero_parametro],"--remoteprotocol-prompt")) {
@@ -6472,9 +6477,9 @@ int parse_cmdline_options(int desde_commandline) {
             int valor=parse_string_to_number(argv[puntero_parametro]);
             if (valor<1 || valor>ZENG_ONLINE_MAX_PLAYERS_PER_ROOM) {
                 debug_printf (VERBOSE_ERR,"Invalid max players per rooms value\n");
-                 exit (1);
+
              }
-            zeng_online_current_max_players_per_room=valor;
+            else zeng_online_current_max_players_per_room=valor;
          }
 
 
@@ -6507,11 +6512,11 @@ int parse_cmdline_options(int desde_commandline) {
              siguiente_parametro_argumento();
             int valor=parse_string_to_number(argv[puntero_parametro]);
             if (valor<0 || valor>2) {
-                 debug_printf (VERBOSE_ERR,"Invalid port value\n");
-                 exit (1);
+                 debug_printf (VERBOSE_ERR,"Invalid value for --showfiredbreakpoint\n");
+
              }
 
-            debug_show_fired_breakpoints_type=valor;
+            else debug_show_fired_breakpoints_type=valor;
          }
 
          else if (!strcmp(argv[puntero_parametro],"--set-breakpoint")) {
