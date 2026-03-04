@@ -106,6 +106,7 @@ Corregido compilación sin pthreads
 Corregido posible división por 0 al obtener erróneamente el uso de cpu en Linux
 Corregido posible segfault en driver cocoa de macOS
 Corregido fallo visual en border en Spectrum Next al cambiar la velocidad turbo
+Corregido mostrar indicador de submenú (>) cuando el menú tiene barra de scroll vertical
 Corregido cambio de color de paleta en Amstrad PCW
 Eliminados algunos opcodes viejos/inexistentes de Next Z80N
 

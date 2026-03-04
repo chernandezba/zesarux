@@ -106,6 +106,7 @@ Fixed non-pthreads compilation
 Fixed possible divide by 0 when getting bad cpu usage on Linux
 Fixed possible segfault on macOS cocoa driver
 Fixed glitch on border on Spectrum Next when changing turbo speed
+Fixed showing submenu indicator (>) when the menu has vertical scroll bar
 Fixed Amstrad PCW palette color change
 Removed some old/non-existent - Z80N Next opcodes
 

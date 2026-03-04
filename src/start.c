@@ -2811,11 +2811,11 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
 
                 if (valor<1 || valor>9) {
-                    printf ("Invalid value for zoom\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid value for zoom: %d",valor);
                 }
-
-                zoom_x=valor;
+                else {
+                    zoom_x=valor;
+                }
 
             }
 
@@ -2825,11 +2825,11 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
 
                 if (valor<1 || valor>9) {
-                    printf ("Invalid value for zoom\n");
-                    exit(1);
+                    debug_printf (VERBOSE_ERR,"Invalid value for zoom: %d",valor);
                 }
-
-                zoom_y=valor;
+                else {
+                    zoom_y=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zoom-allow-different-xy")) {
@@ -3235,20 +3235,22 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor!=4 && valor!=5 && valor!=6 && valor!=7 && valor!=8) {
-                    printf ("Invalid value for character width\n");
-                    exit(1);
+                    debug_printf(VERBOSE_ERR,"Invalid value for character width: %d",valor);
                 }
-                menu_char_width=valor;
+                else {
+                    menu_char_width=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--menucharheight")) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
                 if (valor!=6 && valor!=7 && valor!=8) {
-                    printf ("Invalid value for character height\n");
-                    exit(1);
+                    debug_printf(VERBOSE_ERR,"Invalid value for character height: %d",valor);
                 }
-                menu_char_height=valor;
+                else {
+                    menu_char_height=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--menu-half-width")) {
@@ -3264,11 +3266,11 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=atoi(argv[puntero_parametro]);
 
                 if (valor<1 || valor>9) {
-                    printf ("Invalid value for zoom\n");
-                    exit(1);
+                    debug_printf(VERBOSE_ERR,"Invalid value for zoom: %d",valor);
                 }
-
-                zoom_y=zoom_x=valor;
+                else {
+                    zoom_y=zoom_x=valor;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--frameskip")) {
