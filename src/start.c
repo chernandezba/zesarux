@@ -2753,18 +2753,19 @@ void main_init_audio(void)
 
 
 //desde_commandline: si parsea desde commandline (1) o desde archivo de config (0)
-int parse_cmdline_options(int desde_commandline) {
+int parse_cmdline_options(int desde_commandline)
+{
 
-        while (!siguiente_parametro()) {
+    while (!siguiente_parametro()) {
             if (!strcmp(argv[puntero_parametro],"--help")) {
                 zesarux_cmdline_help();
                 exit(1);
             }
 
-                        if (!strcmp(argv[puntero_parametro],"--experthelp")) {
-                                zesarux_cmdline_help_expert();
-                                exit(1);
-                        }
+            if (!strcmp(argv[puntero_parametro],"--experthelp")) {
+                zesarux_cmdline_help_expert();
+                exit(1);
+            }
 
             if (!strcmp(argv[puntero_parametro],"--helpcustomconfig")) {
                 customconfig_help();
@@ -2778,9 +2779,9 @@ int parse_cmdline_options(int desde_commandline) {
 
 
             if (!strcmp(argv[puntero_parametro],"--showcompileinfo")) {
-                                show_compile_info();
-                                exit(1);
-                        }
+                show_compile_info();
+                exit(1);
+            }
 
 
 
@@ -3183,6 +3184,8 @@ int parse_cmdline_options(int desde_commandline) {
 
                     enum zxdesktop_custom_icon_status_ids status;
 
+                    int error=0;
+
                     if (!strcasecmp("exists",argv[puntero_parametro])) {
                         status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
                     }
@@ -3192,26 +3195,29 @@ int parse_cmdline_options(int desde_commandline) {
                     }
 
                     else {
-                        printf("Invalid icon status %s\n",argv[puntero_parametro]);
-                        exit(1);
+                        debug_printf(VERBOSE_ERR,"Invalid icon status %s",argv[puntero_parametro]);
+                        error=1;
                     }
 
 
+                    if (!error) {
+                        int indice_icono=zxvision_add_configurable_icon_no_add_position(indice_funcion);
+                        if (indice_icono<0) {
+                            debug_printf(VERBOSE_ERR,"Can not add more icons, limit reached: %d",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
 
-                    int indice_icono=zxvision_add_configurable_icon_no_add_position(indice_funcion);
-                    if (indice_icono<0) {
-                        printf("Can not add more icons, limit reached: %d\n",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
-                        exit(1);
+                        }
+
+                        else {
+                            //Asignamos x,y a mano dado que aqui aun no sabemos el tamaño de la ventana y por tanto no sabemos si sale de rango
+                            zxdesktop_configurable_icons_list[indice_icono].pos_x=x;
+                            zxdesktop_configurable_icons_list[indice_icono].pos_y=y;
+
+                            zxvision_set_configurable_icon_text(indice_icono,text_icon);
+                            zxvision_set_configurable_icon_extra_info(indice_icono,extra_info);
+
+                            zxdesktop_configurable_icons_list[indice_icono].status=status;
+                        }
                     }
-
-                    //Asignamos x,y a mano dado que aqui aun no sabemos el tamaño de la ventana y por tanto no sabemos si sale de rango
-                    zxdesktop_configurable_icons_list[indice_icono].pos_x=x;
-                    zxdesktop_configurable_icons_list[indice_icono].pos_y=y;
-
-                    zxvision_set_configurable_icon_text(indice_icono,text_icon);
-                    zxvision_set_configurable_icon_extra_info(indice_icono,extra_info);
-
-                    zxdesktop_configurable_icons_list[indice_icono].status=status;
 
                 }
 
@@ -4201,7 +4207,7 @@ int parse_cmdline_options(int desde_commandline) {
                 tecla_redefinida=parse_string_to_number(argv[puntero_parametro]);
 
                 if (util_add_redefinir_tecla(tecla_original,tecla_redefinida)) {
-                    //exit(1);
+                    //error
                 }
             }
 
@@ -4597,7 +4603,7 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--textspeechprogram")) {
                 siguiente_parametro_argumento();
-                                textspeech_filter_program=argv[puntero_parametro];
+                textspeech_filter_program=argv[puntero_parametro];
                 //Si es ruta relativa, poner ruta absoluta
                 if (!si_ruta_absoluta(textspeech_filter_program)) {
                     //printf ("es ruta relativa\n");
@@ -4619,7 +4625,7 @@ int parse_cmdline_options(int desde_commandline) {
                 textspeech_filter_program_check_spaces();
 
                 //Y si es NULL es que han habido espacios, y salir del emulador
-                if (textspeech_filter_program==NULL) exit(1);
+                //if (textspeech_filter_program==NULL) exit(1);
 
             }
 
@@ -4645,7 +4651,7 @@ int parse_cmdline_options(int desde_commandline) {
                                         textspeech_stop_filter_program_check_spaces();
 
                                         //Y si es NULL es que han habido espacios, y salir del emulador
-                                        if (textspeech_stop_filter_program==NULL) exit(1);
+                                        //if (textspeech_stop_filter_program==NULL) exit(1);
                                 }
                         }
 
@@ -4702,7 +4708,7 @@ int parse_cmdline_options(int desde_commandline) {
                 if (textimage_filter_program_check_spaces()) {
 
                     //han habido espacios, y salir del emulador
-                    exit(1);
+                    //exit(1);
                 }
 
             }
@@ -5063,7 +5069,7 @@ int parse_cmdline_options(int desde_commandline) {
                 destination=argv[puntero_parametro];
 
                 if (util_copy_files_to_mmc_addlist(source,destination)) {
-                    //exit(1);
+                    //error
                 }
             }
 
@@ -5856,24 +5862,29 @@ int parse_cmdline_options(int desde_commandline) {
                 canal=argv[puntero_parametro][0];
                 canal=letra_mayuscula(canal);
 
+                siguiente_parametro_argumento();
+
                 if (canal!='A' && canal!='B' && canal!='C') {
                     debug_printf (VERBOSE_ERR,"Invalid ay stereo channel\n");
-                    exit(1);
-                }
-
-                int valor;
-                siguiente_parametro_argumento();
-                valor=atoi(argv[puntero_parametro]);
-
-                if (valor<0 || valor>2) {
-                    debug_printf (VERBOSE_ERR,"Invalid ay stereo channel position value\n");
 
                 }
+
                 else {
 
-                    if (canal=='A') ay3_custom_stereo_A=valor;
-                    if (canal=='B') ay3_custom_stereo_B=valor;
-                    if (canal=='C') ay3_custom_stereo_C=valor;
+                    int valor;
+
+                    valor=atoi(argv[puntero_parametro]);
+
+                    if (valor<0 || valor>2) {
+                        debug_printf (VERBOSE_ERR,"Invalid ay stereo channel position value\n");
+
+                    }
+                    else {
+
+                        if (canal=='A') ay3_custom_stereo_A=valor;
+                        if (canal=='B') ay3_custom_stereo_B=valor;
+                        if (canal=='C') ay3_custom_stereo_C=valor;
+                    }
                 }
 
             }
@@ -6586,21 +6597,27 @@ int parse_cmdline_options(int desde_commandline) {
          }
 
          else if (!strcmp(argv[puntero_parametro],"--set-mem-breakpoint")) {
-             siguiente_parametro_argumento();
-             int direccion=parse_string_to_number(argv[puntero_parametro]);
-             if (direccion<0 || direccion>65535) {
-                 printf("Address %d out of range setting memory breakpoint\n",direccion);
-                 exit(1);
-             }
+            siguiente_parametro_argumento();
+            int direccion=parse_string_to_number(argv[puntero_parametro]);
 
             siguiente_parametro_argumento();
-             int valor=parse_string_to_number(argv[puntero_parametro]);
-             if (valor<0 || valor>255) {
-                 printf("Type %d out of range setting memory breakpoint at address %04XH\n",valor,direccion);
 
-             }
+            if (direccion<0 || direccion>65535) {
+                printf("Address %d out of range setting memory breakpoint\n",direccion);
 
-             else debug_set_mem_breakpoint(direccion,valor);
+            }
+
+            else {
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                if (valor<0 || valor>255) {
+                    printf("Type %d out of range setting memory breakpoint at address %04XH\n",valor,direccion);
+
+                }
+
+                else {
+                    debug_set_mem_breakpoint(direccion,valor);
+                }
+            }
 
          }
 
@@ -7210,18 +7227,18 @@ int parse_cmdline_options(int desde_commandline) {
                 siguiente_parametro_argumento();
                 alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
-                if (x<0 || y<0 || ancho<0 || alto<0) {
-                    debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
-                    exit(1);
-                }
-
                 siguiente_parametro_argumento();
                 is_minimized=parse_string_to_number(argv[puntero_parametro]);
 
                 siguiente_parametro_argumento();
                 is_maximized=parse_string_to_number(argv[puntero_parametro]);
 
-                util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized);
+                if (x<0 || y<0 || ancho<0 || alto<0) {
+                    debug_printf (VERBOSE_ERR,"Invalid window geometry\n");
+
+                }
+
+                else util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized);
 
             }
 
@@ -7273,23 +7290,27 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--sensor-set")) {
                 siguiente_parametro_argumento();
                 int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
-                if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
-                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set\n",numero_sensor);
-                    exit(1);
-                }
 
                 siguiente_parametro_argumento();
-                char *sensor_type=argv[puntero_parametro];
 
-                int sensor_id=sensor_find(sensor_type);
-                if (sensor_id<0) {
-                    //Si nombre sensor invalido, damos error pero seguimos, para facilitar
-                    //cargar configuraciones de versiones superiores con sensores que no reconocemos
-                    debug_printf (VERBOSE_ERR,"Invalid sensor type %s for setting --sensor-set",sensor_type);
+                if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set\n",numero_sensor);
+
                 }
 
                 else {
-                    strcpy (menu_debug_view_sensors_list_sensors[numero_sensor].short_name,sensor_type);
+                    char *sensor_type=argv[puntero_parametro];
+
+                    int sensor_id=sensor_find(sensor_type);
+                    if (sensor_id<0) {
+                        //Si nombre sensor invalido, damos error pero seguimos, para facilitar
+                        //cargar configuraciones de versiones superiores con sensores que no reconocemos
+                        debug_printf (VERBOSE_ERR,"Invalid sensor type %s for setting --sensor-set",sensor_type);
+                    }
+
+                    else {
+                        strcpy (menu_debug_view_sensors_list_sensors[numero_sensor].short_name,sensor_type);
+                    }
                 }
             }
 
@@ -7297,22 +7318,26 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--sensor-set-widget")) {
                 siguiente_parametro_argumento();
                 int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
-                if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
-                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set-widget\n",numero_sensor);
-                    exit(1);
-                }
 
                 siguiente_parametro_argumento();
-                char *sensor_type=argv[puntero_parametro];
 
-                int widget_id=zxvision_widget_find_name_type(sensor_type);
-                if (widget_id<0) {
-                    //Si nombre sensor invalido, damos error pero seguimos, para facilitar
-                    //cargar configuraciones de versiones superiores con sensores que no reconocemos
-                    debug_printf (VERBOSE_ERR,"Invalid sensor widget type %s for setting --sensor-set-widget",sensor_type);
+                if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
+                    debug_printf (VERBOSE_ERR,"Invalid value %d for setting --sensor-set-widget\n",numero_sensor);
+
                 }
+
                 else {
-                    menu_debug_view_sensors_list_sensors[numero_sensor].tipo=widget_id;
+                    char *sensor_type=argv[puntero_parametro];
+
+                    int widget_id=zxvision_widget_find_name_type(sensor_type);
+                    if (widget_id<0) {
+                        //Si nombre sensor invalido, damos error pero seguimos, para facilitar
+                        //cargar configuraciones de versiones superiores con sensores que no reconocemos
+                        debug_printf (VERBOSE_ERR,"Invalid sensor widget type %s for setting --sensor-set-widget",sensor_type);
+                    }
+                    else {
+                        menu_debug_view_sensors_list_sensors[numero_sensor].tipo=widget_id;
+                    }
                 }
             }
 
