@@ -959,7 +959,96 @@ int scrcocoa_ultimo_estado_realjoystick_present=0;
 
 int cocoa_renderizando=0;
 
+
+
 - (void)render {
+
+    //Impedir que se llame cuando se esta dentro. Esto puede pasar si se genera un cpu_panic aqui dentro y el propio cpu_panic vuelve a llamar aqui
+    if (cocoa_renderizando) {
+        //printf("###############################No permitir render anidado\n");
+        return;
+    }
+
+    cocoa_renderizando=1;
+
+    // CGLLockContext([[self openGLContext] CGLContextObj]);
+
+    [[self openGLContext] makeCurrentContext];
+
+    // We set the final size considering if Retina Display present
+    if (0/*ventana_fullscreen*/)
+    {
+        //Escalamos manteniendo la proporción
+        int fullscreen_height=[[NSScreen mainScreen] frame].size.height;
+        int fullscreen_width=[[NSScreen mainScreen] frame].size.width;
+
+        //Asumimos que llena en vertical
+        float finalheight=fullscreen_height;
+
+        //proporción ancho/alto de la imagen a renderizar
+        float aspectratio=((float)vprect.size.width)/((float)vprect.size.height);
+
+        float finalwidth=finalheight*aspectratio;
+
+        //Si necesita mas en horizontal, cambiamos: llena en horizontal y recalculamos en vertical
+        if (finalwidth>fullscreen_width) {
+            finalwidth=fullscreen_width;
+            finalheight=fullscreen_width/aspectratio;
+        }
+        int offset_x=(fullscreen_width-finalwidth)/2;
+        int offset_y=(fullscreen_height-finalheight)/2;
+
+        //Escalado dado que es mediante openGL, se puede hacer un escalado "decimal" no entero si es necesario
+        glViewport(offset_x, offset_y, finalwidth, finalheight);
+    }
+
+    else {
+        glViewport(0, 0, vprect.size.width, vprect.size.height);
+    }
+
+    //NO BORRAMOS el fondo porque ya lo dibujamos más abajo
+
+    glBindTexture(GL_TEXTURE_2D, texId);
+    //Actualizamos la textura
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pixel_screen_width, pixel_screen_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, pixel_screen_data);
+
+    glBegin(GL_QUADS);
+    glColor4d(1.0,1.0,1.0,1.0); //Color blanco se multiplica con el color de los pixeles de la textura.
+
+    glTexCoord2d(0,1);
+    glVertex2d(-1.0, -1.0);
+
+    glTexCoord2d(1,1);
+    glVertex2d(1.0,-1.0);
+
+    glTexCoord2d(1,0);
+    glVertex2d(1.0,1.0);
+
+    glTexCoord2d(0,0);
+    glVertex2d(-1.0,1.0);
+    glEnd();
+
+    [[self openGLContext] flushBuffer];
+
+    glFlush();
+
+    /*
+    The documentation for -[NSOpenGLContext flushBuffer] says:
+
+    Discussion
+
+    If the receiver is not a double-buffered context, this call does nothing.
+    You can cause your context to be double-buffered by including NSOpenGLPFADoubleBuffer in your pixel format attributes.
+    Alternatively, you can call glFlush() instead of -[NSOpenGLContext flushBuffer] and leave your context single-buffered.
+    */
+
+
+    // CGLUnlockContext([[self openGLContext] CGLContextObj]);
+    cocoa_renderizando=0;
+}
+
+
+- (void)old_render {
 
     //Impedir que se llame cuando se esta dentro. Esto puede pasar si se genera un cpu_panic aqui dentro y el propio cpu_panic vuelve a llamar aqui
     if (cocoa_renderizando) {
@@ -1349,7 +1438,7 @@ int cocoa_raton_oculto=0;
 - (void) setContentDimensions
 {
 
-    if (ventana_fullscreen) {
+    if (0/*ventana_fullscreen*/) {
 
         //printf ("[[NSScreen mainScreen] frame].size %f X %f\n",[[NSScreen mainScreen] frame].size.width,[[NSScreen mainScreen] frame].size.height);
 
@@ -1433,7 +1522,7 @@ int cocoa_raton_oculto=0;
 
 
     // update windows
-    if (ventana_fullscreen) {
+    if (0/*ventana_fullscreen*/) {
         [[fullScreenWindow contentView] setFrame:[[NSScreen mainScreen] frame]];
 
         [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y - h + screen.height, w, h + [normalWindow frame].size.height - screen.height) display:NO animate:NO];
@@ -1466,7 +1555,31 @@ int cocoa_raton_oculto=0;
 }
 
 
-- (void) toggleFullScreen:(id)sender
+- (void)toggleFullScreen:(id)sender
+{
+    NSWindow *window = [self window];
+
+    if (!window)
+        return;
+
+    if (!ventana_fullscreen) {
+        //printf("Activando ventana_fullscreen\n");
+        ventana_fullscreen = 1;
+        [self grabMouse];
+    } else {
+        //printf("desactivando ventana_fullscreen\n");
+        ventana_fullscreen = 0;
+        [self ungrabMouse];
+    }
+
+    [self setContentDimensions];
+
+    [window toggleFullScreen:sender];
+}
+
+
+
+- (void) old_toggleFullScreen:(id)sender
 {
     //COCOA_DEBUG("ZesaruxCocoaView: toggleFullScreen\n");
 
@@ -3278,7 +3391,7 @@ int scrcocoa_init (void) {
         });
 
 
-    if (ventana_fullscreen) {
+    if (0/*ventana_fullscreen*/) {
         //esto no lo hace bien. se queda la ventana con un escalado raro, y ademas en gui settings dice que fullscreen=0
         [cocoaView toggleFullScreen:nil];
     }
