@@ -221,5 +221,7 @@ extern z80_bit scr_sdl_hwsurface;
 extern z80_bit storage_accelerate_loading;
 extern z80_bit storage_accelerate_saving;
 
+extern int disable_fullscreen_on_exit_zesarux;
+
 #endif
 

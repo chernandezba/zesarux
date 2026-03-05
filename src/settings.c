@@ -422,6 +422,12 @@ z80_bit zxvision_topbar_appears_move_mouse_top={1};
 //Cambiar estilo segun dia/noche
 z80_bit zxvision_change_gui_style_day_night={0};
 
+
+//
+// Main Window Settings
+//
+int disable_fullscreen_on_exit_zesarux=1;
+
 //
 // General Settings
 //

@@ -637,7 +637,7 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
 
 
 
-int zxdesktop_estado_antes_fullscreen=0;
+
 
 //Para guardar las ventanas que estaban abiertas antes de pasar a full screen
 int total_config_window_geometry_antes_fullscreen=0;
@@ -747,6 +747,7 @@ void menu_interface_fullscreen_restore_open_windows(void)
 
 int border_state_before_full_screen=0;
 int footer_state_before_full_screen=0;
+int zxdesktop_estado_antes_fullscreen=0;
 
 void menu_interface_fullscreen_enable(void)
 {
@@ -1538,6 +1539,10 @@ void menu_colour_settings(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_general_settings_disable_fullscreen_on_exit_zesarux(MENU_ITEM_PARAMETERS)
+{
+    disable_fullscreen_on_exit_zesarux ^=1;
+}
 
 
 void menu_main_window_settings(MENU_ITEM_PARAMETERS)
@@ -1582,6 +1587,13 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Footer when going to full screen");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Footer when going to full screen");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_fullscreen_on_exit_zesarux,NULL,
+                "Disable fullscreen on exit ZEsarUX","Desactivar fullscreen al salir de ZEsarUX","Desactivar fullscreen al sortir de ZEsarUX");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_fullscreen_on_exit_zesarux ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable fullscreen on exit ZEsarUX");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable fullscreen on exit ZEsarUX, so on the configuration will be saved as full screen disabled");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 

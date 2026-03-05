@@ -106,3 +106,6 @@ eso se envía en las estadísticas
 ok ->probarlo en macos < 26
 ->ver posibles fugas de memoria en macos < 26 al haber quitado el NSAutoreleasePool
 ok ->probar con --vo xwindows por ejemplo
+
+
+-probar disable-fullscreen-on-exit  en diferentes drivers

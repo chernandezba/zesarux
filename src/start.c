@@ -141,6 +141,7 @@
 #include "samram.h"
 #include "snap_ram.h"
 #include "menu_items.h"
+#include "menu_items_settings.h"
 #include "charset.h"
 #include "menu_filesel.h"
 #include "hilow_barbanegra.h"
@@ -1289,6 +1290,8 @@ printf (
         "--zxdesktop-no-restore-win-after-fullscreen    Do not restore windows after disabling full screen, when --zxdesktop-disable-on-fullscreen setting is set\n"
         "--disable-border-on-fullscreen                 Disable Border when going to full screen\n"
         "--disable-footer-on-fullscreen                 Disable Footer when going to full screen\n"
+        "--no-disable-fullscreen-on-exit                Disable fullscreen on exit ZEsarUX\n"
+
         "--disableborder                                Disable Border\n"
         "--frameskip n                                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
         "--no-frameskip-zxdesktop-back                  Disable apply frameskip drawing ZX Desktop Background\n"
@@ -3080,6 +3083,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--disable-footer-on-fullscreen")) {
                 disable_footer_on_full_screen=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--no-disable-fullscreen-on-exit")) {
+                disable_fullscreen_on_exit_zesarux=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-frame-emulated-display")) {
@@ -8797,7 +8804,10 @@ void end_emulator_saveornot_config(int saveconfig)
 
 void end_emulator(void)
 {
-    //if (ventana_fullscreen) menu_interface_fullscreen_disable();
+    if (ventana_fullscreen && disable_fullscreen_on_exit_zesarux) {
+        scr_reset_fullscreen();
+        menu_interface_fullscreen_disable();
+    }
 
     end_emulator_saveornot_config(1);
 }
