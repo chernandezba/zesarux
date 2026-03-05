@@ -4804,6 +4804,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_settings_audio);
 
+        menu_add_item_menu_index_full_path(array_menu_settings_audio,
+            "Main Menu-> Settings-> Hardware-> Audio","Menú Principal-> Opciones-> Hardware-> Audio","Menú Principal-> Opcions-> Hardware-> Audio");
+
         retorno_menu=menu_dibuja_menu(&settings_audio_opcion_seleccionada,&item_seleccionado,array_menu_settings_audio,
             "Audio Settings","Opciones Audio","Opcions Audio");
 
@@ -6731,7 +6734,7 @@ void menu_settings_tv(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Settings-> TV","Menú Principal-> Opciones-> TV","Menú Principal-> Opcions-> TV");
+            "Main Menu-> Settings-> Harware-> TV","Menú Principal-> Opciones-> Hardware-> TV","Menú Principal-> Opcions-> Hardware-> TV");
 
         retorno_menu=menu_dibuja_menu(&settings_tv_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "TV Settings","Opciones TV","Opcions TV");
@@ -9003,7 +9006,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_index_full_path(array_menu_settings_display,
-            "Main Menu-> Settings-> Video","Menú Principal-> Opciones-> Video","Menú Principal-> Opcions-> Video");
+            "Main Menu-> Settings-> Video-> Hardware","Menú Principal-> Opciones-> Video-> Hardware","Menú Principal-> Opcions-> Video-> Hardware");
 
         retorno_menu=menu_dibuja_menu(&settings_display_opcion_seleccionada,&item_seleccionado,array_menu_settings_display,
             "Video Settings","Opciones Video","Opcions Video");

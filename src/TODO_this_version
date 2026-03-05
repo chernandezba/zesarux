@@ -71,11 +71,11 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
 ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
---diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
---nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
---funcion en zrcp para enviar mensajes a ventanas
---ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
---desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
+*diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
+*nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
+*funcion en zrcp para enviar mensajes a ventanas
+*ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
+*desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
 
 
 
@@ -98,7 +98,6 @@ eso se envía en las estadísticas
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
 
 
-
 -Inicio macos. Sustituir todo este código que hace que la app se vea, por otra cosa moderna:
     if (!CPSGetCurrentProcess(&PSN))
         if (!CPSEnableForegroundOperation(&PSN,0x03,0x3C,0x2C,0x1103))
@@ -109,8 +108,3 @@ eso se envía en las estadísticas
 ok ->probarlo en macos < 26
 ->ver posibles fugas de memoria en macos < 26 al haber quitado el NSAutoreleasePool
 ok ->probar con --vo xwindows por ejemplo
-
-
-
-ok -revisar parseo de parámetros, que no haya ninguno (exceptuando alguna excepción extraña) que salga con un exit() en caso de error. La mayoria deberian mostrar el error pero iniciar ZEsarUX
-*revisar los else, que debajo si hay mas de una linea este con llaves
