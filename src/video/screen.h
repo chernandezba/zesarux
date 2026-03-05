@@ -56,6 +56,8 @@ extern void (*scr_refresca_pantalla_solo_driver) (void);
 extern void (*scr_set_fullscreen) (void);
 extern void (*scr_reset_fullscreen) (void);
 extern int ventana_fullscreen;
+extern void change_variable_ventana_fullscreen(int valor);
+
 extern int (*scr_init_pantalla) (void);
 extern void (*scr_end_pantalla) (void);
 extern z80_byte (*scr_lee_puerto) (z80_byte puerto_h,z80_byte puerto_l);

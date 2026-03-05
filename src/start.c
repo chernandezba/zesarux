@@ -3327,7 +3327,7 @@ int parse_cmdline_options(int desde_commandline)
 
 
             else if (!strcmp(argv[puntero_parametro],"--fullscreen")) {
-                ventana_fullscreen=1;
+                change_variable_ventana_fullscreen(1);
             }
 
             else if (!strcmp(argv[puntero_parametro],"--verbose")) {
@@ -5512,7 +5512,7 @@ int parse_cmdline_options(int desde_commandline)
             }
 
             else if (!strcmp(argv[puntero_parametro],"--decimal-full-scale-fbdev")) {
-                ventana_fullscreen=1;
+                change_variable_ventana_fullscreen(1);
                                 fbdev_decimal_full_scale_fbdev=1;
             }
 
@@ -8797,6 +8797,8 @@ void end_emulator_saveornot_config(int saveconfig)
 
 void end_emulator(void)
 {
+    //if (ventana_fullscreen) menu_interface_fullscreen_disable();
+
     end_emulator_saveornot_config(1);
 }
 

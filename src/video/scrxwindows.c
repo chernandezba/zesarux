@@ -308,7 +308,7 @@ void scrxwindows_reset_fullscreen(void)
 
 #ifdef USE_XVIDMODE
 	debug_printf (VERBOSE_INFO,"Resetting fullscreen");
-    ventana_fullscreen=0;
+    change_variable_ventana_fullscreen(0);
 
 
     //Activar decoraciones de ventana
@@ -493,7 +493,7 @@ void scrxwindows_set_fullscreen(void)
 	fullscreen_height=bestheight;
 
 
-	ventana_fullscreen=1;
+	change_variable_ventana_fullscreen(1);
 
 
 	//Eliminar decoraciones de ventana

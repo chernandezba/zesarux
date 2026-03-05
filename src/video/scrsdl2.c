@@ -309,7 +309,7 @@ void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 void scrsdl_set_fullscreen(void)
 {
 
-    ventana_fullscreen=1;
+    change_variable_ventana_fullscreen(1);
     scrsdl_destruye_ventana();
     scrsdl_crea_ventana();
 
@@ -319,7 +319,7 @@ void scrsdl_set_fullscreen(void)
 void scrsdl_reset_fullscreen(void)
 {
 
-    ventana_fullscreen=0;
+    change_variable_ventana_fullscreen(0);
     scrsdl_destruye_ventana();
     scrsdl_crea_ventana();
 

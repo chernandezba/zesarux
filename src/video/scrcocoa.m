@@ -1420,10 +1420,10 @@ int cocoa_raton_oculto=0;
 
     if ((window.styleMask & NSWindowStyleMaskFullScreen) != 0) {
         //Está en pantalla completa. Conmutara a no pantalla completa
-        ventana_fullscreen=0;
+        change_variable_ventana_fullscreen(0);
     }
     else {
-        ventana_fullscreen=1;
+        change_variable_ventana_fullscreen(1);
     }
 
     //printf("togglefullscreen. ventana_fullscreen=%d\n",ventana_fullscreen);

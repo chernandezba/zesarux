@@ -569,7 +569,7 @@ void scrfbdev_set_fullscreen(void)
 	//debug_printf (VERBOSE_ERR,"fbdev: Full screen mode not supported on this video driver");
 
 	scrfbdev_end();
-	ventana_fullscreen=1;
+    change_variable_ventana_fullscreen(1);
 	scrfbdev_init();
 
 	modificado_border.v=1;
@@ -581,7 +581,7 @@ void scrfbdev_reset_fullscreen(void)
 	//debug_printf (VERBOSE_ERR,"fbdev: Full screen mode not supported on this video driver");
 
 	scrfbdev_end();
-	ventana_fullscreen=0;
+    change_variable_ventana_fullscreen(0);
 
 	zoom_x=zoom_x_original;
 	zoom_y=zoom_y_original;

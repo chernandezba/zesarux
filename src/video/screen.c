@@ -291,6 +291,11 @@ int umbral_simulate_screen_zx8081=4;
 //Dice que no hay que hacer fadeout al salir. Se activa desde Mac os x cocoa driver
 z80_bit no_fadeout_exit={0};
 
+void change_variable_ventana_fullscreen(int valor)
+{
+    ventana_fullscreen=valor;
+}
+
 
 void scr_set_driver_name(char *nombre)
 {
