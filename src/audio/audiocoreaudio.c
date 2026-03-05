@@ -38,6 +38,12 @@
 #include "settings.h"
 
 
+//Simbolo introducido en macOS 12. Para poder soportar compilacion en macOS < 12
+#if __MAC_OS_X_VERSION_MAX_ALLOWED < 120000
+#define kAudioObjectPropertyElementMain kAudioObjectPropertyElementMaster
+#endif
+
+
 //saudiocoreaudio_fifo_t sound_fifo;
 
 char *buffer_actual;
