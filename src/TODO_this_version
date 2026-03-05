@@ -91,6 +91,7 @@ esto a nivel de estadística, permito saber en estadisticas web (enviando un par
 Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
 eso se envía en las estadísticas
 
+
 -warnings en audio/audiocoreaudio.c
 
 

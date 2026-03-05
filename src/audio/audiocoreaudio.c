@@ -150,8 +150,8 @@ freqptr=&freqqqq;
   OSStatus err = kAudioHardwareNoError;
   AudioDeviceID device = kAudioObjectUnknown; /* the default device */
   //int error;
-  float hz;
-  int sound_framesiz;
+  //float hz;
+  //int sound_framesiz;
 
   if( get_default_output_device(&device) ) return 1;
   if( get_default_sample_rate( device, &deviceFormat.mSampleRate ) ) return 1;
@@ -258,9 +258,10 @@ stereoptr=&pepe;
      speed to about 2000% on my Mac, 100Hz allows up to 5000% for me) */
 
 
-	hz=FRECUENCIA_SONIDO;
+	//hz=FRECUENCIA_SONIDO;
 
-  sound_framesiz = deviceFormat.mSampleRate / hz;
+
+  //sound_framesiz = deviceFormat.mSampleRate / hz;
 
   /* wait to run sound until we have some sound to play */
   audio_output_started = 0;
@@ -291,14 +292,16 @@ void sound_lowlevel_frame( char *data, int len );
 //https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/AQRecord/RecordingAudio.html
 
 //Total de buffers utilizado por las funciones de Mac OS X
-static const int coreaudio_record_buffers = 3;
+//static const int coreaudio_record_buffers = 3;
+
+#define COREAUDIO_RECORD_BUFFERS 3
 
 //Estructura para almacenar el estado de la grabacion
 //Estructura Obtenida de los ejemplos, modificada con las cosas que uso realmente
 struct AQRecorderState {
     AudioStreamBasicDescription  mDataFormat;
     AudioQueueRef                mQueue;
-    AudioQueueBufferRef          mBuffers[coreaudio_record_buffers];
+    AudioQueueBufferRef          mBuffers[COREAUDIO_RECORD_BUFFERS];
     UInt32                       bufferByteSize;
 };
 
@@ -357,7 +360,7 @@ void audiocoreaudio_start_record_input(void)
     fmt->mBytesPerPacket   = fmt->mBytesPerFrame * fmt->mFramesPerPacket;
     fmt->mFormatFlags      = kLinearPCMFormatFlagIsSignedInteger;
 
-
+    //TODO: no leemos codigos retorno de cada llamada (ese OSStatus)
     OSStatus r = 0;
 
     r = AudioQueueNewInput(&coreaudio_record_state.mDataFormat, coreaudio_handleinputbuffer, &coreaudio_record_state,
@@ -376,7 +379,7 @@ void audiocoreaudio_start_record_input(void)
     coreaudio_record_state.bufferByteSize = AUDIO_RECORD_BUFFER_SIZE;
 
     int i;
-    for (i = 0; i < coreaudio_record_buffers; ++i) {
+    for (i = 0; i < COREAUDIO_RECORD_BUFFERS; ++i) {
         r = AudioQueueAllocateBuffer(coreaudio_record_state.mQueue, coreaudio_record_state.bufferByteSize, &coreaudio_record_state.mBuffers[i]);
 
         r = AudioQueueEnqueueBuffer(coreaudio_record_state.mQueue, coreaudio_record_state.mBuffers[i], 0, NULL);
