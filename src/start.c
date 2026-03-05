@@ -3637,13 +3637,13 @@ int parse_cmdline_options(int desde_commandline)
                     siguiente_parametro_argumento();
                     int valor=parse_string_to_number(argv[puntero_parametro]);
                     if (valor<1 || valor>3) {
-                        printf("Invalid slot number\n");
+                        debug_printf (VERBOSE_ERR,"Invalid slot number");
 
                     }
                     else z88_slotcard_inicial_slot=valor;
                 }
                 else {
-                    debug_printf (VERBOSE_ERR,"Invalid extension for eprom/flash card\n");
+                    debug_printf (VERBOSE_ERR,"Invalid extension for eprom/flash card");
 
                 }
 
