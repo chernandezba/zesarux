@@ -105,6 +105,7 @@ Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver
 Fixed non-pthreads compilation
 Fixed possible divide by 0 when getting bad cpu usage on Linux
+Fixed fullscreen on macOS
 Fixed possible segfault on macOS cocoa driver
 Fixed glitch on border on Spectrum Next when changing turbo speed
 Fixed showing submenu indicator (>) when the menu has vertical scroll bar

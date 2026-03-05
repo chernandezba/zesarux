@@ -1414,17 +1414,21 @@ int cocoa_raton_oculto=0;
 {
     NSWindow *window = [self window];
 
-    if (!window)
+    if (!window) {
         return;
+    }
 
     if (!ventana_fullscreen) {
-        //printf("Activando ventana_fullscreen\n");
+
         ventana_fullscreen = 1;
-        [self grabMouse];
-    } else {
-        //printf("desactivando ventana_fullscreen\n");
+
+        //dejamos que se vea el raton en pantalla completa
+        //[self grabMouse];
+    }
+    else {
+
         ventana_fullscreen = 0;
-        [self ungrabMouse];
+        //[self ungrabMouse];
     }
 
     [self setContentDimensions];
