@@ -86,7 +86,7 @@ int get_default_output_device(AudioDeviceID* device)
   AudioObjectPropertyAddress property_address = {
     kAudioHardwarePropertyDefaultOutputDevice,
     kAudioObjectPropertyScopeGlobal,
-    kAudioObjectPropertyElementMaster
+    kAudioObjectPropertyElementMain
   };
 
   /* get the default output device for the HAL */
@@ -114,7 +114,7 @@ get_default_sample_rate( AudioDeviceID device, Float64 *rate )
   AudioObjectPropertyAddress property_address = {
     kAudioDevicePropertyNominalSampleRate,
     kAudioObjectPropertyScopeGlobal,
-    kAudioObjectPropertyElementMaster
+    kAudioObjectPropertyElementMain
   };
 
   /* get the default output device for the HAL */
