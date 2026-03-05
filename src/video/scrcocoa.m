@@ -1418,6 +1418,18 @@ int cocoa_raton_oculto=0;
         return;
     }
 
+    if ((window.styleMask & NSWindowStyleMaskFullScreen) != 0) {
+        //Está en pantalla completa. Conmutara a no pantalla completa
+        ventana_fullscreen=0;
+    }
+    else {
+        ventana_fullscreen=1;
+    }
+
+    //printf("togglefullscreen. ventana_fullscreen=%d\n",ventana_fullscreen);
+
+    /*
+
     if (!ventana_fullscreen) {
 
         ventana_fullscreen = 1;
@@ -1430,6 +1442,7 @@ int cocoa_raton_oculto=0;
         ventana_fullscreen = 0;
         //[self ungrabMouse];
     }
+    */
 
     [self setContentDimensions];
 
@@ -3170,6 +3183,9 @@ int scrcocoa_init (void) {
 
 
 
+    if (ventana_fullscreen) {
+        [cocoaView toggleFullScreen:nil];
+    }
 
     //Inicializar joystick y gamepads. Para el caso, las funciones se llamaran *joystick* aunque hagan referencia a los dos
     realjoystick_init=realjoystick_cocoa_init;
