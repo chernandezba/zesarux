@@ -68,6 +68,9 @@ SDL_Surface *sdl_screen;
 //la ventana se redimensiona
 int scrsdl_debe_redimensionar=0;
 
+int scrsdl_ancho_ventana=0;
+int scrsdl_alto_ventana=0;
+
 
 void scrsdl_update_window_title(void)
 {
@@ -108,6 +111,9 @@ int scrsdl_crea_ventana(void)
     }
 
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
+
+    scrsdl_ancho_ventana=ancho;
+    scrsdl_alto_ventana=alto;
 
     if (scr_sdl_8bits_color.v) {
         sdl_screen = SDL_SetVideoMode(ancho_ventana,alto_ventana,8, flags);
@@ -317,6 +323,7 @@ void scrsdl_refresca_border(void)
 
 void scrsdl_refresca_pantalla_solo_driver(void)
 {
+    /*
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
 
@@ -331,11 +338,17 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
 
     SDL_UpdateRect(sdl_screen, 0, 0, ancho, alto );
+    */
+
+    if (scrsdl_ancho_ventana && scrsdl_alto_ventana) {
+
+        SDL_UpdateRect(sdl_screen, 0, 0, scrsdl_ancho_ventana, scrsdl_alto_ventana );
 
 
-    /* UnLock the screen for direct access to the pixels */
-    if ( SDL_MUSTLOCK(sdl_screen) ) {
-            SDL_UnlockSurface(sdl_screen);
+        /* UnLock the screen for direct access to the pixels */
+        if ( SDL_MUSTLOCK(sdl_screen) ) {
+                SDL_UnlockSurface(sdl_screen);
+        }
     }
 
 }
