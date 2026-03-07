@@ -125,6 +125,8 @@ int scrsdl_crea_ventana(void)
                 printf("ancho despues: %d\n",ancho);
 
 
+                //Ponemos pixeles en tamaño normal (en render_surface) y luego escalaremos al tamaño total del monitor (en sdl_screen)
+
                 ancho=monitor_w;
                 alto=monitor_h;
 

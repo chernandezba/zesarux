@@ -113,3 +113,6 @@ ok ->probar con --vo xwindows por ejemplo
 *probar disable-fullscreen-on-exit  en diferentes drivers
 *permitir raton en full screen
 *a veces al pasar a fullscreen en mac se gerera segfault. quiza habria que bloquear temporalmente la funcion de render
+*sdl1
+--//TODO: puede que no obtengamos monitor_w o h? en ese caso habria que dar error de sdl y no cambiar a fullscreen
+--que se pueda usar el raton en fullscreen
