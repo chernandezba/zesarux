@@ -83,6 +83,7 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 ok ya estaba*poder forzar un modo por menu
 ok*bit 7 para resetear o no paleta al cambiar un modo
 ok *comentar codigo segun https://amstrad.es/forum/viewtopic.php?t=4809&start=75#p87482
+* revisar info de la wiki: https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini
 
 -modo dither, sin realvideo, no lo hace en el border
 
@@ -108,7 +109,7 @@ ok ->probarlo en macos < 26
 ok ->probar con --vo xwindows por ejemplo
 
 
--probar disable-fullscreen-on-exit  en diferentes drivers
+-probar fullscreen en todos drivers
+*probar disable-fullscreen-on-exit  en diferentes drivers
 *permitir raton en full screen
-*probar fullscreen en todos drivers
 *a veces al pasar a fullscreen en mac se gerera segfault. quiza habria que bloquear temporalmente la funcion de render
