@@ -392,61 +392,61 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
 	    if (ventana_fullscreen) {
 
-SDL_Rect src;
-SDL_Rect dst;
+            SDL_Rect src;
+            SDL_Rect dst;
 
-int ancho_origen= render_surface->w;
-int alto_origen=render_surface->h;
+            int ancho_origen= scrsdl_ancho_no_fullscreen;
+            int alto_origen=scrsdl_alto_no_fullscreen;
 
-src.x = 0;
-src.y = 0;
-src.w = ancho_origen;
-src.h = alto_origen;
+            src.x = 0;
+            src.y = 0;
+            src.w = ancho_origen;
+            src.h = alto_origen;
 
-float aspect=((float)render_surface->w)/((float)render_surface->h);
+            float aspect=((float)scrsdl_ancho_no_fullscreen)/((float)scrsdl_alto_no_fullscreen);
 
-int alto_escalado_destino;
-int ancho_escalado_destino;
+            int alto_escalado_destino;
+            int ancho_escalado_destino;
 
-printf("Aspect: %f\n",aspect);
+            printf("Aspect: %f\n",aspect);
 
-float mas_grande_x=((float)sdl_screen->w)/((float)ancho_origen);
-float mas_grande_y=((float)sdl_screen->h)/((float)alto_origen);
+            float mas_grande_x=((float)sdl_screen->w)/((float)ancho_origen);
+            float mas_grande_y=((float)sdl_screen->h)/((float)alto_origen);
 
-printf("Aumento en X %f en Y %f\n",mas_grande_x,mas_grande_y);
+            printf("Aumento en X %f en Y %f\n",mas_grande_x,mas_grande_y);
 
-int offset_x=0;
-int offset_y=0;
+            int offset_x=0;
+            int offset_y=0;
 
-if (mas_grande_x>mas_grande_y) {
-alto_escalado_destino=sdl_screen->h;
-ancho_escalado_destino=((float)sdl_screen->h)*aspect;
-offset_x=((sdl_screen->w)-ancho_escalado_destino)/2;
-}
-else {
-ancho_escalado_destino=sdl_screen->w;
-alto_escalado_destino=((float)sdl_screen->w)/aspect;
-offset_y=((sdl_screen->h)-alto_escalado_destino)/2;
-}
-
-
-dst.x = offset_x;
-dst.y = offset_y;
-dst.w = ancho_escalado_destino;
-dst.h = alto_escalado_destino;
-
-printf("Escalando desde %d X %d hasta %d X %d. monitor total: %d X %d\n",ancho_origen,alto_origen,ancho_escalado_destino,alto_escalado_destino,sdl_screen->w,sdl_screen->h);
-
-SDL_SoftStretch(render_surface, &src, sdl_screen, &dst);
+            if (mas_grande_x>mas_grande_y) {
+                alto_escalado_destino=sdl_screen->h;
+                ancho_escalado_destino=((float)sdl_screen->h)*aspect;
+                offset_x=((sdl_screen->w)-ancho_escalado_destino)/2;
+            }
+            else {
+                ancho_escalado_destino=sdl_screen->w;
+                alto_escalado_destino=((float)sdl_screen->w)/aspect;
+                offset_y=((sdl_screen->h)-alto_escalado_destino)/2;
+            }
 
 
-SDL_UpdateRect(sdl_screen, 0, 0, scrsdl_ancho_ventana, scrsdl_alto_ventana);
+            dst.x = offset_x;
+            dst.y = offset_y;
+            dst.w = ancho_escalado_destino;
+            dst.h = alto_escalado_destino;
+
+            printf("Escalando desde %d X %d hasta %d X %d. monitor total: %d X %d\n",ancho_origen,alto_origen,ancho_escalado_destino,alto_escalado_destino,sdl_screen->w,sdl_screen->h);
+
+            SDL_SoftStretch(render_surface, &src, sdl_screen, &dst);
+
+
+            SDL_UpdateRect(sdl_screen, 0, 0, scrsdl_ancho_ventana, scrsdl_alto_ventana);
 
 
 		}
 	    else {
 
-        SDL_UpdateRect(sdl_screen, 0, 0, scrsdl_ancho_ventana, scrsdl_alto_ventana );
+            SDL_UpdateRect(sdl_screen, 0, 0, scrsdl_ancho_ventana, scrsdl_alto_ventana );
 		}
 
 
