@@ -79,6 +79,9 @@ void scrsdl_update_window_title(void)
 }
 
 
+int scrsdl_ancho_ventana=0;
+int scrsdl_alto_ventana=0;
+
 int scrsdl_crea_ventana(void)
 {
 
@@ -86,9 +89,6 @@ int scrsdl_crea_ventana(void)
 
     flags=SDL_WINDOW_RESIZABLE;
 
-    if (ventana_fullscreen) {
-        flags |=SDL_WINDOW_FULLSCREEN;
-    }
 
 
     int ancho=screen_get_window_size_width_zoom_border_en();
@@ -97,12 +97,41 @@ int scrsdl_crea_ventana(void)
     int alto=screen_get_window_size_height_zoom_border_en();
     alto +=screen_get_ext_desktop_height_zoom();
 
+    if (ventana_fullscreen) {
+        flags |=SDL_WINDOW_FULLSCREEN;
+
+        int monitor_w=0;
+	    int monitor_h=0;
+
+        SDL_DisplayMode dm;
+
+        if (SDL_GetDesktopDisplayMode(0, &dm) == 0) {
+            monitor_w = dm.w;
+            monitor_h = dm.h;
+
+            printf("ancho antes: %d\n",ancho);
+
+            float aspect=((float)monitor_w) / ((float) monitor_h);
+            ancho=((float)ancho)*aspect;
+            printf("ancho despues: %d\n",ancho);
+
+
+            //Ponemos pixeles en tamaño normal (en render_surface) y luego escalaremos al tamaño total del monitor (en sdl_screen)
+
+            ancho=monitor_w;
+            alto=monitor_h;
+        }
+    }
+
     if (scr_sdl_force_size.v) {
         ancho=scr_sdl_force_size_width;
         alto=scr_sdl_force_size_height;
     }
 
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
+
+    scrsdl_ancho_ventana=ancho;
+    scrsdl_alto_ventana=alto;
 
     if (SDL_CreateWindowAndRenderer(ancho,alto, flags, &window, &renderer)!=0) return 1;
 
@@ -161,6 +190,7 @@ void scrsdl_destruye_ventana(void)
 //Putpixel RGB 8 bit
 void scrsdl_putpixel_final_rgb8(int x,int y,unsigned int color_rgb)
 {
+    /*
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
 
@@ -170,8 +200,9 @@ void scrsdl_putpixel_final_rgb8(int x,int y,unsigned int color_rgb)
         int alto=scr_sdl_force_size_height;
         if (x>=ancho || y>=alto) return;
     }
+        */
 
-    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x);
+    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * scrsdl_ancho_ventana + x);
 
 
     //Usamos color rgb 8 bits: 3 bits Red, 3 bits Green, 2 bits Blue : RRRGGGBB
@@ -186,6 +217,7 @@ void scrsdl_putpixel_final_rgb8(int x,int y,unsigned int color_rgb)
 //Putpixel RGB 32 bit
 void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
+    /*
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
 
@@ -195,8 +227,9 @@ void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
         int alto=scr_sdl_force_size_height;
         if (x>=ancho || y>=alto) return;
     }
+    */
 
-    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x) * 4;
+    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * scrsdl_ancho_ventana + x) * 4;
 
 
     if (screen_rgb_8bit) {
@@ -344,6 +377,7 @@ void scrsdl_refresca_border(void)
 void scrsdl_refresca_pantalla_solo_driver(void)
 {
 
+    /*
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
 
@@ -352,12 +386,13 @@ void scrsdl_refresca_pantalla_solo_driver(void)
         ancho=scr_sdl_force_size_width;
         //alto=scr_sdl_force_size_height;
     }
+    */
 
     if (scr_sdl_8bits_color.v) {
-        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho);
+        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, scrsdl_ancho_ventana);
     }
     else {
-        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho * 4);
+        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, scrsdl_ancho_ventana * 4);
     }
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, scrsdl_texture, NULL, NULL);

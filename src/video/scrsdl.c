@@ -111,8 +111,6 @@ int scrsdl_crea_ventana(void)
             monitor_w = modes[0]->w;
             monitor_h = modes[0]->h;
 
-            //TODO: puede que no obtengamos monitor_w o h? en ese caso habria que dar error de sdl y no cambiar a fullscreen
-
 	        if (monitor_w && monitor_h) {
 
                 printf("ancho antes: %d\n",ancho);
