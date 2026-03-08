@@ -88,10 +88,6 @@ int scrsdl_crea_ventana(void)
 
     flags=SDL_SWSURFACE | SDL_RESIZABLE;
 
-    if (ventana_fullscreen) {
-        flags |=SDL_FULLSCREEN;
-    }
-
     int ancho=screen_get_window_size_width_zoom_border_en();
 
     ancho +=screen_get_ext_desktop_width_zoom();
@@ -104,6 +100,7 @@ int scrsdl_crea_ventana(void)
     scrsdl_alto_no_fullscreen=alto;
 
     if (ventana_fullscreen) {
+        flags |=SDL_FULLSCREEN;
 	    SDL_Rect **modes;
         modes = SDL_ListModes(NULL, SDL_FULLSCREEN);
 
@@ -139,6 +136,7 @@ int scrsdl_crea_ventana(void)
 
         if (!monitor_w || !monitor_h) {
             ventana_fullscreen=0;
+            flags &= ~SDL_FULLSCREEN;
             debug_printf(VERBOSE_ERR,"Can not set fullscreen mode");
         }
     }
