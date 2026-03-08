@@ -115,9 +115,9 @@ int scrsdl_crea_ventana(void)
 
                 printf("ancho antes: %d\n",ancho);
 
-                float aspect=((float)monitor_w) / ((float) monitor_h);
-                ancho=((float)ancho)*aspect;
-                printf("ancho despues: %d\n",ancho);
+                //float aspect=((float)monitor_w) / ((float) monitor_h);
+                //ancho=((float)ancho)*aspect;
+                //printf("ancho despues: %d\n",ancho);
 
 
                 //Ponemos pixeles en tamaño normal (en render_surface) y luego escalaremos al tamaño total del monitor (en sdl_screen)
