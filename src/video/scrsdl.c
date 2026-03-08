@@ -104,7 +104,7 @@ int scrsdl_crea_ventana(void)
     scrsdl_alto_no_fullscreen=alto;
 
     if (ventana_fullscreen) {
-	SDL_Rect **modes;
+	    SDL_Rect **modes;
         modes = SDL_ListModes(NULL, SDL_FULLSCREEN);
 
         int monitor_w=0;
@@ -136,6 +136,11 @@ int scrsdl_crea_ventana(void)
 
 	        }
 	    }
+
+        if (!monitor_w || !monitor_h) {
+            ventana_fullscreen=0;
+            debug_printf(VERBOSE_ERR,"Can not set fullscreen mode");
+        }
     }
 
     int ancho_ventana=ancho;
