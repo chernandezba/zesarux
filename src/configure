@@ -50,7 +50,6 @@ show_help()
         echo "--disable-caca               Disable cacalib driver"
         echo "--disable-xwindows           Disable xwindows driver"
         echo "--disable-xext               Disable xwindows extensions"
-        echo "--disable-xvidmode           Disable xwindows vidmode extensions"
 	echo "--disable-sdl                Disable SDL video & audio driver"
 	echo "--disable-fbdev              Disable framebuffer driver"
         echo "--disable-dsp                Disable audio dsp driver"
@@ -138,7 +137,6 @@ OPTIONPTHREADS="enabled"
 OPTIONNETWORKING="enabled"
 OPTIONSNDFILE="enabled"
 OPTIONXEXT="enabled"
-OPTIONXVIDMODE="enabled"
 INSTALLPREFIX="/usr/local"
 OPTIONEMULATE_UNDOC_SCF_CCF=""
 OPTIONEMULATE_MEMPTR="yes"
@@ -229,7 +227,6 @@ while [ $# -gt 0 ]; do
 	--disable-xwindows)
         OPTIONOBJXWINDOWS=""
         OPTIONXEXT=""
-	OPTIONXVIDMODE=""
 	;;
 
         --disable-sdl)
@@ -292,7 +289,7 @@ while [ $# -gt 0 ]; do
 	;;
 
 	--disable-xvidmode)
-	OPTIONXVIDMODE=""
+	echo "--disable-xvidmode setting is deprecated"
 	;;
 
 	--enable-ssl)
@@ -869,7 +866,6 @@ _EOF
                 echo "not found"
                 OPTIONOBJXWINDOWS=""
 		OPTIONXEXT=""
-		OPTIONXVIDMODE=""
         else
                 echo "found"
         	LDFLAGS="$LDFLAGS -L/usr/X11R6/lib -L/opt/X11/lib"
@@ -914,38 +910,6 @@ else
         echo "disabled"
 fi
 
-echo -n "Checking for xwindows vidmode extensions ... "
-if [ -n "$OPTIONXVIDMODE" ]; then
-#en principio activo, probemos a compilar
-
-        TEMPFILE="configure.compile.c"
-
-        cat > $TEMPFILE << _EOF
-#include <X11/Xlib.h>
-#include <X11/extensions/xf86vmode.h>
-
-int main () {
-return 0;
-}
-_EOF
-
-        $CCOMPILER $CFLAGS -I/usr/X11R6/include -I/opt/X11/include $TEMPFILE -o $TEMPFILE.o >> $LOGFILE 2>&1
-        RESULTCODE=$?
-        if [ $RESULTCODE != 0 ]; then
-                echo "not found."
-		echo "Warning. Fullscreen mode not available on XWindow driver"
-		sleep 5
-                OPTIONXVIDMODE=""
-        else
-                echo "found"
-                LIBS="-lXxf86vm $LIBS"
-        fi
-        rm -f $TEMPFILE $TEMPFILE.o
-
-
-else
-        echo "disabled"
-fi
 
 
 echo -n "Checking for posix threads ... "
@@ -2526,12 +2490,6 @@ _EOF
 COMPILE_VARIABLES="$COMPILE_VARIABLES USE_XEXT"
 fi
 
-if [ -n "$OPTIONXVIDMODE" ]; then
-cat >> compileoptions.h << _EOF
-#define USE_XVIDMODE
-_EOF
-COMPILE_VARIABLES="$COMPILE_VARIABLES USE_XVIDMODE"
-fi
 
 
 

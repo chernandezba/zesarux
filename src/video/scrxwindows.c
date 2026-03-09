@@ -55,41 +55,12 @@
 #include <X11/keysym.h>
 #include <unistd.h>
 
-#ifdef USE_XVIDMODE
-//Para full screen
-#include <X11/extensions/xf86vmode.h>
 
-/*
-	#if defined(__APPLE__)
-//En apple no encuentro ese include con la estructura... aunque luego igualmente no tiene la extension XFree86-VidModeExtension y no puede hacer fullscreen
-        typedef struct
-        {
-                unsigned long   flags;
-                unsigned long   functions;
-                unsigned long   decorations;
-                long            inputMode;
-                unsigned long   status;
-        } PropMwmHints;
-
-	#else
-	#include <Xm/MwmUtil.h>
-	#endif
-*/
+//Eliminar USE_XVIDMODE
 
 
-//La Xm/MwmUtil.h, presente en motif y openmotif en Linux, solo la uso para esta estructura, que pongo a continuacion,
-//para que sea mas facil compilar y no tener que instalarla solo para eso. Es mas, en Mac OS X ni existe
 
-        typedef struct
-        {
-                unsigned long   flags;
-                unsigned long   functions;
-                unsigned long   decorations;
-                long            inputMode;
-                unsigned long   status;
-        } PropMwmHints;
 
-#endif
 
 
 int shm_used = 0;
