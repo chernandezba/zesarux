@@ -123,7 +123,13 @@ int scrsdl_crea_ventana(void)
                 ancho=monitor_w;
                 alto=monitor_h;
 
-                render_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, scrsdl_ancho_no_fullscreen, scrsdl_alto_no_fullscreen, 32, 0,0,0,0);
+                if (scr_sdl_8bits_color.v) {
+                    render_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, scrsdl_ancho_no_fullscreen, scrsdl_alto_no_fullscreen, 8, 0,0,0,0);
+                }
+
+                else {
+                    render_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, scrsdl_ancho_no_fullscreen, scrsdl_alto_no_fullscreen, 32, 0,0,0,0);
+                }
 
 	        }
 	    }
@@ -424,7 +430,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
         /* UnLock the screen for direct access to the pixels */
         if ( SDL_MUSTLOCK(sdl_screen) ) {
-                SDL_UnlockSurface(sdl_screen);
+            SDL_UnlockSurface(sdl_screen);
         }
     }
 
