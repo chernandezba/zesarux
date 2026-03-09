@@ -79,17 +79,6 @@ void scrsdl_update_window_title(void)
 }
 
 
-int scrsdl_ancho_ventana=0;
-int scrsdl_alto_ventana=0;
-
-int scrsdl_ancho_no_fullscreen=0;
-int scrsdl_alto_no_fullscreen=0;
-
-int scrsdl_ancho_fullscreen=0;
-int scrsdl_alto_fullscreen=0;
-
-SDL_Surface *render_surface;
-
 int scrsdl_crea_ventana(void)
 {
 
@@ -105,64 +94,12 @@ int scrsdl_crea_ventana(void)
     int alto=screen_get_window_size_height_zoom_border_en();
     alto +=screen_get_ext_desktop_height_zoom();
 
-    scrsdl_ancho_no_fullscreen=ancho;
-    scrsdl_alto_no_fullscreen=alto;
-
-    if (ventana_fullscreen) {
-        flags |=SDL_WINDOW_FULLSCREEN;
-
-        int monitor_w=0;
-	    int monitor_h=0;
-
-        SDL_DisplayMode dm;
-
-        if (SDL_GetDesktopDisplayMode(0, &dm) == 0) {
-            monitor_w = dm.w;
-            monitor_h = dm.h;
-
-            printf("ancho antes: %d\n",ancho);
-
-            //float aspect=((float)monitor_w) / ((float) monitor_h);
-            //ancho=((float)ancho)*aspect;
-            //printf("ancho despues: %d\n",ancho);
-
-
-            //Ponemos pixeles en tamaño normal (en render_surface) y luego escalaremos al tamaño total del monitor (en sdl_screen)
-
-            scrsdl_ancho_fullscreen=monitor_w;
-            scrsdl_alto_fullscreen=monitor_h;
-
-            ancho=monitor_w;
-            alto=monitor_h;
-
-            //render_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, scrsdl_ancho_no_fullscreen, scrsdl_alto_no_fullscreen, 32, 0,0,0,0);
-
-
-            render_surface = SDL_CreateRGBSurfaceWithFormat(
-                    0,
-                    scrsdl_ancho_no_fullscreen, scrsdl_alto_no_fullscreen,
-                    32,
-                    SDL_PIXELFORMAT_ARGB8888
-                );
-        }
-
-        if (!monitor_w || !monitor_h) {
-            ventana_fullscreen=0;
-            flags &= ~SDL_WINDOW_FULLSCREEN;
-            debug_printf(VERBOSE_ERR,"Can not set fullscreen mode");
-        }
-    }
-
     if (scr_sdl_force_size.v) {
         ancho=scr_sdl_force_size_width;
         alto=scr_sdl_force_size_height;
     }
 
     debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
-    if (ventana_fullscreen) printf("Creating window fullscreen %d X %d\n",ancho,alto );
-
-    scrsdl_ancho_ventana=ancho;
-    scrsdl_alto_ventana=alto;
 
     if (SDL_CreateWindowAndRenderer(ancho,alto, flags, &window, &renderer)!=0) return 1;
 
@@ -170,9 +107,14 @@ int scrsdl_crea_ventana(void)
             return 1;
     }
 
+    if (ventana_fullscreen) {
+	    SDL_RenderSetLogicalSize(renderer, ancho, alto);
+	    if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0) {
+		    debug_printf(VERBOSE_ERR,"Can not set fullscreen mode: %s", SDL_GetError());
+            ventana_fullscreen=0;
+		}
+    }
 
-
-    //SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
     if (renderer==NULL) return 1;
 
@@ -182,24 +124,12 @@ int scrsdl_crea_ventana(void)
     //SDL_SetWindowTitle(window,"ZEsarUX "EMULATOR_VERSION);
     scrsdl_update_window_title();
 
-    if (ventana_fullscreen) {
-        if (scr_sdl_8bits_color.v) {
-            scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB332, SDL_TEXTUREACCESS_STREAMING, ancho, alto);
-        }
-
-        else {
-            scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, ancho, alto);
-        }
+    if (scr_sdl_8bits_color.v) {
+        scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB332, SDL_TEXTUREACCESS_STATIC, ancho, alto);
     }
+
     else {
-
-        if (scr_sdl_8bits_color.v) {
-            scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGB332, SDL_TEXTUREACCESS_STATIC, ancho, alto);
-        }
-
-        else {
-            scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, alto);
-        }
+        scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, alto);
     }
 
     scrsdl_pixeles=malloc(ancho * alto *4);
@@ -233,7 +163,6 @@ void scrsdl_destruye_ventana(void)
 //Putpixel RGB 8 bit
 void scrsdl_putpixel_final_rgb8(int x,int y,unsigned int color_rgb)
 {
-    /*
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
 
@@ -243,15 +172,9 @@ void scrsdl_putpixel_final_rgb8(int x,int y,unsigned int color_rgb)
         int alto=scr_sdl_force_size_height;
         if (x>=ancho || y>=alto) return;
     }
-        */
 
-    Uint8 *p;
-    if (ventana_fullscreen) {
-        p = (Uint8 *)scrsdl_pixeles + (y * scrsdl_ancho_no_fullscreen + x) ;
-    }
-    else {
-        p = (Uint8 *)scrsdl_pixeles + (y * scrsdl_ancho_ventana + x) ;
-    }
+    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x);
+
 
     //Usamos color rgb 8 bits: 3 bits Red, 3 bits Green, 2 bits Blue : RRRGGGBB
     unsigned char r,g,b;
@@ -265,7 +188,6 @@ void scrsdl_putpixel_final_rgb8(int x,int y,unsigned int color_rgb)
 //Putpixel RGB 32 bit
 void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
-    /*
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
 
@@ -275,23 +197,8 @@ void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
         int alto=scr_sdl_force_size_height;
         if (x>=ancho || y>=alto) return;
     }
-    */
 
-    Uint8 *p;
-    if (ventana_fullscreen) {
-        int bpp = render_surface->format->BytesPerPixel;
-
-        // apuntamos a la fila y columna correctas
-        //p = (Uint8 *)render_surface->pixels + y * render_surface->pitch + x * bpp;
-        //p = (Uint8 *)render_surface->pixels + (y * scrsdl_ancho_no_fullscreen + x) * 4;
-
-        p = (Uint8 *)render_surface->pixels + y * render_surface->pitch +x*4;
-
-    }
-    else {
-        p = (Uint8 *)scrsdl_pixeles + (y * scrsdl_ancho_ventana + x) * 4;
-    }
-
+    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x) * 4;
 
 
     if (screen_rgb_8bit) {
@@ -404,7 +311,7 @@ void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 void scrsdl_set_fullscreen(void)
 {
 
-    change_variable_ventana_fullscreen(1);
+    ventana_fullscreen=1;
     scrsdl_destruye_ventana();
     scrsdl_crea_ventana();
 
@@ -414,7 +321,7 @@ void scrsdl_set_fullscreen(void)
 void scrsdl_reset_fullscreen(void)
 {
 
-    change_variable_ventana_fullscreen(0);
+    ventana_fullscreen=0;
     scrsdl_destruye_ventana();
     scrsdl_crea_ventana();
 
@@ -439,7 +346,6 @@ void scrsdl_refresca_border(void)
 void scrsdl_refresca_pantalla_solo_driver(void)
 {
 
-    /*
     int ancho=screen_get_window_size_width_zoom_border_en();
     ancho +=screen_get_ext_desktop_width_zoom();
 
@@ -448,89 +354,15 @@ void scrsdl_refresca_pantalla_solo_driver(void)
         ancho=scr_sdl_force_size_width;
         //alto=scr_sdl_force_size_height;
     }
-    */
 
-
-
-    if (ventana_fullscreen) {
-        /*
-        int ancho_origen=scrsdl_ancho_no_fullscreen;
-        int alto_origen=scrsdl_alto_no_fullscreen;
-
-        float aspect=((float)scrsdl_ancho_no_fullscreen)/((float)scrsdl_alto_no_fullscreen);
-
-        int alto_escalado_destino;
-        int ancho_escalado_destino;
-
-        printf("Aspect: %f\n",aspect);
-
-        float mas_grande_x=((float)scrsdl_ancho_fullscreen)/((float)ancho_origen);
-        float mas_grande_y=((float)scrsdl_alto_fullscreen)/((float)alto_origen);
-
-        printf("Aumento en X %f en Y %f\n",mas_grande_x,mas_grande_y);
-
-        int offset_x=0;
-        int offset_y=0;
-
-        if (mas_grande_x>mas_grande_y) {
-            alto_escalado_destino=scrsdl_alto_fullscreen;
-            ancho_escalado_destino=((float)scrsdl_alto_fullscreen)*aspect;
-            offset_x=(scrsdl_ancho_fullscreen-ancho_escalado_destino)/2;
-        }
-        else {
-            ancho_escalado_destino=scrsdl_ancho_fullscreen;
-            alto_escalado_destino=((float)scrsdl_ancho_fullscreen)/aspect;
-            offset_y=(scrsdl_alto_fullscreen-alto_escalado_destino)/2;
-        }
-        */
-
-
-        // Activar pixel-perfect scaling
-        //SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-
-        // Configurar logical size para que SDL haga el escalado
-        SDL_RenderSetLogicalSize(renderer, render_surface->w, render_surface->h);
-
-        SDL_Rect dst;
-
-        dst.x = 0; //offset_x;
-        dst.y = 0; //offset_y;
-        dst.w = scrsdl_ancho_fullscreen; //ancho_escalado_destino; //ancho_escalado_destino; //ancho_escalado_destino;   // ancho escalado
-        dst.h = scrsdl_alto_fullscreen; //alto_escalado_destino; //alto_escalado_destino; //alto_escalado_destino;    // alto escalado
-
-        printf("Escalando a %d * %d\n",dst.w,dst.h);
-
-
-
-        if (scr_sdl_8bits_color.v) {
-            //SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, scrsdl_ancho_no_fullscreen);
-            SDL_UpdateTexture(scrsdl_texture, NULL, render_surface->pixels, render_surface->pitch);
-        }
-        else {
-            //SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, scrsdl_ancho_no_fullscreen * 4);
-            SDL_UpdateTexture(scrsdl_texture, NULL, render_surface->pixels, render_surface->pitch);
-        }
-
-        SDL_RenderClear(renderer);
-
-        SDL_RenderCopy(renderer, scrsdl_texture, NULL, &dst);
+    if (scr_sdl_8bits_color.v) {
+        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho);
     }
-
-
-
     else {
-        if (scr_sdl_8bits_color.v) {
-            SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, scrsdl_ancho_ventana);
-        }
-        else {
-            SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, scrsdl_ancho_ventana * 4);
-        }
-
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, scrsdl_texture, NULL, NULL);
+        SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho * 4);
     }
-
-
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, scrsdl_texture, NULL, NULL);
     SDL_RenderPresent(renderer);
 }
 
