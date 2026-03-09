@@ -429,9 +429,9 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
 
         /* UnLock the screen for direct access to the pixels */
-        if ( SDL_MUSTLOCK(sdl_screen) ) {
+        /*if ( SDL_MUSTLOCK(sdl_screen) ) {
             SDL_UnlockSurface(sdl_screen);
-        }
+        }*/
     }
 
 }
@@ -443,12 +443,13 @@ void scrsdl_refresca_pantalla(void)
 
     /* Lock the screen for direct access to the pixels */
     //Aunque en mis pruebas esta funcion dice que la pantalla no necesita hacer lock
-    if ( SDL_MUSTLOCK(sdl_screen) ) {
+    /*if ( SDL_MUSTLOCK(sdl_screen) ) {
     //printf ("locking screen\n");
         if ( SDL_LockSurface(sdl_screen) < 0 ) {
                 cpu_panic ("scr sdl can't lock screen");
         }
     }
+        */
 
     if (sem_screen_refresh_reallocate_layers) {
             //printf ("--Screen layers are being reallocated. return\n");
