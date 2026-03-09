@@ -117,9 +117,4 @@ ok ->probar con --vo xwindows por ejemplo
 *sdl1 ok
 *sdl2 poner
 *sdl1, sdl2: revisar fullscreen funcione bien con ¿parametro limites pantalla? y modo rgb 8 bit
-*sdl1,sdl2: quitar debug print
-
--SDL_SetWindowFullscreen(window, 0);
-para quitar fullscreen. necesario? se recrea la ventana cada vez, quizá no hace falta
-
--Pantalla completa con resolución menor de lo habitual en sdl peta con seg fault?
+*xwindows: no hace escalado? el escalado es el mio de zoom que entra por el aviso de resize. al salir de fullscreen, se queda zoom muy grande

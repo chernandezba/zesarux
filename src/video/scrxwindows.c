@@ -136,11 +136,6 @@ int fullscreen_width,fullscreen_height;
 int screen_prefull_width,screen_prefull_height;
 
 
-//Resoluciones de pantalla posibles - para fullscreen
-
-#ifdef USE_XVIDMODE
-XF86VidModeModeInfo **videomodes;
-#endif
 
 
 void scrxwindows_resize(int width,int height);
@@ -404,6 +399,11 @@ void scrxwindows_resize(int width,int height)
 
     debug_printf (VERBOSE_INFO,"Xwindows resize");
 
+    printf ("Xwindows resize\n");
+    //if (ventana_fullscreen) {
+    //    return;
+    //}
+
     /*
     if (ventana_fullscreen) {
         zoom_x_calculado=zoom_x;
@@ -457,7 +457,7 @@ void scrxwindows_resize(int width,int height)
         modificado_border.v=1;
 
         width=screen_get_window_size_width_zoom_border_en();
-                        width+=screen_get_ext_desktop_width_zoom();
+        width+=screen_get_ext_desktop_width_zoom();
 
         height=screen_get_window_size_height_zoom_border_en();
         height+=screen_get_ext_desktop_height_zoom();
