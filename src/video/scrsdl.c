@@ -101,6 +101,7 @@ int scrsdl_crea_ventana(void)
 
     if (ventana_fullscreen) {
         flags |=SDL_FULLSCREEN;
+        flags &= ~SDL_RESIZABLE;
 	    SDL_Rect **modes;
         modes = SDL_ListModes(NULL, SDL_FULLSCREEN);
 
