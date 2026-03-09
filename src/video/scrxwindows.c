@@ -336,7 +336,7 @@ void scrxwindows_resize(int width,int height)
 
     debug_printf (VERBOSE_INFO,"Xwindows resize");
 
-    printf ("Xwindows resize\n");
+    //printf ("Xwindows resize\n");
     //if (ventana_fullscreen) {
     //    return;
     //}
@@ -577,7 +577,7 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
 
     }
 
-    if( shm_used ) {
+    if ( shm_used ) {
 
 #ifdef X_USE_SHM
         //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
@@ -1619,7 +1619,7 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
 	  }
 	}
-	//printf("\n");
+
 
 }
 
@@ -1638,7 +1638,7 @@ z80_byte scrxwindows_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
 }
 
 
-static int xdisplay_find_visual (void)
+static int xdisplay_find_visual(void)
 {
     XVisualInfo visual_tmpl;
     XVisualInfo *vis;
@@ -1655,8 +1655,8 @@ static int xdisplay_find_visual (void)
         VisualScreenMask,
         &visual_tmpl, &nvis );
 
-    if( vis != NULL ) {
-        for( i = 0; i < nvis; i++ ) {
+    if ( vis != NULL ) {
+        for ( i = 0; i < nvis; i++ ) {
                 /*
                     * Save the visual index and its depth, if this is the first
                     * truecolor visual, or a visual that is 'preferred' over the
@@ -1684,7 +1684,7 @@ static int xdisplay_find_visual (void)
         }
         XFree(vis);
     }
-  return sel_v == -1 ? 1 : 0;
+    return sel_v == -1 ? 1 : 0;
 }
 
 
@@ -1696,7 +1696,6 @@ static int xdisplay_find_visual (void)
 
 void scrxwindows_hide_mouse_pointer(void)
 {
-
 
 	Cursor invisibleCursor;
 	Pixmap bitmapNoData;
@@ -1733,7 +1732,7 @@ int scrxwindows_get_menu_width(void)
 
     if (max>OVERLAY_SCREEN_MAX_WIDTH) max=OVERLAY_SCREEN_MAX_WIDTH;
 
-    //printf ("max x: %d %d\n",max,screen_get_emulated_display_width_no_zoom_border_en());
+
 
     return max;
 }
@@ -1749,7 +1748,7 @@ int scrxwindows_get_menu_height(void)
 
     if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
-    //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
+
     return max;
 }
 
@@ -1770,7 +1769,6 @@ void scrxwindows_update_window_title(void)
 	list[0] = buffer;
 	list[1] = 0;
 
-	//sprintf( buffer, "ZEsarUX "EMULATOR_VERSION );
     strcpy(buffer,get_window_title());
 
 	XStringListToTextProperty( list, 1, &text);
@@ -1843,15 +1841,15 @@ int scrxwindows_init (void) {
 
 	// Wait for the MapNotify event
 
-	for(;;) {
+	for (;;) {
 	    XEvent e;
 	    XNextEvent(dpy, &e);
-	    if (e.type == MapNotify)
-		  break;
+	    if (e.type == MapNotify) {
+            break;
+        }
 	}
 
 	if ( xdisplay_find_visual() ) exit(1);
-
 
 
 	scrxwindows_alloc_image(ancho, alto);
@@ -1920,7 +1918,7 @@ static int try_shm (void)
     int id;
     int error;
 
-    if( !XShmQueryExtension( dpy ) ) return 0;
+    if ( !XShmQueryExtension( dpy ) ) return 0;
 
     shm_eventtype = XShmGetEventBase( dpy ) + ShmCompletion;
 
@@ -1931,98 +1929,99 @@ static int try_shm (void)
     scrxwindows_get_display_size(&ancho,&alto);
 
 
-
     image = XShmCreateImage( dpy, xdisplay_visual,
-                            xdisplay_depth, ZPixmap,
-                            NULL, &shm_info,
-                            ancho, alto );
+        xdisplay_depth, ZPixmap,
+        NULL, &shm_info,
+        ancho, alto );
 
 
-/*
-   we allocate extra space after the screen for status bar icons
-   status bar icons total width always smaller than 3xDISPLAY_ASPECT_WIDTH
-*/
-  if( !image ) return 0;
+    /*
+    we allocate extra space after the screen for status bar icons
+    status bar icons total width always smaller than 3xDISPLAY_ASPECT_WIDTH
+    */
+    if ( !image ) return 0;
 
-  /* Get an SHM to work with */
-  id = get_shm_id( image->bytes_per_line * image->height );
-  if( id == -1 ) return 0;
+    /* Get an SHM to work with */
+    id = get_shm_id( image->bytes_per_line * image->height );
+    if ( id == -1 ) return 0;
 
-  /* Attempt to attach to the shared memory */
-  shm_info.shmid = id;
-  image->data = shm_info.shmaddr = shmat( id, 0, 0 );
+    /* Attempt to attach to the shared memory */
+    shm_info.shmid = id;
+    image->data = shm_info.shmaddr = shmat( id, 0, 0 );
 
-  /* If we couldn't attach, remove the chunk and give up */
-  if( image->data == (void*)-1 ) {
+    /* If we couldn't attach, remove the chunk and give up */
+    if ( image->data == (void*)-1 ) {
+        shmctl( id, IPC_RMID, NULL );
+        image->data = NULL;
+        return 0;
+    }
+
+    /* This may generate an X error */
+    xerror_error = 0; xerror_expecting = 1;
+    error = !XShmAttach( dpy, &shm_info );
+
+    /* Force any X errors to occur before we disable traps */
+    XSync( dpy, False );
+    xerror_expecting = 0;
+
+    /* If we caught an error, don't use SHM */
+    if( error || xerror_error ) {
+        printf ("shm error. disabling\n");
+        shmctl( id, IPC_RMID, NULL );
+        shmdt( image->data ); image->data = NULL;
+        return 0;
+    }
+
+    /* Now flag the chunk for deletion; this will take effect when
+    everything has detached from it */
     shmctl( id, IPC_RMID, NULL );
-    image->data = NULL;
-    return 0;
-  }
 
-  /* This may generate an X error */
-  xerror_error = 0; xerror_expecting = 1;
-  error = !XShmAttach( dpy, &shm_info );
-
-/* Force any X errors to occur before we disable traps */
-  XSync( dpy, False );
-  xerror_expecting = 0;
-
-  /* If we caught an error, don't use SHM */
-  if( error || xerror_error ) {
-    printf ("shm error. disabling\n");
-    shmctl( id, IPC_RMID, NULL );
-    shmdt( image->data ); image->data = NULL;
-    return 0;
-  }
-
-  /* Now flag the chunk for deletion; this will take effect when
-     everything has detached from it */
-  shmctl( id, IPC_RMID, NULL );
-
-  return 1;
+    return 1;
 }
 
 /* Get an SHM ID; also attempt to reclaim any stale chunks we find */
 static int get_shm_id (const int size)
 {
-  key_t key = 'Z' << 24 | 'E' << 16 | 'U' << 8 | 'X';
-  struct shmid_ds shm;
+    key_t key = 'Z' << 24 | 'E' << 16 | 'U' << 8 | 'X';
+    struct shmid_ds shm;
 
-  int id;
+    int id;
 
-  int pollution = 5;
+    int pollution = 5;
 
-  do {
-    /* See if a chunk already eimagests with this key */
-    id = shmget( key, size, 0777 );
+    do {
+        /* See if a chunk already eimagests with this key */
+        id = shmget( key, size, 0777 );
 
-    /* If the chunk didn't already eimagest, try and create one for our
-       use */
-    if( id == -1 ) {
-      id = shmget( key, size, IPC_CREAT | 0777 );
-      continue;                 /* And then jump to the end of the loop */
-    }
-    /* If the chunk already eimagests, try and get information about it */
-    if( shmctl( id, IPC_STAT, &shm ) != -1 ) {
+        /* If the chunk didn't already eimagest, try and create one for our
+        use */
+        if ( id == -1 ) {
+            id = shmget( key, size, IPC_CREAT | 0777 );
+            continue;                 /* And then jump to the end of the loop */
+        }
+        /* If the chunk already eimagests, try and get information about it */
+        if ( shmctl( id, IPC_STAT, &shm ) != -1 ) {
 
-      /* If something's actively using this chunk, try another key */
-      if( shm.shm_nattch ) {
-        key++;
-      } else {          /* Otherwise, attempt to remove the chunk */
+            /* If something's actively using this chunk, try another key */
+            if ( shm.shm_nattch ) {
+                key++;
+            }
+            else {          /* Otherwise, attempt to remove the chunk */
 
-        /* If we couldn't remove that chunk, try another key. If we
-           could, just try again */
-        if( shmctl( id, IPC_RMID, NULL ) != 0 ) key++;
-      }
-    } else {            /* Couldn't get info on the chunk, so try next key */
-      key++;
-    }
+                /* If we couldn't remove that chunk, try another key. If we
+                could, just try again */
+                if ( shmctl( id, IPC_RMID, NULL ) != 0 ) key++;
+            }
+        }
+        else {            /* Couldn't get info on the chunk, so try next key */
+            key++;
+        }
 
-    id = -1;            /* To prevent early eimaget from loop */
+        id = -1;            /* To prevent early eimaget from loop */
 
-  } while( id == -1 && --pollution );
+    } while ( id == -1 && --pollution );
 
-  return id;
+    return id;
 }
 #endif                  /* #ifdef X_USE_SHM */
 
@@ -2035,7 +2034,7 @@ static void xdisplay_destroy_image (void)
   /* Free the XImage used to store screen data; also frees the malloc'd
      data */
 #ifdef X_USE_SHM
-    if( shm_used ) {
+    if ( shm_used ) {
         XShmDetach( dpy, &shm_info );
         shmdt( shm_info.shmaddr );
         image->data = NULL;
@@ -2054,7 +2053,7 @@ int xdisplay_end (void)
 {
     xdisplay_destroy_image();
     /* Free the allocated GC */
-    if( gc ) XFreeGC( dpy, gc );
+    if ( gc ) XFreeGC( dpy, gc );
     gc = 0;
 
     XDestroyWindow(dpy,ventana);
@@ -2062,7 +2061,4 @@ int xdisplay_end (void)
 
     return 0;
 }
-
-
-
 
