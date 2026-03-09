@@ -177,4 +177,3 @@ de momento esto afecta a zeng online y se solventa con zoc_keys_tecla_repetida
 
 -Drag drop con menú abierto en sdl2 no parece funcionar bien
 
--Pantalla completa con resolución menor de lo habitual en sdl peta con seg fault
