@@ -113,21 +113,17 @@ int scrsdl_crea_ventana(void)
 
 	        if (monitor_w && monitor_h) {
 
-                printf("ancho antes: %d\n",ancho);
-
-                //float aspect=((float)monitor_w) / ((float) monitor_h);
-                //ancho=((float)ancho)*aspect;
-                //printf("ancho despues: %d\n",ancho);
-
-
-                //Ponemos pixeles en tamaño normal (en render_surface) y luego escalaremos al tamaño total del monitor (en sdl_screen)
+                //Fullscreen se basa en definir el modo de video de SDL que ocupe toda la pantalla,
+                //aunque nuestros pixeles los metemos en un surface de tamaño normal (mismo tamaño que en ventana)
+                //Luego a la hora de renderizar (ver función scrsdl_refresca_pantalla_solo_driver) escalamos mediante SDL al tamaño de pantalla completa, conservando proporciones
+                //y centrando imagen.
+                //Si solo definieramos full screen y dejasemos renderizar a SDL a pantalla completa, no respeta proporciones y llena la pantalla entera (en ancho y alto)
+                //deformando la imagen
 
                 ancho=monitor_w;
                 alto=monitor_h;
 
                 render_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, scrsdl_ancho_no_fullscreen, scrsdl_alto_no_fullscreen, 32, 0,0,0,0);
-
-                //ancho +=500;
 
 	        }
 	    }
@@ -174,8 +170,7 @@ int scrsdl_crea_ventana(void)
 
     scr_reallocate_layers_menu(ancho,alto);
 
-    //establecer titulo ventana
-    //SDL_WM_SetCaption("ZEsarUX " EMULATOR_VERSION , "ZEsarUX");
+
     scrsdl_update_window_title();
 
     if (mouse_pointer_shown.v==0) SDL_ShowCursor(0);
@@ -204,7 +199,9 @@ void scrsdl_putpixel_final_rgb_32(int x,int y,unsigned int color_rgb)
     }
 
 
-    else p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x * 4;
+    else {
+        p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x * 4;
+    }
 
     //controlar limites x,y
     if (scr_sdl_force_size.v) {
@@ -230,7 +227,14 @@ void scrsdl_putpixel_final_rgb_32(int x,int y,unsigned int color_rgb)
 void scrsdl_putpixel_final_rgb_8(int x,int y,unsigned int color_rgb)
 {
 
-    Uint8 *p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x;
+    Uint8 *p;
+
+    if (ventana_fullscreen) {
+    	p = (Uint8 *)render_surface->pixels + y * render_surface->pitch + x;
+    }
+    else {
+        p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x;
+    }
 
     //controlar limites x,y
     if (scr_sdl_force_size.v) {
@@ -313,27 +317,7 @@ void scrsdl_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 
 }
 
-/*
-void old_scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 
-
-    int yorigen;
-
-    yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
-
-    //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
-    y +=yorigen;
-    z80_bit inverse;
-
-    inverse.v=0;
-
-    //128 y 129 corresponden a franja de menu y a letra enye minuscula
-    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
-
-    //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
-    scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
-}
-*/
 
 void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
@@ -374,22 +358,7 @@ void scrsdl_refresca_border(void)
 
 void scrsdl_refresca_pantalla_solo_driver(void)
 {
-    /*
-    int ancho=screen_get_window_size_width_zoom_border_en();
-    ancho +=screen_get_ext_desktop_width_zoom();
 
-    int alto=screen_get_window_size_height_zoom_border_en();
-    alto +=screen_get_ext_desktop_height_zoom();
-
-    //controlar limites x,y
-    if (scr_sdl_force_size.v) {
-        ancho=scr_sdl_force_size_width;
-        alto=scr_sdl_force_size_height;
-    }
-
-
-    SDL_UpdateRect(sdl_screen, 0, 0, ancho, alto );
-    */
 
     if (scrsdl_ancho_ventana && scrsdl_alto_ventana) {
 
@@ -411,12 +380,12 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             int alto_escalado_destino;
             int ancho_escalado_destino;
 
-            printf("Aspect: %f\n",aspect);
+            //printf("Aspect: %f\n",aspect);
 
             float mas_grande_x=((float)sdl_screen->w)/((float)ancho_origen);
             float mas_grande_y=((float)sdl_screen->h)/((float)alto_origen);
 
-            printf("Aumento en X %f en Y %f\n",mas_grande_x,mas_grande_y);
+            //printf("Aumento en X %f en Y %f\n",mas_grande_x,mas_grande_y);
 
             int offset_x=0;
             int offset_y=0;
@@ -438,7 +407,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             dst.w = ancho_escalado_destino;
             dst.h = alto_escalado_destino;
 
-            printf("Escalando desde %d X %d hasta %d X %d. monitor total: %d X %d\n",ancho_origen,alto_origen,ancho_escalado_destino,alto_escalado_destino,sdl_screen->w,sdl_screen->h);
+            //printf("Escalando desde %d X %d hasta %d X %d. monitor total: %d X %d\n",ancho_origen,alto_origen,ancho_escalado_destino,alto_escalado_destino,sdl_screen->w,sdl_screen->h);
 
             SDL_SoftStretch(render_surface, &src, sdl_screen, &dst);
 
