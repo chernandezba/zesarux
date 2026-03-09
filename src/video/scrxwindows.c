@@ -240,16 +240,18 @@ int scrxwindows_setwindowparms(void)
 
 
 	//Y se fijan los incrementos de la ventana, para que se amplie en fracciones enteras
-	if (ventana_fullscreen==0) {
+	//if (ventana_fullscreen==0) {
 	        sizeHints->width_inc    = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
 	        sizeHints->height_inc   = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
-	}
+	//}
 
+    /*
 	else {
 		//en full screen ponemos el tamanyo de ventana a la que queramos
 		sizeHints->width_inc    = 1;
 		sizeHints->height_inc   = 1;
 	}
+        */
 
 	sizeHints->max_width    =     9999 * sizeHints->width_inc;
 	sizeHints->max_height   =     9999 * sizeHints->height_inc;
@@ -306,6 +308,32 @@ int scrxwindows_setwindowparms(void)
 void scrxwindows_reset_fullscreen(void)
 {
 
+    //Los window managers modernos (como los de GNOME, KDE Plasma o Xfce) soportan el protocolo EWMH.
+    //Debes enviar un ClientMessage al window manager.
+    Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
+    Atom fullscreen = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+
+    XEvent xev = {0};
+    xev.type = ClientMessage;
+    xev.xclient.window = ventana;
+    xev.xclient.message_type = wm_state;
+    xev.xclient.format = 32;
+    xev.xclient.data.l[0] = 0; // remove fullscreen
+    xev.xclient.data.l[1] = fullscreen;
+    xev.xclient.data.l[2] = 0;
+
+    XSendEvent(
+        dpy,
+        DefaultRootWindow(dpy),
+        False,
+        SubstructureRedirectMask | SubstructureNotifyMask,
+        &xev
+    );
+
+    change_variable_ventana_fullscreen(0);
+
+    return;
+
 #ifdef USE_XVIDMODE
 	debug_printf (VERBOSE_INFO,"Resetting fullscreen");
     change_variable_ventana_fullscreen(0);
@@ -352,199 +380,32 @@ void scrxwindows_reset_fullscreen(void)
 
 void scrxwindows_set_fullscreen(void)
 {
+    debug_printf (VERBOSE_INFO,"Setting full screen");
+
+    //Los window managers modernos (como los de GNOME, KDE Plasma o Xfce) soportan el protocolo EWMH.
+    //Debes enviar un ClientMessage al window manager.
+    Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
+    Atom fullscreen = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+
+    XEvent xev = {0};
+    xev.type = ClientMessage;
+    xev.xclient.window = ventana;
+    xev.xclient.message_type = wm_state;
+    xev.xclient.format = 32;
+    xev.xclient.data.l[0] = 1; // 1 = enable fullscreen
+    xev.xclient.data.l[1] = fullscreen;
+    xev.xclient.data.l[2] = 0;
+
+    XSendEvent(
+        dpy,
+        DefaultRootWindow(dpy),
+        False,
+        SubstructureRedirectMask | SubstructureNotifyMask,
+        &xev
+    );
+
+    change_variable_ventana_fullscreen(1);
 
-
-
-#ifdef USE_XVIDMODE
-	// http://tonyobryan.com/index.php?article=9
-
-	debug_printf (VERBOSE_INFO,"Setting full screen");
-
-
-	//https://forums.geforce.com/default/topic/487759/xf86vidmodeswitchtomode-fails-when-changing-to-a-modeline-greater-than-the-current-one-i-39-ve-trie/
-
-
-	int i  ;
-
-	int vmMajor, vmMinor;
-
-	int modeNum, bestMode;
-
-
-	int screen;
-	screen = DefaultScreen(dpy);
-
-
-	/* set best mode to current */
-
-	bestMode = 0;
-
-	/* get a connection */
-
-
-
-	int vm_event, vm_error;
-
-	//Comprobar si existe esa extension
-	if (!XF86VidModeQueryExtension(dpy, &vm_event, &vm_error)) {
-		debug_printf (VERBOSE_ERR,"No extension XFree86-VidModeExtension found. Can't switch to full screen");
-		return;
-	}
-
-
-
-	XF86VidModeQueryVersion(dpy, &vmMajor, &vmMinor);
-
-	debug_printf(VERBOSE_INFO,"XF86 VideoMode extension version %d.%d", vmMajor, vmMinor);
-
-
-	XF86VidModeGetAllModeLines(dpy, screen, &modeNum, &videomodes);
-
-
-
-	int bestwidth,bestheight;
-	bestMode=-1;
-	bestwidth=99999;
-	bestheight=99999;
-
-	//prueba a zoom 2. Quiza mejor asi porque el alto total (296 ) multiplicado por dos da 594, que es casi 600, y por tanto,
-	//la resolucion que mejor se ajusta es 800x600
-	int zoom_futuro_x,zoom_futuro_y;
-	zoom_futuro_x=zoom_futuro_y=2;
-
-	int widthspectrum;
-	int heightspectrum;
-
-	//Resolucion de ventana
-    widthspectrum=screen_get_window_size_width_no_zoom_border_en()*zoom_futuro_x;
-    widthspectrum +=(screen_get_ext_desktop_width_no_zoom()*zoom_futuro_x);
-
-    heightspectrum=screen_get_window_size_height_no_zoom_border_en()*zoom_futuro_y;
-    heightspectrum +=(screen_get_ext_desktop_height_no_zoom()*zoom_futuro_y);
-
-
-
-	//int width=widthspectrum;
-	//int height=heightspectrum;
-
-//fullscreen_width,fullscreen_height
-
-	/* save desktop-resolution before switching modes */
-
-
-	//TODO
-	//Supuestamente el modo actual esta en
-	//*videomodes[0]
-	//Pero esto no me funciona. Lo unico que funciona bien es obtener la resolucion actual mediante DisplayWidth,  etc
-	//Obtener resolucion actual
-	//Luego la resolucion actual no la encuentro en ninguno de los *videomodes[]...
-    screen_prefull_width  = DisplayWidth( dpy, screen );
-	screen_prefull_height = DisplayHeight( dpy, screen );
-
-	//debug_printf(VERBOSE_INFO,"Current video mode: %d x %d",screen_prefull_width,screen_prefull_height);
-
-	/* look for mode with best resolution */
-	debug_printf(VERBOSE_INFO,"minimum desired size: %d x %d",widthspectrum,heightspectrum);
-
-	for (i = 0; i < modeNum; i++) {
-
-		int leidowidth,leidoheight;
-
-		leidowidth=videomodes[i]->hdisplay;
-		leidoheight=videomodes[i]->vdisplay;
-
-		debug_printf(VERBOSE_INFO,"mode %d: %4d x %4d",i,leidowidth,leidoheight);
-
-
-		//Si modo con mayor o igual resolucion
-		if (leidowidth >= widthspectrum && leidoheight >=heightspectrum) {
-
-			//Y si ese modo es menor que el best
-			if (leidowidth < bestwidth && leidoheight < bestheight) {
-				debug_printf(VERBOSE_INFO,"mode %i is better",i);
-				bestMode = i;
-
-				bestwidth=leidowidth;
-				bestheight=leidoheight;
-			}
-		}
-
-	}
-
-
-	if (bestMode==-1) {
-		debug_printf(VERBOSE_ERR,"No valid modes found");
-		return;
-	}
-
-	zoom_x=zoom_futuro_x;
-	zoom_y=zoom_futuro_y;
-
-	set_putpixel_zoom();
-
-
-
-	debug_printf(VERBOSE_INFO,"best mode: %d %4d x %4d",bestMode,bestwidth,bestheight);
-
-
-
-	//para que sea pantalla completa, tamanyo de ventana tiene que ser el mismo que pantalla
-	fullscreen_width=bestwidth;
-	fullscreen_height=bestheight;
-
-
-	change_variable_ventana_fullscreen(1);
-
-
-	//Eliminar decoraciones de ventana
-
-
-	PropMwmHints hints;
-
-	Atom    property;
-
-	hints.flags = 2;        // Specify that we're changing the ventana decorations.
-	hints.decorations = 0;  // 0 (false) means that ventana decorations should go bye-bye.
-	property = XInternAtom(dpy,"_MOTIF_WM_HINTS",True);
-	XChangeProperty(dpy,ventana,property,property,32,PropModeReplace,(unsigned char *)&hints,5);
-
-
-
-	//Ajustar parametros, concretamente el que indica incrementos de ventana, para que podamos poner el tamaño que queramos
-	scrxwindows_setwindowparms();
-
-
-	//Llamamos aqui porque necesita asignar algunas estructuras de memoria... sino petara con segmentation fault
-	scrxwindows_resize(fullscreen_width,fullscreen_height);
-
-
-	XF86VidModeSwitchToMode(dpy,DefaultScreen(dpy),videomodes[bestMode] );
-
-	XMoveResizeWindow(dpy,ventana,0,0,fullscreen_width,fullscreen_height);
-
-
-
-    //Ajustar centro de la ventana
-    int xcentro = (fullscreen_width-widthspectrum)/2;
-    int ycentro = (fullscreen_height-heightspectrum)/2;
-	debug_printf(VERBOSE_INFO,"Center: x %d y %d",xcentro,ycentro);
-
-    XF86VidModeSetViewPort(dpy,DefaultScreen(dpy),xcentro,ycentro);
-
-
-
-	//Mostrar ventana y capturar teclado y mouse
-	XMapRaised(dpy,ventana);
-
-	XGrabPointer(dpy,ventana,True,0,GrabModeAsync,GrabModeAsync,ventana,0L,CurrentTime);
-
-	XGrabKeyboard(dpy,ventana,False,GrabModeAsync,GrabModeAsync,CurrentTime);
-
-
-#else
-	debug_printf(VERBOSE_ERR,"Full screen support not compiled");
-
-#endif
 
 }
 
@@ -603,6 +464,7 @@ void scrxwindows_resize(int width,int height)
 
     debug_printf (VERBOSE_INFO,"Xwindows resize");
 
+    /*
     if (ventana_fullscreen) {
         zoom_x_calculado=zoom_x;
         zoom_y_calculado=zoom_y;
@@ -626,6 +488,7 @@ void scrxwindows_resize(int width,int height)
         return;
 
     }
+    */
 
 
 
@@ -841,13 +704,28 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
 
     scrxwindows_get_display_size(&ancho,&alto);
 
+    int offset_x=0;
+    int offset_y=0;
+
+    if (ventana_fullscreen) {
+        XWindowAttributes attr;
+        XGetWindowAttributes(dpy, ventana, &attr);
+
+        int win_width = attr.width;
+        int win_height = attr.height;
+
+        offset_x = (win_width - ancho) / 2;
+        offset_y = (win_height - alto) / 2;
+
+    }
+
     if( shm_used ) {
 
 #ifdef X_USE_SHM
         //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
         //printf ("image=%x\n",image);
 
-        XShmPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto, False);
+        XShmPutImage(dpy, ventana, gc, image, 0, 0, offset_x, offset_y, ancho, alto, False);
 
         /*
         Parámetros:
@@ -888,7 +766,7 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
 
     else {
         //printf ("sin shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-        XPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto );
+        XPutImage(dpy, ventana, gc, image, 0, 0, offset_x, offset_y, ancho, alto );
 
     }
 
@@ -1037,7 +915,7 @@ void scrxwindows_end(void)
 	debug_printf (VERBOSE_INFO,"Closing xwindows video driver");
 
 	//Si hay pantalla completa, desactivarla
-	if (ventana_fullscreen) scrxwindows_reset_fullscreen();
+	//if (ventana_fullscreen) scrxwindows_reset_fullscreen();
 
 	xdisplay_end();
 }
