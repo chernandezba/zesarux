@@ -289,7 +289,7 @@ while [ $# -gt 0 ]; do
 	;;
 
 	--disable-xvidmode)
-	echo "--disable-xvidmode setting is deprecated"
+	echo "Warning: --disable-xvidmode setting is deprecated, do not use it"
 	;;
 
 	--enable-ssl)
