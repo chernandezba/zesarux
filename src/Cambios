@@ -99,6 +99,7 @@ Corregida emulación de opcode DD/FD+EB: EX DE,HL en vez de EX DE,IX/IY
 Corregido tiempos de opcodes DD/FD inexistentes
 Corregido desensamblado de opcodes indocumentados dd/fd + cb + res/set (ix+d) donde el resultado también se guarda en un registro
 Corregida carga con --tape y --realtape con autocarga de snapshot al inicio
+Corregido registro C después de cargar cinta estandar (comportamiento no documentado) - corrige carga de juego Sweet Fightin' +2
 Corregido parámetro --sdl-force-win-size al usar modo de color rgb24 bit en SDL1
 Corregidos parámetros --sdl-force-win-size y --sdl-8bit-color en SDL2
 Corregido descomprimir archivos tar y rar con espacios en el nombre

@@ -57,7 +57,6 @@ esta haciendo bien el timing
 - Cabecera tzx que incluya versión emulador
 
 
-
 -tzx:
 *funciona way exploding fist, por ejemplo. lord of chaos tambien, este ademas tiene tags id 32
 *quiza en tap antes de leer longitud habria que llamar a una funcion de "inicio de carga",

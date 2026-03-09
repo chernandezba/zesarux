@@ -174,7 +174,7 @@ pues indicando por linea de comandos no servirá de nada
 
 
 
--Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
+
 
 
 -Funciones de utils no deberían involucrar nada del menú
