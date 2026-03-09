@@ -240,18 +240,10 @@ int scrxwindows_setwindowparms(void)
 
 
 	//Y se fijan los incrementos de la ventana, para que se amplie en fracciones enteras
-	//if (ventana_fullscreen==0) {
-	        sizeHints->width_inc    = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
-	        sizeHints->height_inc   = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
-	//}
 
-    /*
-	else {
-		//en full screen ponemos el tamanyo de ventana a la que queramos
-		sizeHints->width_inc    = 1;
-		sizeHints->height_inc   = 1;
-	}
-        */
+    sizeHints->width_inc    = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
+    sizeHints->height_inc   = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
+
 
 	sizeHints->max_width    =     9999 * sizeHints->width_inc;
 	sizeHints->max_height   =     9999 * sizeHints->height_inc;
@@ -300,10 +292,6 @@ int scrxwindows_setwindowparms(void)
 
 
 
-//Atom wmDelete;
-
-
-
 
 void scrxwindows_reset_fullscreen(void)
 {
@@ -331,49 +319,6 @@ void scrxwindows_reset_fullscreen(void)
     );
 
     change_variable_ventana_fullscreen(0);
-
-    return;
-
-#ifdef USE_XVIDMODE
-	debug_printf (VERBOSE_INFO,"Resetting fullscreen");
-    change_variable_ventana_fullscreen(0);
-
-
-    //Activar decoraciones de ventana
-
-
-    PropMwmHints hints;
-
-    Atom    property;
-
-    hints.flags = 2;        // Specify that we're changing the ventana decorations.
-    hints.decorations = 1;  // true
-    property = XInternAtom(dpy,"_MOTIF_WM_HINTS",True);
-    XChangeProperty(dpy,ventana,property,property,32,PropModeReplace,(unsigned char *)&hints,5);
-
-
-    //Liberar raton
-    XMapRaised(dpy,ventana);
-
-    XUngrabPointer(dpy,CurrentTime);
-
-    XUngrabKeyboard(dpy,CurrentTime);
-
-
-	//Poner resolucion anterior
-	XF86VidModeSwitchToMode(dpy,DefaultScreen(dpy),videomodes[0] );
-
-
-    //Ajustar parametros, concretamente el que indica incrementos de ventana, para ponerlo en modo normal
-    scrxwindows_setwindowparms();
-
-
-
-
-#else
-    debug_printf(VERBOSE_ERR,"Full screen support not compiled");
-
-#endif
 
 
 }
@@ -417,7 +362,7 @@ void scrxwindows_alloc_image(int width,int height)
 #endif                          /* #ifdef X_USE_SHM */
 
 
-    if( !shm_used ) {
+    if ( !shm_used ) {
 
         //free mem if needed
         if (image!=NULL) {
@@ -429,18 +374,13 @@ void scrxwindows_alloc_image(int width,int height)
         image = XCreateImage( dpy, xdisplay_visual,
                         xdisplay_depth, ZPixmap, 0, NULL, width,height,8,0);
 
-        if(!image) {
-        debug_printf(VERBOSE_ERR,"Couldn't create image");
-        exit(1);
+        if (!image) {
+            cpu_panic("Couldn't create image");
         }
 
-        if( ( image->data = malloc( image->bytes_per_line *
-                                                    image->height ) ) == NULL ) {
-        debug_printf(VERBOSE_ERR," Out of memory for image data");
-        exit(1);
+        if ( ( image->data = malloc( image->bytes_per_line * image->height ) ) == NULL ) {
+            cpu_panic("Out of memory for image data");
         }
-            //printf ("despues xcreateimage image=%x\n",image);
-
 
 
     }
