@@ -1121,6 +1121,9 @@ void tap_load(void)
         //Puede retornar valores 0x01, 0x21, 0xFE, 0xDE... en teoria son los ultimos valores enviados al puerto FEH
         reg_c=1;
 
+        //Registro DE decrementado en cantidad de bytes leidos
+        DE -= cinta_longitud;
+
 
         //En principio la salida de carga siempre retorna flag Z a 0
         //esto corrige un problema en la carga de Rocman:
