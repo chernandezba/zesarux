@@ -453,6 +453,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
 
     if (ventana_fullscreen) {
+        /*
         int ancho_origen=scrsdl_ancho_no_fullscreen;
         int alto_origen=scrsdl_alto_no_fullscreen;
 
@@ -481,6 +482,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             alto_escalado_destino=((float)scrsdl_ancho_fullscreen)/aspect;
             offset_y=(scrsdl_alto_fullscreen-alto_escalado_destino)/2;
         }
+        */
 
 
         // Activar pixel-perfect scaling
