@@ -1118,6 +1118,11 @@ void tap_load(void)
 				reg_h=checksum_calculado;
 				reg_ix=cinta_pedido_inicio++;
 
+                //Registro C en el retorno tiene valores diferentes, aunque no útiles ni documentados,
+                //sin embargo esto es necesario para el juego Sweet Fighter II
+                //Puede retornar valores 0x01, 0x21, 0xFE, 0xDE... en teoria son los ultimos valores enviados al puerto FEH
+                reg_c=1;
+
 
                                 //En principio la salida de carga siempre retorna flag Z a 0
                                 //esto corrige un problema en la carga de Rocman:
