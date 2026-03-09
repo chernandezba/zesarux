@@ -911,238 +911,234 @@ void tap_load(void)
 //printf ("tap load\n");
 
 
-            if (buffer_tap_read==NULL) {
-                //asignamos buffer memoria temporal para lectura
-                buffer_tap_read=malloc(65536);
-                if (buffer_tap_read==NULL) {
-                    cpu_panic("Error allocating tap read memory buffer");
-                }
+    if (buffer_tap_read==NULL) {
+        //asignamos buffer memoria temporal para lectura
+        buffer_tap_read=malloc(65536);
+        if (buffer_tap_read==NULL) {
+            cpu_panic("Error allocating tap read memory buffer");
+        }
+    }
+
+    z80_int cinta_pedido_inicio=reg_ix;
+    z80_byte cinta_pedido_flag=reg_a_shadow;
+    z80_int cinta_pedido_longitud=value_8_to_16(reg_d,reg_e);
+
+    //z80_byte h,l;
+    z80_byte checksum,checksum_calculado;
+
+
+
+    //leemos longitud, flag de la cinta
+
+    z80_int cinta_longitud;
+
+    if (tape_block_readlength==NULL) {
+        debug_printf (VERBOSE_ERR,"Tape functions uninitialized");
+                        //tapefile=NULL;
+        eject_tape_load();
+        //tape_load_inserted.v=0;
+        Z80_FLAGS &=(255-FLAG_C);
+        reg_pc=pop_valor();
+
+        return;
+    }
+
+    //Movemos indicador de bloque, para el visor de cinta y saber donde estamos
+    tape_viewer_block_index++;
+
+    cinta_longitud=tape_block_readlength();
+    if (cinta_longitud==0) {
+        int retornar_error=1;
+        if (tape_auto_rewind.v) {
+            if (tape_block_feof()) {
+                debug_printf(VERBOSE_INFO,"End of tape and autorewind enabled. Rewind tape");
+                tape_viewer_block_index=0;
+                tape_block_rewindbegin();
+
+                tape_viewer_block_index++;
+                cinta_longitud=tape_block_readlength();
+
+                if (cinta_longitud!=0) retornar_error=0;
             }
+        }
 
-            z80_int cinta_pedido_inicio=reg_ix;
-            z80_byte cinta_pedido_flag=reg_a_shadow;
-            z80_int cinta_pedido_longitud=value_8_to_16(reg_d,reg_e);
+        if (retornar_error) {
+            debug_printf(VERBOSE_INFO,"Error read tape. Bytes=0");
+            //tapefile=NULL;
+            eject_tape_load();
+            //tape_load_inserted.v=0;
+            Z80_FLAGS &=(255-FLAG_C);
+            reg_pc=pop_valor();
+            return;
+        }
+    }
 
-            //z80_byte h,l;
-            z80_byte checksum,checksum_calculado;
+
+
+    z80_byte cinta_flag=0;
+
+
+    //if (tape_any_flag_loading.v==0) flag_Z_shadow.v=0;
+    if (tape_any_flag_loading.v==0) Z80_FLAGS_SHADOW &=(255-FLAG_Z);
 
 
 
-            //leemos longitud, flag de la cinta
+    if (Z80_FLAGS_SHADOW & FLAG_Z) {
+        debug_printf(VERBOSE_INFO,"Mode any flag");
 
-            z80_int cinta_longitud;
+        char buffer_reg[1000];
+        print_registers(buffer_reg);
 
-            if (tape_block_readlength==NULL) {
-                debug_printf (VERBOSE_ERR,"Tape functions uninitialized");
-                                //tapefile=NULL;
-                eject_tape_load();
-                //tape_load_inserted.v=0;
-                Z80_FLAGS &=(255-FLAG_C);
-                reg_pc=pop_valor();
+        debug_printf(VERBOSE_INFO,"%s",buffer_reg);
 
-                return;
+        cinta_flag=0;
+
+
+
+        //TODO. En teoria el modo de cualquier flag deberia cargar el flag como byte... pero esto no funciona bien
+        //con rocman o en snapshot de chase hq por ejemplo. deberia ser cinta_longitud-=1 y no hacer el fread,
+        //para que se leyese el flag como byte
+    }
+
+    else	{
+        cinta_longitud-=2;
+        tape_block_read(&cinta_flag,1);
+    }
+
+
+    debug_printf(VERBOSE_INFO,"load start=%d flag asked=%d length asked=%d flag tape=%d length tape=%d",
+        cinta_pedido_inicio,cinta_pedido_flag,cinta_pedido_longitud,cinta_flag,cinta_longitud);
+
+
+    if (cinta_pedido_flag!=cinta_flag && (Z80_FLAGS_SHADOW & FLAG_Z)==0 ) {
+        debug_printf(VERBOSE_INFO,"Tape flag is not what asked");
+        //fseek(ptr_mycinta,cinta_longitud,SEEK_CUR);
+        tape_block_seek(cinta_longitud,SEEK_CUR);
+                        //saltamos checksum
+                        tape_block_read(&checksum,1);
+        //volver a cargar
+        if (MACHINE_IS_ZXUNO) reg_pc=zxuno_punto_entrado_load;
+        else if (MACHINE_IS_TIMEX_TS_TC_2068) reg_pc=255;
+                        else reg_pc=1378;
+
+    }
+
+    //leemos bytes
+    else {
+        Z80_FLAGS |=FLAG_C;
+
+        //no hace falta inicializarlo a 0, solo es para evitar un warning de compilacion
+        //warning: ‘leidos’ may be used uninitialized in this function
+        //Realmente no pasara nunca, siempre entrara en alguno de los if o else y se inicializará
+        int leidos=0;
+
+        if (cinta_longitud != cinta_pedido_longitud) {
+            debug_printf(VERBOSE_INFO,"Tape length (%d) is not what asked (%d)",cinta_longitud,cinta_pedido_longitud);
+            if (cinta_longitud>cinta_pedido_longitud) {
+                debug_printf(VERBOSE_INFO,"Tape length is more than asked");
+                leidos=tape_block_read(buffer_tap_read,cinta_pedido_longitud);
+                //leemos checksum si no en modo any flag
+                if ((Z80_FLAGS_SHADOW & FLAG_Z)==0)	tape_block_read(&checksum,1);
+
+                //y saltamos el resto que sobra
+                debug_printf(VERBOSE_INFO,"Skipping %d bytes",cinta_longitud-cinta_pedido_longitud);
+                                //fseek(ptr_mycinta,cinta_longitud-cinta_pedido_longitud,SEEK_CUR);
+
+                tape_block_seek(cinta_longitud-cinta_pedido_longitud,SEEK_CUR);
+
             }
+            if (cinta_longitud<cinta_pedido_longitud) {
+                debug_printf(VERBOSE_INFO,"Tape length is less than asked. Reading %d bytes",cinta_longitud);
 
-            //Movemos indicador de bloque, para el visor de cinta y saber donde estamos
-            tape_viewer_block_index++;
+                leidos=tape_block_read(buffer_tap_read,cinta_longitud);
 
-            cinta_longitud=tape_block_readlength();
-            if (cinta_longitud==0) {
-                int retornar_error=1;
-                if (tape_auto_rewind.v) {
-                    if (tape_block_feof()) {
-                        debug_printf(VERBOSE_INFO,"End of tape and autorewind enabled. Rewind tape");
-                        tape_viewer_block_index=0;
-                        tape_block_rewindbegin();
 
-                        tape_viewer_block_index++;
-                        cinta_longitud=tape_block_readlength();
 
-                        if (cinta_longitud!=0) retornar_error=0;
-                    }
-                }
+                checksum=0;
 
-                if (retornar_error) {
-                    debug_printf(VERBOSE_INFO,"Error read tape. Bytes=0");
-                    //tapefile=NULL;
-                    eject_tape_load();
-                    //tape_load_inserted.v=0;
+                //devolver error si no es que estamos en modo any flag
+                if ((Z80_FLAGS_SHADOW & FLAG_Z)==0) {
+                //TODO: completar esto
+                //descartar checksum
+                z80_byte nada;
+                tape_block_read(&nada,1);
+
+                    debug_printf(VERBOSE_INFO,"Returning load error");
                     Z80_FLAGS &=(255-FLAG_C);
-                    reg_pc=pop_valor();
-                    return;
-                }
-            }
-
-
-
-            z80_byte cinta_flag=0;
-
-
-            //if (tape_any_flag_loading.v==0) flag_Z_shadow.v=0;
-            if (tape_any_flag_loading.v==0) Z80_FLAGS_SHADOW &=(255-FLAG_Z);
-
-
-            //if (flag_Z_shadow.v==1) {
-                        if (Z80_FLAGS_SHADOW & FLAG_Z) {
-                debug_printf(VERBOSE_INFO,"Mode any flag");
-
-                char buffer_reg[1000];
-                print_registers(buffer_reg);
-
-                debug_printf(VERBOSE_INFO,"%s",buffer_reg);
-
-                cinta_flag=0;
-
-
-
-                //TODO. En teoria el modo de cualquier flag deberia cargar el flag como byte... pero esto no funciona bien
-                //con rocman o en snapshot de chase hq por ejemplo. deberia ser cinta_longitud-=1 y no hacer el fread,
-                //para que se leyese el flag como byte
-            }
-
-            else	{
-                cinta_longitud-=2;
-                tape_block_read(&cinta_flag,1);
-            }
-
-
-            debug_printf(VERBOSE_INFO,"load start=%d flag asked=%d length asked=%d flag tape=%d length tape=%d",
-                cinta_pedido_inicio,cinta_pedido_flag,cinta_pedido_longitud,cinta_flag,cinta_longitud);
-
-
-            if (cinta_pedido_flag!=cinta_flag && (Z80_FLAGS_SHADOW & FLAG_Z)==0 ) {
-                debug_printf(VERBOSE_INFO,"Tape flag is not what asked");
-                //fseek(ptr_mycinta,cinta_longitud,SEEK_CUR);
-                tape_block_seek(cinta_longitud,SEEK_CUR);
-                                //saltamos checksum
-                                tape_block_read(&checksum,1);
-                //volver a cargar
-                if (MACHINE_IS_ZXUNO) reg_pc=zxuno_punto_entrado_load;
-                else if (MACHINE_IS_TIMEX_TS_TC_2068) reg_pc=255;
-                                else reg_pc=1378;
-
-            }
-
-            //leemos bytes
-            else {
-                Z80_FLAGS |=FLAG_C;
-
-                //no hace falta inicializarlo a 0, solo es para evitar un warning de compilacion
-                //warning: ‘leidos’ may be used uninitialized in this function
-                //Realmente no pasara nunca, siempre entrara en alguno de los if o else y se inicializará
-                int leidos=0;
-
-                if (cinta_longitud != cinta_pedido_longitud) {
-                    debug_printf(VERBOSE_INFO,"Tape length (%d) is not what asked (%d)",cinta_longitud,cinta_pedido_longitud);
-                    if (cinta_longitud>cinta_pedido_longitud) {
-                        debug_printf(VERBOSE_INFO,"Tape length is more than asked");
-                        leidos=tape_block_read(buffer_tap_read,cinta_pedido_longitud);
-                        //leemos checksum si no en modo any flag
-                        if ((Z80_FLAGS_SHADOW & FLAG_Z)==0)	tape_block_read(&checksum,1);
-
-                        //y saltamos el resto que sobra
-                        debug_printf(VERBOSE_INFO,"Skipping %d bytes",cinta_longitud-cinta_pedido_longitud);
-                                        //fseek(ptr_mycinta,cinta_longitud-cinta_pedido_longitud,SEEK_CUR);
-
-                        tape_block_seek(cinta_longitud-cinta_pedido_longitud,SEEK_CUR);
-
-                    }
-                    if (cinta_longitud<cinta_pedido_longitud) {
-                        debug_printf(VERBOSE_INFO,"Tape length is less than asked. Reading %d bytes",cinta_longitud);
-
-                        leidos=tape_block_read(buffer_tap_read,cinta_longitud);
-
-
-
-                        checksum=0;
-
-                        //devolver error si no es que estamos en modo any flag
-                        if ((Z80_FLAGS_SHADOW & FLAG_Z)==0) {
-                        //TODO: completar esto
-                        //descartar checksum
-                        z80_byte nada;
-                        tape_block_read(&nada,1);
-
-                            debug_printf(VERBOSE_INFO,"Returning load error");
-                            Z80_FLAGS &=(255-FLAG_C);
-                        }
-
-
-                    }
                 }
 
-                else {
-                    //leidos=fread(buffer_tap_read,1,cinta_longitud,ptr_mycinta);
-                    leidos=tape_block_read(buffer_tap_read,cinta_longitud);
-                                    //leemos checksum
-                                    tape_block_read(&checksum,1);
-                }
+
+            }
+        }
+
+        else {
+            //leidos=fread(buffer_tap_read,1,cinta_longitud,ptr_mycinta);
+            leidos=tape_block_read(buffer_tap_read,cinta_longitud);
+            //leemos checksum
+            tape_block_read(&checksum,1);
+        }
 
 //				printf ("leidos: %d\n",leidos);
 
-                //simulamos sonido de carga, pokeando en destino tambien
-                load_spectrum_simulate_loading(buffer_tap_read,cinta_pedido_inicio,leidos,cinta_flag);
+        //simulamos sonido de carga, pokeando en destino tambien
+        load_spectrum_simulate_loading(buffer_tap_read,cinta_pedido_inicio,leidos,cinta_flag);
 
 
-                //calculamos checksum
-                z80_byte *origen,tempbyte;
-                origen=buffer_tap_read;
-                checksum_calculado=cinta_flag;
+        //calculamos checksum
+        z80_byte *origen,tempbyte;
+        origen=buffer_tap_read;
+        checksum_calculado=cinta_flag;
 
-                //printf ("calculamos checksum. leidos=%d checksum_calculado_inicial: %d\n",leidos,checksum_calculado);
+        //printf ("calculamos checksum. leidos=%d checksum_calculado_inicial: %d\n",leidos,checksum_calculado);
 
-                for (;leidos;leidos--) {
-                    tempbyte=*origen;
-                    poke_byte_no_time(cinta_pedido_inicio++,tempbyte);
+        for (;leidos;leidos--) {
+            tempbyte=*origen;
+            poke_byte_no_time(cinta_pedido_inicio++,tempbyte);
 //					printf ("byte\n");
-                    origen++;
-                    checksum_calculado=checksum_calculado ^ tempbyte;
-                    //printf ("0x%x ", checksum_calculado);
-                }
+            origen++;
+            checksum_calculado=checksum_calculado ^ tempbyte;
+            //printf ("0x%x ", checksum_calculado);
+        }
 
-                checksum_calculado=checksum_calculado ^ checksum;
-
-
+        checksum_calculado=checksum_calculado ^ checksum;
 
 
 
-                if (checksum_calculado!=0) {
-                    debug_printf(VERBOSE_INFO,"Tape checksum is not 0");
-                    Z80_FLAGS &=(255-FLAG_C);
-                                }
+        if (checksum_calculado!=0) {
+            debug_printf(VERBOSE_INFO,"Tape checksum is not 0");
+            Z80_FLAGS &=(255-FLAG_C);
+                        }
 
-                reg_pc=pop_valor();
+        reg_pc=pop_valor();
 
-                //reg_a=checksum_calculado;
-                //H=checksum
-                reg_h=checksum_calculado;
-                reg_ix=cinta_pedido_inicio++;
+        //reg_a=checksum_calculado;
+        //H=checksum
+        reg_h=checksum_calculado;
+        reg_ix=cinta_pedido_inicio++;
 
-                //Registro C en el retorno tiene valores diferentes, aunque no útiles ni documentados,
-                //sin embargo esto es necesario para el juego Sweet Fighter II
-                //Puede retornar valores 0x01, 0x21, 0xFE, 0xDE... en teoria son los ultimos valores enviados al puerto FEH
-                reg_c=1;
-
-
-                                //En principio la salida de carga siempre retorna flag Z a 0
-                                //esto corrige un problema en la carga de Rocman:
-                                //carga bloque de atributos, con "any flag loading" (flag Z' a 1), en 22527, con longitud 769
-                                //al volver de ese bloque, carga el siguiente (tal cual como esté flag Z, no lo toca),
-                                //y si no lo ponemos a 0, entonces el siguiente bloque lo cargaria como any flag loading, de nuevo,
-                                //cosa que es error, pues el siguiente bloque lo carga en 16384
-                                //de ahi que reseteemos siempre flag Z al volver
-                                //Probablemente este comportamiento sea un bug en el juego, en como carga,
-                                //pues antes de cargar el primer bloque, hace un XOR A, esto activa flag Z, cosa que no tiene sentido,
-                                //probablemente el programador vio que cargaba los atributos en 22529, sin saber por qué (metiendo en 22528 el flag),
-                                //y simplemente cambió la carga a 225287 y aumentó la longitud en 1. O no... quien sabe
-                                Z80_FLAGS &=(255-FLAG_Z);
+        //Registro C en el retorno tiene valores diferentes, aunque no útiles ni documentados,
+        //sin embargo esto es necesario para el juego Sweet Fighter II
+        //Puede retornar valores 0x01, 0x21, 0xFE, 0xDE... en teoria son los ultimos valores enviados al puerto FEH
+        reg_c=1;
 
 
-                debug_printf(VERBOSE_INFO,"Returning H=0x%x IX=%d",reg_h,reg_ix);
+        //En principio la salida de carga siempre retorna flag Z a 0
+        //esto corrige un problema en la carga de Rocman:
+        //carga bloque de atributos, con "any flag loading" (flag Z' a 1), en 22527, con longitud 769
+        //al volver de ese bloque, carga el siguiente (tal cual como esté flag Z, no lo toca),
+        //y si no lo ponemos a 0, entonces el siguiente bloque lo cargaria como any flag loading, de nuevo,
+        //cosa que es error, pues el siguiente bloque lo carga en 16384
+        //de ahi que reseteemos siempre flag Z al volver
+        //Probablemente este comportamiento sea un bug en el juego, en como carga,
+        //pues antes de cargar el primer bloque, hace un XOR A, esto activa flag Z, cosa que no tiene sentido,
+        //probablemente el programador vio que cargaba los atributos en 22529, sin saber por qué (metiendo en 22528 el flag),
+        //y simplemente cambió la carga a 225287 y aumentó la longitud en 1. O no... quien sabe
+        Z80_FLAGS &=(255-FLAG_Z);
 
-            }
 
-        //}
+        debug_printf(VERBOSE_INFO,"Returning H=0x%x IX=%d",reg_h,reg_ix);
+
+    }
 
 
 
