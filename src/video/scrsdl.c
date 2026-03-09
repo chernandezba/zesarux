@@ -452,9 +452,9 @@ void scrsdl_refresca_pantalla(void)
         */
 
     if (sem_screen_refresh_reallocate_layers) {
-            //printf ("--Screen layers are being reallocated. return\n");
-            //debug_exec_show_backtrace();
-            return;
+        //printf ("--Screen layers are being reallocated. return\n");
+        //debug_exec_show_backtrace();
+        return;
     }
 
     sem_screen_refresh_reallocate_layers=1;
@@ -462,18 +462,15 @@ void scrsdl_refresca_pantalla(void)
     scr_driver_redraw_desktop_windows();
 
     if (MACHINE_IS_ZX8081) {
-
-
-
-            scrsdl_refresca_pantalla_zx81();
+        scrsdl_refresca_pantalla_zx81();
     }
 
     else if (MACHINE_IS_PRISM) {
-            screen_prism_refresca_pantalla();
+        screen_prism_refresca_pantalla();
     }
 
     else if (MACHINE_IS_TBBLUE) {
-            screen_tbblue_refresca_pantalla();
+        screen_tbblue_refresca_pantalla();
     }
 
 
@@ -513,27 +510,27 @@ void scrsdl_refresca_pantalla(void)
 
 
     else if (MACHINE_IS_ACE) {
-            scr_refresca_pantalla_y_border_ace();
+        scr_refresca_pantalla_y_border_ace();
     }
 
     else if (MACHINE_IS_CPC) {
-            scr_refresca_pantalla_y_border_cpc();
+        scr_refresca_pantalla_y_border_cpc();
     }
 
     else if (MACHINE_IS_PCW) {
-            scr_refresca_pantalla_y_border_pcw();
+        scr_refresca_pantalla_y_border_pcw();
     }
 
     else if (MACHINE_IS_SAM) {
-            scr_refresca_pantalla_y_border_sam();
+        scr_refresca_pantalla_y_border_sam();
     }
 
     else if (MACHINE_IS_QL) {
-            scr_refresca_pantalla_y_border_ql();
+        scr_refresca_pantalla_y_border_ql();
     }
 
     else if (MACHINE_IS_MK14) {
-            scr_refresca_pantalla_y_border_mk14();
+        scr_refresca_pantalla_y_border_mk14();
     }
 
     else if (MACHINE_IS_MSX) {
@@ -557,7 +554,6 @@ void scrsdl_refresca_pantalla(void)
     }
 
 
-    //printf ("%d\n",spectrum_colortable[1]);
 
     screen_render_menu_overlay_if_active();
 
@@ -584,7 +580,6 @@ void scrsdl_end(void)
 
     scrsdl_inicializado.v=0;
     commonsdl_end();
-    //printf ("After close sdl driver\n");
 }
 
 z80_byte scrsdl_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
@@ -1779,60 +1774,59 @@ int realjoystick_sdl_init(void)
 {
 
 
-        debug_printf(VERBOSE_DEBUG,"Initializing real joystick. Using SDL support");
+    debug_printf(VERBOSE_DEBUG,"Initializing real joystick. Using SDL support");
 
-        SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+    SDL_InitSubSystem(SDL_INIT_JOYSTICK);
 
 
-        realjoystick_sdl_total_joysticks=SDL_NumJoysticks();
+    realjoystick_sdl_total_joysticks=SDL_NumJoysticks();
 
-        debug_printf(VERBOSE_DEBUG,"Total joysticks: %d",realjoystick_sdl_total_joysticks);
+    debug_printf(VERBOSE_DEBUG,"Total joysticks: %d",realjoystick_sdl_total_joysticks);
 
-        if (realjoystick_sdl_total_joysticks<1) {
-                return 1; //error
+    if (realjoystick_sdl_total_joysticks<1) {
+            return 1; //error
+    }
+
+    else {
+
+        sdl_joy=SDL_JoystickOpen(realjoystick_index);
+        if (sdl_joy) {
+                debug_printf(VERBOSE_DEBUG,"Opened Joystick 0");
+
+                sdl_num_axes=SDL_JoystickNumAxes(sdl_joy);
+                sdl_num_hats=SDL_JoystickNumHats(sdl_joy);
+                sdl_num_buttons=SDL_JoystickNumButtons(sdl_joy);
+
+                debug_printf(VERBOSE_DEBUG,"Name: %s", SDL_JoystickName(realjoystick_index));
+                debug_printf(VERBOSE_DEBUG,"Number of Axes: %d", sdl_num_axes);
+                debug_printf(VERBOSE_DEBUG,"Number of Hats: %d", sdl_num_hats);
+                debug_printf(VERBOSE_DEBUG,"Number of Buttons: %d", sdl_num_buttons);
+                //printf("Number of Balls: %d\n", SDL_JoystickNumBalls(sdl_joy));
+                //printf("Number of Hats: %d\n",SDL_JoystickNumHats(sdl_joy));
+
+
+                //Por si acaso el nombre lo truncamos
+                menu_tape_settings_trunc_name((char *)SDL_JoystickName(realjoystick_index),realjoystick_joy_name,REALJOYSTICK_MAX_NAME);
+
+                realjoystick_total_axes=sdl_num_axes;
+                realjoystick_total_buttons=sdl_num_buttons;
+
+                strcpy(realjoystick_driver_name,"SDL");
+
+
         }
 
         else {
-
-
-                sdl_joy=SDL_JoystickOpen(realjoystick_index);
-                if (sdl_joy) {
-                        debug_printf(VERBOSE_DEBUG,"Opened Joystick 0");
-
-                        sdl_num_axes=SDL_JoystickNumAxes(sdl_joy);
-                        sdl_num_hats=SDL_JoystickNumHats(sdl_joy);
-                        sdl_num_buttons=SDL_JoystickNumButtons(sdl_joy);
-
-                        debug_printf(VERBOSE_DEBUG,"Name: %s", SDL_JoystickName(realjoystick_index));
-                        debug_printf(VERBOSE_DEBUG,"Number of Axes: %d", sdl_num_axes);
-                        debug_printf(VERBOSE_DEBUG,"Number of Hats: %d", sdl_num_hats);
-                        debug_printf(VERBOSE_DEBUG,"Number of Buttons: %d", sdl_num_buttons);
-                        //printf("Number of Balls: %d\n", SDL_JoystickNumBalls(sdl_joy));
-                        //printf("Number of Hats: %d\n",SDL_JoystickNumHats(sdl_joy));
-
-
-                        //Por si acaso el nombre lo truncamos
-                        menu_tape_settings_trunc_name((char *)SDL_JoystickName(realjoystick_index),realjoystick_joy_name,REALJOYSTICK_MAX_NAME);
-
-                        realjoystick_total_axes=sdl_num_axes;
-                        realjoystick_total_buttons=sdl_num_buttons;
-
-                        strcpy(realjoystick_driver_name,"SDL");
-
-
-                }
-
-                else {
-                        return 1; //error
-                }
+                return 1; //error
         }
+    }
 
 
-        //Inicializar estados a 0
-        int i;
-        for (i=0;i<SDL_JOY_MAX_BOTONS;i++) sdl_states_joy_buttons[i]=0;
-        for (i=0;i<SDL_JOY_MAX_AXES;i++) sdl_states_joy_axes[i]=0;
-        for (i=0;i<SDL_JOY_MAX_HATS;i++) sdl_states_joy_hats[i]=0;
+    //Inicializar estados a 0
+    int i;
+    for (i=0;i<SDL_JOY_MAX_BOTONS;i++) sdl_states_joy_buttons[i]=0;
+    for (i=0;i<SDL_JOY_MAX_AXES;i++) sdl_states_joy_axes[i]=0;
+    for (i=0;i<SDL_JOY_MAX_HATS;i++) sdl_states_joy_hats[i]=0;
 
 
 	return 0; //OK
@@ -2054,51 +2048,51 @@ int scrsdl_init (void) {
     screen_este_driver_permite_ext_desktop=1;
 
 
-        //Inicializaciones necesarias
-        scr_putpixel=scrsdl_putpixel;
-        scr_putpixel_final=scrsdl_putpixel_final;
+    //Inicializaciones necesarias
+    scr_putpixel=scrsdl_putpixel;
+    scr_putpixel_final=scrsdl_putpixel_final;
 
-        if (scr_sdl_8bits_color.v) {
-            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_8;
-        }
-        else {
-            scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_32;
-        }
-        scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
+    if (scr_sdl_8bits_color.v) {
+        scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_8;
+    }
+    else {
+        scrsdl_putpixel_final_rgb=scrsdl_putpixel_final_rgb_32;
+    }
+    scr_putpixel_final_rgb=scrsdl_putpixel_final_rgb;
 
-        scr_get_menu_width=scrsdl_get_menu_width;
-        scr_get_menu_height=scrsdl_get_menu_height;
+    scr_get_menu_width=scrsdl_get_menu_width;
+    scr_get_menu_height=scrsdl_get_menu_height;
 	//scr_driver_can_ext_desktop=scrsdl_driver_can_ext_desktop;
 
 
-        scr_putchar_zx8081=scrsdl_putchar_zx8081;
-        scr_debug_registers=scrsdl_debug_registers;
-        scr_messages_debug=scrsdl_messages_debug;
-        scr_putchar_menu=scrsdl_putchar_menu;
-        scr_putchar_footer=scrsdl_putchar_footer;
-        scr_set_fullscreen=scrsdl_set_fullscreen;
-        scr_reset_fullscreen=scrsdl_reset_fullscreen;
-	scr_z88_cpc_load_keymap=scrsdl_z88_cpc_load_keymap;
-	scr_detectedchar_print=scrsdl_detectedchar_print;
-        scr_update_window_title=scrsdl_update_window_title;
-        scr_tiene_colores=1;
-        screen_refresh_menu=1;
+    scr_putchar_zx8081=scrsdl_putchar_zx8081;
+    scr_debug_registers=scrsdl_debug_registers;
+    scr_messages_debug=scrsdl_messages_debug;
+    scr_putchar_menu=scrsdl_putchar_menu;
+    scr_putchar_footer=scrsdl_putchar_footer;
+    scr_set_fullscreen=scrsdl_set_fullscreen;
+    scr_reset_fullscreen=scrsdl_reset_fullscreen;
+    scr_z88_cpc_load_keymap=scrsdl_z88_cpc_load_keymap;
+    scr_detectedchar_print=scrsdl_detectedchar_print;
+    scr_update_window_title=scrsdl_update_window_title;
+    scr_tiene_colores=1;
+    screen_refresh_menu=1;
 
 
-        if (!realjoystick_is_linux_native() ) {
+    if (!realjoystick_is_linux_native() ) {
 
 
-	        realjoystick_init=realjoystick_sdl_init;
-	        realjoystick_main=realjoystick_sdl_main;
+        realjoystick_init=realjoystick_sdl_init;
+        realjoystick_main=realjoystick_sdl_main;
 
-                realjoystick_initialize_joystick();
-        }
+        realjoystick_initialize_joystick();
+    }
 
 
 
-    	if (commonsdl_init() != 0 ) {
+    if (commonsdl_init() != 0 ) {
 		debug_printf (VERBOSE_ERR,"scrsdl_init: Error initializing driver");
-                return 1;
+        return 1;
 	}
 
 	scrsdl_inicializado.v=1;
@@ -2110,15 +2104,15 @@ int scrsdl_init (void) {
 
 
 
-        //Otra inicializacion necesaria
-        //Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
-        scr_set_driver_name("sdl");
+    //Otra inicializacion necesaria
+    //Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
+    scr_set_driver_name("sdl");
 
 
 	scr_z88_cpc_load_keymap();
 
-        //printf ("Ending initializing SDL driver\n");
+    //printf ("Ending initializing SDL driver\n");
 
-        return 0;
+    return 0;
 
 }
