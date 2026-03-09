@@ -107,7 +107,7 @@ The following is a list of complete features, all of which are optional.
 
 # Video Drivers
 
-- x11 (on GNU/Linux, other Unix and Raspberry): needs x11libs, x11extlibs, xf86vidmode, xxf86vm. On debian-based systems the command "apt-get install xorg-dev" will be enough
+- x11 (on GNU/Linux, other Unix and Raspberry): needs x11libs, x11extlibs, xxf86vm. On debian-based systems the command "apt-get install xorg-dev" will be enough
 - x11 (on Mac OS X): needs XQuartz
 - cocoa (on Mac OS X): Compiling supported using XCode.
 - SDL 1.2 (on GNU/Linux, other Unix and Raspberry): needs sdllib-1.2. SDL2 is experimental. Run "apt-get install libsdl1.2-dev" on debian-based systems

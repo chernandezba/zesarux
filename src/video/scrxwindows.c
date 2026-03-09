@@ -56,12 +56,6 @@
 #include <unistd.h>
 
 
-//Eliminar USE_XVIDMODE
-
-
-
-
-
 
 int shm_used = 0;
 static XImage *image = NULL;
@@ -116,8 +110,8 @@ void scrxwindows_resize(int width,int height);
 void scrxwindows_messages_debug(char *s)
 {
 	printf ("%s\n",s);
-        //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
-        fflush(stdout);
+    //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
+    fflush(stdout);
 
 }
 
@@ -136,14 +130,10 @@ void scrxwindows_messages_debug(char *s)
 
 
 
-//	z80_byte prueba_car=33;
-
 
 Display *dpy;
 
-
 Window ventana=0;
-
 
 GC gc;
 
@@ -250,20 +240,14 @@ int scrxwindows_setwindowparms(void)
 	XSetWMProtocols( dpy, ventana, &delete_window_atom, 1 );
 
 
-
-
 	return 0;
 
 }
 
-
-
-
-void scrxwindows_reset_fullscreen(void)
+void scrxwindows_set_reset_fullscreen(int set_reset)
 {
-
     //Los window managers modernos (como los de GNOME, KDE Plasma o Xfce) soportan el protocolo EWMH.
-    //Debes enviar un ClientMessage al window manager.
+    //Se envia un ClientMessage al window manager.
     Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
     Atom fullscreen = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
 
@@ -272,7 +256,7 @@ void scrxwindows_reset_fullscreen(void)
     xev.xclient.window = ventana;
     xev.xclient.message_type = wm_state;
     xev.xclient.format = 32;
-    xev.xclient.data.l[0] = 0; // remove fullscreen
+    xev.xclient.data.l[0] = set_reset; // 0=remove fullscreen, 1 = enable fullscreen
     xev.xclient.data.l[1] = fullscreen;
     xev.xclient.data.l[2] = 0;
 
@@ -284,39 +268,21 @@ void scrxwindows_reset_fullscreen(void)
         &xev
     );
 
-    change_variable_ventana_fullscreen(0);
+    change_variable_ventana_fullscreen(set_reset);
+}
 
+
+void scrxwindows_reset_fullscreen(void)
+{
+    debug_printf (VERBOSE_INFO,"Resetting full screen");
+    scrxwindows_set_reset_fullscreen(0);
 
 }
 
 void scrxwindows_set_fullscreen(void)
 {
     debug_printf (VERBOSE_INFO,"Setting full screen");
-
-    //Los window managers modernos (como los de GNOME, KDE Plasma o Xfce) soportan el protocolo EWMH.
-    //Debes enviar un ClientMessage al window manager.
-    Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
-    Atom fullscreen = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
-
-    XEvent xev = {0};
-    xev.type = ClientMessage;
-    xev.xclient.window = ventana;
-    xev.xclient.message_type = wm_state;
-    xev.xclient.format = 32;
-    xev.xclient.data.l[0] = 1; // 1 = enable fullscreen
-    xev.xclient.data.l[1] = fullscreen;
-    xev.xclient.data.l[2] = 0;
-
-    XSendEvent(
-        dpy,
-        DefaultRootWindow(dpy),
-        False,
-        SubstructureRedirectMask | SubstructureNotifyMask,
-        &xev
-    );
-
-    change_variable_ventana_fullscreen(1);
-
+    scrxwindows_set_reset_fullscreen(1);
 
 }
 
