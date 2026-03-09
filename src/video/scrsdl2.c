@@ -1389,7 +1389,9 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
 void scrsdl_resize(int width,int height)
 {
 
-    if (ventana_fullscreen) return ; //No hacer resizes cuando este en pantalla completa, sino nos metemos en un bucle de resizes continuos
+    if (ventana_fullscreen) {
+        return ; //No hacer resizes cuando este en pantalla completa, sino nos metemos en un bucle de resizes continuos
+    }
 
     clear_putpixel_cache();
 
@@ -1436,7 +1438,9 @@ void scrsdl_resize(int width,int height)
 int scrsdl_recibido_resize(SDL_Event *event)
 {
 
-    if (ventana_fullscreen) return 0; //No avisar de resizes cuando este en pantalla completa, sino nos metemos en un bucle de resizes continuos
+    if (ventana_fullscreen) {
+        return 0; //No avisar de resizes cuando este en pantalla completa, sino nos metemos en un bucle de resizes continuos
+    }
 
     if (event->type==SDL_WINDOWEVENT) {
         if (event->window.event==SDL_WINDOWEVENT_RESIZED) return 1;
