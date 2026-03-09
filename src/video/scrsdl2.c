@@ -1382,7 +1382,6 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
     else if (tecla==scrsdl_keymap_z88_cpc_slash) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_SLASH,pressrelease);
 
 
-
 }
 
 
