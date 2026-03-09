@@ -645,26 +645,7 @@ void scrxwindows_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel
 
 }
 
-//Rutina de putchar para footer window
-/*
-void old_scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 
-
-        int yorigen;
-
-	yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
-
-        //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
-        y +=yorigen;
-        z80_bit inverse;
-
-        inverse.v=0;
-        //128 y 129 corresponden a franja de menu y a letra enye minuscula
-        if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
-        //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
-				scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
-}
-*/
 
 //Rutina de putchar para footer window
 void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
