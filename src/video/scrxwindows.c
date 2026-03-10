@@ -1189,22 +1189,22 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 
             //F1 pulsado
-                        case XK_F1:
+            case XK_F1:
                 util_set_reset_key(UTIL_KEY_F1,pressrelease);
-                        break;
+            break;
 
             //F2 pulsado
-                        case XK_F2:
+            case XK_F2:
                 util_set_reset_key(UTIL_KEY_F2,pressrelease);
-                        break;
+            break;
 
             //F3 pulsado
-                        case XK_F3:
+            case XK_F3:
                 util_set_reset_key(UTIL_KEY_F3,pressrelease);
-                        break;
+            break;
 
             //F4 pulsado
-                        case XK_F4:
+            case XK_F4:
                 util_set_reset_key(UTIL_KEY_F4,pressrelease);
                         break;
 
