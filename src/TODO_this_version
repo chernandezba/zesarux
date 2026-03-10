@@ -120,3 +120,6 @@ ok ->probar con --vo xwindows por ejemplo
 *xwindows:
 **no hace escalado? el escalado es el mio de zoom que entra por el aviso de resize.
 **al salir de fullscreen, se queda zoom muy grande
+
+
+-copiar (desde fuera de ZEsarUX) -pegar como pulsaciones de teclas

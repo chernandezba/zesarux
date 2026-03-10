@@ -1058,6 +1058,7 @@ printf (
         "--hardware-debug-ports-byte-file f  Sets the file used on register HARDWARE_DEBUG_BYTE_FILE\n"
         "--dump-ram-to-file f                Dump memory from 4000h to ffffh to a file, when exiting emulator\n"
         "--dump-snapshot-panic               Dump .zsf snapshot when a cpu panic is fired\n"
+        "--show-visualmem-text               Shows Visualmem menu with text instead of graphic\n"
         "--textadvmap-zoom n                 Text adventure map: zoom level\n"
         "--textadvmap-follow                 Text adventure map: follow the current position on the map\n"
         "--textadvmap-show-unconnected       Text adventure map: show unconnected rooms\n"
@@ -4879,6 +4880,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--watch-show-decimal-results")) {
                 debug_watches_show_decimal.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--show-visualmem-text")) {
+                setting_mostrar_visualmem_grafico.v=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--load-source-code")) {

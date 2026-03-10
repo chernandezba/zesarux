@@ -527,6 +527,8 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
             "If you want to use this config file on startup instead of the default .zesaruxrc file you must launch ZEsarUX with setting --configfile");
         menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_GENERA_VENTANA|MENU_ITEM_FLAG_SE_CERRARA|MENU_ITEM_FLAG_ES_AVANZADO);
 
+        menu_add_item_menu_separator(array_menu_settings_config_file);
+        menu_add_item_menu_add_flags(array_menu_settings_config_file,MENU_ITEM_FLAG_ES_AVANZADO);
 
         menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_delete,NULL,
             "    Delete config file","    Borrar archivo config","    Esborrar arxiu config");
@@ -12403,6 +12405,8 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+
 
         menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_autorewind,NULL,
             "Autorew~~ind","Autorebob~~inar","Autorebob~~inar");
