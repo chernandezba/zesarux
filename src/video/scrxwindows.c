@@ -977,96 +977,96 @@ void deal_with_keys(XEvent *event,int pressrelease)
             break;
 
             case XK_minus:
-                        keysym = XK_6;
-                break;
+                keysym = XK_6;
+            break;
 
             case XK_egrave:
-                        keysym = XK_7;
-                break;
+                keysym = XK_7;
+            break;
 
             case XK_underscore:
                 keysym = XK_8;
-                break;
+            break;
 
             case XK_ccedilla:
                 keysym = XK_9;
                 break;
 
             case XK_agrave:
-                    keysym = XK_0;
+                keysym = XK_0;
             break;
         }
     }
 
      int tecla_gestionada_chloe=0;
-        if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
-                        tecla_gestionada_chloe=1;
+    if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
+        tecla_gestionada_chloe=1;
 
-                        if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_MINUS,pressrelease);
+        if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_MINUS,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_equal) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_EQUAL,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_equal) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_EQUAL,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_BACKSLASH,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_BACKSLASH,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_BRACKET_LEFT,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_BRACKET_LEFT,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_BRACKET_RIGHT,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_BRACKET_RIGHT,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_SEMICOLON,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_SEMICOLON,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_apostrophe) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_APOSTROPHE,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_apostrophe) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_APOSTROPHE,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_pound) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_POUND,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_pound) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_POUND,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_COMMA,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_COMMA,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_PERIOD,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_PERIOD,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_SLASH,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_SLASH,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_leftz) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_LEFTZ,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_leftz) util_set_reset_key_chloe_keymap(UTIL_KEY_CHLOE_LEFTZ,pressrelease);
 
-                        else tecla_gestionada_chloe=0;
-        }
-
-
-        if (tecla_gestionada_chloe) return;
+        else tecla_gestionada_chloe=0;
+    }
 
 
-
-        int tecla_gestionada_sam_ql=0;
-        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
-                tecla_gestionada_sam_ql=1;
-
-                        if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_equal) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_EQUAL,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_BACKSLASH,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_BRACKET_LEFT,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_BRACKET_RIGHT,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SEMICOLON,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_apostrophe) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_APOSTROPHE,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_pound) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_POUND,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_COMMA,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
-
-                        else if (keysym==scrxwindows_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
+    if (tecla_gestionada_chloe) return;
 
 
-                else tecla_gestionada_sam_ql=0;
-        }
 
-        if (tecla_gestionada_sam_ql) return;
+    int tecla_gestionada_sam_ql=0;
+    if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
+        tecla_gestionada_sam_ql=1;
+
+        if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_equal) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_EQUAL,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_BACKSLASH,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_BRACKET_LEFT,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_BRACKET_RIGHT,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SEMICOLON,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_apostrophe) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_APOSTROPHE,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_pound) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_POUND,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_COMMA,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
+
+
+        else tecla_gestionada_sam_ql=0;
+    }
+
+    if (tecla_gestionada_sam_ql) return;
 
 
 
@@ -1084,47 +1084,48 @@ void deal_with_keys(XEvent *event,int pressrelease)
                 joystick_possible_leftshift_key(pressrelease);
             break;
 
-                        case XK_Shift_R:
+            case XK_Shift_R:
                 joystick_possible_rightshift_key(pressrelease);
-                        break;
+            break;
 
-                        case XK_Alt_L:
+            case XK_Alt_L:
                 joystick_possible_leftalt_key(pressrelease);
             break;
-                        case XK_Alt_R:
+
+            case XK_Alt_R:
                 joystick_possible_rightalt_key(pressrelease);
-                        break;
+            break;
 
 
             case XK_Control_L:
                 joystick_possible_leftctrl_key(pressrelease);
-                        break;
+            break;
 
             case XK_Control_R:
                 joystick_possible_rightctrl_key(pressrelease);
-                        break;
+            break;
 
             case XK_Super_L:
                 util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
-                        break;
+            break;
 
             case XK_Super_R:
                 util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
-                        break;
+            break;
 
 
             case XK_Delete:
                 util_set_reset_key(UTIL_KEY_DEL,pressrelease);
-                        break;
+            break;
 
             //Teclas que generan doble pulsacion
             case XK_BackSpace:
                 util_set_reset_key(UTIL_KEY_BACKSPACE,pressrelease);
-                        break;
+            break;
 
             case XK_Home:
                 joystick_possible_home_key(pressrelease);
-                        break;
+            break;
 
             case XK_End:
                 util_set_reset_key(UTIL_KEY_END,pressrelease);
@@ -1132,55 +1133,55 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
             case XK_Left:
                 util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
-                        break;
+            break;
 
-                        case XK_Right:
+            case XK_Right:
                 util_set_reset_key(UTIL_KEY_RIGHT,pressrelease);
-                        break;
+            break;
 
-                        case XK_Down:
+            case XK_Down:
                 util_set_reset_key(UTIL_KEY_DOWN,pressrelease);
-                        break;
+            break;
 
-                        case XK_Up:
+            case XK_Up:
                 util_set_reset_key(UTIL_KEY_UP,pressrelease);
-                        break;
+            break;
 
             case XK_Tab:
                 joystick_possible_tab_key(pressrelease);
-                        break;
+            break;
 
             case XK_Caps_Lock:
                 util_set_reset_key(UTIL_KEY_CAPS_LOCK,pressrelease);
-                        break;
+            break;
 
             case XK_comma:
                 util_set_reset_key(UTIL_KEY_COMMA,pressrelease);
-                        break;
+            break;
 
             case XK_period:
                 util_set_reset_key(UTIL_KEY_PERIOD,pressrelease);
-                        break;
+            break;
 
             case XK_minus:
             case XK_KP_Subtract:
                 util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
-                        break;
+            break;
 
             case XK_plus:
             case XK_KP_Add:
                 util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
-                        break;
+            break;
 
-                        case XK_slash:
-                        case XK_KP_Divide:
+            case XK_slash:
+            case XK_KP_Divide:
                 util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
-                        break;
+            break;
 
-                        case XK_asterisk:
-                        case XK_KP_Multiply:
+            case XK_asterisk:
+            case XK_KP_Multiply:
                 util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
-                        break;
+            break;
 
             case XK_Num_Lock:
                 util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
