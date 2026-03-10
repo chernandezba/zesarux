@@ -1188,84 +1188,85 @@ void deal_with_keys(XEvent *event,int pressrelease)
             break;
 
 
-            //F1 pulsado
+
             case XK_F1:
                 util_set_reset_key(UTIL_KEY_F1,pressrelease);
             break;
 
-            //F2 pulsado
+
             case XK_F2:
                 util_set_reset_key(UTIL_KEY_F2,pressrelease);
             break;
 
-            //F3 pulsado
+
             case XK_F3:
                 util_set_reset_key(UTIL_KEY_F3,pressrelease);
             break;
 
-            //F4 pulsado
+
             case XK_F4:
                 util_set_reset_key(UTIL_KEY_F4,pressrelease);
-                        break;
-
-                        //F5 pulsado
-                        case XK_F5:
-                                util_set_reset_key(UTIL_KEY_F5,pressrelease);
-                        break;
+            break;
 
 
-                        //F6 pulsado
-                        case XK_F6:
-                                util_set_reset_key(UTIL_KEY_F6,pressrelease);
-                        break;
-
-                        //F7 pulsado
-                        case XK_F7:
-                                util_set_reset_key(UTIL_KEY_F7,pressrelease);
-                        break;
+            case XK_F5:
+                    util_set_reset_key(UTIL_KEY_F5,pressrelease);
+            break;
 
 
-            //F8 pulsado. osdkeyboard
+
+            case XK_F6:
+                    util_set_reset_key(UTIL_KEY_F6,pressrelease);
+            break;
+
+
+            case XK_F7:
+                    util_set_reset_key(UTIL_KEY_F7,pressrelease);
+            break;
+
+
+
             case XK_F8:
                 util_set_reset_key(UTIL_KEY_F8,pressrelease);
                         break;
 
-            //F9 pulsado. quickload
+
             case XK_F9:
                 util_set_reset_key(UTIL_KEY_F9,pressrelease);
-                        break;
+            break;
 
 
-                        //F10 pulsado
-                        case XK_F10:
+
+            case XK_F10:
                 util_set_reset_key(UTIL_KEY_F10,pressrelease);
-                        break;
+            break;
 
 
-                        //F11 pulsado
-                        case XK_F11:
-                                util_set_reset_key(UTIL_KEY_F11,pressrelease);
-                        break;
 
-                        //F12 pulsado
-                        case XK_F12:
-                                util_set_reset_key(UTIL_KEY_F12,pressrelease);
-                        break;
+            case XK_F11:
+                util_set_reset_key(UTIL_KEY_F11,pressrelease);
+            break;
 
-                        //F13 pulsado
-                        case XK_F13:
-                                util_set_reset_key(UTIL_KEY_F13,pressrelease);
-                        break;
 
-                        //F14 pulsado
-                        case XK_F14:
-                                util_set_reset_key(UTIL_KEY_F14,pressrelease);
-                        break;
+            case XK_F12:
+                util_set_reset_key(UTIL_KEY_F12,pressrelease);
+            break;
 
-                        //F15 pulsado
-                        case XK_F15:
-                                util_set_reset_key(UTIL_KEY_F15,pressrelease);
-                        break;
+
+            case XK_F13:
+                util_set_reset_key(UTIL_KEY_F13,pressrelease);
+            break;
+
+
+            case XK_F14:
+                util_set_reset_key(UTIL_KEY_F14,pressrelease);
+            break;
+
+
+            case XK_F15:
+                util_set_reset_key(UTIL_KEY_F15,pressrelease);
+            break;
+
 
             //ESC pulsado
             case XK_Escape:
@@ -1273,64 +1274,64 @@ void deal_with_keys(XEvent *event,int pressrelease)
             break;
 
             //PgUp
-                        case XK_Page_Up:
+            case XK_Page_Up:
                 util_set_reset_key(UTIL_KEY_PAGE_UP,pressrelease);
-                        break;
+            break;
 
-                        //PgDn
-                        case XK_Page_Down:
+            //PgDn
+            case XK_Page_Down:
                 util_set_reset_key(UTIL_KEY_PAGE_DOWN,pressrelease);
-                        break;
+            break;
 
 
             //Teclas del keypad
             case XK_KP_Insert:
-                                util_set_reset_key(UTIL_KEY_KP0,pressrelease);
-                        break;
+                    util_set_reset_key(UTIL_KEY_KP0,pressrelease);
+            break;
 
-                        case XK_KP_End:
-                                util_set_reset_key(UTIL_KEY_KP1,pressrelease);
-                        break;
+            case XK_KP_End:
+                    util_set_reset_key(UTIL_KEY_KP1,pressrelease);
+            break;
 
-                        case XK_KP_Down:
-                                util_set_reset_key(UTIL_KEY_KP2,pressrelease);
-                        break;
+            case XK_KP_Down:
+                    util_set_reset_key(UTIL_KEY_KP2,pressrelease);
+            break;
 
-                        case XK_KP_Page_Down:
-                                util_set_reset_key(UTIL_KEY_KP3,pressrelease);
-                        break;
+            case XK_KP_Page_Down:
+                    util_set_reset_key(UTIL_KEY_KP3,pressrelease);
+            break;
 
-                        case XK_KP_Left:
-                                util_set_reset_key(UTIL_KEY_KP4,pressrelease);
-                        break;
+            case XK_KP_Left:
+                    util_set_reset_key(UTIL_KEY_KP4,pressrelease);
+            break;
 
-                        case XK_KP_Begin:
-                                util_set_reset_key(UTIL_KEY_KP5,pressrelease);
-                        break;
+            case XK_KP_Begin:
+                    util_set_reset_key(UTIL_KEY_KP5,pressrelease);
+            break;
 
-                        case XK_KP_Right:
-                                util_set_reset_key(UTIL_KEY_KP6,pressrelease);
-                        break;
+            case XK_KP_Right:
+                    util_set_reset_key(UTIL_KEY_KP6,pressrelease);
+            break;
 
-                        case XK_KP_Home:
-                                util_set_reset_key(UTIL_KEY_KP7,pressrelease);
-                        break;
+            case XK_KP_Home:
+                    util_set_reset_key(UTIL_KEY_KP7,pressrelease);
+            break;
 
-                        case XK_KP_Up:
-                                util_set_reset_key(UTIL_KEY_KP8,pressrelease);
-                        break;
+            case XK_KP_Up:
+                    util_set_reset_key(UTIL_KEY_KP8,pressrelease);
+            break;
 
-                        case XK_KP_Page_Up:
-                                util_set_reset_key(UTIL_KEY_KP9,pressrelease);
-                        break;
+            case XK_KP_Page_Up:
+                    util_set_reset_key(UTIL_KEY_KP9,pressrelease);
+            break;
 
-                        case XK_KP_Delete:
-                                util_set_reset_key(UTIL_KEY_KP_COMMA,pressrelease);
-                        break;
+            case XK_KP_Delete:
+                    util_set_reset_key(UTIL_KEY_KP_COMMA,pressrelease);
+            break;
 
-                        case XK_KP_Enter:
-                                util_set_reset_key(UTIL_KEY_KP_ENTER,pressrelease);
-                        break;
+            case XK_KP_Enter:
+                    util_set_reset_key(UTIL_KEY_KP_ENTER,pressrelease);
+            break;
 
 
 
@@ -1345,32 +1346,32 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
     //Fuera del switch
 
-//Teclas que necesitan conversion de teclado para CPC
+    //Teclas que necesitan conversion de teclado para CPC
         if (MACHINE_IS_CPC) {
 
-                        if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_MINUS,pressrelease);
+            if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_MINUS,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_circunflejo) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_CIRCUNFLEJO,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_circunflejo) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_CIRCUNFLEJO,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_arroba) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_ARROBA,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_arroba) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_ARROBA,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_LEFT,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_LEFT,pressrelease);
 
 
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_colon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COLON,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_colon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COLON,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SEMICOLON,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SEMICOLON,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_RIGHT,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_RIGHT,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COMMA,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COMMA,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_PERIOD,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_PERIOD,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SLASH,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SLASH,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BACKSLASH,pressrelease);
+            else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BACKSLASH,pressrelease);
 
 
         }
@@ -1379,29 +1380,27 @@ void deal_with_keys(XEvent *event,int pressrelease)
 //Teclas que necesitan conversion de teclado para Z88
     if (!MACHINE_IS_Z88) return;
 
-                        if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_MINUS,pressrelease);
+    if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_MINUS,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_equal) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_EQUAL,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_equal) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_EQUAL,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_BACKSLASH,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_BACKSLASH,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_BRACKET_LEFT,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_BRACKET_LEFT,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_BRACKET_RIGHT,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_BRACKET_RIGHT,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_SEMICOLON,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_SEMICOLON,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_apostrophe) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_APOSTROPHE,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_apostrophe) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_APOSTROPHE,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_pound) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_POUND,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_pound) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_POUND,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_COMMA,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_COMMA,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_PERIOD,pressrelease);
+    else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_PERIOD,pressrelease);
 
-                        else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_SLASH,pressrelease);
-
-
+    else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_SLASH,pressrelease);
 
 
 
