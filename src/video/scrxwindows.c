@@ -56,8 +56,7 @@
 
 
 
-int shm_used = 0;
-static XImage *image = NULL;
+
 
 
 #ifdef USE_XEXT
@@ -68,16 +67,7 @@ static XImage *image = NULL;
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <X11/extensions/XShm.h>
-#endif
 
-static Visual *xdisplay_visual = NULL;
-static int xdisplay_depth = -1;
-
-//para desactivar shm por linea de comandos
-int disable_shm=0;
-
-
-#ifdef X_USE_SHM
 static XShmSegmentInfo shm_info;
 int shm_eventtype;
 
@@ -86,7 +76,16 @@ static int get_shm_id( const int size );
 #endif
 
 
-int xdisplay_end (void);
+
+int shm_used = 0;
+static XImage *image = NULL;
+
+static Visual *xdisplay_visual = NULL;
+static int xdisplay_depth = -1;
+
+//para desactivar shm por linea de comandos
+int disable_shm=0;
+
 
 int xerror_error;
 int xerror_expecting;
@@ -94,10 +93,7 @@ int xerror_expecting;
 
 int ultimo_resize_width=0,ultimo_resize_height=0;
 
-int fullscreen_width,fullscreen_height;
 
-//Resolucion pantalla antes de full screen
-int screen_prefull_width,screen_prefull_height;
 
 Display *dpy;
 
@@ -186,8 +182,8 @@ int scrxwindows_setwindowparms(void)
     sizeHints->height_inc   = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
 
 
-    sizeHints->max_width    =     9999 * sizeHints->width_inc;
-    sizeHints->max_height   =     9999 * sizeHints->height_inc;
+    sizeHints->max_width    = 9999 * sizeHints->width_inc;
+    sizeHints->max_height   = 9999 * sizeHints->height_inc;
 
     sizeHints->flags |= PAspect;
     sizeHints->min_aspect.x = 0;
@@ -729,15 +725,43 @@ void scrxwindows_refresca_pantalla(void)
 }
 
 
+
+static void xdisplay_destroy_image(void)
+{
+  /* Free the XImage used to store screen data; also frees the malloc'd
+     data */
+
+#ifdef X_USE_SHM
+    if (shm_used) {
+        XShmDetach( dpy, &shm_info );
+        shmdt( shm_info.shmaddr );
+        image->data = NULL;
+        shm_used = 0;
+    }
+
+#endif
+
+    if (image) {
+        XDestroyImage(image);
+        image = NULL;
+    }
+}
+
+
 void scrxwindows_end(void)
 {
 
     debug_printf (VERBOSE_INFO,"Closing xwindows video driver");
 
-    //Si hay pantalla completa, desactivarla
-    //if (ventana_fullscreen) scrxwindows_reset_fullscreen();
 
-    xdisplay_end();
+    xdisplay_destroy_image();
+    /* Free the allocated GC */
+    if (gc) XFreeGC( dpy, gc );
+
+    gc = 0;
+
+    XDestroyWindow(dpy,ventana);
+    XCloseDisplay(dpy);
 }
 
 
@@ -940,7 +964,7 @@ void scrxwindows_z88_cpc_load_keymap(void)
 void deal_with_keys(XEvent *event,int pressrelease)
 {
     KeySym keysym;
-    //char tecla;
+
 
 
     KeySym native;
@@ -998,7 +1022,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
         }
     }
 
-     int tecla_gestionada_chloe=0;
+    int tecla_gestionada_chloe=0;
     if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
         tecla_gestionada_chloe=1;
 
@@ -1072,309 +1096,309 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
     switch (keysym) {
 
-            case 32:
-                util_set_reset_key(UTIL_KEY_SPACE,pressrelease);
-            break;
+        case 32:
+            util_set_reset_key(UTIL_KEY_SPACE,pressrelease);
+        break;
 
-            case XK_Return:
-                util_set_reset_key(UTIL_KEY_ENTER,pressrelease);
-            break;
+        case XK_Return:
+            util_set_reset_key(UTIL_KEY_ENTER,pressrelease);
+        break;
 
-            case XK_Shift_L:
-                joystick_possible_leftshift_key(pressrelease);
-            break;
+        case XK_Shift_L:
+            joystick_possible_leftshift_key(pressrelease);
+        break;
 
-            case XK_Shift_R:
-                joystick_possible_rightshift_key(pressrelease);
-            break;
+        case XK_Shift_R:
+            joystick_possible_rightshift_key(pressrelease);
+        break;
 
-            case XK_Alt_L:
-                joystick_possible_leftalt_key(pressrelease);
-            break;
+        case XK_Alt_L:
+            joystick_possible_leftalt_key(pressrelease);
+        break;
 
-            case XK_Alt_R:
-                joystick_possible_rightalt_key(pressrelease);
-            break;
+        case XK_Alt_R:
+            joystick_possible_rightalt_key(pressrelease);
+        break;
 
 
-            case XK_Control_L:
-                joystick_possible_leftctrl_key(pressrelease);
-            break;
+        case XK_Control_L:
+            joystick_possible_leftctrl_key(pressrelease);
+        break;
 
-            case XK_Control_R:
-                joystick_possible_rightctrl_key(pressrelease);
-            break;
+        case XK_Control_R:
+            joystick_possible_rightctrl_key(pressrelease);
+        break;
 
-            case XK_Super_L:
-                util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
-            break;
+        case XK_Super_L:
+            util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
+        break;
 
-            case XK_Super_R:
-                util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
-            break;
+        case XK_Super_R:
+            util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
+        break;
 
 
-            case XK_Delete:
-                util_set_reset_key(UTIL_KEY_DEL,pressrelease);
-            break;
+        case XK_Delete:
+            util_set_reset_key(UTIL_KEY_DEL,pressrelease);
+        break;
 
-            //Teclas que generan doble pulsacion
-            case XK_BackSpace:
-                util_set_reset_key(UTIL_KEY_BACKSPACE,pressrelease);
-            break;
+        //Teclas que generan doble pulsacion
+        case XK_BackSpace:
+            util_set_reset_key(UTIL_KEY_BACKSPACE,pressrelease);
+        break;
 
-            case XK_Home:
-                joystick_possible_home_key(pressrelease);
-            break;
+        case XK_Home:
+            joystick_possible_home_key(pressrelease);
+        break;
 
-            case XK_End:
-                util_set_reset_key(UTIL_KEY_END,pressrelease);
-            break;
+        case XK_End:
+            util_set_reset_key(UTIL_KEY_END,pressrelease);
+        break;
 
-            case XK_Left:
-                util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
-            break;
+        case XK_Left:
+            util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
+        break;
 
-            case XK_Right:
-                util_set_reset_key(UTIL_KEY_RIGHT,pressrelease);
-            break;
+        case XK_Right:
+            util_set_reset_key(UTIL_KEY_RIGHT,pressrelease);
+        break;
 
-            case XK_Down:
-                util_set_reset_key(UTIL_KEY_DOWN,pressrelease);
-            break;
+        case XK_Down:
+            util_set_reset_key(UTIL_KEY_DOWN,pressrelease);
+        break;
 
-            case XK_Up:
-                util_set_reset_key(UTIL_KEY_UP,pressrelease);
-            break;
+        case XK_Up:
+            util_set_reset_key(UTIL_KEY_UP,pressrelease);
+        break;
 
-            case XK_Tab:
-                joystick_possible_tab_key(pressrelease);
-            break;
+        case XK_Tab:
+            joystick_possible_tab_key(pressrelease);
+        break;
 
-            case XK_Caps_Lock:
-                util_set_reset_key(UTIL_KEY_CAPS_LOCK,pressrelease);
-            break;
+        case XK_Caps_Lock:
+            util_set_reset_key(UTIL_KEY_CAPS_LOCK,pressrelease);
+        break;
 
-            case XK_comma:
-                util_set_reset_key(UTIL_KEY_COMMA,pressrelease);
-            break;
+        case XK_comma:
+            util_set_reset_key(UTIL_KEY_COMMA,pressrelease);
+        break;
 
-            case XK_period:
-                util_set_reset_key(UTIL_KEY_PERIOD,pressrelease);
-            break;
+        case XK_period:
+            util_set_reset_key(UTIL_KEY_PERIOD,pressrelease);
+        break;
 
-            case XK_minus:
-            case XK_KP_Subtract:
-                util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
-            break;
+        case XK_minus:
+        case XK_KP_Subtract:
+            util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
+        break;
 
-            case XK_plus:
-            case XK_KP_Add:
-                util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
-            break;
+        case XK_plus:
+        case XK_KP_Add:
+            util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
+        break;
 
-            case XK_slash:
-            case XK_KP_Divide:
-                util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
-            break;
+        case XK_slash:
+        case XK_KP_Divide:
+            util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
+        break;
 
-            case XK_asterisk:
-            case XK_KP_Multiply:
-                util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
-            break;
+        case XK_asterisk:
+        case XK_KP_Multiply:
+            util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
+        break;
 
-            case XK_Num_Lock:
-                util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
-            break;
+        case XK_Num_Lock:
+            util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+        break;
 
 
 
-            case XK_F1:
-                util_set_reset_key(UTIL_KEY_F1,pressrelease);
-            break;
+        case XK_F1:
+            util_set_reset_key(UTIL_KEY_F1,pressrelease);
+        break;
 
 
-            case XK_F2:
-                util_set_reset_key(UTIL_KEY_F2,pressrelease);
-            break;
+        case XK_F2:
+            util_set_reset_key(UTIL_KEY_F2,pressrelease);
+        break;
 
 
-            case XK_F3:
-                util_set_reset_key(UTIL_KEY_F3,pressrelease);
-            break;
+        case XK_F3:
+            util_set_reset_key(UTIL_KEY_F3,pressrelease);
+        break;
 
 
-            case XK_F4:
-                util_set_reset_key(UTIL_KEY_F4,pressrelease);
-            break;
+        case XK_F4:
+            util_set_reset_key(UTIL_KEY_F4,pressrelease);
+        break;
 
 
-            case XK_F5:
-                    util_set_reset_key(UTIL_KEY_F5,pressrelease);
-            break;
+        case XK_F5:
+                util_set_reset_key(UTIL_KEY_F5,pressrelease);
+        break;
 
 
 
-            case XK_F6:
-                    util_set_reset_key(UTIL_KEY_F6,pressrelease);
-            break;
+        case XK_F6:
+                util_set_reset_key(UTIL_KEY_F6,pressrelease);
+        break;
 
 
-            case XK_F7:
-                    util_set_reset_key(UTIL_KEY_F7,pressrelease);
-            break;
+        case XK_F7:
+                util_set_reset_key(UTIL_KEY_F7,pressrelease);
+        break;
 
 
 
-            case XK_F8:
-                util_set_reset_key(UTIL_KEY_F8,pressrelease);
-                        break;
+        case XK_F8:
+            util_set_reset_key(UTIL_KEY_F8,pressrelease);
+                    break;
 
 
-            case XK_F9:
-                util_set_reset_key(UTIL_KEY_F9,pressrelease);
-            break;
+        case XK_F9:
+            util_set_reset_key(UTIL_KEY_F9,pressrelease);
+        break;
 
 
 
-            case XK_F10:
-                util_set_reset_key(UTIL_KEY_F10,pressrelease);
-            break;
+        case XK_F10:
+            util_set_reset_key(UTIL_KEY_F10,pressrelease);
+        break;
 
 
 
-            case XK_F11:
-                util_set_reset_key(UTIL_KEY_F11,pressrelease);
-            break;
+        case XK_F11:
+            util_set_reset_key(UTIL_KEY_F11,pressrelease);
+        break;
 
 
-            case XK_F12:
-                util_set_reset_key(UTIL_KEY_F12,pressrelease);
-            break;
+        case XK_F12:
+            util_set_reset_key(UTIL_KEY_F12,pressrelease);
+        break;
 
 
-            case XK_F13:
-                util_set_reset_key(UTIL_KEY_F13,pressrelease);
-            break;
+        case XK_F13:
+            util_set_reset_key(UTIL_KEY_F13,pressrelease);
+        break;
 
 
-            case XK_F14:
-                util_set_reset_key(UTIL_KEY_F14,pressrelease);
-            break;
+        case XK_F14:
+            util_set_reset_key(UTIL_KEY_F14,pressrelease);
+        break;
 
 
-            case XK_F15:
-                util_set_reset_key(UTIL_KEY_F15,pressrelease);
-            break;
+        case XK_F15:
+            util_set_reset_key(UTIL_KEY_F15,pressrelease);
+        break;
 
 
-            //ESC pulsado
-            case XK_Escape:
-                util_set_reset_key(UTIL_KEY_ESC,pressrelease);
-            break;
+        //ESC pulsado
+        case XK_Escape:
+            util_set_reset_key(UTIL_KEY_ESC,pressrelease);
+        break;
 
-            //PgUp
-            case XK_Page_Up:
-                util_set_reset_key(UTIL_KEY_PAGE_UP,pressrelease);
-            break;
+        //PgUp
+        case XK_Page_Up:
+            util_set_reset_key(UTIL_KEY_PAGE_UP,pressrelease);
+        break;
 
-            //PgDn
-            case XK_Page_Down:
-                util_set_reset_key(UTIL_KEY_PAGE_DOWN,pressrelease);
-            break;
+        //PgDn
+        case XK_Page_Down:
+            util_set_reset_key(UTIL_KEY_PAGE_DOWN,pressrelease);
+        break;
 
 
-            //Teclas del keypad
-            case XK_KP_Insert:
-                    util_set_reset_key(UTIL_KEY_KP0,pressrelease);
-            break;
+        //Teclas del keypad
+        case XK_KP_Insert:
+                util_set_reset_key(UTIL_KEY_KP0,pressrelease);
+        break;
 
-            case XK_KP_End:
-                    util_set_reset_key(UTIL_KEY_KP1,pressrelease);
-            break;
+        case XK_KP_End:
+                util_set_reset_key(UTIL_KEY_KP1,pressrelease);
+        break;
 
-            case XK_KP_Down:
-                    util_set_reset_key(UTIL_KEY_KP2,pressrelease);
-            break;
+        case XK_KP_Down:
+                util_set_reset_key(UTIL_KEY_KP2,pressrelease);
+        break;
 
-            case XK_KP_Page_Down:
-                    util_set_reset_key(UTIL_KEY_KP3,pressrelease);
-            break;
+        case XK_KP_Page_Down:
+                util_set_reset_key(UTIL_KEY_KP3,pressrelease);
+        break;
 
-            case XK_KP_Left:
-                    util_set_reset_key(UTIL_KEY_KP4,pressrelease);
-            break;
+        case XK_KP_Left:
+                util_set_reset_key(UTIL_KEY_KP4,pressrelease);
+        break;
 
-            case XK_KP_Begin:
-                    util_set_reset_key(UTIL_KEY_KP5,pressrelease);
-            break;
+        case XK_KP_Begin:
+                util_set_reset_key(UTIL_KEY_KP5,pressrelease);
+        break;
 
-            case XK_KP_Right:
-                    util_set_reset_key(UTIL_KEY_KP6,pressrelease);
-            break;
+        case XK_KP_Right:
+                util_set_reset_key(UTIL_KEY_KP6,pressrelease);
+        break;
 
-            case XK_KP_Home:
-                    util_set_reset_key(UTIL_KEY_KP7,pressrelease);
-            break;
+        case XK_KP_Home:
+                util_set_reset_key(UTIL_KEY_KP7,pressrelease);
+        break;
 
-            case XK_KP_Up:
-                    util_set_reset_key(UTIL_KEY_KP8,pressrelease);
-            break;
+        case XK_KP_Up:
+                util_set_reset_key(UTIL_KEY_KP8,pressrelease);
+        break;
 
-            case XK_KP_Page_Up:
-                    util_set_reset_key(UTIL_KEY_KP9,pressrelease);
-            break;
+        case XK_KP_Page_Up:
+                util_set_reset_key(UTIL_KEY_KP9,pressrelease);
+        break;
 
-            case XK_KP_Delete:
-                    util_set_reset_key(UTIL_KEY_KP_COMMA,pressrelease);
-            break;
+        case XK_KP_Delete:
+                util_set_reset_key(UTIL_KEY_KP_COMMA,pressrelease);
+        break;
 
-            case XK_KP_Enter:
-                    util_set_reset_key(UTIL_KEY_KP_ENTER,pressrelease);
-            break;
+        case XK_KP_Enter:
+                util_set_reset_key(UTIL_KEY_KP_ENTER,pressrelease);
+        break;
 
 
 
 
-            default:
-                //convert_numeros_letras_puerto_teclado(keysym,pressrelease);
-                if (keysym<256) util_set_reset_key(keysym,pressrelease);
-            break;
+        default:
+            //convert_numeros_letras_puerto_teclado(keysym,pressrelease);
+            if (keysym<256) util_set_reset_key(keysym,pressrelease);
+        break;
 
-        }
+    }
 
 
     //Fuera del switch
 
     //Teclas que necesitan conversion de teclado para CPC
-        if (MACHINE_IS_CPC) {
+    if (MACHINE_IS_CPC) {
 
-            if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_MINUS,pressrelease);
+        if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_MINUS,pressrelease);
 
-            else if (keysym==scrxwindows_keymap_z88_cpc_circunflejo) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_CIRCUNFLEJO,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_circunflejo) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_CIRCUNFLEJO,pressrelease);
 
-            else if (keysym==scrxwindows_keymap_z88_cpc_arroba) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_ARROBA,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_arroba) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_ARROBA,pressrelease);
 
-            else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_LEFT,pressrelease);
-
-
-
-            else if (keysym==scrxwindows_keymap_z88_cpc_colon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COLON,pressrelease);
-
-            else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SEMICOLON,pressrelease);
-
-            else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_RIGHT,pressrelease);
-
-            else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COMMA,pressrelease);
-
-            else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_PERIOD,pressrelease);
-
-            else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SLASH,pressrelease);
-
-            else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BACKSLASH,pressrelease);
+        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_left) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_LEFT,pressrelease);
 
 
-        }
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_colon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COLON,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_semicolon) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SEMICOLON,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_bracket_right) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BRACKET_RIGHT,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_comma) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_COMMA,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_PERIOD,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_SLASH,pressrelease);
+
+        else if (keysym==scrxwindows_keymap_z88_cpc_backslash) util_set_reset_key_cpc_keymap(UTIL_KEY_CPC_BACKSLASH,pressrelease);
+
+
+    }
 
 
 //Teclas que necesitan conversion de teclado para Z88
@@ -1441,8 +1465,8 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
 
     while (XCheckWindowEvent(dpy,ventana,FocusChangeMask|KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event)) {
-      //printf ("evento tipo: %d\n",event.type);
-          switch(event.type){
+        //printf ("evento tipo: %d\n",event.type);
+        switch(event.type){
 
             case FocusIn:
                 //printf("FocusIn\n");
@@ -1463,114 +1487,106 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
             break;
 
-        //Mouse
-        case ButtonPress:
+            //Mouse
+            case ButtonPress:
 
-            if ( event.xbutton.button == 1 ) {
-                util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
-            }
-            if ( event.xbutton.button == 3 ) {
-                //mouse_right=1;
-                util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
-            }
+                if ( event.xbutton.button == 1 ) {
+                    util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
+                }
+                if ( event.xbutton.button == 3 ) {
+                    //mouse_right=1;
+                    util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
+                }
 
-            //Botones 4 y 5 en X11 es scroll arriba y abajo... ciertamente un tanto confuso
-             if ( event.xbutton.button == 4 ) {
-                mouse_wheel_vertical=1;
-            }
+                //Botones 4 y 5 en X11 es scroll arriba y abajo... ciertamente un tanto confuso
+                if ( event.xbutton.button == 4 ) {
+                    mouse_wheel_vertical=1;
+                }
 
-            if ( event.xbutton.button == 5 ) {
-                mouse_wheel_vertical=-1;
-            }
+                if ( event.xbutton.button == 5 ) {
+                    mouse_wheel_vertical=-1;
+                }
 
 
 
-            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. ", event.xbutton.x, event.xbutton.y);
+                debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. ", event.xbutton.x, event.xbutton.y);
 
-        break;
+            break;
 
-                case ButtonRelease:
-                        debug_printf (VERBOSE_PARANOID,"Mouse Button release. x=%d y=%d", event.xbutton.x, event.xbutton.y);
-                        if ( event.xbutton.button == 1 ) {
-                //mouse_left=0;
-                util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
-            }
-                        if ( event.xbutton.button == 3 ) {
-                //mouse_right=0;
-                util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
-            }
+            case ButtonRelease:
+                debug_printf (VERBOSE_PARANOID,"Mouse Button release. x=%d y=%d", event.xbutton.x, event.xbutton.y);
+                if ( event.xbutton.button == 1 ) {
+                    //mouse_left=0;
+                    util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
+                }
+                if ( event.xbutton.button == 3 ) {
+                    //mouse_right=0;
+                    util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
+                }
 
             //mouse_left=0;
 
-                break;
-
-        case MotionNotify:
-            mouse_x=event.xbutton.x;
-            mouse_y=event.xbutton.y;
-
-            lightgun_x=event.xbutton.x;
-            lightgun_y=event.xbutton.y;
-            lightgun_x=lightgun_x/zoom_x;
-            lightgun_y=lightgun_y/zoom_y;
-
-
-            kempston_mouse_x=mouse_x/zoom_x;
-            kempston_mouse_y=255-mouse_y/zoom_y;
-            //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
-
-            debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
-        break;
-
-
-        case KeyPress:
-    //		printf ("key press ");
-            notificar_tecla_interrupcion_si_z88();
-                deal_with_keys(&event,1);
             break;
 
-        case KeyRelease:
-    //		printf ("release key ");
-                   deal_with_keys(&event,0);
-        break;
+            case MotionNotify:
+                mouse_x=event.xbutton.x;
+                mouse_y=event.xbutton.y;
 
-        case ConfigureNotify:
-            //      xdisplay_configure_notify(event.xconfigure.width,
-                        //        event.xconfigure.height);
-            debug_printf(VERBOSE_INFO,"XWindows event ConfigureNotify width: %d height: %d",event.xconfigure.width,event.xconfigure.height);
-
-        //ver si tamaño es el mismo que el actual, no hacer resize
-        //en mac os x pasa que esto se queda en un bucle muchas veces al redimensionar y se queda continuamente ampliando y reduciendo
-
-//                if (ultimo_resize_width!=event.xconfigure.width || ultimo_resize_height!=event.xconfigure.height) {
-                        ultimo_resize_width=event.xconfigure.width;
-                        ultimo_resize_height=event.xconfigure.height;
-
-            scrxwindows_resize(event.xconfigure.width,event.xconfigure.height);
-
-            //Redibujar zona inferior Z88 si conviene
-            screen_z88_draw_lower_screen();
-            menu_init_footer();
-
-            //si en menu y no esta multitask, hay que refrescar a mano
-            if (menu_abierto && !menu_multitarea) {
-                debug_printf (VERBOSE_INFO,"Force refresh screen because in menu and multitask is disabled");
-                scr_refresca_pantalla();
-            }
+                lightgun_x=event.xbutton.x;
+                lightgun_y=event.xbutton.y;
+                lightgun_x=lightgun_x/zoom_x;
+                lightgun_y=lightgun_y/zoom_y;
 
 
-            //vaciar eventos. para evitar que en mac se quede en bucle
-            while (XCheckWindowEvent(dpy,ventana,KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event));
-            //TODO: quiza en vez de esto lo mejor seria poner una pausa aqui...
-  //              }
-    //            else {
-      //                  debug_printf (VERBOSE_INFO,"Not resizing window so size is the same");
-        //        }
+                kempston_mouse_x=mouse_x/zoom_x;
+                kempston_mouse_y=255-mouse_y/zoom_y;
+                //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
 
-        break;
+                debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
+            break;
 
-        case ExposureMask:
-            debug_printf(VERBOSE_INFO,"XWindows event ExposureMask x: %d y: %d height: %d width: %d",event.xexpose.x, event.xexpose.y, event.xexpose.width, event.xexpose.height);
-        break;
+
+            case KeyPress:
+                notificar_tecla_interrupcion_si_z88();
+                deal_with_keys(&event,1);
+                break;
+
+            case KeyRelease:
+                deal_with_keys(&event,0);
+            break;
+
+            case ConfigureNotify:
+                //      xdisplay_configure_notify(event.xconfigure.width,
+                            //        event.xconfigure.height);
+                debug_printf(VERBOSE_INFO,"XWindows event ConfigureNotify width: %d height: %d",event.xconfigure.width,event.xconfigure.height);
+
+
+                ultimo_resize_width=event.xconfigure.width;
+                ultimo_resize_height=event.xconfigure.height;
+
+                scrxwindows_resize(event.xconfigure.width,event.xconfigure.height);
+
+                //Redibujar zona inferior Z88 si conviene
+                screen_z88_draw_lower_screen();
+                menu_init_footer();
+
+                //si en menu y no esta multitask, hay que refrescar a mano
+                if (menu_abierto && !menu_multitarea) {
+                    debug_printf (VERBOSE_INFO,"Force refresh screen because in menu and multitask is disabled");
+                    scr_refresca_pantalla();
+                }
+
+
+                //vaciar eventos. para evitar que en mac se quede en bucle
+                while (XCheckWindowEvent(dpy,ventana,KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event));
+                    //TODO: quiza en vez de esto lo mejor seria poner una pausa aqui...
+
+
+            break;
+
+            case ExposureMask:
+                debug_printf(VERBOSE_INFO,"XWindows event ExposureMask x: %d y: %d height: %d width: %d",event.xexpose.x, event.xexpose.y, event.xexpose.width, event.xexpose.height);
+            break;
 
         //case ClientMessage:
         //
@@ -1579,9 +1595,9 @@ void scrxwindows_actualiza_tablas_teclado(void)
         //	}
         //break;
 
-      }
-    }
 
+        }
+    }
 
 }
 
@@ -1646,6 +1662,7 @@ static int xdisplay_find_visual(void)
         }
         XFree(vis);
     }
+
     return sel_v == -1 ? 1 : 0;
 }
 
@@ -1714,17 +1731,12 @@ int scrxwindows_get_menu_height(void)
     return max;
 }
 
-/*
-int scrxwindows_driver_can_ext_desktop (void)
-{
-        return 1;
-}
-*/
+
 
 void scrxwindows_update_window_title(void)
 {
     char *list[2];
-    //char buffer[20];
+
     char buffer[ZESARUX_MAX_WINDOW_TITLE+1];
     XTextProperty text;
 
@@ -1738,7 +1750,7 @@ void scrxwindows_update_window_title(void)
 }
 
 
-int scrxwindows_init (void) {
+int scrxwindows_init(void) {
 
     debug_printf (VERBOSE_INFO,"Init XWindows Video Driver");
 
@@ -1754,17 +1766,9 @@ int scrxwindows_init (void) {
         debug_printf (VERBOSE_ERR,"xwindows driver. Error opening display");
         return 1;
     }
-    //assert(dpy);
 
-    // Get some colors
-
-    int blackColor = BlackPixel(dpy, DefaultScreen(dpy));
-    int whiteColor = WhitePixel(dpy, DefaultScreen(dpy));
 
     // Create the window
-
-    //Esto asignarlo antes para que el driver vea correctamente el tamaño
-    //scr_driver_can_ext_desktop=scrxwindows_driver_can_ext_desktop;
 
     int ancho,alto;
     ancho=screen_get_window_size_width_zoom_border_en();
@@ -1774,6 +1778,11 @@ int scrxwindows_init (void) {
     alto=screen_get_window_size_height_zoom_border_en();
 
     alto +=screen_get_ext_desktop_height_zoom();
+
+    // Get some colors
+
+    int blackColor = BlackPixel(dpy, DefaultScreen(dpy));
+    int whiteColor = WhitePixel(dpy, DefaultScreen(dpy));
 
     ventana = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, ancho, alto,0, blackColor, blackColor);
 
@@ -1811,7 +1820,7 @@ int scrxwindows_init (void) {
         }
     }
 
-    if ( xdisplay_find_visual() ) exit(1);
+    if (xdisplay_find_visual()) exit(1);
 
 
     scrxwindows_alloc_image(ancho, alto);
@@ -1987,40 +1996,4 @@ static int get_shm_id (const int size)
 }
 #endif                  /* #ifdef X_USE_SHM */
 
-
-
-
-
-static void xdisplay_destroy_image (void)
-{
-  /* Free the XImage used to store screen data; also frees the malloc'd
-     data */
-#ifdef X_USE_SHM
-    if ( shm_used ) {
-        XShmDetach( dpy, &shm_info );
-        shmdt( shm_info.shmaddr );
-        image->data = NULL;
-        shm_used = 0;
-    }
-#endif
-    if (image) {
-        XDestroyImage(image);
-        image = NULL;
-    }
-}
-
-
-
-int xdisplay_end (void)
-{
-    xdisplay_destroy_image();
-    /* Free the allocated GC */
-    if ( gc ) XFreeGC( dpy, gc );
-    gc = 0;
-
-    XDestroyWindow(dpy,ventana);
-    XCloseDisplay(dpy);
-
-    return 0;
-}
 
