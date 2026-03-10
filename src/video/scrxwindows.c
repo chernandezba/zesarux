@@ -108,6 +108,11 @@ int zoom_y_antes_fullscreen=1;
 void scrxwindows_resize(int width,int height);
 
 
+//Util para pantalla completa para saber posicion real del mouse
+int imagen_offset_x=0;
+int imagen_offset_y=0;
+
+
 
 void scrxwindows_messages_debug(char *s)
 {
@@ -507,6 +512,8 @@ void scrxwindows_get_display_size(int *p_ancho,int *p_alto)
     *p_alto=alto;
 }
 
+
+
 void scrxwindows_refresca_pantalla_solo_driver(void)
 {
     //Dibujar normal toda la pantalla entera
@@ -517,8 +524,8 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
 
     scrxwindows_get_display_size(&ancho,&alto);
 
-    int offset_x=0;
-    int offset_y=0;
+    imagen_offset_x=0;
+    imagen_offset_y=0;
 
     if (ventana_fullscreen) {
         XWindowAttributes attr;
@@ -527,8 +534,8 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
         int win_width = attr.width;
         int win_height = attr.height;
 
-        offset_x = (win_width - ancho) / 2;
-        offset_y = (win_height - alto) / 2;
+        imagen_offset_x = (win_width - ancho) / 2;
+        imagen_offset_y = (win_height - alto) / 2;
 
     }
 
@@ -538,7 +545,7 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
         //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
         //printf ("image=%x\n",image);
 
-        XShmPutImage(dpy, ventana, gc, image, 0, 0, offset_x, offset_y, ancho, alto, False);
+        XShmPutImage(dpy, ventana, gc, image, 0, 0, imagen_offset_x, imagen_offset_y, ancho, alto, False);
 
         /*
         Parámetros:
@@ -579,7 +586,7 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
 
     else {
         //printf ("sin shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-        XPutImage(dpy, ventana, gc, image, 0, 0, offset_x, offset_y, ancho, alto );
+        XPutImage(dpy, ventana, gc, image, 0, 0, imagen_offset_x, imagen_offset_y, ancho, alto );
 
     }
 
@@ -1520,8 +1527,13 @@ void scrxwindows_actualiza_tablas_teclado(void)
                 mouse_x=event.xbutton.x;
                 mouse_y=event.xbutton.y;
 
-                lightgun_x=event.xbutton.x;
-                lightgun_y=event.xbutton.y;
+                if (ventana_fullscreen) {
+                    mouse_x -=imagen_offset_x;
+                    mouse_y -=imagen_offset_y;
+                }
+
+                lightgun_x=mouse_x;
+                lightgun_y=mouse_y;
                 lightgun_x=lightgun_x/zoom_x;
                 lightgun_y=lightgun_y/zoom_y;
 
