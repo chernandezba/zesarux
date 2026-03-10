@@ -35,7 +35,6 @@
 #include "zxvision.h"
 #include "timer.h"
 #include "utils.h"
-//#include "operaciones.h"
 #include "joystick.h"
 #include "cpc.h"
 #include "prism.h"
@@ -74,7 +73,7 @@ static XImage *image = NULL;
 static Visual *xdisplay_visual = NULL;
 static int xdisplay_depth = -1;
 
-//desactivar shm por linea de comandos
+//para desactivar shm por linea de comandos
 int disable_shm=0;
 
 
@@ -100,37 +99,6 @@ int fullscreen_width,fullscreen_height;
 //Resolucion pantalla antes de full screen
 int screen_prefull_width,screen_prefull_height;
 
-
-
-
-void scrxwindows_resize(int width,int height);
-
-
-
-void scrxwindows_messages_debug(char *s)
-{
-	printf ("%s\n",s);
-    //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
-    fflush(stdout);
-
-}
-
-
-//#define SIZE (256 * 192)
-
-//;                               Bits:  4    3    2    1    0     ;desplazamiento puerto
-//puerto_65278    db              255  ; V    C    X    Z    Sh    ;0
-//puerto_65022    db              255  ; G    F    D    S    A     ;1
-//puerto_64510    db              255  ; T    R    E    W    Q     ;2
-//puerto_63486    db              255  ; 5    4    3    2    1     ;3
-//puerto_61438    db              255  ; 6    7    8    9    0     ;4
-//puerto_57342    db              255  ; Y    U    I    O    P     ;5
-//puerto_49150    db              255  ; H    J    K    L    Enter ;6
-//puerto_32766    db              255  ; B    N    M    Simb Space ;7
-
-
-
-
 Display *dpy;
 
 Window ventana=0;
@@ -142,74 +110,91 @@ GC gc;
 static Atom delete_window_atom;
 
 
+int zoom_x_antes_fullscreen=1;
+int zoom_y_antes_fullscreen=1;
+
+void scrxwindows_resize(int width,int height);
+
+
+
+void scrxwindows_messages_debug(char *s)
+{
+    printf ("%s\n",s);
+    //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
+    fflush(stdout);
+
+}
+
+
+
 int scrxwindows_setwindowparms(void)
 {
 
-	//Para indicar los incrementos de tamaño de la ventana
-	//asi la ventana se incrementa solo en tamaños multiples del tamaño de spectrum real
-	//sino, el tamaño podria ser cualquiera
-	//De momento solo se usa para eso, aunque se pueden establecer muchos otros parametros
-	XWMHints *wmHints;
-	XSizeHints *sizeHints;
-	XClassHint *classHint;
-	XTextProperty windowName, iconName;
-	char *windowNameList="ZEsarUX",*iconNameList="ZEsarUX";
+    //Para indicar los incrementos de tamaño de la ventana
+    //asi la ventana se incrementa solo en tamaños multiples del tamaño de spectrum real
+    //sino, el tamaño podria ser cualquiera
+    //De momento solo se usa para eso, aunque se pueden establecer muchos otros parametros
+    XWMHints *wmHints;
+    XSizeHints *sizeHints;
+    XClassHint *classHint;
+    XTextProperty windowName, iconName;
+    char *windowNameList="ZEsarUX",*iconNameList="ZEsarUX";
 
 
-	if(!(wmHints = XAllocWMHints())) {
-		debug_printf(VERBOSE_ERR,"failure allocating XAllocWMHints");
-		return 1;
-	}
+    if(!(wmHints = XAllocWMHints())) {
+        debug_printf(VERBOSE_ERR,"failure allocating XAllocWMHints");
+        return 1;
+    }
 
-	if(!(sizeHints = XAllocSizeHints())) {
-		debug_printf(VERBOSE_ERR,"failure allocating XAllocSizeHints");
-		return 1;
-	}
+    if(!(sizeHints = XAllocSizeHints())) {
+        debug_printf(VERBOSE_ERR,"failure allocating XAllocSizeHints");
+        return 1;
+    }
 
-	if(!(classHint = XAllocClassHint())) {
-		debug_printf(VERBOSE_ERR,"failure allocating XAllocClassHint");
-		return 1;
-	}
-
-
-	if(XStringListToTextProperty(&windowNameList,1,&windowName) == 0 ) {
-		debug_printf(VERBOSE_ERR,"structure allocation for windowName failed");
-		return 1;
-	}
-
-	if(XStringListToTextProperty(&iconNameList,1,&iconName) == 0 ) {
-		debug_printf(VERBOSE_ERR,"structure allocation for iconName failed\n");
-		return 1;
-	}
+    if(!(classHint = XAllocClassHint())) {
+        debug_printf(VERBOSE_ERR,"failure allocating XAllocClassHint");
+        return 1;
+    }
 
 
-	/* Set standard window properties */
+    if(XStringListToTextProperty(&windowNameList,1,&windowName) == 0 ) {
+        debug_printf(VERBOSE_ERR,"structure allocation for windowName failed");
+        return 1;
+    }
 
-	sizeHints->flags = PBaseSize | PResizeInc | PMaxSize | PMinSize;
-
-	sizeHints->base_width = 0;
-	sizeHints->base_height = 0;
-
-	//Fijamos el minimo de tamaño de la ventana
-	sizeHints->min_width = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
-	sizeHints->min_height = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
+    if(XStringListToTextProperty(&iconNameList,1,&iconName) == 0 ) {
+        debug_printf(VERBOSE_ERR,"structure allocation for iconName failed\n");
+        return 1;
+    }
 
 
-	//Y se fijan los incrementos de la ventana, para que se amplie en fracciones enteras
+    /* Set standard window properties */
+
+    sizeHints->flags = PBaseSize | PResizeInc | PMaxSize | PMinSize;
+
+    sizeHints->base_width = 0;
+    sizeHints->base_height = 0;
+
+    //Fijamos el minimo de tamaño de la ventana
+    sizeHints->min_width = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
+    sizeHints->min_height = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
+
+
+    //Y se fijan los incrementos de la ventana, para que se amplie en fracciones enteras
 
     sizeHints->width_inc    = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
     sizeHints->height_inc   = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
 
 
-	sizeHints->max_width    =     9999 * sizeHints->width_inc;
-	sizeHints->max_height   =     9999 * sizeHints->height_inc;
+    sizeHints->max_width    =     9999 * sizeHints->width_inc;
+    sizeHints->max_height   =     9999 * sizeHints->height_inc;
 
-	sizeHints->flags |= PAspect;
-	sizeHints->min_aspect.x = 0;
-	sizeHints->min_aspect.y = 1;    //Indica 0.1
+    sizeHints->flags |= PAspect;
+    sizeHints->min_aspect.x = 0;
+    sizeHints->min_aspect.y = 1;    //Indica 0.1
 
-	sizeHints->max_aspect.x = 100;
-	sizeHints->max_aspect.y = 0;    //Indica 100.0
+    sizeHints->max_aspect.x = 100;
+    sizeHints->max_aspect.y = 0;    //Indica 100.0
 
     // Si no se permite valores de zoom_x y zoom_y diferentes
     if (screen_keep_both_zoom_equals.v) {
@@ -221,26 +206,26 @@ int scrxwindows_setwindowparms(void)
         sizeHints->max_aspect.y = sizeHints->min_height;
     }
 
-	wmHints->flags=StateHint | InputHint;
+    wmHints->flags=StateHint | InputHint;
 
-	wmHints->initial_state=NormalState;
-	wmHints->input=True;
+    wmHints->initial_state=NormalState;
+    wmHints->input=True;
 
-	classHint->res_name="ZEsarUX";
-	classHint->res_class="ZEsarUX";
+    classHint->res_name="ZEsarUX";
+    classHint->res_class="ZEsarUX";
 
-	XSetWMProperties(dpy, ventana, &windowName, &iconName, NULL, 0, sizeHints, wmHints, classHint);
+    XSetWMProperties(dpy, ventana, &windowName, &iconName, NULL, 0, sizeHints, wmHints, classHint);
 
-	//Fin Para indicar los incrementos de tamaño de la ventana
-
-
-	//Capturar cierre ventana
-
-	delete_window_atom = XInternAtom( dpy, "WM_DELETE_WINDOW", 0 );
-	XSetWMProtocols( dpy, ventana, &delete_window_atom, 1 );
+    //Fin Para indicar los incrementos de tamaño de la ventana
 
 
-	return 0;
+    //Capturar cierre ventana
+
+    delete_window_atom = XInternAtom( dpy, "WM_DELETE_WINDOW", 0 );
+    XSetWMProtocols( dpy, ventana, &delete_window_atom, 1 );
+
+
+    return 0;
 
 }
 
@@ -248,6 +233,7 @@ void scrxwindows_set_reset_fullscreen(int set_reset)
 {
     //Los window managers modernos (como los de GNOME, KDE Plasma o Xfce) soportan el protocolo EWMH.
     //Se envia un ClientMessage al window manager.
+    //
     //Nota: este fullscreen no llena completamente la ventana, se ajustará el zoom a lo máximo posible
     //Habría varias maneras de hacerlo
     //1. Extensión XRender de X11
@@ -280,8 +266,6 @@ void scrxwindows_set_reset_fullscreen(int set_reset)
     change_variable_ventana_fullscreen(set_reset);
 }
 
-int zoom_x_antes_fullscreen=1;
-int zoom_y_antes_fullscreen=1;
 
 void scrxwindows_reset_fullscreen(void)
 {
@@ -328,7 +312,7 @@ void scrxwindows_alloc_image(int width,int height)
 
 #ifdef X_USE_SHM
     if (!disable_shm) shm_used = try_shm();
-#endif                          /* #ifdef X_USE_SHM */
+#endif
 
 
     if ( !shm_used ) {
@@ -375,22 +359,22 @@ void scrxwindows_resize(int width,int height)
 
     debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
 
-    //zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
+
     zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
     zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
 
 
-	if (!zoom_x_calculado) zoom_x_calculado=1;
-	if (!zoom_y_calculado) zoom_y_calculado=1;
+    if (!zoom_x_calculado) zoom_x_calculado=1;
+    if (!zoom_y_calculado) zoom_y_calculado=1;
 
-	debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
+    debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
 
     // Si no se permite valores de zoom_x y zoom_y diferentes
     //Este ajuste ya lo realiza el gestor de ventanas y lo definimos al inicializar la ventana
     //PERO en xwindows desde Mac no lo hace y tenemos que ajustarlo aquí
     scr_adjust_zoom_equals(&zoom_x_calculado,&zoom_y_calculado);
 
-	if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
+    if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
         //resize
         zoom_x=zoom_x_calculado;
         zoom_y=zoom_y_calculado;
@@ -412,10 +396,10 @@ void scrxwindows_resize(int width,int height)
 
         XResizeWindow( dpy, ventana, width, height);
 
-	}
+    }
 
-	//printf ("resize %d %d\n",width,height);
-	scr_reallocate_layers_menu(width,height);
+    //printf ("resize %d %d\n",width,height);
+    scr_reallocate_layers_menu(width,height);
 
     scr_set_pending_redraw_desktop_windows();
 
@@ -434,33 +418,6 @@ void scrxwindows_debug_registers(void)
 }
 
 
-/*
-
-
-The whole matter becomes at good deal clearer if we look at the screen address in binary.
-
-
-           High Byte                |               Low Byte
-
-0   1   0   T   T   L   L   L          Cr Cr Cr Cc Cc Cc Cc Cc
-
-
-
-I have used some abbreviations to make things a bit clearer:
-
-T - these two bits refer to which third of the screen is being addressed:  00 - Top,  01 - Middle,    10 - Bottom
-
-L - these three bits indicate which line is being addressed:  from 0 - 7, or 000 - 111 in binary
-
-Cr - these three bits indicate which character row is being addressed:  from 0 - 7
-
-Cc - these five bits refer to which character column is being addressed: from 0 - 31
-
-
-The  top three bits ( 010 ) of the high byte don't change.
-
-
-*/
 
 //Funcion de poner pixel en pantalla de driver, teniendo como entrada el color en RGB
 void scrxwindows_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
@@ -472,12 +429,12 @@ void scrxwindows_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
     }
 
 
-	XPutPixel(image,x,y,color_rgb);
+    XPutPixel(image,x,y,color_rgb);
 }
 
 void scrxwindows_putpixel_final(int x,int y,unsigned int color)
 {
-	XPutPixel(image,x,y,spectrum_colortable[color]);
+    XPutPixel(image,x,y,spectrum_colortable[color]);
 }
 
 void scrxwindows_putpixel(int x,int y,unsigned int color)
@@ -500,14 +457,14 @@ void scrxwindows_putpixel(int x,int y,unsigned int color)
 
 void scrxwindows_refresca_border(void)
 {
-	scr_refresca_border();
+    scr_refresca_border();
 
 }
 
 
 void scrxwindows_putchar_zx8081(int x,int y, z80_byte caracter)
 {
-	scr_putchar_zx8081_comun(x,y, caracter);
+    scr_putchar_zx8081_comun(x,y, caracter);
 }
 
 
@@ -540,22 +497,22 @@ void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pap
 void scrxwindows_refresca_pantalla_zx81(void)
 {
 
-scr_refresca_pantalla_y_border_zx8081();
+    scr_refresca_pantalla_y_border_zx8081();
 
 }
 
 void scrxwindows_get_display_size(int *p_ancho,int *p_alto)
 {
-	int ancho=screen_get_window_size_width_zoom_border_en();
+    int ancho=screen_get_window_size_width_zoom_border_en();
 
-	ancho +=screen_get_ext_desktop_width_zoom();
+    ancho +=screen_get_ext_desktop_width_zoom();
 
-	int alto=screen_get_window_size_height_zoom_border_en();
+    int alto=screen_get_window_size_height_zoom_border_en();
 
-	alto +=screen_get_ext_desktop_height_zoom();
+    alto +=screen_get_ext_desktop_height_zoom();
 
-	*p_ancho=ancho;
-	*p_alto=alto;
+    *p_ancho=ancho;
+    *p_alto=alto;
 }
 
 void scrxwindows_refresca_pantalla_solo_driver(void)
@@ -665,10 +622,10 @@ void scrxwindows_refresca_pantalla(void)
 
     scr_driver_redraw_desktop_windows();
 
-	if (MACHINE_IS_ZX8081) {
+    if (MACHINE_IS_ZX8081) {
 
         scrxwindows_refresca_pantalla_zx81();
-	}
+    }
 
     else if (MACHINE_IS_PRISM) {
             screen_prism_refresca_pantalla();
@@ -679,9 +636,9 @@ void scrxwindows_refresca_pantalla(void)
     }
 
 
-	else if (MACHINE_IS_SPECTRUM) {
+    else if (MACHINE_IS_SPECTRUM) {
 
-		if (MACHINE_IS_TSCONF)	screen_tsconf_refresca_pantalla();
+        if (MACHINE_IS_TSCONF)	screen_tsconf_refresca_pantalla();
 
 
         else { //Spectrum no TSConf
@@ -706,18 +663,18 @@ void scrxwindows_refresca_pantalla(void)
                 scr_refresca_pantalla_rainbow_comun_spectrum();
             }
 
-		}
-	}
+        }
+    }
 
-	else if (MACHINE_IS_Z88) {
-		screen_z88_refresca_pantalla();
-	}
+    else if (MACHINE_IS_Z88) {
+        screen_z88_refresca_pantalla();
+    }
 
     else if (MACHINE_IS_ACE) {
             scr_refresca_pantalla_y_border_ace();
     }
 
-	else if (MACHINE_IS_CPC) {
+    else if (MACHINE_IS_CPC) {
                 scr_refresca_pantalla_y_border_cpc();
         }
 
@@ -725,9 +682,9 @@ void scrxwindows_refresca_pantalla(void)
             scr_refresca_pantalla_y_border_pcw();
     }
 
-	else if (MACHINE_IS_SAM) {
-		scr_refresca_pantalla_y_border_sam();
-	}
+    else if (MACHINE_IS_SAM) {
+        scr_refresca_pantalla_y_border_sam();
+    }
 
     else if (MACHINE_IS_QL) {
             scr_refresca_pantalla_y_border_ql();
@@ -737,33 +694,33 @@ void scrxwindows_refresca_pantalla(void)
             scr_refresca_pantalla_y_border_mk14();
     }
 
-	else if (MACHINE_IS_MSX) {
-		scr_refresca_pantalla_y_border_msx();
-	}
+    else if (MACHINE_IS_MSX) {
+        scr_refresca_pantalla_y_border_msx();
+    }
 
-	else if (MACHINE_IS_SVI) {
-		scr_refresca_pantalla_y_border_svi();
-	}
+    else if (MACHINE_IS_SVI) {
+        scr_refresca_pantalla_y_border_svi();
+    }
 
-	else if (MACHINE_IS_COLECO) {
-		scr_refresca_pantalla_y_border_coleco();
-	}
+    else if (MACHINE_IS_COLECO) {
+        scr_refresca_pantalla_y_border_coleco();
+    }
 
-	else if (MACHINE_IS_SG1000) {
-		scr_refresca_pantalla_y_border_sg1000();
-	}
+    else if (MACHINE_IS_SG1000) {
+        scr_refresca_pantalla_y_border_sg1000();
+    }
 
-	else if (MACHINE_IS_SMS) {
-		scr_refresca_pantalla_y_border_sms();
-	}
+    else if (MACHINE_IS_SMS) {
+        scr_refresca_pantalla_y_border_sms();
+    }
 
 
-	screen_render_menu_overlay_if_active();
+    screen_render_menu_overlay_if_active();
 
-	//Escribir footer
-	draw_middle_footer();
+    //Escribir footer
+    draw_middle_footer();
 
-	scrxwindows_refresca_pantalla_solo_driver();
+    scrxwindows_refresca_pantalla_solo_driver();
 
 
 
@@ -775,12 +732,12 @@ void scrxwindows_refresca_pantalla(void)
 void scrxwindows_end(void)
 {
 
-	debug_printf (VERBOSE_INFO,"Closing xwindows video driver");
+    debug_printf (VERBOSE_INFO,"Closing xwindows video driver");
 
-	//Si hay pantalla completa, desactivarla
-	//if (ventana_fullscreen) scrxwindows_reset_fullscreen();
+    //Si hay pantalla completa, desactivarla
+    //if (ventana_fullscreen) scrxwindows_reset_fullscreen();
 
-	xdisplay_end();
+    xdisplay_end();
 }
 
 
@@ -859,122 +816,122 @@ KeySym scrxwindows_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo us
 void scrxwindows_z88_cpc_load_keymap(void)
 {
 
-	debug_printf (VERBOSE_INFO,"Loading keymap");
+    debug_printf (VERBOSE_INFO,"Loading keymap");
 
-	//Teclas se ubican en misma disposicion fisica del Z88, excepto:
-	//libra~ -> spanish: cedilla (misma ubicacion fisica del z88). english: acento grave (supuestamente a la izquierda del 1)
-	//backslash: en english esta en fila inferior del z88. en spanish, lo ubicamos a la izquierda del 1 (ºª\)
+    //Teclas se ubican en misma disposicion fisica del Z88, excepto:
+    //libra~ -> spanish: cedilla (misma ubicacion fisica del z88). english: acento grave (supuestamente a la izquierda del 1)
+    //backslash: en english esta en fila inferior del z88. en spanish, lo ubicamos a la izquierda del 1 (ºª\)
 
-	switch (z88_cpc_keymap_type) {
+    switch (z88_cpc_keymap_type) {
 
-		case 1:
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
-				scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
-				scrxwindows_keymap_z88_cpc_equal=XK_exclamdown;
-				scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
+        case 1:
+            if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
+                scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
+                scrxwindows_keymap_z88_cpc_equal=XK_exclamdown;
+                scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
 
-				scrxwindows_keymap_z88_cpc_bracket_left=XK_dead_grave;
-				scrxwindows_keymap_z88_cpc_bracket_right=XK_plus;
-				scrxwindows_keymap_z88_cpc_semicolon=XK_ntilde;
-				scrxwindows_keymap_z88_cpc_apostrophe=XK_dead_acute;
-				scrxwindows_keymap_z88_cpc_pound=XK_ccedilla;
-				scrxwindows_keymap_z88_cpc_comma=XK_comma;
-				scrxwindows_keymap_z88_cpc_period=XK_period;
-				scrxwindows_keymap_z88_cpc_slash=XK_minus;
-				scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
-			}
-
-
+                scrxwindows_keymap_z88_cpc_bracket_left=XK_dead_grave;
+                scrxwindows_keymap_z88_cpc_bracket_right=XK_plus;
+                scrxwindows_keymap_z88_cpc_semicolon=XK_ntilde;
+                scrxwindows_keymap_z88_cpc_apostrophe=XK_dead_acute;
+                scrxwindows_keymap_z88_cpc_pound=XK_ccedilla;
+                scrxwindows_keymap_z88_cpc_comma=XK_comma;
+                scrxwindows_keymap_z88_cpc_period=XK_period;
+                scrxwindows_keymap_z88_cpc_slash=XK_minus;
+                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
+            }
 
 
-			else if (MACHINE_IS_CPC) {
-                        	scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
-	                        scrxwindows_keymap_z88_cpc_circunflejo=XK_exclamdown;
-
-        	                scrxwindows_keymap_z88_cpc_arroba=XK_dead_grave;
-                	        scrxwindows_keymap_z88_cpc_bracket_left=XK_plus;
-	                        scrxwindows_keymap_z88_cpc_colon=XK_ntilde;
-        	                scrxwindows_keymap_z88_cpc_semicolon=XK_dead_acute;
-                	        scrxwindows_keymap_z88_cpc_bracket_right=XK_ccedilla;
-                        	scrxwindows_keymap_z88_cpc_comma=XK_comma;
-	                        scrxwindows_keymap_z88_cpc_period=XK_period;
-        	                scrxwindows_keymap_z88_cpc_slash=XK_minus;
-
-                	        scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
-				scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
-		        }
-
-			else if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
-				scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
-                                scrxwindows_keymap_z88_cpc_equal=XK_exclamdown;
-                                scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
-
-                                scrxwindows_keymap_z88_cpc_bracket_left=XK_dead_grave;
-                                scrxwindows_keymap_z88_cpc_bracket_right=XK_plus;
-                                scrxwindows_keymap_z88_cpc_semicolon=XK_ntilde;
-                                scrxwindows_keymap_z88_cpc_apostrophe=XK_dead_acute;
-                                scrxwindows_keymap_z88_cpc_pound=XK_ccedilla;
-                                scrxwindows_keymap_z88_cpc_comma=XK_comma;
-                                scrxwindows_keymap_z88_cpc_period=XK_period;
-                                scrxwindows_keymap_z88_cpc_slash=XK_minus;
-                                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
-                        }
 
 
-		break;
+            else if (MACHINE_IS_CPC) {
+                scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
+                scrxwindows_keymap_z88_cpc_circunflejo=XK_exclamdown;
+
+                scrxwindows_keymap_z88_cpc_arroba=XK_dead_grave;
+                scrxwindows_keymap_z88_cpc_bracket_left=XK_plus;
+                scrxwindows_keymap_z88_cpc_colon=XK_ntilde;
+                scrxwindows_keymap_z88_cpc_semicolon=XK_dead_acute;
+                scrxwindows_keymap_z88_cpc_bracket_right=XK_ccedilla;
+                scrxwindows_keymap_z88_cpc_comma=XK_comma;
+                scrxwindows_keymap_z88_cpc_period=XK_period;
+                scrxwindows_keymap_z88_cpc_slash=XK_minus;
+
+                scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
+                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
+            }
+
+            else if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
+                scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
+                scrxwindows_keymap_z88_cpc_equal=XK_exclamdown;
+                scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
+
+                scrxwindows_keymap_z88_cpc_bracket_left=XK_dead_grave;
+                scrxwindows_keymap_z88_cpc_bracket_right=XK_plus;
+                scrxwindows_keymap_z88_cpc_semicolon=XK_ntilde;
+                scrxwindows_keymap_z88_cpc_apostrophe=XK_dead_acute;
+                scrxwindows_keymap_z88_cpc_pound=XK_ccedilla;
+                scrxwindows_keymap_z88_cpc_comma=XK_comma;
+                scrxwindows_keymap_z88_cpc_period=XK_period;
+                scrxwindows_keymap_z88_cpc_slash=XK_minus;
+                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
+            }
 
 
-		default:
-			//0 o default
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
-				scrxwindows_keymap_z88_cpc_minus=XK_minus;
-				scrxwindows_keymap_z88_cpc_equal=XK_equal;
-				scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
+        break;
 
-				scrxwindows_keymap_z88_cpc_bracket_left=XK_bracketleft;
-				scrxwindows_keymap_z88_cpc_bracket_right=XK_bracketright;
-				scrxwindows_keymap_z88_cpc_semicolon=XK_semicolon;
-				scrxwindows_keymap_z88_cpc_apostrophe=XK_apostrophe;
-				scrxwindows_keymap_z88_cpc_pound=XK_grave;
-				scrxwindows_keymap_z88_cpc_comma=XK_comma;
-				scrxwindows_keymap_z88_cpc_period=XK_period;
-				scrxwindows_keymap_z88_cpc_slash=XK_slash;
-                                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
-			}
 
-			else if (MACHINE_IS_CPC) {
-				scrxwindows_keymap_z88_cpc_minus=XK_minus;
-                                scrxwindows_keymap_z88_cpc_circunflejo=XK_equal;
+        default:
+            //0 o default
+            if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
+                scrxwindows_keymap_z88_cpc_minus=XK_minus;
+                scrxwindows_keymap_z88_cpc_equal=XK_equal;
+                scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
 
-                                scrxwindows_keymap_z88_cpc_arroba=XK_bracketleft;
-                                scrxwindows_keymap_z88_cpc_bracket_left=XK_bracketright;
-                                scrxwindows_keymap_z88_cpc_colon=XK_semicolon;
-                                scrxwindows_keymap_z88_cpc_semicolon=XK_apostrophe;
-                                scrxwindows_keymap_z88_cpc_bracket_right=XK_grave;
-                                scrxwindows_keymap_z88_cpc_comma=XK_comma;
-                                scrxwindows_keymap_z88_cpc_period=XK_period;
-                                scrxwindows_keymap_z88_cpc_slash=XK_slash;
-                                scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
-                                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
-			}
+                scrxwindows_keymap_z88_cpc_bracket_left=XK_bracketleft;
+                scrxwindows_keymap_z88_cpc_bracket_right=XK_bracketright;
+                scrxwindows_keymap_z88_cpc_semicolon=XK_semicolon;
+                scrxwindows_keymap_z88_cpc_apostrophe=XK_apostrophe;
+                scrxwindows_keymap_z88_cpc_pound=XK_grave;
+                scrxwindows_keymap_z88_cpc_comma=XK_comma;
+                scrxwindows_keymap_z88_cpc_period=XK_period;
+                scrxwindows_keymap_z88_cpc_slash=XK_slash;
+                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
+            }
 
-			else if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
-				scrxwindows_keymap_z88_cpc_minus=XK_minus;
-                                scrxwindows_keymap_z88_cpc_circunflejo=XK_equal;
+            else if (MACHINE_IS_CPC) {
+                scrxwindows_keymap_z88_cpc_minus=XK_minus;
+                scrxwindows_keymap_z88_cpc_circunflejo=XK_equal;
 
-                                scrxwindows_keymap_z88_cpc_arroba=XK_bracketleft;
-                                scrxwindows_keymap_z88_cpc_bracket_left=XK_bracketright;
-                                scrxwindows_keymap_z88_cpc_colon=XK_semicolon;
-                                scrxwindows_keymap_z88_cpc_semicolon=XK_apostrophe;
-                                scrxwindows_keymap_z88_cpc_bracket_right=XK_grave;
-                                scrxwindows_keymap_z88_cpc_comma=XK_comma;
-                                scrxwindows_keymap_z88_cpc_period=XK_period;
-                                scrxwindows_keymap_z88_cpc_slash=XK_slash;
-                                scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
-                                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
-			}
-		break;
-	}
+                scrxwindows_keymap_z88_cpc_arroba=XK_bracketleft;
+                scrxwindows_keymap_z88_cpc_bracket_left=XK_bracketright;
+                scrxwindows_keymap_z88_cpc_colon=XK_semicolon;
+                scrxwindows_keymap_z88_cpc_semicolon=XK_apostrophe;
+                scrxwindows_keymap_z88_cpc_bracket_right=XK_grave;
+                scrxwindows_keymap_z88_cpc_comma=XK_comma;
+                scrxwindows_keymap_z88_cpc_period=XK_period;
+                scrxwindows_keymap_z88_cpc_slash=XK_slash;
+                scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
+                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
+            }
+
+            else if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
+                scrxwindows_keymap_z88_cpc_minus=XK_minus;
+                scrxwindows_keymap_z88_cpc_circunflejo=XK_equal;
+
+                scrxwindows_keymap_z88_cpc_arroba=XK_bracketleft;
+                scrxwindows_keymap_z88_cpc_bracket_left=XK_bracketright;
+                scrxwindows_keymap_z88_cpc_colon=XK_semicolon;
+                scrxwindows_keymap_z88_cpc_semicolon=XK_apostrophe;
+                scrxwindows_keymap_z88_cpc_bracket_right=XK_grave;
+                scrxwindows_keymap_z88_cpc_comma=XK_comma;
+                scrxwindows_keymap_z88_cpc_period=XK_period;
+                scrxwindows_keymap_z88_cpc_slash=XK_slash;
+                scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
+                scrxwindows_keymap_z88_cpc_leftz=XK_less; //Tecla a la izquierda de la Z. Solo usada en Chloe
+            }
+        break;
+    }
 }
 
 
@@ -982,64 +939,64 @@ void scrxwindows_z88_cpc_load_keymap(void)
 
 void deal_with_keys(XEvent *event,int pressrelease)
 {
-	KeySym keysym;
-	//char tecla;
+    KeySym keysym;
+    //char tecla;
 
 
-	KeySym native;
+    KeySym native;
 
-	//printf ("event->xkey :%d\n",event->xkey);
+    //printf ("event->xkey :%d\n",event->xkey);
 
-	native = XLookupKeysym( &event->xkey, 0 );
-	//aunque esto es una union y se podria poner como native = XLookupKeysym( event, 0 );   pero retorna un warning
+    native = XLookupKeysym( &event->xkey, 0 );
+    //aunque esto es una union y se podria poner como native = XLookupKeysym( event, 0 );   pero retorna un warning
 
-	keysym=native;
-	//printf ("keysym: 0x%lX\n",native);
+    keysym=native;
+    //printf ("keysym: 0x%lX\n",native);
 
-	//Suport for numbers on azerty keyboard. You can get them without having to press shift
-	if (azerty_keyboard.v) {
-		switch (keysym) {
-			case XK_ampersand:
-				keysym = XK_1;
-			break;
+    //Suport for numbers on azerty keyboard. You can get them without having to press shift
+    if (azerty_keyboard.v) {
+        switch (keysym) {
+            case XK_ampersand:
+                keysym = XK_1;
+            break;
 
-			case XK_eacute:
-				keysym = XK_2;
-		        break;
+            case XK_eacute:
+                keysym = XK_2;
+                break;
 
-			case XK_quotedbl:
-				keysym = XK_3;
-		        break;
+            case XK_quotedbl:
+                keysym = XK_3;
+                break;
 
-			case XK_apostrophe:
-			        keysym = XK_4;
-			break;
+            case XK_apostrophe:
+                keysym = XK_4;
+            break;
 
-			case XK_parenleft:
-			        keysym = XK_5;
-		        break;
+            case XK_parenleft:
+                keysym = XK_5;
+            break;
 
-			case XK_minus:
-		                keysym = XK_6;
-		        break;
+            case XK_minus:
+                        keysym = XK_6;
+                break;
 
-			case XK_egrave:
-		                keysym = XK_7;
-		        break;
+            case XK_egrave:
+                        keysym = XK_7;
+                break;
 
-			case XK_underscore:
-				keysym = XK_8;
-		        break;
+            case XK_underscore:
+                keysym = XK_8;
+                break;
 
-			case XK_ccedilla:
-				keysym = XK_9;
-		        break;
+            case XK_ccedilla:
+                keysym = XK_9;
+                break;
 
-			case XK_agrave:
-			        keysym = XK_0;
-			break;
-		}
-	}
+            case XK_agrave:
+                    keysym = XK_0;
+            break;
+        }
+    }
 
      int tecla_gestionada_chloe=0;
         if (MACHINE_IS_SPECTRUM && chloe_keyboard.v) {
@@ -1113,116 +1070,116 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 
 
-	switch (keysym) {
+    switch (keysym) {
 
-			case 32:
-				util_set_reset_key(UTIL_KEY_SPACE,pressrelease);
-			break;
+            case 32:
+                util_set_reset_key(UTIL_KEY_SPACE,pressrelease);
+            break;
 
-			case XK_Return:
-				util_set_reset_key(UTIL_KEY_ENTER,pressrelease);
-			break;
+            case XK_Return:
+                util_set_reset_key(UTIL_KEY_ENTER,pressrelease);
+            break;
 
-			case XK_Shift_L:
-				joystick_possible_leftshift_key(pressrelease);
-			break;
+            case XK_Shift_L:
+                joystick_possible_leftshift_key(pressrelease);
+            break;
 
                         case XK_Shift_R:
-				joystick_possible_rightshift_key(pressrelease);
+                joystick_possible_rightshift_key(pressrelease);
                         break;
 
                         case XK_Alt_L:
-				joystick_possible_leftalt_key(pressrelease);
-			break;
+                joystick_possible_leftalt_key(pressrelease);
+            break;
                         case XK_Alt_R:
-				joystick_possible_rightalt_key(pressrelease);
+                joystick_possible_rightalt_key(pressrelease);
                         break;
 
 
-			case XK_Control_L:
-				joystick_possible_leftctrl_key(pressrelease);
+            case XK_Control_L:
+                joystick_possible_leftctrl_key(pressrelease);
                         break;
 
-			case XK_Control_R:
-				joystick_possible_rightctrl_key(pressrelease);
+            case XK_Control_R:
+                joystick_possible_rightctrl_key(pressrelease);
                         break;
 
-			case XK_Super_L:
-				util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
+            case XK_Super_L:
+                util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
                         break;
 
-			case XK_Super_R:
-				util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
+            case XK_Super_R:
+                util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
                         break;
 
 
-			case XK_Delete:
-				util_set_reset_key(UTIL_KEY_DEL,pressrelease);
+            case XK_Delete:
+                util_set_reset_key(UTIL_KEY_DEL,pressrelease);
                         break;
 
-			//Teclas que generan doble pulsacion
-			case XK_BackSpace:
-				util_set_reset_key(UTIL_KEY_BACKSPACE,pressrelease);
+            //Teclas que generan doble pulsacion
+            case XK_BackSpace:
+                util_set_reset_key(UTIL_KEY_BACKSPACE,pressrelease);
                         break;
 
-			case XK_Home:
-				joystick_possible_home_key(pressrelease);
+            case XK_Home:
+                joystick_possible_home_key(pressrelease);
                         break;
 
             case XK_End:
                 util_set_reset_key(UTIL_KEY_END,pressrelease);
             break;
 
-			case XK_Left:
-				util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
+            case XK_Left:
+                util_set_reset_key(UTIL_KEY_LEFT,pressrelease);
                         break;
 
                         case XK_Right:
-				util_set_reset_key(UTIL_KEY_RIGHT,pressrelease);
+                util_set_reset_key(UTIL_KEY_RIGHT,pressrelease);
                         break;
 
                         case XK_Down:
-				util_set_reset_key(UTIL_KEY_DOWN,pressrelease);
+                util_set_reset_key(UTIL_KEY_DOWN,pressrelease);
                         break;
 
                         case XK_Up:
-				util_set_reset_key(UTIL_KEY_UP,pressrelease);
+                util_set_reset_key(UTIL_KEY_UP,pressrelease);
                         break;
 
-			case XK_Tab:
-				joystick_possible_tab_key(pressrelease);
+            case XK_Tab:
+                joystick_possible_tab_key(pressrelease);
                         break;
 
-			case XK_Caps_Lock:
-				util_set_reset_key(UTIL_KEY_CAPS_LOCK,pressrelease);
+            case XK_Caps_Lock:
+                util_set_reset_key(UTIL_KEY_CAPS_LOCK,pressrelease);
                         break;
 
-			case XK_comma:
-				util_set_reset_key(UTIL_KEY_COMMA,pressrelease);
+            case XK_comma:
+                util_set_reset_key(UTIL_KEY_COMMA,pressrelease);
                         break;
 
-			case XK_period:
-				util_set_reset_key(UTIL_KEY_PERIOD,pressrelease);
+            case XK_period:
+                util_set_reset_key(UTIL_KEY_PERIOD,pressrelease);
                         break;
 
-			case XK_minus:
-			case XK_KP_Subtract:
-				util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
+            case XK_minus:
+            case XK_KP_Subtract:
+                util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
                         break;
 
-			case XK_plus:
-			case XK_KP_Add:
-				util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
+            case XK_plus:
+            case XK_KP_Add:
+                util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
                         break;
 
                         case XK_slash:
                         case XK_KP_Divide:
-				util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
+                util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
                         break;
 
                         case XK_asterisk:
                         case XK_KP_Multiply:
-				util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
+                util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
                         break;
 
             case XK_Num_Lock:
@@ -1230,24 +1187,24 @@ void deal_with_keys(XEvent *event,int pressrelease)
             break;
 
 
-			//F1 pulsado
+            //F1 pulsado
                         case XK_F1:
-				util_set_reset_key(UTIL_KEY_F1,pressrelease);
+                util_set_reset_key(UTIL_KEY_F1,pressrelease);
                         break;
 
-			//F2 pulsado
+            //F2 pulsado
                         case XK_F2:
-				util_set_reset_key(UTIL_KEY_F2,pressrelease);
+                util_set_reset_key(UTIL_KEY_F2,pressrelease);
                         break;
 
-			//F3 pulsado
+            //F3 pulsado
                         case XK_F3:
-				util_set_reset_key(UTIL_KEY_F3,pressrelease);
+                util_set_reset_key(UTIL_KEY_F3,pressrelease);
                         break;
 
-			//F4 pulsado
+            //F4 pulsado
                         case XK_F4:
-				util_set_reset_key(UTIL_KEY_F4,pressrelease);
+                util_set_reset_key(UTIL_KEY_F4,pressrelease);
                         break;
 
                         //F5 pulsado
@@ -1267,20 +1224,20 @@ void deal_with_keys(XEvent *event,int pressrelease)
                         break;
 
 
-			//F8 pulsado. osdkeyboard
-			case XK_F8:
-				util_set_reset_key(UTIL_KEY_F8,pressrelease);
+            //F8 pulsado. osdkeyboard
+            case XK_F8:
+                util_set_reset_key(UTIL_KEY_F8,pressrelease);
                         break;
 
-			//F9 pulsado. quickload
-			case XK_F9:
-				util_set_reset_key(UTIL_KEY_F9,pressrelease);
+            //F9 pulsado. quickload
+            case XK_F9:
+                util_set_reset_key(UTIL_KEY_F9,pressrelease);
                         break;
 
 
                         //F10 pulsado
                         case XK_F10:
-				util_set_reset_key(UTIL_KEY_F10,pressrelease);
+                util_set_reset_key(UTIL_KEY_F10,pressrelease);
                         break;
 
 
@@ -1309,24 +1266,24 @@ void deal_with_keys(XEvent *event,int pressrelease)
                                 util_set_reset_key(UTIL_KEY_F15,pressrelease);
                         break;
 
-			//ESC pulsado
-			case XK_Escape:
-				util_set_reset_key(UTIL_KEY_ESC,pressrelease);
-			break;
+            //ESC pulsado
+            case XK_Escape:
+                util_set_reset_key(UTIL_KEY_ESC,pressrelease);
+            break;
 
-			//PgUp
+            //PgUp
                         case XK_Page_Up:
-				util_set_reset_key(UTIL_KEY_PAGE_UP,pressrelease);
+                util_set_reset_key(UTIL_KEY_PAGE_UP,pressrelease);
                         break;
 
                         //PgDn
                         case XK_Page_Down:
-				util_set_reset_key(UTIL_KEY_PAGE_DOWN,pressrelease);
+                util_set_reset_key(UTIL_KEY_PAGE_DOWN,pressrelease);
                         break;
 
 
-			//Teclas del keypad
-			case XK_KP_Insert:
+            //Teclas del keypad
+            case XK_KP_Insert:
                                 util_set_reset_key(UTIL_KEY_KP0,pressrelease);
                         break;
 
@@ -1377,15 +1334,15 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 
 
-			default:
-				//convert_numeros_letras_puerto_teclado(keysym,pressrelease);
-				if (keysym<256) util_set_reset_key(keysym,pressrelease);
-			break;
+            default:
+                //convert_numeros_letras_puerto_teclado(keysym,pressrelease);
+                if (keysym<256) util_set_reset_key(keysym,pressrelease);
+            break;
 
-		}
+        }
 
 
-	//Fuera del switch
+    //Fuera del switch
 
 //Teclas que necesitan conversion de teclado para CPC
         if (MACHINE_IS_CPC) {
@@ -1419,7 +1376,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 
 //Teclas que necesitan conversion de teclado para Z88
-	if (!MACHINE_IS_Z88) return;
+    if (!MACHINE_IS_Z88) return;
 
                         if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_z88_keymap(UTIL_KEY_Z88_MINUS,pressrelease);
 
@@ -1454,71 +1411,71 @@ void scrxwindows_actualiza_tablas_teclado(void)
 {
 
 
-	XEvent event;
-	//quiza lo mejor es mediante eventos sincronos, de tal manera que cuando se pulse una tecla se actualice la tabla...
+    XEvent event;
+    //quiza lo mejor es mediante eventos sincronos, de tal manera que cuando se pulse una tecla se actualice la tabla...
     //	printf ("lee\n ");
     //XNextEvent(dpy,&event);
 
 
 
-	//Capturar cierre ventana
-	//Desactivado porque con esto, el menu sin multitask no va
-	//quiza porque en ese caso, la lectura de teclas se hace "asincrona" y no se lee... o no se libera nunca tecla... hay que revisarlo
-	//por eso de momento esta desactivado. aunque no se captura evento de cierre aqui, pero si que se envia una señal,
-	//y al no capturarse, al darle con el raton a la X de cierre de ventana, no hara nada
-	/*
-	XNextEvent(dpy, &event);
+    //Capturar cierre ventana
+    //Desactivado porque con esto, el menu sin multitask no va
+    //quiza porque en ese caso, la lectura de teclas se hace "asincrona" y no se lee... o no se libera nunca tecla... hay que revisarlo
+    //por eso de momento esta desactivado. aunque no se captura evento de cierre aqui, pero si que se envia una señal,
+    //y al no capturarse, al darle con el raton a la X de cierre de ventana, no hara nada
+    /*
+    XNextEvent(dpy, &event);
 
       if (event.type == ClientMessage &&
           event.xclient.data.l[0] == delete_window_atom)
-	{
-		debug_printf (VERBOSE_INFO,"Received window close event");
-		//Hacemos que aparezca el menu con opcion de salir del emulador
-		menu_set_menu_abierto(1);
-		menu_button_exit_emulator.v=1;
+    {
+        debug_printf (VERBOSE_INFO,"Received window close event");
+        //Hacemos que aparezca el menu con opcion de salir del emulador
+        menu_set_menu_abierto(1);
+        menu_button_exit_emulator.v=1;
 
       }
-	*/
-	//Fin capturar cierre ventana
+    */
+    //Fin capturar cierre ventana
 
 
 
-	while (XCheckWindowEvent(dpy,ventana,FocusChangeMask|KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event)) {
-	  //printf ("evento tipo: %d\n",event.type);
+    while (XCheckWindowEvent(dpy,ventana,FocusChangeMask|KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event)) {
+      //printf ("evento tipo: %d\n",event.type);
           switch(event.type){
 
-			case FocusIn:
-				//printf("FocusIn\n");
-			break;
+            case FocusIn:
+                //printf("FocusIn\n");
+            break;
 
 
-			case FocusOut:
-				//printf("FocusOut\n");
+            case FocusOut:
+                //printf("FocusOut\n");
 
-				//Si se ha salido con alt-tab, liberar tecla alt, pues las X11 no avisan de alt liberado al salir
-				//de la ventana asi
+                //Si se ha salido con alt-tab, liberar tecla alt, pues las X11 no avisan de alt liberado al salir
+                //de la ventana asi
 
-				//De hecho lo ideal seria liberar todas teclas al perder el foco de la ventana,
-				//pero por probar, de momento empezar por liberar alt
-				debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
+                //De hecho lo ideal seria liberar todas teclas al perder el foco de la ventana,
+                //pero por probar, de momento empezar por liberar alt
+                debug_printf(VERBOSE_INFO,"Releasing alt when losing window focus (to avoid alt pressed when alt-tab key combination pressed)");
 
-				joystick_possible_leftalt_key(0);
+                joystick_possible_leftalt_key(0);
 
-			break;
+            break;
 
-		//Mouse
-		case ButtonPress:
+        //Mouse
+        case ButtonPress:
 
-			if ( event.xbutton.button == 1 ) {
-				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
-			}
-			if ( event.xbutton.button == 3 ) {
-				//mouse_right=1;
-				util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
-			}
+            if ( event.xbutton.button == 1 ) {
+                util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
+            }
+            if ( event.xbutton.button == 3 ) {
+                //mouse_right=1;
+                util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
+            }
 
-			//Botones 4 y 5 en X11 es scroll arriba y abajo... ciertamente un tanto confuso
-     		if ( event.xbutton.button == 4 ) {
+            //Botones 4 y 5 en X11 es scroll arriba y abajo... ciertamente un tanto confuso
+             if ( event.xbutton.button == 4 ) {
                 mouse_wheel_vertical=1;
             }
 
@@ -1528,102 +1485,102 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
 
 
-			debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. ", event.xbutton.x, event.xbutton.y);
+            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. ", event.xbutton.x, event.xbutton.y);
 
-		break;
+        break;
 
                 case ButtonRelease:
                         debug_printf (VERBOSE_PARANOID,"Mouse Button release. x=%d y=%d", event.xbutton.x, event.xbutton.y);
                         if ( event.xbutton.button == 1 ) {
-				//mouse_left=0;
-				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
-			}
+                //mouse_left=0;
+                util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
+            }
                         if ( event.xbutton.button == 3 ) {
-				//mouse_right=0;
-				util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
-			}
+                //mouse_right=0;
+                util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
+            }
 
-			//mouse_left=0;
+            //mouse_left=0;
 
                 break;
 
-		case MotionNotify:
-		    mouse_x=event.xbutton.x;
-		    mouse_y=event.xbutton.y;
+        case MotionNotify:
+            mouse_x=event.xbutton.x;
+            mouse_y=event.xbutton.y;
 
-			lightgun_x=event.xbutton.x;
-			lightgun_y=event.xbutton.y;
-			lightgun_x=lightgun_x/zoom_x;
-			lightgun_y=lightgun_y/zoom_y;
-
-
-		    kempston_mouse_x=mouse_x/zoom_x;
-		    kempston_mouse_y=255-mouse_y/zoom_y;
-		    //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
-
-			debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
-		break;
+            lightgun_x=event.xbutton.x;
+            lightgun_y=event.xbutton.y;
+            lightgun_x=lightgun_x/zoom_x;
+            lightgun_y=lightgun_y/zoom_y;
 
 
-		case KeyPress:
-	//		printf ("key press ");
-			notificar_tecla_interrupcion_si_z88();
-	            deal_with_keys(&event,1);
+            kempston_mouse_x=mouse_x/zoom_x;
+            kempston_mouse_y=255-mouse_y/zoom_y;
+            //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
+
+            debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
+        break;
+
+
+        case KeyPress:
+    //		printf ("key press ");
+            notificar_tecla_interrupcion_si_z88();
+                deal_with_keys(&event,1);
             break;
 
-		case KeyRelease:
-	//		printf ("release key ");
+        case KeyRelease:
+    //		printf ("release key ");
                    deal_with_keys(&event,0);
-		break;
+        break;
 
-		case ConfigureNotify:
-			//      xdisplay_configure_notify(event.xconfigure.width,
+        case ConfigureNotify:
+            //      xdisplay_configure_notify(event.xconfigure.width,
                         //        event.xconfigure.height);
-			debug_printf(VERBOSE_INFO,"XWindows event ConfigureNotify width: %d height: %d",event.xconfigure.width,event.xconfigure.height);
+            debug_printf(VERBOSE_INFO,"XWindows event ConfigureNotify width: %d height: %d",event.xconfigure.width,event.xconfigure.height);
 
-		//ver si tamaño es el mismo que el actual, no hacer resize
-		//en mac os x pasa que esto se queda en un bucle muchas veces al redimensionar y se queda continuamente ampliando y reduciendo
+        //ver si tamaño es el mismo que el actual, no hacer resize
+        //en mac os x pasa que esto se queda en un bucle muchas veces al redimensionar y se queda continuamente ampliando y reduciendo
 
 //                if (ultimo_resize_width!=event.xconfigure.width || ultimo_resize_height!=event.xconfigure.height) {
                         ultimo_resize_width=event.xconfigure.width;
                         ultimo_resize_height=event.xconfigure.height;
 
-			scrxwindows_resize(event.xconfigure.width,event.xconfigure.height);
+            scrxwindows_resize(event.xconfigure.width,event.xconfigure.height);
 
-			//Redibujar zona inferior Z88 si conviene
-			screen_z88_draw_lower_screen();
-			menu_init_footer();
+            //Redibujar zona inferior Z88 si conviene
+            screen_z88_draw_lower_screen();
+            menu_init_footer();
 
-			//si en menu y no esta multitask, hay que refrescar a mano
-			if (menu_abierto && !menu_multitarea) {
-				debug_printf (VERBOSE_INFO,"Force refresh screen because in menu and multitask is disabled");
-				scr_refresca_pantalla();
-			}
+            //si en menu y no esta multitask, hay que refrescar a mano
+            if (menu_abierto && !menu_multitarea) {
+                debug_printf (VERBOSE_INFO,"Force refresh screen because in menu and multitask is disabled");
+                scr_refresca_pantalla();
+            }
 
 
-			//vaciar eventos. para evitar que en mac se quede en bucle
-			while (XCheckWindowEvent(dpy,ventana,KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event));
-			//TODO: quiza en vez de esto lo mejor seria poner una pausa aqui...
+            //vaciar eventos. para evitar que en mac se quede en bucle
+            while (XCheckWindowEvent(dpy,ventana,KeyPressMask|KeyReleaseMask|StructureNotifyMask|ExposureMask|ButtonPressMask|ButtonReleaseMask|PointerMotionMask,&event));
+            //TODO: quiza en vez de esto lo mejor seria poner una pausa aqui...
   //              }
     //            else {
       //                  debug_printf (VERBOSE_INFO,"Not resizing window so size is the same");
         //        }
 
-		break;
+        break;
 
-		case ExposureMask:
-			debug_printf(VERBOSE_INFO,"XWindows event ExposureMask x: %d y: %d height: %d width: %d",event.xexpose.x, event.xexpose.y, event.xexpose.width, event.xexpose.height);
-		break;
+        case ExposureMask:
+            debug_printf(VERBOSE_INFO,"XWindows event ExposureMask x: %d y: %d height: %d width: %d",event.xexpose.x, event.xexpose.y, event.xexpose.width, event.xexpose.height);
+        break;
 
-		//case ClientMessage:
-		//
-		//	if (event.xclient.message_type == wm_protocols && event.xclient.data.l[0] == wm_delete_window) {
-		//		end_emulator();
-		//	}
-		//break;
+        //case ClientMessage:
+        //
+        //	if (event.xclient.message_type == wm_protocols && event.xclient.data.l[0] == wm_delete_window) {
+        //		end_emulator();
+        //	}
+        //break;
 
-	  }
-	}
+      }
+    }
 
 
 }
@@ -1702,17 +1659,17 @@ static int xdisplay_find_visual(void)
 void scrxwindows_hide_mouse_pointer(void)
 {
 
-	Cursor invisibleCursor;
-	Pixmap bitmapNoData;
-	XColor black;
-	static char noData[] = { 0,0,0,0,0,0,0,0 };
-	black.red = black.green = black.blue = 0;
+    Cursor invisibleCursor;
+    Pixmap bitmapNoData;
+    XColor black;
+    static char noData[] = { 0,0,0,0,0,0,0,0 };
+    black.red = black.green = black.blue = 0;
 
-	bitmapNoData = XCreateBitmapFromData(dpy, ventana, noData, 8, 8);
-	invisibleCursor = XCreatePixmapCursor(dpy, bitmapNoData, bitmapNoData,
+    bitmapNoData = XCreateBitmapFromData(dpy, ventana, noData, 8, 8);
+    invisibleCursor = XCreatePixmapCursor(dpy, bitmapNoData, bitmapNoData,
                                      &black, &black, 0, 0);
-	XDefineCursor(dpy,ventana, invisibleCursor);
-	XFreeCursor(dpy, invisibleCursor);
+    XDefineCursor(dpy,ventana, invisibleCursor);
+    XFreeCursor(dpy, invisibleCursor);
 
 }
 
@@ -1766,18 +1723,18 @@ int scrxwindows_driver_can_ext_desktop (void)
 
 void scrxwindows_update_window_title(void)
 {
-	char *list[2];
+    char *list[2];
     //char buffer[20];
-	char buffer[ZESARUX_MAX_WINDOW_TITLE+1];
-	XTextProperty text;
+    char buffer[ZESARUX_MAX_WINDOW_TITLE+1];
+    XTextProperty text;
 
-	list[0] = buffer;
-	list[1] = 0;
+    list[0] = buffer;
+    list[1] = 0;
 
     strcpy(buffer,get_window_title());
 
-	XStringListToTextProperty( list, 1, &text);
-	XSetWMName( dpy, ventana, &text );
+    XStringListToTextProperty( list, 1, &text);
+    XSetWMName( dpy, ventana, &text );
 }
 
 
@@ -1818,55 +1775,55 @@ int scrxwindows_init (void) {
 
     alto +=screen_get_ext_desktop_height_zoom();
 
-	ventana = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, ancho, alto,0, blackColor, blackColor);
+    ventana = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, ancho, alto,0, blackColor, blackColor);
 
 
-	debug_printf (VERBOSE_INFO,"Create XWindows Window %d X %d",ancho,alto);
+    debug_printf (VERBOSE_INFO,"Create XWindows Window %d X %d",ancho,alto);
 
 
 
-	if (scrxwindows_setwindowparms()) return 1;
+    if (scrxwindows_setwindowparms()) return 1;
 
 
-	// We want to get MapNotify events
+    // We want to get MapNotify events
 
-	XSelectInput(dpy, ventana, FocusChangeMask| KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+    XSelectInput(dpy, ventana, FocusChangeMask| KeyPressMask | KeyReleaseMask | StructureNotifyMask | ExposureMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
 
-	// "Map" the window (that is, make it appear on the screen)
+    // "Map" the window (that is, make it appear on the screen)
 
-	XMapWindow(dpy, ventana);
+    XMapWindow(dpy, ventana);
 
-	// Create a "Graphics Context"
+    // Create a "Graphics Context"
 
-	gc = XCreateGC(dpy, ventana, 0, NIL);
+    gc = XCreateGC(dpy, ventana, 0, NIL);
 
-	// Tell the GC we draw using the white color
+    // Tell the GC we draw using the white color
 
-	XSetForeground(dpy, gc, whiteColor);
+    XSetForeground(dpy, gc, whiteColor);
 
-	// Wait for the MapNotify event
+    // Wait for the MapNotify event
 
-	for (;;) {
-	    XEvent e;
-	    XNextEvent(dpy, &e);
-	    if (e.type == MapNotify) {
+    for (;;) {
+        XEvent e;
+        XNextEvent(dpy, &e);
+        if (e.type == MapNotify) {
             break;
         }
-	}
+    }
 
-	if ( xdisplay_find_visual() ) exit(1);
+    if ( xdisplay_find_visual() ) exit(1);
 
 
-	scrxwindows_alloc_image(ancho, alto);
+    scrxwindows_alloc_image(ancho, alto);
 
     scr_reallocate_layers_menu(ancho,alto);
 
-	if (!shm_used) debug_printf (VERBOSE_WARN,"No X11 Shared memory. Expect poor performance");
+    if (!shm_used) debug_printf (VERBOSE_WARN,"No X11 Shared memory. Expect poor performance");
 
 
-	XFlush(dpy);
+    XFlush(dpy);
 
-	scrxwindows_update_window_title();
+    scrxwindows_update_window_title();
 
 
     //Inicializaciones necesarias
@@ -1891,26 +1848,26 @@ int scrxwindows_init (void) {
     screen_refresh_menu=1;
 
 
-	//Esta funcion quiza no iba antes, pero en un xorg reciente funciona
-	if (mouse_pointer_shown.v==0) {
-		debug_printf (VERBOSE_INFO,"Hiding mouse pointer");
-		scrxwindows_hide_mouse_pointer();
-	}
+    //Esta funcion quiza no iba antes, pero en un xorg reciente funciona
+    if (mouse_pointer_shown.v==0) {
+        debug_printf (VERBOSE_INFO,"Hiding mouse pointer");
+        scrxwindows_hide_mouse_pointer();
+    }
 
 
-	//Otra inicializacion necesaria
-	//Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
-	scr_set_driver_name("xwindows");
+    //Otra inicializacion necesaria
+    //Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
+    scr_set_driver_name("xwindows");
 
 
     scr_z88_cpc_load_keymap();
 
 
-	if (ventana_fullscreen) {
-		scr_set_fullscreen();
-	}
+    if (ventana_fullscreen) {
+        scr_set_fullscreen();
+    }
 
-	return 0;
+    return 0;
 
 
 }
