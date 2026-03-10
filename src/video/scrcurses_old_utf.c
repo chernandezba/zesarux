@@ -1482,12 +1482,7 @@ int scrcurses_get_menu_height(void)
         return 24/screen_reduce_menu_alto;
 }
 
-/*
-int scrcurses_driver_can_ext_desktop (void)
-{
-        return 0;
-}
-*/
+
 
 int scrcurses_init (void) {
 

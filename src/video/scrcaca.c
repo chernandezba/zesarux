@@ -711,12 +711,7 @@ int scrcaca_get_menu_height(void)
         return 24/screen_reduce_menu_alto;
 }
 
-/*
-int scrcaca_driver_can_ext_desktop (void)
-{
-        return 0;
-}
-*/
+
 
 
 int scrcaca_init (void)

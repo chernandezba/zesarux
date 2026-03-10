@@ -1618,8 +1618,8 @@ void scrsdl_actualiza_tablas_teclado(void)
             mouse_x=event.motion.x;
             mouse_y=event.motion.y;
 
-            lightgun_x=event.motion.x;
-            lightgun_y=event.motion.y;
+            lightgun_x=mouse_x;
+            lightgun_y=mouse_y;
             lightgun_x=lightgun_x/zoom_x;
             lightgun_y=lightgun_y/zoom_y;
 
@@ -1746,12 +1746,7 @@ int scrsdl_get_menu_height(void)
         return max;
 }
 
-/*
-int scrsdl_driver_can_ext_desktop (void)
-{
-        return 1;
-}
-*/
+
 
 
 int realjoystick_sdl_total_joysticks=0;

@@ -142,12 +142,7 @@ int scrsimpletext_get_menu_height(void)
         return 24/screen_reduce_menu_alto;
 }
 
-/*
-int scrsimpletext_driver_can_ext_desktop (void)
-{
-        return 0;
-}
-*/
+
 
 void scrsimpletext_textspeech_filter_welcome_message(void)
 {
