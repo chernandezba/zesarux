@@ -91,10 +91,6 @@ int xerror_error;
 int xerror_expecting;
 
 
-int ultimo_resize_width=0,ultimo_resize_height=0;
-
-
-
 Display *dpy;
 
 Window ventana=0;
@@ -728,8 +724,7 @@ void scrxwindows_refresca_pantalla(void)
 
 static void xdisplay_destroy_image(void)
 {
-  /* Free the XImage used to store screen data; also frees the malloc'd
-     data */
+    // Free the XImage used to store screen data; also frees the malloc'd data
 
 #ifdef X_USE_SHM
     if (shm_used) {
@@ -964,9 +959,6 @@ void scrxwindows_z88_cpc_load_keymap(void)
 void deal_with_keys(XEvent *event,int pressrelease)
 {
     KeySym keysym;
-
-
-
     KeySym native;
 
     //printf ("event->xkey :%d\n",event->xkey);
@@ -1292,7 +1284,6 @@ void deal_with_keys(XEvent *event,int pressrelease)
         break;
 
 
-        //ESC pulsado
         case XK_Escape:
             util_set_reset_key(UTIL_KEY_ESC,pressrelease);
         break;
@@ -1358,10 +1349,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
         break;
 
 
-
-
         default:
-            //convert_numeros_letras_puerto_teclado(keysym,pressrelease);
             if (keysym<256) util_set_reset_key(keysym,pressrelease);
         break;
 
@@ -1560,9 +1548,6 @@ void scrxwindows_actualiza_tablas_teclado(void)
                             //        event.xconfigure.height);
                 debug_printf(VERBOSE_INFO,"XWindows event ConfigureNotify width: %d height: %d",event.xconfigure.width,event.xconfigure.height);
 
-
-                ultimo_resize_width=event.xconfigure.width;
-                ultimo_resize_height=event.xconfigure.height;
 
                 scrxwindows_resize(event.xconfigure.width,event.xconfigure.height);
 
