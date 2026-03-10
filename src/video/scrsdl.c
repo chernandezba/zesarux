@@ -76,6 +76,10 @@ int scrsdl_alto_no_fullscreen=0;
 
 SDL_Surface *render_surface;
 
+//Tamaño y offset de zona fullscreen
+SDL_Rect dst_fullscreen;
+
+
 void scrsdl_update_window_title(void)
 {
     SDL_WM_SetCaption(get_window_title(), "ZEsarUX");
@@ -372,7 +376,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 	    if (ventana_fullscreen) {
 
             SDL_Rect src;
-            SDL_Rect dst;
+
 
             int ancho_origen= scrsdl_ancho_no_fullscreen;
             int alto_origen=scrsdl_alto_no_fullscreen;
@@ -409,14 +413,17 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             }
 
 
-            dst.x = offset_x;
-            dst.y = offset_y;
-            dst.w = ancho_escalado_destino;
-            dst.h = alto_escalado_destino;
+            dst_fullscreen.x = offset_x;
+            dst_fullscreen.y = offset_y;
+            dst_fullscreen.w = ancho_escalado_destino;
+            dst_fullscreen.h = alto_escalado_destino;
+
+            //printf("ampliacion ancho %f alto %f\n",
+            //    (float)ancho_escalado_destino/(float)scrsdl_ancho_no_fullscreen,(float)alto_escalado_destino/(float)scrsdl_alto_no_fullscreen);
 
             //printf("Escalando desde %d X %d hasta %d X %d. monitor total: %d X %d\n",ancho_origen,alto_origen,ancho_escalado_destino,alto_escalado_destino,sdl_screen->w,sdl_screen->h);
 
-            SDL_SoftStretch(render_surface, &src, sdl_screen, &dst);
+            SDL_SoftStretch(render_surface, &src, sdl_screen, &dst_fullscreen);
 
 
             SDL_UpdateRect(sdl_screen, 0, 0, scrsdl_ancho_ventana, scrsdl_alto_ventana);
@@ -1615,8 +1622,27 @@ void scrsdl_actualiza_tablas_teclado(void)
 
 		//mouse motion
 		if (event.type==SDL_MOUSEMOTION) {
-            mouse_x=event.motion.x;
-            mouse_y=event.motion.y;
+
+            //En pantalla completa tenemos que ajustar la posicion real del raton
+            if (ventana_fullscreen) {
+                //printf("antes %d,%d\n",event.motion.x,event.motion.y);
+
+                mouse_x=event.motion.x-dst_fullscreen.x;
+                mouse_x=(mouse_x*scrsdl_ancho_no_fullscreen)/dst_fullscreen.w;
+
+                //printf("ampliacion ancho %f alto %f\n",
+                //    (float)ancho_escalado_destino/(float)scrsdl_ancho_no_fullscreen,(float)alto_escalado_destino/(float)scrsdl_alto_no_fullscreen);
+
+                mouse_y=event.motion.y-dst_fullscreen.y;
+                mouse_y=(mouse_y*scrsdl_alto_no_fullscreen)/dst_fullscreen.h;
+
+                //printf("despues %d,%d\n",mouse_x,mouse_y);
+            }
+
+            else {
+                mouse_x=event.motion.x;
+                mouse_y=event.motion.y;
+            }
 
             lightgun_x=mouse_x;
             lightgun_y=mouse_y;

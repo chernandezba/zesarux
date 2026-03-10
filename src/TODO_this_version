@@ -112,7 +112,13 @@ ok ->probar con --vo xwindows por ejemplo
 
 -probar fullscreen en todos drivers
 
-ok cocoa, xwindows, ok sdl2, *permitir raton en full screen
+*permitir raton en full screen. probar fullscreen con zx desktop
+ok cocoa,
+xwindows mal,
+sdl2 ok
+sdl1 ok
+
+
 en sdl1, raton lo ubica en la posicion inicial
 
 *a veces al pasar a fullscreen en mac se genera segfault. quiza habria que bloquear temporalmente la funcion de render
