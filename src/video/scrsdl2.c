@@ -1553,6 +1553,8 @@ See the SDL documentation. Scancodes represent the physical position of the keys
             mouse_x=event.motion.x;
             mouse_y=event.motion.y;
 
+            //printf("Mouse is at (%d,%d)\n", mouse_x, mouse_y);
+
             lightgun_x=event.motion.x;
             lightgun_y=event.motion.y;
             lightgun_x=lightgun_x/zoom_x;
@@ -1560,7 +1562,7 @@ See the SDL documentation. Scancodes represent the physical position of the keys
 
             kempston_mouse_x=mouse_x/zoom_x;
             kempston_mouse_y=255-mouse_y/zoom_y;
-            //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
+
 
             debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
 		}

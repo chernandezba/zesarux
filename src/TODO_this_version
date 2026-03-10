@@ -115,9 +115,8 @@ ok ->probar con --vo xwindows por ejemplo
 *permitir raton en full screen. probar fullscreen con zx desktop
 ok cocoa,
 xwindows ok
-sdl2 ok. aunque al volver de fullscreen no lee bien raton
 sdl1 ok
-
+sdl2 ok. aunque al volver de fullscreen no lee bien raton
 
 en sdl1, raton lo ubica en la posicion inicial
 
