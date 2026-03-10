@@ -295,7 +295,7 @@ void scrxwindows_reset_fullscreen(void)
 
     if (quitar_fullscreen) {
 
-        printf("Recuperar valores de zoom de antes de full screen\n");
+        debug_printf (VERBOSE_INFO,"Restore zoom values from before activating full screen");
 
         zoom_x=zoom_x_antes_fullscreen;
         zoom_y=zoom_y_antes_fullscreen;
@@ -373,39 +373,6 @@ void scrxwindows_resize(int width,int height)
 
     debug_printf (VERBOSE_INFO,"Xwindows resize");
 
-    //printf ("Xwindows resize\n");
-    //if (ventana_fullscreen) {
-    //    return;
-    //}
-
-    /*
-    if (ventana_fullscreen) {
-        zoom_x_calculado=zoom_x;
-        zoom_y_calculado=zoom_y;
-
-        modificado_border.v=1;
-
-
-
-        debug_printf (VERBOSE_INFO,"Calling XResizeWindow on fullscreen");
-
-        scrxwindows_alloc_image(fullscreen_width,fullscreen_height);
-
-        XResizeWindow( dpy, ventana, fullscreen_width, fullscreen_height);
-
-        XMapRaised(dpy,ventana);
-
-        //printf ("resize %d %d\n",width,height);
-        scr_reallocate_layers_menu(fullscreen_width,fullscreen_height);
-
-        scr_set_pending_redraw_desktop_windows();
-        return;
-
-    }
-    */
-
-
-
     debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
 
     //zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
@@ -430,7 +397,7 @@ void scrxwindows_resize(int width,int height)
         set_putpixel_zoom();
         modificado_border.v=1;
 
-        printf("Reajustando zoom a %d,%d\n",zoom_x,zoom_y);
+        //printf("Reajustando zoom a %d,%d\n",zoom_x,zoom_y);
 
         width=screen_get_window_size_width_zoom_border_en();
         width+=screen_get_ext_desktop_width_zoom();
@@ -790,7 +757,6 @@ void scrxwindows_refresca_pantalla(void)
 		scr_refresca_pantalla_y_border_sms();
 	}
 
-	//printf ("%d\n",spectrum_colortable[1]);
 
 	screen_render_menu_overlay_if_active();
 
@@ -1854,7 +1820,7 @@ int scrxwindows_init (void) {
 
 	ventana = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, ancho, alto,0, blackColor, blackColor);
 
-	//printf ("crear ventana %d %d\n",screen_get_window_size_width_zoom_border_en(), screen_get_window_size_height_zoom_border_en() );
+
 	debug_printf (VERBOSE_INFO,"Create XWindows Window %d X %d",ancho,alto);
 
 
@@ -2005,7 +1971,7 @@ static int try_shm (void)
 
     /* If we caught an error, don't use SHM */
     if( error || xerror_error ) {
-        printf ("shm error. disabling\n");
+        debug_printf (VERBOSE_ERR,"shm error. disabling");
         shmctl( id, IPC_RMID, NULL );
         shmdt( image->data ); image->data = NULL;
         return 0;

@@ -93,6 +93,7 @@ Mejorado título de la ventana de ZEsarUX: unificar título en todos los diferen
 
 * Correcciones:
 
+Corregido problemas al activar modo de pantalla completa en macOS, Linux y Windows (drivers cocoa, xwindow, sdl, sdl2)
 Corregida emulación de Magnum Light Phaser
 Corregida lectura de puerto BFFD en Spectrum +2A/+3
 Corregida emulación de opcode DD/FD+EB: EX DE,HL en vez de EX DE,IX/IY

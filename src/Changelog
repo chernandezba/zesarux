@@ -93,6 +93,7 @@ Improved ZEsarUX window title: unify title on all different drivers: SDL, X11, e
 
 * Fixes:
 
+Fixed fullscreen issues on macOS, Linux and Windows (drivers cocoa, xwindow, sdl, sdl2)
 Fixed emulation of Magnum Light Phaser
 Fixed reading port BFFD on Spectrum +2A/+3
 Fixed emulation of DD/FD+EB opcode: EX DE,HL instead of EX DE,IX/IY
