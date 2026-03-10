@@ -113,10 +113,10 @@ ok ->probar con --vo xwindows por ejemplo
 -probar fullscreen en todos drivers
 *probar disable-fullscreen-on-exit  en diferentes drivers
 *permitir raton en full screen
-*a veces al pasar a fullscreen en mac se gerera segfault. quiza habria que bloquear temporalmente la funcion de render
+*a veces al pasar a fullscreen en mac se genera segfault. quiza habria que bloquear temporalmente la funcion de render
 *sdl1 ok
 *sdl2 poner
-*sdl1, sdl2: revisar fullscreen funcione bien con ¿parametro limites pantalla? y modo rgb 8 bit
+*sdl1, sdl2: revisar fullscreen funcione bien con ¿parametro limites pantalla?
 *xwindows:
 ok **no hace escalado? el escalado es el mio de zoom que entra por el aviso de resize.
 ok **al salir de fullscreen, se queda zoom muy grande

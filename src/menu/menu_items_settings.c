@@ -1526,7 +1526,14 @@ void menu_colour_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_colour_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_ESC_item(array_menu_colour_settings);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&colour_settings_opcion_seleccionada,&item_seleccionado,array_menu_colour_settings,"Colour Settings" );
+        menu_add_item_menu_index_full_path(array_menu_colour_settings,
+            "Main Menu-> Settings-> Main Window-> Colour Settings",
+            "Menú Principal-> Opciones-> Ventana Principal-> Opciones de colores",
+            "Menú Principal-> Opcions-> Finestra Principal-> Opcions de colors");
+
+        retorno_menu=menu_dibuja_menu(&colour_settings_opcion_seleccionada,&item_seleccionado,array_menu_colour_settings,
+                "Colour Settings","Opciones de colores","Opcions de colors");
+
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
