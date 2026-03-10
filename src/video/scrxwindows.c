@@ -248,6 +248,15 @@ void scrxwindows_set_reset_fullscreen(int set_reset)
 {
     //Los window managers modernos (como los de GNOME, KDE Plasma o Xfce) soportan el protocolo EWMH.
     //Se envia un ClientMessage al window manager.
+    //Nota: este fullscreen no llena completamente la ventana, se ajustará el zoom a lo máximo posible
+    //Habría varias maneras de hacerlo
+    //1. Extensión XRender de X11
+    //2. Extensión XVideo de X11
+    //3. Uso de OpenGL
+    //4. Escalado por software
+    //Como no es algo que me preocupe especialmente y por dejar un método sencillo, sin complicaciones,
+    //lo voy a dejar así. Quien tenga mucha necesidad de un modo fullscreen que llene la pantalla, que use SDL por ejemplo
+
     Atom wm_state = XInternAtom(dpy, "_NET_WM_STATE", False);
     Atom fullscreen = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
 
@@ -271,17 +280,45 @@ void scrxwindows_set_reset_fullscreen(int set_reset)
     change_variable_ventana_fullscreen(set_reset);
 }
 
+int zoom_x_antes_fullscreen=1;
+int zoom_y_antes_fullscreen=1;
 
 void scrxwindows_reset_fullscreen(void)
 {
+    int quitar_fullscreen=0;
+
+    //Pasamos de tener fullscreen a quitarlo. Recuperar nivel zoom que habia antes
+    if (ventana_fullscreen) quitar_fullscreen=1;
+
     debug_printf (VERBOSE_INFO,"Resetting full screen");
     scrxwindows_set_reset_fullscreen(0);
 
+    if (quitar_fullscreen) {
+
+        printf("Recuperar valores de zoom de antes de full screen\n");
+
+        zoom_x=zoom_x_antes_fullscreen;
+        zoom_y=zoom_y_antes_fullscreen;
+
+        int width=screen_get_window_size_width_zoom_border_en();
+        width+=screen_get_ext_desktop_width_zoom();
+
+        int height=screen_get_window_size_height_zoom_border_en();
+        height+=screen_get_ext_desktop_height_zoom();
+
+        scrxwindows_resize(width,height);
+    }
+
 }
+
+
 
 void scrxwindows_set_fullscreen(void)
 {
     debug_printf (VERBOSE_INFO,"Setting full screen");
+    zoom_x_antes_fullscreen=zoom_x;
+    zoom_y_antes_fullscreen=zoom_y;
+
     scrxwindows_set_reset_fullscreen(1);
 
 }
@@ -392,6 +429,8 @@ void scrxwindows_resize(int width,int height)
         zoom_y=zoom_y_calculado;
         set_putpixel_zoom();
         modificado_border.v=1;
+
+        printf("Reajustando zoom a %d,%d\n",zoom_x,zoom_y);
 
         width=screen_get_window_size_width_zoom_border_en();
         width+=screen_get_ext_desktop_width_zoom();
