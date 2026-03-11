@@ -128,4 +128,9 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -copiar (desde fuera de ZEsarUX) -pegar como pulsaciones de teclas
 
-"Colour settings" menu, falta la traducción
+-poder insertar cinta cuando la rutina de la rom ya esta cargando
+*deberia ser una opcion (activada por defecto) ?
+*que en los modelos de 128k detecte si esta en la rom 3/1 (hacer funciones comunes)
+
+
+-breakpoint: poderlo borrar al editar

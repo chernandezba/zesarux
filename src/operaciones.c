@@ -4369,7 +4369,19 @@ void rlca(void)
         reg_a=rlc_valor_comun(reg_a);
 }
 
+void ex_af_af(void)
+{
+    z80_byte valor;
 
+	valor=reg_a;
+	reg_a=reg_a_shadow;
+	reg_a_shadow=valor;
+
+	valor=Z80_FLAGS;
+	Z80_FLAGS=Z80_FLAGS_SHADOW;
+	Z80_FLAGS_SHADOW=valor;
+
+}
 
 //rutina comun a rl y rla
 z80_byte rl_valor_comun(z80_byte value)

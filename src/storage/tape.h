@@ -26,6 +26,7 @@
 #include "mem128.h"
 #include "zvfs.h"
 
+extern void tape_trap_load_spectrum(void);
 extern int tap_open(void);
 extern int tap_close(void);
 extern int tap_out_open(void);

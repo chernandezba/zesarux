@@ -65,6 +65,8 @@
 #include "interface007.h"
 #include "dinamid3.h"
 #include "dsk.h"
+#include "contend.h"
+#include "core_spectrum.h"
 
 #include "autoselectoptions.h"
 
@@ -324,6 +326,29 @@ void tape_visual_casette_advance_reel(void)
     visual_cassette_tape_rodillo_arrastre_grados=(visual_cassette_tape_rodillo_arrastre_grados % 360);
 }
 
+void tape_trap_load_spectrum(void)
+{
+    //si estamos en pausa, no hacer nada
+    if (!tape_pause) {
+        audio_playing.v=0;
+
+        draw_tape_text();
+
+        tap_load();
+        all_interlace_scr_refresca_pantalla();
+
+        //audio_playing.v=1;
+        timer_reset();
+    }
+
+    else {
+        core_spectrum_store_rainbow_current_atributes();
+        //generamos nada. como si fuera un NOP
+        contend_read( reg_pc, 4 );
+
+    }
+}
+
 void tape_init(void)
 {
 
@@ -339,7 +364,7 @@ void tape_init(void)
 
 
 
-                if (tapefile!=0) {
+    if (tapefile!=0) {
                         debug_printf (VERBOSE_INFO,"Initializing Tape File");
 
                         //if (strstr(tapefile,".tap")!=NULL  || strstr(tapefile,".TAP")!=NULL) {
@@ -433,7 +458,45 @@ void tape_init(void)
 
             set_tape_file_machine(tapefile);
             set_tape_file_options(tapefile);
+
+
+        //Adicional. En spectrum si antes de insertar la cinta estaba en la rutina de carga de la rom esperando cinta,
+        //y si no hay cinta real insertada y si no hay autoload, salir de esa subrutina de la rom y hacer que entre por la normal
+        printf("reg_pc %d noautoload %d realtape inserted %d\n",reg_pc,noautoload.v,realtape_inserted.v);
+        if (MACHINE_IS_SPECTRUM && noautoload.v && realtape_inserted.v==0) {
+            if (reg_pc>=1517 && reg_pc<=1530) {
+                printf("Insertando cinta con la rutina de la rom de carga en curso\n");
+                //*direccion de retorno en sp+4 habitualmente al entrar por la 1366
+                pop_valor();
+
+                //Si se ha entrado por la 1366, aqui habra un 53f
+                z80_int valor_stack=peek_word(reg_sp);
+                if (valor_stack==0x053f) {
+                    printf("Parece que hemos entrado por la 1366. Quitar un word del stack\n");
+                    pop_valor();
                 }
+                else {
+                    printf("Parece que se ha entrado al load de la rom desde una direccion diferente a la 1366\n");
+                }
+
+
+                printf("Flag: %02XH\n",reg_a_shadow);
+
+                //Flag de carga esta en A' y el modo de carga (Z=0 normal, Z=1 para any flag) en F'
+                //Tal cual es como entra en la 1378
+
+
+                //Reentrar como si se hubiera tenido cinta insertada
+                reg_pc=1378;
+                tape_trap_load_spectrum();
+            }
+
+        }
+
+    }
+
+
+
 }
 
 void tape_out_init(void)
@@ -908,7 +971,7 @@ void tape_seek_to_block(int index_to_seek)
 void tap_load(void)
 {
 
-//printf ("tap load\n");
+    //printf ("tap load\n");
 
 
     if (buffer_tap_read==NULL) {

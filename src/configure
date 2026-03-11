@@ -1442,7 +1442,7 @@ debug.o: debug.c cpu.h debug.h mem128.h machines/timex.h video/screen.h zxvision
 debug_timings.o: debug_timings.c debug_timings.h cpu.h debug.h
 	\$(CC) \$(CFLAGS) -c debug_timings.c
 
-tape.o: storage/tape.c storage/tape.h cpu.h operaciones.h debug.h storage/tape_tap.h storage/tape_tzx.h storage/tape_pzx.h storage/tape_smp.h machines/chloe.h machines/prism.h mem128.h machines/timex.h snap/snap.h compileoptions.h video/screen.h machines/zx8081.h zxvision/zxvision.h snap/snap_z81.h utils.h audio/audio.h video/screen.h autoselectoptions.h machines/zxuno.h timer.h storage/superupgrade.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h machines/tbblue.h settings.h machines/msx.h storage/samram.h menu/menu_items.h zvfs.h copy_interfaces/hilow_barbanegra.h copy_interfaces/transtape.h dsk.h
+tape.o: storage/tape.c storage/tape.h cpu.h operaciones.h debug.h storage/tape_tap.h storage/tape_tzx.h storage/tape_pzx.h storage/tape_smp.h machines/chloe.h machines/prism.h mem128.h machines/timex.h snap/snap.h compileoptions.h video/screen.h machines/zx8081.h zxvision/zxvision.h snap/snap_z81.h utils.h audio/audio.h video/screen.h autoselectoptions.h machines/zxuno.h timer.h storage/superupgrade.h copy_interfaces/multiface.h machines/chrome.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h machines/tbblue.h settings.h machines/msx.h storage/samram.h menu/menu_items.h zvfs.h copy_interfaces/hilow_barbanegra.h copy_interfaces/transtape.h dsk.h contend.h cores/core_spectrum.h
 	\$(CC) \$(CFLAGS) -c storage/tape.c
 
 tape_tap.o: storage/tape_tap.c storage/tape_tap.h storage/tape.h cpu.h operaciones.h debug.h

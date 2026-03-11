@@ -118,15 +118,8 @@ void instruccion_8()
 {
 
 //EX AF,AF'
-	z80_byte valor;
 
-	valor=reg_a;
-	reg_a=reg_a_shadow;
-	reg_a_shadow=valor;
-
-	valor=Z80_FLAGS;
-	Z80_FLAGS=Z80_FLAGS_SHADOW;
-	Z80_FLAGS_SHADOW=valor;
+    ex_af_af();
 
 }
 

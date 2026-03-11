@@ -96,25 +96,25 @@ int si_siguiente_sonido(void)
 {
 
 	if (MACHINE_IS_PRISM) {
-/*
-Si son 525 scanlines:
-525/5*3=315
+        /*
+        Si son 525 scanlines:
+        525/5*3=315
 
-0/1.6=0 mod 5=0
-1/1.6=0 mod 5=1
-2/1.6=1
-3/1.6=1
-4/1.6=2
+        0/1.6=0 mod 5=0
+        1/1.6=0 mod 5=1
+        2/1.6=1
+        3/1.6=1
+        4/1.6=2
 
-5/1.6=3
-6/1.6=3
-7/1,6=4
-8/1.6=4
-9/1.6=5
+        5/1.6=3
+        6/1.6=3
+        7/1,6=4
+        8/1.6=4
+        9/1.6=5
 
-10/1.6=6
-Hacer mod 5 y escoger 0,2,4 (de cada 5 coger 3)
-*/
+        10/1.6=6
+        Hacer mod 5 y escoger 0,2,4 (de cada 5 coger 3)
+        */
 		int resto=t_scanline%5;
 		if (resto==0 || resto==2 || resto==4) return 1;
 		else return 0;
@@ -201,16 +201,16 @@ void core_spectrum_store_rainbow_current_atributes(void)
 
 
 	//Si no vamos a refrescar pantalla (framedrop), no tiene sentido almacenar nada en el buffer
-/*
-Sin saltar frame aqui, tenemos por ejemplo
-./zesarux --realvideo --frameskip 4  --vo null --exit-after 10
-15 % cpu
-tiempo de proceso en 10 segundos: user	0m1.498s
+    /*
+    Sin saltar frame aqui, tenemos por ejemplo
+    ./zesarux --realvideo --frameskip 4  --vo null --exit-after 10
+    15 % cpu
+    tiempo de proceso en 10 segundos: user	0m1.498s
 
-Saltando frame aqui,
-12% cpu
-tiempo de proceso en 10 segundos: user	0m1.239s
-*/
+    Saltando frame aqui,
+    12% cpu
+    tiempo de proceso en 10 segundos: user	0m1.239s
+    */
     if (next_frame_skip_render_scanlines) {
         //if ((t_estados/screen_testados_linea)>310) printf ("-Not storing rainbow buffer as framescreen_saltar is %d or manual frameskip\n",framescreen_saltar);
         //if ((temp_xx_veces % 50)==0 && ((t_estados % screen_testados_linea)>1640)) printf("Skipping core_spectrum_store_rainbow_current_atributes due to framedrop. scanline %d\n",t_scanline_draw);
@@ -409,11 +409,11 @@ void core_spectrum_fin_frame_pantalla(void)
     if (debug_registers) scr_debug_registers();
 
     contador_parpadeo--;
-        //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-        if (!contador_parpadeo) {
-                contador_parpadeo=16;
-                toggle_flash_state();
-        }
+    //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+    if (!contador_parpadeo) {
+            contador_parpadeo=16;
+            toggle_flash_state();
+    }
 
 
     if (!interrupcion_timer_generada.v) {
@@ -885,8 +885,8 @@ void core_spectrum_ciclo_fetch(void)
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
-        //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
-        //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
+    //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales
+    //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
 
 	scr_stdout_debug_print_char_routine();
 
@@ -1057,25 +1057,7 @@ void cpu_core_loop_spectrum(void)
 
 
     if (tap_load_detect()) {
-        //si estamos en pausa, no hacer nada
-        if (!tape_pause) {
-            audio_playing.v=0;
-
-            draw_tape_text();
-
-            tap_load();
-            all_interlace_scr_refresca_pantalla();
-
-            //audio_playing.v=1;
-            timer_reset();
-        }
-
-        else {
-            core_spectrum_store_rainbow_current_atributes();
-            //generamos nada. como si fuera un NOP
-            contend_read( reg_pc, 4 );
-
-        }
+        tape_trap_load_spectrum();
     }
 
     else if (tap_save_detect()) {

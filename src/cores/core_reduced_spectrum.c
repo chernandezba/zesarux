@@ -68,45 +68,24 @@
 void cpu_core_loop_reduced_spectrum(void)
 {
 
-		timer_check_interrupt();
+    timer_check_interrupt();
 
-        //Eventos de la controladora de disco
-        pd765_next_event_from_core();
+    //Eventos de la controladora de disco
+    pd765_next_event_from_core();
 
-		//Gestionar autoload
-		gestionar_autoload_spectrum();
-
-
-		if (tap_load_detect()) {
-			//si estamos en pausa, no hacer nada
-			if (!tape_pause) {
-					audio_playing.v=0;
-
-					draw_tape_text();
-
-					tap_load();
-					all_interlace_scr_refresca_pantalla();
-
-					//printf ("refresco pantalla\n");
-					//audio_playing.v=1;
-					timer_reset();
-			}
-
-			else {
-				core_spectrum_store_rainbow_current_atributes();
-				//generamos nada. como si fuera un NOP
-
-				contend_read( reg_pc, 4 );
+    //Gestionar autoload
+    gestionar_autoload_spectrum();
 
 
-			}
-		}
+    if (tap_load_detect()) {
+        tape_trap_load_spectrum();
+    }
 
 
-		else {
-			if (esperando_tiempo_final_t_estados.v==0) {
+    else {
+        if (esperando_tiempo_final_t_estados.v==0) {
 
-				core_spectrum_store_rainbow_current_atributes();
+            core_spectrum_store_rainbow_current_atributes();
 
 
 
@@ -119,36 +98,36 @@ void cpu_core_loop_reduced_spectrum(void)
 
 #endif
 
-				if (MACHINE_IS_TSCONF) tsconf_handle_frame_interrupts();
+            if (MACHINE_IS_TSCONF) tsconf_handle_frame_interrupts();
 
 
 
-				contend_read( reg_pc, 4 );
-				byte_leido_core_spectrum=fetch_opcode();
+            contend_read( reg_pc, 4 );
+            byte_leido_core_spectrum=fetch_opcode();
 
 
 
 
 #ifdef EMULATE_CPU_STATS
-				util_stats_increment_counter(stats_codsinpr,byte_leido_core_spectrum);
+            util_stats_increment_counter(stats_codsinpr,byte_leido_core_spectrum);
 #endif
 
-                //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-                if (z80_halt_signal.v) {
-                    byte_leido_core_spectrum=0;
-                }
-                else {
-                    reg_pc++;
-                }
+            //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+            if (z80_halt_signal.v) {
+                byte_leido_core_spectrum=0;
+            }
+            else {
+                reg_pc++;
+            }
 
-				reg_r++;
+            reg_r++;
 
 
 
-                z80_no_ejecutado_block_opcodes();
-				codsinpr[byte_leido_core_spectrum]  () ;
+            z80_no_ejecutado_block_opcodes();
+            codsinpr[byte_leido_core_spectrum]  () ;
 
-				//printf ("t_estados:%d\n",t_estados);
+            //printf ("t_estados:%d\n",t_estados);
 
 
 

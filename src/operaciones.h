@@ -472,6 +472,7 @@ extern z80_int pop_valor();
 extern z80_byte rlc_valor(z80_byte value);
 extern void rlc_reg(z80_byte *reg);
 extern void rlca(void);
+extern void ex_af_af(void);
 extern z80_byte rl_valor(z80_byte value);
 extern void rl_reg(z80_byte *reg);
 extern void rla(void);
