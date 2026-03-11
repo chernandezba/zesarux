@@ -465,30 +465,47 @@ void tape_init(void)
         printf("reg_pc %d noautoload %d realtape inserted %d\n",reg_pc,noautoload.v,realtape_inserted.v);
         if (MACHINE_IS_SPECTRUM && noautoload.v && realtape_inserted.v==0) {
             if (reg_pc>=1517 && reg_pc<=1530) {
-                printf("Insertando cinta con la rutina de la rom de carga en curso\n");
-                //*direccion de retorno en sp+4 habitualmente al entrar por la 1366
-                pop_valor();
 
-                //Si se ha entrado por la 1366, aqui habra un 53f
-                z80_int valor_stack=peek_word(reg_sp);
-                if (valor_stack==0x053f) {
-                    printf("Parece que hemos entrado por la 1366. Quitar un word del stack\n");
+                //Si estamos en la rom correspondiente
+                int en_rom_load=1;
+
+                if (MACHINE_IS_SPECTRUM_P2A_P3) {
+                    if (get_actual_rom_p2a()!=3) en_rom_load=0;
+                }
+
+                if (MACHINE_IS_SPECTRUM_128_P2) {
+                    if (get_actual_rom_128k()!=1) en_rom_load=0;
+                }
+
+                printf("en_rom_load: %d\n",en_rom_load);
+
+                if (en_rom_load) {
+
+                    printf("Insertando cinta con la rutina de la rom de carga en curso\n");
+                    //*direccion de retorno en sp+4 habitualmente al entrar por la 1366
                     pop_valor();
+
+                    //Si se ha entrado por la 1366, aqui habra un 53f
+                    z80_int valor_stack=peek_word(reg_sp);
+                    if (valor_stack==0x053f) {
+                        printf("Parece que hemos entrado por la 1366. Quitar un word del stack\n");
+                        pop_valor();
+                    }
+                    else {
+                        printf("Parece que se ha entrado al load de la rom desde una direccion diferente a la 1366\n");
+                    }
+
+
+                    printf("Flag: %02XH\n",reg_a_shadow);
+
+                    //Flag de carga esta en A' y el modo de carga (Z=0 normal, Z=1 para any flag) en F'
+                    //Tal cual es como entra en la 1378
+
+
+                    //Reentrar como si se hubiera tenido cinta insertada
+                    reg_pc=1378;
+                    tape_trap_load_spectrum();
                 }
-                else {
-                    printf("Parece que se ha entrado al load de la rom desde una direccion diferente a la 1366\n");
-                }
-
-
-                printf("Flag: %02XH\n",reg_a_shadow);
-
-                //Flag de carga esta en A' y el modo de carga (Z=0 normal, Z=1 para any flag) en F'
-                //Tal cual es como entra en la 1378
-
-
-                //Reentrar como si se hubiera tenido cinta insertada
-                reg_pc=1378;
-                tape_trap_load_spectrum();
             }
 
         }

@@ -11,6 +11,7 @@ Permitir al driver SDL usar una paleta de color de 8 bits
 Permitir al driver SDL forzar el tamaño de la ventana
 Permitir variable de entorno DESTDIR en el paso make install
 Permitir acelerar carga y grabación de diskette, microdrive, etc
+Permitir insertar una cinta estándar en ZX Spectrum cuando la cpu ya está ejecutando la rutina de la rom
 Agregada opción de configuración para autoactivar chip AY en modelos de Spectrum sin chip ay
 Agregada vista previa de snapshots ZSF de máquinas QL, ZX80 y ZX81
 Permitir ver GO SUB stack de ZX80 y ZX81

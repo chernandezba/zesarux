@@ -11,6 +11,7 @@ Allow SDL driver to use a 8-bit color palette
 Allow SDL driver to force window size
 Allow DESTDIR environment varieble on make install step
 Allow to accelerate loading and saving of diskette, microdrive, etc
+Allow to insert a standard tape on ZX Spectrum when the cpu is already running the rom load routine
 Added config setting for autoenable ay chip on Spectrum models without ay chip
 Added ZSF snapshot previews for QL, ZX80 and ZX81 machines
 Allow to see GO SUB stack of ZX80 and ZX81
