@@ -11546,8 +11546,8 @@ int convert_pzx_to_rwa(char *origen, char *destino)
 
 int convert_any_to_wav(char *origen, char *destino)
 {
-        //Primero pasar a rwa y luego a wav
-        char rwa_temp_file[PATH_MAX];
+    //Primero pasar a rwa y luego a wav
+    char rwa_temp_file[PATH_MAX];
 
     int result_first_convert;
 
@@ -11556,25 +11556,25 @@ int convert_any_to_wav(char *origen, char *destino)
     else if (!util_compare_file_extension(origen,"smp")) result_first_convert=convert_smp_to_rwa_tmpdir(origen,rwa_temp_file);
     else if (!util_compare_file_extension(origen,"o")) result_first_convert=convert_o_to_rwa_tmpdir(origen,rwa_temp_file);
     else if (!util_compare_file_extension(origen,"p") || !util_compare_file_extension(origen,"81") || !util_compare_file_extension(origen,"p81")) result_first_convert=convert_p_to_rwa_tmpdir(origen,rwa_temp_file);
-        else if (!util_compare_file_extension(origen,"pzx")) result_first_convert=convert_pzx_to_rwa_tmpdir(origen,rwa_temp_file);
+    else if (!util_compare_file_extension(origen,"pzx")) result_first_convert=convert_pzx_to_rwa_tmpdir(origen,rwa_temp_file);
     else return 1;
 
-         if (result_first_convert) {
-            //Error
-                        return 1;
-                }
+    if (result_first_convert) {
+        //Error
+        return 1;
+    }
 
-                if (!si_existe_archivo(rwa_temp_file)) {
-                        //debug_printf(VERBOSE_ERR,"Error converting input file. Target file not found");
-                        return 1;
-                }
+    if (!si_existe_archivo(rwa_temp_file)) {
+        //debug_printf(VERBOSE_ERR,"Error converting input file. Target file not found");
+        return 1;
+    }
 
-        if (convert_rwa_to_wav(rwa_temp_file,destino)) {
-                return 1;
-        }
+    if (convert_rwa_to_wav(rwa_temp_file,destino)) {
+        return 1;
+    }
 
 
-        return 0;
+    return 0;
 }
 
 int convert_rmd_to_mdr_find_end_sync(int pos_raw,int *total_leidos,int total_size,z80_byte *microdrive_buffer_datos)
