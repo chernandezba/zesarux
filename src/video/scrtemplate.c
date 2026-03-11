@@ -286,6 +286,13 @@ void scrvideoname_update_window_title(void)
     //SDL_SetWindowTitle(window,get_window_title());
 }
 
+char *scrvideoname_get_text_clipboard(int *p_longitud)
+{
+    //TODO: Obtener texto de clipboard, retornar en *p_longitud la longitud (incluyendo 0 del final) y el char * de retorno donde esta la memoria
+    //asignada con el texto
+}
+
+
 int scrvideoname_init (void) {
 
 	debug_printf (VERBOSE_INFO,"Init VIDEONAME_CAP Video Driver");
@@ -311,6 +318,7 @@ int scrvideoname_init (void) {
 	scr_z88_cpc_load_keymap=scrvideoname_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrvideoname_detectedchar_print;
     scr_update_window_title=scrvideoname_update_window_title;
+    scr_get_text_clipboard=scrvideoname_get_text_clipboard;
         scr_tiene_colores=1;
         screen_refresh_menu=1;
 

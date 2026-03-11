@@ -2696,6 +2696,32 @@ void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
     scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
 }
 
+char *scrcocoa_get_text_clipboard(int *p_longitud)
+{
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+
+    NSString *text = [pasteboard stringForType:NSPasteboardTypeString];
+
+
+
+    if (text) {
+        const char *cstr = [text UTF8String];
+        //printf("Texto: [%s]\n",cstr);
+
+        int longitud_texto=strlen(cstr)+1;
+
+        char *memoria_texto=util_malloc(longitud_texto,"Can not allocate memory for getting text from clipboard");
+        strcpy(memoria_texto,cstr);
+        *p_longitud=longitud_texto;
+        return memoria_texto;
+    }
+
+    else {
+        *p_longitud=0;
+        return NULL;
+    }
+
+}
 
 void scrcocoa_set_fullscreen(void)
 {
@@ -3139,6 +3165,7 @@ int scrcocoa_init (void) {
     scr_get_menu_height=scrcocoa_get_menu_height;
     //scr_driver_can_ext_desktop=scrcocoa_driver_can_ext_desktop;
     scr_update_window_title=scrcocoa_update_window_title;
+    scr_get_text_clipboard=scrcocoa_get_text_clipboard;
 
     scr_putchar_zx8081=scrcocoa_putchar_zx8081;
     scr_debug_registers=scrcocoa_debug_registers;

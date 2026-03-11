@@ -1850,6 +1850,7 @@ int scrxwindows_init(void) {
     scr_z88_cpc_load_keymap=scrxwindows_z88_cpc_load_keymap;
     scr_detectedchar_print=scrxwindows_detectedchar_print;
     scr_update_window_title=scrxwindows_update_window_title;
+    scr_get_text_clipboard=NULL;
     scr_tiene_colores=1;
     screen_refresh_menu=1;
 

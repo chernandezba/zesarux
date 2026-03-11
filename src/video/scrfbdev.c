@@ -1919,6 +1919,7 @@ int scrfbdev_init (void){
 	scr_z88_cpc_load_keymap=scrfbdev_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrfbdev_detectedchar_print;
     scr_update_window_title=NULL;
+    scr_get_text_clipboard=NULL;
 
 
 	//int ancho_minimo=ANCHO_PANTALLA+LEFT_BORDER_NO_ZOOM*2*border_enabled.v;

@@ -1992,6 +1992,7 @@ int scrsdl_init (void) {
     scr_z88_cpc_load_keymap=scrsdl_z88_cpc_load_keymap;
     scr_detectedchar_print=scrsdl_detectedchar_print;
     scr_update_window_title=scrsdl_update_window_title;
+    scr_get_text_clipboard=NULL;
     scr_tiene_colores=1;
     screen_refresh_menu=1;
 

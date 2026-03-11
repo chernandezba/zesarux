@@ -272,6 +272,7 @@ int scrstdout_init (void){
 
 	scr_detectedchar_print=scrstdout_detectedchar_print;
     scr_update_window_title=NULL;
+    scr_get_text_clipboard=NULL;
 
 	//activamos esto en stdout, para que se capture el texto, pero si no tenemos el automatic redraw activado,
 	//para evitar hacer redraw y a la vez hacer print de trap

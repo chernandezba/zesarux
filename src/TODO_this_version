@@ -130,7 +130,5 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -poder insertar cinta cuando la rutina de la rom ya esta cargando
 *deberia ser una opcion (activada por defecto) ? que no se vea la opcion si esta el autoload
-ok*que en los modelos de 128k detecte si esta en la rom 3/1 (hacer funciones comunes)
 
 
-ok-breakpoint: poderlo borrar al editar

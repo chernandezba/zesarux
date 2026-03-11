@@ -150,6 +150,8 @@ int (*scr_get_menu_height) (void);
 
 void (*scr_update_window_title) (void)=NULL;
 
+char *(*scr_get_text_clipboard) (int *p_longitud)=NULL;
+
 //int (*scr_driver_can_ext_desktop) (void);
 
 

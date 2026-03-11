@@ -186,6 +186,7 @@ int scrsimpletext_init (void){
 	scr_z88_cpc_load_keymap=scrsimpletext_z88_cpc_load_keymap;
 	scr_detectedchar_print=scrsimpletext_detectedchar_print;
     scr_update_window_title=NULL;
+    scr_get_text_clipboard=NULL;
 
         //por defecto activamos esto en simpletext
         chardetect_printchar_enabled.v=1;

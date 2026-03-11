@@ -32322,6 +32322,24 @@ void menu_input_file_keyboard_play(MENU_ITEM_PARAMETERS)
     input_file_keyboard_playing.v ^=1;
 }
 
+void menu_input_file_keyboard_paste(MENU_ITEM_PARAMETERS)
+{
+
+    if (scr_get_text_clipboard==NULL) {
+        printf("Video driver doesn't have clipboard\n");
+        return;
+    }
+
+    int longitud;
+    char *texto=scr_get_text_clipboard(&longitud);
+
+    if (texto!=NULL) {
+        printf("Texto obtenido: [%s]\n",texto);
+    }
+
+    free(texto);
+}
+
 void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_input_file_keyboard;
@@ -32333,6 +32351,8 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
         char string_input_file_keyboard_shown[16];
         menu_tape_settings_trunc_name(input_file_keyboard_name,string_input_file_keyboard_shown,16);
         menu_add_item_menu_inicial_format(&array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard,NULL,"Spool file [%s]",string_input_file_keyboard_shown);
+
+        menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_paste,NULL,"Paste from clipboard");
 
 
         menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_insert,menu_input_file_keyboard_cond,"[%c] Spool file inserted",(input_file_keyboard_inserted.v ? 'X' : ' ' ));
