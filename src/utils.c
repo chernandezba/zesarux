@@ -179,6 +179,13 @@ char *input_file_keyboard_name=NULL;
 z80_bit input_file_keyboard_inserted;
 //Si esta en play (y no pausado)
 z80_bit input_file_keyboard_playing;
+//Si se usa clipboard en vez de archivo
+int input_file_keyboard_is_clipboard=0;
+
+int input_file_keyboard_clipboard_length=0;
+char *input_file_keyboard_clipboard_memory;
+int input_file_keyboard_clipboard_indice=0;
+
 
 //Pausa en valores de 1/50 segundos
 int input_file_keyboard_delay=5;
@@ -3006,6 +3013,8 @@ void eject_input_file_keyboard(void)
 
 int input_file_keyboard_init(void)
 {
+    input_file_keyboard_is_clipboard=0;
+
     ptr_input_file_keyboard=fopen(input_file_keyboard_name,"rb");
 
     if (!ptr_input_file_keyboard) {
@@ -3020,10 +3029,25 @@ int input_file_keyboard_init(void)
 
 }
 
+void input_file_keyboard_clipboard_init(char *texto,int longitud)
+{
+    input_file_keyboard_clipboard_length=longitud;
+    input_file_keyboard_clipboard_memory=texto;
+    printf("En init: %s\n",texto);
+    printf("En init: %s\n",input_file_keyboard_clipboard_memory);
+    input_file_keyboard_clipboard_indice=0;
+    input_file_keyboard_is_clipboard=1;
+
+    insert_input_file_keyboard();
+}
+
 void input_file_keyboard_close(void)
 {
     eject_input_file_keyboard();
-    fclose(ptr_input_file_keyboard);
+
+    if (!input_file_keyboard_is_clipboard) {
+        fclose(ptr_input_file_keyboard);
+    }
 }
 
 
@@ -3110,7 +3134,20 @@ void input_file_keyboard_get_key(void)
                     }
                 }
 
-                                int leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+
+                int leidos;
+                if (input_file_keyboard_is_clipboard) {
+                    if (input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice]==0) leidos=0;
+                    else {
+                        leidos=1;
+                        input_file_keyboard_last_key=input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice++];
+                        printf("indice %d tecla: %c todo: %s\n",input_file_keyboard_clipboard_indice,input_file_keyboard_last_key,input_file_keyboard_clipboard_memory);
+                    }
+                }
+                else {
+                    leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+                }
+
                 if (leidos==0) {
                     debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
                     eject_input_file_keyboard();
@@ -13893,7 +13930,22 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
         if (input_file_keyboard_is_playing() && dir==lastk) {
                             z80_byte input_file_keyboard_last_key;
 
-                                int leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+                                //int leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+
+
+                                int leidos;
+                                if (input_file_keyboard_is_clipboard) {
+                                    if (input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice]==0) leidos=0;
+                                    else {
+                                        leidos=1;
+                                        input_file_keyboard_last_key=input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice++];
+                                    }
+                                }
+                                else {
+                                    leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+                                }
+
+
                                 if (leidos==0) {
                                         debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
                                         eject_input_file_keyboard();

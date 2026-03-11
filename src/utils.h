@@ -77,6 +77,8 @@ extern unsigned char input_file_keyboard_last_key;
 extern z80_bit input_file_keyboard_is_pause;
 extern z80_bit input_file_keyboard_send_pause;
 extern z80_bit input_file_keyboard_turbo;
+extern int input_file_keyboard_is_clipboard;
+extern void input_file_keyboard_clipboard_init(char *texto,int longitud);
 
 
 extern void insert_input_file_keyboard(void);
