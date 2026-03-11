@@ -132,352 +132,352 @@ void cpu_core_loop_reduced_spectrum(void)
 
 
             }
+    }
+
+
+
+    //ejecutar esto al final de cada una de las scanlines (312)
+    //esto implica que al final del frame de pantalla habremos enviado 312 bytes de sonido
+
+
+    //A final de cada scanline
+    if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+        //printf ("%d\n",t_estados);
+        //if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
+
+        if (si_siguiente_sonido() ) {
+
+            audio_valor_enviar_sonido=0;
+
+            audio_valor_enviar_sonido +=da_output_ay();
+
+
+            if (beeper_enabled.v) {
+                if (beeper_real_enabled==0) {
+                    audio_valor_enviar_sonido += value_beeper;
+                }
+
+                else {
+                    audio_valor_enviar_sonido += get_value_beeper_sum_array();
+                    beeper_new_line();
+                }
+
+            }
+
+
+
+            if (realtape_inserted.v && realtape_playing.v) {
+                realtape_get_byte();
+                if (realtape_loading_sound.v) {
+                    reset_silence_detection_counter();
+                    audio_valor_enviar_sonido /=2;
+                    audio_valor_enviar_sonido += get_realtape_last_value()/2;
+                    //Sonido alterado cuando top speed
+                    if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
+                }
+            }
+
+            //Ajustar volumen
+            if (audiovolume!=100) {
+                audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
+            }
+
+            //if (audio_valor_enviar_sonido>127 || audio_valor_enviar_sonido<-128) printf ("Error audio value: %d\n",audio_valor_enviar_sonido);
+
+            audio_send_mono_sample(audio_valor_enviar_sonido);
+
+
+            ay_chip_siguiente_ciclo();
+
+            if (MACHINE_IS_TSCONF) {
+                //y reseteo de esto, que es para interrupciones frame
+                tsconf_handle_frame_interrupts_prev_horiz=9999;
+            }
+
         }
 
 
 
-		//ejecutar esto al final de cada una de las scanlines (312)
-		//esto implica que al final del frame de pantalla habremos enviado 312 bytes de sonido
+        //final de linea
 
+        //copiamos contenido linea y border a buffer rainbow
+        if (rainbow_enabled.v==1) {
+            if (next_frame_skip_render_scanlines) {
+                //if ((t_estados/screen_testados_linea)>319) printf ("-Not storing rainbow buffer as framescreen_saltar is %d or manual frameskip\n",framescreen_saltar);
+            }
 
-		//A final de cada scanline
-		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
-			//printf ("%d\n",t_estados);
-			//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
+            else {
+                //if ((t_estados/screen_testados_linea)>319) printf ("storing rainbow buffer\n");
+                screen_store_scanline_rainbow_solo_border();
+                screen_store_scanline_rainbow_solo_display();
+            }
 
-			if (si_siguiente_sonido() ) {
+            //t_scanline_next_border();
 
-				audio_valor_enviar_sonido=0;
+        }
 
-				audio_valor_enviar_sonido +=da_output_ay();
+        t_scanline_next_line();
 
+        //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
+        //esperar para ver si se ha generado una interrupcion 1/50
 
-				if (beeper_enabled.v) {
-					if (beeper_real_enabled==0) {
-						audio_valor_enviar_sonido += value_beeper;
-					}
+        if (t_estados>=screen_testados_total) {
 
-					else {
-						audio_valor_enviar_sonido += get_value_beeper_sum_array();
-						beeper_new_line();
-					}
+            //tsconf_last_frame_y=-1;
 
-				}
+            if (rainbow_enabled.v==1) t_scanline_next_fullborder();
 
+            t_scanline=0;
 
+            //printf ("final scan lines. total: %d\n",screen_scanlines);
+            if (MACHINE_IS_INVES) {
+                    //Inves
+                    t_scanline_draw=screen_indice_inicio_pant;
+                    //printf ("reset inves a inicio pant : %d\n",t_scanline_draw);
+            }
 
-				if (realtape_inserted.v && realtape_playing.v) {
-					realtape_get_byte();
-					if (realtape_loading_sound.v) {
-                        reset_silence_detection_counter();
-						audio_valor_enviar_sonido /=2;
-						audio_valor_enviar_sonido += get_realtape_last_value()/2;
-						//Sonido alterado cuando top speed
-						if (timer_condicion_top_speed() ) audio_valor_enviar_sonido=audio_change_top_speed_sound(audio_valor_enviar_sonido);
-					}
-				}
+            else {
+                    //printf ("reset no inves\n");
+                    set_t_scanline_draw_zero();
 
-				//Ajustar volumen
-				if (audiovolume!=100) {
-					audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
-				}
+            }
 
-				//if (audio_valor_enviar_sonido>127 || audio_valor_enviar_sonido<-128) printf ("Error audio value: %d\n",audio_valor_enviar_sonido);
 
-				audio_send_mono_sample(audio_valor_enviar_sonido);
+            //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
+            //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
+            //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
+            //este completo; esto es necesario para Z88
 
 
-				ay_chip_siguiente_ciclo();
+            int linea_estados=t_estados/screen_testados_linea;
 
-				if (MACHINE_IS_TSCONF) {
-					//y reseteo de esto, que es para interrupciones frame
-					tsconf_handle_frame_interrupts_prev_horiz=9999;
-				}
+            while (linea_estados<312) {
+                    audio_send_mono_sample(audio_valor_enviar_sonido);
+                    linea_estados++;
+            }
 
-			}
 
 
 
-			//final de linea
+            t_estados -=screen_testados_total;
 
-			//copiamos contenido linea y border a buffer rainbow
-			if (rainbow_enabled.v==1) {
-				if (next_frame_skip_render_scanlines) {
-					//if ((t_estados/screen_testados_linea)>319) printf ("-Not storing rainbow buffer as framescreen_saltar is %d or manual frameskip\n",framescreen_saltar);
-				}
+            //Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
+            //t_estados=0;
+            //->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
 
-				else {
-					//if ((t_estados/screen_testados_linea)>319) printf ("storing rainbow buffer\n");
-					screen_store_scanline_rainbow_solo_border();
-					screen_store_scanline_rainbow_solo_display();
-				}
 
-				//t_scanline_next_border();
+            //Final de instrucciones ejecutadas en un frame de pantalla
+            if (iff1.v==1) {
+                interrupcion_maskable_generada.v=1;
 
-			}
+                //En Timex, ver bit 6 de puerto FF
+                if ( MACHINE_IS_TIMEX_TS_TC_2068 && ( timex_port_ff & 64) ) interrupcion_maskable_generada.v=0;
 
-			t_scanline_next_line();
+                //TSConf lo gestiona mediante interrupciones de frame
+                if (MACHINE_IS_TSCONF) interrupcion_maskable_generada.v=0;
 
-			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
-			//esperar para ver si se ha generado una interrupcion 1/50
 
-            if (t_estados>=screen_testados_total) {
 
-				//tsconf_last_frame_y=-1;
+            }
 
-				if (rainbow_enabled.v==1) t_scanline_next_fullborder();
 
-				t_scanline=0;
+            cpu_loop_refresca_pantalla();
 
-				//printf ("final scan lines. total: %d\n",screen_scanlines);
-				if (MACHINE_IS_INVES) {
-						//Inves
-						t_scanline_draw=screen_indice_inicio_pant;
-						//printf ("reset inves a inicio pant : %d\n",t_scanline_draw);
-				}
 
-				else {
-						//printf ("reset no inves\n");
-						set_t_scanline_draw_zero();
+            siguiente_frame_pantalla();
 
-				}
 
+            if (debug_registers) scr_debug_registers();
 
-				//Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
-				//Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-				//Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
-				//este completo; esto es necesario para Z88
+            contador_parpadeo--;
+            //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+            if (!contador_parpadeo) {
+                    contador_parpadeo=16;
+                    toggle_flash_state();
+            }
 
 
-				int linea_estados=t_estados/screen_testados_linea;
+            if (!interrupcion_timer_generada.v) {
+                //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
+                //printf ("no demasiado\n");
+                esperando_tiempo_final_t_estados.v=1;
+            }
 
-				while (linea_estados<312) {
-						audio_send_mono_sample(audio_valor_enviar_sonido);
-						linea_estados++;
-				}
+            else {
+                //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
+                //printf ("demasiado\n");
+                esperando_tiempo_final_t_estados.v=0;
+            }
 
+            core_end_frame_check_zrcp_zeng_snap.v=1;
 
+            //snapshot en ram
+            snapshot_add_in_ram();
 
+        }
+        //Fin bloque final de pantalla
 
-				t_estados -=screen_testados_total;
 
-				//Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
-				//t_estados=0;
-				//->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
+    }
 
+    if (esperando_tiempo_final_t_estados.v) {
+        timer_pause_waiting_end_frame();
+    }
 
-				//Final de instrucciones ejecutadas en un frame de pantalla
-				if (iff1.v==1) {
-					interrupcion_maskable_generada.v=1;
 
-					//En Timex, ver bit 6 de puerto FF
-					if ( MACHINE_IS_TIMEX_TS_TC_2068 && ( timex_port_ff & 64) ) interrupcion_maskable_generada.v=0;
 
-					//TSConf lo gestiona mediante interrupciones de frame
-					if (MACHINE_IS_TSCONF) interrupcion_maskable_generada.v=0;
+    //Interrupcion de 1/50s. mapa teclas activas y joystick
+    if (interrupcion_fifty_generada.v) {
+        interrupcion_fifty_generada.v=0;
 
+        //y de momento actualizamos tablas de teclado segun tecla leida
+        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
+        scr_actualiza_tablas_teclado();
 
 
-				}
+        //lectura de joystick
+        realjoystick_main();
 
+        //printf ("temp conta fifty: %d\n",tempcontafifty++);
+    }
 
-				cpu_loop_refresca_pantalla();
 
+    //Interrupcion de procesador y marca final de frame
+    if (interrupcion_timer_generada.v) {
+        //printf ("Generada interrupcion timer\n");
+        interrupcion_timer_generada.v=0;
+        esperando_tiempo_final_t_estados.v=0;
+        interlaced_numero_frame++;
+        //printf ("%d\n",interlaced_numero_frame);
+    }
 
-				siguiente_frame_pantalla();
 
+    //Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en spectrum o al cambio de bit6 de R en zx80/81
+    if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
-				if (debug_registers) scr_debug_registers();
+        debug_fired_interrupt=1;
 
-				contador_parpadeo--;
-				//printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-				if (!contador_parpadeo) {
-						contador_parpadeo=16;
-						toggle_flash_state();
-				}
+        //printf ("Generada interrupcion Z80\n");
 
+        z80_adjust_flags_interrupt_block_opcode();
 
-				if (!interrupcion_timer_generada.v) {
-					//Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
-					//printf ("no demasiado\n");
-					esperando_tiempo_final_t_estados.v=1;
-				}
+        //if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
 
-				else {
-					//Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
-					//printf ("demasiado\n");
-					esperando_tiempo_final_t_estados.v=0;
-				}
+        //ver si esta en HALT
+        if (z80_halt_signal.v) {
+            z80_halt_signal.v=0;
+            //reg_pc++;
+        }
 
-				core_end_frame_check_zrcp_zeng_snap.v=1;
 
-                //snapshot en ram
-                snapshot_add_in_ram();
+        if (interrupcion_non_maskable_generada.v) {
+            debug_anota_retorno_step_nmi();
+            //printf ("generada nmi\n");
+            interrupcion_non_maskable_generada.v=0;
 
-			}
-			//Fin bloque final de pantalla
 
+            //NMI wait 14 estados
+            t_estados += 14;
 
-		}
 
-		if (esperando_tiempo_final_t_estados.v) {
-			timer_pause_waiting_end_frame();
-		}
 
+            push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
 
-		//Interrupcion de 1/50s. mapa teclas activas y joystick
-		if (interrupcion_fifty_generada.v) {
-			interrupcion_fifty_generada.v=0;
+            reg_r++;
+            iff1.v=0;
+            //printf ("Calling NMI with pc=0x%x\n",reg_pc);
 
-			//y de momento actualizamos tablas de teclado segun tecla leida
-			//printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
-			scr_actualiza_tablas_teclado();
+            //Otros 6 estados
+            t_estados += 6;
 
+            //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
+            reg_pc= 0x66;
 
-			//lectura de joystick
-			realjoystick_main();
 
-			//printf ("temp conta fifty: %d\n",tempcontafifty++);
-		}
 
+            t_estados -=15;
 
-		//Interrupcion de procesador y marca final de frame
-		if (interrupcion_timer_generada.v) {
-			//printf ("Generada interrupcion timer\n");
-			interrupcion_timer_generada.v=0;
-			esperando_tiempo_final_t_estados.v=0;
-			interlaced_numero_frame++;
-			//printf ("%d\n",interlaced_numero_frame);
-		}
+            if (superupgrade_enabled.v) {
+                //Saltar a NMI de ROM0. TODO: que pasa con puertos 32765 y 8189?
+                superupgrade_puerto_43b = 0;
+                puerto_32765=0;
+                puerto_8189=0;
+                superupgrade_set_memory_pages();
+            }
 
 
-		//Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en spectrum o al cambio de bit6 de R en zx80/81
-		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
-			debug_fired_interrupt=1;
+        }
 
-			//printf ("Generada interrupcion Z80\n");
 
-			z80_adjust_flags_interrupt_block_opcode();
+        //justo despues de EI no debe generar interrupcion
+        //e interrupcion nmi tiene prioridad
+        if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251) {
 
-			//if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
+            //printf ("Lanzada interrupcion spectrum normal\n");
 
-			//ver si esta en HALT
-			if (z80_halt_signal.v) {
-				z80_halt_signal.v=0;
-				//reg_pc++;
-			}
+            debug_anota_retorno_step_maskable();
+            //Tratar interrupciones maskable
+            interrupcion_maskable_generada.v=0;
 
+            interrupcion_si_despues_lda_ir();
 
-			if (interrupcion_non_maskable_generada.v) {
-				debug_anota_retorno_step_nmi();
-				//printf ("generada nmi\n");
-				interrupcion_non_maskable_generada.v=0;
 
+            push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
-				//NMI wait 14 estados
-				t_estados += 14;
+            reg_r++;
 
+            //Caso Inves. Hacer poke (I*256+R) con 255
+            if (MACHINE_IS_INVES) {
+                z80_byte reg_r_total=(reg_r&127) | (reg_r_bit7 &128);
 
+                z80_int dir=reg_i*256+reg_r_total;
 
-				push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+                poke_byte_no_time(dir,255);
+            }
 
 
-				reg_r++;
-				iff1.v=0;
-				//printf ("Calling NMI with pc=0x%x\n",reg_pc);
+            //desactivar interrupciones al generar una
+            iff1.v=iff2.v=0;
+            //Modelos spectrum
 
-				//Otros 6 estados
-				t_estados += 6;
+            if (im_mode==0 || im_mode==1) {
+                cpu_common_jump_im01();
+            }
 
-				//Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
-				reg_pc= 0x66;
+            else {
+            //IM 2.
 
+                z80_int temp_i;
+                z80_byte dir_l,dir_h;
 
+                if (MACHINE_IS_TSCONF) temp_i=reg_i*256+tsconf_vector_fired_interrupt;
 
-				t_estados -=15;
+                else temp_i=get_im2_interrupt_vector();
+                dir_l=peek_byte(temp_i++);
+                dir_h=peek_byte(temp_i);
+                reg_pc=value_8_to_16(dir_h,dir_l);
+                t_estados += 7;
 
-				if (superupgrade_enabled.v) {
-					//Saltar a NMI de ROM0. TODO: que pasa con puertos 32765 y 8189?
-					superupgrade_puerto_43b = 0;
-					puerto_32765=0;
-					puerto_8189=0;
-					superupgrade_set_memory_pages();
-				}
 
+                //Para mejorar demos ula128 y scroll2017
+                //Pero esto hace empeorar la demo ulatest3.tap
+                if (ula_im2_slow.v) t_estados++;
+            }
 
+        }
 
-			}
 
+    }
+    //Fin gestion interrupciones
 
-			//justo despues de EI no debe generar interrupcion
-			//e interrupcion nmi tiene prioridad
-			if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251) {
-
-				//printf ("Lanzada interrupcion spectrum normal\n");
-
-				debug_anota_retorno_step_maskable();
-				//Tratar interrupciones maskable
-				interrupcion_maskable_generada.v=0;
-
-				interrupcion_si_despues_lda_ir();
-
-
-				push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
-
-				reg_r++;
-
-				//Caso Inves. Hacer poke (I*256+R) con 255
-				if (MACHINE_IS_INVES) {
-					z80_byte reg_r_total=(reg_r&127) | (reg_r_bit7 &128);
-
-					z80_int dir=reg_i*256+reg_r_total;
-
-					poke_byte_no_time(dir,255);
-				}
-
-
-				//desactivar interrupciones al generar una
-				iff1.v=iff2.v=0;
-				//Modelos spectrum
-
-				if (im_mode==0 || im_mode==1) {
-					cpu_common_jump_im01();
-				}
-
-				else {
-				//IM 2.
-
-					z80_int temp_i;
-					z80_byte dir_l,dir_h;
-
-					if (MACHINE_IS_TSCONF) temp_i=reg_i*256+tsconf_vector_fired_interrupt;
-
-					else temp_i=get_im2_interrupt_vector();
-					dir_l=peek_byte(temp_i++);
-					dir_h=peek_byte(temp_i);
-					reg_pc=value_8_to_16(dir_h,dir_l);
-					t_estados += 7;
-
-
-					//Para mejorar demos ula128 y scroll2017
-					//Pero esto hace empeorar la demo ulatest3.tap
-					if (ula_im2_slow.v) t_estados++;
-				}
-
-			}
-
-
-  	  	}
-	  	//Fin gestion interrupciones
-
-		//Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
-		if (core_end_frame_check_zrcp_zeng_snap.v) {
-			core_end_frame_check_zrcp_zeng_snap.v=0;
-			check_pending_zrcp_put_snapshot();
-			zeng_send_snapshot_if_needed();
-		}
+    //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+    if (core_end_frame_check_zrcp_zeng_snap.v) {
+        core_end_frame_check_zrcp_zeng_snap.v=0;
+        check_pending_zrcp_put_snapshot();
+        zeng_send_snapshot_if_needed();
+    }
 
 
 
