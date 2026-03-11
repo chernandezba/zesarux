@@ -32326,7 +32326,7 @@ void menu_input_file_keyboard_paste(MENU_ITEM_PARAMETERS)
 {
 
     if (scr_get_text_clipboard==NULL) {
-        debug_printf(VERBOSE_ERR,"Video driver doesn't have clipboard");
+        debug_printf(VERBOSE_ERR,"This video driver doesn't have clipboard");
         return;
     }
 
