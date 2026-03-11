@@ -3141,7 +3141,7 @@ void input_file_keyboard_get_key(void)
                     else {
                         leidos=1;
                         input_file_keyboard_last_key=input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice++];
-                        printf("indice %d tecla: %c todo: %s\n",input_file_keyboard_clipboard_indice,input_file_keyboard_last_key,input_file_keyboard_clipboard_memory);
+                        printf("indice %d tecla: %c\n",input_file_keyboard_clipboard_indice,input_file_keyboard_last_key);
                     }
                 }
                 else {
@@ -13939,6 +13939,7 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
                                     else {
                                         leidos=1;
                                         input_file_keyboard_last_key=input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice++];
+                                        printf("indice %d tecla: %c\n",input_file_keyboard_clipboard_indice,input_file_keyboard_last_key);
                                     }
                                 }
                                 else {

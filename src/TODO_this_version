@@ -133,6 +133,7 @@ en sdl1, raton lo ubica en la posicion inicial
 *condicion spool file inserted que no este bloqueado en rojo cuando viene de clipboard
 *cambiar esos menus para que no hable siempre de spool file, sino texto spool o algo asi
 *entrada en changelog
+*icono/tecla f para hacer paste de manera facil: insercion, activar
 
 -poder insertar cinta cuando la rutina de la rom ya esta cargando
 *deberia ser una opcion (activada por defecto) ? que no se vea la opcion si esta el autoload
