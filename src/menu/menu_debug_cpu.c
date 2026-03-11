@@ -854,6 +854,17 @@ void menu_breakpoints_conditions_set_ok(MENU_ITEM_PARAMETERS)
     menu_breakpoints_conditions_finish_window=1;
 }
 
+void menu_breakpoints_conditions_delete(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno_texto("Delete breakpoint","Sure?")) {
+        breakpoint_edit_parameters.string_texto_breakpoint[0]=0;
+        breakpoint_edit_parameters.string_texto_action[0]=0;
+        breakpoint_edit_parameters.enabled=0;
+        breakpoint_edit_parameters.pass_count=0;
+        menu_breakpoints_conditions_set_ok(valor_opcion);
+    }
+}
+
 void menu_breakpoints_conditions_set_cancel(MENU_ITEM_PARAMETERS)
 {
     menu_breakpoints_conditions_finish_window=1;
@@ -973,9 +984,16 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_campo_seleccionable(array_menu_common);
         menu_add_item_menu_shortcut(array_menu_common,'a');
 
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_delete,NULL,
+            "[~^Delete]");
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+
+
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_help,NULL,
             "[He~^lp]");
-        menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
+        menu_add_item_menu_tabulado(array_menu_common,columna_botones,10);
         //La tecla H para help, que seria lo lógico, no la puedo usar como shortcut, dado que se utiliza como accion igual a F1 en items de menu
         menu_add_item_menu_shortcut(array_menu_common,'l');
 

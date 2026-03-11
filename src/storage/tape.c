@@ -496,7 +496,7 @@ void tape_init(void)
                     }
 
 
-                    printf("Flag: %02XH\n",reg_a_shadow);
+                    //printf("Flag: %02XH\n",reg_a_shadow);
 
                     //Flag de carga esta en A' y el modo de carga (Z=0 normal, Z=1 para any flag) en F'
                     //Tal cual es como entra en la 1378
