@@ -137,8 +137,8 @@ ok sdl2
 *parametro de turbo que se guarde en config
 
 *turbo mode se esta quitando al inicio en cpu.c
-*ventana aparte que vaya mostrando el texto que se está pegando
-**icono de la ventana
+ok*ventana aparte que vaya mostrando el texto que se está pegando
+ok **icono de la ventana
 
 
 
