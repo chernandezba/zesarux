@@ -7595,10 +7595,7 @@ char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[EXT_DESKTOP_BUTTONS_A
 	"        wwrrrrrrrww       ",
 	"          wwwrwww         " 	 //25
 };
-
-
-
-char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANCHO]={
+/*
     //01234567890123456789012345
     "                          ",     //0
   	"  x           x           ",
@@ -7610,18 +7607,32 @@ char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANC
 	"      xx                  ",
 	"      xx                  ",
 	"     xxxx                 ",
-	"      xx                  ",	//10
+	"      xx                  ",*/
+
+char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    " WWWWW WWWWW WWWWW WWWWW  ",     //0
+  	" WxxxW WxxxW Wx xW WxxxW  ",
+	" W x W Wx  W Wx xW W x W  ",
+	" W x W Wxx W W x W W x W  ",
+	" W x W Wx  W Wx xW W x W  ",
+	" W x W WxxxW Wx xW W x W  ",
+	" WWWWW WWWWW WWWWW WWWWW  ",
+	"  xx                      ",
+	"  xx                      ",
+	" xxxx                     ",
+	"  xx                      ",	//10
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxwwxwxwwxwwxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	"xxwwxwwxwwxwwxwwxwwxwwwxxx",
+	"xxwwxwwxrrxrrxwwxwwxwwwxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxwwxwwxwwxwwxwwxwwxwwxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
-	"xxxxwwxwwxwwxwwxwwxwwxwxry",
+	"xxxxwwxrrxwwxwwxwwxwwxwxry",
 	"xxxxxxxxxxxxxxxxxxxxxxxryg",
 	"xxxxxxwwxwwwwwwwwxwwxxrygb",
 	"xxxxxxxxxxxxxxxxxxxxxrygbx",
