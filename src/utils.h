@@ -81,15 +81,14 @@ extern void send_text_as_keystrokes_init(char *texto,int longitud);
 extern void send_text_as_keystrokes_get_from_clipboard(void);
 
 
-extern void insert_input_file_keyboard(void);
-extern void eject_input_file_keyboard(void);
+extern void send_text_as_keystrokes_insert(void);
+extern void send_text_as_keystrokes_eject(void);
 extern int input_file_keyboard_init(void);
 
 extern void reset_keyboard_ports(void);
 extern void ascii_to_keyboard_port(unsigned tecla);
 extern void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease);
 extern void input_file_keyboard_get_key(void);
-extern void input_file_keyboard_close(void);
 
 
 #ifdef EMULATE_CPU_STATS

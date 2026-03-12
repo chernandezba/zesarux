@@ -2994,23 +2994,35 @@ int input_file_keyboard_is_playing(void)
         else return 0;
 }
 
-void insert_input_file_keyboard(void)
+void send_text_as_keystrokes_insert(void)
 {
     send_text_as_keystrokes_is_inserted.v=1;
     send_text_as_keystrokes_playing.v=0;
     printf("Insertado\n");
 }
 
-void eject_input_file_keyboard(void)
+void send_text_as_keystrokes_eject(void)
 {
-        send_text_as_keystrokes_is_inserted.v=0;
-        send_text_as_keystrokes_playing.v=0;
+    send_text_as_keystrokes_is_inserted.v=0;
+    send_text_as_keystrokes_playing.v=0;
 
-        //Si modo turbo, quitar
-        if (input_file_keyboard_turbo.v) {
-                reset_peek_byte_function_spoolturbo();
-                input_file_keyboard_turbo.v=0;
-        }
+    //Si modo turbo, quitar
+    if (input_file_keyboard_turbo.v) {
+            reset_peek_byte_function_spoolturbo();
+            input_file_keyboard_turbo.v=0;
+    }
+}
+
+void send_text_as_keystrokes_init(char *texto,int longitud)
+{
+    send_text_as_keystrokes_length=longitud;
+    send_text_as_keystrokes_memory=texto;
+    printf("En init: %s\n",texto);
+    printf("En init: %s\n",send_text_as_keystrokes_memory);
+    send_text_as_keystrokes_indice=0;
+
+
+    send_text_as_keystrokes_insert();
 }
 
 int input_file_keyboard_init(void)
@@ -3025,7 +3037,7 @@ int input_file_keyboard_init(void)
 
     if (!ptr_file) {
         debug_printf(VERBOSE_ERR,"Unable to open keyboard input file %s",input_file_keyboard_name);
-        eject_input_file_keyboard();
+        send_text_as_keystrokes_eject();
         return 1;
     }
 
@@ -3044,24 +3056,9 @@ int input_file_keyboard_init(void)
 
 }
 
-void send_text_as_keystrokes_init(char *texto,int longitud)
-{
-    send_text_as_keystrokes_length=longitud;
-    send_text_as_keystrokes_memory=texto;
-    printf("En init: %s\n",texto);
-    printf("En init: %s\n",send_text_as_keystrokes_memory);
-    send_text_as_keystrokes_indice=0;
 
 
-    insert_input_file_keyboard();
-}
 
-void input_file_keyboard_close(void)
-{
-    eject_input_file_keyboard();
-
-
-}
 
 
 void send_text_as_keystrokes_get_from_clipboard(void)
@@ -3109,7 +3106,7 @@ void input_file_keyboard_get_key(void)
 
                 if (leidos==0) {
                     debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
-                    eject_input_file_keyboard();
+                    send_text_as_keystrokes_eject();
                     reset_keyboard_ports();
                     return;
                 }
@@ -13979,7 +13976,7 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
 
                                 if (leidos==0) {
                                         debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
-                                        eject_input_file_keyboard();
+                                        send_text_as_keystrokes_eject();
                                         reset_keyboard_ports();
                                 }
 

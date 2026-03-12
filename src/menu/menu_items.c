@@ -32224,26 +32224,20 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_input_file_keyboard_insert(MENU_ITEM_PARAMETERS)
+void menu_input_file_keyboard_eject(MENU_ITEM_PARAMETERS)
 {
 
-        if (send_text_as_keystrokes_is_inserted.v==0) {
-                input_file_keyboard_init();
-        }
 
-        else if (send_text_as_keystrokes_is_inserted.v==1) {
-                input_file_keyboard_close();
+
+        if (send_text_as_keystrokes_is_inserted.v==1) {
+                send_text_as_keystrokes_eject();
         }
 
 }
 
 
 
-int menu_input_file_keyboard_cond(void)
-{
-        if (input_file_keyboard_name!=NULL) return 1;
-        else return 0;
-}
+
 
 void menu_input_file_keyboard_delay(MENU_ITEM_PARAMETERS)
 {
@@ -32266,7 +32260,7 @@ void menu_input_file_keyboard_delay(MENU_ITEM_PARAMETERS)
 void menu_input_file_keyboard(MENU_ITEM_PARAMETERS)
 {
 
-    eject_input_file_keyboard();
+    send_text_as_keystrokes_eject();
 
     char *filtros[2];
 
@@ -32282,7 +32276,7 @@ void menu_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
     else {
         input_file_keyboard_name=NULL;
-        eject_input_file_keyboard();
+        send_text_as_keystrokes_eject();
     }
 }
 
@@ -32336,20 +32330,23 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
     do {
         menu_add_item_menu_inicial(&array_menu_input_file_keyboard,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        int mostrar=1;
-        if (send_text_as_keystrokes_is_inserted.v) mostrar=0;
+        if (send_text_as_keystrokes_is_inserted.v==0) {
 
-        if (mostrar) {
             char string_input_file_keyboard_shown[16];
             menu_tape_settings_trunc_name(input_file_keyboard_name,string_input_file_keyboard_shown,16);
-            menu_add_item_menu_inicial_format(&array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard,NULL,"Text file [%s]",string_input_file_keyboard_shown);
+            menu_add_item_menu_inicial_format(&array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard,NULL,"    Read from Text file [%s]",string_input_file_keyboard_shown);
+
+            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_paste,NULL,"    Paste from clipboard");
+
         }
 
-        menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_paste,NULL,"Paste from clipboard");
+        else {
+
+            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_eject,NULL,"    Disable",
+                (send_text_as_keystrokes_is_inserted.v ? 'X' : ' ' ));
+        }
 
 
-        menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_insert,menu_input_file_keyboard_cond,"[%c] Enabled",
-            (send_text_as_keystrokes_is_inserted.v ? 'X' : ' ' ));
         if (send_text_as_keystrokes_is_inserted.v) {
 
             menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_play,NULL,"[%c] Playing",(send_text_as_keystrokes_playing.v ? 'X' : ' ' ));
