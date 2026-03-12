@@ -136,7 +136,7 @@ en sdl1, raton lo ubica en la posicion inicial
 *parametro de turbo que se guarde en config
 ->Send Text as Keystrokes…
 ->Enviar texto como pulsaciones de teclado…
-ok*renombrar funciones.
+
 *renombrar settings config
 *revisar insert/eject en ambos modos que funcionen bien
 *turbo mode se esta quitando al realizar alguna de las acciones. por que?

@@ -2991,6 +2991,34 @@ void ascii_to_keyboard_port(unsigned tecla)
     ascii_to_keyboard_port_set_clear(tecla,1);
 }
 
+//Cambio parametros repeticion de teclas en modos turbo para que vaya rapido
+void send_text_as_keystrokes_get_key_turbo_chg_repeat(void)
+{
+
+    if (send_text_as_keystrokes_turbo_mode.v==0) return;
+
+    if (MACHINE_IS_SPECTRUM) {
+        //Cambiar valores de repeticion de teclas
+        poke_byte_no_time(23561,1);
+        poke_byte_no_time(23562,1);
+    }
+
+}
+
+//Restaurar parametros repeticion de teclas en modos turbo
+void send_text_as_keystrokes_get_key_turbo_rst_repeat(void)
+{
+
+    if (send_text_as_keystrokes_turbo_mode.v==0) return;
+
+    if (MACHINE_IS_SPECTRUM) {
+        //Restaurar valores de repeticion de teclas
+        poke_byte_no_time(23561,35);
+        poke_byte_no_time(23562,5);
+    }
+
+}
+
 int send_text_as_keystrokes_is_playing(void)
 {
     if (send_text_as_keystrokes_is_inserted.v && send_text_as_keystrokes_playing.v) return 1;
@@ -3009,11 +3037,8 @@ void send_text_as_keystrokes_eject(void)
     send_text_as_keystrokes_is_inserted.v=0;
     send_text_as_keystrokes_playing.v=0;
 
-    //Si modo turbo, quitar
-    //if (send_text_as_keystrokes_turbo_mode.v) {
-    //        reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
-    //        send_text_as_keystrokes_turbo_mode.v=0;
-    //}
+    send_text_as_keystrokes_get_key_turbo_rst_repeat();
+
 }
 
 void send_text_as_keystrokes_init(char *texto,int longitud)
@@ -3154,7 +3179,7 @@ void peek_byte_sendtextkeystrokes_spoolturbo_check_key(z80_int dir)
     }
     */
 
-    if (send_text_as_keystrokes_is_playing() && dir==lastk) {
+    if (send_text_as_keystrokes_is_playing() && send_text_as_keystrokes_turbo_mode.v && dir==lastk) {
         z80_byte send_text_as_keystrokes_last_key;
 
 
@@ -3252,7 +3277,7 @@ void old_reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 
 
 
-//Establecer rutinas propias
+
 void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 {
 
@@ -3263,11 +3288,7 @@ void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
     debug_printf (VERBOSE_DEBUG,"Setting keystrokes_spoolturbo peek Spectrum functions");
     printf ("Setting keystrokes_spoolturbo peek Spectrum functions\n");
 
-    if (MACHINE_IS_SPECTRUM) {
-        //Cambiar valores de repeticion de teclas
-        poke_byte_no_time(23561,1);
-        poke_byte_no_time(23562,1);
-    }
+    send_text_as_keystrokes_get_key_turbo_chg_repeat();
 
     //Asignar mediante nuevas funciones de core anidados
     sendtextkeystrokes_spoolturbo_nested_id_peek_byte=debug_nested_peek_byte_add(peek_byte_sendtextkeystrokes_spoolturbo,"Dandanator peek_byte");
@@ -3278,19 +3299,15 @@ void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 
 }
 
-//Restaurar rutinas de dandanator
+
 void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 {
-printf("Reset\n");
+
     if (send_text_as_keystrokes_core_nested_turbo_enabled.v==0) return;
 
     send_text_as_keystrokes_core_nested_turbo_enabled.v=0;
 
-    if (MACHINE_IS_SPECTRUM) {
-        //Restaurar valores de repeticion de teclas
-        poke_byte_no_time(23561,35);
-        poke_byte_no_time(23562,5);
-    }
+    send_text_as_keystrokes_get_key_turbo_rst_repeat();
 
     debug_printf (VERBOSE_DEBUG,"Restoring original peek functions before keystrokes_spoolturbo");
     printf ("Restoring original peek functions before keystrokes_spoolturbo\n");
