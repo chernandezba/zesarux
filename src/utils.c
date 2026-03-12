@@ -202,6 +202,9 @@ z80_bit send_text_as_keystrokes_send_pause;
 //modo turbo de spool file
 z80_bit send_text_as_keystrokes_turbo_mode={0};
 
+//core de turbo esta activado o no
+z80_bit send_text_as_keystrokes_core_nested_turbo_enabled={0};
+
 //Si se guarda la configuracion al salir del programa
 z80_bit save_configuration_file_on_exit={0};
 
@@ -3184,30 +3187,33 @@ void peek_byte_sendtextkeystrokes_spoolturbo_check_key(z80_int dir)
 }
 
 
-//Punteros a las funciones originales
-z80_byte (*peek_byte_no_time_no_sendtextkeystrokes_spoolturbo)(z80_int dir);
-z80_byte (*peek_byte_no_sendtextkeystrokes_spoolturbo)(z80_int dir);
+int sendtextkeystrokes_spoolturbo_nested_id_peek_byte;
+int sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time;
 
-z80_byte peek_byte_sendtextkeystrokes_spoolturbo(z80_int dir)
+
+
+z80_byte peek_byte_sendtextkeystrokes_spoolturbo(z80_int dir,z80_byte value GCC_UNUSED)
 {
+    z80_byte valor_leido=debug_nested_peek_byte_call_previous(sendtextkeystrokes_spoolturbo_nested_id_peek_byte,dir);
 
     peek_byte_sendtextkeystrokes_spoolturbo_check_key(dir);
 
-    return peek_byte_no_sendtextkeystrokes_spoolturbo(dir);
+    return valor_leido;
 }
 
-z80_byte peek_byte_no_time_sendtextkeystrokes_spoolturbo(z80_int dir)
+z80_byte peek_byte_no_time_sendtextkeystrokes_spoolturbo(z80_int dir,z80_byte value GCC_UNUSED)
 {
+    z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time,dir);
 
     peek_byte_sendtextkeystrokes_spoolturbo_check_key(dir);
 
-    return peek_byte_no_time_no_sendtextkeystrokes_spoolturbo(dir);
+    return valor_leido;
 }
 
 
 
-
-void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
+/*
+void old_set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 {
 
     debug_printf(VERBOSE_INFO,"Enabling spoolturbo on peek_byte");
@@ -3228,7 +3234,7 @@ void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 
 }
 
-void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
+void old_reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 {
     debug_printf(VERBOSE_INFO,"Resetting spoolturbo on peek_byte");
 
@@ -3241,6 +3247,54 @@ void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
     peek_byte_no_time=peek_byte_no_time_no_sendtextkeystrokes_spoolturbo;
     peek_byte=peek_byte_no_sendtextkeystrokes_spoolturbo;
 }
+*/
+
+
+
+//Establecer rutinas propias
+void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
+{
+
+    if (send_text_as_keystrokes_core_nested_turbo_enabled.v) return;
+
+    debug_printf (VERBOSE_DEBUG,"Setting keystrokes_spoolturbo peek Spectrum functions");
+    printf ("Setting keystrokes_spoolturbo peek Spectrum functions\n");
+
+    if (MACHINE_IS_SPECTRUM) {
+        //Cambiar valores de repeticion de teclas
+        poke_byte_no_time(23561,1);
+        poke_byte_no_time(23562,1);
+    }
+
+    //Asignar mediante nuevas funciones de core anidados
+    sendtextkeystrokes_spoolturbo_nested_id_peek_byte=debug_nested_peek_byte_add(peek_byte_sendtextkeystrokes_spoolturbo,"Dandanator peek_byte");
+    sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(peek_byte_no_time_sendtextkeystrokes_spoolturbo,"Dandanator peek_byte_no_time");
+
+
+
+
+}
+
+//Restaurar rutinas de dandanator
+void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
+{
+
+    if (send_text_as_keystrokes_core_nested_turbo_enabled.v==0) return;
+
+    if (MACHINE_IS_SPECTRUM) {
+        //Restaurar valores de repeticion de teclas
+        poke_byte_no_time(23561,35);
+        poke_byte_no_time(23562,5);
+    }
+
+    debug_printf (VERBOSE_DEBUG,"Restoring original peek functions before keystrokes_spoolturbo");
+    printf ("Restoring original peek functions before keystrokes_spoolturbo\n");
+
+	debug_nested_peek_byte_del(sendtextkeystrokes_spoolturbo_nested_id_peek_byte);
+	debug_nested_peek_byte_no_time_del(sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time);
+}
+
+
 
 int util_send_text_as_keystrokes_ms(void)
 {

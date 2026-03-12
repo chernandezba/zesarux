@@ -32316,11 +32316,11 @@ void menu_send_text_as_keystrokes_play(MENU_ITEM_PARAMETERS)
 
 
     if (send_text_as_keystrokes_turbo_mode.v) {
-        //set_peek_byte_function_sendtextkeystrokes_spoolturbo();
+        set_peek_byte_function_sendtextkeystrokes_spoolturbo();
     }
 
     else {
-        //reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
+        reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
     }
 
 }
