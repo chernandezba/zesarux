@@ -32291,12 +32291,12 @@ void menu_send_text_as_keystrokes_turbo_mode(MENU_ITEM_PARAMETERS)
 {
 
     if (send_text_as_keystrokes_turbo_mode.v) {
-        reset_peek_byte_function_spoolturbo();
+        reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
         send_text_as_keystrokes_turbo_mode.v=0;
     }
 
     else {
-        set_peek_byte_function_spoolturbo();
+        set_peek_byte_function_sendtextkeystrokes_spoolturbo();
         send_text_as_keystrokes_turbo_mode.v=1;
     }
 }

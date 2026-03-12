@@ -590,8 +590,8 @@ extern int util_poke(z80_byte banco,z80_int direccion,z80_byte valor);
 
 extern int util_busca_archivo_nocase(char *archivo,char *directorio,char *nombreencontrado);
 
-extern void set_peek_byte_function_spoolturbo(void);
-extern void reset_peek_byte_function_spoolturbo(void);
+extern void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void);
+extern void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void);
 
 
 extern void set_poke_byte_function_writerom(void);

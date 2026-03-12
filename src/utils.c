@@ -3008,7 +3008,7 @@ void send_text_as_keystrokes_eject(void)
 
     //Si modo turbo, quitar
     if (send_text_as_keystrokes_turbo_mode.v) {
-            reset_peek_byte_function_spoolturbo();
+            reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
             send_text_as_keystrokes_turbo_mode.v=0;
     }
 }
@@ -3058,9 +3058,6 @@ int input_file_keyboard_init(void)
 
 
 
-
-
-
 void send_text_as_keystrokes_get_from_clipboard(void)
 {
     if (scr_get_text_clipboard==NULL) {
@@ -3082,57 +3079,60 @@ void send_text_as_keystrokes_get_from_clipboard(void)
 
 void send_text_as_keystrokes_get_key(void)
 {
-                        if (send_text_as_keystrokes_pending_next.v==1) {
-                                send_text_as_keystrokes_pending_next.v=0;
-                                //leer siguiente tecla o enviar pausa (nada)
-                if (send_text_as_keystrokes_send_pause.v==1) {
-                    if (send_text_as_keystrokes_is_pause.v==1) {
-                        reset_keyboard_ports();
-                        return;
-                    }
-                }
-
-
-                int leidos;
-
-                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) {
-                    leidos=0;
-                    send_text_as_keystrokes_last_key=0;
-                }
-                else {
-                    leidos=1;
-                    send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
-                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
-                }
-
-
-
-                if (leidos==0) {
-                    debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
-                    send_text_as_keystrokes_eject();
-                    reset_keyboard_ports();
-                    return;
-                }
-
-                        }
-
-
-                        //Puertos a 0
-                        reset_keyboard_ports();
-                        //solo habilitar tecla indicada
-            if (send_text_as_keystrokes_send_pause.v==0) ascii_to_keyboard_port(send_text_as_keystrokes_last_key);
-
-            //Se envia pausa. Ver si ahora es pausa o tecla
-            else {
-                if (send_text_as_keystrokes_is_pause.v==0) ascii_to_keyboard_port(send_text_as_keystrokes_last_key);
+    if (send_text_as_keystrokes_pending_next.v) {
+        send_text_as_keystrokes_pending_next.v=0;
+        //leer siguiente tecla o enviar pausa (nada)
+        if (send_text_as_keystrokes_send_pause.v==1) {
+            if (send_text_as_keystrokes_is_pause.v==1) {
+                reset_keyboard_ports();
+                return;
             }
+        }
+
+
+        int leidos;
+
+        if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) {
+            leidos=0;
+            send_text_as_keystrokes_last_key=0;
+        }
+        else {
+            leidos=1;
+            send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+            printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
+        }
+
+
+
+        if (leidos==0) {
+            debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
+            send_text_as_keystrokes_eject();
+            reset_keyboard_ports();
+            return;
+        }
+
+    }
+
+
+    //Puertos a 0
+    reset_keyboard_ports();
+
+    //solo habilitar tecla indicada
+    if (send_text_as_keystrokes_send_pause.v==0) {
+        ascii_to_keyboard_port(send_text_as_keystrokes_last_key);
+    }
+
+    //Se envia pausa. Ver si ahora es pausa o tecla
+    else {
+        if (send_text_as_keystrokes_is_pause.v==0) ascii_to_keyboard_port(send_text_as_keystrokes_last_key);
+    }
 
 
 }
 
 
 //Funciones Spool Turbo para modelos Spectrum
-void peek_byte_spoolturbo_check_key(z80_int dir)
+void peek_byte_sendtextkeystrokes_spoolturbo_check_key(z80_int dir)
 {
     //si dir=23560, enviar tecla de spool file
     z80_int lastk=23560;
@@ -3153,8 +3153,6 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
 
     if (send_text_as_keystrokes_is_playing() && dir==lastk) {
         z80_byte send_text_as_keystrokes_last_key;
-
-        //int leidos=fread(&send_text_as_keystrokes_last_key,1,1,ptr_input_file_keyboard);
 
 
         int leidos;
@@ -3187,29 +3185,29 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
 
 
 //Punteros a las funciones originales
-z80_byte (*peek_byte_no_time_no_spoolturbo)(z80_int dir);
-z80_byte (*peek_byte_no_spoolturbo)(z80_int dir);
+z80_byte (*peek_byte_no_time_no_sendtextkeystrokes_spoolturbo)(z80_int dir);
+z80_byte (*peek_byte_no_sendtextkeystrokes_spoolturbo)(z80_int dir);
 
-z80_byte peek_byte_spoolturbo(z80_int dir)
+z80_byte peek_byte_sendtextkeystrokes_spoolturbo(z80_int dir)
 {
 
-    peek_byte_spoolturbo_check_key(dir);
+    peek_byte_sendtextkeystrokes_spoolturbo_check_key(dir);
 
-    return peek_byte_no_spoolturbo(dir);
+    return peek_byte_no_sendtextkeystrokes_spoolturbo(dir);
 }
 
-z80_byte peek_byte_no_time_spoolturbo(z80_int dir)
+z80_byte peek_byte_no_time_sendtextkeystrokes_spoolturbo(z80_int dir)
 {
 
-        peek_byte_spoolturbo_check_key(dir);
+    peek_byte_sendtextkeystrokes_spoolturbo_check_key(dir);
 
-        return peek_byte_no_time_no_spoolturbo(dir);
+    return peek_byte_no_time_no_sendtextkeystrokes_spoolturbo(dir);
 }
 
 
 
 
-void set_peek_byte_function_spoolturbo(void)
+void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 {
 
     debug_printf(VERBOSE_INFO,"Enabling spoolturbo on peek_byte");
@@ -3222,15 +3220,15 @@ void set_peek_byte_function_spoolturbo(void)
     }
 
 
-    peek_byte_no_time_no_spoolturbo=peek_byte_no_time;
-    peek_byte_no_time=peek_byte_no_time_spoolturbo;
+    peek_byte_no_time_no_sendtextkeystrokes_spoolturbo=peek_byte_no_time;
+    peek_byte_no_time=peek_byte_no_time_sendtextkeystrokes_spoolturbo;
 
-    peek_byte_no_spoolturbo=peek_byte;
-    peek_byte=peek_byte_spoolturbo;
+    peek_byte_no_sendtextkeystrokes_spoolturbo=peek_byte;
+    peek_byte=peek_byte_sendtextkeystrokes_spoolturbo;
 
 }
 
-void reset_peek_byte_function_spoolturbo(void)
+void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 {
     debug_printf(VERBOSE_INFO,"Resetting spoolturbo on peek_byte");
 
@@ -3240,8 +3238,8 @@ void reset_peek_byte_function_spoolturbo(void)
         poke_byte_no_time(23562,5);
     }
 
-    peek_byte_no_time=peek_byte_no_time_no_spoolturbo;
-    peek_byte=peek_byte_no_spoolturbo;
+    peek_byte_no_time=peek_byte_no_time_no_sendtextkeystrokes_spoolturbo;
+    peek_byte=peek_byte_no_sendtextkeystrokes_spoolturbo;
 }
 
 int util_send_text_as_keystrokes_ms(void)
