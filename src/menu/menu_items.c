@@ -32228,14 +32228,11 @@ void menu_send_text_as_keystrokes_eject(MENU_ITEM_PARAMETERS)
 {
 
 
-
-        if (send_text_as_keystrokes_is_inserted.v==1) {
-                send_text_as_keystrokes_eject();
-        }
+    if (send_text_as_keystrokes_is_inserted.v) {
+        send_text_as_keystrokes_eject();
+    }
 
 }
-
-
 
 
 
@@ -32286,21 +32283,6 @@ void menu_send_text_as_keystrokes_send_pause(MENU_ITEM_PARAMETERS)
     send_text_as_keystrokes_send_pause.v ^=1;
 }
 
-void menu_send_text_as_keystrokes_set_nested_turbo(void)
-{
-
-    if (send_text_as_keystrokes_turbo_mode.v==0 || send_text_as_keystrokes_playing.v==0) {
-        reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
-        return;
-    }
-
-
-    if (send_text_as_keystrokes_turbo_mode.v && send_text_as_keystrokes_playing.v) {
-            set_peek_byte_function_sendtextkeystrokes_spoolturbo();
-    }
-
-
-}
 
 void menu_send_text_as_keystrokes_turbo_mode(MENU_ITEM_PARAMETERS)
 {
@@ -32313,7 +32295,7 @@ void menu_send_text_as_keystrokes_turbo_mode(MENU_ITEM_PARAMETERS)
         send_text_as_keystrokes_turbo_mode.v=1;
     }
 
-    menu_send_text_as_keystrokes_set_nested_turbo();
+    util_send_text_as_keystrokes_setreset_nested_turbo();
 }
 
 
@@ -32329,7 +32311,7 @@ void menu_send_text_as_keystrokes_play(MENU_ITEM_PARAMETERS)
 {
     send_text_as_keystrokes_playing.v ^=1;
 
-    menu_send_text_as_keystrokes_set_nested_turbo();
+    util_send_text_as_keystrokes_setreset_nested_turbo();
 
 }
 

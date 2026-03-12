@@ -3238,42 +3238,7 @@ z80_byte peek_byte_no_time_sendtextkeystrokes_spoolturbo(z80_int dir,z80_byte va
 
 
 
-/*
-void old_set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
-{
 
-    debug_printf(VERBOSE_INFO,"Enabling spoolturbo on peek_byte");
-
-
-    if (MACHINE_IS_SPECTRUM) {
-        //Cambiar valores de repeticion de teclas
-        poke_byte_no_time(23561,1);
-        poke_byte_no_time(23562,1);
-    }
-
-
-    peek_byte_no_time_no_sendtextkeystrokes_spoolturbo=peek_byte_no_time;
-    peek_byte_no_time=peek_byte_no_time_sendtextkeystrokes_spoolturbo;
-
-    peek_byte_no_sendtextkeystrokes_spoolturbo=peek_byte;
-    peek_byte=peek_byte_sendtextkeystrokes_spoolturbo;
-
-}
-
-void old_reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
-{
-    debug_printf(VERBOSE_INFO,"Resetting spoolturbo on peek_byte");
-
-    if (MACHINE_IS_SPECTRUM) {
-        //Restaurar valores de repeticion de teclas
-        poke_byte_no_time(23561,35);
-        poke_byte_no_time(23562,5);
-    }
-
-    peek_byte_no_time=peek_byte_no_time_no_sendtextkeystrokes_spoolturbo;
-    peek_byte=peek_byte_no_sendtextkeystrokes_spoolturbo;
-}
-*/
 
 
 
@@ -3321,6 +3286,23 @@ void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 int util_send_text_as_keystrokes_ms(void)
 {
     return send_text_as_keystrokes_delay*1000/50;
+}
+
+//Habilita o deshabilita el nested para el modo turbo, si conviene
+void util_send_text_as_keystrokes_setreset_nested_turbo(void)
+{
+
+    if (send_text_as_keystrokes_turbo_mode.v==0 || send_text_as_keystrokes_playing.v==0) {
+        reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
+        return;
+    }
+
+
+    if (send_text_as_keystrokes_turbo_mode.v && send_text_as_keystrokes_playing.v) {
+        set_peek_byte_function_sendtextkeystrokes_spoolturbo();
+    }
+
+
 }
 
 
