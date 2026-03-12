@@ -32243,7 +32243,7 @@ void menu_send_text_as_keystrokes_delay(MENU_ITEM_PARAMETERS)
 {
 
     //Final valor =>  send_text_as_keystrokes_delay=((Valor en ms)*50)/1000
-    int valor_ms=util_get_input_file_keyboard_ms();
+    int valor_ms=util_send_text_as_keystrokes_ms();
 
     menu_ventana_scanf_numero_enhanced("Key length",&valor_ms,5,+20,20,2000,1);
 
@@ -32362,7 +32362,7 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
             if (send_text_as_keystrokes_turbo_mode.v==0) {
 
-                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_delay,NULL,"[%d ms] Key length",util_get_input_file_keyboard_ms() );
+                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_delay,NULL,"[%d ms] Key length",util_send_text_as_keystrokes_ms() );
                 menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Length of every key pressed");
                 menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend 100 ms for entering lines on Spectrum BASIC. I also suggest to send some manual delays, using unhandled character, like \\, to assure entering lines is correct ");
 

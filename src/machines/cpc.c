@@ -938,7 +938,7 @@ I/O address	A9	A8	Description	Read/Write status	Used Direction	Used for
 
            //Si esta spool file activo, generar siguiente tecla
                 if (send_text_as_keystrokes_is_playing() ) {
-                                input_file_keyboard_get_key();
+                                send_text_as_keystrokes_get_key();
                 }
 
 

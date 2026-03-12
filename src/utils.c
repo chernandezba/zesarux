@@ -3080,7 +3080,7 @@ void send_text_as_keystrokes_get_from_clipboard(void)
 
 
 
-void input_file_keyboard_get_key(void)
+void send_text_as_keystrokes_get_key(void)
 {
                         if (send_text_as_keystrokes_pending_next.v==1) {
                                 send_text_as_keystrokes_pending_next.v=0;
@@ -23901,7 +23901,7 @@ unsigned int util_read_long_value(z80_byte *origen)
     return (origen[0])|(origen[1]<<8)|(origen[2]<<16)|(origen[3]<<24);
 }
 
-int util_get_input_file_keyboard_ms(void)
+int util_send_text_as_keystrokes_ms(void)
 {
     return send_text_as_keystrokes_delay*1000/50;
 }

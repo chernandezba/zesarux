@@ -959,7 +959,7 @@ z80_byte z88_return_keyboard_port_value(z80_byte puerto_h)
 
                 //Si esta spool file activo, generar siguiente tecla
                 if (send_text_as_keystrokes_is_playing() ) {
-                        input_file_keyboard_get_key();
+                        send_text_as_keystrokes_get_key();
                 }
 
 

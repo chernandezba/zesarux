@@ -88,7 +88,7 @@ extern int input_file_keyboard_init(void);
 extern void reset_keyboard_ports(void);
 extern void ascii_to_keyboard_port(unsigned tecla);
 extern void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease);
-extern void input_file_keyboard_get_key(void);
+extern void send_text_as_keystrokes_get_key(void);
 
 
 #ifdef EMULATE_CPU_STATS
@@ -1058,7 +1058,7 @@ extern const char *spectrum_colour_names[];
 extern void util_write_long_value(z80_byte *destino,unsigned int valor);
 extern unsigned int util_read_long_value(z80_byte *origen);
 
-extern int util_get_input_file_keyboard_ms(void);
+extern int util_send_text_as_keystrokes_ms(void);
 
 extern char fatfs_disk_zero_path[];
 
