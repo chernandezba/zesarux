@@ -32353,7 +32353,8 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
             //en tbblue no va bien la opcion de turbo
             if (!MACHINE_IS_TBBLUE) {
-                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_turbo_mode,menu_send_text_as_keystrokes_turbo_mode_cond,"[%c] Turbo mode",(send_text_as_keystrokes_turbo_mode.v ? 'X' : ' ') );
+                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_turbo_mode,menu_send_text_as_keystrokes_turbo_mode_cond,"[%c] Turbo mode",
+                    (send_text_as_keystrokes_turbo_mode.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_send_text_as_keystrokes,"Allow turbo mode on Spectrum models");
                 menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"Allow turbo mode on Spectrum models. It traps calls to ROM when keyboard is read.\n"
                                     "Works well with Spectrum Basic but also with Text Adventures made with Daad, Paws and GAC");

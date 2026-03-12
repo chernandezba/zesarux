@@ -6411,10 +6411,10 @@ int parse_cmdline_options(int desde_commandline)
 
 
             else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile")) {
-                                siguiente_parametro_argumento();
-                //sprintf(input_file_keyboard_name_buffer,"%s",argv[puntero_parametro]);
+                siguiente_parametro_argumento();
+
                 input_file_keyboard_name=argv[puntero_parametro];
-                    input_file_keyboard_init();
+                input_file_keyboard_init();
             }
 
             else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-play")) {
@@ -6426,11 +6426,12 @@ int parse_cmdline_options(int desde_commandline)
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor>100 || valor<1) {
-                    debug_printf (VERBOSE_ERR,"Invalid keylength\n");
-
+                    debug_printf (VERBOSE_ERR,"Invalid keylength");
                 }
 
-                else send_text_as_keystrokes_delay=valor;
+                else {
+                    send_text_as_keystrokes_delay=valor;
+                }
 
             }
 

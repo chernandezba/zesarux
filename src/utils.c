@@ -3095,7 +3095,10 @@ void send_text_as_keystrokes_get_key(void)
 
                 int leidos;
 
-                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
+                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) {
+                    leidos=0;
+                    send_text_as_keystrokes_last_key=0;
+                }
                 else {
                     leidos=1;
                     send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
@@ -3125,6 +3128,125 @@ void send_text_as_keystrokes_get_key(void)
             }
 
 
+}
+
+
+//Funciones Spool Turbo para modelos Spectrum
+void peek_byte_spoolturbo_check_key(z80_int dir)
+{
+    //si dir=23560, enviar tecla de spool file
+    z80_int lastk=23560;
+
+    /* pruebas modo turbo en jupiter ace
+    if (MACHINE_IS_ACE) {
+        lastk=15398;
+    //KEYCOD	3C26	15398	 1 byte. The ASCII code of the last key pressed.
+
+        //15399	1 byte. Used by the routine that reads the keyboard.
+        //Conteo de tiempo pulsada tecla??
+        if (send_text_as_keystrokes_is_playing() && dir==15399) {
+            //poke_byte_no_time(dir,1);
+            //return;
+        }
+    }
+    */
+
+    if (send_text_as_keystrokes_is_playing() && dir==lastk) {
+        z80_byte send_text_as_keystrokes_last_key;
+
+        //int leidos=fread(&send_text_as_keystrokes_last_key,1,1,ptr_input_file_keyboard);
+
+
+        int leidos;
+
+        if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) {
+            leidos=0;
+            send_text_as_keystrokes_last_key=0;
+        }
+        else {
+            leidos=1;
+            send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+            printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
+        }
+
+
+        if (leidos==0) {
+            debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
+            send_text_as_keystrokes_eject();
+            reset_keyboard_ports();
+        }
+
+        //conversion de salto de linea
+        if (send_text_as_keystrokes_last_key==10) send_text_as_keystrokes_last_key=13;
+
+        poke_byte_no_time(lastk,send_text_as_keystrokes_last_key);
+
+
+    }
+}
+
+
+//Punteros a las funciones originales
+z80_byte (*peek_byte_no_time_no_spoolturbo)(z80_int dir);
+z80_byte (*peek_byte_no_spoolturbo)(z80_int dir);
+
+z80_byte peek_byte_spoolturbo(z80_int dir)
+{
+
+    peek_byte_spoolturbo_check_key(dir);
+
+    return peek_byte_no_spoolturbo(dir);
+}
+
+z80_byte peek_byte_no_time_spoolturbo(z80_int dir)
+{
+
+        peek_byte_spoolturbo_check_key(dir);
+
+        return peek_byte_no_time_no_spoolturbo(dir);
+}
+
+
+
+
+void set_peek_byte_function_spoolturbo(void)
+{
+
+    debug_printf(VERBOSE_INFO,"Enabling spoolturbo on peek_byte");
+
+
+    if (MACHINE_IS_SPECTRUM) {
+        //Cambiar valores de repeticion de teclas
+        poke_byte_no_time(23561,1);
+        poke_byte_no_time(23562,1);
+    }
+
+
+    peek_byte_no_time_no_spoolturbo=peek_byte_no_time;
+    peek_byte_no_time=peek_byte_no_time_spoolturbo;
+
+    peek_byte_no_spoolturbo=peek_byte;
+    peek_byte=peek_byte_spoolturbo;
+
+}
+
+void reset_peek_byte_function_spoolturbo(void)
+{
+    debug_printf(VERBOSE_INFO,"Resetting spoolturbo on peek_byte");
+
+    if (MACHINE_IS_SPECTRUM) {
+        //Restaurar valores de repeticion de teclas
+        poke_byte_no_time(23561,35);
+        poke_byte_no_time(23562,5);
+    }
+
+    peek_byte_no_time=peek_byte_no_time_no_spoolturbo;
+    peek_byte=peek_byte_no_spoolturbo;
+}
+
+int util_send_text_as_keystrokes_ms(void)
+{
+    return send_text_as_keystrokes_delay*1000/50;
 }
 
 
@@ -13936,117 +14058,6 @@ int util_busca_archivo_nocase(char *archivo,char *directorio,char *nombreencontr
 }
 
 
-//Funciones Spool Turbo para modelos Spectrum
-void peek_byte_spoolturbo_check_key(z80_int dir)
-{
-    //si dir=23560, enviar tecla de spool file
-    z80_int lastk=23560;
-
-    /* pruebas modo turbo en jupiter ace
-    if (MACHINE_IS_ACE) {
-        lastk=15398;
-    //KEYCOD	3C26	15398	 1 byte. The ASCII code of the last key pressed.
-
-        //15399	1 byte. Used by the routine that reads the keyboard.
-        //Conteo de tiempo pulsada tecla??
-        if (send_text_as_keystrokes_is_playing() && dir==15399) {
-            //poke_byte_no_time(dir,1);
-            //return;
-        }
-    }
-    */
-
-        if (send_text_as_keystrokes_is_playing() && dir==lastk) {
-                            z80_byte send_text_as_keystrokes_last_key;
-
-                                //int leidos=fread(&send_text_as_keystrokes_last_key,1,1,ptr_input_file_keyboard);
-
-
-                                int leidos;
-
-                                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
-                                else {
-                                    leidos=1;
-                                    send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
-                                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
-                                }
-
-
-//fread(&send_text_as_keystrokes_last_key,1,1,ptr_input_file_keyboard);
-
-                                if (leidos==0) {
-                                        debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
-                                        send_text_as_keystrokes_eject();
-                                        reset_keyboard_ports();
-                                }
-
-                                //conversion de salto de linea
-                                if (send_text_as_keystrokes_last_key==10) send_text_as_keystrokes_last_key=13;
-
-                                poke_byte_no_time(lastk,send_text_as_keystrokes_last_key);
-
-
-        }
-}
-
-//Punteros a las funciones originales
-z80_byte (*peek_byte_no_time_no_spoolturbo)(z80_int dir);
-z80_byte (*peek_byte_no_spoolturbo)(z80_int dir);
-
-z80_byte peek_byte_spoolturbo(z80_int dir)
-{
-
-    peek_byte_spoolturbo_check_key(dir);
-
-    return peek_byte_no_spoolturbo(dir);
-}
-
-z80_byte peek_byte_no_time_spoolturbo(z80_int dir)
-{
-
-        peek_byte_spoolturbo_check_key(dir);
-
-        return peek_byte_no_time_no_spoolturbo(dir);
-}
-
-
-
-
-void set_peek_byte_function_spoolturbo(void)
-{
-
-    debug_printf(VERBOSE_INFO,"Enabling spoolturbo on peek_byte");
-
-
-    if (MACHINE_IS_SPECTRUM) {
-        //Cambiar valores de repeticion de teclas
-        poke_byte_no_time(23561,1);
-        poke_byte_no_time(23562,1);
-    }
-
-
-    peek_byte_no_time_no_spoolturbo=peek_byte_no_time;
-    peek_byte_no_time=peek_byte_no_time_spoolturbo;
-
-    peek_byte_no_spoolturbo=peek_byte;
-    peek_byte=peek_byte_spoolturbo;
-
-}
-
-void reset_peek_byte_function_spoolturbo(void)
-{
-    debug_printf(VERBOSE_INFO,"Resetting spoolturbo on peek_byte");
-
-    if (MACHINE_IS_SPECTRUM) {
-        //Restaurar valores de repeticion de teclas
-        poke_byte_no_time(23561,35);
-        poke_byte_no_time(23562,5);
-    }
-
-    peek_byte_no_time=peek_byte_no_time_no_spoolturbo;
-    peek_byte=peek_byte_no_spoolturbo;
-}
-
 
 //Funciones de Escritura en ROM
 //Permitido en Spectrum 48k, Spectrum 16k, ZX80, ZX81, Jupiter Ace
@@ -23901,10 +23912,7 @@ unsigned int util_read_long_value(z80_byte *origen)
     return (origen[0])|(origen[1]<<8)|(origen[2]<<16)|(origen[3]<<24);
 }
 
-int util_send_text_as_keystrokes_ms(void)
-{
-    return send_text_as_keystrokes_delay*1000/50;
-}
+
 
 //Dice si una ruta es de una mmc montada
 //Realmente chan fat fs soporta otras rutas como validas, pero aqui establecemos siempre
