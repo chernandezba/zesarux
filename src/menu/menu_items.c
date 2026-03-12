@@ -32227,11 +32227,11 @@ void menu_help(MENU_ITEM_PARAMETERS)
 void menu_input_file_keyboard_insert(MENU_ITEM_PARAMETERS)
 {
 
-        if (input_file_keyboard_inserted.v==0) {
+        if (send_text_as_keystrokes_inserted.v==0) {
                 input_file_keyboard_init();
         }
 
-        else if (input_file_keyboard_inserted.v==1) {
+        else if (send_text_as_keystrokes_inserted.v==1) {
                 input_file_keyboard_close();
         }
 
@@ -32318,7 +32318,7 @@ int menu_input_file_keyboard_turbo_cond(void)
 
 void menu_input_file_keyboard_play(MENU_ITEM_PARAMETERS)
 {
-    input_file_keyboard_playing.v ^=1;
+    send_text_as_keystrokes_playing.v ^=1;
 }
 
 void menu_input_file_keyboard_paste(MENU_ITEM_PARAMETERS)
@@ -32350,7 +32350,7 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial(&array_menu_input_file_keyboard,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         int mostrar=1;
-        if (input_file_keyboard_inserted.v) mostrar=0;
+        if (send_text_as_keystrokes_inserted.v) mostrar=0;
 
         if (mostrar) {
             char string_input_file_keyboard_shown[16];
@@ -32362,10 +32362,10 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_insert,menu_input_file_keyboard_cond,"[%c] Spool file inserted",
-            (input_file_keyboard_inserted.v ? 'X' : ' ' ));
-        if (input_file_keyboard_inserted.v) {
+            (send_text_as_keystrokes_inserted.v ? 'X' : ' ' ));
+        if (send_text_as_keystrokes_inserted.v) {
 
-            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_play,NULL,"[%c] Spool file playing",(input_file_keyboard_playing.v ? 'X' : ' ' ));
+            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_play,NULL,"[%c] Spool file playing",(send_text_as_keystrokes_playing.v ? 'X' : ' ' ));
 
             //en tbblue no va bien la opcion de turbo
             if (!MACHINE_IS_TBBLUE) {

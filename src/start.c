@@ -6418,7 +6418,7 @@ int parse_cmdline_options(int desde_commandline)
             }
 
             else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-play")) {
-                input_file_keyboard_playing.v=1;
+                send_text_as_keystrokes_playing.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-keylength")) {
@@ -7719,8 +7719,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     aofile_inserted.v=0;
     vofilename=NULL;
     vofile_inserted.v=0;
-    input_file_keyboard_inserted.v=0;
-    input_file_keyboard_playing.v=0;
+    send_text_as_keystrokes_inserted.v=0;
+    send_text_as_keystrokes_playing.v=0;
     input_file_keyboard_send_pause.v=1;
 
 

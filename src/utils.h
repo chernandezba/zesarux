@@ -69,7 +69,7 @@ extern void show_compile_info(void);
 
 extern char input_file_keyboard_name_buffer[];
 extern char *input_file_keyboard_name;
-extern z80_bit input_file_keyboard_inserted;
+extern z80_bit send_text_as_keystrokes_inserted;
 extern int input_file_keyboard_delay;
 extern int input_file_keyboard_delay_counter;
 extern z80_bit input_file_keyboard_pending_next;
@@ -884,7 +884,7 @@ extern int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_d
 
 extern int input_file_keyboard_is_playing(void);
 
-extern z80_bit input_file_keyboard_playing;
+extern z80_bit send_text_as_keystrokes_playing;
 
 extern void convert_to_rwa_common_tmp(char *origen, char *destino);
 

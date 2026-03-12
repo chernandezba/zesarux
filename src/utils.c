@@ -169,16 +169,17 @@
 #include "enhanced_zx81_read.h"
 #include "tv.h"
 
-//Archivo usado para entrada de teclas
-//FILE *ptr_input_file_keyboard;
+//Nota: funciones de simular teclas desde archivo de texto o portapapeles, los nombres
+//tienen el prefijo send_text_as_keystrokes_ o input_file_keyboard_ , son lo mismo, solo que el segundo es el nombre antiguo
+//pero hacen referencia a lo mismo
 //Nombre archivo
 char input_file_keyboard_name_buffer[PATH_MAX];
 //Puntero que apunta al nombre
 char *input_file_keyboard_name=NULL;
 //Si esta insertado
-z80_bit input_file_keyboard_inserted;
+z80_bit send_text_as_keystrokes_inserted;
 //Si esta en play (y no pausado)
-z80_bit input_file_keyboard_playing;
+z80_bit send_text_as_keystrokes_playing;
 
 
 
@@ -2989,21 +2990,21 @@ void ascii_to_keyboard_port(unsigned tecla)
 
 int input_file_keyboard_is_playing(void)
 {
-        if (input_file_keyboard_inserted.v && input_file_keyboard_playing.v) return 1;
+        if (send_text_as_keystrokes_inserted.v && send_text_as_keystrokes_playing.v) return 1;
         else return 0;
 }
 
 void insert_input_file_keyboard(void)
 {
-    input_file_keyboard_inserted.v=1;
-        input_file_keyboard_playing.v=0;
+    send_text_as_keystrokes_inserted.v=1;
+        send_text_as_keystrokes_playing.v=0;
     printf("Insertado\n");
 }
 
 void eject_input_file_keyboard(void)
 {
-        input_file_keyboard_inserted.v=0;
-        input_file_keyboard_playing.v=0;
+        send_text_as_keystrokes_inserted.v=0;
+        send_text_as_keystrokes_playing.v=0;
 
         //Si modo turbo, quitar
         if (input_file_keyboard_turbo.v) {
@@ -4724,9 +4725,9 @@ int util_write_configfile(void)
   }
 
 
-  if (input_file_keyboard_name!=NULL && input_file_keyboard_inserted.v)         ADD_STRING_CONFIG,"--keyboardspoolfile \"%s\"",input_file_keyboard_name);
+  if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_inserted.v)         ADD_STRING_CONFIG,"--keyboardspoolfile \"%s\"",input_file_keyboard_name);
 
-  if (input_file_keyboard_playing.v)           ADD_STRING_CONFIG,"--keyboardspoolfile-play");
+  if (send_text_as_keystrokes_playing.v)           ADD_STRING_CONFIG,"--keyboardspoolfile-play");
 
                                                 ADD_STRING_CONFIG,"--keyboardspoolfile-keylength %d",input_file_keyboard_delay);
 
