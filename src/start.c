@@ -983,10 +983,10 @@ printf (
         "--loadbinary file addr len          Load binary file \"file\" at address \"addr\" with length \"len\". Set ln to 0 to load the entire file in memory\n"
         "--loadbinarypath path               Select initial Load Binary path\n"
         "--savebinarypath path               Select initial Save Binary path\n"
-        "--keyboardspoolfile file            Insert spool file for keyboard presses\n"
-        "--keyboardspoolfile-play            Play spool file right after starting the emulated machine\n"
-        "--keyboardspoolfile-keylength n     Length of every key pressed. n is in intervals of 1/50 seconds, from 1 to 100. So, a value of 1 means 20 ms, and 100 means 2000 ms\n"
-        "--keyboardspoolfile-nodelay         Do not send delay after every key press\n"
+        "--sendtextkeystrokes-file file      Insert spool file for keyboard presses\n"
+        "--sendtextkeystrokes-play           Play spool file right after starting the emulated machine\n"
+        "--sendtextkeystrokes-keylength n    Length of every key pressed. n is in intervals of 1/50 seconds, from 1 to 100. So, a value of 1 means 20 ms, and 100 means 2000 ms\n"
+        "--sendtextkeystrokes-nodelay        Do not send delay after every key press\n"
 
 #ifdef USE_PTHREADS
         "--enable-remoteprotocol             Enable ZRCP remote protocol\n"
@@ -6410,18 +6410,27 @@ int parse_cmdline_options(int desde_commandline)
             }
 
 
-            else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile")) {
+            else if (!strcmp(argv[puntero_parametro],"--sendtextkeystrokes-file") ||
+                    //Deprecated
+                    !strcmp(argv[puntero_parametro],"--keyboardspoolfile")
+                 ) {
                 siguiente_parametro_argumento();
 
                 input_file_keyboard_name=argv[puntero_parametro];
                 input_file_keyboard_init();
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-play")) {
+            else if (!strcmp(argv[puntero_parametro],"--sendtextkeystrokes-play") ||
+                    //Deprecated
+                    !strcmp(argv[puntero_parametro],"--keyboardspoolfile-play")
+                 ) {
                 send_text_as_keystrokes_playing.v=1;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-keylength")) {
+            else if (!strcmp(argv[puntero_parametro],"--sendtextkeystrokes-keylength") ||
+                    //Deprecated
+                    !strcmp(argv[puntero_parametro],"--keyboardspoolfile-keylength")
+                 ) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
@@ -6435,7 +6444,10 @@ int parse_cmdline_options(int desde_commandline)
 
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-nodelay")) {
+            else if (!strcmp(argv[puntero_parametro],"--sendtextkeystrokes-nodelay") ||
+                    //Deprecated
+                    !strcmp(argv[puntero_parametro],"--keyboardspoolfile-nodelay")
+                ) {
                 send_text_as_keystrokes_send_pause.v=0;
             }
 

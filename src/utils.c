@@ -4921,13 +4921,13 @@ int util_write_configfile(void)
   }
 
 
-  if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_is_inserted.v)         ADD_STRING_CONFIG,"--keyboardspoolfile \"%s\"",input_file_keyboard_name);
+  if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_is_inserted.v)         ADD_STRING_CONFIG,"--sendtextkeystrokes-file \"%s\"",input_file_keyboard_name);
 
-  if (send_text_as_keystrokes_playing.v)           ADD_STRING_CONFIG,"--keyboardspoolfile-play");
+  if (send_text_as_keystrokes_playing.v)           ADD_STRING_CONFIG,"--sendtextkeystrokes-play");
 
-                                                ADD_STRING_CONFIG,"--keyboardspoolfile-keylength %d",send_text_as_keystrokes_delay);
+                                                ADD_STRING_CONFIG,"--sendtextkeystrokes-keylength %d",send_text_as_keystrokes_delay);
 
-  if (send_text_as_keystrokes_send_pause.v==0)      ADD_STRING_CONFIG,"--keyboardspoolfile-nodelay");
+  if (send_text_as_keystrokes_send_pause.v==0)      ADD_STRING_CONFIG,"--sendtextkeystrokes-nodelay");
 
                                               ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
 

@@ -137,7 +137,7 @@ en sdl1, raton lo ubica en la posicion inicial
 ->Send Text as Keystrokes…
 ->Enviar texto como pulsaciones de teclado…
 
-*renombrar settings config
+ok *renombrar settings config
 *revisar insert/eject en ambos modos que funcionen bien
 *turbo mode se esta quitando al realizar alguna de las acciones. por que?
 *ventana aparte que vaya mostrando el texto que se está pegando
