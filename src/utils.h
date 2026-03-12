@@ -69,7 +69,7 @@ extern void show_compile_info(void);
 
 extern char input_file_keyboard_name_buffer[];
 extern char *input_file_keyboard_name;
-extern z80_bit send_text_as_keystrokes_inserted;
+extern z80_bit send_text_as_keystrokes_is_inserted;
 extern int input_file_keyboard_delay;
 extern int input_file_keyboard_delay_counter;
 extern z80_bit input_file_keyboard_pending_next;
@@ -78,6 +78,7 @@ extern z80_bit input_file_keyboard_is_pause;
 extern z80_bit input_file_keyboard_send_pause;
 extern z80_bit input_file_keyboard_turbo;
 extern void send_text_as_keystrokes_init(char *texto,int longitud);
+extern void send_text_as_keystrokes_get_from_clipboard(void);
 
 
 extern void insert_input_file_keyboard(void);

@@ -177,7 +177,7 @@ char input_file_keyboard_name_buffer[PATH_MAX];
 //Puntero que apunta al nombre
 char *input_file_keyboard_name=NULL;
 //Si esta insertado
-z80_bit send_text_as_keystrokes_inserted;
+z80_bit send_text_as_keystrokes_is_inserted;
 //Si esta en play (y no pausado)
 z80_bit send_text_as_keystrokes_playing;
 
@@ -2990,20 +2990,20 @@ void ascii_to_keyboard_port(unsigned tecla)
 
 int input_file_keyboard_is_playing(void)
 {
-        if (send_text_as_keystrokes_inserted.v && send_text_as_keystrokes_playing.v) return 1;
+        if (send_text_as_keystrokes_is_inserted.v && send_text_as_keystrokes_playing.v) return 1;
         else return 0;
 }
 
 void insert_input_file_keyboard(void)
 {
-    send_text_as_keystrokes_inserted.v=1;
-        send_text_as_keystrokes_playing.v=0;
+    send_text_as_keystrokes_is_inserted.v=1;
+    send_text_as_keystrokes_playing.v=0;
     printf("Insertado\n");
 }
 
 void eject_input_file_keyboard(void)
 {
-        send_text_as_keystrokes_inserted.v=0;
+        send_text_as_keystrokes_is_inserted.v=0;
         send_text_as_keystrokes_playing.v=0;
 
         //Si modo turbo, quitar
@@ -3059,6 +3059,73 @@ void send_text_as_keystrokes_init(char *texto,int longitud)
 void input_file_keyboard_close(void)
 {
     eject_input_file_keyboard();
+
+
+}
+
+
+void send_text_as_keystrokes_get_from_clipboard(void)
+{
+    if (scr_get_text_clipboard==NULL) {
+        debug_printf(VERBOSE_ERR,"This video driver doesn't have clipboard");
+        return;
+    }
+
+    int longitud;
+    char *texto=scr_get_text_clipboard(&longitud);
+
+    if (texto!=NULL) {
+        printf("Texto obtenido: [%s]\n",texto);
+
+        send_text_as_keystrokes_init(texto,longitud);
+    }
+}
+
+
+
+void input_file_keyboard_get_key(void)
+{
+                        if (input_file_keyboard_pending_next.v==1) {
+                                input_file_keyboard_pending_next.v=0;
+                                //leer siguiente tecla o enviar pausa (nada)
+                if (input_file_keyboard_send_pause.v==1) {
+                    if (input_file_keyboard_is_pause.v==1) {
+                        reset_keyboard_ports();
+                        return;
+                    }
+                }
+
+
+                int leidos;
+
+                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
+                else {
+                    leidos=1;
+                    input_file_keyboard_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,input_file_keyboard_last_key);
+                }
+
+
+
+                if (leidos==0) {
+                    debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
+                    eject_input_file_keyboard();
+                    reset_keyboard_ports();
+                    return;
+                }
+
+                        }
+
+
+                        //Puertos a 0
+                        reset_keyboard_ports();
+                        //solo habilitar tecla indicada
+            if (input_file_keyboard_send_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
+
+            //Se envia pausa. Ver si ahora es pausa o tecla
+            else {
+                if (input_file_keyboard_is_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
+            }
 
 
 }
@@ -3135,52 +3202,6 @@ void reset_keyboard_ports(void)
 }
 
 
-void input_file_keyboard_get_key(void)
-{
-                        if (input_file_keyboard_pending_next.v==1) {
-                                input_file_keyboard_pending_next.v=0;
-                                //leer siguiente tecla o enviar pausa (nada)
-                if (input_file_keyboard_send_pause.v==1) {
-                    if (input_file_keyboard_is_pause.v==1) {
-                        reset_keyboard_ports();
-                        return;
-                    }
-                }
-
-
-                int leidos;
-
-                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
-                else {
-                    leidos=1;
-                    input_file_keyboard_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
-                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,input_file_keyboard_last_key);
-                }
-
-
-
-                if (leidos==0) {
-                    debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
-                    eject_input_file_keyboard();
-                    reset_keyboard_ports();
-                    return;
-                }
-
-                        }
-
-
-                        //Puertos a 0
-                        reset_keyboard_ports();
-                        //solo habilitar tecla indicada
-            if (input_file_keyboard_send_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
-
-            //Se envia pausa. Ver si ahora es pausa o tecla
-            else {
-                if (input_file_keyboard_is_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
-            }
-
-
-}
 
 //Devuelve tamanyo minimo de ROM para el tipo de maquina indicado
 int get_rom_size(int machine)
@@ -4725,7 +4746,7 @@ int util_write_configfile(void)
   }
 
 
-  if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_inserted.v)         ADD_STRING_CONFIG,"--keyboardspoolfile \"%s\"",input_file_keyboard_name);
+  if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_is_inserted.v)         ADD_STRING_CONFIG,"--keyboardspoolfile \"%s\"",input_file_keyboard_name);
 
   if (send_text_as_keystrokes_playing.v)           ADD_STRING_CONFIG,"--keyboardspoolfile-play");
 
