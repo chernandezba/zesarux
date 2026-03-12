@@ -2678,101 +2678,6 @@ char *bitmap_button_ext_desktop_asciitable[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          "	//25
 };
 
-/*
-Template
-char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
-    "                          ",     //0
-  	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",	//10
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",    //20
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          " 	 //25
-};
-
-*/
-
-
-/*
-char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
-    "                          ",     //0
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-  	"  x  x  xxxx xxxx xxx     ",
-	"  x  x  x    x    x  x    ",
-	"  x  x  xxxx xxxx xxx     ",
-	"  x  x     x x    x  x    ",
-	"  xxxx  xxxx xxxx x   x   ",	//10
-	"                          ",
-	"                          ",
-  	"                          ",
-	"     xx   xxxx xxxx       ",
-	"     x x  x    x          ",
-	"     x  x xxxx xxx        ",
-	"     x x  x    x          ",
-	"     xx   xxxx x          ",
-	"                          ",
-	"                          ",    //20
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          ",
-	"                          " 	 //25
-};
-*/
-char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
-    "                          ",  //0
-    "                          ",
-    "      x    x  xxxx        ",
-	"      xx   x x    x       ",
-	"      x x  x x    x       ",
-	"      x  x x x    x       ",
-	"      x   xx x    x       ",
-	"      x    x  xxxx        ",
-  	"                          ",
-    "                          ",
-	"   x  xxxx  xxxx  x    x  ",	//10
-	"   x x     x    x xx   x  ",
-	"   x x     x    x x x  x  ",
-	"   x x     x    x x  x x  ",
-	"   x x     x    x x   xx  ",
-	"   x  xxxx  xxxx  x    x  ",
-  	"                          ",
-    "                          ",
-	"    x   x xxxxxx xxxxx    ",
-	"     x x  x        x      ",
-	"      x   xxxxxx   x      ",	//20
-	"      x   x        x      ",
-	"      x   x        x      ",
-	"      x   xxxxxx   x      ",
-	"                          ",
-	"                          " 	 //25
-};
 
 char *bitmap_button_ext_desktop_fullscreen[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
@@ -7691,3 +7596,101 @@ char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[EXT_DESKTOP_BUTTONS_A
 	"          wwwrwww         " 	 //25
 };
 
+
+
+
+/*
+Template
+char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",	//10
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+
+*/
+
+
+/*
+char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+  	"  x  x  xxxx xxxx xxx     ",
+	"  x  x  x    x    x  x    ",
+	"  x  x  xxxx xxxx xxx     ",
+	"  x  x     x x    x  x    ",
+	"  xxxx  xxxx xxxx x   x   ",	//10
+	"                          ",
+	"                          ",
+  	"                          ",
+	"     xx   xxxx xxxx       ",
+	"     x x  x    x          ",
+	"     x  x xxxx xxx        ",
+	"     x x  x    x          ",
+	"     xx   xxxx x          ",
+	"                          ",
+	"                          ",    //20
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          " 	 //25
+};
+*/
+char *bitmap_button_ext_desktop_userdefined[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",  //0
+    "                          ",
+    "      x    x  xxxx        ",
+	"      xx   x x    x       ",
+	"      x x  x x    x       ",
+	"      x  x x x    x       ",
+	"      x   xx x    x       ",
+	"      x    x  xxxx        ",
+  	"                          ",
+    "                          ",
+	"   x  xxxx  xxxx  x    x  ",	//10
+	"   x x     x    x xx   x  ",
+	"   x x     x    x x x  x  ",
+	"   x x     x    x x  x x  ",
+	"   x x     x    x x   xx  ",
+	"   x  xxxx  xxxx  x    x  ",
+  	"                          ",
+    "                          ",
+	"    x   x xxxxxx xxxxx    ",
+	"     x x  x        x      ",
+	"      x   xxxxxx   x      ",	//20
+	"      x   x        x      ",
+	"      x   x        x      ",
+	"      x   xxxxxx   x      ",
+	"                          ",
+	"                          " 	 //25
+};
