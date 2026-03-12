@@ -302,7 +302,7 @@ __FEATURES__
 
 * Can browse online Spectrum games
 
-* Supports Input spool text file to simulate keyboard press
+* Supports Send Text as keystrokes, reading from a text file or the system clipboard
 
 * Supports reading Pokes from .POK files
 

@@ -135,7 +135,7 @@ en sdl1, raton lo ubica en la posicion inicial
 *entrada en changelog
 *icono/tecla f para hacer paste de manera facil: insercion, activar
 *parametro de turbo que se guarde en config
-*probar que con input file siga funcionando
+ok *probar que con input file siga funcionando
 ok *quiza renombrar a input text o algo parecido. spool file no es muy intuitivo
 ->Send Text as Keystrokes…
 ->Enviar texto como pulsaciones de teclado…

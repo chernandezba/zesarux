@@ -196,7 +196,7 @@
 
 * Puede buscar online juegos de Spectrum
 
-* Soporta archivo de texto de entrada ("Input spool text file") para simular pulsaciones de teclado
+* Soporta Enviar Texto como pulsaciones de teclado, leyendo desde un archivo de texto o el portapapeles del sistema
 
 * Soporta leer Pokes de archivos .POK
 
