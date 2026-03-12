@@ -70,13 +70,13 @@ extern void show_compile_info(void);
 extern char input_file_keyboard_name_buffer[];
 extern char *input_file_keyboard_name;
 extern z80_bit send_text_as_keystrokes_is_inserted;
-extern int input_file_keyboard_delay;
-extern int input_file_keyboard_delay_counter;
-extern z80_bit input_file_keyboard_pending_next;
-extern unsigned char input_file_keyboard_last_key;
-extern z80_bit input_file_keyboard_is_pause;
-extern z80_bit input_file_keyboard_send_pause;
-extern z80_bit input_file_keyboard_turbo;
+extern int send_text_as_keystrokes_delay;
+extern int send_text_as_keystrokes_delay_counter;
+extern z80_bit send_text_as_keystrokes_pending_next;
+extern unsigned char send_text_as_keystrokes_last_key;
+extern z80_bit send_text_as_keystrokes_is_pause;
+extern z80_bit send_text_as_keystrokes_send_pause;
+extern z80_bit send_text_as_keystrokes_turbo_mode;
 extern void send_text_as_keystrokes_init(char *texto,int longitud);
 extern void send_text_as_keystrokes_get_from_clipboard(void);
 
@@ -882,7 +882,7 @@ extern int util_convert_o_p_p81_spec_basic_to_scr(char *filename,char *archivo_d
 
 
 
-extern int input_file_keyboard_is_playing(void);
+extern int send_text_as_keystrokes_is_playing(void);
 
 extern z80_bit send_text_as_keystrokes_playing;
 

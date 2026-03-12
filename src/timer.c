@@ -1210,13 +1210,13 @@ void timer_check_interrupt(void)
         }
 
         //Input file keyboard
-        if (input_file_keyboard_is_playing() ) {
-            input_file_keyboard_delay_counter++;
-            if (input_file_keyboard_delay_counter>=input_file_keyboard_delay) {
-                input_file_keyboard_delay_counter=0;
-                input_file_keyboard_pending_next.v=1;
+        if (send_text_as_keystrokes_is_playing() ) {
+            send_text_as_keystrokes_delay_counter++;
+            if (send_text_as_keystrokes_delay_counter>=send_text_as_keystrokes_delay) {
+                send_text_as_keystrokes_delay_counter=0;
+                send_text_as_keystrokes_pending_next.v=1;
 
-                input_file_keyboard_is_pause.v ^=1;
+                send_text_as_keystrokes_is_pause.v ^=1;
 
             }
         }

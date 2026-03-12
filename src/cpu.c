@@ -1951,7 +1951,7 @@ void set_machine_params(void)
     chloe_keyboard.v=0;
 
 
-    input_file_keyboard_turbo.v=0;
+    send_text_as_keystrokes_turbo_mode.v=0;
 
 
 

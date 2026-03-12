@@ -6430,12 +6430,12 @@ int parse_cmdline_options(int desde_commandline)
 
                 }
 
-                else input_file_keyboard_delay=valor;
+                else send_text_as_keystrokes_delay=valor;
 
             }
 
             else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-nodelay")) {
-                input_file_keyboard_send_pause.v=0;
+                send_text_as_keystrokes_send_pause.v=0;
             }
 
 //Si no hay soporte de pthreads, estas opciones las permitimos pero luego no hace nada
@@ -7721,7 +7721,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     vofile_inserted.v=0;
     send_text_as_keystrokes_is_inserted.v=0;
     send_text_as_keystrokes_playing.v=0;
-    input_file_keyboard_send_pause.v=1;
+    send_text_as_keystrokes_send_pause.v=1;
 
 
     /*

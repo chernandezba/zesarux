@@ -189,24 +189,24 @@ int send_text_as_keystrokes_indice=0;
 
 
 //Pausa en valores de 1/50 segundos
-int input_file_keyboard_delay=5;
+int send_text_as_keystrokes_delay=5;
 //Contador actual
-int input_file_keyboard_delay_counter=0;
+int send_text_as_keystrokes_delay_counter=0;
 //Pendiente de leer siguiente tecla
-z80_bit input_file_keyboard_pending_next;
+z80_bit send_text_as_keystrokes_pending_next;
 //Si lo siguiente es pausa o tecla
-z80_bit input_file_keyboard_is_pause;
+z80_bit send_text_as_keystrokes_is_pause;
 //Si hay que enviar pausa despues de cada pulsacion o no
-z80_bit input_file_keyboard_send_pause;
+z80_bit send_text_as_keystrokes_send_pause;
 
 //modo turbo de spool file
-z80_bit input_file_keyboard_turbo={0};
+z80_bit send_text_as_keystrokes_turbo_mode={0};
 
 //Si se guarda la configuracion al salir del programa
 z80_bit save_configuration_file_on_exit={0};
 
 //ultima tecla leida
-unsigned char input_file_keyboard_last_key;
+unsigned char send_text_as_keystrokes_last_key;
 
 void parse_customfile_options(void);
 
@@ -2988,10 +2988,10 @@ void ascii_to_keyboard_port(unsigned tecla)
     ascii_to_keyboard_port_set_clear(tecla,1);
 }
 
-int input_file_keyboard_is_playing(void)
+int send_text_as_keystrokes_is_playing(void)
 {
-        if (send_text_as_keystrokes_is_inserted.v && send_text_as_keystrokes_playing.v) return 1;
-        else return 0;
+    if (send_text_as_keystrokes_is_inserted.v && send_text_as_keystrokes_playing.v) return 1;
+    else return 0;
 }
 
 void send_text_as_keystrokes_insert(void)
@@ -3007,9 +3007,9 @@ void send_text_as_keystrokes_eject(void)
     send_text_as_keystrokes_playing.v=0;
 
     //Si modo turbo, quitar
-    if (input_file_keyboard_turbo.v) {
+    if (send_text_as_keystrokes_turbo_mode.v) {
             reset_peek_byte_function_spoolturbo();
-            input_file_keyboard_turbo.v=0;
+            send_text_as_keystrokes_turbo_mode.v=0;
     }
 }
 
@@ -3082,11 +3082,11 @@ void send_text_as_keystrokes_get_from_clipboard(void)
 
 void input_file_keyboard_get_key(void)
 {
-                        if (input_file_keyboard_pending_next.v==1) {
-                                input_file_keyboard_pending_next.v=0;
+                        if (send_text_as_keystrokes_pending_next.v==1) {
+                                send_text_as_keystrokes_pending_next.v=0;
                                 //leer siguiente tecla o enviar pausa (nada)
-                if (input_file_keyboard_send_pause.v==1) {
-                    if (input_file_keyboard_is_pause.v==1) {
+                if (send_text_as_keystrokes_send_pause.v==1) {
+                    if (send_text_as_keystrokes_is_pause.v==1) {
                         reset_keyboard_ports();
                         return;
                     }
@@ -3098,8 +3098,8 @@ void input_file_keyboard_get_key(void)
                 if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
                 else {
                     leidos=1;
-                    input_file_keyboard_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
-                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,input_file_keyboard_last_key);
+                    send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
                 }
 
 
@@ -3117,11 +3117,11 @@ void input_file_keyboard_get_key(void)
                         //Puertos a 0
                         reset_keyboard_ports();
                         //solo habilitar tecla indicada
-            if (input_file_keyboard_send_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
+            if (send_text_as_keystrokes_send_pause.v==0) ascii_to_keyboard_port(send_text_as_keystrokes_last_key);
 
             //Se envia pausa. Ver si ahora es pausa o tecla
             else {
-                if (input_file_keyboard_is_pause.v==0) ascii_to_keyboard_port(input_file_keyboard_last_key);
+                if (send_text_as_keystrokes_is_pause.v==0) ascii_to_keyboard_port(send_text_as_keystrokes_last_key);
             }
 
 
@@ -4747,9 +4747,9 @@ int util_write_configfile(void)
 
   if (send_text_as_keystrokes_playing.v)           ADD_STRING_CONFIG,"--keyboardspoolfile-play");
 
-                                                ADD_STRING_CONFIG,"--keyboardspoolfile-keylength %d",input_file_keyboard_delay);
+                                                ADD_STRING_CONFIG,"--keyboardspoolfile-keylength %d",send_text_as_keystrokes_delay);
 
-  if (input_file_keyboard_send_pause.v==0)      ADD_STRING_CONFIG,"--keyboardspoolfile-nodelay");
+  if (send_text_as_keystrokes_send_pause.v==0)      ADD_STRING_CONFIG,"--keyboardspoolfile-nodelay");
 
                                               ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
 
@@ -13949,17 +13949,17 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
 
         //15399	1 byte. Used by the routine that reads the keyboard.
         //Conteo de tiempo pulsada tecla??
-        if (input_file_keyboard_is_playing() && dir==15399) {
+        if (send_text_as_keystrokes_is_playing() && dir==15399) {
             //poke_byte_no_time(dir,1);
             //return;
         }
     }
     */
 
-        if (input_file_keyboard_is_playing() && dir==lastk) {
-                            z80_byte input_file_keyboard_last_key;
+        if (send_text_as_keystrokes_is_playing() && dir==lastk) {
+                            z80_byte send_text_as_keystrokes_last_key;
 
-                                //int leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+                                //int leidos=fread(&send_text_as_keystrokes_last_key,1,1,ptr_input_file_keyboard);
 
 
                                 int leidos;
@@ -13967,12 +13967,12 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
                                 if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
                                 else {
                                     leidos=1;
-                                    input_file_keyboard_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
-                                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,input_file_keyboard_last_key);
+                                    send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+                                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
                                 }
 
 
-//fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+//fread(&send_text_as_keystrokes_last_key,1,1,ptr_input_file_keyboard);
 
                                 if (leidos==0) {
                                         debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
@@ -13981,9 +13981,9 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
                                 }
 
                                 //conversion de salto de linea
-                                if (input_file_keyboard_last_key==10) input_file_keyboard_last_key=13;
+                                if (send_text_as_keystrokes_last_key==10) send_text_as_keystrokes_last_key=13;
 
-                                poke_byte_no_time(lastk,input_file_keyboard_last_key);
+                                poke_byte_no_time(lastk,send_text_as_keystrokes_last_key);
 
 
         }
@@ -23903,7 +23903,7 @@ unsigned int util_read_long_value(z80_byte *origen)
 
 int util_get_input_file_keyboard_ms(void)
 {
-    return input_file_keyboard_delay*1000/50;
+    return send_text_as_keystrokes_delay*1000/50;
 }
 
 //Dice si una ruta es de una mmc montada

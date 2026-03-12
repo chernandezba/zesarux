@@ -32239,20 +32239,20 @@ void menu_input_file_keyboard_eject(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_input_file_keyboard_delay(MENU_ITEM_PARAMETERS)
+void menu_send_text_as_keystrokes_delay(MENU_ITEM_PARAMETERS)
 {
 
-    //Final valor =>  input_file_keyboard_delay=((Valor en ms)*50)/1000
+    //Final valor =>  send_text_as_keystrokes_delay=((Valor en ms)*50)/1000
     int valor_ms=util_get_input_file_keyboard_ms();
 
     menu_ventana_scanf_numero_enhanced("Key length",&valor_ms,5,+20,20,2000,1);
 
 
-    input_file_keyboard_delay=(valor_ms*50)/1000;
+    send_text_as_keystrokes_delay=(valor_ms*50)/1000;
 
     //Por si acaso controlar los limites despues de hacer este calculo
     //1->20 ms. 100->2000 ms
-    if (input_file_keyboard_delay<1 || input_file_keyboard_delay>100) input_file_keyboard_delay=1;
+    if (send_text_as_keystrokes_delay<1 || send_text_as_keystrokes_delay>100) send_text_as_keystrokes_delay=1;
 
 
 }
@@ -32281,28 +32281,28 @@ void menu_input_file_keyboard(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_input_file_keyboard_send_pause(MENU_ITEM_PARAMETERS)
+void menu_send_text_as_keystrokes_send_pause(MENU_ITEM_PARAMETERS)
 {
-    input_file_keyboard_send_pause.v ^=1;
+    send_text_as_keystrokes_send_pause.v ^=1;
 }
 
 
-void menu_input_file_keyboard_turbo(MENU_ITEM_PARAMETERS)
+void menu_send_text_as_keystrokes_turbo_mode(MENU_ITEM_PARAMETERS)
 {
 
-    if (input_file_keyboard_turbo.v) {
+    if (send_text_as_keystrokes_turbo_mode.v) {
         reset_peek_byte_function_spoolturbo();
-        input_file_keyboard_turbo.v=0;
+        send_text_as_keystrokes_turbo_mode.v=0;
     }
 
     else {
         set_peek_byte_function_spoolturbo();
-        input_file_keyboard_turbo.v=1;
+        send_text_as_keystrokes_turbo_mode.v=1;
     }
 }
 
 
-int menu_input_file_keyboard_turbo_cond(void)
+int menu_send_text_as_keystrokes_turbo_mode_cond(void)
 {
     if (MACHINE_IS_SPECTRUM) return 1;
     //if (MACHINE_IS_ACE) return 1;
@@ -32353,20 +32353,20 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
             //en tbblue no va bien la opcion de turbo
             if (!MACHINE_IS_TBBLUE) {
-                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_turbo,menu_input_file_keyboard_turbo_cond,"[%c] Turbo mode",(input_file_keyboard_turbo.v ? 'X' : ' ') );
+                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_turbo_mode,menu_send_text_as_keystrokes_turbo_mode_cond,"[%c] Turbo mode",(send_text_as_keystrokes_turbo_mode.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Allow turbo mode on Spectrum models");
                 menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"Allow turbo mode on Spectrum models. It traps calls to ROM when keyboard is read.\n"
                                     "Works well with Spectrum Basic but also with Text Adventures made with Daad, Paws and GAC");
             }
 
 
-            if (input_file_keyboard_turbo.v==0) {
+            if (send_text_as_keystrokes_turbo_mode.v==0) {
 
-                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_delay,NULL,"[%d ms] Key length",util_get_input_file_keyboard_ms() );
+                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_delay,NULL,"[%d ms] Key length",util_get_input_file_keyboard_ms() );
                 menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Length of every key pressed");
                 menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend 100 ms for entering lines on Spectrum BASIC. I also suggest to send some manual delays, using unhandled character, like \\, to assure entering lines is correct ");
 
-                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_send_pause,NULL,"[%c] Delay after every key",(input_file_keyboard_send_pause.v==1 ? 'X' : ' ') );
+                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_send_pause,NULL,"[%c] Delay after every key",(send_text_as_keystrokes_send_pause.v==1 ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Send or not a delay of the same duration after every key");
                 menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend enabling this for entering lines on Spectrum BASIC");
 
