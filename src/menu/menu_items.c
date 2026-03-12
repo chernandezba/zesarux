@@ -32407,7 +32407,7 @@ void menu_send_text_keystrokes_status(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("sendtextkeystrokesstatus",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=KEYSTROKES_STATUS_WINDOW_TEXT_LENGTH+2;
+            ancho_ventana=32; //Para que quepa bien el titulo de ventana
             alto_ventana=5;
 
             xventana=menu_center_x()-ancho_ventana/2;
@@ -32415,7 +32415,7 @@ void menu_send_text_keystrokes_status(MENU_ITEM_PARAMETERS)
         }
 
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Send Text Keystrokes Status",
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Send Keystrokes Status",
             "sendtextkeystrokesstatus",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;

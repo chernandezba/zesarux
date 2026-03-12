@@ -3029,7 +3029,7 @@ void send_text_as_keystrokes_insert(void)
 {
     send_text_as_keystrokes_is_inserted.v=1;
     send_text_as_keystrokes_playing.v=0;
-    printf("Insertado\n");
+    //printf("Insertado\n");
 }
 
 void send_text_as_keystrokes_eject(void)
@@ -3097,7 +3097,7 @@ void send_text_as_keystrokes_get_from_clipboard(void)
     char *texto=scr_get_text_clipboard(&longitud);
 
     if (texto!=NULL) {
-        printf("Texto obtenido: [%s]\n",texto);
+        //printf("Texto obtenido: [%s]\n",texto);
 
         send_text_as_keystrokes_init(texto,longitud);
     }
@@ -3127,7 +3127,7 @@ void send_text_as_keystrokes_get_key(void)
         else {
             leidos=1;
             send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
-            printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
+            //printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
         }
 
 
@@ -3192,7 +3192,7 @@ void peek_byte_sendtextkeystrokes_spoolturbo_check_key(z80_int dir)
         else {
             leidos=1;
             send_text_as_keystrokes_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
-            printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
+            //printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_last_key);
         }
 
 
@@ -3205,7 +3205,7 @@ void peek_byte_sendtextkeystrokes_spoolturbo_check_key(z80_int dir)
         //conversion de salto de linea
         if (send_text_as_keystrokes_last_key==10) send_text_as_keystrokes_last_key=13;
 
-        printf("poke lastk con %d\n",send_text_as_keystrokes_last_key);
+        //printf("poke lastk con %d\n",send_text_as_keystrokes_last_key);
         poke_byte_no_time(lastk,send_text_as_keystrokes_last_key);
 
 
