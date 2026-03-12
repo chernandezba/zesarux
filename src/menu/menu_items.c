@@ -32335,16 +32335,26 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
         if (send_text_as_keystrokes_is_inserted.v==0) {
 
-            menu_add_item_menu_inicial_format(&array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes,NULL,"    Read from Text file");
+            menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes,NULL,
+                "Read from text file","Leer de archivo de texto","Llegir d'arxiu de text");
+            menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
 
-            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_paste,NULL,"    Paste from clipboard");
+            if (scr_get_text_clipboard!=NULL) {
+                menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_paste,NULL,
+                    "Read from clipboard","Leer del portapapeles","Llegir del portapapers");
+                menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
+            }
 
         }
 
         else {
 
-            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_eject,NULL,"    Stop",
-                (send_text_as_keystrokes_is_inserted.v ? 'X' : ' ' ));
+            menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_eject,NULL,
+                "Stop sending text","Detener envio de texto","Aturar enviament de text");
+            menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
+
+
+            menu_add_item_menu_separator(array_menu_send_text_as_keystrokes);
         }
 
 
@@ -32354,8 +32364,9 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
             //en tbblue no va bien la opcion de turbo
             if (!MACHINE_IS_TBBLUE) {
-                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_turbo_mode,menu_send_text_as_keystrokes_turbo_mode_cond,"[%c] Turbo mode",
-                    (send_text_as_keystrokes_turbo_mode.v ? 'X' : ' ') );
+                menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_turbo_mode,menu_send_text_as_keystrokes_turbo_mode_cond,
+                    "Turbo mode","Modo turbo","Mode turbo");
+                menu_add_item_menu_prefijo_format(array_menu_send_text_as_keystrokes,"[%c] ",(send_text_as_keystrokes_turbo_mode.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_send_text_as_keystrokes,"Allow turbo mode on Spectrum models");
                 menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"Allow turbo mode on Spectrum models. It traps calls to ROM when keyboard is read.\n"
                                     "Works well with Spectrum Basic but also with Text Adventures made with Daad, Paws and GAC");
@@ -32376,9 +32387,13 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_send_text_as_keystrokes,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_send_text_as_keystrokes);
 
         menu_add_ESC_item(array_menu_send_text_as_keystrokes);
+
+        menu_add_item_menu_index_full_path(array_menu_send_text_as_keystrokes,
+            "Main Menu-> Debug-> Send Text as Keystrokes","Menú Principal-> Debug-> Enviar texto como pulsaciones de teclado","Menú Principal-> Debug-> Enviar text com pulsacions de teclat");
+
 
         retorno_menu=menu_dibuja_menu(&send_text_as_keystrokes_opcion_seleccionada,&item_seleccionado,array_menu_send_text_as_keystrokes,
             "Send Text as Keystrokes" ,"Enviar texto como pulsaciones de teclado","Enviar text com pulsacions de teclat");
