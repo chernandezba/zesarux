@@ -32291,12 +32291,12 @@ void menu_send_text_as_keystrokes_turbo_mode(MENU_ITEM_PARAMETERS)
 {
 
     if (send_text_as_keystrokes_turbo_mode.v) {
-        reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
+        //reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
         send_text_as_keystrokes_turbo_mode.v=0;
     }
 
     else {
-        set_peek_byte_function_sendtextkeystrokes_spoolturbo();
+        //set_peek_byte_function_sendtextkeystrokes_spoolturbo();
         send_text_as_keystrokes_turbo_mode.v=1;
     }
 }
@@ -32313,6 +32313,16 @@ int menu_send_text_as_keystrokes_turbo_mode_cond(void)
 void menu_send_text_as_keystrokes_play(MENU_ITEM_PARAMETERS)
 {
     send_text_as_keystrokes_playing.v ^=1;
+
+
+    if (send_text_as_keystrokes_turbo_mode.v) {
+        //set_peek_byte_function_sendtextkeystrokes_spoolturbo();
+    }
+
+    else {
+        //reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
+    }
+
 }
 
 void menu_send_text_as_keystrokes_paste(MENU_ITEM_PARAMETERS)
