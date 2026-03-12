@@ -4920,7 +4920,7 @@ char *charset_icons_text[]={
 "xx ",
 " xx",
 
-//102
+//f 102
 " xx",
 " x ",
 "xxx",
@@ -4951,6 +4951,7 @@ char *charset_icons_text[]={
 "  x",
 "xx ",
 
+//k
 "x  ",
 "x x",
 "xx ",
@@ -4981,7 +4982,7 @@ char *charset_icons_text[]={
 "x x",
 "xxx",
 
-//112
+//p 112
 "   ",
 " x ",
 "x x",

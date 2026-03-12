@@ -10930,7 +10930,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"specnextaudiodac",    "next DAC",menu_specnext_audio_dac,bitmap_button_ext_desktop_nextdac},
     {"processmanagement",   "prc mngmnt",   menu_display_window_list,bitmap_button_ext_desktop_processmanagement},
     {"processswitcher",     "proc swtch",   menu_process_switcher,bitmap_button_ext_desktop_processswitcher},
-    {"sendtextkeystrokesstatus","send keystr",menu_send_text_keystrokes_status,bitmap_button_ext_desktop_userdefined},
+    {"sendtextkeystrokesstatus","send keystr",menu_send_text_keystrokes_status,bitmap_button_ext_desktop_sendtextkeystrokesstatus},
     {"viewsensors",         "sensors",      menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
     {"shortcutshelper",     "shrtcuthlp",   menu_shortcuts_window,bitmap_button_ext_desktop_shortcutshelper},
     {"inspectrumanalyzer",  "spec anlys",   menu_input_spectrum_analyzer,bitmap_button_ext_desktop_inspectrumanalyzer},

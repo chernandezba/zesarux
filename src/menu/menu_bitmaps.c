@@ -7598,6 +7598,36 @@ char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[EXT_DESKTOP_BUTTONS_A
 
 
 
+char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"  x           x           ",
+	" xxx  xx     xxx          ",
+	"  x  x x x x  x           ",
+	"  x  xx   x   x           ",
+	"  xx  xx x x  xx          ",
+	"                          ",
+	"      xx                  ",
+	"      xx                  ",
+	"     xxxx                 ",
+	"      xx                  ",	//10
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwxry",
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",
+	"xxxxxxwwxwwwwwwwwxwwxxrygb",
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
 
 /*
 Template

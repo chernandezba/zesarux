@@ -3251,13 +3251,12 @@ void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
     send_text_as_keystrokes_core_nested_turbo_enabled.v=1;
 
     debug_printf (VERBOSE_DEBUG,"Setting keystrokes_spoolturbo peek Spectrum functions");
-    printf ("Setting keystrokes_spoolturbo peek Spectrum functions\n");
 
     send_text_as_keystrokes_get_key_turbo_chg_repeat();
 
     //Asignar mediante nuevas funciones de core anidados
-    sendtextkeystrokes_spoolturbo_nested_id_peek_byte=debug_nested_peek_byte_add(peek_byte_sendtextkeystrokes_spoolturbo,"Dandanator peek_byte");
-    sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(peek_byte_no_time_sendtextkeystrokes_spoolturbo,"Dandanator peek_byte_no_time");
+    sendtextkeystrokes_spoolturbo_nested_id_peek_byte=debug_nested_peek_byte_add(peek_byte_sendtextkeystrokes_spoolturbo,"Send text keystrokes turbo peek_byte");
+    sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(peek_byte_no_time_sendtextkeystrokes_spoolturbo,"Send text keystrokes turbo peek_byte_no_time");
 
 
 
@@ -3275,7 +3274,6 @@ void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
     send_text_as_keystrokes_get_key_turbo_rst_repeat();
 
     debug_printf (VERBOSE_DEBUG,"Restoring original peek functions before keystrokes_spoolturbo");
-    printf ("Restoring original peek functions before keystrokes_spoolturbo\n");
 
 	debug_nested_peek_byte_del(sendtextkeystrokes_spoolturbo_nested_id_peek_byte);
 	debug_nested_peek_byte_no_time_del(sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time);
