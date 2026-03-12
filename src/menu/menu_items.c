@@ -32288,6 +32288,9 @@ void menu_send_text_as_keystrokes_turbo_mode(MENU_ITEM_PARAMETERS)
 {
 
     if (send_text_as_keystrokes_turbo_mode.v) {
+        //dejar parametros normales de repeticion de teclas
+        send_text_as_keystrokes_get_key_turbo_rst_repeat();
+
         send_text_as_keystrokes_turbo_mode.v=0;
     }
 
@@ -32332,9 +32335,7 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
         if (send_text_as_keystrokes_is_inserted.v==0) {
 
-            char string_input_file_keyboard_shown[16];
-            menu_tape_settings_trunc_name(input_file_keyboard_name,string_input_file_keyboard_shown,16);
-            menu_add_item_menu_inicial_format(&array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes,NULL,"    Read from Text file [%s]",string_input_file_keyboard_shown);
+            menu_add_item_menu_inicial_format(&array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes,NULL,"    Read from Text file");
 
             menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_paste,NULL,"    Paste from clipboard");
 
@@ -32342,7 +32343,7 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
         else {
 
-            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_eject,NULL,"    Disable",
+            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_eject,NULL,"    Stop",
                 (send_text_as_keystrokes_is_inserted.v ? 'X' : ' ' ));
         }
 

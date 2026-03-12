@@ -593,6 +593,7 @@ extern int util_busca_archivo_nocase(char *archivo,char *directorio,char *nombre
 extern void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void);
 extern void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void);
 extern void util_send_text_as_keystrokes_setreset_nested_turbo(void);
+extern void send_text_as_keystrokes_get_key_turbo_rst_repeat(void);
 
 
 extern void set_poke_byte_function_writerom(void);
