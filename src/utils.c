@@ -3010,10 +3010,10 @@ void send_text_as_keystrokes_eject(void)
     send_text_as_keystrokes_playing.v=0;
 
     //Si modo turbo, quitar
-    if (send_text_as_keystrokes_turbo_mode.v) {
-            reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
-            send_text_as_keystrokes_turbo_mode.v=0;
-    }
+    //if (send_text_as_keystrokes_turbo_mode.v) {
+    //        reset_peek_byte_function_sendtextkeystrokes_spoolturbo();
+    //        send_text_as_keystrokes_turbo_mode.v=0;
+    //}
 }
 
 void send_text_as_keystrokes_init(char *texto,int longitud)
@@ -3180,6 +3180,7 @@ void peek_byte_sendtextkeystrokes_spoolturbo_check_key(z80_int dir)
         //conversion de salto de linea
         if (send_text_as_keystrokes_last_key==10) send_text_as_keystrokes_last_key=13;
 
+        printf("poke lastk con %d\n",send_text_as_keystrokes_last_key);
         poke_byte_no_time(lastk,send_text_as_keystrokes_last_key);
 
 
@@ -3194,18 +3195,18 @@ int sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time;
 
 z80_byte peek_byte_sendtextkeystrokes_spoolturbo(z80_int dir,z80_byte value GCC_UNUSED)
 {
-    z80_byte valor_leido=debug_nested_peek_byte_call_previous(sendtextkeystrokes_spoolturbo_nested_id_peek_byte,dir);
-
     peek_byte_sendtextkeystrokes_spoolturbo_check_key(dir);
+
+    z80_byte valor_leido=debug_nested_peek_byte_call_previous(sendtextkeystrokes_spoolturbo_nested_id_peek_byte,dir);
 
     return valor_leido;
 }
 
 z80_byte peek_byte_no_time_sendtextkeystrokes_spoolturbo(z80_int dir,z80_byte value GCC_UNUSED)
 {
-    z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time,dir);
-
     peek_byte_sendtextkeystrokes_spoolturbo_check_key(dir);
+
+    z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(sendtextkeystrokes_spoolturbo_nested_id_peek_byte_no_time,dir);
 
     return valor_leido;
 }
