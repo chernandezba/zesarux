@@ -888,6 +888,9 @@ extern int send_text_as_keystrokes_is_playing(void);
 
 extern z80_bit send_text_as_keystrokes_playing;
 
+extern char *send_text_as_keystrokes_memory;
+extern int send_text_as_keystrokes_indice;
+
 extern void convert_to_rwa_common_tmp(char *origen, char *destino);
 
 extern void util_tape_get_name_header(z80_byte *tape,char *texto);

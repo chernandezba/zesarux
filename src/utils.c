@@ -184,7 +184,7 @@ z80_bit send_text_as_keystrokes_playing;
 
 
 int send_text_as_keystrokes_length=0;
-char *send_text_as_keystrokes_memory;
+char *send_text_as_keystrokes_memory=NULL;
 int send_text_as_keystrokes_indice=0;
 
 

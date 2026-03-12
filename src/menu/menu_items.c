@@ -32343,6 +32343,7 @@ Y definirla en zxvision_known_window_names_array
 
 zxvision_window *menu_send_text_keystrokes_status_window;
 
+#define KEYSTROKES_STATUS_WINDOW_TEXT_LENGTH 20
 
 void menu_send_text_keystrokes_status_overlay(void)
 {
@@ -32353,8 +32354,23 @@ void menu_send_text_keystrokes_status_overlay(void)
     if (menu_send_text_keystrokes_status_window->is_minimized) return;
 
 
-    //Print....
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...
+    if (send_text_as_keystrokes_is_inserted.v && send_text_as_keystrokes_memory!=NULL) {
+
+
+
+        //Obtenemos un trozo del texto que se esta enviando
+        char buffer_texto[KEYSTROKES_STATUS_WINDOW_TEXT_LENGTH+1];
+
+        int i;
+        for (i=0;i<KEYSTROKES_STATUS_WINDOW_TEXT_LENGTH && send_text_as_keystrokes_memory[send_text_as_keystrokes_indice+i];i++) {
+            buffer_texto[i]=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice+i];
+        }
+
+        buffer_texto[i]=0;
+
+        zxvision_print_string_defaults_fillspc(menu_send_text_keystrokes_status_window,1,0,buffer_texto);
+
+    }
 
 
     //Mostrar contenido
@@ -32391,8 +32407,8 @@ void menu_send_text_keystrokes_status(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("sendtextkeystrokesstatus",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=30;
-            alto_ventana=20;
+            ancho_ventana=KEYSTROKES_STATUS_WINDOW_TEXT_LENGTH+2;
+            alto_ventana=5;
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2;
@@ -32440,13 +32456,6 @@ void menu_send_text_keystrokes_status(MENU_ITEM_PARAMETERS)
 
 
         switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
-
 
             //Salir con ESC
             case 2:
