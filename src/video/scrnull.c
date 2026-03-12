@@ -32,7 +32,7 @@
 
 void scrnull_z88_cpc_load_keymap(void)
 {
-	debug_printf (VERBOSE_INFO,"Loading keymap");
+    debug_printf (VERBOSE_INFO,"Loading keymap");
 }
 
 void scrnull_putpixel_final_rgb(int x GCC_UNUSED,int y GCC_UNUSED,unsigned int color_rgb GCC_UNUSED)
@@ -75,15 +75,15 @@ void scrnull_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 
 void scrnull_set_fullscreen(void)
 {
-	debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
+    debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
 }
 
 void scrnull_reset_fullscreen(void)
 {
-	debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
+    debug_printf (VERBOSE_ERR,"Full screen mode not supported on this video driver");
 }
 
-void scrnull_detectedchar_print(z80_byte caracter)
+void scrnull_detectedchar_print(z80_byte caracter GCC_UNUSED)
 {
 
 }
@@ -91,82 +91,94 @@ void scrnull_detectedchar_print(z80_byte caracter)
 //Estos valores no deben ser mayores de OVERLAY_SCREEN_MAX_WIDTH y OVERLAY_SCREEN_MAX_HEIGTH
 int scrnull_get_menu_width(void)
 {
-        return 32/screen_reduce_menu_ancho;
+    return 32/screen_reduce_menu_ancho;
 }
 
 
 int scrnull_get_menu_height(void)
 {
-        return 24/screen_reduce_menu_alto;
+    return 24/screen_reduce_menu_alto;
 }
 
 
 
 
 //Null video drivers
-int scrnull_init (void){
+int scrnull_init (void)
+{
 
-debug_printf (VERBOSE_INFO,"Init Null Video Driver");
+    debug_printf (VERBOSE_INFO,"Init Null Video Driver");
 
-	scr_debug_registers=scrnull_debug_registers;
-        scr_messages_debug=scrnull_messages_debug;
+    scr_debug_registers=scrnull_debug_registers;
+    scr_messages_debug=scrnull_messages_debug;
 
-	scr_putchar_menu=scrnull_putchar_menu;
-	scr_putchar_footer=scrnull_putchar_footer;
+    scr_putchar_menu=scrnull_putchar_menu;
+    scr_putchar_footer=scrnull_putchar_footer;
 
-	scr_putpixel_final=scrnull_putpixel_final;
-	scr_putpixel_final_rgb=scrnull_putpixel_final_rgb;
+    scr_putpixel_final=scrnull_putpixel_final;
+    scr_putpixel_final_rgb=scrnull_putpixel_final_rgb;
 
 
-        scr_get_menu_width=scrnull_get_menu_width;
-        scr_get_menu_height=scrnull_get_menu_height;
-	//scr_driver_can_ext_desktop=scrnull_driver_can_ext_desktop;
+    scr_get_menu_width=scrnull_get_menu_width;
+    scr_get_menu_height=scrnull_get_menu_height;
+    //scr_driver_can_ext_desktop=scrnull_driver_can_ext_desktop;
 
-	scr_set_driver_name("null");
+    scr_set_driver_name("null");
 
-	scr_set_fullscreen=scrnull_set_fullscreen;
-	scr_reset_fullscreen=scrnull_reset_fullscreen;
-	scr_z88_cpc_load_keymap=scrnull_z88_cpc_load_keymap;
-	scr_detectedchar_print=scrnull_detectedchar_print;
+    scr_set_fullscreen=scrnull_set_fullscreen;
+    scr_reset_fullscreen=scrnull_reset_fullscreen;
+    scr_z88_cpc_load_keymap=scrnull_z88_cpc_load_keymap;
+    scr_detectedchar_print=scrnull_detectedchar_print;
     scr_update_window_title=NULL;
     scr_get_text_clipboard=NULL;
 
 
-return 0;
+    return 0;
 
 }
 
 void scrnull_end(void)
 {
-debug_printf (VERBOSE_INFO,"Closing video driver");
+    debug_printf (VERBOSE_INFO,"Closing video driver");
 
 }
 
 void scrnull_refresca_pantalla_solo_driver(void)
 {
-        //Como esto solo lo uso de momento para drivers graficos, de momento lo dejo vacio
+    //Como esto solo lo uso de momento para drivers graficos, de momento lo dejo vacio
 }
 
 
-void scrnull_refresca_pantalla(void){}
-z80_byte scrnull_lee_puerto(z80_byte puerto_h,z80_byte puerto_l){
+void scrnull_refresca_pantalla(void)
+{
 
-        //Para evitar warnings al compilar de "unused parameter"
-        puerto_h=puerto_l;
-        puerto_l=puerto_h;
-
-
-        return 255;
 }
-void scrnull_actualiza_tablas_teclado(void){}
-void scrnull_debug_registers(void){
+
+z80_byte scrnull_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
+{
+
+    //Para evitar warnings al compilar de "unused parameter"
+    puerto_h=puerto_l;
+    puerto_l=puerto_h;
 
 
-char buffer[2048];
+    return 255;
+}
 
-print_registers(buffer);
+void scrnull_actualiza_tablas_teclado(void)
+{
 
-printf ("%s\r",buffer);
+}
+
+void scrnull_debug_registers(void)
+{
+
+
+    char buffer[2048];
+
+    print_registers(buffer);
+
+    printf ("%s\r",buffer);
 
 }
 
@@ -174,7 +186,7 @@ printf ("%s\r",buffer);
 
 void scrnull_messages_debug(char *s)
 {
-        printf ("%s\n",s);
+    printf ("%s\n",s);
 }
 
 

@@ -32266,25 +32266,24 @@ void menu_input_file_keyboard_delay(MENU_ITEM_PARAMETERS)
 void menu_input_file_keyboard(MENU_ITEM_PARAMETERS)
 {
 
-        input_file_keyboard_inserted.v=0;
-        input_file_keyboard_playing.v=0;
+    eject_input_file_keyboard();
+
+    char *filtros[2];
+
+    filtros[0]="txt";
+    filtros[1]=0;
 
 
-        char *filtros[2];
-
-        filtros[0]="txt";
-        filtros[1]=0;
-
-
-        if (menu_filesel("Select Spool File",filtros,input_file_keyboard_name_buffer)==1) {
+    if (menu_filesel("Select Spool File",filtros,input_file_keyboard_name_buffer)==1) {
         input_file_keyboard_name=input_file_keyboard_name_buffer;
+        input_file_keyboard_init();
 
-        }
+    }
 
-        else {
+    else {
         input_file_keyboard_name=NULL;
         eject_input_file_keyboard();
-        }
+    }
 }
 
 
@@ -32336,7 +32335,7 @@ void menu_input_file_keyboard_paste(MENU_ITEM_PARAMETERS)
     if (texto!=NULL) {
         printf("Texto obtenido: [%s]\n",texto);
 
-        input_file_keyboard_clipboard_init(texto,longitud);
+        send_text_as_keystrokes_init(texto,longitud);
     }
 
 }
@@ -32351,7 +32350,7 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial(&array_menu_input_file_keyboard,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         int mostrar=1;
-        if (input_file_keyboard_is_clipboard && input_file_keyboard_inserted.v) mostrar=0;
+        if (input_file_keyboard_inserted.v) mostrar=0;
 
         if (mostrar) {
             char string_input_file_keyboard_shown[16];
@@ -32362,7 +32361,8 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_paste,NULL,"Paste from clipboard");
 
 
-        menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_insert,menu_input_file_keyboard_cond,"[%c] Spool file inserted",(input_file_keyboard_inserted.v ? 'X' : ' ' ));
+        menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_insert,menu_input_file_keyboard_cond,"[%c] Spool file inserted",
+            (input_file_keyboard_inserted.v ? 'X' : ' ' ));
         if (input_file_keyboard_inserted.v) {
 
             menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_play,NULL,"[%c] Spool file playing",(input_file_keyboard_playing.v ? 'X' : ' ' ));
@@ -32378,13 +32378,13 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
             if (input_file_keyboard_turbo.v==0) {
 
-                            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_delay,NULL,"[%d ms] Key length",util_get_input_file_keyboard_ms() );
-                            menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Length of every key pressed");
-                            menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend 100 ms for entering lines on Spectrum BASIC. I also suggest to send some manual delays, using unhandled character, like \\, to assure entering lines is correct ");
+                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_delay,NULL,"[%d ms] Key length",util_get_input_file_keyboard_ms() );
+                menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Length of every key pressed");
+                menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend 100 ms for entering lines on Spectrum BASIC. I also suggest to send some manual delays, using unhandled character, like \\, to assure entering lines is correct ");
 
-                            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_send_pause,NULL,"[%c] Delay after every key",(input_file_keyboard_send_pause.v==1 ? 'X' : ' ') );
-                            menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Send or not a delay of the same duration after every key");
-                            menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend enabling this for entering lines on Spectrum BASIC");
+                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_send_pause,NULL,"[%c] Delay after every key",(input_file_keyboard_send_pause.v==1 ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Send or not a delay of the same duration after every key");
+                menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend enabling this for entering lines on Spectrum BASIC");
 
             }
         }
@@ -32395,7 +32395,8 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_input_file_keyboard);
 
         retorno_menu=menu_dibuja_menu(&input_file_keyboard_opcion_seleccionada,&item_seleccionado,array_menu_input_file_keyboard,
-            "Input File Spooling Menu" ,"Menú Input File Spooling","Menú Input File Spooling");
+            "Send Text as Keystrokes" ,"Enviar texto como pulsaciones de teclado","Enviar text com pulsacions de teclat");
+
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -35485,8 +35486,10 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
         if (!CPU_IS_MOTOROLA) {
-            menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,"Input File Spoolin~~g");
-            menu_add_item_menu_shortcut(array_menu_debug,'g');
+
+
+            menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,"Send Text as Keystrokes");
+            //menu_add_item_menu_shortcut(array_menu_debug,'g');
             menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file as keyboard presses");
             menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file is sent as keyboard presses. Only Ascii characters, not UFT, Unicode or others. "
                                                                    "Symbols that require extended mode on Spectrum are not sent: [ ] (c) ~ \\ { }. These can be used "

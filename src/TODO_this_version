@@ -135,6 +135,16 @@ en sdl1, raton lo ubica en la posicion inicial
 *entrada en changelog
 *icono/tecla f para hacer paste de manera facil: insercion, activar
 *parametro de turbo que se guarde en config
+*probar que con input file siga funcionando
+ok *quiza renombrar a input text o algo parecido. spool file no es muy intuitivo
+->Send Text as Keystrokes…
+->Enviar texto como pulsaciones de teclado…
+*renombrar funciones. que todo tenga prefijo: send_text_as_keystrokes_
+*revisar insert/eject en ambos modos que funcionen bien
+*turbo mode se esta quitando al realizar alguna de las acciones. por que?
+*ventana aparte que vaya mostrando el texto que se está pegando
+*nombres de menus y funciones de indexación
+*traducciones para menus
 
 -poder insertar cinta cuando la rutina de la rom ya esta cargando
 *deberia ser una opcion (activada por defecto) ? que no se vea la opcion si esta el autoload

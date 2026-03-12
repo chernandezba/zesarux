@@ -170,7 +170,7 @@
 #include "tv.h"
 
 //Archivo usado para entrada de teclas
-FILE *ptr_input_file_keyboard;
+//FILE *ptr_input_file_keyboard;
 //Nombre archivo
 char input_file_keyboard_name_buffer[PATH_MAX];
 //Puntero que apunta al nombre
@@ -179,12 +179,12 @@ char *input_file_keyboard_name=NULL;
 z80_bit input_file_keyboard_inserted;
 //Si esta en play (y no pausado)
 z80_bit input_file_keyboard_playing;
-//Si se usa clipboard en vez de archivo
-int input_file_keyboard_is_clipboard=0;
 
-int input_file_keyboard_clipboard_length=0;
-char *input_file_keyboard_clipboard_memory;
-int input_file_keyboard_clipboard_indice=0;
+
+
+int send_text_as_keystrokes_length=0;
+char *send_text_as_keystrokes_memory;
+int send_text_as_keystrokes_indice=0;
 
 
 //Pausa en valores de 1/50 segundos
@@ -2997,6 +2997,7 @@ void insert_input_file_keyboard(void)
 {
     input_file_keyboard_inserted.v=1;
         input_file_keyboard_playing.v=0;
+    printf("Insertado\n");
 }
 
 void eject_input_file_keyboard(void)
@@ -3013,30 +3014,43 @@ void eject_input_file_keyboard(void)
 
 int input_file_keyboard_init(void)
 {
-    input_file_keyboard_is_clipboard=0;
 
-    ptr_input_file_keyboard=fopen(input_file_keyboard_name,"rb");
+    int longitud=get_file_size(input_file_keyboard_name);
 
-    if (!ptr_input_file_keyboard) {
+    char *texto=util_malloc(longitud,"Can not allocate memory for file read");
+
+    FILE *ptr_file=fopen(input_file_keyboard_name,"rb");
+
+
+    if (!ptr_file) {
         debug_printf(VERBOSE_ERR,"Unable to open keyboard input file %s",input_file_keyboard_name);
         eject_input_file_keyboard();
         return 1;
     }
 
-    insert_input_file_keyboard();
+    int leidos=fread(texto,1,longitud,ptr_file);
+
+    if (leidos!=longitud) {
+        debug_printf(VERBOSE_ERR,"Error loading text file");
+        free(texto);
+        return 1;
+    }
+
+
+    send_text_as_keystrokes_init(texto,longitud);
 
     return 0;
 
 }
 
-void input_file_keyboard_clipboard_init(char *texto,int longitud)
+void send_text_as_keystrokes_init(char *texto,int longitud)
 {
-    input_file_keyboard_clipboard_length=longitud;
-    input_file_keyboard_clipboard_memory=texto;
+    send_text_as_keystrokes_length=longitud;
+    send_text_as_keystrokes_memory=texto;
     printf("En init: %s\n",texto);
-    printf("En init: %s\n",input_file_keyboard_clipboard_memory);
-    input_file_keyboard_clipboard_indice=0;
-    input_file_keyboard_is_clipboard=1;
+    printf("En init: %s\n",send_text_as_keystrokes_memory);
+    send_text_as_keystrokes_indice=0;
+
 
     insert_input_file_keyboard();
 }
@@ -3045,9 +3059,7 @@ void input_file_keyboard_close(void)
 {
     eject_input_file_keyboard();
 
-    if (!input_file_keyboard_is_clipboard) {
-        fclose(ptr_input_file_keyboard);
-    }
+
 }
 
 
@@ -3136,17 +3148,15 @@ void input_file_keyboard_get_key(void)
 
 
                 int leidos;
-                if (input_file_keyboard_is_clipboard) {
-                    if (input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice]==0) leidos=0;
-                    else {
-                        leidos=1;
-                        input_file_keyboard_last_key=input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice++];
-                        printf("indice %d tecla: %c\n",input_file_keyboard_clipboard_indice,input_file_keyboard_last_key);
-                    }
-                }
+
+                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
                 else {
-                    leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+                    leidos=1;
+                    input_file_keyboard_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,input_file_keyboard_last_key);
                 }
+
+
 
                 if (leidos==0) {
                     debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");
@@ -13934,18 +13944,16 @@ void peek_byte_spoolturbo_check_key(z80_int dir)
 
 
                                 int leidos;
-                                if (input_file_keyboard_is_clipboard) {
-                                    if (input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice]==0) leidos=0;
-                                    else {
-                                        leidos=1;
-                                        input_file_keyboard_last_key=input_file_keyboard_clipboard_memory[input_file_keyboard_clipboard_indice++];
-                                        printf("indice %d tecla: %c\n",input_file_keyboard_clipboard_indice,input_file_keyboard_last_key);
-                                    }
-                                }
+
+                                if (send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]==0) leidos=0;
                                 else {
-                                    leidos=fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
+                                    leidos=1;
+                                    input_file_keyboard_last_key=send_text_as_keystrokes_memory[send_text_as_keystrokes_indice++];
+                                    printf("indice %d tecla: %c\n",send_text_as_keystrokes_indice,input_file_keyboard_last_key);
                                 }
 
+
+//fread(&input_file_keyboard_last_key,1,1,ptr_input_file_keyboard);
 
                                 if (leidos==0) {
                                         debug_printf (VERBOSE_INFO,"Read 0 bytes of Input File Keyboard. End of file");

@@ -51,13 +51,13 @@ videoname with the video driver name in lowercase letters, like "xwindows"
 //Funcion de poner pixel en pantalla de driver, teniendo como entrada el color en RGB
 void scrvideoname_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
-	//Putpixel Call (x,y,color_rgb);
+    //Putpixel Call (x,y,color_rgb);
 }
 
 //Funcion de poner pixel en pantalla de driver, teniendo como entrada el color indexado
 void scrvideoname_putpixel_final(int x,int y,unsigned int color)
 {
-	//Putpixel Call (x,y,spectrum_colortable[color]);
+    //Putpixel Call (x,y,spectrum_colortable[color]);
 }
 
 
@@ -71,7 +71,7 @@ void scrvideoname_putpixel(int x,int y,unsigned int color)
         }
 
         //Metemos pixel en layer adecuado
-	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
+    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;
 
         //Putpixel haciendo mix
         screen_putpixel_mix_layers(x,y);
@@ -87,10 +87,10 @@ void scrvideoname_putchar_zx8081(int x,int y, z80_byte caracter)
 void scrvideoname_debug_registers(void)
 {
 
-	char buffer[2048];
-	print_registers(buffer);
+    char buffer[2048];
+    print_registers(buffer);
 
-	printf ("%s\r",buffer);
+    printf ("%s\r",buffer);
 }
 
 void scrvideoname_messages_debug(char *s)
@@ -138,7 +138,7 @@ void scrvideoname_reset_fullscreen(void)
 void scrvideoname_refresca_pantalla_zx81(void)
 {
 
-        scr_refresca_pantalla_y_border_zx8081();
+    scr_refresca_pantalla_y_border_zx8081();
 
 }
 
@@ -202,7 +202,7 @@ void scrvideoname_refresca_pantalla(void)
         }
 
 
-	else if (MACHINE_IS_CPC) {
+    else if (MACHINE_IS_CPC) {
                 scr_refresca_pantalla_y_border_cpc();
         }
 
@@ -213,7 +213,7 @@ void scrvideoname_refresca_pantalla(void)
 
         //printf ("%d\n",spectrum_colortable[1]);
 
-	screen_render_menu_overlay_if_active();
+    screen_render_menu_overlay_if_active();
 
 
         //Escribir footer
@@ -230,28 +230,28 @@ void scrvideoname_end(void)
 
 z80_byte scrvideoname_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
 {
-	return 255;
+    return 255;
 }
 
 void scrvideoname_actualiza_tablas_teclado(void)
 {
 
-	//Si se pulsa tecla y en modo z88, notificar interrupcion
-	//if (pressrelease) notificar_tecla_interrupcion_si_z88();
+    //Si se pulsa tecla y en modo z88, notificar interrupcion
+    //if (pressrelease) notificar_tecla_interrupcion_si_z88();
 
 }
 
 
 void scrvideoname_z88_cpc_load_keymap(void)
 {
-	debug_printf (VERBOSE_INFO,"Loading keymap");
+    debug_printf (VERBOSE_INFO,"Loading keymap");
 }
 
 void scrvideoname_detectedchar_print(z80_byte caracter)
 {
-        printf ("%c",caracter);
-        //flush de salida standard
-        fflush(stdout);
+    printf ("%c",caracter);
+    //flush de salida standard
+    fflush(stdout);
 
 }
 
@@ -262,7 +262,7 @@ int scrvideoname_get_menu_width(void)
         int max=screen_get_emulated_display_width_no_zoom_border_en()/menu_char_width/menu_gui_zoom/screen_reduce_menu_ancho;
         if (max>OVERLAY_SCREEN_MAX_WIDTH) max=OVERLAY_SCREEN_MAX_WIDTH;
 
-                //printf ("max x: %d %d\n",max,screen_get_emulated_display_width_no_zoom_border_en());
+        //printf ("max x: %d %d\n",max,screen_get_emulated_display_width_no_zoom_border_en());
 
         return max;
 }
@@ -273,7 +273,7 @@ int scrvideoname_get_menu_height(void)
         int max=screen_get_emulated_display_height_no_zoom_border_en()/8/menu_gui_zoom/screen_reduce_menu_alto;
         if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
-                //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
+        //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
         return max;
 }
 
@@ -293,47 +293,48 @@ char *scrvideoname_get_text_clipboard(int *p_longitud)
 }
 
 
-int scrvideoname_init (void) {
+int scrvideoname_init (void)
+{
 
-	debug_printf (VERBOSE_INFO,"Init VIDEONAME_CAP Video Driver");
-
-
-        //Inicializaciones necesarias
-        scr_putpixel=scrvideoname_putpixel;
-        scr_putpixel_final=scrvideoname_putpixel_final;
-        scr_putpixel_final_rgb=scrvideoname_putpixel_final_rgb;
-
-        scr_get_menu_width=scrvideoname_get_menu_width;
-        scr_get_menu_height=scrvideoname_get_menu_height;
-	//scr_driver_can_ext_desktop=scrvideoname_driver_can_ext_desktop;
+    debug_printf (VERBOSE_INFO,"Init VIDEONAME_CAP Video Driver");
 
 
-        scr_putchar_zx8081=scrvideoname_putchar_zx8081;
-        scr_debug_registers=scrvideoname_debug_registers;
-        scr_messages_debug=scrvideoname_messages_debug;
-        scr_putchar_menu=scrvideoname_putchar_menu;
-	scr_putchar_footer=scrvideoname_putchar_footer;
-        scr_set_fullscreen=scrvideoname_set_fullscreen;
-        scr_reset_fullscreen=scrvideoname_reset_fullscreen;
-	scr_z88_cpc_load_keymap=scrvideoname_z88_cpc_load_keymap;
-	scr_detectedchar_print=scrvideoname_detectedchar_print;
+    //Inicializaciones necesarias
+    scr_putpixel=scrvideoname_putpixel;
+    scr_putpixel_final=scrvideoname_putpixel_final;
+    scr_putpixel_final_rgb=scrvideoname_putpixel_final_rgb;
+
+    scr_get_menu_width=scrvideoname_get_menu_width;
+    scr_get_menu_height=scrvideoname_get_menu_height;
+    //scr_driver_can_ext_desktop=scrvideoname_driver_can_ext_desktop;
+
+
+    scr_putchar_zx8081=scrvideoname_putchar_zx8081;
+    scr_debug_registers=scrvideoname_debug_registers;
+    scr_messages_debug=scrvideoname_messages_debug;
+    scr_putchar_menu=scrvideoname_putchar_menu;
+    scr_putchar_footer=scrvideoname_putchar_footer;
+    scr_set_fullscreen=scrvideoname_set_fullscreen;
+    scr_reset_fullscreen=scrvideoname_reset_fullscreen;
+    scr_z88_cpc_load_keymap=scrvideoname_z88_cpc_load_keymap;
+    scr_detectedchar_print=scrvideoname_detectedchar_print;
     scr_update_window_title=scrvideoname_update_window_title;
     scr_get_text_clipboard=scrvideoname_get_text_clipboard;
-        scr_tiene_colores=1;
-        screen_refresh_menu=1;
+    scr_tiene_colores=1;
+    screen_refresh_menu=1;
 
 
-        //Otra inicializacion necesaria
-        //Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
-        scr_set_driver_name("videoname");
+    //Otra inicializacion necesaria
+    //Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
+    scr_set_driver_name("videoname");
 
-	//importante: modificar funcion int si_complete_video_driver(void) de screen.c si este driver es completo, agregarlo ahi
-	//importante: definicion de f_functions en menu.c, si driver permite teclas F
+    //importante: modificar funcion int si_complete_video_driver(void) de screen.c si este driver es completo, agregarlo ahi
+    //importante: definicion de f_functions en menu.c, si driver permite teclas F
 
 
-	scr_z88_cpc_load_keymap();
+    scr_z88_cpc_load_keymap();
 
-        return 0;
+    return 0;
 
 }
 
