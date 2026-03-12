@@ -244,7 +244,7 @@ int machine_selection_opcion_seleccionada=0;
 int menu_machine_selection_by_name_opcion_seleccionada=0;
 int licenses_opcion_seleccionada=0;
 int about_opcion_seleccionada=0;
-int input_file_keyboard_opcion_seleccionada=0;
+int send_text_as_keystrokes_opcion_seleccionada=0;
 int audio_opcion_seleccionada=0;
 int debug_opcion_seleccionada=0;
 int snapshot_opcion_seleccionada=0;
@@ -32224,7 +32224,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_input_file_keyboard_eject(MENU_ITEM_PARAMETERS)
+void menu_send_text_as_keystrokes_eject(MENU_ITEM_PARAMETERS)
 {
 
 
@@ -32257,7 +32257,7 @@ void menu_send_text_as_keystrokes_delay(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_input_file_keyboard(MENU_ITEM_PARAMETERS)
+void menu_send_text_as_keystrokes(MENU_ITEM_PARAMETERS)
 {
 
     send_text_as_keystrokes_eject();
@@ -32310,12 +32310,12 @@ int menu_send_text_as_keystrokes_turbo_mode_cond(void)
 }
 
 
-void menu_input_file_keyboard_play(MENU_ITEM_PARAMETERS)
+void menu_send_text_as_keystrokes_play(MENU_ITEM_PARAMETERS)
 {
     send_text_as_keystrokes_playing.v ^=1;
 }
 
-void menu_input_file_keyboard_paste(MENU_ITEM_PARAMETERS)
+void menu_send_text_as_keystrokes_paste(MENU_ITEM_PARAMETERS)
 {
     send_text_as_keystrokes_get_from_clipboard();
 
@@ -32323,62 +32323,62 @@ void menu_input_file_keyboard_paste(MENU_ITEM_PARAMETERS)
 
 void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 {
-    menu_item *array_menu_input_file_keyboard;
+    menu_item *array_menu_send_text_as_keystrokes;
     menu_item item_seleccionado;
     int retorno_menu;
 
     do {
-        menu_add_item_menu_inicial(&array_menu_input_file_keyboard,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_inicial(&array_menu_send_text_as_keystrokes,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         if (send_text_as_keystrokes_is_inserted.v==0) {
 
             char string_input_file_keyboard_shown[16];
             menu_tape_settings_trunc_name(input_file_keyboard_name,string_input_file_keyboard_shown,16);
-            menu_add_item_menu_inicial_format(&array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard,NULL,"    Read from Text file [%s]",string_input_file_keyboard_shown);
+            menu_add_item_menu_inicial_format(&array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes,NULL,"    Read from Text file [%s]",string_input_file_keyboard_shown);
 
-            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_paste,NULL,"    Paste from clipboard");
+            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_paste,NULL,"    Paste from clipboard");
 
         }
 
         else {
 
-            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_eject,NULL,"    Disable",
+            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_eject,NULL,"    Disable",
                 (send_text_as_keystrokes_is_inserted.v ? 'X' : ' ' ));
         }
 
 
         if (send_text_as_keystrokes_is_inserted.v) {
 
-            menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_input_file_keyboard_play,NULL,"[%c] Playing",(send_text_as_keystrokes_playing.v ? 'X' : ' ' ));
+            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_play,NULL,"[%c] Playing",(send_text_as_keystrokes_playing.v ? 'X' : ' ' ));
 
             //en tbblue no va bien la opcion de turbo
             if (!MACHINE_IS_TBBLUE) {
-                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_turbo_mode,menu_send_text_as_keystrokes_turbo_mode_cond,"[%c] Turbo mode",(send_text_as_keystrokes_turbo_mode.v ? 'X' : ' ') );
-                menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Allow turbo mode on Spectrum models");
-                menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"Allow turbo mode on Spectrum models. It traps calls to ROM when keyboard is read.\n"
+                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_turbo_mode,menu_send_text_as_keystrokes_turbo_mode_cond,"[%c] Turbo mode",(send_text_as_keystrokes_turbo_mode.v ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_send_text_as_keystrokes,"Allow turbo mode on Spectrum models");
+                menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"Allow turbo mode on Spectrum models. It traps calls to ROM when keyboard is read.\n"
                                     "Works well with Spectrum Basic but also with Text Adventures made with Daad, Paws and GAC");
             }
 
 
             if (send_text_as_keystrokes_turbo_mode.v==0) {
 
-                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_delay,NULL,"[%d ms] Key length",util_send_text_as_keystrokes_ms() );
-                menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Length of every key pressed");
-                menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend 100 ms for entering lines on Spectrum BASIC. I also suggest to send some manual delays, using unhandled character, like \\, to assure entering lines is correct ");
+                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_delay,NULL,"[%d ms] Key length",util_send_text_as_keystrokes_ms() );
+                menu_add_item_menu_tooltip(array_menu_send_text_as_keystrokes,"Length of every key pressed");
+                menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"I recommend 100 ms for entering lines on Spectrum BASIC. I also suggest to send some manual delays, using unhandled character, like \\, to assure entering lines is correct ");
 
-                menu_add_item_menu_format(array_menu_input_file_keyboard,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_send_pause,NULL,"[%c] Delay after every key",(send_text_as_keystrokes_send_pause.v==1 ? 'X' : ' ') );
-                menu_add_item_menu_tooltip(array_menu_input_file_keyboard,"Send or not a delay of the same duration after every key");
-                menu_add_item_menu_ayuda(array_menu_input_file_keyboard,"I recommend enabling this for entering lines on Spectrum BASIC");
+                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_send_pause,NULL,"[%c] Delay after every key",(send_text_as_keystrokes_send_pause.v==1 ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_send_text_as_keystrokes,"Send or not a delay of the same duration after every key");
+                menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"I recommend enabling this for entering lines on Spectrum BASIC");
 
             }
         }
 
 
-        menu_add_item_menu(array_menu_input_file_keyboard,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_send_text_as_keystrokes,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_ESC_item(array_menu_input_file_keyboard);
+        menu_add_ESC_item(array_menu_send_text_as_keystrokes);
 
-        retorno_menu=menu_dibuja_menu(&input_file_keyboard_opcion_seleccionada,&item_seleccionado,array_menu_input_file_keyboard,
+        retorno_menu=menu_dibuja_menu(&send_text_as_keystrokes_opcion_seleccionada,&item_seleccionado,array_menu_send_text_as_keystrokes,
             "Send Text as Keystrokes" ,"Enviar texto como pulsaciones de teclado","Enviar text com pulsacions de teclat");
 
 
