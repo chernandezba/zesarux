@@ -32360,7 +32360,9 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
         if (send_text_as_keystrokes_is_inserted.v) {
 
-            menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_play,NULL,"[%c] Playing",(send_text_as_keystrokes_playing.v ? 'X' : ' ' ));
+            menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_play,NULL,
+                "Playing","Reproduciendose","Reproduint-se");
+            menu_add_item_menu_prefijo_format(array_menu_send_text_as_keystrokes,"[%c] ",(send_text_as_keystrokes_playing.v ? 'X' : ' ' ));
 
             //en tbblue no va bien la opcion de turbo
             if (!MACHINE_IS_TBBLUE) {
@@ -32375,11 +32377,15 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
             if (send_text_as_keystrokes_turbo_mode.v==0) {
 
-                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_delay,NULL,"[%d ms] Key length",util_send_text_as_keystrokes_ms() );
+                menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_delay,NULL,
+                    "Key length","Duración de tecla","Duració de tecla");
+                menu_add_item_menu_prefijo_format(array_menu_send_text_as_keystrokes,"[%d ms] ",util_send_text_as_keystrokes_ms() );
                 menu_add_item_menu_tooltip(array_menu_send_text_as_keystrokes,"Length of every key pressed");
                 menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"I recommend 100 ms for entering lines on Spectrum BASIC. I also suggest to send some manual delays, using unhandled character, like \\, to assure entering lines is correct ");
 
-                menu_add_item_menu_format(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_send_pause,NULL,"[%c] Delay after every key",(send_text_as_keystrokes_send_pause.v==1 ? 'X' : ' ') );
+                menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_send_pause,NULL,
+                    "Delay after every key","Pausa después de cada tecla","Pausa després de cada tecla");
+                menu_add_item_menu_prefijo_format(array_menu_send_text_as_keystrokes,"[%c] ",(send_text_as_keystrokes_send_pause.v==1 ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_send_text_as_keystrokes,"Send or not a delay of the same duration after every key");
                 menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"I recommend enabling this for entering lines on Spectrum BASIC");
 
@@ -35489,7 +35495,9 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         if (!CPU_IS_MOTOROLA) {
 
 
-            menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,"Send Text as Keystrokes");
+            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,
+                "Send Text as Keystrokes" ,"Enviar texto como pulsaciones de teclado","Enviar text com pulsacions de teclat");
+
             //menu_add_item_menu_shortcut(array_menu_debug,'g');
             menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file as keyboard presses");
             menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file is sent as keyboard presses. Only Ascii characters, not UFT, Unicode or others. "
