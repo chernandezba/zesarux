@@ -3257,6 +3257,8 @@ void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 
     if (send_text_as_keystrokes_core_nested_turbo_enabled.v) return;
 
+    send_text_as_keystrokes_core_nested_turbo_enabled.v=1;
+
     debug_printf (VERBOSE_DEBUG,"Setting keystrokes_spoolturbo peek Spectrum functions");
     printf ("Setting keystrokes_spoolturbo peek Spectrum functions\n");
 
@@ -3278,8 +3280,10 @@ void set_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 //Restaurar rutinas de dandanator
 void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void)
 {
-
+printf("Reset\n");
     if (send_text_as_keystrokes_core_nested_turbo_enabled.v==0) return;
+
+    send_text_as_keystrokes_core_nested_turbo_enabled.v=0;
 
     if (MACHINE_IS_SPECTRUM) {
         //Restaurar valores de repeticion de teclas
