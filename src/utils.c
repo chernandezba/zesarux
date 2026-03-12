@@ -3045,8 +3045,8 @@ void send_text_as_keystrokes_init(char *texto,int longitud)
 {
     send_text_as_keystrokes_length=longitud;
     send_text_as_keystrokes_memory=texto;
-    printf("En init: %s\n",texto);
-    printf("En init: %s\n",send_text_as_keystrokes_memory);
+    //printf("En init: %s\n",texto);
+    //printf("En init: %s\n",send_text_as_keystrokes_memory);
     send_text_as_keystrokes_indice=0;
 
 

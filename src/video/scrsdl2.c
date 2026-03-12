@@ -288,6 +288,36 @@ void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
     scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
 }
 
+
+char *scrsdl_get_text_clipboard(int *p_longitud)
+{
+
+    char *text = SDL_GetClipboardText();
+
+
+    if (text) {
+
+        //printf("Texto: [%s]\n",cstr);
+
+        int longitud_texto=strlen(text)+1;
+
+        char *memoria_texto=util_malloc(longitud_texto,"Can not allocate memory for getting text from clipboard");
+        strcpy(memoria_texto,text);
+        SDL_free(text);
+
+        *p_longitud=longitud_texto;
+        return memoria_texto;
+    }
+
+    else {
+        *p_longitud=0;
+        return NULL;
+    }
+
+}
+
+
+
 void scrsdl_set_fullscreen(void)
 {
 
@@ -1992,7 +2022,7 @@ int scrsdl_init (void) {
     scr_z88_cpc_load_keymap=scrsdl_z88_cpc_load_keymap;
     scr_detectedchar_print=scrsdl_detectedchar_print;
     scr_update_window_title=scrsdl_update_window_title;
-    scr_get_text_clipboard=NULL;
+    scr_get_text_clipboard=scrsdl_get_text_clipboard;
     scr_tiene_colores=1;
     screen_refresh_menu=1;
 

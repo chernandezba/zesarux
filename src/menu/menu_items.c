@@ -32320,6 +32320,11 @@ void menu_send_text_as_keystrokes_play(MENU_ITEM_PARAMETERS)
 
 void menu_send_text_as_keystrokes_paste(MENU_ITEM_PARAMETERS)
 {
+
+    //No queremos que si se habia usado un archivo de texto, si salimos con play de clipboard, al salir en la configuracion se guardaria
+    //este parametro de archivo que ya no estamos usando
+    input_file_keyboard_name=NULL;
+
     send_text_as_keystrokes_get_from_clipboard();
 
 }
