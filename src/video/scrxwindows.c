@@ -1654,44 +1654,44 @@ void scrxwindows_actualiza_tablas_teclado(void)
         if (event.xselection.property) {
                     Atom actual;
                     int format;
-                    unsigned long nitems, bytes_after;
-                    unsigned char *data = NULL;
+            unsigned long nitems, bytes_after;
+            unsigned char *data = NULL;
 
-                    XGetWindowProperty(dpy,
-                                    ventana,
-                                    event.xselection.property,
-                                    0,
-                                    65536,
-                                    False,
-                                    AnyPropertyType,
-                                    &actual,
-                                    &format,
-                                    &nitems,
-                                    &bytes_after,
-                                    &data);
+            XGetWindowProperty(dpy,
+                            ventana,
+                            event.xselection.property,
+                            0,
+                            65536,
+                            False,
+                            AnyPropertyType,
+                            &actual,
+                            &format,
+                            &nitems,
+                            &bytes_after,
+                            &data);
 
-                    if (data) {
-                        printf("Archivo recibido: [%s]\n", data);
+            if (data) {
+                printf("Archivo recibido: [%s]\n", data);
 
-                        int longitud=strlen((char *) data);
+                int longitud=strlen((char *) data);
 
-                        //quitar cr lf del final
-                        while (longitud > 0 && (data[longitud-1] == '\n' || data[longitud-1] == '\r')) {
-                            data[longitud-1] = '\0';
-                            longitud--;
-                        }
+                //quitar cr lf del final
+                while (longitud > 0 && (data[longitud-1] == '\n' || data[longitud-1] == '\r')) {
+                    data[longitud-1] = '\0';
+                    longitud--;
+                }
 
+                //quitar file:// del principio
+                const char *prefix = "file://";
+                int indice_inicio=0;
+                if (strncmp((char *)data, prefix, strlen(prefix)) == 0) {
+                    indice_inicio += strlen(prefix); // ahora uri apunta a la ruta POSIX
+                }
+                printf("Ruta: [%s]\n", &data[indice_inicio]);
+                util_drag_drop_file((char *) &data[indice_inicio]);
 
-                        const char *prefix = "file://";
-                        int indice_inicio=0;
-                        if (strncmp((char *)data, prefix, strlen(prefix)) == 0) {
-                            indice_inicio += strlen(prefix); // ahora uri apunta a la ruta POSIX
-                        }
-                        printf("Ruta: [%s]\n", &data[indice_inicio]);
-                        util_drag_drop_file((char *) &data[indice_inicio]);
-
-                        XFree(data);
-                    }
+                XFree(data);
+            }
         }
     }
 
