@@ -1647,9 +1647,9 @@ void scrsdl_actualiza_tablas_teclado(void)
 #ifdef MINGW
         if (event.type == SDL_SYSWMEVENT) {
 
-            if (event.syswm.msg->msg.win.msg == WM_DROPFILES) {
+            if (event.syswm.msg->msg == WM_DROPFILES) {
 
-                HDROP hDrop = (HDROP)event.syswm.msg->msg.win.wParam;
+                HDROP hDrop = (HDROP)event.syswm.msg->wParam;
 
                 UINT count = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
 

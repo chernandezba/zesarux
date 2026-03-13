@@ -132,7 +132,7 @@ ok sdl2
 *sdl1 en windows, usar funciones nativas de windows?
 *ver para xwindow?
 
-*entrada en changelog
+*entrada en changelog (sdl2, windows, mac)
 *icono/tecla f para hacer paste de manera facil: insercion, activar
 *parametro de turbo que se guarde en config
 
@@ -209,3 +209,5 @@ gcc main.c -o app.exe -lSDL -lshell32
 
 
 *revisar que compile sdl1 en windows bien
+
+*drag-drop: changelog agregar de windows
