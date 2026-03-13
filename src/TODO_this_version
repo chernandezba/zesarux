@@ -152,3 +152,60 @@ ok **icono de la ventana
 
 
 -con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado
+
+-drag drop en windows para sdl1:
+
+#include <SDL/SDL.h>
+#include <SDL/SDL_syswm.h>
+
+despues de crear ventana sdl:
+
+SDL_SysWMinfo info;
+SDL_VERSION(&info.version);
+
+if (SDL_GetWMInfo(&info)) {
+    HWND hwnd = info.window;
+}
+
+//activar drag drop
+#include <shellapi.h>
+DragAcceptFiles(hwnd, TRUE);
+
+
+//interceptar mensajes win32:
+SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
+
+en el loop de eventos sdl:
+
+
+SDL_Event event;
+
+while (SDL_PollEvent(&event)) {
+
+    if (event.type == SDL_SYSWMEVENT) {
+
+        if (event.syswm.msg->msg.win.msg == WM_DROPFILES) {
+
+            HDROP hDrop = (HDROP)event.syswm.msg->msg.win.wParam;
+
+            UINT count = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+
+            //bucle para todos los archivos arrastrados
+            for (UINT i = 0; i < count; i++) {
+                char file[MAX_PATH];
+                DragQueryFile(hDrop, i, file, MAX_PATH);
+                printf("Archivo: %s\n", file);
+            }
+
+            DragFinish(hDrop);
+        }
+    }
+}
+
+
+Compilar con:
+
+gcc main.c -o app.exe -lSDL -lshell32
+
+
+*revisar que compile sdl1 en windows bien

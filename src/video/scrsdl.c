@@ -19,6 +19,7 @@
 
 */
 
+//Para clipboard en windows
 #ifdef MINGW
     #include <windows.h>
     #include <mmsystem.h>
@@ -33,7 +34,11 @@
 	#include <SDL/SDL.h>
 #endif
 
-
+//Para drag-drop en windows
+#ifdef MINGW
+    #include <SDL/SDL_syswm.h>
+    #include <shellapi.h>
+#endif
 
 #include "scrsdl.h"
 #include "common_sdl.h"
@@ -89,6 +94,14 @@ void scrsdl_update_window_title(void)
 {
     SDL_WM_SetCaption(get_window_title(), "ZEsarUX");
 }
+
+//Para drag-drop en windows
+#ifdef MINGW
+HWND hwnd;
+#endif
+
+
+
 
 int scrsdl_crea_ventana(void)
 {
@@ -198,6 +211,27 @@ int scrsdl_crea_ventana(void)
     menu_init_footer();
 
     scr_set_pending_redraw_desktop_windows();
+
+
+    //Para Drag-drop en windows
+#ifdef MINGW
+
+SDL_SysWMinfo info;
+SDL_VERSION(&info.version);
+
+if (SDL_GetWMInfo(&info)) {
+    hwnd = info.window;
+
+    //activar drag drop
+    DragAcceptFiles(hwnd, TRUE);
+
+    //interceptar mensajes win32:
+    SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
+}
+
+
+#endif
+
 
     return 0;
 
@@ -1608,6 +1642,28 @@ void scrsdl_actualiza_tablas_teclado(void)
 
             }
 		}
+
+        //Drag-drop en windows
+#ifdef MINGW
+        if (event.type == SDL_SYSWMEVENT) {
+
+            if (event.syswm.msg->msg.win.msg == WM_DROPFILES) {
+
+                HDROP hDrop = (HDROP)event.syswm.msg->msg.win.wParam;
+
+                UINT count = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+
+                //bucle para todos los archivos arrastrados
+                for (UINT i = 0; i < count; i++) {
+                    char file[MAX_PATH];
+                    DragQueryFile(hDrop, i, file, MAX_PATH);
+                    printf("Archivo: %s\n", file);
+                }
+
+                DragFinish(hDrop);
+            }
+        }
+#endif
 
 
 		if (event.type==SDL_ACTIVEEVENT) {
