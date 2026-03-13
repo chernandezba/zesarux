@@ -32524,9 +32524,9 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
                 "Stop sending text","Detener envio de texto","Aturar enviament de text");
             menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
 
-
-            menu_add_item_menu_separator(array_menu_send_text_as_keystrokes);
         }
+
+        menu_add_item_menu_separator(array_menu_send_text_as_keystrokes);
 
         menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_keystrokes_status,NULL,
             "Status Window","Ventana de estado","Finestra d'estat");

@@ -127,7 +127,7 @@ en sdl1, raton lo ubica en la posicion inicial
 
 
 -copiar (desde fuera de ZEsarUX) -pegar como pulsaciones de teclas
-*gestionar free() al finalizar
+ok *gestionar free() al finalizar
 ok sdl2
 ok *sdl1 en windows,
 ok Mac
@@ -138,8 +138,7 @@ ok Mac
 *parametro de turbo que se guarde en config
 
 *turbo mode se esta quitando al inicio en cpu.c
-ok*ventana aparte que vaya mostrando el texto que se está pegando
-ok **icono de la ventana
+
 
 
 
@@ -154,61 +153,6 @@ ok **icono de la ventana
 
 -con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado
 
--drag drop en windows para sdl1:
-
-#include <SDL/SDL.h>
-#include <SDL/SDL_syswm.h>
-
-despues de crear ventana sdl:
-
-SDL_SysWMinfo info;
-SDL_VERSION(&info.version);
-
-if (SDL_GetWMInfo(&info)) {
-    HWND hwnd = info.window;
-}
-
-//activar drag drop
-#include <shellapi.h>
-DragAcceptFiles(hwnd, TRUE);
-
-
-//interceptar mensajes win32:
-SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
-
-en el loop de eventos sdl:
-
-
-SDL_Event event;
-
-while (SDL_PollEvent(&event)) {
-
-    if (event.type == SDL_SYSWMEVENT) {
-
-        if (event.syswm.msg->msg == WM_DROPFILES) {
-
-            HDROP hDrop = (HDROP)event.syswm.msg->wParam;
-
-            UINT count = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-
-            //bucle para todos los archivos arrastrados
-            for (UINT i = 0; i < count; i++) {
-                char file[MAX_PATH];
-                DragQueryFile(hDrop, i, file, MAX_PATH);
-                printf("Archivo: %s\n", file);
-            }
-
-            DragFinish(hDrop);
-        }
-    }
-}
-
-
-Compilar con:
-
-gcc main.c -o app.exe -lSDL -lshell32
-
 
 *revisar que compile sdl1 en linux bien
 
-ok windows *drag-drop: changelog agregar de windows

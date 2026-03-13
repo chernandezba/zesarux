@@ -3043,6 +3043,11 @@ void send_text_as_keystrokes_eject(void)
 
 void send_text_as_keystrokes_init(char *texto,int longitud)
 {
+    if (send_text_as_keystrokes_memory!=NULL) {
+        printf("Freeing previous send text as keystrokes memory\n");
+        free(send_text_as_keystrokes_memory);
+    }
+
     send_text_as_keystrokes_length=longitud;
     send_text_as_keystrokes_memory=texto;
     //printf("En init: %s\n",texto);
