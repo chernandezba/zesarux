@@ -1657,7 +1657,7 @@ void scrsdl_actualiza_tablas_teclado(void)
                 for (UINT i = 0; i < count; i++) {
                     char file[MAX_PATH];
                     DragQueryFile(hDrop, i, file, MAX_PATH);
-                    printf("Archivo: %s\n", file);
+                    //printf("Archivo: %s\n", file);
                     util_drag_drop_file(file);
                 }
 

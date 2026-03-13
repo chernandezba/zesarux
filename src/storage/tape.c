@@ -462,7 +462,7 @@ void tape_init(void)
 
         //Adicional. En spectrum si antes de insertar la cinta estaba en la rutina de carga de la rom esperando cinta,
         //y si no hay cinta real insertada y si no hay autoload, salir de esa subrutina de la rom y hacer que entre por la normal
-        printf("reg_pc %d noautoload %d realtape inserted %d\n",reg_pc,noautoload.v,realtape_inserted.v);
+        //printf("reg_pc %d noautoload %d realtape inserted %d\n",reg_pc,noautoload.v,realtape_inserted.v);
         if (MACHINE_IS_SPECTRUM && noautoload.v && realtape_inserted.v==0) {
             if (reg_pc>=1517 && reg_pc<=1530) {
 
