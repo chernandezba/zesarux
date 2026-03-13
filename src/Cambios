@@ -4,7 +4,8 @@ ZEsarUX 13 Beta 2 - The Way of the Exploding Fist edition. 05 Marzo 2026
 
 Agregada versión para macOS Silicon
 Agregada opción para ordenar automaticámente los iconos en ZX Desktop
-Agregado soporte para drag&drop en Windows y Linux (X11)
+Agregado soporte para drag&drop en Windows y Linux (Xwindow) - ya se soportaba en Mac y SDL2
+Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas (Mac, Windows, SDL2, Xwindow)
 Permitir drag&drop de archivos comprimidos
 Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)
 Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada

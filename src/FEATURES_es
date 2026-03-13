@@ -196,7 +196,9 @@
 
 * Puede buscar online juegos de Spectrum
 
-* Soporta Enviar Texto como pulsaciones de teclado, leyendo desde un archivo de texto o el portapapeles del sistema
+* Soporta Enviar Texto como pulsaciones de teclado, leyendo desde un archivo de texto o el portapapeles del sistema en Mac, Windows, GNU/Linux (SDL2, Xwindow)
+
+* Soporta drag & drop en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 
 * Soporta leer Pokes de archivos .POK
 

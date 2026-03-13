@@ -302,7 +302,9 @@ __FEATURES__
 
 * Can browse online Spectrum games
 
-* Supports Send Text as keystrokes, reading from a text file or the system clipboard
+* Supports Send Text as keystrokes, reading from a text file or the system clipboard on systems: Mac, Windows, GNU/Linux (SDL2, Xwindow)
+
+* Supports drag & drop on systems: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 
 * Supports reading Pokes from .POK files
 
