@@ -95,7 +95,9 @@ eso se envía en las estadísticas
 
 -tooltips con mouse en iconos y botones
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
-*quitar posibles print de debug
+*quitar prints de debug
+*quiza menos tiempo para que aparezcan?
+*que desaparezcan si el usuario abre algun menu por ejemplo
 
 
 -Inicio macos. Sustituir todo este código que hace que la app se vea, por otra cosa moderna:
@@ -111,15 +113,12 @@ ok ->probar con --vo xwindows por ejemplo
 
 
 -probar fullscreen en todos drivers
-
 *permitir raton en full screen. probar fullscreen con zx desktop
 ok cocoa,
 xwindows ok
 sdl1 ok
 sdl2 ok. aunque al volver de fullscreen no lee bien raton
-
 en sdl1, raton lo ubica en la posicion inicial
-
 *a veces al pasar a fullscreen en mac se genera segfault. quiza habria que bloquear temporalmente la funcion de render
 *sdl1 ok
 *sdl2 poner
@@ -132,17 +131,21 @@ en sdl1, raton lo ubica en la posicion inicial
 *quiza que al insertar txt/leer de clipboard ya active playing. si el usuario no quiere, que luego lo desactive
 *turbo mode se esta quitando al inicio en cpu.c
 *quitar print debug
+*quiza en bucle asincrono para X11, que espere no usando actualiza_teclas sino core_loop, para que se actualice sonido etc y core de cpu
+
+-drag&drop
+*quitar print debug
+
 
 
 -poder insertar cinta cuando la rutina de la rom ya esta cargando
 *deberia ser una opcion (activada por defecto) ? que no se vea la opcion si esta el autoload
 *quitar print debug
 
--drag&drop
-*quitar print debug
+
 
 -con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado
 
 
-*revisar que compile sdl1 en linux bien
+-revisar que compile sdl1 en linux bien
 
