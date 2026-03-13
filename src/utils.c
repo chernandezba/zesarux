@@ -3107,7 +3107,31 @@ void send_text_as_keystrokes_get_from_clipboard(void)
         send_text_as_keystrokes_init(texto,longitud);
     }
     else {
-        debug_printf(VERBOSE_ERR,"Did not receive anything from the clipboard");
+        printf("longitud: %d\n",longitud);
+        //Si longitud -1, indica que se recibe de manera asincrona (X11 por ejemplo)
+        if (longitud==-1) {
+            printf("Recepcion portapapeles asincrona\n");
+
+            int contador=50;
+            while (contador && longitud==-1) {
+                scr_actualiza_tablas_teclado();
+                timer_sleep(20);
+                texto=scr_get_text_clipboard(&longitud);
+
+                contador--;
+            }
+
+            if (texto!=NULL) {
+                printf("Recibido portapapeles: %s\n",texto);
+                send_text_as_keystrokes_init(texto,longitud);
+            }
+            else {
+                debug_printf(VERBOSE_ERR,"Error receiving asynchronous clipboard");
+            }
+        }
+        else {
+            debug_printf(VERBOSE_ERR,"Did not receive anything from the clipboard");
+        }
     }
 }
 

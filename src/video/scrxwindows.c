@@ -492,18 +492,48 @@ void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pap
     scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
 }
 
+//Estado de recepcion del contenido del clipboard
+//0= inicial
+//1= pedido
+//2= recibido
+int pendiente_recepcion_clipboard=0;
+
+int longitud_portapapeles=0;
+char *puntero_portapapeles=NULL;
+
+
 char *scrxwindows_get_text_clipboard(int *p_longitud)
 {
-    Atom clipboard = XInternAtom(dpy, "CLIPBOARD", False);
-    Atom utf8 = XInternAtom(dpy, "UTF8_STRING", False);
 
-    // window -> tu ventana ya existente
-    XConvertSelection(dpy, clipboard, utf8, clipboard, ventana, CurrentTime);
-    XFlush(dpy);  // envía la solicitud
+    //En X11 no se obtiene el clipboard al momento. Se solicita y luego se recibira el evento desde el bucle de eventos
+
+    if (pendiente_recepcion_clipboard==0) {
+        printf("Pedido portapapeles\n");
+        pendiente_recepcion_clipboard=1;
+        Atom clipboard = XInternAtom(dpy, "CLIPBOARD", False);
+        Atom utf8 = XInternAtom(dpy, "UTF8_STRING", False);
+
+        // window -> tu ventana ya existente
+        XConvertSelection(dpy, clipboard, utf8, clipboard, ventana, CurrentTime);
+        XFlush(dpy);  // envía la solicitud
+
+        *p_longitud=-1;
+        return NULL;
+    }
+    if (pendiente_recepcion_clipboard==1) {
+        *p_longitud=-1;
+        return NULL;
+    }
+
+    if (pendiente_recepcion_clipboard==2) {
+        pendiente_recepcion_clipboard=0;
+        //Recogerlo desde lo que ha dejado nuestro loop de eventos
+        *p_longitud=longitud_portapapeles;
+        return puntero_portapapeles;
+    }
 
     *p_longitud=0;
     return NULL;
-
 
 }
 
@@ -1728,6 +1758,15 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
             if (data) {
                 printf("Portapapeles: %s\n", (char*)data);
+
+                longitud_portapapeles=strlen((char*)data)+1;
+
+                puntero_portapapeles=util_malloc(longitud_portapapeles,"Can not allocate memory for getting text from clipboard");
+                strcpy(puntero_portapapeles,(char*)data);
+
+                //Indicar que ya se ha recibido
+                pendiente_recepcion_clipboard=2;
+
                 XFree(data);
             } else {
                 printf("Portapapeles vacío o no textual\n");
