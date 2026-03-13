@@ -433,7 +433,7 @@ if [ "$SISTEMA" = "Msys" ]; then
 	#y agregar el icono
 
 	LDFLAGS="zesarux.res $LDFLAGS"
-	LIBS="-lwinmm $LIBS"
+	LIBS="-lwinmm -lshell32 $LIBS"
 fi
 
 
