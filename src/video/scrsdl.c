@@ -2152,7 +2152,7 @@ int scrsdl_init (void) {
     scr_update_window_title=scrsdl_update_window_title;
 
 #ifdef MINGW
-    scr_get_text_clipboard=scrsdl_windows_get_text_clipboard();
+    scr_get_text_clipboard=scrsdl_windows_get_text_clipboard;
 #else
     scr_get_text_clipboard=NULL;
 #endif
