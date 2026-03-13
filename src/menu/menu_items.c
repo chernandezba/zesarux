@@ -32331,16 +32331,6 @@ void menu_send_text_as_keystrokes_paste(MENU_ITEM_PARAMETERS)
 
 
 
-
-/*
-Inicio de Template de ventana de menu que se puede enviar a background
-Sustituir "send_text_keystrokes_status" por el nombre de la ventana
-Sustituir "sendtextkeystrokesstatus" por el nombre corto de la ventana (nombre identificativo de geometria, string sin _)
-Sustituir "Window title" por el titulo de la ventana
-Y definirla en zxvision_known_window_names_array
-*/
-
-
 zxvision_window *menu_send_text_keystrokes_status_window;
 
 #define KEYSTROKES_STATUS_WINDOW_TEXT_LENGTH 20
@@ -32487,14 +32477,6 @@ void menu_send_text_keystrokes_status(MENU_ITEM_PARAMETERS)
 
 
 
-/*
-Fin de Template de ventana de menu que se puede enviar a background
-*/
-
-
-
-
-
 void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_send_text_as_keystrokes;
@@ -32528,11 +32510,7 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_send_text_as_keystrokes);
 
-        menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_keystrokes_status,NULL,
-            "Status Window","Ventana de estado","Finestra d'estat");
-            menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
-        menu_add_item_menu_se_cerrara(array_menu_send_text_as_keystrokes);
-        menu_add_item_menu_genera_ventana(array_menu_send_text_as_keystrokes);
+
 
         if (send_text_as_keystrokes_is_inserted.v) {
 
@@ -32566,7 +32544,15 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_ayuda(array_menu_send_text_as_keystrokes,"I recommend enabling this for entering lines on Spectrum BASIC");
 
             }
+
+            menu_add_item_menu_separator(array_menu_send_text_as_keystrokes);
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_keystrokes_status,NULL,
+            "Status Window","Ventana de estado","Finestra d'estat");
+        menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
+        menu_add_item_menu_se_cerrara(array_menu_send_text_as_keystrokes);
+        menu_add_item_menu_genera_ventana(array_menu_send_text_as_keystrokes);
 
 
         menu_add_item_menu_separator(array_menu_send_text_as_keystrokes);
