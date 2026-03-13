@@ -492,6 +492,21 @@ void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pap
     scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
 }
 
+char *scrxwindows_get_text_clipboard(int *p_longitud)
+{
+    Atom clipboard = XInternAtom(dpy, "CLIPBOARD", False);
+    Atom utf8 = XInternAtom(dpy, "UTF8_STRING", False);
+
+    // window -> tu ventana ya existente
+    XConvertSelection(dpy, clipboard, utf8, clipboard, ventana, CurrentTime);
+    XFlush(dpy);  // envía la solicitud
+
+    *p_longitud=0;
+    return NULL;
+
+
+}
+
 
 void scrxwindows_refresca_pantalla_zx81(void)
 {
@@ -1651,48 +1666,75 @@ void scrxwindows_actualiza_tablas_teclado(void)
     while (XCheckTypedEvent(dpy, SelectionNotify, &event))
     {
         printf("Selectionnotify\n");
-        if (event.xselection.property) {
-                    Atom actual;
-                    int format;
+
+
+        if (event.xselection.selection == XInternAtom(dpy, "XdndSelection", False)) {
+            printf("Client message\n");
+            if (event.xselection.property) {
+                        Atom actual;
+                        int format;
+                unsigned long nitems, bytes_after;
+                unsigned char *data = NULL;
+
+                XGetWindowProperty(dpy,
+                                ventana,
+                                event.xselection.property,
+                                0,
+                                65536,
+                                False,
+                                AnyPropertyType,
+                                &actual,
+                                &format,
+                                &nitems,
+                                &bytes_after,
+                                &data);
+
+                if (data) {
+                    printf("Archivo recibido: [%s]\n", data);
+
+                    int longitud=strlen((char *) data);
+
+                    //quitar cr lf del final
+                    while (longitud > 0 && (data[longitud-1] == '\n' || data[longitud-1] == '\r')) {
+                        data[longitud-1] = '\0';
+                        longitud--;
+                    }
+
+                    //quitar file:// del principio
+                    const char *prefix = "file://";
+                    int indice_inicio=0;
+                    if (strncmp((char *)data, prefix, strlen(prefix)) == 0) {
+                        indice_inicio += strlen(prefix); // ahora uri apunta a la ruta POSIX
+                    }
+                    printf("Ruta: [%s]\n", &data[indice_inicio]);
+                    util_drag_drop_file((char *) &data[indice_inicio]);
+
+                    XFree(data);
+                }
+            }
+        }
+        //Recibimos el contenido del portapapeles pedido antes
+
+        if (event.xselection.selection == XInternAtom(dpy, "CLIPBOARD", False)) {
+            Atom actual_type;
+            int actual_format;
             unsigned long nitems, bytes_after;
             unsigned char *data = NULL;
 
-            XGetWindowProperty(dpy,
-                            ventana,
-                            event.xselection.property,
-                            0,
-                            65536,
-                            False,
-                            AnyPropertyType,
-                            &actual,
-                            &format,
-                            &nitems,
-                            &bytes_after,
-                            &data);
+            XGetWindowProperty(dpy, ventana, event.xselection.property,
+                            0, (~0L), False, AnyPropertyType,
+                            &actual_type, &actual_format,
+                            &nitems, &bytes_after, &data);
 
             if (data) {
-                printf("Archivo recibido: [%s]\n", data);
-
-                int longitud=strlen((char *) data);
-
-                //quitar cr lf del final
-                while (longitud > 0 && (data[longitud-1] == '\n' || data[longitud-1] == '\r')) {
-                    data[longitud-1] = '\0';
-                    longitud--;
-                }
-
-                //quitar file:// del principio
-                const char *prefix = "file://";
-                int indice_inicio=0;
-                if (strncmp((char *)data, prefix, strlen(prefix)) == 0) {
-                    indice_inicio += strlen(prefix); // ahora uri apunta a la ruta POSIX
-                }
-                printf("Ruta: [%s]\n", &data[indice_inicio]);
-                util_drag_drop_file((char *) &data[indice_inicio]);
-
+                printf("Portapapeles: %s\n", (char*)data);
                 XFree(data);
+            } else {
+                printf("Portapapeles vacío o no textual\n");
             }
         }
+
+
     }
 
 }
@@ -1968,7 +2010,7 @@ int scrxwindows_init(void) {
     scr_z88_cpc_load_keymap=scrxwindows_z88_cpc_load_keymap;
     scr_detectedchar_print=scrxwindows_detectedchar_print;
     scr_update_window_title=scrxwindows_update_window_title;
-    scr_get_text_clipboard=NULL;
+    scr_get_text_clipboard=scrxwindows_get_text_clipboard;
     scr_tiene_colores=1;
     screen_refresh_menu=1;
 

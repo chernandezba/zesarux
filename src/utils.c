@@ -3106,6 +3106,9 @@ void send_text_as_keystrokes_get_from_clipboard(void)
 
         send_text_as_keystrokes_init(texto,longitud);
     }
+    else {
+        debug_printf(VERBOSE_ERR,"Did not receive anything from the clipboard");
+    }
 }
 
 
