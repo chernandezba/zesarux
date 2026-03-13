@@ -4513,6 +4513,7 @@ char *charset_icons_text[]={
 "xxx",
 " x ",
 
+//36 $
 " x ",
 "xxx",
 "xx ",
