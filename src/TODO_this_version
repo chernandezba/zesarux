@@ -127,10 +127,6 @@ en sdl1, raton lo ubica en la posicion inicial
 
 
 -copiar (desde fuera de ZEsarUX) -pegar como pulsaciones de teclas
-ok *gestionar free() al finalizar
-ok sdl2
-ok *sdl1 en windows,
-ok Mac
 *ver para xwindow?
 
 *entrada en changelog (sdl2, windows, mac)

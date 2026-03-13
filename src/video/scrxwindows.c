@@ -52,6 +52,8 @@
 #include <X11/Xlib.h> // Every Xlib program must include this
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
+#include <X11/Xatom.h>
+
 #include <unistd.h>
 
 
@@ -1596,6 +1598,103 @@ void scrxwindows_actualiza_tablas_teclado(void)
         }
     }
 
+    //Eventos que permiten drag & drop los gestiono en otro bucle, por si acaso, que no quiero cambiar la mascara del primer while
+    while (XCheckTypedWindowEvent(dpy, ventana, ClientMessage, &event))
+    {
+        Atom msg = event.xclient.message_type;
+
+        if (msg == XInternAtom(dpy, "XdndEnter", False)) {
+            printf("Drag entered\n");
+        }
+
+        if (msg == XInternAtom(dpy, "XdndPosition", False)) {
+            printf("Drag moving\n");
+
+            Window source = event.xclient.data.l[0];
+
+            XClientMessageEvent reply;
+            memset(&reply,0,sizeof(reply));
+
+            reply.type = ClientMessage;
+            reply.display = dpy;
+            reply.window = source;
+            reply.message_type = XInternAtom(dpy,"XdndStatus",False);
+            reply.format = 32;
+
+            reply.data.l[0] = ventana; // tu ventana
+            reply.data.l[1] = 1;       // aceptar drop
+            reply.data.l[2] = 0;
+            reply.data.l[3] = 0;
+            reply.data.l[4] = XInternAtom(dpy,"XdndActionCopy",False);
+
+            XSendEvent(dpy, source, False, NoEventMask, (XEvent*)&reply);
+            XFlush(dpy);
+        }
+
+        if (msg == XInternAtom(dpy, "XdndDrop", False)) {
+            printf("Drop recibido\n");
+
+            Atom sel = XInternAtom(dpy, "XdndSelection", False);
+            Atom target = XInternAtom(dpy, "text/uri-list", False);
+
+            XConvertSelection(dpy,
+                            sel,
+                            target,
+                            sel,
+                            ventana,
+                            CurrentTime);
+        }
+    }
+
+    /* y también para recibir los datos */
+
+    while (XCheckTypedEvent(dpy, SelectionNotify, &event))
+    {
+        printf("Selectionnotify\n");
+        if (event.xselection.property) {
+                    Atom actual;
+                    int format;
+                    unsigned long nitems, bytes_after;
+                    unsigned char *data = NULL;
+
+                    XGetWindowProperty(dpy,
+                                    ventana,
+                                    event.xselection.property,
+                                    0,
+                                    65536,
+                                    False,
+                                    AnyPropertyType,
+                                    &actual,
+                                    &format,
+                                    &nitems,
+                                    &bytes_after,
+                                    &data);
+
+                    if (data) {
+                        printf("Archivo recibido: [%s]\n", data);
+
+                        int longitud=strlen((char *) data);
+
+                        //quitar cr lf del final
+                        while (longitud > 0 && (data[longitud-1] == '\n' || data[longitud-1] == '\r')) {
+                            data[longitud-1] = '\0';
+                            longitud--;
+                        }
+
+
+                        const char *prefix = "file://";
+                        int indice_inicio=0;
+                        if (strncmp((char *)data, prefix, strlen(prefix)) == 0) {
+                            indice_inicio += strlen(prefix); // ahora uri apunta a la ruta POSIX
+                        }
+                        printf("Ruta: [%s]\n", &data[indice_inicio]);
+                        util_drag_drop_file((char *) &data[indice_inicio]);
+
+                        XFree(data);
+                    }
+        }
+    }
+
 }
 
 
@@ -1746,6 +1845,23 @@ void scrxwindows_update_window_title(void)
     XSetWMName( dpy, ventana, &text );
 }
 
+//Declarar soporte Xdnd
+void scrxwindows_tell_accept_drag_drop(void)
+{
+    Atom XdndAware = XInternAtom(dpy, "XdndAware", False);
+    long version = 5;
+
+    XChangeProperty(dpy,
+        ventana,
+        XdndAware,
+        XA_ATOM,
+        32,
+        PropModeReplace,
+        (unsigned char*)&version,
+        1);
+
+}
+
 
 int scrxwindows_init(void) {
 
@@ -1830,6 +1946,8 @@ int scrxwindows_init(void) {
     XFlush(dpy);
 
     scrxwindows_update_window_title();
+
+    scrxwindows_tell_accept_drag_drop();
 
 
     //Inicializaciones necesarias
