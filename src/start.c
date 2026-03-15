@@ -1094,6 +1094,7 @@ printf (
         "--fileviewer-hex                   File viewer always shows file contents in hexadecimal+ascii\n"
         "--no-file-previews                 Do not show file previews on file selector menus\n"
         "--reduce-file-previews             Reduce file previews to half size\n"
+        "--file-previews-on-zxdesktop       Show previews also on ZX Desktop\n"
 
 
         "\n"
@@ -3868,6 +3869,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--reduce-file-previews")) {
                 menu_filesel_show_previews_reduce.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--file-previews-on-zxdesktop")) {
+                menu_filesel_show_previews_on_zxdesktop.v=1;
             }
 
 

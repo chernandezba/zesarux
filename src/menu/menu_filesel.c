@@ -120,6 +120,9 @@ z80_bit menu_filesel_show_previews={1};
 //Si reducir previews a la mitad
 z80_bit menu_filesel_show_previews_reduce={0};
 
+//Si mostrar previews en el fondo del ZX Desktop
+z80_bit menu_filesel_show_previews_on_zxdesktop={0};
+
 //Si no caben todos los archivos en pantalla y por tanto se muestra "*" a la derecha
 int filesel_no_cabe_todo;
 
@@ -5088,6 +5091,8 @@ void menu_filesel_preview_convert_scr_spec_to_buf(z80_byte *orig,int *dest)
 
 }
 
+char menu_filesel_last_preview_scr_filename[PATH_MAX]="";
+
 void menu_filesel_preview_render_scr(char *archivo_scr)
 {
             //printf("es pantalla\n");
@@ -5098,6 +5103,14 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
         menu_filesel_overlay_last_preview_width=0;
         menu_filesel_overlay_last_preview_height=0;
         return;
+    }
+
+
+    if (menu_filesel_show_previews_on_zxdesktop.v) {
+        //printf("load preview on background\n");
+        strcpy(menu_filesel_last_preview_scr_filename,archivo_scr);
+        zxdesktop_draw_scrfile_load();
+        menu_draw_ext_desktop();
     }
 
     int file_size=get_file_size(archivo_scr);
@@ -5948,6 +5961,11 @@ void menu_filesel_preexit(zxvision_window *ventana)
     zxvision_reset_window_overlay(ventana);
 
     zxvision_destroy_window(ventana);
+
+    if (menu_filesel_show_previews_on_zxdesktop.v) {
+        //Quitar el preview de scr del fondo y dejar lo que hubiera
+        if (zxdesktop_draw_scrfile_enabled) zxdesktop_draw_scrfile_load();
+    }
 
 }
 

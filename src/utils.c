@@ -4752,6 +4752,8 @@ int util_write_configfile(void)
 
   if (menu_filesel_show_previews_reduce.v)      ADD_STRING_CONFIG,"--reduce-file-previews");
 
+  if (menu_filesel_show_previews_on_zxdesktop.v)    ADD_STRING_CONFIG,"--file-previews-on-zxdesktop");
+
   if (menu_desactivado.v)                     ADD_STRING_CONFIG,"--disablemenu");
 
   if (menu_desactivado_andexit.v)              ADD_STRING_CONFIG,"--disablemenuandexit");

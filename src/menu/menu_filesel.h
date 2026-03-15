@@ -36,8 +36,11 @@ extern z80_bit menu_filesel_hide_size;
 extern z80_bit menu_filesel_utils_allow_folder_delete;
 extern z80_bit menu_filesel_show_previews;
 extern z80_bit menu_filesel_show_previews_reduce;
+extern z80_bit menu_filesel_show_previews_on_zxdesktop;
 extern z80_bit menu_filesel_show_utils;
 extern z80_bit menu_filesel_show_only_read_only_utils;
+
+extern char menu_filesel_last_preview_scr_filename[];
 
 extern int menu_filesel(char *titulo,char *filtros[],char *archivo);
 extern int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save);

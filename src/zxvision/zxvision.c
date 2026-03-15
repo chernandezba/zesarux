@@ -6985,15 +6985,34 @@ void zxdesktop_draw_scrfile_load(void)
 
     if (!if_zxdesktop_enabled_and_driver_allows() ) return;
 
-    if (!zxdesktop_draw_scrfile_enabled) return;
+    char *nombre_scr;
 
-    debug_printf(VERBOSE_DEBUG,"Loading ZX Desktop background SCR file %s",zxdesktop_draw_scrfile_name);
+    nombre_scr=zxdesktop_draw_scrfile_name;
+
+
+    int load_scr_from_preview=0;
+
+    if (menu_filesel_show_previews_on_zxdesktop.v) {
+        if (zxvision_find_window_in_background("filesel")) {
+            if (menu_filesel_last_preview_scr_filename[0]) {
+                nombre_scr=menu_filesel_last_preview_scr_filename;
+                load_scr_from_preview=1;
+            }
+        }
+    }
+
+    if (!zxdesktop_draw_scrfile_enabled && !load_scr_from_preview) return;
+
+
+    //printf("Loading ZX Desktop background SCR file %s\n",nombre_scr);
+
+    debug_printf(VERBOSE_DEBUG,"Loading ZX Desktop background SCR file %s",nombre_scr);
 
     //Si se extrae de un tap, snapshot o similar, indicar aqui siempre que scr archivo es realmente
     char final_scrfile_name[PATH_MAX]="";
 
-    if (!util_compare_file_extension(zxdesktop_draw_scrfile_name,"scr")) {
-        strcpy(final_scrfile_name,zxdesktop_draw_scrfile_name);
+    if (!util_compare_file_extension(nombre_scr,"scr")) {
+        strcpy(final_scrfile_name,nombre_scr);
     }
     else {
 
@@ -7005,12 +7024,12 @@ void zxdesktop_draw_scrfile_load(void)
 
 
         char buf_file_no_dir[PATH_MAX];
-        util_get_file_no_directory(zxdesktop_draw_scrfile_name,buf_file_no_dir);
+        util_get_file_no_directory(nombre_scr,buf_file_no_dir);
 
         char tempscr[PATH_MAX];
         sprintf(tempscr,"%s/%s.scr",tmpdir,buf_file_no_dir);
 
-        int retorno=util_convert_any_to_scr(zxdesktop_draw_scrfile_name,tempscr);
+        int retorno=util_convert_any_to_scr(nombre_scr,tempscr);
 
         if (!retorno) {
 
@@ -7051,7 +7070,7 @@ void zxdesktop_draw_scrfile_load(void)
     }
 
     if (!si_existe_archivo(final_scrfile_name)) {
-        debug_printf(VERBOSE_ERR,"Can not load ZX Desktop background SCR file %s",zxdesktop_draw_scrfile_name);
+        debug_printf(VERBOSE_ERR,"Can not load ZX Desktop background SCR file %s",nombre_scr);
         //Aunque el archivo no exista, igualmente leer a cache (aun con datos random de zxdesktop_draw_scrfile_pointer),
         //asi la cache estará inicializada con datos de colores dentro de rango
         //Si no, correriamos el riesgo de tener en cache valores de colores fuera de rango y generar un segfault
@@ -7103,9 +7122,11 @@ void zxdesktop_draw_scrfile_load(void)
 //si conviene dibujar el background de un scr file
 //retorna -1 si no
 //o el color si hay que mostrarlo
-int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto)
+int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto,int filesel_ejecutandose_preview_en_zxdesktop)
 {
-    if (!zxdesktop_draw_scrfile_enabled) return -1;
+    if (!zxdesktop_draw_scrfile_enabled && filesel_ejecutandose_preview_en_zxdesktop==0) return -1;
+
+    //printf("draw zx desktop scr background\n");
 
     int scale_x=1;
     int scale_y=1;
@@ -7148,7 +7169,10 @@ int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto)
     if (x<margen_min_x || x>margen_max_x || y<margen_min_y || y>margen_max_y) return -1;
 
     //Por si acaso
-    if (zxdesktop_draw_scrfile_pointer==NULL) return -1;
+    if (zxdesktop_draw_scrfile_pointer==NULL) {
+        //printf("zxdesktop_draw_scrfile_pointer is NULL\n");
+        return -1;
+    }
 
     //return util_get_pixel_color_scr(zxdesktop_draw_scrfile_pointer,(x-margen_min_x)/scale_x,(y-margen_min_y)/scale_y);
 
@@ -7255,6 +7279,17 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
     //En el caso de barras fijas, offset es 0
     if (menu_ext_desktop_fill==1) menu_ext_desktop_fill_rainbow_counter=0;
 
+    int filesel_ejecutandose_preview_en_zxdesktop=0;
+
+    //Ver si ventana filesel activa
+    if (menu_filesel_show_previews_on_zxdesktop.v) {
+        if (zxvision_find_window_in_background("filesel")) {
+            //printf("Filesel ejecutandose %d\n",contador_segundo);
+            filesel_ejecutandose_preview_en_zxdesktop=1;
+        }
+    }
+
+
     for (y=yinicio;y<yinicio+alto;y++) {
 
         //Este bloque solo para degraded, se calcula en cada posicion y
@@ -7354,7 +7389,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
             int color_scrfile;
 
             if (xrelative>=0) {
-                color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_zxdesktop,alto);
+                color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_zxdesktop,alto,filesel_ejecutandose_preview_en_zxdesktop);
 
 
                 //temporal game of life

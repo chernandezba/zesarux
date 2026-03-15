@@ -14509,6 +14509,11 @@ void menu_setting_filesel_previews_reduce(MENU_ITEM_PARAMETERS)
     menu_filesel_show_previews_reduce.v ^=1;
 }
 
+void menu_setting_filesel_previews_on_zxdesktop(MENU_ITEM_PARAMETERS)
+{
+    menu_filesel_show_previews_on_zxdesktop.v ^=1;
+}
+
 void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -14546,6 +14551,13 @@ void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_common,'u');
             menu_add_item_menu_tooltip(array_menu_common,"Reduce previews to half size instead of full size");
             menu_add_item_menu_ayuda(array_menu_common,"Reduce previews to half size instead of full size");
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews_on_zxdesktop,NULL,
+                "Show previews also on ~~ZX Desktop","Mostrar previews también en ~~ZX Desktop","Mostrar previews també al ~~ZX Desktop");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_show_previews_on_zxdesktop.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_common,'z');
+            menu_add_item_menu_tooltip(array_menu_common,"Show previews also on ZX Desktop");
+            menu_add_item_menu_ayuda(array_menu_common,"Show previews also on ZX Desktop");
         }
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,
