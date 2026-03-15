@@ -4469,6 +4469,9 @@ unsigned char char_set_zesarux_tiny[TOTAL_ASCII_CHARSET_ELEMENTS];
 
 //De este charset definido con strings se genera char_set_zesarux_tiny
 //Si hay que agregar nuevas letras, hay que hacerlo en este charset_icons_text
+//Son de 4x6 pero el ancho efectivo de los caracteres es de 3 pixeles, y el alto es de 5, para dejar espacio entre caracteres
+//Por tanto siempre hay que dejar una columna en blanco a la derecha y una fila en blanco abajo de cada caracter
+//Exceptuando el caracter 128 (la franja de color) que llena en 4 de ancho y 6 de alto
 char *charset_icons_text[]={
 
 //32

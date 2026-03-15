@@ -5106,12 +5106,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
     }
 
 
-    if (menu_filesel_show_previews_on_zxdesktop.v) {
-        //printf("load preview on background\n");
-        strcpy(menu_filesel_last_preview_scr_filename,archivo_scr);
-        zxdesktop_draw_scrfile_load();
-        menu_draw_ext_desktop();
-    }
+
 
     int file_size=get_file_size(archivo_scr);
 
@@ -5169,6 +5164,13 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
         free(buffer_intermedio);
 
         return;
+    }
+
+    if (menu_filesel_show_previews_on_zxdesktop.v) {
+        //printf("load preview on background\n");
+        strcpy(menu_filesel_last_preview_scr_filename,archivo_scr);
+        zxdesktop_draw_scrfile_load();
+        menu_draw_ext_desktop();
     }
 
     //Leemos el archivo en memoria

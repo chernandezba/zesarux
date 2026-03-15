@@ -157,4 +157,6 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -Poder lanzar teclas F desde menú
 
--File selector que se vean previews en el fondo  del ZX desktop
+ok -File selector que se vean previews en el fondo  del ZX desktop
+*si activo scr en el fondo, al abrir fileselector, en fondo se vera ese scr escalado, o sea, quiere activar el preview pero como no hay ninguno, muestra lo que tiene en memoria
+*no hace preview en fondo si es de ql por ejemplo-> dificil pues el desktop solo muestra archivos SCR, no de ql
