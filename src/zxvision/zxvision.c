@@ -7132,7 +7132,7 @@ int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto,int filesel_
     int scale_y=1;
 
 
-    if (zxdesktop_draw_scrfile_fill_scale) {
+    if (zxdesktop_draw_scrfile_fill_scale || filesel_ejecutandose_preview_en_zxdesktop) {
         scale_x=ancho/256;
         scale_y=alto/192;
     }
@@ -7159,7 +7159,7 @@ int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto,int filesel_
     int margen_min_y=0;
     int margen_max_y=total_size_y-1;
 
-    if (zxdesktop_draw_scrfile_centered) {
+    if (zxdesktop_draw_scrfile_centered || filesel_ejecutandose_preview_en_zxdesktop) {
         margen_min_x=(ancho-total_size_x)/2;
         margen_min_y=(alto-total_size_y)/2;
         margen_max_x=margen_min_x+total_size_x-1;
@@ -7400,7 +7400,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
                 }
             }
 
-            if (mostrar_scrfile && zxdesktop_draw_scrfile_mix_background) {
+            if (mostrar_scrfile && (zxdesktop_draw_scrfile_mix_background || filesel_ejecutandose_preview_en_zxdesktop)) {
                 //aplicar tramado con el fondo
                 int desactivado=(x+y)%2;
 
