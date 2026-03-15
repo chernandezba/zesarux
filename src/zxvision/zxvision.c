@@ -6116,7 +6116,7 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
             menu_draw_ext_desktop_putpixel_bitmap_icon_text,zoom,0,offset,0);
 
 
-        x +=(ancho_caracter+1)*zoom_x*menu_gui_zoom;     //El ancho de caracter +1 para que no queden pegados
+        x +=ancho_caracter*zoom_x*menu_gui_zoom;     //El ancho de caracter +1 para que no queden pegados
 
     }
 
@@ -6556,7 +6556,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
         //int zoom_iconos=menu_get_ext_desktop_icons_zoom();
 
-        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,(CHARSET_ICONS_ANCHO+1)*longitud_texto*zoom_x*menu_gui_zoom,
+        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,CHARSET_ICONS_ANCHO*longitud_texto*zoom_x*menu_gui_zoom,
             CHARSET_ICONS_ALTO*zoom_y*menu_gui_zoom,ESTILO_GUI_PAPEL_NORMAL);
     }
 

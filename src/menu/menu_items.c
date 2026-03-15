@@ -43245,7 +43245,7 @@ void menu_process_switcher_draw_icon_text(int x,int y,char *texto,int max_texto)
             0,menu_process_switcher_draw_icon_text_putpixel,zoom,0,offset,0);
 
 
-        x +=(ancho_caracter+1)*zoom;     //El ancho de caracter +1 para que no queden pegados
+        x +=ancho_caracter*zoom;     //El ancho de caracter +1 para que no queden pegados
 
     }
 
@@ -43576,7 +43576,7 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
 
 
     //Y texto
-    int max_texto=PROCESS_SWITCHER_ICON_SEPARATION_X/(CHARSET_ICONS_ANCHO+1);
+    int max_texto=PROCESS_SWITCHER_ICON_SEPARATION_X/CHARSET_ICONS_ANCHO;
 
     //quitar 1 caracter para que no quede pegado
     max_texto--;

@@ -78,8 +78,8 @@ extern void charset_generate_zesarux_tiny(void);
 
 extern char *charset_icons_text[];
 
-//El ancho efectivo del caracter. Se escribe con 1 espacio de mas
-#define CHARSET_ICONS_ANCHO 3
+//El ancho efectivo del caracter
+#define CHARSET_ICONS_ANCHO 4
 #define CHARSET_ICONS_ALTO 5
 
 
