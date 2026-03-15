@@ -80,7 +80,7 @@ extern char *charset_icons_text[];
 
 //El ancho efectivo del caracter
 #define CHARSET_ICONS_ANCHO 4
-#define CHARSET_ICONS_ALTO 5
+#define CHARSET_ICONS_ALTO 6
 
 
 #endif

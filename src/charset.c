@@ -120,7 +120,7 @@ void charset_generate_zesarux_tiny(void)
     for (i=32;i<=MAX_CHARSET_GRAPHIC;i++) {
         //printf("i: %d\n",i);
         int linea;
-        for (linea=0;linea<5;linea++) {
+        for (linea=0;linea<6;linea++) {
             //printf("linea: %d\n",linea);
             z80_byte byte_escribir=0;
             int bit;
@@ -132,26 +132,9 @@ void charset_generate_zesarux_tiny(void)
 
             byte_escribir=byte_escribir<<3;
 
-            //Si es la franja de color, reasignar a una franja de 4 pixeles efectivos de ancho y 6 de alto, para que no se vea corte
-            /*
-
-            "   x", //0x10
-            "  xx", //0x30
-            "  xx", //0x30
-            " xxx", //0x70
-            "xxxx", //0xF0
-            "xxxx", //0xF0
-            */
-            if (i==128) {
-                z80_byte franja[]={0x10,0x30,0x30,0x70,0xF0};
-                byte_escribir=franja[linea];
-            }
 
             char_set_zesarux_tiny[destino++]=byte_escribir;
         }
-
-        if (i==128) char_set_zesarux_tiny[destino++]=0xF0;
-        else char_set_zesarux_tiny[destino++]=0;
 
         char_set_zesarux_tiny[destino++]=0;
         char_set_zesarux_tiny[destino++]=0;
@@ -4494,15 +4477,18 @@ char *charset_icons_text[]={
 "    ",
 "    ",
 "    ",
+"    ",
 
 " x  ",
 " x  ",
 " x  ",
 "    ",
 " x  ",
+"    ",
 
 "x x ",
 "x x ",
+"    ",
 "    ",
 "    ",
 "    ",
@@ -4512,6 +4498,7 @@ char *charset_icons_text[]={
 " x  ",
 "xxx ",
 " x  ",
+"    ",
 
 //36 $
 " x  ",
@@ -4519,36 +4506,42 @@ char *charset_icons_text[]={
 "xx  ",
 "xxx ",
 " x  ",
+"    ",
 
 "x x ",
 "  x ",
 " x  ",
 "x   ",
 "x x ",
+"    ",
 
 " x  ",
 "xxx ",
 " xx ",
 "xx  ",
 "x x ",
+"    ",
 
 "  x ",
 "  x ",
 "    ",
 "    ",
 "    ",
+"    ",
 
 "  x ",
 " x  ",
 " x  ",
 " x  ",
 "  x ",
+"    ",
 
 " x  ",
 "  x ",
 "  x ",
 "  x ",
 " x  ",
+"    ",
 
 //42
 "x x ",
@@ -4556,36 +4549,42 @@ char *charset_icons_text[]={
 "xxx ",
 " x  ",
 "x x ",
+"    ",
 
 " x  ",
 " x  ",
 "xxx ",
 " x  ",
 " x  ",
+"    ",
 
 "    ",
 "    ",
 "  x ",
 "  x ",
 " x  ",
+"    ",
 
 "    ",
 "    ",
 "xxx ",
 "    ",
 "    ",
+"    ",
 
 "    ",
 "    ",
 "    ",
 "    ",
 " x  ",
+"    ",
 
 "  x ",
 "  x ",
 " x  ",
 "x   ",
 "x   ",
+"    ",
 
 //0
 " x  ",
@@ -4593,24 +4592,28 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 " x  ",
+"    ",
 
 "  x ",
 " xx ",
 "x x ",
 "  x ",
 "  x ",
+"    ",
 
 "xxx ",
 "  x ",
 "xxx ",
 "x   ",
 "xxx ",
+"    ",
 
 "xxx ",
 "  x ",
 "xxx ",
 "  x ",
 "xxx ",
+"    ",
 
 //52
 "x x ",
@@ -4618,59 +4621,69 @@ char *charset_icons_text[]={
 "xxx ",
 "  x ",
 "  x ",
+"    ",
 
 "xxx ",
 "x   ",
 "xx  ",
 "  x ",
 "xx  ",
+"    ",
 
 "xxx ",
 "x   ",
 "xxx ",
 "x x ",
 "xxx ",
+"    ",
 
 "xxx ",
 "  x ",
 "  x ",
 " x  ",
 " x  ",
+"    ",
 
 "xxx ",
 "x x ",
 "xxx ",
 "x x ",
 "xxx ",
+"    ",
 
 "xxx ",
 "x x ",
 "xxx ",
 "  x ",
 "xxx ",
+"    ",
 
 " xx ",
 " xx ",
 "    ",
 " xx ",
 " xx ",
+"    ",
 
 " xx ",
 " xx ",
 "    ",
 "  x ",
 " x  ",
+"    ",
 
 "  x ",
 " x  ",
 "x   ",
 " x  ",
 "  x ",
+"    ",
 
 "    ",
 "xxx ",
 "    ",
 "xxx ",
+"    ",
 "    ",
 
 //62
@@ -4679,18 +4692,21 @@ char *charset_icons_text[]={
 "  x ",
 " x  ",
 "x   ",
+"    ",
 
 "xx  ",
 "  x ",
 " x  ",
 "    ",
 " x  ",
+"    ",
 
 " x  ",
 "xxx ",
 "xxx ",
 "x   ",
 " xx ",
+"    ",
 
 //A
 "xxx ",
@@ -4698,42 +4714,49 @@ char *charset_icons_text[]={
 "xxx ",
 "x x ",
 "x x ",
+"    ",
 
 "xx  ",
 "x x ",
 "xx  ",
 "x x ",
 "xx  ",
+"    ",
 
 "xxx ",
 "x   ",
 "x   ",
 "x   ",
 "xxx ",
+"    ",
 
 "xx  ",
 "x x ",
 "x x ",
 "x x ",
 "xx  ",
+"    ",
 
 "xxx ",
 "x   ",
 "xx  ",
 "x   ",
 "xxx ",
+"    ",
 
 "xxx ",
 "x   ",
 "xx  ",
 "x   ",
 "x   ",
+"    ",
 
 "xxx ",
 "x   ",
 "x   ",
 "x x ",
 "xxx ",
+"    ",
 
 //72
 "x x ",
@@ -4741,30 +4764,35 @@ char *charset_icons_text[]={
 "xxx ",
 "x x ",
 "x x ",
+"    ",
 
 " x  ",
 " x  ",
 " x  ",
 " x  ",
 " x  ",
+"    ",
 
 "  x ",
 "  x ",
 "  x ",
 "x x ",
 "xxx ",
+"    ",
 
 "x x ",
 "x x ",
 "xx  ",
 "x x ",
 "x x ",
+"    ",
 
 "x   ",
 "x   ",
 "x   ",
 "x   ",
 "xxx ",
+"    ",
 
 //Letra M
 "x x ",
@@ -4772,30 +4800,35 @@ char *charset_icons_text[]={
 "xxx ",
 "x x ",
 "x x ",
+"    ",
 
 "x x ",
 "xxx ",
 "x x ",
 "x x ",
 "x x ",
+"    ",
 
 "xxx ",
 "x x ",
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 "xxx ",
 "x x ",
 "xxx ",
 "x   ",
 "x   ",
+"    ",
 
 "xxx ",
 "x x ",
 "x x ",
 "xxx ",
 "xxx ",
+"    ",
 
 //82. Letra R
 "xx  ",
@@ -4803,60 +4836,70 @@ char *charset_icons_text[]={
 "xx  ",
 "x x ",
 "x x ",
+"    ",
 
 " xx ",
 "x   ",
 " x  ",
 "  x ",
 "xx  ",
+"    ",
 
 "xxx ",
 " x  ",
 " x  ",
 " x  ",
 " x  ",
+"    ",
 
 "x x ",
 "x x ",
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 "x x ",
 "x x ",
 "x x ",
 " x  ",
 " x  ",
+"    ",
 
 "x x ",
 "x x ",
 "xxx ",
 "xxx ",
 "x x ",
+"    ",
 
 "x x ",
 "x x ",
 " x  ",
 "x x ",
 "x x ",
+"    ",
 
 "x x ",
 "x x ",
 " x  ",
 " x  ",
 " x  ",
+"    ",
 
 "xxx ",
 "  x ",
 " x  ",
 "x   ",
 "xxx ",
+"    ",
 
 " xx ",
 " x  ",
 " x  ",
 " x  ",
 " xx ",
+"    ",
 
 //92
 "x   ",
@@ -4864,15 +4907,18 @@ char *charset_icons_text[]={
 " x  ",
 "  x ",
 "  x ",
+"    ",
 
 " xx ",
 "  x ",
 "  x ",
 "  x ",
 " xx ",
+"    ",
 
 " x  ",
 "x x ",
+"    ",
 "    ",
 "    ",
 "    ",
@@ -4882,9 +4928,11 @@ char *charset_icons_text[]={
 "    ",
 "    ",
 "xxx ",
+"    ",
 
 " x  ",
 "  x ",
+"    ",
 "    ",
 "    ",
 "    ",
@@ -4896,30 +4944,35 @@ char *charset_icons_text[]={
 " xx ",
 "x x ",
 "xxx ",
+"    ",
 
 "x   ",
 "x   ",
 "xxx ",
 "x x ",
 "xxx ",
+"    ",
 
 "    ",
 "xxx ",
 "x   ",
 "x   ",
 "xxx ",
+"    ",
 
 "  x ",
 "  x ",
 "xxx ",
 "x x ",
 "xxx ",
+"    ",
 
 "    ",
 " xx ",
 "x x ",
 "xx  ",
 " xx ",
+"    ",
 
 //f 102
 " xx ",
@@ -4927,30 +4980,35 @@ char *charset_icons_text[]={
 "xxx ",
 " x  ",
 " x  ",
+"    ",
 
 " xx ",
 "x x ",
 "xxx ",
 "  x ",
 " x  ",
+"    ",
 
 "x   ",
 "x   ",
 "xxx ",
 "x x ",
 "x x ",
+"    ",
 
 " x  ",
 "    ",
 " x  ",
 " x  ",
 " x  ",
+"    ",
 
 "  x ",
 "    ",
 "  x ",
 "  x ",
 "xx  ",
+"    ",
 
 //k
 "x   ",
@@ -4958,30 +5016,35 @@ char *charset_icons_text[]={
 "xx  ",
 "xx  ",
 "x x ",
+"    ",
 
 "    ",
 "x   ",
 "x   ",
 "x   ",
 " xx ",
+"    ",
 
 "    ",
 " x  ",
 "xxx ",
 "xxx ",
 "x x ",
+"    ",
 
 "    ",
 " x  ",
 "x x ",
 "x x ",
 "x x ",
+"    ",
 
 "    ",
 "xxx ",
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 //p 112
 "    ",
@@ -4989,60 +5052,70 @@ char *charset_icons_text[]={
 "x x ",
 "xx  ",
 "x   ",
+"    ",
 
 "    ",
 " x  ",
 "x x ",
 " xx ",
 "  x ",
+"    ",
 
 "    ",
 " xx ",
 "x   ",
 "x   ",
 "x   ",
+"    ",
 
 "    ",
 " xx ",
 "xx  ",
 " xx ",
 "xx  ",
+"    ",
 
 " x  ",
 "xxx ",
 " x  ",
 " x  ",
 " xx ",
+"    ",
 
 "    ",
 "x x ",
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 "    ",
 "x x ",
 "x x ",
 "x x ",
 " x  ",
+"    ",
 
 "    ",
 "x x ",
 "xxx ",
 "xxx ",
 "xxx ",
+"    ",
 
 "    ",
 "    ",
 "x x ",
 " x  ",
 "x x ",
+"    ",
 
 "    ",
 "x x ",
 "x x ",
 " xx ",
 "  x ",
+"    ",
 
 //122
 "    ",
@@ -5050,30 +5123,35 @@ char *charset_icons_text[]={
 " x  ",
 "x   ",
 "xxx ",
+"    ",
 
 " xx ",
 " x  ",
 "x   ",
 " x  ",
 " xx ",
+"    ",
 
 " x  ",
 " x  ",
 "    ",
 " x  ",
 " x  ",
+"    ",
 
 "xx  ",
 " x  ",
 "  x ",
 " x  ",
 "xx  ",
+"    ",
 
 //126
 "    ",
 "    ",
 "xx  ",
 " xx ",
+"    ",
 "    ",
 
 //127
@@ -5082,16 +5160,18 @@ char *charset_icons_text[]={
 "x x ",
 "xxx ",
 "  x ",
+"    ",
 
 
 
 
 //caracter adicional para menu - franja de color de spectrum. 128
-"  x ",
-"  x ",
-" xx ",
-" xx ",
-"xxx ",
+"   x",
+"  xx",
+"  xx",
+" xxx",
+"xxxx",
+"xxxx",
 
 
 //129 enye minuscula
@@ -5100,6 +5180,7 @@ char *charset_icons_text[]={
 " x  ",
 "x x ",
 "x x ",
+"    ",
 
 
 //CYRILLIC SMALL LETTER I и. 130. Igual que N
@@ -5108,6 +5189,7 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 "x x ",
+"    ",
 
 //Cyrillic Ш - 131. Igual que W, no veo manera fácil de mostrar ese caracter
 "    ",
@@ -5115,6 +5197,7 @@ char *charset_icons_text[]={
 "xxx ",
 "xxx ",
 "xxx ",
+"    ",
 
 //Cyrillic л - 132
 "    ",
@@ -5122,6 +5205,7 @@ char *charset_icons_text[]={
 " xx ",
 " xx ",
 "xxx ",
+"    ",
 
 //Cyrillic г - 133
 "    ",
@@ -5129,6 +5213,7 @@ char *charset_icons_text[]={
 "x   ",
 "x   ",
 "x   ",
+"    ",
 
 //Cyrillic ч - 134
 "x x ",
@@ -5136,6 +5221,7 @@ char *charset_icons_text[]={
 "xxx ",
 "  x ",
 "  x ",
+"    ",
 
 //Cyrillic д - 135
 "xxx ",
@@ -5143,6 +5229,7 @@ char *charset_icons_text[]={
 "x x ",
 "xxx ",
 "x x ",
+"    ",
 
 //Cyrillic я - 136
 " xx ",
@@ -5150,6 +5237,7 @@ char *charset_icons_text[]={
 " xx ",
 "x x ",
 "x x ",
+"    ",
 
 //Letra minuscula r con anzuelo ɾ - 137
 "    ",
@@ -5157,6 +5245,7 @@ char *charset_icons_text[]={
 "x   ",
 "x   ",
 "xx  ",
+"    ",
 
 //Greek Small Letter Theta θ - 138
 " x  ",
@@ -5164,6 +5253,7 @@ char *charset_icons_text[]={
 "xxx ",
 "x x ",
 " x  ",
+"    ",
 
 //Caracter boton cierre BeOS - 139
 "xxx ",
@@ -5171,6 +5261,7 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 //Caracter boton cierre  - 140
 "xxx ",
@@ -5178,6 +5269,7 @@ char *charset_icons_text[]={
 " x  ",
 "x x ",
 "xxx ",
+"    ",
 
 //Caracter logo apple - 141
 " x  ",
@@ -5185,6 +5277,7 @@ char *charset_icons_text[]={
 " xx ",
 "xxx ",
 "xxx ",
+"    ",
 
 //á a acentuada - 142
 "  x ",
@@ -5192,6 +5285,7 @@ char *charset_icons_text[]={
 " xx ",
 "x x ",
 "xxx ",
+"    ",
 
 
 //é e acentuada - 143
@@ -5200,6 +5294,7 @@ char *charset_icons_text[]={
 "x x ",
 "xx  ",
 " xx ",
+"    ",
 
 //í i acentuada - 144
 "  x ",
@@ -5207,6 +5302,7 @@ char *charset_icons_text[]={
 "    ",
 " x  ",
 " x  ",
+"    ",
 
 //ó o acentuada - 145
 "  x ",
@@ -5214,6 +5310,7 @@ char *charset_icons_text[]={
 "xxx ",
 "x x ",
 "xxx ",
+"    ",
 
 //ú u acentuada - 146
 "  x ",
@@ -5221,6 +5318,7 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 //Ñ enye mayuscula - 147
 "xxx ",
@@ -5228,6 +5326,7 @@ char *charset_icons_text[]={
 "xxx ",
 "x x ",
 "x x ",
+"    ",
 
 //Caracter fondo titulo estilo AtariTOS - 148
 "xxx ",
@@ -5235,6 +5334,7 @@ char *charset_icons_text[]={
 "xxx ",
 "    ",
 "xxx ",
+"    ",
 
 //Caracter enviar a background estilo ZEsarUX plus - 149
 "x x ",
@@ -5242,11 +5342,13 @@ char *charset_icons_text[]={
 "x x ",
 " x  ",
 "x x ",
+"    ",
 
 //Caracter minimizar estilo AtariTOS - 150
 "    ",
 "    ",
 "xxx ",
+"    ",
 "    ",
 "    ",
 
@@ -5256,6 +5358,7 @@ char *charset_icons_text[]={
 "    ",
 "xxx ",
 "    ",
+"    ",
 
 
 //Caracter maximizar estilo AtariTOS - 152
@@ -5264,6 +5367,7 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 " x  ",
+"    ",
 
 //Caracter franjas verticales colores titulo - 153
 "xx  ",
@@ -5271,6 +5375,7 @@ char *charset_icons_text[]={
 "xx  ",
 "xx  ",
 "xx  ",
+"    ",
 
 //Caracter boton cierre estilo ZEsarUX plus - 154
 "xxx ",
@@ -5278,6 +5383,7 @@ char *charset_icons_text[]={
 " x  ",
 "x x ",
 "xxx ",
+"    ",
 
 //Caracter boton cierre estilo Risc OS - 155
 "xxx ",
@@ -5285,6 +5391,7 @@ char *charset_icons_text[]={
 " x  ",
 "x x ",
 "xxx ",
+"    ",
 
 //Caracter boton background estilo Risc OS - 156
 "xxx ",
@@ -5292,6 +5399,7 @@ char *charset_icons_text[]={
 "xxx ",
 "x x ",
 "xxx ",
+"    ",
 
 //Caracter boton maximizar y restaurar estilo Risc OS - 157
 "x   ",
@@ -5299,6 +5407,7 @@ char *charset_icons_text[]={
 " xx ",
 " xx ",
 " xx ",
+"    ",
 
 //Cedilla ç 158
 "xxx ",
@@ -5306,6 +5415,7 @@ char *charset_icons_text[]={
 "x   ",
 "xxx ",
 " x  ",
+"    ",
 
 //à a acentuada abierta - 159
 "x   ",
@@ -5313,6 +5423,7 @@ char *charset_icons_text[]={
 " xx ",
 "x x ",
 "xxx ",
+"    ",
 
 //è e acentuada abierta - 160
 "x   ",
@@ -5320,6 +5431,7 @@ char *charset_icons_text[]={
 "x x ",
 "xx  ",
 " xx ",
+"    ",
 
 //ò o acentuada abierta - 161
 "x   ",
@@ -5327,6 +5439,7 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 //ü u con dieresis 162
 "x x ",
@@ -5334,6 +5447,7 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 //flecha abajo, para botones extender zx desktop - 163
 " x  ",
@@ -5341,6 +5455,7 @@ char *charset_icons_text[]={
 " x  ",
 "xxx ",
 " x  ",
+"    ",
 
 //flecha arriba, para botones extender zx desktop - 164
 " x  ",
@@ -5348,6 +5463,7 @@ char *charset_icons_text[]={
 " x  ",
 " x  ",
 " x  ",
+"    ",
 
 
 //flecha derecha, para botones extender zx desktop - 165
@@ -5356,6 +5472,7 @@ char *charset_icons_text[]={
 "xxx ",
 " x  ",
 "x   ",
+"    ",
 
 //flecha izquierda, para botones extender zx desktop - 166
 "  x ",
@@ -5363,6 +5480,7 @@ char *charset_icons_text[]={
 "xxx ",
 " x  ",
 "  x ",
+"    ",
 
 //ï i con dieresis - 167
 "x x ",
@@ -5370,6 +5488,7 @@ char *charset_icons_text[]={
 " x  ",
 " x  ",
 " x  ",
+"    ",
 
 //Á A mayúscula acento cerrado - 168
 "  x ",
@@ -5377,6 +5496,7 @@ char *charset_icons_text[]={
 "x x ",
 "xxx ",
 "x x ",
+"    ",
 
 //Caracter boton minimizar QNX - 169
 "    ",
@@ -5384,6 +5504,7 @@ char *charset_icons_text[]={
 "    ",
 "    ",
 "xxx ",
+"    ",
 
 //Caracter boton cierre QNX - 170
 "x x ",
@@ -5391,12 +5512,14 @@ char *charset_icons_text[]={
 " x  ",
 "x x ",
 "x x ",
+"    ",
 
 //Caracter minimizar estilo ZEsarUX plus - 171
 "    ",
 "xxx ",
 "x x ",
 "xxx ",
+"    ",
 "    ",
 
 //Caracter maximizar estilo ZEsarUX plus - 172
@@ -5405,6 +5528,7 @@ char *charset_icons_text[]={
 "x x ",
 "x x ",
 "xxx ",
+"    ",
 
 //Letra Z logo pequeña - Realmente es una Z igual, aunque hardcoded los colores en funcion scr_putchar_menu_comun_zoom - 173
 "xxx ",
@@ -5412,5 +5536,6 @@ char *charset_icons_text[]={
 " x  ",
 "x   ",
 "xxx ",
+"    ",
 
 };
