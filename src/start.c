@@ -1773,10 +1773,10 @@ printf("\n"
 #endif
 
         "--nochangeslowparameters    Do not change any performance parameters (frameskip, realvideo, etc) "
-        "on slow machines like raspberry, etc\n"
+        "on slow machines like raspberry pi 1, etc\n"
 
         "--changeslowparameters      Change some performance parameters (frameskip, realvideo, etc) "
-        "on slow machines like raspberry, etc\n"
+        "on slow machines like raspberry pi 1, etc\n"
 
 #ifdef COMPILE_FBDEV
         "--no-use-ttyfbdev                      Do not use a tty on fbdev driver. It disables keyboard\n"

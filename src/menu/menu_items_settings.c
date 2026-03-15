@@ -1679,10 +1679,6 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-
         if (si_complete_video_driver() ) {
 
             menu_add_item_menu_separator(array_menu_window_settings);

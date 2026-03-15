@@ -81,7 +81,7 @@ The following is a list of recommended minimum features for each operating syste
 
 # Raspberry Pi (Raspbian)
 
-A Raspberry Pi 2 is recommended a minimum. The Raspberry Pi 1 is a bit too slow for ZEsarUX, but you can run at normal Spectrum speed by setting overclock on the Pi, having Real Video setting disabled and using the Spectrum reduced core
+A Raspberry Pi 2 is recommended a minimum. The Raspberry Pi 1 is a bit too slow for ZEsarUX, but you can run at normal Spectrum speed by setting overclock on the Pi, having Real Video setting disabled, using the Spectrum reduced core and running with setting --changeslowparameters
 
 - libpthreads
 - alsa
@@ -186,7 +186,7 @@ Even more, if you have a slow device like the Raspberry Pi 1 or Zero, I recommen
 
     $ ./configure --enable-raspberry --spectrum-reduced-core --disable-memptr --disable-visualmem --disable-cpustats
 
-This will also ensure that the "reduced core" is on by default, which uses less cpu, although you can also switch it from command line, or at runtime. Also we do not compile memptr, visualmem and cpu stats, which use a bit more cpu
+This will also ensure that the "reduced core" is on by default, which uses less cpu, although you can also switch it from command line, or at runtime. Also we do not compile memptr, visualmem and cpu stats, which use a bit more cpu. Then run zesaurux with setting "--changeslowparameters" to improve performance
 
 
 NOTE: by using the reduced core some features will NOT be available. See the FAQ file, where it talks about the Spectrum reduced core
