@@ -8017,7 +8017,7 @@ int util_set_reset_key_continue_f_functions(enum util_teclas tecla,int pressrele
 
     case UTIL_KEY_F5:
       indice=4;
-      printf ("F5!!\n");
+      //printf ("F5!!\n");
     break;
 
     case UTIL_KEY_F6:
@@ -8026,7 +8026,6 @@ int util_set_reset_key_continue_f_functions(enum util_teclas tecla,int pressrele
 
     case UTIL_KEY_F7:
       indice=6;
-      printf ("F7!!\n");
     break;
 
     case UTIL_KEY_F8:
@@ -8081,7 +8080,7 @@ int util_set_reset_key_continue_f_functions(enum util_teclas tecla,int pressrele
       menu_button_f_function.v=1;
       //printf("Indice accion: %d\n",indice);
       menu_button_f_function_index=indice;
-      printf("indicar abrir menu\n");
+      //printf("indicar abrir menu\n");
       menu_set_menu_abierto(1);
 
 

@@ -3052,11 +3052,7 @@ int menu_if_f_key_not_default(void)
 {
     //Si pulsada tecla F no asignada a default
 
-    //Si se pulsa tecla F que no es default
     if (menu_button_f_function.v && menu_button_f_function_index>=0) {
-
-        //Estas variables solo se activan cuando   //Abrir menu si funcion no es defecto y no es background window
-          //if (accion!=F_FUNCION_DEFAULT && accion!=F_FUNCION_BACKGROUND_WINDOW) {
 
         int indice=menu_button_f_function_index;
 
@@ -3064,10 +3060,7 @@ int menu_if_f_key_not_default(void)
         int indice_tabla=defined_f_functions_keys_array[indice];
         enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_tabla);
         if (accion!=F_FUNCION_DEFAULT && accion!=F_FUNCION_BACKGROUND_WINDOW) {
-            //liberamos esa tecla
-            //menu_button_f_function.v=0;
-            printf ("Pulsada tecla F no asignada a default\n");
-            //sleep(1);
+            debug_printf(VERBOSE_DEBUG,"Pressed f-key while menu opened");
             return 1;
         }
 
@@ -3099,7 +3092,7 @@ int menu_if_pressed_menu_button(void)
         if (accion==F_FUNCION_OPENMENU) {
             //liberamos esa tecla
             menu_button_f_function.v=0;
-            printf ("Pulsada tecla F abrir menu\n");
+            //printf ("Pulsada tecla F abrir menu\n");
             //sleep(1);
             return 1;
         }
@@ -3111,7 +3104,7 @@ int menu_if_pressed_menu_button(void)
 
     //Sera tecla F5 por defecto, ya que no se ha pulsado tecla con no default
     if ((puerto_especial2&16)==0) {
-        printf ("Pulsada F5 por defecto\n");
+        //printf ("Pulsada F5 por defecto\n");
         //sleep(1);
         return 1;
     }
@@ -3196,12 +3189,13 @@ z80_byte menu_get_pressed_key_no_modifier(void)
 
     //Si menu esta abierto y pulsamos de nuevo la tecla de menu, cerrar todas ventanas y reabrir menu
     //O si se pulsa tecla que cierra todos menus (simula F5+ESC), y por tanto tiene que hacer la parte de F5 igual
+    //O si se pulsa tecla F no asociada a default
     //No acabo de tener claro que este sea el mejor sitio para comprobar esto... o si?
-    if (menu_if_pressed_menu_button() || pulsada_tecla_cerrar_todos_menus ) {
+    if (menu_if_pressed_menu_button() || pulsada_tecla_cerrar_todos_menus || menu_if_f_key_not_default()) {
     //if ((puerto_especial2&16)==0) {
         //printf ("Pulsada tecla abrir menu\n");
         //sleep(1);
-        printf("--Cerrar todos menus\n");
+        //printf("--Cerrar todos menus\n");
 
         menu_pressed_open_menu_while_in_menu.v=1;
 
@@ -3243,52 +3237,6 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
                                 else {
                                         return 2; //Escape
                                 }
-            }
-        }
-    }
-
-
-    //Si menu esta abierto y pulsamos tecla F, cerrar todos menus
-    else if (menu_if_f_key_not_default() ) {
-
-        printf("--Tecla F pulsada no asignada a default\n");
-
-        menu_pressed_open_menu_while_in_menu.v=1;
-
-
-
-        /*
-        -si no se permite background, cerrar todos menus abiertos y volver a abrir el menu principal
--si se permite background:
-—si ventana activa se puede enviar a background, enviarla a background
-—si ventana activa no permite enviar a background, cerrarla
-y luego en cualquiera de los dos casos, abrir el menu principal
-
-las condiciones de "ventana activa se puede enviar a background o no" son comunes de cuando se pulsa en otra ventana. hacer función común??
-
-    Estas decisiones son parecidas en casos:
-    pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
-        */
-        salir_todos_menus=1;
-
-        if (!menu_allow_background_windows) {
-            //Temp retornar escape
-            return 2; //Escape
-        }
-
-        else {
-            if (zxvision_current_window!=NULL) {
-
-                //printf("menu_get_pressed_key_no_modifier. Retorno tecla 3 con zxvision current window no es null\n");
-                        //Si la ventana activa permite ir a background, mandarla a background
-                if (zxvision_current_window->can_be_backgrounded) {
-                    return 3; //Tecla background F6
-                }
-
-                //Si la ventana activa no permite ir a background, cerrarla
-                else {
-                    return 2; //Escape
-                }
             }
         }
     }
@@ -28590,7 +28538,6 @@ void menu_inicio_bucle(void)
 
         reopen_menu=zxvision_simple_window_manager(reopen_menu);
 
-        printf("reopen menu\n");
 
 
         which_window_clicked_on_background=NULL;
@@ -29666,7 +29613,7 @@ void menu_inicio(void)
             //Esto evita por ejemplo que al abrir menu con F5, si se entra a submenu, se crea que hemos pulsado F5 y cierre el menu y vuelva a abrir menu principal
             menu_button_f_function.v=0;
 
-            printf ("menu inicio pulsada tecla de funcion\n");
+            //printf ("menu inicio pulsada tecla de funcion\n");
             //Entrada
             //menu_espera_no_tecla();
             osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
