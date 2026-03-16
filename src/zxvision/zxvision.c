@@ -7036,7 +7036,7 @@ void zxdesktop_draw_scrfile_load(void)
     //Si se extrae de un tap, snapshot o similar, indicar aqui siempre que scr archivo es realmente
     char final_scrfile_name[PATH_MAX]="";
 
-    if (!util_compare_file_extension(nombre_scr,"scr")) {
+    if (!util_compare_file_extension(nombre_scr,"scr") || get_file_size(nombre_scr)==6912) {
         strcpy(final_scrfile_name,nombre_scr);
     }
     else {

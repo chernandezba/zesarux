@@ -164,4 +164,6 @@ ok *que pasa con maquinas que tienen teclas F? como Z88, MSX, etc-> antes ya con
 
 -File selector que se vean previews en el fondo  del ZX desktop
 ok *cuando se pasa por un archivo sin preview, en el fondo del zx desktop, si habia SCR habilitado, se muestra el preview anterior en vez del SCR habilitado
+ok *no hace previews en el fondo de DSK por ejemplo, o solo alguna vez. creo que solo archivos que acaban en .SCR
+
 *no hace preview en fondo si es de ql por ejemplo-> dificil pues el desktop solo muestra archivos SCR, no de ql
