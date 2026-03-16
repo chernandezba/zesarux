@@ -3725,7 +3725,7 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 
         //printf("filesel draw ext desktop\n");
         menu_draw_ext_desktop();
-        menu_refresca_pantalla();
+        //menu_refresca_pantalla();
     }
 
 
