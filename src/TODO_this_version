@@ -93,6 +93,11 @@ Para que quiero esa estadística? Se podria simplemente que el Dockerfile al eje
 eso se envía en las estadísticas
 
 
+
+
+
+
+
 -tooltips con mouse en iconos y botones
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
 *quitar prints de debug
