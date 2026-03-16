@@ -40,6 +40,9 @@ extern z80_bit menu_filesel_show_previews_on_zxdesktop;
 extern z80_bit menu_filesel_show_utils;
 extern z80_bit menu_filesel_show_only_read_only_utils;
 
+extern int menu_filesel_overlay_last_preview_width;
+extern int menu_filesel_overlay_last_preview_height;
+
 extern char menu_filesel_last_preview_scr_filename[];
 
 extern int menu_filesel(char *titulo,char *filtros[],char *archivo);

@@ -7308,9 +7308,13 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
     //Ver si ventana filesel activa
     if (menu_filesel_show_previews_on_zxdesktop.v) {
-        if (zxvision_find_window_in_background("filesel")) {
+        if (zxvision_find_window_in_background("filesel") && menu_filesel_overlay_last_preview_width && menu_filesel_overlay_last_preview_height) {
+            //printf("Draw ext desktop hay preview\n");
             //printf("Filesel ejecutandose %d\n",contador_segundo);
             filesel_ejecutandose_preview_en_zxdesktop=1;
+        }
+        else {
+            //printf("Draw ext desktop NO hay preview\n");
         }
     }
 

@@ -150,7 +150,7 @@ en sdl1, raton lo ubica en la posicion inicial
 -revisar que compile sdl1 en linux bien
 
 -Revisar opqa y teclas mover ventana
-*solo falta en debug cpu
+*solo falta en debug cpu, muchas teclas mapeadas ahi. quiza un modo en el que se pueda cambiar a modo movimiento ventana
 
 
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
@@ -158,10 +158,8 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -Poder lanzar teclas F desde menú
 *teclas default (como F9) no la lanza
-*en menu_inicio_bucle_main, en else if (menu_button_f_function.v) {, cerrar o no cerrar el menu al acabar?
-Para la mayoria, cerrar. si es sendkeyspor ejemplo, no cerrar, como detectar eso? Ver si tiene sendkeys activo y en ese caso no cerrar menu. El resto de F funciones no deberia afectar, se podria cerrar menu
 *que pasa con maquinas que tienen teclas F? como Z88, MSX, etc-> antes ya con el menu cerrado, procesaba la tecla F de funcion y no la recibia la maquina emulada
 
 ok -File selector que se vean previews en el fondo  del ZX desktop
-*si activo scr en el fondo, al abrir fileselector, en fondo se vera ese scr escalado, o sea, quiere activar el preview pero como no hay ninguno, muestra lo que tiene en memoria
+*cuando se pasa por un archivo sin preview, en el fondo del zx desktop, si habia SCR habilitado, se muestra el preview anterior en vez del SCR habilitado
 *no hace preview en fondo si es de ql por ejemplo-> dificil pues el desktop solo muestra archivos SCR, no de ql

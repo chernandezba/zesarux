@@ -164,7 +164,7 @@ z80_bit menu_filesel_utils_allow_folder_delete={0};
 
 int menu_recent_files_opcion_seleccionada=0;
 
-
+int menu_filesel_overlay_force_render=0;
 
 
 
@@ -174,6 +174,7 @@ void menu_filesel_overlay_show_current_dir(zxvision_window *ventana,int rotar);
 
 filesel_item *menu_get_filesel_item(int index);
 int menu_filesel_file_can_be_expanded(char *archivo);
+void menu_filesel_overlay(void);
 
 //devuelve 1 si el directorio cumple el filtro
 //realmente lo que hacemos aqui es ocultar/mostrar carpetas que empiezan con .
@@ -3715,6 +3716,18 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
         //printf("menu_speech_tecla_pulsada en fin de print_dir: %d\n",menu_speech_tecla_pulsada);
     }
 
+    if (menu_filesel_show_previews_on_zxdesktop.v) {
+        //forzamos dibujar overlay para que procese el preview
+        //printf("filesel obtener preview\n");
+
+        menu_filesel_overlay_force_render=1;
+        menu_filesel_overlay();
+
+        //printf("filesel draw ext desktop\n");
+        menu_draw_ext_desktop();
+        menu_refresca_pantalla();
+    }
+
 
 }
 
@@ -4553,6 +4566,8 @@ void menu_filesel_overlay_draw_preview(void)
     int alto_miniatura;
 
     //printf("%d\n",ancho_ventana);
+
+    //printf("Filesel dibujando preview en ventana filesel. size %d X %d\n",menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height);
 
     //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
     if (ancho_ventana<minimo_ancho+margen_x_coord) {
@@ -5930,7 +5945,8 @@ void menu_filesel_overlay(void)
 {
     //Y el procesado de nueva preview no tan seguido
     //esto hara ejecutar esto 5 veces por segundo
-    if ( ((contador_segundo%200) == 0 && menu_filesel_overlay_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+    if ( ((contador_segundo%200) == 0 && menu_filesel_overlay_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0 || menu_filesel_overlay_force_render) {
+        menu_filesel_overlay_force_render=0;
         menu_filesel_overlay_valor_contador_segundo_anterior=contador_segundo;
 
         //renderizar preview en memoria si conviene
