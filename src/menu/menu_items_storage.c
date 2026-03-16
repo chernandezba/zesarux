@@ -5467,6 +5467,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             case 3:
                 salir=1;
             break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+            break;
         }
 
 
