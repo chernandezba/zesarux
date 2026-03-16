@@ -157,6 +157,10 @@ en sdl1, raton lo ubica en la posicion inicial
 
 
 -Poder lanzar teclas F desde menú
+*teclas default (como F9) no la lanza
+*en menu_inicio_bucle_main, en else if (menu_button_f_function.v) {, cerrar o no cerrar el menu al acabar?
+Para la mayoria, cerrar. si es sendkeyspor ejemplo, no cerrar, como detectar eso?
+*que pasa con maquinas que tienen teclas F? como Z88, MSX, etc-> antes ya con el menu cerrado, procesaba la tecla F de funcion y no la recibia la maquina emulada
 
 ok -File selector que se vean previews en el fondo  del ZX desktop
 *si activo scr en el fondo, al abrir fileselector, en fondo se vera ese scr escalado, o sea, quiere activar el preview pero como no hay ninguno, muestra lo que tiene en memoria

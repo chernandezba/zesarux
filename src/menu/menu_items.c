@@ -45586,7 +45586,45 @@ void menu_inicio_bucle_main(void)
             }
         }
 
+        //Detectar pulsaciones de teclas de funcion pulsadas con el menu abierto
+        else if (menu_button_f_function.v) {
+
+                //Si se reabre menu, resetear flags de teclas pulsadas especiales
+                //Esto evita por ejemplo que al abrir menu con F5, si se entra a submenu, se crea que hemos pulsado F5 y cierre el menu y vuelva a abrir menu principal
+                menu_button_f_function.v=0;
+
+                printf ("-----Gestionar tecla de funcion pulsada desde menu de inicio\n");
+                //Entrada
+                //menu_espera_no_tecla();
+                osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+                //Procesar comandos F
+
+                //Procesamos cuando se pulsa tecla F concreta desde joystick
+                if (menu_button_f_function_action==0) menu_process_f_functions();
+                else {
+                    //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
+                    menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0);
+                    menu_button_f_function_action=0;
+                }
+
+                //menu_event_open_menu.v
+
+                menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
+
+
+                //Salir o no salir?
+                //Si no salimos, al pulsar F7 reset, hace reset pero abre el menu
+                //Si salimos, tecla de send keys no va
+                salir_menu=1;
+
+                //printf("Fin procesamiento f funciones\n");
+
+
+        }
+
         else {
+
 
             //printf("scr_new_driver_name [%s]\n",scr_new_driver_name);
 

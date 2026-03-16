@@ -330,6 +330,8 @@ extern int zxvision_which_lower_button_is_mouse(void);
 extern int f_functions;
 extern char *string_esc_closes_menus;
 
+extern void menu_process_f_functions(void);
+
 #define MENU_CPU_CORE_LOOP_SLEEP_NO_MULTITASK 500
 
 extern void menu_cpu_core_loop(void);
