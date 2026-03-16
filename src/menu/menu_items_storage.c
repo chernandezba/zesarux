@@ -9281,6 +9281,10 @@ void menu_microdrive_raw_map(MENU_ITEM_PARAMETERS)
             case 24:
                 for (aux_pgdnup=0;aux_pgdnup<total_alto;aux_pgdnup++) menu_microdrive_raw_map_arriba(ventana);
             break;
+
+            default:
+                zxvision_handle_opqa_wskl(ventana,tecla);
+            break;
         }
 
 

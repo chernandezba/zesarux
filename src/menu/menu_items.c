@@ -3505,8 +3505,6 @@ void menu_debug_spritenav_new_window(zxvision_window *ventana)
         }
 
 
-        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,
-        //						TSCONF_SPRITENAV_WINDOW_ANCHO-1,menu_debug_tsconf_tbblue_msx_spritenav_get_total_height_win(),"Sprite navigator");
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,
                                 TSCONF_SPRITENAV_WINDOW_ANCHO-1,menu_debug_tsconf_tbblue_msx_spritenav_get_total_height_win(),"Sprite navigator",
@@ -8377,6 +8375,10 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
                 if (menu_hexdump_edit_mode) menu_hexdump_edit_mode=0;
             break;
 
+            default:
+                zxvision_handle_opqa_wskl(ventana,tecla);
+            break;
+
 
 
         }
@@ -10518,6 +10520,10 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_opqa_wskl(ventana,tecla);
             break;
         }
 
@@ -13095,8 +13101,11 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                     break;
 
                     default:
-                        //no es tecla valida, no redibujar texto
-                        redibujar_texto=0;
+
+                        if (!zxvision_handle_opqa_wskl(ventana,tecla)) {
+                            //no es tecla valida, no redibujar texto
+                            redibujar_texto=0;
+                        }
                     break;
 
         }
@@ -17435,12 +17444,6 @@ void menu_network_traffic(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
-
 
             //Salir con ESC
             case 2:
@@ -17450,6 +17453,10 @@ void menu_network_traffic(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
             break;
         }
 
@@ -19488,6 +19495,10 @@ void menu_video_output(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
             break;
         }
 
@@ -24211,17 +24222,13 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
         zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound","audiogensound",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
-        //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound");
 
         ventana->can_be_backgrounded=1;
         //ventana->upper_margin=2;
         //Permitir hotkeys desde raton
         ventana->can_mouse_send_hotkeys=1;
 
-        //indicar nombre del grabado de geometria
-        //strcpy(ventana->geometry_name,"audiogensound");
-        //restaurar estado minimizado de ventana
-        //ventana->is_minimized=is_minimized;
+
 
     }
 
@@ -24258,6 +24265,10 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
 
         if (tecla=='m') {
             gs_stereo_mode.v ^=1;
+        }
+
+        else {
+            zxvision_handle_cursors_pgupdn(ventana,tecla);
         }
 
 
@@ -25800,6 +25811,10 @@ void menu_snapshot_in_ram_browse(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
             break;
         }
 
@@ -32456,6 +32471,10 @@ void menu_send_text_keystrokes_status(MENU_ITEM_PARAMETERS)
             case 3:
                 salir=1;
             break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+            break;
         }
 
 
@@ -32890,12 +32909,6 @@ void menu_specnext_audio_dac(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
-
 
             //Salir con ESC
             case 2:
@@ -32905,6 +32918,10 @@ void menu_specnext_audio_dac(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
             break;
         }
 
@@ -34612,6 +34629,10 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
             case 3:
                 salir=1;
             break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+            break;
         }
 
 
@@ -34904,6 +34925,10 @@ void menu_ascii_table(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
             break;
         }
 
@@ -39495,6 +39520,10 @@ void menu_realtape_record_input(MENU_ITEM_PARAMETERS)
             case 3:
                 salir=1;
             break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+            break;
         }
 
 
@@ -39666,6 +39695,10 @@ void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
             break;
         }
 
@@ -42189,12 +42222,6 @@ zxvision_draw_window(ventana);
 
         switch (tecla) {
 
-            case 11:
-                //arriba
-                //blablabla
-            break;
-
-
 
             //Salir con ESC
             case 2:
@@ -42204,6 +42231,10 @@ zxvision_draw_window(ventana);
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
             break;
         }
 
@@ -47280,6 +47311,15 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
+            break;
+
+            default:
+                //Nota: considerar que en el bloque switch no se gestionan teclas OPQAWSKL o cursores o pgup/pgdn, porque si se gestiona alguna de esas (con mayusculas).
+                //aqui no entrará alguna
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+
+                //O tambien se puede llamar a la gestion de OPQAWSKL (sin cursores ni pgup/dn)
+                //zxvision_handle_opqa_wskl(ventana,tecla);
             break;
         }
 

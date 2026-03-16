@@ -136,6 +136,7 @@ en sdl1, raton lo ubica en la posicion inicial
 -drag&drop
 *quitar print debug
 
+-Probar eventos x11: teclado, ratón, redimensionado ratón  etc etc que todo siga funcionando despues de cambios en drag & drop y clipboard
 
 
 -poder insertar cinta cuando la rutina de la rom ya esta cargando
@@ -146,14 +147,21 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado
 
-
 -revisar que compile sdl1 en linux bien
 
 -Revisar opqa y teclas mover ventana
+*Se usa zxvision_handle_cursors_pgupdn(ventana,tecla);
+*gestiona cursores scroll, pgup/dn y opqa wskl
+*si solo se quiere usar redimensionado, usar zxvision_handle_opqa_wskl
+*en los de menus tabulados, no se puede implementar directamente? Porque las teclas las gestiona el menu,
+ quiza una opcion para decirle que puede gestionarse mediante esas teclas.
+*agrego time machine, colour palettes
+
+-funcion menu: no distingue shift-tecla , ignora mayusculas y shift+s o s hace smartload las dos por ejemplo
+menu_retorna_atajo, baja tecla a minusculas siempre, por que?
 
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
 
-ok -Opción quitar real vídeo en dispositivos lentos y framedrop está en configure?
 
 -Poder lanzar teclas F desde menú
 

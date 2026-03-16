@@ -650,7 +650,8 @@ extern void zxvision_draw_rectangle_function(zxvision_window *ventana,int x1,int
 extern void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,int *yfinal);
 
 extern z80_byte zxvision_read_keyboard(void);
-void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla);
+extern int zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla);
+extern int zxvision_handle_opqa_wskl(zxvision_window *ventana,z80_byte tecla);
 extern z80_byte zxvision_common_getkey_refresh(void);
 extern z80_byte zxvision_common_getkey_refresh_noesperatecla(void);
 extern z80_byte zxvision_common_getkey_refresh_noesperanotec(void);

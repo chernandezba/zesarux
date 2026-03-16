@@ -2260,6 +2260,10 @@ void menu_zeng_online_status_window(MENU_ITEM_PARAMETERS)
             case 3:
                 salir=1;
             break;
+
+            default:
+                zxvision_handle_cursors_pgupdn(ventana,tecla);
+            break;
         }
 
 

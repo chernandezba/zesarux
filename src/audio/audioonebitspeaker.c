@@ -123,11 +123,7 @@ int audioonebitspeaker_init(void)
 
     debug_printf (VERBOSE_INFO,"Init One Bit Speaker Audio Driver");
 
-    //Detectamos tipo. En Raspberry, no se permite tipo PCSpeaker
-//#ifdef EMULATE_RASPBERRY
-//    audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO;
-//    debug_printf (VERBOSE_WARN,"Setting Speaker type to GPIO");
-//#endif
+
 
 
 

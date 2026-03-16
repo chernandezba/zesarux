@@ -8083,7 +8083,6 @@ void draw_middle_footer(void)
     //menu_draw_cpu_temp();
 
 //Temperatura mostrarla en raspberry y en general en Linux
-//#ifdef EMULATE_RASPBERRY
 #ifdef __linux__
     if (screen_show_cpu_temp.v) {
         menu_draw_cpu_temp();
@@ -19818,10 +19817,93 @@ int zxvision_window_get_pixel_y_position(zxvision_window *ventana)
     return this_win_y;
 }
 
+//Retorna 0 si no se ha gestionado la tecla
+int zxvision_handle_opqa_wskl(zxvision_window *ventana,z80_byte tecla)
+{
+    int tecla_valida=1;
+    switch (tecla) {
+
+        //Mover ventana
+        case 'Q':
+            zxvision_set_y_position(ventana,ventana->y-1);
+        break;
+
+        case 'A':
+            zxvision_set_y_position(ventana,ventana->y+1);
+        break;
+
+        case 'O':
+            zxvision_set_x_position(ventana,ventana->x-1);
+        break;
+
+        case 'P':
+            zxvision_set_x_position(ventana,ventana->x+1);
+        break;
+
+        //Redimensionar ventana
+        //Mover ventana
+        case 'W':
+            if (ventana->visible_height-1>1 && ventana->can_be_resized) {
+                zxvision_set_visible_height(ventana,ventana->visible_height-1);
+                //printf("Ventana deja de estar minimizada\n");
+                ventana->is_minimized=0;
+                ventana->is_maximized=0;
+            }
+        break;
+
+        case 'S':
+            if (ventana->can_be_resized) {
+                zxvision_set_visible_height(ventana,ventana->visible_height+1);
+                //printf("Ventana deja de estar minimizada\n");
+                ventana->is_minimized=0;
+                ventana->is_maximized=0;
+            }
+        break;
+
+        case 'K':
+            if (ventana->visible_width-1>5 && ventana->can_be_resized) {
+                zxvision_set_visible_width(ventana,ventana->visible_width-1);
+                //printf("Ventana deja de estar minimizada\n");
+                ventana->is_minimized=0;
+                ventana->is_maximized=0;
+            }
+        break;
+
+        case 'L':
+            if (ventana->can_be_resized) {
+                zxvision_set_visible_width(ventana,ventana->visible_width+1);
+                //printf("Ventana deja de estar minimizada\n");
+                ventana->is_minimized=0;
+                ventana->is_maximized=0;
+            }
+        break;
+
+        default:
+            tecla_valida=0;
+        break;
+
+    }
+
+    if (tecla_valida) {
+        //Refrescamos pantalla para reflejar esto, util con multitask off
+        if (!menu_multitarea) {
+            //printf ("refresca pantalla\n");
+            menu_refresca_pantalla();
+        }
+    }
+
+    return tecla_valida;
+
+}
+
 
 //Funcion comun que usan algunas ventanas para movimiento de cursores y pgup/dn
-void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
+//Retorna 0 si no se ha gestionado la tecla
+int zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
 {
+
+    if (zxvision_handle_opqa_wskl(ventana,tecla)) return 1;
+
     int contador_pgdnup;
     int tecla_valida=1;
                     switch (tecla) {
@@ -19877,60 +19959,6 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
                             menu_speech_reset_tecla_pulsada();
                         break;
 
-                        //Mover ventana
-                        case 'Q':
-                            zxvision_set_y_position(ventana,ventana->y-1);
-                        break;
-
-                        case 'A':
-                            zxvision_set_y_position(ventana,ventana->y+1);
-                        break;
-
-                        case 'O':
-                            zxvision_set_x_position(ventana,ventana->x-1);
-                        break;
-
-                        case 'P':
-                            zxvision_set_x_position(ventana,ventana->x+1);
-                        break;
-
-                        //Redimensionar ventana
-                        //Mover ventana
-                        case 'W':
-                            if (ventana->visible_height-1>1 && ventana->can_be_resized) {
-                                zxvision_set_visible_height(ventana,ventana->visible_height-1);
-                                //printf("Ventana deja de estar minimizada\n");
-                                ventana->is_minimized=0;
-                                ventana->is_maximized=0;
-                            }
-                        break;
-
-                        case 'S':
-                            if (ventana->can_be_resized) {
-                                zxvision_set_visible_height(ventana,ventana->visible_height+1);
-                                //printf("Ventana deja de estar minimizada\n");
-                                ventana->is_minimized=0;
-                                ventana->is_maximized=0;
-                            }
-                        break;
-
-                        case 'K':
-                            if (ventana->visible_width-1>5 && ventana->can_be_resized) {
-                                zxvision_set_visible_width(ventana,ventana->visible_width-1);
-                                //printf("Ventana deja de estar minimizada\n");
-                                ventana->is_minimized=0;
-                                ventana->is_maximized=0;
-                            }
-                        break;
-
-                        case 'L':
-                            if (ventana->can_be_resized) {
-                                zxvision_set_visible_width(ventana,ventana->visible_width+1);
-                                //printf("Ventana deja de estar minimizada\n");
-                                ventana->is_minimized=0;
-                                ventana->is_maximized=0;
-                            }
-                        break;
 
                         default:
                             tecla_valida=0;
@@ -19945,6 +19973,8 @@ void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla)
             menu_refresca_pantalla();
         }
     }
+
+    return tecla_valida;
 
 }
 
@@ -21828,7 +21858,7 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 int menu_retorna_atajo(menu_item *m,z80_byte tecla)
 {
 
-    //Si letra en mayusculas, bajar a minusculas
+    //Si letra en mayusculas, bajar a minusculas. Por que???
     if (tecla>='A' && tecla<='Z') tecla +=('a'-'A');
 
     int linea=0;
@@ -23145,7 +23175,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
             tecla_leida=zxvision_read_keyboard();
 
-            //printf ("Despues tecla leida: %d\n",tecla_leida);
+            //printf ("Despues tecla leida: %d %c\n",tecla_leida,tecla_leida);
 
             mouse_movido=antes_mouse_movido;
 
@@ -23354,7 +23384,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             }
 
 
-            //printf ("menu tecla: %d\n",tecla);
+            //printf ("menu tecla: %d %c\n",tecla,tecla);
         }
 
         //Si no se ha pulsado tecla de atajo:
@@ -23647,10 +23677,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 menu_writing_inverse_color.v=1;
                 menu_escribe_opciones_zxvision(ventana,m,entrada_atajo,max_opciones);
                 menu_refresca_pantalla();
-                //menu_espera_no_tecla();
+
                 menu_dibuja_menu_espera_no_tecla();
 
-                //int tecla_atajo=tecla;
 
                 //decimos que se ha pulsado Enter
                 tecla=13;
@@ -23665,11 +23694,6 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                             tecla=0;
                     }
                 }
-
-                /*if (tecla!=0) {
-                    //printf("Shortcut for key %c\n",tecla_atajo);
-                    zxvision_helper_menu_shortcut_print(tecla_atajo);
-                }*/
 
 
 
