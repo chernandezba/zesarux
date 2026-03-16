@@ -7305,13 +7305,18 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
     if (menu_ext_desktop_fill==1) menu_ext_desktop_fill_rainbow_counter=0;
 
     int filesel_ejecutandose_preview_en_zxdesktop=0;
+    int filesel_ejecutandose=0;
 
     //Ver si ventana filesel activa
     if (menu_filesel_show_previews_on_zxdesktop.v) {
-        if (zxvision_find_window_in_background("filesel") && menu_filesel_overlay_last_preview_width && menu_filesel_overlay_last_preview_height) {
-            //printf("Draw ext desktop hay preview\n");
-            //printf("Filesel ejecutandose %d\n",contador_segundo);
-            filesel_ejecutandose_preview_en_zxdesktop=1;
+        if (zxvision_find_window_in_background("filesel")) {
+            filesel_ejecutandose=1;
+
+            if (menu_filesel_overlay_last_preview_width && menu_filesel_overlay_last_preview_height) {
+                //printf("Draw ext desktop hay preview\n");
+                //printf("Filesel ejecutandose %d\n",contador_segundo);
+                filesel_ejecutandose_preview_en_zxdesktop=1;
+            }
         }
         else {
             //printf("Draw ext desktop NO hay preview\n");
@@ -7434,6 +7439,14 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
                 int desactivado=(x+y)%2;
 
                 if (desactivado) mostrar_scrfile=0;
+            }
+
+            //Si filesel ejecutandose pero sin preview
+            //No mostramos ni el posible SCR que se hubiera configurado en el zx desktop
+            //Es que en este caso para mostrar ese SCR habria que cargarlo en memoria de nuevo
+            //Y mejor asi, asi el usuario ve en el zx desktop que no hay preview del archivo seleccionado en el filesel
+            if (filesel_ejecutandose && !filesel_ejecutandose_preview_en_zxdesktop) {
+                mostrar_scrfile=0;
             }
 
 

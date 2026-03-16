@@ -158,8 +158,10 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -Poder lanzar teclas F desde menú
 *teclas default (como F9) no la lanza
-*que pasa con maquinas que tienen teclas F? como Z88, MSX, etc-> antes ya con el menu cerrado, procesaba la tecla F de funcion y no la recibia la maquina emulada
+ok *que pasa con maquinas que tienen teclas F? como Z88, MSX, etc-> antes ya con el menu cerrado, procesaba la tecla F de funcion y no la recibia la maquina emulada
 
-ok -File selector que se vean previews en el fondo  del ZX desktop
-*cuando se pasa por un archivo sin preview, en el fondo del zx desktop, si habia SCR habilitado, se muestra el preview anterior en vez del SCR habilitado
+
+
+-File selector que se vean previews en el fondo  del ZX desktop
+ok *cuando se pasa por un archivo sin preview, en el fondo del zx desktop, si habia SCR habilitado, se muestra el preview anterior en vez del SCR habilitado
 *no hace preview en fondo si es de ql por ejemplo-> dificil pues el desktop solo muestra archivos SCR, no de ql
