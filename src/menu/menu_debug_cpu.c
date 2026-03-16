@@ -862,6 +862,26 @@ void menu_breakpoints_conditions_delete(MENU_ITEM_PARAMETERS)
         breakpoint_edit_parameters.enabled=0;
         breakpoint_edit_parameters.pass_count=0;
         menu_breakpoints_conditions_set_ok(valor_opcion);
+
+        int breakpoint_index=valor_opcion;
+
+        debug_set_breakpoint(breakpoint_index,breakpoint_edit_parameters.string_texto_breakpoint,breakpoint_edit_parameters.pass_count);
+
+
+        debug_set_breakpoint_action(breakpoint_index,breakpoint_edit_parameters.string_texto_action);
+
+        debug_breakpoints_conditions_disable(breakpoint_index);
+
+
+        //comprobar error
+        if (if_pending_error_message) {
+            menu_muestra_pending_error_message(); //Si se genera un error derivado del set breakpoint, mostrarlo y salir
+            return;
+        }
+
+        else {
+            menu_breakpoints_conditions_finish_window=1;
+        }
     }
 }
 
@@ -988,6 +1008,7 @@ void menu_breakpoints_conditions_set(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_breakpoints_conditions_delete,NULL,
             "[~^Delete]");
         menu_add_item_menu_tabulado(array_menu_common,columna_botones,7);
+        menu_add_item_menu_valor_opcion(array_menu_common,breakpoint_index);
         menu_add_item_menu_shortcut(array_menu_common,'d');
 
 
