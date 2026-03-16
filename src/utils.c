@@ -9509,16 +9509,16 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         //F7 pulsado. Uso del simulador de joystick si esta habilitado
                         case UTIL_KEY_F7:
 
-                                if (pressrelease) {
-                    if (simulador_joystick) {
-                        simulador_joystick_forzado=1;
-                    }
-                                    pcw_keyboard_table[0xA] &=(255-16);
+                            if (pressrelease) {
+                                if (simulador_joystick) {
+                                    simulador_joystick_forzado=1;
+                                }
+                                pcw_keyboard_table[0xA] &=(255-16);
 
-                                }
-                                else {
-                                    pcw_keyboard_table[0xA] |=16;
-                                }
+                            }
+                            else {
+                                pcw_keyboard_table[0xA] |=16;
+                            }
                         break;
 
 
