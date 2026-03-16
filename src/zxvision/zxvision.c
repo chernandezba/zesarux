@@ -21859,7 +21859,7 @@ int menu_retorna_atajo(menu_item *m,z80_byte tecla)
 {
 
     //Si letra en mayusculas, bajar a minusculas. Por que???
-    if (tecla>='A' && tecla<='Z') tecla +=('a'-'A');
+    //if (tecla>='A' && tecla<='Z') tecla +=('a'-'A');
 
     int linea=0;
 
