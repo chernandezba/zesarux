@@ -23702,6 +23702,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
             else {
                 debug_printf (VERBOSE_DEBUG,"No shortcut found for read key: %c",tecla);
+
+                //Probar teclas de movimiento ventana
+                zxvision_handle_opqa_wskl(ventana,tecla);
+
                 tecla=0;
                 menu_espera_no_tecla();
             }
