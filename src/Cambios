@@ -63,6 +63,7 @@ Mejorado ZX Vision:
 - Agregado soporte para tipos de letra de 4 pixeles de ancho
 - Agregado tipo de letra "ZEsarUXtiny" adecuado para configuración de charset 4x6 (el mismo que ya se usaba en los iconos)
 - Agregado estilos de GUI "ZEsarUX Tiny" and "Pico-8"
+- Permitir pulsar teclas F de función desde el menú
 - Permitir reducir tamaño disponible menú a la mitad de la ventana principal
 - Permitir ver previews de archivos del selector de archivos en el fondo del ZX Desktop
 - La mayoría de ventanas se pueden mover/redimensionar ahora usando teclas OPQAWSKL
