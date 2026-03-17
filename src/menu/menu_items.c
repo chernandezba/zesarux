@@ -32591,11 +32591,11 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_send_text_as_keystrokes);
 
         menu_add_item_menu_index_full_path(array_menu_send_text_as_keystrokes,
-            "Main Menu-> Debug-> Send Text as Keystrokes","Menú Principal-> Debug-> Enviar texto como pulsaciones de teclado","Menú Principal-> Debug-> Enviar text com pulsacions de teclat");
+            "Main Menu-> Debug-> Send Text as Keystrokes","Menú Principal-> Debug-> Enviar texto como teclas","Menú Principal-> Debug-> Enviar text com tecles");
 
 
         retorno_menu=menu_dibuja_menu(&send_text_as_keystrokes_opcion_seleccionada,&item_seleccionado,array_menu_send_text_as_keystrokes,
-            "Send Text as Keystrokes" ,"Enviar texto como pulsaciones de teclado","Enviar text com pulsacions de teclat");
+            "Send Text as Keystrokes" ,"Enviar texto como teclas","Enviar text com tecles");
 
 
 
@@ -35692,17 +35692,15 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
         if (!CPU_IS_MOTOROLA) {
-
-
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,
-                "Send Text as Keystrokes" ,"Enviar texto como pulsaciones de teclado","Enviar text com pulsacions de teclat");
+                "Send Text as Keystrokes" ,"Enviar texto como teclas","Enviar text com tecles");
 
             //menu_add_item_menu_shortcut(array_menu_debug,'g');
-            menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file as keyboard presses");
-            menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file is sent as keyboard presses. Only Ascii characters, not UFT, Unicode or others. "
-                                                                   "Symbols that require extended mode on Spectrum are not sent: [ ] (c) ~ \\ { }. These can be used "
-                                                                   "as a delay.\n"
-                                "Note: symbol | means Shift+1 (Edit)");
+            menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file or clipboard as keyboard presses");
+            menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file or clipboard is sent as keyboard presses. Only Ascii characters, not UTF, Unicode or others. "
+                "Symbols that require extended mode on Spectrum are not sent: [ ] (c) ~ \\ { }. These can be used "
+                "as a delay.\n"
+                "Note: symbol | means Shift+1 (Edit)");
             menu_add_item_menu_tiene_submenu(array_menu_debug);
             menu_add_item_menu_es_avanzado(array_menu_debug);
         }

@@ -97,9 +97,6 @@ eso se envía en las estadísticas
 
 -tooltips con mouse en iconos y botones
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
-*quiza menos tiempo para que aparezcan?
-*que desaparezcan si el usuario abre algun menu por ejemplo
-
 
 
 -probar fullscreen en todos drivers
@@ -129,6 +126,3 @@ en sdl1, raton lo ubica en la posicion inicial
 -Poder lanzar teclas F desde menú
 *teclas default (como F9) no la lanza
 ok *que pasa con maquinas que tienen teclas F? como Z88, MSX, etc-> antes ya con el menu cerrado, procesaba la tecla F de funcion y no la recibia la maquina emulada
-
-
-
