@@ -4994,6 +4994,8 @@ int util_write_configfile(void)
 
   if (send_text_as_keystrokes_send_pause.v==0)      ADD_STRING_CONFIG,"--sendtextkeystrokes-nodelay");
 
+  if (send_text_as_keystrokes_turbo_mode.v)         ADD_STRING_CONFIG,"--sendtextkeystrokes-turbo");
+
                                               ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
 
 

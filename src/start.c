@@ -350,6 +350,8 @@ z80_bit command_line_start_zeng_online_server={0};
 
 z80_bit command_line_snapshots_in_ram={0};
 
+z80_bit command_line_keystrokes_turbo={0};
+
 //z80_bit parameter_disable_allbetawarningsleep={0};
 
 //Fin command_line flags
@@ -985,6 +987,7 @@ printf (
         "--savebinarypath path               Select initial Save Binary path\n"
         "--sendtextkeystrokes-file file      Insert spool file for keyboard presses\n"
         "--sendtextkeystrokes-play           Play spool file right after starting the emulated machine\n"
+        "--sendtextkeystrokes-turbo          Allow turbo mode for sending keystrokes on Spectrum models\n"
         "--sendtextkeystrokes-keylength n    Length of every key pressed. n is in intervals of 1/50 seconds, from 1 to 100. So, a value of 1 means 20 ms, and 100 means 2000 ms\n"
         "--sendtextkeystrokes-nodelay        Do not send delay after every key press\n"
 
@@ -6432,6 +6435,10 @@ int parse_cmdline_options(int desde_commandline)
                 send_text_as_keystrokes_playing.v=1;
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--sendtextkeystrokes-turbo")) {
+                command_line_keystrokes_turbo.v=1;
+            }
+
             else if (!strcmp(argv[puntero_parametro],"--sendtextkeystrokes-keylength") ||
                     //Deprecated
                     !strcmp(argv[puntero_parametro],"--keyboardspoolfile-keylength")
@@ -8392,7 +8399,6 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     if (command_line_spritechip.v) spritechip_enable();
 
-
     if (command_line_chroma81.v) enable_chroma81();
 
     //MMC
@@ -8592,6 +8598,13 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         //minimo_duracion_vsync=command_line_vsync_minimum_lenght;
     }
 
+
+    if (command_line_keystrokes_turbo.v) {
+        send_text_as_keystrokes_turbo_mode.v=1;
+        if (send_text_as_keystrokes_is_inserted.v) {
+            util_send_text_as_keystrokes_setreset_nested_turbo();
+        }
+    }
 
     init_network_tables();
 
