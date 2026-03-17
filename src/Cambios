@@ -3,7 +3,6 @@ ZEsarUX 13 Beta 2 - The Way of the Exploding Fist edition. 05 Marzo 2026
 * Cosas nuevas agregadas:
 
 Agregada versión para macOS Silicon
-Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 Agregado soporte para drag&drop en Windows y Linux (Xwindow) - ya se soportaba en Mac y SDL2
 Permitir drag&drop de archivos comprimidos
 Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
@@ -83,6 +82,7 @@ Mejorado ZX Desktop:
 - Permitir definir valores pequeños para el ancho del ZX Desktop
 - Agregar opción para prohibir activar ZX Desktop
 - Permitir cambiar el color de fondo de iconos, botones inferiores y superiores
+- Agregada opción para ordenar automaticámente los iconos en ZX Desktop
 - Agregada opción para añadir un contorno a los iconos
 - Ventanas no se cierran al activar ZX Desktop
 
