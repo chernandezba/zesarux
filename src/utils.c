@@ -3089,7 +3089,27 @@ int input_file_keyboard_init(void)
 
 }
 
+void send_text_as_keystrokes_get_from_clipboard_one_frame(void)
+{
+    int anterior_contador_segundo=contador_segundo;
 
+    if (!menu_multitarea) {
+        //Sin multitarea no hay timers
+
+        printf("no multitarea\n");
+        menu_cpu_core_loop();
+
+    }
+    else {
+
+        while (anterior_contador_segundo==contador_segundo) {
+            printf("%d %d\n",anterior_contador_segundo,contador_segundo);
+            menu_cpu_core_loop();
+        }
+
+    }
+
+}
 
 void send_text_as_keystrokes_get_from_clipboard(void)
 {
@@ -3112,6 +3132,7 @@ void send_text_as_keystrokes_get_from_clipboard(void)
         if (longitud==-1) {
             //printf("Recepcion portapapeles asincrona\n");
 
+            /*
             int contador=50;
             while (contador && longitud==-1) {
                 scr_actualiza_tablas_teclado();
@@ -3120,6 +3141,18 @@ void send_text_as_keystrokes_get_from_clipboard(void)
 
                 contador--;
             }
+            */
+
+            int contador=50;
+            while (contador && longitud==-1) {
+                //printf("Esperar 1 frame\n");
+                send_text_as_keystrokes_get_from_clipboard_one_frame();
+                texto=scr_get_text_clipboard(&longitud);
+
+                contador--;
+            }
+
+
 
             if (texto!=NULL) {
                 //printf("Recibido portapapeles: %s\n",texto);
