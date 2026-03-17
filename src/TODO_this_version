@@ -114,7 +114,6 @@ en sdl1, raton lo ubica en la posicion inicial
 *icono/tecla f para hacer paste de manera facil: insercion, activar
 *parametro de turbo que se guarde en config
 *turbo mode se esta quitando al inicio en cpu.c
-*quiza en bucle asincrono para X11, que espere no usando actualiza_teclas sino core_loop, para que se actualice sonido etc y core de cpu
 
 
 -con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado
