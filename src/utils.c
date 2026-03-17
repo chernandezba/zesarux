@@ -9524,7 +9524,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                         //z80_byte puerto_especial3=255; //  F10 F9 F8 F7 F6
 
-                        //F6 pulsado. De momento no hace nada
+                        //F6 pulsado.
                         case UTIL_KEY_F6:
 
                                 if (pressrelease) {

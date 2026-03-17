@@ -3065,11 +3065,34 @@ int menu_if_f_key_not_default(void)
             return 1;
         }
 
+    }
+
+    return 0;
+}
+
+//Para detectar pulsaciones de tecla F9 con el menu abierto
+int menu_if_pressed_f9(void)
+{
+    //Si pulsada tecla F no asignada a default
+
+    if (menu_button_f_function.v && menu_button_f_function_index>=0) {
+
+        int indice=menu_button_f_function_index;
+
+        //Si accion es openmenu
+        int indice_tabla=defined_f_functions_keys_array[indice];
+        enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_tabla);
+        if (accion!=F_FUNCION_DEFAULT && accion!=F_FUNCION_BACKGROUND_WINDOW) {
+            return 0;
+        }
 
     }
 
-
-
+    //si F9. Tal cual abrimos smartload desde aquí, interrumpiendo donde estuviera
+    if ((puerto_especial3 & 8)==0) {
+        printf("Pulsada F9\n");
+        return 1;
+    }
 
     return 0;
 }
@@ -3221,8 +3244,8 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
         salir_todos_menus=1;
 
         if (!menu_allow_background_windows) {
-            //Temp retornar escape
-            return 2; //Escape
+            //retornar escape
+            return 2;
         }
 
         else {
@@ -3240,6 +3263,54 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
                                 }
             }
         }
+    }
+
+    if (menu_if_pressed_f9()) {
+
+        zxvision_window *filesel_en_background=zxvision_find_window_in_background("filesel");
+
+        int somos_filesel=0;
+
+        if (zxvision_current_window!=NULL) {
+            if (!strcasecmp(zxvision_current_window->geometry_name,"filesel")) {
+                printf("somos filesel\n");
+                somos_filesel=1;
+            }
+        }
+
+        //Siempre que no esté ya abierto filesel
+        if (filesel_en_background==NULL && !somos_filesel) {
+
+            printf("Abrir smartload\n");
+            menu_smartload(0);
+
+            salir_todos_menus=1;
+
+            if (!menu_allow_background_windows) {
+                //retornar escape
+                return 2;
+            }
+
+            else {
+                if (zxvision_current_window!=NULL) {
+
+                    //printf("menu_get_pressed_key_no_modifier. Retorno tecla 3 con zxvision current window no es null\n");
+                                                //Si la ventana activa permite ir a background, mandarla a background
+                                    if (zxvision_current_window->can_be_backgrounded) {
+                                            return 3; //Tecla background F6
+                                    }
+
+                                    //Si la ventana activa no permite ir a background, cerrarla
+                                    else {
+                                            return 2; //Escape
+                                    }
+                }
+            }
+
+            return 2; //Escape
+
+        }
+
     }
 
     tecla=menu_get_key_array(puerto_65022,menu_array_keys_65022);
