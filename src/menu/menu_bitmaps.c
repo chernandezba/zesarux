@@ -7538,7 +7538,7 @@ char *bitmap_button_ext_desktop_zengonline[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_mirilla_lightgun[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
-      "          wwwxwww         ",
+    "          wwwxwww         ",
     "        wwxxxxxxxww       ",
     "      wwxx   x   xxww     ",
     "     wxx   wwxww   xxw    ",
@@ -7569,7 +7569,7 @@ char *bitmap_button_ext_desktop_mirilla_lightgun[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "                          ",     //0
-      "          wwwrwww         ",
+    "          wwwrwww         ",
     "        wwrrrrrrrww       ",
     "      wwrr   r   rrww     ",
     "     wrr   wwrww   rrw    ",
@@ -7612,7 +7612,7 @@ char *bitmap_button_ext_desktop_mirilla_lightgun_disparada[EXT_DESKTOP_BUTTONS_A
 char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     " WWWWW WWWWW WWWWW WWWWW  ",     //0
-      " WxxxW WxxxW Wx xW WxxxW  ",
+    " WxxxW WxxxW Wx xW WxxxW  ",
     " W x W Wx  W Wx xW W x W  ",
     " W x W Wxx W W x W W x W  ",
     " W x W Wx  W Wx xW W x W  ",
@@ -7642,17 +7642,17 @@ char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANC
 
 char *bitmap_button_ext_desktop_paste_keystrokes[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    " WWWWW WWWWW WWWWW WWWWW  ",     //0
-      " WxxxW WxxxW Wx xW WxxxW  ",
-    " W x W Wx  W Wx xW W x W  ",
-    " W x W Wxx W W x W W x W  ",
-    " W x W Wx  W Wx xW W x W  ",
-    " W x W WxxxW Wx xW W x W  ",
-    " WWWWW WWWWW WWWWW WWWWW  ",
-    "  xx                      ",
-    "  xx                      ",
-    " xxxx                     ",
-    "  xx                      ",	//10
+    "                xxxxx     ",     //0
+    "              xxxWWWxxx   ",
+    "             xWWxxxxxWWx  ",
+    "   xxxxxxxx  xWWWWWWWWWx  ",
+    "   xxxxxxxx  xWWWWWWWWWx  ",
+    "   xx        xWWxxxxxWWx  ",
+    "   xx        xWWWWWWWWWx  ",
+    " xxxxxx      xWWxxxxxWWx  ",
+    "  xxxx       xWWWWWWWWWx  ",
+    "   xx         xxxxxxxxx   ",
+    "                          ",	//10
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxwwxwxwwxwwxxxxxxxxxxxxxx",
