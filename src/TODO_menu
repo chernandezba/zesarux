@@ -99,6 +99,8 @@ Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8
 ->ok
 *falta calcular posicion de ... en caso de archivos o <dir> cuando ancho pequeño
 
+-File selector, previews en el fondo  del ZX desktop, no lo muestra si es pantalla de QL (archivo de 32kb). el problema es que esos previews no se genera archivo scr
+
 
 -revisar algunas opciones de menu que se podrian gestionar con menu_add_item_menu_opcion_conmuta
 
