@@ -7642,16 +7642,16 @@ char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANC
 
 char *bitmap_button_ext_desktop_paste_keystrokes[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "                xxxxx     ",     //0
-    "              xxxWWWxxx   ",
-    "             xWWxxxxxWWx  ",
-    "   xxxxxxxx  xWWWWWWWWWx  ",
-    "   xxxxxxxx  xWWWWWWWWWx  ",
-    "   xx        xWWxxxxxWWx  ",
-    "   xx        xWWWWWWWWWx  ",
-    " xxxxxx      xWWxxxxxWWx  ",
-    "  xxxx       xWWWWWWWWWx  ",
-    "   xx         xxxxxxxxx   ",
+    "                xxxx      ",     //0
+    "              xxxWWxxx    ",
+    "             xWWxxxxWWx   ",
+    "    xxxxxxx  xWWWWWWWWx   ",
+    "    xxxxxxx  xWWWWWWWWx   ",
+    "    xx       xWWxxxxWWx   ",
+    "    xx       xWWWWWWWWx   ",
+    "  xxxxxx     xWWxxxxWWx   ",
+    "   xxxx      xWWWWWWWWx   ",
+    "    xx        xxxxxxxx    ",
     "                          ",	//10
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
