@@ -1751,6 +1751,11 @@ void scrxwindows_actualiza_tablas_teclado(void)
             unsigned long nitems, bytes_after;
             unsigned char *data = NULL;
 
+            if (event.xselection.property == None) {
+                debug_printf(VERBOSE_ERR,"Clipboard empty");
+                return;
+            }
+
             XGetWindowProperty(dpy, ventana, event.xselection.property,
                             0, (~0L), False, AnyPropertyType,
                             &actual_type, &actual_format,
@@ -1770,7 +1775,7 @@ void scrxwindows_actualiza_tablas_teclado(void)
                 XFree(data);
             }
             else {
-                //printf("Portapapeles vacío o no textual\n");
+                debug_printf(VERBOSE_ERR,"Clipboard empty or no text in it");
             }
         }
 
