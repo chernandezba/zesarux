@@ -383,14 +383,14 @@ char *scrsdl_windows_get_text_clipboard(int *p_longitud)
 
 
     if (!OpenClipboard(NULL)) {
-        printf("No se pudo abrir el portapapeles\n");
+        debug_printf(VERBOSE_ERR,"Can't open clipboard");
         *p_longitud=0;
         return NULL;
     }
 
     HANDLE h = GetClipboardData(CF_TEXT);
     if (!h) {
-        printf("No hay texto ASCII en el portapapeles\n");
+        debug_printf(VERBOSE_ERR,"No ASCII text on clipboard");
         CloseClipboard();
         *p_longitud=0;
         return NULL;
@@ -403,19 +403,19 @@ char *scrsdl_windows_get_text_clipboard(int *p_longitud)
         return NULL;
     }
 
-    printf("Portapapeles: %s\n", text);
+    //printf("Portapapeles: %s\n", text);
 
 
-        int longitud_texto=strlen(text)+1;
+    int longitud_texto=strlen(text)+1;
 
-        char *memoria_texto=util_malloc(longitud_texto,"Can not allocate memory for getting text from clipboard");
-        strcpy(memoria_texto,text);
-        *p_longitud=longitud_texto;
+    char *memoria_texto=util_malloc(longitud_texto,"Can not allocate memory for getting text from clipboard");
+    strcpy(memoria_texto,text);
+    *p_longitud=longitud_texto;
 
     GlobalUnlock(h);
     CloseClipboard();
 
-        return memoria_texto;
+    return memoria_texto;
 
 
 }

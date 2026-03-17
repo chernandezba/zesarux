@@ -2726,32 +2726,13 @@ char *scrcocoa_get_text_clipboard(int *p_longitud)
 void scrcocoa_set_fullscreen(void)
 {
 
-    //[cocoaView toggleFullScreen:nil];
-
-    /*
-    A partir de OSX el capitan, la llamada
-    [cocoaView toggleFullScreen:nil];
-
-
-    genera este aviso al salir:
-    CoreAnimation: warning, deleted thread with uncommitted CATransaction; set CA_DEBUG_TRANSACTIONS=1 in environment to log backtraces.
-
-    Aparte que no funciona el full screen desde GUI settings. La solucion tiene el formato:
-    [cocoaView performSelectorOnMainThread:@selector(myCustomDrawing:)
-                            withObject:myCustomData
-                            waitUntilDone:YES];
-    */
-
-[cocoaView performSelectorOnMainThread:@selector(toggleFullScreen:) withObject:nil waitUntilDone:YES];
-
+    [cocoaView performSelectorOnMainThread:@selector(toggleFullScreen:) withObject:nil waitUntilDone:YES];
 
 }
 
 
 void scrcocoa_reset_fullscreen(void)
 {
-    //[cocoaView toggleFullScreen:nil];
-    //Mismo comentario que set_fullscreen
 
     [cocoaView performSelectorOnMainThread:@selector(toggleFullScreen:) withObject:nil waitUntilDone:YES];
 

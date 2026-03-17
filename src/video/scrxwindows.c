@@ -1649,11 +1649,11 @@ void scrxwindows_actualiza_tablas_teclado(void)
         Atom msg = event.xclient.message_type;
 
         if (msg == XInternAtom(dpy, "XdndEnter", False)) {
-            printf("Drag entered\n");
+            //printf("Drag entered\n");
         }
 
         if (msg == XInternAtom(dpy, "XdndPosition", False)) {
-            printf("Drag moving\n");
+            //printf("Drag moving\n");
 
             Window source = event.xclient.data.l[0];
 
@@ -1677,7 +1677,7 @@ void scrxwindows_actualiza_tablas_teclado(void)
         }
 
         if (msg == XInternAtom(dpy, "XdndDrop", False)) {
-            printf("Drop recibido\n");
+            //printf("Drop recibido\n");
 
             Atom sel = XInternAtom(dpy, "XdndSelection", False);
             Atom target = XInternAtom(dpy, "text/uri-list", False);
@@ -1695,11 +1695,11 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
     while (XCheckTypedEvent(dpy, SelectionNotify, &event))
     {
-        printf("Selectionnotify\n");
+        //printf("Selectionnotify\n");
 
 
         if (event.xselection.selection == XInternAtom(dpy, "XdndSelection", False)) {
-            printf("Client message\n");
+            //printf("Client message\n");
             if (event.xselection.property) {
                         Atom actual;
                         int format;
@@ -1720,7 +1720,7 @@ void scrxwindows_actualiza_tablas_teclado(void)
                                 &data);
 
                 if (data) {
-                    printf("Archivo recibido: [%s]\n", data);
+                    debug_printf(VERBOSE_INFO,"Received drag-drop file: %s", data);
 
                     int longitud=strlen((char *) data);
 
@@ -1736,15 +1736,15 @@ void scrxwindows_actualiza_tablas_teclado(void)
                     if (strncmp((char *)data, prefix, strlen(prefix)) == 0) {
                         indice_inicio += strlen(prefix); // ahora uri apunta a la ruta POSIX
                     }
-                    printf("Ruta: [%s]\n", &data[indice_inicio]);
+                    //printf("Ruta: [%s]\n", &data[indice_inicio]);
                     util_drag_drop_file((char *) &data[indice_inicio]);
 
                     XFree(data);
                 }
             }
         }
-        //Recibimos el contenido del portapapeles pedido antes
 
+        //Recibimos el contenido del portapapeles pedido antes
         if (event.xselection.selection == XInternAtom(dpy, "CLIPBOARD", False)) {
             Atom actual_type;
             int actual_format;
@@ -1757,7 +1757,7 @@ void scrxwindows_actualiza_tablas_teclado(void)
                             &nitems, &bytes_after, &data);
 
             if (data) {
-                printf("Portapapeles: %s\n", (char*)data);
+                //printf("Portapapeles: %s\n", (char*)data);
 
                 longitud_portapapeles=strlen((char*)data)+1;
 
@@ -1768,8 +1768,9 @@ void scrxwindows_actualiza_tablas_teclado(void)
                 pendiente_recepcion_clipboard=2;
 
                 XFree(data);
-            } else {
-                printf("Portapapeles vacío o no textual\n");
+            }
+            else {
+                //printf("Portapapeles vacío o no textual\n");
             }
         }
 
