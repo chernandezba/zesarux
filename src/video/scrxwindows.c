@@ -1753,29 +1753,32 @@ void scrxwindows_actualiza_tablas_teclado(void)
 
             if (event.xselection.property == None) {
                 debug_printf(VERBOSE_ERR,"Clipboard empty");
-                return;
             }
 
-            XGetWindowProperty(dpy, ventana, event.xselection.property,
-                            0, (~0L), False, AnyPropertyType,
-                            &actual_type, &actual_format,
-                            &nitems, &bytes_after, &data);
-
-            if (data) {
-                //printf("Portapapeles: %s\n", (char*)data);
-
-                longitud_portapapeles=strlen((char*)data)+1;
-
-                puntero_portapapeles=util_malloc(longitud_portapapeles,"Can not allocate memory for getting text from clipboard");
-                strcpy(puntero_portapapeles,(char*)data);
-
-                //Indicar que ya se ha recibido
-                pendiente_recepcion_clipboard=2;
-
-                XFree(data);
-            }
             else {
-                debug_printf(VERBOSE_ERR,"Clipboard empty or no text in it");
+
+                XGetWindowProperty(dpy, ventana, event.xselection.property,
+                                0, (~0L), False, AnyPropertyType,
+                                &actual_type, &actual_format,
+                                &nitems, &bytes_after, &data);
+
+                if (data) {
+                    //printf("Portapapeles: %s\n", (char*)data);
+
+                    longitud_portapapeles=strlen((char*)data)+1;
+
+                    puntero_portapapeles=util_malloc(longitud_portapapeles,"Can not allocate memory for getting text from clipboard");
+                    strcpy(puntero_portapapeles,(char*)data);
+
+                    //Indicar que ya se ha recibido
+                    pendiente_recepcion_clipboard=2;
+
+                    XFree(data);
+                }
+                else {
+                    debug_printf(VERBOSE_ERR,"Clipboard empty or no text in it");
+                }
+
             }
         }
 
