@@ -32385,6 +32385,10 @@ void menu_send_text_keystrokes_status_overlay(void)
 
     }
 
+    else {
+        zxvision_print_string_defaults_fillspc(menu_send_text_keystrokes_status_window,1,0,"<Empty>");
+    }
+
 
     //Mostrar contenido
     zxvision_draw_window_contents(menu_send_text_keystrokes_status_window);
