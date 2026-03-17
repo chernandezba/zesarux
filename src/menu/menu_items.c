@@ -32284,6 +32284,10 @@ void menu_send_text_as_keystrokes(MENU_ITEM_PARAMETERS)
         input_file_keyboard_name=input_file_keyboard_name_buffer;
         input_file_keyboard_init();
 
+        if (send_text_as_keystrokes_is_inserted.v) {
+           send_text_as_keystrokes_playing.v=1;
+        }
+
     }
 
     else {
@@ -32341,6 +32345,10 @@ void menu_send_text_as_keystrokes_paste(MENU_ITEM_PARAMETERS)
     input_file_keyboard_name=NULL;
 
     send_text_as_keystrokes_get_from_clipboard();
+
+    if (send_text_as_keystrokes_is_inserted.v) {
+        send_text_as_keystrokes_playing.v=1;
+    }
 
 }
 
@@ -32507,15 +32515,15 @@ void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS)
 
         if (send_text_as_keystrokes_is_inserted.v==0) {
 
-            menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes,NULL,
-                "Read from text file","Leer de archivo de texto","Llegir d'arxiu de text");
-            menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
-
             if (scr_get_text_clipboard!=NULL) {
                 menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes_paste,NULL,
                     "Read from clipboard","Leer del portapapeles","Llegir del portapapers");
                 menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
             }
+
+            menu_add_item_menu_en_es_ca(array_menu_send_text_as_keystrokes,MENU_OPCION_NORMAL,menu_send_text_as_keystrokes,NULL,
+                "Read from text file","Leer de archivo de texto","Llegir d'arxiu de text");
+            menu_add_item_menu_prefijo(array_menu_send_text_as_keystrokes,"    ");
 
         }
 

@@ -95,9 +95,6 @@ eso se envía en las estadísticas
 
 
 
-
-
-
 -tooltips con mouse en iconos y botones
 *accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
 *quiza menos tiempo para que aparezcan?
@@ -116,15 +113,11 @@ en sdl1, raton lo ubica en la posicion inicial
 -copiar (desde fuera de ZEsarUX) -pegar como pulsaciones de teclas
 *icono/tecla f para hacer paste de manera facil: insercion, activar
 *parametro de turbo que se guarde en config
-*quiza que al insertar txt/leer de clipboard ya active playing. si el usuario no quiere, que luego lo desactive
 *turbo mode se esta quitando al inicio en cpu.c
-ok*quitar print debug
 *quiza en bucle asincrono para X11, que espere no usando actualiza_teclas sino core_loop, para que se actualice sonido etc y core de cpu
 
 
 -con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado
-
--Probar eventos x11: teclado, ratón, redimensionado ratón  etc etc que todo siga funcionando despues de cambios en drag & drop y clipboard
 
 
 -Revisar opqa y teclas mover ventana
