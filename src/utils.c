@@ -3096,14 +3096,14 @@ void send_text_as_keystrokes_get_from_clipboard_one_frame(void)
     if (!menu_multitarea) {
         //Sin multitarea no hay timers
 
-        printf("no multitarea\n");
+        //printf("no multitarea\n");
         menu_cpu_core_loop();
 
     }
     else {
 
         while (anterior_contador_segundo==contador_segundo) {
-            printf("%d %d\n",anterior_contador_segundo,contador_segundo);
+            //printf("%d %d\n",anterior_contador_segundo,contador_segundo);
             menu_cpu_core_loop();
         }
 
