@@ -7630,13 +7630,13 @@ char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANC
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxwwxwwxrrxrrxwwxwwxwwwxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xxxwwxwwxwwxwwxwwxwwxwwxxx",
-    "xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
-    "xxxxwwxrrxwwxwwxwwxwwxwxry",
-    "xxxxxxxxxxxxxxxxxxxxxxxryg",
-    "xxxxxxwwxwwwwwwwwxwwxxrygb",
-    "xxxxxxxxxxxxxxxxxxxxxrygbx",
-    " xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+    "wwbbwwwwxwwxwwxwwxwwxwwxxx",
+    "wwwwwwxxxxxxxxxxxxxxxxwxxr",    //20
+    "wbbbwwxrrxwwxwwxwwxwwxwxry",//21
+    "wwbbwwxxxxxxxxxxxxxxxxxryg",//22
+    "wwbbwwwwxwwwwwwwwxwwxxrygb",//23
+    "wbbbbwxxxxxxxxxxxxxxxrygbx",//24
+    "wwwwwwxxxxxxxxxxxxxxrygbx " 	 //25
 };
 
 
