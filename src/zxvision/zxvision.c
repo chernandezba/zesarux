@@ -8654,7 +8654,7 @@ void tooltips_mouse_timer_event(void)
     if (tooltip.id_tooltip<0) {
         //Si estaba visible, quitar
         if (tooltip_mouse_visible.v) {
-            printf("--Quitar tooltip\n");
+            debug_printf(VERBOSE_INFO,"Remove current mouse tooltip");
             tooltips_mouse_timer_event_redraw();
         }
 
@@ -8671,7 +8671,9 @@ void tooltips_mouse_timer_event(void)
     //printf("tooltip.id_tooltip %d\n",tooltip.id_tooltip);
 
     if (tooltips_mouse_id_ultimo_tooltip!=tooltip.id_tooltip || tooltips_mouse_tipo_ultimo_tooltip!=tooltip.tipo_tooltip) {
-        printf("--Cambia el anterior tooltip o no habia antes (%d %d)\n",tooltips_mouse_id_ultimo_tooltip,tooltip.id_tooltip);
+        //printf("--Cambia el anterior tooltip o no habia antes (%d %d)\n",tooltips_mouse_id_ultimo_tooltip,tooltip.id_tooltip);
+        debug_printf(VERBOSE_INFO,"Change previous mouse tooltip or did not exist before");
+
         //Borrar el anterior
         if (tooltips_mouse_id_ultimo_tooltip>=0) {
             tooltips_mouse_timer_event_redraw();

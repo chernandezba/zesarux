@@ -508,7 +508,7 @@ char *scrxwindows_get_text_clipboard(int *p_longitud)
     //En X11 no se obtiene el clipboard al momento. Se solicita y luego se recibira el evento desde el bucle de eventos
 
     if (pendiente_recepcion_clipboard==0) {
-        printf("Pedido portapapeles\n");
+        //printf("Pedido portapapeles\n");
         pendiente_recepcion_clipboard=1;
         Atom clipboard = XInternAtom(dpy, "CLIPBOARD", False);
         Atom utf8 = XInternAtom(dpy, "UTF8_STRING", False);

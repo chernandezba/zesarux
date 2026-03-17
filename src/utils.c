@@ -3044,7 +3044,7 @@ void send_text_as_keystrokes_eject(void)
 void send_text_as_keystrokes_init(char *texto,int longitud)
 {
     if (send_text_as_keystrokes_memory!=NULL) {
-        printf("Freeing previous send text as keystrokes memory\n");
+        debug_printf(VERBOSE_INFO,"Freeing previous send text as keystrokes memory");
         free(send_text_as_keystrokes_memory);
     }
 
@@ -3107,10 +3107,10 @@ void send_text_as_keystrokes_get_from_clipboard(void)
         send_text_as_keystrokes_init(texto,longitud);
     }
     else {
-        printf("longitud: %d\n",longitud);
+        //printf("longitud: %d\n",longitud);
         //Si longitud -1, indica que se recibe de manera asincrona (X11 por ejemplo)
         if (longitud==-1) {
-            printf("Recepcion portapapeles asincrona\n");
+            //printf("Recepcion portapapeles asincrona\n");
 
             int contador=50;
             while (contador && longitud==-1) {
@@ -3122,7 +3122,7 @@ void send_text_as_keystrokes_get_from_clipboard(void)
             }
 
             if (texto!=NULL) {
-                printf("Recibido portapapeles: %s\n",texto);
+                //printf("Recibido portapapeles: %s\n",texto);
                 send_text_as_keystrokes_init(texto,longitud);
             }
             else {
