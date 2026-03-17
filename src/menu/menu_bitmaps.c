@@ -7640,6 +7640,36 @@ char *bitmap_button_ext_desktop_sendtextkeystrokesstatus[EXT_DESKTOP_BUTTONS_ANC
 };
 
 
+char *bitmap_button_ext_desktop_paste_keystrokes[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    " WWWWW WWWWW WWWWW WWWWW  ",     //0
+      " WxxxW WxxxW Wx xW WxxxW  ",
+    " W x W Wx  W Wx xW W x W  ",
+    " W x W Wxx W W x W W x W  ",
+    " W x W Wx  W Wx xW W x W  ",
+    " W x W WxxxW Wx xW W x W  ",
+    " WWWWW WWWWW WWWWW WWWWW  ",
+    "  xx                      ",
+    "  xx                      ",
+    " xxxx                     ",
+    "  xx                      ",	//10
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwxwxwwxwwxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxwwxwwxrrxrrxwwxwwxwwwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxwwxwwxwwxwwxwwxwwxwwxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
+    "xxxxwwxrrxwwxwwxwwxwwxwxry",
+    "xxxxxxxxxxxxxxxxxxxxxxxryg",
+    "xxxxxxwwxwwwwwwwwxwwxxrygb",
+    "xxxxxxxxxxxxxxxxxxxxxrygbx",
+    " xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
 /*
 Template
 char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={

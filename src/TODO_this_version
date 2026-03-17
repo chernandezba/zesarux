@@ -109,8 +109,6 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -copiar (desde fuera de ZEsarUX) -pegar como pulsaciones de teclas
 *icono/tecla f para hacer paste de manera facil: insercion, activar
-*parametro de turbo que se guarde en config
-*turbo mode se esta quitando al inicio en cpu.c
 
 
 -con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado

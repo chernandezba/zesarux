@@ -284,6 +284,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"SpeccyOnline",F_FUNCION_ONLINE_SPECCY,bitmap_button_ext_desktop_speccy_online,"","Open Speccy Online browser"},
     {"ZX81Online",F_FUNCION_ONLINE_ZX81,bitmap_button_ext_desktop_zx81_online,"","Open ZX81 Online browser"},
     {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr,"","Trigger OCR function on the emulated display"},
+    {"PasteKeystrokes",F_FUNCION_PASTE_KEYSTROKES,bitmap_button_ext_desktop_paste_keystrokes,"","Paste clipboard contents as keystrokes"},
     {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch,"","Switch ZX-Uno Prism video mode"},
     {"TrashCan",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash,"","Trash Can"},
 

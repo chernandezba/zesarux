@@ -45865,6 +45865,12 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
             textspeech_enviar_speech_pantalla();
         break;
 
+        case F_FUNCION_PASTE_KEYSTROKES:
+            if (MACHINE_IS_SPECTRUM && send_text_as_keystrokes_is_inserted.v==0 && send_text_as_keystrokes_playing.v==0 && scr_get_text_clipboard!=NULL) {
+                menu_send_text_as_keystrokes_paste(0);
+            }
+        break;
+
         case F_FUNCION_SMARTLOAD:
             menu_smartload(0);
         break;
