@@ -786,7 +786,7 @@ enum defined_f_function_ids {
 //Define teclas F que se pueden mapear a acciones y botones
 #define MAX_DEFINED_F_FUNCION_NAME_LENGTH 30
 
-#define MAX_DEFINED_F_FUNCION_TOOLTIP_LENGTH 50
+#define MAX_DEFINED_F_FUNCION_TOOLTIP_LENGTH 70
 
 struct s_defined_f_function {
     char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH];

@@ -45866,8 +45866,14 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         break;
 
         case F_FUNCION_PASTE_KEYSTROKES:
-            if (MACHINE_IS_SPECTRUM && send_text_as_keystrokes_is_inserted.v==0 && send_text_as_keystrokes_playing.v==0 && scr_get_text_clipboard!=NULL) {
-                menu_send_text_as_keystrokes_paste(0);
+            if (MACHINE_IS_SPECTRUM && scr_get_text_clipboard!=NULL) {
+                if (send_text_as_keystrokes_is_inserted.v==0 && send_text_as_keystrokes_playing.v==0) {
+                    menu_send_text_as_keystrokes_paste(0);
+                }
+                else if (send_text_as_keystrokes_is_inserted.v && send_text_as_keystrokes_playing.v) {
+                    //Si esta pegandose texto ahora, detener
+                    send_text_as_keystrokes_eject();
+                }
             }
         break;
 
