@@ -119,7 +119,16 @@ en sdl1, raton lo ubica en la posicion inicial
 
 -Poder lanzar teclas F desde menú
 ok *teclas default (como F9) no la lanza
+->cambiar manera como se gestiona F9, hacerlo similar a las otras F definidas por usuario: cerrar ventanas y reentrar en menu, con una señal nueva que haga smartload
+
+
 ->acabar de probar F9.
 F9 con filesel abierto, F9 sin multitarea, F9 sin filesel abierto. Se opta por abrir tal cual smartload cuando se detecta tecla,
 en vez de simular cierre de menu y reapertura con smartload... se podria hacer asi?
 Y si asigno F9 a otra cosa? Asignando a nothing , se abre igual- >error. Y si asigno a otra cosa, ya no se abre
+
+
+ok-pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
+->cambiado función zxvision_get_next_pid
+
+-al mover ventanas, que se vea la coordenada en la barra del titulo

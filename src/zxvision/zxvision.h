@@ -1599,6 +1599,7 @@ extern int menu_pressed_zxdesktop_configurable_icon_right_button;
 extern int menu_pressed_zxdesktop_right_button_zxdesktop_background;
 extern z80_bit menu_pressed_close_all_menus;
 extern z80_bit menu_pressed_open_menu_while_in_menu;
+extern z80_bit menu_pressed_f9_with_menu_open;
 
 extern void init_zxdesktop_configurable_icons(void);
 extern void create_default_zxdesktop_configurable_icons(void);

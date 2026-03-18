@@ -1463,6 +1463,9 @@ z80_bit mouse_menu_ignore_click_open={0};
 //Se ha pulsado tecla de menu cuando menu esta abierto
 z80_bit menu_pressed_open_menu_while_in_menu={0};
 
+//Si se pulsa F9 con el menu abierto
+z80_bit menu_pressed_f9_with_menu_open={0};
+
 //Si se pulsa tecla que simula F5 + ESC (y por tanto cierra todos menus)
 z80_bit menu_pressed_close_all_menus={0};
 
@@ -3267,51 +3270,44 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
 
     if (menu_if_pressed_f9()) {
 
-        zxvision_window *filesel_en_background=zxvision_find_window_in_background("filesel");
 
-        int somos_filesel=0;
+        printf("Pulsado F9\n");
 
-        if (zxvision_current_window!=NULL) {
-            if (!strcasecmp(zxvision_current_window->geometry_name,"filesel")) {
-                printf("somos filesel\n");
-                somos_filesel=1;
-            }
+        menu_pressed_f9_with_menu_open.v=1;
+
+        menu_pressed_open_menu_while_in_menu.v=1;
+
+
+        if (pulsada_tecla_cerrar_todos_menus) {
+            debug_printf(VERBOSE_INFO,"Pressed key close all menus");
+            menu_pressed_close_all_menus.v=1;
         }
 
-        //Siempre que no esté ya abierto filesel
-        if (filesel_en_background==NULL && !somos_filesel) {
 
-            printf("Abrir smartload\n");
-            menu_smartload(0);
+        salir_todos_menus=1;
 
-            salir_todos_menus=1;
-
-            if (!menu_allow_background_windows) {
-                //retornar escape
-                return 2;
-            }
-
-            else {
-                if (zxvision_current_window!=NULL) {
-
-                    //printf("menu_get_pressed_key_no_modifier. Retorno tecla 3 con zxvision current window no es null\n");
-                                                //Si la ventana activa permite ir a background, mandarla a background
-                                    if (zxvision_current_window->can_be_backgrounded) {
-                                            return 3; //Tecla background F6
-                                    }
-
-                                    //Si la ventana activa no permite ir a background, cerrarla
-                                    else {
-                                            return 2; //Escape
-                                    }
-                }
-            }
-
-            return 2; //Escape
-
+        if (!menu_allow_background_windows) {
+            //retornar escape
+            return 2;
         }
 
+        else {
+            if (zxvision_current_window!=NULL) {
+
+                //printf("menu_get_pressed_key_no_modifier. Retorno tecla 3 con zxvision current window no es null\n");
+                                            //Si la ventana activa permite ir a background, mandarla a background
+                                if (zxvision_current_window->can_be_backgrounded) {
+                                        return 3; //Tecla background F6
+                                }
+
+                                //Si la ventana activa no permite ir a background, cerrarla
+                                else {
+                                        return 2; //Escape
+                                }
+            }
+        }
     }
+
 
     tecla=menu_get_key_array(puerto_65022,menu_array_keys_65022);
     if (tecla) return tecla;
@@ -11963,8 +11959,6 @@ zxvision_window *zxvision_search_window_by_pid(unsigned int pid_to_search)
 
 //Buscar siguiente pid para una ventana
 //Nos basamos en zxvision_last_pid pero descartando que ese no exista ya
-//Eso puede suceder cuando el contador de pid "da la vuelta", cosa altamente improbable, siendo un contador de 32 bits,
-//pero podria pasar
 unsigned int zxvision_get_next_pid(void)
 {
     //TODO: este while se quedaria sin salir cuando hubiera tantas ventanas como permite el contador de pid = 2^32 = 4294967296
@@ -11978,7 +11972,10 @@ unsigned int zxvision_get_next_pid(void)
 
     //printf("Proximo pid: %u\n",zxvision_last_pid);
 
-    return zxvision_last_pid;
+    //Incrementar el ultimo usado
+    //por una parte, siempre se incrementa,
+    //y por otra, si el contador diera la vuelta, tambien se descartarían duplicados por el bucle anterior
+    return zxvision_last_pid++;
 }
 
 void zxvision_set_ventana_tipo_activa(void)

@@ -174,7 +174,6 @@ O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo e
 quizá tiene un uso muy reducido porque los programas necesariamente no se graban con variables, excepto algunos que guardan datos
 como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables
 
--pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
 
 -Juego "Simón" haciendo uso del logo X. Y con sonidos de eventos de menú
 
