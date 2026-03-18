@@ -98,7 +98,6 @@ eso se envía en las estadísticas
 *permitir raton en full screen. probar fullscreen con zx desktop
 sdl2 ok. aunque al volver de fullscreen no lee bien raton
 en sdl1, raton lo ubica en la posicion inicial
-*a veces al pasar a fullscreen en mac se genera segfault. quiza habria que bloquear temporalmente la funcion de render
 *sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
 
 
@@ -112,4 +111,5 @@ en sdl1, raton lo ubica en la posicion inicial
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
 
 
--cocoa: iniciar con --fullscreen no tiene en cuenta si desactiva zx desktop en full screen por ejemplo. hay que llamar
+-cocoa: iniciar con --fullscreen, al salir de fullscreen no sabe si tiene que restaurar zx desktop, border etc,
+porque cuando ha arrancado, se inicia la ventana primero sin  zx desktop

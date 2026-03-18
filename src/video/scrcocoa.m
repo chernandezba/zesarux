@@ -3220,7 +3220,7 @@ int scrcocoa_init (void) {
 
 
     if (ventana_fullscreen) {
-        [cocoaView toggleFullScreen:nil];
+        [cocoaView toggleFullScreenPrevio:nil];
     }
 
     //Inicializar joystick y gamepads. Para el caso, las funciones se llamaran *joystick* aunque hagan referencia a los dos
