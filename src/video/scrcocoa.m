@@ -1412,6 +1412,8 @@ int cocoa_raton_oculto=0;
 //Se llama aqui desde menu de mac de fullscreen de ZEsarUX, hay que considerar parametros de antes/despues desactivado zx desktop , border, etc
 - (void)toggleFullScreenPrevio:(id)sender
 {
+    //printf("Inicio toggleFullScreenPrevio\n");
+
 
     //printf("toggleFullScreenPrevio\n");
 
@@ -1420,6 +1422,8 @@ int cocoa_raton_oculto=0;
     if (!window) {
         return;
     }
+
+    pendingresize=1;
 
     if ((window.styleMask & NSWindowStyleMaskFullScreen) != 0) {
         //Está en pantalla completa. Conmutara a no pantalla completa
@@ -1438,6 +1442,10 @@ int cocoa_raton_oculto=0;
 
     [window toggleFullScreen:sender];
 
+    //printf("Fin toggleFullScreenPrevio\n");
+
+    pendingresize=0;
+
 }
 
 - (void)toggleFullScreen:(id)sender
@@ -1447,6 +1455,8 @@ int cocoa_raton_oculto=0;
     if (!window) {
         return;
     }
+
+    pendingresize=1;
 
     if ((window.styleMask & NSWindowStyleMaskFullScreen) != 0) {
         //Está en pantalla completa. Conmutara a no pantalla completa
@@ -1459,6 +1469,8 @@ int cocoa_raton_oculto=0;
     [self setContentDimensions];
 
     [window toggleFullScreen:sender];
+
+    pendingresize=0;
 }
 
 
@@ -2777,7 +2789,7 @@ void scrcocoa_refresca_pantalla_solo_driver(void)
 
 void scrcocoa_refresca_pantalla(void)
 {
-
+    //printf("Inicio scrcocoa_refresca_pantalla\n");
 
     if (pendiente_z88_draw_lower) {
         screen_z88_draw_lower_screen();
@@ -2786,7 +2798,10 @@ void scrcocoa_refresca_pantalla(void)
     }
 
 
-    if (pendingresize) return;
+    if (pendingresize) {
+        //printf("Salir de scrcocoa_refresca_pantalla sin hacer nada porque esta pendingresize\n");
+        return;
+    }
 
     /*if (pendingresize && pendingresize_w!=0 && pendingresize_h!=0) {
         printf ("redimensionar desde refresca_pantalla\n");
@@ -2911,6 +2926,7 @@ void scrcocoa_refresca_pantalla(void)
 
     sem_screen_refresh_reallocate_layers=0;
 
+    //printf("Fin scrcocoa_refresca_pantalla\n");
 
 }
 
