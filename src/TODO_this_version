@@ -110,3 +110,6 @@ en sdl1, raton lo ubica en la posicion inicial
 
 
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
+
+
+-cocoa: iniciar con --fullscreen no tiene en cuenta si desactiva zx desktop en full screen por ejemplo. hay que llamar

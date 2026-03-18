@@ -1409,6 +1409,36 @@ int cocoa_raton_oculto=0;
 
 }
 
+//Se llama aqui desde menu de mac de fullscreen de ZEsarUX, hay que considerar parametros de antes/despues desactivado zx desktop , border, etc
+- (void)toggleFullScreenPrevio:(id)sender
+{
+
+    //printf("toggleFullScreenPrevio\n");
+
+    NSWindow *window = [self window];
+
+    if (!window) {
+        return;
+    }
+
+    if ((window.styleMask & NSWindowStyleMaskFullScreen) != 0) {
+        //Está en pantalla completa. Conmutara a no pantalla completa
+        //printf("Quitamos full screen\n");
+        change_variable_ventana_fullscreen(0);
+        menu_interface_fullscreen_disable();
+    }
+    else {
+        //printf("Pasamos a full screen\n");
+        menu_interface_fullscreen_enable();
+        change_variable_ventana_fullscreen(1);
+    }
+
+
+    [self setContentDimensions];
+
+    [window toggleFullScreen:sender];
+
+}
 
 - (void)toggleFullScreen:(id)sender
 {
@@ -1421,30 +1451,10 @@ int cocoa_raton_oculto=0;
     if ((window.styleMask & NSWindowStyleMaskFullScreen) != 0) {
         //Está en pantalla completa. Conmutara a no pantalla completa
         change_variable_ventana_fullscreen(0);
-        menu_interface_fullscreen_disable();
     }
     else {
         change_variable_ventana_fullscreen(1);
-        menu_interface_fullscreen_enable();
     }
-
-    //printf("togglefullscreen. ventana_fullscreen=%d\n",ventana_fullscreen);
-
-    /*
-
-    if (!ventana_fullscreen) {
-
-        ventana_fullscreen = 1;
-
-        //dejamos que se vea el raton en pantalla completa
-        //[self grabMouse];
-    }
-    else {
-
-        ventana_fullscreen = 0;
-        //[self ungrabMouse];
-    }
-    */
 
     [self setContentDimensions];
 
@@ -2533,6 +2543,7 @@ CPSProcessSerNum PSN;
     // View menu
     //
     menu = [[NSMenu alloc] initWithTitle:@"View"];
+    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(toggleFullScreenPrevio:) keyEquivalent:@""] autorelease]];
     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Open ZEsarUX menu" action:@selector(openzesaruxmenu:) keyEquivalent:@""] autorelease]];
 
     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
