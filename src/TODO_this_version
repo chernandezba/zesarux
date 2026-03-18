@@ -122,7 +122,6 @@ ok *teclas default (como F9) no la lanza
 ->cambiar manera como se gestiona F9, hacerlo similar a las otras F definidas por usuario: cerrar ventanas y reentrar en menu, con una señal nueva que haga smartload
 
 
-->acabar de probar F9.
-F9 con filesel abierto, F9 sin multitarea, F9 sin filesel abierto. Se opta por abrir tal cual smartload cuando se detecta tecla,
-en vez de simular cierre de menu y reapertura con smartload... se podria hacer asi?
-Y si asigno F9 a otra cosa? Asignando a nothing , se abre igual- >error. Y si asigno a otra cosa, ya no se abre
+->acabar de probar F9 en menu abierto
+*Probar F9 asignada a default, nothing, smartload y otra cosa
+*tanto con menu abierto como cerrado
