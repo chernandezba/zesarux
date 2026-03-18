@@ -115,13 +115,3 @@ en sdl1, raton lo ubica en la posicion inicial
 
 
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
-
-
--Poder lanzar teclas F desde menú
-ok *teclas default (como F9) no la lanza
-->cambiar manera como se gestiona F9, hacerlo similar a las otras F definidas por usuario: cerrar ventanas y reentrar en menu, con una señal nueva que haga smartload
-
-
-->acabar de probar F9 en menu abierto
-*Probar F9 asignada a default, nothing, smartload y otra cosa
-*tanto con menu abierto como cerrado

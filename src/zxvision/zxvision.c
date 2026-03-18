@@ -3084,7 +3084,7 @@ int menu_if_pressed_background_button(void)
 int menu_if_f_key_not_default(void)
 {
     //Si pulsada tecla F no asignada a default
-    printf("menu_if_f_key_not_default\n");
+    //printf("menu_if_f_key_not_default\n");
 
     if (menu_button_f_function.v && menu_button_f_function_index>=0) {
 
@@ -3107,14 +3107,14 @@ int menu_if_f_key_not_default(void)
 int menu_if_pressed_f9(void)
 {
     //Si pulsada tecla F9 no asignada a default
-    printf("menu_if_pressed_f9. menu_button_f_function.v %d menu_button_f_function_index %d\n",menu_button_f_function.v,menu_button_f_function_index);
+    //printf("menu_if_pressed_f9. menu_button_f_function.v %d menu_button_f_function_index %d\n",menu_button_f_function.v,menu_button_f_function_index);
 
     if ((puerto_especial3 & 8)!=0) {
         //printf("No pulsada F9\n");
         return 0;
     }
 
-    printf("--Pulsada F9\n");
+    //printf("--Pulsada F9\n");
 
 
     /*
@@ -3138,13 +3138,13 @@ int menu_if_pressed_f9(void)
     enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_tabla);
 
     if (accion==F_FUNCION_NOTHING) {
-        printf("--Asignada F9 a nada\n");
+        //printf("--Asignada F9 a nada\n");
         return 0;
     }
 
     //Nota: si accion está asignada a algo que no es default, ya se detectara antes desde menu_if_f_key_not_default()
 
-    printf("--menu_if_pressed_f9 F9 pulsada y genera smartload\n");
+    //printf("--menu_if_pressed_f9 F9 pulsada y genera smartload\n");
 
     return 1;
 }
@@ -3320,7 +3320,7 @@ las condiciones de "ventana activa se puede enviar a background o no" son comune
     if (menu_if_pressed_f9()) {
 
 
-        printf("Pulsado F9\n");
+        //printf("Pulsado F9\n");
 
         menu_pressed_f9_with_menu_open.v=1;
 
