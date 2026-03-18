@@ -10137,7 +10137,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
             if (w!=NULL) {
                 char titulo[ZXVISION_MAX_WINDOW_TITLE];
 
-                sprintf(titulo,"%d , %d",w->x,w->y);
+                sprintf(titulo,"%d,%d",w->x,w->y);
 
                 menu_dibuja_ventana_titulo(w,titulo);
             }
@@ -10155,7 +10155,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
             if (w!=NULL) {
                 char titulo[ZXVISION_MAX_WINDOW_TITLE];
 
-                sprintf(titulo,"%d X %d",w->visible_width,w->visible_height);
+                sprintf(titulo,"%d x %d",w->visible_width,w->visible_height);
 
                 menu_dibuja_ventana_titulo(w,titulo);
             }

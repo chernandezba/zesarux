@@ -128,7 +128,5 @@ en vez de simular cierre de menu y reapertura con smartload... se podria hacer a
 Y si asigno F9 a otra cosa? Asignando a nothing , se abre igual- >error. Y si asigno a otra cosa, ya no se abre
 
 
-ok-pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
-->cambiado función zxvision_get_next_pid
 
--al mover ventanas, que se vea la coordenada en la barra del titulo
+ok -al mover ventanas, que se vea la coordenada en la barra del titulo
