@@ -1549,6 +1549,14 @@ void scrxwindows_actualiza_tablas_teclado(void)
                     mouse_wheel_vertical=-1;
                 }
 
+                //Y 6 7 scroll izquierda y derecha
+                if ( event.xbutton.button == 6 ) {
+                    mouse_wheel_horizontal=1;
+                }
+
+                if ( event.xbutton.button == 7 ) {
+                    mouse_wheel_horizontal=-1;
+                }
 
 
                 debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. ", event.xbutton.x, event.xbutton.y);
