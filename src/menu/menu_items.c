@@ -45608,10 +45608,7 @@ void menu_inicio_bucle_main(void)
 
         //Detectar pulsaciones de teclas de funcion pulsadas con el menu abierto
         else if (menu_button_f_function.v) {
-
             debug_printf(VERBOSE_DEBUG,"Detected pressed F-key before re-enter menu");
-
-            printf("Detected pressed F-key before re-enter menu\n");
 
             //Si se reabre menu, resetear flags de teclas pulsadas especiales
             menu_button_f_function.v=0;
@@ -45628,39 +45625,22 @@ void menu_inicio_bucle_main(void)
                 menu_button_f_function_action=0;
             }
 
-
             menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
-
 
             //Salir normalmente, excepto cuando se ha inyectado teclas (como en sendkeysmenu)
             if (!menu_inject_teclas_estado) salir_menu=1;
-
-
         }
 
         //Detectar pulsado F9 con el menu abierto
         else if (menu_pressed_f9_with_menu_open.v) {
-
             menu_pressed_f9_with_menu_open.v=0;
-
-            printf("Detected pressed F9 before re-enter menu\n");
-
-
 
             osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
 
-            //Procesar comandos F
-
-
             menu_smartload(0);
 
-
             menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
-
-
             salir_menu=1;
-
-
         }
 
         else {
