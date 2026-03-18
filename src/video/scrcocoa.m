@@ -63,7 +63,7 @@
 #include "utils.h"
 
 #include "timer.h"
-#include "menu.h"
+#include "menu_items_settings.h"
 
 #include "joystick.h"
 #include "cpc.h"
@@ -1421,9 +1421,11 @@ int cocoa_raton_oculto=0;
     if ((window.styleMask & NSWindowStyleMaskFullScreen) != 0) {
         //Está en pantalla completa. Conmutara a no pantalla completa
         change_variable_ventana_fullscreen(0);
+        menu_interface_fullscreen_disable();
     }
     else {
         change_variable_ventana_fullscreen(1);
+        menu_interface_fullscreen_enable();
     }
 
     //printf("togglefullscreen. ventana_fullscreen=%d\n",ventana_fullscreen);
@@ -2531,7 +2533,6 @@ CPSProcessSerNum PSN;
     // View menu
     //
     menu = [[NSMenu alloc] initWithTitle:@"View"];
-    [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(toggleFullScreen:) keyEquivalent:@""] autorelease]];
     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Open ZEsarUX menu" action:@selector(openzesaruxmenu:) keyEquivalent:@""] autorelease]];
 
     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];

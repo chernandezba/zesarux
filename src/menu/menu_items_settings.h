@@ -30,6 +30,7 @@ extern int menu_interface_border_cond(void);
 extern void menu_interface_border(MENU_ITEM_PARAMETERS);
 extern void menu_interface_fullscreen(MENU_ITEM_PARAMETERS);
 extern void menu_interface_fullscreen_disable(void);
+extern void menu_interface_fullscreen_enable(void);
 extern void menu_interface_flash(MENU_ITEM_PARAMETERS);
 extern void menu_interface_multitask(MENU_ITEM_PARAMETERS);
 extern void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS);
