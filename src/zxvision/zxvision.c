@@ -188,6 +188,35 @@ int menu_char_height=8;
 
 int menu_last_cpu_use=0;
 
+
+int mouse_is_dragging=0;
+int window_is_being_moved=0;
+int window_is_being_resized=0;
+int configurable_icon_is_being_moved=0;
+int configurable_icon_is_being_moved_which=-1;
+int configurable_icon_is_being_moved_previous_x=0;
+int configurable_icon_is_being_moved_previous_y=0;
+
+//ultima posicion que se ha dibujado arrastrando
+int configurable_icon_is_being_moved_previous_dragged_x=0;
+int configurable_icon_is_being_moved_previous_dragged_y=0;
+
+//Para evitar que se mueva un icono sin querer si pulsamos y movemos un poco el raton
+int zxvision_posicion_inicial_mover_icono_x=0;
+int zxvision_posicion_inicial_mover_icono_y=0;
+
+int window_mouse_x_before_move=0;
+int window_mouse_y_before_move=0;
+
+int last_x_mouse_clicked=0;
+int last_y_mouse_clicked=0;
+int mouse_is_clicking=0;
+int menu_mouse_left_double_click_counter=0;
+int menu_mouse_left_double_click_counter_initial=0;
+
+int mouse_is_double_clicking=0;
+
+
 void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf);
 
 defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
@@ -10102,6 +10131,19 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
     //solo hacerlo en el caso de drivers completos
     if (si_complete_video_driver() ) {
 
+        //Si estaba en titulo y moviendo la ventana
+        if (mouse_is_dragging && window_is_being_moved) {
+            zxvision_window *w=zxvision_current_window;
+            if (w!=NULL) {
+                char titulo[ZXVISION_MAX_WINDOW_TITLE];
+
+                sprintf(titulo,"%d , %d",w->x,w->y);
+
+                menu_dibuja_ventana_titulo(w,titulo);
+            }
+
+        }
+
         //TODO: se dibuja zona punteada cuando mouse_is_dragging, esto es un error, porque cualquier acción de arrastrar algo en la ventana,
         //ocasiona que se dibuje punteado, no solo al arrastrar la ventana propiamente
         //Solo que no se nota porque el dibujado punteado consiste en no dibujar 1 de cada 2 pixeles, y como ya están dibujados, su efecto no se nota
@@ -17484,32 +17526,7 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
 }
 
 
-int mouse_is_dragging=0;
-int window_is_being_moved=0;
-int window_is_being_resized=0;
-int configurable_icon_is_being_moved=0;
-int configurable_icon_is_being_moved_which=-1;
-int configurable_icon_is_being_moved_previous_x=0;
-int configurable_icon_is_being_moved_previous_y=0;
 
-//ultima posicion que se ha dibujado arrastrando
-int configurable_icon_is_being_moved_previous_dragged_x=0;
-int configurable_icon_is_being_moved_previous_dragged_y=0;
-
-//Para evitar que se mueva un icono sin querer si pulsamos y movemos un poco el raton
-int zxvision_posicion_inicial_mover_icono_x=0;
-int zxvision_posicion_inicial_mover_icono_y=0;
-
-int window_mouse_x_before_move=0;
-int window_mouse_y_before_move=0;
-
-int last_x_mouse_clicked=0;
-int last_y_mouse_clicked=0;
-int mouse_is_clicking=0;
-int menu_mouse_left_double_click_counter=0;
-int menu_mouse_left_double_click_counter_initial=0;
-
-int mouse_is_double_clicking=0;
 
 
 void zxvision_handle_mouse_move_aux(zxvision_window *w)

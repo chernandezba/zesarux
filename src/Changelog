@@ -75,6 +75,7 @@ Improved ZX Vision:
 - Allow to select dark or light GUI style depending on current hour
 - Changed charset for styles Solarized Dark and Light: now uses the same as AtariTOS
 - Show window size when resizing
+- Show window position when moving
 - Changed windows border color when dragging for resizing: Warning color when a window has to be enlarged (because there is text beyond current size), otherwise Selected color
 - New widget type Triangle on View Sensors
 
