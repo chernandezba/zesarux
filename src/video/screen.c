@@ -12760,17 +12760,17 @@ if (reinicia_ventana) {
 //refresco de pantalla, 2 veces, para que cuando haya modo interlaced o gigascreen y multitask on, se dibujen los dos frames, el par y el impar
 void all_interlace_scr_refresca_pantalla(void)
 {
-	//printf ("antes de scr_refresca_pantalla\n");
+    //printf ("antes de scr_refresca_pantalla\n");
     scr_refresca_pantalla();
-	//printf ("despues de scr_refresca_pantalla\n");
+    //printf ("despues de scr_refresca_pantalla\n");
     if (video_interlaced_mode.v || gigascreen_enabled.v) {
-      interlaced_numero_frame++;
-			screen_switch_rainbow_buffer();
-      scr_refresca_pantalla();
+        interlaced_numero_frame++;
+        screen_switch_rainbow_buffer();
+        scr_refresca_pantalla();
     }
 
-	//Modo timex real necesita esto
-	if (timex_video_emulation.v && (timex_mode_512192_real.v || timex_ugly_hack_enabled)) clear_putpixel_cache();
+    //Modo timex real necesita esto
+    if (timex_video_emulation.v && (timex_mode_512192_real.v || timex_ugly_hack_enabled)) clear_putpixel_cache();
 
 }
 
