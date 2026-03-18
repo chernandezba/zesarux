@@ -1414,7 +1414,6 @@ int cocoa_raton_oculto=0;
 {
     //printf("Inicio toggleFullScreenPrevio\n");
 
-
     //printf("toggleFullScreenPrevio\n");
 
     NSWindow *window = [self window];
@@ -1450,6 +1449,8 @@ int cocoa_raton_oculto=0;
 
 - (void)toggleFullScreen:(id)sender
 {
+    //printf("toggleFullScreen linea 1453\n");
+
     NSWindow *window = [self window];
 
     if (!window) {
@@ -2408,7 +2409,7 @@ int previous_timer_sleep_machine=0;
 
 - (void)toggleFullScreen:(id)sender
 {
-    //COCOA_DEBUG("ZesaruxCocoaAppController: toggleFullScreen\n");
+    //printf("ZesaruxCocoaAppController: toggleFullScreen\n");
 
     [cocoaView toggleFullScreen:sender];
 }
@@ -2749,7 +2750,7 @@ char *scrcocoa_get_text_clipboard(int *p_longitud)
 
 void scrcocoa_set_fullscreen(void)
 {
-
+    //printf("scrcocoa_set_fullscreen\n");
     [cocoaView performSelectorOnMainThread:@selector(toggleFullScreen:) withObject:nil waitUntilDone:YES];
 
 }
@@ -2757,7 +2758,7 @@ void scrcocoa_set_fullscreen(void)
 
 void scrcocoa_reset_fullscreen(void)
 {
-
+    //printf("scrcocoa_reset_fullscreen\n");
     [cocoaView performSelectorOnMainThread:@selector(toggleFullScreen:) withObject:nil waitUntilDone:YES];
 
 }
@@ -3141,8 +3142,10 @@ void scrcocoa_stop_timer(void)
     //[cocoaView stopTimer];
 }
 
+int realizado_primer_fullscreen_inicio=0;
 
-int scrcocoa_init (void) {
+int scrcocoa_init (void)
+{
 
 
     debug_printf (VERBOSE_INFO,"Init COCOA(OpenGL) Video Driver");
@@ -3218,8 +3221,13 @@ int scrcocoa_init (void) {
         });
 
 
+    //Este cambio a fullscreen solo queremos que se lance la primera vez al inicio, si se ha arrancado con --fullscreen
+    //El resto de cambios de fullscreen se deben gestionar desde scrcocoa_set_fullscreen y scrcocoa_reset_fullscreen
+    //Hay que tener en cuenta que aqui al init se llama siempre cuando se conmuta de pantalla completa
+    if (ventana_fullscreen && !realizado_primer_fullscreen_inicio) {
+        realizado_primer_fullscreen_inicio=1;
 
-    if (ventana_fullscreen) {
+        //printf("screen_ext_desktop_enabled: %d\n",screen_ext_desktop_enabled);
         [cocoaView toggleFullScreenPrevio:nil];
     }
 
