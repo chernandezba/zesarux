@@ -19379,6 +19379,8 @@ void menu_video_output_overlay(void)
 
     if (rainbow_enabled.v) {
 
+        int offset_x=menu_char_width;
+
         int x,y,xmax,ymax;
         xmax=get_total_ancho_rainbow();
         ymax=get_total_alto_rainbow();
@@ -19387,7 +19389,7 @@ void menu_video_output_overlay(void)
 
         for (y=0;y<ymax;y++) {
             for (x=0;x<xmax;x++) {
-                zxvision_putpixel(menu_video_output_window,x,y,*puntero);
+                zxvision_putpixel(menu_video_output_window,x+offset_x,y,*puntero);
                 puntero++;
             }
         }
