@@ -109,7 +109,15 @@ en sdl1, raton lo ubica en la posicion inicial
 
 
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
+*comprobado y a mi no me pasa. quiza es cuando se usa sdl2 sobre framebuffer? quiza falta algun comando mas de sdl en
+scrsdl_refresca_pantalla_solo_driver?
+Posibles cosas:
 
+-doble comando
+SDL_RenderPresent(renderer);
+SDL_RenderPresent(renderer);
 
-ok-cocoa: iniciar con --fullscreen, al salir de fullscreen no sabe si tiene que restaurar zx desktop, border etc,
-porque cuando ha arrancado, se inicia la ventana primero sin  zx desktop
+-meter un hint:
+SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
+antes de commonsdl_init
+
