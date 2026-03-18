@@ -126,7 +126,3 @@ ok *teclas default (como F9) no la lanza
 F9 con filesel abierto, F9 sin multitarea, F9 sin filesel abierto. Se opta por abrir tal cual smartload cuando se detecta tecla,
 en vez de simular cierre de menu y reapertura con smartload... se podria hacer asi?
 Y si asigno F9 a otra cosa? Asignando a nothing , se abre igual- >error. Y si asigno a otra cosa, ya no se abre
-
-
-
-ok -al mover ventanas, que se vea la coordenada en la barra del titulo

@@ -3084,6 +3084,7 @@ int menu_if_pressed_background_button(void)
 int menu_if_f_key_not_default(void)
 {
     //Si pulsada tecla F no asignada a default
+    printf("menu_if_f_key_not_default\n");
 
     if (menu_button_f_function.v && menu_button_f_function_index>=0) {
 
@@ -3105,22 +3106,26 @@ int menu_if_f_key_not_default(void)
 //Para detectar pulsaciones de tecla F9 con el menu abierto
 int menu_if_pressed_f9(void)
 {
-    //Si pulsada tecla F no asignada a default
+    //Si pulsada tecla F9 no asignada a default
+    printf("menu_if_pressed_f9. menu_button_f_function.v %d menu_button_f_function_index %d\n",menu_button_f_function.v,menu_button_f_function_index);
 
     if (menu_button_f_function.v && menu_button_f_function_index>=0) {
+        printf("menu_if_pressed_f9 cumple funcion e indice\n");
 
         int indice=menu_button_f_function_index;
 
         //Si accion es openmenu
         int indice_tabla=defined_f_functions_keys_array[indice];
         enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_tabla);
-        if (accion!=F_FUNCION_DEFAULT && accion!=F_FUNCION_BACKGROUND_WINDOW) {
+
+        if (accion!=F_FUNCION_DEFAULT && accion!=F_FUNCION_SMARTLOAD) {
             return 0;
         }
 
     }
 
-    //si F9. Tal cual abrimos smartload desde aquí, interrumpiendo donde estuviera
+    printf("menu_if_pressed_f9 2\n");
+
     if ((puerto_especial3 & 8)==0) {
         printf("Pulsada F9\n");
         return 1;
