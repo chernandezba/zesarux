@@ -2851,7 +2851,7 @@ int parse_cmdline_options(int desde_commandline)
                 autochange_zoom_big_display.v=0;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--video-special-effects")) {
+            else if (!strcmp(argv[puntero_parametro],"--video-special-effects-enable")) {
                 screen_special_effects_enabled.v=1;
             }
 
