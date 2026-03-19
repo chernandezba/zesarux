@@ -4962,7 +4962,7 @@ int scalled_rainbow_alto=0;
 z80_int *new_scalled_rainbow_buffer_gigascren_one=NULL;
 z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 
-void screen_scale_075_050_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
+void screen_special_effects_functions(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
 
@@ -5039,8 +5039,9 @@ void screen_scale_075_050_gigascreen_function(int ancho,int alto)
                         scalled_rainbow_alto=alto;
                 }
 
-				screen_scale_075_050_and_watermark_function(rainbow_buffer_one,new_scalled_rainbow_buffer_gigascren_one,ancho,alto);
-				screen_scale_075_050_and_watermark_function(rainbow_buffer_two,new_scalled_rainbow_buffer_gigascren_two,ancho,alto);
+                //TODO rehacer esto
+				//screen_scale_075_050_and_watermark_function(rainbow_buffer_one,new_scalled_rainbow_buffer_gigascren_one,ancho,alto);
+				//screen_scale_075_050_and_watermark_function(rainbow_buffer_two,new_scalled_rainbow_buffer_gigascren_two,ancho,alto);
 }
 
 
@@ -5208,7 +5209,7 @@ void screen_scale_075_050_free_buffers(void)
     }
 }
 
-void screen_scale_075_050_025_function(int ancho,int alto)
+void screen_special_effects_functions_pre(int ancho,int alto)
 {
 
 
@@ -5239,7 +5240,7 @@ void screen_scale_075_050_025_function(int ancho,int alto)
 			scalled_rainbow_alto=alto;
 		}
 
-		screen_scale_075_050_and_watermark_function(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
+		screen_special_effects_functions(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
 
 }
 
@@ -5255,7 +5256,7 @@ z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
 
 	//Si se aplican efectos a la pantalla
 	if (screen_special_effects_enabled.v) {
-		screen_scale_075_050_025_function(ancho,alto);
+		screen_special_effects_functions_pre(ancho,alto);
 		puntero=new_scalled_rainbow_buffer;
 	}
 

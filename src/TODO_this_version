@@ -127,3 +127,13 @@ antes de commonsdl_init
 -copy-paste y text-paste quizá mover a otro menú?
 
 -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el total height. se deberia resetear
+
+
+
+zoom: origen rainbow buffer-> zoom-> destino otro
+unsteady: origen rainbow buffer-> unsteady-> destino otro
+zoom+unsteady: rigen rainbow buffer-> zoom -> destino intermedio -> unsteady -> destino otro
+
+*primero: el destino final hacer siempre free
+
+-revisar gigascreen , replantear entera?
