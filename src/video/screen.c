@@ -4938,23 +4938,6 @@ void screen_scale_075_050_and_watermark_function(z80_int *origen,z80_int *destin
         }
 
 
-		//Forzamos meter watermark
-        /*
-		int watermark_x;
-		int watermark_y;
-
-		//Misma variable que watermark general
-		screen_get_offsets_watermark_position(screen_watermark_position,ancho_final,alto_final,&watermark_x,&watermark_y);
-
-		watermark_x +=screen_reduce_offset_x;
-		watermark_y +=screen_reduce_offset_y;
-
-
-		screen_put_watermark_generic(destino,watermark_x,watermark_y,scalled_rainbow_ancho,screen_generic_putpixel_indexcolour);
-        */
-
-
-
 }
 
 
