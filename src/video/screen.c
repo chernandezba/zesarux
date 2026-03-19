@@ -4974,6 +4974,78 @@ void screen_rainbow_effect_flip_horizontal(z80_int *origen,z80_int *destino,int 
 
 }
 
+
+int effect_nagravision_seed=0;
+
+int effect_nagravision_get_rnd(void)
+{
+/*
+;Seguimos la misma formula RND del spectrum:
+;0..1 -> n=(75*(n+1)-1)/65536
+;0..65535 -> n=65536/(75*(n+1)-1)
+generar_random_noise:
+*/
+
+        int resultado;
+        int r;
+
+        r=effect_nagravision_seed;
+
+        resultado=(75*(r+1)-1);
+
+        effect_nagravision_seed=resultado & 0xFFFF;
+
+        return effect_nagravision_seed;
+
+
+}
+
+void screen_rainbow_effect_nagravision_swap(z80_int *destino,int ancho,int y1,int y2)
+{
+    int x;
+
+    for (x=0;x<ancho;x++) {
+        int y1_offset=y1*ancho+x;
+        int y2_offset=y2*ancho+x;
+
+        int color1=destino[y1_offset];
+        int color2=destino[y2_offset];
+        destino[y1_offset]=color2;
+        destino[y2_offset]=color1;
+    }
+}
+
+
+int screen_rainbow_effect_nagravision_initial_seed=0;
+
+void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    //Se inicializa el seed en cada frame
+    effect_nagravision_seed=screen_rainbow_effect_nagravision_initial_seed;
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    //Y mezclar lineas
+
+    int total_mezclar=alto*2; //mezclar unas cuantas lineas
+
+    while (total_mezclar) {
+        int y1=effect_nagravision_get_rnd() % alto;
+        int y2=effect_nagravision_get_rnd() % alto;
+
+        screen_rainbow_effect_nagravision_swap(destino,ancho,y1,y2);
+
+        total_mezclar--;
+    }
+
+    screen_rainbow_effect_nagravision_initial_seed++;
+    //A cada segundo, se usa mismo seed
+    if (screen_rainbow_effect_nagravision_initial_seed==50) screen_rainbow_effect_nagravision_initial_seed=0;
+
+}
+
 //Comunes a escalado normal y escalado con gigascreen
 int scalled_rainbow_ancho=0;
 int scalled_rainbow_alto=0;
@@ -5031,6 +5103,14 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
     if (screen_special_effects_flip_horizontal.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_rainbow_effect_flip_horizontal(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+    if (screen_special_effects_nagravision.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
         aplicado_algo=1;
         if (origen!=inicial_origen) free(origen);
         origen=destino;
@@ -5268,7 +5348,6 @@ z80_int *screen_special_effects_alloc_buffer(int ancho,int alto)
 void screen_special_effects_functions_pre(int ancho,int alto)
 {
 
-
     //Liberar buffer anterior
     screen_special_effects_free_buffers();
 
@@ -5282,6 +5361,7 @@ z80_bit screen_special_effects_enabled={0};
 z80_bit screen_special_effects_temblar={0};
 z80_bit screen_special_effects_flip_vertical={0};
 z80_bit screen_special_effects_flip_horizontal={0};
+z80_bit screen_special_effects_nagravision={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
