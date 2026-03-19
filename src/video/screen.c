@@ -4932,6 +4932,28 @@ void screen_rainbow_effect_temblar(z80_int *origen,z80_int *destino,int ancho,in
 
 }
 
+void screen_rainbow_effect_flip_vertical(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    int x,y;
+
+    for (y=0;y<alto/2;y++) {
+
+        for (x=0;x<ancho;x++) {
+            //Obtener pixel de arriba y abajo y meterlos en destino intercambiados
+            int offset1=(ancho*y)+x;
+            int offset2=(ancho*(alto-1-y))+x;
+
+            int color1=origen[offset1];
+            int color2=origen[offset2];
+            destino[offset1]=color2;
+            destino[offset2]=color1;
+        }
+
+    }
+
+
+}
+
 //Comunes a escalado normal y escalado con gigascreen
 int scalled_rainbow_ancho=0;
 int scalled_rainbow_alto=0;
@@ -4965,9 +4987,13 @@ void screen_scale_075_050_and_watermark_function(z80_int *origen,z80_int *destin
         screen_rainbow_effect_temblar(origen,destino,ancho,alto);
     }
 
+    if (screen_special_effects_flip_vertical.v) {
+        screen_rainbow_effect_flip_vertical(origen,destino,ancho,alto);
+    }
+
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
     //TODO: averiguar esto de manera mas eficiente
-    if (screen_reduction_factor==SCREEN_REDUCE_NONE && screen_special_effects_temblar.v==0) {
+    if (screen_reduction_factor==SCREEN_REDUCE_NONE && screen_special_effects_temblar.v==0 && screen_special_effects_flip_vertical.v==0) {
         int tamanyo=ancho*alto*2;
         memcpy(destino,origen,tamanyo);
     }
@@ -5220,6 +5246,7 @@ void screen_scale_075_050_025_function(int ancho,int alto)
 
 z80_bit screen_special_effects_enabled={0};
 z80_bit screen_special_effects_temblar={0};
+z80_bit screen_special_effects_flip_vertical={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)

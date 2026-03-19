@@ -1768,7 +1768,16 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
                 "Unsteady","Temblar","Tremolar");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_temblar.v ? 'X' : ' ' ));
             menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_temblar);
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Simulate unsteady video display");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Simulate unsteady video display");
 
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Flip vertical","Invertir en vertical","Invertir en vertical");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_flip_vertical.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_flip_vertical);
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Flip vertical");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Flip vertical");
 
             menu_add_item_menu_separator(array_menu_window_settings);
 
