@@ -1549,19 +1549,26 @@ int audio_adjust_volume(int valor_enviar)
                                 return v;
 }
 
+#define FREQ_PLUS 12800
 int grados_nagra=0;
 void audio_apply_nagra_effect(void)
 {
 
-        float valor_sin=util_get_cosine(grados_nagra)/(float)10000;
-        audio_valor_enviar_sonido_izquierdo *=valor_sin;
-        audio_valor_enviar_sonido_derecho *=valor_sin;
-        #define FREQ_PLUS 12800
+        int valor_sin=util_get_cosine(grados_nagra);
+
+        int izq=audio_valor_enviar_sonido_izquierdo;
+        int der=audio_valor_enviar_sonido_derecho;
+
+        izq=(izq*valor_sin)/10000;
+        der=(der*valor_sin)/10000;
+
+        audio_valor_enviar_sonido_izquierdo=izq;
+        audio_valor_enviar_sonido_derecho=der;
 
         int inc=(360*FREQ_PLUS)/FRECUENCIA_SONIDO;
 
         grados_nagra +=inc;
-        printf("grados %d inc %d valor_sin %f\n",grados_nagra,inc,valor_sin);
+        //printf("grados %d inc %d valor_sin %f\n",grados_nagra,inc,valor_sin);
 }
 
 
