@@ -4951,6 +4951,26 @@ void screen_rainbow_effect_flip_vertical(z80_int *origen,z80_int *destino,int an
 
     }
 
+}
+
+void screen_rainbow_effect_flip_horizontal(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+
+        for (x=0;x<ancho/2;x++) {
+            //Obtener pixel de arriba y abajo y meterlos en destino intercambiados
+            int offset1=(ancho*y)+x;
+            int offset2=(ancho*y)+ancho-1-x;
+
+            int color1=origen[offset1];
+            int color2=origen[offset2];
+            destino[offset1]=color2;
+            destino[offset2]=color1;
+        }
+
+    }
 
 }
 
@@ -5003,6 +5023,14 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
     if (screen_special_effects_flip_vertical.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_rainbow_effect_flip_vertical(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+    if (screen_special_effects_flip_horizontal.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_flip_horizontal(origen,destino,ancho,alto);
         aplicado_algo=1;
         if (origen!=inicial_origen) free(origen);
         origen=destino;
@@ -5253,6 +5281,7 @@ void screen_special_effects_functions_pre(int ancho,int alto)
 z80_bit screen_special_effects_enabled={0};
 z80_bit screen_special_effects_temblar={0};
 z80_bit screen_special_effects_flip_vertical={0};
+z80_bit screen_special_effects_flip_horizontal={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
