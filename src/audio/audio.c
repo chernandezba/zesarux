@@ -1549,7 +1549,7 @@ int audio_adjust_volume(int valor_enviar)
                                 return v;
 }
 
-float grados_nagra=0;
+int grados_nagra=0;
 void audio_apply_nagra_effect(void)
 {
 
@@ -1557,11 +1557,11 @@ void audio_apply_nagra_effect(void)
         audio_valor_enviar_sonido_izquierdo *=valor_sin;
         audio_valor_enviar_sonido_derecho *=valor_sin;
         #define FREQ_PLUS 12800
-        float inc=((float)360)/(float)FRECUENCIA_SONIDO;
-        inc*=FREQ_PLUS;
+
+        int inc=(360*FREQ_PLUS)/FRECUENCIA_SONIDO;
 
         grados_nagra +=inc;
-        printf("grados %f inc %f valor_sin %f\n",grados_nagra,inc,valor_sin);
+        printf("grados %d inc %d valor_sin %f\n",grados_nagra,inc,valor_sin);
 }
 
 
