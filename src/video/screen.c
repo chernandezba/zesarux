@@ -5029,15 +5029,14 @@ void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int anch
 
     //Y mezclar lineas
 
-    int total_mezclar=alto*2; //mezclar unas cuantas lineas
+    int y;
 
-    while (total_mezclar) {
-        int y1=effect_nagravision_get_rnd() % alto;
+    for (y=0;y<alto;y++) {
+
         int y2=effect_nagravision_get_rnd() % alto;
 
-        screen_rainbow_effect_nagravision_swap(destino,ancho,y1,y2);
+        screen_rainbow_effect_nagravision_swap(destino,ancho,y,y2);
 
-        total_mezclar--;
     }
 
     screen_rainbow_effect_nagravision_initial_seed++;
