@@ -5203,6 +5203,19 @@ void screen_scale_075_050_025_function(int ancho,int alto)
 
 }
 
+z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
+{
+	puntero=rainbow_buffer;
+
+	//Si se reduce la pantalla 0.75
+	if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
+		screen_scale_075_050_025_function(ancho,alto);
+		puntero=new_scalled_rainbow_buffer;
+	}
+
+    return puntero;
+}
+
 
 void screen_add_watermark_rainbow(void)
 {
