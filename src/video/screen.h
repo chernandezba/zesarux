@@ -304,7 +304,6 @@ extern z80_bit autodetect_rainbow;
 
 extern z80_int *new_scalled_rainbow_buffer;
 
-extern void screen_scale_075_050_025_function(int ancho,int alto);
 extern z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto);
 
 extern z80_bit screen_reduce_antialias;

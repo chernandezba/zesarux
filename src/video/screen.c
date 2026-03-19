@@ -5203,6 +5203,7 @@ void screen_scale_075_050_025_function(int ancho,int alto)
 
 }
 
+//Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
 {
 	puntero=rainbow_buffer;
@@ -5297,12 +5298,8 @@ void scr_refresca_pantalla_rainbow_comun(void)
 
     puntero=rainbow_buffer;
 
-	//Si se reduce la pantalla 0.75
-	if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
-		screen_scale_075_050_025_function(ancho,alto);
-		puntero=new_scalled_rainbow_buffer;
-	}
-	//Fin reduccion pantalla 0.75
+    //Reduccion de pantalla y otros efectos
+    puntero=screen_rainbow_effects(puntero,ancho,alto);
 
 
     for (y=0;y<alto;y++) {
@@ -5347,12 +5344,8 @@ void scr_refresca_pantalla_rainbow_comun_spectrum(void)
 	puntero=rainbow_buffer;
 
 
-	//Si se reduce la pantalla 0.75
-	if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
-		screen_scale_075_050_025_function(ancho,alto);
-		puntero=new_scalled_rainbow_buffer;
-	}
-	//Fin reduccion pantalla 0.75
+    //Reduccion de pantalla y otros efectos
+    puntero=screen_rainbow_effects(puntero,ancho,alto);
 
 
 	for (y=0;y<alto;y++) {
