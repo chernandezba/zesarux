@@ -301,6 +301,11 @@ void core_sms_fin_scanline(void)
 				}
 				*/
 
+            if (audio_nagra_effect.v) {
+                audio_apply_nagra_effect();
+                audio_apply_nagra_effect_next();
+            }
+
 
 
 				if (realtape_inserted.v && realtape_playing.v) {
