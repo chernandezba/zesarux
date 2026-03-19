@@ -878,6 +878,7 @@ z80_bit beeper_enabled={1};
 //Si la salida a la tarjeta de sonido solo tiene dos valores: 0 o 1 (+127 o -128 realmente)
 z80_bit audio_resample_1bit={0};
 
+z80_bit audio_nagra_effect={0};
 
 //Similar a silence_detection_counter pero solo para operaciones del beeper
 int beeper_silence_detection_counter=0;
@@ -1547,6 +1548,23 @@ int audio_adjust_volume(int valor_enviar)
 
                                 return v;
 }
+
+float grados_nagra=0;
+void audio_apply_nagra_effect(void)
+{
+
+        float valor_sin=util_get_cosine(grados_nagra)/(float)10000;
+        audio_valor_enviar_sonido_izquierdo *=valor_sin;
+        audio_valor_enviar_sonido_derecho *=valor_sin;
+        #define FREQ_PLUS 12800
+        float inc=((float)360)/(float)FRECUENCIA_SONIDO;
+        inc*=FREQ_PLUS;
+
+        grados_nagra +=inc;
+        printf("grados %f inc %f valor_sin %f\n",grados_nagra,inc,valor_sin);
+}
+
+
 
 /* Frecuencias notas musicales, incluido longitud de onda
 extraido de http://www.phy.mtu.edu/~suits/notefreqs.html

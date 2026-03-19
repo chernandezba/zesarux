@@ -4737,7 +4737,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings_audio,"Resample audio output to 1 bit only");
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-
+        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,NULL,NULL,"[%c] Nagravision",(audio_nagra_effect.v ? 'X' : ' '));
+        menu_add_item_menu_opcion_conmuta(array_menu_settings_audio,&audio_nagra_effect);
+        menu_add_item_menu_tooltip(array_menu_settings_audio,"Nagravision audio effect");
+        menu_add_item_menu_ayuda(array_menu_settings_audio,"Nagravision audio effect");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 

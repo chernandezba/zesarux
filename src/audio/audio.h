@@ -100,6 +100,7 @@ extern int audio_is_recording_input;
 extern char audio_last_record_input_sample;
 
 
+
 extern int audiorecord_input_return_fifo_total_size(void);
 extern int audiorecord_input_fifo_return_size(void);
 extern int audiorecord_input_fifo_write(char *origen,int longitud);
@@ -284,6 +285,9 @@ extern audiodac_type audiodac_types[];
 extern z80_bit beeper_enabled;
 
 extern z80_bit audio_resample_1bit;
+
+extern z80_bit audio_nagra_effect;
+extern void audio_apply_nagra_effect(void);
 
 extern void audiodac_mix(void);
 
