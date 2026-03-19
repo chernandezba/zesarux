@@ -1554,21 +1554,24 @@ int grados_nagra=0;
 void audio_apply_nagra_effect(void)
 {
 
-        int valor_sin=util_get_cosine(grados_nagra);
+    int valor_sin=util_get_cosine(grados_nagra);
 
-        int izq=audio_valor_enviar_sonido_izquierdo;
-        int der=audio_valor_enviar_sonido_derecho;
+    int izq=audio_valor_enviar_sonido_izquierdo;
+    int der=audio_valor_enviar_sonido_derecho;
 
-        izq=(izq*valor_sin)/10000;
-        der=(der*valor_sin)/10000;
+    izq=(izq*valor_sin)/10000;
+    der=(der*valor_sin)/10000;
 
-        audio_valor_enviar_sonido_izquierdo=izq;
-        audio_valor_enviar_sonido_derecho=der;
+    audio_valor_enviar_sonido_izquierdo=izq;
+    audio_valor_enviar_sonido_derecho=der;
 
-        int inc=(360*FREQ_PLUS)/FRECUENCIA_SONIDO;
+}
 
-        grados_nagra +=inc;
-        //printf("grados %d inc %d valor_sin %f\n",grados_nagra,inc,valor_sin);
+void audio_apply_nagra_effect_next(void)
+{
+    int inc=(360*FREQ_PLUS)/FRECUENCIA_SONIDO;
+
+    grados_nagra +=inc;
 }
 
 

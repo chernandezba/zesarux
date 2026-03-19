@@ -288,6 +288,7 @@ extern z80_bit audio_resample_1bit;
 
 extern z80_bit audio_nagra_effect;
 extern void audio_apply_nagra_effect(void);
+extern void audio_apply_nagra_effect_next(void);
 
 extern void audiodac_mix(void);
 
