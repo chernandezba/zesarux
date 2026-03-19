@@ -4962,41 +4962,61 @@ int scalled_rainbow_alto=0;
 z80_int *new_scalled_rainbow_buffer_gigascren_one=NULL;
 z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 
-void screen_special_effects_functions(z80_int *origen,z80_int *destino,int ancho,int alto)
+z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 {
+    z80_int *inicial_origen=origen;
 
+    int aplicado_algo=0;
+    z80_int *destino;
 
     //Zoom 0.5
     if (screen_reduction_factor==SCREEN_REDUCE_050) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_scale_rainbow_21(origen,ancho,alto,destino);
+        aplicado_algo=1;
         origen=destino;
     }
 
     else if (screen_reduction_factor==SCREEN_REDUCE_025) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_scale_rainbow_41(origen,ancho,alto,destino);
+        aplicado_algo=1;
         origen=destino;
     }
 
     else if (screen_reduction_factor==SCREEN_REDUCE_075) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_scale_rainbow_43(origen,ancho,alto,destino);
+        aplicado_algo=1;
         origen=destino;
     }
 
 
     if (screen_special_effects_temblar.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_rainbow_effect_temblar(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
     }
 
     if (screen_special_effects_flip_vertical.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_rainbow_effect_flip_vertical(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
     }
 
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
     //TODO: averiguar esto de manera mas eficiente
-    if (screen_reduction_factor==SCREEN_REDUCE_NONE && screen_special_effects_temblar.v==0 && screen_special_effects_flip_vertical.v==0) {
+    if (!aplicado_algo) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
         int tamanyo=ancho*alto*2;
         memcpy(destino,origen,tamanyo);
     }
+
+    return destino;
 
 }
 
@@ -5006,7 +5026,7 @@ void screen_special_effects_functions(z80_int *origen,z80_int *destino,int ancho
 void screen_scale_075_050_gigascreen_function(int ancho,int alto)
 {
 
-
+return;
                 //solo asignar buffer la primera vez o si ha cambiado el tamanyo
                 int asignar=0;
 
@@ -5209,6 +5229,14 @@ void screen_special_effects_free_buffers(void)
     }
 }
 
+z80_int *screen_special_effects_alloc_buffer(int ancho,int alto)
+{
+    int tamanyo=ancho*alto*2;
+    z80_int *buffer=util_malloc(ancho*alto*2,"Can not allocate scalled rainbow buffer"); //*2 por que son valores de 16 bits
+    memset(buffer,0,tamanyo);
+    return buffer;
+}
+
 void screen_special_effects_functions_pre(int ancho,int alto)
 {
 
@@ -5217,19 +5245,7 @@ void screen_special_effects_functions_pre(int ancho,int alto)
     screen_special_effects_free_buffers();
 
 
-    debug_printf(VERBOSE_DEBUG,"Allocating scaled rainbow buffer");
-    new_scalled_rainbow_buffer=malloc(ancho*alto*2); //*2 por que son valores de 16 bits
-    if (new_scalled_rainbow_buffer==NULL) cpu_panic("Can not allocate scalled rainbow buffer");
-
-    //Llenarlo de cero
-    int i;
-    for (i=0;i<ancho*alto;i++) new_scalled_rainbow_buffer[i]=0;
-
-    scalled_rainbow_ancho=ancho;
-    scalled_rainbow_alto=alto;
-
-
-    screen_special_effects_functions(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
+    new_scalled_rainbow_buffer=screen_special_effects_functions(rainbow_buffer,ancho,alto);
 
 }
 
