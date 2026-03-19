@@ -1030,6 +1030,8 @@ enum SCREEN_REDUCTIONS {
 extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 
 extern void screen_scale_075_050_free_buffers(void);
+extern z80_bit screen_special_effects_enabled;
+extern z80_bit screen_special_effects_temblar;
 
 extern int screen_reduce_offset_x;
 extern int screen_reduce_offset_y;

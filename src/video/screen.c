@@ -4908,6 +4908,30 @@ void screen_get_offsets_watermark_position(int position,int ancho, int alto, int
 		*y=watermark_y;
 }
 
+int screen_rainbow_effect_temblar_frame=0;
+
+void screen_rainbow_effect_temblar(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+
+        for (x=ancho-2;x>=0;x--) {
+            int offset=(ancho*y)+x;
+            if ((y%2)==screen_rainbow_effect_temblar_frame) {
+                destino[offset]=origen[offset+1];
+            }
+            else {
+                destino[offset]=origen[offset];
+            }
+        }
+
+    }
+
+    screen_rainbow_effect_temblar_frame ^=1;
+
+}
+
 //Comunes a escalado normal y escalado con gigascreen
 int scalled_rainbow_ancho=0;
 int scalled_rainbow_alto=0;
@@ -4919,24 +4943,34 @@ z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 void screen_scale_075_050_and_watermark_function(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
-        //int ancho_final,alto_final;
 
-        //Zoom 0.5
-        if (screen_reduction_factor==SCREEN_REDUCE_050) {
-            screen_scale_rainbow_21(origen,ancho,alto,destino);
-        }
+    //Zoom 0.5
+    if (screen_reduction_factor==SCREEN_REDUCE_050) {
+        screen_scale_rainbow_21(origen,ancho,alto,destino);
+        origen=destino;
+    }
 
-        else if (screen_reduction_factor==SCREEN_REDUCE_025) {
-            screen_scale_rainbow_41(origen,ancho,alto,destino);
-        }
+    else if (screen_reduction_factor==SCREEN_REDUCE_025) {
+        screen_scale_rainbow_41(origen,ancho,alto,destino);
+        origen=destino;
+    }
 
-        else {
-            //Zoom 0.75
-		    screen_scale_rainbow_43(origen,ancho,alto,destino);
-            //ancho_final=(ancho*3)/4;
-            //alto_final=(alto*3)/4;
-        }
+    else if (screen_reduction_factor==SCREEN_REDUCE_075) {
+        screen_scale_rainbow_43(origen,ancho,alto,destino);
+        origen=destino;
+    }
 
+
+    if (screen_special_effects_temblar.v) {
+        screen_rainbow_effect_temblar(origen,destino,ancho,alto);
+    }
+
+    //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
+    //TODO: averiguar esto de manera mas eficiente
+    if (screen_reduction_factor==SCREEN_REDUCE_NONE && screen_special_effects_temblar.v==0) {
+        int tamanyo=ancho*alto*2;
+        memcpy(destino,origen,tamanyo);
+    }
 
 }
 
@@ -5179,20 +5213,21 @@ void screen_scale_075_050_025_function(int ancho,int alto)
 			scalled_rainbow_alto=alto;
 		}
 
-
-		//Destino va a ser el mismo
-		//screen_scale_075_050_and_watermark_function(rainbow_buffer,rainbow_buffer,ancho,alto);
 		screen_scale_075_050_and_watermark_function(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
 
 }
+
+
+z80_bit screen_special_effects_enabled={0};
+z80_bit screen_special_effects_temblar={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
 {
 	puntero=rainbow_buffer;
 
-	//Si se reduce la pantalla 0.75
-	if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
+	//Si se aplican efectos a la pantalla
+	if (screen_special_effects_enabled.v) {
 		screen_scale_075_050_025_function(ancho,alto);
 		puntero=new_scalled_rainbow_buffer;
 	}

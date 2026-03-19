@@ -1734,28 +1734,45 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,
-            menu_window_settings_reduce_075,NULL,"[%s] R~~educe display",string_reduce);
-        menu_add_item_menu_shortcut(array_menu_window_settings,'e');
-        menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75, 0.5 or 0.25");
-        menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75, 0.5 or 0.25. Enables realvideo. Reduce to 0.75 was used on a large bulb display for the RunZX 2018 event");
-        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+            "Special effects","Efectos Especiales","Efectes Especials");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_enabled.v ? 'X' : ' ' ));
+        menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_enabled);
 
 
-        if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_antialias,NULL,"[%c]  Antialias",(screen_reduce_antialias.v ? 'X' : ' ') );
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
+        if (screen_special_effects_enabled.v) {
+
+            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,
+                menu_window_settings_reduce_075,NULL,"[%s] R~~educe display",string_reduce);
+            menu_add_item_menu_shortcut(array_menu_window_settings,'e');
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75, 0.5 or 0.25");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75, 0.5 or 0.25. Enables realvideo. Reduce to 0.75 was used on a large bulb display for the RunZX 2018 event");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofx,NULL,"     Offset x [%d]",screen_reduce_offset_x);
-            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
-            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+            if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
+                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_antialias,NULL,"[%c]  Antialias",(screen_reduce_antialias.v ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
+                menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofx,NULL,"     Offset x [%d]",screen_reduce_offset_x);
+                menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
+                menu_add_item_menu_es_avanzado(array_menu_window_settings);
+            }
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Unsteady","Temblar","Tremolar");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_temblar.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_temblar);
+
+
+            menu_add_item_menu_separator(array_menu_window_settings);
+
         }
-
-        menu_add_item_menu_separator(array_menu_window_settings);
 
         menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,menu_interface_border_cond,"[%c] Window F~~ooter",(menu_footer ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_window_settings,'o');
