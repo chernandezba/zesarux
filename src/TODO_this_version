@@ -130,7 +130,7 @@ antes de commonsdl_init
 
 
 -efectos especiales
-*parametros de flip vertical, horizontal
+*parametros de flip vertical, horizontal, interferencias... en config
 *revisar liberar memoria
 *revisar gigascreen , replantear entera
 

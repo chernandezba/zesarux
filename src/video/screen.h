@@ -1036,6 +1036,7 @@ extern z80_bit screen_special_effects_temblar;
 extern z80_bit screen_special_effects_flip_vertical;
 extern z80_bit screen_special_effects_flip_horizontal;
 extern z80_bit screen_special_effects_nagravision;
+extern z80_bit screen_special_effects_interferences;
 
 extern int screen_reduce_offset_x;
 extern int screen_reduce_offset_y;
