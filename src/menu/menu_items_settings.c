@@ -925,7 +925,7 @@ void menu_window_settings_reduce_075(MENU_ITEM_PARAMETERS)
     }
 
     //Liberar buffers para borrar rastros de escalados 0.50/0.75
-    screen_scale_075_050_free_buffers();
+    //screen_special_effects_free_buffers();
 
     enable_rainbow();
 }
@@ -945,7 +945,7 @@ void menu_window_settings_reduce_075_050_ofx(MENU_ITEM_PARAMETERS)
         screen_reduce_offset_x=parse_string_to_number(string_offset);
 
         //Liberar buffers para borrar rastros de otros offsets
-        screen_scale_075_050_free_buffers();
+        //screen_special_effects_free_buffers();
 }
 
 void menu_window_settings_reduce_075_050_ofy(MENU_ITEM_PARAMETERS)
@@ -956,7 +956,7 @@ void menu_window_settings_reduce_075_050_ofy(MENU_ITEM_PARAMETERS)
         screen_reduce_offset_y=parse_string_to_number(string_offset);
 
         //Liberar buffers para borrar rastros de otros offsets
-        screen_scale_075_050_free_buffers();
+        //screen_special_effects_free_buffers();
 }
 
 void menu_interface_footer(MENU_ITEM_PARAMETERS)

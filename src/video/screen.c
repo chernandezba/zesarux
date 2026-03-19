@@ -5013,7 +5013,7 @@ void screen_scale_075_050_gigascreen_function(int ancho,int alto)
                 //Si ha cambiado el tamanyo
                 if (scalled_rainbow_ancho!=ancho || scalled_rainbow_alto!=alto) {
                         //Liberar si existia
-                        screen_scale_075_050_free_buffers();
+                        screen_special_effects_free_buffers();
 
                         asignar=1;
                 }
@@ -5192,7 +5192,7 @@ z80_int *new_scalled_rainbow_buffer=NULL;
 
 
 
-void screen_scale_075_050_free_buffers(void)
+void screen_special_effects_free_buffers(void)
 {
     if (new_scalled_rainbow_buffer!=NULL) {
         debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
@@ -5213,34 +5213,23 @@ void screen_special_effects_functions_pre(int ancho,int alto)
 {
 
 
-		//solo asignar buffer la primera vez o si ha cambiado el tamanyo
-		int asignar=0;
+    //Liberar buffer anterior
+    screen_special_effects_free_buffers();
 
-		//Si ha cambiado el tamanyo
-		if (scalled_rainbow_ancho!=ancho || scalled_rainbow_alto!=alto) {
-			//Liberar si existia
-			screen_scale_075_050_free_buffers();
 
-			asignar=1;
-		}
+    debug_printf(VERBOSE_DEBUG,"Allocating scaled rainbow buffer");
+    new_scalled_rainbow_buffer=malloc(ancho*alto*2); //*2 por que son valores de 16 bits
+    if (new_scalled_rainbow_buffer==NULL) cpu_panic("Can not allocate scalled rainbow buffer");
 
-		//O si no hay buffer asignado
-		if (new_scalled_rainbow_buffer==NULL) asignar=1;
+    //Llenarlo de cero
+    int i;
+    for (i=0;i<ancho*alto;i++) new_scalled_rainbow_buffer[i]=0;
 
-		if (asignar) {
-			debug_printf(VERBOSE_DEBUG,"Allocating scaled rainbow buffer");
-			new_scalled_rainbow_buffer=malloc(ancho*alto*2); //*2 por que son valores de 16 bits
-			if (new_scalled_rainbow_buffer==NULL) cpu_panic("Can not allocate scalled rainbow buffer");
+    scalled_rainbow_ancho=ancho;
+    scalled_rainbow_alto=alto;
 
-			//Llenarlo de cero
-			int i;
-			for (i=0;i<ancho*alto;i++) new_scalled_rainbow_buffer[i]=0;
 
-			scalled_rainbow_ancho=ancho;
-			scalled_rainbow_alto=alto;
-		}
-
-		screen_special_effects_functions(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
+    screen_special_effects_functions(rainbow_buffer,new_scalled_rainbow_buffer,ancho,alto);
 
 }
 
