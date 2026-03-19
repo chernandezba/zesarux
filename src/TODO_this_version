@@ -58,7 +58,6 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 -Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
 
--Copy (desde fuera de ZEsarUX) y paste dentro como spool file (pulsaciones de teclas)
 
 
 -revisar parpadeos en linux en top buttons al moverse por los menus
@@ -121,3 +120,10 @@ SDL_RenderPresent(renderer);
 SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 antes de commonsdl_init
 
+
+-zoom 0.75, 0.5 y 0.25 en mas máquinas?
+
+
+-copy-paste y text-paste quizá mover a otro menú?
+
+-gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el total height. se deberia resetear

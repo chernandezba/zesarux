@@ -35055,6 +35055,8 @@ void menu_view_gosub_stack_overlay(void)
 
             int lineas=debug_view_basic_gosub_stack(results_buffer,MAX_TEXTO_GENERIC_MESSAGE);
 
+            //printf("lineas %d\n",lineas);
+
             //Mostrar una a una todas las lineas
 
             //Ajustar alto ventana. Al menos una linea aunque solo sea para mostrar error

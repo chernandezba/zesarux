@@ -9870,6 +9870,7 @@ int debug_view_basic_gosub_stack_start_mark_zx81(int inicio_direccion)
     else return 0;
 }
 
+//Retorna total lineas de stack
 int debug_view_basic_gosub_stack(char *results_buffer,int maxima_longitud_texto)
 {
 
