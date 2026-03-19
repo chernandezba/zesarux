@@ -8,7 +8,7 @@ Permitir drag&drop de archivos comprimidos
 Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 Renombrar función de "Input File Spooling" a "Enviar Texto como Pulsaciones de Teclado"
 Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)
-Permitir reducir pantalla en on Spectrum, TSConf, Prism, ZX80, ZX81, Z88, Colecovision, MSX, SG1000, Master System, Spectravideo
+Permitir reducir pantalla en Colecovision, CPC, Master System, MSX, Prism, SG1000, Spectravideo, Spectrum, TSConf, ZX80, ZX81, Z88
 Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 Permitir al driver SDL usar una paleta de color de 8 bits
 Permitir al driver SDL forzar el tamaño de la ventana

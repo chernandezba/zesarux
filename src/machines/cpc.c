@@ -2042,6 +2042,13 @@ void scr_refresca_pantalla_y_border_cpc_rainbow(void)
 
 	puntero=rainbow_buffer;
 
+	//Si se reduce la pantalla 0.75
+	if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
+		screen_scale_075_050_025_function(ancho,alto);
+		puntero=new_scalled_rainbow_buffer;
+	}
+	//Fin reduccion pantalla 0.75
+
 
     //printf("ultima linea al hacer render: %d\n",cpc_last_drawn_line);
 
