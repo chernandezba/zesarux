@@ -453,8 +453,10 @@ void core_spectrum_fin_scanline(void)
         audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();
 
         if (audio_nagra_effect.v) {
+            //printf("%d\n",audio_valor_enviar_sonido_izquierdo);
             audio_apply_nagra_effect();
             audio_apply_nagra_effect_next();
+            //printf(">%d\n",audio_valor_enviar_sonido_izquierdo);
         }
 
         if (beeper_enabled.v) {

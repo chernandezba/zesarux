@@ -8548,6 +8548,14 @@ void set_value_beeper(int v)
 
     }
 
+    //printf("%d\n",value_beeper);
+
+    if (audio_nagra_effect.v) {
+        if (value_beeper<0) value_beeper=0;
+        audio_apply_nagra_effect_beeper();
+        return;
+    }
+
 
 
 }

@@ -1567,6 +1567,20 @@ void audio_apply_nagra_effect(void)
 
 }
 
+void audio_apply_nagra_effect_beeper(void)
+{
+
+    int valor_sin=util_get_cosine(grados_nagra);
+
+    int izq=value_beeper;
+
+    izq=(izq*valor_sin)/10000;
+
+    value_beeper=izq;
+
+
+}
+
 void audio_apply_nagra_effect_next(void)
 {
     int inc=(360*FREQ_PLUS)/FRECUENCIA_SONIDO;
