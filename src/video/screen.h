@@ -1050,6 +1050,8 @@ extern z80_bit screen_special_effects_hsync_lost;
 extern z80_bit screen_special_effects_pixelate;
 extern int screen_rainbow_effect_pixelate_size;
 
+#define SCREEN_EFFECT_PIXELATE_MAX_SIZE 16
+
 extern int screen_reduce_offset_x;
 extern int screen_reduce_offset_y;
 

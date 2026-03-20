@@ -1571,7 +1571,7 @@ void menu_interface_special_effects_fisheye_follow_music(MENU_ITEM_PARAMETERS)
 void menu_interface_special_effects_pixelate_size(MENU_ITEM_PARAMETERS)
 {
     screen_rainbow_effect_pixelate_size +=2;
-    if (screen_rainbow_effect_pixelate_size>16) screen_rainbow_effect_pixelate_size=2;
+    if (screen_rainbow_effect_pixelate_size>SCREEN_EFFECT_PIXELATE_MAX_SIZE) screen_rainbow_effect_pixelate_size=2;
 }
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)

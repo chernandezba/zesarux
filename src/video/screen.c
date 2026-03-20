@@ -5213,6 +5213,51 @@ void screen_rainbow_effect_vsync_lost(z80_int *origen,z80_int *destino,int ancho
 
 int screen_rainbow_effect_pixelate_size=2;
 
+#define SCREEN_PIXELATE_ARRAY_LIST_LENGTH (SCREEN_EFFECT_PIXELATE_MAX_SIZE*SCREEN_EFFECT_PIXELATE_MAX_SIZE)
+
+int screen_pixelate_array_list[SCREEN_PIXELATE_ARRAY_LIST_LENGTH];
+
+int screen_rainbow_effect_pixelate_get_color(z80_int *origen,int ancho,int x,int y)
+{
+
+    int zx,zy;
+
+    int offset_array=0;
+
+    for (zy=0;zy<screen_rainbow_effect_pixelate_size;zy++) {
+        for (zx=0;zx<screen_rainbow_effect_pixelate_size;zx++) {
+            int offset_origen=(y+zy)*ancho+x+zx;
+            screen_pixelate_array_list[offset_array++]=origen[offset_origen];
+        }
+    }
+
+    //Ahora recorremos la lista y vemos cual es el color que mas se repite
+    int color_mas_repetido=0;
+    int veces_mas_repetido=0;
+
+    int i,j;
+
+    for (i=0;i<screen_rainbow_effect_pixelate_size;i++) {
+
+        int color_buscar=screen_pixelate_array_list[i];
+
+        int veces_leido=0;
+
+        //Cuantas veces aparece ese color
+        for (j=0;j<screen_rainbow_effect_pixelate_size;j++) {
+            if (screen_pixelate_array_list[j]==color_buscar) veces_leido++;
+        }
+
+        if (veces_leido>veces_mas_repetido) {
+            veces_mas_repetido=veces_leido;
+            color_mas_repetido=color_buscar;
+        }
+    }
+
+    return color_mas_repetido;
+
+}
+
 void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
@@ -5229,7 +5274,13 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
             int offset_origen=yorigen*ancho+xorigen;
             int offset_destino=y*ancho+x;
 
-            int color=origen[offset_origen];
+            int color;
+
+            //color=origen[offset_origen];
+
+            //Nota: aunque nuestros buffers no son rgb, vamos a obtener el color que mas se repite
+            //Lo ideal seria tener un buffer rgb y sacar un promedio de color de todo el recuadro a pixelar
+            color=screen_rainbow_effect_pixelate_get_color(origen,ancho,xorigen,yorigen);
 
             destino[offset_destino]=color;
 
