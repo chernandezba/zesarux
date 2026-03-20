@@ -5075,9 +5075,9 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
 
 }
 
-int screen_rainbow_effect_waves_offsets[1000];
+int screen_rainbow_effect_waves_offsets[10000];
 
-#define SCREEN_EFFECT_WAVES_MAX_OFFSET 6
+#define SCREEN_EFFECT_WAVES_MAX_OFFSET 4
 
 int screen_rainbow_effect_waves_offset=SCREEN_EFFECT_WAVES_MAX_OFFSET/2;
 int screen_rainbow_effect_waves_frames=0;
@@ -5090,28 +5090,43 @@ void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int 
 
     int valor_random=util_get_random() % 30000;
 
+
+    printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
+
+
     for (y=0;y<alto;y++) {
+
         for (x=0;x<ancho-SCREEN_EFFECT_WAVES_MAX_OFFSET;x++) {
             int offset_origen=y*ancho+x+screen_rainbow_effect_waves_offsets[y];
             int offset_destino=y*ancho+x;
             destino[offset_destino]=origen[offset_origen];
         }
 
-        if ((screen_rainbow_effect_waves_frames%20)==0) {
+        if ((screen_rainbow_effect_waves_frames%10)==0) {
             if (y>0) {
-                screen_rainbow_effect_waves_offsets[y]=screen_rainbow_effect_waves_offsets[y-1];
+                int anterior_offset=screen_rainbow_effect_waves_offsets[y-1];
+                int current_offset=screen_rainbow_effect_waves_offsets[y];
+
+                if ((y%2)==0) anterior_offset=current_offset;
+
+                screen_rainbow_effect_waves_offsets[y]=anterior_offset;
 
                 if (valor_random<10000) {
-                    if (screen_rainbow_effect_waves_offsets[y]>0) screen_rainbow_effect_waves_offsets[y]=screen_rainbow_effect_waves_offsets[y-1]-1;
+                    if (anterior_offset>0) {
+                        screen_rainbow_effect_waves_offsets[y]=anterior_offset-1;
+                    }
                 }
 
                 else if (valor_random>20000) {
-                    if (screen_rainbow_effect_waves_offsets[y]<SCREEN_EFFECT_WAVES_MAX_OFFSET) screen_rainbow_effect_waves_offsets[y]=screen_rainbow_effect_waves_offsets[y-1]+1;
+                    if (anterior_offset<SCREEN_EFFECT_WAVES_MAX_OFFSET) {
+                        screen_rainbow_effect_waves_offsets[y]=anterior_offset+1;
+                    }
                 }
+
 
             }
 
-            if ((y%3)==0) valor_random=util_get_random() % 30000;
+            if ((y%10)==0) valor_random=util_get_random() % 30000;
 
         }
 
@@ -5201,13 +5216,15 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         origen=destino;
     }
 
-    /*if (1) {
+    /*
+    if (1) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_rainbow_effect_waves(origen,destino,ancho,alto);
         aplicado_algo=1;
         if (origen!=inicial_origen) free(origen);
         origen=destino;
-    }*/
+    }
+    */
 
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
     //TODO: averiguar esto de manera mas eficiente
