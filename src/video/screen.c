@@ -5073,7 +5073,6 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
 
     }
 
-
 }
 
 #define SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR 4
@@ -5087,12 +5086,10 @@ void screen_rainbow_effect_zoom_mouse_putpixel(z80_int *destino,int ancho,int al
         for (zx=0;zx<SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;zx++) {
             if (dest_x+zx>=0 && dest_y+zy>=0 && dest_x+zx<ancho && dest_y+zy<alto) {
                 int offset_dest=(dest_y+zy)*ancho+dest_x+zx;
-
                 destino[offset_dest]=color;
             }
         }
     }
-
 }
 
 void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho,int alto)
@@ -5123,12 +5120,8 @@ void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho
             z80_int color=0;
 
             if (orig_x>=0 && orig_y>=0 && orig_x<ancho && orig_y<alto) {
-
-
                 int offset_orig=orig_y*ancho+orig_x;
-
                 color=origen[offset_orig];
-
             }
 
             else {
@@ -5216,14 +5209,6 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
 
         int media_cpu_perc=sensor_get_percentaje_value_by_id(sensor_id);
 
-
-        int upper_warning_perc=sensors_array[sensor_id].upper_warning_perc;
-
-        int sobrepasa=0;
-
-        if (media_cpu_perc>upper_warning_perc) {
-            sobrepasa=1;
-        }
 
         //total 12
         float nuevo_k=(12.0f*media_cpu_perc)/100.0f;

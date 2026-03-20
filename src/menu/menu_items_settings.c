@@ -1569,54 +1569,57 @@ void menu_interface_special_effects_fisheye_follow_music(MENU_ITEM_PARAMETERS)
 
 void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_window_settings;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_window_settings;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
 
-            //hotkeys usadas:
+        //hotkeys usadas:
 
         menu_add_item_menu_inicial_format(&array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
         menu_add_item_menu_shortcut(array_menu_window_settings,'f');
 
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,menu_interface_border_cond,
-                "No ZX Desktop on Full Screen","No ZX Desktop en pantalla completa","No ZX Desktop a pantalla completa");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable ZX Desktop when going to full screen");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable ZX Desktop when going to full screen. "
-                "It will be enabled again going back from full screen. Windows will be closed on full screen if this setting is enabled");
-            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,menu_interface_border_cond,
+            "No ZX Desktop on Full Screen","No ZX Desktop en pantalla completa","No ZX Desktop a pantalla completa");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Disable ZX Desktop when going to full screen");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Disable ZX Desktop when going to full screen. "
+            "It will be enabled again going back from full screen. Windows will be closed on full screen if this setting is enabled");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-            if (zxdesktop_disable_on_full_screen) {
-                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_restore_windows_after_full_screen,menu_interface_border_cond,
-                    " Restore windows after Full Screen"," Restaurar ventanas al volver"," Restaurar finestres al tornar");
-                menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_restore_windows_after_full_screen ? 'X' : ' ' ));
-                menu_add_item_menu_tooltip(array_menu_window_settings,"Restore windows after going from full screen");
-                menu_add_item_menu_ayuda(array_menu_window_settings,"Restore windows after disabling full screen, when 'Disable on Full Screen' setting is set");
-                menu_add_item_menu_es_avanzado(array_menu_window_settings);
-            }
-
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,menu_interface_border_cond,
-                "No Border on Full Screen","No Border en pantalla completa","No Border a pantalla completa");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_border_on_full_screen ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Border when going to full screen");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Border when going to full screen");
+        if (zxdesktop_disable_on_full_screen) {
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_restore_windows_after_full_screen,menu_interface_border_cond,
+                " Restore windows after Full Screen"," Restaurar ventanas al volver"," Restaurar finestres al tornar");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_restore_windows_after_full_screen ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Restore windows after going from full screen");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Restore windows after disabling full screen, when 'Disable on Full Screen' setting is set");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
+        }
 
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_footer_on_full_screen,menu_interface_border_cond,
-                "No Footer on Full Screen","No Footer en pantalla completa","No Footer a pantalla completa");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Footer when going to full screen");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Footer when going to full screen");
-            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,menu_interface_border_cond,
+            "No Border on Full Screen","No Border en pantalla completa","No Border a pantalla completa");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_border_on_full_screen ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Border when going to full screen");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Border when going to full screen");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
-            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_fullscreen_on_exit_zesarux,NULL,
-                "Disable fullscreen on exit ZEsarUX","Desactivar fullscreen al salir de ZEsarUX","Desactivar fullscreen al sortir de ZEsarUX");
-            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_fullscreen_on_exit_zesarux ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable fullscreen on exit ZEsarUX");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable fullscreen on exit ZEsarUX, so on the configuration will be saved as full screen disabled");
-            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_footer_on_full_screen,menu_interface_border_cond,
+            "No Footer on Full Screen","No Footer en pantalla completa","No Footer a pantalla completa");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Footer when going to full screen");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Footer when going to full screen");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_fullscreen_on_exit_zesarux,NULL,
+            "Disable fullscreen on exit ZEsarUX","Desactivar fullscreen al salir de ZEsarUX","Desactivar fullscreen al sortir de ZEsarUX");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_fullscreen_on_exit_zesarux ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Disable fullscreen on exit ZEsarUX");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Disable fullscreen on exit ZEsarUX, so on the configuration will be saved as full screen disabled");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+        menu_add_item_menu_separator(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
         if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC && !MACHINE_IS_PCW) {

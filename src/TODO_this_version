@@ -130,7 +130,7 @@ antes de commonsdl_init
 
 
 -efectos especiales
-*parametros de flip vertical, horizontal, interferencias, nagra, fish eye... en config
+*parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse... en config
 *revisar liberar memoria
 *revisar gigascreen , replantear entera
 *mas efectos: vsync lost, pixelado
@@ -160,9 +160,6 @@ k < 0 → efecto tipo lente inversa (cóncavo)
 -Twirl (remolino)
 Rota píxeles dependiendo de la distancia al centro.
 
--Zoom dinámico
-Escala alrededor del centro con interpolación simple.
-->y/o zoom alrededor de la posición del raton
 
 -Heat distortion (aire caliente)
 Pequeñas variaciones verticales animadas.
