@@ -5271,7 +5271,7 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
             yorigen *=screen_rainbow_effect_pixelate_size;
             xorigen *=screen_rainbow_effect_pixelate_size;
 
-            int offset_origen=yorigen*ancho+xorigen;
+            //int offset_origen=yorigen*ancho+xorigen;
             int offset_destino=y*ancho+x;
 
             int color;

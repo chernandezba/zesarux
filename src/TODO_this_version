@@ -130,12 +130,10 @@ antes de commonsdl_init
 
 
 -efectos especiales
-*parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse, vsync lost... en config
+*parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse, vsync lost, hsync lost, pixelate... en config
 *revisar liberar memoria
 *revisar gigascreen , replantear entera
-*mas efectos: pixelado
-
-
+*mas efectos:
 
 -Twirl (remolino)
 Rota píxeles dependiendo de la distancia al centro.
@@ -156,9 +154,6 @@ int sx = (x + y / 4) % width;
 
 dst[y*width + x] = src[y*width + sx];
 
-
--Blur (box blur simple)
-Promedia vecinos (3x3).
 
 
 -poder indicar orden de aplicacion de cada efecto. ejemplo lente, interferencias o interferencias, lente
