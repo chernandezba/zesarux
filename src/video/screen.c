@@ -5075,6 +5075,53 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
 
 }
 
+int screen_rainbow_effect_waves_offsets[1000];
+
+#define SCREEN_EFFECT_WAVES_MAX_OFFSET 6
+
+int screen_rainbow_effect_waves_offset=SCREEN_EFFECT_WAVES_MAX_OFFSET/2;
+int screen_rainbow_effect_waves_frames=0;
+
+void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+
+    int x,y;
+
+    int valor_random=util_get_random() % 30000;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho-SCREEN_EFFECT_WAVES_MAX_OFFSET;x++) {
+            int offset_origen=y*ancho+x+screen_rainbow_effect_waves_offsets[y];
+            int offset_destino=y*ancho+x;
+            destino[offset_destino]=origen[offset_origen];
+        }
+
+        if ((screen_rainbow_effect_waves_frames%20)==0) {
+            if (y>0) {
+                screen_rainbow_effect_waves_offsets[y]=screen_rainbow_effect_waves_offsets[y-1];
+
+                if (valor_random<10000) {
+                    if (screen_rainbow_effect_waves_offsets[y]>0) screen_rainbow_effect_waves_offsets[y]=screen_rainbow_effect_waves_offsets[y-1]-1;
+                }
+
+                else if (valor_random>20000) {
+                    if (screen_rainbow_effect_waves_offsets[y]<SCREEN_EFFECT_WAVES_MAX_OFFSET) screen_rainbow_effect_waves_offsets[y]=screen_rainbow_effect_waves_offsets[y-1]+1;
+                }
+
+            }
+
+            if ((y%3)==0) valor_random=util_get_random() % 30000;
+
+        }
+
+    }
+
+    screen_rainbow_effect_waves_frames++;
+
+
+}
+
 //Comunes a escalado normal y escalado con gigascreen
 int scalled_rainbow_ancho=0;
 int scalled_rainbow_alto=0;
@@ -5153,6 +5200,14 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         if (origen!=inicial_origen) free(origen);
         origen=destino;
     }
+
+    /*if (1) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_waves(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }*/
 
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
     //TODO: averiguar esto de manera mas eficiente
