@@ -1712,10 +1712,10 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Settings-> Main Window-> Special Effects","Menú Principal-> Opciones-> Ventana Principal-> Efectos Especiales","Menú Principal-> Opcions-> Finestra Principal-> Efectes Especials");
+            "Main Menu-> Settings-> Main Window-> FX","Menú Principal-> Opciones-> Ventana Principal-> FX","Menú Principal-> Opcions-> Finestra Principal-> FX");
 
         retorno_menu=menu_dibuja_menu(&main_window_special_effects_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Special Effects","Efectos Especiales","Efectes Especials" );
+            "FX","FX","FX" );
 
 
 
@@ -1917,14 +1917,6 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
 
 
-
-        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_special_effects,NULL,
-            "    Special effects","    Efectos Especiales","    Efectes Especials");
-        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
-        menu_add_item_menu_es_avanzado(array_menu_window_settings);
-
-
-
         menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_footer,menu_interface_border_cond,"[%c] Window F~~ooter",(menu_footer ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_window_settings,'o');
         menu_add_item_menu_tooltip(array_menu_window_settings,"Show on footer some machine information");
@@ -1993,6 +1985,13 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             "Colour settings","Opciones de colores","Opcions de colors");
         menu_add_item_menu_tiene_submenu(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_special_effects,NULL,
+            "FX","FX","FX");
+        menu_add_item_menu_shortcut(array_menu_window_settings,'x');
+        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
 
         menu_add_item_menu_separator(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
