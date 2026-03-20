@@ -5142,6 +5142,41 @@ void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho
 
 }
 
+int screen_rainbow_effect_hsync_lost_x_inicial=0;
+
+void screen_rainbow_effect_hsync_lost(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    int xorigen=screen_rainbow_effect_hsync_lost_x_inicial;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+            int offset_origen=y*ancho+xorigen;
+            int offset_destino=y*ancho+x;
+
+            int color=origen[offset_origen];
+
+            //ultimas columnas tienen color negro como se aprecian en los hsync
+            if (xorigen>=ancho-20) color=0;
+
+            destino[offset_destino]=color;
+
+            xorigen++;
+            if (xorigen==ancho) xorigen=0;
+
+        }
+
+
+    }
+
+    screen_rainbow_effect_hsync_lost_x_inicial++;
+    if (screen_rainbow_effect_hsync_lost_x_inicial==ancho) screen_rainbow_effect_hsync_lost_x_inicial=0;
+
+
+}
+
 
 int screen_rainbow_effect_vsync_lost_y_inicial=0;
 
@@ -5482,7 +5517,13 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         origen=destino;
     }
 
-
+    if (screen_special_effects_hsync_lost.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_hsync_lost(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
 
     if (screen_special_effects_vsync_lost.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
@@ -5751,6 +5792,7 @@ z80_bit screen_special_effects_interferences={0};
 z80_bit screen_special_effects_waves={0};
 z80_bit screen_special_effects_fisheye={0};
 z80_bit screen_special_effects_zoom_mouse={0};
+z80_bit screen_special_effects_hsync_lost={0};
 z80_bit screen_special_effects_vsync_lost={0};
 
 //Aplicar efectos a modo rainbow
