@@ -41975,6 +41975,8 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     z80_64bit cuadrado_a=delta_x*delta_x;
     z80_64bit cuadrado_b=delta_y*delta_y;
     z80_64bit cuadrados=(cuadrado_a) + (cuadrado_b);
+
+    //Nota: realmente para este efecto no haria falta sacar la raiz cuadrada (creo)
     int hipotenusa=util_sqrt(cuadrados,NULL);
 
     //printf("cuadrados %lld %lld. suma cuadrados: %lld hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);

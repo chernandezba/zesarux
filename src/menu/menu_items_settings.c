@@ -1553,6 +1553,19 @@ void menu_general_settings_disable_fullscreen_on_exit_zesarux(MENU_ITEM_PARAMETE
     disable_fullscreen_on_exit_zesarux ^=1;
 }
 
+void menu_interface_special_effects_fisheye_factor(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_fisheye_change_factor();
+}
+
+void menu_interface_special_effects_fisheye_follow_music(MENU_ITEM_PARAMETERS)
+{
+    if (screen_special_effects_fisheye_follow_music_channel=='A') screen_special_effects_fisheye_follow_music_channel='B';
+    else if (screen_special_effects_fisheye_follow_music_channel=='B') screen_special_effects_fisheye_follow_music_channel='C';
+    else if (screen_special_effects_fisheye_follow_music_channel=='C') screen_special_effects_fisheye_follow_music_channel=0;
+    else screen_special_effects_fisheye_follow_music_channel='A';
+}
+
 
 void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 {
@@ -1794,12 +1807,51 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_window_settings,"Interferences");
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Waves","Olas","Ones");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_waves.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_waves);
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Waves");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Waves");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Lens","Lente","Lent");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_fisheye.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_fisheye);
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Lens");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Lens");
+
+            if (screen_special_effects_fisheye.v) {
+
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                    "Follow mouse","Seguir ratón","Seguir ratolí");
+                menu_add_item_menu_prefijo_format(array_menu_window_settings," [%c] ",(screen_special_effects_fisheye_follow_mouse.v ? 'X' : ' ' ));
+                menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_fisheye_follow_mouse);
+
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_follow_music,NULL,
+                    "Follow Music Channel","Seguir Canal Música","Seguir Canal Musica");
+                menu_add_item_menu_prefijo_format(array_menu_window_settings," [%c] ",(screen_special_effects_fisheye_follow_music_channel ? screen_special_effects_fisheye_follow_music_channel : ' ' ));
+
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                    "Automatic Lens factor","Factor Lente Automático","Factor Lent Automàtic");
+                menu_add_item_menu_prefijo_format(array_menu_window_settings," [%c] ",(screen_special_effects_fisheye_automatic_factor.v ? 'X' : ' ' ));
+                menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_fisheye_automatic_factor);
+
+                if (screen_special_effects_fisheye_automatic_factor.v==0) {
+                    menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_factor,NULL,
+                        "Lens factor","Factor Lente","Factor Lent");
+                    menu_add_item_menu_prefijo_format(array_menu_window_settings," [%1.3f] ",screen_rainbow_effect_fisheye_factor_k);
+                }
+
+
+            }
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
                 "Nagravision","Nagravision","Nagravision");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_nagravision.v ? 'X' : ' ' ));
             menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_nagravision);
             menu_add_item_menu_ayuda(array_menu_window_settings,"Nagravision");
             menu_add_item_menu_tooltip(array_menu_window_settings,"Nagravision");
-
 
 
             menu_add_item_menu_separator(array_menu_window_settings);

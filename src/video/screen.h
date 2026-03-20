@@ -1037,6 +1037,13 @@ extern z80_bit screen_special_effects_flip_vertical;
 extern z80_bit screen_special_effects_flip_horizontal;
 extern z80_bit screen_special_effects_nagravision;
 extern z80_bit screen_special_effects_interferences;
+extern z80_bit screen_special_effects_waves;
+extern z80_bit screen_special_effects_fisheye;
+extern z80_bit screen_special_effects_fisheye_automatic_factor;
+extern z80_bit screen_special_effects_fisheye_follow_mouse;
+extern char screen_special_effects_fisheye_follow_music_channel;
+extern float screen_rainbow_effect_fisheye_factor_k;
+extern void screen_rainbow_effect_fisheye_change_factor(void);
 
 extern int screen_reduce_offset_x;
 extern int screen_reduce_offset_y;

@@ -65,6 +65,7 @@
 #include "zeng_online_client.h"
 #include "tape.h"
 #include "joystick.h"
+#include "utils_math.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
@@ -5075,7 +5076,206 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
 
 }
 
-int screen_rainbow_effect_waves_offsets[10000];
+
+// intensidad del efecto
+
+//k → intensidad del efecto
+//Es un número pequeño (float), por ejemplo:
+//float k = 0.00001f;
+//controla lo fuerte que es el ojo de pez:
+//k > 0 → efecto tipo ojo de pez (convexo)
+//k < 0 → efecto tipo lente inversa (cóncavo)
+float screen_rainbow_effect_fisheye_factor_k = 1.0f;
+z80_bit screen_special_effects_fisheye_automatic_factor={0};
+z80_bit screen_special_effects_fisheye_follow_mouse={0};
+
+//A,B,C canales AY o 0
+char screen_special_effects_fisheye_follow_music_channel=0;
+
+void screen_rainbow_effect_fisheye_change_factor(void)
+{
+    screen_rainbow_effect_fisheye_factor_k +=0.5f;
+    if (screen_rainbow_effect_fisheye_factor_k>6.0f) screen_rainbow_effect_fisheye_factor_k=-6.0f;
+}
+
+void screen_rainbow_effect_fisheye_change_factor_slow(void)
+{
+    screen_rainbow_effect_fisheye_factor_k +=0.01f;
+    if (screen_rainbow_effect_fisheye_factor_k>4.0f) screen_rainbow_effect_fisheye_factor_k=-6.0f;
+}
+
+
+int screen_rainbow_effect_fisheye_frames=0;
+
+void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+
+    int x,y;
+
+
+    //printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
+
+    int cx=ancho/2;
+    int cy=alto/2;
+
+    //printf("%d\n",cy);
+
+    if (screen_special_effects_fisheye_follow_mouse.v) {
+
+        cx=mouse_x/zoom_x;
+        cy=mouse_y/zoom_y;
+        //printf("- %d\n",cy);
+    }
+
+    // radio máximo al cuadrado (hasta la esquina)
+    float maxr2 = (float)(cx*cx + cy*cy);
+
+
+    //Ajustar factor k segun musica
+    if (screen_special_effects_fisheye_follow_music_channel) {
+        char sensor_name[SENSORS_MAX_SHORT_NAME];
+        sprintf(sensor_name,"ay_vol_chip0_chan_%c",screen_special_effects_fisheye_follow_music_channel);
+        int sensor_id=sensor_find(sensor_name);
+
+        if (sensor_id<0) return;
+
+
+        int media_cpu_perc=sensor_get_percentaje_value_by_id(sensor_id);
+
+
+        int upper_warning_perc=sensors_array[sensor_id].upper_warning_perc;
+
+        int sobrepasa=0;
+
+        if (media_cpu_perc>upper_warning_perc) {
+            sobrepasa=1;
+        }
+
+        //total 12
+        float nuevo_k=(12.0f*media_cpu_perc)/100.0f;
+        nuevo_k -=6.0f;
+
+        screen_rainbow_effect_fisheye_factor_k=nuevo_k;
+    }
+
+
+
+
+    for (y=0;y<alto;y++) {
+
+        for (x=0;x<ancho;x++) {
+
+        //distancias al centro
+        int dx = x - cx;
+        int dy = y - cy;
+
+        //distancia al centro
+
+
+        // distancia al cuadrado normalizada [0,1]
+        float r2 = (dx*dx + dy*dy) / maxr2;
+
+        // "lente real" (barrel distortion)
+        //factor Si factor = 1 → no hay deformación
+        //Si factor > 1 → estiras hacia afuera
+        //Si factor < 1 → comprimes hacia el centro
+        float factor = 1.0f / (1.0f + screen_rainbow_effect_fisheye_factor_k * r2);
+
+        int sx = cx + dx * factor;
+        int sy = cy + dy * factor;
+
+
+            if (sx<0) sx=0;
+            if (sy<0) sy=0;
+            if (sx>=ancho) sx=ancho-1;
+            if (sy>=alto) sy=alto-1;
+
+
+
+
+
+            int offset_origen=(sy*ancho)+sx;
+
+            int offset_destino=y*ancho+x;
+            destino[offset_destino]=origen[offset_origen];
+        }
+
+
+    }
+
+    screen_rainbow_effect_fisheye_frames++;
+
+    if (screen_special_effects_fisheye_automatic_factor.v) screen_rainbow_effect_fisheye_change_factor_slow();
+
+
+}
+
+void antes_screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+
+    int x,y;
+
+
+    //printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
+
+    int cx=ancho/2;
+    int cy=alto/2;
+
+
+    for (y=0;y<alto;y++) {
+
+        for (x=0;x<ancho;x++) {
+
+            //distancias al centro
+            int dx = x - cx;
+            int dy = y - cy;
+
+            //distancia al centro
+
+
+            int r = util_sqrt(dx*dx + dy*dy,NULL);
+
+            float k=0.002f;
+
+            int factor = 1 + k * r*r;
+            int src_x = cx + dx * factor;
+            int src_y = cy + dy * factor;
+
+            if (src_x<0) src_x=0;
+            if (src_y<0) src_y=0;
+            if (src_x>=ancho) src_x=ancho-1;
+            if (src_y>=alto) src_y=alto-1;
+
+//factor Si factor = 1 → no hay deformación
+//Si factor > 1 → estiras hacia afuera
+//Si factor < 1 → comprimes hacia el centro
+
+//k → intensidad del efecto
+//Es un número pequeño (float), por ejemplo:
+//float k = 0.00001f;
+//controla lo fuerte que es el ojo de pez:
+//k > 0 → efecto tipo ojo de pez (convexo)
+//k < 0 → efecto tipo lente inversa (cóncavo)
+
+            int offset_origen=(src_y*ancho)+src_x;
+
+            int offset_destino=y*ancho+x;
+            destino[offset_destino]=origen[offset_origen];
+        }
+
+
+    }
+
+
+}
+
+
+
+#define SCREEN_EFFECT_WAVES_MAX_LINES 10000
+
+int screen_rainbow_effect_waves_offsets[SCREEN_EFFECT_WAVES_MAX_LINES];
 
 #define SCREEN_EFFECT_WAVES_MAX_OFFSET 4
 
@@ -5091,42 +5291,56 @@ void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int 
     int valor_random=util_get_random() % 30000;
 
 
-    printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
+    //printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
 
 
     for (y=0;y<alto;y++) {
 
         for (x=0;x<ancho-SCREEN_EFFECT_WAVES_MAX_OFFSET;x++) {
-            int offset_origen=y*ancho+x+screen_rainbow_effect_waves_offsets[y];
+            int offset_onda;
+
+            if (y<SCREEN_EFFECT_WAVES_MAX_LINES) {
+                offset_onda=screen_rainbow_effect_waves_offsets[y];
+            }
+            else offset_onda=0;
+
+            int offset_origen=y*ancho+x+offset_onda;
+
             int offset_destino=y*ancho+x;
             destino[offset_destino]=origen[offset_origen];
         }
 
+        //Cada cuantos frames moverse
         if ((screen_rainbow_effect_waves_frames%10)==0) {
-            if (y>0) {
+            if (y>0 && y<SCREEN_EFFECT_WAVES_MAX_LINES) {
                 int anterior_offset=screen_rainbow_effect_waves_offsets[y-1];
                 int current_offset=screen_rainbow_effect_waves_offsets[y];
 
+                //Lineas impares: copiar offset de la anterior linea
+                //Lineas pares: offset segun random
                 if ((y%2)==0) anterior_offset=current_offset;
 
                 screen_rainbow_effect_waves_offsets[y]=anterior_offset;
 
+                //33% de probabilidad de irse a la izquierda
                 if (valor_random<10000) {
                     if (anterior_offset>0) {
                         screen_rainbow_effect_waves_offsets[y]=anterior_offset-1;
                     }
                 }
 
+                //33% de probabilidad de irse a la derecha
                 else if (valor_random>20000) {
                     if (anterior_offset<SCREEN_EFFECT_WAVES_MAX_OFFSET) {
                         screen_rainbow_effect_waves_offsets[y]=anterior_offset+1;
                     }
                 }
 
-
+                //33% de probabilidad de no moverse
             }
 
-            if ((y%10)==0) valor_random=util_get_random() % 30000;
+            //Olas de 15 pixeles de alto
+            if ((y%15)==0) valor_random=util_get_random() % 30000;
 
         }
 
@@ -5216,15 +5430,23 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         origen=destino;
     }
 
-    /*
-    if (1) {
+
+    if (screen_special_effects_waves.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_rainbow_effect_waves(origen,destino,ancho,alto);
         aplicado_algo=1;
         if (origen!=inicial_origen) free(origen);
         origen=destino;
     }
-    */
+
+    if (screen_special_effects_fisheye.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_fisheye(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
 
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
     //TODO: averiguar esto de manera mas eficiente
@@ -5473,6 +5695,8 @@ z80_bit screen_special_effects_flip_vertical={0};
 z80_bit screen_special_effects_flip_horizontal={0};
 z80_bit screen_special_effects_nagravision={0};
 z80_bit screen_special_effects_interferences={0};
+z80_bit screen_special_effects_waves={0};
+z80_bit screen_special_effects_fisheye={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
