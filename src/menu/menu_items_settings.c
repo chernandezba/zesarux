@@ -1581,7 +1581,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "Special effects","Efectos Especiales","Efectes Especials");
+            "Enable","Activar","Activar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_enabled.v ? 'X' : ' ' ));
         menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_enabled);
 
@@ -1672,7 +1672,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_follow_music_channel ? screen_special_effects_fisheye_follow_music_channel : ' ' ));
 
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-                    "Automatic Lens factor","Factor Lente Automático","Factor Lent Automàtic");
+                    "Continuous Lens factor","Factor Lente Continuo","Factor Lent Continu");
                 menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_automatic_factor.v ? 'X' : ' ' ));
                 menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_automatic_factor);
 
@@ -1691,6 +1691,14 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_zoom_mouse);
             menu_add_item_menu_ayuda(array_menu_common,"Zoom Mouse");
             menu_add_item_menu_tooltip(array_menu_common,"Zoom Mouse");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                "Vsync lost","Pérdida vsync","Pèrdua vsync");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_vsync_lost.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_vsync_lost);
+            menu_add_item_menu_ayuda(array_menu_common,"Vsync lost");
+            menu_add_item_menu_tooltip(array_menu_common,"Vsync lost");
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,

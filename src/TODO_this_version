@@ -130,32 +130,12 @@ antes de commonsdl_init
 
 
 -efectos especiales
-*parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse... en config
+*parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse, vsync lost... en config
 *revisar liberar memoria
 *revisar gigascreen , replantear entera
-*mas efectos: vsync lost, pixelado
+*mas efectos: pixelado
 
--Distorsión radial (tipo "ojo de pez")
-Modifica las coordenadas según la distancia al centro:
-dx = x - cx;
-dy = y - cy;
-r = sqrt(dx*dx + dy*dy);
-factor = 1 + k * r*r;
-src_x = cx + dx * factor;
-src_y = cy + dy * factor;
-//cx,cy= centro pantalla
-//factor Si factor = 1 → no hay deformación
-Si factor > 1 → estiras hacia afuera
-Si factor < 1 → comprimes hacia el centro
 
-k → intensidad del efecto
-Es un número pequeño (float), por ejemplo:
-float k = 0.00001f;
--> controla lo fuerte que es el ojo de pez:
-k > 0 → efecto tipo ojo de pez (convexo)
-k < 0 → efecto tipo lente inversa (cóncavo)
-
-->poder alterar el centro segun posicion del raton
 
 -Twirl (remolino)
 Rota píxeles dependiendo de la distancia al centro.
@@ -168,7 +148,6 @@ int offset = ((x ^ y ^ time_int) & 7) - 3;
 int sy = (y + offset + height) % height;
 
 dst[y*width + x] = src[sy*width + x];
-
 
 
 -Shear (inclinación)

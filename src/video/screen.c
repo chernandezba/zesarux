@@ -5143,6 +5143,41 @@ void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho
 }
 
 
+int screen_rainbow_effect_vsync_lost_y_inicial=0;
+
+void screen_rainbow_effect_vsync_lost(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    int yorigen=screen_rainbow_effect_vsync_lost_y_inicial;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+            int offset_origen=yorigen*ancho+x;
+            int offset_destino=y*ancho+x;
+
+            int color=origen[offset_origen];
+
+            //ultimas lineas tienen color negro como se aprecian en los vsync
+            if (yorigen>=alto-20) color=0;
+
+            destino[offset_destino]=color;
+
+        }
+
+        yorigen++;
+        if (yorigen==alto) yorigen=0;
+    }
+
+    screen_rainbow_effect_vsync_lost_y_inicial++;
+    if (screen_rainbow_effect_vsync_lost_y_inicial==alto) screen_rainbow_effect_vsync_lost_y_inicial=0;
+
+
+}
+
+
+
 // intensidad del efecto
 
 //k → intensidad del efecto
@@ -5447,6 +5482,16 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         origen=destino;
     }
 
+
+
+    if (screen_special_effects_vsync_lost.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_vsync_lost(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
     if (screen_special_effects_zoom_mouse.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_rainbow_effect_zoom_mouse(origen,destino,ancho,alto);
@@ -5706,6 +5751,7 @@ z80_bit screen_special_effects_interferences={0};
 z80_bit screen_special_effects_waves={0};
 z80_bit screen_special_effects_fisheye={0};
 z80_bit screen_special_effects_zoom_mouse={0};
+z80_bit screen_special_effects_vsync_lost={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
