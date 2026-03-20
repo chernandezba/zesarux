@@ -1847,6 +1847,14 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
             }
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
+                "Zoom Mouse","Zoom Ratón","Zoom Ratolí");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_zoom_mouse.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_zoom_mouse);
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Zoom Mouse");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Zoom Mouse");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,NULL,NULL,
                 "Nagravision","Nagravision","Nagravision");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_special_effects_nagravision.v ? 'X' : ' ' ));
             menu_add_item_menu_opcion_conmuta(array_menu_window_settings,&screen_special_effects_nagravision);

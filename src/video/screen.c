@@ -5076,6 +5076,71 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
 
 }
 
+#define SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR 3
+#define SCREEN_EFFECT_ZOOM_MOUSE_SIZE 20
+
+void screen_rainbow_effect_zoom_mouse_putpixel(z80_int *destino,int ancho,int alto,int dest_x,int dest_y,int color)
+{
+    int zx,zy;
+
+    for (zy=0;zy<SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;zy++) {
+        for (zx=0;zx<SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;zx++) {
+            if (dest_x>=0 && dest_y>=0 && dest_x<ancho && dest_y<alto) {
+                int offset_dest=dest_y*ancho+dest_x;
+
+                destino[offset_dest]=color;
+            }
+        }
+    }
+
+}
+
+void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    int orig_y=mouse_y/zoom_y;
+    int dest_y=orig_y;
+
+    orig_y -=SCREEN_EFFECT_ZOOM_MOUSE_SIZE/2;
+    dest_y -=(SCREEN_EFFECT_ZOOM_MOUSE_SIZE/2)*SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;
+
+    int inc_x,inc_y;
+
+    for (inc_y=0;inc_y<alto;inc_y++) {
+
+        int orig_x=mouse_x/zoom_x;
+        int dest_x=orig_x;
+
+        orig_x -=SCREEN_EFFECT_ZOOM_MOUSE_SIZE/2;
+        dest_x -=(SCREEN_EFFECT_ZOOM_MOUSE_SIZE/2)*SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;
+
+        for (inc_x=0;inc_x<ancho;inc_x++) {
+
+            if (orig_x>=0 && orig_y>=0 && orig_x<ancho && orig_y<alto) {
+
+
+                int offset_orig=orig_y*ancho+orig_x;
+
+                z80_int color=origen[offset_orig];
+
+                screen_rainbow_effect_zoom_mouse_putpixel(destino,ancho,alto,dest_x,dest_y,color);
+
+            }
+
+            dest_x +=SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;
+        }
+
+        dest_y +=SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;
+
+    }
+
+
+}
+
 
 // intensidad del efecto
 
@@ -5389,6 +5454,14 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         origen=destino;
     }
 
+    if (screen_special_effects_zoom_mouse.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_zoom_mouse(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
 
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
     //TODO: averiguar esto de manera mas eficiente
@@ -5639,6 +5712,7 @@ z80_bit screen_special_effects_nagravision={0};
 z80_bit screen_special_effects_interferences={0};
 z80_bit screen_special_effects_waves={0};
 z80_bit screen_special_effects_fisheye={0};
+z80_bit screen_special_effects_zoom_mouse={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
