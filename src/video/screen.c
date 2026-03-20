@@ -5211,65 +5211,7 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
 
 }
 
-void antes_screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,int alto)
-{
 
-
-    int x,y;
-
-
-    //printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
-
-    int cx=ancho/2;
-    int cy=alto/2;
-
-
-    for (y=0;y<alto;y++) {
-
-        for (x=0;x<ancho;x++) {
-
-            //distancias al centro
-            int dx = x - cx;
-            int dy = y - cy;
-
-            //distancia al centro
-
-
-            int r = util_sqrt(dx*dx + dy*dy,NULL);
-
-            float k=0.002f;
-
-            int factor = 1 + k * r*r;
-            int src_x = cx + dx * factor;
-            int src_y = cy + dy * factor;
-
-            if (src_x<0) src_x=0;
-            if (src_y<0) src_y=0;
-            if (src_x>=ancho) src_x=ancho-1;
-            if (src_y>=alto) src_y=alto-1;
-
-//factor Si factor = 1 → no hay deformación
-//Si factor > 1 → estiras hacia afuera
-//Si factor < 1 → comprimes hacia el centro
-
-//k → intensidad del efecto
-//Es un número pequeño (float), por ejemplo:
-//float k = 0.00001f;
-//controla lo fuerte que es el ojo de pez:
-//k > 0 → efecto tipo ojo de pez (convexo)
-//k < 0 → efecto tipo lente inversa (cóncavo)
-
-            int offset_origen=(src_y*ancho)+src_x;
-
-            int offset_destino=y*ancho+x;
-            destino[offset_destino]=origen[offset_origen];
-        }
-
-
-    }
-
-
-}
 
 
 
