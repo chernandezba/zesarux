@@ -5076,7 +5076,7 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
 
 }
 
-#define SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR 3
+#define SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR 4
 #define SCREEN_EFFECT_ZOOM_MOUSE_SIZE 20
 
 void screen_rainbow_effect_zoom_mouse_putpixel(z80_int *destino,int ancho,int alto,int dest_x,int dest_y,int color)
@@ -5085,8 +5085,8 @@ void screen_rainbow_effect_zoom_mouse_putpixel(z80_int *destino,int ancho,int al
 
     for (zy=0;zy<SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;zy++) {
         for (zx=0;zx<SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;zx++) {
-            if (dest_x>=0 && dest_y>=0 && dest_x<ancho && dest_y<alto) {
-                int offset_dest=dest_y*ancho+dest_x;
+            if (dest_x+zx>=0 && dest_y+zy>=0 && dest_x+zx<ancho && dest_y+zy<alto) {
+                int offset_dest=(dest_y+zy)*ancho+dest_x+zx;
 
                 destino[offset_dest]=color;
             }
@@ -5110,7 +5110,7 @@ void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho
 
     int inc_x,inc_y;
 
-    for (inc_y=0;inc_y<alto;inc_y++) {
+    for (inc_y=0;inc_y<SCREEN_EFFECT_ZOOM_MOUSE_SIZE;inc_y++,orig_y++) {
 
         int orig_x=mouse_x/zoom_x;
         int dest_x=orig_x;
@@ -5118,7 +5118,7 @@ void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho
         orig_x -=SCREEN_EFFECT_ZOOM_MOUSE_SIZE/2;
         dest_x -=(SCREEN_EFFECT_ZOOM_MOUSE_SIZE/2)*SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;
 
-        for (inc_x=0;inc_x<ancho;inc_x++) {
+        for (inc_x=0;inc_x<SCREEN_EFFECT_ZOOM_MOUSE_SIZE;inc_x++,orig_x++) {
 
             if (orig_x>=0 && orig_y>=0 && orig_x<ancho && orig_y<alto) {
 
