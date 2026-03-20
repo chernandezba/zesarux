@@ -5120,16 +5120,24 @@ void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho
 
         for (inc_x=0;inc_x<SCREEN_EFFECT_ZOOM_MOUSE_SIZE;inc_x++,orig_x++) {
 
+            z80_int color=0;
+
             if (orig_x>=0 && orig_y>=0 && orig_x<ancho && orig_y<alto) {
 
 
                 int offset_orig=orig_y*ancho+orig_x;
 
-                z80_int color=origen[offset_orig];
-
-                screen_rainbow_effect_zoom_mouse_putpixel(destino,ancho,alto,dest_x,dest_y,color);
+                color=origen[offset_orig];
 
             }
+
+            else {
+                //Pixeles que en origen salen de rango, mostrarlos como tramado
+                int sum=orig_x+orig_y;
+                if ((sum % 2)==0) color=15;
+            }
+
+            screen_rainbow_effect_zoom_mouse_putpixel(destino,ancho,alto,dest_x,dest_y,color);
 
             dest_x +=SCREEN_EFFECT_ZOOM_MOUSE_ZOOM_FACTOR;
         }
