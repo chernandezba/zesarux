@@ -1568,7 +1568,11 @@ void menu_interface_special_effects_fisheye_follow_music(MENU_ITEM_PARAMETERS)
 }
 
 
-
+void menu_interface_special_effects_pixelate_size(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_pixelate_size +=2;
+    if (screen_rainbow_effect_pixelate_size>16) screen_rainbow_effect_pixelate_size=2;
+}
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
@@ -1691,6 +1695,21 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_zoom_mouse);
             menu_add_item_menu_ayuda(array_menu_common,"Zoom Mouse");
             menu_add_item_menu_tooltip(array_menu_common,"Zoom Mouse");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                "Pixelate","Pixelar","Pixelar");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_pixelate.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_pixelate);
+            menu_add_item_menu_ayuda(array_menu_common,"Pixelate");
+            menu_add_item_menu_tooltip(array_menu_common,"Pixelate");
+
+            if (screen_special_effects_pixelate.v) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_pixelate_size,NULL,
+                    "Pixelate size","Pixelar tamaño","Pixelar tamany");
+                menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_pixelate_size);
+            }
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Hsync lost","Pérdida hsync","Pèrdua hsync");

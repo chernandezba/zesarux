@@ -1047,6 +1047,8 @@ extern void screen_rainbow_effect_fisheye_change_factor(void);
 extern z80_bit screen_special_effects_zoom_mouse;
 extern z80_bit screen_special_effects_vsync_lost;
 extern z80_bit screen_special_effects_hsync_lost;
+extern z80_bit screen_special_effects_pixelate;
+extern int screen_rainbow_effect_pixelate_size;
 
 extern int screen_reduce_offset_x;
 extern int screen_reduce_offset_y;
