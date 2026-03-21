@@ -160,3 +160,18 @@ dst[y*width + x] = src[y*width + sx];
 
 -nagravision audio
 *completar maquinas
+
+-en features indicar video effects:
+-Reduce
+-Unsteady
+-Flip Vertical
+-Flip Horizontal
+-Interferences
+-Waves
+-Lens
+-Zoom mouse
+-Pixelate
+-Hsync lost
+-Vsync lost
+-Nagravision (also Nagra audio)
+etc...
