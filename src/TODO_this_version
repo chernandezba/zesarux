@@ -132,6 +132,7 @@ antes de commonsdl_init
 -efectos especiales
 *parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse, vsync lost, hsync lost, pixelate... en config
 *revisar liberar memoria
+*entradas en changelog
 *revisar gigascreen , replantear entera
 *mas efectos:
 
