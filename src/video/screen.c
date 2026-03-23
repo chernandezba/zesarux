@@ -5301,11 +5301,20 @@ void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int a
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 			
-			int offset = ((x ^ y ^ screen_rainbow_effect_heat_tiempo) & 7) - 3;
+			//int offset = ((x ^ y ^ (screen_rainbow_effect_heat_tiempo/25)) & 7) - 3;
+			int off=((y + (screen_rainbow_effect_heat_tiempo/25)) % 16);
+			
+			//if (offset>=8) offset=16-offset;
+			off=(off*90)/16;
+			
+			int offset=16*util_get_cosine(off)/10000;
+		
+			int sy = (y + offset) % alto;
+			sy=y;
+			
+			int sx = (x + offset) % ancho;
 
-			int sy = (y + offset + alto) % alto;
-
-			destino[y*ancho + x] = origen[sy*ancho + x];			
+			destino[y*ancho + x] = origen[sy*ancho +sx];			
 			
             
         }
