@@ -5292,6 +5292,7 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 }
 
 int screen_rainbow_effect_heat_tiempo=0;
+int screen_rainbow_effect_heat_intensidad=8;
 
 void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -5304,16 +5305,22 @@ void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int a
 			//Cada 30 pixeles en alto, una vuelta entera 360 grados
 			int off=((y+screen_rainbow_effect_heat_tiempo/1) % 30)*(360/30);
 			
-			//8 de ancho max
-			int offset=8*util_get_cosine(off)/10000;
+			//cerca del border reducir el efecto
+			//if (x<8) intensidad=x;
+			//if (x>ancho-8) intensidad=ancho-x-1;
+			
+			
+			int offset=screen_rainbow_effect_heat_intensidad*util_get_cosine(off)/10000;
+
 			
 			int sx = (x + offset);
 			
-			if (x<10) sx=x;
 			
 			int color;
-			if (sx<0 || sx>=ancho) color=0;
-			else color=origen[y*ancho +sx];
+			if (sx<0) sx=0;
+			if (sx>=ancho) sx=ancho-1;
+			
+			color=origen[y*ancho +sx];
 
 			destino[y*ancho + x] = color;			
 			

@@ -1574,6 +1574,12 @@ void menu_interface_special_effects_pixelate_size(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_pixelate_size>SCREEN_EFFECT_PIXELATE_MAX_SIZE) screen_rainbow_effect_pixelate_size=2;
 }
 
+void menu_interface_special_effects_waves2_width(MENU_ITEM_PARAMETERS)
+{
+	screen_rainbow_effect_heat_intensidad++;
+	if (screen_rainbow_effect_heat_intensidad>=21) screen_rainbow_effect_heat_intensidad=2;
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1663,6 +1669,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_heat);
             menu_add_item_menu_ayuda(array_menu_common,"Waves2");
             menu_add_item_menu_tooltip(array_menu_common,"Waves2");
+            
+            //screen_rainbow_effect_heat_intensidad
+            if (screen_special_effects_heat.v) {
+				menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_waves2_width,NULL,
+                "Wave width","Ancho Olas","Ample Ones");
+				menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_heat_intensidad);
+			}
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Lens","Lente","Lent");
