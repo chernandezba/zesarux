@@ -1052,6 +1052,24 @@ extern int screen_rainbow_effect_pixelate_size;
 extern z80_bit screen_special_effects_heat;
 extern int screen_rainbow_effect_heat_intensidad;
 
+extern void init_screen_effects_table(void);
+
+enum enum_screen_effect_types {
+	SCREEN_EFFECT_TYPE_REDUCE,
+	SCREEN_EFFECT_TYPE_UNSTEADY,
+	SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
+	SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
+	SCREEN_EFFECT_TYPE_INTERFERENCES,
+	SCREEN_EFFECT_TYPE_WAVES,
+	SCREEN_EFFECT_TYPE_WAVES2,
+	SCREEN_EFFECT_TYPE_LENS,
+	SCREEN_EFFECT_TYPE_ZOOM_MOUSE,
+	SCREEN_EFFECT_TYPE_PIXELATE,
+	SCREEN_EFFECT_TYPE_HSYNC_LOST,
+	SCREEN_EFFECT_TYPE_VSYNC_LOST,
+	SCREEN_EFFECT_TYPE_NAGRAVISION
+};
+
 #define SCREEN_EFFECT_PIXELATE_MAX_SIZE 16
 
 extern int screen_reduce_offset_x;

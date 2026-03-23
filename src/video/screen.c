@@ -5305,9 +5305,6 @@ void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int a
 			//Cada 30 pixeles en alto, una vuelta entera 360 grados
 			int off=((y+screen_rainbow_effect_heat_tiempo/1) % 30)*(360/30);
 			
-			//cerca del border reducir el efecto
-			//if (x<8) intensidad=x;
-			//if (x>ancho-8) intensidad=ancho-x-1;
 			
 			
 			int offset=screen_rainbow_effect_heat_intensidad*util_get_cosine(off)/10000;
@@ -5934,6 +5931,10 @@ z80_bit screen_special_effects_hsync_lost={0};
 z80_bit screen_special_effects_vsync_lost={0};
 z80_bit screen_special_effects_pixelate={0};
 z80_bit screen_special_effects_heat={0};
+
+void init_screen_effects_table(void)
+{
+}
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)

@@ -7921,6 +7921,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     init_debug_user_variables();
 
     extended_stack_clear();
+    
+    init_screen_effects_table();
 
     last_filesused_clear();
     menu_first_aid_init();
@@ -7944,12 +7946,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     audio_end=NULL;
     audio_init=NULL;
 
-//temp
-//parse_string_to_number_add_label("sinclair",16384);
-//parse_string_to_number_add_label("research",32768);
-//parse_string_to_number_add_label("ltd",8192);
 
-//labels_load("prueba.sym");
 
     quickload_inicial.v=0;
     z88_slotcard_inicial.v=0;
