@@ -1779,7 +1779,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_automatic_factor.v ? 'X' : ' ' ));
                     menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_automatic_factor);
 
-                    if (screen_special_effects_fisheye_automatic_factor.v==0) {
+                    if (screen_special_effects_fisheye_automatic_factor.v==0 && !screen_special_effects_fisheye_follow_music_channel) {
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_factor,NULL,
                             "Lens factor","Factor Lente","Factor Lent");
                         menu_add_item_menu_prefijo_format(array_menu_common," [%1.3f] ",screen_rainbow_effect_fisheye_factor_k);

@@ -1032,6 +1032,8 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 extern void screen_special_effects_free_buffers(void);
 extern z80_int *screen_special_effects_alloc_buffer(int ancho,int alto);
 extern z80_bit screen_special_effects_enabled;
+
+/*
 extern z80_bit screen_special_effects_temblar;
 extern z80_bit screen_special_effects_flip_vertical;
 extern z80_bit screen_special_effects_flip_horizontal;
@@ -1039,18 +1041,24 @@ extern z80_bit screen_special_effects_nagravision;
 extern z80_bit screen_special_effects_interferences;
 extern z80_bit screen_special_effects_waves;
 extern z80_bit screen_special_effects_fisheye;
-extern z80_bit screen_special_effects_fisheye_automatic_factor;
-extern z80_bit screen_special_effects_fisheye_follow_mouse;
-extern char screen_special_effects_fisheye_follow_music_channel;
-extern float screen_rainbow_effect_fisheye_factor_k;
-extern void screen_rainbow_effect_fisheye_change_factor(void);
 extern z80_bit screen_special_effects_zoom_mouse;
 extern z80_bit screen_special_effects_vsync_lost;
 extern z80_bit screen_special_effects_hsync_lost;
 extern z80_bit screen_special_effects_pixelate;
-extern int screen_rainbow_effect_pixelate_size;
 extern z80_bit screen_special_effects_heat;
+*/
+
+
+extern float screen_rainbow_effect_fisheye_factor_k;
+extern void screen_rainbow_effect_fisheye_change_factor(void);
+
+extern int screen_rainbow_effect_pixelate_size;
+
 extern int screen_rainbow_effect_heat_intensidad;
+
+extern z80_bit screen_special_effects_fisheye_automatic_factor;
+extern z80_bit screen_special_effects_fisheye_follow_mouse;
+extern char screen_special_effects_fisheye_follow_music_channel;
 
 extern void init_screen_effects_table(void);
 

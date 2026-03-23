@@ -2857,7 +2857,7 @@ int parse_cmdline_options(int desde_commandline)
             }
 
             else if (!strcmp(argv[puntero_parametro],"--video-special-effect-unsteady")) {
-                screen_special_effects_temblar.v=1;
+                //screen_special_effects_temblar.v=1;
             }
 
 
