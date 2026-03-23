@@ -1580,6 +1580,89 @@ void menu_interface_special_effects_waves2_width(MENU_ITEM_PARAMETERS)
 	if (screen_rainbow_effect_heat_intensidad>=21) screen_rainbow_effect_heat_intensidad=2;
 }
 
+void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
+{
+	int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
+	int type_current=screen_effect_applied_list[valor_opcion].type;
+	
+	screen_effect_applied_list[valor_opcion].type=screen_effect_applied_list[valor_opcion-1].type;
+	screen_effect_applied_list[valor_opcion].enabled=screen_effect_applied_list[valor_opcion-1].enabled;
+	
+	screen_effect_applied_list[valor_opcion-1].type=type_current;
+	screen_effect_applied_list[valor_opcion-1].enabled=enabled_current;
+}
+
+void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
+{
+	screen_effect_applied_list[valor_opcion].enabled ^=1;
+};
+
+void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
+{
+	int efecto_seleccionado=valor_opcion;
+	//screen_effect_applied_list[opcion_seleccionada].enabled ^=1;
+	
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    
+    int opcion_seleccionada=0;
+
+
+    do {
+
+		if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
+			menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_enable,NULL,
+            "Enable","Activar","Activar");
+        }
+        else {
+			menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_enable,NULL,
+            "Disable","Desactivar","Desactivar");
+        }
+        menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+ 
+		if (efecto_seleccionado>0) {
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_move_up,NULL,
+            "Move Up","Mover Arriba","Moure Adalt");
+			menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+		}
+ 
+        
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Main Window-> FX-> Change",
+            "Menú Principal-> Opciones-> Ventana Principal-> FX-> Cambia",
+            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia");
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Change","Cambia","Canvia" );
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+	
+	
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1604,10 +1687,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 				int enabled=screen_effect_applied_list[i].enabled;
 				enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
 				
-				menu_add_item_menu(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-					screen_effect_get_name(type));
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
+					menu_main_window_special_effects_change,NULL,screen_effect_get_name(type));
 				menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
-					(screen_effect_applied_list[i].enabled ? 'X' : ' ' ));
+					(enabled ? 'X' : ' ' ));
+				menu_add_item_menu_valor_opcion(array_menu_common,i);
  
 			}
 
