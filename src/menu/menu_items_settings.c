@@ -1576,76 +1576,76 @@ void menu_interface_special_effects_pixelate_size(MENU_ITEM_PARAMETERS)
 
 void menu_interface_special_effects_waves2_width(MENU_ITEM_PARAMETERS)
 {
-	screen_rainbow_effect_heat_intensidad++;
-	if (screen_rainbow_effect_heat_intensidad>=21) screen_rainbow_effect_heat_intensidad=2;
+    screen_rainbow_effect_heat_intensidad++;
+    if (screen_rainbow_effect_heat_intensidad>=21) screen_rainbow_effect_heat_intensidad=2;
 }
 
 void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
 {
-	int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
-	int type_current=screen_effect_applied_list[valor_opcion].type;
-	
-	screen_effect_applied_list[valor_opcion].type=screen_effect_applied_list[valor_opcion-1].type;
-	screen_effect_applied_list[valor_opcion].enabled=screen_effect_applied_list[valor_opcion-1].enabled;
-	
-	screen_effect_applied_list[valor_opcion-1].type=type_current;
-	screen_effect_applied_list[valor_opcion-1].enabled=enabled_current;
-	
-	main_window_special_effects_opcion_seleccionada--;
+    int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
+    int type_current=screen_effect_applied_list[valor_opcion].type;
+
+    screen_effect_applied_list[valor_opcion].type=screen_effect_applied_list[valor_opcion-1].type;
+    screen_effect_applied_list[valor_opcion].enabled=screen_effect_applied_list[valor_opcion-1].enabled;
+
+    screen_effect_applied_list[valor_opcion-1].type=type_current;
+    screen_effect_applied_list[valor_opcion-1].enabled=enabled_current;
+
+    main_window_special_effects_opcion_seleccionada--;
 }
 
 void menu_main_window_special_effects_change_move_down(MENU_ITEM_PARAMETERS)
 {
-	int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
-	int type_current=screen_effect_applied_list[valor_opcion].type;
-	
-	screen_effect_applied_list[valor_opcion].type=screen_effect_applied_list[valor_opcion+1].type;
-	screen_effect_applied_list[valor_opcion].enabled=screen_effect_applied_list[valor_opcion+1].enabled;
-	
-	screen_effect_applied_list[valor_opcion+1].type=type_current;
-	screen_effect_applied_list[valor_opcion+1].enabled=enabled_current;
-	
-	main_window_special_effects_opcion_seleccionada++;
+    int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
+    int type_current=screen_effect_applied_list[valor_opcion].type;
+
+    screen_effect_applied_list[valor_opcion].type=screen_effect_applied_list[valor_opcion+1].type;
+    screen_effect_applied_list[valor_opcion].enabled=screen_effect_applied_list[valor_opcion+1].enabled;
+
+    screen_effect_applied_list[valor_opcion+1].type=type_current;
+    screen_effect_applied_list[valor_opcion+1].enabled=enabled_current;
+
+    main_window_special_effects_opcion_seleccionada++;
 }
 
 void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
 {
-	screen_effect_applied_list[valor_opcion].enabled ^=1;
+    screen_effect_applied_list[valor_opcion].enabled ^=1;
 };
 
 void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
 {
-	int efecto_seleccionado=valor_opcion;
-	
-	
+    int efecto_seleccionado=valor_opcion;
+
+
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
-   
+
     //do {
 
-		if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
-			menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_enable,NULL,
+        if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
+            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_enable,NULL,
             "Enable","Activar","Activar");
         }
         else {
-			menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_enable,NULL,
+            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_enable,NULL,
             "Disable","Desactivar","Desactivar");
         }
         menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
- 
-		if (efecto_seleccionado>0) {
-			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_move_up,NULL,
-            "Move Up","Mover Arriba","Moure Amunt");
-			menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
-		}
 
-		if (efecto_seleccionado<MAX_SCREEN_EFFECTS-1) {
-			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_move_down,NULL,
+        if (efecto_seleccionado>0) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_move_up,NULL,
+            "Move Up","Mover Arriba","Moure Amunt");
+            menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+        }
+
+        if (efecto_seleccionado<MAX_SCREEN_EFFECTS-1) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_move_down,NULL,
             "Move Down","Mover Abajo","Moure Avall");
-			menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
-		} 
-        
+            menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+        }
+
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
@@ -1677,8 +1677,8 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
         }
 
     //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-	
-	
+
+
 }
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
@@ -1698,22 +1698,22 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
         if (screen_special_effects_enabled.v) {
-			
-			int i;
-			
-			for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-				int enabled=screen_effect_applied_list[i].enabled;
-				enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
-				
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
-					menu_main_window_special_effects_change,NULL,screen_effect_get_name(type));
-				menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
-					(enabled ? 'X' : ' ' ));
-				menu_add_item_menu_valor_opcion(array_menu_common,i);
-				
-				
-				if (type==SCREEN_EFFECT_TYPE_REDUCE) {
-					
+
+            int i;
+
+            for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+                int enabled=screen_effect_applied_list[i].enabled;
+                enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
+
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
+                    menu_main_window_special_effects_change,NULL,screen_effect_get_name(type));
+                menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+                    (enabled ? 'X' : ' ' ));
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+
+                if (type==SCREEN_EFFECT_TYPE_REDUCE) {
+
             char string_reduce[10];
             if (screen_reduction_factor==SCREEN_REDUCE_NONE) strcpy (string_reduce," ");
             else if (screen_reduction_factor==SCREEN_REDUCE_075) strcpy (string_reduce,"0.75");
@@ -1741,12 +1741,12 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
                 menu_add_item_menu_es_avanzado(array_menu_common);
             }
-				}
-				
- 
-			}
+                }
 
-            
+
+            }
+
+
 
         }
 
@@ -1872,13 +1872,13 @@ void old_menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_heat);
             menu_add_item_menu_ayuda(array_menu_common,"Waves2");
             menu_add_item_menu_tooltip(array_menu_common,"Waves2");
-            
+
             //screen_rainbow_effect_heat_intensidad
             if (screen_special_effects_heat.v) {
-				menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_waves2_width,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_waves2_width,NULL,
                 "Wave width","Ancho Olas","Ample Ones");
-				menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_heat_intensidad);
-			}
+                menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_heat_intensidad);
+            }
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Lens","Lente","Lent");
@@ -4147,7 +4147,7 @@ void menu_debug_settings_show_zones_beyond_sync(MENU_ITEM_PARAMETERS)
 
 void menu_debug_step_over_rst8_plus_two(MENU_ITEM_PARAMETERS)
 {
-	debug_step_over_rst8_plus_two.v ^=1;
+    debug_step_over_rst8_plus_two.v ^=1;
 }
 
 void menu_debug_show_timing_opcodes(MENU_ITEM_PARAMETERS)
@@ -4219,17 +4219,17 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         }
 
 
-		if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_step_over_rst8_plus_two,NULL,
-				"Step Over RST8 +2","Step Over RST8 +2","Step Over RST8 +2");
-			menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",
-				(debug_step_over_rst8_plus_two.v ? 'X' : ' ') );
-			menu_add_item_menu_tooltip(array_menu_settings_debug,"When step over RST 8, it will stop on PC+2");
-			menu_add_item_menu_ayuda(array_menu_settings_debug,"When step over RST 8, it will stop on PC+2. "
-				"Useful when debugging esxdos calls; following byte to RST 8 must be >=128. "
-				"Note: when using esxdos handler, this is always the behaviour, no matter this setting"
-			);
-		}
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_step_over_rst8_plus_two,NULL,
+                "Step Over RST8 +2","Step Over RST8 +2","Step Over RST8 +2");
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",
+                (debug_step_over_rst8_plus_two.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_settings_debug,"When step over RST 8, it will stop on PC+2");
+            menu_add_item_menu_ayuda(array_menu_settings_debug,"When step over RST 8, it will stop on PC+2. "
+                "Useful when debugging esxdos calls; following byte to RST 8 must be >=128. "
+                "Note: when using esxdos handler, this is always the behaviour, no matter this setting"
+            );
+        }
 
         menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_show_timing_opcodes,NULL,
             "Show timing opcodes","Mostrar tiempos opcodes","Veure temps opcodes");

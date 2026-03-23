@@ -7921,7 +7921,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     init_debug_user_variables();
 
     extended_stack_clear();
-    
+
     init_screen_effects_table();
 
     last_filesused_clear();

@@ -492,23 +492,23 @@ extern void screen_tbblue_refresca_pantalla(void);
 //Estructura usada para funcion de conversion de caracter z88, y para funcion de bucle de refresco de pantalla de z88 en ascii
 struct s_z88_return_character_atributes
 {
-	//z80_byte *sbr;
-	z88_dir sbr;
-	int ascii_caracter;
-	int ancho;
-	int inverse;
-	int subrallado;
-	int parpadeo;
-	int gris;
-	int null_caracter;
+    //z80_byte *sbr;
+    z88_dir sbr;
+    int ascii_caracter;
+    int ancho;
+    int inverse;
+    int subrallado;
+    int parpadeo;
+    int gris;
+    int null_caracter;
 
-	//Estos siguientes solo usados en funcion de bucle de refresco de pantalla
-	int x,y;
-	void (*f_print_char)(struct s_z88_return_character_atributes *s);
-	void (*f_new_line)(struct s_z88_return_character_atributes *s);
+    //Estos siguientes solo usados en funcion de bucle de refresco de pantalla
+    int x,y;
+    void (*f_print_char)(struct s_z88_return_character_atributes *s);
+    void (*f_new_line)(struct s_z88_return_character_atributes *s);
 
 
-	//int temp_orig;
+    //int temp_orig;
 };
 
 extern void z88_return_character_atributes(struct s_z88_return_character_atributes *z88_caracter);
@@ -801,9 +801,9 @@ picotron:
 
 struct s_total_palette_colours {
         char nombre_paleta[32];
-				char descripcion_paleta[32];
-				int indice_inicial;
-				int total_colores;
+                char descripcion_paleta[32];
+                int indice_inicial;
+                int total_colores;
 };
 
 typedef struct s_total_palette_colours total_palette_colours;
@@ -817,10 +817,10 @@ extern total_palette_colours total_palette_colours_array[];
 #define VALOR_GRIS_A_R_G_B \
                                 if (screen_gray_mode & 1) b=valorgris; \
                                 else b=0; \
-				\
+                \
                                 if (screen_gray_mode & 2) g=valorgris; \
                                 else g=0; \
-				\
+                \
                                 if (screen_gray_mode & 4) r=valorgris; \
                                 else r=0; \
 
@@ -1055,24 +1055,24 @@ extern int screen_rainbow_effect_heat_intensidad;
 extern void init_screen_effects_table(void);
 
 enum enum_screen_effect_types {
-	SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
-	SCREEN_EFFECT_TYPE_UNSTEADY,
-	SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
-	SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
-	SCREEN_EFFECT_TYPE_INTERFERENCES,
-	SCREEN_EFFECT_TYPE_WAVES,
-	SCREEN_EFFECT_TYPE_WAVES2,
-	SCREEN_EFFECT_TYPE_LENS,
-	SCREEN_EFFECT_TYPE_ZOOM_MOUSE,
-	SCREEN_EFFECT_TYPE_PIXELATE,
-	SCREEN_EFFECT_TYPE_HSYNC_LOST,
-	SCREEN_EFFECT_TYPE_VSYNC_LOST,
-	SCREEN_EFFECT_TYPE_NAGRAVISION
+    SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
+    SCREEN_EFFECT_TYPE_UNSTEADY,
+    SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
+    SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
+    SCREEN_EFFECT_TYPE_INTERFERENCES,
+    SCREEN_EFFECT_TYPE_WAVES,
+    SCREEN_EFFECT_TYPE_WAVES2,
+    SCREEN_EFFECT_TYPE_LENS,
+    SCREEN_EFFECT_TYPE_ZOOM_MOUSE,
+    SCREEN_EFFECT_TYPE_PIXELATE,
+    SCREEN_EFFECT_TYPE_HSYNC_LOST,
+    SCREEN_EFFECT_TYPE_VSYNC_LOST,
+    SCREEN_EFFECT_TYPE_NAGRAVISION
 };
 
 typedef struct {
-	enum enum_screen_effect_types type;
-	char name[40];
+    enum enum_screen_effect_types type;
+    char name[40];
 } screen_effect_type_name;
 
 extern char *screen_effect_get_name(enum enum_screen_effect_types type);
@@ -1080,8 +1080,8 @@ extern char *screen_effect_get_name(enum enum_screen_effect_types type);
 #define MAX_SCREEN_EFFECTS 13
 
 typedef struct {
-	int enabled;
-	enum enum_screen_effect_types type;
+    int enabled;
+    enum enum_screen_effect_types type;
 } screen_effect_applied;
 
 extern screen_effect_applied screen_effect_applied_list[];
