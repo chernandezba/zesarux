@@ -1590,6 +1590,22 @@ void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
 	
 	screen_effect_applied_list[valor_opcion-1].type=type_current;
 	screen_effect_applied_list[valor_opcion-1].enabled=enabled_current;
+	
+	main_window_special_effects_opcion_seleccionada--;
+}
+
+void menu_main_window_special_effects_change_move_down(MENU_ITEM_PARAMETERS)
+{
+	int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
+	int type_current=screen_effect_applied_list[valor_opcion].type;
+	
+	screen_effect_applied_list[valor_opcion].type=screen_effect_applied_list[valor_opcion+1].type;
+	screen_effect_applied_list[valor_opcion].enabled=screen_effect_applied_list[valor_opcion+1].enabled;
+	
+	screen_effect_applied_list[valor_opcion+1].type=type_current;
+	screen_effect_applied_list[valor_opcion+1].enabled=enabled_current;
+	
+	main_window_special_effects_opcion_seleccionada++;
 }
 
 void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
@@ -1609,7 +1625,7 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
     int opcion_seleccionada=0;
 
 
-    do {
+    //do {
 
 		if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
 			menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_enable,NULL,
@@ -1623,10 +1639,15 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
  
 		if (efecto_seleccionado>0) {
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_move_up,NULL,
-            "Move Up","Mover Arriba","Moure Adalt");
+            "Move Up","Mover Arriba","Moure Amunt");
 			menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
 		}
- 
+
+		if (efecto_seleccionado<MAX_SCREEN_EFFECTS-1) {
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,		   	menu_main_window_special_effects_change_move_down,NULL,
+            "Move Down","Mover Abajo","Moure Avall");
+			menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+		} 
         
         menu_add_item_menu_separator(array_menu_common);
 
@@ -1658,7 +1679,7 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
             }
         }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 	
 	
 }
