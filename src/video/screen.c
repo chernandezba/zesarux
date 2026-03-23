@@ -5585,6 +5585,14 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 				case SCREEN_EFFECT_TYPE_FLIP_VERTICAL:
 					screen_rainbow_effect_flip_vertical(origen,destino,ancho,alto);
 				break;
+				
+				case SCREEN_EFFECT_TYPE_INTERFERENCES:
+					screen_rainbow_effect_interferences(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_ZOOM_MOUSE:
+					screen_rainbow_effect_zoom_mouse(origen,destino,ancho,alto);
+				break;
 			}
 			
 			aplicado_algo=1;
@@ -5612,13 +5620,6 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
     }
 
 
-    if (screen_special_effects_interferences.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_interferences(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
 
 
     if (screen_special_effects_waves.v) {
@@ -5669,13 +5670,7 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         origen=destino;
     }
 
-    if (screen_special_effects_zoom_mouse.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_zoom_mouse(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
+    
 
 */
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
