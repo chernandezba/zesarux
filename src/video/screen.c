@@ -5617,6 +5617,15 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 				case SCREEN_EFFECT_TYPE_PIXELATE:
 					screen_rainbow_effect_pixelate(origen,destino,ancho,alto);
 				break;
+				
+				case SCREEN_EFFECT_TYPE_HSYNC_LOST:
+					screen_rainbow_effect_hsync_lost(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_VSYNC_LOST:
+					screen_rainbow_effect_vsync_lost(origen,destino,ancho,alto);
+				break;
+       
 			}
 			
 			aplicado_algo=1;
@@ -5626,37 +5635,6 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 	}
 
    
-/*
-    
-
-    
-
-    if (screen_special_effects_hsync_lost.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_hsync_lost(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
-
-    if (screen_special_effects_vsync_lost.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_vsync_lost(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
-
-    if (screen_special_effects_pixelate.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-         aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
-
-    
-
-*/
     //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
     //TODO: averiguar esto de manera mas eficiente
     if (!aplicado_algo) {
