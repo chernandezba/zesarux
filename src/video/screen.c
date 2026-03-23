@@ -106,7 +106,7 @@ z80_bit screen_show_cpu_temp={1};
 //mostrar fps en footer
 z80_bit screen_show_fps={1};
 
-enum SCREEN_REDUCTIONS screen_reduction_factor=SCREEN_REDUCE_NONE;
+enum SCREEN_REDUCTIONS screen_reduction_factor=SCREEN_REDUCE_075;
 
 //Antialias al reducir
 z80_bit screen_reduce_antialias={1};
@@ -5715,11 +5715,11 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
 
 
         //Reducimos los dos bufferes si conviene-escalado 0.75
-        if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
+        /* TODO if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
                 screen_scale_075_050_gigascreen_function(ancho,alto);
                 puntero_one=new_scalled_rainbow_buffer_gigascren_one;
                 puntero_two=new_scalled_rainbow_buffer_gigascren_two;
-        }
+        }*/
 
         for (y=0;y<alto;y++) {
             for (x=0;x<ancho;x++) {

@@ -1021,7 +1021,7 @@ extern void scr_refresca_pantalla_tsconf_text_textmode (void (*fun_color) (z80_b
 
 
 enum SCREEN_REDUCTIONS {
-    SCREEN_REDUCE_NONE,
+//    SCREEN_REDUCE_NONE,
     SCREEN_REDUCE_075,
     SCREEN_REDUCE_050,
     SCREEN_REDUCE_025
