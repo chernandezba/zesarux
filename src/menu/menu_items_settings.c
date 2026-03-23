@@ -239,7 +239,7 @@ int hardware_settings_mouse_opcion_seleccionada=0;
 int hardware_settings_dma_opcion_seleccionada=0;
 int hardware_settings_spectrum_next_opcion_seleccionada=0;
 int main_window_special_effects_opcion_seleccionada=0;
-
+int main_window_special_effects_change=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -1621,10 +1621,7 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
-    
-    int opcion_seleccionada=0;
-
-
+   
     //do {
 
 		if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
@@ -1660,7 +1657,7 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
             "Menú Principal-> Opciones-> Ventana Principal-> FX-> Cambia",
             "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia");
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+        retorno_menu=menu_dibuja_menu(&main_window_special_effects_change,&item_seleccionado,array_menu_common,
             "Change","Cambia","Canvia" );
 
 
