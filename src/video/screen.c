@@ -5586,12 +5586,36 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 					screen_rainbow_effect_flip_vertical(origen,destino,ancho,alto);
 				break;
 				
+				case SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL:
+					screen_rainbow_effect_flip_horizontal(origen,destino,ancho,alto);
+				break;
+				
 				case SCREEN_EFFECT_TYPE_INTERFERENCES:
 					screen_rainbow_effect_interferences(origen,destino,ancho,alto);
 				break;
 				
 				case SCREEN_EFFECT_TYPE_ZOOM_MOUSE:
 					screen_rainbow_effect_zoom_mouse(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_NAGRAVISION:
+					screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_WAVES:
+					screen_rainbow_effect_waves(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_WAVES2:
+					screen_rainbow_effect_heat(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_LENS:
+					screen_rainbow_effect_fisheye(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_PIXELATE:
+					screen_rainbow_effect_pixelate(origen,destino,ancho,alto);
 				break;
 			}
 			
@@ -5603,48 +5627,9 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
    
 /*
-    if (screen_special_effects_flip_horizontal.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_flip_horizontal(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
-
-    if (screen_special_effects_nagravision.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
-
-
-
-
-    if (screen_special_effects_waves.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_waves(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
-
-    if (screen_special_effects_fisheye.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_fisheye(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }
     
-    if (screen_special_effects_heat.v) {
-        destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_heat(origen,destino,ancho,alto);
-        aplicado_algo=1;
-        if (origen!=inicial_origen) free(origen);
-        origen=destino;
-    }    
+
+    
 
     if (screen_special_effects_hsync_lost.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
@@ -5664,8 +5649,7 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
     if (screen_special_effects_pixelate.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
-        screen_rainbow_effect_pixelate(origen,destino,ancho,alto);
-        aplicado_algo=1;
+         aplicado_algo=1;
         if (origen!=inicial_origen) free(origen);
         origen=destino;
     }
