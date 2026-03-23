@@ -5301,21 +5301,21 @@ void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int a
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 			
-			//int offset = ((x ^ y ^ (screen_rainbow_effect_heat_tiempo/25)) & 7) - 3;
-			//int off=((y + (screen_rainbow_effect_heat_tiempo/25)) );
-			int off=((y+screen_rainbow_effect_heat_tiempo/25) % 16)*(360/16);
+			//Cada 30 pixeles en alto, una vuelta entera 360 grados
+			int off=((y+screen_rainbow_effect_heat_tiempo/1) % 30)*(360/30);
 			
-			//if (offset>=8) offset=16-offset;
-			//off=off % 360;
-			
+			//8 de ancho max
 			int offset=8*util_get_cosine(off)/10000;
-		
-			int sy = (y + offset) % alto;
-			sy=y;
 			
-			int sx = (x + offset) % ancho;
+			int sx = (x + offset);
+			
+			if (x<10) sx=x;
+			
+			int color;
+			if (sx<0 || sx>=ancho) color=0;
+			else color=origen[y*ancho +sx];
 
-			destino[y*ancho + x] = origen[sy*ancho +sx];			
+			destino[y*ancho + x] = color;			
 			
             
         }
