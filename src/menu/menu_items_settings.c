@@ -1597,6 +1597,74 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
         if (screen_special_effects_enabled.v) {
+			
+			int i;
+			
+			for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+				int enabled=screen_effect_applied_list[i].enabled;
+				enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
+				
+				menu_add_item_menu(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+					screen_effect_get_name(type));
+				menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
+					(screen_effect_applied_list[i].enabled ? 'X' : ' ' ));
+ 
+			}
+
+            
+
+        }
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Main Window-> FX","Menú Principal-> Opciones-> Ventana Principal-> FX","Menú Principal-> Opcions-> Finestra Principal-> FX");
+
+        retorno_menu=menu_dibuja_menu(&main_window_special_effects_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "FX","FX","FX" );
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+void old_menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "Enable","Activar","Activar");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_enabled.v ? 'X' : ' ' ));
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_enabled);
+
+
+        if (screen_special_effects_enabled.v) {
 
             char string_reduce[10];
             if (screen_reduction_factor==SCREEN_REDUCE_NONE) strcpy (string_reduce," ");

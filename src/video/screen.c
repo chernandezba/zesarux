@@ -5949,7 +5949,16 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
 	{SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"}
 };
 
+char *screen_effect_name_unknown="Unknown";
 
+char *screen_effect_get_name(enum enum_screen_effect_types type)
+{
+	int i;
+	for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+		if (screen_effect_type_list[i].type==type) return screen_effect_type_list[i].name;
+	}
+	return screen_effect_name_unknown;
+}
 
 screen_effect_applied screen_effect_applied_list[MAX_SCREEN_EFFECTS];
 

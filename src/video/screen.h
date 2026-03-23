@@ -1075,6 +1075,8 @@ typedef struct {
 	char name[40];
 } screen_effect_type_name;
 
+extern char *screen_effect_get_name(enum enum_screen_effect_types type);
+
 #define MAX_SCREEN_EFFECTS 13
 
 typedef struct {
