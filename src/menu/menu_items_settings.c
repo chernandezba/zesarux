@@ -1616,7 +1616,7 @@ void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
 void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
 {
 	int efecto_seleccionado=valor_opcion;
-	//screen_effect_applied_list[opcion_seleccionada].enabled ^=1;
+	
 	
     menu_item *array_menu_common;
     menu_item item_seleccionado;
