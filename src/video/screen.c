@@ -5554,6 +5554,149 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
     int aplicado_algo=0;
     z80_int *destino;
+    
+    int i;
+    
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+		if (screen_effect_applied_list[i].enabled) {
+			destino=screen_special_effects_alloc_buffer(ancho,alto);
+
+			switch (screen_effect_applied_list[i].type) {
+				case SCREEN_EFFECT_TYPE_REDUCE:
+				 //Zoom 0.5
+    if (screen_reduction_factor==SCREEN_REDUCE_050) {
+        screen_scale_rainbow_21(origen,ancho,alto,destino);
+    }
+
+    else if (screen_reduction_factor==SCREEN_REDUCE_025) {
+        screen_scale_rainbow_41(origen,ancho,alto,destino);
+    }
+
+    else if (screen_reduction_factor==SCREEN_REDUCE_075) {
+        screen_scale_rainbow_43(origen,ancho,alto,destino);
+    }
+    
+				break;
+				
+				case SCREEN_EFFECT_TYPE_UNSTEADY:
+					screen_rainbow_effect_temblar(origen,destino,ancho,alto);
+				break;
+				
+				case SCREEN_EFFECT_TYPE_FLIP_VERTICAL:
+					screen_rainbow_effect_flip_vertical(origen,destino,ancho,alto);
+				break;
+			}
+			
+			aplicado_algo=1;
+			if (origen!=inicial_origen) free(origen);
+			origen=destino;
+		}
+	}
+
+   
+/*
+    if (screen_special_effects_flip_horizontal.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_flip_horizontal(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+    if (screen_special_effects_nagravision.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+
+    if (screen_special_effects_interferences.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_interferences(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+
+    if (screen_special_effects_waves.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_waves(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+    if (screen_special_effects_fisheye.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_fisheye(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+    
+    if (screen_special_effects_heat.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_heat(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }    
+
+    if (screen_special_effects_hsync_lost.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_hsync_lost(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+    if (screen_special_effects_vsync_lost.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_vsync_lost(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+    if (screen_special_effects_pixelate.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_pixelate(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+    if (screen_special_effects_zoom_mouse.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_zoom_mouse(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }
+
+*/
+    //Si no se ha aplicado ningun efecto especial, tal cual copiar de origen a destino
+    //TODO: averiguar esto de manera mas eficiente
+    if (!aplicado_algo) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        int tamanyo=ancho*alto*2;
+        memcpy(destino,origen,tamanyo);
+    }
+
+    return destino;
+
+}
+
+
+z80_int *old_screen_special_effects_functions(z80_int *origen,int ancho,int alto)
+{
+    z80_int *inicial_origen=origen;
+
+    int aplicado_algo=0;
+    z80_int *destino;
 
     //Zoom 0.5
     if (screen_reduction_factor==SCREEN_REDUCE_050) {
@@ -5691,7 +5834,6 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
     return destino;
 
 }
-
 
 
 
