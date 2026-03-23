@@ -126,7 +126,7 @@ antes de commonsdl_init
 
 -copy-paste y text-paste quizá mover a otro menú?
 
--gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el total height. se deberia resetear
+ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el total height. se deberia resetear
 
 
 -efectos especiales

@@ -5291,6 +5291,31 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 
 }
 
+int screen_rainbow_effect_heat_tiempo=0;
+
+void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+			
+			int offset = ((x ^ y ^ screen_rainbow_effect_heat_tiempo) & 7) - 3;
+
+			int sy = (y + offset + alto) % alto;
+
+			destino[y*ancho + x] = origen[sy*ancho + x];			
+			
+            
+        }
+
+    }
+    
+    screen_rainbow_effect_heat_tiempo++;
+
+
+}
 
 
 // intensidad del efecto
@@ -5596,6 +5621,14 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         if (origen!=inicial_origen) free(origen);
         origen=destino;
     }
+    
+    if (screen_special_effects_heat.v) {
+        destino=screen_special_effects_alloc_buffer(ancho,alto);
+        screen_rainbow_effect_heat(origen,destino,ancho,alto);
+        aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
+        origen=destino;
+    }    
 
     if (screen_special_effects_hsync_lost.v) {
         destino=screen_special_effects_alloc_buffer(ancho,alto);
@@ -5883,6 +5916,7 @@ z80_bit screen_special_effects_zoom_mouse={0};
 z80_bit screen_special_effects_hsync_lost={0};
 z80_bit screen_special_effects_vsync_lost={0};
 z80_bit screen_special_effects_pixelate={0};
+z80_bit screen_special_effects_heat={0};
 
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)

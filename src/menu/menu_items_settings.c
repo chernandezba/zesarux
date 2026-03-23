@@ -1710,6 +1710,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_pixelate_size);
             }
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                "Heat","Calor","Calor");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_heat.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_heat);
+            menu_add_item_menu_ayuda(array_menu_common,"Heat");
+            menu_add_item_menu_tooltip(array_menu_common,"Heat");
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Hsync lost","Pérdida hsync","Pèrdua hsync");
