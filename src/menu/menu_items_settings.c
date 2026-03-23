@@ -1580,8 +1580,14 @@ void menu_interface_special_effects_waves2_width(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_heat_intensidad>=21) screen_rainbow_effect_heat_intensidad=2;
 }
 
+int menu_main_window_special_effects_mover_cursor=-1;
+
 void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
 {
+
+
+    printf("Mover arriba. valor_opcion %d\n",valor_opcion);
+
     int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
     int type_current=screen_effect_applied_list[valor_opcion].type;
 
@@ -1591,7 +1597,7 @@ void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
     screen_effect_applied_list[valor_opcion-1].type=type_current;
     screen_effect_applied_list[valor_opcion-1].enabled=enabled_current;
 
-    main_window_special_effects_opcion_seleccionada--;
+    menu_main_window_special_effects_mover_cursor=valor_opcion-1;
 }
 
 void menu_main_window_special_effects_change_move_down(MENU_ITEM_PARAMETERS)
@@ -1605,7 +1611,7 @@ void menu_main_window_special_effects_change_move_down(MENU_ITEM_PARAMETERS)
     screen_effect_applied_list[valor_opcion+1].type=type_current;
     screen_effect_applied_list[valor_opcion+1].enabled=enabled_current;
 
-    main_window_special_effects_opcion_seleccionada++;
+    menu_main_window_special_effects_mover_cursor=valor_opcion+1;
 }
 
 void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
@@ -1702,6 +1708,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             int i;
 
             for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+                //+1 porque la primera linea es la del enable
+                if (i==menu_main_window_special_effects_mover_cursor+1) {
+                    printf("cursor a %d\n",menu_main_window_special_effects_mover_cursor);
+                    menu_main_window_special_effects_mover_cursor=-1;
+                    main_window_special_effects_opcion_seleccionada=menu_item_get_linea_actual(array_menu_common);
+                }
+
                 int enabled=screen_effect_applied_list[i].enabled;
                 enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
 
