@@ -5560,6 +5560,7 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_scale_rainbow_21(origen,ancho,alto,destino);
         aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
         origen=destino;
     }
 
@@ -5567,6 +5568,7 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_scale_rainbow_41(origen,ancho,alto,destino);
         aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
         origen=destino;
     }
 
@@ -5574,6 +5576,7 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
         destino=screen_special_effects_alloc_buffer(ancho,alto);
         screen_scale_rainbow_43(origen,ancho,alto,destino);
         aplicado_algo=1;
+        if (origen!=inicial_origen) free(origen);
         origen=destino;
     }
 
