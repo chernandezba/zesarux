@@ -1658,6 +1658,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                "Waves","Olas2","Ones2");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_heat.v ? 'X' : ' ' ));
+            menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_heat);
+            menu_add_item_menu_ayuda(array_menu_common,"Waves2");
+            menu_add_item_menu_tooltip(array_menu_common,"Waves2");
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Lens","Lente","Lent");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_fisheye.v ? 'X' : ' ' ));
             menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye);
@@ -1710,12 +1717,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_pixelate_size);
             }
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-                "Heat","Calor","Calor");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_heat.v ? 'X' : ' ' ));
-            menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_heat);
-            menu_add_item_menu_ayuda(array_menu_common,"Heat");
-            menu_add_item_menu_tooltip(array_menu_common,"Heat");
+
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,

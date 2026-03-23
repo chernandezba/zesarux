@@ -5302,12 +5302,13 @@ void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int a
         for (x=0;x<ancho;x++) {
 			
 			//int offset = ((x ^ y ^ (screen_rainbow_effect_heat_tiempo/25)) & 7) - 3;
-			int off=((y + (screen_rainbow_effect_heat_tiempo/25)) % 16);
+			//int off=((y + (screen_rainbow_effect_heat_tiempo/25)) );
+			int off=((y+screen_rainbow_effect_heat_tiempo/25) % 16)*(360/16);
 			
 			//if (offset>=8) offset=16-offset;
-			off=(off*90)/16;
+			//off=off % 360;
 			
-			int offset=16*util_get_cosine(off)/10000;
+			int offset=8*util_get_cosine(off)/10000;
 		
 			int sy = (y + offset) % alto;
 			sy=y;
