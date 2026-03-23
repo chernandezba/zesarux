@@ -1586,7 +1586,7 @@ void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
 {
 
 
-    printf("Mover arriba. valor_opcion %d\n",valor_opcion);
+    //printf("Mover arriba. valor_opcion %d\n",valor_opcion);
 
     int enabled_current=screen_effect_applied_list[valor_opcion].enabled;
     int type_current=screen_effect_applied_list[valor_opcion].type;
@@ -1710,8 +1710,8 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
                 //+1 porque la primera linea es la del enable
                 if (i==menu_main_window_special_effects_mover_cursor+1) {
-                    printf("cursor a %d\n",menu_main_window_special_effects_mover_cursor);
-                    menu_main_window_special_effects_mover_cursor=-1;
+                    //printf("cursor a %d\n",menu_main_window_special_effects_mover_cursor);
+                    menu_main_window_special_effects_mover_cursor=-99; //para que no coincida con nada
                     main_window_special_effects_opcion_seleccionada=menu_item_get_linea_actual(array_menu_common);
                 }
 
@@ -1725,39 +1725,77 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
 
 
-                if (type==SCREEN_EFFECT_TYPE_REDUCE) {
+                if (type==SCREEN_EFFECT_TYPE_REDUCE && enabled) {
 
-            char string_reduce[10];
-            if (screen_reduction_factor==SCREEN_REDUCE_NONE) strcpy (string_reduce," ");
-            else if (screen_reduction_factor==SCREEN_REDUCE_075) strcpy (string_reduce,"0.75");
-            else if (screen_reduction_factor==SCREEN_REDUCE_050) strcpy (string_reduce,"0.50");
-            else strcpy (string_reduce,"0.25");
-
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
-                menu_window_settings_reduce_075,NULL,"[%s] R~~educe display",string_reduce);
-            menu_add_item_menu_shortcut(array_menu_common,'e');
-            menu_add_item_menu_tooltip(array_menu_common,"Reduce machine display output by 0.75, 0.5 or 0.25");
-            menu_add_item_menu_ayuda(array_menu_common,"Reduce machine display output by 0.75, 0.5 or 0.25. Enables realvideo. Reduce to 0.75 was used on a large bulb display for the RunZX 2018 event");
-            menu_add_item_menu_es_avanzado(array_menu_common);
+                    char string_reduce[10];
+                    if (screen_reduction_factor==SCREEN_REDUCE_NONE) strcpy (string_reduce," ");
+                    else if (screen_reduction_factor==SCREEN_REDUCE_075) strcpy (string_reduce,"0.75");
+                    else if (screen_reduction_factor==SCREEN_REDUCE_050) strcpy (string_reduce,"0.50");
+                    else strcpy (string_reduce,"0.25");
 
 
-            if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_antialias,NULL,"[%c]  Antialias",(screen_reduce_antialias.v ? 'X' : ' ') );
-                menu_add_item_menu_tooltip(array_menu_common,"Antialias is only applied to the standard 16 Spectrum colors");
-                menu_add_item_menu_ayuda(array_menu_common,"Antialias is only applied to the standard 16 Spectrum colors");
-                menu_add_item_menu_es_avanzado(array_menu_common);
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
+                        menu_window_settings_reduce_075,NULL,"[%s] R~~educe display",string_reduce);
+                    menu_add_item_menu_shortcut(array_menu_common,'e');
+                    menu_add_item_menu_tooltip(array_menu_common,"Reduce machine display output by 0.75, 0.5 or 0.25");
+                    menu_add_item_menu_ayuda(array_menu_common,"Reduce machine display output by 0.75, 0.5 or 0.25. Enables realvideo. Reduce to 0.75 was used on a large bulb display for the RunZX 2018 event");
+                    menu_add_item_menu_es_avanzado(array_menu_common);
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofx,NULL,"     Offset x [%d]",screen_reduce_offset_x);
-                menu_add_item_menu_es_avanzado(array_menu_common);
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
-                menu_add_item_menu_es_avanzado(array_menu_common);
-            }
+                    if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_antialias,NULL,"[%c]  Antialias",(screen_reduce_antialias.v ? 'X' : ' ') );
+                        menu_add_item_menu_tooltip(array_menu_common,"Antialias is only applied to the standard 16 Spectrum colors");
+                        menu_add_item_menu_ayuda(array_menu_common,"Antialias is only applied to the standard 16 Spectrum colors");
+                        menu_add_item_menu_es_avanzado(array_menu_common);
+
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofx,NULL,"     Offset x [%d]",screen_reduce_offset_x);
+                        menu_add_item_menu_es_avanzado(array_menu_common);
+
+                        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
+                        menu_add_item_menu_es_avanzado(array_menu_common);
+                    }
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_WAVES2 && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_waves2_width,NULL,
+                        "Wave width","Ancho Olas","Ample Ones");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_heat_intensidad);
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_LENS && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Follow mouse","Seguir ratón","Seguir ratolí");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_follow_mouse.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_follow_mouse);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_follow_music,NULL,
+                        "Follow Music Channel","Seguir Canal Música","Seguir Canal Musica");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_follow_music_channel ? screen_special_effects_fisheye_follow_music_channel : ' ' ));
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Continuous Lens factor","Factor Lente Continuo","Factor Lent Continu");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_automatic_factor.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_automatic_factor);
+
+                    if (screen_special_effects_fisheye_automatic_factor.v==0) {
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_factor,NULL,
+                            "Lens factor","Factor Lente","Factor Lent");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%1.3f] ",screen_rainbow_effect_fisheye_factor_k);
+                    }
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_PIXELATE && enabled) {
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_pixelate_size,NULL,
+                        "Pixelate size","Pixelar tamaño","Pixelar tamany");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_pixelate_size);
                 }
 
 
             }
+
+
+
 
 
 
@@ -1886,12 +1924,8 @@ void old_menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_common,"Waves2");
             menu_add_item_menu_tooltip(array_menu_common,"Waves2");
 
-            //screen_rainbow_effect_heat_intensidad
-            if (screen_special_effects_heat.v) {
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_waves2_width,NULL,
-                "Wave width","Ancho Olas","Ample Ones");
-                menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_heat_intensidad);
-            }
+
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Lens","Lente","Lent");
@@ -1900,30 +1934,7 @@ void old_menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_common,"Lens");
             menu_add_item_menu_tooltip(array_menu_common,"Lens");
 
-            if (screen_special_effects_fisheye.v) {
 
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-                    "Follow mouse","Seguir ratón","Seguir ratolí");
-                menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_follow_mouse.v ? 'X' : ' ' ));
-                menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_follow_mouse);
-
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_follow_music,NULL,
-                    "Follow Music Channel","Seguir Canal Música","Seguir Canal Musica");
-                menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_follow_music_channel ? screen_special_effects_fisheye_follow_music_channel : ' ' ));
-
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-                    "Continuous Lens factor","Factor Lente Continuo","Factor Lent Continu");
-                menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_automatic_factor.v ? 'X' : ' ' ));
-                menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_automatic_factor);
-
-                if (screen_special_effects_fisheye_automatic_factor.v==0) {
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_factor,NULL,
-                        "Lens factor","Factor Lente","Factor Lent");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%1.3f] ",screen_rainbow_effect_fisheye_factor_k);
-                }
-
-
-            }
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Zoom Mouse","Zoom Ratón","Zoom Ratolí");
@@ -1940,11 +1951,7 @@ void old_menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_common,"Pixelate");
             menu_add_item_menu_tooltip(array_menu_common,"Pixelate");
 
-            if (screen_special_effects_pixelate.v) {
-                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_pixelate_size,NULL,
-                    "Pixelate size","Pixelar tamaño","Pixelar tamany");
-                menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_pixelate_size);
-            }
+
 
 
 
