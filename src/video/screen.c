@@ -5932,8 +5932,35 @@ z80_bit screen_special_effects_vsync_lost={0};
 z80_bit screen_special_effects_pixelate={0};
 z80_bit screen_special_effects_heat={0};
 
+
+screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
+	{SCREEN_EFFECT_TYPE_REDUCE,"Reduce"},
+	{SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady"},
+	{SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical"},
+	{SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal"},
+	{SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences"},
+	{SCREEN_EFFECT_TYPE_WAVES,"Waves"},
+	{SCREEN_EFFECT_TYPE_WAVES2,"Waves2"},
+	{SCREEN_EFFECT_TYPE_LENS,"Lens"},
+	{SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse"},
+	{SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate"},
+	{SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost"},
+	{SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost"},
+	{SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"}
+};
+
+
+
+screen_effect_applied screen_effect_applied_list[MAX_SCREEN_EFFECTS];
+
+
 void init_screen_effects_table(void)
 {
+	int i;
+	for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+		screen_effect_applied_list[i].enabled=0;
+		screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_REDUCE+i;
+	}
 }
 
 //Aplicar efectos a modo rainbow

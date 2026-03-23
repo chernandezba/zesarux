@@ -1055,7 +1055,7 @@ extern int screen_rainbow_effect_heat_intensidad;
 extern void init_screen_effects_table(void);
 
 enum enum_screen_effect_types {
-	SCREEN_EFFECT_TYPE_REDUCE,
+	SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
 	SCREEN_EFFECT_TYPE_UNSTEADY,
 	SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
 	SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
@@ -1069,6 +1069,22 @@ enum enum_screen_effect_types {
 	SCREEN_EFFECT_TYPE_VSYNC_LOST,
 	SCREEN_EFFECT_TYPE_NAGRAVISION
 };
+
+typedef struct {
+	enum enum_screen_effect_types type;
+	char name[40];
+} screen_effect_type_name;
+
+#define MAX_SCREEN_EFFECTS 13
+
+typedef struct {
+	int enabled;
+	enum enum_screen_effect_types type;
+} screen_effect_applied;
+
+extern screen_effect_applied screen_effect_applied_list[];
+
+extern screen_effect_type_name screen_effect_type_list[];
 
 #define SCREEN_EFFECT_PIXELATE_MAX_SIZE 16
 
