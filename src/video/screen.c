@@ -5291,10 +5291,10 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 
 }
 
-int screen_rainbow_effect_heat_tiempo=0;
-int screen_rainbow_effect_heat_intensidad=8;
+int screen_rainbow_effect_improved_waves_tiempo=0;
+int screen_rainbow_effect_improved_waves_intensidad=8;
 
-void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int alto)
+void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
@@ -5303,11 +5303,11 @@ void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int a
         for (x=0;x<ancho;x++) {
 
             //Cada 30 pixeles en alto, una vuelta entera 360 grados
-            int off=((y+screen_rainbow_effect_heat_tiempo/1) % 30)*(360/30);
+            int off=((y+screen_rainbow_effect_improved_waves_tiempo/1) % 30)*(360/30);
 
 
 
-            int offset=screen_rainbow_effect_heat_intensidad*util_get_cosine(off)/10000;
+            int offset=screen_rainbow_effect_improved_waves_intensidad*util_get_cosine(off)/10000;
 
 
             int sx = (x + offset);
@@ -5326,10 +5326,383 @@ void screen_rainbow_effect_heat(z80_int *origen,z80_int *destino,int ancho,int a
 
     }
 
-    screen_rainbow_effect_heat_tiempo++;
+    screen_rainbow_effect_improved_waves_tiempo++;
 
 
 }
+
+int screen_rainbow_effect_shear_factor=4;
+
+void screen_rainbow_effect_shear(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+
+            // shear / "cizalla", "cisallament"
+            int sx = x + y / screen_rainbow_effect_shear_factor;
+
+            int color;
+
+            if (sx<0 || sx>=ancho) color=0;
+            else color=origen[y*ancho + sx];
+
+            destino[y*ancho + x] = color;
+
+
+        }
+
+    }
+
+
+
+}
+
+int screen_rainbow_effect_scroll_horizontal_offset=1;
+z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
+
+
+int screen_rainbow_effect_fadeinout_percentage=0;
+int screen_rainbow_effect_fadeinout_sign=+1;
+
+void screen_rainbow_effect_fadeinout(z80_int *origen,z80_int *destino,int ancho,int alto,int fadein)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int color=origen[y*ancho + x];
+
+            unsigned int color32=spectrum_colortable[color];
+            int red=(color32 >> 16) & 0xFF;
+            int green=(color32 >> 8) & 0xFF;
+            int blue=(color32   ) & 0xFF;
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+            //Aplicar %
+            red=(red*screen_rainbow_effect_fadeinout_percentage)/100;
+            green=(green*screen_rainbow_effect_fadeinout_percentage)/100;
+            blue=(blue*screen_rainbow_effect_fadeinout_percentage)/100;
+
+            //Usamos tabla de TSCONF_INDEX_FIRST_COLOR que tiene 5 bits por componente
+            int rgb15=(red<<10) | (green<<5) | blue;
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+    if (fadein) {
+        screen_rainbow_effect_fadeinout_percentage+=3;
+        if (screen_rainbow_effect_fadeinout_percentage>100) screen_rainbow_effect_fadeinout_percentage=0;
+    }
+    else if (fadein<0) {
+        screen_rainbow_effect_fadeinout_percentage-=3;
+        if (screen_rainbow_effect_fadeinout_percentage<0) screen_rainbow_effect_fadeinout_percentage=100;
+    }
+    else { //In-Out
+        if (screen_rainbow_effect_fadeinout_sign>0) {
+            screen_rainbow_effect_fadeinout_percentage+=3;
+            if (screen_rainbow_effect_fadeinout_percentage>100) screen_rainbow_effect_fadeinout_sign=-1;
+        }
+        else {
+            screen_rainbow_effect_fadeinout_percentage-=3;
+            if (screen_rainbow_effect_fadeinout_percentage<0) screen_rainbow_effect_fadeinout_sign=+1;
+        }
+    }
+
+}
+
+
+void screen_rainbow_effect_scanlines(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int color=origen[y*ancho + x];
+
+            //Bajar brillo lineas pares
+            if (y%2) {
+
+                unsigned int color32=spectrum_colortable[color];
+                int red=(color32 >> 16) & 0xFF;
+                int green=(color32 >> 8) & 0xFF;
+                int blue=(color32   ) & 0xFF;
+
+                red=(red>>3) & 0x1F;
+                green=(green>>3) & 0x1F;
+                blue=(blue>>3) & 0x1F;
+
+
+                red /=2;
+                green /=2;
+                blue /=2;
+
+                //Usamos tabla de TSCONF_INDEX_FIRST_COLOR que tiene 5 bits por componente
+                int rgb15=(red<<10) | (green<<5) | blue;
+                color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+            }
+
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+
+}
+
+
+void screen_rainbow_effect_sepia(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int color=origen[y*ancho + x];
+            unsigned int color32=spectrum_colortable[color];
+
+            int red=(color32 >> 16) & 0xFF;
+            int green=(color32 >> 8) & 0xFF;
+            int blue=(color32   ) & 0xFF;
+
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+
+            int tr = (393 * red + 769 * green + 189 * blue) / 1000;
+            int tg = (349 * red + 686 * green + 168 * blue) / 1000;
+            int tb = (272 * red + 534 * green + 131 * blue) / 1000;
+
+            red = (tr > 31) ? 31 : tr;
+            green = (tg > 31) ? 31 : tg;
+            blue = (tb > 31) ? 31 : tb;
+
+            int rgb15=(red<<10) | (green<<5) | blue;
+
+
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+
+}
+
+
+int screen_rainbow_effect_contrast_factor=100;
+
+void screen_rainbow_effect_contrast(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int color=origen[y*ancho + x];
+            unsigned int color32=spectrum_colortable[color];
+
+            int red=(color32 >> 16) & 0xFF;
+            int green=(color32 >> 8) & 0xFF;
+            int blue=(color32   ) & 0xFF;
+
+
+            /*
+| factor | efecto                |
+| ------ | --------------------- |
+| 0      | gris plano (todo 128) |
+| 128    | bajo contraste        |
+| 256    | normal (sin cambio)   |
+| 384    | alto contraste        |
+| 512    | muy fuerte (clipping) |
+
+            */
+
+            int factor=screen_rainbow_effect_contrast_factor;
+            int val;
+
+            val = ((factor * (red - 128)) >> 8) + 128;
+            if (val < 0) val = 0;
+            if (val > 255) val = 255;
+            red = val;
+
+            val = ((factor * (green - 128)) >> 8) + 128;
+            if (val < 0) val = 0;
+            if (val > 255) val = 255;
+            green = val;
+
+            val = ((factor * (blue - 128)) >> 8) + 128;
+            if (val < 0) val = 0;
+            if (val > 255) val = 255;
+            blue = val;
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+            int rgb15=(red<<10) | (green<<5) | blue;
+
+
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+
+}
+
+int screen_rainbow_effect_brightness_factor=50;
+
+void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int color=origen[y*ancho + x];
+            unsigned int color32=spectrum_colortable[color];
+
+            int red=(color32 >> 16) & 0xFF;
+            int green=(color32 >> 8) & 0xFF;
+            int blue=(color32   ) & 0xFF;
+
+            //permitir color negro incrementarse a partir de cierto factor
+            if (screen_rainbow_effect_brightness_factor>1000) {
+                if (!red) red=1;
+                if (!green) green=1;
+                if (!blue) blue=1;
+            }
+
+
+            red=(red*screen_rainbow_effect_brightness_factor)/100;
+            if (red>255) red=255;
+
+            green=(green*screen_rainbow_effect_brightness_factor)/100;
+            if (green>255) green=255;
+
+            blue=(blue*screen_rainbow_effect_brightness_factor)/100;
+            if (blue>255) blue=255;
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+            int rgb15=(red<<10) | (green<<5) | blue;
+
+
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+
+}
+
+void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int orig_x = x+screen_rainbow_effect_scroll_horizontal_offset;
+
+            int color;
+
+            if (screen_rainbow_effect_scroll_horizontal_circular.v) {
+                if (orig_x<0) orig_x=ancho-1+(orig_x % ancho);
+                else orig_x=orig_x % ancho;
+
+                //if (orig_x<0 || orig_x>=ancho) printf("ERROR %d ancho: %d\n",orig_x,ancho);
+
+                color=origen[y*ancho + orig_x];
+            }
+
+            else {
+                if (orig_x<0 || orig_x>=ancho) color=0;
+                else color=origen[y*ancho + orig_x];
+            }
+
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+}
+
+int screen_rainbow_effect_scroll_vertical_offset=1;
+z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
+
+void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    //printf("%d %d %d %d\n",(-1 % 3),(-2 % 3),(-3 % 3),(-4 % 3));
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int orig_y = y+screen_rainbow_effect_scroll_vertical_offset;
+
+            int color;
+
+            if (screen_rainbow_effect_scroll_vertical_circular.v) {
+                if (orig_y<0) orig_y=alto-1+(orig_y % alto);
+                else orig_y=orig_y % alto;
+
+                //if (orig_y<0 || orig_y>=alto) printf("ERROR %d alto: %d\n",orig_y,alto);
+
+                color=origen[orig_y*ancho + x];
+            }
+
+            else {
+                if (orig_y<0 || orig_y>=alto) color=0;
+                else color=origen[orig_y*ancho + x];
+            }
+
+
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+}
+
 
 
 // intensidad del efecto
@@ -5369,7 +5742,7 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
     int x,y;
 
 
-    //printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
+    //printf("%d %d\n",screen_rainbow_effect_sea_offsets[0],screen_rainbow_effect_sea_offsets[1]);
 
     int cx=ancho/2;
     int cy=alto/2;
@@ -5464,14 +5837,14 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
 
 #define SCREEN_EFFECT_WAVES_MAX_LINES 10000
 
-int screen_rainbow_effect_waves_offsets[SCREEN_EFFECT_WAVES_MAX_LINES];
+int screen_rainbow_effect_sea_offsets[SCREEN_EFFECT_WAVES_MAX_LINES];
 
 #define SCREEN_EFFECT_WAVES_MAX_OFFSET 4
 
-int screen_rainbow_effect_waves_offset=SCREEN_EFFECT_WAVES_MAX_OFFSET/2;
-int screen_rainbow_effect_waves_frames=0;
+int screen_rainbow_effect_sea_offset=SCREEN_EFFECT_WAVES_MAX_OFFSET/2;
+int screen_rainbow_effect_sea_frames=0;
 
-void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int alto)
+void screen_rainbow_effect_sea(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
 
@@ -5480,7 +5853,7 @@ void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int 
     int valor_random=util_get_random() % 30000;
 
 
-    //printf("%d %d\n",screen_rainbow_effect_waves_offsets[0],screen_rainbow_effect_waves_offsets[1]);
+    //printf("%d %d\n",screen_rainbow_effect_sea_offsets[0],screen_rainbow_effect_sea_offsets[1]);
 
 
     for (y=0;y<alto;y++) {
@@ -5489,7 +5862,7 @@ void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int 
             int offset_onda;
 
             if (y<SCREEN_EFFECT_WAVES_MAX_LINES) {
-                offset_onda=screen_rainbow_effect_waves_offsets[y];
+                offset_onda=screen_rainbow_effect_sea_offsets[y];
             }
             else offset_onda=0;
 
@@ -5500,28 +5873,28 @@ void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int 
         }
 
         //Cada cuantos frames moverse
-        if ((screen_rainbow_effect_waves_frames%10)==0) {
+        if ((screen_rainbow_effect_sea_frames%10)==0) {
             if (y>0 && y<SCREEN_EFFECT_WAVES_MAX_LINES) {
-                int anterior_offset=screen_rainbow_effect_waves_offsets[y-1];
-                int current_offset=screen_rainbow_effect_waves_offsets[y];
+                int anterior_offset=screen_rainbow_effect_sea_offsets[y-1];
+                int current_offset=screen_rainbow_effect_sea_offsets[y];
 
                 //Lineas impares: copiar offset de la anterior linea
                 //Lineas pares: offset segun random
                 if ((y%2)==0) anterior_offset=current_offset;
 
-                screen_rainbow_effect_waves_offsets[y]=anterior_offset;
+                screen_rainbow_effect_sea_offsets[y]=anterior_offset;
 
                 //33% de probabilidad de irse a la izquierda
                 if (valor_random<10000) {
                     if (anterior_offset>0) {
-                        screen_rainbow_effect_waves_offsets[y]=anterior_offset-1;
+                        screen_rainbow_effect_sea_offsets[y]=anterior_offset-1;
                     }
                 }
 
                 //33% de probabilidad de irse a la derecha
                 else if (valor_random>20000) {
                     if (anterior_offset<SCREEN_EFFECT_WAVES_MAX_OFFSET) {
-                        screen_rainbow_effect_waves_offsets[y]=anterior_offset+1;
+                        screen_rainbow_effect_sea_offsets[y]=anterior_offset+1;
                     }
                 }
 
@@ -5535,7 +5908,7 @@ void screen_rainbow_effect_waves(z80_int *origen,z80_int *destino,int ancho,int 
 
     }
 
-    screen_rainbow_effect_waves_frames++;
+    screen_rainbow_effect_sea_frames++;
 
 
 }
@@ -5601,12 +5974,16 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
                 break;
 
-                case SCREEN_EFFECT_TYPE_WAVES:
-                    screen_rainbow_effect_waves(origen,destino,ancho,alto);
+                case SCREEN_EFFECT_TYPE_SEA:
+                    screen_rainbow_effect_sea(origen,destino,ancho,alto);
                 break;
 
-                case SCREEN_EFFECT_TYPE_WAVES2:
-                    screen_rainbow_effect_heat(origen,destino,ancho,alto);
+                case SCREEN_EFFECT_TYPE_WAVES:
+                    screen_rainbow_effect_improved_waves(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_SHEAR:
+                    screen_rainbow_effect_shear(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_LENS:
@@ -5623,6 +6000,42 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_VSYNC_LOST:
                     screen_rainbow_effect_vsync_lost(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL:
+                    screen_rainbow_effect_scroll_horizontal(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_SCROLL_VERTICAL:
+                    screen_rainbow_effect_scroll_vertical(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_FADEIN:
+                    screen_rainbow_effect_fadeinout(origen,destino,ancho,alto,1);
+                break;
+
+                case SCREEN_EFFECT_TYPE_FADEOUT:
+                    screen_rainbow_effect_fadeinout(origen,destino,ancho,alto,-1);
+                break;
+
+                case SCREEN_EFFECT_TYPE_FADEINOUT:
+                    screen_rainbow_effect_fadeinout(origen,destino,ancho,alto,0);
+                break;
+
+                case SCREEN_EFFECT_TYPE_SCANLINES:
+                    screen_rainbow_effect_scanlines(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_SEPIA:
+                    screen_rainbow_effect_sepia(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_CONTRAST:
+                    screen_rainbow_effect_contrast(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_BRIGHTNESS:
+                    screen_rainbow_effect_brightness(origen,destino,ancho,alto);
                 break;
 
             }
@@ -5899,13 +6312,23 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical"},
     {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal"},
     {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences"},
+    {SCREEN_EFFECT_TYPE_SEA,"Sea"},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves"},
-    {SCREEN_EFFECT_TYPE_WAVES2,"Waves2"},
+    {SCREEN_EFFECT_TYPE_SHEAR,"Shear"},
     {SCREEN_EFFECT_TYPE_LENS,"Lens"},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse"},
     {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate"},
     {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost"},
     {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost"},
+    {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal"},
+    {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical"},
+    {SCREEN_EFFECT_TYPE_FADEIN,"Fade In"},
+    {SCREEN_EFFECT_TYPE_FADEOUT,"Fade Out"},
+    {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut"},
+    {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines"},
+    {SCREEN_EFFECT_TYPE_SEPIA,"Sepia"},
+    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast"},
+    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness"},
     {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"}
 };
 

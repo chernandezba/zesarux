@@ -4251,7 +4251,7 @@ unsigned char zxvision_retorna_caracter_flecha_izquierda(void)
 {
     //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
     if (si_complete_video_driver()) {
-        return 166;
+        return CHAR_ARROW_LEFT;
     }
     else return '<';
 }
@@ -4260,7 +4260,7 @@ unsigned char zxvision_retorna_caracter_flecha_derecha(void)
 {
     //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
     if (si_complete_video_driver()) {
-        return 165;
+        return CHAR_ARROW_RIGHT;
     }
     else return '>';
 }
@@ -4269,7 +4269,7 @@ unsigned char zxvision_retorna_caracter_flecha_arriba(void)
 {
     //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
     if (si_complete_video_driver()) {
-        return 164;
+        return CHAR_ARROW_UP;
     }
     else return '^';
 }
@@ -4278,7 +4278,7 @@ unsigned char zxvision_retorna_caracter_flecha_abajo(void)
 {
     //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
     if (si_complete_video_driver()) {
-        return 163;
+        return CHAR_ARROW_DOWN;
     }
     else return 'v';
 }

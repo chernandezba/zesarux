@@ -135,19 +135,14 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 *revisar liberar memoria
 *entradas en changelog
 *revisar gigascreen , replantear entera
+*con menu opciones efectos, que ponga tipo ventana correcto/dialogo, que se mueva bien atras, etc
+*con nuevo efecto scroll horizontal/vertical no deberia hacer falta el offset del efecto reduce
 *mas efectos:
 
 -Twirl (remolino)
 Rota píxeles dependiendo de la distancia al centro.
 
-
-
--Shear (inclinación)
-Desplaza filas progresivamente:
-int sx = (x + y / 4) % width;
-
-dst[y*width + x] = src[y*width + sx];
-
+-efectos RGB aprovechando la tabla TSCONF_INDEX_FIRST_COLOR, que son de 5 bits por componente
 
 
 ok-poder indicar orden de aplicacion de cada efecto. ejemplo lente, interferencias o interferencias, lente

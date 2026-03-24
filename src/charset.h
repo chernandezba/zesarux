@@ -69,6 +69,12 @@ extern void charset_generate_zesarux_tiny(void);
 
 #define CHAR_Z_LOGO_SMALL_TOPBAR 173
 
+#define CHAR_ARROW_DOWN 163
+#define CHAR_ARROW_UP 164
+#define CHAR_ARROW_RIGHT 165
+#define CHAR_ARROW_LEFT 166
+
+
 #define APPLE_LOGO_IN_CHARSET_RETROMAC 141
 
 //Tamanyo de cada array para charset en menu, asi podemos saber si por error he metido mas elementos

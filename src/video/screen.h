@@ -1054,27 +1054,48 @@ extern void screen_rainbow_effect_fisheye_change_factor(void);
 
 extern int screen_rainbow_effect_pixelate_size;
 
-extern int screen_rainbow_effect_heat_intensidad;
+extern int screen_rainbow_effect_improved_waves_intensidad;
 
 extern z80_bit screen_special_effects_fisheye_automatic_factor;
 extern z80_bit screen_special_effects_fisheye_follow_mouse;
 extern char screen_special_effects_fisheye_follow_music_channel;
+extern int screen_rainbow_effect_shear_factor;
+
+extern int screen_rainbow_effect_scroll_horizontal_offset;
+extern int screen_rainbow_effect_scroll_vertical_offset;
+extern z80_bit screen_rainbow_effect_scroll_horizontal_circular;
+extern z80_bit screen_rainbow_effect_scroll_vertical_circular;
+
+extern int screen_rainbow_effect_contrast_factor;
+extern int screen_rainbow_effect_brightness_factor;
 
 extern void init_screen_effects_table(void);
 
+#define MAX_SCREEN_EFFECTS 23
+
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
-    SCREEN_EFFECT_TYPE_UNSTEADY,
-    SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
     SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
+    SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
+    SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,
+    SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,
+    SCREEN_EFFECT_TYPE_HSYNC_LOST,
+    SCREEN_EFFECT_TYPE_VSYNC_LOST,
+    SCREEN_EFFECT_TYPE_UNSTEADY,
     SCREEN_EFFECT_TYPE_INTERFERENCES,
     SCREEN_EFFECT_TYPE_WAVES,
-    SCREEN_EFFECT_TYPE_WAVES2,
+    SCREEN_EFFECT_TYPE_SEA,
+    SCREEN_EFFECT_TYPE_SHEAR,
     SCREEN_EFFECT_TYPE_LENS,
     SCREEN_EFFECT_TYPE_ZOOM_MOUSE,
     SCREEN_EFFECT_TYPE_PIXELATE,
-    SCREEN_EFFECT_TYPE_HSYNC_LOST,
-    SCREEN_EFFECT_TYPE_VSYNC_LOST,
+    SCREEN_EFFECT_TYPE_FADEIN,
+    SCREEN_EFFECT_TYPE_FADEOUT,
+    SCREEN_EFFECT_TYPE_FADEINOUT,
+    SCREEN_EFFECT_TYPE_SCANLINES,
+    SCREEN_EFFECT_TYPE_SEPIA,
+    SCREEN_EFFECT_TYPE_CONTRAST,
+    SCREEN_EFFECT_TYPE_BRIGHTNESS,
     SCREEN_EFFECT_TYPE_NAGRAVISION
 };
 
@@ -1085,7 +1106,7 @@ typedef struct {
 
 extern char *screen_effect_get_name(enum enum_screen_effect_types type);
 
-#define MAX_SCREEN_EFFECTS 13
+
 
 typedef struct {
     int enabled;
