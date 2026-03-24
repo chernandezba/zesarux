@@ -5142,6 +5142,80 @@ void screen_rainbow_effect_zoom_mouse(z80_int *origen,z80_int *destino,int ancho
 
 }
 
+int screen_rainbow_effect_radar_grados=0;
+
+z80_int *screen_rainbow_effect_radar_putpixel_origen;
+z80_int *screen_rainbow_effect_radar_putpixel_destino;
+int screen_rainbow_effect_radar_putpixel_ancho;
+int screen_rainbow_effect_radar_putpixel_alto;
+
+void screen_rainbow_effect_radar_putpixel(zxvision_window *w,int x,int y,int incremento_verde)
+{
+
+    if (x<0 || y<0 || x>=screen_rainbow_effect_radar_putpixel_ancho || y>=screen_rainbow_effect_radar_putpixel_alto) return;
+
+    int color=screen_rainbow_effect_radar_putpixel_origen[y*screen_rainbow_effect_radar_putpixel_ancho + x];
+
+    unsigned int color32=spectrum_colortable[color];
+    int red=(color32 >> 16) & 0xFF;
+    int green=(color32 >> 8) & 0xFF;
+    int blue=(color32   ) & 0xFF;
+
+    red=(red>>3) & 0x1F;
+    green=(green>>3) & 0x1F;
+    blue=(blue>>3) & 0x1F;
+
+    //Sumamos color verde
+    green=green+incremento_verde;
+    if (green>0x1f) green=0x1f;
+
+    //Usamos tabla de TSCONF_INDEX_FIRST_COLOR que tiene 5 bits por componente
+    int rgb15=(red<<10) | (green<<5) | blue;
+    color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+    screen_rainbow_effect_radar_putpixel_destino[y*screen_rainbow_effect_radar_putpixel_ancho + x] = color;
+}
+
+void screen_rainbow_effect_radar(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    screen_rainbow_effect_radar_putpixel_origen=origen;
+    screen_rainbow_effect_radar_putpixel_destino=destino;
+    screen_rainbow_effect_radar_putpixel_ancho=ancho;
+    screen_rainbow_effect_radar_putpixel_alto=alto;
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    int centro_x=ancho/2;
+    int centro_y=alto/2;
+
+    int longitud_radar;
+
+    if (ancho<alto) longitud_radar=ancho/2;
+    else longitud_radar=alto/2;
+
+    int grados=screen_rainbow_effect_radar_grados;
+
+    int i;
+
+    //Incrementar componente verde hasta el maximo y en cada grado del radar
+    for (i=0;i<0x1f;i++,grados++) {
+
+        int punto_linea_radar_x=centro_x+(longitud_radar*util_get_cosine(grados)/10000);
+        int punto_linea_radar_y=centro_y-(longitud_radar*util_get_sine(grados)/10000);
+
+        //Usamos el parametro de color para indicarle cuanto incrementamos el componente verde
+        zxvision_draw_line(NULL,centro_x,centro_y,punto_linea_radar_x,punto_linea_radar_y,i,screen_rainbow_effect_radar_putpixel);
+
+    }
+
+    screen_rainbow_effect_radar_grados++;
+
+
+}
+
 int screen_rainbow_effect_hsync_lost_x_inicial=0;
 
 void screen_rainbow_effect_hsync_lost(z80_int *origen,z80_int *destino,int ancho,int alto)
@@ -6013,6 +6087,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_fisheye(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_RADAR:
+                    screen_rainbow_effect_radar(origen,destino,ancho,alto);
+                break;
+
                 case SCREEN_EFFECT_TYPE_PIXELATE:
                     screen_rainbow_effect_pixelate(origen,destino,ancho,alto);
                 break;
@@ -6343,6 +6421,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_WAVES,"Waves"},
     {SCREEN_EFFECT_TYPE_SHEAR,"Shear"},
     {SCREEN_EFFECT_TYPE_LENS,"Lens"},
+    {SCREEN_EFFECT_TYPE_RADAR,"Radar"},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse"},
     {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate"},
     {SCREEN_EFFECT_TYPE_LED,"LED"},
