@@ -5201,7 +5201,7 @@ void screen_rainbow_effect_radar(z80_int *origen,z80_int *destino,int ancho,int 
     int i;
 
     //Incrementar componente verde hasta el maximo y en cada grado del radar
-    for (i=0;i<0x1f;i++,grados++) {
+    for (i=1;i<=0x1f;i++,grados++) {
 
         int punto_linea_radar_x=centro_x+(longitud_radar*util_get_cosine(grados)/10000);
         int punto_linea_radar_y=centro_y-(longitud_radar*util_get_sine(grados)/10000);
@@ -5702,6 +5702,126 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
 
 }
 
+
+#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES 5
+//Punteros de los frames anteriores
+//Los guardamos en formato RGB15 bits
+
+//frame [0] es el mas antiguo
+z80_int *screen_rainbow_effect_persistence_frames_mem[SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES];
+int screen_rainbow_effect_persistence_ancho=-1;
+int screen_rainbow_effect_persistence_alto=-1;
+
+
+void screen_rainbow_effect_persistence_check_mem(int ancho,int alto)
+{
+    int asignar_mem=0;
+
+    //Liberar si ha cambiado el ancho o alto
+    if (screen_rainbow_effect_persistence_ancho!=-1 && screen_rainbow_effect_persistence_alto!=-1) {
+        if (screen_rainbow_effect_persistence_ancho!=ancho || screen_rainbow_effect_persistence_alto!=alto) {
+            int i;
+            for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;i++) {
+                free(screen_rainbow_effect_persistence_frames_mem[i]);
+            }
+            asignar_mem=1;
+        }
+    }
+
+    if (screen_rainbow_effect_persistence_ancho==-1 || screen_rainbow_effect_persistence_alto==-1) asignar_mem=1;
+
+    if (asignar_mem) {
+        int i;
+        for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;i++) {
+            screen_rainbow_effect_persistence_frames_mem[i]=screen_special_effects_alloc_buffer(ancho,alto);
+        }
+    }
+
+}
+
+void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero ver si hay que asignar o liberar memoria
+    screen_rainbow_effect_persistence_check_mem(ancho,alto);
+
+    int x,y;
+
+    //Renderizar vista actual como mezcla de las anteriores
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+            int offset=y*ancho + x;
+
+            //Frame actual
+            int color=origen[offset];
+            unsigned int color32=spectrum_colortable[color];
+
+            int red=(color32 >> 16) & 0xFF;
+            int green=(color32 >> 8) & 0xFF;
+            int blue=(color32   ) & 0xFF;
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+            int red_original=red;
+            int green_original=green;
+            int blue_original=blue;
+
+            //temp
+            red=green=blue=0;
+
+            //Frames anteriores
+            int i;
+            for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;i++) {
+                z80_int *puntero=screen_rainbow_effect_persistence_frames_mem[i];
+                int color_frame_antes=puntero[offset];
+                int color_frame_antes_red=(color_frame_antes >> 10) & 0x1F;
+                int color_frame_antes_green=(color_frame_antes >> 5) & 0x1F;
+                int color_frame_antes_blue=(color_frame_antes) & 0x1F;
+
+                red +=color_frame_antes_red;
+                green +=color_frame_antes_green;
+                blue +=color_frame_antes_blue;
+            }
+
+            //media de todos
+            red /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
+            green /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
+            blue /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
+
+            int rgb15=(red<<10) | (green<<5) | blue;
+
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[y*ancho + x] = color;
+
+
+            //Y ahora rotamos los frames. Primero los que tenemos anteriores, que son en formato RGB15
+            for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES-1;i++) {
+                z80_int *puntero_dest=screen_rainbow_effect_persistence_frames_mem[i];
+                z80_int *puntero_orig=screen_rainbow_effect_persistence_frames_mem[i+1];
+                int color_orig=puntero_orig[offset];
+                puntero_dest[offset]=color_orig;
+            }
+
+            //Y el ultimo frame, que sale del buffer original, convirtiendo a RGB15
+            z80_int *puntero_dest=screen_rainbow_effect_persistence_frames_mem[i];
+
+            rgb15=(red_original<<10) | (green_original<<5) | blue_original;
+
+            printf("%d\n",rgb15);
+
+            puntero_dest[offset]=rgb15;
+
+        }
+
+    }
+
+
+}
+
 void screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
@@ -6143,6 +6263,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_brightness(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_PERSISTENCE:
+                    screen_rainbow_effect_persistence(origen,destino,ancho,alto);
+                break;
+
             }
 
             aplicado_algo=1;
@@ -6434,6 +6558,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut"},
     {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines"},
     {SCREEN_EFFECT_TYPE_SEPIA,"Sepia"},
+    {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence"},
     {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast"},
     {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness"},
     {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"}

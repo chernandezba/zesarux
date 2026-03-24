@@ -1071,7 +1071,7 @@ extern int screen_rainbow_effect_brightness_factor;
 
 extern void init_screen_effects_table(void);
 
-#define MAX_SCREEN_EFFECTS 25
+#define MAX_SCREEN_EFFECTS 26
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
@@ -1098,6 +1098,7 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_SEPIA,
     SCREEN_EFFECT_TYPE_CONTRAST,
     SCREEN_EFFECT_TYPE_BRIGHTNESS,
+    SCREEN_EFFECT_TYPE_PERSISTENCE,
     SCREEN_EFFECT_TYPE_NAGRAVISION
 };
 
