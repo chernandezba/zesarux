@@ -5702,8 +5702,8 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
 
 }
 
-
-#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES 5
+//0.2 segundos. O sea, 10 frames
+#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES 10
 //Punteros de los frames anteriores
 //Los guardamos en formato RGB15 bits
 
@@ -5771,8 +5771,6 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
             int green_original=green;
             int blue_original=blue;
 
-            //temp
-            red=green=blue=0;
 
             //Frames anteriores
             int i;
@@ -5788,7 +5786,7 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
                 blue +=color_frame_antes_blue;
             }
 
-            //media de todos
+            //media de todos.
             red /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
             green /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
             blue /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
@@ -5805,6 +5803,23 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
                 z80_int *puntero_dest=screen_rainbow_effect_persistence_frames_mem[i];
                 z80_int *puntero_orig=screen_rainbow_effect_persistence_frames_mem[i+1];
                 int color_orig=puntero_orig[offset];
+
+                //Mientras frame mas antiguo, mas oscuro
+                int color_orig_red=(color_orig >>10) & 0x1f;
+                int color_orig_green=(color_orig >>5) & 0x1f;
+                int color_orig_blue=(color_orig) & 0x1f;
+
+                //frame 0 el mas antiguo, que tenga menos brillo
+                int factor_apagar=100-((SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES-i)*15)/SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;
+
+                //if (x==0 && y==0) printf("i %2d factor apagar %d\n",i,factor_apagar);
+
+                color_orig_red=(color_orig_red*factor_apagar)/100;
+                color_orig_green=(color_orig_green*factor_apagar)/100;
+                color_orig_blue=(color_orig_blue*factor_apagar)/100;
+
+                color_orig=(color_orig_red<<10) | (color_orig_green<<5) | color_orig_blue;
+
                 puntero_dest[offset]=color_orig;
             }
 
@@ -5812,8 +5827,6 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
             z80_int *puntero_dest=screen_rainbow_effect_persistence_frames_mem[i];
 
             rgb15=(red_original<<10) | (green_original<<5) | blue_original;
-
-
 
             puntero_dest[offset]=rgb15;
 
