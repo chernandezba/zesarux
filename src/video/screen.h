@@ -1069,16 +1069,18 @@ extern z80_bit screen_rainbow_effect_scroll_vertical_circular;
 extern int screen_rainbow_effect_contrast_factor;
 extern int screen_rainbow_effect_brightness_factor;
 extern int screen_rainbow_effect_rotate_grados;
+extern z80_bit screen_rainbow_effect_remolino_follow_mouse;
 
 extern void init_screen_effects_table(void);
 
-#define MAX_SCREEN_EFFECTS 27
+#define MAX_SCREEN_EFFECTS 28
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
     SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
     SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
     SCREEN_EFFECT_TYPE_ROTATE,
+    SCREEN_EFFECT_TYPE_TWIRL,
     SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,
     SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,
     SCREEN_EFFECT_TYPE_HSYNC_LOST,

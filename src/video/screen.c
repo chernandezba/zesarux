@@ -4991,9 +4991,58 @@ void screen_rainbow_effect_rotate(z80_int *origen,z80_int *destino,int ancho,int
             int dx = x - centro_x;
             int dy = y - centro_y;
 
-            // aplicar rotación inversa
+            // aplicar rotación
             int src_x =  (util_get_cosine(screen_rainbow_effect_rotate_grados) * dx)/10000 - (util_get_sine(screen_rainbow_effect_rotate_grados) * dy)/10000 + centro_x;
             int src_y = (util_get_sine(screen_rainbow_effect_rotate_grados) * dx)/10000 + (util_get_cosine(screen_rainbow_effect_rotate_grados) * dy)/10000 + centro_y;
+
+            if (src_x>=0 && src_y>=0 && src_x<ancho && src_y<alto) {
+                int offset_origen=(ancho*src_y)+src_x;
+
+                int color=origen[offset_origen];
+
+                int offset_destino=(ancho*y)+x;
+
+                destino[offset_destino]=color;
+            }
+        }
+
+    }
+
+}
+
+
+z80_bit screen_rainbow_effect_remolino_follow_mouse={0};
+
+void screen_rainbow_effect_remolino(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    int x,y;
+    int centro_x=ancho/2;
+    int centro_y=alto/2;
+
+    if (screen_rainbow_effect_remolino_follow_mouse.v) {
+        centro_x=mouse_x/zoom_x;
+        centro_y=mouse_y/zoom_y;
+    }
+
+    for (y=0;y<alto;y++) {
+
+        for (x=0;x<ancho;x++) {
+
+            // trasladar al centro
+            int dx = x - centro_x;
+            int dy = y - centro_y;
+
+            //grados segun distancia al centro. mayor distancia, menos grados
+            //nota: no hace falta sacar la raiz cuadrada, solo quiero algo proporcional a la distancia
+            int distancia=dx*dx+dy*dy;
+
+            int grados;
+
+            if (distancia==0) grados=0;
+            else grados=100000/distancia;
+
+            int src_x =  (util_get_cosine(grados) * dx)/10000 - (util_get_sine(grados) * dy)/10000 + centro_x;
+            int src_y = (util_get_sine(grados) * dx)/10000 + (util_get_cosine(grados) * dy)/10000 + centro_y;
 
             if (src_x>=0 && src_y>=0 && src_x<ancho && src_y<alto) {
                 int offset_origen=(ancho*src_y)+src_x;
@@ -6233,6 +6282,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_rotate(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_TWIRL:
+                    screen_rainbow_effect_remolino(origen,destino,ancho,alto);
+                break;
+
                 case SCREEN_EFFECT_TYPE_INTERFERENCES:
                     screen_rainbow_effect_interferences(origen,destino,ancho,alto);
                 break;
@@ -6595,6 +6648,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical"},
     {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal"},
     {SCREEN_EFFECT_TYPE_ROTATE,"Rotate"},
+    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl"},
     {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences"},
     {SCREEN_EFFECT_TYPE_SEA,"Sea"},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves"},
