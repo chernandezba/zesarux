@@ -5628,6 +5628,29 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
 
 }
 
+void screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+            //De cada 4 pixeles solo mostrar 1
+            int mx=(x%2);
+            int my=(y%2);
+            if (mx==0 && my==0) {
+                int color=origen[y*ancho + x];
+                destino[y*ancho + x] = color;
+            }
+
+        }
+
+    }
+
+
+}
+
+
 void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
@@ -5994,6 +6017,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_pixelate(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_LED:
+                    screen_rainbow_effect_led(origen,destino,ancho,alto);
+                break;
+
                 case SCREEN_EFFECT_TYPE_HSYNC_LOST:
                     screen_rainbow_effect_hsync_lost(origen,destino,ancho,alto);
                 break;
@@ -6318,6 +6345,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_LENS,"Lens"},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse"},
     {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate"},
+    {SCREEN_EFFECT_TYPE_LED,"LED"},
     {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost"},
     {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost"},
     {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal"},
