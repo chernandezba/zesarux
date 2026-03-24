@@ -1071,12 +1071,13 @@ extern int screen_rainbow_effect_brightness_factor;
 
 extern void init_screen_effects_table(void);
 
-#define MAX_SCREEN_EFFECTS 26
+#define MAX_SCREEN_EFFECTS 27
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
     SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
     SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
+    SCREEN_EFFECT_TYPE_ROTATE,
     SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,
     SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,
     SCREEN_EFFECT_TYPE_HSYNC_LOST,
