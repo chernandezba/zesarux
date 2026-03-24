@@ -139,10 +139,8 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 *con nuevo efecto scroll horizontal/vertical no deberia hacer falta el offset del efecto reduce
 *mas efectos:
 
--Twirl (remolino)
-Rota píxeles dependiendo de la distancia al centro.
 
--efectos RGB aprovechando la tabla TSCONF_INDEX_FIRST_COLOR, que son de 5 bits por componente
+mas efectos RGB aprovechando la tabla TSCONF_INDEX_FIRST_COLOR, que son de 5 bits por componente
 
 
 ok-poder indicar orden de aplicacion de cada efecto. ejemplo lente, interferencias o interferencias, lente
