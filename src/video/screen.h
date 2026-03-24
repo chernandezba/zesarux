@@ -1068,6 +1068,7 @@ extern z80_bit screen_rainbow_effect_scroll_vertical_circular;
 
 extern int screen_rainbow_effect_contrast_factor;
 extern int screen_rainbow_effect_brightness_factor;
+extern int screen_rainbow_effect_rotate_grados;
 
 extern void init_screen_effects_table(void);
 

@@ -1718,6 +1718,12 @@ void menu_interface_special_effects_scroll_vertical_offset(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Offset Vertical",&screen_rainbow_effect_scroll_vertical_offset,5,+1,-999,+999,0);
 }
 
+void menu_interface_special_effects_rotate_grados(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ventana_scanf_numero_enhanced("Degrees",&screen_rainbow_effect_rotate_grados,4,+1,0,359,0);
+}
+
 void menu_interface_special_effects_contrast_factor(MENU_ITEM_PARAMETERS)
 {
     screen_rainbow_effect_contrast_factor+=25;
@@ -1881,6 +1887,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_brightness_factor,NULL,
                         "Brightness Factor","Factor Brightness","Factor Brightness");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_brightness_factor);
+                }
+
+
+                if (type==SCREEN_EFFECT_TYPE_ROTATE && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_rotate_grados,NULL,
+                        "Degress","Grados","Graus");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_rotate_grados);
                 }
 
             }

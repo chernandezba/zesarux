@@ -4992,8 +4992,8 @@ void screen_rainbow_effect_rotate(z80_int *origen,z80_int *destino,int ancho,int
             int dy = y - centro_y;
 
             // aplicar rotación inversa
-            int src_x =  (util_get_cosine(screen_rainbow_effect_rotate_grados) * dx)/10000 + (util_get_sine(screen_rainbow_effect_rotate_grados) * dy)/10000 + centro_x;
-            int src_y = (-util_get_sine(screen_rainbow_effect_rotate_grados) * dx)/10000 + (util_get_cosine(screen_rainbow_effect_rotate_grados) * dy)/10000 + centro_y;
+            int src_x =  (util_get_cosine(screen_rainbow_effect_rotate_grados) * dx)/10000 - (util_get_sine(screen_rainbow_effect_rotate_grados) * dy)/10000 + centro_x;
+            int src_y = (util_get_sine(screen_rainbow_effect_rotate_grados) * dx)/10000 + (util_get_cosine(screen_rainbow_effect_rotate_grados) * dy)/10000 + centro_y;
 
             if (src_x>=0 && src_y>=0 && src_x<ancho && src_y<alto) {
                 int offset_origen=(ancho*src_y)+src_x;
