@@ -5734,6 +5734,8 @@ void screen_rainbow_effect_persistence_check_mem(int ancho,int alto)
         int i;
         for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;i++) {
             screen_rainbow_effect_persistence_frames_mem[i]=screen_special_effects_alloc_buffer(ancho,alto);
+            screen_rainbow_effect_persistence_ancho=ancho;
+            screen_rainbow_effect_persistence_alto=alto;
         }
     }
 
@@ -5811,7 +5813,7 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
 
             rgb15=(red_original<<10) | (green_original<<5) | blue_original;
 
-            printf("%d\n",rgb15);
+
 
             puntero_dest[offset]=rgb15;
 
