@@ -5127,7 +5127,7 @@ void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int anch
 
     for (ygrupo=0;ygrupo<alto;ygrupo+=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) {
 
-        for (y=ygrupo;y<alto && y<ygrupo+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES-1;y++) {
+        for (y=ygrupo;y<alto && y<ygrupo+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;y++) {
 
             int rango_random=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
             if (y+rango_random>alto) rango_random=alto-y;
@@ -5194,6 +5194,43 @@ int screen_rainbow_effect_sortalike_compare(z80_int *origen,int ancho,int y1,int
     }
 
     return similares;
+}
+
+
+void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    int y,y2,ygrupo;
+
+    for (ygrupo=0;ygrupo<alto;ygrupo+=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) {
+
+        for (y=ygrupo;y<alto && y<ygrupo+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;y++) {
+
+            int y2_cambiar=y+1;
+            int max_similar=0;
+
+            for (y2=y+1;y2<y+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;y2++) {
+
+                int similares=screen_rainbow_effect_sortalike_compare(destino,ancho,y,y2);
+                //printf("- y %3d y2 %3d similares %d max_similar %d\n",y,y2,similares,max_similar);
+                if (similares>max_similar) {
+                    max_similar=similares;
+                    y2_cambiar=y2;
+                }
+
+            }
+
+            //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
+            screen_rainbow_effect_nagravision_swap(destino,ancho,y+1,y2_cambiar);
+        }
+
+    }
+
+
 }
 
 void screen_rainbow_effect_sortalike(z80_int *origen,z80_int *destino,int ancho,int alto)
@@ -6397,6 +6434,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_DECODENAGRAVISION:
+                    screen_rainbow_effect_decodenagravision(origen,destino,ancho,alto);
+                break;
+
                 case SCREEN_EFFECT_TYPE_RANDOMLINES:
                     screen_rainbow_effect_randomlines(origen,destino,ancho,alto);
                 break;
@@ -6779,6 +6820,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness"},
     {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"},
     {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines"},
+    {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision"},
     {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike"}
 };
 
