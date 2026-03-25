@@ -5248,7 +5248,8 @@ void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,in
 
     for (ygrupo=0;ygrupo<alto;ygrupo+=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) {
 
-        screen_rainbow_effect_decodenagra_group(destino,ancho,alto,ygrupo);
+        //Siempre comparar con la linea anterior
+        screen_rainbow_effect_decodenagra_group(destino,ancho,alto,ygrupo-1);
 
     }
 
