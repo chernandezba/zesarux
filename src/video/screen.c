@@ -5134,7 +5134,7 @@ void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int anch
 
             int valor_random=effect_nagravision_get_rnd() % rango_random;
 
-            int y2=y+valor_random;
+            int y2=ygrupo+valor_random;
 
             screen_rainbow_effect_nagravision_swap(destino,ancho,y,y2);
         }
