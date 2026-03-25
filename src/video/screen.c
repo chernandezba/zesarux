@@ -5208,24 +5208,32 @@ void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,in
 
     for (ygrupo=0;ygrupo<alto;ygrupo+=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) {
 
-        for (y=ygrupo;y<alto && y<ygrupo+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;y++) {
+        int fingrupo=ygrupo+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
 
+        for (y=ygrupo;y<alto && y<fingrupo;y++) {
+            //y: linea a comparar con las de abajo (empezando en y+1)
             int y2_cambiar=y+1;
             int max_similar=0;
 
-            for (y2=y+1;y2<y+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;y2++) {
+            //printf("Inicio buscar y %d\n",y);
+
+            for (y2=y+1;y2<alto && y2<fingrupo;y2++) {
 
                 int similares=screen_rainbow_effect_sortalike_compare(destino,ancho,y,y2);
                 //printf("- y %3d y2 %3d similares %d max_similar %d\n",y,y2,similares,max_similar);
                 if (similares>max_similar) {
                     max_similar=similares;
                     y2_cambiar=y2;
+                    //printf("- y %3d y2 %3d similares %d max_similar %d\n",y,y2,similares,max_similar);
                 }
 
             }
 
-            //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
-            screen_rainbow_effect_nagravision_swap(destino,ancho,y+1,y2_cambiar);
+            //Si es la misma linea la que se pretende intercambiar, no hacer nada
+            if (y+1!=y2_cambiar) {
+                //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
+                screen_rainbow_effect_nagravision_swap(destino,ancho,y+1,y2_cambiar);
+            }
         }
 
     }
