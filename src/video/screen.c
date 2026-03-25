@@ -5092,9 +5092,11 @@ generar_random_noise:
 }
 
 //Intercambiar dos lineas
-void screen_rainbow_effect_nagravision_swap(z80_int *destino,int ancho,int y1,int y2)
+void screen_rainbow_effect_nagravision_swap(z80_int *destino,int ancho,int alto,int y1,int y2)
 {
     int x;
+
+    if (y1>=alto || y2>=alto) return;
 
     for (x=0;x<ancho;x++) {
         int y1_offset=y1*ancho+x;
@@ -5130,13 +5132,13 @@ void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int anch
         for (y=ygrupo;y<alto && y<ygrupo+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;y++) {
 
             int rango_random=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
-            if (y+rango_random>alto) rango_random=alto-y;
+            if (ygrupo+rango_random>alto) rango_random=alto-ygrupo;
 
             int valor_random=effect_nagravision_get_rnd() % rango_random;
 
             int y2=ygrupo+valor_random;
 
-            screen_rainbow_effect_nagravision_swap(destino,ancho,y,y2);
+            screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y,y2);
         }
 
     }
@@ -5165,7 +5167,7 @@ void screen_rainbow_effect_randomlines(z80_int *origen,z80_int *destino,int anch
 
         int y2=effect_nagravision_get_rnd() % alto;
 
-        screen_rainbow_effect_nagravision_swap(destino,ancho,y,y2);
+        screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y,y2);
 
     }
 
@@ -5232,7 +5234,7 @@ void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,in
             //Si es la misma linea la que se pretende intercambiar, no hacer nada
             if (y+1!=y2_cambiar) {
                 //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
-                screen_rainbow_effect_nagravision_swap(destino,ancho,y+1,y2_cambiar);
+                screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y+1,y2_cambiar);
             }
         }
 
@@ -5267,7 +5269,7 @@ void screen_rainbow_effect_sortalike(z80_int *origen,z80_int *destino,int ancho,
         }
 
         //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
-        screen_rainbow_effect_nagravision_swap(destino,ancho,y+1,y2_cambiar);
+        screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y+1,y2_cambiar);
 
     }
 
