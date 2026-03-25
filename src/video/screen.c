@@ -5134,6 +5134,9 @@ void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int anch
 
         valor_random -=(SCREEN_EFFECT_NAGRAVISION_GROUP_LINES/2);
 
+        //desde -16 hasta +15 con SCREEN_EFFECT_NAGRAVISION_GROUP_LINES=32
+        //if (valor_random>=15) printf("%d\n",valor_random);
+
         int y2=y+valor_random;
 
         screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y,y2);
