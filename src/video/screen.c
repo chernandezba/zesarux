@@ -5201,9 +5201,12 @@ int screen_rainbow_effect_sortalike_compare(z80_int *origen,int ancho,int y1,int
 void screen_rainbow_effect_decodenagra_group(z80_int *destino,int ancho,int alto,int y)
 {
 
+    int fingrupo=y+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
+
+    //Siempre comparar con la linea anterior
+    y--;
     if (y<0) y=0;
 
-    int fingrupo=y+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
 
     for (;y<alto && y<fingrupo;y++) {
         //y: linea a comparar con las de abajo (empezando en y+1)
@@ -5248,8 +5251,8 @@ void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,in
 
     for (ygrupo=0;ygrupo<alto;ygrupo+=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) {
 
-        //Siempre comparar con la linea anterior
-        screen_rainbow_effect_decodenagra_group(destino,ancho,alto,ygrupo-1);
+
+        screen_rainbow_effect_decodenagra_group(destino,ancho,alto,ygrupo);
 
     }
 
