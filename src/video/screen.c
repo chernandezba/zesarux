@@ -5108,9 +5108,47 @@ void screen_rainbow_effect_nagravision_swap(z80_int *destino,int ancho,int y1,in
 }
 
 
+#define SCREEN_EFFECT_NAGRAVISION_GROUP_LINES 32
 int screen_rainbow_effect_nagravision_initial_seed=0;
 
 void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    //Se inicializa el seed en cada frame
+    effect_nagravision_seed=screen_rainbow_effect_nagravision_initial_seed;
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    //Y mezclar lineas
+
+    int y;
+    int ygrupo;
+
+    for (ygrupo=0;ygrupo<alto;ygrupo+=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) {
+
+        for (y=ygrupo;y<alto && y<ygrupo+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES-1;y++) {
+
+            int rango_random=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
+            if (y+rango_random>alto) rango_random=alto-y;
+
+            int valor_random=effect_nagravision_get_rnd() % rango_random;
+
+            int y2=y+valor_random;
+
+            screen_rainbow_effect_nagravision_swap(destino,ancho,y,y2);
+        }
+
+    }
+
+    screen_rainbow_effect_nagravision_initial_seed++;
+    //A cada segundo, se usa mismo seed
+    if (screen_rainbow_effect_nagravision_initial_seed==50) screen_rainbow_effect_nagravision_initial_seed=0;
+
+}
+
+
+void screen_rainbow_effect_randomlines(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
     //Se inicializa el seed en cada frame
     effect_nagravision_seed=screen_rainbow_effect_nagravision_initial_seed;
@@ -6359,6 +6397,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_RANDOMLINES:
+                    screen_rainbow_effect_randomlines(origen,destino,ancho,alto);
+                break;
+
                 case SCREEN_EFFECT_TYPE_SORTALIKE:
                     screen_rainbow_effect_sortalike(origen,destino,ancho,alto);
                 break;
@@ -6736,6 +6778,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast"},
     {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness"},
     {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"},
+    {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines"},
     {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike"}
 };
 

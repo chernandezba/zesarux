@@ -1074,7 +1074,7 @@ extern z80_bit screen_rainbow_effect_rotate_follow_mouse;
 
 extern void init_screen_effects_table(void);
 
-#define MAX_SCREEN_EFFECTS 29
+#define MAX_SCREEN_EFFECTS 30
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
@@ -1105,6 +1105,7 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_BRIGHTNESS,
     SCREEN_EFFECT_TYPE_PERSISTENCE,
     SCREEN_EFFECT_TYPE_NAGRAVISION,
+    SCREEN_EFFECT_TYPE_RANDOMLINES,
     SCREEN_EFFECT_TYPE_SORTALIKE
 };
 
