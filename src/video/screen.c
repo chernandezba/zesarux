@@ -4976,12 +4976,18 @@ void screen_rainbow_effect_flip_horizontal(z80_int *origen,z80_int *destino,int 
 }
 
 int screen_rainbow_effect_rotate_grados=45;
+z80_bit screen_rainbow_effect_rotate_follow_mouse={0};
 
 void screen_rainbow_effect_rotate(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
     int x,y;
     int centro_x=ancho/2;
     int centro_y=alto/2;
+
+    if (screen_rainbow_effect_rotate_follow_mouse.v) {
+        centro_x=mouse_x/zoom_x;
+        centro_y=mouse_y/zoom_y;
+    }
 
     for (y=0;y<alto;y++) {
 
@@ -5085,6 +5091,7 @@ generar_random_noise:
 
 }
 
+//Intercambiar dos lineas
 void screen_rainbow_effect_nagravision_swap(z80_int *destino,int ancho,int y1,int y2)
 {
     int x;
@@ -5127,6 +5134,60 @@ void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int anch
     screen_rainbow_effect_nagravision_initial_seed++;
     //A cada segundo, se usa mismo seed
     if (screen_rainbow_effect_nagravision_initial_seed==50) screen_rainbow_effect_nagravision_initial_seed=0;
+
+}
+
+int screen_rainbow_effect_sortalike_compare(z80_int *origen,int ancho,int y1,int y2)
+{
+    int x;
+    int similares=0;
+
+    for (x=0;x<ancho;x++) {
+        int y1_offset=y1*ancho+x;
+        int y2_offset=y2*ancho+x;
+
+        int color_1_1=origen[y1_offset];
+
+        int color_2_1=origen[y2_offset];
+        int color_2_2=origen[y2_offset-1];
+        int color_2_3=origen[y2_offset+1];
+
+        if (color_1_1==color_2_1 /*|| color_1_1==color_2_2 || color_1_1==color_2_3*/) similares++;
+    }
+
+    return similares;
+}
+
+void screen_rainbow_effect_sortalike(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    int y,y2;
+
+    for (y=0;y<alto;y++) {
+
+        int y2_cambiar=y+1;
+        int max_similar=0;
+
+        for (y2=y+1;y2<alto;y2++) {
+
+            int similares=screen_rainbow_effect_sortalike_compare(destino,ancho,y,y2);
+            //printf("- y %3d y2 %3d similares %d max_similar %d\n",y,y2,similares,max_similar);
+            if (similares>max_similar) {
+                max_similar=similares;
+                y2_cambiar=y2;
+            }
+
+        }
+
+        //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
+        screen_rainbow_effect_nagravision_swap(destino,ancho,y+1,y2_cambiar);
+
+    }
+
 
 }
 
@@ -6298,6 +6359,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_nagravision(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_SORTALIKE:
+                    screen_rainbow_effect_sortalike(origen,destino,ancho,alto);
+                break;
+
                 case SCREEN_EFFECT_TYPE_SEA:
                     screen_rainbow_effect_sea(origen,destino,ancho,alto);
                 break;
@@ -6670,7 +6735,8 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence"},
     {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast"},
     {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness"},
-    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"}
+    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"},
+    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike"}
 };
 
 char *screen_effect_name_unknown="Unknown";

@@ -137,6 +137,13 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 *revisar gigascreen , replantear entera
 *con menu opciones efectos, que ponga tipo ventana correcto/dialogo, que se mueva bien atras, etc
 *con nuevo efecto scroll horizontal/vertical no deberia hacer falta el offset del efecto reduce
+*Persistencia poder indicar cantidad de frames. Que se asigne siempre memoria según máximo de frames pero luego solo use los que indique el usuario
+*ahora mover efectos no deja bien el cursor cuando hay repetidos
+*efecto decodificar el nagravision:
+-buscar similitudes entre dos lineas consecutivas. para ello:
+--de cada linea, buscar la que mas coincidencias de colores tiene con otra.
+--con la que se encuentre, intercambiar en la linea que hay justo debajo
+--y asi con todas
 *mas efectos:
 
 
@@ -144,22 +151,14 @@ mas efectos RGB aprovechando la tabla TSCONF_INDEX_FIRST_COLOR, que son de 5 bit
 
 
 ok-poder indicar orden de aplicacion de cada efecto. ejemplo lente, interferencias o interferencias, lente
--falta linea de comandos/config file
+-falta linea de comandos/config file. quiza algo como :
+id-posicion efecto enabled/disabled
+Aunque esto permitiria usar un mismo efecto en diferentes posiciones. tiene sentido?
 
 -nagravision audio
 *completar maquinas
 
--en features indicar video effects:
--Reduce
--Unsteady
--Flip Vertical
--Flip Horizontal
--Interferences
--Waves
--Lens
--Zoom mouse
--Pixelate
--Hsync lost
--Vsync lost
+-en features indicar video effects todos:
+...
 -Nagravision (also Nagra audio)
 etc...

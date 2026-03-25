@@ -1619,6 +1619,74 @@ void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
     screen_effect_applied_list[valor_opcion].enabled ^=1;
 };
 
+void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
+{
+    int efecto_seleccionado=valor_opcion;
+
+    int opcion_seleccionada=0;
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    //Seleccionar una opcion y salir
+
+    //do {
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,
+        "");
+
+        int i;
+            for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+
+                //enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
+
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
+                    NULL,NULL,screen_effect_get_name(SCREEN_EFFECT_TYPE_REDUCE+i));
+
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
+            }
+
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Main Window-> FX-> Change-> Change type",
+            "Menú Principal-> Opciones-> Ventana Principal-> FX-> Cambia-> Cambia Tipo",
+            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia Tipus");
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Change type","Cambia tipo","Canvia tipus" );
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            //if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                //item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                //printf("Linea seleccionada %d cambiar a %d\n",efecto_seleccionado,SCREEN_EFFECT_TYPE_REDUCE+item_seleccionado.valor_opcion);
+
+                screen_effect_applied_list[efecto_seleccionado].type=SCREEN_EFFECT_TYPE_REDUCE+item_seleccionado.valor_opcion;
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            //}
+        }
+
+    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+}
+
 void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
 {
     int efecto_seleccionado=valor_opcion;
@@ -1655,6 +1723,12 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_abajo());
             menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
         }
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_type,NULL,
+        "Change Type","Cambiar Tipo","Canviar Tipus");
+        menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+
 
         menu_add_item_menu_separator(array_menu_common);
 
@@ -1894,6 +1968,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_rotate_grados,NULL,
                         "Degress","Grados","Graus");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_rotate_grados);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Rotation center follows Mouse","Centro rotación sigue Ratón","Centre rotació segueix Ratolí");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_rotate_follow_mouse.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_rotate_follow_mouse);
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_TWIRL && enabled) {

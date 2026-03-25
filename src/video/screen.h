@@ -1070,10 +1070,11 @@ extern int screen_rainbow_effect_contrast_factor;
 extern int screen_rainbow_effect_brightness_factor;
 extern int screen_rainbow_effect_rotate_grados;
 extern z80_bit screen_rainbow_effect_remolino_follow_mouse;
+extern z80_bit screen_rainbow_effect_rotate_follow_mouse;
 
 extern void init_screen_effects_table(void);
 
-#define MAX_SCREEN_EFFECTS 28
+#define MAX_SCREEN_EFFECTS 29
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
@@ -1103,7 +1104,8 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_CONTRAST,
     SCREEN_EFFECT_TYPE_BRIGHTNESS,
     SCREEN_EFFECT_TYPE_PERSISTENCE,
-    SCREEN_EFFECT_TYPE_NAGRAVISION
+    SCREEN_EFFECT_TYPE_NAGRAVISION,
+    SCREEN_EFFECT_TYPE_SORTALIKE
 };
 
 typedef struct {
