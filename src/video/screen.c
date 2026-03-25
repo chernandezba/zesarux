@@ -5096,7 +5096,7 @@ void screen_rainbow_effect_nagravision_swap(z80_int *destino,int ancho,int alto,
 {
     int x;
 
-    if (y1>=alto || y2>=alto) return;
+    if (y1<0 || y2<0 || y1>=alto || y2>=alto) return;
 
     for (x=0;x<ancho;x++) {
         int y1_offset=y1*ancho+x;
@@ -5114,6 +5114,41 @@ void screen_rainbow_effect_nagravision_swap(z80_int *destino,int ancho,int alto,
 int screen_rainbow_effect_nagravision_initial_seed=0;
 
 void screen_rainbow_effect_nagravision(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+    //Se inicializa el seed en cada frame
+    effect_nagravision_seed=screen_rainbow_effect_nagravision_initial_seed;
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    //Y mezclar lineas
+
+    int y;
+
+
+
+    for (y=0;y<alto;y++) {
+
+        int valor_random=effect_nagravision_get_rnd() % SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
+
+        valor_random -=(SCREEN_EFFECT_NAGRAVISION_GROUP_LINES/2);
+
+        int y2=y+valor_random;
+
+        screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y,y2);
+    }
+
+
+
+    screen_rainbow_effect_nagravision_initial_seed++;
+    //A cada segundo, se usa mismo seed
+    if (screen_rainbow_effect_nagravision_initial_seed==50) screen_rainbow_effect_nagravision_initial_seed=0;
+
+}
+
+//Algoritmo malo que divide exactamente los bloques en 32
+void screen_rainbow_effect_nagravision_bad(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
     //Se inicializa el seed en cada frame
     effect_nagravision_seed=screen_rainbow_effect_nagravision_initial_seed;
@@ -5198,7 +5233,8 @@ int screen_rainbow_effect_sortalike_compare(z80_int *origen,int ancho,int y1,int
     return similares;
 }
 
-void screen_rainbow_effect_decodenagra_group(z80_int *destino,int ancho,int alto,int y)
+//Usando la division incorrecta de bloques de 32
+void screen_rainbow_effect_decodenagra_group_bad(z80_int *destino,int ancho,int alto,int y)
 {
 
     int fingrupo=y+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
@@ -5240,7 +5276,8 @@ void screen_rainbow_effect_decodenagra_group(z80_int *destino,int ancho,int alto
 }
 
 
-void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,int ancho,int alto)
+//Usando la division incorrecta de bloques de 32
+void screen_rainbow_effect_decodenagravision_bad(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     //Primero copiar tal cual de origen a destino
@@ -5252,7 +5289,65 @@ void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,in
     for (ygrupo=0;ygrupo<alto;ygrupo+=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) {
 
 
-        screen_rainbow_effect_decodenagra_group(destino,ancho,alto,ygrupo);
+        screen_rainbow_effect_decodenagra_group_bad(destino,ancho,alto,ygrupo);
+
+    }
+
+
+}
+
+
+void screen_rainbow_effect_decodenagra_group(z80_int *destino,int ancho,int alto,int y)
+{
+
+    int fingrupo=y+SCREEN_EFFECT_NAGRAVISION_GROUP_LINES;
+
+
+    for (;y<alto && y<fingrupo;y++) {
+        //y: linea a comparar con las de abajo (empezando en y+1)
+        int y2_cambiar=y+1;
+        int max_similar=0;
+
+        //printf("Inicio buscar y %d\n",y);
+
+        int y2;
+
+        //Comparar con cada una
+        for (y2=y+1;y2<alto && y2<fingrupo;y2++) {
+
+            int similares=screen_rainbow_effect_sortalike_compare(destino,ancho,y,y2);
+            //printf("- y %3d y2 %3d similares %d max_similar %d\n",y,y2,similares,max_similar);
+            if (similares>max_similar) {
+                max_similar=similares;
+                y2_cambiar=y2;
+                //printf("- y %3d y2 %3d similares %d max_similar %d\n",y,y2,similares,max_similar);
+            }
+
+        }
+
+        //Si es la misma linea la que se pretende intercambiar, no hacer nada
+        if (y+1!=y2_cambiar) {
+            //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
+            screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y+1,y2_cambiar);
+        }
+    }
+
+}
+
+void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    int y;
+
+    for (y=0;y<alto;y++) {
+
+        //buscar lineas arriba o abajo a ver cual se parece mas
+
+        screen_rainbow_effect_decodenagra_group(destino,ancho,alto,y);
 
     }
 
