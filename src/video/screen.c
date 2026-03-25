@@ -5299,6 +5299,9 @@ void screen_rainbow_effect_decodenagravision_bad(z80_int *origen,z80_int *destin
 
 }
 
+//array para saber la linea original que tiene cada una antes de moverla, para evitar moverlas demasiado lejos
+#define SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES 2000
+int screen_rainbow_effect_decodenagra_linea_original[SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES];
 
 void screen_rainbow_effect_decodenagra_group(z80_int *destino,int ancho,int alto,int y)
 {
@@ -5330,8 +5333,39 @@ void screen_rainbow_effect_decodenagra_group(z80_int *destino,int ancho,int alto
 
         //Si es la misma linea la que se pretende intercambiar, no hacer nada
         if (y+1!=y2_cambiar) {
+
+            int en_limite_lineas=1;
+            int linea1=0;
+            int linea2=0; //inicializar con algo para que no se queje el compilador
+
+
+            int cambiar=0;
+            //ver si en el rango de array de lineas originales
+            if (y2_cambiar>=SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES || y+1>=SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES) {
+                en_limite_lineas=0;
+                cambiar=1;
+            }
+
+            if (en_limite_lineas) {
+                //ver si no esta muy lejos de su pos inicial
+                linea1=screen_rainbow_effect_decodenagra_linea_original[y2_cambiar];
+                linea2=screen_rainbow_effect_decodenagra_linea_original[y+1];
+
+                if (util_get_absolute(y+1-linea1)<=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES && util_get_absolute(y2_cambiar-linea2)<=SCREEN_EFFECT_NAGRAVISION_GROUP_LINES) cambiar=1;
+
+            }
+
+
             //printf("Cambiar - y %3d y2 %3d max_similar %d\n",y+1,y2_cambiar,max_similar);
-            screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y+1,y2_cambiar);
+            if (cambiar) {
+                //printf("Cambiar - %d %d diferencia %d\n",linea1,linea2,util_get_absolute(y+1-linea1));
+                screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y+1,y2_cambiar);
+                if (en_limite_lineas) {
+                    screen_rainbow_effect_decodenagra_linea_original[y2_cambiar]=linea2;
+                    screen_rainbow_effect_decodenagra_linea_original[y+1]=linea1;
+                }
+            }
+
         }
     }
 
@@ -5344,6 +5378,9 @@ void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,in
     int tamanyo=ancho*alto*2;
     memcpy(destino,origen,tamanyo);
 
+    int i;
+    for (i=0;i<SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES;i++) screen_rainbow_effect_decodenagra_linea_original[i]=i;
+
     int y;
 
     for (y=0;y<alto;y++) {
@@ -5354,6 +5391,8 @@ void screen_rainbow_effect_decodenagravision(z80_int *origen,z80_int *destino,in
 
     }
 
+    //for (i=0;i<320;i++) printf("%d %d\n",i,screen_rainbow_effect_decodenagra_linea_original[i]);
+    //printf("-----\n");
 
 }
 
