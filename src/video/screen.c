@@ -5227,10 +5227,9 @@ int screen_rainbow_effect_sortalike_compare(z80_int *origen,int ancho,int y1,int
         int color_1_1=origen[y1_offset];
 
         int color_2_1=origen[y2_offset];
-        int color_2_2=origen[y2_offset-1];
-        int color_2_3=origen[y2_offset+1];
 
-        if (color_1_1==color_2_1 /*|| color_1_1==color_2_2 || color_1_1==color_2_3*/) similares++;
+
+        if (color_1_1==color_2_1) similares++;
     }
 
     return similares;
@@ -5532,7 +5531,7 @@ z80_int *screen_rainbow_effect_radar_putpixel_destino;
 int screen_rainbow_effect_radar_putpixel_ancho;
 int screen_rainbow_effect_radar_putpixel_alto;
 
-void screen_rainbow_effect_radar_putpixel(zxvision_window *w,int x,int y,int incremento_verde)
+void screen_rainbow_effect_radar_putpixel(zxvision_window *w GCC_UNUSED,int x,int y,int incremento_verde)
 {
 
     if (x<0 || y<0 || x>=screen_rainbow_effect_radar_putpixel_ancho || y>=screen_rainbow_effect_radar_putpixel_alto) return;
