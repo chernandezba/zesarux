@@ -5986,6 +5986,7 @@ void screen_rainbow_effect_blur_media_rgb_pixeles(z80_int *origen,int orig_x,int
 }
 
 //media de color del pixel indicado y los de alrededor, retorna en rgb15
+//Si intensity=0 devolverá el color del pixel indicado, tal cual. O sea, no hace blur
 int screen_rainbow_effect_blur_media(z80_int *origen,int orig_x,int orig_y,int ancho,int alto,int x,int y,int total_ancho,int total_alto,int intensity)
 {
     int red=0;
@@ -6003,28 +6004,6 @@ int screen_rainbow_effect_blur_media(z80_int *origen,int orig_x,int orig_y,int a
         }
     }
 
-    /*
-
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x-1,y-1,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x+0,y-1,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x+1,y-1,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x-1,y+0,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x+0,y+0,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x+1,y+0,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x-1,y+1,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x+0,y+1,&red,&green,&blue);
-    total_pixeles++;
-    screen_rainbow_effect_blur_media_rgb_pixeles(origen,orig_x,orig_y,ancho,alto,total_ancho,total_alto,x+1,y+1,&red,&green,&blue);
-    total_pixeles++;
-
-    */
 
     if (total_pixeles!=0) {
         red /=total_pixeles;
@@ -6038,13 +6017,34 @@ int screen_rainbow_effect_blur_media(z80_int *origen,int orig_x,int orig_y,int a
 
 }
 
-void screen_rainbow_effect_blur_zone(z80_int *origen,z80_int *destino,int orig_x,int orig_y,int ancho,int alto,int total_ancho,int total_alto,int intensity)
+void screen_rainbow_effect_blur_zone(z80_int *origen,z80_int *destino,int orig_x,int orig_y,int ancho,int alto,int total_ancho,int total_alto,int intensity,int follow_mouse)
 {
 
     int x,y;
 
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
+
     for (y=orig_y;y<orig_y+alto;y++) {
         for (x=orig_x;x<orig_x+ancho;x++) {
+
+            if (follow_mouse) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=10;
+
+                intensity=dist/500;
+
+                if (intensity>max_intensity) intensity=max_intensity;
+
+                intensity=max_intensity-intensity;
+
+            }
 
             int color=TSCONF_INDEX_FIRST_COLOR+screen_rainbow_effect_blur_media(origen,orig_x,orig_y,ancho,alto,x,y,total_ancho,total_alto,intensity);
 
@@ -6058,10 +6058,11 @@ void screen_rainbow_effect_blur_zone(z80_int *origen,z80_int *destino,int orig_x
 }
 
 int screen_rainbow_effect_blur_intensity=1;
+z80_bit screen_rainbow_effect_blur_follow_mouse={0};
 
 void screen_rainbow_effect_blur(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
-    screen_rainbow_effect_blur_zone(origen,destino,0,0,ancho,alto,ancho,alto,screen_rainbow_effect_blur_intensity);
+    screen_rainbow_effect_blur_zone(origen,destino,0,0,ancho,alto,ancho,alto,screen_rainbow_effect_blur_intensity,screen_rainbow_effect_blur_follow_mouse.v);
 
 }
 
@@ -6127,10 +6128,12 @@ void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino
 
 
     //y blur en el borde izquierdo
-    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,TOP_BORDER_NO_ZOOM,LEFT_BORDER_NO_ZOOM,192,ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_leftright);
+    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,TOP_BORDER_NO_ZOOM,LEFT_BORDER_NO_ZOOM,192,
+        ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_leftright,0);
 
     //y en el derecho
-    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,LEFT_BORDER_NO_ZOOM+256,TOP_BORDER_NO_ZOOM,LEFT_BORDER_NO_ZOOM,192,ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_leftright);
+    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,LEFT_BORDER_NO_ZOOM+256,TOP_BORDER_NO_ZOOM,LEFT_BORDER_NO_ZOOM,192,
+        ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_leftright,0);
 
     free(temp_bufferdestino);
 
@@ -6159,10 +6162,12 @@ void screen_rainbow_effect_shaderborder_infsup(z80_int *origen,z80_int *destino,
 
 
     //y blur en el borde superior
-    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,0,ancho,TOP_BORDER_NO_ZOOM,ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_updown);
+    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,0,ancho,TOP_BORDER_NO_ZOOM,
+        ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_updown,0);
 
     //y en el borde inferior
-    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,TOP_BORDER_NO_ZOOM+192,ancho,TOP_BORDER_NO_ZOOM,ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_updown);
+    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,TOP_BORDER_NO_ZOOM+192,ancho,TOP_BORDER_NO_ZOOM,
+        ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_updown,0);
 
     free(temp_bufferdestino);
 
