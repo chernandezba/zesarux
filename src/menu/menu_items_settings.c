@@ -1849,6 +1849,12 @@ void menu_interface_special_effects_blur_intensity(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_blur_intensity>16) screen_rainbow_effect_blur_intensity=1;
 }
 
+void menu_interface_special_effects_persistence_total_frames(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_persistence_total_frames++;
+    if (screen_rainbow_effect_persistence_total_frames>SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES) screen_rainbow_effect_persistence_total_frames=3;
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2066,6 +2072,12 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_brightness_factor,NULL,
                         "Brightness Factor","Factor Brightness","Factor Brightness");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_brightness_factor);
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_PERSISTENCE && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_persistence_total_frames,NULL,
+                        "Total Frames","Frames Total","Frames Total");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_persistence_total_frames);
                 }
 
 

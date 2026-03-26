@@ -1080,8 +1080,11 @@ extern z80_bit screen_rainbow_effect_shaderborder_leftright_enable;
 extern z80_bit screen_rainbow_effect_shaderborder_updown_enable;
 extern int screen_rainbow_effect_blur_intensity;
 extern z80_bit screen_rainbow_effect_blur_follow_mouse;
+extern int screen_rainbow_effect_persistence_total_frames;
 
 extern void init_screen_effects_table(void);
+
+#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 20
 
 #define MAX_SCREEN_EFFECTS 33
 

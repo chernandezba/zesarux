@@ -6333,13 +6333,15 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
 
 }
 
+
 //0.2 segundos. O sea, 10 frames
-#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES 10
+int screen_rainbow_effect_persistence_total_frames=10;
+//#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES 10
 //Punteros de los frames anteriores
 //Los guardamos en formato RGB15 bits
 
 //frame [0] es el mas antiguo
-z80_int *screen_rainbow_effect_persistence_frames_mem[SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES];
+z80_int *screen_rainbow_effect_persistence_frames_mem[SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES];
 int screen_rainbow_effect_persistence_ancho=-1;
 int screen_rainbow_effect_persistence_alto=-1;
 
@@ -6352,7 +6354,7 @@ void screen_rainbow_effect_persistence_check_mem(int ancho,int alto)
     if (screen_rainbow_effect_persistence_ancho!=-1 && screen_rainbow_effect_persistence_alto!=-1) {
         if (screen_rainbow_effect_persistence_ancho!=ancho || screen_rainbow_effect_persistence_alto!=alto) {
             int i;
-            for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;i++) {
+            for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES;i++) {
                 free(screen_rainbow_effect_persistence_frames_mem[i]);
             }
             asignar_mem=1;
@@ -6363,7 +6365,7 @@ void screen_rainbow_effect_persistence_check_mem(int ancho,int alto)
 
     if (asignar_mem) {
         int i;
-        for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;i++) {
+        for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES;i++) {
             screen_rainbow_effect_persistence_frames_mem[i]=screen_special_effects_alloc_buffer(ancho,alto);
             screen_rainbow_effect_persistence_ancho=ancho;
             screen_rainbow_effect_persistence_alto=alto;
@@ -6405,7 +6407,7 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
 
             //Frames anteriores
             int i;
-            for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;i++) {
+            for (i=0;i<screen_rainbow_effect_persistence_total_frames;i++) {
                 z80_int *puntero=screen_rainbow_effect_persistence_frames_mem[i];
                 int color_frame_antes=puntero[offset];
                 int color_frame_antes_red=(color_frame_antes >> 10) & 0x1F;
@@ -6418,9 +6420,9 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
             }
 
             //media de todos.
-            red /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
-            green /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
-            blue /=(SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES+1);
+            red /=(screen_rainbow_effect_persistence_total_frames+1);
+            green /=(screen_rainbow_effect_persistence_total_frames+1);
+            blue /=(screen_rainbow_effect_persistence_total_frames+1);
 
             int rgb15=(red<<10) | (green<<5) | blue;
 
@@ -6430,7 +6432,7 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
 
 
             //Y ahora rotamos los frames. Primero los que tenemos anteriores, que son en formato RGB15
-            for (i=0;i<SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES-1;i++) {
+            for (i=0;i<screen_rainbow_effect_persistence_total_frames-1;i++) {
                 z80_int *puntero_dest=screen_rainbow_effect_persistence_frames_mem[i];
                 z80_int *puntero_orig=screen_rainbow_effect_persistence_frames_mem[i+1];
                 int color_orig=puntero_orig[offset];
@@ -6441,7 +6443,7 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
                 int color_orig_blue=(color_orig) & 0x1f;
 
                 //frame 0 el mas antiguo, que tenga menos brillo
-                int factor_apagar=100-((SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES-i)*15)/SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES;
+                int factor_apagar=100-((screen_rainbow_effect_persistence_total_frames-i)*15)/screen_rainbow_effect_persistence_total_frames;
 
                 //if (x==0 && y==0) printf("i %2d factor apagar %d\n",i,factor_apagar);
 
