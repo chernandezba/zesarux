@@ -6267,14 +6267,39 @@ void screen_rainbow_effect_shaderborder(z80_int *origen,z80_int *destino,int anc
 
 
 int screen_rainbow_effect_contrast_factor=100;
+z80_bit screen_rainbow_effect_contrast_follow_mouse={0};
 
 void screen_rainbow_effect_contrast(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
 
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
+
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
+
+            int factor=screen_rainbow_effect_contrast_factor;
+
+            if (screen_rainbow_effect_contrast_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=1000;
+
+                if (dist==0) factor=max_intensity;
+                else factor=1000*max_intensity/dist;
+
+                if (factor>max_intensity) factor=max_intensity;
+
+                if (factor<0) factor=0;
+
+            }
 
             int color=origen[y*ancho + x];
             unsigned int color32=spectrum_colortable[color];
@@ -6295,7 +6320,7 @@ void screen_rainbow_effect_contrast(z80_int *origen,z80_int *destino,int ancho,i
 
             */
 
-            int factor=screen_rainbow_effect_contrast_factor;
+
             int val;
 
             val = ((factor * (red - 128)) >> 8) + 128;
