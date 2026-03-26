@@ -6066,7 +6066,7 @@ void screen_rainbow_effect_blur(z80_int *origen,z80_int *destino,int ancho,int a
 }
 
 int screen_rainbow_effect_shaderborder_factor_zoom=1000;
-int screen_rainbow_effect_shaderborder_blur_intensity=8;
+int screen_rainbow_effect_shaderborder_blur_intensity=4;
 
 void screen_rainbow_effect_shaderborder_putpixel(z80_int *destino,int ancho,int alto,int x,int y,int color)
 {
@@ -6084,6 +6084,23 @@ int screen_rainbow_effect_shaderborder_getpixel(z80_int *origen,int ancho,int al
 
 }
 
+void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,int ancho_total,int alto_total,int factor_zoom)
+{
+    //Copiamos trozo de pantalla hacia border
+    int x,y;
+
+
+    for (y=0;y<192;y++) {
+        for (x=0;x<LEFT_BORDER_NO_ZOOM;x++) {
+
+            int color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho_total,alto_total,LEFT_BORDER_NO_ZOOM+x*factor_zoom/1000,y+TOP_BORDER_NO_ZOOM);
+            screen_rainbow_effect_shaderborder_putpixel(destino,ancho_total,alto_total,x,y+TOP_BORDER_NO_ZOOM,color);
+
+        }
+    }
+
+}
+
 
 void screen_rainbow_effect_shaderborder(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -6098,27 +6115,17 @@ void screen_rainbow_effect_shaderborder(z80_int *origen,z80_int *destino,int anc
 
     //Copiamos trozo de pantalla hacia border
     int x,y;
-    /*
-    for (y=TOP_BORDER_NO_ZOOM;y<TOP_BORDER_NO_ZOOM+192;y++) {
-        for (x=LEFT_BORDER_NO_ZOOM;x<LEFT_BORDER_NO_ZOOM+LEFT_BORDER_NO_ZOOM;x++) {
-            int color=origen[y*ancho + x];
-            temp_bufferdestino[y*ancho+x-LEFT_BORDER_NO_ZOOM]=color;
 
-            color=origen[y*ancho + x+(256-LEFT_BORDER_NO_ZOOM)];
-            temp_bufferdestino[y*ancho+x+256]=color;
-        }
-    }
-    */
-
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom);
 
     for (y=0;y<192;y++) {
         for (x=0;x<LEFT_BORDER_NO_ZOOM;x++) {
             //factor zoom. 1000=1. 2000=x2 (comprimir zona mas grande). 500=0.5 (ampliar zona)
             int factor_zoom=screen_rainbow_effect_shaderborder_factor_zoom;
+            int color;
 
-
-            int color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho,alto,LEFT_BORDER_NO_ZOOM+x*factor_zoom/1000,y+TOP_BORDER_NO_ZOOM);
-            screen_rainbow_effect_shaderborder_putpixel(temp_bufferdestino,ancho,alto,x,y+TOP_BORDER_NO_ZOOM,color);
+            //int color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho,alto,LEFT_BORDER_NO_ZOOM+x*factor_zoom/1000,y+TOP_BORDER_NO_ZOOM);
+            //screen_rainbow_effect_shaderborder_putpixel(temp_bufferdestino,ancho,alto,x,y+TOP_BORDER_NO_ZOOM,color);
 
             color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho,alto,LEFT_BORDER_NO_ZOOM+x*factor_zoom/1000+(256-LEFT_BORDER_NO_ZOOM*factor_zoom/1000),y+TOP_BORDER_NO_ZOOM);
             screen_rainbow_effect_shaderborder_putpixel(temp_bufferdestino,ancho,alto,x+LEFT_BORDER_NO_ZOOM+256,y+TOP_BORDER_NO_ZOOM,color);
