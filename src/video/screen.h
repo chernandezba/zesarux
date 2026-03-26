@@ -1084,7 +1084,7 @@ extern int screen_rainbow_effect_persistence_total_frames;
 
 extern void init_screen_effects_table(void);
 
-#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 20
+#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 25
 
 #define MAX_SCREEN_EFFECTS 33
 

@@ -6443,7 +6443,16 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
                 int color_orig_blue=(color_orig) & 0x1f;
 
                 //frame 0 el mas antiguo, que tenga menos brillo
+
+                //15 para persistencia 10 frames
+                //7.5 para persistencia 20 frames
+                //30 para persistencia 5 frames
+                //int porcentaje_reduccion=(15*10)/screen_rainbow_effect_persistence_total_frames;
+
                 int factor_apagar=100-((screen_rainbow_effect_persistence_total_frames-i)*15)/screen_rainbow_effect_persistence_total_frames;
+
+                if (factor_apagar<0) factor_apagar=0;
+                if (factor_apagar>100) factor_apagar=100;
 
                 //if (x==0 && y==0) printf("i %2d factor apagar %d\n",i,factor_apagar);
 
