@@ -1075,6 +1075,8 @@ extern int screen_rainbow_effect_shaderborder_factor_zoom_leftright;
 extern int screen_rainbow_effect_shaderborder_factor_zoom_updown;
 extern int screen_rainbow_effect_shaderborder_blur_intensity_leftright;
 extern int screen_rainbow_effect_shaderborder_blur_intensity_updown;
+extern z80_bit screen_rainbow_effect_shaderborder_leftright_enable;
+extern z80_bit screen_rainbow_effect_shaderborder_updown_enable;
 extern int screen_rainbow_effect_blur_intensity;
 
 extern void init_screen_effects_table(void);

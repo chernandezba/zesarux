@@ -1954,27 +1954,46 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
                 if (type==SCREEN_EFFECT_TYPE_SHADERBORDER && enabled) {
 
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_leftright,NULL,
-                        "Zoom Factor left-right","Factor Zoom izq-der","Factor Zoom esq-dre");
-                    char buffer_zoom[10];
-                    if (screen_rainbow_effect_shaderborder_factor_zoom_leftright>=1000) sprintf(buffer_zoom,"%d",screen_rainbow_effect_shaderborder_factor_zoom_leftright/1000);
-                    else sprintf(buffer_zoom,"0.%d",screen_rainbow_effect_shaderborder_factor_zoom_leftright);
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",buffer_zoom);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Enable left-right","Activar izq-der","Activar esq-dre");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_shaderborder_leftright_enable.v ? 'X' : ' '));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shaderborder_leftright_enable);
 
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_updown,NULL,
-                        "Zoom Factor up-down","Factor Zoom arr-aba","Factor Zoom dalt-ava");
+                    if (screen_rainbow_effect_shaderborder_leftright_enable.v) {
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_leftright,NULL,
+                            "Zoom Factor left-right","Factor Zoom izq-der","Factor Zoom esq-dre");
+                        char buffer_zoom[10];
+                        if (screen_rainbow_effect_shaderborder_factor_zoom_leftright>=1000) sprintf(buffer_zoom,"%d",screen_rainbow_effect_shaderborder_factor_zoom_leftright/1000);
+                        else sprintf(buffer_zoom,"0.%d",screen_rainbow_effect_shaderborder_factor_zoom_leftright);
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",buffer_zoom);
 
-                    if (screen_rainbow_effect_shaderborder_factor_zoom_updown>=1000) sprintf(buffer_zoom,"%d",screen_rainbow_effect_shaderborder_factor_zoom_updown/1000);
-                    else sprintf(buffer_zoom,"0.%d",screen_rainbow_effect_shaderborder_factor_zoom_updown);
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",buffer_zoom);
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_blur_intensity_leftright,NULL,
+                            "Blur intensity left-right","Intensidad desenfoque izq-der","Intensitat desenfocament esq-dre");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_blur_intensity_leftright);
 
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_blur_intensity_leftright,NULL,
-                        "Blur intensity left-right","Intensidad desenfoque izq-der","Intensitat desenfocament esq-dre");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_blur_intensity_leftright);
+                    }
 
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_blur_intensity_updown,NULL,
-                        "Blur intensity up-down","Intensidad desenfoque arr-aba","Intensitat desenfocament dalt-ava");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_blur_intensity_updown);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Enable up-down","Activar arr-aba","Activar dalt-ava");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_shaderborder_updown_enable.v ? 'X' : ' '));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shaderborder_updown_enable);
+
+                    if (screen_rainbow_effect_shaderborder_updown_enable.v) {
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_updown,NULL,
+                            "Zoom Factor up-down","Factor Zoom arr-aba","Factor Zoom dalt-ava");
+
+                        char buffer_zoom[10];
+                        if (screen_rainbow_effect_shaderborder_factor_zoom_updown>=1000) sprintf(buffer_zoom,"%d",screen_rainbow_effect_shaderborder_factor_zoom_updown/1000);
+                        else sprintf(buffer_zoom,"0.%d",screen_rainbow_effect_shaderborder_factor_zoom_updown);
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",buffer_zoom);
+
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_blur_intensity_updown,NULL,
+                            "Blur intensity up-down","Intensidad desenfoque arr-aba","Intensitat desenfocament dalt-ava");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_blur_intensity_updown);
+
+                    }
 
                 }
 
