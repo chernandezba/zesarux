@@ -1819,10 +1819,16 @@ void menu_interface_special_effects_brightness_factor(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_brightness_factor>256*100) screen_rainbow_effect_brightness_factor=0;
 }
 
-void menu_interface_special_effects_shaderborder_zoom(MENU_ITEM_PARAMETERS)
+void menu_interface_special_effects_shaderborder_zoom_leftright(MENU_ITEM_PARAMETERS)
 {
-    screen_rainbow_effect_shaderborder_factor_zoom *=2;
-    if (screen_rainbow_effect_shaderborder_factor_zoom>8000) screen_rainbow_effect_shaderborder_factor_zoom=125;
+    screen_rainbow_effect_shaderborder_factor_zoom_leftright *=2;
+    if (screen_rainbow_effect_shaderborder_factor_zoom_leftright>8000) screen_rainbow_effect_shaderborder_factor_zoom_leftright=125;
+}
+
+void menu_interface_special_effects_shaderborder_zoom_updown(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_shaderborder_factor_zoom_updown *=2;
+    if (screen_rainbow_effect_shaderborder_factor_zoom_updown>8000) screen_rainbow_effect_shaderborder_factor_zoom_updown=125;
 }
 
 void menu_interface_special_effects_shaderborder_blur_intensity_leftright(MENU_ITEM_PARAMETERS)
@@ -1948,12 +1954,18 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
                 if (type==SCREEN_EFFECT_TYPE_SHADERBORDER && enabled) {
 
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom,NULL,
-                        "Zoom Factor","Factor Zoom","Factor Zoom");
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_leftright,NULL,
+                        "Zoom Factor left-right","Factor Zoom izq-der","Factor Zoom esq-dre");
                     char buffer_zoom[10];
-                    if (screen_rainbow_effect_shaderborder_factor_zoom>=1000) sprintf(buffer_zoom,"%d",screen_rainbow_effect_shaderborder_factor_zoom/1000);
-                    else sprintf(buffer_zoom,"0.%d",screen_rainbow_effect_shaderborder_factor_zoom);
+                    if (screen_rainbow_effect_shaderborder_factor_zoom_leftright>=1000) sprintf(buffer_zoom,"%d",screen_rainbow_effect_shaderborder_factor_zoom_leftright/1000);
+                    else sprintf(buffer_zoom,"0.%d",screen_rainbow_effect_shaderborder_factor_zoom_leftright);
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",buffer_zoom);
 
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_updown,NULL,
+                        "Zoom Factor up-down","Factor Zoom arr-aba","Factor Zoom dalt-ava");
+
+                    if (screen_rainbow_effect_shaderborder_factor_zoom_updown>=1000) sprintf(buffer_zoom,"%d",screen_rainbow_effect_shaderborder_factor_zoom_updown/1000);
+                    else sprintf(buffer_zoom,"0.%d",screen_rainbow_effect_shaderborder_factor_zoom_updown);
                     menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",buffer_zoom);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_blur_intensity_leftright,NULL,

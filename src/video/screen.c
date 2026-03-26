@@ -6065,7 +6065,8 @@ void screen_rainbow_effect_blur(z80_int *origen,z80_int *destino,int ancho,int a
 
 }
 
-int screen_rainbow_effect_shaderborder_factor_zoom=2000;
+int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000;
+int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000;
 int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
 int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
 
@@ -6116,12 +6117,12 @@ void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino
     //Copiamos trozo de pantalla hacia border
     int x,y;
 
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom,1000,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom_leftright,1000,
         LEFT_BORDER_NO_ZOOM,192,LEFT_BORDER_NO_ZOOM,TOP_BORDER_NO_ZOOM,0,TOP_BORDER_NO_ZOOM);
 
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom,1000,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom_leftright,1000,
         LEFT_BORDER_NO_ZOOM,192,
-        LEFT_BORDER_NO_ZOOM+(256-LEFT_BORDER_NO_ZOOM*screen_rainbow_effect_shaderborder_factor_zoom/1000),TOP_BORDER_NO_ZOOM, //origen
+        LEFT_BORDER_NO_ZOOM+(256-LEFT_BORDER_NO_ZOOM*screen_rainbow_effect_shaderborder_factor_zoom_leftright/1000),TOP_BORDER_NO_ZOOM, //origen
         LEFT_BORDER_NO_ZOOM+256,TOP_BORDER_NO_ZOOM  //destino
     );
 
@@ -6147,15 +6148,15 @@ void screen_rainbow_effect_shaderborder_infsup(z80_int *origen,z80_int *destino,
     int x,y;
 
     //TODO de momento copy tal cual sin reducir/ampliar
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom_updown,
         ancho,TOP_BORDER_NO_ZOOM,
         0,TOP_BORDER_NO_ZOOM,
         0,0
     );
 
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom_updown,
         ancho,TOP_BORDER_NO_ZOOM,
-        0,TOP_BORDER_NO_ZOOM+192-TOP_BORDER_NO_ZOOM*screen_rainbow_effect_shaderborder_factor_zoom/1000,
+        0,TOP_BORDER_NO_ZOOM+192-TOP_BORDER_NO_ZOOM*screen_rainbow_effect_shaderborder_factor_zoom_updown/1000,
         0,TOP_BORDER_NO_ZOOM+192);
 
 
