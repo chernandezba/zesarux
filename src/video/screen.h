@@ -1071,6 +1071,7 @@ extern z80_bit screen_rainbow_effect_scroll_vertical_circular;
 
 extern int screen_rainbow_effect_contrast_factor;
 extern int screen_rainbow_effect_brightness_factor;
+extern z80_bit screen_rainbow_effect_brightness_follow_mouse;
 extern int screen_rainbow_effect_rotate_grados;
 extern z80_bit screen_rainbow_effect_remolino_follow_mouse;
 extern z80_bit screen_rainbow_effect_rotate_follow_mouse;

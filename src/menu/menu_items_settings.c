@@ -2050,9 +2050,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_shear_factor_follow_mouse.v ? 'X' : ' ' ));
                     menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shear_factor_follow_mouse);
 
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shear_intensity,NULL,
-                        "Shear intensity","Intensidad cizalla","Intensitat cisallament");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shear_factor);
+                    if (screen_rainbow_effect_shear_factor_follow_mouse.v==0) {
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shear_intensity,NULL,
+                            "Shear intensity","Intensidad cizalla","Intensitat cisallament");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shear_factor);
+
+                    }
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL && enabled) {
@@ -2084,9 +2088,18 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_BRIGHTNESS && enabled) {
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_brightness_factor,NULL,
-                        "Brightness Factor","Factor Brightness","Factor Brightness");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_brightness_factor);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Follow Mouse","Sigue Ratón","Segueix Ratolí");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_brightness_follow_mouse.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_brightness_follow_mouse);
+
+                    if (screen_rainbow_effect_brightness_follow_mouse.v==0) {
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_brightness_factor,NULL,
+                            "Brightness Factor","Factor Brightness","Factor Brightness");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_brightness_factor);
+
+                    }
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_PERSISTENCE && enabled) {

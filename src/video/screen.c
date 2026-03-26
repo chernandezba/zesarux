@@ -6332,14 +6332,45 @@ void screen_rainbow_effect_contrast(z80_int *origen,z80_int *destino,int ancho,i
 }
 
 int screen_rainbow_effect_brightness_factor=50;
+z80_bit screen_rainbow_effect_brightness_follow_mouse={0};
 
 void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
 
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
+
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
+
+            int brightness=screen_rainbow_effect_brightness_factor;
+
+
+            if (screen_rainbow_effect_brightness_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=1000;
+
+                if (dist==0) brightness=max_intensity;
+                else brightness=50*max_intensity/dist;
+
+                //brightness=max_intensity-brightness;
+
+                if (brightness>max_intensity) brightness=max_intensity;
+
+                if (brightness<0) brightness=0;
+
+            }
+
+
+
 
             int color=origen[y*ancho + x];
             unsigned int color32=spectrum_colortable[color];
@@ -6349,20 +6380,20 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
             int blue=(color32   ) & 0xFF;
 
             //permitir color negro incrementarse a partir de cierto factor
-            if (screen_rainbow_effect_brightness_factor>1000) {
+            if (brightness>1000) {
                 if (!red) red=1;
                 if (!green) green=1;
                 if (!blue) blue=1;
             }
 
 
-            red=(red*screen_rainbow_effect_brightness_factor)/100;
+            red=(red*brightness)/100;
             if (red>255) red=255;
 
-            green=(green*screen_rainbow_effect_brightness_factor)/100;
+            green=(green*brightness)/100;
             if (green>255) green=255;
 
-            blue=(blue*screen_rainbow_effect_brightness_factor)/100;
+            blue=(blue*brightness)/100;
             if (blue>255) blue=255;
 
             red=(red>>3) & 0x1F;
