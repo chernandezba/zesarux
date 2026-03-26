@@ -6084,7 +6084,7 @@ int screen_rainbow_effect_shaderborder_getpixel(z80_int *origen,int ancho,int al
 
 }
 
-void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,int ancho_total,int alto_total,int factor_zoom_x,
+void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,int ancho_total,int alto_total,int factor_zoom_x,int factor_zoom_y,
     int ancho,int alto,int orig_x,int orig_y,int dest_x,int dest_y)
 {
     //Copiamos trozo de pantalla hacia border
@@ -6094,7 +6094,7 @@ void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,in
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 
-            int color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho_total,alto_total,orig_x+x*factor_zoom_x/1000,orig_y+y);
+            int color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho_total,alto_total,orig_x+x*factor_zoom_x/1000,orig_y+y*factor_zoom_y/1000);
             screen_rainbow_effect_shaderborder_putpixel(destino,ancho_total,alto_total,dest_x+x,y+dest_y,color);
 
         }
@@ -6115,10 +6115,10 @@ void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino
     //Copiamos trozo de pantalla hacia border
     int x,y;
 
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom,1000,
         LEFT_BORDER_NO_ZOOM,192,LEFT_BORDER_NO_ZOOM,TOP_BORDER_NO_ZOOM,0,TOP_BORDER_NO_ZOOM);
 
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom,1000,
         LEFT_BORDER_NO_ZOOM,192,
         LEFT_BORDER_NO_ZOOM+(256-LEFT_BORDER_NO_ZOOM*screen_rainbow_effect_shaderborder_factor_zoom/1000),TOP_BORDER_NO_ZOOM, //origen
         LEFT_BORDER_NO_ZOOM+256,TOP_BORDER_NO_ZOOM  //destino
@@ -6146,15 +6146,15 @@ void screen_rainbow_effect_shaderborder_infsup(z80_int *origen,z80_int *destino,
     int x,y;
 
     //TODO de momento copy tal cual sin reducir/ampliar
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom,
         ancho,TOP_BORDER_NO_ZOOM,
         0,TOP_BORDER_NO_ZOOM,
         0,0
     );
 
-    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,
+    screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom,
         ancho,TOP_BORDER_NO_ZOOM,
-        0,TOP_BORDER_NO_ZOOM+192-TOP_BORDER_NO_ZOOM*1000/*screen_rainbow_effect_shaderborder_factor_zoom*//1000,
+        0,TOP_BORDER_NO_ZOOM+192-TOP_BORDER_NO_ZOOM*screen_rainbow_effect_shaderborder_factor_zoom/1000,
         0,TOP_BORDER_NO_ZOOM+192);
 
 
