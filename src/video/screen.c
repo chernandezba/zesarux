@@ -5842,18 +5842,42 @@ void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int a
 }
 
 int screen_rainbow_effect_shear_factor=4;
+z80_bit screen_rainbow_effect_shear_factor_follow_mouse={0};
 
 void screen_rainbow_effect_shear(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
 
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
+
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 
+            int shear_factor=screen_rainbow_effect_shear_factor;
+
+            if (screen_rainbow_effect_shear_factor_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=50;
+
+                shear_factor=dist/500;
+
+
+                if (shear_factor>max_intensity) shear_factor=max_intensity;
+                if (shear_factor<1) shear_factor=1;
+
+            }
+
 
             // shear / "cizalla", "cisallament"
-            int sx = x + y / screen_rainbow_effect_shear_factor;
+            int sx = x + y / shear_factor;
 
             int color;
 

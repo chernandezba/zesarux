@@ -1062,6 +1062,7 @@ extern z80_bit screen_special_effects_fisheye_automatic_factor;
 extern z80_bit screen_special_effects_fisheye_follow_mouse;
 extern char screen_special_effects_fisheye_follow_music_channel;
 extern int screen_rainbow_effect_shear_factor;
+extern z80_bit screen_rainbow_effect_shear_factor_follow_mouse;
 
 extern int screen_rainbow_effect_scroll_horizontal_offset;
 extern int screen_rainbow_effect_scroll_vertical_offset;

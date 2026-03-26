@@ -2045,6 +2045,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
                 if (type==SCREEN_EFFECT_TYPE_SHEAR && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Follow Mouse","Sigue Ratón","Segueix Ratolí");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_shear_factor_follow_mouse.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shear_factor_follow_mouse);
+
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shear_intensity,NULL,
                         "Shear intensity","Intensidad cizalla","Intensitat cisallament");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shear_factor);
