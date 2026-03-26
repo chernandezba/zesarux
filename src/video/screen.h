@@ -1056,6 +1056,7 @@ extern int screen_rainbow_effect_pixelate_size;
 extern z80_bit screen_rainbow_effect_pixelate_follow_mouse;
 
 extern int screen_rainbow_effect_improved_waves_intensidad;
+extern z80_bit screen_rainbow_effect_improved_waves_follow_mouse;
 
 extern z80_bit screen_special_effects_fisheye_automatic_factor;
 extern z80_bit screen_special_effects_fisheye_follow_mouse;

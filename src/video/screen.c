@@ -5779,11 +5779,15 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 
 int screen_rainbow_effect_improved_waves_tiempo=0;
 int screen_rainbow_effect_improved_waves_intensidad=8;
+z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};
 
 void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
+
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
 
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
@@ -5791,9 +5795,29 @@ void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int a
             //Cada 30 pixeles en alto, una vuelta entera 360 grados
             int off=((y+screen_rainbow_effect_improved_waves_tiempo/1) % 30)*(360/30);
 
+            int intensity=screen_rainbow_effect_improved_waves_intensidad;
+
+            if (screen_rainbow_effect_improved_waves_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=20;
+
+                intensity=dist/200;
+
+                if (intensity>max_intensity) intensity=max_intensity;
+                if (intensity<2) intensity=2;
+
+                intensity=max_intensity-intensity;
+
+            }
 
 
-            int offset=screen_rainbow_effect_improved_waves_intensidad*util_get_cosine(off)/10000;
+            int offset=intensity*util_get_cosine(off)/10000;
 
 
             int sx = (x + offset);
