@@ -5300,7 +5300,7 @@ void screen_rainbow_effect_decodenagravision_bad(z80_int *origen,z80_int *destin
 }
 
 //array para saber la linea original que tiene cada una antes de moverla, para evitar moverlas demasiado lejos
-#define SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES 2000
+#define SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES 1000
 int screen_rainbow_effect_decodenagra_linea_original[SCREEN_RAINBOW_EFFECT_DECODENAGRA_MAX_ORIG_LINES];
 
 void screen_rainbow_effect_decodenagra_group(z80_int *destino,int ancho,int alto,int y)
