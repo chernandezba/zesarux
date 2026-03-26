@@ -6084,7 +6084,7 @@ int screen_rainbow_effect_shaderborder_getpixel(z80_int *origen,int ancho,int al
 
 }
 
-void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,int ancho_total,int alto_total,int factor_zoom,
+void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,int ancho_total,int alto_total,int factor_zoom_x,
     int ancho,int alto,int orig_x,int orig_y,int dest_x,int dest_y)
 {
     //Copiamos trozo de pantalla hacia border
@@ -6094,7 +6094,7 @@ void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,in
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 
-            int color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho_total,alto_total,orig_x+x*factor_zoom/1000,orig_y+y);
+            int color=screen_rainbow_effect_shaderborder_getpixel(origen,ancho_total,alto_total,orig_x+x*factor_zoom_x/1000,orig_y+y);
             screen_rainbow_effect_shaderborder_putpixel(destino,ancho_total,alto_total,dest_x+x,y+dest_y,color);
 
         }
