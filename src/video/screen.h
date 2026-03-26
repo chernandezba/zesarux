@@ -1053,6 +1053,7 @@ extern float screen_rainbow_effect_fisheye_factor_k;
 extern void screen_rainbow_effect_fisheye_change_factor(void);
 
 extern int screen_rainbow_effect_pixelate_size;
+extern z80_bit screen_rainbow_effect_pixelate_follow_mouse;
 
 extern int screen_rainbow_effect_improved_waves_intensidad;
 

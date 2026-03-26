@@ -140,7 +140,7 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 *Persistencia poder indicar cantidad de frames. Que se asigne siempre memoria según máximo de frames pero luego solo use los que indique el usuario
 *ahora mover efectos no deja bien el cursor cuando hay repetidos
 *shader border poder definir ancho border
-*shader border para border inferior y superior
+
 *mas efectos:
 
 

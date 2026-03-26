@@ -5673,15 +5673,15 @@ int screen_rainbow_effect_pixelate_size=2;
 
 int screen_pixelate_array_list[SCREEN_PIXELATE_ARRAY_LIST_LENGTH];
 
-int screen_rainbow_effect_pixelate_get_color(z80_int *origen,int ancho,int x,int y)
+int screen_rainbow_effect_pixelate_get_color(z80_int *origen,int ancho,int x,int y,int pixelate_size)
 {
 
     int zx,zy;
 
     int offset_array=0;
 
-    for (zy=0;zy<screen_rainbow_effect_pixelate_size;zy++) {
-        for (zx=0;zx<screen_rainbow_effect_pixelate_size;zx++) {
+    for (zy=0;zy<pixelate_size;zy++) {
+        for (zx=0;zx<pixelate_size;zx++) {
             int offset_origen=(y+zy)*ancho+x+zx;
             screen_pixelate_array_list[offset_array++]=origen[offset_origen];
         }
@@ -5693,14 +5693,14 @@ int screen_rainbow_effect_pixelate_get_color(z80_int *origen,int ancho,int x,int
 
     int i,j;
 
-    for (i=0;i<screen_rainbow_effect_pixelate_size;i++) {
+    for (i=0;i<pixelate_size;i++) {
 
         int color_buscar=screen_pixelate_array_list[i];
 
         int veces_leido=0;
 
         //Cuantas veces aparece ese color
-        for (j=0;j<screen_rainbow_effect_pixelate_size;j++) {
+        for (j=0;j<pixelate_size;j++) {
             if (screen_pixelate_array_list[j]==color_buscar) veces_leido++;
         }
 
@@ -5714,18 +5714,46 @@ int screen_rainbow_effect_pixelate_get_color(z80_int *origen,int ancho,int x,int
 
 }
 
+z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};
+
 void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
 
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
+
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
-            int yorigen=y/screen_rainbow_effect_pixelate_size;
-            int xorigen=x/screen_rainbow_effect_pixelate_size;
+            int pixelate_size=screen_rainbow_effect_pixelate_size;
 
-            yorigen *=screen_rainbow_effect_pixelate_size;
-            xorigen *=screen_rainbow_effect_pixelate_size;
+            if (screen_rainbow_effect_pixelate_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=SCREEN_EFFECT_PIXELATE_MAX_SIZE;
+
+                pixelate_size=dist/200;
+
+                if (pixelate_size>SCREEN_EFFECT_PIXELATE_MAX_SIZE) pixelate_size=max_intensity;
+
+                pixelate_size=max_intensity-pixelate_size;
+
+                if (pixelate_size<1) pixelate_size=1;
+
+
+            }
+
+            int yorigen=y/pixelate_size;
+            int xorigen=x/pixelate_size;
+
+            yorigen *=pixelate_size;
+            xorigen *=pixelate_size;
 
             //int offset_origen=yorigen*ancho+xorigen;
             int offset_destino=y*ancho+x;
@@ -5734,9 +5762,11 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 
             //color=origen[offset_origen];
 
+
+
             //Nota: aunque nuestros buffers no son rgb, vamos a obtener el color que mas se repite
             //Lo ideal seria tener un buffer rgb y sacar un promedio de color de todo el recuadro a pixelar
-            color=screen_rainbow_effect_pixelate_get_color(origen,ancho,xorigen,yorigen);
+            color=screen_rainbow_effect_pixelate_get_color(origen,ancho,xorigen,yorigen,pixelate_size);
 
             destino[offset_destino]=color;
 
