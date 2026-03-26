@@ -5667,6 +5667,78 @@ void screen_rainbow_effect_vsync_lost(z80_int *origen,z80_int *destino,int ancho
 
 }
 
+
+void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    int radio=100; // radio de efecto (ej: 100)
+
+    int swirl=0; //0 si no queremos rotacion
+
+    int mx=mouse_x/zoom_x;
+    int my=mouse_y/zoom_y;
+
+    //>0 atracción
+    //<0 repulsion
+    int fuerza=512; // intensidad (ej: 512–4096)
+
+
+    int radio2 = radio * radio;
+
+    for (y = 0; y < alto; y++) {
+        for (x = 0; x < ancho; x++) {
+
+            int dx = x - mx;
+            int dy = y - my;
+
+            int dist2 = dx*dx + dy*dy;
+
+            if (dist2 < radio2) {
+
+                // evitar inestabilidad en el centro
+                //if (dist2 < 16) dist2 = 16;
+
+                // caída suave: (radio² - dist²)
+                int falloff = radio2 - dist2;
+
+                // fixed point 8 bits
+                int factor;
+
+                if (radio2==0) factor=9999;
+
+                else factor = (falloff * fuerza) / radio2;
+
+                // añadir componente de rotación (swirl)
+                int tx = -dy;
+                int ty = dx;
+
+                int ddx = dx + ((tx * swirl) >> 8);
+                int ddy = dy + ((ty * swirl) >> 8);
+
+                int srcX = x - ((ddx * factor) >> 8);
+                int srcY = y - ((ddy * factor) >> 8);
+
+                // clamp
+                if (srcX < 0) srcX = 0;
+                if (srcX >= ancho) srcX = ancho - 1;
+                if (srcY < 0) srcY = 0;
+                if (srcY >= alto) srcY = alto - 1;
+
+                destino[y*ancho + x] = origen[srcY*ancho + srcX];
+
+            }
+            else {
+                destino[y*ancho + x] = origen[y*ancho + x];
+            }
+        }
+    }
+
+
+}
+
+
 int screen_rainbow_effect_pixelate_size=2;
 
 #define SCREEN_PIXELATE_ARRAY_LIST_LENGTH (SCREEN_EFFECT_PIXELATE_MAX_SIZE*SCREEN_EFFECT_PIXELATE_MAX_SIZE)
@@ -7044,6 +7116,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_radar(origen,destino,ancho,alto);
                 break;
 
+                case SCREEN_EFFECT_TYPE_ATTRACTION:
+                    screen_rainbow_effect_attraction(origen,destino,ancho,alto);
+                break;
+
                 case SCREEN_EFFECT_TYPE_PIXELATE:
                     screen_rainbow_effect_pixelate(origen,destino,ancho,alto);
                 break;
@@ -7386,6 +7462,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences"},
     {SCREEN_EFFECT_TYPE_SEA,"Sea"},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves"},
+    {SCREEN_EFFECT_TYPE_ATTRACTION,"Attraction"},
     {SCREEN_EFFECT_TYPE_SHEAR,"Shear"},
     {SCREEN_EFFECT_TYPE_LENS,"Lens"},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar"},
