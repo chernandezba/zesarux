@@ -1071,10 +1071,13 @@ extern int screen_rainbow_effect_brightness_factor;
 extern int screen_rainbow_effect_rotate_grados;
 extern z80_bit screen_rainbow_effect_remolino_follow_mouse;
 extern z80_bit screen_rainbow_effect_rotate_follow_mouse;
+extern int screen_rainbow_effect_shaderborder_factor_zoom;
+extern int screen_rainbow_effect_shaderborder_blur_intensity;
+extern int screen_rainbow_effect_blur_intensity;
 
 extern void init_screen_effects_table(void);
 
-#define MAX_SCREEN_EFFECTS 31
+#define MAX_SCREEN_EFFECTS 33
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
@@ -1095,6 +1098,8 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_RADAR,
     SCREEN_EFFECT_TYPE_ZOOM_MOUSE,
     SCREEN_EFFECT_TYPE_PIXELATE,
+    SCREEN_EFFECT_TYPE_BLUR,
+    SCREEN_EFFECT_TYPE_SHADERBORDER,
     SCREEN_EFFECT_TYPE_LED,
     SCREEN_EFFECT_TYPE_FADEIN,
     SCREEN_EFFECT_TYPE_FADEOUT,

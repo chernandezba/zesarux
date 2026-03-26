@@ -139,11 +139,8 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 *con nuevo efecto scroll horizontal/vertical no deberia hacer falta el offset del efecto reduce
 *Persistencia poder indicar cantidad de frames. Que se asigne siempre memoria según máximo de frames pero luego solo use los que indique el usuario
 *ahora mover efectos no deja bien el cursor cuando hay repetidos
-*efecto decodificar el nagravision:
--buscar similitudes entre dos lineas consecutivas. para ello:
---de cada linea, buscar la que mas coincidencias de colores tiene con otra.
---con la que se encuentre, intercambiar en la linea que hay justo debajo
---y asi con todas
+*shader border poder definir ancho border
+*shader border para border inferior y superior
 *mas efectos:
 
 
