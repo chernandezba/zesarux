@@ -5740,9 +5740,9 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 
                 pixelate_size=dist/200;
 
-                if (pixelate_size>SCREEN_EFFECT_PIXELATE_MAX_SIZE) pixelate_size=max_intensity;
-
                 pixelate_size=max_intensity-pixelate_size;
+
+                if (pixelate_size>SCREEN_EFFECT_PIXELATE_MAX_SIZE) pixelate_size=max_intensity;
 
                 if (pixelate_size<1) pixelate_size=1;
 
@@ -5809,10 +5809,10 @@ void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int a
 
                 intensity=dist/200;
 
-                if (intensity>max_intensity) intensity=max_intensity;
-                if (intensity<2) intensity=2;
-
                 intensity=max_intensity-intensity;
+
+                if (intensity>max_intensity) intensity=max_intensity;
+                if (intensity<0) intensity=0;
 
             }
 
@@ -6114,13 +6114,15 @@ void screen_rainbow_effect_blur_zone(z80_int *origen,z80_int *destino,int orig_x
 
                 int dist=dx*dx+dy*dy;
 
+                //con 10 ya se usa mucha cpu
                 int max_intensity=10;
 
                 intensity=dist/500;
 
-                if (intensity>max_intensity) intensity=max_intensity;
-
                 intensity=max_intensity-intensity;
+
+                if (intensity>max_intensity) intensity=max_intensity;
+                if (intensity<0) intensity=0;
 
             }
 
