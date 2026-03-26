@@ -6065,7 +6065,7 @@ void screen_rainbow_effect_blur(z80_int *origen,z80_int *destino,int ancho,int a
 
 }
 
-int screen_rainbow_effect_shaderborder_factor_zoom=1000;
+int screen_rainbow_effect_shaderborder_factor_zoom=2000;
 int screen_rainbow_effect_shaderborder_blur_intensity=4;
 
 void screen_rainbow_effect_shaderborder_putpixel(z80_int *destino,int ancho,int alto,int x,int y,int color)
@@ -6103,15 +6103,13 @@ void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,in
 }
 
 
-void screen_rainbow_effect_shaderborder(z80_int *origen,z80_int *destino,int ancho,int alto)
+void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
-    //prueba blur solo a imagen central
     z80_int *temp_bufferdestino=screen_special_effects_alloc_buffer(ancho,alto);
     //Primero copiar tal cual de origen a destino
-    int tamanyo=ancho*alto*2;
-    memcpy(temp_bufferdestino,origen,tamanyo);
-    memcpy(destino,origen,tamanyo);
+    //int tamanyo=ancho*alto*2;
+    //  memcpy(temp_bufferdestino,origen,tamanyo);
 
 
     //Copiamos trozo de pantalla hacia border
@@ -6137,7 +6135,16 @@ void screen_rainbow_effect_shaderborder(z80_int *origen,z80_int *destino,int anc
     free(temp_bufferdestino);
 
 
+}
 
+void screen_rainbow_effect_shaderborder(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    screen_rainbow_effect_shaderborder_lateral(origen,destino,ancho,alto);
 }
 
 
