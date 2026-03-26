@@ -5675,7 +5675,7 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 
     int radio=100; // radio de efecto (ej: 100)
 
-    int swirl=0; //0 si no queremos rotacion
+    //int swirl=0; //0 si no queremos rotacion
 
     int mx=mouse_x/zoom_x;
     int my=mouse_y/zoom_y;
@@ -5693,32 +5693,16 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
             int dx = x - mx;
             int dy = y - my;
 
-            int dist2 = dx*dx + dy*dy;
+            int dx2=dx*dx;
+            int dy2=dy*dy;
+
+            int dist2 = dx2 + dy2;
 
             if (dist2 < radio2) {
 
-                // evitar inestabilidad en el centro
-                //if (dist2 < 16) dist2 = 16;
 
-                // caída suave: (radio² - dist²)
-                int falloff = radio2 - dist2;
-
-                // fixed point 8 bits
-                int factor;
-
-                if (radio2==0) factor=9999;
-
-                else factor = (falloff * fuerza) / radio2;
-
-                // añadir componente de rotación (swirl)
-                int tx = -dy;
-                int ty = dx;
-
-                int ddx = dx + ((tx * swirl) >> 8);
-                int ddy = dy + ((ty * swirl) >> 8);
-
-                int srcX = x - ((ddx * factor) >> 8);
-                int srcY = y - ((ddy * factor) >> 8);
+                int srcX = x - dx2/100;
+                int srcY = y - dy2/100;
 
                 // clamp
                 if (srcX < 0) srcX = 0;
