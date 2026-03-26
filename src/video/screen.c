@@ -6671,6 +6671,7 @@ void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,in
 
 int screen_rainbow_effect_scroll_vertical_offset=1;
 z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
+z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};
 
 void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -6678,10 +6679,33 @@ void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int 
 
     int x,y;
 
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
+
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
+            int scroll=screen_rainbow_effect_scroll_vertical_offset;
 
-            int orig_y = y+screen_rainbow_effect_scroll_vertical_offset;
+            if (screen_rainbow_effect_scroll_vertical_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=ancho;
+
+                if (dist==0) scroll=max_intensity;
+                else scroll=1000*max_intensity/dist;
+
+                if (scroll>max_intensity) scroll=max_intensity;
+
+                if (scroll<0) scroll=0;
+
+            }
+
+            int orig_y = y+scroll;
 
             int color;
 

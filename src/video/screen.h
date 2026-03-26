@@ -1067,6 +1067,7 @@ extern z80_bit screen_rainbow_effect_shear_factor_follow_mouse;
 extern int screen_rainbow_effect_scroll_horizontal_offset;
 extern z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse;
 extern int screen_rainbow_effect_scroll_vertical_offset;
+extern z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse;
 extern z80_bit screen_rainbow_effect_scroll_horizontal_circular;
 extern z80_bit screen_rainbow_effect_scroll_vertical_circular;
 
