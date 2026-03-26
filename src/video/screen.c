@@ -5895,8 +5895,7 @@ void screen_rainbow_effect_shear(z80_int *origen,z80_int *destino,int ancho,int 
 
 }
 
-int screen_rainbow_effect_scroll_horizontal_offset=1;
-z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
+
 
 
 int screen_rainbow_effect_fadeinout_percentage=0;
@@ -6607,16 +6606,43 @@ void screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int al
 
 }
 
+int screen_rainbow_effect_scroll_horizontal_offset=1;
+z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
+z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};
 
 void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
 
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
+
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 
-            int orig_x = x+screen_rainbow_effect_scroll_horizontal_offset;
+            int scroll=screen_rainbow_effect_scroll_horizontal_offset;
+
+            if (screen_rainbow_effect_scroll_horizontal_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=ancho;
+
+                if (dist==0) scroll=max_intensity;
+                else scroll=1000*max_intensity/dist;
+
+                if (scroll>max_intensity) scroll=max_intensity;
+
+                if (scroll<0) scroll=0;
+
+            }
+
+            int orig_x = x+scroll;
 
             int color;
 
