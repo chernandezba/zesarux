@@ -5675,14 +5675,9 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 
     int radio=100; // radio de efecto (ej: 100)
 
-    //int swirl=0; //0 si no queremos rotacion
 
     int mx=mouse_x/zoom_x;
     int my=mouse_y/zoom_y;
-
-    //>0 atracción
-    //<0 repulsion
-    int fuerza=512; // intensidad (ej: 512–4096)
 
 
     int radio2 = radio * radio;
@@ -5693,6 +5688,9 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
             int dx = x - mx;
             int dy = y - my;
 
+            int signo_dx=(dx<0 ? -1 : +1 );
+            int signo_dy=(dy<0 ? -1 : +1 );
+
             int dx2=dx*dx;
             int dy2=dy*dy;
 
@@ -5700,9 +5698,15 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 
             if (dist2 < radio2) {
 
+                int factor=10000;
 
-                int srcX = x - dx2/100;
-                int srcY = y - dy2/100;
+                int srcX;
+                if (dx2==0) srcX=x+signo_dx*factor*100;
+                else srcX = x+signo_dx*factor/dx2;
+
+                int srcY;
+                if (dy2==0) srcY=y+signo_dy*factor*100;
+                else srcY = y+signo_dy*factor/dy2;
 
                 // clamp
                 if (srcX < 0) srcX = 0;
