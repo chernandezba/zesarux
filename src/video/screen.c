@@ -5707,8 +5707,8 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
                 int srcX;
                 int srcY;
                 if (dist2==0) {
-                    srcX=x+signo_dx*factor*100;
-                    srcY=y+signo_dy*factor*100;
+                    srcX=x+atraccion*signo_dx*factor*100;
+                    srcY=y+atraccion*signo_dy*factor*100;
                 }
 
                 else {
