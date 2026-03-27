@@ -5667,6 +5667,8 @@ void screen_rainbow_effect_vsync_lost(z80_int *origen,z80_int *destino,int ancho
 
 }
 
+int screen_rainbow_effect_attraction_force=4;
+int screen_rainbow_effect_attraction_atrac_repulse=+1;
 
 void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -5696,28 +5698,32 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 
             int dist2 = dx2 + dy2;
 
-            if (dist2 < radio2) {
+            int atraccion=screen_rainbow_effect_attraction_atrac_repulse;
 
-                int factor=20000;
+            if (1/*dist2 < radio2*/) {
 
-                if (dx2!=0 && dy2!=0) {
+                int factor=20000*screen_rainbow_effect_attraction_force;
 
-                    int srcX;
-                    if (dx2==0) srcX=x+signo_dx*factor*100;
-                    else srcX = x+signo_dx*factor/dist2;
-
-                    int srcY;
-                    if (dy2==0) srcY=y+signo_dy*factor*100;
-                    else srcY = y+signo_dy*factor/dist2;
-
-                    // clamp
-                    if (srcX < 0) srcX = 0;
-                    if (srcX >= ancho) srcX = ancho - 1;
-                    if (srcY < 0) srcY = 0;
-                    if (srcY >= alto) srcY = alto - 1;
-
-                    destino[y*ancho + x] = origen[srcY*ancho + srcX];
+                int srcX;
+                int srcY;
+                if (dist2==0) {
+                    srcX=x+signo_dx*factor*100;
+                    srcY=y+signo_dy*factor*100;
                 }
+
+                else {
+                    srcX = x+atraccion*signo_dx*factor/dist2;
+                    srcY = y+atraccion*signo_dy*factor/dist2;
+                }
+
+                // clamp
+                if (srcX < 0) srcX = 0;
+                if (srcX >= ancho) srcX = ancho - 1;
+                if (srcY < 0) srcY = 0;
+                if (srcY >= alto) srcY = alto - 1;
+
+                destino[y*ancho + x] = origen[srcY*ancho + srcX];
+
 
             }
             else {
@@ -6062,6 +6068,7 @@ void screen_rainbow_effect_scanlines(z80_int *origen,z80_int *destino,int ancho,
 
 }
 
+z80_bit screen_rainbow_effect_sepia_follow_mouse={0};
 
 void screen_rainbow_effect_sepia(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -6078,15 +6085,43 @@ void screen_rainbow_effect_sepia(z80_int *origen,z80_int *destino,int ancho,int 
             int green=(color32 >> 8) & 0xFF;
             int blue=(color32   ) & 0xFF;
 
+            int orig_red=red;
+            int orig_green=green;
+            int orig_blue=blue;
+
 
             red=(red>>3) & 0x1F;
             green=(green>>3) & 0x1F;
             blue=(blue>>3) & 0x1F;
 
 
-            int tr = (393 * red + 769 * green + 189 * blue) / 1000;
-            int tg = (349 * red + 686 * green + 168 * blue) / 1000;
-            int tb = (272 * red + 534 * green + 131 * blue) / 1000;
+            int tr = (393 * red + 769 * green + 189 * blue);
+            int tg = (349 * red + 686 * green + 168 * blue);
+            int tb = (272 * red + 534 * green + 131 * blue);
+
+
+            if (screen_rainbow_effect_sepia_follow_mouse.v) {
+                int mx=mouse_x/zoom_x;
+                int my=mouse_y/zoom_y;
+
+                int dx=mx-x;
+                int dy=my-y;
+
+                //Nota: estos factores de division y multiplicacion están puestos a ojo para que quede mas o menos bien visualmente
+                int dist=(dx*dx+dy*dy)/1000;
+
+                if (dist!=0) {
+
+                    tr=(tr/dist+orig_red)*10;
+                    tg=(tg/dist+orig_green)*10;
+                    tb=(tb/dist+orig_blue)*10;
+
+                }
+            }
+
+            tr /=1000;
+            tg /=1000;
+            tb /=1000;
 
             red = (tr > 31) ? 31 : tr;
             green = (tg > 31) ? 31 : tg;
@@ -7107,7 +7142,7 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                     screen_rainbow_effect_radar(origen,destino,ancho,alto);
                 break;
 
-                case SCREEN_EFFECT_TYPE_ATTRACTION:
+                case SCREEN_EFFECT_TYPE_MAGNETIC_FIELD:
                     screen_rainbow_effect_attraction(origen,destino,ancho,alto);
                 break;
 
@@ -7453,7 +7488,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences"},
     {SCREEN_EFFECT_TYPE_SEA,"Sea"},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves"},
-    {SCREEN_EFFECT_TYPE_ATTRACTION,"Attraction"},
+    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field"},
     {SCREEN_EFFECT_TYPE_SHEAR,"Shear"},
     {SCREEN_EFFECT_TYPE_LENS,"Lens"},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar"},

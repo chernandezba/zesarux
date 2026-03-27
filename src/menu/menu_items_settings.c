@@ -1855,6 +1855,17 @@ void menu_interface_special_effects_persistence_total_frames(MENU_ITEM_PARAMETER
     if (screen_rainbow_effect_persistence_total_frames>SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES) screen_rainbow_effect_persistence_total_frames=3;
 }
 
+void menu_interface_special_effects_attraction_force(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_attraction_force++;
+    if (screen_rainbow_effect_attraction_force>20) screen_rainbow_effect_attraction_force=1;
+}
+
+void menu_interface_special_effects_attraction_atrac_repulse(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_attraction_atrac_repulse *=-1;
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1936,6 +1947,17 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                             menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_improved_waves_intensidad);
 
                     }
+
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_MAGNETIC_FIELD && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_attraction_force,NULL,
+                        "Force","Fuerza","Força");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_attraction_force);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_attraction_atrac_repulse,NULL,
+                        "Type","Tipo","Força");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",(screen_rainbow_effect_attraction_atrac_repulse==+1 ? "Attraction" : "Repulsion"));
 
                 }
 
@@ -2154,6 +2176,14 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_remolino_follow_mouse.v ? 'X' : ' ' ));
                     menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_remolino_follow_mouse);
                 }
+
+                if (type==SCREEN_EFFECT_TYPE_SEPIA && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Follow Mouse","Sigue Ratón","Segueix Ratolí");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_sepia_follow_mouse.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_sepia_follow_mouse);
+                }
+
 
             }
 

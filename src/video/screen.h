@@ -1064,6 +1064,11 @@ extern char screen_special_effects_fisheye_follow_music_channel;
 extern int screen_rainbow_effect_shear_factor;
 extern z80_bit screen_rainbow_effect_shear_factor_follow_mouse;
 
+extern int screen_rainbow_effect_attraction_force;
+extern int screen_rainbow_effect_attraction_atrac_repulse;
+
+extern z80_bit screen_rainbow_effect_sepia_follow_mouse;
+
 extern int screen_rainbow_effect_scroll_horizontal_offset;
 extern z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse;
 extern int screen_rainbow_effect_scroll_vertical_offset;
@@ -1108,7 +1113,7 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_INTERFERENCES,
     SCREEN_EFFECT_TYPE_WAVES,
     SCREEN_EFFECT_TYPE_SEA,
-    SCREEN_EFFECT_TYPE_ATTRACTION,
+    SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,
     SCREEN_EFFECT_TYPE_SHEAR,
     SCREEN_EFFECT_TYPE_LENS,
     SCREEN_EFFECT_TYPE_RADAR,
