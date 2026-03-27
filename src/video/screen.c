@@ -5673,7 +5673,7 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 
     int x,y;
 
-    int radio=100; // radio de efecto (ej: 100)
+    int radio=alto/2; // radio de efecto (ej: 100)
 
 
     int mx=mouse_x/zoom_x;
@@ -5698,7 +5698,7 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 
             if (dist2 < radio2) {
 
-                int factor=10000;
+                int factor=20000;
 
                 if (dx2!=0 && dy2!=0) {
 
