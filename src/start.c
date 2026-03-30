@@ -64,6 +64,7 @@
 #include "audio.h"
 #include "audio_ayplayer.h"
 #include "screen.h"
+#include "screen_fx.h"
 #include "ay38912.h"
 #include "mem128.h"
 #include "zx8081.h"

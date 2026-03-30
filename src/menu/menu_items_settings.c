@@ -51,6 +51,7 @@
 #include "menu_file_viewer_browser.h"
 #include "menu_debug_cpu.h"
 #include "screen.h"
+#include "screen_fx.h"
 #include "cpu.h"
 #include "start.h"
 #include "debug.h"

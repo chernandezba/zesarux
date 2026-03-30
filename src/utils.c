@@ -63,6 +63,7 @@
 #include "tape.h"
 #include "snap.h"
 #include "screen.h"
+#include "screen_fx.h"
 #include "realjoystick.h"
 #include "zxvision.h"
 #include "zxvision_topbar.h"
