@@ -156,7 +156,7 @@ freqptr=&freqqqq;
   OSStatus err = kAudioHardwareNoError;
   AudioDeviceID device = kAudioObjectUnknown; /* the default device */
   //int error;
-  //float hz;
+  //flotante hz;
   //int sound_framesiz;
 
   if( get_default_output_device(&device) ) return 1;

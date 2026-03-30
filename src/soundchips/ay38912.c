@@ -304,7 +304,7 @@ int i;
 
 //Onda senoidal. activar -lm en proceso de compilacion
 /*
-float sineval,radians;
+flotante sineval,radians;
 	for (i=0;i<FRECUENCIA_CONSTANTE_NORMAL_SONIDO;i++) {
 		radians=i;
 		radians=radians*6.28318530718;

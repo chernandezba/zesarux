@@ -212,8 +212,8 @@ Nota, frecuencia, pitch
 El resto obtenido desde el programa playscale, con las formulas:
 
     int a=11447;
-    float b=10.6;
-    float f=a/(pitch+b-0.5);
+    flotante b=10.6;
+    flotante f=a/(pitch+b-0.5);
 
 
 Tabla con decimales:
