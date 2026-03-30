@@ -2299,7 +2299,7 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
         //distancia al centro
 
 
-        // distancia al cuadrado normalizada [0,1]  -> usamos 0...100
+        // distancia al cuadrado normalizada [0,1]  -> usamos 0...1000
         int r2 = (1000*(dx*dx + dy*dy)) / maxr2;
 
         //printf("%f\n",r2);
@@ -2311,6 +2311,8 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
         int mult=screen_rainbow_effect_fisheye_factor_k * r2;
 
         float factor = (1.0f + ((float)mult)/100/1000);
+
+        //printf("%f\n",factor);
 
         int sx = cx + dx / factor;
         int sy = cy + dy / factor;
