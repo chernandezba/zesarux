@@ -130,7 +130,6 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 
 -efectos especiales
--renombrar heat por waves2
 *parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse, vsync lost, hsync lost, pixelate... en config
 *revisar liberar memoria
 *Poder quitar los float en los efectos que los usan?

@@ -40,7 +40,7 @@ extern z80_bit screen_special_effects_enabled;
 
 
 
-extern float screen_rainbow_effect_fisheye_factor_k;
+extern int screen_rainbow_effect_fisheye_factor_k;
 extern void screen_rainbow_effect_fisheye_change_factor(void);
 
 extern int screen_rainbow_effect_pixelate_size;

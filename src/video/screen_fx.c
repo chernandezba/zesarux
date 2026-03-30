@@ -2218,7 +2218,8 @@ void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int 
 //controla lo fuerte que es el ojo de pez:
 //k > 0 → efecto tipo ojo de pez (convexo)
 //k < 0 → efecto tipo lente inversa (cóncavo)
-float screen_rainbow_effect_fisheye_factor_k = 1.0f;
+//Lo tenemos multiplicado por 100 para evitar usar float
+int screen_rainbow_effect_fisheye_factor_k = 100;
 z80_bit screen_special_effects_fisheye_automatic_factor={0};
 z80_bit screen_special_effects_fisheye_follow_mouse={0};
 
@@ -2227,14 +2228,14 @@ char screen_special_effects_fisheye_follow_music_channel=0;
 
 void screen_rainbow_effect_fisheye_change_factor(void)
 {
-    screen_rainbow_effect_fisheye_factor_k +=0.5f;
-    if (screen_rainbow_effect_fisheye_factor_k>6.0f) screen_rainbow_effect_fisheye_factor_k=-6.0f;
+    screen_rainbow_effect_fisheye_factor_k +=50;
+    if (screen_rainbow_effect_fisheye_factor_k>600) screen_rainbow_effect_fisheye_factor_k=-600;
 }
 
 void screen_rainbow_effect_fisheye_change_factor_slow(void)
 {
-    screen_rainbow_effect_fisheye_factor_k +=0.01f;
-    if (screen_rainbow_effect_fisheye_factor_k>4.0f) screen_rainbow_effect_fisheye_factor_k=-6.0f;
+    screen_rainbow_effect_fisheye_factor_k +=1;
+    if (screen_rainbow_effect_fisheye_factor_k>400) screen_rainbow_effect_fisheye_factor_k=-600;
 }
 
 
@@ -2278,8 +2279,8 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
 
 
         //total 12
-        float nuevo_k=(12.0f*media_cpu_perc)/100.0f;
-        nuevo_k -=6.0f;
+        int nuevo_k=(12*media_cpu_perc);
+        nuevo_k -=600;
 
         screen_rainbow_effect_fisheye_factor_k=nuevo_k;
     }
@@ -2305,7 +2306,7 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
         //factor Si factor = 1 → no hay deformación
         //Si factor > 1 → estiras hacia afuera
         //Si factor < 1 → comprimes hacia el centro
-        float factor = 1.0f / (1.0f + screen_rainbow_effect_fisheye_factor_k * r2);
+        float factor = 1.0f / (1.0f + ((float)screen_rainbow_effect_fisheye_factor_k * r2)/100);
 
         int sx = cx + dx * factor;
         int sy = cy + dy * factor;
