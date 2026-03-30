@@ -2213,12 +2213,12 @@ void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int 
 // intensidad del efecto
 
 //k → intensidad del efecto
-//Es un número pequeño (float), por ejemplo:
-//float k = 0.00001f;
+//Es un número pequeño (flotante), por ejemplo:
+// k = 0.00001f;
 //controla lo fuerte que es el ojo de pez:
 //k > 0 → efecto tipo ojo de pez (convexo)
 //k < 0 → efecto tipo lente inversa (cóncavo)
-//Lo tenemos multiplicado por 100 para evitar usar float
+//Lo tenemos multiplicado por 100 para evitar usar flotantes
 int screen_rainbow_effect_fisheye_factor_k = 100;
 z80_bit screen_special_effects_fisheye_automatic_factor={0};
 z80_bit screen_special_effects_fisheye_follow_mouse={0};
@@ -2305,17 +2305,19 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
         //printf("%f\n",r2);
 
         // "lente real" (barrel distortion)
-        //factor Si factor = 1 → no hay deformación
-        //Si factor > 1 → estiras hacia afuera
-        //Si factor < 1 → comprimes hacia el centro
-        int mult=screen_rainbow_effect_fisheye_factor_k * r2;
+        //factor Si factor = 100000 → no hay deformación
+        //Si factor > 100000 → estiras hacia afuera
+        //Si factor < 100000 → comprimes hacia el centro
+        int scale = 100000;  // factor de escala
 
-        float factor = (1.0f + ((float)mult)/100/1000);
+        int mult = screen_rainbow_effect_fisheye_factor_k * r2;
 
-        //printf("%f\n",factor);
+        // factor = 1 + mult/100000
+        int factor_fixed = scale + mult;
 
-        int sx = cx + dx / factor;
-        int sy = cy + dy / factor;
+        int sx = cx + ((z80_64bit)dx * scale) / factor_fixed;
+        int sy = cy + ((z80_64bit)dy * scale) / factor_fixed;
+
 
 
             if (sx<0) sx=0;
