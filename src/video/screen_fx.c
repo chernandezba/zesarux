@@ -2308,10 +2308,12 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
         //factor Si factor = 1 → no hay deformación
         //Si factor > 1 → estiras hacia afuera
         //Si factor < 1 → comprimes hacia el centro
-        float factor = 1.0f / (1.0f + ((float)screen_rainbow_effect_fisheye_factor_k * r2)/100/1000);
+        int mult=screen_rainbow_effect_fisheye_factor_k * r2;
 
-        int sx = cx + dx * factor;
-        int sy = cy + dy * factor;
+        float factor = (1.0f + ((float)mult)/100/1000);
+
+        int sx = cx + dx / factor;
+        int sy = cy + dy / factor;
 
 
             if (sx<0) sx=0;
