@@ -2292,34 +2292,34 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
 
         for (x=0;x<ancho;x++) {
 
-        //distancias al centro
-        int dx = x - cx;
-        int dy = y - cy;
+            //distancias al centro
+            int dx = x - cx;
+            int dy = y - cy;
 
-        //distancia al centro
+            //distancia al centro
 
 
-        // distancia al cuadrado normalizada [0,1]  -> usamos 0...1000
-        int r2;
+            // distancia al cuadrado normalizada [0,1]  -> usamos 0...1000
+            int r2;
 
-        if (maxr2==0) r2=9999999;
-        else r2 = (1000*(dx*dx + dy*dy)) / maxr2;
+            if (maxr2==0) r2=9999999;
+            else r2 = (1000*(dx*dx + dy*dy)) / maxr2;
 
-        //printf("%f\n",r2);
+            //printf("%f\n",r2);
 
-        // "lente real" (barrel distortion)
-        //factor Si factor = 100000 → no hay deformación
-        //Si factor > 100000 → estiras hacia afuera
-        //Si factor < 100000 → comprimes hacia el centro
-        int scale = 100000;  // factor de escala
+            // "lente real" (barrel distortion)
+            //factor Si factor = 100000 → no hay deformación
+            //Si factor > 100000 → estiras hacia afuera
+            //Si factor < 100000 → comprimes hacia el centro
+            int scale = 100000;  // factor de escala
 
-        int mult = screen_rainbow_effect_fisheye_factor_k * r2;
+            int mult = screen_rainbow_effect_fisheye_factor_k * r2;
 
-        // factor = 1 + mult/100000
-        int factor_fixed = scale + mult;
+            // factor = 1 + mult/100000
+            int factor_fixed = scale + mult;
 
-        int sx = cx + ((z80_64bit)dx * scale) / factor_fixed;
-        int sy = cy + ((z80_64bit)dy * scale) / factor_fixed;
+            int sx = cx + ((z80_64bit)dx * scale) / factor_fixed;
+            int sy = cy + ((z80_64bit)dy * scale) / factor_fixed;
 
 
 
