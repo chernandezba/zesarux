@@ -2300,7 +2300,10 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
 
 
         // distancia al cuadrado normalizada [0,1]  -> usamos 0...1000
-        int r2 = (1000*(dx*dx + dy*dy)) / maxr2;
+        int r2;
+
+        if (maxr2==0) r2=9999999;
+        else r2 = (1000*(dx*dx + dy*dy)) / maxr2;
 
         //printf("%f\n",r2);
 
