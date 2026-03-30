@@ -2263,7 +2263,7 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
     }
 
     // radio máximo al cuadrado (hasta la esquina)
-    float maxr2 = (float)(cx*cx + cy*cy);
+    int maxr2 = cx*cx + cy*cy;
 
 
     //Ajustar factor k segun musica
@@ -2300,7 +2300,7 @@ void screen_rainbow_effect_fisheye(z80_int *origen,z80_int *destino,int ancho,in
 
 
         // distancia al cuadrado normalizada [0,1]
-        float r2 = (dx*dx + dy*dy) / maxr2;
+        float r2 = (dx*dx + dy*dy) / (float) maxr2;
 
         // "lente real" (barrel distortion)
         //factor Si factor = 1 → no hay deformación
