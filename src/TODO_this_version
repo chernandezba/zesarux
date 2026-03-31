@@ -121,8 +121,6 @@ SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 antes de commonsdl_init
 
 
--zoom 0.75, 0.5 y 0.25 en mas máquinas?
-
 
 -copy-paste y text-paste quizá mover a otro menú?
 
@@ -132,7 +130,6 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 -efectos especiales
 *parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse, vsync lost, hsync lost, pixelate... en config
 *revisar liberar memoria
-*Poder quitar los float en los efectos que los usan?
 *entradas en changelog
 *revisar gigascreen , replantear entera, tenia una condición especial para el efecto de reduce
 *con menu opciones efectos, que ponga tipo ventana correcto/dialogo, que se mueva bien atras, etc

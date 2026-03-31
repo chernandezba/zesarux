@@ -3889,7 +3889,6 @@ int util_write_configfile(void)
   if (screen_reduce_menu_alto==2)       ADD_STRING_CONFIG,"--menu-half-height");
 
   if (screen_special_effects_enabled.v)    ADD_STRING_CONFIG,"--video-special-effects-enable");
-  //if (screen_special_effects_temblar.v)    ADD_STRING_CONFIG,"--video-special-effect-unsteady");
 
   if (screen_reduction_factor==SCREEN_REDUCE_075)			ADD_STRING_CONFIG,"--reduce-075");
   if (screen_reduction_factor==SCREEN_REDUCE_050)			ADD_STRING_CONFIG,"--reduce-050");

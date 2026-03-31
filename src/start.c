@@ -1311,7 +1311,6 @@ printf (
         "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 
         "--video-special-effects-enable                 Enable special video effects\n"
-        "--video-special-effect-unsteady                Simulate unsteady video display. Require --video-special-effects-enable\n"
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-special-effects-enable\n"
         "--reduce-050                                   Reduce display size to 1/2. Require --video-special-effects-enable\n"
         "--reduce-025                                   Reduce display size to 1/4. Require --video-special-effects-enable\n"
@@ -2855,10 +2854,6 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--video-special-effects-enable")) {
                 screen_special_effects_enabled.v=1;
-            }
-
-            else if (!strcmp(argv[puntero_parametro],"--video-special-effect-unsteady")) {
-                //screen_special_effects_temblar.v=1;
             }
 
 
