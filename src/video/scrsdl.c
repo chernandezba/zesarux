@@ -511,14 +511,11 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             dst_fullscreen.w = ancho_escalado_destino;
             dst_fullscreen.h = alto_escalado_destino;
 
-
             //printf("Escalando desde %d X %d hasta %d X %d. monitor total: %d X %d\n",ancho_origen,alto_origen,ancho_escalado_destino,alto_escalado_destino,sdl_screen->w,sdl_screen->h);
 
             SDL_SoftStretch(render_surface, &src, sdl_screen, &dst_fullscreen);
 
-
             SDL_UpdateRect(sdl_screen, 0, 0, scrsdl_ancho_ventana, scrsdl_alto_ventana);
-
 
 		}
 	    else {
