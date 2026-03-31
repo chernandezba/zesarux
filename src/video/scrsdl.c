@@ -486,9 +486,9 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             //float mas_grande_y=((float)sdl_screen->h)/((float)alto_origen);
 
             //Esto solo es una relación de aspecto, da igual que esté multiplicado por 1000 para no usar floats
-            //Pero subimos a un tipo de entero de 64 bits para evitar overflow
-            z80_64bit mas_grande_x=((z80_64bit)1000*sdl_screen->w)/ancho_origen;
-            z80_64bit mas_grande_y=((z80_64bit)1000*sdl_screen->h)/alto_origen;
+            //Nota: no hay riesgo de exceder el limite de un entero de 32 bits pues seria con resoluciones de 2 millones de pixeles
+            int mas_grande_x=(1000*sdl_screen->w)/ancho_origen;
+            int mas_grande_y=(1000*sdl_screen->h)/alto_origen;
 
             //printf("Aumento en X %d en Y %d\n",mas_grande_x,mas_grande_y);
 
