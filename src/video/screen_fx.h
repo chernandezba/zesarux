@@ -88,10 +88,11 @@ extern void init_screen_effects_table(void);
 
 #define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 25
 
-#define MAX_SCREEN_EFFECTS 34
+#define MAX_SCREEN_EFFECTS 35
 
 enum enum_screen_effect_types {
-    SCREEN_EFFECT_TYPE_REDUCE, //Este siempre el primero en este enum
+    SCREEN_EFFECT_TYPE_NONE, //Este siempre el primero en este enum
+    SCREEN_EFFECT_TYPE_REDUCE,
     SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,
     SCREEN_EFFECT_TYPE_FLIP_VERTICAL,
     SCREEN_EFFECT_TYPE_ROTATE,

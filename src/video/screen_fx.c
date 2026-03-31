@@ -2448,10 +2448,13 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
     int i;
 
     for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-        if (screen_effect_applied_list[i].enabled) {
+        if (screen_effect_applied_list[i].enabled && screen_effect_applied_list[i].type!=SCREEN_EFFECT_TYPE_NONE) {
             destino=screen_special_effects_alloc_buffer(ancho,alto);
 
             switch (screen_effect_applied_list[i].type) {
+                case SCREEN_EFFECT_TYPE_NONE:
+                break;
+
                 case SCREEN_EFFECT_TYPE_REDUCE:
                     if (screen_reduction_factor==SCREEN_REDUCE_050) {
                         screen_scale_rainbow_21(origen,ancho,alto,destino);
@@ -2725,6 +2728,7 @@ z80_bit screen_special_effects_heat={0};
 */
 
 screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
+    {SCREEN_EFFECT_TYPE_NONE,"None"},
     {SCREEN_EFFECT_TYPE_REDUCE,"Reduce"},
     {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady"},
     {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical"},
@@ -2780,7 +2784,7 @@ void init_screen_effects_table(void)
     int i;
     for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
         screen_effect_applied_list[i].enabled=0;
-        screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_REDUCE+i;
+        screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
     }
 }
 
