@@ -480,7 +480,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             int alto_escalado_destino;
             int ancho_escalado_destino;
 
-            //printf("Aspect: %f\n",aspect);
+            //printf("Aspect: %d\n",aspect);
 
             //float mas_grande_x=((float)sdl_screen->w)/((float)ancho_origen);
             //float mas_grande_y=((float)sdl_screen->h)/((float)alto_origen);
@@ -489,7 +489,7 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             int mas_grande_x=(1000*sdl_screen->w)/ancho_origen;
             int mas_grande_y=(1000*sdl_screen->h)/alto_origen;
 
-            //printf("Aumento en X %f en Y %f\n",mas_grande_x,mas_grande_y);
+            //printf("Aumento en X %d en Y %d\n",mas_grande_x,mas_grande_y);
 
             int offset_x=0;
             int offset_y=0;
