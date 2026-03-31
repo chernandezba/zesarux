@@ -473,15 +473,21 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             src.w = ancho_origen;
             src.h = alto_origen;
 
-            float aspect=((float)scrsdl_ancho_no_fullscreen)/((float)scrsdl_alto_no_fullscreen);
+            //Aspecto multiplicado por 1000 para no tener que usar floats
+            //float aspect=((float)scrsdl_ancho_no_fullscreen)/((float)scrsdl_alto_no_fullscreen);
+            int aspect=(scrsdl_ancho_no_fullscreen*1000)/scrsdl_alto_no_fullscreen;
 
             int alto_escalado_destino;
             int ancho_escalado_destino;
 
             //printf("Aspect: %f\n",aspect);
 
-            float mas_grande_x=((float)sdl_screen->w)/((float)ancho_origen);
-            float mas_grande_y=((float)sdl_screen->h)/((float)alto_origen);
+            //float mas_grande_x=((float)sdl_screen->w)/((float)ancho_origen);
+            //float mas_grande_y=((float)sdl_screen->h)/((float)alto_origen);
+
+            //Esto solo es una relación de aspecto, da igual que esté multiplicado por 1000 para no usar floats
+            int mas_grande_x=(1000*sdl_screen->w)/ancho_origen;
+            int mas_grande_y=(1000*sdl_screen->h)/alto_origen;
 
             //printf("Aumento en X %f en Y %f\n",mas_grande_x,mas_grande_y);
 
@@ -490,12 +496,12 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 
             if (mas_grande_x>mas_grande_y) {
                 alto_escalado_destino=sdl_screen->h;
-                ancho_escalado_destino=((float)sdl_screen->h)*aspect;
+                ancho_escalado_destino=((sdl_screen->h)*aspect)/1000;
                 offset_x=((sdl_screen->w)-ancho_escalado_destino)/2;
             }
             else {
                 ancho_escalado_destino=sdl_screen->w;
-                alto_escalado_destino=((float)sdl_screen->w)/aspect;
+                alto_escalado_destino=((sdl_screen->w)*1000)/aspect;
                 offset_y=((sdl_screen->h)-alto_escalado_destino)/2;
             }
 
@@ -505,8 +511,6 @@ void scrsdl_refresca_pantalla_solo_driver(void)
             dst_fullscreen.w = ancho_escalado_destino;
             dst_fullscreen.h = alto_escalado_destino;
 
-            //printf("ampliacion ancho %f alto %f\n",
-            //    (float)ancho_escalado_destino/(float)scrsdl_ancho_no_fullscreen,(float)alto_escalado_destino/(float)scrsdl_alto_no_fullscreen);
 
             //printf("Escalando desde %d X %d hasta %d X %d. monitor total: %d X %d\n",ancho_origen,alto_origen,ancho_escalado_destino,alto_escalado_destino,sdl_screen->w,sdl_screen->h);
 
@@ -1739,9 +1743,6 @@ void scrsdl_actualiza_tablas_teclado(void)
 
                 mouse_x=event.motion.x-dst_fullscreen.x;
                 mouse_x=(mouse_x*scrsdl_ancho_no_fullscreen)/dst_fullscreen.w;
-
-                //printf("ampliacion ancho %f alto %f\n",
-                //    (float)ancho_escalado_destino/(float)scrsdl_ancho_no_fullscreen,(float)alto_escalado_destino/(float)scrsdl_alto_no_fullscreen);
 
                 mouse_y=event.motion.y-dst_fullscreen.y;
                 mouse_y=(mouse_y*scrsdl_alto_no_fullscreen)/dst_fullscreen.h;
