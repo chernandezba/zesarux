@@ -2447,7 +2447,7 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
     int i;
 
-    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+    for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
         if (screen_effect_applied_list[i].enabled && screen_effect_applied_list[i].type!=SCREEN_EFFECT_TYPE_NONE) {
             destino=screen_special_effects_alloc_buffer(ancho,alto);
 
@@ -2776,15 +2776,20 @@ char *screen_effect_get_name(enum enum_screen_effect_types type)
     return screen_effect_name_unknown;
 }
 
-screen_effect_applied screen_effect_applied_list[MAX_SCREEN_EFFECTS];
+screen_effect_applied screen_effect_applied_list[MAX_SCREEN_LIST_EFFECTS];
 
 
 void init_screen_effects_table(void)
 {
     int i;
-    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+    for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
         screen_effect_applied_list[i].enabled=0;
-        screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
+        if (i<MAX_SCREEN_EFFECTS) {
+            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
+        }
+        else {
+            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
+        }
     }
 }
 

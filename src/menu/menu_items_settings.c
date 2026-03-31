@@ -1633,13 +1633,10 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
     //Seleccionar una opcion y salir
 
     //do {
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,
-        "");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,"");
 
         int i;
             for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-
-                //enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
 
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
                     NULL,NULL,screen_effect_get_name(SCREEN_EFFECT_TYPE_NONE+i));
@@ -1718,7 +1715,7 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
         }
 
-        if (efecto_seleccionado<MAX_SCREEN_EFFECTS-1) {
+        if (efecto_seleccionado<MAX_SCREEN_LIST_EFFECTS-1) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_down,NULL,
             "Move Down","Mover Abajo","Moure Avall");
             menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_abajo());
@@ -1887,7 +1884,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
             int i;
 
-            for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+            for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
                 int enabled=screen_effect_applied_list[i].enabled;
                 enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
 

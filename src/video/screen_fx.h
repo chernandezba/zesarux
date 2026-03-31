@@ -88,6 +88,10 @@ extern void init_screen_effects_table(void);
 
 #define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 25
 
+//Total de efectos que se pueden aplicar
+#define MAX_SCREEN_LIST_EFFECTS 50
+
+//Cantidad de efectos diferentes
 #define MAX_SCREEN_EFFECTS 35
 
 enum enum_screen_effect_types {
