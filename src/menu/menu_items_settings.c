@@ -1653,12 +1653,12 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_index_full_path(array_menu_common,
+        /*menu_add_item_menu_index_full_path(array_menu_common,
             "Main Menu-> Settings-> Main Window-> FX-> Change-> Change type",
             "Menú Principal-> Opciones-> Ventana Principal-> FX-> Cambia-> Cambia Tipo",
-            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia Tipus");
+            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia Tipus");*/
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+        retorno_menu=menu_dibuja_menu_dialogo(&opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Change type","Cambia tipo","Canvia tipus" );
 
 
@@ -1698,12 +1698,20 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
 
     //do {
 
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_type,NULL,
+        "Change Type","Cambiar Tipo","Canviar Tipus");
+        menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+
+
         if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
-            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
             "Enable","Activar","Activar");
         }
         else {
-            menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
             "Disable","Desactivar","Desactivar");
         }
         menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
@@ -1722,24 +1730,18 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
         }
 
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_type,NULL,
-        "Change Type","Cambiar Tipo","Canviar Tipus");
-        menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
-
-
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 
 
 
-        menu_add_item_menu_index_full_path(array_menu_common,
+        /*menu_add_item_menu_index_full_path(array_menu_common,
             "Main Menu-> Settings-> Main Window-> FX-> Change",
             "Menú Principal-> Opciones-> Ventana Principal-> FX-> Cambia",
-            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia");
+            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia");*/
 
-        retorno_menu=menu_dibuja_menu(&main_window_special_effects_change,&item_seleccionado,array_menu_common,
+        retorno_menu=menu_dibuja_menu_dialogo(&main_window_special_effects_change,&item_seleccionado,array_menu_common,
             "Change","Cambia","Canvia" );
 
 

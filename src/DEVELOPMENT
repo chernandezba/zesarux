@@ -175,7 +175,7 @@ Sobre indexado de menus
 
 Si se utiliza funcion de crear menu pero no es un menu estrictamente, llamar a:
 
-menu_dibuja_menu_dialogo_no_title_lang
+menu_dibuja_menu_dialogo_no_title_lang o menu_dibuja_menu_dialogo
 
 En vez de usar menu_dibuja_menu_no_title_lang o cualquier otra variante menu_dibuja_menu*
 

@@ -142,8 +142,6 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 mas efectos RGB aprovechando la tabla TSCONF_INDEX_FIRST_COLOR, que son de 5 bits por componente
 
--falta linea de comandos/config file. quiza algo como :
-id-posicion efecto enabled/disabled
 
 -nagravision audio
 *completar maquinas

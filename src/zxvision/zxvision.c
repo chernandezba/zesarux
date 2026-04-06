@@ -24162,13 +24162,22 @@ int menu_dibuja_menu_no_indexado(int *opcion_inicial,menu_item *item_seleccionad
 }
 */
 
-//con titulo de menu igual en los 3 idiomas
-int menu_dibuja_menu_dialogo_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+
+
+//con titulo de menu diferente en los 3 idiomas
+int menu_dibuja_menu_dialogo(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)
 {
     m->no_es_realmente_un_menu=1;
     m->no_indexar_busqueda=1;
 
-    return menu_dibuja_menu_no_title_lang(opcion_inicial,item_seleccionado,m,titulo);
+    return menu_dibuja_menu(opcion_inicial,item_seleccionado,m,titulo_en,titulo_es,titulo_ca);
+}
+
+//con titulo de menu igual en los 3 idiomas
+int menu_dibuja_menu_dialogo_no_title_lang(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
+{
+
+    return menu_dibuja_menu_dialogo(opcion_inicial,item_seleccionado,m,titulo,titulo,titulo);
 }
 
 //Igual que menu_dibuja_menu pero este menu se selecciona enter una vez o escape una vez, pero la funcion que la llamada no vuelve

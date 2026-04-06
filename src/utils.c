@@ -3892,7 +3892,7 @@ int util_write_configfile(void)
 
   for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
     if (screen_effect_applied_list[i].type!=SCREEN_EFFECT_TYPE_NONE) {
-        ADD_STRING_CONFIG,"--video-fx-set %s %d %d",screen_effect_get_name(screen_effect_applied_list[i].type),i,screen_effect_applied_list[i].enabled);
+        ADD_STRING_CONFIG,"--video-fx-set \"%s\" %d %d",screen_effect_get_name(screen_effect_applied_list[i].type),i,screen_effect_applied_list[i].enabled);
     }
   }
 
