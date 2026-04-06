@@ -3890,6 +3890,13 @@ int util_write_configfile(void)
 
   if (screen_special_effects_enabled.v)    ADD_STRING_CONFIG,"--video-fx-enable");
 
+  for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
+    if (screen_effect_applied_list[i].type!=SCREEN_EFFECT_TYPE_NONE) {
+        ADD_STRING_CONFIG,"--video-fx-set %s %d %d",screen_effect_get_name(screen_effect_applied_list[i].type),i,screen_effect_applied_list[i].enabled);
+    }
+  }
+
+
   if (screen_reduction_factor==SCREEN_REDUCE_075)			ADD_STRING_CONFIG,"--reduce-075");
   if (screen_reduction_factor==SCREEN_REDUCE_050)			ADD_STRING_CONFIG,"--reduce-050");
   if (screen_reduction_factor==SCREEN_REDUCE_025)			ADD_STRING_CONFIG,"--reduce-025");
