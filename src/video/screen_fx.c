@@ -62,6 +62,24 @@ int screen_rainbow_effect_scroll_vertical_offset=1;
 z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
 z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};
 
+int screen_rainbow_effect_attraction_force=4;
+int screen_rainbow_effect_attraction_atrac_repulse=+1;
+
+int screen_rainbow_effect_pixelate_size=2;
+
+z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1};
+z80_bit screen_rainbow_effect_shaderborder_updown_enable={1};
+int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000;
+int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000;
+int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
+int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
+
+//0.2 segundos. O sea, 10 frames
+int screen_rainbow_effect_persistence_total_frames=10;
+
+//A,B,C canales AY o 0
+char screen_special_effects_fisheye_follow_music_channel=0;
+
 
 //Fisheye
 // intensidad del efecto
@@ -1086,8 +1104,7 @@ void screen_rainbow_effect_vsync_lost(z80_int *origen,z80_int *destino,int ancho
 
 }
 
-int screen_rainbow_effect_attraction_force=4;
-int screen_rainbow_effect_attraction_atrac_repulse=+1;
+
 
 void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1155,7 +1172,7 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 }
 
 
-int screen_rainbow_effect_pixelate_size=2;
+
 
 #define SCREEN_PIXELATE_ARRAY_LIST_LENGTH (SCREEN_EFFECT_PIXELATE_MAX_SIZE*SCREEN_EFFECT_PIXELATE_MAX_SIZE)
 
@@ -1658,12 +1675,7 @@ void screen_rainbow_effect_blur(z80_int *origen,z80_int *destino,int ancho,int a
 
 }
 
-z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1};
-z80_bit screen_rainbow_effect_shaderborder_updown_enable={1};
-int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000;
-int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000;
-int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
-int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
+
 
 void screen_rainbow_effect_shaderborder_putpixel(z80_int *destino,int ancho,int alto,int x,int y,int color)
 {
@@ -1950,9 +1962,8 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
 }
 
 
-//0.2 segundos. O sea, 10 frames
-int screen_rainbow_effect_persistence_total_frames=10;
-//#define SCREEN_RAINBOW_EFFECT_PERSISTENCE_TOTAL_FRAMES 10
+
+
 //Punteros de los frames anteriores
 //Los guardamos en formato RGB15 bits
 
@@ -2244,8 +2255,7 @@ void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int 
 
 
 
-//A,B,C canales AY o 0
-char screen_special_effects_fisheye_follow_music_channel=0;
+
 
 void screen_rainbow_effect_fisheye_change_factor(void)
 {
