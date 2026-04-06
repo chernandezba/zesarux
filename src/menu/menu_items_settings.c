@@ -936,16 +936,7 @@ void menu_window_settings_reduce_075_050_antialias(MENU_ITEM_PARAMETERS)
     screen_reduce_antialias.v ^=1;
 }
 
-void menu_window_settings_reduce_075_050_ofx(MENU_ITEM_PARAMETERS)
-{
-        char string_offset[3];
-        sprintf (string_offset,"%d",screen_reduce_offset_x);
-        menu_ventana_scanf("Offset x",string_offset,3);
-        screen_reduce_offset_x=parse_string_to_number(string_offset);
 
-        //Liberar buffers para borrar rastros de otros offsets
-        //screen_special_effects_free_buffers();
-}
 
 void menu_window_settings_reduce_075_050_ofy(MENU_ITEM_PARAMETERS)
 {
@@ -1929,8 +1920,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_ayuda(array_menu_common,"Antialias is only applied to the standard 16 Spectrum colors");
                     menu_add_item_menu_es_avanzado(array_menu_common);
 
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofx,NULL,"     Offset x [%d]",screen_reduce_offset_x);
-                    menu_add_item_menu_es_avanzado(array_menu_common);
+
 
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_050_ofy,NULL,"     Offset y [%d]",screen_reduce_offset_y);
                     menu_add_item_menu_es_avanzado(array_menu_common);

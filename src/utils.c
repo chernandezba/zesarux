@@ -3915,7 +3915,6 @@ int util_write_configfile(void)
 
 
 
-                        ADD_STRING_CONFIG,"--reduce-display-offset-x %d",screen_reduce_offset_x);
                         ADD_STRING_CONFIG,"--reduce-display-offset-y %d",screen_reduce_offset_y);
 
   if (screen_watermark_enabled.v)               ADD_STRING_CONFIG,"--enable-watermark");

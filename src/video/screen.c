@@ -116,7 +116,7 @@ z80_bit screen_keep_both_zoom_equals={1};
 int screen_reduce_menu_ancho=1;
 int screen_reduce_menu_alto=1;
 
-int screen_reduce_offset_x=0;
+
 int screen_reduce_offset_y=0;
 
 //Usado por los drivers de video cuando hay pendiente un redibujado de ZX Desktop y las ventanas

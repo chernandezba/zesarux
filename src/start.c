@@ -2935,6 +2935,7 @@ int parse_cmdline_options(int desde_commandline)
                 screen_reduce_antialias.v=0;
             }
 
+            //deprecated. use instead scroll effect
             else if (
                 //deprecated --reduce-075-offset-x
                 !strcmp(argv[puntero_parametro],"--reduce-075-offset-x") ||
@@ -2942,7 +2943,7 @@ int parse_cmdline_options(int desde_commandline)
 
                 ) {
                 siguiente_parametro_argumento();
-                screen_reduce_offset_x=atoi(argv[puntero_parametro]);
+
             }
 
             else if (

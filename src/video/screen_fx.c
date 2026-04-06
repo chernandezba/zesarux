@@ -113,13 +113,13 @@ void screen_scale_rainbow_43(z80_int *orig,int ancho,int alto,z80_int *dest)
     int diferencia_alto=alto-alto_destino;
 
     //Controlar offsets
-    if (screen_reduce_offset_x>diferencia_ancho) screen_reduce_offset_x=diferencia_ancho;
+
     if (screen_reduce_offset_y>diferencia_alto) screen_reduce_offset_y=diferencia_alto-1;
 
-    if (screen_reduce_offset_x<0) screen_reduce_offset_x=0;
+
     if (screen_reduce_offset_y<0) screen_reduce_offset_y=0;
 
-    dest +=screen_reduce_offset_x;
+
     dest +=screen_reduce_offset_y*ancho;
 
     z80_int color_izq;
@@ -277,13 +277,13 @@ void screen_scale_rainbow_21(z80_int *orig,int ancho,int alto,z80_int *dest)
     int diferencia_alto=alto-alto_destino;
 
     //Controlar offsets
-    if (screen_reduce_offset_x>diferencia_ancho) screen_reduce_offset_x=diferencia_ancho;
+
     if (screen_reduce_offset_y>diferencia_alto) screen_reduce_offset_y=diferencia_alto-1;
 
-    if (screen_reduce_offset_x<0) screen_reduce_offset_x=0;
+
     if (screen_reduce_offset_y<0) screen_reduce_offset_y=0;
 
-    dest +=screen_reduce_offset_x;
+
     dest +=screen_reduce_offset_y*ancho;
 
     z80_int color_1;
