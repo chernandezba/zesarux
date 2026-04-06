@@ -1338,8 +1338,6 @@ screen_effect_print_names();
         "--reduce-050                                   Reduce display size to 1/2. Require --video-fx-enable\n"
         "--reduce-025                                   Reduce display size to 1/4. Require --video-fx-enable\n"
         "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
-        "--reduce-display-offset-x n                    Destination offset x on reduced display\n"
-        "--reduce-display-offset-y n                    Destination offset y on reduced display\n"
 
 
         "\n"
