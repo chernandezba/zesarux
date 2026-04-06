@@ -32,6 +32,49 @@
 #include "sensors.h"
 
 
+int screen_rainbow_effect_rotate_grados=45;
+z80_bit screen_rainbow_effect_rotate_follow_mouse={0};
+z80_bit screen_rainbow_effect_remolino_follow_mouse={0};
+z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};
+
+int screen_rainbow_effect_improved_waves_tiempo=0;
+int screen_rainbow_effect_improved_waves_intensidad=8;
+z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};
+
+int screen_rainbow_effect_shear_factor=4;
+z80_bit screen_rainbow_effect_shear_factor_follow_mouse={0};
+
+z80_bit screen_rainbow_effect_sepia_follow_mouse={0};
+int screen_rainbow_effect_blur_intensity=1;
+z80_bit screen_rainbow_effect_blur_follow_mouse={0};
+
+int screen_rainbow_effect_contrast_factor=100;
+z80_bit screen_rainbow_effect_contrast_follow_mouse={0};
+
+int screen_rainbow_effect_brightness_factor=50;
+z80_bit screen_rainbow_effect_brightness_follow_mouse={0};
+
+int screen_rainbow_effect_scroll_horizontal_offset=1;
+z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
+z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};
+
+int screen_rainbow_effect_scroll_vertical_offset=1;
+z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
+z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};
+
+
+//Fisheye
+// intensidad del efecto
+//k → intensidad del efecto
+//Es un número pequeño (flotante), por ejemplo:
+// k = 0.00001f;
+//controla lo fuerte que es el ojo de pez:
+//k > 0 → efecto tipo ojo de pez (convexo)
+//k < 0 → efecto tipo lente inversa (cóncavo)
+//Lo tenemos multiplicado por 100 para evitar usar flotantes
+int screen_rainbow_effect_fisheye_factor_k = 100;
+z80_bit screen_special_effects_fisheye_automatic_factor={0};
+z80_bit screen_special_effects_fisheye_follow_mouse={0};
 
 //Mezclar dos colores si estan en rango spectrum 0-15, retornando el gigascreen. Si no, devolver el primero
 z80_int screen_scale_075_050_mix_two(z80_int color1, z80_int color2)
@@ -352,8 +395,7 @@ void screen_rainbow_effect_flip_horizontal(z80_int *origen,z80_int *destino,int 
 
 }
 
-int screen_rainbow_effect_rotate_grados=45;
-z80_bit screen_rainbow_effect_rotate_follow_mouse={0};
+
 
 void screen_rainbow_effect_rotate(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -394,7 +436,7 @@ void screen_rainbow_effect_rotate(z80_int *origen,z80_int *destino,int ancho,int
 }
 
 
-z80_bit screen_rainbow_effect_remolino_follow_mouse={0};
+
 
 void screen_rainbow_effect_remolino(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1160,7 +1202,7 @@ int screen_rainbow_effect_pixelate_get_color(z80_int *origen,int ancho,int x,int
 
 }
 
-z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};
+
 
 void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1223,9 +1265,7 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 
 }
 
-int screen_rainbow_effect_improved_waves_tiempo=0;
-int screen_rainbow_effect_improved_waves_intensidad=8;
-z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};
+
 
 void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1287,8 +1327,7 @@ void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int a
 
 }
 
-int screen_rainbow_effect_shear_factor=4;
-z80_bit screen_rainbow_effect_shear_factor_follow_mouse={0};
+
 
 void screen_rainbow_effect_shear(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1445,7 +1484,7 @@ void screen_rainbow_effect_scanlines(z80_int *origen,z80_int *destino,int ancho,
 
 }
 
-z80_bit screen_rainbow_effect_sepia_follow_mouse={0};
+
 
 void screen_rainbow_effect_sepia(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1611,8 +1650,7 @@ void screen_rainbow_effect_blur_zone(z80_int *origen,z80_int *destino,int orig_x
 
 }
 
-int screen_rainbow_effect_blur_intensity=1;
-z80_bit screen_rainbow_effect_blur_follow_mouse={0};
+
 
 void screen_rainbow_effect_blur(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1740,8 +1778,7 @@ void screen_rainbow_effect_shaderborder(z80_int *origen,z80_int *destino,int anc
 }
 
 
-int screen_rainbow_effect_contrast_factor=100;
-z80_bit screen_rainbow_effect_contrast_follow_mouse={0};
+
 
 void screen_rainbow_effect_contrast(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1830,8 +1867,7 @@ void screen_rainbow_effect_contrast(z80_int *origen,z80_int *destino,int ancho,i
 
 }
 
-int screen_rainbow_effect_brightness_factor=50;
-z80_bit screen_rainbow_effect_brightness_follow_mouse={0};
+
 
 void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -2081,9 +2117,7 @@ void screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int al
 
 }
 
-int screen_rainbow_effect_scroll_horizontal_offset=1;
-z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
-z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};
+
 
 void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -2144,9 +2178,7 @@ void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,in
 
 }
 
-int screen_rainbow_effect_scroll_vertical_offset=1;
-z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
-z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};
+
 
 void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -2210,18 +2242,7 @@ void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int 
 
 
 
-// intensidad del efecto
 
-//k → intensidad del efecto
-//Es un número pequeño (flotante), por ejemplo:
-// k = 0.00001f;
-//controla lo fuerte que es el ojo de pez:
-//k > 0 → efecto tipo ojo de pez (convexo)
-//k < 0 → efecto tipo lente inversa (cóncavo)
-//Lo tenemos multiplicado por 100 para evitar usar flotantes
-int screen_rainbow_effect_fisheye_factor_k = 100;
-z80_bit screen_special_effects_fisheye_automatic_factor={0};
-z80_bit screen_special_effects_fisheye_follow_mouse={0};
 
 //A,B,C canales AY o 0
 char screen_special_effects_fisheye_follow_music_channel=0;
@@ -2721,7 +2742,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical",NULL},
     {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal",NULL},
     {SCREEN_EFFECT_TYPE_ROTATE,"Rotate",&screen_rainbow_effect_rotate_follow_mouse},
-    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",NULL},
+    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",&screen_rainbow_effect_remolino_follow_mouse},
     {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL},
     {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves",NULL},
