@@ -3831,35 +3831,35 @@ void util_copy_path_delete_last_slash(char *origen, char *destino)
 //0 si error
 int util_write_configfile(void)
 {
-  //Sobreescribimos archivos con settings actuales
-  debug_printf (VERBOSE_INFO,"Writing configuration file");
+    //Sobreescribimos archivos con settings actuales
+    debug_printf (VERBOSE_INFO,"Writing configuration file");
 
-  //Creamos archivo de configuracion de ejemplo y agregamos settings aparte
+    //Creamos archivo de configuracion de ejemplo y agregamos settings aparte
 
-  if (util_create_sample_configfile(0)==0) {
+    if (util_create_sample_configfile(0)==0) {
     debug_printf(VERBOSE_ERR,"Cannot write configuration file");
     return 0;
-  }
+    }
 
-  //Agregamos contenido
-  //char config_settings[20000]; //Esto es mas que suficiente
+    //Agregamos contenido
+    //char config_settings[20000]; //Esto es mas que suficiente
 
-  char *config_settings=util_malloc(MAX_SIZE_CONFIG_FILE+1,"Can not allocate memory for config file");
+    char *config_settings=util_malloc(MAX_SIZE_CONFIG_FILE+1,"Can not allocate memory for config file");
 
-  char buffer_temp[MAX_CONFIG_SETTING]; //Para cadenas temporales
-  //char buffer_temp2[MAX_CONFIG_SETTING]; //Para cadenas temporales
+    char buffer_temp[MAX_CONFIG_SETTING]; //Para cadenas temporales
+    //char buffer_temp2[MAX_CONFIG_SETTING]; //Para cadenas temporales
 
-  int indice_string=0;
+    int indice_string=0;
 
-  int i;
+    int i;
 
 
 
-//Macro para no repetir tantas veces lo mismo
-#define ADD_STRING_CONFIG indice_string +=util_write_config_add_string(&config_settings[indice_string]
+    //Macro para no repetir tantas veces lo mismo
+    #define ADD_STRING_CONFIG indice_string +=util_write_config_add_string(&config_settings[indice_string]
 
-  //sprintf (buffer_temp,"--zoom %d",zoom_x);
-  if (save_configuration_file_on_exit.v)      ADD_STRING_CONFIG,"--saveconf-on-exit");
+    //sprintf (buffer_temp,"--zoom %d",zoom_x);
+    if (save_configuration_file_on_exit.v)      ADD_STRING_CONFIG,"--saveconf-on-exit");
 
 
     //Estos dos justo al principio para poder avisar si se ha hecho downgrade
@@ -3869,32 +3869,32 @@ int util_write_configfile(void)
 
 
 
-  if (zoom_x==zoom_y) ADD_STRING_CONFIG,"--zoom %d",zoom_x);
-  else {
-    ADD_STRING_CONFIG,"--zoomx %d",zoom_x);
-    ADD_STRING_CONFIG,"--zoomy %d",zoom_y);
-  }
-
-  if (autochange_zoom_big_display.v==0)       ADD_STRING_CONFIG,"--no-autochange-zoom-big-display");
-
-  if (screen_keep_both_zoom_equals.v==0)        ADD_STRING_CONFIG,"--zoom-allow-different-xy");
-
-  if (frameskip)                              ADD_STRING_CONFIG,"--frameskip %d",frameskip);
-
-
-  if (menu_char_width!=8)		      ADD_STRING_CONFIG,"--menucharwidth %d",menu_char_width);
-  if (menu_char_height!=8)		      ADD_STRING_CONFIG,"--menucharheight %d",menu_char_height);
-
-  if (screen_reduce_menu_ancho==2)      ADD_STRING_CONFIG,"--menu-half-width");
-  if (screen_reduce_menu_alto==2)       ADD_STRING_CONFIG,"--menu-half-height");
-
-  if (screen_special_effects_enabled.v)    ADD_STRING_CONFIG,"--video-fx-enable");
-
-  for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
-    if (screen_effect_applied_list[i].type!=SCREEN_EFFECT_TYPE_NONE) {
-        ADD_STRING_CONFIG,"--video-fx-set \"%s\" %d %d",screen_effect_get_name(screen_effect_applied_list[i].type),i,screen_effect_applied_list[i].enabled);
+    if (zoom_x==zoom_y) ADD_STRING_CONFIG,"--zoom %d",zoom_x);
+    else {
+        ADD_STRING_CONFIG,"--zoomx %d",zoom_x);
+        ADD_STRING_CONFIG,"--zoomy %d",zoom_y);
     }
-  }
+
+    if (autochange_zoom_big_display.v==0)       ADD_STRING_CONFIG,"--no-autochange-zoom-big-display");
+
+    if (screen_keep_both_zoom_equals.v==0)        ADD_STRING_CONFIG,"--zoom-allow-different-xy");
+
+    if (frameskip)                              ADD_STRING_CONFIG,"--frameskip %d",frameskip);
+
+
+    if (menu_char_width!=8)		      ADD_STRING_CONFIG,"--menucharwidth %d",menu_char_width);
+    if (menu_char_height!=8)		      ADD_STRING_CONFIG,"--menucharheight %d",menu_char_height);
+
+    if (screen_reduce_menu_ancho==2)      ADD_STRING_CONFIG,"--menu-half-width");
+    if (screen_reduce_menu_alto==2)       ADD_STRING_CONFIG,"--menu-half-height");
+
+    if (screen_special_effects_enabled.v)    ADD_STRING_CONFIG,"--video-fx-enable");
+
+    for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
+        if (screen_effect_applied_list[i].type!=SCREEN_EFFECT_TYPE_NONE) {
+            ADD_STRING_CONFIG,"--video-fx-set \"%s\" %d %d",screen_effect_get_name(screen_effect_applied_list[i].type),i,screen_effect_applied_list[i].enabled);
+        }
+    }
 
 
     for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
@@ -3908,33 +3908,33 @@ int util_write_configfile(void)
 
 
 
-  if (screen_reduction_factor==SCREEN_REDUCE_075)			ADD_STRING_CONFIG,"--reduce-075");
-  if (screen_reduction_factor==SCREEN_REDUCE_050)			ADD_STRING_CONFIG,"--reduce-050");
-  if (screen_reduction_factor==SCREEN_REDUCE_025)			ADD_STRING_CONFIG,"--reduce-025");
-  if (screen_reduce_antialias.v==0)		ADD_STRING_CONFIG,"--reduce-display-no-antialias");
+    if (screen_reduction_factor==SCREEN_REDUCE_075)			ADD_STRING_CONFIG,"--reduce-075");
+    if (screen_reduction_factor==SCREEN_REDUCE_050)			ADD_STRING_CONFIG,"--reduce-050");
+    if (screen_reduction_factor==SCREEN_REDUCE_025)			ADD_STRING_CONFIG,"--reduce-025");
+    if (screen_reduce_antialias.v==0)		ADD_STRING_CONFIG,"--reduce-display-no-antialias");
 
 
 
-  if (screen_watermark_enabled.v)               ADD_STRING_CONFIG,"--enable-watermark");
+    if (screen_watermark_enabled.v)               ADD_STRING_CONFIG,"--enable-watermark");
 
 
                                                 ADD_STRING_CONFIG,"--watermark-position %d",screen_watermark_position);
 
-  if (screen_watermark_enabled_only_when_device_activity.v)     ADD_STRING_CONFIG,"--watermark-only-when-device-activity");
-  if (screen_watermark_rotate_colors_device_activity.v==0)      ADD_STRING_CONFIG,"--watermark-no-rotate-device-activity");
+    if (screen_watermark_enabled_only_when_device_activity.v)     ADD_STRING_CONFIG,"--watermark-only-when-device-activity");
+    if (screen_watermark_rotate_colors_device_activity.v==0)      ADD_STRING_CONFIG,"--watermark-no-rotate-device-activity");
 
-  if (screen_forbid_zxdesktop)          ADD_STRING_CONFIG,"--forbid-zxdesktop");
-
-
-  if (screen_ext_desktop_enabled)             ADD_STRING_CONFIG,"--enable-zxdesktop");
-                                              ADD_STRING_CONFIG,"--zxdesktop-width %d",zxdesktop_width);
-                                              ADD_STRING_CONFIG,"--zxdesktop-height %d",zxdesktop_height);
+    if (screen_forbid_zxdesktop)          ADD_STRING_CONFIG,"--forbid-zxdesktop");
 
 
+    if (screen_ext_desktop_enabled)             ADD_STRING_CONFIG,"--enable-zxdesktop");
+                                                ADD_STRING_CONFIG,"--zxdesktop-width %d",zxdesktop_width);
+                                                ADD_STRING_CONFIG,"--zxdesktop-height %d",zxdesktop_height);
 
-                                              ADD_STRING_CONFIG,"--zxdesktop-fill-type %d",menu_ext_desktop_fill);
-                                              ADD_STRING_CONFIG,"--zxdesktop-fill-primary-color %d",menu_ext_desktop_fill_first_color);
-                                              ADD_STRING_CONFIG,"--zxdesktop-fill-secondary-color %d",menu_ext_desktop_fill_second_color);
+
+
+                                                ADD_STRING_CONFIG,"--zxdesktop-fill-type %d",menu_ext_desktop_fill);
+                                                ADD_STRING_CONFIG,"--zxdesktop-fill-primary-color %d",menu_ext_desktop_fill_first_color);
+                                                ADD_STRING_CONFIG,"--zxdesktop-fill-secondary-color %d",menu_ext_desktop_fill_second_color);
 
     if (menu_ext_desktop_degraded_inverted.v)	  ADD_STRING_CONFIG,"--zxdesktop-fill-degraded-inverted");
 
@@ -4054,233 +4054,233 @@ int util_write_configfile(void)
         }
     }
 
-  if (autoframeskip.v==0)                     ADD_STRING_CONFIG,"--disable-autoframeskip");
+    if (autoframeskip.v==0)                     ADD_STRING_CONFIG,"--disable-autoframeskip");
 
-  if (auto_frameskip_even_when_movin_windows.v==0)         ADD_STRING_CONFIG,"--no-autoframeskip-moving-win");
+    if (auto_frameskip_even_when_movin_windows.v==0)         ADD_STRING_CONFIG,"--no-autoframeskip-moving-win");
 
-  if (frameskip_draw_zxdesktop_background.v==0)    ADD_STRING_CONFIG,"--no-frameskip-zxdesktop-back");
+    if (frameskip_draw_zxdesktop_background.v==0)    ADD_STRING_CONFIG,"--no-frameskip-zxdesktop-back");
 
-  if (disable_change_flash.v)                 ADD_STRING_CONFIG,"--disable-flash");
+    if (disable_change_flash.v)                 ADD_STRING_CONFIG,"--disable-flash");
 
-  if (cambio_parametros_maquinas_lentas.v)    ADD_STRING_CONFIG,"--changeslowparameters");
-  else                                        ADD_STRING_CONFIG,"--nochangeslowparameters");
-  if (ventana_fullscreen)                     ADD_STRING_CONFIG,"--fullscreen");
-  if (verbose_level)                          ADD_STRING_CONFIG,"--verbose %d",verbose_level);
+    if (cambio_parametros_maquinas_lentas.v)    ADD_STRING_CONFIG,"--changeslowparameters");
+    else                                        ADD_STRING_CONFIG,"--nochangeslowparameters");
+    if (ventana_fullscreen)                     ADD_STRING_CONFIG,"--fullscreen");
+    if (verbose_level)                          ADD_STRING_CONFIG,"--verbose %d",verbose_level);
 
 
-  if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) ADD_STRING_CONFIG,"--debug-filter exclude");
-  if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_INCLUDE) ADD_STRING_CONFIG,"--debug-filter include");
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) ADD_STRING_CONFIG,"--debug-filter exclude");
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_INCLUDE) ADD_STRING_CONFIG,"--debug-filter include");
 
 
                                                 ADD_STRING_CONFIG,"--debug-filter-exclude-mask %d",debug_mascara_clase_exclude);
                                                 ADD_STRING_CONFIG,"--debug-filter-include-mask %d",debug_mascara_clase_include);
 
 
-  if (debug_unnamed_console_enabled.v==0)     ADD_STRING_CONFIG,"--disable-debug-console-win");
+    if (debug_unnamed_console_enabled.v==0)     ADD_STRING_CONFIG,"--disable-debug-console-win");
 
-  if (debug_always_show_messages_in_console.v) ADD_STRING_CONFIG,"--verbose-always-console");
-  if (windows_no_disable_console.v)           ADD_STRING_CONFIG,"--nodisableconsole");
-  if (porcentaje_velocidad_emulador!=100)     ADD_STRING_CONFIG,"--emulatorspeed %d",porcentaje_velocidad_emulador);
-  if (zxuno_deny_turbo_bios_boot.v)           ADD_STRING_CONFIG,"--denyturbozxunoboot");
+    if (debug_always_show_messages_in_console.v) ADD_STRING_CONFIG,"--verbose-always-console");
+    if (windows_no_disable_console.v)           ADD_STRING_CONFIG,"--nodisableconsole");
+    if (porcentaje_velocidad_emulador!=100)     ADD_STRING_CONFIG,"--emulatorspeed %d",porcentaje_velocidad_emulador);
+    if (zxuno_deny_turbo_bios_boot.v)           ADD_STRING_CONFIG,"--denyturbozxunoboot");
 
-  if (tbblue_deny_turbo_rom.v) {
-    ADD_STRING_CONFIG,"--denyturbotbbluerom");
-  }
+    if (tbblue_deny_turbo_rom.v) {
+        ADD_STRING_CONFIG,"--denyturbotbbluerom");
+    }
 
-  else {
-    ADD_STRING_CONFIG,"--allowturbotbbluerom");
-  }
+    else {
+        ADD_STRING_CONFIG,"--allowturbotbbluerom");
+    }
 
-                                              ADD_STRING_CONFIG,"--tbblue-max-turbo-rom %d",tbblue_deny_turbo_rom_max_allowed);
+                                                ADD_STRING_CONFIG,"--tbblue-max-turbo-rom %d",tbblue_deny_turbo_rom_max_allowed);
 
-  if (tbblue_deny_turbo_everywhere.v)         ADD_STRING_CONFIG,"--denyturbotbblueeverywhere");
+    if (tbblue_deny_turbo_everywhere.v)         ADD_STRING_CONFIG,"--denyturbotbblueeverywhere");
 
-                                              ADD_STRING_CONFIG,"--tbblue-max-turbo-everywhere %d",tbblue_deny_turbo_everywhere_max_allowed);
-
-
-  if (tbblue_fast_boot_mode.v)                ADD_STRING_CONFIG,"--tbblue-fast-boot-mode");
+                                                ADD_STRING_CONFIG,"--tbblue-max-turbo-everywhere %d",tbblue_deny_turbo_everywhere_max_allowed);
 
 
-  if (cpu_random_r_register.v)                ADD_STRING_CONFIG,"--random-r-register");
+    if (tbblue_fast_boot_mode.v)                ADD_STRING_CONFIG,"--tbblue-fast-boot-mode");
 
 
-  //no uso esto de momento if (tbblue_initial_123b_port>=0)            ADD_STRING_CONFIG,"--tbblue-123b-port %d",tbblue_initial_123b_port);
-
-  if (zx8081_get_standard_ram()!=16)          ADD_STRING_CONFIG,"--zx8081mem %d",zx8081_get_standard_ram());
-  if (get_ram_ace()!=19)                      ADD_STRING_CONFIG,"--acemem %d",get_ram_ace() );
-  if (mem128_multiplicador!=1)                ADD_STRING_CONFIG,"--128kmem %d",mem128_multiplicador*128);
-  if (ql_get_current_ram_kb()!=128)           ADD_STRING_CONFIG,"--qlrammem %d",ql_get_current_ram_kb() );
-
-  if (simulate_screen_zx8081.v)               ADD_STRING_CONFIG,"--videozx8081 %d",umbral_simulate_screen_zx8081);
-                                              ADD_STRING_CONFIG,"--ao %s",audio_new_driver_name);
-                                              ADD_STRING_CONFIG,"--vo %s",scr_new_driver_name);
-  if (noautoload.v)                           ADD_STRING_CONFIG,"--noautoload");
-
-  if (fast_autoload.v)			      ADD_STRING_CONFIG,"--fastautoload");
-
-  if (storage_accelerate_loading.v)           ADD_STRING_CONFIG,"--accelerate-loading");
-  if (storage_accelerate_saving.v)            ADD_STRING_CONFIG,"--accelerate-saving");
-
-  if (ay_speech_enabled.v==0)                 ADD_STRING_CONFIG,"--disableayspeech");
-  if (ay_envelopes_enabled.v==0)              ADD_STRING_CONFIG,"--disableenvelopes");
-  if (audio_noreset_audiobuffer_full.v)       ADD_STRING_CONFIG,"--noreset-audiobuffer-full");
+    if (cpu_random_r_register.v)                ADD_STRING_CONFIG,"--random-r-register");
 
 
-  if (silence_detector_setting.v)	      ADD_STRING_CONFIG,"--enable-silencedetector");
-  else 					      ADD_STRING_CONFIG,"--disable-silencedetector");
+    //no uso esto de momento if (tbblue_initial_123b_port>=0)            ADD_STRING_CONFIG,"--tbblue-123b-port %d",tbblue_initial_123b_port);
 
-  if (audioonebitspeaker_intensive_cpu_usage)     ADD_STRING_CONFIG,"--onebitspeaker-improved");
-  if (audioonebitspeaker_agudo_filtro)            ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter");
-                                              ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter-divider %d",audioonebitspeaker_agudo_filtro_limite);
-                                              ADD_STRING_CONFIG,"--onebitspeaker-type %d",audioonebitspeaker_tipo_altavoz);
+    if (zx8081_get_standard_ram()!=16)          ADD_STRING_CONFIG,"--zx8081mem %d",zx8081_get_standard_ram());
+    if (get_ram_ace()!=19)                      ADD_STRING_CONFIG,"--acemem %d",get_ram_ace() );
+    if (mem128_multiplicador!=1)                ADD_STRING_CONFIG,"--128kmem %d",mem128_multiplicador*128);
+    if (ql_get_current_ram_kb()!=128)           ADD_STRING_CONFIG,"--qlrammem %d",ql_get_current_ram_kb() );
+
+    if (simulate_screen_zx8081.v)               ADD_STRING_CONFIG,"--videozx8081 %d",umbral_simulate_screen_zx8081);
+                                                ADD_STRING_CONFIG,"--ao %s",audio_new_driver_name);
+                                                ADD_STRING_CONFIG,"--vo %s",scr_new_driver_name);
+    if (noautoload.v)                           ADD_STRING_CONFIG,"--noautoload");
+
+    if (fast_autoload.v)			      ADD_STRING_CONFIG,"--fastautoload");
+
+    if (storage_accelerate_loading.v)           ADD_STRING_CONFIG,"--accelerate-loading");
+    if (storage_accelerate_saving.v)            ADD_STRING_CONFIG,"--accelerate-saving");
+
+    if (ay_speech_enabled.v==0)                 ADD_STRING_CONFIG,"--disableayspeech");
+    if (ay_envelopes_enabled.v==0)              ADD_STRING_CONFIG,"--disableenvelopes");
+    if (audio_noreset_audiobuffer_full.v)       ADD_STRING_CONFIG,"--noreset-audiobuffer-full");
+
+
+    if (silence_detector_setting.v)	      ADD_STRING_CONFIG,"--enable-silencedetector");
+    else 					      ADD_STRING_CONFIG,"--disable-silencedetector");
+
+    if (audioonebitspeaker_intensive_cpu_usage)     ADD_STRING_CONFIG,"--onebitspeaker-improved");
+    if (audioonebitspeaker_agudo_filtro)            ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter");
+                                                ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter-divider %d",audioonebitspeaker_agudo_filtro_limite);
+                                                ADD_STRING_CONFIG,"--onebitspeaker-type %d",audioonebitspeaker_tipo_altavoz);
 
 #ifdef COMPILE_ALSA
                                               ADD_STRING_CONFIG,"--alsacapturedevice %s",alsa_capture_device);
 #endif
 
-  if (border_enabled.v==0)                    ADD_STRING_CONFIG,"--disableborder");
-  if (mouse_pointer_shown.v==0)               ADD_STRING_CONFIG,"--hidemousepointer");
-  if (mouse_menu_disabled.v)                  ADD_STRING_CONFIG,"--disablemenumouse");
-  if (mouse_menu_ignore_click_open.v)         ADD_STRING_CONFIG,"--ignoremouseclickopenmenu");
+    if (border_enabled.v==0)                    ADD_STRING_CONFIG,"--disableborder");
+    if (mouse_pointer_shown.v==0)               ADD_STRING_CONFIG,"--hidemousepointer");
+    if (mouse_menu_disabled.v)                  ADD_STRING_CONFIG,"--disablemenumouse");
+    if (mouse_menu_ignore_click_open.v)         ADD_STRING_CONFIG,"--ignoremouseclickopenmenu");
 
-  if (zxvision_topbar_menu_enabled.v)           ADD_STRING_CONFIG,"--enable-top-menu");
-  if (zxvision_topbar_appears_move_mouse_top.v==0)     ADD_STRING_CONFIG,"--no-show-top-menu-move-top");
+    if (zxvision_topbar_menu_enabled.v)           ADD_STRING_CONFIG,"--enable-top-menu");
+    if (zxvision_topbar_appears_move_mouse_top.v==0)     ADD_STRING_CONFIG,"--no-show-top-menu-move-top");
 
-  if (lightgun_emulation_enabled.v)             ADD_STRING_CONFIG,"--enable-optical-input");
-  if (lightgun_scope.v)                         ADD_STRING_CONFIG,"--opticalinput-scope");
+    if (lightgun_emulation_enabled.v)             ADD_STRING_CONFIG,"--enable-optical-input");
+    if (lightgun_scope.v)                         ADD_STRING_CONFIG,"--opticalinput-scope");
 
                                                 ADD_STRING_CONFIG,"--opticalinputtype \"%s\"",lightgun_types_list[lightgun_emulation_type]);
                                                 ADD_STRING_CONFIG,"--opticalinput-scan-threshold %d",lightgun_vertical_threshold);
 
 
-  if (kempston_mouse_emulation.v)             ADD_STRING_CONFIG,"--enablekempstonmouse");
+    if (kempston_mouse_emulation.v)             ADD_STRING_CONFIG,"--enablekempstonmouse");
 
-                                              ADD_STRING_CONFIG,"--kempstonmouse-sens %d",kempston_mouse_factor_sensibilidad);
+                                                ADD_STRING_CONFIG,"--kempstonmouse-sens %d",kempston_mouse_factor_sensibilidad);
 
 
-  if (core_spectrum_uses_reduced.v)           ADD_STRING_CONFIG,"--spectrum-reduced-core");
-  else                                        ADD_STRING_CONFIG,"--no-spectrum-reduced-core");
+    if (core_spectrum_uses_reduced.v)           ADD_STRING_CONFIG,"--spectrum-reduced-core");
+    else                                        ADD_STRING_CONFIG,"--no-spectrum-reduced-core");
 
 
                                               ADD_STRING_CONFIG,"--ula-data-bus %d",ula_databus_value);
 
-  if (menu_footer==0)                         ADD_STRING_CONFIG,"--disablefooter");
-  if (menu_multitarea==0)                     ADD_STRING_CONFIG,"--disablemultitaskmenu");
-  if (menu_emulation_paused_on_menu)          ADD_STRING_CONFIG,"--stopemulationmenu");
+    if (menu_footer==0)                         ADD_STRING_CONFIG,"--disablefooter");
+    if (menu_multitarea==0)                     ADD_STRING_CONFIG,"--disablemultitaskmenu");
+    if (menu_emulation_paused_on_menu)          ADD_STRING_CONFIG,"--stopemulationmenu");
 
-  if (menu_old_behaviour_close_menus.v)       ADD_STRING_CONFIG,"--old-behaviour-menu-esc-etc");
+    if (menu_old_behaviour_close_menus.v)       ADD_STRING_CONFIG,"--old-behaviour-menu-esc-etc");
 
-  //if (screen_bw_no_multitask_menu.v==0)       ADD_STRING_CONFIG,"--disablebw-no-multitask");
+    //if (screen_bw_no_multitask_menu.v==0)       ADD_STRING_CONFIG,"--disablebw-no-multitask");
 
-  get_machine_config_name_by_number(buffer_temp,current_machine_type);
+    get_machine_config_name_by_number(buffer_temp,current_machine_type);
 
-  if (buffer_temp[0]!=0) {
-                                              ADD_STRING_CONFIG,"--machine %s",buffer_temp);
-  }
-  if (video_fast_mode_emulation.v)            ADD_STRING_CONFIG,"--videofastblack");
+    if (buffer_temp[0]!=0) {
+                                                ADD_STRING_CONFIG,"--machine %s",buffer_temp);
+    }
+    if (video_fast_mode_emulation.v)            ADD_STRING_CONFIG,"--videofastblack");
 
-  if (ocr_settings_not_look_23606.v)          ADD_STRING_CONFIG,"--no-ocr-alternatechars");
+    if (ocr_settings_not_look_23606.v)          ADD_STRING_CONFIG,"--no-ocr-alternatechars");
 
-  if (z88_hide_keys_shortcuts.v)                ADD_STRING_CONFIG,"--z88-hide-shortcuts");
+    if (z88_hide_keys_shortcuts.v)                ADD_STRING_CONFIG,"--z88-hide-shortcuts");
 
-  if (screen_text_all_refresh_pixel.v)        ADD_STRING_CONFIG,"--allpixeltotext");
+    if (screen_text_all_refresh_pixel.v)        ADD_STRING_CONFIG,"--allpixeltotext");
 
-                                              ADD_STRING_CONFIG,"--allpixeltotext-scale %d",screen_text_all_refresh_pixel_scale);
+                                                ADD_STRING_CONFIG,"--allpixeltotext-scale %d",screen_text_all_refresh_pixel_scale);
 
-  if (screen_text_all_refresh_pixel_invert.v) ADD_STRING_CONFIG,"--allpixeltotext-invert");
+    if (screen_text_all_refresh_pixel_invert.v) ADD_STRING_CONFIG,"--allpixeltotext-invert");
 
                                             ADD_STRING_CONFIG,"--allpixeltotext-width %d",scr_refresca_pantalla_tsconf_text_max_ancho);
                                             ADD_STRING_CONFIG,"--allpixeltotext-x-offset %d",scr_refresca_pantalla_tsconf_text_offset_x);
                                             ADD_STRING_CONFIG,"--allpixeltotext-height %d",scr_refresca_pantalla_tsconf_text_max_alto);
                                             ADD_STRING_CONFIG,"--allpixeltotext-y-offset %d",scr_refresca_pantalla_tsconf_text_offset_y);
 
-  if (zx8081_vsync_sound.v)                   ADD_STRING_CONFIG,"--zx8081vsyncsound");
-  if (zx8081_detect_vsync_sound.v)            ADD_STRING_CONFIG,"--zx8081vsyncsounddetection");
+    if (zx8081_vsync_sound.v)                   ADD_STRING_CONFIG,"--zx8081vsyncsound");
+    if (zx8081_detect_vsync_sound.v)            ADD_STRING_CONFIG,"--zx8081vsyncsounddetection");
 
-  if (ram_in_8192.v)                          ADD_STRING_CONFIG,"--zx8081ram8K2000");
-  if (ram_in_32768.v)                         ADD_STRING_CONFIG,"--zx8081ram16K8000");
-  if (ram_in_49152.v)                         ADD_STRING_CONFIG,"--zx8081ram16KC000");
-  if (autodetect_wrx.v)                       ADD_STRING_CONFIG,"--autodetectwrx");
-  if (wrx_present.v)                          ADD_STRING_CONFIG,"--wrx");
-                                              //ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
-  if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
+    if (ram_in_8192.v)                          ADD_STRING_CONFIG,"--zx8081ram8K2000");
+    if (ram_in_32768.v)                         ADD_STRING_CONFIG,"--zx8081ram16K8000");
+    if (ram_in_49152.v)                         ADD_STRING_CONFIG,"--zx8081ram16KC000");
+    if (autodetect_wrx.v)                       ADD_STRING_CONFIG,"--autodetectwrx");
+    if (wrx_present.v)                          ADD_STRING_CONFIG,"--wrx");
+                                                //ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
+    if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
 
                                             ADD_STRING_CONFIG,"--tv-maximum-scanlines %d",tv_max_lines);
                                             ADD_STRING_CONFIG,"--tv-maximum-scanline-period %d",tv_max_line_period);
                                             ADD_STRING_CONFIG,"--tv-minimum-accepted-vsync-length %d",tv_minimum_accepted_vsync);
                                             ADD_STRING_CONFIG,"--tv-minimum-accepted-vsync-interval %d",tv_vsync_minimum_accepted_interval);
 
-  if (setting_set_machine_enable_custom_rom && custom_romfile[0]!=0) {
+    if (setting_set_machine_enable_custom_rom && custom_romfile[0]!=0) {
         ADD_STRING_CONFIG,"--romfile \"%s\"",custom_romfile);
-  }
+    }
 
 
-  if (quickload_file[0]!=0) {
-    util_get_dir(quickload_file,buffer_temp);
-     ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
-  }
+    if (quickload_file[0]!=0) {
+        util_get_dir(quickload_file,buffer_temp);
+        ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
+    }
 
-  if (smartload_history_file[0]) ADD_STRING_CONFIG,"--smartloadhistoryfile \"%s\"",smartload_history_file);
+    if (smartload_history_file[0]) ADD_STRING_CONFIG,"--smartloadhistoryfile \"%s\"",smartload_history_file);
 
-  //Archivos recientes de smartload. Recorremos desde abajo hasta arriba
+    //Archivos recientes de smartload. Recorremos desde abajo hasta arriba
     for (i=MAX_LAST_FILESUSED-1;i>=0;i--) {
         if (last_files_used_array[i][0]!=0) ADD_STRING_CONFIG,"--addlastfile \"%s\"",last_files_used_array[i]);
     }
 
 
 
-  if (snapshot_autosave_interval_quicksave_directory[0]!=0) {
+    if (snapshot_autosave_interval_quicksave_directory[0]!=0) {
         //Rutas que son directorios, llamar a util_copy_path_delete_last_slash
         //Rutas que apuntan a archivos (o directorios por linea de comandos pero que en menu almacenan archivos), llamar a util_get_dir
         //printf ("dir quicksave: %s\n",snapshot_autosave_interval_quicksave_directory);
         util_copy_path_delete_last_slash(snapshot_autosave_interval_quicksave_directory,buffer_temp);
         //printf ("dir quicksave final: %s\n",buffer_temp);
 
-     ADD_STRING_CONFIG,"--quicksavepath \"%s\"",buffer_temp);
-  }
+        ADD_STRING_CONFIG,"--quicksavepath \"%s\"",buffer_temp);
+    }
 
 
-  if (binary_file_load[0]!=0) {
-        //printf ("dir binary_file_load: %s\n",binary_file_load);
-    util_get_dir(binary_file_load,buffer_temp);
-        //printf ("dir binary_file_load final: %s\n",buffer_temp);
-     ADD_STRING_CONFIG,"--loadbinarypath \"%s\"",buffer_temp);
-  }
+    if (binary_file_load[0]!=0) {
+            //printf ("dir binary_file_load: %s\n",binary_file_load);
+        util_get_dir(binary_file_load,buffer_temp);
+            //printf ("dir binary_file_load final: %s\n",buffer_temp);
+        ADD_STRING_CONFIG,"--loadbinarypath \"%s\"",buffer_temp);
+    }
 
-  if (binary_file_save[0]!=0) {
-        util_get_dir(binary_file_save,buffer_temp);
-     ADD_STRING_CONFIG,"--savebinarypath \"%s\"",buffer_temp);
-  }
+    if (binary_file_save[0]!=0) {
+            util_get_dir(binary_file_save,buffer_temp);
+        ADD_STRING_CONFIG,"--savebinarypath \"%s\"",buffer_temp);
+    }
 
-  if (zxuno_flash_spi_name[0])                ADD_STRING_CONFIG,"--zxunospifile \"%s\"",zxuno_flash_spi_name);
-  if (zxuno_flash_persistent_writes.v)     ADD_STRING_CONFIG,"--zxunospi-persistent-writes");
+    if (zxuno_flash_spi_name[0])                ADD_STRING_CONFIG,"--zxunospifile \"%s\"",zxuno_flash_spi_name);
+    if (zxuno_flash_persistent_writes.v)     ADD_STRING_CONFIG,"--zxunospi-persistent-writes");
 
 
-  if (zxuno_flash_write_protection.v)         ADD_STRING_CONFIG,"--zxunospi-write-protection");
+    if (zxuno_flash_write_protection.v)         ADD_STRING_CONFIG,"--zxunospi-write-protection");
 
-  //TODO printerbitmapfile
-  //TODO printertextfile
-  //TODO redefinekey
+    //TODO printerbitmapfile
+    //TODO printertextfile
+    //TODO redefinekey
 
                                             ADD_STRING_CONFIG,"--tbblue-machine-id %d",tbblue_machine_id);
 
-  if (recreated_zx_keyboard_support.v)	      ADD_STRING_CONFIG,"--recreatedzx");
-  if (recreated_zx_keyboard_support_also_on_menu.v)     ADD_STRING_CONFIG,"--recreatedzx-also-on-menu");
+    if (recreated_zx_keyboard_support.v)	      ADD_STRING_CONFIG,"--recreatedzx");
+    if (recreated_zx_keyboard_support_also_on_menu.v)     ADD_STRING_CONFIG,"--recreatedzx-also-on-menu");
 
-  if (keyboard_issue2.v)                        ADD_STRING_CONFIG,"--keyboard-issue2");
+    if (keyboard_issue2.v)                        ADD_STRING_CONFIG,"--keyboard-issue2");
 
                                                 ADD_STRING_CONFIG,"--keymap %d",z88_cpc_keymap_type);
 
-  if (autoload_snapshot_on_start.v)           ADD_STRING_CONFIG,"--autoloadsnap");
-  if (autosave_snapshot_on_exit.v)            ADD_STRING_CONFIG,"--autosavesnap");
-  if (autosave_snapshot_path_buffer[0]!=0) {
-    //Quitar barra del final si la hay
-    //strcpy(buffer_temp,autosave_snapshot_path_buffer);
-    //i=strlen(buffer_temp);
-    //if (i>1 && buffer_temp[i-1]=='/') buffer_temp[i-1]=0;
-    util_copy_path_delete_last_slash(autosave_snapshot_path_buffer,buffer_temp);
-        ADD_STRING_CONFIG,"--autosnappath \"%s\"",buffer_temp);
-  }
+    if (autoload_snapshot_on_start.v)           ADD_STRING_CONFIG,"--autoloadsnap");
+    if (autosave_snapshot_on_exit.v)            ADD_STRING_CONFIG,"--autosavesnap");
+    if (autosave_snapshot_path_buffer[0]!=0) {
+        //Quitar barra del final si la hay
+        //strcpy(buffer_temp,autosave_snapshot_path_buffer);
+        //i=strlen(buffer_temp);
+        //if (i>1 && buffer_temp[i-1]=='/') buffer_temp[i-1]=0;
+        util_copy_path_delete_last_slash(autosave_snapshot_path_buffer,buffer_temp);
+            ADD_STRING_CONFIG,"--autosnappath \"%s\"",buffer_temp);
+    }
 
 
   if (emulator_tmpdir_set_by_user[0]!=0) {
