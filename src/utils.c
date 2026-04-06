@@ -4283,71 +4283,71 @@ int util_write_configfile(void)
     }
 
 
-  if (emulator_tmpdir_set_by_user[0]!=0) {
-    //Quitar barra del final si la hay
-    util_copy_path_delete_last_slash(emulator_tmpdir_set_by_user,buffer_temp);
-     ADD_STRING_CONFIG,"--tempdir \"%s\"",buffer_temp);
-  }
+    if (emulator_tmpdir_set_by_user[0]!=0) {
+        //Quitar barra del final si la hay
+        util_copy_path_delete_last_slash(emulator_tmpdir_set_by_user,buffer_temp);
+        ADD_STRING_CONFIG,"--tempdir \"%s\"",buffer_temp);
+    }
 
-  if (sna_setting_no_change_machine.v)          ADD_STRING_CONFIG,"--snap-no-change-machine");
+    if (sna_setting_no_change_machine.v)          ADD_STRING_CONFIG,"--snap-no-change-machine");
 
-  if (automount_esxdos_nex.v==0)                ADD_STRING_CONFIG,"--nex-no-automount-esxdos");
+    if (automount_esxdos_nex.v==0)                ADD_STRING_CONFIG,"--nex-no-automount-esxdos");
 
-  if (zsf_force_uncompressed)                   ADD_STRING_CONFIG,"--zsf-uncompressed");
-  if (zsf_snap_save_rom.v)                      ADD_STRING_CONFIG,"--zsf-save-rom");
+    if (zsf_force_uncompressed)                   ADD_STRING_CONFIG,"--zsf-uncompressed");
+    if (zsf_snap_save_rom.v)                      ADD_STRING_CONFIG,"--zsf-save-rom");
 
-  if (no_close_menu_after_smartload.v)          ADD_STRING_CONFIG,"--no-close-after-smartload");
+    if (no_close_menu_after_smartload.v)          ADD_STRING_CONFIG,"--no-close-after-smartload");
 
-  if (sync_clock_to_z88.v==0)                   ADD_STRING_CONFIG,"--z88-not-sync-clock-snap");
+    if (sync_clock_to_z88.v==0)                   ADD_STRING_CONFIG,"--z88-not-sync-clock-snap");
 
-  if (snapshot_in_ram_enabled.v)                ADD_STRING_CONFIG,"--snapram-enable");
-  if (snapshot_in_ram_timer_enabled.v)          ADD_STRING_CONFIG,"--snapram-automatic");
+    if (snapshot_in_ram_enabled.v)                ADD_STRING_CONFIG,"--snapram-enable");
+    if (snapshot_in_ram_timer_enabled.v)          ADD_STRING_CONFIG,"--snapram-automatic");
                                                 ADD_STRING_CONFIG,"--snapram-interval %d",snapshot_in_ram_interval_seconds);
                                                 ADD_STRING_CONFIG,"--snapram-max %d",snapshots_in_ram_maximum);
                                                 ADD_STRING_CONFIG,"--snapram-rewind-timeout %d",snapshot_in_ram_enabled_timer_timeout);
 
 
-  if (texto_artistico.v==0)                     ADD_STRING_CONFIG,"--disablearttext");
+    if (texto_artistico.v==0)                     ADD_STRING_CONFIG,"--disablearttext");
                                                 ADD_STRING_CONFIG,"--arttextthresold %d",umbral_arttext);
 
-  if (use_scrcursesw.v)                         ADD_STRING_CONFIG,"--curses-ext-utf");
+    if (use_scrcursesw.v)                         ADD_STRING_CONFIG,"--curses-ext-utf");
 
 
-  if (chardetect_printchar_enabled.v)         ADD_STRING_CONFIG,"--enableprintchartrap");
-  if (stdout_simpletext_automatic_redraw.v)   ADD_STRING_CONFIG,"--autoredrawstdout");
-  if (screen_text_accept_ansi)                ADD_STRING_CONFIG,"--sendansi");
+    if (chardetect_printchar_enabled.v)         ADD_STRING_CONFIG,"--enableprintchartrap");
+    if (stdout_simpletext_automatic_redraw.v)   ADD_STRING_CONFIG,"--autoredrawstdout");
+    if (screen_text_accept_ansi)                ADD_STRING_CONFIG,"--sendansi");
 
-                                              ADD_STRING_CONFIG,"--textfps %d",50/scrstdout_simpletext_refresh_factor);
+                                                ADD_STRING_CONFIG,"--textfps %d",50/scrstdout_simpletext_refresh_factor);
 
 
-  if (chardetect_line_width)                  ADD_STRING_CONFIG,"--linewidth %d",chardetect_line_width);
-  if (chardetect_detect_char_enabled.v && trap_char_detection_routine_number==TRAP_CHAR_DETECTION_ROUTINE_AUTOMATIC)
-                                              ADD_STRING_CONFIG,"--automaticdetectchar");
-  if (chardetect_second_trap_char_dir)        ADD_STRING_CONFIG,"--secondtrapchar %d",chardetect_second_trap_char_dir);
-  if (chardetect_third_trap_char_dir)         ADD_STRING_CONFIG,"--thirdtrapchar %d",chardetect_third_trap_char_dir);
-                                              ADD_STRING_CONFIG,"--chartrapfilter \"%s\"",chardetect_char_filter_names[chardetect_char_filter]);
-  if (chardetect_ignore_newline.v)            ADD_STRING_CONFIG,"--chardetectignorenl");
+    if (chardetect_line_width)                  ADD_STRING_CONFIG,"--linewidth %d",chardetect_line_width);
+    if (chardetect_detect_char_enabled.v && trap_char_detection_routine_number==TRAP_CHAR_DETECTION_ROUTINE_AUTOMATIC)
+                                                ADD_STRING_CONFIG,"--automaticdetectchar");
+    if (chardetect_second_trap_char_dir)        ADD_STRING_CONFIG,"--secondtrapchar %d",chardetect_second_trap_char_dir);
+    if (chardetect_third_trap_char_dir)         ADD_STRING_CONFIG,"--thirdtrapchar %d",chardetect_third_trap_char_dir);
+                                                ADD_STRING_CONFIG,"--chartrapfilter \"%s\"",chardetect_char_filter_names[chardetect_char_filter]);
+    if (chardetect_ignore_newline.v)            ADD_STRING_CONFIG,"--chardetectignorenl");
 
-  if (chardetect_rom_compat_numbers.v)        ADD_STRING_CONFIG,"--chardetectcompatnum");
+    if (chardetect_rom_compat_numbers.v)        ADD_STRING_CONFIG,"--chardetectcompatnum");
 
-  if (textspeech_get_stdout.v) ADD_STRING_CONFIG,"--textspeechgetstdout");
+    if (textspeech_get_stdout.v) ADD_STRING_CONFIG,"--textspeechgetstdout");
 
-  if (chardetect_line_width_wait_space.v)     ADD_STRING_CONFIG,"--linewidthwaitspace");
-  else                                          ADD_STRING_CONFIG,"--linewidthnowaitspace");
+    if (chardetect_line_width_wait_space.v)     ADD_STRING_CONFIG,"--linewidthwaitspace");
+    else                                          ADD_STRING_CONFIG,"--linewidthnowaitspace");
 
-  if (chardetect_line_width_wait_dot.v)     ADD_STRING_CONFIG,"--linewidthwaitdot");
-  else                                      ADD_STRING_CONFIG,"--linewidthnowaitdot");
+    if (chardetect_line_width_wait_dot.v)     ADD_STRING_CONFIG,"--linewidthwaitdot");
+    else                                      ADD_STRING_CONFIG,"--linewidthnowaitdot");
 
-  if (chardetect_second_trap_sum32.v)         ADD_STRING_CONFIG,"--secondtrapsum32");
-  if (textspeech_filter_program!=NULL)        ADD_STRING_CONFIG,"--textspeechprogram \"%s\"",textspeech_filter_program);
-  if (textspeech_stop_filter_program!=NULL)   ADD_STRING_CONFIG,"--textspeechstopprogram \"%s\"",textspeech_stop_filter_program);
-  if (textspeech_filter_program_wait.v)       ADD_STRING_CONFIG,"--textspeechwait");
-  if (textspeech_also_send_menu.v)            ADD_STRING_CONFIG,"--textspeechmenu");
-  if (textspeech_timeout_no_enter)            ADD_STRING_CONFIG,"--textspeechtimeout %d",textspeech_timeout_no_enter);
+    if (chardetect_second_trap_sum32.v)         ADD_STRING_CONFIG,"--secondtrapsum32");
+    if (textspeech_filter_program!=NULL)        ADD_STRING_CONFIG,"--textspeechprogram \"%s\"",textspeech_filter_program);
+    if (textspeech_stop_filter_program!=NULL)   ADD_STRING_CONFIG,"--textspeechstopprogram \"%s\"",textspeech_stop_filter_program);
+    if (textspeech_filter_program_wait.v)       ADD_STRING_CONFIG,"--textspeechwait");
+    if (textspeech_also_send_menu.v)            ADD_STRING_CONFIG,"--textspeechmenu");
+    if (textspeech_timeout_no_enter)            ADD_STRING_CONFIG,"--textspeechtimeout %d",textspeech_timeout_no_enter);
 
-  if (accessibility_enable_gui_sounds.v)      ADD_STRING_CONFIG,"--accessibility-gui-sounds");
+    if (accessibility_enable_gui_sounds.v)      ADD_STRING_CONFIG,"--accessibility-gui-sounds");
 
-  if (textimage_filter_program[0])          ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
+    if (textimage_filter_program[0])          ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
 
                                             ADD_STRING_CONFIG,"--textimage-method-location %s",
                                                 textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);
@@ -4365,165 +4365,165 @@ int util_write_configfile(void)
                                             ADD_STRING_CONFIG,"--textadvmap-zoom %d",menu_debug_textadventure_map_connections_zoom);
 
 
-                                              ADD_STRING_CONFIG,"--tool-sox-path \"%s\"",external_tool_sox);
-                                              //ADD_STRING_CONFIG,"--tool-unzip-path \"%s\"",external_tool_unzip);
-                                              ADD_STRING_CONFIG,"--tool-gunzip-path \"%s\"",external_tool_gunzip);
-                                              ADD_STRING_CONFIG,"--tool-tar-path \"%s\"",external_tool_tar);
-                                              ADD_STRING_CONFIG,"--tool-unrar-path \"%s\"",external_tool_unrar);
+                                                ADD_STRING_CONFIG,"--tool-sox-path \"%s\"",external_tool_sox);
+                                                //ADD_STRING_CONFIG,"--tool-unzip-path \"%s\"",external_tool_unzip);
+                                                ADD_STRING_CONFIG,"--tool-gunzip-path \"%s\"",external_tool_gunzip);
+                                                ADD_STRING_CONFIG,"--tool-tar-path \"%s\"",external_tool_tar);
+                                                ADD_STRING_CONFIG,"--tool-unrar-path \"%s\"",external_tool_unrar);
 
-  //Primera tarjeta MMC
-  if (mmc_file_name[0][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file \"%s\"",mmc_file_name[0]);
-  if (mmc_enabled[0].v)                          ADD_STRING_CONFIG,"--enable-mmc");
-  if (mmc_write_protection[0].v)		      ADD_STRING_CONFIG,"--mmc-write-protection");
-  if (mmc_persistent_writes[0].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes");
+    //Primera tarjeta MMC
+    if (mmc_file_name[0][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file \"%s\"",mmc_file_name[0]);
+    if (mmc_enabled[0].v)                          ADD_STRING_CONFIG,"--enable-mmc");
+    if (mmc_write_protection[0].v)		      ADD_STRING_CONFIG,"--mmc-write-protection");
+    if (mmc_persistent_writes[0].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes");
 
-  //Segunda tarjeta MMC
-  if (mmc_file_name[1][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file-2 \"%s\"",mmc_file_name[1]);
-  if (mmc_enabled[1].v)                          ADD_STRING_CONFIG,"--enable-mmc-2");
-  if (mmc_write_protection[1].v)		      ADD_STRING_CONFIG,"--mmc-write-protection-2");
-  if (mmc_persistent_writes[1].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes-2");
-
-
-  if (divmmc_mmc_ports_enabled.v)             ADD_STRING_CONFIG,"--enable-divmmc-ports");
-
-  if (if1_enabled.v)                        ADD_STRING_CONFIG,"--enable-interface1");
-
-  for (i=0;i<MAX_MICRODRIVES_BY_CONFIG;i++) {
-    if (microdrive_status[i].microdrive_file_name[0]!=0)  ADD_STRING_CONFIG,"--zx-mdv-file %d \"%s\"",i+1,microdrive_status[i].microdrive_file_name);
-    if (microdrive_status[i].microdrive_enabled) ADD_STRING_CONFIG,"--zx-mdv-enable %d",i+1);
-    if (microdrive_status[i].microdrive_persistent_writes==0) ADD_STRING_CONFIG,"--zx-mdv-no-persistent-writes %d",i+1);
-  }
+    //Segunda tarjeta MMC
+    if (mmc_file_name[1][0]!=0)                    ADD_STRING_CONFIG,"--mmc-file-2 \"%s\"",mmc_file_name[1]);
+    if (mmc_enabled[1].v)                          ADD_STRING_CONFIG,"--enable-mmc-2");
+    if (mmc_write_protection[1].v)		      ADD_STRING_CONFIG,"--mmc-write-protection-2");
+    if (mmc_persistent_writes[1].v==0)	      ADD_STRING_CONFIG,"--mmc-no-persistent-writes-2");
 
 
-  //Los settings de  mmc paging no guardarlo si maquina es tbblue, pues acaba activando el divmmc paging en tbblue y entonces esto provoca que no arranque la tbblue rom
-  if (!MACHINE_IS_TBBLUE) {
-    if (divmmc_diviface_enabled.v)            ADD_STRING_CONFIG,"--enable-divmmc-paging");
-    if (divmmc_mmc_ports_enabled.v && divmmc_diviface_enabled.v)
-                                              ADD_STRING_CONFIG,"--enable-divmmc");
-  }
+    if (divmmc_mmc_ports_enabled.v)             ADD_STRING_CONFIG,"--enable-divmmc-ports");
 
-  if (divmmc_rom_name[0]!=0)                  ADD_STRING_CONFIG,"--divmmc-rom \"%s\"",divmmc_rom_name);
+    if (if1_enabled.v)                        ADD_STRING_CONFIG,"--enable-interface1");
 
-  if (hilow_file_name[0]!=0)                    ADD_STRING_CONFIG,"--hilow-file \"%s\"",hilow_file_name);
-  if (hilow_enabled.v)                          ADD_STRING_CONFIG,"--enable-hilow");
-  if (hilow_write_protection.v)		            ADD_STRING_CONFIG,"--hilow-write-protection");
-  if (hilow_persistent_writes.v==0)	            ADD_STRING_CONFIG,"--hilow-no-persistent-writes");
-
-  if (z88_eprom_or_flash_persistent_writes.v==0)    ADD_STRING_CONFIG,"--z88-no-persistent-writes");
-
-  if (ide_file_name[0]!=0)                    ADD_STRING_CONFIG,"--ide-file \"%s\"",ide_file_name);
-  if (ide_enabled.v)                          ADD_STRING_CONFIG,"--enable-ide");
-  if (ide_write_protection.v)		      ADD_STRING_CONFIG,"--ide-write-protection");
-  if (ide_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--ide-no-persistent-writes");
-  if (divide_ide_ports_enabled.v)             ADD_STRING_CONFIG,"--enable-divide-ports");
-  if (divide_diviface_enabled.v)              ADD_STRING_CONFIG,"--enable-divide-paging");
-
-  if (divide_ide_ports_enabled.v && divide_diviface_enabled.v)
-                                              ADD_STRING_CONFIG,"--enable-divide");
-  if (divide_rom_name[0]!=0)                  ADD_STRING_CONFIG,"--divide-rom \"%s\"",divide_rom_name);
-
-  if (zxmmcplus_enabled.v)                          ADD_STRING_CONFIG,"--enable-zxmmcplus");
-  if (zxmmc_emulation.v)                      ADD_STRING_CONFIG,"--enable-zxmmc");
-
-  if (zxmmcplus_flash_name[0])                ADD_STRING_CONFIG,"--zxmmcplus-flash-file \"%s\"",zxmmcplus_flash_name);
-  if (zxmmcplus_flashrom_write_protect.v)     ADD_STRING_CONFIG,"--zxmmcplus-flash-write-protection");
-  if (zxmmcplus_flashrom_persistent_writes.v) ADD_STRING_CONFIG,"--zxmmcplus-flash-persistent-writes");
-
-  if (eight_bit_simple_ide_enabled.v)         ADD_STRING_CONFIG,"--enable-8bit-ide");
-
-                                  ADD_STRING_CONFIG,"--diviface-ram-size %d",get_diviface_total_ram());
-
-  if (zxpand_enabled.v)                       ADD_STRING_CONFIG,"--enable-zxpand");
-  if (zxpand_root_dir[0]!=0)                  ADD_STRING_CONFIG,"--zxpand-root-dir \"%s\"",zxpand_root_dir);
-
-  //no decir que esta habilitado si se va a desactivar al resetear
-  if (esxdos_handler_enabled.v && esxdos_umount_on_reset.v==0)               ADD_STRING_CONFIG,"--enable-esxdos-handler");
-  if (esxdos_handler_root_dir[0]!=0)          ADD_STRING_CONFIG,"--esxdos-root-dir \"%s\"",esxdos_handler_root_dir);
-
-  if (esxdos_handler_enabled.v && esxdos_handler_cwd[0]!=0)  ADD_STRING_CONFIG,"--esxdos-local-dir \"%s\"",esxdos_handler_cwd);
-
-  if (esxdos_handler_readonly.v)              ADD_STRING_CONFIG,"--esxdos-readonly");
-
-  if (ql_microdrive_floppy_emulation)         ADD_STRING_CONFIG,"--enable-ql-mdv-flp");
-  if (ql_mdv1_root_dir[0]!=0)                 ADD_STRING_CONFIG,"--ql-mdv1-root-dir \"%s\"",ql_mdv1_root_dir);
-  if (ql_mdv2_root_dir[0]!=0)                 ADD_STRING_CONFIG,"--ql-mdv2-root-dir \"%s\"",ql_mdv2_root_dir);
-  if (ql_flp1_root_dir[0]!=0)                 ADD_STRING_CONFIG,"--ql-flp1-root-dir \"%s\"",ql_flp1_root_dir);
-
-  if (ql_device_mdv1_enabled)                 ADD_STRING_CONFIG,"--ql-mdv1-enable");
-  if (ql_device_mdv2_enabled)                 ADD_STRING_CONFIG,"--ql-mdv2-enable");
-  if (ql_device_flp1_enabled)                 ADD_STRING_CONFIG,"--ql-flp1-enable");
+    for (i=0;i<MAX_MICRODRIVES_BY_CONFIG;i++) {
+        if (microdrive_status[i].microdrive_file_name[0]!=0)  ADD_STRING_CONFIG,"--zx-mdv-file %d \"%s\"",i+1,microdrive_status[i].microdrive_file_name);
+        if (microdrive_status[i].microdrive_enabled) ADD_STRING_CONFIG,"--zx-mdv-enable %d",i+1);
+        if (microdrive_status[i].microdrive_persistent_writes==0) ADD_STRING_CONFIG,"--zx-mdv-no-persistent-writes %d",i+1);
+    }
 
 
-  if (ql_device_mdv1_readonly)                ADD_STRING_CONFIG,"--ql-mdv1-read-only");
-  if (ql_device_mdv2_readonly)                ADD_STRING_CONFIG,"--ql-mdv2-read-only");
-  if (ql_device_flp1_readonly)                ADD_STRING_CONFIG,"--ql-flp1-read-only");
+    //Los settings de  mmc paging no guardarlo si maquina es tbblue, pues acaba activando el divmmc paging en tbblue y entonces esto provoca que no arranque la tbblue rom
+    if (!MACHINE_IS_TBBLUE) {
+        if (divmmc_diviface_enabled.v)            ADD_STRING_CONFIG,"--enable-divmmc-paging");
+        if (divmmc_mmc_ports_enabled.v && divmmc_diviface_enabled.v)
+                                                ADD_STRING_CONFIG,"--enable-divmmc");
+    }
 
-  if (ql_win1_alias_mdv1.v==0)                ADD_STRING_CONFIG,"--ql-win1-no-alias-mdv1");
+    if (divmmc_rom_name[0]!=0)                  ADD_STRING_CONFIG,"--divmmc-rom \"%s\"",divmmc_rom_name);
 
-  if (ql_flp1_follow_mdv1.v)                  ADD_STRING_CONFIG,"--ql-flp1-dir-copied-mdv1");
+    if (hilow_file_name[0]!=0)                    ADD_STRING_CONFIG,"--hilow-file \"%s\"",hilow_file_name);
+    if (hilow_enabled.v)                          ADD_STRING_CONFIG,"--enable-hilow");
+    if (hilow_write_protection.v)		            ADD_STRING_CONFIG,"--hilow-write-protection");
+    if (hilow_persistent_writes.v==0)	            ADD_STRING_CONFIG,"--hilow-no-persistent-writes");
 
-  if (dandanator_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--dandanator-rom \"%s\"",dandanator_rom_file_name);
-  if (dandanator_enabled.v)                   ADD_STRING_CONFIG,"--enable-dandanator");
-  if (kartusho_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--kartusho-rom \"%s\"",kartusho_rom_file_name);
-  if (kartusho_enabled.v)                   ADD_STRING_CONFIG,"--enable-kartusho");
+    if (z88_eprom_or_flash_persistent_writes.v==0)    ADD_STRING_CONFIG,"--z88-no-persistent-writes");
 
-  if (ifrom_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--ifrom-rom \"%s\"",ifrom_rom_file_name);
-  if (ifrom_enabled.v)                   ADD_STRING_CONFIG,"--enable-ifrom");
+    if (ide_file_name[0]!=0)                    ADD_STRING_CONFIG,"--ide-file \"%s\"",ide_file_name);
+    if (ide_enabled.v)                          ADD_STRING_CONFIG,"--enable-ide");
+    if (ide_write_protection.v)		      ADD_STRING_CONFIG,"--ide-write-protection");
+    if (ide_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--ide-no-persistent-writes");
+    if (divide_ide_ports_enabled.v)             ADD_STRING_CONFIG,"--enable-divide-ports");
+    if (divide_diviface_enabled.v)              ADD_STRING_CONFIG,"--enable-divide-paging");
 
-  if (betadisk_enabled.v)                   ADD_STRING_CONFIG,"--enable-betadisk");
+    if (divide_ide_ports_enabled.v && divide_diviface_enabled.v)
+                                                ADD_STRING_CONFIG,"--enable-divide");
+    if (divide_rom_name[0]!=0)                  ADD_STRING_CONFIG,"--divide-rom \"%s\"",divide_rom_name);
 
-  if (trd_file_name[0]!=0)                    ADD_STRING_CONFIG,"--trd-file \"%s\"",trd_file_name);
-  if (trd_enabled.v)                          ADD_STRING_CONFIG,"--enable-trd");
-  if (trd_write_protection.v)		      ADD_STRING_CONFIG,"--trd-write-protection");
-  if (trd_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--trd-no-persistent-writes");
+    if (zxmmcplus_enabled.v)                          ADD_STRING_CONFIG,"--enable-zxmmcplus");
+    if (zxmmc_emulation.v)                      ADD_STRING_CONFIG,"--enable-zxmmc");
 
+    if (zxmmcplus_flash_name[0])                ADD_STRING_CONFIG,"--zxmmcplus-flash-file \"%s\"",zxmmcplus_flash_name);
+    if (zxmmcplus_flashrom_write_protect.v)     ADD_STRING_CONFIG,"--zxmmcplus-flash-write-protection");
+    if (zxmmcplus_flashrom_persistent_writes.v) ADD_STRING_CONFIG,"--zxmmcplus-flash-persistent-writes");
 
+    if (eight_bit_simple_ide_enabled.v)         ADD_STRING_CONFIG,"--enable-8bit-ide");
 
-  if (dskplusthree_file_name[0]!=0)           ADD_STRING_CONFIG,"--dsk-file \"%s\"",dskplusthree_file_name);
-  if (dskplusthree_emulation.v)               ADD_STRING_CONFIG,"--enable-dsk");
-  if (dskplusthree_write_protection.v)	      ADD_STRING_CONFIG,"--dsk-write-protection");
+                                    ADD_STRING_CONFIG,"--diviface-ram-size %d",get_diviface_total_ram());
 
-  if (pd765_silent_write_protection.v)        ADD_STRING_CONFIG,"--pd765-silent-write-protection");
+    if (zxpand_enabled.v)                       ADD_STRING_CONFIG,"--enable-zxpand");
+    if (zxpand_root_dir[0]!=0)                  ADD_STRING_CONFIG,"--zxpand-root-dir \"%s\"",zxpand_root_dir);
 
-  if (dskplusthree_persistent_writes.v==0)    ADD_STRING_CONFIG,"--dsk-no-persistent-writes");
-  else                                        ADD_STRING_CONFIG,"--dsk-persistent-writes");
+    //no decir que esta habilitado si se va a desactivar al resetear
+    if (esxdos_handler_enabled.v && esxdos_umount_on_reset.v==0)               ADD_STRING_CONFIG,"--enable-esxdos-handler");
+    if (esxdos_handler_root_dir[0]!=0)          ADD_STRING_CONFIG,"--esxdos-root-dir \"%s\"",esxdos_handler_root_dir);
 
-  if (pcw_boot_reinsert_previous_dsk.v==0)    ADD_STRING_CONFIG,"--dsk-pcw-no-boot-reinsert-previous-dsk");
-  if (pcw_failback_cpm_when_no_boot.v==0)     ADD_STRING_CONFIG,"--dsk-pcw-no-failback-cpm-when-no-boot");
+    if (esxdos_handler_enabled.v && esxdos_handler_cwd[0]!=0)  ADD_STRING_CONFIG,"--esxdos-local-dir \"%s\"",esxdos_handler_cwd);
 
-  if (superupgrade_rom_file_name[0]!=0)       ADD_STRING_CONFIG,"--superupgrade-flash \"%s\"",superupgrade_rom_file_name);
-  if (superupgrade_enabled.v)                 ADD_STRING_CONFIG,"--enable-superupgrade");
+    if (esxdos_handler_readonly.v)              ADD_STRING_CONFIG,"--esxdos-readonly");
 
+    if (ql_microdrive_floppy_emulation)         ADD_STRING_CONFIG,"--enable-ql-mdv-flp");
+    if (ql_mdv1_root_dir[0]!=0)                 ADD_STRING_CONFIG,"--ql-mdv1-root-dir \"%s\"",ql_mdv1_root_dir);
+    if (ql_mdv2_root_dir[0]!=0)                 ADD_STRING_CONFIG,"--ql-mdv2-root-dir \"%s\"",ql_mdv2_root_dir);
+    if (ql_flp1_root_dir[0]!=0)                 ADD_STRING_CONFIG,"--ql-flp1-root-dir \"%s\"",ql_flp1_root_dir);
 
-                                              ADD_STRING_CONFIG,"--showfiredbreakpoint %d",debug_show_fired_breakpoints_type);
-
-
-  if (debug_breakpoints_enabled.v)            ADD_STRING_CONFIG,"--enable-breakpoints");
-
-  if (debug_shows_invalid_opcode.v)           ADD_STRING_CONFIG,"--show-invalid-opcode");
-
-
-  if (debug_breakpoints_cond_behaviour.v==0)  ADD_STRING_CONFIG,"--brkp-always");
-
-
-  if (debug_settings_show_screen.v)           ADD_STRING_CONFIG,"--show-display-debug");
+    if (ql_device_mdv1_enabled)                 ADD_STRING_CONFIG,"--ql-mdv1-enable");
+    if (ql_device_mdv2_enabled)                 ADD_STRING_CONFIG,"--ql-mdv2-enable");
+    if (ql_device_flp1_enabled)                 ADD_STRING_CONFIG,"--ql-flp1-enable");
 
 
-  if (menu_debug_registers_if_showscan.v)     ADD_STRING_CONFIG,"--show-electron-debug");
+    if (ql_device_mdv1_readonly)                ADD_STRING_CONFIG,"--ql-mdv1-read-only");
+    if (ql_device_mdv2_readonly)                ADD_STRING_CONFIG,"--ql-mdv2-read-only");
+    if (ql_device_flp1_readonly)                ADD_STRING_CONFIG,"--ql-flp1-read-only");
 
-  if (debug_step_over_rst8_plus_two.v)		  ADD_STRING_CONFIG,"--step-over-rst8-plus-two");
+    if (ql_win1_alias_mdv1.v==0)                ADD_STRING_CONFIG,"--ql-win1-no-alias-mdv1");
 
-  if (debug_show_timing_opcodes.v)            ADD_STRING_CONFIG,"--debug-show-timing-opcodes");
+    if (ql_flp1_follow_mdv1.v)                  ADD_STRING_CONFIG,"--ql-flp1-dir-copied-mdv1");
 
-  if (debug_view_basic_show_address.v)        ADD_STRING_CONFIG,"--show-basic-address");
+    if (dandanator_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--dandanator-rom \"%s\"",dandanator_rom_file_name);
+    if (dandanator_enabled.v)                   ADD_STRING_CONFIG,"--enable-dandanator");
+    if (kartusho_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--kartusho-rom \"%s\"",kartusho_rom_file_name);
+    if (kartusho_enabled.v)                   ADD_STRING_CONFIG,"--enable-kartusho");
 
-  if (debug_watches_show_decimal.v)           ADD_STRING_CONFIG,"--watch-show-decimal-results");
+    if (ifrom_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--ifrom-rom \"%s\"",ifrom_rom_file_name);
+    if (ifrom_enabled.v)                   ADD_STRING_CONFIG,"--enable-ifrom");
 
-  if (setting_mostrar_visualmem_grafico.v==0)   ADD_STRING_CONFIG,"--show-visualmem-text");
+    if (betadisk_enabled.v)                   ADD_STRING_CONFIG,"--enable-betadisk");
 
-                                              ADD_STRING_CONFIG,"--cpu-history-max-items %d",cpu_history_max_elements);
+    if (trd_file_name[0]!=0)                    ADD_STRING_CONFIG,"--trd-file \"%s\"",trd_file_name);
+    if (trd_enabled.v)                          ADD_STRING_CONFIG,"--enable-trd");
+    if (trd_write_protection.v)		      ADD_STRING_CONFIG,"--trd-write-protection");
+    if (trd_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--trd-no-persistent-writes");
 
-  if (remote_tamanyo_archivo_raw_source_code) ADD_STRING_CONFIG,"--load-source-code %s",last_source_code_file);
+
+
+    if (dskplusthree_file_name[0]!=0)           ADD_STRING_CONFIG,"--dsk-file \"%s\"",dskplusthree_file_name);
+    if (dskplusthree_emulation.v)               ADD_STRING_CONFIG,"--enable-dsk");
+    if (dskplusthree_write_protection.v)	      ADD_STRING_CONFIG,"--dsk-write-protection");
+
+    if (pd765_silent_write_protection.v)        ADD_STRING_CONFIG,"--pd765-silent-write-protection");
+
+    if (dskplusthree_persistent_writes.v==0)    ADD_STRING_CONFIG,"--dsk-no-persistent-writes");
+    else                                        ADD_STRING_CONFIG,"--dsk-persistent-writes");
+
+    if (pcw_boot_reinsert_previous_dsk.v==0)    ADD_STRING_CONFIG,"--dsk-pcw-no-boot-reinsert-previous-dsk");
+    if (pcw_failback_cpm_when_no_boot.v==0)     ADD_STRING_CONFIG,"--dsk-pcw-no-failback-cpm-when-no-boot");
+
+    if (superupgrade_rom_file_name[0]!=0)       ADD_STRING_CONFIG,"--superupgrade-flash \"%s\"",superupgrade_rom_file_name);
+    if (superupgrade_enabled.v)                 ADD_STRING_CONFIG,"--enable-superupgrade");
+
+
+                                                ADD_STRING_CONFIG,"--showfiredbreakpoint %d",debug_show_fired_breakpoints_type);
+
+
+    if (debug_breakpoints_enabled.v)            ADD_STRING_CONFIG,"--enable-breakpoints");
+
+    if (debug_shows_invalid_opcode.v)           ADD_STRING_CONFIG,"--show-invalid-opcode");
+
+
+    if (debug_breakpoints_cond_behaviour.v==0)  ADD_STRING_CONFIG,"--brkp-always");
+
+
+    if (debug_settings_show_screen.v)           ADD_STRING_CONFIG,"--show-display-debug");
+
+
+    if (menu_debug_registers_if_showscan.v)     ADD_STRING_CONFIG,"--show-electron-debug");
+
+    if (debug_step_over_rst8_plus_two.v)		  ADD_STRING_CONFIG,"--step-over-rst8-plus-two");
+
+    if (debug_show_timing_opcodes.v)            ADD_STRING_CONFIG,"--debug-show-timing-opcodes");
+
+    if (debug_view_basic_show_address.v)        ADD_STRING_CONFIG,"--show-basic-address");
+
+    if (debug_watches_show_decimal.v)           ADD_STRING_CONFIG,"--watch-show-decimal-results");
+
+    if (setting_mostrar_visualmem_grafico.v==0)   ADD_STRING_CONFIG,"--show-visualmem-text");
+
+                                                ADD_STRING_CONFIG,"--cpu-history-max-items %d",cpu_history_max_elements);
+
+    if (remote_tamanyo_archivo_raw_source_code) ADD_STRING_CONFIG,"--load-source-code %s",last_source_code_file);
 
 
     if (menu_debug_hexdump_follow_expression_defined()) {
@@ -4539,235 +4539,234 @@ int util_write_configfile(void)
 
 
 
-  for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
 
 
+        if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
 
-            if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
+            //nuevo parser de breakpoints
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+                            ADD_STRING_CONFIG,"--set-breakpoint %d \"%s\"",i+1,buffer_temp);
 
-                //nuevo parser de breakpoints
-                char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-                exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-                                ADD_STRING_CONFIG,"--set-breakpoint %d \"%s\"",i+1,buffer_temp);
-
-                if (!debug_breakpoints_conditions_enabled[i]) {
-                    ADD_STRING_CONFIG,"--disable-breakpoint %d",i+1);
-                }
+            if (!debug_breakpoints_conditions_enabled[i]) {
+                ADD_STRING_CONFIG,"--disable-breakpoint %d",i+1);
             }
+        }
 
 
     }
 
-  for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-    if (debug_breakpoints_actions_array[i][0]!=0)
-                                              ADD_STRING_CONFIG,"--set-breakpointaction %d \"%s\"",i+1,debug_breakpoints_actions_array[i]);
-  }
-
-  for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-    if (debug_breakpoints_pass_count[i]) {
-        ADD_STRING_CONFIG,"--set-breakpointpasscount %d %d",i+1,debug_breakpoints_pass_count[i]);
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+        if (debug_breakpoints_actions_array[i][0]!=0)
+                                                ADD_STRING_CONFIG,"--set-breakpointaction %d \"%s\"",i+1,debug_breakpoints_actions_array[i]);
     }
-  }
 
-
-  for (i=0;i<DEBUG_MAX_WATCHES;i++) {
-
-            if (debug_watches_array[i][0].tipo!=TPT_FIN) {
-
-                char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-                exp_par_tokens_to_exp(debug_watches_array[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-                                ADD_STRING_CONFIG,"--set-watch %d \"%s\"",i+1,buffer_temp);
-            }
-
-            if (debug_watches_labels_array[i][0]) {
-                ADD_STRING_CONFIG,"--set-watch-label %d \"%s\"",i+1,debug_watches_labels_array[i]);
-            }
-
+    for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
+        if (debug_breakpoints_pass_count[i]) {
+            ADD_STRING_CONFIG,"--set-breakpointpasscount %d %d",i+1,debug_breakpoints_pass_count[i]);
+        }
     }
 
 
+    for (i=0;i<DEBUG_MAX_WATCHES;i++) {
 
-  for (i=0;i<65536;i++) {
+        if (debug_watches_array[i][0].tipo!=TPT_FIN) {
+
+            char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+            exp_par_tokens_to_exp(debug_watches_array[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+                            ADD_STRING_CONFIG,"--set-watch %d \"%s\"",i+1,buffer_temp);
+        }
+
+        if (debug_watches_labels_array[i][0]) {
+            ADD_STRING_CONFIG,"--set-watch-label %d \"%s\"",i+1,debug_watches_labels_array[i]);
+        }
+
+    }
+
+
+
+    for (i=0;i<65536;i++) {
         if (mem_breakpoint_array[i]!=0)
-                                              ADD_STRING_CONFIG,"--set-mem-breakpoint %04XH %d",i,mem_breakpoint_array[i]);
+                                                ADD_STRING_CONFIG,"--set-mem-breakpoint %04XH %d",i,mem_breakpoint_array[i]);
     }
 
-  if (hardware_debug_port.v)                  ADD_STRING_CONFIG,"--hardware-debug-ports");
-  if (zesarux_zxi_hardware_debug_file[0]!=0)  ADD_STRING_CONFIG,"--hardware-debug-ports-byte-file \"%s\"",zesarux_zxi_hardware_debug_file);
+    if (hardware_debug_port.v)                  ADD_STRING_CONFIG,"--hardware-debug-ports");
+    if (zesarux_zxi_hardware_debug_file[0]!=0)  ADD_STRING_CONFIG,"--hardware-debug-ports-byte-file \"%s\"",zesarux_zxi_hardware_debug_file);
 
-  if (debug_dump_zsf_on_cpu_panic.v)          ADD_STRING_CONFIG,"--dump-snapshot-panic");
+    if (debug_dump_zsf_on_cpu_panic.v)          ADD_STRING_CONFIG,"--dump-snapshot-panic");
 
-  if (autoselect_snaptape_options.v==0)       ADD_STRING_CONFIG,"--noautoselectfileopt");
-  if (screen_show_splash_texts.v==0)          ADD_STRING_CONFIG,"--nosplash");
-  if (screen_show_cpu_usage.v==0)             ADD_STRING_CONFIG,"--no-cpu-usage");
-  if (screen_show_cpu_temp.v==0)              ADD_STRING_CONFIG,"--no-cpu-temp");
-  if (screen_show_fps.v==0)                   ADD_STRING_CONFIG,"--no-fps");
-  if (opcion_no_welcome_message.v)                     ADD_STRING_CONFIG,"--nowelcomemessage");
-  if (opcion_fast_welcome_message.v)          ADD_STRING_CONFIG,"--fastwelcomemessage");
+    if (autoselect_snaptape_options.v==0)       ADD_STRING_CONFIG,"--noautoselectfileopt");
+    if (screen_show_splash_texts.v==0)          ADD_STRING_CONFIG,"--nosplash");
+    if (screen_show_cpu_usage.v==0)             ADD_STRING_CONFIG,"--no-cpu-usage");
+    if (screen_show_cpu_temp.v==0)              ADD_STRING_CONFIG,"--no-cpu-temp");
+    if (screen_show_fps.v==0)                   ADD_STRING_CONFIG,"--no-fps");
+    if (opcion_no_welcome_message.v)                     ADD_STRING_CONFIG,"--nowelcomemessage");
+    if (opcion_fast_welcome_message.v)          ADD_STRING_CONFIG,"--fastwelcomemessage");
 
-  if (xanniversary_logo.v)                    ADD_STRING_CONFIG,"--enable-xanniversary-logo");
+    if (xanniversary_logo.v)                    ADD_STRING_CONFIG,"--enable-xanniversary-logo");
 
-  if (menu_hide_vertical_percentaje_bar.v) ADD_STRING_CONFIG,"--hide-menu-percentage-bar");
+    if (menu_hide_vertical_percentaje_bar.v) ADD_STRING_CONFIG,"--hide-menu-percentage-bar");
 
-  if (menu_hide_submenu_indicator.v)            ADD_STRING_CONFIG,"--hide-menu-submenu-indicator");
-  if (menu_show_submenus_tree.v==0)             ADD_STRING_CONFIG,"--no-show-previous-submenus");
+    if (menu_hide_submenu_indicator.v)            ADD_STRING_CONFIG,"--hide-menu-submenu-indicator");
+    if (menu_show_submenus_tree.v==0)             ADD_STRING_CONFIG,"--no-show-previous-submenus");
 
-  if (menu_hide_minimize_button.v)           ADD_STRING_CONFIG,"--hide-menu-minimize-button");
-  if (menu_hide_maximize_button.v)           ADD_STRING_CONFIG,"--hide-menu-maximize-button");
-  if (menu_hide_close_button.v)              ADD_STRING_CONFIG,"--hide-menu-close-button");
+    if (menu_hide_minimize_button.v)           ADD_STRING_CONFIG,"--hide-menu-minimize-button");
+    if (menu_hide_maximize_button.v)           ADD_STRING_CONFIG,"--hide-menu-maximize-button");
+    if (menu_hide_close_button.v)              ADD_STRING_CONFIG,"--hide-menu-close-button");
 
-  if (zxvision_hide_minimized_windows.v)     ADD_STRING_CONFIG,"--hide-minimized-windows");
+    if (zxvision_hide_minimized_windows.v)     ADD_STRING_CONFIG,"--hide-minimized-windows");
 
-  if (zxvision_allow_windows_beyond_limit.v)    ADD_STRING_CONFIG,"--beyond-limits-windows");
+    if (zxvision_allow_windows_beyond_limit.v)    ADD_STRING_CONFIG,"--beyond-limits-windows");
 
-  if (menu_hide_background_button_on_inactive.v==0) ADD_STRING_CONFIG,"--show-menu-background-button");
+    if (menu_hide_background_button_on_inactive.v==0) ADD_STRING_CONFIG,"--show-menu-background-button");
 
-  if (menu_change_frame_when_resize_zone.v==0)      ADD_STRING_CONFIG,"--no-change-frame-resize-zone");
+    if (menu_change_frame_when_resize_zone.v==0)      ADD_STRING_CONFIG,"--no-change-frame-resize-zone");
 
-  if (gui_language==GUI_LANGUAGE_SPANISH)   ADD_STRING_CONFIG,"--language es");
-  if (gui_language==GUI_LANGUAGE_CATALAN)   ADD_STRING_CONFIG,"--language ca");
+    if (gui_language==GUI_LANGUAGE_SPANISH)   ADD_STRING_CONFIG,"--language es");
+    if (gui_language==GUI_LANGUAGE_CATALAN)   ADD_STRING_CONFIG,"--language ca");
 
-  if (online_download_path[0]!=0)           ADD_STRING_CONFIG,"--online-download-path \"%s\"",online_download_path);
+    if (online_download_path[0]!=0)           ADD_STRING_CONFIG,"--online-download-path \"%s\"",online_download_path);
 
-  if (menu_invert_mouse_scroll.v)             ADD_STRING_CONFIG,"--invert-menu-mouse-scroll");
+    if (menu_invert_mouse_scroll.v)             ADD_STRING_CONFIG,"--invert-menu-mouse-scroll");
 
-  if (menu_mouse_right_send_esc.v)          ADD_STRING_CONFIG,"--right-mouse-esc");
+    if (menu_mouse_right_send_esc.v)          ADD_STRING_CONFIG,"--right-mouse-esc");
 
-  if (zxvision_setting_use_speccy_keys.v)  ADD_STRING_CONFIG,"--zxvision-use-speccy-keys");
+    if (zxvision_setting_use_speccy_keys.v)  ADD_STRING_CONFIG,"--zxvision-use-speccy-keys");
 
-  if (setting_process_switcher_immutable.v)     ADD_STRING_CONFIG,"--process-switcher-immutable");
+    if (setting_process_switcher_immutable.v)     ADD_STRING_CONFIG,"--process-switcher-immutable");
 
-  if (setting_process_switcher_always_visible.v)     ADD_STRING_CONFIG,"--process-switcher-always-visible");
+    if (setting_process_switcher_always_visible.v)     ADD_STRING_CONFIG,"--process-switcher-always-visible");
 
-  if (setting_process_switcher_force_left_bottom.v==0)  ADD_STRING_CONFIG,"--process-switcher-no-left-bottom");
+    if (setting_process_switcher_force_left_bottom.v==0)  ADD_STRING_CONFIG,"--process-switcher-no-left-bottom");
 
-  if (menu_allow_background_windows)          ADD_STRING_CONFIG,"--allow-background-windows");
+    if (menu_allow_background_windows)          ADD_STRING_CONFIG,"--allow-background-windows");
 
-  if (always_force_overlay_visible_when_menu_closed) ADD_STRING_CONFIG,"--allow-background-windows-closed-menu");
+    if (always_force_overlay_visible_when_menu_closed) ADD_STRING_CONFIG,"--allow-background-windows-closed-menu");
 
-                                              ADD_STRING_CONFIG,"--menu-mix-method \"%s\"",screen_menu_mix_methods_strings[screen_menu_mix_method]);
+                                                ADD_STRING_CONFIG,"--menu-mix-method \"%s\"",screen_menu_mix_methods_strings[screen_menu_mix_method]);
 
 
-                                                ADD_STRING_CONFIG,"--menu-transparency-perc %d",screen_menu_mix_transparency);
+                                                    ADD_STRING_CONFIG,"--menu-transparency-perc %d",screen_menu_mix_transparency);
 
 
 
-  //lo desactivo. Esto da problemas con footer
-  //if (screen_menu_reduce_bright_machine.v)   ADD_STRING_CONFIG,"--menu-darken-when-open");
+    //lo desactivo. Esto da problemas con footer
+    //if (screen_menu_reduce_bright_machine.v)   ADD_STRING_CONFIG,"--menu-darken-when-open");
 
-  if (screen_machine_bw_no_multitask.v)      ADD_STRING_CONFIG,"--menu-bw-multitask");
+    if (screen_machine_bw_no_multitask.v)      ADD_STRING_CONFIG,"--menu-bw-multitask");
 
 
 
-  if (rainbow_enabled.v)                      ADD_STRING_CONFIG,"--realvideo");
+    if (rainbow_enabled.v)                      ADD_STRING_CONFIG,"--realvideo");
 
-  if (autodetect_rainbow.v==0)                ADD_STRING_CONFIG,"--no-detect-realvideo");
+    if (autodetect_rainbow.v==0)                ADD_STRING_CONFIG,"--no-detect-realvideo");
 
-  if (tbblue_store_scanlines.v)               ADD_STRING_CONFIG,"--tbblue-legacy-hicolor");
-  if (tbblue_store_scanlines_border.v)        ADD_STRING_CONFIG,"--tbblue-legacy-border");
-  if (tbblue_disable_optimized_sprites.v)     ADD_STRING_CONFIG,"--tbblue-no-sprite-optimization");
+    if (tbblue_store_scanlines.v)               ADD_STRING_CONFIG,"--tbblue-legacy-hicolor");
+    if (tbblue_store_scanlines_border.v)        ADD_STRING_CONFIG,"--tbblue-legacy-border");
+    if (tbblue_disable_optimized_sprites.v)     ADD_STRING_CONFIG,"--tbblue-no-sprite-optimization");
 
-  //if (tsconf_si_render_spritetile_rapido.v)   ADD_STRING_CONFIG,"--tsconf-fast-render");
+    //if (tsconf_si_render_spritetile_rapido.v)   ADD_STRING_CONFIG,"--tsconf-fast-render");
 
 
-  if (gigascreen_enabled.v)                   ADD_STRING_CONFIG,"--enablegigascreen");
-  if (video_interlaced_mode.v)                ADD_STRING_CONFIG,"--enableinterlaced");
-  if (video_interlaced_scanlines.v)             ADD_STRING_CONFIG,"--enableinterlaced-scanlines");
-  if (video_interlaced_scanlines_aggressive.v)  ADD_STRING_CONFIG,"--enableinterlaced-scanlines-aggressive");
+    if (gigascreen_enabled.v)                   ADD_STRING_CONFIG,"--enablegigascreen");
+    if (video_interlaced_mode.v)                ADD_STRING_CONFIG,"--enableinterlaced");
+    if (video_interlaced_scanlines.v)             ADD_STRING_CONFIG,"--enableinterlaced-scanlines");
+    if (video_interlaced_scanlines_aggressive.v)  ADD_STRING_CONFIG,"--enableinterlaced-scanlines-aggressive");
 
-  if (ulaplus_presente.v)                     ADD_STRING_CONFIG,"--enableulaplus");
-  if (spectra_enabled.v)                      ADD_STRING_CONFIG,"--enablespectra");
-  if (timex_video_emulation.v)                ADD_STRING_CONFIG,"--enabletimexvideo");
-  if (timex_mode_512192_real.v==0)	      ADD_STRING_CONFIG,"--disablerealtimex512");
-  if (pentagon_16c_mode_available.v)          ADD_STRING_CONFIG,"--enable16c");
+    if (ulaplus_presente.v)                     ADD_STRING_CONFIG,"--enableulaplus");
+    if (spectra_enabled.v)                      ADD_STRING_CONFIG,"--enablespectra");
+    if (timex_video_emulation.v)                ADD_STRING_CONFIG,"--enabletimexvideo");
+    if (timex_mode_512192_real.v==0)	      ADD_STRING_CONFIG,"--disablerealtimex512");
+    if (pentagon_16c_mode_available.v)          ADD_STRING_CONFIG,"--enable16c");
 
 
-  if (spritechip_enabled.v)                   ADD_STRING_CONFIG,"--enablezgx");
-  if (beeper_enabled.v==0)                    ADD_STRING_CONFIG,"--disablebeeper");
-  if (beeper_real_enabled==0)                 ADD_STRING_CONFIG,"--disablerealbeeper");
-  if (ay_retorna_numero_chips()>1)            ADD_STRING_CONFIG,"--totalaychips %d",ay_retorna_numero_chips() );
+    if (spritechip_enabled.v)                   ADD_STRING_CONFIG,"--enablezgx");
+    if (beeper_enabled.v==0)                    ADD_STRING_CONFIG,"--disablebeeper");
+    if (beeper_real_enabled==0)                 ADD_STRING_CONFIG,"--disablerealbeeper");
+    if (ay_retorna_numero_chips()>1)            ADD_STRING_CONFIG,"--totalaychips %d",ay_retorna_numero_chips() );
 
-  if (ay3_stereo_mode>0)                      ADD_STRING_CONFIG,"--ay-stereo-mode %d",ay3_stereo_mode);
+    if (ay3_stereo_mode>0)                      ADD_STRING_CONFIG,"--ay-stereo-mode %d",ay3_stereo_mode);
 
-  if (autoenable_ay_chip.v)                   ADD_STRING_CONFIG,"--ay-autoenable");
+    if (autoenable_ay_chip.v)                   ADD_STRING_CONFIG,"--ay-autoenable");
 
-                                              ADD_STRING_CONFIG,"--ay-stereo-channel A %d",ay3_custom_stereo_A);
-                                              ADD_STRING_CONFIG,"--ay-stereo-channel B %d",ay3_custom_stereo_B);
-                                              ADD_STRING_CONFIG,"--ay-stereo-channel C %d",ay3_custom_stereo_C);
+                                                ADD_STRING_CONFIG,"--ay-stereo-channel A %d",ay3_custom_stereo_A);
+                                                ADD_STRING_CONFIG,"--ay-stereo-channel B %d",ay3_custom_stereo_B);
+                                                ADD_STRING_CONFIG,"--ay-stereo-channel C %d",ay3_custom_stereo_C);
 
-  if (audiodac_enabled.v)                     ADD_STRING_CONFIG,"--enableaudiodac");
-                                              ADD_STRING_CONFIG,"--audiodactype \"%s\"",audiodac_types[audiodac_selected_type].name);
+    if (audiodac_enabled.v)                     ADD_STRING_CONFIG,"--enableaudiodac");
+                                                ADD_STRING_CONFIG,"--audiodactype \"%s\"",audiodac_types[audiodac_selected_type].name);
 
-  if (snow_effect_enabled.v)                  ADD_STRING_CONFIG,"--snoweffect");
-  if (audiovolume!=100)                       ADD_STRING_CONFIG,"--audiovolume %d",audiovolume);
-  if (ay_player_exit_emulator_when_finish.v)  ADD_STRING_CONFIG,"--ayplayer-end-exit");
-  if (ay_player_shuffle_mode.v)               ADD_STRING_CONFIG,"--ayplayer-shuffle");
-  if (ay_player_silence_detection.v==0)       ADD_STRING_CONFIG,"--ayplayer-no-silence-detection");
-  if (ay_player_repeat_file.v)                ADD_STRING_CONFIG,"--ayplayer-end-repeat");
-  if (ay_player_limit_infinite_tracks!=0)     ADD_STRING_CONFIG,"--ayplayer-inf-length %d",ay_player_limit_infinite_tracks/50);
-  if (ay_player_limit_any_track!=0)           ADD_STRING_CONFIG,"--ayplayer-any-length %d",ay_player_limit_any_track/50);
-  if (ay_player_add_to_track!=0)              ADD_STRING_CONFIG,"--ayplayer-add-to-track %d",ay_player_add_to_track);
-  if (ay_player_cpc_mode.v)                   ADD_STRING_CONFIG,"--ayplayer-cpc");
-  if (ay_player_show_info_console.v)          ADD_STRING_CONFIG,"--ayplayer-show-info-console");
+    if (snow_effect_enabled.v)                  ADD_STRING_CONFIG,"--snoweffect");
+    if (audiovolume!=100)                       ADD_STRING_CONFIG,"--audiovolume %d",audiovolume);
+    if (ay_player_exit_emulator_when_finish.v)  ADD_STRING_CONFIG,"--ayplayer-end-exit");
+    if (ay_player_shuffle_mode.v)               ADD_STRING_CONFIG,"--ayplayer-shuffle");
+    if (ay_player_silence_detection.v==0)       ADD_STRING_CONFIG,"--ayplayer-no-silence-detection");
+    if (ay_player_repeat_file.v)                ADD_STRING_CONFIG,"--ayplayer-end-repeat");
+    if (ay_player_limit_infinite_tracks!=0)     ADD_STRING_CONFIG,"--ayplayer-inf-length %d",ay_player_limit_infinite_tracks/50);
+    if (ay_player_limit_any_track!=0)           ADD_STRING_CONFIG,"--ayplayer-any-length %d",ay_player_limit_any_track/50);
+    if (ay_player_add_to_track!=0)              ADD_STRING_CONFIG,"--ayplayer-add-to-track %d",ay_player_add_to_track);
+    if (ay_player_cpc_mode.v)                   ADD_STRING_CONFIG,"--ayplayer-cpc");
+    if (ay_player_show_info_console.v)          ADD_STRING_CONFIG,"--ayplayer-show-info-console");
 
-                                              ADD_STRING_CONFIG,"--audiopiano-zoom %d",audiochip_piano_zoom_x);
+                                                ADD_STRING_CONFIG,"--audiopiano-zoom %d",audiochip_piano_zoom_x);
 
 
-  if (audio_midi_output_initialized)          ADD_STRING_CONFIG,"--enable-midi");
-                                              ADD_STRING_CONFIG,"--midi-client %d",audio_midi_client);
-                                              ADD_STRING_CONFIG,"--midi-port %d",audio_midi_port);
+    if (audio_midi_output_initialized)          ADD_STRING_CONFIG,"--enable-midi");
+                                                ADD_STRING_CONFIG,"--midi-client %d",audio_midi_client);
+                                                ADD_STRING_CONFIG,"--midi-port %d",audio_midi_port);
 
-                                              ADD_STRING_CONFIG,"--midi-raw-device %s",audio_raw_midi_device_out);
-  if (audio_midi_raw_mode==0)                 ADD_STRING_CONFIG,"--midi-no-raw-mode");
+                                                ADD_STRING_CONFIG,"--midi-raw-device %s",audio_raw_midi_device_out);
+    if (audio_midi_raw_mode==0)                 ADD_STRING_CONFIG,"--midi-no-raw-mode");
 
 
-  if (midi_output_record_noisetone.v)         ADD_STRING_CONFIG,"--midi-allow-tone-noise");
+    if (midi_output_record_noisetone.v)         ADD_STRING_CONFIG,"--midi-allow-tone-noise");
 
 
 
-  //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
-  if (sdl_raw_keyboard_read.v)                ADD_STRING_CONFIG,"--sdlrawkeyboard");
+    //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+    if (sdl_raw_keyboard_read.v)                ADD_STRING_CONFIG,"--sdlrawkeyboard");
 
-  //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
-  if (scr_sdl_8bits_color.v)                  ADD_STRING_CONFIG,"--sdl-8bit-color");
+    //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+    if (scr_sdl_8bits_color.v)                  ADD_STRING_CONFIG,"--sdl-8bit-color");
 
 
-//Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
-  if (scr_sdl_force_size.v) {
-    ADD_STRING_CONFIG,"--sdl-force-win-size %d %d",scr_sdl_force_size_width,scr_sdl_force_size_height);
-  }
+    //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+    if (scr_sdl_force_size.v) {
+        ADD_STRING_CONFIG,"--sdl-force-win-size %d %d",scr_sdl_force_size_width,scr_sdl_force_size_height);
+    }
 
 
 
-  //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
-  if (audiosdl_use_new_callback.v)              ADD_STRING_CONFIG,"--sdl-use-callback-new");
-  //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
-  if (audiosdl_use_new_callback.v==0)           ADD_STRING_CONFIG,"--sdl-use-callback-old");
+    //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+    if (audiosdl_use_new_callback.v)              ADD_STRING_CONFIG,"--sdl-use-callback-new");
+    //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+    if (audiosdl_use_new_callback.v==0)           ADD_STRING_CONFIG,"--sdl-use-callback-old");
 
 
-  if (standard_to_real_tape_fallback.v==0)    ADD_STRING_CONFIG,"--no-fallbacktorealtape");
-  if (tape_any_flag_loading.v)                ADD_STRING_CONFIG,"--anyflagloading");
-  if (tape_auto_rewind.v)                     ADD_STRING_CONFIG,"--autorewind");
+    if (standard_to_real_tape_fallback.v==0)    ADD_STRING_CONFIG,"--no-fallbacktorealtape");
+    if (tape_any_flag_loading.v)                ADD_STRING_CONFIG,"--anyflagloading");
+    if (tape_auto_rewind.v)                     ADD_STRING_CONFIG,"--autorewind");
 
-  if (tape_loading_simulate.v)                ADD_STRING_CONFIG,"--simulaterealload");
-  if (tape_loading_simulate_fast.v)           ADD_STRING_CONFIG,"--simulaterealloadfast");
-  if (tzx_suppress_pause.v)                   ADD_STRING_CONFIG,"--deletetzxpauses");
+    if (tape_loading_simulate.v)                ADD_STRING_CONFIG,"--simulaterealload");
+    if (tape_loading_simulate_fast.v)           ADD_STRING_CONFIG,"--simulaterealloadfast");
+    if (tzx_suppress_pause.v)                   ADD_STRING_CONFIG,"--deletetzxpauses");
 
-  //if (accelerate_realtape_loaders.v)                   ADD_STRING_CONFIG,"--realloadfast");
+    //if (accelerate_realtape_loaders.v)                   ADD_STRING_CONFIG,"--realloadfast");
 
 
-  if (screen_gray_mode&1)                     ADD_STRING_CONFIG,"--blue");
-  if (screen_gray_mode&2)                     ADD_STRING_CONFIG,"--green");
-  if (screen_gray_mode&4)                     ADD_STRING_CONFIG,"--red");
-  if (inverse_video.v)                        ADD_STRING_CONFIG,"--inversevideo");
-  if (screen_rgb_8bit)                        ADD_STRING_CONFIG,"--rgb8bit-color");
-  if (video_dither_mode.v)                    ADD_STRING_CONFIG,"--dithering");
-  if (spectrum_1648_use_real_palette.v)       ADD_STRING_CONFIG,"--realpalette");
+    if (screen_gray_mode&1)                     ADD_STRING_CONFIG,"--blue");
+    if (screen_gray_mode&2)                     ADD_STRING_CONFIG,"--green");
+    if (screen_gray_mode&4)                     ADD_STRING_CONFIG,"--red");
+    if (inverse_video.v)                        ADD_STRING_CONFIG,"--inversevideo");
+    if (screen_rgb_8bit)                        ADD_STRING_CONFIG,"--rgb8bit-color");
+    if (video_dither_mode.v)                    ADD_STRING_CONFIG,"--dithering");
+    if (spectrum_1648_use_real_palette.v)       ADD_STRING_CONFIG,"--realpalette");
 
-  if (tooltip_enabled.v==0)                   ADD_STRING_CONFIG,"--disabletooltips");
+    if (tooltip_enabled.v==0)                   ADD_STRING_CONFIG,"--disabletooltips");
 
 
-  if (menu_disable_first_aid.v)               ADD_STRING_CONFIG,"--disable-all-first-aid");
+    if (menu_disable_first_aid.v)               ADD_STRING_CONFIG,"--disable-all-first-aid");
 
     for (i=0;i<total_first_aid;i++) {
                 int *opcion;
@@ -4777,149 +4776,149 @@ int util_write_configfile(void)
     }
 
 
-  if (menu_limit_menu_open.v)                 ADD_STRING_CONFIG,"--limitopenmenu");
+    if (menu_limit_menu_open.v)                 ADD_STRING_CONFIG,"--limitopenmenu");
 
-  if (menu_show_advanced_items.v)               ADD_STRING_CONFIG,"--advancedmenus");
+    if (menu_show_advanced_items.v)               ADD_STRING_CONFIG,"--advancedmenus");
 
-  //Se guardara la opcion siempre que le haya entrado por config, sin tener en cuenta que el usuario
-  //haya conmutado a menu completo
-  if (menu_show_simple_items_by_config.v)       ADD_STRING_CONFIG,"--simplemenus");
+    //Se guardara la opcion siempre que le haya entrado por config, sin tener en cuenta que el usuario
+    //haya conmutado a menu completo
+    if (menu_show_simple_items_by_config.v)       ADD_STRING_CONFIG,"--simplemenus");
 
-  if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_NAME)    ADD_STRING_CONFIG,"--setmachinebyname");
+    if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_NAME)    ADD_STRING_CONFIG,"--setmachinebyname");
 
-  if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_FAMILY)    ADD_STRING_CONFIG,"--setmachinebyfamily");
+    if (setting_machine_selection_type==MACHINE_SELECTION_TYPE_BY_FAMILY)    ADD_STRING_CONFIG,"--setmachinebyfamily");
 
-  if (menu_filesel_hide_dirs.v)         ADD_STRING_CONFIG,"--filebrowser-hide-dirs");
+    if (menu_filesel_hide_dirs.v)         ADD_STRING_CONFIG,"--filebrowser-hide-dirs");
 
-  if (menu_filesel_hide_size.v)             ADD_STRING_CONFIG,"--filebrowser-hide-size");
+    if (menu_filesel_hide_size.v)             ADD_STRING_CONFIG,"--filebrowser-hide-size");
 
-  if (menu_filesel_utils_allow_folder_delete.v)      ADD_STRING_CONFIG,"--filebrowser-allow-folder-delete");
-
-
-  if (menu_file_viewer_always_hex.v)            ADD_STRING_CONFIG,"--fileviewer-hex");
-
-  if (menu_filesel_show_previews.v==0)         ADD_STRING_CONFIG,"--no-file-previews");
-
-  if (menu_filesel_show_previews_reduce.v)      ADD_STRING_CONFIG,"--reduce-file-previews");
-
-  if (menu_filesel_show_previews_on_zxdesktop.v)    ADD_STRING_CONFIG,"--file-previews-on-zxdesktop");
-
-  if (menu_desactivado.v)                     ADD_STRING_CONFIG,"--disablemenu");
-
-  if (menu_desactivado_andexit.v)              ADD_STRING_CONFIG,"--disablemenuandexit");
+    if (menu_filesel_utils_allow_folder_delete.v)      ADD_STRING_CONFIG,"--filebrowser-allow-folder-delete");
 
 
-  if (menu_desactivado_file_utilities.v)      ADD_STRING_CONFIG,"--disablemenufileutils");
+    if (menu_file_viewer_always_hex.v)            ADD_STRING_CONFIG,"--fileviewer-hex");
 
-  //if (index_menu_enabled.v==0)                  ADD_STRING_CONFIG,"--disable-search-menu");
-  if (index_menu_enabled.v==1)                  ADD_STRING_CONFIG,"--enable-search-menu");
+    if (menu_filesel_show_previews.v==0)         ADD_STRING_CONFIG,"--no-file-previews");
 
-  if (menu_force_writing_inverse_color.v)     ADD_STRING_CONFIG,"--forcevisiblehotkeys");
-  if (force_confirm_yes.v)                    ADD_STRING_CONFIG,"--forceconfirmyes");
-                                              ADD_STRING_CONFIG,"--gui-style \"%s\"",definiciones_estilos_gui[estilo_gui_activo].nombre_estilo);
-  if (zxvision_change_gui_style_day_night.v)     ADD_STRING_CONFIG,"--gui-style-day-night");
+    if (menu_filesel_show_previews_reduce.v)      ADD_STRING_CONFIG,"--reduce-file-previews");
 
+    if (menu_filesel_show_previews_on_zxdesktop.v)    ADD_STRING_CONFIG,"--file-previews-on-zxdesktop");
 
-  if (user_charset>=0)                        ADD_STRING_CONFIG,"--charset \"%s\"",charset_list[user_charset].nombre);
+    if (menu_desactivado.v)                     ADD_STRING_CONFIG,"--disablemenu");
 
-  if (char_set_customfile_path[0]!=0)         ADD_STRING_CONFIG,"--charset-customfile \"%s\"",char_set_customfile_path);
+    if (menu_desactivado_andexit.v)              ADD_STRING_CONFIG,"--disablemenuandexit");
 
 
-  if (zeng_remote_hostname[0]!=0)             ADD_STRING_CONFIG,"--zeng-remote-hostname %s",zeng_remote_hostname);
-                                              ADD_STRING_CONFIG,"--zeng-remote-port %d",zeng_remote_port);
-                                              //ADD_STRING_CONFIG,"--zeng-snapshot-interval %d",zeng_segundos_cada_snapshot);
-                                              ADD_STRING_CONFIG,"--zeng-snapshot-interval-frames %d",zeng_frames_video_cada_snapshot);
-  if (zeng_i_am_master)                       ADD_STRING_CONFIG,"--zeng-iam-master");
-  if (zeng_do_not_send_input_events)          ADD_STRING_CONFIG,"--zeng-not-send-input-events");
+    if (menu_desactivado_file_utilities.v)      ADD_STRING_CONFIG,"--disablemenufileutils");
+
+    //if (index_menu_enabled.v==0)                  ADD_STRING_CONFIG,"--disable-search-menu");
+    if (index_menu_enabled.v==1)                  ADD_STRING_CONFIG,"--enable-search-menu");
+
+    if (menu_force_writing_inverse_color.v)     ADD_STRING_CONFIG,"--forcevisiblehotkeys");
+    if (force_confirm_yes.v)                    ADD_STRING_CONFIG,"--forceconfirmyes");
+                                                ADD_STRING_CONFIG,"--gui-style \"%s\"",definiciones_estilos_gui[estilo_gui_activo].nombre_estilo);
+    if (zxvision_change_gui_style_day_night.v)     ADD_STRING_CONFIG,"--gui-style-day-night");
 
 
+    if (user_charset>=0)                        ADD_STRING_CONFIG,"--charset \"%s\"",charset_list[user_charset].nombre);
+
+    if (char_set_customfile_path[0]!=0)         ADD_STRING_CONFIG,"--charset-customfile \"%s\"",char_set_customfile_path);
 
 
-                                              ADD_STRING_CONFIG,"--total-minutes-use %d",total_minutes_use);
-
-
-  if (stats_asked.v)                          ADD_STRING_CONFIG,"--stats-send-already-asked");
-  if (stats_enabled.v)                        ADD_STRING_CONFIG,"--stats-send-enabled");
-
-  if (tbblue_autoconfigure_sd_asked.v)             ADD_STRING_CONFIG,"--tbblue-autoconfigure-sd-already-asked");
-
-
-
-  if (stats_uuid[0]!=0)                      ADD_STRING_CONFIG,"--stats-uuid %s",stats_uuid);
-
-              ADD_STRING_CONFIG,"--stats-speccy-queries %d",stats_total_speccy_browser_queries);
-
-            ADD_STRING_CONFIG,"--stats-zx81-queries %d",stats_total_zx81_browser_queries);
+    if (zeng_remote_hostname[0]!=0)             ADD_STRING_CONFIG,"--zeng-remote-hostname %s",zeng_remote_hostname);
+                                                ADD_STRING_CONFIG,"--zeng-remote-port %d",zeng_remote_port);
+                                                //ADD_STRING_CONFIG,"--zeng-snapshot-interval %d",zeng_segundos_cada_snapshot);
+                                                ADD_STRING_CONFIG,"--zeng-snapshot-interval-frames %d",zeng_frames_video_cada_snapshot);
+    if (zeng_i_am_master)                       ADD_STRING_CONFIG,"--zeng-iam-master");
+    if (zeng_do_not_send_input_events)          ADD_STRING_CONFIG,"--zeng-not-send-input-events");
 
 
 
 
-
-  if (stats_check_updates_enabled.v==0)                 ADD_STRING_CONFIG,"--stats-disable-check-updates");
-
-  if (stats_check_yesterday_users_enabled.v==0)         ADD_STRING_CONFIG,"--stats-disable-check-yesterday-users");
+                                                ADD_STRING_CONFIG,"--total-minutes-use %d",total_minutes_use);
 
 
+    if (stats_asked.v)                          ADD_STRING_CONFIG,"--stats-send-already-asked");
+    if (stats_enabled.v)                        ADD_STRING_CONFIG,"--stats-send-enabled");
+
+    if (tbblue_autoconfigure_sd_asked.v)             ADD_STRING_CONFIG,"--tbblue-autoconfigure-sd-already-asked");
 
 
-  if (stats_last_remote_version[0]!=0)       ADD_STRING_CONFIG,"--stats-last-avail-version %s",stats_last_remote_version);
+
+    if (stats_uuid[0]!=0)                      ADD_STRING_CONFIG,"--stats-uuid %s",stats_uuid);
+
+        ADD_STRING_CONFIG,"--stats-speccy-queries %d",stats_total_speccy_browser_queries);
+
+        ADD_STRING_CONFIG,"--stats-zx81-queries %d",stats_total_zx81_browser_queries);
 
 
-  if (avoid_christmas_mode.v)               ADD_STRING_CONFIG,"--avoid-christmas-mode");
 
 
-  if (timer_user_preferred[0]) {
-    ADD_STRING_CONFIG,"--preferred-timer %s",timer_user_preferred);
-  }
+
+    if (stats_check_updates_enabled.v==0)                 ADD_STRING_CONFIG,"--stats-disable-check-updates");
+
+    if (stats_check_yesterday_users_enabled.v==0)         ADD_STRING_CONFIG,"--stats-disable-check-yesterday-users");
 
 
-  if (do_no_show_changelog_when_update.v)     ADD_STRING_CONFIG,"--no-show-changelog");
-
-  if (do_no_show_david_in_memoriam.v)         ADD_STRING_CONFIG,"--no-show-david-in-memoriam");
 
 
-  //Deprecated
-  //if (parameter_disablebetawarning[0])        ADD_STRING_CONFIG,"--disablebetawarning \"%s\"",parameter_disablebetawarning);
+    if (stats_last_remote_version[0]!=0)       ADD_STRING_CONFIG,"--stats-last-avail-version %s",stats_last_remote_version);
 
-  //Deprecated
-  //if (parameter_disable_allbetawarningsleep.v)  ADD_STRING_CONFIG,"--disableallbetawarningpause");
 
-  for (i=0;i<total_config_window_geometry;i++) {
-       ADD_STRING_CONFIG,"--window-geometry %s %d %d %d %d %d %d %d %d", saved_config_window_geometry_array[i].nombre,
-       saved_config_window_geometry_array[i].x,saved_config_window_geometry_array[i].y,
+    if (avoid_christmas_mode.v)               ADD_STRING_CONFIG,"--avoid-christmas-mode");
+
+
+    if (timer_user_preferred[0]) {
+        ADD_STRING_CONFIG,"--preferred-timer %s",timer_user_preferred);
+    }
+
+
+    if (do_no_show_changelog_when_update.v)     ADD_STRING_CONFIG,"--no-show-changelog");
+
+    if (do_no_show_david_in_memoriam.v)         ADD_STRING_CONFIG,"--no-show-david-in-memoriam");
+
+
+    //Deprecated
+    //if (parameter_disablebetawarning[0])        ADD_STRING_CONFIG,"--disablebetawarning \"%s\"",parameter_disablebetawarning);
+
+    //Deprecated
+    //if (parameter_disable_allbetawarningsleep.v)  ADD_STRING_CONFIG,"--disableallbetawarningpause");
+
+    for (i=0;i<total_config_window_geometry;i++) {
+        ADD_STRING_CONFIG,"--window-geometry %s %d %d %d %d %d %d %d %d", saved_config_window_geometry_array[i].nombre,
+        saved_config_window_geometry_array[i].x,saved_config_window_geometry_array[i].y,
         saved_config_window_geometry_array[i].ancho,saved_config_window_geometry_array[i].alto,
         saved_config_window_geometry_array[i].width_before_max_min_imize,saved_config_window_geometry_array[i].height_before_max_min_imize,
         saved_config_window_geometry_array[i].is_minimized,saved_config_window_geometry_array[i].is_maximized
         );
-  }
+    }
 
-  if (menu_reopen_background_windows_on_start.v==0) ADD_STRING_CONFIG,"--disable-restore-windows");
+    if (menu_reopen_background_windows_on_start.v==0) ADD_STRING_CONFIG,"--disable-restore-windows");
 
 
-  if (menu_allow_background_windows && menu_reopen_background_windows_on_start.v) {
+    if (menu_allow_background_windows && menu_reopen_background_windows_on_start.v) {
         //Guardar lista de ventanas activas
-    //Empezamos una a una, desde la de mas abajo
-    zxvision_window *ventana;
+        //Empezamos una a una, desde la de mas abajo
+        zxvision_window *ventana;
 
-    ventana=zxvision_current_window;
+        ventana=zxvision_current_window;
 
-    if (ventana!=NULL) {
+        if (ventana!=NULL) {
 
-                ventana=zxvision_find_first_window_below_this(ventana);
+            ventana=zxvision_find_first_window_below_this(ventana);
 
-                while (ventana!=NULL) {
+            while (ventana!=NULL) {
 
-                        if (ventana->geometry_name[0]!=0 && ventana->can_be_backgrounded) {
-                                ADD_STRING_CONFIG,"--restorewindow \"%s\"",ventana->geometry_name);
-                        }
+                    if (ventana->geometry_name[0]!=0 && ventana->can_be_backgrounded) {
+                            ADD_STRING_CONFIG,"--restorewindow \"%s\"",ventana->geometry_name);
+                    }
 
 
-                        ventana=ventana->next_window;
+                    ventana=ventana->next_window;
 
-                }
+            }
         }
 
-  }
+    }
 
 
     //Sensores en la ventana de debug view sensors
@@ -4973,34 +4972,34 @@ int util_write_configfile(void)
     }
 
 
-  for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
-    int indice=defined_f_functions_keys_array[i];
-    enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice);
-    if (accion!=F_FUNCION_DEFAULT) {
-                                              ADD_STRING_CONFIG,"--def-f-function F%d \"%s\"",i+1,defined_direct_functions_array[indice].texto_funcion);
+    for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
+        int indice=defined_f_functions_keys_array[i];
+        enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice);
+        if (accion!=F_FUNCION_DEFAULT) {
+                                                ADD_STRING_CONFIG,"--def-f-function F%d \"%s\"",i+1,defined_direct_functions_array[indice].texto_funcion);
+        }
     }
-  }
 
-  for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
-    if (defined_f_functions_keys_array_parameters[i][0]!=0) {
-                                              ADD_STRING_CONFIG,"--def-f-function-parameters F%d \"%s\"",i+1,defined_f_functions_keys_array_parameters[i]);
+    for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
+        if (defined_f_functions_keys_array_parameters[i][0]!=0) {
+                                                ADD_STRING_CONFIG,"--def-f-function-parameters F%d \"%s\"",i+1,defined_f_functions_keys_array_parameters[i]);
+        }
     }
-  }
 
 
-  for (i=0;i<MAX_USERDEF_BUTTONS;i++) {
-    int indice=defined_buttons_functions_array[i];
-    enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice);
-    if (accion!=F_FUNCION_DEFAULT) {
-                                              ADD_STRING_CONFIG,"--def-button-function %d \"%s\"",i,defined_direct_functions_array[indice].texto_funcion);
+    for (i=0;i<MAX_USERDEF_BUTTONS;i++) {
+        int indice=defined_buttons_functions_array[i];
+        enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice);
+        if (accion!=F_FUNCION_DEFAULT) {
+                                                ADD_STRING_CONFIG,"--def-button-function %d \"%s\"",i,defined_direct_functions_array[indice].texto_funcion);
+        }
     }
-  }
 
-  for (i=0;i<MAX_USERDEF_BUTTONS;i++) {
-    if (defined_buttons_functions_array_parameters[i][0]!=0) {
-                                              ADD_STRING_CONFIG,"--def-button-function-parameters %d \"%s\"",i,defined_buttons_functions_array_parameters[i]);
+    for (i=0;i<MAX_USERDEF_BUTTONS;i++) {
+        if (defined_buttons_functions_array_parameters[i][0]!=0) {
+                                                ADD_STRING_CONFIG,"--def-button-function-parameters %d \"%s\"",i,defined_buttons_functions_array_parameters[i]);
+        }
     }
-  }
 
 
   if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_is_inserted.v)         ADD_STRING_CONFIG,"--sendtextkeystrokes-file \"%s\"",input_file_keyboard_name);
