@@ -1622,7 +1622,7 @@ void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
 
 void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
 {
-    int efecto_seleccionado=valor_opcion;
+    int indice_efecto_seleccionado=valor_opcion;
 
     int opcion_seleccionada=0;
 
@@ -1642,6 +1642,8 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
                     NULL,NULL,screen_effect_get_name(SCREEN_EFFECT_TYPE_NONE+i));
 
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                if (screen_effect_applied_list[indice_efecto_seleccionado].type==(enum enum_screen_effect_types)SCREEN_EFFECT_TYPE_NONE+i) opcion_seleccionada=i;
             }
 
 
@@ -1670,7 +1672,7 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
                 //item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
                 //printf("Linea seleccionada %d cambiar a %d\n",efecto_seleccionado,SCREEN_EFFECT_TYPE_NONE+item_seleccionado.valor_opcion);
 
-                screen_effect_applied_list[efecto_seleccionado].type=SCREEN_EFFECT_TYPE_NONE+item_seleccionado.valor_opcion;
+                screen_effect_applied_list[indice_efecto_seleccionado].type=SCREEN_EFFECT_TYPE_NONE+item_seleccionado.valor_opcion;
 
                 //Si este menu lo definimos como un menu tabulado,
                 //si hay alguna accion disparada en la que se haya pulsado ESC,
