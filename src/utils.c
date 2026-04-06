@@ -5002,141 +5002,141 @@ int util_write_configfile(void)
     }
 
 
-  if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_is_inserted.v)         ADD_STRING_CONFIG,"--sendtextkeystrokes-file \"%s\"",input_file_keyboard_name);
+    if (input_file_keyboard_name!=NULL && send_text_as_keystrokes_is_inserted.v)         ADD_STRING_CONFIG,"--sendtextkeystrokes-file \"%s\"",input_file_keyboard_name);
 
-  if (send_text_as_keystrokes_playing.v)           ADD_STRING_CONFIG,"--sendtextkeystrokes-play");
+    if (send_text_as_keystrokes_playing.v)           ADD_STRING_CONFIG,"--sendtextkeystrokes-play");
 
-                                                ADD_STRING_CONFIG,"--sendtextkeystrokes-keylength %d",send_text_as_keystrokes_delay);
+                                                    ADD_STRING_CONFIG,"--sendtextkeystrokes-keylength %d",send_text_as_keystrokes_delay);
 
-  if (send_text_as_keystrokes_send_pause.v==0)      ADD_STRING_CONFIG,"--sendtextkeystrokes-nodelay");
+    if (send_text_as_keystrokes_send_pause.v==0)      ADD_STRING_CONFIG,"--sendtextkeystrokes-nodelay");
 
-  if (send_text_as_keystrokes_turbo_mode.v)         ADD_STRING_CONFIG,"--sendtextkeystrokes-turbo");
+    if (send_text_as_keystrokes_turbo_mode.v)         ADD_STRING_CONFIG,"--sendtextkeystrokes-turbo");
 
-                                              ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
-
-
-                                            ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire_array[0]);
-                                            ADD_STRING_CONFIG,"--joystickfirekey2 %d",joystick_defined_key_fire_array[1]);
-                                            ADD_STRING_CONFIG,"--joystickfirekey3 %d",joystick_defined_key_fire_array[2]);
-                                            ADD_STRING_CONFIG,"--joystickfirekey4 %d",joystick_defined_key_fire_array[3]);
-
-  if (sms_swap_controls.v)                  ADD_STRING_CONFIG,"--sms-swap-controls");
-
-  if (remote_protocol_enabled.v)                ADD_STRING_CONFIG,"--enable-remoteprotocol");
-                                                ADD_STRING_CONFIG,"--remoteprotocol-port %d",remote_protocol_port);
-                                                ADD_STRING_CONFIG,"--remoteprotocol-prompt \"%s\"",remote_prompt_command_string);
-  if (remote_protocol_char_mode.v)              ADD_STRING_CONFIG,"--remoteprotocol-linemode-telnet");
-
-  if (zeng_online_enabled)                      ADD_STRING_CONFIG,"--enable-zeng-online-server");
+                                                ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
 
 
-                                                ADD_STRING_CONFIG,"--zeng-online-hostname \"%s\"",zeng_online_server);
-  if (zeng_online_nickname[0])                  ADD_STRING_CONFIG,"--zeng-online-nickname \"%s\"",zeng_online_nickname);
+                                                ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire_array[0]);
+                                                ADD_STRING_CONFIG,"--joystickfirekey2 %d",joystick_defined_key_fire_array[1]);
+                                                ADD_STRING_CONFIG,"--joystickfirekey3 %d",joystick_defined_key_fire_array[2]);
+                                                ADD_STRING_CONFIG,"--joystickfirekey4 %d",joystick_defined_key_fire_array[3]);
+
+    if (sms_swap_controls.v)                  ADD_STRING_CONFIG,"--sms-swap-controls");
+
+    if (remote_protocol_enabled.v)                ADD_STRING_CONFIG,"--enable-remoteprotocol");
+                                                    ADD_STRING_CONFIG,"--remoteprotocol-port %d",remote_protocol_port);
+                                                    ADD_STRING_CONFIG,"--remoteprotocol-prompt \"%s\"",remote_prompt_command_string);
+    if (remote_protocol_char_mode.v)              ADD_STRING_CONFIG,"--remoteprotocol-linemode-telnet");
+
+    if (zeng_online_enabled)                      ADD_STRING_CONFIG,"--enable-zeng-online-server");
 
 
-  if (zeng_online_zip_compress_snapshots.v==0)  ADD_STRING_CONFIG,"--zeng-online-no-zip-snapshots");
-  if (zeng_online_show_footer_lag_indicator.v==0)   ADD_STRING_CONFIG,"--zeng-online-no-footer-lag-indicator");
-  if (zoc_slave_differential_displays_limit_full_autoadjust.v==0)   ADD_STRING_CONFIG,"--zeng-online-no-autoadjust-display-quality");
-  if (streaming_enabled_when_creating==0)       ADD_STRING_CONFIG,"--zeng-online-no-streaming-create");
-
-  if (zeng_online_allow_room_creation_from_any_ip.v)    ADD_STRING_CONFIG,"--zeng-online-server-allow-create");
-  if (zeng_online_destroy_rooms_without_players.v)      ADD_STRING_CONFIG,"--zeng-online-server-destroy-rooms-no-players");
-                                                ADD_STRING_CONFIG,"--zeng-online-server-max-rooms %d",zeng_online_current_max_rooms);
-                                                ADD_STRING_CONFIG,"--zeng-online-server-max-players-room %d",zeng_online_current_max_players_per_room);
-
-  if (zeng_online_server_allow_zrcp_only_zeng_online.v==0)  ADD_STRING_CONFIG,"--zeng-online-server-allow-all-zrcp");
-
-  if (realjoystick_disabled.v==1)              ADD_STRING_CONFIG,"--disablerealjoystick");
+                                                    ADD_STRING_CONFIG,"--zeng-online-hostname \"%s\"",zeng_online_server);
+    if (zeng_online_nickname[0])                  ADD_STRING_CONFIG,"--zeng-online-nickname \"%s\"",zeng_online_nickname);
 
 
-  if (realjoystick_index!=0)                ADD_STRING_CONFIG,"--realjoystickindex %d",realjoystick_index);
+    if (zeng_online_zip_compress_snapshots.v==0)  ADD_STRING_CONFIG,"--zeng-online-no-zip-snapshots");
+    if (zeng_online_show_footer_lag_indicator.v==0)   ADD_STRING_CONFIG,"--zeng-online-no-footer-lag-indicator");
+    if (zoc_slave_differential_displays_limit_full_autoadjust.v==0)   ADD_STRING_CONFIG,"--zeng-online-no-autoadjust-display-quality");
+    if (streaming_enabled_when_creating==0)       ADD_STRING_CONFIG,"--zeng-online-no-streaming-create");
 
-  if (no_native_linux_realjoystick.v)          ADD_STRING_CONFIG,"--no-native-linux-realjoy");
+    if (zeng_online_allow_room_creation_from_any_ip.v)    ADD_STRING_CONFIG,"--zeng-online-server-allow-create");
+    if (zeng_online_destroy_rooms_without_players.v)      ADD_STRING_CONFIG,"--zeng-online-server-destroy-rooms-no-players");
+                                                    ADD_STRING_CONFIG,"--zeng-online-server-max-rooms %d",zeng_online_current_max_rooms);
+                                                    ADD_STRING_CONFIG,"--zeng-online-server-max-players-room %d",zeng_online_current_max_players_per_room);
+
+    if (zeng_online_server_allow_zrcp_only_zeng_online.v==0)  ADD_STRING_CONFIG,"--zeng-online-server-allow-all-zrcp");
+
+    if (realjoystick_disabled.v==1)              ADD_STRING_CONFIG,"--disablerealjoystick");
+
+
+    if (realjoystick_index!=0)                ADD_STRING_CONFIG,"--realjoystickindex %d",realjoystick_index);
+
+    if (no_native_linux_realjoystick.v)          ADD_STRING_CONFIG,"--no-native-linux-realjoy");
 
 
 
-                          ADD_STRING_CONFIG,"--realjoystickpath %s",string_dev_joystick);
+                        ADD_STRING_CONFIG,"--realjoystickpath %s",string_dev_joystick);
 
                         ADD_STRING_CONFIG,"--realjoystick-calibrate %d",realjoystick_autocalibrate_value);
 
-                                              ADD_STRING_CONFIG,"--steering-wheel-axis-number %d",realjoystick_steering_button);
+                        ADD_STRING_CONFIG,"--steering-wheel-axis-number %d",realjoystick_steering_button);
 
-  //real joystick buttons to events. Siempre este antes que el de events/buttons to keys
-  for (i=0;i<MAX_EVENTS_JOYSTICK;i++) {
-      if (realjoystick_events_array[i].asignado.v) {
-          char texto_button[20];
-          int button_type;
-          button_type=realjoystick_events_array[i].button_type;
+    //real joystick buttons to events. Siempre este antes que el de events/buttons to keys
+    for (i=0;i<MAX_EVENTS_JOYSTICK;i++) {
+        if (realjoystick_events_array[i].asignado.v) {
+            char texto_button[20];
+            int button_type;
+            button_type=realjoystick_events_array[i].button_type;
 
-          util_write_config_aux_realjoystick(button_type, realjoystick_events_array[i].button, texto_button);
+            util_write_config_aux_realjoystick(button_type, realjoystick_events_array[i].button, texto_button);
 
-          ADD_STRING_CONFIG,"--joystickevent %s %s",texto_button,realjoystick_event_names[i]);
-      }
-  }
-
-
-
-
-
-  //real joystick buttons to keys
-  for (i=0;i<MAX_KEYS_JOYSTICK;i++) {
-      if (realjoystick_keys_array[i].asignado.v) {
-          char texto_button[20];
-          int button_type;
-          z80_byte caracter;
-          caracter=realjoystick_keys_array[i].caracter;
-          button_type=realjoystick_keys_array[i].button_type;
-
-        util_write_config_aux_realjoystick(button_type, realjoystick_keys_array[i].button, texto_button);
-
-          ADD_STRING_CONFIG,"--joystickkeybt %s %d",texto_button,caracter);
-      }
-  }
+            ADD_STRING_CONFIG,"--joystickevent %s %s",texto_button,realjoystick_event_names[i]);
+        }
+    }
 
 
 
 
-  //joystickkeyev no lo estoy autoguardando, esto es mas indicado para archivos .config
-  if (realjoystick_clear_keys_on_smartload.v) ADD_STRING_CONFIG,"--clearkeylistonsmart");
+
+    //real joystick buttons to keys
+    for (i=0;i<MAX_KEYS_JOYSTICK;i++) {
+        if (realjoystick_keys_array[i].asignado.v) {
+            char texto_button[20];
+            int button_type;
+            z80_byte caracter;
+            caracter=realjoystick_keys_array[i].caracter;
+            button_type=realjoystick_keys_array[i].button_type;
+
+            util_write_config_aux_realjoystick(button_type, realjoystick_keys_array[i].button, texto_button);
+
+            ADD_STRING_CONFIG,"--joystickkeybt %s %d",texto_button,caracter);
+        }
+    }
 
 
 
-  //text osd keyboard
-  for (i=0;i<osd_adv_kbd_defined;i++) {
-          //Truco para poder poner " en el texto. Con barra invertida
-          if (!strcmp(osd_adv_kbd_list[i],"\"")) ADD_STRING_CONFIG,"--text-keyboard-add \\");
-    else ADD_STRING_CONFIG,"--text-keyboard-add \"%s\"",osd_adv_kbd_list[i]);
-  }
+
+    //joystickkeyev no lo estoy autoguardando, esto es mas indicado para archivos .config
+    if (realjoystick_clear_keys_on_smartload.v) ADD_STRING_CONFIG,"--clearkeylistonsmart");
+
+
+
+    //text osd keyboard
+    for (i=0;i<osd_adv_kbd_defined;i++) {
+        //Truco para poder poner " en el texto. Con barra invertida
+        if (!strcmp(osd_adv_kbd_list[i],"\"")) ADD_STRING_CONFIG,"--text-keyboard-add \\");
+        else ADD_STRING_CONFIG,"--text-keyboard-add \"%s\"",osd_adv_kbd_list[i]);
+    }
 
                                         ADD_STRING_CONFIG,"--text-keyboard-length %d",adventure_keyboard_key_length);
 
-     if (adventure_keyboard_send_final_spc) ADD_STRING_CONFIG,"--text-keyboard-finalspc");
+    if (adventure_keyboard_send_final_spc) ADD_STRING_CONFIG,"--text-keyboard-finalspc");
 
 
-  if (quickexit.v)                            ADD_STRING_CONFIG,"--quickexit");
+    if (quickexit.v)                            ADD_STRING_CONFIG,"--quickexit");
 
-  //Guardar si hay algo que Guardar
-  if (indice_string) {
-    char configfile[PATH_MAX];
-       FILE *ptr_configfile;
+    //Guardar si hay algo que Guardar
+    if (indice_string) {
+        char configfile[PATH_MAX];
+        FILE *ptr_configfile;
 
-     if (util_get_configfile_name(configfile)==0)  {
-       debug_printf(VERBOSE_ERR,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open configuration file");
-       free(config_settings);
-       return 0;
-     }
+        if (util_get_configfile_name(configfile)==0)  {
+            debug_printf(VERBOSE_ERR,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open configuration file");
+            free(config_settings);
+            return 0;
+        }
 
-     ptr_configfile=fopen(configfile,"a+");
-     if (!ptr_configfile) {
-                        debug_printf(VERBOSE_ERR,"Cannot write configuration file %s",configfile);
-                        free(config_settings);
-                        return 0;
-      }
+        ptr_configfile=fopen(configfile,"a+");
+        if (!ptr_configfile) {
+            debug_printf(VERBOSE_ERR,"Cannot write configuration file %s",configfile);
+            free(config_settings);
+            return 0;
+        }
 
-    fwrite(config_settings, 1, strlen(config_settings), ptr_configfile);
+        fwrite(config_settings, 1, strlen(config_settings), ptr_configfile);
 
 
-      fclose(ptr_configfile);
+        fclose(ptr_configfile);
     }
 
 
