@@ -2784,6 +2784,16 @@ char *screen_effect_get_name(enum enum_screen_effect_types type)
     return screen_effect_name_unknown;
 }
 
+void screen_effect_print_names(void)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        printf("%s",screen_effect_type_list[i].name);
+        if (i!=MAX_SCREEN_EFFECTS-1) printf(",");
+    }
+
+}
+
 //Retorna id de efecto segun el texto buscado. -1 si no existe
 //Nota: dado que los enum son unsigned, uso variable int en vez de enum_screen_effect_types
 int screen_effect_get_type(char *efecto)

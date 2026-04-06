@@ -142,6 +142,7 @@ extern char *screen_effect_get_name(enum enum_screen_effect_types type);
 extern int screen_effect_get_type(char *efecto);
 extern void set_screen_effect(int position,enum enum_screen_effect_types type,int enabled);
 extern void set_screen_follow_mouse_effect(enum enum_screen_effect_types type);
+extern void screen_effect_print_names(void);
 
 typedef struct {
     int enabled;

@@ -1325,6 +1325,13 @@ printf (
         "\n"
 
         "--video-fx-enable                              Enable special video effects\n"
+        "The following settings that use a effect name, the valid names are:\n"
+        );
+
+screen_effect_print_names();
+        printf(
+        "\n"
+
         "--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
         "--video-fx-follow-mouse effect                 Sets follow mouse setting on effect (Note: not all effects use that setting, it will be ignored on these)\n"
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
