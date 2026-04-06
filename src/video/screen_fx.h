@@ -138,8 +138,8 @@ typedef struct {
 } screen_effect_type_name;
 
 extern char *screen_effect_get_name(enum enum_screen_effect_types type);
-
-
+extern int screen_effect_get_type(char *efecto);
+extern void set_screen_effect(int position,enum enum_screen_effect_types type,int enabled);
 
 typedef struct {
     int enabled;

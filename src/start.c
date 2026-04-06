@@ -1325,6 +1325,7 @@ printf (
         "\n"
 
         "--video-fx-enable                              Enable special video effects\n"
+        "--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
         "--reduce-050                                   Reduce display size to 1/2. Require --video-fx-enable\n"
         "--reduce-025                                   Reduce display size to 1/4. Require --video-fx-enable\n"
@@ -2863,6 +2864,29 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--video-fx-enable")) {
                 screen_special_effects_enabled.v=1;
+            }
+
+            //"--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-set")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+                siguiente_parametro_argumento();
+
+                int position=parse_string_to_number(argv[puntero_parametro]);
+                siguiente_parametro_argumento();
+
+                int enabled=parse_string_to_number(argv[puntero_parametro]);
+
+                int tipo_efecto=screen_effect_get_type(effect);
+
+                if (tipo_efecto<0) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect %s",effect);
+                }
+                else {
+                    set_screen_effect(position,tipo_efecto,enabled);
+                }
+
             }
 
 

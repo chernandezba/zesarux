@@ -2776,7 +2776,29 @@ char *screen_effect_get_name(enum enum_screen_effect_types type)
     return screen_effect_name_unknown;
 }
 
+//Retorna id de efecto segun el texto buscado. -1 si no existe
+//Nota: dado que los enum son unsigned, uso variable int en vez de enum_screen_effect_types
+int screen_effect_get_type(char *efecto)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (!strcasecmp(screen_effect_type_list[i].name,efecto)) return screen_effect_type_list[i].type;
+    }
+    return -1;
+}
+
 screen_effect_applied screen_effect_applied_list[MAX_SCREEN_LIST_EFFECTS];
+
+void set_screen_effect(int position,enum enum_screen_effect_types type,int enabled)
+{
+    if (position<0 || position>=MAX_SCREEN_LIST_EFFECTS) {
+        debug_printf(VERBOSE_ERR,"Invalid position %d for effect",position);
+        return;
+    }
+
+    screen_effect_applied_list[position].type=type;
+    screen_effect_applied_list[position].enabled=(enabled ? 1 : 0);
+}
 
 
 void init_screen_effects_table(void)
