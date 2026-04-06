@@ -1326,6 +1326,7 @@ printf (
 
         "--video-fx-enable                              Enable special video effects\n"
         "--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
+        "--video-fx-follow-mouse effect                 Sets follow mouse setting on effect (Note: not all effects use that setting, it will be ignored on these)\n"
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
         "--reduce-050                                   Reduce display size to 1/2. Require --video-fx-enable\n"
         "--reduce-025                                   Reduce display size to 1/4. Require --video-fx-enable\n"
@@ -2885,6 +2886,22 @@ int parse_cmdline_options(int desde_commandline)
                 }
                 else {
                     set_screen_effect(position,tipo_efecto,enabled);
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-follow-mouse")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                int tipo_efecto=screen_effect_get_type(effect);
+
+                if (tipo_efecto<0) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for follow mouse: %s",effect);
+                }
+                else {
+                    set_screen_follow_mouse_effect(tipo_efecto);
                 }
 
             }

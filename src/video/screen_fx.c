@@ -2712,57 +2712,44 @@ void screen_special_effects_functions_pre(int ancho,int alto)
 
 z80_bit screen_special_effects_enabled={0};
 
-/*
-z80_bit screen_special_effects_temblar={0};
-z80_bit screen_special_effects_flip_vertical={0};
-z80_bit screen_special_effects_flip_horizontal={0};
-z80_bit screen_special_effects_nagravision={0};
-z80_bit screen_special_effects_interferences={0};
-z80_bit screen_special_effects_waves={0};
-z80_bit screen_special_effects_fisheye={0};
-z80_bit screen_special_effects_zoom_mouse={0};
-z80_bit screen_special_effects_hsync_lost={0};
-z80_bit screen_special_effects_vsync_lost={0};
-z80_bit screen_special_effects_pixelate={0};
-z80_bit screen_special_effects_heat={0};
-*/
+
 
 screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
-    {SCREEN_EFFECT_TYPE_NONE,"None"},
-    {SCREEN_EFFECT_TYPE_REDUCE,"Reduce"},
-    {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady"},
-    {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical"},
-    {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal"},
-    {SCREEN_EFFECT_TYPE_ROTATE,"Rotate"},
-    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl"},
-    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences"},
-    {SCREEN_EFFECT_TYPE_SEA,"Sea"},
-    {SCREEN_EFFECT_TYPE_WAVES,"Waves"},
-    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field"},
-    {SCREEN_EFFECT_TYPE_SHEAR,"Shear"},
-    {SCREEN_EFFECT_TYPE_LENS,"Lens"},
-    {SCREEN_EFFECT_TYPE_RADAR,"Radar"},
-    {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse"},
-    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate"},
-    {SCREEN_EFFECT_TYPE_BLUR,"Blur"},
-    {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder"},
-    {SCREEN_EFFECT_TYPE_LED,"LED"},
-    {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost"},
-    {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost"},
-    {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal"},
-    {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical"},
-    {SCREEN_EFFECT_TYPE_FADEIN,"Fade In"},
-    {SCREEN_EFFECT_TYPE_FADEOUT,"Fade Out"},
-    {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut"},
-    {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines"},
-    {SCREEN_EFFECT_TYPE_SEPIA,"Sepia"},
-    {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence"},
-    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast"},
-    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness"},
-    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision"},
-    {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines"},
-    {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision"},
-    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike"}
+    {SCREEN_EFFECT_TYPE_NONE,"None",NULL},
+    {SCREEN_EFFECT_TYPE_REDUCE,"Reduce",NULL},
+    {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady",NULL},
+    {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical",NULL},
+    {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal",NULL},
+    {SCREEN_EFFECT_TYPE_ROTATE,"Rotate",&screen_rainbow_effect_rotate_follow_mouse},
+    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",NULL},
+    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL},
+    {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL},
+    {SCREEN_EFFECT_TYPE_WAVES,"Waves",NULL},
+    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL},
+    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",NULL},
+    {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL},
+    {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL},
+    {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL},
+    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",NULL},
+    {SCREEN_EFFECT_TYPE_BLUR,"Blur",NULL},
+    {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL},
+    {SCREEN_EFFECT_TYPE_LED,"LED",NULL},
+    {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost",NULL},
+    {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost",NULL},
+    {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal",NULL},
+    {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical",NULL},
+    {SCREEN_EFFECT_TYPE_FADEIN,"Fade In",NULL},
+    {SCREEN_EFFECT_TYPE_FADEOUT,"Fade Out",NULL},
+    {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut",NULL},
+    {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines",NULL},
+    {SCREEN_EFFECT_TYPE_SEPIA,"Sepia",NULL},
+    {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence",NULL},
+    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",NULL},
+    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",NULL},
+    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision",NULL},
+    {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines",NULL},
+    {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision",NULL},
+    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike",NULL}
 };
 
 char *screen_effect_name_unknown="Unknown";
@@ -2798,6 +2785,17 @@ void set_screen_effect(int position,enum enum_screen_effect_types type,int enabl
 
     screen_effect_applied_list[position].type=type;
     screen_effect_applied_list[position].enabled=(enabled ? 1 : 0);
+}
+
+void set_screen_follow_mouse_effect(enum enum_screen_effect_types type)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (screen_effect_type_list[i].type==type && screen_effect_type_list[i].follow_mouse_setting!=NULL) {
+            z80_bit *follow_mouse=screen_effect_type_list[i].follow_mouse_setting;
+            follow_mouse->v=1;
+        }
+    }
 }
 
 

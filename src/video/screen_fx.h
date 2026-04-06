@@ -135,11 +135,13 @@ enum enum_screen_effect_types {
 typedef struct {
     enum enum_screen_effect_types type;
     char name[40];
+    z80_bit *follow_mouse_setting;
 } screen_effect_type_name;
 
 extern char *screen_effect_get_name(enum enum_screen_effect_types type);
 extern int screen_effect_get_type(char *efecto);
 extern void set_screen_effect(int position,enum enum_screen_effect_types type,int enabled);
+extern void set_screen_follow_mouse_effect(enum enum_screen_effect_types type);
 
 typedef struct {
     int enabled;

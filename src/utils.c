@@ -3897,6 +3897,17 @@ int util_write_configfile(void)
   }
 
 
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (screen_effect_type_list[i].follow_mouse_setting!=NULL) {
+            z80_bit *follow_mouse=screen_effect_type_list[i].follow_mouse_setting;
+            if (follow_mouse->v) {
+                ADD_STRING_CONFIG,"--video-fx-follow-mouse \"%s\"",screen_effect_type_list[i].name);
+            }
+        }
+    }
+
+
+
   if (screen_reduction_factor==SCREEN_REDUCE_075)			ADD_STRING_CONFIG,"--reduce-075");
   if (screen_reduction_factor==SCREEN_REDUCE_050)			ADD_STRING_CONFIG,"--reduce-050");
   if (screen_reduction_factor==SCREEN_REDUCE_025)			ADD_STRING_CONFIG,"--reduce-025");
