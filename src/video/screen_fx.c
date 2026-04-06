@@ -2806,12 +2806,12 @@ void init_screen_effects_table(void)
     int i;
     for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
         screen_effect_applied_list[i].enabled=0;
-        if (i<MAX_SCREEN_EFFECTS) {
-            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
-        }
-        else {
+        //if (i<MAX_SCREEN_EFFECTS) {
+        //    screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
+        //}
+        //else {
             screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
-        }
+        //}
     }
 }
 
