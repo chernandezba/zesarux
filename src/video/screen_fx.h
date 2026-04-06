@@ -156,7 +156,6 @@ extern screen_effect_type_name screen_effect_type_list[];
 #define SCREEN_EFFECT_PIXELATE_MAX_SIZE 16
 
 
-extern int screen_reduce_offset_y;
 
 
 #endif

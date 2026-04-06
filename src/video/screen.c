@@ -117,7 +117,6 @@ int screen_reduce_menu_ancho=1;
 int screen_reduce_menu_alto=1;
 
 
-int screen_reduce_offset_y=0;
 
 //Usado por los drivers de video cuando hay pendiente un redibujado de ZX Desktop y las ventanas
 int scr_pendiente_redraw_desktop_windows=0;

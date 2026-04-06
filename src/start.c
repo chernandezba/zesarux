@@ -2946,6 +2946,7 @@ int parse_cmdline_options(int desde_commandline)
 
             }
 
+            //deprecated. use instead scroll effect
             else if (
                 //deprecated --reduce-075-offset-y
                 !strcmp(argv[puntero_parametro],"--reduce-075-offset-y") ||
@@ -2953,7 +2954,6 @@ int parse_cmdline_options(int desde_commandline)
 
                 ) {
                 siguiente_parametro_argumento();
-                screen_reduce_offset_y=atoi(argv[puntero_parametro]);
             }
 
             else if (!strcmp(argv[puntero_parametro],"--enable-watermark")) {
