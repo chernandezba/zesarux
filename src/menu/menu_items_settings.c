@@ -1578,8 +1578,9 @@ void menu_interface_special_effects_waves2_width(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_improved_waves_intensidad>=21) screen_rainbow_effect_improved_waves_intensidad=2;
 }
 
+//Para poder reasignar el cursor al mover efectos arriba o abajo
 int menu_main_window_special_effects_mover_cursor=0;
-enum enum_screen_effect_types menu_main_window_special_effects_mover_cursor_tipo;
+int menu_main_window_special_effects_mover_cursor_linea=0;
 
 void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
 {
@@ -1597,7 +1598,7 @@ void menu_main_window_special_effects_change_move_up(MENU_ITEM_PARAMETERS)
     screen_effect_applied_list[valor_opcion-1].enabled=enabled_current;
 
     menu_main_window_special_effects_mover_cursor=1;
-    menu_main_window_special_effects_mover_cursor_tipo=type_current;
+    menu_main_window_special_effects_mover_cursor_linea=valor_opcion-1;
 }
 
 void menu_main_window_special_effects_change_move_down(MENU_ITEM_PARAMETERS)
@@ -1612,7 +1613,7 @@ void menu_main_window_special_effects_change_move_down(MENU_ITEM_PARAMETERS)
     screen_effect_applied_list[valor_opcion+1].enabled=enabled_current;
 
     menu_main_window_special_effects_mover_cursor=1;
-    menu_main_window_special_effects_mover_cursor_tipo=type_current;
+    menu_main_window_special_effects_mover_cursor_linea=valor_opcion+1;
 }
 
 void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
@@ -1898,7 +1899,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     (enabled ? 'X' : ' ' ));
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
 
-                if (menu_main_window_special_effects_mover_cursor && menu_main_window_special_effects_mover_cursor_tipo==type) {
+                if (menu_main_window_special_effects_mover_cursor && menu_main_window_special_effects_mover_cursor_linea==i) {
                     menu_main_window_special_effects_mover_cursor=0; //para que no coincida con nada
                     main_window_special_effects_opcion_seleccionada=menu_item_get_linea_actual(array_menu_common);
                     //printf("establecido cursor a %d\n",menu_item_get_linea_actual(array_menu_common));

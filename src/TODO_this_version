@@ -134,7 +134,7 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 *revisar gigascreen , replantear entera, tenia una condición especial para el efecto de reduce
 ok *con menu opciones efectos, que ponga tipo ventana correcto/dialogo, que se mueva bien atras, etc
 *con nuevo efecto scroll horizontal/vertical no deberia hacer falta el offset del efecto reduce
-*ahora mover efectos no deja bien el cursor cuando hay repetidos
+ok *ahora mover efectos no deja bien el cursor cuando hay repetidos
 *shader border poder definir ancho border
 
 *mas efectos:
