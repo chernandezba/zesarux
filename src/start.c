@@ -1310,19 +1310,28 @@ printf (
 
         "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 
-        "--video-special-effects-enable                 Enable special video effects\n"
-        "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-special-effects-enable\n"
-        "--reduce-050                                   Reduce display size to 1/2. Require --video-special-effects-enable\n"
-        "--reduce-025                                   Reduce display size to 1/4. Require --video-special-effects-enable\n"
-        "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
-        "--reduce-display-offset-x n                    Destination offset x on reduced display\n"
-        "--reduce-display-offset-y n                    Destination offset y on reduced display\n"
+
         "--disablefooter                                Disable window footer\n"
         "--no-cpu-temp                                  Do not show host CPU temperature on footer\n"
         "--no-fps                                       Do not show FPS on footer\n"
 #ifndef MINGW
         "--no-cpu-usage                                 Do not show host CPU usage on footer\n"
 #endif
+
+        "\n"
+        "\n"
+        "Main Window - FX Settings\n"
+        "-------------------------\n"
+        "\n"
+
+        "--video-fx-enable                              Enable special video effects\n"
+        "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
+        "--reduce-050                                   Reduce display size to 1/2. Require --video-fx-enable\n"
+        "--reduce-025                                   Reduce display size to 1/4. Require --video-fx-enable\n"
+        "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
+        "--reduce-display-offset-x n                    Destination offset x on reduced display\n"
+        "--reduce-display-offset-y n                    Destination offset y on reduced display\n"
+
 
         "\n"
         "\n"
@@ -2852,7 +2861,7 @@ int parse_cmdline_options(int desde_commandline)
                 autochange_zoom_big_display.v=0;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--video-special-effects-enable")) {
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-enable")) {
                 screen_special_effects_enabled.v=1;
             }
 
