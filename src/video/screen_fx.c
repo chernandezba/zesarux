@@ -39,7 +39,7 @@ z80_bit screen_rainbow_effect_remolino_follow_mouse={0};        //AGCONFIG
 z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};        //AGCONFIG
 
 
-int screen_rainbow_effect_improved_waves_intensity=8;
+int screen_rainbow_effect_improved_waves_intensity=8;           //AGCONFIG
 z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};  //AGCONFIG
 
 int screen_rainbow_effect_shear_intensity=4;
@@ -2729,41 +2729,41 @@ z80_bit screen_special_effects_enabled={0};
 
 
 screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
-    {SCREEN_EFFECT_TYPE_NONE,"None",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_REDUCE,"Reduce",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_ROTATE,"Rotate",&screen_rainbow_effect_rotate_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",&screen_rainbow_effect_remolino_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,2,21},
-    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_LED,"LED",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal",&screen_rainbow_effect_scroll_horizontal_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical",&screen_rainbow_effect_scroll_vertical_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_FADEIN,"Fade In",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_FADEOUT,"Fade Out",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SEPIA,"Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",&screen_rainbow_effect_contrast_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",&screen_rainbow_effect_brightness_follow_mouse,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision",NULL,NULL,0,0},
-    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike",NULL,NULL,0,0}
+    {SCREEN_EFFECT_TYPE_NONE,"None",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_REDUCE,"Reduce",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_ROTATE,"Rotate",&screen_rainbow_effect_rotate_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",&screen_rainbow_effect_remolino_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,8,2,21},
+    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,&screen_rainbow_effect_shear_intensity,4,1,50},
+    {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_LED,"LED",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal",&screen_rainbow_effect_scroll_horizontal_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical",&screen_rainbow_effect_scroll_vertical_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FADEIN,"Fade In",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FADEOUT,"Fade Out",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SEPIA,"Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",&screen_rainbow_effect_contrast_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",&screen_rainbow_effect_brightness_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike",NULL,NULL,0,0,0}
 };
 
 char *screen_effect_name_unknown="Unknown";

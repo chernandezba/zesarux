@@ -137,6 +137,7 @@ typedef struct {
     char name[40];
     z80_bit *follow_mouse_setting;
     int *intensity_setting;
+    int default_intensity;
     int lower_intensity,higher_intensity;
 } screen_effect_type_name;
 

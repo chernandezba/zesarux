@@ -3909,8 +3909,9 @@ int util_write_configfile(void)
     for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
         if (screen_effect_type_list[i].intensity_setting!=NULL) {
             int *intensity_setting=screen_effect_type_list[i].intensity_setting;
-
-            ADD_STRING_CONFIG,"--video-fx-intensity \"%s\" %d",screen_effect_type_list[i].name,*intensity_setting);
+            if (*intensity_setting!=screen_effect_type_list[i].default_intensity) {
+                ADD_STRING_CONFIG,"--video-fx-intensity \"%s\" %d",screen_effect_type_list[i].name,*intensity_setting);
+            }
         }
     }
 
