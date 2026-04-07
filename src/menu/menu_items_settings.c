@@ -1555,7 +1555,7 @@ void menu_interface_special_effects_pixelate_size(MENU_ITEM_PARAMETERS)
 void menu_interface_special_effects_waves2_width(MENU_ITEM_PARAMETERS)
 {
     screen_rainbow_effect_improved_waves_intensity++;
-    if (screen_rainbow_effect_improved_waves_intensity>=21) screen_rainbow_effect_improved_waves_intensity=2;
+    if (screen_rainbow_effect_improved_waves_intensity>20) screen_rainbow_effect_improved_waves_intensity=2;
 }
 
 //Para poder reasignar el cursor al mover efectos arriba o abajo
@@ -1753,7 +1753,7 @@ void menu_interface_special_effects_shear_intensity(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_shear_intensity<20) screen_rainbow_effect_shear_intensity++;
     else screen_rainbow_effect_shear_intensity +=2;
 
-    if (screen_rainbow_effect_shear_intensity>=50) screen_rainbow_effect_shear_intensity=1;
+    if (screen_rainbow_effect_shear_intensity>49) screen_rainbow_effect_shear_intensity=1;
 }
 
 void menu_interface_special_effects_scroll_horizontal_offset(MENU_ITEM_PARAMETERS)

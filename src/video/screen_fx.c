@@ -31,6 +31,7 @@
 #include "joystick.h"
 #include "sensors.h"
 
+z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto);
 
 //Nota: AGCONFIG indica agregado en config
 int screen_rainbow_effect_rotate_grados=45;
@@ -94,6 +95,210 @@ char screen_special_effects_fisheye_follow_music_channel=0;
 int screen_rainbow_effect_fisheye_factor_k = 100;
 z80_bit screen_special_effects_fisheye_automatic_factor={0};
 z80_bit screen_special_effects_fisheye_follow_mouse={0};
+
+
+
+z80_bit screen_special_effects_enabled={0};
+
+
+
+screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
+    {SCREEN_EFFECT_TYPE_NONE,"None",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_REDUCE,"Reduce",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_ROTATE,"Rotate",&screen_rainbow_effect_rotate_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",&screen_rainbow_effect_remolino_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,20},
+    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,&screen_rainbow_effect_shear_intensity,SCREEN_FX_SHEAR_DEFAULT_INTENSITY,1,49},
+    {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,&screen_rainbow_effect_blur_intensity,SCREEN_FX_BLUR_DEFAULT_INTENSITY,1,16},
+    {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_LED,"LED",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal",&screen_rainbow_effect_scroll_horizontal_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical",&screen_rainbow_effect_scroll_vertical_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FADEIN,"Fade In",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FADEOUT,"Fade Out",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SEPIA,"Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",&screen_rainbow_effect_contrast_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",&screen_rainbow_effect_brightness_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike",NULL,NULL,0,0,0}
+};
+
+char *screen_effect_name_unknown="Unknown";
+
+
+z80_int *new_scalled_rainbow_buffer=NULL;
+
+
+//Comunes a escalado normal y escalado con gigascreen
+int scalled_rainbow_ancho=0;
+int scalled_rainbow_alto=0;
+
+//Punteros de escalado 0.75 para gigascreen
+z80_int *new_scalled_rainbow_buffer_gigascren_one=NULL;
+z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
+
+void screen_special_effects_free_buffers(void)
+{
+    if (new_scalled_rainbow_buffer!=NULL) {
+        debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
+        free (new_scalled_rainbow_buffer);
+        new_scalled_rainbow_buffer=NULL;
+    }
+
+    if (new_scalled_rainbow_buffer_gigascren_one!=NULL) {
+            debug_printf(VERBOSE_DEBUG,"Freeing previous scaled gigascreen rainbow buffers");
+            free (new_scalled_rainbow_buffer_gigascren_one);
+            free (new_scalled_rainbow_buffer_gigascren_two);
+            new_scalled_rainbow_buffer_gigascren_one=NULL;
+            new_scalled_rainbow_buffer_gigascren_two=NULL;
+    }
+}
+
+z80_int *screen_special_effects_alloc_buffer(int ancho,int alto)
+{
+    int tamanyo=ancho*alto*2;
+    z80_int *buffer=util_malloc(ancho*alto*2,"Can not allocate scalled rainbow buffer"); //*2 por que son valores de 16 bits
+    memset(buffer,0,tamanyo);
+    return buffer;
+}
+
+void screen_special_effects_functions_pre(int ancho,int alto)
+{
+
+    //Liberar buffer anterior
+    screen_special_effects_free_buffers();
+
+
+    new_scalled_rainbow_buffer=screen_special_effects_functions(rainbow_buffer,ancho,alto);
+
+}
+
+
+
+char *screen_effect_get_name(enum enum_screen_effect_types type)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (screen_effect_type_list[i].type==type) return screen_effect_type_list[i].name;
+    }
+    return screen_effect_name_unknown;
+}
+
+void screen_effect_print_names(void)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        printf("%s",screen_effect_type_list[i].name);
+        if (i!=MAX_SCREEN_EFFECTS-1) printf(",");
+    }
+
+}
+
+//Retorna id de efecto segun el texto buscado. -1 si no existe
+//Nota: dado que los enum son unsigned, uso variable int en vez de enum_screen_effect_types
+int screen_effect_get_type(char *efecto)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (!strcasecmp(screen_effect_type_list[i].name,efecto)) return screen_effect_type_list[i].type;
+    }
+    return -1;
+}
+
+screen_effect_applied screen_effect_applied_list[MAX_SCREEN_LIST_EFFECTS];
+
+void set_screen_effect(int position,enum enum_screen_effect_types type,int enabled)
+{
+    if (position<0 || position>=MAX_SCREEN_LIST_EFFECTS) {
+        debug_printf(VERBOSE_ERR,"Invalid position %d for effect",position);
+        return;
+    }
+
+    screen_effect_applied_list[position].type=type;
+    screen_effect_applied_list[position].enabled=(enabled ? 1 : 0);
+}
+
+//Retorna <0 si efecto no tiene follow mouse
+int set_screen_follow_mouse_effect(enum enum_screen_effect_types type)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (screen_effect_type_list[i].type==type && screen_effect_type_list[i].follow_mouse_setting!=NULL) {
+            z80_bit *follow_mouse=screen_effect_type_list[i].follow_mouse_setting;
+            follow_mouse->v=1;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+//Retorna 0 si ok
+//Retorna <0 si efecto no tiene intensidad
+//Retorna >1 si fuera de rango
+int set_screen_intensity_effect(enum enum_screen_effect_types type,int intensidad)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (screen_effect_type_list[i].type==type && screen_effect_type_list[i].intensity_setting!=NULL) {
+            int *intensity_setting=screen_effect_type_list[i].intensity_setting;
+            if (intensidad<screen_effect_type_list[i].lower_intensity || intensidad>screen_effect_type_list[i].higher_intensity) return 1;
+            *intensity_setting=intensidad;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+void init_screen_effects_table(void)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
+        screen_effect_applied_list[i].enabled=0;
+        //if (i<MAX_SCREEN_EFFECTS) {
+        //    screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
+        //}
+        //else {
+            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
+        //}
+    }
+}
+
+//Aplicar efectos a modo rainbow
+z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
+{
+    puntero=rainbow_buffer;
+
+    //Si se aplican efectos a la pantalla
+    if (screen_special_effects_enabled.v) {
+        screen_special_effects_functions_pre(ancho,alto);
+        puntero=new_scalled_rainbow_buffer;
+    }
+
+    return puntero;
+}
+
+
+
+
+
+
 
 //Mezclar dos colores si estan en rango spectrum 0-15, retornando el gigascreen. Si no, devolver el primero
 z80_int screen_scale_075_050_mix_two(z80_int color1, z80_int color2)
@@ -2444,13 +2649,7 @@ void screen_rainbow_effect_sea(z80_int *origen,z80_int *destino,int ancho,int al
 
 }
 
-//Comunes a escalado normal y escalado con gigascreen
-int scalled_rainbow_ancho=0;
-int scalled_rainbow_alto=0;
 
-//Punteros de escalado 0.75 para gigascreen
-z80_int *new_scalled_rainbow_buffer_gigascren_one=NULL;
-z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
 
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 {
@@ -2680,196 +2879,5 @@ return;
                 //screen_scale_075_050_and_watermark_function(rainbow_buffer_one,new_scalled_rainbow_buffer_gigascren_one,ancho,alto);
                 //screen_scale_075_050_and_watermark_function(rainbow_buffer_two,new_scalled_rainbow_buffer_gigascren_two,ancho,alto);
 }
-
-
-
-z80_int *new_scalled_rainbow_buffer=NULL;
-
-
-
-void screen_special_effects_free_buffers(void)
-{
-    if (new_scalled_rainbow_buffer!=NULL) {
-        debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
-        free (new_scalled_rainbow_buffer);
-        new_scalled_rainbow_buffer=NULL;
-    }
-
-    if (new_scalled_rainbow_buffer_gigascren_one!=NULL) {
-            debug_printf(VERBOSE_DEBUG,"Freeing previous scaled gigascreen rainbow buffers");
-            free (new_scalled_rainbow_buffer_gigascren_one);
-            free (new_scalled_rainbow_buffer_gigascren_two);
-            new_scalled_rainbow_buffer_gigascren_one=NULL;
-            new_scalled_rainbow_buffer_gigascren_two=NULL;
-    }
-}
-
-z80_int *screen_special_effects_alloc_buffer(int ancho,int alto)
-{
-    int tamanyo=ancho*alto*2;
-    z80_int *buffer=util_malloc(ancho*alto*2,"Can not allocate scalled rainbow buffer"); //*2 por que son valores de 16 bits
-    memset(buffer,0,tamanyo);
-    return buffer;
-}
-
-void screen_special_effects_functions_pre(int ancho,int alto)
-{
-
-    //Liberar buffer anterior
-    screen_special_effects_free_buffers();
-
-
-    new_scalled_rainbow_buffer=screen_special_effects_functions(rainbow_buffer,ancho,alto);
-
-}
-
-
-z80_bit screen_special_effects_enabled={0};
-
-
-
-screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
-    {SCREEN_EFFECT_TYPE_NONE,"None",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_REDUCE,"Reduce",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_ROTATE,"Rotate",&screen_rainbow_effect_rotate_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",&screen_rainbow_effect_remolino_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,20},
-    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,&screen_rainbow_effect_shear_intensity,SCREEN_FX_SHEAR_DEFAULT_INTENSITY,1,49},
-    {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,&screen_rainbow_effect_blur_intensity,SCREEN_FX_BLUR_DEFAULT_INTENSITY,1,16},
-    {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_LED,"LED",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal",&screen_rainbow_effect_scroll_horizontal_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical",&screen_rainbow_effect_scroll_vertical_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_FADEIN,"Fade In",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_FADEOUT,"Fade Out",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SEPIA,"Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",&screen_rainbow_effect_contrast_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",&screen_rainbow_effect_brightness_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike",NULL,NULL,0,0,0}
-};
-
-char *screen_effect_name_unknown="Unknown";
-
-char *screen_effect_get_name(enum enum_screen_effect_types type)
-{
-    int i;
-    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-        if (screen_effect_type_list[i].type==type) return screen_effect_type_list[i].name;
-    }
-    return screen_effect_name_unknown;
-}
-
-void screen_effect_print_names(void)
-{
-    int i;
-    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-        printf("%s",screen_effect_type_list[i].name);
-        if (i!=MAX_SCREEN_EFFECTS-1) printf(",");
-    }
-
-}
-
-//Retorna id de efecto segun el texto buscado. -1 si no existe
-//Nota: dado que los enum son unsigned, uso variable int en vez de enum_screen_effect_types
-int screen_effect_get_type(char *efecto)
-{
-    int i;
-    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-        if (!strcasecmp(screen_effect_type_list[i].name,efecto)) return screen_effect_type_list[i].type;
-    }
-    return -1;
-}
-
-screen_effect_applied screen_effect_applied_list[MAX_SCREEN_LIST_EFFECTS];
-
-void set_screen_effect(int position,enum enum_screen_effect_types type,int enabled)
-{
-    if (position<0 || position>=MAX_SCREEN_LIST_EFFECTS) {
-        debug_printf(VERBOSE_ERR,"Invalid position %d for effect",position);
-        return;
-    }
-
-    screen_effect_applied_list[position].type=type;
-    screen_effect_applied_list[position].enabled=(enabled ? 1 : 0);
-}
-
-//Retorna <0 si efecto no tiene follow mouse
-int set_screen_follow_mouse_effect(enum enum_screen_effect_types type)
-{
-    int i;
-    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-        if (screen_effect_type_list[i].type==type && screen_effect_type_list[i].follow_mouse_setting!=NULL) {
-            z80_bit *follow_mouse=screen_effect_type_list[i].follow_mouse_setting;
-            follow_mouse->v=1;
-            return 0;
-        }
-    }
-    return -1;
-}
-
-//Retorna 0 si ok
-//Retorna <0 si efecto no tiene intensidad
-//Retorna >1 si fuera de rango
-int set_screen_intensity_effect(enum enum_screen_effect_types type,int intensidad)
-{
-    int i;
-    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
-        if (screen_effect_type_list[i].type==type && screen_effect_type_list[i].intensity_setting!=NULL) {
-            int *intensity_setting=screen_effect_type_list[i].intensity_setting;
-            if (intensidad<screen_effect_type_list[i].lower_intensity || intensidad>screen_effect_type_list[i].higher_intensity) return 1;
-            *intensity_setting=intensidad;
-            return 0;
-        }
-    }
-    return -1;
-}
-
-void init_screen_effects_table(void)
-{
-    int i;
-    for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
-        screen_effect_applied_list[i].enabled=0;
-        //if (i<MAX_SCREEN_EFFECTS) {
-        //    screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
-        //}
-        //else {
-            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
-        //}
-    }
-}
-
-//Aplicar efectos a modo rainbow
-z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
-{
-    puntero=rainbow_buffer;
-
-    //Si se aplican efectos a la pantalla
-    if (screen_special_effects_enabled.v) {
-        screen_special_effects_functions_pre(ancho,alto);
-        puntero=new_scalled_rainbow_buffer;
-    }
-
-    return puntero;
-}
-
-
 
 
