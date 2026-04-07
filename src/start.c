@@ -1334,6 +1334,7 @@ screen_effect_print_names();
 
         "--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
         "--video-fx-follow-mouse effect                 Sets follow mouse setting on effect (Note: not all effects use that setting)\n"
+        "--video-fx-circular effect                     Sets circular setting on effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
         "--video-fx-intensity effect intensity          Sets intensity setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-angle effect angle                  Sets rotation angle for effect (Note: only Rotate effect supports this parameter)\n"
         "--video-fx-offset effect offset                Sets offset for effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
@@ -2989,6 +2990,23 @@ int parse_cmdline_options(int desde_commandline)
                             screen_rainbow_effect_scroll_vertical_offset=valor_offset;
                         }
                     }
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-circular")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                if (!strcasecmp(effect,"Scroll Horizontal")) {
+                    screen_rainbow_effect_scroll_horizontal_circular.v=1;
+                }
+                else if (!strcasecmp(effect,"Scroll Vertical")) {
+                    screen_rainbow_effect_scroll_vertical_circular.v=1;
+                }
+                else {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for circular setting: %s",effect);
                 }
 
             }

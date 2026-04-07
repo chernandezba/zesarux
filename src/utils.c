@@ -3928,6 +3928,14 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-offset \"Scroll Vertical\" %d",screen_rainbow_effect_scroll_vertical_offset);
     }
 
+    if (screen_rainbow_effect_scroll_horizontal_circular.v) {
+        ADD_STRING_CONFIG,"--video-fx-circular \"Scroll Horizontal\"");
+    }
+
+    if (screen_rainbow_effect_scroll_vertical_circular.v) {
+        ADD_STRING_CONFIG,"--video-fx-circular \"Scroll Vertical\"");
+    }
+
 
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");
