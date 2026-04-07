@@ -37,7 +37,7 @@ z80_bit screen_rainbow_effect_rotate_follow_mouse={0};
 z80_bit screen_rainbow_effect_remolino_follow_mouse={0};
 z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};
 
-int screen_rainbow_effect_improved_waves_tiempo=0;
+
 int screen_rainbow_effect_improved_waves_intensidad=8;
 z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};
 
@@ -1264,7 +1264,7 @@ void screen_rainbow_effect_pixelate(z80_int *origen,z80_int *destino,int ancho,i
 
 }
 
-
+int screen_rainbow_effect_improved_waves_tiempo=0;
 
 void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -2810,15 +2810,18 @@ void set_screen_effect(int position,enum enum_screen_effect_types type,int enabl
     screen_effect_applied_list[position].enabled=(enabled ? 1 : 0);
 }
 
-void set_screen_follow_mouse_effect(enum enum_screen_effect_types type)
+//Retorna <0 si efecto no tiene follow mouse
+int set_screen_follow_mouse_effect(enum enum_screen_effect_types type)
 {
     int i;
     for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
         if (screen_effect_type_list[i].type==type && screen_effect_type_list[i].follow_mouse_setting!=NULL) {
             z80_bit *follow_mouse=screen_effect_type_list[i].follow_mouse_setting;
             follow_mouse->v=1;
+            return 0;
         }
     }
+    return -1;
 }
 
 

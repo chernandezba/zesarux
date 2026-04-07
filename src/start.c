@@ -2906,7 +2906,9 @@ int parse_cmdline_options(int desde_commandline)
                     debug_printf(VERBOSE_ERR,"Invalid effect for follow mouse: %s",effect);
                 }
                 else {
-                    set_screen_follow_mouse_effect(tipo_efecto);
+                    if (set_screen_follow_mouse_effect(tipo_efecto)<0) {
+                        debug_printf(VERBOSE_ERR,"Effect %s does not have follow mouse setting",effect);
+                    }
                 }
 
             }
