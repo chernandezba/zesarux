@@ -67,7 +67,7 @@ z80_bit screen_rainbow_effect_scroll_vertical_circular={0};     //AGCONFIG
 z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};     //AGCONFIG
 
 int screen_rainbow_effect_attraction_intensity=SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY; //AGCONFIG
-int screen_rainbow_effect_attraction_atrac_repulse=+1;
+int screen_rainbow_effect_attraction_atrac_repulse=+1; //AGCONFIG
 
 
 

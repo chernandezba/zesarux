@@ -3936,6 +3936,8 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-circular \"Scroll Vertical\"");
     }
 
+    ADD_STRING_CONFIG,"--video-fx-attraction \"Magnetic Field\" %d",screen_rainbow_effect_attraction_atrac_repulse);
+
 
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");

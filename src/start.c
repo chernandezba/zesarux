@@ -1335,6 +1335,7 @@ screen_effect_print_names();
         "--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
         "--video-fx-follow-mouse effect                 Sets follow mouse setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-circular effect                     Sets circular setting on effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
+        "--video-fx-attraction effect value             Sets attraction value for effect: +1: attraction, -1: repulsion (Note: only Magnetic Field effect supports this parameter)\n"
         "--video-fx-intensity effect intensity          Sets intensity setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-angle effect angle                  Sets rotation angle for effect (Note: only Rotate effect supports this parameter)\n"
         "--video-fx-offset effect offset                Sets offset for effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
@@ -2961,6 +2962,29 @@ int parse_cmdline_options(int desde_commandline)
                     }
                     else {
                         screen_rainbow_effect_rotate_grados=valor_angulo;
+                    }
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-attraction")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int valor_atraccion=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Magnetic Field")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for attraction setting: %s",effect);
+                }
+                else {
+                    if (valor_atraccion!=+1 && valor_atraccion!=-1) {
+                        debug_printf(VERBOSE_ERR,"Attraction value for effect %s out of range",effect);
+                    }
+                    else {
+                        screen_rainbow_effect_attraction_atrac_repulse=valor_atraccion;
                     }
                 }
 
