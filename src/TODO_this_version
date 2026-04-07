@@ -128,7 +128,7 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 
 -efectos especiales
-*parametros de flip vertical, horizontal, interferencias, nagra, fish eye, zoom mouse, vsync lost, hsync lost, pixelate... en config
+*parametros config faltan de lens factor K y continuous
 *revisar liberar memoria
 *entradas en changelog
 *revisar gigascreen , replantear entera, tenia una condición especial para el efecto de reduce

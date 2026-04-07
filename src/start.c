@@ -1339,6 +1339,7 @@ screen_effect_print_names();
         "--video-fx-intensity effect intensity          Sets intensity setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-angle effect angle                  Sets rotation angle for effect (Note: only Rotate effect supports this parameter)\n"
         "--video-fx-frames effect frames                Sets frames parameter for effect (Note: only Persistence effect supports this parameter)\n"
+        "--video-fx-follow-channel effect channel       Sets follow ay chip channel (A,B,C or 0) for effect (Note: only Lens effect supports this parameter)\n"
         "--video-fx-offset effect offset                Sets offset for effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
 
         "--video-fx-leftrightborder effect 0/1          Enables or disables effect on border left and right (Note: only Shader Border effect supports this parameter)\n"
@@ -2972,6 +2973,38 @@ int parse_cmdline_options(int desde_commandline)
                     }
                     else {
                         screen_rainbow_effect_rotate_grados=valor_angulo;
+                    }
+                }
+
+            }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-follow-channel")) {
+                siguiente_parametro_argumento();
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                char *channel=argv[puntero_parametro];
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Lens")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for channel setting: %s",effect);
+                }
+                else {
+                    if (!strcasecmp(channel,"0")) {
+                        screen_special_effects_fisheye_follow_music_channel=0;
+                    }
+                    else if (!strcasecmp(channel,"A")) {
+                        screen_special_effects_fisheye_follow_music_channel='A';
+                    }
+                    else if (!strcasecmp(channel,"B")) {
+                        screen_special_effects_fisheye_follow_music_channel='B';
+                    }
+                    else if (!strcasecmp(channel,"C")) {
+                        screen_special_effects_fisheye_follow_music_channel='C';
+                    }
+                    else {
+                        debug_printf(VERBOSE_ERR,"Channel for effect %s out of range",effect);
                     }
                 }
 

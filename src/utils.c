@@ -3949,6 +3949,14 @@ int util_write_configfile(void)
 
     ADD_STRING_CONFIG,"--video-fx-frames Persistence %d",screen_rainbow_effect_persistence_total_frames);
 
+    if (screen_special_effects_fisheye_follow_music_channel==0) {
+        ADD_STRING_CONFIG,"--video-fx-follow-channel Lens 0");
+    }
+    else {
+        ADD_STRING_CONFIG,"--video-fx-follow-channel Lens %c",screen_special_effects_fisheye_follow_music_channel);
+    }
+
+
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");
     if (screen_reduction_factor==SCREEN_REDUCE_025)	ADD_STRING_CONFIG,"--reduce-025");
