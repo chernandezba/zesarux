@@ -50,10 +50,10 @@ z80_bit screen_rainbow_effect_sepia_follow_mouse={0};           //AGCONFIG
 int screen_rainbow_effect_blur_intensity=SCREEN_FX_BLUR_DEFAULT_INTENSITY; //AGCONFIG
 z80_bit screen_rainbow_effect_blur_follow_mouse={0};            //AGCONFIG
 
-int screen_rainbow_effect_contrast_intensity=100;
+int screen_rainbow_effect_contrast_intensity=SCREEN_FX_CONTRAST_DEFAULT_INTENSITY; //AGCONFIG
 z80_bit screen_rainbow_effect_contrast_follow_mouse={0};        //AGCONFIG
 
-int screen_rainbow_effect_brightness_intensity=50;
+int screen_rainbow_effect_brightness_intensity=SCREEN_FX_BRIGHTNESS_DEFAULT_INTENSITY; //AGCONFIG
 z80_bit screen_rainbow_effect_brightness_follow_mouse={0};      //AGCONFIG
 
 int screen_rainbow_effect_scroll_horizontal_offset=1;
@@ -64,7 +64,7 @@ int screen_rainbow_effect_scroll_vertical_offset=1;
 z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
 z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};     //AGCONFIG
 
-int screen_rainbow_effect_attraction_intensity=4;
+int screen_rainbow_effect_attraction_intensity=SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY; //AGCONFIG
 int screen_rainbow_effect_attraction_atrac_repulse=+1;
 
 int screen_rainbow_effect_pixelate_size=2;
@@ -113,7 +113,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,20},
-    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,&screen_rainbow_effect_attraction_intensity,SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY,1,20},
     {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,&screen_rainbow_effect_shear_intensity,SCREEN_FX_SHEAR_DEFAULT_INTENSITY,1,49},
     {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0,0},
@@ -132,8 +132,8 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SEPIA,"Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",&screen_rainbow_effect_contrast_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",&screen_rainbow_effect_brightness_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",&screen_rainbow_effect_contrast_follow_mouse,&screen_rainbow_effect_contrast_intensity,SCREEN_FX_CONTRAST_DEFAULT_INTENSITY,0,1000},
+    {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",&screen_rainbow_effect_brightness_follow_mouse,&screen_rainbow_effect_brightness_intensity,SCREEN_FX_BRIGHTNESS_DEFAULT_INTENSITY,0,256*100},
     {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision",NULL,NULL,0,0,0},
