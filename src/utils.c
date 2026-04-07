@@ -3920,6 +3920,15 @@ int util_write_configfile(void)
     }
 
 
+    if (screen_rainbow_effect_scroll_horizontal_offset!=SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET) {
+        ADD_STRING_CONFIG,"--video-fx-offset \"Scroll Horizontal\" %d",screen_rainbow_effect_scroll_horizontal_offset);
+    }
+
+    if (screen_rainbow_effect_scroll_vertical_offset!=SCREEN_FX_SCROLL_VERTICAL_DEFAULT_OFFSET) {
+        ADD_STRING_CONFIG,"--video-fx-offset \"Scroll Vertical\" %d",screen_rainbow_effect_scroll_vertical_offset);
+    }
+
+
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");
     if (screen_reduction_factor==SCREEN_REDUCE_025)	ADD_STRING_CONFIG,"--reduce-025");
