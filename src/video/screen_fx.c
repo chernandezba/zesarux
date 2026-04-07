@@ -32,37 +32,38 @@
 #include "sensors.h"
 
 
+//Nota: AGCONFIG indica agregado en config
 int screen_rainbow_effect_rotate_grados=45;
-z80_bit screen_rainbow_effect_rotate_follow_mouse={0};
-z80_bit screen_rainbow_effect_remolino_follow_mouse={0};
-z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};
+z80_bit screen_rainbow_effect_rotate_follow_mouse={0};          //AGCONFIG
+z80_bit screen_rainbow_effect_remolino_follow_mouse={0};        //AGCONFIG
+z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};        //AGCONFIG
 
 
-int screen_rainbow_effect_improved_waves_intensidad=8;
-z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};
+int screen_rainbow_effect_improved_waves_intensity=8;
+z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};  //AGCONFIG
 
-int screen_rainbow_effect_shear_factor=4;
-z80_bit screen_rainbow_effect_shear_factor_follow_mouse={0};
+int screen_rainbow_effect_shear_intensity=4;
+z80_bit screen_rainbow_effect_shear_intensity_follow_mouse={0};    //AGCONFIG
 
-z80_bit screen_rainbow_effect_sepia_follow_mouse={0};
+z80_bit screen_rainbow_effect_sepia_follow_mouse={0};           //AGCONFIG
 int screen_rainbow_effect_blur_intensity=1;
-z80_bit screen_rainbow_effect_blur_follow_mouse={0};
+z80_bit screen_rainbow_effect_blur_follow_mouse={0};            //AGCONFIG
 
-int screen_rainbow_effect_contrast_factor=100;
-z80_bit screen_rainbow_effect_contrast_follow_mouse={0};
+int screen_rainbow_effect_contrast_intensity=100;
+z80_bit screen_rainbow_effect_contrast_follow_mouse={0};        //AGCONFIG
 
-int screen_rainbow_effect_brightness_factor=50;
-z80_bit screen_rainbow_effect_brightness_follow_mouse={0};
+int screen_rainbow_effect_brightness_intensity=50;
+z80_bit screen_rainbow_effect_brightness_follow_mouse={0};      //AGCONFIG
 
 int screen_rainbow_effect_scroll_horizontal_offset=1;
 z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
-z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};
+z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};   //AGCONFIG
 
 int screen_rainbow_effect_scroll_vertical_offset=1;
 z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
-z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};
+z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};     //AGCONFIG
 
-int screen_rainbow_effect_attraction_force=4;
+int screen_rainbow_effect_attraction_intensity=4;
 int screen_rainbow_effect_attraction_atrac_repulse=+1;
 
 int screen_rainbow_effect_pixelate_size=2;
@@ -1120,7 +1121,7 @@ void screen_rainbow_effect_attraction(z80_int *origen,z80_int *destino,int ancho
 
             if (1/*dist2 < radio2*/) {
 
-                int factor=20000*screen_rainbow_effect_attraction_force;
+                int factor=20000*screen_rainbow_effect_attraction_intensity;
 
                 int srcX;
                 int srcY;
@@ -1280,7 +1281,7 @@ void screen_rainbow_effect_improved_waves(z80_int *origen,z80_int *destino,int a
             //Cada 30 pixeles en alto, una vuelta entera 360 grados
             int off=((y+screen_rainbow_effect_improved_waves_tiempo/1) % 30)*(360/30);
 
-            int intensity=screen_rainbow_effect_improved_waves_intensidad;
+            int intensity=screen_rainbow_effect_improved_waves_intensity;
 
             if (screen_rainbow_effect_improved_waves_follow_mouse.v) {
 
@@ -1339,9 +1340,9 @@ void screen_rainbow_effect_shear(z80_int *origen,z80_int *destino,int ancho,int 
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 
-            int shear_factor=screen_rainbow_effect_shear_factor;
+            int shear_factor=screen_rainbow_effect_shear_intensity;
 
-            if (screen_rainbow_effect_shear_factor_follow_mouse.v) {
+            if (screen_rainbow_effect_shear_intensity_follow_mouse.v) {
 
                 //distancia al raton
                 int dx=cx-x;
@@ -1785,7 +1786,7 @@ void screen_rainbow_effect_contrast(z80_int *origen,z80_int *destino,int ancho,i
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 
-            int factor=screen_rainbow_effect_contrast_factor;
+            int factor=screen_rainbow_effect_contrast_intensity;
 
             if (screen_rainbow_effect_contrast_follow_mouse.v) {
 
@@ -1874,7 +1875,7 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
 
-            int brightness=screen_rainbow_effect_brightness_factor;
+            int brightness=screen_rainbow_effect_brightness_intensity;
 
 
             if (screen_rainbow_effect_brightness_follow_mouse.v) {
@@ -2739,7 +2740,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse},
     {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL},
-    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_factor_follow_mouse},
+    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse},
     {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL},

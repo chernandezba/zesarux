@@ -1554,8 +1554,8 @@ void menu_interface_special_effects_pixelate_size(MENU_ITEM_PARAMETERS)
 
 void menu_interface_special_effects_waves2_width(MENU_ITEM_PARAMETERS)
 {
-    screen_rainbow_effect_improved_waves_intensidad++;
-    if (screen_rainbow_effect_improved_waves_intensidad>=21) screen_rainbow_effect_improved_waves_intensidad=2;
+    screen_rainbow_effect_improved_waves_intensity++;
+    if (screen_rainbow_effect_improved_waves_intensity>=21) screen_rainbow_effect_improved_waves_intensity=2;
 }
 
 //Para poder reasignar el cursor al mover efectos arriba o abajo
@@ -1750,10 +1750,10 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
 
 void menu_interface_special_effects_shear_intensity(MENU_ITEM_PARAMETERS)
 {
-    if (screen_rainbow_effect_shear_factor<20) screen_rainbow_effect_shear_factor++;
-    else screen_rainbow_effect_shear_factor +=2;
+    if (screen_rainbow_effect_shear_intensity<20) screen_rainbow_effect_shear_intensity++;
+    else screen_rainbow_effect_shear_intensity +=2;
 
-    if (screen_rainbow_effect_shear_factor>=50) screen_rainbow_effect_shear_factor=1;
+    if (screen_rainbow_effect_shear_intensity>=50) screen_rainbow_effect_shear_intensity=1;
 }
 
 void menu_interface_special_effects_scroll_horizontal_offset(MENU_ITEM_PARAMETERS)
@@ -1783,23 +1783,23 @@ void menu_interface_special_effects_rotate_grados(MENU_ITEM_PARAMETERS)
 
 void menu_interface_special_effects_contrast_factor(MENU_ITEM_PARAMETERS)
 {
-    screen_rainbow_effect_contrast_factor+=25;
-    if (screen_rainbow_effect_contrast_factor>1000) screen_rainbow_effect_contrast_factor=0;
+    screen_rainbow_effect_contrast_intensity+=25;
+    if (screen_rainbow_effect_contrast_intensity>1000) screen_rainbow_effect_contrast_intensity=0;
 }
 
 void menu_interface_special_effects_brightness_factor(MENU_ITEM_PARAMETERS)
 {
-    if (screen_rainbow_effect_brightness_factor<500) {
-        screen_rainbow_effect_brightness_factor+=10;
+    if (screen_rainbow_effect_brightness_intensity<500) {
+        screen_rainbow_effect_brightness_intensity+=10;
     }
-    //if (screen_rainbow_effect_brightness_factor>500) screen_rainbow_effect_brightness_factor=0;
-    else if (screen_rainbow_effect_brightness_factor<5000){
-        screen_rainbow_effect_brightness_factor+=100;
+    //if (screen_rainbow_effect_brightness_intensity>500) screen_rainbow_effect_brightness_intensity=0;
+    else if (screen_rainbow_effect_brightness_intensity<5000){
+        screen_rainbow_effect_brightness_intensity+=100;
     }
 
-    else screen_rainbow_effect_brightness_factor+=500;
+    else screen_rainbow_effect_brightness_intensity+=500;
 
-    if (screen_rainbow_effect_brightness_factor>256*100) screen_rainbow_effect_brightness_factor=0;
+    if (screen_rainbow_effect_brightness_intensity>256*100) screen_rainbow_effect_brightness_intensity=0;
 }
 
 void menu_interface_special_effects_shaderborder_zoom_leftright(MENU_ITEM_PARAMETERS)
@@ -1840,8 +1840,8 @@ void menu_interface_special_effects_persistence_total_frames(MENU_ITEM_PARAMETER
 
 void menu_interface_special_effects_attraction_force(MENU_ITEM_PARAMETERS)
 {
-    screen_rainbow_effect_attraction_force++;
-    if (screen_rainbow_effect_attraction_force>20) screen_rainbow_effect_attraction_force=1;
+    screen_rainbow_effect_attraction_intensity++;
+    if (screen_rainbow_effect_attraction_intensity>20) screen_rainbow_effect_attraction_intensity=1;
 }
 
 void menu_interface_special_effects_attraction_atrac_repulse(MENU_ITEM_PARAMETERS)
@@ -1923,7 +1923,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_waves2_width,NULL,
                             "Wave width","Ancho Olas","Ample Ones");
-                            menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_improved_waves_intensidad);
+                            menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_improved_waves_intensity);
 
                     }
 
@@ -1931,8 +1931,8 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
                 if (type==SCREEN_EFFECT_TYPE_MAGNETIC_FIELD && enabled) {
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_attraction_force,NULL,
-                        "Force","Fuerza","Força");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_attraction_force);
+                        "Intensity","Intensidad","Intensitat");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_attraction_intensity);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_attraction_atrac_repulse,NULL,
                         "Type","Tipo","Força");
@@ -2048,14 +2048,14 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 if (type==SCREEN_EFFECT_TYPE_SHEAR && enabled) {
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                         "Follow Mouse","Sigue Ratón","Segueix Ratolí");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_shear_factor_follow_mouse.v ? 'X' : ' ' ));
-                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shear_factor_follow_mouse);
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_shear_intensity_follow_mouse.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shear_intensity_follow_mouse);
 
-                    if (screen_rainbow_effect_shear_factor_follow_mouse.v==0) {
+                    if (screen_rainbow_effect_shear_intensity_follow_mouse.v==0) {
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shear_intensity,NULL,
                             "Shear intensity","Intensidad cizalla","Intensitat cisallament");
-                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shear_factor);
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shear_intensity);
 
                     }
                 }
@@ -2110,8 +2110,8 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     if (screen_rainbow_effect_contrast_follow_mouse.v==0) {
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_contrast_factor,NULL,
-                            "Contrast Factor","Factor Contraste","Factor Contrast");
-                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_contrast_factor);
+                            "Contrast Intensity","Intensidad Contraste","Intensitat Contrast");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_contrast_intensity);
 
                     }
                 }
@@ -2125,8 +2125,8 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     if (screen_rainbow_effect_brightness_follow_mouse.v==0) {
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_brightness_factor,NULL,
-                            "Brightness Factor","Factor Brightness","Factor Brightness");
-                        menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_brightness_factor);
+                            "Brightness Intensity","Intensidad Brillo","Intensitat Brillantor");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_brightness_intensity);
 
                     }
                 }

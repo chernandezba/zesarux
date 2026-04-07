@@ -46,16 +46,16 @@ extern void screen_rainbow_effect_fisheye_change_factor(void);
 extern int screen_rainbow_effect_pixelate_size;
 extern z80_bit screen_rainbow_effect_pixelate_follow_mouse;
 
-extern int screen_rainbow_effect_improved_waves_intensidad;
+extern int screen_rainbow_effect_improved_waves_intensity;
 extern z80_bit screen_rainbow_effect_improved_waves_follow_mouse;
 
 extern z80_bit screen_special_effects_fisheye_automatic_factor;
 extern z80_bit screen_special_effects_fisheye_follow_mouse;
 extern char screen_special_effects_fisheye_follow_music_channel;
-extern int screen_rainbow_effect_shear_factor;
-extern z80_bit screen_rainbow_effect_shear_factor_follow_mouse;
+extern int screen_rainbow_effect_shear_intensity;
+extern z80_bit screen_rainbow_effect_shear_intensity_follow_mouse;
 
-extern int screen_rainbow_effect_attraction_force;
+extern int screen_rainbow_effect_attraction_intensity;
 extern int screen_rainbow_effect_attraction_atrac_repulse;
 
 extern z80_bit screen_rainbow_effect_sepia_follow_mouse;
@@ -67,9 +67,9 @@ extern z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse;
 extern z80_bit screen_rainbow_effect_scroll_horizontal_circular;
 extern z80_bit screen_rainbow_effect_scroll_vertical_circular;
 
-extern int screen_rainbow_effect_contrast_factor;
+extern int screen_rainbow_effect_contrast_intensity;
 extern z80_bit screen_rainbow_effect_contrast_follow_mouse;
-extern int screen_rainbow_effect_brightness_factor;
+extern int screen_rainbow_effect_brightness_intensity;
 extern z80_bit screen_rainbow_effect_brightness_follow_mouse;
 extern int screen_rainbow_effect_rotate_grados;
 extern z80_bit screen_rainbow_effect_remolino_follow_mouse;
