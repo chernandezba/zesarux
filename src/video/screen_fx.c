@@ -46,7 +46,7 @@ int screen_rainbow_effect_shear_intensity=SCREEN_FX_SHEAR_DEFAULT_INTENSITY; //A
 z80_bit screen_rainbow_effect_shear_intensity_follow_mouse={0};    //AGCONFIG
 
 z80_bit screen_rainbow_effect_sepia_follow_mouse={0};           //AGCONFIG
-int screen_rainbow_effect_blur_intensity=1;
+int screen_rainbow_effect_blur_intensity=SCREEN_FX_BLUR_DEFAULT_INTENSITY; //AGCONFIG
 z80_bit screen_rainbow_effect_blur_follow_mouse={0};            //AGCONFIG
 
 int screen_rainbow_effect_contrast_intensity=100;
@@ -2738,14 +2738,14 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_TWIRL,"Twirl",&screen_rainbow_effect_remolino_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SEA,"Sea",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,21},
+    {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,20},
     {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,&screen_rainbow_effect_shear_intensity,SCREEN_FX_SHEAR_DEFAULT_INTENSITY,1,50},
+    {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,&screen_rainbow_effect_shear_intensity,SCREEN_FX_SHEAR_DEFAULT_INTENSITY,1,49},
     {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,&screen_rainbow_effect_blur_intensity,SCREEN_FX_BLUR_DEFAULT_INTENSITY,1,16},
     {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_LED,"LED",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost",NULL,NULL,0,0,0},

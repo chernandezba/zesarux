@@ -36,6 +36,7 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 
 #define SCREEN_FX_WAVES_DEFAULT_INTENSITY 8
 #define SCREEN_FX_SHEAR_DEFAULT_INTENSITY 4
+#define SCREEN_FX_BLUR_DEFAULT_INTENSITY 1
 
 extern void screen_special_effects_free_buffers(void);
 extern z80_int *screen_special_effects_alloc_buffer(int ancho,int alto);
