@@ -33,7 +33,7 @@
 
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto);
 
-//Nota: AGCONFIG indica agregado en config
+
 int screen_rainbow_effect_rotate_grados=SCREEN_FX_ROTATE_DEFAULT_ANGLE;
 z80_bit screen_rainbow_effect_rotate_follow_mouse={0};
 z80_bit screen_rainbow_effect_remolino_follow_mouse={0};
@@ -79,7 +79,7 @@ int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
 int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
 
 
-
+//FALTAN:
 //0.2 segundos. O sea, 10 frames
 int screen_rainbow_effect_persistence_total_frames=10;
 

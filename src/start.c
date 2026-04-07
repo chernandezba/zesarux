@@ -1338,6 +1338,7 @@ screen_effect_print_names();
         "--video-fx-attraction effect value             Sets attraction value for effect: +1: attraction, -1: repulsion (Note: only Magnetic Field effect supports this parameter)\n"
         "--video-fx-intensity effect intensity          Sets intensity setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-angle effect angle                  Sets rotation angle for effect (Note: only Rotate effect supports this parameter)\n"
+        "--video-fx-frames effect frames                Sets frames parameter for effect (Note: only Persistence effect supports this parameter)\n"
         "--video-fx-offset effect offset                Sets offset for effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
 
         "--video-fx-leftrightborder effect 0/1          Enables or disables effect on border left and right (Note: only Shader Border effect supports this parameter)\n"
@@ -2971,6 +2972,29 @@ int parse_cmdline_options(int desde_commandline)
                     }
                     else {
                         screen_rainbow_effect_rotate_grados=valor_angulo;
+                    }
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-frames")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int valor_frames=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Persistence")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for frames setting: %s",effect);
+                }
+                else {
+                    if (valor_frames<3 || valor_frames>SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES) {
+                        debug_printf(VERBOSE_ERR,"Frames for effect %s out of range",effect);
+                    }
+                    else {
+                        screen_rainbow_effect_persistence_total_frames=valor_frames;
                     }
                 }
 

@@ -3947,6 +3947,7 @@ int util_write_configfile(void)
     ADD_STRING_CONFIG,"--video-fx-leftrightblur \"Shader Border\" %d",screen_rainbow_effect_shaderborder_blur_intensity_leftright);
     ADD_STRING_CONFIG,"--video-fx-updownblur \"Shader Border\" %d",screen_rainbow_effect_shaderborder_blur_intensity_updown);
 
+    ADD_STRING_CONFIG,"--video-fx-frames Persistence %d",screen_rainbow_effect_persistence_total_frames);
 
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");
