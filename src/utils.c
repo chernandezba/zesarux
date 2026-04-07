@@ -3915,6 +3915,10 @@ int util_write_configfile(void)
         }
     }
 
+    if (screen_rainbow_effect_rotate_grados!=SCREEN_FX_ROTATE_DEFAULT_ANGLE) {
+        ADD_STRING_CONFIG,"--video-fx-angle Rotate %d",screen_rainbow_effect_rotate_grados);
+    }
+
 
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");

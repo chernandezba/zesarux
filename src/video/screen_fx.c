@@ -34,7 +34,7 @@
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto);
 
 //Nota: AGCONFIG indica agregado en config
-int screen_rainbow_effect_rotate_grados=45;
+int screen_rainbow_effect_rotate_grados=SCREEN_FX_ROTATE_DEFAULT_ANGLE;
 z80_bit screen_rainbow_effect_rotate_follow_mouse={0};          //AGCONFIG
 z80_bit screen_rainbow_effect_remolino_follow_mouse={0};        //AGCONFIG
 z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};        //AGCONFIG
