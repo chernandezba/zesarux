@@ -34,9 +34,11 @@
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto);
 
 //Nota: AGCONFIG indica agregado en config
-int screen_rainbow_effect_rotate_grados=SCREEN_FX_ROTATE_DEFAULT_ANGLE;
+int screen_rainbow_effect_rotate_grados=SCREEN_FX_ROTATE_DEFAULT_ANGLE; //AGCONFIG
 z80_bit screen_rainbow_effect_rotate_follow_mouse={0};          //AGCONFIG
 z80_bit screen_rainbow_effect_remolino_follow_mouse={0};        //AGCONFIG
+
+int screen_rainbow_effect_pixelate_size=SCREEN_FX_PIXELATE_DEFAULT_INTENSITY; //AGCONFIG
 z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};        //AGCONFIG
 
 
@@ -67,7 +69,7 @@ z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};     //AGCONFIG
 int screen_rainbow_effect_attraction_intensity=SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY; //AGCONFIG
 int screen_rainbow_effect_attraction_atrac_repulse=+1;
 
-int screen_rainbow_effect_pixelate_size=2;
+
 
 z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1};
 z80_bit screen_rainbow_effect_shaderborder_updown_enable={1};
@@ -118,7 +120,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_LENS,"Lens",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,&screen_rainbow_effect_pixelate_size,SCREEN_FX_PIXELATE_DEFAULT_INTENSITY,2,SCREEN_EFFECT_PIXELATE_MAX_SIZE},
     {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,&screen_rainbow_effect_blur_intensity,SCREEN_FX_BLUR_DEFAULT_INTENSITY,1,16},
     {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_LED,"LED",NULL,NULL,0,0,0},

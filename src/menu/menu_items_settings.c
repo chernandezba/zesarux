@@ -1972,7 +1972,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     if (screen_rainbow_effect_pixelate_follow_mouse.v==0) {
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_pixelate_size,NULL,
-                            "Pixelate size","Pixelar tamaño","Pixelar tamany");
+                            "Intensity","Intensidad","Intensitat");
                         menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_pixelate_size);
 
                     }

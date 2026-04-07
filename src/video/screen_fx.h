@@ -34,12 +34,15 @@ enum SCREEN_REDUCTIONS {
 
 extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 
+#define SCREEN_EFFECT_PIXELATE_MAX_SIZE 32
+
 #define SCREEN_FX_WAVES_DEFAULT_INTENSITY 8
 #define SCREEN_FX_SHEAR_DEFAULT_INTENSITY 4
 #define SCREEN_FX_BLUR_DEFAULT_INTENSITY 1
 #define SCREEN_FX_CONTRAST_DEFAULT_INTENSITY 100
 #define SCREEN_FX_BRIGHTNESS_DEFAULT_INTENSITY 50
 #define SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY 4
+#define SCREEN_FX_PIXELATE_DEFAULT_INTENSITY 2
 #define SCREEN_FX_ROTATE_DEFAULT_ANGLE 45
 
 extern void screen_special_effects_free_buffers(void);
@@ -165,7 +168,7 @@ extern screen_effect_applied screen_effect_applied_list[];
 
 extern screen_effect_type_name screen_effect_type_list[];
 
-#define SCREEN_EFFECT_PIXELATE_MAX_SIZE 16
+
 
 
 
