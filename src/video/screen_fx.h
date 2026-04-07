@@ -136,12 +136,15 @@ typedef struct {
     enum enum_screen_effect_types type;
     char name[40];
     z80_bit *follow_mouse_setting;
+    int *intensity_setting;
+    int lower_intensity,higher_intensity;
 } screen_effect_type_name;
 
 extern char *screen_effect_get_name(enum enum_screen_effect_types type);
 extern int screen_effect_get_type(char *efecto);
 extern void set_screen_effect(int position,enum enum_screen_effect_types type,int enabled);
 extern int set_screen_follow_mouse_effect(enum enum_screen_effect_types type);
+extern int set_screen_intensity_effect(enum enum_screen_effect_types type,int intensidad);
 extern void screen_effect_print_names(void);
 
 typedef struct {
