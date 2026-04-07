@@ -122,7 +122,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,&screen_rainbow_effect_pixelate_size,SCREEN_FX_PIXELATE_DEFAULT_INTENSITY,2,SCREEN_EFFECT_PIXELATE_MAX_SIZE},
     {SCREEN_EFFECT_TYPE_BLUR,"Blur",&screen_rainbow_effect_blur_follow_mouse,&screen_rainbow_effect_blur_intensity,SCREEN_FX_BLUR_DEFAULT_INTENSITY,1,16},
-    {SCREEN_EFFECT_TYPE_SHADERBORDER,"ShaderBorder",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_SHADERBORDER,"Shader Border",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_LED,"LED",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost",NULL,NULL,0,0,0},
