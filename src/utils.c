@@ -3941,6 +3941,10 @@ int util_write_configfile(void)
     ADD_STRING_CONFIG,"--video-fx-leftrightborder \"Shader Border\" %d",screen_rainbow_effect_shaderborder_leftright_enable.v);
     ADD_STRING_CONFIG,"--video-fx-updownborder \"Shader Border\" %d",screen_rainbow_effect_shaderborder_updown_enable.v);
 
+    ADD_STRING_CONFIG,"--video-fx-leftrightzoom \"Shader Border\" %d",screen_rainbow_effect_shaderborder_factor_zoom_leftright);
+    ADD_STRING_CONFIG,"--video-fx-updownzoom \"Shader Border\" %d",screen_rainbow_effect_shaderborder_factor_zoom_updown);
+
+
 
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");
