@@ -1340,13 +1340,6 @@ screen_effect_print_names();
         "--video-fx-angle effect angle                  Sets rotation angle for effect (Note: only Rotate effect supports this parameter)\n"
         "--video-fx-offset effect offset                Sets offset for effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
 
-/*
-
-int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000;
-int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000;
-int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
-int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
-*/
         "--video-fx-leftrightborder effect 0/1          Enables or disables effect on border left and right (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-updownborder effect 0/1             Enables or disables effect on border up and down (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-leftrightzoom effect zoom           Sets zoom level (multipled by 1000) on border left and right (Note: only Shader Border effect supports this parameter)\n"

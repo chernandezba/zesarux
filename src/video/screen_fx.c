@@ -34,49 +34,51 @@
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto);
 
 //Nota: AGCONFIG indica agregado en config
-int screen_rainbow_effect_rotate_grados=SCREEN_FX_ROTATE_DEFAULT_ANGLE; //AGCONFIG
-z80_bit screen_rainbow_effect_rotate_follow_mouse={0};          //AGCONFIG
-z80_bit screen_rainbow_effect_remolino_follow_mouse={0};        //AGCONFIG
+int screen_rainbow_effect_rotate_grados=SCREEN_FX_ROTATE_DEFAULT_ANGLE;
+z80_bit screen_rainbow_effect_rotate_follow_mouse={0};
+z80_bit screen_rainbow_effect_remolino_follow_mouse={0};
 
-int screen_rainbow_effect_pixelate_size=SCREEN_FX_PIXELATE_DEFAULT_INTENSITY; //AGCONFIG
-z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};        //AGCONFIG
-
-
-int screen_rainbow_effect_improved_waves_intensity=SCREEN_FX_WAVES_DEFAULT_INTENSITY;           //AGCONFIG
-z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};  //AGCONFIG
-
-int screen_rainbow_effect_shear_intensity=SCREEN_FX_SHEAR_DEFAULT_INTENSITY; //AGCONFIG
-z80_bit screen_rainbow_effect_shear_intensity_follow_mouse={0};    //AGCONFIG
-
-z80_bit screen_rainbow_effect_sepia_follow_mouse={0};           //AGCONFIG
-int screen_rainbow_effect_blur_intensity=SCREEN_FX_BLUR_DEFAULT_INTENSITY; //AGCONFIG
-z80_bit screen_rainbow_effect_blur_follow_mouse={0};            //AGCONFIG
-
-int screen_rainbow_effect_contrast_intensity=SCREEN_FX_CONTRAST_DEFAULT_INTENSITY; //AGCONFIG
-z80_bit screen_rainbow_effect_contrast_follow_mouse={0};        //AGCONFIG
-
-int screen_rainbow_effect_brightness_intensity=SCREEN_FX_BRIGHTNESS_DEFAULT_INTENSITY; //AGCONFIG
-z80_bit screen_rainbow_effect_brightness_follow_mouse={0};      //AGCONFIG
-
-int screen_rainbow_effect_scroll_horizontal_offset=SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET; //AGCONFIG
-z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};   //AGCONFIG
-z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};   //AGCONFIG
-
-int screen_rainbow_effect_scroll_vertical_offset=SCREEN_FX_SCROLL_VERTICAL_DEFAULT_OFFSET; //AGCONFIG
-z80_bit screen_rainbow_effect_scroll_vertical_circular={0};     //AGCONFIG
-z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};     //AGCONFIG
-
-int screen_rainbow_effect_attraction_intensity=SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY; //AGCONFIG
-int screen_rainbow_effect_attraction_atrac_repulse=+1; //AGCONFIG
+int screen_rainbow_effect_pixelate_size=SCREEN_FX_PIXELATE_DEFAULT_INTENSITY;
+z80_bit screen_rainbow_effect_pixelate_follow_mouse={0};
 
 
+int screen_rainbow_effect_improved_waves_intensity=SCREEN_FX_WAVES_DEFAULT_INTENSITY;
+z80_bit screen_rainbow_effect_improved_waves_follow_mouse={0};
 
-z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1}; //AGCONFIG
-z80_bit screen_rainbow_effect_shaderborder_updown_enable={1}; //AGCONFIG
-int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000; //AGCONFIG
-int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000; //AGCONFIG
-int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4; //AGCONFIG
-int screen_rainbow_effect_shaderborder_blur_intensity_updown=4; //AGCONFIG
+int screen_rainbow_effect_shear_intensity=SCREEN_FX_SHEAR_DEFAULT_INTENSITY;
+z80_bit screen_rainbow_effect_shear_intensity_follow_mouse={0};
+
+z80_bit screen_rainbow_effect_sepia_follow_mouse={0};
+int screen_rainbow_effect_blur_intensity=SCREEN_FX_BLUR_DEFAULT_INTENSITY;
+z80_bit screen_rainbow_effect_blur_follow_mouse={0};
+
+int screen_rainbow_effect_contrast_intensity=SCREEN_FX_CONTRAST_DEFAULT_INTENSITY;
+z80_bit screen_rainbow_effect_contrast_follow_mouse={0};
+
+int screen_rainbow_effect_brightness_intensity=SCREEN_FX_BRIGHTNESS_DEFAULT_INTENSITY;
+z80_bit screen_rainbow_effect_brightness_follow_mouse={0};
+
+int screen_rainbow_effect_scroll_horizontal_offset=SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET;
+z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
+z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};
+
+int screen_rainbow_effect_scroll_vertical_offset=SCREEN_FX_SCROLL_VERTICAL_DEFAULT_OFFSET;
+z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
+z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};
+
+int screen_rainbow_effect_attraction_intensity=SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY;
+int screen_rainbow_effect_attraction_atrac_repulse=+1;
+
+
+
+z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1};
+z80_bit screen_rainbow_effect_shaderborder_updown_enable={1};
+int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000;
+int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000;
+int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
+int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
+
+
 
 //0.2 segundos. O sea, 10 frames
 int screen_rainbow_effect_persistence_total_frames=10;
