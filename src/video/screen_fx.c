@@ -59,11 +59,11 @@ int screen_rainbow_effect_brightness_intensity=SCREEN_FX_BRIGHTNESS_DEFAULT_INTE
 z80_bit screen_rainbow_effect_brightness_follow_mouse={0};      //AGCONFIG
 
 int screen_rainbow_effect_scroll_horizontal_offset=SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET; //AGCONFIG
-z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};
+z80_bit screen_rainbow_effect_scroll_horizontal_circular={0};   //AGCONFIG
 z80_bit screen_rainbow_effect_scroll_horizontal_follow_mouse={0};   //AGCONFIG
 
 int screen_rainbow_effect_scroll_vertical_offset=SCREEN_FX_SCROLL_VERTICAL_DEFAULT_OFFSET; //AGCONFIG
-z80_bit screen_rainbow_effect_scroll_vertical_circular={0};
+z80_bit screen_rainbow_effect_scroll_vertical_circular={0};     //AGCONFIG
 z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};     //AGCONFIG
 
 int screen_rainbow_effect_attraction_intensity=SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY; //AGCONFIG
