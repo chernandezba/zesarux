@@ -1339,6 +1339,19 @@ screen_effect_print_names();
         "--video-fx-intensity effect intensity          Sets intensity setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-angle effect angle                  Sets rotation angle for effect (Note: only Rotate effect supports this parameter)\n"
         "--video-fx-offset effect offset                Sets offset for effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
+
+/*
+z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1};
+z80_bit screen_rainbow_effect_shaderborder_updown_enable={1};
+int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000;
+int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000;
+int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
+int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
+*/
+        "--video-fx-leftrightborder effect 0/1          Enables or disables effect on border left and right (Note: only Shader Border effect supports this parameter)\n"
+        "--video-fx-updownborder effect 0/1             Enables or disables effect on border up and down (Note: only Shader Border effect supports this parameter)\n"
+
+
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
         "--reduce-050                                   Reduce display size to 1/2. Require --video-fx-enable\n"
         "--reduce-025                                   Reduce display size to 1/4. Require --video-fx-enable\n"
@@ -2965,6 +2978,41 @@ int parse_cmdline_options(int desde_commandline)
                     }
                 }
 
+            }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-leftrightborder")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int activado=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Shader Border")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for leftright border setting: %s",effect);
+                }
+                else {
+                    screen_rainbow_effect_shaderborder_leftright_enable.v=activado;
+                }
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-updownborder")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int activado=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Shader Border")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for updown border setting: %s",effect);
+                }
+                else {
+                    screen_rainbow_effect_shaderborder_updown_enable.v=activado;
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--video-fx-attraction")) {

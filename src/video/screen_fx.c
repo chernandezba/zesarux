@@ -71,8 +71,8 @@ int screen_rainbow_effect_attraction_atrac_repulse=+1; //AGCONFIG
 
 
 
-z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1};
-z80_bit screen_rainbow_effect_shaderborder_updown_enable={1};
+z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1}; //AGCONFIG
+z80_bit screen_rainbow_effect_shaderborder_updown_enable={1}; //AGCONFIG
 int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000;
 int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000;
 int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;

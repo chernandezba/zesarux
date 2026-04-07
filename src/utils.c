@@ -3938,6 +3938,9 @@ int util_write_configfile(void)
 
     ADD_STRING_CONFIG,"--video-fx-attraction \"Magnetic Field\" %d",screen_rainbow_effect_attraction_atrac_repulse);
 
+    ADD_STRING_CONFIG,"--video-fx-leftrightborder \"Shader Border\" %d",screen_rainbow_effect_shaderborder_leftright_enable.v);
+    ADD_STRING_CONFIG,"--video-fx-updownborder \"Shader Border\" %d",screen_rainbow_effect_shaderborder_updown_enable.v);
+
 
     if (screen_reduction_factor==SCREEN_REDUCE_075)	ADD_STRING_CONFIG,"--reduce-075");
     if (screen_reduction_factor==SCREEN_REDUCE_050)	ADD_STRING_CONFIG,"--reduce-050");
