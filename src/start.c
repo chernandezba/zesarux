@@ -1351,6 +1351,8 @@ int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
         "--video-fx-updownborder effect 0/1             Enables or disables effect on border up and down (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-leftrightzoom effect zoom           Sets zoom level (multipled by 1000) on border left and right (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-updownzoom effect zoom              Sets zoom level (multipled by 1000) on border up and down (Note: only Shader Border effect supports this parameter)\n"
+        "--video-fx-leftrightblur effect intensity      Sets blur intensity on border left and right (Note: only Shader Border effect supports this parameter)\n"
+        "--video-fx-updownblur effect intensity         Sets blur intensity on border up and down (Note: only Shader Border effect supports this parameter)\n"
 
 
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
@@ -3059,6 +3061,51 @@ int parse_cmdline_options(int desde_commandline)
                     }
                 }
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-leftrightblur")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int valor_blur=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Shader Border")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for leftright blur setting: %s",effect);
+                }
+                else {
+                    if (valor_blur<1 || valor_blur>16) {
+                        debug_printf(VERBOSE_ERR,"Left Right Blur for effect %s out of range",effect);
+                    }
+                    else {
+                        screen_rainbow_effect_shaderborder_blur_intensity_leftright=valor_blur;
+                    }
+                }
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-updownblur")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int valor_blur=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Shader Border")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for updown blur setting: %s",effect);
+                }
+                else {
+                    if (valor_blur<1 || valor_blur>16) {
+                        debug_printf(VERBOSE_ERR,"Up Down Blur for effect %s out of range",effect);
+                    }
+                    else {
+                        screen_rainbow_effect_shaderborder_blur_intensity_updown=valor_blur;
+                    }
+                }
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--video-fx-attraction")) {
                 siguiente_parametro_argumento();

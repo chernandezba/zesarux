@@ -75,8 +75,8 @@ z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1}; //AGCONFIG
 z80_bit screen_rainbow_effect_shaderborder_updown_enable={1}; //AGCONFIG
 int screen_rainbow_effect_shaderborder_factor_zoom_leftright=2000; //AGCONFIG
 int screen_rainbow_effect_shaderborder_factor_zoom_updown=2000; //AGCONFIG
-int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4;
-int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
+int screen_rainbow_effect_shaderborder_blur_intensity_leftright=4; //AGCONFIG
+int screen_rainbow_effect_shaderborder_blur_intensity_updown=4; //AGCONFIG
 
 //0.2 segundos. O sea, 10 frames
 int screen_rainbow_effect_persistence_total_frames=10;
