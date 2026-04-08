@@ -136,6 +136,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_FADEINOUT,"Fade InOut",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SEPIA,"Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_RGB,"RGB",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast",&screen_rainbow_effect_contrast_follow_mouse,&screen_rainbow_effect_contrast_intensity,SCREEN_FX_CONTRAST_DEFAULT_INTENSITY,0,1000},
     {SCREEN_EFFECT_TYPE_BRIGHTNESS,"Brightness",&screen_rainbow_effect_brightness_follow_mouse,&screen_rainbow_effect_brightness_intensity,SCREEN_FX_BRIGHTNESS_DEFAULT_INTENSITY,0,256*100},
@@ -1799,6 +1800,54 @@ void screen_rainbow_effect_sepia(z80_int *origen,z80_int *destino,int ancho,int 
 
 }
 
+
+z80_bit screen_rainbow_effect_rgb_red={0};
+z80_bit screen_rainbow_effect_rgb_green={1};
+z80_bit screen_rainbow_effect_rgb_blue={0};
+
+void screen_rainbow_effect_rgb(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int color=origen[y*ancho + x];
+            unsigned int color32=spectrum_colortable[color];
+
+            int red=(color32 >> 16) & 0xFF;
+            int green=(color32 >> 8) & 0xFF;
+            int blue=(color32   ) & 0xFF;
+
+            int valor_gris=rgb_to_grey(red,green,blue);
+
+            valor_gris=(valor_gris>>3) & 0x1F;
+
+
+            if (screen_rainbow_effect_rgb_red.v) red=valor_gris;
+            else red=0;
+
+            if (screen_rainbow_effect_rgb_green.v) green=valor_gris;
+            else green=0;
+
+            if (screen_rainbow_effect_rgb_blue.v) blue=valor_gris;
+            else blue=0;
+
+
+            int rgb15=(red<<10) | (green<<5) | blue;
+
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+
+}
+
 //Retorna color rgb15 del pixel indicado, sumandolo en variables de entrada
 void screen_rainbow_effect_blur_media_rgb_pixeles(z80_int *origen,int orig_x,int orig_y,int ancho,int alto,int total_ancho,int total_alto,int x,int y,int *red,int *green,int *blue)
 {
@@ -2766,6 +2815,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_LOGOREBOUND:
                     screen_rainbow_effect_logorebound(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_RGB:
+                    screen_rainbow_effect_rgb(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_SEA:
