@@ -1061,12 +1061,12 @@ void screen_rainbow_effect_logorebound(z80_int *origen,z80_int *destino,int anch
     screen_put_watermark_generic(destino,screen_rainbow_effect_logorebound_x,screen_rainbow_effect_logorebound_y,ancho,alto,screen_generic_putpixel_indexcolour);
 
     screen_rainbow_effect_logorebound_x +=screen_rainbow_effect_logorebound_x_inc;
-    if (screen_rainbow_effect_logorebound_x==0 || screen_rainbow_effect_logorebound_x==ancho-ZESARUX_ASCII_LOGO_ANCHO) {
+    if (screen_rainbow_effect_logorebound_x<=0 || screen_rainbow_effect_logorebound_x>=ancho-ZESARUX_ASCII_LOGO_ANCHO) {
         screen_rainbow_effect_logorebound_x_inc=-screen_rainbow_effect_logorebound_x_inc;
     }
 
     screen_rainbow_effect_logorebound_y +=screen_rainbow_effect_logorebound_y_inc;
-    if (screen_rainbow_effect_logorebound_y==0 || screen_rainbow_effect_logorebound_y==alto-ZESARUX_ASCII_LOGO_ALTO) {
+    if (screen_rainbow_effect_logorebound_y<=0 || screen_rainbow_effect_logorebound_y>=alto-ZESARUX_ASCII_LOGO_ALTO) {
         screen_rainbow_effect_logorebound_y_inc=-screen_rainbow_effect_logorebound_y_inc;
     }
 
