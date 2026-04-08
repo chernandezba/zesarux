@@ -153,13 +153,8 @@ char *screen_effect_name_unknown="Unknown";
 z80_int *new_scalled_rainbow_buffer=NULL;
 
 
-//Comunes a escalado normal y escalado con gigascreen
-int scalled_rainbow_ancho=0;
-int scalled_rainbow_alto=0;
 
-//Punteros de escalado 0.75 para gigascreen
-z80_int *new_scalled_rainbow_buffer_gigascren_one=NULL;
-z80_int *new_scalled_rainbow_buffer_gigascren_two=NULL;
+
 
 void screen_special_effects_free_buffers(void)
 {
@@ -169,13 +164,6 @@ void screen_special_effects_free_buffers(void)
         new_scalled_rainbow_buffer=NULL;
     }
 
-    if (new_scalled_rainbow_buffer_gigascren_one!=NULL) {
-            debug_printf(VERBOSE_DEBUG,"Freeing previous scaled gigascreen rainbow buffers");
-            free (new_scalled_rainbow_buffer_gigascren_one);
-            free (new_scalled_rainbow_buffer_gigascren_two);
-            new_scalled_rainbow_buffer_gigascren_one=NULL;
-            new_scalled_rainbow_buffer_gigascren_two=NULL;
-    }
 }
 
 z80_int *screen_special_effects_alloc_buffer(int ancho,int alto)
@@ -290,7 +278,6 @@ void init_screen_effects_table(void)
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
 {
-    //puntero=rainbow_buffer;
 
     //Si se aplican efectos a la pantalla
     if (screen_special_effects_enabled.v) {
@@ -2933,45 +2920,6 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
 
 
-void screen_scale_075_050_gigascreen_function(int ancho,int alto)
-{
 
-return;
-                //solo asignar buffer la primera vez o si ha cambiado el tamanyo
-                int asignar=0;
-
-                //Si ha cambiado el tamanyo
-                if (scalled_rainbow_ancho!=ancho || scalled_rainbow_alto!=alto) {
-                        //Liberar si existia
-                        screen_special_effects_free_buffers();
-
-                        asignar=1;
-                }
-
-                //O si no hay buffer asignado
-                if (new_scalled_rainbow_buffer_gigascren_one==NULL) asignar=1;
-
-                if (asignar) {
-                        debug_printf(VERBOSE_DEBUG,"Allocating scaled gigascreen rainbow buffers");
-                        new_scalled_rainbow_buffer_gigascren_one=malloc(ancho*alto*2); //*2 por que son valores de 16 bits
-                        new_scalled_rainbow_buffer_gigascren_two=malloc(ancho*alto*2); //*2 por que son valores de 16 bits
-
-                        if (new_scalled_rainbow_buffer_gigascren_one==NULL || new_scalled_rainbow_buffer_gigascren_two==NULL) cpu_panic("Can not allocate scalled gigascreen rainbow buffers");
-
-                        //Llenarlo de cero
-                        int i;
-                        for (i=0;i<ancho*alto;i++) {
-                            new_scalled_rainbow_buffer_gigascren_one[i]=0;
-                            new_scalled_rainbow_buffer_gigascren_two[i]=0;
-                        }
-
-                        scalled_rainbow_ancho=ancho;
-                        scalled_rainbow_alto=alto;
-                }
-
-                //TODO rehacer esto
-                //screen_scale_075_050_and_watermark_function(rainbow_buffer_one,new_scalled_rainbow_buffer_gigascren_one,ancho,alto);
-                //screen_scale_075_050_and_watermark_function(rainbow_buffer_two,new_scalled_rainbow_buffer_gigascren_two,ancho,alto);
-}
 
 

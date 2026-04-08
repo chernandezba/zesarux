@@ -4797,12 +4797,6 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
         puntero_two=rainbow_buffer_two;
 
 
-        //Reducimos los dos bufferes si conviene-escalado 0.75
-        /* TODO if (screen_reduction_factor!=SCREEN_REDUCE_NONE) {
-                screen_scale_075_050_gigascreen_function(ancho,alto);
-                puntero_one=new_scalled_rainbow_buffer_gigascren_one;
-                puntero_two=new_scalled_rainbow_buffer_gigascren_two;
-        }*/
 
         for (y=0;y<alto;y++) {
             for (x=0;x<ancho;x++) {
