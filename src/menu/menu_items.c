@@ -13358,7 +13358,7 @@ int menu_ay_partitura_ultima_columna[3];
 
 
 //Hacer putpixel en pantalla de color indexado 16 bits. Usado en watermark para no rainbow
-void menu_ay_partitura_putpixel_nota(z80_int *destino GCC_UNUSED,int x,int y,int ancho_destino GCC_UNUSED,int color GCC_UNUSED)
+void menu_ay_partitura_putpixel_nota(z80_int *destino GCC_UNUSED,int x,int y,int ancho_destino GCC_UNUSED,int alto_destino GCC_UNUSED,int color GCC_UNUSED)
 {
     //scr_putpixel(x,y,color);
 
@@ -13368,7 +13368,7 @@ void menu_ay_partitura_putpixel_nota(z80_int *destino GCC_UNUSED,int x,int y,int
 
 void menu_ay_partitura_dibujar_sost(int x,int y)
 {
-    screen_put_asciibitmap_generic(pentagrama_sost,NULL,x,y,PENTAGRAMA_SOST_ANCHO,PENTAGRAMA_SOST_ALTO,0,menu_ay_partitura_putpixel_nota,1,0,0);
+    screen_put_asciibitmap_generic(pentagrama_sost,NULL,x,y,PENTAGRAMA_SOST_ANCHO,PENTAGRAMA_SOST_ALTO,0,0,menu_ay_partitura_putpixel_nota,1,0,0);
 }
 
 //duraciones notas
@@ -13549,7 +13549,7 @@ void menu_ay_partitura_dibujar_nota(int x,int y,int incremento_palito,int duraci
 
 
 
-    screen_put_asciibitmap_generic(bitmap_nota,NULL,x,y,PENTAGRAMA_NOTA_ANCHO,PENTAGRAMA_NOTA_ALTO,0,menu_ay_partitura_putpixel_nota,1,0,0);
+    screen_put_asciibitmap_generic(bitmap_nota,NULL,x,y,PENTAGRAMA_NOTA_ANCHO,PENTAGRAMA_NOTA_ALTO,0,0,menu_ay_partitura_putpixel_nota,1,0,0);
 
 
     //PENTAGRAMA_NOTA_LARGO_PALITO
@@ -13586,7 +13586,7 @@ void menu_ay_partitura_dibujar_nota(int x,int y,int incremento_palito,int duraci
     //Si hay que dibujar puntillo
     if (aysheet_tipo_nota_tienepuntillo(tipo_nota_duracion)) {
         screen_put_asciibitmap_generic(pentagrama_puntillo,NULL,x+PENTAGRAMA_NOTA_ANCHO+1,y+PENTAGRAMA_NOTA_ALTO/2+1,
-                PENTAGRAMA_PUNTILLO_ANCHO,PENTAGRAMA_PUNTILLO_ALTO,0,menu_ay_partitura_putpixel_nota,1,0,0);
+                PENTAGRAMA_PUNTILLO_ANCHO,PENTAGRAMA_PUNTILLO_ALTO,0,0,menu_ay_partitura_putpixel_nota,1,0,0);
     }
 
 
@@ -13597,7 +13597,7 @@ void menu_ay_partitura_dibujar_nota(int x,int y,int incremento_palito,int duraci
 void meny_ay_partitura_dibujar_clavesol(int x,int y)
 {
     screen_put_asciibitmap_generic(pentagrama_clave_sol,NULL,x,y,PENTAGRAMA_CLAVE_SOL_ANCHO,PENTAGRAMA_CLAVE_SOL_ALTO,
-    0,menu_ay_partitura_putpixel_nota,1,0,0);
+    0,0,menu_ay_partitura_putpixel_nota,1,0,0);
 }
 
 
@@ -43247,14 +43247,14 @@ void menu_toys(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_process_switcher_window;
 
-void menu_process_switcher_draw_icon_text_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color GCC_UNUSED)
+void menu_process_switcher_draw_icon_text_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color GCC_UNUSED)
 {
     //El color es el del estilo
     zxvision_putpixel(menu_process_switcher_window,x,y,ESTILO_GUI_TINTA_NORMAL);
 }
 
 
-void menu_process_switcher_draw_icon_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+void menu_process_switcher_draw_icon_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
 {
 
     zxvision_putpixel(menu_process_switcher_window,x,y,color);
@@ -43297,7 +43297,7 @@ void menu_process_switcher_draw_icon_text(int x,int y,char *texto,int max_texto)
         //    menu_process_switcher_draw_icon_putpixel,zoom,0,offset);
 
         screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter,
-            0,menu_process_switcher_draw_icon_text_putpixel,zoom,0,offset,0);
+            0,0,menu_process_switcher_draw_icon_text_putpixel,zoom,0,offset,0);
 
 
         x +=ancho_caracter*zoom;     //El ancho de caracter +1 para que no queden pegados
@@ -43591,7 +43591,7 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
     //Y dibujar dicho botón
     int nivel_zoom=1;
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-        0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0,0);
+        0,0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0,0);
 
     //marca alrededor del seleccionado
     if (indice_icono==seleccionado_indice_icono) {

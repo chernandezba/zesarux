@@ -4669,7 +4669,7 @@ void menu_footer_zesarux_emulator(void)
 
 }
 
-void footer_logo_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+void footer_logo_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
 {
         scr_putpixel(x,y,color);
 }
@@ -4877,8 +4877,8 @@ void menu_clear_footer(void)
             //copiamos el logo a bitmap de destino cambiando el color del marco
             menu_footer_logo_copy_final(color_marco);
 
-            screen_put_asciibitmap_generic(&zesarux_ascii_logo_footer[1],NULL,xlogo,yinicial,ZESARUX_ASCII_LOGO_ANCHO,24, 0,
-            footer_logo_putpixel,zoom_logo,0,0);
+            screen_put_asciibitmap_generic(&zesarux_ascii_logo_footer[1],NULL,xlogo,yinicial,ZESARUX_ASCII_LOGO_ANCHO,24, 0, 0,
+                footer_logo_putpixel,zoom_logo,0,0);
         }
 
 
@@ -5118,7 +5118,7 @@ void menu_set_menu_abierto(int valor)
 }
 
 //Para meter el logo u otros botones en zona de extended desktop
-void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
 {
     //Controlar si se sale de rango
     int total_width=screen_get_total_width_window_plus_zxdesktop();
@@ -5139,7 +5139,7 @@ void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int
 }
 
 //Para el texto de los iconos
-void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color GCC_UNUSED)
+void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color GCC_UNUSED)
 {
     //Controlar si se sale de rango
     int total_width=screen_get_total_width_window_plus_zxdesktop();
@@ -5666,7 +5666,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
         if (es_set_machine) {
             screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-            0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
+            0,0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
 
             //Y continuamos hacia abajo diciendo que dibuje la flecha
             puntero_bitmap=bitmap_button_ext_desktop_set_machine_only_arrow;
@@ -5674,7 +5674,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
         }
 
         screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-        0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
+            0,0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
     }
 }
 
@@ -5915,7 +5915,7 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 
 
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-        0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,inverso,1);
+        0,0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,inverso,1);
 
 
 
@@ -6155,7 +6155,7 @@ void menu_draw_ext_desktop_buttons(void)
 
 
         screen_put_asciibitmap_generic(puntero_bitmap,NULL,destino_x,destino_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-        0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
+        0,0,menu_draw_ext_desktop_putpixel_bitmap,nivel_zoom,0,1);
 
 
 
@@ -6195,7 +6195,7 @@ void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
     //    menu_draw_ext_desktop_putpixel_bitmap,zoom,0,7);
 
     //Y dibujar bitmap
-    screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
+    screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0, 0,
         menu_draw_ext_desktop_putpixel_bitmap,zoom,0,1);
 
 }
@@ -6232,7 +6232,7 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
 
         //TODO: esta funcion no permite zoom X y zoom Y diferentes, solo permite uno
         //en el caso del texto le enviamos el zoom que sea mas pequeño
-        screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
+        screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0, 0,
             menu_draw_ext_desktop_putpixel_bitmap_icon_text,zoom,0,offset,0);
 
 

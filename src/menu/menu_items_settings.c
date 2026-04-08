@@ -13120,7 +13120,7 @@ zxvision_window menu_zxdesktop_set_userdef_button_func_action_ventana;
 
 
 //Para hacer un preview del boton
-void menu_zxdesktop_set_userdef_button_func_action_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+void menu_zxdesktop_set_userdef_button_func_action_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
 {
     //scr_putpixel(x,y,color);
     //zxvision_window *ventana;
@@ -13182,7 +13182,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
         //Y dibujar dicho botón
         int nivel_zoom=1;
         screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-            0,menu_zxdesktop_set_userdef_button_func_action_putpixel,nivel_zoom,0,1);
+            0,0,menu_zxdesktop_set_userdef_button_func_action_putpixel,nivel_zoom,0,1);
     }
 
     //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
@@ -13293,7 +13293,7 @@ zxvision_window menu_zxdesktop_get_window_list_ventana;
 int menu_zxdesktop_get_window_list_opcion_seleccionada=0;
 
 //Para hacer un preview del boton
-void menu_zxdesktop_get_window_list_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+void menu_zxdesktop_get_window_list_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
 {
     //scr_putpixel(x,y,color);
     //zxvision_window *ventana;
@@ -13360,7 +13360,7 @@ void menu_zxdesktop_get_window_list_overlay(void)
         //Y dibujar dicho botón
         int nivel_zoom=1;
         screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO,
-            0,menu_zxdesktop_get_window_list_putpixel,nivel_zoom,0,1);
+            0,0,menu_zxdesktop_get_window_list_putpixel,nivel_zoom,0,1);
 
     }
 

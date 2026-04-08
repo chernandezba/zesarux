@@ -1072,7 +1072,7 @@ void screen_rainbow_effect_logorebound(z80_int *origen,z80_int *destino,int anch
     int tamanyo=ancho*alto*2;
     memcpy(destino,origen,tamanyo);
 
-    screen_put_watermark_generic(destino,screen_rainbow_effect_logorebound_x,screen_rainbow_effect_logorebound_y,ancho,screen_generic_putpixel_indexcolour);
+    screen_put_watermark_generic(destino,screen_rainbow_effect_logorebound_x,screen_rainbow_effect_logorebound_y,ancho,alto,screen_generic_putpixel_indexcolour);
 
     screen_rainbow_effect_logorebound_x +=screen_rainbow_effect_logorebound_x_inc;
     if (screen_rainbow_effect_logorebound_x==0 || screen_rainbow_effect_logorebound_x==ancho-ZESARUX_ASCII_LOGO_ANCHO) {

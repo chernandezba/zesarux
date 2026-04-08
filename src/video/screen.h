@@ -1028,11 +1028,12 @@ extern z80_bit screen_watermark_enabled;
 extern z80_bit screen_watermark_enabled_only_when_device_activity;
 extern z80_bit screen_watermark_rotate_colors_device_activity;
 
-extern void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) );
+extern void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho, int alto, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int alto,int color) );
 extern void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig,
-    int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),
+    int ancho_destino, int alto_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int alto_destino, int color),
     int zoom,int inverso,int permitir_envoltura );
-extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso,int offset_inicio_agregar,int permitir_envoltura );
+extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, int alto_destino,
+    void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int alto_destino,int color),int zoom,int inverso,int offset_inicio_agregar,int permitir_envoltura );
 //extern void screen_put_mask_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino,   void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int offset_inicio_agregar,int color_pixel);
 
 
@@ -1059,9 +1060,9 @@ extern void screen_text_set_ansi_color_bg(z80_byte paper);
 
 extern void screen_text_set_ansi_color_fg(z80_byte ink);
 
-extern void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int color);
+extern void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int alto,int color);
 
-extern int screen_generic_getpixel_indexcolour(z80_int *destino,int x,int y,int ancho);
+extern int screen_generic_getpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int alto);
 
 extern int screen_force_refresh;
 

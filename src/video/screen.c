@@ -4292,7 +4292,7 @@ BITS INK PAPER BORDER
 
 
 //Meter pixel en un buffer rainbow de color indexado 16 bits. Usado en watermark y se podria usar en mas cosas
-void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int color)
+void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int alto GCC_UNUSED,int color)
 {
     int offset=y*ancho+x;
 
@@ -4300,7 +4300,7 @@ void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,
 }
 
 //Obtiene pixel de un buffer rainbow de color indexado 16 bits. Usado en watermark y se podria usar en mas cosas. Justo lo contrario de screen_generic_putpixel_indexcolour
-int screen_generic_getpixel_indexcolour(z80_int *destino,int x,int y,int ancho)
+int screen_generic_getpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int alto GCC_UNUSED)
 {
         int offset=y*ancho+x;
 
@@ -4308,7 +4308,7 @@ int screen_generic_getpixel_indexcolour(z80_int *destino,int x,int y,int ancho)
 }
 
 //Hacer putpixel en pantalla de color indexado 16 bits. Usado en watermark para no rainbow
-void screen_generic_putpixel_no_rainbow_watermark(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+void screen_generic_putpixel_no_rainbow_watermark(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int alto GCC_UNUSED,int color)
 {
     scr_putpixel(x,y,color);
 }
@@ -4392,8 +4392,8 @@ void screen_put_mask_asciibitmap_generic_offset_inicio(char **origen,z80_int *de
 //permitir_envoltura: si se permite dibujar la envoltura alrededor de los pixeles, que evita que se funda el icono con el zx desktop segun el color
 //(cuando se activan como transparentes)
 //Por ejemplo los textos de iconos del zx desktop no permiten envoltura
-void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino,
-    void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso,int offset_inicio_agregar,int permitir_envoltura)
+void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, int alto_destino,
+    void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int alto_destino, int color), int zoom,int inverso,int offset_inicio_agregar,int permitir_envoltura)
 {
 
     int dibujar_envoltura=menu_ext_desktop_contorno_iconos.v;
@@ -4475,7 +4475,7 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
                 int zx,zy;
                 for (zx=0;zx<zoom;zx++) {
                     for (zy=0;zy<zoom;zy++) {
-                        putpixel(destino,x+columna*zoom+zx,y+fila*zoom+zy,ancho_destino,color_pixel);
+                        putpixel(destino,x+columna*zoom+zx,y+fila*zoom+zy,ancho_destino,alto_destino,color_pixel);
                     }
                 }
             }
@@ -4488,10 +4488,10 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
 
 //Mete un bitmap en formato ascii en un bitmap generico
 void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig,
-    int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),
+    int ancho_destino, int alto_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int alto_destino, int color),
     int zoom,int inverso,int permitir_envoltura)
 {
-    screen_put_asciibitmap_generic_offset_inicio(origen,destino,x,y,ancho_orig,alto_orig,ancho_destino,putpixel,zoom,inverso,0,permitir_envoltura);
+    screen_put_asciibitmap_generic_offset_inicio(origen,destino,x,y,ancho_orig,alto_orig,ancho_destino,alto_destino,putpixel,zoom,inverso,0,permitir_envoltura);
 }
 
 
@@ -4546,7 +4546,7 @@ void screen_put_watermark_generic_rotate_colors(char colores_cambios[4][2])
     }
 }
 
-void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) )
+void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino, int alto_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int alto,int color) )
 {
     char **logo=get_zesarux_ascii_logo();
 
@@ -4618,7 +4618,7 @@ void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino
     }
 
 
-    screen_put_asciibitmap_generic(lineas_logo_copiado,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0,0);
+    screen_put_asciibitmap_generic(lineas_logo_copiado,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,alto_destino,putpixel,1,0,0);
 
     free(logo_copiado);
 }
@@ -4692,7 +4692,7 @@ void screen_add_watermark_rainbow(void)
         //Misma variable que watermark general
         screen_get_offsets_watermark_position(screen_watermark_position,ancho,alto,&watermark_x,&watermark_y);
 
-        screen_put_watermark_generic(rainbow_buffer,watermark_x,watermark_y,ancho,screen_generic_putpixel_indexcolour);
+        screen_put_watermark_generic(rainbow_buffer,watermark_x,watermark_y,ancho,alto,screen_generic_putpixel_indexcolour);
 
     }
 
@@ -4724,7 +4724,7 @@ void screen_add_watermark_no_rainbow(void)
                 //Misma variable que watermark general
                 screen_get_offsets_watermark_position(screen_watermark_position,ancho,alto,&watermark_x,&watermark_y);
 
-                screen_put_watermark_generic(rainbow_buffer,watermark_x,watermark_y,ancho,screen_generic_putpixel_no_rainbow_watermark);
+                screen_put_watermark_generic(rainbow_buffer,watermark_x,watermark_y,ancho,alto,screen_generic_putpixel_no_rainbow_watermark);
 
         }
 

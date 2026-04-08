@@ -5633,10 +5633,10 @@ int menu_debug_registers_buffer_precursor[ANCHO_SCANLINE_CURSOR];
 int menu_debug_registers_buffer_pre_x=-1; //posicion anterior del cursor
 int menu_debug_registers_buffer_pre_y=-1;
 
-void menu_debug_showscan_putpixel(z80_int *destino,int x,int y,int ancho,int color)
+void menu_debug_showscan_putpixel(z80_int *destino,int x,int y,int ancho,int alto,int color)
 {
 
-    screen_generic_putpixel_indexcolour(destino,x,y,ancho,color);
+    screen_generic_putpixel_indexcolour(destino,x,y,ancho,alto,color);
 
 }
 
@@ -5669,7 +5669,7 @@ void menu_debug_registers_show_scan_pos_putcursor(int x_inicial,int y)
 
                 if (x_final<ancho) {
                     int color_antes=menu_debug_registers_buffer_precursor[x];
-                    menu_debug_showscan_putpixel(rainbow_buffer,x_final,menu_debug_registers_buffer_pre_y,ancho,color_antes);
+                    menu_debug_showscan_putpixel(rainbow_buffer,x_final,menu_debug_registers_buffer_pre_y,ancho,alto,color_antes);
                 }
             }
     }
@@ -5694,13 +5694,13 @@ void menu_debug_registers_show_scan_pos_putcursor(int x_inicial,int y)
 
             if (y>=0 && y<alto && x>=0 && x<ancho) {
 
-                color_anterior=screen_generic_getpixel_indexcolour(rainbow_buffer,x_final,y,ancho);
+                color_anterior=screen_generic_getpixel_indexcolour(rainbow_buffer,x_final,y,ancho,alto);
 
                 menu_debug_registers_buffer_precursor[x]=color_anterior;
 
                 //Y ponemos pixel
 
-                menu_debug_showscan_putpixel(rainbow_buffer,x_final,y,ancho,colores_rainbow[indice_color]);
+                menu_debug_showscan_putpixel(rainbow_buffer,x_final,y,ancho,alto,colores_rainbow[indice_color]);
             }
         }
 
