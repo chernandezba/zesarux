@@ -5622,9 +5622,7 @@ void menu_debug_cont_speed_progress(char *s)
 
 
 
-/*
-int screen_generic_getpixel_indexcolour(z80_int *destino,int x,int y,int ancho);
-*/
+
 
 #define ANCHO_SCANLINE_CURSOR 32
 

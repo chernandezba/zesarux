@@ -4292,8 +4292,10 @@ BITS INK PAPER BORDER
 
 
 //Meter pixel en un buffer rainbow de color indexado 16 bits. Usado en watermark y se podria usar en mas cosas
-void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int alto GCC_UNUSED,int color)
+void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int alto,int color)
 {
+    if (x<0 || y<0 || x>=ancho || y>=alto) return;
+
     int offset=y*ancho+x;
 
     destino[offset]=color;
@@ -4302,9 +4304,11 @@ void screen_generic_putpixel_indexcolour(z80_int *destino,int x,int y,int ancho,
 //Obtiene pixel de un buffer rainbow de color indexado 16 bits. Usado en watermark y se podria usar en mas cosas. Justo lo contrario de screen_generic_putpixel_indexcolour
 int screen_generic_getpixel_indexcolour(z80_int *destino,int x,int y,int ancho,int alto GCC_UNUSED)
 {
-        int offset=y*ancho+x;
+    if (x<0 || y<0 || x>=ancho || y>=alto) return 0;
 
-        return destino[offset];
+    int offset=y*ancho+x;
+
+    return destino[offset];
 }
 
 //Hacer putpixel en pantalla de color indexado 16 bits. Usado en watermark para no rainbow

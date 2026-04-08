@@ -1071,6 +1071,7 @@ void screen_rainbow_effect_logorebound(z80_int *origen,z80_int *destino,int anch
     //Primero copiar tal cual de origen a destino
     int tamanyo=ancho*alto*2;
     memcpy(destino,origen,tamanyo);
+    //printf("%d,%d\n",screen_rainbow_effect_logorebound_x,screen_rainbow_effect_logorebound_y);
 
     screen_put_watermark_generic(destino,screen_rainbow_effect_logorebound_x,screen_rainbow_effect_logorebound_y,ancho,alto,screen_generic_putpixel_indexcolour);
 
