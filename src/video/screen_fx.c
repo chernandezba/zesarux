@@ -186,14 +186,14 @@ z80_int *screen_special_effects_alloc_buffer(int ancho,int alto)
     return buffer;
 }
 
-void screen_special_effects_functions_pre(int ancho,int alto)
+void screen_special_effects_functions_pre(z80_int *puntero,int ancho,int alto)
 {
 
     //Liberar buffer anterior
     screen_special_effects_free_buffers();
 
 
-    new_scalled_rainbow_buffer=screen_special_effects_functions(rainbow_buffer,ancho,alto);
+    new_scalled_rainbow_buffer=screen_special_effects_functions(puntero,ancho,alto);
 
 }
 
@@ -290,11 +290,11 @@ void init_screen_effects_table(void)
 //Aplicar efectos a modo rainbow
 z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
 {
-    puntero=rainbow_buffer;
+    //puntero=rainbow_buffer;
 
     //Si se aplican efectos a la pantalla
     if (screen_special_effects_enabled.v) {
-        screen_special_effects_functions_pre(ancho,alto);
+        screen_special_effects_functions_pre(puntero,ancho,alto);
         puntero=new_scalled_rainbow_buffer;
     }
 

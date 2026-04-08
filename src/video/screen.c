@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "screen.h"
+#include "screen_fx.h"
 #include "cpu.h"
 #include "debug.h"
 #include "mem128.h"
@@ -965,6 +966,9 @@ z80_int *rainbow_buffer=NULL;
 z80_int *rainbow_buffer_one=NULL;
 z80_int *rainbow_buffer_two=NULL;
 
+//Para gigascreen con FX
+z80_int *rainbow_buffer_gigascreen_fx=NULL;
+
 //cache de putpixel. Solo usado en modos rainbow (segun recuerdo)
 z80_int *putpixel_cache=NULL;
 
@@ -1152,6 +1156,7 @@ void init_rainbow(void)
         debug_printf (VERBOSE_INFO,"Freeing previous rainbow video buffer");
         free(rainbow_buffer_one);
         free(rainbow_buffer_two);
+        free(rainbow_buffer_gigascreen_fx);
     }
 
 
@@ -1165,14 +1170,21 @@ void init_rainbow(void)
     }
 
 
-        rainbow_buffer_two=malloc(tamanyo);
-        if (rainbow_buffer_two==NULL) {
-                cpu_panic("Error allocating rainbow video buffer");
-        }
+    rainbow_buffer_two=malloc(tamanyo);
+    if (rainbow_buffer_two==NULL) {
+            cpu_panic("Error allocating rainbow video buffer");
+    }
+
+
+    rainbow_buffer_gigascreen_fx=malloc(tamanyo);
+    if (rainbow_buffer_gigascreen_fx==NULL) {
+            cpu_panic("Error allocating rainbow video buffer");
+    }
 
     //Inicializar esos buffers a 0
     memset(rainbow_buffer_one,0,tamanyo);
     memset(rainbow_buffer_two,0,tamanyo);
+    memset(rainbow_buffer_gigascreen_fx,0,tamanyo);
 
 
 
@@ -4811,6 +4823,72 @@ void scr_refresca_pantalla_rainbow_comun_gigascreen(void)
 }
 
 
+void scr_refresca_pantalla_rainbow_comun_gigascreen_fx(void)
+{
+
+    int ancho,alto;
+
+    ancho=get_total_ancho_rainbow();
+    alto=get_total_alto_rainbow();
+
+
+    int x,y;
+    int color_pixel_final;
+
+    z80_int *puntero_fx;
+
+    if ((interlaced_numero_frame&1)==0) {
+
+
+        //Para gigascreen, valores que se encontraran en el buffer rainbow seran entre 0 y 15
+        z80_byte color_pixel_one,color_pixel_two;
+
+
+        z80_int *puntero_one,*puntero_two;
+
+        puntero_one=rainbow_buffer_one;
+        puntero_two=rainbow_buffer_two;
+        puntero_fx=rainbow_buffer_gigascreen_fx;
+
+
+        //Primero mezclamos los dos frames de video para obtener colores gigascreen
+        for (y=0;y<alto;y++) {
+            for (x=0;x<ancho;x++) {
+
+                color_pixel_one=*puntero_one++;
+                color_pixel_two=*puntero_two++;
+
+                color_pixel_final=get_gigascreen_color(color_pixel_one,color_pixel_two);
+
+                *puntero_fx=color_pixel_final;
+                puntero_fx++;
+
+
+            }
+        }
+
+    }
+
+    puntero_fx=rainbow_buffer_gigascreen_fx;
+
+    //Efectos especiales (FX)
+    puntero_fx=screen_rainbow_effects(puntero_fx,ancho,alto);
+
+    //Y mostrar en pantalla
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            color_pixel_final=*puntero_fx++;
+
+            scr_putpixel_zoom_rainbow(x,y,color_pixel_final);
+
+        }
+    }
+
+
+
+    screen_switch_rainbow_buffer();
+}
 
 
 void scr_refresca_pantalla_rainbow_unalinea_timex(int y)
@@ -4914,7 +4992,12 @@ void scr_refresca_pantalla_rainbow_comun_spectrum(void)
 {
 
     if (gigascreen_enabled.v) {
-        scr_refresca_pantalla_rainbow_comun_gigascreen();
+        if (screen_special_effects_enabled.v) {
+            scr_refresca_pantalla_rainbow_comun_gigascreen_fx();
+        }
+        else {
+            scr_refresca_pantalla_rainbow_comun_gigascreen();
+        }
         return;
     }
 
@@ -4942,7 +5025,7 @@ void scr_refresca_pantalla_rainbow_comun_spectrum(void)
     puntero=rainbow_buffer;
 
 
-    //Reduccion de pantalla y otros efectos
+    //Efectos especiales (FX)
     puntero=screen_rainbow_effects(puntero,ancho,alto);
 
 

@@ -33,6 +33,7 @@
 #include "cpc.h"
 #include "cpu.h"
 #include "screen.h"
+#include "screen_fx.h"
 #include "debug.h"
 #include "contend.h"
 #include "joystick.h"

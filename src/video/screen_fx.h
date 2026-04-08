@@ -25,6 +25,8 @@
 #include "cpu.h"
 
 
+extern z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto);
+
 enum SCREEN_REDUCTIONS {
 //    SCREEN_REDUCE_NONE,
     SCREEN_REDUCE_075,

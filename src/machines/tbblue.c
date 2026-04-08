@@ -33,6 +33,7 @@
 #include "divmmc.h"
 #include "diviface.h"
 #include "screen.h"
+#include "screen_fx.h"
 
 #include "timex.h"
 #include "ula.h"
