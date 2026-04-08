@@ -1335,6 +1335,7 @@ screen_effect_print_names();
         "--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
         "--video-fx-follow-mouse effect                 Sets follow mouse setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-circular effect                     Sets circular setting on effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
+        "--video-fx-continuous effect                   Sets continuous setting on effect (Note: only Lens supports this parameter)\n"
         "--video-fx-attraction effect value             Sets attraction value for effect: +1: attraction, -1: repulsion (Note: only Magnetic Field effect supports this parameter)\n"
         "--video-fx-intensity effect intensity          Sets intensity setting on effect (Note: not all effects use that setting)\n"
         "--video-fx-angle effect angle                  Sets rotation angle for effect (Note: only Rotate effect supports this parameter)\n"
@@ -3223,6 +3224,19 @@ int parse_cmdline_options(int desde_commandline)
                     debug_printf(VERBOSE_ERR,"Invalid effect for circular setting: %s",effect);
                 }
 
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-continuous")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                if (!strcasecmp(effect,"Lens")) {
+                    screen_special_effects_fisheye_automatic_factor.v=1;
+                }
+                else {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for continuous setting: %s",effect);
+                }
             }
 
 

@@ -3936,6 +3936,10 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-circular \"Scroll Vertical\"");
     }
 
+    if (screen_special_effects_fisheye_automatic_factor.v) {
+        ADD_STRING_CONFIG,"--video-fx-continuous Lens");
+    }
+
     ADD_STRING_CONFIG,"--video-fx-attraction \"Magnetic Field\" %d",screen_rainbow_effect_attraction_atrac_repulse);
 
     ADD_STRING_CONFIG,"--video-fx-leftrightborder \"Shader Border\" %d",screen_rainbow_effect_shaderborder_leftright_enable.v);
