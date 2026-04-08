@@ -96,7 +96,7 @@ char screen_special_effects_fisheye_follow_music_channel=0;
 //k > 0 → efecto tipo ojo de pez (convexo)
 //k < 0 → efecto tipo lente inversa (cóncavo)
 //Lo tenemos multiplicado por 100 para evitar usar flotantes
-int screen_rainbow_effect_fisheye_factor_k = 100;
+int screen_rainbow_effect_fisheye_factor_k = SCREEN_FX_LENS_DEFAULT_INTENSITY;
 z80_bit screen_special_effects_fisheye_automatic_factor={0};
 z80_bit screen_special_effects_fisheye_follow_mouse={0};
 
@@ -119,7 +119,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_WAVES,"Waves",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,20},
     {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field",NULL,&screen_rainbow_effect_attraction_intensity,SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY,1,20},
     {SCREEN_EFFECT_TYPE_SHEAR,"Shear",&screen_rainbow_effect_shear_intensity_follow_mouse,&screen_rainbow_effect_shear_intensity,SCREEN_FX_SHEAR_DEFAULT_INTENSITY,1,49},
-    {SCREEN_EFFECT_TYPE_LENS,"Lens",&screen_special_effects_fisheye_follow_mouse,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_LENS,"Lens",&screen_special_effects_fisheye_follow_mouse,&screen_rainbow_effect_fisheye_factor_k,SCREEN_FX_LENS_DEFAULT_INTENSITY,-600,600},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate",&screen_rainbow_effect_pixelate_follow_mouse,&screen_rainbow_effect_pixelate_size,SCREEN_FX_PIXELATE_DEFAULT_INTENSITY,2,SCREEN_EFFECT_PIXELATE_MAX_SIZE},
