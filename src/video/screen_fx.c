@@ -30,6 +30,7 @@
 #include "utils_math.h"
 #include "joystick.h"
 #include "sensors.h"
+#include "menu_bitmaps.h"
 
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto);
 
@@ -141,7 +142,8 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_NAGRAVISION,"Nagravision",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike",NULL,NULL,0,0,0}
+    {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_LOGOREBOUND,"Logo Rebound",NULL,NULL,0,0,0}
 };
 
 char *screen_effect_name_unknown="Unknown";
@@ -1053,6 +1055,22 @@ void screen_rainbow_effect_sortalike(z80_int *origen,z80_int *destino,int ancho,
         screen_rainbow_effect_nagravision_swap(destino,ancho,alto,y+1,y2_cambiar);
 
     }
+
+
+}
+
+
+int screen_rainbow_effect_logorebound_x=0;
+int screen_rainbow_effect_logorebound_y=0;
+
+void screen_rainbow_effect_logorebound(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    screen_put_watermark_generic(destino,screen_rainbow_effect_logorebound_x,screen_rainbow_effect_logorebound_y,ancho,screen_generic_putpixel_indexcolour);
 
 
 }
@@ -2729,6 +2747,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_SORTALIKE:
                     screen_rainbow_effect_sortalike(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_LOGOREBOUND:
+                    screen_rainbow_effect_logorebound(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_SEA:
