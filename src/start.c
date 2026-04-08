@@ -1349,6 +1349,7 @@ screen_effect_print_names();
         "--video-fx-updownzoom effect zoom              Sets zoom level (multipled by 1000) on border up and down (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-leftrightblur effect intensity      Sets blur intensity on border left and right (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-updownblur effect intensity         Sets blur intensity on border up and down (Note: only Shader Border effect supports this parameter)\n"
+        "--video-fx-rgb effect r g b                    Sets rgb values for effect (Note: only RGB effect supports this parameter)\n"
 
 
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
@@ -3030,6 +3031,32 @@ int parse_cmdline_options(int desde_commandline)
                     else {
                         screen_rainbow_effect_persistence_total_frames=valor_frames;
                     }
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-rgb")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int red=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                int green=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                int blue=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"RGB")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for rgb setting: %s",effect);
+                }
+                else {
+                    screen_rainbow_effect_rgb_red.v=red;
+                    screen_rainbow_effect_rgb_green.v=green;
+                    screen_rainbow_effect_rgb_blue.v=blue;
                 }
 
             }

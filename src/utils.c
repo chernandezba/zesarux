@@ -3953,6 +3953,8 @@ int util_write_configfile(void)
 
     ADD_STRING_CONFIG,"--video-fx-frames Persistence %d",screen_rainbow_effect_persistence_total_frames);
 
+    ADD_STRING_CONFIG,"--video-fx-rgb RGB %d %d %d",screen_rainbow_effect_rgb_red.v,screen_rainbow_effect_rgb_green.v,screen_rainbow_effect_rgb_blue.v);
+
     if (screen_special_effects_fisheye_follow_music_channel==0) {
         ADD_STRING_CONFIG,"--video-fx-follow-channel Lens 0");
     }
