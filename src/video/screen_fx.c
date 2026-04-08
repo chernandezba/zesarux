@@ -1061,7 +1061,9 @@ void screen_rainbow_effect_sortalike(z80_int *origen,z80_int *destino,int ancho,
 
 
 int screen_rainbow_effect_logorebound_x=0;
+int screen_rainbow_effect_logorebound_x_inc=+1;
 int screen_rainbow_effect_logorebound_y=0;
+int screen_rainbow_effect_logorebound_y_inc=+1;
 
 void screen_rainbow_effect_logorebound(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -1071,6 +1073,18 @@ void screen_rainbow_effect_logorebound(z80_int *origen,z80_int *destino,int anch
     memcpy(destino,origen,tamanyo);
 
     screen_put_watermark_generic(destino,screen_rainbow_effect_logorebound_x,screen_rainbow_effect_logorebound_y,ancho,screen_generic_putpixel_indexcolour);
+
+    screen_rainbow_effect_logorebound_x +=screen_rainbow_effect_logorebound_x_inc;
+    if (screen_rainbow_effect_logorebound_x==0 || screen_rainbow_effect_logorebound_x==ancho-ZESARUX_ASCII_LOGO_ANCHO) {
+        screen_rainbow_effect_logorebound_x_inc=-screen_rainbow_effect_logorebound_x_inc;
+    }
+
+    screen_rainbow_effect_logorebound_y +=screen_rainbow_effect_logorebound_y_inc;
+    if (screen_rainbow_effect_logorebound_y==0 || screen_rainbow_effect_logorebound_y==alto-ZESARUX_ASCII_LOGO_ALTO) {
+        screen_rainbow_effect_logorebound_y_inc=-screen_rainbow_effect_logorebound_y_inc;
+    }
+
+
 
 
 }
