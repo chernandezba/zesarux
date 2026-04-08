@@ -1950,10 +1950,12 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                         "Follow Music Channel","Seguir Canal Música","Seguir Canal Musica");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_follow_music_channel ? screen_special_effects_fisheye_follow_music_channel : ' ' ));
 
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-                        "Continuous Lens factor","Factor Lente Continuo","Factor Lent Continu");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_automatic_factor.v ? 'X' : ' ' ));
-                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_automatic_factor);
+                    if (!screen_special_effects_fisheye_follow_music_channel) {
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                            "Continuous Lens factor","Factor Lente Continuo","Factor Lent Continu");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_special_effects_fisheye_automatic_factor.v ? 'X' : ' ' ));
+                        menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_fisheye_automatic_factor);
+                    }
 
                     if (screen_special_effects_fisheye_automatic_factor.v==0 && !screen_special_effects_fisheye_follow_music_channel) {
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_fisheye_factor,NULL,
