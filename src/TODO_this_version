@@ -120,6 +120,7 @@ SDL_RenderPresent(renderer);
 SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 antes de commonsdl_init
 
+-en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
 
 
 -copy-paste y text-paste quizá mover a otro menú?
