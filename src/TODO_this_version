@@ -131,7 +131,7 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 *revisar liberar memoria
 *entradas en changelog
 *shader border poder definir ancho border
-
+*shader border en Next no se ve bien
 
 -nagravision audio
 *completar maquinas
