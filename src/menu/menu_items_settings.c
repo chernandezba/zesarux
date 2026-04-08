@@ -2165,6 +2165,23 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_sepia_follow_mouse);
                 }
 
+                if (type==SCREEN_EFFECT_TYPE_RGB && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Red","Rojo","Vermell");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_rgb_red.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_rgb_red);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Green","Verde","Verd");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_rgb_green.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_rgb_green);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Blue","Azul","Blau");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_rgb_blue.v ? 'X' : ' ' ));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_rgb_blue);
+                }
+
 
             }
 

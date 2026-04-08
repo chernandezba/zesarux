@@ -98,6 +98,10 @@ extern int screen_rainbow_effect_blur_intensity;
 extern z80_bit screen_rainbow_effect_blur_follow_mouse;
 extern int screen_rainbow_effect_persistence_total_frames;
 
+extern z80_bit screen_rainbow_effect_rgb_red;
+extern z80_bit screen_rainbow_effect_rgb_green;
+extern z80_bit screen_rainbow_effect_rgb_blue;
+
 extern void init_screen_effects_table(void);
 
 #define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 25
