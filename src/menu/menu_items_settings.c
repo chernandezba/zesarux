@@ -1860,9 +1860,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "Enable","Activar","Activar");
+            "Enable FX","Activar FX","Activar FX");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_enabled.v ? 'X' : ' ' ));
         menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_enabled);
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Effects ---","--- Efectos ---","--- Efectes ---");
 
 
         if (screen_special_effects_enabled.v) {

@@ -1349,7 +1349,7 @@ screen_effect_print_names();
         "--video-fx-updownzoom effect zoom              Sets zoom level (multipled by 1000) on border up and down (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-leftrightblur effect intensity      Sets blur intensity on border left and right (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-updownblur effect intensity         Sets blur intensity on border up and down (Note: only Shader Border effect supports this parameter)\n"
-        "--video-fx-rgb effect r g b                    Sets rgb values for effect (Note: only RGB effect supports this parameter)\n"
+        "--video-fx-rgb effect r g b                    Sets rgb values (0/1) for effect (Note: only RGB effect supports this parameter)\n"
 
 
         "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
