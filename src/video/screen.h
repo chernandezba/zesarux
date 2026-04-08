@@ -302,7 +302,6 @@ extern void disable_16c_mode(void);
 extern z80_bit rainbow_enabled;
 extern z80_bit autodetect_rainbow;
 
-extern z80_int *new_scalled_rainbow_buffer;
 
 
 

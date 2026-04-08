@@ -150,18 +150,15 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
 char *screen_effect_name_unknown="Unknown";
 
 
-z80_int *new_scalled_rainbow_buffer=NULL;
-
-
-
+z80_int *new_fx_rainbow_buffer=NULL;
 
 
 void screen_special_effects_free_buffers(void)
 {
-    if (new_scalled_rainbow_buffer!=NULL) {
+    if (new_fx_rainbow_buffer!=NULL) {
         debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
-        free (new_scalled_rainbow_buffer);
-        new_scalled_rainbow_buffer=NULL;
+        free (new_fx_rainbow_buffer);
+        new_fx_rainbow_buffer=NULL;
     }
 
 }
@@ -181,7 +178,7 @@ void screen_special_effects_functions_pre(z80_int *puntero,int ancho,int alto)
     screen_special_effects_free_buffers();
 
 
-    new_scalled_rainbow_buffer=screen_special_effects_functions(puntero,ancho,alto);
+    new_fx_rainbow_buffer=screen_special_effects_functions(puntero,ancho,alto);
 
 }
 
@@ -282,7 +279,7 @@ z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto)
     //Si se aplican efectos a la pantalla
     if (screen_special_effects_enabled.v) {
         screen_special_effects_functions_pre(puntero,ancho,alto);
-        puntero=new_scalled_rainbow_buffer;
+        puntero=new_fx_rainbow_buffer;
     }
 
     return puntero;

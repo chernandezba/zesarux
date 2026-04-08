@@ -27,6 +27,9 @@
 
 extern z80_int *screen_rainbow_effects(z80_int *puntero,int ancho,int alto);
 
+extern z80_int *new_fx_rainbow_buffer;
+
+
 enum SCREEN_REDUCTIONS {
 //    SCREEN_REDUCE_NONE,
     SCREEN_REDUCE_075,
