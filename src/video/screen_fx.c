@@ -156,7 +156,7 @@ z80_int *new_fx_rainbow_buffer=NULL;
 void screen_special_effects_free_buffers(void)
 {
     if (new_fx_rainbow_buffer!=NULL) {
-        debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
+        //debug_printf(VERBOSE_DEBUG,"Freeing previous scaled rainbow buffer");
         free (new_fx_rainbow_buffer);
         new_fx_rainbow_buffer=NULL;
     }

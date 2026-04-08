@@ -130,13 +130,7 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 -efectos especiales
 *revisar liberar memoria
 *entradas en changelog
-*revisar gigascreen , replantear entera, tenia una condición especial para el efecto de reduce
 *shader border poder definir ancho border
-
-*mas efectos:
-
-
-mas efectos RGB aprovechando la tabla TSCONF_INDEX_FIRST_COLOR, que son de 5 bits por componente
 
 
 -nagravision audio
