@@ -1916,7 +1916,9 @@ void screen_rainbow_effect_blur_zone(z80_int *origen,z80_int *destino,int orig_x
 
             int color=TSCONF_INDEX_FIRST_COLOR+screen_rainbow_effect_blur_media(origen,orig_x,orig_y,ancho,alto,x,y,total_ancho,total_alto,intensity);
 
-            destino[y*total_ancho + x] = color;
+            if (x>=0 && y>=0 && x<total_ancho && y<total_alto) {
+                destino[y*total_ancho + x] = color;
+            }
 
         }
 
