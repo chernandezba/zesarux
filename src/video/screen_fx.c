@@ -1972,15 +1972,16 @@ void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,in
 }
 
 int screen_rainbow_effect_shaderborder_alto_border_superior=TOP_BORDER_NO_ZOOM;
-int screen_rainbow_effect_shaderborder_lateral_ancho_borde_izquierdo=LEFT_BORDER_NO_ZOOM;
-int screen_rainbow_effect_shaderborder_lateral_ancho_borde_derecho=RIGHT_BORDER_NO_ZOOM;
-int screen_rainbow_effect_shaderborder_lateral_alto_border_inferior=BOTTOM_BORDER_NO_ZOOM;
+int screen_rainbow_effect_shaderborder_alto_border_inferior=BOTTOM_BORDER_NO_ZOOM;
+int screen_rainbow_effect_shaderborder_ancho_borde_izquierdo=LEFT_BORDER_NO_ZOOM;
+int screen_rainbow_effect_shaderborder_ancho_borde_derecho=RIGHT_BORDER_NO_ZOOM;
+
 
 void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
     int alto_border_superior=screen_rainbow_effect_shaderborder_alto_border_superior;
-    int ancho_borde_izquierdo=screen_rainbow_effect_shaderborder_lateral_ancho_borde_izquierdo;
-    int ancho_borde_derecho=screen_rainbow_effect_shaderborder_lateral_ancho_borde_derecho;
+    int ancho_borde_izquierdo=screen_rainbow_effect_shaderborder_ancho_borde_izquierdo;
+    int ancho_borde_derecho=screen_rainbow_effect_shaderborder_ancho_borde_derecho;
 
 
     z80_int *temp_bufferdestino=screen_special_effects_alloc_buffer(ancho,alto);
@@ -2014,7 +2015,7 @@ void screen_rainbow_effect_shaderborder_infsup(z80_int *origen,z80_int *destino,
 {
 
     int alto_border_superior=screen_rainbow_effect_shaderborder_alto_border_superior;
-    int alto_border_inferior=screen_rainbow_effect_shaderborder_lateral_alto_border_inferior;
+    int alto_border_inferior=screen_rainbow_effect_shaderborder_alto_border_inferior;
 
     z80_int *temp_bufferdestino=screen_special_effects_alloc_buffer(ancho,alto);
 
