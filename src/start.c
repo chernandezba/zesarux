@@ -3091,7 +3091,7 @@ int parse_cmdline_options(int desde_commandline)
                 }
                 else {
                     if (tb<1 || bb<1 || lb<1 || rb<1 || dh<1 || dw<1 ||
-                        tb>100 || bb>100 || lb>100 || rb>100 || dh>1000 || dw>1000) {
+                        tb>200 || bb>200 || lb>200 || rb>200 || dh>1000 || dw>1000) {
                             debug_printf(VERBOSE_ERR,"Sizes for effect %s out of range",effect);
                     }
 

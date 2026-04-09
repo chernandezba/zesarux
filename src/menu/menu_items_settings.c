@@ -1853,21 +1853,21 @@ void menu_interface_special_effects_attraction_atrac_repulse(MENU_ITEM_PARAMETER
 
 void menu_interface_special_effects_shaderborder_top_border_size(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Top Border Heigth",&screen_rainbow_effect_shaderborder_alto_border_superior,5,+1,1,100,0);
+    menu_ventana_scanf_numero_enhanced("Top Border Heigth",&screen_rainbow_effect_shaderborder_alto_border_superior,5,+1,1,200,0);
 }
 
 void menu_interface_special_effects_shaderborder_bottom_border_size(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Bottom Border Heigth",&screen_rainbow_effect_shaderborder_alto_border_inferior,5,+1,1,100,0);
+    menu_ventana_scanf_numero_enhanced("Bottom Border Heigth",&screen_rainbow_effect_shaderborder_alto_border_inferior,5,+1,1,200,0);
 }
 
 void menu_interface_special_effects_shaderborder_left_border_size(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Left Border Width",&screen_rainbow_effect_shaderborder_ancho_borde_izquierdo,5,+1,1,100,0);
+    menu_ventana_scanf_numero_enhanced("Left Border Width",&screen_rainbow_effect_shaderborder_ancho_borde_izquierdo,5,+1,1,200,0);
 }
 void menu_interface_special_effects_shaderborder_right_border_size(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Right Border Width",&screen_rainbow_effect_shaderborder_ancho_borde_derecho,5,+1,1,100,0);
+    menu_ventana_scanf_numero_enhanced("Right Border Width",&screen_rainbow_effect_shaderborder_ancho_borde_derecho,5,+1,1,200,0);
 }
 
 void menu_interface_special_effects_shaderborder_display_height(MENU_ITEM_PARAMETERS)
@@ -2079,15 +2079,13 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_blur_intensity_updown);
 
                     }
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_display_width,NULL,
+                        "Display width","Ancho pantalla","Ample pantalla");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_ancho_pantalla);
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_display_height,NULL,
                         "Display height","Alto pantalla","Alt pantalla");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_alto_pantalla);
-
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_display_width,NULL,
-                        "Display width","Ample pantalla","Ample pantalla");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_ancho_pantalla);
-
 
                 }
 

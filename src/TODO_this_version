@@ -131,8 +131,6 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 -efectos especiales
 *revisar liberar memoria
 *entradas en changelog
-*shader border poder definir tamaños border, pantalla
-*shader border poder grabar en settings config tamaños border, pantalla
 *shader border en Next no se ve bien
 *shader border sin border y/o full screen sin border, da segfault
 
