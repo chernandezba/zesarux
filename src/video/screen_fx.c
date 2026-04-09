@@ -1971,6 +1971,11 @@ void screen_rainbow_effect_shaderborder_copy(z80_int *origen,z80_int *destino,in
 
 }
 
+
+//Ejemplo para ZX81:
+//borde superior=40
+
+
 int screen_rainbow_effect_shaderborder_alto_border_superior=TOP_BORDER_NO_ZOOM;
 int screen_rainbow_effect_shaderborder_alto_border_inferior=BOTTOM_BORDER_NO_ZOOM;
 int screen_rainbow_effect_shaderborder_ancho_borde_izquierdo=LEFT_BORDER_NO_ZOOM;
