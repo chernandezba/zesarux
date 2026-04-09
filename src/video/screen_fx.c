@@ -128,6 +128,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_BLUR,"Blur","Desenfocar","Desenfocar",&screen_rainbow_effect_blur_follow_mouse,&screen_rainbow_effect_blur_intensity,SCREEN_FX_BLUR_DEFAULT_INTENSITY,1,16},
     {SCREEN_EFFECT_TYPE_SHADERBORDER,"Shader Border","Borde Sombreado","Vora Ombrejat",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_LED,"LED","LED","LED",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_LED_RGB,"LED RGB","LED RGB","LED RGB",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost","Pérdida Hsync","Pèrdua Hsync",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost","Pérdida Vsync","Pèrdua Vsync",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal","Scroll Horizontal","Scroll Horitzontal",&screen_rainbow_effect_scroll_horizontal_follow_mouse,NULL,0,0,0},
@@ -2423,7 +2424,80 @@ void screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int al
 
 }
 
+void screen_rainbow_effect_led_rgb(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
 
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+            //De cada 4 pixeles solo mostrar 1. Pero promediamos el color de los 4
+            int mx=(x%2);
+            int my=(y%2);
+            if (mx==0 && my==0) {
+                int color_1=origen[y*ancho + x];
+                unsigned int color32_1=spectrum_colortable[color_1];
+
+                int color_2=origen[y*ancho + x+1];
+                unsigned int color32_2=spectrum_colortable[color_2];
+
+                int color_3=origen[(y+1)*ancho + x];
+                unsigned int color32_3=spectrum_colortable[color_3];
+
+                int color_4=origen[(y+1)*ancho + x+1];
+                unsigned int color32_4=spectrum_colortable[color_4];
+
+            int red_1=(color32_1 >> 16) & 0xFF;
+            int green_1=(color32_1 >> 8) & 0xFF;
+            int blue_1=(color32_1   ) & 0xFF;
+
+            int red_2=(color32_2 >> 16) & 0xFF;
+            int green_2=(color32_2 >> 8) & 0xFF;
+            int blue_2=(color32_2   ) & 0xFF;
+
+            int red_3=(color32_3 >> 16) & 0xFF;
+            int green_3=(color32_3 >> 8) & 0xFF;
+            int blue_3=(color32_3   ) & 0xFF;
+
+            int red_4=(color32_4 >> 16) & 0xFF;
+            int green_4=(color32_4 >> 8) & 0xFF;
+            int blue_4=(color32_4   ) & 0xFF;
+
+            int red=(red_1+red_2+red_3+red_4)/4;
+            int green=(green_1+green_2+green_3+green_4)/4;
+            int blue=(blue_1+blue_2+blue_3+blue_4)/4;
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+            int rgb15;
+            unsigned int color;
+
+            //Y escribo los 3 pixeles por separado (rojo, verde y azul)
+
+            //rgb15=(red<<10) | (green<<5) | blue;
+            rgb15=(red<<10);
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+            destino[y*ancho + x] = color;
+
+            rgb15=(green<<5);
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+            destino[y*ancho + x+1] = color;
+
+            rgb15=blue;
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+            destino[(y+1)*ancho + x] = color;
+
+
+            }
+
+        }
+
+    }
+
+
+}
 
 void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -2880,6 +2954,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_LED:
                     screen_rainbow_effect_led(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_LED_RGB:
+                    screen_rainbow_effect_led_rgb(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_HSYNC_LOST:

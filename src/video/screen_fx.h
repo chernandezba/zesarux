@@ -122,7 +122,7 @@ extern void init_screen_effects_table(void);
 #define MAX_SCREEN_LIST_EFFECTS 50
 
 //Cantidad de efectos diferentes
-#define MAX_SCREEN_EFFECTS 37
+#define MAX_SCREEN_EFFECTS 38
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_NONE, //Este siempre el primero en este enum
@@ -148,6 +148,7 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_BLUR,
     SCREEN_EFFECT_TYPE_SHADERBORDER,
     SCREEN_EFFECT_TYPE_LED,
+    SCREEN_EFFECT_TYPE_LED_RGB,
     SCREEN_EFFECT_TYPE_FADEIN,
     SCREEN_EFFECT_TYPE_FADEOUT,
     SCREEN_EFFECT_TYPE_FADEINOUT,

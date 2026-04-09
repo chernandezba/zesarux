@@ -7,7 +7,7 @@ Added support for drag&drop on Windows and Linux (Xwindow) - was already support
 Allow drag&drop of compressed files
 Added lots of special effects for video output:
 - Reduce, Unsteady, Flip Vertical, Flip Horizontal, Rotate, Twirl, Interferences, Sea, Waves, Magnetic Field, Shear, Lens, Radar
-- Zoom Mouse, Pixelate, Blur, Shader Border, LED, Hsync lost, Vsync lost, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
+- Zoom Mouse, Pixelate, Blur, Shader Border, LED, LED RGB, Hsync lost, Vsync lost, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
 - Scanlines, Sepia, RGB, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
 Added support for reading clipboard contents and send as keystrokes on systems: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 Rename function "Input File Spooling" to "Send Text as Keystrokes"
