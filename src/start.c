@@ -1353,10 +1353,10 @@ screen_effect_print_names();
         "--video-fx-rgb effect r g b                    Sets rgb values (0/1) for effect (Note: only RGB effect supports this parameter)\n"
 
 
-        "--video-fx-reduce-075                          Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
-        "--video-fx-reduce-050                          Reduce display size to 1/2. Require --video-fx-enable\n"
-        "--video-fx-reduce-025                          Reduce display size to 1/4. Require --video-fx-enable\n"
-        "--video-fx-reduce-display-no-antialias         Disable antialias for reduction, enabled by default\n"
+        "--video-fx-reduce-075                          Sets display size 4/3 for Reduce effect (divide by 4, multiply by 3)\n"
+        "--video-fx-reduce-050                          Sets display size 1/2 for Reduce effect\n"
+        "--video-fx-reduce-025                          Sets display size 1/4 for Reduce effect\n"
+        "--video-fx-reduce-display-no-antialias         Disable antialias for Reduce effect, enabled by default\n"
 
 
         "\n"
