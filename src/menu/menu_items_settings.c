@@ -1622,7 +1622,7 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
             for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
 
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
-                    NULL,NULL,screen_effect_get_name(SCREEN_EFFECT_TYPE_NONE+i));
+                    NULL,NULL,screen_effect_get_name_translation(SCREEN_EFFECT_TYPE_NONE+i));
 
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
 
@@ -1910,7 +1910,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 enum enum_screen_effect_types type=screen_effect_applied_list[i].type;
 
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
-                    menu_main_window_special_effects_change,NULL,screen_effect_get_name(type));
+                    menu_main_window_special_effects_change,NULL,screen_effect_get_name_translation(type));
                 menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
                     (enabled ? 'X' : ' ' ));
                 menu_add_item_menu_valor_opcion(array_menu_common,i);

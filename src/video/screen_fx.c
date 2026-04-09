@@ -31,6 +31,7 @@
 #include "joystick.h"
 #include "sensors.h"
 #include "menu_bitmaps.h"
+#include "settings.h"
 
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto);
 
@@ -189,6 +190,25 @@ char *screen_effect_get_name(enum enum_screen_effect_types type)
     int i;
     for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
         if (screen_effect_type_list[i].type==type) return screen_effect_type_list[i].name;
+    }
+    return screen_effect_name_unknown;
+}
+
+char *screen_effect_get_name_translation(enum enum_screen_effect_types type)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+        if (screen_effect_type_list[i].type==type) {
+            if (gui_language==GUI_LANGUAGE_SPANISH) {
+                return screen_effect_type_list[i].name_es;
+            }
+            else if (gui_language==GUI_LANGUAGE_CATALAN) {
+                return screen_effect_type_list[i].name_ca;
+            }
+            else {
+                return screen_effect_type_list[i].name;
+            }
+        }
     }
     return screen_effect_name_unknown;
 }
