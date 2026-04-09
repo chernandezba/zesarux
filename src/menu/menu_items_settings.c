@@ -1853,8 +1853,31 @@ void menu_interface_special_effects_attraction_atrac_repulse(MENU_ITEM_PARAMETER
 
 void menu_interface_special_effects_shaderborder_top_border_size(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Top Border Size",&screen_rainbow_effect_shaderborder_alto_border_superior,5,+1,0,100,0);
+    menu_ventana_scanf_numero_enhanced("Top Border Heigth",&screen_rainbow_effect_shaderborder_alto_border_superior,5,+1,1,100,0);
 }
+
+void menu_interface_special_effects_shaderborder_bottom_border_size(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Bottom Border Heigth",&screen_rainbow_effect_shaderborder_alto_border_inferior,5,+1,1,100,0);
+}
+
+void menu_interface_special_effects_shaderborder_left_border_size(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Left Border Width",&screen_rainbow_effect_shaderborder_ancho_borde_izquierdo,5,+1,1,100,0);
+}
+void menu_interface_special_effects_shaderborder_right_border_size(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Right Border Width",&screen_rainbow_effect_shaderborder_ancho_borde_derecho,5,+1,1,100,0);
+}
+
+/*
+
+int =BOTTOM_BORDER_NO_ZOOM;
+int =LEFT_BORDER_NO_ZOOM;
+int =RIGHT_BORDER_NO_ZOOM;
+int screen_rainbow_effect_shaderborder_alto_pantalla=192;
+int screen_rainbow_effect_shaderborder_ancho_pantalla=256;
+*/
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
@@ -2001,6 +2024,15 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shaderborder_leftright_enable);
 
                     if (screen_rainbow_effect_shaderborder_leftright_enable.v) {
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_left_border_size,NULL,
+                            "Left Border width","Ancho borde izquierdo","Alt borde esquerre");
+                        menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_ancho_borde_izquierdo);
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_right_border_size,NULL,
+                            "Right Border width","Ancho borde derecho","Alt borde dreta");
+                        menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_ancho_borde_derecho);
+
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_leftright,NULL,
                             "Zoom Factor left-right","Factor Zoom izq-der","Factor Zoom esq-dre");
                         char buffer_zoom[10];
@@ -2025,6 +2057,18 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_top_border_size,NULL,
                             "Top Border Height","Alto borde superior","Alt borde superior");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_alto_border_superior);
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_bottom_border_size,NULL,
+                            "Bottom Border Height","Alto borde inferior","Alt borde inferior");
+                        menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_alto_border_inferior);
+
+/*
+int =LEFT_BORDER_NO_ZOOM;
+int =RIGHT_BORDER_NO_ZOOM;
+int screen_rainbow_effect_shaderborder_alto_pantalla=192;
+int screen_rainbow_effect_shaderborder_ancho_pantalla=256;
+*/
+
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_updown,NULL,
                             "Zoom Factor up-down","Factor Zoom arr-aba","Factor Zoom dalt-ava");
