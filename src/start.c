@@ -1325,7 +1325,7 @@ printf (
         "\n"
 
         "--video-fx-enable                              Enable special video effects\n"
-        "The following settings that use a effect name, the valid names are:\n"
+        "For the following settings that use a effect name, the valid names are:\n"
         );
 
 screen_effect_print_names();
@@ -1353,10 +1353,10 @@ screen_effect_print_names();
         "--video-fx-rgb effect r g b                    Sets rgb values (0/1) for effect (Note: only RGB effect supports this parameter)\n"
 
 
-        "--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
-        "--reduce-050                                   Reduce display size to 1/2. Require --video-fx-enable\n"
-        "--reduce-025                                   Reduce display size to 1/4. Require --video-fx-enable\n"
-        "--reduce-display-no-antialias                  Disable antialias for reduction, enabled by default\n"
+        "--video-fx-reduce-075                          Reduce display size 4/3 (divide by 4, multiply by 3). Require --video-fx-enable\n"
+        "--video-fx-reduce-050                          Reduce display size to 1/2. Require --video-fx-enable\n"
+        "--video-fx-reduce-025                          Reduce display size to 1/4. Require --video-fx-enable\n"
+        "--video-fx-reduce-display-no-antialias         Disable antialias for reduction, enabled by default\n"
 
 
         "\n"
@@ -3313,22 +3313,29 @@ int parse_cmdline_options(int desde_commandline)
             }
 
 
-            else if (!strcmp(argv[puntero_parametro],"--reduce-075")) {
+            else if (!strcmp(argv[puntero_parametro],"--reduce-075") ||
+                !strcmp(argv[puntero_parametro],"--video-fx-reduce-075")
+                ) {
                 screen_reduction_factor=SCREEN_REDUCE_075;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--reduce-050")) {
+            else if (!strcmp(argv[puntero_parametro],"--reduce-050") ||
+                !strcmp(argv[puntero_parametro],"--video-fx-reduce-050")
+                ) {
                 screen_reduction_factor=SCREEN_REDUCE_050;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--reduce-025")) {
+            else if (!strcmp(argv[puntero_parametro],"--reduce-025") ||
+                !strcmp(argv[puntero_parametro],"--video-fx-reduce-025")
+                ) {
                 screen_reduction_factor=SCREEN_REDUCE_025;
             }
 
             else if (
                 //deprecated --reduce-075-no-antialias
                 !strcmp(argv[puntero_parametro],"--reduce-075-no-antialias") ||
-                !strcmp(argv[puntero_parametro],"--reduce-display-no-antialias")
+                !strcmp(argv[puntero_parametro],"--reduce-display-no-antialias") ||
+                !strcmp(argv[puntero_parametro],"--video-fx-reduce-display-no-antialias")
 
                 ) {
                 screen_reduce_antialias.v=0;
