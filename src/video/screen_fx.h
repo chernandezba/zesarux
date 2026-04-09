@@ -167,6 +167,8 @@ enum enum_screen_effect_types {
 typedef struct {
     enum enum_screen_effect_types type;
     char name[40];
+    char name_es[40];
+    char name_ca[40];
     z80_bit *follow_mouse_setting;
     int *intensity_setting;
     int default_intensity;
