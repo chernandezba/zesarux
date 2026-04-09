@@ -6,9 +6,9 @@ Agregada versión para macOS Silicon
 Agregado soporte para drag&drop en Windows y Linux (Xwindow) - ya se soportaba en Mac y SDL2
 Permitir drag&drop de archivos comprimidos
 Agregado un montón de efectos especiales para la salida de video:
-* Reducir, Temblar, Invertir Vertical, Invertir Horizontal, Rotar, Remolino, Interferencias, Mar, Ondas, Campo Magnético, Cizalla, Lente, Radar
-* Zoom Mouse, Pixelar, Desenfocar, Borde Sombreado, LED, Pérdida Hsync, Pérdida Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
-* Scanlines, Sepia, RGB, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
+- Reducir, Temblar, Invertir Vertical, Invertir Horizontal, Rotar, Remolino, Interferencias, Mar, Ondas, Campo Magnético, Cizalla, Lente, Radar
+- Zoom Mouse, Pixelar, Desenfocar, Borde Sombreado, LED, Pérdida Hsync, Pérdida Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
+- Scanlines, Sepia, RGB, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
 Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 Renombrar función de "Input File Spooling" a "Enviar Texto como Pulsaciones de Teclado"
 Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)
