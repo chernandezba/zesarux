@@ -2005,28 +2005,31 @@ void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino
 void screen_rainbow_effect_shaderborder_infsup(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
+    int alto_border_superior=TOP_BORDER_NO_ZOOM;
+    int alto_border_inferior=BOTTOM_BORDER_NO_ZOOM;
+
     z80_int *temp_bufferdestino=screen_special_effects_alloc_buffer(ancho,alto);
 
     //Copiamos trozo de pantalla hacia border
 
     screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom_updown,
-        ancho,TOP_BORDER_NO_ZOOM,
-        0,TOP_BORDER_NO_ZOOM,
+        ancho,alto_border_superior,
+        0,alto_border_superior,
         0,0
     );
 
     screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,1000,screen_rainbow_effect_shaderborder_factor_zoom_updown,
-        ancho,TOP_BORDER_NO_ZOOM,
-        0,TOP_BORDER_NO_ZOOM+192-TOP_BORDER_NO_ZOOM*screen_rainbow_effect_shaderborder_factor_zoom_updown/1000,
-        0,TOP_BORDER_NO_ZOOM+192);
+        ancho,alto_border_inferior,
+        0,alto_border_superior+192-alto_border_inferior*screen_rainbow_effect_shaderborder_factor_zoom_updown/1000,
+        0,alto_border_superior+192);
 
 
     //y blur en el borde superior
-    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,0,ancho,TOP_BORDER_NO_ZOOM,
+    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,0,ancho,alto_border_superior,
         ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_updown,0);
 
     //y en el borde inferior
-    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,TOP_BORDER_NO_ZOOM+192,ancho,TOP_BORDER_NO_ZOOM,
+    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,0,alto_border_superior+192,ancho,alto_border_inferior,
         ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_updown,0);
 
     free(temp_bufferdestino);
