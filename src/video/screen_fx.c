@@ -1995,8 +1995,8 @@ void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino
 
     screen_rainbow_effect_shaderborder_copy(origen,temp_bufferdestino,ancho,alto,screen_rainbow_effect_shaderborder_factor_zoom_leftright,1000,
         ancho_borde_derecho,screen_rainbow_effect_shaderborder_alto_pantalla,
-        ancho_borde_izquierdo+(256-ancho_borde_derecho*screen_rainbow_effect_shaderborder_factor_zoom_leftright/1000),alto_border_superior, //origen
-        ancho_borde_izquierdo+256,alto_border_superior  //destino
+        ancho_borde_izquierdo+(screen_rainbow_effect_shaderborder_ancho_pantalla-ancho_borde_derecho*screen_rainbow_effect_shaderborder_factor_zoom_leftright/1000),alto_border_superior, //origen
+        ancho_borde_izquierdo+screen_rainbow_effect_shaderborder_ancho_pantalla,alto_border_superior  //destino
     );
 
 
@@ -2005,7 +2005,7 @@ void screen_rainbow_effect_shaderborder_lateral(z80_int *origen,z80_int *destino
         ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_leftright,0);
 
     //y en el derecho
-    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,ancho_borde_izquierdo+256,alto_border_superior,ancho_borde_derecho,screen_rainbow_effect_shaderborder_alto_pantalla,
+    screen_rainbow_effect_blur_zone(temp_bufferdestino,destino,ancho_borde_izquierdo+screen_rainbow_effect_shaderborder_ancho_pantalla,alto_border_superior,ancho_borde_derecho,screen_rainbow_effect_shaderborder_alto_pantalla,
         ancho,alto,screen_rainbow_effect_shaderborder_blur_intensity_leftright,0);
 
     free(temp_bufferdestino);
