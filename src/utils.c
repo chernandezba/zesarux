@@ -3955,6 +3955,17 @@ int util_write_configfile(void)
 
     ADD_STRING_CONFIG,"--video-fx-rgb RGB %d %d %d",screen_rainbow_effect_rgb_red.v,screen_rainbow_effect_rgb_green.v,screen_rainbow_effect_rgb_blue.v);
 
+
+    ADD_STRING_CONFIG,"--video-fx-sizes \"Shader Border\" %d %d %d %d %d %d",
+        screen_rainbow_effect_shaderborder_alto_border_superior,
+        screen_rainbow_effect_shaderborder_alto_border_inferior,
+        screen_rainbow_effect_shaderborder_ancho_borde_izquierdo,
+        screen_rainbow_effect_shaderborder_ancho_borde_derecho,
+        screen_rainbow_effect_shaderborder_alto_pantalla,
+        screen_rainbow_effect_shaderborder_ancho_pantalla);
+
+
+
     if (screen_special_effects_fisheye_follow_music_channel==0) {
         ADD_STRING_CONFIG,"--video-fx-follow-channel Lens 0");
     }

@@ -1349,6 +1349,7 @@ screen_effect_print_names();
         "--video-fx-updownzoom effect zoom              Sets zoom level (multipled by 1000) on border up and down (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-leftrightblur effect intensity      Sets blur intensity on border left and right (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-updownblur effect intensity         Sets blur intensity on border up and down (Note: only Shader Border effect supports this parameter)\n"
+        "--video-fx-sizes effect tb bb lb rb dh dw      Sets sizes for effect: Top Border, Bottom Border, Left Border, Right Border, Display Height, Display Width (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-rgb effect r g b                    Sets rgb values (0/1) for effect (Note: only RGB effect supports this parameter)\n"
 
 
@@ -3057,6 +3058,51 @@ int parse_cmdline_options(int desde_commandline)
                     screen_rainbow_effect_rgb_red.v=red;
                     screen_rainbow_effect_rgb_green.v=green;
                     screen_rainbow_effect_rgb_blue.v=blue;
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-sizes")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int tb=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                int bb=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                int lb=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                int rb=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                int dh=parse_string_to_number(argv[puntero_parametro]);
+
+                siguiente_parametro_argumento();
+                int dw=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Shader Border")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for sizes setting: %s",effect);
+                }
+                else {
+                    if (tb<1 || bb<1 || lb<1 || rb<1 || dh<1 || dw<1 ||
+                        tb>100 || bb>100 || lb>100 || rb>100 || dh>1000 || dw>1000) {
+                            debug_printf(VERBOSE_ERR,"Sizes for effect %s out of range",effect);
+                    }
+
+                    else {
+                        screen_rainbow_effect_shaderborder_alto_border_superior=tb;
+                        screen_rainbow_effect_shaderborder_alto_border_inferior=bb;
+                        screen_rainbow_effect_shaderborder_ancho_borde_izquierdo=lb;
+                        screen_rainbow_effect_shaderborder_ancho_borde_derecho=rb;
+                        screen_rainbow_effect_shaderborder_alto_pantalla=dh;
+                        screen_rainbow_effect_shaderborder_ancho_pantalla=dw;
+                    }
                 }
 
             }
