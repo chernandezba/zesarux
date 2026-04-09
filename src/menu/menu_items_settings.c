@@ -1661,71 +1661,63 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
 
     //Seleccionar una opcion y salir
 
-    //do {
 
 
-        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_type,NULL,
-        "Change Type","Cambiar Tipo","Canviar Tipus");
+    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_type,NULL,
+    "Change Type","Cambiar Tipo","Canviar Tipus");
+    menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+
+
+    if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
+        "Enable","Activar","Activar");
+    }
+    else {
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
+        "Disable","Desactivar","Desactivar");
+    }
+    menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+
+    if (efecto_seleccionado>0) {
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_up,NULL,
+        "Move Up","Mover Arriba","Moure Amunt");
+        menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_arriba());
         menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+    }
 
-
-        if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
-            "Enable","Activar","Activar");
-        }
-        else {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_enable,NULL,
-            "Disable","Desactivar","Desactivar");
-        }
+    if (efecto_seleccionado<MAX_SCREEN_LIST_EFFECTS-1) {
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_down,NULL,
+        "Move Down","Mover Abajo","Moure Avall");
+        menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_abajo());
         menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+    }
 
-        if (efecto_seleccionado>0) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_up,NULL,
-            "Move Up","Mover Arriba","Moure Amunt");
-            menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_arriba());
-            menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+    menu_add_item_menu_separator(array_menu_common);
+
+    menu_add_ESC_item(array_menu_common);
+
+
+
+    retorno_menu=menu_dibuja_menu_dialogo(&main_window_special_effects_change,&item_seleccionado,array_menu_common,
+        "Change","Cambia","Canvia" );
+
+
+    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+        //llamamos por valor de funcion
+        if (item_seleccionado.menu_funcion!=NULL) {
+            //printf ("actuamos por funcion\n");
+            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            //Si este menu lo definimos como un menu tabulado,
+            //si hay alguna accion disparada en la que se haya pulsado ESC,
+            //no queremos que cierre este menu
+            //salir_todos_menus=0;
+
         }
-
-        if (efecto_seleccionado<MAX_SCREEN_LIST_EFFECTS-1) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_down,NULL,
-            "Move Down","Mover Abajo","Moure Avall");
-            menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_abajo());
-            menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
-        }
-
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_ESC_item(array_menu_common);
-
-
-
-        /*menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Settings-> Main Window-> FX-> Change",
-            "Menú Principal-> Opciones-> Ventana Principal-> FX-> Cambia",
-            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia");*/
-
-        retorno_menu=menu_dibuja_menu_dialogo(&main_window_special_effects_change,&item_seleccionado,array_menu_common,
-            "Change","Cambia","Canvia" );
-
-
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                //Si este menu lo definimos como un menu tabulado,
-                //si hay alguna accion disparada en la que se haya pulsado ESC,
-                //no queremos que cierre este menu
-                //salir_todos_menus=0;
-
-            }
-        }
-
-    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    }
 
 
 }
@@ -1874,6 +1866,8 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
             "Enable FX","Activar FX","Activar FX");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_enabled.v ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_common,"Effects are applied in order, starting from top to bottom");
+        menu_add_item_menu_ayuda(array_menu_common,"Effects are applied in order, starting from top to bottom");
         menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_enabled);
 
         menu_add_item_menu_separator(array_menu_common);
@@ -1893,6 +1887,8 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_main_window_special_effects_change,NULL,screen_effect_get_name_translation(type));
                 menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",
                     (enabled ? 'X' : ' ' ));
+                menu_add_item_menu_tooltip(array_menu_common,"Effects are applied in order, starting from top to bottom");
+                menu_add_item_menu_ayuda(array_menu_common,"Effects are applied in order, starting from top to bottom");
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                 if (menu_main_window_special_effects_mover_cursor && menu_main_window_special_effects_mover_cursor_linea==i) {
