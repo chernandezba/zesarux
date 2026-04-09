@@ -2028,11 +2028,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     if (screen_rainbow_effect_shaderborder_leftright_enable.v) {
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_left_border_size,NULL,
-                            "Left Border width","Ancho borde izquierdo","Ample borde esquerre");
+                            "Left Border width","Ancho borde izquierdo","Ample vora esquerra");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_ancho_borde_izquierdo);
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_right_border_size,NULL,
-                            "Right Border width","Ancho borde derecho","Ample borde dreta");
+                            "Right Border width","Ancho borde derecho","Ample vora dreta");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_ancho_borde_derecho);
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_leftright,NULL,
@@ -2057,11 +2057,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_top_border_size,NULL,
-                            "Top Border Height","Alto borde superior","Alt borde superior");
+                            "Top Border Height","Alto borde superior","Alt vora superior");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_alto_border_superior);
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_bottom_border_size,NULL,
-                            "Bottom Border Height","Alto borde inferior","Alt borde inferior");
+                            "Bottom Border Height","Alto borde inferior","Alt vora inferior");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_alto_border_inferior);
 
 
