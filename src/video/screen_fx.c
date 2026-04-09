@@ -218,7 +218,7 @@ void screen_effect_print_names(void)
     int i;
     for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
         printf("%s",screen_effect_type_list[i].name);
-        if (i!=MAX_SCREEN_EFFECTS-1) printf(",");
+        if (i!=MAX_SCREEN_EFFECTS-1) printf(", ");
     }
 
 }

@@ -130,9 +130,6 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 -efectos especiales
 *revisar liberar memoria
-*entradas en changelog
-*shader border en Next no se ve bien
-*shader border sin border y/o full screen sin border, da segfault
 
 -nagravision audio
 *completar maquinas
