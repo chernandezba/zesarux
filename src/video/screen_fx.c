@@ -109,7 +109,7 @@ z80_bit screen_special_effects_enabled={0};
 
 
 screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
-    {SCREEN_EFFECT_TYPE_NONE,"None","Ninguno","Cap",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_NONE,"None","Nada","Res",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_REDUCE,"Reduce","Reducir","Reduir",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_UNSTEADY,"Unsteady","Temblar","Tremolar",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_FLIP_VERTICAL,"Flip Vertical","Invertir Vertical","Invertir Vertical",NULL,NULL,0,0,0},

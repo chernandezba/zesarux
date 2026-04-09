@@ -1615,58 +1615,38 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
 
     //Seleccionar una opcion y salir
 
-    //do {
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,"");
 
-        int i;
-            for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
+    menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,"");
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
-                    NULL,NULL,screen_effect_get_name_translation(SCREEN_EFFECT_TYPE_NONE+i));
+    int i;
+    for (i=0;i<MAX_SCREEN_EFFECTS;i++) {
 
-                menu_add_item_menu_valor_opcion(array_menu_common,i);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
+            NULL,NULL,screen_effect_get_name_translation(SCREEN_EFFECT_TYPE_NONE+i));
 
-                if (screen_effect_applied_list[indice_efecto_seleccionado].type==(enum enum_screen_effect_types)SCREEN_EFFECT_TYPE_NONE+i) opcion_seleccionada=i;
-            }
+        menu_add_item_menu_valor_opcion(array_menu_common,i);
 
-
+        if (screen_effect_applied_list[indice_efecto_seleccionado].type==(enum enum_screen_effect_types)SCREEN_EFFECT_TYPE_NONE+i) opcion_seleccionada=i;
+    }
 
 
-        menu_add_item_menu_separator(array_menu_common);
+    menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_ESC_item(array_menu_common);
-
-
-
-        /*menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Settings-> Main Window-> FX-> Change-> Change type",
-            "Menú Principal-> Opciones-> Ventana Principal-> FX-> Cambia-> Cambia Tipo",
-            "Menú Principal-> Opcions-> Finestra Principal-> FX-> Canvia Tipus");*/
-
-        retorno_menu=menu_dibuja_menu_dialogo(&opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "Change type","Cambia tipo","Canvia tipus" );
+    menu_add_ESC_item(array_menu_common);
 
 
+    retorno_menu=menu_dibuja_menu_dialogo(&opcion_seleccionada,&item_seleccionado,array_menu_common,
+        "Change type","Cambia tipo","Canvia tipus" );
 
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            //if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                //item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                //printf("Linea seleccionada %d cambiar a %d\n",efecto_seleccionado,SCREEN_EFFECT_TYPE_NONE+item_seleccionado.valor_opcion);
 
-                screen_effect_applied_list[indice_efecto_seleccionado].type=SCREEN_EFFECT_TYPE_NONE+item_seleccionado.valor_opcion;
+    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+        screen_effect_applied_list[indice_efecto_seleccionado].type=SCREEN_EFFECT_TYPE_NONE+item_seleccionado.valor_opcion;
 
-                //Si este menu lo definimos como un menu tabulado,
-                //si hay alguna accion disparada en la que se haya pulsado ESC,
-                //no queremos que cierre este menu
-                //salir_todos_menus=0;
-
-            //}
+        //Y activarlo siempre que no sea efecto none. Esto agiliza el proceso y quita un paso al usuario: si cambia el tipo asumo que también quiere activarlo
+        if (screen_effect_applied_list[indice_efecto_seleccionado].type!=SCREEN_EFFECT_TYPE_NONE) {
+            screen_effect_applied_list[indice_efecto_seleccionado].enabled=1;
         }
-
-    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
+    }
 
 }
 
