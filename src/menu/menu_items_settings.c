@@ -808,7 +808,9 @@ void menu_interface_fullscreen_disable(void)
         if (!screen_ext_desktop_enabled) {
             menu_ext_desk_settings_enable(0);
 
-            if (zxdesktop_restore_windows_after_full_screen) menu_interface_fullscreen_restore_open_windows();
+            if (zxdesktop_restore_windows_after_full_screen) {
+                menu_interface_fullscreen_restore_open_windows();
+            }
 
         }
     }
@@ -2238,6 +2240,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial_format(&array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
         menu_add_item_menu_shortcut(array_menu_window_settings,'f');
+        //necesario para que al salir de fullscreen se puedan restaurar correctamente las ventanas
+        menu_add_item_menu_se_cerrara(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,menu_interface_border_cond,
             "No ZX Desktop on Full Screen","No ZX Desktop en pantalla completa","No ZX Desktop a pantalla completa");
