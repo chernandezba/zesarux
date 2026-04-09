@@ -1870,14 +1870,16 @@ void menu_interface_special_effects_shaderborder_right_border_size(MENU_ITEM_PAR
     menu_ventana_scanf_numero_enhanced("Right Border Width",&screen_rainbow_effect_shaderborder_ancho_borde_derecho,5,+1,1,100,0);
 }
 
-/*
+void menu_interface_special_effects_shaderborder_display_height(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Display Height",&screen_rainbow_effect_shaderborder_alto_pantalla,5,+1,1,1000,0);
+}
 
-int =BOTTOM_BORDER_NO_ZOOM;
-int =LEFT_BORDER_NO_ZOOM;
-int =RIGHT_BORDER_NO_ZOOM;
-int screen_rainbow_effect_shaderborder_alto_pantalla=192;
-int screen_rainbow_effect_shaderborder_ancho_pantalla=256;
-*/
+void menu_interface_special_effects_shaderborder_display_width(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Display Width",&screen_rainbow_effect_shaderborder_ancho_pantalla,5,+1,1,1000,0);
+}
+
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
@@ -2026,11 +2028,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     if (screen_rainbow_effect_shaderborder_leftright_enable.v) {
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_left_border_size,NULL,
-                            "Left Border width","Ancho borde izquierdo","Alt borde esquerre");
+                            "Left Border width","Ancho borde izquierdo","Ample borde esquerre");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_ancho_borde_izquierdo);
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_right_border_size,NULL,
-                            "Right Border width","Ancho borde derecho","Alt borde dreta");
+                            "Right Border width","Ancho borde derecho","Ample borde dreta");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_ancho_borde_derecho);
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_leftright,NULL,
@@ -2062,13 +2064,6 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                             "Bottom Border Height","Alto borde inferior","Alt borde inferior");
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_alto_border_inferior);
 
-/*
-int =LEFT_BORDER_NO_ZOOM;
-int =RIGHT_BORDER_NO_ZOOM;
-int screen_rainbow_effect_shaderborder_alto_pantalla=192;
-int screen_rainbow_effect_shaderborder_ancho_pantalla=256;
-*/
-
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_updown,NULL,
                             "Zoom Factor up-down","Factor Zoom arr-aba","Factor Zoom dalt-ava");
@@ -2084,6 +2079,15 @@ int screen_rainbow_effect_shaderborder_ancho_pantalla=256;
                         menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_blur_intensity_updown);
 
                     }
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_display_height,NULL,
+                        "Display height","Alto pantalla","Alt pantalla");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_alto_pantalla);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_display_width,NULL,
+                        "Display width","Ample pantalla","Ample pantalla");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_shaderborder_ancho_pantalla);
+
 
                 }
 
