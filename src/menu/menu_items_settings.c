@@ -1851,6 +1851,11 @@ void menu_interface_special_effects_attraction_atrac_repulse(MENU_ITEM_PARAMETER
     screen_rainbow_effect_attraction_atrac_repulse *=-1;
 }
 
+void menu_interface_special_effects_shaderborder_top_border_size(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Top Border Size",&screen_rainbow_effect_shaderborder_alto_border_superior,5,+1,0,100,0);
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2015,6 +2020,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_shaderborder_updown_enable);
 
                     if (screen_rainbow_effect_shaderborder_updown_enable.v) {
+
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_top_border_size,NULL,
+                            "Top Border Height","Alto borde superior","Alt borde superior");
+                        menu_add_item_menu_prefijo_format(array_menu_common,"  [%d] ",screen_rainbow_effect_shaderborder_alto_border_superior);
 
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_shaderborder_zoom_updown,NULL,
                             "Zoom Factor up-down","Factor Zoom arr-aba","Factor Zoom dalt-ava");
