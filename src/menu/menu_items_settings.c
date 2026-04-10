@@ -1852,6 +1852,12 @@ void menu_interface_special_effects_shaderborder_display_width(MENU_ITEM_PARAMET
     menu_ventana_scanf_numero_enhanced("Display Width",&screen_rainbow_effect_shaderborder_ancho_pantalla,5,+1,1,1000,0);
 }
 
+void menu_interface_special_effects_zoom_factor(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_zoom_factor++;
+    if (screen_rainbow_effect_zoom_factor>32) screen_rainbow_effect_zoom_factor=SCREEN_FX_ZOOM_DEFAULT_FACTOR;
+}
+
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
@@ -1951,6 +1957,12 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                         "Type","Tipo","Força");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",(screen_rainbow_effect_attraction_atrac_repulse==+1 ? "Attraction" : "Repulsion"));
 
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_ZOOM && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_zoom_factor,NULL,
+                        "Intensity","Intensidad","Intensitat");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_zoom_factor);
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_LENS && enabled) {
