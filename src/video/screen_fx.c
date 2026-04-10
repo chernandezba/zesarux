@@ -124,6 +124,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_LENS,"Lens","Lente","Lent",&screen_special_effects_fisheye_follow_mouse,&screen_rainbow_effect_fisheye_factor_k,SCREEN_FX_LENS_DEFAULT_INTENSITY,-600,600},
     {SCREEN_EFFECT_TYPE_RADAR,"Radar","Radar","Radar",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_ZOOM_MOUSE,"Zoom Mouse","Zoom Mouse","Zoom Mouse",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_ZOOM,"Zoom","Zoom","Zoom",NULL,&screen_rainbow_effect_zoom_factor,SCREEN_FX_ZOOM_DEFAULT_FACTOR,2,32},
     {SCREEN_EFFECT_TYPE_PIXELATE,"Pixelate","Pixelar","Pixelar",&screen_rainbow_effect_pixelate_follow_mouse,&screen_rainbow_effect_pixelate_size,SCREEN_FX_PIXELATE_DEFAULT_INTENSITY,2,SCREEN_EFFECT_PIXELATE_MAX_SIZE},
     {SCREEN_EFFECT_TYPE_BLUR,"Blur","Desenfocar","Desenfocar",&screen_rainbow_effect_blur_follow_mouse,&screen_rainbow_effect_blur_intensity,SCREEN_FX_BLUR_DEFAULT_INTENSITY,1,16},
     {SCREEN_EFFECT_TYPE_SHADERBORDER,"Shader Border","Borde Sombreado","Vora Ombrejat",NULL,NULL,0,0,0},
@@ -1297,6 +1298,32 @@ void screen_rainbow_effect_hsync_lost(z80_int *origen,z80_int *destino,int ancho
 
     screen_rainbow_effect_hsync_lost_x_inicial++;
     if (screen_rainbow_effect_hsync_lost_x_inicial==ancho) screen_rainbow_effect_hsync_lost_x_inicial=0;
+
+
+}
+
+
+int screen_rainbow_effect_zoom_factor=SCREEN_FX_ZOOM_DEFAULT_FACTOR;
+
+void screen_rainbow_effect_zoom(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+            int x_orig=x/screen_rainbow_effect_zoom_factor;
+            int y_orig=y/screen_rainbow_effect_zoom_factor;
+
+            int color=origen[y_orig*ancho+x_orig];
+
+            int offset_destino=y*ancho+x;
+
+            destino[offset_destino]=color;
+
+        }
+
+    }
 
 
 }
@@ -2895,6 +2922,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_INTERFERENCES:
                     screen_rainbow_effect_interferences(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_ZOOM:
+                    screen_rainbow_effect_zoom(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_ZOOM_MOUSE:

@@ -52,12 +52,13 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 #define SCREEN_FX_ROTATE_DEFAULT_ANGLE 45
 #define SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET 1
 #define SCREEN_FX_SCROLL_VERTICAL_DEFAULT_OFFSET 1
+#define SCREEN_FX_ZOOM_DEFAULT_FACTOR 2
 
 extern void screen_special_effects_free_buffers(void);
 extern z80_int *screen_special_effects_alloc_buffer(int ancho,int alto);
 extern z80_bit screen_special_effects_enabled;
 
-
+extern int screen_rainbow_effect_zoom_factor;
 
 extern int screen_rainbow_effect_fisheye_factor_k;
 extern void screen_rainbow_effect_fisheye_change_factor(void);
@@ -122,7 +123,7 @@ extern void init_screen_effects_table(void);
 #define MAX_SCREEN_LIST_EFFECTS 50
 
 //Cantidad de efectos diferentes
-#define MAX_SCREEN_EFFECTS 38
+#define MAX_SCREEN_EFFECTS 39
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_NONE, //Este siempre el primero en este enum
@@ -143,6 +144,7 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_SHEAR,
     SCREEN_EFFECT_TYPE_LENS,
     SCREEN_EFFECT_TYPE_RADAR,
+    SCREEN_EFFECT_TYPE_ZOOM,
     SCREEN_EFFECT_TYPE_ZOOM_MOUSE,
     SCREEN_EFFECT_TYPE_PIXELATE,
     SCREEN_EFFECT_TYPE_BLUR,
