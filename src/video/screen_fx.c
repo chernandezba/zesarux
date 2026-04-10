@@ -2402,7 +2402,8 @@ void screen_rainbow_effect_persistence(z80_int *origen,z80_int *destino,int anch
 
 }
 
-void screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int alto)
+//Viejo efecto
+void old_screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
@@ -2424,7 +2425,8 @@ void screen_rainbow_effect_led(z80_int *origen,z80_int *destino,int ancho,int al
 
 }
 
-void screen_rainbow_effect_led_rgb(z80_int *origen,z80_int *destino,int ancho,int alto)
+//Parametro rgb: si se separa el pixel en los 3 componentes o no
+void screen_rainbow_effect_led_rgb(z80_int *origen,z80_int *destino,int ancho,int alto,int si_rgb)
 {
 
     int x,y;
@@ -2435,6 +2437,7 @@ void screen_rainbow_effect_led_rgb(z80_int *origen,z80_int *destino,int ancho,in
             int mx=(x%2);
             int my=(y%2);
             if (mx==0 && my==0) {
+                //Promedio de los 4 pixeles en uno
                 int color_1=origen[y*ancho + x];
                 unsigned int color32_1=spectrum_colortable[color_1];
 
@@ -2447,49 +2450,55 @@ void screen_rainbow_effect_led_rgb(z80_int *origen,z80_int *destino,int ancho,in
                 int color_4=origen[(y+1)*ancho + x+1];
                 unsigned int color32_4=spectrum_colortable[color_4];
 
-            int red_1=(color32_1 >> 16) & 0xFF;
-            int green_1=(color32_1 >> 8) & 0xFF;
-            int blue_1=(color32_1   ) & 0xFF;
+                int red_1=(color32_1 >> 16) & 0xFF;
+                int green_1=(color32_1 >> 8) & 0xFF;
+                int blue_1=(color32_1   ) & 0xFF;
 
-            int red_2=(color32_2 >> 16) & 0xFF;
-            int green_2=(color32_2 >> 8) & 0xFF;
-            int blue_2=(color32_2   ) & 0xFF;
+                int red_2=(color32_2 >> 16) & 0xFF;
+                int green_2=(color32_2 >> 8) & 0xFF;
+                int blue_2=(color32_2   ) & 0xFF;
 
-            int red_3=(color32_3 >> 16) & 0xFF;
-            int green_3=(color32_3 >> 8) & 0xFF;
-            int blue_3=(color32_3   ) & 0xFF;
+                int red_3=(color32_3 >> 16) & 0xFF;
+                int green_3=(color32_3 >> 8) & 0xFF;
+                int blue_3=(color32_3   ) & 0xFF;
 
-            int red_4=(color32_4 >> 16) & 0xFF;
-            int green_4=(color32_4 >> 8) & 0xFF;
-            int blue_4=(color32_4   ) & 0xFF;
+                int red_4=(color32_4 >> 16) & 0xFF;
+                int green_4=(color32_4 >> 8) & 0xFF;
+                int blue_4=(color32_4   ) & 0xFF;
 
-            int red=(red_1+red_2+red_3+red_4)/4;
-            int green=(green_1+green_2+green_3+green_4)/4;
-            int blue=(blue_1+blue_2+blue_3+blue_4)/4;
+                int red=(red_1+red_2+red_3+red_4)/4;
+                int green=(green_1+green_2+green_3+green_4)/4;
+                int blue=(blue_1+blue_2+blue_3+blue_4)/4;
 
-            red=(red>>3) & 0x1F;
-            green=(green>>3) & 0x1F;
-            blue=(blue>>3) & 0x1F;
+                red=(red>>3) & 0x1F;
+                green=(green>>3) & 0x1F;
+                blue=(blue>>3) & 0x1F;
 
-            int rgb15;
-            unsigned int color;
-
-            //Y escribo los 3 pixeles por separado (rojo, verde y azul)
-
-            //rgb15=(red<<10) | (green<<5) | blue;
-            rgb15=(red<<10);
-            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
-            destino[y*ancho + x] = color;
-
-            rgb15=(green<<5);
-            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
-            destino[y*ancho + x+1] = color;
-
-            rgb15=blue;
-            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
-            destino[(y+1)*ancho + x] = color;
+                int rgb15;
+                unsigned int color;
 
 
+                if (si_rgb) {
+                    //Y escribo los 3 pixeles por separado (rojo, verde y azul)
+                    rgb15=(red<<10);
+                    color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+                    destino[y*ancho + x] = color;
+
+                    rgb15=(green<<5);
+                    color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+                    destino[y*ancho + x+1] = color;
+
+                    rgb15=blue;
+                    color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+                    destino[(y+1)*ancho + x] = color;
+                }
+
+
+                else {
+                    rgb15=(red<<10) | (green<<5) | blue;
+                    color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+                    destino[y*ancho + x] = color;
+                }
             }
 
         }
@@ -2953,11 +2962,11 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                 break;
 
                 case SCREEN_EFFECT_TYPE_LED:
-                    screen_rainbow_effect_led(origen,destino,ancho,alto);
+                    screen_rainbow_effect_led_rgb(origen,destino,ancho,alto,0);
                 break;
 
                 case SCREEN_EFFECT_TYPE_LED_RGB:
-                    screen_rainbow_effect_led_rgb(origen,destino,ancho,alto);
+                    screen_rainbow_effect_led_rgb(origen,destino,ancho,alto,1);
                 break;
 
                 case SCREEN_EFFECT_TYPE_HSYNC_LOST:
