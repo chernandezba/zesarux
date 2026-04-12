@@ -1858,6 +1858,10 @@ void menu_interface_special_effects_zoom_factor(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_zoom_factor>SCREEN_FX_ZOOM_MAX_FACTOR) screen_rainbow_effect_zoom_factor=SCREEN_FX_ZOOM_DEFAULT_FACTOR;
 }
 
+void menu_interface_special_effects_mix_from_buffer_percentaje(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Layer percentaje",&screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer,3,+1,1,99,0);
+}
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
@@ -1963,6 +1967,12 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_zoom_factor,NULL,
                         "Intensity","Intensidad","Intensitat");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%d.%d] ",screen_rainbow_effect_zoom_factor/10,screen_rainbow_effect_zoom_factor%10);
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_mix_from_buffer_percentaje,NULL,
+                        "Buffer Layer percentaje","Porcentaje capa buffer","Percentatge capa buffer");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer);
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_LENS && enabled) {

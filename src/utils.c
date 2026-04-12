@@ -3919,6 +3919,9 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-angle Rotate %d",screen_rainbow_effect_rotate_grados);
     }
 
+    if (screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer!=SCREEN_FX_MIX_FROM_BUFFER_DEFAULT_PERCENTAGE) {
+        ADD_STRING_CONFIG,"--video-fx-percentage \"Mix from buffer\" %d",screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer);
+    }
 
     if (screen_rainbow_effect_scroll_horizontal_offset!=SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET) {
         ADD_STRING_CONFIG,"--video-fx-offset \"Scroll Horizontal\" %d",screen_rainbow_effect_scroll_horizontal_offset);

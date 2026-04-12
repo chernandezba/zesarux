@@ -1130,7 +1130,7 @@ void screen_rainbow_effect_copy_to_buffer(z80_int *origen,z80_int *destino,int a
 }
 
 
-int screen_rainbow_effect_mix_from_buffer_percentaje_buffer_layer=10;
+int screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=SCREEN_FX_MIX_FROM_BUFFER_DEFAULT_PERCENTAGE;
 void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
@@ -1159,7 +1159,7 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
             int blue2=(color2_32   ) & 0xFF;
 
             //aplicar porcentajes de capas
-            int p1=screen_rainbow_effect_mix_from_buffer_percentaje_buffer_layer;
+            int p1=screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer;
             int p2=100-p1;
 
             int red=((red1*p1)/100+(red2*p2)/100);
