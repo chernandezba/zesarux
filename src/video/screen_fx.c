@@ -149,7 +149,8 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike","Ordenar Parecidos","Ordenar Semblants",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_LOGOREBOUND,"Logo Rebound","Rebote Logo","Rebotar Logo",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL,"Restore Original","Restaurar Original","Restaurar Original",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_COPY_TO_BUFFER,"Copy to buffer","Copiar a buffer","Copiar a buffer",NULL,NULL,0,0,0}
+    {SCREEN_EFFECT_TYPE_COPY_TO_BUFFER,"Copy to buffer","Copiar a buffer","Copiar a buffer",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER,"Mix from buffer","Mezclar desde buffer","Mesclar desde buffer",NULL,NULL,0,0,0}
 };
 
 char *screen_effect_name_unknown="Unknown";
@@ -1125,6 +1126,54 @@ void screen_rainbow_effect_copy_to_buffer(z80_int *origen,z80_int *destino,int a
     }
 
     memcpy(screen_rainbow_effect_copy_to_buffer_buffer,origen,tamanyo);
+
+}
+
+void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    if (screen_rainbow_effect_copy_to_buffer_buffer==NULL) return;
+
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int offset=y*ancho+x;
+
+            int color1=screen_rainbow_effect_copy_to_buffer_buffer[offset];
+            int color2=origen[offset];
+
+
+            unsigned int color1_32=spectrum_colortable[color1];
+            int red1=(color1_32 >> 16) & 0xFF;
+            int green1=(color1_32 >> 8) & 0xFF;
+            int blue1=(color1_32   ) & 0xFF;
+
+            unsigned int color2_32=spectrum_colortable[color2];
+            int red2=(color2_32 >> 16) & 0xFF;
+            int green2=(color2_32 >> 8) & 0xFF;
+            int blue2=(color2_32   ) & 0xFF;
+
+            int red=(red1+red2)/2;
+            int green=(green1+green2)/2;
+            int blue=(blue1+blue2)/2;
+
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+            //Usamos tabla de TSCONF_INDEX_FIRST_COLOR que tiene 5 bits por componente
+            int rgb15=(red<<10) | (green<<5) | blue;
+            int color_final=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[offset]=color_final;
+
+        }
+
+    }
 
 }
 
@@ -2997,6 +3046,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_COPY_TO_BUFFER:
                     screen_rainbow_effect_copy_to_buffer(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER:
+                    screen_rainbow_effect_mix_from_buffer(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_RGB:
