@@ -138,3 +138,17 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 ...
 -Nagravision (also Nagra audio)
 etc...
+
+
+
+-Imagen estereoscopica. Tanto anaglifo (azul + rojo) como imagen separada en dos ventanas para dos ojos
+->esto ya se puede hacer combinando los efectos:
+
+--video-fx-set "Scroll Horizontal" 0 1
+--video-fx-set "RGB" 1 1
+--video-fx-set "Copy to buffer" 2 1
+--video-fx-set "Restore Original" 3 1
+--video-fx-set "Red" 4 1
+--video-fx-set "Mix from buffer" 5 1
+--video-fx-offset "Scroll Horizontal" 20
+--video-fx-rgb RGB 0 0 1
