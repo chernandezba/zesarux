@@ -148,7 +148,8 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision","Decodificar Nagravision","Decodificar Nagravision",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike","Ordenar Parecidos","Ordenar Semblants",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_LOGOREBOUND,"Logo Rebound","Rebote Logo","Rebotar Logo",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL,"Restore Original","Restaurar Original","Restaurar Original",NULL,NULL,0,0,0}
+    {SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL,"Restore Original","Restaurar Original","Restaurar Original",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_COPY_TO_BUFFER,"Copy to buffer","Copiar a buffer","Copiar a buffer",NULL,NULL,0,0,0}
 };
 
 char *screen_effect_name_unknown="Unknown";
@@ -1105,6 +1106,25 @@ void screen_rainbow_effect_restore_original(z80_int *inicial_origen,z80_int *des
     int tamanyo=ancho*alto*2;
     memcpy(destino,inicial_origen,tamanyo);
 
+
+}
+
+
+z80_int *screen_rainbow_effect_copy_to_buffer_buffer=NULL;
+
+void screen_rainbow_effect_copy_to_buffer(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    //Y lo guardamos tambien en otro buffer
+    if (screen_rainbow_effect_copy_to_buffer_buffer==NULL) {
+        screen_rainbow_effect_copy_to_buffer_buffer=util_malloc(tamanyo,"Can not allocate copy to buffer");
+    }
+
+    memcpy(screen_rainbow_effect_copy_to_buffer_buffer,origen,tamanyo);
 
 }
 
@@ -2881,6 +2901,13 @@ void screen_rainbow_effect_sea(z80_int *origen,z80_int *destino,int ancho,int al
 
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 {
+
+    //Liberamos siempre este buffer al inicio de los efectos
+    if (screen_rainbow_effect_copy_to_buffer_buffer!=NULL) {
+        free(screen_rainbow_effect_copy_to_buffer_buffer);
+        screen_rainbow_effect_copy_to_buffer_buffer=NULL;
+    }
+
     z80_int *inicial_origen=origen;
 
     int aplicado_algo=0;
@@ -2964,7 +2991,12 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
                 break;
 
                 case SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL:
+                    //Ojo que aqui le pasamos el buffer inicial
                     screen_rainbow_effect_restore_original(inicial_origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_COPY_TO_BUFFER:
+                    screen_rainbow_effect_copy_to_buffer(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_RGB:

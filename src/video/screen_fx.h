@@ -124,7 +124,7 @@ extern void init_screen_effects_table(void);
 #define MAX_SCREEN_LIST_EFFECTS 60
 
 //Cantidad de efectos diferentes
-#define MAX_SCREEN_EFFECTS 40
+#define MAX_SCREEN_EFFECTS 41
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_NONE, //Este siempre el primero en este enum
@@ -166,7 +166,8 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_DECODENAGRAVISION,
     SCREEN_EFFECT_TYPE_SORTALIKE,
     SCREEN_EFFECT_TYPE_LOGOREBOUND,
-    SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL
+    SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL,
+    SCREEN_EFFECT_TYPE_COPY_TO_BUFFER
 };
 
 typedef struct {
