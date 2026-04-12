@@ -52,7 +52,8 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 #define SCREEN_FX_ROTATE_DEFAULT_ANGLE 45
 #define SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET 1
 #define SCREEN_FX_SCROLL_VERTICAL_DEFAULT_OFFSET 1
-#define SCREEN_FX_ZOOM_DEFAULT_FACTOR 2
+#define SCREEN_FX_ZOOM_DEFAULT_FACTOR 12
+#define SCREEN_FX_ZOOM_MAX_FACTOR 80
 
 extern void screen_special_effects_free_buffers(void);
 extern z80_int *screen_special_effects_alloc_buffer(int ancho,int alto);
