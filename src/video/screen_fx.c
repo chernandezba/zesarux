@@ -147,7 +147,8 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_RANDOMLINES,"Random Lines","Lineas Aleatorias","Línies Aleatòries",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_DECODENAGRAVISION,"Decode Nagravision","Decodificar Nagravision","Decodificar Nagravision",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SORTALIKE,"Sortalike","Ordenar Parecidos","Ordenar Semblants",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_LOGOREBOUND,"Logo Rebound","Rebote Logo","Rebotar Logo",NULL,NULL,0,0,0}
+    {SCREEN_EFFECT_TYPE_LOGOREBOUND,"Logo Rebound","Rebote Logo","Rebotar Logo",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL,"Restore Original","Restaurar Original","Restaurar Original",NULL,NULL,0,0,0}
 };
 
 char *screen_effect_name_unknown="Unknown";
@@ -1093,6 +1094,16 @@ void screen_rainbow_effect_logorebound(z80_int *origen,z80_int *destino,int anch
     }
 
 
+
+
+}
+
+void screen_rainbow_effect_restore_original(z80_int *inicial_origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Restaurar imagen original
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,inicial_origen,tamanyo);
 
 
 }
@@ -2950,6 +2961,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_LOGOREBOUND:
                     screen_rainbow_effect_logorebound(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL:
+                    screen_rainbow_effect_restore_original(inicial_origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_RGB:

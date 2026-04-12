@@ -129,8 +129,6 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 
 -efectos especiales
-*efecto zoom 2x, 3x o 4x de una zona concreta de la pantalla (no sigue mouse). quiza ni hace falta indicar zona,
-se puede poner antes un efecto de scroll para desplazar la zona, y hacer zoom siempre desde 0,0
 *revisar liberar memoria
 
 -nagravision audio
