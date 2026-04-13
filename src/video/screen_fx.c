@@ -1134,56 +1134,24 @@ void screen_rainbow_effect_copy_to_buffer(z80_int *origen,z80_int *destino,int a
 int screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=SCREEN_FX_MIX_FROM_BUFFER_DEFAULT_PERCENTAGE;
 enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAGE;
 
-const char *screen_rainbow_effect_mix_string_mix_average="Average";
-const char *screen_rainbow_effect_mix_string_mix_sum="Sum";
-const char *screen_rainbow_effect_mix_string_mix_substract="Substract";
-const char *screen_rainbow_effect_mix_string_mix_multiply="Multiply";
-const char *screen_rainbow_effect_mix_string_mix_inverse_multiply="Inverse Multiply";
-const char *screen_rainbow_effect_mix_string_mix_and="And";
-const char *screen_rainbow_effect_mix_string_mix_or="Or";
-const char *screen_rainbow_effect_mix_string_mix_xor="Xor";
+const char *screen_rainbow_effect_mix_string_types[SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES]={
+    "Average",
+    "Sum",
+    "Substract",
+    "Difference",
+    "Multiply",
+    "Inverse Multiply",
+    "And",
+    "Or",
+    "Xor"
+};
+
 const char *screen_rainbow_effect_mix_string_unknown="Unknown";
 
 const char *screen_rainbow_effect_mix_from_buffer_get_string_type(enum MIX_FROM_BUFFER_TYPES tipo)
 {
-    switch (tipo) {
-        case MIX_AVERAGE:
-            return screen_rainbow_effect_mix_string_mix_average;
-        break;
-
-        case MIX_SUM:
-            return screen_rainbow_effect_mix_string_mix_sum;
-        break;
-
-        case MIX_SUBSTRACT:
-            return screen_rainbow_effect_mix_string_mix_substract;
-        break;
-
-        case MIX_MULTIPLY:
-            return screen_rainbow_effect_mix_string_mix_multiply;
-        break;
-
-        case MIX_INVERSE_MULTIPLY:
-            return screen_rainbow_effect_mix_string_mix_inverse_multiply;
-        break;
-
-        case MIX_AND:
-            return screen_rainbow_effect_mix_string_mix_and;
-        break;
-
-        case MIX_OR:
-            return screen_rainbow_effect_mix_string_mix_or;
-        break;
-
-        case MIX_XOR:
-            return screen_rainbow_effect_mix_string_mix_xor;
-        break;
-
-        default:
-            return screen_rainbow_effect_mix_string_unknown;
-        break;
-
-    }
+    if (tipo>=0 && tipo<SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES) return screen_rainbow_effect_mix_string_types[tipo];
+    else return screen_rainbow_effect_mix_string_unknown;
 }
 
 enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_get_from_string(char *tipo)
@@ -1252,6 +1220,12 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     red=red2-red1;
                     green=green2-green1;
                     blue=blue2-blue1;
+                break;
+
+                case MIX_DIFFERENCE:
+                    red=util_get_absolute(red2-red1);
+                    green=util_get_absolute(green2-green1);
+                    blue=util_get_absolute(blue2-blue1);
                 break;
 
                 case MIX_MULTIPLY:
