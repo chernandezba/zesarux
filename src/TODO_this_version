@@ -130,7 +130,6 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 -efectos especiales
 *revisar liberar memoria
-ok *efecto cargar bmp
 
 -nagravision audio
 *completar maquinas

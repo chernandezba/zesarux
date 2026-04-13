@@ -1137,6 +1137,7 @@ enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAG
 const char *screen_rainbow_effect_mix_string_mix_average="Average";
 const char *screen_rainbow_effect_mix_string_mix_sum="Sum";
 const char *screen_rainbow_effect_mix_string_mix_substract="Substract";
+const char *screen_rainbow_effect_mix_string_mix_multiply="Multiply";
 const char *screen_rainbow_effect_mix_string_mix_and="And";
 const char *screen_rainbow_effect_mix_string_mix_or="Or";
 const char *screen_rainbow_effect_mix_string_mix_xor="Xor";
@@ -1155,6 +1156,10 @@ const char *screen_rainbow_effect_mix_from_buffer_get_string_type(enum MIX_FROM_
 
         case MIX_SUBSTRACT:
             return screen_rainbow_effect_mix_string_mix_substract;
+        break;
+
+        case MIX_MULTIPLY:
+            return screen_rainbow_effect_mix_string_mix_multiply;
         break;
 
         case MIX_AND:
@@ -1236,18 +1241,18 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     red=red2+red1;
                     green=green2+green1;
                     blue=blue2+blue1;
-                    if (red>255) red=255;
-                    if (green>255) green=255;
-                    if (blue>255) blue=255;
                 break;
 
                 case MIX_SUBSTRACT:
                     red=red2-red1;
                     green=green2-green1;
                     blue=blue2-blue1;
-                    if (red<0) red=0;
-                    if (green<0) green=0;
-                    if (blue<0) blue=0;
+                break;
+
+                case MIX_MULTIPLY:
+                    red=(red2*red1)/255;
+                    green=(green2*green1)/255;
+                    blue=(blue2*blue1)/255;
                 break;
 
                 case MIX_AND:
@@ -1270,6 +1275,14 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
 
 
             }
+
+            if (red>255) red=255;
+            if (green>255) green=255;
+            if (blue>255) blue=255;
+
+            if (red<0) red=0;
+            if (green<0) green=0;
+            if (blue<0) blue=0;
 
             red=(red>>3) & 0x1F;
             green=(green>>3) & 0x1F;
