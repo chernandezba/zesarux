@@ -1138,6 +1138,7 @@ const char *screen_rainbow_effect_mix_string_mix_average="Average";
 const char *screen_rainbow_effect_mix_string_mix_sum="Sum";
 const char *screen_rainbow_effect_mix_string_mix_substract="Substract";
 const char *screen_rainbow_effect_mix_string_mix_multiply="Multiply";
+const char *screen_rainbow_effect_mix_string_mix_inverse_multiply="Inverse Multiply";
 const char *screen_rainbow_effect_mix_string_mix_and="And";
 const char *screen_rainbow_effect_mix_string_mix_or="Or";
 const char *screen_rainbow_effect_mix_string_mix_xor="Xor";
@@ -1160,6 +1161,10 @@ const char *screen_rainbow_effect_mix_from_buffer_get_string_type(enum MIX_FROM_
 
         case MIX_MULTIPLY:
             return screen_rainbow_effect_mix_string_mix_multiply;
+        break;
+
+        case MIX_INVERSE_MULTIPLY:
+            return screen_rainbow_effect_mix_string_mix_inverse_multiply;
         break;
 
         case MIX_AND:
@@ -1253,6 +1258,12 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     red=(red2*red1)/255;
                     green=(green2*green1)/255;
                     blue=(blue2*blue1)/255;
+                break;
+
+                case MIX_INVERSE_MULTIPLY:
+                    red= 255 - ((255 - red1) * (255 - red2)) / 255;
+                    green= 255 - ((255 - green1) * (255 - green2)) / 255;
+                    blue= 255 - ((255 - blue1) * (255 - blue2)) / 255;
                 break;
 
                 case MIX_AND:
