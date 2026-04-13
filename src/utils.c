@@ -3923,6 +3923,8 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-percentage \"Mix from buffer\" %d",screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer);
     }
 
+    ADD_STRING_CONFIG,"--video-fx-mix-type \"Mix from buffer\" \"%s\"",screen_rainbow_effect_mix_from_buffer_get_string_type(screen_rainbow_effect_mix_from_buffer_tipo));
+
     if (screen_rainbow_effect_scroll_horizontal_offset!=SCREEN_FX_SCROLL_HORIZONTAL_DEFAULT_OFFSET) {
         ADD_STRING_CONFIG,"--video-fx-offset \"Scroll Horizontal\" %d",screen_rainbow_effect_scroll_horizontal_offset);
     }
