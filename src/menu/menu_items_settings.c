@@ -928,7 +928,7 @@ void menu_window_settings_reduce_075(MENU_ITEM_PARAMETERS)
     //Liberar buffers para borrar rastros de escalados 0.50/0.75
     //screen_special_effects_free_buffers();
 
-    enable_rainbow();
+    //enable_rainbow();
 }
 
 
@@ -1928,6 +1928,16 @@ void screen_rainbow_effect_load_bmp_enable_transparent_rectangle_height(MENU_ITE
     menu_ventana_scanf_numero_enhanced("Height",&screen_rainbow_effect_load_bmp_transparent_rectangle_height,5,+1,0,9999,0);
 }
 
+void menu_main_window_special_effects_enable_disable(MENU_ITEM_PARAMETERS)
+{
+
+    if (screen_special_effects_enabled.v) {
+        screen_fx_disable();
+    }
+    else {
+        screen_fx_enable();
+    }
+}
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
@@ -1939,13 +1949,12 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
     do {
 
 
-        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_enable_disable,NULL,
             "Enable F~~X","Activar F~~X","Activar F~~X");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_special_effects_enabled.v ? 'X' : ' ' ));
         menu_add_item_menu_shortcut(array_menu_common,'x');
         menu_add_item_menu_tooltip(array_menu_common,"Effects are applied in order, starting from top to bottom");
         menu_add_item_menu_ayuda(array_menu_common,"Effects are applied in order, starting from top to bottom");
-        menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_special_effects_enabled);
 
         menu_add_item_menu_separator(array_menu_common);
 

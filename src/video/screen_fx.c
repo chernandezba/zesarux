@@ -3270,8 +3270,17 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
 
 
+void screen_fx_enable(void)
+{
+    enable_rainbow();
 
+    screen_special_effects_enabled.v=1;
 
+}
 
+void screen_fx_disable(void)
+{
+    screen_special_effects_enabled.v=0;
+}
 
 

@@ -218,7 +218,8 @@ extern screen_effect_applied screen_effect_applied_list[];
 
 extern screen_effect_type_name screen_effect_type_list[];
 
-
+extern void screen_fx_enable(void);
+extern void screen_fx_disable(void);
 
 
 

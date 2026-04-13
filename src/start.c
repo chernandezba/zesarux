@@ -2892,7 +2892,7 @@ int parse_cmdline_options(int desde_commandline)
             }
 
             else if (!strcmp(argv[puntero_parametro],"--video-fx-enable")) {
-                screen_special_effects_enabled.v=1;
+                screen_fx_enable();
             }
 
             //"--video-fx-set effect n 0/1                    Sets a effect on n position, and enabled/disabled (0/1)\n"
