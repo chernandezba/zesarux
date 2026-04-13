@@ -121,13 +121,18 @@ extern z80_bit screen_rainbow_effect_rgb_blue;
 
 extern void init_screen_effects_table(void);
 
+extern char screen_rainbow_effect_load_bmp_file_path[];
+extern z80_byte screen_rainbow_effect_load_bmp_file_path_transparent_color;
+extern void screen_rainbow_effect_load_bmp_free_image(void);
+#define SCREEN_RAINBOW_EFFECT_LOAD_BMP_ID_PALETTE 2
+
 #define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 25
 
 //Total de efectos que se pueden aplicar
 #define MAX_SCREEN_LIST_EFFECTS 60
 
 //Cantidad de efectos diferentes
-#define MAX_SCREEN_EFFECTS 43
+#define MAX_SCREEN_EFFECTS 44
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_NONE, //Este siempre el primero en este enum
@@ -172,7 +177,8 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_LOGOREBOUND,
     SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL,
     SCREEN_EFFECT_TYPE_COPY_TO_BUFFER,
-    SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER
+    SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER,
+    SCREEN_EFFECT_TYPE_LOAD_BMP
 };
 
 typedef struct {

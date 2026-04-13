@@ -1352,6 +1352,8 @@ screen_effect_print_names();
         "--video-fx-sizes effect tb bb lb rb dh dw      Sets sizes for effect: Top Border, Bottom Border, Left Border, Right Border, Display Height, Display Width (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-rgb effect r g b                    Sets rgb values (0/1) for effect (Note: only RGB effect supports this parameter)\n"
         "--video-fx-percentage effect percentage        Sets percentage for effect (Note: only Mix from buffer effect supports this parameter)\n"
+        "--video-fx-file effect file                    Sets file for effect (Note: only Load BMP effect supports this parameter)\n"
+        "--video-fx-transparent effect color            Sets transparent color for effect (Note: only Load BMP effect supports this parameter)\n"
 
 
         "--video-fx-reduce-075                          Sets display size 4/3 for Reduce effect (divide by 4, multiply by 3)\n"
@@ -2992,7 +2994,7 @@ int parse_cmdline_options(int desde_commandline)
 
                 //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
                 if (strcasecmp(effect,"Mix from buffer")) {
-                    debug_printf(VERBOSE_ERR,"Invalid effect for angle setting: %s",effect);
+                    debug_printf(VERBOSE_ERR,"Invalid effect for percentage setting: %s",effect);
                 }
                 else {
                     if (valor_porcentaje<1 || valor_porcentaje>99) {
@@ -3001,6 +3003,45 @@ int parse_cmdline_options(int desde_commandline)
                     else {
                         screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=valor_porcentaje;
                     }
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-file")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                char *nombre=argv[puntero_parametro];
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Load BMP")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for file setting: %s",effect);
+                }
+                else {
+                    strcpy(screen_rainbow_effect_load_bmp_file_path,nombre);
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-transparent")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int color=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Load BMP")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for transparent color setting: %s",effect);
+                }
+                if (color<0 || color>255) {
+                    debug_printf(VERBOSE_ERR,"Color for effect %s out of range",effect);
+                }
+                else {
+                    screen_rainbow_effect_load_bmp_file_path_transparent_color=color;
                 }
 
             }

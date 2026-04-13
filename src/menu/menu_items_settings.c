@@ -1863,6 +1863,54 @@ void menu_interface_special_effects_mix_from_buffer_percentaje(MENU_ITEM_PARAMET
     menu_ventana_scanf_numero_enhanced("Layer percentaje",&screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer,3,+1,1,99,0);
 }
 
+void menu_interface_special_effects_load_bmp(MENU_ITEM_PARAMETERS)
+{
+
+    char *filtros[2];
+
+    filtros[0]="bmp";
+    filtros[1]=0;
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio de cinta
+    //si no hay directorio, vamos a rutas predefinidas
+    if (screen_rainbow_effect_load_bmp_file_path[0]==0) menu_chdir_sharedfiles();
+
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(screen_rainbow_effect_load_bmp_file_path,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
+
+    menu_filesel("Select file",filtros,screen_rainbow_effect_load_bmp_file_path);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+    screen_rainbow_effect_load_bmp_free_image();
+
+
+}
+
+void menu_interface_special_effects_load_bmp_transparent_color(MENU_ITEM_PARAMETERS)
+{
+    int color=screen_rainbow_effect_load_bmp_file_path_transparent_color;
+
+    menu_ventana_scanf_numero_enhanced("Transparent color",&color,4,+1,0,255,0);
+
+    screen_rainbow_effect_load_bmp_file_path_transparent_color=color;
+}
+
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2014,6 +2062,22 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
                     }
 
+
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_LOAD_BMP && enabled) {
+                    char string_bmp_shown[20];
+                    menu_tape_settings_trunc_name(screen_rainbow_effect_load_bmp_file_path,string_bmp_shown,20);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_load_bmp,NULL,
+                        "BMP File","Archivo BMP","Arxiu BMP");
+                    menu_add_item_menu_prefijo_format(array_menu_common,"  [%s] ",string_bmp_shown);
+                    menu_add_item_menu_tooltip(array_menu_common,"BMP file should be 256 indexed colours, no compression, 352x304 for speccy");
+                    menu_add_item_menu_ayuda(array_menu_common,"BMP file should be 256 indexed colours, no compression, 352x304 for speccy. See folder /extras/media/artwork on ZEsarUX extras for examples");
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_load_bmp_transparent_color,NULL,
+                        "Transparent Color","Color Transparente","Color Transparent");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%02XH] ",screen_rainbow_effect_load_bmp_file_path_transparent_color);
 
                 }
 

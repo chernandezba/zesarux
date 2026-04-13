@@ -8,7 +8,8 @@ Permitir drag&drop de archivos comprimidos
 Agregado un montón de efectos especiales para la salida de video:
 - Reducir, Temblar, Invertir Vertical, Invertir Horizontal, Rotar, Remolino, Interferencias, Mar, Ondas, Campo Magnético, Cizalla, Lente, Radar
 - Zoom, Zoom Mouse, Pixelar, Desenfocar, Borde Sombreado, LED, LED RGB, Pérdida Hsync, Pérdida Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
-- Scanlines, Sepia, Rojo, RGB, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo, Restaurar Original, Copiar a buffer, Mezclar desde Buffer
+- Scanlines, Sepia, Rojo, RGB, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
+- Restaurar Original, Copiar a buffer, Mezclar desde Buffer, Cargar BMP
 Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 Renombrar función de "Input File Spooling" a "Enviar Texto como Pulsaciones de Teclado"
 Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)

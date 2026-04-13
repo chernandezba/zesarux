@@ -3943,6 +3943,12 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-continuous Lens");
     }
 
+    if (screen_rainbow_effect_load_bmp_file_path[0]) {
+        ADD_STRING_CONFIG,"--video-fx-file \"Load BMP\" \"%s\"",screen_rainbow_effect_load_bmp_file_path);
+    }
+
+    ADD_STRING_CONFIG,"--video-fx-transparent \"Load BMP\" %d",screen_rainbow_effect_load_bmp_file_path_transparent_color);
+
     ADD_STRING_CONFIG,"--video-fx-attraction \"Magnetic Field\" %d",screen_rainbow_effect_attraction_atrac_repulse);
 
     ADD_STRING_CONFIG,"--video-fx-leftrightborder \"Shader Border\" %d",screen_rainbow_effect_shaderborder_leftright_enable.v);
@@ -23901,8 +23907,15 @@ reserved	1 byte	 	unused (=0)
 void util_load_bmp_file_palette(z80_byte *puntero,int id_paleta)
 {
     //Cargar la paleta bmp.
-    int paleta_destino=(id_paleta==0 ? BMP_INDEX_FIRST_COLOR : BMP_SECOND_INDEX_FIRST_COLOR);
-    util_bmp_load_palette(puntero,paleta_destino);
+    //int inicio_color_destino=(id_paleta==0 ? BMP_INDEX_FIRST_COLOR : BMP_SECOND_INDEX_FIRST_COLOR);
+
+    int inicio_color_destino;
+
+    if (id_paleta==1) inicio_color_destino=BMP_SECOND_INDEX_FIRST_COLOR;
+    else if (id_paleta==2) inicio_color_destino=BMP_THIRD_INDEX_FIRST_COLOR;
+    else inicio_color_destino=BMP_INDEX_FIRST_COLOR;
+
+    util_bmp_load_palette(puntero,inicio_color_destino);
 }
 
 //Cargar un archivo bmp en memoria. Retorna puntero

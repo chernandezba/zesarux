@@ -151,7 +151,8 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_LOGOREBOUND,"Logo Rebound","Rebote Logo","Rebotar Logo",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL,"Restore Original","Restaurar Original","Restaurar Original",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_COPY_TO_BUFFER,"Copy to buffer","Copiar a buffer","Copiar a buffer",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER,"Mix from buffer","Mezclar desde buffer","Mesclar desde buffer",NULL,NULL,0,0,0}
+    {SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER,"Mix from buffer","Mezclar desde buffer","Mesclar desde buffer",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_LOAD_BMP,"Load BMP","Cargar BMP","Carregar BMP",NULL,NULL,0,0,0}
 };
 
 char *screen_effect_name_unknown="Unknown";
@@ -1181,6 +1182,64 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
 
         }
 
+    }
+
+}
+
+char screen_rainbow_effect_load_bmp_file_path[PATH_MAX]="";
+z80_byte *screen_rainbow_effect_load_bmp_mem=NULL;
+z80_byte screen_rainbow_effect_load_bmp_file_path_transparent_color=0;
+
+int screen_rainbow_effect_load_bmp_ancho_total=0;
+int screen_rainbow_effect_load_bmp_alto_total=0;
+z80_int *screen_rainbow_effect_load_bmp_destino=NULL;
+
+void screen_rainbow_effect_load_bmp_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+{
+    if (color_final==65535) return; //Esto seria para el transparente
+    if (screen_rainbow_effect_load_bmp_destino==NULL) return;
+
+    int ancho_total=screen_rainbow_effect_load_bmp_ancho_total;
+    int alto_total=screen_rainbow_effect_load_bmp_alto_total;
+    if (x<0 || y<0 || x>=ancho_total || y>=alto_total) return;
+
+    int offset=y*ancho_total+x;
+    screen_rainbow_effect_load_bmp_destino[offset]=color_final;
+
+}
+
+void screen_rainbow_effect_load_bmp_free_image(void)
+{
+    if (screen_rainbow_effect_load_bmp_mem!=NULL) {
+        free(screen_rainbow_effect_load_bmp_mem);
+        screen_rainbow_effect_load_bmp_mem=NULL;
+    }
+
+}
+
+
+void screen_rainbow_effect_load_bmp(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    if (screen_rainbow_effect_load_bmp_file_path[0]==0) return;
+
+    if (screen_rainbow_effect_load_bmp_mem==NULL) {
+        screen_rainbow_effect_load_bmp_mem=util_load_bmp_file(screen_rainbow_effect_load_bmp_file_path,SCREEN_RAINBOW_EFFECT_LOAD_BMP_ID_PALETTE);
+    }
+
+    screen_rainbow_effect_load_bmp_ancho_total=ancho;
+    screen_rainbow_effect_load_bmp_alto_total=alto;
+    screen_rainbow_effect_load_bmp_destino=destino;
+
+
+    if (screen_rainbow_effect_load_bmp_mem!=NULL) {
+    screen_render_bmpfile_function(screen_rainbow_effect_load_bmp_mem,BMP_THIRD_INDEX_FIRST_COLOR,NULL,0,
+        0,0,screen_rainbow_effect_load_bmp_file_path_transparent_color,65535,
+        screen_rainbow_effect_load_bmp_putpixel);
     }
 
 }
@@ -2969,6 +3028,7 @@ void screen_rainbow_effect_sea(z80_int *origen,z80_int *destino,int ancho,int al
 z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 {
 
+    //printf("ancho %d alto %d\n",ancho,alto);
     //Liberamos siempre este buffer al inicio de los efectos
     if (screen_rainbow_effect_copy_to_buffer_buffer!=NULL) {
         free(screen_rainbow_effect_copy_to_buffer_buffer);
@@ -3068,6 +3128,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER:
                     screen_rainbow_effect_mix_from_buffer(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_LOAD_BMP:
+                    screen_rainbow_effect_load_bmp(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_RGB:
