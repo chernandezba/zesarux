@@ -1144,6 +1144,7 @@ const char *screen_rainbow_effect_mix_string_types[SCREEN_FX_MIX_FROM_BUFFER_TOT
     "And",
     "Or",
     "Xor",
+    "Overlay",
     "Lighten",
     "Darken"
 };
@@ -1258,6 +1259,12 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     red=red2 ^ red1;
                     green=green2 ^ green1;
                     blue=blue2 ^ blue1;
+                break;
+
+                case MIX_OVERLAY:
+                    red= (red1 < 128) ? (2 * red1 * red2 / 255) : (255 - 2 * (255 - red1)*(255 - red2)/255);
+                    green= (green1 < 128) ? (2 * green1 * green2 / 255) : (255 - 2 * (255 - green1)*(255 - green2)/255);
+                    blue= (blue1 < 128) ? (2 * blue1 * blue2 / 255) : (255 - 2 * (255 - blue1)*(255 - blue2)/255);
                 break;
 
                 case MIX_LIGHTEN:
