@@ -1352,6 +1352,7 @@ screen_effect_print_names();
         "--video-fx-sizes effect tb bb lb rb dh dw      Sets sizes for effect: Top Border, Bottom Border, Left Border, Right Border, Display Height, Display Width (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-rgb effect r g b                    Sets rgb values (0/1) for effect (Note: only RGB effect supports this parameter)\n"
         "--video-fx-percentage effect percentage        Sets percentage for effect (Note: only Mix from buffer effect supports this parameter)\n"
+        "--video-fx-mix-type effect type                Sets mix type for effect (Note: only Mix from buffer effect supports this parameter)\n"
         "--video-fx-file effect file                    Sets file for effect (Note: only Load BMP effect supports this parameter)\n"
         "--video-fx-transparent-color effect color      Sets transparent color for effect, set to -1 to not use transparent color (Note: only Load BMP effect supports this parameter)\n"
         "--video-fx-transparent-rectangle effect enabled x y width height       Sets enabled (0/1) and size of transparent rectable (Note: only Load BMP effect supports this parameter)\n"
@@ -3007,6 +3008,27 @@ int parse_cmdline_options(int desde_commandline)
                 }
 
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-mix-type")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                char *string_tipo=argv[puntero_parametro];
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Mix from buffer")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for percentage setting: %s",effect);
+                }
+                else {
+                    enum MIX_FROM_BUFFER_TYPES tipo=screen_rainbow_effect_mix_from_buffer_get_from_string(string_tipo);
+                    screen_rainbow_effect_mix_from_buffer_tipo=tipo;
+                }
+
+            }
+
+
 
             else if (!strcmp(argv[puntero_parametro],"--video-fx-file")) {
                 siguiente_parametro_argumento();

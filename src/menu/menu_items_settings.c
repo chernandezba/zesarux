@@ -2053,7 +2053,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 if (type==SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER && enabled) {
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_mix_from_buffer_type,NULL,
                         "Mix Type","Tipo Mezcla","Tipus Mescla");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",screen_rainbow_effect_mix_from_buffer_get_string_type() );
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",screen_rainbow_effect_mix_from_buffer_get_string_type(screen_rainbow_effect_mix_from_buffer_tipo) );
 
                     if (screen_rainbow_effect_mix_from_buffer_tipo==MIX_AVERAGE) {
                         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_mix_from_buffer_percentaje,NULL,

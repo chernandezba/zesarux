@@ -1142,9 +1142,9 @@ const char *screen_rainbow_effect_mix_string_mix_or="Or";
 const char *screen_rainbow_effect_mix_string_mix_xor="Xor";
 const char *screen_rainbow_effect_mix_string_unknown="Unknown";
 
-const char *screen_rainbow_effect_mix_from_buffer_get_string_type(void)
+const char *screen_rainbow_effect_mix_from_buffer_get_string_type(enum MIX_FROM_BUFFER_TYPES tipo)
 {
-    switch (screen_rainbow_effect_mix_from_buffer_tipo) {
+    switch (tipo) {
         case MIX_AVERAGE:
             return screen_rainbow_effect_mix_string_mix_average;
         break;
@@ -1176,7 +1176,17 @@ const char *screen_rainbow_effect_mix_from_buffer_get_string_type(void)
     }
 }
 
+enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_get_from_string(char *tipo)
+{
+    int i;
 
+    for (i=0;i<SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES;i++) {
+        if (!strcasecmp(tipo,screen_rainbow_effect_mix_from_buffer_get_string_type(i))) return i;
+    }
+
+    //Si no se encuentra, retornar el primero
+    return 0;
+}
 
 void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int ancho,int alto)
 {

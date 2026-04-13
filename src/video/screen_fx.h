@@ -129,7 +129,8 @@ enum MIX_FROM_BUFFER_TYPES {
     MIX_XOR
 };
 
-extern const char *screen_rainbow_effect_mix_from_buffer_get_string_type(void);
+extern const char *screen_rainbow_effect_mix_from_buffer_get_string_type(enum MIX_FROM_BUFFER_TYPES tipo);
+extern enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_get_from_string(char *tipo);
 
 extern z80_bit screen_rainbow_effect_rgb_red;
 extern z80_bit screen_rainbow_effect_rgb_green;
