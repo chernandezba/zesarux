@@ -1137,6 +1137,9 @@ enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAG
 const char *screen_rainbow_effect_mix_string_mix_average="Average";
 const char *screen_rainbow_effect_mix_string_mix_sum="Sum";
 const char *screen_rainbow_effect_mix_string_mix_substract="Substract";
+const char *screen_rainbow_effect_mix_string_mix_and="And";
+const char *screen_rainbow_effect_mix_string_mix_or="Or";
+const char *screen_rainbow_effect_mix_string_mix_xor="Xor";
 const char *screen_rainbow_effect_mix_string_unknown="Unknown";
 
 const char *screen_rainbow_effect_mix_from_buffer_get_string_type(void)
@@ -1152,6 +1155,18 @@ const char *screen_rainbow_effect_mix_from_buffer_get_string_type(void)
 
         case MIX_SUBSTRACT:
             return screen_rainbow_effect_mix_string_mix_substract;
+        break;
+
+        case MIX_AND:
+            return screen_rainbow_effect_mix_string_mix_and;
+        break;
+
+        case MIX_OR:
+            return screen_rainbow_effect_mix_string_mix_or;
+        break;
+
+        case MIX_XOR:
+            return screen_rainbow_effect_mix_string_mix_xor;
         break;
 
         default:
@@ -1223,6 +1238,24 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     if (red<0) red=0;
                     if (green<0) green=0;
                     if (blue<0) blue=0;
+                break;
+
+                case MIX_AND:
+                    red=red2 & red1;
+                    green=green2 & green1;
+                    blue=blue2 & blue1;
+                break;
+
+                case MIX_OR:
+                    red=red2 | red1;
+                    green=green2 | green1;
+                    blue=blue2 | blue1;
+                break;
+
+                case MIX_XOR:
+                    red=red2 ^ red1;
+                    green=green2 ^ green1;
+                    blue=blue2 ^ blue1;
                 break;
 
 
