@@ -1143,7 +1143,9 @@ const char *screen_rainbow_effect_mix_string_types[SCREEN_FX_MIX_FROM_BUFFER_TOT
     "Inverse Multiply",
     "And",
     "Or",
-    "Xor"
+    "Xor",
+    "Lighten",
+    "Darken"
 };
 
 const char *screen_rainbow_effect_mix_string_unknown="Unknown";
@@ -1256,6 +1258,18 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     red=red2 ^ red1;
                     green=green2 ^ green1;
                     blue=blue2 ^ blue1;
+                break;
+
+                case MIX_LIGHTEN:
+                    red=util_max(red2 , red1);
+                    green=util_max(green2 , green1);
+                    blue=util_max(blue2 , blue1);
+                break;
+
+                case MIX_DARKEN:
+                    red=util_min(red2 , red1);
+                    green=util_min(green2 , green1);
+                    blue=util_min(blue2 , blue1);
                 break;
 
 

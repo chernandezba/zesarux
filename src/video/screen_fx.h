@@ -118,7 +118,7 @@ extern enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_tipo;
 
 #define SCREEN_FX_MIX_FROM_BUFFER_DEFAULT_PERCENTAGE 50
 
-#define SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES 9
+#define SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES 11
 
 enum MIX_FROM_BUFFER_TYPES {
     MIX_AVERAGE=0,
@@ -129,7 +129,9 @@ enum MIX_FROM_BUFFER_TYPES {
     MIX_INVERSE_MULTIPLY,
     MIX_AND,
     MIX_OR,
-    MIX_XOR
+    MIX_XOR,
+    MIX_LIGHTEN,
+    MIX_DARKEN
 };
 
 extern const char *screen_rainbow_effect_mix_from_buffer_get_string_type(enum MIX_FROM_BUFFER_TYPES tipo);

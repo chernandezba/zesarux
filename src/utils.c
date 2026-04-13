@@ -26177,3 +26177,8 @@ int util_min(int a,int b)
     else return b;
 }
 
+int util_max(int a,int b)
+{
+    if (a>b) return a;
+    else return b;
+}
