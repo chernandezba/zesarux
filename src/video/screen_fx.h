@@ -122,7 +122,7 @@ extern z80_bit screen_rainbow_effect_rgb_blue;
 extern void init_screen_effects_table(void);
 
 extern char screen_rainbow_effect_load_bmp_file_path[];
-extern z80_byte screen_rainbow_effect_load_bmp_file_path_transparent_color;
+extern int screen_rainbow_effect_load_bmp_file_path_transparent_color;
 extern void screen_rainbow_effect_load_bmp_free_image(void);
 extern z80_bit screen_rainbow_effect_load_bmp_enable_transparent_rectangle;
 extern int screen_rainbow_effect_load_bmp_transparent_rectangle_x;

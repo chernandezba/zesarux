@@ -1188,7 +1188,7 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
 
 char screen_rainbow_effect_load_bmp_file_path[PATH_MAX]="";
 z80_byte *screen_rainbow_effect_load_bmp_mem=NULL;
-z80_byte screen_rainbow_effect_load_bmp_file_path_transparent_color=0;
+int screen_rainbow_effect_load_bmp_file_path_transparent_color=0;
 
 z80_bit screen_rainbow_effect_load_bmp_enable_transparent_rectangle={0};
 

@@ -130,9 +130,7 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 -efectos especiales
 *revisar liberar memoria
-ok *efecto cargar bmp. podria servir para meter un "frame" alrededor del juego, como hacen Mame con gráficos de las arcade
-deberia ser un bmp de los que tengo soportados (indexado, 256 colores). quizá una paleta aparte?
-*bmp load quiza en los propios parametros del efecto activar el recorte para el fondo?
+ok *efecto cargar bmp
 
 -nagravision audio
 *completar maquinas

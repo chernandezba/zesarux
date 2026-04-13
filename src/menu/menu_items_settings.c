@@ -1903,11 +1903,9 @@ void menu_interface_special_effects_load_bmp(MENU_ITEM_PARAMETERS)
 
 void menu_interface_special_effects_load_bmp_transparent_color(MENU_ITEM_PARAMETERS)
 {
-    int color=screen_rainbow_effect_load_bmp_file_path_transparent_color;
 
-    menu_ventana_scanf_numero_enhanced("Transparent color",&color,4,+1,0,255,0);
+    menu_ventana_scanf_numero_enhanced("Transparent color",&screen_rainbow_effect_load_bmp_file_path_transparent_color,4,+1,-1,255,0);
 
-    screen_rainbow_effect_load_bmp_file_path_transparent_color=color;
 }
 
 void screen_rainbow_effect_load_bmp_enable_transparent_rectangle_x(MENU_ITEM_PARAMETERS)
@@ -2097,7 +2095,9 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_load_bmp_transparent_color,NULL,
                         "Transparent Color","Color Transparente","Color Transparent");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%02XH] ",screen_rainbow_effect_load_bmp_file_path_transparent_color);
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_load_bmp_file_path_transparent_color);
+                    menu_add_item_menu_tooltip(array_menu_common,"Set to -1 to not use transparent color");
+                    menu_add_item_menu_ayuda(array_menu_common,"Set to -1 to not use transparent color");
 
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                         "Transparent Rectangle","Rectángulo Transparente","Rectangle Transparent");

@@ -1353,7 +1353,7 @@ screen_effect_print_names();
         "--video-fx-rgb effect r g b                    Sets rgb values (0/1) for effect (Note: only RGB effect supports this parameter)\n"
         "--video-fx-percentage effect percentage        Sets percentage for effect (Note: only Mix from buffer effect supports this parameter)\n"
         "--video-fx-file effect file                    Sets file for effect (Note: only Load BMP effect supports this parameter)\n"
-        "--video-fx-transparent-color effect color      Sets transparent color for effect (Note: only Load BMP effect supports this parameter)\n"
+        "--video-fx-transparent-color effect color      Sets transparent color for effect, set to -1 to not use transparent color (Note: only Load BMP effect supports this parameter)\n"
         "--video-fx-transparent-rectangle effect enabled x y width height       Sets enabled (0/1) and size of transparent rectable (Note: only Load BMP effect supports this parameter)\n"
 
 
@@ -3038,7 +3038,7 @@ int parse_cmdline_options(int desde_commandline)
                 if (strcasecmp(effect,"Load BMP")) {
                     debug_printf(VERBOSE_ERR,"Invalid effect for transparent color setting: %s",effect);
                 }
-                if (color<0 || color>255) {
+                if (color<-1 || color>255) {
                     debug_printf(VERBOSE_ERR,"Color for effect %s out of range",effect);
                 }
                 else {
