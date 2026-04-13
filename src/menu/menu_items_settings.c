@@ -1910,6 +1910,26 @@ void menu_interface_special_effects_load_bmp_transparent_color(MENU_ITEM_PARAMET
     screen_rainbow_effect_load_bmp_file_path_transparent_color=color;
 }
 
+void screen_rainbow_effect_load_bmp_enable_transparent_rectangle_x(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("X",&screen_rainbow_effect_load_bmp_transparent_rectangle_x,5,+1,0,9999,0);
+}
+
+void screen_rainbow_effect_load_bmp_enable_transparent_rectangle_y(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Y",&screen_rainbow_effect_load_bmp_transparent_rectangle_y,5,+1,0,9999,0);
+}
+
+void screen_rainbow_effect_load_bmp_enable_transparent_rectangle_width(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Width",&screen_rainbow_effect_load_bmp_transparent_rectangle_width,5,+1,0,9999,0);
+}
+
+void screen_rainbow_effect_load_bmp_enable_transparent_rectangle_height(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Height",&screen_rainbow_effect_load_bmp_transparent_rectangle_height,5,+1,0,9999,0);
+}
+
 
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
@@ -2078,6 +2098,31 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_load_bmp_transparent_color,NULL,
                         "Transparent Color","Color Transparente","Color Transparent");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%02XH] ",screen_rainbow_effect_load_bmp_file_path_transparent_color);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        "Transparent Rectangle","Rectángulo Transparente","Rectangle Transparent");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_load_bmp_enable_transparent_rectangle.v ? 'X' : ' '));
+                    menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_load_bmp_enable_transparent_rectangle);
+
+                    if (screen_rainbow_effect_load_bmp_enable_transparent_rectangle.v) {
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,screen_rainbow_effect_load_bmp_enable_transparent_rectangle_x,NULL,
+                            "X","X","X");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_load_bmp_transparent_rectangle_x);
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,screen_rainbow_effect_load_bmp_enable_transparent_rectangle_y,NULL,
+                            "Y","Y","Y");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_load_bmp_transparent_rectangle_y);
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,screen_rainbow_effect_load_bmp_enable_transparent_rectangle_width,NULL,
+                            "Width","Ancho","Ample");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_load_bmp_transparent_rectangle_width);
+
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,screen_rainbow_effect_load_bmp_enable_transparent_rectangle_height,NULL,
+                            "Height","Alto","Alt");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_load_bmp_transparent_rectangle_height);
+                    }
+
+
 
                 }
 

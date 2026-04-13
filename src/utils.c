@@ -3947,7 +3947,14 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-file \"Load BMP\" \"%s\"",screen_rainbow_effect_load_bmp_file_path);
     }
 
-    ADD_STRING_CONFIG,"--video-fx-transparent \"Load BMP\" %d",screen_rainbow_effect_load_bmp_file_path_transparent_color);
+    ADD_STRING_CONFIG,"--video-fx-transparent-color \"Load BMP\" %d",screen_rainbow_effect_load_bmp_file_path_transparent_color);
+    ADD_STRING_CONFIG,"--video-fx-transparent-rectangle \"Load BMP\" %d %d %d %d %d",
+        screen_rainbow_effect_load_bmp_enable_transparent_rectangle.v,
+        screen_rainbow_effect_load_bmp_transparent_rectangle_x,
+        screen_rainbow_effect_load_bmp_transparent_rectangle_y,
+        screen_rainbow_effect_load_bmp_transparent_rectangle_width,
+        screen_rainbow_effect_load_bmp_transparent_rectangle_height
+    );
 
     ADD_STRING_CONFIG,"--video-fx-attraction \"Magnetic Field\" %d",screen_rainbow_effect_attraction_atrac_repulse);
 
