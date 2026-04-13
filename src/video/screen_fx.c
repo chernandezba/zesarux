@@ -1141,6 +1141,7 @@ const char *screen_rainbow_effect_mix_string_types[SCREEN_FX_MIX_FROM_BUFFER_TOT
     "Difference",
     "Multiply",
     "Inverse Multiply",
+    "Division",
     "And",
     "Or",
     "Xor",
@@ -1241,6 +1242,12 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     red= 255 - ((255 - red1) * (255 - red2)) / 255;
                     green= 255 - ((255 - green1) * (255 - green2)) / 255;
                     blue= 255 - ((255 - blue1) * (255 - blue2)) / 255;
+                break;
+
+                case MIX_DIVISION:
+                    red=util_min((red1 * 255) / (red2 + 1), 255);
+                    green=util_min((green1 * 255) / (green2 + 1), 255);
+                    blue=util_min((blue1 * 255) / (blue2 + 1), 255);
                 break;
 
                 case MIX_AND:
