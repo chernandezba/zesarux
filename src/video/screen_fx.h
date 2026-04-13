@@ -124,7 +124,11 @@ extern void init_screen_effects_table(void);
 extern char screen_rainbow_effect_load_bmp_file_path[];
 extern z80_byte screen_rainbow_effect_load_bmp_file_path_transparent_color;
 extern void screen_rainbow_effect_load_bmp_free_image(void);
+extern z80_bit screen_rainbow_effect_load_bmp_enable_transparent_rectangle;
 #define SCREEN_RAINBOW_EFFECT_LOAD_BMP_ID_PALETTE 2
+
+//le decimos que al encontrar transparencia, lo cambie por este color
+#define SCREEN_RAINBOW_EFFECT_LOAD_BMP_FAKE_TRANSPARENCY_COLOR 65535
 
 #define SCREEN_RAINBOW_EFFECT_PERSISTENCE_MAX_FRAMES 25
 

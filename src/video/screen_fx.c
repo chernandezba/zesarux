@@ -1190,19 +1190,33 @@ char screen_rainbow_effect_load_bmp_file_path[PATH_MAX]="";
 z80_byte *screen_rainbow_effect_load_bmp_mem=NULL;
 z80_byte screen_rainbow_effect_load_bmp_file_path_transparent_color=0;
 
+z80_bit screen_rainbow_effect_load_bmp_enable_transparent_rectangle={0};
+
+int screen_rainbow_effect_load_bmp_transparent_rectangle_x=0;
+int screen_rainbow_effect_load_bmp_transparent_rectangle_y=0;
+int screen_rainbow_effect_load_bmp_transparent_rectangle_width=0;
+int screen_rainbow_effect_load_bmp_transparent_rectangle_height=0;
+
 int screen_rainbow_effect_load_bmp_ancho_total=0;
 int screen_rainbow_effect_load_bmp_alto_total=0;
 z80_int *screen_rainbow_effect_load_bmp_destino=NULL;
 
 void screen_rainbow_effect_load_bmp_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
 {
-    if (color_final==65535) return; //Esto seria para el transparente
+    if (color_final==SCREEN_RAINBOW_EFFECT_LOAD_BMP_FAKE_TRANSPARENCY_COLOR) return; //Esto seria para el transparente
     if (screen_rainbow_effect_load_bmp_destino==NULL) return;
 
     int ancho_total=screen_rainbow_effect_load_bmp_ancho_total;
     int alto_total=screen_rainbow_effect_load_bmp_alto_total;
     if (x<0 || y<0 || x>=ancho_total || y>=alto_total) return;
 
+    //Recorte por rectangulo
+    if (screen_rainbow_effect_load_bmp_enable_transparent_rectangle.v) {
+        if (x>=screen_rainbow_effect_load_bmp_transparent_rectangle_x && x<screen_rainbow_effect_load_bmp_transparent_rectangle_x+screen_rainbow_effect_load_bmp_transparent_rectangle_width &&
+            y>=screen_rainbow_effect_load_bmp_transparent_rectangle_y && y<screen_rainbow_effect_load_bmp_transparent_rectangle_y+ screen_rainbow_effect_load_bmp_transparent_rectangle_height) {
+            return;
+        }
+    }
     int offset=y*ancho_total+x;
     screen_rainbow_effect_load_bmp_destino[offset]=color_final;
 
@@ -1238,7 +1252,7 @@ void screen_rainbow_effect_load_bmp(z80_int *origen,z80_int *destino,int ancho,i
 
     if (screen_rainbow_effect_load_bmp_mem!=NULL) {
     screen_render_bmpfile_function(screen_rainbow_effect_load_bmp_mem,BMP_THIRD_INDEX_FIRST_COLOR,NULL,0,
-        0,0,screen_rainbow_effect_load_bmp_file_path_transparent_color,65535,
+        0,0,screen_rainbow_effect_load_bmp_file_path_transparent_color,SCREEN_RAINBOW_EFFECT_LOAD_BMP_FAKE_TRANSPARENCY_COLOR,
         screen_rainbow_effect_load_bmp_putpixel);
     }
 
