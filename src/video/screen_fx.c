@@ -1131,8 +1131,38 @@ void screen_rainbow_effect_copy_to_buffer(z80_int *origen,z80_int *destino,int a
 
 }
 
-
 int screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=SCREEN_FX_MIX_FROM_BUFFER_DEFAULT_PERCENTAGE;
+enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAGE;
+
+const char *screen_rainbow_effect_mix_string_mix_average="Average";
+const char *screen_rainbow_effect_mix_string_mix_sum="Sum";
+const char *screen_rainbow_effect_mix_string_mix_substract="Substract";
+const char *screen_rainbow_effect_mix_string_unknown="Unknown";
+
+const char *screen_rainbow_effect_mix_from_buffer_get_string_type(void)
+{
+    switch (screen_rainbow_effect_mix_from_buffer_tipo) {
+        case MIX_AVERAGE:
+            return screen_rainbow_effect_mix_string_mix_average;
+        break;
+
+        case MIX_SUM:
+            return screen_rainbow_effect_mix_string_mix_sum;
+        break;
+
+        case MIX_SUBSTRACT:
+            return screen_rainbow_effect_mix_string_mix_substract;
+        break;
+
+        default:
+            return screen_rainbow_effect_mix_string_unknown;
+        break;
+
+    }
+}
+
+
+
 void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
@@ -1160,15 +1190,43 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
             int green2=(color2_32 >> 8) & 0xFF;
             int blue2=(color2_32   ) & 0xFF;
 
-            //aplicar porcentajes de capas
-            int p1=screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer;
-            int p2=100-p1;
+            int red,green,blue;
+            int p1,p2;
 
-            int red=((red1*p1)/100+(red2*p2)/100);
-            int green=((green1*p1)/100+(green2*p2)/100);
-            int blue=((blue1*p1)/100+(blue2*p2)/100);
+            switch (screen_rainbow_effect_mix_from_buffer_tipo) {
+                case MIX_AVERAGE:
+
+                    //aplicar porcentajes de capas
+                    p1=screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer;
+                    p2=100-p1;
 
 
+                    red=((red1*p1)/100+(red2*p2)/100);
+                    green=((green1*p1)/100+(green2*p2)/100);
+                    blue=((blue1*p1)/100+(blue2*p2)/100);
+
+                break;
+
+                case MIX_SUM:
+                    red=red2+red1;
+                    green=green2+green1;
+                    blue=blue2+blue1;
+                    if (red>255) red=255;
+                    if (green>255) green=255;
+                    if (blue>255) blue=255;
+                break;
+
+                case MIX_SUBSTRACT:
+                    red=red2-red1;
+                    green=green2-green1;
+                    blue=blue2-blue1;
+                    if (red<0) red=0;
+                    if (green<0) green=0;
+                    if (blue<0) blue=0;
+                break;
+
+
+            }
 
             red=(red>>3) & 0x1F;
             green=(green>>3) & 0x1F;

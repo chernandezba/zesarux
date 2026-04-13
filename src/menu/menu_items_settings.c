@@ -1939,6 +1939,12 @@ void menu_main_window_special_effects_enable_disable(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_interface_special_effects_mix_from_buffer_type(MENU_ITEM_PARAMETERS)
+{
+    screen_rainbow_effect_mix_from_buffer_tipo++;
+    if (screen_rainbow_effect_mix_from_buffer_tipo>=SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES) screen_rainbow_effect_mix_from_buffer_tipo=0;
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2045,9 +2051,15 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER && enabled) {
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_mix_from_buffer_percentaje,NULL,
-                        "Buffer Layer percentaje","Porcentaje capa buffer","Percentatge capa buffer");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_mix_from_buffer_type,NULL,
+                        "Mix Type","Tipo Mezcla","Tipus Mescla");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%s] ",screen_rainbow_effect_mix_from_buffer_get_string_type() );
+
+                    if (screen_rainbow_effect_mix_from_buffer_tipo==MIX_AVERAGE) {
+                        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_mix_from_buffer_percentaje,NULL,
+                            "Buffer Layer percentaje","Porcentaje capa buffer","Percentatge capa buffer");
+                        menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer);
+                    }
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_LENS && enabled) {

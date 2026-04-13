@@ -55,7 +55,7 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 #define SCREEN_FX_ZOOM_DEFAULT_FACTOR 12
 #define SCREEN_FX_ZOOM_MAX_FACTOR 80
 
-#define SCREEN_FX_MIX_FROM_BUFFER_DEFAULT_PERCENTAGE 50
+
 
 extern void screen_special_effects_free_buffers(void);
 extern z80_int *screen_special_effects_alloc_buffer(int ancho,int alto);
@@ -114,6 +114,19 @@ extern int screen_rainbow_effect_blur_intensity;
 extern z80_bit screen_rainbow_effect_blur_follow_mouse;
 extern int screen_rainbow_effect_persistence_total_frames;
 extern int screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer;
+extern enum MIX_FROM_BUFFER_TYPES screen_rainbow_effect_mix_from_buffer_tipo;
+
+#define SCREEN_FX_MIX_FROM_BUFFER_DEFAULT_PERCENTAGE 50
+
+#define SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES 3
+
+enum MIX_FROM_BUFFER_TYPES {
+    MIX_AVERAGE=0,
+    MIX_SUM,
+    MIX_SUBSTRACT
+};
+
+extern const char *screen_rainbow_effect_mix_from_buffer_get_string_type(void);
 
 extern z80_bit screen_rainbow_effect_rgb_red;
 extern z80_bit screen_rainbow_effect_rgb_green;
