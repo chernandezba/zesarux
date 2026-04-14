@@ -253,6 +253,30 @@ Q: I started ZEsarUX on Linux a pure text console mode, tried the fbdev driver b
 "fbdev: ioctl VT_GETSTATE: Inappropriate ioctl for device (not a linux console?)"
 A: You need to start it from a pseudo-text console mode, I mean, it's a text console but set in a graphics mode. To do that, you must set a vga mode parameter on the kernel boot. Try adding this parameter to the Grub boot: "vga=792"
 
+
+Q: Can ZEsarUX generate Anaglyph images for 3D glasses? (Red-Blue glasses)
+A: Yes, you can use the FX effects, on Settings-> Main Window-> FX. You need to create a initial image in red, apply an offset and then mix it with the same image in blue. This can be achieved by applying the following effects, in order:
+
+- Scroll Horizontal. 20 pixels
+- Red
+- Copy to buffer
+- Restore Original
+- RGB. Select only Blue
+- Mix from buffer. 50%. Type: Average
+
+You can also enable these effects using the following config settings:
+
+--video-fx-enable
+--video-fx-set "Scroll Horizontal" 0 1
+--video-fx-set "Red" 1 1
+--video-fx-set "Copy to buffer" 2 1
+--video-fx-set "Restore Original" 3 1
+--video-fx-set "RGB" 4 1
+--video-fx-set "Mix from buffer" 5 1
+--video-fx-offset "Scroll Horizontal" 20
+--video-fx-rgb RGB 0 0 1
+--video-fx-mix-type "Mix from buffer" "Average"
+
 ----------------------------------------------------------------------------
 
 
