@@ -68,7 +68,11 @@
 
 * Emulates hi-res modes on ZX Spectrum (rainbow effects and others) and ZX80/ZX81 (UDG, CHR$128, WRX, HRG and some other hi-res modes)
 
-* Supports reducing the screen to 192x144 (0.75 scale)
+* Supports lots of video effects:
+- Reduce, Unsteady, Flip Vertical, Flip Horizontal, Rotate, Twirl, Interferences, Sea, Waves, Magnetic Field, Shear, Lens, Radar
+- Zoom, Zoom Mouse, Pixelate, Blur, Shader Border, LED, LED RGB, Hsync lost, Vsync lost, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
+- Scanlines, Sepia, Red, RGB, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
+- Restore Original, Copy to buffer, Mix from Buffer, Load BMP
 
 * Uses its own powerful window environment (ZX Vision) inside the program application window, having the same GUI style on all plattforms. Allows to have an extended display to hold menus and multitask windows in the GUI (ZX Desktop)
 
@@ -163,6 +167,8 @@
 * Experimental simulation of the Sam Coupe Audio Chip (SAA1099)
 
 * Emulates i8049 QL sound
+
+* Simulates Nagravision Audio effect
 
 * Supports RAM size up to 1024 KB on Spectrum and Pentagon
 
