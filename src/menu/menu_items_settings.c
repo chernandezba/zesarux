@@ -1946,6 +1946,13 @@ void menu_interface_special_effects_mix_from_buffer_type(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_mix_from_buffer_tipo>=SCREEN_FX_MIX_FROM_BUFFER_TOTAL_TYPES) screen_rainbow_effect_mix_from_buffer_tipo=0;
 }
 
+void menu_main_window_special_effects_remove(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Remove all effects")) {
+        init_screen_effects_table();
+    }
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -1963,12 +1970,15 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Effects are applied in order, starting from top to bottom");
         menu_add_item_menu_ayuda(array_menu_common,"Effects are applied in order, starting from top to bottom");
 
-        menu_add_item_menu_separator(array_menu_common);
-
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Effects ---","--- Efectos ---","--- Efectes ---");
-
-
         if (screen_special_effects_enabled.v) {
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_remove,NULL,
+                "Remove all effects","Borrar todos los efectos","Borrar tots els efectes");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"--- Effects ---","--- Efectos ---","--- Efectes ---");
 
             int i;
 

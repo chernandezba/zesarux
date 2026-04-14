@@ -79,10 +79,7 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 
 
 -PCW:
-ok ya estaba*poder forzar un modo por menu
-ok*bit 7 para resetear o no paleta al cambiar un modo
-ok *comentar codigo segun https://amstrad.es/forum/viewtopic.php?t=4809&start=75#p87482
-* revisar info de la wiki: https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini
+* revisar info de la wiki: https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini y ver si falta algo y/o si está todo bien
 
 -modo dither, sin realvideo, no lo hace en el border
 
@@ -130,20 +127,4 @@ ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el
 
 -efectos especiales
 *revisar liberar memoria
-
-
-
--Imagen estereoscopica. Tanto anaglifo (azul + rojo) como imagen separada en dos ventanas para dos ojos
-->esto ya se puede hacer combinando los efectos:
-
---video-fx-enable
---video-fx-set "Scroll Horizontal" 0 1
---video-fx-set "Red" 1 1
---video-fx-set "Copy to buffer" 2 1
---video-fx-set "Restore Original" 3 1
---video-fx-set "RGB" 4 1
---video-fx-set "Mix from buffer" 5 1
---video-fx-offset "Scroll Horizontal" 20
---video-fx-rgb RGB 0 0 1
---video-fx-mix-type "Mix from buffer" "Average"
 
