@@ -1567,6 +1567,18 @@ void audio_apply_nagra_effect(void)
 
 }
 
+void audio_apply_nagra_effect_mono(void)
+{
+
+    int valor_sin=util_get_cosine(grados_nagra);
+
+    audio_valor_enviar_sonido=(audio_valor_enviar_sonido*valor_sin)/10000;
+
+}
+
+
+
+
 void audio_apply_nagra_effect_beeper(void)
 {
 
