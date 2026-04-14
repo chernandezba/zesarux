@@ -423,6 +423,11 @@ void cpu_core_loop_z88(void)
 					}
 
 				}
+
+            if (audio_nagra_effect.v) {
+                audio_apply_nagra_effect_mono();
+                audio_apply_nagra_effect_next();
+            }
 	                        //Ajustar volumen
         	                if (audiovolume!=100) {
                 	                audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);

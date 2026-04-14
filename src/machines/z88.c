@@ -3176,6 +3176,11 @@ z80_long_int z88_eprom_flash_recover_deleted(void)
 
 char z88_get_beeper_sound(void)
 {
+    if (audio_nagra_effect.v) {
+        if (blink_com & 64) return +100;
+        else return 0;
+    }
+
 
 	if (blink_com & 64) return +100;
 	else return -100;
