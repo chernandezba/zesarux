@@ -511,62 +511,62 @@ void cpu_core_loop_z88(void)
 
     //Interrupcion de 1/200s. mapa teclas activas y joystick
     if (interrupcion_fifty_generada.v) {
-                        interrupcion_fifty_generada.v=0;
+        interrupcion_fifty_generada.v=0;
 
-            if (z88_5ms_contador==3) {
-                            //y de momento actualizamos tablas de teclado segun tecla leida
-                //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
-                           scr_actualiza_tablas_teclado();
-
-
-                           //lectura de joystick
-                           realjoystick_main();
-
-            }
-
-                        z88_5ms_contador++;
-                        if (z88_5ms_contador==4) z88_5ms_contador=0;
-
-                        //printf ("temp conta fifty: %d z88_5ms_contador: %d\n",tempcontafifty++,z88_5ms_contador);
+        if (z88_5ms_contador==3) {
+            //y de momento actualizamos tablas de teclado segun tecla leida
+            //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
+            scr_actualiza_tablas_teclado();
 
 
-            //Top speed no funciona bien en Z88. Si estaba activo, desactivarlo
-            if (top_speed_timer.v) top_speed_timer.v=0;
-                }
+            //lectura de joystick
+            realjoystick_main();
+
+        }
+
+        z88_5ms_contador++;
+        if (z88_5ms_contador==4) z88_5ms_contador=0;
+
+        //printf ("temp conta fifty: %d z88_5ms_contador: %d\n",tempcontafifty++,z88_5ms_contador);
 
 
-                //Interrupcion de procesador y marca final de frame
-                if (interrupcion_timer_generada.v) {
-                        interrupcion_timer_generada.v=0;
-                        esperando_tiempo_final_t_estados.v=0;
-                        interlaced_numero_frame++;
-            z88_contador_para_flap++;
-                        //printf ("%d\n",interlaced_numero_frame);
-            z88_gestionar_tim();
-
-            //printf ("registros RTC TIM: %d %d %d %d %d\n",blink_tim[0],blink_tim[1],blink_tim[2],blink_tim[3],blink_tim[4]);
-
-            //Gestionar interrupciones al final del frame
-            if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
-                z88_gestionar_interrupcion();
-            }
-
-            //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
-            if (core_end_frame_check_zrcp_zeng_snap.v) {
-                core_end_frame_check_zrcp_zeng_snap.v=0;
-                check_pending_zrcp_put_snapshot();
-                zeng_send_snapshot_if_needed();
-
-                zeng_online_client_end_frame_from_core_functions();
-
-            }
-
-                        //Para calcular lo que se tarda en ejecutar todo un frame
-                        timer_get_elapsed_core_frame_pre();
+        //Top speed no funciona bien en Z88. Si estaba activo, desactivarlo
+        if (top_speed_timer.v) top_speed_timer.v=0;
+    }
 
 
-                }
+    //Interrupcion de procesador y marca final de frame
+    if (interrupcion_timer_generada.v) {
+        interrupcion_timer_generada.v=0;
+        esperando_tiempo_final_t_estados.v=0;
+        interlaced_numero_frame++;
+        z88_contador_para_flap++;
+        //printf ("%d\n",interlaced_numero_frame);
+        z88_gestionar_tim();
 
-                debug_get_t_stados_parcial_post();
+        //printf ("registros RTC TIM: %d %d %d %d %d\n",blink_tim[0],blink_tim[1],blink_tim[2],blink_tim[3],blink_tim[4]);
+
+        //Gestionar interrupciones al final del frame
+        if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+            z88_gestionar_interrupcion();
+        }
+
+        //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+        if (core_end_frame_check_zrcp_zeng_snap.v) {
+            core_end_frame_check_zrcp_zeng_snap.v=0;
+            check_pending_zrcp_put_snapshot();
+            zeng_send_snapshot_if_needed();
+
+            zeng_online_client_end_frame_from_core_functions();
+
+        }
+
+        //Para calcular lo que se tarda en ejecutar todo un frame
+        timer_get_elapsed_core_frame_pre();
+
+
+    }
+
+    debug_get_t_stados_parcial_post();
 
 }
