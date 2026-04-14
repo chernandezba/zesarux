@@ -150,7 +150,10 @@ void core_pcw_end_scanline_stuff(void)
     audio_valor_enviar_sonido_izquierdo +=da_output_ay_izquierdo();
     audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();
 
-
+    if (audio_nagra_effect.v) {
+        audio_apply_nagra_effect();
+        audio_apply_nagra_effect_next();
+    }
 
     //TODO real beeper
     if (beeper_enabled.v) {
