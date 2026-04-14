@@ -189,80 +189,80 @@ void z88_gestionar_interrupcion(void)
     z80_adjust_flags_interrupt_block_opcode();
 
 
-                        //ver si esta en HALT
-                        if (z80_halt_signal.v) {
-                                        z80_halt_signal.v=0;
-                                        //reg_pc++;
-                    //z88_awake_from_coma();
-                        //printf ("final de halt en refresca: %d max_cpu_cycles: %d\n",refresca,max_cpu_cycles);
-                        }
+    //ver si esta en HALT
+    if (z80_halt_signal.v) {
+                    z80_halt_signal.v=0;
+                    //reg_pc++;
+//z88_awake_from_coma();
+    //printf ("final de halt en refresca: %d max_cpu_cycles: %d\n",refresca,max_cpu_cycles);
+    }
 
-            //z88_awake_from_snooze();
-
-
-                         if (interrupcion_non_maskable_generada.v) {
-                        debug_anota_retorno_step_nmi();
-                                                interrupcion_non_maskable_generada.v=0;
-                                                //printf ("Calling NMI with pc=0x%x\n",reg_pc);
-                                                //call_address(0x66);
-                        iff1.v=0;
-                                                push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
-                                                reg_pc=0x66;
+    //z88_awake_from_snooze();
 
 
-                                        }
+    if (interrupcion_non_maskable_generada.v) {
+        debug_anota_retorno_step_nmi();
+        interrupcion_non_maskable_generada.v=0;
+        //printf ("Calling NMI with pc=0x%x\n",reg_pc);
+        //call_address(0x66);
+        iff1.v=0;
+        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+        reg_pc=0x66;
 
-                        else {
 
-            //si estamos en DI, volver
+    }
+
+    else {
+
+        //si estamos en DI, volver
 
 
-            if (iff1.v==0) {
-                if (interrupcion_maskable_generada.v) interrupcion_maskable_generada.v=0;
-                //printf ("generada interrupcion pero DI. volvemos sin hacer nada\n");
-                return;
+        if (iff1.v==0) {
+            if (interrupcion_maskable_generada.v) interrupcion_maskable_generada.v=0;
+            //printf ("generada interrupcion pero DI. volvemos sin hacer nada\n");
+            return;
+        }
+
+
+
+
+        //justo despues de EI no debe generar interrupcion
+        //e interrupcion nmi tiene prioridad
+        if (interrupcion_maskable_generada.v && byte_leido_core_z88!=251) {
+            debug_anota_retorno_step_maskable();
+            //Tratar interrupciones maskable
+            interrupcion_maskable_generada.v=0;
+
+
+
+
+            push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+
+            reg_r++;
+
+
+
+            //desactivar interrupciones al generar una
+            iff1.v=iff2.v=0;
+
+            if (im_mode==0 || im_mode==1) {
+            cpu_common_jump_im01();
             }
+            else {
+            //IM 2.
+
+            z80_int temp_i;
+            z80_byte dir_l,dir_h;
+            temp_i=get_im2_interrupt_vector();
+            dir_l=peek_byte(temp_i++);
+            dir_h=peek_byte(temp_i);
+            reg_pc=value_8_to_16(dir_h,dir_l);
+            t_estados += 7;
 
 
-
-
-                                        //justo despues de EI no debe generar interrupcion
-                                        //e interrupcion nmi tiene prioridad
-                               if (interrupcion_maskable_generada.v && byte_leido_core_z88!=251) {
-                        debug_anota_retorno_step_maskable();
-                                                //Tratar interrupciones maskable
-                                                interrupcion_maskable_generada.v=0;
-
-
-
-
-                                                push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
-
-                                                reg_r++;
-
-
-
-                                                //desactivar interrupciones al generar una
-                        iff1.v=iff2.v=0;
-
-                                                if (im_mode==0 || im_mode==1) {
-                                                        cpu_common_jump_im01();
-                                                }
-                                                else {
-                                                //IM 2.
-
-                                                        z80_int temp_i;
-                                                        z80_byte dir_l,dir_h;
-                                                        temp_i=get_im2_interrupt_vector();
-                                                        dir_l=peek_byte(temp_i++);
-                                                        dir_h=peek_byte(temp_i);
-                                                        reg_pc=value_8_to_16(dir_h,dir_l);
-                                                        t_estados += 7;
-
-
-                                                }
-                    }
             }
+        }
+    }
 
 
 }
