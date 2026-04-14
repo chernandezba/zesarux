@@ -207,7 +207,10 @@ void cpu_core_loop_ql(void)
             //Usando emulacion del chip intel
             audio_valor_enviar_sonido +=ql_audio_da_output();
 
-
+            if (audio_nagra_effect.v) {
+                audio_apply_nagra_effect_mono();
+                audio_apply_nagra_effect_next();
+            }
 
             //Ajustar volumen
             if (audiovolume!=100) {
