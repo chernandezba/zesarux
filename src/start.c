@@ -840,6 +840,7 @@ void zesarux_cmdline_help_expert(void)
 printf (
         "\n"
         "--audiovolume n                  Sets the audio output volume to percentage n\n"
+        "--nagraaudio                     Enable Nagravision audio filter\n"
         "--zx8081vsyncsound               Enable vsync/tape sound on ZX80/81\n"
         "--zx8081vsyncsounddetection      Enable vsync/tape sound detection on ZX80/81\n"
         "--ayplayer-add-dir d             Add directory containing AY files to playlist\n"
@@ -6560,6 +6561,12 @@ int parse_cmdline_options(int desde_commandline)
 
                 else audiovolume=valor;
             }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--nagraaudio")) {
+                audio_nagra_effect.v=1;
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-add-dir")) {
                 siguiente_parametro_argumento();

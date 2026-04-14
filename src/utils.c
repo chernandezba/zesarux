@@ -4791,6 +4791,7 @@ int util_write_configfile(void)
 
     if (snow_effect_enabled.v)                      ADD_STRING_CONFIG,"--snoweffect");
     if (audiovolume!=100)                           ADD_STRING_CONFIG,"--audiovolume %d",audiovolume);
+    if (audio_nagra_effect.v)                       ADD_STRING_CONFIG,"--nagraaudio");
     if (ay_player_exit_emulator_when_finish.v)      ADD_STRING_CONFIG,"--ayplayer-end-exit");
     if (ay_player_shuffle_mode.v)                   ADD_STRING_CONFIG,"--ayplayer-shuffle");
     if (ay_player_silence_detection.v==0)           ADD_STRING_CONFIG,"--ayplayer-no-silence-detection");
