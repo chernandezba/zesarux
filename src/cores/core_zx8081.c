@@ -188,10 +188,10 @@ void cpu_core_loop_zx8081(void)
 
 
 
-    if (pendiente_maskable_generada.v) {
-        pendiente_maskable_generada.v=0;
-        interrupcion_maskable_generada.v=1;
-    }
+            if (pendiente_maskable_generada.v) {
+                pendiente_maskable_generada.v=0;
+                interrupcion_maskable_generada.v=1;
+            }
 
 
             if (iff1.v) {
@@ -239,8 +239,6 @@ void cpu_core_loop_zx8081(void)
         core_zx8081_medio_scanline=0;
 
         t_scanline++;
-
-
 
 
         //Envio sonido
@@ -399,8 +397,6 @@ void cpu_core_loop_zx8081(void)
 
 
         }
-
-
 
 
     }
