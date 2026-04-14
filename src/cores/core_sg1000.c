@@ -67,24 +67,18 @@ int duracion_ultimo_opcode_sg1000=0;
 
 
 
-
-
-
-
-
-
 void t_scanline_next_fullborder_sg1000(void)
 {
-        //resetear buffer border
+    //resetear buffer border
 
-        //int i;
+    //int i;
 
 
 
-        //a 255
-        //for (i=0;i<CURRENT_FULLBORDER_ARRAY_LENGTH;i++) fullbuffer_border[i]=255;
-		//mas rapido con memset
-		memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH);
+    //a 255
+    //for (i=0;i<CURRENT_FULLBORDER_ARRAY_LENGTH;i++) fullbuffer_border[i]=255;
+    //mas rapido con memset
+    memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH);
 
 
 	//printf ("max buffer border : %d\n",i);
@@ -94,8 +88,6 @@ void t_scanline_next_fullborder_sg1000(void)
 
 void interrupcion_si_despues_lda_ir_sg1000(void)
 {
-
-
 
 	//NMOS
 	//printf ("leido %d en interrupt\n",byte_leido_core_sg1000);
@@ -111,11 +103,6 @@ void interrupcion_si_despues_lda_ir_sg1000(void)
 
 
 
-
-
-
-
-
 void core_sg1000_fin_frame_pantalla(void)
 {
 	//Siguiente frame de pantalla
@@ -123,8 +110,6 @@ void core_sg1000_fin_frame_pantalla(void)
 
 
 
-
-				//tsconf_last_frame_y=-1;
 
 				if (rainbow_enabled.v==1) t_scanline_next_fullborder_sg1000();
 
@@ -259,6 +244,11 @@ void core_sg1000_fin_scanline(void)
 				//audio_valor_enviar_sonido_derecho +=da_output_sn_derecho();
 				audio_valor_enviar_sonido_izquierdo +=da_output_sn();
 				audio_valor_enviar_sonido_derecho +=da_output_sn();
+
+                if (audio_nagra_effect.v) {
+                    audio_apply_nagra_effect();
+                    audio_apply_nagra_effect_next();
+                }
 
 
 				/*
