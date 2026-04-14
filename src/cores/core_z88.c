@@ -274,102 +274,94 @@ void z88_gestionar_interrupcion(void)
 void cpu_core_loop_z88(void)
 {
 
-                debug_get_t_stados_parcial_pre();
+    debug_get_t_stados_parcial_pre();
 
 
-        timer_check_interrupt();
+    timer_check_interrupt();
 
-//#ifdef COMPILE_STDOUT
-//              if (screen_stdout_driver) scr_stdout_printchar();
-//#endif
-//
-//#ifdef COMPILE_SIMPLETEXT
-//                if (screen_simpletext_driver) scr_simpletext_printchar();
-//#endif
-                if (chardetect_detect_char_enabled.v) chardetect_detect_char();
-                if (chardetect_printchar_enabled.v) chardetect_printchar();
-
-
+    //#ifdef COMPILE_STDOUT
+    //              if (screen_stdout_driver) scr_stdout_printchar();
+    //#endif
+    //
+    //#ifdef COMPILE_SIMPLETEXT
+    //                if (screen_simpletext_driver) scr_simpletext_printchar();
+    //#endif
+    if (chardetect_detect_char_enabled.v) chardetect_detect_char();
+    if (chardetect_printchar_enabled.v) chardetect_printchar();
 
 
-        if (0==1) {
+    if (esperando_tiempo_final_t_estados.v==0) {
+
+
+        if (z88_snooze.v==0) {
+            contend_read( reg_pc, 4 );
+
+            byte_leido_core_z88=fetch_opcode();
+
+    #ifdef EMULATE_CPU_STATS
+            util_stats_increment_counter(stats_codsinpr,byte_leido_core_z88);
+    #endif
+
+            //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+            if (z80_halt_signal.v) {
+                byte_leido_core_z88=0;
+            }
+            else {
+                reg_pc++;
+            }
+
+            reg_r++;
+
+            z80_no_ejecutado_block_opcodes();
+            codsinpr[byte_leido_core_z88]  () ;
+
+            //printf ("t_estados: %d\n",t_estados);
+
         }
 
         else {
-            if (esperando_tiempo_final_t_estados.v==0) {
+            //printf ("modo snooze reg_pc=%d\n",reg_pc);
+            //si esta en modo snooze o coma, no hacer mucho
+            //contend_read( reg_pc, 4 );
+            //lee NOP
+            byte_leido_core_z88=0;
+
+            //simulamos que es un nop pero con t_estados muy largo, para liberar la cpu bastante
+            t_estados +=Z88_T_ESTADOS_COMA_SNOOZE;
 
 
-                if (z88_snooze.v==0) {
-                                    contend_read( reg_pc, 4 );
+        }
 
-                    byte_leido_core_z88=fetch_opcode();
+        //si en modo snooze o coma, leer teclado para notificar
+        if (z88_snooze.v || z88_coma.v) {
 
-#ifdef EMULATE_CPU_STATS
-                    util_stats_increment_counter(stats_codsinpr,byte_leido_core_z88);
-#endif
+            if (z88_return_keyboard_port_value(0)!=255) {
+                //printf ("notificar tecla\n");
+                z88_notificar_tecla();
 
-                    //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-                    if (z80_halt_signal.v) {
-                        byte_leido_core_z88=0;
-                    }
-                    else {
-                        reg_pc++;
-                    }
+                //printf ("tecla kbd A10: %d A11: %d\n", blink_kbd_a10, blink_kbd_a11);
+            }
 
-                    reg_r++;
-
-                            z80_no_ejecutado_block_opcodes();
-                            codsinpr[byte_leido_core_z88]  () ;
-
-                    //printf ("t_estados: %d\n",t_estados);
+        }
 
 
-                }
-
-                else {
-                    //printf ("modo snooze reg_pc=%d\n",reg_pc);
-                    //si esta en modo snooze o coma, no hacer mucho
-                    //contend_read( reg_pc, 4 );
-                    //lee NOP
-                    byte_leido_core_z88=0;
-
-                    //simulamos que es un nop pero con t_estados muy largo, para liberar la cpu bastante
-                    t_estados +=Z88_T_ESTADOS_COMA_SNOOZE;
-
-
-                }
-
-                                //si en modo snooze o coma, leer teclado para notificar
-                                if (z88_snooze.v || z88_coma.v) {
-
-                                        if (z88_return_keyboard_port_value(0)!=255) {
-                                                //printf ("notificar tecla\n");
-                                                z88_notificar_tecla();
-
-                                                //printf ("tecla kbd A10: %d A11: %d\n", blink_kbd_a10, blink_kbd_a11);
-                                        }
-
-                                }
-
-
-                //Si en modo coma, alargar los t_estados del halt, para liberar la cpu bastante
-                if (z88_snooze.v==0 && z88_coma.v==1 && z80_halt_signal.v) {
-                    t_estados +=Z88_T_ESTADOS_COMA_SNOOZE;
-                }
+        //Si en modo coma, alargar los t_estados del halt, para liberar la cpu bastante
+        if (z88_snooze.v==0 && z88_coma.v==1 && z80_halt_signal.v) {
+            t_estados +=Z88_T_ESTADOS_COMA_SNOOZE;
+        }
 
 
 
-                        }
-                }
+    }
 
 
 
-        //ejecutar esto al final de cada una de las scanlines (312)
-        //esto implica que al final del frame de pantalla habremos enviado 312 bytes de sonido
+    //ejecutar esto al final de cada una de las scanlines (312)
+    //esto implica que al final del frame de pantalla habremos enviado 312 bytes de sonido
 
 
-        //A final de cada scanline
-        if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+    //A final de cada scanline
+    if ( (t_estados/screen_testados_linea)>t_scanline  ) {
             //printf ("%d\n",t_estados);
 
 
