@@ -1860,7 +1860,7 @@ void menu_interface_special_effects_zoom_factor(MENU_ITEM_PARAMETERS)
 
 void menu_interface_special_effects_mix_from_buffer_percentaje(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Layer percentaje",&screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer,3,+1,1,99,0);
+    menu_ventana_scanf_numero_enhanced("Layer percentage",&screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer,3,+1,1,99,0);
 }
 
 void menu_interface_special_effects_load_bmp(MENU_ITEM_PARAMETERS)

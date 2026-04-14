@@ -1834,7 +1834,7 @@ void handle_trap_fs_mdinf(void)
         //Retornamos :
         //D1.L empty/good sectors. The number of empty sectors is in the most significant word (msw) of D1,
         //the total available on the medium is in the least significant word (lsw). A sector is 512 bytes.
-        //de momento ,MDV files in QLAY format. Thee files must be exactly 174930 bytes 174930/512->aprox 341
+        //de momento ,MDV files in QLAY format. The files must be exactly 174930 bytes 174930/512->aprox 341
         m68k_set_reg(M68K_REG_D1,32*65536+341); //32 sectores libres, 341 sectores ocupados
         //Por qué 32 sectores libres? Nada, por probar, porque no diga 0 simplemente
 

@@ -1940,7 +1940,7 @@ printf("\n"
         //"--disablebw-no-multitask   Disable changing to black & white colours on the emulator machine when menu open and multitask is off\n"
         "--stopemulationmenu                      When multitask is enabled, you can disable emulation when opening the menu\n"
         "--old-behaviour-menu-esc-etc             Old menu behaviour: ESC go back, Apps go back to previous menu\n"
-        "--hide-menu-percentage-bar               Hides vertical percentaje bar on the right of text windows and file selector\n"
+        "--hide-menu-percentage-bar               Hides vertical percentage bar on the right of text windows and file selector\n"
         "--hide-menu-submenu-indicator            Hides submenu indicator character (>) on menu items with submenus\n"
         "--no-show-previous-submenus              Do not show previous submenus\n"
         "--hide-menu-minimize-button              Hides minimize button on the title window\n"
@@ -2057,7 +2057,7 @@ printf (
         widget_list_print();
 
         printf("\n"
-        "--sensor-set-abs position                Set widget type absolute instead of percentaje for menu View sensors. Position must be 0 to %d\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
+        "--sensor-set-abs position                Set widget type absolute instead of percentage for menu View sensors. Position must be 0 to %d\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
 
 
         printf(
