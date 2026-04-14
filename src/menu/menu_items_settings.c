@@ -1802,8 +1802,9 @@ void menu_interface_special_effects_shaderborder_blur_intensity_updown(MENU_ITEM
 
 void menu_interface_special_effects_blur_intensity(MENU_ITEM_PARAMETERS)
 {
-    screen_rainbow_effect_blur_intensity++;
-    if (screen_rainbow_effect_blur_intensity>16) screen_rainbow_effect_blur_intensity=1;
+    //screen_rainbow_effect_blur_intensity++;
+    //if (screen_rainbow_effect_blur_intensity>16) screen_rainbow_effect_blur_intensity=1;
+    menu_ventana_scanf_numero_enhanced("Intensity",&screen_rainbow_effect_blur_intensity,3,+1,1,16,0);
 }
 
 void menu_interface_special_effects_persistence_total_frames(MENU_ITEM_PARAMETERS)
