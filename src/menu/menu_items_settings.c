@@ -1598,6 +1598,21 @@ void menu_main_window_special_effects_change_move_down(MENU_ITEM_PARAMETERS)
     menu_main_window_special_effects_mover_cursor_linea=valor_opcion+1;
 }
 
+void menu_main_window_special_effects_change_insert_effect(MENU_ITEM_PARAMETERS)
+{
+
+    int i;
+
+    for (i=MAX_SCREEN_LIST_EFFECTS-1;i>valor_opcion;i--) {
+        screen_effect_applied_list[i].type=screen_effect_applied_list[i-1].type;
+        screen_effect_applied_list[i].enabled=screen_effect_applied_list[i-1].enabled;
+    }
+
+    screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
+    screen_effect_applied_list[i].enabled=0;
+
+}
+
 void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
 {
     screen_effect_applied_list[valor_opcion].enabled ^=1;
@@ -1694,6 +1709,11 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_abajo());
         menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
     }
+
+    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_insert_effect,NULL,
+    "Insert effect","Insertar efecto","Insertar efecte");
+    menu_add_item_menu_prefijo(array_menu_common,"+ ");
+    menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
 
     menu_add_item_menu_separator(array_menu_common);
 
