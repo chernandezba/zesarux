@@ -236,126 +236,93 @@ void core_coleco_fin_frame_pantalla(void)
 
 void core_coleco_fin_scanline(void)
 {
-//printf ("%d\n",t_estados);
-			//if (t_estados>69000) printf ("t_scanline casi final: %d\n",t_scanline);
 
-			if (1) {
+    audio_valor_enviar_sonido_izquierdo=audio_valor_enviar_sonido_derecho=0;
 
-				//audio_valor_enviar_sonido=0;
+    audio_valor_enviar_sonido_izquierdo +=da_output_sn();
+    audio_valor_enviar_sonido_derecho +=da_output_sn();
 
-				audio_valor_enviar_sonido_izquierdo=audio_valor_enviar_sonido_derecho=0;
-
-				//audio_valor_enviar_sonido_izquierdo +=da_output_sn_izquierdo();
-				//audio_valor_enviar_sonido_derecho +=da_output_sn_derecho();
-				audio_valor_enviar_sonido_izquierdo +=da_output_sn();
-				audio_valor_enviar_sonido_derecho +=da_output_sn();
-
-                if (audio_nagra_effect.v) {
-                    //Nota para beeper se gestiona independiente porque el silencio en beeper no es 0 y al multiplicar por el coseno, generaria un pitido en silencio
-
-                    //printf("%d\n",audio_valor_enviar_sonido_izquierdo);
-                    audio_apply_nagra_effect();
-                    audio_apply_nagra_effect_next();
-                    //printf(">%d\n",audio_valor_enviar_sonido_izquierdo);
-                }
-
-				/*
-				if (beeper_enabled.v) {
-					if (beeper_real_enabled==0) {
-						audio_valor_enviar_sonido_izquierdo += da_amplitud_speaker_coleco();
-						audio_valor_enviar_sonido_derecho += da_amplitud_speaker_coleco();
-					}
-
-					else {
-						char suma_beeper=get_value_beeper_sum_array();
-						audio_valor_enviar_sonido_izquierdo += suma_beeper;
-						audio_valor_enviar_sonido_derecho += suma_beeper;
-						beeper_new_line();
-					}
-
-
-				}
-				*/
+    if (audio_nagra_effect.v) {
+        audio_apply_nagra_effect();
+        audio_apply_nagra_effect_next();
+    }
 
 
 
-				if (realtape_inserted.v && realtape_playing.v) {
-					realtape_get_byte();
-					if (realtape_loading_sound.v) {
-                        reset_silence_detection_counter();
-                        audio_valor_enviar_sonido_izquierdo /=2;
-	                    audio_valor_enviar_sonido_izquierdo += get_realtape_last_value()/2;
+    if (realtape_inserted.v && realtape_playing.v) {
+        realtape_get_byte();
+        if (realtape_loading_sound.v) {
+            reset_silence_detection_counter();
+            audio_valor_enviar_sonido_izquierdo /=2;
+            audio_valor_enviar_sonido_izquierdo += get_realtape_last_value()/2;
 
-						audio_valor_enviar_sonido_derecho /=2;
-	                    audio_valor_enviar_sonido_derecho += get_realtape_last_value()/2;
+            audio_valor_enviar_sonido_derecho /=2;
+            audio_valor_enviar_sonido_derecho += get_realtape_last_value()/2;
 
-						//Sonido alterado cuando top speed
-						if (timer_condicion_top_speed() ) {
-							audio_valor_enviar_sonido_izquierdo=audio_change_top_speed_sound(audio_valor_enviar_sonido_izquierdo);
-							audio_valor_enviar_sonido_derecho=audio_change_top_speed_sound(audio_valor_enviar_sonido_derecho);
-						}
-					}
-				}
+            //Sonido alterado cuando top speed
+            if (timer_condicion_top_speed() ) {
+                audio_valor_enviar_sonido_izquierdo=audio_change_top_speed_sound(audio_valor_enviar_sonido_izquierdo);
+                audio_valor_enviar_sonido_derecho=audio_change_top_speed_sound(audio_valor_enviar_sonido_derecho);
+            }
+        }
+    }
 
-				//Ajustar volumen
-				if (audiovolume!=100) {
-					audio_valor_enviar_sonido_izquierdo=audio_adjust_volume(audio_valor_enviar_sonido_izquierdo);
-					audio_valor_enviar_sonido_derecho=audio_adjust_volume(audio_valor_enviar_sonido_derecho);
-				}
-
-
-				if (audio_tone_generator) {
-					audio_send_mono_sample(audio_tone_generator_get() );
-				}
-
-				else {
-					audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
-				}
+    //Ajustar volumen
+    if (audiovolume!=100) {
+        audio_valor_enviar_sonido_izquierdo=audio_adjust_volume(audio_valor_enviar_sonido_izquierdo);
+        audio_valor_enviar_sonido_derecho=audio_adjust_volume(audio_valor_enviar_sonido_derecho);
+    }
 
 
+    if (audio_tone_generator) {
+        audio_send_mono_sample(audio_tone_generator_get() );
+    }
 
-				sn_chip_siguiente_ciclo();
+    else {
+        audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
+    }
 
 
 
-			}
-
-			//final de linea
-
-			//copiamos contenido linea y border a buffer rainbow
-			if (rainbow_enabled.v==1) {
-				if (next_frame_skip_render_scanlines) {
-					//if ((t_estados/screen_testados_linea)>319) printf ("-Not storing rainbow buffer as framescreen_saltar is %d or manual frameskip\n",framescreen_saltar);
-				}
-
-				else {
-					//if ((t_estados/screen_testados_linea)>319) printf ("storing rainbow buffer\n");
-					//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_store_scanline_rainbow);
-					//screen_store_scanline_rainbow_solo_border();
-					//screen_store_scanline_rainbow_solo_display();
-
-					screen_store_scanline_rainbow_coleco_border_and_display();
-					//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_store_scanline_rainbow);
-				}
-
-				//t_scanline_next_border();
-
-			}
-
-			//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_t_scanline_next_line);
-			t_scanline_next_line();
-			//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_t_scanline_next_line);
+    sn_chip_siguiente_ciclo();
 
 
-			//se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
-			//esperar para ver si se ha generado una interrupcion 1/50
+    //final de linea
 
-            if (t_estados>=screen_testados_total) {
-				//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_fin_frame_pantalla);
-				core_coleco_fin_frame_pantalla();
-				//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_fin_frame_pantalla);
-			}
-			//Fin bloque final de pantalla
+    //copiamos contenido linea y border a buffer rainbow
+    if (rainbow_enabled.v==1) {
+        if (next_frame_skip_render_scanlines) {
+            //if ((t_estados/screen_testados_linea)>319) printf ("-Not storing rainbow buffer as framescreen_saltar is %d or manual frameskip\n",framescreen_saltar);
+        }
+
+        else {
+            //if ((t_estados/screen_testados_linea)>319) printf ("storing rainbow buffer\n");
+            //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_store_scanline_rainbow);
+            //screen_store_scanline_rainbow_solo_border();
+            //screen_store_scanline_rainbow_solo_display();
+
+            screen_store_scanline_rainbow_coleco_border_and_display();
+            //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_store_scanline_rainbow);
+        }
+
+        //t_scanline_next_border();
+
+    }
+
+    //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_t_scanline_next_line);
+    t_scanline_next_line();
+    //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_t_scanline_next_line);
+
+
+    //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
+    //esperar para ver si se ha generado una interrupcion 1/50
+
+    if (t_estados>=screen_testados_total) {
+        //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_fin_frame_pantalla);
+        core_coleco_fin_frame_pantalla();
+        //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_fin_frame_pantalla);
+    }
+    //Fin bloque final de pantalla
 
 
 
