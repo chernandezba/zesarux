@@ -263,6 +263,11 @@ void cpu_core_loop_zx8081(void)
             beeper_silence_detection_counter=SILENCE_DETECTION_MAX;
         }
 
+        if (audio_nagra_effect.v) {
+            audio_apply_nagra_effect_mono();
+            audio_apply_nagra_effect_next();
+        }
+
 
         int leer_cinta_real=0;
 
