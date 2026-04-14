@@ -67,24 +67,18 @@ int duracion_ultimo_opcode_coleco=0;
 
 
 
-
-
-
-
-
-
 void t_scanline_next_fullborder_coleco(void)
 {
-        //resetear buffer border
+    //resetear buffer border
 
-        //int i;
+    //int i;
 
 
 
-        //a 255
-        //for (i=0;i<CURRENT_FULLBORDER_ARRAY_LENGTH;i++) fullbuffer_border[i]=255;
-		//mas rapido con memset
-		memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH);
+    //a 255
+    //for (i=0;i<CURRENT_FULLBORDER_ARRAY_LENGTH;i++) fullbuffer_border[i]=255;
+    //mas rapido con memset
+    memset(fullbuffer_border,255,CURRENT_FULLBORDER_ARRAY_LENGTH);
 
 
 	//printf ("max buffer border : %d\n",i);
@@ -94,8 +88,6 @@ void t_scanline_next_fullborder_coleco(void)
 
 void interrupcion_si_despues_lda_ir_coleco(void)
 {
-
-
 
 	//NMOS
 	//printf ("leido %d en interrupt\n",byte_leido_core_coleco);
@@ -110,126 +102,108 @@ void interrupcion_si_despues_lda_ir_coleco(void)
 
 
 
-
-
-
-
-
-
 void core_coleco_fin_frame_pantalla(void)
 {
-	//Siguiente frame de pantalla
-				timer_get_elapsed_core_frame_post();
+    //Siguiente frame de pantalla
+    timer_get_elapsed_core_frame_post();
+
+
+    if (rainbow_enabled.v==1) t_scanline_next_fullborder_coleco();
+
+    t_scanline=0;
+
+
+    set_t_scanline_draw_zero();
+
+
+    //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
+    //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
+    //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
+    //este completo; esto es necesario para Z88
+
+
+    int linea_estados=t_estados/screen_testados_linea;
+
+    while (linea_estados<312) {
+        audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
+        //audio_send_mono_sample(audio_valor_enviar_sonido_izquierdo);
+                            linea_estados++;
+    }
 
 
 
 
-				//tsconf_last_frame_y=-1;
+    t_estados -=screen_testados_total;
 
-				if (rainbow_enabled.v==1) t_scanline_next_fullborder_coleco();
+    //Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
+    //t_estados=0;
+    //->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
 
-		        t_scanline=0;
-
-
-					set_t_scanline_draw_zero();
-
+    audio_tone_generator_last=-audio_tone_generator_last;
 
 
-
-                                //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
-                                //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-                                //Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
-                                //este completo; esto es necesario para Z88
+    //Final de instrucciones ejecutadas en un frame de pantalla
+    if (iff1.v==1) {
+        interrupcion_maskable_generada.v=1;
 
 
-                int linea_estados=t_estados/screen_testados_linea;
-
-                while (linea_estados<312) {
-					audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
-					//audio_send_mono_sample(audio_valor_enviar_sonido_izquierdo);
-                                        linea_estados++;
-                }
+        //Si la anterior instruccion ha tardado 32 ciclos o mas
+        if (duracion_ultimo_opcode_coleco>=cpu_duracion_pulso_interrupcion) {
+            debug_printf (VERBOSE_PARANOID,"Losing last interrupt because last opcode lasts 32 t-states or more");
+            interrupcion_maskable_generada.v=0;
+        }
 
 
+    }
 
+    //Si se genera nmi mediante bit 5 de registro vdp 1
+    //VR1
+    //5    IE0        V-Blank Interrupt Enable   (0=Disable, 1=Enable)
+    if (vdp_9918a_registers[1] & 32) {
+        //printf ("Generando nmi\n");
+        generate_nmi();
 
-                t_estados -=screen_testados_total;
-
-				//Para paperboy, thelosttapesofalbion0 y otros que hacen letras en el border, para que no se desplacen en diagonal
-				//t_estados=0;
-				//->paperboy queda fijo. thelosttapesofalbion0 no se desplaza, sino que tiembla si no forzamos esto
-
-				audio_tone_generator_last=-audio_tone_generator_last;
-
-
-				//Final de instrucciones ejecutadas en un frame de pantalla
-				if (iff1.v==1) {
-					interrupcion_maskable_generada.v=1;
+        //Avisar vsync en vdp
+        vdp_9918a_status_register |=128;
+    }
 
 
 
+    cpu_loop_refresca_pantalla();
+
+    vofile_send_frame(rainbow_buffer);
 
 
-					//Si la anterior instruccion ha tardado 32 ciclos o mas
-					if (duracion_ultimo_opcode_coleco>=cpu_duracion_pulso_interrupcion) {
-						debug_printf (VERBOSE_PARANOID,"Losing last interrupt because last opcode lasts 32 t-states or more");
-						interrupcion_maskable_generada.v=0;
-					}
+    siguiente_frame_pantalla();
 
 
+    if (debug_registers) scr_debug_registers();
+
+    contador_parpadeo--;
+    //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+    if (!contador_parpadeo) {
+        contador_parpadeo=16;
+        toggle_flash_state();
+    }
 
 
+    if (!interrupcion_timer_generada.v) {
+        //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
+        //printf ("no demasiado\n");
+        esperando_tiempo_final_t_estados.v=1;
+    }
 
-				}
-
-				//Si se genera nmi mediante bit 5 de registro vdp 1
-				//VR1
-				//5    IE0        V-Blank Interrupt Enable   (0=Disable, 1=Enable)
-				if (vdp_9918a_registers[1] & 32) {
-					//printf ("Generando nmi\n");
-					generate_nmi();
-
-					//Avisar vsync en vdp
-					vdp_9918a_status_register |=128;
-				}
+    else {
+        //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
+        //printf ("demasiado\n");
+        esperando_tiempo_final_t_estados.v=0;
+    }
 
 
+    core_end_frame_check_zrcp_zeng_snap.v=1;
 
-				cpu_loop_refresca_pantalla();
-
-				vofile_send_frame(rainbow_buffer);
-
-
-				siguiente_frame_pantalla();
-
-
-				if (debug_registers) scr_debug_registers();
-
-	  	                contador_parpadeo--;
-                        	//printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-	                        if (!contador_parpadeo) {
-        	                        contador_parpadeo=16;
-                	                toggle_flash_state();
-	                        }
-
-
-				if (!interrupcion_timer_generada.v) {
-					//Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
-					//printf ("no demasiado\n");
-					esperando_tiempo_final_t_estados.v=1;
-				}
-
-				else {
-					//Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
-					//printf ("demasiado\n");
-					esperando_tiempo_final_t_estados.v=0;
-				}
-
-
-				core_end_frame_check_zrcp_zeng_snap.v=1;
-
-                //snapshot en ram
-                snapshot_add_in_ram();
+    //snapshot en ram
+    snapshot_add_in_ram();
 
 
 }
@@ -330,128 +304,94 @@ void core_coleco_fin_scanline(void)
 
 void core_coleco_handle_interrupts(void)
 {
-		debug_fired_interrupt=1;
+    debug_fired_interrupt=1;
 
-        z80_adjust_flags_interrupt_block_opcode();
-
-			//printf ("Generada interrupcion Z80\n");
+    z80_adjust_flags_interrupt_block_opcode();
 
 
 
-			//if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
-
-                        //ver si esta en HALT
-                        if (z80_halt_signal.v) {
-                                        z80_halt_signal.v=0;
-                                        //reg_pc++;
-                        }
+    //ver si esta en HALT
+    if (z80_halt_signal.v) {
+        z80_halt_signal.v=0;
+        //reg_pc++;
+    }
 
 
+    if (interrupcion_non_maskable_generada.v) {
+        debug_anota_retorno_step_nmi();
+        interrupcion_non_maskable_generada.v=0;
 
-			if (1==1) {
+        //NMI wait 14 estados
+        t_estados += 14;
 
-					if (interrupcion_non_maskable_generada.v) {
-						debug_anota_retorno_step_nmi();
-						//printf ("generada nmi\n");
-                                                interrupcion_non_maskable_generada.v=0;
+        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
-
-                                                //NMI wait 14 estados
-                                                t_estados += 14;
-
-
+        reg_r++;
+        iff1.v=0;
 
 
-												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+        //Otros 6 estados
+        t_estados += 6;
+
+        //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
+        reg_pc= 0x66;
+
+        //temp
+        t_estados -=15;
 
 
-                                                reg_r++;
-                                                iff1.v=0;
-                                                //printf ("Calling NMI with pc=0x%x\n",reg_pc);
-
-                                                //Otros 6 estados
-                                                t_estados += 6;
-
-                                                //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
-                                                reg_pc= 0x66;
-
-												//printf ("generada nmi pc=%04XH\n",reg_pc);
-
-                                                //temp
-
-                                                t_estados -=15;
+        generate_nmi_prepare_fetch();
 
 
+    }
 
 
+    //justo despues de EI no debe generar interrupcion
+    //e interrupcion nmi tiene prioridad
+    if (interrupcion_maskable_generada.v && byte_leido_core_coleco!=251) {
 
-						generate_nmi_prepare_fetch();
+        //printf ("Lanzada interrupcion spectrum normal\n");
 
+        debug_anota_retorno_step_maskable();
+        //Tratar interrupciones maskable
+        interrupcion_maskable_generada.v=0;
 
-					}
-
-					if (1==1) {
-
-
-
-
-
-					//justo despues de EI no debe generar interrupcion
-					//e interrupcion nmi tiene prioridad
-						if (interrupcion_maskable_generada.v && byte_leido_core_coleco!=251) {
-
-						//printf ("Lanzada interrupcion spectrum normal\n");
-
-						debug_anota_retorno_step_maskable();
-						//Tratar interrupciones maskable
-						interrupcion_maskable_generada.v=0;
-
-						interrupcion_si_despues_lda_ir_coleco();
+        interrupcion_si_despues_lda_ir_coleco();
 
 
+        push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+
+        reg_r++;
 
 
-						push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+        //desactivar interrupciones al generar una
+        iff1.v=iff2.v=0;
 
-						reg_r++;
+        if (im_mode==0 || im_mode==1) {
+            cpu_common_jump_im01();
+        }
+        else {
+        //IM 2.
 
+            z80_int temp_i;
+            z80_byte dir_l,dir_h;
 
+            temp_i=get_im2_interrupt_vector();
+            dir_l=peek_byte(temp_i++);
+            dir_h=peek_byte(temp_i);
+            reg_pc=value_8_to_16(dir_h,dir_l);
+            t_estados += 7;
 
+            //Para mejorar demos ula128 y scroll2017
+            //Pero esto hace empeorar la demo ulatest3.tap
+            if (ula_im2_slow.v) t_estados++;
+        }
 
-
-						//desactivar interrupciones al generar una
-						iff1.v=iff2.v=0;
-						//Modelos spectrum
-
-						if (im_mode==0 || im_mode==1) {
-							cpu_common_jump_im01();
-						}
-						else {
-						//IM 2.
-
-							z80_int temp_i;
-							z80_byte dir_l,dir_h;
+    }
 
 
 
-                            temp_i=get_im2_interrupt_vector();
-							dir_l=peek_byte(temp_i++);
-							dir_h=peek_byte(temp_i);
-							reg_pc=value_8_to_16(dir_h,dir_l);
-							t_estados += 7;
-
-							//Para mejorar demos ula128 y scroll2017
-							//Pero esto hace empeorar la demo ulatest3.tap
-							if (ula_im2_slow.v) t_estados++;
-						}
-
-					}
-				}
-
-
-			}
 }
-
 
 
 
@@ -475,76 +415,67 @@ void core_coleco_ciclo_fetch(void)
 
 
 
-				if (nmi_pending_pre_opcode) {
-						//Dado que esto se activa despues de lanzar nmi y antes de leer opcode, aqui saltara cuando PC=66H
-						//debug_printf (VERBOSE_DEBUG,"Handling nmi mapping pre opcode fetch at %04XH",reg_pc);
-						nmi_handle_pending_prepost_fetch();
-				}
+    if (nmi_pending_pre_opcode) {
+        //Dado que esto se activa despues de lanzar nmi y antes de leer opcode, aqui saltara cuando PC=66H
+        //debug_printf (VERBOSE_DEBUG,"Handling nmi mapping pre opcode fetch at %04XH",reg_pc);
+        nmi_handle_pending_prepost_fetch();
+    }
 
 
-				int t_estados_antes_opcode=t_estados;
-				core_refetch=0;
+    int t_estados_antes_opcode=t_estados;
+    core_refetch=0;
 
 
 
-        	                        contend_read( reg_pc, 4 );
-					byte_leido_core_coleco=fetch_opcode();
+    contend_read( reg_pc, 4 );
+    byte_leido_core_coleco=fetch_opcode();
 
 
 
 
 #ifdef EMULATE_CPU_STATS
-				util_stats_increment_counter(stats_codsinpr,byte_leido_core_coleco);
+    util_stats_increment_counter(stats_codsinpr,byte_leido_core_coleco);
 #endif
 
-                //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-                if (z80_halt_signal.v) {
-                    byte_leido_core_coleco=0;
-                }
-                else {
-                    reg_pc++;
-                }
+    //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+    if (z80_halt_signal.v) {
+        byte_leido_core_coleco=0;
+    }
+    else {
+        reg_pc++;
+    }
 
-				//Nota: agregar estos dos if de nmi_pending_pre_opcode y nmi_pending_post_opcode
-				//supone un 0.2 % de uso mas en mi iMac: pasa de usar 5.4% cpu a 5.6% cpu en --vo null y --ao null
-				//Es muy poco...
-				if (nmi_pending_post_opcode) {
-					//Dado que esto se activa despues de lanzar nmi y leer opcode, aqui saltara cuando PC=67H
-					//debug_printf (VERBOSE_DEBUG,"Handling nmi mapping post opcode fetch at %04XH",reg_pc);
-					nmi_handle_pending_prepost_fetch();
-				}
+    //Nota: agregar estos dos if de nmi_pending_pre_opcode y nmi_pending_post_opcode
+    //supone un 0.2 % de uso mas en mi iMac: pasa de usar 5.4% cpu a 5.6% cpu en --vo null y --ao null
+    //Es muy poco...
+    if (nmi_pending_post_opcode) {
+        //Dado que esto se activa despues de lanzar nmi y leer opcode, aqui saltara cuando PC=67H
+        //debug_printf (VERBOSE_DEBUG,"Handling nmi mapping post opcode fetch at %04XH",reg_pc);
+        nmi_handle_pending_prepost_fetch();
+    }
 
-				reg_r++;
+    reg_r++;
 
 
 
 
 #ifdef EMULATE_SCF_CCF_UNDOC_FLAGS
-				//Guardar antes F
-				scf_ccf_undoc_flags_before=Z80_FLAGS;
+    //Guardar antes F
+    scf_ccf_undoc_flags_before=Z80_FLAGS;
 #endif
 
-                z80_no_ejecutado_block_opcodes();
-	            codsinpr[byte_leido_core_coleco]  () ;
+    z80_no_ejecutado_block_opcodes();
+    codsinpr[byte_leido_core_coleco]  () ;
 
 
 #ifdef EMULATE_SCF_CCF_UNDOC_FLAGS
-				//Para saber si se ha modificado
-				scf_ccf_undoc_flags_after_changed=(Z80_FLAGS  == scf_ccf_undoc_flags_before ? 0 : 1);
+    //Para saber si se ha modificado
+    scf_ccf_undoc_flags_after_changed=(Z80_FLAGS  == scf_ccf_undoc_flags_before ? 0 : 1);
 #endif
 
-				//Ultima duracion, si es que ultimo opcode no genera fetch de nuevo del opcode
-				if (!core_refetch) duracion_ultimo_opcode_coleco=t_estados-t_estados_antes_opcode;
-				else duracion_ultimo_opcode_coleco +=t_estados-t_estados_antes_opcode;
-
-
-
-
-
-
-
-
-
+    //Ultima duracion, si es que ultimo opcode no genera fetch de nuevo del opcode
+    if (!core_refetch) duracion_ultimo_opcode_coleco=t_estados-t_estados_antes_opcode;
+    else duracion_ultimo_opcode_coleco +=t_estados-t_estados_antes_opcode;
 
 
 }
@@ -553,9 +484,9 @@ void core_coleco_ciclo_fetch(void)
 void cpu_core_loop_coleco(void)
 {
 
-		debug_get_t_stados_parcial_pre();
+    debug_get_t_stados_parcial_pre();
 
-		timer_check_interrupt();
+    timer_check_interrupt();
 
 
 
@@ -568,100 +499,93 @@ void cpu_core_loop_coleco(void)
 //#endif
 
 
-		if (chardetect_detect_char_enabled.v) chardetect_detect_char();
-		if (chardetect_printchar_enabled.v) chardetect_printchar();
+    if (chardetect_detect_char_enabled.v) chardetect_detect_char();
+    if (chardetect_printchar_enabled.v) chardetect_printchar();
 
 
 
 
-			if (esperando_tiempo_final_t_estados.v==0) {
-				//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_ciclo_fetch);
-				core_coleco_ciclo_fetch();
-				//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_ciclo_fetch);
-            }
+    if (esperando_tiempo_final_t_estados.v==0) {
+        //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_ciclo_fetch);
+        core_coleco_ciclo_fetch();
+        //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_ciclo_fetch);
+    }
 
 
 
+    //A final de cada scanline
+    if ( (t_estados/screen_testados_linea)>t_scanline  ) {
+        //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_fin_scanline);
+        core_coleco_fin_scanline();
+        //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_fin_scanline);
+    }
+
+
+    //Ya hemos leido duracion ultimo opcode. Resetearla a 0 si no hay que hacer refetch
+    if (!core_refetch) duracion_ultimo_opcode_coleco=0;
 
 
 
-
-
-		//A final de cada scanline
-		if ( (t_estados/screen_testados_linea)>t_scanline  ) {
-			//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_fin_scanline);
-			core_coleco_fin_scanline();
-			//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_fin_scanline);
-		}
-
-
-		//Ya hemos leido duracion ultimo opcode. Resetearla a 0 si no hay que hacer refetch
-		if (!core_refetch) duracion_ultimo_opcode_coleco=0;
+    if (esperando_tiempo_final_t_estados.v) {
+        timer_pause_waiting_end_frame();
+    }
 
 
 
-		if (esperando_tiempo_final_t_estados.v) {
-			timer_pause_waiting_end_frame();
-		}
+    //Interrupcion de 1/50s. mapa teclas activas y joystick
+    if (interrupcion_fifty_generada.v) {
+        interrupcion_fifty_generada.v=0;
+
+        //y de momento actualizamos tablas de teclado segun tecla leida
+        //printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
+        //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_scr_actualiza_tablas_teclado);
+        scr_actualiza_tablas_teclado();
+        //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_scr_actualiza_tablas_teclado);
+
+
+        //lectura de joystick
+        //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_realjoystick_main);
+        realjoystick_main();
+        //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_realjoystick_main);
+
+    }
+
+
+    //Interrupcion de procesador y marca final de frame
+    if (interrupcion_timer_generada.v) {
+        //printf ("Generada interrupcion timer\n");
+        interrupcion_timer_generada.v=0;
+        esperando_tiempo_final_t_estados.v=0;
+        interlaced_numero_frame++;
+        //printf ("%d\n",interlaced_numero_frame);
+
+        //Para calcular lo que se tarda en ejecutar todo un frame
+        timer_get_elapsed_core_frame_pre();
+
+
+    }
+
+
+    //Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en spectrum o al cambio de bit6 de R en zx80/81
+    if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
+        //TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_handle_interrupts);
+        core_coleco_handle_interrupts();
+        //TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_handle_interrupts);
+    }
+    //Fin gestion interrupciones
+
+
+    //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+    if (core_end_frame_check_zrcp_zeng_snap.v) {
+        core_end_frame_check_zrcp_zeng_snap.v=0;
+        check_pending_zrcp_put_snapshot();
+        zeng_send_snapshot_if_needed();
+
+        zeng_online_client_end_frame_from_core_functions();
+    }
 
 
 
-		//Interrupcion de 1/50s. mapa teclas activas y joystick
-        if (interrupcion_fifty_generada.v) {
-			interrupcion_fifty_generada.v=0;
-
-            //y de momento actualizamos tablas de teclado segun tecla leida
-			//printf ("Actualizamos tablas teclado %d ", temp_veces_actualiza_teclas++);
-			//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_scr_actualiza_tablas_teclado);
-			scr_actualiza_tablas_teclado();
-			//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_scr_actualiza_tablas_teclado);
-
-
-			//lectura de joystick
-			//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_realjoystick_main);
-			realjoystick_main();
-			//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_realjoystick_main);
-
-
-
-		}
-
-
-		//Interrupcion de procesador y marca final de frame
-		if (interrupcion_timer_generada.v) {
-			//printf ("Generada interrupcion timer\n");
-			interrupcion_timer_generada.v=0;
-			esperando_tiempo_final_t_estados.v=0;
-			interlaced_numero_frame++;
-			//printf ("%d\n",interlaced_numero_frame);
-
-			//Para calcular lo que se tarda en ejecutar todo un frame
-			timer_get_elapsed_core_frame_pre();
-
-
-        }
-
-
-		//Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en spectrum o al cambio de bit6 de R en zx80/81
-		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
-			//TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_coleco_handle_interrupts);
-			core_coleco_handle_interrupts();
-			//TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_coleco_handle_interrupts);
-        }
-		//Fin gestion interrupciones
-
-
-		//Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
-		if (core_end_frame_check_zrcp_zeng_snap.v) {
-			core_end_frame_check_zrcp_zeng_snap.v=0;
-			check_pending_zrcp_put_snapshot();
-			zeng_send_snapshot_if_needed();
-
-            zeng_online_client_end_frame_from_core_functions();
-		}
-
-
-
-		debug_get_t_stados_parcial_post();
+    debug_get_t_stados_parcial_post();
 
 }
