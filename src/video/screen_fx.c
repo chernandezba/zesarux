@@ -2833,6 +2833,8 @@ void screen_rainbow_effect_led_rgb(z80_int *origen,z80_int *destino,int ancho,in
 
 }
 
+z80_bit screen_rainbow_effect_scroll_horizontal_incremental={0};
+
 void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
@@ -2845,6 +2847,13 @@ void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,in
         for (x=0;x<ancho;x++) {
 
             int scroll=screen_rainbow_effect_scroll_horizontal_offset;
+
+
+            //Alterar scroll segun Y. Para poder simular efecto de profundidad variable en gafas 3d azul-roja anaglifo
+            if (screen_rainbow_effect_scroll_horizontal_incremental.v && alto!=0) {
+                scroll=(scroll*y)/alto;
+            }
+
 
             if (screen_rainbow_effect_scroll_horizontal_follow_mouse.v) {
 
@@ -2893,6 +2902,7 @@ void screen_rainbow_effect_scroll_horizontal(z80_int *origen,z80_int *destino,in
 }
 
 
+z80_bit screen_rainbow_effect_scroll_vertical_incremental={0};
 
 void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
@@ -2906,6 +2916,11 @@ void screen_rainbow_effect_scroll_vertical(z80_int *origen,z80_int *destino,int 
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
             int scroll=screen_rainbow_effect_scroll_vertical_offset;
+
+            //Alterar scroll segun X
+            if (screen_rainbow_effect_scroll_vertical_incremental.v && ancho!=0) {
+                scroll=(scroll*x)/ancho;
+            }
 
             if (screen_rainbow_effect_scroll_vertical_follow_mouse.v) {
 

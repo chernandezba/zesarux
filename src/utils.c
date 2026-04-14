@@ -3941,6 +3941,14 @@ int util_write_configfile(void)
         ADD_STRING_CONFIG,"--video-fx-circular \"Scroll Vertical\"");
     }
 
+    if (screen_rainbow_effect_scroll_horizontal_incremental.v) {
+        ADD_STRING_CONFIG,"--video-fx-incremental \"Scroll Horizontal\"");
+    }
+
+    if (screen_rainbow_effect_scroll_vertical_incremental.v) {
+        ADD_STRING_CONFIG,"--video-fx-incremental \"Scroll Vertical\"");
+    }
+
     if (screen_special_effects_fisheye_automatic_factor.v) {
         ADD_STRING_CONFIG,"--video-fx-continuous Lens");
     }
