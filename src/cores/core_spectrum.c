@@ -454,11 +454,8 @@ void core_spectrum_fin_scanline(void)
 
         if (audio_nagra_effect.v) {
             //Nota para beeper se gestiona independiente porque el silencio en beeper no es 0 y al multiplicar por el coseno, generaria un pitido en silencio
-
-            //printf("%d\n",audio_valor_enviar_sonido_izquierdo);
             audio_apply_nagra_effect();
             audio_apply_nagra_effect_next();
-            //printf(">%d\n",audio_valor_enviar_sonido_izquierdo);
         }
 
         if (beeper_enabled.v) {

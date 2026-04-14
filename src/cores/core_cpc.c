@@ -180,6 +180,11 @@ void core_cpc_end_scanline_stuff(void)
         //printf("sonido_mic: %d\n",sonido_mic);
     }
 
+    if (audio_nagra_effect.v) {
+        audio_apply_nagra_effect();
+        audio_apply_nagra_effect_next();
+    }
+
     int leer_cinta_real=0;
 
     if (realtape_inserted.v && realtape_playing.v) leer_cinta_real=1;
