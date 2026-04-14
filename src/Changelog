@@ -10,6 +10,7 @@ Added lots of special effects for video output:
 - Zoom, Zoom Mouse, Pixelate, Blur, Shader Border, LED, LED RGB, Hsync lost, Vsync lost, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
 - Scanlines, Sepia, Red, RGB, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
 - Restore Original, Copy to buffer, Mix from Buffer, Load BMP
+Added Nagravision Audio effect
 Added support for reading clipboard contents and send as keystrokes on systems: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 Rename function "Input File Spooling" to "Send Text as Keystrokes"
 Allow to reduce display to half (1/2) and to a quarter (1/4)

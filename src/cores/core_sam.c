@@ -256,7 +256,10 @@ void core_sam_fin_scanline(void)
 
     audio_valor_enviar_sonido +=da_output_ay();
 
-
+    if (audio_nagra_effect.v) {
+        audio_apply_nagra_effect_mono();
+        audio_apply_nagra_effect_next();
+    }
 
     if (beeper_enabled.v) {
 
