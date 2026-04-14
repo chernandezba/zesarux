@@ -362,159 +362,155 @@ void cpu_core_loop_z88(void)
 
     //A final de cada scanline
     if ( (t_estados/screen_testados_linea)>t_scanline  ) {
-            //printf ("%d\n",t_estados);
+        //printf ("%d\n",t_estados);
 
 
-                //Esto sucede con 15600hz
-                contador_z88_sonido_3200hz +=3200;
+        //Esto sucede con 15600hz
+        contador_z88_sonido_3200hz +=3200;
 
-                //si esta en la mitad del periodo, conmutar
-                if (contador_z88_sonido_3200hz>=15600/2) {
-                    contador_z88_sonido_3200hz -=15600/2;
-                    valor_sonido_3200hz = -valor_sonido_3200hz;
-                }
+        //si esta en la mitad del periodo, conmutar
+        if (contador_z88_sonido_3200hz>=15600/2) {
+            contador_z88_sonido_3200hz -=15600/2;
+            valor_sonido_3200hz = -valor_sonido_3200hz;
+        }
 
 
 
-                audio_valor_enviar_sonido=0;
+        audio_valor_enviar_sonido=0;
 
-                        /*
-7           SRUN        Speaker source (0=SBIT, 1=TxD or 3200hz)
-6           SBIT        SRUN=0: 0=low, 1=high; SRUN=1: 0=3200 hz, 1=TxD
-                        */
+        /*
+        7           SRUN        Speaker source (0=SBIT, 1=TxD or 3200hz)
+        6           SBIT        SRUN=0: 0=low, 1=high; SRUN=1: 0=3200 hz, 1=TxD
+        */
 
-              if (beeper_enabled.v) {
+        if (beeper_enabled.v) {
 
-                    z80_byte tipo_sonido=blink_com & (64+128);
-                    if (tipo_sonido>=128) {
-                    //Sonido 3200hz
+            z80_byte tipo_sonido=blink_com & (64+128);
+            if (tipo_sonido>=128) {
+                //Sonido 3200hz
                 if (tipo_sonido == 128) {
-                audio_valor_enviar_sonido = valor_sonido_3200hz;
-                //Sonido continuo 3200 hz. resetear contador silencio
-                  reset_beeper_silence_detection_counter();
+                    audio_valor_enviar_sonido = valor_sonido_3200hz;
+                    //Sonido continuo 3200 hz. resetear contador silencio
+                    reset_beeper_silence_detection_counter();
                 }
 
-                        //Sonido de TxD. no implementado
-                        if (tipo_sonido == 128+64) {
-                        }
-
-                    }
-
-                    else {
-
-
-                        if (beeper_real_enabled==0) {
-                            audio_valor_enviar_sonido +=z88_get_beeper_sound();
-                        }
-                        else {
-                            audio_valor_enviar_sonido += get_value_beeper_sum_array();
-                  beeper_new_line();
-                        }
-
-
-                    }
-
+                //Sonido de TxD. no implementado
+                if (tipo_sonido == 128+64) {
                 }
 
-            if (audio_nagra_effect.v) {
-                audio_apply_nagra_effect_mono();
-                audio_apply_nagra_effect_next();
             }
-                            //Ajustar volumen
-                            if (audiovolume!=100) {
-                                    audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
-                            }
 
-                                audio_send_mono_sample(audio_valor_enviar_sonido);
+            else {
 
 
-
-            //}
-
-
-
-            //final de linea
-
-            t_scanline_next_line();
-
-
-
-            //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
-            //esperar para ver si se ha generado una interrupcion 1/50
-
-                        if (t_estados>=screen_testados_total) {
-
-                //printf ("total t_estados: %d\n",screen_testados_total);
-
-
-                         t_scanline=0;
-
-                                 timer_get_elapsed_core_frame_post();
-
-                    set_t_scanline_draw_zero();
-
-
-                                t_estados -=screen_testados_total;
-
-                if (z88_5ms_contador==3) {
-                    //printf ("z88_5ms_contador=%d\n",z88_5ms_contador);
-
-                    cpu_loop_refresca_pantalla();
-
-                    vofile_send_frame(rainbow_buffer);
-
-                    siguiente_frame_pantalla();
-
-
-                    if (debug_registers) scr_debug_registers();
-
-                    //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
-                    //estado_parpadeo en z88 es para texto. a cada segundo cambia el estado
-                    //estado_parpadeo_cursor en z88 es para el cursor. 0.7 segundos invertido. 0.3 segundos normal
-
-                    contador_parpadeo--;
-                    if (!contador_parpadeo) {
-                        contador_parpadeo=50;
-                        toggle_flash_state();
-                        //printf ("cambio parpadeo. result: %d\n",estado_parpadeo.v);
-                    }
-
-                    //50*0.3=15
-                    if (contador_parpadeo>=15) estado_parpadeo_cursor.v=0;
-                    else estado_parpadeo_cursor.v=1;
-
-                    //printf ("contador: %d parpadeo_cursor: %d\n",contador_parpadeo,estado_parpadeo_cursor.v);
+                if (beeper_real_enabled==0) {
+                    audio_valor_enviar_sonido +=z88_get_beeper_sound();
                 }
-
-
-                if (!interrupcion_timer_generada.v) {
-                    //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
-                    //printf ("no demasiado\n");
-                    esperando_tiempo_final_t_estados.v=1;
-                }
-
                 else {
-                    //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
-                    //printf ("demasiado\n");
-                    esperando_tiempo_final_t_estados.v=0;
-                }
-
-                core_end_frame_check_zrcp_zeng_snap.v=1;
+                    audio_valor_enviar_sonido += get_value_beeper_sum_array();
+                    beeper_new_line();
+                    }
 
 
             }
 
         }
 
-        if (esperando_tiempo_final_t_estados.v) {
-            timer_pause_waiting_end_frame();
+        if (audio_nagra_effect.v) {
+            audio_apply_nagra_effect_mono();
+            audio_apply_nagra_effect_next();
+        }
+        //Ajustar volumen
+        if (audiovolume!=100) {
+                audio_valor_enviar_sonido=audio_adjust_volume(audio_valor_enviar_sonido);
         }
 
+        audio_send_mono_sample(audio_valor_enviar_sonido);
 
 
 
-              //Interrupcion de 1/200s. mapa teclas activas y joystick
-                if (interrupcion_fifty_generada.v) {
+        //final de linea
+
+        t_scanline_next_line();
+
+
+
+        //se supone que hemos ejecutado todas las instrucciones posibles de toda la pantalla. refrescar pantalla y
+        //esperar para ver si se ha generado una interrupcion 1/50
+
+        if (t_estados>=screen_testados_total) {
+
+            //printf ("total t_estados: %d\n",screen_testados_total);
+
+
+            t_scanline=0;
+
+            timer_get_elapsed_core_frame_post();
+
+            set_t_scanline_draw_zero();
+
+
+            t_estados -=screen_testados_total;
+
+            if (z88_5ms_contador==3) {
+                //printf ("z88_5ms_contador=%d\n",z88_5ms_contador);
+
+                cpu_loop_refresca_pantalla();
+
+                vofile_send_frame(rainbow_buffer);
+
+                siguiente_frame_pantalla();
+
+
+                if (debug_registers) scr_debug_registers();
+
+                //printf ("Parpadeo: %d estado: %d\n",contador_parpadeo,estado_parpadeo.v);
+                //estado_parpadeo en z88 es para texto. a cada segundo cambia el estado
+                //estado_parpadeo_cursor en z88 es para el cursor. 0.7 segundos invertido. 0.3 segundos normal
+
+                contador_parpadeo--;
+                if (!contador_parpadeo) {
+                    contador_parpadeo=50;
+                    toggle_flash_state();
+                    //printf ("cambio parpadeo. result: %d\n",estado_parpadeo.v);
+                }
+
+                //50*0.3=15
+                if (contador_parpadeo>=15) estado_parpadeo_cursor.v=0;
+                else estado_parpadeo_cursor.v=1;
+
+                //printf ("contador: %d parpadeo_cursor: %d\n",contador_parpadeo,estado_parpadeo_cursor.v);
+            }
+
+
+            if (!interrupcion_timer_generada.v) {
+                //Llegado a final de frame pero aun no ha llegado interrupcion de timer. Esperemos...
+                //printf ("no demasiado\n");
+                esperando_tiempo_final_t_estados.v=1;
+            }
+
+            else {
+                //Llegado a final de frame y ya ha llegado interrupcion de timer. No esperamos.... Hemos tardado demasiado
+                //printf ("demasiado\n");
+                esperando_tiempo_final_t_estados.v=0;
+            }
+
+            core_end_frame_check_zrcp_zeng_snap.v=1;
+
+
+        }
+
+    }
+
+    if (esperando_tiempo_final_t_estados.v) {
+        timer_pause_waiting_end_frame();
+    }
+
+
+
+
+    //Interrupcion de 1/200s. mapa teclas activas y joystick
+    if (interrupcion_fifty_generada.v) {
                         interrupcion_fifty_generada.v=0;
 
             if (z88_5ms_contador==3) {
