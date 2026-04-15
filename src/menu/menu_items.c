@@ -12112,7 +12112,7 @@ void menu_debug_draw_sprites(void)
 
                         //Aqui estaremos siempre a principio de columna (x divisible entre 8)
                         //sumamos y
-                        offset_sprite +=(y & 7)*4;
+                        offset_sprite +=((y-y_inicial) & 7)*4;
 
 
                         //int incremento_linea=(y/8)+
@@ -12174,24 +12174,30 @@ void menu_debug_draw_sprites(void)
                         */
                         //y<8
 
+                        int y_local_sprite=y;
+
+                        if (view_sprites_hardware && view_sprites_hardware_all.v) {
+                            y_local_sprite=y-y_inicial;
+                        }
+
                         //Quad A
-                        if (y<=7 && x<=7) {
-                            puntero_final=puntero_orig+y;
+                        if (y_local_sprite<=7 && x<=7) {
+                            puntero_final=puntero_orig+y_local_sprite;
                         }
 
                         //Quad B
-                        else if (y>=8 && y<=15 && x<=7) {
-                            puntero_final=puntero_orig+y;
+                        else if (y_local_sprite>=8 && y_local_sprite<=15 && x<=7) {
+                            puntero_final=puntero_orig+y_local_sprite;
                         }
 
                         //Quad C
-                        else if (y<=7 && x>=8 && x<=15) {
-                            puntero_final=puntero_orig+16+y;
+                        else if (y_local_sprite<=7 && x>=8 && x<=15) {
+                            puntero_final=puntero_orig+16+y_local_sprite;
                         }
 
                         //Quad D
                         else  {
-                            puntero_final=puntero_orig+16+y;
+                            puntero_final=puntero_orig+16+y_local_sprite;
                         }
 
 
