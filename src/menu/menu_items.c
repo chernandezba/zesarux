@@ -18089,6 +18089,10 @@ void menu_display_window_list_get_item_window(char *texto_destino,zxvision_windo
     //TODO: de momento 4 digitos para el pid
     //Al final vendria % ) pero no lo metemos aqui, pues las llamadas a menu_display_window_list_get_item_window
     //desde los items de menus lo hacen pasar a funcion de formateo (tipo printf) y se cargaria el %
+
+    //Texto: alineado a la izquierda
+    //Numeros: alineados a la derecha
+
     sprintf(texto_destino,
         "%4u %-*s%*s %5d KiB %7ld us (%3d",item_ventana_puntero->pid,menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
         menu_display_window_list_espacios_flags,window_flags,
@@ -18128,7 +18132,7 @@ void menu_display_window_list_print_item(zxvision_window *w,int linea,char *wind
 //en que se abre nueva ventana y entonces el cursor estaria apuntando al proceso que no hemos pulsado, y seria confuso para el usuario
 int menu_display_window_list_overlay_do_not_update=0;
 
-char *menu_display_window_list_header="PID  Process name            Flags  VRAM      Time spent";
+char *menu_display_window_list_header=" PID Process name            Flags      VRAM         Time spent";
 
 void menu_display_window_list_overlay(void)
 {
