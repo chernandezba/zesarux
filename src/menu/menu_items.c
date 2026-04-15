@@ -12015,8 +12015,6 @@ void menu_debug_draw_sprites(void)
                 puntero=adjust_address_memory_size(puntero);
 
 
-
-
                 puntero_final=puntero;
 
                 //Hacer esto a cada salto de x 0,8, etc
@@ -12083,7 +12081,7 @@ void menu_debug_draw_sprites(void)
                         //Lo que haremos en ese modo hardware es no mostrar > o v, simplemente activo (X)
 
 
-                        int fila=y/8;
+                        int fila=(y-y_inicial)/8;
                         int columna=x/8;
 
                         int tamanyo_sprite=32;
