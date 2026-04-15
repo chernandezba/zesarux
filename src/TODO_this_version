@@ -121,10 +121,7 @@ antes de commonsdl_init
 
 -en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
 
-
 -copy-paste y text-paste quizá mover a otro menú?
-
-ok?? -gosub stack al conservar tamaño anterior, puede ser tamaño muy grande el total height. se deberia resetear
 
 
 -efectos especiales
