@@ -114,3 +114,5 @@ antes de commonsdl_init
 
 
 - Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
+*se usa y-y_inicial  como uso de offset y relativo dentro de un sprite al mostrarlos todos. redefinir esto para que podamos mostrar sprites en cuadricula asi cabran mas
+*destacar (con un cuadrado?) los sprites en uso en la escena
