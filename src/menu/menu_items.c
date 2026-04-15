@@ -11976,9 +11976,24 @@ void menu_debug_draw_sprites(void)
 
     int total_sprites_mostrar=1;
 
+    if (view_sprites_hardware && view_sprites_hardware_all.v) {
+        //TODO limite para diferentes maquinas
+
+        if (MACHINE_HAS_VDP_9918A) total_sprites_mostrar=32;
+
+        else total_sprites_mostrar=32;
+    }
+
     int contador_sprite_mostrar;
 
+    int orig_view_sprites_direccion=view_sprites_direccion;
+
     for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;contador_sprite_mostrar++) {
+
+        if (view_sprites_hardware && view_sprites_hardware_all.v) {
+            view_sprites_direccion=contador_sprite_mostrar;
+            y_inicial=alto_total_sprites*contador_sprite_mostrar;
+        }
 
         for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites) {
             if (view_sprites_scr_sprite && y<192) {
@@ -12349,6 +12364,7 @@ void menu_debug_draw_sprites(void)
 
     }
 
+    view_sprites_direccion=orig_view_sprites_direccion;
 
     zxvision_draw_window_contents(menu_debug_draw_sprites_window);
 
@@ -12690,10 +12706,10 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
 
     if (linea>=0) {
 
-        char buffer_primera_linea[100]; //dar espacio de mas para poder alojar el ~de los atajos
-        char buffer_segunda_linea[100];
+        char buffer_primera_linea[200]; //dar espacio de mas para poder alojar el ~de los atajos
+        char buffer_segunda_linea[200];
 
-        char buffer_tercera_linea[100];
+        char buffer_tercera_linea[200];
 
         //Forzar a mostrar atajos
         z80_bit antes_menu_writing_inverse_color;
@@ -12713,13 +12729,13 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
         else sprintf(buffer_tercera_linea,"Pa~~l.: %s. O~~ff:%d",nombre_paleta,view_sprites_offset_palette);
 
 
-        char mensaje_texto_hardware[64];
+        char mensaje_texto_hardware[100];
 
         //por defecto
         mensaje_texto_hardware[0]=0;
 
         if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE || MACHINE_HAS_VDP_9918A) {
-            sprintf(mensaje_texto_hardware,"[%c] ~~hardware",(view_sprites_hardware ? 'X' : ' ') );
+            sprintf(mensaje_texto_hardware,"[%c] ~~hardware [%c] ~~viewall",(view_sprites_hardware ? 'X' : ' '),(view_sprites_hardware_all.v ? 'X' : ' ') );
         }
 
         char mensaje_texto_zx81_pseudohires[33];
@@ -13021,6 +13037,17 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                     case 'h':
                         if (MACHINE_IS_TBBLUE || MACHINE_IS_TSCONF || MACHINE_HAS_VDP_9918A) {
                             view_sprites_hardware ^=1;
+                            //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
+                            //solo la alteramos momentaneamente al cambiar tipo de sprite hardware, con esto se borra correctamente y en cambio
+                            //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
+                            //a usar 52% cuando lo tenemos a 0
+                            ventana->must_clear_cache_on_draw_once=1;
+                        }
+                    break;
+
+                    case 'v':
+                        if (MACHINE_IS_TBBLUE || MACHINE_IS_TSCONF || MACHINE_HAS_VDP_9918A) {
+                            view_sprites_hardware_all.v ^=1;
                             //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
                             //solo la alteramos momentaneamente al cambiar tipo de sprite hardware, con esto se borra correctamente y en cambio
                             //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
