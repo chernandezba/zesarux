@@ -73,14 +73,10 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 * revisar info de la wiki: https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini y ver si falta algo y/o si está todo bien
 
 
--modo dither, sin realvideo, no lo hace en el border
-
-
 -poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
 Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
 eso se envía en las estadísticas
-
 
 
 -probar fullscreen en todos drivers

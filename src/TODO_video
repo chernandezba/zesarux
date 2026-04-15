@@ -25,6 +25,7 @@ el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos
 
 -Contador fps cuando speed es 200% debería mostrar 100 fps
 
+-modo dither, sin realvideo, no lo hace en el border
 
 
 -OCR con colores y codigos ansi? para F4 y ZRCP

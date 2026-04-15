@@ -598,8 +598,6 @@ int total_minutes_use=0;
 
 
 
-
-
 //Aqui solo se llama posteriormente a haber inicializado la maquina, nunca antes
 void cpu_set_turbo_speed(void)
 {
@@ -666,12 +664,12 @@ void cpu_set_turbo_speed(void)
 	cpu_turbo_speed=speed;
 
 	screen_testados_linea *=cpu_turbo_speed;
-        screen_set_video_params_indices();
-        inicializa_tabla_contend_cached_change_cpu_speed();
+    screen_set_video_params_indices();
+    inicializa_tabla_contend_cached_change_cpu_speed();
 
-        //Recalcular algunos valores cacheados
-        recalcular_get_total_ancho_rainbow();
-        recalcular_get_total_alto_rainbow();
+    //Recalcular algunos valores cacheados
+    recalcular_get_total_ancho_rainbow();
+    recalcular_get_total_alto_rainbow();
 
     debug_printf(VERBOSE_DEBUG,"Called to cpu_set_turbo_speed. cpu_turbo_speed: %d t-states per line: %d",cpu_turbo_speed,screen_testados_linea);
 
@@ -689,10 +687,10 @@ void cpu_set_turbo_speed(void)
 	//printf ("Calculated t-scanline according to t-states: %d\n",t_estados / screen_testados_linea);
 
 
-        //Se cambia el turbo, esto no afecta al rainbow buffer
-        //init_rainbow();
+    //Se cambia el turbo, esto no afecta al rainbow buffer
+    //init_rainbow();
 
-        init_cache_putpixel();
+    init_cache_putpixel();
 
     do_not_run_init_z88_memory_slots=0;
 
