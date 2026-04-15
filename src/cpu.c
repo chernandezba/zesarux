@@ -855,20 +855,20 @@ void cold_start_cpu_registers(void)
     //Ver http://foro.speccy.org/viewtopic.php?f=11&t=2319
     //y http://www.worldofspectrum.org/forums/discussion/comment/539714#Comment_539714
 
-        /*
-        AF=BC=DE=HL=IX=IY=SP=FFFFH
-        AF'=BC'=DE'=HL'=FFFFH
-        IR=0000H
-        */
+    /*
+    AF=BC=DE=HL=IX=IY=SP=FFFFH
+    AF'=BC'=DE'=HL'=FFFFH
+    IR=0000H
+    */
 
-        reg_a=0xff;
-        Z80_FLAGS=0xff;
-        BC=HL=DE=0xffff;
-        reg_ix=reg_iy=reg_sp=0xffff;
+    reg_a=0xff;
+    Z80_FLAGS=0xff;
+    BC=HL=DE=0xffff;
+    reg_ix=reg_iy=reg_sp=0xffff;
 
-        reg_h_shadow=reg_l_shadow=reg_b_shadow=reg_c_shadow=reg_d_shadow=reg_e_shadow=reg_a_shadow=Z80_FLAGS_SHADOW=0xff;
-        reg_i=0;
-        reg_r=reg_r_bit7=0;
+    reg_h_shadow=reg_l_shadow=reg_b_shadow=reg_c_shadow=reg_d_shadow=reg_e_shadow=reg_a_shadow=Z80_FLAGS_SHADOW=0xff;
+    reg_i=0;
+    reg_r=reg_r_bit7=0;
 
     if (cpu_random_r_register.v) {
         reg_r=value_16_to_8l(randomize_noise[0]) & 127;
@@ -894,12 +894,12 @@ void cold_start_cpu_registers(void)
         zxuno_ports[0xfe]=0;
 
 
-            zxuno_ports[0x0B]=0;
-            zxuno_ports[0x0C]=255;
-            zxuno_ports[0x0D]=1;
-            zxuno_ports[0x0E]=0;
-            zxuno_ports[0x0F]=0;
-            zxuno_ports[0x40]=0;
+        zxuno_ports[0x0B]=0;
+        zxuno_ports[0x0C]=255;
+        zxuno_ports[0x0D]=1;
+        zxuno_ports[0x0E]=0;
+        zxuno_ports[0x0F]=0;
+        zxuno_ports[0x40]=0;
 
 
 
@@ -971,7 +971,7 @@ void hard_reset_cpu(void)
     else if (MACHINE_IS_TBBLUE) {
         tbblue_hard_reset();
         reset_cpu();
-  }
+    }
 
     else if (superupgrade_enabled.v) {
         superupgrade_hard_reset();
@@ -1025,9 +1025,9 @@ void reset_cpu(void)
 
     interrupcion_maskable_generada.v=0;
     interrupcion_non_maskable_generada.v=0;
-  interrupcion_timer_generada.v=0;
+    interrupcion_timer_generada.v=0;
     iff1.v=iff2.v=0;
-  im_mode=0;
+    im_mode=0;
 
     if1_rom_paged.v=0;
 
@@ -1042,13 +1042,11 @@ void reset_cpu(void)
     diviface_reset();
 
 
-
-
     //si no se pone esto a 0, al cambiar de zx80 a zx81 suele colgarse
-        z80_halt_signal.v=0;
+    z80_halt_signal.v=0;
 
 
-        esperando_tiempo_final_t_estados.v=0;
+    esperando_tiempo_final_t_estados.v=0;
 
 
     if (MACHINE_IS_ZX8081) {
@@ -1158,11 +1156,11 @@ void reset_cpu(void)
     t_scanline=0;
     t_scanline_draw=0;
 
-        if (MACHINE_IS_INVES) {
+    if (MACHINE_IS_INVES) {
         //Inves
         t_scanline_draw=screen_indice_inicio_pant;
         alertado_inves_check_write_on_interrupt_bug=0;
-        }
+    }
 
     init_chip_ay();
 
