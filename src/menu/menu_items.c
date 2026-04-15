@@ -19353,8 +19353,11 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&text_adventure_tools_opcion_seleccionada,&item_seleccionado,array_menu_common,"Text aventure Tools");
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Display -> Text adventure Tools","Menú Principal-> Display-> Utilidades aventuras de texto","Menú Principal-> Display-> Utilitats aventures de text");
 
+        retorno_menu=menu_dibuja_menu(&text_adventure_tools_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Text Adventure Tools","Utilidades aventuras de texto","Utilitats aventures de text");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
