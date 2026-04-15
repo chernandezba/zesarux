@@ -11974,6 +11974,12 @@ void menu_debug_draw_sprites(void)
 
     int y_inicial=0;
 
+    int total_sprites_mostrar=1;
+
+    int contador_sprite_mostrar;
+
+    for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;contador_sprite_mostrar++) {
+
         for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites) {
             if (view_sprites_scr_sprite && y<192) {
                 puntero=view_sprites_direccion+screen_addr_table[(y<<5)];
@@ -12340,6 +12346,8 @@ void menu_debug_draw_sprites(void)
 
 
         }
+
+    }
 
 
     zxvision_draw_window_contents(menu_debug_draw_sprites_window);
