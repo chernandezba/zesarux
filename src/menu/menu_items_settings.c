@@ -2449,7 +2449,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             "Main Menu-> Settings-> Main Window-> FX","Menú Principal-> Opciones-> Ventana Principal-> FX","Menú Principal-> Opcions-> Finestra Principal-> FX");
 
         retorno_menu=menu_dibuja_menu(&main_window_special_effects_opcion_seleccionada,&item_seleccionado,array_menu_common,
-            "FX","FX","FX" );
+            "Emulated Display FX","FX de Pantalla Emulada","FX de Pantalla Emulada");
 
 
 
@@ -2723,7 +2723,7 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_special_effects,NULL,
-            "FX","FX","FX");
+            "Emulated Display FX","FX de Pantalla Emulada","FX de Pantalla Emulada");
         menu_add_item_menu_shortcut(array_menu_window_settings,'x');
         menu_add_item_menu_tiene_submenu(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);

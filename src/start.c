@@ -1326,7 +1326,7 @@ printf (
         "-------------------------\n"
         "\n"
 
-        "--video-fx-enable                              Enable special video effects\n"
+        "--video-fx-enable                              Enable special video effects on Emulated Display\n"
         "For the following settings that use a effect name, the valid names are:\n"
         );
 
