@@ -3895,15 +3895,15 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_common,"Character height. You can reduce it so allowing more text rows in a window");
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reduce_menu_width_half,NULL,"Reduce menu width to half");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Reducir ancho menú a la mitad","Reduir ample menú a la meitat");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reduce_menu_width_half,NULL,"Half menu available width");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Mitad ancho disponible menús","Meitat ample disponible menús");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_reduce_menu_ancho==2 ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_common,"Reduce menu width to half");
         menu_add_item_menu_ayuda(array_menu_common,"Reduce available width for menus to half");
         menu_add_item_menu_es_avanzado(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reduce_menu_height_half,NULL,"Reduce menu height to half");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Reducir alto menú a la mitad","Reduir alt menú a la meitat");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reduce_menu_height_half,NULL,"Half menu available height");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Mitad alto disponible menús","Meitat alt disponible menús");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(screen_reduce_menu_alto==2 ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(array_menu_common,"Reduce menu height to half");
         menu_add_item_menu_ayuda(array_menu_common,"Reduce available height for menus to half");

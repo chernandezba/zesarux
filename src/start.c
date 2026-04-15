@@ -923,7 +923,8 @@ printf (
         "--sdl-use-callback-old      SDL audio use old callback\n"
         "--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n"
         "--sdl-8bit-color            SDL initialize video mode with 8 bit color palette\n"
-        "--sdl-force-win-size w h    SDL force window size to width (w) and heigth (h)\n"
+        "--sdl-force-win-size w h    SDL force window size to width (w) and heigth (h).\n"
+        "                            Note: This only affects usable window size, other components like GUI menus, emulated display, etc would think they have the \"usual\" size although they may not be fully visible\n"
         "--sdl-hwsurface             SDL surface is stored in video memory instead of system memory\n"
 
 
