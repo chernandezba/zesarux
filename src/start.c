@@ -1322,8 +1322,8 @@ printf (
 
         "\n"
         "\n"
-        "Main Window - FX Settings\n"
-        "-------------------------\n"
+        "Main Window - Emulated Display FX Settings\n"
+        "------------------------------------------\n"
         "\n"
 
         "--video-fx-enable                              Enable special video effects on Emulated Display\n"

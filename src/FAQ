@@ -255,7 +255,7 @@ A: You need to start it from a pseudo-text console mode, I mean, it's a text con
 
 
 Q: Can ZEsarUX generate Anaglyph images for 3D glasses? (Red-Blue glasses)
-A: Yes, you can use the FX effects, on Settings-> Main Window-> FX. You need to create a initial image in red, apply an offset and then mix it with the same image in blue. This can be achieved by applying the following effects, in order:
+A: Yes, you can use the Emulated Display FX effects, on Settings-> Main Window-> Emulated Display FX. You need to create a initial image in red, apply an offset and then mix it with the same image in blue. This can be achieved by applying the following effects, in order:
 
 - Scroll Horizontal. 20 pixels
 - Red

@@ -2446,7 +2446,9 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_index_full_path(array_menu_common,
-            "Main Menu-> Settings-> Main Window-> FX","Menú Principal-> Opciones-> Ventana Principal-> FX","Menú Principal-> Opcions-> Finestra Principal-> FX");
+            "Main Menu-> Settings-> Main Window-> Emulated Display FX",
+            "Menú Principal-> Opciones-> Ventana Principal-> FX de Pantalla Emulada",
+            "Menú Principal-> Opcions-> Finestra Principal-> FX de Pantalla Emulada");
 
         retorno_menu=menu_dibuja_menu(&main_window_special_effects_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Emulated Display FX","FX de Pantalla Emulada","FX de Pantalla Emulada");
