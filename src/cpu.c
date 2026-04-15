@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #ifndef MINGW
-	#include <unistd.h>
+    #include <unistd.h>
 #endif
 #include <string.h>
 
@@ -38,8 +38,8 @@
 #include <signal.h>
 
 #ifdef MINGW
-	//Para llamar a FreeConsole
-	#include <windows.h>
+    //Para llamar a FreeConsole
+    #include <windows.h>
 #endif
 
 
@@ -186,11 +186,11 @@
 
 #ifdef COMPILE_SDL
 
-	#ifdef COMPILE_SDL2
-		#include "scrsdl2.h"
-	#else
-		#include "scrsdl.h"
-	#endif
+    #ifdef COMPILE_SDL2
+        #include "scrsdl2.h"
+    #else
+        #include "scrsdl.h"
+    #endif
 #endif
 
 
@@ -254,9 +254,9 @@ enum z80_cpu_types z80_cpu_current_type=Z80_TYPE_GENERIC;
 
 
 char *z80_cpu_types_strings[TOTAL_Z80_CPU_TYPES]={
-	"Generic",
-	"Mostek",
-	"CMOS"
+    "Generic",
+    "Mostek",
+    "CMOS"
 };
 
 
@@ -560,8 +560,8 @@ z80_bit allow_write_rom={0};
 int z88_cpc_keymap_type=0;
 
 char *realmachine_keymap_strings_types[]={
-	"Default",
-	"Spanish"
+    "Default",
+    "Spanish"
 };
 
 //Modo turbo. 1=normal. 2=7 Mhz (2X), 3=14 Mhz (4X), etc
@@ -603,67 +603,67 @@ void cpu_set_turbo_speed(void)
 {
 
 
-	debug_printf (VERBOSE_INFO,"Changing turbo mode from %dX to %dX",cpu_turbo_speed_antes,cpu_turbo_speed);
+    debug_printf (VERBOSE_INFO,"Changing turbo mode from %dX to %dX",cpu_turbo_speed_antes,cpu_turbo_speed);
 
-	//Ajustes previos de t_estados. En estos ajustes, solo las variables t_estados, antes_t_estados se usan. Las t_estados_en_linea, t_estados_percx son para debug
-	//printf ("Turbo was %d, setting turbo %d\n",cpu_turbo_speed_antes,cpu_turbo_speed);
+    //Ajustes previos de t_estados. En estos ajustes, solo las variables t_estados, antes_t_estados se usan. Las t_estados_en_linea, t_estados_percx son para debug
+    //printf ("Turbo was %d, setting turbo %d\n",cpu_turbo_speed_antes,cpu_turbo_speed);
 
-	//int t_estados_en_linea=t_estados % screen_testados_linea;
+    //int t_estados_en_linea=t_estados % screen_testados_linea;
 
-	//int t_estados_percx=(t_estados_en_linea*100)/screen_testados_linea;
+    //int t_estados_percx=(t_estados_en_linea*100)/screen_testados_linea;
 
-	//printf ("Before changing turbo, t-scanline: %d, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_scanline,t_estados,t_estados_en_linea,t_estados_percx);
+    //printf ("Before changing turbo, t-scanline: %d, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_scanline,t_estados,t_estados_en_linea,t_estados_percx);
 
-	int antes_t_estados=t_estados / cpu_turbo_speed_antes;
+    int antes_t_estados=t_estados / cpu_turbo_speed_antes;
 
-	//printf ("Before changing turbo, t-states at turbo 1X: %d\n",antes_t_estados);
-
-
-	z80_bit antes_debug_breakpoints_enabled;
-	antes_debug_breakpoints_enabled.v=debug_breakpoints_enabled.v;
-
-	z80_bit antes_betadisk_enabled;
-	antes_betadisk_enabled.v=betadisk_enabled.v;
-
-	z80_bit antes_mutiface_enabled;
-	antes_mutiface_enabled.v=multiface_enabled.v;
-
-	z80_bit antes_if1_enabled;
-	antes_if1_enabled.v=if1_enabled.v;
-
-	z80_bit antes_cpu_code_coverage_enabled;
-	antes_cpu_code_coverage_enabled.v=cpu_code_coverage_enabled.v;
-
-	z80_bit antes_cpu_history_enabled;
-	antes_cpu_history_enabled.v=cpu_history_enabled.v;
-
-	z80_bit antes_extended_stack_enabled;
-	antes_extended_stack_enabled.v=extended_stack_enabled.v;
+    //printf ("Before changing turbo, t-states at turbo 1X: %d\n",antes_t_estados);
 
 
-	do_not_run_init_z88_memory_slots=1;
+    z80_bit antes_debug_breakpoints_enabled;
+    antes_debug_breakpoints_enabled.v=debug_breakpoints_enabled.v;
+
+    z80_bit antes_betadisk_enabled;
+    antes_betadisk_enabled.v=betadisk_enabled.v;
+
+    z80_bit antes_mutiface_enabled;
+    antes_mutiface_enabled.v=multiface_enabled.v;
+
+    z80_bit antes_if1_enabled;
+    antes_if1_enabled.v=if1_enabled.v;
+
+    z80_bit antes_cpu_code_coverage_enabled;
+    antes_cpu_code_coverage_enabled.v=cpu_code_coverage_enabled.v;
+
+    z80_bit antes_cpu_history_enabled;
+    antes_cpu_history_enabled.v=cpu_history_enabled.v;
+
+    z80_bit antes_extended_stack_enabled;
+    antes_extended_stack_enabled.v=extended_stack_enabled.v;
 
 
-	if (cpu_turbo_speed>MAX_CPU_TURBO_SPEED) {
-		debug_printf (VERBOSE_INFO,"Turbo mode higher than maximum. Setting to %d",MAX_CPU_TURBO_SPEED);
-		cpu_turbo_speed=MAX_CPU_TURBO_SPEED;
-	}
-
-	//Si esta divmmc/divide, volver a aplicar funciones poke
-	if (diviface_enabled.v) diviface_restore_peek_poke_functions();
+    do_not_run_init_z88_memory_slots=1;
 
 
+    if (cpu_turbo_speed>MAX_CPU_TURBO_SPEED) {
+        debug_printf (VERBOSE_INFO,"Turbo mode higher than maximum. Setting to %d",MAX_CPU_TURBO_SPEED);
+        cpu_turbo_speed=MAX_CPU_TURBO_SPEED;
+    }
+
+    //Si esta divmmc/divide, volver a aplicar funciones poke
+    if (diviface_enabled.v) diviface_restore_peek_poke_functions();
 
 
-	//Variable turbo se sobreescribe al llamar a set_machine_params. Guardar y restaurar luego
-	int speed=cpu_turbo_speed;
 
-	set_machine_empties_audio_buffer.v=0; //para que no vacie buffer de sonido y asi sonido no se oye extraño
-	set_machine_params();
 
-	cpu_turbo_speed=speed;
+    //Variable turbo se sobreescribe al llamar a set_machine_params. Guardar y restaurar luego
+    int speed=cpu_turbo_speed;
 
-	screen_testados_linea *=cpu_turbo_speed;
+    set_machine_empties_audio_buffer.v=0; //para que no vacie buffer de sonido y asi sonido no se oye extraño
+    set_machine_params();
+
+    cpu_turbo_speed=speed;
+
+    screen_testados_linea *=cpu_turbo_speed;
     screen_set_video_params_indices();
     inicializa_tabla_contend_cached_change_cpu_speed();
 
@@ -674,17 +674,17 @@ void cpu_set_turbo_speed(void)
     debug_printf(VERBOSE_DEBUG,"Called to cpu_set_turbo_speed. cpu_turbo_speed: %d t-states per line: %d",cpu_turbo_speed,screen_testados_linea);
 
 
-	//Ajustes posteriores de t_estados
-	//Ajustar t_estados para que se quede en mismo "sitio"
-	t_estados=antes_t_estados * cpu_turbo_speed;
+    //Ajustes posteriores de t_estados
+    //Ajustar t_estados para que se quede en mismo "sitio"
+    t_estados=antes_t_estados * cpu_turbo_speed;
 
 
-	//t_estados_en_linea=t_estados % screen_testados_linea;
+    //t_estados_en_linea=t_estados % screen_testados_linea;
 
-	//t_estados_percx=(t_estados_en_linea*100)/screen_testados_linea;
+    //t_estados_percx=(t_estados_en_linea*100)/screen_testados_linea;
 
-	//printf ("After changing turbo, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_estados,t_estados_en_linea,t_estados_percx);
-	//printf ("Calculated t-scanline according to t-states: %d\n",t_estados / screen_testados_linea);
+    //printf ("After changing turbo, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_estados,t_estados_en_linea,t_estados_percx);
+    //printf ("Calculated t-scanline according to t-states: %d\n",t_estados / screen_testados_linea);
 
 
     //Se cambia el turbo, esto no afecta al rainbow buffer
@@ -694,68 +694,68 @@ void cpu_set_turbo_speed(void)
 
     do_not_run_init_z88_memory_slots=0;
 
-	if (diviface_enabled.v) diviface_set_peek_poke_functions();
+    if (diviface_enabled.v) diviface_set_peek_poke_functions();
 
-	//Si estaba modo debug cpu, reactivar
-	if (antes_debug_breakpoints_enabled.v) {
-		debug_printf(VERBOSE_INFO,"Re-enabling breakpoints because they were enabled before changing turbo mode");
-		debug_breakpoints_enabled.v=1;
-		breakpoints_enable();
-	}
+    //Si estaba modo debug cpu, reactivar
+    if (antes_debug_breakpoints_enabled.v) {
+        debug_printf(VERBOSE_INFO,"Re-enabling breakpoints because they were enabled before changing turbo mode");
+        debug_breakpoints_enabled.v=1;
+        breakpoints_enable();
+    }
 
-	if (antes_betadisk_enabled.v) betadisk_enable();
+    if (antes_betadisk_enabled.v) betadisk_enable();
 
-	if (antes_mutiface_enabled.v) multiface_enable();
+    if (antes_mutiface_enabled.v) multiface_enable();
 
     if (antes_if1_enabled.v) {
         //printf("Reactivar if1\n");
         enable_if1();
     }
 
-	if (antes_cpu_code_coverage_enabled.v) set_cpu_core_code_coverage_enable();
+    if (antes_cpu_code_coverage_enabled.v) set_cpu_core_code_coverage_enable();
 
 
-	if (antes_cpu_history_enabled.v) set_cpu_core_history_enable();
+    if (antes_cpu_history_enabled.v) set_cpu_core_history_enable();
 
 
-	if (antes_extended_stack_enabled.v) set_extended_stack();
-
-
-
-	cpu_turbo_speed_antes=cpu_turbo_speed;
+    if (antes_extended_stack_enabled.v) set_extended_stack();
 
 
 
-	/*
-	Calculos de tiempo en ejecutar esta funcion de cambio de velocidad de cpu, desde metodo antiguo hasta optimizado actual:
+    cpu_turbo_speed_antes=cpu_turbo_speed;
+
+
+
+    /*
+    Calculos de tiempo en ejecutar esta funcion de cambio de velocidad de cpu, desde metodo antiguo hasta optimizado actual:
 --Metodo clasico de obtener tablas contend:
 
-	Con O0:
+    Con O0:
 cpu: X01 tiempo: 1611 us
 cpu: X08 tiempo: 4117 us
 
-	Con O2:
+    Con O2:
 cpu: X01 tiempo: 880 us
 cpu: X08 tiempo: 1031 us
 
 
 
-	--Con rutina contend con memset:
-	Con O0:
+    --Con rutina contend con memset:
+    Con O0:
 cpu: X08 tiempo: 863 us
 
-	Con O2:
+    Con O2:
 cpu: X08 tiempo: 539 us
 
-	-- Con tabla cacheada al cambiar speed:
-	Con O0:
+    -- Con tabla cacheada al cambiar speed:
+    Con O0:
 cpu: X01 tiempo: 964 us
 cpu: X08 tiempo: 883 us
 
-	Con O2:
+    Con O2:
 cpu: X01 tiempo: 547 us
 cpu: X08 tiempo: 438 us
-	*/
+    */
 
 
 }
@@ -769,7 +769,7 @@ void z80_no_ejecutado_block_opcodes(void)
 void z80_adjust_flags_interrupt_block_opcode(void)
 {
 
-	//Si estabamos en una instruccion de bloque
+    //Si estabamos en una instruccion de bloque
     /*
     Basado en info de: https://github.com/hoglet67/Z80Decoder/wiki/Undocumented-Flags
     */
@@ -850,10 +850,10 @@ void z80_adjust_flags_interrupt_block_opcode(void)
 void cold_start_cpu_registers(void)
 {
 
-	//Probar RANDOMIZE USR 46578 y debe aparecer pantalla con colores y al pulsar Espacio, franjas en el borde
-	//Si esto se ejecuta despues de un reset, no sucede
-	//Ver http://foro.speccy.org/viewtopic.php?f=11&t=2319
-	//y http://www.worldofspectrum.org/forums/discussion/comment/539714#Comment_539714
+    //Probar RANDOMIZE USR 46578 y debe aparecer pantalla con colores y al pulsar Espacio, franjas en el borde
+    //Si esto se ejecuta despues de un reset, no sucede
+    //Ver http://foro.speccy.org/viewtopic.php?f=11&t=2319
+    //y http://www.worldofspectrum.org/forums/discussion/comment/539714#Comment_539714
 
         /*
         AF=BC=DE=HL=IX=IY=SP=FFFFH
@@ -870,130 +870,130 @@ void cold_start_cpu_registers(void)
         reg_i=0;
         reg_r=reg_r_bit7=0;
 
-	if (cpu_random_r_register.v) {
-		reg_r=value_16_to_8l(randomize_noise[0]) & 127;
-		debug_printf (VERBOSE_DEBUG,"R Register set to random value: %02XH",reg_r);
-	}
+    if (cpu_random_r_register.v) {
+        reg_r=value_16_to_8l(randomize_noise[0]) & 127;
+        debug_printf (VERBOSE_DEBUG,"R Register set to random value: %02XH",reg_r);
+    }
 
-	out_254_original_value=out_254=0xff;
+    out_254_original_value=out_254=0xff;
 
-	//Parece que en Inves esto es asi:
-	if (MACHINE_IS_INVES) {
-		out_254_original_value=out_254=0;
-	}
+    //Parece que en Inves esto es asi:
+    if (MACHINE_IS_INVES) {
+        out_254_original_value=out_254=0;
+    }
 
-	modificado_border.v=1;
+    modificado_border.v=1;
 
-	//Modo BOOTM y cambio de otros settings del menu emulador
-	if (MACHINE_IS_ZXUNO) {
+    //Modo BOOTM y cambio de otros settings del menu emulador
+    if (MACHINE_IS_ZXUNO) {
 
-		//activar BOOTM
-		zxuno_ports[0]=1;
+        //activar BOOTM
+        zxuno_ports[0]=1;
 
-		//metemos registro SCRATCH / COLDBOOT a 0
-		zxuno_ports[0xfe]=0;
-
-
-        	zxuno_ports[0x0B]=0;
-        	zxuno_ports[0x0C]=255;
-	        zxuno_ports[0x0D]=1;
-        	zxuno_ports[0x0E]=0;
-	        zxuno_ports[0x0F]=0;
-        	zxuno_ports[0x40]=0;
+        //metemos registro SCRATCH / COLDBOOT a 0
+        zxuno_ports[0xfe]=0;
 
 
+            zxuno_ports[0x0B]=0;
+            zxuno_ports[0x0C]=255;
+            zxuno_ports[0x0D]=1;
+            zxuno_ports[0x0E]=0;
+            zxuno_ports[0x0F]=0;
+            zxuno_ports[0x40]=0;
 
-		zxuno_set_emulator_setting_i2kb();
-		zxuno_set_emulator_setting_timing();
-		zxuno_set_emulator_setting_contend();
-		zxuno_set_emulator_setting_diven();
-		zxuno_set_emulator_setting_disd();
-		zxuno_set_emulator_setting_devcontrol_diay();
-		zxuno_set_emulator_setting_devcontrol_ditay();
-		zxuno_set_emulator_setting_scandblctrl();
-		zxuno_set_emulator_setting_ditimex();
-		zxuno_set_emulator_setting_diulaplus();
 
-		//quitamos write enable de la spi flash zxuno
-		zxuno_spi_clear_write_enable();
 
-		zxuno_radasoffset_high_byte.v=0;
-		zxuno_radasoffset=0;
+        zxuno_set_emulator_setting_i2kb();
+        zxuno_set_emulator_setting_timing();
+        zxuno_set_emulator_setting_contend();
+        zxuno_set_emulator_setting_diven();
+        zxuno_set_emulator_setting_disd();
+        zxuno_set_emulator_setting_devcontrol_diay();
+        zxuno_set_emulator_setting_devcontrol_ditay();
+        zxuno_set_emulator_setting_scandblctrl();
+        zxuno_set_emulator_setting_ditimex();
+        zxuno_set_emulator_setting_diulaplus();
 
-		//radaspadding
-		zxuno_ports[0x42]=0;
+        //quitamos write enable de la spi flash zxuno
+        zxuno_spi_clear_write_enable();
 
-		//radaspalbank
-		zxuno_ports[0x43]=0;
+        zxuno_radasoffset_high_byte.v=0;
+        zxuno_radasoffset=0;
+
+        //radaspadding
+        zxuno_ports[0x42]=0;
+
+        //radaspalbank
+        zxuno_ports[0x43]=0;
 
         //registro prism
         zxuno_ports[0x50]=0;
 
         zxuno_prism_set_default_palette();
 
-	}
+    }
 
-	if (MACHINE_IS_PRISM) {
-		hard_reset_cpu_prism();
-		prism_set_emulator_setting_cpuspeed();
-	}
+    if (MACHINE_IS_PRISM) {
+        hard_reset_cpu_prism();
+        prism_set_emulator_setting_cpuspeed();
+    }
 
-	if (MACHINE_IS_TBBLUE) {
-		tbblue_hard_reset();
-	}
+    if (MACHINE_IS_TBBLUE) {
+        tbblue_hard_reset();
+    }
 
-	if (MACHINE_IS_TSCONF) {
-		tsconf_hard_reset();
-		tsconf_set_default_basic_palette();
-	}
+    if (MACHINE_IS_TSCONF) {
+        tsconf_hard_reset();
+        tsconf_set_default_basic_palette();
+    }
 
-	if (MACHINE_IS_BASECONF) {
-		baseconf_hard_reset();
-		//baseconf_set_default_basic_palette();
-	}
+    if (MACHINE_IS_BASECONF) {
+        baseconf_hard_reset();
+        //baseconf_set_default_basic_palette();
+    }
 }
 
 
 //Para maquinas Z88 y zxuno y prism
 void hard_reset_cpu(void)
 {
-	if (MACHINE_IS_Z88) hard_reset_cpu_z88();
+    if (MACHINE_IS_Z88) hard_reset_cpu_z88();
 
-	else if (MACHINE_IS_ZXUNO) {
-		hard_reset_cpu_zxuno();
-	}
+    else if (MACHINE_IS_ZXUNO) {
+        hard_reset_cpu_zxuno();
+    }
 
-	else if (MACHINE_IS_PRISM) {
-		hard_reset_cpu_prism();
-		reset_cpu();
-	}
+    else if (MACHINE_IS_PRISM) {
+        hard_reset_cpu_prism();
+        reset_cpu();
+    }
 
-	else if (MACHINE_IS_TBBLUE) {
-    	tbblue_hard_reset();
-		reset_cpu();
+    else if (MACHINE_IS_TBBLUE) {
+        tbblue_hard_reset();
+        reset_cpu();
   }
 
-	else if (superupgrade_enabled.v) {
-		superupgrade_hard_reset();
-		reset_cpu();
-	}
+    else if (superupgrade_enabled.v) {
+        superupgrade_hard_reset();
+        reset_cpu();
+    }
 
-	else if (MACHINE_IS_TSCONF) {
-		tsconf_hard_reset();
+    else if (MACHINE_IS_TSCONF) {
+        tsconf_hard_reset();
 
-	}
+    }
 
-	else if (MACHINE_IS_BASECONF) {
-		baseconf_hard_reset();
+    else if (MACHINE_IS_BASECONF) {
+        baseconf_hard_reset();
 
-	}
+    }
 
 }
 
 void reset_cpu(void)
 {
 
-	debug_printf (VERBOSE_INFO,"Reset cpu");
+    debug_printf (VERBOSE_INFO,"Reset cpu");
 
     if (esxdos_umount_on_reset.v) {
         if (esxdos_handler_enabled.v) {
@@ -1003,170 +1003,170 @@ void reset_cpu(void)
         esxdos_umount_on_reset.v=0;
     }
 
-	if (rzx_reproduciendo) {
-		eject_rzx_file();
-	}
+    if (rzx_reproduciendo) {
+        eject_rzx_file();
+    }
 
-	reg_pc=0;
-	reg_i=0;
+    reg_pc=0;
+    reg_i=0;
 
     z80_wait_signal.v=0;
 
-	//mapear rom 0 en modos 128k y paginas RAM normales
-	puerto_32765=0;
-	puerto_8189=0;
+    //mapear rom 0 en modos 128k y paginas RAM normales
+    puerto_32765=0;
+    puerto_8189=0;
 
-	zesarux_zxi_last_register=0;
-	zesarux_zxi_registers_array[0]=0;
+    zesarux_zxi_last_register=0;
+    zesarux_zxi_registers_array[0]=0;
 
-	zesarux_zxi_registers_array[4]=0;
-	zesarux_zxi_registers_array[5]=0;
+    zesarux_zxi_registers_array[4]=0;
+    zesarux_zxi_registers_array[5]=0;
 
 
-	interrupcion_maskable_generada.v=0;
-	interrupcion_non_maskable_generada.v=0;
+    interrupcion_maskable_generada.v=0;
+    interrupcion_non_maskable_generada.v=0;
   interrupcion_timer_generada.v=0;
-	iff1.v=iff2.v=0;
+    iff1.v=iff2.v=0;
   im_mode=0;
 
-	if1_rom_paged.v=0;
+    if1_rom_paged.v=0;
 
 
-	//Algunos otros registros
-	reg_a=0xff;
-	Z80_FLAGS=0xff;
-	reg_sp=0xffff;
+    //Algunos otros registros
+    reg_a=0xff;
+    Z80_FLAGS=0xff;
+    reg_sp=0xffff;
 
-	datagear_reset();
+    datagear_reset();
 
     diviface_reset();
 
 
 
 
-	//si no se pone esto a 0, al cambiar de zx80 a zx81 suele colgarse
+    //si no se pone esto a 0, al cambiar de zx80 a zx81 suele colgarse
         z80_halt_signal.v=0;
 
 
         esperando_tiempo_final_t_estados.v=0;
 
 
-	if (MACHINE_IS_ZX8081) {
-		//algunos reseteos para zx80/81
-		nmi_generator_active.v=0;
+    if (MACHINE_IS_ZX8081) {
+        //algunos reseteos para zx80/81
+        nmi_generator_active.v=0;
         zx8081_vsync_generator.v=0;
         //hsync_generator_active.v=0;
         ula_zx81_time_event_t_estados=0;
-		//timeout_linea_vsync=NORMAL_TIMEOUT_LINEA_VSYNC;
-		chroma81_port_7FEF=0;
+        //timeout_linea_vsync=NORMAL_TIMEOUT_LINEA_VSYNC;
+        chroma81_port_7FEF=0;
 
 
 
-		//Si zxpand, habilitar overlay rom
-		if (zxpand_enabled.v) {
-			zxpand_overlay_rom.v=1;
-			dragons_lair_hack.v=0;
-		}
+        //Si zxpand, habilitar overlay rom
+        if (zxpand_enabled.v) {
+            zxpand_overlay_rom.v=1;
+            dragons_lair_hack.v=0;
+        }
 
-	}
-
-
-	if (MACHINE_IS_SPECTRUM_128_P2) {
-		mem_set_normal_pages_128k();
-	}
-
-	if (MACHINE_IS_SPECTRUM_P2A_P3) {
-		mem_set_normal_pages_p2a();
-	}
-
-	if (MACHINE_IS_ZXUNO) {
-		//mem_set_normal_pages_zxuno();
-
-		//interrupciones raster
-		zxuno_ports[0x0c]=0xff;
-		zxuno_ports[0x0d]=1;
-
-		//indice de mensaje a coreid
-		zxuno_core_id_indice=0;
-
-		zxuno_set_memory_pages();
-
-		//Registros dma
-		zxuno_index_nibble_dma_write[0]=zxuno_index_nibble_dma_write[1]=zxuno_index_nibble_dma_write[2]=zxuno_index_nibble_dma_write[3]=zxuno_index_nibble_dma_write[4]=0;
-		zxuno_index_nibble_dma_read[0]=zxuno_index_nibble_dma_read[1]=zxuno_index_nibble_dma_read[2]=zxuno_index_nibble_dma_read[3]=zxuno_index_nibble_dma_read[4]=0;
-
-		zxuno_ports[0xa0]=0;
-		zxuno_ports[0xa6]=0;
+    }
 
 
-		zxuno_dmareg[0][0]=zxuno_dmareg[0][1]=0;
-		zxuno_dmareg[1][0]=zxuno_dmareg[1][1]=0;
-		zxuno_dmareg[2][0]=zxuno_dmareg[2][1]=0;
-		zxuno_dmareg[3][0]=zxuno_dmareg[3][1]=0;
-		zxuno_dmareg[4][0]=zxuno_dmareg[4][1]=0;
-	}
+    if (MACHINE_IS_SPECTRUM_128_P2) {
+        mem_set_normal_pages_128k();
+    }
 
-	//Modos extendidos ulaplus desactivar, sea en maquina zxuno o no
-	zxuno_ports[0x40]=0;
+    if (MACHINE_IS_SPECTRUM_P2A_P3) {
+        mem_set_normal_pages_p2a();
+    }
+
+    if (MACHINE_IS_ZXUNO) {
+        //mem_set_normal_pages_zxuno();
+
+        //interrupciones raster
+        zxuno_ports[0x0c]=0xff;
+        zxuno_ports[0x0d]=1;
+
+        //indice de mensaje a coreid
+        zxuno_core_id_indice=0;
+
+        zxuno_set_memory_pages();
+
+        //Registros dma
+        zxuno_index_nibble_dma_write[0]=zxuno_index_nibble_dma_write[1]=zxuno_index_nibble_dma_write[2]=zxuno_index_nibble_dma_write[3]=zxuno_index_nibble_dma_write[4]=0;
+        zxuno_index_nibble_dma_read[0]=zxuno_index_nibble_dma_read[1]=zxuno_index_nibble_dma_read[2]=zxuno_index_nibble_dma_read[3]=zxuno_index_nibble_dma_read[4]=0;
+
+        zxuno_ports[0xa0]=0;
+        zxuno_ports[0xa6]=0;
 
 
-	if (MACHINE_IS_Z88) {
-		z88_set_default_memory_pages();
-		z88_snooze.v=0;
-		z88_coma.v=0;
+        zxuno_dmareg[0][0]=zxuno_dmareg[0][1]=0;
+        zxuno_dmareg[1][0]=zxuno_dmareg[1][1]=0;
+        zxuno_dmareg[2][0]=zxuno_dmareg[2][1]=0;
+        zxuno_dmareg[3][0]=zxuno_dmareg[3][1]=0;
+        zxuno_dmareg[4][0]=zxuno_dmareg[4][1]=0;
+    }
 
-		blink_tim[0] = 0x98;
-		blink_tim[1] = blink_tim[2] = blink_tim[3] = blink_tim[4] = 0;
+    //Modos extendidos ulaplus desactivar, sea en maquina zxuno o no
+    zxuno_ports[0x40]=0;
 
-		//registros de video a 0 tambien
-		blink_pixel_base[0]=blink_pixel_base[1]=blink_pixel_base[2]=blink_pixel_base[3]=0;
-		blink_sbr=0;
 
-		//resetear speaker. por si acaso se queda activo el sonido a 3200 khz
-		//7           SRUN        Speaker source (0=SBIT, 1=TxD or 3200Khz
-		blink_com &= (255-128);
+    if (MACHINE_IS_Z88) {
+        z88_set_default_memory_pages();
+        z88_snooze.v=0;
+        z88_coma.v=0;
 
-	}
+        blink_tim[0] = 0x98;
+        blink_tim[1] = blink_tim[2] = blink_tim[3] = blink_tim[4] = 0;
 
-	if (MACHINE_IS_MSX) {
-		msx_reset();
-	}
+        //registros de video a 0 tambien
+        blink_pixel_base[0]=blink_pixel_base[1]=blink_pixel_base[2]=blink_pixel_base[3]=0;
+        blink_sbr=0;
 
-	if (MACHINE_IS_SVI) {
-		svi_reset();
-	}
+        //resetear speaker. por si acaso se queda activo el sonido a 3200 khz
+        //7           SRUN        Speaker source (0=SBIT, 1=TxD or 3200Khz
+        blink_com &= (255-128);
 
-	if (MACHINE_IS_COLECO) {
-		coleco_reset();
-	}
+    }
 
-	if (MACHINE_IS_SG1000) {
-		sg1000_reset();
-	}
+    if (MACHINE_IS_MSX) {
+        msx_reset();
+    }
 
-	if (MACHINE_IS_SMS) {
-		sms_reset();
-	}
+    if (MACHINE_IS_SVI) {
+        svi_reset();
+    }
+
+    if (MACHINE_IS_COLECO) {
+        coleco_reset();
+    }
+
+    if (MACHINE_IS_SG1000) {
+        sg1000_reset();
+    }
+
+    if (MACHINE_IS_SMS) {
+        sms_reset();
+    }
 
     if (MACHINE_IS_PCW) {
         pcw_reset();
     }
 
-	vdp_9918a_reset();
+    vdp_9918a_reset();
 
-	t_estados=0;
-	t_scanline=0;
-	t_scanline_draw=0;
+    t_estados=0;
+    t_scanline=0;
+    t_scanline_draw=0;
 
         if (MACHINE_IS_INVES) {
-		//Inves
-		t_scanline_draw=screen_indice_inicio_pant;
+        //Inves
+        t_scanline_draw=screen_indice_inicio_pant;
         alertado_inves_check_write_on_interrupt_bug=0;
         }
 
-	init_chip_ay();
+    init_chip_ay();
 
-	init_chip_sn();
+    init_chip_sn();
 
 #ifdef EMULATE_CPU_STATS
 util_stats_init();
@@ -1174,74 +1174,74 @@ util_stats_init();
 
 
 
-	if (MACHINE_IS_SPECTRUM) {
-		//Modo spectra 0
-		spectra_display_mode_register=0;
+    if (MACHINE_IS_SPECTRUM) {
+        //Modo spectra 0
+        spectra_display_mode_register=0;
 
-		if (ulaplus_presente.v) ulaplus_set_mode(0);
-		if (ulaplus_presente.v) ulaplus_set_extended_mode(0);
-	}
-
-
-	//Resetear modo timex
-	timex_port_ff=0;
-
-	//Resetear paginacion timex
-	timex_port_f4=0;
-
-	//Resetear puerto eff7 pentagon
-	puerto_eff7=0;
+        if (ulaplus_presente.v) ulaplus_set_mode(0);
+        if (ulaplus_presente.v) ulaplus_set_extended_mode(0);
+    }
 
 
-	if (MACHINE_IS_CHLOE) chloe_set_memory_pages();
+    //Resetear modo timex
+    timex_port_ff=0;
 
-	if (MACHINE_IS_PRISM) {
-		//Cambiar pagina rom tal cual como si pusiesemos bit de rom de puerto 32765 a 0 y el bit de 8189 tambien a 0
-		//Asi por ejemplo, si desde prism vamos a maquina +2A, luego vamos a 48 Basic,
-		//haciendo un reset normal, volvemos a menu +2A. Sino cambiasemos la pagina de rom asi,
-		//al hacer reset volveria a 48 Basic
+    //Resetear paginacion timex
+    timex_port_f4=0;
 
-		//desactivado
-		//porque reset desde maquina 48 (rom page 2) lo envia a prism boot
-		//		prism_rom_page &=(255-3);
+    //Resetear puerto eff7 pentagon
+    puerto_eff7=0;
 
 
-		prism_set_memory_pages();
-	}
+    if (MACHINE_IS_CHLOE) chloe_set_memory_pages();
 
-	if (MACHINE_IS_CHROME) {
-		chrome_set_memory_pages();
-	}
+    if (MACHINE_IS_PRISM) {
+        //Cambiar pagina rom tal cual como si pusiesemos bit de rom de puerto 32765 a 0 y el bit de 8189 tambien a 0
+        //Asi por ejemplo, si desde prism vamos a maquina +2A, luego vamos a 48 Basic,
+        //haciendo un reset normal, volvemos a menu +2A. Sino cambiasemos la pagina de rom asi,
+        //al hacer reset volveria a 48 Basic
 
-	if (MACHINE_IS_TSCONF) {
-		tsconf_reset_cpu();
-	}
+        //desactivado
+        //porque reset desde maquina 48 (rom page 2) lo envia a prism boot
+        //		prism_rom_page &=(255-3);
 
-	if (MACHINE_IS_BASECONF) {
-		baseconf_reset_cpu();
-	}
 
-	if (MACHINE_IS_TBBLUE) {
-		tbblue_reset();
-		tbblue_set_memory_pages();
+        prism_set_memory_pages();
+    }
 
-		//porque antes estaba el tbblue_reset aqui despues de set_memory_pages???
+    if (MACHINE_IS_CHROME) {
+        chrome_set_memory_pages();
+    }
 
-		//tbblue_read_port_24d5_index=0;
-		ds1307_reset();
-	}
+    if (MACHINE_IS_TSCONF) {
+        tsconf_reset_cpu();
+    }
 
-	if (MACHINE_IS_TIMEX_TS_TC_2068) timex_set_memory_pages();
+    if (MACHINE_IS_BASECONF) {
+        baseconf_reset_cpu();
+    }
 
-	if (MACHINE_IS_CPC) {
+    if (MACHINE_IS_TBBLUE) {
+        tbblue_reset();
+        tbblue_set_memory_pages();
+
+        //porque antes estaba el tbblue_reset aqui despues de set_memory_pages???
+
+        //tbblue_read_port_24d5_index=0;
+        ds1307_reset();
+    }
+
+    if (MACHINE_IS_TIMEX_TS_TC_2068) timex_set_memory_pages();
+
+    if (MACHINE_IS_CPC) {
         cpc_reset();
-	}
+    }
 
-	if (MACHINE_IS_SAM) {
-		sam_vmpr=sam_hmpr=sam_lmpr=0;
+    if (MACHINE_IS_SAM) {
+        sam_vmpr=sam_hmpr=sam_lmpr=0;
 
-		sam_set_memory_pages();
-	}
+        sam_set_memory_pages();
+    }
 
 
     if (mmc_enabled[0].v || mmc_enabled[1].v) mmc_reset();
@@ -1249,88 +1249,88 @@ util_stats_init();
 
         if (ide_enabled.v) ide_reset();
 
-	if (superupgrade_enabled.v) superupgrade_set_memory_pages();
+    if (superupgrade_enabled.v) superupgrade_set_memory_pages();
 
     if (zxmmcplus_enabled.v) zxmmcplus_reset();
 
-	ay_player_playing.v=0;
+    ay_player_playing.v=0;
 
-	if (multiface_enabled.v) {
-		multiface_lockout=0;
-		multiface_unmap_memory();
-	}
+    if (multiface_enabled.v) {
+        multiface_lockout=0;
+        multiface_unmap_memory();
+    }
 
-	if (MACHINE_IS_SPECTRUM && betadisk_enabled.v) betadisk_reset();
+    if (MACHINE_IS_SPECTRUM && betadisk_enabled.v) betadisk_reset();
 
-	if (MACHINE_IS_QL) {
+    if (MACHINE_IS_QL) {
         m68k_init();
         m68k_set_cpu_type(M68K_CPU_TYPE_68000);
         m68k_pulse_reset();
 
-		//HWReset();
-		//printf ("Reg PC QL: %08XH\n",pc);
-		//sleep(2);
-		ql_ipc_reset();
+        //HWReset();
+        //printf ("Reg PC QL: %08XH\n",pc);
+        //sleep(2);
+        ql_ipc_reset();
         ql_stop_sound();
-		qltraps_init_fopen_files_array();
-	}
+        qltraps_init_fopen_files_array();
+    }
 
-	if (MACHINE_IS_MK14) {
-		scmp_reset();
-		mk14_reset();
-	}
+    if (MACHINE_IS_MK14) {
+        scmp_reset();
+        mk14_reset();
+    }
 
 
-	if (esxdos_handler_enabled.v) {
-		esxdos_handler_reset();
-	}
+    if (esxdos_handler_enabled.v) {
+        esxdos_handler_reset();
+    }
 
-	if (hilow_enabled.v) {
-		hilow_reset();
-	}
+    if (hilow_enabled.v) {
+        hilow_reset();
+    }
 
     if (lec_enabled.v) {
         lec_reset();
     }
 
-	if (hilow_bbn_enabled.v) {
-		hilow_bbn_reset();
-	}
+    if (hilow_bbn_enabled.v) {
+        hilow_bbn_reset();
+    }
 
-	if (transtape_enabled.v) {
-		transtape_reset();
-	}
+    if (transtape_enabled.v) {
+        transtape_reset();
+    }
 
-	if (specmate_enabled.v) {
-		specmate_reset();
-	}
+    if (specmate_enabled.v) {
+        specmate_reset();
+    }
 
-	if (phoenix_enabled.v) {
-		phoenix_reset();
-	}
+    if (phoenix_enabled.v) {
+        phoenix_reset();
+    }
 
-	if (defcon_enabled.v) {
-		defcon_reset();
-	}
+    if (defcon_enabled.v) {
+        defcon_reset();
+    }
 
-	if (ramjet_enabled.v) {
-		ramjet_reset();
-	}
+    if (ramjet_enabled.v) {
+        ramjet_reset();
+    }
 
-	if (interface007_enabled.v) {
-		interface007_reset();
-	}
+    if (interface007_enabled.v) {
+        interface007_reset();
+    }
 
-	if (dinamid3_enabled.v) {
-		dinamid3_reset();
-	}
+    if (dinamid3_enabled.v) {
+        dinamid3_reset();
+    }
 
     if (pd765_enabled.v) {
         pd765_reset();
     }
 
-	//Inicializar zona memoria de debug
-	debug_memory_zone_debug_reset();
+    //Inicializar zona memoria de debug
+    debug_memory_zone_debug_reset();
 
 }
 
@@ -1346,11 +1346,11 @@ void random_ram_inves(z80_byte *puntero,int longitud)
                 //printf ("random:%d\n",valor);
                 *puntero=valor;
 
-		valor = valor ^255;
+        valor = valor ^255;
         }
 
-	//asumimos que el ultimo valor enviado desde menu sera el por defecto (255)
-	last_inves_low_ram_poke_menu=255;
+    //asumimos que el ultimo valor enviado desde menu sera el por defecto (255)
+    last_inves_low_ram_poke_menu=255;
 
 }
 
@@ -1367,46 +1367,46 @@ void set_emulator_speed(void)
 
     //printf("set_emulator_speed\n");
 
-	//Calcular velocidad. caso normal que porcentaje=100, valor queda timer_sleep_machine es original_timer_sleep_machine*100/100 = original_timer_sleep_machine
-	timer_sleep_machine=original_timer_sleep_machine*100/porcentaje_velocidad_emulador;
-	if (timer_sleep_machine==0) timer_sleep_machine=1;
+    //Calcular velocidad. caso normal que porcentaje=100, valor queda timer_sleep_machine es original_timer_sleep_machine*100/100 = original_timer_sleep_machine
+    timer_sleep_machine=original_timer_sleep_machine*100/porcentaje_velocidad_emulador;
+    if (timer_sleep_machine==0) timer_sleep_machine=1;
 
     //Reiniciar timer por si se activa maquina como Z88 donde el timer SDL no permite esa velocidad
     //o tambien si cpu speed es demasiado alta y tampoco permite algun timer concreto
     timer_restart();
 
-	//Si ha cambiado velocidad, reiniciar driver audio con frecuencia adecuada
-	if (anterior_porcentaje_velocidad_emulador!=porcentaje_velocidad_emulador) {
-		if (audio_end!=NULL) audio_end();
-		frecuencia_sonido_variable=FRECUENCIA_CONSTANTE_NORMAL_SONIDO*porcentaje_velocidad_emulador/100;
-		if (audio_init!=NULL) {
-			if (audio_init()) {
-				//Error
-				fallback_audio_null();
-			}
-		}
-	}
+    //Si ha cambiado velocidad, reiniciar driver audio con frecuencia adecuada
+    if (anterior_porcentaje_velocidad_emulador!=porcentaje_velocidad_emulador) {
+        if (audio_end!=NULL) audio_end();
+        frecuencia_sonido_variable=FRECUENCIA_CONSTANTE_NORMAL_SONIDO*porcentaje_velocidad_emulador/100;
+        if (audio_init!=NULL) {
+            if (audio_init()) {
+                //Error
+                fallback_audio_null();
+            }
+        }
+    }
 
-	anterior_porcentaje_velocidad_emulador=porcentaje_velocidad_emulador;
+    anterior_porcentaje_velocidad_emulador=porcentaje_velocidad_emulador;
 
-	debug_printf (VERBOSE_INFO,"Setting timer_sleep_machine to %d us",timer_sleep_machine);
+    debug_printf (VERBOSE_INFO,"Setting timer_sleep_machine to %d us",timer_sleep_machine);
 
-	/*
-	Lo anterior cubre los casos:
-	-cambio de maquina de spectrum a z88: se recalcula timer_sleep_machine, sin tener que reiniciar driver audio
-	-cambio de porcentaje cpu: se recalcula timer_sleep_machine y se reinicia driver audio si hay cambio porcentaje velocidad
-	*/
+    /*
+    Lo anterior cubre los casos:
+    -cambio de maquina de spectrum a z88: se recalcula timer_sleep_machine, sin tener que reiniciar driver audio
+    -cambio de porcentaje cpu: se recalcula timer_sleep_machine y se reinicia driver audio si hay cambio porcentaje velocidad
+    */
 
 }
 
 /*
 void set_emulator_speed(void)
 {
-	//ajuste mediante t estados por linea. requiere desactivar realvideo
-	//ademas la tabla de memoria contended se saldra de rango...
-	screen_testados_linea=screen_testados_linea*porcentaje_velocidad_emulador/100;
+    //ajuste mediante t estados por linea. requiere desactivar realvideo
+    //ademas la tabla de memoria contended se saldra de rango...
+    screen_testados_linea=screen_testados_linea*porcentaje_velocidad_emulador/100;
 
-	printf ("t estados por linea: %d\n",screen_testados_linea);
+    printf ("t estados por linea: %d\n",screen_testados_linea);
 
 }
 */
@@ -1417,35 +1417,35 @@ void set_emulator_speed(void)
 void old_set_emulator_speed(void)
 {
 
-	return ;
+    return ;
 
-	//Esto se hacia antes cuando la cpu no estaba sincronizada y solo habia el contador de maximo de instrucciones
-	//ahora habria que cuadrar muchos contadores en base a la velocidad: total_testates, testates de border, etc....
+    //Esto se hacia antes cuando la cpu no estaba sincronizada y solo habia el contador de maximo de instrucciones
+    //ahora habria que cuadrar muchos contadores en base a la velocidad: total_testates, testates de border, etc....
 
-	//if (machine_type==20) max_cpu_cycles=MAX_CPU_CYCLES_ZX80;
-	//else if (machine_type==21) max_cpu_cycles=MAX_CPU_CYCLES_ZX81;
-	//else max_cpu_cycles=MAX_CPU_CYCLES_SPECTRUM;
+    //if (machine_type==20) max_cpu_cycles=MAX_CPU_CYCLES_ZX80;
+    //else if (machine_type==21) max_cpu_cycles=MAX_CPU_CYCLES_ZX81;
+    //else max_cpu_cycles=MAX_CPU_CYCLES_SPECTRUM;
 
 
-	if (porcentaje_velocidad_emulador==100) return;
+    if (porcentaje_velocidad_emulador==100) return;
 
-	//controlar valores. por ejemplo, un porcentaje de 1, da un floating point exception en alguna parte del codigo...
-	if (porcentaje_velocidad_emulador<10 || porcentaje_velocidad_emulador>1000) {
-		debug_printf (VERBOSE_ERR,"Invalid value for cpu speed: %d",porcentaje_velocidad_emulador);
-		return;
-	}
+    //controlar valores. por ejemplo, un porcentaje de 1, da un floating point exception en alguna parte del codigo...
+    if (porcentaje_velocidad_emulador<10 || porcentaje_velocidad_emulador>1000) {
+        debug_printf (VERBOSE_ERR,"Invalid value for cpu speed: %d",porcentaje_velocidad_emulador);
+        return;
+    }
 
-	debug_printf (VERBOSE_INFO,"Setting cpu speed to: %d%%",porcentaje_velocidad_emulador);
+    debug_printf (VERBOSE_INFO,"Setting cpu speed to: %d%%",porcentaje_velocidad_emulador);
 
-	//lo hacemos multiple de 312
-	//max_cpu_cycles=max_cpu_cycles/312;
+    //lo hacemos multiple de 312
+    //max_cpu_cycles=max_cpu_cycles/312;
 
-	//aplicamos porcentaje
-	//max_cpu_cycles=max_cpu_cycles*porcentaje_velocidad_emulador;
-	//max_cpu_cycles=max_cpu_cycles/100;
+    //aplicamos porcentaje
+    //max_cpu_cycles=max_cpu_cycles*porcentaje_velocidad_emulador;
+    //max_cpu_cycles=max_cpu_cycles/100;
 
-	//y lo volvemos a dejar *312
-	//max_cpu_cycles=max_cpu_cycles*312;
+    //y lo volvemos a dejar *312
+    //max_cpu_cycles=max_cpu_cycles*312;
 
 }
 
@@ -1453,31 +1453,31 @@ void old_set_emulator_speed(void)
 //asignar memoria de maquina, liberando memoria antes si conviene
 void malloc_machine(int tamanyo)
 {
-	if (memoria_spectrum!=NULL) {
-		debug_printf(VERBOSE_INFO,"Freeing previous Machine memory");
-		free(memoria_spectrum);
-	}
+    if (memoria_spectrum!=NULL) {
+        debug_printf(VERBOSE_INFO,"Freeing previous Machine memory");
+        free(memoria_spectrum);
+    }
 
-	debug_printf(VERBOSE_INFO,"Allocating %d bytes for Machine memory",tamanyo);
-	memoria_spectrum=malloc(tamanyo);
+    debug_printf(VERBOSE_INFO,"Allocating %d bytes for Machine memory",tamanyo);
+    memoria_spectrum=malloc(tamanyo);
 
-	if (memoria_spectrum==NULL) {
-		cpu_panic ("Error. Cannot allocate Machine memory");
-	}
+    if (memoria_spectrum==NULL) {
+        cpu_panic ("Error. Cannot allocate Machine memory");
+    }
 
 
-	//En Z88, el puntero que se usa es realmente z88_puntero_memoria
-	z88_puntero_memoria=memoria_spectrum;
+    //En Z88, el puntero que se usa es realmente z88_puntero_memoria
+    z88_puntero_memoria=memoria_spectrum;
 }
 
 void malloc_mem_machine(void) {
 
-	//Caso Inves. Asignamos 64 kb ram+16kb para rom
+    //Caso Inves. Asignamos 64 kb ram+16kb para rom
 
-	if (MACHINE_IS_INVES) {
-		malloc_machine(65536+16384);
-		random_ram_inves(memoria_spectrum,65536);
-	}
+    if (MACHINE_IS_INVES) {
+        malloc_machine(65536+16384);
+        random_ram_inves(memoria_spectrum,65536);
+    }
 
         else if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_ZX8081 || MACHINE_IS_ACE) {
                 //total 64kb
@@ -1492,33 +1492,33 @@ void malloc_mem_machine(void) {
                 malloc_machine((32+1024)*1024);
                 random_ram(memoria_spectrum+32768,1024*1024);
 
-		mem_init_memory_tables_128k();
+        mem_init_memory_tables_128k();
                 mem_set_normal_pages_128k();
 
         }
 
-	 else if (MACHINE_IS_SPECTRUM_P2A_P3) {
+     else if (MACHINE_IS_SPECTRUM_P2A_P3) {
 
                 //64 kb rom, 128-1024 ram
                 malloc_machine((64+1024)*1024);
                 random_ram(memoria_spectrum+65536,1024*1024);
 
-		mem_init_memory_tables_p2a();
+        mem_init_memory_tables_p2a();
                 mem_set_normal_pages_p2a();
 
         }
 
-	else if (MACHINE_IS_ZXUNO) {
-		//16 KB rom
-		//512 KB SRAM
-		//1024 FLASH
+    else if (MACHINE_IS_ZXUNO) {
+        //16 KB rom
+        //512 KB SRAM
+        //1024 FLASH
         //4 paginas vram adicionales de 8192 kb
-		malloc_machine((ZXUNO_ROM_SIZE+ZXUNO_SRAM_SIZE+ZXUNO_SPI_SIZE+8*4)*1024);
-		random_ram(memoria_spectrum,(ZXUNO_ROM_SIZE+ZXUNO_SRAM_SIZE+ZXUNO_SPI_SIZE+8*4)*1024);
+        malloc_machine((ZXUNO_ROM_SIZE+ZXUNO_SRAM_SIZE+ZXUNO_SPI_SIZE+8*4)*1024);
+        random_ram(memoria_spectrum,(ZXUNO_ROM_SIZE+ZXUNO_SRAM_SIZE+ZXUNO_SPI_SIZE+8*4)*1024);
 
 
-		zxuno_init_memory_tables();
-		zxuno_set_memory_pages();
+        zxuno_init_memory_tables();
+        zxuno_set_memory_pages();
 
 
 
@@ -1526,22 +1526,22 @@ void malloc_mem_machine(void) {
 
 
 
-	}
+    }
 
-	  else if (MACHINE_IS_CHLOE) {
+      else if (MACHINE_IS_CHLOE) {
 
-		//Necesita 32 kb rom, 256 kb ram (EX 64, DOCK 64, HOME 128)
+        //Necesita 32 kb rom, 256 kb ram (EX 64, DOCK 64, HOME 128)
 
                 //32 kb rom, 256 ram
                 malloc_machine((32+256)*1024);
                 random_ram(memoria_spectrum+32768,256*1024);
 
-		chloe_init_memory_tables();
-		chloe_set_memory_pages();
+        chloe_init_memory_tables();
+        chloe_set_memory_pages();
 
         }
 
-	else if (MACHINE_IS_PRISM) {
+    else if (MACHINE_IS_PRISM) {
 
                 //Necesita 4096 KB rom, 512 kb ram (EX 64, DOCK 64, HOME 128)
 
@@ -1551,8 +1551,8 @@ void malloc_mem_machine(void) {
                 random_ram(memoria_spectrum+(4096*1024),512*1024);
 
 
-		//Y paginas VRAM
-		prism_malloc_vram();
+        //Y paginas VRAM
+        prism_malloc_vram();
 
                 prism_init_memory_tables();
                 prism_set_memory_pages();
@@ -1561,7 +1561,7 @@ void malloc_mem_machine(void) {
 
         else if (MACHINE_IS_TBBLUE) {
 
-		//2048 KB RAM + 16 KB FPGA ROM (8 kb repetido dos veces)
+        //2048 KB RAM + 16 KB FPGA ROM (8 kb repetido dos veces)
                 malloc_machine( TBBLUE_TOTAL_MEMORY_USED*1024);
 
                 random_ram(memoria_spectrum,TBBLUE_TOTAL_MEMORY_USED*1024);
@@ -1572,47 +1572,47 @@ void malloc_mem_machine(void) {
 
         }
 
-				else if (MACHINE_IS_CHROME) {
+                else if (MACHINE_IS_CHROME) {
 
-				//Necesita 64 kb rom, 160 kb ram
-				malloc_machine((64+160)*1024);
-				random_ram(memoria_spectrum+65536,160*1024);
+                //Necesita 64 kb rom, 160 kb ram
+                malloc_machine((64+160)*1024);
+                random_ram(memoria_spectrum+65536,160*1024);
 
-				chrome_init_memory_tables();
-				chrome_set_memory_pages();
+                chrome_init_memory_tables();
+                chrome_set_memory_pages();
 
-						}
+                        }
 
-						else if (MACHINE_IS_TSCONF) {
+                        else if (MACHINE_IS_TSCONF) {
 
-		                //512 kb rom, 4096 ram
-		                malloc_machine((512+4096)*1024);
-		                //temp de momento nada de random random_ram(memoria_spectrum+512*1024,4096*1024);
+                        //512 kb rom, 4096 ram
+                        malloc_machine((512+4096)*1024);
+                        //temp de momento nada de random random_ram(memoria_spectrum+512*1024,4096*1024);
 
-				tsconf_init_memory_tables();
-				tsconf_set_memory_pages();
-
-
-		        }
-
-					else if (MACHINE_IS_BASECONF) {
-
-		                //512 kb rom, 4096 ram
-		                malloc_machine((512+4096)*1024);
-		                //temp de momento nada de random random_ram(memoria_spectrum+512*1024,4096*1024);
-
-				baseconf_init_memory_tables();
-				baseconf_set_memory_pages();
+                tsconf_init_memory_tables();
+                tsconf_set_memory_pages();
 
 
-		        }
+                }
 
-						else if (MACHINE_IS_MK14) {
+                    else if (MACHINE_IS_BASECONF) {
 
-										//64 kb ram/rom
-										malloc_machine(65536);
+                        //512 kb rom, 4096 ram
+                        malloc_machine((512+4096)*1024);
+                        //temp de momento nada de random random_ram(memoria_spectrum+512*1024,4096*1024);
 
-						}
+                baseconf_init_memory_tables();
+                baseconf_set_memory_pages();
+
+
+                }
+
+                        else if (MACHINE_IS_MK14) {
+
+                                        //64 kb ram/rom
+                                        malloc_machine(65536);
+
+                        }
 
 
           else if (MACHINE_IS_TIMEX_TS_TC_2068) {
@@ -1625,15 +1625,15 @@ void malloc_mem_machine(void) {
                 timex_init_memory_tables();
                 timex_set_memory_pages();
 
-		//Inicializar memoria DOCK con 255
-		timex_empty_dock_space();
+        //Inicializar memoria DOCK con 255
+        timex_empty_dock_space();
 
         }
 
-	else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
 
-		//32 kb rom
-		//128 kb ram. Asignamos 128kb ram aunque maquina sea de 64 kb de ram->Facilita las funciones
+        //32 kb rom
+        //128 kb ram. Asignamos 128kb ram aunque maquina sea de 64 kb de ram->Facilita las funciones
 
                 malloc_machine(160*1024);
                 random_ram(memoria_spectrum,160*1024);
@@ -1644,24 +1644,10 @@ void malloc_mem_machine(void) {
 
         }
 
-	else if (MACHINE_IS_CPC_6128) {
+    else if (MACHINE_IS_CPC_6128) {
 
-		//48 kb rom
-		//128 kb ram.
-
-                malloc_machine(176*1024);
-                random_ram(memoria_spectrum,176*1024);
-
-                cpc_init_memory_tables();
-                cpc_set_memory_pages();
-
-
-        }
-
-	else if (MACHINE_IS_CPC_664) {
-
-		//48 kb rom
-		//128 kb ram. Asignamos 128kb ram aunque maquina sea de 64 kb de ram->Facilita las funciones
+        //48 kb rom
+        //128 kb ram.
 
                 malloc_machine(176*1024);
                 random_ram(memoria_spectrum,176*1024);
@@ -1672,9 +1658,23 @@ void malloc_mem_machine(void) {
 
         }
 
-	else if (MACHINE_IS_PCW_8256) {
+    else if (MACHINE_IS_CPC_664) {
 
-		//256kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
+        //48 kb rom
+        //128 kb ram. Asignamos 128kb ram aunque maquina sea de 64 kb de ram->Facilita las funciones
+
+                malloc_machine(176*1024);
+                random_ram(memoria_spectrum,176*1024);
+
+                cpc_init_memory_tables();
+                cpc_set_memory_pages();
+
+
+        }
+
+    else if (MACHINE_IS_PCW_8256) {
+
+        //256kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
                 pcw_total_ram=256*1024;
 
                 malloc_machine(2*1024*1024);
@@ -1686,9 +1686,9 @@ void malloc_mem_machine(void) {
 
         }
 
-	else if (MACHINE_IS_PCW_8512) {
+    else if (MACHINE_IS_PCW_8512) {
 
-		//512kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
+        //512kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
                 pcw_total_ram=512*1024;
 
                 malloc_machine(2*1024*1024);
@@ -1706,27 +1706,27 @@ void malloc_mem_machine(void) {
                 random_ram(memoria_spectrum+32768,32768);
 
 
-				//y 16kb para vram
-				msx_alloc_vram_memory();
+                //y 16kb para vram
+                msx_alloc_vram_memory();
 
 
-				msx_init_memory_tables();
+                msx_init_memory_tables();
 
         }
 
 
         else if (MACHINE_IS_SVI) {
-			//Total:  5 RAMS de 32 kb, 3 ROMS de 32 kb -> 5*32 + 3*32 = 160 + 96 = 256
+            //Total:  5 RAMS de 32 kb, 3 ROMS de 32 kb -> 5*32 + 3*32 = 160 + 96 = 256
 
                 malloc_machine(256*1024);
                 random_ram(memoria_spectrum,256*1024);
 
 
-				//y 16kb para vram
-				svi_alloc_vram_memory();
+                //y 16kb para vram
+                svi_alloc_vram_memory();
 
 
-				svi_init_memory_tables();
+                svi_init_memory_tables();
 
         }
 
@@ -1736,11 +1736,11 @@ void malloc_mem_machine(void) {
                 random_ram(memoria_spectrum+32768,32768);
 
 
-				//y 16kb para vram
-				coleco_alloc_vram_memory();
+                //y 16kb para vram
+                coleco_alloc_vram_memory();
 
 
-				coleco_init_memory_tables();
+                coleco_init_memory_tables();
 
         }
 
@@ -1750,11 +1750,11 @@ void malloc_mem_machine(void) {
                 random_ram(memoria_spectrum,65536);
 
 
-				//y 16kb para vram
-				sg1000_alloc_vram_memory();
+                //y 16kb para vram
+                sg1000_alloc_vram_memory();
 
 
-				sg1000_init_memory_tables();
+                sg1000_init_memory_tables();
 
         }
 
@@ -1764,41 +1764,41 @@ void malloc_mem_machine(void) {
                 random_ram(memoria_spectrum,SMS_MAX_ROM_SIZE+8192);
 
 
-				//y 16kb para vram
-				sms_alloc_vram_memory();
+                //y 16kb para vram
+                sms_alloc_vram_memory();
 
 
-				sms_init_memory_tables();
+                sms_init_memory_tables();
 
         }
 
 
-	else if (MACHINE_IS_Z88) {
-		//Asignar 4 MB
-		//z88_puntero_memoria=malloc(4*1024*1024);
-		malloc_machine(4*1024*1024);
-		random_ram(memoria_spectrum,4*1024*1024);
-	}
+    else if (MACHINE_IS_Z88) {
+        //Asignar 4 MB
+        //z88_puntero_memoria=malloc(4*1024*1024);
+        malloc_machine(4*1024*1024);
+        random_ram(memoria_spectrum,4*1024*1024);
+    }
 
-	else if (MACHINE_IS_SAM) {
-		//Asignar 512 kb+32 kb de rom
-		//Incluso si la maquina es de 256kb, nosotros asignamos el maximo (512)
-		malloc_machine((512+32)*1024);
-		random_ram(memoria_spectrum,(512+32)*1024);
+    else if (MACHINE_IS_SAM) {
+        //Asignar 512 kb+32 kb de rom
+        //Incluso si la maquina es de 256kb, nosotros asignamos el maximo (512)
+        malloc_machine((512+32)*1024);
+        random_ram(memoria_spectrum,(512+32)*1024);
 
                 sam_init_memory_tables();
                 sam_set_memory_pages();
-	}
+    }
 
-	else if (MACHINE_IS_QL) {
-		//Asignar el maximo limite del QL que emulo
-		malloc_machine(QL_MAXIMUM_MEM_LIMIT+1);
-		memoria_ql=memoria_spectrum;
-	}
+    else if (MACHINE_IS_QL) {
+        //Asignar el maximo limite del QL que emulo
+        malloc_machine(QL_MAXIMUM_MEM_LIMIT+1);
+        memoria_ql=memoria_spectrum;
+    }
 
-	else {
-		cpu_panic("Do not know how to allocate mem for active machine");
-	}
+    else {
+        cpu_panic("Do not know how to allocate mem for active machine");
+    }
 
 }
 
@@ -2485,18 +2485,18 @@ void set_machine_params(void)
 
 
 
-	switch (current_machine_type) {
+    switch (current_machine_type) {
 
-		case 0:
+        case 0:
             poke_byte=poke_byte_spectrum_16k;
             peek_byte=peek_byte_spectrum_16k;
             peek_byte_no_time=peek_byte_no_time_spectrum_16k;
             poke_byte_no_time=poke_byte_no_time_spectrum_16k;
             lee_puerto=lee_puerto_spectrum;
-		break;
+        break;
 
-		case 1:
-		case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
+        case 1:
+        case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
         case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
         case MACHINE_ID_TIMEX_TC2048:
         case MACHINE_ID_CZ_2000:
@@ -2512,7 +2512,7 @@ void set_machine_params(void)
                 enable_timex_video();
             }
 
-		break;
+        break;
 
         case 2:
             poke_byte=poke_byte_spectrum_inves;
@@ -2597,8 +2597,8 @@ void set_machine_params(void)
         break;
 
 
-		case 15:
-		case 16:
+        case 15:
+        case 16:
             poke_byte=poke_byte_chloe;
             peek_byte=peek_byte_chloe;
             peek_byte_no_time=peek_byte_no_time_chloe;
@@ -2631,7 +2631,7 @@ void set_machine_params(void)
             enable_timex_video();
         break;
 
-		case 18:
+        case 18:
             poke_byte=poke_byte_prism;
             peek_byte=peek_byte_prism;
             peek_byte_no_time=peek_byte_no_time_prism;
@@ -2724,7 +2724,7 @@ void set_machine_params(void)
 
         break;
 
-		case MACHINE_ID_COLECO:
+        case MACHINE_ID_COLECO:
             poke_byte=poke_byte_coleco;
             peek_byte=peek_byte_coleco;
             peek_byte_no_time=peek_byte_no_time_coleco;
@@ -2735,7 +2735,7 @@ void set_machine_params(void)
             sn_chip_present.v=1;
         break;
 
-		case MACHINE_ID_SG1000:
+        case MACHINE_ID_SG1000:
             poke_byte=poke_byte_sg1000;
             peek_byte=peek_byte_sg1000;
             peek_byte_no_time=peek_byte_no_time_sg1000;
@@ -2746,7 +2746,7 @@ void set_machine_params(void)
             sn_chip_present.v=1;
         break;
 
-		case MACHINE_ID_SMS:
+        case MACHINE_ID_SMS:
             poke_byte=poke_byte_sms;
             peek_byte=peek_byte_sms;
             peek_byte_no_time=peek_byte_no_time_sms;
@@ -2757,7 +2757,7 @@ void set_machine_params(void)
             sn_chip_present.v=1;
         break;
 
-		case MACHINE_ID_MSX1:
+        case MACHINE_ID_MSX1:
             poke_byte=poke_byte_msx1;
             peek_byte=peek_byte_msx1;
             peek_byte_no_time=peek_byte_no_time_msx1;
@@ -2771,8 +2771,8 @@ void set_machine_params(void)
         break;
 
 
-		case MACHINE_ID_SVI_318:
-		case MACHINE_ID_SVI_328:
+        case MACHINE_ID_SVI_318:
+        case MACHINE_ID_SVI_328:
             poke_byte=poke_byte_svi;
             peek_byte=peek_byte_svi;
             peek_byte_no_time=peek_byte_no_time_svi;
@@ -2786,7 +2786,7 @@ void set_machine_params(void)
         break;
 
 
-		case MACHINE_ID_ZX80:
+        case MACHINE_ID_ZX80:
         case MACHINE_ID_MICRODIGITAL_TK80:
         case MACHINE_ID_MICRODIGITAL_TK82:
             poke_byte=poke_byte_zx80;
@@ -2811,9 +2811,9 @@ void set_machine_params(void)
 
 
 
-		break;
+        break;
 
-		case MACHINE_ID_ZX81:
+        case MACHINE_ID_ZX81:
         case MACHINE_ID_TIMEX_TS1000:
         case MACHINE_ID_TIMEX_TS1500:
         case MACHINE_ID_MICRODIGITAL_TK82C:
@@ -2846,10 +2846,10 @@ void set_machine_params(void)
 
 
 
-		break;
+        break;
 
-		case 122:
-		//Jupiter Ace
+        case 122:
+        //Jupiter Ace
             poke_byte=poke_byte_ace;
             peek_byte=peek_byte_ace;
             peek_byte_no_time=peek_byte_ace_no_time;
@@ -2890,12 +2890,12 @@ void set_machine_params(void)
             //Z88 3,2768 MHz
             screen_testados_linea=210;
 
-		break;
+        break;
 
 
-		//CPC464
+        //CPC464
         //CPC4128
-		//CPC664
+        //CPC664
         //CPC6128
         case MACHINE_ID_CPC_464:
         case MACHINE_ID_CPC_4128:
@@ -2930,10 +2930,10 @@ void set_machine_params(void)
             ay_chip_present.v=1;
             fetch_opcode=fetch_opcode_pcw;
 
-		break;
+        break;
 
 
-		case 150:
+        case 150:
             poke_byte=poke_byte_sam;
             peek_byte=peek_byte_sam;
             peek_byte_no_time=peek_byte_no_time_sam;
@@ -2950,7 +2950,7 @@ void set_machine_params(void)
 
         break;
 
-		case MACHINE_ID_QL_STANDARD: //QL 160
+        case MACHINE_ID_QL_STANDARD: //QL 160
 
             poke_byte=poke_byte_legacy_ql;
             peek_byte=peek_byte_legacy_ql;
@@ -2967,28 +2967,28 @@ void set_machine_params(void)
             screen_testados_linea=80;
 
             i8049_chip_present=1;
-		break;
+        break;
 
 
-		case MACHINE_ID_MK14_STANDARD:
+        case MACHINE_ID_MK14_STANDARD:
             poke_byte=poke_byte_mk14;
             peek_byte=peek_byte_mk14;
             peek_byte_no_time=peek_byte_no_time_mk14;
             poke_byte_no_time=poke_byte_no_time_mk14;
             lee_puerto=lee_puerto_legacy_mk14;
-		break;
+        break;
 
 
 
-		default:
-			//printf ("Init Machine id %d not supported. Exiting\n",current_machine_type);
-			sprintf (mensaje_error,"Init Machine id %d not supported. Exiting",current_machine_type);
-			cpu_panic(mensaje_error);
-		break;
-	}
+        default:
+            //printf ("Init Machine id %d not supported. Exiting\n",current_machine_type);
+            sprintf (mensaje_error,"Init Machine id %d not supported. Exiting",current_machine_type);
+            cpu_panic(mensaje_error);
+        break;
+    }
 
 
-	if (MACHINE_IS_SPECTRUM) {
+    if (MACHINE_IS_SPECTRUM) {
         //Activar deteccion automatica de rutina de impresion de caracteres, si conviene
         if (chardetect_detect_char_enabled.v) {
             chardetect_init_automatic_char_detection();
@@ -2997,14 +2997,14 @@ void set_machine_params(void)
         //Reactivar poke de spectra
         if (spectra_enabled.v) spectra_set_poke();
 
-	}
+    }
 
 
-	debug_printf(VERBOSE_INFO,"Setting machine %s",get_machine_name(current_machine_type));
+    debug_printf(VERBOSE_INFO,"Setting machine %s",get_machine_name(current_machine_type));
 
-	//Recalcular algunos valores cacheados
-	recalcular_get_total_ancho_rainbow();
-	recalcular_get_total_alto_rainbow();
+    //Recalcular algunos valores cacheados
+    recalcular_get_total_ancho_rainbow();
+    recalcular_get_total_alto_rainbow();
 
 
 }
@@ -3013,12 +3013,12 @@ void set_machine_params(void)
 
 void post_set_mach_reopen_screen(void)
 {
-				debug_printf(VERBOSE_INFO,"End Screen");
-			scr_end_pantalla();
-			debug_printf(VERBOSE_INFO,"Creating Screen");
-			screen_init_pantalla_and_others_and_realjoystick();
+                debug_printf(VERBOSE_INFO,"End Screen");
+            scr_end_pantalla();
+            debug_printf(VERBOSE_INFO,"Creating Screen");
+            screen_init_pantalla_and_others_and_realjoystick();
 
-			//scr_init_pantalla();
+            //scr_init_pantalla();
 }
 
 
@@ -3028,11 +3028,11 @@ void post_set_machine_no_rom_load_reopen_window(void)
 
     int antes_menu_gui_zoom=menu_gui_zoom;
 
-	set_menu_gui_zoom();
+    set_menu_gui_zoom();
 
-	//printf ("last: %d current: %d\n",last_machine_type,current_machine_type);
+    //printf ("last: %d current: %d\n",last_machine_type,current_machine_type);
 
-	if (last_machine_type!=255 && last_machine_type!=current_machine_type) {
+    if (last_machine_type!=255 && last_machine_type!=current_machine_type) {
         //Si máquina con gui zoom a 2, cambiar zoom_x y zoom_y a 1, para no exceder tamaños
         if (autochange_zoom_big_display.v) {
             if (antes_menu_gui_zoom !=menu_gui_zoom && menu_gui_zoom==2) {
@@ -3046,14 +3046,14 @@ void post_set_machine_no_rom_load_reopen_window(void)
         }
 
 
-		debug_printf (VERBOSE_INFO,"Reopening window so current machine is different and may have different window size");
-		//printf ("Reopening window so current machine is different and may have different window size\n");
-		post_set_mach_reopen_screen();
+        debug_printf (VERBOSE_INFO,"Reopening window so current machine is different and may have different window size");
+        //printf ("Reopening window so current machine is different and may have different window size\n");
+        post_set_mach_reopen_screen();
 
-		//Rearrange de ventanas en segundo plano, por si la maquina actual es una ventana de ZEsarUX mas pequeña
-		//y se saldrian las ventanas zxvision de rango
-		//debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine is different and may have different window size");
-		//zxvision_rearrange_background_windows(
+        //Rearrange de ventanas en segundo plano, por si la maquina actual es una ventana de ZEsarUX mas pequeña
+        //y se saldrian las ventanas zxvision de rango
+        //debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine is different and may have different window size");
+        //zxvision_rearrange_background_windows(
 
 
         //printf("antes_ancho_total %d antes_alto_total %d ancho actual %d alto actual %d\n",last_ancho_ventana,last_alto_ventana,
@@ -3085,23 +3085,23 @@ void post_set_machine_no_rom_load_reopen_window(void)
 void post_set_machine_no_rom_load(void)
 {
 
-		screen_set_video_params_indices();
-		inicializa_tabla_contend();
+        screen_set_video_params_indices();
+        inicializa_tabla_contend();
 
-		init_rainbow();
-		init_cache_putpixel();
-
-
-		post_set_machine_no_rom_load_reopen_window();
-
-		//printf ("antes init layers\n");
-		scr_init_layers_menu();
-		//printf ("despues init layers\n");
-		scr_clear_layer_menu();
+        init_rainbow();
+        init_cache_putpixel();
 
 
-		last_machine_type=current_machine_type;
-		menu_init_footer();
+        post_set_machine_no_rom_load_reopen_window();
+
+        //printf ("antes init layers\n");
+        scr_init_layers_menu();
+        //printf ("despues init layers\n");
+        scr_clear_layer_menu();
+
+
+        last_machine_type=current_machine_type;
+        menu_init_footer();
 
 
 
@@ -3121,31 +3121,31 @@ void post_set_machine(char *romfile)
 void set_machine(char *romfile)
 {
 
-	//Si estaba divmmc o divide activo, desactivarlos
-	//if (divmmc_enabled.v) divmmc_disable();
-	//if (divide_enabled.v) divide_disable();
-	if (diviface_enabled.v) diviface_disable();
+    //Si estaba divmmc o divide activo, desactivarlos
+    //if (divmmc_enabled.v) divmmc_disable();
+    //if (divide_enabled.v) divide_disable();
+    if (diviface_enabled.v) diviface_disable();
 
                 //Si se cambia de maquina zxuno a otra no zxuno, desactivar divmmc
-		/*
+        /*
                 if (last_machine_type!=255) {
                         if (last_machine_type==14 && machine_type!=14 && divmmc_enabled.v) {
                                 debug_printf (VERBOSE_INFO,"Disabling divmmc because it was enabled on ZX-Uno");
                                 divmmc_disable();
                         }
                 }
-		*/
+        */
 
 
 
-	set_machine_params();
-	malloc_mem_machine();
+    set_machine_params();
+    malloc_mem_machine();
 
-	//Si hay activo divmmc o divide, reactivar. Se pone aqui porque en caso de zxuno es necesario que esten inicializadas las paginas de memoria
-	//if (divmmc_enabled.v) divmmc_enable();
-	//if (divide_enabled.v) divide_enable();
+    //Si hay activo divmmc o divide, reactivar. Se pone aqui porque en caso de zxuno es necesario que esten inicializadas las paginas de memoria
+    //if (divmmc_enabled.v) divmmc_enable();
+    //if (divide_enabled.v) divide_enable();
 
-	post_set_machine(romfile);
+    post_set_machine(romfile);
 }
 
 
@@ -3163,11 +3163,11 @@ void rom_load(char *romfilename)
     FILE *ptr_romfile;
     int leidos;
 
-	char mensaje_error[200];
+    char mensaje_error[200];
 
 
-	if (romfilename==NULL) {
-		switch (current_machine_type) {
+    if (romfilename==NULL) {
+        switch (current_machine_type) {
             case 0:
             case MACHINE_ID_CZ_2000:
             case MACHINE_ID_CZ_SPECTRUM:
@@ -3330,19 +3330,19 @@ void rom_load(char *romfilename)
 
             romfilename="zx81.rom";
 
-		    break;
+            break;
 
             case MACHINE_ID_TIMEX_TS1500:
 
             romfilename="ts1500.rom";
 
-		    break;
+            break;
 
             case MACHINE_ID_MICRODIGITAL_TK85:
 
             romfilename="tk85.rom";
 
-		    break;
+            break;
 
             case 122:
 
@@ -3406,8 +3406,8 @@ void rom_load(char *romfilename)
 
 
 
-		}
-	}
+        }
+    }
 
     //Aunque si hay custom rom, sobreescribir esto
     if (setting_set_machine_enable_custom_rom && custom_romfile[0]!=0) {
@@ -3418,7 +3418,7 @@ void rom_load(char *romfilename)
 
     char romfilename_with_path[PATH_MAX];
 
-	int existe=find_sharedfile(romfilename,romfilename_with_path);
+    int existe=find_sharedfile(romfilename,romfilename_with_path);
 
     if (!existe)
     {
@@ -3440,7 +3440,7 @@ void rom_load(char *romfilename)
 
     int expected_rom_size=get_rom_size(current_machine_type);
 
-		//Caso Inves. ROM esta en el final de la memoria asignada
+        //Caso Inves. ROM esta en el final de la memoria asignada
     if (MACHINE_IS_INVES) {
         //Inves
         leidos=fread(&memoria_spectrum[65536],1,expected_rom_size,ptr_romfile);
