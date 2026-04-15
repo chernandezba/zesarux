@@ -8,9 +8,6 @@ pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 -Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
 
 
--Si conmuto de un CPU step a ventana abierta de hexedit, ejecutará alguna instrucción sin querer?
-Y teniendo el stop emulation on menú? Se ejecuta alguna instrucción sin querer?
-
 
 -lightgun
 *rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
@@ -47,16 +44,11 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 -Probar compilar contra ssl en mac desde homebrew
 
 
--Pantalla completa en Mac no va bien
-
 
 -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
 -Zeng opción para enviar mensaje a un usuario concreto
 -En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
-
-
--Quiza reducir el color rojo de items de menu no seleccionables: en algunos menus es un rojo muy intenso
 
 
 
@@ -65,7 +57,6 @@ Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio
 
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
-
 
 
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
@@ -120,8 +111,6 @@ SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 antes de commonsdl_init
 
 -en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
-
--copy-paste y text-paste quizá mover a otro menú?
 
 
 -efectos especiales

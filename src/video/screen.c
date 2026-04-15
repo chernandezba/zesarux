@@ -1981,29 +1981,16 @@ int scr_putpixel_dither_get_black_pixels(int color)
     int cuantos_escribir=0;
 
 
-    //A partir de cierto umbral, todo en negro
-    //if (porcen>95) porcen=100;
-
     int multiplicador=zoom_x*zoom_y;
 
     cuantos_escribir=(multiplicador*porcen)/100;
 
-    //printf("cuantos %d gris %d porcen %d %% rgb %d %d %d\n",cuantos_escribir,gris,porcen,r,g,b);
 
     return cuantos_escribir;
 }
 
 void scr_putpixel_zoom_rainbow_mas_de_uno_dither(int x,int y,unsigned int color)
 {
-
-    int multiplicador=zoom_x*zoom_y;
-
-    //Al menos 4 puntos por cada pixel para poder hacer dither
-
-    if (multiplicador<4) {
-        //scr_putpixel_zoom_rainbow_mas_de_uno(x,y,color);
-        //return;
-    }
 
 
 
