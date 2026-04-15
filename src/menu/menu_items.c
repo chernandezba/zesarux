@@ -11972,9 +11972,9 @@ void menu_debug_draw_sprites(void)
 
     int alto_total_sprites=view_sprites_alto_sprite*menu_debug_draw_sprites_zoom_sprites;
 
+    int y_inicial=0;
 
-
-        for (y=0;y<alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites) {
+        for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites) {
             if (view_sprites_scr_sprite && y<192) {
                 puntero=view_sprites_direccion+screen_addr_table[(y<<5)];
             }
