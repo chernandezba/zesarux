@@ -12051,7 +12051,7 @@ void menu_debug_draw_sprites(void)
                         int offset_sprite=sprite_name;
 
                         int offset_pattern_table=offset_sprite*32+vdp_9918a_get_sprite_pattern_table_sms_mode4();
-                        puntero_final=offset_pattern_table+y*4;
+                        puntero_final=offset_pattern_table+(y-y_inicial)*4;
                     }
 
                     else {
@@ -12174,11 +12174,7 @@ void menu_debug_draw_sprites(void)
                         */
                         //y<8
 
-                        int y_local_sprite=y;
-
-                        if (view_sprites_hardware && view_sprites_hardware_all.v) {
-                            y_local_sprite=y-y_inicial;
-                        }
+                        int y_local_sprite=y-y_inicial;
 
                         //Quad A
                         if (y_local_sprite<=7 && x<=7) {
