@@ -18128,6 +18128,8 @@ void menu_display_window_list_print_item(zxvision_window *w,int linea,char *wind
 //en que se abre nueva ventana y entonces el cursor estaria apuntando al proceso que no hemos pulsado, y seria confuso para el usuario
 int menu_display_window_list_overlay_do_not_update=0;
 
+char *menu_display_window_list_header="PID  Process name            Flags  VRAM      Time spent";
+
 void menu_display_window_list_overlay(void)
 {
 
@@ -18157,7 +18159,7 @@ void menu_display_window_list_overlay(void)
         zxvision_cls(menu_display_window_list_window);
 
         //VRAM de Video RAM
-        menu_display_window_list_print_item(menu_display_window_list_window,0,"PID  Process name            Flags  VRAM      Time spent");
+        menu_display_window_list_print_item(menu_display_window_list_window,0,menu_display_window_list_header);
         menu_display_window_list_print_item(menu_display_window_list_window,1,"---Top---");
 
 
@@ -18304,7 +18306,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     do {
 
         //VRAM de Video RAM
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"PID  Process name            Flags  VRAM      Time spent");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,menu_display_window_list_header);
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"---Top---");
