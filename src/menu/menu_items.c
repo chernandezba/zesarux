@@ -12735,7 +12735,11 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
         mensaje_texto_hardware[0]=0;
 
         if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE || MACHINE_HAS_VDP_9918A) {
-            sprintf(mensaje_texto_hardware,"[%c] ~~hardware [%c] ~~viewall",(view_sprites_hardware ? 'X' : ' '),(view_sprites_hardware_all.v ? 'X' : ' ') );
+            char buffer_viewall[30];
+            if (view_sprites_hardware) sprintf(buffer_viewall,"[%c] ~~viewall",(view_sprites_hardware_all.v ? 'X' : ' ') );
+            else buffer_viewall[0]=0;
+
+            sprintf(mensaje_texto_hardware,"[%c] ~~hardware %s",(view_sprites_hardware ? 'X' : ' '),buffer_viewall);
         }
 
         char mensaje_texto_zx81_pseudohires[33];
