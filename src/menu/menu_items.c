@@ -11941,6 +11941,22 @@ void menu_debug_draw_sprites_set_sprite_used_in_frame(int sprite)
 
 }
 
+void menu_debug_draw_sprites_marco_activo(int x_en_sprite,int finalx,int y,int y_inicial,int yorigen,int sprite_name)
+{
+    //Enmarcar el sprite
+    if (view_sprites_hardware_all.v && y==y_inicial && x_en_sprite==0) {
+        int recuadro_x=finalx-1;
+        int recuadro_y=yorigen+y-1;
+        int color=ESTILO_GUI_PAPEL_NORMAL; //por defecto borrar el recuadro
+
+        if (menu_debug_draw_sprites_is_sprite_used_in_frame(sprite_name) && estado_parpadeo.v) {
+            color=ESTILO_GUI_PAPEL_SELECCIONADO;
+        }
+
+        zxvision_draw_rectangle(menu_debug_draw_sprites_window,recuadro_x,recuadro_y,view_sprites_ancho_sprite+2,view_sprites_alto_sprite+2,color);
+    }
+}
+
 void menu_debug_draw_sprites(void)
 {
 
@@ -12096,20 +12112,8 @@ void menu_debug_draw_sprites(void)
 
 
                             //Enmarcar el sprite
-                            if (view_sprites_hardware_all.v && y==y_inicial && x_en_sprite==0) {
-                                int recuadro_x=finalx-1;
-                                int recuadro_y=yorigen+y-1;
-                                int color=ESTILO_GUI_PAPEL_NORMAL; //por defecto borrar el recuadro
+                            menu_debug_draw_sprites_marco_activo(x_en_sprite,finalx,y,y_inicial,yorigen,sprite_name);
 
-                                if (menu_debug_draw_sprites_is_sprite_used_in_frame(sprite_name) && estado_parpadeo.v) {
-                                    //printf("existe %d\n",sprite_name);
-                                    //printf("conteo : %d\n",++temp_conteo);
-                                    color=ESTILO_GUI_PAPEL_SELECCIONADO;
-                                }
-
-                                zxvision_draw_rectangle(menu_debug_draw_sprites_window,recuadro_x,recuadro_y,view_sprites_ancho_sprite+2,view_sprites_alto_sprite+2,color);
-                                //zxvision_putpixel(menu_debug_draw_sprites_window,finalx-1,yorigen+y-1,6);
-                            }
 
                             //printf ("numero sprite: %d sprite name: %d\n",numero_sprite,sprite_name);
 
@@ -12223,6 +12227,9 @@ void menu_debug_draw_sprites(void)
                             z80_byte sprite_name=menu_debug_draw_sprites_get_byte(attribute_table+2);
 
 
+                            //Enmarcar el sprite
+                            menu_debug_draw_sprites_marco_activo(x_en_sprite,finalx,y,y_inicial,yorigen,sprite_name);
+
                             //printf ("despues\n");
 
                             //TODO: asumimos sprites 16x16
@@ -12266,8 +12273,6 @@ void menu_debug_draw_sprites(void)
 
 
                             puntero_final +=vdp_9918a_get_sprite_pattern_table();
-
-                            //printf ("puntero final: %04XH\n",puntero_final);
 
 
                         }

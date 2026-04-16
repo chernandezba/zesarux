@@ -697,6 +697,8 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
                         if (pos_x_final>=0 && pos_x_final<=255 && pos_y_final>=0 && pos_y_final<=191) {
 
+                            if (x==0 && y==0) menu_debug_draw_sprites_set_sprite_used_in_frame(sprite_name);
+
                             //Si bit a 1
                             if (1) {
                                 //Y si ese color no es transparente

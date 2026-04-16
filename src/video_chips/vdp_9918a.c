@@ -30,6 +30,7 @@
 #include "screen.h"
 #include "settings.h"
 #include "vdp_9918a_sms.h"
+#include "menu_items.h"
 
 /*
 Nota: parece que en el documento chipstms9918 la numeracion de bits está al revés, por ejemplo,
@@ -897,6 +898,8 @@ void vdp_9918a_render_sprites_no_rainbow(z80_byte *vram)
                                         //Si dentro de limites
                                         if (pos_x_final>=0 && pos_x_final<=255 && pos_y_final>=0 && pos_y_final<=191) {
 
+                                            if (x==0 && y==0) menu_debug_draw_sprites_set_sprite_used_in_frame(sprite_name);
+
                                             //Si bit a 1
                                             if (byte_leido & 128) {
                                                 //Y si ese color no es transparente
@@ -1598,7 +1601,7 @@ void vdp_9918a_render_rainbow_sprites_line_post(int scanline,z80_int *destino_sc
                 //if (vert_pos<192) {
                     //int offset_pattern_table=sprite_name*bytes_per_sprite+sprite_pattern_table;
 
-
+                    menu_debug_draw_sprites_set_sprite_used_in_frame(sprite_name);
 
                       int offset_pattern_table=sprite_name*8+sprite_pattern_table;
                     z80_byte color=attr_color_etc & 15;

@@ -1398,16 +1398,16 @@ core_ql.o: cores/core_ql.c cores/core_ql.h cpu.h debug.h storage/tape.h audio/au
 core_mk14.o: cores/core_mk14.c cores/core_mk14.h cpus/scmp.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h ula.h settings.h snap/snap_zsf.h zrcp/zeng.h zrcp/zeng_online_client.h
 	\$(CC) \$(CFLAGS) -c cores/core_mk14.c
 
-core_msx.o: cores/core_msx.c cores/core_msx.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/msx.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h
+core_msx.o: cores/core_msx.c cores/core_msx.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/msx.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c cores/core_msx.c
 
-core_svi.o: cores/core_svi.c cores/core_svi.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/svi.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h
+core_svi.o: cores/core_svi.c cores/core_svi.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/svi.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c cores/core_svi.c
 
-core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h video_chips/vdp_9918a.h soundchips/sn76489an.h video_chips/vdp_9918a_sms.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h
+core_coleco.o: cores/core_coleco.c cores/core_coleco.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/coleco.h video_chips/vdp_9918a.h soundchips/sn76489an.h video_chips/vdp_9918a_sms.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c cores/core_coleco.c
 
-core_sg1000.o: cores/core_sg1000.c cores/core_sg1000.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sg1000.h video_chips/vdp_9918a.h soundchips/sn76489an.h video_chips/vdp_9918a_sms.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h
+core_sg1000.o: cores/core_sg1000.c cores/core_sg1000.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sg1000.h video_chips/vdp_9918a.h soundchips/sn76489an.h video_chips/vdp_9918a_sms.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c cores/core_sg1000.c
 
 core_sms.o: cores/core_sms.c cores/core_sms.h cpu.h debug.h storage/tape.h audio/audio.h video/screen.h soundchips/ay38912.h operaciones.h snap/snap.h timer.h zxvision/zxvision.h chardetect.h compileoptions.h contend.h snap/snap_zx8081.h utils.h realjoystick.h  settings.h machines/sms.h video_chips/vdp_9918a.h soundchips/sn76489an.h video_chips/vdp_9918a_sms.h snap/snap_ram.h cpus/z80_codsinpr.h zrcp/zeng_online_client.h menu/menu_items.h
@@ -1475,7 +1475,7 @@ ay38912.o: soundchips/ay38912.c soundchips/ay38912.h cpu.h audio/audio.h joystic
 sn76489an.o: soundchips/sn76489an.c soundchips/sn76489an.h cpu.h audio/audio.h joystick.h debug.h
 	\$(CC) \$(CFLAGS) -c soundchips/sn76489an.c
 
-vdp_9918a.o: video_chips/vdp_9918a.c video_chips/vdp_9918a.h cpu.h debug.h video/screen.h settings.h video_chips/vdp_9918a_sms.h
+vdp_9918a.o: video_chips/vdp_9918a.c video_chips/vdp_9918a.h cpu.h debug.h video/screen.h settings.h video_chips/vdp_9918a_sms.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c video_chips/vdp_9918a.c
 
 vdp_9918a_sms.o: video_chips/vdp_9918a_sms.c video_chips/vdp_9918a_sms.h video_chips/vdp_9918a.h cpu.h debug.h video/screen.h settings.h menu/menu_items.h
