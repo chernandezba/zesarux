@@ -12050,11 +12050,16 @@ void menu_debug_draw_sprites(void)
 
     if (view_sprites_hardware && view_sprites_hardware_all.v) {
         total_columnas_sprites=4;
+
+        //caso de tsconf por ejemplo, para que quepan bien, pueden ser sprites grandes como los de ny17.spg
+        if (MACHINE_IS_TSCONF) total_columnas_sprites=8;
     }
 
     int margen_separacion_sprites_modo_all=4;
 
     for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;) {
+
+        //printf("Conta sprite %d view_sprites_direccion %d puntero: %d\n",contador_sprite_mostrar,view_sprites_direccion,puntero);
 
         int columna_sprite;
 
@@ -12093,7 +12098,7 @@ void menu_debug_draw_sprites(void)
                 int x_en_sprite=0;
 
                 for (x=x_inicial;x<x_inicial+view_sprites_ancho_sprite;) {
-                    //printf ("puntero: %d\n",puntero);
+                    //if (x_en_sprite==0) printf ("puntero: %d\n",puntero);
                     puntero=adjust_address_memory_size(puntero);
 
 
@@ -12298,6 +12303,8 @@ void menu_debug_draw_sprites(void)
 
                     byte_leido=menu_debug_draw_sprites_get_byte(puntero_final);
 
+                    //if (x_en_sprite==0) printf ("puntero_final: %d\n",puntero_final);
+
                     /*byte_leido=menu_debug_get_mapped_byte(puntero);
 
 
@@ -12318,6 +12325,11 @@ void menu_debug_draw_sprites(void)
                         byte_leido ^=255;
                     }
                     */
+
+                    if (MACHINE_IS_TSCONF && view_sprites_hardware) {
+                        //Enmarcar el sprite
+                        menu_debug_draw_sprites_marco_activo(x_en_sprite,finalx,y,y_inicial,yorigen,view_sprites_direccion);
+                    }
 
                     if (menu_sprites_modo_pcw_pantalla.v && MACHINE_IS_PCW) puntero +=8;
 
@@ -12446,6 +12458,13 @@ void menu_debug_draw_sprites(void)
                 }
 
 
+            }
+
+            if (view_sprites_hardware && view_sprites_hardware_all.v) {
+                if (MACHINE_IS_TSCONF) {
+                    view_sprites_direccion++;
+                    puntero=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
+                }
             }
 
         }

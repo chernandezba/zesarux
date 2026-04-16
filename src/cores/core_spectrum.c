@@ -435,7 +435,9 @@ void core_spectrum_fin_frame_pantalla(void)
     //snapshot en ram
     snapshot_add_in_ram();
 
-
+    if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE) {
+        init_view_sprites_used_sprites_in_frame();
+    }
 }
 
 void core_spectrum_fin_scanline(void)

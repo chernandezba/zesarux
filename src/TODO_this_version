@@ -113,6 +113,8 @@ antes de commonsdl_init
 *revisar liberar memoria
 
 
-- Poder ver todos los sprites de tbblue, MSX etc de golpe, en una sola ventana
-*se usa y-y_inicial  como uso de offset y relativo dentro de un sprite al mostrarlos todos. redefinir esto para que podamos mostrar sprites en cuadricula asi cabran mas
-*destacar (con un cuadrado?) los sprites en uso en la escena
+- Poder ver todos los sprites
+*tsconf: con sonic. si empiezo con sprite 0 no se ven bien los colores, parece que no saca bien offset del 0. pero empezando en 1 si
+*tsconf: deberia siempre empezar con el 0
+*tbblue: falta todo
+*quiza mover las funciones de init y marcar sprites que ahora están en menu_items.h porque obliga a meter ese include en los core* y los machines/tsconf etc

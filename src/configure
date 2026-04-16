@@ -1520,7 +1520,7 @@ chrome.o: machines/chrome.c machines/chrome.h cpu.h mem128.h debug.h contend.h
 zxevo.o: machines/zxevo.c machines/zxevo.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h
 	\$(CC) \$(CFLAGS) -c machines/zxevo.c
 
-tsconf.o: machines/tsconf.c machines/tsconf.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h machines/zxevo.h chardevice.h uartbridge.h
+tsconf.o: machines/tsconf.c machines/tsconf.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h machines/zxevo.h chardevice.h uartbridge.h menu/menu_items.h
 	\$(CC) \$(CFLAGS) -c machines/tsconf.c
 
 baseconf.o: machines/baseconf.c machines/baseconf.h cpu.h mem128.h debug.h contend.h zxvision/zxvision.h video/screen.h ula.h operaciones.h machines/zxevo.h
