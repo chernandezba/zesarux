@@ -11990,6 +11990,10 @@ void menu_debug_draw_sprites(void)
 
     int total_columnas_sprites=1;
 
+    if (view_sprites_hardware && view_sprites_hardware_all.v) {
+        total_columnas_sprites=4;
+    }
+
     for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;) {
 
         int columna_sprite;
@@ -11998,12 +12002,14 @@ void menu_debug_draw_sprites(void)
 
             int y_en_sprite=0;
 
-            int x_inicial=(columna_sprite*view_sprites_ancho_sprite+8); //8 de margen para que queden separados
+            int x_inicial=columna_sprite*(view_sprites_ancho_sprite+4); //8 de margen para que queden separados
 
             if (view_sprites_hardware && view_sprites_hardware_all.v) {
                 view_sprites_direccion=contador_sprite_mostrar;
-                y_inicial=alto_total_sprites*contador_sprite_mostrar;
+                //y_inicial=alto_total_sprites*contador_sprite_mostrar;
             }
+
+            printf("x_inicial: %d\n",x_inicial);
 
             for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites,y_en_sprite++) {
                 if (view_sprites_scr_sprite && y<192) {
@@ -12011,7 +12017,7 @@ void menu_debug_draw_sprites(void)
                 }
 
                 puntero_inicio_linea=puntero;
-                finalx=xorigen;
+                finalx=xorigen+x_inicial;
 
                 menu_z80_moto_int puntero_final;
 
@@ -12255,9 +12261,6 @@ void menu_debug_draw_sprites(void)
 
                     for (bit=0;bit<8;bit+=total_bpp,incx++,finalx+=menu_debug_draw_sprites_zoom_sprites,x++,x_en_sprite++) {
 
-
-
-
                         int dis=(8-(incx+1)*view_sprites_bpp);
 
                         //printf ("incx: %d dis: %d\n",incx,dis);
@@ -12375,6 +12378,10 @@ void menu_debug_draw_sprites(void)
 
         }
 
+
+        if (view_sprites_hardware && view_sprites_hardware_all.v) {
+            y_inicial +=alto_total_sprites;
+        }
     }
 
     view_sprites_direccion=orig_view_sprites_direccion;
