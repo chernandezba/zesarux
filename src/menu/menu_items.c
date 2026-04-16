@@ -12022,13 +12022,21 @@ void menu_debug_draw_sprites(void)
     int total_sprites_mostrar=1;
 
     if (view_sprites_hardware && view_sprites_hardware_all.v) {
-        //TODO limite para diferentes maquinas
+        //limite para diferentes maquinas
 
         if (MACHINE_HAS_VDP_9918A) {
-            total_sprites_mostrar=32;
+            total_sprites_mostrar=VDP_9918A_MAX_SPRITES;
             if (MACHINE_IS_SMS) {
-                total_sprites_mostrar=64;
+                total_sprites_mostrar=VDP_9918A_SMS_MODE4_MAX_SPRITES;
             }
+        }
+
+        else if (MACHINE_IS_TSCONF) {
+            total_sprites_mostrar=TSCONF_MAX_SPRITES;
+        }
+
+        else if (MACHINE_IS_TBBLUE) {
+            total_sprites_mostrar=TBBLUE_MAX_SPRITES;
         }
 
         else total_sprites_mostrar=32;
@@ -12057,8 +12065,14 @@ void menu_debug_draw_sprites(void)
             int x_inicial=columna_sprite*(view_sprites_ancho_sprite+margen_separacion_sprites_modo_all); //algo de margen para que queden separados
 
             if (view_sprites_hardware && view_sprites_hardware_all.v) {
-                view_sprites_direccion=contador_sprite_mostrar;
-                //y_inicial=alto_total_sprites*contador_sprite_mostrar;
+                if (MACHINE_IS_TSCONF) {
+                    //no alteramos view_sprites_direccion
+                }
+
+                else {
+                    view_sprites_direccion=contador_sprite_mostrar;
+                    //y_inicial=alto_total_sprites*contador_sprite_mostrar;
+                }
             }
 
             //printf("x_inicial: %d\n",x_inicial);
