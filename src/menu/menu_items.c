@@ -11994,6 +11994,8 @@ void menu_debug_draw_sprites(void)
         total_columnas_sprites=4;
     }
 
+    int margen_separacion_sprites_modo_all=4;
+
     for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;) {
 
         int columna_sprite;
@@ -12002,14 +12004,14 @@ void menu_debug_draw_sprites(void)
 
             int y_en_sprite=0;
 
-            int x_inicial=columna_sprite*(view_sprites_ancho_sprite+4); //8 de margen para que queden separados
+            int x_inicial=columna_sprite*(view_sprites_ancho_sprite+margen_separacion_sprites_modo_all); //algo de margen para que queden separados
 
             if (view_sprites_hardware && view_sprites_hardware_all.v) {
                 view_sprites_direccion=contador_sprite_mostrar;
                 //y_inicial=alto_total_sprites*contador_sprite_mostrar;
             }
 
-            printf("x_inicial: %d\n",x_inicial);
+            //printf("x_inicial: %d\n",x_inicial);
 
             for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites,y_en_sprite++) {
                 if (view_sprites_scr_sprite && y<192) {
@@ -12381,6 +12383,7 @@ void menu_debug_draw_sprites(void)
 
         if (view_sprites_hardware && view_sprites_hardware_all.v) {
             y_inicial +=alto_total_sprites;
+            y_inicial +=margen_separacion_sprites_modo_all;
         }
     }
 
