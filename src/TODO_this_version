@@ -118,3 +118,4 @@ antes de commonsdl_init
 *tsconf: deberia siempre empezar con el 0
 *tbblue: falta todo
 *quiza mover las funciones de init y marcar sprites que ahora están en menu_items.h porque obliga a meter ese include en los core* y los machines/tsconf etc
+*agregar a changelog
