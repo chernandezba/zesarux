@@ -11979,7 +11979,12 @@ void menu_debug_draw_sprites(void)
     if (view_sprites_hardware && view_sprites_hardware_all.v) {
         //TODO limite para diferentes maquinas
 
-        if (MACHINE_HAS_VDP_9918A) total_sprites_mostrar=32;
+        if (MACHINE_HAS_VDP_9918A) {
+            total_sprites_mostrar=32;
+            if (MACHINE_IS_SMS) {
+                total_sprites_mostrar=64;
+            }
+        }
 
         else total_sprites_mostrar=32;
     }
