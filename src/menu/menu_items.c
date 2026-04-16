@@ -12067,6 +12067,22 @@ void menu_debug_draw_sprites(void)
                             //Obtener byte 2, sprite name
                             z80_byte sprite_name=menu_debug_draw_sprites_get_byte(attribute_table+1);
 
+
+                            //prueba de enmarcar el sprite
+                            if (view_sprites_hardware_all.v && x==x_inicial && y==y_inicial) {
+                                int recuadro_x=finalx-1;
+                                int recuadro_y=yorigen+y-1;
+                                int color;
+                                if (sprite_name==180) {
+                                    color=6;
+                                }
+                                else {
+                                    color=ESTILO_GUI_PAPEL_NORMAL; //borrar lo que hubiera
+                                }
+                                zxvision_draw_rectangle(menu_debug_draw_sprites_window,recuadro_x,recuadro_y,view_sprites_ancho_sprite+2,view_sprites_alto_sprite+2,color);
+                                //zxvision_putpixel(menu_debug_draw_sprites_window,finalx-1,yorigen+y-1,6);
+                            }
+
                             //printf ("numero sprite: %d sprite name: %d\n",numero_sprite,sprite_name);
 
                             //Si ancho > 8, a la derecha mostramos el siguiente sprite
