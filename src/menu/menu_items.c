@@ -11988,381 +11988,390 @@ void menu_debug_draw_sprites(void)
 
     int orig_view_sprites_direccion=view_sprites_direccion;
 
+    int total_columnas_sprites=1;
+
     for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;contador_sprite_mostrar++) {
 
-        if (view_sprites_hardware && view_sprites_hardware_all.v) {
-            view_sprites_direccion=contador_sprite_mostrar;
-            y_inicial=alto_total_sprites*contador_sprite_mostrar;
-        }
-
         int y_en_sprite=0;
-        int x_inicial=0;
 
-        for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites,y_en_sprite++) {
-            if (view_sprites_scr_sprite && y<192) {
-                puntero=view_sprites_direccion+screen_addr_table[(y<<5)];
+        int columna_sprite;
+
+        for (columna_sprite=0;columna_sprite<total_columnas_sprites;columna_sprite++) {
+
+            int x_inicial=0;
+
+            if (view_sprites_hardware && view_sprites_hardware_all.v) {
+                view_sprites_direccion=contador_sprite_mostrar;
+                y_inicial=alto_total_sprites*contador_sprite_mostrar;
             }
 
-            puntero_inicio_linea=puntero;
-            finalx=xorigen;
+            for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites,y_en_sprite++) {
+                if (view_sprites_scr_sprite && y<192) {
+                    puntero=view_sprites_direccion+screen_addr_table[(y<<5)];
+                }
 
-            menu_z80_moto_int puntero_final;
+                puntero_inicio_linea=puntero;
+                finalx=xorigen;
 
-            //Para sprites sms modo 4
-            z80_byte byte_leido_sms_1,byte_leido_sms_2,byte_leido_sms_3,byte_leido_sms_4;
+                menu_z80_moto_int puntero_final;
 
-            int x_en_sprite=0;
+                //Para sprites sms modo 4
+                z80_byte byte_leido_sms_1,byte_leido_sms_2,byte_leido_sms_3,byte_leido_sms_4;
 
-            for (x=x_inicial;x<x_inicial+view_sprites_ancho_sprite;) {
-                //printf ("puntero: %d\n",puntero);
-                puntero=adjust_address_memory_size(puntero);
+                int x_en_sprite=0;
 
-
-                puntero_final=puntero;
-
-                //Hacer esto a cada salto de x 0,8, etc
-                if (view_sprites_sms_tiles && (x%8)==0) {
-                    //Caso de sprites Master System modo 4
-
-                    if (view_sprites_hardware) {
-                        //Activado setting de hardware.
-
-                        //Accedemos a la tabla de 64 sprites
-
-                        //menu_z80_moto_int puntero_orig=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
-
-                        z80_int attribute_table=vdp_9918a_get_sprite_attribute_table();
-
-                        int numero_sprite=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
-
-                        numero_sprite %=VDP_9918A_SMS_MODE4_MAX_SPRITES;
+                for (x=x_inicial;x<x_inicial+view_sprites_ancho_sprite;) {
+                    //printf ("puntero: %d\n",puntero);
+                    puntero=adjust_address_memory_size(puntero);
 
 
+                    puntero_final=puntero;
 
-                        attribute_table +=0x80+numero_sprite*2;
+                    //Hacer esto a cada salto de x 0,8, etc
+                    if (view_sprites_sms_tiles && (x%8)==0) {
+                        //Caso de sprites Master System modo 4
 
-                        //printf ("tabla atributo sprite: %04XH\n",attribute_table);
+                        if (view_sprites_hardware) {
+                            //Activado setting de hardware.
 
-                        //printf ("antes\n");
-                        //Obtener byte 2, sprite name
-                        z80_byte sprite_name=menu_debug_draw_sprites_get_byte(attribute_table+1);
+                            //Accedemos a la tabla de 64 sprites
 
-                        //printf ("numero sprite: %d sprite name: %d\n",numero_sprite,sprite_name);
+                            //menu_z80_moto_int puntero_orig=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
 
-                        //Si ancho > 8, a la derecha mostramos el siguiente sprite
+                            z80_int attribute_table=vdp_9918a_get_sprite_attribute_table();
 
-                        int offset_sprite=sprite_name;
+                            int numero_sprite=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
 
-                        int offset_pattern_table=offset_sprite*32+vdp_9918a_get_sprite_pattern_table_sms_mode4();
-                        puntero_final=offset_pattern_table+y_en_sprite*4;
-                    }
-
-                    else {
-                        //Ejemplo para sprite de ancho 32 y alto 16,
-                        //Mostrar el sprite ordenado asi: (Modo "A"). En pantalla lo indica con ">" de flecha derecha
-                        //Asi se ve bien en Streets of Rage
-                        // 0 1 2 3
-                        // 4 5 6 7
-                        //donde 0 es el primer sprite, 1 el segundo, etc
-
-                        //a cada "salto" de columna salta 32 bytes (1 sprite)
-                        //a cada "salto" de fila salta (en este ejemplo) 32*4
-
-                        //Modo "B": En pantalla lo indica con "v" de flecha abajo
-                        //Asi se ve bien en Sonic
-                        // 0 2 4 6
-                        // 1 3 5 7
-
-                        //Nota: en caso de sprites de 8x8 sera:
-                        // 0
-
-                        //Y en caso de 8x16 sera:
-                        // 0
-                        // 1
-
-                        //Por tanto en esos casos no le afecta el modo A o B. En sprites por hardware es 8x8 o 8x16 por tanto da igual el modo A o B
-                        //Lo que haremos en ese modo hardware es no mostrar > o v, simplemente activo (X)
+                            numero_sprite %=VDP_9918A_SMS_MODE4_MAX_SPRITES;
 
 
-                        int fila=y_en_sprite/8;
-                        int columna=x/8;
 
-                        int tamanyo_sprite=32;
+                            attribute_table +=0x80+numero_sprite*2;
 
+                            //printf ("tabla atributo sprite: %04XH\n",attribute_table);
 
-                        //Usado en modo "A"
-                        int sprites_en_fila=view_sprites_ancho_sprite/8;
+                            //printf ("antes\n");
+                            //Obtener byte 2, sprite name
+                            z80_byte sprite_name=menu_debug_draw_sprites_get_byte(attribute_table+1);
 
-                        //Usado en modo "B"
-                        int sprites_en_columna=view_sprites_alto_sprite/8;
+                            //printf ("numero sprite: %d sprite name: %d\n",numero_sprite,sprite_name);
 
-                        int offset_sprite;
+                            //Si ancho > 8, a la derecha mostramos el siguiente sprite
 
-                        if (view_sprites_sms_tiles==1) {
-                            //Donde apunta el principio del sprite. modo A
-                            offset_sprite=(fila*sprites_en_fila)+columna;
+                            int offset_sprite=sprite_name;
+
+                            int offset_pattern_table=offset_sprite*32+vdp_9918a_get_sprite_pattern_table_sms_mode4();
+                            puntero_final=offset_pattern_table+y_en_sprite*4;
                         }
 
                         else {
-                            //view_sprites_sms_tiles sera 2
-                            //Donde apunta el principio del sprite. modo B
-                            offset_sprite=(columna*sprites_en_columna)+fila;
-                        }
+                            //Ejemplo para sprite de ancho 32 y alto 16,
+                            //Mostrar el sprite ordenado asi: (Modo "A"). En pantalla lo indica con ">" de flecha derecha
+                            //Asi se ve bien en Streets of Rage
+                            // 0 1 2 3
+                            // 4 5 6 7
+                            //donde 0 es el primer sprite, 1 el segundo, etc
 
+                            //a cada "salto" de columna salta 32 bytes (1 sprite)
+                            //a cada "salto" de fila salta (en este ejemplo) 32*4
 
+                            //Modo "B": En pantalla lo indica con "v" de flecha abajo
+                            //Asi se ve bien en Sonic
+                            // 0 2 4 6
+                            // 1 3 5 7
 
-                        offset_sprite *=tamanyo_sprite;
+                            //Nota: en caso de sprites de 8x8 sera:
+                            // 0
 
-                        //Aqui estaremos siempre a principio de columna (x divisible entre 8)
-                        //sumamos y
-                        offset_sprite +=(y_en_sprite & 7)*4;
+                            //Y en caso de 8x16 sera:
+                            // 0
+                            // 1
 
+                            //Por tanto en esos casos no le afecta el modo A o B. En sprites por hardware es 8x8 o 8x16 por tanto da igual el modo A o B
+                            //Lo que haremos en ese modo hardware es no mostrar > o v, simplemente activo (X)
 
-                        //int incremento_linea=(y/8)+
-                        //int offset_linea=(view_sprites_ancho_sprite/8)*32;
-                        puntero_final=view_sprites_direccion+offset_sprite;
 
+                            int fila=y_en_sprite/8;
+                            int columna=x/8;
 
+                            int tamanyo_sprite=32;
 
-                    }
 
-                    byte_leido_sms_1=menu_debug_draw_sprites_get_byte(puntero_final++);
-                    byte_leido_sms_2=menu_debug_draw_sprites_get_byte(puntero_final++);
-                    byte_leido_sms_3=menu_debug_draw_sprites_get_byte(puntero_final++);
-                    byte_leido_sms_4=menu_debug_draw_sprites_get_byte(puntero_final++);
+                            //Usado en modo "A"
+                            int sprites_en_fila=view_sprites_ancho_sprite/8;
 
-                }
+                            //Usado en modo "B"
+                            int sprites_en_columna=view_sprites_alto_sprite/8;
 
-                //Alterar en el caso de VDP9918A, que es un tanto particular (sobretodo 16x16)
-                if (view_sprites_hardware && MACHINE_HAS_VDP_9918A) {
+                            int offset_sprite;
 
-                    if (!view_sprites_sms_tiles) {
-
-                        //Accedemos a la tabla de 32 sprites
-
-                        //menu_z80_moto_int puntero_orig=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
-
-                        z80_int attribute_table=vdp_9918a_get_sprite_attribute_table();
-
-                        int numero_sprite=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
-
-                        numero_sprite %=32;
-
-                        //printf ("numero sprite: %d\n",numero_sprite);
-
-                        attribute_table +=numero_sprite*4;
-
-                        //printf ("tabla atributo sprite: %04XH\n",attribute_table);
-
-                        //printf ("antes\n");
-                        //Obtener byte 2, sprite name
-                        z80_byte sprite_name=menu_debug_draw_sprites_get_byte(attribute_table+2);
-
-
-                        //printf ("despues\n");
-
-                        //TODO: asumimos sprites 16x16
-                        //TODO: colores del sprite
-
-                        menu_z80_moto_int puntero_orig=sprite_name *8;
-                        /*
-                        QUADRANT   AC
-                                BD
-
-                        Orden en memoria:
-                        A   0
-                        B   8
-                        C   16
-                        D   24
-                        */
-                        //y<8
-
-                        //int y_local_sprite=y-y_inicial;
-
-
-                        //Quad A
-                        if (y_en_sprite<=7 && x_en_sprite<=7) {
-                            puntero_final=puntero_orig+y_en_sprite;
-                        }
-
-                        //Quad B
-                        else if (y_en_sprite>=8 && y_en_sprite<=15 && x_en_sprite<=7) {
-                            puntero_final=puntero_orig+y_en_sprite;
-                        }
-
-                        //Quad C
-                        else if (y_en_sprite<=7 && x_en_sprite>=8 && x_en_sprite<=15) {
-                            puntero_final=puntero_orig+16+y_en_sprite;
-                        }
-
-                        //Quad D
-                        else  {
-                            puntero_final=puntero_orig+16+y_en_sprite;
-                        }
-
-
-                        puntero_final +=vdp_9918a_get_sprite_pattern_table();
-
-                        //printf ("puntero final: %04XH\n",puntero_final);
-
-
-                    }
-
-
-                }
-
-                byte_leido=menu_debug_draw_sprites_get_byte(puntero_final);
-
-                /*byte_leido=menu_debug_get_mapped_byte(puntero);
-
-
-
-                //Si hay puntero a valores en rom como algunos juegos pseudo hires de zx81
-                if (view_sprites_zx81_pseudohires.v) {
-                    int temp_inverse=0; //si se hace inverse derivado de juegos pseudo hires de zx81
-                    if (byte_leido&128) temp_inverse=1;
-
-                    z80_int temp_dir=reg_i*256+(8*(byte_leido&63));
-                    byte_leido=peek_byte_no_time(temp_dir);
-
-                    if (temp_inverse) byte_leido ^=255;
-                }
-
-
-                if (view_sprites_inverse.v) {
-                    byte_leido ^=255;
-                }
-                */
-
-                if (menu_sprites_modo_pcw_pantalla.v && MACHINE_IS_PCW) puntero +=8;
-
-                else puntero +=view_sprite_incremento;
-
-
-                int incx=0;
-
-                int total_bpp=view_sprites_bpp;
-
-                //para sms, solo hacer este bucle 1 vez
-                if (view_sprites_sms_tiles) total_bpp=8;
-
-                for (bit=0;bit<8;bit+=total_bpp,incx++,finalx+=menu_debug_draw_sprites_zoom_sprites,x++,x_en_sprite++) {
-
-
-
-
-                    int dis=(8-(incx+1)*view_sprites_bpp);
-
-                    //printf ("incx: %d dis: %d\n",incx,dis);
-
-                    color=byte_leido >> dis;
-                    z80_byte mascara;
-                    switch (view_sprites_bpp) {
-                        case 1:
-                            mascara=1;
-                        break;
-
-                        case 2:
-                            mascara=3;
-                        break;
-
-                        case 4:
-                            mascara=15;
-                        break;
-
-                        case 8:
-                            mascara=255;
-                        break;
-                    }
-
-                    color=color & mascara;
-
-                //en 8ppb (1 bpp), primer color rotar 7, luego 6, luego 5, .... 0 (8-(pos actual+1)*bpp). mascara 1
-                //en 4ppb (2 bpp), primer color rotar 6, luego 4, luego 2, luego 0 (8-(pos actual+1)*bpp). mascara 3
-                //en 2ppb (4 bpp), primer color rotar 4, luego 0  (8-(pos actual+1)*bpp). mascara 15
-                //en 1ppb (8 bpp), rotar 0 . mascara 255  (8-(pos actual+1)*bpp). mascara 255
-
-                //Caso 1 bpp
-                if (view_sprites_bpp==1) {
-                                        if ( color ==0 ) color=ESTILO_GUI_PAPEL_NORMAL;
-                                        else color=ESTILO_GUI_TINTA_NORMAL;
-                }
-                else {
-                    color=menu_debug_sprites_return_color_palette(view_sprites_palette,color+view_sprites_offset_palette);
-
-                }
-
-                //En el caso de modo sms sprites modo 4, lo anterior realizado no sirve de mucho, pues vamos a sacar el color del pixel de otra manera
-                //TODO: hacer que el código anterior no se ejecute si estamos en dicho modo, realmente no afecta pero es absurdo ejecutar eso
-                //si el color lo recalculamos de otra manera
-                if (view_sprites_sms_tiles) {
-                    z80_byte byte_color=((byte_leido_sms_1>>7)&1) | ((byte_leido_sms_2>>6)&2) | ((byte_leido_sms_3>>5)&4) | ((byte_leido_sms_4>>4)&8);
-
-
-                    z80_byte color_sprite=vdp_9918a_sms_cram[view_sprites_offset_palette + (byte_color & 15)] & 63;
-
-                    color=SMS_INDEX_FIRST_COLOR+color_sprite;
-
-                }
-
-
-                //Contemplar zoom de sprites
-                int zx,zy;
-                for (zx=0;zx<menu_debug_draw_sprites_zoom_sprites;zx++) {
-                    for (zy=0;zy<menu_debug_draw_sprites_zoom_sprites;zy++) {
-                        //Contemplar rejilla a partir de zoom 4
-                        int color_pixel=color;
-                        if (menu_debug_draw_sprites_zoom_sprites>=4 && menu_debug_draw_sprites_grid) {
-                            //cuadricula
-                            if (zx==0 || zy==0) {
-                                /*
-                                if (view_sprites_bpp==1) {
-                                    if (color_pixel==ESTILO_GUI_PAPEL_NORMAL) color_pixel=ESTILO_GUI_TINTA_NORMAL;
-                                    else color_pixel=ESTILO_GUI_PAPEL_NORMAL;
-                                }
-
-                                else color_pixel=ESTILO_GUI_TINTA_NORMAL;
-                                */
-
-                                //La cuadricula con el color de waveform siempre se vera bien encima de un fondo de papel
-
-                                color_pixel=ESTILO_GUI_COLOR_WAVEFORM;
+                            if (view_sprites_sms_tiles==1) {
+                                //Donde apunta el principio del sprite. modo A
+                                offset_sprite=(fila*sprites_en_fila)+columna;
                             }
+
+                            else {
+                                //view_sprites_sms_tiles sera 2
+                                //Donde apunta el principio del sprite. modo B
+                                offset_sprite=(columna*sprites_en_columna)+fila;
+                            }
+
+
+
+                            offset_sprite *=tamanyo_sprite;
+
+                            //Aqui estaremos siempre a principio de columna (x divisible entre 8)
+                            //sumamos y
+                            offset_sprite +=(y_en_sprite & 7)*4;
+
+
+                            //int incremento_linea=(y/8)+
+                            //int offset_linea=(view_sprites_ancho_sprite/8)*32;
+                            puntero_final=view_sprites_direccion+offset_sprite;
+
+
+
                         }
-                        zxvision_putpixel(menu_debug_draw_sprites_window,finalx+zx,yorigen+y+zy,color_pixel);
+
+                        byte_leido_sms_1=menu_debug_draw_sprites_get_byte(puntero_final++);
+                        byte_leido_sms_2=menu_debug_draw_sprites_get_byte(puntero_final++);
+                        byte_leido_sms_3=menu_debug_draw_sprites_get_byte(puntero_final++);
+                        byte_leido_sms_4=menu_debug_draw_sprites_get_byte(puntero_final++);
+
                     }
+
+                    //Alterar en el caso de VDP9918A, que es un tanto particular (sobretodo 16x16)
+                    if (view_sprites_hardware && MACHINE_HAS_VDP_9918A) {
+
+                        if (!view_sprites_sms_tiles) {
+
+                            //Accedemos a la tabla de 32 sprites
+
+                            //menu_z80_moto_int puntero_orig=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
+
+                            z80_int attribute_table=vdp_9918a_get_sprite_attribute_table();
+
+                            int numero_sprite=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
+
+                            numero_sprite %=32;
+
+                            //printf ("numero sprite: %d\n",numero_sprite);
+
+                            attribute_table +=numero_sprite*4;
+
+                            //printf ("tabla atributo sprite: %04XH\n",attribute_table);
+
+                            //printf ("antes\n");
+                            //Obtener byte 2, sprite name
+                            z80_byte sprite_name=menu_debug_draw_sprites_get_byte(attribute_table+2);
+
+
+                            //printf ("despues\n");
+
+                            //TODO: asumimos sprites 16x16
+                            //TODO: colores del sprite
+
+                            menu_z80_moto_int puntero_orig=sprite_name *8;
+                            /*
+                            QUADRANT   AC
+                                    BD
+
+                            Orden en memoria:
+                            A   0
+                            B   8
+                            C   16
+                            D   24
+                            */
+                            //y<8
+
+                            //int y_local_sprite=y-y_inicial;
+
+
+                            //Quad A
+                            if (y_en_sprite<=7 && x_en_sprite<=7) {
+                                puntero_final=puntero_orig+y_en_sprite;
+                            }
+
+                            //Quad B
+                            else if (y_en_sprite>=8 && y_en_sprite<=15 && x_en_sprite<=7) {
+                                puntero_final=puntero_orig+y_en_sprite;
+                            }
+
+                            //Quad C
+                            else if (y_en_sprite<=7 && x_en_sprite>=8 && x_en_sprite<=15) {
+                                puntero_final=puntero_orig+16+y_en_sprite;
+                            }
+
+                            //Quad D
+                            else  {
+                                puntero_final=puntero_orig+16+y_en_sprite;
+                            }
+
+
+                            puntero_final +=vdp_9918a_get_sprite_pattern_table();
+
+                            //printf ("puntero final: %04XH\n",puntero_final);
+
+
+                        }
+
+
+                    }
+
+                    byte_leido=menu_debug_draw_sprites_get_byte(puntero_final);
+
+                    /*byte_leido=menu_debug_get_mapped_byte(puntero);
+
+
+
+                    //Si hay puntero a valores en rom como algunos juegos pseudo hires de zx81
+                    if (view_sprites_zx81_pseudohires.v) {
+                        int temp_inverse=0; //si se hace inverse derivado de juegos pseudo hires de zx81
+                        if (byte_leido&128) temp_inverse=1;
+
+                        z80_int temp_dir=reg_i*256+(8*(byte_leido&63));
+                        byte_leido=peek_byte_no_time(temp_dir);
+
+                        if (temp_inverse) byte_leido ^=255;
+                    }
+
+
+                    if (view_sprites_inverse.v) {
+                        byte_leido ^=255;
+                    }
+                    */
+
+                    if (menu_sprites_modo_pcw_pantalla.v && MACHINE_IS_PCW) puntero +=8;
+
+                    else puntero +=view_sprite_incremento;
+
+
+                    int incx=0;
+
+                    int total_bpp=view_sprites_bpp;
+
+                    //para sms, solo hacer este bucle 1 vez
+                    if (view_sprites_sms_tiles) total_bpp=8;
+
+                    for (bit=0;bit<8;bit+=total_bpp,incx++,finalx+=menu_debug_draw_sprites_zoom_sprites,x++,x_en_sprite++) {
+
+
+
+
+                        int dis=(8-(incx+1)*view_sprites_bpp);
+
+                        //printf ("incx: %d dis: %d\n",incx,dis);
+
+                        color=byte_leido >> dis;
+                        z80_byte mascara;
+                        switch (view_sprites_bpp) {
+                            case 1:
+                                mascara=1;
+                            break;
+
+                            case 2:
+                                mascara=3;
+                            break;
+
+                            case 4:
+                                mascara=15;
+                            break;
+
+                            case 8:
+                                mascara=255;
+                            break;
+                        }
+
+                        color=color & mascara;
+
+                    //en 8ppb (1 bpp), primer color rotar 7, luego 6, luego 5, .... 0 (8-(pos actual+1)*bpp). mascara 1
+                    //en 4ppb (2 bpp), primer color rotar 6, luego 4, luego 2, luego 0 (8-(pos actual+1)*bpp). mascara 3
+                    //en 2ppb (4 bpp), primer color rotar 4, luego 0  (8-(pos actual+1)*bpp). mascara 15
+                    //en 1ppb (8 bpp), rotar 0 . mascara 255  (8-(pos actual+1)*bpp). mascara 255
+
+                    //Caso 1 bpp
+                    if (view_sprites_bpp==1) {
+                                            if ( color ==0 ) color=ESTILO_GUI_PAPEL_NORMAL;
+                                            else color=ESTILO_GUI_TINTA_NORMAL;
+                    }
+                    else {
+                        color=menu_debug_sprites_return_color_palette(view_sprites_palette,color+view_sprites_offset_palette);
+
+                    }
+
+                    //En el caso de modo sms sprites modo 4, lo anterior realizado no sirve de mucho, pues vamos a sacar el color del pixel de otra manera
+                    //TODO: hacer que el código anterior no se ejecute si estamos en dicho modo, realmente no afecta pero es absurdo ejecutar eso
+                    //si el color lo recalculamos de otra manera
+                    if (view_sprites_sms_tiles) {
+                        z80_byte byte_color=((byte_leido_sms_1>>7)&1) | ((byte_leido_sms_2>>6)&2) | ((byte_leido_sms_3>>5)&4) | ((byte_leido_sms_4>>4)&8);
+
+
+                        z80_byte color_sprite=vdp_9918a_sms_cram[view_sprites_offset_palette + (byte_color & 15)] & 63;
+
+                        color=SMS_INDEX_FIRST_COLOR+color_sprite;
+
+                    }
+
+
+                    //Contemplar zoom de sprites
+                    int zx,zy;
+                    for (zx=0;zx<menu_debug_draw_sprites_zoom_sprites;zx++) {
+                        for (zy=0;zy<menu_debug_draw_sprites_zoom_sprites;zy++) {
+                            //Contemplar rejilla a partir de zoom 4
+                            int color_pixel=color;
+                            if (menu_debug_draw_sprites_zoom_sprites>=4 && menu_debug_draw_sprites_grid) {
+                                //cuadricula
+                                if (zx==0 || zy==0) {
+                                    /*
+                                    if (view_sprites_bpp==1) {
+                                        if (color_pixel==ESTILO_GUI_PAPEL_NORMAL) color_pixel=ESTILO_GUI_TINTA_NORMAL;
+                                        else color_pixel=ESTILO_GUI_PAPEL_NORMAL;
+                                    }
+
+                                    else color_pixel=ESTILO_GUI_TINTA_NORMAL;
+                                    */
+
+                                    //La cuadricula con el color de waveform siempre se vera bien encima de un fondo de papel
+
+                                    color_pixel=ESTILO_GUI_COLOR_WAVEFORM;
+                                }
+                            }
+                            zxvision_putpixel(menu_debug_draw_sprites_window,finalx+zx,yorigen+y+zy,color_pixel);
+                        }
+                    }
+
                 }
 
-               }
+                    byte_leido_sms_1=byte_leido_sms_1<<1;
+                    byte_leido_sms_2=byte_leido_sms_2<<1;
+                    byte_leido_sms_3=byte_leido_sms_3<<1;
+                    byte_leido_sms_4=byte_leido_sms_4<<1;
 
-                byte_leido_sms_1=byte_leido_sms_1<<1;
-                byte_leido_sms_2=byte_leido_sms_2<<1;
-                byte_leido_sms_3=byte_leido_sms_3<<1;
-                byte_leido_sms_4=byte_leido_sms_4<<1;
+                }
 
-            }
-
-            //puntero=puntero_inicio_linea;
+                //puntero=puntero_inicio_linea;
 
 
-            if (menu_sprites_modo_pcw_pantalla.v && MACHINE_IS_PCW) {
-                //Cada 8 lineas, se incrementa diferente
-                if ((y%8)==7) {
-                    //puntero+=view_sprites_ancho_sprite;
-                    //puntero+=(720/8);
-                    //Ya viene incrementado +8. Entonces se deberia incrementar en +1
-                    puntero-=7;
+                if (menu_sprites_modo_pcw_pantalla.v && MACHINE_IS_PCW) {
+                    //Cada 8 lineas, se incrementa diferente
+                    if ((y%8)==7) {
+                        //puntero+=view_sprites_ancho_sprite;
+                        //puntero+=(720/8);
+                        //Ya viene incrementado +8. Entonces se deberia incrementar en +1
+                        puntero-=7;
+                    }
+                    else {
+                        puntero=puntero_inicio_linea;
+                        puntero++;
+                    }
                 }
                 else {
                     puntero=puntero_inicio_linea;
-                    puntero++;
+                    puntero +=tamanyo_linea;
                 }
-            }
-            else {
-                puntero=puntero_inicio_linea;
-                puntero +=tamanyo_linea;
-            }
 
+
+            }
 
         }
 
