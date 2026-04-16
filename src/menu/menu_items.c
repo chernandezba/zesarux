@@ -11929,6 +11929,8 @@ int menu_debug_draw_sprites_is_sprite_used_in_frame(int sprite)
 {
     if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return 0;
 
+    //if (menu_debug_draw_sprites_used_sprites_in_frame[sprite]) printf("is %d %d\n",sprite,menu_debug_draw_sprites_used_sprites_in_frame[sprite]);
+
     return menu_debug_draw_sprites_used_sprites_in_frame[sprite];
 
 }
