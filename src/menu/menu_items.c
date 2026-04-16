@@ -11996,6 +11996,7 @@ void menu_debug_draw_sprites(void)
         }
 
         int y_en_sprite=0;
+        int x_inicial=0;
 
         for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites,y_en_sprite++) {
             if (view_sprites_scr_sprite && y<192) {
@@ -12010,9 +12011,9 @@ void menu_debug_draw_sprites(void)
             //Para sprites sms modo 4
             z80_byte byte_leido_sms_1,byte_leido_sms_2,byte_leido_sms_3,byte_leido_sms_4;
 
+            int x_en_sprite=0;
 
-
-            for (x=0;x<view_sprites_ancho_sprite;) {
+            for (x=x_inicial;x<x_inicial+view_sprites_ancho_sprite;) {
                 //printf ("puntero: %d\n",puntero);
                 puntero=adjust_address_memory_size(puntero);
 
@@ -12180,17 +12181,17 @@ void menu_debug_draw_sprites(void)
 
 
                         //Quad A
-                        if (y_en_sprite<=7 && x<=7) {
+                        if (y_en_sprite<=7 && x_en_sprite<=7) {
                             puntero_final=puntero_orig+y_en_sprite;
                         }
 
                         //Quad B
-                        else if (y_en_sprite>=8 && y_en_sprite<=15 && x<=7) {
+                        else if (y_en_sprite>=8 && y_en_sprite<=15 && x_en_sprite<=7) {
                             puntero_final=puntero_orig+y_en_sprite;
                         }
 
                         //Quad C
-                        else if (y_en_sprite<=7 && x>=8 && x<=15) {
+                        else if (y_en_sprite<=7 && x_en_sprite>=8 && x_en_sprite<=15) {
                             puntero_final=puntero_orig+16+y_en_sprite;
                         }
 
@@ -12245,7 +12246,7 @@ void menu_debug_draw_sprites(void)
                 //para sms, solo hacer este bucle 1 vez
                 if (view_sprites_sms_tiles) total_bpp=8;
 
-                for (bit=0;bit<8;bit+=total_bpp,incx++,finalx+=menu_debug_draw_sprites_zoom_sprites,x++) {
+                for (bit=0;bit<8;bit+=total_bpp,incx++,finalx+=menu_debug_draw_sprites_zoom_sprites,x++,x_en_sprite++) {
 
 
 
