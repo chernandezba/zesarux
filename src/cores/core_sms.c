@@ -64,6 +64,7 @@
 #include "snap_ram.h"
 #include "z80_codsinpr.h"
 #include "zeng_online_client.h"
+#include "menu_items.h"
 
 
 z80_byte byte_leido_core_sms;
@@ -262,6 +263,8 @@ void core_sms_fin_frame_pantalla(void)
 
     //snapshot en ram
     snapshot_add_in_ram();
+
+    init_view_sprites_used_sprites_in_frame();
 
 
 }

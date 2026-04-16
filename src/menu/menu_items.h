@@ -94,6 +94,10 @@ extern void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS);
 
 extern char *menu_debug_sprites_change_ptr_historial[];
 
+#define MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME 1000
+
+extern void init_view_sprites_used_sprites_in_frame(void);
+extern void menu_debug_draw_sprites_set_sprite_used_in_frame(int sprite);
 
 extern char *menu_debug_poke_address_historial[];
 

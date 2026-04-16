@@ -11913,9 +11913,36 @@ int menu_draw_sprites_get_origin_y(void)
 int menu_debug_draw_sprites_zoom_sprites=1;
 int menu_debug_draw_sprites_grid=0;
 
+int menu_debug_draw_sprites_used_sprites_in_frame[MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME];
+
+void init_view_sprites_used_sprites_in_frame(void)
+{
+    int i;
+
+    for (i=0;i<MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME;i++) {
+        menu_debug_draw_sprites_used_sprites_in_frame[i]=0;
+    }
+
+}
+
+int menu_debug_draw_sprites_is_sprite_used_in_frame(int sprite)
+{
+    if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return 0;
+
+    return menu_debug_draw_sprites_used_sprites_in_frame[sprite];
+
+}
+
+void menu_debug_draw_sprites_set_sprite_used_in_frame(int sprite)
+{
+    if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return;
+    //printf("set sprite %d\n",sprite);
+    menu_debug_draw_sprites_used_sprites_in_frame[sprite]=1;
+
+}
+
 void menu_debug_draw_sprites(void)
 {
-
 
 
     menu_speech_set_tecla_pulsada(); //Si no, envia continuamente todo ese texto a speech
@@ -12069,14 +12096,16 @@ void menu_debug_draw_sprites(void)
 
 
                             //prueba de enmarcar el sprite
-                            if (view_sprites_hardware_all.v && x==x_inicial && y==y_inicial) {
+                            if (view_sprites_hardware_all.v && y==y_inicial && x_en_sprite==0) {
                                 int recuadro_x=finalx-1;
                                 int recuadro_y=yorigen+y-1;
                                 int color;
-                                if (sprite_name==180) {
+                                if (menu_debug_draw_sprites_is_sprite_used_in_frame(sprite_name)) {
+                                    //printf("existe %d\n",sprite_name);
                                     color=6;
                                 }
                                 else {
+                                    //printf("no existe %d\n",sprite_name);
                                     color=ESTILO_GUI_PAPEL_NORMAL; //borrar lo que hubiera
                                 }
                                 zxvision_draw_rectangle(menu_debug_draw_sprites_window,recuadro_x,recuadro_y,view_sprites_ancho_sprite+2,view_sprites_alto_sprite+2,color);
@@ -12889,6 +12918,8 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 
     //disable_interlace();
+
+    init_view_sprites_used_sprites_in_frame();
 
     zxvision_window *ventana;
     ventana=&zxvision_window_view_sprites;

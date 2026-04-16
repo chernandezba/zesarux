@@ -30,6 +30,7 @@
 #include "debug.h"
 #include "screen.h"
 #include "settings.h"
+#include "menu_items.h"
 
 
 //Rutinas del VDP de Sega Master System que extiende el vdp 9918a
@@ -1367,6 +1368,9 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
         //Si posicion Y sprite esta en el margen
         //if (vert_pos<192) {
         if (scanline>=vert_pos && scanline<vert_pos+sprite_height*sprite_double) {
+
+            menu_debug_draw_sprites_set_sprite_used_in_frame(sprite_name);
+
             //int offset_pattern_table=sprite_name*bytes_per_sprite+sprite_pattern_table;
                 int offset_pattern_table=sprite_name*32+sprite_pattern_table;
 
