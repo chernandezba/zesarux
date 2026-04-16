@@ -11990,15 +11990,15 @@ void menu_debug_draw_sprites(void)
 
     int total_columnas_sprites=1;
 
-    for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;contador_sprite_mostrar++) {
-
-        int y_en_sprite=0;
+    for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;) {
 
         int columna_sprite;
 
-        for (columna_sprite=0;columna_sprite<total_columnas_sprites;columna_sprite++) {
+        for (columna_sprite=0;columna_sprite<total_columnas_sprites && contador_sprite_mostrar<total_sprites_mostrar;columna_sprite++,contador_sprite_mostrar++) {
 
-            int x_inicial=0;
+            int y_en_sprite=0;
+
+            int x_inicial=(columna_sprite*view_sprites_ancho_sprite+8); //8 de margen para que queden separados
 
             if (view_sprites_hardware && view_sprites_hardware_all.v) {
                 view_sprites_direccion=contador_sprite_mostrar;
