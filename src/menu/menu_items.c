@@ -11995,7 +11995,9 @@ void menu_debug_draw_sprites(void)
             y_inicial=alto_total_sprites*contador_sprite_mostrar;
         }
 
-        for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites) {
+        int y_en_sprite=0;
+
+        for (y=y_inicial;y<y_inicial+alto_total_sprites;y+=menu_debug_draw_sprites_zoom_sprites,y_en_sprite++) {
             if (view_sprites_scr_sprite && y<192) {
                 puntero=view_sprites_direccion+screen_addr_table[(y<<5)];
             }
@@ -12051,7 +12053,7 @@ void menu_debug_draw_sprites(void)
                         int offset_sprite=sprite_name;
 
                         int offset_pattern_table=offset_sprite*32+vdp_9918a_get_sprite_pattern_table_sms_mode4();
-                        puntero_final=offset_pattern_table+(y-y_inicial)*4;
+                        puntero_final=offset_pattern_table+y_en_sprite*4;
                     }
 
                     else {
@@ -12081,7 +12083,7 @@ void menu_debug_draw_sprites(void)
                         //Lo que haremos en ese modo hardware es no mostrar > o v, simplemente activo (X)
 
 
-                        int fila=(y-y_inicial)/8;
+                        int fila=y_en_sprite/8;
                         int columna=x/8;
 
                         int tamanyo_sprite=32;
@@ -12112,7 +12114,7 @@ void menu_debug_draw_sprites(void)
 
                         //Aqui estaremos siempre a principio de columna (x divisible entre 8)
                         //sumamos y
-                        offset_sprite +=((y-y_inicial) & 7)*4;
+                        offset_sprite +=(y_en_sprite & 7)*4;
 
 
                         //int incremento_linea=(y/8)+
@@ -12174,26 +12176,27 @@ void menu_debug_draw_sprites(void)
                         */
                         //y<8
 
-                        int y_local_sprite=y-y_inicial;
+                        //int y_local_sprite=y-y_inicial;
+
 
                         //Quad A
-                        if (y_local_sprite<=7 && x<=7) {
-                            puntero_final=puntero_orig+y_local_sprite;
+                        if (y_en_sprite<=7 && x<=7) {
+                            puntero_final=puntero_orig+y_en_sprite;
                         }
 
                         //Quad B
-                        else if (y_local_sprite>=8 && y_local_sprite<=15 && x<=7) {
-                            puntero_final=puntero_orig+y_local_sprite;
+                        else if (y_en_sprite>=8 && y_en_sprite<=15 && x<=7) {
+                            puntero_final=puntero_orig+y_en_sprite;
                         }
 
                         //Quad C
-                        else if (y_local_sprite<=7 && x>=8 && x<=15) {
-                            puntero_final=puntero_orig+16+y_local_sprite;
+                        else if (y_en_sprite<=7 && x>=8 && x<=15) {
+                            puntero_final=puntero_orig+16+y_en_sprite;
                         }
 
                         //Quad D
                         else  {
-                            puntero_final=puntero_orig+16+y_local_sprite;
+                            puntero_final=puntero_orig+16+y_en_sprite;
                         }
 
 
