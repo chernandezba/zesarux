@@ -12068,7 +12068,7 @@ void menu_debug_draw_sprites(void)
                     puntero_final=puntero;
 
                     //Hacer esto a cada salto de x 0,8, etc
-                    if (view_sprites_sms_tiles && (x%8)==0) {
+                    if (view_sprites_sms_tiles && (x_en_sprite%8)==0) {
                         //Caso de sprites Master System modo 4
 
                         if (view_sprites_hardware) {
@@ -12095,19 +12095,18 @@ void menu_debug_draw_sprites(void)
                             z80_byte sprite_name=menu_debug_draw_sprites_get_byte(attribute_table+1);
 
 
-                            //prueba de enmarcar el sprite
+                            //Enmarcar el sprite
                             if (view_sprites_hardware_all.v && y==y_inicial && x_en_sprite==0) {
                                 int recuadro_x=finalx-1;
                                 int recuadro_y=yorigen+y-1;
-                                int color;
-                                if (menu_debug_draw_sprites_is_sprite_used_in_frame(sprite_name)) {
+                                int color=ESTILO_GUI_PAPEL_NORMAL; //por defecto borrar el recuadro
+
+                                if (menu_debug_draw_sprites_is_sprite_used_in_frame(sprite_name) && estado_parpadeo.v) {
                                     //printf("existe %d\n",sprite_name);
-                                    color=6;
+                                    //printf("conteo : %d\n",++temp_conteo);
+                                    color=ESTILO_GUI_PAPEL_SELECCIONADO;
                                 }
-                                else {
-                                    //printf("no existe %d\n",sprite_name);
-                                    color=ESTILO_GUI_PAPEL_NORMAL; //borrar lo que hubiera
-                                }
+
                                 zxvision_draw_rectangle(menu_debug_draw_sprites_window,recuadro_x,recuadro_y,view_sprites_ancho_sprite+2,view_sprites_alto_sprite+2,color);
                                 //zxvision_putpixel(menu_debug_draw_sprites_window,finalx-1,yorigen+y-1,6);
                             }
