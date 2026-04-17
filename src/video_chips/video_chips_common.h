@@ -23,7 +23,7 @@
 #define VIDEO_CHIPS_COMMON_H
 
 
-#define MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME 1000
+#define VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME 1000
 
 extern void video_chips_common_init_used_sprites_in_frame(void);
 extern void video_chips_common_set_sprite_used_in_frame(int sprite);

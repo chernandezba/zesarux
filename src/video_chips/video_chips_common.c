@@ -32,13 +32,13 @@
 
 
 //Para indicar qué sprites está usando en el frame actual de video
-int video_chips_common_used_sprites_in_frame[MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME];
+int video_chips_common_used_sprites_in_frame[VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME];
 
 void video_chips_common_init_used_sprites_in_frame(void)
 {
     int i;
 
-    for (i=0;i<MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME;i++) {
+    for (i=0;i<VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME;i++) {
         video_chips_common_used_sprites_in_frame[i]=0;
     }
 
@@ -46,7 +46,7 @@ void video_chips_common_init_used_sprites_in_frame(void)
 
 int video_chips_common_is_sprite_used_in_frame(int sprite)
 {
-    if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return 0;
+    if (sprite<0 || sprite>=VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME) return 0;
 
     //if (video_chips_common_used_sprites_in_frame[sprite]) printf("is %d %d\n",sprite,video_chips_common_used_sprites_in_frame[sprite]);
 
@@ -56,7 +56,7 @@ int video_chips_common_is_sprite_used_in_frame(int sprite)
 
 void video_chips_common_set_sprite_used_in_frame(int sprite)
 {
-    if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return;
+    if (sprite<0 || sprite>=VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME) return;
     //printf("set sprite %d\n",sprite);
     video_chips_common_used_sprites_in_frame[sprite]=1;
 
