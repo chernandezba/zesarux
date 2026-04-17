@@ -47,6 +47,7 @@
 #include "settings.h"
 #include "joystick.h"
 #include "operaciones.h"
+#include "video_chips_common.h"
 
 
 
@@ -2630,6 +2631,8 @@ If the display of the sprites on the border is disabled, the coordinates of the 
 
             //Pintar el sprite si esta en rango de coordenada y
             if (diferencia>=0 && diferencia<TBBLUE_SPRITE_HEIGHT && y>=rangoymin && y<=rangoymax) {
+
+                video_chips_common_set_sprite_used_in_frame(index_pattern);
 
                 //printf ("y: %d t_scanline_draw: %d rainbowy:%d sprite_y: %d\n",y,t_scanline_draw,rainbowy,sprite_y);
                 z80_byte sx=0,sy=0; //Coordenadas x,y dentro del pattern

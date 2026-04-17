@@ -12044,7 +12044,7 @@ void menu_debug_draw_sprites(void)
             int x_inicial=columna_sprite*(view_sprites_ancho_sprite+margen_separacion_sprites_modo_all); //algo de margen para que queden separados
 
             if (view_sprites_hardware && view_sprites_hardware_all.v) {
-                if (MACHINE_IS_TSCONF) {
+                if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE) {
                     //no alteramos view_sprites_direccion
                 }
 
@@ -12300,7 +12300,7 @@ void menu_debug_draw_sprites(void)
                     }
                     */
 
-                    if (MACHINE_IS_TSCONF && view_sprites_hardware) {
+                    if (view_sprites_hardware && (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE) ) {
                         //Enmarcar el sprite
                         menu_debug_draw_sprites_marco_activo(x_en_sprite,finalx,y,y_inicial,yorigen,view_sprites_direccion);
                     }
