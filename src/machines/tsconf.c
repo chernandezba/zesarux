@@ -2118,7 +2118,7 @@ void tsconf_store_scanline_sprites(int capa_mostrar)
         		//Ver si esta en rango y
         		if (scanline_copia>=y && scanline_copia<y+ysize) {
 
-                    menu_debug_draw_sprites_set_sprite_used_in_frame(i);
+                    video_chips_common_set_sprite_used_in_frame(i);
 
 					z80_byte sprite_r1h=tsconf_fmaps[0x200+offset+3];
 		      		int x=tsconf_fmaps[0x200+offset+2]+256*(sprite_r1h&1);

@@ -697,7 +697,7 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
 
                         if (pos_x_final>=0 && pos_x_final<=255 && pos_y_final>=0 && pos_y_final<=191) {
 
-                            if (x==0 && y==0) menu_debug_draw_sprites_set_sprite_used_in_frame(sprite_name);
+                            if (x==0 && y==0) video_chips_common_set_sprite_used_in_frame(sprite_name);
 
                             //Si bit a 1
                             if (1) {
@@ -1371,7 +1371,7 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
         //if (vert_pos<192) {
         if (scanline>=vert_pos && scanline<vert_pos+sprite_height*sprite_double) {
 
-            menu_debug_draw_sprites_set_sprite_used_in_frame(sprite_name);
+            video_chips_common_set_sprite_used_in_frame(sprite_name);
 
             //int offset_pattern_table=sprite_name*bytes_per_sprite+sprite_pattern_table;
                 int offset_pattern_table=sprite_name*32+sprite_pattern_table;
