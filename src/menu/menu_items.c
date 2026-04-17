@@ -12931,7 +12931,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
     //disable_interlace();
 
-    init_view_sprites_used_sprites_in_frame();
+    video_chips_common_init_used_sprites_in_frame();
 
     zxvision_window *ventana;
     ventana=&zxvision_window_view_sprites;

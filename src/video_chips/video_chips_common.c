@@ -34,7 +34,7 @@
 //Para indicar qué sprites está usando en el frame actual de video
 int video_chips_common_used_sprites_in_frame[MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME];
 
-void init_view_sprites_used_sprites_in_frame(void)
+void video_chips_common_init_used_sprites_in_frame(void)
 {
     int i;
 

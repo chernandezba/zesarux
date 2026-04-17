@@ -210,7 +210,7 @@ void core_sg1000_fin_frame_pantalla(void)
     //snapshot en ram
     snapshot_add_in_ram();
 
-    init_view_sprites_used_sprites_in_frame();
+    video_chips_common_init_used_sprites_in_frame();
 
 
 }
