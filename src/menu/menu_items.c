@@ -12009,7 +12009,8 @@ void menu_debug_draw_sprites(void)
         }
 
         else if (MACHINE_IS_TBBLUE) {
-            total_sprites_mostrar=TBBLUE_MAX_SPRITES;
+            if (view_sprites_bpp==4) total_sprites_mostrar=TBBLUE_MAX_PATTERNS*2;
+            else total_sprites_mostrar=TBBLUE_MAX_PATTERNS;
         }
 
         else total_sprites_mostrar=32;
@@ -12025,7 +12026,7 @@ void menu_debug_draw_sprites(void)
         total_columnas_sprites=4;
 
         //caso de tsconf por ejemplo, para que quepan bien, pueden ser sprites grandes como los de ny17.spg
-        if (MACHINE_IS_TSCONF) total_columnas_sprites=8;
+        if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE) total_columnas_sprites=8;
     }
 
     int margen_separacion_sprites_modo_all=4;
