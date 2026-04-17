@@ -1328,7 +1328,7 @@ int screen_rainbow_effect_load_bmp_ancho_total=0;
 int screen_rainbow_effect_load_bmp_alto_total=0;
 z80_int *screen_rainbow_effect_load_bmp_destino=NULL;
 
-void screen_rainbow_effect_load_bmp_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+void screen_rainbow_effect_load_bmp_putpixel(zxvision_window *ventana GCC_UNUSED,int x,int y,int color_final,int follow_zoom GCC_UNUSED)
 {
     if (color_final==SCREEN_RAINBOW_EFFECT_LOAD_BMP_FAKE_TRANSPARENCY_COLOR) return; //Esto seria para el transparente
     if (screen_rainbow_effect_load_bmp_destino==NULL) return;

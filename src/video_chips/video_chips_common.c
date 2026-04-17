@@ -31,7 +31,7 @@
 #include "settings.h"
 
 
-//Para indicar qué sprites está usando en el frame actual de video
+//Para indicar qué sprites está usando en el frame actual de video, usado luego en la ventana de view sprites
 int video_chips_common_used_sprites_in_frame[VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME];
 
 void video_chips_common_init_used_sprites_in_frame(void)
