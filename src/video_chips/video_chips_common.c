@@ -44,7 +44,7 @@ void video_chips_common_init_used_sprites_in_frame(void)
 
 }
 
-int menu_debug_draw_sprites_is_sprite_used_in_frame(int sprite)
+int video_chips_common_is_sprite_used_in_frame(int sprite)
 {
     if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return 0;
 

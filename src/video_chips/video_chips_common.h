@@ -27,6 +27,6 @@
 
 extern void video_chips_common_init_used_sprites_in_frame(void);
 extern void menu_debug_draw_sprites_set_sprite_used_in_frame(int sprite);
-extern int menu_debug_draw_sprites_is_sprite_used_in_frame(int sprite);
+extern int video_chips_common_is_sprite_used_in_frame(int sprite);
 
 #endif
