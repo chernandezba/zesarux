@@ -58,7 +58,7 @@
 #include "snap_ram.h"
 #include "z80_codsinpr.h"
 #include "zeng_online_client.h"
-#include "menu_items.h"
+#include "video_chips_common.h"
 
 
 z80_byte byte_leido_core_coleco;

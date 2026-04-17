@@ -30,7 +30,7 @@
 #include "debug.h"
 #include "screen.h"
 #include "settings.h"
-#include "menu_items.h"
+#include "video_chips_common.h"
 
 
 //Rutinas del VDP de Sega Master System que extiende el vdp 9918a

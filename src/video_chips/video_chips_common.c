@@ -30,3 +30,34 @@
 #include "screen.h"
 #include "settings.h"
 
+
+
+int menu_debug_draw_sprites_used_sprites_in_frame[MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME];
+
+void init_view_sprites_used_sprites_in_frame(void)
+{
+    int i;
+
+    for (i=0;i<MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME;i++) {
+        menu_debug_draw_sprites_used_sprites_in_frame[i]=0;
+    }
+
+}
+
+int menu_debug_draw_sprites_is_sprite_used_in_frame(int sprite)
+{
+    if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return 0;
+
+    //if (menu_debug_draw_sprites_used_sprites_in_frame[sprite]) printf("is %d %d\n",sprite,menu_debug_draw_sprites_used_sprites_in_frame[sprite]);
+
+    return menu_debug_draw_sprites_used_sprites_in_frame[sprite];
+
+}
+
+void menu_debug_draw_sprites_set_sprite_used_in_frame(int sprite)
+{
+    if (sprite<0 || sprite>=MENU_VIEW_SPRITES_MAX_USED_SPRITES_IN_FRAME) return;
+    //printf("set sprite %d\n",sprite);
+    menu_debug_draw_sprites_used_sprites_in_frame[sprite]=1;
+
+}

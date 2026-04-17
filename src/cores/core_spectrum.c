@@ -74,6 +74,7 @@
 #include "plus3dos_handler.h"
 #include "zeng_online_client.h"
 #include "if1.h"
+#include "video_chips_common.h"
 
 z80_byte byte_leido_core_spectrum;
 

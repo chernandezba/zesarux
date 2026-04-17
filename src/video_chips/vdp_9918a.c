@@ -30,7 +30,7 @@
 #include "screen.h"
 #include "settings.h"
 #include "vdp_9918a_sms.h"
-#include "menu_items.h"
+#include "video_chips_common.h"
 
 /*
 Nota: parece que en el documento chipstms9918 la numeracion de bits está al revés, por ejemplo,

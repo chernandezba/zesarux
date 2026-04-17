@@ -38,7 +38,7 @@
 
 #include "chardevice.h"
 #include "uartbridge.h"
-#include "menu_items.h"
+#include "video_chips_common.h"
 
 
 void tsconf_generate_im1_im2(z80_byte vector);
