@@ -436,7 +436,11 @@ void core_spectrum_fin_frame_pantalla(void)
     //snapshot en ram
     snapshot_add_in_ram();
 
-    if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE) {
+    if (MACHINE_IS_TSCONF) {
+        video_chips_common_init_used_sprites_in_frame();
+    }
+
+    if (MACHINE_IS_TBBLUE) {
         video_chips_common_init_used_sprites_in_frame();
     }
 }
