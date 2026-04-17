@@ -2128,6 +2128,8 @@ void tbsprite_do_overlay(void)
 
     //Aqui tenemos el y=0 arriba del todo del border
 
+    if (y==0) video_chips_common_init_used_sprites_in_frame();
+
     //Bucle para cada sprite
     int conta_sprites;
     z80_byte index_pattern;

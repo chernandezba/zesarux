@@ -440,9 +440,6 @@ void core_spectrum_fin_frame_pantalla(void)
         video_chips_common_init_used_sprites_in_frame();
     }
 
-    if (MACHINE_IS_TBBLUE) {
-        video_chips_common_init_used_sprites_in_frame();
-    }
 }
 
 void core_spectrum_fin_scanline(void)

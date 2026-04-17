@@ -116,5 +116,5 @@ antes de commonsdl_init
 - Poder ver todos los sprites
 *tsconf: con sonic. si empiezo con sprite 0 no se ven bien los colores, parece que no saca bien offset del 0. pero empezando en 1 si
 *tsconf: deberia siempre empezar con el 0
-*tbblue: falta todo
+*tbblue: no esta claro si el init de marca sprites esta mal y/o esta marcando todos los sprites a veces y a veces ninguno
 *agregar a changelog
