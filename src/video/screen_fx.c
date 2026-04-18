@@ -57,6 +57,10 @@ z80_bit screen_rainbow_effect_blur_follow_mouse={0};
 int screen_rainbow_effect_contrast_intensity=SCREEN_FX_CONTRAST_DEFAULT_INTENSITY;
 z80_bit screen_rainbow_effect_contrast_follow_mouse={0};
 
+//Porcentaje de color
+int screen_rainbow_effect_decolorize_intensity=SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY;
+z80_bit screen_rainbow_effect_decolorize_follow_mouse={0};
+
 int screen_rainbow_effect_brightness_intensity=SCREEN_FX_BRIGHTNESS_DEFAULT_INTENSITY;
 z80_bit screen_rainbow_effect_brightness_follow_mouse={0};
 
@@ -140,7 +144,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines","Scanlines","Scanlines",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SEPIA,"Sepia","Sepia","Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RGB,"RGB","RGB","RGB",NULL,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_DECOLORIZE,"Decolorize","Decolorizar","Decoloritzar",NULL,&screen_rainbow_effect_decolorize_intensity,SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY,0,100},
+    {SCREEN_EFFECT_TYPE_DECOLORIZE,"Decolorize","Decolorizar","Decoloritzar",&screen_rainbow_effect_decolorize_follow_mouse,&screen_rainbow_effect_decolorize_intensity,SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY,0,100},
     {SCREEN_EFFECT_TYPE_RED,"Red","Rojo","Vermell",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence","Persistencia","Persistència",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast","Contraste","Contrast",&screen_rainbow_effect_contrast_follow_mouse,&screen_rainbow_effect_contrast_intensity,SCREEN_FX_CONTRAST_DEFAULT_INTENSITY,0,1000},
@@ -2121,13 +2125,15 @@ void screen_rainbow_effect_sepia(z80_int *origen,z80_int *destino,int ancho,int 
 
 }
 
-//Porcentaje de color
-int screen_rainbow_effect_decolorize_intensity=SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY;
+
 
 void screen_rainbow_effect_decolorize(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
     int x,y;
+
+    int cx=mouse_x/zoom_x;
+    int cy=mouse_y/zoom_y;
 
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
@@ -2140,13 +2146,34 @@ void screen_rainbow_effect_decolorize(z80_int *origen,z80_int *destino,int ancho
             int blue=(color32   ) & 0xFF;
 
             //Mediar el color original con el gris
+            int porcentaje_color=screen_rainbow_effect_decolorize_intensity;
 
-            int porcentaje_gris=100-screen_rainbow_effect_decolorize_intensity;
+            if (screen_rainbow_effect_decolorize_follow_mouse.v) {
+
+                //distancia al raton
+                int dx=cx-x;
+                int dy=cy-y;
+
+                int dist=dx*dx+dy*dy;
+
+                int max_intensity=100;
+
+                if (dist==0) porcentaje_color=0;
+                else porcentaje_color=(dist/250);
+
+                if (porcentaje_color>max_intensity) porcentaje_color=max_intensity;
+
+                if (porcentaje_color<0) porcentaje_color=0;
+
+            }
+
+
+            int porcentaje_gris=100-porcentaje_color;
             int valor_gris=(rgb_to_grey(red,green,blue)*porcentaje_gris)/100;
 
-            red=(red*screen_rainbow_effect_decolorize_intensity)/100;
-            green=(green*screen_rainbow_effect_decolorize_intensity)/100;
-            blue=(blue*screen_rainbow_effect_decolorize_intensity)/100;
+            red=(red*porcentaje_color)/100;
+            green=(green*porcentaje_color)/100;
+            blue=(blue*porcentaje_color)/100;
 
 
             //valor_gris=(valor_gris>>3) & 0x1F;
@@ -2592,8 +2619,6 @@ void screen_rainbow_effect_brightness(z80_int *origen,z80_int *destino,int ancho
                 if (brightness<0) brightness=0;
 
             }
-
-
 
 
             int color=origen[y*ancho + x];

@@ -84,6 +84,7 @@ extern int screen_rainbow_effect_attraction_atrac_repulse;
 extern z80_bit screen_rainbow_effect_sepia_follow_mouse;
 
 extern int screen_rainbow_effect_decolorize_intensity;
+extern z80_bit screen_rainbow_effect_decolorize_follow_mouse;
 
 extern int screen_rainbow_effect_scroll_horizontal_offset;
 extern z80_bit screen_rainbow_effect_scroll_horizontal_incremental;
