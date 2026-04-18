@@ -2158,8 +2158,7 @@ void screen_rainbow_effect_decolorize(z80_int *origen,z80_int *destino,int ancho
 
                 int max_intensity=100;
 
-                if (dist==0) porcentaje_color=0;
-                else porcentaje_color=(dist/250);
+                porcentaje_color=(dist/250);
 
                 if (porcentaje_color>max_intensity) porcentaje_color=max_intensity;
 
@@ -2175,8 +2174,6 @@ void screen_rainbow_effect_decolorize(z80_int *origen,z80_int *destino,int ancho
             green=(green*porcentaje_color)/100;
             blue=(blue*porcentaje_color)/100;
 
-
-            //valor_gris=(valor_gris>>3) & 0x1F;
 
             red=red+valor_gris;
             green=green+valor_gris;
