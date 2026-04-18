@@ -54,7 +54,7 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 #define SCREEN_FX_SCROLL_VERTICAL_DEFAULT_OFFSET 1
 #define SCREEN_FX_ZOOM_DEFAULT_FACTOR 12
 #define SCREEN_FX_ZOOM_MAX_FACTOR 80
-
+#define SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY 50
 
 
 extern void screen_special_effects_free_buffers(void);
@@ -82,6 +82,8 @@ extern int screen_rainbow_effect_attraction_intensity;
 extern int screen_rainbow_effect_attraction_atrac_repulse;
 
 extern z80_bit screen_rainbow_effect_sepia_follow_mouse;
+
+extern int screen_rainbow_effect_decolorize_intensity;
 
 extern int screen_rainbow_effect_scroll_horizontal_offset;
 extern z80_bit screen_rainbow_effect_scroll_horizontal_incremental;
@@ -167,7 +169,7 @@ extern int screen_rainbow_effect_load_bmp_transparent_rectangle_height;
 #define MAX_SCREEN_LIST_EFFECTS 60
 
 //Cantidad de efectos diferentes
-#define MAX_SCREEN_EFFECTS 44
+#define MAX_SCREEN_EFFECTS 45
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_NONE, //Este siempre el primero en este enum
@@ -202,6 +204,7 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_SEPIA,
     SCREEN_EFFECT_TYPE_RED,
     SCREEN_EFFECT_TYPE_RGB,
+    SCREEN_EFFECT_TYPE_DECOLORIZE,
     SCREEN_EFFECT_TYPE_CONTRAST,
     SCREEN_EFFECT_TYPE_BRIGHTNESS,
     SCREEN_EFFECT_TYPE_PERSISTENCE,

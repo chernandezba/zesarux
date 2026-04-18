@@ -140,6 +140,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_SCANLINES,"Scanlines","Scanlines","Scanlines",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SEPIA,"Sepia","Sepia","Sepia",&screen_rainbow_effect_sepia_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_RGB,"RGB","RGB","RGB",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_DECOLORIZE,"Decolorize","Decolorizar","Decoloritzar",NULL,&screen_rainbow_effect_decolorize_intensity,SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY,0,100},
     {SCREEN_EFFECT_TYPE_RED,"Red","Rojo","Vermell",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_PERSISTENCE,"Persistence","Persistencia","Persistència",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_CONTRAST,"Contrast","Contraste","Contrast",&screen_rainbow_effect_contrast_follow_mouse,&screen_rainbow_effect_contrast_intensity,SCREEN_FX_CONTRAST_DEFAULT_INTENSITY,0,1000},
@@ -2120,6 +2121,61 @@ void screen_rainbow_effect_sepia(z80_int *origen,z80_int *destino,int ancho,int 
 
 }
 
+//Porcentaje de color
+int screen_rainbow_effect_decolorize_intensity=SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY;
+
+void screen_rainbow_effect_decolorize(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            int color=origen[y*ancho + x];
+            unsigned int color32=spectrum_colortable[color];
+
+            int red=(color32 >> 16) & 0xFF;
+            int green=(color32 >> 8) & 0xFF;
+            int blue=(color32   ) & 0xFF;
+
+            //Mediar el color original con el gris
+
+            int porcentaje_gris=100-screen_rainbow_effect_decolorize_intensity;
+            int valor_gris=(rgb_to_grey(red,green,blue)*porcentaje_gris)/100;
+
+            red=(red*screen_rainbow_effect_decolorize_intensity)/100;
+            green=(green*screen_rainbow_effect_decolorize_intensity)/100;
+            blue=(blue*screen_rainbow_effect_decolorize_intensity)/100;
+
+
+            //valor_gris=(valor_gris>>3) & 0x1F;
+
+            red=red+valor_gris;
+            green=green+valor_gris;
+            blue=blue+valor_gris;
+
+            if (red>255) red=255;
+            if (green>255) green=255;
+            if (blue>255) blue=255;
+
+            red=(red>>3) & 0x1F;
+            green=(green>>3) & 0x1F;
+            blue=(blue>>3) & 0x1F;
+
+
+            int rgb15=(red<<10) | (green<<5) | blue;
+
+            color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+            destino[y*ancho + x] = color;
+
+        }
+
+    }
+
+
+}
 
 z80_bit screen_rainbow_effect_rgb_red={0};
 z80_bit screen_rainbow_effect_rgb_green={1};
@@ -3292,6 +3348,10 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_RGB:
                     screen_rainbow_effect_rgb(origen,destino,ancho,alto);
+                break;
+
+                case SCREEN_EFFECT_TYPE_DECOLORIZE:
+                    screen_rainbow_effect_decolorize(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_RED:
