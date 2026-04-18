@@ -1816,6 +1816,12 @@ void menu_interface_special_effects_brightness_factor(MENU_ITEM_PARAMETERS)
     if (screen_rainbow_effect_brightness_intensity>256*100) screen_rainbow_effect_brightness_intensity=0;
 }
 
+void menu_interface_special_effects_decolorize_percent(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ventana_scanf_numero_enhanced("Color Percent",&screen_rainbow_effect_decolorize_intensity,4,+1,0,100,0);
+}
+
 void menu_interface_special_effects_shaderborder_zoom_leftright(MENU_ITEM_PARAMETERS)
 {
     screen_rainbow_effect_shaderborder_factor_zoom_leftright *=2;
@@ -2432,6 +2438,14 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                         "Blue","Azul","Blau");
                     menu_add_item_menu_prefijo_format(array_menu_common," [%c] ",(screen_rainbow_effect_rgb_blue.v ? 'X' : ' ' ));
                     menu_add_item_menu_opcion_conmuta(array_menu_common,&screen_rainbow_effect_rgb_blue);
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_DECOLORIZE && enabled) {
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_decolorize_percent,NULL,
+                        "Color Percent","Porcentaje Color","Percentatge Color");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_decolorize_intensity);
+
                 }
 
 
