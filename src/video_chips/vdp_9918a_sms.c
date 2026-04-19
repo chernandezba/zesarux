@@ -1371,6 +1371,7 @@ to be taken from the first 256 or last 256 of the 512 available patterns.
         //if (vert_pos<192) {
         if (scanline>=vert_pos && scanline<vert_pos+sprite_height*sprite_double) {
 
+            //printf("indicar usado %d\n",sprite_name);
             video_chips_common_set_sprite_used_in_frame(sprite_name);
 
             //int offset_pattern_table=sprite_name*bytes_per_sprite+sprite_pattern_table;

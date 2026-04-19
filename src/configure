@@ -1481,7 +1481,7 @@ vdp_9918a.o: video_chips/vdp_9918a.c video_chips/vdp_9918a.h cpu.h debug.h video
 vdp_9918a_sms.o: video_chips/vdp_9918a_sms.c video_chips/vdp_9918a_sms.h video_chips/vdp_9918a.h cpu.h debug.h video/screen.h settings.h video_chips/video_chips_common.h
 	\$(CC) \$(CFLAGS) -c video_chips/vdp_9918a_sms.c
 
-video_chips_common.o: video_chips/video_chips_common.c cpu.h debug.h video/screen.h settings.h
+video_chips_common.o: video_chips/video_chips_common.c video_chips/video_chips_common.h cpu.h debug.h video/screen.h settings.h
 	\$(CC) \$(CFLAGS) -c video_chips/video_chips_common.c
 
 msx.o: machines/msx.c machines/msx.h cpu.h debug.h video_chips/vdp_9918a.h storage/tape.h video/screen.h audio/audio.h operaciones.h joystick.h settings.h
