@@ -12586,7 +12586,7 @@ void menu_debug_sprites_get_parameters_hardware(void)
 
 
             //offset paleta
-            view_sprites_offset_palette=0;
+            //view_sprites_offset_palette=0; //por que forzar a 0???
 
             view_sprites_increment_cursor_vertical=1; //saltar de 1 en 1
 
@@ -13109,6 +13109,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
                             if (view_sprites_offset_palette>=256) view_sprites_offset_palette=0;
                         }
+                        //printf("offset: %d\n",view_sprites_offset_palette);
                     break;
 
                     case 'g':
