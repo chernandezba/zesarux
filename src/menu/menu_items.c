@@ -13080,6 +13080,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
                     case 'b':
                         menu_debug_sprites_change_bpp();
+                        ventana->must_clear_cache_on_draw_once=1;
                     break;
 
                     case 'd':
