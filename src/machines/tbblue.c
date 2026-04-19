@@ -2128,7 +2128,6 @@ void tbsprite_do_overlay(void)
 
     //Aqui tenemos el y=0 arriba del todo del border
 
-    if (y==0) video_chips_common_init_used_sprites_in_frame();
 
     //Bucle para cada sprite
     int conta_sprites;
@@ -2417,7 +2416,7 @@ If the display of the sprites on the border is disabled, the coordinates of the 
             if (spr_attr_4 & 128) sprite_es_4bpp=1;
 
             if (sprite_es_4bpp) {
-            index_pattern *=2;
+                index_pattern *=2;
                 if (spr_attr_4 & 64) {
                     //offset_4bpp_N6=1;
                     index_pattern +=1;
@@ -8247,7 +8246,10 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
 {
 
 
-
+    /*if (t_scanline_draw==0) {
+        printf("Borrar sprites\n");
+        video_chips_common_init_used_sprites_in_frame();
+    }*/
 
     //48% cpu en welcome screen. Alternativa mas lenta sin memfill
 

@@ -11924,7 +11924,8 @@ void menu_debug_draw_sprites_marco_activo(int x_en_sprite,int finalx,int y,int y
         int recuadro_y=yorigen+y-1;
         int color=ESTILO_GUI_PAPEL_NORMAL; //por defecto borrar el recuadro
 
-        if (video_chips_common_is_sprite_used_in_frame(sprite_name) && estado_parpadeo.v) {
+        if (video_chips_common_is_sprite_used_in_frame(sprite_name) /*&& estado_parpadeo.v*/) {
+            //printf("Indicar usado sprite %d\n",sprite_name);
             color=ESTILO_GUI_PAPEL_SELECCIONADO;
         }
 
@@ -12435,7 +12436,7 @@ void menu_debug_draw_sprites(void)
             }
 
             if (view_sprites_hardware && view_sprites_hardware_all.v) {
-                if (MACHINE_IS_TSCONF) {
+                if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE) {
                     view_sprites_direccion++;
                     puntero=menu_debug_draw_sprites_get_pointer_offset(view_sprites_direccion);
                 }
