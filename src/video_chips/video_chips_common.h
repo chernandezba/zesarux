@@ -23,7 +23,8 @@
 #define VIDEO_CHIPS_COMMON_H
 
 
-#define VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME 1000
+//el que mas, es tbblue que puede tener hasta 128
+#define VIDEO_CHIPS_COMMON_MAX_USED_SPRITES_IN_FRAME 128
 
 extern void video_chips_common_init_used_sprites_in_frame(void);
 extern void video_chips_common_set_sprite_used_in_frame(int sprite);
