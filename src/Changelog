@@ -99,6 +99,7 @@ Improved ZX Life:
 - Allow to speed up game
 - Fix behaviour on board limits
 
+Allow to see all hardware sprites at once on View Sprites window
 Improved editing joystick to events/keys (allow to unasign easily)
 Improved Trash icon
 Improved decimal precision of Basic Variables window values

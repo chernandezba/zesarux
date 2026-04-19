@@ -99,6 +99,7 @@ Mejorado ZX Life:
 - Permitir acelerar juego
 - Corregir comportamiento en límites del tablero
 
+Permite ver todos los sprites de hardware a la vez en la ventana de Ver Sprites.
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
 Mejorado icono de Papelera
 Mejorada precisión decimal de valores de ventana de Basic Variables

@@ -115,5 +115,4 @@ antes de commonsdl_init
 
 - Poder ver todos los sprites
 *tsconf: con sonic. si empiezo con sprite 0 no se ven bien los colores, parece que no saca bien offset del 0. pero empezando en 1 si
-*tsconf: deberia siempre empezar con el 0
-*agregar a changelog
+*tsconf: deberia siempre empezar con el 0 -> o no, asi se puede hacer que empiece en otro cualquiera
