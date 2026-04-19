@@ -13135,6 +13135,11 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                             //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
                             //a usar 52% cuando lo tenemos a 0
                             ventana->must_clear_cache_on_draw_once=1;
+
+                            if (MACHINE_IS_TBBLUE && view_sprites_hardware) {
+                                //paleta 11 tbblue
+                                view_sprites_palette=11;
+                            }
                         }
                     break;
 
