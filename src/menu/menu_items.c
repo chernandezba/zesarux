@@ -11920,8 +11920,8 @@ void menu_debug_draw_sprites_marco_activo(int x_en_sprite,int finalx,int y,int y
 {
     //Enmarcar el sprite
     if (view_sprites_hardware_all.v && y==y_inicial && x_en_sprite==0) {
-        int recuadro_x=finalx-1;
-        int recuadro_y=yorigen+y-1;
+        int recuadro_x=finalx-2;
+        int recuadro_y=yorigen+y-2;
         int color=ESTILO_GUI_PAPEL_NORMAL; //por defecto borrar el recuadro
 
         if (video_chips_common_is_sprite_used_in_frame(sprite_name) /*&& estado_parpadeo.v*/) {
@@ -11929,7 +11929,7 @@ void menu_debug_draw_sprites_marco_activo(int x_en_sprite,int finalx,int y,int y
             color=ESTILO_GUI_PAPEL_SELECCIONADO;
         }
 
-        zxvision_draw_rectangle(menu_debug_draw_sprites_window,recuadro_x,recuadro_y,view_sprites_ancho_sprite+2,view_sprites_alto_sprite+2,color);
+        zxvision_draw_rectangle(menu_debug_draw_sprites_window,recuadro_x,recuadro_y,view_sprites_ancho_sprite+4,view_sprites_alto_sprite+4,color);
     }
 }
 
@@ -12027,10 +12027,10 @@ void menu_debug_draw_sprites(void)
         total_columnas_sprites=4;
 
         //caso de tsconf por ejemplo, para que quepan bien, pueden ser sprites grandes como los de ny17.spg
-        if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE) total_columnas_sprites=8;
+        if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE || MACHINE_IS_SMS ) total_columnas_sprites=8;
     }
 
-    int margen_separacion_sprites_modo_all=4;
+    int margen_separacion_sprites_modo_all=5;
 
     for (contador_sprite_mostrar=0;contador_sprite_mostrar<total_sprites_mostrar;) {
 
@@ -12613,8 +12613,6 @@ void menu_debug_sprites_get_parameters_hardware(void)
 
             menu_debug_set_memory_zone(14);
 
-            //paleta 11 tbblue
-            //view_sprites_palette=11;
 
 
         }
@@ -13095,6 +13093,8 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                             else {
                                 if (view_sprites_sms_tiles==3) view_sprites_sms_tiles=0;
                             }
+
+                            ventana->must_clear_cache_on_draw_once=1;
                         }
                     break;
 
@@ -13137,9 +13137,23 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                             //a usar 52% cuando lo tenemos a 0
                             ventana->must_clear_cache_on_draw_once=1;
 
-                            if (MACHINE_IS_TBBLUE && view_sprites_hardware) {
-                                //paleta 11 tbblue
-                                view_sprites_palette=11;
+                            if (view_sprites_hardware) {
+                                if (MACHINE_IS_TBBLUE) {
+                                    view_sprites_palette=11;
+                                }
+
+                                if (MACHINE_IS_TSCONF) {
+                                    view_sprites_palette=15;
+                                }
+
+                                if (MACHINE_HAS_VDP_9918A) {
+                                    view_sprites_palette=16;
+                                }
+
+                                if (MACHINE_IS_SMS) {
+                                    view_sprites_palette=19;
+                                }
+
                             }
                         }
                     break;
@@ -13169,10 +13183,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
                     case 'z':
 
-
                         menu_debug_change_memory_zone();
-
-
 
                         break;
 
