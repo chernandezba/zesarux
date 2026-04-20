@@ -27376,6 +27376,9 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
 #define MENU_SCANF_NUMERO_ANCHO_SLIDER 20
 #define MENU_SCANF_NUMERO_POS_Y_SLIDER 2
 
+#define MENU_SCANF_NUMERO_X_BOTON_MENOS 1
+
+
 //Indica que cada caracter de slider empieza en la opcion indice 10
 #define MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER 10
 
@@ -27468,6 +27471,63 @@ int menu_ventana_scanf_number_ajust_cursor_mouse(menu_item *m,int posicion_raton
     return linea_seleccionada;
 }
 
+
+zxvision_window *temp_ventana;
+
+
+//Para llamarse cuando se mueve cursor por el slider
+void menu_ventana_scanf_move_slider(struct s_menu_item *item_seleccionado)
+{
+    return;
+
+
+    int pos_en_slider=(item_seleccionado->valor_opcion)-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
+
+    printf("pos en slider: %d\n",pos_en_slider);
+
+    //Escribir slider
+    char buffer_slider[MENU_SCANF_NUMERO_ANCHO_SLIDER+1];
+
+    //minimo y maximo y texto da igual, no lo uso
+    menu_ventana_scanf_number_get_string_slider(buffer_slider,"hola",10,500);
+
+    //Sobreescribo un caracter
+    if (pos_en_slider>=0 && pos_en_slider<MENU_SCANF_NUMERO_ANCHO_SLIDER) buffer_slider[pos_en_slider]='|';
+
+    zxvision_print_string_defaults(temp_ventana,MENU_SCANF_NUMERO_X_BOTON_MENOS,MENU_SCANF_NUMERO_POS_Y_SLIDER,buffer_slider);
+
+    zxvision_print_string_defaults(temp_ventana,MENU_SCANF_NUMERO_X_BOTON_MENOS,MENU_SCANF_NUMERO_POS_Y_SLIDER,"KAKAKAKAKA");
+
+    zxvision_draw_window_contents(temp_ventana);
+
+    //printf("pos_en_slider: %d\n",pos_en_slider);
+
+    /*
+                    //slider
+                    if (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER) {
+                        int pos_relativa=valor_opcion-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
+                        int total_rango=maximo-minimo;
+
+                        int valor_relativo;
+                        if (total_rango==0) valor_relativo=0;
+                        else valor_relativo=(pos_relativa*total_rango)/MENU_SCANF_NUMERO_ANCHO_SLIDER;
+
+                        int valor_final=minimo+valor_relativo;
+
+                        //detectar si cursor en el valor maximo
+                        if (valor_opcion==MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER-1) valor_final=maximo;
+
+                        //detectar limites
+                        if (valor_final<minimo) valor_final=minimo;
+                        if (valor_final>maximo) valor_final=maximo;
+
+                        sprintf(texto,"%d",valor_final);
+                    }
+
+    */
+}
+
+
 /*
 max_length: maxima longitud, contando caracter 0 del final
 minimo: valor minimo admitido
@@ -27477,11 +27537,9 @@ circular: si al pasar umbral, se resetea al otro umbral
 En entrada de texto no validamos el maximo y minimo. Eso lo tiene que seguir haciendo la funcion que llama a menu_ventana_scanf_numero
 Si que se controla al pulsar botones de + y -
 
+Retorna -1 si pulsado ESC
+
 */
-
-
-
-//Retorna -1 si pulsado ESC
 int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {
     //dado que utilizamos un menu tabulado, se resetearia estado de salir_todos_menus. Esto es especialmente critico en algunos
@@ -27495,6 +27553,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         menu_ventana_scanf(titulo,texto,max_length);
         return 0;
     }
+
 
 
     int ancho_ventana=32;
@@ -27517,6 +27576,10 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     //El foco en el numero
     int comun_opcion_seleccionada=1;
 
+    //temp
+    //temp_ventana=&ventana;
+
+
 
     //Donde van los bloques
 
@@ -27529,7 +27592,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     int max_input_visible=ancho_ventana-2-2-2; //2 laterales, 2 de los botones, y 2 de espacios entre botones
     if (max_length<max_input_visible) max_input_visible=max_length;
 
-    int x_boton_menos=1;
+    int x_boton_menos=MENU_SCANF_NUMERO_X_BOTON_MENOS;
     int x_texto_input=x_boton_menos+2;
     int x_boton_mas=x_texto_input+max_input_visible+1;
     int x_boton_ok=1;
@@ -27593,6 +27656,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,string_slider);
             menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,MENU_SCANF_NUMERO_POS_Y_SLIDER);
             menu_add_item_menu_valor_opcion(array_menu_common,MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+i);
+            menu_add_item_menu_seleccionado(array_menu_common,menu_ventana_scanf_move_slider);
         }
 
 

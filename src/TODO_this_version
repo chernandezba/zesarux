@@ -121,3 +121,5 @@ antes de commonsdl_init
 -etc..
 
 *Estos efectos sobreescriben todo lo que haya (preguntando al usuario confirmación)
+
+*quiza overlay en scanf numero para dibujar el slider?
