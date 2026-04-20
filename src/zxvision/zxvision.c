@@ -27578,7 +27578,7 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
 
     //printf("posicion_pedida %d posicion_slider %d\n",posicion_pedida,posicion_slider);
 
-    if (posicion_slider<0 || posicion_slider>MENU_SCANF_NUMERO_ANCHO_SLIDER) {
+    if (posicion_slider<0 || posicion_slider>=MENU_SCANF_NUMERO_ANCHO_SLIDER) {
         //Para cuando el cursor se ha ido del slider hacia abajo, retornamos ultima posicion conocida del slider
         posicion_slider=menu_ventana_scanf_texto_item_slider_last_slider;
     }
@@ -27626,6 +27626,9 @@ Si que se controla al pulsar botones de + y -
 
 Retorna -1 si pulsado ESC
 
+Nota: esta función es algo complicada (sobretodo la gestión del slider) porque reaprovechamos la rutina de menu_dibuja_menu, con funciones
+auxiliares de retorno de texto dinamico (menu_add_item_menu_funcion_texto_item)
+Seguramente si se usase una funcion creada desde cero, no usando menu_dibuja_menu, algunas cosas serian mas simples
 */
 int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {

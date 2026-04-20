@@ -122,4 +122,6 @@ antes de commonsdl_init
 
 *Estos efectos sobreescriben todo lo que haya (preguntando al usuario confirmación)
 
-*quiza overlay en scanf numero para dibujar el slider?
+
+-slider
+si rango pequeño, como en window zoom, salen repetidos caracteres "|"
