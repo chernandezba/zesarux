@@ -27372,8 +27372,42 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
     zxvision_scanf(ventana,texto,max_length,max_length,x_texto_input,0,1,0,0);
 }
 
+
+#define MENU_SCANF_NUMERO_ANCHO_SLIDER 20
+
+void menu_ventana_scanf_number_get_string_slider(char *destino,char *texto_input,int minimo,int maximo)
+{
+    //Slider
+    int i;
+    //calcular posicion del valor respecto al slider
+    int valor_actual=parse_string_to_number(texto_input);
+
+    int pos_desde_inicio=valor_actual-minimo;
+    int total_rango=maximo-minimo;
+
+    int pos_slider;
+
+    if (total_rango==0) pos_slider=0;
+
+    else pos_slider=(pos_desde_inicio*MENU_SCANF_NUMERO_ANCHO_SLIDER)/total_rango;
+
+    //detectar si valor final
+    if (valor_actual==maximo) pos_slider=MENU_SCANF_NUMERO_ANCHO_SLIDER-1;
+
+
+    for (i=0;i<MENU_SCANF_NUMERO_ANCHO_SLIDER;i++) {
+        char slider='=';
+        if (i==pos_slider) slider='|';
+
+        destino[i]=slider;
+    }
+
+    destino[i]=0;
+}
+
+
 void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *texto,int x_boton_menos,int x_boton_mas,
-    int x_texto_input,int x_boton_ok,int x_boton_cancel,int x_boton_default)
+    int x_texto_input,int x_boton_ok,int x_boton_cancel,int x_boton_default,int minimo,int maximo)
 {
     //Borrar linea entera
     zxvision_print_string_defaults_fillspc(ventana,x_boton_menos,0,"");
@@ -27384,6 +27418,14 @@ void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *text
 
     //Escribir numero
     zxvision_print_string_defaults(ventana,x_texto_input,0,texto);
+
+
+    //Escribir slider
+    char buffer_slider[MENU_SCANF_NUMERO_ANCHO_SLIDER+1];
+    menu_ventana_scanf_number_get_string_slider(buffer_slider,texto,minimo,maximo);
+
+    zxvision_print_string_defaults(ventana,x_boton_menos,2,buffer_slider);
+
 
     zxvision_print_string_defaults(ventana,x_boton_ok,4,"<OK>");
 
@@ -27434,7 +27476,7 @@ Si que se controla al pulsar botones de + y -
 
 */
 
-#define MENU_SCANF_NUMERO_ANCHO_SLIDER 20
+
 
 //Retorna -1 si pulsado ESC
 int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
@@ -27494,7 +27536,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     if (default_value==NULL) x_boton_default=-1;
 
     //Dibujar texto interior
-    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
+    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo);
 
     //Dibujar ventana antes de scanf
     zxvision_draw_window(&ventana);
@@ -27517,7 +27559,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     do {
 
-        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
+        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo);
 
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-");
@@ -27762,7 +27804,7 @@ int old_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int in
     if (default_value==NULL) x_boton_default=-1;
 
     //Dibujar texto interior
-    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
+    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo);
 
     //Dibujar ventana antes de scanf
     zxvision_draw_window(&ventana);
@@ -27788,7 +27830,7 @@ int old_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int in
         //int xdef=x_boton_default;
         //if (default_value==NULL) xdef=-1;
 
-        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
+        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo);
 
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-");
