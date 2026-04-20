@@ -27437,7 +27437,7 @@ Si que se controla al pulsar botones de + y -
 #define MENU_SCANF_NUMERO_ANCHO_SLIDER 20
 
 //Retorna -1 si pulsado ESC
-int new_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
+int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {
     //dado que utilizamos un menu tabulado, se resetearia estado de salir_todos_menus. Esto es especialmente critico en algunos
     //menus en los que interesa que se cierren despues de pasar por aqui, como al seleccionar un microdrive rmd que no existe, y se pide tamaño
@@ -27517,14 +27517,6 @@ int new_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int in
 
     do {
 
-
-
-        //Escribir primero numero
-
-        //Dibujar texto interior
-        //int xdef=x_boton_default;
-        //if (default_value==NULL) xdef=-1;
-
         menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
 
 
@@ -27558,8 +27550,24 @@ int new_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int in
 
         //Slider
         int i;
+        //calcular posicion del valor respecto al slider
+        int valor_actual=parse_string_to_number(texto);
+
+        int pos_desde_inicio=valor_actual-minimo;    //50-40=10
+        int total_rango=maximo-minimo;  //60-40=20
+
+        int pos_slider;
+
+        if (total_rango==0) pos_slider=0;
+
+        else pos_slider=(pos_desde_inicio*MENU_SCANF_NUMERO_ANCHO_SLIDER)/total_rango;
+
+
         for (i=0;i<MENU_SCANF_NUMERO_ANCHO_SLIDER;i++) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"=");
+            char string_slider[2]="=";
+            if (i==pos_slider) string_slider[0]='|';
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,string_slider);
             menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,2);
             menu_add_item_menu_valor_opcion(array_menu_common,10+i);
         }
@@ -27674,7 +27682,7 @@ Si que se controla al pulsar botones de + y -
 */
 
 //Retorna -1 si pulsado ESC
-int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
+int old_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {
     //dado que utilizamos un menu tabulado, se resetearia estado de salir_todos_menus. Esto es especialmente critico en algunos
     //menus en los que interesa que se cierren despues de pasar por aqui, como al seleccionar un microdrive rmd que no existe, y se pide tamaño
