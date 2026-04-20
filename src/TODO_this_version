@@ -124,4 +124,5 @@ antes de commonsdl_init
 
 
 -slider
-si rango pequeño, como en window zoom, salen repetidos caracteres "|"
+*si rango pequeño, como en window zoom, salen repetidos caracteres "|"
+*botones -/+ no van porque continuamente se calcula el valor de texto en base a la posicion del slider. lo mismo pasa al darle enter en el input de texto

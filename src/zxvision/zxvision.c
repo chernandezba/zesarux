@@ -27578,9 +27578,12 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
 
     //printf("posicion_pedida %d posicion_slider %d\n",posicion_pedida,posicion_slider);
 
+    int actualizar_campo_texto=1;
+
     if (posicion_slider<0 || posicion_slider>=MENU_SCANF_NUMERO_ANCHO_SLIDER) {
         //Para cuando el cursor se ha ido del slider hacia abajo, retornamos ultima posicion conocida del slider
         posicion_slider=menu_ventana_scanf_texto_item_slider_last_slider;
+        actualizar_campo_texto=0;
     }
 
     else {
@@ -27589,7 +27592,9 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
 
     if (posicion_pedida==posicion_slider) {
         //printf("Establecer valor segun %d\n",item_pedido->valor_opcion);
-        menu_ventana_scanf_numero_set_texto_segun_valor_slider(item_pedido->valor_opcion);
+        if (actualizar_campo_texto) {
+            menu_ventana_scanf_numero_set_texto_segun_valor_slider(item_pedido->valor_opcion);
+        }
 
         strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"|");
 
@@ -27718,7 +27723,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
 
     do {
-
+        printf("Texto al crear menu: %s\n",texto);
         menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,-1);
 
 
@@ -27805,6 +27810,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                         int numero=parse_string_to_number(texto);
 
                         if (valor_opcion==0) {
+                            printf("menos\n");
                             numero-=incremento;
                             if (numero<minimo) {
                                 if (circular) {
@@ -27829,7 +27835,11 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                             }
                         }
 
+                        printf("valor final: %d\n",numero);
+
                         sprintf(texto,"%d",numero);
+
+                        printf("Texto: %s\n",texto);
                     }
 
                     if (valor_opcion==1) {
