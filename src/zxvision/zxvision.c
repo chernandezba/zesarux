@@ -20600,11 +20600,11 @@ menu_item *menu_retorna_item(menu_item *m,int buscado)
 //Retorna el texto del item de menu, segun el idioma
 char *menu_retorna_item_language(menu_item *m)
 {
-    //printf("Item spanish (%s) english (%s)\n",m->texto_opcion_spanish,m->texto_opcion);
-    //Dado que hay que concatenar el prefijo, guardamos el string final en un campo del mismo item de menu
+
     if (m->menu_funcion_texto_item!=NULL) return m->menu_funcion_texto_item(m);
 
-
+    //printf("Item spanish (%s) english (%s)\n",m->texto_opcion_spanish,m->texto_opcion);
+    //Dado que hay que concatenar el prefijo, guardamos el string final en un campo del mismo item de menu
     char *texto_opcion;
 
     if (gui_language==GUI_LANGUAGE_SPANISH && m->texto_opcion_spanish[0]!=0) {
@@ -27556,6 +27556,8 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
     int posicion_pedida=item_pedido->valor_opcion;
 
     posicion_pedida -=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
+
+    //printf("posicion_pedida %d posicion_slider %d\n",posicion_pedida,posicion_slider);
 
     if (posicion_pedida==posicion_slider) {
         //printf("Establecer valor segun %d\n",item_pedido->valor_opcion);
