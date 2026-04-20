@@ -27553,14 +27553,17 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         //calcular posicion del valor respecto al slider
         int valor_actual=parse_string_to_number(texto);
 
-        int pos_desde_inicio=valor_actual-minimo;    //50-40=10
-        int total_rango=maximo-minimo;  //60-40=20
+        int pos_desde_inicio=valor_actual-minimo;
+        int total_rango=maximo-minimo;
 
         int pos_slider;
 
         if (total_rango==0) pos_slider=0;
 
         else pos_slider=(pos_desde_inicio*MENU_SCANF_NUMERO_ANCHO_SLIDER)/total_rango;
+
+        //detectar si valor final
+        if (valor_actual==maximo) pos_slider=MENU_SCANF_NUMERO_ANCHO_SLIDER-1;
 
 
         for (i=0;i<MENU_SCANF_NUMERO_ANCHO_SLIDER;i++) {
@@ -27651,6 +27654,26 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                         debe_ajustar_cursor_segun_mouse=1;
                     }
 
+                    //slider
+                    if (valor_opcion>=10 && valor_opcion<10+MENU_SCANF_NUMERO_ANCHO_SLIDER) {
+                        int pos_relativa=valor_opcion-10;
+                        int total_rango=maximo-minimo;
+
+                        int valor_relativo;
+                        if (total_rango==0) valor_relativo=0;
+                        else valor_relativo=(pos_relativa*total_rango)/MENU_SCANF_NUMERO_ANCHO_SLIDER;
+
+                        int valor_final=minimo+valor_relativo;
+
+                        //detectar si cursor en el valor maximo
+                        if (valor_opcion==10+MENU_SCANF_NUMERO_ANCHO_SLIDER-1) valor_final=maximo;
+
+                        //detectar limites
+                        if (valor_final<minimo) valor_final=minimo;
+                        if (valor_final>maximo) valor_final=maximo;
+
+                        sprintf(texto,"%d",valor_final);
+                    }
 
 
             }
