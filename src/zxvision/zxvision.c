@@ -27374,6 +27374,7 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
 
 
 #define MENU_SCANF_NUMERO_ANCHO_SLIDER 20
+#define MENU_SCANF_NUMERO_POS_Y_SLIDER 2
 
 void menu_ventana_scanf_number_get_string_slider(char *destino,char *texto_input,int minimo,int maximo)
 {
@@ -27424,8 +27425,7 @@ void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *text
     char buffer_slider[MENU_SCANF_NUMERO_ANCHO_SLIDER+1];
     menu_ventana_scanf_number_get_string_slider(buffer_slider,texto,minimo,maximo);
 
-    zxvision_print_string_defaults(ventana,x_boton_menos,2,buffer_slider);
-
+    zxvision_print_string_defaults(ventana,x_boton_menos,MENU_SCANF_NUMERO_POS_Y_SLIDER,buffer_slider);
 
     zxvision_print_string_defaults(ventana,x_boton_ok,4,"<OK>");
 
@@ -27591,29 +27591,18 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         }
 
         //Slider
+        char buffer_slider[MENU_SCANF_NUMERO_ANCHO_SLIDER+1];
+        menu_ventana_scanf_number_get_string_slider(buffer_slider,texto,minimo,maximo);
+
+        //Cada caracter es una opcion
         int i;
-        //calcular posicion del valor respecto al slider
-        int valor_actual=parse_string_to_number(texto);
-
-        int pos_desde_inicio=valor_actual-minimo;
-        int total_rango=maximo-minimo;
-
-        int pos_slider;
-
-        if (total_rango==0) pos_slider=0;
-
-        else pos_slider=(pos_desde_inicio*MENU_SCANF_NUMERO_ANCHO_SLIDER)/total_rango;
-
-        //detectar si valor final
-        if (valor_actual==maximo) pos_slider=MENU_SCANF_NUMERO_ANCHO_SLIDER-1;
-
 
         for (i=0;i<MENU_SCANF_NUMERO_ANCHO_SLIDER;i++) {
             char string_slider[2]="=";
-            if (i==pos_slider) string_slider[0]='|';
+            string_slider[0]=buffer_slider[i];
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,string_slider);
-            menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,2);
+            menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,MENU_SCANF_NUMERO_POS_Y_SLIDER);
             menu_add_item_menu_valor_opcion(array_menu_common,10+i);
         }
 
