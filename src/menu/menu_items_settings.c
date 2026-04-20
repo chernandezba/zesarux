@@ -1834,7 +1834,7 @@ void menu_interface_special_effects_brightness_factor(MENU_ITEM_PARAMETERS)
 void menu_interface_special_effects_decolorize_percent(MENU_ITEM_PARAMETERS)
 {
 
-    menu_ventana_scanf_numero_enhanced("Color Percent",&screen_rainbow_effect_decolorize_intensity,4,+1,0,100,0);
+    menu_ventana_scanf_numero_enhanced_default("Color Percent",&screen_rainbow_effect_decolorize_intensity,4,+1,0,100,0,SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY);
 }
 
 void menu_interface_special_effects_shaderborder_zoom_leftright(MENU_ITEM_PARAMETERS)

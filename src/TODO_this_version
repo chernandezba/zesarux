@@ -110,6 +110,7 @@ antes de commonsdl_init
 
 
 -efectos especiales
+*todos efectos que tengan valor por defecto, que en el input por scanf enhanced , llamen a menu_ventana_scanf_numero_enhanced_default
 *revisar liberar memoria
 *En features indicar efecto 3D anaglifo usando varios FX
 

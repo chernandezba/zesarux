@@ -27579,20 +27579,6 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         menu_add_item_menu_tabulado(array_menu_common,x_boton_mas,0);
         menu_add_item_menu_valor_opcion(array_menu_common,2);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<OK>");
-        menu_add_item_menu_tabulado(array_menu_common,x_boton_ok,4);
-        menu_add_item_menu_valor_opcion(array_menu_common,3);
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,"<Cancel>");
-        menu_add_item_menu_tabulado(array_menu_common,x_boton_cancel,4);
-        menu_add_item_menu_valor_opcion(array_menu_common,4);
-
-        if (default_value!=NULL) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Reset Default>");
-            menu_add_item_menu_tabulado(array_menu_common,x_boton_default,4);
-            menu_add_item_menu_valor_opcion(array_menu_common,5);
-        }
-
         //Slider
         char buffer_slider[MENU_SCANF_NUMERO_ANCHO_SLIDER+1];
         menu_ventana_scanf_number_get_string_slider(buffer_slider,texto,minimo,maximo);
@@ -27608,6 +27594,23 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
             menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,MENU_SCANF_NUMERO_POS_Y_SLIDER);
             menu_add_item_menu_valor_opcion(array_menu_common,MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+i);
         }
+
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<OK>");
+        menu_add_item_menu_tabulado(array_menu_common,x_boton_ok,4);
+        menu_add_item_menu_valor_opcion(array_menu_common,3);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,"<Cancel>");
+        menu_add_item_menu_tabulado(array_menu_common,x_boton_cancel,4);
+        menu_add_item_menu_valor_opcion(array_menu_common,4);
+
+        if (default_value!=NULL) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Reset Default>");
+            menu_add_item_menu_tabulado(array_menu_common,x_boton_default,4);
+            menu_add_item_menu_valor_opcion(array_menu_common,5);
+        }
+
+
 
 
         //Antes de abrir el menu, ajustar la opcion seleccionada cuando ha salido del input de numero
