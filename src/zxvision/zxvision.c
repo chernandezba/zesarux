@@ -27830,32 +27830,16 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
                     //slider
                     if (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER) {
-                        menu_ventana_scanf_numero_set_texto_segun_valor_slider(valor_opcion);
-                        /*
-                        int pos_relativa=valor_opcion-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
-                        int total_rango=maximo-minimo;
+                        //esto ya no hace falta, el valor se actualiza dinamicamente al mover el slider
+                        //menu_ventana_scanf_numero_set_texto_segun_valor_slider(valor_opcion);
 
-                        int valor_relativo;
-                        if (total_rango==0) valor_relativo=0;
-                        else valor_relativo=(pos_relativa*total_rango)/MENU_SCANF_NUMERO_ANCHO_SLIDER;
-
-                        int valor_final=minimo+valor_relativo;
-
-                        //detectar si cursor en el valor maximo
-                        if (valor_opcion==MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER-1) valor_final=maximo;
-
-                        //detectar limites
-                        if (valor_final<minimo) valor_final=minimo;
-                        if (valor_final>maximo) valor_final=maximo;
-
-                        sprintf(texto,"%d",valor_final);
-                        */
                     }
 
 
             }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && (valor_opcion<3 || (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER)));
+//    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && (valor_opcion<3 || (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER)));
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && valor_opcion<3);
 
 
     //En caso de menus tabulados, es responsabilidad de este de liberar ventana
