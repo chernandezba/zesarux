@@ -27495,6 +27495,7 @@ int menu_ventana_scanf_number_ajust_cursor_mouse(menu_item *m,int posicion_raton
 
 struct {
     zxvision_window *ventana;
+    int *opcion_seleccionada;
     char *texto;
     int x_boton_menos;
     int x_boton_mas;
@@ -27541,7 +27542,6 @@ char *menu_ventana_scanf_texto_item_valor(struct s_menu_item *item_pedido)
 
 char menu_ventana_scanf_texto_item_slider_buffer_retorno[10];
 
-int *p_menu_ventana_scanf_texto_opcion_seleccionada=NULL;
 
 //Para poder hacer que el caracter de slider se mueva a medida que el cursor de menu se desplaza por aqui
 char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
@@ -27549,33 +27549,30 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
     //por defecto
     strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"=");
 
-    if (p_menu_ventana_scanf_texto_opcion_seleccionada!=NULL) {
+    int *p_opcion_seleccionada=menu_ventana_scanf_numero_parametros.opcion_seleccionada;
 
-        int posicion_slider=(*p_menu_ventana_scanf_texto_opcion_seleccionada)-MENU_SCANF_NUMERO_START_ORDEN_SLIDER;
+    int posicion_slider=(*p_opcion_seleccionada)-MENU_SCANF_NUMERO_START_ORDEN_SLIDER;
 
-        int posicion_pedida=item_pedido->valor_opcion;
+    int posicion_pedida=item_pedido->valor_opcion;
 
-        posicion_pedida -=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
+    posicion_pedida -=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
 
-        if (posicion_pedida==posicion_slider) {
-            //printf("Establecer valor segun %d\n",item_pedido->valor_opcion);
-            menu_ventana_scanf_numero_set_texto_segun_valor_slider(item_pedido->valor_opcion);
+    if (posicion_pedida==posicion_slider) {
+        //printf("Establecer valor segun %d\n",item_pedido->valor_opcion);
+        menu_ventana_scanf_numero_set_texto_segun_valor_slider(item_pedido->valor_opcion);
 
-            strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"|");
+        strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"|");
 
-            menu_ventana_scanf_number_print_buttons(menu_ventana_scanf_numero_parametros.ventana,
-                menu_ventana_scanf_numero_parametros.texto,
-                menu_ventana_scanf_numero_parametros.x_boton_menos,
-                menu_ventana_scanf_numero_parametros.x_boton_mas,
-                menu_ventana_scanf_numero_parametros.x_texto_input,
-                menu_ventana_scanf_numero_parametros.x_boton_ok,
-                menu_ventana_scanf_numero_parametros.x_boton_cancel,
-                menu_ventana_scanf_numero_parametros.x_boton_default,
-                menu_ventana_scanf_numero_parametros.minimo,
-                menu_ventana_scanf_numero_parametros.maximo);
-
-
-        }
+        menu_ventana_scanf_number_print_buttons(menu_ventana_scanf_numero_parametros.ventana,
+            menu_ventana_scanf_numero_parametros.texto,
+            menu_ventana_scanf_numero_parametros.x_boton_menos,
+            menu_ventana_scanf_numero_parametros.x_boton_mas,
+            menu_ventana_scanf_numero_parametros.x_texto_input,
+            menu_ventana_scanf_numero_parametros.x_boton_ok,
+            menu_ventana_scanf_numero_parametros.x_boton_cancel,
+            menu_ventana_scanf_numero_parametros.x_boton_default,
+            menu_ventana_scanf_numero_parametros.minimo,
+            menu_ventana_scanf_numero_parametros.maximo);
 
     }
 
@@ -27633,19 +27630,8 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     //El foco en el numero
     int comun_opcion_seleccionada=1;
 
-    //Para poder hacer que el slider lea la opcion selecionada
-    p_menu_ventana_scanf_texto_opcion_seleccionada=&comun_opcion_seleccionada;
-
-
 
     //Donde van los bloques
-
-    //int inicio_bloque_x=8;
-    //int inicio_bloque_y=2;
-    //int ancho_bloque=6;
-
-    //int linea=inicio_bloque_y;
-
     int max_input_visible=ancho_ventana-2-2-2; //2 laterales, 2 de los botones, y 2 de espacios entre botones
     if (max_length<max_input_visible) max_input_visible=max_length;
 
@@ -27658,8 +27644,12 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     int x_boton_default=x_boton_cancel+9;
     if (default_value==NULL) x_boton_default=-1;
 
-    //Dibujar texto interior
+
+    //Guardar los parametros de entrada en una estructura auxiliar, pues se usa en otras funciones (como la del update de slider)
+    //Esto obviamente convierte en esta función en no-reentrante, o sea solo se puede llamar una vez sin anidarse
+    //Si se quisiera hacer reentrante se deberia crear esta estructura dinámicamente en memoria (y obviamente liberarla al acabar)
     menu_ventana_scanf_numero_parametros.ventana=&ventana;
+    menu_ventana_scanf_numero_parametros.opcion_seleccionada=&comun_opcion_seleccionada;
     menu_ventana_scanf_numero_parametros.texto=texto;
     menu_ventana_scanf_numero_parametros.x_boton_menos=x_boton_menos;
     menu_ventana_scanf_numero_parametros.x_boton_mas=x_boton_mas;
@@ -27670,6 +27660,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     menu_ventana_scanf_numero_parametros.minimo=minimo;
     menu_ventana_scanf_numero_parametros.maximo=maximo;
 
+    //Dibujar texto interior
     menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo);
 
     //Dibujar ventana antes de scanf
@@ -27681,7 +27672,6 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     //Cambiar la opcion seleccionada a la del OK, al pulsar enter
     //comun_opcion_seleccionada=3;
-
 
 
     //Decir que habra que ajustar raton segun posicion mouse actual
