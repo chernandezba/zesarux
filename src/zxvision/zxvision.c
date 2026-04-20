@@ -27376,6 +27376,9 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
 #define MENU_SCANF_NUMERO_ANCHO_SLIDER 20
 #define MENU_SCANF_NUMERO_POS_Y_SLIDER 2
 
+//Indica que cada caracter de slider empieza en la opcion indice 10
+#define MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER 10
+
 void menu_ventana_scanf_number_get_string_slider(char *destino,char *texto_input,int minimo,int maximo)
 {
     //Slider
@@ -27603,7 +27606,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,string_slider);
             menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,MENU_SCANF_NUMERO_POS_Y_SLIDER);
-            menu_add_item_menu_valor_opcion(array_menu_common,10+i);
+            menu_add_item_menu_valor_opcion(array_menu_common,MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+i);
         }
 
 
@@ -27686,8 +27689,8 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                     }
 
                     //slider
-                    if (valor_opcion>=10 && valor_opcion<10+MENU_SCANF_NUMERO_ANCHO_SLIDER) {
-                        int pos_relativa=valor_opcion-10;
+                    if (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER) {
+                        int pos_relativa=valor_opcion-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
                         int total_rango=maximo-minimo;
 
                         int valor_relativo;
@@ -27697,7 +27700,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                         int valor_final=minimo+valor_relativo;
 
                         //detectar si cursor en el valor maximo
-                        if (valor_opcion==10+MENU_SCANF_NUMERO_ANCHO_SLIDER-1) valor_final=maximo;
+                        if (valor_opcion==MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER-1) valor_final=maximo;
 
                         //detectar limites
                         if (valor_final<minimo) valor_final=minimo;
@@ -27709,7 +27712,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
             }
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && (valor_opcion<3 || (valor_opcion>=10 && valor_opcion<10+MENU_SCANF_NUMERO_ANCHO_SLIDER)));
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && (valor_opcion<3 || (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER)));
 
 
     //En caso de menus tabulados, es responsabilidad de este de liberar ventana
