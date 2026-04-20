@@ -27435,19 +27435,35 @@ void menu_ventana_scanf_number_get_string_slider(char *destino,char *texto_input
 
 
 void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *texto,int x_boton_menos,int x_boton_mas,
-    int x_texto_input,int x_boton_ok,int x_boton_cancel,int x_boton_default,int minimo,int maximo,int si_mas_menos)
+    int x_texto_input,int x_boton_ok,int x_boton_cancel,int x_boton_default,int minimo,int maximo,int opcion_seleccionada)
 {
-    if (si_mas_menos) {
-        //Borrar linea entera
-        zxvision_print_string_defaults_fillspc(ventana,x_boton_menos,0,"");
 
-        //Escribir - +
+    //Borrar linea entera
+    zxvision_print_string_defaults_fillspc(ventana,x_boton_menos,0,"");
+
+    //Escribir - +
+    if (opcion_seleccionada==0) {
+        zxvision_print_string(ventana,x_boton_menos,0,ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0,"-");
+    }
+    else {
         zxvision_print_string_defaults(ventana,x_boton_menos,0,"-");
+    }
+
+    if (opcion_seleccionada==2) {
+        zxvision_print_string(ventana,x_boton_mas,0,ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0,"+");
+    }
+    else {
         zxvision_print_string_defaults(ventana,x_boton_mas,0,"+");
     }
 
+
     //Escribir numero
-    zxvision_print_string_defaults(ventana,x_texto_input,0,texto);
+    if (opcion_seleccionada==1) {
+        zxvision_print_string(ventana,x_texto_input,0,ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0,texto);
+    }
+    else {
+        zxvision_print_string_defaults(ventana,x_texto_input,0,texto);
+    }
 
 
     //Escribir slider
@@ -27531,7 +27547,7 @@ void menu_ventana_scanf_numero_set_texto_segun_valor_slider(int valor_opcion)
 
     //printf("en menu_ventana_scanf_numero_set_texto_segun_valor_slider establecer valor %d\n",valor_final);
 
-    sprintf(menu_ventana_scanf_numero_parametros.texto,"%d ",valor_final);
+    sprintf(menu_ventana_scanf_numero_parametros.texto,"%d",valor_final);
 
 
 }
@@ -27588,7 +27604,7 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
             menu_ventana_scanf_numero_parametros.x_boton_default,
             menu_ventana_scanf_numero_parametros.minimo,
             menu_ventana_scanf_numero_parametros.maximo,
-            0
+            *p_opcion_seleccionada
         );
 
     }
@@ -27678,7 +27694,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     menu_ventana_scanf_numero_parametros.maximo=maximo;
 
     //Dibujar texto interior
-    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,1);
+    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,-1);
 
     //Dibujar ventana antes de scanf
     zxvision_draw_window(&ventana);
@@ -27700,7 +27716,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     do {
 
-        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,1);
+        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,-1);
 
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-");
@@ -27929,7 +27945,7 @@ int old_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int in
     if (default_value==NULL) x_boton_default=-1;
 
     //Dibujar texto interior
-    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,1);
+    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,-1);
 
     //Dibujar ventana antes de scanf
     zxvision_draw_window(&ventana);
@@ -27955,7 +27971,7 @@ int old_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int in
         //int xdef=x_boton_default;
         //if (default_value==NULL) xdef=-1;
 
-        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,1);
+        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,-1);
 
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-");
