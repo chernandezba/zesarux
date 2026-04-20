@@ -27493,7 +27493,51 @@ int menu_ventana_scanf_number_ajust_cursor_mouse(menu_item *m,int posicion_raton
 }
 
 
+struct {
+    zxvision_window *ventana;
+    char *texto;
+    int x_boton_menos;
+    int x_boton_mas;
+    int x_texto_input;
+    int x_boton_ok;
+    int x_boton_cancel;
+    int x_boton_default;
+    int minimo;
+    int maximo;
+} menu_ventana_scanf_numero_parametros;
 
+
+void menu_ventana_scanf_numero_set_texto_segun_valor_slider(int valor_opcion)
+{
+
+    int pos_relativa=valor_opcion-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
+    int total_rango=menu_ventana_scanf_numero_parametros.maximo-menu_ventana_scanf_numero_parametros.minimo;
+
+    int valor_relativo;
+    if (total_rango==0) valor_relativo=0;
+    else valor_relativo=(pos_relativa*total_rango)/MENU_SCANF_NUMERO_ANCHO_SLIDER;
+
+    int valor_final=menu_ventana_scanf_numero_parametros.minimo+valor_relativo;
+
+    //detectar si cursor en el valor maximo
+    if (valor_opcion==MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER-1) valor_final=menu_ventana_scanf_numero_parametros.maximo;
+
+    //detectar limites
+    if (valor_final<menu_ventana_scanf_numero_parametros.minimo) valor_final=menu_ventana_scanf_numero_parametros.minimo;
+    if (valor_final>menu_ventana_scanf_numero_parametros.maximo) valor_final=menu_ventana_scanf_numero_parametros.maximo;
+
+    //printf("en menu_ventana_scanf_numero_set_texto_segun_valor_slider establecer valor %d\n",valor_final);
+
+    sprintf(menu_ventana_scanf_numero_parametros.texto,"%d",valor_final);
+
+
+}
+
+
+char *menu_ventana_scanf_texto_item_valor(struct s_menu_item *item_pedido)
+{
+    return menu_ventana_scanf_numero_parametros.texto;
+}
 
 char menu_ventana_scanf_texto_item_slider_buffer_retorno[10];
 
@@ -27514,7 +27558,23 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
         posicion_pedida -=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
 
         if (posicion_pedida==posicion_slider) {
+            //printf("Establecer valor segun %d\n",item_pedido->valor_opcion);
+            menu_ventana_scanf_numero_set_texto_segun_valor_slider(item_pedido->valor_opcion);
+
             strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"|");
+
+            menu_ventana_scanf_number_print_buttons(menu_ventana_scanf_numero_parametros.ventana,
+                menu_ventana_scanf_numero_parametros.texto,
+                menu_ventana_scanf_numero_parametros.x_boton_menos,
+                menu_ventana_scanf_numero_parametros.x_boton_mas,
+                menu_ventana_scanf_numero_parametros.x_texto_input,
+                menu_ventana_scanf_numero_parametros.x_boton_ok,
+                menu_ventana_scanf_numero_parametros.x_boton_cancel,
+                menu_ventana_scanf_numero_parametros.x_boton_default,
+                menu_ventana_scanf_numero_parametros.minimo,
+                menu_ventana_scanf_numero_parametros.maximo);
+
+
         }
 
     }
@@ -27599,6 +27659,17 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     if (default_value==NULL) x_boton_default=-1;
 
     //Dibujar texto interior
+    menu_ventana_scanf_numero_parametros.ventana=&ventana;
+    menu_ventana_scanf_numero_parametros.texto=texto;
+    menu_ventana_scanf_numero_parametros.x_boton_menos=x_boton_menos;
+    menu_ventana_scanf_numero_parametros.x_boton_mas=x_boton_mas;
+    menu_ventana_scanf_numero_parametros.x_texto_input=x_texto_input;
+    menu_ventana_scanf_numero_parametros.x_boton_ok=x_boton_ok;
+    menu_ventana_scanf_numero_parametros.x_boton_cancel=x_boton_cancel;
+    menu_ventana_scanf_numero_parametros.x_boton_default=x_boton_default;
+    menu_ventana_scanf_numero_parametros.minimo=minimo;
+    menu_ventana_scanf_numero_parametros.maximo=maximo;
+
     menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo);
 
     //Dibujar ventana antes de scanf
@@ -27631,9 +27702,12 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         //no indexar esta busqueda
         menu_add_item_menu_no_indexar_busqueda(array_menu_common);
 
+        //Este texto tambien es dinamico, al moverse el cursor desde el slider hacia abajo,
+        //tiene que retornar el texto correspondiente al valor en ese momento
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,texto);
         menu_add_item_menu_tabulado(array_menu_common,x_texto_input,0);
         menu_add_item_menu_valor_opcion(array_menu_common,1);
+        menu_add_item_menu_funcion_texto_item(array_menu_common,menu_ventana_scanf_texto_item_valor);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"+");
         menu_add_item_menu_tabulado(array_menu_common,x_boton_mas,0);
@@ -27756,6 +27830,8 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
                     //slider
                     if (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER) {
+                        menu_ventana_scanf_numero_set_texto_segun_valor_slider(valor_opcion);
+                        /*
                         int pos_relativa=valor_opcion-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
                         int total_rango=maximo-minimo;
 
@@ -27773,6 +27849,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                         if (valor_final>maximo) valor_final=maximo;
 
                         sprintf(texto,"%d",valor_final);
+                        */
                     }
 
 
