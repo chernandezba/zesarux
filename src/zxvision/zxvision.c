@@ -20602,6 +20602,8 @@ char *menu_retorna_item_language(menu_item *m)
 {
     //printf("Item spanish (%s) english (%s)\n",m->texto_opcion_spanish,m->texto_opcion);
     //Dado que hay que concatenar el prefijo, guardamos el string final en un campo del mismo item de menu
+    if (m->menu_funcion_texto_item!=NULL) return m->menu_funcion_texto_item(m);
+
 
     char *texto_opcion;
 
@@ -24236,6 +24238,8 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
 
     m->menu_funcion_seleccionada=NULL;
 
+    m->menu_funcion_texto_item=NULL;
+
     m->siguiente_item=NULL;
 
     ////
@@ -24771,6 +24775,19 @@ void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_selecciona
         }
 
         m->menu_funcion_seleccionada=menu_funcion_seleccionada;
+}
+
+//Agregar funcion de retorno de texto de un item
+void menu_add_item_menu_funcion_texto_item(menu_item *m,char *(*menu_funcion_texto_item)(struct s_menu_item *))
+{
+//busca el ultimo item i le añade el indicado
+
+        while (m->siguiente_item!=NULL)
+        {
+                m=m->siguiente_item;
+        }
+
+        m->menu_funcion_texto_item=menu_funcion_texto_item;
 }
 
 

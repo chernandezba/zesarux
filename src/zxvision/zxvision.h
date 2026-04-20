@@ -1060,6 +1060,9 @@ struct s_menu_item {
     //Esto es, al mover el cursor sobre esa opción, podemos hacer que llame a una función
     void (*menu_funcion_seleccionada)(struct s_menu_item *item_seleccionado);
 
+    //funcion que retorna el texto de un item
+    char *(*menu_funcion_texto_item)(struct s_menu_item *item_seleccionado);
+
     //Indica para ciertos cuadros de dialogo, que usan funcion de menu pero no se comportan como menus
     //les deja por ejemplo redimensionar el menu. Quien lo usa? De momento nadie...
     int no_es_realmente_un_menu;
@@ -1178,6 +1181,7 @@ extern void menu_add_item_menu_opcion_conmuta(menu_item *m,z80_bit *opcion);
 extern void menu_add_item_menu_marcar_opcion(menu_item *m,int valor);
 extern void menu_add_item_menu_campo_seleccionable(menu_item *m);
 extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
+extern void menu_add_item_menu_funcion_texto_item(menu_item *m,char *(*menu_funcion_texto_item)(struct s_menu_item *));
 extern void menu_add_item_menu_index_full_path(menu_item *m,char *index_name_en,char *index_name_es,char *index_name_ca);
 extern void menu_add_item_menu_separator(menu_item *m);
 extern void menu_add_item_menu_no_es_realmente_un_menu(menu_item *m);
