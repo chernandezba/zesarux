@@ -27747,7 +27747,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
             //Asumimos que esta en OK
             //Cambiar la opcion seleccionada a la del OK, al pulsar enter
-            comun_opcion_seleccionada=3;
+            comun_opcion_seleccionada=3+MENU_SCANF_NUMERO_ANCHO_SLIDER;
 
             int opcion_sel=menu_ventana_scanf_number_ajust_cursor_mouse(array_menu_common,menu_mouse_x,menu_mouse_y-1);
             //printf("opcion seleccionada: %d\n",opcion_sel);
