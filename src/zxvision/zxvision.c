@@ -25225,44 +25225,6 @@ void menu_uncompress_zip_progress(char *zip_file,char *dest_dir)
 
 
 
-
-
-
-
-/*
-void menu_testeo_scanf_numero(MENU_ITEM_PARAMETERS)
-{
-
-        char string_zoom[3];
-    int temp_zoom;
-
-
-    //comprobaciones previas para no petar el sprintf
-    if (zoom_x>9 || zoom_x<1) zoom_x=1;
-
-        sprintf (string_zoom,"%d",zoom_x);
-
-
-        int retorno=menu_ventana_scanf_numero("Number test",string_zoom,3,+2,0,9,0);
-        if (retorno<0) {
-            menu_warn_message("Pulsado ESC");
-        }
-        else {
-
-            temp_zoom=parse_string_to_number(string_zoom);
-
-
-            menu_generic_message_format("Test","Value %d",temp_zoom);
-        }
-
-}
-*/
-
-
-
-
-
-
 void zxvision_dibuja_rectangulo_relleno(zxvision_window *w,int x, int y, int ancho, int alto, int color)
 {
     int x1,y1;
@@ -27423,12 +27385,12 @@ void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *text
     //Escribir numero
     zxvision_print_string_defaults(ventana,x_texto_input,0,texto);
 
-    zxvision_print_string_defaults(ventana,x_boton_ok,2,"<OK>");
+    zxvision_print_string_defaults(ventana,x_boton_ok,4,"<OK>");
 
-    zxvision_print_string_defaults(ventana,x_boton_cancel,2,"<Cancel>");
+    zxvision_print_string_defaults(ventana,x_boton_cancel,4,"<Cancel>");
 
     if (x_boton_default>=0) {
-        zxvision_print_string_defaults(ventana,x_boton_default,2,"<Reset Default>");
+        zxvision_print_string_defaults(ventana,x_boton_default,4,"<Reset Default>");
     }
 }
 
@@ -27460,6 +27422,245 @@ int menu_ventana_scanf_number_ajust_cursor_mouse(menu_item *m,int posicion_raton
 
     return linea_seleccionada;
 }
+
+/*
+max_length: maxima longitud, contando caracter 0 del final
+minimo: valor minimo admitido
+maximo: valor maximo admitido
+circular: si al pasar umbral, se resetea al otro umbral
+
+En entrada de texto no validamos el maximo y minimo. Eso lo tiene que seguir haciendo la funcion que llama a menu_ventana_scanf_numero
+Si que se controla al pulsar botones de + y -
+
+*/
+
+#define MENU_SCANF_NUMERO_ANCHO_SLIDER 20
+
+//Retorna -1 si pulsado ESC
+int new_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
+{
+    //dado que utilizamos un menu tabulado, se resetearia estado de salir_todos_menus. Esto es especialmente critico en algunos
+    //menus en los que interesa que se cierren despues de pasar por aqui, como al seleccionar un microdrive rmd que no existe, y se pide tamaño
+    int antes_salir_todos_menus=salir_todos_menus;
+
+
+    //En caso de stdout, es mas simple, mostrar texto y esperar texto
+    //Lo gestiona la propia rutina de menu_ventana_scanf
+    if (menu_es_stdout()) {
+        menu_ventana_scanf(titulo,texto,max_length);
+        return 0;
+    }
+
+
+    int ancho_ventana=32;
+    int alto_ventana=7;
+
+
+    int xventana=menu_center_x()-ancho_ventana/2;
+    int yventana=menu_center_y()-alto_ventana/2;
+
+    zxvision_window ventana;
+
+    zxvision_new_window(&ventana,xventana,yventana,ancho_ventana,alto_ventana,
+                                                        ancho_ventana-1,alto_ventana-2,titulo);
+
+    //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    //El foco en el numero
+    int comun_opcion_seleccionada=1;
+
+
+    //Donde van los bloques
+
+    //int inicio_bloque_x=8;
+    //int inicio_bloque_y=2;
+    //int ancho_bloque=6;
+
+    //int linea=inicio_bloque_y;
+
+    int max_input_visible=ancho_ventana-2-2-2; //2 laterales, 2 de los botones, y 2 de espacios entre botones
+    if (max_length<max_input_visible) max_input_visible=max_length;
+
+    int x_boton_menos=1;
+    int x_texto_input=x_boton_menos+2;
+    int x_boton_mas=x_texto_input+max_input_visible+1;
+    int x_boton_ok=1;
+    int x_boton_cancel=x_boton_ok+5;
+
+    int x_boton_default=x_boton_cancel+9;
+    if (default_value==NULL) x_boton_default=-1;
+
+    //Dibujar texto interior
+    menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
+
+    //Dibujar ventana antes de scanf
+    zxvision_draw_window(&ventana);
+    zxvision_draw_window_contents(&ventana);
+
+    //Entramos primero editando el numero
+    menu_ventana_scanf_number_aux(&ventana,texto,max_length,x_texto_input);
+
+    //Cambiar la opcion seleccionada a la del OK, al pulsar enter
+    //comun_opcion_seleccionada=3;
+
+
+
+    //Decir que habra que ajustar raton segun posicion mouse actual
+    int debe_ajustar_cursor_segun_mouse=1;
+
+    int valor_opcion=-1;
+
+
+
+    do {
+
+
+
+        //Escribir primero numero
+
+        //Dibujar texto interior
+        //int xdef=x_boton_default;
+        //if (default_value==NULL) xdef=-1;
+
+        menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default);
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-");
+        menu_add_item_menu_tabulado(array_menu_common,x_boton_menos,0);
+        menu_add_item_menu_valor_opcion(array_menu_common,0);
+        //no indexar esta busqueda
+        menu_add_item_menu_no_indexar_busqueda(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,texto);
+        menu_add_item_menu_tabulado(array_menu_common,x_texto_input,0);
+        menu_add_item_menu_valor_opcion(array_menu_common,1);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"+");
+        menu_add_item_menu_tabulado(array_menu_common,x_boton_mas,0);
+        menu_add_item_menu_valor_opcion(array_menu_common,2);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<OK>");
+        menu_add_item_menu_tabulado(array_menu_common,x_boton_ok,4);
+        menu_add_item_menu_valor_opcion(array_menu_common,3);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,"<Cancel>");
+        menu_add_item_menu_tabulado(array_menu_common,x_boton_cancel,4);
+        menu_add_item_menu_valor_opcion(array_menu_common,4);
+
+        if (default_value!=NULL) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Reset Default>");
+            menu_add_item_menu_tabulado(array_menu_common,x_boton_default,4);
+            menu_add_item_menu_valor_opcion(array_menu_common,5);
+        }
+
+        //Slider
+        int i;
+        for (i=0;i<MENU_SCANF_NUMERO_ANCHO_SLIDER;i++) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"=");
+            menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,2);
+            menu_add_item_menu_valor_opcion(array_menu_common,10+i);
+        }
+
+
+        //Antes de abrir el menu, ajustar la opcion seleccionada cuando ha salido del input de numero
+        //y a que boton apunta el mouse
+        if (debe_ajustar_cursor_segun_mouse) {
+            debe_ajustar_cursor_segun_mouse=0;
+
+            //Asumimos que esta en OK
+            //Cambiar la opcion seleccionada a la del OK, al pulsar enter
+            comun_opcion_seleccionada=3;
+
+            int opcion_sel=menu_ventana_scanf_number_ajust_cursor_mouse(array_menu_common,menu_mouse_x,menu_mouse_y-1);
+            //printf("opcion seleccionada: %d\n",opcion_sel);
+            if (opcion_sel>=0) {
+                comun_opcion_seleccionada=opcion_sel;
+            }
+        }
+
+        retorno_menu=menu_dibuja_menu_no_title_lang(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,titulo);
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+
+
+                    valor_opcion=item_seleccionado.valor_opcion;
+
+                    //botones menos y mas
+                    if (valor_opcion==0 || valor_opcion==2) {
+
+                        int numero=parse_string_to_number(texto);
+
+                        if (valor_opcion==0) {
+                            numero-=incremento;
+                            if (numero<minimo) {
+                                if (circular) {
+                                    numero=maximo;
+                                }
+                                else {
+                                    numero=minimo;
+                                }
+                            }
+                        }
+
+                        if (valor_opcion==2) {
+                            numero+=incremento;
+
+                            if (numero>maximo) {
+                                if (circular) {
+                                    numero=minimo;
+                                }
+                                else {
+                                    numero=maximo;
+                                }
+                            }
+                        }
+
+                        sprintf(texto,"%d",numero);
+                    }
+
+                    if (valor_opcion==1) {
+                        menu_ventana_scanf_number_aux(&ventana,texto,max_length,x_texto_input);
+                        //zxvision_scanf(&ventana,texto,max_length,max_length,x_texto_input,0,1);
+                        //menu_espera_no_tecla();
+
+
+
+                        //Pero ajustar el mouse si apunta a alguna opcion
+                        debe_ajustar_cursor_segun_mouse=1;
+                    }
+
+                    //Boton set default
+                    if (valor_opcion==5 && default_value!=NULL) {
+
+                        sprintf(texto,"%d",*default_value);
+
+
+                        //Pero ajustar el mouse si apunta a alguna opcion
+                        debe_ajustar_cursor_segun_mouse=1;
+                    }
+
+
+
+            }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && (valor_opcion<3 || (valor_opcion>=10 && valor_opcion<10+MENU_SCANF_NUMERO_ANCHO_SLIDER)));
+
+
+    //En caso de menus tabulados, es responsabilidad de este de liberar ventana
+    zxvision_destroy_window(&ventana);
+
+
+    salir_todos_menus=antes_salir_todos_menus;
+
+    if (valor_opcion==4 || retorno_menu==MENU_RETORNO_ESC) return -1; //Pulsado Cancel
+
+    else return 0;
+}
+
 
 /*
 max_length: maxima longitud, contando caracter 0 del final
@@ -27675,6 +27876,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     else return 0;
 }
+
 
 int menu_ventana_scanf_numero_enhanced_common(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
 {

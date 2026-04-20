@@ -858,57 +858,72 @@ void menu_interface_language(MENU_ITEM_PARAMETERS)
 
 void menu_interface_zoom(MENU_ITEM_PARAMETERS)
 {
-    char string_zoom[2];
-    int temp_zoom;
+    //char string_zoom[2];
+    //int temp_zoom;
 
     //comprobaciones previas para no petar el sprintf
     if (zoom_x>9 || zoom_x<1) zoom_x=1;
 
-    sprintf (string_zoom,"%d",zoom_x);
+    //sprintf (string_zoom,"%d",zoom_x);
 
-    int retorno=menu_ventana_scanf_numero("Window Zoom",string_zoom,2,+1,1,9,0,NULL);
+    //int retorno=menu_ventana_scanf_numero("Window Zoom",string_zoom,2,+1,1,9,0,NULL);
+
+    int valor=zoom_x;
+
+    int retorno=menu_ventana_scanf_numero_enhanced("Window Zoom",&valor,2,+1,1,9,0);
+
     if (retorno>=0) {
-        temp_zoom=parse_string_to_number(string_zoom);
+        //temp_zoom=parse_string_to_number(string_zoom);
 
-        screen_set_window_zoom(temp_zoom,temp_zoom);
+        //screen_set_window_zoom(temp_zoom,temp_zoom);
+        screen_set_window_zoom(valor,valor);
     }
 
 }
 
 void menu_interface_zoom_width(MENU_ITEM_PARAMETERS)
 {
-    char string_zoom[2];
-    int temp_zoom;
+    //char string_zoom[2];
+    //int temp_zoom;
 
     //comprobaciones previas para no petar el sprintf
     if (zoom_x>9 || zoom_x<1) zoom_x=1;
 
-    sprintf (string_zoom,"%d",zoom_x);
+    //sprintf (string_zoom,"%d",zoom_x);
 
-    int retorno=menu_ventana_scanf_numero("Window Zoom Width",string_zoom,2,+1,1,9,0,NULL);
+    //int retorno=menu_ventana_scanf_numero("Window Zoom Width",string_zoom,2,+1,1,9,0,NULL);
+
+    int valor=zoom_x;
+
+    int retorno=menu_ventana_scanf_numero_enhanced("Window Zoom Width",&valor,2,+1,1,9,0);
     if (retorno>=0) {
-        temp_zoom=parse_string_to_number(string_zoom);
+        //temp_zoom=parse_string_to_number(string_zoom);
 
-        screen_set_window_zoom(temp_zoom,zoom_y);
+        //screen_set_window_zoom(temp_zoom,zoom_y);
+        screen_set_window_zoom(valor,zoom_y);
     }
 
 }
 
 void menu_interface_zoom_height(MENU_ITEM_PARAMETERS)
 {
-    char string_zoom[2];
-    int temp_zoom;
+    //char string_zoom[2];
+    //int temp_zoom;
 
     //comprobaciones previas para no petar el sprintf
     if (zoom_y>9 || zoom_y<1) zoom_y=1;
 
-    sprintf (string_zoom,"%d",zoom_y);
+    //sprintf (string_zoom,"%d",zoom_y);
 
-    int retorno=menu_ventana_scanf_numero("Window Zoom Height",string_zoom,2,+1,1,9,0,NULL);
+    //int retorno=menu_ventana_scanf_numero("Window Zoom Height",string_zoom,2,+1,1,9,0,NULL);
+    int valor=zoom_y;
+
+    int retorno=menu_ventana_scanf_numero_enhanced("Window Zoom Height",&valor,2,+1,1,9,0);
     if (retorno>=0) {
-        temp_zoom=parse_string_to_number(string_zoom);
+        //temp_zoom=parse_string_to_number(string_zoom);
 
-        screen_set_window_zoom(zoom_x,temp_zoom);
+        //screen_set_window_zoom(zoom_x,temp_zoom);
+        screen_set_window_zoom(zoom_x,valor);
     }
 
 }
@@ -5086,26 +5101,7 @@ void menu_audio_volume(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf_numero_enhanced("Volume in %",&audiovolume,4,+20,0,100,0);
 
-/*
-        char string_perc[4];
 
-        sprintf (string_perc,"%d",audiovolume);
-
-
-        //menu_ventana_scanf("Volume in %",string_perc,4);
-        int retorno=menu_ventana_scanf_numero("Volume in %",string_perc,4,+20,0,100,0);
-
-        if (retorno<0) return;
-
-        int v=parse_string_to_number(string_perc);
-
-    if (v>100 || v<0) {
-        debug_printf (VERBOSE_ERR,"Invalid volume value");
-        return;
-    }
-
-    audiovolume=v;
-*/
 }
 
 void menu_audio_ay_chip(MENU_ITEM_PARAMETERS)
@@ -8582,26 +8578,6 @@ void menu_display_osd_word_kb_length(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf_numero_enhanced("Length? (10-100)",&adventure_keyboard_key_length,4,+10,10,100,0);
 
-/*
-    char string_length[4];
-
-        sprintf (string_length,"%d",adventure_keyboard_key_length);
-
-        //menu_ventana_scanf("Length? (10-100)",string_length,4);
-
-        int ret=menu_ventana_scanf_numero("Length? (10-100)",string_length,4,+10,10,100,0);
-
-        if (ret<0) return;
-
-        int valor=parse_string_to_number(string_length);
-    if (valor<10 || valor>100) {
-        debug_printf (VERBOSE_ERR,"Invalid value");
-    }
-
-    else {
-        adventure_keyboard_key_length=valor;
-    }
-    */
 
 }
 

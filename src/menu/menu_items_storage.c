@@ -12909,19 +12909,22 @@ void menu_ql_flp1_follow_mdv1(MENU_ITEM_PARAMETERS)
 
 void menu_ql_data_size_headerless(MENU_ITEM_PARAMETERS)
 {
-    char string_data_size[7];
+    //char string_data_size[7];
 
 
-    sprintf (string_data_size,"%d",ql_task_default_data_size);
+    //sprintf (string_data_size,"%d",ql_task_default_data_size);
 
+    int valor=ql_task_default_data_size;
 
-
-    int retorno=menu_ventana_scanf_numero("Data size",string_data_size,7,+4096,0,131072,1,NULL);
+    //int retorno=menu_ventana_scanf_numero("Data size",string_data_size,7,+4096,0,131072,1,NULL);
+    int retorno=menu_ventana_scanf_numero_enhanced("Data size",&valor,7,+4096,0,131072,1);
     if (retorno>=0) {
-        int valor=parse_string_to_number(string_data_size);
+        //int valor=parse_string_to_number(string_data_size);
 
-        if (valor<0 || valor>131072) debug_printf(VERBOSE_ERR,"Invalid value. Must be in range (0-131072)");
-        else ql_task_default_data_size=valor;
+        //if (valor<0 || valor>131072) debug_printf(VERBOSE_ERR,"Invalid value. Must be in range (0-131072)");
+        //else
+
+        ql_task_default_data_size=valor;
     }
 }
 

@@ -408,6 +408,8 @@ Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el 
 
 -sprite disabling window tambien para tsconf y maquinas con chip vdp (msx, etc)
 
+-View sprites hardware parece que en tsconf no siempre se ve bien. Ejemplo demo Mustang
+
 -al salir de filesel, debe cambiar unidad activa a la local, y no a mmc.
 Esto podria provocar que otros sitios que usan ZVFS (por ejemplo esxdos handler) accedieran a la mmc si lo ultimo que se ha accedido
 desde filesel era la mmc

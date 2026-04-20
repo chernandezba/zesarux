@@ -111,3 +111,12 @@ antes de commonsdl_init
 
 -efectos especiales
 *revisar liberar memoria
+*En features indicar efecto 3D anaglifo usando varios FX
+
+*En FX poder insertar varios efectos de golpe como:
+-anaglifo 3d
+-nagra encode y decode
+-efecto reducción visible en pantalla tamaño normal (usar mix)
+-etc..
+
+*Estos efectos sobreescriben todo lo que haya (preguntando al usuario confirmación)
