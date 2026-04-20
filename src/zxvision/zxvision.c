@@ -24778,6 +24778,7 @@ void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_selecciona
 }
 
 //Agregar funcion de retorno de texto de un item
+//O sea, en vez de escribir el texto del item en cuestión, se llama a una función definida en ese item y esa dirá el texto a escribir
 void menu_add_item_menu_funcion_texto_item(menu_item *m,char *(*menu_funcion_texto_item)(struct s_menu_item *))
 {
 //busca el ultimo item i le añade el indicado
@@ -27399,6 +27400,9 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
 //Indica que cada caracter de slider empieza en la opcion indice 10
 #define MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER 10
 
+//numero de orden donde empieza el slider
+#define MENU_SCANF_NUMERO_START_ORDEN_SLIDER 3
+
 void menu_ventana_scanf_number_get_string_slider(char *destino,char *texto_input,int minimo,int maximo)
 {
     //Slider
@@ -27489,60 +27493,36 @@ int menu_ventana_scanf_number_ajust_cursor_mouse(menu_item *m,int posicion_raton
 }
 
 
-zxvision_window *temp_ventana;
 
 
-//Para llamarse cuando se mueve cursor por el slider
-void menu_ventana_scanf_move_slider(struct s_menu_item *item_seleccionado)
+char menu_ventana_scanf_texto_item_slider_buffer_retorno[10];
+
+int *p_menu_ventana_scanf_texto_opcion_seleccionada=NULL;
+
+//Para poder hacer que el caracter de slider se mueva a medida que el cursor de menu se desplaza por aqui
+char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
 {
-    return;
+    //por defecto
+    strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"=");
 
+    if (p_menu_ventana_scanf_texto_opcion_seleccionada!=NULL) {
 
-    int pos_en_slider=(item_seleccionado->valor_opcion)-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
+        int posicion_slider=(*p_menu_ventana_scanf_texto_opcion_seleccionada)-MENU_SCANF_NUMERO_START_ORDEN_SLIDER;
 
-    printf("pos en slider: %d\n",pos_en_slider);
+        int posicion_pedida=item_pedido->valor_opcion;
 
-    //Escribir slider
-    char buffer_slider[MENU_SCANF_NUMERO_ANCHO_SLIDER+1];
+        posicion_pedida -=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
 
-    //minimo y maximo y texto da igual, no lo uso
-    menu_ventana_scanf_number_get_string_slider(buffer_slider,"hola",10,500);
+        if (posicion_pedida==posicion_slider) {
+            strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"|");
+        }
 
-    //Sobreescribo un caracter
-    if (pos_en_slider>=0 && pos_en_slider<MENU_SCANF_NUMERO_ANCHO_SLIDER) buffer_slider[pos_en_slider]='|';
+    }
 
-    zxvision_print_string_defaults(temp_ventana,MENU_SCANF_NUMERO_X_BOTON_MENOS,MENU_SCANF_NUMERO_POS_Y_SLIDER,buffer_slider);
-
-    zxvision_print_string_defaults(temp_ventana,MENU_SCANF_NUMERO_X_BOTON_MENOS,MENU_SCANF_NUMERO_POS_Y_SLIDER,"KAKAKAKAKA");
-
-    zxvision_draw_window_contents(temp_ventana);
-
-    //printf("pos_en_slider: %d\n",pos_en_slider);
-
-    /*
-                    //slider
-                    if (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER) {
-                        int pos_relativa=valor_opcion-MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
-                        int total_rango=maximo-minimo;
-
-                        int valor_relativo;
-                        if (total_rango==0) valor_relativo=0;
-                        else valor_relativo=(pos_relativa*total_rango)/MENU_SCANF_NUMERO_ANCHO_SLIDER;
-
-                        int valor_final=minimo+valor_relativo;
-
-                        //detectar si cursor en el valor maximo
-                        if (valor_opcion==MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER-1) valor_final=maximo;
-
-                        //detectar limites
-                        if (valor_final<minimo) valor_final=minimo;
-                        if (valor_final>maximo) valor_final=maximo;
-
-                        sprintf(texto,"%d",valor_final);
-                    }
-
-    */
+    return menu_ventana_scanf_texto_item_slider_buffer_retorno;
 }
+
+
 
 
 /*
@@ -27593,8 +27573,8 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     //El foco en el numero
     int comun_opcion_seleccionada=1;
 
-    //temp
-    //temp_ventana=&ventana;
+    //Para poder hacer que el slider lea la opcion selecionada
+    p_menu_ventana_scanf_texto_opcion_seleccionada=&comun_opcion_seleccionada;
 
 
 
@@ -27660,6 +27640,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         menu_add_item_menu_valor_opcion(array_menu_common,2);
 
         //Slider
+        //IMPORTANTE: el orden donde empieza el slider debe coindir con MENU_SCANF_NUMERO_START_ORDEN_SLIDER
         char buffer_slider[MENU_SCANF_NUMERO_ANCHO_SLIDER+1];
         menu_ventana_scanf_number_get_string_slider(buffer_slider,texto,minimo,maximo);
 
@@ -27673,7 +27654,8 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,string_slider);
             menu_add_item_menu_tabulado(array_menu_common,x_boton_menos+i,MENU_SCANF_NUMERO_POS_Y_SLIDER);
             menu_add_item_menu_valor_opcion(array_menu_common,MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+i);
-            menu_add_item_menu_seleccionado(array_menu_common,menu_ventana_scanf_move_slider);
+            //menu_add_item_menu_seleccionado(array_menu_common,menu_ventana_scanf_move_slider);
+            menu_add_item_menu_funcion_texto_item(array_menu_common,menu_ventana_scanf_texto_item_slider);
         }
 
 
