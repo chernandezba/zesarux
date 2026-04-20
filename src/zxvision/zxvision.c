@@ -27542,6 +27542,7 @@ char *menu_ventana_scanf_texto_item_valor(struct s_menu_item *item_pedido)
 
 char menu_ventana_scanf_texto_item_slider_buffer_retorno[10];
 
+int menu_ventana_scanf_texto_item_slider_last_slider=0;
 
 //Para poder hacer que el caracter de slider se mueva a medida que el cursor de menu se desplaza por aqui
 char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
@@ -27558,6 +27559,15 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
     posicion_pedida -=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER;
 
     //printf("posicion_pedida %d posicion_slider %d\n",posicion_pedida,posicion_slider);
+
+    if (posicion_slider<0 || posicion_slider>MENU_SCANF_NUMERO_ANCHO_SLIDER) {
+        //Para cuando el cursor se ha ido del slider hacia abajo, retornamos ultima posicion conocida del slider
+        posicion_slider=menu_ventana_scanf_texto_item_slider_last_slider;
+    }
+
+    else {
+        menu_ventana_scanf_texto_item_slider_last_slider=posicion_slider;
+    }
 
     if (posicion_pedida==posicion_slider) {
         //printf("Establecer valor segun %d\n",item_pedido->valor_opcion);
