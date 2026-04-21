@@ -326,6 +326,28 @@ void screen_effects_table_insert_nagra_enc_dec(void)
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_DECODENAGRAVISION;
 }
 
+void screen_effects_table_insert_picture_in_picture(void)
+{
+   int i=0;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_REDUCE;
+
+    screen_reduction_factor=SCREEN_REDUCE_025;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_COPY_TO_BUFFER;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER;
+
+    screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAGE;
+    screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=50;
+}
+
 void screen_effects_table_insert_anaglyph(void)
 {
     int i=0;
