@@ -75,7 +75,7 @@ z80_bit screen_rainbow_effect_scroll_vertical_follow_mouse={0};
 int screen_rainbow_effect_attraction_intensity=SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY;
 int screen_rainbow_effect_attraction_atrac_repulse=+1;
 
-
+int screen_rainbow_effect_interferences_intensity=SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY;
 
 z80_bit screen_rainbow_effect_shaderborder_leftright_enable={1};
 z80_bit screen_rainbow_effect_shaderborder_updown_enable={1};
@@ -120,7 +120,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal","Invertir Horizontal","Invertir Horizontal",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_ROTATE,"Rotate","Rotar","Rotar",&screen_rainbow_effect_rotate_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_TWIRL,"Twirl","Remolino","Remolí",&screen_rainbow_effect_remolino_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences","Interferencias","Interferencies",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences","Interferencias","Interferencies",NULL,&screen_rainbow_effect_interferences_intensity,SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY,0,100},
     {SCREEN_EFFECT_TYPE_SEA,"Sea","Mar","Mar",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves","Ondas","Ones",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,20},
     {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field","Campo Magnético","Camp Magnètic",NULL,&screen_rainbow_effect_attraction_intensity,SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY,1,20},
@@ -1558,6 +1558,8 @@ void screen_rainbow_effect_load_bmp(z80_int *origen,z80_int *destino,int ancho,i
 
 }
 
+
+
 void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int ancho,int alto)
 {
 
@@ -1573,7 +1575,9 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
 
             int valor=util_get_random() % 10000;
 
-            if (valor<1000) {
+            int umbral=100*screen_rainbow_effect_interferences_intensity;
+
+            if (valor<umbral) {
 
                 int offset=y*ancho+x;
 

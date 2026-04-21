@@ -56,11 +56,14 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 #define SCREEN_FX_ZOOM_MAX_FACTOR 80
 #define SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY 50
 #define SCREEN_FX_PERSISTENCE_DEFAULT_FRAMES 10
+#define SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY 10
 
 
 extern void screen_special_effects_free_buffers(void);
 extern z80_int *screen_special_effects_alloc_buffer(int ancho,int alto);
 extern z80_bit screen_special_effects_enabled;
+
+extern int screen_rainbow_effect_interferences_intensity;
 
 extern int screen_rainbow_effect_zoom_factor;
 
