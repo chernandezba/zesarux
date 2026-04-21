@@ -2064,6 +2064,15 @@ void menu_fx_group_old_crt(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_fx_group_my_old_crt(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("My Old CRT")) {
+        init_screen_effects_table();
+
+        screen_effects_table_insert_my_old_crt();
+    }
+}
+
 void menu_main_window_special_effects_group(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2079,7 +2088,9 @@ void menu_main_window_special_effects_group(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_fx_group_picture_in_picture,NULL,"Picture in Picture","Imagen en Imagen","Imatge en Imatge");
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_fx_group_old_crt,NULL,"Old CRT","Viejo CRT","Vell CRT");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_fx_group_old_crt,NULL,"Old CRT","Vieja CRT","Vella CRT");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_fx_group_my_old_crt,NULL,"My Old CRT","Mi Vieja CRT","La meva vella CRT");
 
         menu_add_item_menu_separator(array_menu_common);
 

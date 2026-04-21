@@ -370,6 +370,57 @@ void screen_effects_table_insert_old_crt(void)
 
 }
 
+void screen_effects_table_insert_my_old_crt(void)
+{
+    int i=0;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL;
+
+    screen_rainbow_effect_scroll_horizontal_incremental.v=0;
+    screen_rainbow_effect_scroll_horizontal_offset=20;
+    screen_rainbow_effect_scroll_horizontal_follow_mouse.v=0;
+    screen_rainbow_effect_scroll_horizontal_circular.v=1;
+
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_COPY_TO_BUFFER;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER;
+
+    screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAGE;
+    screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=10;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_LENS;
+
+    screen_special_effects_fisheye_automatic_factor.v=0;
+    screen_special_effects_fisheye_follow_mouse.v=0;
+
+    screen_special_effects_fisheye_follow_music_channel=0;
+    screen_rainbow_effect_fisheye_factor_k=-20;
+
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_UNSTEADY;
+
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_SCANLINES;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_RGB;
+
+    screen_rainbow_effect_rgb_red.v=1;
+    screen_rainbow_effect_rgb_green.v=1;
+    screen_rainbow_effect_rgb_blue.v=1;
+
+}
+
 void screen_effects_table_insert_anaglyph(void)
 {
     int i=0;
