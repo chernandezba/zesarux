@@ -328,7 +328,7 @@ void screen_effects_table_insert_nagra_enc_dec(void)
 
 void screen_effects_table_insert_picture_in_picture(void)
 {
-   int i=0;
+    int i=0;
 
     screen_effect_applied_list[i].enabled=1;
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_REDUCE;
@@ -345,6 +345,29 @@ void screen_effects_table_insert_picture_in_picture(void)
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER;
 
     screen_rainbow_effect_mix_from_buffer_tipo=MIX_BLACK_KEY;
+}
+
+void screen_effects_table_insert_old_crt(void)
+{
+    int i=0;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_LENS;
+
+    screen_special_effects_fisheye_automatic_factor.v=0;
+    screen_special_effects_fisheye_follow_mouse.v=0;
+
+    screen_special_effects_fisheye_follow_music_channel=0;
+    screen_rainbow_effect_fisheye_factor_k=-20;
+
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_UNSTEADY;
+
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_SCANLINES;
+
 }
 
 void screen_effects_table_insert_anaglyph(void)

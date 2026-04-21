@@ -155,6 +155,7 @@ extern void screen_effects_table_insert_all(void);
 extern void screen_effects_table_insert_anaglyph(void);
 extern void screen_effects_table_insert_nagra_enc_dec(void);
 extern void screen_effects_table_insert_picture_in_picture(void);
+extern void screen_effects_table_insert_old_crt(void);
 
 extern char screen_rainbow_effect_load_bmp_file_path[];
 extern int screen_rainbow_effect_load_bmp_file_path_transparent_color;
