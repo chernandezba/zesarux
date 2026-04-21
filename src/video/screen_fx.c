@@ -344,8 +344,7 @@ void screen_effects_table_insert_picture_in_picture(void)
     screen_effect_applied_list[i].enabled=1;
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER;
 
-    screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAGE;
-    screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=50;
+    screen_rainbow_effect_mix_from_buffer_tipo=MIX_BLACK_KEY;
 }
 
 void screen_effects_table_insert_anaglyph(void)
@@ -1230,6 +1229,7 @@ const char *screen_rainbow_effect_mix_string_types[SCREEN_FX_MIX_FROM_BUFFER_TOT
     "And",
     "Or",
     "Xor",
+    "Black Key",
     "Overlay",
     "Lighten",
     "Darken"
@@ -1351,6 +1351,20 @@ void screen_rainbow_effect_mix_from_buffer(z80_int *origen,z80_int *destino,int 
                     red=red2 ^ red1;
                     green=green2 ^ green1;
                     blue=blue2 ^ blue1;
+                break;
+
+                case MIX_BLACK_KEY:
+                    if (red1==0 && green1==0 && blue1==0) {
+                        red=red2;
+                        green=green2;
+                        blue=blue2;
+                    }
+                    else {
+                        red=red1;
+                        green=green1;
+                        blue=blue1;
+                    }
+
                 break;
 
                 case MIX_OVERLAY:
