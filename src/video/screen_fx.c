@@ -87,7 +87,7 @@ int screen_rainbow_effect_shaderborder_blur_intensity_updown=4;
 
 
 //0.2 segundos. O sea, 10 frames
-int screen_rainbow_effect_persistence_total_frames=10;
+int screen_rainbow_effect_persistence_total_frames=SCREEN_FX_PERSISTENCE_DEFAULT_FRAMES;
 
 //A,B,C canales AY o 0
 char screen_special_effects_fisheye_follow_music_channel=0;
@@ -301,6 +301,20 @@ void init_screen_effects_table(void)
         //else {
             screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
         //}
+    }
+}
+
+void screen_effects_table_insert_all(void)
+{
+    int i;
+    for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
+        screen_effect_applied_list[i].enabled=1;
+        if (i<MAX_SCREEN_EFFECTS) {
+            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
+        }
+        else {
+            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
+        }
     }
 }
 

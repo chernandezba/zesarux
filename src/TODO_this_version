@@ -111,6 +111,8 @@ antes de commonsdl_init
 
 -efectos especiales
 *todos efectos que tengan valor por defecto, que en el input por scanf enhanced , llamen a menu_ventana_scanf_numero_enhanced_default
+y meterlos todos dinámicos los que se puedan
+
 *revisar liberar memoria
 *En features indicar efecto 3D anaglifo usando varios FX
 
@@ -125,5 +127,3 @@ antes de commonsdl_init
 
 -slider
 *si rango pequeño, como en window zoom, salen repetidos caracteres "|"
--> ok, pero *botones -/+ no van porque continuamente se calcula el valor de texto en base a la posicion del slider. lo mismo pasa al darle enter en el input de texto
-pero botones -/+ no muestran posicion del slider que tocaria

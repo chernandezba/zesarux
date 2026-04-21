@@ -55,6 +55,7 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 #define SCREEN_FX_ZOOM_DEFAULT_FACTOR 12
 #define SCREEN_FX_ZOOM_MAX_FACTOR 80
 #define SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY 50
+#define SCREEN_FX_PERSISTENCE_DEFAULT_FRAMES 10
 
 
 extern void screen_special_effects_free_buffers(void);
@@ -149,6 +150,7 @@ extern z80_bit screen_rainbow_effect_rgb_green;
 extern z80_bit screen_rainbow_effect_rgb_blue;
 
 extern void init_screen_effects_table(void);
+extern void screen_effects_table_insert_all(void);
 
 extern char screen_rainbow_effect_load_bmp_file_path[];
 extern int screen_rainbow_effect_load_bmp_file_path_transparent_color;

@@ -77,6 +77,7 @@ Mejorado ZX Vision:
 - Movido varias opciones a opciones -> Hardware
 - Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas
 - Algunos diálogos de ajustes pueden resetearse a valores por defecto
+- Agregado un control deslizante en diálogos de entrada numérica
 - Ventanas restauradas al inicio como maximizadas, se restaurarán al tamaño máximo disponible
 - Permitir enviar mensajes a ventanas, para disparar acciones. Se pueden enviar mensajes desde el menu Windows o desde la ventana de Gestión de Procesos
 - Permitir seleccionar estilo de GUI en oscuro o claro dependiendo de la hora actual

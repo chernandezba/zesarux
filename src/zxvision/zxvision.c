@@ -27403,6 +27403,8 @@ void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_
 //numero de orden donde empieza el slider
 #define MENU_SCANF_NUMERO_START_ORDEN_SLIDER 3
 
+int menu_ventana_scanf_texto_item_slider_last_slider=0;
+
 void menu_ventana_scanf_number_get_string_slider(char *destino,char *texto_input,int minimo,int maximo)
 {
     //Slider
@@ -27421,6 +27423,9 @@ void menu_ventana_scanf_number_get_string_slider(char *destino,char *texto_input
 
     //detectar si valor final
     if (valor_actual==maximo) pos_slider=MENU_SCANF_NUMERO_ANCHO_SLIDER-1;
+
+
+    menu_ventana_scanf_texto_item_slider_last_slider=pos_slider;
 
 
     for (i=0;i<MENU_SCANF_NUMERO_ANCHO_SLIDER;i++) {
@@ -27515,6 +27520,7 @@ struct {
     zxvision_window *ventana;
     int *opcion_seleccionada;
     char *texto;
+    int *variable_destino;
     int x_boton_menos;
     int x_boton_mas;
     int x_texto_input;
@@ -27560,11 +27566,25 @@ char *menu_ventana_scanf_texto_item_valor(struct s_menu_item *item_pedido)
 
 char menu_ventana_scanf_texto_item_slider_buffer_retorno[10];
 
-int menu_ventana_scanf_texto_item_slider_last_slider=0;
+
 
 //Para poder hacer que el caracter de slider se mueva a medida que el cursor de menu se desplaza por aqui
+//Tambien nos sirve como funcion que se llama siempre al escribir lineas de menu
 char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
 {
+    printf("Obtener texto sliders\n");
+
+
+    //aplicar dinamicamente el cambio de la variable
+    if (menu_ventana_scanf_numero_parametros.variable_destino!=NULL) {
+        int numero=parse_string_to_number(menu_ventana_scanf_numero_parametros.texto);
+
+        if (numero>=menu_ventana_scanf_numero_parametros.minimo && numero<=menu_ventana_scanf_numero_parametros.maximo) {
+            *(menu_ventana_scanf_numero_parametros.variable_destino)=numero;
+        }
+    }
+
+
     //por defecto
     strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"=");
 
@@ -27587,6 +27607,7 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
     }
 
     else {
+        printf("Posicion exacta slider (%d)\n",posicion_slider);
         menu_ventana_scanf_texto_item_slider_last_slider=posicion_slider;
     }
 
@@ -27596,9 +27617,10 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
             menu_ventana_scanf_numero_set_texto_segun_valor_slider(item_pedido->valor_opcion);
         }
 
+        printf("Retornar caracter slider donde toca (%d)\n",posicion_pedida);
         strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"|");
 
-        //Dibujar texto,sliders, pero no redibujar botones porque si no, desaparece el color invertido si el cursor esta en ellos
+        //Dibujar texto,sliders, etc
         menu_ventana_scanf_number_print_buttons(menu_ventana_scanf_numero_parametros.ventana,
             menu_ventana_scanf_numero_parametros.texto,
             menu_ventana_scanf_numero_parametros.x_boton_menos,
@@ -27635,7 +27657,7 @@ Nota: esta función es algo complicada (sobretodo la gestión del slider) porque
 auxiliares de retorno de texto dinamico (menu_add_item_menu_funcion_texto_item)
 Seguramente si se usase una funcion creada desde cero, no usando menu_dibuja_menu, algunas cosas serian mas simples
 */
-int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
+int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value,int *variable_destino)
 {
     //dado que utilizamos un menu tabulado, se resetearia estado de salir_todos_menus. Esto es especialmente critico en algunos
     //menus en los que interesa que se cierren despues de pasar por aqui, como al seleccionar un microdrive rmd que no existe, y se pide tamaño
@@ -27649,7 +27671,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         return 0;
     }
 
-
+    int valor_original=*variable_destino;
 
     int ancho_ventana=32;
     int alto_ventana=7;
@@ -27692,6 +27714,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     menu_ventana_scanf_numero_parametros.ventana=&ventana;
     menu_ventana_scanf_numero_parametros.opcion_seleccionada=&comun_opcion_seleccionada;
     menu_ventana_scanf_numero_parametros.texto=texto;
+    menu_ventana_scanf_numero_parametros.variable_destino=variable_destino;
     menu_ventana_scanf_numero_parametros.x_boton_menos=x_boton_menos;
     menu_ventana_scanf_numero_parametros.x_boton_mas=x_boton_mas;
     menu_ventana_scanf_numero_parametros.x_texto_input=x_texto_input;
@@ -27849,7 +27872,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
 
 
-                        //Pero ajustar el mouse si apunta a alguna opcion
+                        //Saltar a OK pero ajustar el mouse si apunta a alguna opcion
                         debe_ajustar_cursor_segun_mouse=1;
                     }
 
@@ -27860,7 +27883,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
 
                         //Pero ajustar el mouse si apunta a alguna opcion
-                        debe_ajustar_cursor_segun_mouse=1;
+                        //debe_ajustar_cursor_segun_mouse=1;
                     }
 
                     //slider
@@ -27868,13 +27891,16 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                         //esto ya no hace falta, el valor se actualiza dinamicamente al mover el slider
                         //menu_ventana_scanf_numero_set_texto_segun_valor_slider(valor_opcion);
 
+                        //Saltar a OK pero ajustar el mouse si apunta a alguna opcion
+                        debe_ajustar_cursor_segun_mouse=1;
+
                     }
 
 
             }
 
-//    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && (valor_opcion<3 || (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER)));
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && valor_opcion<3);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && (valor_opcion<3 || (valor_opcion>=MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER && valor_opcion<MENU_SCANF_NUMERO_START_INDEX_OPTIONS_SLIDER+MENU_SCANF_NUMERO_ANCHO_SLIDER)));
+    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && valor_opcion<3);
 
 
     //En caso de menus tabulados, es responsabilidad de este de liberar ventana
@@ -27883,7 +27909,14 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     salir_todos_menus=antes_salir_todos_menus;
 
-    if (valor_opcion==4 || retorno_menu==MENU_RETORNO_ESC) return -1; //Pulsado Cancel
+    printf("retorno_menu %d item_seleccionado.tipo_opcion&MENU_OPCION_ESC %d\n",retorno_menu,item_seleccionado.tipo_opcion&MENU_OPCION_ESC);
+
+    if (item_seleccionado.tipo_opcion&MENU_OPCION_ESC || retorno_menu==MENU_RETORNO_ESC) {
+        printf("Cancelar\n");
+        //sprintf(texto,"%d",valor_original);
+        *variable_destino=valor_original;
+        return -1; //Pulsado Cancel
+    }
 
     else return 0;
 }
@@ -28105,7 +28138,8 @@ int old_menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int in
 }
 
 
-int menu_ventana_scanf_numero_enhanced_common(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value)
+//dynamic_update tiene valor diferente de 0 si queremos que la variable se vaya actualizando dinamicamente al modificarla en la ventana
+int menu_ventana_scanf_numero_enhanced_common(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value,int dynamic_update)
 {
 
     //Asignar memoria para el buffer
@@ -28116,7 +28150,13 @@ int menu_ventana_scanf_numero_enhanced_common(char *titulo,int *variable,int max
 
     sprintf(buf_texto,"%d",*variable);
 
-    int ret=menu_ventana_scanf_numero(titulo,buf_texto,max_length,incremento,minimo,maximo,circular,default_value);
+    int *variable_dynamic=variable;
+
+    if (!dynamic_update) variable_dynamic=NULL;
+
+    int ret=menu_ventana_scanf_numero(titulo,buf_texto,max_length,incremento,minimo,maximo,circular,default_value,variable_dynamic);
+
+
     //Si no pulsado ESC
     if (ret>=0) {
 
@@ -28150,7 +28190,7 @@ int menu_ventana_scanf_numero_enhanced_common(char *titulo,int *variable,int max
 int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular)
 {
 
-    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,NULL);
+    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,NULL,0);
 
 }
 
@@ -28158,9 +28198,14 @@ int menu_ventana_scanf_numero_enhanced(char *titulo,int *variable,int max_length
 //Igual que menu_ventana_scanf_numero_enhanced pero pudiendo especificar valor por defecto
 int menu_ventana_scanf_numero_enhanced_default(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular,int default_value)
 {
-    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,&default_value);
+    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,&default_value,0);
 }
 
+//Igual que menu_ventana_scanf_numero_enhanced_default pero indicando que la variable se actualiza dinamicamente
+int menu_ventana_scanf_numero_enhanced_default_dynamic(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular,int default_value)
+{
+    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,&default_value,1);
+}
 
 
 void menu_inicio_pre_retorno_reset_flags(void)
