@@ -27746,7 +27746,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
 
     do {
-        printf("Texto al crear menu: %s\n",texto);
+        //printf("Texto al crear menu: %s\n",texto);
         menu_ventana_scanf_number_print_buttons(&ventana,texto,x_boton_menos,x_boton_mas,x_texto_input,x_boton_ok,x_boton_cancel,x_boton_default,minimo,maximo,-1);
 
 
@@ -27833,7 +27833,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                         int numero=parse_string_to_number(texto);
 
                         if (valor_opcion==0) {
-                            printf("menos\n");
+                            //printf("menos\n");
                             numero-=incremento;
                             if (numero<minimo) {
                                 if (circular) {
@@ -27858,11 +27858,11 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
                             }
                         }
 
-                        printf("valor final: %d\n",numero);
+                        //printf("valor final: %d\n",numero);
 
                         sprintf(texto,"%d",numero);
 
-                        printf("Texto: %s\n",texto);
+                        //printf("Texto: %s\n",texto);
                     }
 
                     if (valor_opcion==1) {
@@ -27909,10 +27909,10 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
 
     salir_todos_menus=antes_salir_todos_menus;
 
-    printf("retorno_menu %d item_seleccionado.tipo_opcion&MENU_OPCION_ESC %d\n",retorno_menu,item_seleccionado.tipo_opcion&MENU_OPCION_ESC);
+    //printf("retorno_menu %d item_seleccionado.tipo_opcion&MENU_OPCION_ESC %d\n",retorno_menu,item_seleccionado.tipo_opcion&MENU_OPCION_ESC);
 
     if (item_seleccionado.tipo_opcion&MENU_OPCION_ESC || retorno_menu==MENU_RETORNO_ESC) {
-        printf("Cancelar\n");
+        //printf("Cancelar\n");
         //sprintf(texto,"%d",valor_original);
         *variable_destino=valor_original;
         return -1; //Pulsado Cancel
