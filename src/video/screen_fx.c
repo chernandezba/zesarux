@@ -358,7 +358,7 @@ void screen_effects_table_insert_old_crt(void)
     screen_special_effects_fisheye_follow_mouse.v=0;
 
     screen_special_effects_fisheye_follow_music_channel=0;
-    screen_rainbow_effect_fisheye_factor_k=-20;
+    screen_rainbow_effect_fisheye_factor_k=-15;
 
 
     screen_effect_applied_list[i].enabled=1;
@@ -393,7 +393,7 @@ void screen_effects_table_insert_my_old_crt(void)
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER;
 
     screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAGE;
-    screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=10;
+    screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=8;
 
     screen_effect_applied_list[i].enabled=1;
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_LENS;
@@ -402,7 +402,7 @@ void screen_effects_table_insert_my_old_crt(void)
     screen_special_effects_fisheye_follow_mouse.v=0;
 
     screen_special_effects_fisheye_follow_music_channel=0;
-    screen_rainbow_effect_fisheye_factor_k=-20;
+    screen_rainbow_effect_fisheye_factor_k=-15;
 
 
     screen_effect_applied_list[i].enabled=1;
