@@ -27572,7 +27572,7 @@ char menu_ventana_scanf_texto_item_slider_buffer_retorno[10];
 //Tambien nos sirve como funcion que se llama siempre al escribir lineas de menu
 char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
 {
-    printf("Obtener texto sliders\n");
+    //printf("Obtener texto sliders\n");
 
 
     //aplicar dinamicamente el cambio de la variable
@@ -27607,7 +27607,7 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
     }
 
     else {
-        printf("Posicion exacta slider (%d)\n",posicion_slider);
+        //printf("Posicion exacta slider (%d)\n",posicion_slider);
         menu_ventana_scanf_texto_item_slider_last_slider=posicion_slider;
     }
 
@@ -27617,7 +27617,7 @@ char *menu_ventana_scanf_texto_item_slider(struct s_menu_item *item_pedido)
             menu_ventana_scanf_numero_set_texto_segun_valor_slider(item_pedido->valor_opcion);
         }
 
-        printf("Retornar caracter slider donde toca (%d)\n",posicion_pedida);
+        //printf("Retornar caracter slider donde toca (%d)\n",posicion_pedida);
         strcpy(menu_ventana_scanf_texto_item_slider_buffer_retorno,"|");
 
         //Dibujar texto,sliders, etc
