@@ -114,7 +114,7 @@ antes de commonsdl_init
 *En features indicar efecto 3D anaglifo usando varios FX
 
 *En FX poder insertar varios efectos de golpe como:
--anaglifo 3d
+ok -anaglifo 3d
 -nagra encode y decode
 -efecto reducción visible en pantalla tamaño normal (usar mix)
 -etc..

@@ -152,6 +152,7 @@ extern z80_bit screen_rainbow_effect_rgb_blue;
 extern void init_screen_effects_table(void);
 extern void screen_effects_table_insert_all(void);
 extern void screen_effects_table_insert_anaglyph(void);
+extern void screen_effects_table_insert_nagra_enc_dec(void);
 
 extern char screen_rainbow_effect_load_bmp_file_path[];
 extern int screen_rainbow_effect_load_bmp_file_path_transparent_color;

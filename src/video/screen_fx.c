@@ -315,6 +315,17 @@ void screen_effects_table_insert_all(void)
     }
 }
 
+void screen_effects_table_insert_nagra_enc_dec(void)
+{
+    int i=0;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_NAGRAVISION;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_DECODENAGRAVISION;
+}
+
 void screen_effects_table_insert_anaglyph(void)
 {
     int i=0;
