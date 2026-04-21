@@ -295,12 +295,9 @@ void init_screen_effects_table(void)
     int i;
     for (i=0;i<MAX_SCREEN_LIST_EFFECTS;i++) {
         screen_effect_applied_list[i].enabled=0;
-        //if (i<MAX_SCREEN_EFFECTS) {
-        //    screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE+i;
-        //}
-        //else {
-            screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
-        //}
+
+        screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
+
     }
 }
 
@@ -316,6 +313,42 @@ void screen_effects_table_insert_all(void)
             screen_effect_applied_list[i].type=SCREEN_EFFECT_TYPE_NONE;
         }
     }
+}
+
+void screen_effects_table_insert_anaglyph(void)
+{
+    int i=0;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL;
+
+    screen_rainbow_effect_scroll_horizontal_incremental.v=0;
+    screen_rainbow_effect_scroll_horizontal_offset=20;
+    screen_rainbow_effect_scroll_horizontal_follow_mouse.v=0;
+    screen_rainbow_effect_scroll_horizontal_circular.v=0;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_RED;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_COPY_TO_BUFFER;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_RESTORE_ORIGINAL;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_RGB;
+
+    screen_rainbow_effect_rgb_red.v=0;
+    screen_rainbow_effect_rgb_green.v=0;
+    screen_rainbow_effect_rgb_blue.v=1;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER;
+
+    screen_rainbow_effect_mix_from_buffer_tipo=MIX_AVERAGE;
+    screen_rainbow_effect_mix_from_buffer_percentage_buffer_layer=50;
+
 }
 
 //Aplicar efectos a modo rainbow

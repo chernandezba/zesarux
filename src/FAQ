@@ -273,9 +273,9 @@ You can also enable these effects using the following config settings:
 --video-fx-set "Restore Original" 3 1
 --video-fx-set "RGB" 4 1
 --video-fx-set "Mix from buffer" 5 1
+--video-fx-mix-type "Mix from buffer" "Average"
 --video-fx-offset "Scroll Horizontal" 20
 --video-fx-rgb RGB 0 0 1
---video-fx-mix-type "Mix from buffer" "Average"
 
 ----------------------------------------------------------------------------
 

@@ -241,6 +241,7 @@ int hardware_settings_dma_opcion_seleccionada=0;
 int hardware_settings_spectrum_next_opcion_seleccionada=0;
 int main_window_special_effects_opcion_seleccionada=0;
 int main_window_special_effects_change=0;
+int main_window_special_effects_group_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -2027,6 +2028,59 @@ void menu_main_window_special_effects_insert_all(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_fx_group_anaglyph(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Insert Anaglyph")) {
+        init_screen_effects_table();
+
+        screen_effects_table_insert_anaglyph();
+    }
+}
+
+void menu_main_window_special_effects_group(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_fx_group_anaglyph,NULL,"Anaglyph","Anaglifo","Anaglif");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_fx_group_anaglyph,NULL,"D~~inamid3","D~~inamid3","D~~inamid3");
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> Main Window-> Emulated Display FX-> Insert effects group",
+            "Menú Principal-> Opciones-> Ventana Principal-> FX de Pantalla Emulada-> Insertar grupo de efectos",
+            "Menú Principal-> Opcions-> Finestra Principal-> FX de Pantalla Emulada-> Insertar grups d'efectes");
+
+        retorno_menu=menu_dibuja_menu(&main_window_special_effects_group_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Insert effects group Menu","Menú Insertar grupo de efectos","Menú Insertar grups d'efectes" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
 void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2053,6 +2107,11 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_insert_all,NULL,
                 "Insert all effects","Insertar todos los efectos","Insertar tots els efectes");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_group,NULL,
+                "Insert effects group","Insertar grupo de efectos","Insertar grups d'efectes");
+            menu_add_item_menu_prefijo(array_menu_common,"    ");
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_separator(array_menu_common);
 
