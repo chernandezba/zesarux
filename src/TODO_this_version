@@ -86,9 +86,6 @@ en sdl1, raton lo ubica en la posicion inicial
 *sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
 
 
--con top menu activado, en menu z, si salgo con F10, cuadro de confirmacion de salir aparece arriba a la izquierda en vez de centrado
-
-
 -Revisar opqa y teclas mover ventana
 *solo falta en debug cpu, muchas teclas mapeadas ahi. quiza un modo en el que se pueda cambiar a modo movimiento ventana
 

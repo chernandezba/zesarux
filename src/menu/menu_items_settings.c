@@ -2114,12 +2114,12 @@ void menu_main_window_special_effects_group(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_common);
 
 
-        menu_add_item_menu_index_full_path(array_menu_common,
+        /*menu_add_item_menu_index_full_path(array_menu_common,
             "Main Menu-> Settings-> Main Window-> Emulated Display FX-> Insert effects group",
             "Menú Principal-> Opciones-> Ventana Principal-> FX de Pantalla Emulada-> Insertar grupo de efectos",
-            "Menú Principal-> Opcions-> Finestra Principal-> FX de Pantalla Emulada-> Insertar grups d'efectes");
+            "Menú Principal-> Opcions-> Finestra Principal-> FX de Pantalla Emulada-> Insertar grups d'efectes");*/
 
-        retorno_menu=menu_dibuja_menu(&main_window_special_effects_group_opcion_seleccionada,&item_seleccionado,array_menu_common,
+        retorno_menu=menu_dibuja_menu_dialogo(&main_window_special_effects_group_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Insert effects group Menu","Menú Insertar grupo de efectos","Menú Insertar grups d'efectes" );
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -2170,7 +2170,9 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_group,NULL,
                 "Insert effects group","Insertar grupo de efectos","Insertar grups d'efectes");
             menu_add_item_menu_prefijo(array_menu_common,"    ");
-            menu_add_item_menu_tiene_submenu(array_menu_common);
+            //menu_add_item_menu_tiene_submenu(array_menu_common);
+            menu_add_item_menu_genera_ventana(array_menu_common);
+            menu_add_item_menu_se_cerrara(array_menu_common);
 
             menu_add_item_menu_separator(array_menu_common);
 
@@ -2635,12 +2637,12 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_index_full_path(array_menu_common,
+        /*menu_add_item_menu_index_full_path(array_menu_common,
             "Main Menu-> Settings-> Main Window-> Emulated Display FX",
             "Menú Principal-> Opciones-> Ventana Principal-> FX de Pantalla Emulada",
-            "Menú Principal-> Opcions-> Finestra Principal-> FX de Pantalla Emulada");
+            "Menú Principal-> Opcions-> Finestra Principal-> FX de Pantalla Emulada");*/
 
-        retorno_menu=menu_dibuja_menu(&main_window_special_effects_opcion_seleccionada,&item_seleccionado,array_menu_common,
+        retorno_menu=menu_dibuja_menu_dialogo(&main_window_special_effects_opcion_seleccionada,&item_seleccionado,array_menu_common,
             "Emulated Display FX","FX de Pantalla Emulada","FX de Pantalla Emulada");
 
 
@@ -2917,7 +2919,8 @@ void menu_main_window_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_main_window_special_effects,NULL,
             "Emulated Display FX","FX de Pantalla Emulada","FX de Pantalla Emulada");
         menu_add_item_menu_shortcut(array_menu_window_settings,'x');
-        menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        //menu_add_item_menu_tiene_submenu(array_menu_window_settings);
+        menu_add_item_menu_genera_ventana(array_menu_window_settings);
         menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
