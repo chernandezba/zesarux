@@ -1672,6 +1672,11 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
 
 }
 
+int menu_main_window_special_effects_cond_false(void)
+{
+    return 0;
+}
+
 void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
 {
     int efecto_seleccionado=valor_opcion;
@@ -1704,19 +1709,24 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
     }
     menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
 
-    if (efecto_seleccionado>0) {
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_up,NULL,
-        "Move Up","Mover Arriba","Moure Amunt");
-        menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_arriba());
-        menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
-    }
 
-    if (efecto_seleccionado<MAX_SCREEN_LIST_EFFECTS-1) {
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_down,NULL,
-        "Move Down","Mover Abajo","Moure Avall");
-        menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_abajo());
-        menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
-    }
+    int (*condicion_up)()=NULL;
+    if (efecto_seleccionado==0) condicion_up=menu_main_window_special_effects_cond_false;
+
+    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_up,condicion_up,
+    "Move Up","Mover Arriba","Moure Amunt");
+    menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_arriba());
+    menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+
+
+    int (*condicion_down)()=NULL;
+    if (efecto_seleccionado==MAX_SCREEN_LIST_EFFECTS-1) condicion_down=menu_main_window_special_effects_cond_false;
+
+    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_move_down,condicion_down,
+    "Move Down","Mover Abajo","Moure Avall");
+    menu_add_item_menu_prefijo_format(array_menu_common,"%c ",zxvision_retorna_caracter_flecha_abajo());
+    menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+
 
     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_insert_effect,NULL,
     "Insert effect","Insertar efecto","Insertar efecte");
