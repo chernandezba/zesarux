@@ -26567,7 +26567,10 @@ void menu_find_bytes(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_find_bytes);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&find_bytes_opcion_seleccionada,&item_seleccionado,array_menu_find_bytes,"Find bytes" );
+                menu_add_item_menu_index_full_path(array_menu_find_bytes,
+                    "Main Menu-> Debug-> Find-> Find bytes","Menú Principal-> Debug-> Encontrar-> Encontrar bytes","Menú Principal-> Debug-> Trobar-> Trobar bytes");
+
+                retorno_menu=menu_dibuja_menu(&find_bytes_opcion_seleccionada,&item_seleccionado,array_menu_find_bytes,"Find bytes","Encontrar bytes","Trobar bytes" );
 
 
 
@@ -26756,7 +26759,10 @@ void menu_find_lives(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_find_lives);
 
-                retorno_menu=menu_dibuja_menu_no_title_lang(&find_lives_opcion_seleccionada,&item_seleccionado,array_menu_find_lives,"Find lives" );
+                menu_add_item_menu_index_full_path(array_menu_find_lives,
+                    "Main Menu-> Debug-> Find-> Find lives","Menú Principal-> Debug-> Encontrar-> Encontrar vidas","Menú Principal-> Debug-> Trobar-> Trobar vides");
+
+                retorno_menu=menu_dibuja_menu(&find_lives_opcion_seleccionada,&item_seleccionado,array_menu_find_lives,"Find lives","Encontrar vidas","Trobar vides" );
 
 
 
@@ -27724,9 +27730,6 @@ void menu_memory_cheat(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
 void menu_find(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_find;
@@ -27734,16 +27737,14 @@ void menu_find(MENU_ITEM_PARAMETERS)
         int retorno_menu;
 
 
-
-
         do {
 
-                menu_add_item_menu_inicial_format(&array_menu_find,MENU_OPCION_NORMAL,menu_find_bytes,NULL,"Find bytes");
+                menu_add_item_menu_en_es_ca_inicial(&array_menu_find,MENU_OPCION_NORMAL,menu_find_bytes,NULL,"Find bytes","Encontrar bytes","Trobar bytes");
                 menu_add_item_menu_tooltip(array_menu_find,"Find several bytes on memory");
                 menu_add_item_menu_tiene_submenu(array_menu_find);
                 menu_add_item_menu_ayuda(array_menu_find,"Find several bytes on the 64 KB of mapped memory, considering the last address found (if any)");
 
-                menu_add_item_menu_format(array_menu_find,MENU_OPCION_NORMAL,menu_find_lives,NULL,"Find lives address");
+                menu_add_item_menu_en_es_ca(array_menu_find,MENU_OPCION_NORMAL,menu_find_lives,NULL,"Find lives","Encontrar vidas","Trobar vides");
                 menu_add_item_menu_tooltip(array_menu_find,"Find memory pointer where lives are located");
                 menu_add_item_menu_tiene_submenu(array_menu_find);
                 menu_add_item_menu_ayuda(array_menu_find,"Find memory pointer where lives are located)");
@@ -27759,8 +27760,11 @@ void menu_find(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_find);
 
+                menu_add_item_menu_index_full_path(array_menu_find,
+                    "Main Menu-> Debug-> Find","Menú Principal-> Debug-> Encontrar","Menú Principal-> Debug-> Trobar");
+
                 retorno_menu=menu_dibuja_menu(&find_opcion_seleccionada,&item_seleccionado,array_menu_find,
-                    "Find menu","Menú Find","Menú Find" );
+                    "Find","Encontrar","Trobar" );
 
 
 
@@ -30226,7 +30230,11 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_machine_selection,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_machine_selection);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&hotswap_machine_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,"Hotswap Machine Menu" );
+        menu_add_item_menu_index_full_path(array_menu_machine_selection,
+            "Main Menu-> Machine-> Hotswap Machine","Menú Principal-> Máquina-> Hotswap Máquina","Menú Principal-> Máquina-> Hotswap Màquina");
+
+        retorno_menu=menu_dibuja_menu(&hotswap_machine_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,
+            "Hotswap Machine","Hotswap Máquina","Hotswap Màquina" );
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

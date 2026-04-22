@@ -6340,6 +6340,11 @@ void menu_ula_settings(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu(array_menu_ula_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_ula_settings);
 
+        menu_add_item_menu_index_full_path(array_menu_ula_settings,
+            "Main Menu-> Settings-> Hardware-> ULA Settings",
+            "Menú Principal-> Opciones-> Hardware-> Opciones ULA",
+            "Menú Principal-> Opcions-> Hardware-> Opcions ULA");
+
         retorno_menu=menu_dibuja_menu(&ula_settings_opcion_seleccionada,&item_seleccionado,array_menu_ula_settings,
             "ULA Settings","Opciones ULA","Opcions ULA" );
 
