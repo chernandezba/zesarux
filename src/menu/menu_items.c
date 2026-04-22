@@ -45648,7 +45648,9 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
 
             if ( (retorno_menu!=MENU_RETORNO_ESC) &&  (retorno_menu==MENU_RETORNO_F10)  ) {
 
-                //menu_exit_emulator(0);
+                //Si se llama aqui pulsando F10 desde top menu habilitado, hay que resetear la posicion del siguiente menu, para que aparezca centrado
+                //si no, saldria arriba pegado al top menu
+                zxvision_reset_set_next_menu_position();
                 menu_principal_salir_emulador(0);
 
             }
