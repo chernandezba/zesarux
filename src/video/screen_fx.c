@@ -335,6 +335,7 @@ void screen_effects_table_insert_picture_in_picture(void)
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_REDUCE;
 
     screen_reduction_factor=SCREEN_REDUCE_025;
+    screen_reduce_antialias.v=1;
 
     screen_effect_applied_list[i].enabled=1;
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_COPY_TO_BUFFER;
@@ -1585,13 +1586,8 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
     int total_pixeles=ancho*alto;
     int total_pixeles_afectados=(total_pixeles*screen_rainbow_effect_interferences_intensity)/SCREEN_FX_INTERFERENCES_MAX_INTENSITY;
 
-    int x,y;
 
     for (;total_pixeles_afectados>0;total_pixeles_afectados--) {
-
-
-        //int x=util_get_random() % ancho;
-        //int y=util_get_random() % alto;
 
         int x=util_get_random_enhanced() % ancho;
         int y=util_get_random_enhanced() % alto;

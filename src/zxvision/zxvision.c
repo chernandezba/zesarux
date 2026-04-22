@@ -27559,7 +27559,7 @@ void menu_ventana_scanf_numero_set_texto_segun_valor_slider(int valor_opcion)
 }
 
 
-char *menu_ventana_scanf_texto_item_valor(struct s_menu_item *item_pedido)
+char *menu_ventana_scanf_texto_item_valor(struct s_menu_item *item_pedido GCC_UNUSED)
 {
     return menu_ventana_scanf_numero_parametros.texto;
 }

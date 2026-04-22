@@ -109,11 +109,6 @@ antes de commonsdl_init
 -en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
 
 
--efectos especiales
-ok *revisar liberar memoria
-*En features indicar efecto 3D anaglifo usando varios FX
-ok *efecto vsync franja que va bajando: quiza una linea mas intensa (200%, configurable) seguida de otras lineas mas arriba en decreciente intensidad hasta 100%
-
 
 -slider
 *si rango pequeño, como en window zoom, salen repetidos caracteres "|"
