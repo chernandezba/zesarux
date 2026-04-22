@@ -136,6 +136,7 @@ struct zeng_online_room {
     int created;
     int max_players;
     int current_players;
+    int uptime; //en minutos
     int do_not_allow_events; //TODO: no permitir envio de eventos en esta room, util para solo transmitir desde el master y que nadie interactue
     char name[ZENG_ONLINE_MAX_ROOM_NAME+1]; //+1 para el 0 del final
 

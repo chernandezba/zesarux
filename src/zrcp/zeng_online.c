@@ -233,6 +233,8 @@ void zeng_online_destroy_room_aux(int room_number)
 
     zeng_online_rooms_list[room_number].current_players=0;
 
+    zeng_online_rooms_list[room_number].uptime=0;
+
     strcpy(zeng_online_rooms_list[room_number].name,"<free>");
 
     if (zeng_online_rooms_list[room_number].snapshot_memory!=NULL) {
@@ -246,6 +248,32 @@ void zeng_online_destroy_room_aux(int room_number)
 
 }
 
+void zeng_online_increment_uptime_rooms(void)
+{
+
+    DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Increment uptime of rooms");
+    printf("ZENG Online: Increment uptime of rooms\n");
+
+    int room_number;
+
+    struct timeval tiempo_ahora;
+    timer_stats_current_time(&tiempo_ahora);
+
+    long difftime;
+
+    int i;
+
+    for (room_number=0;room_number<zeng_online_current_max_rooms;room_number++) {
+        if (zeng_online_rooms_list[room_number].created) {
+            //DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Increment uptime of room %d",room_number);
+            printf("ZENG Online: Increment uptime of room %d\n",room_number);
+
+            zeng_online_rooms_list[room_number].uptime++;
+
+        }
+
+    }
+}
 
 void zeng_online_expire_non_alive_users(void)
 {
@@ -349,6 +377,9 @@ void timer_zeng_online_server(void)
 
     //Destruir rooms que no tengan usuarios
     if (zeng_online_destroy_rooms_without_players.v) zeng_online_destroy_empty_rooms();
+
+    //Incrementar contador de uptime
+    zeng_online_increment_uptime_rooms();
 
 }
 
@@ -736,6 +767,7 @@ void init_zeng_online_rooms(void)
         zeng_online_rooms_list[i].created=0;
         zeng_online_rooms_list[i].max_players=zeng_online_current_max_players_per_room;
         zeng_online_rooms_list[i].current_players=0;
+        zeng_online_rooms_list[i].uptime=0;
         strcpy(zeng_online_rooms_list[i].name,"<free>");
         zeng_online_rooms_list[i].snapshot_memory=NULL;
         zeng_online_rooms_list[i].snapshot_size=0;
@@ -877,6 +909,7 @@ void zeng_online_create_room(int misocket,int room_number,char *room_name,int st
     //zeng_online_rooms_list[room_number].max_players=zeng_online_current_max_players_per_room;
 
     zeng_online_rooms_list[room_number].current_players=0;
+    zeng_online_rooms_list[room_number].uptime=0;
     zeng_online_rooms_list[room_number].snapshot_memory=NULL;
 
     zeng_online_rooms_list[room_number].autojoin_enabled=0;
@@ -985,15 +1018,16 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
 
         int i;
 
-        escribir_socket(misocket,"N.  Created Autojoin Players Max Name\n");
+        escribir_socket(misocket,"N.  Created Autojoin Players Max Uptime Name\n");
 
         for (i=0;i<zeng_online_current_max_rooms;i++) {
-            escribir_socket_format(misocket,"%3d %d       %d      %3d       %3d %s\n",
+            escribir_socket_format(misocket,"%3d %d       %d      %3d       %3d %6d    %s\n",
                 i,
                 zeng_online_rooms_list[i].created,
                 zeng_online_rooms_list[i].autojoin_enabled,
                 zeng_online_rooms_list[i].current_players,
                 zeng_online_rooms_list[i].max_players,
+                zeng_online_rooms_list[i].uptime/60,   //retornamos en horas
                 zeng_online_rooms_list[i].name
             );
         }

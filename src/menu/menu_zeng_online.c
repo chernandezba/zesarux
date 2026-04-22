@@ -254,7 +254,7 @@ int menu_zeng_online_authorize_join_cond(zxvision_window *w GCC_UNUSED)
     return !zeng_online_client_authorize_join_thread_running;
 }
 
-int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int *current_players,int *max_players,char *room_name)
+int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int *current_players,int *max_players,int *uptime,char *room_name)
 {
 
     room_name[0]=0;
@@ -356,8 +356,8 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
 
         //TODO: si ventana poco ancho, puede seleccionar linea entre medio solo con espacios
 
-        //Vamos a parsear 4 valores y luego una string
-        #define ROOM_LIST_CAMPOS_LEER 5
+        //Vamos a parsear varios valores numéricos y luego una string
+        #define ROOM_LIST_CAMPOS_LEER 6
         int valores[ROOM_LIST_CAMPOS_LEER];
         int total_valores=0;
 
@@ -405,6 +405,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
         *autojoin=valores[2];
         *current_players=valores[3];
         *max_players=valores[4];
+        *uptime=valores[5];
 
         //Truncar nombre ventana hasta espacio final
         int inicio_nombre=strlen(item_seleccionado.texto_opcion)-1;
@@ -655,10 +656,10 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
     }
 
 
-    int room_number,created,autojoin,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players,uptime;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,room_name);
 
     if (retorno>=0) {
 
@@ -712,10 +713,10 @@ void menu_zeng_online_rejoin_master(MENU_ITEM_PARAMETERS)
     }
 
 
-    int room_number,created,autojoin,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players,uptime;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,room_name);
 
     if (retorno>=0) {
 
@@ -757,10 +758,10 @@ void menu_zeng_online_rejoin_manager_master(MENU_ITEM_PARAMETERS)
     }
 
 
-    int room_number,created,autojoin,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players,uptime;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,room_name);
 
     if (retorno>=0) {
 
@@ -807,11 +808,13 @@ void menu_zeng_online_rejoin_manager_master(MENU_ITEM_PARAMETERS)
 void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
 {
 
-    int room_number,created,autojoin,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players,uptime;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
     //int retorno=
-    menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
+    menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,room_name);
+
+    printf("Uptime: [%d] Room name: [%s]\n",uptime,room_name);
 
 
 }
@@ -1118,10 +1121,10 @@ void menu_zeng_online_join_room(MENU_ITEM_PARAMETERS)
     //char texto_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
 
-    int room_number,created,autojoin,current_players,max_players;
+    int room_number,created,autojoin,current_players,max_players,uptime;
     char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,room_name);
 
     if (retorno>=0) {
 
