@@ -814,7 +814,7 @@ void menu_zeng_online_list_rooms_menu_item(MENU_ITEM_PARAMETERS)
     //int retorno=
     menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,room_name);
 
-    printf("Uptime: [%d] Room name: [%s]\n",uptime,room_name);
+    //printf("Uptime: [%d] Room name: [%s]\n",uptime,room_name);
 
 
 }

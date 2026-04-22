@@ -252,21 +252,12 @@ void zeng_online_increment_uptime_rooms(void)
 {
 
     DBG_PRINT_ZENG_ONLINE VERBOSE_INFO,"ZENG Online: Increment uptime of rooms");
-    printf("ZENG Online: Increment uptime of rooms\n");
 
     int room_number;
 
-    struct timeval tiempo_ahora;
-    timer_stats_current_time(&tiempo_ahora);
-
-    long difftime;
-
-    int i;
-
     for (room_number=0;room_number<zeng_online_current_max_rooms;room_number++) {
         if (zeng_online_rooms_list[room_number].created) {
-            //DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Increment uptime of room %d",room_number);
-            printf("ZENG Online: Increment uptime of room %d\n",room_number);
+            DBG_PRINT_ZENG_ONLINE VERBOSE_DEBUG,"ZENG Online: Increment uptime of room %d",room_number);
 
             zeng_online_rooms_list[room_number].uptime++;
 
@@ -1021,7 +1012,7 @@ void zeng_online_parse_command(int misocket,int comando_argc,char **comando_argv
         escribir_socket(misocket,"N.  Created Autojoin Players Max Uptime Name\n");
 
         for (i=0;i<zeng_online_current_max_rooms;i++) {
-            escribir_socket_format(misocket,"%3d %d       %d      %3d       %3d %6d    %s\n",
+            escribir_socket_format(misocket,"%3d %d       %d      %3d       %3d %6d %s\n",
                 i,
                 zeng_online_rooms_list[i].created,
                 zeng_online_rooms_list[i].autojoin_enabled,
