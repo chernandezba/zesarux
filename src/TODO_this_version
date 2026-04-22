@@ -110,7 +110,7 @@ antes de commonsdl_init
 
 
 -efectos especiales
-*revisar liberar memoria
+ok *revisar liberar memoria
 *En features indicar efecto 3D anaglifo usando varios FX
 ok *efecto vsync franja que va bajando: quiza una linea mas intensa (200%, configurable) seguida de otras lineas mas arriba en decreciente intensidad hasta 100%
 

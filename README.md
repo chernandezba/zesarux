@@ -180,6 +180,8 @@ __FEATURES__
 - Scanlines, Sepia, Red, RGB, Decolorize, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
 - Restore Original, Copy to buffer, Mix from Buffer, Load BMP
 
+* Can generate Anaglyph images for 3D glasses (red-blue glasses)
+
 * Uses its own powerful window environment (ZX Vision) inside the program application window, having the same GUI style on all plattforms. Allows to have an extended display to hold menus and multitask windows in the GUI (ZX Desktop)
 
 * Partial support for Spanish and Catalan language on menus
