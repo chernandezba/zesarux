@@ -1691,6 +1691,7 @@ void menu_main_window_special_effects_change(MENU_ITEM_PARAMETERS)
     menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_main_window_special_effects_change_type,NULL,
     "Change Type","Cambiar Tipo","Canviar Tipus");
     menu_add_item_menu_valor_opcion(array_menu_common,efecto_seleccionado);
+    menu_add_item_menu_genera_ventana(array_menu_common);
 
 
     if (screen_effect_applied_list[efecto_seleccionado].enabled==0) {
@@ -2188,6 +2189,7 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_common,"Effects are applied in order, starting from top to bottom");
                 menu_add_item_menu_ayuda(array_menu_common,"Effects are applied in order, starting from top to bottom");
                 menu_add_item_menu_valor_opcion(array_menu_common,i);
+                menu_add_item_menu_genera_ventana(array_menu_common);
 
                 if (menu_main_window_special_effects_mover_cursor && menu_main_window_special_effects_mover_cursor_linea==i) {
                     menu_main_window_special_effects_mover_cursor=0; //para que no coincida con nada

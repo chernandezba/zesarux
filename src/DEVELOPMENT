@@ -168,6 +168,8 @@ tiene este parametro. Por lo general, lo que son acciones (sin ventanas de confi
 
 * si una funcion utiliza menus tabulados, y no es una ventana como tal (por ejemplo menu_ventana_scanf_numero), debe guardar estado al entrar de salir_todos_menus
 y restaurarlo al salir, porque el uso de menus tabulados cambia salir_todos_menus a 0
+* si es una ventana que usa funciones de menu pero no es un menu, usar funciones menu_dibuja_menu_dialogo_no_title_lang o menu_dibuja_menu_dialogo
+Ademas el menu que llama a esa ventana tiene que indicar al menos este flag: menu_add_item_menu_genera_ventana(
 
 -----------------------------------------
 Sobre indexado de menus
