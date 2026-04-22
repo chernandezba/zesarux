@@ -3185,7 +3185,6 @@ int parse_cmdline_options(int desde_commandline)
                         screen_rainbow_effect_vsync_y_velocidad=valor_speed;
                     }
                 }
-
             }
 
             else if (!strcmp(argv[puntero_parametro],"--video-fx-rgb")) {
