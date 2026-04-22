@@ -45,7 +45,8 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 
 
--Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
+ok -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
+
 -Zeng opción para enviar mensaje a un usuario concreto
 -En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas

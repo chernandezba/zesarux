@@ -942,7 +942,7 @@ struct s_items_ayuda items_ayuda[]={
     "                                                uuid is a unique identifier for the client, usually can be the same as Statistics uuid\n"
     "kick creator_pass n uuid                        Kick user identified by uuid\n"
     "leave n user_pass uuid                          Leaves room n.\n"
-    "list-rooms                                      Returns rooms list\n"
+    "list-rooms                                      Returns rooms list with the following info: Room number, created (0=No, 1=Yes), autojoin (0=No, 1=Yes), current players, max players, uptime (in hours) and room name\n"
     "list-users user_pass n                          Gets the list of joined users on room n, user and uuid on separate lines\n"
     "put-snapshot creator_pass n data                Put a snapshot on room n, requieres creator_pass for that room. Data must be hexadecimal characters without spaces\n"
     "rename-room creator_pass n name                 Rename room n with name\n"
