@@ -109,11 +109,6 @@ antes de commonsdl_init
 -en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
 
 
-
--slider
-*si rango pequeño, como en window zoom, salen repetidos caracteres "|"
-
-
 -real video render
 Que en vez de ir siempre al offset 0,0 pueda ir al offset de una ventana abierta, la de video output
 Esto permitira mover el render a una ventana. Pero requiere:

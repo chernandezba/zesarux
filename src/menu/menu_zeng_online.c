@@ -272,7 +272,7 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
     }
 
     if (zeng_remote_list_rooms_buffer[0]!=0) {
-        //zxvision_generic_message("Rooms",zeng_remote_list_rooms_buffer);
+
 
         //Mostrar latencia
         if (menu_show_advanced_items.v) {
@@ -292,86 +292,53 @@ int menu_zeng_online_list_rooms(int *room_number,int *created,int *autojoin,int 
         }
 
 
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-    int opcion_seleccionada=0;
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        int opcion_seleccionada=0;
 
-    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-    //Ir agregando lineas hasta final
-    int i;
-    int inicio_linea=0;
+        //Ir agregando lineas hasta final
+        int i;
+        int inicio_linea=0;
 
-    int linea=0;
+        int linea=0;
 
-    for (i=0;zeng_remote_list_rooms_buffer[i];i++) {
-        if (zeng_remote_list_rooms_buffer[i]=='\n') {
-            zeng_remote_list_rooms_buffer[i]=0;
-            //El primero es cabecera y lo metemos como tipo separador
-            if (linea==0) {
-                //printf("Primer item\n");
-                menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_SEPARADOR,NULL,NULL);
+        for (i=0;zeng_remote_list_rooms_buffer[i];i++) {
+            if (zeng_remote_list_rooms_buffer[i]=='\n') {
+                zeng_remote_list_rooms_buffer[i]=0;
+                //El primero es cabecera y lo metemos como tipo separador
+                if (linea==0) {
+                    //printf("Primer item\n");
+                    menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_SEPARADOR,NULL,NULL);
+                }
+                else {
+                    menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+                    //Al menos hay dos items de menu, por tanto opcion inicial es la segunda
+                    opcion_seleccionada=1;
+                }
+
+                inicio_linea=i+1;
+
+                linea++;
             }
-            else {
-                menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
-                //Al menos hay dos items de menu, por tanto opcion inicial es la segunda
-                opcion_seleccionada=1;
-            }
-
-            inicio_linea=i+1;
-
-            linea++;
         }
-    }
 
-    //Y el del final. Siempre que no sea texto en blanco
-    if (zeng_remote_list_rooms_buffer[inicio_linea] && zeng_remote_list_rooms_buffer[inicio_linea]!='\n') {
-        menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
-    }
+        //Y el del final. Siempre que no sea texto en blanco
+        if (zeng_remote_list_rooms_buffer[inicio_linea] && zeng_remote_list_rooms_buffer[inicio_linea]!='\n') {
+            menu_add_item_menu(array_menu_common,&zeng_remote_list_rooms_buffer[inicio_linea],MENU_OPCION_NORMAL,NULL,NULL);
+        }
 
 
-        //menu_add_item_menu_separator(array_menu_common);
 
-        //menu_add_ESC_item(array_menu_common);
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Rooms");
 
         //Si no seleccionada linea valida
         if (!((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0)) {
             return -1;
-
-            /*
-                //llamamos por valor de funcion
-                if (item_seleccionado.menu_funcion!=NULL) {
-                        //printf ("actuamos por funcion\n");
-                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-
-                }
-            */
         }
-
-    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-//printf(item_seleccionado.texto_opcion);
-        //generic_message_tooltip_return retorno_ventana;
-        //zxvision_generic_message_tooltip("Rooms", 0,0, 0, 1, &retorno_ventana, 1, 0, "%s", zeng_remote_list_rooms_buffer);
-
-
-        //printf("Despues ventana rooms\n");
-        //Si se sale con ESC
-        //if (retorno_ventana.estado_retorno==0) return -1;
-
-        //Linea seleccionada es 1? quiere decir que se selecciona texto "--- edition"
-    /*
-        Por defecto, linea seleccionada es 0, incluso aunque no se haya habilitado linea de cursor, por ejemplo
-        al buscar texto con f y n
-        Como la que buscamos es la 1, no hay problema de falso positivo
-    */
-        //int linea=retorno_ventana.linea_seleccionada;
-
-        //printf("linea: %d\n",linea);
-        //printf("Texto seleccionado: [%s]\n",item_seleccionado.texto_opcion);
 
 
 
