@@ -8578,7 +8578,7 @@ void menu_settings_storage(MENU_ITEM_PARAMETERS)
         menu_add_ESC_item(array_menu_settings_storage);
 
         menu_add_item_menu_index_full_path(array_menu_settings_storage,
-            "Main Menu-> Settings-> Hardware-> Storage","Menú Principal-> Opciones-> Hardware-> Almacenamiento","Menú Principal-> Opcions-> Hardware-> Emmagatzematgea");
+            "Main Menu-> Settings-> Hardware-> Storage","Menú Principal-> Opciones-> Hardware-> Almacenamiento","Menú Principal-> Opcions-> Hardware-> Emmagatzematge");
 
 
         retorno_menu=menu_dibuja_menu(&settings_storage_opcion_seleccionada,&item_seleccionado,array_menu_settings_storage,

@@ -377,3 +377,36 @@ probablemente porque el alto es multiple de 8 y queda menos de una fila abajo si
 
 -al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
 
+-Zeng opción para enviar mensaje a un usuario concreto
+-En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
+Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
+
+
+-Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
+
+-poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
+esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
+Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
+eso se envía en las estadísticas
+
+-real video render
+Que en vez de ir siempre al offset 0,0 pueda ir al offset de una ventana abierta, la de video output
+Esto permitira mover el render a una ventana. Pero requiere:
+-que esa ventana aunque esté arriba no "tape" el render de pixeles: por defecto toda ventana arriba tapa el render de abajo. quiza atributo nuevo de ventana tipo "transparente"
+o solo un atributo especial para este render
+-que el render no salga de los limites de esa ventana ni de la ventana principal
+-alguna manera de conmutar entre el render normal y el de esa ventana
+
+
+-FX de pantalla emulada que en vez de aplicarlos al rainbow buffer, lo aplique a un buffer posterior que ya tiene el zoom aplicado
+Esto permitiria que efectos como scanlines se vieran mejor (al no aplicarse el zoom despues del efecto, sino que el zoom vendria antes). El flujo seria:
+
+-maquina emulada genera rainbow buffer -> se genera otro buffer de tamaño * zoom -> se aplica FX a ese nuevo buffer-> se renderiza en pantalla ese buffer, teniendo en cuenta
+que ya no habrán varias rutinas putpixel segun si zoom 1 o zoom >1, sino que siempre seria zoom a 1 (porque ya ha escalado en el buffer anterior)
+-efectos que leen posicion raton/zoom, ya no se dividira por zoom
+-hay algunos efectos que no quedaran tambien aplicandolos en el buffer con el zoom, cuales?
+
+
+-vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
+
+

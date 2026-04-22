@@ -5,8 +5,6 @@
 Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
 pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 
--Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
-
 
 
 -lightgun
@@ -28,8 +26,6 @@ Util si estamos en debug cpu y queremos que un juego lea el boton del ratón (em
 Quizá con una opción y sólo si está el foco en ventana de debug CPU
 
 
-
-
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
 
@@ -44,20 +40,9 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 -Probar compilar contra ssl en mac desde homebrew
 
 
-
-ok -Poder saber en que fecha se ha iniciado una sala de zeng online y/o indicar el uptime
-
--Zeng opción para enviar mensaje a un usuario concreto
--En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
-Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
-
-
-
 -revisar parpadeos en linux en top buttons al moverse por los menus
 ->parece que solo pasa con driver xwindow, con sdl no pasa
 
-
--vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
 
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
@@ -72,12 +57,6 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 
 -PCW:
 * revisar info de la wiki: https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini y ver si falta algo y/o si está todo bien
-
-
--poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
-esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
-Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
-eso se envía en las estadísticas
 
 
 -probar fullscreen en todos drivers
@@ -107,10 +86,3 @@ antes de commonsdl_init
 -en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
 
 
--real video render
-Que en vez de ir siempre al offset 0,0 pueda ir al offset de una ventana abierta, la de video output
-Esto permitira mover el render a una ventana. Pero requiere:
--que esa ventana aunque esté arriba no "tape" el render de pixeles: por defecto toda ventana arriba tapa el render de abajo. quiza atributo nuevo de ventana tipo "transparente"
-o solo un atributo especial para este render
--que el render no salga de los limites de esa ventana ni de la ventana principal
--alguna manera de conmutar entre el render normal y el de esa ventana
