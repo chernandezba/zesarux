@@ -105,7 +105,7 @@ Improved editing joystick to events/keys (allow to unasign easily)
 Improved Trash icon
 Improved decimal precision of Basic Variables window values
 Improved code to allow compilation on other Unix systems, like AROS, FiwixOS, Sortix, Minix3
-Improved ZENG Online protocol: allow to connect different ZEsarUX client and server versions (if they are compatible)
+Improved ZENG Online protocol: allow to connect different ZEsarUX client and server versions (if they are compatible), add uptime to rooms
 Improved inserting device files (mmc files, ide files, etc): now they are automatically enabled after inserting them
 Improved ZEsarUX window title: unify title on all different drivers: SDL, X11, etc ...
 
