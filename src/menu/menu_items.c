@@ -12017,6 +12017,9 @@ void menu_debug_draw_sprites(void)
         else total_sprites_mostrar=32;
     }
 
+    //Si no es maquina sms, no hay que tener activada esta opción porque si no, se verán mal los sprites
+    if (!MACHINE_HAS_VDP_9918A) view_sprites_sms_tiles=0;
+
     int contador_sprite_mostrar;
 
     int orig_view_sprites_direccion=view_sprites_direccion;

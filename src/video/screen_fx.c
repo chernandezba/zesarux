@@ -120,7 +120,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_FLIP_HORIZONTAL,"Flip Horizontal","Invertir Horizontal","Invertir Horizontal",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_ROTATE,"Rotate","Rotar","Rotar",&screen_rainbow_effect_rotate_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_TWIRL,"Twirl","Remolino","Remolí",&screen_rainbow_effect_remolino_follow_mouse,NULL,0,0,0},
-    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences","Interferencias","Interferencies",NULL,&screen_rainbow_effect_interferences_intensity,SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY,0,100},
+    {SCREEN_EFFECT_TYPE_INTERFERENCES,"Interferences","Interferencias","Interferencies",NULL,&screen_rainbow_effect_interferences_intensity,SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY,0,SCREEN_FX_INTERFERENCES_MAX_INTENSITY},
     {SCREEN_EFFECT_TYPE_SEA,"Sea","Mar","Mar",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_WAVES,"Waves","Ondas","Ones",&screen_rainbow_effect_improved_waves_follow_mouse,&screen_rainbow_effect_improved_waves_intensity,SCREEN_FX_WAVES_DEFAULT_INTENSITY,2,20},
     {SCREEN_EFFECT_TYPE_MAGNETIC_FIELD,"Magnetic Field","Campo Magnético","Camp Magnètic",NULL,&screen_rainbow_effect_attraction_intensity,SCREEN_FX_ATTRACTION_DEFAULT_INTENSITY,1,20},
@@ -136,6 +136,7 @@ screen_effect_type_name screen_effect_type_list[MAX_SCREEN_EFFECTS]={
     {SCREEN_EFFECT_TYPE_LED_RGB,"LED RGB","LED RGB","LED RGB",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_HSYNC_LOST,"Hsync lost","Pérdida Hsync","Pèrdua Hsync",NULL,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_VSYNC_LOST,"Vsync lost","Pérdida Vsync","Pèrdua Vsync",NULL,NULL,0,0,0},
+    {SCREEN_EFFECT_TYPE_VSYNC,"Vsync","Vsync","Vsync",NULL,&screen_rainbow_effect_vsync_brillo_intensidad,SCREEN_FX_VSYNC_DEFAULT_INTENSITY,SCREEN_FX_VSYNC_MIN_INTENSITY,SCREEN_FX_VSYNC_MAX_INTENSITY},
     {SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL,"Scroll Horizontal","Scroll Horizontal","Scroll Horitzontal",&screen_rainbow_effect_scroll_horizontal_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,"Scroll Vertical","Scroll Vertical","Scroll Vertical",&screen_rainbow_effect_scroll_vertical_follow_mouse,NULL,0,0,0},
     {SCREEN_EFFECT_TYPE_FADEIN,"Fade In","Fade In","Fade In",NULL,NULL,0,0,0},
@@ -368,6 +369,11 @@ void screen_effects_table_insert_old_crt(void)
     screen_effect_applied_list[i].enabled=1;
     screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_SCANLINES;
 
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_VSYNC;
+    screen_rainbow_effect_vsync_brillo_intensidad=50;
+    screen_rainbow_effect_vsync_y_velocidad=1;
+
 }
 
 void screen_effects_table_insert_my_old_crt(void)
@@ -418,6 +424,15 @@ void screen_effects_table_insert_my_old_crt(void)
     screen_rainbow_effect_rgb_red.v=1;
     screen_rainbow_effect_rgb_green.v=1;
     screen_rainbow_effect_rgb_blue.v=1;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_INTERFERENCES;
+    screen_rainbow_effect_interferences_intensity=1;
+
+    screen_effect_applied_list[i].enabled=1;
+    screen_effect_applied_list[i++].type=SCREEN_EFFECT_TYPE_VSYNC;
+    screen_rainbow_effect_vsync_brillo_intensidad=50;
+    screen_rainbow_effect_vsync_y_velocidad=1;
 
 }
 
@@ -1567,25 +1582,24 @@ void screen_rainbow_effect_interferences(z80_int *origen,z80_int *destino,int an
     int tamanyo=ancho*alto*2;
     memcpy(destino,origen,tamanyo);
 
+    int total_pixeles=ancho*alto;
+    int total_pixeles_afectados=(total_pixeles*screen_rainbow_effect_interferences_intensity)/SCREEN_FX_INTERFERENCES_MAX_INTENSITY;
 
     int x,y;
 
-    for (y=0;y<alto;y++) {
-        for (x=0;x<ancho;x++) {
+    for (;total_pixeles_afectados>0;total_pixeles_afectados--) {
 
-            int valor=util_get_random() % 10000;
 
-            int umbral=100*screen_rainbow_effect_interferences_intensity;
+        //int x=util_get_random() % ancho;
+        //int y=util_get_random() % alto;
 
-            if (valor<umbral) {
+        int x=util_get_random_enhanced() % ancho;
+        int y=util_get_random_enhanced() % alto;
 
-                int offset=y*ancho+x;
+        int offset=y*ancho+x;
 
-                destino[offset]=15; //blanco
+        destino[offset]=15; //blanco
 
-            }
-
-        }
 
     }
 
@@ -1823,6 +1837,87 @@ void screen_rainbow_effect_vsync_lost(z80_int *origen,z80_int *destino,int ancho
 
     screen_rainbow_effect_vsync_lost_y_inicial++;
     if (screen_rainbow_effect_vsync_lost_y_inicial==alto) screen_rainbow_effect_vsync_lost_y_inicial=0;
+
+
+}
+
+int screen_rainbow_effect_vsync_y_inicial=0;
+int screen_rainbow_effect_vsync_grueso=5;
+
+//de 1 a 4. 1 rapido, 4 lento
+int screen_rainbow_effect_vsync_y_velocidad=SCREEN_FX_VSYNC_DEFAULT_SPEED;
+
+//Se le suma el porcentaje a 100
+int screen_rainbow_effect_vsync_brillo_intensidad=SCREEN_FX_VSYNC_DEFAULT_INTENSITY;
+
+
+void screen_rainbow_effect_vsync(z80_int *origen,z80_int *destino,int ancho,int alto)
+{
+
+    //Primero copiar tal cual de origen a destino
+    int tamanyo=ancho*alto*2;
+    memcpy(destino,origen,tamanyo);
+
+    int x,y;
+
+    y=screen_rainbow_effect_vsync_y_inicial/screen_rainbow_effect_vsync_y_velocidad;
+
+    int i;
+
+    int brillo=100+screen_rainbow_effect_vsync_brillo_intensidad;
+
+    int decremento=(brillo-100)/screen_rainbow_effect_vsync_grueso;
+
+    //printf("Decremento: %d\n",decremento);
+
+    for (i=0;i<screen_rainbow_effect_vsync_grueso;i++,y--) {
+
+        if (y>=0 && y<alto) {
+
+            for (x=0;x<ancho;x++) {
+                int offset=y*ancho+x;
+
+                int color=origen[offset];
+
+                unsigned int color32=spectrum_colortable[color];
+                int red=(color32 >> 16) & 0xFF;
+                int green=(color32 >> 8) & 0xFF;
+                int blue=(color32   ) & 0xFF;
+
+                //Si es negro, subir el color de negro tambien
+                if (red==0 && green==0 && red==0) red=green=blue=10;
+
+                red=(red*brillo)/100;
+                green=(green*brillo)/100;
+                blue=(blue*brillo)/100;
+
+                if (red>255) red=255;
+                if (green>255) green=255;
+                if (blue>255) blue=255;
+
+                red=(red>>3) & 0x1F;
+                green=(green>>3) & 0x1F;
+                blue=(blue>>3) & 0x1F;
+
+
+                //Usamos tabla de TSCONF_INDEX_FIRST_COLOR que tiene 5 bits por componente
+                int rgb15=(red<<10) | (green<<5) | blue;
+                color=TSCONF_INDEX_FIRST_COLOR+rgb15;
+
+                destino[offset]=color;
+
+            }
+        }
+
+        brillo -=decremento;
+        if (brillo<100) brillo=100;
+    }
+
+
+    screen_rainbow_effect_vsync_y_inicial++;
+
+    //Cuando desaparece aun está fuera sin verse un poco
+    if (screen_rainbow_effect_vsync_y_inicial/screen_rainbow_effect_vsync_y_velocidad>=alto+50) screen_rainbow_effect_vsync_y_inicial=0;
 
 
 }
@@ -3602,6 +3697,11 @@ z80_int *screen_special_effects_functions(z80_int *origen,int ancho,int alto)
 
                 case SCREEN_EFFECT_TYPE_VSYNC_LOST:
                     screen_rainbow_effect_vsync_lost(origen,destino,ancho,alto);
+                break;
+
+
+                case SCREEN_EFFECT_TYPE_VSYNC:
+                    screen_rainbow_effect_vsync(origen,destino,ancho,alto);
                 break;
 
                 case SCREEN_EFFECT_TYPE_SCROLL_HORIZONTAL:

@@ -3979,6 +3979,9 @@ int util_write_configfile(void)
 
     ADD_STRING_CONFIG,"--video-fx-frames Persistence %d",screen_rainbow_effect_persistence_total_frames);
 
+    ADD_STRING_CONFIG,"--video-fx-speed Vsync %d",screen_rainbow_effect_vsync_y_velocidad);
+
+
     ADD_STRING_CONFIG,"--video-fx-rgb RGB %d %d %d",screen_rainbow_effect_rgb_red.v,screen_rainbow_effect_rgb_green.v,screen_rainbow_effect_rgb_blue.v);
 
 
@@ -26141,6 +26144,22 @@ int util_get_random(void)
 
     //Para generar valores impares ?¿
     if (util_random_noise<500) valor_random++;
+
+    return valor_random;
+
+}
+
+//Devolver valor random usando libreria del sistema pero tambien tiene en cuenta pulsaciones de teclado o raton
+int util_get_random_enhanced(void)
+{
+
+    int valor_random=rand();
+
+    //un poco mas aleatorio
+    //como util_random_noise es valor en ms de tiempo pulsado tecla o raton, habitualmente
+    //esto ira de 0 a 1000
+    valor_random +=util_random_noise;
+
 
     return valor_random;
 

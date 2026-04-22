@@ -522,6 +522,8 @@ extern int convert_mdr_to_rmd(char *origen, char *destino);
 
 extern int util_get_random(void);
 
+extern int util_get_random_enhanced(void);
+
 extern z80_bit quickload_guessing_tzx_type;
 
 extern int load_binary_file(char *binary_file_load,int valor_leido_direccion,int valor_leido_longitud);

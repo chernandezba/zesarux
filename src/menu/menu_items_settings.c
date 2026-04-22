@@ -1858,9 +1858,9 @@ void menu_interface_special_effects_shaderborder_blur_intensity_leftright(MENU_I
     menu_ventana_scanf_numero_enhanced_default_dynamic("Intensity",&screen_rainbow_effect_shaderborder_blur_intensity_leftright,3,+1,1,16,0,4);
 }
 
-void menu_interface_special_effects_interferences_percentage(MENU_ITEM_PARAMETERS)
+void menu_interface_special_effects_interferences_intensity(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced_default_dynamic("Percentage",&screen_rainbow_effect_interferences_intensity,4,+1,0,100,0,SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY);
+    menu_ventana_scanf_numero_enhanced_default_dynamic("Intensity",&screen_rainbow_effect_interferences_intensity,6,+1,0,SCREEN_FX_INTERFERENCES_MAX_INTENSITY,0,SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY);
 }
 
 void menu_interface_special_effects_shaderborder_blur_intensity_updown(MENU_ITEM_PARAMETERS)
@@ -1974,6 +1974,17 @@ void menu_interface_special_effects_load_bmp(MENU_ITEM_PARAMETERS)
 
 
 }
+
+void menu_interface_special_effects_vsync_intensity(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced_default_dynamic("Intensity",&screen_rainbow_effect_vsync_brillo_intensidad,4,+1,SCREEN_FX_VSYNC_MIN_INTENSITY,SCREEN_FX_VSYNC_MAX_INTENSITY,0,SCREEN_FX_VSYNC_DEFAULT_INTENSITY);
+}
+
+void menu_interface_special_effects_vsync_speed(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced_default_dynamic("Speed",&screen_rainbow_effect_vsync_y_velocidad,4,+1,SCREEN_FX_VSYNC_MIN_SPEED,SCREEN_FX_VSYNC_MAX_SPEED,0,SCREEN_FX_VSYNC_DEFAULT_SPEED);
+}
+
 
 void menu_interface_special_effects_load_bmp_transparent_color(MENU_ITEM_PARAMETERS)
 {
@@ -2246,9 +2257,19 @@ void menu_main_window_special_effects(MENU_ITEM_PARAMETERS)
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_INTERFERENCES && enabled) {
-                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_interferences_percentage,NULL,
-                        "Percentage","Porcentaje","Percentatge");
-                    menu_add_item_menu_prefijo_format(array_menu_common," [%d %%] ",screen_rainbow_effect_interferences_intensity);
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_interferences_intensity,NULL,
+                        "Intensity","Intensidad","Intensitat");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_interferences_intensity);
+                }
+
+                if (type==SCREEN_EFFECT_TYPE_VSYNC && enabled) {
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_vsync_intensity,NULL,
+                        "Intensity","Intensidad","Intensitat");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_vsync_brillo_intensidad);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_special_effects_vsync_speed,NULL,
+                        "Speed","Velocidad","Velocitat");
+                    menu_add_item_menu_prefijo_format(array_menu_common," [%d] ",screen_rainbow_effect_vsync_y_velocidad);
                 }
 
                 if (type==SCREEN_EFFECT_TYPE_MIX_FROM_BUFFER && enabled) {

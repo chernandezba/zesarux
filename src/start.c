@@ -1345,6 +1345,7 @@ screen_effect_print_names();
         "--video-fx-frames effect frames                Sets frames parameter for effect (Note: only Persistence effect supports this parameter)\n"
         "--video-fx-follow-channel effect channel       Sets follow ay chip channel (A,B,C or 0) for effect (Note: only Lens effect supports this parameter)\n"
         "--video-fx-offset effect offset                Sets offset for effect (Note: only Scroll Horizontal and Scroll Vertical support this parameter)\n"
+        "--video-fx-speed effect speed                  Sets speed parameter for effect (Note: only Vsync effect supports this parameter)\n"
 
         "--video-fx-leftrightborder effect 0/1          Enables or disables effect on border left and right (Note: only Shader Border effect supports this parameter)\n"
         "--video-fx-updownborder effect 0/1             Enables or disables effect on border up and down (Note: only Shader Border effect supports this parameter)\n"
@@ -3159,6 +3160,29 @@ int parse_cmdline_options(int desde_commandline)
                     }
                     else {
                         screen_rainbow_effect_persistence_total_frames=valor_frames;
+                    }
+                }
+
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--video-fx-speed")) {
+                siguiente_parametro_argumento();
+
+                char *effect=argv[puntero_parametro];
+
+                siguiente_parametro_argumento();
+                int valor_speed=parse_string_to_number(argv[puntero_parametro]);
+
+                //Nota: este setting permite que en un futuro se reuse para otros efectos simplemente cambiando el nombre de efecto (el primer parametro)
+                if (strcasecmp(effect,"Vsync")) {
+                    debug_printf(VERBOSE_ERR,"Invalid effect for speed setting: %s",effect);
+                }
+                else {
+                    if (valor_speed<SCREEN_FX_VSYNC_MIN_SPEED || valor_speed>SCREEN_FX_VSYNC_MAX_SPEED) {
+                        debug_printf(VERBOSE_ERR,"Speed for effect %s out of range",effect);
+                    }
+                    else {
+                        screen_rainbow_effect_vsync_y_velocidad=valor_speed;
                     }
                 }
 

@@ -56,8 +56,14 @@ extern enum SCREEN_REDUCTIONS screen_reduction_factor;
 #define SCREEN_FX_ZOOM_MAX_FACTOR 80
 #define SCREEN_FX_DECOLORIZE_DEFAULT_INTENSITY 50
 #define SCREEN_FX_PERSISTENCE_DEFAULT_FRAMES 10
-#define SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY 10
-
+#define SCREEN_FX_INTERFERENCES_DEFAULT_INTENSITY 100
+#define SCREEN_FX_INTERFERENCES_MAX_INTENSITY 10000
+#define SCREEN_FX_VSYNC_DEFAULT_INTENSITY 50
+#define SCREEN_FX_VSYNC_MIN_INTENSITY 0
+#define SCREEN_FX_VSYNC_MAX_INTENSITY 100
+#define SCREEN_FX_VSYNC_DEFAULT_SPEED 1
+#define SCREEN_FX_VSYNC_MIN_SPEED 1
+#define SCREEN_FX_VSYNC_MAX_SPEED 4
 
 extern void screen_special_effects_free_buffers(void);
 extern z80_int *screen_special_effects_alloc_buffer(int ancho,int alto);
@@ -118,6 +124,9 @@ extern int screen_rainbow_effect_shaderborder_ancho_borde_izquierdo;
 extern int screen_rainbow_effect_shaderborder_ancho_borde_derecho;
 extern int screen_rainbow_effect_shaderborder_alto_pantalla;
 extern int screen_rainbow_effect_shaderborder_ancho_pantalla;
+
+extern int screen_rainbow_effect_vsync_y_velocidad;
+extern int screen_rainbow_effect_vsync_brillo_intensidad;
 
 extern int screen_rainbow_effect_blur_intensity;
 extern z80_bit screen_rainbow_effect_blur_follow_mouse;
@@ -181,7 +190,7 @@ extern int screen_rainbow_effect_load_bmp_transparent_rectangle_height;
 #define MAX_SCREEN_LIST_EFFECTS 60
 
 //Cantidad de efectos diferentes
-#define MAX_SCREEN_EFFECTS 45
+#define MAX_SCREEN_EFFECTS 46
 
 enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_NONE, //Este siempre el primero en este enum
@@ -194,6 +203,7 @@ enum enum_screen_effect_types {
     SCREEN_EFFECT_TYPE_SCROLL_VERTICAL,
     SCREEN_EFFECT_TYPE_HSYNC_LOST,
     SCREEN_EFFECT_TYPE_VSYNC_LOST,
+    SCREEN_EFFECT_TYPE_VSYNC,
     SCREEN_EFFECT_TYPE_UNSTEADY,
     SCREEN_EFFECT_TYPE_INTERFERENCES,
     SCREEN_EFFECT_TYPE_WAVES,

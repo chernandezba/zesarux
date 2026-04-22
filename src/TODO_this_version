@@ -112,15 +112,17 @@ antes de commonsdl_init
 -efectos especiales
 *revisar liberar memoria
 *En features indicar efecto 3D anaglifo usando varios FX
-
-*En FX poder insertar varios efectos de golpe como:
-ok -anaglifo 3d
--nagra encode y decode
--efecto reducción visible en pantalla tamaño normal (usar mix)
--etc..
-
-*Estos efectos sobreescriben todo lo que haya (preguntando al usuario confirmación)
+ok *efecto vsync franja que va bajando: quiza una linea mas intensa (200%, configurable) seguida de otras lineas mas arriba en decreciente intensidad hasta 100%
 
 
 -slider
 *si rango pequeño, como en window zoom, salen repetidos caracteres "|"
+
+
+-real video render
+Que en vez de ir siempre al offset 0,0 pueda ir al offset de una ventana abierta, la de video output
+Esto permitira mover el render a una ventana. Pero requiere:
+-que esa ventana aunque esté arriba no "tape" el render de pixeles: por defecto toda ventana arriba tapa el render de abajo. quiza atributo nuevo de ventana tipo "transparente"
+o solo un atributo especial para este render
+-que el render no salga de los limites de esa ventana ni de la ventana principal
+-alguna manera de conmutar entre el render normal y el de esa ventana
