@@ -24714,15 +24714,15 @@ void menu_strings_language_array_insert(char *string_english,char *string_spanis
 {
     int i;
 
-    printf("Insertando [%s]\n",string_english);
+    //printf("Insertando [%s]\n",string_english);
 
     int posicion=menu_strings_language_array_get_hash_position(string_english);
 
 
     for (i=0;i<sorted_strings_language_list_elementos;i++) {
-        printf("pos %d\n",posicion);
+        //printf("pos %d\n",posicion);
         if (sorted_strings_language_list[posicion].usado==0) {
-            printf("Insertando [%s] en %d\n",string_english,posicion);
+            //printf("Insertando [%s] en %d\n",string_english,posicion);
             sorted_strings_language_list[posicion].usado=1;
             sorted_strings_language_list[posicion].string_english=string_english;
             sorted_strings_language_list[posicion].string_spanish=string_spanish;
@@ -24730,7 +24730,7 @@ void menu_strings_language_array_insert(char *string_english,char *string_spanis
             return;
         }
         else {
-            printf("Conflicto [%s] en %d\n",string_english,posicion);
+            //printf("Conflicto [%s] en %d\n",string_english,posicion);
         }
 
         //siguiente posicion si esa esta ocupada
@@ -24738,7 +24738,7 @@ void menu_strings_language_array_insert(char *string_english,char *string_spanis
         posicion=posicion % sorted_strings_language_list_elementos;
     }
 
-    printf("No se puede insertar\n");
+    //printf("No se puede insertar\n");
 }
 
 
@@ -24751,7 +24751,7 @@ void menu_init_strings_language_array(void)
 
     sorted_strings_language_list_elementos=(sizeof(strings_language_list))/(sizeof(strings_language_list[0]));
 
-    printf("total elementos: %d\n",sorted_strings_language_list_elementos);
+    //printf("total elementos: %d\n",sorted_strings_language_list_elementos);
 
     //Asignar memoria
     int total_memoria=sizeof(struct s_strings_sorted_language_list)*sorted_strings_language_list_elementos;
@@ -24771,6 +24771,7 @@ void menu_init_strings_language_array(void)
     }
 
     //Debug print elementos
+    /*
     for (i=0;i<sorted_strings_language_list_elementos;i++) {
         printf("Pos %d english=[%s] spanish=[%s] catalan=[%s]\n",
             i,
@@ -24778,6 +24779,7 @@ void menu_init_strings_language_array(void)
             sorted_strings_language_list[i].string_spanish,
             sorted_strings_language_list[i].string_catalan);
     }
+    */
 
 }
 
@@ -24809,7 +24811,7 @@ char *menu_get_string_language(char *string_english)
         //printf("pos %d\n",posicion);
         if (sorted_strings_language_list[posicion].usado) {
             if (!strcasecmp(string_english,sorted_strings_language_list[posicion].string_english)) {
-                printf("Encontrado [%s] en %d. iteraciones=%d\n",string_english,posicion,iteraciones);
+                //printf("Encontrado [%s] en %d. iteraciones=%d\n",string_english,posicion,iteraciones);
 
                 if (gui_language==GUI_LANGUAGE_SPANISH) return sorted_strings_language_list[posicion].string_spanish;
                 else if (gui_language==GUI_LANGUAGE_CATALAN) return sorted_strings_language_list[posicion].string_catalan;
@@ -24822,7 +24824,7 @@ char *menu_get_string_language(char *string_english)
         posicion=posicion % sorted_strings_language_list_elementos;
     }
 
-    printf("No se encuentra. Retornar misma string iteraciones=%d\n",iteraciones);
+    //printf("No se encuentra. Retornar misma string iteraciones=%d\n",iteraciones);
     return string_english;
 }
 
