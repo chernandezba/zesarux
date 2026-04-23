@@ -436,7 +436,7 @@ int lightgun_view_pixel_color_rainbow(int x,int y)
 
         int color=rainbow_buffer[indice];
 
-        printf("x %d y %d color %d\n",x,y,color);
+        //printf("x %d y %d color %d\n",x,y,color);
 
         return color;
     }
@@ -459,6 +459,8 @@ int lightgun_view_pixel_color_no_rainbow(int x,int y)
         //retornar color border
         return color;
     }
+
+    //printf("lightgun_view_pixel_color_no_rainbow x=%4d y=%4d\n",x,y);
 
     int dir_atributo=y/8;
     dir_atributo *=32;
@@ -501,7 +503,7 @@ int lightgun_view_pixel_color_no_rainbow(int x,int y)
 
 }
 
-//Ver si la zona donde apunta el raton (lightgun) esta en blanco. Usado en Gunstick de MHT
+//Vieja rutina. Ver si la zona donde apunta el raton (lightgun) esta en blanco. Usado en Gunstick de MHT
 int old_lightgun_view_white(void)
 {
 
@@ -542,6 +544,9 @@ int old_lightgun_view_white(void)
 //Ver si la zona donde apunta el raton (lightgun) esta en blanco. Usado en Gunstick de MHT
 int lightgun_view_white(void)
 {
+
+
+    //printf("lightgun_view_white\n");
 
 //Si curses
 #ifdef COMPILE_CURSES
@@ -642,6 +647,7 @@ int lightgun_view_electron_check_offset(int electron_offset,int lightgun_offset)
 //Usado en magnum light phaser y stack light rifle
 int lightgun_view_electron(void)
 {
+    //printf("view electron\n");
     //ver electron
 
     //x inicialmente esta posicionada dentro de pantalla... sin contar border

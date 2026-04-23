@@ -12,7 +12,10 @@ pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 en programa aparte, mostrando coordenada y en pantalla
 
 ok-lightgun: magnum. poder tener margen de mas de 1 scanline (para el acid killer por ejemplo)
--magnun: acid killer, ver por que no funciona en mitad derecha
+
+-magnun: acid killer, ver por que no funciona en mitad derecha. el shooting range le pasa lo mismo
+Creo que tiene que ver con que la mitad derecha de la pantalla se dibujan esas lineas (para averiguar la posicion de la pistola)
+en un frame de video diferente de la mitad izquierda
 
 -config setting para aymidi_rs232_enabled.v
 if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que ser dependiente de ese setting?
