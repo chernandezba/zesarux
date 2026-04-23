@@ -7618,6 +7618,8 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
                         color=color % TSCONF_TOTAL_PALETTE_COLOURS;
                         color += TSCONF_INDEX_FIRST_COLOR;
 
+                        //if (color>EMULATOR_TOTAL_PALETTE_COLOURS || color<0) printf("Color %d out of range\n",color);
+
                         scr_putpixel(x,y,color);
 
                     break;

@@ -26161,19 +26161,15 @@ int util_get_random(void)
     //Para generar valores impares ?¿
     if (util_random_noise<500) valor_random++;
 
-    return valor_random;
+    //por si al sumar el noise se convierte en negativo
+    return util_get_absolute(valor_random);
 
 }
 
 //Devolver valor random usando libreria del sistema pero tambien tiene en cuenta pulsaciones de teclado o raton
 int util_get_random_enhanced(void)
 {
-    //TODO: parece que usar rand() del sistema para dibujar el fondo de zx desktop random, genera segfaults realizando acciones concretas y casi siempre se reproduce
-    //por tanto hasta que no sepa como llamar a esta función de manera segura, no la usaremos
 
-    return util_get_random();
-
-    /*
 
     int valor_random=rand();
 
@@ -26182,9 +26178,9 @@ int util_get_random_enhanced(void)
     //esto ira de 0 a 1000
     valor_random +=util_random_noise;
 
+    //por si al sumar el noise se convierte en negativo
+    return util_get_absolute(valor_random);
 
-    return valor_random;
-    */
 
 }
 

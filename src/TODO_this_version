@@ -47,7 +47,6 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 ->parece que solo pasa con driver xwindow, con sdl no pasa
 
 
-
 -Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
 ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
 *diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
@@ -87,4 +86,24 @@ SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 antes de commonsdl_init
 
 -en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
+
+-error al usar rand
+
+
+network.c:364:50: runtime error: load of misaligned address 0x60b00012100c for type 'char *', which requires 8 byte alignment
+0x60b00012100c: note: pointer points here
+  00 00 00 00 1c 10 12 00  b0 60 00 00 00 00 00 00  00 00 00 00 33 53 21 0d  00 00 00 00 00 00 00 00
+              ^
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior network.c:364:50
+utils.c:26183:18: runtime error: signed integer overflow: 2147483632 + 100 cannot be represented in type 'int'
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior utils.c:26183:18
+Playing AY file: /Users/cesarhernandez/Documents/ZEsarUX/zesarux-extras/extras/media/ay_files/Spectrum/test_versions/version_0/ToiAcidGame.ay
+Version: 0
+Author: J. V. Aranda, J. C. Rodriguez
+Misc: Toi Acid Game (c) Iber Soft 1989
+Total songs: 10
+First song: 1
+Playing song 1 name: Toi Acid Game (48k Level 1 Title). Duration: 00:33.22
+Playing song 2 name: Toi Acid Game (48k Level 1 Complete). Duration: 00:40.36
+^CMac-mini-de-Cesar:src cesarhernandezexport CFLAGS="-fsanitize=address,undefined"
 
