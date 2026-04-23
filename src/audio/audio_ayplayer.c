@@ -242,6 +242,9 @@ int audio_ay_player_load(char *filename)
 		return 1;
 	}
 
+    //Activar el autohabilitado de chip ay, porque si está en spectrum 48k (sin chip ay) no sonará nada
+    if (autoenable_ay_chip.v==0) autoenable_ay_chip.v=1;
+
 
     return 0;
 }
