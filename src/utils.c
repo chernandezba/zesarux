@@ -26168,6 +26168,12 @@ int util_get_random(void)
 //Devolver valor random usando libreria del sistema pero tambien tiene en cuenta pulsaciones de teclado o raton
 int util_get_random_enhanced(void)
 {
+    //TODO: parece que usar rand() del sistema para dibujar el fondo de zx desktop random, genera segfaults realizando acciones concretas y casi siempre se reproduce
+    //por tanto hasta que no sepa como llamar a esta función de manera segura, no la usaremos
+
+    return util_get_random();
+
+    /*
 
     int valor_random=rand();
 
@@ -26178,6 +26184,7 @@ int util_get_random_enhanced(void)
 
 
     return valor_random;
+    */
 
 }
 
