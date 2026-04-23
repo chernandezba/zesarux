@@ -7,7 +7,7 @@ Added support for drag&drop on Windows and Linux (Xwindow) - was already support
 Allow drag&drop of compressed files
 Added lots of special effects for video output:
 - Reduce, Unsteady, Flip Vertical, Flip Horizontal, Rotate, Twirl, Interferences, Sea, Waves, Magnetic Field, Shear, Lens, Radar
-- Zoom, Zoom Mouse, Pixelate, Blur, Shader Border, LED, LED RGB, Hsync lost, Vsync lost, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
+- Zoom, Zoom Mouse, Pixelate, Blur, Shader Border, LED, LED RGB, Hsync lost, Vsync lost, Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
 - Scanlines, Sepia, Red, RGB, Decolorize, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
 - Restore Original, Copy to buffer, Mix from Buffer, Load BMP
 Added Nagravision Audio effect

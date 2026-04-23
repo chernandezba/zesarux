@@ -7601,7 +7601,8 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
                         //color=value_16_to_8h(randomize_noise[0]) % EMULATOR_TOTAL_PALETTE_COLOURS;
 
                         //sacamos color entre 0-255
-                        color=value_16_to_8h(util_get_random());
+                        //color=value_16_to_8h(util_get_random());
+                        color=value_16_to_8h(util_get_random_enhanced());
 
                         //por si acaso restringir a esa paleta (idealmente de 256 colores) sacando el resto
                         color = color % GIGASCREEN_TOTAL_PALETTE_COLOURS;
