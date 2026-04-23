@@ -8375,6 +8375,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     buildnumber_int=atoi(BUILDNUMBER);
     //printf("build number %u\n",buildnumber_int);
 
+    menu_init_strings_language_array();
 
     //Unos cuantos valores por defecto
     cpu_step_mode.v=0;

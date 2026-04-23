@@ -24015,7 +24015,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-
+        //printf("Activar debug console\n");
         zxvision_activate_this_window(ventana);
     }
 
@@ -45129,7 +45129,7 @@ z80_bit save_snapshot_file_on_exit_dialog={1};
 char *menu_exit_emulator_additional_item(void)
 {
     sprintf(menu_exit_emulator_additional_save_config,
-        "[%c] Save config",(save_configuration_file_on_exit.v ? 'X' : ' '));
+        "[%c] %s",(save_configuration_file_on_exit.v ? 'X' : ' '),menu_get_string_language("Save config"));
 
     return menu_exit_emulator_additional_save_config;
 }
@@ -45144,7 +45144,7 @@ void menu_exit_emulator_additional_item_trigger(void)
 char *menu_exit_emulator_additional_item2(void)
 {
     sprintf(menu_exit_emulator_additional_save_snapshot,
-        "[%c] Save snapshot",(save_snapshot_file_on_exit_dialog.v ? 'X' : ' '));
+        "[%c] %s",(save_snapshot_file_on_exit_dialog.v ? 'X' : ' '),menu_get_string_language("Save snapshot"));
 
     return menu_exit_emulator_additional_save_snapshot;
 }
@@ -45173,7 +45173,7 @@ void menu_exit_emulator(MENU_ITEM_PARAMETERS)
         if (save_configuration_file_on_exit.v) {
             if (autosave_snapshot_on_exit.v) {
                 //Permitimos no grabar config ni no grabar snapshot
-                salir=menu_confirm_yesno_texto_additional_item("Exit ZEsarUX",menu_get_string_language("Sure?"),
+                salir=menu_confirm_yesno_texto_additional_item(menu_get_string_language("Exit ZEsarUX"),menu_get_string_language("Sure?"),
                     menu_exit_emulator_additional_item,menu_exit_emulator_additional_item_trigger,
                     menu_exit_emulator_additional_item2,menu_exit_emulator_additional_item_trigger2
                     );
@@ -45181,14 +45181,14 @@ void menu_exit_emulator(MENU_ITEM_PARAMETERS)
 
             else {
                 //Permitimos no grabar config
-                salir=menu_confirm_yesno_texto_additional_item("Exit ZEsarUX",menu_get_string_language("Sure?"),
+                salir=menu_confirm_yesno_texto_additional_item(menu_get_string_language("Exit ZEsarUX"),menu_get_string_language("Sure?"),
                     menu_exit_emulator_additional_item,menu_exit_emulator_additional_item_trigger,
                     NULL,NULL
                     );
             }
         }
         else {
-            salir=menu_confirm_yesno("Exit ZEsarUX");
+            salir=menu_confirm_yesno(menu_get_string_language("Exit ZEsarUX"));
         }
     }
 
@@ -45633,12 +45633,12 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             menu_add_item_menu_ayuda(array_menu_principal,string_esc_closes_menus);
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,
-                "Exit ZEsarUX","Salir de ZEsarUX","Sortir de ZEsarUX");
+                menu_get_string_language("Exit ZEsarUX"),menu_get_string_language("Exit ZEsarUX"),menu_get_string_language("Exit ZEsarUX"));
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s",(f_functions==1 ? "F10 ": "") );
             menu_add_item_menu_es_sencillo(array_menu_principal);
             menu_add_item_menu_genera_ventana(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_EXIT));
-            menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
+            menu_add_item_menu_ayuda(array_menu_principal,menu_get_string_language("Exit ZEsarUX"));
 
 
             //La llamada a menu_add_item_menu_index_full_path lo agrega al principio del array, por tanto lo podemos llamar desde cualquier

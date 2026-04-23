@@ -4633,7 +4633,7 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-
+        //printf("Activamos watches\n");
         zxvision_activate_this_window(ventana);
     }
 

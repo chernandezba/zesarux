@@ -2883,6 +2883,47 @@ void codetests_utf8(void)
     }
 }
 
+void codetests_strings_language(void)
+{
+    menu_init_strings_language_array();
+
+    gui_language=GUI_LANGUAGE_SPANISH;
+
+    int i;
+
+    int total_iteraciones=0;
+
+    for (i=0;i<sorted_strings_language_list_elementos;i++) {
+        char *string_english_buscar=strings_language_list[i].string_english;
+        printf("Buscando [%s]\n",string_english_buscar);
+        char *string_spanish_encontrada=menu_get_string_language(string_english_buscar);
+        if (!strcasecmp(string_spanish_encontrada,strings_language_list[i].string_spanish)) {
+            printf("Coincide [%s] y [%s]\n",string_spanish_encontrada,strings_language_list[i].string_spanish);
+        }
+        else {
+            printf("NO Coincide [%s] y [%s]\n",string_spanish_encontrada,strings_language_list[i].string_spanish);
+            exit(1);
+        }
+
+        int iteraciones=menu_get_string_language_debug_ultimas_iteraciones;
+
+        total_iteraciones +=iteraciones;
+    }
+
+    printf("Buscando cadena inexistente\n");
+
+    if (strcasecmp(menu_get_string_language("bla bla kwefkkwek wehjfhwef"),"bla bla kwefkkwek wehjfhwef")) {
+        printf("Error busqueda cadena inexistente\n");
+        exit(1);
+    }
+
+    if (sorted_strings_language_list_elementos) {
+        printf("Media iteraciones: %d Total elementos: %d\n",total_iteraciones/sorted_strings_language_list_elementos,sorted_strings_language_list_elementos);
+    }
+
+
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -3019,6 +3060,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning utf8 string tests\n");
     codetests_utf8();
+
+    printf("\nRunning strings language code tests\n");
+    codetests_strings_language();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();

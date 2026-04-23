@@ -23135,6 +23135,22 @@ int util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,in
                         *is_maximized=saved_config_window_geometry_array[i].is_maximized;
                         *width_before_max_min_imize=saved_config_window_geometry_array[i].width_before_max_min_imize;
                         *height_before_max_min_imize=saved_config_window_geometry_array[i].height_before_max_min_imize;
+
+                        //Si esta minimizada y el setting de ocultarla, desminimizarla
+                        //Por que si no, ventanas que se minimizaron y se cerraron, al reabrirlas no se verán
+                        //Nota: ventanas que si están abiertas ya no entran por aqui y se desminimizan al llamar a zxvision_activate_this_window
+                        //Nota2: ventana minimizada, para cerrarla, la manera mas rapida seria con la opcion de "Close all windows" y en ese caso se desminimizan todas
+                        //(se guarda su geometria desminimizada) en zxvision_window_delete_all_windows
+                        //Pero si se minimiza y luego se quita de la configuración de "--restorewindow", ya no se iniciará (estará cerrada) y la geometria dira que estaba minimizada
+                        //Nota3: se puede por ejemplo minimizar una ventana y luego cerrarla desde process switcher o window management: en ese caso se quedará como cerrada y minimizada también
+
+                        //Por tanto es necesario aquí este trozo de código en los casos en que quedan cerradas y minimizadas
+                        if (*is_minimized && zxvision_hide_minimized_windows.v) {
+                            //printf("Desminimizar %s\n",nombre);
+                            *is_minimized=0;
+                        }
+
+
                         debug_printf (VERBOSE_DEBUG,"Returning window geometry %s from index %d, %d,%d %dX%d (%dX%d) min %d",
                         nombre,i,*y,*y,*ancho,*alto,*width_before_max_min_imize,*height_before_max_min_imize,*is_minimized);
                         return 1;

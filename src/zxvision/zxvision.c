@@ -12256,6 +12256,9 @@ void zxvision_window_delete_all_windows(void)
         //si ya no están abiertas. Por que si no, se guardarian como minimizadas, quedarian cerradas,
         //y al arrancarlas de nuevo no se verian porque arrancan minimizadas. Y habria que arrancarlas dos veces para que la
         //segunda vez ya se desminimicen
+        //Nota: esto ya se solventó en util_find_window_geometry al buscar geometria de una ventana cerrada, se desminimizan
+        //En util_find_window_geometry afecta el caso en que se ha minimizado y en vez de cerrarse desde zxvision_window_delete_all_windows,
+        //se ha quitado de la config de opcion "--restorewindow" y por tanto no se iniciara la ventana y se habrá guardado minimizada
 
         if (ventana->is_minimized) {
 
@@ -12345,13 +12348,18 @@ void zxvision_window_move_this_window_on_top(zxvision_window *ventana)
         zxvision_redraw_all_windows();
 }
 
-void zxvision_activate_this_window(zxvision_window *ventana)
+void zxvision_unminimize_on_activate(zxvision_window *ventana)
 {
-
     //Si esta minimizada y el setting de ocultarla, desminimizarla
     if (ventana->is_minimized && zxvision_hide_minimized_windows.v) {
         zxvision_toggle_minimize_window(ventana);
     }
+}
+
+void zxvision_activate_this_window(zxvision_window *ventana)
+{
+
+    zxvision_unminimize_on_activate(ventana);
 
     zxvision_window_move_this_window_on_top(ventana);
     zxvision_keys_event_not_send_to_machine=1;
@@ -24574,9 +24582,23 @@ void old_menu_add_item_menu_es_avanzado(menu_item *m)
 }
 */
 
+
+/*
 char *menu_text_string_sure_spanish="Seguro?";
 char *menu_text_string_sure_catalan="Segur?";
 char *menu_text_string_sure_english="Sure?";
+
+char *menu_text_string_save_config_spanish="Grabar configuración";
+char *menu_text_string_save_config_catalan="Gravar configuració";
+char *menu_text_string_save_config_english="Save config";
+
+char *menu_text_string_save_snapshot_spanish="Grabar snapshot";
+char *menu_text_string_save_snapshot_catalan="Gravar snapshot";
+char *menu_text_string_save_snapshot_english="Save snapshot";
+
+char *menu_text_string_exit_zesarux_spanish="Salir de ZEsarUX";
+char *menu_text_string_exit_zesarux_catalan="Sortir de ZEsarUX";
+char *menu_text_string_exit_zesarux_english="Exit ZEsarUX";
 
 char *menu_text_string_autoframeskip_spanish="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_catalan="Auto Saltar Frames";
@@ -24590,48 +24612,219 @@ char *menu_text_string_welcome_spanish="Bienvenido";
 char *menu_text_string_welcome_catalan="Benvingut";
 char *menu_text_string_welcome_english="Welcome";
 
-//char *menu_text_string_select_manufacturer_spanish="Selecciona fabricante";
-//char *menu_text_string_select_manufacturer_catalan="Selecciona fabricant";
-//char *menu_text_string_select_manufacturer_english="Select manufacturer";
 
 
 //Funcion para devolver ciertas strings de ingles a español
 //Nota: funcion no optimizada, no usar para muchas strings o sera muy lento
-char *menu_get_string_language(char *texto)
+char *old_menu_get_string_language(char *texto)
 {
-    if (!strcmp(texto,"Sure?")) {
+    if (!strcmp(texto,menu_text_string_sure_english)) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_sure_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_sure_catalan;
         else return menu_text_string_sure_english;
     }
 
-    else if (!strcmp(texto,"Auto Frameskip")) {
+    else if (!strcmp(texto,menu_text_string_save_config_english)) {
+        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_save_config_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_save_config_catalan;
+        else return menu_text_string_save_config_english;
+    }
+
+    else if (!strcmp(texto,menu_text_string_save_snapshot_english)) {
+        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_save_snapshot_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_save_snapshot_catalan;
+        else return menu_text_string_save_snapshot_english;
+    }
+
+    else if (!strcmp(texto,menu_text_string_exit_zesarux_english)) {
+        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_exit_zesarux_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_exit_zesarux_catalan;
+        else return menu_text_string_exit_zesarux_english;
+    }
+
+    else if (!strcmp(texto,menu_text_string_autoframeskip_english)) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_autoframeskip_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_autoframeskip_catalan;
         else return menu_text_string_autoframeskip_english;
     }
 
-    else if (!strcmp(texto,"Enabled")) {
+    else if (!strcmp(texto,menu_text_string_enabled_english)) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_enabled_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_enabled_catalan;
         else return menu_text_string_enabled_english;
     }
 
-    else if (!strcmp(texto,"Welcome")) {
+    else if (!strcmp(texto,menu_text_string_welcome_english)) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_welcome_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_welcome_catalan;
         else return menu_text_string_welcome_english;
     }
 
-    /*else if (!strcmp(texto,"Select manufacturer")) {
-        if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_select_manufacturer_spanish;
-        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_select_manufacturer_catalan;
-        else return menu_text_string_select_manufacturer_english;
-    }*/
-
     else return texto;
 }
 
+*/
+
+
+struct s_strings_language_list strings_language_list[]={
+    {"Seguro?","Segur?","Sure?"},
+    {"Grabar configuración","Gravar configuració","Save config"},
+    {"Grabar snapshot","Gravar snapshot","Save snapshot"},
+    {"Salir de ZEsarUX","Sortir de ZEsarUX","Exit ZEsarUX"},
+    {"Auto Saltar Frames","Auto Saltar Frames","Auto Frameskip"},
+    {"Activado","Activat","Enabled"},
+    {"Bienvenido","Benvingut","Welcome"}
+};
+
+
+int inicializado_strings_language_array=0;
+
+struct s_strings_sorted_language_list {
+    int usado;
+    char *string_spanish;
+    char *string_catalan;
+    char *string_english;
+};
+
+//Aqui se almacenara la lista de cadenas de texto pero ordenadas segun nuestra hash
+struct s_strings_sorted_language_list *sorted_strings_language_list;
+
+//Inicializado a 1, por si acaso, no pete la funcion de hash si esto es 0 (aunque no deberia porque se tiene que inicializar)
+int sorted_strings_language_list_elementos=1;
+
+//Indexaremos por la primera letra de la string en ingles
+int menu_strings_language_array_get_hash_position(char *texto)
+{
+    int posicion=letra_minuscula(texto[0]);
+
+    //Si tiene dos o mas letras, combinamos las dos para obtener el hash
+    if (texto[0]) {
+        if (texto[1]) {
+            posicion=posicion<<8;
+            posicion=posicion | letra_minuscula(texto[1]);
+        }
+    }
+
+    posicion=posicion % sorted_strings_language_list_elementos;
+
+    return posicion;
+}
+
+void menu_strings_language_array_insert(char *string_english,char *string_spanish,char *string_catalan)
+{
+    int i;
+
+    printf("Insertando [%s]\n",string_english);
+
+    int posicion=menu_strings_language_array_get_hash_position(string_english);
+
+
+    for (i=0;i<sorted_strings_language_list_elementos;i++) {
+        printf("pos %d\n",posicion);
+        if (sorted_strings_language_list[posicion].usado==0) {
+            printf("Insertando [%s] en %d\n",string_english,posicion);
+            sorted_strings_language_list[posicion].usado=1;
+            sorted_strings_language_list[posicion].string_english=string_english;
+            sorted_strings_language_list[posicion].string_spanish=string_spanish;
+            sorted_strings_language_list[posicion].string_catalan=string_catalan;
+            return;
+        }
+        else {
+            printf("Conflicto [%s] en %d\n",string_english,posicion);
+        }
+
+        //siguiente posicion si esa esta ocupada
+        posicion++;
+        posicion=posicion % sorted_strings_language_list_elementos;
+    }
+
+    printf("No se puede insertar\n");
+}
+
+
+
+void menu_init_strings_language_array(void)
+{
+    inicializado_strings_language_array=1;
+
+    //Primero ver total de elementos
+
+    sorted_strings_language_list_elementos=(sizeof(strings_language_list))/(sizeof(strings_language_list[0]));
+
+    printf("total elementos: %d\n",sorted_strings_language_list_elementos);
+
+    //Asignar memoria
+    int total_memoria=sizeof(struct s_strings_sorted_language_list)*sorted_strings_language_list_elementos;
+
+    sorted_strings_language_list=util_malloc(total_memoria,"Can not allocate memory for language strings");
+
+
+    //Inicializar elementos a no usados
+    int i;
+    for (i=0;i<sorted_strings_language_list_elementos;i++) {
+        sorted_strings_language_list[i].usado=0;
+    }
+
+    //Insertar elementos
+    for (i=0;i<sorted_strings_language_list_elementos;i++) {
+        menu_strings_language_array_insert(strings_language_list[i].string_english,strings_language_list[i].string_spanish,strings_language_list[i].string_catalan);
+    }
+
+    //Debug print elementos
+    for (i=0;i<sorted_strings_language_list_elementos;i++) {
+        printf("Pos %d english=[%s] spanish=[%s] catalan=[%s]\n",
+            i,
+            sorted_strings_language_list[i].string_english,
+            sorted_strings_language_list[i].string_spanish,
+            sorted_strings_language_list[i].string_catalan);
+    }
+
+}
+
+//Usado en codetests
+int menu_get_string_language_debug_ultimas_iteraciones;
+
+
+/*
+Si la cantidad de textos fuese muy grande, seria mucho mejor no usar función hash y directamente
+insertar los elementos y luego ordenarlos alfabéticamente , y luego para buscar usar una búsqueda típica sobre elementos ordenados
+*/
+char *menu_get_string_language(char *string_english)
+{
+    if (!inicializado_strings_language_array) menu_init_strings_language_array();
+
+    int i;
+
+    //printf("Buscando [%s]\n",string_english);
+
+    int posicion=menu_strings_language_array_get_hash_position(string_english);
+
+    int iteraciones=0;
+
+    for (i=0;i<sorted_strings_language_list_elementos;i++) {
+        iteraciones++;
+
+        menu_get_string_language_debug_ultimas_iteraciones=iteraciones;
+
+        //printf("pos %d\n",posicion);
+        if (sorted_strings_language_list[posicion].usado) {
+            if (!strcasecmp(string_english,sorted_strings_language_list[posicion].string_english)) {
+                printf("Encontrado [%s] en %d. iteraciones=%d\n",string_english,posicion,iteraciones);
+
+                if (gui_language==GUI_LANGUAGE_SPANISH) return sorted_strings_language_list[posicion].string_spanish;
+                else if (gui_language==GUI_LANGUAGE_CATALAN) return sorted_strings_language_list[posicion].string_catalan;
+                else return sorted_strings_language_list[posicion].string_english;
+            }
+        }
+
+        //siguiente posicion si esa no contiene el texto a buscar
+        posicion++;
+        posicion=posicion % sorted_strings_language_list_elementos;
+    }
+
+    printf("No se encuentra. Retornar misma string iteraciones=%d\n",iteraciones);
+    return string_english;
+}
 
 //Agregar texto de item menu en spanish
 void menu_add_item_menu_spanish(menu_item *m,char *s)

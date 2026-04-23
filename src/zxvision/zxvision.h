@@ -1748,6 +1748,10 @@ extern void zxvision_sound_event_new_window(void);
 
 extern char *menu_get_string_language(char *texto);
 
+extern void menu_init_strings_language_array(void);
+
+extern int menu_get_string_language_debug_ultimas_iteraciones;
+
 extern int timer_osd_keyboard_menu;
 
 extern char snapshot_load_file[];
@@ -1755,6 +1759,16 @@ extern char snapshot_save_file[];
 
 extern int menu_char_width;
 extern int menu_char_height;
+
+struct s_strings_language_list {
+    char *string_spanish;
+    char *string_catalan;
+    char *string_english;
+};
+
+extern struct s_strings_language_list strings_language_list[];
+
+extern int sorted_strings_language_list_elementos;
 
 //extern int overlay_usado_screen_array[];
 

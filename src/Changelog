@@ -129,6 +129,7 @@ Fixed fullscreen on macOS
 Fixed possible segfault on macOS cocoa driver
 Fixed glitch on border on Spectrum Next when changing turbo speed
 Fixed showing submenu indicator (>) when the menu has vertical scroll bar
+Fixed reopening windows that were closed and minimized (when setting "hide minimized windows" is enabled)
 Fixed Amstrad PCW palette color change
 Removed some old/non-existent - Z80N Next opcodes
 

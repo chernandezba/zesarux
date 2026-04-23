@@ -86,3 +86,4 @@ antes de commonsdl_init
 -en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
 
 
+ok -menu_get_string_language: quitar todos esos "if" y meter array con estructura y/o quiza una hash para encontrarlos rápido
