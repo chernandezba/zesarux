@@ -648,6 +648,8 @@ void menu_zoc_join_master_aux(int room_number)
     strcpy(zeng_online_joined_as_text,"Master");
 }
 
+char menu_zeng_online_create_room_last_room_name[ZENG_ONLINE_MAX_ROOM_NAME+1]="";
+
 void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 {
     if (zeng_online_nickname[0]==0) {
@@ -657,9 +659,9 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
 
     int room_number,created,autojoin,current_players,max_players,uptime;
-    char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
+    //char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
-    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,room_name);
+    int retorno=menu_zeng_online_list_rooms(&room_number,&created,&autojoin,&current_players,&max_players,&uptime,menu_zeng_online_create_room_last_room_name);
 
     if (retorno>=0) {
 
@@ -669,9 +671,9 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
             return;
         }
 
-        strcpy(room_name,"<used>");
+        strcpy(menu_zeng_online_create_room_last_room_name,"<used>");
 
-        if (menu_ventana_scanf("Room name?",room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
+        if (menu_ventana_scanf("Room name?",menu_zeng_online_create_room_last_room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
             return;
         }
 
@@ -679,7 +681,7 @@ void menu_zeng_online_create_room(MENU_ITEM_PARAMETERS)
 
 
         //Lanzar el thread de crear room
-        zeng_online_client_create_room(room_number,room_name);
+        zeng_online_client_create_room(room_number,menu_zeng_online_create_room_last_room_name);
 
         contador_menu_zeng_connect_print=0;
 
@@ -1324,17 +1326,18 @@ void menu_zeng_online_max_players_room(MENU_ITEM_PARAMETERS)
 void menu_zeng_online_rename_room(MENU_ITEM_PARAMETERS)
 {
 
-    char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
+    //char room_name[ZENG_ONLINE_MAX_ROOM_NAME+1];
 
 
-    strcpy(room_name,"<used>");
+    //strcpy(menu_zeng_online_create_room_last_room_name,"<used>");
 
-    if (menu_ventana_scanf("Room name?",room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
+    //Mostramos el nombre que se indicó al crearla
+    if (menu_ventana_scanf("Room name?",menu_zeng_online_create_room_last_room_name,ZENG_ONLINE_MAX_ROOM_NAME+1)<0) {
         return;
     }
 
 
-    zeng_online_client_rename_room(room_name);
+    zeng_online_client_rename_room(menu_zeng_online_create_room_last_room_name);
     zxvision_simple_progress_window("Rename room", menu_zeng_online_rename_room_cond,menu_zeng_online_connecting_common_print);
 
 
