@@ -128,10 +128,6 @@ z80_bit ay_chip_present;
 //Por defecto la frecuencia del spectrum
 int ay_chip_frequency=FRECUENCIA_SPECTRUM_AY;
 
-//#define FRECUENCIA_SPECTRUM_AY 1773400
-//#define FRECUENCIA_CPC_AY      1000000
-//#define FRECUENCIA_ZX81_AY     1625000
-
 
 
 //Valores de volumen
@@ -163,8 +159,6 @@ short sine_table[FRECUENCIA_CONSTANTE_NORMAL_SONIDO];
 //short sine_table[15600*10];
 
 
-
-//z80_bit turbosound_enabled={0};
 
 int total_ay_chips=1;
 
@@ -246,8 +240,6 @@ void init_chip_ay(void)
 {
 
 
-    //inicializamos el chip aunque este desactivado
-    //if (ay_chip_present.v==0) return;
 
     debug_printf (VERBOSE_INFO,"Initializing AY Chip");
 
@@ -277,11 +269,11 @@ void init_chip_ay(void)
         ultimo_valor_ruido[chip]=+32767;
     }
 
-int i;
+    int i;
 
 
 
-// Onda cuadrada
+    // Onda cuadrada
     for (i=0;i<FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2;i++) {
         sine_table[i]=+32767;
     }
@@ -302,41 +294,26 @@ int i;
 
 
 
-//Onda senoidal. activar -lm en proceso de compilacion
-/*
-flotante sineval,radians;
-    for (i=0;i<FRECUENCIA_CONSTANTE_NORMAL_SONIDO;i++) {
-        radians=i;
-        radians=radians*6.28318530718;
+    //Onda senoidal. activar -lm en proceso de compilacion
+    /*
+    flotante sineval,radians;
+        for (i=0;i<FRECUENCIA_CONSTANTE_NORMAL_SONIDO;i++) {
+            radians=i;
+            radians=radians*6.28318530718;
 
-        radians=radians/((float)(FRECUENCIA_CONSTANTE_NORMAL_SONIDO));
-        sineval=sin(radians);
-        sine_table[i]=32767*sineval;
+            radians=radians/((float)(FRECUENCIA_CONSTANTE_NORMAL_SONIDO));
+            sineval=sin(radians);
+            sine_table[i]=32767*sineval;
 
-        debug_printf (VERBOSE_DEBUG,"i=%d radians=%f sine=%f value=%d",i,radians,sineval,sine_table[i]);
-    }
+            debug_printf (VERBOSE_DEBUG,"i=%d radians=%f sine=%f value=%d",i,radians,sineval,sine_table[i]);
+        }
 
-*/
+    */
 
 
 }
 
-/*
-void turbosound_disable(void)
-{
-    debug_printf (VERBOSE_INFO,"Disabling Turbosound");
-    ay_chip_selected=0;
-    turbosound_enabled.v=0;
-}
 
-void turbosound_enable(void)
-{
-    debug_printf (VERBOSE_INFO,"Enabling Turbosound");
-    ay_chip_selected=0;
-    turbosound_enabled.v=1;
-    init_chip_ay();
-}
-*/
 
 void set_total_ay_chips(int total)
 {
@@ -349,23 +326,23 @@ void set_total_ay_chips(int total)
 
 void ay_randomize(int chip)
 {
-/*
-;Seguimos la misma formula RND del spectrum:
-;0..1 -> n=(75*(n+1)-1)/65536
-;0..65535 -> n=65536/(75*(n+1)-1)
-generar_random_noise:
-*/
+    /*
+    ;Seguimos la misma formula RND del spectrum:
+    ;0..1 -> n=(75*(n+1)-1)/65536
+    ;0..65535 -> n=65536/(75*(n+1)-1)
+    generar_random_noise:
+    */
 
-        int resultado;
-        int r;
+    int resultado;
+    int r;
 
-        r=randomize_noise[chip];
+    r=randomize_noise[chip];
 
-        resultado=(75*(r+1)-1);
+    resultado=(75*(r+1)-1);
 
-        randomize_noise[chip]=resultado & 0xFFFF;
+    randomize_noise[chip]=resultado & 0xFFFF;
 
-        //printf ("randomize_noise: %d\n",randomize_noise);
+    //printf ("randomize_noise: %d\n",randomize_noise);
 
 
 }
@@ -376,13 +353,13 @@ generar_random_noise:
 void ay_chip_valor_aleatorio(int chip)
 {
 
-ay_randomize(chip);
+    ay_randomize(chip);
 
-/*
-          ;Generar +1 o -1
-          ;0..32767 -> +1
-          ;32768..65535 -> -1
-  */
+    /*
+    ;Generar +1 o -1
+    ;0..32767 -> +1
+    ;32768..65535 -> -1
+    */
 
     if (randomize_noise[chip]<32768) ultimo_valor_ruido[chip]=+32767;
     else ultimo_valor_ruido[chip]=-32767;
@@ -444,18 +421,18 @@ COMMENT !
 
     else if (tone.v==1 && noise.v==1)  {
         /*
-         Also note that setting both Ta
-    and Na to 0 produces bursts of noise and half-periods of constant
-    output 0.
-*/
+        Also note that setting both Ta
+        and Na to 0 produces bursts of noise and half-periods of constant
+        output 0.
+        */
         //Valor combinado ruido y tono
         //en version 1.0 este /2 no estaba, era un error, por tanto se generaba al final un volumen mayor de lo normal,
         //cosa que podia hacer que el valor final del sonido cambiase de signo,
         //provocando ruido mas alto de lo normal
         valor=(ultimo_valor_ruido[chip]+ultimo_valor_tono)/2;
 
-                reset_silence_detection_counter();
-                //ay_player_silence_detection_counter=0;
+        reset_silence_detection_counter();
+        //ay_player_silence_detection_counter=0;
         //printf ("tone y noise. valor:%d\n",valor);
 
         }
@@ -470,7 +447,7 @@ COMMENT !
 
 
 
-        if (volumen & 16) {
+    if (volumen & 16) {
         //printf ("Hay envolvente activo tipo : %d\n",ay_3_8912_registros[13]&15);
         if (ay_envelopes_enabled.v==1) volumen=da_output_envolvente(chip);
 
@@ -480,7 +457,7 @@ COMMENT !
     volumen=volumen & 15; //Evitar valores de volumen fuera de rango que vengan de los registros de volumen
 
     //if (volumen>15) printf ("  Error volumen >15 : %d\n",volumen);
-        valor=valor*volume_table[volumen];
+    valor=valor*volume_table[volumen];
     valor=valor/32767;
     valor8=valor;
     //printf ("valor final tono: %d\n",valor8);
@@ -498,8 +475,8 @@ char da_output_ay(void)
 {
 
 
-        //char valor_enviar_ay=0;
-        int valor_enviar_ay=0;
+    //char valor_enviar_ay=0;
+    int valor_enviar_ay=0;
     if (ay_chip_present.v==1) {
 
         //Hacerlo para cada chip
@@ -537,15 +514,15 @@ int ay3_custom_stereo_A=0;
 int ay3_custom_stereo_B=1;
 int ay3_custom_stereo_C=2;
 /*
-          0=Mono
-          1=ACB Stereo (Canal A=Izq,Canal C=Centro,Canal B=Der)
-          2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
-          3=BAC Stereo (Canal A=Centro,Canal B=Izquierdo,Canal C=Der)
-          4=Custom. Depende de variables
-              ay3_custom_stereo_A
-            ay3_custom_stereo_B
-            ay3_custom_stereo_C
-            En cada una de esas 3, si vale 0=Left. Si 1=Center, Si 2=Right
+0=Mono
+1=ACB Stereo (Canal A=Izq,Canal C=Centro,Canal B=Der)
+2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
+3=BAC Stereo (Canal A=Centro,Canal B=Izquierdo,Canal C=Der)
+4=Custom. Depende de variables
+ay3_custom_stereo_A
+ay3_custom_stereo_B
+ay3_custom_stereo_C
+En cada una de esas 3, si vale 0=Left. Si 1=Center, Si 2=Right
 */
 
 void da_output_ay_3_canales(char *canal_A,char *canal_B, char *canal_C)
@@ -597,19 +574,19 @@ void da_output_ay_izquierdo_derecho(char *iz, char *de)
     int altavoz_izquierdo=0, altavoz_derecho=0;
 
     //Aplicar modo stereo AY
-//int ay3_stereo_mode=0;
-/*
-          0=Mono
-          1=ACB Stereo (Canal A=Izq,Canal C=Centro,Canal B=Der)
-          2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
-          3=BAC Stereo (Canal A=Centro,Canal B=Izquierdo,Canal C=Der)
-          4=CBA Stereo (Canal A=Der,Canal B=Centro, Canal C=Izq)
-          5=Custom. Depende de variables
-              ay3_custom_stereo_A
-            ay3_custom_stereo_B
-            ay3_custom_stereo_C
-            En cada una de esas 3, si vale 0=Left. Si 1=Center, Si 2=Right
-*/
+    //int ay3_stereo_mode=0;
+    /*
+    0=Mono
+    1=ACB Stereo (Canal A=Izq,Canal C=Centro,Canal B=Der)
+    2=ABC Stereo (Canal A=Izq,Canal B=Centro,Canal C=Der)
+    3=BAC Stereo (Canal A=Centro,Canal B=Izquierdo,Canal C=Der)
+    4=CBA Stereo (Canal A=Der,Canal B=Centro, Canal C=Izq)
+    5=Custom. Depende de variables
+    ay3_custom_stereo_A
+    ay3_custom_stereo_B
+    ay3_custom_stereo_C
+    En cada una de esas 3, si vale 0=Left. Si 1=Center, Si 2=Right
+    */
     switch (ay3_stereo_mode) {
 
         case 1:
@@ -798,27 +775,27 @@ ese valor ya se repite por si solo
         case 7:
         case 9:
         case 15:
-                //debug_printf (VERBOSE_DEBUG,"End envelope cycle. Going to 0");
-                ciclo_envolvente[ay_chip_selected]=256;
+            //debug_printf (VERBOSE_DEBUG,"End envelope cycle. Going to 0");
+            ciclo_envolvente[ay_chip_selected]=256;
         break;
 
       //envolventes que se van a 1
         case 11:
         case 13:
-                //debug_printf (VERBOSE_DEBUG,"End envelope cycle. Going to 1");
-                                ciclo_envolvente[ay_chip_selected]=512;
+            //debug_printf (VERBOSE_DEBUG,"End envelope cycle. Going to 1");
+            ciclo_envolvente[ay_chip_selected]=512;
         break;
 
 
       //envolventes que se repiten
         default:
 
-                                        //debug_printf (VERBOSE_DEBUG,"End envelope cycle. Going to the beginning");
-                                        ciclo_envolvente[ay_chip_selected]=0;
-                    if (tipo_envolvente==10 || tipo_envolvente==14) {
-                        //envolventes en v
-                        ciclo_envolvente_10_14_signo[ay_chip_selected]=-ciclo_envolvente_10_14_signo[ay_chip_selected];
-                    }
+            //debug_printf (VERBOSE_DEBUG,"End envelope cycle. Going to the beginning");
+            ciclo_envolvente[ay_chip_selected]=0;
+            if (tipo_envolvente==10 || tipo_envolvente==14) {
+                //envolventes en v
+                ciclo_envolvente_10_14_signo[ay_chip_selected]=-ciclo_envolvente_10_14_signo[ay_chip_selected];
+            }
 
         break;
 
@@ -835,7 +812,7 @@ ese valor ya se repite por si solo
 void ay_chip_siguiente_ciclo_siguiente(int chip)
 {
 
-if (ay_chip_present.v==0) return;
+    if (ay_chip_present.v==0) return;
 
 /*
                 int r;
@@ -843,55 +820,48 @@ if (ay_chip_present.v==0) return;
                         printf ("R%d=%x ",r,ay_3_8912_registros[r]);
 */
 
-                        //actualizamos contadores de frecuencias
-                        ultimo_valor_tono_A[chip]=sine_table[contador_tono_A[chip]];
-                        contador_tono_A[chip] +=freq_tono_A[chip];
-                        if (contador_tono_A[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-                                contador_tono_A[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
-                        }
+    //actualizamos contadores de frecuencias
+    ultimo_valor_tono_A[chip]=sine_table[contador_tono_A[chip]];
+    contador_tono_A[chip] +=freq_tono_A[chip];
+    if (contador_tono_A[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
+        contador_tono_A[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
+    }
 
-                        ultimo_valor_tono_B[chip]=sine_table[contador_tono_B[chip]];
-                        contador_tono_B[chip] +=freq_tono_B[chip];
-                        if (contador_tono_B[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-                                contador_tono_B[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
-                        }
+    ultimo_valor_tono_B[chip]=sine_table[contador_tono_B[chip]];
+    contador_tono_B[chip] +=freq_tono_B[chip];
+    if (contador_tono_B[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
+        contador_tono_B[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
+    }
 
-                        ultimo_valor_tono_C[chip]=sine_table[contador_tono_C[chip]];
-                        contador_tono_C[chip] +=freq_tono_C[chip];
-                        if (contador_tono_C[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-                                contador_tono_C[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
-                        }
-
-
-                        contador_ruido[chip] +=freq_ruido[chip];
-                        if (contador_ruido[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-                                contador_ruido[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
-                                ay_chip_valor_aleatorio(chip);
-                                //printf ("Conmutar ruido\n");
-                        }
+    ultimo_valor_tono_C[chip]=sine_table[contador_tono_C[chip]];
+    contador_tono_C[chip] +=freq_tono_C[chip];
+    if (contador_tono_C[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
+        contador_tono_C[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
+    }
 
 
-             //Esto se ejecuta aunque desactivemos el envelope por linea de comandos... pero da igual, al final no se escuchara el envelope
-                                contador_envelope[chip] +=freq_envelope[chip];
+    contador_ruido[chip] +=freq_ruido[chip];
+    if (contador_ruido[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
+        contador_ruido[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
+        ay_chip_valor_aleatorio(chip);
+        //printf ("Conmutar ruido\n");
+    }
 
-                        //*10 dado que hemos de ser capaz de generar frecuencias de 0.1
-                        //*16 dado que hay 16 divisiones en cada pulso de envolvente
-                        if (contador_envelope[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO*10/16) {
-                                contador_envelope[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO*10/16;
-                                ultimo_valor_envolvente[chip]=devuelve_volumen_ciclo_envolvente();
-                        }
+
+    //Esto se ejecuta aunque desactivemos el envelope por linea de comandos... pero da igual, al final no se escuchara el envelope
+    contador_envelope[chip] +=freq_envelope[chip];
+
+    //*10 dado que hemos de ser capaz de generar frecuencias de 0.1
+    //*16 dado que hay 16 divisiones en cada pulso de envolvente
+    if (contador_envelope[chip]>=FRECUENCIA_CONSTANTE_NORMAL_SONIDO*10/16) {
+        contador_envelope[chip] -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO*10/16;
+        ultimo_valor_envolvente[chip]=devuelve_volumen_ciclo_envolvente();
+    }
 
 
 }
 
 
-
-/*int ay_retorna_numero_chips(void)
-{
-    int chips=1;
-        if (turbosound_enabled.v) chips++;
-    return chips;
-}*/
 
 
 int ay_retorna_numero_chips(void)
@@ -981,23 +951,23 @@ void ay_establece_frecuencia_tono(z80_byte indice, int *freq_tono)
 
     int freq_temp;
     freq_temp=ay_3_8912_registros[ay_chip_selected][indice]+256*(ay_3_8912_registros[ay_chip_selected][indice+1] & 0x0F);
-        //printf ("Valor freq_temp : %d\n",freq_temp);
+    //printf ("Valor freq_temp : %d\n",freq_temp);
 
     //controlamos divisiones por cero
     if (!freq_temp) freq_temp++;
 
-        freq_temp=freq_temp*AY_DIVISOR_FRECUENCIA;
+    freq_temp=freq_temp*AY_DIVISOR_FRECUENCIA;
 
 
 
 
-        *freq_tono=FRECUENCIA_AY/freq_temp;
+    *freq_tono=FRECUENCIA_AY/freq_temp;
 
     //printf ("Valor freq_tono : %d\n",*freq_tono);
 
     /* Pruebas notas
     Octava 4. Nota C Valor registros: 424. Freq_tono=261 hz ok
-              Nota D Valor registros: 377. Freq_tono=293 hz ok
+            Nota D Valor registros: 377. Freq_tono=293 hz ok
 
     Maximo valor en registro=12 bit=4095. 4095*16=65520
     FRECUENCIA_AY=1773400
@@ -1016,7 +986,7 @@ void ay_establece_frecuencia_tono(z80_byte indice, int *freq_tono)
     //esto ya no hace falta con la tabla... multiplicador=1
     *freq_tono=(*freq_tono)*TEMP_MULTIPLICADOR;
 
-        if (*freq_tono>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
+    if (*freq_tono>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
         //debug_printf (VERBOSE_DEBUG,"Frequency tone %d out of range",(*freq_tono)/TEMP_MULTIPLICADOR);
         *freq_tono=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
     }
@@ -1031,7 +1001,7 @@ void ay_establece_frecuencia_tono(z80_byte indice, int *freq_tono)
     //temp
     //*contador_tono=0;
 
-        //printf ("Valor incremento frecuencia canal : %d contador_tono : %d\n",*freq_tono,*contador_tono);
+    //printf ("Valor incremento frecuencia canal : %d contador_tono : %d\n",*freq_tono,*contador_tono);
 
 
 }
@@ -1043,7 +1013,7 @@ void ay_establece_frecuencia_ruido(void)
 
     //Frecuencia ruido
     int freq_temp=ay_3_8912_registros[ay_chip_selected][6] & 31;
-        //printf ("Valor registros ruido : %d Hz\n",freq_temp);
+    //printf ("Valor registros ruido : %d Hz\n",freq_temp);
 
     //controlamos divisiones por cero
     if (!freq_temp) freq_temp++;
@@ -1052,29 +1022,28 @@ void ay_establece_frecuencia_ruido(void)
 
 
 
-                freq_ruido[ay_chip_selected]=FRECUENCIA_NOISE/freq_temp;
+    freq_ruido[ay_chip_selected]=FRECUENCIA_NOISE/freq_temp;
     //printf ("Frecuencia ruido: %d Hz\n",freq_ruido);
 
-        //freq_ruido realmente tiene frecuencia*2... dice cada cuando se conmuta de signo
-        //freq_ruido=freq_ruido*TEMP_MULTIPLICADOR;
-        freq_ruido[ay_chip_selected]=freq_ruido[ay_chip_selected]*2;
+    //freq_ruido realmente tiene frecuencia*2... dice cada cuando se conmuta de signo
+    //freq_ruido=freq_ruido*TEMP_MULTIPLICADOR;
+    freq_ruido[ay_chip_selected]=freq_ruido[ay_chip_selected]*2;
 
 
 
     if (freq_ruido[ay_chip_selected]>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-                //debug_printf (VERBOSE_DEBUG,"Frequency noise %d out of range",freq_ruido[ay_chip_selected]/2);
-                freq_ruido[ay_chip_selected]=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
-        }
+        //debug_printf (VERBOSE_DEBUG,"Frequency noise %d out of range",freq_ruido[ay_chip_selected]/2);
+        freq_ruido[ay_chip_selected]=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
+    }
 
 
-//si la frecuencia del ruido es exactamente igual a la del sonido
-//alteramos un poco el valor
-if ( freq_ruido[ay_chip_selected]==FRECUENCIA_CONSTANTE_NORMAL_SONIDO) freq_ruido[ay_chip_selected]=FRECUENCIA_CONSTANTE_NORMAL_SONIDO-10;
+    //si la frecuencia del ruido es exactamente igual a la del sonido
+    //alteramos un poco el valor
+    if ( freq_ruido[ay_chip_selected]==FRECUENCIA_CONSTANTE_NORMAL_SONIDO) freq_ruido[ay_chip_selected]=FRECUENCIA_CONSTANTE_NORMAL_SONIDO-10;
 
 
 
     //printf ("Frecuencia ruido final: %d Hz\n",freq_ruido);
-
 
 
 }
@@ -1083,58 +1052,58 @@ if ( freq_ruido[ay_chip_selected]==FRECUENCIA_CONSTANTE_NORMAL_SONIDO) freq_ruid
 void ay_establece_frecuencia_envelope(void)
 {
 
-            //debug_printf (VERBOSE_DEBUG,"Register Frequency Envelope ay");
-            //contador de 16 bits?
-                int freq_temp=ay_3_8912_registros[ay_chip_selected][11]+256*(ay_3_8912_registros[ay_chip_selected][12] & 0xFF);
-            //debug_printf (VERBOSE_DEBUG,"Register counter envelope: %d",freq_temp);
-                //freq_temp=freq_temp*256;
-                   //printf ("Valor frecuencia envelope : %d Hz\n",freq_temp);
+    //debug_printf (VERBOSE_DEBUG,"Register Frequency Envelope ay");
+    //contador de 16 bits?
+    int freq_temp=ay_3_8912_registros[ay_chip_selected][11]+256*(ay_3_8912_registros[ay_chip_selected][12] & 0xFF);
+    //debug_printf (VERBOSE_DEBUG,"Register counter envelope: %d",freq_temp);
+    //freq_temp=freq_temp*256;
+    //printf ("Valor frecuencia envelope : %d Hz\n",freq_temp);
 
-            /* Envolvente: En teoria debe ir desde 0.1 Hz a 6 KHz
+    /* Envolvente: En teoria debe ir desde 0.1 Hz a 6 KHz
 
-            SI X=6927
+    SI X=6927
 
-            Minimo valor(maxima frecuencia)=1.
+    Minimo valor(maxima frecuencia)=1.
 
-            X/1= aprox 6000 Hz
+    X/1= aprox 6000 Hz
 
-            Maximo valor (menor frecuencia)=65536.  65536
-            X/65536=0.09
+    Maximo valor (menor frecuencia)=65536.  65536
+    X/65536=0.09
 
-            multiplicamos por 10
+    multiplicamos por 10
 
-            X=69270
+    X=69270
 
-            */
-
-
-                //controlamos divisiones por cero
-            if (!freq_temp) freq_temp++;
-
-                freq_envelope[ay_chip_selected]=FRECUENCIA_ENVELOPE/freq_temp;
-
-                if (freq_envelope[ay_chip_selected]>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-                        //debug_printf (VERBOSE_DEBUG,"Frequency envelope %d out of range",freq_envelope[ay_chip_selected]);
-                        freq_envelope[ay_chip_selected]=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
-                }
+    */
 
 
-                //si la frecuencia del envelope es exactamente igual a la del sonido
-                //alteramos un poco el valor
-            //esto sucede con valores demasiado altos y quedan fijados a FRECUENCIA_CONSTANTE_NORMAL_SONIDO en el trozo de codigo anterior
+    //controlamos divisiones por cero
+    if (!freq_temp) freq_temp++;
+
+    freq_envelope[ay_chip_selected]=FRECUENCIA_ENVELOPE/freq_temp;
+
+    if (freq_envelope[ay_chip_selected]>FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
+            //debug_printf (VERBOSE_DEBUG,"Frequency envelope %d out of range",freq_envelope[ay_chip_selected]);
+            freq_envelope[ay_chip_selected]=FRECUENCIA_CONSTANTE_NORMAL_SONIDO;
+    }
 
 
-            //si lo alterasemos solo un poquito, sucede que juegos como el Robocop 2 no se oyen los disparos
-            //lo alteramos mas ( *2 / 3)
-                if ( freq_envelope[ay_chip_selected]==FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
-                //printf ("temp freq_envelope = FRECUENCIA_CONSTANTE_NORMAL_SONIDO : %d\n",freq_envelope);
-                freq_envelope[ay_chip_selected] *=2;
-                freq_envelope[ay_chip_selected] /=3;
-            }
+    //si la frecuencia del envelope es exactamente igual a la del sonido
+    //alteramos un poco el valor
+    //esto sucede con valores demasiado altos y quedan fijados a FRECUENCIA_CONSTANTE_NORMAL_SONIDO en el trozo de codigo anterior
+
+
+    //si lo alterasemos solo un poquito, sucede que juegos como el Robocop 2 no se oyen los disparos
+    //lo alteramos mas ( *2 / 3)
+    if ( freq_envelope[ay_chip_selected]==FRECUENCIA_CONSTANTE_NORMAL_SONIDO) {
+        //printf ("temp freq_envelope = FRECUENCIA_CONSTANTE_NORMAL_SONIDO : %d\n",freq_envelope);
+        freq_envelope[ay_chip_selected] *=2;
+        freq_envelope[ay_chip_selected] /=3;
+    }
 
 
 
-                        //debug_printf (VERBOSE_DEBUG,"Frequency envelope *10 : %d Hz",freq_envelope[ay_chip_selected]);
+    //debug_printf (VERBOSE_DEBUG,"Frequency envelope *10 : %d Hz",freq_envelope[ay_chip_selected]);
 
 }
 
@@ -1193,8 +1162,8 @@ que se escribe a ese registro es nuestro valor de "o".
 Entonces, el algoritmo queda más o menos así:
 
 
-[dentro del cuerpo de la funciÛn que es llamada cuando se escribe en el
-registro 0Eh del AY-3-8912, incluir este cÛdigo]
+[dentro del cuerpo de la función que es llamada cuando se escribe en el
+registro 0Eh del AY-3-8912, incluir este código]
 
 */
 
@@ -1239,81 +1208,81 @@ aymidi_rs232_tbefore = debug_t_estados_parcial;
 
 switch (aymidi_rs232_midi_state)
 {
-  case ESPERA_START:
+    case ESPERA_START:
     if (output_bit == 0) // seÒal de START v·lida!
     {
-      debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Valid START signal");
-      aymidi_rs232_midi_state = LEE_BIT;
-      aymidi_rs232_dato_midi = 0;
-      aymidi_rs232_bits = 0;
-      //break;
+        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Valid START signal");
+        aymidi_rs232_midi_state = LEE_BIT;
+        aymidi_rs232_dato_midi = 0;
+        aymidi_rs232_bits = 0;
+        //break;
     }  // en otro caso, seguimos esperando una seÒal v·lida...
     break;
 
-  case LEE_BIT:
+    case LEE_BIT:
     if (100<=aymidi_rs232_diftime && aymidi_rs232_diftime<=120)  // si llegÛ a tiempo...
     {
-      aymidi_rs232_dato_midi >>= 1;  // desplazamos a la derecha
-      aymidi_rs232_dato_midi |= (output_bit << 7); // y plantamos el bit leido de MIDI en el bit 7
-      aymidi_rs232_bits++;                // asÌ vamos leyendo desde el LSb hasta el MSb
-      if (aymidi_rs232_bits == 8)
+        aymidi_rs232_dato_midi >>= 1;  // desplazamos a la derecha
+        aymidi_rs232_dato_midi |= (output_bit << 7); // y plantamos el bit leido de MIDI en el bit 7
+        aymidi_rs232_bits++;                // asÌ vamos leyendo desde el LSb hasta el MSb
+        if (aymidi_rs232_bits == 8)
         aymidi_rs232_midi_state = ESPERA_STOP;
     }
     else  // ha llegado una escritura, pero fuera de tiempo
     {
 
-      debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Write arrived late");
+        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Write arrived late");
 
-      if (output_bit == 1)  {// si es estado inactivo, volvemos al principio
+        if (output_bit == 1)  {// si es estado inactivo, volvemos al principio
         aymidi_rs232_midi_state = ESPERA_START;
         debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Start receiving from the beginning");
-      }
-      else
-      {  // si no, lo consideramos una nueva seÒal de START. Empezamos otra vez a leer aymidi_rs232_bits
+        }
+        else
+        {  // si no, lo consideramos una nueva seÒal de START. Empezamos otra vez a leer aymidi_rs232_bits
         aymidi_rs232_dato_midi = 0;
         aymidi_rs232_bits = 0;
         debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Consider is as a START signal");
-      }
+        }
     }
 
     break;
 
 
-  case ESPERA_STOP:
+    case ESPERA_STOP:
     if (100<=aymidi_rs232_diftime && aymidi_rs232_diftime<=120)  // si llegÛ a tiempo...
     {
-      if (output_bit == 1) // seÒal de STOP v·lida!
-      {
+        if (output_bit == 1) // seÒal de STOP v·lida!
+        {
         procesar_aymidi_rs232_dato_midi(aymidi_rs232_dato_midi); // hacemos lo que sea con el dato recibido
         aymidi_rs232_midi_state = ESPERA_START;
         debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Valid STOP signal");
-      }
-      else {
+        }
+        else {
         aymidi_rs232_midi_state = ESPERA_START; // seÒal de STOP no v·lida. Se descarta el dato
         debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Invalid STOP signal. Discard data");
-      }
+        }
     }
     else  // no llegÛ a tiempo
     {
 
         printf("aymidi_rs232: STOP arrived late\n");
 
-      if (output_bit == 1) {
+        if (output_bit == 1) {
         aymidi_rs232_midi_state = ESPERA_START;
-      }
-      else
-      {  // lo consideramos una nueva seÒal de START
+        }
+        else
+        {  // lo consideramos una nueva seÒal de START
         aymidi_rs232_midi_state = LEE_BIT;
         aymidi_rs232_dato_midi = 0;
         aymidi_rs232_bits = 0;
-      }
+        }
     }
 
     break;
 
 
-  default:
-    aymidi_rs232_midi_state = ESPERA_START;
+    default:
+        aymidi_rs232_midi_state = ESPERA_START;
     break;
 }
 
@@ -1476,20 +1445,18 @@ void activa_ay_chip_si_conviene(void)
 //Se le pasa valores fino (8 bits bajos) y alto (8 bits altos)
 int ay_retorna_frecuencia_valor_registro(z80_byte value_l,z80_byte value_h)
 {
-        int freq_temp;
+    int freq_temp;
     int freq_tono;
-        freq_temp=value_l+256*(value_h & 0x0F);
-        //printf ("Valor freq_temp : %d\n",freq_temp);
+    freq_temp=value_l+256*(value_h & 0x0F);
+    //printf ("Valor freq_temp : %d\n",freq_temp);
 
-        //controlamos divisiones por cero
-        if (!freq_temp) freq_temp++;
+    //controlamos divisiones por cero
+    if (!freq_temp) freq_temp++;
 
-        freq_temp=freq_temp*AY_DIVISOR_FRECUENCIA;
-
-
+    freq_temp=freq_temp*AY_DIVISOR_FRECUENCIA;
 
 
-        freq_tono=FRECUENCIA_AY/freq_temp;
+    freq_tono=FRECUENCIA_AY/freq_temp;
 
     return freq_tono;
 }
@@ -1500,7 +1467,7 @@ int ay_retorna_frecuencia(int registro,int chip)
 {
 
 
-        return ay_retorna_frecuencia_valor_registro(ay_3_8912_registros[chip][registro*2],ay_3_8912_registros[chip][registro*2+1]);
+    return ay_retorna_frecuencia_valor_registro(ay_3_8912_registros[chip][registro*2],ay_3_8912_registros[chip][registro*2+1]);
 
 
 }
