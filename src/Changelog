@@ -31,11 +31,11 @@ Added black & white video dither mode
 Added RGB 8 bit color mode
 Added lightgun scope
 Added emulation of Optical Devices:
-- Stack Light Rifle
-- Defender Light Gun
-- Trojan Light Pen
 - Datel Lightwriter
+- Defender Light Gun
 - Spectrum Doodler Lightpen
+- Stack Light Rifle
+- Trojan Light Pen
 
 * Improvements:
 

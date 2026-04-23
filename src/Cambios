@@ -31,11 +31,11 @@ Agregado modo de color en blanco y negro con tramado
 Agregado modo de color RGB 8 bit
 Agregada mirilla de lightgun
 Agregada emulación de Dispositivos Ópticos:
-- Stack Light Rifle
-- Defender Light Gun
-- Trojan Light Pen
 - Datel Lightwriter
+- Defender Light Gun
 - Spectrum Doodler Lightpen
+- Stack Light Rifle
+- Trojan Light Pen
 
 * Mejoras:
 
