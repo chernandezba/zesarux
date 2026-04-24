@@ -43929,6 +43929,9 @@ void menu_process_switcher_overlay(void)
 
             if (pointer_window==zxvision_current_window) si_tarea_actual=1;
 
+            //Pero si el menu esta cerrado, no quiero que aparezca ese recuadro de ventana activa
+            if (!menu_abierto) si_tarea_actual=0;
+
             int minimizada=pointer_window->is_minimized;
 
             menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i,seleccionado_indice_icono,si_tarea_actual,minimizada);

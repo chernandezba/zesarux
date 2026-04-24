@@ -105,5 +105,6 @@ Total songs: 10
 First song: 1
 Playing song 1 name: Toi Acid Game (48k Level 1 Title). Duration: 00:33.22
 Playing song 2 name: Toi Acid Game (48k Level 1 Complete). Duration: 00:40.36
-^CMac-mini-de-Cesar:src cesarhernandezexport CFLAGS="-fsanitize=address,undefined"
+^CMac-mini-de-Cesar:src cesarhernandez export CFLAGS="-fsanitize=address,undefined"
 
+ok -process switcher: si esta menu cerrado, el foco está en la máquina emulada y por tanto no deberia salir el recuadro en la ventana que tiene zxvision_current
