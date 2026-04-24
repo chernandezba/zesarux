@@ -14562,8 +14562,9 @@ int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
         if (longitud<2) strcpy(texto,"Corrupt tape");
         else {
             //Maximo 36 bytes (en una cabecera tipo SPED). Copiamos a buffer temporal para evitar que se salga puntero de sitio
-            z80_byte buffer_temp[36];
-            util_memcpy_protect_origin(buffer_temp, tape, 36, 0, 36);
+            //Pero le hemos restado 3
+            z80_byte buffer_temp[33];
+            util_memcpy_protect_origin(buffer_temp, tape, 33, 0, 33);
             util_tape_get_info_tapeblock(buffer_temp,flag,longitud,texto);
 
 
