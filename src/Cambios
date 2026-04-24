@@ -131,6 +131,7 @@ Corregido fallo visual en border en Spectrum Next al cambiar la velocidad turbo
 Corregido mostrar indicador de submenú (>) cuando el menú tiene barra de scroll vertical
 Corregido al reabrir ventanas que estaban cerradas y minimizadas (cuando la opción de "ocultar ventanas minimizadas" está activada)
 Corregido cambio de color de paleta en Amstrad PCW
+Corregido varios posibles segfaults en diferentes secciones del código
 Eliminados algunos opcodes viejos/inexistentes de Next Z80N
 
 ----

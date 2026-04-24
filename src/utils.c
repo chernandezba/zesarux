@@ -1035,42 +1035,49 @@ unsigned int util_stats_sum_all_counters(void)
 
 
 
-
-
-
-
 //Obtiene la extension de filename y la guarda en extension. Extension sin el punto
 //filename debe ser nombre de archivo, sin incluir directorio
 void util_get_file_extension(char *filename,char *extension)
 {
 
-        //obtener extension del nombre
-        //buscar ultimo punto
-        //parar si se encuentra / o \ de division de carpeta
+    //obtener extension del nombre
+    //buscar ultimo punto
+    //parar si se encuentra / o \ de division de carpeta
 
-        char caracter_carpeta='/';
+    char caracter_carpeta='/';
 #ifdef MINGW
-        caracter_carpeta='\\';
+    caracter_carpeta='\\';
 #endif
 
 
-        int j;
-        j=strlen(filename);
-        if (j==0) extension[0]=0;
-        else {
-                for (;j>=0 && filename[j]!='.' && filename[j]!=caracter_carpeta;j--);
+    int j;
+    j=strlen(filename);
 
-                if (filename[j]==caracter_carpeta) {
-                        extension[0]=0; //no hay extension
-                }
+    //Asumimos que no tiene extension
+    extension[0]=0;
 
-                else {
-                        if (j>=0) strcpy(extension,&filename[j+1]);
-                        else extension[0]=0;
-                }
+    if (j>0) {
+        //Empezar desde el ultimo caracter y recorremos hacia el inicio, buscando un punto o el caracter de division de carpeta
+        for (;j>=0 && filename[j]!='.' && filename[j]!=caracter_carpeta;j--);
+
+        //si j=-1, es que hemos recorrido sin encontrar ni punto ni caracter carpeta
+
+        if (j>=0) {
+            //Nos hemos parado antes de recorrer todo el nombre hacia el inicio, entonces:
+            //O se ha leido un punto o el caracter de carpeta
+            //Si se ha leido punto, hay extension
+            //Si se ha leido caracter de carpeta, no hay extension
+
+            if (filename[j]=='.') {
+                //Se ha leido un punto. hay extension
+                strcpy(extension,&filename[j+1]);
+            }
+
         }
 
-        debug_printf (VERBOSE_DEBUG,"Filename: [%s] Extension: [%s]",filename,extension);
+    }
+
+    debug_printf (VERBOSE_DEBUG,"Filename: [%s] Extension: [%s]",filename,extension);
 }
 
 //Obtiene el nombre de filename sin extension y la guarda en filename_without_extension.
