@@ -18543,6 +18543,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
     z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
 
     puntero_lectura +=10; //Saltar cabecera (version tzx etc)
+    total_mem -=10;
 
     int salir=0;
 
@@ -18556,6 +18557,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
         z80_byte tzx_id=*puntero_lectura;
 
         puntero_lectura++;
+        total_mem--;
 
         switch (tzx_id) {
 
@@ -18571,7 +18573,9 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
                     //realmente los de longitud no se leeran luego, el flag si. Esto es por compatibilidad con la gestion del bloque tipo 0x10
 
                     longitud_bloque=puntero_lectura[15]+256*puntero_lectura[16]+65536*puntero_lectura[17];
+
                     puntero_lectura+=18;
+                    total_mem -=18;
 
                     //bloque simulado para poder obtener nombre del bloque
                     //39 bytes: 2 de longitud, 1 de flag, y 36 de maximo cabecera tipo sped
@@ -18589,13 +18593,14 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
                 else {
                     puntero_lectura +=2;
                     total_mem -=2;
+
                     copia_puntero=puntero_lectura;
                     longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,0);
                 }
 
 
-                total_mem-=longitud_bloque;
                 puntero_lectura +=longitud_bloque;
+                total_mem-=longitud_bloque;
                 //debug_printf (VERBOSE_DEBUG,"Tape browser. Block: %s",buffer_texto);
 
 
@@ -18764,9 +18769,10 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
                 //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
                 puntero_lectura+=2;
-                puntero_lectura+=longitud_bloque;
+                total_mem-=2;
 
-                total_mem -=(longitud_bloque+2);
+                puntero_lectura+=longitud_bloque;
+                total_mem -=longitud_bloque;
             break;
 
             case 0x32:
@@ -18774,13 +18780,15 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
                 //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
                 longitud_bloque=puntero_lectura[0]+256*puntero_lectura[1];
+
                 puntero_lectura+=2;
+                total_mem-=2;
 
 
                 z80_byte nstrings=*puntero_lectura;
-                puntero_lectura++;
 
-                total_mem -=3;
+                puntero_lectura++;
+                total_mem--;
 
                 //char buffer_text_id[256];
                 //char buffer_text_text[256];
@@ -18788,10 +18796,12 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
                 for (;nstrings;nstrings--) {
                     //z80_byte text_type=*puntero_lectura;
                     puntero_lectura++;
+                    total_mem--;
+
                     z80_byte longitud_texto=*puntero_lectura;
                     puntero_lectura++;
+                    total_mem--;
 
-                    total_mem -=2;
 
                     //tape_tzx_get_archive_info(text_type,buffer_text_id);
                     //util_binary_to_ascii(&tzx_file_mem[puntero],buffer_text_text,longitud_texto,longitud_texto);
@@ -18800,7 +18810,6 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
                     //indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
                     puntero_lectura +=longitud_texto;
-
                     total_mem -=longitud_texto;
                 }
 
