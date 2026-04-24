@@ -22909,10 +22909,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //pues menus tabulados son mas bien para ventanas, como visual memory, y no menus de opciones
     //Y siempre que indique el full path en el primer item de menu
 
+    char buf_full_path[MAX_LENGTH_FULL_PATH_SUBMENU];
+
     //Si no tiene titulo...
     if (m->index_full_path==NULL) {
 
-        char buf_full_path[MAX_LENGTH_FULL_PATH_SUBMENU];
+
 
         //Lo deducimos teniendo en cuenta que hay submenus previos
         if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) {

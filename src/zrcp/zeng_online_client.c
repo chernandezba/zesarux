@@ -533,7 +533,7 @@ int zeng_online_client_list_rooms_connect(void)
 
     leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)zeng_remote_list_rooms_buffer,total_listado_rooms_memoria,&posicion_command);
     if (leidos>0) {
-        buffer[leidos]=0; //fin de texto
+        zeng_remote_list_rooms_buffer[leidos]=0; //fin de texto
         DBG_PRINT_ZENG_ONLINE_CLIENT VERBOSE_PARANOID,"ZENG Online Client: Received text for zeng-online list-rooms (length %d): \n[\n%s\n]",leidos,zeng_remote_list_rooms_buffer);
     }
 
