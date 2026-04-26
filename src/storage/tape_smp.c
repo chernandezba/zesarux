@@ -940,6 +940,17 @@ int spec_lee_byte(void)
 //Mira si hay un byte de cambio de onda, en cuyo caso lo devuelve
 //Pone spec_final_fichero a 1 si se llega al final del fichero
 {
+
+    //printf("antes spec_lee_byte memoria_archivo_smp_puntero %d spec_longitud_total_archivo_smp %d final %d\n",
+    //        memoria_archivo_smp_puntero,spec_longitud_total_archivo_smp,spec_final_fichero);
+
+    //Por si acaso se llama a leer cuando ya se ha llegado al final
+    if (memoria_archivo_smp_puntero>=spec_longitud_total_archivo_smp) {
+		spec_final_fichero=1;
+		return 0;
+	}
+
+
 	if (spec_cambio) {
 		spec_cambio=0;
 		return spec_byte_cambio;
@@ -949,13 +960,6 @@ int spec_lee_byte(void)
 		//spec_byte_cambio=fgetc(ptr_mycinta_smp);
         //Es mas rapido leer de memoria que no andar haciendo fgetc
         spec_byte_cambio=memoria_archivo_smp[memoria_archivo_smp_puntero++];
-
-
-		//tempp++;
-		//printf ("l: %d\n",tempp);
-		//unsigned char v;
-		//v=spec_byte_cambio;
-		// printf ("%x ",v);
 	}
 
     if (memoria_archivo_smp_puntero>=spec_longitud_total_archivo_smp) {
@@ -1416,7 +1420,7 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 		debug_printf (VERBOSE_INFO,"----------------");
 
 
-	} while (1);
+	} while (!spec_final_fichero);
 
 	fin:
 
