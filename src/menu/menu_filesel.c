@@ -6952,13 +6952,18 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 
 
-                        //Redibujar ventana
-                        //releer_directorio=1;
+                        if (!releer_directorio) {
+                            //Redibujar ventana en el caso que no haya que releer directorio
+                            //porque si hay que releer directorio, puede pasar en casos como copiar archivos,
+                            //en que se rellama a filesel para la carpeta de destino, sobreescribiendo
+                            //la información del directorio inicial (pues esta rutina de menu_filesel no es reentrante)
+                            //Y por tanto accederiamos a memoria no disponible generando un posible segfault
 
-                        zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
-                        zxvision_menu_filesel_print_legend(ventana);
+                            zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
+                            zxvision_menu_filesel_print_legend(ventana);
 
-                        zxvision_menu_filesel_print_text_contents(ventana);
+                            zxvision_menu_filesel_print_text_contents(ventana);
+                        }
                     }
 
                 }
