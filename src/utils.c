@@ -14516,6 +14516,7 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 //Retorna texto descriptivo de informacion de cinta en texto. Cinta tipo tap o tzx
 //Retorna longitud del bloque
 //origin_tap es importante cuando se viene de un tap y maquina activa es jupiter ace, pues esos tap no tienen flag
+//Hasta 39 bytes de origen se pueden llegar a leer
 int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
 {
     int longitud=value_8_to_16(tape[1],tape[0]);
@@ -18552,6 +18553,8 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
     int archivo_tzx_tiene_scr=0;
     char primer_bloque_basic[PATH_MAX]="";
 
+    z80_byte buffer_temp_cabecera[39];
+
     while(total_mem>0 && !salir) {
 
         z80_byte tzx_id=*puntero_lectura;
@@ -18568,6 +18571,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
             //ID 11 - Turbo Speed Data Block
 
                 if (tzx_id==0x11) {
+                    //printf("Es turbo\n");
                     copia_puntero=puntero_lectura+16;
                     //copia_puntero hay que dejarlo justo donde quedan 2 bytes de la longitud y luego el siguiente es el flag
                     //realmente los de longitud no se leeran luego, el flag si. Esto es por compatibilidad con la gestion del bloque tipo 0x10
@@ -18579,23 +18583,44 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
 
                     //bloque simulado para poder obtener nombre del bloque
                     //39 bytes: 2 de longitud, 1 de flag, y 36 de maximo cabecera tipo sped
-                    z80_byte buffer_temp_cabecera[39];
+
 
                     //2 primeros bytes de longitud
                     buffer_temp_cabecera[0]=longitud_bloque % 0xFF;
                     buffer_temp_cabecera[1]=(longitud_bloque % 0xFF00)>>8;
-                    util_memcpy_protect_origin(&buffer_temp_cabecera[2], puntero_lectura, 37, 0, 37);
+                    //printf("Antes memcopy total_mem %d\n",total_mem);
 
+                    int bytes_leer=total_mem;
+
+                    if (bytes_leer>37) bytes_leer=37;
+
+                    util_memcpy_protect_origin(&buffer_temp_cabecera[2], puntero_lectura, bytes_leer, 0, 37);
+                    //printf("Despues memcopy\n");
                     util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0);
+
+
+
 
                 }
 
                 else {
+                    //printf("Es estandar\n");
                     puntero_lectura +=2;
                     total_mem -=2;
 
                     copia_puntero=puntero_lectura;
-                    longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,0);
+
+
+                    int bytes_leer=total_mem;
+
+                    if (bytes_leer>39) bytes_leer=39;
+
+                    util_memcpy_protect_origin(buffer_temp_cabecera, puntero_lectura, bytes_leer, 0, 39);
+                    //printf("Despues memcopy\n");
+                    longitud_bloque=util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0);
+
+
+                    //longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,0);
                 }
 
 
