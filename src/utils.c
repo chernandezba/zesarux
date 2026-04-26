@@ -3049,6 +3049,8 @@ void send_text_as_keystrokes_eject(void)
 
 }
 
+//Enviar texto en el buffer de keystrokes
+//Nota: el texto debe incluir byte 0 al final y ese 0 cuenta en el total de longitud
 void send_text_as_keystrokes_init(char *texto,int longitud)
 {
     if (send_text_as_keystrokes_memory!=NULL) {

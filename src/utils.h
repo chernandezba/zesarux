@@ -597,7 +597,6 @@ extern void reset_peek_byte_function_sendtextkeystrokes_spoolturbo(void);
 extern void util_send_text_as_keystrokes_setreset_nested_turbo(void);
 extern void send_text_as_keystrokes_get_key_turbo_rst_repeat(void);
 
-
 extern void set_poke_byte_function_writerom(void);
 extern void reset_poke_byte_function_writerom(void);
 
@@ -892,6 +891,7 @@ extern z80_bit send_text_as_keystrokes_playing;
 
 extern char *send_text_as_keystrokes_memory;
 extern int send_text_as_keystrokes_indice;
+extern int send_text_as_keystrokes_length;
 
 extern void convert_to_rwa_common_tmp(char *origen, char *destino);
 

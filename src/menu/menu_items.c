@@ -32555,10 +32555,20 @@ void menu_send_text_keystrokes_status_overlay(void)
 
         zxvision_print_string_defaults_fillspc(menu_send_text_keystrokes_status_window,1,0,buffer_texto);
 
+        int porcentaje;
+        int longitud_total=send_text_as_keystrokes_length-1; //no contar el byte 0 del final
+
+        if (longitud_total<1) porcentaje=0;
+        else porcentaje=(send_text_as_keystrokes_indice*100)/longitud_total;
+
+        zxvision_print_string_defaults_fillspc_format(menu_send_text_keystrokes_status_window,1,1,"Sent: %d/%d (%d %%)",
+            send_text_as_keystrokes_indice,longitud_total,porcentaje);
+
     }
 
     else {
         zxvision_print_string_defaults_fillspc(menu_send_text_keystrokes_status_window,1,0,"<Empty>");
+        zxvision_print_string_defaults_fillspc(menu_send_text_keystrokes_status_window,1,1,"");
     }
 
 
