@@ -77,45 +77,45 @@ char inputfile_name_rwa[PATH_MAX];
 int tape_smp_open_input_file(void)
 {
 
-	//Inicializar siempre esto. Si no se confunde si ha habido una conversion anterior
-	ptr_mycinta_smp=NULL;
+    //Inicializar siempre esto. Si no se confunde si ha habido una conversion anterior
+    ptr_mycinta_smp=NULL;
 
     int longitud_archivo_smp;
 
-	if (!util_compare_file_extension(tapefile,"smp")) {
-		if (lee_smp_ya_convertido==0) {
-			convert_to_rwa_common_tmp(tapefile,inputfile_name_rwa);
-			convert_smp_to_rwa(tapefile,inputfile_name_rwa);
-		}
+    if (!util_compare_file_extension(tapefile,"smp")) {
+        if (lee_smp_ya_convertido==0) {
+            convert_to_rwa_common_tmp(tapefile,inputfile_name_rwa);
+            convert_smp_to_rwa(tapefile,inputfile_name_rwa);
+        }
 
-		ptr_mycinta_smp=fopen(inputfile_name_rwa,"rb");
-
-        longitud_archivo_smp=get_file_size(inputfile_name_rwa);
-		//printf ("convertido a rwa : %s\n",inputfile_name_rwa);
-	}
-
-	else if (!util_compare_file_extension(tapefile,"wav")) {
-		if (lee_smp_ya_convertido==0) {
-			convert_to_rwa_common_tmp(tapefile,inputfile_name_rwa);
-			if (convert_wav_to_rwa(tapefile,inputfile_name_rwa)) {
-				debug_printf (VERBOSE_ERR,"Error converting wav to rwa");
-				return 0;
-			}
-		}
-		ptr_mycinta_smp=fopen(inputfile_name_rwa,"rb");
+        ptr_mycinta_smp=fopen(inputfile_name_rwa,"rb");
 
         longitud_archivo_smp=get_file_size(inputfile_name_rwa);
-	}
+        //printf ("convertido a rwa : %s\n",inputfile_name_rwa);
+    }
+
+    else if (!util_compare_file_extension(tapefile,"wav")) {
+        if (lee_smp_ya_convertido==0) {
+            convert_to_rwa_common_tmp(tapefile,inputfile_name_rwa);
+            if (convert_wav_to_rwa(tapefile,inputfile_name_rwa)) {
+                debug_printf (VERBOSE_ERR,"Error converting wav to rwa");
+                return 0;
+            }
+        }
+        ptr_mycinta_smp=fopen(inputfile_name_rwa,"rb");
+
+        longitud_archivo_smp=get_file_size(inputfile_name_rwa);
+    }
 
 
-	else {
+    else {
         //printf("cinta no es smp ni wav\n");
-		ptr_mycinta_smp=fopen(tapefile,"rb");
+        ptr_mycinta_smp=fopen(tapefile,"rb");
         longitud_archivo_smp=get_file_size(tapefile);
-	}
+    }
 
 
-	lee_smp_ya_convertido=1;
+    lee_smp_ya_convertido=1;
 
     return longitud_archivo_smp;
 
@@ -127,12 +127,12 @@ int tape_smp_open_input_file(void)
 //1 si error
 int spec_smp_write_mem_byte(int index,z80_byte valor)
 {
-	if (index>=MAX_BYTES_READ) {
-		return 1;
-	}
+    if (index>=MAX_BYTES_READ) {
+        return 1;
+    }
 
-	spec_smp_memory[index]=valor;
-	return 0;
+    spec_smp_memory[index]=valor;
+    return 0;
 }
 
 
@@ -141,46 +141,46 @@ int tape_block_smp_open(void)
 
 
 
-	if (!(MACHINE_IS_SPECTRUM)) return 0;
+    if (!(MACHINE_IS_SPECTRUM)) return 0;
 
 
-	else {
-		//avisar que no se ha abierto aun el archivo. Esto se hace porque en la rutina de Autodetectar,
-		//cada vez se abre el archivo de nuevo, y evitar que se tenga que convertir (por ejemplo de wav) una y otra vez
-		lee_smp_ya_convertido=0;
+    else {
+        //avisar que no se ha abierto aun el archivo. Esto se hace porque en la rutina de Autodetectar,
+        //cada vez se abre el archivo de nuevo, y evitar que se tenga que convertir (por ejemplo de wav) una y otra vez
+        lee_smp_ya_convertido=0;
 
-		int longitud_archivo_smp=tape_smp_open_input_file();
+        int longitud_archivo_smp=tape_smp_open_input_file();
 
-		if (!ptr_mycinta_smp)
-		{
-			debug_printf(VERBOSE_ERR,"Unable to open smp input file %s",tapefile);
-			tapefile=0;
-			return 1;
-		}
+        if (!ptr_mycinta_smp)
+        {
+            debug_printf(VERBOSE_ERR,"Unable to open smp input file %s",tapefile);
+            tapefile=0;
+            return 1;
+        }
 
         //Nota: esta rutina puede tardar un poco si el archivo de audio es muy grande
-		main_spec_rwaatap(NULL,0,NULL,longitud_archivo_smp);
+        main_spec_rwaatap(NULL,0,NULL,longitud_archivo_smp);
 
 
-		return 0;
-	}
+        return 0;
+    }
 }
 
 
 int tape_block_smp_read(void *dir,int longitud)
 {
 
-	if (spec_smp_read_index_tap>=spec_smp_total_read) {
-		debug_printf(VERBOSE_INFO,"End of file");
-		return 0;
-	}
+    if (spec_smp_read_index_tap>=spec_smp_total_read) {
+        debug_printf(VERBOSE_INFO,"End of file");
+        return 0;
+    }
 
 
-	memcpy(dir,&spec_smp_memory[spec_smp_read_index_tap],longitud);
+    memcpy(dir,&spec_smp_memory[spec_smp_read_index_tap],longitud);
 
-	spec_smp_read_index_tap +=longitud;
+    spec_smp_read_index_tap +=longitud;
 
-	return longitud;
+    return longitud;
 
 
 
@@ -188,18 +188,18 @@ int tape_block_smp_read(void *dir,int longitud)
 
 int tape_block_smp_readlength(void)
 {
-	z80_byte buffer[2];
-	if (spec_smp_read_index_tap>=spec_smp_total_read) {
-		debug_printf(VERBOSE_INFO,"End of file");
-		return 0;
-	}
+    z80_byte buffer[2];
+    if (spec_smp_read_index_tap>=spec_smp_total_read) {
+        debug_printf(VERBOSE_INFO,"End of file");
+        return 0;
+    }
 
-	memcpy(buffer,&spec_smp_memory[spec_smp_read_index_tap],2);
-	spec_smp_read_index_tap +=2;
+    memcpy(buffer,&spec_smp_memory[spec_smp_read_index_tap],2);
+    spec_smp_read_index_tap +=2;
 
-	//printf ("tape_block_smp_readlength: %d\n",value_8_to_16(buffer[1],buffer[0]));
+    //printf ("tape_block_smp_readlength: %d\n",value_8_to_16(buffer[1],buffer[0]));
 
-	return value_8_to_16(buffer[1],buffer[0]);
+    return value_8_to_16(buffer[1],buffer[0]);
 
 }
 
@@ -207,18 +207,18 @@ int tape_block_smp_readlength(void)
 int tape_block_smp_seek(int longitud,int direccion)
 {
 
-	switch (direccion) {
-		case SEEK_CUR:
-			spec_smp_read_index_tap +=longitud;
-			break;
+    switch (direccion) {
+        case SEEK_CUR:
+            spec_smp_read_index_tap +=longitud;
+            break;
 
-		default:
-			debug_printf (VERBOSE_ERR,"tape_block_smp_seek. whence invalid : %d",direccion);
-			return -1;
-			break;
-	}
+        default:
+            debug_printf (VERBOSE_ERR,"tape_block_smp_seek. whence invalid : %d",direccion);
+            return -1;
+            break;
+    }
 
-	return 0;
+    return 0;
 
 }
 
@@ -228,7 +228,7 @@ int tape_block_smp_seek(int longitud,int direccion)
 //Cargar en RAM datos obtenidos del audio de SMP
 void snap_load_zx80_zx81_load_smp(void)
 {
-	if (main_leezx81(NULL,NULL,1)==0) {
+    if (main_leezx81(NULL,NULL,1)==0) {
         debug_printf (VERBOSE_ERR,"Error: Program length is zero");
     }
 }
@@ -271,8 +271,8 @@ int zx8081_debugonda=0;
 
 int zx8081_da_abs(int valor)
 {
-	if (valor>=0) return valor;
-	else return -valor;
+    if (valor>=0) return valor;
+    else return -valor;
 }
 
 int zx8081_lee_byte(void)
@@ -280,16 +280,16 @@ int zx8081_lee_byte(void)
 //Pone zx8081_final_fichero a 1 si se llega al final del fichero
 {
 
-	zx8081_byte_cambio=fgetc(ptr_mycinta_smp);
-	zx8081_fic_leido++;
-	//printf (" %d\n",zx8081_fic_leido);
+    zx8081_byte_cambio=fgetc(ptr_mycinta_smp);
+    zx8081_fic_leido++;
+    //printf (" %d\n",zx8081_fic_leido);
 
-	if (feof(ptr_mycinta_smp)) {
-		zx8081_final_fichero=1;
-		return 0;
-	}
+    if (feof(ptr_mycinta_smp)) {
+        zx8081_final_fichero=1;
+        return 0;
+    }
 
-	return zx8081_byte_cambio;
+    return zx8081_byte_cambio;
 }
 
 int zx8081_lee_onda(unsigned char *longitud)
@@ -299,111 +299,111 @@ int zx8081_lee_onda(unsigned char *longitud)
 {
 
 
-	//int debug_leidos=0;
-	unsigned char veces;
-	int byte,byte_ant;
+    //int debug_leidos=0;
+    unsigned char veces;
+    int byte,byte_ant;
 
-	//Primero posicionarse en una onda de sonido
-	//Ver si la onda cambia bruscamente (mas de zx8081_sensibilidad_cambio) en mas de zx8081_longitud_cambio bytes
+    //Primero posicionarse en una onda de sonido
+    //Ver si la onda cambia bruscamente (mas de zx8081_sensibilidad_cambio) en mas de zx8081_longitud_cambio bytes
 
-	//printf ("Sensibilidad cambio: %d\n",zx8081_sensibilidad_cambio);
-
-
-	byte_ant=zx8081_lee_byte();
-
-	veces=0;
-
-	do {
-		if (zx8081_debugonda) printf ("S");
-		if (zx8081_final_fichero) {
-			debug_printf (VERBOSE_DEBUG,"End audio input file waiting audio value high change");
-			//printf ("longitud esperando cambio: %d leidos: %d\n",*longitud,debug_leidos);
-			return -1;
-		}
-		byte=zx8081_lee_byte();
-		//debug_leidos++;
-
-		//Parche para soportar conversiones no muy buenas de smp a rwa, en que se repite el ultimo byte de vez en cuando
-		//Desactivado Parche, pues entonces lo que sucede es que con archivos rwa
-		//generados mediante save del emulador en zx81, los silencios entre bits tienen mismo valor, y se interpretarian
-		//como parte de este parche
-		//if (byte==byte_ant) {
-		//}
-
-		//else {
-		int diferencia;
-		diferencia=zx8081_da_abs(byte-byte_ant);
-		//printf ("esperando cambio brusco: byte antes: %d byte despues: %d diferencia: %d sensibilidad cambio: %d veces: %d zx8081_longitud_cambio: %d\n",byte_ant,byte,diferencia,zx8081_sensibilidad_cambio,veces,zx8081_longitud_cambio);
-
-		if (diferencia>=zx8081_sensibilidad_cambio) veces++;
-		else {
-			//en vez de invalidar esto (veces=0) decir que "la ultima" no cuenta
-			if (veces) veces--;
-		}
-
-		//}
+    //printf ("Sensibilidad cambio: %d\n",zx8081_sensibilidad_cambio);
 
 
-		byte_ant=byte;
-	} while (veces<zx8081_longitud_cambio);
+    byte_ant=zx8081_lee_byte();
+
+    veces=0;
+
+    do {
+        if (zx8081_debugonda) printf ("S");
+        if (zx8081_final_fichero) {
+            debug_printf (VERBOSE_DEBUG,"End audio input file waiting audio value high change");
+            //printf ("longitud esperando cambio: %d leidos: %d\n",*longitud,debug_leidos);
+            return -1;
+        }
+        byte=zx8081_lee_byte();
+        //debug_leidos++;
+
+        //Parche para soportar conversiones no muy buenas de smp a rwa, en que se repite el ultimo byte de vez en cuando
+        //Desactivado Parche, pues entonces lo que sucede es que con archivos rwa
+        //generados mediante save del emulador en zx81, los silencios entre bits tienen mismo valor, y se interpretarian
+        //como parte de este parche
+        //if (byte==byte_ant) {
+        //}
+
+        //else {
+        int diferencia;
+        diferencia=zx8081_da_abs(byte-byte_ant);
+        //printf ("esperando cambio brusco: byte antes: %d byte despues: %d diferencia: %d sensibilidad cambio: %d veces: %d zx8081_longitud_cambio: %d\n",byte_ant,byte,diferencia,zx8081_sensibilidad_cambio,veces,zx8081_longitud_cambio);
+
+        if (diferencia>=zx8081_sensibilidad_cambio) veces++;
+        else {
+            //en vez de invalidar esto (veces=0) decir que "la ultima" no cuenta
+            if (veces) veces--;
+        }
+
+        //}
+
+
+        byte_ant=byte;
+    } while (veces<zx8081_longitud_cambio);
 
 
 
-	*longitud=veces+1;
-	//printf ("longitud despues de esperar cambio: %d leidos: %d\n",*longitud,debug_leidos);
-	//debug_leidos=0;
+    *longitud=veces+1;
+    //printf ("longitud despues de esperar cambio: %d leidos: %d\n",*longitud,debug_leidos);
+    //debug_leidos=0;
 
-	//A partir de ahora leer la longitud hasta que el cambio no sea brusco
+    //A partir de ahora leer la longitud hasta que el cambio no sea brusco
 
-	//valor zx8081_longitud_cambio depende de frecuencia muestreo
-	//valor zx8081_sensibilidad_cambio depende del volumen y/o bits (8 o 16)
+    //valor zx8081_longitud_cambio depende de frecuencia muestreo
+    //valor zx8081_sensibilidad_cambio depende del volumen y/o bits (8 o 16)
 
-	//Se tiene byte
-	veces=0;
+    //Se tiene byte
+    veces=0;
 
-	byte_ant=byte;
-	do {
-		if (zx8081_debugonda) printf ("O");
-		byte=zx8081_lee_byte();
-		if (zx8081_final_fichero) {
-			debug_printf (VERBOSE_DEBUG,"End file reading data. Length: %d",*longitud);
-			//printf ("fin de archivo. longitud: %d leidos: %d\n",*longitud,debug_leidos);
+    byte_ant=byte;
+    do {
+        if (zx8081_debugonda) printf ("O");
+        byte=zx8081_lee_byte();
+        if (zx8081_final_fichero) {
+            debug_printf (VERBOSE_DEBUG,"End file reading data. Length: %d",*longitud);
+            //printf ("fin de archivo. longitud: %d leidos: %d\n",*longitud,debug_leidos);
 
-			return -1;
-		}
+            return -1;
+        }
 
-		//Parche para soportar conversiones no muy buenas de smp a rwa, en que se repite el ultimo byte de vez en cuando
-		//Desactivado Parche, pues entonces lo que sucede es que con archivos rwa
-		//generados mediante save del emulador en zx81, los silencios entre bits tienen mismo valor, y se interpretarian
-		//como parte de este parche
-		//if (byte==byte_ant) {
-		//	(*longitud)--;
-		//}
+        //Parche para soportar conversiones no muy buenas de smp a rwa, en que se repite el ultimo byte de vez en cuando
+        //Desactivado Parche, pues entonces lo que sucede es que con archivos rwa
+        //generados mediante save del emulador en zx81, los silencios entre bits tienen mismo valor, y se interpretarian
+        //como parte de este parche
+        //if (byte==byte_ant) {
+        //	(*longitud)--;
+        //}
 
-		//else {
-		int diferencia;
-		diferencia=zx8081_da_abs(byte-byte_ant);
-		//printf ("esperando cambio no brusco byte antes: %d byte despues: %d diferencia: %d sensibilidad cambio: %d veces: %d zx8081_longitud_cambio: %d\n",byte_ant,byte,diferencia,zx8081_sensibilidad_cambio,veces,zx8081_longitud_cambio);
-		if (diferencia<zx8081_sensibilidad_cambio) {
-			veces++;
-			if (veces>=zx8081_longitud_cambio) break;
-		}
-		else {
-			//en vez de invalidar esto (veces=0) decir que "la ultima" no cuenta
-			if (veces) veces--;
-		}
+        //else {
+        int diferencia;
+        diferencia=zx8081_da_abs(byte-byte_ant);
+        //printf ("esperando cambio no brusco byte antes: %d byte despues: %d diferencia: %d sensibilidad cambio: %d veces: %d zx8081_longitud_cambio: %d\n",byte_ant,byte,diferencia,zx8081_sensibilidad_cambio,veces,zx8081_longitud_cambio);
+        if (diferencia<zx8081_sensibilidad_cambio) {
+            veces++;
+            if (veces>=zx8081_longitud_cambio) break;
+        }
+        else {
+            //en vez de invalidar esto (veces=0) decir que "la ultima" no cuenta
+            if (veces) veces--;
+        }
 
-		//}
+        //}
 
-		(*longitud)++;
-		byte_ant=byte;
-		//debug_leidos++;
-	} while (1);
+        (*longitud)++;
+        byte_ant=byte;
+        //debug_leidos++;
+    } while (1);
 
 
-	//printf ("longitud despues de cambio no brusco: %d leidos: %d\n",*longitud,debug_leidos);
+    //printf ("longitud despues de cambio no brusco: %d leidos: %d\n",*longitud,debug_leidos);
 
-	return 0;
+    return 0;
 
 }
 
@@ -411,7 +411,7 @@ int zx8081_dice_margen(int n,int valor,int izq,int der)
 //Funcion que dice si el valor n esta entre [valor-izq,valor+der]
 {
 
-	return (n>=valor-izq && n<=valor+der);
+    return (n>=valor-izq && n<=valor+der);
 
 }
 
@@ -419,17 +419,17 @@ int zx8081_dice_bit(char numero)
 //Dice si el bit es 0 o 1 segun su numero de ondas
 //Devuelve -1 si no es un bit aceptado
 {
-	if (zx8081_dice_margen(numero,zx8081_ceros,12,12)) {
-		if (zx8081_debugonda) printf ("0");
-		return 0;
-	}
-	if (zx8081_dice_margen(numero,zx8081_unos,12,12)) {
-		if (zx8081_debugonda) printf ("1");
-		return 1;
-	}
-	unsigned int n=(unsigned int)numero;
-	debug_printf (VERBOSE_DEBUG,"Value %d for a bit length not accepted",n);
-	return -1;
+    if (zx8081_dice_margen(numero,zx8081_ceros,12,12)) {
+        if (zx8081_debugonda) printf ("0");
+        return 0;
+    }
+    if (zx8081_dice_margen(numero,zx8081_unos,12,12)) {
+        if (zx8081_debugonda) printf ("1");
+        return 1;
+    }
+    unsigned int n=(unsigned int)numero;
+    debug_printf (VERBOSE_DEBUG,"Value %d for a bit length not accepted",n);
+    return -1;
 
 }
 
@@ -437,74 +437,74 @@ int zx8081_lee_1_bit(void)
 //Funcion que lee 1 bit
 {
 
-	unsigned char longitud;
+    unsigned char longitud;
 
-	if (zx8081_lee_onda(&longitud)==-1) return -1;
+    if (zx8081_lee_onda(&longitud)==-1) return -1;
 
-	return zx8081_dice_bit(longitud);
+    return zx8081_dice_bit(longitud);
 }
 
 int zx8081_lee_8_bits(void)
 //Devuelve 8 bits leidos
 //Devuelve -1 si se llega al final de los datos
 {
-	char bit;
-	int n,byte=0;
+    char bit;
+    int n,byte=0;
 
-	for (n=0;n<8;n++) {
-		bit=zx8081_lee_1_bit();
-		//printf ("bit: %d ",bit);
-		if (bit==-1) return -1;
-		byte=byte*2+bit;
-	}
-	return byte;
+    for (n=0;n<8;n++) {
+        bit=zx8081_lee_1_bit();
+        //printf ("bit: %d ",bit);
+        if (bit==-1) return -1;
+        byte=byte*2+bit;
+    }
+    return byte;
 }
 
 int zx8081_escribe_nombre(unsigned char *m,int leidos)
 //Funcion que escribe el nombre del fichero y retorna la longitud del nombre
 {
-	unsigned char n;
-	int l=0;
-	z80_bit inverse;
+    unsigned char n;
+    int l=0;
+    z80_bit inverse;
 
-	do {
-		if (!leidos) break;
-		n=*m++;
-		leidos--;
-		l++;
-		putchar(da_codigo81(n,&inverse));
-	} while (n<128);
+    do {
+        if (!leidos) break;
+        n=*m++;
+        leidos--;
+        l++;
+        putchar(da_codigo81(n,&inverse));
+    } while (n<128);
 
 
-	return l;
+    return l;
 
 }
 
 int zx8081_escribe_nombre_to_string(unsigned char *m,unsigned char *s,int leidos)
 //Funcion que escribe el nombre del fichero en una string y retorna la longitud del nombre
 {
-	unsigned char n;
-	int l=0;
-	z80_bit inverse;
-	z80_byte caracter;
+    unsigned char n;
+    int l=0;
+    z80_bit inverse;
+    z80_byte caracter;
 
-	do {
-		if (!leidos) break;
-		n=*m++;
-		leidos--;
-		l++;
-		if (l>255) {
-			debug_printf (VERBOSE_INFO,"Error. Name is bigger than 255 bytes");
-			return l;
-		}
+    do {
+        if (!leidos) break;
+        n=*m++;
+        leidos--;
+        l++;
+        if (l>255) {
+            debug_printf (VERBOSE_INFO,"Error. Name is bigger than 255 bytes");
+            return l;
+        }
 
-		caracter=da_codigo81(n,&inverse);
-		*s++=caracter;
-		//putchar(da_codigo81(n,&inverse));
-	} while (n<128);
+        caracter=da_codigo81(n,&inverse);
+        *s++=caracter;
+        //putchar(da_codigo81(n,&inverse));
+    } while (n<128);
 
-	*s=0;
-	return l;
+    *s=0;
+    return l;
 
 }
 
@@ -516,39 +516,39 @@ int zx8081_lee_todos_bytes(unsigned char *m)
 
 
 
-	tape_smp_open_input_file();
+    tape_smp_open_input_file();
 
-	if (!ptr_mycinta_smp)
-	{
-		debug_printf(VERBOSE_ERR,"Unable to open smp input file (on zx8081_lee_todos_bytes) %s",tapefile);
-		tapefile=0;
-		return -1;
-	}
-
-
-
-	zx8081_fic_leido=0;
-	zx8081_final_fichero=0;
+    if (!ptr_mycinta_smp)
+    {
+        debug_printf(VERBOSE_ERR,"Unable to open smp input file (on zx8081_lee_todos_bytes) %s",tapefile);
+        tapefile=0;
+        return -1;
+    }
 
 
-	int retorno;
-	int bytes_leidos=0;
-	unsigned char byte_leido;
 
-	do {
-		retorno=zx8081_lee_8_bits(/*-1*/);
-		if (retorno==-1) break;
-
-		byte_leido=retorno;
-
-		*m++=byte_leido;
-		bytes_leidos++;
-	} while (1);
+    zx8081_fic_leido=0;
+    zx8081_final_fichero=0;
 
 
-	fclose(ptr_mycinta_smp);
+    int retorno;
+    int bytes_leidos=0;
+    unsigned char byte_leido;
 
-	return bytes_leidos;
+    do {
+        retorno=zx8081_lee_8_bits(/*-1*/);
+        if (retorno==-1) break;
+
+        byte_leido=retorno;
+
+        *m++=byte_leido;
+        bytes_leidos++;
+    } while (1);
+
+
+    fclose(ptr_mycinta_smp);
+
+    return bytes_leidos;
 
 }
 
@@ -557,7 +557,7 @@ z_atomic_semaphore main_leezx81_semaphore;
 void main_leezx81_init_semaphore(void)
 {
     //printf("Init semaforo\n");
-	z_atomic_reset(&main_leezx81_semaphore);
+    z_atomic_reset(&main_leezx81_semaphore);
 }
 
 
@@ -620,27 +620,27 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 
     if (main_leezx81_inicio_bloqueo()) return 0;
 
-	int bytes_leidos;
-	int auto_parametros=0;
+    int bytes_leidos;
+    int auto_parametros=0;
 
-	unsigned char *buffer_memoria;
-	unsigned char *buffer_memoria_orig;
-
-
-	zx8081_sensibilidad_cambio=3;
-
-	//11111 hz
-	//zx8081_longitud_cambio=3;
-
-	//15600 hz
-	//zx8081_longitud_cambio=4;
-	//temp
-	zx8081_longitud_cambio=3;
+    unsigned char *buffer_memoria;
+    unsigned char *buffer_memoria_orig;
 
 
+    zx8081_sensibilidad_cambio=3;
+
+    //11111 hz
+    //zx8081_longitud_cambio=3;
+
+    //15600 hz
+    //zx8081_longitud_cambio=4;
+    //temp
+    zx8081_longitud_cambio=3;
 
 
-	auto_parametros=1;
+
+
+    auto_parametros=1;
 
 
     debug_printf (VERBOSE_INFO,"Reading SMP audio data and converting to ZX80/ZX81 file in memory");
@@ -648,118 +648,118 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
     debug_printf (VERBOSE_INFO,"Routine based on original program LEEZX81 V1.1. (c) Cesar Hernandez Bano (10/09/1998), (02/09/2013)");
 
 
-	//Mensaje de aviso que se esta procesando
+    //Mensaje de aviso que se esta procesando
 
-	//borrar texto             01234567890123456789012345678901
-	menu_putstring_footer(0,2,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+    //borrar texto             01234567890123456789012345678901
+    menu_putstring_footer(0,2,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
 
-	//color inverso
-	menu_putstring_footer(0,2,"Guessing Loading Parameters...",WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
+    //color inverso
+    menu_putstring_footer(0,2,"Guessing Loading Parameters...",WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
 
 
 
-	//si no hay este cpuloop, no se refresca la pantalla en xwindows
-	int conta;
+    //si no hay este cpuloop, no se refresca la pantalla en xwindows
+    int conta;
     if (archivo_destino==NULL && si_load) {
-	    for (conta=0;conta<20000;conta++) {
-    		new_snap_load_zx8081_simulate_cpuloop();
-    	}
-    	scr_refresca_pantalla();
+        for (conta=0;conta<20000;conta++) {
+            new_snap_load_zx8081_simulate_cpuloop();
+        }
+        scr_refresca_pantalla();
     }
 
 
 
-	//Asignar memoria
-	if ((buffer_memoria=(unsigned char *)malloc(65536L))==NULL) {
-		cpu_panic ("Error allocating memory when reading smp file");
-	}
+    //Asignar memoria
+    if ((buffer_memoria=(unsigned char *)malloc(65536L))==NULL) {
+        cpu_panic ("Error allocating memory when reading smp file");
+    }
 
-	buffer_memoria_orig=buffer_memoria;
-
-
-	debug_printf (VERBOSE_DEBUG,"Reading smp audio data...");
+    buffer_memoria_orig=buffer_memoria;
 
 
-	//avisar que no se ha abierto aun el archivo. Esto se hace porque en la rutina de Autodetectar,
-	//cada vez se abre el archivo de nuevo, y evitar que se tenga que convertir (por ejemplo de wav) una y otra vez
-	lee_smp_ya_convertido=0;
+    debug_printf (VERBOSE_DEBUG,"Reading smp audio data...");
 
-	if (auto_parametros==0) {
-		bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
-		if (bytes_leidos==-1) {
+
+    //avisar que no se ha abierto aun el archivo. Esto se hace porque en la rutina de Autodetectar,
+    //cada vez se abre el archivo de nuevo, y evitar que se tenga que convertir (por ejemplo de wav) una y otra vez
+    lee_smp_ya_convertido=0;
+
+    if (auto_parametros==0) {
+        bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
+        if (bytes_leidos==-1) {
             main_leezx81_liberar_bloqueo();
-			//Error
-			return 0;
-		}
-	}
+            //Error
+            return 0;
+        }
+    }
 
 
-	else {
-		int i;
-		int mejor_zx8081_sensibilidad_cambio=2;
-		int mejor_bytes_leidos=0;
-		int mejor_zx8081_fic_leido=0;
+    else {
+        int i;
+        int mejor_zx8081_sensibilidad_cambio=2;
+        int mejor_bytes_leidos=0;
+        int mejor_zx8081_fic_leido=0;
 
-		zx8081_sensibilidad_cambio=2;
+        zx8081_sensibilidad_cambio=2;
 
-		debug_printf (VERBOSE_INFO,"Autodetecting best loading parameters...");
+        debug_printf (VERBOSE_INFO,"Autodetecting best loading parameters...");
 
-		//30 diferentes valores de zx8081_sensibilidad_cambio
-		for (i=0;i<30;i++) {
-			debug_printf (VERBOSE_DEBUG,"Testing with Threshold of wave change: %d",zx8081_sensibilidad_cambio);
-			bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
+        //30 diferentes valores de zx8081_sensibilidad_cambio
+        for (i=0;i<30;i++) {
+            debug_printf (VERBOSE_DEBUG,"Testing with Threshold of wave change: %d",zx8081_sensibilidad_cambio);
+            bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
 
-			if (bytes_leidos==-1) {
+            if (bytes_leidos==-1) {
                 main_leezx81_liberar_bloqueo();
-				//Error
-				return 0;
-			}
+                //Error
+                return 0;
+            }
 
-			debug_printf (VERBOSE_DEBUG,"Bytes read: %d",bytes_leidos);
-			if (bytes_leidos>mejor_bytes_leidos) {
-				mejor_bytes_leidos=bytes_leidos;
-				mejor_zx8081_sensibilidad_cambio=zx8081_sensibilidad_cambio;
-				mejor_zx8081_fic_leido=zx8081_fic_leido;
-			}
+            debug_printf (VERBOSE_DEBUG,"Bytes read: %d",bytes_leidos);
+            if (bytes_leidos>mejor_bytes_leidos) {
+                mejor_bytes_leidos=bytes_leidos;
+                mejor_zx8081_sensibilidad_cambio=zx8081_sensibilidad_cambio;
+                mejor_zx8081_fic_leido=zx8081_fic_leido;
+            }
 
-			zx8081_sensibilidad_cambio++;
-		}
+            zx8081_sensibilidad_cambio++;
+        }
 
-		debug_printf (VERBOSE_DEBUG,"Best Threshold of wave change: %d Bytes read: %d Sound Bytes read: %d",mejor_zx8081_sensibilidad_cambio,mejor_bytes_leidos,mejor_zx8081_fic_leido);
+        debug_printf (VERBOSE_DEBUG,"Best Threshold of wave change: %d Bytes read: %d Sound Bytes read: %d",mejor_zx8081_sensibilidad_cambio,mejor_bytes_leidos,mejor_zx8081_fic_leido);
 
-		//Relanzamos lectura con el mejor parametro de sensibilidad
-		zx8081_sensibilidad_cambio=mejor_zx8081_sensibilidad_cambio;
-		//printf ("sensi: %d\n",zx8081_sensibilidad_cambio);
-		bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
-		debug_printf (VERBOSE_DEBUG,"Bytes read: %d",bytes_leidos);
-
-
-	}
+        //Relanzamos lectura con el mejor parametro de sensibilidad
+        zx8081_sensibilidad_cambio=mejor_zx8081_sensibilidad_cambio;
+        //printf ("sensi: %d\n",zx8081_sensibilidad_cambio);
+        bytes_leidos=zx8081_lee_todos_bytes(buffer_memoria);
+        debug_printf (VERBOSE_DEBUG,"Bytes read: %d",bytes_leidos);
 
 
-
-	//borrar texto             01234567890123456789012345678901
-	menu_putstring_footer(0,2,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
-
-	menu_footer_bottom_line();
+    }
 
 
 
-	if (bytes_leidos) {
+    //borrar texto             01234567890123456789012345678901
+    menu_putstring_footer(0,2,"                                ",WINDOW_FOOTER_INK,WINDOW_FOOTER_PAPER);
+
+    menu_footer_bottom_line();
 
 
-		if (verbose_level>=VERBOSE_DEBUG) {
-			//mostrar por consola
-			int i;
-			z80_bit inverse;
 
-			printf ("Data loaded:\n");
+    if (bytes_leidos) {
 
-			for (i=0;i<bytes_leidos;i++) printf ("%c",da_codigo81(buffer_memoria[i],&inverse));
 
-			printf ("\n");
+        if (verbose_level>=VERBOSE_DEBUG) {
+            //mostrar por consola
+            int i;
+            z80_bit inverse;
 
-		}
+            printf ("Data loaded:\n");
+
+            for (i=0;i<bytes_leidos;i++) printf ("%c",da_codigo81(buffer_memoria[i],&inverse));
+
+            printf ("\n");
+
+        }
 
         //asumimos zx81
         int es_zx81=1;
@@ -808,42 +808,42 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
         }
 
 
-		debug_printf (VERBOSE_INFO,"Sound Bytes read: %u Program length (without the name):%u ",
-			      zx8081_fic_leido,bytes_leidos);
-		if (bytes_leidos) {
+        debug_printf (VERBOSE_INFO,"Sound Bytes read: %u Program length (without the name):%u ",
+                  zx8081_fic_leido,bytes_leidos);
+        if (bytes_leidos) {
 
-			z80_int offset_destino;
+            z80_int offset_destino;
 
-			offset_destino=0;
+            offset_destino=0;
 
-			if (MACHINE_IS_ZX81_TYPE) offset_destino=0x4009;
-			if (MACHINE_IS_ZX80_TYPE) offset_destino=0x4000;
+            if (MACHINE_IS_ZX81_TYPE) offset_destino=0x4009;
+            if (MACHINE_IS_ZX80_TYPE) offset_destino=0x4000;
 
-			if (offset_destino==0 && si_load) cpu_panic ("Destination dir is zero");
-
-
-			if (offset_destino+bytes_leidos>ramtop_zx8081) debug_printf (VERBOSE_ERR,"Read bytes (%d) over ramtop (%d)",bytes_leidos,ramtop_zx8081);
-			//printf ("offset_destino: %d\n",offset_destino);
+            if (offset_destino==0 && si_load) cpu_panic ("Destination dir is zero");
 
 
+            if (offset_destino+bytes_leidos>ramtop_zx8081) debug_printf (VERBOSE_ERR,"Read bytes (%d) over ramtop (%d)",bytes_leidos,ramtop_zx8081);
+            //printf ("offset_destino: %d\n",offset_destino);
 
-			if (tape_loading_simulate.v==1 && archivo_destino==NULL && si_load) {
-				new_snap_load_zx80_zx81_simulate_loading(memoria_spectrum+offset_destino,buffer_memoria,bytes_leidos);
-			}
 
-			//Igualmente lo leemos, aunque traspase ramtop
-            if (archivo_destino==NULL && si_load) {
-			    memcpy(memoria_spectrum+offset_destino,buffer_memoria,bytes_leidos);
+
+            if (tape_loading_simulate.v==1 && archivo_destino==NULL && si_load) {
+                new_snap_load_zx80_zx81_simulate_loading(memoria_spectrum+offset_destino,buffer_memoria,bytes_leidos);
             }
-		}
-	}
-	//if (!bytes_leidos) debug_printf (VERBOSE_ERR,"Error: Program length is zero");
+
+            //Igualmente lo leemos, aunque traspase ramtop
+            if (archivo_destino==NULL && si_load) {
+                memcpy(memoria_spectrum+offset_destino,buffer_memoria,bytes_leidos);
+            }
+        }
+    }
+    //if (!bytes_leidos) debug_printf (VERBOSE_ERR,"Error: Program length is zero");
 
     if (archivo_destino!=NULL) {
         util_save_file(buffer_memoria,bytes_leidos,archivo_destino);
     }
 
-	free(buffer_memoria_orig);
+    free(buffer_memoria_orig);
 
     main_leezx81_liberar_bloqueo();
     return bytes_leidos;
@@ -868,11 +868,11 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 
 
 char *spec_tipos_fichero[]={
-	"Program",  //0
-	"Number Array",
-	"Character Array",
-	"Bytes",  //3
-	"Flag",  //4
+    "Program",  //0
+    "Number Array",
+    "Character Array",
+    "Bytes",  //3
+    "Flag",  //4
     "Unknown" //5
 };
 
@@ -915,7 +915,7 @@ int memoria_archivo_smp_puntero;
 
 int spec_da_ascii(int codigo)
 {
-	return (codigo<127 && codigo>31 ? codigo : '.');
+    return (codigo<127 && codigo>31 ? codigo : '.');
 }
 
 
@@ -925,7 +925,7 @@ int spec_da_ascii(int codigo)
 int spec_da_abs(int valor)
 {
     if (valor>=0) return valor;
-	else return -valor;
+    else return -valor;
 
 }
 */
@@ -946,32 +946,32 @@ int spec_lee_byte(void)
 
     //Por si acaso se llama a leer cuando ya se ha llegado al final
     if (memoria_archivo_smp_puntero>=spec_longitud_total_archivo_smp) {
-		spec_final_fichero=1;
-		return 0;
-	}
+        spec_final_fichero=1;
+        return 0;
+    }
 
 
-	if (spec_cambio) {
-		spec_cambio=0;
-		return spec_byte_cambio;
-	}
+    if (spec_cambio) {
+        spec_cambio=0;
+        return spec_byte_cambio;
+    }
 
-	else {
-		//spec_byte_cambio=fgetc(ptr_mycinta_smp);
+    else {
+        //spec_byte_cambio=fgetc(ptr_mycinta_smp);
         //Es mas rapido leer de memoria que no andar haciendo fgetc
         spec_byte_cambio=memoria_archivo_smp[memoria_archivo_smp_puntero++];
-	}
+    }
 
     if (memoria_archivo_smp_puntero>=spec_longitud_total_archivo_smp) {
 
-	//if (feof(ptr_mycinta_smp)) {
-		spec_final_fichero=1;
-		return 0;
-	}
+    //if (feof(ptr_mycinta_smp)) {
+        spec_final_fichero=1;
+        return 0;
+    }
 
-	//printf ("leido: %d\n",spec_byte_cambio);
+    //printf ("leido: %d\n",spec_byte_cambio);
 
-	return spec_byte_cambio;
+    return spec_byte_cambio;
 }
 
 #define spec_da_signo(X) (X>=0 ? 1 : -1)
@@ -981,11 +981,11 @@ char spec_da_signo(char valor)
 //Devuelve el signo de valor: -1,+1 o 0
 {
 
-	if (valor>=0) return 1;
-	if (valor<0) return -1;
+    if (valor>=0) return 1;
+    if (valor<0) return -1;
 
-	//TODO: aqui se llega alguna vez?
-	return 0;
+    //TODO: aqui se llega alguna vez?
+    return 0;
 }
 */
 
@@ -995,42 +995,42 @@ int spec_lee_onda(unsigned char *longitud,unsigned char *amplitud)
 //de esa onda
 //Devuelve -1 si se llega al final del fichero
 {
-	char byte,byte_anterior,veces=0;
+    char byte,byte_anterior,veces=0;
 
-	*longitud=1;
-	*amplitud=0;
+    *longitud=1;
+    *amplitud=0;
 
-	byte_anterior=spec_lee_byte();
-	*amplitud=spec_da_abs(byte_anterior);
+    byte_anterior=spec_lee_byte();
+    *amplitud=spec_da_abs(byte_anterior);
 
 
-	if (spec_final_fichero) return -1;
+    if (spec_final_fichero) return -1;
 
-	do {
-		byte=spec_lee_byte();
-		if (spec_final_fichero) return -1;
+    do {
+        byte=spec_lee_byte();
+        if (spec_final_fichero) return -1;
 
-		if (spec_da_abs(byte)>(*amplitud)) *amplitud=spec_da_abs(byte);
+        if (spec_da_abs(byte)>(*amplitud)) *amplitud=spec_da_abs(byte);
 
-		//printf ("amplitud: %d\n",*amplitud);
+        //printf ("amplitud: %d\n",*amplitud);
 
-		if (spec_da_signo(byte)!=spec_da_signo(byte_anterior)
-			//&& spec_da_abs(byte)>=SPEC_NO_RUIDO
-		) {
+        if (spec_da_signo(byte)!=spec_da_signo(byte_anterior)
+            //&& spec_da_abs(byte)>=SPEC_NO_RUIDO
+        ) {
 
-			if (veces==1) {
-				spec_cambio=1;
+            if (veces==1) {
+                spec_cambio=1;
 
-				//printf ("cambio signo con longitud: %u\n",*longitud);
+                //printf ("cambio signo con longitud: %u\n",*longitud);
 
-				return 0;
-			}
+                return 0;
+            }
 
-			veces++;
-		}
-		(*longitud)++;
-		byte_anterior=byte;
-	} while (1);
+            veces++;
+        }
+        (*longitud)++;
+        byte_anterior=byte;
+    } while (1);
 }
 
 /*
@@ -1038,10 +1038,10 @@ int spec_dice_bit(char longitud)
 //Dice si el bit es 0 o 1 segun su amplitud
 //Devuelve -1 si no es un bit aceptado
 {
-	if (longitud>=spec_ceros-margen_spec_ceros && longitud<=spec_ceros+margen_spec_ceros) return 0;
-	if (longitud>=spec_unos-margen_spec_unos && longitud<=spec_unos+margen_spec_unos) return 1;
-	debug_printf (VERBOSE_DEBUG,"Invalid length for bit: %d",longitud);
-	return -1;
+    if (longitud>=spec_ceros-margen_spec_ceros && longitud<=spec_ceros+margen_spec_ceros) return 0;
+    if (longitud>=spec_unos-margen_spec_unos && longitud<=spec_unos+margen_spec_unos) return 1;
+    debug_printf (VERBOSE_DEBUG,"Invalid length for bit: %d",longitud);
+    return -1;
 }
 */
 
@@ -1056,15 +1056,15 @@ int spec_lee_8_bits(void)
 //Devuelve -2 si se encuentra ruido
 //Devuelve -3 si se encuentran datos sin sentido
 {
-	unsigned char longitud,amplitud;
-	char bit;
-	int n,byte=0;
+    unsigned char longitud,amplitud;
+    char bit;
+    int n,byte=0;
 
-	for (n=0;n<8;n++) {
+    for (n=0;n<8;n++) {
 
-		if (spec_lee_onda(&longitud,&amplitud)==-1) return -1;
+        if (spec_lee_onda(&longitud,&amplitud)==-1) return -1;
 
-		if (amplitud<SPEC_NO_RUIDO) return -2;
+        if (amplitud<SPEC_NO_RUIDO) return -2;
 
 
         if (longitud>=spec_ceros-margen_spec_ceros && longitud<=spec_ceros+margen_spec_ceros) bit=0;
@@ -1074,14 +1074,14 @@ int spec_lee_8_bits(void)
             return -3;
         }
 
-		//bit=spec_dice_bit(longitud);
-		//if (bit==-1) return -3;
+        //bit=spec_dice_bit(longitud);
+        //if (bit==-1) return -3;
 
 
 
-		byte=byte*2+bit;
-	}
-	return byte;
+        byte=byte*2+bit;
+    }
+    return byte;
 }
 
 char *main_spec_rwaatap_pointer_print=NULL;
@@ -1103,11 +1103,11 @@ int spec_current_block_positions;
 void spec_debug_cabecera(int indice,int leidos)
 //Escribe tipo de fichero
 {
-	int n;
-	z80_int len,parm1,parm2;
-	unsigned char tipo;
+    int n;
+    z80_int len,parm1,parm2;
+    unsigned char tipo;
 
-	char buffer_nombre[11];
+    char buffer_nombre[11];
 
     char buffer_string[1024];
 
@@ -1119,30 +1119,30 @@ void spec_debug_cabecera(int indice,int leidos)
         }
     }
 
-	if (leidos!=19) {
-		debug_printf (VERBOSE_INFO,"Read tape block. %s:%d . Length: %d",
-			      spec_tipos_fichero[4],spec_smp_memory[indice],  ( leidos>2 ? leidos-2 : leidos  )  );
+    if (leidos!=19) {
+        debug_printf (VERBOSE_INFO,"Read tape block. %s:%d . Length: %d",
+                  spec_tipos_fichero[4],spec_smp_memory[indice],  ( leidos>2 ? leidos-2 : leidos  )  );
 
 
         if (main_spec_rwaatap_pointer_print!=NULL) {
-		    sprintf (buffer_string,"Tape block. %s: %d. Length: %d\n\n",
-			      spec_tipos_fichero[4],spec_smp_memory[indice],  ( leidos>2 ? leidos-2 : leidos  )  );
+            sprintf (buffer_string,"Tape block. %s: %d. Length: %d\n\n",
+                  spec_tipos_fichero[4],spec_smp_memory[indice],  ( leidos>2 ? leidos-2 : leidos  )  );
             int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
             if (nocabe) return;
         }
 
-		//if (leidos>2) printf ("%u+2\n",leidos-2);
-		//else printf ("%u\n",leidos);
-		return;
-	}
+        //if (leidos>2) printf ("%u+2\n",leidos-2);
+        //else printf ("%u\n",leidos);
+        return;
+    }
 
-	tipo=spec_smp_memory[indice+1];
+    tipo=spec_smp_memory[indice+1];
 
     if (tipo>3) tipo=5; //Desconocido
 
-	for (n=0;n<10;n++) buffer_nombre[n]=spec_da_ascii(spec_smp_memory[indice+2+n]);
-	buffer_nombre[10]=0;
-	debug_printf (VERBOSE_INFO,"Read tape block. Standard Header - %s: %s",spec_tipos_fichero[tipo],buffer_nombre);
+    for (n=0;n<10;n++) buffer_nombre[n]=spec_da_ascii(spec_smp_memory[indice+2+n]);
+    buffer_nombre[10]=0;
+    debug_printf (VERBOSE_INFO,"Read tape block. Standard Header - %s: %s",spec_tipos_fichero[tipo],buffer_nombre);
 
 
     if (main_spec_rwaatap_pointer_print!=NULL) {
@@ -1151,11 +1151,11 @@ void spec_debug_cabecera(int indice,int leidos)
         if (nocabe) return;
     }
 
-	len=value_8_to_16(spec_smp_memory[indice+13],spec_smp_memory[indice+12]);
-	parm1=value_8_to_16(spec_smp_memory[indice+15],spec_smp_memory[indice+14]);
-	parm2=value_8_to_16(spec_smp_memory[indice+17],spec_smp_memory[indice+16]);
+    len=value_8_to_16(spec_smp_memory[indice+13],spec_smp_memory[indice+12]);
+    parm1=value_8_to_16(spec_smp_memory[indice+15],spec_smp_memory[indice+14]);
+    parm2=value_8_to_16(spec_smp_memory[indice+17],spec_smp_memory[indice+16]);
 
-	debug_printf (VERBOSE_INFO,"- Length: %u Parm1: %u Parm2: %u",len,parm1,parm2);
+    debug_printf (VERBOSE_INFO,"- Length: %u Parm1: %u Parm2: %u",len,parm1,parm2);
 
     if (main_spec_rwaatap_pointer_print!=NULL) {
         sprintf (buffer_string,"- Length: %u Parm1: %u Parm2: %u\n",len,parm1,parm2);
@@ -1164,21 +1164,21 @@ void spec_debug_cabecera(int indice,int leidos)
     }
 
 
-	int variables=len-parm2;
-	if (variables<0) variables=0;
+    int variables=len-parm2;
+    if (variables<0) variables=0;
 
-	if (tipo==3) {
-		debug_printf (VERBOSE_INFO,"- Start: %u",parm1);
+    if (tipo==3) {
+        debug_printf (VERBOSE_INFO,"- Start: %u",parm1);
 
         if (main_spec_rwaatap_pointer_print!=NULL) {
-		    sprintf (buffer_string,"- Start: %u\n",parm1);
+            sprintf (buffer_string,"- Start: %u\n",parm1);
             int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
             if (nocabe) return;
         }
-	}
+    }
 
-	if (!tipo) {
-		if (parm1<=32767) {
+    if (!tipo) {
+        if (parm1<=32767) {
             debug_printf (VERBOSE_INFO,"- Variables: %u . Autorun: %d",variables,parm1);
 
             if (main_spec_rwaatap_pointer_print!=NULL) {
@@ -1188,7 +1188,7 @@ void spec_debug_cabecera(int indice,int leidos)
                 if (nocabe) return;
             }
         }
-		else {
+        else {
             debug_printf (VERBOSE_INFO,"- Variables:%u . Autorun: None",variables);
 
             if (main_spec_rwaatap_pointer_print!=NULL) {
@@ -1197,7 +1197,7 @@ void spec_debug_cabecera(int indice,int leidos)
                 if (nocabe) return;
             }
         }
-	}
+    }
 
 
     if (main_spec_rwaatap_pointer_print!=NULL) {
@@ -1221,10 +1221,10 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
     spec_array_block_positions=array_block_positions;
     spec_max_array_block_positions=max_array_block_positions;
 
-	spec_smp_write_index_tap=0;
-	spec_smp_read_index_tap=0;
+    spec_smp_write_index_tap=0;
+    spec_smp_read_index_tap=0;
 
-	spec_smp_total_read=0;
+    spec_smp_total_read=0;
 
     spec_last_file_position=0;
 
@@ -1232,39 +1232,39 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 
 
 
-	unsigned char amplitud,longitud;
-	int byte,byte2;
-	unsigned int n;
+    unsigned char amplitud,longitud;
+    int byte,byte2;
+    unsigned int n;
 
     if (codigo_retorno!=NULL) *codigo_retorno=0; //asumimos ok carga
 
 
-	//apunta al principio de cada bloque TAP
-	int spec_smp_write_index_tap_start;
+    //apunta al principio de cada bloque TAP
+    int spec_smp_write_index_tap_start;
 
-	debug_printf (VERBOSE_INFO,"Reading SMP audio data and converting to TAP file in memory");
+    debug_printf (VERBOSE_INFO,"Reading SMP audio data and converting to TAP file in memory");
 
     debug_printf (VERBOSE_INFO,"Routine based on original program SMPATAP V1.1. (c) Cesar Hernandez Bano (10/09/1998), (31/03/2014)");
 
 
-	spec_smp_write_index_tap_start=spec_smp_write_index_tap;
+    spec_smp_write_index_tap_start=spec_smp_write_index_tap;
 
-	//dejamos espacio para los 2 bytes que indican longitud
-	spec_smp_write_index_tap +=2;
+    //dejamos espacio para los 2 bytes que indican longitud
+    spec_smp_write_index_tap +=2;
 
     //cuando hay browse, dice que ya se ha agregado el texto de "ZX Spectrum tape"
     int agregado_info_inicio=0;
 
 
-	//Asignar memoria. 1 MB maximo
-	if (spec_smp_memory==NULL) {
-		debug_printf (VERBOSE_INFO,"Allocating %d bytes for tape buffer",MAX_BYTES_READ);
+    //Asignar memoria. 1 MB maximo
+    if (spec_smp_memory==NULL) {
+        debug_printf (VERBOSE_INFO,"Allocating %d bytes for tape buffer",MAX_BYTES_READ);
 
-		spec_smp_memory=malloc(MAX_BYTES_READ);
-		if (spec_smp_memory==NULL) {
-			cpu_panic ("Error allocating memory for tape buffer");
-		}
-	}
+        spec_smp_memory=malloc(MAX_BYTES_READ);
+        if (spec_smp_memory==NULL) {
+            cpu_panic ("Error allocating memory for tape buffer");
+        }
+    }
 
     //Asignar memoria para archivo de entrada
 
@@ -1275,82 +1275,82 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 
     memoria_archivo_smp_puntero=0;
 
-	do {
-		spec_carry=0;
+    do {
+        spec_carry=0;
 
-		spec_cambio=0;
-		spec_final_fichero=0;
+        spec_cambio=0;
+        spec_final_fichero=0;
 
-		spec_bytes_leidos=0;
+        spec_bytes_leidos=0;
 
-		//printf ("antes spec_smp_write_index_tap: %d spec_smp_write_index_tap_start: %d spec_smp_total_read: %d\n",spec_smp_write_index_tap,spec_smp_write_index_tap_start,spec_smp_total_read);
+        //printf ("antes spec_smp_write_index_tap: %d spec_smp_write_index_tap_start: %d spec_smp_total_read: %d\n",spec_smp_write_index_tap,spec_smp_write_index_tap_start,spec_smp_total_read);
 
 
 
-		//Leer unas ondas de tono guia
-		n=0;
-		do {
-			if (spec_lee_onda(&longitud,&amplitud)==-1) {
-				//printf ("spec_lee_onda == -1 antes de leer pilot tone. n=%d\n",n);
-				goto fin;
-			}
-			if (amplitud<SPEC_NO_RUIDO || (!(longitud>=spec_tono_guia-margen_spec_tono_guia && longitud<=spec_tono_guia+margen_spec_tono_guia))
-			) {
-				//printf ("reset n. amplitud: %u longitud: %u\n",amplitud,longitud);
-				n=0;
-				continue;
-			}
-			n++;
-			//printf ("ondas guia: %d\n",n);
-		} while (n<SPEC_ONDAS_GUIA);
+        //Leer unas ondas de tono guia
+        n=0;
+        do {
+            if (spec_lee_onda(&longitud,&amplitud)==-1) {
+                //printf ("spec_lee_onda == -1 antes de leer pilot tone. n=%d\n",n);
+                goto fin;
+            }
+            if (amplitud<SPEC_NO_RUIDO || (!(longitud>=spec_tono_guia-margen_spec_tono_guia && longitud<=spec_tono_guia+margen_spec_tono_guia))
+            ) {
+                //printf ("reset n. amplitud: %u longitud: %u\n",amplitud,longitud);
+                n=0;
+                continue;
+            }
+            n++;
+            //printf ("ondas guia: %d\n",n);
+        } while (n<SPEC_ONDAS_GUIA);
 
-		debug_printf (VERBOSE_DEBUG,"Reading pilot tone...");
+        debug_printf (VERBOSE_DEBUG,"Reading pilot tone...");
         //printf("Reading pilot tone...\n");
 
-		do {
-			if (spec_lee_onda(&longitud,&amplitud)==-1) goto fin;
-		} while (amplitud>=SPEC_NO_RUIDO && (longitud>=spec_tono_guia-margen_spec_tono_guia &&
-		longitud<=spec_tono_guia+margen_spec_tono_guia));
+        do {
+            if (spec_lee_onda(&longitud,&amplitud)==-1) goto fin;
+        } while (amplitud>=SPEC_NO_RUIDO && (longitud>=spec_tono_guia-margen_spec_tono_guia &&
+        longitud<=spec_tono_guia+margen_spec_tono_guia));
 
-		//Hay que saber si se esta en mitad o al final de la onda falsa
-		if (longitud>spec_mitad_onda_falsa) { //en mitad de la onda falsa
-			spec_cambio=0;
-			byte=spec_byte_cambio;
-			do {
-				byte2=spec_lee_byte();
-				if (spec_final_fichero) goto fin;
-			} while (spec_da_signo(byte)==spec_da_signo(byte2));
-		}
+        //Hay que saber si se esta en mitad o al final de la onda falsa
+        if (longitud>spec_mitad_onda_falsa) { //en mitad de la onda falsa
+            spec_cambio=0;
+            byte=spec_byte_cambio;
+            do {
+                byte2=spec_lee_byte();
+                if (spec_final_fichero) goto fin;
+            } while (spec_da_signo(byte)==spec_da_signo(byte2));
+        }
 
-		debug_printf (VERBOSE_DEBUG,"Reading data...");
+        debug_printf (VERBOSE_DEBUG,"Reading data...");
 
         //printf("Reading data...\n");
 
 
-		//Despues del tono guia viene una onda falsa, no utilizable,
-		//parecida a un bit 0
+        //Despues del tono guia viene una onda falsa, no utilizable,
+        //parecida a un bit 0
 
-		do {
-			byte=spec_lee_8_bits(/*-1*/);
-			//if (byte==-1) goto fin;
+        do {
+            byte=spec_lee_8_bits(/*-1*/);
+            //if (byte==-1) goto fin;
 
-			//if (byte==-1) break;
-			if (byte<0) break;
+            //if (byte==-1) break;
+            if (byte<0) break;
 
-			if (spec_smp_write_mem_byte(spec_smp_write_index_tap,byte)) {
-				debug_printf (VERBOSE_ERR,"Memory buffer full");
-				return 0;
-			}
+            if (spec_smp_write_mem_byte(spec_smp_write_index_tap,byte)) {
+                debug_printf (VERBOSE_ERR,"Memory buffer full");
+                return 0;
+            }
 
-			spec_smp_write_index_tap++;
-
-
-			spec_carry^=byte;
-			spec_bytes_leidos++;
-		} while (1);
+            spec_smp_write_index_tap++;
 
 
-		if (spec_bytes_leidos) {
+            spec_carry^=byte;
+            spec_bytes_leidos++;
+        } while (1);
+
+
+        if (spec_bytes_leidos) {
 
             if (!agregado_info_inicio) {
                 agregado_info_inicio=1;
@@ -1361,7 +1361,7 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
                 }
             }
 
-			spec_debug_cabecera(spec_smp_write_index_tap_start+2,spec_bytes_leidos);
+            spec_debug_cabecera(spec_smp_write_index_tap_start+2,spec_bytes_leidos);
 
 
 
@@ -1372,64 +1372,64 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
 
 
 
-			n=spec_bytes_leidos;
+            n=spec_bytes_leidos;
 
 
-		}
+        }
 
         //En convertir cinta, o en browser cinta, interesa tener en el error con VERBOSE_ERR
         //En Visual Tape Browser, no queremos esto. Lo tendremos en cuenta en la funcion de salida
-		if (spec_carry) {
+        if (spec_carry) {
             if (codigo_retorno!=NULL) *codigo_retorno=1; //error de carga
-			else debug_printf (VERBOSE_ERR,"Error converting audio block to tape. Invalid end carry");
-		}
+            else debug_printf (VERBOSE_ERR,"Error converting audio block to tape. Invalid end carry");
+        }
 
 
-		if (spec_bytes_leidos) {
+        if (spec_bytes_leidos) {
 
-			debug_printf (VERBOSE_DEBUG,"Writing %d bytes to memory buffer",spec_bytes_leidos);
+            debug_printf (VERBOSE_DEBUG,"Writing %d bytes to memory buffer",spec_bytes_leidos);
 
-			spec_smp_write_mem_byte(spec_smp_write_index_tap_start,value_16_to_8l(spec_bytes_leidos));
-			spec_smp_write_index_tap_start++;
-
-
-			//comprobamos solo el ultimo byte, ya es suficiente
-			if (spec_smp_write_mem_byte(spec_smp_write_index_tap_start,value_16_to_8h(spec_bytes_leidos) )) {
-				debug_printf (VERBOSE_ERR,"Memory buffer full");
-				return 0;
-			}
+            spec_smp_write_mem_byte(spec_smp_write_index_tap_start,value_16_to_8l(spec_bytes_leidos));
+            spec_smp_write_index_tap_start++;
 
 
-			spec_smp_total_read+=spec_bytes_leidos+2;
+            //comprobamos solo el ultimo byte, ya es suficiente
+            if (spec_smp_write_mem_byte(spec_smp_write_index_tap_start,value_16_to_8h(spec_bytes_leidos) )) {
+                debug_printf (VERBOSE_ERR,"Memory buffer full");
+                return 0;
+            }
+
+
+            spec_smp_total_read+=spec_bytes_leidos+2;
 
 
 
-			spec_smp_write_index_tap_start=spec_smp_write_index_tap;
+            spec_smp_write_index_tap_start=spec_smp_write_index_tap;
 
-			//dejamos espacio para los 2 bytes que indican longitud
-			spec_smp_write_index_tap +=2;
-
-
-		}
-		else {
-			debug_printf (VERBOSE_DEBUG,"0 bytes read");
-		}
-		//printf ("despues spec_smp_write_index_tap: %d spec_smp_write_index_tap_start: %d spec_smp_total_read: %d\n",spec_smp_write_index_tap,spec_smp_write_index_tap_start,spec_smp_total_read);
+            //dejamos espacio para los 2 bytes que indican longitud
+            spec_smp_write_index_tap +=2;
 
 
-		debug_printf (VERBOSE_INFO,"----------------");
+        }
+        else {
+            debug_printf (VERBOSE_DEBUG,"0 bytes read");
+        }
+        //printf ("despues spec_smp_write_index_tap: %d spec_smp_write_index_tap_start: %d spec_smp_total_read: %d\n",spec_smp_write_index_tap,spec_smp_write_index_tap_start,spec_smp_total_read);
 
 
-	} while (!spec_final_fichero);
+        debug_printf (VERBOSE_INFO,"----------------");
 
-	fin:
+
+    } while (!spec_final_fichero);
+
+    fin:
 
 
     free(memoria_archivo_smp);
 
-	if (spec_smp_total_read==0) {
-		debug_printf(VERBOSE_INFO,"Converted Zero bytes of data from SMP file. May be a corrupted file or unsupported format");
-	}
+    if (spec_smp_total_read==0) {
+        debug_printf(VERBOSE_INFO,"Converted Zero bytes of data from SMP file. May be a corrupted file or unsupported format");
+    }
 
     //Indicar -1 al final del array de posiciones
     if (spec_array_block_positions!=NULL) {
@@ -1437,6 +1437,6 @@ int main_spec_rwaatap(long *array_block_positions,int max_array_block_positions,
     }
 
 
-	return 0;
+    return 0;
 
 }
