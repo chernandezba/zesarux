@@ -3071,7 +3071,8 @@ int input_file_keyboard_init(void)
 
     int longitud=get_file_size(input_file_keyboard_name);
 
-    char *texto=util_malloc(longitud,"Can not allocate memory for file read");
+    //Asignamos 1 byte mas para poner el 0 del final de string
+    char *texto=util_malloc(longitud+1,"Can not allocate memory for file read");
 
     FILE *ptr_file=fopen(input_file_keyboard_name,"rb");
 
@@ -3090,8 +3091,9 @@ int input_file_keyboard_init(void)
         return 1;
     }
 
+    texto[longitud]=0;
 
-    send_text_as_keystrokes_init(texto,longitud);
+    send_text_as_keystrokes_init(texto,longitud+1);
 
     return 0;
 
@@ -3255,6 +3257,7 @@ void peek_byte_sendtextkeystrokes_spoolturbo_check_key(z80_int dir)
     if (send_text_as_keystrokes_is_playing() && send_text_as_keystrokes_turbo_mode.v && dir==lastk) {
         z80_byte send_text_as_keystrokes_last_key;
 
+        //printf("leyendo caracter posicion %d caracter %d\n",send_text_as_keystrokes_indice,send_text_as_keystrokes_memory[send_text_as_keystrokes_indice]);
 
         int leidos;
 
