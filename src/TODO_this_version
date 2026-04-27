@@ -92,3 +92,4 @@ antes de commonsdl_init
 export CFLAGS="-g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-g -fsanitize=address,undefined,object-size"
 
+-teclado en pantalla no siempre envia tecla y no parece volver a abrir ventana (con --noconfigfile si)
