@@ -3364,7 +3364,7 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
     //Los demas se ajustan bien al escalado por defecto
 
 
-    if (menu_char_width==8) {
+    if (menu_char_width>=8) {
         return 1;
     }
 
@@ -3541,7 +3541,8 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
         if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
 
             for (bit=0;bit<8;bit++) {
-                if (byte_leido & 128 ) color=tinta;
+                int mascara=128 >> bit;
+                if (byte_leido & mascara ) color=tinta;
                 else color=papel;
 
                 //Z logo pequeña usada en topbar
@@ -3551,7 +3552,7 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
                     if (color==-2) color=tinta;
                 }
 
-                byte_leido=(byte_leido&127)<<1;
+                //byte_leido=(byte_leido&127)<<1;
 
 
                 int xfinal,yfinal;
