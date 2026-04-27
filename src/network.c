@@ -326,7 +326,7 @@ void omplir_adr_internet_semaforo_init(void)
 }
 
 
-//Vieja funcion aunque la nueva no me compila en windows
+//Vieja funcion para windows, porque la nueva no me compila en windows
 //TODO: hacer que la nueva tambien funcione en windows
 #ifdef MINGW
 
