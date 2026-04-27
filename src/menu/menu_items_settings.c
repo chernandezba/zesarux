@@ -4092,9 +4092,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "Allow char width/height >8",
-            "Permitir caracter ancho/alto >8",
-            "Permetre caràcter ample/alt >8");
+            "Allow char width/height > 8",
+            "Permitir caracter ancho/alto > 8",
+            "Permetre caràcter ample/alt > 8");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_allow_select_char_width_height_larger.v ? 'X' : ' ' ));
         menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_allow_select_char_width_height_larger);
 
