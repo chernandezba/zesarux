@@ -327,7 +327,7 @@ void omplir_adr_internet_semaforo_init(void)
 
 
 
-int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port)
+int old_omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port)
 {
 
     //Adquirir lock
@@ -376,6 +376,36 @@ int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port
 
     //Liberar lock
     z_atomic_reset(&omplir_adr_internet_semaforo);
+
+    return 0;
+}
+
+
+int omplir_adr_internet(struct sockaddr_in *adr, char *host, unsigned short n_port)
+{
+    struct addrinfo hints;
+    struct addrinfo *res = NULL;
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;       // Solo IPv4
+    hints.ai_socktype = SOCK_STREAM;
+
+    adr->sin_family = AF_INET;
+    adr->sin_port = htons(n_port);
+
+    if (host != NULL) {
+        int ret = getaddrinfo(host, NULL, &hints, &res);
+        if (ret != 0) {
+            return -1;
+        }
+
+        struct sockaddr_in *addr_in = (struct sockaddr_in *)res->ai_addr;
+        adr->sin_addr = addr_in->sin_addr;
+
+        freeaddrinfo(res);
+    } else {
+        adr->sin_addr.s_addr = htonl(INADDR_ANY);
+    }
 
     return 0;
 }
