@@ -4570,9 +4570,10 @@ void menu_audio_draw_sound_wave(void)
 
     if (si_complete_video_driver() ) {
             ancho *=menu_char_width;
-            alto *=8;
             xorigen *=menu_char_width;
-            yorigen *=8;
+
+            yorigen *=menu_char_height;
+            alto *=menu_char_height;
     }
 
 
