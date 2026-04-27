@@ -92,4 +92,4 @@ antes de commonsdl_init
 export CFLAGS="-g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-g -fsanitize=address,undefined,object-size"
 
-ok -process switcher: si esta menu cerrado, el foco está en la máquina emulada y por tanto no deberia salir el recuadro en la ventana que tiene zxvision_current
+-ancho y alto de caracter que se pueda establecer a 16 pixeles por ejemplo. o incluso 24

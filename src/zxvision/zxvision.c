@@ -17908,12 +17908,19 @@ void zxvision_send_scroll_down_and_draw(zxvision_window *w)
 //Si se habia pulsado en una ventana por debajo de la actual
 int clicked_on_background_windows=0;
 
-zxvision_window *which_window_clicked_on_background=NULL;
+//zxvision_window *which_window_clicked_on_background=NULL;
+
+char which_window_name_clicked_on_background[MAX_NAME_WINDOW_GEOMETRY]="";
+
 
 void zxvision_handle_mouse_ev_switch_back_wind(zxvision_window *ventana_pulsada)
 {
     clicked_on_background_windows=1;
-    which_window_clicked_on_background=ventana_pulsada;
+    //which_window_clicked_on_background=ventana_pulsada;
+    strcpy(which_window_name_clicked_on_background,ventana_pulsada->geometry_name);
+
+
+    //printf("Pulsado en ventana [%s]\n",which_window_name_clicked_on_background);
 
     //desminimizar ventana si estaba minimizada
     if (ventana_pulsada->is_minimized) {
@@ -29185,13 +29192,14 @@ int zxvision_simple_window_manager(int reopen_menu)
         //printf("Liberar boton de cierre ventana\n");
         mouse_pressed_close_window=0;
 
-        if (which_window_clicked_on_background!=NULL) {
+        if (which_window_name_clicked_on_background[0]) {
             //printf ("Ventana: %s\n",which_window_clicked_on_background->window_title);
             //printf ("Geometry name ventana: %s\n",which_window_clicked_on_background->geometry_name);
 
             char *geometry_name;
 
-            geometry_name=which_window_clicked_on_background->geometry_name;
+            //geometry_name=which_window_clicked_on_background->geometry_name;
+            geometry_name=which_window_name_clicked_on_background;
 
             if (geometry_name[0]!=0) {
 
@@ -29331,7 +29339,8 @@ void menu_inicio_bucle(void)
 
 
 
-        which_window_clicked_on_background=NULL;
+        //which_window_clicked_on_background=NULL;
+        which_window_name_clicked_on_background[0]=0;
 
         /*if (pressed_close_window_on_window_manager) {
             printf("A Window has been closed. Do not reopen menu\n");

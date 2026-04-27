@@ -18110,7 +18110,8 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 
                 //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
                 clicked_on_background_windows=1;
-                which_window_clicked_on_background=ventana;
+                //which_window_clicked_on_background=ventana;
+                strcpy(which_window_name_clicked_on_background,ventana->geometry_name);
 
                 //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
                 menu_display_window_conmutar_ventana=1;
@@ -43618,7 +43619,8 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 
             //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
             clicked_on_background_windows=1;
-            which_window_clicked_on_background=ventana_pulsada;
+            //which_window_clicked_on_background=ventana_pulsada;
+            strcpy(which_window_name_clicked_on_background,ventana_pulsada->geometry_name);
 
             //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
             menu_process_switcher_conmutar_ventana=1;

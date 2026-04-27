@@ -462,7 +462,8 @@ extern zxvision_window *zxvision_coords_in_any_window(int x,int y);
 
 extern int clicked_on_background_windows;
 
-extern zxvision_window *which_window_clicked_on_background;
+//extern zxvision_window *which_window_clicked_on_background;
+extern char which_window_name_clicked_on_background[];
 
 extern void zxvision_set_window_overlay_from_current(zxvision_window *ventana);
 extern void zxvision_set_window_overlay(zxvision_window *ventana,void (*overlay_function) (void));
