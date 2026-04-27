@@ -3438,11 +3438,17 @@ void menu_interface_charwidth_after_width_change(void)
     if (menu_allow_background_windows) zxvision_rearrange_background_windows(0,1);
 }
 
+//Esto solo aplica en el menu
+z80_bit menu_allow_select_char_width_height_larger={0};
+
 void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
 {
     menu_char_width--;
 
-    if (menu_char_width<MIN_MENU_CHAR_WIDTH) menu_char_width=MAX_MENU_CHAR_WIDTH;
+    if (menu_char_width<MIN_MENU_CHAR_WIDTH) {
+        if (menu_allow_select_char_width_height_larger.v) menu_char_width=MAX_MENU_CHAR_WIDTH;
+        else menu_char_width=8;
+    }
 
     menu_interface_charwidth_after_width_change();
 
@@ -3453,7 +3459,10 @@ void menu_interface_charheight(MENU_ITEM_PARAMETERS)
 {
     menu_char_height--;
 
-    if (menu_char_height<MIN_MENU_CHAR_HEIGHT) menu_char_height=MAX_MENU_CHAR_HEIGHT;
+    if (menu_char_height<MIN_MENU_CHAR_HEIGHT) {
+        if (menu_allow_select_char_width_height_larger.v) menu_char_height=MAX_MENU_CHAR_HEIGHT;
+        else menu_char_height=8;
+    }
 
     menu_interface_charwidth_after_width_change();
 
@@ -4081,6 +4090,13 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            "Allow char width/height >8",
+            "Permitir caracter ancho/alto >8",
+            "Permetre caràcter ample/alt >8");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_allow_select_char_width_height_larger.v ? 'X' : ' ' ));
+        menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_allow_select_char_width_height_larger);
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Char width");
