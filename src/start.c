@@ -3893,7 +3893,7 @@ int parse_cmdline_options(int desde_commandline)
             else if (!strcmp(argv[puntero_parametro],"--menucharwidth")) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
-                if (valor!=4 && valor!=5 && valor!=6 && valor!=7 && valor!=8) {
+                if (valor<MIN_MENU_CHAR_WIDTH || valor>MAX_MENU_CHAR_WIDTH) {
                     debug_printf(VERBOSE_ERR,"Invalid value for character width: %d",valor);
                 }
                 else {
@@ -3904,7 +3904,7 @@ int parse_cmdline_options(int desde_commandline)
             else if (!strcmp(argv[puntero_parametro],"--menucharheight")) {
                 siguiente_parametro_argumento();
                 int valor=atoi(argv[puntero_parametro]);
-                if (valor!=6 && valor!=7 && valor!=8) {
+                if (valor<MIN_MENU_CHAR_HEIGHT || valor>MAX_MENU_CHAR_HEIGHT) {
                     debug_printf(VERBOSE_ERR,"Invalid value for character height: %d",valor);
                 }
                 else {

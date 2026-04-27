@@ -1758,6 +1758,12 @@ extern int timer_osd_keyboard_menu;
 extern char snapshot_load_file[];
 extern char snapshot_save_file[];
 
+#define MAX_MENU_CHAR_WIDTH 24
+#define MIN_MENU_CHAR_WIDTH 4
+
+#define MAX_MENU_CHAR_HEIGHT 24
+#define MIN_MENU_CHAR_HEIGHT 6
+
 extern int menu_char_width;
 extern int menu_char_height;
 

@@ -3442,7 +3442,7 @@ void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
 {
     menu_char_width--;
 
-    if (menu_char_width==3) menu_char_width=24;
+    if (menu_char_width<MIN_MENU_CHAR_WIDTH) menu_char_width=MAX_MENU_CHAR_WIDTH;
 
     menu_interface_charwidth_after_width_change();
 
@@ -3453,7 +3453,7 @@ void menu_interface_charheight(MENU_ITEM_PARAMETERS)
 {
     menu_char_height--;
 
-    if (menu_char_height==5) menu_char_height=8;
+    if (menu_char_height<MIN_MENU_CHAR_HEIGHT) menu_char_height=MAX_MENU_CHAR_HEIGHT;
 
     menu_interface_charwidth_after_width_change();
 

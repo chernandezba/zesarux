@@ -3462,7 +3462,7 @@ int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
     }
 
 
-    if (menu_char_height==8) {
+    if (menu_char_height>=8) {
         return 1;
     }
 
@@ -3530,15 +3530,24 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
     y=y*menu_char_height;
 
-    for (line=0;line<8;line++) {
+    int line_in_char=0;
 
-        byte_leido=*puntero++;
+    int alto_leer_caracter=8;
+
+    //Para poder hacer altos >8
+    if (menu_char_height>8) alto_leer_caracter=menu_char_height;
+
+    int conteo_alto=0;
+
+    for (line=0;line<alto_leer_caracter;line++) {
+
+        byte_leido=puntero[line_in_char];
         if (inverse.v==1) byte_leido = byte_leido ^255;
 
         int px=0; //Coordenada x del pixel final
 
         //Si se dibuja esa linea debido a reduccion de alto de caracter
-        if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
+        if (scr_putchar_menu_comun_zoom_reduce_charheight(line_in_char)) {
 
             int ancho_leer_caracter=8;
 
@@ -3557,7 +3566,7 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
                 //Z logo pequeña usada en topbar
                 if (caracter==CHAR_Z_LOGO_SMALL_TOPBAR) {
-                    color=scr_putchar_menu_comun_small_z_logo[line][bit];
+                    color=scr_putchar_menu_comun_small_z_logo[line_in_char][bit];
                     if (color==-1) color=papel;
                     if (color==-2) color=tinta;
                 }
@@ -3593,6 +3602,12 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
             y++;
 
+        }
+
+        conteo_alto+=8;
+        if (conteo_alto>=menu_char_height) {
+            line_in_char++;
+            conteo_alto-=menu_char_height;
         }
     }
 }
