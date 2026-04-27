@@ -3442,7 +3442,7 @@ void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
 {
     menu_char_width--;
 
-    if (menu_char_width==3) menu_char_width=8;
+    if (menu_char_width==3) menu_char_width=24;
 
     menu_interface_charwidth_after_width_change();
 

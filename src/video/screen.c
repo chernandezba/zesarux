@@ -3540,7 +3540,17 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
         //Si se dibuja esa linea debido a reduccion de alto de caracter
         if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
 
-            for (bit=0;bit<8;bit++) {
+            int ancho_leer_caracter=8;
+
+            //Para poder hacer anchos >8
+            if (menu_char_width>8) ancho_leer_caracter=menu_char_width;
+
+            int conteo_ancho=0;
+
+            bit=0;
+
+
+            for (;ancho_leer_caracter>0;ancho_leer_caracter--) {
                 int mascara=128 >> bit;
                 if (byte_leido & mascara ) color=tinta;
                 else color=papel;
@@ -3570,6 +3580,14 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
                     scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
                     px++;
                 }
+
+                conteo_ancho+=8;
+                if (conteo_ancho>=menu_char_width) {
+                    bit++;
+                    conteo_ancho-=menu_char_width;
+                }
+
+
 
             }
 
