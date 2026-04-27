@@ -67,6 +67,7 @@ Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto)
 - Agregado tooltips para botones superiores (de menús) e inferiores (de dispositivos)
 - Agregado soporte para tipos de letra de 4 pixeles de ancho
+- Permitir elegit tamaño de tipo de letra > 8
 - Agregado tipo de letra "ZEsarUXtiny" adecuado para configuración de charset 4x6 (el mismo que ya se usaba en los iconos)
 - Agregado estilos de GUI "ZEsarUX Tiny" and "Pico-8"
 - Permitir pulsar teclas F de función desde el menú
