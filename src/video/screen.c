@@ -3519,7 +3519,7 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
     int margeny_arr;
 
     z80_byte *puntero;
-    puntero=&char_set[(caracter-32)*8];
+    puntero=&char_set[(caracter-32)*CHAR_SET_ORIGINAL_HEIGHT];
 
 
     scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
@@ -3532,10 +3532,10 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
     int line_in_char=0;
 
-    int alto_leer_caracter=8;
+    int alto_leer_caracter=CHAR_SET_ORIGINAL_HEIGHT;
 
     //Para poder hacer altos >8
-    if (menu_char_height>8) alto_leer_caracter=menu_char_height;
+    if (menu_char_height>CHAR_SET_ORIGINAL_HEIGHT) alto_leer_caracter=menu_char_height;
 
     int conteo_alto=0;
 
@@ -3549,10 +3549,10 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
         //Si se dibuja esa linea debido a reduccion de alto de caracter
         if (scr_putchar_menu_comun_zoom_reduce_charheight(line_in_char)) {
 
-            int ancho_leer_caracter=8;
+            int ancho_leer_caracter=CHAR_SET_ORIGINAL_WIDTH;
 
             //Para poder hacer anchos >8
-            if (menu_char_width>8) ancho_leer_caracter=menu_char_width;
+            if (menu_char_width>CHAR_SET_ORIGINAL_WIDTH) ancho_leer_caracter=menu_char_width;
 
             int conteo_ancho=0;
 
@@ -3584,13 +3584,13 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
                 //Hacer zoom de ese pixel si conviene
 
-                //Ancho de caracter 8, 7 y 6 pixeles
+                //Qué columna de pixeles eliminamos en el caso de ancho de caracter < 8
                 if (scr_putchar_menu_comun_zoom_reduce_charwidth(bit)) {
                     scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
                     px++;
                 }
 
-                conteo_ancho+=8;
+                conteo_ancho+=CHAR_SET_ORIGINAL_WIDTH;
                 if (conteo_ancho>=menu_char_width) {
                     bit++;
                     conteo_ancho-=menu_char_width;
@@ -3604,7 +3604,7 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
         }
 
-        conteo_alto+=8;
+        conteo_alto+=CHAR_SET_ORIGINAL_HEIGHT;
         if (conteo_alto>=menu_char_height) {
             line_in_char++;
             conteo_alto-=menu_char_height;

@@ -48,6 +48,10 @@ extern char char_set_customfile_path[];
 
 #define MAX_CHARSET_NAME 32
 
+//Todas las fuentes (excepto las de iconos) tienen este tamaño
+#define CHAR_SET_ORIGINAL_WIDTH 8
+#define CHAR_SET_ORIGINAL_HEIGHT 8
+
 struct s_charset_list {
     char nombre[MAX_CHARSET_NAME];
     unsigned char *puntero;
@@ -84,7 +88,7 @@ extern void charset_generate_zesarux_tiny(void);
 
 extern char *charset_icons_text[];
 
-//El ancho efectivo del caracter
+//El tipo de letra usado para iconos
 #define CHARSET_ICONS_ANCHO 4
 #define CHARSET_ICONS_ALTO 6
 
