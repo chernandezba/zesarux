@@ -3444,6 +3444,7 @@ z80_bit menu_allow_select_char_width_height_larger={0};
 void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
 {
     menu_char_width--;
+    if (menu_allow_select_char_width_height_larger.v==0 && menu_char_width>8) menu_char_width=8;
 
     if (menu_char_width<MIN_MENU_CHAR_WIDTH) {
         if (menu_allow_select_char_width_height_larger.v) menu_char_width=MAX_MENU_CHAR_WIDTH;
@@ -3458,6 +3459,7 @@ void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
 void menu_interface_charheight(MENU_ITEM_PARAMETERS)
 {
     menu_char_height--;
+    if (menu_allow_select_char_width_height_larger.v==0 && menu_char_height>8) menu_char_height=8;
 
     if (menu_char_height<MIN_MENU_CHAR_HEIGHT) {
         if (menu_allow_select_char_width_height_larger.v) menu_char_height=MAX_MENU_CHAR_HEIGHT;
@@ -4092,9 +4094,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
-            "Allow char width/height > 8",
-            "Permitir caracter ancho/alto > 8",
-            "Permetre caràcter ample/alt > 8");
+            "Allow set char size > 8",
+            "Permitir fijar tamaño caracter > 8",
+            "Permetre fixar tamany caràcter > 8");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_allow_select_char_width_height_larger.v ? 'X' : ' ' ));
         menu_add_item_menu_opcion_conmuta(array_menu_common,&menu_allow_select_char_width_height_larger);
 
@@ -10833,7 +10835,9 @@ void menu_accessibility_menu_high_contrast(MENU_ITEM_PARAMETERS)
 
 void menu_accessibility_menu_big_font(MENU_ITEM_PARAMETERS)
 {
-    menu_char_width=8;
+    menu_char_width=16;
+
+    menu_char_height=16;
 
     menu_interface_charwidth_after_width_change();
 
