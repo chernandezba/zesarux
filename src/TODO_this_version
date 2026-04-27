@@ -93,4 +93,4 @@ export CFLAGS="-g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-g -fsanitize=address,undefined,object-size"
 
 ok -ancho y alto de caracter que se pueda establecer a 16 pixeles por ejemplo. o incluso 24
--waveform no ubica bien la zona de onda con tamaño 16 de letra por ejemplo
+ok -waveform no ubica bien la zona de onda con tamaño 16 de letra por ejemplo
