@@ -326,8 +326,11 @@ void omplir_adr_internet_semaforo_init(void)
 }
 
 
+//Vieja funcion aunque la nueva no me compila en windows
+//TODO: hacer que la nueva tambien funcione en windows
+#ifdef MINGW
 
-int old_omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port)
+int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port)
 {
 
     //Adquirir lock
@@ -380,6 +383,8 @@ int old_omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_
     return 0;
 }
 
+#else
+
 
 int omplir_adr_internet(struct sockaddr_in *adr, char *host, unsigned short n_port)
 {
@@ -409,6 +414,8 @@ int omplir_adr_internet(struct sockaddr_in *adr, char *host, unsigned short n_po
 
     return 0;
 }
+
+#endif
 
 //Assignar l'adre<E7>a al socket
 //Host ha de valer NULL si es tracta del servidor
