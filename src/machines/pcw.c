@@ -331,25 +331,7 @@ int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
     0xAA00AA,
     0xAA5500,
     0xAAAAAA,
-    0x000000, //555555
-    0x5555FF,
-    0x55FF55,
-    0x55FFFF,
-    0xFF5555,
-    0xFF55FF,
-    0xFFFF55,
-    0xFFFFFF,
-
-    //paleta 16 colores
-    0x000000,
-    0x0000AA,
-    0x00AA00,
-    0x00AAAA,
-    0xAA0000,
-    0xAA00AA,
-    0xAA5500,
-    0xAAAAAA,
-    0x000000, //555555
+    0x555555,
     0x5555FF,
     0x55FF55,
     0x55FFFF,
@@ -378,21 +360,23 @@ int pcw_convert_rgb_24_to_rgb_15(int rgb24)
     return rgb15;
 }
 
-
+#define PCW_COLORS_IN_MODE0 2
+#define PCW_COLORS_IN_MODE1 (4*4)
+#define PCW_COLORS_IN_MODE2_3 16
 
 #define PCW_COLOUR_START_MODE1_RGB15 PCW_COLORS_IN_MODE0
 #define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+PCW_COLORS_IN_MODE1)
-#define PCW_COLOUR_START_MODE3_RGB15 (PCW_COLOUR_START_MODE2_RGB15+PCW_COLORS_IN_MODE1)
+//#define PCW_COLOUR_START_MODE3_RGB15 (PCW_COLOUR_START_MODE2_RGB15+PCW_COLORS_IN_MODE1)
 
 typedef struct {
     int offset,total_colores;
 } pcw_colores_paletas;
 
-pcw_colores_paletas lista_pcw_colores_paletas[4]={
+pcw_colores_paletas lista_pcw_colores_paletas[3]={
     {0,PCW_COLORS_IN_MODE0},
     {PCW_COLOUR_START_MODE1_RGB15,PCW_COLORS_IN_MODE1},
-    {PCW_COLOUR_START_MODE2_RGB15,PCW_COLORS_IN_MODE2_3},
-    {PCW_COLOUR_START_MODE3_RGB15,PCW_COLORS_IN_MODE2_3}
+    {PCW_COLOUR_START_MODE2_RGB15,PCW_COLORS_IN_MODE2_3}
+    //{PCW_COLOUR_START_MODE3_RGB15,PCW_COLORS_IN_MODE2_3}
 };
 
 //La paleta de trabajo es esta, en 15 bits, que al final se obtendran colores de paleta de tsconf de 15 bits
@@ -400,9 +384,11 @@ pcw_colores_paletas lista_pcw_colores_paletas[4]={
 int pcw_rgb_table_15_bits[PCW_TOTAL_PALETTE_COLOURS];
 
 //Resetear paleta asociada a un modo concreto
+//Modos 2 y 3 comparten misma paleta
 void pcw_init_colour_palette_mode(int mode)
 {
     if (mode>=4) mode=0;
+    if (mode==3) mode=2;
 
     int colores=lista_pcw_colores_paletas[mode].total_colores;
     int offset=lista_pcw_colores_paletas[mode].offset;
@@ -575,14 +561,9 @@ void pcw_change_palette_colour(int indice_color,int rgb_color)
         break;
 
         case 2:
-            indice_color=indice_color % 16;
-            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE2_RGB15+indice_color,rgb_color);
-        break;
-
-        case 3:
         default:
             indice_color=indice_color % 16;
-            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE3_RGB15+indice_color,rgb_color);
+            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE2_RGB15+indice_color,rgb_color);
         break;
 
     }
@@ -1565,8 +1546,6 @@ void pcw_boot_check_dsk_not_bootable(void)
 void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
 {
 
-    // Ver https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini
-
     /*
     El puerto $80 se usa para mandar un valor para elegir registro.
     En puerto $81 es para los datos asociados; ambos soportan lectura y escritura
@@ -1679,10 +1658,6 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             sprintf(buffer_mensaje,"Setting video mode %s",pcw_video_mode_names[pcw_video_mode]);
             screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
 
-        }
-
-        else if (funcion==3) {
-            //printf("Cambio de color en border no implementado\n");
         }
     }
 
