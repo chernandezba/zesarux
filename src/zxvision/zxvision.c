@@ -3774,6 +3774,9 @@ void menu_call_onscreen_keyboard_from_menu(void)
 
     menu_espera_no_tecla();
     menu_button_osdkeyboard.v=0; //Decir que no tecla osd pulsada, por si acaso
+
+    //printf("menu_call_onscreen_keyboard_from_menu\n");
+
     menu_button_f_function.v=0;
 
     //overlay_screen copia_overlay[OVERLAY_SCREEN_MAX_WIDTH*OVERLAY_SCREEN_MAX_HEIGTH];
@@ -27875,6 +27878,7 @@ Seguramente si se usase una funcion creada desde cero, no usando menu_dibuja_men
 */
 int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int incremento,int minimo,int maximo,int circular,int *default_value,int *variable_destino)
 {
+    //printf("destino: %p\n",variable_destino);
     //dado que utilizamos un menu tabulado, se resetearia estado de salir_todos_menus. Esto es especialmente critico en algunos
     //menus en los que interesa que se cierren despues de pasar por aqui, como al seleccionar un microdrive rmd que no existe, y se pide tamaño
     int antes_salir_todos_menus=salir_todos_menus;
@@ -27887,7 +27891,11 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
         return 0;
     }
 
-    int valor_original=*variable_destino;
+    int valor_original=0;
+
+    if (variable_destino!=NULL) {
+        valor_original=*variable_destino;
+    }
 
     int ancho_ventana=32;
     int alto_ventana=7;
@@ -28130,7 +28138,9 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     if (item_seleccionado.tipo_opcion&MENU_OPCION_ESC || retorno_menu==MENU_RETORNO_ESC) {
         //printf("Cancelar\n");
         //sprintf(texto,"%d",valor_original);
-        *variable_destino=valor_original;
+        if (variable_destino!=NULL) {
+            *variable_destino=valor_original;
+        }
         return -1; //Pulsado Cancel
     }
 
@@ -28426,6 +28436,8 @@ int menu_ventana_scanf_numero_enhanced_default_dynamic(char *titulo,int *variabl
 
 void menu_inicio_pre_retorno_reset_flags(void)
 {
+    //printf("menu_inicio_pre_retorno_reset_flags\n");
+
     //desactivar botones de acceso directo
     menu_button_smartload.v=0;
     menu_button_osdkeyboard.v=0;
@@ -29598,6 +29610,8 @@ void enable_zxdesktop_and_background(void)
 void menu_inicio(void)
 {
 
+    //printf ("inicio menu_inicio\n");
+
     //printf ("inicio menu_inicio. menu_event_remote_protocol_enterstep.v=%d\n",menu_event_remote_protocol_enterstep.v);
     pulsado_alguna_ventana_con_menu_cerrado=0;
 
@@ -30056,6 +30070,9 @@ void menu_inicio(void)
         menu_inicio_reset_emulated_keys();
     }
 
+//printf ("2.1inicio menu_inicio\n");
+
+
     //printf("1 despues liberar_teclas_y_esperar\n");
     //printf("PC=%04XH\n",reg_pc);
 
@@ -30202,6 +30219,7 @@ void menu_inicio(void)
 //printf ("5inicio menu_inicio\n");
 
     if (menu_button_osdkeyboard.v) {
+        //printf("Menu detectado menu_button_osdkeyboard.v\n");
         //menu_espera_no_tecla();
         menu_onscreen_keyboard(0);
         osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer
