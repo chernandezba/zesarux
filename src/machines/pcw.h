@@ -26,8 +26,12 @@
 #include "cpu.h"
 
 
-//2 normales, 4 paletas de 4 colores CGA, modo de 16 colores
-#define PCW_TOTAL_PALETTE_COLOURS (2+4*4+16)
+#define PCW_COLORS_IN_MODE0 2
+#define PCW_COLORS_IN_MODE1 (4*4)
+#define PCW_COLORS_IN_MODE2_3 16
+
+//2 normales, 4 paletas de 4 colores CGA, 2 modos de 16 colores
+#define PCW_TOTAL_PALETTE_COLOURS (PCW_COLORS_IN_MODE0+PCW_COLORS_IN_MODE1+PCW_COLORS_IN_MODE2_3+PCW_COLORS_IN_MODE2_3)
 
 //Hacer que estos valores de border sean multiples de 8
 //TODO: no tengo claro del ancho del border pero le pongo suficiente para que quepa el logo de ZEsarUX a la izquierda

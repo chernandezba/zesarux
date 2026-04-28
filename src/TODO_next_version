@@ -409,4 +409,5 @@ que ya no habrán varias rutinas putpixel segun si zoom 1 o zoom >1, sino que si
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
-
+-cuando F8 no está asignada a default, al abrir teclado en pantalla desde menu display, al pulsar una tecla no se vuelve a entrar a teclado en pantalla
+Esto es debido al llamar a menu_si_pulsada_tecla_osd, se pierde acción

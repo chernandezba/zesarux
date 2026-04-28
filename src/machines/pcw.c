@@ -360,9 +360,7 @@ int pcw_convert_rgb_24_to_rgb_15(int rgb24)
     return rgb15;
 }
 
-#define PCW_COLORS_IN_MODE0 2
-#define PCW_COLORS_IN_MODE1 (4*4)
-#define PCW_COLORS_IN_MODE2_3 16
+
 
 #define PCW_COLOUR_START_MODE1_RGB15 PCW_COLORS_IN_MODE0
 #define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+PCW_COLORS_IN_MODE1)
@@ -1544,6 +1542,8 @@ void pcw_boot_check_dsk_not_bootable(void)
 void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
 {
 
+    // Ver https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini
+
     /*
     El puerto $80 se usa para mandar un valor para elegir registro.
     En puerto $81 es para los datos asociados; ambos soportan lectura y escritura
@@ -1656,6 +1656,10 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             sprintf(buffer_mensaje,"Setting video mode %s",pcw_video_mode_names[pcw_video_mode]);
             screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
 
+        }
+
+        else if (funcion==3) {
+            //printf("Cambio de color en border no implementado\n");
         }
     }
 

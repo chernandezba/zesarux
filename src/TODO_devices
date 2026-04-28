@@ -260,6 +260,18 @@ Sector -407021264
 
 ------------------
 
+--- Pistola optica ---
+
+-magnun: acid killer, ver por que no funciona en mitad derecha. el shooting range le pasa lo mismo
+Creo que tiene que ver con que la mitad derecha de la pantalla se dibujan esas lineas (para averiguar la posicion de la pistola)
+en un frame de video diferente de la mitad izquierda
+
+------------------
+
+
+
+------------------
+
 
 -emulación impresion seikosha gp-100a
 
