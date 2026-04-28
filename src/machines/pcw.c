@@ -331,7 +331,25 @@ int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
     0xAA00AA,
     0xAA5500,
     0xAAAAAA,
-    0x555555,
+    0x000000, //555555
+    0x5555FF,
+    0x55FF55,
+    0x55FFFF,
+    0xFF5555,
+    0xFF55FF,
+    0xFFFF55,
+    0xFFFFFF,
+
+    //paleta 16 colores
+    0x000000,
+    0x0000AA,
+    0x00AA00,
+    0x00AAAA,
+    0xAA0000,
+    0xAA00AA,
+    0xAA5500,
+    0xAAAAAA,
+    0x000000, //555555
     0x5555FF,
     0x55FF55,
     0x55FFFF,
@@ -557,9 +575,14 @@ void pcw_change_palette_colour(int indice_color,int rgb_color)
         break;
 
         case 2:
-        default:
             indice_color=indice_color % 16;
             pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE2_RGB15+indice_color,rgb_color);
+        break;
+
+        case 3:
+        default:
+            indice_color=indice_color % 16;
+            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE3_RGB15+indice_color,rgb_color);
         break;
 
     }
