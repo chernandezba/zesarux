@@ -95,4 +95,4 @@ export LDFLAGS="-g -fsanitize=address,undefined,object-size"
 -cuando F8 no está asignada a default, al abrir teclado en pantalla desde menu display, al pulsar una tecla no se vuelve a entrar a teclado en pantalla
 Esto es debido al llamar a menu_si_pulsada_tecla_osd, se pierde acción
 
--revisar dibujado paws, gac cuando char height o width no es 8
+ok-revisar dibujado paws, gac cuando char height o width no es 8

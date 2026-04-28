@@ -28433,6 +28433,11 @@ int menu_ventana_scanf_numero_enhanced_default_dynamic(char *titulo,int *variabl
     return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,&default_value,1);
 }
 
+//Igual que menu_ventana_scanf_numero_enhanced pero indicando que la variable se actualiza dinamicamente
+int menu_ventana_scanf_numero_enhanced_dynamic(char *titulo,int *variable,int max_length,int incremento,int minimo,int maximo,int circular)
+{
+    return menu_ventana_scanf_numero_enhanced_common(titulo,variable,max_length,incremento,minimo,maximo,circular,NULL,1);
+}
 
 void menu_inicio_pre_retorno_reset_flags(void)
 {

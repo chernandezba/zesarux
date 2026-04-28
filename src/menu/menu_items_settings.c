@@ -5282,7 +5282,7 @@ void menu_audio_beeper_real (MENU_ITEM_PARAMETERS)
 
 void menu_audio_volume(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Volume in %",&audiovolume,4,+20,0,100,0);
+    menu_ventana_scanf_numero_enhanced_dynamic("Volume in %",&audiovolume,4,+20,0,100,0);
 
 
 }
@@ -6041,27 +6041,7 @@ int menu_hardware_advanced_input_value(int minimum,int maximum,char *texto,int *
         *variable=variable_copia;
         return 0;
     }
-    /*
 
-    int valor;
-
-        char string_value[4];
-
-        sprintf (string_value,"%d",*variable);
-
-
-        menu_ventana_scanf(texto,string_value,4);
-
-        valor=parse_string_to_number(string_value);
-
-    if (valor<minimum || valor>maximum) {
-        debug_printf (VERBOSE_ERR,"Value out of range. Minimum: %d Maximum: %d",minimum,maximum);
-        return -1;
-    }
-
-    *variable=valor;
-    return 0;
-    */
 
 
 }
@@ -14516,7 +14496,7 @@ void menu_zxdesktop_scrfile_mix_background(MENU_ITEM_PARAMETERS)
 
 void menu_zxdesktop_scrfile_scalefactor(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf_numero_enhanced("Scale factor",&zxdesktop_draw_scrfile_scale_factor,2,+1,1,5,0);
+    menu_ventana_scanf_numero_enhanced_dynamic("Scale factor",&zxdesktop_draw_scrfile_scale_factor,2,+1,1,5,0);
 }
 
 
