@@ -52,8 +52,6 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 
 
 
--PCW:
-* revisar info de la wiki: https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini y ver si falta algo y/o si está todo bien
 
 
 -probar fullscreen en todos drivers
@@ -88,3 +86,5 @@ export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 
+-PCW:
+* revisar info de la wiki: https://www.habisoft.com/pcwwiki/doku.php?id=es:hardware:perifericos:pcwsharpmini y ver si falta algo y/o si está todo bien
