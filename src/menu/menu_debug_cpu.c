@@ -10771,9 +10771,9 @@ para zoom 1. dibujo habitacion de 12x12
 
 */
 
-//Desplazamiento donde empieza el mapa. Las primeras 4 lineas de texto son para opciones y teclas
+//Desplazamiento donde empieza el mapa. Se calcula al entrar en la función de overlay
 int map_adventure_offset_x=0;
-int map_adventure_offset_y=32;
+int map_adventure_offset_y=0;
 
 
 
@@ -11936,8 +11936,9 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
     w=menu_debug_textadventure_map_connections_overlay_window;
 
-    //ajustar offset x
+    //ajustar offset x,y
     map_adventure_offset_x=menu_char_width;
+    map_adventure_offset_y=menu_char_height*4; //4 lineas de opciones
 
 
 
