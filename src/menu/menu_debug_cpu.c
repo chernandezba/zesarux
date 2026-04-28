@@ -7272,10 +7272,10 @@ int new_plot_moves[8][2]={
                     sprintf (drawstring,"BLOCK      %4d %4d %4d %4d",x1,y1,ancho,alto);
 
                     //Tener en cuenta char width y height
-                    int temp_x=((x1+RENDER_PAWS_START_X_DRAW)*8)/menu_char_width;
+                    int temp_x=RENDER_PAWS_START_X_DRAW+(x1*8)/menu_char_width;
                     x1=temp_x;
 
-                    int temp_y=((y1+RENDER_PAWS_START_Y_DRAW)*8)/menu_char_height;
+                    int temp_y=RENDER_PAWS_START_Y_DRAW+(y1*8)/menu_char_height;
                     y1=temp_y;
 
 
