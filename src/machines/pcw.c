@@ -1659,6 +1659,11 @@ void pcw_out_port_video(z80_byte puerto_l,z80_byte value)
             screen_print_splash_text_center_no_if_previous(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,buffer_mensaje);
 
         }
+
+        else if (funcion==3) {
+            //printf("Cambio de color en border no implementado\n");
+        }
+
     }
 
 }
