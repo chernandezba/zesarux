@@ -92,4 +92,5 @@ antes de commonsdl_init
 export CFLAGS="-g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-g -fsanitize=address,undefined,object-size"
 
--teclado en pantalla no siempre envia tecla y no parece volver a abrir ventana (con --noconfigfile si)
+-cuando F8 no está asignada a default, al abrir teclado en pantalla desde menu display, al pulsar una tecla no se vuelve a entrar a teclado en pantalla
+Esto es debido al llamar a menu_si_pulsada_tecla_osd, se pierde acción

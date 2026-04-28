@@ -1733,9 +1733,9 @@ void menu_debug_registers_change_ptr(void)
 #define MOD_WRITE_IXIY_d_MEM8 (1L<<29)
 
 //Para IN A,(N)
-#define MOD_READ_IN_A_N (1<<30)
+#define MOD_READ_IN_A_N (1L<<30)
 //Para IN r,(C)
-#define MOD_READ_IN_R_C (1<<31)
+#define MOD_READ_IN_R_C (1L<<31)
 
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
@@ -6250,8 +6250,8 @@ void render_paws_putpixel(zxvision_window *w,int x,int y,int color)
 
     //Y sumar margen inicio pantalla
     if (paws_render_total_escalado==1) {
-        y_final=y+RENDER_PAWS_START_Y_DRAW*8;
         x_final=x+RENDER_PAWS_START_X_DRAW*menu_char_width;
+        y_final=y+RENDER_PAWS_START_Y_DRAW*menu_char_height;
         zxvision_putpixel(w,x_final,y_final,color);
     }
 
@@ -6579,9 +6579,10 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
 
 
         int ancho_rellenar=256/menu_char_width;
+        int alto_rellenar=192/menu_char_height;
 
         int rellena_x,rellena_y;
-        for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+24;rellena_y++) {
+        for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+alto_rellenar;rellena_y++) {
             for (rellena_x=RENDER_PAWS_START_X_DRAW;rellena_x<RENDER_PAWS_START_X_DRAW+ancho_rellenar;rellena_x++) {
                 if (w!=NULL) zxvision_print_char_simple(w,rellena_x,rellena_y,gac_render_default_ink,
                             gac_render_default_paper,0,' ');
@@ -7006,9 +7007,10 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
         //Solo si escala global es 1, pues de otra manera se trataria de dibujado dentro del mapa de conexiones
         if (paws_render_total_escalado==1) {
             int ancho_rellenar=256/menu_char_width;
+            int alto_rellenar=192/menu_char_height;
 
             int rellena_x,rellena_y;
-            for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+24;rellena_y++) {
+            for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+alto_rellenar;rellena_y++) {
                 for (rellena_x=RENDER_PAWS_START_X_DRAW;rellena_x<RENDER_PAWS_START_X_DRAW+ancho_rellenar;rellena_x++) {
                     if (w!=NULL) zxvision_print_char_simple(w,rellena_x,rellena_y,paws_render_ink+paws_render_bright*8,
                                 paws_render_paper+paws_render_bright*8,0,' ');
@@ -7269,18 +7271,22 @@ int new_plot_moves[8][2]={
 
                     sprintf (drawstring,"BLOCK      %4d %4d %4d %4d",x1,y1,ancho,alto);
 
-                    //Tener en cuenta char width
+                    //Tener en cuenta char width y height
                     int temp_x=((x1+RENDER_PAWS_START_X_DRAW)*8)/menu_char_width;
                     x1=temp_x;
 
+                    int temp_y=((y1+RENDER_PAWS_START_Y_DRAW)*8)/menu_char_height;
+                    y1=temp_y;
 
-                    //Tener en cuenta char width
+
+                    //Tener en cuenta char width y height
 
                     int temp_ancho=(ancho*8)/menu_char_width;
                     ancho=temp_ancho;
-
                     x2=x1+ancho;
 
+                    int temp_alto=(alto*8)/menu_char_height;
+                    alto=temp_alto;
                     y2=y1+alto;
 
 
@@ -7316,7 +7322,7 @@ int new_plot_moves[8][2]={
 
                                     if (w!=NULL) {
                                         //printf("block color ink %d paper %d bright %d\n",paws_render_ink,paws_render_paper,paws_render_bright);
-                                        zxvision_set_attr(w,rellena_x,rellena_y+RENDER_PAWS_START_Y_DRAW,
+                                        zxvision_set_attr(w,rellena_x,rellena_y,
                                             paws_render_ink+paws_render_bright*8,paws_render_paper+paws_render_bright*8,0);
                                     }
 
@@ -7437,10 +7443,14 @@ int new_plot_moves[8][2]={
                             caracter_mostrar,
                             parm1,parm2);
 
-                    //ajustar x a char width
+                    //ajustar x,y a char width
                     int posx=parm1+RENDER_PAWS_START_X_DRAW;
                     posx *=8;
                     posx /= menu_char_width;
+
+                    int posy=parm2+RENDER_PAWS_START_Y_DRAW;
+                    posy *=8;
+                    posy /= menu_char_height;
 
                     if (paws_render_disable_text.v==0 && w!=NULL) {
                         int color_tinta=paws_render_ink+paws_render_bright*8;
@@ -7450,7 +7460,7 @@ int new_plot_moves[8][2]={
                             color_papel=paws_render_ink+paws_render_bright*8;
                         }
 
-                        zxvision_print_char_simple(w,posx,parm2+RENDER_PAWS_START_Y_DRAW,color_tinta,
+                        zxvision_print_char_simple(w,posx,posy,color_tinta,
                             color_papel,0,caracter_mostrar);
                     }
 
