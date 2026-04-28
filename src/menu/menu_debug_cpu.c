@@ -7313,6 +7313,7 @@ int new_plot_moves[8][2]={
                     //probar grafico 20 en firfurcio
                     //o grafico 4 de juanito
 
+                    //printf("rellena x %4d %4d (%4d) y %4d %4d (%4d)\n",x1,x2,x2-x1,y1,y2,y2-y1);
 
                     if (paws_render_disable_block.v==0) {
                         rellena_y=y1;
@@ -7444,13 +7445,15 @@ int new_plot_moves[8][2]={
                             parm1,parm2);
 
                     //ajustar x,y a char width
-                    int posx=parm1+RENDER_PAWS_START_X_DRAW;
+                    int posx=parm1;
                     posx *=8;
                     posx /= menu_char_width;
+                    posx +=RENDER_PAWS_START_X_DRAW;
 
-                    int posy=parm2+RENDER_PAWS_START_Y_DRAW;
+                    int posy=parm2;
                     posy *=8;
                     posy /= menu_char_height;
+                    posy +=RENDER_PAWS_START_Y_DRAW;
 
                     if (paws_render_disable_text.v==0 && w!=NULL) {
                         int color_tinta=paws_render_ink+paws_render_bright*8;
