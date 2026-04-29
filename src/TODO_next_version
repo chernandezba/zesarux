@@ -411,3 +411,12 @@ que ya no habrán varias rutinas putpixel segun si zoom 1 o zoom >1, sino que si
 
 -cuando F8 no está asignada a default, al abrir teclado en pantalla desde menu display, al pulsar una tecla no se vuelve a entrar a teclado en pantalla
 Esto es debido al llamar a menu_si_pulsada_tecla_osd, se pierde acción
+
+-Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
+ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
+*diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
+*nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
+*funcion en zrcp para enviar mensajes a ventanas
+*ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
+*desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
+

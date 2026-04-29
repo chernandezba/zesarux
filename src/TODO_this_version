@@ -19,10 +19,6 @@ con operation wolf de la magnum escribe muchos mensajes en consola (paranoid) au
 Es necesario tanto print?
 
 
--poder hacer que con menu abierto, se envien eventos de teclado, pistola etc a máquina emulada.
-Util si estamos en debug cpu y queremos que un juego lea el boton del ratón (emulando lightgun) y/o luz de pistola
-Quizá con una opción y sólo si está el foco en ventana de debug CPU
-
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
@@ -35,23 +31,9 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 -Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
 
--Probar compilar contra ssl en mac desde homebrew
-
 
 -revisar parpadeos en linux en top buttons al moverse por los menus
 ->parece que solo pasa con driver xwindow, con sdl no pasa
-
-
--Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
-ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
-*diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
-*nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
-*funcion en zrcp para enviar mensajes a ventanas
-*ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
-*desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
-
-
-
 
 
 -probar fullscreen en todos drivers

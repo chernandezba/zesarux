@@ -266,6 +266,11 @@ Sector -407021264
 Creo que tiene que ver con que la mitad derecha de la pantalla se dibujan esas lineas (para averiguar la posicion de la pistola)
 en un frame de video diferente de la mitad izquierda
 
+
+-poder hacer que con menu abierto, se envien eventos de teclado, pistola etc a máquina emulada.
+Util si estamos en debug cpu y queremos que un juego lea el boton del ratón (emulando lightgun) y/o luz de pistola
+Quizá con una opción y sólo si está el foco en ventana de debug CPU
+
 ------------------
 
 

@@ -75,6 +75,14 @@ cat /dev/hdb > ZEsarUX.tar.gz
 tar -xvzf ZEsarUX.tar.gz
 
 
+
+--------------
+
+Para testeo ssl en Mac, compilar con libssl de brew:
+
+export CFLAGS="-I/opt/homebrew/Cellar/openssl@3/3.6.0/include"
+export LDFLAGS="-L/opt/homebrew/Cellar/openssl@3/3.6.0/lib"
+
 --------------
 
 Para que el cpu_panic muestre backtrace si hay un error, compilar con -g -rdynamic (en Linux) o -g (en Mac)
