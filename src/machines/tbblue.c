@@ -3476,7 +3476,9 @@ void tbblue_set_memory_pages(void)
             contend_pages_actual[0]=0;
             contend_pages_actual[1]=contend_pages_128k_p2a[5];
             contend_pages_actual[2]=contend_pages_128k_p2a[2];
-            contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
+
+            if (contend_page_high_segment>7) contend_pages_actual[3]=0;
+            else contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
 
 
         break;
@@ -3533,7 +3535,9 @@ void tbblue_set_memory_pages(void)
                 contend_pages_actual[0]=0;
                 contend_pages_actual[1]=contend_pages_128k_p2a[5];
                 contend_pages_actual[2]=contend_pages_128k_p2a[2];
-                contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
+
+                if (contend_page_high_segment>7) contend_pages_actual[3]=0;
+                else contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
 
 
             }
@@ -3563,7 +3567,9 @@ void tbblue_set_memory_pages(void)
             contend_pages_actual[0]=0;
             contend_pages_actual[1]=contend_pages_128k_p2a[5];
             contend_pages_actual[2]=contend_pages_128k_p2a[2];
-            contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
+
+            if (contend_page_high_segment>7) contend_pages_actual[3]=0;
+            else contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
 
 
         break;
