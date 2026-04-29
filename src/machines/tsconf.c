@@ -1566,10 +1566,15 @@ void tsconf_store_scanline_ula(void)
 {
 
 
+
     int scanline_copia=tsconf_get_current_visible_scanline();
+
+    //printf("scanline_copia %d tsconf_current_border_height %d\n",scanline_copia,tsconf_current_border_height);
 
     //linea que se debe leer
     scanline_copia -=tsconf_current_border_height;
+
+    //printf("scanline_copia despues %d\n",scanline_copia);
 
     int y_origen_pixeles=scanline_copia;
 
@@ -1596,10 +1601,6 @@ void tsconf_store_scanline_ula(void)
     z80_byte attribute,bright,flash;
     z80_int ink,paper,aux;
 
-    z80_byte *screen=get_base_mem_pantalla();
-
-    //printf("y_origen_pixeles: %d\n",y_origen_pixeles);
-    direccion=screen_addr_table[(y_origen_pixeles<<5)];
 
 
     fila=y_origen_pixeles/8;
@@ -1800,7 +1801,13 @@ void tsconf_store_scanline_ula(void)
 
                                         //screen=tsconf_ram_mem_table[vram_page];
 
+            z80_byte *screen=get_base_mem_pantalla();
 
+            int y_linea_pantalla=y_origen_pixeles;
+
+            //por si acaso, no deberia pasar pero...
+            if (y_linea_pantalla>191) y_linea_pantalla=191;
+            direccion=screen_addr_table[(y_linea_pantalla<<5)];
 
             for (x=0;x<32;x++) {
 
