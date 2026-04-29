@@ -67,3 +67,4 @@ antes de commonsdl_init
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
+-revisar entradas en archivo "Cambios"
