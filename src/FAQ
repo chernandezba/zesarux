@@ -351,6 +351,16 @@ So, you must configure on ZENG menu:
 
 Do not write whitespaces between the hosts
 
+
+Q: I have started two ZEsarUX windows, one creates a room on ZENG Online server and the other one connects to that room. That second one can't send any key presses
+A: If you have started two ZEsarUX windows, both have same configuration and there is a parameter that must be unique when connecting to a ZENG Online server: 
+--stats-uuid X
+That parameter associates a unique identificator for the ZENG Online player; if this uuid is repeated, keys are not received well. You can change the "X" value to another
+number or even remove this parameter and when starting ZEsarUX, a new one will be generated.
+Also, there is another parameter, --zeng-online-nickname, that assigns a nickname to the ZENG Online player. These nicknames should also be different for all players; however,
+everything will work ok but it could be confusing having the same nickname repeated on a room
+
+
 ----------------------------------------------------------------------------
 
 
