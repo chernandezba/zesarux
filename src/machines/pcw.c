@@ -286,13 +286,18 @@ void pcw_set_memory_pages(void)
 
 }
 
-//Tabla de colores en rgb24, solo se usa al principio para convertirla a rgb15
-int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
+//Tabla de colores en rgb24, para modos 0, 1, 2, 3
+int pcw_rgb24_full_table[PCW_ALL_COLOURS_MODES]={
 
+    //
+    // 2 colores para modo 0
+    //
     0x000000, //negro
     0x41FF00,  //verde. Tipico color de green "P1" phosphor
 
-    //4 colores tipicos de CGA
+    //
+    // 16 colores para modo 1, realmente son 4 paletas diferentes, los 4 colores tipicos de CGA
+    //
 
     //Paleta 0 low intensity
     //negro, green, red, brown
@@ -322,7 +327,9 @@ int pcw_rgb_table[PCW_TOTAL_PALETTE_COLOURS]={
     0xFFFFFF, //white
 
 
-    //paleta 16 colores
+    //
+    // 16 colores para modo 2, 3
+    //
     0x000000,
     0x0000AA,
     0x00AA00,
@@ -364,9 +371,8 @@ int pcw_convert_rgb_24_to_rgb_15(int rgb24)
 #define PCW_COLORS_IN_MODE1 (4*4)
 #define PCW_COLORS_IN_MODE2_3 16
 
-#define PCW_COLOUR_START_MODE1_RGB15 PCW_COLORS_IN_MODE0
-#define PCW_COLOUR_START_MODE2_RGB15 (PCW_COLOUR_START_MODE1_RGB15+PCW_COLORS_IN_MODE1)
-//#define PCW_COLOUR_START_MODE3_RGB15 (PCW_COLOUR_START_MODE2_RGB15+PCW_COLORS_IN_MODE1)
+#define PCW_COLOUR_NEW_START_MODE1_RGB15 PCW_COLORS_IN_MODE0
+#define PCW_COLOUR_NEW_START_MODE2_RGB15 (PCW_COLOUR_NEW_START_MODE1_RGB15+PCW_COLORS_IN_MODE1)
 
 typedef struct {
     int offset,total_colores;
@@ -374,13 +380,16 @@ typedef struct {
 
 pcw_colores_paletas lista_pcw_colores_paletas[3]={
     {0,PCW_COLORS_IN_MODE0},
-    {PCW_COLOUR_START_MODE1_RGB15,PCW_COLORS_IN_MODE1},
-    {PCW_COLOUR_START_MODE2_RGB15,PCW_COLORS_IN_MODE2_3}
-    //{PCW_COLOUR_START_MODE3_RGB15,PCW_COLORS_IN_MODE2_3}
+    {PCW_COLOUR_NEW_START_MODE1_RGB15,PCW_COLORS_IN_MODE1},
+    {PCW_COLOUR_NEW_START_MODE2_RGB15,PCW_COLORS_IN_MODE2_3}
 };
 
 //La paleta de trabajo es esta, en 15 bits, que al final se obtendran colores de paleta de tsconf de 15 bits
 //Cuando el pcw modifica algun color de la paleta, se hace sobre esta paleta de 15 bits
+//Son 16 colores, todos compartidos entre todos modos
+//Por ejemplo los 2 colores del modo 0 son los mismos 2 colores iniciales del modo 1, PERO,
+//habitualmente al cambiar el modo de video (dependiendo del bit 7 del valor) se sobreescriben los colores que la componen llamando a pcw_init_colour_palette_mode,
+//y dicha funcion asigna los colores de pcw_rgb_table_15_bits segun pcw_rgb24_full_table, con los colores que tiene de cada modo
 int pcw_rgb_table_15_bits[PCW_TOTAL_PALETTE_COLOURS];
 
 //Resetear paleta asociada a un modo concreto
@@ -391,17 +400,18 @@ void pcw_init_colour_palette_mode(int mode)
     if (mode==3) mode=2;
 
     int colores=lista_pcw_colores_paletas[mode].total_colores;
-    int offset=lista_pcw_colores_paletas[mode].offset;
+    int offset_origen=lista_pcw_colores_paletas[mode].offset;
 
     int i;
     for (i=0;i<colores;i++) {
-        int rgb_24=pcw_rgb_table[offset+i];
+        int rgb_24=pcw_rgb24_full_table[offset_origen+i];
         int rgb_15=pcw_convert_rgb_24_to_rgb_15(rgb_24);
-        pcw_rgb_table_15_bits[offset+i]=rgb_15;
+        pcw_rgb_table_15_bits[i]=rgb_15;
     }
 }
 
 //Convertir los colores rgb24 a rgb15
+/*
 void pcw_init_colour_palette(void)
 {
 
@@ -414,6 +424,7 @@ void pcw_init_colour_palette(void)
     }
 
 }
+*/
 
 
 //Retorna el color de 15 bits de un indice a paleta
@@ -442,7 +453,7 @@ int pcw_get_rgb_color_mode0(int i)
 int pcw_get_rgb_color_mode1(int i)
 {
     int indice_color=i+pcw_mode1_palette*4;
-    int color_rgb15=pcw_get_color_palette(PCW_COLOUR_START_MODE1_RGB15+indice_color);
+    int color_rgb15=pcw_get_color_palette(indice_color);
 
     int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
     //printf("%d %d\n",i,indice_color_rgb24);
@@ -452,10 +463,8 @@ int pcw_get_rgb_color_mode1(int i)
 //Retorna el color en modo 2 y 3
 int pcw_get_rgb_color_mode2_3(int i)
 {
-
-
     int indice_color=i;
-    int color_rgb15=pcw_get_color_palette(PCW_COLOUR_START_MODE2_RGB15+indice_color);
+    int color_rgb15=pcw_get_color_palette(indice_color);
 
     int indice_color_rgb24=TSCONF_INDEX_FIRST_COLOR+color_rgb15;
     //printf("%d %d\n",i,indice_color_rgb24);
@@ -519,14 +528,10 @@ int pcw_get_palette_colour(int indice_color)
         break;
 
         case 1:
-            indice_color=indice_color % 16;
-            return pcw_get_palette_colour_indexfinal(PCW_COLOUR_START_MODE1_RGB15+indice_color);
-        break;
-
         case 2:
         default:
             indice_color=indice_color % 16;
-            return pcw_get_palette_colour_indexfinal(PCW_COLOUR_START_MODE2_RGB15+indice_color);
+            return pcw_get_palette_colour_indexfinal(indice_color);
         break;
 
     }
@@ -556,14 +561,10 @@ void pcw_change_palette_colour(int indice_color,int rgb_color)
         break;
 
         case 1:
-            indice_color=indice_color % 16;
-            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE1_RGB15+indice_color,rgb_color);
-        break;
-
         case 2:
         default:
             indice_color=indice_color % 16;
-            pcw_change_palette_colour_indexfinal(PCW_COLOUR_START_MODE2_RGB15+indice_color,rgb_color);
+            pcw_change_palette_colour_indexfinal(indice_color,rgb_color);
         break;
 
     }
@@ -613,7 +614,8 @@ void pcw_reset(void)
 
     pcw_video_mode=0;
 
-    pcw_init_colour_palette();
+    //pcw_init_colour_palette();
+    pcw_init_colour_palette_mode(pcw_video_mode);
 }
 
 void pcw_init_memory_tables(void)
