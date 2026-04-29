@@ -18,7 +18,7 @@ Allow to reduce display on Colecovision, CPC, Master System, MSX, Prism, SG1000,
 Added f-key/icon to trigger an action ("SendKeysMenu") to send keys to menu, for example send keys "tti" to open input tape
 Allow SDL driver to use a 8-bit color palette
 Allow SDL driver to force window size
-Allow DESTDIR environment varieble on make install step
+Allow DESTDIR environment variable on make install step
 Allow to accelerate loading and saving of diskette, microdrive, etc
 Allow to insert a standard tape on ZX Spectrum when the cpu is already running the rom load routine
 Added config setting for autoenable ay chip on Spectrum models without ay chip
@@ -65,7 +65,7 @@ Improved Snapshots in RAM:
 
 Improved ZX Vision:
 - Added new Top Menu (not enabled by default)
-- Added tooltips for upper bottons (menu buttons) and lower buttons (device buttons)
+- Added tooltips for upper bottons (menu buttons) and lower buttons (device buttons) and for icons
 - Added support for 4 pixel wide charsets
 - Allow to set charset size > 8
 - Added charset "ZEsarUXtiny" adequate for 4x6 charset configuration (same charset already used on icons)
@@ -73,7 +73,7 @@ Improved ZX Vision:
 - Allow to press F-function keys from the menu
 - Allow to reduce available menu size to half size of Main Window
 - Allow to see file previews from the file selector on ZX Desktop background
-- Most windows can be moved/resized now using keys OPQAWSKL
+- Most windows can be moved/resized now using keys shift+OPQAWSKL
 - Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision, TV
 - Moved some settings to settings -> Hardware
 - Added shortcuts helper action to create icon to trigger recorded keys
@@ -126,7 +126,6 @@ Fixed uncompress tar and rar files with spaces in name
 Fixed default timer on Mac OS X when not using cocoa driver
 Fixed non-pthreads compilation
 Fixed possible divide by 0 when getting bad cpu usage on Linux
-Fixed fullscreen on macOS
 Fixed possible segfault on macOS cocoa driver
 Fixed glitch on border on Spectrum Next when changing turbo speed
 Fixed showing submenu indicator (>) when the menu has vertical scroll bar

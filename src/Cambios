@@ -65,7 +65,7 @@ Mejorado Snapshots en RAM:
 
 Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto)
-- Agregado tooltips para botones superiores (de menús) e inferiores (de dispositivos)
+- Agregado tooltips para botones superiores (de menús) e inferiores (de dispositivos) y para iconos
 - Agregado soporte para tipos de letra de 4 pixeles de ancho
 - Permitir elegit tamaño de tipo de letra > 8
 - Agregado tipo de letra "ZEsarUXtiny" adecuado para configuración de charset 4x6 (el mismo que ya se usaba en los iconos)
@@ -73,7 +73,7 @@ Mejorado ZX Vision:
 - Permitir pulsar teclas F de función desde el menú
 - Permitir reducir tamaño disponible menú a la mitad de la ventana principal
 - Permitir ver previews de archivos del selector de archivos en el fondo del ZX Desktop
-- La mayoría de ventanas se pueden mover/redimensionar ahora usando teclas OPQAWSKL
+- La mayoría de ventanas se pueden mover/redimensionar ahora usando teclas mayus+OPQAWSKL
 - Reordenadas opciones & nuevo menú: revisa opciones -> Display Emulado, General, Ventana Principal, ZX Vision, TV
 - Movido varias opciones a opciones -> Hardware
 - Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas
@@ -126,7 +126,6 @@ Corregido descomprimir archivos tar y rar con espacios en el nombre
 Corregido temporizador por defecto en Mac OS X cuando no se usa driver cocoa
 Corregido compilación sin pthreads
 Corregido posible división por 0 al obtener erróneamente el uso de cpu en Linux
-Corregida pantalla completa en macOS
 Corregido posible segfault en driver cocoa de macOS
 Corregido fallo visual en border en Spectrum Next al cambiar la velocidad turbo
 Corregido mostrar indicador de submenú (>) cuando el menú tiene barra de scroll vertical
