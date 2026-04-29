@@ -10126,8 +10126,16 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
                     if (menu_display_total_palette_show_mapped==0) {
 
                         indice_paleta=total_palette_colours_array[menu_display_total_palette_current_palette].indice_inicial;
-                        indice_color_final_rgb=indice_paleta+current_color;
-                        color_final_rgb=spectrum_colortable_normal[indice_color_final_rgb];
+
+
+                        if (indice_paleta==-1) {
+                            color_final_rgb=pcw_rgb24_full_table[current_color];
+                        }
+
+                        else {
+                            indice_color_final_rgb=indice_paleta+current_color;
+                            color_final_rgb=spectrum_colortable_normal[indice_color_final_rgb];
+                        }
 
 
 

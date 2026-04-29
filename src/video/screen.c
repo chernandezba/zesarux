@@ -270,7 +270,8 @@ total_palette_colours total_palette_colours_array[TOTAL_PALETAS_COLORES]={
     {"QL","8 colour",QL_INDEX_FIRST_COLOR,QL_TOTAL_PALETTE_COLOURS},
     {"BMP File first palette","256 colour",BMP_INDEX_FIRST_COLOR,BMP_TOTAL_PALETTE_COLOURS},
     {"BMP File second palette","256 colour",BMP_SECOND_INDEX_FIRST_COLOR,BMP_SECOND_TOTAL_PALETTE_COLOURS},
-    {"PCW RGB8","PCW 256 colour",PCW_RGB8_FIRST_COLOR,PCW_RGB8_PALETTE_COLOURS}
+    {"PCW RGB8","PCW 256 colour",PCW_RGB8_FIRST_COLOR,PCW_RGB8_PALETTE_COLOURS},
+    {"PCW","PCW initial palettes colours",-1,PCW_ALL_COLOURS_MODES} //Este es especial porque los colores salen de otro sitio
 };
 
 
