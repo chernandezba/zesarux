@@ -66,6 +66,7 @@
 #include "zeng_online_client.h"
 #include "tape.h"
 #include "joystick.h"
+#include "atomic.h"
 
 
 //Incluimos estos dos para la funcion de fade out
@@ -1195,9 +1196,34 @@ void init_rainbow(void)
 
 }
 
+//Para evitar que mientras se inicializa cache putpixel (despues del free y antes de asignar la memoria),
+//entre un clear_putpixel_cache como consecuencia de un cambio de ventana que en Mac OS salta a resizeContentToWidth y de ahi a clear_putpixel_cache
+//Y eso provocaria que clear_putpixel_cache estuviera usando memoria desasignada y generar un posible segfault
+//Por tanto, estas dos funciones init_cache_putpixel y clear_putpixel_cache son bloqueantes entre ellas
+z_atomic_semaphore semaphore_altering_cache_putpixel;
+
+
+void cache_putpixel_begin_lock_semaphore(void)
+{
+    //printf("Set semaphore\n");
+	while(z_atomic_test_and_set(&semaphore_altering_cache_putpixel)) {
+		//printf("Esperando a liberar lock en cache_putpixel_begin_lock_semaphore\n");
+	}
+}
+
+void cache_putpixel_end_lock_semaphore(void)
+{
+    //printf("Reset semaphore\n");
+    z_atomic_reset(&semaphore_altering_cache_putpixel);
+}
+
 void init_cache_putpixel(void)
 {
 #ifdef PUTPIXELCACHE
+
+    //printf("init_cache_putpixel BEGIN\n");
+    cache_putpixel_begin_lock_semaphore();
+
     debug_printf (VERBOSE_INFO,"Initializing putpixel_cache");
     if (putpixel_cache!=NULL) {
         debug_printf (VERBOSE_INFO,"Freeing previous putpixel_cache");
@@ -1238,6 +1264,10 @@ void init_cache_putpixel(void)
         cpu_panic("Error allocating putpixel_cache video buffer");
     }
 
+    cache_putpixel_end_lock_semaphore();
+    //printf("init_cache_putpixel END\n");
+
+    //printf("Calling clear_putpixel_cache from init_cache_putpixel\n");
     clear_putpixel_cache();
 #else
     debug_printf (VERBOSE_INFO,"Putpixel cache disabled on compilation time");
@@ -1251,6 +1281,9 @@ void clear_putpixel_cache(void)
 #ifdef PUTPIXELCACHE
 
     if (putpixel_cache==NULL) return;
+
+    //printf("clear_putpixel_cache BEGIN\n");
+    cache_putpixel_begin_lock_semaphore();
 
     debug_printf (VERBOSE_INFO,"Clearing putpixel cache");
 
@@ -1286,6 +1319,9 @@ void clear_putpixel_cache(void)
 
 
     memset(putpixel_cache,255,longitud);
+
+    cache_putpixel_end_lock_semaphore();
+    //printf("clear_putpixel_cache END\n");
 
     //printf ("clear putpixel cache get_total_ancho_rainbow=%d get_total_alto_rainbow=%d \n",get_total_ancho_rainbow(),get_total_alto_rainbow() );
 #endif
