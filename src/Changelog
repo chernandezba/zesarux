@@ -119,7 +119,7 @@ Fixed emulation of DD/FD+EB opcode: EX DE,HL instead of EX DE,IX/IY
 Fixed timing of inexistent DD/FD opcodes
 Fixed disassemble of undocumented opcodes DD/FD + CB + res/set (ix+d) where the result is also stored on a register
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
-Fixed C register after loading standard tape (undocummented feature) - fixes loading of game Sweet Fightin' +2
+Fixed C register after loading standard tape (undocumented feature) - fixes loading of game Sweet Fightin' +2
 Fixed sdl parameter --sdl-force-win-size when using rgb24 bit color mode on SDL1
 Fixed sdl parameters --sdl-force-win-size and --sdl-8bit-color on SDL2
 Fixed uncompress tar and rar files with spaces in name

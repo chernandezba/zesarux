@@ -87,6 +87,11 @@ export LDFLAGS="-L/opt/homebrew/Cellar/openssl@3/3.6.0/lib"
 
 Para que el cpu_panic muestre backtrace si hay un error, compilar con -g -rdynamic (en Linux) o -g (en Mac)
 
+Para compilar con detección de indices fuera de array, uso de memoria liberada y otros errores, compilar en Mac con:
+export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
+export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
+El O3 es opcional pero generará código mas rápido
+
 
 Para mostrar todos los iconos lower meter en compileoptions.h:
 

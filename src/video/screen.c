@@ -1250,6 +1250,66 @@ void init_cache_putpixel(void)
 
 }
 
+void clear_putpixel_cache(void)
+{
+
+#ifdef PUTPIXELCACHE
+
+    if (putpixel_cache==NULL) return;
+
+    debug_printf (VERBOSE_INFO,"Clearing putpixel cache");
+
+
+
+
+    int tamanyo_y;
+
+    tamanyo_y=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom();
+
+    if (video_interlaced_mode.v) tamanyo_y *=2;
+
+    int tamanyo_x;
+
+    tamanyo_x=screen_get_window_size_width_no_zoom_border_en();
+
+    if (timex_si_modo_512() ) tamanyo_x *=2;
+
+
+    //printf ("Clearing putpixel cache %d X %d\n",tamanyo_x,tamanyo_y);
+    /*int x,y;
+    int indice=0;
+
+    for (y=0;y<tamanyo_y;y++) {
+        for (x=0;x<tamanyo_x;x++) {
+            //cambiar toda la cache
+            //ponemos cualquier valor que no pueda existir, para invalidarla
+            putpixel_cache[indice]=65535;
+
+            indice++;
+        }
+    }*/
+
+    //Alternativa con memset mas rapido
+    int longitud=tamanyo_y*tamanyo_x*2; //*2 porque es un z80_int
+
+    //Si la longitud de lo que vamos a inicializar es mayor que el tamaño
+    //propiamente de la memoria asignada, no borrar todo
+    //Esto puede suceder momentaneamente al cambiar a maquina con resolucion mayor, cuando se
+    //ha cambiado la definición de la máquina, se inicializa realvideo (por ejemplo)
+    //pero aun no se ha llamado a init_cache_putpixel
+    if (longitud>putpixel_cache_size) {
+        debug_printf (VERBOSE_INFO,"Allocated memory for putpixel cache is smaller than we are trying to clear, can be normal");
+        longitud=putpixel_cache_size;
+    }
+
+
+    memset(putpixel_cache,255,longitud);
+
+    //printf ("clear putpixel cache get_total_ancho_rainbow=%d get_total_alto_rainbow=%d \n",get_total_ancho_rainbow(),get_total_alto_rainbow() );
+#endif
+
+}
+
 
 //#define put_putpixel_cache(x,y) putpixel_cache[x]=y
 
@@ -1864,65 +1924,7 @@ void screen_tbblue_refresca_pantalla(void)
 
 }
 
-void clear_putpixel_cache(void)
-{
 
-#ifdef PUTPIXELCACHE
-
-    if (putpixel_cache==NULL) return;
-
-    debug_printf (VERBOSE_INFO,"Clearing putpixel cache");
-
-
-
-
-    int tamanyo_y;
-
-    tamanyo_y=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom();
-
-    if (video_interlaced_mode.v) tamanyo_y *=2;
-
-    int tamanyo_x;
-
-    tamanyo_x=screen_get_window_size_width_no_zoom_border_en();
-
-    if (timex_si_modo_512() ) tamanyo_x *=2;
-
-
-    //printf ("Clearing putpixel cache %d X %d\n",tamanyo_x,tamanyo_y);
-    /*int x,y;
-    int indice=0;
-
-    for (y=0;y<tamanyo_y;y++) {
-        for (x=0;x<tamanyo_x;x++) {
-            //cambiar toda la cache
-            //ponemos cualquier valor que no pueda existir, para invalidarla
-            putpixel_cache[indice]=65535;
-
-            indice++;
-        }
-    }*/
-
-    //Alternativa con memset mas rapido
-    int longitud=tamanyo_y*tamanyo_x*2; //*2 porque es un z80_int
-
-    //Si la longitud de lo que vamos a inicializar es mayor que el tamaño
-    //propiamente de la memoria asignada, no borrar todo
-    //Esto puede suceder momentaneamente al cambiar a maquina con resolucion mayor, cuando se
-    //ha cambiado la definición de la máquina, se inicializa realvideo (por ejemplo)
-    //pero aun no se ha llamado a init_cache_putpixel
-    if (longitud>putpixel_cache_size) {
-        debug_printf (VERBOSE_INFO,"Allocated memory for putpixel cache is smaller than we are trying to clear, can be normal");
-        longitud=putpixel_cache_size;
-    }
-
-
-    memset(putpixel_cache,255,longitud);
-
-    //printf ("clear putpixel cache get_total_ancho_rainbow=%d get_total_alto_rainbow=%d \n",get_total_ancho_rainbow(),get_total_alto_rainbow() );
-#endif
-
-}
 
 //putpixel escalandolo al zoom necesario y teniendo en cuenta toda la pantalla entera (rainbow)
 //y con cache
