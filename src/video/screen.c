@@ -1204,22 +1204,17 @@ void init_cache_putpixel(void)
         free(putpixel_cache);
     }
 
-        int ancho,alto,tamanyo;
+    int ancho,alto,tamanyo;
 
 
-        //ancho=screen_get_emulated_display_width_no_zoom();
-        //alto=screen_get_emulated_display_height_no_zoom();
-    //Incluir en tamanyo el footer
-        //ancho=screen_get_window_size_width_no_zoom_border_en();
-        //alto=screen_get_window_size_height_no_zoom_border_en();
-        ancho=screen_get_window_size_width_no_zoom();
-        alto=screen_get_window_size_height_no_zoom();
+    ancho=screen_get_window_size_width_no_zoom();
+    alto=screen_get_window_size_height_no_zoom();
 
 
     //El tamanyo depende del footer. Pero no del border (siempre se incluye con border)
 
 
-        tamanyo=ancho*alto;
+    tamanyo=ancho*alto;
     //para poder hacer putpixel cache con zoom y*2 y interlaced, doble de tamanyo
     tamanyo *=2;
 
@@ -1275,19 +1270,6 @@ void clear_putpixel_cache(void)
     if (timex_si_modo_512() ) tamanyo_x *=2;
 
 
-    //printf ("Clearing putpixel cache %d X %d\n",tamanyo_x,tamanyo_y);
-    /*int x,y;
-    int indice=0;
-
-    for (y=0;y<tamanyo_y;y++) {
-        for (x=0;x<tamanyo_x;x++) {
-            //cambiar toda la cache
-            //ponemos cualquier valor que no pueda existir, para invalidarla
-            putpixel_cache[indice]=65535;
-
-            indice++;
-        }
-    }*/
 
     //Alternativa con memset mas rapido
     int longitud=tamanyo_y*tamanyo_x*2; //*2 porque es un z80_int
