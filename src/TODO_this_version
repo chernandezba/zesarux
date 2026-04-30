@@ -7,10 +7,6 @@ pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 
 
 
--lightgun
-*rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
-en programa aparte, mostrando coordenada y en pantalla
-
 
 -config setting para aymidi_rs232_enabled.v
 if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que ser dependiente de ese setting?
@@ -66,5 +62,11 @@ antes de commonsdl_init
 
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
+
+
+
+-lightgun
+*rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
+en programa aparte, mostrando coordenada y en pantalla
 
 -revisar entradas en archivo "Cambios"

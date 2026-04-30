@@ -29,7 +29,7 @@ Allow to save smartload history on a file
 Added aggresive scanline effect
 Added black & white video dither mode
 Added RGB 8 bit color mode
-Added lightgun scope
+Added Optical Devices scope
 Added emulation of Optical Devices:
 - Datel Lightwriter
 - Defender Light Gun
@@ -117,7 +117,7 @@ Fixed emulation of Magnum Light Phaser
 Fixed reading port BFFD on Spectrum +2A/+3
 Fixed emulation of DD/FD+EB opcode: EX DE,HL instead of EX DE,IX/IY
 Fixed timing of inexistent DD/FD opcodes
-Fixed disassemble of undocumented opcodes dd/fd + cb + res/set (ix+d) where the result is also stored on a register
+Fixed disassemble of undocumented opcodes DD/FD + CB + res/set (ix+d) where the result is also stored on a register
 Fixed loading tape with --tape and --realtape and autoload snapshot on start
 Fixed C register after loading standard tape (undocummented feature) - fixes loading of game Sweet Fightin' +2
 Fixed sdl parameter --sdl-force-win-size when using rgb24 bit color mode on SDL1

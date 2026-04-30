@@ -29,7 +29,7 @@ Permitir grabar historial de smartload en un archivo
 Agregado efecto scanlines agresivo
 Agregado modo de color en blanco y negro con tramado
 Agregado modo de color RGB 8 bit
-Agregada mirilla de lightgun
+Agregada mirilla de Dispositivos Ópticos
 Agregada emulación de Dispositivos Ópticos:
 - Datel Lightwriter
 - Defender Light Gun
@@ -67,7 +67,7 @@ Mejorado ZX Vision:
 - Agregado nuevo Menú Superior (no habilitado por defecto)
 - Agregado tooltips para botones superiores (de menús) e inferiores (de dispositivos) y para iconos
 - Agregado soporte para tipos de letra de 4 pixeles de ancho
-- Permitir elegit tamaño de tipo de letra > 8
+- Permitir elegir tamaño de tipo de letra > 8
 - Agregado tipo de letra "ZEsarUXtiny" adecuado para configuración de charset 4x6 (el mismo que ya se usaba en los iconos)
 - Agregado estilos de GUI "ZEsarUX Tiny" and "Pico-8"
 - Permitir pulsar teclas F de función desde el menú
@@ -117,7 +117,7 @@ Corregida emulación de Magnum Light Phaser
 Corregida lectura de puerto BFFD en Spectrum +2A/+3
 Corregida emulación de opcode DD/FD+EB: EX DE,HL en vez de EX DE,IX/IY
 Corregido tiempos de opcodes DD/FD inexistentes
-Corregido desensamblado de opcodes indocumentados dd/fd + cb + res/set (ix+d) donde el resultado también se guarda en un registro
+Corregido desensamblado de opcodes indocumentados DD/FD + CB + res/set (ix+d) donde el resultado también se guarda en un registro
 Corregida carga con --tape y --realtape con autocarga de snapshot al inicio
 Corregido registro C después de cargar cinta estandar (comportamiento no documentado) - corrige carga de juego Sweet Fightin' +2
 Corregido parámetro --sdl-force-win-size al usar modo de color rgb24 bit en SDL1
