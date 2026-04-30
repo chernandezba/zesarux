@@ -1202,7 +1202,6 @@ void init_rainbow(void)
 //Por tanto, estas dos funciones init_cache_putpixel y clear_putpixel_cache son bloqueantes entre ellas
 z_atomic_semaphore semaphore_altering_cache_putpixel;
 
-
 void cache_putpixel_begin_lock_semaphore(void)
 {
     //printf("Set semaphore\n");
