@@ -76,7 +76,6 @@ int menu_debug_registers_print_main_step(zxvision_window *ventana);
 void textadv_map_putpixel(zxvision_window *w,int x,int y,int color);
 
 //Permitir pulsar teclas de movimientos ventanas (OPQA WKSL) o que vayan como comandos de debug cpu
-//Se conmuta con tecla 'W' mayúscula
 z80_bit menu_debug_cpu_allow_window_keys={0};
 
 
@@ -8792,6 +8791,8 @@ void menu_debug_help(void)
         "N: Permite ejecutar continuamente hacia atrás. Requiere tener el historial de la cpu habilitado y sólo está disponible en modo paso a paso. "
         "Lógicamente esta ejecución hacia atrás tiene un límite, determinado en el menu Settings-> Debug-> Max history items\n"
         "\n"
+        "I: Permitir o denegar el movimiento y tamaño de la ventana Debug CPU mediante teclas OPQA WSKL\n"
+        "\n"
         "shift+cursor up: Ir a la dirección previa en el historial. Requiere tener el historial de la cpu habilitado y sólo está disponible en modo paso a paso\n"
         "\n"
         "g: Ver los gráficos de una aventura hecha con GAC\n"
@@ -8917,6 +8918,8 @@ void menu_debug_help(void)
         "\n"
         "N: Permet executar contínuament cap enrere. Requereix tenir l'historial de la cpu habilitat i només està disponible en mode pas a pas."
         "Lògicament aquesta execució cap enrere té un límit, determinat al menú Settings-> Debug-> Max history items\n"
+        "\n"
+        "I: Permetre o denegar el moviment i tamany de la finestra Debug CPU mitjançant tecles OPQA WSKL\n"
         "\n"
         "shift+cursor up: Anar a l'adreça previa a l'historial. You need cpu execution history enabled and it's only available on step mode\n"
         "\n"
@@ -9045,6 +9048,8 @@ void menu_debug_help(void)
         "N: You can run backwards continuously. You need cpu execution history enabled and it's only available on step mode. "
         "This backwards execution has a limit defined on menu Settings-> Debug-> Max history items\n"
         "\n"
+        "I: Allow or disallow movement and size of Debug CPU window using keys OPQA WSKL\n"
+        "\n"
         "shift+cursor up: Go to the previous address in history. You need cpu execution history enabled and it's only available on step mode\n"
         "\n"
         "g: See the graphics of a GAC text adventure\n"
@@ -9130,10 +9135,10 @@ void menu_debug_cpu_switch_window_keys(void)
 {
     menu_debug_cpu_allow_window_keys.v ^=1;
     if (menu_debug_cpu_allow_window_keys.v) {
-        menu_generic_message_splash("Window keys","Allowed window movement keys");
+        menu_generic_message_splash("Window keys","Allowed window movement and size keys");
     }
     else {
-        menu_generic_message_splash("Window keys","Window movement keys are not allowed");
+        menu_generic_message_splash("Window keys","Disallowed window movement and size keys");
     }
 }
 
@@ -9567,7 +9572,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }
 
-                if (tecla=='L' && menu_debug_registers_current_view==1) {
+                if (tecla=='L' && menu_debug_registers_current_view==1 && menu_debug_cpu_allow_window_keys.v==0) {
                     menu_debug_toggle_breakpoint(0);
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -9606,7 +9611,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }
 
-                if (tecla=='W') {
+                if (tecla=='I') {
                     menu_debug_cpu_switch_window_keys();
 
                     //Decimos que no hay tecla pulsada
@@ -9648,7 +9653,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
                 //Establecer PC con valor de PTR
-                if (tecla=='P') {
+                if (tecla=='P' && menu_debug_cpu_allow_window_keys.v==0) {
                     char buffer_temp[32];
                     sprintf(buffer_temp,"PC=%d",menu_debug_memory_pointer);
                     //printf("%s\n",buffer_temp);
@@ -10086,7 +10091,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
                 }
 
-                if (tecla=='W') {
+                if (tecla=='I') {
                     //Detener multitarea, porque si no, la ventana de splash ejecutara opcodes de la cpu
                     int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
                     menu_emulation_paused_on_menu=1;
@@ -10231,7 +10236,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     si_ejecuta_una_instruccion=0;
                 }
 
-                if (tecla=='L' && menu_debug_registers_current_view==1) {
+                if (tecla=='L' && menu_debug_registers_current_view==1 && menu_debug_cpu_allow_window_keys.v==0) {
                     menu_debug_toggle_breakpoint(0);
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -10249,7 +10254,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
                 //Establecer PC con valor de PTR
-                if (tecla=='P') {
+                if (tecla=='P' && menu_debug_cpu_allow_window_keys.v==0) {
                     char buffer_temp[32];
                     sprintf(buffer_temp,"PC=%d",menu_debug_memory_pointer);
                     //printf("%s\n",buffer_temp);
@@ -10383,7 +10388,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
                 //backstep
-                if (tecla=='S' && cpu_history_enabled.v && cpu_history_started.v) {
+                if (tecla=='S' && cpu_history_enabled.v && cpu_history_started.v && menu_debug_cpu_allow_window_keys.v==0) {
                     menu_debug_cpu_backwards_history();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -10575,6 +10580,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
                 }
+
+                if (menu_debug_cpu_allow_window_keys.v) zxvision_handle_opqa_wskl(ventana,tecla);
 
                 if (tecla==2) { //ESC
                     cpu_step_mode.v=0;
