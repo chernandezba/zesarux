@@ -73,7 +73,7 @@ Mejorado ZX Vision:
 - Permitir pulsar teclas F de función desde el menú
 - Permitir reducir tamaño disponible menú a la mitad de la ventana principal
 - Permitir ver previews de archivos del selector de archivos en el fondo del ZX Desktop
-- La mayoría de ventanas se pueden mover/redimensionar ahora usando teclas mayus+OPQAWSKL
+- La mayoría de ventanas ahora se pueden mover/redimensionar usando teclas mayus+OPQAWSKL
 - Reordenadas opciones & nuevo menú: revisa opciones -> Display Emulado, General, Ventana Principal, ZX Vision, TV
 - Movido varias opciones a opciones -> Hardware
 - Agregada acción al ayudante de atajos para crear icono que lanza las teclas grabadas

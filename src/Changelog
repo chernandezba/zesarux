@@ -73,7 +73,7 @@ Improved ZX Vision:
 - Allow to press F-function keys from the menu
 - Allow to reduce available menu size to half size of Main Window
 - Allow to see file previews from the file selector on ZX Desktop background
-- Most windows can be moved/resized now using keys shift+OPQAWSKL
+- Most windows can now be moved/resized using keys shift+OPQAWSKL
 - Reordered settings & new menu: check settings -> Emulated Display, General, Main Window, ZX Vision, TV
 - Moved some settings to settings -> Hardware
 - Added shortcuts helper action to create icon to trigger recorded keys

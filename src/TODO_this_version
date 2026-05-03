@@ -36,8 +36,8 @@ en sdl1, raton lo ubica en la posicion inicial
 *sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
 
 
--Revisar opqa y teclas mover ventana
-*solo falta en debug cpu, muchas teclas mapeadas ahi. quiza un modo en el que se pueda cambiar a modo movimiento ventana
+ok -Revisar opqa y teclas mover ventana
+ok *solo falta en debug cpu, muchas teclas mapeadas ahi. quiza un modo en el que se pueda cambiar a modo movimiento ventana
 
 
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
