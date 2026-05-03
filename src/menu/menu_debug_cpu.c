@@ -75,6 +75,10 @@ int menu_debug_registers_print_main_step(zxvision_window *ventana);
 
 void textadv_map_putpixel(zxvision_window *w,int x,int y,int color);
 
+//Permitir pulsar teclas de movimientos ventanas (OPQA WKSL) o que vayan como comandos de debug cpu
+//Se conmuta con tecla 'W' mayúscula
+z80_bit menu_debug_cpu_allow_window_keys={0};
+
 
 menu_z80_moto_int menu_debug_disassemble_bajar(menu_z80_moto_int dir_inicial)
 {
@@ -9122,6 +9126,17 @@ void menu_debug_cpu_view_stack(void)
 
 }
 
+void menu_debug_cpu_switch_window_keys(void)
+{
+    menu_debug_cpu_allow_window_keys.v ^=1;
+    if (menu_debug_cpu_allow_window_keys.v) {
+        menu_generic_message_splash("Window keys","Allowed window movement keys");
+    }
+    else {
+        menu_generic_message_splash("Window keys","Window movement keys are not allowed");
+    }
+}
+
 void menu_debug_registers(MENU_ITEM_PARAMETERS)
 {
 
@@ -9591,7 +9606,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }
 
+                if (tecla=='W') {
+                    menu_debug_cpu_switch_window_keys();
 
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                }
 
                 if (tecla=='i') {
                     last_debug_poke_dir=menu_debug_memory_pointer;
@@ -9731,6 +9751,10 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }
+
+
+                if (menu_debug_cpu_allow_window_keys.v) zxvision_handle_opqa_wskl(ventana,tecla);
+
 
                 //Si tecla no es ESC o background, no salir
                 if (tecla!=2 && tecla!=3) acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -10059,6 +10083,22 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
                     //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
+                    menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+                }
+
+                if (tecla=='W') {
+                    //Detener multitarea, porque si no, la ventana de splash ejecutara opcodes de la cpu
+                    int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+                    menu_emulation_paused_on_menu=1;
+
+                    menu_debug_cpu_switch_window_keys();
+
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                    //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+                    si_ejecuta_una_instruccion=0;
+
+                    //Restaurar estado multitarea
                     menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
                 }
 
