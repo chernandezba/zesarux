@@ -77,6 +77,8 @@ extern void (*scr_update_window_title) (void);
 extern char *(*scr_get_text_clipboard) (int *p_longitud);
 
 //extern int (*scr_driver_can_ext_desktop) (void);
+
+
 extern int scr_driver_can_ext_desktop (void);
 
 extern int screen_este_driver_permite_ext_desktop;

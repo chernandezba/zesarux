@@ -3962,6 +3962,8 @@ char *menu_filesel_recent_files_folders(int *tipo)
 
     menu_filesel_recent_files_folders_seleccionado_enter=0;
 
+    //printf("Entrada recent salir_todos_menus: %d\n",salir_todos_menus);
+
     do {
 
         hay_alguno=0;
@@ -4041,6 +4043,8 @@ char *menu_filesel_recent_files_folders(int *tipo)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC &&
         !salir_todos_menus && !menu_filesel_recent_files_folders_seleccionado_enter);
+
+    //printf("Salida recent salir_todos_menus: %d\n",salir_todos_menus);
 
     *tipo=menu_filesel_recent_files_folders_tipo_seleccionado;
 
@@ -6742,6 +6746,10 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
                     //conservar estado de salir todos menus, por si se sale de recent con ESC, que no se habilite
                     int antes_salir_todos_menus=salir_todos_menus;
+
+                    //Y no queremos que se herede salir_todos_menus al entrar aqui, por si venimos por ejemplo de tape input donde
+                    //se habilita para cerrar todos los menus despues de elegir archivo
+                    salir_todos_menus=0;
 
                     char *archivo_reciente=menu_filesel_recent_files_folders(&tipo);
 

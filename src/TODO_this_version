@@ -1,11 +1,4 @@
 
--Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
-        menu_add_item_menu_index_full_path(array_menu_settings_debug,
-            "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
-Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
-pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
-
-
 -config setting para aymidi_rs232_enabled.v
 if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que ser dependiente de ese setting?
 desactivado por defecto
@@ -53,6 +46,4 @@ export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 
-ok -lightgun
-*rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
-en programa aparte, mostrando coordenada y en pantalla
+ok-en tape input o output tape, en Recent, al pulsar Espacio , se cierra ventana

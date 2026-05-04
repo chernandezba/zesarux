@@ -420,3 +420,8 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 *ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
 *desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
 
+-Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
+        menu_add_item_menu_index_full_path(array_menu_settings_debug,
+            "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
+Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
+pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
