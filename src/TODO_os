@@ -31,6 +31,8 @@ Ouch, thank you for the response – this will require some hard studying to fig
 -cocoa: visibilidad raton en pantalla completa. Se puede corregir eliminando funciones grabMouse/ungrabMouse pero luego
 la posición del ratón no la lee correctamente, seguramente por culpa del factor de zoom
 
+-cocoa: memory leak cada vez que se redimensiona ventana o se conmuta full screen
+
 -Joystick en Mac: decir nombre de joystick y total botones/axis
 
 

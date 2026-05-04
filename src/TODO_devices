@@ -246,6 +246,9 @@ por ver los diferentes mensajes de error
 
 -Ddh con extended info al final, que contenga marcas de sector y labels ?
 
+-Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
+->lo gestiona zxdesktop_lowericon_hilow_accion_boton_derecho expresamente cuando está desactivado. por que?
+
 
 -lee_hilow_audio: ultimo sector en cara B dice:
 Total bytes leidos: 0

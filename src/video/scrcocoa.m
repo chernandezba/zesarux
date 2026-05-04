@@ -812,6 +812,8 @@ int scrcocoa_ultimo_estado_realjoystick_present=0;
 
     NSInteger dataLength = pixel_screen_width * pixel_screen_height * 4;
     pixel_screen_data = (UInt8*)malloc(dataLength * sizeof(UInt8));
+    //printf("malloc redimensionaventana %d MiB\n",dataLength * sizeof(UInt8)/1024/1024);
+    //TODO: esta memoria no se libera, cada vez que redimensiona ventana, hay un memory leak, pues se reasigna sin liberar el anterior
 
     ZesaruxCocoaView *elview;
     elview=[ laventana contentView ];
@@ -3212,6 +3214,8 @@ int scrcocoa_init (void)
     NSInteger dataLength = pixel_screen_width * pixel_screen_height * 4;
     //UInt8 *pixel_screen_data = (UInt8*)malloc(dataLength * sizeof(UInt8));
     pixel_screen_data = (UInt8*)malloc(dataLength * sizeof(UInt8));
+    //printf("malloc init %d MiB\n",dataLength * sizeof(UInt8)/1024/1024);
+    //TODO: esta memoria no se libera, cada vez que cambia de full screen, hay un memory leak, pues se reasigna sin liberar el anterior
 
     scr_reallocate_layers_menu(pixel_screen_width,pixel_screen_height);
 

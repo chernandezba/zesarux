@@ -22,8 +22,6 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
 
--Qué sentido tiene que el icono de hilow deje hacer "Switch tape inserted flag" cuando no está hilow activado?
-
 
 -revisar parpadeos en linux en top buttons al moverse por los menus
 ->parece que solo pasa con driver xwindow, con sdl no pasa
@@ -34,10 +32,6 @@ menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshi
 sdl2 ok. aunque al volver de fullscreen no lee bien raton
 en sdl1, raton lo ubica en la posicion inicial
 *sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
-
-
-ok -Revisar opqa y teclas mover ventana
-ok *solo falta en debug cpu, muchas teclas mapeadas ahi. quiza un modo en el que se pueda cambiar a modo movimiento ventana
 
 
 -Sdl2 refresco menús y quitar multitarea no refresca siempre
@@ -53,14 +47,12 @@ SDL_RenderPresent(renderer);
 SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
 antes de commonsdl_init
 
--en cocoa, cada vez que va a pantalla completa y vuelve, asigna 64 mb de ram aprox que no libera
-
 -buscar otros posibles errores usando flags
 
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 
--lightgun
+ok -lightgun
 *rutina de Sinclair Action Pack - Side A, del programa principal que detecta posicion y, ponerla como ejempo
 en programa aparte, mostrando coordenada y en pantalla
