@@ -12,7 +12,6 @@ Es necesario tanto print?
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
-
 -Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
 
 
@@ -44,6 +43,3 @@ antes de commonsdl_init
 
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
-
-
-ok-en tape input o output tape, en Recent, al pulsar Espacio , se cierra ventana
