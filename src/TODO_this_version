@@ -12,8 +12,6 @@ Es necesario tanto print?
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
--Comparar uso de cpu en x11 y cocoa. Probar con cpu en reposo o con carga
-
 
 -revisar parpadeos en linux en top buttons al moverse por los menus
 ->parece que solo pasa con driver xwindow, con sdl no pasa
