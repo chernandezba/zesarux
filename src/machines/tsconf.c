@@ -1815,6 +1815,17 @@ void tsconf_store_scanline_ula(void)
                         byte_leido=screen[direccion];
 
                         attribute=screen[dir_atributo];
+
+                        if (scr_refresca_sin_colores.v) attribute=56;
+
+                        else {
+                            if (scr_refresca_show_attribute_grid.v) {
+                                int cuad=(fila+x)%2;
+                                if (cuad) attribute=56+64;
+                                else attribute=56;
+                            }
+                        }
+
                         //attribute=56;
 
                         //printf ("byte %d atributo %d\n",byte_leido,attribute);
