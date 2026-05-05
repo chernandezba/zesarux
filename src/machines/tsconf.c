@@ -2815,6 +2815,14 @@ void scr_tsconf_refresca_pantalla_zxmode_no_rainbow_comun(void)
 
                 if (scr_refresca_sin_colores.v) attribute=56;
 
+                else {
+                    if (scr_refresca_show_attribute_grid.v) {
+                        int cuad=(fila+x)%2;
+                        if (cuad) attribute=56+64;
+                        else attribute=56;
+                    }
+                }
+
 
                             ink=attribute &7;
                             paper=(attribute>>3) &7;
