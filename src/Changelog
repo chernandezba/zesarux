@@ -29,6 +29,7 @@ Allow to save smartload history on a file
 Added aggresive scanline effect
 Added black & white video dither mode
 Added RGB 8 bit color mode
+Added show attribute grid on Spectrum
 Added Optical Devices scope
 Added emulation of Optical Devices:
 - Datel Lightwriter

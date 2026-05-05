@@ -8696,6 +8696,11 @@ void menu_display_refresca_sin_colores(MENU_ITEM_PARAMETERS)
     modificado_border.v=1;
 }
 
+void menu_display_refresca_show_attribute_grid(MENU_ITEM_PARAMETERS)
+{
+    scr_refresca_show_attribute_grid.v ^=1;
+    modificado_border.v=1;
+}
 
 void menu_display_timex_force_line_512192(MENU_ITEM_PARAMETERS)
 {
@@ -9995,6 +10000,17 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_settings_display,"Disables colours for Spectrum display");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Disables colours for Spectrum display");
             menu_add_item_menu_es_avanzado(array_menu_settings_display);
+
+
+            if (scr_refresca_sin_colores.v==0) {
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_show_attribute_grid,NULL,
+                    "Show attribute grid","Mostrar rejilla atributos","Mostrar reixeta atributs");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(scr_refresca_show_attribute_grid.v ? 'X' : ' '));
+                menu_add_item_menu_tooltip(array_menu_settings_display,"Show attribute grid for Spectrum display");
+                menu_add_item_menu_ayuda(array_menu_settings_display,"Show attribute grid for Spectrum display");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
+            }
+
         }
 
 

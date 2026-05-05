@@ -285,8 +285,11 @@ z80_bit pentagon_16c_mode_available={0};
 //Modo flash color
 z80_bit spectrum_flash_color_mode={0};
 
-//Refrescar pantalla spectrum sin colores. Solo para modo no realvideo
+//Refrescar pantalla spectrum sin colores
 z80_bit scr_refresca_sin_colores={0};
+
+//Refrescar pantalla spectrum mostrando las fronteras de 8x8
+z80_bit scr_refresca_show_attribute_grid={0};
 
 //umbral de pixeles para dibujar o no un punto
 int umbral_simulate_screen_zx8081=4;
@@ -5139,6 +5142,15 @@ void scr_refresca_pantalla_comun(void)
                 attribute=56;
                 //ink1=(byte_leido >>4)&0xF;
                 //ink2=(byte_leido    )&0xF;
+
+            }
+
+            else {
+                if (scr_refresca_show_attribute_grid.v) {
+                    int cuad=(fila+x)%2;
+                    if (cuad) attribute=56+64;
+                    else attribute=56;
+                }
             }
 
 

@@ -924,6 +924,8 @@ extern void screen_text_repinta_pantalla_cpc(void);
 
 extern z80_bit scr_refresca_sin_colores;
 
+extern z80_bit scr_refresca_show_attribute_grid;
+
 extern void scr_refresca_pantalla_y_border_ql(void);
 
 extern z80_bit no_fadeout_exit;

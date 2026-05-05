@@ -29,6 +29,7 @@ Permitir grabar historial de smartload en un archivo
 Agregado efecto scanlines agresivo
 Agregado modo de color en blanco y negro con tramado
 Agregado modo de color RGB 8 bit
+Agregado mostrar rejilla de atributos en Spectrum
 Agregada mirilla de Dispositivos Ópticos
 Agregada emulación de Dispositivos Ópticos:
 - Datel Lightwriter
