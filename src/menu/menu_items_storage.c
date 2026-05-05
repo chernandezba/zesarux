@@ -3171,7 +3171,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_tape_settings);
 
-        retorno_menu=menu_dibuja_menu_no_title_lang(&storage_tape_opcion_seleccionada,&item_seleccionado,array_menu_tape_settings,"Tape" );
+        menu_add_item_menu_index_full_path(array_menu_tape_settings,"Main Menu-> Storage-> Tape","Menú Principal-> Almacenamiento-> Cinta","Menú Principal-> Emmagatzematge-> Cinta");
+        retorno_menu=menu_dibuja_menu(&storage_tape_opcion_seleccionada,&item_seleccionado,array_menu_tape_settings,"Tape Menu","Menú Cinta","Menú Cinta");
 
 
 
