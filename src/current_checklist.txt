@@ -27,16 +27,6 @@ ok Mac
 
 -ejecutar tests/automatic_test_cycle_machines.sh
 
--probar cambio idioma menu y ver diferentes menus
-
--probar Search menu
-
--probar 4 combinaciones de logo:
-./zesarux --disable-xanniversary-logo
-./zesarux --enable-xanniversary-logo
-./zesarux --disable-xanniversary-logo --enable-christmas-mode
-./zesarux --enable-xanniversary-logo --enable-christmas-mode
-
 -probar Valgrind en Linux 64 bits:
 compilar con :  
 export CFLAGS="-g -rdynamic"
