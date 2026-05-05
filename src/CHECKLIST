@@ -172,7 +172,9 @@ Drivers audio:
 
 -probar carga desde cinta real
 
--probar watermark, reduce 0.75
+-probar watermark
+
+-probar filtros FX de video
 
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
@@ -228,6 +230,7 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar waveform, tambien en drivers no graficos como curses, aa, etc
 -probar ay player. Con versiones 00,01,02,3. Probar Spectrum y CPC
 -probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
+-modo blanco y negro con dither
 -ver paletas de colores
 -probar expansiones de ram de zx80/81
 -probar a generar algun error y que aparezca en menu

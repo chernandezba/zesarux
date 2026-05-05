@@ -451,3 +451,6 @@ caras adyacentes de un cubo. Ejemplo:
     por tanto "parecería" que están a la misma profundidad
     Nota: para el ejemplo se han dibujado caras como cuadrados, pero es lo mismo para triángulos
     Quizá obtener el punto medio de los 3 vértices de un triángulo y obtener la profundidad en ese punto?
+
+
+-al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
