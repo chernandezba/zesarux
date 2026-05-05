@@ -8570,7 +8570,17 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
                 }
 
 
-            if (scr_refresca_sin_colores.v) attribute=56;
+            if (scr_refresca_sin_colores.v) {
+                attribute=56;
+            }
+
+            else {
+                if (scr_refresca_show_attribute_grid.v) {
+                    int cuad=(fila+x)%2;
+                    if (cuad) attribute=56+64;
+                    else attribute=56;
+                }
+            }
 
             GET_PIXEL_COLOR
 
