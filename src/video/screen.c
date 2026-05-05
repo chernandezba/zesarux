@@ -288,7 +288,7 @@ z80_bit spectrum_flash_color_mode={0};
 //Refrescar pantalla spectrum sin colores
 z80_bit scr_refresca_sin_colores={0};
 
-//Refrescar pantalla spectrum mostrando las fronteras de 8x8
+//Refrescar pantalla spectrum mostrando rejilla de color de 8x8
 z80_bit scr_refresca_show_attribute_grid={0};
 
 //umbral de pixeles para dibujar o no un punto
