@@ -108,7 +108,7 @@ Drivers audio:
 
 -Funciones de Red:
 --Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
---Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
+--Mac: Probar ZENG, Speccy browser, Download TBBLUE SD
 --Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
 -Probar ZENG Online server
@@ -134,7 +134,6 @@ Drivers audio:
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
 -probar turbosound, 3 chips ay
 -probar specdrum, covox
--probar general sound
 -probar opcion ay speech on/off con chase hq por ejemplo
 -probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound

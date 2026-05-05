@@ -426,6 +426,8 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
 pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 
+-en view sensors agregar sensores de canales de General Sound
+
 -Render objectos 3D (para widgets sensors y otros efectos) mediante el "Painter Algorithm": renderizar todos los triángulos ordenando de mas cerca a mas lejos, así
 se ocultan las caras no visibles. Aquí lo difícil sería saber qué triangulos están mas lejos o mas cerca, se pueden ver las coordenadas pero por ejemplo hay problemas con
 caras adyacentes de un cubo. Ejemplo:
