@@ -1,3 +1,7 @@
+//Compilar con
+./configure --disable-memptr --disable-visualmem --disable-cpustats
+
+
 	//En iMac (21,5 pulgadas, finales de 2009)
 	//CPU 3.0 GHz Intel Xeon
 
@@ -273,3 +277,34 @@
         //
         //Fin pruebas 17 Agosto 2020
         //
+
+
+	//En Mac Mini (M4 Pro, 2024)
+        //
+        //Pruebas 05 Mayo 2026. Compilando sin optimizaciones ni opciones (./configure --disable-memptr --disable-visualmem --disable-cpustats)
+        //
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 6% cpu
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1
+        //con cocoa: 18%
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 23% cpu
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 24% cpu
+
+        //
+        //Fin pruebas 05 Mayo 2026
+        //
+

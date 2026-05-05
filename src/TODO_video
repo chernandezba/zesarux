@@ -177,3 +177,16 @@ de momento esto afecta a zeng online y se solventa con zoc_keys_tecla_repetida
 
 -Drag drop con menú abierto en sdl2 no parece funcionar bien
 
+
+-Sdl2 refresco menús y quitar multitarea no refresca siempre (le sucede a David Carrión)
+*comprobado y a mi no me pasa. quiza es cuando se usa sdl2 sobre framebuffer? quiza falta algun comando mas de sdl en
+scrsdl_refresca_pantalla_solo_driver?
+Posibles cosas:
+
+**doble comando
+SDL_RenderPresent(renderer);
+SDL_RenderPresent(renderer);
+
+**meter un hint:
+SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
+antes de commonsdl_init

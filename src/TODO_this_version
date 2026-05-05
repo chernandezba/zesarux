@@ -26,19 +26,6 @@ en sdl1, raton lo ubica en la posicion inicial
 *sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
 
 
--Sdl2 refresco menús y quitar multitarea no refresca siempre
-*comprobado y a mi no me pasa. quiza es cuando se usa sdl2 sobre framebuffer? quiza falta algun comando mas de sdl en
-scrsdl_refresca_pantalla_solo_driver?
-Posibles cosas:
-
-**doble comando
-SDL_RenderPresent(renderer);
-SDL_RenderPresent(renderer);
-
-**meter un hint:
-SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
-antes de commonsdl_init
-
 -buscar otros posibles errores usando flags
 
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"

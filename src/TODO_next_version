@@ -425,3 +425,29 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
             "Main Menu-> Settings-> Debug","Menú Principal-> Opciones-> Debug","Menú Principal-> Opcions-> Debug");
 Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
 pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
+
+-Render objectos 3D (para widgets sensors y otros efectos) mediante el "Painter Algorithm": renderizar todos los triángulos ordenando de mas cerca a mas lejos, así
+se ocultan las caras no visibles. Aquí lo difícil sería saber qué triangulos están mas lejos o mas cerca, se pueden ver las coordenadas pero por ejemplo hay problemas con
+caras adyacentes de un cubo. Ejemplo:
+
+             ****************
+            **      1      **
+           * *            * *
+          *  *           *  *
+         *   *   2      *   *
+        ****************    *
+        *    *         *    *
+        *    *         *    *
+        *    ****************
+        *   *          *   *
+        *  *           *  *
+        * *            * *
+        **             **
+        ****************
+
+    Cara de detrás: 1
+    Cara de arriba: 2
+    Tienen un vértice en común. Como se determina que 1 está mas atrás de 2? Porque la profundidad de 1 está a la misma que el vértice mas alejado de 2,
+    por tanto "parecería" que están a la misma profundidad
+    Nota: para el ejemplo se han dibujado caras como cuadrados, pero es lo mismo para triángulos
+    Quizá obtener el punto medio de los 3 vértices de un triángulo y obtener la profundidad en ese punto?
