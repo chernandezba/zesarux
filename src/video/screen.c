@@ -1205,9 +1205,9 @@ z_atomic_semaphore semaphore_altering_cache_putpixel;
 void cache_putpixel_begin_lock_semaphore(void)
 {
     //printf("Set semaphore\n");
-	while(z_atomic_test_and_set(&semaphore_altering_cache_putpixel)) {
-		//printf("Esperando a liberar lock en cache_putpixel_begin_lock_semaphore\n");
-	}
+    while(z_atomic_test_and_set(&semaphore_altering_cache_putpixel)) {
+        //printf("Esperando a liberar lock en cache_putpixel_begin_lock_semaphore\n");
+    }
 }
 
 void cache_putpixel_end_lock_semaphore(void)
@@ -5095,13 +5095,13 @@ void scr_refresca_pantalla_rainbow_comun_spectrum(void)
 void scr_refresca_pantalla_comun(void)
 {
     int x,y,bit;
-        z80_int direccion,dir_atributo;
-        z80_byte byte_leido;
-        int color=0;
-        int fila;
-        //int zx,zy;
+    z80_int direccion,dir_atributo;
+    z80_byte byte_leido;
+    int color=0;
+    int fila;
+    //int zx,zy;
 
-        z80_byte attribute,ink,paper,bright,flash,aux;
+    z80_byte attribute,ink,paper,bright,flash,aux;
 
 
     if (simulate_screen_zx8081.v==1) {
@@ -5111,78 +5111,78 @@ void scr_refresca_pantalla_comun(void)
     }
 
 
-       z80_byte *screen=get_base_mem_pantalla();
+    z80_byte *screen=get_base_mem_pantalla();
 
-        //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
+    //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
     z80_byte x_hi;
 
-        for (y=0;y<192;y++) {
-                //direccion=16384 | devuelve_direccion_pantalla(0,y);
+    for (y=0;y<192;y++) {
+        //direccion=16384 | devuelve_direccion_pantalla(0,y);
 
-                //direccion=16384 | screen_addr_table[(y<<5)];
-                direccion=screen_addr_table[(y<<5)];
-
-
-                fila=y/8;
-                dir_atributo=6144+(fila*32);
-                for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
+        //direccion=16384 | screen_addr_table[(y<<5)];
+        direccion=screen_addr_table[(y<<5)];
 
 
-
-                            byte_leido=screen[direccion];
-                            attribute=screen[dir_atributo];
-
-                //Prueba de un modo de video inventado en que el color de la tinta sale de los 4 bits de la zona de pixeles
-                //int ink1,ink2;
-
-                if (scr_refresca_sin_colores.v) {
-                    attribute=56;
-                    //ink1=(byte_leido >>4)&0xF;
-                    //ink2=(byte_leido    )&0xF;
-                }
+        fila=y/8;
+        dir_atributo=6144+(fila*32);
+        for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
 
 
-                            ink=attribute &7;
-                            paper=(attribute>>3) &7;
-                            bright=(attribute) &64;
-                            flash=(attribute)&128;
-                            if (flash) {
-                                    //intercambiar si conviene
-                                    if (estado_parpadeo.v) {
-                                            aux=paper;
-                                            paper=ink;
-                                            ink=aux;
-                                    }
-                            }
 
-                if (bright) {
-                    ink +=8;
-                    paper +=8;
-                }
+            byte_leido=screen[direccion];
+            attribute=screen[dir_atributo];
 
-                            for (bit=0;bit<8;bit++) {
+            //Prueba de un modo de video inventado en que el color de la tinta sale de los 4 bits de la zona de pixeles
+            //int ink1,ink2;
 
-                    color= ( byte_leido & 128 ? ink : paper );
-                    //if (scr_refresca_sin_colores.v) {
-                    //	if (bit<=3) color= ( byte_leido & 128 ? ink1 : paper );
-                    //	else color= ( byte_leido & 128 ? ink2 : paper );
-                    //}
+            if (scr_refresca_sin_colores.v) {
+                attribute=56;
+                //ink1=(byte_leido >>4)&0xF;
+                //ink2=(byte_leido    )&0xF;
+            }
 
-                    /*
 
-                    Prueba cutre de visualizar la imagen en un plano 3D
-                    int xfinal,yfinal;
-                    //191-y porque el 0,0 lo tenemos arriba del todo pero la funcion de 3D lo asume abajo del todo
-                    zxvision_widgets_draw_particles_3d_convert(x_hi+bit,191-y,0,&xfinal,&yfinal);
-                    scr_putpixel_zoom(xfinal,191-yfinal,color);
-                    if (xfinal<0) printf("X %d\n",xfinal);
+            ink=attribute &7;
+            paper=(attribute>>3) &7;
+            bright=(attribute) &64;
+            flash=(attribute)&128;
+            if (flash) {
+                    //intercambiar si conviene
+                    if (estado_parpadeo.v) {
+                            aux=paper;
+                            paper=ink;
+                            ink=aux;
+                    }
+            }
 
-                    */
+            if (bright) {
+                ink +=8;
+                paper +=8;
+            }
 
-                    scr_putpixel_zoom(x_hi+bit,y,color);
+            for (bit=0;bit<8;bit++) {
 
-                                    byte_leido=byte_leido<<1;
-                            }
+                color= ( byte_leido & 128 ? ink : paper );
+                //if (scr_refresca_sin_colores.v) {
+                //	if (bit<=3) color= ( byte_leido & 128 ? ink1 : paper );
+                //	else color= ( byte_leido & 128 ? ink2 : paper );
+                //}
+
+                /*
+
+                Prueba cutre de visualizar la imagen en un plano 3D
+                int xfinal,yfinal;
+                //191-y porque el 0,0 lo tenemos arriba del todo pero la funcion de 3D lo asume abajo del todo
+                zxvision_widgets_draw_particles_3d_convert(x_hi+bit,191-y,0,&xfinal,&yfinal);
+                scr_putpixel_zoom(xfinal,191-yfinal,color);
+                if (xfinal<0) printf("X %d\n",xfinal);
+
+                */
+
+                scr_putpixel_zoom(x_hi+bit,y,color);
+
+                byte_leido=byte_leido<<1;
+            }
 
 
             //temp
@@ -5191,11 +5191,11 @@ void scr_refresca_pantalla_comun(void)
             //}
 
 
-                        direccion++;
+            direccion++;
             dir_atributo++;
-                }
-
         }
+
+    }
 
 }
 
