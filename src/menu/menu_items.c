@@ -24832,16 +24832,11 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
     //Textos. Creamos antes para ver el que tiene mas ancho
     char mensaje_about[3][200];
-    //unsigned char letra_enye;
 
-    //mensaje completo con enye en segundo apellido
-    //letra_enye=129;
 
     sprintf (mensaje_about[0],"ZEsarUX " EMULATOR_VERSION " (" EMULATOR_SHORT_DATE ")");
     sprintf (mensaje_about[1],EMULATOR_EDITION_NAME);
-    //sprintf (mensaje_about[2],"(C) 2013 Cesar Hernandez Ba%co",letra_enye);
     sprintf (mensaje_about[2],"(C) 2013 César Hernández Bañó");
-    //sprintf (mensaje_about[2],"(C) 2013 Cesar Hernandez Bano");
 
     int ancho_maximo=0;
     int i;
@@ -24861,7 +24856,6 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
     ancho_visible=ancho_maximo+x_texto+1;
 
 
-    //alto_visible=10;
     alto_visible=(alto_imagen_salamanquesa/menu_char_height)+2; //+2 de la linea de titulo y la de abajo del todo
 
     //Si no es multiple el alto del bitmap con el alto del char height, sumar 1
@@ -24890,9 +24884,6 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
     zxvision_new_window(ventana,x_ventana,y_ventana,ancho_visible,alto_visible,
                             ancho_total,alto_total,"About");
 
-
-    //nota: la carga del juego de edicion y por tanto uno de los easter egg no sale con este about, logicamente pues no tenemos
-    //opcion para buscar texto asi... hay que hacerlo desde el otro about, que se dispara si no hay zx desktop habilitado
 
     ventana->can_be_resized=0;
     ventana->can_be_minimized=0;
