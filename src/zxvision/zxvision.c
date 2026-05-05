@@ -24697,7 +24697,9 @@ struct s_strings_language_list strings_language_list[]={
     {"Salir de ZEsarUX","Sortir de ZEsarUX","Exit ZEsarUX"},
     {"Auto Saltar Frames","Auto Saltar Frames","Auto Frameskip"},
     {"Activado","Activat","Enabled"},
-    {"Bienvenido","Benvingut","Welcome"}
+    {"Bienvenido","Benvingut","Welcome"},
+    {"Acerca de","Quant a","About"}
+
 };
 
 

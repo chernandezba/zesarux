@@ -24882,7 +24882,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
 
     zxvision_new_window(ventana,x_ventana,y_ventana,ancho_visible,alto_visible,
-                            ancho_total,alto_total,"About");
+                            ancho_total,alto_total,menu_get_string_language("About"));
 
 
     ventana->can_be_resized=0;
@@ -31446,7 +31446,7 @@ void menu_about_about(MENU_ITEM_PARAMETERS)
 
     generic_message_tooltip_return retorno_ventana;
 
-    zxvision_generic_message_tooltip("About" , 0, 0 ,0,0,0,&retorno_ventana,0,0, mensaje_about);
+    zxvision_generic_message_tooltip(menu_get_string_language("About") , 0, 0 ,0,0,0,&retorno_ventana,0,0, mensaje_about);
 
 
 
