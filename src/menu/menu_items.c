@@ -24896,35 +24896,6 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
     Debe ser bmp. 256 colour (indexed).  grabar con no-codificación run lenght,  y no sobreescribir la información de espacio de colores
     */
 
-/*
-    char nombrebmp[PATH_MAX];
-
-    strcpy(nombrebmp,"salamanquesa.bmp");
-
-
-    //localizarlo
-    char buffer_nombre[PATH_MAX];
-
-    int existe=find_sharedfile(nombrebmp,buffer_nombre);
-    if (!existe)  {
-        debug_printf(VERBOSE_DEBUG,"Unable to find bmp file %s",nombrebmp);
-        //no lanzamos error de esto, al menos mostrar ventana about
-        //return;
-
-        //decimos imagen a NULL para que no la muestre
-        //en ese caso si que habra un recuadro transparente donde estaria la imagen
-        //podria hacer que en este caso el recuadro no saliera, pero lo prefiero asi,
-        //asi el usuario de alguna manera sabe que algo raro pasa... ;)
-        new_about_window_bmp_file_mem=NULL;
-    }
-
-    else {
-        new_about_window_bmp_file_mem=util_load_bmp_file(buffer_nombre);
-    }
-
-
-    //if (new_about_window_bmp_file_mem==NULL) return;
-*/
 
     //La salamanquesa no se carga de disco sino que esta incrustada en el codigo. Es un BMP
     menu_about_load_bmp_palette();
@@ -24935,8 +24906,6 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
     //ya no hace falta transparente debido al nuevo tratamiento de cache de putchar
     //zxvision_fill_window_transparent(ventana);
-
-
 
     //Y la zona que sera de texto, la quitamos como transparente (inicializamos con espacios)
 
