@@ -27,12 +27,10 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 
 -ventana para saber qué notas se están enviando a dispositivo midi externo
-*de momento se clasifican los mensajes mid en una clase de debug aparte, tanto audio_midi_output_raw que vienen por ejemplo de los puertos midi del chip ay,
-como los que se simulan del chip de sonido hacia midi
+*mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
 
 -explicar mejor MIDI y MID en FAQ:
 
 *salida cualquier chip de sonido a midi externo o a .mid
 *salida chip ay puertos 14 y 15 del spectrum directos a midi externo
 
--meter debug noteon,off,instrument indicar que driver es: alsa, windows etc
