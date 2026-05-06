@@ -683,7 +683,7 @@ void coreaudio_mid_add_note(z80_byte *note,int messagesize)
          coreaudio_midi_currentpacket, timestamp, messagesize, note);
 
     if (coreaudio_midi_currentpacket==NULL) {
-      DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: Coreaudio midi queue was full. Flush and retry");
+      DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: coreaudio: midi queue was full. Flush and retry");
       //Hacemos flush y reintentamos
       coreaudio_midi_output_flush_output();
       coreaudio_midi_currentpacket = MIDIPacketListAdd(coreaudio_midi_packetlist, COREAUDIO_MIDI_BUFFER_SIZE,
@@ -869,7 +869,7 @@ void playPacketListOnAllDevices(MIDIPortRef midiout,const MIDIPacketList* pktlis
       dest = MIDIGetDestination(iDest);
       status = MIDISend(midiout, dest, pktlist);
       if (status) {
-          DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: coreaudio_midi: Problem sending MIDI data");
+          DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: coreaudio: Problem sending MIDI data");
           //printf("%s\n", GetMacOSStatusErrorString(status));
           //exit(status);
       }

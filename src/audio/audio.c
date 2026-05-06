@@ -4328,7 +4328,7 @@ midiStreamOut(lphStream,&buffer,sizeof(MIDIHDR));
 int windows_note_on(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteon event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: windows: noteon event channel %d note %d velocity %d",channel,note,velocity);
 
   windows_midi_message mensaje;
 
@@ -4346,7 +4346,7 @@ int windows_note_on(unsigned char channel, unsigned char note,unsigned char velo
 int windows_note_off(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteoff event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: windows: noteoff event channel %d note %d velocity %d",channel,note,velocity);
 
   windows_midi_message mensaje;
 
@@ -4365,7 +4365,7 @@ int windows_note_off(unsigned char channel, unsigned char note,unsigned char vel
 int windows_change_instrument(unsigned char instrument)
 {
 
-  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: change instrument event instrument %d",instrument);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: windows: change instrument event instrument %d",instrument);
 
   windows_midi_message mensaje;
 
