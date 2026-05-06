@@ -1855,10 +1855,10 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"E9",10548},
 {"F9",11175},
 {"F#9",11839},
-{"G9",12543},
-{"G#9",13289},
+{"G9",12543}, //127 en codificacion midi
+{"G#9",13289}, //a partir de 128 no tiene sentido en estandar midi
 {"A9",14080},
-{"A#9",14917}, //130 en codificacion midi
+{"A#9",14917},
 {"B9",15804}
 };
 
@@ -1872,6 +1872,9 @@ char *unknown_nota_musical="XX";
 //Si no coincide, retornar -1
 int get_mid_number_note(char *str)
 {
+    //TODO: en teoria valores de notas midi mayores de 127 no existen, por tanto G#9, A9, A#9 y B9 no existen en midi
+    //Por tanto esta funcion deberia evitar esas notas finales no válidas
+
 	//nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 	const int offset_inicial=MID_FORMAT_INITIAL_NOTE_OFFSET;  //C0=12
 
