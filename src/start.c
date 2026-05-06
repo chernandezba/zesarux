@@ -537,18 +537,18 @@ void print_funny_message(void)
         "Good afternoon, gentlemen, I'm a HAL 9000 Computer",
         "Neo-Geo. MAX 330 MEGA - PRO GEAR SPEC",
         "Workbench disk not present",
-        "GEMDOS: File not found",
+        "GEMDOS: File not found", //34
         "Z80 ERROR",
         "WORK RAM TEST ERROR",
         "Blitter overload",
-        "Track 0 not found",
+        "Track 0 not found", //38
         "?Redo from start",
         "Reading FAT",
         "68000 Exception: Privilege violation",
-        "Bombs: 8 (Double bus fault)",
+        "Bombs: 8 (Double bus fault)", //42
         "Too many sprites on scanline",
         "Printer not ready",
-        "Insert side B"
+        "Insert side B" //45
     };
 
 
