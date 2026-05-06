@@ -3498,9 +3498,22 @@ audio_midi_raw_parse_value(value);
 
 }
 
+struct s_status_midi_out status_midi_out_channels[256];
+
+void init_status_midi_out_channels(void)
+{
+    int i;
+
+    for (i=0;i<256;i++) status_midi_out_channels[i].note_on=0;
+}
+
 //TODO: windows y coreaudio siempre usan canal 0. Mientras que alsa si que tiene canales distintos
 int audio_midi_output_note_on(unsigned char channel, unsigned char note)
 {
+
+    status_midi_out_channels[channel].note_on=1;
+    status_midi_out_channels[channel].note=note;
+
 	#ifdef COMPILE_ALSA
 	return alsa_note_on(channel,note,ALSA_MID_VELOCITY);
 	#endif
@@ -3517,6 +3530,9 @@ int audio_midi_output_note_on(unsigned char channel, unsigned char note)
 
 int audio_midi_output_note_off(unsigned char channel, unsigned char note)
 {
+
+    status_midi_out_channels[channel].note_on=0;
+
 	#ifdef COMPILE_ALSA
 	return alsa_note_off(channel,note,ALSA_MID_VELOCITY);
 	#endif
@@ -3654,6 +3670,8 @@ int audio_midi_available(void)
 //Devuelve 1 si error
 int audio_midi_output_init(void)
 {
+
+    init_status_midi_out_channels();
 
 	//Aqui no se puede entrar desde menu, pero si desde command line, y podria intentar activarse cuando no hay dichos drivers disponibles
 	if (!audio_midi_available()) return 0;

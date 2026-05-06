@@ -14792,7 +14792,37 @@ void menu_midi_output_status_overlay(void)
 
     zxvision_window *w=menu_midi_output_status_window;
 
-    zxvision_print_string_defaults_fillspc_format(w,1,0,"Last MIDI command: %02XH",get_last_audio_midi_output_raw_value());
+    int linea=0;
+    zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Last MIDI raw command: %02XH",get_last_audio_midi_output_raw_value());
+
+
+    int i;
+
+    for (i=0;i<256;i++) {
+        if (status_midi_out_channels[i].note_on) {
+            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Channel %3d Note: %3d",i,status_midi_out_channels[i].note);
+        }
+        else {
+            zxvision_print_string_defaults_fillspc_format(w,1,linea,"");
+        }
+        linea++;
+    }
+
+
+    /*
+    int chip;
+
+    for (chip=0;chip<audio_get_total_chips();chip++) {
+        int canal;
+        for (canal=0;canal<3;canal++) {
+
+            int freq=audio_retorna_frecuencia_canal(canal,chip);
+
+            zxvision_print_string_defaults_fillspc_format(w,1,linea++,"Chip %d Channel %d Note: %s",chip+1,canal+1,get_note_name(freq) );
+
+        }
+    }
+    */
 
 
     //Mostrar contenido

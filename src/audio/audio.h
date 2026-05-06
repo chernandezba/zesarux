@@ -231,6 +231,13 @@ extern void audio_midi_output_raw(z80_byte value);
 extern z80_byte get_last_audio_midi_output_raw_value(void);
 extern void audio_midi_output_reset(void);
 
+struct s_status_midi_out {
+    int note_on;
+    unsigned char note;
+};
+
+extern struct s_status_midi_out status_midi_out_channels[];
+
 extern char *midi_instrument_list[];
 extern int si_audio_silenced(void);
 extern int audio_get_total_chips(void);
