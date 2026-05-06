@@ -3457,11 +3457,17 @@ void audio_midi_raw_parse_value(z80_byte value)
 	}
 }
 
+z80_byte last_audio_midi_output_raw_value=0;
 
+z80_byte get_last_audio_midi_output_raw_value(void)
+{
+    return last_audio_midi_output_raw_value;
+}
 
 void audio_midi_output_raw(z80_byte value)
 {
 
+    last_audio_midi_output_raw_value=value;
 
 	if (audio_midi_output_initialized==0) return;
 

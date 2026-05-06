@@ -92,6 +92,8 @@ extern void menu_realtape_record_input(MENU_ITEM_PARAMETERS);
 extern void menu_realtape_record_input_write_byte(char valor);
 extern void menu_input_spectrum_analyzer(MENU_ITEM_PARAMETERS);
 
+extern void menu_midi_output_status(MENU_ITEM_PARAMETERS);
+
 extern char *menu_debug_sprites_change_ptr_historial[];
 
 
