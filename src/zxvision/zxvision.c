@@ -11123,7 +11123,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"hilowvisualdatadrive",     "vsdatadrv",    menu_hilow_visual_datadrive,bitmap_button_ext_desktop_hilow_visual_datadrive},
     {"microdriverawmap",    "mdv rawmap",  menu_microdrive_raw_map,bitmap_button_ext_desktop_mdvrawmap},
     {"memorycheat",         "memcheat",     menu_memory_cheat,bitmap_button_ext_desktop_memorycheat},
-    {"midioutstatus",       "midioutst",    menu_midi_output_status,bitmap_button_ext_desktop_userdefined},
+    {"midioutstatus",       "midioutst",    menu_midi_output_status,bitmap_button_ext_desktop_midi_output_status},
     {"networktraffic",      "nettraffic",   menu_network_traffic,bitmap_button_ext_desktop_networktrafiic},
     {"specnextaudiodac",    "next DAC",menu_specnext_audio_dac,bitmap_button_ext_desktop_nextdac},
     {"processmanagement",   "prc mngmnt",   menu_display_window_list,bitmap_button_ext_desktop_processmanagement},

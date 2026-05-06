@@ -7670,6 +7670,37 @@ char *bitmap_button_ext_desktop_paste_keystrokes[EXT_DESKTOP_BUTTONS_ANCHO]={
     " xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
 };
 
+
+char *bitmap_button_ext_desktop_midi_output_status[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "  xxxxxx   x  xxxxx   x   ",	//10
+    "  x  x  x  x       x  x   ",
+    "  x  x  x  x  x    x  x   ",
+    "  x  x  x  x  x    x  x   ",
+    "  x  x  x  x  x    x  x   ",
+    "  x  x  x  x  xxxxx   x   ",
+    "                          ",
+    "                          ",
+    "                          ",
+    "wwwwww                    ",
+    "wbbbww                    ",    //20
+    "wwbbww                    ",
+    "wwbbww                    ",
+    "wwbbww                    ",
+    "wbbbbw                    ",
+    "wwwwww                    " 	 //25
+};
+
 /*
 Template
 char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={

@@ -153,6 +153,7 @@ extern char *bitmap_button_ext_desktop_zengonline[];
 
 extern char *bitmap_button_ext_desktop_backgroundwindow[];
 extern char *bitmap_button_ext_desktop_showbackgroundwindows[];
+extern char *bitmap_button_ext_desktop_midi_output_status[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 
