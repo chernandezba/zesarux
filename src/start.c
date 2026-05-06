@@ -502,10 +502,7 @@ void print_funny_message(void)
     //Mensaje gracioso de arranque que empezó con la ZXSpectr edition (ZEsarUX 4.1)
     //El primero era: Detected SoundBlaster at A220 I5 D1 T2
 
-    //printf ("random: %d\n",randomize_noise[0]);
-
-    //mensajes random de broma
-    #define MAX_RANDOM_FUNNY_MESSAGES 32
+    #define MAX_RANDOM_FUNNY_MESSAGES 45
     char *random_funny_messajes[MAX_RANDOM_FUNNY_MESSAGES]={
         "Detected SoundBlaster at A220 I5 D1 T2",
         "DOS/4GW Protected Mode Run-time  Version 1.97",		//2
@@ -538,7 +535,20 @@ void print_funny_message(void)
         "Not enough memory to display the error m",
         "ERROR 1164 HOW IN THE HELL DID YOU GET HERE", //30
         "Good afternoon, gentlemen, I'm a HAL 9000 Computer",
-        "Neo-Geo. MAX 330 MEGA - PRO GEAR SPEC"
+        "Neo-Geo. MAX 330 MEGA - PRO GEAR SPEC",
+        "Workbench disk not present",
+        "GEMDOS: File not found",
+        "Z80 ERROR",
+        "WORK RAM TEST ERROR",
+        "Blitter overload",
+        "Track 0 not found",
+        "?Redo from start",
+        "Reading FAT",
+        "68000 Exception: Privilege violation",
+        "Bombs: 8 (Double bus fault)",
+        "Too many sprites on scanline",
+        "Printer not ready",
+        "Insert side B"
     };
 
 
@@ -8714,7 +8724,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     printf ("Build number: " BUILDNUMBER "\n");
 
     printf ("WARNING. This is a Snapshot version and not a stable one\n"
-             "Some features may not work, random crashes could happen, abnormal CPU use, or lots of debug messages on console\n\n");
+             "Some features may not work, random crashes could happen, abnormal CPU usage, or lots of debug messages on console\n\n");
 
     //int pausa_warning_snapshot=1;
 
