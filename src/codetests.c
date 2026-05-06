@@ -2924,6 +2924,21 @@ void codetests_strings_language(void)
 
 }
 
+void codetests_midi_notes(void)
+{
+    int i;
+
+    for (i=0;i<256;i++) {
+        printf("Midi note: %3d Name: %s\n",i,get_note_name_by_mid_number(i));
+        if (i<12 || i>131) {
+            if (strcasecmp("XX",get_note_name_by_mid_number(i))) {
+                printf("ERROR\n");
+                exit(1);
+            }
+        }
+    }
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -3063,6 +3078,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning strings language code tests\n");
     codetests_strings_language();
+
+    printf("\nRunning midi notes tests\n");
+    codetests_midi_notes();
 
     //printf("\nRunning codetests stl\n");
     //codetests_stl();
