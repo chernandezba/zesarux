@@ -3601,7 +3601,7 @@ void audio_midi_output_finish(void)
 	//No hay nada que finalizar?
 	if (!audio_midi_output_initialized) return;
 
-	debug_printf (VERBOSE_DEBUG,"Closing midi output");
+	DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: Closing midi output");
 
 #ifdef COMPILE_ALSA
 
@@ -3653,7 +3653,7 @@ int audio_midi_output_init(void)
 	if (!audio_midi_available()) return 0;
 
 
-	debug_printf (VERBOSE_DEBUG,"Initializing midi output");
+	DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: Initializing midi output");
 
 #ifdef COMPILE_ALSA
 
@@ -3962,7 +3962,7 @@ void audio_midi_output_frame_event(void)
 
 					    if (nota_numero<0) {
 					        //Nota invalida. no se deberia llegar aqui nunca
-					        debug_printf (VERBOSE_DEBUG,"Invalid note %s",midi_output_nota_sonando[canal_final]);
+					        DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: Invalid note %s",midi_output_nota_sonando[canal_final]);
         				}
 						else audio_midi_output_note_off(canal_final,nota_numero);
 					}
@@ -3975,7 +3975,7 @@ void audio_midi_output_frame_event(void)
 
                         if (nota_numero<0) {
                             //Nota invalida. no se deberia llegar aqui nunca
-                            debug_printf (VERBOSE_DEBUG,"Invalid note %s",nota);
+                            DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: Invalid note %s",nota);
                         }
                         else {
 
@@ -4304,7 +4304,7 @@ buffer.dwFlags=0;
 midiOutPrepareHeader((HMIDIOUT)lphStream,&buffer,sizeof(MIDIHDR));
 
 midiStreamOut(lphStream,&buffer,sizeof(MIDIHDR));
-printf("Enviando windows_midi raw value %02XH\n",value);
+//printf("Enviando windows_midi raw value %02XH\n",value);
 
   /*windows_midi_message mensaje;
 
@@ -4365,7 +4365,7 @@ int windows_note_off(unsigned char channel, unsigned char note,unsigned char vel
 int windows_change_instrument(unsigned char instrument)
 {
 
-  debug_printf (VERBOSE_PARANOID,"change instrument event instrument %d",instrument);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: change instrument event instrument %d",instrument);
 
   windows_midi_message mensaje;
 
