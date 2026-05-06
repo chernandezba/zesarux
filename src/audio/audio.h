@@ -238,6 +238,8 @@ struct s_status_midi_out {
 
 extern struct s_status_midi_out status_midi_out_channels[];
 
+extern char *get_note_name_by_mid_number(int index);
+
 extern char *midi_instrument_list[];
 extern int si_audio_silenced(void);
 extern int audio_get_total_chips(void);

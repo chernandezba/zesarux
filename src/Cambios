@@ -11,6 +11,7 @@ Agregado un montón de efectos especiales para la salida de video:
 - Scanlines, Sepia, Rojo, RGB, Decolorizar, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
 - Restaurar Original, Copiar a buffer, Mezclar desde Buffer, Cargar BMP
 Agregado efecto Audio Nagravision
+Agregada ventana de estado de salida de midi
 Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 Renombrar función de "Input File Spooling" a "Enviar Texto como Pulsaciones de Teclado"
 Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)

@@ -1737,8 +1737,10 @@ B9 	15804.264 	2.2
 //#define NOTAS_MUSICALES_NOTAS_POR_OCTAVA 12
 //sacamos la lista con: cat audio.c|sed 's/\..*//'|awk '{printf "\{\"%s\",%s\},\n",$1,$2}'
 
+#define MID_FORMAT_INITIAL_NOTE_OFFSET 12
+
 nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
-{"C0",16},
+{"C0",16},       //valor 12 en codificacion midi
 {"C#0",17},
 {"D0",18},
 {"D#0",19},
@@ -1746,7 +1748,7 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"F0",21},
 {"F#0",23},
 {"G0",24},
-{"G#0",25},
+{"G#0",25},   //20 en codificacion midi
 {"A0",27},
 {"A#0",29},
 {"B0",30},
@@ -1756,7 +1758,7 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"D#1",38},
 {"E1",41},
 {"F1",43},
-{"F#1",46},
+{"F#1",46},  //30 en codificacion midi
 {"G1",49},
 {"G#1",51},
 {"A1",55},
@@ -1766,7 +1768,7 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"C#2",69},
 {"D2",73},
 {"D#2",77},
-{"E2",82},
+{"E2",82},  //40 en codificacion midi
 {"F2",87},
 {"F#2",92},
 {"G2",98},
@@ -1776,31 +1778,27 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"B2",123},
 {"C3",130},
 {"C#3",138},
-{"D3",146},
+{"D3",146}, //50 en codificacion midi
 {"D#3",155},
 {"E3",164},
 {"F3",174},
 {"F#3",185},
 {"G3",196},
 {"G#3",207},
-
-
 {"A3",220},
 {"A#3",233},
 {"B3",246},
-
-{"C4",261},
+{"C4",261}, //60 en codificacion midi
 {"C#4",277},
 {"D4",293},
 {"D#4",311},
 {"E4",329},
-
 {"F4",349},
 {"F#4",369},
 {"G4",392},
 {"G#4",415},
 {"A4",440},
-{"A#4",466},
+{"A#4",466}, //70 en codificacion midi
 {"B4",493},
 {"C5",523},
 {"C#5",554},
@@ -1810,18 +1808,17 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"F5",698},
 {"F#5",739},
 {"G5",783},
-{"G#5",830},
+{"G#5",830}, //80 en codificacion midi
 {"A5",880},
 {"A#5",932},
 {"B5",987},
 {"C6",1046},
-
 {"C#6",1108},
 {"D6",1174},
 {"D#6",1244},
 {"E6",1318},
 {"F6",1396},
-{"F#6",1479},
+{"F#6",1479}, //90 en codificacion midi
 {"G6",1567},
 {"G#6",1661},
 {"A6",1760},
@@ -1831,7 +1828,7 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"C#7",2217},
 {"D7",2349},
 {"D#7",2489},
-{"E7",2637},
+{"E7",2637}, //100 en codificacion midi
 {"F7",2793},
 {"F#7",2959},
 {"G7",3135},
@@ -1841,7 +1838,7 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"B7",3951},
 {"C8",4186},
 {"C#8",4434},
-{"D8",4698},
+{"D8",4698}, //110 en codificacion midi
 {"D#8",4978},
 {"E8",5274},
 {"F8",5587},
@@ -1851,7 +1848,7 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"A8",7040},
 {"A#8",7458},
 {"B8",7902},
-{"C9",8372},
+{"C9",8372}, //120 en codificacion midi
 {"C#9",8869},
 {"D9",9397},
 {"D#9",9956},
@@ -1861,7 +1858,7 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"G9",12543},
 {"G#9",13289},
 {"A9",14080},
-{"A#9",14917},
+{"A#9",14917}, //130 en codificacion midi
 {"B9",15804}
 };
 
@@ -1876,7 +1873,7 @@ char *unknown_nota_musical="XX";
 int get_mid_number_note(char *str)
 {
 	//nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
-	const int offset_inicial=12;  //C0=12
+	const int offset_inicial=MID_FORMAT_INITIAL_NOTE_OFFSET;  //C0=12
 
 	//cadena vacia, -1
 	if (str[0]==0) return -1;
@@ -1888,6 +1885,16 @@ int get_mid_number_note(char *str)
 
 	return -1;
 }
+
+
+//devuelve nombre nota, segun su valor de nota midi
+char *get_note_name_by_mid_number(int index)
+{
+	if (index<MID_FORMAT_INITIAL_NOTE_OFFSET || index>=MID_FORMAT_INITIAL_NOTE_OFFSET+MAX_NOTAS_MUSICALES) return unknown_nota_musical;
+
+	else return tabla_notas_musicales[index-MID_FORMAT_INITIAL_NOTE_OFFSET].nombre;
+}
+
 
 //convertir nombre nota en formato string a frecuencia
 //Si no coincide, retornar -1

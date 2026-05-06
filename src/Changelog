@@ -11,6 +11,7 @@ Added lots of special effects for video output:
 - Scanlines, Sepia, Red, RGB, Decolorize, Persistence, Contrast, Brightness, Nagravision, Random Lines, Decode Nagravision, Sortalike, Logo Rebound
 - Restore Original, Copy to buffer, Mix from Buffer, Load BMP
 Added Nagravision Audio effect
+Added midi output status window
 Added support for reading clipboard contents and send as keystrokes on systems: Mac, Windows, GNU/Linux (SDL2, Xwindow)
 Rename function "Input File Spooling" to "Send Text as Keystrokes"
 Allow to reduce display to half (1/2) and to a quarter (1/4)

@@ -14800,7 +14800,8 @@ void menu_midi_output_status_overlay(void)
 
     for (i=0;i<256;i++) {
         if (status_midi_out_channels[i].note_on) {
-            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Channel %3d Note: %3d",i,status_midi_out_channels[i].note);
+            unsigned char note=status_midi_out_channels[i].note;
+            zxvision_print_string_defaults_fillspc_format(w,1,linea,"Channel %3d Note: %3d %s",i,note,get_note_name_by_mid_number(note));
         }
         else {
             zxvision_print_string_defaults_fillspc_format(w,1,linea,"");
