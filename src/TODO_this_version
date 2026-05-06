@@ -41,3 +41,5 @@ como los que se simulan del chip de sonido hacia midi
 
 *salida cualquier chip de sonido a midi externo o a .mid
 *salida chip ay puertos 14 y 15 del spectrum directos a midi externo
+
+-meter debug noteon,off,instrument indicar que driver es: alsa, windows etc

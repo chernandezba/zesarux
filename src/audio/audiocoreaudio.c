@@ -807,7 +807,7 @@ void coreaudio_mid_finish_all(void)
 int coreaudio_note_on(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteon event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: coreaudio: noteon event channel %d note %d velocity %d",channel,note,velocity);
 
   z80_byte noteon[] = {0x90, note, velocity};
 
@@ -819,7 +819,7 @@ int coreaudio_note_on(unsigned char channel, unsigned char note,unsigned char ve
 int coreaudio_note_off(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteoff event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: coreaudio: noteoff event channel %d note %d velocity %d",channel,note,velocity);
 
   z80_byte noteoff[] = {0x80, note, velocity};
 
@@ -832,7 +832,7 @@ int coreaudio_note_off(unsigned char channel, unsigned char note,unsigned char v
 int coreaudio_change_instrument(unsigned char instrument)
 {
 
-  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: change instrument event instrument %d",instrument);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: coreaudio: change instrument event instrument %d",instrument);
 
     //El mensaje seria 0xC0 + canal
 
