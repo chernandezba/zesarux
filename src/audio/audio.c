@@ -3520,6 +3520,8 @@ void init_status_midi_out_channels(void)
 //TODO: windows y coreaudio siempre usan canal 0. Mientras que alsa si que tiene canales distintos
 int audio_midi_output_note_on(unsigned char channel, unsigned char note)
 {
+    //Nota mayor que 127 no tiene sentido en midi, en teoria solo usa 7 bits
+    if (note>127) return 0;
 
     status_midi_out_channels[channel].note_on=1;
     status_midi_out_channels[channel].note=note;
@@ -3540,6 +3542,8 @@ int audio_midi_output_note_on(unsigned char channel, unsigned char note)
 
 int audio_midi_output_note_off(unsigned char channel, unsigned char note)
 {
+    //Nota mayor que 127 no tiene sentido en midi, en teoria solo usa 7 bits
+    if (note>127) return 0;
 
     status_midi_out_channels[channel].note_on=0;
 
