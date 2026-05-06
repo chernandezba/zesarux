@@ -961,7 +961,7 @@ int alsa_note_on(unsigned char channel, unsigned char note,unsigned char velocit
 int alsa_change_instrument_raw(unsigned char channel,unsigned char instrument)
 {
 
-  debug_printf (VERBOSE_PARANOID,"change instrument event channel %d instrument %d",channel,instrument);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: change instrument event channel %d instrument %d",channel,instrument);
 
     //El mensaje seria 0xC0 + canal
 
@@ -978,7 +978,7 @@ int alsa_change_instrument_raw(unsigned char channel,unsigned char instrument)
 int alsa_change_instrument_noraw(unsigned char channel,unsigned char instrument)
 {
 
-	debug_printf (VERBOSE_PARANOID,"change instrument event channel %d instrument %d",channel,instrument);
+	DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: change instrument event channel %d instrument %d",channel,instrument);
 
 	snd_seq_event_t ev;
 
@@ -1013,7 +1013,7 @@ int alsa_change_instrument(unsigned char instrument)
 int alsa_note_off_noraw(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-	debug_printf (VERBOSE_PARANOID,"noteoff event channel %d note %d velocity %d",channel,note,velocity);
+	DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteoff event channel %d note %d velocity %d",channel,note,velocity);
 	snd_seq_event_t ev;
 
 	snd_seq_ev_clear(&ev);
@@ -1031,7 +1031,7 @@ int alsa_note_off_noraw(unsigned char channel, unsigned char note,unsigned char 
 int alsa_note_off_raw(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  debug_printf (VERBOSE_PARANOID,"noteoff event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteoff event channel %d note %d velocity %d",channel,note,velocity);
 
   z80_byte noteoff[] = {0x80, note, velocity};
 

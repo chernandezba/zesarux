@@ -683,7 +683,7 @@ void coreaudio_mid_add_note(z80_byte *note,int messagesize)
          coreaudio_midi_currentpacket, timestamp, messagesize, note);
 
     if (coreaudio_midi_currentpacket==NULL) {
-      debug_printf (VERBOSE_DEBUG,"Coreaudio midi queue was full. Flush and retry");
+      DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: Coreaudio midi queue was full. Flush and retry");
       //Hacemos flush y reintentamos
       coreaudio_midi_output_flush_output();
       coreaudio_midi_currentpacket = MIDIPacketListAdd(coreaudio_midi_packetlist, COREAUDIO_MIDI_BUFFER_SIZE,
@@ -832,7 +832,7 @@ int coreaudio_note_off(unsigned char channel, unsigned char note,unsigned char v
 int coreaudio_change_instrument(unsigned char instrument)
 {
 
-  debug_printf (VERBOSE_PARANOID,"change instrument event instrument %d",instrument);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: change instrument event instrument %d",instrument);
 
     //El mensaje seria 0xC0 + canal
 
@@ -869,7 +869,7 @@ void playPacketListOnAllDevices(MIDIPortRef midiout,const MIDIPacketList* pktlis
       dest = MIDIGetDestination(iDest);
       status = MIDISend(midiout, dest, pktlist);
       if (status) {
-          debug_printf(VERBOSE_DEBUG,"coreaudio_midi: Problem sending MIDI data");
+          DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: coreaudio_midi: Problem sending MIDI data");
           //printf("%s\n", GetMacOSStatusErrorString(status));
           //exit(status);
       }
