@@ -2,13 +2,6 @@
 -juegos de la lightgun magnum, el sinclair action pack, envian continuamente valores a midi registro 14. por que?
 
 
--config setting para aymidi_rs232_enabled.v
-if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que ser dependiente de ese setting?
-desactivado por defecto
-con operation wolf de la magnum escribe muchos mensajes en consola (paranoid) aun desactivando el settting.
-Es necesario tanto print?
-
-
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
 
 
