@@ -1174,13 +1174,13 @@ enum AYMIDI_RS232_ESTADOS {ESPERA_START, LEE_BIT, ESPERA_STOP};
 // escrituras al AY. Guarda el T-estado de la anterior escritura
 static unsigned aymidi_rs232_tbefore = 0;
 
-// esta variable es el estado de la pequeÒa FSM que vamos a usar
+// esta variable es el estado de la pequeña FSM que vamos a usar
 enum AYMIDI_RS232_ESTADOS aymidi_rs232_midi_state = ESPERA_START;
 
 // diferencia de tiempo entre dos escrituras al puerto MIDI
 int aymidi_rs232_diftime;
 
-// aqui se ir· ensamblando el byte emitido por MIDI
+// aqui se irá ensamblando el byte emitido por MIDI
 static unsigned char aymidi_rs232_dato_midi;
 
 // contador de aymidi_rs232_bits
@@ -1194,7 +1194,7 @@ void procesar_aymidi_rs232_dato_midi(z80_byte value)
     //Si lo tenemos habilitado
     if (aymidi_rs232_enabled.v==0) return;
 
-    debug_printf (VERBOSE_DEBUG,"Sending MIDI data: %02XH",value);
+    DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: Sending MIDI data: %02XH",value);
     audio_midi_output_raw(value);
 }
 
@@ -1202,89 +1202,89 @@ void procesar_aymidi_rs232_dato_midi(z80_byte value)
 void aymidi_rs232_miguel(int output_bit)
 {
 
-// Uso variable de t estados parcial para esto. Nota: esta variable no se incrementa en el core_reduced
-aymidi_rs232_diftime = (debug_t_estados_parcial+ - aymidi_rs232_tbefore)/cpu_turbo_speed;
-aymidi_rs232_tbefore = debug_t_estados_parcial;
+    // Uso variable de t estados parcial para esto. Nota: esta variable no se incrementa en el core_reduced
+    aymidi_rs232_diftime = (debug_t_estados_parcial+ - aymidi_rs232_tbefore)/cpu_turbo_speed;
+    aymidi_rs232_tbefore = debug_t_estados_parcial;
 
-switch (aymidi_rs232_midi_state)
-{
-    case ESPERA_START:
-    if (output_bit == 0) // seÒal de START v·lida!
+    switch (aymidi_rs232_midi_state)
     {
-        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Valid START signal");
-        aymidi_rs232_midi_state = LEE_BIT;
-        aymidi_rs232_dato_midi = 0;
-        aymidi_rs232_bits = 0;
-        //break;
-    }  // en otro caso, seguimos esperando una seÒal v·lida...
-    break;
+        case ESPERA_START:
+            if (output_bit == 0) // señal de START válida!
+            {
+                debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Valid START signal");
+                aymidi_rs232_midi_state = LEE_BIT;
+                aymidi_rs232_dato_midi = 0;
+                aymidi_rs232_bits = 0;
+                //break;
+            }  // en otro caso, seguimos esperando una señal válida...
+        break;
 
-    case LEE_BIT:
-    if (100<=aymidi_rs232_diftime && aymidi_rs232_diftime<=120)  // si llegÛ a tiempo...
-    {
-        aymidi_rs232_dato_midi >>= 1;  // desplazamos a la derecha
-        aymidi_rs232_dato_midi |= (output_bit << 7); // y plantamos el bit leido de MIDI en el bit 7
-        aymidi_rs232_bits++;                // asÌ vamos leyendo desde el LSb hasta el MSb
-        if (aymidi_rs232_bits == 8)
-        aymidi_rs232_midi_state = ESPERA_STOP;
+        case LEE_BIT:
+            if (100<=aymidi_rs232_diftime && aymidi_rs232_diftime<=120)  // si llega a tiempo...
+            {
+                aymidi_rs232_dato_midi >>= 1;  // desplazamos a la derecha
+                aymidi_rs232_dato_midi |= (output_bit << 7); // y plantamos el bit leido de MIDI en el bit 7
+                aymidi_rs232_bits++;                // así vamos leyendo desde el LSb hasta el MSb
+                if (aymidi_rs232_bits == 8)
+                aymidi_rs232_midi_state = ESPERA_STOP;
+            }
+            else  // ha llegado una escritura, pero fuera de tiempo
+            {
+
+                debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Write arrived late");
+
+                if (output_bit == 1)  {// si es estado inactivo, volvemos al principio
+                aymidi_rs232_midi_state = ESPERA_START;
+                debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Start receiving from the beginning");
+                }
+                else
+                {  // si no, lo consideramos una nueva señal de START. Empezamos otra vez a leer aymidi_rs232_bits
+                aymidi_rs232_dato_midi = 0;
+                aymidi_rs232_bits = 0;
+                debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Consider is as a START signal");
+                }
+            }
+
+        break;
+
+
+        case ESPERA_STOP:
+            if (100<=aymidi_rs232_diftime && aymidi_rs232_diftime<=120)  // si llega a tiempo...
+            {
+                if (output_bit == 1) // señal de STOP válida!
+                {
+                procesar_aymidi_rs232_dato_midi(aymidi_rs232_dato_midi); // hacemos lo que sea con el dato recibido
+                aymidi_rs232_midi_state = ESPERA_START;
+                debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Valid STOP signal");
+                }
+                else {
+                aymidi_rs232_midi_state = ESPERA_START; // señal de STOP no válida. Se descarta el dato
+                debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Invalid STOP signal. Discard data");
+                }
+            }
+            else  // no llega a tiempo
+            {
+
+                //printf("aymidi_rs232: STOP arrived late\n");
+
+                if (output_bit == 1) {
+                aymidi_rs232_midi_state = ESPERA_START;
+                }
+                else
+                {  // lo consideramos una nueva seÒal de START
+                aymidi_rs232_midi_state = LEE_BIT;
+                aymidi_rs232_dato_midi = 0;
+                aymidi_rs232_bits = 0;
+                }
+            }
+
+        break;
+
+
+        default:
+            aymidi_rs232_midi_state = ESPERA_START;
+        break;
     }
-    else  // ha llegado una escritura, pero fuera de tiempo
-    {
-
-        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Write arrived late");
-
-        if (output_bit == 1)  {// si es estado inactivo, volvemos al principio
-        aymidi_rs232_midi_state = ESPERA_START;
-        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Start receiving from the beginning");
-        }
-        else
-        {  // si no, lo consideramos una nueva seÒal de START. Empezamos otra vez a leer aymidi_rs232_bits
-        aymidi_rs232_dato_midi = 0;
-        aymidi_rs232_bits = 0;
-        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Consider is as a START signal");
-        }
-    }
-
-    break;
-
-
-    case ESPERA_STOP:
-    if (100<=aymidi_rs232_diftime && aymidi_rs232_diftime<=120)  // si llegÛ a tiempo...
-    {
-        if (output_bit == 1) // seÒal de STOP v·lida!
-        {
-        procesar_aymidi_rs232_dato_midi(aymidi_rs232_dato_midi); // hacemos lo que sea con el dato recibido
-        aymidi_rs232_midi_state = ESPERA_START;
-        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Valid STOP signal");
-        }
-        else {
-        aymidi_rs232_midi_state = ESPERA_START; // seÒal de STOP no v·lida. Se descarta el dato
-        debug_printf (VERBOSE_PARANOID,"aymidi_rs232: Invalid STOP signal. Discard data");
-        }
-    }
-    else  // no llegÛ a tiempo
-    {
-
-        printf("aymidi_rs232: STOP arrived late\n");
-
-        if (output_bit == 1) {
-        aymidi_rs232_midi_state = ESPERA_START;
-        }
-        else
-        {  // lo consideramos una nueva seÒal de START
-        aymidi_rs232_midi_state = LEE_BIT;
-        aymidi_rs232_dato_midi = 0;
-        aymidi_rs232_bits = 0;
-        }
-    }
-
-    break;
-
-
-    default:
-        aymidi_rs232_midi_state = ESPERA_START;
-    break;
-}
 
 }
 
@@ -1319,7 +1319,7 @@ void out_port_ay(z80_int puerto,z80_byte value)
     //printf ("Out port ay chip. Puerto: %d Valor: %d\n",puerto,value);
 
     if (puerto==49149 && (ay_3_8912_registro_sel[ay_chip_selected]==14 || ay_3_8912_registro_sel[ay_chip_selected]==15) ) {
-        //printf ("Out midi valor: %d\n",value);
+        //printf ("Out midi puerto: %d valor: %d\n",ay_3_8912_registro_sel[ay_chip_selected],value);
         //old_ay3_mid_handle(value);
 
 
