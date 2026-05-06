@@ -208,6 +208,7 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
+-probar filtro audio nagravision
 -probar verbose 3, 4, debugregisters
 -probar desactivando border, con y sin realvideo, en spectrum y zx8081
 -probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
