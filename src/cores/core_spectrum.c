@@ -459,7 +459,6 @@ void core_spectrum_fin_scanline(void)
         if (audio_nagra_effect.v) {
             //Nota para beeper se gestiona independiente porque el silencio en beeper no es 0 y al multiplicar por el coseno, generaria un pitido en silencio
             audio_apply_nagra_effect();
-            audio_apply_nagra_effect_next();
         }
 
         if (beeper_enabled.v) {
@@ -524,6 +523,11 @@ void core_spectrum_fin_scanline(void)
                     audio_valor_enviar_sonido_derecho=audio_change_top_speed_sound(audio_valor_enviar_sonido_derecho);
                 }
             }
+        }
+
+        if (audio_nagra_effect.v) {
+            //Siguiente ciclo nagra
+            audio_apply_nagra_effect_next();
         }
 
         //Ajustar volumen

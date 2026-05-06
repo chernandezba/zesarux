@@ -2104,6 +2104,13 @@ void audiodac_mix(void)
 	//Pasar valor a signed
 	char valor_signed_audiodac=(audiodac_last_value_data-128);
 
+
+    if (audio_nagra_effect.v) {
+        int valor_sin=util_get_cosine(grados_nagra);
+
+        valor_signed_audiodac=(valor_signed_audiodac*valor_sin)/10000;
+    }
+
 	//Mezclar con el valor de salida
 	int v;
 	v=audio_valor_enviar_sonido_izquierdo+valor_signed_audiodac;
