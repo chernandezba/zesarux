@@ -163,12 +163,15 @@ extern int core_spectrum_executed_halt_in_this_scanline;
 #define VERBOSE_CLASS_ZXVISION_EVENTS       (1<<15)
 #define VERBOSE_CLASS_ZXVISION_TOPMENU      (1<<16)
 #define VERBOSE_CLASS_DMA                   (1<<17)
+#define VERBOSE_CLASS_MIDI_OUT              (1<<18)
 
 //Mensajes sin clase indicada. Bit 31 que seria de signo no lo toco. Uso bit 30 para el de anythingelse
 #define VERBOSE_CLASS_ANYTHINGELSE (1<<30)
 
 #define VERBOSE_MASK_CLASS_TYPE_EXCLUDE 0
 #define VERBOSE_MASK_CLASS_TYPE_INCLUDE 1
+
+#define DBG_PRINT_MIDI_OUT debug_printf(VERBOSE_CLASS_MIDI_OUT|
 
 //Listado de mascaras
 struct s_debug_masks_class {

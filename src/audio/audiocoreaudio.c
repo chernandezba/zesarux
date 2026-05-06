@@ -807,7 +807,7 @@ void coreaudio_mid_finish_all(void)
 int coreaudio_note_on(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  debug_printf (VERBOSE_PARANOID,"noteon event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteon event channel %d note %d velocity %d",channel,note,velocity);
 
   z80_byte noteon[] = {0x90, note, velocity};
 
@@ -819,7 +819,7 @@ int coreaudio_note_on(unsigned char channel, unsigned char note,unsigned char ve
 int coreaudio_note_off(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  debug_printf (VERBOSE_PARANOID,"noteoff event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteoff event channel %d note %d velocity %d",channel,note,velocity);
 
   z80_byte noteoff[] = {0x80, note, velocity};
 

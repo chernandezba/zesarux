@@ -919,7 +919,7 @@ int alsa_midi_raw(z80_byte value)
 int alsa_note_on_noraw(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-	debug_printf (VERBOSE_PARANOID,"noteon event channel %d note %d velocity %d",channel,note,velocity);
+	DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteon event channel %d note %d velocity %d",channel,note,velocity);
 
 	snd_seq_event_t ev;
 
@@ -939,7 +939,7 @@ int alsa_note_on_noraw(unsigned char channel, unsigned char note,unsigned char v
 int alsa_note_on_raw(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  debug_printf (VERBOSE_PARANOID,"noteon event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteon event channel %d note %d velocity %d",channel,note,velocity);
 
   z80_byte noteon[] = {0x90, note, velocity};
 

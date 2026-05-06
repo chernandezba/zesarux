@@ -1,4 +1,7 @@
 
+-juegos de la lightgun magnum, el sinclair action pack, envian continuamente valores a midi registro 14. por que?
+
+
 -config setting para aymidi_rs232_enabled.v
 if (MACHINE_IS_SPECTRUM) nuevo_aymidi_rs232_handle(value); esto no tendria que ser dependiente de ese setting?
 desactivado por defecto
@@ -28,3 +31,13 @@ en sdl1, raton lo ubica en la posicion inicial
 
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
+
+
+-ventana para saber qué notas se están enviando a dispositivo midi externo
+*de momento se clasifican los mensajes mid en una clase de debug aparte, tanto audio_midi_output_raw que vienen por ejemplo de los puertos midi del chip ay,
+como los que se simulan del chip de sonido hacia midi
+
+-explicar mejor MIDI y MID en FAQ:
+
+*salida cualquier chip de sonido a midi externo o a .mid
+*salida chip ay puertos 14 y 15 del spectrum directos a midi externo

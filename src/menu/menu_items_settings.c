@@ -4800,7 +4800,7 @@ void menu_debug_verbose_filter(MENU_ITEM_PARAMETERS)
 
 
     do {
-
+        //printf("debug_mascara_clase_include: %X\n",debug_mascara_clase_include);
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         int valor_mascara_config=(debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? debug_mascara_clase_exclude : debug_mascara_clase_include);

@@ -3478,7 +3478,7 @@ alsa_midi_raw(value);
 
 
 #ifdef MINGW
-//De momento no va
+
 
 
 windows_midi_raw(value);
@@ -3970,7 +3970,7 @@ void audio_midi_output_frame_event(void)
 
 					//note on si no es un silencio
 					if (nota[0]!=0) {
-                        debug_printf(VERBOSE_DEBUG,"Midi output: sending note channel %d note %s",canal_final,nota);
+                        DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: sending note channel %d note %s",canal_final,nota);
                     	int nota_numero=get_mid_number_note(nota);
 
                         if (nota_numero<0) {
@@ -4328,7 +4328,7 @@ printf("Enviando windows_midi raw value %02XH\n",value);
 int windows_note_on(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  debug_printf (VERBOSE_PARANOID,"noteon event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteon event channel %d note %d velocity %d",channel,note,velocity);
 
   windows_midi_message mensaje;
 
@@ -4346,7 +4346,7 @@ int windows_note_on(unsigned char channel, unsigned char note,unsigned char velo
 int windows_note_off(unsigned char channel, unsigned char note,unsigned char velocity)
 {
 
-  debug_printf (VERBOSE_PARANOID,"noteoff event channel %d note %d velocity %d",channel,note,velocity);
+  DBG_PRINT_MIDI_OUT VERBOSE_DEBUG,"MIDI_OUT: noteoff event channel %d note %d velocity %d",channel,note,velocity);
 
   windows_midi_message mensaje;
 
