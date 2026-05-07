@@ -62,7 +62,7 @@ Drivers video:
 *por cada driver (incluido null) y con y sin pthreads:
 **probar redimensionar ventana
 **probar cambio zoom desde menu
-**probar fullscreen en aquellos que lo soportan: xwindows, fbdev, sdl, cocoa
+**probar fullscreen
 **probar todas maquinas. probar teclas mayus, ctrl, alt. en z88 mayus izq, der, ctrl, alt, f1, f2, f3
 **probar ocultar raton
 **probar zx desktop

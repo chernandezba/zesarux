@@ -459,3 +459,29 @@ caras adyacentes de un cubo. Ejemplo:
 
 -ventana para saber qué notas se están enviando a dispositivo midi externo
 *mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
+
+-juegos de la lightgun magnum, el sinclair action pack, envian continuamente valores a midi registro 14. por que?
+
+
+-compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
+menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
+
+
+-revisar parpadeos en linux en top buttons al moverse por los menus
+->parece que solo pasa con driver xwindow, con sdl no pasa
+
+
+-ventana status esxdos handler:
+*archivos abiertos. asi como la info de cada uno. ya hay un comando de zrcp que lo retorna. esxdoshandler-get-open-files
+*cwd?
+
+
+-probar fullscreen en todos drivers
+*permitir raton en full screen. probar fullscreen con zx desktop
+sdl2 ok. aunque al volver de fullscreen no lee bien raton
+en sdl1, raton lo ubica en la posicion inicial
+*sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
+->parece que no siempre falla el calculo de posicion del raton. con debian 32 bits x86 funciona bien
+
+
+-si se abre ventana breakpoints, con top menu, ubica la ventana arriba del todo donde esta top menu

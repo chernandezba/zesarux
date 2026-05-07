@@ -53,7 +53,13 @@ Drivers video:
 *por cada driver (incluido null) y con y sin pthreads:
 **probar redimensionar ventana
 **probar cambio zoom desde menu
-**probar fullscreen en aquellos que lo soportan: xwindows, fbdev, sdl, cocoa
+**probar fullscreen
+ok sdl1
+ok sdl2
+ok xwindows
+ok cocoa
+pending windows
+
 **probar todas maquinas. probar teclas mayus, ctrl, alt. en z88 mayus izq, der, ctrl, alt, f1, f2, f3
 **probar ocultar raton
 **probar zx desktop
@@ -77,8 +83,6 @@ hacer las acciones de:  mover iconos, pulsar iconos (botón izquierdo y derecho)
 2. sin ninguna ventana y con menu abierto
 3. con alguna ventana abierta y con menu cerrado
 4. con alguna ventana abierta y con menu abierto
-
--iniciar sin archivo de configuracion (borrarlo temporalmente) y ver como se va comportando - asistente de primer inicio, first aid, abrir zx desktop, etc
 
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
@@ -117,12 +121,10 @@ Drivers audio:
 -probar con --disable-sndfile
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar todas maquinas, una por una 
--probar menu about, con zxdesktop habilitado o no, y con driver de texto
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar particularidades Inves: no contended memory. Puerto ficticio para hacer visible RAM baja, requiere hardware debug ports , se puede probar con inves-switch-lowram.tap. Ver RAM baja con view hexdump. Probar con musica Lemmings. Probar investest.tap, que testea entre otras cosas: 64 kb ram, OUT ula AND RAM (border color, snow in border, no sound),  colour ula delay, interrupt starts at video display (not at the top of the border), interrupt escribe en direccion I*256+R valor 255
 -probar hotswap maquina
--probar tipo listado maquinas: Name, Family, Manufacturer
 -probar custom rom desde menu y desde linea de comandos. probar todas roms
 -probar realvideo spectrum
 -probar realvideo zx80/81
@@ -132,14 +134,12 @@ Drivers audio:
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
--probar turbosound, 3 chips ay
 -probar specdrum, covox
 -probar opcion ay speech on/off con chase hq por ejemplo
 -probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar menu aysheet
--probar export to .mid
 -probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak (aydemo, pink panther...) )
 -probar sonido vsync en zx81, con orquesta.p, sound.p, beatles.p. probar vsync sound detection
 -probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
@@ -166,7 +166,6 @@ Drivers audio:
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
 -probar ZXMMC+
 -probar divmmc con zxuno y sin zxuno. tambien en instalado en /Applications en Mac y en /usr/ de Linux. Probar reload mmc
--probar esxdos handler
 -probar divide. Probar reload ide
 -probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
 config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
@@ -176,7 +175,6 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar kartusho
 -probar ifrom
 -probar betadisk. visual floppy de betadisk
--probar discos +3. visual floppy de dsk
 -probar microdrive en spectrum
 -probar HiLow Datadrive
 -probar file browser
