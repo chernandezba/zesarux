@@ -11784,6 +11784,11 @@ void zxvision_new_window_check_static_size_range(int *x,int *y,int *visible_widt
                 *visible_width=ZXVISION_MAX_ANCHO_VENTANA;
                 *visible_height=ZXVISION_MAX_ALTO_VENTANA;
 
+                if (zxvision_topbar_menu_enabled.v) {
+                    *y=1;
+                    *visible_height=ZXVISION_MAX_ALTO_VENTANA-1;
+                }
+
         }
 }
 
