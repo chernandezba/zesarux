@@ -23034,8 +23034,15 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     }
 
     //Reajustar x,y por si se ha salido con los posicionados anteriores
-    if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
-    if (y+alto>scr_get_menu_height()) y=scr_get_menu_height()-alto;
+    if (x+ancho>scr_get_menu_width()) {
+        //printf("Reajustar x\n");
+        x=scr_get_menu_width()-ancho;
+    }
+
+    if (y+alto>scr_get_menu_height()) {
+        //printf("Reajustar y\n");
+        y=scr_get_menu_height()-alto;
+    }
 
 
     int ancho_visible=ancho;
@@ -23045,12 +23052,25 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //char window_error_message[100];
         //sprintf(window_error_message,"Window out of bounds: x: %d y: %d ancho: %d alto: %d",x,y,ancho,alto);
         //cpu_panic(window_error_message);
+        //printf("Window out of bounds: x: %d y: %d ancho: %d alto: %d\n",x,y,ancho,alto);
 
         //Ajustar limites
-        if (x<0) x=0;
-        if (y<0) y=0;
-        if (x+ancho>scr_get_menu_width()) ancho_visible=scr_get_menu_width()-x;
-        if (y+alto>scr_get_menu_height()) alto_visible=scr_get_menu_height()-y;
+        if (x<0) {
+            x=0;
+        }
+
+        if (y<0) {
+            y=0;
+            if (zxvision_topbar_menu_enabled.v) y=1;
+        }
+
+        if (x+ancho>scr_get_menu_width()) {
+            ancho_visible=scr_get_menu_width()-x;
+        }
+
+        if (y+alto>scr_get_menu_height()) {
+            alto_visible=scr_get_menu_height()-y;
+        }
     }
 
     //printf("---menu_dibuja_menu posicion menu %d,%d\n",x,y);
