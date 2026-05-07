@@ -11747,6 +11747,7 @@ void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visib
 
         debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting y position",*x,*y,*visible_width,*visible_height);
         *y=0;
+        if (zxvision_topbar_menu_enabled.v) *y=1;
     }
 
 
@@ -11754,6 +11755,7 @@ void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visib
 
         debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting visible height",*x,*y,*visible_width,*visible_height);
         *visible_height=ZXVISION_MAX_ALTO_VENTANA;
+        if (zxvision_topbar_menu_enabled.v) *visible_height=ZXVISION_MAX_ALTO_VENTANA-1;
 
     }
 }
