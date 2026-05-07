@@ -208,11 +208,15 @@ A: ZEsarUX have three midi related functions:
 2) Sounds generated on an audio chip (AY Chip, SN Chip or QL Chip) can be played on a external midi device connected to your computer (or software synth)
 3) Sounds generated on an audio chip (AY Chip, SN Chip or QL Chip) can be exported to a .mid file
 
-To use functions 1 and 2, first you need a external midi device (like a Piano) or use a software midi synth, which 'emulates' a MIDI device. There are many, depending on your operating system:
--GNU/Linux: Timidity. Included on most Linux distributions.
--Mac: fluidsynth. You can install it with 'brew install fluidsynth' or 'sudo port install fluidsynth', depending on what package manager you have.
-You'll also need a soundfount, which you can download for example from: http://www.schristiancollins.com/generaluser.php.
--Windows: CoolSoft VirtualMIDISynth (but I think some Windows have a software MIDI by default, so maybe you won't need another one).
+To use functions 1 and 2, first you need a external midi device (like a Piano) or use a software midi synth, which 'emulates' a MIDI device:
+
+- If you use a external midi device, Mac and Windows have native support, Linux also have native support but you must use the alsa audio driver. Just plug the device on a USB port.
+
+- If you use a software midi synth, you can try some, depending on your operating system:
+ - GNU/Linux: Timidity. Included on most Linux distributions.
+ - Mac: fluidsynth. You can install it with 'brew install fluidsynth' or 'sudo port install fluidsynth', depending on what package manager you have.
+   You'll also need a soundfount, which you can download for example from: http://www.schristiancollins.com/generaluser.php.
+ - Windows: CoolSoft VirtualMIDISynth (but I think some Windows have a software MIDI by default, so maybe you won't need another one).
 
 Then, enable setting on menu Settings-> Hardware-> Audio-> Audio Chip to MIDI Output
 
