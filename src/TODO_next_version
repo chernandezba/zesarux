@@ -484,4 +484,3 @@ en sdl1, raton lo ubica en la posicion inicial
 ->parece que no siempre falla el calculo de posicion del raton. con debian 32 bits x86 funciona bien
 
 
--si se abre ventana breakpoints, con top menu, ubica la ventana arriba del todo donde esta top menu
