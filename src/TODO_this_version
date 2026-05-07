@@ -35,4 +35,4 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 *salida chip ay puertos 14 y 15 del spectrum directos a midi externo
 
 
--smartload_history_file que se pueda definir desde el menu?
+ok-smartload_history_file que se pueda definir desde el menu?
