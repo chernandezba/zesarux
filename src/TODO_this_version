@@ -34,3 +34,6 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 *salida cualquier chip de sonido a midi externo o a .mid
 *salida chip ay puertos 14 y 15 del spectrum directos a midi externo
 
+-quiza salida a midi externo que aparezca siempre aunque maquina no tenga chip de sonido?
+
+-smartload_history_file que se pueda definir desde el menu?

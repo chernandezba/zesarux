@@ -5907,7 +5907,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-        if (ay_chip_present.v || sn_chip_present.v || i8049_chip_present) {
+
                 menu_add_item_menu_separator(array_menu_settings_audio);
 
                 menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_direct_midi_output,audio_midi_available,"Audio Chip to ~~MIDI Output");
@@ -5933,7 +5933,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_shortcut(array_menu_settings_audio,'m');
                 menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
 
-        }
+
 
 
 
