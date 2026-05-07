@@ -811,6 +811,8 @@ void zxuno_write_port(z80_int puerto, z80_byte value)
 
 	z80_byte dma_index_register,dma_index_nibble;
 
+    z80_byte scn;
+
 	if (puerto==0xFC3B) {
 		//printf ("Out Port %x ZX-Uno written with value %x, PC after=%x\n",puerto,value,reg_pc);
 		last_port_FC3B=value;
@@ -942,9 +944,9 @@ void zxuno_write_port(z80_int puerto, z80_byte value)
 
 			case 0x0B:
 				//Si 0x0B, SCANDBLCTRL
-				debug_printf (VERBOSE_DEBUG,"Write SCANDBLCTRL. Value=%d",value);
+				//debug_printf (VERBOSE_DEBUG,"Write SCANDBLCTRL. Value=%d",value);
 
-				z80_byte scn=zxuno_ports[0x0B];
+				scn=zxuno_ports[0x0B];
 				if (anterior_scandblctrl!=scn) zxuno_set_emulator_setting_scandblctrl();
 			break;
 
