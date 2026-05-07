@@ -201,17 +201,25 @@ A: As the name suggests, you must connect a speaker to two GPI pins: one goes to
 Then use the onebitspeaker driver, set type to Raspberry Pi GPIO.
 The default pin number is set to 22, but you can change it to any other you want. 
 
+Q: What are the MIDI/MID features on ZEsarUX?
+A: ZEsarUX have three midi related functions:
 
-Q: How can I enable the MIDI output feature?
-A: You must select a machine with Audio Chip (Spectrum 128k, QL, MSX, Master System, etc) and go to menu Settings-> Audio-> Audio Chip to MIDI Output
+1) On Spectrum 128k/+2/+2A/+3 and other Speccy clones with AY Chip, values sent to registers 14 and 15 (MIDI registers) are routed to a external midi device connected to your computer (or software synth)
+2) Sounds generated on an audio chip (AY Chip, SN Chip or QL Chip) can be played on a external midi device connected to your computer (or software synth)
+3) Sounds generated on an audio chip (AY Chip, SN Chip or QL Chip) can be exported to a .mid file
 
-
-Q: I want to use the MIDI output feature but I don't have any MIDI device. Is there any way to use it?
-A: Yes, you can use a software which 'emulates' a MIDI device. There are many, depending on your operating system:
+To use functions 1 and 2, first you need a external midi device (like a Piano) or use a software midi synth, which 'emulates' a MIDI device. There are many, depending on your operating system:
 -GNU/Linux: Timidity. Included on most Linux distributions.
 -Mac: fluidsynth. You can install it with 'brew install fluidsynth' or 'sudo port install fluidsynth', depending on what package manager you have.
 You'll also need a soundfount, which you can download for example from: http://www.schristiancollins.com/generaluser.php.
 -Windows: CoolSoft VirtualMIDISynth (but I think some Windows have a software MIDI by default, so maybe you won't need another one).
+
+Then, enable setting on menu Settings-> Hardware-> Audio-> Audio Chip to MIDI Output
+
+Also, to use function 1, you need to be sure setting Menu-> Audio-> AY Mixer-> AY MIDI Registers is enabled. There is a midi player included on ZX-Uno mmc image (on the extras mmc image), use command ".playmidi"
+and look on MID folder on that image, there are some .mid files to play.
+
+To use function 3, go to Menu-> Audio-> Audio Chip to .mid
 
 ----------------------------------------------------------------------------
 

@@ -25,14 +25,3 @@ en sdl1, raton lo ubica en la posicion inicial
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
-
--ventana para saber qué notas se están enviando a dispositivo midi externo
-*mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
-
--explicar mejor MIDI y MID en FAQ:
-
-*salida cualquier chip de sonido a midi externo o a .mid
-*salida chip ay puertos 14 y 15 del spectrum directos a midi externo
-
-
-ok-smartload_history_file que se pueda definir desde el menu?

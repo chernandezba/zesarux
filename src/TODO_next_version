@@ -456,3 +456,6 @@ caras adyacentes de un cubo. Ejemplo:
 
 
 -al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
+
+-ventana para saber qué notas se están enviando a dispositivo midi externo
+*mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
