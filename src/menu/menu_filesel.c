@@ -7065,15 +7065,20 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
 }
 
+//Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
+//Si seleccionado archivo, lo guarda en variable *archivo
+//Si sale con ESC, devuelve en menu_filesel_last_directory_seen ultimo directorio
 int menu_filesel(char *titulo,char *filtros[],char *archivo)
 {
-    //dialogo comun no de grabar
     return menu_filesel_if_save(titulo,filtros,archivo,0);
 }
 
+//Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
+//Si seleccionado archivo, lo guarda en variable *archivo
+//Si sale con ESC, devuelve en menu_filesel_last_directory_seen ultimo directorio
+//Decimos que es operacion de grabar y facilitamos al usuario poniendo el cursor en el campo de nombre de archivo
 int menu_filesel_save(char *titulo,char *filtros[],char *archivo)
 {
-    //dialogo comun no de grabar
     return menu_filesel_if_save(titulo,filtros,archivo,1);
 }
 

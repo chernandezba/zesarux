@@ -25,6 +25,7 @@
 #include "cpu.h"
 
 extern void menu_settings(MENU_ITEM_PARAMETERS);
+extern void menu_settings_smartload(MENU_ITEM_PARAMETERS);
 extern void menu_settings_config_file(MENU_ITEM_PARAMETERS);
 extern int menu_interface_border_cond(void);
 extern void menu_interface_border(MENU_ITEM_PARAMETERS);

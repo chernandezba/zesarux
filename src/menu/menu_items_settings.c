@@ -242,6 +242,7 @@ int hardware_settings_spectrum_next_opcion_seleccionada=0;
 int main_window_special_effects_opcion_seleccionada=0;
 int main_window_special_effects_change=0;
 int main_window_special_effects_group_opcion_seleccionada=0;
+int settings_smartload_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -11655,6 +11656,16 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);
         menu_add_item_menu_es_avanzado(array_menu_settings);
 
+
+        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_smartload,NULL,
+            "Smart load","Carga astuta","Càrrega astuta");
+        //menu_add_item_menu_shortcut(array_menu_settings,'s');
+        menu_add_item_menu_tooltip(array_menu_settings,"Smart load settings");
+        menu_add_item_menu_ayuda(array_menu_settings,"Smart load settings");
+        menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
+
+
         menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_snapshot,NULL,
             "~~Snapshot","In~~stantánea","In~~stantània");
         menu_add_item_menu_shortcut(array_menu_settings,'s');
@@ -11943,11 +11954,6 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
             );
         }
 
-        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_close_menu_after_smartload,NULL,
-            "Close menu after smartload","Cerrar menú después smartload","Tancar menú després smartload");
-        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(no_close_menu_after_smartload.v ? ' ' : 'X'));
-        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Closes the menu after Smartload");
-        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Closes the menu after Smartload");
 
         if (MACHINE_IS_Z88) {
             menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_settings_snapshot_sync_to_z88_clock,NULL,
@@ -12054,6 +12060,113 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
+
+
+}
+
+
+
+void menu_settings_smartload_history_file(MENU_ITEM_PARAMETERS)
+{
+
+    char *filtros[2];
+
+    filtros[0]="txt";
+    filtros[1]=0;
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio de smartload_history_file
+    if (smartload_history_file[0]) {
+        char directorio[PATH_MAX];
+        util_get_dir(smartload_history_file,directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+
+    }
+
+    int ret=menu_filesel_save("Select History File",filtros,smartload_history_file);
+
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+    if (ret==1) {
+
+        //Ver si archivo existe y preguntar
+        if (si_existe_archivo(smartload_history_file)) {
+            if (menu_confirm_yesno_texto("File exists","Append?")==0) {
+                smartload_history_file[0]=0;
+                return;
+            }
+        }
+
+    }
+
+    else smartload_history_file[0]=0;
+
+}
+
+
+
+
+void menu_settings_smartload(MENU_ITEM_PARAMETERS)
+{
+
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+
+        do {
+
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_snapshot_close_menu_after_smartload,NULL,
+            "Close menu after smartload","Cerrar menú después smartload","Tancar menú després smartload");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(no_close_menu_after_smartload.v ? ' ' : 'X'));
+        menu_add_item_menu_tooltip(array_menu_common,"Closes the menu after Smartload");
+        menu_add_item_menu_ayuda(array_menu_common,"Closes the menu after Smartload");
+
+
+        char string_smartload_history_file_shown[18];
+        menu_tape_settings_trunc_name(smartload_history_file,string_smartload_history_file_shown,18);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_smartload_history_file,NULL,
+        "Smartload history file","Archivo historial smartload","Arxiu historial smartload");
+        menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_smartload_history_file_shown);
+        menu_add_item_menu_tooltip(array_menu_common,"Defines a file to store the history of quickload");
+        menu_add_item_menu_ayuda(array_menu_common,"Defines a file to store the history of quickload");
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings Menu-> Smartload",
+            "Menú Principal-> Menú Opciones-> Carga astuta",
+            "Menú Principal-> Menú Opcions-> Càrrega astuta");
+
+        retorno_menu=menu_dibuja_menu(&settings_smartload_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Smart load Settings","Opciones Carga astuta","Opcions Càrrega astuta");
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    }
+            }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
