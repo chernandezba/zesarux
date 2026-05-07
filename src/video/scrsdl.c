@@ -1740,10 +1740,18 @@ void scrsdl_actualiza_tablas_teclado(void)
                 //printf("antes %d,%d\n",event.motion.x,event.motion.y);
 
                 mouse_x=event.motion.x-dst_fullscreen.x;
-                mouse_x=(mouse_x*scrsdl_ancho_no_fullscreen)/dst_fullscreen.w;
+                mouse_x=(mouse_x*scrsdl_ancho_no_fullscreen);
+
+                if (dst_fullscreen.w!=0) {
+                    mouse_x /=dst_fullscreen.w;
+                }
 
                 mouse_y=event.motion.y-dst_fullscreen.y;
-                mouse_y=(mouse_y*scrsdl_alto_no_fullscreen)/dst_fullscreen.h;
+                mouse_y=(mouse_y*scrsdl_alto_no_fullscreen);
+
+                if (dst_fullscreen.h!=0) {
+                    mouse_y /=dst_fullscreen.h;
+                }
 
                 //printf("despues %d,%d\n",mouse_x,mouse_y);
             }
