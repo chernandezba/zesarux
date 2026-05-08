@@ -360,7 +360,7 @@ void screen_effects_table_insert_old_crt(void)
     screen_special_effects_fisheye_follow_mouse.v=0;
 
     screen_special_effects_fisheye_follow_music_channel=0;
-    screen_rainbow_effect_fisheye_factor_k=-15;
+    screen_rainbow_effect_fisheye_factor_k=-10;
 
 
     screen_effect_applied_list[i].enabled=1;
