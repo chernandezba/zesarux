@@ -7,4 +7,6 @@
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
-ok-si se abre ventana breakpoints, con top menu, ubica la ventana arriba del todo donde esta top menu
+-ejemplos de mplayer convertir para mpv
+
+-Leer del portapapeles en Mac en nueva instalación, pedirá permisos?

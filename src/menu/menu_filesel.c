@@ -306,7 +306,10 @@ int menu_file_filter(const char *name,char *filtros[])
 
     if (!strcasecmp(extension,"rar")) return 1;
 
-    if (!strcasecmp(extension,"mdv")) return 1;
+    if (!strcasecmp(extension,"mdv")) {
+        if (get_file_size((char *)name)==174930) return 1;
+        else return 0;
+    }
 
     if (!strcasecmp(extension,"hdf")) return 1;
 
@@ -3242,7 +3245,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","81","p81","o","mdv","scl","ddh","mdr","rmd","rzx",
+        "flash","p","81","p81","o","scl","ddh","mdr","rmd","rzx",
         NULL
     };
 
@@ -3252,6 +3255,12 @@ int menu_filesel_file_can_be_expanded(char *archivo)
         if (!util_compare_file_extension(archivo,extensiones_validas[i]) ) {
             return 1;
         }
+    }
+
+    //mdv solo los que son de un tamaño concreto
+    if (!util_compare_file_extension(archivo,"mdv")) {
+        if (get_file_size(archivo)==174930) return 1;
+        else return 0;
     }
 
     //Ver si comprimido

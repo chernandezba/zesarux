@@ -900,9 +900,11 @@ In the first case, there are 10 bytes with the values present in bytes 4 to 13 o
 void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int replace_underscore_dot,int replace_underscore_dot_only_one)
 {
   //Buscar hasta _
+  //printf("split path\n");
   int i;
   for (i=0;ql_path[i] && ql_path[i]!='_';i++);
   if (ql_path[i]==0) {
+    //printf("device not found\n");
     //No encontrado
     ql_device[0]=0;
     ql_file[0]=0;
@@ -1074,6 +1076,7 @@ int ql_si_ruta_parametro(char *texto,char *ruta)
 //Dice si la ruta que se le ha pasado corresponde a un mdv1_, o mdv2_, o flp1_
 int ql_si_ruta_mdv_flp(char *texto)
 {
+    //printf("ql_si_ruta_mdv_flp (%s)\n",texto);
   char *encontrado;
 
   char *buscar_mdv1="mdv1_";
