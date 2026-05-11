@@ -10,3 +10,8 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 -ejemplos de mplayer convertir para mpv
 
 -Leer del portapapeles en Mac en nueva instalación, pedirá permisos?
+
+
+-Ver ql_return_full_path en que casos se llama e implementar ql_qdos_handler_assume_mdv1_if_no_device
+-exec crazy_exe no va pero si exec mdv1_crazy_exe. donde llama?
+-hay mas sitios donde implementar ql_qdos_handler_assume_mdv1_if_no_device?

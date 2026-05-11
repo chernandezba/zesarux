@@ -940,7 +940,7 @@ void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int
     int device_not_found=1;
     if (ql_qdos_handler_assume_mdv1_if_no_device.v) {
         if (!ql_si_file_is_device(ql_path)) {
-            debug_printf(VERBOSE_DEBUG,"QDOS handler: split path and device: in path (%s) device not found, assume mdv1",ql_path);
+            debug_printf(VERBOSE_DEBUG,"QDOS handler: Split path and device: in path (%s) device not found, assume mdv1",ql_path);
             device_not_found=0;
             split_path=0;
             strcpy(ql_device,"mdv1");
@@ -1040,7 +1040,10 @@ int ql_return_full_path(char *device, char *file, char *fullpath)
         if (!ql_device_flp1_enabled) return 1;
         sourcepath=ql_flp1_root_dir;
     }
-    else return 1;
+    else {
+        //printf("Error ql_return_full_path\n");
+        return 1;
+    }
 
     if (sourcepath[0])  sprintf(fullpath,"%s/%s",sourcepath,file);
     else sprintf(fullpath,"%s",file); //Ruta definida como vacia
