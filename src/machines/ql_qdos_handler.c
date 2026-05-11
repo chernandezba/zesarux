@@ -78,6 +78,9 @@ int ql_previous_trap_was_4=0;
 //2: flp1
 int ql_qdos_last_unit_used=0;
 
+//Si asumimos mdv1_ cuando una ruta no contiene dispositivo
+z80_bit ql_qdos_handler_assume_mdv1_if_no_device={0};
+
 
 void ql_footer_mdflp_operating(void)
 {
@@ -896,46 +899,91 @@ In the first case, there are 10 bytes with the values present in bytes 4 to 13 o
 
 
 
+int ql_si_file_is_device(char *nombre)
+{
+    /*
+CON
+SCR
+SER
+NETI
+NETO
+PIPE
+*/
+
+    char *dispositivos[]={
+        "CON","SCR","SER","NETI","NETO","PIPE",NULL
+    };
+
+    int i;
+
+    for (i=0;dispositivos[i]!=NULL;i++) {
+        if (!strcasecmp(nombre,dispositivos[i]) ) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 //Dado una ruta de QL tipo mdv1_programa , retorna mdv1 y programa por separados
 void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int replace_underscore_dot,int replace_underscore_dot_only_one)
 {
   //Buscar hasta _
   //printf("split path\n");
+  int split_path=1;
+
   int i;
   for (i=0;ql_path[i] && ql_path[i]!='_';i++);
   if (ql_path[i]==0) {
     //printf("device not found\n");
     //No encontrado
-    ql_device[0]=0;
-    ql_file[0]=0;
+    int device_not_found=1;
+    if (ql_qdos_handler_assume_mdv1_if_no_device.v) {
+        if (!ql_si_file_is_device(ql_path)) {
+            debug_printf(VERBOSE_DEBUG,"QDOS handler: split path and device: in path (%s) device not found, assume mdv1",ql_path);
+            device_not_found=0;
+            split_path=0;
+            strcpy(ql_device,"mdv1");
+            strcpy(ql_file,ql_path);
+        }
+    }
+
+
+    if (device_not_found) {
+        ql_device[0]=0;
+        ql_file[0]=0;
+    }
   }
 
-  //Copiar desde inicio hasta aqui en ql_device
-  int iorig=i;
-  //Vamos del final hacia atras
-  ql_device[i]=0;
-  i--;
   char c;
-  for (;i>=0;i--) {
-    c=letra_minuscula(ql_path[i]);
-    ql_device[i]=c;
+
+  if (split_path)  {
+    //Copiar desde inicio hasta aqui en ql_device
+    int iorig=i;
+    //Vamos del final hacia atras
+    ql_device[i]=0;
+    i--;
+
+    for (;i>=0;i--) {
+        c=letra_minuscula(ql_path[i]);
+        ql_device[i]=c;
+    }
+
+    //Restauramos indice y vamos de ahi+1 al final. Si nombre de archivo contiene un _, sustituir por .
+    //Y pasar a minusculas todo
+    i=iorig+1;
+    int destino=0;
+
+        //Lo paso a minusculas a destino
+    for (;ql_path[i];i++,destino++) {
+        c=letra_minuscula(ql_path[i]);
+
+        ql_file[destino]=c;
+    }
+
+    ql_file[destino]=0;
+
   }
-
-  //Restauramos indice y vamos de ahi+1 al final. Si nombre de archivo contiene un _, sustituir por .
-  //Y pasar a minusculas todo
-  i=iorig+1;
-  int destino=0;
-
-	//Lo paso a minusculas a destino
-  for (;ql_path[i];i++,destino++) {
-    c=letra_minuscula(ql_path[i]);
-
-    ql_file[destino]=c;
-  }
-
-  ql_file[destino]=0;
-
-
 
 	//Y en destino, cambio las "_", empezando desde el final, y solo quitando una "_" dependiendo de replace_underscore_dot_only_one
 	if (replace_underscore_dot) {
@@ -1096,6 +1144,17 @@ int ql_si_ruta_mdv_flp(char *texto)
   char *buscar_flp1="flp1_";
   encontrado=util_strcasestr(texto, buscar_flp1);
   if (encontrado) return 1;
+
+  if (ql_qdos_handler_assume_mdv1_if_no_device.v) {
+    if (ql_si_file_is_device(texto)) return 0;
+    else {
+        //Si no hay "_" , podria ser por ejemplo scr_450X20a32X236
+        if (util_strcasestr(texto, "_")) return 0;
+
+        debug_printf(VERBOSE_DEBUG,"QDOS handler: Return if path is mdv/flp: in path (%s) device not found, assume mdv1",texto);
+        return 1;
+    }
+  }
 
   return 0;
 }

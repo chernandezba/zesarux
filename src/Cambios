@@ -111,6 +111,7 @@ Mejorado código para permitir compilar en otros sistemas Unix, como AROS, Fiwix
 Mejorado ZENG Online protocol: permitir conectar cliente y servidor con diferentes versiones de ZEsarUX (siempre que sean compatibles), agregar tiempo de vida ("uptime") de las salas
 Mejorado inserción de archivos de dispositivos (archivos .mmc, archivos .ide, etc): ahora se habilitan automáticamente después de insertarlos
 Mejorado título de la ventana de ZEsarUX: unificar título en todos los diferentes drivers: SDL, X11, etc ...
+Mejorada emulación de QL: permitir asumir mdv1_ para operaciones de archivos sin prefijo de dispositivo
 
 * Correcciones:
 

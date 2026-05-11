@@ -82,7 +82,7 @@ extern moto_long ql_task_default_data_size;
 #define QL_MAX_FILE_HEADER_LENGTH QL_POSSIBLE_HEADER_LENGTH_TWO
 
 
-
+extern z80_bit ql_qdos_handler_assume_mdv1_if_no_device;
 
 
 //64-6 cuando no hay magic
