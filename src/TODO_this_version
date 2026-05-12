@@ -13,3 +13,7 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 
 -QL: probar bien accesos con setting ql_qdos_handler_assume_mdv1_if_no_device activado o desactivado
+
+-osd watermark no se ve en QL
+
+-que se guarde en recent files las carpetas accedidas para el root dir de mdv
