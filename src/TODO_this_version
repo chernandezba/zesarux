@@ -13,5 +13,3 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 
 -QL: probar bien accesos con setting ql_qdos_handler_assume_mdv1_if_no_device activado o desactivado
-
--Implementar mejoras de mdvtool pero mirando diff de versiones anteriores del repo oficial. Hay correcciones y quizá el juego ese del duck se corrige la carga de la pantalla
