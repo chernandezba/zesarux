@@ -13038,7 +13038,8 @@ void menu_ql_mdv_flp(MENU_ITEM_PARAMETERS)
                 (ql_qdos_handler_assume_mdv1_if_no_device.v ? 'X' : ' ') );
             menu_add_item_menu_opcion_conmuta(array_menu_common,&ql_qdos_handler_assume_mdv1_if_no_device);
             menu_add_item_menu_tooltip(array_menu_common,"If a file operation doesn't have device name, assume mdv1");
-            menu_add_item_menu_ayuda(array_menu_common,"If a file operation doesn't have device name, assume mdv1");
+            menu_add_item_menu_ayuda(array_menu_common,"If a file operation doesn't have device name, assume mdv1. "
+                "This setting won't work if file has a dot (.) in the name and it's accessed using underscore (_)");
 
 
 

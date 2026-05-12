@@ -14697,7 +14697,7 @@ char *mingw_strcasestr(const char *arg1, const char *arg2)
 char *util_strcasestr(char *string, char *string_a_buscar)
 {
 
-        //Debe coincidir desde el principio de string
+        //Debe coincidir desde el principio de string ?¿
 #if defined(MINGW) || defined(OTHER_UNIX)
         //En Windows no esta la funcion strcasestr
         char *coincide=mingw_strcasestr(string,string_a_buscar);

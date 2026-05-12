@@ -79,6 +79,7 @@ int ql_previous_trap_was_4=0;
 int ql_qdos_last_unit_used=0;
 
 //Si asumimos mdv1_ cuando una ruta no contiene dispositivo
+//Esto no funcionará bien si el archivo tiene "." y se accede mediante "_"
 z80_bit ql_qdos_handler_assume_mdv1_if_no_device={0};
 
 
@@ -897,9 +898,12 @@ In the first case, there are 10 bytes with the values present in bytes 4 to 13 o
 }
 
 
+char *ql_known_devices_not_mdv_flp[]={
+    "CON","SCR","SER","NETI","NETO","PIPE",NULL
+};
 
-
-int ql_si_file_is_device(char *nombre)
+//si el nombre es alguno de los dispositivos conocidos, exceptuando mdv y flp
+int ql_si_file_is_device_but_not_mdv_flp(char *nombre)
 {
     /*
 CON
@@ -910,14 +914,10 @@ NETO
 PIPE
 */
 
-    char *dispositivos[]={
-        "CON","SCR","SER","NETI","NETO","PIPE",NULL
-    };
-
     int i;
 
-    for (i=0;dispositivos[i]!=NULL;i++) {
-        if (!strcasecmp(nombre,dispositivos[i]) ) {
+    for (i=0;ql_known_devices_not_mdv_flp[i]!=NULL;i++) {
+        if (!strcasecmp(nombre,ql_known_devices_not_mdv_flp[i]) ) {
             return 1;
         }
     }
@@ -939,7 +939,7 @@ void ql_split_path_device_name(char *ql_path, char *ql_device, char *ql_file,int
     //No encontrado
     int device_not_found=1;
     if (ql_qdos_handler_assume_mdv1_if_no_device.v) {
-        if (!ql_si_file_is_device(ql_path)) {
+        if (!ql_si_file_is_device_but_not_mdv_flp(ql_path)) {
             debug_printf(VERBOSE_DEBUG,"QDOS handler: Split path and device: in path (%s) device not found, assume mdv1",ql_path);
             device_not_found=0;
             split_path=0;
@@ -1014,6 +1014,9 @@ int ql_device_flp1_enabled=0;
 //Tambien asigna ultima unidad usada para visualizarlo en el icono y el footer
 int ql_return_full_path(char *device, char *file, char *fullpath)
 {
+
+    //printf("ql_return_full_path device: [%s] [%s]\n",device,file);
+
     char *sourcepath;
 
     if (!strcasecmp(device,"mdv1")) {
@@ -1041,6 +1044,9 @@ int ql_return_full_path(char *device, char *file, char *fullpath)
         sourcepath=ql_flp1_root_dir;
     }
     else {
+        //TODO: si un archivo tiene un punto en el nombre (.) el usuario puede acceder como ejemplo "EXEC crazy_exe"
+        //entonces aquí llega y cree que el device es crazy_ y por tanto no es un device conocido, y dará error, requeriria
+        //una gestion mas compleja del cambio de puntos a _ y de saber qué dispositivos son válidos en el sistema
         //printf("Error ql_return_full_path\n");
         return 1;
     }
@@ -1149,10 +1155,20 @@ int ql_si_ruta_mdv_flp(char *texto)
   if (encontrado) return 1;
 
   if (ql_qdos_handler_assume_mdv1_if_no_device.v) {
-    if (ql_si_file_is_device(texto)) return 0;
+    if (ql_si_file_is_device_but_not_mdv_flp(texto)) return 0;
     else {
         //Si no hay "_" , podria ser por ejemplo scr_450X20a32X236
-        if (util_strcasestr(texto, "_")) return 0;
+
+        //TODO: aqui se genera un falso positivo cuando el nombre contiene un punto (.) pues se usará "_" para acceder a él
+        //Ejemplo si el archivo se llama "crazy.exe" se intentará acceder con "_", ejemplo: "exec crazy_exe" y al llegar
+        //aquí verá que tiene guion bajo _ y creera que crazy_ es un dispositivo
+        //Para solventar esto habria que hacer aqui y en la funcion ql_return_full_path, una gestión mas inteligente de dispositivos,
+        //saber si un dispositivo es de sistema y/o no es un dispositivo asignado dinamicamente. Para el caso no nos complicaremos mas,
+        //setting ql_qdos_handler_assume_mdv1_if_no_device.v funcionará para algunos casos pero para otros no (para archivos con "_" no funcionará)
+        char *encontrado=util_strcasestr(texto, "_");
+        if (encontrado) {
+            return 0;
+        }
 
         debug_printf(VERBOSE_DEBUG,"QDOS handler: Return if path is mdv/flp: in path (%s) device not found, assume mdv1",texto);
         return 1;
@@ -2087,9 +2103,9 @@ void handle_trap_io_sstrg(void)
                       i++;
                   }
                   else {
-                      sprintf(&buffer_mensaje[i],"%02XH ",byte_leido);
+                      sprintf(&buffer_mensaje[i]," %02XH ",byte_leido);
 
-                      i+=4;
+                      i+=5;
                   }
 
                   puntero_origen++;
@@ -2149,9 +2165,9 @@ void handle_trap_io_sstrg(void)
                       i++;
                   }
                   else {
-                      sprintf(&buffer_mensaje[i],"%02XH ",byte_leido);
+                      sprintf(&buffer_mensaje[i]," %02XH ",byte_leido);
 
-                      i+=4;
+                      i+=5;
                   }
 
                   puntero_origen++;
