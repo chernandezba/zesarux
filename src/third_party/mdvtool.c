@@ -119,7 +119,7 @@ int mdvtool_get_mapping_entry(int i) {
 }
 
 // compare mapping table with sector number of sector header
-void mdv_check_mapping(void) {
+int mdv_check_mapping(void) {
   int i;
   for(i=0;i<255;i++) {
     // mapping entry from sector 0
@@ -131,7 +131,10 @@ void mdv_check_mapping(void) {
       unsigned short phys = mdvtool_get_index(i);
 
       // check for valid physical entry
-      // TODO:
+      if(phys>255){
+        printf("WARNING: Invalid physical entry:%d\n",phys);
+        return -1;
+      }
 
       int me_bh = 256*buffer[phys].sec.file + buffer[phys].sec.block;
 
@@ -147,6 +150,7 @@ void mdv_check_mapping(void) {
       }
     }
   }
+  return 0;
 }
 
 void mdvtool_file_dump_chain(int f) {
@@ -410,7 +414,7 @@ void mdvtool_file_export_dest(char *name,char *destination_name) {
     return;
   }
 
-  int size = mdvtool_file_size(f);
+  int size = mdvtool_file_size(f)-64; //Subtract 64 bytes for qdos header
   printf("Exporting %d bytes to '%s' ... ", size, name);
 
   FILE *out = fopen(destination_name, "wb");
@@ -567,7 +571,35 @@ int entries = mdvtool_file_size(0)/sizeof(file_t);
 
 }
 
+sector_t *mdvtool_get_free_block(int file_index,int block,int last_block){
+  // get a free block
+  int i, s;
+  for(i=0;i<MDVTOOL_MAX_SECTORS;i++) {
+    s = last_block - 13 - i;
+    if(s < 0) s += MDVTOOL_MAX_SECTORS;
+    if((mdvtool_get_mapping_entry(s) &0xff00) == 0xfd00) break;
+  }
+
+  if(i == MDVTOOL_MAX_SECTORS) {
+    printf("Image full\n");
+    return 0;
+  }
+
+  // set new mapping entry
+  buffer[0].sec.data[2*s] = file_index;
+  buffer[0].sec.data[2*s+1] = block;
+  mdvtool_files[file_index][block] = s;
+
+  return mdvtool_file_get_sector(file_index, block);
+}
+
 void mdvtool_file_write(file_t *file, char *data) {
+  //Convert dots in file name to underscores
+  for(int c=0;c<strlen(file->name);c++){
+    if(file->name[c]=='.') file->name[c]='_';
+  }
+
+
   printf("Writing file '%s' with %d bytes to mdv image ...\n",
 	 file->name, SWAP32(file->length));
 
@@ -585,6 +617,9 @@ void mdvtool_file_write(file_t *file, char *data) {
   if(replace)
     printf("!!!!INFO: Replaced %d occurances of flp1_ by mdv1_\n", replace);
 
+  //Add 64 bytes to file length for qdos header
+  file->length=SWAP32(SWAP32(file->length) +64);
+
   // check if file exists
   if(mdvtool_file_open(file->name) >= 0) {
     printf("file already exists!\n");
@@ -597,8 +632,12 @@ void mdvtool_file_write(file_t *file, char *data) {
 
   // check if we need to extend the directory file
   if((entries & 7) == 7) {
-    printf("ERROR: Directory file extension not supported yet\n");
-    return;
+    //Extend directory
+    sector_t *sec = mdvtool_get_free_block(0,(entries/8)+1,(entries/8));
+    sec->file = 0;
+    sec->block = (entries/8)+1;
+    sec->bh_csum = sum(&sec->file, 2);
+    entries = mdvtool_file_size(0)/sizeof(file_t);
   }
 
   // write directory entry
@@ -625,30 +664,9 @@ void mdvtool_file_write(file_t *file, char *data) {
     int blk_size = block?512:(512-sizeof(file_t));
     if(blk_size > size) blk_size = size;
 
-    //    printf("Writing block %d with %d bytes\n", block, blk_size);
+    //printf("Writing block %d with %d bytes\n", block, blk_size);
 
-    // get a free block
-    int i, s;
-    for(i=0;i<MDVTOOL_MAX_SECTORS;i++) {
-      s = last_block - 13 - i;
-      if(s < 0) s += MDVTOOL_MAX_SECTORS;
-
-      if((mdvtool_get_mapping_entry(s) &0xff00) == 0xfd00)
-	break;
-    }
-
-    if(i == MDVTOOL_MAX_SECTORS) {
-      printf("Image full\n");
-      return;
-    }
-
-    // set new mapping entry
-    buffer[0].sec.data[2*s] = file_index;
-    buffer[0].sec.data[2*s+1] = block;
-    mdvtool_files[file_index][block] = s;
-
-    sector_t *sec = mdvtool_file_get_sector(file_index, block);
-
+    sector_t *sec = mdvtool_get_free_block(file_index,block,last_block);
     // update mapping entry and fill sector
     if(!block) {
       memcpy(sec->data, file, sizeof(file_t));
@@ -657,19 +675,18 @@ void mdvtool_file_write(file_t *file, char *data) {
       memcpy(sec->data, data, blk_size);
 
     // adjust headers
-    //unsigned short phys = mdvtool_get_index(s);
-
-    mdvtool_get_index(s);
+    //   unsigned short phys = get_index(s);
 
     sec->file = file_index;
     sec->block = block;
     sec->bh_csum = sum(&sec->file, 2);
-
+    last_block=mdvtool_files[file_index][block];
     block++;
     size -= blk_size;
     data += blk_size;
 
-    last_block = s;
+    //last_block = s;
+
   }
 }
 
@@ -677,17 +694,17 @@ void mdvtool_file_write(file_t *file, char *data) {
 void mdvtool_file_import(char *name) {
   FILE *in = fopen(name, "rb");
   if(!in) {
-    fprintf(stderr, "Unable to open mdv input file %s\n", name);
+    fprintf(stderr, "Unable to open input file %s\n", name);
     return;
   }
 
   // check file size
-  fseek(mdv, 0, SEEK_END);
+  fseek(in, 0, SEEK_END);
   int size = ftell(in);
-  fseek(mdv, 0, SEEK_SET);
+  fseek(in, 0, SEEK_SET);
 
   char *buffer = malloc(size);
-  if(fread(buffer, 1, size, in) != (size_t) size) {
+  if(fread(buffer, 1, size, in) != size) {
     perror("fread()");
     free(buffer);
     fclose(in);
@@ -738,9 +755,7 @@ void mdv_erase(void) {
   // mark all sectors as free
   int i;
   for(i=0;i<MDVTOOL_MAX_SECTORS;i++) {
-    //unsigned short phys = mdvtool_get_index(i);
-
-    mdvtool_get_index(i);
+//    unsigned short phys = get_index(i);
 
     // set new mapping entry
 
@@ -750,7 +765,7 @@ void mdv_erase(void) {
 
     if(sec) {
       if(file) {
-	//	printf("erasing file %d, block %d\n", file, block);
+		printf("erasing file %d, block %d\n", file, block);
 
 	mdvtool_files[file][block] = 0xff;
 	buffer[0].sec.data[2*i] = 0xfd;
