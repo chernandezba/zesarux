@@ -2,6 +2,7 @@
     mdvtool.c: Tool from MIST emulator to extract contents of a .mdv qlay file format. File should be 174930 bytes in size
     (c) 2015 by Till Harbaum
     https://github.com/mist-devel
+    https://github.com/mist-devel/mist-binaries/tree/master/cores/ql/tools/mdvtool
 
     Copyright (c) 2015 Till Harbaum <till@harbaum.org>
 
@@ -26,8 +27,17 @@
 
 */
 
-/* mdvtool */
-/* another quick'n dirty tool to deal with microdrive images */
+// mdvtool
+// another quick'n dirty tool to deal with microdrive images
+// Original author Till Harbaum
+//
+// Create MDV function added
+// Fixed ZIP import
+// Squished a few bugs
+// (c)2019 Jason Lucas
+//
+// Additional fixes squidrpi
+//
 
 #include <stdio.h>
 #include <stdlib.h>
