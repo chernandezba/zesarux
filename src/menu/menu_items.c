@@ -42012,7 +42012,8 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         }
 
         else if (MACHINE_IS_QL) {
-            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_ql_mdv_flp,NULL,"Microdrive & Floppy");
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_ql_mdv_flp,NULL,"~~Microdrive & Floppy");
+            menu_add_item_menu_shortcut(array_menu_storage,'m');
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 
 
