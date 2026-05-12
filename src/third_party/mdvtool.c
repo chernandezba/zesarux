@@ -598,7 +598,8 @@ sector_t *mdvtool_get_free_block(int file_index,int block,int last_block){
 
 void mdvtool_file_write(file_t *file, char *data) {
   //Convert dots in file name to underscores
-  for(int c=0;c<strlen(file->name);c++){
+  int longitud=strlen(file->name);
+  for(int c=0;c<longitud;c++){
     if(file->name[c]=='.') file->name[c]='_';
   }
 
@@ -707,7 +708,7 @@ void mdvtool_file_import(char *name) {
   fseek(in, 0, SEEK_SET);
 
   char *buffer = malloc(size);
-  if(fread(buffer, 1, size, in) != size) {
+  if(fread(buffer, 1, size, in) != (size_t) size) {
     perror("fread()");
     free(buffer);
     fclose(in);
