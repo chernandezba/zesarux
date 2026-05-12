@@ -538,9 +538,11 @@ void mdv_dir() {
   }
 }
 
+//Función derivada de mdv_dir creada por mi (César) para extraer todos los archivos
 void mdvtool_mdvtool_file_export_all(char *dest_dir)
 {
-int entries = mdvtool_file_size(0)/sizeof(file_t);
+
+  int entries = mdvtool_file_size(0)/sizeof(file_t);
   if(entries >= 1) {
     printf("Extracting list from directory file:\n");
 
@@ -549,24 +551,25 @@ int entries = mdvtool_file_size(0)/sizeof(file_t);
     for(j=1;j<entries;j++) {
       file_t *f = mdvtool_file_get_entry(j);
       if(f) {
-	//show_file_entry(f);
-	printf("%s\n",f->name);
+        //show_file_entry(f);
+        printf("%s\n",f->name);
 
-	char finalpath[PATH_MAX];
+        char finalpath[PATH_MAX];
 
-  //Cambiar las _ por . del nombre
-  char finalname[PATH_MAX];
-  strcpy(finalname,f->name);
-  util_string_replace_char(finalname,'_','.');
+        //Cambiar las _ por . del nombre
+        char finalname[PATH_MAX];
+        strcpy(finalname,f->name);
+        util_string_replace_char(finalname,'_','.');
 
-	sprintf(finalpath,"%s/%s",dest_dir,finalname);
-  printf("Extracting %s to %s\n",finalname,finalpath);
-	mdvtool_file_export_dest(f->name,finalpath);
+        sprintf(finalpath,"%s/%s",dest_dir,finalname);
+        printf("Extracting %s to %s\n",finalname,finalpath);
+        mdvtool_file_export_dest(f->name,finalpath);
 
-	}
+	  }
     }
   } else
-    printf("ERROR: directory file does not exist\n");
+
+  printf("ERROR: directory file does not exist\n");
 
 
 }
@@ -725,14 +728,9 @@ void mdvtool_file_import(char *name) {
 }
 
 void mdv_write(char *name) {
-  printf("Writing mdv %s\n", name);
-
-  // adjust checksums
   int i;
-  for(i=0;i<MDVTOOL_MAX_SECTORS;i++) {
-    if(buffer[i].hdr.ff == 0xff)
-      buffer[i].sec.data_csum = sum(buffer[i].sec.data, 512);
-  }
+
+  printf("Writing mdv %s\n", name);
 
   FILE *out = fopen(name, "wb");
   if(!out) {
@@ -740,10 +738,25 @@ void mdv_write(char *name) {
     return;
   }
 
-  if(fwrite(buffer, sizeof(mdv_entry_t), MDVTOOL_MAX_SECTORS, out) != MDVTOOL_MAX_SECTORS) {
-    perror("fwrite()");
-    fclose(out);
-    return;
+  // Write all sectors to output file,
+  // First write sector 0 then others in reverse order
+  for(i=MDVTOOL_MAX_SECTORS;i>0;i--) {
+    unsigned char cursec;
+
+    cursec=i;
+    if(cursec == MDVTOOL_MAX_SECTORS) cursec = 0;
+
+    // adjust checksums
+    if(buffer[cursec].hdr.ff == 0xff)
+      buffer[cursec].sec.data_csum = sum(buffer[cursec].sec.data, 512);
+
+    // write a sector at a time
+    if(!fwrite(&buffer[cursec], sizeof(mdv_entry_t), 1, out)) {
+      fprintf(stderr, "Error writing qlay image\n");
+      perror("fwrite()");
+      return;
+    }
+
   }
 
   fclose(out);
