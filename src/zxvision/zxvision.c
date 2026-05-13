@@ -14701,7 +14701,11 @@ int zxvision_adjust_cursor_top(zxvision_window *ventana)
 
 int zxvision_out_bonds(int x,int y,int ancho,int alto)
 {
-    if (x<0 || y<0) return 1;
+    int limite_y=0;
+
+    if (zxvision_topbar_menu_enabled.v) limite_y=1;
+
+    if (x<0 || y<limite_y) return 1;
 
 
     if (zxvision_allow_windows_beyond_limit.v) {
@@ -20454,7 +20458,7 @@ void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmut
         }
 
         if (y+ventana->visible_height>yfinal) {
-            //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
+            //Si se sale por la abajo, mover ventana arriba para que no se salga
             y=yfinal-ventana->visible_height;
         }
 

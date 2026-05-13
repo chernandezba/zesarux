@@ -17,3 +17,26 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 -osd watermark no se ve en QL
 
 -que se guarde en recent files las carpetas accedidas para el root dir de mdv
+
+ok -mover ventanas con raton o teclas no deberia dejar mover a posicion y=0 si esta top menu activado
+
+
+-Si estoy en maquina ZX80 con menu view basic maximizado, cambio a QL, donde voy a tener menos alto de zx destkop,
+y al reorganizar esa ventana, resulta que acaba teniendo mas alto del que cabe. (post_set_machine_no_rom_load_reopen_window llama a zxvision_rearrange_background_windows)
+Si ademas lo combino con que estas lineas de zxvision_rearrange_background_windows para que el rearrange considere y=1 como inicial si se sale de margenes:
+
+        if (x<0) x=0;
+        if (y<0) y=0;
+
+cambio por:
+
+        if (x<0) x=0;
+        if (y<0) y=origen_y;
+
+Se sale mucho mas la ventana cuando hay top menu o botones superiores.
+
+El tema es que rearrange esta pensado para reorganizar desde el menu window, no cuando ha cambiado el tamaño del desktop
+Si ha cambiado el tamaño habria que revisar el tamaño de todas las ventanas y reducirlas
+
+
+-top menu. si muevo rápido el raton hacia arriba (saliendome por arriba) y luego hacia abajo, dejándolo dentro de la ventana, la mayoria de veces no desaparece el top menu
