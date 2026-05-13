@@ -18,7 +18,6 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 -que se guarde en recent files las carpetas accedidas para el root dir de mdv
 
-ok -mover ventanas con raton o teclas no deberia dejar mover a posicion y=0 si esta top menu activado
 
 
 -Si estoy en maquina ZX80 con menu view basic maximizado, cambio a QL, donde voy a tener menos alto de zx destkop,
@@ -39,4 +38,4 @@ El tema es que rearrange esta pensado para reorganizar desde el menu window, no 
 Si ha cambiado el tamaño habria que revisar el tamaño de todas las ventanas y reducirlas
 
 
--top menu. si muevo rápido el raton hacia arriba (saliendome por arriba) y luego hacia abajo, dejándolo dentro de la ventana, la mayoria de veces no desaparece el top menu
+ok-top menu. si muevo rápido el raton hacia arriba (saliendome por arriba) y luego hacia abajo, dejándolo dentro de la ventana, la mayoria de veces no desaparece el top menu

@@ -98,7 +98,9 @@ void topbar_make_topbar_visible(void)
     porque necesita multitask y background windows even with menu closed
     */
 
+    //printf("make topbar visible. timer=%d\n",switchtopbar_button_visible_timer);
     topbar_esta_visible_por_timer.v=1;
+    switchtopbar_button_visible_timer=0;
 
 }
 
@@ -191,13 +193,17 @@ void topbar_timer_event(void)
     //No estaba visible
     if (topbar_esta_visible_por_timer.v==0) {
         if (movido && get_pos_y_mouse_topbar()==0 && zxvision_mouse_in_zesarux_window()) {
+            //se ha movido arriba. hacer visible
             topbar_make_topbar_visible();
         }
     }
 
     //Estaba visible
     else {
+        //printf("topbar esta visible. timer=%d max=%d\n",switchtopbar_button_visible_timer,MAX_SWITCH_TOPBAR_VISIBLE_TIMER);
         if (movido && get_pos_y_mouse_topbar()==0) {
+            //movido y está el ratón en topbar
+            //printf("poner timer a 0\n");
             switchtopbar_button_visible_timer=0;
         }
 
@@ -206,6 +212,7 @@ void topbar_timer_event(void)
 
             //en 2 segundos (50*2 frames) desaparece
             if (switchtopbar_button_visible_timer==MAX_SWITCH_TOPBAR_VISIBLE_TIMER) {
+                //printf("hide topbar\n");
                 topbar_make_topbar_invisible();
             }
         }
