@@ -124,7 +124,7 @@ Drivers audio:
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
--probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
+-probar vofile (generar archivo de video). Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar todas maquinas, una por una 
 -probar menu about, con zxdesktop habilitado o no, y con driver de texto
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
@@ -359,6 +359,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -Pruebas interfaz menu:
 * habilitar zx desktop. probar botones, iconos
 * zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
+* probar top menu
 * sonidos en menu al moverse cursor, etc
 
 -probar Sprite chip con demo

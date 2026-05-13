@@ -119,7 +119,6 @@ Drivers audio:
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
--probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar todas maquinas, una por una 
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
@@ -286,7 +285,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar easter eggs
 -probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
 -probar ghosting teclado
--probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , ql, cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow y curses, para cada maquina (total: 6 pruebas)
+-probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow y curses, para cada maquina (total: 6 pruebas)
 -probar rutinas autodeteccion caracteres: algunos de sslfunctions, otro no listado (como Spiderman o masters of the universe), hobbit (usa dos rutinas de caracteres). probar con stdout y xwindows, sdl, etc. probar --enableprintchartrap y --disableprintchartrap en stdout y xwindows
 -probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
 -probar speech en stdout
@@ -313,7 +312,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar mantransferv3
 -probar multiface, transtape, etc... todos los dispositivos de copia
 
--keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
+-keymaps en xwindows y sdl para z88, cpc, chloe, sam, 
 
 -probar Jupiter Ace. centipede (chip ay) y valkyr (speaker y chip ay). cargar y grabar ace. cargar wav
 -probar Chloe 140, 280. Tests, carga trap, grabar tap, chloe keyboard
@@ -360,20 +359,3 @@ pruebas Z88:
 -probar en menus tarjetas de aplicaciones, archivos, desconocidas
 -probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
-pruebas QL
--teclado:
-
-the main thing to check is the character codes - use:
-REP Loop:print code(inkey$(-1))
-
-This will show the character code for each pressed key.
-
-In particular check 
-
-a (97)
-CTRL a (1) 
-and 
-ALT a ( ALT is awkard, it returns 255 plus the character code, so you should see on screen two values, 255 then 97 when you press this combination)
-
--cargar manualmente juegos en memoria mediante load binary
--cargar lbytes mediante emulacion de microdrive&floppy
