@@ -6954,6 +6954,8 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_QL) {
             menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_ql_ram,NULL,"RAM size [%d KB]",(ql_mem_limit+1)/1024-128 );
+            menu_add_item_menu_genera_ventana(array_menu_hardware_memory_settings);
+            menu_add_item_menu_se_cerrara(array_menu_hardware_memory_settings);
         }
 
         if (menu_cond_zx8081() ) {
