@@ -1210,9 +1210,8 @@ void aofile_send_frame(char *buffer)
 	//printf ("buffer: %p ptr_aofile: %p\n",buffer,ptr_aofile);
 
 	//copiamos a buffer temporal pasandolo a unsigned
-	//Esto conviene por dos cosas:
-	//1) aofile a wav, solo deja generar archivos de 8 bit unsigned
-	//2) mplayer, por ejemplo, al reproducir un .raw espera un unsigned (y no se como decirle que espere un signed)
+	//Esto conviene por:
+	//aofile a wav, solo deja generar archivos de 8 bit unsigned
 	//memcpy(aofile_buffer,buffer,AUDIO_BUFFER_SIZE);
 
 

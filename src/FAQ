@@ -925,21 +925,21 @@ https://github.com/chernandezba/zxspectr
 It does run on MS-DOS. It was created on June 1996, so it's more than 20 years old!
 
 
-Q: Using the menu "video out to file" generates a raw video file. Seems I have to use the program "mplayer" to run it, I tried but I didn't succeed. I'm using Mac
-A: Playing the raw video on Mac it's a bit tricky, but yes, you can use mplayer for Mac.
-First download MplayerX from:
-http://mplayerx.org
+Q: Using the menu "video out to file" generates a raw video file. Seems I have to use the program "mpv" to run it, I tried but I didn't succeed. I'm using Mac
+A: Playing the raw video on Mac it's a bit tricky, but yes, you can use mpv for Mac.
+First download mpv from:
+https://mpv.io
 
-Then, when you enable video out on ZEsarUX, a window will be appear with the parameters needed for mplayer, but also on console (enabling verbose debug). For example:
-mplayer -demuxer rawvideo -rawvideo fps=5:w=720:h=576:format=bgr24 /Users/chernandezba/Documents/video.rwv
+Then, when you enable video out on ZEsarUX, a window will be appear with the parameters needed for mpv, but also on console (enabling verbose debug). For example:
+mpv --demuxer=rawvideo --demuxer-rawvideo-fps=5 --demuxer-rawvideo-w=720 --demuxer-rawvideo-h=576 --demuxer-rawvideo-mp-format=bgr24 /Users/chernandezba/Documents/video.rwv
 (this example was for a video recording on TSConf machine)
 
-So, MplayerX has a beautiful fronted for Mac but it also has a command line program to play video; this is what you need to play the video generated from ZEsarUX
-You should run the command line mplayer by opening a Terminal, and write:
-/Applications/MPlayerX.app/Contents/Resources/MPlayerX.mplayer.bundle/Contents/Resources/x86_64/mplayer XXXX
+So, mpv has a command line program to play video; this is what you need to play the video generated from ZEsarUX
+You should run the command line mpv by opening a Terminal, and write:
+/Applications/mpv.app/Contents/MacOS/mpv XXXX
 
 Where XXXX are all the parameters that ZEsarUX gave you. In this example, the command line sentence will be:
-/Applications/MPlayerX.app/Contents/Resources/MPlayerX.mplayer.bundle/Contents/Resources/x86_64/mplayer -demuxer rawvideo -rawvideo fps=5:w=720:h=576:format=bgr24 /Users/chernandezba/Documents/video.rwv
+/Applications/mpv.app/Contents/MacOS/mpv --demuxer=rawvideo --demuxer-rawvideo-fps=5 --demuxer-rawvideo-w=720 --demuxer-rawvideo-h=576 --demuxer-rawvideo-mp-format=bgr24 /Users/chernandezba/Documents/video.rwv
 
 
 Q: Is there any manual or documentation?

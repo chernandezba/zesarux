@@ -9016,16 +9016,18 @@ void print_helper_aofile_vofile(void)
 
                 audio_bytes_per_second=FRECUENCIA_SONIDO*2; //*2 porque es stereo en wav
                 video_bytes_per_second=ancho*3*alto*(50/vofile_fps);//*3 porque son 24 bits
-
-        sprintf(buffer_texto_video,"-demuxer rawvideo -rawvideo fps=%d:w=%d:h=%d:format=bgr24",50/vofile_fps,ancho,alto);
+        sprintf(buffer_texto_video,"--demuxer=rawvideo --demuxer-rawvideo-fps=%d --demuxer-rawvideo-w=%d --demuxer-rawvideo-h=%d --demuxer-rawvideo-mp-format=bgr24",50/vofile_fps,ancho,alto);
+        //sprintf(buffer_texto_video,"-demuxer rawvideo -rawvideo fps=%d:w=%d:h=%d:format=bgr24",50/vofile_fps,ancho,alto);
 
     if (aofile_type==AOFILE_TYPE_RAW) {
         audio_bytes_per_second /=2; //porque es mono en rwa
-            sprintf(buffer_texto_audio,"-audiofile %s -audio-demuxer rawaudio -rawaudio channels=1:rate=%d:samplesize=1",aofilename,FRECUENCIA_SONIDO);
+            //sprintf(buffer_texto_audio,"-audiofile %s -audio-demuxer rawaudio -rawaudio channels=1:rate=%d:samplesize=1",aofilename,FRECUENCIA_SONIDO);
+            sprintf(buffer_texto_audio,"--audio-file=%s --audio-demuxer=rawaudio --demuxer-rawaudio-channels=1 --demuxer-rawaudio-rate=%d --demuxer-rawaudio-format=u8",aofilename,FRECUENCIA_SONIDO);
     }
 
     if (aofile_type==AOFILE_TYPE_WAV) {
-        sprintf(buffer_texto_audio,"-audiofile %s",aofilename);
+        //sprintf(buffer_texto_audio,"-audiofile %s",aofilename);
+        sprintf(buffer_texto_audio,"--audio-file=%s",aofilename);
     }
 
 
@@ -9046,11 +9048,11 @@ void print_helper_aofile_vofile(void)
     }
 
     if (aofile_inserted.v==0 && vofile_inserted.v==1) {
-        sprintf(last_message_helper_aofile_vofile_util,"You can play it with : mplayer %s %s",buffer_texto_video,vofilename);
+        sprintf(last_message_helper_aofile_vofile_util,"You can play it with : mpv %s %s",buffer_texto_video,vofilename);
     }
 
     if (aofile_inserted.v==1 && vofile_inserted.v==1) {
-        sprintf(last_message_helper_aofile_vofile_util,"You can play both audio & video files with : mplayer %s %s %s",buffer_texto_video,buffer_texto_audio,vofilename);
+        sprintf(last_message_helper_aofile_vofile_util,"You can play both audio & video files with : mpv %s %s %s",buffer_texto_video,buffer_texto_audio,vofilename);
     }
 
     sprintf(last_message_helper_aofile_vofile_bytes_minute_audio,"Every minute of file uses %d KB",audio_bytes_per_second*60/1024);
