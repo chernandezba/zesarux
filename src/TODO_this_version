@@ -12,4 +12,4 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 -QL: probar bien accesos con setting ql_qdos_handler_assume_mdv1_if_no_device activado o desactivado
 
-ok-Al habilitar topmenu que se haga visible temporalmente para que el usuario lo vea
+ok -cambio de memory zone y vuelta a mapped memory en ql, lo deja con mascara ffff
