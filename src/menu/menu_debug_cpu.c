@@ -451,6 +451,7 @@ void menu_debug_set_memory_zone_mapped(void)
         menu_debug_memory_zone=-1;
         menu_debug_show_memory_zones=0;
         menu_debug_memory_zone_size=65536;
+        if (MACHINE_IS_QL) menu_debug_memory_zone_size=ql_mem_limit+1;
 }
 
 
@@ -2846,11 +2847,11 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
         switch (linea) {
 
             case 0:
-                 sprintf (textoregistros,"PC %05X",get_pc_register() );
+                 sprintf (textoregistros,"PC  %05X",get_pc_register() );
             break;
 
             case 1:
-                 sprintf (textoregistros,"SP %05X",m68k_get_reg(NULL, M68K_REG_SP) );
+                 sprintf (textoregistros,"SP  %05X",m68k_get_reg(NULL, M68K_REG_SP) );
             break;
 
             case 2:
@@ -2858,7 +2859,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
             break;
 
             case 3:
-                 sprintf (textoregistros,"SR %04X",m68k_get_reg(NULL, M68K_REG_SR) );
+                 sprintf (textoregistros,"SR  %04X",m68k_get_reg(NULL, M68K_REG_SR) );
             break;
 
             case 4:
