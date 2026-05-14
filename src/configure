@@ -1694,7 +1694,7 @@ menu_file_viewer_browser.o: menu/menu_file_viewer_browser.c zxvision/zxvision.h 
 menu_zeng_online.o: menu/menu_zeng_online.c zxvision/zxvision.h menu/menu_items.h compileoptions.h video/screen.h cpu.h debug.h network.h zrcp/zeng_online_client.h zrcp/zeng_online.h stats.h settings.h
 	\$(CC) \$(CFLAGS) -c menu/menu_zeng_online.c
 
-menu_items_settings.o: menu/menu_items_settings.c menu/menu_items_settings.h menu/menu_items_storage.h zxvision/zxvision.h menu/menu_file_viewer_browser.h video/screen.h video/screen_fx.h cpu.h start.h debug.h machines/zx8081.h soundchips/ay38912.h compileoptions.h storage/tape.h audio/audio.h timer.h snap/snap.h operaciones.h third_party/disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h video/scrstdout.h machines/z88.h video_chips/ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  storage/mmc.h storage/ide.h storage/divmmc.h storage/divide.h storage/diviface.h storage/zxpand.h video_chips/spectra.h video_chips/spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h storage/if1.h storage/pd765.h storage/atomlite.h machines/tbblue.h storage/dandanator.h storage/kartusho.h storage/ifrom.h spritefinder.h storage/superupgrade.h cpus/m68k.h zrcp/remote.h snap/snap_rzx.h copy_interfaces/multiface.h cpus/scmp.h storage/esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h storage/betadisk.h storage/tape_tzx.h snap/snap_zsf.h settings.h datagear.h assemble.h expression_parser.h uartbridge.h zrcp/zeng.h zrcp/zeng_online.h network.h stats.h video_chips/vdp_9918a.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h soundchips/sn76489an.h machines/ql_qdos_handler.h machines/ql_i8049.h soundchips/gs.h zvfs.h video_chips/vdp_9918a_sms.h snap/snap_ram.h sensors.h storage/samram.h snap/snap_zx8081.h menu/menu_bitmaps.h menu/menu_filesel.h menu/menu_debug_cpu.h machines/pcw.h utils_text_adventure.h tv.h
+menu_items_settings.o: menu/menu_items_settings.c menu/menu_items_settings.h menu/menu_items_storage.h zxvision/zxvision.h zxvision/zxvision_topbar.h menu/menu_file_viewer_browser.h video/screen.h video/screen_fx.h cpu.h start.h debug.h machines/zx8081.h soundchips/ay38912.h compileoptions.h storage/tape.h audio/audio.h timer.h snap/snap.h operaciones.h third_party/disassemble.h utils.h contend.h joystick.h ula.h printers.h realjoystick.h video/scrstdout.h machines/z88.h video_chips/ulaplus.h autoselectoptions.h machines/zxuno.h charset.h chardetect.h textspeech.h  storage/mmc.h storage/ide.h storage/divmmc.h storage/divide.h storage/diviface.h storage/zxpand.h video_chips/spectra.h video_chips/spritechip.h machines/jupiterace.h machines/timex.h machines/chloe.h machines/cpc.h machines/prism.h machines/sam.h storage/if1.h storage/pd765.h storage/atomlite.h machines/tbblue.h storage/dandanator.h storage/kartusho.h storage/ifrom.h spritefinder.h storage/superupgrade.h cpus/m68k.h zrcp/remote.h snap/snap_rzx.h copy_interfaces/multiface.h cpus/scmp.h storage/esxdos_handler.h machines/zxevo.h machines/tsconf.h machines/baseconf.h snap/snap_spg.h storage/betadisk.h storage/tape_tzx.h snap/snap_zsf.h settings.h datagear.h assemble.h expression_parser.h uartbridge.h zrcp/zeng.h zrcp/zeng_online.h network.h stats.h video_chips/vdp_9918a.h machines/msx.h machines/coleco.h machines/sg1000.h machines/sms.h machines/svi.h soundchips/sn76489an.h machines/ql_qdos_handler.h machines/ql_i8049.h soundchips/gs.h zvfs.h video_chips/vdp_9918a_sms.h snap/snap_ram.h sensors.h storage/samram.h snap/snap_zx8081.h menu/menu_bitmaps.h menu/menu_filesel.h menu/menu_debug_cpu.h machines/pcw.h utils_text_adventure.h tv.h
 	\$(CC) \$(CFLAGS) -c menu/menu_items_settings.c
 
 menu_debug_cpu.o: menu/menu_debug_cpu.c menu/menu_debug_cpu.h zxvision/zxvision.h cpu.h debug.h cpus/scmp.h cpus/m68k.h machines/zx8081.h machines/z88.h settings.h operaciones.h video/screen.h joystick.h machines/tbblue.h ula.h timer.h audio/audio.h machines/prism.h menu/menu_items.h menu/menu_filesel.h third_party/disassemble.h soundchips/ay38912.h realjoystick.h utils_text_adventure.h tv.h debug_timings.h
@@ -2688,6 +2688,9 @@ FILES_FOR_STATS="*.c *.h audio/* copy_interfaces/* cores/* cpus/* machines/* men
 #Descartando lineas vacias
 LINES_SOURCE=`cat $FILES_FOR_STATS|grep -v "^$"|wc -l|tail -1|awk '{printf $1}'`
 
+TOTAL_C_FILES=`find . -name '*.c' | wc -l`
+TOTAL_H_FILES=`find . -name '*.h' | wc -l`
+
 #Cantidad comentarios (TODO: esto es aprox porque puede haber un comentario en varias lineas con //)
 COMMENTS_TYPE_LINE=`grep '//' $FILES_FOR_STATS|wc -l|tail -1|awk '{printf $1}'`
 COMMENTS_TYPE_BLOCK=`grep '/\*' $FILES_FOR_STATS|wc -l|tail -1|awk '{printf $1}'`
@@ -2718,6 +2721,8 @@ cat >> compileoptions.h << _EOF
 #define INSTALL_PREFIX "$INSTALLPREFIX"
 
 #define LINES_SOURCE $LINES_SOURCE
+#define TOTAL_C_FILES $TOTAL_C_FILES
+#define TOTAL_H_FILES $TOTAL_H_FILES
 #define TOTAL_COMMENTS $TOTAL_COMMENTS
 #define TOTAL_TODO_ITEMS $TOTAL_TODO_ITEMS
 
