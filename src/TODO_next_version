@@ -507,3 +507,42 @@ Si ha cambiado el tamaño habria que revisar el tamaño de todas las ventanas y 
 -osd watermark no se ve en QL
 
 -que se guarde en recent files las carpetas accedidas para el root dir de mdv
+
+
+-Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
+
+-Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
+
+-Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
+solo los primeros menus principales, los submenus si que salgan con barra de título
+
+-Con estilo tiny, sin desktop, desde top menu, submenus no aparecen al lado, aunque haya espacio para ubicarlos, aparecen posicionados arriba a la izquierda
+serian estas lineas:
+diff --git a/src/zxvision/zxvision.c b/src/zxvision/zxvision.c
+index dd279a05..ba320131 100644
+--- a/src/zxvision/zxvision.c
++++ b/src/zxvision/zxvision.c
+@@ -22680,7 +22680,8 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
+     //    menu_dibuja_submenu_primer_submenu,force_next_menu_position.v);
+
+     //menu a la derecha del anterior siempre que tengamos zx desktop habilitado y opcion de situar menus en zx desktop
+-    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
++    //if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
++    if (menu_show_submenus_tree.v) {
+
+
+         //es el primero
+@@ -23022,13 +23023,15 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item
+
+     int posicionar_submenu=0;
+
+-    if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0 && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
++    //if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0 && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
++
++    if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) posicionar_submenu=1;
+
+Pero entonces posiciona submenus tambien cuando no tenemos topbar y no hay zx desktop....
+Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados, o pegados arriba, o pegados a la derecha
+
+
+-cambio de memory zone y vuelta a mapped memory en ql, lo deja con mascara ffff
