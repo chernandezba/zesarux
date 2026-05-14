@@ -44,6 +44,7 @@
 
 
 #include "zxvision.h"
+#include "zxvision_topbar.h"
 #include "menu_items_settings.h"
 #include "menu_items.h"
 #include "menu_items_storage.h"
@@ -3731,6 +3732,11 @@ void menu_item_old_behaviour_close_menus(MENU_ITEM_PARAMETERS)
 void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
 {
     zxvision_topbar_menu_enabled.v ^=1;
+
+    if (zxvision_topbar_menu_enabled.v) {
+        //hacerla visible momentaneamente para que el usuario la vea
+        topbar_make_topbar_visible();
+    }
 
     //Comprobar posiciones iconos y reajustar
     //Debido a que con topbar dejamos que los iconos empiecen mas arriba que cuando hay botones superiores
