@@ -17788,6 +17788,10 @@ void zxvision_handle_maximize_maximize(zxvision_window *w)
     w->x=0;
     w->y=0;
 
+    if (zxvision_topbar_menu_enabled.v) {
+        w->y=1;
+    }
+
     zxvision_set_visible_width(w,max_width);
     zxvision_set_visible_height(w,max_height);
 
