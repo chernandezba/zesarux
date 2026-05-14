@@ -579,8 +579,8 @@ char running_machine_hardware_name[MAX_MACHINE_HARDWARE_NAME+1]=""; //Por si aca
 #ifdef MINGW
 void get_machine_hardware_name(void)
 {
-    //Mingw no tiene uname
-    //Lo sacamos de COMPILATION_MACHINE_HARDWARE_NAME, que obviamente, no tiene por que coincidir
+    //Mingw no tiene llamada al sistema uname()
+    //Lo sacamos de COMPILATION_MACHINE_HARDWARE_NAME, que obviamente, no tiene por que coincidir, que viene del comando "uname" del script configure
     //Le ponemos el sufijo -win para saber que es de windows y no real del todo
     sprintf(running_machine_hardware_name,"%s-win",COMPILATION_MACHINE_HARDWARE_NAME);
 }
