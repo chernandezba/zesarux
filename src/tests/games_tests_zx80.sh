@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-OPTIONS="--noconfigfile --quickexit --nowelcomemessage --enable-zxdesktop"
+OPTIONS="--noconfigfile --quickexit --nowelcomemessage --enable-zxdesktop --realvideo"
 
 while read LINE; do
 
