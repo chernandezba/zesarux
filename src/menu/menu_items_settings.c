@@ -9463,6 +9463,8 @@ void menu_display_pcw_video_mode(MENU_ITEM_PARAMETERS)
 {
     pcw_video_mode++;
     if (pcw_video_mode==4) pcw_video_mode=0;
+
+    pcw_init_colour_palette_mode(pcw_video_mode);
 }
 
 void menu_display_pcw_mode1_palette(MENU_ITEM_PARAMETERS)

@@ -93,6 +93,8 @@ extern z80_bit pcw_pending_interrupt;
 
 extern void pcw_interrupt_from_pd765(void);
 
+extern void pcw_init_colour_palette_mode(int mode);
+
 extern void scr_refresca_pantalla_y_border_pcw(void);
 
 extern z80_byte pcw_bank_registers[];
