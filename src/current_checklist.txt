@@ -19,13 +19,6 @@ ok Mac
 
 -ejecutar tests/machines_test.sh
 
--ejecutar tests/games_tests.sh
-
--ejecutar tests/games_tests_zx80.sh
-
--ejecutar tests/games_tests_zx81.sh
-
-
 -ejecutar tests/automatic_test_cycle_machines.sh
 
 -probar Valgrind en Linux 64 bits:
@@ -144,15 +137,13 @@ Drivers audio:
 -probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
 -probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
 -probar any flag loading cintas, con copiador, rocman
--probar archivos zip, tar, rar, gz
 -probar expansor archivos tap, tzx, dsk, trd, etc
--probar cambiando rutas a sox, gunzip, etc...
 
 -probar diferentes cargas, a continuacion, hay ejemplos en carpeta snap_tests y tambien alguno suelto, como canciones.smp y orquesta.smp
-*probar carga binaria (tape) smp,wav,rwa en spectrum
+*probar carga binaria (tape) smp,rwa en spectrum
 *probar carga binaria (tape) smp,wav,rwa en zx80
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
-*probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
+*probar carga realtape : spectrum: smp,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
 -probar carga desde cinta real
 

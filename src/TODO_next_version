@@ -544,3 +544,5 @@ index dd279a05..ba320131 100644
 Pero entonces posiciona submenus tambien cuando no tenemos topbar y no hay zx desktop....
 Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados, o pegados arriba, o pegados a la derecha
 
+
+-fullscreen en cpc, sin border, en mac , no se ve bien
