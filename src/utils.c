@@ -18200,7 +18200,7 @@ int util_extract_mdr(char *filename,char *tempdir)
         return 1;
     }
 
-
+    //printf("total_file_size: %d\n",total_file_size);
     taperead=util_malloc(total_file_size,"Can not allocate memory for expand mdr");
 
 

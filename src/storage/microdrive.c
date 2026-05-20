@@ -944,12 +944,16 @@ z80_byte mdr_get_file_catalogue_get_byte(z80_byte *puntero,int sector,int sector
 
     offset +=sector_offset;
 
+    //printf("offset %d delta: %ld\n",offset,&puntero[offset]-puntero);
+
     return puntero[offset];
 }
 
 void mdr_safe_memcpy(z80_byte *puntero,int sector,int sector_offset,z80_byte *destino,int longitud)
 {
+    //printf("mdr_safe_memcpy puntero %p sector %d sector_offset %d destino %p longitud %d\n",puntero,sector,sector_offset,destino,longitud);
     while (longitud>0) {
+        //printf("longitud %d\n",longitud);
         z80_byte byte_leido=mdr_get_file_catalogue_get_byte(puntero,sector,sector_offset++);
         *destino=byte_leido;
 
@@ -1027,11 +1031,13 @@ void mdr_get_file_from_catalogue(z80_byte *origen,struct s_mdr_file_cat_one_file
 
                     tamanyo_esperado -=rec_length;
 
-                    if (rec_length>512) {
-                        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Asked for more than 512 bytes to read of a sector (%d). Error. Truncating to 512",rec_length);
-                        rec_length=512;
+                    //if (rec_length>512) {
+                    if (offset_a_grabar+rec_length>MDR_BYTES_PER_SECTOR) {
+                        DBG_PRINT_MDR VERBOSE_DEBUG,"MDR: Asked beyond %d bytes to read of a sector (%d). Error. Truncating",MDR_BYTES_PER_SECTOR,rec_length);
+                        rec_length=MDR_BYTES_PER_SECTOR-offset_a_grabar;
                     }
 
+                    //printf("antes mdr_safe_memcpy total_sectors %d\n",total_sectors);
                     mdr_safe_memcpy(origen,i,offset_a_grabar,destino,rec_length);
                 }
 
@@ -1149,8 +1155,13 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
     int escrito_microdrive_label=0;
 
+    //printf("total_sectors: %d\n",total_sectors);
+
     //Sacamos el label del sector 0 primero. Si esta erroneo, ya se corregira cuando se detecte el primer archivo
-    mdr_get_file_catalogue_get_label(catalogo->label,origen,0);
+    if (total_sectors>0) {
+        mdr_get_file_catalogue_get_label(catalogo->label,origen,0);
+        //printf("Label: [%s]\n",catalogo->label);
+    }
 
     int id_file=0;
 
