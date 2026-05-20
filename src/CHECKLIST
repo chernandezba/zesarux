@@ -192,7 +192,7 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar ifrom
 -probar betadisk. visual floppy de betadisk
 -probar discos +3. visual floppy de dsk
--probar microdrive en spectrum
+-probar microdrive en spectrum. tanto mdr, rmd. lectura y escritura
 -probar HiLow Datadrive
 -probar file browser
 

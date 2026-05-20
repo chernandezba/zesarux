@@ -546,3 +546,13 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 
 
 -fullscreen en cpc, sin border, en mac , no se ve bien
+
+
+-en menu storage-microdrive, menus que aparecen para un tipo de microdrive (rmd o mdr), no se podria hacer que para los menus no soportados, hiciera conversión?
+Ejemplo: tenemos un rmd y no aparecerá Chkdsk. Podemos hacer que aparezca chkdsk haciendo que primero convierta ese rmd a mdr? tiene sentido?
+O quiza mejor que sea el usuario el que convierta a rmd o mdr y asi tener los menus que faltan. Pero en este ultimo caso, estaria en las mismas,
+los otros menus no aparecerían. La gracia es que todos pudieran aparecer haciendo conversiones adecuadas
+Quiza menus como estiramiento no hacer que aparezca si el tipo no es el correcto
+Ver expandido ya lo hace: para los rmd, primero convierte a mdr y de ahi ya expande
+Tiene sentido microdrive raw map cuando el microdrive es mdr? quiza por la gracia de ver como se mueve el puntero lector o tambien por ver los datos,
+aunque no sea puramente raw porque viene de un mdr, pero puede estar bien

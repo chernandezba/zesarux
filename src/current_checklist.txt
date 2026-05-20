@@ -163,7 +163,7 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar kartusho
 -probar ifrom
 -probar betadisk. visual floppy de betadisk
--probar microdrive en spectrum
+ok lectura rmd, mdr. faltan escrituras -probar microdrive en spectrum
 -probar HiLow Datadrive
 -probar file browser
 
