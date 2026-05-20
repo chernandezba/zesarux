@@ -6624,9 +6624,9 @@ void menu_storage_microdrive_map(MENU_ITEM_PARAMETERS)
             int medio=0;
             if (used_sectors % 2 !=0) medio=1;
 
-            int tamanyo_archivo=catalogo->file[buscar_archivo].file_size;
 
             if (buscar_archivo>=0) {
+                int tamanyo_archivo=catalogo->file[buscar_archivo].file_size;
                 zxvision_print_string_defaults_fillspc_format(&ventana,1,linea++,
                     "Size: %5d B Used %d%s KB First sect: %d",tamanyo_archivo,used_kb,(medio ? ".5" : ""),
                         catalogo->file[buscar_archivo].sectors_list[0]);
