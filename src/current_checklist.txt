@@ -318,9 +318,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -Probar MK14
 -Probar MSX
 -Probar Spectravideo
--Probar Colecovision
--Probar SG-1000
--Probar Master System
 
 -Pruebas interfaz menu:
 * habilitar zx desktop. probar botones, iconos
