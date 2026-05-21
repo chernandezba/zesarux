@@ -1666,7 +1666,7 @@ char *get_menu_zoc_display_quality_string(int interval)
 void menu_zeng_online_full_display_interval(MENU_ITEM_PARAMETERS)
 {
 
-    int opcion=menu_simple_five_choices("Interval?","One of:",
+    int opcion=menu_simple_five_choices("Quality?","Select",
         get_menu_zoc_display_quality_string(0),
         get_menu_zoc_display_quality_string(2),
         get_menu_zoc_display_quality_string(10),
@@ -2523,6 +2523,8 @@ void menu_zeng_online(MENU_ITEM_PARAMETERS)
                         get_menu_zoc_display_quality_string(zoc_slave_differential_displays_limit_full),
                         zoc_slave_differential_displays_limit_full);
                     menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+                    menu_add_item_menu_genera_ventana(array_menu_common);
+                    menu_add_item_menu_se_cerrara(array_menu_common);
 
                     menu_add_item_menu_tooltip(array_menu_common,"How many differential displays have to ask to get a full display frame");
                     menu_add_item_menu_ayuda(array_menu_common,"How many differential displays have to ask to get a full display frame. "
