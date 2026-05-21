@@ -908,7 +908,9 @@ int menu_zeng_online_ask_user_get_uuid(char *uuid,int ocultar_master,int agregar
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Users");
 
     //No quedarnos en bucle como un menu. Al seleccionar usuario, se establece el uuid, y siempre que no se salga con ESC
-    if ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus) {
+    //Nota: no detectamos salir_todos_menus porque este tipo de dialogo siempre activa salir_todos_menus
+    //con detectar (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC es suficiente para saber si se ha pulsado ESC y por tanto no hacer kick
+    if ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC) {
 
         //printf("Usuario %s UUID %s\n",item_seleccionado.texto_opcion,item_seleccionado.texto_misc);
 
@@ -1301,6 +1303,7 @@ void menu_zeng_online_kick_user(MENU_ITEM_PARAMETERS)
     char buffer_uuid[STATS_UUID_MAX_LENGTH+1];
 
     if (menu_zeng_online_ask_user_get_uuid(buffer_uuid,1,1)) {
+        //printf("menu kick user [%s]\n",buffer_uuid);
         zeng_online_client_kick_user(buffer_uuid);
         zxvision_simple_progress_window("Kick user", menu_zeng_online_kick_user_cond,menu_zeng_online_connecting_common_print );
     }

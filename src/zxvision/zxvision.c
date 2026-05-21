@@ -22821,10 +22821,8 @@ int ultimo_menu_salido_con_flecha_derecha=0;
 //m: estructura de menu (estructura en forma de lista con punteros)
 //titulo: titulo de la ventana del menu
 //Nota: x,y, ancho, alto de la ventana se calculan segun el contenido de la misma
-
 //Retorno
 //valor retorno: tecla pulsada: 0 normal (ENTER), 1 ESCAPE,... MENU_RETORNO_XXXX
-
 //opcion_inicial contiene la opcion seleccionada.
 //asigna en item_seleccionado valores de: tipo_opcion, menu_funcion (debe ser una estructura ya asignada)
 int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo_en,char *titulo_es,char *titulo_ca)

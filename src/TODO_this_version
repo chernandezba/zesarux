@@ -8,5 +8,3 @@ export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 -Leer del portapapeles en Mac en nueva instalación, pedirá permisos?
-
--mapa microdrive hace array index out of bounds

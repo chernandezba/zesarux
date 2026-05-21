@@ -1208,6 +1208,7 @@ int zeng_online_client_kick_user_connect(void)
         created_room_creator_password,
         zeng_online_joined_to_room_number,
         param_zeng_online_client_kick_user_uuid);
+    //printf("kick user [%s]\n",param_zeng_online_client_kick_user_uuid);
 
     return zoc_open_command_close(buffer_enviar,"kick");
 
