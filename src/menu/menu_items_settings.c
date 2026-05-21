@@ -12140,7 +12140,7 @@ void menu_settings_smartload(MENU_ITEM_PARAMETERS)
             "Close menu after smartload","Cerrar menú después smartload","Tancar menú després smartload");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(no_close_menu_after_smartload.v ? ' ' : 'X'));
         menu_add_item_menu_tooltip(array_menu_common,"Closes the menu after Smartload");
-        menu_add_item_menu_ayuda(array_menu_common,"Closes the menu after Smartload");
+        menu_add_item_menu_ayuda(array_menu_common,"Closes the menu after Smartload. If disabled, the menu is kept open but only if top menu is not enabled");
 
 
         char string_smartload_history_file_shown[18];
