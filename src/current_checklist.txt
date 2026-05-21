@@ -94,7 +94,7 @@ Drivers audio:
 --Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
 --Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
--Probar ZENG Online server
+-Probar ZENG Online server: todas funciones, tipos ventanas/menus que funcionen y se abran bien
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
