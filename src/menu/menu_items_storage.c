@@ -6184,7 +6184,7 @@ void menu_storage_microdrive_file(MENU_ITEM_PARAMETERS)
                     int total_size=MICRODRIVE_RAW_COMMON_SIZE;
 
                     //Si se sale con Cancel o se pone valor incorrecto
-                    if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,7,+1,1,1000000,0)<0) {
+                    if (menu_ventana_scanf_numero_enhanced("Total Size?",&total_size,8,+1,1,1000000,0)<0) {
                         microdrive_status[microdrive_seleccionado].microdrive_file_name[0]=0;
                         return;
                     }
