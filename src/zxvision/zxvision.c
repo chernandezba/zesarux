@@ -10492,6 +10492,8 @@ int menu_da_ancho_titulo(char *titulo)
 
         int ancho_total=strlen(titulo)+ancho_boton_cerrar+ancho_franjas_color+margen_adicional; //+1 de margen, para que no se pegue el titulo
 
+        //printf("strlen %3d + adicional %3d\n",strlen(titulo),ancho_boton_cerrar+ancho_franjas_color+margen_adicional);
+
         if (zxvision_window_can_be_backgrounded(zxvision_current_window)) {
             //printf ("Sumamos 1\n");
             //sleep(5);
@@ -10508,6 +10510,8 @@ int menu_dibuja_ventana_ret_ancho_titulo(int ancho,char *titulo)
     int ancho_mostrar_titulo=menu_da_ancho_titulo(titulo);
 
     int ancho_disponible_titulo=ancho;
+
+    //printf("menu_da_ancho_titulo: %3d ancho_disponible_titulo %3d\n",ancho_mostrar_titulo,ancho_disponible_titulo);
 
     if (ancho_disponible_titulo<ancho_mostrar_titulo) ancho_mostrar_titulo=ancho_disponible_titulo;
 
@@ -10902,13 +10906,25 @@ void menu_dibuja_ventana(zxvision_window *w)
     //y las franjas de color
     if (ESTILO_GUI_MUESTRA_RAINBOW && ventana_tipo_activa) {
         //en el caso de drivers completos, hacerlo real
-        menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
+        //Pero si ancho es muy pequeño, no mostrarlas para que no tapen todo el titulo
+
+
+        //con 14 deja 4 caracteres para el titulo
+        if (ancho>=14) {
+
+        //O solo mostrar barras cuando tenga el ancho minimo necesario
+        //int ancho_necesario=menu_da_ancho_titulo(w->window_title);
+        //if (ancho>=ancho_necesario) {
+
+            menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
+        }
     }
 
     menu_dibuja_ventana_botones();
 
 }
 
+/*
 void old_menu_dibuja_ventana(zxvision_window *w)
 {
 
@@ -11071,6 +11087,8 @@ void old_menu_dibuja_ventana(zxvision_window *w)
 
 
 }
+
+*/
 
 int last_mouse_x,last_mouse_y;
 int mouse_movido=0;
@@ -17627,13 +17645,16 @@ void zxvision_handle_click_minimize(zxvision_window *w)
         //Cambiar alto
         zxvision_set_visible_height(w,2);
 
+        //printf("Ventana %s\n",w->window_title);
+
         //Cambiar ancho
         //primero poner ancho inicial y luego reducir a ancho minimo para que quepa el titulo
+        //printf("zxvision_set_visible_width %d\n",w->width_before_max_min_imize);
         zxvision_set_visible_width(w,w->width_before_max_min_imize);
 
         int ancho_ventana_final=menu_dibuja_ventana_ret_ancho_titulo(w->visible_width,w->window_title);
 
-        //printf ("ancho final: %d\n",ancho_ventana_final);
+        //printf ("ancho final: %3d ventana %s\n",ancho_ventana_final,w->window_title);
         zxvision_set_visible_width(w,ancho_ventana_final);
 
         //Al minimizar/restaurar, desactivamos maximizado
