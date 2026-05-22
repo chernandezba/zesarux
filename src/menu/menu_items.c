@@ -18146,6 +18146,10 @@ void menu_display_window_list_info(zxvision_window *w)
         "Name: %s\n"
         "Position: %d,%d\n"
         "Visible size: %dX%d\n"
+
+        "Position before max/min ize: %d,%d\n"
+        "Visible size before max/min ize: %dX%d\n"
+
         "Total size: %dX%d (%d KiB)\n"
         "Scroll %d,%d\n"
         "Minimized: %s\n"
@@ -18156,7 +18160,11 @@ void menu_display_window_list_info(zxvision_window *w)
         "Can be minimized: %s\n"
         "Can receive messages: %s\n"
         ,
-        w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,memory_used/1024,
+        w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,
+
+        w->x_before_max_min_imize,w->y_before_max_min_imize,w->height_before_max_min_imize,w->width_before_max_min_imize,
+
+        w->total_width,w->total_height,memory_used/1024,
         w->offset_x,w->offset_y,
         (w->is_minimized ? "Yes" : "No"),
         (w->is_maximized ? "Yes" : "No"),
