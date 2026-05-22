@@ -558,3 +558,10 @@ Tiene sentido microdrive raw map cuando el microdrive es mdr? quiza por la graci
 aunque no sea puramente raw porque viene de un mdr, pero puede estar bien
 
 -en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado
+
+
+-Otro estilo de GUI con barra rainbow de título ventana que sean puntos de color. Para estilo AtariTOS?-> no acaba de quedar bien en AtariTOS
+Parece como un bug de color sobre la franja actual
+
+-Dibujado de barras arcoiris en titulo menu: o bien aparezcan a partir de ancho minimo fijo (lo que hay ahora) o que espere
+el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
