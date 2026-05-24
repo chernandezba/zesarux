@@ -1300,8 +1300,6 @@ struct s_mdr_file_cat *mdr_get_file_catalogue(z80_byte *origen,int total_sectors
 
 
 
-                    //util_tape_tap_get_info(buffer_tap_temp,buffer_info_tape,0);
-
                     z80_byte flag=0;
                     z80_int longitud=19;
 
