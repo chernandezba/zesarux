@@ -4831,7 +4831,7 @@ Maximo sectores por archivo: 25
             }
 
 
-            zxvision_print_string_defaults(&ventana,1,hilow_browser_inicio_y_mapa-1,"Legend: [D]irect [u]sed [F]ile [.]free [x]unusable");
+            zxvision_print_string_defaults(&ventana,1,hilow_browser_inicio_y_mapa-1,"Legend: [D]irec. [u]sed [F]ile [.]free [x]unusable");
         }
 
         //Restaurar comportamiento atajos
