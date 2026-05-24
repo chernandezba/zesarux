@@ -250,12 +250,21 @@ int tape_pzx_seek_data_block(void)
             debug_printf(VERBOSE_INFO,"PZX PZXT block. Version %d.%d",buffer_version[0],buffer_version[1]);
 
             //asigna memoria
+            /*
+            The additional information consists of sequence of strings, each terminated
+            either by character 0x00 or end of the block, whichever comes first.
+            This means the last string in the sequence may or may not be terminated.
+            */
+
+            //Metemos 1 byte de mas al final con 0 por si la ultima cadena no acaba con el 0
+
             z80_byte *info_bloque;
-            info_bloque=util_malloc(pzx_last_blockmem_length-2,"Can not allocate for PZXT block");
+            info_bloque=util_malloc(pzx_last_blockmem_length-2+1,"Can not allocate for PZXT block");
 
             //Copiar el contenido
             //printf("pzx_last_blockmem_length-2: %d\n",pzx_last_blockmem_length-2);
             tape_block_pzx_blockmem_fread(info_bloque,pzx_last_blockmem_length-2);
+            info_bloque[pzx_last_blockmem_length-2]=0;
 
             //Mostrar las cadenas de texto cada una separadas por espacio
             int longitud_textos=pzx_last_blockmem_length-2;
@@ -266,6 +275,7 @@ int tape_pzx_seek_data_block(void)
             puntero_strings=info_bloque;
 
             while (longitud_textos>0) {
+                //printf("longitud_textos: %d\n",longitud_textos);
                 debug_printf(VERBOSE_INFO,"PZX PZXT block. Tape info: %s",puntero_strings);
                 int longitud_string=strlen((char *)puntero_strings);
 

@@ -16,3 +16,4 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
 
 -tape load karnov.pzx peta
+ok corregido. probar bien ese pzx y otros
