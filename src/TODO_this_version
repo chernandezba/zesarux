@@ -7,8 +7,12 @@
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
--Leer del portapapeles en Mac en nueva instalación, pedirá permisos?
+-probar despues de cambio de util_tape_tap_get_info funciones:
+*extract tap
+*extract tzx
+*extract pzx
+*tzx browser
+*tap browser
 
 
--Menús Zeng online están traducidos?
-
+-tape load karnov.pzx peta

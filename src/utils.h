@@ -727,7 +727,7 @@ extern void convert_numeros_letras_puerto_teclado_continue(z80_byte tecla,int pr
 
 
 
-extern int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap);
+extern int util_tape_tap_get_info(z80_byte *origen_tape,char *texto,int origin_tap,int longitud_origen);
 
 #define DEFAULT_ZESARUX_CONFIG_FILE ".zesaruxrc"
 
@@ -1078,7 +1078,7 @@ extern int util_copy_files_to_mmc_addlist(char *source, char *destination);
 extern void util_copy_files_to_mmc_doit(void);
 
 extern z80_byte util_get_byte_protect(z80_byte *memoria,int total_size,int offset);
-extern void util_memcpy_protect_origin(z80_byte *destino,z80_byte *memoria,int total_size,int offset,int total_copiar);
+extern void util_memcpy_protect_origin(z80_byte *destino,z80_byte *origen,int total_origin_size,int offset,int total_copiar);
 
 
 

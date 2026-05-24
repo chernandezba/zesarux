@@ -14511,6 +14511,7 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
                         z80_byte sped_year=tape[20];
 
             sprintf(texto,"SPED %s (%d-%d-%d)",buffer_nombre,sped_day,sped_month,sped_year+1980);
+            //Ultimos 9 bytes de cabecera sped estan a 255, no se usan
 
         }
 
@@ -14521,9 +14522,14 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 //Retorna texto descriptivo de informacion de cinta en texto. Cinta tipo tap o tzx
 //Retorna longitud del bloque
 //origin_tap es importante cuando se viene de un tap y maquina activa es jupiter ace, pues esos tap no tienen flag
-//Hasta 39 bytes de origen se pueden llegar a leer
-int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
+//Hasta 39 bytes de origen se pueden llegar a leer (36 de sped + 3 bytes de inicio: longitud, flag)
+int util_tape_tap_get_info(z80_byte *origen_tape,char *texto,int origin_tap,int longitud_origen)
 {
+
+    z80_byte buf_tape[39];
+    util_memcpy_protect_origin(buf_tape, origen_tape, longitud_origen, 0, 39);
+    z80_byte *tape=buf_tape;
+
     int longitud=value_8_to_16(tape[1],tape[0]);
 
     //Soporte para cintas TAP de Jupiter Ace, que no tienen flag
@@ -14576,7 +14582,10 @@ int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
         else {
             //Maximo 36 bytes (en una cabecera tipo SPED). Copiamos a buffer temporal para evitar que se salga puntero de sitio
             //Pero le hemos restado 3
+            //TODO: creo que esto esta mal, se deberian leer 36, que es el total de cabecera sped
+            //pero como los ultimos 9 bytes de cabecera sped no se usan, no se notara que falten 3 de esos bytes
             z80_byte buffer_temp[33];
+            //printf("util_memcpy_protect_origin\n");
             util_memcpy_protect_origin(buffer_temp, tape, 33, 0, 33);
             util_tape_get_info_tapeblock(buffer_temp,flag,longitud,texto);
 
@@ -17896,9 +17905,10 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
         //z80_byte *copia_puntero=puntero_lectura;
         int nuevo_copia_puntero=nuevo_puntero_lectura;
         //Buffer temporal para evitar que se salga de sitio
-        z80_byte buffer_temp[36]; //36 maximo en una cabecera tipo sped
-        util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,nuevo_puntero_lectura,36);
-        longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,1);
+        //z80_byte buffer_temp[36+3]; //36 maximo en una cabecera tipo sped
+        //util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,nuevo_puntero_lectura,36+3);
+        //longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,1);
+        longitud_bloque=util_tape_tap_get_info(taperead,buffer_texto,1,remaining_file_size);
                 //printf("longitud bloque: %d\n",longitud_bloque);
                 //printf("nombre: %s\n",buffer_texto);
 
@@ -18601,7 +18611,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
 
                     util_memcpy_protect_origin(&buffer_temp_cabecera[2], puntero_lectura, bytes_leer, 0, 37);
                     //printf("Despues memcopy\n");
-                    util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0);
+                    util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0,39);
 
 
 
@@ -18622,10 +18632,9 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile,int genera
 
                     util_memcpy_protect_origin(buffer_temp_cabecera, puntero_lectura, bytes_leer, 0, 39);
                     //printf("Despues memcopy\n");
-                    longitud_bloque=util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0);
+                    longitud_bloque=util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0,39);
 
 
-                    //longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,0);
                 }
 
 
@@ -19109,9 +19118,11 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int genera
                 longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto);
                 */
 
-                z80_byte buffer_temp[36];
-                util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,puntero_lectura,36);
-                longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,0);
+                //z80_byte buffer_temp[36];
+                //util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,puntero_lectura,36);
+                //longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,0);
+
+                longitud_bloque=util_tape_tap_get_info(taperead,buffer_texto,0,remaining_file_size);
 
 
 
@@ -24399,12 +24410,17 @@ z80_byte util_get_byte_protect(z80_byte *memoria,int total_size,int offset)
 }
 
 
-//Funcion memcpy pero comprobando que origen no se salga del maximo permitido
-void util_memcpy_protect_origin(z80_byte *destino,z80_byte *memoria,int total_size,int offset,int total_copiar)
+//Funcion memcpy pero comprobando que origen no se salga del maximo permitido. Lo que se salga, se copiara con byte 0
+//destino: destino donde copiar
+//origen: origen de los datos
+//total_origin_size: total tamaño origen de los datos
+//offset: offset en los datos de origen
+//total_copiar: cuantos datos se quieren copiar
+void util_memcpy_protect_origin(z80_byte *destino,z80_byte *origen,int total_origin_size,int offset,int total_copiar)
 {
 
     for (;total_copiar>0;total_copiar--) {
-        *destino=util_get_byte_protect(memoria,total_size,offset);
+        *destino=util_get_byte_protect(origen,total_origin_size,offset);
 
         destino++;
         offset++;

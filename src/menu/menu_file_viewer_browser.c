@@ -4161,7 +4161,8 @@ void menu_file_tzx_browser_show(char *filename)
 				puntero+=2;
 
 
-			        longitud_sub_bloque=util_tape_tap_get_info(&tzx_file_mem[puntero],buffer_bloque,0);
+			        //longitud_sub_bloque=util_tape_tap_get_info(&tzx_file_mem[puntero],buffer_bloque,0);
+                    longitud_sub_bloque=util_tape_tap_get_info(&tzx_file_mem[puntero],buffer_bloque,0,filesize-puntero);
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
 
@@ -4422,7 +4423,8 @@ int menu_tape_browser_show(char *filename,int indice_bloque_actual)
     int id_bloque_leido=0;
 
 	while(total_mem>0) {
-		longitud_bloque=util_tape_tap_get_info(puntero_lectura,&buffer_texto[1],1);
+        //printf("total_mem %d\n",total_mem);
+		longitud_bloque=util_tape_tap_get_info(puntero_lectura,&buffer_texto[1],1,total_mem);
 
         //dejamos un espacio para poder indicar, si conviene, donde está el puntero actual de lectura
         if (id_bloque_leido==indice_bloque_actual) buffer_texto[0]='>';
