@@ -166,25 +166,25 @@ void samram_opcode_edf9(void)
     z80_byte valor_leido=samram_memory_pointer[DE];
     reg_a=valor_leido;
 
-//instruccion_119()
+    //instruccion_119()
 
-//LD (HL),A
-	poke_byte(HL,reg_a);
-
-
-
-
-//instruccion_28()
-
-//INC E
-        inc_8bit(reg_e);
+    //LD (HL),A
+    poke_byte(HL,reg_a);
 
 
 
-//instruccion_36()
 
-//INC H
-	inc_8bit(reg_h);
+    //instruccion_28()
+
+    //INC E
+    inc_8bit(reg_e);
+
+
+
+    //instruccion_36()
+
+    //INC H
+    inc_8bit(reg_h);
 
 
 
@@ -193,7 +193,7 @@ void samram_opcode_edf9(void)
 
 void samram_opcode_edfa(void)
 {
-//;EDFA=RAMBANK LD A,HL
+    //;EDFA=RAMBANK LD A,HL
     //printf("EDFA=RAMBANK LD A,HL HL=%d\n",HL);
 
 
@@ -296,35 +296,35 @@ int samram_tap_save_detect(void)
 z80_byte *samram_check_if_sam_area(z80_int dir,int writing)
 {
 
-  //si espacio rom
-  if (dir<16384) {
-    if (!samram_if_rom_mapped()) return NULL;
+    //si espacio rom
+    if (dir<16384) {
+        if (!samram_if_rom_mapped()) return NULL;
 
-    //Si intenta escribir, denegar. Tal y como se hacia en emulador Z80, no se permite escribir en esa ram desde el emulador
-    if (writing) {
-        //printf("Trying to write mapped cmos ram-rom dir %d\n",dir);
-        return NULL;
-    }
+        //Si intenta escribir, denegar. Tal y como se hacia en emulador Z80, no se permite escribir en esa ram desde el emulador
+        if (writing) {
+            //printf("Trying to write mapped cmos ram-rom dir %d\n",dir);
+            return NULL;
+        }
 
-    //rom mapeada, ver cual
-    int romblock=samram_get_rom_mapped();
+        //rom mapeada, ver cual
+        int romblock=samram_get_rom_mapped();
 
-    int offset=dir+16384*romblock;
-    //printf("romblock %d\n",romblock);
-    return &samram_memory_pointer[offset];
-
-  }
-
-  //si mayor 32767
-  if (dir>32767) {
-
-    if (samram_settings_byte & 32) {
-        int offset=dir; //la shadow ram esta justo despues de la rom
+        int offset=dir+16384*romblock;
+        //printf("romblock %d\n",romblock);
         return &samram_memory_pointer[offset];
-    }
-  }
 
-  return NULL;
+    }
+
+    //si mayor 32767
+    if (dir>32767) {
+
+        if (samram_settings_byte & 32) {
+            int offset=dir; //la shadow ram esta justo despues de la rom
+            return &samram_memory_pointer[offset];
+        }
+    }
+
+    return NULL;
 }
 
 
@@ -334,7 +334,7 @@ z80_byte *samram_check_if_sam_area(z80_int dir,int writing)
 z80_byte samram_poke_byte(z80_int dir,z80_byte valor)
 {
 
-	//samram_original_poke_byte(dir,valor);
+    //samram_original_poke_byte(dir,valor);
     //Llamar a anterior
     //pero no cuando escribimos en shadow ram
     int escribir=1;
@@ -393,39 +393,39 @@ z80_byte samram_poke_byte_no_time(z80_int dir,z80_byte valor)
 z80_byte samram_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
 {
 
-	z80_byte valor_leido=debug_nested_peek_byte_call_previous(samram_nested_id_peek_byte,dir);
+    z80_byte valor_leido=debug_nested_peek_byte_call_previous(samram_nested_id_peek_byte,dir);
 
 
 
-	z80_byte *samdir;
-        samdir=samram_check_if_sam_area(dir,0);
-        if (samdir!=NULL) {
-          if (dir>32767) {
-               //printf("peek byte shadow ram %d\n",dir);
-           }
-           return *samdir;
+    z80_byte *samdir;
+    samdir=samram_check_if_sam_area(dir,0);
+    if (samdir!=NULL) {
+        if (dir>32767) {
+            //printf("peek byte shadow ram %d\n",dir);
         }
+        return *samdir;
+    }
 
 
-	return valor_leido;
+    return valor_leido;
 }
 
 z80_byte samram_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 {
 
-	z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(samram_nested_id_peek_byte_no_time,dir);
+    z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(samram_nested_id_peek_byte_no_time,dir);
 
 
-	z80_byte *samdir;
-        samdir=samram_check_if_sam_area(dir,0);
-        if (samdir!=NULL) {
-          if (dir>32767) {
-               //printf("peek byte shadow ram %d\n",dir);
-           }
-           return *samdir;
+    z80_byte *samdir;
+    samdir=samram_check_if_sam_area(dir,0);
+    if (samdir!=NULL) {
+        if (dir>32767) {
+            //printf("peek byte shadow ram %d\n",dir);
         }
+        return *samdir;
+    }
 
-	return valor_leido;
+    return valor_leido;
 }
 
 
@@ -435,11 +435,11 @@ void samram_set_peek_poke_functions(void)
 {
     debug_printf (VERBOSE_DEBUG,"Setting samram poke / peek functions");
 
-	//Asignar mediante nuevas funciones de core anidados
-	samram_nested_id_poke_byte=debug_nested_poke_byte_add(samram_poke_byte,"Samram poke_byte");
-	samram_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(samram_poke_byte_no_time,"Samram poke_byte_no_time");
-	samram_nested_id_peek_byte=debug_nested_peek_byte_add(samram_peek_byte,"Samram peek_byte");
-	samram_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(samram_peek_byte_no_time,"Samram peek_byte_no_time");
+    //Asignar mediante nuevas funciones de core anidados
+    samram_nested_id_poke_byte=debug_nested_poke_byte_add(samram_poke_byte,"Samram poke_byte");
+    samram_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(samram_poke_byte_no_time,"Samram poke_byte_no_time");
+    samram_nested_id_peek_byte=debug_nested_peek_byte_add(samram_peek_byte,"Samram peek_byte");
+    samram_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(samram_peek_byte_no_time,"Samram peek_byte_no_time");
 
 }
 
@@ -449,24 +449,24 @@ void samram_restore_peek_poke_functions(void)
                 debug_printf (VERBOSE_DEBUG,"Restoring original poke / peek functions before samram");
 
 
-	debug_nested_poke_byte_del(samram_nested_id_poke_byte);
-	debug_nested_poke_byte_no_time_del(samram_nested_id_poke_byte_no_time);
-	debug_nested_peek_byte_del(samram_nested_id_peek_byte);
-	debug_nested_peek_byte_no_time_del(samram_nested_id_peek_byte_no_time);
+    debug_nested_poke_byte_del(samram_nested_id_poke_byte);
+    debug_nested_poke_byte_no_time_del(samram_nested_id_poke_byte_no_time);
+    debug_nested_peek_byte_del(samram_nested_id_peek_byte);
+    debug_nested_peek_byte_no_time_del(samram_nested_id_peek_byte_no_time);
 }
 
 
 
 void samram_alloc_memory(void)
 {
-        int size=SAMRAM_SIZE;
+    int size=SAMRAM_SIZE;
 
-        debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for samram emulation",size/1024);
+    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for samram emulation",size/1024);
 
-        samram_memory_pointer=malloc(size);
-        if (samram_memory_pointer==NULL) {
-                cpu_panic ("No enough memory for samram emulation");
-        }
+    samram_memory_pointer=malloc(size);
+    if (samram_memory_pointer==NULL) {
+            cpu_panic ("No enough memory for samram emulation");
+    }
 
 
 }
@@ -474,31 +474,31 @@ void samram_alloc_memory(void)
 int samram_load_rom(void)
 {
 
-        FILE *ptr_samram_romfile;
-        int leidos=0;
+    FILE *ptr_samram_romfile;
+    int leidos=0;
 
-        debug_printf (VERBOSE_INFO,"Loading samram rom %s",samram_rom_file_name);
+    debug_printf (VERBOSE_INFO,"Loading samram rom %s",samram_rom_file_name);
 
-  			ptr_samram_romfile=fopen(samram_rom_file_name,"rb");
-                if (!ptr_samram_romfile) {
-                        debug_printf (VERBOSE_ERR,"Unable to open ROM file");
-                }
+    ptr_samram_romfile=fopen(samram_rom_file_name,"rb");
+    if (!ptr_samram_romfile) {
+            debug_printf (VERBOSE_ERR,"Unable to open ROM file");
+    }
 
-        if (ptr_samram_romfile!=NULL) {
+    if (ptr_samram_romfile!=NULL) {
 
-                leidos=fread(samram_memory_pointer,1,32768,ptr_samram_romfile);
-                fclose(ptr_samram_romfile);
+        leidos=fread(samram_memory_pointer,1,32768,ptr_samram_romfile);
+        fclose(ptr_samram_romfile);
 
-        }
+    }
 
 
 
-        if (leidos!=32768 || ptr_samram_romfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error reading samram rom");
-                return 1;
-        }
+    if (leidos!=32768 || ptr_samram_romfile==NULL) {
+            debug_printf (VERBOSE_ERR,"Error reading samram rom");
+            return 1;
+    }
 
-        return 0;
+    return 0;
 }
 
 
@@ -506,38 +506,38 @@ int samram_load_rom(void)
 void samram_enable(void)
 {
 
-  if (!MACHINE_IS_SPECTRUM_48) {
-    debug_printf(VERBOSE_INFO,"Can not enable samram on non Spectrum 48 machine");
-    return;
-  }
+    if (!MACHINE_IS_SPECTRUM_48) {
+        debug_printf(VERBOSE_INFO,"Can not enable samram on non Spectrum 48 machine");
+        return;
+    }
 
-	if (samram_enabled.v) {
-		debug_printf (VERBOSE_DEBUG,"Already enabled");
-		return;
-	}
+    if (samram_enabled.v) {
+        debug_printf (VERBOSE_DEBUG,"Already enabled");
+        return;
+    }
 
-	if (samram_rom_file_name[0]==0) {
-		debug_printf (VERBOSE_ERR,"Trying to enable Samram but no ROM file selected");
-		return;
-	}
+    if (samram_rom_file_name[0]==0) {
+        debug_printf (VERBOSE_ERR,"Trying to enable Samram but no ROM file selected");
+        return;
+    }
 
-	samram_alloc_memory();
-	if (samram_load_rom()) return;
+    samram_alloc_memory();
+    if (samram_load_rom()) return;
 
-	samram_set_peek_poke_functions();
+    samram_set_peek_poke_functions();
 
-	samram_enabled.v=1;
-
-
-	//samram_settings_byte=2; //no mapeado
-
-	samram_settings_byte=0; //activar cmos ram y seleccionar bank 0
+    samram_enabled.v=1;
 
 
-	joystick_emulation=JOYSTICK_KEMPSTON;
-	debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Kempston as NMI menu needs it");
+    //samram_settings_byte=2; //no mapeado
 
-	reset_cpu();
+    samram_settings_byte=0; //activar cmos ram y seleccionar bank 0
+
+
+    joystick_emulation=JOYSTICK_KEMPSTON;
+    debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Kempston as NMI menu needs it");
+
+    reset_cpu();
 
 
 
@@ -545,13 +545,13 @@ void samram_enable(void)
 
 void samram_disable(void)
 {
-	if (samram_enabled.v==0) return;
+    if (samram_enabled.v==0) return;
 
-	samram_restore_peek_poke_functions();
+    samram_restore_peek_poke_functions();
 
-	free(samram_memory_pointer);
+    free(samram_memory_pointer);
 
-	samram_enabled.v=0;
+    samram_enabled.v=0;
 }
 
 void samram_nmi(void)
@@ -570,9 +570,9 @@ void samram_press_button(void)
                 return;
         }
 
-	samram_settings_byte=0; //activar cmos ram y seleccionar bank 0
+    samram_settings_byte=0; //activar cmos ram y seleccionar bank 0
 
-	reset_cpu();
+    reset_cpu();
 
 
 }
@@ -608,7 +608,7 @@ void samram_write_port(z80_byte value)
 
 
     //no hacer los printf siguientes
-  return;
+    return;
 
   switch (value) {
       case 0:

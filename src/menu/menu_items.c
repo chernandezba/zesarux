@@ -47618,10 +47618,6 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     { zxdesktop_lowericon_zxmmcplusflash_is_visible, zxdesktop_lowericon_zxmmcplusflash_is_active, zxdesktop_lowericon_zxmmcplusflash_accion,NULL,
         bitmap_lowericon_ext_desktop_zxmmcplusflash,bitmap_lowericon_ext_desktop_zxmmcplusflash,&zxdesktop_icon_zxmmcplusflash_inverse,TOOLTIP_ZXMMCPLUS_FLASH},
 
-    //samram. En este caso no hay distincion entre icono insertado y no insertado
-    { zxdesktop_lowericon_samram_is_visible, zxdesktop_lowericon_samram_is_active, zxdesktop_lowericon_samram_accion,NULL,
-        bitmap_lowericon_ext_desktop_samram,bitmap_lowericon_ext_desktop_samram,&zxdesktop_icon_samram_inverse,TOOLTIP_SAMRAM},
-
     //cartucho dandanator
     { zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
         zxdesktop_lowericon_dandanator_accion_boton_derecho,
@@ -47631,6 +47627,10 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     { zxdesktop_lowericon_hilow_is_visible, zxdesktop_lowericon_hilow_is_active,zxdesktop_lowericon_hilow_accion,
         zxdesktop_lowericon_hilow_accion_boton_derecho,
         bitmap_lowericon_ext_desktop_hilow_active,bitmap_lowericon_ext_desktop_hilow_inactive,&zxdesktop_icon_hilow_inverse,TOOLTIP_HILOW},
+
+    //samram. En este caso no hay distincion entre icono insertado y no insertado
+    { zxdesktop_lowericon_samram_is_visible, zxdesktop_lowericon_samram_is_active, zxdesktop_lowericon_samram_accion,NULL,
+        bitmap_lowericon_ext_desktop_samram,bitmap_lowericon_ext_desktop_samram,&zxdesktop_icon_samram_inverse,TOOLTIP_SAMRAM},
 
 };
 
