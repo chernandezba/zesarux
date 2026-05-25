@@ -2779,8 +2779,6 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
                     port=BC;
                 }
 
-                //sprintf (textoregistros,"fila%d",linea-22);
-
 
                 if ((registros_modificados & MOD_READ_IN_A_N) || (registros_modificados & MOD_READ_IN_R_C) ) {
                     if (linea==21) {
@@ -2792,7 +2790,6 @@ void menu_debug_show_register_line(int linea,char *textoregistros,z80_64bit *col
 
                             int indice_fila=linea-22;
                             int offset_string=indice_fila*DEBUG_FILAS_TECLAS_LEN_LINEA;
-                            //printf("offset_string %d\n",offset_string); //8*20
                             if (filas_teclas[offset_string]) {
                                 sprintf (textoregistros,"Row %s",&filas_teclas[offset_string]);
                             }
