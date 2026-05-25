@@ -42211,7 +42211,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_samram,NULL,"Samram");
             //menu_add_item_menu_shortcut(array_menu_storage,'s');
 
-            menu_add_item_menu_tooltip(array_menu_storage,"Samram settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_SAMRAM));
             menu_add_item_menu_ayuda(array_menu_storage,"Settings for Gerton Lunter Samram emulation.\n"
                     "It's a device that Gerton Lunter created and also was emulated in his own emulator\n"
                     "The original interface has a 32kb of static RAM and also uses 32 kb of the extra shadow unused faulty "
@@ -45486,6 +45486,7 @@ char *tooltips_devices_cartridge_ts2068="Timex Cartridge Settings";
 char *tooltips_devices_cartridge_z88="Z88 Memory Slots";
 char *tooltips_devices_zxuno_flash="ZXUno Flash settings";
 char *tooltips_devices_zxmmcplus_flash="ZXMMC+ settings";
+char *tooltips_devices_samram="Samram settings";
 char *tooltips_devices_hilow="HiLow Data Drive";
 char *tooltips_devices_cartridge_sms="Master System cartridge";;
 char *tooltips_devices_cartridge_sg1000="SG-1000 cartridge";
@@ -45593,6 +45594,10 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip)
 
         case TOOLTIP_ZXMMCPLUS_FLASH:
             return tooltips_devices_zxmmcplus_flash;
+        break;
+
+        case TOOLTIP_SAMRAM:
+            return tooltips_devices_samram;
         break;
 
 
@@ -47253,6 +47258,27 @@ void zxdesktop_lowericon_zxmmcplusflash_accion(void)
     menu_zxmmcplus(0);
 }
 
+
+//Funciones para samram
+int zxdesktop_lowericon_samram_is_visible(void)
+{
+    if (MACHINE_IS_SPECTRUM && samram_enabled.v) return 1;
+
+    else return 0;
+}
+
+int zxdesktop_lowericon_samram_is_active(void)
+{
+    if (MACHINE_IS_SPECTRUM && samram_enabled.v) return 1;
+    else return 0;
+}
+
+void zxdesktop_lowericon_samram_accion(void)
+{
+    menu_samram(0);
+}
+
+
 //Funciones para Cartuchos MSX, Coleco, SVI, SG1000, SMS
 
 
@@ -47489,6 +47515,7 @@ int zxdesktop_icon_flp1_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
 int zxdesktop_icon_zxmmcplusflash_inverse=0;
+int zxdesktop_icon_samram_inverse=0; //de momento nunca cambia a 1
 int zxdesktop_icon_hilow_inverse=0;
 
 
@@ -47590,6 +47617,10 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //zxmmc+ flash. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_zxmmcplusflash_is_visible, zxdesktop_lowericon_zxmmcplusflash_is_active, zxdesktop_lowericon_zxmmcplusflash_accion,NULL,
         bitmap_lowericon_ext_desktop_zxmmcplusflash,bitmap_lowericon_ext_desktop_zxmmcplusflash,&zxdesktop_icon_zxmmcplusflash_inverse,TOOLTIP_ZXMMCPLUS_FLASH},
+
+    //samram. En este caso no hay distincion entre icono insertado y no insertado
+    { zxdesktop_lowericon_samram_is_visible, zxdesktop_lowericon_samram_is_active, zxdesktop_lowericon_samram_accion,NULL,
+        bitmap_lowericon_ext_desktop_samram,bitmap_lowericon_ext_desktop_samram,&zxdesktop_icon_samram_inverse,TOOLTIP_SAMRAM},
 
     //cartucho dandanator
     { zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,

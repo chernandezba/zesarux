@@ -316,6 +316,7 @@ extern int zxdesktop_icon_flp1_inverse;
 extern int zxdesktop_icon_dandanator_inverse;
 extern int zxdesktop_icon_zxunoflash_inverse;
 extern int zxdesktop_icon_zxmmcplusflash_inverse;
+extern int zxdesktop_icon_samram_inverse;
 extern int zxdesktop_icon_hilow_inverse;
 
 extern void gamelife_timer_counter_event(void);

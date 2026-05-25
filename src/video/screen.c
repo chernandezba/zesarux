@@ -15247,6 +15247,7 @@ void delete_generic_footertext(void)
     zxdesktop_icon_dandanator_inverse=0;
     zxdesktop_icon_zxunoflash_inverse=0;
     zxdesktop_icon_zxmmcplusflash_inverse=0;
+    zxdesktop_icon_samram_inverse=0;
     zxdesktop_icon_hilow_inverse=0;
 
     menu_draw_ext_desktop();

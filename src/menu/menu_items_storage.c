@@ -3486,6 +3486,9 @@ void menu_samram_rom_file(MENU_ITEM_PARAMETERS)
                                 samram_rom_file_name[0]=0;
                                 return;
                         }
+
+                        samram_enable();
+
                 }
 
 
