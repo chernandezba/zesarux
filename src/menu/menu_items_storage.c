@@ -12714,6 +12714,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,
                     "DIVIDE RAM","DIVIDE RAM","DIVIDE RAM");
                 menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%d KB]",get_diviface_total_ram() );
+                menu_add_item_menu_prefijo(array_menu_ide_divide,"    ");
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE RAM");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE RAM");
                 menu_add_item_menu_es_avanzado(array_menu_ide_divide);
