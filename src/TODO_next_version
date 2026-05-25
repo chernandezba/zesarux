@@ -625,3 +625,6 @@ Estos tap son una test units que uso para comprobar  en la medida de lo posible 
 Carpeta conversacionales/tipo parser/daad/daad v3
 
 Ahora lo tienes nada más empezar casi (segundo condacto). Pero ojo, solo en el de 128K, en el 48 el compilador cambia los XMES a MES, así que sale el texto "Esto es un XMES" pero es mentira 😃
+
+
+-iconos de dispositivos de lec romm ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
