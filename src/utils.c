@@ -17902,13 +17902,14 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
     char primer_bloque_basic[PATH_MAX]="";
 
     while(remaining_file_size>0) {
+        //printf("remaining_file_size %d\n",remaining_file_size);
         //z80_byte *copia_puntero=puntero_lectura;
         int nuevo_copia_puntero=nuevo_puntero_lectura;
         //Buffer temporal para evitar que se salga de sitio
         //z80_byte buffer_temp[36+3]; //36 maximo en una cabecera tipo sped
         //util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,nuevo_puntero_lectura,36+3);
         //longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,1);
-        longitud_bloque=util_tape_tap_get_info(taperead,buffer_texto,1,remaining_file_size);
+        longitud_bloque=util_tape_tap_get_info(&taperead[nuevo_puntero_lectura],buffer_texto,1,remaining_file_size);
                 //printf("longitud bloque: %d\n",longitud_bloque);
                 //printf("nombre: %s\n",buffer_texto);
 
@@ -17983,6 +17984,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
 
                                 if (tzxfile==NULL) {
+                                        //printf("Generando temp file %s/%02d-data-%d%s\n",tempdir,filenumber,longitud_final,extension_agregar);
                                         sprintf (buffer_temp_file,"%s/%02d-data-%d%s",tempdir,filenumber,longitud_final,extension_agregar);
 
                                         if (era_pantalla) {
