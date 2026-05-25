@@ -17905,10 +17905,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
         //printf("remaining_file_size %d\n",remaining_file_size);
         //z80_byte *copia_puntero=puntero_lectura;
         int nuevo_copia_puntero=nuevo_puntero_lectura;
-        //Buffer temporal para evitar que se salga de sitio
-        //z80_byte buffer_temp[36+3]; //36 maximo en una cabecera tipo sped
-        //util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,nuevo_puntero_lectura,36+3);
-        //longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,1);
+
         longitud_bloque=util_tape_tap_get_info(&taperead[nuevo_puntero_lectura],buffer_texto,1,remaining_file_size);
                 //printf("longitud bloque: %d\n",longitud_bloque);
                 //printf("nombre: %s\n",buffer_texto);
@@ -19093,36 +19090,8 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile,int genera
                 }
 
 
-
-
-                //Procesar el total de bits
-                //int bit_number=7;
-                //z80_byte processing_byte;
-
-                //z80_int *sequence_bit;
-                //int longitud_sequence_bit;
-
-                //z80_long_int total_bits_read;
-
-
-
-                //z80_byte *puntero_lectura_copia=memoria;
                 int memoria_lectura_copia=memoria_lectura;
 
-                //util_get_byte_protect(taperead,total_file_size,memoria_lectura_copia+
-
-
-                //36 que suficiente por si da la casualidad de cabecera sped (34 bytes)
-                //TODO: esto son los primeros pasos para evitar un segfault al hacer un preview de un pzx corrupto
-                /*
-
-
-                longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto);
-                */
-
-                //z80_byte buffer_temp[36];
-                //util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,puntero_lectura,36);
-                //longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,0);
 
                 longitud_bloque=util_tape_tap_get_info(taperead,buffer_texto,0,remaining_file_size);
 

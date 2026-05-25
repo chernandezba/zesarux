@@ -4161,7 +4161,6 @@ void menu_file_tzx_browser_show(char *filename)
 				puntero+=2;
 
 
-			        //longitud_sub_bloque=util_tape_tap_get_info(&tzx_file_mem[puntero],buffer_bloque,0);
                     longitud_sub_bloque=util_tape_tap_get_info(&tzx_file_mem[puntero],buffer_bloque,0,filesize-puntero);
 				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
 
