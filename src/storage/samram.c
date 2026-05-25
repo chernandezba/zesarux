@@ -35,6 +35,8 @@
 #include "operaciones.h"
 #include "ula.h"
 #include "joystick.h"
+#include "menu_items.h"
+#include "screen.h"
 
 
 z80_bit samram_enabled={0};
@@ -578,11 +580,28 @@ void samram_press_button(void)
 }
 */
 
+void samram_footer_print_flash_operating(void)
+{
 
+
+	generic_footertext_print_operating("SAM");
+    watermark_tell_device_activity();
+
+    //Y poner icono en inverso
+
+    if (!zxdesktop_icon_samram_inverse) {
+        zxdesktop_icon_samram_inverse=1;
+        menu_draw_ext_desktop();
+    }
+
+}
 
 void samram_write_port(z80_byte value)
 {
   //printf ("write sam ram value %02XH\n",value);
+
+  //Realmente samram siempre se usa al activarlo, estamos destacando el dispositivo al acceder al puerto de control
+  samram_footer_print_flash_operating();
 
   int bitvalue=value&1;
 

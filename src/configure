@@ -1785,7 +1785,7 @@ expression_parser.o: expression_parser.c expression_parser.h cpu.h debug.h utils
 kartusho.o: storage/kartusho.c storage/kartusho.h cpu.h debug.h utils.h operaciones.h ula.h
 	\$(CC) \$(CFLAGS) -c storage/kartusho.c
 
-samram.o: storage/samram.c storage/samram.h cpu.h debug.h utils.h operaciones.h ula.h joystick.h
+samram.o: storage/samram.c storage/samram.h cpu.h debug.h utils.h operaciones.h ula.h joystick.h menu/menu_items.h video/screen.h
 	\$(CC) \$(CFLAGS) -c storage/samram.c
 
 ifrom.o: storage/ifrom.c storage/ifrom.h cpu.h debug.h utils.h operaciones.h ula.h

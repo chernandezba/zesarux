@@ -47515,7 +47515,7 @@ int zxdesktop_icon_flp1_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
 int zxdesktop_icon_zxmmcplusflash_inverse=0;
-int zxdesktop_icon_samram_inverse=0; //de momento nunca cambia a 1
+int zxdesktop_icon_samram_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
 
 
