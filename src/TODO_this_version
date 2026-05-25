@@ -10,7 +10,7 @@ export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 -probar despues de cambio de util_tape_tap_get_info funciones:
 ok*extract tap
 ok*extract tzx
-*extract pzx
+ok *extract pzx
 ok*tzx browser
 ok*tap browser
 
