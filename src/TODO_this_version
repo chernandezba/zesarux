@@ -15,5 +15,4 @@ ok*tzx browser
 ok*tap browser
 
 
--tape load karnov.pzx peta
-ok corregido. probar bien ese pzx y otros
+-aventure map: con quill,  descripciones localidades aparecen y luego desaparecen -> parece que ya no lo hace
