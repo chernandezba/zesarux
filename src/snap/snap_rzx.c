@@ -230,9 +230,15 @@ void load_rzx_snapshot_file(char *archivo)
                       65536*rzx_get_byte(rzx_posicion_puntero+3) + 16777216*rzx_get_byte(rzx_posicion_puntero+4);
 
         debug_printf (VERBOSE_DEBUG,"Creator information block. Length: %d",aux_block_length);
-        char creator_name[20];
+        char creator_name[21];
 
-        for (i=0;i<20;i++) creator_name[i]=rzx_get_byte(rzx_posicion_puntero+5+i);
+        for (i=0;i<20;i++) {
+            creator_name[i]=rzx_get_byte(rzx_posicion_puntero+5+i);
+            //printf("%d %d\n",i,creator_name[i]);
+        }
+
+        //Acabar la string con 0
+        creator_name[i]=0;
 
         debug_printf (VERBOSE_INFO,"Creator : %s. Version: %d.%d",creator_name,rzx_get_byte(rzx_posicion_puntero+25),rzx_get_byte(rzx_posicion_puntero+26) );
 
@@ -251,9 +257,12 @@ void load_rzx_snapshot_file(char *archivo)
 
         debug_printf (VERBOSE_DEBUG,"First snapshot flags byte: %d",snapshot_flags);
 
-        char snapshot_extension[4];
+        char snapshot_extension[5];
 
         for (i=0;i<4;i++) snapshot_extension[i]=rzx_get_byte(rzx_posicion_puntero+9+i);
+
+        //Acabar la string con 0
+        snapshot_extension[i]=0;
 
         debug_printf (VERBOSE_INFO,"Snapshot extension : %s",snapshot_extension );
 

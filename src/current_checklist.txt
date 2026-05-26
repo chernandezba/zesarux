@@ -169,7 +169,6 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar buscador vidas infinitas. tambien con cpu top speed
 -probar memory cheat
--probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
 -probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
 -probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
 -probar desactivar breakpoints con espacio
@@ -178,7 +177,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar watches
 -probar remote command protocol ZRCP, en linux, mac y windows. Probar linemode telnet
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
--probar rzx files con extras/media/spectrum/rzx
 -probar quill/paws/daad debugger
 -probar text adventure map en gac/quill/paws/daad
 -probar quicksave, autosave at interval
