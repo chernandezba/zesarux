@@ -659,7 +659,7 @@ void rzx_retorna_minutos_segundos(int segundos, int *m, int *s)
 
 void rzx_print_footer(void)
 {
-	if (rzx_reproduciendo) {
+    if (rzx_reproduciendo) {
 
     //debug_printf(VERBOSE_DEBUG,"RZX: Begin rzx frame. Total frames in this input recording block: %d. Current frame: %d",rzx_frames_input_recording,rzx_frames_input_recording_counter);
 
@@ -710,9 +710,9 @@ void rzx_print_footer(void)
     //Escribir mm:ss pero el : parpadea
     sprintf (buffer_texto,"RZX Playing: %02d%c%02d/%s (%d%%)",elapsed_min,(elapsed_sec&1 ? ':' : ' '),elapsed_sec,
             buffer_tiempo_estimado,total);
-		//color inverso
-		menu_putstring_footer(0,2,buffer_texto,WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
+        //color inverso
+        menu_putstring_footer(0,2,buffer_texto,WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
 
     rzx_elapsed_time++;
-	}
+    }
 }
