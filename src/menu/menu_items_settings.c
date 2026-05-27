@@ -11493,6 +11493,8 @@ void menu_settings_danger_zone(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_danger_zone_timer,NULL,"Preferred Timer");
         menu_add_item_menu_prefijo_format(array_menu_common,"    ");
         menu_add_item_menu_sufijo_format(array_menu_common," [%s]",timer_name);
+        menu_add_item_menu_genera_ventana(array_menu_common);
+        menu_add_item_menu_se_cerrara(array_menu_common);
 
         if (!timer_user_preferred[0]) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Timer priority list:");

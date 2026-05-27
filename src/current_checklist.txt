@@ -178,10 +178,8 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar remote command protocol ZRCP, en linux, mac y windows. Probar linemode telnet
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar quill/paws/daad debugger
--probar text adventure map en gac/quill/paws/daad
 -probar quicksave, autosave at interval
 -probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
--probar settings-danger zona-timers
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
@@ -201,7 +199,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 ** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
 * Con y sin border enabled
 -probar smartload. probar deteccion de tipo tzx (standard o turbo) en quickload
--probar recent files, drive
+-probar drive en file selector (windows)
 -probar autoload & autosave
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: master system: streets of rage, street fighter ii. sg1000: hero. coleco: hero. cpc: commando. spectrum: hasta 4 botones, con print in 31
 -probar on screen keyboard, con F8 y con joystick
