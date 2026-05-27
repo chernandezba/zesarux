@@ -628,3 +628,7 @@ Ahora lo tienes nada más empezar casi (segundo condacto). Pero ojo, solo en el 
 
 
 -iconos de dispositivos de lec romm ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
+
+-poder incorporar las qltools (https://github.com/NormanDunbar/qltools/tree/master) para extraer archivos de imagenes microdrive o floppy
+
+-quiza que ventana no activa tenga también recuadro alrededor de la ventana, como la activa  (y recuadro de color mas claro)
