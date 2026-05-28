@@ -14,3 +14,4 @@ ok *extract pzx
 ok*tzx browser
 ok*tap browser
 
+-al seleccionar un dsk nuevo, lo inserta y le manda orden de load -> no deberia

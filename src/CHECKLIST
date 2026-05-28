@@ -333,7 +333,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar emulator speed
 -probar turbo mode. manual y en zxuno, prism, chloe y tbblue
 -probar top speed, con threads y sin threads
--probar accelerate loaders
+-probar accelerate load, accelerate save
 -probar mantransferv3
 -probar multiface, transtape, etc... todos los dispositivos de copia
 

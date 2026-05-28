@@ -213,7 +213,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar cambio driver audio desde menu
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
--probar frameskip
 -probar easter eggs
 -probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
 -probar ghosting teclado
@@ -235,7 +234,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar modo gigascreen. demos e imagenes
 -probar emulator speed
 -probar turbo mode. manual y en zxuno, prism, chloe y tbblue
--probar accelerate loaders
 -probar mantransferv3
 -probar multiface, transtape, etc... todos los dispositivos de copia
 
