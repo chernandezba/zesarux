@@ -24072,6 +24072,7 @@ void util_rotate_file(char *filename,int archivos)
 
 //Funcion comun que puede indicar si queremos convertir utf a caracteres en pantalla, o bien,
 //convertir caracteres con acentos etc a caracteres sin acentos
+//Retorna longitud texto final
 int util_convert_utf_charset_common(char *origen,z80_byte *final,int longitud_texto,int forzar_no_mostrar_utf)
 {
 
@@ -24150,12 +24151,14 @@ int util_convert_utf_charset_common(char *origen,z80_byte *final,int longitud_te
 
 
 //Convertir una string de origen a caracteres charset, sustituyendo graficos en cirilicos
+//Retorna longitud texto final
 int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto)
 {
     return util_convert_utf_charset_common(origen,final,longitud_texto,0);
 }
 
 //Convertir una string de origen a caracteres sin acentos etc
+//Retorna longitud texto final
 int util_convert_utf_no_utf(char *origen,char *final,int longitud_texto)
 {
     return util_convert_utf_charset_common(origen,(z80_byte *)final,longitud_texto,1);

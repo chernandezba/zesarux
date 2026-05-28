@@ -21839,7 +21839,7 @@ void menu_dibuja_menu_stdout_print_numero_opcion(int max_opciones,int opcion_mar
 int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
     int linea_seleccionada=*opcion_inicial;
-    char texto_linea_sin_shortcut[64];
+    char texto_linea_sin_shortcut[200];
 
     menu_item *aux;
 
@@ -21897,9 +21897,28 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
                 menu_dibuja_menu_stdout_texto_sin_atajo(menu_retorna_item_language(aux),texto_linea_sin_shortcut);
 
 
-                printf ( "%s",texto_linea_sin_shortcut);
+                printf ("%s",texto_linea_sin_shortcut);
                 if (!menu_speech_tecla_pulsada) {
                     scrstdout_menu_print_speech_macro (texto_linea_sin_shortcut);
+                }
+
+                if (aux->genera_ventana) printf("...");
+
+                if (aux->tiene_submenu) {
+
+
+                    //tabular a 40 caracteres
+                    char texto_linea_sin_utf[200];
+                    //Modificar posibles caracteres utf para que no sean utf, para saber longitud exacta en caracteres
+                    util_convert_utf_no_utf(texto_linea_sin_shortcut,texto_linea_sin_utf,strlen(texto_linea_sin_shortcut));
+                    //printf("--- %s --- \n",texto_linea_sin_utf);
+
+                    int longitud_texto=strlen(texto_linea_sin_utf);
+
+                    int espacios_agregar=40-longitud_texto;
+                    for (;espacios_agregar>0;espacios_agregar--) printf(" ");
+
+                    printf(">");
                 }
 
             }
