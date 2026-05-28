@@ -1854,7 +1854,7 @@ diviface.o: storage/diviface.c storage/diviface.h cpu.h debug.h utils.h zxvision
 if1.o: storage/if1.c storage/if1.h storage/microdrive.h storage/microdrive_raw.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h mem128.h video/screen.h zesarux.h timer.h
 	\$(CC) \$(CFLAGS) -c storage/if1.c
 
-microdrive.o: storage/microdrive.c storage/microdrive.h storage/microdrive_raw.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h
+microdrive.o: storage/microdrive.c storage/microdrive.h storage/microdrive_raw.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c storage/microdrive.c
 
 microdrive_raw.o: storage/microdrive_raw.c storage/microdrive_raw.h storage/microdrive.h storage/if1.h cpu.h debug.h utils.h operaciones.h zxvision/zxvision.h menu/menu_items.h video/screen.h audio/audio.h
