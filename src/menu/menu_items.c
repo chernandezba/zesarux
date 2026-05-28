@@ -32421,6 +32421,8 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
 
+            menu_add_item_menu_separator(array_menu_common);
+
             menu_add_item_menu(array_menu_common,"~~Help",MENU_OPCION_NORMAL,menu_about_help,NULL);
             menu_add_item_menu_shortcut(array_menu_common,'h');
              menu_add_item_menu_se_cerrara(array_menu_common);
@@ -32509,6 +32511,8 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_common,'w');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
+
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_compile_info,NULL,
                 "C~~ompile info","Información de c~~ompilación","Informació de c~~ompilació");
