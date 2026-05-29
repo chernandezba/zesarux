@@ -7721,10 +7721,10 @@ char *bitmap_button_ext_desktop_midi_output_status[EXT_DESKTOP_BUTTONS_ANCHO]={
     " wxwwxwwxwwxwwxxxxxwwwxw  ",
     " wwwwwwwwwwwwwwwwwwwwwww  ",
     "                          ",
-    "                          ",
     "wwwwww                    ",
-    "wbbbww                    ",    //20
     "wwbbww                    ",
+    "wwwwww                    ",    //20
+    "wbbbww                    ",
     "wwbbww                    ",
     "wwbbww                    ",
     "wbbbbw                    ",
