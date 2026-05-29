@@ -267,7 +267,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar quill/paws/daad debugger
 -probar text adventure map en gac/quill/paws/daad
 -probar location graphics gac/paws/daad
--probar quicksave, autosave at interval, snapshots to ram
+-probar quicksave, autosave at interval, snapshots to ram y time machine
 -probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
 -probar settings-danger zona-timers
 -probar fallback de drivers graficos y de sonido

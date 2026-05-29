@@ -16,3 +16,7 @@ ok*tap browser
 
 
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
+
+ok revisar otros dispositivos -dsk no autocargar si se crea nuevo dsk
+
+-en ql. Si pongo headerless size 0 se colgará? División por cero?
