@@ -10899,6 +10899,8 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
     //volvemos a directorio inicial
     zvfs_chdir(directorio_actual);
 
+    int creado_archivo=0;
+
     if (ret==1) {
 
         if (!si_existe_archivo(dskfile)) {
@@ -10907,6 +10909,8 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
             //return;
 
             if (menu_confirm_yesno_texto("DSK does not exist","Create?")) {
+
+                creado_archivo=1;
 
                 //Parece que a +3DOS no le gusta nada discos que se salen del formato estandard
                 int tipo=menu_simple_two_choices("DSK type","Image type?","+3DOS compatible","Custom");
@@ -10974,6 +10978,14 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
             }
 
         }
+
+        int antes_noautoload=noautoload.v;
+
+        if (creado_archivo) {
+            //si se ha creado nuevo archivo, no tiene sentido autocargarlo pues no tiene datos
+            noautoload.v=1;
+        }
+
         dsk_insert_disk(dskfile);
 
         dskplusthree_enable();
@@ -10981,6 +10993,8 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
         //Habilitar pd765 a no ser que los traps esten activados
         if (plus3dos_traps.v==0) pd765_enable();
         //plus3dos_traps.v=1;
+
+        noautoload.v=antes_noautoload;
 
 
     }
