@@ -19,4 +19,3 @@ ok*tap browser
 
 ok revisar otros dispositivos -dsk no autocargar si se crea nuevo dsk
 
--en ql. Si pongo headerless size 0 se colgará? División por cero?
