@@ -7180,6 +7180,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
             menu_hardware_zxprinter_cond,"Bitmap file","Archivo bitmap","Arxiu bitmap");
         menu_add_item_menu_sufijo_format(array_menu_hardware_printers," [%s]",string_bitmapfile_shown);
         menu_add_item_menu_prefijo_format(array_menu_hardware_printers,"    ");
+        menu_add_item_menu_add_flags(array_menu_hardware_printers,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
         menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to image file");
         menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a image file. Supports pbm file format, and "
@@ -7195,6 +7196,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
             menu_hardware_zxprinter_cond,"OCR file","Archivo OCR","Arxiu OCR");
         menu_add_item_menu_sufijo_format(array_menu_hardware_printers," [%s]",string_ocrfile_shown);
         menu_add_item_menu_prefijo_format(array_menu_hardware_printers,"    ");
+        menu_add_item_menu_add_flags(array_menu_hardware_printers,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
         menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to text file using OCR method");
         menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a text file using OCR method to guess text. "
@@ -7205,6 +7207,7 @@ void menu_hardware_printers(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_copy,
             menu_hardware_zxprinter_cond,"Run COPY routine","Ejecutar rutina COPY","Executar rutina COPY");
         menu_add_item_menu_prefijo_format(array_menu_hardware_printers,"    ");
+        menu_add_item_menu_add_flags(array_menu_hardware_printers,MENU_ITEM_FLAG_SE_CERRARA);
 
         menu_add_item_menu_tooltip(array_menu_hardware_printers,"Runs ROM COPY routine");
         menu_add_item_menu_ayuda(array_menu_hardware_printers,"It calls ROM copy routine on Spectrum and ZX-81, like the COPY command on BASIC. \n"
