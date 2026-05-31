@@ -12975,13 +12975,17 @@ void screen_text_repinta_pantalla_zx81_rainbow_comun(void (*puntero_printchar_ca
 
                         int spritelin;
                         caracter=255;
+                        //int spritex;
 
                         //Buscar caracteres en posicion y...y+7
+                        //Y en posicion x...x+7
+                        //for (spritex=0;spritex<8 && caracter==255;spritex++) {
                                 for (spritelin=0;spritelin<8 && caracter==255;spritelin++) {
+                                        //screen_get_sprite_char(x*8+spritex,y*8+spritelin,caracter_sprite);
                                         screen_get_sprite_char(x*8,y*8+spritelin,caracter_sprite);
                                         caracter=compare_char_tabla_rainbow(caracter_sprite,&inverse,&memoria_spectrum[direccion]);
                                 }
-
+                        //}
 
 
                         if (caracter!=255) {
