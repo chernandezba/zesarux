@@ -126,7 +126,6 @@ Drivers audio:
 
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
--probar verbose 3, 4, debugregisters
 -probar desactivando border, con y sin realvideo, en spectrum y zx8081
 -probar azerty. se puede probar pulsando guion o cedilla
 -probar redefinir teclas, en menu y linea comandos
@@ -140,31 +139,24 @@ Drivers audio:
 -probar menu de stdout. seguir probándolo
 -probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp
 -probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
--probar archivo de configuracion, probar comillas en archivo configuracion (simples y dobles : por ejemplo : --joystickkeyev Up 't' (esto poniendo joystick a none para que se envie solo la t) o  --joystickemulated "Sinclair 2"). probar grabado archivo config
 -probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
 nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
--probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
--probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
--probar desactivar breakpoints con espacio
 -probar exportar disassemble a archivo texto
 -probar assembler, desde menu y ZRCP
 -probar remote command protocol ZRCP, en linux, mac y windows. Probar linemode telnet
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar quill/paws/daad debugger
 -probar fallback de drivers graficos y de sonido
--probar custom configuration file, con snap_tests/test_autoconfig.tap  (y hay snap_tests/test_autoconfig.tap.config) y snap_tests/test_autoconfig.p (y hay snap_tests/test_autoconfig.p.config)
 -probar drive en file selector (windows)
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire. autoleft/right. hasta 4 botones probar. Para testear dos botones: master system: streets of rage, street fighter ii. sg1000: hero. coleco: hero. cpc: commando. spectrum: hasta 4 botones, con print in 31
 -probar on screen keyboard, con F8 y con joystick
 -probar on screen adventure keyboard 
--probar asignar teclas f a funciones
 -probar --limitopenmenu
 -probar idle bus. con Arkanoid por ejemplo
 -probar realjoystick. probar opciones linea comandos: --joystickkeyev, --joystickkeybt, --joystickevent. Probar menu test joystick. Probar joystick sdl, joystick nativo linux, joystick simulator, disable joystick. En todos casos probar quitar y poner border (porque reinicializa drivers)
 -probar volante joystick
--probar cambio driver audio desde menu
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
 -probar easter eggs
@@ -175,18 +167,11 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar F4 (pantalla a speech) en Spectrum (con texto normal y graficos), Z88, ZX81 (con y sin rainbow, y con texto normal y con graficos->4 combinaciones). ZX80
 -probar funcion Find. probar buscar pokes
 -probar poke: manual y pok file (tanto buenos como corrupt, longline, desde snap_tests/)
--probar ram refresh junto con extras/media/spectrum/tests/memoryrefresh.tap
 -probar opcion para desactivar paging en ram/rom
 -probar cpu transaction log
--probar menu file utilities
--probar demos beeper
--probar real beeper activo/desactivado
 -probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
--probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena
 -probar emulator speed
 -probar turbo mode. manual y en zxuno, prism, chloe y tbblue
--probar mantransferv3
--probar multiface, transtape, etc... todos los dispositivos de copia
 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, 
 
