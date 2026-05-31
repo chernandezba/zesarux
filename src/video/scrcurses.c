@@ -961,12 +961,17 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
 
             int spritelin;
             caracter=255;
+            int spritex;
 
             //Buscar caracteres en posicion y...y+7
+            //Y en posicion x...x+7
+            for (spritex=0;spritex<8 && caracter==255;spritex++) {
             for (spritelin=0;spritelin<8 && caracter==255;spritelin++) {
-                screen_get_sprite_char(x*8,y*8+spritelin,caracter_sprite);
+                screen_get_sprite_char(x*8+spritex,y*8+spritelin,caracter_sprite);
+                //screen_get_sprite_char(x*8,y*8+spritelin,caracter_sprite);
                 caracter=compare_char_tabla_rainbow(caracter_sprite,&inverse,&memoria_spectrum[direccion]);
                 //if (caracter) debug_printf (VERBOSE_ERR,"xx: %d spritelin: %d caracter: %d ",xx,spritelin,caracter);
+            }
             }
 
             int going_to_use_cursesw=0;

@@ -22,3 +22,6 @@ ok revisar otros dispositivos -dsk no autocargar si se crea nuevo dsk
 -f4 en zx81 con realvideo no encuentra caracteres. ejemplo con mazogs. con zx80 si va
 tampoco repinta caracteres con realvideo y stdout o simpletext (salen caracteres artisticos pero no reales)
 quiza meter modificacion para escanear coordenada x entre 0 y 7 para encontrar caracter coincidente. screen.c 12980
+en curses pasara lo mismo
+->esto pasa porque con nueva rutina de render de zx81 no empieza justo a renderizar en x=0 cada caracter
+->corregido. acabar de probar en curses,stdout,simpletext
