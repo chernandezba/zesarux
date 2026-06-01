@@ -28814,7 +28814,7 @@ void menu_inicio_handle_right_button_background(void)
         zxvision_set_next_menu_position_from_current_mouse();
 
         //propiedades zx desktop
-        int opcion=menu_simple_five_choices("ZX Desktop","--Action--","New icon","New file link","Customize icons","Reorder icons","ZX Desktop settings");
+        int opcion=menu_simple_six_choices("ZX Desktop","--Action--","New icon","New file link","Customize icons","Reorder icons","ZX Desktop settings",menu_get_string_language("Exit ZEsarUX"));
 
         zxvision_reset_set_next_menu_position();
 
@@ -28841,6 +28841,10 @@ void menu_inicio_handle_right_button_background(void)
 
             case 5:
                 menu_ext_desktop_settings(0);
+            break;
+
+            case 6:
+                menu_principal_salir_emulador(0);
             break;
 
         }
