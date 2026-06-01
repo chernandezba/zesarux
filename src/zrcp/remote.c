@@ -2052,15 +2052,15 @@ void remote_cpu_enter_step(int misocket)
     //Si ya estaba este modo, salir sin mas
     if (menu_event_remote_protocol_enterstep.v) return;
 
-  //De momento solo simular pulsacion de tecla de menu, eso hace saltar el step
+    //De momento solo simular pulsacion de tecla de menu, eso hace saltar el step
 
-  //TODO: Pendiente de eliminar esta variable. Tiene sentido???
-  //menu_espera_tecla_no_cpu_loop_flag_salir.v=1;
+    //TODO: Pendiente de eliminar esta variable. Tiene sentido???
+    //menu_espera_tecla_no_cpu_loop_flag_salir.v=1;
 
-  //guardar estado multitarea
-  menu_multitarea_antes_cpu_step=menu_multitarea;
+    //guardar estado multitarea
+    menu_multitarea_antes_cpu_step=menu_multitarea;
 
-  remote_ack_enter_cpu_step.v=0;
+    remote_ack_enter_cpu_step.v=0;
 
 
     //En caso de drivers stdout y null, no cerrar menu, que es un lio. si esta abierto, dara error
@@ -2077,41 +2077,41 @@ void remote_cpu_enter_step(int misocket)
 
     else {
 
-  //Abrir menu si no estaba ya abierto
-  remote_disable_multitask_enter_menu();
-  //Cerrar menu
-  remote_send_esc_close_menu();
+        //Abrir menu si no estaba ya abierto
+        remote_disable_multitask_enter_menu();
+        //Cerrar menu
+        remote_send_esc_close_menu();
 
     }
 
-  //Esperamos que se haya cerrado el menu. Con un timeout
-  int contador_cierre;
-  for (contador_cierre=0;contador_cierre<10 && menu_abierto;contador_cierre++) {
+    //Esperamos que se haya cerrado el menu. Con un timeout
+    int contador_cierre;
+    for (contador_cierre=0;contador_cierre<10 && menu_abierto;contador_cierre++) {
+        usleep(100000);
+    }
+
+    //Y luego pausa de 0.1 segundos para que se acabe de cerrar todo
     usleep(100000);
-  }
 
-  //Y luego pausa de 0.1 segundos para que se acabe de cerrar todo
-  usleep(100000);
+    if (menu_abierto) debug_printf(VERBOSE_DEBUG,"It seems menu has not been closed from the enter-cpu-step action");
 
-  if (menu_abierto) debug_printf(VERBOSE_DEBUG,"It seems menu has not been closed from the enter-cpu-step action");
+    //Avisar que entramos en paso a paso y Abrir menu
+    menu_event_remote_protocol_enterstep.v=1;
+    menu_set_menu_abierto(1);
 
-  //Avisar que entramos en paso a paso y Abrir menu
-  menu_event_remote_protocol_enterstep.v=1;
-  menu_set_menu_abierto(1);
+    int contador_timeout;
+    //Esperamos a que se haya recibido la señal de entrada en remote cpu-step
+    //20 iteraciones=2 segundos
+    for (contador_timeout=0;contador_timeout<20 && remote_ack_enter_cpu_step.v==0;contador_timeout++) {
+        usleep(100000); //0.1 segundo
+    }
 
-  int contador_timeout;
-  //Esperamos a que se haya recibido la señal de entrada en remote cpu-step
-  //20 iteraciones=2 segundos
-  for (contador_timeout=0;contador_timeout<20 && remote_ack_enter_cpu_step.v==0;contador_timeout++) {
-    usleep(100000); //0.1 segundo
-  }
-
-  if (remote_ack_enter_cpu_step.v==0) {
-    //Menu no se ha enterado de entrada en este modo. Error
-    escribir_socket(misocket,"Error. Can not enter cpu step mode. You can try closing the menu");
-    menu_event_remote_protocol_enterstep.v=0;
-    return;
-  }
+    if (remote_ack_enter_cpu_step.v==0) {
+        //Menu no se ha enterado de entrada en este modo. Error
+        escribir_socket(misocket,"Error. Can not enter cpu step mode. You can try closing the menu");
+        menu_event_remote_protocol_enterstep.v=0;
+        return;
+    }
 
     remote_footer_cpu_step();
 
