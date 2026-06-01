@@ -94,15 +94,15 @@ int zrcp_command_close_all_menus=0;
 #include <sys/types.h>
 
 #ifdef MINGW
-	#include <winsock2.h>
+    #include <winsock2.h>
 
-	//para usar socklen_t
-	#include <ws2tcpip.h>
+    //para usar socklen_t
+    #include <ws2tcpip.h>
 #else
-	#include <sys/socket.h>
-	#include <netdb.h>
-	#include <unistd.h>
-	#include <arpa/inet.h>
+    #include <sys/socket.h>
+    #include <netdb.h>
+    #include <unistd.h>
+    #include <arpa/inet.h>
 #endif
 
 #ifdef __FreeBSD__
@@ -615,141 +615,141 @@ struct s_items_ayuda items_ayuda[]={
   {"assemble","|a","[address] [instruction]","Assemble at address. If no instruction specified, "
                                         "opens assemble prompt"},
   {"ayplayer","|ayp","command parameter","Runs a command on the AY Player. command can be:\n"
-	"get-author          Prints the author\n"
-	"get-elapsed-track   Prints elapsed track time in 1/50 of seconds\n"
+    "get-author          Prints the author\n"
+    "get-elapsed-track   Prints elapsed track time in 1/50 of seconds\n"
     "get-file            Prints the file being played\n"
     "get-id-file         Prints the number of order in playlist of the file being played\n"
-	"get-misc            Prints misc information\n"
+    "get-misc            Prints misc information\n"
     "get-playlist        Prints the playlist\n"
     "get-total-files     Prints total files in playlist\n"
-	"get-total-tracks    Prints total tracks\n"
-	"get-track-length    Prints track length in 1/50 of seconds\n"
-	"get-track-name      Prints track name\n"
-	"get-track-number    Prints current track number\n"
+    "get-total-tracks    Prints total tracks\n"
+    "get-track-length    Prints track length in 1/50 of seconds\n"
+    "get-track-name      Prints track name\n"
+    "get-track-number    Prints current track number\n"
 
-	"load                Loads the .ay file indicated by parameter\n"
+    "load                Loads the .ay file indicated by parameter\n"
     "load-dir            Loads the directory to the playlist\n"
-	"next-file           Go to next file\n"
+    "next-file           Go to next file\n"
     "play-id             Plays the file identificated by parameter id\n"
-	"prev-file           Go to previous file\n"
-	"next-track          Go to next track\n"
-	"prev-track          Go to previous track\n"
-	"stop                Stops playing\n"
+    "prev-file           Go to previous file\n"
+    "next-track          Go to next track\n"
+    "prev-track          Go to previous track\n"
+    "stop                Stops playing\n"
 
 },
 
     {"cd",NULL,NULL,"Change Working Directory"},
-	{"clear-membreakpoints",NULL,NULL,"Clear all memory breakpoints"},
+    {"clear-membreakpoints",NULL,NULL,"Clear all memory breakpoints"},
     {"close-all-menus",NULL,NULL,"Close all open menus"},
 
-	{"cpu-code-coverage",NULL,"action [parameter]","Sets cpu code coverage parameters. Action and parameters are the following:\n"
-	"clear            Clear address list\n"
-	"enabled yes|no   Enable or disable the cpu code coverage\n"
-	"get              Get all run addresses\n"
-	},
+    {"cpu-code-coverage",NULL,"action [parameter]","Sets cpu code coverage parameters. Action and parameters are the following:\n"
+    "clear            Clear address list\n"
+    "enabled yes|no   Enable or disable the cpu code coverage\n"
+    "get              Get all run addresses\n"
+    },
 
 
-	{"cpu-history",NULL,"action [parameter] [parameter]","Runs cpu history actions. Action and parameters are the following:\n"
-	"clear                      Clear the cpu history\n"
-	"enabled       yes|no:      Enable or disable the cpu history\n"
+    {"cpu-history",NULL,"action [parameter] [parameter]","Runs cpu history actions. Action and parameters are the following:\n"
+    "clear                      Clear the cpu history\n"
+    "enabled       yes|no:      Enable or disable the cpu history\n"
     "find-pc       address      Tells if pc adddress is in cpu history; returns history position or -1 if not found\n"
-	"get           index:       Get registers at position, being 0 the most recent item. This is a legacy command in order to mantain compatibility with DeZog\n"
+    "get           index:       Get registers at position, being 0 the most recent item. This is a legacy command in order to mantain compatibility with DeZog\n"
     "get-extended  index:       Get registers at position, being 0 the most recent item. This command includes more features than 'get'\n"
-	"get-max-size               Return maximum allowed elements in history\n"
-	"get-pc        start items: Return PC register from position start, being 0 the most recent item, total items. Goes backwards\n"
-	"get-size                   Return total elements in history\n"
-	"ignrephalt    yes|no:      Ignore repeated opcode HALT. Disabled by default. Parameter shared with cpu-transaction-log\n"
-	"ignrepldxr    yes|no:      Ignore repeated opcode LDIR or LDDR. Disabled by default\n"
-	"is-enabled                 Tells if the cpu history is enabled or not\n"
-	"is-started                 Tells if the cpu history is started or not\n"
+    "get-max-size               Return maximum allowed elements in history\n"
+    "get-pc        start items: Return PC register from position start, being 0 the most recent item, total items. Goes backwards\n"
+    "get-size                   Return total elements in history\n"
+    "ignrephalt    yes|no:      Ignore repeated opcode HALT. Disabled by default. Parameter shared with cpu-transaction-log\n"
+    "ignrepldxr    yes|no:      Ignore repeated opcode LDIR or LDDR. Disabled by default\n"
+    "is-enabled                 Tells if the cpu history is enabled or not\n"
+    "is-started                 Tells if the cpu history is started or not\n"
     "restore       index:       Restore registers from position, being 0 the most recent item\n"
-	"started       yes|no:      Start recording cpu history. Requires it to be enabled first\n"
-	"set-max-size  number:      Sets maximum allowed elements in history\n"
-	},
+    "started       yes|no:      Start recording cpu history. Requires it to be enabled first\n"
+    "set-max-size  number:      Sets maximum allowed elements in history\n"
+    },
 
 
   {"cpu-panic",NULL,"text","Triggers the cpu panic function with the desired text. Note: It sets cpu-step-mode before doing it, so it ensures the emulation is paused"},
   {"cpu-step","|cs",NULL,"Run single opcode cpu step. Note: if 'real video' and 'shows electron on debug' settings are enabled, display will be updated immediately"},
   {"cpu-step-over","|cso",NULL,"Runs until returning from the current opcode. In case if current opcode is RET or JP (with or without flag conditions) it will run a cpu-step instead of cpu-step-over"},
-	{"cpu-transaction-log",NULL,"parameter value","Sets cpu transaction log parameters. Parameters and values are the following:\n"
-	"logfile         name:   File to store the log\n"
-	"enabled         yes|no: Enable or disable the cpu transaction log. Requires logfile to enable it\n"
+    {"cpu-transaction-log",NULL,"parameter value","Sets cpu transaction log parameters. Parameters and values are the following:\n"
+    "logfile         name:   File to store the log\n"
+    "enabled         yes|no: Enable or disable the cpu transaction log. Requires logfile to enable it\n"
 
-	"autorotate      yes|no: Enables automatic rotation of the log file\n"
-	"rotatefiles     number: Number of files to keep in rotation (1-999)\n"
-	"rotatesize      number: Size in MB to rotate log file (0-9999). 0 means no rotate\n"
-	"rotatelines     number: Size in lines to rotate log file (0-2147483647). 0 means no rotate\n"
+    "autorotate      yes|no: Enables automatic rotation of the log file\n"
+    "rotatefiles     number: Number of files to keep in rotation (1-999)\n"
+    "rotatesize      number: Size in MB to rotate log file (0-9999). 0 means no rotate\n"
+    "rotatelines     number: Size in lines to rotate log file (0-2147483647). 0 means no rotate\n"
 
-	"truncate        yes|no: Truncate the log file. Requires value set to yes\n"
-	"truncaterotated yes|no: Truncate the rotated log files. Requires value set to yes\n"
+    "truncate        yes|no: Truncate the log file. Requires value set to yes\n"
+    "truncaterotated yes|no: Truncate the rotated log files. Requires value set to yes\n"
 
-	"ignrephalt      yes|no: Ignore repeated opcode HALT. Disabled by default. Parameter shared with cpu-history\n"
+    "ignrephalt      yes|no: Ignore repeated opcode HALT. Disabled by default. Parameter shared with cpu-history\n"
 
-	"datetime        yes|no: Enable datetime logging\n"
-	"tstates         yes|no: Enable tstates logging\n"
-	"address         yes|no: Enable address logging. Enabled by default\n"
-	"opcode          yes|no: Enable opcode logging. Enabled by default\n"
-	"registers       yes|no: Enable registers logging\n"
-	},
+    "datetime        yes|no: Enable datetime logging\n"
+    "tstates         yes|no: Enable tstates logging\n"
+    "address         yes|no: Enable address logging. Enabled by default\n"
+    "opcode          yes|no: Enable opcode logging. Enabled by default\n"
+    "registers       yes|no: Enable registers logging\n"
+    },
   {"debug-analyze-command",NULL,"parameters","Just analyze the command and print its parameters"},
 
   {"disable-breakpoint","|db","index","Disable specific breakpoint"},
   {"disable-breakpoints",NULL,NULL,"Disable all breakpoints"},
   {"disassemble","|d","[address] [lines]","Disassemble at address. If no address specified, "
                                         "disassemble from PC register. If no lines specified, disassembles one line"},
-	{"dump-nested-functions",NULL,NULL,"Shows internal nested core functions"},
-	{"dump-scanline-buffer",NULL,NULL,"Shows internal scanline rainbow buffer, pixel and atribute byte pairs"},
+    {"dump-nested-functions",NULL,NULL,"Shows internal nested core functions"},
+    {"dump-scanline-buffer",NULL,NULL,"Shows internal scanline rainbow buffer, pixel and atribute byte pairs"},
   {"enable-breakpoint","|eb","index","Enable specific breakpoint"},
   {"enable-breakpoints",NULL,NULL,"Enable breakpoints"},
   {"enter-cpu-step","|encs",NULL,"Enter cpu step to step mode"},
-	{"esxdoshandler-get-open-files","|esxgof",NULL,"Gets a list of open files and directories on the esxdos handler"},
+    {"esxdoshandler-get-open-files","|esxgof",NULL,"Gets a list of open files and directories on the esxdos handler"},
   {"evaluate","|e","expression","Evaluate expression. It's the same parser as using breakpoints on the debug menu"},
   //{"evaluate-condition","|ec","condition","Evaluate condition. It's the same as using evaluate condition on the breakpoints debug menu"},
   {"exit-cpu-step","|ecs",NULL,"Exit cpu step to step mode"},
   {"exit-emulator",NULL,NULL,"Ends emulator"},
 
-	{"extended-stack",NULL,"action [parameter]","Sets extended stack parameters, which allows you to see what kind of values are in the stack. Action and parameters are the following:\n"
-	"clear              Clears the extended stack setting values to 0 and type to default\n"
-	"enabled yes|no     Enable or disable the extended stack\n"
-	"get     n [index]  Get n values. The index default value is the SP register\n"
-	},
+    {"extended-stack",NULL,"action [parameter]","Sets extended stack parameters, which allows you to see what kind of values are in the stack. Action and parameters are the following:\n"
+    "clear              Clears the extended stack setting values to 0 and type to default\n"
+    "enabled yes|no     Enable or disable the extended stack\n"
+    "get     n [index]  Get n values. The index default value is the SP register\n"
+    },
 
 
 {"find-label",NULL,"label","Finds label on source code"},
   {"generate-nmi",NULL,NULL,"Generates a NMI"},
-	{"get-audio-buffer-info",NULL,NULL,"Get audio buffer information"},
+    {"get-audio-buffer-info",NULL,NULL,"Get audio buffer information"},
   {"get-breakpoints","|gb","[index] [items]","Get breakpoints list. If set index, returns item at index. If set items, returns number of items list starting from index parameter"},
-	{"get-breakpointsactions","|gba","[index] [items]","Get breakpoints actions list. If set first, returns item at index. If set items, returns number of items list starting from index parameter"},
+    {"get-breakpointsactions","|gba","[index] [items]","Get breakpoints actions list. If set first, returns item at index. If set items, returns number of items list starting from index parameter"},
     {"get-breakpointspasscount","|gbpc","[index] [items]","Get breakpoints pass count list (current counter and configured limit). If set first, returns item at index. If set items, returns number of items list starting from index parameter"},
-	{"get-breakpoints-optimized",NULL,"[index] [items]","Show which breakpoints are optimized or not. If set index, returns item at index. If set items, returns number of items list starting from index parameter"},
-	  {"get-buildnumber",NULL,NULL,"Shows build number. Useful on beta version, this build number is the compilation date of ZEsarUX in Unix time format"},
-	{"get-cpu-core-name",NULL,NULL,"Get emulation cpu core name"},
-	{"get-cpu-frequency",NULL,NULL,"Get cpu frequency in HZ"},
-	{"get-cpu-turbo-speed",NULL,NULL,"Get cpu turbo speed"},
+    {"get-breakpoints-optimized",NULL,"[index] [items]","Show which breakpoints are optimized or not. If set index, returns item at index. If set items, returns number of items list starting from index parameter"},
+      {"get-buildnumber",NULL,NULL,"Shows build number. Useful on beta version, this build number is the compilation date of ZEsarUX in Unix time format"},
+    {"get-cpu-core-name",NULL,NULL,"Get emulation cpu core name"},
+    {"get-cpu-frequency",NULL,NULL,"Get cpu frequency in HZ"},
+    {"get-cpu-turbo-speed",NULL,NULL,"Get cpu turbo speed"},
   {"get-crc32",NULL,"start_address length","Calculate crc32 checksum starting at address for defined length. It uses current memory zone"},
   {"get-current-machine","|gcm",NULL,"Returns current machine name"},
-	{"get-current-memory-zone","|gcmz",NULL,"Returns current memory zone"},
-	{"get-debug-settings","|gds",NULL,"Get debug settings on remote command protocol. See command set-debug-settings"},
+    {"get-current-memory-zone","|gcmz",NULL,"Returns current memory zone"},
+    {"get-debug-settings","|gds",NULL,"Get debug settings on remote command protocol. See command set-debug-settings"},
 
-	{"get-io-ports",NULL,NULL,"Returns currently i/o ports used"},
+    {"get-io-ports",NULL,NULL,"Returns currently i/o ports used"},
 
-  	{"get-membreakpoints",NULL,"[address] [items]","Get memory breakpoints list. If set address, returns item at address. If set items, returns number of enabled items list starting from address parameter"},
-	{"get-machines",NULL,NULL,"Returns list of emulated machines"},
-	{"get-memory-pages","|gmp","[verbose]","Returns current state of memory pages. Default output will be the same as on debug menu; verbose output gives a detailed description of every page"},
-	{"get-memory-zones","|gmz",NULL,"Returns list of memory zones of this machine"},
-	{"get-ocr",NULL,NULL,"Get OCR output text"},
-	{"get-os",NULL,NULL,"Shows emulator operating system"},
+      {"get-membreakpoints",NULL,"[address] [items]","Get memory breakpoints list. If set address, returns item at address. If set items, returns number of enabled items list starting from address parameter"},
+    {"get-machines",NULL,NULL,"Returns list of emulated machines"},
+    {"get-memory-pages","|gmp","[verbose]","Returns current state of memory pages. Default output will be the same as on debug menu; verbose output gives a detailed description of every page"},
+    {"get-memory-zones","|gmz",NULL,"Returns list of memory zones of this machine"},
+    {"get-ocr",NULL,NULL,"Get OCR output text"},
+    {"get-os",NULL,NULL,"Shows emulator operating system"},
   {"get-paging-state",NULL,NULL,"Shows paging state on Spectrum 128k machines: if using screen 5/7 and if paging enabled"},
   {"get-registers","|gr",NULL,"Get CPU registers"},
-	{"get-snapshot",NULL,NULL,"Gets a zsf snapshot on console. Contents are shown as hexadecimal characters"},
-	{"get-stack-backtrace",NULL,"[items]","Get last 16-bit values from the stack. If no items parameter, it shows 5 by default"},
+    {"get-snapshot",NULL,NULL,"Gets a zsf snapshot on console. Contents are shown as hexadecimal characters"},
+    {"get-stack-backtrace",NULL,"[items]","Get last 16-bit values from the stack. If no items parameter, it shows 5 by default"},
     {"get-text-overlay",NULL,NULL,"Get text from overlay (menu, windows)"},
-	{"get-tstates",NULL,NULL,"Get the t-states counter"},
-	{"get-tstates-partial",NULL,NULL,"Get the t-states partial counter. Shows text OVERFLOW if value overflows"},
-	{"get-ui-io-ports",NULL,NULL,"Gets user interacton io ports values for 8 rows of keyboard and joystick. Format of the values received is the same as command set-ui-io-ports"},
-	  {"get-version",NULL,NULL,"Shows emulator version"},
+    {"get-tstates",NULL,NULL,"Get the t-states counter"},
+    {"get-tstates-partial",NULL,NULL,"Get the t-states partial counter. Shows text OVERFLOW if value overflows"},
+    {"get-ui-io-ports",NULL,NULL,"Gets user interacton io ports values for 8 rows of keyboard and joystick. Format of the values received is the same as command set-ui-io-ports"},
+      {"get-version",NULL,NULL,"Shows emulator version"},
 
-	{"get-video-driver",NULL,NULL,"Shows current video driver"},
+    {"get-video-driver",NULL,NULL,"Shows current video driver"},
 
 #ifdef EMULATE_VISUALMEM
   {"get-visualmem-written-dump","|gvmwd","[compact]","Dumps all the visual memory written positions and values. Then, clear its contents. If parameter compact, will compress non zero values on the same line, for a maximum of 16"},
@@ -758,125 +758,125 @@ struct s_items_ayuda items_ayuda[]={
 #endif
   {"hard-reset-cpu",NULL,NULL,"Hard resets the machine"},
   {"help","|?","[command]","Shows help screen or command help"},
-	{"hexdump","|h","pointer length","Dumps memory at address, showing hex and ascii."},
-	{"hexdump-internal",NULL,"pointer length [offset]","Dumps internal memory (hexadecimal and ascii) for a given memory pointer. "
-							"Pointer can be:\n"
-							"diviface_memory: where divide/divmmc firmware and ram is located\n"
-							"emulator_memory: usually includes RAM+ROM emulated machine\n"
-							"rainbow_buffer: where the real video memory buffer is located\n"
-							"superupgrade_flash: where the superupgrade Flash is located\n"
-							"superupgrade_ram: where the superupgrade RAM is located\n"
-							"\n"
-							"Use with care, pointer address is a memory address on the emulator program (not the emulated memory)"},
-	{"ifrom-press-button",NULL,NULL,"Press button on the iFrom interface"},
-	{"kartusho-press-button",NULL,NULL,"Press button on the Kartusho interface"},
-	{"load-binary",NULL,"file addr len","Load binary file \"file\" at address \"addr\" with length \"len\", on the current memory zone. Set ln to 0 to load the entire file in memory"},
-	{"load-source-code","|lsc","file","Load source file to be used on disassemble opcode functions"},
-	{"ls",NULL,NULL,"Minimal command list"},
+    {"hexdump","|h","pointer length","Dumps memory at address, showing hex and ascii."},
+    {"hexdump-internal",NULL,"pointer length [offset]","Dumps internal memory (hexadecimal and ascii) for a given memory pointer. "
+                            "Pointer can be:\n"
+                            "diviface_memory: where divide/divmmc firmware and ram is located\n"
+                            "emulator_memory: usually includes RAM+ROM emulated machine\n"
+                            "rainbow_buffer: where the real video memory buffer is located\n"
+                            "superupgrade_flash: where the superupgrade Flash is located\n"
+                            "superupgrade_ram: where the superupgrade RAM is located\n"
+                            "\n"
+                            "Use with care, pointer address is a memory address on the emulator program (not the emulated memory)"},
+    {"ifrom-press-button",NULL,NULL,"Press button on the iFrom interface"},
+    {"kartusho-press-button",NULL,NULL,"Press button on the Kartusho interface"},
+    {"load-binary",NULL,"file addr len","Load binary file \"file\" at address \"addr\" with length \"len\", on the current memory zone. Set ln to 0 to load the entire file in memory"},
+    {"load-source-code","|lsc","file","Load source file to be used on disassemble opcode functions"},
+    {"ls",NULL,NULL,"Minimal command list"},
     {"mmc-reload",NULL,NULL,"Reload MMC file"},
-	{"noop",NULL,NULL,"This command does nothing"},
+    {"noop",NULL,NULL,"This command does nothing"},
     {"open-menu",NULL,NULL,"Triggers action to open menu (like F5)"},
     {"pwd",NULL,NULL,"Print Working Directory"},
     {"print-error",NULL,"message","Prints a error message exactly the same way as debug_printf(VERBOSE_ERR,..."},
-	{"print-footer",NULL,"message","Prints message on footer"},
-	{"put-snapshot",NULL,NULL,"Puts a zsf snapshot from console. Contents must be hexadecimal characters without spaces"},
+    {"print-footer",NULL,"message","Prints message on footer"},
+    {"put-snapshot",NULL,NULL,"Puts a zsf snapshot from console. Contents must be hexadecimal characters without spaces"},
 {"qdos-get-open-files","|qlgof",NULL,"Gets a list of open files and directories on the QL QDOS handler"},
 
   {"quit","|exit|logout",NULL,"Closes connection"},
-	{"read-memory",NULL,"[address] [length]","Dumps memory at address. "
-	"If address not specified, dumps all memory for current memory zone: 64 kB for mapped memory on Z80, 16 kB for Spectrum 48kB ROM etc. "
-	"And if you specify address but not length, only 1 byte is read"
-	},
+    {"read-memory",NULL,"[address] [length]","Dumps memory at address. "
+    "If address not specified, dumps all memory for current memory zone: 64 kB for mapped memory on Z80, 16 kB for Spectrum 48kB ROM etc. "
+    "And if you specify address but not length, only 1 byte is read"
+    },
     {"realtape-open",NULL,"file","Inserts real tape"},
   {"reset-cpu",NULL,NULL,"Resets CPU"},
-	{"reset-tstates-partial",NULL,NULL,"Resets the t-states partial counter"},
+    {"reset-tstates-partial",NULL,NULL,"Resets the t-states partial counter"},
   {"run","|r","[verbose] [limit] [no-stop-on-data] [update-immediately]","Run cpu when on cpu step mode. Returns when a breakpoint is fired, data sent (for example keypress) or any other event which opens the menu.\n"
-	"Set verbose parameter to get verbose output\n"
-	"limit parameter is a number of opcodes to run before returning\n"
-	"no-stop-on-data tells that the command will not return if data is sent to the socket (for example keypress on telnet client)\n"
-	"update-immediately tells that the display must be updated after every opcode run; this requires 'real video' and 'shows electron on debug' settings enabled\n"
-	"The parameters can be written in different order, for example:\nrun verbose\nor\nrun 100\nor\nrun verbose 100\n"
+    "Set verbose parameter to get verbose output\n"
+    "limit parameter is a number of opcodes to run before returning\n"
+    "no-stop-on-data tells that the command will not return if data is sent to the socket (for example keypress on telnet client)\n"
+    "update-immediately tells that the display must be updated after every opcode run; this requires 'real video' and 'shows electron on debug' settings enabled\n"
+    "The parameters can be written in different order, for example:\nrun verbose\nor\nrun 100\nor\nrun verbose 100\n"
    "Notice this command does not run the usual cpu loop, instead it is controlled from ZRCP. If you close the connection, the run loop will die\n"
-	 },
-	{"save-binary",NULL,"file addr len","Save binary file \"file\" from address \"addr\" with length \"len\", from the current memory zone. Set ln to 0 to save the entire current memory zone"},
-	{"save-binary-internal",NULL,"pointer length file [offset]","Dumps internal memory to file for a given memory pointer. "
-				"Pointer can be any of the hexdump-internal command\n"
-				"Use with care, pointer address is a memory address on the emulator program (not the emulated memory)"},
+     },
+    {"save-binary",NULL,"file addr len","Save binary file \"file\" from address \"addr\" with length \"len\", from the current memory zone. Set ln to 0 to save the entire current memory zone"},
+    {"save-binary-internal",NULL,"pointer length file [offset]","Dumps internal memory to file for a given memory pointer. "
+                "Pointer can be any of the hexdump-internal command\n"
+                "Use with care, pointer address is a memory address on the emulator program (not the emulated memory)"},
 
-	{"save-screen",NULL,"file","Save screen to file. Currently bmp, scr and pbm file formats supported"},
-
-
-
-	{"send-keys-ascii",NULL,"time asciichar1 [asciichar2] [asciichar3] ... ","Simulates sending some ascii keys on parameters asciichar, separated by spaces. Every key is separated in time by a non-press time. Time is in miliseconds, a normal value for Basic writing is 100 miliseconds"},
-	{"send-keys-event",NULL,"key event [nomenu]","Simulates sending key press/release. See file utils.h, enum util_teclas for values. Event must be 0 for release, or different to 0 for press\n"
-	                        "nomenu is an optional parameter, if set to non 0, tells the key is not sent when menu is open; by default is 0: send the key even if the menu is open"},
-
-	{"send-keys-string",NULL,"time string","Simulates sending some keys on parameter string. Every key is separated in time by a non-press time. Time is in miliseconds, a normal value for Basic writing is 100 miliseconds"},
-	{"set-breakpoint","|sb","index [condition]","Sets a breakpoint at desired index entry with condition. If no condition set, breakpoint will be handled as disabled\n"
-	HELP_MESSAGE_CONDITION_BREAKPOINT
-	},
-	{"set-breakpointaction","|sba","index [action]","Sets a breakpoint action at desired index entry. The condition to fire the action is the one that matches the same index as on the breakpoints table\n"
-	HELP_MESSAGE_BREAKPOINT_ACTION
-	},
-	{"set-breakpointpasscount","|sbpc","index [pass count]","Sets a breakpoint pass count at desired index entry"},
-	{"set-cr",NULL,NULL,"Sends carriage return to every command output received, useful on Windows environments"},
-	{"set-debug-settings","|sds","setting","Set debug settings on remote command protocol. It's a numeric value with bitmask with different meaning: \n"
-				"Bit 0: show all cpu registers on cpu stepping or only pc+opcode.\nBit 1: show 8 next opcodes on cpu stepping.\n"
-				"Bit 2: Do not consider a L preffix when searching source code labels.\n"
-				"Bit 3: Show bytes when debugging opcodes.\n"
-				"Bit 4: Repeat last command only by pressing enter.\n"
-				"Bit 5: Step over interrupt when running cpu-step, cpu-step-over and run verbose. It's the same setting as Step Over Interrupt on menu\n"
-		},
-
-	{"set-ui-io-ports",NULL,"9-hex-values","Sets user interacton io ports values for 8 rows of keyboard and joystick. Bytes must be in hexadecimal and not separated\n"
-	"The order of sending the 8 rows of keyboard is:\n"
-	"\n"
-	"              Bit   4    3    2    1    0     \n"
-	"0xFEFE port. Keys:  V    C    X    Z    Sh    \n"
-	"0xFDFE port. Keys:  G    F    D    S    A     \n"
-	"0xFBFE port. Keys:  T    R    E    W    Q     \n"
-	"0xF7FE port. Keys:  5    4    3    2    1     \n"
-	"0xEFFE port. Keys:  6    7    8    9    0     \n"
-	"0xDFFE port. Keys:  Y    U    I    O    P     \n"
-	"0xBFFE port. Keys:  H    J    K    L    Enter \n"
-	"0x7FFE port. Keys:  B    N    M    Simb Space \n"
-	"\n"
-	"And the last one (the 9th) is the joystick value:\n"
-	"                    Fire Up   Down Left Right\n"
-	"\n"
-	"Keyboard bits have a 0 for a pressed key, and a 1 for an unpressed key\n"
-	"Joystick bits have a 1 for a pressed direction, and a 0 for an unpressed direction\n"
-	"\n"
-	"So for example, sending the command:\n"
-	"set-ui-io-ports efffffffffffffff00\n"
-	"Will press key V (as EFH is 11101111 in binary)\n"
-	"Or another example:\n"
-	"set-ui-io-ports ffffffffffffffff01\n"
-	"Will press joystick right direction\n"
-	"\n"
-	"Actually you only have to set/reset 5 lower bits of every keyboard rows, so:\n"
-	"set-ui-io-ports ffffffffffffffff00\n"
-	"has the same effect as:\n"
-	"set-ui-io-ports 1f1f1f1f1f1f1f1f00\n"
-	"\n"
-	"Joystick value has always the same effect no matter which kind of joystick you selected, so for example, sending a 01 value will allways mean press right direction\n"
-
-	},
+    {"save-screen",NULL,"file","Save screen to file. Currently bmp, scr and pbm file formats supported"},
 
 
-	{"set-machine","|sm","machine_name","Set machine"},
-	{"set-membreakpoint",NULL,"address type [items]","Sets a memory breakpoint starting at desired address entry for type. If items parameter is not set, the default is 1. type can be:\n"
-		"0: Disabled\n"
-		"1: Fired when reading memory\n"
-		"2: Fired when writing memory\n"
-		"3: Fired when reading or writing memory\n"
-		},
-	{"set-memory-zone","|smz","zone","Set memory zone number"},
+
+    {"send-keys-ascii",NULL,"time asciichar1 [asciichar2] [asciichar3] ... ","Simulates sending some ascii keys on parameters asciichar, separated by spaces. Every key is separated in time by a non-press time. Time is in miliseconds, a normal value for Basic writing is 100 miliseconds"},
+    {"send-keys-event",NULL,"key event [nomenu]","Simulates sending key press/release. See file utils.h, enum util_teclas for values. Event must be 0 for release, or different to 0 for press\n"
+                            "nomenu is an optional parameter, if set to non 0, tells the key is not sent when menu is open; by default is 0: send the key even if the menu is open"},
+
+    {"send-keys-string",NULL,"time string","Simulates sending some keys on parameter string. Every key is separated in time by a non-press time. Time is in miliseconds, a normal value for Basic writing is 100 miliseconds"},
+    {"set-breakpoint","|sb","index [condition]","Sets a breakpoint at desired index entry with condition. If no condition set, breakpoint will be handled as disabled\n"
+    HELP_MESSAGE_CONDITION_BREAKPOINT
+    },
+    {"set-breakpointaction","|sba","index [action]","Sets a breakpoint action at desired index entry. The condition to fire the action is the one that matches the same index as on the breakpoints table\n"
+    HELP_MESSAGE_BREAKPOINT_ACTION
+    },
+    {"set-breakpointpasscount","|sbpc","index [pass count]","Sets a breakpoint pass count at desired index entry"},
+    {"set-cr",NULL,NULL,"Sends carriage return to every command output received, useful on Windows environments"},
+    {"set-debug-settings","|sds","setting","Set debug settings on remote command protocol. It's a numeric value with bitmask with different meaning: \n"
+                "Bit 0: show all cpu registers on cpu stepping or only pc+opcode.\nBit 1: show 8 next opcodes on cpu stepping.\n"
+                "Bit 2: Do not consider a L preffix when searching source code labels.\n"
+                "Bit 3: Show bytes when debugging opcodes.\n"
+                "Bit 4: Repeat last command only by pressing enter.\n"
+                "Bit 5: Step over interrupt when running cpu-step, cpu-step-over and run verbose. It's the same setting as Step Over Interrupt on menu\n"
+        },
+
+    {"set-ui-io-ports",NULL,"9-hex-values","Sets user interacton io ports values for 8 rows of keyboard and joystick. Bytes must be in hexadecimal and not separated\n"
+    "The order of sending the 8 rows of keyboard is:\n"
+    "\n"
+    "              Bit   4    3    2    1    0     \n"
+    "0xFEFE port. Keys:  V    C    X    Z    Sh    \n"
+    "0xFDFE port. Keys:  G    F    D    S    A     \n"
+    "0xFBFE port. Keys:  T    R    E    W    Q     \n"
+    "0xF7FE port. Keys:  5    4    3    2    1     \n"
+    "0xEFFE port. Keys:  6    7    8    9    0     \n"
+    "0xDFFE port. Keys:  Y    U    I    O    P     \n"
+    "0xBFFE port. Keys:  H    J    K    L    Enter \n"
+    "0x7FFE port. Keys:  B    N    M    Simb Space \n"
+    "\n"
+    "And the last one (the 9th) is the joystick value:\n"
+    "                    Fire Up   Down Left Right\n"
+    "\n"
+    "Keyboard bits have a 0 for a pressed key, and a 1 for an unpressed key\n"
+    "Joystick bits have a 1 for a pressed direction, and a 0 for an unpressed direction\n"
+    "\n"
+    "So for example, sending the command:\n"
+    "set-ui-io-ports efffffffffffffff00\n"
+    "Will press key V (as EFH is 11101111 in binary)\n"
+    "Or another example:\n"
+    "set-ui-io-ports ffffffffffffffff01\n"
+    "Will press joystick right direction\n"
+    "\n"
+    "Actually you only have to set/reset 5 lower bits of every keyboard rows, so:\n"
+    "set-ui-io-ports ffffffffffffffff00\n"
+    "has the same effect as:\n"
+    "set-ui-io-ports 1f1f1f1f1f1f1f1f00\n"
+    "\n"
+    "Joystick value has always the same effect no matter which kind of joystick you selected, so for example, sending a 01 value will allways mean press right direction\n"
+
+    },
+
+
+    {"set-machine","|sm","machine_name","Set machine"},
+    {"set-membreakpoint",NULL,"address type [items]","Sets a memory breakpoint starting at desired address entry for type. If items parameter is not set, the default is 1. type can be:\n"
+        "0: Disabled\n"
+        "1: Fired when reading memory\n"
+        "2: Fired when writing memory\n"
+        "3: Fired when reading or writing memory\n"
+        },
+    {"set-memory-zone","|smz","zone","Set memory zone number"},
   {"set-register","|sr","register=value","Changes register value. Example: set-register DE=3344H"},
 
-	{"set-text-brightness",NULL,"brightness","Change text render brightness value (0-100)"},
-	{"set-verbose-level",NULL,NULL,"Sets verbose level for console output"},
-	{"set-window-zoom",NULL,"zoom","Sets window zoom"},
+    {"set-text-brightness",NULL,"brightness","Change text render brightness value (0-100)"},
+    {"set-verbose-level",NULL,NULL,"Sets verbose level for console output"},
+    {"set-window-zoom",NULL,"zoom","Sets window zoom"},
   {"smartload","|sl","file","Smart-loads a file. If the cpu is not in cpu-step mode, it will change to cpu-step before loading, and exit cpu-step mode after loading; if it was already on cpu-step mode, it will be on cpu-step mode after loading. Use with care, may produce unexpected behaviour when emulator is doing a machine reset for example"},
   {"snapshot-load",NULL,"file","Loads a snapshot. If the cpu is not in cpu-step mode, it will change to cpu-step before loading, and exit cpu-step mode after loading; if it was already on cpu-step mode, it will be on cpu-step mode after loading"},
   {"snapshot-save",NULL,"file","Saves a snapshot"},
@@ -909,11 +909,11 @@ struct s_items_ayuda items_ayuda[]={
 
  {"tsconf-set-af-port",NULL,"index value","Set TSConf XXAF port value"},
 
-	{"view-basic",NULL,NULL,"Gets Basic program listing"},
-	{"write-memory","|wm","address value","Writes a sequence of bytes starting at desired address on memory. Bytes must be separated by one space each one"},
-	{"write-memory-raw",NULL,"address values","Writes a sequence of bytes starting at desired address on memory. Bytes must be in hexadecimal and not separated"},
-	{"write-port",NULL,"port value","Writes value at port"},
-	{"zeng-is-master",NULL,NULL,"Tells if ZENG is configured as master or not"},
+    {"view-basic",NULL,NULL,"Gets Basic program listing"},
+    {"write-memory","|wm","address value","Writes a sequence of bytes starting at desired address on memory. Bytes must be separated by one space each one"},
+    {"write-memory-raw",NULL,"address values","Writes a sequence of bytes starting at desired address on memory. Bytes must be in hexadecimal and not separated"},
+    {"write-port",NULL,"port value","Writes value at port"},
+    {"zeng-is-master",NULL,NULL,"Tells if ZENG is configured as master or not"},
 
 
   {"zeng-online","|zo","command parameter","Related ZENG Online actions. Command can be:\n"
@@ -923,7 +923,7 @@ struct s_items_ayuda items_ayuda[]={
     "create-room n name s                            Creates a room n. It must be in non-created state. s is streaming mode (0 or 1). Returns the creator_password\n"
     "destroy-room creator_pass n                     Destroys room n\n"
     "disable                                         Disables ZENG Online\n"
-	"enable                                          Enables ZENG Online\n"
+    "enable                                          Enables ZENG Online\n"
     "get-keys user_pass n                            This command returns continuously (never ends) keys from room n, every one separated by NL character.\n"
     "                                                If there is not any key to get, it will block until one is generated\n"
     "                                                Returned format is: uuid key event nomenu\n"
@@ -952,7 +952,7 @@ struct s_items_ayuda items_ayuda[]={
     "                                                uuid is a unique identifier for the client, usually can be the same as Statistics uuid\n"
     "                                                See file utils.h, enum util_teclas for key values\n"
     "                                                Event must be 0 for release, or different to 0 for press\n"
-	"                                                nomenu if set to non 0, tells the key is not sent when menu is open\n"
+    "                                                nomenu if set to non 0, tells the key is not sent when menu is open\n"
     "send-message user_pass n nickname message       Sends broadcast message to room\n"
     "set-autojoin creator_pass n p                   Define permissions (p) for autojoin on room (n), this enables autojoin. Requires creator_pass of that room\n"
     "set-allow-messages creator_pass n               Allows sending messages (allowed by default)\n"
@@ -981,16 +981,16 @@ struct s_items_ayuda items_ayuda[]={
 void remote_get_memory(int misocket,unsigned int inicio,unsigned int longitud)
 {
 
-	menu_debug_set_memory_zone_attr();
+    menu_debug_set_memory_zone_attr();
 
-	if (longitud==0) {
-  	longitud=menu_debug_memory_zone_size;
-	}
+    if (longitud==0) {
+      longitud=menu_debug_memory_zone_size;
+    }
 
-	while (longitud--) {
-		//escribir_socket_format(misocket,"%02X",peek_byte_z80_moto(inicio++));
-		escribir_socket_format(misocket,"%02X",menu_debug_get_mapped_byte(inicio++));
-	}
+    while (longitud--) {
+        //escribir_socket_format(misocket,"%02X",peek_byte_z80_moto(inicio++));
+        escribir_socket_format(misocket,"%02X",menu_debug_get_mapped_byte(inicio++));
+    }
 
 
 }
@@ -1044,13 +1044,13 @@ void remote_get_breakpoints(int misocket,int inicio,int items)
 
 
 
-			if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
+            if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
 
-				//nuevo parser de breakpoints
-				char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
-				exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
-				escribir_socket_format(misocket,buffer_temp);
-			}
+                //nuevo parser de breakpoints
+                char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
+                exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
+                escribir_socket_format(misocket,buffer_temp);
+            }
 
 
 
@@ -1079,10 +1079,10 @@ void remote_get_membreakpoints(int misocket,int inicio,int items)
 
 
 //Caso retornar estado del que solo miramos
-	if (items==0) {
-		escribir_socket_format(misocket,"%04XH : %d\n",inicio,mem_breakpoint_array[inicio]);
-		return;
-	}
+    if (items==0) {
+        escribir_socket_format(misocket,"%04XH : %d\n",inicio,mem_breakpoint_array[inicio]);
+        return;
+    }
 
  int total_activos=0;
 
@@ -1091,8 +1091,8 @@ void remote_get_membreakpoints(int misocket,int inicio,int items)
     z80_byte tipo=mem_breakpoint_array[i];
 
     if (tipo!=0) {
-	escribir_socket_format(misocket,"%04XH : %d\n",i,tipo);
-	total_activos++;
+    escribir_socket_format(misocket,"%04XH : %d\n",i,tipo);
+    total_activos++;
     }
 
   }
@@ -1116,7 +1116,7 @@ void remote_get_breakpoints_optimized(int misocket,int inicio,int items)
     }
     else {
       escribir_socket_format(misocket,"Optimized %d: Type: %d Value: %d",
-				i+1,optimized_breakpoint_array[i].operator,optimized_breakpoint_array[i].valor);
+                i+1,optimized_breakpoint_array[i].operator,optimized_breakpoint_array[i].valor);
     }
 
 
@@ -1128,19 +1128,19 @@ void remote_get_breakpoints_optimized(int misocket,int inicio,int items)
 void remote_get_memory_zones(int misocket)
 {
   int i;
-	char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
-	int readwrite;
-	int size;
+    char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
+    int readwrite;
+    int size;
 
-	escribir_socket(misocket,"Zone: -1 Name: Mapped memory\n");
+    escribir_socket(misocket,"Zone: -1 Name: Mapped memory\n");
 
-	for (i=0;i<MACHINE_MAX_MEMORY_ZONES;i++) {
-		size=machine_get_memory_zone_attrib(i, &readwrite);
-		if (size>0) {
-			machine_get_memory_zone_name(i, zone_name);
-			escribir_socket_format(misocket,"Zone: %d Name: %s Size: %d R/W: %d\n",i,zone_name,size,readwrite);
-		}
-	}
+    for (i=0;i<MACHINE_MAX_MEMORY_ZONES;i++) {
+        size=machine_get_memory_zone_attrib(i, &readwrite);
+        if (size>0) {
+            machine_get_memory_zone_name(i, zone_name);
+            escribir_socket_format(misocket,"Zone: %d Name: %s Size: %d R/W: %d\n",i,zone_name,size,readwrite);
+        }
+    }
 
 }
 
@@ -1150,13 +1150,13 @@ void remote_get_breakpointsactions(int misocket,int inicio,int items)
 
 
   for (i=inicio;i<MAX_BREAKPOINTS_CONDITIONS && i<inicio+items;i++) {
-		escribir_socket_format(misocket,"%d: ",i+1);
+        escribir_socket_format(misocket,"%d: ",i+1);
 
     if (debug_breakpoints_actions_array[i][0]==0 ||
-			!strcmp(debug_breakpoints_actions_array[i],"menu") ||
-			!strcmp(debug_breakpoints_actions_array[i],"break")
-		) {
-			escribir_socket_format(misocket,"menu");
+            !strcmp(debug_breakpoints_actions_array[i],"menu") ||
+            !strcmp(debug_breakpoints_actions_array[i],"break")
+        ) {
+            escribir_socket_format(misocket,"menu");
     }
     else {
       escribir_socket_format(misocket,debug_breakpoints_actions_array[i]);
@@ -1346,116 +1346,116 @@ void remote_set_breakpointaction(int misocket,char *parametros)
 
 int remote_eval_yes_no(char *text)
 {
-	if (!strcasecmp(text,"yes")) return 1;
-	else return 0;
+    if (!strcasecmp(text,"yes")) return 1;
+    else return 0;
 }
 
 void remote_cpu_transaction_log(int misocket,char *parameter,char *value)
 {
-	if (!strcasecmp(parameter,"logfile")) {
-		strcpy(transaction_log_filename,value);
-	}
+    if (!strcasecmp(parameter,"logfile")) {
+        strcpy(transaction_log_filename,value);
+    }
 
-	//Comun para activar el logfile y tambien para truncar. Ambos requieren detener el core para hacer esto
-	else if (!strcasecmp(parameter,"enabled") ||
-					!strcasecmp(parameter,"truncate") ||
-					!strcasecmp(parameter,"truncaterotated")
-	) {
+    //Comun para activar el logfile y tambien para truncar. Ambos requieren detener el core para hacer esto
+    else if (!strcasecmp(parameter,"enabled") ||
+                    !strcasecmp(parameter,"truncate") ||
+                    !strcasecmp(parameter,"truncaterotated")
+    ) {
 
-		//Si no esta definido logfile, no se permite activar (ni desactivar)
-		//podria dejar permitido desactivar pero es absurdo, si no hay logfile no estara activado
-		if (transaction_log_filename[0]==0) {
-			escribir_socket(misocket,"Error. logfile not set");
-			return;
-		}
-
-
-		//Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
-		//puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
-		int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
-			remote_cpu_enter_step(misocket);
-			if (menu_event_remote_protocol_enterstep.v==0) return;
+        //Si no esta definido logfile, no se permite activar (ni desactivar)
+        //podria dejar permitido desactivar pero es absurdo, si no hay logfile no estara activado
+        if (transaction_log_filename[0]==0) {
+            escribir_socket(misocket,"Error. logfile not set");
+            return;
+        }
 
 
-		if (!strcasecmp(parameter,"enabled")) {
-			if (remote_eval_yes_no(value)) {
-				set_cpu_core_transaction_log();
-			}
+        //Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
+        //puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
+        int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
+            remote_cpu_enter_step(misocket);
+            if (menu_event_remote_protocol_enterstep.v==0) return;
 
-			else {
-				reset_cpu_core_transaction_log();
-			}
-		}
 
-		if (!strcasecmp(parameter,"truncate")) {
-			if (remote_eval_yes_no(value)) {
-				transaction_log_truncate();
-			}
-		}
+        if (!strcasecmp(parameter,"enabled")) {
+            if (remote_eval_yes_no(value)) {
+                set_cpu_core_transaction_log();
+            }
 
-		if (!strcasecmp(parameter,"truncaterotated")) {
-			if (remote_eval_yes_no(value)) {
-				transaction_log_truncate_rotated();
-			}
-		}
+            else {
+                reset_cpu_core_transaction_log();
+            }
+        }
 
-		//Salir del cpu step si no estaba en ese modo
-		if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
+        if (!strcasecmp(parameter,"truncate")) {
+            if (remote_eval_yes_no(value)) {
+                transaction_log_truncate();
+            }
+        }
 
-	}
+        if (!strcasecmp(parameter,"truncaterotated")) {
+            if (remote_eval_yes_no(value)) {
+                transaction_log_truncate_rotated();
+            }
+        }
 
-	else if (!strcasecmp(parameter,"autorotate")) {
-		cpu_transaction_log_rotate_enabled.v=remote_eval_yes_no(value);
-	}
+        //Salir del cpu step si no estaba en ese modo
+        if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
 
-	else if (!strcasecmp(parameter,"rotatefiles")) {
-		if (transaction_log_set_rotate_number(parse_string_to_number(value))) {
-			escribir_socket(misocket,"Error. Invalid value");
-			return;
-		}
-	}
+    }
 
-	else if (!strcasecmp(parameter,"rotatesize")) {
-		if (transaction_log_set_rotate_size(parse_string_to_number(value))) {
-			escribir_socket(misocket,"Error. Invalid value");
-			return;
-		}
-	}
+    else if (!strcasecmp(parameter,"autorotate")) {
+        cpu_transaction_log_rotate_enabled.v=remote_eval_yes_no(value);
+    }
 
-	else if (!strcasecmp(parameter,"rotatelines")) {
-		if (transaction_log_set_rotate_lines(parse_string_to_number(value))) {
-			escribir_socket(misocket,"Error. Invalid value");
-			return;
-		}
-	}
+    else if (!strcasecmp(parameter,"rotatefiles")) {
+        if (transaction_log_set_rotate_number(parse_string_to_number(value))) {
+            escribir_socket(misocket,"Error. Invalid value");
+            return;
+        }
+    }
 
-	else if (!strcasecmp(parameter,"ignrephalt")) {
-		cpu_trans_log_ignore_repeated_halt.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"rotatesize")) {
+        if (transaction_log_set_rotate_size(parse_string_to_number(value))) {
+            escribir_socket(misocket,"Error. Invalid value");
+            return;
+        }
+    }
 
-	else if (!strcasecmp(parameter,"datetime")) {
-		cpu_transaction_log_store_datetime.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"rotatelines")) {
+        if (transaction_log_set_rotate_lines(parse_string_to_number(value))) {
+            escribir_socket(misocket,"Error. Invalid value");
+            return;
+        }
+    }
 
-	else if (!strcasecmp(parameter,"tstates")) {
-		cpu_transaction_log_store_tstates.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"ignrephalt")) {
+        cpu_trans_log_ignore_repeated_halt.v=remote_eval_yes_no(value);
+    }
 
-	else if (!strcasecmp(parameter,"address")) {
-		cpu_transaction_log_store_address.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"datetime")) {
+        cpu_transaction_log_store_datetime.v=remote_eval_yes_no(value);
+    }
 
-	else if (!strcasecmp(parameter,"opcode")) {
-		cpu_transaction_log_store_opcode.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"tstates")) {
+        cpu_transaction_log_store_tstates.v=remote_eval_yes_no(value);
+    }
 
-	else if (!strcasecmp(parameter,"registers")) {
-		cpu_transaction_log_store_registers.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"address")) {
+        cpu_transaction_log_store_address.v=remote_eval_yes_no(value);
+    }
 
-	else {
-		escribir_socket(misocket,"Error. Unknown parameter");
-	}
+    else if (!strcasecmp(parameter,"opcode")) {
+        cpu_transaction_log_store_opcode.v=remote_eval_yes_no(value);
+    }
+
+    else if (!strcasecmp(parameter,"registers")) {
+        cpu_transaction_log_store_registers.v=remote_eval_yes_no(value);
+    }
+
+    else {
+        escribir_socket(misocket,"Error. Unknown parameter");
+    }
 
 
 }
@@ -1464,68 +1464,68 @@ void remote_cpu_transaction_log(int misocket,char *parameter,char *value)
 
 void remote_cpu_code_coverage(int misocket,char *parameter,char *value)
 {
-	/*if (!strcasecmp(parameter,"logfile????")) {
-		strcpy(transaction_log_filename,value);
-	}*/
+    /*if (!strcasecmp(parameter,"logfile????")) {
+        strcpy(transaction_log_filename,value);
+    }*/
 
-	//printf ("%p\n",value);
+    //printf ("%p\n",value);
 
-	//Comun para activar el logfile y tambien para truncar. Ambos requieren detener el core para hacer esto
-	if (!strcasecmp(parameter,"enabled") ) {
-
-
-
-
-		//Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
-		//puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
-		int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
-			remote_cpu_enter_step(misocket);
-			if (menu_event_remote_protocol_enterstep.v==0) return;
+    //Comun para activar el logfile y tambien para truncar. Ambos requieren detener el core para hacer esto
+    if (!strcasecmp(parameter,"enabled") ) {
 
 
 
-		if (!strcasecmp(parameter,"enabled")) {
-			if (remote_eval_yes_no(value)) {
-				if (cpu_code_coverage_enabled.v) escribir_socket(misocket,"Error. Already enabled");
-				else set_cpu_core_code_coverage();
-			}
 
-			else {
-				if (cpu_code_coverage_enabled.v==0) escribir_socket(misocket,"Error. Already disabled");
-				reset_cpu_core_code_coverage();
-			}
-		}
-
-
-		//Salir del cpu step si no estaba en ese modo
-		if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
+        //Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
+        //puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
+        int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
+            remote_cpu_enter_step(misocket);
+            if (menu_event_remote_protocol_enterstep.v==0) return;
 
 
 
-	}
+        if (!strcasecmp(parameter,"enabled")) {
+            if (remote_eval_yes_no(value)) {
+                if (cpu_code_coverage_enabled.v) escribir_socket(misocket,"Error. Already enabled");
+                else set_cpu_core_code_coverage();
+            }
 
-	else if (!strcasecmp(parameter,"get")) {
-		if (cpu_code_coverage_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled");
-		else {
-			int i;
-			for (i=0;i<65536;i++) {
-		  	if (cpu_code_coverage_array[i]) {
-			    escribir_socket_format(misocket,"%04X ",i);
-			  }
-			}
-			//escribir_socket(misocket,"\n");
-		}
-	}
+            else {
+                if (cpu_code_coverage_enabled.v==0) escribir_socket(misocket,"Error. Already disabled");
+                reset_cpu_core_code_coverage();
+            }
+        }
 
-	else if (!strcasecmp(parameter,"clear")) {
-	cpu_code_coverage_clear();
-	}
+
+        //Salir del cpu step si no estaba en ese modo
+        if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
 
 
 
-	else {
-		escribir_socket(misocket,"Error. Unknown parameter");
-	}
+    }
+
+    else if (!strcasecmp(parameter,"get")) {
+        if (cpu_code_coverage_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled");
+        else {
+            int i;
+            for (i=0;i<65536;i++) {
+              if (cpu_code_coverage_array[i]) {
+                escribir_socket_format(misocket,"%04X ",i);
+              }
+            }
+            //escribir_socket(misocket,"\n");
+        }
+    }
+
+    else if (!strcasecmp(parameter,"clear")) {
+    cpu_code_coverage_clear();
+    }
+
+
+
+    else {
+        escribir_socket(misocket,"Error. Unknown parameter");
+    }
 
 
 }
@@ -1535,83 +1535,83 @@ void remote_cpu_code_coverage(int misocket,char *parameter,char *value)
 void remote_extended_stack(int misocket,char *parameter,char *value,char *second_value)
 {
 
-	//printf ("%p (%s)\n",second_value,second_value);
+    //printf ("%p (%s)\n",second_value,second_value);
 
 
-	//If comun para acciones que requieren detener el core momentaneamente
-	if (!strcasecmp(parameter,"enabled") ) {
+    //If comun para acciones que requieren detener el core momentaneamente
+    if (!strcasecmp(parameter,"enabled") ) {
 
 
-		//Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
-		//puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
-		int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
-		remote_cpu_enter_step(misocket);
-		if (menu_event_remote_protocol_enterstep.v==0) return;
-
-
-
-		if (!strcasecmp(parameter,"enabled")) {
-			if (remote_eval_yes_no(value)) {
-				if (extended_stack_enabled.v) escribir_socket(misocket,"Error. Already enabled");
-				else set_extended_stack();
-			}
-
-			else {
-				if (extended_stack_enabled.v==0) escribir_socket(misocket,"Error. Already disabled");
-				reset_extended_stack();
-			}
-		}
-
-
-		//Salir del cpu step si no estaba en ese modo
-		if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
+        //Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
+        //puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
+        int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
+        remote_cpu_enter_step(misocket);
+        if (menu_event_remote_protocol_enterstep.v==0) return;
 
 
 
-	}
+        if (!strcasecmp(parameter,"enabled")) {
+            if (remote_eval_yes_no(value)) {
+                if (extended_stack_enabled.v) escribir_socket(misocket,"Error. Already enabled");
+                else set_extended_stack();
+            }
 
-	else if (!strcasecmp(parameter,"get")) {
-		if (extended_stack_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled");
-		else {
-			int items=parse_string_to_number(value);
-
-			z80_int registro_inicial_stack=reg_sp;
-
-			//Ver si hay un segundo parametro
-			if (second_value[0]!=0) registro_inicial_stack=parse_string_to_number(second_value);
-
-			z80_int indice_l;
-			z80_int indice_h;
-			int i;
-
-			for (i=0;i<items;i++) {
-					z80_int valor_resultante;
-					z80_byte tipo;
-
-					//Para asegurarnos que los indices siempre estan en rango 0...65535 (el tamanyo del array)
-					indice_l=registro_inicial_stack+i*2;
-					indice_h=indice_l+1;
+            else {
+                if (extended_stack_enabled.v==0) escribir_socket(misocket,"Error. Already disabled");
+                reset_extended_stack();
+            }
+        }
 
 
-					//realmente el extended stack guarda valor y tipo para cada byte, aqui solo mostramos word
-					valor_resultante=extended_stack_array_items[indice_l].valor+256*extended_stack_array_items[indice_h].valor;
-
-					//Los dos bytes deberian tener el mismo tipo
-					tipo=extended_stack_array_items[indice_l].tipo;
-					escribir_socket_format(misocket,"%04XH %s\n",valor_resultante,extended_stack_get_string_type(tipo));
-			}
-
-		}
-	}
-
-	else if (!strcasecmp(parameter,"clear")) {
-		extended_stack_clear();
-	}
+        //Salir del cpu step si no estaba en ese modo
+        if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
 
 
-	else {
-		escribir_socket(misocket,"Error. Unknown parameter");
-	}
+
+    }
+
+    else if (!strcasecmp(parameter,"get")) {
+        if (extended_stack_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled");
+        else {
+            int items=parse_string_to_number(value);
+
+            z80_int registro_inicial_stack=reg_sp;
+
+            //Ver si hay un segundo parametro
+            if (second_value[0]!=0) registro_inicial_stack=parse_string_to_number(second_value);
+
+            z80_int indice_l;
+            z80_int indice_h;
+            int i;
+
+            for (i=0;i<items;i++) {
+                    z80_int valor_resultante;
+                    z80_byte tipo;
+
+                    //Para asegurarnos que los indices siempre estan en rango 0...65535 (el tamanyo del array)
+                    indice_l=registro_inicial_stack+i*2;
+                    indice_h=indice_l+1;
+
+
+                    //realmente el extended stack guarda valor y tipo para cada byte, aqui solo mostramos word
+                    valor_resultante=extended_stack_array_items[indice_l].valor+256*extended_stack_array_items[indice_h].valor;
+
+                    //Los dos bytes deberian tener el mismo tipo
+                    tipo=extended_stack_array_items[indice_l].tipo;
+                    escribir_socket_format(misocket,"%04XH %s\n",valor_resultante,extended_stack_get_string_type(tipo));
+            }
+
+        }
+    }
+
+    else if (!strcasecmp(parameter,"clear")) {
+        extended_stack_clear();
+    }
+
+
+    else {
+        escribir_socket(misocket,"Error. Unknown parameter");
+    }
 
 
 }
@@ -1620,152 +1620,152 @@ void remote_extended_stack(int misocket,char *parameter,char *value,char *second
 void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 {
 
-	//printf ("(%s) (%s)\n",value,value2);
+    //printf ("(%s) (%s)\n",value,value2);
 
-	//Comun para activar el core y para iniciarlo y otros. Ambos requieren detener el core para hacer esto
-	if (!strcasecmp(parameter,"enabled") ||
-	    !strcasecmp(parameter,"started") ||
-		!strcasecmp(parameter,"set-max-size") ||
-		!strcasecmp(parameter,"clear")
+    //Comun para activar el core y para iniciarlo y otros. Ambos requieren detener el core para hacer esto
+    if (!strcasecmp(parameter,"enabled") ||
+        !strcasecmp(parameter,"started") ||
+        !strcasecmp(parameter,"set-max-size") ||
+        !strcasecmp(parameter,"clear")
 
-	) {
-
-
-		//Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
-		//puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
-		int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
-			remote_cpu_enter_step(misocket);
-			if (menu_event_remote_protocol_enterstep.v==0) return;
+    ) {
 
 
-
-		if (!strcasecmp(parameter,"enabled")) {
-			if (remote_eval_yes_no(value)) {
-				if (cpu_history_enabled.v) escribir_socket(misocket,"Error. Already enabled");
-				else set_cpu_core_history();
-			}
-
-			else {
-				if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. Already disabled");
-				reset_cpu_core_history();
-			}
-		}
-
-		if (!strcasecmp(parameter,"started")) {
-			if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-			else {
-				if (remote_eval_yes_no(value)) cpu_history_started.v=1;
-				else cpu_history_started.v=0;
-			}
-		}
-
-		if (!strcasecmp(parameter,"set-max-size")) {
-			if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-			else {
-				int total=parse_string_to_number(value);
-
-				if (cpu_history_set_max_size(total)!=0) {
-					escribir_socket(misocket,"ERROR: Value out of range");
-				}
-			}
-		}
+        //Pausar la emulacion para evitar que ese core transaction log este en ejecucion. Si eso pasa,
+        //puede provocar segfault al desactivarlo, pues intenta llamar a debug_nested_core_call_previous y este mismo core ya ha desaparecido
+        int antes_menu_event_remote_protocol_enterstep=menu_event_remote_protocol_enterstep.v;
+            remote_cpu_enter_step(misocket);
+            if (menu_event_remote_protocol_enterstep.v==0) return;
 
 
 
-		if (!strcasecmp(parameter,"clear")) {
-			if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-			else {
-				cpu_history_init_buffer();
-			}
-		}
+        if (!strcasecmp(parameter,"enabled")) {
+            if (remote_eval_yes_no(value)) {
+                if (cpu_history_enabled.v) escribir_socket(misocket,"Error. Already enabled");
+                else set_cpu_core_history();
+            }
+
+            else {
+                if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. Already disabled");
+                reset_cpu_core_history();
+            }
+        }
+
+        if (!strcasecmp(parameter,"started")) {
+            if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+            else {
+                if (remote_eval_yes_no(value)) cpu_history_started.v=1;
+                else cpu_history_started.v=0;
+            }
+        }
+
+        if (!strcasecmp(parameter,"set-max-size")) {
+            if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+            else {
+                int total=parse_string_to_number(value);
+
+                if (cpu_history_set_max_size(total)!=0) {
+                    escribir_socket(misocket,"ERROR: Value out of range");
+                }
+            }
+        }
 
 
-		//Salir del cpu step si no estaba en ese modo
-		if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
+
+        if (!strcasecmp(parameter,"clear")) {
+            if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+            else {
+                cpu_history_init_buffer();
+            }
+        }
+
+
+        //Salir del cpu step si no estaba en ese modo
+        if (!antes_menu_event_remote_protocol_enterstep) remote_cpu_exit_step(misocket);
 
 
 
-	}
+    }
 
-	else if (!strcasecmp(parameter,"get")) {
-		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-		else {
-			int indice=parse_string_to_number(value);
-			int total_elementos=cpu_history_get_total_elements();
+    else if (!strcasecmp(parameter,"get")) {
+        if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+        else {
+            int indice=parse_string_to_number(value);
+            int total_elementos=cpu_history_get_total_elements();
 
-			//Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
-			//en cpu_history_get_registers_element se pide como: 0 es el mas antiguo
-			//Ejemplo: 10 elementos totales. Se pide por el 3.
-			//indice_final=10-3-1=7
-			//Ejemplo: 10 elementos totales. Se pide por el 9 (que sera el mas antiguo)
-			//indice_final=10-9-1=0
-			int indice_final=total_elementos-indice-1;
-
-
-			char string_destino[1024];
-			cpu_history_legacy_get_registers_element(indice_final,string_destino);
-			escribir_socket(misocket,string_destino);
-		}
-	}
-
-	else if (!strcasecmp(parameter,"get-extended")) {
-		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-		else {
-			int indice=parse_string_to_number(value);
-			int total_elementos=cpu_history_get_total_elements();
-
-			//Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
-			//en cpu_history_get_registers_element se pide como: 0 es el mas antiguo
-			//Ejemplo: 10 elementos totales. Se pide por el 3.
-			//indice_final=10-3-1=7
-			//Ejemplo: 10 elementos totales. Se pide por el 9 (que sera el mas antiguo)
-			//indice_final=10-9-1=0
-			int indice_final=total_elementos-indice-1;
+            //Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
+            //en cpu_history_get_registers_element se pide como: 0 es el mas antiguo
+            //Ejemplo: 10 elementos totales. Se pide por el 3.
+            //indice_final=10-3-1=7
+            //Ejemplo: 10 elementos totales. Se pide por el 9 (que sera el mas antiguo)
+            //indice_final=10-9-1=0
+            int indice_final=total_elementos-indice-1;
 
 
-			char string_destino[1024];
-			cpu_history_get_registers_extended_element(indice_final,string_destino);
-			escribir_socket(misocket,string_destino);
-		}
-	}
+            char string_destino[1024];
+            cpu_history_legacy_get_registers_element(indice_final,string_destino);
+            escribir_socket(misocket,string_destino);
+        }
+    }
 
-	else if (!strcasecmp(parameter,"restore")) {
-		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-		else {
-			int indice=parse_string_to_number(value);
-			int total_elementos=cpu_history_get_total_elements();
+    else if (!strcasecmp(parameter,"get-extended")) {
+        if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+        else {
+            int indice=parse_string_to_number(value);
+            int total_elementos=cpu_history_get_total_elements();
 
-			//Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
-			//en cpu_history_get_registers_element se pide como: 0 es el mas antiguo
-			//Ejemplo: 10 elementos totales. Se pide por el 3.
-			//indice_final=10-3-1=7
-			//Ejemplo: 10 elementos totales. Se pide por el 9 (que sera el mas antiguo)
-			//indice_final=10-9-1=0
-			int indice_final=total_elementos-indice-1;
-
-			cpu_history_regs_bin_restore(indice_final);
-		}
-	}
+            //Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
+            //en cpu_history_get_registers_element se pide como: 0 es el mas antiguo
+            //Ejemplo: 10 elementos totales. Se pide por el 3.
+            //indice_final=10-3-1=7
+            //Ejemplo: 10 elementos totales. Se pide por el 9 (que sera el mas antiguo)
+            //indice_final=10-9-1=0
+            int indice_final=total_elementos-indice-1;
 
 
-	else if (!strcasecmp(parameter,"get-size")) {
-		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-		else {
-			escribir_socket_format(misocket,"%d",cpu_history_get_total_elements() );
-		}
-	}
+            char string_destino[1024];
+            cpu_history_get_registers_extended_element(indice_final,string_destino);
+            escribir_socket(misocket,string_destino);
+        }
+    }
+
+    else if (!strcasecmp(parameter,"restore")) {
+        if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+        else {
+            int indice=parse_string_to_number(value);
+            int total_elementos=cpu_history_get_total_elements();
+
+            //Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
+            //en cpu_history_get_registers_element se pide como: 0 es el mas antiguo
+            //Ejemplo: 10 elementos totales. Se pide por el 3.
+            //indice_final=10-3-1=7
+            //Ejemplo: 10 elementos totales. Se pide por el 9 (que sera el mas antiguo)
+            //indice_final=10-9-1=0
+            int indice_final=total_elementos-indice-1;
+
+            cpu_history_regs_bin_restore(indice_final);
+        }
+    }
 
 
-	else if (!strcasecmp(parameter,"get-max-size")) {
-		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-		else {
-			escribir_socket_format(misocket,"%d",cpu_history_get_max_size() );
-		}
-	}
+    else if (!strcasecmp(parameter,"get-size")) {
+        if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+        else {
+            escribir_socket_format(misocket,"%d",cpu_history_get_total_elements() );
+        }
+    }
 
-	else if (!strcasecmp(parameter,"find-pc")) {
-		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-		else {
+
+    else if (!strcasecmp(parameter,"get-max-size")) {
+        if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+        else {
+            escribir_socket_format(misocket,"%d",cpu_history_get_max_size() );
+        }
+    }
+
+    else if (!strcasecmp(parameter,"find-pc")) {
+        if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+        else {
 
             int direccion_to_find=parse_string_to_number(value);
 
@@ -1773,60 +1773,60 @@ void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 
             escribir_socket_format(misocket,"%d",direccion_encontrada);
 
-		}
-	}
+        }
+    }
 
-	else if (!strcasecmp(parameter,"get-pc")) {
-		if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
-		else {
-		int total_elementos=cpu_history_get_total_elements();
-			int indice=parse_string_to_number(value);
-						//Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
-			indice=total_elementos-indice-1;
+    else if (!strcasecmp(parameter,"get-pc")) {
+        if (cpu_history_enabled.v==0) escribir_socket(misocket,"Error. It's not enabled\n");
+        else {
+        int total_elementos=cpu_history_get_total_elements();
+            int indice=parse_string_to_number(value);
+                        //Al solicitarlo, el 0 es el item mas reciente. el 1 es el anterior a este
+            indice=total_elementos-indice-1;
 
 
-			int total=parse_string_to_number(value2);
-			//int total=final-indice+1;
-			if (total<0) {
-				escribir_socket(misocket,"Error. Can't be negative");
-			}
-			else {
-				//Validar que no se pidan mas de los que hay
-				if (total>total_elementos) {
-					//escribir_socket(misocket,"Error. End goes beyond total elements");
-					total=total_elementos;
-				}
+            int total=parse_string_to_number(value2);
+            //int total=final-indice+1;
+            if (total<0) {
+                escribir_socket(misocket,"Error. Can't be negative");
+            }
+            else {
+                //Validar que no se pidan mas de los que hay
+                if (total>total_elementos) {
+                    //escribir_socket(misocket,"Error. End goes beyond total elements");
+                    total=total_elementos;
+                }
 
-					while (total) {
-						char string_destino[1024];
-						cpu_history_get_pc_register_element(indice--,string_destino);
-						escribir_socket_format(misocket,"%s ",string_destino);
-						total--;
-					}
+                    while (total) {
+                        char string_destino[1024];
+                        cpu_history_get_pc_register_element(indice--,string_destino);
+                        escribir_socket_format(misocket,"%s ",string_destino);
+                        total--;
+                    }
 
-			}
-		}
-	}
+            }
+        }
+    }
 
-	else if (!strcasecmp(parameter,"ignrephalt")) {
-		cpu_trans_log_ignore_repeated_halt.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"ignrephalt")) {
+        cpu_trans_log_ignore_repeated_halt.v=remote_eval_yes_no(value);
+    }
 
-	else if (!strcasecmp(parameter,"ignrepldxr")) {
-		cpu_trans_log_ignore_repeated_ldxr.v=remote_eval_yes_no(value);
-	}
+    else if (!strcasecmp(parameter,"ignrepldxr")) {
+        cpu_trans_log_ignore_repeated_ldxr.v=remote_eval_yes_no(value);
+    }
 
-	else if (!strcasecmp(parameter,"is-enabled")) {
-		escribir_socket_format(misocket,"%d",cpu_history_enabled.v);
-	}
+    else if (!strcasecmp(parameter,"is-enabled")) {
+        escribir_socket_format(misocket,"%d",cpu_history_enabled.v);
+    }
 
-	else if (!strcasecmp(parameter,"is-started")) {
-		escribir_socket_format(misocket,"%d",cpu_history_started.v);
-	}
+    else if (!strcasecmp(parameter,"is-started")) {
+        escribir_socket_format(misocket,"%d",cpu_history_started.v);
+    }
 
-	else {
-		escribir_socket(misocket,"Error. Unknown parameter");
-	}
+    else {
+        escribir_socket(misocket,"Error. Unknown parameter");
+    }
 
 
 }
@@ -1836,157 +1836,157 @@ void remote_cpu_history(int misocket,char *parameter,char *value,char *value2)
 void remote_disassemble(int misocket,unsigned int direccion,int lineas,int mostrar_direccion)
 {
 
-	menu_debug_set_memory_zone_attr();
+    menu_debug_set_memory_zone_attr();
 
   char buffer_retorno[1024];
-	//char buffer_codigo_fuente[1024];
-	//char posible_siguiente_linea[1024]="";
+    //char buffer_codigo_fuente[1024];
+    //char posible_siguiente_linea[1024]="";
 
   size_t longitud_opcode;
 
   //int lineas_orig=lineas;
 
-	//int mostrar_codigo_fuente=1;
+    //int mostrar_codigo_fuente=1;
 
-	int pos_source=-1;
+    int pos_source=-1;
 
-	int guessed_next_pos_source=-1;
+    int guessed_next_pos_source=-1;
 
   while (lineas) {
-		//mostrar_codigo_fuente=1;
+        //mostrar_codigo_fuente=1;
     //direccion=adjust_address_space_cpu(direccion);
 
-		direccion=adjust_address_memory_size(direccion);
-		//int posicion_final_linea=-1;
+        direccion=adjust_address_memory_size(direccion);
+        //int posicion_final_linea=-1;
 
-		if (remote_tamanyo_archivo_raw_source_code) {
+        if (remote_tamanyo_archivo_raw_source_code) {
             pos_source=remote_disassemble_find_label(direccion);
             /*
-			char buffer_label[128];
+            char buffer_label[128];
 
-			if (remote_debug_settings & 4) {
-				if (CPU_IS_MOTOROLA) sprintf(buffer_label,"%05X",direccion);
-				else sprintf(buffer_label,"%04X",direccion);
-			}
-			else {
-				if (CPU_IS_MOTOROLA) sprintf(buffer_label,"L%05X",direccion);
-				else sprintf(buffer_label,"L%04X",direccion);
-			}
+            if (remote_debug_settings & 4) {
+                if (CPU_IS_MOTOROLA) sprintf(buffer_label,"%05X",direccion);
+                else sprintf(buffer_label,"%04X",direccion);
+            }
+            else {
+                if (CPU_IS_MOTOROLA) sprintf(buffer_label,"L%05X",direccion);
+                else sprintf(buffer_label,"L%04X",direccion);
+            }
 
-			pos_source=remote_find_label_source_code(buffer_label);
+            pos_source=remote_find_label_source_code(buffer_label);
             */
-			//printf ("posicion para %s: %d\n",buffer_label,pos_source);
-			if (pos_source!=-1) guessed_next_pos_source=pos_source;
-		}
+            //printf ("posicion para %s: %d\n",buffer_label,pos_source);
+            if (pos_source!=-1) guessed_next_pos_source=pos_source;
+        }
 
 
-		int pos=0;
-  	if (mostrar_direccion) {
-			/*if (CPU_IS_MOTOROLA) {
-				sprintf(buffer_retorno,"%05X ",direccion);
-				pos+=6;
-			}
-  		else {
-				sprintf(buffer_retorno,"%04X ",direccion);
-				pos +=5;
-			}*/
+        int pos=0;
+      if (mostrar_direccion) {
+            /*if (CPU_IS_MOTOROLA) {
+                sprintf(buffer_retorno,"%05X ",direccion);
+                pos+=6;
+            }
+          else {
+                sprintf(buffer_retorno,"%04X ",direccion);
+                pos +=5;
+            }*/
 
-			menu_debug_print_address_memory_zone(buffer_retorno, direccion);
-			pos +=7;
+            menu_debug_print_address_memory_zone(buffer_retorno, direccion);
+            pos +=7;
 
-			//Quitar 0 del final
-			//buffer_retorno[pos]=' ';
-  	}
+            //Quitar 0 del final
+            //buffer_retorno[pos]=' ';
+      }
 
-		escribir_socket_format(misocket,"%s ",buffer_retorno);
-		pos=0;
+        escribir_socket_format(misocket,"%s ",buffer_retorno);
+        pos=0;
 
-  	debugger_disassemble(&buffer_retorno[pos],100,&longitud_opcode,direccion);
+      debugger_disassemble(&buffer_retorno[pos],100,&longitud_opcode,direccion);
 
-		//Mostrar bytes del opcode si conviene. Tenemos buffer para 4 bytes en spectrum y para 16 en QL
-		if (remote_debug_settings & 8) {
+        //Mostrar bytes del opcode si conviene. Tenemos buffer para 4 bytes en spectrum y para 16 en QL
+        if (remote_debug_settings & 8) {
 #define MAX_OPCODE_LENGHT_MOTO 12
 #define MAX_OPCODE_LENGHT_Z80 4
 
-			char buffer_bytes_opcode[MAX_OPCODE_LENGHT_MOTO*2+1]; //24+1
-															//  123456789012345678901234
-			strcpy(buffer_bytes_opcode,"                        ");
+            char buffer_bytes_opcode[MAX_OPCODE_LENGHT_MOTO*2+1]; //24+1
+                                                            //  123456789012345678901234
+            strcpy(buffer_bytes_opcode,"                        ");
 
-			if (CPU_IS_MOTOROLA) buffer_bytes_opcode[MAX_OPCODE_LENGHT_MOTO*2]=0;
-			else buffer_bytes_opcode[MAX_OPCODE_LENGHT_Z80*2]=0;
+            if (CPU_IS_MOTOROLA) buffer_bytes_opcode[MAX_OPCODE_LENGHT_MOTO*2]=0;
+            else buffer_bytes_opcode[MAX_OPCODE_LENGHT_Z80*2]=0;
 
-			//fijamos maximo
-			int buffer_longitud=longitud_opcode;
-			if (buffer_longitud>MAX_OPCODE_LENGHT_MOTO) buffer_longitud=MAX_OPCODE_LENGHT_MOTO;
+            //fijamos maximo
+            int buffer_longitud=longitud_opcode;
+            if (buffer_longitud>MAX_OPCODE_LENGHT_MOTO) buffer_longitud=MAX_OPCODE_LENGHT_MOTO;
 
-			//printf ("longitud :%d fijo: %d\n",longitud_opcode,buffer_longitud);
+            //printf ("longitud :%d fijo: %d\n",longitud_opcode,buffer_longitud);
 
-			//Copiamos bytes
-			int indice;
-			for (indice=0;buffer_longitud>0;buffer_longitud--,indice++) {
-				char buffer_temp[3];
-				sprintf (buffer_temp,"%02X",peek_byte_z80_moto(direccion+indice));
-				buffer_bytes_opcode[indice*2]=buffer_temp[0];
-				buffer_bytes_opcode[indice*2+1]=buffer_temp[1];
-			}
+            //Copiamos bytes
+            int indice;
+            for (indice=0;buffer_longitud>0;buffer_longitud--,indice++) {
+                char buffer_temp[3];
+                sprintf (buffer_temp,"%02X",peek_byte_z80_moto(direccion+indice));
+                buffer_bytes_opcode[indice*2]=buffer_temp[0];
+                buffer_bytes_opcode[indice*2+1]=buffer_temp[1];
+            }
 
-			escribir_socket_format(misocket,"%s ",buffer_bytes_opcode);
+            escribir_socket_format(misocket,"%s ",buffer_bytes_opcode);
 
-		}
-
-
-
-  	direccion +=longitud_opcode;
+        }
 
 
 
-		if (remote_tamanyo_archivo_raw_source_code) {
-
-			char *puntero_source=NULL;
-
-			if (pos_source!=-1 || guessed_next_pos_source!=-1) {
-
-				//Intentamos mostrar la siguiente linea
-				if (pos_source!=-1) {
-		                        int indice=remote_parsed_source_code_indexes_pointer[pos_source];
-                		        puntero_source=&remote_raw_source_code_pointer[indice];
-				}
-
-				else {
-					//Mostrar guessed
-		                        int indice=remote_parsed_source_code_indexes_pointer[guessed_next_pos_source];
-                		        puntero_source=&remote_raw_source_code_pointer[indice];
-
-				}
-			}
-
-			escribir_socket(misocket,buffer_retorno);
-
-			if (puntero_source!=NULL) {
-				//tabular y mostrar source
-				int longitud=strlen(buffer_retorno);
-				//Tabular hasta columna indicada. TODO configurable
-				int espacios=50-longitud;
-				while (espacios>0) {
-					escribir_socket(misocket," ");
-					espacios--;
-				}
-
-				escribir_socket(misocket,"|");
-				escribir_socket(misocket,puntero_source);
-			}
-
-		}
-
-		else escribir_socket(misocket,buffer_retorno);
+      direccion +=longitud_opcode;
 
 
-		//Y apuntamos a la siguiente linea guessed
-		if (guessed_next_pos_source!=-1) guessed_next_pos_source++;
+
+        if (remote_tamanyo_archivo_raw_source_code) {
+
+            char *puntero_source=NULL;
+
+            if (pos_source!=-1 || guessed_next_pos_source!=-1) {
+
+                //Intentamos mostrar la siguiente linea
+                if (pos_source!=-1) {
+                                int indice=remote_parsed_source_code_indexes_pointer[pos_source];
+                                puntero_source=&remote_raw_source_code_pointer[indice];
+                }
+
+                else {
+                    //Mostrar guessed
+                                int indice=remote_parsed_source_code_indexes_pointer[guessed_next_pos_source];
+                                puntero_source=&remote_raw_source_code_pointer[indice];
+
+                }
+            }
+
+            escribir_socket(misocket,buffer_retorno);
+
+            if (puntero_source!=NULL) {
+                //tabular y mostrar source
+                int longitud=strlen(buffer_retorno);
+                //Tabular hasta columna indicada. TODO configurable
+                int espacios=50-longitud;
+                while (espacios>0) {
+                    escribir_socket(misocket," ");
+                    espacios--;
+                }
+
+                escribir_socket(misocket,"|");
+                escribir_socket(misocket,puntero_source);
+            }
+
+        }
+
+        else escribir_socket(misocket,buffer_retorno);
 
 
-  	lineas--;
-  	if (lineas) escribir_socket(misocket,"\n");
+        //Y apuntamos a la siguiente linea guessed
+        if (guessed_next_pos_source!=-1) guessed_next_pos_source++;
+
+
+      lineas--;
+      if (lineas) escribir_socket(misocket,"\n");
 
 
   }
@@ -2029,17 +2029,17 @@ void remote_send_esc_close_menu(void)
 void remote_footer_cpu_step(void)
 {
 
-	menu_footer_activity("STEP");
-	//Dado que se ha quitado multitask y esta todo parado, refrescar pantalla para mostrar el footer
-	scr_refresca_pantalla_solo_driver();
+    menu_footer_activity("STEP");
+    //Dado que se ha quitado multitask y esta todo parado, refrescar pantalla para mostrar el footer
+    scr_refresca_pantalla_solo_driver();
 
 }
 
 void remote_footer_cpu_step_clear(void)
 {
 
-	menu_delete_footer_activity();
-	//no hace falta forzar refresco pantalla dado que se sale de este estado, menu esta cerrado y por tanto se ejecutara el core tal cual
+    menu_delete_footer_activity();
+    //no hace falta forzar refresco pantalla dado que se sale de este estado, menu esta cerrado y por tanto se ejecutara el core tal cual
 
 }
 
@@ -2049,8 +2049,8 @@ int menu_multitarea_antes_cpu_step=0;
 //Este modo deja la emulacion pausada
 void remote_cpu_enter_step(int misocket)
 {
-	//Si ya estaba este modo, salir sin mas
-	if (menu_event_remote_protocol_enterstep.v) return;
+    //Si ya estaba este modo, salir sin mas
+    if (menu_event_remote_protocol_enterstep.v) return;
 
   //De momento solo simular pulsacion de tecla de menu, eso hace saltar el step
 
@@ -2113,7 +2113,7 @@ void remote_cpu_enter_step(int misocket)
     return;
   }
 
-	remote_footer_cpu_step();
+    remote_footer_cpu_step();
 
 }
 
@@ -2124,32 +2124,32 @@ void remote_get_regs_disassemble(int misocket)
   char buffer_retorno[2048];
 
   //Mostrar registros
-	if (remote_debug_settings&1) {
-  	print_registers(buffer_retorno);
-  	escribir_socket (misocket,buffer_retorno);
+    if (remote_debug_settings&1) {
+      print_registers(buffer_retorno);
+      escribir_socket (misocket,buffer_retorno);
 
-	//Mostrar T-estados
-	escribir_socket_format(misocket," TSTATES: %d",t_estados);
+    //Mostrar T-estados
+    escribir_socket_format(misocket," TSTATES: %d",t_estados);
 
-  	//Salto linea
-  	escribir_socket (misocket,"\n");
-	}
+      //Salto linea
+      escribir_socket (misocket,"\n");
+    }
 
-	/*else  {
-		if (CPU_IS_MOTOROLA) {
-			sprintf (buffer_retorno,"%05X ",get_pc_register());
-		}
-		else {
-			sprintf (buffer_retorno,"%04X ",get_pc_register());
-		}
+    /*else  {
+        if (CPU_IS_MOTOROLA) {
+            sprintf (buffer_retorno,"%05X ",get_pc_register());
+        }
+        else {
+            sprintf (buffer_retorno,"%04X ",get_pc_register());
+        }
 
-		escribir_socket (misocket,buffer_retorno);
-	}*/
+        escribir_socket (misocket,buffer_retorno);
+    }*/
 
 
   //Y desensamblar direccion donde apunta el PC
-	int lineas=1;
-	if (remote_debug_settings&2) lineas=8;
+    int lineas=1;
+    if (remote_debug_settings&2) lineas=8;
   remote_disassemble(misocket,get_pc_register(),lineas,1 );
 
 }
@@ -2159,14 +2159,14 @@ void remote_cpu_exit_step_continue(void)
 {
   menu_event_remote_protocol_enterstep.v=0;
   remote_send_esc_close_menu();
-	remote_footer_cpu_step_clear();
+    remote_footer_cpu_step_clear();
 }
 
 
 void remote_cpu_exit_step_continue_restore_multitask(void)
 {
 
-	remote_cpu_exit_step_continue();
+    remote_cpu_exit_step_continue();
 
  //Restaurar estado multitarea
  menu_multitarea=menu_multitarea_antes_cpu_step;
@@ -2200,13 +2200,13 @@ void remote_cpu_after_core_loop(int misocket)
 //Ejecuta core_loop y si parametro update esta activo, actualiza pantalla al momento y muestra electron si conviene
 void remote_core_loop_if_update_immediately(int update,int nowait_endframe)
 {
-		if (update) screen_force_refresh=1; //Para que no haga frameskip y almacene los pixeles/atributos en buffer rainbow
+        if (update) screen_force_refresh=1; //Para que no haga frameskip y almacene los pixeles/atributos en buffer rainbow
     if (nowait_endframe) menu_debug_registers_run_cpu_opcode();
-	else cpu_core_loop();
-		if (update) {
-			menu_debug_registers_show_scan_position();
-			menu_refresca_pantalla();
-		}
+    else cpu_core_loop();
+        if (update) {
+            menu_debug_registers_show_scan_position();
+            menu_refresca_pantalla();
+        }
 }
 
 void remote_cpu_before_core_loop(void)
@@ -2227,10 +2227,10 @@ void remote_cpu_step(int misocket) {
 
   remote_cpu_before_core_loop();
 
-	remote_core_loop_if_update_immediately(1,1);
+    remote_core_loop_if_update_immediately(1,1);
 
   if (debug_core_lanzado_inter.v && (remote_debug_settings&32)) {
-	  debug_run_until_return_interrupt();
+      debug_run_until_return_interrupt();
   }
 
 
@@ -2245,9 +2245,9 @@ void remote_cpu_step_over(int misocket) {
   //char buffer_retorno[1024];
   //Si apunta PC a instrucciones RET o JP, hacer un cpu-step
   if (si_cpu_step_over_jpret()) {
-	  debug_printf(VERBOSE_DEBUG,"Running only cpu-step as current opcode is JP or RET");
-	  remote_cpu_step(misocket);
-	  return;
+      debug_printf(VERBOSE_DEBUG,"Running only cpu-step as current opcode is JP or RET");
+      remote_cpu_step(misocket);
+      return;
   }
 
 
@@ -2271,79 +2271,79 @@ void remote_cpu_step_over(int misocket) {
 void remote_cpu_run_loop(int misocket,int verbose,int limite,int datos_vuelve,int actualiza_al_momento)
 {
 
-	char buf[30];
+    char buf[30];
 
 
-	//Hacer el socket que no se quede bloqueado si no hay datos.
+    //Hacer el socket que no se quede bloqueado si no hay datos.
 
-	if (datos_vuelve) {
-	#ifdef MINGW
-	  u_long on = 1;
+    if (datos_vuelve) {
+    #ifdef MINGW
+      u_long on = 1;
     ioctlsocket(misocket, FIONBIO, &on);
-	#else
-		int flags = fcntl(misocket, F_GETFL, 0);
-		fcntl(misocket, F_SETFL, flags | O_NONBLOCK);
-	#endif
+    #else
+        int flags = fcntl(misocket, F_GETFL, 0);
+        fcntl(misocket, F_SETFL, flags | O_NONBLOCK);
+    #endif
 
-	}
+    }
 
-	int total_instrucciones=0;
+    int total_instrucciones=0;
 
-	int salir=0;
-	while (!salir) {
-	  if (verbose) {
-	    remote_get_regs_disassemble(misocket);
-	    escribir_socket(misocket,"\n");
-	  }
-	  debug_core_lanzado_inter.v=0;
-
-
-		remote_core_loop_if_update_immediately(actualiza_al_momento,0);
-
-	  if (debug_core_lanzado_inter.v && (remote_debug_settings&32)) {
-			debug_run_until_return_interrupt();
-	  }
-
-		//Si se vuelve cuando hay datos en el socket. Con esto, usa mucha mas cpu (46% respecto a un 19% si no se esta mirando el socket)
-		if (datos_vuelve) {
-			#ifdef MINGW
-				int leidos=recv(misocket,buf,30,0);
-				//int leidos = read(misocket, buf, 30);
-				if (leidos>0) {
-					salir=1;
-				}
-			#else
-				//int leidos = read(misocket, buf, 30);
-				int leidos=recv(misocket,buf,30,0);
-				if (leidos>0) {
-					salir=1;
-				}
-			#endif
-		}
+    int salir=0;
+    while (!salir) {
+      if (verbose) {
+        remote_get_regs_disassemble(misocket);
+        escribir_socket(misocket,"\n");
+      }
+      debug_core_lanzado_inter.v=0;
 
 
-	  total_instrucciones++;
-	  if (limite) {
-	    if (total_instrucciones==limite) {
-	      escribir_socket_format(misocket,"Returning after %d opcodes\n",limite);
-	      salir=1;
-	    }
-	  }
+        remote_core_loop_if_update_immediately(actualiza_al_momento,0);
+
+      if (debug_core_lanzado_inter.v && (remote_debug_settings&32)) {
+            debug_run_until_return_interrupt();
+      }
+
+        //Si se vuelve cuando hay datos en el socket. Con esto, usa mucha mas cpu (46% respecto a un 19% si no se esta mirando el socket)
+        if (datos_vuelve) {
+            #ifdef MINGW
+                int leidos=recv(misocket,buf,30,0);
+                //int leidos = read(misocket, buf, 30);
+                if (leidos>0) {
+                    salir=1;
+                }
+            #else
+                //int leidos = read(misocket, buf, 30);
+                int leidos=recv(misocket,buf,30,0);
+                if (leidos>0) {
+                    salir=1;
+                }
+            #endif
+        }
+
+
+      total_instrucciones++;
+      if (limite) {
+        if (total_instrucciones==limite) {
+          escribir_socket_format(misocket,"Returning after %d opcodes\n",limite);
+          salir=1;
+        }
+      }
       //Si se abre menu o salta excepcion, salir
-	  if (menu_abierto || menu_breakpoint_exception.v) salir=1;
-	}
+      if (menu_abierto || menu_breakpoint_exception.v) salir=1;
+    }
 
 
-	//Dejar el socket tranquilito como estaba antes
-	if (datos_vuelve) {
-	#ifdef MINGW
-		u_long on = 0;
-    	ioctlsocket(misocket, FIONBIO, &on);
-	#else
-		int flags = fcntl(misocket, F_GETFL, 0);
-		fcntl(misocket, F_SETFL, flags ^ O_NONBLOCK);
-	#endif
-	}
+    //Dejar el socket tranquilito como estaba antes
+    if (datos_vuelve) {
+    #ifdef MINGW
+        u_long on = 0;
+        ioctlsocket(misocket, FIONBIO, &on);
+    #else
+        int flags = fcntl(misocket, F_GETFL, 0);
+        fcntl(misocket, F_SETFL, flags ^ O_NONBLOCK);
+    #endif
+    }
 
 
 
@@ -2373,12 +2373,12 @@ void remote_cpu_run(int misocket,int verbose,int limite,int datosvuelve,int upda
 
   debug_printf(VERBOSE_DEBUG,"Exiting run command");
 
-	//Si se ha saltado un breakpoint, decirlo
-	if (menu_breakpoint_exception.v) {
-		if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
-			escribir_socket_format(misocket,"Breakpoint fired: %s\n",catch_breakpoint_message);
-			}
-	}
+    //Si se ha saltado un breakpoint, decirlo
+    if (menu_breakpoint_exception.v) {
+        if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
+            escribir_socket_format(misocket,"Breakpoint fired: %s\n",catch_breakpoint_message);
+            }
+    }
 
 
   remote_cpu_after_core_loop(misocket);
@@ -2391,57 +2391,57 @@ void remote_evaluate(int misocket,char *texto)
   //char salida[MAX_BREAKPOINT_CONDITION_LENGTH];
 
 
-	char buffer_salida[256]; //mas que suficiente
-	char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
+    char buffer_salida[256]; //mas que suficiente
+    char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
 
 
-	int result=exp_par_evaluate_expression(texto,buffer_salida,string_detoken);
-	if (result==0) {
-		escribir_socket(misocket,buffer_salida);
-	}
+    int result=exp_par_evaluate_expression(texto,buffer_salida,string_detoken);
+    if (result==0) {
+        escribir_socket(misocket,buffer_salida);
+    }
 
-	else if (result==1) {
-		escribir_socket(misocket,buffer_salida);
-	}
+    else if (result==1) {
+        escribir_socket(misocket,buffer_salida);
+    }
 
-	else {
-		escribir_socket_format(misocket,"%s parsed string: %s",buffer_salida,string_detoken);
-	}
+    else {
+        escribir_socket_format(misocket,"%s parsed string: %s",buffer_salida,string_detoken);
+    }
 
 }
 
 
 void remote_esxdos_gof(int misocket)
 {
-	int i;
+    int i;
 
-	for (i=0;i<ESXDOS_MAX_OPEN_FILES;i++) {
-		if (esxdos_fopen_files[i].open_file.v) {
-			if (esxdos_fopen_files[i].is_a_directory.v) {
-				escribir_socket_format(misocket,"%d (dir) Name: %s\n",i,esxdos_fopen_files[i].esxdos_handler_last_dir_open);
-			}
-			else {
-				escribir_socket_format(misocket,"%d (file) Name: %s Full Path: %s\n",i,esxdos_fopen_files[i].debug_name,esxdos_fopen_files[i].debug_fullpath);
-			}
-		}
-	}
+    for (i=0;i<ESXDOS_MAX_OPEN_FILES;i++) {
+        if (esxdos_fopen_files[i].open_file.v) {
+            if (esxdos_fopen_files[i].is_a_directory.v) {
+                escribir_socket_format(misocket,"%d (dir) Name: %s\n",i,esxdos_fopen_files[i].esxdos_handler_last_dir_open);
+            }
+            else {
+                escribir_socket_format(misocket,"%d (file) Name: %s Full Path: %s\n",i,esxdos_fopen_files[i].debug_name,esxdos_fopen_files[i].debug_fullpath);
+            }
+        }
+    }
 
 }
 
 void remote_qdos_gof(int misocket)
 {
-	int i;
+    int i;
 
-	for (i=0;i<QLTRAPS_MAX_OPEN_FILES;i++) {
-		if (qltraps_fopen_files[i].open_file.v) {
-			if (qltraps_fopen_files[i].es_dispositivo) {
-				escribir_socket_format(misocket,"%d (dir) Name: %s\n",i,qltraps_fopen_files[i].qltraps_handler_last_dir_open);
-			}
-			else {
-				escribir_socket_format(misocket,"%d (file) Name: %s Full Path: %s\n",i,qltraps_fopen_files[i].debug_name,qltraps_fopen_files[i].debug_fullpath);
-			}
-		}
-	}
+    for (i=0;i<QLTRAPS_MAX_OPEN_FILES;i++) {
+        if (qltraps_fopen_files[i].open_file.v) {
+            if (qltraps_fopen_files[i].es_dispositivo) {
+                escribir_socket_format(misocket,"%d (dir) Name: %s\n",i,qltraps_fopen_files[i].qltraps_handler_last_dir_open);
+            }
+            else {
+                escribir_socket_format(misocket,"%d (file) Name: %s Full Path: %s\n",i,qltraps_fopen_files[i].debug_name,qltraps_fopen_files[i].debug_fullpath);
+            }
+        }
+    }
 
 }
 
@@ -2760,22 +2760,22 @@ void easter_egg_scroll_horizontal_continuo_front(void)
 void easter_egg_star_wars_write_line(char *texto,int longitud_texto,int x,int y,int scanline, z80_int color)
 {
 
-	//Convertir buffer inicial a caracteres finales para conversión de cirílicos
+    //Convertir buffer inicial a caracteres finales para conversión de cirílicos
 
-	z80_byte buffer_final[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+    z80_byte buffer_final[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
-	int longitud_final=util_convert_utf_charset(texto,buffer_final,longitud_texto);
-	//Al final el texto convertido desde utf ocupara menos en pantalla en caso de haber caracteres de mas de 1 byte
-	//y como formatea el texto antes por cada linea, habran lineas bastante vacias cuando haya caracteres utf
+    int longitud_final=util_convert_utf_charset(texto,buffer_final,longitud_texto);
+    //Al final el texto convertido desde utf ocupara menos en pantalla en caso de haber caracteres de mas de 1 byte
+    //y como formatea el texto antes por cada linea, habran lineas bastante vacias cuando haya caracteres utf
 
   //for (;longitud_texto;longitud_texto--) {
-	  int i=0;
+      int i=0;
   for (;longitud_final;longitud_final--) {
-	  //printf ("%d ",buffer_final[i]);
+      //printf ("%d ",buffer_final[i]);
     easter_scanline_putchar_front(buffer_final[i],x,y,scanline,color);
     x+=8;
     //texto++;
-	i++;
+    i++;
   }
 
   //printf ("\n");
@@ -2905,66 +2905,66 @@ void easter_egg_star_wars_text(char *texto_orig)
   //void menu_generic_message_tooltip(char *titulo, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, const char * texto_format , ...)
 
     //Funcion derivada de menu_generic_message_tooltip
-  	//texto que contiene cada linea con ajuste de palabra. Al trocear las lineas aumentan
-  	char buffer_lineas[MAX_LINEAS_TOTAL_GENERIC_MESSAGE][MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+      //texto que contiene cada linea con ajuste de palabra. Al trocear las lineas aumentan
+      char buffer_lineas[MAX_LINEAS_TOTAL_GENERIC_MESSAGE][MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
 
-  	const int max_ancho_texto=30;
+      const int max_ancho_texto=30;
 
-  	//Primera linea que mostramos en la ventana
-  	//int primera_linea=0;
+      //Primera linea que mostramos en la ventana
+      //int primera_linea=0;
 
-  	int indice_linea=0;  //Numero total de lineas??
-  	int indice_texto=0;
-  	int ultimo_indice_texto=0;
-  	int longitud=strlen(texto);
+      int indice_linea=0;  //Numero total de lineas??
+      int indice_texto=0;
+      int ultimo_indice_texto=0;
+      int longitud=strlen(texto);
 
-  	//int indice_segunda_linea;
+      //int indice_segunda_linea;
 
-  	//int texto_no_cabe=0;
+      //int texto_no_cabe=0;
 
-  	do {
-  		indice_texto+=max_ancho_texto;
-
-
-  		//printf ("indice_linea: %d\n",indice_linea);
-
-  		//Controlar final de texto
-  		if (indice_texto>=longitud) indice_texto=longitud;
-
-  		//Si no, miramos si hay que separar por espacios
-  		else indice_texto=menu_generic_message_aux_wordwrap(texto,ultimo_indice_texto,indice_texto);
-
-  		//Separamos por salto de linea, filtramos caracteres extranyos
-  		indice_texto=menu_generic_message_aux_filter(texto,ultimo_indice_texto,indice_texto);
-
-  		//copiar texto
-  		int longitud_texto=indice_texto-ultimo_indice_texto;
+      do {
+          indice_texto+=max_ancho_texto;
 
 
-  		//snprintf(buffer_lineas[indice_linea],longitud_texto,&texto[ultimo_indice_texto]);
+          //printf ("indice_linea: %d\n",indice_linea);
+
+          //Controlar final de texto
+          if (indice_texto>=longitud) indice_texto=longitud;
+
+          //Si no, miramos si hay que separar por espacios
+          else indice_texto=menu_generic_message_aux_wordwrap(texto,ultimo_indice_texto,indice_texto);
+
+          //Separamos por salto de linea, filtramos caracteres extranyos
+          indice_texto=menu_generic_message_aux_filter(texto,ultimo_indice_texto,indice_texto);
+
+          //copiar texto
+          int longitud_texto=indice_texto-ultimo_indice_texto;
 
 
-  		menu_generic_message_aux_copia(&texto[ultimo_indice_texto],buffer_lineas[indice_linea],longitud_texto);
-  		buffer_lineas[indice_linea++][longitud_texto]=0;
-  		//printf ("copiado %d caracteres desde %d hasta %d: %s\n",longitud_texto,ultimo_indice_texto,indice_texto,buffer_lineas[indice_linea-1]);
+          //snprintf(buffer_lineas[indice_linea],longitud_texto,&texto[ultimo_indice_texto]);
 
 
-  		//printf ("texto: %s\n",buffer_lineas[indice_linea-1]);
+          menu_generic_message_aux_copia(&texto[ultimo_indice_texto],buffer_lineas[indice_linea],longitud_texto);
+          buffer_lineas[indice_linea++][longitud_texto]=0;
+          //printf ("copiado %d caracteres desde %d hasta %d: %s\n",longitud_texto,ultimo_indice_texto,indice_texto,buffer_lineas[indice_linea-1]);
 
-  		if (indice_linea==MAX_LINEAS_TOTAL_GENERIC_MESSAGE) {
+
+          //printf ("texto: %s\n",buffer_lineas[indice_linea-1]);
+
+          if (indice_linea==MAX_LINEAS_TOTAL_GENERIC_MESSAGE) {
                           //cpu_panic("Max lines on menu_generic_message reached");
-  			debug_printf(VERBOSE_INFO,"Max lines on menu_generic_message reached (%d)",MAX_LINEAS_TOTAL_GENERIC_MESSAGE);
-  			//finalizamos bucle
-  			indice_texto=longitud;
-  		}
+              debug_printf(VERBOSE_INFO,"Max lines on menu_generic_message reached (%d)",MAX_LINEAS_TOTAL_GENERIC_MESSAGE);
+              //finalizamos bucle
+              indice_texto=longitud;
+          }
 
-  		ultimo_indice_texto=indice_texto;
-  		//printf ("ultimo indice: %d %c\n",ultimo_indice_texto,texto[ultimo_indice_texto]);
+          ultimo_indice_texto=indice_texto;
+          //printf ("ultimo indice: %d %c\n",ultimo_indice_texto,texto[ultimo_indice_texto]);
 
-  	} while (indice_texto<longitud);
+      } while (indice_texto<longitud);
 
 
-  	debug_printf (VERBOSE_INFO,"Read %d lines (word wrapped)",indice_linea);
+      debug_printf (VERBOSE_INFO,"Read %d lines (word wrapped)",indice_linea);
 
 
     int linea_leida;
@@ -3207,14 +3207,14 @@ void remote_cerrar_conexion(void)
     //Solo hacer close de eso cuando habia una conexión activa
     if (sock_connected_client>=0) {
 #ifdef MINGW
-	closesocket(sock_connected_client);
+    closesocket(sock_connected_client);
 #else
-	close(sock_connected_client);
+    close(sock_connected_client);
 #endif
 
-	//#ifdef MINGW
-	//WSACleanup();
-	//#endif
+    //#ifdef MINGW
+    //WSACleanup();
+    //#endif
     }
 
     sock_connected_client=-1;
@@ -3242,109 +3242,109 @@ void remote_parse_commands_argvc(char *texto,int *remote_command_argc, char **re
 void remote_dump_nested_core_functions(int misocket)
 {
 
-	char buffer[10000];
+    char buffer[10000];
 
 
-	debug_dump_nested_functions(buffer);
+    debug_dump_nested_functions(buffer);
 
-	escribir_socket(misocket,buffer);
+    escribir_socket(misocket,buffer);
 }
 
 //Escribe en destino las dos cadenas, la segunda tabulada en la posicion column, y tabulada mediante espacios
 /*void remote_print_strings_tabbed(char *destino, char *string1, char *string2, int column)
 {
-	//Primero llenar de espacios hasta columna
-	int i;
-	for (i=0;i<column;i++) {
-		destino[i]=' ';
-	}
+    //Primero llenar de espacios hasta columna
+    int i;
+    for (i=0;i<column;i++) {
+        destino[i]=' ';
+    }
 
-	//Escribe las dos cadenas
-	sprintf(destino,"%s",string1);
+    //Escribe las dos cadenas
+    sprintf(destino,"%s",string1);
 
-	//Quitar 0 final
-	destino[strlen(string1)]=' ';
+    //Quitar 0 final
+    destino[strlen(string1)]=' ';
 
-	//Escribe cadena 2
-	sprintf(&destino[column],"%s",string2);
+    //Escribe cadena 2
+    sprintf(&destino[column],"%s",string2);
 }
 */
 
 void remote_fill_string_spaces(char *string, int length)
 {
-	int i;
+    int i;
 
-	for (i=0;i<length;i++) {
-		*string=' ';
-		string++;
-	}
+    for (i=0;i<length;i++) {
+        *string=' ';
+        string++;
+    }
 
-	*string=0;
+    *string=0;
 }
 
 int remote_get_max_length_command(void)
 {
-	int salto_tabulacion=0;
-	int i;
+    int salto_tabulacion=0;
+    int i;
 
-	//Calcular primero salto de tabulacion ideal, leyendo mayor longitud de texto
-	for (i=0;items_ayuda[i].nombre_comando!=NULL;i++) {
-		int l=strlen(items_ayuda[i].nombre_comando);
-		if (l>salto_tabulacion) salto_tabulacion=l;
-	}
+    //Calcular primero salto de tabulacion ideal, leyendo mayor longitud de texto
+    for (i=0;items_ayuda[i].nombre_comando!=NULL;i++) {
+        int l=strlen(items_ayuda[i].nombre_comando);
+        if (l>salto_tabulacion) salto_tabulacion=l;
+    }
 
-	return salto_tabulacion;
+    return salto_tabulacion;
 }
 
 void remote_print_no_zero_ending(char *s,char *string_to_add)
 {
-	while (*string_to_add) {
-		*s=*string_to_add;
+    while (*string_to_add) {
+        *s=*string_to_add;
 
-		s++;
-		string_to_add++;
-	}
+        s++;
+        string_to_add++;
+    }
 }
 
 //Retorna lista de comandos con ayuda simple en misma linea
 void remote_help_no_parameters_command(int misocket)
 {
 
-		//Mostrar comando y al lado ayuda del mismo, reducida hasta el siguiente punto
+        //Mostrar comando y al lado ayuda del mismo, reducida hasta el siguiente punto
 
-		//Calcular primero maxima longitud comando
-		int salto_tabulacion=remote_get_max_length_command();
+        //Calcular primero maxima longitud comando
+        int salto_tabulacion=remote_get_max_length_command();
 
-		//darle dos espacios mas
+        //darle dos espacios mas
 
-		salto_tabulacion +=2;
+        salto_tabulacion +=2;
 
-		char buffer_texto[1024];
+        char buffer_texto[1024];
 
-		char buffer_ayuda[1024];
+        char buffer_ayuda[1024];
 
     int i;
     for (i=0;items_ayuda[i].nombre_comando!=NULL;i++) {
 
-				//llenar string con espacios minimo hasta salto_tabulacion
-				remote_fill_string_spaces(buffer_texto,salto_tabulacion);
+                //llenar string con espacios minimo hasta salto_tabulacion
+                remote_fill_string_spaces(buffer_texto,salto_tabulacion);
 
 
 
-				//Meter en buffer_ayuda hasta siguiente . o final
-				int j;
+                //Meter en buffer_ayuda hasta siguiente . o final
+                int j;
 
-				for (j=0;items_ayuda[i].ayuda_comando[j]!=0 && items_ayuda[i].ayuda_comando[j]!='.';j++) {
-					buffer_ayuda[j]=items_ayuda[i].ayuda_comando[j];
-				}
+                for (j=0;items_ayuda[i].ayuda_comando[j]!=0 && items_ayuda[i].ayuda_comando[j]!='.';j++) {
+                    buffer_ayuda[j]=items_ayuda[i].ayuda_comando[j];
+                }
 
-				buffer_ayuda[j]=0;
+                buffer_ayuda[j]=0;
 
-				//Meter en buffer texto las dos cadenas
-				remote_print_no_zero_ending(buffer_texto,items_ayuda[i].nombre_comando);
+                //Meter en buffer texto las dos cadenas
+                remote_print_no_zero_ending(buffer_texto,items_ayuda[i].nombre_comando);
 
-				sprintf(&buffer_texto[salto_tabulacion],"%s",buffer_ayuda);
-				escribir_socket(misocket,buffer_texto);
+                sprintf(&buffer_texto[salto_tabulacion],"%s",buffer_ayuda);
+                escribir_socket(misocket,buffer_texto);
 
 
         escribir_socket (misocket,"\n");
@@ -3359,46 +3359,46 @@ void remote_simple_help(int misocket)
 {
 
 
-		int salto_tabulacion=remote_get_max_length_command();
+        int salto_tabulacion=remote_get_max_length_command();
 
-		//y darle dos espacios mas
-		salto_tabulacion +=2;
+        //y darle dos espacios mas
+        salto_tabulacion +=2;
 
-		const int columnas_total=4;
-		int columna=0;
-		char buffer_texto[1024];
-		int i;
+        const int columnas_total=4;
+        int columna=0;
+        char buffer_texto[1024];
+        int i;
 
     for (i=0;items_ayuda[i].nombre_comando!=NULL;i++) {
-				if (columna==0) remote_fill_string_spaces(buffer_texto,columnas_total*salto_tabulacion);
+                if (columna==0) remote_fill_string_spaces(buffer_texto,columnas_total*salto_tabulacion);
 
-				int pos_columna=columna*salto_tabulacion;
+                int pos_columna=columna*salto_tabulacion;
 
 
-				remote_print_no_zero_ending(&buffer_texto[pos_columna],items_ayuda[i].nombre_comando);
-				//sprintf(&buffer_texto[pos_columna],"%s",items_ayuda[i].nombre_comando);
-				//Quitar 0 del final
-				buffer_texto[pos_columna+strlen(items_ayuda[i].nombre_comando)]=32;
+                remote_print_no_zero_ending(&buffer_texto[pos_columna],items_ayuda[i].nombre_comando);
+                //sprintf(&buffer_texto[pos_columna],"%s",items_ayuda[i].nombre_comando);
+                //Quitar 0 del final
+                buffer_texto[pos_columna+strlen(items_ayuda[i].nombre_comando)]=32;
 
-				columna++;
+                columna++;
 
-				//Si final de columna o final de comandos
-				if (columna==columnas_total) {
-					escribir_socket(misocket,buffer_texto);
-					escribir_socket (misocket,"\n");
-					columna=0;
-				}
+                //Si final de columna o final de comandos
+                if (columna==columnas_total) {
+                    escribir_socket(misocket,buffer_texto);
+                    escribir_socket (misocket,"\n");
+                    columna=0;
+                }
 
 
         //escribir_socket(misocket,items_ayuda[i].nombre_comando);
         //escribir_socket (misocket,"\n");
     }
 
-		//Si ha acabado en medio de columnas
-		if (columna!=0) {
-			escribir_socket(misocket,buffer_texto);
-			escribir_socket (misocket,"\n");
-		}
+        //Si ha acabado en medio de columnas
+        if (columna!=0) {
+            escribir_socket(misocket,buffer_texto);
+            escribir_socket (misocket,"\n");
+        }
 
 }
 
@@ -3476,86 +3476,86 @@ void remote_copy_string_spc(char *origen, char *destino)
 void remote_ayplayer(int misocket,char *command,char *command_parm)
 {
 
-	//Comandos que requieren que este en ejecucion el player
-	if (
-		!strcasecmp(command,"prev-track") ||
-		!strcasecmp(command,"stop") ||
-		!strcasecmp(command,"next-track") ||
+    //Comandos que requieren que este en ejecucion el player
+    if (
+        !strcasecmp(command,"prev-track") ||
+        !strcasecmp(command,"stop") ||
+        !strcasecmp(command,"next-track") ||
         !strcasecmp(command,"prev-file") ||
         !strcasecmp(command,"next-file") ||
-		!strcasecmp(command,"get-track-name") ||
-		!strcasecmp(command,"get-author") ||
-		!strcasecmp(command,"get-misc") ||
-		!strcasecmp(command,"get-track-number") ||
-		!strcasecmp(command,"get-total-tracks") ||
+        !strcasecmp(command,"get-track-name") ||
+        !strcasecmp(command,"get-author") ||
+        !strcasecmp(command,"get-misc") ||
+        !strcasecmp(command,"get-track-number") ||
+        !strcasecmp(command,"get-total-tracks") ||
         !strcasecmp(command,"get-id-file") ||
-		!strcasecmp(command,"get-elapsed-track") ||
+        !strcasecmp(command,"get-elapsed-track") ||
         !strcasecmp(command,"get-file") ||
-		!strcasecmp(command,"get-track-length")
-		) {
-		if (!menu_audio_new_ayplayer_si_mostrar()) {
-			escribir_socket_format(misocket,"ERROR. Player not running\n");
-			return;
-		}
+        !strcasecmp(command,"get-track-length")
+        ) {
+        if (!menu_audio_new_ayplayer_si_mostrar()) {
+            escribir_socket_format(misocket,"ERROR. Player not running\n");
+            return;
+        }
 
-		if (!strcasecmp(command,"prev-track")) ay_player_previous_track();
-		if (!strcasecmp(command,"stop")) ay_player_stop_player();
-		if (!strcasecmp(command,"next-track")) ay_player_next_track();
+        if (!strcasecmp(command,"prev-track")) ay_player_previous_track();
+        if (!strcasecmp(command,"stop")) ay_player_stop_player();
+        if (!strcasecmp(command,"next-track")) ay_player_next_track();
         if (!strcasecmp(command,"prev-file")) ay_player_previous_file();
         if (!strcasecmp(command,"next-file")) ay_player_next_file();
-		if (!strcasecmp(command,"get-track-name")) {
-			escribir_socket(misocket,ay_player_file_song_name);
-		}
+        if (!strcasecmp(command,"get-track-name")) {
+            escribir_socket(misocket,ay_player_file_song_name);
+        }
 
         if (!strcasecmp(command,"get-file")) {
             escribir_socket(misocket,ay_player_filename_playing);
         }
 
-		if (!strcasecmp(command,"get-author")) {
-			escribir_socket(misocket,ay_player_file_author);
-		}
+        if (!strcasecmp(command,"get-author")) {
+            escribir_socket(misocket,ay_player_file_author);
+        }
 
-		if (!strcasecmp(command,"get-misc")) {
-			escribir_socket(misocket,ay_player_file_misc);
-		}
+        if (!strcasecmp(command,"get-misc")) {
+            escribir_socket(misocket,ay_player_file_misc);
+        }
 
-		if (!strcasecmp(command,"get-track-number")) {
-			escribir_socket_format(misocket,"%d",ay_player_pista_actual);
-		}
+        if (!strcasecmp(command,"get-track-number")) {
+            escribir_socket_format(misocket,"%d",ay_player_pista_actual);
+        }
 
-		if (!strcasecmp(command,"get-total-tracks")) {
-			escribir_socket_format(misocket,"%d",ay_player_total_songs());
-		}
-
-
+        if (!strcasecmp(command,"get-total-tracks")) {
+            escribir_socket_format(misocket,"%d",ay_player_total_songs());
+        }
 
 
-		if (!strcasecmp(command,"get-id-file")) {
-			escribir_socket_format(misocket,"%d",ay_player_playlist_item_actual);
-		}
 
 
-		if (!strcasecmp(command,"get-elapsed-track")) {
-			escribir_socket_format(misocket,"%d",ay_song_length_counter);
-		}
+        if (!strcasecmp(command,"get-id-file")) {
+            escribir_socket_format(misocket,"%d",ay_player_playlist_item_actual);
+        }
 
-		if (!strcasecmp(command,"get-track-length")) {
-			escribir_socket_format(misocket,"%d",ay_song_length);
-		}
 
-	}
+        if (!strcasecmp(command,"get-elapsed-track")) {
+            escribir_socket_format(misocket,"%d",ay_song_length_counter);
+        }
+
+        if (!strcasecmp(command,"get-track-length")) {
+            escribir_socket_format(misocket,"%d",ay_song_length);
+        }
+
+    }
 
     if (!strcasecmp(command,"get-total-files")) {
         escribir_socket_format(misocket,"%d",ay_player_playlist_get_total_elements());
     }
 
-	if (!strcasecmp(command,"load-dir")) {
-		ay_player_add_directory_playlist(command_parm);
-	}
+    if (!strcasecmp(command,"load-dir")) {
+        ay_player_add_directory_playlist(command_parm);
+    }
 
-	if (!strcasecmp(command,"load")) {
-		ay_player_add_file(command_parm);
-	}
+    if (!strcasecmp(command,"load")) {
+        ay_player_add_file(command_parm);
+    }
 
     if (!strcasecmp(command,"get-playlist")) {
 
@@ -3580,158 +3580,158 @@ void remote_ayplayer(int misocket,char *command,char *command_parm)
     }
 
 
-	if (!strcasecmp(command,"play-id")) {
+    if (!strcasecmp(command,"play-id")) {
         int identificador=parse_string_to_number(command_parm);
-		ay_player_play_this_item(identificador);
-	}
+        ay_player_play_this_item(identificador);
+    }
 
 
 }
 
 void remote_hexdump_internal(int misocket,z80_byte *inicio,int longitud,int offset)
 {
-	//Formato:
-	//000284d0  20 20 20 20 20 4d 4f 56  45 2e 57 20 20 20 44 31  |     MOVE.W   D1|
-	//printf ("%p %p\n",inicio,memoria_spectrum);
-	inicio +=offset;
+    //Formato:
+    //000284d0  20 20 20 20 20 4d 4f 56  45 2e 57 20 20 20 44 31  |     MOVE.W   D1|
+    //printf ("%p %p\n",inicio,memoria_spectrum);
+    inicio +=offset;
 
-	for (;longitud>0;longitud -=16) {
-		escribir_socket_format(misocket,"%XH ",offset);
-		offset +=16;
+    for (;longitud>0;longitud -=16) {
+        escribir_socket_format(misocket,"%XH ",offset);
+        offset +=16;
 
-		//escribir_socket_format(misocket,"%d ",longitud);
-		//sleep(1);
-		int longitud_parcial=longitud;
+        //escribir_socket_format(misocket,"%d ",longitud);
+        //sleep(1);
+        int longitud_parcial=longitud;
 
-		if (longitud_parcial>16) longitud_parcial=16;
+        if (longitud_parcial>16) longitud_parcial=16;
 
-		z80_byte *puntero_linea;
-		puntero_linea=inicio;
-		//Volcar 16 bytes hexa
-		for (;longitud_parcial>0;longitud_parcial--) {
-			escribir_socket_format(misocket,"%02X ",*puntero_linea);
-			puntero_linea++;
-		}
-		//z80_byte c=(z80_byte)*memoria_spectrum;
+        z80_byte *puntero_linea;
+        puntero_linea=inicio;
+        //Volcar 16 bytes hexa
+        for (;longitud_parcial>0;longitud_parcial--) {
+            escribir_socket_format(misocket,"%02X ",*puntero_linea);
+            puntero_linea++;
+        }
+        //z80_byte c=(z80_byte)*memoria_spectrum;
 
-		//escribir_socket_format(misocket,"%02XH ",*puntero_linea);
-		//Llenar los que falten
+        //escribir_socket_format(misocket,"%02XH ",*puntero_linea);
+        //Llenar los que falten
 
-		if (longitud<16) {
-			int espacios=16-longitud;
-			for (;espacios;espacios--) escribir_socket(misocket,"   ");
-		}
+        if (longitud<16) {
+            int espacios=16-longitud;
+            for (;espacios;espacios--) escribir_socket(misocket,"   ");
+        }
 
-		escribir_socket(misocket," |");
+        escribir_socket(misocket," |");
 
 
-		puntero_linea=(z80_byte *) inicio;
+        puntero_linea=(z80_byte *) inicio;
 
-		longitud_parcial=longitud;
+        longitud_parcial=longitud;
 
-		if (longitud_parcial>16) longitud_parcial=16;
+        if (longitud_parcial>16) longitud_parcial=16;
 
-		//Volcar 16 bytes ascii
-		for (;longitud_parcial>0;longitud_parcial--) {
-			unsigned char c=*puntero_linea;
-			if (c<32 || c>126) c='.';
-			escribir_socket_format(misocket,"%c",c);
-			puntero_linea++;
-		}
+        //Volcar 16 bytes ascii
+        for (;longitud_parcial>0;longitud_parcial--) {
+            unsigned char c=*puntero_linea;
+            if (c<32 || c>126) c='.';
+            escribir_socket_format(misocket,"%c",c);
+            puntero_linea++;
+        }
 
-		escribir_socket(misocket,"|\n");
+        escribir_socket(misocket,"|\n");
 
-		inicio +=16;
+        inicio +=16;
 
-	}
+    }
 }
 
 
 
 void remote_hexdump(int misocket,int inicio,int longitud)
 {
-	//Formato:
-	//000284d0  20 20 20 20 20 4d 4f 56  45 2e 57 20 20 20 44 31  |     MOVE.W   D1|
-	//printf ("%p %p\n",inicio,memoria_spectrum);
-	//inicio +=offset;
+    //Formato:
+    //000284d0  20 20 20 20 20 4d 4f 56  45 2e 57 20 20 20 44 31  |     MOVE.W   D1|
+    //printf ("%p %p\n",inicio,memoria_spectrum);
+    //inicio +=offset;
 
-	menu_debug_set_memory_zone_attr();
+    menu_debug_set_memory_zone_attr();
 
-	for (;longitud>0;longitud -=16) {
-		char buffer_direccion[MAX_LENGTH_ADDRESS_MEMORY_ZONE+1];
-		menu_debug_print_address_memory_zone(buffer_direccion,inicio);
+    for (;longitud>0;longitud -=16) {
+        char buffer_direccion[MAX_LENGTH_ADDRESS_MEMORY_ZONE+1];
+        menu_debug_print_address_memory_zone(buffer_direccion,inicio);
 
-		escribir_socket_format(misocket,"%sH ",buffer_direccion);
-		//offset +=16;
+        escribir_socket_format(misocket,"%sH ",buffer_direccion);
+        //offset +=16;
 
-		//escribir_socket_format(misocket,"%d ",longitud);
-		//sleep(1);
-		int longitud_parcial=longitud;
+        //escribir_socket_format(misocket,"%d ",longitud);
+        //sleep(1);
+        int longitud_parcial=longitud;
 
-		if (longitud_parcial>16) longitud_parcial=16;
+        if (longitud_parcial>16) longitud_parcial=16;
 
-		int puntero_linea;
-		puntero_linea=inicio;
-		//Volcar 16 bytes hexa
-		for (;longitud_parcial>0;longitud_parcial--) {
-			//escribir_socket_format(misocket,"%02X ",peek_byte_z80_moto(puntero_linea));
-			escribir_socket_format(misocket,"%02X ",menu_debug_get_mapped_byte(puntero_linea));
-			puntero_linea++;
-		}
-		//z80_byte c=(z80_byte)*memoria_spectrum;
+        int puntero_linea;
+        puntero_linea=inicio;
+        //Volcar 16 bytes hexa
+        for (;longitud_parcial>0;longitud_parcial--) {
+            //escribir_socket_format(misocket,"%02X ",peek_byte_z80_moto(puntero_linea));
+            escribir_socket_format(misocket,"%02X ",menu_debug_get_mapped_byte(puntero_linea));
+            puntero_linea++;
+        }
+        //z80_byte c=(z80_byte)*memoria_spectrum;
 
-		//escribir_socket_format(misocket,"%02XH ",*puntero_linea);
-		//Llenar los que falten
+        //escribir_socket_format(misocket,"%02XH ",*puntero_linea);
+        //Llenar los que falten
 
-		if (longitud<16) {
-			int espacios=16-longitud;
-			for (;espacios;espacios--) escribir_socket(misocket,"   ");
-		}
+        if (longitud<16) {
+            int espacios=16-longitud;
+            for (;espacios;espacios--) escribir_socket(misocket,"   ");
+        }
 
-		escribir_socket(misocket," |");
+        escribir_socket(misocket," |");
 
 
-		puntero_linea=inicio;
+        puntero_linea=inicio;
 
-		longitud_parcial=longitud;
+        longitud_parcial=longitud;
 
-		if (longitud_parcial>16) longitud_parcial=16;
+        if (longitud_parcial>16) longitud_parcial=16;
 
-		//Volcar 16 bytes ascii
-		for (;longitud_parcial>0;longitud_parcial--) {
-			//unsigned char c=peek_byte_z80_moto(puntero_linea);
-			unsigned char c=menu_debug_get_mapped_byte(puntero_linea);
-			if (c<32 || c>126) c='.';
-			escribir_socket_format(misocket,"%c",c);
-			puntero_linea++;
-		}
+        //Volcar 16 bytes ascii
+        for (;longitud_parcial>0;longitud_parcial--) {
+            //unsigned char c=peek_byte_z80_moto(puntero_linea);
+            unsigned char c=menu_debug_get_mapped_byte(puntero_linea);
+            if (c<32 || c>126) c='.';
+            escribir_socket_format(misocket,"%c",c);
+            puntero_linea++;
+        }
 
-		escribir_socket(misocket,"|\n");
+        escribir_socket(misocket,"|\n");
 
-		inicio +=16;
+        inicio +=16;
 
-	}
+    }
 }
 
 //Retorna 0 si no reconocido puntero. Retorna puntero en variable "puntero"
 int return_internal_pointer(char *s,z80_byte **puntero)
 {
 
-	z80_byte *inicio;
-	inicio=NULL;
-	int retorno=1;
+    z80_byte *inicio;
+    inicio=NULL;
+    int retorno=1;
 
-	if (!strcasecmp(s,"emulator_memory")) 				inicio=memoria_spectrum;
-	else if (!strcasecmp(s,"diviface_memory")) 		inicio=diviface_memory_pointer;
-	else if (!strcasecmp(s,"rainbow_buffer")) 		inicio=(z80_byte *)rainbow_buffer;
-	else if (!strcasecmp(s,"superupgrade_ram")) 	inicio=superupgrade_ram_memory_pointer;
-	else if (!strcasecmp(s,"superupgrade_flash")) inicio=superupgrade_rom_memory_pointer;
+    if (!strcasecmp(s,"emulator_memory")) 				inicio=memoria_spectrum;
+    else if (!strcasecmp(s,"diviface_memory")) 		inicio=diviface_memory_pointer;
+    else if (!strcasecmp(s,"rainbow_buffer")) 		inicio=(z80_byte *)rainbow_buffer;
+    else if (!strcasecmp(s,"superupgrade_ram")) 	inicio=superupgrade_ram_memory_pointer;
+    else if (!strcasecmp(s,"superupgrade_flash")) inicio=superupgrade_rom_memory_pointer;
 
-	else retorno=0;
+    else retorno=0;
 
-	*puntero=inicio;
+    *puntero=inicio;
 
-	return retorno;
+    return retorno;
 }
 
 
@@ -3799,29 +3799,29 @@ z80_int tbblue_palette_sprite_second[256];
 
 int remote_assemble(int misocket,char *texto,unsigned int direccion)
 {
-	z80_byte destino_ensamblado[MAX_DESTINO_ENSAMBLADO];
+    z80_byte destino_ensamblado[MAX_DESTINO_ENSAMBLADO];
 
 
-				int longitud_destino=assemble_opcode(direccion,texto,destino_ensamblado);
+                int longitud_destino=assemble_opcode(direccion,texto,destino_ensamblado);
 
-				if (longitud_destino==0) {
-					escribir_socket_format(misocket,"Error. Invalid opcode: %s\n",texto);
-					return 0;
-				}
+                if (longitud_destino==0) {
+                    escribir_socket_format(misocket,"Error. Invalid opcode: %s\n",texto);
+                    return 0;
+                }
 
-				else {
+                else {
 
-					menu_debug_set_memory_zone_attr();
-					unsigned int direccion_escribir=direccion;
-					int i;
-					for (i=0;i<longitud_destino;i++) {
-						menu_debug_write_mapped_byte(direccion_escribir++,destino_ensamblado[i]);
-					}
+                    menu_debug_set_memory_zone_attr();
+                    unsigned int direccion_escribir=direccion;
+                    int i;
+                    for (i=0;i<longitud_destino;i++) {
+                        menu_debug_write_mapped_byte(direccion_escribir++,destino_ensamblado[i]);
+                    }
 
-					remote_disassemble(misocket,direccion,1,1);
-					escribir_socket(misocket,"\n");
-				}
-		return longitud_destino;
+                    remote_disassemble(misocket,direccion,1,1);
+                    escribir_socket(misocket,"\n");
+                }
+        return longitud_destino;
 }
 
 
@@ -3830,35 +3830,35 @@ int remote_assemble(int misocket,char *texto,unsigned int direccion)
 void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_visualmem)
 {
 
-	int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
-	int longitud_linea=0;
+    int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
+    int longitud_linea=0;
 
-	int i;
-	for (i=0;i<final_visualmem;i++) {
-		//Posicion no 0
-		if (buffer[i]) {
-			if (longitud_linea==0) {
-				//Nueva linea
-				escribir_socket_format(misocket,"%0*XH ",digitos_max,i);
-			}
-			escribir_socket_format(misocket,"%u ",buffer[i]);
-			buffer[i]=0;
+    int i;
+    for (i=0;i<final_visualmem;i++) {
+        //Posicion no 0
+        if (buffer[i]) {
+            if (longitud_linea==0) {
+                //Nueva linea
+                escribir_socket_format(misocket,"%0*XH ",digitos_max,i);
+            }
+            escribir_socket_format(misocket,"%u ",buffer[i]);
+            buffer[i]=0;
 
-			longitud_linea++;
-			if (longitud_linea==16) {
-				escribir_socket_format(misocket,"\n");
-				longitud_linea=0;
-			}
-		}
+            longitud_linea++;
+            if (longitud_linea==16) {
+                escribir_socket_format(misocket,"\n");
+                longitud_linea=0;
+            }
+        }
 
-		else {
-			//Posicion 0. Si la linea estaba empezada, salto de linea
-			if (longitud_linea) {
-				escribir_socket_format(misocket,"\n");
-				longitud_linea=0;
-			}
-		}
-	}
+        else {
+            //Posicion 0. Si la linea estaba empezada, salto de linea
+            if (longitud_linea) {
+                escribir_socket_format(misocket,"\n");
+                longitud_linea=0;
+            }
+        }
+    }
 }
 #endif
 
@@ -3879,63 +3879,63 @@ void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_
 void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion_cliente,char *ip_source_address)
 {
 
-	char buffer_retorno[2048];
+    char buffer_retorno[2048];
     char *parametros;
     int remote_command_argc;
 
     //punteros de parametros
     char *remote_command_argv[REMOTE_MAX_PARAMETERS_COMMAND];
 
-	int longitud_comando=strlen(comando);
+    int longitud_comando=strlen(comando);
 
-	if (longitud_comando<DEBUG_MAX_MESSAGE_LENGTH) {
-		debug_printf (VERBOSE_DEBUG,"Remote command: length: %d [%s]",longitud_comando,comando);
-	}
+    if (longitud_comando<DEBUG_MAX_MESSAGE_LENGTH) {
+        debug_printf (VERBOSE_DEBUG,"Remote command: length: %d [%s]",longitud_comando,comando);
+    }
 
-	else {
-		debug_printf (VERBOSE_DEBUG,"Remote command: length: %d",longitud_comando);
-	}
+    else {
+        debug_printf (VERBOSE_DEBUG,"Remote command: length: %d",longitud_comando);
+    }
 
-	//Si enter y setting de repetir comando anterior solo pulsando enter
-	if (  (comando[0]==0  || comando[0]=='\n' || comando[0]=='\r')
-		&&
-		(remote_debug_settings&16)
-		) {
-		strcpy(comando,buffer_lectura_socket_anterior);
-		debug_printf (VERBOSE_DEBUG,"Repeating last command: length: %d [%s]",strlen(comando),comando);
-		escribir_socket_format(misocket,"Repeating: %s\n",comando);
-	}
+    //Si enter y setting de repetir comando anterior solo pulsando enter
+    if (  (comando[0]==0  || comando[0]=='\n' || comando[0]=='\r')
+        &&
+        (remote_debug_settings&16)
+        ) {
+        strcpy(comando,buffer_lectura_socket_anterior);
+        debug_printf (VERBOSE_DEBUG,"Repeating last command: length: %d [%s]",strlen(comando),comando);
+        escribir_socket_format(misocket,"Repeating: %s\n",comando);
+    }
 
-	else {
-		//Si no, copiar a texto comando anterior el actual
-		strcpy(buffer_lectura_socket_anterior,comando);
-	}
+    else {
+        //Si no, copiar a texto comando anterior el actual
+        strcpy(buffer_lectura_socket_anterior,comando);
+    }
 
-	//printf ("%d %d %d %d",comando[0],comando[1],comando[2],comando[3]);
+    //printf ("%d %d %d %d",comando[0],comando[1],comando[2],comando[3]);
 
-	//No hacer caso de comandos con enter, cr, o espacios
-	//Si comando nulo, volver
-	int i;
-	int comando_ignorar=1;
+    //No hacer caso de comandos con enter, cr, o espacios
+    //Si comando nulo, volver
+    int i;
+    int comando_ignorar=1;
 
-	i=0;
-	while (comando[i]) {
-		char c=comando[i];
-		if (c!=10 && c!=13) comando_ignorar=0;
-		i++;
-	}
+    i=0;
+    while (comando[i]) {
+        char c=comando[i];
+        if (c!=10 && c!=13) comando_ignorar=0;
+        i++;
+    }
 
-	if (comando_ignorar) {
-		//En caso de salir de assemble
-		remote_protocol_assembling.v=0;
-		return;
-	}
+    if (comando_ignorar) {
+        //En caso de salir de assemble
+        remote_protocol_assembling.v=0;
+        return;
+    }
 
-	if (comando[0]==0 || (comando[0]==10 && comando[1]==0) ) {
-		//debug_printf(VERBOSE_DEBUG,"Command is null");
-		//sleep (1);
-		return;
-	}
+    if (comando[0]==0 || (comando[0]==10 && comando[1]==0) ) {
+        //debug_printf(VERBOSE_DEBUG,"Command is null");
+        //sleep (1);
+        return;
+    }
 
 
 
@@ -3950,55 +3950,55 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
     comando_sin_parametros[i]=0;
 
-	parametros=&comando[i];
+    parametros=&comando[i];
 
-	//parametros[0]=0;
-	int pindex=0;
-	if (comando[i]==' ') {
-		i++;
-		parametros++;
-		for (;comando[i] && comando[i]!='\n' && comando[i]!='\r';i++,pindex++) {
-			//printf ("searching for end command index: %d\n",i);
-			//parametros[pindex]=comando[i];
-		}
-	}
+    //parametros[0]=0;
+    int pindex=0;
+    if (comando[i]==' ') {
+        i++;
+        parametros++;
+        for (;comando[i] && comando[i]!='\n' && comando[i]!='\r';i++,pindex++) {
+            //printf ("searching for end command index: %d\n",i);
+            //parametros[pindex]=comando[i];
+        }
+    }
 
-	parametros[pindex]=0;
+    parametros[pindex]=0;
 
-	debug_printf (VERBOSE_DEBUG,"Remote command without parameters: length: %d [%s]",strlen(comando_sin_parametros),comando_sin_parametros);
+    debug_printf (VERBOSE_DEBUG,"Remote command without parameters: length: %d [%s]",strlen(comando_sin_parametros),comando_sin_parametros);
 
-	if (strlen(parametros)<DEBUG_MAX_MESSAGE_LENGTH) {
-		debug_printf (VERBOSE_DEBUG,"Remote command parameters: length: %d [%s]",strlen(parametros),parametros);
-	}
-	else {
-		debug_printf (VERBOSE_DEBUG,"Remote command parameters: length: %d",strlen(parametros));
-	}
+    if (strlen(parametros)<DEBUG_MAX_MESSAGE_LENGTH) {
+        debug_printf (VERBOSE_DEBUG,"Remote command parameters: length: %d [%s]",strlen(parametros),parametros);
+    }
+    else {
+        debug_printf (VERBOSE_DEBUG,"Remote command parameters: length: %d",strlen(parametros));
+    }
 
 
-	//Si en modo assembling. Juntamos comando y parametros
-	if (remote_protocol_assembling.v) {
+    //Si en modo assembling. Juntamos comando y parametros
+    if (remote_protocol_assembling.v) {
 
-		//Si cadena vacia
-		//if (comando_sin_parametros[0]==0) {
-		//	remote_protocol_assembling.v=0;
-		//}
+        //Si cadena vacia
+        //if (comando_sin_parametros[0]==0) {
+        //	remote_protocol_assembling.v=0;
+        //}
 
-		//else {
-			char comando_final[2048];
-			sprintf (comando_final,"%s %s",comando_sin_parametros,parametros);
-			int longitud=remote_assemble(misocket,comando_final,direccion_assembling);
-			//printf ("longitud ensamblado: %d\n",longitud);
-			if (longitud==0) {
-				//Error
-				remote_protocol_assembling.v=0;
-			}
-			else {
-				direccion_assembling +=longitud;
-			}
-		//}
+        //else {
+            char comando_final[2048];
+            sprintf (comando_final,"%s %s",comando_sin_parametros,parametros);
+            int longitud=remote_assemble(misocket,comando_final,direccion_assembling);
+            //printf ("longitud ensamblado: %d\n",longitud);
+            if (longitud==0) {
+                //Error
+                remote_protocol_assembling.v=0;
+            }
+            else {
+                direccion_assembling +=longitud;
+            }
+        //}
 
-		return;
-	}
+        return;
+    }
 
     //Si limitados comandos a zeng online cuando zeng online server activado
     if (zeng_online_enabled && zeng_online_server_allow_zrcp_only_zeng_online.v) {
@@ -4017,71 +4017,71 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
             )
 
         {
-		    escribir_socket (misocket,"Unknown or not allowed command");
+            escribir_socket (misocket,"Unknown or not allowed command");
             return;
-	    }
+        }
     }
 
-	//Ver cada comando
-	if (!strcmp(comando_sin_parametros,"help") || !strcmp(comando_sin_parametros,"?")) {
-		if (parametros[0]==0) {
-			escribir_socket(misocket,"Available commands:\n");
-			remote_help_no_parameters_command(misocket);
+    //Ver cada comando
+    if (!strcmp(comando_sin_parametros,"help") || !strcmp(comando_sin_parametros,"?")) {
+        if (parametros[0]==0) {
+            escribir_socket(misocket,"Available commands:\n");
+            remote_help_no_parameters_command(misocket);
 
 
-			escribir_socket(misocket,"\nYou can get descriptive help for every command with: help command");
+            escribir_socket(misocket,"\nYou can get descriptive help for every command with: help command");
 
-			escribir_socket(misocket,"\nNote 1: When help shows an argument in brackets [], it means the argument is optional, and when written, "
-			                  	"you must not write these brackets\n"
+            escribir_socket(misocket,"\nNote 1: When help shows an argument in brackets [], it means the argument is optional, and when written, "
+                                  "you must not write these brackets\n"
 
-								  "Note 2: Some commands allows to specify parameters in \"\" \n"
+                                  "Note 2: Some commands allows to specify parameters in \"\" \n"
 
 
-							);
+                            );
     }
 
-		else remote_help_command(misocket,parametros);
-	}
+        else remote_help_command(misocket,parametros);
+    }
 
 
-	else if (!strcmp(comando_sin_parametros,"about")) {
-		escribir_socket (misocket,"ZEsarUX remote command protocol");
-	}
+    else if (!strcmp(comando_sin_parametros,"about")) {
+        escribir_socket (misocket,"ZEsarUX remote command protocol");
+    }
 
   else if (!strcmp(comando_sin_parametros,"assemble") || !strcmp(comando_sin_parametros,"a")) {
 
-		//No utilizo remote_parse_commands pues el parametro 2 en adelante puede contener espacios ("INC BC")
-	if (parametros[0]==0) {
-		escribir_socket(misocket,"ERROR. No parameters set");
-	}
+        //No utilizo remote_parse_commands pues el parametro 2 en adelante puede contener espacios ("INC BC")
+    if (parametros[0]==0) {
+        escribir_socket(misocket,"ERROR. No parameters set");
+    }
 
-	/*else {
+    /*else {
 
-		direccion=parse_string_to_number(parametros);
+        direccion=parse_string_to_number(parametros);
 
-		menu_debug_set_memory_zone_attr();
+        menu_debug_set_memory_zone_attr();
 
-		//Ver si hay espacio
-		char *s=find_space_or_end(parametros);
-		while (*s) {*/
+        //Ver si hay espacio
+        char *s=find_space_or_end(parametros);
+        while (*s) {*/
 
-		else {
-			unsigned int direccion=parse_string_to_number(parametros);
-			char *s=find_space_or_end(parametros);
+        else {
+            unsigned int direccion=parse_string_to_number(parametros);
+            char *s=find_space_or_end(parametros);
       if (*s) {
-				remote_assemble(misocket,s,direccion);
-			}
-			else {
-				direccion_assembling=direccion;
-				remote_protocol_assembling.v=1; //Entrar en modo assembly
-			}
-  	}
-	}
+                remote_assemble(misocket,s,direccion);
+            }
+            else {
+                direccion_assembling=direccion;
+                remote_protocol_assembling.v=1; //Entrar en modo assembly
+            }
+      }
+    }
 
   //ATDT easter egg
-	else if (comando_sin_parametros[0]=='A' && comando_sin_parametros[1]=='T' && comando_sin_parametros[2]=='D' && comando_sin_parametros[3]=='T') {
-		escribir_socket (misocket,"NO CARRIER");
-	}
+    else if (comando_sin_parametros[0]=='A' && comando_sin_parametros[1]=='T' && comando_sin_parametros[2]=='D' && comando_sin_parametros[3]=='T') {
+        escribir_socket (misocket,"NO CARRIER");
+    }
 
   else if (!strcmp(comando_sin_parametros,"ayplayer") || !strcmp(comando_sin_parametros,"ayp")) {
     remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
@@ -4095,7 +4095,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
     remote_ayplayer(misocket,remote_command_argv[0],remote_command_argv[1]);
   }
 
-	else if (!strcmp(comando_sin_parametros,"cd")) {
+    else if (!strcmp(comando_sin_parametros,"cd")) {
         remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
         if (remote_command_argc<1) {
@@ -4103,11 +4103,11 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
             return;
         }
         zvfs_chdir(remote_command_argv[0]);
-	}
+    }
 
 
  else if (!strcmp(comando_sin_parametros,"clear-membreakpoints")) {
-	 clear_mem_breakpoints();
+     clear_mem_breakpoints();
   }
 
  else if (!strcmp(comando_sin_parametros,"close-all-menus")) {
@@ -4166,14 +4166,14 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
       return;
     }
 
-	//Asignar punteros. Si no existen parametros adicionales, cadenas vacias
+    //Asignar punteros. Si no existen parametros adicionales, cadenas vacias
 
-	//En este caso un parametros adicionales. Inicializados a cadenas vacias
-	char *second_parameter="";
-	//second_parameter=NULL;
+    //En este caso un parametros adicionales. Inicializados a cadenas vacias
+    char *second_parameter="";
+    //second_parameter=NULL;
 
 
-	if (remote_command_argc>1) second_parameter=remote_command_argv[1];
+    if (remote_command_argc>1) second_parameter=remote_command_argv[1];
 
 
     remote_cpu_code_coverage(misocket,remote_command_argv[0],second_parameter);
@@ -4188,19 +4188,19 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
       return;
     }
 
-	//Asignar punteros. Si no existen parametros adicionales, cadenas vacias
+    //Asignar punteros. Si no existen parametros adicionales, cadenas vacias
 
-	//En este caso dos parametros adicionales. Inicializados a cadenas vacias
-	char *second_parameter="";
-	//second_parameter=NULL;
+    //En este caso dos parametros adicionales. Inicializados a cadenas vacias
+    char *second_parameter="";
+    //second_parameter=NULL;
 
-	char *third_parameter="";
-	//third_parameter=NULL;
+    char *third_parameter="";
+    //third_parameter=NULL;
 
-	if (remote_command_argc>1) second_parameter=remote_command_argv[1];
-	if (remote_command_argc>2) third_parameter=remote_command_argv[2];
+    if (remote_command_argc>1) second_parameter=remote_command_argv[1];
+    if (remote_command_argc>2) third_parameter=remote_command_argv[2];
 
-	//El primero y segundo parametro no seran nunca cero porque ya estamos haciendo comprobacion por remote_command_argc antes
+    //El primero y segundo parametro no seran nunca cero porque ya estamos haciendo comprobacion por remote_command_argc antes
     remote_cpu_history(misocket,remote_command_argv[0],second_parameter,third_parameter);
   }
 
@@ -4210,11 +4210,11 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
   else if (!strcmp(comando_sin_parametros,"cpu-panic")) {
-	//Entramos en el mismo modo que cpu-step para poder congelar la emulacion
-	remote_cpu_enter_step(misocket);
-	if (menu_event_remote_protocol_enterstep.v==0) return;
+    //Entramos en el mismo modo que cpu-step para poder congelar la emulacion
+    remote_cpu_enter_step(misocket);
+    if (menu_event_remote_protocol_enterstep.v==0) return;
 
-	cpu_panic(parametros);
+    cpu_panic(parametros);
   }
 
   else if (!strcmp(comando_sin_parametros,"cpu-step") || !strcmp(comando_sin_parametros,"cs")) {
@@ -4239,17 +4239,17 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
   }
 
 
-	else if (!strcmp(comando_sin_parametros,"debug-analyze-command")) {
-		//Parseamos los parametros porque me sirven para debugar
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+    else if (!strcmp(comando_sin_parametros,"debug-analyze-command")) {
+        //Parseamos los parametros porque me sirven para debugar
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-		int i;
+        int i;
 
-		for (i=0;i<remote_command_argc;i++) {
-			//printf ("Parametro %d: [%s]\n",i,remote_command_argv[i]);
-			escribir_socket_format(misocket,"Parameter %d: [%s]\n",i,remote_command_argv[i]);
-		}
-	}
+        for (i=0;i<remote_command_argc;i++) {
+            //printf ("Parametro %d: [%s]\n",i,remote_command_argv[i]);
+            escribir_socket_format(misocket,"Parameter %d: [%s]\n",i,remote_command_argv[i]);
+        }
+    }
 
   else if (!strcmp(comando_sin_parametros,"disable-breakpoint") || !strcmp(comando_sin_parametros,"db")) {
     if (debug_breakpoints_enabled.v==0) escribir_socket (misocket,"Error. You must enable breakpoints first");
@@ -4285,23 +4285,23 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
   }
 
-	else if (!strcmp(comando_sin_parametros,"dump-nested-functions")) {
-		remote_dump_nested_core_functions(misocket);
-	}
+    else if (!strcmp(comando_sin_parametros,"dump-nested-functions")) {
+        remote_dump_nested_core_functions(misocket);
+    }
 
-	else if (!strcmp(comando_sin_parametros,"dump-scanline-buffer")) {
+    else if (!strcmp(comando_sin_parametros,"dump-scanline-buffer")) {
 
-		int limite=screen_testados_linea*2; //2 pixeles por cada t-estado
+        int limite=screen_testados_linea*2; //2 pixeles por cada t-estado
 
-		limite /=8; //array es de bloques de 8 pixeles (espacio de atributo)
+        limite /=8; //array es de bloques de 8 pixeles (espacio de atributo)
 
-		limite *=2; //y son pares de 8-pixel (byte) y atributo
+        limite *=2; //y son pares de 8-pixel (byte) y atributo
 
-		int i;
-		for (i=0;i<limite;i++) escribir_socket_format (misocket,"%02X ",scanline_buffer[i]);
+        int i;
+        for (i=0;i<limite;i++) escribir_socket_format (misocket,"%02X ",scanline_buffer[i]);
 
 
-	}
+    }
 
   else if (!strcmp(comando_sin_parametros,"easter-egg")) {
     remote_easter_egg(misocket);
@@ -4331,9 +4331,9 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
     remote_cpu_enter_step(misocket);
   }
 
-	else if (!strcmp(comando_sin_parametros,"esxdoshandler-get-open-files") || !strcmp(comando_sin_parametros,"esxgof")) {
-		if (esxdos_handler_enabled.v==0) escribir_socket(misocket,"Error. Handler is not enabled");
-		else remote_esxdos_gof(misocket);
+    else if (!strcmp(comando_sin_parametros,"esxdoshandler-get-open-files") || !strcmp(comando_sin_parametros,"esxgof")) {
+        if (esxdos_handler_enabled.v==0) escribir_socket(misocket,"Error. Handler is not enabled");
+        else remote_esxdos_gof(misocket);
   }
 
 
@@ -4364,20 +4364,20 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
   }
 
   else if (!strcmp(comando_sin_parametros,"exit-emulator")) {
-		escribir_socket (misocket,"Sayonara baby\n");
-		sleep(1);
+        escribir_socket (misocket,"Sayonara baby\n");
+        sleep(1);
 
-		remote_calling_end_emulator.v=1;
-		end_emulator_autosave_snapshot();
+        remote_calling_end_emulator.v=1;
+        end_emulator_autosave_snapshot();
   }
 
 
   else if (!strcmp(comando_sin_parametros,"extended-stack") ) {
 
-	  if (!CPU_IS_Z80) {
-		  escribir_socket(misocket,"ERROR. CPU is not Z80");
-		  return;
-	  }
+      if (!CPU_IS_Z80) {
+          escribir_socket(misocket,"ERROR. CPU is not Z80");
+          return;
+      }
 
     remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
@@ -4388,67 +4388,67 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
 
 
-	//Asignar punteros. Si no existen parametros adicionales, cadenas vacias
+    //Asignar punteros. Si no existen parametros adicionales, cadenas vacias
 
-	//En este caso solo un parametro adicional
-	char *third_parameter="";
-	//third_parameter=NULL;
+    //En este caso solo un parametro adicional
+    char *third_parameter="";
+    //third_parameter=NULL;
 
-	if (remote_command_argc>2) third_parameter=remote_command_argv[2];
+    if (remote_command_argc>2) third_parameter=remote_command_argv[2];
 
 
-	//El primero y segundo parametro no seran nunca cero porque ya estamos haciendo comprobacion por remote_command_argc antes
+    //El primero y segundo parametro no seran nunca cero porque ya estamos haciendo comprobacion por remote_command_argc antes
     remote_extended_stack(misocket,remote_command_argv[0],remote_command_argv[1],third_parameter);
   }
 
 
 
   else if (!strcmp(comando_sin_parametros,"find-label")) {
-		if (remote_tamanyo_archivo_raw_source_code==0) {
-			escribir_socket (misocket,"ERROR. No source code loaded");
-		}
-		else {
-			int linea=remote_find_label_source_code(parametros);
-			if (linea!=-1) {
-				int indice=remote_parsed_source_code_indexes_pointer[linea];
+        if (remote_tamanyo_archivo_raw_source_code==0) {
+            escribir_socket (misocket,"ERROR. No source code loaded");
+        }
+        else {
+            int linea=remote_find_label_source_code(parametros);
+            if (linea!=-1) {
+                int indice=remote_parsed_source_code_indexes_pointer[linea];
         char *puntero=&remote_raw_source_code_pointer[indice];
-				escribir_socket (misocket,puntero);
-			}
-			else {
-				escribir_socket (misocket,"ERROR. Not found");
-			}
-		}
+                escribir_socket (misocket,puntero);
+            }
+            else {
+                escribir_socket (misocket,"ERROR. Not found");
+            }
+        }
   }
 
 
   else if (!strcmp(comando_sin_parametros,"generate-nmi")) {
-	generate_nmi();
+    generate_nmi();
   }
 
 
-	else if (!strcmp(comando_sin_parametros,"get-audio-buffer-info")) {
-		int tamanyo,posicion;
-		audio_get_buffer_info(&tamanyo,&posicion);
-		escribir_socket_format(misocket,"Total size: %d Current size: %d\n",tamanyo,posicion);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-audio-buffer-info")) {
+        int tamanyo,posicion;
+        audio_get_buffer_info(&tamanyo,&posicion);
+        escribir_socket_format(misocket,"Total size: %d Current size: %d\n",tamanyo,posicion);
+    }
 
 //get-breakpoints, estado global y lista cada uno, si hay y si esta enabled
   else if (!strcmp(comando_sin_parametros,"get-breakpoints") || !strcmp(comando_sin_parametros,"gb")) {
-	int inicio=1;
-	int items=MAX_BREAKPOINTS_CONDITIONS;
+    int inicio=1;
+    int items=MAX_BREAKPOINTS_CONDITIONS;
 
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
                 if (remote_command_argc>0) {
-			inicio=parse_string_to_number(remote_command_argv[0]);
-			if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
-				escribir_socket (misocket,"ERROR. Index out of range");
-				return;
-			}
-			items=1;
+            inicio=parse_string_to_number(remote_command_argv[0]);
+            if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
+                escribir_socket (misocket,"ERROR. Index out of range");
+                return;
+            }
+            items=1;
                 }
 
                 if (remote_command_argc>1) {
-			items=parse_string_to_number(remote_command_argv[1]);
+            items=parse_string_to_number(remote_command_argv[1]);
                 }
 
 
@@ -4478,19 +4478,19 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
         remote_get_breakpointspasscounts(misocket,inicio-1,items);
     }
 
-	//get-breakpoints, estado global y lista cada uno, si hay y si esta enabled
-	  else if (!strcmp(comando_sin_parametros,"get-breakpointsactions") || !strcmp(comando_sin_parametros,"gba")) {
+    //get-breakpoints, estado global y lista cada uno, si hay y si esta enabled
+      else if (!strcmp(comando_sin_parametros,"get-breakpointsactions") || !strcmp(comando_sin_parametros,"gba")) {
         int inicio=1;
         int items=MAX_BREAKPOINTS_CONDITIONS;
 
                 remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
                 if (remote_command_argc>0) {
                         inicio=parse_string_to_number(remote_command_argv[0]);
-			if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
-				escribir_socket (misocket,"ERROR. Index out of range");
-				return;
-			}
-			items=1;
+            if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
+                escribir_socket (misocket,"ERROR. Index out of range");
+                return;
+            }
+            items=1;
                 }
 
                 if (remote_command_argc>1) {
@@ -4498,47 +4498,47 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
                 }
 
 
-	    remote_get_breakpointsactions(misocket,inicio-1,items);
-	  }
+        remote_get_breakpointsactions(misocket,inicio-1,items);
+      }
 
-	  else if (!strcmp(comando_sin_parametros,"get-breakpoints-optimized") ) {
+      else if (!strcmp(comando_sin_parametros,"get-breakpoints-optimized") ) {
         int inicio=1;
-	int items=MAX_BREAKPOINTS_CONDITIONS;
+    int items=MAX_BREAKPOINTS_CONDITIONS;
 
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
                 if (remote_command_argc>0) {
-			inicio=parse_string_to_number(remote_command_argv[0]);
-			if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
-				escribir_socket (misocket,"ERROR. Index out of range");
-				return;
-			}
-			items=1;
+            inicio=parse_string_to_number(remote_command_argv[0]);
+            if (inicio<1 || inicio>MAX_BREAKPOINTS_CONDITIONS) {
+                escribir_socket (misocket,"ERROR. Index out of range");
+                return;
+            }
+            items=1;
                 }
 
                 if (remote_command_argc>1) {
-			items=parse_string_to_number(remote_command_argv[1]);
+            items=parse_string_to_number(remote_command_argv[1]);
                 }
 
 
     remote_get_breakpoints_optimized(misocket,inicio-1,items);
-	  }
+      }
 
-	else if (!strcmp(comando_sin_parametros,"get-buildnumber")) {
+    else if (!strcmp(comando_sin_parametros,"get-buildnumber")) {
                 escribir_socket (misocket,BUILDNUMBER);
-	}
+    }
 
 
-	else if (!strcmp(comando_sin_parametros,"get-cpu-core-name")) {
-		if (cpu_core_loop_name!=NULL) escribir_socket(misocket,cpu_core_loop_name);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-cpu-core-name")) {
+        if (cpu_core_loop_name!=NULL) escribir_socket(misocket,cpu_core_loop_name);
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-cpu-frequency")) {
-		escribir_socket_format(misocket,"%d",get_cpu_frequency() );
-	}
+    else if (!strcmp(comando_sin_parametros,"get-cpu-frequency")) {
+        escribir_socket_format(misocket,"%d",get_cpu_frequency() );
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-cpu-turbo-speed")) {
-		escribir_socket_format(misocket,"%d",cpu_turbo_speed );
-	}
+    else if (!strcmp(comando_sin_parametros,"get-cpu-turbo-speed")) {
+        escribir_socket_format(misocket,"%d",cpu_turbo_speed );
+    }
 
 
 
@@ -4596,39 +4596,39 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
     escribir_socket (misocket,get_machine_name(current_machine_type));
   }
 
-	else if (!strcmp(comando_sin_parametros,"get-current-memory-zone") || !strcmp(comando_sin_parametros,"gcmz")) {
-		menu_debug_set_memory_zone_attr();
+    else if (!strcmp(comando_sin_parametros,"get-current-memory-zone") || !strcmp(comando_sin_parametros,"gcmz")) {
+        menu_debug_set_memory_zone_attr();
 
-		char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
-		int zone=menu_get_current_memory_zone_name_number(zone_name);
-		//machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
+        char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
+        int zone=menu_get_current_memory_zone_name_number(zone_name);
+        //machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
 
-		escribir_socket_format (misocket,"Zone number: %d Name: %s Size: %d (%d KB)", zone,zone_name,
-			menu_debug_memory_zone_size,menu_debug_memory_zone_size/1024);
+        escribir_socket_format (misocket,"Zone number: %d Name: %s Size: %d (%d KB)", zone,zone_name,
+            menu_debug_memory_zone_size,menu_debug_memory_zone_size/1024);
 
-	}
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-debug-settings") || !strcmp(comando_sin_parametros,"gds")) {
-		sprintf(buffer_retorno,"%d",remote_debug_settings);
-		escribir_socket(misocket,buffer_retorno);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-debug-settings") || !strcmp(comando_sin_parametros,"gds")) {
+        sprintf(buffer_retorno,"%d",remote_debug_settings);
+        escribir_socket(misocket,buffer_retorno);
+    }
 
 
 
-	else if (!strcmp(comando_sin_parametros,"get-io-ports") ) {
+    else if (!strcmp(comando_sin_parametros,"get-io-ports") ) {
         char *stats_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for io ports");
 
-		debug_get_ioports(stats_buffer);
-		escribir_socket(misocket,stats_buffer);
+        debug_get_ioports(stats_buffer);
+        escribir_socket(misocket,stats_buffer);
 
         free(stats_buffer);
-	}
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-machines")) {
-		escribir_socket (misocket,string_machines_list_description);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-machines")) {
+        escribir_socket (misocket,string_machines_list_description);
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-memory-pages") || !strcmp(comando_sin_parametros,"gmp")) {
+    else if (!strcmp(comando_sin_parametros,"get-memory-pages") || !strcmp(comando_sin_parametros,"gmp")) {
 
                 remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
@@ -4659,10 +4659,10 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
                 }
 
 
-		//char buffer_temporal[MAX_TEXT_DEBUG_GET_MEMORY_PAGES+1];
-		//debug_get_memory_pages(buffer_temporal);
-		//escribir_socket (misocket,buffer_temporal);
-	}
+        //char buffer_temporal[MAX_TEXT_DEBUG_GET_MEMORY_PAGES+1];
+        //debug_get_memory_pages(buffer_temporal);
+        //escribir_socket (misocket,buffer_temporal);
+    }
 
   else if (!strcmp(comando_sin_parametros,"get-membreakpoints") ) {
         int inicio=0;
@@ -4680,7 +4680,7 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
                 if (remote_command_argc>1) {
                         items=parse_string_to_number(remote_command_argv[1]);
-			if (items<0 || items>65536) {
+            if (items<0 || items>65536) {
                                 escribir_socket (misocket,"ERROR. Items out of range");
                                 return;
                         }
@@ -4690,23 +4690,23 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
     remote_get_membreakpoints(misocket,inicio,items);
   }
 
-	else if (!strcmp(comando_sin_parametros,"get-memory-zones") || !strcmp(comando_sin_parametros,"gmz")) {
-		remote_get_memory_zones(misocket);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-memory-zones") || !strcmp(comando_sin_parametros,"gmz")) {
+        remote_get_memory_zones(misocket);
+    }
 
 
 
-	else if (!strcmp(comando_sin_parametros,"get-ocr")) {
-		char buffer_ocr[8192];
-		ocr_get_text(buffer_ocr,1);
-		escribir_socket (misocket,buffer_ocr);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-ocr")) {
+        char buffer_ocr[8192];
+        ocr_get_text(buffer_ocr,1);
+        escribir_socket (misocket,buffer_ocr);
+    }
 
 
 
-	else if (!strcmp(comando_sin_parametros,"get-os")) {
-		escribir_socket (misocket,COMPILATION_SYSTEM);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-os")) {
+        escribir_socket (misocket,COMPILATION_SYSTEM);
+    }
 
   else if (!strcmp(comando_sin_parametros,"get-paging-state")) {
     char buffer[32];
@@ -4719,27 +4719,27 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
     escribir_socket (misocket,buffer_retorno);
   }
 
-	else if (!strcmp(comando_sin_parametros,"get-snapshot")) {
-		z80_byte *buffer_temp;
-		buffer_temp=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
-		if (buffer_temp==NULL) cpu_panic("Can not allocate memory for get-snapshot");
+    else if (!strcmp(comando_sin_parametros,"get-snapshot")) {
+        z80_byte *buffer_temp;
+        buffer_temp=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM); //16 MB es mas que suficiente
+        if (buffer_temp==NULL) cpu_panic("Can not allocate memory for get-snapshot");
 
-		z80_byte *puntero=buffer_temp;
-		int longitud;
+        z80_byte *puntero=buffer_temp;
+        int longitud;
 
-  		save_zsf_snapshot_file_mem(NULL,puntero,&longitud,0);
+          save_zsf_snapshot_file_mem(NULL,puntero,&longitud,0);
 
-		//printf ("longitud: %d\n",longitud);
+        //printf ("longitud: %d\n",longitud);
 
-		int i;
-		for (i=0;i<longitud;i++) {
-			escribir_socket_format(misocket,"%02X",buffer_temp[i]);
-		}
+        int i;
+        for (i=0;i<longitud;i++) {
+            escribir_socket_format(misocket,"%02X",buffer_temp[i]);
+        }
 
-	 	free(buffer_temp);
-	}
+         free(buffer_temp);
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-stack-backtrace")) {
+    else if (!strcmp(comando_sin_parametros,"get-stack-backtrace")) {
 
     int items=5;
 
@@ -4752,19 +4752,19 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
       }
     }
 
-		if (CPU_IS_MOTOROLA) {
+        if (CPU_IS_MOTOROLA) {
 
-		}
-		else {
-			int i;
+        }
+        else {
+            int i;
 
 
-			for (i=0;i<items;i++) {
-				z80_int valor=peek_byte_z80_moto(reg_sp+i*2)+256*peek_byte_z80_moto(reg_sp+1+i*2);
-				escribir_socket_format(misocket,"%04XH ",valor);
-			}
-		}
-	}
+            for (i=0;i<items;i++) {
+                z80_int valor=peek_byte_z80_moto(reg_sp+i*2)+256*peek_byte_z80_moto(reg_sp+1+i*2);
+                escribir_socket_format(misocket,"%04XH ",valor);
+            }
+        }
+    }
 
     else if (!strcmp(comando_sin_parametros,"get-text-overlay")) {
         int x,y;
@@ -4787,18 +4787,18 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 
     }
 
-	else if (!strcmp(comando_sin_parametros,"get-tstates")) {
-		escribir_socket_format (misocket,"%d",t_estados);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-tstates")) {
+        escribir_socket_format (misocket,"%d",t_estados);
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-tstates-partial")) {
-		char buffer_partial[32];
-		debug_get_t_estados_parcial(buffer_partial);
-		escribir_socket (misocket,buffer_partial);
-	}
+    else if (!strcmp(comando_sin_parametros,"get-tstates-partial")) {
+        char buffer_partial[32];
+        debug_get_t_estados_parcial(buffer_partial);
+        escribir_socket (misocket,buffer_partial);
+    }
 
-	//Este comando no se usa en la funcion de juegos online, aunque lo hago como complemento a set-ui-io-ports, por si resulta util para algo
-	else if (!strcmp(comando_sin_parametros,"get-ui-io-ports") ) {
+    //Este comando no se usa en la funcion de juegos online, aunque lo hago como complemento a set-ui-io-ports, por si resulta util para algo
+    else if (!strcmp(comando_sin_parametros,"get-ui-io-ports") ) {
 
 //;                    Bits:  4    3    2    1    0     ;desplazamiento puerto
 //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
@@ -4810,109 +4810,109 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 //puerto_49150    db              255  ; H                J         K      L    Enter ;6
 //puerto_32766    db              255  ; B    N    M    Simb Space ;7
 
-		escribir_socket_format(misocket,"%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-			puerto_65278,puerto_65022,puerto_64510,puerto_63486,
-			puerto_61438,puerto_57342,puerto_49150,puerto_32766,
-			puerto_especial_joystick);
+        escribir_socket_format(misocket,"%02X%02X%02X%02X%02X%02X%02X%02X%02X",
+            puerto_65278,puerto_65022,puerto_64510,puerto_63486,
+            puerto_61438,puerto_57342,puerto_49150,puerto_32766,
+            puerto_especial_joystick);
 
-	}
-
-
-	else if (!strcmp(comando_sin_parametros,"get-version")) {
-		char buffer[30];
-		util_get_emulator_version_number(buffer);
-
-		escribir_socket (misocket,buffer);
-	}
+    }
 
 
+    else if (!strcmp(comando_sin_parametros,"get-version")) {
+        char buffer[30];
+        util_get_emulator_version_number(buffer);
+
+        escribir_socket (misocket,buffer);
+    }
 
 
-	else if (!strcmp(comando_sin_parametros,"get-video-driver")) {
+
+
+    else if (!strcmp(comando_sin_parametros,"get-video-driver")) {
                 escribir_socket (misocket,scr_new_driver_name);
-	}
+    }
 
 #ifdef EMULATE_VISUALMEM
-	else if (!strcmp(comando_sin_parametros,"get-visualmem-written-dump") || !strcmp(comando_sin_parametros,"gvmwd") ) {
+    else if (!strcmp(comando_sin_parametros,"get-visualmem-written-dump") || !strcmp(comando_sin_parametros,"gvmwd") ) {
 
-		int salida_compacta=0;
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-		if (remote_command_argc>0) {
-			if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
-		}
+        int salida_compacta=0;
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        if (remote_command_argc>0) {
+            if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
+        }
 
-		int final_visualmem=65536;
-		if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
+        int final_visualmem=65536;
+        if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
 
-		if (salida_compacta) {
-			remote_visualmem_generic_compact(misocket,visualmem_buffer,final_visualmem);
-			return;
-		}
+        if (salida_compacta) {
+            remote_visualmem_generic_compact(misocket,visualmem_buffer,final_visualmem);
+            return;
+        }
 
-		int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
+        int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
 
-		int i;
-		for (i=0;i<final_visualmem;i++) {
-			if (visualmem_buffer[i]) {
-				escribir_socket_format(misocket,"%0*XH %u\n",digitos_max,i,visualmem_buffer[i]);
-				clear_visualmembuffer(i);
-			}
-		}
-	}
+        int i;
+        for (i=0;i<final_visualmem;i++) {
+            if (visualmem_buffer[i]) {
+                escribir_socket_format(misocket,"%0*XH %u\n",digitos_max,i,visualmem_buffer[i]);
+                clear_visualmembuffer(i);
+            }
+        }
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-visualmem-read-dump") || !strcmp(comando_sin_parametros,"gvmrd")) {
+    else if (!strcmp(comando_sin_parametros,"get-visualmem-read-dump") || !strcmp(comando_sin_parametros,"gvmrd")) {
 
-		int salida_compacta=0;
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-		if (remote_command_argc>0) {
-			if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
-		}
+        int salida_compacta=0;
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        if (remote_command_argc>0) {
+            if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
+        }
 
-		int final_visualmem=65536;
-		if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
+        int final_visualmem=65536;
+        if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
 
-		if (salida_compacta) {
-			remote_visualmem_generic_compact(misocket,visualmem_read_buffer,final_visualmem);
-			return;
-		}
+        if (salida_compacta) {
+            remote_visualmem_generic_compact(misocket,visualmem_read_buffer,final_visualmem);
+            return;
+        }
 
-		int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
+        int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
 
-		int i;
-		for (i=0;i<final_visualmem;i++) {
-			if (visualmem_read_buffer[i]) {
-				escribir_socket_format(misocket,"%0*XH %u\n",digitos_max,i,visualmem_read_buffer[i]);
-				clear_visualmemreadbuffer(i);
-			}
-		}
-	}
+        int i;
+        for (i=0;i<final_visualmem;i++) {
+            if (visualmem_read_buffer[i]) {
+                escribir_socket_format(misocket,"%0*XH %u\n",digitos_max,i,visualmem_read_buffer[i]);
+                clear_visualmemreadbuffer(i);
+            }
+        }
+    }
 
-	else if (!strcmp(comando_sin_parametros,"get-visualmem-opcode-dump") || !strcmp(comando_sin_parametros,"gvmod")) {
+    else if (!strcmp(comando_sin_parametros,"get-visualmem-opcode-dump") || !strcmp(comando_sin_parametros,"gvmod")) {
 
-		int salida_compacta=0;
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-		if (remote_command_argc>0) {
-			if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
-		}
+        int salida_compacta=0;
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        if (remote_command_argc>0) {
+            if (!strcmp(remote_command_argv[0],"compact")) salida_compacta=1;
+        }
 
-		int final_visualmem=65536;
-		if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
+        int final_visualmem=65536;
+        if (MACHINE_IS_QL) final_visualmem=ql_mem_limit+1;
 
-		if (salida_compacta) {
-			remote_visualmem_generic_compact(misocket,visualmem_opcode_buffer,final_visualmem);
-			return;
-		}
+        if (salida_compacta) {
+            remote_visualmem_generic_compact(misocket,visualmem_opcode_buffer,final_visualmem);
+            return;
+        }
 
-		int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
+        int digitos_max=menu_debug_get_total_digits_hexa(final_visualmem-1);
 
-		int i;
-		for (i=0;i<final_visualmem;i++) {
-			if (visualmem_opcode_buffer[i]) {
-				escribir_socket_format(misocket,"%0*XH %u\n",digitos_max,i,visualmem_opcode_buffer[i]);
-				clear_visualmemopcodebuffer(i);
-			}
-		}
-	}
+        int i;
+        for (i=0;i<final_visualmem;i++) {
+            if (visualmem_opcode_buffer[i]) {
+                escribir_socket_format(misocket,"%0*XH %u\n",digitos_max,i,visualmem_opcode_buffer[i]);
+                clear_visualmemopcodebuffer(i);
+            }
+        }
+    }
 #endif
 
 
@@ -4925,69 +4925,69 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
   }
 
 
-	else if (!strcmp(comando_sin_parametros,"hexdump") || !strcmp(comando_sin_parametros,"h")) {
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+    else if (!strcmp(comando_sin_parametros,"hexdump") || !strcmp(comando_sin_parametros,"h")) {
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-		if (remote_command_argc!=2) {
-			escribir_socket(misocket,"ERROR. Needs two parameters");
-			return;
-		}
+        if (remote_command_argc!=2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters");
+            return;
+        }
 
-		int inicio=parse_string_to_number(remote_command_argv[0]);
-		int longitud=parse_string_to_number(remote_command_argv[1]);
+        int inicio=parse_string_to_number(remote_command_argv[0]);
+        int longitud=parse_string_to_number(remote_command_argv[1]);
 
         //temp simular un comando que va lento
         //sleep(10);
 
         //printf("Despues sleep\n");
 
-		remote_hexdump(misocket,inicio,longitud);
+        remote_hexdump(misocket,inicio,longitud);
 
         //printf("Despues remote_hexdump\n");
 
-	}
+    }
 
-	else if (!strcmp(comando_sin_parametros,"hexdump-internal")) {
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+    else if (!strcmp(comando_sin_parametros,"hexdump-internal")) {
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-		if (remote_command_argc<2) {
-			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
-			return;
-		}
-
-
-		z80_byte *inicio;
+        if (remote_command_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters minimum");
+            return;
+        }
 
 
-		if (return_internal_pointer(remote_command_argv[0],&inicio)==0) {
-			escribir_socket(misocket,"ERROR. Unknown pointer");
-			return;
-		}
-
-		if (inicio==NULL) {
-			escribir_socket(misocket,"ERROR. Pointer is null");
-			return;
-		}
-
-		int longitud=parse_string_to_number(remote_command_argv[1]);
-
-		int offset=0;
-		if (remote_command_argc>2) offset=parse_string_to_number(remote_command_argv[2]);
-
-		remote_hexdump_internal(misocket,inicio,longitud,offset);
-
-	}
-
-	else if (!strcmp(comando_sin_parametros,"kartusho-press-button")) {
-			kartusho_press_button();
-	}
-
-	else if (!strcmp(comando_sin_parametros,"ifrom-press-button")) {
-			ifrom_press_button();
-	}
+        z80_byte *inicio;
 
 
-	else if (!strcmp(comando_sin_parametros,"load-binary")) {
+        if (return_internal_pointer(remote_command_argv[0],&inicio)==0) {
+            escribir_socket(misocket,"ERROR. Unknown pointer");
+            return;
+        }
+
+        if (inicio==NULL) {
+            escribir_socket(misocket,"ERROR. Pointer is null");
+            return;
+        }
+
+        int longitud=parse_string_to_number(remote_command_argv[1]);
+
+        int offset=0;
+        if (remote_command_argc>2) offset=parse_string_to_number(remote_command_argv[2]);
+
+        remote_hexdump_internal(misocket,inicio,longitud,offset);
+
+    }
+
+    else if (!strcmp(comando_sin_parametros,"kartusho-press-button")) {
+            kartusho_press_button();
+    }
+
+    else if (!strcmp(comando_sin_parametros,"ifrom-press-button")) {
+            ifrom_press_button();
+    }
+
+
+    else if (!strcmp(comando_sin_parametros,"load-binary")) {
                 remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 
@@ -4998,37 +4998,37 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
                         return;
                 }
 
-		//int load_binary_file(char *binary_file_load,int valor_leido_direccion,int valor_leido_longitud)
+        //int load_binary_file(char *binary_file_load,int valor_leido_direccion,int valor_leido_longitud)
 
-		char *archivo;
-		archivo=remote_command_argv[0];
+        char *archivo;
+        archivo=remote_command_argv[0];
 
-		int valor_leido_direccion=parse_string_to_number(remote_command_argv[1]);
+        int valor_leido_direccion=parse_string_to_number(remote_command_argv[1]);
 
-		int valor_leido_longitud=parse_string_to_number(remote_command_argv[2]);
+        int valor_leido_longitud=parse_string_to_number(remote_command_argv[2]);
 
-		int retorno=load_binary_file(archivo,valor_leido_direccion,valor_leido_longitud);
+        int retorno=load_binary_file(archivo,valor_leido_direccion,valor_leido_longitud);
 
-		if (retorno) escribir_socket(misocket,"ERROR loading file");
-
-
-	}
+        if (retorno) escribir_socket(misocket,"ERROR loading file");
 
 
-	else if (!strcmp(comando_sin_parametros,"load-source-code") || !strcmp(comando_sin_parametros,"lsc")) {
-		int retorno=remote_load_source_code(parametros);
+    }
+
+
+    else if (!strcmp(comando_sin_parametros,"load-source-code") || !strcmp(comando_sin_parametros,"lsc")) {
+        int retorno=remote_load_source_code(parametros);
 
         if (retorno) {
             escribir_socket(misocket,"ERROR loading source code");
         }
-	}
+    }
 
-	else if (!strcmp(comando_sin_parametros,"ls")) {
-			remote_simple_help(misocket);
-	}
+    else if (!strcmp(comando_sin_parametros,"ls")) {
+            remote_simple_help(misocket);
+    }
 
     //TODO: esto es solo para la primera tarjeta
-	else if (!strcmp(comando_sin_parametros,"mmc-reload")) {
+    else if (!strcmp(comando_sin_parametros,"mmc-reload")) {
         if (mmc_enabled[0].v==0) {
             escribir_socket(misocket,"ERROR. MMC is not enabled");
         }
@@ -5041,17 +5041,17 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
                escribir_socket(misocket,"ERROR reloading MMC");
             }
         }
-	}
+    }
 
-	else if (!strcmp(comando_sin_parametros,"noop")) {
-		//No hacer absolutamente nada
-	}
+    else if (!strcmp(comando_sin_parametros,"noop")) {
+        //No hacer absolutamente nada
+    }
 
-	else if (!strcmp(comando_sin_parametros,"open-menu")) {
-		menu_fire_event_open_menu();
-	}
+    else if (!strcmp(comando_sin_parametros,"open-menu")) {
+        menu_fire_event_open_menu();
+    }
 
-	else if (!strcmp(comando_sin_parametros,"print-error") ) {
+    else if (!strcmp(comando_sin_parametros,"print-error") ) {
 
         remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
@@ -5060,126 +5060,126 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
                 return;
         }
 
-		debug_printf(VERBOSE_ERR,"%s",remote_command_argv[0]);
+        debug_printf(VERBOSE_ERR,"%s",remote_command_argv[0]);
 
-	}
+    }
 
-	else if (!strcmp(comando_sin_parametros,"print-footer") ) {
+    else if (!strcmp(comando_sin_parametros,"print-footer") ) {
 
-		if (parametros[0]==0) {
-			escribir_socket(misocket,"ERROR. No message set");
-		}
+        if (parametros[0]==0) {
+            escribir_socket(misocket,"ERROR. No message set");
+        }
 
-		else {
+        else {
 
-			char *s=parametros;
-			//int parametros_recibidos=0;
-			int i=0;
+            char *s=parametros;
+            //int parametros_recibidos=0;
+            int i=0;
 
-			char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH];
+            char mensaje[AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH];
 
-			while (*s && i<AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH-1) {
-				mensaje[i++]=*s;
-				s++;
-			}
+            while (*s && i<AUTOSELECTOPTIONS_MAX_FOOTER_LENGTH-1) {
+                mensaje[i++]=*s;
+                s++;
+            }
 
-			//printf ("i: %d\n",i);
-			mensaje[i]=0;
+            //printf ("i: %d\n",i);
+            mensaje[i]=0;
 
-			put_footer_first_message(mensaje);
+            put_footer_first_message(mensaje);
 
-			//Y enviarlo a speech
-			textspeech_print_speech(parametros);
+            //Y enviarlo a speech
+            textspeech_print_speech(parametros);
 
 
-		}
+        }
 
-	}
+    }
 
     //Este comando se usa en ZENG
-	else if (!strcmp(comando_sin_parametros,"put-snapshot") ) {
-		/*
-		Se puede enviar un snapshot por script asi:
-		#!/usr/bin/env bash
+    else if (!strcmp(comando_sin_parametros,"put-snapshot") ) {
+        /*
+        Se puede enviar un snapshot por script asi:
+        #!/usr/bin/env bash
 
-		( sleep 1 ; echo -n "put-snapshot " ; cat pruebasnap.txt ; sleep 1 ) | telnet localhost 10000
-		//Teniendo en cuenta que pruebasnap.txt contiene el volcado que se ha generado con get-snapshot
-		 */
-		z80_byte valor;
-		if (parametros[0]==0) {
-			escribir_socket(misocket,"ERROR. No parameters set");
-		}
+        ( sleep 1 ; echo -n "put-snapshot " ; cat pruebasnap.txt ; sleep 1 ) | telnet localhost 10000
+        //Teniendo en cuenta que pruebasnap.txt contiene el volcado que se ha generado con get-snapshot
+         */
+        z80_byte valor;
+        if (parametros[0]==0) {
+            escribir_socket(misocket,"ERROR. No parameters set");
+        }
 
-		else {
+        else {
 
-			char *s=parametros;
-			int parametros_recibidos=0;
+            char *s=parametros;
+            int parametros_recibidos=0;
 
-			z80_byte *buffer_destino;
-			buffer_destino=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2);
-			if (buffer_destino==NULL) cpu_panic("Can not allocate memory for put-snapshot");
-
-
-			while (*s) {
-				char buffer_valor[4];
-				buffer_valor[0]=s[0];
-				buffer_valor[1]=s[1];
-				buffer_valor[2]='H';
-				buffer_valor[3]=0;
-				//printf ("%s\n",buffer_valor);
-				valor=parse_string_to_number(buffer_valor);
-				//printf ("valor: %d\n",valor);
-
-				buffer_destino[parametros_recibidos++]=valor;
-				//menu_debug_write_mapped_byte(direccion++,valor);
-
-				s++;
-				if (*s) s++;
-			}
-
-			//Enviarlo como snapshot, pero al final de un frame de pantalla
-			//load_zsf_snapshot_file_mem(NULL,buffer_destino,parametros_recibidos);
-			pending_zrcp_put_snapshot_buffer_destino=buffer_destino;
-			pending_zrcp_put_snapshot_longitud=parametros_recibidos;
+            z80_byte *buffer_destino;
+            buffer_destino=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2);
+            if (buffer_destino==NULL) cpu_panic("Can not allocate memory for put-snapshot");
 
 
+            while (*s) {
+                char buffer_valor[4];
+                buffer_valor[0]=s[0];
+                buffer_valor[1]=s[1];
+                buffer_valor[2]='H';
+                buffer_valor[3]=0;
+                //printf ("%s\n",buffer_valor);
+                valor=parse_string_to_number(buffer_valor);
+                //printf ("valor: %d\n",valor);
 
-		}
+                buffer_destino[parametros_recibidos++]=valor;
+                //menu_debug_write_mapped_byte(direccion++,valor);
 
-	}
+                s++;
+                if (*s) s++;
+            }
 
-	else if (!strcmp(comando_sin_parametros,"pwd")) {
+            //Enviarlo como snapshot, pero al final de un frame de pantalla
+            //load_zsf_snapshot_file_mem(NULL,buffer_destino,parametros_recibidos);
+            pending_zrcp_put_snapshot_buffer_destino=buffer_destino;
+            pending_zrcp_put_snapshot_longitud=parametros_recibidos;
+
+
+
+        }
+
+    }
+
+    else if (!strcmp(comando_sin_parametros,"pwd")) {
         char directorio_actual[PATH_MAX];
         zvfs_getcwd(directorio_actual,PATH_MAX);
         escribir_socket(misocket,directorio_actual);
-	}
+    }
 
-	else if (!strcmp(comando_sin_parametros,"qdos-get-open-files") || !strcmp(comando_sin_parametros,"qlgof")) {
-		if (!MACHINE_IS_QL) escribir_socket(misocket,"Error. Machine is not QL");
-		else remote_qdos_gof(misocket);
+    else if (!strcmp(comando_sin_parametros,"qdos-get-open-files") || !strcmp(comando_sin_parametros,"qlgof")) {
+        if (!MACHINE_IS_QL) escribir_socket(misocket,"Error. Machine is not QL");
+        else remote_qdos_gof(misocket);
   }
 
-	else if (!strcmp(comando_sin_parametros,"read-memory")) {
-		unsigned int inicio=0;
-		unsigned int longitud=0;
+    else if (!strcmp(comando_sin_parametros,"read-memory")) {
+        unsigned int inicio=0;
+        unsigned int longitud=0;
 
-		if (parametros[0]!=0) {
+        if (parametros[0]!=0) {
 
-			inicio=parse_string_to_number(parametros);
-			longitud=1;
-			//Ver si hay espacio
+            inicio=parse_string_to_number(parametros);
+            longitud=1;
+            //Ver si hay espacio
       char *s=find_space_or_end(parametros);
       if (*s) longitud=parse_string_to_number(s);
 
-		}
-		remote_get_memory(misocket,inicio,longitud);
+        }
+        remote_get_memory(misocket,inicio,longitud);
 
-	}
+    }
 
 
-	else if (!strcmp(comando_sin_parametros,"read-mapped-memory")) {
-		escribir_socket(misocket,"This command is no longer supported. Use read-memory command and set memory zone if needed");
-	}
+    else if (!strcmp(comando_sin_parametros,"read-mapped-memory")) {
+        escribir_socket(misocket,"This command is no longer supported. Use read-memory command and set memory zone if needed");
+    }
 
     else if (!strcmp(comando_sin_parametros,"realtape-open")) {
 
@@ -5222,17 +5222,17 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
           reset_cpu();
   }
 
-	else if (!strcmp(comando_sin_parametros,"reset-tstates-partial")) {
-		debug_t_estados_parcial=0;
-	}
+    else if (!strcmp(comando_sin_parametros,"reset-tstates-partial")) {
+        debug_t_estados_parcial=0;
+    }
 
   else if (!strcmp(comando_sin_parametros,"run") || !strcmp(comando_sin_parametros,"r")) {
     int verbose=0;
     int limit=0;
 
     int par=0;
-		int datosvuelve=1;
-		int update_immediately=0;
+        int datosvuelve=1;
+        int update_immediately=0;
 
     remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
@@ -5240,15 +5240,15 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
     for (par=0;par<remote_command_argc;par++) {
       if (!strcasecmp(remote_command_argv[par],"verbose")) verbose=1;
       else if (!strcasecmp(remote_command_argv[par],"no-stop-on-data")) datosvuelve=0;
-			else if (!strcasecmp(remote_command_argv[par],"update-immediately")) update_immediately=1;
+            else if (!strcasecmp(remote_command_argv[par],"update-immediately")) update_immediately=1;
       else limit=parse_string_to_number(remote_command_argv[par]);
     }
 
 
     //if (parametros[0]!=0) verbose=1;
-	char texto_evento_data[100];
-	if (datosvuelve) strcpy(texto_evento_data,"key press or data sent, ");
-	else texto_evento_data[0]=0;
+    char texto_evento_data[100];
+    if (datosvuelve) strcpy(texto_evento_data,"key press or data sent, ");
+    else texto_evento_data[0]=0;
 
     if (limit==0) escribir_socket_format(misocket,"Running until a breakpoint, %smenu opening or other event\n",texto_evento_data);
     else escribir_socket_format(misocket,"Running until a breakpoint, %smenu opening, %d opcodes run, or other event\n",texto_evento_data,limit);
@@ -5256,123 +5256,123 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
   }
 
 
-	else if (!strcmp(comando_sin_parametros,"save-binary")) {
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+    else if (!strcmp(comando_sin_parametros,"save-binary")) {
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
 
-		if (remote_command_argc<3) {
-				escribir_socket(misocket,"ERROR. Needs three parameters");
-				return;
-		}
+        if (remote_command_argc<3) {
+                escribir_socket(misocket,"ERROR. Needs three parameters");
+                return;
+        }
 
 
-		char *archivo;
-		archivo=remote_command_argv[0];
+        char *archivo;
+        archivo=remote_command_argv[0];
 
-		int valor_leido_direccion=parse_string_to_number(remote_command_argv[1]);
+        int valor_leido_direccion=parse_string_to_number(remote_command_argv[1]);
 
-		int valor_leido_longitud=parse_string_to_number(remote_command_argv[2]);
+        int valor_leido_longitud=parse_string_to_number(remote_command_argv[2]);
 
-		int retorno=save_binary_file(archivo,valor_leido_direccion,valor_leido_longitud);
+        int retorno=save_binary_file(archivo,valor_leido_direccion,valor_leido_longitud);
 
-		if (retorno) escribir_socket(misocket,"ERROR loading file");
-
-
-	}
+        if (retorno) escribir_socket(misocket,"ERROR loading file");
 
 
-	else if (!strcmp(comando_sin_parametros,"save-binary-internal")) {
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-
-		if (remote_command_argc<3) {
-			escribir_socket(misocket,"ERROR. Needs three parameters minimum");
-			return;
-		}
+    }
 
 
-		z80_byte *inicio;
+    else if (!strcmp(comando_sin_parametros,"save-binary-internal")) {
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-		if (return_internal_pointer(remote_command_argv[0],&inicio)==0) {
-			escribir_socket(misocket,"ERROR. Unknown pointer");
-			return;
-		}
-
-		if (inicio==NULL) {
-			escribir_socket(misocket,"ERROR. Pointer is null");
-			return;
-		}
-
-		int longitud=parse_string_to_number(remote_command_argv[1]);
-
-		char *binaryfile;
-
-		binaryfile=remote_command_argv[2];
-
-		int offset=0;
-		if (remote_command_argc>3) offset=parse_string_to_number(remote_command_argv[3]);
-
-		inicio +=offset;
-
-		FILE *ptr_binaryfile;
-				ptr_binaryfile=fopen(binaryfile,"wb");
-				if (!ptr_binaryfile)
-			{
-						debug_printf (VERBOSE_ERR,"Unable to open file");
-				}
-			else {
-
-							int i;
-							for (i=0;i<longitud;i++) {
-											fwrite(inicio,1,1,ptr_binaryfile);
-											inicio++;
-							}
-
-						 fclose(ptr_binaryfile);
-			}
+        if (remote_command_argc<3) {
+            escribir_socket(misocket,"ERROR. Needs three parameters minimum");
+            return;
+        }
 
 
-	}
+        z80_byte *inicio;
+
+        if (return_internal_pointer(remote_command_argv[0],&inicio)==0) {
+            escribir_socket(misocket,"ERROR. Unknown pointer");
+            return;
+        }
+
+        if (inicio==NULL) {
+            escribir_socket(misocket,"ERROR. Pointer is null");
+            return;
+        }
+
+        int longitud=parse_string_to_number(remote_command_argv[1]);
+
+        char *binaryfile;
+
+        binaryfile=remote_command_argv[2];
+
+        int offset=0;
+        if (remote_command_argc>3) offset=parse_string_to_number(remote_command_argv[3]);
+
+        inicio +=offset;
+
+        FILE *ptr_binaryfile;
+                ptr_binaryfile=fopen(binaryfile,"wb");
+                if (!ptr_binaryfile)
+            {
+                        debug_printf (VERBOSE_ERR,"Unable to open file");
+                }
+            else {
+
+                            int i;
+                            for (i=0;i<longitud;i++) {
+                                            fwrite(inicio,1,1,ptr_binaryfile);
+                                            inicio++;
+                            }
+
+                         fclose(ptr_binaryfile);
+            }
 
 
-	else if (!strcmp(comando_sin_parametros,"save-screen") ) {
-
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-		if (remote_command_argc<1) {
-			escribir_socket(misocket,"ERROR. No parameter set");
-			return;
-		}
+    }
 
 
-		save_screen(remote_command_argv[0]);
+    else if (!strcmp(comando_sin_parametros,"save-screen") ) {
+
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        if (remote_command_argc<1) {
+            escribir_socket(misocket,"ERROR. No parameter set");
+            return;
+        }
+
+
+        save_screen(remote_command_argv[0]);
 
 
   }
 
-	else if (!strcmp(comando_sin_parametros,"send-keys-event")) {
+    else if (!strcmp(comando_sin_parametros,"send-keys-event")) {
 
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-		if (remote_command_argc<2) {
-			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
-			return;
-		}
-
-
+        if (remote_command_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters minimum");
+            return;
+        }
 
 
-		int tecla=parse_string_to_number(remote_command_argv[0]);
-		int evento=parse_string_to_number(remote_command_argv[1]);
-		int nomenu=0;
-
-		if (remote_command_argc==3) nomenu=parse_string_to_number(remote_command_argv[2]);
-
-		int enviar=1;
-		if (nomenu && menu_abierto) enviar=0;
 
 
-		//Enviar la tecla pero que no vuelva a entrar por zeng
-		if (enviar) {
-			debug_printf (VERBOSE_PARANOID,"Processing from ZRCP command send-keys-event: key %d event %d",tecla,evento);
+        int tecla=parse_string_to_number(remote_command_argv[0]);
+        int evento=parse_string_to_number(remote_command_argv[1]);
+        int nomenu=0;
+
+        if (remote_command_argc==3) nomenu=parse_string_to_number(remote_command_argv[2]);
+
+        int enviar=1;
+        if (nomenu && menu_abierto) enviar=0;
+
+
+        //Enviar la tecla pero que no vuelva a entrar por zeng
+        if (enviar) {
+            debug_printf (VERBOSE_PARANOID,"Processing from ZRCP command send-keys-event: key %d event %d",tecla,evento);
 
             debug_printf (VERBOSE_PARANOID,"Info joystick: fire: %d up: %d down: %d left: %d right: %d",
                 UTIL_KEY_JOY_FIRE,UTIL_KEY_JOY_UP,UTIL_KEY_JOY_DOWN,UTIL_KEY_JOY_LEFT,UTIL_KEY_JOY_RIGHT);
@@ -5384,68 +5384,68 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
             }
 
             else {
-			    util_set_reset_key_continue_after_zeng(tecla,evento);
+                util_set_reset_key_continue_after_zeng(tecla,evento);
             }
-		}
+        }
 
 
-	}
+    }
 
 
-	else if (!strcmp(comando_sin_parametros,"send-keys-string")) {
-		//remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+    else if (!strcmp(comando_sin_parametros,"send-keys-string")) {
+        //remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-		/*if (remote_command_argc<2) {
-			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
-			return;
-		}*/
+        /*if (remote_command_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters minimum");
+            return;
+        }*/
 
-		z80_byte tecla;
+        z80_byte tecla;
 
-		//No separamos en argv porque interesa tener toda la string a enviar, con sus espacios y todo
-		int pausa=parse_string_to_number(parametros);
+        //No separamos en argv porque interesa tener toda la string a enviar, con sus espacios y todo
+        int pausa=parse_string_to_number(parametros);
 
-		char *s=find_space_or_end(parametros);
-		if ( (*s)==0) {
-			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
-			return;
-		}
+        char *s=find_space_or_end(parametros);
+        if ( (*s)==0) {
+            escribir_socket(misocket,"ERROR. Needs two parameters minimum");
+            return;
+        }
 
-		for (;*s;s++) {
-			tecla=*s;
-			ascii_to_keyboard_port(tecla);
-			usleep(pausa*1000);
-			reset_keyboard_ports();
-			usleep(pausa*1000);
-		}
-
-
-	}
-
-	else if (!strcmp(comando_sin_parametros,"send-keys-ascii")) {
-		remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-
-		if (remote_command_argc<2) {
-			escribir_socket(misocket,"ERROR. Needs two parameters minimum");
-			return;
-		}
-
-		z80_byte tecla;
-
-		int pausa=parse_string_to_number(remote_command_argv[0]);
-
-		int i;
-		for (i=1;i<remote_command_argc;i++) {
-			tecla=parse_string_to_number(remote_command_argv[i]);
-			//printf ("Enviando tecla %d\n",tecla);
-			ascii_to_keyboard_port(tecla);
-			usleep(pausa*1000);
-			reset_keyboard_ports();
-			usleep(pausa*1000);
-		}
+        for (;*s;s++) {
+            tecla=*s;
+            ascii_to_keyboard_port(tecla);
+            usleep(pausa*1000);
+            reset_keyboard_ports();
+            usleep(pausa*1000);
+        }
 
 
-	}
+    }
+
+    else if (!strcmp(comando_sin_parametros,"send-keys-ascii")) {
+        remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+
+        if (remote_command_argc<2) {
+            escribir_socket(misocket,"ERROR. Needs two parameters minimum");
+            return;
+        }
+
+        z80_byte tecla;
+
+        int pausa=parse_string_to_number(remote_command_argv[0]);
+
+        int i;
+        for (i=1;i<remote_command_argc;i++) {
+            tecla=parse_string_to_number(remote_command_argv[i]);
+            //printf ("Enviando tecla %d\n",tecla);
+            ascii_to_keyboard_port(tecla);
+            usleep(pausa*1000);
+            reset_keyboard_ports();
+            usleep(pausa*1000);
+        }
+
+
+    }
 
 //set-breakpoint - si breakpoint activo. id numero y texto
 else if (!strcmp(comando_sin_parametros,"set-breakpoint") || !strcmp(comando_sin_parametros,"sb")) {
@@ -5464,54 +5464,54 @@ else if (!strcmp(comando_sin_parametros,"set-breakpointaction") || !strcmp(coman
 }
 
 else if (!strcmp(comando_sin_parametros,"set-cr")) {
-	enviar_cr=1;
+    enviar_cr=1;
 }
 
 else if (!strcmp(comando_sin_parametros,"set-debug-settings") || !strcmp(comando_sin_parametros,"sds")) {
-	if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
-	else remote_debug_settings=parse_string_to_number(parametros);
+    if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+    else remote_debug_settings=parse_string_to_number(parametros);
 }
 
 //Este comando se usa (o se usara) en la funcion de juegos online
 else if (!strcmp(comando_sin_parametros,"set-ui-io-ports") ) {
-		z80_byte valor;
-		if (parametros[0]==0) {
-			escribir_socket(misocket,"ERROR. No parameters set");
-		}
+        z80_byte valor;
+        if (parametros[0]==0) {
+            escribir_socket(misocket,"ERROR. No parameters set");
+        }
 
-		else {
+        else {
 
-			char *s=parametros;
-			int parametros_recibidos=0;
+            char *s=parametros;
+            int parametros_recibidos=0;
 
 #define ZRCP_CMD_SET_UI_IO_PORTS_TOTAL_PARAMS 9
 
 
-			z80_byte buffer_destino[ZRCP_CMD_SET_UI_IO_PORTS_TOTAL_PARAMS];
+            z80_byte buffer_destino[ZRCP_CMD_SET_UI_IO_PORTS_TOTAL_PARAMS];
 
-			while (*s) {
-				char buffer_valor[4];
-				buffer_valor[0]=s[0];
-				buffer_valor[1]=s[1];
-				buffer_valor[2]='H';
-				buffer_valor[3]=0;
-				//printf ("%s\n",buffer_valor);
-				valor=parse_string_to_number(buffer_valor);
-				//printf ("valor: %d\n",valor);
+            while (*s) {
+                char buffer_valor[4];
+                buffer_valor[0]=s[0];
+                buffer_valor[1]=s[1];
+                buffer_valor[2]='H';
+                buffer_valor[3]=0;
+                //printf ("%s\n",buffer_valor);
+                valor=parse_string_to_number(buffer_valor);
+                //printf ("valor: %d\n",valor);
 
-				buffer_destino[parametros_recibidos++]=valor;
-				//menu_debug_write_mapped_byte(direccion++,valor);
+                buffer_destino[parametros_recibidos++]=valor;
+                //menu_debug_write_mapped_byte(direccion++,valor);
 
-				s++;
-				if (*s) s++;
-			}
+                s++;
+                if (*s) s++;
+            }
 
-			//Ver si total de parametros recibidos correctos
-			if (parametros_recibidos!=ZRCP_CMD_SET_UI_IO_PORTS_TOTAL_PARAMS) {
-				escribir_socket_format(misocket,"ERROR. Number of bytes received different than %d",ZRCP_CMD_SET_UI_IO_PORTS_TOTAL_PARAMS);
-			}
-			else {
-				//Meterlo en los puertos tal cual
+            //Ver si total de parametros recibidos correctos
+            if (parametros_recibidos!=ZRCP_CMD_SET_UI_IO_PORTS_TOTAL_PARAMS) {
+                escribir_socket_format(misocket,"ERROR. Number of bytes received different than %d",ZRCP_CMD_SET_UI_IO_PORTS_TOTAL_PARAMS);
+            }
+            else {
+                //Meterlo en los puertos tal cual
 //;                    Bits:  4    3    2    1    0     ;desplazamiento puerto
 //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
 //puerto_65022   db    255  ; G    F    D    S    A     ;1
@@ -5521,46 +5521,46 @@ else if (!strcmp(comando_sin_parametros,"set-ui-io-ports") ) {
 //puerto_57342    db              255  ; Y    U    I    O    P     ;5
 //puerto_49150    db              255  ; H                J         K      L    Enter ;6
 //puerto_32766    db              255  ; B    N    M    Simb Space ;7
-				puerto_65278=buffer_destino[0];
-				puerto_65022=buffer_destino[1];
-				puerto_64510=buffer_destino[2];
-				puerto_63486=buffer_destino[3];
-				puerto_61438=buffer_destino[4];
-				puerto_57342=buffer_destino[5];
-				puerto_49150=buffer_destino[6];
-				puerto_32766=buffer_destino[7];
-				puerto_especial_joystick=buffer_destino[8];
+                puerto_65278=buffer_destino[0];
+                puerto_65022=buffer_destino[1];
+                puerto_64510=buffer_destino[2];
+                puerto_63486=buffer_destino[3];
+                puerto_61438=buffer_destino[4];
+                puerto_57342=buffer_destino[5];
+                puerto_49150=buffer_destino[6];
+                puerto_32766=buffer_destino[7];
+                puerto_especial_joystick=buffer_destino[8];
 
-				//0xFEFE,0xFDFE,0xFBFE,0xF7FE,0xEFFE,0xDFFE,0xBFFE,0x7FFE
-			}
+                //0xFEFE,0xFDFE,0xFBFE,0xF7FE,0xEFFE,0xDFFE,0xBFFE,0x7FFE
+            }
 
 
-		}
+        }
 
-	}
+    }
 
 
 else if (!strcmp(comando_sin_parametros,"set-machine") || !strcmp(comando_sin_parametros,"sm")) {
-	if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
-	else {
+    if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+    else {
 
-		//Entramos en el mismo modo que cpu-step para poder congelar la emulacion
-		remote_cpu_enter_step(misocket);
-		if (menu_event_remote_protocol_enterstep.v==0) return;
+        //Entramos en el mismo modo que cpu-step para poder congelar la emulacion
+        remote_cpu_enter_step(misocket);
+        if (menu_event_remote_protocol_enterstep.v==0) return;
 
-		if (set_machine_type_by_name(parametros)) {
-						 //Error.
-						escribir_socket_format(misocket,"ERROR. Unknown machine %s",parametros);
-		}
+        if (set_machine_type_by_name(parametros)) {
+                         //Error.
+                        escribir_socket_format(misocket,"ERROR. Unknown machine %s",parametros);
+        }
 
-		else {
-			set_machine(NULL);
-			cold_start_cpu_registers();
-			reset_cpu();
-		}
+        else {
+            set_machine(NULL);
+            cold_start_cpu_registers();
+            reset_cpu();
+        }
 
-		remote_cpu_exit_step(misocket);
-	}
+        remote_cpu_exit_step(misocket);
+    }
 
 }
 
@@ -5575,143 +5575,143 @@ else if (!strcmp(comando_sin_parametros,"set-membreakpoint") ) {
                                         return;
                                 }
 
-  	int index_int=parse_string_to_number(remote_command_argv[0]);
-  	if (index_int<0 || index_int>65536) {
-		escribir_socket(misocket,"ERROR. Address out of range");
-		return;
-	}
+      int index_int=parse_string_to_number(remote_command_argv[0]);
+      if (index_int<0 || index_int>65536) {
+        escribir_socket(misocket,"ERROR. Address out of range");
+        return;
+    }
 
-	int type=parse_string_to_number(remote_command_argv[1]);
-	if (type<0 || type>255) {
+    int type=parse_string_to_number(remote_command_argv[1]);
+    if (type<0 || type>255) {
                 escribir_socket(misocket,"ERROR. Type out of range");
                 return;
         }
 
-	int items=1;
+    int items=1;
 
-	if (remote_command_argc>=3) {
-		items=parse_string_to_number(remote_command_argv[2]);
-	}
+    if (remote_command_argc>=3) {
+        items=parse_string_to_number(remote_command_argv[2]);
+    }
 
 
 
-	for (;items>0;items--) {
-		debug_set_mem_breakpoint(index_int++,type);
-	}
+    for (;items>0;items--) {
+        debug_set_mem_breakpoint(index_int++,type);
+    }
   }
 }
 
 else if (!strcmp(comando_sin_parametros,"set-memory-zone") || !strcmp(comando_sin_parametros,"smz") ) {
-	if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
-	else {
+    if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+    else {
 
-		int readwrite;
+        int readwrite;
 
-		int zone=parse_string_to_number(parametros);
+        int zone=parse_string_to_number(parametros);
 
-		if (zone==-1) {
-			menu_debug_show_memory_zones=0;
-			menu_debug_memory_zone=-1;
-		}
+        if (zone==-1) {
+            menu_debug_show_memory_zones=0;
+            menu_debug_memory_zone=-1;
+        }
 
-		else {
+        else {
 
-			menu_debug_show_memory_zones=1;
+            menu_debug_show_memory_zones=1;
 
-			unsigned int size=machine_get_memory_zone_attrib(zone,&readwrite);
-			if (size<=0) {
-						 //Error.
-						escribir_socket_format(misocket,"ERROR. Unknown zone %d",zone);
-					}
+            unsigned int size=machine_get_memory_zone_attrib(zone,&readwrite);
+            if (size<=0) {
+                         //Error.
+                        escribir_socket_format(misocket,"ERROR. Unknown zone %d",zone);
+                    }
 
-			else {
-				//escribir_socket_format(misocket,"Setting zone to %d\n",zone);
-				menu_debug_memory_zone=zone;
-			}
-		}
+            else {
+                //escribir_socket_format(misocket,"Setting zone to %d\n",zone);
+                menu_debug_memory_zone=zone;
+            }
+        }
 
-	}
+    }
 
 }
 
-	else if (!strcmp(comando_sin_parametros,"set-text-brightness")) {
-		if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
-	        else {
-			int bri=parse_string_to_number(parametros);
-			if (bri<0 || bri>100) {
-				escribir_socket_format(misocket,"ERROR. Invalid brightness value %d",bri);
-			}
+    else if (!strcmp(comando_sin_parametros,"set-text-brightness")) {
+        if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+            else {
+            int bri=parse_string_to_number(parametros);
+            if (bri<0 || bri>100) {
+                escribir_socket_format(misocket,"ERROR. Invalid brightness value %d",bri);
+            }
 
-			else screen_text_brightness=bri;
-		}
-	}
+            else screen_text_brightness=bri;
+        }
+    }
 
-	else if (!strcmp(comando_sin_parametros,"set-register") || !strcmp(comando_sin_parametros,"sr")) {
-		if (debug_change_register(parametros)) {
-			escribir_socket (misocket,"Error changing register");
-		}
-		else {
-			print_registers(buffer_retorno);
-			escribir_socket (misocket,buffer_retorno);
-		}
-	}
+    else if (!strcmp(comando_sin_parametros,"set-register") || !strcmp(comando_sin_parametros,"sr")) {
+        if (debug_change_register(parametros)) {
+            escribir_socket (misocket,"Error changing register");
+        }
+        else {
+            print_registers(buffer_retorno);
+            escribir_socket (misocket,buffer_retorno);
+        }
+    }
 
-	else if (!strcmp(comando_sin_parametros,"set-verbose-level")) {
-		if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+    else if (!strcmp(comando_sin_parametros,"set-verbose-level")) {
+        if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
 
-		else {
-			int i=parse_string_to_number(parametros);
+        else {
+            int i=parse_string_to_number(parametros);
 
-			if (i<0 || i>4) {
-				escribir_socket (misocket,"ERROR. Invalid Verbose level");
-			}
+            if (i<0 || i>4) {
+                escribir_socket (misocket,"ERROR. Invalid Verbose level");
+            }
 
-			else verbose_level=i;
-		}
-	}
+            else verbose_level=i;
+        }
+    }
 
-	else if (!strcmp(comando_sin_parametros,"set-window-zoom") ) {
-		if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
-		else {
+    else if (!strcmp(comando_sin_parametros,"set-window-zoom") ) {
+        if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+        else {
 
-			//Entramos en el mismo modo que cpu-step para poder congelar la emulacion
-			remote_cpu_enter_step(misocket);
-			if (menu_event_remote_protocol_enterstep.v==0) return;
+            //Entramos en el mismo modo que cpu-step para poder congelar la emulacion
+            remote_cpu_enter_step(misocket);
+            if (menu_event_remote_protocol_enterstep.v==0) return;
 
-			int z=parse_string_to_number(parametros);
+            int z=parse_string_to_number(parametros);
 
-			screen_set_window_zoom(z,z);
+            screen_set_window_zoom(z,z);
 
 
-			remote_cpu_exit_step(misocket);
-		}
+            remote_cpu_exit_step(misocket);
+        }
 
-	}
+    }
 
 
 else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_parametros,"sl")) {
 
-	remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-	if (remote_command_argc<1) {
-		escribir_socket(misocket,"ERROR. No parameter set");
-		return;
-	}
+    remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+    if (remote_command_argc<1) {
+        escribir_socket(misocket,"ERROR. No parameter set");
+        return;
+    }
 
 
-		//Si estamos en cpu-step-mode, cargar tal cual y volver sin tocar modo
-		//Si no, entrar cpu-step-mode y luego quitar cpu-step-mode
+        //Si estamos en cpu-step-mode, cargar tal cual y volver sin tocar modo
+        //Si no, entrar cpu-step-mode y luego quitar cpu-step-mode
 
-		z80_bit antes_menu_event_remote_protocol_enterstep;
+        z80_bit antes_menu_event_remote_protocol_enterstep;
 
-		antes_menu_event_remote_protocol_enterstep.v=menu_event_remote_protocol_enterstep.v;
+        antes_menu_event_remote_protocol_enterstep.v=menu_event_remote_protocol_enterstep.v;
 
 
-		if (antes_menu_event_remote_protocol_enterstep.v==0) {
-    		//Asegurarnos que congelamos el emulador: abrir menu con mutitarea desactivada
-    		//Entramos en el mismo modo que cpu-step para poder congelar la emulacion
+        if (antes_menu_event_remote_protocol_enterstep.v==0) {
+            //Asegurarnos que congelamos el emulador: abrir menu con mutitarea desactivada
+            //Entramos en el mismo modo que cpu-step para poder congelar la emulacion
             remote_cpu_enter_step(misocket);
             if (menu_event_remote_protocol_enterstep.v==0) return;
-		}
+        }
 
 
     //if (quickload(parametros)) {
@@ -5725,9 +5725,9 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
       escribir_socket (misocket,"Error. Unknown file format");
     }
 
-	if (antes_menu_event_remote_protocol_enterstep.v==0) {
+    if (antes_menu_event_remote_protocol_enterstep.v==0) {
         remote_cpu_exit_step(misocket);
-	}
+    }
 
   }
 
@@ -5771,20 +5771,20 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 
   else if (!strcmp(comando_sin_parametros,"snapshot-load") ) {
 
-		//Si estamos en cpu-step-mode, cargar tal cual y volver sin tocar modo
-		//Si no, entrar cpu-step-mode y luego quitar cpu-step-mode
+        //Si estamos en cpu-step-mode, cargar tal cual y volver sin tocar modo
+        //Si no, entrar cpu-step-mode y luego quitar cpu-step-mode
 
-		z80_bit antes_menu_event_remote_protocol_enterstep;
+        z80_bit antes_menu_event_remote_protocol_enterstep;
 
-		antes_menu_event_remote_protocol_enterstep.v=menu_event_remote_protocol_enterstep.v;
+        antes_menu_event_remote_protocol_enterstep.v=menu_event_remote_protocol_enterstep.v;
 
 
-		if (antes_menu_event_remote_protocol_enterstep.v==0) {
-    	//Asegurarnos que congelamos el emulador: abrir menu con mutitarea desactivada
-    	//Entramos en el mismo modo que cpu-step para poder congelar la emulacion
-    	remote_cpu_enter_step(misocket);
-    	if (menu_event_remote_protocol_enterstep.v==0) return;
-		}
+        if (antes_menu_event_remote_protocol_enterstep.v==0) {
+        //Asegurarnos que congelamos el emulador: abrir menu con mutitarea desactivada
+        //Entramos en el mismo modo que cpu-step para poder congelar la emulacion
+        remote_cpu_enter_step(misocket);
+        if (menu_event_remote_protocol_enterstep.v==0) return;
+        }
 
 
     strcpy(snapshot_load_file,parametros);
@@ -5792,9 +5792,9 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
     snapshot_load();
 
 
-		if (antes_menu_event_remote_protocol_enterstep.v==0) {
-    	remote_cpu_exit_step(misocket);
-		}
+        if (antes_menu_event_remote_protocol_enterstep.v==0) {
+        remote_cpu_exit_step(misocket);
+        }
   }
 
   else if (!strcmp(comando_sin_parametros,"snapshot-save") ) {
@@ -5802,12 +5802,12 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
   }
 
   else if (!strcmp(comando_sin_parametros,"speech-empty-fifo") ) {
-  	//Vaciamos cola speech
-  	textspeech_empty_speech_fifo();
+      //Vaciamos cola speech
+      textspeech_empty_speech_fifo();
   }
 
   else if (!strcmp(comando_sin_parametros,"speech-send") ) {
-  	textspeech_print_speech(parametros);
+      textspeech_print_speech(parametros);
   }
 
   else if (!strcmp(comando_sin_parametros,"tbblue-get-clipwindow") ) {
@@ -5871,15 +5871,15 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 
     else if (!strcmp(comando_sin_parametros,"tbblue-get-palette") ) {
 
-		if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
-		else {
-			remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
-			if (remote_command_argc<3) {
-				escribir_socket(misocket,"ERROR. Needs three parameter minimum");
-				return;
-			}
+        if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
+        else {
+            remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+            if (remote_command_argc<3) {
+                escribir_socket(misocket,"ERROR. Needs three parameter minimum");
+                return;
+            }
 
-			z80_byte index=parse_string_to_number(remote_command_argv[2]);
+            z80_byte index=parse_string_to_number(remote_command_argv[2]);
 
       z80_int *paleta;
       paleta=remote_return_palette(remote_command_argv[0],remote_command_argv[1]);
@@ -5888,12 +5888,12 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
         return;
       }
 
-			int items=1;
-			if (remote_command_argc>3) items=parse_string_to_number(remote_command_argv[3]);
-			//if (index<0 || index>255) escribir_socket(misocket,"ERROR. Out of range");
+            int items=1;
+            if (remote_command_argc>3) items=parse_string_to_number(remote_command_argv[3]);
+            //if (index<0 || index>255) escribir_socket(misocket,"ERROR. Out of range");
 
-			for (;items;items--) {
-				//z80_byte color=tbsprite_palette[index++];
+            for (;items;items--) {
+                //z80_byte color=tbsprite_palette[index++];
         z80_int color=paleta[index++];  //primera paleta
 
                 if (!strcasecmp(remote_command_argv[0],"layer2")) {
@@ -5901,77 +5901,77 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
                     color=color & (0xFFFF-TBBLUE_LAYER2_PRIORITY);
                 }
 
-				escribir_socket_format(misocket,"%03X ",color);
-			}
+                escribir_socket_format(misocket,"%03X ",color);
+            }
 
-	        }
+            }
 
 
     }
 
         else if (!strcmp(comando_sin_parametros,"tbblue-get-pattern") ) {
 
-			if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
-			else {
+            if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
+            else {
 
-				remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+                remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-				if (remote_command_argc<2) {
-						escribir_socket(misocket,"ERROR. Needs two parameters minimum");
-						return;
-				}
+                if (remote_command_argc<2) {
+                        escribir_socket(misocket,"ERROR. Needs two parameters minimum");
+                        return;
+                }
 
-				int index_int=parse_string_to_number(remote_command_argv[0]);
+                int index_int=parse_string_to_number(remote_command_argv[0]);
 
-				int totalitems=1;
+                int totalitems=1;
 
-				int bpp=parse_string_to_number(remote_command_argv[1]);
+                int bpp=parse_string_to_number(remote_command_argv[1]);
 
-				if (bpp!=4 && bpp!=8) {
-					escribir_socket_format(misocket,"ERROR. Invalid value for bpp: %d",bpp);
-					return;
-				}
+                if (bpp!=4 && bpp!=8) {
+                    escribir_socket_format(misocket,"ERROR. Invalid value for bpp: %d",bpp);
+                    return;
+                }
 
-				if (remote_command_argc>2) totalitems=parse_string_to_number(remote_command_argv[2]);
+                if (remote_command_argc>2) totalitems=parse_string_to_number(remote_command_argv[2]);
 
-				int max_pattern=TBBLUE_MAX_PATTERNS;
-				int total_size=TBBLUE_SPRITE_8BPP_SIZE;
+                int max_pattern=TBBLUE_MAX_PATTERNS;
+                int total_size=TBBLUE_SPRITE_8BPP_SIZE;
 
-				if (bpp==4) {
-					max_pattern *=2;
-					total_size=TBBLUE_SPRITE_4BPP_SIZE;
-				}
+                if (bpp==4) {
+                    max_pattern *=2;
+                    total_size=TBBLUE_SPRITE_4BPP_SIZE;
+                }
 
 
-				//Esto solo usado para 4bpp
-				//int indice_4bpp=index_int/2;
+                //Esto solo usado para 4bpp
+                //int indice_4bpp=index_int/2;
                 int indice_4bpp=index_int;
-				//int offset_1_pattern=index_int %2;
+                //int offset_1_pattern=index_int %2;
 
 
-				if (index_int<0 || index_int>=max_pattern) escribir_socket(misocket,"ERROR. Out of range");
-				else {
-					for (;totalitems;totalitems--) {
-						int i;
-						for (i=0;i<total_size;i++) {
+                if (index_int<0 || index_int>=max_pattern) escribir_socket(misocket,"ERROR. Out of range");
+                else {
+                    for (;totalitems;totalitems--) {
+                        int i;
+                        for (i=0;i<total_size;i++) {
 
-							z80_byte index_color;
+                            z80_byte index_color;
 
-							if (bpp==8) {
-								index_color=tbsprite_pattern_get_value_index_8bpp(index_int,i);
-							}
-							else {
-								index_color=tbsprite_pattern_get_value_index_4bpp(indice_4bpp,i);
-							}
+                            if (bpp==8) {
+                                index_color=tbsprite_pattern_get_value_index_8bpp(index_int,i);
+                            }
+                            else {
+                                index_color=tbsprite_pattern_get_value_index_4bpp(indice_4bpp,i);
+                            }
 
-							escribir_socket_format(misocket,"%02X ",index_color);
-						}
-						escribir_socket(misocket,"\n");
-						index_int++;
-						if (index_int==TBBLUE_MAX_PATTERNS) index_int=0;
-					}
-				}
-			}
+                            escribir_socket_format(misocket,"%02X ",index_color);
+                        }
+                        escribir_socket(misocket,"\n");
+                        index_int++;
+                        if (index_int==TBBLUE_MAX_PATTERNS) index_int=0;
+                    }
+                }
+            }
 
         }
 
@@ -5997,54 +5997,54 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
 
         else if (!strcmp(comando_sin_parametros,"tbblue-get-sprite") ) {
 
-					if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
-					else {
+                    if (!MACHINE_IS_TBBLUE) escribir_socket(misocket,"ERROR. Machine is not TBBlue");
+                    else {
 
-							remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
+                            remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
-							if (remote_command_argc<1) {
-											escribir_socket(misocket,"ERROR. Needs one parameter minimum");
-											return;
-							}
+                            if (remote_command_argc<1) {
+                                            escribir_socket(misocket,"ERROR. Needs one parameter minimum");
+                                            return;
+                            }
 
-							int index_int=parse_string_to_number(remote_command_argv[0]);
+                            int index_int=parse_string_to_number(remote_command_argv[0]);
 
-							int totalitems=1;
+                            int totalitems=1;
 
-							if (remote_command_argc>1) totalitems=parse_string_to_number(remote_command_argv[1]);
+                            if (remote_command_argc>1) totalitems=parse_string_to_number(remote_command_argv[1]);
 
-							if (index_int<0 || index_int>=TBBLUE_MAX_SPRITES) escribir_socket(misocket,"ERROR. Out of range");
-							else {
-								for (;totalitems;totalitems--) {
-									int i;
+                            if (index_int<0 || index_int>=TBBLUE_MAX_SPRITES) escribir_socket(misocket,"ERROR. Out of range");
+                            else {
+                                for (;totalitems;totalitems--) {
+                                    int i;
 
-									int tamanyo_sprite=4;
-									if (tbsprite_new_sprites[index_int][3] & 64) tamanyo_sprite++;
+                                    int tamanyo_sprite=4;
+                                    if (tbsprite_new_sprites[index_int][3] & 64) tamanyo_sprite++;
 
-									for (i=0;i<tamanyo_sprite;i++) {
-											z80_byte value_sprite=tbsprite_new_sprites[index_int][i];
-											escribir_socket_format(misocket,"%02X ",value_sprite);
-									}
-									escribir_socket(misocket,"\n");
-									index_int++;
-									if (index_int==TBBLUE_MAX_SPRITES) index_int=0;
-								}
-							}
-					}
+                                    for (i=0;i<tamanyo_sprite;i++) {
+                                            z80_byte value_sprite=tbsprite_new_sprites[index_int][i];
+                                            escribir_socket_format(misocket,"%02X ",value_sprite);
+                                    }
+                                    escribir_socket(misocket,"\n");
+                                    index_int++;
+                                    if (index_int==TBBLUE_MAX_SPRITES) index_int=0;
+                                }
+                            }
+                    }
 
-				}
+                }
 
 
 
-	else if (!strcmp(comando_sin_parametros,"tbblue-set-palette")) {
-		z80_byte index;
-		z80_int valor;
-		if (parametros[0]==0) {
-			escribir_socket(misocket,"ERROR. No parameters set");
-		}
+    else if (!strcmp(comando_sin_parametros,"tbblue-set-palette")) {
+        z80_byte index;
+        z80_int valor;
+        if (parametros[0]==0) {
+            escribir_socket(misocket,"ERROR. No parameters set");
+        }
 
     //ula|layer2|sprite first|second index value
-		else {
+        else {
 
       //remote_copy_string_spc
       char nombrepaleta[100];
@@ -6073,54 +6073,54 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
       }
 
 
-			index=parse_string_to_number(textoindice);
+            index=parse_string_to_number(textoindice);
 
-			//Ver si hay espacio
-			//s=find_space_or_end(parametros);
-			while (*s) {
-				valor=parse_string_to_number(s);
+            //Ver si hay espacio
+            //s=find_space_or_end(parametros);
+            while (*s) {
+                valor=parse_string_to_number(s);
 
         paleta[index++]=valor & 0x1FF;
 
-				s=find_space_or_end(s);
-			}
+                s=find_space_or_end(s);
+            }
 
 
-		}
+        }
 
-	}
-
-
-	else if (!strcmp(comando_sin_parametros,"tbblue-set-pattern")) {
-		int index_int;
-		z80_byte valor;
-		if (parametros[0]==0) {
-			escribir_socket(misocket,"ERROR. No parameters set");
-		}
-
-		else {
-
-			index_int=parse_string_to_number(parametros);
-
-			if (index_int<0 || index_int>=TBBLUE_MAX_PATTERNS) escribir_socket(misocket,"ERROR. Out of range");
-
-			z80_byte i=0;
-
-			//Ver si hay espacio
-			char *s=find_space_or_end(parametros);
-			while (*s) {
-				valor=parse_string_to_number(s);
-				//tbsprite_patterns[index_int][i++]=valor;
-				tbsprite_pattern_put_value_index_8bpp(index_int,i,valor);
-				i++;
-
-				s=find_space_or_end(s);
-			}
+    }
 
 
-		}
+    else if (!strcmp(comando_sin_parametros,"tbblue-set-pattern")) {
+        int index_int;
+        z80_byte valor;
+        if (parametros[0]==0) {
+            escribir_socket(misocket,"ERROR. No parameters set");
+        }
 
-	}
+        else {
+
+            index_int=parse_string_to_number(parametros);
+
+            if (index_int<0 || index_int>=TBBLUE_MAX_PATTERNS) escribir_socket(misocket,"ERROR. Out of range");
+
+            z80_byte i=0;
+
+            //Ver si hay espacio
+            char *s=find_space_or_end(parametros);
+            while (*s) {
+                valor=parse_string_to_number(s);
+                //tbsprite_patterns[index_int][i++]=valor;
+                tbsprite_pattern_put_value_index_8bpp(index_int,i,valor);
+                i++;
+
+                s=find_space_or_end(s);
+            }
+
+
+        }
+
+    }
 
    else if (!strcmp(comando_sin_parametros,"tbblue-set-register") ) {
 
@@ -6143,74 +6143,74 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
               else {
                 //tbblue_set_register_port(index_int);
                 //tbblue_set_value_port(value);
-								tbblue_set_value_port_position(index_int,value);
+                                tbblue_set_value_port_position(index_int,value);
               }
           }
 
   }
 
 
-	else if (!strcmp(comando_sin_parametros,"tbblue-set-sprite")) {
-		int index_int;
-		z80_byte valor;
-		if (parametros[0]==0) {
-			escribir_socket(misocket,"ERROR. No parameters set");
-		}
+    else if (!strcmp(comando_sin_parametros,"tbblue-set-sprite")) {
+        int index_int;
+        z80_byte valor;
+        if (parametros[0]==0) {
+            escribir_socket(misocket,"ERROR. No parameters set");
+        }
 
-		else {
+        else {
 
-			index_int=parse_string_to_number(parametros);
+            index_int=parse_string_to_number(parametros);
 
-			if (index_int<0 || index_int>=TBBLUE_MAX_SPRITES) escribir_socket(misocket,"ERROR. Out of range");
+            if (index_int<0 || index_int>=TBBLUE_MAX_SPRITES) escribir_socket(misocket,"ERROR. Out of range");
 
-			z80_byte i=0;
+            z80_byte i=0;
 
-			//Ver si hay espacio
-			char *s=find_space_or_end(parametros);
-			while (*s) {
-				valor=parse_string_to_number(s);
-				//tbsprite_sprites[index_int][i]=valor;
+            //Ver si hay espacio
+            char *s=find_space_or_end(parametros);
+            while (*s) {
+                valor=parse_string_to_number(s);
+                //tbsprite_sprites[index_int][i]=valor;
                 tbblue_write_sprite_value(index_int,i,valor);
                 i++;
-				if (i==4) i=0;
+                if (i==4) i=0;
 
-				s=find_space_or_end(s);
-			}
-
-
-		}
-
-	}
+                s=find_space_or_end(s);
+            }
 
 
+        }
+
+    }
 
 
 
 
-				else if (!strcmp(comando_sin_parametros,"tsconf-get-af-port") ) {
-
-			  	if (!MACHINE_IS_TSCONF) escribir_socket(misocket,"ERROR. Machine is not TSConf");
-					else {
-						if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
-						else {
-
-							 int index=parse_string_to_number(parametros);
-							 if (index<0 || index>255) escribir_socket(misocket,"ERROR. Out of range");
-							 else {
-								 z80_byte value=tsconf_get_af_port(index);
-								 escribir_socket_format(misocket,"%02XH",value);
-							 }
-						}
-					}
-
-				}
 
 
+                else if (!strcmp(comando_sin_parametros,"tsconf-get-af-port") ) {
 
-				else if (!strcmp(comando_sin_parametros,"tsconf-set-af-port") ) {
+                  if (!MACHINE_IS_TSCONF) escribir_socket(misocket,"ERROR. Machine is not TSConf");
+                    else {
+                        if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+                        else {
 
-			  	if (!MACHINE_IS_TSCONF) escribir_socket(misocket,"ERROR. Machine is not TSConf");
-					else {
+                             int index=parse_string_to_number(parametros);
+                             if (index<0 || index>255) escribir_socket(misocket,"ERROR. Out of range");
+                             else {
+                                 z80_byte value=tsconf_get_af_port(index);
+                                 escribir_socket_format(misocket,"%02XH",value);
+                             }
+                        }
+                    }
+
+                }
+
+
+
+                else if (!strcmp(comando_sin_parametros,"tsconf-set-af-port") ) {
+
+                  if (!MACHINE_IS_TSCONF) escribir_socket(misocket,"ERROR. Machine is not TSConf");
+                    else {
 
               remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
@@ -6219,20 +6219,20 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
                       return;
               }
 
-							int index_int=parse_string_to_number(remote_command_argv[0]);
+                            int index_int=parse_string_to_number(remote_command_argv[0]);
 
-            	int value=parse_string_to_number(remote_command_argv[1]);
+                int value=parse_string_to_number(remote_command_argv[1]);
 
-							if (index_int<0 || index_int>255 || value<0 || value>255) escribir_socket(misocket,"ERROR. Out of range");
+                            if (index_int<0 || index_int>255 || value<0 || value>255) escribir_socket(misocket,"ERROR. Out of range");
 
-							else {
-								tsconf_write_af_port(index_int,value);
-							}
+                            else {
+                                tsconf_write_af_port(index_int,value);
+                            }
 
 
-					}
+                    }
 
-				}
+                }
 
 
 
@@ -6242,105 +6242,105 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
           //if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step(misocket);
 
           escribir_socket (misocket,"Sayonara baby\n");
-					*remote_salir_conexion_cliente=1;
-					sleep(1);
+                    *remote_salir_conexion_cliente=1;
+                    sleep(1);
 
-					remote_cerrar_conexion();
+                    remote_cerrar_conexion();
 
         }
 
-	else if (!strcmp(comando_sin_parametros,"view-basic")) {
+    else if (!strcmp(comando_sin_parametros,"view-basic")) {
                 char *results_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing basic");
 
-				debug_view_basic(results_buffer);
-				escribir_socket(misocket,results_buffer);
+                debug_view_basic(results_buffer);
+                escribir_socket(misocket,results_buffer);
 
                 free(results_buffer);
-	}
+    }
 
 /*
 como generar volcado hexadecimal de archivo binario:
 hexdump -v -e '16/1 "%02xH " " "'
 */
 else if (!strcmp(comando_sin_parametros,"write-memory") || !strcmp(comando_sin_parametros,"wm")) {
-	unsigned int direccion;
-	z80_byte valor;
-	if (parametros[0]==0) {
-		escribir_socket(misocket,"ERROR. No parameters set");
-	}
+    unsigned int direccion;
+    z80_byte valor;
+    if (parametros[0]==0) {
+        escribir_socket(misocket,"ERROR. No parameters set");
+    }
 
-	else {
+    else {
 
-		direccion=parse_string_to_number(parametros);
+        direccion=parse_string_to_number(parametros);
 
-		menu_debug_set_memory_zone_attr();
+        menu_debug_set_memory_zone_attr();
 
-		//Ver si hay espacio
-		char *s=find_space_or_end(parametros);
-		while (*s) {
-			valor=parse_string_to_number(s);
-			//poke_byte_z80_moto(direccion++,valor);
-			//printf ("poke addr %X value %x\n",direccion,valor);
-			menu_debug_write_mapped_byte(direccion++,valor);
+        //Ver si hay espacio
+        char *s=find_space_or_end(parametros);
+        while (*s) {
+            valor=parse_string_to_number(s);
+            //poke_byte_z80_moto(direccion++,valor);
+            //printf ("poke addr %X value %x\n",direccion,valor);
+            menu_debug_write_mapped_byte(direccion++,valor);
 
-			s=find_space_or_end(s);
-		}
+            s=find_space_or_end(s);
+        }
 
 
-	}
+    }
 
 }
 
 else if (!strcmp(comando_sin_parametros,"write-mapped-memory") || !strcmp(comando_sin_parametros,"wmm")) {
-	escribir_socket(misocket,"This command is no longer supported. Use write-memory command and set memory zone if needed");
+    escribir_socket(misocket,"This command is no longer supported. Use write-memory command and set memory zone if needed");
 }
 
 else if (!strcmp(comando_sin_parametros,"write-mapped-memory-raw") ) {
-	escribir_socket(misocket,"This command is no longer supported. Use write-memory-raw command and set memory zone if needed");
+    escribir_socket(misocket,"This command is no longer supported. Use write-memory-raw command and set memory zone if needed");
 }
 
 else if (!strcmp(comando_sin_parametros,"write-memory-raw") ) {
-	unsigned int direccion;
-	z80_byte valor;
-	if (parametros[0]==0) {
-		escribir_socket(misocket,"ERROR. No parameters set");
-	}
+    unsigned int direccion;
+    z80_byte valor;
+    if (parametros[0]==0) {
+        escribir_socket(misocket,"ERROR. No parameters set");
+    }
 
-	else {
+    else {
 
-		direccion=parse_string_to_number(parametros);
+        direccion=parse_string_to_number(parametros);
 
-		menu_debug_set_memory_zone_attr();
+        menu_debug_set_memory_zone_attr();
 
-		//Ver si hay espacio
-		char *s=find_space_or_end(parametros);
-		while (*s) {
-			char buffer_valor[4];
-			buffer_valor[0]=s[0];
-			buffer_valor[1]=s[1];
-			buffer_valor[2]='H';
-			buffer_valor[3]=0;
-			//printf ("%s\n",buffer_valor);
-			valor=parse_string_to_number(buffer_valor);
-			//printf ("valor: %d\n",valor);
-			//poke_byte_z80_moto(direccion++,valor);
-			menu_debug_write_mapped_byte(direccion++,valor);
+        //Ver si hay espacio
+        char *s=find_space_or_end(parametros);
+        while (*s) {
+            char buffer_valor[4];
+            buffer_valor[0]=s[0];
+            buffer_valor[1]=s[1];
+            buffer_valor[2]='H';
+            buffer_valor[3]=0;
+            //printf ("%s\n",buffer_valor);
+            valor=parse_string_to_number(buffer_valor);
+            //printf ("valor: %d\n",valor);
+            //poke_byte_z80_moto(direccion++,valor);
+            menu_debug_write_mapped_byte(direccion++,valor);
 
-			s++;
-			if (*s) s++;
-		}
-		/*else {
-			escribir_socket(misocket,"ERROR. No value set");
-		}*/
+            s++;
+            if (*s) s++;
+        }
+        /*else {
+            escribir_socket(misocket,"ERROR. No value set");
+        }*/
 
-	}
+    }
 
 }
 
 else if (!strcmp(comando_sin_parametros,"write-port") ) {
 
-	if (!CPU_IS_Z80) escribir_socket(misocket,"ERROR. CPU is not Z80");
-	else {
+    if (!CPU_IS_Z80) escribir_socket(misocket,"ERROR. CPU is not Z80");
+    else {
 
               remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
 
@@ -6349,50 +6349,50 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
                       return;
               }
 
-			z80_int port=parse_string_to_number(remote_command_argv[0]);
+            z80_int port=parse_string_to_number(remote_command_argv[0]);
 
             z80_byte value=parse_string_to_number(remote_command_argv[1]);
 
-			out_port(port,value);
+            out_port(port,value);
 
 
 
-	}
+    }
 }
 
 
-	else if (!strcmp(comando_sin_parametros,"zeng-is-master") ) {
-		escribir_socket_format(misocket,"%d",zeng_i_am_master);
-	}
+    else if (!strcmp(comando_sin_parametros,"zeng-is-master") ) {
+        escribir_socket_format(misocket,"%d",zeng_i_am_master);
+    }
 
-	else if (!strcmp(comando_sin_parametros,"zeng-online") || !strcmp(comando_sin_parametros,"zo")) {
+    else if (!strcmp(comando_sin_parametros,"zeng-online") || !strcmp(comando_sin_parametros,"zo")) {
         remote_parse_commands_argvc(parametros,&remote_command_argc,remote_command_argv);
         zeng_online_parse_command(misocket,remote_command_argc,remote_command_argv,ip_source_address);
 
-	}
+    }
 
 
-		else if (!strcmp(comando_sin_parametros,"zxevo-get-nvram") ) {
+        else if (!strcmp(comando_sin_parametros,"zxevo-get-nvram") ) {
 
-			  	if (!MACHINE_IS_ZXEVO) escribir_socket(misocket,"ERROR. Machine is not ZX-Evo");
-					else {
-						if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
-						else {
+                  if (!MACHINE_IS_ZXEVO) escribir_socket(misocket,"ERROR. Machine is not ZX-Evo");
+                    else {
+                        if (parametros[0]==0) escribir_socket(misocket,"ERROR. No parameter set");
+                        else {
 
-							 int index=parse_string_to_number(parametros);
-							 if (index<0 || index>255) escribir_socket(misocket,"ERROR. Out of range");
-							 else {
-								 z80_byte value=zxevo_nvram[index];
-								 escribir_socket_format(misocket,"%02X",value);
-							 }
-						}
-					}
+                             int index=parse_string_to_number(parametros);
+                             if (index<0 || index>255) escribir_socket(misocket,"ERROR. Out of range");
+                             else {
+                                 z80_byte value=zxevo_nvram[index];
+                                 escribir_socket_format(misocket,"%02X",value);
+                             }
+                        }
+                    }
 
-				}
+                }
 
-	else {
-		escribir_socket (misocket,"Unknown command");
-	}
+    else {
+        escribir_socket (misocket,"Unknown command");
+    }
 
 
 
@@ -6403,9 +6403,9 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 int remote_initialize_port(void)
 {
 
-	sock_listen=crear_socket_TCP();
+    sock_listen=crear_socket_TCP();
 
-	//printf("sock_listen: %d\n",sock_listen);
+    //printf("sock_listen: %d\n",sock_listen);
 
 //#ifndef MINGW
   if (sock_listen<0) {
@@ -6413,15 +6413,15 @@ int remote_initialize_port(void)
     return 1;
   }
 
-	//Evitar errores "Unable to bind: Address already in use" cuando se cierra el emulador con una conexion en curso
-	int opcion_socket=1;
+    //Evitar errores "Unable to bind: Address already in use" cuando se cierra el emulador con una conexion en curso
+    int opcion_socket=1;
 
-	setsockopt(sock_listen,SOL_SOCKET,SO_REUSEADDR,&opcion_socket,sizeof(int));
+    setsockopt(sock_listen,SOL_SOCKET,SO_REUSEADDR,&opcion_socket,sizeof(int));
 
 //#endif
 
 
-	int result=assignar_adr_internet(sock_listen,NULL,remote_protocol_port);
+    int result=assignar_adr_internet(sock_listen,NULL,remote_protocol_port);
 
 //#ifndef MINGW
   if (result<0) {
@@ -6430,7 +6430,7 @@ int remote_initialize_port(void)
   }
 //#endif
 
-	result=listen(sock_listen,SOMAXCONN);
+    result=listen(sock_listen,SOMAXCONN);
 
 //#ifndef MINGW
   if (result<0) {
@@ -6454,27 +6454,27 @@ void remote_get_client_ip(int elsocket,char *ipsource)
 struct sockaddr_in sockaddr_client;
 
  socklen_t long_sockaddr;
-	char *direccio_client; //Adreça IP del client en format text
+    char *direccio_client; //Adreça IP del client en format text
 
 
-	//Obtenir socket client
-	long_sockaddr=sizeof(sockaddr_client);
-	if (getpeername(elsocket,(struct sockaddr *)&sockaddr_client,&long_sockaddr)<0) {
-		debug_printf (VERBOSE_DEBUG,"ZRCP: Error getting client IP");
-		return;
-	}
+    //Obtenir socket client
+    long_sockaddr=sizeof(sockaddr_client);
+    if (getpeername(elsocket,(struct sockaddr *)&sockaddr_client,&long_sockaddr)<0) {
+        debug_printf (VERBOSE_DEBUG,"ZRCP: Error getting client IP");
+        return;
+    }
 
 
 
-	//debug_printf (VERBOSE_DEBUG,"ncdd_servidor_fill: %x",sockaddr_client.sin_addr.s_addr);
+    //debug_printf (VERBOSE_DEBUG,"ncdd_servidor_fill: %x",sockaddr_client.sin_addr.s_addr);
 
 
-	//Obtenir direccio IP client, en format text ("A.B.C.D")
-	direccio_client=inet_ntoa(sockaddr_client.sin_addr);
-	if (direccio_client==NULL) {
-		debug_printf (VERBOSE_DEBUG,"ZRCP: Error getting client IP string");
-		return;
-	}
+    //Obtenir direccio IP client, en format text ("A.B.C.D")
+    direccio_client=inet_ntoa(sockaddr_client.sin_addr);
+    if (direccio_client==NULL) {
+        debug_printf (VERBOSE_DEBUG,"ZRCP: Error getting client IP string");
+        return;
+    }
 
 
 
@@ -6491,7 +6491,7 @@ z_atomic_semaphore zrcp_command_semaforo;
 
 void zrcp_sem_init(void)
 {
-	z_atomic_reset(&zrcp_command_semaforo);
+    z_atomic_reset(&zrcp_command_semaforo);
 }
 
 /*
@@ -6759,10 +6759,10 @@ void zrcp_handle_linemode_character(struct s_parameters_handle_linemode *paramet
 void *zrcp_handle_new_connection(void *entrada)
 {
 
-	//Ese puntero que nos llega es realmente el valor del numero de socket
+    //Ese puntero que nos llega es realmente el valor del numero de socket
     int sock_connected_client=(int)entrada;
 
-	//printf("sock_connected_client en zrcp_handle_new_connection: %d\n",sock_connected_client);
+    //printf("sock_connected_client en zrcp_handle_new_connection: %d\n",sock_connected_client);
     //char *buffer_lectura_socket=((struct s_zrcp_new_connection_parms *)entrada)->buffer_lectura_socket;
 
     //Asignar memoria para los buffers de recepcion
@@ -6927,7 +6927,7 @@ void *zrcp_handle_new_connection(void *entrada)
                 //printf("interpretar comando: [%s]\n",buffer_lectura_socket);
 
                 interpreta_comando(buffer_lectura_socket,sock_connected_client,
-					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente,ip_source_address);
+                    buffer_lectura_socket_anterior,&remote_salir_conexion_cliente,ip_source_address);
 
                 //Liberar lock
                 z_atomic_reset(&zrcp_command_semaforo);
@@ -6945,13 +6945,13 @@ void *zrcp_handle_new_connection(void *entrada)
 
 
 #ifdef MINGW
-	closesocket(sock_connected_client);
-	//desactivo esto ya que esto implica que no se va a usar mas los windows sockets, cosa no cierta (se pueden usar en zeng por ejemplo)
-	//ademas no estamos llamando a WSAStartup al inicio
-	//Se deberia hacer el WSACleanup al finalizar el emulador
-	//WSACleanup();
+    closesocket(sock_connected_client);
+    //desactivo esto ya que esto implica que no se va a usar mas los windows sockets, cosa no cierta (se pueden usar en zeng por ejemplo)
+    //ademas no estamos llamando a WSAStartup al inicio
+    //Se deberia hacer el WSACleanup al finalizar el emulador
+    //WSACleanup();
 #else
-	//printf("Closing socket %d\n",sock_connected_client);
+    //printf("Closing socket %d\n",sock_connected_client);
     //int retorno=
     close(sock_connected_client);
     //printf("Retorno close: %d\n",retorno);
@@ -6967,7 +6967,7 @@ void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
     //struct s_zrcp_new_connection_parms parametros_thread;
     //parametros_thread.sock_connected_client=sock_connected_client;
 
-	//printf("sock_connected_client en thread_remote_protocol_function_aux_new_conn: %d\n",sock_connected_client);
+    //printf("sock_connected_client en thread_remote_protocol_function_aux_new_conn: %d\n",sock_connected_client);
     //parametros_thread.buffer_lectura_socket=buffer_lectura_socket;
 
     //TODO: deberia llevar un control de cada thread que se crea?
@@ -6982,85 +6982,85 @@ void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
 
     //pthread_t temp_thread;
 
-	//Nota: al pasar el parametro de sock_connected_client, o bien creo una estructura con un malloc, para cada conexion,
-	//que ademas deberia llevar yo un control para hacer su free correspondiente, o bien
-	//hago esto, en el que el valor del socket lo envio como si fuese un puntero,
-	//y eso funciona, siempre considerando las limitaciones de un valor de un puntero, por ejemplo en cpus de 32 bits,
-	//un puntero tiene tamaño de 32 bits,
-	//y no podria enviar un valor de socket que excediese el rango de 32 bits (si intentase enviar un long de 64 bits por ejemplo)
+    //Nota: al pasar el parametro de sock_connected_client, o bien creo una estructura con un malloc, para cada conexion,
+    //que ademas deberia llevar yo un control para hacer su free correspondiente, o bien
+    //hago esto, en el que el valor del socket lo envio como si fuese un puntero,
+    //y eso funciona, siempre considerando las limitaciones de un valor de un puntero, por ejemplo en cpus de 32 bits,
+    //un puntero tiene tamaño de 32 bits,
+    //y no podria enviar un valor de socket que excediese el rango de 32 bits (si intentase enviar un long de 64 bits por ejemplo)
     //aunque esto se quejará el compilador con un warning
-	//Nota 2: podrias pensar que serviria asignar una estructura en el stack , pero eso no vale, porque
-	//al finalizar esta funcion, el stack se libera , y cuando el thread vaya a mirar esa estructura,
-	//la memoria donde estaba, esta liberada y a saber entonces que lee...
+    //Nota 2: podrias pensar que serviria asignar una estructura en el stack , pero eso no vale, porque
+    //al finalizar esta funcion, el stack se libera , y cuando el thread vaya a mirar esa estructura,
+    //la memoria donde estaba, esta liberada y a saber entonces que lee...
     if (pthread_create( temp_thread, NULL, &zrcp_handle_new_connection, (void *)sock_connected_client) ) {
         debug_printf(VERBOSE_ERR,"Error running handling new ZRCP connection");
     }
 
     //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
-	pthread_detach(*temp_thread);
+    pthread_detach(*temp_thread);
 }
 
 void *thread_remote_protocol_function(void *nada)
 {
 
-	if (remote_initialize_port()) return NULL;
+    if (remote_initialize_port()) return NULL;
 
-	fflush(stdout);
+    fflush(stdout);
 
-	while (1)
-	{
-		long_adr=sizeof(adr);
+    while (1)
+    {
+        long_adr=sizeof(adr);
 
         int sock_connected_client=-1;
 
-		if (!remote_protocol_ended.v) {
-			//printf ("ANTES accept\n");
-			sock_connected_client=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
+        if (!remote_protocol_ended.v) {
+            //printf ("ANTES accept\n");
+            sock_connected_client=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
             //printf("sock_connected_client: %d\n",sock_connected_client);
-		}
+        }
 
-		else {
-			//Si ha finalizado, volver
-			return NULL;
-		}
-
-
-		if (sock_connected_client<0) {
-			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d",
-				sock_listen);
-			//printf ("Remote command. Error running accept on socket %d. More info: %s\n",
-			//	sock_listen,strerror(errno));
-			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
-			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
-			//como mucho lo mostramos en verbose debug
-
-			//remote_salir_conexion_cliente=1;
-			sleep(1);
-		}
+        else {
+            //Si ha finalizado, volver
+            return NULL;
+        }
 
 
-		else {
+        if (sock_connected_client<0) {
+            debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d",
+                sock_listen);
+            //printf ("Remote command. Error running accept on socket %d. More info: %s\n",
+            //	sock_listen,strerror(errno));
+            //Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
+            //Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
+            //como mucho lo mostramos en verbose debug
+
+            //remote_salir_conexion_cliente=1;
+            sleep(1);
+        }
+
+
+        else {
 
             thread_remote_protocol_function_aux_new_conn(sock_connected_client);
 
-		}
+        }
 
-		//debug_printf (VERBOSE_DEBUG,"Remote command. Exiting connection");
+        //debug_printf (VERBOSE_DEBUG,"Remote command. Exiting connection");
 
         //printf ("Remote command. Exiting connection\n");
 
-		//Salir del modo step si estaba activado
-		//if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step_continue();
+        //Salir del modo step si estaba activado
+        //if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step_continue();
 
-	} //Fin while(1)
-
-
-	//para que no se queje el compilador de variable no usada
-	nada=0;
-	nada++;
+    } //Fin while(1)
 
 
-	return NULL;
+    //para que no se queje el compilador de variable no usada
+    nada=0;
+    nada++;
+
+
+    return NULL;
 }
 
 
@@ -7070,7 +7070,7 @@ void init_remote_protocol(void)
 
   if (remote_protocol_enabled.v==0) return;
 
-	debug_printf (VERBOSE_INFO,"Starting ZEsarUX remote protocol (ZRCP) listener on port %d",remote_protocol_port);
+    debug_printf (VERBOSE_INFO,"Starting ZEsarUX remote protocol (ZRCP) listener on port %d",remote_protocol_port);
 
 
     /*
@@ -7088,17 +7088,17 @@ void init_remote_protocol(void)
 
 
 
-	thread_remote_inicializado.v=0;
+    thread_remote_inicializado.v=0;
 
-	if (pthread_create( &thread_remote_protocol, NULL, &thread_remote_protocol_function, NULL) ) {
-		debug_printf(VERBOSE_ERR,"Can not create remote protocol pthread");
-	}
+    if (pthread_create( &thread_remote_protocol, NULL, &thread_remote_protocol_function, NULL) ) {
+        debug_printf(VERBOSE_ERR,"Can not create remote protocol pthread");
+    }
 
-	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
-	pthread_detach(thread_remote_protocol);
+    //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+    pthread_detach(thread_remote_protocol);
 
-	thread_remote_inicializado.v=1;
-	remote_protocol_ended.v=0;
+    thread_remote_inicializado.v=1;
+    remote_protocol_ended.v=0;
 
     zrcp_sem_init();
 
@@ -7108,8 +7108,8 @@ void init_remote_protocol(void)
 
 void enable_and_init_remote_protocol(void)
 {
-	remote_protocol_enabled.v=1;
-	init_remote_protocol();
+    remote_protocol_enabled.v=1;
+    init_remote_protocol();
 }
 
 void end_remote_protocol(void)
@@ -7118,20 +7118,20 @@ void end_remote_protocol(void)
   if (remote_protocol_enabled.v==0) return;
   if (thread_remote_inicializado.v==0) return;
 
-	debug_printf(VERBOSE_INFO,"Ending remote command protocol listener");
+    debug_printf(VERBOSE_INFO,"Ending remote command protocol listener");
 
-	//remote_salir_conexion_cliente=1;
-	remote_protocol_ended.v=1;
+    //remote_salir_conexion_cliente=1;
+    remote_protocol_ended.v=1;
 
-	remote_cerrar_conexion();
+    remote_cerrar_conexion();
 #ifdef MINGW
-	closesocket(sock_listen);
-	//desactivo esto ya que esto implica que no se va a usar mas los windows sockets, cosa no cierta (se pueden usar en zeng por ejemplo)
-	//ademas no estamos llamando a WSAStartup al inicio
-	//Se deberia hacer el WSACleanup al finalizar el emulador
-	//WSACleanup();
+    closesocket(sock_listen);
+    //desactivo esto ya que esto implica que no se va a usar mas los windows sockets, cosa no cierta (se pueden usar en zeng por ejemplo)
+    //ademas no estamos llamando a WSAStartup al inicio
+    //Se deberia hacer el WSACleanup al finalizar el emulador
+    //WSACleanup();
 #else
-	close(sock_listen);
+    close(sock_listen);
 #endif
 
 
@@ -7147,8 +7147,8 @@ void end_remote_protocol(void)
 //No hacer nada, no hay pthreads disponibles
 void init_remote_protocol(void)
 {
-	if (remote_protocol_enabled.v==0) return;
-	debug_printf(VERBOSE_INFO,"Not enabling remote protocol because pthreads support is not compiled");
+    if (remote_protocol_enabled.v==0) return;
+    debug_printf(VERBOSE_INFO,"Not enabling remote protocol because pthreads support is not compiled");
 }
 
 void end_remote_protocol(void)
