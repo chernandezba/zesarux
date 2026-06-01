@@ -1223,7 +1223,7 @@ void ocr_get_text(char *s,int solo_texto)
 
         screen_repinta_pantalla_z88(&z88_caracter);
 
-		}
+    }
     else if (MACHINE_IS_SAM) {
         ocr_enviar_speech_pantalla_sam();
     }
