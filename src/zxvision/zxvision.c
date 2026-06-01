@@ -24772,7 +24772,12 @@ struct s_strings_language_list strings_language_list[]={
     {"Auto Saltar Frames","Auto Saltar Frames","Auto Frameskip"},
     {"Activado","Activat","Enabled"},
     {"Bienvenido","Benvingut","Welcome"},
-    {"Acerca de","Quant a","About"}
+    {"Acerca de","Quant a","About"},
+    {"Reordenar iconos","Reordenar icones","Reorder icons"},
+    {"Nuevo icono","Nova icona","New icon"},
+    {"Nuevo enlace a archivo","Nou enllaç a arxiu","New file link"},
+    {"Personalizar iconos","Personalitzar icones","Customize icons"},
+    {"Opciones ZX Desktop","Opcions ZX Desktop","ZX Desktop settings"}
 
 };
 
@@ -28814,7 +28819,8 @@ void menu_inicio_handle_right_button_background(void)
         zxvision_set_next_menu_position_from_current_mouse();
 
         //propiedades zx desktop
-        int opcion=menu_simple_six_choices("ZX Desktop","--Action--","New icon","New file link","Customize icons","Reorder icons","ZX Desktop settings",menu_get_string_language("Exit ZEsarUX"));
+        int opcion=menu_simple_six_choices("ZX Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
+            menu_get_string_language("Reorder icons"),menu_get_string_language("ZX Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
 
         zxvision_reset_set_next_menu_position();
 
@@ -28834,7 +28840,7 @@ void menu_inicio_handle_right_button_background(void)
             break;
 
             case 4:
-                if (menu_confirm_yesno("Reorder icons")) {
+                if (menu_confirm_yesno(menu_get_string_language("Reorder icons"))) {
                     zxvision_reorder_configurable_icons();
                 }
             break;
