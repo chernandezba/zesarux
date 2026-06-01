@@ -178,11 +178,6 @@ Drivers audio:
 -Probar MSX
 -Probar Spectravideo
 
--Pruebas interfaz menu:
-* habilitar zx desktop. probar botones, iconos
-* zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
-* sonidos en menu al moverse cursor, etc
-
 -probar activando funciones de captura de segmentation fault y forzando fallo
 -probar en general mayoria de cintas, snaps y eproms incluidas
 -probar instalando en ruta concreta y ejecutando desde alli
