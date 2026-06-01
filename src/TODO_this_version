@@ -7,15 +7,4 @@
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 
--probar despues de cambio de util_tape_tap_get_info funciones:
-ok*extract tap
-ok*extract tzx
-ok *extract pzx
-ok*tzx browser
-ok*tap browser
-
-
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
-
-ok revisar otros dispositivos -dsk no autocargar si se crea nuevo dsk
-
