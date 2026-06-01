@@ -138,6 +138,7 @@ Corregido al reabrir ventanas que estaban cerradas y minimizadas (cuando la opci
 Corregido cambio de color de paleta en Amstrad PCW
 Corregido expandir contenidos de archivos .mdv de QL
 Corregido varios posibles segfaults en diferentes secciones del código
+Corregido entrar modo cpu-step desde ZRCP
 Eliminados algunos opcodes viejos/inexistentes de Next Z80N
 
 ----

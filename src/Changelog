@@ -138,6 +138,7 @@ Fixed reopening windows that were closed and minimized (when setting "hide minim
 Fixed Amstrad PCW palette color change
 Fixed expanding QL .mdv file contents
 Fixed some possible segfaults in several sections of the code
+Fixed enter cpu-step mode from ZRCP
 Removed some old/non-existent - Z80N Next opcodes
 
 ----

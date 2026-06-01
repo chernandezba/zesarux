@@ -2084,7 +2084,7 @@ void remote_cpu_enter_step(int misocket)
 
     }
 
-  //Esperamos que se haya cerrado el menu
+  //Esperamos que se haya cerrado el menu. Con un timeout
   int contador_cierre;
   for (contador_cierre=0;contador_cierre<10 && menu_abierto;contador_cierre++) {
     usleep(100000);
@@ -2092,6 +2092,8 @@ void remote_cpu_enter_step(int misocket)
 
   //Y luego pausa de 0.1 segundos para que se acabe de cerrar todo
   usleep(100000);
+
+  if (menu_abierto) debug_printf(VERBOSE_DEBUG,"It seems menu has not been closed from the enter-cpu-step action");
 
   //Avisar que entramos en paso a paso y Abrir menu
   menu_event_remote_protocol_enterstep.v=1;
