@@ -171,7 +171,6 @@ Drivers audio:
 -Probar Sam Coupe. Todas teclas. Probar atomlite
 -probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA. 
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
--Probar TSConf
 -Probar Baseconf
 -Probar Chrome
 -Probar MK14
