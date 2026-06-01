@@ -2084,7 +2084,13 @@ void remote_cpu_enter_step(int misocket)
 
     }
 
-  //Pausa de 0.1 segundo. Esperamos a que se haya cerrado el menu
+  //Esperamos que se haya cerrado el menu
+  int contador_cierre;
+  for (contador_cierre=0;contador_cierre<10 && menu_abierto;contador_cierre++) {
+    usleep(100000);
+  }
+
+  //Y luego pausa de 0.1 segundos para que se acabe de cerrar todo
   usleep(100000);
 
   //Avisar que entramos en paso a paso y Abrir menu

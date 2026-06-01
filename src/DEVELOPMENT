@@ -91,6 +91,7 @@ Para compilar con detección de indices fuera de array, uso de memoria liberada 
 export CFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 export LDFLAGS="-O3 -g -fsanitize=address,undefined,object-size"
 El O3 es opcional pero generará código mas rápido
+Se le puede agregar a CFLAGS "-Wno-deprecated-declarations" para que no avise de ciertas declaraciones deprecated, como sprintf
 
 
 Para mostrar todos los iconos lower meter en compileoptions.h:
