@@ -2608,10 +2608,12 @@ void easter_egg_black_front(void)
 
 z80_int easter_egg_get_random(void)
 {
-  ay_randomize(0);
+  //ay_randomize(0);
 
   //randomize_noise es valor de 16 bits
-  return randomize_noise[0];
+  //return randomize_noise[0];
+
+  return util_get_random_enhanced();
 }
 
 void easter_egg_random_pixels_front(void)
@@ -3031,7 +3033,7 @@ void easter_egg_star_wars(void)
 
   easter_egg_star_wars_text("A long time ago, in a galaxy far, far away....");
   easter_egg_star_wars_text("\n\n");
-  easter_egg_star_wars_text("Just kidding... this is not the usual Star Wars scroller... you have just found the ZEsarUX easter egg! \n"
+  easter_egg_star_wars_text("Just kidding... this is not the usual Star Wars scroller... you have just found one ZEsarUX easter egg! \n"
                             "So, this could be my first demo for the Speccy, but this demo does not run on a real Speccy, "
                             "it runs from the inside of the emulator, this is not a Spectrum binary program. \n"
 
