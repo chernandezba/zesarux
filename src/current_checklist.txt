@@ -21,27 +21,6 @@ ok Mac
 
 -ejecutar tests/automatic_test_cycle_machines.sh
 
--probar Valgrind en Linux 64 bits:
-compilar con :  
-export CFLAGS="-g -rdynamic"
-export LDFLAGS="-g -rdynamic"
-./configure --enable-ssl
-
-Lanzarlo con:
-
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./zesarux --ao null > /tmp/report 2>&1
-
-Y realizar acciones en ZEsarUX. Al salir, fijarse en errores como el siguiente que pueden generar segfaults al acceder a memoria liberada:
-==1494== Thread 6:
-==1494== Invalid read of size 4
-==1494==    at 0x2FD0BE: menu_dibuja_menu (zxvision.c:21462)
-==1494==    by 0x34ECD7: menu_inicio_mostrar_main_menu (menu_items.c:42554)
-==1494==    by 0x34EFBB: menu_inicio_bucle_main (menu_items.c:42680)
-
-En cambio errores como "still reachable", "definitely lost", "indirectly lost", "possibly lost" informan de memory leaks pero no problemas de segfaults
-Probar de nuevo a lanzarlo con: valgrind -q ./zesarux --ao null > /tmp/report 2>&1
-Y solo mostrara los errores, no los memory leaks por ejemplo
-
 Drivers video:
 -probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
 *por cada driver (incluido null) y con y sin pthreads:
@@ -95,10 +74,7 @@ Drivers audio:
 
 -probar con --disable-sndfile
 -probar todas maquinas, una por una 
--probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
--probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar custom rom desde menu y desde linea de comandos. probar todas roms
--probar realvideo zx80/81
 -probar realvideo z88
 -probar simular pantalla zx81 en spectrum
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
@@ -106,7 +82,6 @@ Drivers audio:
 -probar opcion ay speech on/off con chase hq por ejemplo
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak (aydemo, pink panther...) )
--probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 -probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
 -probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
