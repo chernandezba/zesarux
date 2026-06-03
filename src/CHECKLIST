@@ -67,7 +67,7 @@ Drivers video:
 **probar ocultar raton
 **probar zx desktop
 **probar F6, F7 en curses, caca, aa en Z88 y en Spectrum
-**probar drag&drop en cocoa, sdl2 (a partir 2.0.5)
+**probar drag&drop
 **probar desactivando border
 **probar desactivando footer
 **en curses, aa, caca, stdout, simpletext probar juegos para ver que tal "emula" los graficos
@@ -224,6 +224,7 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 
 
 -probar desactivando memptr y pasar z80tests.tap de spectrum. probar activando memptr y pasar z80tests.tap
+-probar opcion desactivar contended memory en menu
 -probar z80flags.tap. con memptr y --enable-undoc-scfccf son 6 de 152: fallan bit n,a ; bit n,[r,(hl)], ldi, ldd, ldir, lddr
 -probar cpustats
 -probar visualmem, tambien en drivers no graficos como curses, aa, etc
@@ -243,7 +244,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar menus ayudas. probar cargar juego edition name desde about->seleccionar linea 1(activando cursor con f/n) y enter (segundo easter egg)
 -probar shortcuts en menu
 -probar GUI styles: opcion normal, seleccionada, no disponible, no disponible seleccionada, pixel (audio waveform, visual mem, view sprites) en: driver grafico, en caca y en curses
--probar opcion desactivar contended memory en menu
 -probar advanced timing settings 
 -probar menu de stdout
 -probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp

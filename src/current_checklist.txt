@@ -31,7 +31,7 @@ Drivers video:
 **probar ocultar raton
 **probar zx desktop
 **probar F6, F7 en curses, caca, aa en Z88 y en Spectrum
-**probar drag&drop en cocoa, sdl2 (a partir 2.0.5)
+**probar drag&drop
 **probar desactivando border
 **probar desactivando footer
 **en curses, aa, caca, stdout, simpletext probar juegos para ver que tal "emula" los graficos
@@ -74,14 +74,7 @@ Drivers audio:
 
 -probar con --disable-sndfile
 -probar todas maquinas, una por una 
--probar custom rom desde menu y desde linea de comandos. probar todas roms
--probar realvideo z88
--probar simular pantalla zx81 en spectrum
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
--probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
--probar opcion ay speech on/off con chase hq por ejemplo
--probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
--probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak (aydemo, pink panther...) )
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 -probar a guardar snapshots versiones anteriores .zx (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
 -probar a guardar snapshots .zsf y cargar en ZEsarUX versiones viejas
@@ -92,15 +85,6 @@ Drivers audio:
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
 *probar carga realtape : spectrum: smp,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
--probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
-
--probar simulacion de carga en spectrum, zx80, zx81
--probar audio filter on rom save
--probar desactivando border, con y sin realvideo, en spectrum y zx8081
--probar redefinir teclas, en menu y linea comandos
--probar desactivando contended memory en compilacion
-
--probar desactivando memptr y pasar z80tests.tap de spectrum. probar activando memptr y pasar z80tests.tap
 -probar opcion desactivar contended memory en menu
 -probar advanced timing settings 
 -probar menu de stdout. seguir probándolo
