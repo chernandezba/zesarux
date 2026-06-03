@@ -11142,21 +11142,30 @@ void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS)
                 menu_tape_settings_trunc_name(transaction_log_filename,string_transactionlog_shown,18);
 
                 menu_add_item_menu_inicial_format(&array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_file,NULL,"Log file [%s]",string_transactionlog_shown );
+                menu_add_item_menu_prefijo(array_menu_cpu_transaction_log,"    ");
 
 
                 if (transaction_log_filename[0]!=0) {
                         menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_enable,NULL,"[%c] Transaction log enabled",(cpu_transaction_log_enabled.v ? 'X' : ' ' ) );
+                        menu_add_item_menu_genera_ventana(array_menu_cpu_transaction_log);
+                        menu_add_item_menu_se_cerrara(array_menu_cpu_transaction_log);
+
+                        menu_add_item_menu_separator(array_menu_cpu_transaction_log);
 
                         menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_enable_rotate,NULL,"[%c] Autorotate files",(cpu_transaction_log_rotate_enabled.v ? 'X' : ' ' ) );
                         menu_add_item_menu_tooltip(array_menu_cpu_transaction_log,"Enable automatic rotation of transaction log files");
                         menu_add_item_menu_ayuda(array_menu_cpu_transaction_log,"Enable automatic rotation of transaction log files");
                         if (cpu_transaction_log_rotate_enabled.v) {
-                            menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_rotate_number,NULL,"[%d] Rotate files",cpu_transaction_log_rotated_files);
-                            menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_rotate_size,NULL,"[%d] Rotate size (MB)",cpu_transaction_log_rotate_size);
-                            menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_rotate_lines,NULL,"[%d] Rotate lines",cpu_transaction_log_rotate_lines);
+                            menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_rotate_number,NULL,"    Rotate how many files [%d]",cpu_transaction_log_rotated_files);
+                            menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_rotate_size,NULL,"    Rotate by size (MB) [%d]",cpu_transaction_log_rotate_size);
+                            menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_rotate_lines,NULL,"    Rotate by lines [%d]",cpu_transaction_log_rotate_lines);
                         }
 
                         menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_truncate,NULL,"    Truncate log file");
+                        menu_add_item_menu_genera_ventana(array_menu_cpu_transaction_log);
+                        menu_add_item_menu_se_cerrara(array_menu_cpu_transaction_log);
+
+                        menu_add_item_menu_separator(array_menu_cpu_transaction_log);
                 }
 
         menu_add_item_menu_format(array_menu_cpu_transaction_log,MENU_OPCION_NORMAL,menu_cpu_transaction_log_ignore_rep_halt,NULL,"[%c] Ignore repeated halt",(cpu_trans_log_ignore_repeated_halt.v ? 'X' : ' '));
