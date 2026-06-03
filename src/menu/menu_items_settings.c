@@ -6056,17 +6056,17 @@ int menu_hardware_advanced_input_value(int minimum,int maximum,char *texto,int *
 void menu_hardware_advanced_reload_display(void)
 {
 
-        screen_testados_linea=screen_total_borde_izquierdo/2+128+screen_total_borde_derecho/2+screen_invisible_borde_derecho/2;
+    screen_testados_linea=screen_total_borde_izquierdo/2+128+screen_total_borde_derecho/2+screen_invisible_borde_derecho/2;
 
-            //Recalcular algunos valores cacheados
-            recalcular_get_total_ancho_rainbow();
-            recalcular_get_total_alto_rainbow();
+    //Recalcular algunos valores cacheados
+    recalcular_get_total_ancho_rainbow();
+    recalcular_get_total_alto_rainbow();
 
-                screen_set_video_params_indices();
-                inicializa_tabla_contend();
+    screen_set_video_params_indices();
+    inicializa_tabla_contend();
 
-                init_rainbow();
-                init_cache_putpixel();
+    init_rainbow();
+    init_cache_putpixel();
 }
 
 
