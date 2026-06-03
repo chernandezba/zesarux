@@ -770,7 +770,7 @@ struct s_items_ayuda items_ayuda[]={
                             "Use with care, pointer address is a memory address on the emulator program (not the emulated memory)"},
     {"ifrom-press-button",NULL,NULL,"Press button on the iFrom interface"},
     {"kartusho-press-button",NULL,NULL,"Press button on the Kartusho interface"},
-    {"load-binary",NULL,"file addr len","Load binary file \"file\" at address \"addr\" with length \"len\", on the current memory zone. Set ln to 0 to load the entire file in memory"},
+    {"load-binary",NULL,"file addr len","Load binary file \"file\" at address \"addr\" with length \"len\", on the current memory zone. Set len to 0 to load the entire file in memory"},
     {"load-source-code","|lsc","file","Load source file to be used on disassemble opcode functions"},
     {"ls",NULL,NULL,"Minimal command list"},
     {"mmc-reload",NULL,NULL,"Reload MMC file"},
@@ -798,7 +798,7 @@ struct s_items_ayuda items_ayuda[]={
     "The parameters can be written in different order, for example:\nrun verbose\nor\nrun 100\nor\nrun verbose 100\n"
    "Notice this command does not run the usual cpu loop, instead it is controlled from ZRCP. If you close the connection, the run loop will die\n"
      },
-    {"save-binary",NULL,"file addr len","Save binary file \"file\" from address \"addr\" with length \"len\", from the current memory zone. Set ln to 0 to save the entire current memory zone"},
+    {"save-binary",NULL,"file addr len","Save binary file \"file\" from address \"addr\" with length \"len\", from the current memory zone. Set len to 0 to save the entire current memory zone"},
     {"save-binary-internal",NULL,"pointer length file [offset]","Dumps internal memory to file for a given memory pointer. "
                 "Pointer can be any of the hexdump-internal command\n"
                 "Use with care, pointer address is a memory address on the emulator program (not the emulated memory)"},

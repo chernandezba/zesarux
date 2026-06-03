@@ -995,7 +995,7 @@ printf (
         "--debugconfigfile                   Debug parsing of configuration file (and .config files). This parameter must be the first and it's ignored if written on config file\n"
         "--testconfig                        Test configuration and exit without starting emulator\n"
         "--romfile file                      Select custom ROM file\n"
-        "--loadbinary file addr len          Load binary file \"file\" at address \"addr\" with length \"len\". Set ln to 0 to load the entire file in memory\n"
+        "--loadbinary file addr len          Load binary file \"file\" at address \"addr\" with length \"len\". Set len to 0 to load the entire file in memory\n"
         "--loadbinarypath path               Select initial Load Binary path\n"
         "--savebinarypath path               Select initial Save Binary path\n"
         "--sendtextkeystrokes-file file      Insert spool file for keyboard presses\n"
