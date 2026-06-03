@@ -11015,22 +11015,22 @@ void menu_cpu_transaction_log_file(MENU_ITEM_PARAMETERS)
 
     if (cpu_transaction_log_enabled.v) reset_cpu_core_transaction_log();
 
-        char *filtros[2];
+    char *filtros[2];
 
-        filtros[0]="log";
-        filtros[1]=0;
+    filtros[0]="log";
+    filtros[1]=0;
 
 
-        if (menu_filesel("Select Log File",filtros,transaction_log_filename)==1) {
-                //Ver si archivo existe y preguntar
+    if (menu_filesel_save("Select Log File",filtros,transaction_log_filename)==1) {
+        //Ver si archivo existe y preguntar
         if (si_existe_archivo(transaction_log_filename)) {
-                        if (menu_confirm_yesno_texto("File exists","Append?")==0) {
+            if (menu_confirm_yesno_texto("File exists","Append?")==0) {
                 transaction_log_filename[0]=0;
                 return;
             }
-                }
-
         }
+
+    }
 
     else transaction_log_filename[0]=0;
 
