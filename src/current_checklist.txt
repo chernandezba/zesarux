@@ -85,10 +85,7 @@ Drivers audio:
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
 *probar carga realtape : spectrum: smp,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
--probar opcion desactivar contended memory en menu
--probar advanced timing settings 
 -probar menu de stdout. seguir probándolo
--probar cargar/grabar archivo binario. probar cargar binario desde linea comandos
 -probar remote command protocol ZRCP, en linux, mac y windows. Probar linemode telnet
 -probar fallback de drivers graficos y de sonido
 -probar drive en file selector (windows)
