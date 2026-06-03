@@ -96,10 +96,6 @@ Drivers audio:
 -probar rutinas autodeteccion caracteres: algunos de sslfunctions, otro no listado (como Spiderman o masters of the universe), hobbit (usa dos rutinas de caracteres). probar con stdout y xwindows, sdl, etc. probar --enableprintchartrap y --disableprintchartrap en stdout y xwindows
 -probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
 -probar speech en stdout
--probar cpu transaction log
--probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
--probar emulator speed
--probar turbo mode. manual y en zxuno, prism, chloe y tbblue
 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, 
 
