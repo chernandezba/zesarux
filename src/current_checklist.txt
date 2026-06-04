@@ -112,7 +112,6 @@ Drivers audio:
 -Probar Baseconf
 -Probar Chrome
 -Probar MK14
--Probar MSX
 -Probar Spectravideo
 
 -probar en general mayoria de cintas, snaps y eproms incluidas
