@@ -25426,7 +25426,10 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
             //Quitar posibles errores al preparar esta preview
             //no queremos alertar al usuario por archivos incorrectos
             //De todas maneras siempre se vería el error en la consola
-            if_pending_error_message=0;
+            if (if_pending_error_message) {
+                if_pending_error_message=0;
+                menu_event_open_menu.v=0;
+            }
 
             return retorno;
 }
