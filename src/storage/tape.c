@@ -2865,7 +2865,7 @@ void realtape_insert(void)
         reset_cpu();
 
         //Activamos top speed si conviene
-        if (fast_autoload.v) {
+        if (fast_autoload.v && !MACHINE_IS_CPC) {
             debug_printf (VERBOSE_INFO,"Set top speed from Realtape insert");
             top_speed_timer.v=1;
         }
