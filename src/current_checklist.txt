@@ -104,7 +104,6 @@ Drivers audio:
 -probar Timex. Tests, carga trap, grabar tap
 -Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
 -Probar TBBlue. Copper (carpeta media... copper con demo specdrum y beast (beast con esxdos handler ) ) .  Sprites con Dungeonette (con esxdos handler), tiles. cargar con --noconfigfile y smartload un archivo .nex con archivos de recursos (usara esxdos handler), ver que cargue todo bien
--Probar Sam Coupe. Todas teclas. Probar atomlite
 
 -probar en general mayoria de cintas, snaps y eproms incluidas
 -probar instalando en ruta concreta y ejecutando desde alli
