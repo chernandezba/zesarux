@@ -104,4 +104,3 @@ Drivers audio:
 -probar generando archivo binario y probar a ejecutar, e instalar. 
 -probar generando archivo source y probar a compilar e instalar cambiando prefix
 -probar versiones finales: binario->bajar y ejecutar, instalar. source->bajar, compilar y ejecutar, instalar.
-
