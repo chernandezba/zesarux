@@ -10,26 +10,11 @@ PERCCOMPLETADO=$((100-$PERC))
 echo "Porcentaje=$PERCCOMPLETADO %"
 )
 
--probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
-ok Mac
-ok Linux
-
--ejecutar automatic_tests.sh
-
--ejecutar tests/manual_tests.sh
-
--ejecutar tests/machines_test.sh
-
--ejecutar tests/automatic_test_cycle_machines.sh
-
--probar desactivando xextensions en configure con --disable-xext
--probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
-
 -probar targets:
 * linux 32 bits con y sin pthreads
 * linux 64 bits con y sin pthreads
 * raspberry. y activando extensiones raspberry
-* mac os x, con y sin optimizaciones
+ok * mac os x, con y sin optimizaciones
 * otros unix, como AROS (probado en AROS Icaros Desktop)
 * windows mingw, con y sin pthreads
 * windows cygwin
@@ -53,7 +38,6 @@ ok Linux
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
 *probar carga realtape : spectrum: smp,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
--probar menu de stdout. seguir probándolo
 -probar remote command protocol ZRCP, en linux, mac y windows. Probar linemode telnet
 -probar fallback de drivers graficos y de sonido
 -probar drive en file selector (windows)

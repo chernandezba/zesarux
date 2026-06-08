@@ -68,6 +68,7 @@ Drivers video:
 **probar zx desktop
 **probar F6, F7 en curses, caca, aa en Z88 y en Spectrum
 **probar drag&drop
+**probar copy&paste
 **probar desactivando border
 **probar desactivando footer
 **en curses, aa, caca, stdout, simpletext probar juegos para ver que tal "emula" los graficos
