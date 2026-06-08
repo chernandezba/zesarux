@@ -1,36 +1,36 @@
-ZEsarUX 13 - The Way of the Exploding Fist edition. 04 Junio 2026
+ZEsarUX 13 - The Way of the Exploding Fist edition. 09 Junio 2026
 
 * Cosas nuevas agregadas:
 
 Agregada versión para macOS Silicon
 Agregado soporte para drag&drop en Windows y Linux (Xwindow) - ya se soportaba en Mac y SDL2
 Permitir drag&drop de archivos comprimidos
+Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
+Renombrar función de "Input File Spooling" a "Enviar Texto como Pulsaciones de Teclado"
 Agregado un montón de efectos especiales para la salida de video:
 - Reducir, Temblar, Invertir Vertical, Invertir Horizontal, Rotar, Remolino, Interferencias, Mar, Ondas, Campo Magnético, Cizalla, Lente, Radar
 - Zoom, Zoom Mouse, Pixelar, Desenfocar, Borde Sombreado, LED, LED RGB, Pérdida Hsync, Pérdida Vsync, Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
 - Scanlines, Sepia, Rojo, RGB, Decolorizar, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
 - Restaurar Original, Copiar a buffer, Mezclar desde Buffer, Cargar BMP
-Agregado efecto Audio Nagravision
-Agregada ventana de estado de salida de midi
-Agregado soporte para lectura de portapapeles y envio como pulsaciones de teclas en sistemas: Mac, Windows, GNU/Linux (SDL2, Xwindow)
-Renombrar función de "Input File Spooling" a "Enviar Texto como Pulsaciones de Teclado"
 Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)
 Permitir reducir pantalla en Colecovision, CPC, Master System, MSX, Prism, SG1000, Spectravideo, Spectrum, TSConf, ZX80, ZX81, Z88
+Agregado efecto scanlines agresivo
+Agregado modo de color en blanco y negro con tramado
+Agregado modo de color RGB 8 bit
+Agregado mostrar rejilla de atributos en Spectrum
+Agregado efecto Audio Nagravision
+Agregada ventana de estado de salida de midi
 Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 Permitir al driver SDL usar una paleta de color de 8 bits
 Permitir al driver SDL forzar el tamaño de la ventana
 Permitir variable de entorno DESTDIR en el paso make install
 Permitir acelerar carga y grabación de diskette, microdrive, etc
 Permitir insertar una cinta estándar en ZX Spectrum cuando la cpu ya está ejecutando la rutina de la rom
+Permitir grabar historial de smartload en un archivo
 Agregada opción de configuración para autoactivar chip AY en modelos de Spectrum sin chip ay
 Agregada vista previa de snapshots ZSF de máquinas QL, ZX80 y ZX81
 Permitir ver GO SUB stack de ZX80 y ZX81
 Permitir caracteres utf-8 en footer
-Permitir grabar historial de smartload en un archivo
-Agregado efecto scanlines agresivo
-Agregado modo de color en blanco y negro con tramado
-Agregado modo de color RGB 8 bit
-Agregado mostrar rejilla de atributos en Spectrum
 Agregada mirilla de Dispositivos Ópticos
 Agregada emulación de Dispositivos Ópticos:
 - Datel Lightwriter
@@ -98,6 +98,7 @@ Mejorado ZX Desktop:
 - Agregada opción para añadir un contorno a los iconos
 - Agregado icono de dispositivo SamRam
 - Ventanas no se cierran al activar ZX Desktop
+- Mejorado icono de Papelera
 
 Mejorado ZX Life:
 - Cada generación del juego puede avanzar al ritmo de la música del chip AY
@@ -106,7 +107,6 @@ Mejorado ZX Life:
 
 Permite ver todos los sprites de hardware a la vez en la ventana de Ver Sprites.
 Mejorado edición de joystick a eventos/teclas (permitir desasignar fácilmente)
-Mejorado icono de Papelera
 Mejorada precisión decimal de valores de ventana de Basic Variables
 Mejorado código para permitir compilar en otros sistemas Unix, como AROS, FiwixOS, Sortix, Minix3
 Mejorado ZENG Online protocol: permitir conectar cliente y servidor con diferentes versiones de ZEsarUX (siempre que sean compatibles), agregar tiempo de vida ("uptime") de las salas

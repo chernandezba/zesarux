@@ -644,3 +644,7 @@ Ahora lo tienes nada más empezar casi (segundo condacto). Pero ojo, solo en el 
 -al seleccionar archivo scl que lo expanda en trd automaticamente y seleccione. en vez de tener que pasar por expansion pulsando espacio
 
 -con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
+
+-en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
+
+-Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?

@@ -1,6 +1,5 @@
 *Bateria de pruebas
 
-
 (ver que tanto progreso de checklist esta ejecutado:
 BYTESTOTAL=`wc -c CHECKLIST|awk '{printf $1}'`
 BYTESPARCIAL=`wc -c current_checklist.txt|awk '{printf $1}'`
