@@ -2688,8 +2688,15 @@ FILES_FOR_STATS="*.c *.h audio/* copy_interfaces/* cores/* cpus/* machines/* men
 #Descartando lineas vacias
 LINES_SOURCE=`cat $FILES_FOR_STATS|grep -v "^$"|wc -l|tail -1|awk '{printf $1}'`
 
-TOTAL_C_FILES=`find . -name '*.c' | wc -l`
-TOTAL_H_FILES=`find . -name '*.h' | wc -l`
+FINDPROGRAM="find"
+
+if [ "$SISTEMA" = "Msys" ]; then
+	# Para evitar que use el find de Windows y use el de MinGW
+	FINDPROGRAM="/usr/bin/find"
+fi
+
+TOTAL_C_FILES=`$FINDPROGRAM . -name '*.c' | wc -l`
+TOTAL_H_FILES=`$FINDPROGRAM . -name '*.h' | wc -l`
 
 #Cantidad comentarios (TODO: esto es aprox porque puede haber un comentario en varias lineas con //)
 COMMENTS_TYPE_LINE=`grep '//' $FILES_FOR_STATS|wc -l|tail -1|awk '{printf $1}'`
