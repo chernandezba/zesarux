@@ -16,12 +16,8 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 * raspberry. y activando extensiones raspberry
 ok * mac os x, con y sin optimizaciones
 * otros unix, como AROS (probado en AROS Icaros Desktop)
-* windows mingw, con y sin pthreads
+ok * windows mingw, con y sin pthreads
 * windows cygwin
-
--Funciones de Red:
---Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
---Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
 -Probar ZENG Online server: todas funciones, tipos ventanas/menus que funcionen y se abran bien
 
