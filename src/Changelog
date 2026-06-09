@@ -19,10 +19,10 @@ Added black & white video dither mode
 Added RGB 8 bit color mode
 Added show attribute grid on Spectrum
 Added Nagravision Audio effect
-Added midi output status window
-Added f-key/icon to trigger an action ("SendKeysMenu") to send keys to menu, for example send keys "tti" to open input tape
 Allow SDL driver to use a 8-bit color palette
 Allow SDL driver to force window size
+Added midi output status window
+Added f-key/icon to trigger an action ("SendKeysMenu") to send keys to menu, for example send keys "tti" to open input tape
 Allow DESTDIR environment variable on make install step
 Allow to accelerate loading and saving of diskette, microdrive, etc
 Allow to insert a standard tape on ZX Spectrum when the cpu is already running the rom load routine

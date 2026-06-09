@@ -19,10 +19,10 @@ Agregado modo de color en blanco y negro con tramado
 Agregado modo de color RGB 8 bit
 Agregado mostrar rejilla de atributos en Spectrum
 Agregado efecto Audio Nagravision
-Agregada ventana de estado de salida de midi
-Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 Permitir al driver SDL usar una paleta de color de 8 bits
 Permitir al driver SDL forzar el tamaño de la ventana
+Agregada ventana de estado de salida de midi
+Agregada tecla-f/icono para lanzar una acción ("SendKeysMenu") para enviar teclas al menú, por ejemplo enviar teclas "tti" para abrir cinta de entrada
 Permitir variable de entorno DESTDIR en el paso make install
 Permitir acelerar carga y grabación de diskette, microdrive, etc
 Permitir insertar una cinta estándar en ZX Spectrum cuando la cpu ya está ejecutando la rutina de la rom
