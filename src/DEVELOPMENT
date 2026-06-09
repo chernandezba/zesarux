@@ -233,8 +233,8 @@ Ejemplos de nombres de archivos de una distribución estable y sus tamaños:
  ZEsarUX_linux-11.0-debian13_x64_64.tar.gz             36.1 MB
  ZEsarUX_linux-11.0-fedora42_x86_64.tar.gz             36.1 MB
  ZEsarUX_linux-11.0-ubuntu24_x86_64.tar.gz             36.1 MB
- ZEsarUX_macos-11.0-legacy.dmg                         34.3 MB
- ZEsarUX_macos-11.0.dmg                                34.5 MB
+ ZEsarUX_macos-intel-11.0.dmg                         34.3 MB
+ ZEsarUX_macos-silicon-11.0.dmg                                34.5 MB
  ZEsarUX_raspberrypios-framebuffer-11.0_armv6l.tar.gz  35.7 MB
  ZEsarUX_src-11.0.tar.gz                               37.4 MB
  ZEsarUX_windows-11.0-legacy.zip                       37.5 MB
