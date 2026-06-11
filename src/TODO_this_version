@@ -1,0 +1,1 @@
+-segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)

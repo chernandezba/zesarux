@@ -12,6 +12,7 @@ Agregado un montón de efectos especiales para la salida de video:
 - Zoom, Zoom Mouse, Pixelar, Desenfocar, Borde Sombreado, LED, LED RGB, Pérdida Hsync, Pérdida Vsync, Vsync, Scroll Horizontal, Scroll Vertical, Fade In, Fade Out, Fade InOut
 - Scanlines, Sepia, Rojo, RGB, Decolorizar, Persistencia, Contraste, Brillo, Nagravision, Lineas Aleatorias, Decodificar Nagravision, Ordenar Parecidos, Rebote Logo
 - Restaurar Original, Copiar a buffer, Mezclar desde Buffer, Cargar BMP
+
 Permitir reducir pantalla a la mitad (1/2) y a un cuarto (1/4)
 Permitir reducir pantalla en Colecovision, CPC, Master System, MSX, Prism, SG1000, Spectravideo, Spectrum, TSConf, ZX80, ZX81, Z88
 Agregado efecto scanlines agresivo
