@@ -14820,18 +14820,15 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
         }
 
 
-        //if (ventana_es_background) {
-            //dibujar marco ventana de background
-            int x=pointer_window->x;
-            int y=pointer_window->y;
-            int ancho=pointer_window->visible_width;
-            int alto=pointer_window->visible_height;
-            int x1,y1,x2,y2;
-            zxvision_retorna_coordenadas_marco(x,y,ancho,alto,&x1,&y1,&x2,&y2);
-            menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_COLOR_RECUADRO,ESTILO_GUI_COLOR_RECUADRO,0,!ventana_es_background,pointer_window);
-            //menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_PAPEL_TITULO_INACTIVA,ESTILO_GUI_PAPEL_TITULO_INACTIVA,0,pointer_window);
-        //}
-
+        //dibujar marco ventana
+        int x=pointer_window->x;
+        int y=pointer_window->y;
+        int ancho=pointer_window->visible_width;
+        int alto=pointer_window->visible_height;
+        int x1,y1,x2,y2;
+        zxvision_retorna_coordenadas_marco(x,y,ancho,alto,&x1,&y1,&x2,&y2);
+        menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_COLOR_RECUADRO,ESTILO_GUI_COLOR_RECUADRO,0,!ventana_es_background,pointer_window);
+        //o color ESTILO_GUI_PAPEL_TITULO_INACTIVA?
 
 
         pointer_window=pointer_window->next_window;
