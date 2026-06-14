@@ -1540,7 +1540,7 @@ z80_bit christmas_mode={0};
 z80_bit avoid_christmas_mode={0};
 
 
-void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado);
+void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado,int ventana_en_primer_plano,zxvision_window *w);
 void menu_desactiva_cuadrado(void);
 void menu_establece_cuadrado(int x1,int y1,int x2,int y2,int color);
 
@@ -8853,7 +8853,7 @@ void normal_overlay_texto_menu_final(void)
             }
         }
 
-        menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color,color_marca_redimensionado);
+        menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color,color_marca_redimensionado,1,NULL);
 
     }
 
@@ -10083,22 +10083,54 @@ margenx_izq=TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 
 }
 
+//parametro especial que no llega como parametro a la funcion
+zxvision_window *menu_dibuja_cuadrado_putpixel_background_ventana=NULL;
+
+void menu_dibuja_cuadrado_putpixel_background(int x,int y,int color,int zoom_level)
+{
+    int dibujar=1;
+
+    if (menu_dibuja_cuadrado_putpixel_background_ventana!=NULL) {
+        if (zxvision_coords_in_superior_windows(menu_dibuja_cuadrado_putpixel_background_ventana,x/menu_char_width,y/menu_char_height)) {
+            dibujar=0;
+        }
+    }
+
+
+    if (dibujar) {
+        scr_putpixel_gui_zoom(x,y,color,zoom_level);
+    }
+}
+
 //Indica que el raton esta encima de la zona de redimensionado y por tanto se dibuja diferente
 int ventana_marca_redimensionado_raton_encima=0;
 
 //dibuja cuadrado (4 lineas) usado en entorno de menu gráfico (obviamente curses, stdout etc quedan excluidos)
 //Entrada: x1,y1 punto superior izquierda,x2,y2 punto inferior derecha en resolucion de zx spectrum. Color
 //nota: realmente no es un cuadrado porque el titulo ya hace de franja superior
-void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado)
+//ventana_en_primer_plano: dice que el marco de ventana dibujada es la que esta en primer plano, y por ejemplo saldra en rojo al pasar raton por zona redimensionado
+void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado,int ventana_en_primer_plano,zxvision_window *w)
 {
 
     if (!ESTILO_GUI_MUESTRA_RECUADRO) return;
+
+    //funcion de putpixel. dependiendo si es ventana en primer plano o no
+    void (*putpixel_function)(int x,int y,int color,int zoom_level);
+
+    if (ventana_en_primer_plano) {
+        putpixel_function=scr_putpixel_gui_zoom;
+        menu_dibuja_cuadrado_putpixel_background_ventana=NULL; //aunque no se usara en este caso, pero por si acaso
+    }
+    else {
+        putpixel_function=menu_dibuja_cuadrado_putpixel_background;
+        menu_dibuja_cuadrado_putpixel_background_ventana=w;
+    }
 
 
     int x,y;
 
     //Si ratón está encima de la zona de redimensionado
-    if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v) {
+    if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v && ventana_en_primer_plano) {
         color=ESTILO_GUI_PAPEL_SELECCIONADO;
 
 
@@ -10141,7 +10173,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
     if (si_complete_video_driver() ) {
 
         //Si estaba en titulo y moviendo la ventana
-        if (mouse_is_dragging && window_is_being_moved) {
+        if (mouse_is_dragging && ventana_en_primer_plano && window_is_being_moved) {
             zxvision_window *w=zxvision_current_window;
             if (w!=NULL) {
                 char titulo[ZXVISION_MAX_WINDOW_TITLE];
@@ -10159,7 +10191,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
         //Pero tendria que hacerse mirando algún otro tipo de condición, por ejemplo se podria mirar ventana_marca_redimensionado_raton_encima
 
         //printf("dibuja_cuadrado %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
-        if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima) {
+        if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima && ventana_en_primer_plano) {
             zxvision_window *w=zxvision_current_window;
             if (w!=NULL) {
                 char titulo[ZXVISION_MAX_WINDOW_TITLE];
@@ -10173,23 +10205,23 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
 
         //parte inferior
         for (x=x1;x<=x2;x++) {
-            if (mouse_is_dragging && (x%2)==0) continue; //punteado cuando se mueve o redimensiona
-            scr_putpixel_gui_zoom(x*menu_gui_zoom,y2*menu_gui_zoom,color,menu_gui_zoom);
+            if (mouse_is_dragging && ventana_en_primer_plano && (x%2)==0) continue; //punteado cuando se mueve o redimensiona
+            putpixel_function(x*menu_gui_zoom,y2*menu_gui_zoom,color,menu_gui_zoom);
         }
 
 
         //izquierda
         for (y=y1;y<=y2;y++) {
-            if (mouse_is_dragging && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
-            scr_putpixel_gui_zoom(x1*menu_gui_zoom,y*menu_gui_zoom,color,menu_gui_zoom);
+            if (mouse_is_dragging && ventana_en_primer_plano && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
+            putpixel_function(x1*menu_gui_zoom,y*menu_gui_zoom,color,menu_gui_zoom);
         }
 
 
 
         //derecha
         for (y=y1;y<=y2;y++) {
-            if (mouse_is_dragging && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
-            scr_putpixel_gui_zoom(x2*menu_gui_zoom,y*menu_gui_zoom,color,menu_gui_zoom);
+            if (mouse_is_dragging && ventana_en_primer_plano && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
+            putpixel_function(x2*menu_gui_zoom,y*menu_gui_zoom,color,menu_gui_zoom);
         }
 
 
@@ -10204,29 +10236,29 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
             //     ****
 
             //Arriba del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-1)*menu_gui_zoom,(y2-4)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Medio
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-1)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-2)*menu_gui_zoom,(y2-3)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Abajo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-1)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-2)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-3)*menu_gui_zoom,(y2-2)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
             //Abajo del todo
-            scr_putpixel_gui_zoom((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
-            scr_putpixel_gui_zoom((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-1)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-2)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-3)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
+            putpixel_function((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
         }
 
         /*
         if (ventana_activa_tipo_zxvision) {
             //Poner un pixel avisando que ventana no es zxvision
-            scr_putpixel_gui_zoom((centro_marca_zxvison_x)*menu_gui_zoom,(centro_marca_zxvison_y)*menu_gui_zoom,color_marca_zxvision,menu_gui_zoom);
+            putpixel_function((centro_marca_zxvison_x)*menu_gui_zoom,(centro_marca_zxvison_y)*menu_gui_zoom,color_marca_zxvision,menu_gui_zoom);
         }
         */
 
@@ -10850,6 +10882,26 @@ void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
 
 }
 
+//Retorna coordenadas marco ventana
+void zxvision_retorna_coordenadas_marco(int x,int y,int ancho,int alto,int *x1,int *y1,int *x2,int *y2)
+{
+
+    int xpixel=x*menu_char_width;
+    int ypixel=(y+1)*menu_char_height; //La barra de titulo no tendra linea como tal
+    int anchopixel=ancho*menu_char_width;
+    int altopixel=alto*menu_char_height;
+
+    int xderecha=xpixel+anchopixel-1;
+
+    *x1=xpixel;
+    *y1=ypixel;
+    *x2=xderecha;
+    *y2=ypixel+altopixel-1-menu_char_height;
+
+    //menu_establece_cuadrado(xpixel,ypixel,xderecha,ypixel+altopixel-1-menu_char_height,ESTILO_GUI_COLOR_RECUADRO);
+
+}
+
 //dibuja ventana de menu, con:
 //titulo
 //contenido blanco
@@ -10892,14 +10944,20 @@ void menu_dibuja_ventana(zxvision_window *w)
     current_win_ancho=ancho;
     current_win_alto=alto;
 
+    /*
     xpixel=x*menu_char_width;
     ypixel=(y+1)*menu_char_height; //La barra de titulo no tendra linea como tal
     anchopixel=ancho*menu_char_width;
     altopixel=alto*menu_char_height;
 
     int xderecha=xpixel+anchopixel-1;
+    */
 
-    menu_establece_cuadrado(xpixel,ypixel,xderecha,ypixel+altopixel-1-menu_char_height,ESTILO_GUI_COLOR_RECUADRO);
+    int x1,y1,x2,y2;
+
+    zxvision_retorna_coordenadas_marco(x,y,ancho,alto,&x1,&y1,&x2,&y2);
+
+    menu_establece_cuadrado(x1,y1,x2,y2,ESTILO_GUI_COLOR_RECUADRO);
 
     menu_dibuja_ventana_titulo(w,w->window_title);
 
@@ -14942,6 +15000,18 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
             pointer_window->last_spent_time_overlay=0;
         }
 
+
+        if (ventana_es_background) {
+            //dibujar marco ventana de background
+            int x=pointer_window->x;
+            int y=pointer_window->y;
+            int ancho=pointer_window->visible_width;
+            int alto=pointer_window->visible_height;
+            int x1,y1,x2,y2;
+            zxvision_retorna_coordenadas_marco(x,y,ancho,alto,&x1,&y1,&x2,&y2);
+            menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_COLOR_RECUADRO,ESTILO_GUI_COLOR_RECUADRO,0,pointer_window);
+            //menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_PAPEL_TITULO_INACTIVA,ESTILO_GUI_PAPEL_TITULO_INACTIVA,0,pointer_window);
+        }
 
 
 

@@ -28883,7 +28883,6 @@ long long int menu_visual_realtape_bloque_posicion_final=-1;
 void menu_visual_realtape_overlay(void)
 {
 
-    //if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
     char buffer_texto_medio[40];
 

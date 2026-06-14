@@ -1,1 +1,4 @@
 -segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)
+
+
+-quiza que ventana no activa tenga también recuadro alrededor de la ventana, como la activa  (y recuadro de color mas claro)

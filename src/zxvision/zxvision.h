@@ -290,6 +290,8 @@ extern char zxvision_switch_to_window_on_open_menu_name[];
 extern void zxvision_open_menu_with_window(char *geometry_name);
 extern void zxvision_open_window_by_name(char *nombre);
 
+extern int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y);
+
 extern void set_menu_overlay_function(void (*funcion)(void) );
 extern void reset_menu_overlay_function(void);
 extern void pruebas_texto_menu(void);
