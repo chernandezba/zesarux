@@ -1540,7 +1540,7 @@ z80_bit christmas_mode={0};
 z80_bit avoid_christmas_mode={0};
 
 
-void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado,int ventana_en_primer_plano,zxvision_window *w);
+void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado,int ventana_en_primer_plano,int alterar_estilo_cuadrado,zxvision_window *w);
 void menu_desactiva_cuadrado(void);
 void menu_establece_cuadrado(int x1,int y1,int x2,int y2,int color);
 
@@ -8853,7 +8853,7 @@ void normal_overlay_texto_menu_final(void)
             }
         }
 
-        menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color,color_marca_redimensionado,1,NULL);
+        menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color,color_marca_redimensionado,1,1,NULL);
 
     }
 
@@ -10109,7 +10109,8 @@ int ventana_marca_redimensionado_raton_encima=0;
 //Entrada: x1,y1 punto superior izquierda,x2,y2 punto inferior derecha en resolucion de zx spectrum. Color
 //nota: realmente no es un cuadrado porque el titulo ya hace de franja superior
 //ventana_en_primer_plano: dice que el marco de ventana dibujada es la que esta en primer plano, y por ejemplo saldra en rojo al pasar raton por zona redimensionado
-void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado,int ventana_en_primer_plano,zxvision_window *w)
+//alterar_estilo_cuadrado: si altera estilo por redimensionado o movimiento ventana
+void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_redimensionado,int ventana_en_primer_plano,int alterar_estilo_cuadrado,zxvision_window *w)
 {
 
     if (!ESTILO_GUI_MUESTRA_RECUADRO) return;
@@ -10130,7 +10131,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
     int x,y;
 
     //Si ratón está encima de la zona de redimensionado
-    if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v && ventana_en_primer_plano) {
+    if (ventana_marca_redimensionado_raton_encima && menu_change_frame_when_resize_zone.v && alterar_estilo_cuadrado) {
         color=ESTILO_GUI_PAPEL_SELECCIONADO;
 
 
@@ -10173,7 +10174,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
     if (si_complete_video_driver() ) {
 
         //Si estaba en titulo y moviendo la ventana
-        if (mouse_is_dragging && ventana_en_primer_plano && window_is_being_moved) {
+        if (mouse_is_dragging && alterar_estilo_cuadrado && window_is_being_moved) {
             zxvision_window *w=zxvision_current_window;
             if (w!=NULL) {
                 char titulo[ZXVISION_MAX_WINDOW_TITLE];
@@ -10191,7 +10192,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
         //Pero tendria que hacerse mirando algún otro tipo de condición, por ejemplo se podria mirar ventana_marca_redimensionado_raton_encima
 
         //printf("dibuja_cuadrado %d %d\n",mouse_is_dragging,ventana_marca_redimensionado_raton_encima);
-        if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima && ventana_en_primer_plano) {
+        if (mouse_is_dragging && ventana_marca_redimensionado_raton_encima && alterar_estilo_cuadrado) {
             zxvision_window *w=zxvision_current_window;
             if (w!=NULL) {
                 char titulo[ZXVISION_MAX_WINDOW_TITLE];
@@ -10205,14 +10206,14 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
 
         //parte inferior
         for (x=x1;x<=x2;x++) {
-            if (mouse_is_dragging && ventana_en_primer_plano && (x%2)==0) continue; //punteado cuando se mueve o redimensiona
+            if (mouse_is_dragging && alterar_estilo_cuadrado && (x%2)==0) continue; //punteado cuando se mueve o redimensiona
             putpixel_function(x*menu_gui_zoom,y2*menu_gui_zoom,color,menu_gui_zoom);
         }
 
 
         //izquierda
         for (y=y1;y<=y2;y++) {
-            if (mouse_is_dragging && ventana_en_primer_plano && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
+            if (mouse_is_dragging && alterar_estilo_cuadrado && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
             putpixel_function(x1*menu_gui_zoom,y*menu_gui_zoom,color,menu_gui_zoom);
         }
 
@@ -10220,7 +10221,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
 
         //derecha
         for (y=y1;y<=y2;y++) {
-            if (mouse_is_dragging && ventana_en_primer_plano && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
+            if (mouse_is_dragging && alterar_estilo_cuadrado && (y%2)==0) continue; //punteado cuando se mueve o redimensiona
             putpixel_function(x2*menu_gui_zoom,y*menu_gui_zoom,color,menu_gui_zoom);
         }
 
@@ -10254,13 +10255,6 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
             putpixel_function((x2-4)*menu_gui_zoom,(y2-1)*menu_gui_zoom,color_marca_redimensionado,menu_gui_zoom);
 
         }
-
-        /*
-        if (ventana_activa_tipo_zxvision) {
-            //Poner un pixel avisando que ventana no es zxvision
-            putpixel_function((centro_marca_zxvison_x)*menu_gui_zoom,(centro_marca_zxvison_y)*menu_gui_zoom,color_marca_zxvision,menu_gui_zoom);
-        }
-        */
 
 
 
@@ -14834,7 +14828,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
             int alto=pointer_window->visible_height;
             int x1,y1,x2,y2;
             zxvision_retorna_coordenadas_marco(x,y,ancho,alto,&x1,&y1,&x2,&y2);
-            menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_COLOR_RECUADRO,ESTILO_GUI_COLOR_RECUADRO,0,pointer_window);
+            menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_COLOR_RECUADRO,ESTILO_GUI_COLOR_RECUADRO,0,0,pointer_window);
             //menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_PAPEL_TITULO_INACTIVA,ESTILO_GUI_PAPEL_TITULO_INACTIVA,0,pointer_window);
         }
 
