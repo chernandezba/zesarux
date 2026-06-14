@@ -14854,78 +14854,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 
 }
 
-void old_zxvision_draw_overlays_below_windows(zxvision_window *w)
-{
 
-
-        //Primero ir a buscar la de abajo del todo
-        zxvision_window *pointer_window;
-
-
-        //if (w!=NULL) printf ("\nDraw with overlay. original window: %p. Title: %s\n",w,w->window_title);
-
-
-        //Si no hay ventanas, volver
-        if (zxvision_current_window==NULL) return;
-
-        pointer_window=w;
-
-        while (pointer_window->previous_window!=NULL) {
-                        //debug_printf (VERBOSE_PARANOID,"zxvision_draw_overlays_below_windows below window: %p",pointer_window->previous_window);
-                        pointer_window=pointer_window->previous_window;
-        }
-
-        int antes_ventana_tipo_activa=ventana_tipo_activa;
-        zxvision_reset_ventana_tipo_activa(); //Redibujar las de debajo como inactivas
-
-        //Redibujar diciendo que estan por debajo
-        ventana_es_background=1;
-
-        //Y ahora de ahi hacia arriba, incluido la ultima
-
-
-        //printf ("\n");
-
-        //zxvision_drawing_in_background=1;
-
-        //Dibujar todas ventanas excepto la de mas arriba.
-        //while (pointer_window!=w && pointer_window!=NULL) {
-
-        //Dibujar todas ventanas.
-        while (pointer_window!=NULL) {
-                //while (pointer_window!=w) {
-                                //printf ("window from bottom to top %p. next: %p nombre: %s\n",pointer_window,pointer_window->next_window,pointer_window->window_title);
-
-                //Somos la ventana de mas arriba
-                if (pointer_window==w) {
-                        ventana_es_background=0;
-                        ventana_tipo_activa=antes_ventana_tipo_activa;
-                };
-
-                //en principio no hace falta. Ya se redibuja por el redibujado normal
-                //zxvision_draw_window(pointer_window);
-
-                //Dibujamos contenido anterior, ya que draw_window la borra con espacios
-                //en principio no hace falta. Ya se redibuja por el redibujado normal
-                //zxvision_draw_window_contents(pointer_window);
-
-
-                zxvision_draw_overlay_if_exists(pointer_window);
-
-
-
-                pointer_window=pointer_window->next_window;
-        }
-
-
-
-        //zxvision_drawing_in_background=0;
-
-        ventana_es_background=0;
-
-    ventana_tipo_activa=antes_ventana_tipo_activa;
-
-}
 
 void zxvision_message_put_window_background(void)
 {
@@ -31180,7 +31109,6 @@ void show_all_windows_startup(void)
         zxvision_redraw_all_windows();
 
         overlay_visible_when_menu_closed=1;
-        //menu_draw_background_windows_overlay_after_normal();
     }
 }
 
