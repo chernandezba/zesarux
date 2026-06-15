@@ -1742,7 +1742,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         AMIGAOS_COLOUR_blue,AMIGAOS_COLOUR_red,5+8,AMIGAOS_COLOUR_red, 	//Colores para opcion no disponible
 
         0,ZESARUX_PLUS_COLOUR_WHITE,        	//Colores para el titulo ventana
-        0,              //Color recuadro
+        0,ZESARUX_PLUS_COLOUR_WHITE,              //Color recuadro
         ZESARUX_PLUS_COLOUR_WHITE,OSDOS_COLOUR_GRAY_INACTIVE,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -1775,7 +1775,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,2,7,2, 	//Colores para opcion no disponible
 
         0,7+8,        	//Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         7+8,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -1807,7 +1807,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,2,5,2, 	//Colores para opcion no disponible
 
         0,7,        	//Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         7,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -1841,7 +1841,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,6,1,6,	//Colores para opcion no disponible, iguales que para opcion disponible
 
         6,1,		//Colores para el titulo ventana
-        6,              //Color recuadro
+        6,6,              //Color recuadro
         1,6,		//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -1872,7 +1872,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,3,7,3, 	//Colores para opcion no disponible
 
         0,7+8,        	//Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         7+8,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -1904,7 +1904,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,2,6+8,2,        //Colores para opcion no disponible
 
         6+8,1,            //Colores para el titulo ventana
-        6+8,              //Color recuadro
+        6+8,6+8,              //Color recuadro
         1,6+8,            //Colores para el titulo ventana inactiva
 
         4,4+8,              //Colores waveform
@@ -1936,7 +1936,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         VDP_9918_INDEX_FIRST_COLOR+4,VDP_9918_INDEX_FIRST_COLOR+6,VDP_9918_INDEX_FIRST_COLOR+15,VDP_9918_INDEX_FIRST_COLOR+6,        //Colores para opcion no disponible
 
         VDP_9918_INDEX_FIRST_COLOR+15,VDP_9918_INDEX_FIRST_COLOR+4,            //Colores para el titulo ventana
-        VDP_9918_INDEX_FIRST_COLOR+15,              //Color recuadro
+        VDP_9918_INDEX_FIRST_COLOR+15,VDP_9918_INDEX_FIRST_COLOR+15,              //Color recuadro
         VDP_9918_INDEX_FIRST_COLOR+4,VDP_9918_INDEX_FIRST_COLOR+15,            //Colores para el titulo ventana inactiva
 
         VDP_9918_INDEX_FIRST_COLOR+2,VDP_9918_INDEX_FIRST_COLOR+3,              //Colores waveform
@@ -1967,7 +1967,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,2,7,2, 	//Colores para opcion no disponible
 
         2,7+8,        	//Colores para el titulo ventana
-        2,              //Color recuadro
+        2,2,              //Color recuadro
         7+8,2,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -1998,7 +1998,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,2,7,2,      //Colores para opcion no disponible
 
         0,7+8,          //Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         7+8,0,          //Colores para el titulo ventana inactiva
 
         1,1+8,              //Colores waveform
@@ -2029,7 +2029,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         Z88_PXCOLOFF,Z88_PXCOLGREY,Z88_PXCOLON,Z88_PXCOLGREY,      //Colores para opcion no disponible
 
         Z88_PXCOLON,Z88_PXCOLOFF,          //Colores para el titulo ventana
-        Z88_PXCOLON,              //Color recuadro
+        Z88_PXCOLON,Z88_PXCOLON,              //Color recuadro
         Z88_PXCOLGREY,Z88_PXCOLOFF,          //Colores para el titulo ventana inactiva
 
         4,4+8,              //Colores waveform
@@ -2060,7 +2060,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,0,0,7+8,      //Colores para opcion no disponible
 
         0,7+8,          //Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         7+8,0,          //Colores para el titulo ventana inactiva
 
         4,4+8,              //Colores waveform
@@ -2091,7 +2091,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         AMIGAOS_COLOUR_blue,AMIGAOS_COLOUR_red,0,AMIGAOS_COLOUR_red, 	//Colores para opcion no disponible
 
         7+8,AMIGAOS_COLOUR_blue,        	//Colores para el titulo ventana
-        7+8,              //Color recuadro
+        7+8,7+8,              //Color recuadro
         7+8,AMIGAOS_COLOUR_inactive_title_ink,        	//Colores para el titulo ventana inactiva
 
         AMIGAOS_COLOUR_orange_dark,AMIGAOS_COLOUR_orange,		//Colores waveform
@@ -2122,7 +2122,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         ATARITOS_COLOUR_white,2,0,2, 	//Colores para opcion no disponible
 
         ATARITOS_COLOUR_white,0,        	//Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         ATARITOS_COLOUR_white,0,        	//Colores para el titulo ventana inactiva
 
         ATARITOS_COLOUR_green_dark,ATARITOS_COLOUR_green,		//Colores waveform
@@ -2153,7 +2153,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         BEOS_COLOUR_grey_menu,2,BEOS_COLOUR_grey_selection,2, 	//Colores para opcion no disponible
 
         BEOS_COLOUR_yellow,0,        	//Colores para el titulo ventana
-        BEOS_COLOUR_grey_box,              //Color recuadro
+        BEOS_COLOUR_grey_box,BEOS_COLOUR_grey_box,              //Color recuadro
         BEOS_COLOUR_grey_inactive_title,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2185,7 +2185,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         OSDOS_COLOUR_GRAY,OSDOS_COLOUR_GRAY_INACTIVE,OSDOS_COLOUR_BLUE,OSDOS_COLOUR_GRAY_INACTIVE, 	//Colores para opcion no disponible
 
         OSDOS_COLOUR_BLUE,7+8,        	//Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         OSDOS_COLOUR_GRAY_INACTIVE,OSDOS_COLOUR_GRAY,        	//Colores para el titulo ventana inactiva
 
         OSDOS_COLOUR_BLUE_DARK,OSDOS_COLOUR_BLUE,		//Colores waveform
@@ -2216,7 +2216,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         QNX_COLOUR_GRAY,QNX_COLOUR_GRAY_INACTIVE,QNX_COLOUR_BLUE,QNX_COLOUR_GRAY_INACTIVE, 	//Colores para opcion no disponible
 
         QNX_COLOUR_GREEN,0,        	//Colores para el titulo ventana
-        QNX_COLOUR_GRAY_INACTIVE,              //Color recuadro
+        QNX_COLOUR_GRAY_INACTIVE,QNX_COLOUR_GRAY_INACTIVE,              //Color recuadro
         QNX_COLOUR_GRAY_INACTIVE,0,        	//Colores para el titulo ventana inactiva
 
         QNX_COLOUR_BLUE_DARK,QNX_COLOUR_BLUE,		//Colores waveform
@@ -2247,7 +2247,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         RETROMAC_COLOUR_paper,RETROMAC_COLOUR_unavailable_ink,RETROMAC_COLOUR_selected_paper,RETROMAC_COLOUR_unavailable_ink, 	//Colores para opcion no disponible
 
         RETROMAC_COLOUR_active_title,0,        	//Colores para el titulo ventana
-        RETROMAC_COLOUR_window_box,              //Color recuadro
+        RETROMAC_COLOUR_window_box,RETROMAC_COLOUR_window_box,              //Color recuadro
         RETROMAC_COLOUR_paper,RETROMAC_COLOUR_unavailable_ink,    	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2279,7 +2279,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_DARKBLUE,RISCOS_COLOUR_RED, 	//Colores para opcion no disponible
 
         RISCOS_COLOUR_RED,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana
-        RISCOS_COLOUR_LIGHTBLUE,              //Color recuadro
+        RISCOS_COLOUR_LIGHTBLUE,RISCOS_COLOUR_LIGHTBLUE,              //Color recuadro
         RISCOS_COLOUR_ORANGE,RISCOS_COLOUR_LIGHTBLUE,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2314,7 +2314,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,2,7,2, 	//Colores para opcion no disponible
 
         7+8,1,        	//Colores para el titulo ventana
-        1,              //Color recuadro
+        1,1,              //Color recuadro
         7+8,1,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2345,7 +2345,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,7,7,1, 	//Colores para opcion no disponible
 
         7+8,0,        	//Colores para el titulo ventana
-        7+8,              //Color recuadro
+        7+8,7+8,              //Color recuadro
         7,0,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2376,7 +2376,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         TURBOVISION_COLOUR_white,TURBOVISION_COLOUR_grey,TURBOVISION_COLOUR_green,TURBOVISION_COLOUR_grey, 	//Colores para opcion no disponible
 
         TURBOVISION_COLOUR_lightwhite,TURBOVISION_COLOUR_black,        	//Colores para el titulo ventana
-        TURBOVISION_COLOUR_lightwhite,              //Color recuadro
+        TURBOVISION_COLOUR_lightwhite,TURBOVISION_COLOUR_lightwhite,              //Color recuadro
         TURBOVISION_COLOUR_white,TURBOVISION_COLOUR_black,        	//Colores para el titulo ventana inactiva
 
         TURBOVISION_COLOUR_blue_dark,TURBOVISION_COLOUR_blue,		//Colores waveform
@@ -2407,7 +2407,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         2,6,1,6, 	//Colores para opcion no disponible
 
         2+8,7+8,        	//Colores para el titulo ventana
-        2+8,              //Color recuadro
+        2+8,2+8,              //Color recuadro
         2,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2438,7 +2438,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         4,6,1,6, 	//Colores para opcion no disponible
 
         4+8,0,        	//Colores para el titulo ventana
-        4+8,              //Color recuadro
+        4+8,4+8,              //Color recuadro
         4,7,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2469,7 +2469,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,2,5+8,2, 	//Colores para opcion no disponible
 
         1+8,7+8,        	//Colores para el titulo ventana
-        1+8,              //Color recuadro
+        1+8,1+8,              //Color recuadro
         1,7,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2500,7 +2500,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         3,6,1,6, 	//Colores para opcion no disponible
 
         3+8,7+8,        	//Colores para el titulo ventana
-        3+8,              //Color recuadro
+        3+8,3+8,              //Color recuadro
         3,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2531,7 +2531,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         5,2,4,2, 	//Colores para opcion no disponible
 
         5+8,0,        	//Colores para el titulo ventana
-        5+8,              //Color recuadro
+        5+8,5+8,              //Color recuadro
         5,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2562,7 +2562,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         6,2,4,2, 	//Colores para opcion no disponible
 
         6+8,0,        	//Colores para el titulo ventana
-        6+8,              //Color recuadro
+        6+8,6+8,              //Color recuadro
         6,0,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2593,7 +2593,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         AMIGAOS_COLOUR_blue,AMIGAOS_COLOUR_red,5+8,AMIGAOS_COLOUR_red, 	//Colores para opcion no disponible
 
         0,ZESARUX_PLUS_COLOUR_WHITE,        	//Colores para el titulo ventana
-        0,              //Color recuadro
+        0,ZESARUX_PLUS_COLOUR_WHITE,              //Color recuadro
         ZESARUX_PLUS_COLOUR_WHITE,OSDOS_COLOUR_GRAY_INACTIVE,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2625,7 +2625,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         PICO8_COLOR_WHITE,PICO8_COLOR_DARK_RED,PICO8_COLOR_DARK_RED,PICO8_COLOR_WHITE, 	//Colores para opcion no disponible
 
         PICO8_COLOR_MAUVE,PICO8_COLOR_PURPLE,        	//Colores para el titulo ventana
-        PICO8_COLOR_BLACK,              //Color recuadro
+        PICO8_COLOR_BLACK,PICO8_COLOR_BLACK,              //Color recuadro
         PICO8_COLOR_LAVENDER,PICO8_COLOR_PURPLE,        	//Colores para el titulo ventana inactiva
 
         PICO8_COLOR_MEDIUM_GREEN,PICO8_COLOR_LIME_GREEN,		//Colores waveform
@@ -2656,7 +2656,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,2,0,2, 	//Colores para opcion no disponible
 
         0,7,          //Colores para el titulo ventana
-        0,              //Color recuadro
+        0,0,              //Color recuadro
         7,0,          //Colores para el titulo ventana inactiva
 
         1,1+8,              //Colores waveform
@@ -2687,7 +2687,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,2,7,2, 	//Colores para opcion no disponible
 
         7,0,          //Colores para el titulo ventana
-        7,              //Color recuadro
+        7,7,              //Color recuadro
         0,7,          //Colores para el titulo ventana inactiva
 
         5,5+8,              //Colores waveform
@@ -2720,7 +2720,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         SOLARIZED_COLOUR_base03,SOLARIZED_COLOUR_red,SOLARIZED_COLOUR_base02,SOLARIZED_COLOUR_red, 	//Colores para opcion no disponible
 
         SOLARIZED_COLOUR_base0,SOLARIZED_COLOUR_base03,        	//Colores para el titulo ventana
-        SOLARIZED_COLOUR_base0,              //Color recuadro
+        SOLARIZED_COLOUR_base0,SOLARIZED_COLOUR_base0,              //Color recuadro
         SOLARIZED_COLOUR_base03,SOLARIZED_COLOUR_base0,        	//Colores para el titulo ventana inactiva
 
         SOLARIZED_COLOUR_blue,SOLARIZED_COLOUR_cyan,		//Colores waveform
@@ -2753,7 +2753,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         SOLARIZED_COLOUR_base3,SOLARIZED_COLOUR_red,SOLARIZED_COLOUR_base2,SOLARIZED_COLOUR_red, 	//Colores para opcion no disponible
 
         SOLARIZED_COLOUR_base00,SOLARIZED_COLOUR_base3,        	//Colores para el titulo ventana
-        SOLARIZED_COLOUR_base00,              //Color recuadro
+        SOLARIZED_COLOUR_base00,SOLARIZED_COLOUR_base00,              //Color recuadro
         SOLARIZED_COLOUR_base3,SOLARIZED_COLOUR_base00,        	//Colores para el titulo ventana inactiva
 
         SOLARIZED_COLOUR_blue,SOLARIZED_COLOUR_cyan,		//Colores waveform
@@ -14827,7 +14827,10 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
         int alto=pointer_window->visible_height;
         int x1,y1,x2,y2;
         zxvision_retorna_coordenadas_marco(x,y,ancho,alto,&x1,&y1,&x2,&y2);
-        menu_dibuja_cuadrado(x1,y1,x2,y2,ESTILO_GUI_COLOR_RECUADRO,ESTILO_GUI_COLOR_RECUADRO,0,!ventana_es_background,pointer_window);
+        int color_recuadro=ESTILO_GUI_COLOR_RECUADRO_INACTIVO;
+        if (!ventana_es_background) color_recuadro=ESTILO_GUI_COLOR_RECUADRO;
+
+        menu_dibuja_cuadrado(x1,y1,x2,y2,color_recuadro,color_recuadro,0,!ventana_es_background,pointer_window);
         //o color ESTILO_GUI_PAPEL_TITULO_INACTIVA?
 
 
