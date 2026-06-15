@@ -4,11 +4,7 @@
 -quiza que ventana no activa tenga también recuadro alrededor de la ventana, como la activa  (y recuadro de color mas claro)
 ok pero que color tiene el marco? el mismo que cuando está la ventana activa? O el mismo color que el fondo del titulo cuando ventana inactiva?
 quizá otro color diferente? ver otros entornos de escritorio a ver como se comportan
-* al dibujar marco algun tipo de cache previo: si coordenada / 8 es igual que antes, hacer lo mismo que antes (mostrar si o no)
+ok * al dibujar marco algun tipo de cache previo: si coordenada / 8 es igual que antes, hacer lo mismo que antes (mostrar si o no)
 * ventana que está arriba aunque no este menu abierto sale con marco negro. ver misma condicion que hace que la barra de titulo salga como desactivada
 * revisar colores marco desactivado en todos estilos excepto ZEsarUX plus y tiny
 *Color marco para background debería ser siempre diferente de color paper, para distinguir siempre marco ventana cuando se solapan dos
--todas ventanas:
-*sin cache marco: 78%
-*con cache marco: 75%
-*sin marco: 72 %

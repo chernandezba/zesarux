@@ -10087,6 +10087,15 @@ margenx_izq=TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 zxvision_window *menu_dibuja_cuadrado_putpixel_background_ventana=NULL;
 
 //valores cacheados de anteriores posiciones. si misma posicion (en caracter), dice si dibujar o no segun valor anterior
+/*
+
+Esto permite reducir el uso de cpu. Ejemplo
+-con todas las ventanas posibles abiertas, solapandose varias:
+*sin cache marco: 78% cpu
+*con cache marco: 75% cpu
+*Y directamente sin dibujar ningún marco: 72 %
+
+*/
 int menu_dibuja_cuadrado_putpixel_background_ultima_fila=-1;
 int menu_dibuja_cuadrado_putpixel_background_ultima_columna=-1;
 int menu_dibuja_cuadrado_putpixel_background_ultima_dibujar=1;
@@ -10102,6 +10111,7 @@ void menu_dibuja_cuadrado_putpixel_background(int x,int y,int color,int zoom_lev
             dibujar=menu_dibuja_cuadrado_putpixel_background_ultima_dibujar;
         }
         else {
+            //esta funcion puede ser costosa si hay muchas ventanas. Por eso usamos calculos cacheados
             if (zxvision_coords_in_superior_windows(menu_dibuja_cuadrado_putpixel_background_ventana,columna,fila)) {
                 dibujar=0;
             }
