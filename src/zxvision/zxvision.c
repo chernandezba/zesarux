@@ -7325,9 +7325,11 @@ void menu_draw_ext_desktop_border_emulated_machine(int ancho_no_zxdesktop,int al
     if (!zxdesktop_disable_show_frame_around_display && alto_zxdesktop>=ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME) {
         int grueso_recuadro=4;
 
-        int color=ESTILO_GUI_PAPEL_TITULO;
+        //Colores como el marco de una ventana, si está activa o no
 
-        if (zxvision_key_not_sent_emulated_mach() ) color=ESTILO_GUI_PAPEL_TITULO_INACTIVA;
+        int color=ESTILO_GUI_COLOR_RECUADRO;
+
+        if (zxvision_key_not_sent_emulated_mach() ) color=ESTILO_GUI_COLOR_RECUADRO_INACTIVO;
 
         //linea vertical de abajo
         for (y=alto_no_zxdesktop;y<alto_no_zxdesktop+grueso_recuadro;y++) {
