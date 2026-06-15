@@ -535,7 +535,8 @@ const int retromac_colortable_original[RETROMAC_TOTAL_PALETTE_COLOURS]={
     0xdddddd, //Titulo ventana inactiva, papel
     0x322e9c, //Texto seleccionado
     0x777777, //Tinta opcion no disponible
-    0x999999  //Color para el marco ventana
+    0x999999, //Color para el marco ventana
+    0xc8c8c8  //Color para el marco ventana inactiva
 };
 
 const int amigaos_colortable_original[AMIGAOS_TOTAL_PALETTE_COLOURS]={

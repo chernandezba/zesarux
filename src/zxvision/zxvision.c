@@ -2247,7 +2247,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         RETROMAC_COLOUR_paper,RETROMAC_COLOUR_unavailable_ink,RETROMAC_COLOUR_selected_paper,RETROMAC_COLOUR_unavailable_ink, 	//Colores para opcion no disponible
 
         RETROMAC_COLOUR_active_title,0,        	//Colores para el titulo ventana
-        RETROMAC_COLOUR_window_box,RETROMAC_COLOUR_window_box,              //Color recuadro
+        RETROMAC_COLOUR_window_box,RETROMAC_COLOUR_window_box_inactive,              //Color recuadro
         RETROMAC_COLOUR_paper,RETROMAC_COLOUR_unavailable_ink,    	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
