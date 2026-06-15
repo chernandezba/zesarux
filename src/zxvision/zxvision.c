@@ -10086,14 +10086,30 @@ margenx_izq=TBBLUE_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 //parametro especial que no llega como parametro a la funcion
 zxvision_window *menu_dibuja_cuadrado_putpixel_background_ventana=NULL;
 
+//valores cacheados de anteriores posiciones. si misma posicion (en caracter), dice si dibujar o no segun valor anterior
+int menu_dibuja_cuadrado_putpixel_background_ultima_fila=-1;
+int menu_dibuja_cuadrado_putpixel_background_ultima_columna=-1;
+int menu_dibuja_cuadrado_putpixel_background_ultima_dibujar=1;
+
 void menu_dibuja_cuadrado_putpixel_background(int x,int y,int color,int zoom_level)
 {
     int dibujar=1;
 
     if (menu_dibuja_cuadrado_putpixel_background_ventana!=NULL) {
-        if (zxvision_coords_in_superior_windows(menu_dibuja_cuadrado_putpixel_background_ventana,x/menu_char_width,y/menu_char_height)) {
-            dibujar=0;
+        int columna=x/menu_char_width;
+        int fila=y/menu_char_height;
+        if (columna==menu_dibuja_cuadrado_putpixel_background_ultima_columna && fila==menu_dibuja_cuadrado_putpixel_background_ultima_fila) {
+            dibujar=menu_dibuja_cuadrado_putpixel_background_ultima_dibujar;
         }
+        else {
+            if (zxvision_coords_in_superior_windows(menu_dibuja_cuadrado_putpixel_background_ventana,columna,fila)) {
+                dibujar=0;
+            }
+        }
+
+        menu_dibuja_cuadrado_putpixel_background_ultima_columna=columna;
+        menu_dibuja_cuadrado_putpixel_background_ultima_fila=fila;
+        menu_dibuja_cuadrado_putpixel_background_ultima_dibujar=dibujar;
     }
 
 

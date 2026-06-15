@@ -8,3 +8,7 @@ quizá otro color diferente? ver otros entornos de escritorio a ver como se comp
 * ventana que está arriba aunque no este menu abierto sale con marco negro. ver misma condicion que hace que la barra de titulo salga como desactivada
 * revisar colores marco desactivado en todos estilos excepto ZEsarUX plus y tiny
 *Color marco para background debería ser siempre diferente de color paper, para distinguir siempre marco ventana cuando se solapan dos
+-todas ventanas:
+*sin cache marco: 78%
+*con cache marco: 75%
+*sin marco: 72 %
