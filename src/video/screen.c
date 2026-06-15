@@ -524,7 +524,8 @@ const int beos_colortable_original[BEOS_TOTAL_PALETTE_COLOURS]={
 0x9c9c9c, //Gris opcion seleccionada
 0xefefef, //Gris titulo ventana no seleccionada
 //0x63bdce  //Azul hotkey
-0x00c000  //Verde hotkey
+0x00c000,  //Verde hotkey
+0xBBBBBB  //gris de marco ventana no seleccionada
 
 
 };
@@ -588,7 +589,8 @@ const int qnx_colortable_original[QNX_TOTAL_PALETTE_COLOURS]={
     0x1100fa, //Azul opcion seleccionada
     0x0d00bc, //Azul oscuro para waveform
     0xc6c6c6, //gris de papel
-    0x8c8c8c //titulo ventana inactiva papel
+    0x8c8c8c, //titulo ventana inactiva papel
+    0xb5b5b5, //marco ventana inactiva
 };
 
 const int pico8_colortable_original[PICO8_PALETTE_COLOURS]={

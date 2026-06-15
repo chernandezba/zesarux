@@ -2029,7 +2029,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         Z88_PXCOLOFF,Z88_PXCOLGREY,Z88_PXCOLON,Z88_PXCOLGREY,      //Colores para opcion no disponible
 
         Z88_PXCOLON,Z88_PXCOLOFF,          //Colores para el titulo ventana
-        Z88_PXCOLON,Z88_PXCOLON,              //Color recuadro
+        Z88_PXCOLON,Z88_PXCOLGREY,              //Color recuadro
         Z88_PXCOLGREY,Z88_PXCOLOFF,          //Colores para el titulo ventana inactiva
 
         4,4+8,              //Colores waveform
@@ -2060,7 +2060,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,0,0,7+8,      //Colores para opcion no disponible
 
         0,7+8,          //Colores para el titulo ventana
-        0,0,              //Color recuadro
+        0,7,              //Color recuadro
         7+8,0,          //Colores para el titulo ventana inactiva
 
         4,4+8,              //Colores waveform
@@ -2091,7 +2091,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         AMIGAOS_COLOUR_blue,AMIGAOS_COLOUR_red,0,AMIGAOS_COLOUR_red, 	//Colores para opcion no disponible
 
         7+8,AMIGAOS_COLOUR_blue,        	//Colores para el titulo ventana
-        7+8,7+8,              //Color recuadro
+        7+8,7,              //Color recuadro
         7+8,AMIGAOS_COLOUR_inactive_title_ink,        	//Colores para el titulo ventana inactiva
 
         AMIGAOS_COLOUR_orange_dark,AMIGAOS_COLOUR_orange,		//Colores waveform
@@ -2122,7 +2122,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         ATARITOS_COLOUR_white,2,0,2, 	//Colores para opcion no disponible
 
         ATARITOS_COLOUR_white,0,        	//Colores para el titulo ventana
-        0,0,              //Color recuadro
+        0,7,              //Color recuadro
         ATARITOS_COLOUR_white,0,        	//Colores para el titulo ventana inactiva
 
         ATARITOS_COLOUR_green_dark,ATARITOS_COLOUR_green,		//Colores waveform
@@ -2153,7 +2153,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         BEOS_COLOUR_grey_menu,2,BEOS_COLOUR_grey_selection,2, 	//Colores para opcion no disponible
 
         BEOS_COLOUR_yellow,0,        	//Colores para el titulo ventana
-        BEOS_COLOUR_grey_box,BEOS_COLOUR_grey_box,              //Color recuadro
+        BEOS_COLOUR_grey_box,BEOS_COLOUR_grey_box_inactive,              //Color recuadro
         BEOS_COLOUR_grey_inactive_title,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2185,7 +2185,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         OSDOS_COLOUR_GRAY,OSDOS_COLOUR_GRAY_INACTIVE,OSDOS_COLOUR_BLUE,OSDOS_COLOUR_GRAY_INACTIVE, 	//Colores para opcion no disponible
 
         OSDOS_COLOUR_BLUE,7+8,        	//Colores para el titulo ventana
-        0,0,              //Color recuadro
+        0,OSDOS_COLOUR_GRAY_INACTIVE,              //Color recuadro
         OSDOS_COLOUR_GRAY_INACTIVE,OSDOS_COLOUR_GRAY,        	//Colores para el titulo ventana inactiva
 
         OSDOS_COLOUR_BLUE_DARK,OSDOS_COLOUR_BLUE,		//Colores waveform
@@ -2216,7 +2216,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         QNX_COLOUR_GRAY,QNX_COLOUR_GRAY_INACTIVE,QNX_COLOUR_BLUE,QNX_COLOUR_GRAY_INACTIVE, 	//Colores para opcion no disponible
 
         QNX_COLOUR_GREEN,0,        	//Colores para el titulo ventana
-        QNX_COLOUR_GRAY_INACTIVE,QNX_COLOUR_GRAY_INACTIVE,              //Color recuadro
+        QNX_COLOUR_GRAY_INACTIVE,QNX_COLOUR_GRAY_FRAME_INACTIVE,              //Color recuadro
         QNX_COLOUR_GRAY_INACTIVE,0,        	//Colores para el titulo ventana inactiva
 
         QNX_COLOUR_BLUE_DARK,QNX_COLOUR_BLUE,		//Colores waveform
