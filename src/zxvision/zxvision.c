@@ -2314,7 +2314,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7+8,2,7,2, 	//Colores para opcion no disponible
 
         7+8,1,        	//Colores para el titulo ventana
-        1,1,              //Color recuadro
+        1,7,              //Color recuadro
         7+8,1,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2345,7 +2345,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,7,7,1, 	//Colores para opcion no disponible
 
         7+8,0,        	//Colores para el titulo ventana
-        7+8,7+8,              //Color recuadro
+        7+8,7,              //Color recuadro
         7,0,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
