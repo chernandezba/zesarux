@@ -14792,6 +14792,9 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
     int antes_ventana_tipo_activa=ventana_tipo_activa;
     zxvision_reset_ventana_tipo_activa(); //Redibujar las de debajo como inactivas
 
+    int antes_cuadrado_activo_resize=cuadrado_activo_resize;
+    cuadrado_activo_resize=0;
+
     //Redibujar diciendo que estan por debajo
     ventana_es_background=1;
 
@@ -14881,6 +14884,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 
     ventana_es_background=0;
     ventana_tipo_activa=antes_ventana_tipo_activa;
+    cuadrado_activo_resize=antes_cuadrado_activo_resize;
 
 }
 
