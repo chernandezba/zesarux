@@ -2407,7 +2407,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         2,6,1,6, 	//Colores para opcion no disponible
 
         2+8,7+8,        	//Colores para el titulo ventana
-        2+8,2+8,              //Color recuadro
+        2+8,TSCONF_INDEX_FIRST_COLOR+(0x0F<<10), //Color recuadro. Rojo apagado para marco inactivo
         2,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2438,7 +2438,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         4,6,1,6, 	//Colores para opcion no disponible
 
         4+8,0,        	//Colores para el titulo ventana
-        4+8,4+8,              //Color recuadro
+        4+8,TSCONF_INDEX_FIRST_COLOR+(0x0F<<5), //Color recuadro. Verde apagado para marco inactivo
         4,7,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2469,7 +2469,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         1,2,5+8,2, 	//Colores para opcion no disponible
 
         1+8,7+8,        	//Colores para el titulo ventana
-        1+8,1+8,              //Color recuadro
+        1+8,TSCONF_INDEX_FIRST_COLOR+(0x0F), //Color recuadro. Azul apagado para marco inactivo
         1,7,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
@@ -2500,7 +2500,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         3,6,1,6, 	//Colores para opcion no disponible
 
         3+8,7+8,        	//Colores para el titulo ventana
-        3+8,3+8,              //Color recuadro
+        3+8,TSCONF_INDEX_FIRST_COLOR+((0x0F<<10) | 0x0F), //Color recuadro. Magenta apagado para marco inactivo
         3,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2531,7 +2531,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         5,2,4,2, 	//Colores para opcion no disponible
 
         5+8,0,        	//Colores para el titulo ventana
-        5+8,5+8,              //Color recuadro
+        5+8,TSCONF_INDEX_FIRST_COLOR+((0x0F<<5) | 0x0F), //Color recuadro. Cyan apagado para marco inactivo
         5,0,        	//Colores para el titulo ventana inactiva
 
         1,1+8,		//Colores waveform
@@ -2562,7 +2562,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         6,2,4,2, 	//Colores para opcion no disponible
 
         6+8,0,        	//Colores para el titulo ventana
-        6+8,6+8,              //Color recuadro
+        6+8,TSCONF_INDEX_FIRST_COLOR+((0x0F<<10) | (0x0F<<5)), //Color recuadro. Amarillo apagado para marco inactivo
         6,0,        	//Colores para el titulo ventana inactiva
 
         4,4+8,		//Colores waveform
