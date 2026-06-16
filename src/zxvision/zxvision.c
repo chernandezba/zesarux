@@ -28662,8 +28662,8 @@ void menu_zxdesktop_add_direct_smartload(void)
 
 int zxvision_order_icons_alfabetically_alphasort(zxdesktop_configurable_icon *d1, zxdesktop_configurable_icon *d2)
 {
-    if (d2->status!=ZXDESKTOP_CUSTOM_ICON_EXISTS) return +1; //Decir d1 va antes
-    if (d1->status!=ZXDESKTOP_CUSTOM_ICON_EXISTS) return -1; //Decir d2 va antes
+    if (d2->status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) return +1; //Decir d1 va antes
+    if (d1->status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) return -1; //Decir d2 va antes
 
     return (strcasecmp(d1->text_icon,d2->text_icon));
 
