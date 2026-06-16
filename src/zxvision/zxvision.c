@@ -10114,8 +10114,8 @@ void menu_dibuja_cuadrado_putpixel_background(int x,int y,int color,int zoom_lev
     int dibujar=1;
 
     if (menu_dibuja_cuadrado_putpixel_background_ventana!=NULL) {
-        int columna=x/menu_char_width;
-        int fila=y/menu_char_height;
+        int columna=x/menu_char_width/menu_gui_zoom;
+        int fila=y/menu_char_height/menu_gui_zoom;
         if (columna==menu_dibuja_cuadrado_putpixel_background_ultima_columna && fila==menu_dibuja_cuadrado_putpixel_background_ultima_fila) {
             dibujar=menu_dibuja_cuadrado_putpixel_background_ultima_dibujar;
         }
@@ -24628,7 +24628,7 @@ struct s_strings_language_list strings_language_list[]={
     {"Bienvenido","Benvingut","Welcome"},
     {"Acerca de","Quant a","About"},
     {"Reordenar iconos","Reordenar icones","Reorder icons"},
-    {"Ordenar iconos","Ordenar icones","Sort icons"},
+    {"Ordenar iconos alfabéticamente","Ordenar icones alfabèticament","Sort icons alphabetically"},
     {"Nuevo icono","Nova icona","New icon"},
     {"Nuevo enlace a archivo","Nou enllaç a arxiu","New file link"},
     {"Personalizar iconos","Personalitzar icones","Customize icons"},
@@ -28699,7 +28699,7 @@ void menu_inicio_handle_right_button_background(void)
 
         //propiedades zx desktop
         int opcion=menu_simple_seven_choices("ZX Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
-            menu_get_string_language("Reorder icons"),menu_get_string_language("Sort icons"),menu_get_string_language("ZX Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
+            menu_get_string_language("Reorder icons"),menu_get_string_language("Sort icons alphabetically"),menu_get_string_language("ZX Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
 
         zxvision_reset_set_next_menu_position();
 
@@ -28725,7 +28725,7 @@ void menu_inicio_handle_right_button_background(void)
             break;
 
             case 5:
-                if (menu_confirm_yesno(menu_get_string_language("Sort icons"))) {
+                if (menu_confirm_yesno(menu_get_string_language("Sort icons alphabetically"))) {
                     zxvision_order_icons_alfabetically();
                 }
             break;

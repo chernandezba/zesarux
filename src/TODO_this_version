@@ -1,5 +1,8 @@
 -segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)
 
--en ql, con menu superior, ventana que haya por debajo, dibuja el marco por encima
+ok -en ql, con menu superior, ventana que haya por debajo, dibuja el marco por encima
+->pasa con maquinas con zoom de menu > 1
 
--ordenar iconos por nombre: que les cambie el identificador de cada icono en el escritorio segun orden alfabetico
+ok -ordenar iconos por nombre: que les cambie el identificador de cada icono en el escritorio segun orden alfabetico
+
+-zona de redimensionado de marco dibujarlo solo en ventanas activas?
