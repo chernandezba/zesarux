@@ -1257,6 +1257,8 @@ extern void menu_dibuja_submenu_cierra_todos_submenus(void);
 extern void menu_dibuja_submenu_free_all(void);
 extern void menu_tape_settings_trunc_name(char *orig,char *dest,int max);
 
+extern void menu_dibuja_cuadrado_putpixel_background_reset_cache(void);
+
 extern int ultimo_menu_salido_con_flecha_izquierda;
 extern int ultimo_menu_salido_con_flecha_derecha;
 

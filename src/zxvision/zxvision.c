@@ -10102,6 +10102,13 @@ int menu_dibuja_cuadrado_putpixel_background_ultima_fila=-1;
 int menu_dibuja_cuadrado_putpixel_background_ultima_columna=-1;
 int menu_dibuja_cuadrado_putpixel_background_ultima_dibujar=1;
 
+
+void menu_dibuja_cuadrado_putpixel_background_reset_cache(void)
+{
+    menu_dibuja_cuadrado_putpixel_background_ultima_fila=-1;
+    menu_dibuja_cuadrado_putpixel_background_ultima_columna=-1;
+}
+
 void menu_dibuja_cuadrado_putpixel_background(int x,int y,int color,int zoom_level)
 {
     int dibujar=1;
@@ -14798,6 +14805,8 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 
     zxvision_time_total_drawing_overlay_except_current=0;
 
+
+    menu_dibuja_cuadrado_putpixel_background_reset_cache();
 
     //Dibujar todas ventanas excepto la de mas arriba.
     //while (pointer_window!=w && pointer_window!=NULL) {
@@ -24619,6 +24628,7 @@ struct s_strings_language_list strings_language_list[]={
     {"Bienvenido","Benvingut","Welcome"},
     {"Acerca de","Quant a","About"},
     {"Reordenar iconos","Reordenar icones","Reorder icons"},
+    {"Ordenar iconos","Ordenar icones","Sort icons"},
     {"Nuevo icono","Nova icona","New icon"},
     {"Nuevo enlace a archivo","Nou enllaç a arxiu","New file link"},
     {"Personalizar iconos","Personalitzar icones","Customize icons"},
@@ -28645,6 +28655,30 @@ void menu_zxdesktop_add_direct_smartload(void)
 
 }
 
+
+int zxvision_order_icons_alfabetically_alphasort(zxdesktop_configurable_icon *d1, zxdesktop_configurable_icon *d2)
+{
+    if (d2->status!=ZXDESKTOP_CUSTOM_ICON_EXISTS) return +1; //Decir d1 va antes
+    if (d1->status!=ZXDESKTOP_CUSTOM_ICON_EXISTS) return -1; //Decir d2 va antes
+
+    return (strcasecmp(d1->text_icon,d2->text_icon));
+
+}
+
+void zxvision_order_icons_alfabetically(void)
+{
+
+    int (*funcion_compar)(const void *, const void *);
+
+    funcion_compar=( int (*)(const void *, const void *)  ) zxvision_order_icons_alfabetically_alphasort;
+
+    //Ordenamos la creacion de cada icono pero no alteramos posicion, no serviria de mucho
+    qsort(zxdesktop_configurable_icons_list,MAX_ZXDESKTOP_CONFIGURABLE_ICONS,sizeof(zxdesktop_configurable_icon), funcion_compar);
+
+    //Cambiamos posicion en orden
+    zxvision_reorder_configurable_icons();
+}
+
 //Gestionar pulsacion boton derecho sobre background
 void menu_inicio_handle_right_button_background(void)
 {
@@ -28664,8 +28698,8 @@ void menu_inicio_handle_right_button_background(void)
         zxvision_set_next_menu_position_from_current_mouse();
 
         //propiedades zx desktop
-        int opcion=menu_simple_six_choices("ZX Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
-            menu_get_string_language("Reorder icons"),menu_get_string_language("ZX Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
+        int opcion=menu_simple_seven_choices("ZX Desktop","--Action--",menu_get_string_language("New icon"),menu_get_string_language("New file link"),menu_get_string_language("Customize icons"),
+            menu_get_string_language("Reorder icons"),menu_get_string_language("Sort icons"),menu_get_string_language("ZX Desktop settings"),menu_get_string_language("Exit ZEsarUX"));
 
         zxvision_reset_set_next_menu_position();
 
@@ -28691,10 +28725,16 @@ void menu_inicio_handle_right_button_background(void)
             break;
 
             case 5:
-                menu_ext_desktop_settings(0);
+                if (menu_confirm_yesno(menu_get_string_language("Sort icons"))) {
+                    zxvision_order_icons_alfabetically();
+                }
             break;
 
             case 6:
+                menu_ext_desktop_settings(0);
+            break;
+
+            case 7:
                 menu_principal_salir_emulador(0);
             break;
 

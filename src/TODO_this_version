@@ -1,10 +1,5 @@
 -segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)
 
+-en ql, con menu superior, ventana que haya por debajo, dibuja el marco por encima
 
--quiza que ventana no activa tenga también recuadro alrededor de la ventana, como la activa  (y recuadro de color mas claro)
-ok pero que color tiene el marco? el mismo que cuando está la ventana activa? O el mismo color que el fondo del titulo cuando ventana inactiva?
-quizá otro color diferente? ver otros entornos de escritorio a ver como se comportan
-ok * al dibujar marco algun tipo de cache previo: si coordenada / 8 es igual que antes, hacer lo mismo que antes (mostrar si o no)
-ok * ventana que está arriba aunque no este menu abierto sale con marco negro. ver misma condicion que hace que la barra de titulo salga como desactivada
-* revisar colores marco desactivado en todos estilos excepto ZEsarUX plus y tiny
-*Color marco para background debería ser siempre diferente de color paper, para distinguir siempre marco ventana cuando se solapan dos
+-ordenar iconos por nombre: que les cambie el identificador de cada icono en el escritorio segun orden alfabetico
