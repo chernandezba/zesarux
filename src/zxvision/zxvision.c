@@ -2625,7 +2625,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         PICO8_COLOR_WHITE,PICO8_COLOR_DARK_RED,PICO8_COLOR_DARK_RED,PICO8_COLOR_WHITE, 	//Colores para opcion no disponible
 
         PICO8_COLOR_MAUVE,PICO8_COLOR_PURPLE,        	//Colores para el titulo ventana
-        PICO8_COLOR_BLACK,PICO8_COLOR_BLACK,              //Color recuadro
+        PICO8_COLOR_BLACK,PICO8_COLOR_DARK_GREY,              //Color recuadro
         PICO8_COLOR_LAVENDER,PICO8_COLOR_PURPLE,        	//Colores para el titulo ventana inactiva
 
         PICO8_COLOR_MEDIUM_GREEN,PICO8_COLOR_LIME_GREEN,		//Colores waveform
@@ -2656,7 +2656,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         7,2,0,2, 	//Colores para opcion no disponible
 
         0,7,          //Colores para el titulo ventana
-        0,0,              //Color recuadro
+        0,TSCONF_INDEX_FIRST_COLOR+((0x0F<<10) | (0x0F<<5) | 0x0F), //Color recuadro. Gris apagado para marco inactivo
         7,0,          //Colores para el titulo ventana inactiva
 
         1,1+8,              //Colores waveform
@@ -2687,7 +2687,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         0,2,7,2, 	//Colores para opcion no disponible
 
         7,0,          //Colores para el titulo ventana
-        7,7,              //Color recuadro
+        7,TSCONF_INDEX_FIRST_COLOR+((0x0F<<10) | (0x0F<<5) | 0x0F), //Color recuadro. Gris apagado para marco inactivo
         0,7,          //Colores para el titulo ventana inactiva
 
         5,5+8,              //Colores waveform
@@ -2720,7 +2720,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         SOLARIZED_COLOUR_base03,SOLARIZED_COLOUR_red,SOLARIZED_COLOUR_base02,SOLARIZED_COLOUR_red, 	//Colores para opcion no disponible
 
         SOLARIZED_COLOUR_base0,SOLARIZED_COLOUR_base03,        	//Colores para el titulo ventana
-        SOLARIZED_COLOUR_base0,SOLARIZED_COLOUR_base0,              //Color recuadro
+        SOLARIZED_COLOUR_base0,SOLARIZED_COLOUR_base01,              //Color recuadro
         SOLARIZED_COLOUR_base03,SOLARIZED_COLOUR_base0,        	//Colores para el titulo ventana inactiva
 
         SOLARIZED_COLOUR_blue,SOLARIZED_COLOUR_cyan,		//Colores waveform
@@ -2753,7 +2753,7 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
         SOLARIZED_COLOUR_base3,SOLARIZED_COLOUR_red,SOLARIZED_COLOUR_base2,SOLARIZED_COLOUR_red, 	//Colores para opcion no disponible
 
         SOLARIZED_COLOUR_base00,SOLARIZED_COLOUR_base3,        	//Colores para el titulo ventana
-        SOLARIZED_COLOUR_base00,SOLARIZED_COLOUR_base00,              //Color recuadro
+        SOLARIZED_COLOUR_base00,SOLARIZED_COLOUR_base2,              //Color recuadro
         SOLARIZED_COLOUR_base3,SOLARIZED_COLOUR_base00,        	//Colores para el titulo ventana inactiva
 
         SOLARIZED_COLOUR_blue,SOLARIZED_COLOUR_cyan,		//Colores waveform
