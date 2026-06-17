@@ -6,3 +6,5 @@ ok -en ql, con menu superior, ventana que haya por debajo, dibuja el marco por e
 ok -ordenar iconos por nombre: que les cambie el identificador de cada icono en el escritorio segun orden alfabetico
 
 ok -zona de redimensionado de marco dibujarlo solo en ventanas activas?
+Marca redimensionado sale siempre bien en ventana principal?
+Probar también sin multitarea

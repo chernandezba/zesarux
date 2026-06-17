@@ -10160,6 +10160,7 @@ void menu_dibuja_cuadrado(int x1,int y1,int x2,int y2,int color,int color_marca_
     else {
         putpixel_function=menu_dibuja_cuadrado_putpixel_background;
         menu_dibuja_cuadrado_putpixel_background_ventana=w;
+        menu_dibuja_cuadrado_putpixel_background_reset_cache();
     }
 
 
@@ -14809,7 +14810,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
     zxvision_time_total_drawing_overlay_except_current=0;
 
 
-    menu_dibuja_cuadrado_putpixel_background_reset_cache();
+
 
     //Dibujar todas ventanas excepto la de mas arriba.
     //while (pointer_window!=w && pointer_window!=NULL) {
