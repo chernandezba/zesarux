@@ -5,7 +5,8 @@ Para versión siguiente:
 -------------
 
 
--parpadeos en driver xwindow en zx desktop al moverse por menus
+-revisar parpadeos en linux en top buttons al moverse por los menus
+->parece que solo pasa con driver xwindow, con sdl no pasa
 
 -con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
@@ -18,8 +19,6 @@ Para versión siguiente:
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
--revisar pantalla completa en SDL, X11
---en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
 
 -cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
 
@@ -456,8 +455,7 @@ caras adyacentes de un cubo. Ejemplo:
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
 
--revisar parpadeos en linux en top buttons al moverse por los menus
-->parece que solo pasa con driver xwindow, con sdl no pasa
+
 
 
 -ventana status esxdos handler:
