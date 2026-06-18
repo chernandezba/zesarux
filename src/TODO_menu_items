@@ -1,65 +1,4 @@
-
-
-
-
---- ZX Vision
-
-
--funciones menu_ventana_scanf_numero_enhanced*, slider:
-*si rango pequeño, como en window zoom, salen repetidos caracteres "|"
-
-
--expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
-
-
--carpetas con acentos en file selector sale a la derecha el texto de <dir> movido
-Esto es por calcular mal la longitud en caracteres de lineas con caracteres utf8, en que un caracter ocupa mas de 1 byte
-->ok
-*falta calcular posicion de ... en caso de archivos o <dir> cuando ancho pequeño
-
--File selector, previews en el fondo  del ZX desktop, no lo muestra si es pantalla de QL (archivo de 32kb). el problema es que esos previews no se genera archivo scr
-
-
--revisar algunas opciones de menu que se podrian gestionar con menu_add_item_menu_opcion_conmuta
-
-
--si se quitan tooltips no aparecen shortcuts de opciones... se debería poder tener de manera independiente
-quiza no hace falta porque ya hay la opcion de hacerlos visibles siempre
-Lo que no sale al desactivar tooltips es que aparezcan pasados unos segundos
-
--tooltips con mouse en iconos y botones
-*accesibilidad. que se escuche el tooltip? -> parece que se repite mensaje, porque hace varios fork. Ademas, solo se oye si menu abierto
-
-
--ahora menus no tabulados ya no tienen boton minimizar. Hay alguna ventana, que no sea realmente un menu,
-y que tenga sentido boton de minimizar?
-Por ejemplo, snapshots a ram, el historial es una ventana de tipo menu y ya no se puede minimizar.
-Yo entenderia que los botones de minimizar son solo para aplicaciones que pueden ir a background como tal,
-y por tanto, incluso los cuadros de dialogo (ayuda-changelog por ejemplo) - que no son menu_dibuja_menu -  ni deberian tenerlo
-Por tanto , probablemente, cualquier ventana que use funcion de menu_dibuja_menu (excluyendo tabulados) no deberian poderse minimizar.
-
--tiene sentido items de "ESC back/close"?
-
--boton derecho sobre una ventana, que conmute a esa ventana (pero solo cuando el uso de boton derecho no sea ESC)
-aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto no se lanza la accion del boton izquierdo
-(y no se lanzaria tampoco la del botón derecho)
-
--ctrl/alt +qaop o wskl para mover ventana, en vez de shift, y hacer que todas las ventanas lo soporten (por ejemplo ahora solo va con ventanas que no tengan menu)
-
-
--zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo
-Hacer uso de parametro dirty, usado igual en draw_window_contents, para saber _si hay que redibujar capa de pixel o no
-ventanas escriben aqui con otra funcion, por ejemplo llamada zxvision_putpixel_buffer, o quiza, renombrar
-todas zxvision_putpixel por zxvision_putpixel_direct, y la nueva llamarla tal cual zxvision_putpixel
-*definición anterior:
--Nuevo concepto para ventanas:
-Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
-Ideal para help keyboard por ejemplo
-En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas
-
-
--Renombrar setting de background windows por multitask windows? O algo así
-Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez
+-- menu items Mejoras
 
 -Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
 -process management: no muestra uso tiempo de ventana zxlife si la ventana actual es zxlife
@@ -81,14 +20,6 @@ usar la que si considera movimiento raton
 
 
 
--quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
-util por ejemplo para leer archivos de licencia,
-aunque eso afecta a todo mensaje genérico que aparezca en pantalla
-O quizá solo hacerlo para determinadas ventanas de algunos menus, por ejemplo el de licencias
-
-
--Texto fondo tiene que sea carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto
-
 -Poder ver variables de una cinta .P, .O e incluso basic de spectrum (desde el bloque de basic de un .tap?)
 quizá tiene un uso muy reducido porque los programas necesariamente no se graban con variables, excepto algunos que guardan datos
 como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar variables
@@ -102,45 +33,15 @@ como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar
 
 -En imagen IA de descripción, botón para pedir otra imagen a la IA
 
--otro tipo de overlay pero que no se llame continuamente, solo se llame al mover/redimensionar ventanas.
-y desde su aplicacion logicamente si que se llama a su overlay para dibujar
-ejemplo: process switcher: no se necesita que continuamente se estén redibujando todos los iconos, solo cuando haya movimiento de ventanas
-(pues en ese caso se repintan todas).
-otro ejemplo: el logo de la ventana de about: solo hay que redibujarlo cuando hay cambios de ventanas
-otro ejemplo: help keyboard
-y muchos otros ejemplos en que son pixeles que no cambian, que no hay que redibujar continuamente
-Con eso se reducirá mucho el uso de cpu en cada frame
+
+
 
 -Alto total de process switcher se amplía si necesita ubicar más iconos?
 Debería aumentar total_height si es necesario
 
--cuando se llama a funcion overlay de cada ventana, se deberia pasar como parametro la propia ventana (zxvision_window *),
-asi la funcion de overlay no tiene que guardar un puntero estatico fuera siempre
-complementario: quizá en todos los overlay que no necesiten redibujar siempre, detectar el flag que indica precisamente que se ha borrado, movido, etc, para solo redibujar cuando haya que hacerlo (dirty_user_must_draw_contents)
-->Realmente hay pocas ventanas que tengan overlay de pixeles estaticos
-Una de ellas es el "About" pero ya esta usando dirty_user_must_draw_contents
 
 
 
--opcion para minimizar ventanas a la parte baja de la ventana (o comportamiento como ahora, las minimiza donde estaban)
-
-
--quiza otras acciones sobre ventana que hagan cambiar el color del marco en determinados eventos al mover el raton? Ejemplo:
--mostrar titulo ventana entero al pasar raton sobre zona titulo
--cambiar los botones al pasar por encima de ellos
-
--Botón derecho sobre titulo ventana, activa acciones como: minimizar, maximizar, forzar siempre visible etc
-
--con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
-quiza boton o accion nueva sobre ventana para reajustar tamaño... o no, quizá interesa tener una ventana con contenido grande pero pequeña en pantalla
-(y de ahi que al reducirla tenga scroll)
-De hecho la manera de "recrearlas" es cerrarla y volverla a abrir
-Esto también comporta cosas buenas, como que la posición de scroll se mantiene al salir y entrar de una ventana.
-Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
-
-
-
--ideas para zx vision: https://telcontar.net/Misc/GUI/RISCOS/
 
 -quiza un widget de sensors con la Z del logo?
 
@@ -148,180 +49,27 @@ Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
 
 -select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
 
--Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
 
--Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking), y tambien en FAQ y ayuda background windows help
-
--Botón del medio de ratón para enviar al fondo una ventana
-
--desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
-
--quiza distinguir en la decoracion de ventana lo que es un menu propiamente y lo que es una ventana (ay registers, waveform, etc)
-
--ayuda cuando habla de boton background, minimizar etc, decir que esos son botones por defecto para ZEsarUX y otros temas, pero que en otros los botones son distintos
-
--unificar eventos joystick con eventos F-
-
--funcion menu_generic_message que pueda ocupar mas de 32 caracteres de ancho
-ok?->pendiente controlar que ancho linea texto no exceda en total ancho pantalla/char_width -2
-Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longitud de la constante MAX_….?
-
-
--Describir en development las dos maneras de dibujar el menú y capa de máquina emulada:
-con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
-
-
-->Quiza para version estable en zxvision_draw_window_contents que no haga caso de ese flag, por no generar algun error en version final
-En void zxvision_draw_window_contents(zxvision_window *w)
-Desactivar:
-if (must_return) return;
-
--Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
-
--Activar multitarea ventanas por defecto ? Si no hay configuración anterior?
-
--Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
-Considerar algun modo de dibujado mas rapido -> solventado con frameskip en zx desktop
-
--en ventanas con can_use_all_width=1, no se habilita la barra de scroll vertical cuando hace falta
-
-
--hay algun limite de array o memoria etc en ventanas zxvision alto y alto 32x24? Creo que no
-
--ordenar directorios arriba en filesel? Pero entonces al pulsar una letra y buscar... a donde ira?
-
-
--zxvision_get_char_at_position (usado al pulsar con raton en hotkeys) deberia tener en cuenta si hay offset de pantalla
-util en el mapa de aventura de texto cuando la leyenda siempre se ve arriba aunque haya scroll, para poder habilitar hotkeys pulsando el raton
-
-
-
--que en menu de opciones si raton pulsa en ventana pero en zona que no hay opciones, no envie enter
-
-
--cuando una tecla F no esta como default, no la envia a maquina emulada: ejemplo MSX F2, QL F5
-
--First aid de f keys. Cuando se pulse una f por primera vez
-
-
--Cuando se hace resize de ventana y desaparecen barras desplazamientos, habría que mover offset a 0?
-O esta considerando mal el mostrar barras desplazamiento: quizá deberían salir siempre que offset sea mayor que 0, Y que quepa en pantalla
-
--Ventana scanf con texto descriptivo dentro
 
 
 -Visualmem mmc read/write en Windows no muestra bien posicion (siempre a 0). Probablemente porque es 32 bits y no gestiona bien
 valores long int
 
--Tema gui configurable todos sus elementos: fuentes (charset ya se puede), colores etc
 
--Idea de animación para logo: ZEsarUX con letras de colores rojo amarillo verde azul. Se comprime el texto y la Z va pillando los colores de las letras
-
--Función que usando misma rutina de imprimir Unicode diga la longitud en bytes que ocupa el carácter.
-Así sabremos la longitud de aquellos caracteres que si que imprimimos. Los que no, será 1 y interrogante
 
 -Osd keyboard sin multitarea en ZX81 no va fino
 
--Sin multitarea, pulsaciones sobre la zona de scroll, hace efectivo el scroll cuando se mueve el raton o se pulsa boton o tecla
-
--menu: cuando habilita scroll vertical porque no caben opciones, aparece tambien scroll horizontal
-
--Rueda ratón sin multitarea no se mueve muy fino: parece que actualiza tarde la ventana
-
--botones/wheel left y right de X11??
-
--quiza que al crear ventana, si ancho visible no permite caber titulo, hacer mas ancho visible para que quepa
-
--Puntero en zxvision window a función que actualice ventana o quizá función de entrada a esa ventana?
-Para poder hacer que funciones futuras puedan gestionar pulsaciones de ratón en ventana:
-La ventana tendrá una función de callback donde se llamara cuando se pulse en zonas que no son barras de scroll
-Además de llamar a ese callback, se debe salir de la función de espera tecla zxvision, para poder gestionar eventos que haya avisado dicho callback. Creo que ahora mismo no se sale de función de espera tecla en esos casos
-->No se si es necesario pues en filesel lo hacemos de otra  manera
-Este callback se le pasara el puntero a ventana y quizá eventos de ratón: que botón se ha pulsado, donde, etc
-
--Quizá zxvision generic message ya no debería tener el límite de array de líneas o ancho...
--quiza zxvision_print_string_defaults_fillspc deba ser la habitual zxvision_print_string_defaults
-
-
--menus zxvision:
---porque menus tabulados no rellenan con espacios? ah porque antes siempre se borraba texto con espacios al dibujar menu?
-
-
--zxvision_putpixel deja escribir pixeles mas alla de total_width o height. Esto no es un error en si
-Lo hace realmente con visible_width y visible_height
-
-
--Mejora para first aid:
-Un tercer botón que diga "take me there" para cuando sugiere menús, que te lleve al menú en cuestión
-(por ejemplo cuando detecta joystick y dice que vayas al menú de real joystick para configurarlo)
 
 
 
--mejorar setting de ventana de always visible:
-*decoracion ventana este por arriba -> esto lo hace siempre que no estemos manipulando la ventana actual
-las de debajo, si que tiene consideracion de always_visible, pero en la de ayuda no
-porque las de debajo se redibujan llamando a zxvision_draw_below_windows, pero la de arriba no
-
-*al pulsar en esa ventana, detecte bien que es la de arriba. no lo hace bien del todo, pues en una de las llamadas a
-zxvision_coords_in_below_windows,
-(por debajo de 			//Si se pulsa fuera de ventana
-			debug_printf (VERBOSE_DEBUG,"Clicked outside window. Events are sent to emulated machine. X=%d Y=%d",menu_mouse_x,menu_mouse_y);
-
-)
-
-solo llama ahi cuando se pulsa fuera de la ventana activa,
-y si la ventana activa esta en la zona de una ventana siempre visible, no conmutara a una ventana siempre visible
-*quiza tambien seria mejor que una ventana always_visible, vaya siempre arriba del todo cuando se crean ventanas o se mueven?
-pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es lo que se espera...
 
 
--Nuevos campos para zxvision_windows:
--hora / fecha inicio ventana. Y que se mantenga en sucesivos arranques?
 
 -filesel: Quizá campos pulsables que se vean distintos?
 
 
--Acción joystick menú tab
 
 
---- FIN ZX Vision
-
-
-
-
---- menu - fallos ---
--Error: Abrir menú debug cpu con tecla F
-Luego pulsar botón salir emulador
-Y cierra menus pero no sale
-
--menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
--quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
-
-
-
--Mientras hay splash de inicio, si se pulsa F5, aparece por un momento overlays de ventanas, cuando F5 esta asignada a "Nothing"
-
-
--al cargar smartload, por ejemplo ultimo cargado es thelosttapesofalbion. situa el cursor ahi bien,
-pero al subir para arriba desplaza desde scroll sin mover
-cursor hasta que esta arriba. O sea, deberia mover siempre cursor y no empezar a hacer scroll hasta que no esta arriba
-
-
--Con carga top speed salen dos footer ? El nuevo de rojo también...
-Quizá el Rojo debería ser el Tspeed que ya sale en la carga...
-Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el footer
-
--parece que si hay joystick conectado, el splash de Z logo no aparece toda la animacion, se cierra a la primera barra de color
-
-
--Parece que color de aviso no puede ser mayor que 0-15, pues al usar los $$ de caracter, no permite otros valores. Ver test style Warning text
-
-
--en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
-->no he conseguido reproducirlo
--------------
-
---- menu - mejoras ---
 
 
 -sprite disabling window tambien para tsconf y maquinas con chip vdp (msx, etc)
@@ -546,3 +294,32 @@ for (i=0; i<=14; CheckSum = CheckSum + (header[i] * 257) + i, i++);
 Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Los archivos binarios (con la extensión .$C) en este formato se pueden iniciar directamente desde dispositivos FAT (como HDD o tarjeta SD) mediante el shell de Evo Reset Service integrado.
 
 *************
+
+
+
+
+--- FIN  Mejoras
+
+
+
+
+--- menu items - fallos ---
+-Error: Abrir menú debug cpu con tecla F
+Luego pulsar botón salir emulador
+Y cierra menus pero no sale
+
+-menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
+-quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
+
+
+
+
+-al cargar smartload, por ejemplo ultimo cargado es thelosttapesofalbion. situa el cursor ahi bien,
+pero al subir para arriba desplaza desde scroll sin mover
+cursor hasta que esta arriba. O sea, deberia mover siempre cursor y no empezar a hacer scroll hasta que no esta arriba
+
+
+-------------
+
+
+
