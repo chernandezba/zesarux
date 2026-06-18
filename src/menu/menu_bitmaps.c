@@ -503,7 +503,6 @@ char *bitmap_button_ext_desktop_windows[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_exit[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",     //0
-      "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
@@ -511,14 +510,15 @@ char *bitmap_button_ext_desktop_exit[EXT_DESKTOP_BUTTONS_ANCHO]={
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
-    "xxxxxRRxxRRxxRRxxRRxxxxxxR",
-    "xxxxxRRxxRRxxRRxxRRxxxxxxR",	//10
-    "xxRRRRRRxxxxRRRxxRRRRxxRRR",
-    "xxxxxRRRRxxRRRRxxRRRRxxRRR",
-    "xxxxxRRRRxxRRRRxxRRRRxxRRR",
-    "xxRRRRRRxxxxRRRxxRRRRxxRRR",
-    "xxxxxRRxxRRxxRRxxRRRRxxRRR",
-    "xxxxxRRxxRRxxRRxxRRRRxxRRR",
+    "RRRRRRRRRRRRRRRRRRRRRRRRRR",
+    "RxxxxxRRxxRRxxRRxxRRxxxxxx",
+    "RxxxxxRRxxRRxxRRxxRRxxxxxx",	//10
+    "RxxRRRRRRxxxxRRRxxRRRRxxRR",
+    "RxxxxxRRRRxxRRRRxxRRRRxxRR",
+    "RxxxxxRRRRxxRRRRxxRRRRxxRR",
+    "RxxRRRRRRxxxxRRRxxRRRRxxRR",
+    "RxxxxxRRxxRRxxRRxxRRRRxxRR",
+    "RxxxxxRRxxRRxxRRxxRRRRxxRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",
     "RRRRRRRRRRRRRRRRRRRRRRRRRR",

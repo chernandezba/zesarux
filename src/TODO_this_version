@@ -1,9 +1,5 @@
 -segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)
 
-ok -en ql, con menu superior, ventana que haya por debajo, dibuja el marco por encima
-->pasa con maquinas con zoom de menu > 1
-
-ok -ordenar iconos por nombre: que les cambie el identificador de cada icono en el escritorio segun orden alfabetico
 
 ok -zona de redimensionado de marco dibujarlo solo en ventanas activas?
 Marca redimensionado sale siempre bien en ventana principal?
