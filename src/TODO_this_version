@@ -19,3 +19,5 @@ solo los primeros menus principales, los submenus si que salgan con barra de tí
 -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
+
+-Revisar los TODO_next_versions desde ZENG Online (linea 141) y mover items a los archivos TODO* correspondientes

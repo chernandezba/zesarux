@@ -136,7 +136,34 @@ y no vuelve a abrir el menu, y parece que tampoco envia teclado a maquina emulad
 -para comprobar coordenada y footer, calcular desde abajo de alto ventana. Y usar funcion comun en screen.c
 -quiza funcion footer a scr_putchar_footer_comun_zoom se tiene que hacer con coordenadas 0,1 o 2 simplemente
 
+
 -------------
+
+--- menu items - fallos ---
+-Error: Abrir menú debug cpu con tecla F
+Luego pulsar botón salir emulador
+Y cierra menus pero no sale
+
+-menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
+-quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
+
+
+-al cargar smartload, por ejemplo ultimo cargado es thelosttapesofalbion. situa el cursor ahi bien,
+pero al subir para arriba desplaza desde scroll sin mover
+cursor hasta que esta arriba. O sea, deberia mover siempre cursor y no empezar a hacer scroll hasta que no esta arriba
+
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+
+-en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
+
+-Visual real tape: con cinta cdt de CPC (zynaps.cdt) dice que hay bloques de spectrum y no es asi
+
+
+-------------
+
+
 
 
 Otros TODO menos prioritarios, de aqui hasta el final del archivo:
@@ -172,6 +199,9 @@ la vista 1 sera ventana grande pero con alto total reducido. Parecido a lo que s
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo).
 algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
+-gac debug con condactos y paso a paso
+
+
 
 -text adventure map: texto en mapa deberia seguir char filter. Pero char filter
 esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro
@@ -192,6 +222,13 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 -visualmem que siga memory zone
 
 -lectura de nombre de archivo en fileselector para stdout no admite espacios
+
+-Process management: Render emulated display incluye tiempo de todas las ventanas? Si abro el text adventure map, que consume 6 ms con la guerra
+de las vajillas, el tiempo de render dice 8 ms. si cierro text adventure map, el render baja a 3 ms
+
+-Debug console quizá ancho debería considerar siempre el Máximo al calcular posición siguiente línea, esto en print y scroll
+Asi se podría redimensionar siempre sin que se descuadren los textos anteriores . hecho?
+
 
 
 -formato hobeta: mostrar info en fileutils
@@ -220,21 +257,5 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 *************
 
 
---- FIN  Mejoras
 
 
---- menu items - fallos ---
--Error: Abrir menú debug cpu con tecla F
-Luego pulsar botón salir emulador
-Y cierra menus pero no sale
-
--menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
--quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
-
-
--al cargar smartload, por ejemplo ultimo cargado es thelosttapesofalbion. situa el cursor ahi bien,
-pero al subir para arriba desplaza desde scroll sin mover
-cursor hasta que esta arriba. O sea, deberia mover siempre cursor y no empezar a hacer scroll hasta que no esta arriba
-
-
--------------

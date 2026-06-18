@@ -15,6 +15,10 @@
 *indicar C60 o lo que sea. letras vectoriales?
 *otros detalles de una cinta real: nombre archivo?
 
+-botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
+
+
+
 -iconos de dispositivos mmc/ide en escritorio
 
 -nuevos iconos suele quedar arriba a la izquierda debajo de una ventana, pues las ventanas tambien se posicionan por defecto ahi
@@ -83,6 +87,23 @@ Lo mismo pasa con un reorder
 Y lo mismo con posición de nuevos iconos
 --- FIN  ZX Desktop mejoras
 
+
+-- ZX Desktop fallos
+
+
+-Botones superiores no gestionan errores generados por un item
+Ejemplo:
+pulsamos boton network-> zeng online client-> list rooms
+Si el remoto tiene diferente versión ZRCP, se genera error por debug_printf pero no se ve en el menu. El menu se cierra. Aparece el error al abrir el menu con F5
+Si vamos desde menu principal-> network-> zeng online client-> list rooms, el error si que se ve
+O sea parece que al pulsar desde los botones, se sale del menu y se quita el aviso de "abre menu debido a error"
+(    	    	if_pending_error_message=1;
+menu_fire_event_open_menu();
+)
+
+
+-- FIN ZX Desktop fallos
+
 --------------------------
 
 
@@ -105,6 +126,19 @@ Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el 
 -en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
 ->no he conseguido reproducirlo
 
+-revisar en menu_debug_change_registers(void),
+//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
+
+
+-archivos de cintas que no se cierran en windows al expulsarlas
+
+-texto speech en menu se oye antes que se empiece a mostrar filesel
+
+-Llamadas a menu_warn_message y similares, al iniciar ZEsarUX, cuando esta restaurando ventanas, como la de menu_microdrive_raw_map (comentada al principio: menu_warn_message("Visual Memory window is opened),
+deja la ventana de ZEsarUX en un estado inconsistente
+Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta acabado de iniciar aun
+
+-si tiene que avisar de nueva version disponible en github, parece que no sale aviso si salta un first aid de inicio (testeado en windows)
 
 --- FIN ZX Vision - fallos ---
 

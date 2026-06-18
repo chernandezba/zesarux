@@ -25,6 +25,25 @@ Falla con drivers: sdl
 
 --- Genericos - mejoras ---
 
+-soporte libretro:
+compilacion minima con 3 cores:
+
+git clone https://github.com/libretro/libretro-super.git libretro-super
+cd libretro-super
+./libretro-fetch.sh fuse smsplus sameboy
+./libretro-build.sh fuse smsplus sameboy
+
+
+Copiar un core a retroarch, uno de ejemplo
+ https://docs.libretro.com/development/cores/developing-cores/#skeletor-sample-core
+cd /Users/cesarhernandez/Downloads/libretro-super
+./libretro-build.sh skeleton
+
+cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
+cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
+
+
+
 -Lock sdl al refrescar hace printf?
 
 -fallback de video y/o audio no lo hace si se especifica --vo .... o --ao ...... cosa que normalmente ya estara en el .zesaruxrc y por tanto no se hara fallback

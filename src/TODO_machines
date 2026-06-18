@@ -866,6 +866,12 @@ http://velesoft.speccy.cz/sam_zx128.htm
 
 --- CPC ---
 
+
+-Juego mighty steel fighters cpc. Requiere expansión de RAM? Emularla
+"Mighty Steel Fighters GGP" Amstrad CPC by AmstradGGP
+
+
+
 -Cat en cpc 6128 con pd765 desactivado, se cuelga
 
 -dandanator no va bien en cpc 664, 6128. ejemplo bruce lee carga pantalla y luego se cuelga. rambo II también falla
@@ -1221,6 +1227,8 @@ Como ejemplo, el Toshiba HX-10 (un modelo de 64KB) tiene esta configuración de 
 
 -carga TSX real tape no va?
 carga por cinta audio con external audio source si que va? Alien 8 carga primer bloque y nada mas, o a veces carga la pantalla también
+
+-poder grabar a cinta desde MSX en archivo .cas. Revisar otras máquinas que se pueda hacer
 
 -------------
 
