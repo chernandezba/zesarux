@@ -4,3 +4,18 @@
 ok -zona de redimensionado de marco dibujarlo solo en ventanas activas?
 Marca redimensionado sale siempre bien en ventana principal?
 Probar también sin multitarea
+
+-que se guarde en recent files las carpetas accedidas para el root dir de mdv. y otras rutas que se seleccionan como carpeta (por ejemplo esxdos handler root dir)
+
+-Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
+solo los primeros menus principales, los submenus si que salgan con barra de título
+
+-Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
+
+-Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
+
+-osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
+
+-en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
+
+-Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038

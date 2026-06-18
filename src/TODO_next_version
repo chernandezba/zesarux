@@ -148,11 +148,6 @@ aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> bl
 
 
 
--con no border on full screen & no footer on full screen, al salir de full screen a veces peta
-parece que es la llamada a menu_interface_border
-
-
-
 -quiza menu_ventana_scanf_numero_enhanced deberia mostrar el error en ventana en vez de soltarlo por debug_printf,
 porque luego hay sitios como Sectors info de microdrive que al cambiar de sector con tecla 's' tengo que detectar
 si hay un pending error message y mostrarlo
@@ -259,7 +254,7 @@ al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Per
 -De alguna manera que se vea una miniatura de la pantalla del juego cargado
 En alguna ventana nueva quizá
 
--Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
+
 
 -Ventana que permita agregar notas, que permita quedarse en background
 Problema: donde se guardan las notas? En config no puede ser, ocuparia demasiado
@@ -322,9 +317,7 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 
--en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
-
--Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
+-Máquina Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
 
 
 
@@ -359,10 +352,6 @@ se le envian los caracrteres desde zxvision_draw_window_contents
 
 -Speccy online browser
 Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se escuchan porque se lee la línea del nombre del juego y no la de debajo que dice el tipo
-
-
-
--drag drop en otros sistemas: windows (necesario sdl2), linux (con xwindow se puede?)
 
 
 -pulsar dos veces con boton derecho en zx desktop abre dos veces el menu de zx desktop (menu pequeñito) y luego al pulsar ESC hay que pulsar dos
@@ -504,17 +493,8 @@ Se sale mucho mas la ventana cuando hay top menu o botones superiores.
 El tema es que rearrange esta pensado para reorganizar desde el menu window, no cuando ha cambiado el tamaño del desktop
 Si ha cambiado el tamaño habria que revisar el tamaño de todas las ventanas y reducirlas
 
--osd watermark no se ve en QL
-
--que se guarde en recent files las carpetas accedidas para el root dir de mdv
 
 
--Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
-
--Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
-
--Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
-solo los primeros menus principales, los submenus si que salgan con barra de título
 
 -Con estilo tiny, sin desktop, desde top menu, submenus no aparecen al lado, aunque haya espacio para ubicarlos, aparecen posicionados arriba a la izquierda
 serian estas lineas:
