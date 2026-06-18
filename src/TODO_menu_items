@@ -34,13 +34,8 @@ como matrices y cosas asi. pero en ese caso se pueden cargar y ya luego examinar
 -En imagen IA de descripción, botón para pedir otra imagen a la IA
 
 
-
-
 -Alto total de process switcher se amplía si necesita ubicar más iconos?
 Debería aumentar total_height si es necesario
-
-
-
 
 
 -quiza un widget de sensors con la Z del logo?
@@ -50,27 +45,12 @@ Debería aumentar total_height si es necesario
 -select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
 
 
-
-
 -Visualmem mmc read/write en Windows no muestra bien posicion (siempre a 0). Probablemente porque es 32 bits y no gestiona bien
 valores long int
 
-
-
 -Osd keyboard sin multitarea en ZX81 no va fino
 
-
-
-
-
-
-
 -filesel: Quizá campos pulsables que se vean distintos?
-
-
-
-
-
 
 -sprite disabling window tambien para tsconf y maquinas con chip vdp (msx, etc)
 
@@ -144,10 +124,6 @@ https://github.com/lavoiesl/osx-cpu-temp
 -hex editor: muestra pagina entera cuando una zona de memoria por ejemplo solo es de 2 bytes. Probar por ejemplo con debug memory zone
 
 
--Mouse: para que no haga framedrop al moverse sobre un menu, quiza se deberia considerar cada x frames de tiempo.
-
-
--Permitir teclas numericas como atajos. Para ello hay que reasignar gestion de teclas cursores que las convierte a '6' y '7'
 
 -Al insertar mmc o ide debe ir primero a rutas shared, tal y como hace smartload por ejemplo. y tambien ir a ultima ruta al abrir selector archivos
 
@@ -166,20 +142,7 @@ y no vuelve a abrir el menu, y parece que tampoco envia teclado a maquina emulad
 Otros TODO menos prioritarios, de aqui hasta el final del archivo:
 
 
-
-*** Menu  ***
-
--poder usar kempston mouse desde menu si ventana de menu no tiene el foco (al igual que sucede con el teclado)
-
 -Snapshots automáticos de nombre que depende del archivo cargado. Para tener siempre uno cuando se cambia de juego
-
--Opcional cargar snapshot y no cerrar menú. Mismo para Smartload pero solo con snapshots?
-
--Algunos items de menu, por ejemplo dentro del buscador de vidas, son lineas no seleccionables,
-aunque se definen de tipo normal. Tendrian que ser de tipo separador. Pero en ese caso, habria que hacer que cuando se abra el menu,
-si el cursor esta en un separador, que haga bajar el cursor -> esto parece que ya se intento, buscar comentario que dice:
-//Nota: el separador no puede ser final de menu
-
 
 -Waveform que vaya haciendo fade out (sin scroll) de píxeles anteriores. Para esto require tener varios niveles de color de un pixel
 
@@ -198,16 +161,8 @@ Hacer captura. Luego hacer captura de la derecha, etc
 
 
 
--Quizá algunas operaciones de archivos que se cancelen con esc que avise con ventana temporal de dicha cancelación
-
 -Convertir automático de cinta a wav, mediante uso de mantransfe
 
--stdout file selector. Poder hacer ls, cd etc.
-
--Alternativa en los menús tabulares tipo como el de sprites o colores, que usan cursores y pgup y down
--usar otras acciones / hotkeys para eso
--agregar un handler especial para esas teclas. Pero entonces como se mueve uno por los ítems? Con tecla tab?
-Que uso se le da a tab? En file utils, si se tabula, cambia de sección. En menú tabular, el tab sale?
 
 -ventana debug cpu: si se estaba en vista 8, y luego cargamos un juego que no sea de paws/daad/quill,
 la vista 1 sera ventana grande pero con alto total reducido. Parecido a lo que sucedia al cambiar de vista
@@ -225,19 +180,7 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 -daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb. comentar con Carlos-uto
 
 
--menus tabulados:
-TAB conmutar a zona de acciones? Quiza nueva funcion para seleccion acciones, que permita:
-
-**mover con cursor abajo/arriba e izquierda/derecha. TAB o ESC permite salir
-**en file utils, por su parte, tambien permito acciones directas como ahora con shift+tecla. o no?
-
--eventos joystick para simular pgup, pgdn
-
--Estadísticas de diferentes componentes del core, ya sea cpu u otra cosa, como memoria usada para el rainbow buffer,  y cosas así
-Info de tamaño ventana. Y tamaño ventana sin zoom
-
 -estadisticas memoria etc con getrusage: aunque esto solo vale para Linux
-
 
 -mejorar deteccion frecuencia sonido en audio wave form
 
@@ -245,29 +188,10 @@ Info de tamaño ventana. Y tamaño ventana sin zoom
 -poder hacer hotswap de una maquina a zx-uno
 
 
--joystick derecha para tab. solo en menu
-
--menu_ventana_scanf deberia retornar un codigo de retorno en caso de pulsado ESC
-
 -visualmem podria tener en cuenta toda la ram de una maquina: 128kb en +2, Z88 etc.... aunque dificil para +2 y Z88.... y necesario?
 -visualmem que siga memory zone
 
 -lectura de nombre de archivo en fileselector para stdout no admite espacios
-
-
--sin multitask, no va repeticion de teclas. esto es porque no se ejecuta timer_check_interrupt
-quiza estas funciones de contadores deberian venir con el thread del timer? aunque luego en version
-no-thread no funcionara tampoco
-->esto ya queda solventado con el setting de stop emulation on menu->multitarea sigue funcionando aunque la cpu esta pausada, y funciona repetición de teclas
-
--Mostrar consumo de cpu solo del proceso del emulador?
-
-
--descomprimir rar,gz, etc con espacio en nombres a veces falla. el comando system le envia las "" pero el propio comando
-no gestiona bien nombres con espacios
-
-
--tecla ',' en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB para el menu
 
 
 -formato hobeta: mostrar info en fileutils
@@ -296,11 +220,7 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 *************
 
 
-
-
 --- FIN  Mejoras
-
-
 
 
 --- menu items - fallos ---
@@ -312,14 +232,9 @@ Y cierra menus pero no sale
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
 
-
-
 -al cargar smartload, por ejemplo ultimo cargado es thelosttapesofalbion. situa el cursor ahi bien,
 pero al subir para arriba desplaza desde scroll sin mover
 cursor hasta que esta arriba. O sea, deberia mover siempre cursor y no empezar a hacer scroll hasta que no esta arriba
 
 
 -------------
-
-
-

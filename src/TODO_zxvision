@@ -1,4 +1,5 @@
---- ZX Desktop
+
+--- ZX Desktop mejoras
 
 --Posibles efectos para fondo ZX Desktop:
 ---Imagen formato BMP o PNG
@@ -8,7 +9,6 @@
 
 --Fbdev debe permitir ZX Desktop?
 --sdl2: si se pone width de ZX desktop que no cabe en pantalla, se queda reabriendo continuamente la ventana
-
 
 
 -visual datadrive/visualcassettetape
@@ -81,8 +81,35 @@ Otros archivos como .tap etc se pueden pulsar (como ahora con los accesos direct
 -si se desactivan botones inferiores y superiores, el limite al mover iconos sigue siendo la zona de esos botones, aunque ya no existan
 Lo mismo pasa con un reorder
 Y lo mismo con posición de nuevos iconos
---- FIN ZX Desktop
+--- FIN  ZX Desktop mejoras
 
+--------------------------
+
+
+--- ZX Vision - fallos ---
+
+
+-Mientras hay splash de inicio, si se pulsa F5, aparece por un momento overlays de ventanas, cuando F5 esta asignada a "Nothing"
+
+
+-Con carga top speed salen dos footer ? El nuevo de rojo también...
+Quizá el Rojo debería ser el Tspeed que ya sale en la carga...
+Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el footer
+
+-parece que si hay joystick conectado, el splash de Z logo no aparece toda la animacion, se cierra a la primera barra de color
+
+
+-Parece que color de aviso no puede ser mayor que 0-15, pues al usar los $$ de caracter, no permite otros valores. Ver test style Warning text
+
+
+-en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
+->no he conseguido reproducirlo
+
+
+--- FIN ZX Vision - fallos ---
+
+
+--------------------------
 
 --- ZX Vision mejoras
 
@@ -142,7 +169,6 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 
 
 
-
 -quiza recordar ultimo ancho de ventana en void zxvision_generic_message_tooltip(,
 util por ejemplo para leer archivos de licencia,
 aunque eso afecta a todo mensaje genérico que aparezca en pantalla
@@ -183,7 +209,6 @@ quiza boton o accion nueva sobre ventana para reajustar tamaño... o no, quizá 
 De hecho la manera de "recrearlas" es cerrarla y volverla a abrir
 Esto también comporta cosas buenas, como que la posición de scroll se mantiene al salir y entrar de una ventana.
 Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
-
 
 
 
@@ -320,27 +345,70 @@ pero en ese caso si van arriba del todo quizá tendrian siempre el foco y NO es 
 -Acción joystick menú tab
 
 
+-Mouse: para que no haga framedrop al moverse sobre un menu, quiza se deberia considerar cada x frames de tiempo.
+
+
+-Permitir teclas numericas como atajos. Para ello hay que reasignar gestion de teclas cursores que las convierte a '6' y '7'
+
+
 
 --- FIN ZX Vision mejoras
 
 
 
---- ZX Vision - fallos ---
+-------------
 
 
--Mientras hay splash de inicio, si se pulsa F5, aparece por un momento overlays de ventanas, cuando F5 esta asignada a "Nothing"
+Otros TODO menos prioritarios, de aqui hasta el final del archivo:
+
+-poder usar kempston mouse desde menu si ventana de menu no tiene el foco (al igual que sucede con el teclado)
 
 
--Con carga top speed salen dos footer ? El nuevo de rojo también...
-Quizá el Rojo debería ser el Tspeed que ya sale en la carga...
-Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el footer
 
--parece que si hay joystick conectado, el splash de Z logo no aparece toda la animacion, se cierra a la primera barra de color
+-Opcional cargar snapshot y no cerrar menú. Mismo para Smartload pero solo con snapshots?
+
+-Algunos items de menu, por ejemplo dentro del buscador de vidas, son lineas no seleccionables,
+aunque se definen de tipo normal. Tendrian que ser de tipo separador. Pero en ese caso, habria que hacer que cuando se abra el menu,
+si el cursor esta en un separador, que haga bajar el cursor -> esto parece que ya se intento, buscar comentario que dice:
+//Nota: el separador no puede ser final de menu
 
 
--Parece que color de aviso no puede ser mayor que 0-15, pues al usar los $$ de caracter, no permite otros valores. Ver test style Warning text
+-Quizá algunas operaciones de archivos que se cancelen con esc que avise con ventana temporal de dicha cancelación
+
+-stdout file selector. Poder hacer ls, cd etc.
 
 
--en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
-->no he conseguido reproducirlo
+-Alternativa en los menús tabulares tipo como el de sprites o colores, que usan cursores y pgup y down
+-usar otras acciones / hotkeys para eso
+-agregar un handler especial para esas teclas. Pero entonces como se mueve uno por los ítems? Con tecla tab?
+Que uso se le da a tab? En file utils, si se tabula, cambia de sección. En menú tabular, el tab sale?
+
+-menus tabulados:
+TAB conmutar a zona de acciones? Quiza nueva funcion para seleccion acciones, que permita:
+
+**mover con cursor abajo/arriba e izquierda/derecha. TAB o ESC permite salir
+**en file utils, por su parte, tambien permito acciones directas como ahora con shift+tecla. o no?
+
+-eventos joystick para simular pgup, pgdn
+
+-Estadísticas de diferentes componentes del core, ya sea cpu u otra cosa, como memoria usada para el rainbow buffer,  y cosas así
+Info de tamaño ventana. Y tamaño ventana sin zoom
+
+-joystick derecha para tab. solo en menu
+
+-menu_ventana_scanf deberia retornar un codigo de retorno en caso de pulsado ESC
+
+-sin multitask, no va repeticion de teclas. esto es porque no se ejecuta timer_check_interrupt
+quiza estas funciones de contadores deberian venir con el thread del timer? aunque luego en version
+no-thread no funcionara tampoco
+->esto ya queda solventado con el setting de stop emulation on menu->multitarea sigue funcionando aunque la cpu esta pausada, y funciona repetición de teclas
+
+-Mostrar consumo de cpu solo del proceso del emulador?
+
+
+-descomprimir rar,gz, etc con espacio en nombres a veces falla. el comando system le envia las "" pero el propio comando
+no gestiona bien nombres con espacios
+
+
+-tecla ',' en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB para el menu
 
