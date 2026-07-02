@@ -1032,11 +1032,11 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
             case XK_eacute:
                 keysym = XK_2;
-                break;
+            break;
 
             case XK_quotedbl:
                 keysym = XK_3;
-                break;
+            break;
 
             case XK_apostrophe:
                 keysym = XK_4;
@@ -1060,7 +1060,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
             case XK_ccedilla:
                 keysym = XK_9;
-                break;
+            break;
 
             case XK_agrave:
                 keysym = XK_0;
