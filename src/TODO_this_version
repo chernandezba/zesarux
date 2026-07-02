@@ -21,3 +21,5 @@ solo los primeros menus principales, los submenus si que salgan con barra de tí
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 
 -Revisar los TODO_next_versions desde ZENG Online (linea 141) y mover items a los archivos TODO* correspondientes
+
+-ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
