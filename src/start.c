@@ -1179,6 +1179,8 @@ printf (
         "--recreatedzx-also-on-menu      Use ZX Recreated mode also on menu\n"
         "--keyboard-issue2               Emulate ZX Spectrum Keyboard issue 2. Default issue 3\n"
         "--keymap n                      Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
+        "--azerty-kbd-num-no-shift       Only used on xwindows driver by now. Enables to use numeric keys on Azerty keyboard, without having to press Shift. "
+                                         "Note we are referring to the numeric keys (up to letter A, Z, etc) and not to the numeric keypad\n"
 
         "--enable-optical-input          Enable optical input emulation\n"
         "--opticalinput-scope            Show optical input scope\n"
@@ -4887,6 +4889,10 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--keyboard-issue2")) {
                 keyboard_issue2.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--azerty-kbd-num-no-shift")) {
+                azerty_keyboard_numbers_no_shift.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--keymap")) {

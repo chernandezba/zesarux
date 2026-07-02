@@ -7441,14 +7441,12 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
         }
 
 
-        //Soporte para Azerty keyboard, no tener que pulsar shift con las teclas numericas
-        //En Mac por ejemplo esto no hace falta, al pulsar la tecla "1" leerá un "1" como es de esperar
         if (!strcmp(scr_new_driver_name,"xwindows")) {
             menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_azerty,NULL,
                 "~~Azerty keyboard","Teclado ~~Azerty","Teclat ~~Azerty");
             menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ",(azerty_keyboard_numbers_no_shift.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_keyboard_settings,'a');
-            menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Enables azerty keyboard");
+            menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Enables to use numeric keys on Azerty keyboard, without having to press Shift");
             menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Only used on xwindows driver by now. Enables to use numeric keys on Azerty keyboard, without having "
                         "to press Shift. Note we are referring to the numeric keys (up to letter A, Z, etc) and not to the numeric keypad.");
         }

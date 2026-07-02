@@ -4378,6 +4378,8 @@ int util_write_configfile(void)
 
                                                     ADD_STRING_CONFIG,"--keymap %d",z88_cpc_keymap_type);
 
+    if (azerty_keyboard_numbers_no_shift.v)         ADD_STRING_CONFIG,"--azerty-kbd-num-no-shift");
+
     if (autoload_snapshot_on_start.v)               ADD_STRING_CONFIG,"--autoloadsnap");
     if (autosave_snapshot_on_exit.v)                ADD_STRING_CONFIG,"--autosavesnap");
     if (autosave_snapshot_path_buffer[0]!=0) {
