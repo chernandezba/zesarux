@@ -1,6 +1,7 @@
 ZEsarUX 13.1 - xxxx edition. 15 June 2026
 Draw window frame on background windows
-Allow to sort icons
+Allow to sort icons alphabetically
+Added configuration file setting for enabling to use numeric keys on Azerty keyboard, without having to press Shift
 
 
 ZEsarUX 13 - The Way of the Exploding Fist edition. 09 June 2026
