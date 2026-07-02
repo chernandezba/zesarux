@@ -652,7 +652,7 @@ extern z80_bit zxmmc_emulation;
 
 extern z80_bit quickexit;
 
-extern z80_bit azerty_keyboard;
+
 
 extern z80_int ramtop_ace;
 

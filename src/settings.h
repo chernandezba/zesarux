@@ -77,6 +77,8 @@ extern z80_bit setting_mostrar_ay_piano_grafico;
 
 extern int kempston_mouse_factor_sensibilidad;
 
+extern z80_bit azerty_keyboard_numbers_no_shift;
+
 extern int adventure_keyboard_key_length;
 
 extern int adventure_keyboard_send_final_spc;

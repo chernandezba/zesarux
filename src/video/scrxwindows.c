@@ -1024,7 +1024,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
     //printf ("keysym: 0x%lX\n",native);
 
     //Suport for numbers on azerty keyboard. You can get them without having to press shift
-    if (azerty_keyboard.v) {
+    if (azerty_keyboard_numbers_no_shift.v) {
         switch (keysym) {
             case XK_ampersand:
                 keysym = XK_1;

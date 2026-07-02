@@ -546,8 +546,7 @@ z80_bit windows_no_disable_console={0};
 z80_bit quickexit={0};
 
 
-//Si soporte azerty para xwindows
-z80_bit azerty_keyboard={0};
+
 
 
 z80_int ramtop_ace;
