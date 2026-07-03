@@ -12899,7 +12899,7 @@ void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
             int linea=0;
             //int menu_info_joystick_last_button,menu_info_joystick_last_type,menu_info_joystick_last_value,menu_info_joystick_last_index;
 
-            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Last joystick button/axis:");
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,"Last joystick button/axis/dpad:");
             linea++;
 
 
@@ -12915,6 +12915,10 @@ void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
             }
             else if (menu_info_joystick_last_type==REALJOYSTICK_INPUT_EVENT_AXIS) {
                 strcpy(buffer_type,"Axis");
+                menu_hardware_realjoystick_test_fill_bars(menu_info_joystick_last_raw_value,fill_bars,LONGITUD_BARRAS);
+            }
+            else if (menu_info_joystick_last_type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+                strcpy(buffer_type,"Dpad");
                 menu_hardware_realjoystick_test_fill_bars(menu_info_joystick_last_raw_value,fill_bars,LONGITUD_BARRAS);
             }
             else strcpy(buffer_type,"Unknown");

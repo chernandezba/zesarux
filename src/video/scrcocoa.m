@@ -585,18 +585,31 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
 
     //Axis
     if(usagePage==kHIDPage_GenericDesktop) {
+        //printf("usage: %d\n",usage);
+
+
+        long int valorboton;
+
+        long max;
+        long min;
+        long diff;
 
         switch(usage) {
             case kHIDUsage_GD_X:
             case kHIDUsage_GD_Y:
+            case kHIDUsage_GD_Z:
+            case kHIDUsage_GD_Rx:
+            case kHIDUsage_GD_Ry:
+            case kHIDUsage_GD_Rz:
+            //Nimbus usa kHIDUsage_GD_Z y kHIDUsage_GD_Rz y los Pad
             //printf("AXIS\n");
 
                 boton=usage;
-                long int valorboton=elementValue;      //necesitamos que esto sea long para poder multiplicar por 65534 y no salir del rangpo maximo
+                valorboton=elementValue;      //necesitamos que esto sea long para poder multiplicar por 65534 y no salir del rangpo maximo
 
-                long max=IOHIDElementGetPhysicalMax(element);
-                long min=IOHIDElementGetPhysicalMin(element);
-                long diff=max-min;
+                max=IOHIDElementGetPhysicalMax(element);
+                min=IOHIDElementGetPhysicalMin(element);
+                diff=max-min;
                 debug_printf(VERBOSE_DEBUG,"Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld ",valorboton,min,max,diff);
 
                 //Al menos 2 valores de diferencia
@@ -637,6 +650,59 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
 
                 }
 
+            break;
+
+            case kHIDUsage_GD_DPadUp:      // 0x90 (144)
+            case kHIDUsage_GD_DPadDown:    // 0x91 (145)
+            case kHIDUsage_GD_DPadRight:   // 0x92 (146)
+            case kHIDUsage_GD_DPadLeft:    // 0x93 (147)
+                //printf("DPad. TODO\n");
+
+                boton=usage;
+                valorboton=elementValue;      //necesitamos que esto sea long para poder multiplicar por 65534 y no salir del rangpo maximo
+
+                max=IOHIDElementGetPhysicalMax(element);
+                min=IOHIDElementGetPhysicalMin(element);
+                diff=max-min;
+                debug_printf(VERBOSE_DEBUG,"Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld ",valorboton,min,max,diff);
+                printf("Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld\n",valorboton,min,max,diff);
+
+            //Al menos 2 valores de diferencia
+                if (diff>1) {
+
+
+                    //Desplazamos. Valor menor a 0
+                    valorboton -=min;
+
+                    //printf("1: %ld\n",valorboton);
+
+                    //Y escalamos a 32768
+                    valorboton=(valorboton*32768)/diff;
+
+                    //printf("2: %ld\n",valorboton);
+
+                    //Y desplazamos a -32767 a 32767
+                    //valorboton -=32767;
+
+                    //printf("3: %ld\n",valorboton);
+
+
+
+                    int valorfinalaxis=valorboton;
+
+                    //El valor de info lo guardo como el valor en crudo sin ajustar con autocalibrate
+                    menu_info_joystick_last_raw_value=valorfinalaxis;
+
+                    //printf("Set axis %d value %d\n\n",boton,valorfinalaxis);
+
+                    debug_printf(VERBOSE_DEBUG,"Set dpad %d value %d",boton,valorfinalaxis);
+                    printf("Set dpad %d value %d\n",boton,valorfinalaxis);
+
+                    //TODO de momento no enviar evento
+                    //realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_DPAD,valorfinalaxis,valorboton);
+                    //realjoystick_hit=1;
+
+                }
             break;
 
             case kHIDUsage_GD_Hatswitch:

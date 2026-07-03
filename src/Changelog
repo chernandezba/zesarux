@@ -3,6 +3,7 @@ Draw window frame on background windows
 Allow to sort icons alphabetically
 Added configuration file setting for enabling to use numeric keys on Azerty keyboard, without having to press Shift
 Fixed disabling Search menu
+Added more different joystick support for Mac (Dpad, different axis)
 
 
 ZEsarUX 13 - The Way of the Exploding Fist edition. 09 June 2026

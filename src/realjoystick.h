@@ -68,6 +68,7 @@ typedef unsigned char __u8;
 #define REALJOYSTICK_INPUT_EVENT_AXIS           0x08    /* joystick moved */
 #define REALJOYSTICK_INPUT_EVENT_INIT           0x40    /* initial state of device */
 
+#define REALJOYSTICK_INPUT_EVENT_DPAD           128
 
 extern int (*realjoystick_init)(void);
 extern void (*realjoystick_main)(void);
