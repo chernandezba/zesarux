@@ -532,6 +532,7 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
 
     realjoystick_total_axes=0;
     realjoystick_total_buttons=0;
+    realjoystick_total_dpad=0;
 
     //Contar total de botones
 
@@ -596,6 +597,41 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
 
     CFRelease(elements);
 
+
+    //Contar total de dpad
+
+    elements = IOHIDDeviceCopyMatchingElements(
+        device,
+        NULL,
+        kIOHIDOptionsTypeNone
+    );
+
+    count = CFArrayGetCount(elements);
+
+    for (CFIndex i = 0; i < count; i++)
+    {
+        IOHIDElementRef element =
+            (IOHIDElementRef)CFArrayGetValueAtIndex(elements, i);
+
+
+        uint32_t page = IOHIDElementGetUsagePage(element);
+        uint32_t usage = IOHIDElementGetUsage(element);
+
+        if (page == kHIDPage_GenericDesktop)
+        {
+            switch (usage)
+            {
+                case kHIDUsage_GD_DPadUp:
+                case kHIDUsage_GD_DPadDown:
+                case kHIDUsage_GD_DPadLeft:
+                case kHIDUsage_GD_DPadRight:
+                    realjoystick_total_dpad++;
+                    break;
+            }
+        }
+    }
+
+    CFRelease(elements);
 
     realjoystick_present.v=1;
 

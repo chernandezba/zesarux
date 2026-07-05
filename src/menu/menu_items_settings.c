@@ -12826,7 +12826,7 @@ void menu_hardware_realjoystick_test_fill_bars_dpad(int valor,char *string,int l
 
 
 #define REALJOYSTICK_TEST_ANCHO 36
-#define REALJOYSTICK_TEST_ALTO 16
+#define REALJOYSTICK_TEST_ALTO 17
 
 void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
 {
@@ -12953,6 +12953,9 @@ void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
             zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_texto_medio);
 
             sprintf (buffer_texto_medio,"Total axis: %d",realjoystick_total_axes);
+            zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_texto_medio);
+
+            sprintf (buffer_texto_medio,"Total dpad: %d",realjoystick_total_dpad);
             zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_texto_medio);
 
              if (!realjoystick_is_linux_native() ) {

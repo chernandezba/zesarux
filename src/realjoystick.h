@@ -216,6 +216,7 @@ extern void realjoystick_start_driver(void);
 
 extern int realjoystick_total_buttons;
 extern int realjoystick_total_axes;
+extern int realjoystick_total_dpad;
 #define REALJOYSTICK_MAX_NAME 32
 
 extern char realjoystick_joy_name[];
