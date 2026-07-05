@@ -156,11 +156,11 @@ struct s_realjoystick_event_key_function {
 	//numero de boton
 	int button;
 
-	//tipo de boton: 0-boton normal, +1 axis positivo, -1 axis negativo
+	//tipo de boton: 0-boton normal, +1 axis positivo o dpad, -1 axis negativo
 	int button_type;
 
-        //caracter a enviar, usado en array de keys pero no en array de eventos
-        z80_byte caracter;
+    //caracter a enviar, usado en array de keys pero no en array de eventos
+    z80_byte caracter;
 
 };
 

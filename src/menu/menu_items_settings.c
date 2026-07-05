@@ -12463,31 +12463,7 @@ int menu_joystick_event_list(void)
 
 }
 
-/*
-void old_menu_hardware_realjoystick_keys_button_by_button(int indice,z80_byte caracter)
-{
-    //Uso una simple ventana dado que por zxvision_window no puedo dejarla ahi de fondo y leer el joystick
-    //TODO: probar esto porque quiza si se puede...
-    menu_simple_ventana("Redefine key","Please press the button/axis");
 
-
-
-
-    menu_refresca_pantalla();
-
-    //Para xwindows hace falta esto, sino no refresca
-    scr_actualiza_tablas_teclado();
-
-    //redefinir boton a tecla
-    if (!realjoystick_redefine_key(indice,caracter)) {
-    //se ha salido con tecla. ver si es ESC
-            if ((puerto_especial1&1)==0) {
-                    //desasignar evento
-        realjoystick_keys_array[indice].asignado.v=0;
-            }
-    }
-}
-*/
 
 void menu_hardware_realjoystick_keys_button_by_button(int indice,z80_byte caracter)
 {
