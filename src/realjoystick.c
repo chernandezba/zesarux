@@ -1242,14 +1242,12 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
 
 							case REALJOYSTICK_EVENT_LEFT:
 									//reset derecha
-                                    printf("evento izquierda. reset derecha\n");
 									joystick_release_right(1);
 									realjoystick_set_reset_action(index,value);
 							break;
 
 							case REALJOYSTICK_EVENT_RIGHT:
 									//reset izquierda
-                                    printf("evento derecha. reset izquierda\n");
 									joystick_release_left(1);
 									realjoystick_set_reset_action(index,value);
 							break;
