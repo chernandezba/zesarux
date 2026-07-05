@@ -505,7 +505,26 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
 
     char buffer_temp[256];
 
-    sprintf(buffer_temp,"Prod: 0x%x Vend: 0x%x", product,vendor);
+    //sprintf(buffer_temp,"Prod: 0x%x Vend: 0x%x", product,vendor);
+
+
+    //Obtener el nombre
+    char buffer[256];
+
+    CFStringRef name = (CFStringRef)IOHIDDeviceGetProperty(
+        device,
+        CFSTR(kIOHIDProductKey)
+    );
+
+    if (name) {
+        CFStringGetCString(name, buffer, sizeof(buffer), kCFStringEncodingUTF8);
+        sprintf(buffer_temp,"%s", buffer);
+    }
+    else {
+        strcpy(buffer_temp,"Unknown");
+    }
+
+
 
     //Por si acaso truncar al maximo para no exceder realjoystick_joy_name
     menu_tape_settings_trunc_name(buffer_temp,realjoystick_joy_name,REALJOYSTICK_MAX_NAME);
