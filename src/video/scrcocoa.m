@@ -553,6 +553,49 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
 
     CFRelease(elements);
 
+    //Contar total de axis
+
+    elements = IOHIDDeviceCopyMatchingElements(
+        device,
+        NULL,
+        kIOHIDOptionsTypeNone
+    );
+
+    count = CFArrayGetCount(elements);
+
+    for (CFIndex i = 0; i < count; i++)
+    {
+        IOHIDElementRef element =
+            (IOHIDElementRef)CFArrayGetValueAtIndex(elements, i);
+
+        if (IOHIDElementGetType(element) != kIOHIDElementTypeInput_Axis &&
+            IOHIDElementGetType(element) != kIOHIDElementTypeInput_Misc)
+            continue;
+
+        uint32_t page = IOHIDElementGetUsagePage(element);
+        uint32_t usage = IOHIDElementGetUsage(element);
+
+        if (page == kHIDPage_GenericDesktop)
+        {
+            switch (usage)
+            {
+                case kHIDUsage_GD_X:
+                case kHIDUsage_GD_Y:
+                case kHIDUsage_GD_Z:
+                case kHIDUsage_GD_Rx:
+                case kHIDUsage_GD_Ry:
+                case kHIDUsage_GD_Rz:
+                case kHIDUsage_GD_Slider:
+                case kHIDUsage_GD_Dial:
+                case kHIDUsage_GD_Wheel:
+                    realjoystick_total_axes++;
+                    break;
+            }
+        }
+    }
+
+    CFRelease(elements);
+
 
     realjoystick_present.v=1;
 
