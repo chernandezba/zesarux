@@ -65,6 +65,7 @@
 #include "operaciones.h"
 #include "disassemble.h"
 #include "utils.h"
+#include "utils_math.h"
 #include "contend.h"
 #include "joystick.h"
 #include "ula.h"
@@ -12791,6 +12792,37 @@ void menu_hardware_realjoystick_test_fill_bars(int valor,char *string,int limite
 
 }
 
+//Llena string de texto con barras =====
+//Valor 0:      -----
+//Valor 32767:  =====
+//Valor -32767: =====
+//limite_barras dice cuantas barras muestra hacia la derecha o izquierda
+void menu_hardware_realjoystick_test_fill_bars_dpad(int valor,char *string,int limite_barras)
+{
+    valor=util_get_absolute(valor);
+    //Limitar valor entre 0 y 32767
+    if (valor>32767) valor=32767;
+
+    //Cuantas barras hay que hacer
+    int barras=(valor*limite_barras)/32767;
+
+    //String inicial
+    int i;
+    for (i=0;i<limite_barras;i++) {
+        string[i]='-';
+    }
+
+
+    //Y ahora llenar hacia la derecha
+    int indice=0;
+    for (;barras;barras--) {
+        string[indice]='=';
+        indice++;
+    }
+
+    string[limite_barras]=0;
+
+}
 
 
 #define REALJOYSTICK_TEST_ANCHO 36
@@ -12875,7 +12907,7 @@ void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
             }
             else if (menu_info_joystick_last_type==REALJOYSTICK_INPUT_EVENT_DPAD) {
                 strcpy(buffer_type,"Dpad");
-                menu_hardware_realjoystick_test_fill_bars(menu_info_joystick_last_raw_value,fill_bars,LONGITUD_BARRAS);
+                menu_hardware_realjoystick_test_fill_bars_dpad(menu_info_joystick_last_raw_value,fill_bars,LONGITUD_BARRAS);
             }
             else strcpy(buffer_type,"Unknown");
 
