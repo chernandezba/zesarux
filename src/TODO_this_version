@@ -25,5 +25,9 @@ solo los primeros menus principales, los submenus si que salgan con barra de tí
 -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
 
 -soporte joystick nimbus. soporte pad (no es como un eje que hay posicion para + y otra -). nuevo REALJOYSTICK_INPUT_EVENT_PAD
-calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis o dpad, solo considerar los limites que retorna el propio botón. corregir esto.
-Ver que REALJOYSTICK_INPUT_EVENT_DPAD no mete incompatibilidad con Linux (de eventos con mismo valor)
+ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis o dpad, solo considerar los limites que retorna el propio botón. corregir esto.
+* Ver que REALJOYSTICK_INPUT_EVENT_DPAD no mete incompatibilidad con Linux (de eventos con mismo valor)
+- soporte nimbus en Mac
+- soporte nimbus en Windows (SDL1, SDL2)
+- soporte nimbus en Linux (SDL1, SDL2)
+- soporte nimbus en Linux (Nativo Linux)
