@@ -12199,27 +12199,7 @@ void menu_print_text_axis(char *buffer,int button_type,int button_number)
 
 }
 
-/*
-void old_menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
-{
 
-    menu_simple_ventana("Redefine event","Please press the button/axis");
-    menu_refresca_pantalla();
-
-    //Para xwindows hace falta esto, sino no refresca
-     scr_actualiza_tablas_teclado();
-
-        //redefinir evento
-        if (!realjoystick_redefine_event(hardware_realjoystick_event_opcion_seleccionada)) {
-        //se ha salido con tecla. ver si es ESC
-        if ((puerto_especial1&1)==0) {
-            //desasignar evento
-            realjoystick_events_array[hardware_realjoystick_event_opcion_seleccionada].asignado.v=0;
-        }
-    }
-
-}
-*/
 
 //Retorna tecla pulsada
 int menu_common_wait_realjoystick_press(zxvision_window *ventana)
