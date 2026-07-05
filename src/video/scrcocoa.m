@@ -529,27 +529,33 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
     //Por si acaso truncar al maximo para no exceder realjoystick_joy_name
     menu_tape_settings_trunc_name(buffer_temp,realjoystick_joy_name,REALJOYSTICK_MAX_NAME);
 
+
+    realjoystick_total_axes=0;
+    realjoystick_total_buttons=0;
+
+    //Contar total de botones
+
+    CFArrayRef elements = IOHIDDeviceCopyMatchingElements(device, NULL, kIOHIDOptionsTypeNone);
+
+    CFIndex count = CFArrayGetCount(elements);
+
+    for (CFIndex i = 0; i < count; i++)
+    {
+        IOHIDElementRef element = (IOHIDElementRef)CFArrayGetValueAtIndex(elements, i);
+
+        uint32_t usagePage = IOHIDElementGetUsagePage(element);
+
+        if (usagePage == kHIDPage_Button || usagePage == kHIDPage_Consumer)
+        {
+            realjoystick_total_buttons++;
+        }
+    }
+
+    CFRelease(elements);
+
+
     realjoystick_present.v=1;
 
-
-/* esto no va, falla y no se ejecuta el NSLog ni nada que venga despues
-// Retrieve the device name & serial number
-NSString *devName = [NSString stringWithUTF8String:
-                                              CFStringGetCStringPtr(
-                                                   IOHIDDeviceGetProperty(device,
-                                                        CFSTR("Product")),
-                                                        kCFStringEncodingMacRoman)];
-
-NSString *devSerialNumber = [NSString stringWithUTF8String:
-                                            CFStringGetCStringPtr(
-                                               IOHIDDeviceGetProperty(device,
-                                                     CFSTR("SerialNumber")),
-                                                       kCFStringEncodingMacRoman)];
-
-NSLog(@"\nONTRAK device Model: %@\nSerial Number:%@\n",
-     devName,
-     devSerialNumber);
-     */
 
 
 }
