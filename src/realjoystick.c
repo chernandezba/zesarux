@@ -434,7 +434,7 @@ int realjoystick_find_event_or_key(int indice_inicial,realjoystick_events_keys_f
 				if (type==REALJOYSTICK_INPUT_EVENT_BUTTON && tabla[i].button_type==0) return i;
 
 
-				if (type==REALJOYSTICK_INPUT_EVENT_AXIS) {
+				if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
 
 					//ver si coindice el axis
 					if (tabla[i].button_type==+1) {
@@ -784,7 +784,7 @@ int realjoystick_redefine_event_key_no_wait(realjoystick_events_keys_function *t
 				button_type=0;
                         }
 
-                        if (type==REALJOYSTICK_INPUT_EVENT_AXIS) {
+                        if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
                                 //if (value<0) tabla[indice].button_type=-1;
                                 //else tabla[indice].button_type=+1;
                                 if (value<0) button_type=-1;
@@ -1324,7 +1324,7 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
 
 
 					//ver tipo axis
-					if (type==REALJOYSTICK_INPUT_EVENT_AXIS) {
+					if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
 						switch (index) {
 							case REALJOYSTICK_EVENT_UP:
 								//reset abajo
@@ -1340,12 +1340,14 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
 
 							case REALJOYSTICK_EVENT_LEFT:
 									//reset derecha
+                                    printf("evento izquierda. reset derecha\n");
 									joystick_release_right(1);
 									realjoystick_set_reset_action(index,value);
 							break;
 
 							case REALJOYSTICK_EVENT_RIGHT:
 									//reset izquierda
+                                    printf("evento derecha. reset izquierda\n");
 									joystick_release_left(1);
 									realjoystick_set_reset_action(index,value);
 							break;
@@ -1376,7 +1378,7 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
 
                                 //ver tipo boton normal o axis
 
-                                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS) {
+                                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
                                         realjoystick_set_reset_key(index,value);
                                 }
 			}

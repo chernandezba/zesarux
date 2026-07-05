@@ -611,10 +611,10 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
                 min=IOHIDElementGetPhysicalMin(element);
                 diff=max-min;
                 debug_printf(VERBOSE_DEBUG,"Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld ",valorboton,min,max,diff);
+                printf("Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld\n",valorboton,min,max,diff);
 
                 //Al menos 2 valores de diferencia
                 if (diff>1) {
-
 
                     //Desplazamos. Valor menor a 0
                     valorboton -=min;
@@ -631,7 +631,9 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
 
                     //printf("3: %ld\n",valorboton);
 
-
+                    //Ejemplo -127 a 127: eje izquierdo-derecho: (Min allowed: -127 Max allowed: 127 diff: 254)
+                    // izquierda del todo: -127. valor final: -32767
+                    // derecha del todo: +127. valor final: +32768
 
                     int valorfinalaxis=valorboton;
 
@@ -644,6 +646,7 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
                     //printf("Set axis %d value %d\n\n",boton,valorfinalaxis);
 
                     debug_printf(VERBOSE_DEBUG,"Set axis %d value %d",boton,valorfinalaxis);
+                    printf("Set axis %d value %d\n",boton,valorfinalaxis);
 
                     realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,valorfinalaxis,valorboton);
                     realjoystick_hit=1;
@@ -698,9 +701,8 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
                     debug_printf(VERBOSE_DEBUG,"Set dpad %d value %d",boton,valorfinalaxis);
                     printf("Set dpad %d value %d\n",boton,valorfinalaxis);
 
-                    //TODO de momento no enviar evento
-                    //realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_DPAD,valorfinalaxis,valorboton);
-                    //realjoystick_hit=1;
+                    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_DPAD,valorfinalaxis,valorboton);
+                    realjoystick_hit=1;
 
                 }
             break;
