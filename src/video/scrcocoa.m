@@ -562,14 +562,15 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
     //printf("Usage: %d X %d Y %d HAT %d\n",usage,kHIDUsage_GD_X,kHIDUsage_GD_Y,kHIDUsage_GD_Hatswitch);
 
     int usagePage = IOHIDElementGetUsagePage(element);
-    //printf("Usagepage: %d kHIDPage_GenericDesktop %d kHIDPage_Button %d\n",usagePage,kHIDPage_GenericDesktop,kHIDPage_Button);
+    //printf("Usagepage: %d kHIDPage_GenericDesktop %d kHIDPage_Button %d usage %d\n",usagePage,kHIDPage_GenericDesktop,kHIDPage_Button,usage);
 
     debug_printf(VERBOSE_DEBUG,"Joystick action: usagePage: %d usage: %d elementValue: %ld",usagePage,usage,elementValue);
 
     int boton;
 
-    //Boton
-    if(usagePage==kHIDPage_Button) {
+    //Boton normal o especiales (kHIDPage_Consumer). Con kHIDPage_Consumer el numero de boton es un indice a una función,
+    //por ejemplo con el mando Nimbus el boton Menú tiene usage 547 y es kHIDUsage_Csmr_AC_Home
+    if(usagePage==kHIDPage_Button || usagePage==kHIDPage_Consumer) {
         //printf("BOTON\n");
 
         boton=usage;
