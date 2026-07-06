@@ -556,18 +556,13 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
 
     //Contar total de axis
 
-    elements = IOHIDDeviceCopyMatchingElements(
-        device,
-        NULL,
-        kIOHIDOptionsTypeNone
-    );
+    elements = IOHIDDeviceCopyMatchingElements(device, NULL, kIOHIDOptionsTypeNone);
 
     count = CFArrayGetCount(elements);
 
     for (CFIndex i = 0; i < count; i++)
     {
-        IOHIDElementRef element =
-            (IOHIDElementRef)CFArrayGetValueAtIndex(elements, i);
+        IOHIDElementRef element = (IOHIDElementRef)CFArrayGetValueAtIndex(elements, i);
 
         if (IOHIDElementGetType(element) != kIOHIDElementTypeInput_Axis &&
             IOHIDElementGetType(element) != kIOHIDElementTypeInput_Misc)
@@ -590,7 +585,7 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
                 case kHIDUsage_GD_Dial:
                 case kHIDUsage_GD_Wheel:
                     realjoystick_total_axes++;
-                    break;
+                break;
             }
         }
     }
@@ -600,18 +595,13 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
 
     //Contar total de dpad
 
-    elements = IOHIDDeviceCopyMatchingElements(
-        device,
-        NULL,
-        kIOHIDOptionsTypeNone
-    );
+    elements = IOHIDDeviceCopyMatchingElements(device, NULL, kIOHIDOptionsTypeNone);
 
     count = CFArrayGetCount(elements);
 
     for (CFIndex i = 0; i < count; i++)
     {
-        IOHIDElementRef element =
-            (IOHIDElementRef)CFArrayGetValueAtIndex(elements, i);
+        IOHIDElementRef element = (IOHIDElementRef)CFArrayGetValueAtIndex(elements, i);
 
 
         uint32_t page = IOHIDElementGetUsagePage(element);
@@ -626,7 +616,7 @@ void joystickWasAdded(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, 
                 case kHIDUsage_GD_DPadLeft:
                 case kHIDUsage_GD_DPadRight:
                     realjoystick_total_dpad++;
-                    break;
+                break;
             }
         }
     }
