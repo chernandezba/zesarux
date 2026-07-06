@@ -6,6 +6,9 @@ Fixed disabling Search menu
 Added more different joystick support for Mac (Dpad, different axis)
 Add to recent files/folders list when selecting a folder (for example esxdos handler directory or ql mdv)
 
+Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
+
+
 ZEsarUX 13 - The Way of the Exploding Fist edition. 09 June 2026
 
 * New things added:

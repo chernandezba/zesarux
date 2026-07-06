@@ -7941,7 +7941,10 @@ int parse_cmdline_options(int desde_commandline)
 
                 }
 
-                else util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized);
+                else {
+                    //printf("Recuperando geometria ventana %s minimizada %d\n",nombre,is_minimized);
+                    util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized);
+                }
 
             }
 

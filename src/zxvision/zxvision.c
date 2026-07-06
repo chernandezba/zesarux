@@ -12426,6 +12426,7 @@ void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width
         //total_height=ZXVISION_MAX_ALTO_VENTANA-10;
 
         //printf("despues ancho %d alto %d\n",total_width,total_height);
+        //printf("Ventana creada minimizada %s\n",w->window_title);
 
     }
 

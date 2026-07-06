@@ -23176,7 +23176,8 @@ int util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,in
                         //Nota3: se puede por ejemplo minimizar una ventana y luego cerrarla desde process switcher o window management: en ese caso se quedará como cerrada y minimizada también
 
                         //Por tanto es necesario aquí este trozo de código en los casos en que quedan cerradas y minimizadas
-                        if (*is_minimized && zxvision_hide_minimized_windows.v) {
+                        //Pero no hacerlo cuando se restauran al inicio, por que si no, todas ventanas minimizadas al salir, se desminimizan al entrar
+                        if (*is_minimized && zxvision_hide_minimized_windows.v && !zxvision_currently_restoring_windows_on_start) {
                             //printf("Desminimizar %s\n",nombre);
                             *is_minimized=0;
                         }
