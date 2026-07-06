@@ -19,7 +19,7 @@ solo los primeros menus principales, los submenus si que salgan con barra de tí
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 
--Revisar los TODO_next_version desde ZENG Online (linea 141) y mover items a los archivos TODO* correspondientes
+-Revisar los TODO_next_version desde linea 260 y mover items a los archivos TODO* correspondientes
 
 -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
 
@@ -34,3 +34,13 @@ ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis 
 
 
 ok -que se guarde en recent files las carpetas accedidas para el root dir de mdv. y otras rutas que se seleccionan como carpeta (por ejemplo esxdos handler root dir)
+
+-quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1)) que cambie algo mas de filesel, como:
+**que indique que se pide carpeta y no archivo (aparte del titulo de la ventana que ya lo dice)
+**que no se deba salir con ESC
+**etc....
+
+
+-ventanas minimizadas y con hide minimized windows acaba mostrando el marco de la ventana
+
+-ventanas minimizadas y con hide minimized windows al restaurarse al iniciar, no aparecen como ocultas minimizadas

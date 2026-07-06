@@ -10,7 +10,7 @@
 -Al releer ventana con F4, en menu con opciones, no hace traducción de opciones entre corchetes ni dice los corchetes al final de linea,
 como hace cuando está abriendo un menú y leyendo sus opciones.
 
-Ejemplo: 
+Ejemplo:
 [X] AY Envelopes
 
 En vez de "AY Envelopes. Enabled"
@@ -18,11 +18,15 @@ dice:
 "Ex AY Envelopes"
 
 -Tecla escape debería hacer break cuando se está escuchando speech
-O quizá setting configurable 
+O quizá setting configurable
 
 -relee item menu cuando estas sobre item que no tiene tooltip. Ver codigo:
 -				//TODO: esto no tiene efecto, sigue releyendo cuando estas sobre item que no tiene tooltip
-				//menu_speech_tecla_pulsada=1;	
+				//menu_speech_tecla_pulsada=1;
+
+
+-Speccy online browser
+Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se escuchan porque se lee la línea del nombre del juego y no la de debajo que dice el tipo
 
 
 -script de mac say no reproduce lineas que empiezan por "--", como algunas lineas del FAQ
@@ -37,7 +41,7 @@ O quizá setting configurable
 
 
 
--pulsar ESC en item que se esta escuchando en el menu, cierra el menu? 
+-pulsar ESC en item que se esta escuchando en el menu, cierra el menu?
 En parte es correcto, queremos volver a menu anterior.
 Si no se quiere esto, hay alternativas:
 

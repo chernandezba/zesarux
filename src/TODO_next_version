@@ -138,23 +138,6 @@ y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 
 ----
 
-ZENG Online
-
--Si se hace get-snapshot sin haber uno primero, creo que peta: no deberia porque se controla que el size no sea 0
--Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
-
-
--Modo streaming
-acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
-
-
-Revisar si hay mas sitios donde es necesario  pthread_testcancel();
-
-
-Teclado en pantalla no va con Zeng online?
-
--Modo streaming video para ql? Moviendo memoria de video
-------
 
 -en external audio source. hago shift-e (flush) y mientras está la ventana splash, pulso en pantalla spectrum
 No se cierra el menu realmente, solo pierde el foco. Deberia cerrar el menu
@@ -184,37 +167,11 @@ Realmente tiene que haber algo diferente entre menu_generic_message_splash y men
 al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Pero con el segundo, el foco se queda en la ventana que habia debajo
 
 
--De alguna manera que se vea una miniatura de la pantalla del juego cargado
-En alguna ventana nueva quizá
-
-
-
--Ventana que permita agregar notas, que permita quedarse en background
-Problema: donde se guardan las notas? En config no puede ser, ocuparia demasiado
-Deberia ir vinculado a un archivo de texto. Basicamente se trata de hacer un mini editor de texto
 
 -Copi128: poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
 y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
 Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
 los traps que tenemos ahora
-
--En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese: aun configurando 10000 iconos maximo,
-no hay diferencia al menos al mover un icono (eso leyendo los 10000). Por tanto en principio no vale la pena contar hasta el ultimo usado
-
-
--Conversion de audio datos ZX81
-*Cuando encuentre un pulso sospechoso, llamar a un callback y que pregunte al usuario qué hacer
-*poder editar la onda cuando haya un error - que se pare si hay un error (numero de pulsos desconocidos para valor de bit). Requeriria otra ventana diferente de la waveform?
-No sé si vale la pena, porque los casos que veo suele ser de 5 pulsos (que convierte automáticamente a un bit 0) o de 9-10 pulsos (que convierte automáticamente a un bit 1). Creo que otros errores ya resultarían en archivos de audio de poca calidad que tendría que preguntar al usuario
-miles de veces
-*poder convertir audio de zx80? No sé si tiene mucho sentido, aunque se podría pero hay pocas cintas de zx80 por ahí para recuperar...
-*poder convertir por linea de comandos. convert RWA a P/P81. Automático sin preguntar amplitud. Con --convert-...
-*Luego también se podría integrar en visual real tape, la función que obtiene el nombre del programa y su longitud
-*en menu_file_realtape_browser_show, con tecla V de view muestra los bloques de datos de un rwa, si es zx8081 o spectrum. creo que aqui
-se llama tambien al usar visual real tape, esa info de bloques
-*al insertar en standard tape un archivo smp/rwa, llama a snap_load_zx80_zx81_load_smp: ahi se deberia autodetectar,
-y en algun sitio indicar si se usa el algoritmo viejo o el nuevo. OJO! que es comun a zx80 y zx81
-*unkatris.wav, no es capaz de convertirlo. Quiza esto quiero que siga siendo asi, esa señal no tiene transiciones a valor 0 por ejemplo
 
 
 
@@ -234,9 +191,7 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 -sdl en debian 12 32 bits inicializa muy lento
 
--Volante:
-*continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
-*en haiku se bloquea al arrancar si conectado un volante
+
 
 -implementar máquinas de 60 Hz (timex, master system etc)
 -modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
@@ -283,14 +238,12 @@ Para eso tendria que haber una tabla de cada caracter que uso desde 128 en adela
 En cambio, items de menus si se leen bien porque ahi se le envia linea a linea el texto original (con utf8) y no
 se le envian los caracrteres desde zxvision_draw_window_contents
 
--Speccy online browser
-Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se escuchan porque se lee la línea del nombre del juego y no la de debajo que dice el tipo
 
 
 -pulsar dos veces con boton derecho en zx desktop abre dos veces el menu de zx desktop (menu pequeñito) y luego al pulsar ESC hay que pulsar dos
 veces
 
--que con menus de botones superiores (obviamente con topbar desactivado) pudieras cambiarte de cada uno de los menus con flecha izquierda-derecha, tal cual como se hace con topbar: ejemplo estando en Machine que pudieras saltar a Audio con flecha derecha
+
 
 -ZX desktop: si menu char height no es 8, limite de ventanas por debajo al moverlas hace un efecto extraño,
 probablemente porque el alto es multiple de 8 y queda menos de una fila abajo sin poderse usar

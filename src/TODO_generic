@@ -46,6 +46,10 @@ cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libre
 
 -Lock sdl al refrescar hace printf?
 
+-Volante:
+*continental circus, ---steering-wheel-address b50ch, parece de 16 bits, pero no va bien. intentar que funcione
+*en haiku se bloquea al arrancar si conectado un volante
+
 -fallback de video y/o audio no lo hace si se especifica --vo .... o --ao ...... cosa que normalmente ya estara en el .zesaruxrc y por tanto no se hara fallback
 
 -Parámetro change slow en rpi que no venga por defecto

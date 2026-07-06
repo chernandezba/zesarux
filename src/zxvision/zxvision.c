@@ -14871,7 +14871,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
         int color_recuadro=ESTILO_GUI_COLOR_RECUADRO_INACTIVO;
         if (ventana_tipo_activa) color_recuadro=ESTILO_GUI_COLOR_RECUADRO;
 
-        menu_dibuja_cuadrado(x1,y1,x2,y2,color_recuadro,color_recuadro,0,!ventana_es_background,pointer_window);
+        if (zxvision_show_minimized(pointer_window)) menu_dibuja_cuadrado(x1,y1,x2,y2,color_recuadro,color_recuadro,0,!ventana_es_background,pointer_window);
 
 
         pointer_window=pointer_window->next_window;

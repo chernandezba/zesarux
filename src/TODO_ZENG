@@ -52,6 +52,23 @@ En ambos entornos, mi imac Local, actuando como slave
 
 ---- ZENG ONLINE ----
 
+
+-Si se hace get-snapshot sin haber uno primero, creo que peta: no deberia porque se controla que el size no sea 0
+-Cliente sin permisos de get-snapshot, en el footer acaba diciendo OFFLINE. No deberia poner ese mensaje si no tiene permisos de get-snapshot
+
+
+-Modo streaming
+acabar de probar cambios maquina spectrum y no spectrum en master y slave, antes y despues de conectar
+
+
+Revisar si hay mas sitios donde es necesario  pthread_testcancel();
+
+
+Teclado en pantalla no va con Zeng online?
+
+-Modo streaming video para ql? Moviendo memoria de video
+
+
 -ZENG para msx ¿no? se leen los cursores en destino cuando se pulsan desde slave
 
 

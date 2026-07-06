@@ -17,7 +17,8 @@
 
 -botones superiores e inferiores que no estén pegados a la pantalla: moverlos una columna a la derecha
 
-
+-que con menus de botones superiores (obviamente con topbar desactivado) pudieras cambiarte de cada uno de los menus con flecha izquierda-derecha,
+tal cual como se hace con topbar: ejemplo estando en Machine que pudieras saltar a Audio con flecha derecha
 
 -iconos de dispositivos mmc/ide en escritorio
 
@@ -149,6 +150,9 @@ Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta 
 
 -funciones menu_ventana_scanf_numero_enhanced*, slider:
 *si rango pequeño, como en window zoom, salen repetidos caracteres "|"
+
+-En desktop contar último icono de la lista para que al dibujar solo se cuente hasta ese: aun configurando 10000 iconos maximo,
+no hay diferencia al menos al mover un icono (eso leyendo los 10000). Por tanto en principio no vale la pena contar hasta el ultimo usado
 
 
 -expandir .z80 para sacar pantalla. tiene sentido? pero entonces se deberia hacer con los sna, sp, zsf, etc
