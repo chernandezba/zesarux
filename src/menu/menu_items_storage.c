@@ -10741,7 +10741,7 @@ int menu_storage_string_root_dir(char *string_root_dir)
     zvfs_chdir(string_root_dir);
 
 
-        ret=menu_filesel("Enter dir & press ESC",filtros,nada);
+        ret=menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1);
 
 
     //Si sale con ESC
@@ -12866,7 +12866,7 @@ int menu_storage_ql_mdv_flp(char *string_root_dir,enum ql_qdos_unidades unidad)
     zvfs_chdir(string_root_dir);
 
 
-    ret=menu_filesel("Enter dir & press ESC",filtros,nada);
+    ret=menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1);
 
 
     //Si sale con ESC

@@ -6650,7 +6650,7 @@ void menu_ayplayer_add_directory_playlist(MENU_ITEM_PARAMETERS)
     //zvfs_chdir(string_root_dir);
 
 
-    ret=menu_filesel("Enter dir & press ESC",filtros,nada);
+    ret=menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1);
 
 
     //Si sale con ESC

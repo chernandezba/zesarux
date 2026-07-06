@@ -46,7 +46,7 @@ extern int menu_filesel_overlay_last_preview_height;
 extern char menu_filesel_last_preview_scr_filename[];
 
 extern int menu_filesel(char *titulo,char *filtros[],char *archivo);
-extern int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save);
+extern int menu_filesel_all_parameters(char *titulo,char *filtros[],char *archivo,int si_save,int si_directorio);
 extern int menu_filesel_save(char *titulo,char *filtros[],char *archivo);
 extern int menu_filesel_mkdir(char *directory);
 extern int file_utils_mount_mmc_image(char *fullpath);

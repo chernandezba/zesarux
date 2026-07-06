@@ -6043,11 +6043,22 @@ void menu_filesel_chdir(char *directorio)
 
 }
 
+//Meter en lista de recientes si se está pidiendo un directorio
+void menu_filesel_add_recent_dir(int si_directorio)
+{
+    if (si_directorio) {
+        char buffer[PATH_MAX];
+        sprintf(buffer,"%s/nofile",menu_filesel_last_directory_seen);
+        last_filesused_insert(buffer);
+    }
+}
+
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
 //Si seleccionado archivo, lo guarda en variable *archivo
 //Si sale con ESC, devuelve en menu_filesel_last_directory_seen ultimo directorio
 //si_save indica a 1 que es operacion de grabar y facilitamos al usuario poniendo el cursor en el campo de nombre de archivo
-int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
+//si_directorio indica que se acabará seleccionando un directorio con ESC y por tanto se agregará dicho directorio a la lista de recientes
+int menu_filesel_all_parameters(char *titulo,char *filtros[],char *archivo,int si_save,int si_directorio)
 {
 
     //En el caso de stdout es mucho mas simple
@@ -6326,6 +6337,11 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
                 //ESC
                 if (tecla==2) {
+                    //meter en menu_filesel_last_directory_seen nombre directorio
+                    zvfs_getcwd(menu_filesel_last_directory_seen,PATH_MAX);
+
+                    menu_filesel_add_recent_dir(si_directorio);
+                    //printf("Salir con ESC\n");
                     menu_filesel_exist_ESC();
 
                     menu_filesel_preexit(ventana);
@@ -6575,9 +6591,10 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
                     //ESC
                     case 2:
                         //meter en menu_filesel_last_directory_seen nombre directorio
-                        //getcwd(archivo,PATH_MAX);
                         zvfs_getcwd(menu_filesel_last_directory_seen,PATH_MAX);
-                        //printf ("salimos con ESC. nombre directorio: %s\n",archivo);
+
+                        menu_filesel_add_recent_dir(si_directorio);
+                        //printf("Salir con ESC\n");
                         menu_filesel_exist_ESC();
 
                         //Guardamos geometria al pulsar Escape
@@ -7018,6 +7035,11 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 
                 //ESC
                 else if (tecla==2) {
+                    //meter en menu_filesel_last_directory_seen nombre directorio
+                    zvfs_getcwd(menu_filesel_last_directory_seen,PATH_MAX);
+
+                    menu_filesel_add_recent_dir(si_directorio);
+                    //printf("Salir con ESC\n");
 
                     menu_espera_no_tecla();
                     zvfs_chdir(filesel_directorio_inicial);
@@ -7079,7 +7101,7 @@ int menu_filesel_if_save(char *titulo,char *filtros[],char *archivo,int si_save)
 //Si sale con ESC, devuelve en menu_filesel_last_directory_seen ultimo directorio
 int menu_filesel(char *titulo,char *filtros[],char *archivo)
 {
-    return menu_filesel_if_save(titulo,filtros,archivo,0);
+    return menu_filesel_all_parameters(titulo,filtros,archivo,0,0);
 }
 
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
@@ -7088,7 +7110,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 //Decimos que es operacion de grabar y facilitamos al usuario poniendo el cursor en el campo de nombre de archivo
 int menu_filesel_save(char *titulo,char *filtros[],char *archivo)
 {
-    return menu_filesel_if_save(titulo,filtros,archivo,1);
+    return menu_filesel_all_parameters(titulo,filtros,archivo,1,0);
 }
 
 //Inicializar vacio

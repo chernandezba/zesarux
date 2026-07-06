@@ -5,7 +5,6 @@ ok -zona de redimensionado de marco dibujarlo solo en ventanas activas?
 Marca redimensionado sale siempre bien en ventana principal?
 Probar también sin multitarea
 
--que se guarde en recent files las carpetas accedidas para el root dir de mdv. y otras rutas que se seleccionan como carpeta (por ejemplo esxdos handler root dir)
 
 -Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
 solo los primeros menus principales, los submenus si que salgan con barra de título
@@ -20,7 +19,7 @@ solo los primeros menus principales, los submenus si que salgan con barra de tí
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 
--Revisar los TODO_next_versions desde ZENG Online (linea 141) y mover items a los archivos TODO* correspondientes
+-Revisar los TODO_next_version desde ZENG Online (linea 141) y mover items a los archivos TODO* correspondientes
 
 -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
 
@@ -31,3 +30,7 @@ ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis 
 - soporte nimbus en Windows (SDL1, SDL2)
 - soporte nimbus en Linux (SDL1, SDL2)
 - soporte nimbus en Linux (Nativo Linux)
+
+
+
+ok -que se guarde en recent files las carpetas accedidas para el root dir de mdv. y otras rutas que se seleccionan como carpeta (por ejemplo esxdos handler root dir)
