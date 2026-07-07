@@ -36,5 +36,6 @@ extern int zxvision_topmenu_was_open_by_left_mouse_button;
 extern int get_pos_y_mouse_topbar(void);
 extern void topbar_make_topbar_visible(void);
 extern void if_zxvision_topbar_menu_will_not_have_title(menu_item *m);
+extern int zxvision_topbar_menu_will_not_have_title;
 
 #endif

@@ -6,12 +6,7 @@ ok Marca redimensionado sale siempre bien en ventana principal?
 ok Probar también sin multitarea
 
 
--Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
-solo los primeros menus principales, los submenus si que salgan con barra de título
-->no se podrán mover con ratón?
-->hacemos que se ubique todo igual aunque la barra de menu no aparezca? O sea si se pone uno arriba del todo la primera linea del contenido sera y=1 mientras que en y=0 estará
-el titulo, aunque no se vea
-->al final esto se gestiona con draw window contents lo de dentro
+
 
 -Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
 
@@ -162,3 +157,16 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 
 
 -Mover algunos items del archivo "TODO" a los otros TODO* correspondientes
+
+
+
+-Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
+solo los primeros menus principales, los submenus si que salgan con barra de título
+->no se podrán mover con ratón?
+->hacemos que se ubique todo igual aunque la barra de menu no aparezca? O sea si se pone uno arriba del todo la primera linea del contenido sera y=1 mientras que en y=0 estará
+el titulo, aunque no se vea
+->al final esto se gestiona con draw window contents lo de dentro
+ok? * con machine selection lista alfabetica, al ser ventana muy grande, acaba reasignando (creo) coordenada Y y sale 1 linea por debajo de donde deberia (al cambiar tipo ciciclamente a lista alfabetica)
+ok? *parece que menus si que tienen ventana de titulo, al reentrar en menu -> por ejemplo en menu audio conmutar opcion de activar fuente de sonido externa
+->quiza en if_zxvision_topbar_menu_will_not_have_title no poner setting a 0. que lo haga topbar al salir de ese menu
+Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (cosa rara) no tendria titulo... aunque eso ya es lo que queremos

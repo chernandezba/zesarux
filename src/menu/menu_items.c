@@ -45681,6 +45681,9 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip)
 int menu_inicio_mostrar_main_menu(int salir_menu)
 {
 
+    int antes_zxvision_topbar_menu_will_not_have_title=zxvision_topbar_menu_will_not_have_title;
+
+
     if (force_menu_dibuja_menu_recorrer_menus) {
         force_menu_dibuja_menu_recorrer_menus=0;
         menu_dibuja_menu_recorrer_menus=1;
@@ -45875,7 +45878,13 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
                 if (item_seleccionado.menu_funcion!=NULL) {
                     //printf ("actuamos por funcion\n");
 
+                    //submenus deben tener siempre barra de titulo
+                    zxvision_topbar_menu_will_not_have_title=0;
+
                     item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    //recuperar comportamiento anterior
+                    zxvision_topbar_menu_will_not_have_title=antes_zxvision_topbar_menu_will_not_have_title;
 
 
                     //si ha generado error, no salir

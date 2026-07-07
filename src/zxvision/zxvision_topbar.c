@@ -458,7 +458,7 @@ void if_zxvision_topbar_menu_will_not_have_title(menu_item *m)
     if (zxvision_topbar_menu_enabled.v==0) return;
 
     if (zxvision_topbar_menu_will_not_have_title) {
-        zxvision_topbar_menu_will_not_have_title=0;
+        //zxvision_topbar_menu_will_not_have_title=0;
         menu_add_item_menu_do_not_have_title_bar(m);
         //Y como no tiene barra de titulo, la posicion Y=0 para que el contenido empiece en Y=1
         force_next_menu_position_y=0;

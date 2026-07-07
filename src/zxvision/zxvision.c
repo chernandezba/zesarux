@@ -22757,7 +22757,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     if (m->es_menu_tabulado) salir_todos_menus=0;
 
     int ventana_no_tiene_titulo=0;
-    if (m->do_not_have_title_bar) ventana_no_tiene_titulo=1;
+    if (m->do_not_have_title_bar) {
+        //printf("menu no tiene titulo\n");
+        ventana_no_tiene_titulo=1;
+    }
 
     ultimo_menu_salido_con_flecha_izquierda=0;
     ultimo_menu_salido_con_flecha_derecha=0;
@@ -22964,7 +22967,6 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     if (x<0 || y<0 || x+ancho>scr_get_menu_width() || y+alto>scr_get_menu_height()) {
         //char window_error_message[100];
         //sprintf(window_error_message,"Window out of bounds: x: %d y: %d ancho: %d alto: %d",x,y,ancho,alto);
-        //cpu_panic(window_error_message);
         //printf("Window out of bounds: x: %d y: %d ancho: %d alto: %d\n",x,y,ancho,alto);
 
         //Ajustar limites
@@ -22974,7 +22976,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         if (y<0) {
             y=0;
-            if (zxvision_topbar_menu_enabled.v) y=1;
+            //no cambiar a y=1 si es menu sin titulo (probablemente de top menu)
+            if (zxvision_topbar_menu_enabled.v && !ventana_no_tiene_titulo) y=1;
         }
 
         if (x+ancho>scr_get_menu_width()) {
@@ -23038,7 +23041,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         ventana=zxvision_current_window;
     }
 
-    if (ventana_no_tiene_titulo) ventana->do_not_have_title_bar=1;
+    if (ventana_no_tiene_titulo) {
+        //printf("ventana de menu no tiene titulo\n");
+        ventana->do_not_have_title_bar=1;
+    }
 
     zxvision_draw_window(ventana);
 
