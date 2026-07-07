@@ -1654,6 +1654,8 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
 
     menu_main_window_special_effects_change_type_dynamic_indice_efecto=indice_efecto_seleccionado;
 
+    enum enum_screen_effect_types efecto_inicial=screen_effect_applied_list[indice_efecto_seleccionado].type;
+
     int opcion_seleccionada=0;
 
     menu_item *array_menu_common;
@@ -1695,6 +1697,11 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
         if (screen_effect_applied_list[indice_efecto_seleccionado].type!=SCREEN_EFFECT_TYPE_NONE) {
             screen_effect_applied_list[indice_efecto_seleccionado].enabled=1;
         }
+    }
+
+    //Si se sale con ESC, dejar el efecto anterior
+    else {
+        screen_effect_applied_list[indice_efecto_seleccionado].type=efecto_inicial;
     }
 
 }
