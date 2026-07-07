@@ -458,10 +458,10 @@ void if_zxvision_topbar_menu_will_not_have_title(menu_item *m)
     if (zxvision_topbar_menu_enabled.v==0) return;
 
     if (zxvision_topbar_menu_will_not_have_title) {
-        //zxvision_topbar_menu_will_not_have_title=0;
         menu_add_item_menu_do_not_have_title_bar(m);
         //Y como no tiene barra de titulo, la posicion Y=0 para que el contenido empiece en Y=1
         force_next_menu_position_y=0;
+
     }
 }
 
@@ -762,7 +762,8 @@ void menu_topbarmenu(void)
                 //Importante resetear esto
                 zxvision_topmenu_was_open_by_left_mouse_button=0;
 
-                //Indicamos que menus principales abiertos desde topbar no tienen barra de titulo
+                //Indicamos que menus principales abiertos desde topbar no tienen barra de titulo. Y mantener ese estado siempre en ese menu,
+                //si por ejemplo se conmuta una opcion del menu audio, se reentra en audio, y tiene que seguir sin salir el titulo
                 zxvision_topbar_menu_will_not_have_title=1;
 
                 switch(pos_cursor) {

@@ -24266,11 +24266,13 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
     menu_item *next;
 
     int era_un_assigned_no_indexar_busqueda=0;
+    int no_tenia_titulo=0;
 
     if (m->tipo_opcion==MENU_OPCION_UNASSIGNED) {
         debug_printf (VERBOSE_DEBUG,"Overwrite last item menu because it was MENU_OPCION_UNASSIGNED");
         next=m;
         era_un_assigned_no_indexar_busqueda=m->no_indexar_busqueda;
+        no_tenia_titulo=m->do_not_have_title_bar;
     }
 
     else {
@@ -24303,6 +24305,8 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 
     next->es_menu_tabulado=es_menu_tabulado;
     if (era_un_assigned_no_indexar_busqueda) next->no_indexar_busqueda=era_un_assigned_no_indexar_busqueda;
+    if (no_tenia_titulo) next->do_not_have_title_bar=1;
+
 }
 
 //Agregar un item separador
