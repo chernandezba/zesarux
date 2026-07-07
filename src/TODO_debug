@@ -109,3 +109,63 @@ habitacion en misma posicion, la mueva a otra posicion para que esté aislada
 
 -Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
 Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows
+
+-Nuevos condactos para Daad V3. Comentar con Carlos - Uto
+
+DAAD V3 CAMBIOS
+===============
+
+1) La cabecera del DDB lleva 3 como versión
+
+X 2) INDIR flagno (opcode 122)
+
+   Condacto que toma el valor del flagno y lo guarda 3 bytes más adelante en la DDB (en el segundo parámetro del siguiente condacto).
+
+   En principio el usuario no podrá usar el INDIR directamente, es el compilador el que lo pone.
+
+X 3) SETAT value operation
+
+Value points to a BIT as HASAT/HASNAT does. Operation may be:
+
+0 -> Clear bit
+1 -> Set bit
+2 -> Toggle bit
+
+X 4) Cambio en PAUSE:  si el parámetro es 0, en lugar de hacer una pausa larga hace un pausa indefinida hasta que se pulse una tecla, y se vuelva a soltar. La tecla pulsada se graba en el flag fKey1 (y si procede fKey2)
+***************** NO FUNCIONA; SE BLOQUEA
+
+5) Hay nuevos bits que significan algo en el FLAG 53:
+
+X- Bit 5: Despues de obtener una SL, si el parser encontró una palabra que no pudo  reconocer después de encontrar el verbo, se pone a 1.
+X- Bit 4: Despues de obtener una SL, si el parser encontró una preposición antes del primer nombre, se pone a 1.
+X- Bit 2: si está a 1, no se aplicarán terminaciones pronominales a verbos>=240
+X- Bit 1: Si su valor es 1, HASAT, HASNAT y SETAT funcionarán sobre un set alternativo de flags 60-91 en lugar de 28-59
+X- Bit 0: Tras un DOALL, tendrá valor 1 si no se itera sobre ningún objeto.
+
+
+--
+1) Te afecta en que el primer byte de la cabecera del DDB es un 3 en vez de un 2 o un 1. Eso te permite detectar que versión es. No recuerdo como detectabas que es DAAD.
+
+2) Esto tendrás casi que convertirlo en un solo condacto.
+
+Por ejemplo INDIR 100 LET 100 200 visualmente casi es mejor que sea LET 100 @200
+
+3) Este condacto lo tienes que soportar, dos parametros. Es el equivalente en acción de HASAT/HASNAT, en lugar de comprobar bits, los setea, clear o toggle.
+
+
+4 )Realmente no te afecta. Quizá si encuentras  un PAUSE 0 puedes poner GETKEY en su lugar, pero tampoco pasa nada porque se quede en 0.
+
+5) No te afecta
+
+6) Además está el nuevo condacto XMES, que muestra un "mensaje extra" apuntado por param1 + 256 por param 2 sobre los 64K posibles para esto (en paginas del 128K). En 48K este condacto no hace nada (no debería ni estar, pero si aparece no hace  nada)
+
+XMES: 120
+INDIR: 121
+SETAT: 124
+
+Estos tap son una test units que uso para comprobar  en la medida de lo posible los condactos. Entre otros comprueban los de la V3.
+
+Carpeta conversacionales/tipo parser/daad/daad v3
+
+Ahora lo tienes nada más empezar casi (segundo condacto). Pero ojo, solo en el de 128K, en el 48 el compilador cambia los XMES a MES, así que sale el texto "Esto es un XMES" pero es mentira 😃
+

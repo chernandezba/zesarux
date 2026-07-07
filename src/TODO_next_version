@@ -55,15 +55,9 @@ menu_download_file
 
 
 
--menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado (F8), pero solo cuando es driver texto. Pero la gestion de teclado cuando se pulsa F8 es un tanto especial, porque
-envia la tecla abajo y vale en cualquier parte de menu. Quiza en F8 se deberia conservar el viejo de texto aun
-
-
-
 -issues de submenus:
 --quiza en un menu_dibuja_menu_dialogo_no_title_lang, al pulsar ESC, no debe activar salir_todos_menus
 aunque no todos. por ejemplo en +3dsk, visor format disc, pulsar en archivo-> blocks, ahi si pulsa esc si que interesa que cierre todo
-
 
 
 -quiza menu_ventana_scanf_numero_enhanced deberia mostrar el error en ventana en vez de soltarlo por debug_printf,
@@ -81,7 +75,7 @@ pues si van a menu anterior, al abrir ese menu ya detectan error pendiente y lo 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 
-----
+
 
 -SDL2 no deja cambiar a zoom 2 redimensionando con ratón
 
@@ -95,9 +89,6 @@ y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 -convertir todos tabs a espacios en archivos de código fuente: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
 
 
--modo linemode de ZRCP que se pueda cambiar temporalmente a través de ZRCP para que instancias de zeng o zeng online lo puedan desactivar
-para poderse comunicar correctamente (ni zeng ni zeng online funcionan si está activado linemode telnet)
-
 
 -pasar dumps de mis mdv exportando contenido entero a carpetas. Y poner carpetas con el label correspondiente
 partir de /Users/cesarhernandez/Documents/ql/microdrives_recuperados
@@ -107,12 +98,10 @@ usar WCOPY mdv1_ to mdv2_
 Si hay archivos con acentos en el nombre, hay que copiarlos a mano
 
 
-
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
 
 -cuando F8 no está asignada a default, al abrir teclado en pantalla desde menu display, al pulsar una tecla no se vuelve a entrar a teclado en pantalla
 Esto es debido al llamar a menu_si_pulsada_tecla_osd, se pierde acción
-
 
 
 -Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
@@ -144,75 +133,6 @@ Se sale mucho mas la ventana cuando hay top menu o botones superiores.
 
 El tema es que rearrange esta pensado para reorganizar desde el menu window, no cuando ha cambiado el tamaño del desktop
 Si ha cambiado el tamaño habria que revisar el tamaño de todas las ventanas y reducirlas
-
-
-
-
--fullscreen en cpc, sin border, en mac , no se ve bien
-
- que sean puntos de color. Para estilo AtariTOS?-> no acaba de quedar bien en AtariTOS
-Parece como un bug de color sobre la franja actual
-
-
-
--Nuevos condactos para Daad V3. Comentar con Carlos - Uto
-
-DAAD V3 CAMBIOS
-===============
-
-1) La cabecera del DDB lleva 3 como versión
-
-X 2) INDIR flagno (opcode 122)
-
-   Condacto que toma el valor del flagno y lo guarda 3 bytes más adelante en la DDB (en el segundo parámetro del siguiente condacto).
-
-   En principio el usuario no podrá usar el INDIR directamente, es el compilador el que lo pone.
-
-X 3) SETAT value operation
-
-Value points to a BIT as HASAT/HASNAT does. Operation may be:
-
-0 -> Clear bit
-1 -> Set bit
-2 -> Toggle bit
-
-X 4) Cambio en PAUSE:  si el parámetro es 0, en lugar de hacer una pausa larga hace un pausa indefinida hasta que se pulse una tecla, y se vuelva a soltar. La tecla pulsada se graba en el flag fKey1 (y si procede fKey2)
-***************** NO FUNCIONA; SE BLOQUEA
-
-5) Hay nuevos bits que significan algo en el FLAG 53:
-
-X- Bit 5: Despues de obtener una SL, si el parser encontró una palabra que no pudo  reconocer después de encontrar el verbo, se pone a 1.
-X- Bit 4: Despues de obtener una SL, si el parser encontró una preposición antes del primer nombre, se pone a 1.
-X- Bit 2: si está a 1, no se aplicarán terminaciones pronominales a verbos>=240
-X- Bit 1: Si su valor es 1, HASAT, HASNAT y SETAT funcionarán sobre un set alternativo de flags 60-91 en lugar de 28-59
-X- Bit 0: Tras un DOALL, tendrá valor 1 si no se itera sobre ningún objeto.
-
-
---
-1) Te afecta en que el primer byte de la cabecera del DDB es un 3 en vez de un 2 o un 1. Eso te permite detectar que versión es. No recuerdo como detectabas que es DAAD.
-
-2) Esto tendrás casi que convertirlo en un solo condacto.
-
-Por ejemplo INDIR 100 LET 100 200 visualmente casi es mejor que sea LET 100 @200
-
-3) Este condacto lo tienes que soportar, dos parametros. Es el equivalente en acción de HASAT/HASNAT, en lugar de comprobar bits, los setea, clear o toggle.
-
-
-4 )Realmente no te afecta. Quizá si encuentras  un PAUSE 0 puedes poner GETKEY en su lugar, pero tampoco pasa nada porque se quede en 0.
-
-5) No te afecta
-
-6) Además está el nuevo condacto XMES, que muestra un "mensaje extra" apuntado por param1 + 256 por param 2 sobre los 64K posibles para esto (en paginas del 128K). En 48K este condacto no hace nada (no debería ni estar, pero si aparece no hace  nada)
-
-XMES: 120
-INDIR: 121
-SETAT: 124
-
-Estos tap son una test units que uso para comprobar  en la medida de lo posible los condactos. Entre otros comprueban los de la V3.
-
-Carpeta conversacionales/tipo parser/daad/daad v3
-
-Ahora lo tienes nada más empezar casi (segundo condacto). Pero ojo, solo en el de 128K, en el 48 el compilador cambia los XMES a MES, así que sale el texto "Esto es un XMES" pero es mentira 😃
 
 
 

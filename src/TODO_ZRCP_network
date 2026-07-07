@@ -56,6 +56,9 @@ Con printf verbose error?
 
 - enter-cpu-step no parece funcionar si hay ventanas en background-> no, parece que solo sucede si menu esta abierto
 
+-modo linemode de ZRCP que se pueda cambiar temporalmente a través de ZRCP para que instancias de zeng o zeng online lo puedan desactivar
+para poderse comunicar correctamente (ni zeng ni zeng online funcionan si está activado linemode telnet)
+
 -------------
 
 

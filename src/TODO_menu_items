@@ -144,6 +144,10 @@ no genera codigo de tecla al pulsar esas extendidas
 -ventana midi output status
 *mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
 
+-menu display. teclado en pantalla. quiza poner aqui el nuevo de help keyboard. dejar ese viejo solo para drivers de video de tipo texto, cacalib, etc. considerar ademas que ese antiguo solo sale para spectrum y zx80/81. Ojo que el teclado en pantalla de texto debería también salir al pulsar tecla de OSD teclado (F8), pero solo cuando es driver texto. Pero la gestion de teclado cuando se pulsa F8 es un tanto especial, porque
+envia la tecla abajo y vale en cualquier parte de menu. Quiza en F8 se deberia conservar el viejo de texto aun
+
+
 
 -Al insertar mmc o ide debe ir primero a rutas shared, tal y como hace smartload por ejemplo. y tambien ir a ultima ruta al abrir selector archivos
 
