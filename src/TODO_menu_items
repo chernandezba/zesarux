@@ -135,6 +135,15 @@ o solo un atributo especial para este render
 *archivos abiertos. asi como la info de cada uno. ya hay un comando de zrcp que lo retorna. esxdoshandler-get-open-files
 *cwd?
 
+-keyboard help
+- pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
+- chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
+- keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico: esto sucede porque en menu
+no genera codigo de tecla al pulsar esas extendidas
+
+-ventana midi output status
+*mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
+
 
 -Al insertar mmc o ide debe ir primero a rutas shared, tal y como hace smartload por ejemplo. y tambien ir a ultima ruta al abrir selector archivos
 

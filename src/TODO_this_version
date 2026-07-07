@@ -47,3 +47,111 @@ ok -ventanas minimizadas y con hide minimized windows al restaurarse al iniciar,
 -en view sensors agregar sensores de canales de General Sound
 
 -al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
+
+-en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado
+
+-Dibujado de barras arcoiris en titulo menu: o bien aparezcan a partir de ancho minimo fijo (lo que hay ahora) o que espere
+el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
+
+
+-iconos de dispositivos de lec romm ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
+
+-teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
+
+
+-que al seleccionar efecto FX lo aplique cuando se está moviendo el cursor al seleccionar efecto, sin tener que darle al enter
+
+-al seleccionar archivo scl que lo expanda en trd automaticamente y seleccione. en vez de tener que pasar por expansion pulsando espacio
+
+-con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
+
+-en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
+
+-Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
+
+-cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
+
+-rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
+
+-full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
+
+-Función joystick para conmutar full screen
+
+-F función cualquiera Tecla F por joystick
+
+-Copi128: poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
+y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
+Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
+los traps que tenemos ahora
+
+
+-Captura sonido a archivo de disco
+*opcion para archivo de salida en ventana de captura
+
+-alguna manera que desde external audio source:
+abra hexedit con expresión follow de ix
+abra watches con watch DE, IX etc para la carga
+abra vista basic
+defina también tamaños de esas ventanas?
+Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargando o copiando desde cinta
+->quiza esto se podria hacer con envio de mensajes entre las dos ventanas (*send_message_function...)
+
+-implementar máquinas de 60 Hz (timex, master system etc)
+-modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
+-implementar timings ula TK90x
+
+
+-Máquina Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
+
+ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
+Esto es porque primero se llama a tape_init() que inserta la cinta y posteriormente a autoload_snapshot();
+quiza tape_init() tendria que ir despues de autoload_snapshot() pero hay que validarlo bien todo antes
+Por que tape_init() se llama tan pronto?
+->validar también --snap, --slotcard, --outtape, no sé si fallan tambien cuando hay un zesarux_autosave.zsf
+Ademas en algunos casos (no recuerdo que combinacion ahora), al hacer reinsert (o insert, si no estaba insertada) de cinta, generaba segfault
+
+-pulsar dos veces con boton derecho en zx desktop abre dos veces el menu de zx desktop (menu pequeñito) y luego al pulsar ESC hay que pulsar dos
+veces
+
+-al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
+
+-Zeng opción para enviar mensaje a un usuario concreto
+-En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
+Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
+
+
+-probar fullscreen en todos drivers
+*permitir raton en full screen. probar fullscreen con zx desktop
+sdl2 ok. aunque al volver de fullscreen no lee bien raton
+en sdl1, raton lo ubica en la posicion inicial
+*sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
+->parece que no siempre falla el calculo de posicion del raton. con debian 32 bits x86 funciona bien
+
+
+-Con estilo tiny, sin desktop, desde top menu, submenus no aparecen al lado, aunque haya espacio para ubicarlos, aparecen posicionados arriba a la izquierda
+serian estas lineas:
+diff --git a/src/zxvision/zxvision.c b/src/zxvision/zxvision.c
+index dd279a05..ba320131 100644
+--- a/src/zxvision/zxvision.c
++++ b/src/zxvision/zxvision.c
+@@ -22680,7 +22680,8 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
+     //    menu_dibuja_submenu_primer_submenu,force_next_menu_position.v);
+
+     //menu a la derecha del anterior siempre que tengamos zx desktop habilitado y opcion de situar menus en zx desktop
+-    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
++    //if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
++    if (menu_show_submenus_tree.v) {
+
+
+         //es el primero
+@@ -23022,13 +23023,15 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item
+
+     int posicionar_submenu=0;
+
+-    if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0 && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
++    //if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0 && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
++
++    if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) posicionar_submenu=1;
+
+Pero entonces posiciona submenus tambien cuando no tenemos topbar y no hay zx desktop....
+Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados, o pegados arriba, o pegados a la derecha

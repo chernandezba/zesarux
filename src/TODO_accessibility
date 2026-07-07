@@ -29,6 +29,17 @@ O quizá setting configurable
 Con speech cuando salen las diferentes opciones de un juego (tzx, tap etc) no se escuchan porque se lee la línea del nombre del juego y no la de debajo que dice el tipo
 
 
+-en speech, parece evitar algunas lineas con acentos, por ejemplo menu opciones, item estadísticas (pero sí que lee por ejemplo archivo configuración)
+-en speech, al cerrar ventanas de menu parece leer el titulo de la ventana en background mas arriba. Por ejemplo ir a help->about y cerrarla
+
+-speech: caracteres con acentos, eñes etc no se leen bien en ventanas como por ejemplo help->changelog cuando idioma es español
+sucede porque viene de zxvision_draw_window_contents y esta enviando por ejemplo caracter de eñe como 129, pues
+es como esta en la ventana. pero deberia convertir ese 129 a la eñe de utf8, o bien, convertir ese 129 a una "n" y lo similar con otros
+caracteres, por ejemplo convertir "á" en "a"
+Para eso tendria que haber una tabla de cada caracter que uso desde 128 en adelante a su equivalente en utf8
+En cambio, items de menus si se leen bien porque ahi se le envia linea a linea el texto original (con utf8) y no
+se le envian los caracrteres desde zxvision_draw_window_contents
+
 -script de mac say no reproduce lineas que empiezan por "--", como algunas lineas del FAQ
 
 -al leer lineas con varios hotkeys, solo lee el ultimo hotkey

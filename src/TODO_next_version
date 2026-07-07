@@ -1,33 +1,6 @@
 Para versión siguiente:
 
 -------------
----Errores---
--------------
-
-
--revisar parpadeos en linux en top buttons al moverse por los menus
-->parece que solo pasa con driver xwindow, con sdl no pasa
-
-
--rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
-
-
--cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
-
--full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
-
-
--keyboard help
-- pulsar , o . en ZX81 con ventana abierta, deja apretada la N o M
-- chloe. completar teclas extendidas. ver que hacer con combinaciones de shift...
-- keyboard help no hace por ejemplo en cpc 664 teclas [ ] pulsando esas teclas en el teclado fisico: esto sucede porque en menu
-no genera codigo de tecla al pulsar esas extendidas
-
----Fin Errores---
-
-
-
--------------
 ---Mejoras---
 -------------
 
@@ -35,15 +8,8 @@ no genera codigo de tecla al pulsar esas extendidas
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
 
--driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
--fbdev en linux, fbdev_cls peta al cambiar de maquina. Ejemplo de 48k a +3
-
-
 -en rpi quiza compilar con onebitspeaker? o no? entiendo que pcspeaker no usara sino que intentara usar gpio
 
-
--Función joystick conmuta full screen
--F función cualquiera Tecla F por joystick
 
 
 -Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
@@ -63,20 +29,9 @@ menu_download_file
 
 
 
--Posible driver nuevo u opción en curses en que el menú siga siendo estándar pero el output de la máquina emulada sea el mismo que stdout
-
-
-
 -Teclado en pantalla en rpi borra el input de debajo
 
 
--Idea menús:
-Clara distinción entre línea de menú y entre ventana con opciones
-Menús solo deberían ser líneas navegables hasta un destino
-
-Quizá main menu que sea ventana de 1 de alto con entradas menu tabuladas de
-Smartload snapshot storage debug etc..
-Y sin barra título
 ---Fin Mejoras---
 
 
@@ -120,72 +75,13 @@ pues si van a menu anterior, al abrir ese menu ya detectan error pendiente y lo 
 
 
 
--ppi chip 8255 el mismo en cpc y msx...
-
--En MSX y SVI no estoy usando usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
-
-
-
 -Zumbido ZEsarUX en versión Windows a que se debe? A detector de silencio? lo he llegado a escuchar en haiku, con callback new
-
 
 
 -Corregir algunos casos (todos?) en que se intenta cargar/grabar archivos desde una imagen mmc montada
 y no va porque no uso funciones zvfs. Ejemplo cargar snapshot .z80
 
-
-
-
 ----
-
-
--en external audio source. hago shift-e (flush) y mientras está la ventana splash, pulso en pantalla spectrum
-No se cierra el menu realmente, solo pierde el foco. Deberia cerrar el menu
-Si en cambio pulso justo al inicio de ventana splash, si que cierra el menu
-Pasa en cualquier caso de ventana splash, por ejemplo en cpu statistics y clear statistics
-->en external audio source cambio el mensaje de splash por uno normal de menu_generic_message, eso lo solventa
-Pero habría que solventar esa problematica en splash
-Creo que el origen viene porque al salir de ventana de splash, la variables de mouse_pressed_background_window
-está a 0 , y esto sucede porque en zxvision.c, en este trozo al gestionar pulsacion de raton fuera de ventana:
-
-					//Si la ventana activa permite ir a background, mandarla a background
-					if (zxvision_current_window->can_be_backgrounded) {
-
-La ventana de splash como tal no soporta background, y por eso no cumple esa condición
-Luego entra por aquí:
-
-					//Si la ventana activa no permite ir a background, cerrarla
-					else {
-							mouse_pressed_close_window=1;
-					}
-
-Y por tanto no asigna mouse_pressed_background_window
-Quizá lo que debería hacer, si está en ventana de splash, al pulsar con raton fuera:
--activar mouse_pressed_background_window si la ventana que habia debajo de esa permite background
--cerrar ventana de splash (que ya lo hace hora)
-Realmente tiene que haber algo diferente entre menu_generic_message_splash y menu_generic_message, porque con el primero,
-al pulsar fuera, se queda el foco fuera de la ventana y con el menu cerrado. Pero con el segundo, el foco se queda en la ventana que habia debajo
-
-
-
--Copi128: poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
-y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
-Este lógicamente usa rutinas propias de grabación (y carga) para poder usar los 128kb de ram y por eso no funcionan
-los traps que tenemos ahora
-
-
-
--Captura sonido a archivo de disco
-*opcion para archivo de salida en ventana de captura
-
--alguna manera que desde external audio source:
-abra hexedit con expresión follow de ix
-abra watches con watch DE, IX etc para la carga
-abra vista basic
-defina también tamaños de esas ventanas?
-Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargando o copiando desde cinta
-->quiza esto se podria hacer con envio de mensajes entre las dos ventanas (*send_message_function...)
-
 
 -SDL2 no deja cambiar a zoom 2 redimensionando con ratón
 
@@ -193,28 +89,11 @@ Todo esto es para tener esas ventanas auxiliares útiles cuando se está cargand
 
 
 
--implementar máquinas de 60 Hz (timex, master system etc)
--modo 60 hz en atic atac, para next. Y quizá empezar con maquinas timex que tienen 60 hz, que tienen menos scanlines...
--implementar timings ula TK90x
-
 -baseconf: intentar que arranque. Y si no, quitar de la lista
-
 
 
 -convertir todos tabs a espacios en archivos de código fuente: cmd-shift-p: convert indentation to spaces. Hacerlo uno a uno por cada fuente
 
-
-
--Máquina Chrome. Menu "load dos from rom". que tiene que hacer? falta una rom?
-
-
-
-ok tape, realtape, outtape -con --tape por consola, si hay un zesarux_autosave.zsf, no carga la cinta, aunque la inserta (y se queda topspeed y un pendiente load"").
-Esto es porque primero se llama a tape_init() que inserta la cinta y posteriormente a autoload_snapshot();
-quiza tape_init() tendria que ir despues de autoload_snapshot() pero hay que validarlo bien todo antes
-Por que tape_init() se llama tan pronto?
-validar también --snap, --slotcard, --outtape, no sé si fallan tambien cuando hay un zesarux_autosave.zsf
-Ademas en algunos casos (no recuerdo que combinacion ahora), al hacer reinsert (o insert, si no estaba insertada) de cinta, generaba segfault
 
 -modo linemode de ZRCP que se pueda cambiar temporalmente a través de ZRCP para que instancias de zeng o zeng online lo puedan desactivar
 para poderse comunicar correctamente (ni zeng ni zeng online funcionan si está activado linemode telnet)
@@ -227,45 +106,6 @@ desde qemulator, montar el .mdv original en mdv1, y en mdv2_ una carpeta
 usar WCOPY mdv1_ to mdv2_
 Si hay archivos con acentos en el nombre, hay que copiarlos a mano
 
--en speech, parece evitar algunas lineas con acentos, por ejemplo menu opciones, item estadísticas (pero sí que lee por ejemplo archivo configuración)
--en speech, al cerrar ventanas de menu parece leer el titulo de la ventana en background mas arriba. Por ejemplo ir a help->about y cerrarla
-
--speech: caracteres con acentos, eñes etc no se leen bien en ventanas como por ejemplo help->changelog cuando idioma es español
-sucede porque viene de zxvision_draw_window_contents y esta enviando por ejemplo caracter de eñe como 129, pues
-es como esta en la ventana. pero deberia convertir ese 129 a la eñe de utf8, o bien, convertir ese 129 a una "n" y lo similar con otros
-caracteres, por ejemplo convertir "á" en "a"
-Para eso tendria que haber una tabla de cada caracter que uso desde 128 en adelante a su equivalente en utf8
-En cambio, items de menus si se leen bien porque ahi se le envia linea a linea el texto original (con utf8) y no
-se le envian los caracrteres desde zxvision_draw_window_contents
-
-
-
--pulsar dos veces con boton derecho en zx desktop abre dos veces el menu de zx desktop (menu pequeñito) y luego al pulsar ESC hay que pulsar dos
-veces
-
-
-
--ZX desktop: si menu char height no es 8, limite de ventanas por debajo al moverlas hace un efecto extraño,
-probablemente porque el alto es multiple de 8 y queda menos de una fila abajo sin poderse usar
-
-
-
--al pulsar en un menú padre, que vaya a la opción que se le pulsa de dicho menú padre
-
--Zeng opción para enviar mensaje a un usuario concreto
--En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
-Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
-
-
-
-
--FX de pantalla emulada que en vez de aplicarlos al rainbow buffer, lo aplique a un buffer posterior que ya tiene el zoom aplicado
-Esto permitiria que efectos como scanlines se vieran mejor (al no aplicarse el zoom despues del efecto, sino que el zoom vendria antes). El flujo seria:
-
--maquina emulada genera rainbow buffer -> se genera otro buffer de tamaño * zoom -> se aplica FX a ese nuevo buffer-> se renderiza en pantalla ese buffer, teniendo en cuenta
-que ya no habrán varias rutinas putpixel segun si zoom 1 o zoom >1, sino que siempre seria zoom a 1 (porque ya ha escalado en el buffer anterior)
--efectos que leen posicion raton/zoom, ya no se dividira por zoom
--hay algunos efectos que no quedaran tambien aplicandolos en el buffer con el zoom, cuales?
 
 
 -vofile con output para archivo bitmap raw en blanco y negro, para posible enlace con pantalla e-ink
@@ -283,32 +123,10 @@ pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 
 
 
-
--ventana para saber qué notas se están enviando a dispositivo midi externo
-*mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
-
-
-
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
 
 
-
--ventana status esxdos handler:
-*archivos abiertos. asi como la info de cada uno. ya hay un comando de zrcp que lo retorna. esxdoshandler-get-open-files
-*cwd?
-
-
--probar fullscreen en todos drivers
-*permitir raton en full screen. probar fullscreen con zx desktop
-sdl2 ok. aunque al volver de fullscreen no lee bien raton
-en sdl1, raton lo ubica en la posicion inicial
-*sdl1, sdl2: revisar fullscreen funcione bien con parametro limites pantalla, o no hacer caso de esos limites en full screen?
-->parece que no siempre falla el calculo de posicion del raton. con debian 32 bits x86 funciona bien
-
-
--smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
-Quizá habria que tener alguna herramienta para expandir cualquier mdv
 
 -Si estoy en maquina ZX80 con menu view basic maximizado, cambio a QL, donde voy a tener menos alto de zx destkop,
 y al reorganizar esa ventana, resulta que acaba teniendo mas alto del que cabe. (post_set_machine_no_rom_load_reopen_window llama a zxvision_rearrange_background_windows)
@@ -330,55 +148,11 @@ Si ha cambiado el tamaño habria que revisar el tamaño de todas las ventanas y 
 
 
 
--Con estilo tiny, sin desktop, desde top menu, submenus no aparecen al lado, aunque haya espacio para ubicarlos, aparecen posicionados arriba a la izquierda
-serian estas lineas:
-diff --git a/src/zxvision/zxvision.c b/src/zxvision/zxvision.c
-index dd279a05..ba320131 100644
---- a/src/zxvision/zxvision.c
-+++ b/src/zxvision/zxvision.c
-@@ -22680,7 +22680,8 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
-     //    menu_dibuja_submenu_primer_submenu,force_next_menu_position.v);
-
-     //menu a la derecha del anterior siempre que tengamos zx desktop habilitado y opcion de situar menus en zx desktop
--    if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
-+    //if (menu_show_submenus_tree.v && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) {
-+    if (menu_show_submenus_tree.v) {
-
-
-         //es el primero
-@@ -23022,13 +23023,15 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item
-
-     int posicionar_submenu=0;
-
--    if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0 && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
-+    //if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0 && screen_ext_desktop_enabled && screen_ext_desktop_place_menu) posicionar_submenu=1;
-+
-+    if (menu_show_submenus_tree.v && m->no_es_realmente_un_menu==0) posicionar_submenu=1;
-
-Pero entonces posiciona submenus tambien cuando no tenemos topbar y no hay zx desktop....
-Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados, o pegados arriba, o pegados a la derecha
-
-
 -fullscreen en cpc, sin border, en mac , no se ve bien
 
-
--en menu storage-microdrive, menus que aparecen para un tipo de microdrive (rmd o mdr), no se podria hacer que para los menus no soportados, hiciera conversión?
-Ejemplo: tenemos un rmd y no aparecerá Chkdsk. Podemos hacer que aparezca chkdsk haciendo que primero convierta ese rmd a mdr? tiene sentido?
-O quiza mejor que sea el usuario el que convierta a rmd o mdr y asi tener los menus que faltan. Pero en este ultimo caso, estaria en las mismas,
-los otros menus no aparecerían. La gracia es que todos pudieran aparecer haciendo conversiones adecuadas
-Quiza menus como estiramiento no hacer que aparezca si el tipo no es el correcto
-Ver expandido ya lo hace: para los rmd, primero convierte a mdr y de ahi ya expande
-Tiene sentido microdrive raw map cuando el microdrive es mdr? quiza por la gracia de ver como se mueve el puntero lector o tambien por ver los datos,
-aunque no sea puramente raw porque viene de un mdr, pero puede estar bien
-
--en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado
-
-
--Otro estilo de GUI con barra rainbow de título ventana que sean puntos de color. Para estilo AtariTOS?-> no acaba de quedar bien en AtariTOS
+ que sean puntos de color. Para estilo AtariTOS?-> no acaba de quedar bien en AtariTOS
 Parece como un bug de color sobre la franja actual
 
--Dibujado de barras arcoiris en titulo menu: o bien aparezcan a partir de ancho minimo fijo (lo que hay ahora) o que espere
-el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 
 
 -Nuevos condactos para Daad V3. Comentar con Carlos - Uto
@@ -441,24 +215,4 @@ Carpeta conversacionales/tipo parser/daad/daad v3
 Ahora lo tienes nada más empezar casi (segundo condacto). Pero ojo, solo en el de 128K, en el 48 el compilador cambia los XMES a MES, así que sale el texto "Esto es un XMES" pero es mentira 😃
 
 
--iconos de dispositivos de lec romm ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
 
--poder incorporar las qltools (https://github.com/NormanDunbar/qltools/tree/master) para extraer archivos de imagenes microdrive o floppy
-
-
-
--teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
-
-
-
--intérprete de lenguaje forth. Para...? por ejemplo para acciones de breakpoints
-
--que al seleccionar efecto FX lo aplique cuando se está moviendo el cursor al seleccionar efecto, sin tener que darle al enter
-
--al seleccionar archivo scl que lo expanda en trd automaticamente y seleccione. en vez de tener que pasar por expansion pulsando espacio
-
--con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
-
--en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
-
--Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?

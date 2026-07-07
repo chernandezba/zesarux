@@ -43,6 +43,7 @@ cd "/Users/cesarhernandez/Library/Application Support/RetroArch/cores"
 cp /Users/cesarhernandez/Downloads/libretro-super/dist/osx-x86_64/skeleton_libretro.dylib .
 
 
+-intérprete de lenguaje forth. Para...? por ejemplo para acciones de breakpoints
 
 -Lock sdl al refrescar hace printf?
 

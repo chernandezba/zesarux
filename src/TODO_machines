@@ -20,6 +20,9 @@ http://www.rwapadventures.com/ql_wiki/index.php?title=Sinclair%20QL%20Home%20Com
 -ql_microdrive_floppy_emulation: misma gestion cuando mdv1 o mdv2 o flp1 no esten habilitados. Creo que esto ya está correcto
 
 
+-smartload en QL de archivo qlay .mdv: que expanda y lo active como mdv1. aunque al ser solo los mdv de qlay del tamaño concreto, reduce mucho los mdv que se pueden usar
+Quizá habria que tener alguna herramienta para expandir cualquier mdv
+
 
 Acciones sobre los dos microdrive y el floppy separar en menús
 Y poder activar uno independientemente del otro
@@ -30,6 +33,10 @@ O quiza que salte al menu con la linea de opcion seleccionada donde corresponde
 *si pulsar menos de 1 segundo, devolver esa tecla y ninguna mas en ese segundo
 *si pulsar mas de 1 segundo, devolver tecla con repeticiones
 *ver traps de qdos y ipc afectado en esto
+
+-poder incorporar las qltools (https://github.com/NormanDunbar/qltools/tree/master) para extraer archivos de imagenes microdrive o floppy
+
+
 
 -Poder usar tecla F5
 
@@ -1208,6 +1215,13 @@ Segun MESS:
 
 
 --- MSX ---
+
+
+-ppi chip 8255 el mismo en cpc y msx...
+
+
+-En MSX y SVI no estoy usando usa msx_ppi_mode_port/svi_ppi_mode_port en lectura. Quien lo lee y para que?
+
 
 -expulsar cartucho en msx, svi etc solo deberia aparecer si cartucho insertado? Pero luego como se extrae un cartucho al cargar un snapshot con cartucho? Porque en ese caso no sabe que tiene cartucho aunque esta aho
 
