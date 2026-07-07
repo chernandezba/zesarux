@@ -150,3 +150,12 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 
 
 ok -que al seleccionar efecto FX lo aplique cuando se está moviendo el cursor al seleccionar efecto, sin tener que darle al enter
+
+-Efecto de encefalograma en FX video effects. Pixel que vaya de izquierda a derecha y se mueva en vertical cuando:
+* sonido en algún canal AY
+* o a intervalo regular, indicando como parametro las "pulsaciones" de corazón
+* que permita indicar el color, o quizá siempre verde "fosforito"
+* si el usuario quiere persistencia que le agregue efecto adicional de persistencia
+
+
+-Mover algunos items del archivo "TODO" a los otros TODO* correspondientes

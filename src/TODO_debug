@@ -110,6 +110,28 @@ habitacion en misma posicion, la mueva a otra posicion para que esté aislada
 -Debug printf solo hacer bloqueo cuando mensajes van a consola de ZX Desktop
 Prueba con redimensionar ventana con driver audio sdl con callback y printf donde avisa de underrun de buffer y en Windows
 
+
+-----------------------
+
+--- Debug aventuras conversacionales ---
+
+-Extractor palabras paws gac etc que clasifique por verbos, nombres etc
+-Extractor dibujos paws?
+
+-unpaws , unquill para cpc
+-gac: debug messages, aventure text, etc para CPC
+
+-De extractor paws o similar:
+TODO: si puntero tokens es 0, no hay tokens
+TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con acentos?
+
+-unpaws con quill:
+*compression tokens existen?
+
+-unpaws:
+*compression tokens no siempre estan hasta el 255
+
+
 -Nuevos condactos para Daad V3. Comentar con Carlos - Uto
 
 DAAD V3 CAMBIOS
@@ -169,3 +191,4 @@ Carpeta conversacionales/tipo parser/daad/daad v3
 
 Ahora lo tienes nada más empezar casi (segundo condacto). Pero ojo, solo en el de 128K, en el 48 el compilador cambia los XMES a MES, así que sale el texto "Esto es un XMES" pero es mentira 😃
 
+-----------------

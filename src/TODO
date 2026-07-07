@@ -68,12 +68,6 @@ Mejora: (15/3)=5 -> 5 veces mas rápido
 
 
 
--------------
-
-
-
-
-
 --- Programas mios de Spectrum ---
 
 
@@ -90,45 +84,6 @@ Aunque esto comprime muy poco, solo se ahorra 1 byte por cada espacio, pero algo
 -----------------------
 
 
-
------------------------
-
---- ESXDOS handler ---
-
--chdir en esxdos handler acaba cambiando directorio realmente para emulador??
-
--soporte LFN para esxdos handler. quiza acortar archivos al listar con "dir" y similares. que hacer si hacen fopen de archivo largo?
-acortar archivo... pero habra que acortar tambien ruta subdirectorios....
-complicado. quiza ver mejor como gestiona los nombres largos desde nextos
-
--"overlay" esxdos handler: sobreponer una segunda carpeta sobre la principal
-Asi se puede tener una raiz por ejemplo para divmmc comun, y luego mapear carpetas adicionales para pruebas
-O quiza, en vez de overlay, una segunda unidad de disco
-
--Esxdos. Decidir hl o ix según si está paginada la memoria divmmc?
-
-Unhandled ESXDOS_RST8: B3H !!
-
-al abrir, que pruebe con mayusculas y luego minusculas
-quiza habra problemas con rutas como : /BIN/paco
-
-si subo todo a mayusculas->no ira
-si subo todo a minusculas->no ira
-quiza aqui entonces mejor que el usuario tenga su ruta bien creada en disco todo minusculas o todo mayusculas
-ver que hace zxpand aqui....
-
-*recomendar que o bien usen todo mayusculas o todo minusculas... en mac o windows no hay problemas, en linux si
--FAQ esxdos handler. Comentar mayúsculas etc
-
--Evitar el uso de ../../ etc en esxdos handler para evitar que puedan salir del root de esxdos. Esto también está planteado para zxpand
-
--------------
-
-
-
-
-------------------
-
 --- FAQ ---
 
 -Documentar un poco modo paginación zx uno
@@ -136,14 +91,6 @@ ver que hace zxpand aqui....
 
 ------------------
 
-
-
-
-
-
--------------
--------------
--------------
 
 Otros TODO menos prioritarios, de aqui hasta el final del archivo:
 
@@ -234,42 +181,12 @@ eliminar warnings de funciones sin definir como extern
 
 -Alguna especie de "top" de partes del emulador
 
--Efecto de encefalograma... para..?
-
 
 * -Agregar todas desensamblado roms en txt
   http://www.fruitcake.plus.com/Sinclair/Spectrum128/ROMDisassembly/Spectrum128ROMDisassembly4.htm
 *************
 
 -Revisar qué roms de +3e conviene incluir: la de ide no se como va. E igual se puede incluir la de divide (aunque parece no ir tampoco)
-
-
-
-*** ULAPlus  ***
-
--ULAplus mode 256x192 adicional (modo 11?), linear, igual que modo standard (256x192, flash, brillo, papel, tinta, 6144 longitud) pero lineal ?
-
--ULAplus agregar modos adicionales parecidos a los del sam coupe
-
--multicolor demo y otros modos ham (que usan interrupciones para cambiar paleta) no funcionan perfectos, seguramente a que:
-en multicolor demo cambia la paleta al finalizar un scanline. Cuando finaliza cada scanline, yo meto en rainbow buffer ese scanline, junto
-con el color de la paleta... pero esa paleta que yo leo es ya la siguiente paleta, de la siguiente linea, y no de la actual. Por eso
-hay un desfase de lineas de color en el border en la multicolor
-
--Quizá mis modos lineales deberían usar vram en vez de direcciones lineales en prism?
-No:
-All modes except 9 uses RAM 5 or 7 depending on the bit 3 of port 7FFDh on Spectrum 128k models, or address 4000H on 48k/16k models.
-Mode 9 start always at address 4000H, even on 128k models
-
-Realmente lo que pasa es que estos modos usan más de 8kb y deberían saltar a la siguiente vram (0,1) cuando pasan del offset 8192. Esto para modos 3,5,7
-
-Lo que pasa es que cuando asigno memoria vram hago los 32 k de golpe, por eso cuando se pasa del offset 8192 de vram0 automáticamente se salta a vram1
-
--ULAplus y timex 512x192. Solo va en modo real 512x192. No va color ulaplus en:
-*escalado a 256x192
-*maquina prism
-
-
 
 
 *** Misc ***
@@ -292,21 +209,6 @@ incluso con $NNNN
 *rutinas de pintado de sprites: quiza detectar cambios en pantalla al pulsar teclas. y ver desde donde se realizan esos cambios en pantalla
 * de momento hay algo preliminar: ver spritefinder
 
--Extractor palabras paws gac etc que clasifique por verbos, nombres etc
--Extractor dibujos paws?
-
--unpaws , unquill para cpc
--gac: debug messages, aventure text, etc para CPC
-
--De extractor paws o similar:
-TODO: si puntero tokens es 0, no hay tokens
-TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con acentos?
-
--unpaws con quill:
-*compression tokens existen?
-
--unpaws:
-*compression tokens no siempre estan hasta el 255
 
 
 -Text keyboard editable desde menu?
