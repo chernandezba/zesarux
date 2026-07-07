@@ -33,16 +33,11 @@ ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis 
 
 
 
-ok -que se guarde en recent files las carpetas accedidas para el root dir de mdv. y otras rutas que se seleccionan como carpeta (por ejemplo esxdos handler root dir)
-
 -quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1)) que cambie algo mas de filesel, como:
 **que indique que se pide carpeta y no archivo (aparte del titulo de la ventana que ya lo dice)
 **que no se deba salir con ESC
 **etc....
 
-
-ok -ventanas minimizadas y con hide minimized windows al restaurarse al iniciar, no aparecen como ocultas minimizadas
-->se rompió en la 13.0. en la 12.1 si que lo hace bien
 
 -en view sensors agregar sensores de canales de General Sound
 
@@ -54,7 +49,7 @@ ok -ventanas minimizadas y con hide minimized windows al restaurarse al iniciar,
 el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 
 
--iconos de dispositivos de lec romm ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
+-iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
 
 -teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
 
