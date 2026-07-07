@@ -11606,6 +11606,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings,"Accessibility settings");
         menu_add_item_menu_ayuda(array_menu_settings,"Accessibility settings, to use text-to-speech facilities on ZEsarUX menu and games");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_settings);
 
         /*
         Movido a settings->hardware

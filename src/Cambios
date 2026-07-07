@@ -7,6 +7,8 @@ Agregado mas soporte de joystick en Mac (Dpad, different axis)
 Agregar a lista de recientes files/folders al seleccionar una carpeta (por ejemplo en directorio esxdos handler o ql mdv)
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 
+Menús principales cuando el menú superior está activado, no tienen título de ventana
+
 Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 Corregido efecto de video Fade Out
 

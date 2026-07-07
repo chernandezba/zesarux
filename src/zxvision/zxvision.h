@@ -1099,6 +1099,9 @@ struct s_menu_item {
     //Si no queremos indexar la busqueda en este menu. Por ejemplo Disk Info-> Tracks list
     int no_indexar_busqueda;
 
+    //Si no queremos que el menu tenga barra de titulo
+    int do_not_have_title_bar;
+
     //este menu se selecciona enter una vez o escape una vez, pero la funcion que la llamada no vuelve
     //a dibujar el menu, por tanto a nivel de path de indexacion de busqueda, se pierde el ultimo path de submenu
     //Ejemplo de esto: menu_simple_ten_choices
@@ -1209,6 +1212,8 @@ extern void menu_add_item_menu_genera_ventana(menu_item *m);
 extern void menu_add_item_menu_es_avanzado(menu_item *m);
 extern void menu_add_item_menu_es_sencillo(menu_item *m);
 extern void menu_add_item_menu_se_cerrara(menu_item *m);
+
+extern void menu_add_item_menu_do_not_have_title_bar(menu_item *m);
 
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);

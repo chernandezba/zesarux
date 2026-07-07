@@ -450,6 +450,21 @@ void zxvision_topbar_check_pressed_window(void)
 
 int zxvision_topmenu_was_open_by_left_mouse_button=0;
 
+int zxvision_topbar_menu_will_not_have_title=0;
+
+//Si ese menu no tendra titulo, activamos ese flag en la estructura del menu y luego desactivamos ese comportamiento
+void if_zxvision_topbar_menu_will_not_have_title(menu_item *m)
+{
+    if (zxvision_topbar_menu_enabled.v==0) return;
+
+    if (zxvision_topbar_menu_will_not_have_title) {
+        zxvision_topbar_menu_will_not_have_title=0;
+        menu_add_item_menu_do_not_have_title_bar(m);
+        //Y como no tiene barra de titulo, la posicion Y=0 para que el contenido empiece en Y=1
+        force_next_menu_position_y=0;
+    }
+}
+
 void menu_topbarmenu(void)
 {
     DBG_PRINT_ZXVISION_TOPMENU VERBOSE_DEBUG,"ZXVISION_TOPMENU: Entering Top Menu. mouse_left: %d menu_topbarmenu_pressed_bar: %d",
@@ -747,6 +762,9 @@ void menu_topbarmenu(void)
                 //Importante resetear esto
                 zxvision_topmenu_was_open_by_left_mouse_button=0;
 
+                //Indicamos que menus principales abiertos desde topbar no tienen barra de titulo
+                zxvision_topbar_menu_will_not_have_title=1;
+
                 switch(pos_cursor) {
                     case 0:
                         detectar_salir_menu_principal=menu_inicio_mostrar_main_menu(detectar_salir_menu_principal);
@@ -808,6 +826,7 @@ void menu_topbarmenu(void)
                     break;
                 }
 
+                zxvision_topbar_menu_will_not_have_title=0;
 
                 //printf("despues switch. if_menu_topbarmenu_pressed_bar= %d mouse_left= %d\n",if_menu_topbarmenu_pressed_bar(),mouse_left);
 

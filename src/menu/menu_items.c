@@ -17852,6 +17852,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
                 "It does NOT emulate a full uart device, just links from the emulated machine ports to a physical local device\n"
                 "Available for ZX-Uno, TBBlue and ZX Evolution TSConf");
             menu_add_item_menu_tiene_submenu(array_menu_common);
+            if_zxvision_topbar_menu_will_not_have_title(array_menu_common);
 
 
 #ifndef NETWORKING_DISABLED
@@ -19074,6 +19075,7 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Get information about processes and manage them");
         menu_add_item_menu_ayuda(array_menu_common,"Get information about processes and manage them");
         menu_add_item_menu_es_avanzado(array_menu_common);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_process_switcher,NULL,
             "~~Process switcher","~~Process switcher","~~Process switcher");
@@ -19905,6 +19907,7 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 
         //Como no sabemos cual sera el item inicial, metemos este sin asignar, que se sobreescribe en el siguiente menu_add_item_menu
         menu_add_item_menu_inicial(&array_menu_display_settings,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_display_settings);
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_QL) {
             menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_load_screen,NULL,
@@ -30769,6 +30772,7 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
         "--- Select manufacturer ---","--- Selecciona fabricante ---","--- Selecciona fabricant ---");
         menu_add_item_menu_es_sencillo(array_menu_machine_selection);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_machine_selection);
 
         //Primer fabricante
         //menu_add_item_menu_inicial_format(&array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[0]);
@@ -30917,6 +30921,7 @@ void menu_machine_selection_by_family(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca_inicial(&array_menu_machine_selection,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Select family ---","--- Selecciona familia ---","--- Selecciona familia ---");
         menu_add_item_menu_es_sencillo(array_menu_machine_selection);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_machine_selection);
 
 
         int i=0;
@@ -31077,12 +31082,10 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
     do {
 
 
-        //Como no sabemos cual sera el item inicial, metemos este sin asignar, que se sobreescribe en el siguiente menu_add_item_menu
-        //menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-
         menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
             "--- Select machine ---","--- Selecciona máquina ---","--- Selecciona màquina ---");
         menu_add_item_menu_es_sencillo(array_menu_common);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_common);
 
         for (i=0;i<total_maquinas;i++) {
             //printf ("sorted id: %03d nombre: %s\n",memoria_punteros[i]->id,memoria_punteros[i]->nombre_maquina);
@@ -32429,6 +32432,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_common,'a');
             menu_add_item_menu_se_cerrara(array_menu_common);
             menu_add_item_menu_genera_ventana(array_menu_common);
+            if_zxvision_topbar_menu_will_not_have_title(array_menu_common);
 
             menu_add_item_menu_separator(array_menu_common);
 
@@ -33531,6 +33535,7 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_audio,'r');
         menu_add_item_menu_se_cerrara(array_menu_audio);
         menu_add_item_menu_genera_ventana(array_menu_audio);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_audio);
 
 
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_pianokeyboard,menu_cond_ay_or_sn_chip,
@@ -35640,6 +35645,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_debug,'r');
         menu_add_item_menu_genera_ventana(array_menu_debug);
         menu_add_item_menu_se_cerrara(array_menu_debug);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_debug);
 
         //Agregar una acción de solo hacer PC=0 en casos, por ejemplo, en que hay divide en modo mapram y no queremos
         //que se reinicialice toda la maquina y perder ese mapeo
@@ -36526,6 +36532,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_snapshot,"Load snapshot");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Supported snapshot formats on load:\n"
                 "Z80, ZX, SP, SNA, O, 80, P, 81, Z81");
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_snapshot);
 
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save,NULL,
             "~~Save snapshot","~~Salvar instantánea","~~Salvar instantània");
@@ -42005,6 +42012,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
                 //char string_spi_flash_file_shown[13]; //,string_mmc_file_shown[13];
 
          menu_add_item_menu_inicial(&array_menu_storage,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        if_zxvision_topbar_menu_will_not_have_title(array_menu_storage);
 
 
         if (MACHINE_IS_Z88) {
@@ -45691,6 +45699,7 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
             //menu_add_item_menu_se_cerrara(array_menu_principal);
             menu_add_item_menu_genera_ventana(array_menu_principal);
             menu_add_item_menu_es_sencillo(array_menu_principal);
+            if_zxvision_topbar_menu_will_not_have_title(array_menu_principal);
             menu_add_item_menu_tooltip(array_menu_principal,menu_inicio_retorna_tooltip(TOOLTIP_SMARTLOAD));
             menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
                 "-Binary tapes are inserted as standard tapes and loaded quickly\n"

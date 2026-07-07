@@ -7,6 +7,8 @@ Added more different joystick support for Mac (Dpad, different axis)
 Add to recent files/folders list when selecting a folder (for example esxdos handler directory or ql mdv)
 Special effects for video output are applied dynamically when moving cursor
 
+Main menus when top menu is enabled do not have window title
+
 Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
 Fixed Fade Out video effect
 

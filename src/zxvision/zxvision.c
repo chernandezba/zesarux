@@ -22756,6 +22756,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
     //printf("tabulado: %d\n",m->es_menu_tabulado);
     if (m->es_menu_tabulado) salir_todos_menus=0;
 
+    int ventana_no_tiene_titulo=0;
+    if (m->do_not_have_title_bar) ventana_no_tiene_titulo=1;
+
     ultimo_menu_salido_con_flecha_izquierda=0;
     ultimo_menu_salido_con_flecha_derecha=0;
 
@@ -23035,6 +23038,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         ventana=zxvision_current_window;
     }
 
+    if (ventana_no_tiene_titulo) ventana->do_not_have_title_bar=1;
 
     zxvision_draw_window(ventana);
 
@@ -24191,6 +24195,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     m->item_avanzado=0;
     m->item_sencillo=0;
     m->no_indexar_busqueda=0;
+    m->do_not_have_title_bar=0;
     m->one_time=0;
     m->opcion_marcada=0;
     m->opcion_campo_seleccionable=0;
@@ -24408,6 +24413,19 @@ void menu_add_item_menu_genera_ventana(menu_item *m)
         }
 
         m->genera_ventana=1;
+}
+
+//Agregar decirle que no tiene barra de titulo al ultimo item de menu
+void menu_add_item_menu_do_not_have_title_bar(menu_item *m)
+{
+       //busca el ultimo item i le añade el indicado
+
+        while (m->siguiente_item!=NULL)
+        {
+                m=m->siguiente_item;
+        }
+
+        m->do_not_have_title_bar=1;
 }
 
 //Decirle que todos los menus se cerraran cuando se cierre el menu que dispara esta accion
