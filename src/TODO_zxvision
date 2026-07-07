@@ -148,6 +148,39 @@ Quiza se deberia controlar que las llamadas a *message no hagan nada si no esta 
 
 --- ZX Vision mejoras
 
+-Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
+*diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
+*nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
+*funcion en zrcp para enviar mensajes a ventanas
+*ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
+*desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
+
+-Render objectos 3D (para widgets sensors y otros efectos) mediante el "Painter Algorithm": renderizar todos los triángulos ordenando de mas cerca a mas lejos, así
+se ocultan las caras no visibles. Aquí lo difícil sería saber qué triangulos están mas lejos o mas cerca, se pueden ver las coordenadas pero por ejemplo hay problemas con
+caras adyacentes de un cubo. Ejemplo:
+
+             ****************
+            **      1      **
+           * *            * *
+          *  *           *  *
+         *   *   2      *   *
+        ****************    *
+        *    *         *    *
+        *    *         *    *
+        *    ****************
+        *   *          *   *
+        *  *           *  *
+        * *            * *
+        **             **
+        ****************
+
+    Cara de detrás: 1
+    Cara de arriba: 2
+    Tienen un vértice en común. Como se determina que 1 está mas atrás de 2? Porque la profundidad de 1 está a la misma que el vértice mas alejado de 2,
+    por tanto "parecería" que están a la misma profundidad
+    Nota: para el ejemplo se han dibujado caras como cuadrados, pero es lo mismo para triángulos
+    Quizá obtener el punto medio de los 3 vértices de un triángulo y obtener la profundidad en ese punto?
+
 -funciones menu_ventana_scanf_numero_enhanced*, slider:
 *si rango pequeño, como en window zoom, salen repetidos caracteres "|"
 

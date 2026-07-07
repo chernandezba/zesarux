@@ -274,6 +274,9 @@ en un frame de video diferente de la mitad izquierda
 Util si estamos en debug cpu y queremos que un juego lea el boton del ratón (emulando lightgun) y/o luz de pistola
 Quizá con una opción y sólo si está el foco en ventana de debug CPU
 
+-juegos de la lightgun magnum, el sinclair action pack, envian continuamente valores a midi registro 14. por que?
+
+
 ------------------
 
 

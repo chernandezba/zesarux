@@ -108,3 +108,9 @@ Fifosdlbuffersize 4 y sdlsamplesize 2048
 
 
 ------------------
+
+
+-poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
+esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
+Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
+eso se envía en las estadísticas

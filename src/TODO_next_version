@@ -257,20 +257,6 @@ probablemente porque el alto es multiple de 8 y queda menos de una fila abajo si
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
 
 
--Juego de la vida que tenga ayuda con las reglas del juego. O ya lo tiene?
-
--poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
-esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
-Para que quiero esa estadística? Se podria simplemente que el Dockerfile al ejecutar zesarux le pase un parámetro --docker y luego
-eso se envía en las estadísticas
-
--real video render
-Que en vez de ir siempre al offset 0,0 pueda ir al offset de una ventana abierta, la de video output
-Esto permitira mover el render a una ventana. Pero requiere:
--que esa ventana aunque esté arriba no "tape" el render de pixeles: por defecto toda ventana arriba tapa el render de abajo. quiza atributo nuevo de ventana tipo "transparente"
-o solo un atributo especial para este render
--que el render no salga de los limites de esa ventana ni de la ventana principal
--alguna manera de conmutar entre el render normal y el de esa ventana
 
 
 -FX de pantalla emulada que en vez de aplicarlos al rainbow buffer, lo aplique a un buffer posterior que ya tiene el zoom aplicado
@@ -287,13 +273,7 @@ que ya no habrán varias rutinas putpixel segun si zoom 1 o zoom >1, sino que si
 -cuando F8 no está asignada a default, al abrir teclado en pantalla desde menu display, al pulsar una tecla no se vuelve a entrar a teclado en pantalla
 Esto es debido al llamar a menu_si_pulsada_tecla_osd, se pierde acción
 
--Poder enviar eventos a ventanas. Por ejemplo para el ay player, una función que diga enviar un mensaje (“next track”) a ventana (“ayplayer”).
-ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, string mensaje). si hay error (retorno no 0) mostrar ventana de error
-*diferentes ventanas pueden enviarse mensajes entre si (incluso en vez de no solo comandos fijos, sino mensajes mas complejos)
-*nuevo icono/f-function que para enviar mensajes a ventanas. al crearlo, que pregunte a cual de las ventanas posibles (de zxvision_known_window_names) y que muestre la ayuda de los comandos al usuario para saber que enviar
-*funcion en zrcp para enviar mensajes a ventanas
-*ver como comentarlo en changelog, si es experimental, si hay varias ventanas que lo permiten, uso, etc
-*desde record audio input que se pueda abrir unos watches concretos y hex editor con un follow concreto (para debug de cargas de cinta). Hay ya un to-do de esto
+
 
 -Agregar ¿todas? las entradas de menus de indexación, llamando a menu_add_item_menu_index_full_path, ejemplo:
         menu_add_item_menu_index_full_path(array_menu_settings_debug,
@@ -301,47 +281,16 @@ ok--menu debug para enviar mensaje a ventana, para el usuario (string ventana, s
 Los menus que no usen menu_add_item_menu_index_full_path se les genera automáticamente, si se han abierto desde Main Menu se le agrega ese prefijo,
 pero otros que vienen por ejemplo desde Top Menu o desde Top Buttons pues no
 
--en view sensors agregar sensores de canales de General Sound
-
--Render objectos 3D (para widgets sensors y otros efectos) mediante el "Painter Algorithm": renderizar todos los triángulos ordenando de mas cerca a mas lejos, así
-se ocultan las caras no visibles. Aquí lo difícil sería saber qué triangulos están mas lejos o mas cerca, se pueden ver las coordenadas pero por ejemplo hay problemas con
-caras adyacentes de un cubo. Ejemplo:
-
-             ****************
-            **      1      **
-           * *            * *
-          *  *           *  *
-         *   *   2      *   *
-        ****************    *
-        *    *         *    *
-        *    *         *    *
-        *    ****************
-        *   *          *   *
-        *  *           *  *
-        * *            * *
-        **             **
-        ****************
-
-    Cara de detrás: 1
-    Cara de arriba: 2
-    Tienen un vértice en común. Como se determina que 1 está mas atrás de 2? Porque la profundidad de 1 está a la misma que el vértice mas alejado de 2,
-    por tanto "parecería" que están a la misma profundidad
-    Nota: para el ejemplo se han dibujado caras como cuadrados, pero es lo mismo para triángulos
-    Quizá obtener el punto medio de los 3 vértices de un triángulo y obtener la profundidad en ese punto?
 
 
--al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
 
 -ventana para saber qué notas se están enviando a dispositivo midi externo
 *mejorarla quizá dibujando piano? aunque será lo mismo que la ventana Audio Chip Piano
 
--juegos de la lightgun magnum, el sinclair action pack, envian continuamente valores a midi registro 14. por que?
 
 
 -compilar en 32 bits quiza hace que las columnas de registros modificados mas alla de 32 no funcionen
 menu/menu_debug_cpu.c:2296:52: warning: left shift count >= width of type [-Wshift-count-overflow]
-
-
 
 
 

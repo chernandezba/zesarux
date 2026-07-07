@@ -41,7 +41,9 @@ ok -que se guarde en recent files las carpetas accedidas para el root dir de mdv
 **etc....
 
 
-ok -ventanas minimizadas y con hide minimized windows acaba mostrando el marco de la ventana
-
 ok -ventanas minimizadas y con hide minimized windows al restaurarse al iniciar, no aparecen como ocultas minimizadas
 ->se rompió en la 13.0. en la 12.1 si que lo hace bien
+
+-en view sensors agregar sensores de canales de General Sound
+
+-al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
