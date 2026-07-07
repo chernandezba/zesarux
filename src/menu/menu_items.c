@@ -1079,9 +1079,7 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
             y=menu_center_y()-alto/2;
         }
 
-        //int originx=menu_origin_x();
 
-        //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics");
 
         zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics","cpucompactstatistics",
             is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -1099,6 +1097,9 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
     else {
         zxvision_activate_this_window(ventana);
     }
+
+    //prueba no mostrar barra de titulo
+    //ventana->do_not_have_title_bar=1;
 
     //Y dibujar la ventana
     zxvision_draw_window(ventana);

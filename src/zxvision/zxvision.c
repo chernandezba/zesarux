@@ -10851,6 +10851,7 @@ void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
 
     //titulo
     //primero franja toda negra normalmente en estilo ZEsarUX
+    if (w->do_not_have_title_bar==0) {
     for (i=0;i<ancho;i++) {
         if (ESTILO_GUI_NO_RELLENAR_TITULO) {
             //Caso del estilo BeOS, si estan los botones de antes, al irse la ventana a background,
@@ -10860,6 +10861,7 @@ void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
         else {
             putchar_menu_overlay(x+i,y,caracter_espacio_titulo,color_tinta_titulo,color_papel_titulo);
         }
+    }
     }
 
 
@@ -10885,8 +10887,9 @@ void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
 
     for (i=0;i<ancho_mostrar_titulo && titulo_mostrar[i];i++) {
         char caracter_mostrar=titulo_mostrar[i];
-
+        if (w->do_not_have_title_bar==0) {
         putchar_menu_overlay(x+i,y,caracter_mostrar,color_tinta_titulo,color_papel_titulo);
+        }
     }
 
     //Indicar posicion del boton minimizar
@@ -10894,14 +10897,6 @@ void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf)
 
     if (current_win_minimize_button_position+1>=ancho) current_win_minimize_button_position=ancho-2;
 
-
-    //y las franjas de color
-    /*
-    if (ESTILO_GUI_MUESTRA_RAINBOW && ventana_tipo_activa) {
-        //en el caso de drivers completos, hacerlo real
-        menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
-    }
-    */
 
 
 
@@ -10994,11 +10989,11 @@ void menu_dibuja_ventana(zxvision_window *w)
         //int ancho_necesario=menu_da_ancho_titulo(w->window_title);
         //if (ancho>=ancho_necesario) {
 
-            menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
+            if (w->do_not_have_title_bar==0) menu_dibuja_ventana_franja_arcoiris(x,y,ancho);
         }
     }
 
-    menu_dibuja_ventana_botones();
+    if (w->do_not_have_title_bar==0) menu_dibuja_ventana_botones();
 
 }
 
@@ -12048,6 +12043,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     w->can_be_minimized=1;
     //Decimos que se puede cambiar scroll
     w->can_be_scrolled=1;
+
+    w->do_not_have_title_bar=0;
 
 
     w->disable_special_chars=0;
@@ -14318,10 +14315,10 @@ void zxvision_draw_window(zxvision_window *w)
     zxvision_draw_scroll_bars(w);
 
     //Mostrar boton de minimizar
-    menu_dibuja_ventana_botones();
+    if (w->do_not_have_title_bar==0) menu_dibuja_ventana_botones();
 
     //Mostrar boton background
-    menu_dibuja_ventana_boton_background(w->x,w->y,w->visible_width,w);
+    if (w->do_not_have_title_bar==0) menu_dibuja_ventana_boton_background(w->x,w->y,w->visible_width,w);
 
     //Dado que se ha borrado el contenido, luego en zxvision_draw_window_contents hay que refrescar
     zxvision_set_flag_dirty_must_draw_contents(w);

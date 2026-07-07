@@ -138,6 +138,9 @@ struct s_zxvision_window {
     int is_minimized;
     int is_maximized;
 
+    //Si no tiene barra de titulo
+    int do_not_have_title_bar;
+
     //papel usado por ejemplo al hacer zxvision_cls
     //aunque no se usa en casi ninguna funcion mas, por ejemplo, zxvision_print_string_defaults no lo usa
     //esta pensado para cuando se quiere poner un fondo de color concreto y mayormente llenar la pantalla

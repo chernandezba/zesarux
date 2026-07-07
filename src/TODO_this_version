@@ -8,6 +8,10 @@ ok Probar también sin multitarea
 
 -Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
 solo los primeros menus principales, los submenus si que salgan con barra de título
+->no se podrán mover con ratón?
+->hacemos que se ubique todo igual aunque la barra de menu no aparezca? O sea si se pone uno arriba del todo la primera linea del contenido sera y=1 mientras que en y=0 estará
+el titulo, aunque no se vea
+->al final esto se gestiona con draw window contents lo de dentro
 
 -Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
 
@@ -40,7 +44,7 @@ ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis 
 
 -al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
 
--en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado
+
 
 -Dibujado de barras arcoiris en titulo menu: o bien aparezcan a partir de ancho minimo fijo (lo que hay ahora) o que espere
 el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
@@ -107,7 +111,7 @@ veces
 -Zeng opción para enviar mensaje a un usuario concreto
 -En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
-
+-en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado
 
 -probar fullscreen en todos drivers
 *permitir raton en full screen. probar fullscreen con zx desktop
