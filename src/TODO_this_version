@@ -54,7 +54,7 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 -teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
 
 
--que al seleccionar efecto FX lo aplique cuando se está moviendo el cursor al seleccionar efecto, sin tener que darle al enter
+
 
 -al seleccionar archivo scl que lo expanda en trd automaticamente y seleccione. en vez de tener que pasar por expansion pulsando espacio
 
@@ -153,3 +153,6 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 
 
 -fullscreen en cpc, sin border, en mac , no se ve bien
+
+
+ok -que al seleccionar efecto FX lo aplique cuando se está moviendo el cursor al seleccionar efecto, sin tener que darle al enter

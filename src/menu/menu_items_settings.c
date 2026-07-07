@@ -1626,11 +1626,33 @@ void menu_main_window_special_effects_change_delete_effect(MENU_ITEM_PARAMETERS)
 void menu_main_window_special_effects_change_enable(MENU_ITEM_PARAMETERS)
 {
     screen_effect_applied_list[valor_opcion].enabled ^=1;
-};
+}
+
+
+int menu_main_window_special_effects_change_type_dynamic_indice_efecto=0;
+
+//Aqui entra al pasar el cursor por los efectos
+void menu_main_window_special_effects_change_type_dynamic(struct s_menu_item *item_seleccionado)
+{
+
+    //Que indice de efecto cambiamos llega indirectamente por menu_main_window_special_effects_change_type_dynamic_indice_efecto
+
+    screen_effect_applied_list[menu_main_window_special_effects_change_type_dynamic_indice_efecto].type=SCREEN_EFFECT_TYPE_NONE+item_seleccionado->valor_opcion;
+
+    //Y desactivarlo si es efecto none
+    if (screen_effect_applied_list[menu_main_window_special_effects_change_type_dynamic_indice_efecto].type==SCREEN_EFFECT_TYPE_NONE) {
+        screen_effect_applied_list[menu_main_window_special_effects_change_type_dynamic_indice_efecto].enabled=0;
+    }
+    else {
+        screen_effect_applied_list[menu_main_window_special_effects_change_type_dynamic_indice_efecto].enabled=1;
+    }
+}
 
 void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
 {
     int indice_efecto_seleccionado=valor_opcion;
+
+    menu_main_window_special_effects_change_type_dynamic_indice_efecto=indice_efecto_seleccionado;
 
     int opcion_seleccionada=0;
 
@@ -1650,6 +1672,8 @@ void menu_main_window_special_effects_change_type(MENU_ITEM_PARAMETERS)
             NULL,NULL,screen_effect_get_name_translation(SCREEN_EFFECT_TYPE_NONE+i));
 
         menu_add_item_menu_valor_opcion(array_menu_common,i);
+        //Se cambia dinamicamente el efecto
+        menu_add_item_menu_seleccionado(array_menu_common,menu_main_window_special_effects_change_type_dynamic);
 
         if (screen_effect_applied_list[indice_efecto_seleccionado].type==(enum enum_screen_effect_types)SCREEN_EFFECT_TYPE_NONE+i) opcion_seleccionada=i;
     }

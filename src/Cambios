@@ -5,6 +5,7 @@ Agregada opción en archivo de configuración para activar el uso de teclas num�
 Corregido el desactivado del menú de Búsqueda
 Agregado mas soporte de joystick en Mac (Dpad, different axis)
 Agregar a lista de recientes files/folders al seleccionar una carpeta (por ejemplo en directorio esxdos handler o ql mdv)
+Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 
 Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 
