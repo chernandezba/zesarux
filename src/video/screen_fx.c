@@ -2251,7 +2251,7 @@ void screen_rainbow_effect_fadeinout(z80_int *origen,z80_int *destino,int ancho,
 
     }
 
-    if (fadein) {
+    if (fadein>0) {
         screen_rainbow_effect_fadeinout_percentage+=3;
         if (screen_rainbow_effect_fadeinout_percentage>100) screen_rainbow_effect_fadeinout_percentage=0;
     }
