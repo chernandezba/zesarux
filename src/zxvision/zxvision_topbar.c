@@ -693,7 +693,7 @@ void menu_topbarmenu(void)
                 if (tecla_leida>='a' && tecla_leida<='z') {
                     //ver hotkeys
                     for (i=0;topbar_hotkeys[i];i++) {
-                        if (tecla_leida==topbar_hotkeys[i]) break;
+                        if (tecla_leida==topbar_hotkeys[i] && topmenus_visibles[i]) break;
                     }
                     if (topbar_hotkeys[i]) {
                         dibujar_cursor_topbar_pos_cursor=i;

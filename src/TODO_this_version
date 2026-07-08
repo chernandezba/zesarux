@@ -162,6 +162,8 @@ Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (c
 
 
 
--Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
+-Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Machine
+*ocultar el ultimo menu (help) no lo hace bien
+*no dejar ocultar primer menu (Z)
 
 -Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
