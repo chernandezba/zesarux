@@ -58,9 +58,11 @@ int topbar_menu_desplegado=0;
 //Si se muestran los hotkeys por timer
 int topbarmenu_mostrar_hotkeys_por_timer=0;
 
+#define TOPMENU_TOTAL_MENUS 12
+
 //Generar posiciones de donde está cada menu
 //20 posiciones maximo, incluyendo el primero
-int posiciones_menus[20];
+int posiciones_menus[TOPMENU_TOTAL_MENUS+1];
 
 //lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
                                                           //012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -352,7 +354,7 @@ void menu_topbarmenu_write_bar(void)
             }
         }
 
-        putchar_menu_overlay_parpadeo(x,0,caracter_escribir,tinta,papel,0);
+        /*if (topmenus_visibles[pos_menu])*/ putchar_menu_overlay_parpadeo(x,0,caracter_escribir,tinta,papel,0);
     }
 
 
@@ -419,11 +421,12 @@ int menu_topbarmenu_crear_indice_posiciones(void)
         else {
             if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
         }
-        pos_destino++;
+        if (topmenus_visibles[total_posiciones-1]) pos_destino++;
     }
 
     //El del menu Help
     posiciones_menus[total_posiciones++]=i;
+    //printf("maximo escrito posicion: %d\n",total_posiciones-1);
 
     return total_posiciones;
 }
