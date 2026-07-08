@@ -313,7 +313,14 @@ void menu_topbarmenu_write_bar(void)
     int pos_menu=0;
 
     int x;
+    int xdestino=0;
     for (x=0;topbar_string_linea_menus[x];x++) {
+        int mostrar_caracter=1;
+
+        if (pos_menu<TOPMENU_TOTAL_MENUS) {
+            if (!topmenus_visibles[pos_menu]) mostrar_caracter=0;
+        }
+
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
@@ -370,13 +377,10 @@ void menu_topbarmenu_write_bar(void)
             }
         }
 
-        int mostrar_caracter=1;
-
-        if (pos_menu<TOPMENU_TOTAL_MENUS) {
-            if (!topmenus_visibles[pos_menu]) mostrar_caracter=0;
+        if (mostrar_caracter) {
+            putchar_menu_overlay_parpadeo(xdestino,0,caracter_escribir,tinta,papel,0);
+            xdestino++;
         }
-
-        if (mostrar_caracter) putchar_menu_overlay_parpadeo(x,0,caracter_escribir,tinta,papel,0);
     }
 
 
@@ -436,6 +440,7 @@ int menu_topbarmenu_crear_indice_posiciones(void)
         if (leido_espacio) {
             if (topbar_string_linea_menus[i]!=' ') {
                 //printf("posicion %d i %d\n",total_posiciones,i);
+                //printf("posicion %d valor %d\n",total_posiciones,pos_destino);
                 posiciones_menus[total_posiciones++]=pos_destino;
                 leido_espacio=0;
             }
