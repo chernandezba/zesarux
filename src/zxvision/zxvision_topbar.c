@@ -315,16 +315,31 @@ void menu_topbarmenu_write_bar(void)
     int x;
     int xdestino=0;
     for (x=0;topbar_string_linea_menus[x];x++) {
-        int mostrar_caracter=1;
 
-        if (pos_menu<TOPMENU_TOTAL_MENUS) {
-            if (!topmenus_visibles[pos_menu]) mostrar_caracter=0;
-        }
 
         int tinta=ESTILO_GUI_TINTA_NORMAL;
         int papel=ESTILO_GUI_PAPEL_NORMAL;
 
         char caracter_escribir=topbar_string_linea_menus[x];
+
+        int mostrar_caracter=1;
+
+        printf("x %2d destino %2d pos_menu %2d get_posiciones_menus %d caracter %c ",x,xdestino,pos_menu,get_posiciones_menus(pos_menu),caracter_escribir);
+
+        if (pos_menu<TOPMENU_TOTAL_MENUS) {
+            int pos_mirar=pos_menu;
+
+            //esto es un poco chapuza. pos_menu ha cambiado a la siguiente posicion aunque aun no ha finalizado el texto de ese menu. Por tanto en ese caso tenemos que mirar pos_menu-1
+            if (x<get_posiciones_menus(pos_menu)) pos_mirar--;
+            if (!topmenus_visibles[pos_mirar]) {
+                mostrar_caracter=0;
+                printf("no mostrar caracter\n");
+            }
+        }
+
+        if (mostrar_caracter) {
+            printf("MOSTRAR caracter\n");
+        }
 
         //Resaltar menu donde apunta el cursor
         if (dibujar_cursor_topbar && caracter_escribir!=' ') {
@@ -405,12 +420,21 @@ int if_menu_topbarmenu_enabled_and_pressed_bar(void)
 
 void menu_topbarmenu_flecha_izquierda(void)
 {
-    if (dibujar_cursor_topbar_pos_cursor>0) dibujar_cursor_topbar_pos_cursor--;
+    int salir=0;
+    do {
+        if (dibujar_cursor_topbar_pos_cursor>0) dibujar_cursor_topbar_pos_cursor--;
+        else salir=1;
+    } while (!salir && !topmenus_visibles[dibujar_cursor_topbar_pos_cursor]);
 }
 
 void menu_topbarmenu_flecha_derecha(int total_menus)
 {
-    if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
+    int salir=0;
+
+    do {
+        if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
+        else salir=1;
+    } while (!salir && !topmenus_visibles[dibujar_cursor_topbar_pos_cursor]);
 }
 
 
@@ -448,7 +472,8 @@ int menu_topbarmenu_crear_indice_posiciones(void)
         else {
             if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
         }
-        if (topmenus_visibles[total_posiciones-1]) pos_destino++;
+        //if (topmenus_visibles[total_posiciones-1]) pos_destino++;
+        pos_destino++;
     }
 
     //El del menu Help
