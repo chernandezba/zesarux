@@ -63,7 +63,8 @@ int topbarmenu_mostrar_hotkeys_por_timer=0;
 //Generar posiciones de donde está cada menu
 //20 posiciones maximo, incluyendo el primero
 int posiciones_menus[TOPMENU_TOTAL_MENUS+1];
-
+//Y lo mismo pero considerando menus ocultados
+int posiciones_menus_ocultados[TOPMENU_TOTAL_MENUS+1];
 
 //int temp_get_posiciones_menus_max=-1;
 
@@ -454,30 +455,37 @@ void menu_topbarmenu_preexit(void)
 int menu_topbarmenu_crear_indice_posiciones(void)
 {
     posiciones_menus[0]=0;
+    posiciones_menus_ocultados[0]=0;
 
     int i,total_posiciones;
     int leido_espacio=0;
     char *topbar_string_linea_menus=menu_topbar_get_text_topbar();
 
     int pos_destino=0;
+    int pos_destino_ocultados=0;
     for (i=0,total_posiciones=1;topbar_string_linea_menus[i];i++) {
         if (leido_espacio) {
             if (topbar_string_linea_menus[i]!=' ') {
                 //printf("posicion %d i %d\n",total_posiciones,i);
                 //printf("posicion %d valor %d\n",total_posiciones,pos_destino);
-                posiciones_menus[total_posiciones++]=pos_destino;
+                posiciones_menus[total_posiciones]=pos_destino;
+                posiciones_menus_ocultados[total_posiciones]=pos_destino_ocultados;
+                total_posiciones++;
                 leido_espacio=0;
             }
         }
         else {
             if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
         }
-        //if (topmenus_visibles[total_posiciones-1]) pos_destino++;
+        if (topmenus_visibles[total_posiciones-1]) pos_destino_ocultados++;
+
         pos_destino++;
     }
 
     //El del menu Help
-    posiciones_menus[total_posiciones++]=i;
+    posiciones_menus[total_posiciones]=i;
+    posiciones_menus_ocultados[total_posiciones]=pos_destino_ocultados;
+    total_posiciones++;
     //printf("maximo escrito posicion: %d\n",total_posiciones-1);
 
     return total_posiciones;
@@ -645,7 +653,8 @@ void menu_topbarmenu(void)
                         //Detectar que menu esta seleccionando
                         int i;
                         for (i=0;i<total_posiciones;i++) {
-                            if (columna_actual<get_posiciones_menus(i)) break;
+                            //if (columna_actual<get_posiciones_menus(i)) break;
+                            if (columna_actual<posiciones_menus_ocultados[i]) break;
                         }
 
                         if (i<total_posiciones) {
@@ -764,7 +773,8 @@ void menu_topbarmenu(void)
                     //Detectar que menu hemos pulsado
                     int i;
                     for (i=0;i<total_posiciones;i++) {
-                        if (columna_posicion_x<get_posiciones_menus(i)) break;
+                        //if (columna_posicion_x<get_posiciones_menus(i)) break;
+                        if (columna_posicion_x<posiciones_menus_ocultados[i]) break;
                     }
 
                     if (i<total_posiciones) {
@@ -814,7 +824,10 @@ void menu_topbarmenu(void)
                 //actualizar posicion de cursor global con lo calculado segun el raton
                 dibujar_cursor_topbar_pos_cursor=pos_cursor;
 
-                force_next_menu_position_x=get_posiciones_menus(pos_cursor);
+                //force_next_menu_position_x=get_posiciones_menus(pos_cursor);
+
+                //posicion x considerando menus ocultados
+                force_next_menu_position_x=posiciones_menus_ocultados[pos_cursor];
 
                 //hemos pulsado en topbar, nos mantenemos
                 salir_topbar=0;
