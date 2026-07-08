@@ -64,6 +64,22 @@ int topbarmenu_mostrar_hotkeys_por_timer=0;
 //20 posiciones maximo, incluyendo el primero
 int posiciones_menus[TOPMENU_TOTAL_MENUS+1];
 
+
+//int temp_get_posiciones_menus_max=-1;
+
+//Funcion auxiliar que se uso temporalmente para ver que indices se pedian
+int get_posiciones_menus(int indice)
+{
+    //printf("Retornar %d\n",indice);
+    /*
+    if (indice>temp_get_posiciones_menus_max) {
+        temp_get_posiciones_menus_max=indice;
+        printf("maximo pedido: %d\n",indice);
+    }
+    */
+    return posiciones_menus[indice];
+}
+
 //lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
                                                           //012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
                                                           //0         1         2         3         4         5         6         7         8         9         10
@@ -77,7 +93,7 @@ char topbar_string_linea_menus_with_zxdesktop_catalan[]=   "Z  CarregaAstuta  In
 char topbar_string_linea_menus_without_zxdesktop_catalan[]="Z CA Ins Mqu Aud Dsp Emm Dbg Net Win Opc Hlp";
 
 //Para ocultar menus
-int topmenus_visibles[12]={1,1,1,1,1,1,1,1,1,1,1,1};
+int topmenus_visibles[TOPMENU_TOTAL_MENUS]={1,1,1,1,1,1,1,1,1,1,1,1};
 
 //tecla Z para primer menu ZEsarUX
 //tecla S para Smartload
@@ -307,9 +323,9 @@ void menu_topbarmenu_write_bar(void)
         if (dibujar_cursor_topbar && caracter_escribir!=' ') {
             //printf("dibujar top bar cursor\n");
 
-            int x_inicio=posiciones_menus[dibujar_cursor_topbar_pos_cursor];
+            int x_inicio=get_posiciones_menus(dibujar_cursor_topbar_pos_cursor);
 
-            int x_final=posiciones_menus[dibujar_cursor_topbar_pos_cursor+1]-1;
+            int x_final=get_posiciones_menus(dibujar_cursor_topbar_pos_cursor+1)-1;
 
             if (x>=x_inicio && x<=x_final) {
                 tinta=ESTILO_GUI_TINTA_SELECCIONADO;
@@ -326,7 +342,7 @@ void menu_topbarmenu_write_bar(void)
 
         //printf("Comparar posiciones_menus[%d]=%d\n",pos_menu,posiciones_menus[pos_menu]);
 
-        if (x>=posiciones_menus[pos_menu] && caracter_escribir_minusculas==topbar_hotkeys[pos_menu] ) {
+        if (x>=get_posiciones_menus(pos_menu) && caracter_escribir_minusculas==topbar_hotkeys[pos_menu] ) {
             //printf("Letra hotkey: [%c] x=%d\n",topbar_hotkeys[pos_menu],x);
 
             //Esta en una posicion de hotkey. Saltamos al siguiente para la proxima hotkey
@@ -354,7 +370,13 @@ void menu_topbarmenu_write_bar(void)
             }
         }
 
-        /*if (topmenus_visibles[pos_menu])*/ putchar_menu_overlay_parpadeo(x,0,caracter_escribir,tinta,papel,0);
+        int mostrar_caracter=1;
+
+        if (pos_menu<TOPMENU_TOTAL_MENUS) {
+            if (!topmenus_visibles[pos_menu]) mostrar_caracter=0;
+        }
+
+        if (mostrar_caracter) putchar_menu_overlay_parpadeo(x,0,caracter_escribir,tinta,papel,0);
     }
 
 
@@ -593,7 +615,7 @@ void menu_topbarmenu(void)
                         //Detectar que menu esta seleccionando
                         int i;
                         for (i=0;i<total_posiciones;i++) {
-                            if (columna_actual<posiciones_menus[i]) break;
+                            if (columna_actual<get_posiciones_menus(i)) break;
                         }
 
                         if (i<total_posiciones) {
@@ -712,7 +734,7 @@ void menu_topbarmenu(void)
                     //Detectar que menu hemos pulsado
                     int i;
                     for (i=0;i<total_posiciones;i++) {
-                        if (columna_posicion_x<posiciones_menus[i]) break;
+                        if (columna_posicion_x<get_posiciones_menus(i)) break;
                     }
 
                     if (i<total_posiciones) {
@@ -762,7 +784,7 @@ void menu_topbarmenu(void)
                 //actualizar posicion de cursor global con lo calculado segun el raton
                 dibujar_cursor_topbar_pos_cursor=pos_cursor;
 
-                force_next_menu_position_x=posiciones_menus[pos_cursor];
+                force_next_menu_position_x=get_posiciones_menus(pos_cursor);
 
                 //hemos pulsado en topbar, nos mantenemos
                 salir_topbar=0;
