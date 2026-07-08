@@ -74,6 +74,8 @@ char topbar_string_linea_menus_without_zxdesktop_spanish[]="Z CA Ins Mqu Aud Dsp
 char topbar_string_linea_menus_with_zxdesktop_catalan[]=   "Z  CarregaAstuta  Instantania  Maquina  Audio  Display  Emmagatzematge  Debug  Network  Windows  Opcions  Help";
 char topbar_string_linea_menus_without_zxdesktop_catalan[]="Z CA Ins Mqu Aud Dsp Emm Dbg Net Win Opc Hlp";
 
+//Para ocultar menus
+int topmenus_visibles[12]={1,1,1,1,1,1,1,1,1,1,1,1};
 
 //tecla Z para primer menu ZEsarUX
 //tecla S para Smartload
@@ -404,17 +406,20 @@ int menu_topbarmenu_crear_indice_posiciones(void)
     int i,total_posiciones;
     int leido_espacio=0;
     char *topbar_string_linea_menus=menu_topbar_get_text_topbar();
+
+    int pos_destino=0;
     for (i=0,total_posiciones=1;topbar_string_linea_menus[i];i++) {
         if (leido_espacio) {
             if (topbar_string_linea_menus[i]!=' ') {
                 //printf("posicion %d i %d\n",total_posiciones,i);
-                posiciones_menus[total_posiciones++]=i;
+                posiciones_menus[total_posiciones++]=pos_destino;
                 leido_espacio=0;
             }
         }
         else {
             if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
         }
+        pos_destino++;
     }
 
     //El del menu Help

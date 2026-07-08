@@ -1,16 +1,5 @@
-ok -segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)
 
 
-ok -zona de redimensionado de marco dibujarlo solo en ventanas activas?
-ok Marca redimensionado sale siempre bien en ventana principal?
-ok Probar también sin multitarea
-
-
-
-
--Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
-
--Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
 
 -osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
 
@@ -171,3 +160,8 @@ ok? *parece que menus si que tienen ventana de titulo, al reentrar en menu -> po
 ->quiza en if_zxvision_topbar_menu_will_not_have_title no poner setting a 0. que lo haga topbar al salir de ese menu
 Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (cosa rara) no tendria titulo... aunque eso ya es lo que queremos
 
+
+
+-Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Help
+
+-Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
