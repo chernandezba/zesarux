@@ -9,6 +9,7 @@
 * activar capture segmentation fault en start.c
 * activar capture floating point exception en start.c
 * ZESARUX_EXTRAS_URL en cpu.h en principio no hay que tocarlo
+* ajustar estimated_size en menu_online_download_extras con el tamaño del zip de extras que se descargará
 
 * Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx o dsk. Crear editionnamegame.tap.config o editionnamegame.tzx.config si es necesario
 * En changelog, decir qué comandos nuevos de ZRCP, haciendo diff con version anterior

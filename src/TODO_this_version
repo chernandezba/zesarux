@@ -1,4 +1,4 @@
--segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)
+ok -segfault al descargar zesarux extras (con los flags -fsanitize=address,undefined,object-size -Wno-deprecated-declarations)
 
 
 ok -zona de redimensionado de marco dibujarlo solo en ventanas activas?
@@ -171,4 +171,3 @@ ok? *parece que menus si que tienen ventana de titulo, al reentrar en menu -> po
 ->quiza en if_zxvision_topbar_menu_will_not_have_title no poner setting a 0. que lo haga topbar al salir de ese menu
 Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (cosa rara) no tendria titulo... aunque eso ya es lo que queremos
 
-ok? -menus que se inician con unassigned, tienen titulo habilitado. como storage

@@ -17272,8 +17272,8 @@ void menu_online_download_extras(MENU_ITEM_PARAMETERS)
     strcpy(url,ZESARUX_EXTRAS_URL);
 
 
-    //200 MB. En versión 9.0 son 100 MB. Mas que suficiente para el futuro
-    int estimated_size=200*1024*1024;
+    //300 MB
+    int estimated_size=300*1024*1024;
 
 
 
