@@ -1950,6 +1950,7 @@ printf("\n"
         "--enable-top-menu                        Enable Top Menu\n"
         "--no-show-top-menu-move-top              Do not show Top Menu when moving mouse to top\n"
         "--top-menu-hide-item n                   Hide menu item, n=1 hides Smartload, n=2 hides Snapshot, etc\n"
+        "--top-menu-short-menu-names              Show Top Menu short menu names\n"
 
         //"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
 
@@ -4563,6 +4564,10 @@ int parse_cmdline_options(int desde_commandline)
 
                 }
                 else topbar_set_topmenus_visibles(indice,0);
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--top-menu-short-menu-names")) {
+                topbar_show_short_menu_names=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ignoremouseclickopenmenu")) {

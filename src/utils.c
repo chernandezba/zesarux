@@ -4257,6 +4257,8 @@ int util_write_configfile(void)
         if (!topbar_get_topmenus_visibles(i))       ADD_STRING_CONFIG,"--top-menu-hide-item %d",i);
     }
 
+    if (topbar_show_short_menu_names)               ADD_STRING_CONFIG,"--top-menu-short-menu-names");
+
     if (lightgun_emulation_enabled.v)               ADD_STRING_CONFIG,"--enable-optical-input");
     if (lightgun_scope.v)                           ADD_STRING_CONFIG,"--opticalinput-scope");
 
