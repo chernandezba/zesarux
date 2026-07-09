@@ -4041,6 +4041,14 @@ void menu_topmenu_items_visibility_switch(MENU_ITEM_PARAMETERS)
     menu_topbarmenu_crear_indice_posiciones();
 }
 
+
+void menu_topmenu_short_names(MENU_ITEM_PARAMETERS)
+{
+    topbar_show_short_menu_names ^=1;
+
+    menu_topbarmenu_crear_indice_posiciones();
+}
+
 void menu_topmenu_items_visibility(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -4255,6 +4263,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
                 "Top menu items visibility","Visibilidad items menú superior","Visibilitat items menú superior"
             );
             menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+            menu_add_item_menu_tooltip(array_menu_common,"Hide some menu items");
+            menu_add_item_menu_ayuda(array_menu_common,"Hide some menu items");
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
@@ -4264,6 +4274,10 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_appears_move_mouse_top.v ? 'X' : ' ') );
             menu_add_item_menu_opcion_conmuta(array_menu_common,&zxvision_topbar_appears_move_mouse_top);
             menu_add_item_menu_es_avanzado(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_topmenu_short_names,NULL,
+                "Show Top Menu short menu names","Mostrar nombres de menús cortos en menú superior","Mostrar noms de menús curts en menú superior");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (topbar_show_short_menu_names ? 'X' : ' ') );
         }
 
 
@@ -14441,6 +14455,9 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
     }
 
     zxvision_reorder_configurable_icons_if_auto();
+
+    //Cambiar nombres cortos/largos de menus en topbar segun si zx desktop activado o no
+    topbar_guess_show_short_menu_names_variable();
 
     cls_menu_overlay();
 

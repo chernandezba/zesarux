@@ -43,5 +43,7 @@ extern void topbar_set_topmenus_visibles(int indice,int valor);
 extern void topbar_switch_topmenus_visibles(int indice);
 extern int topbar_get_topmenus_visibles(int indice);
 extern int menu_topbarmenu_crear_indice_posiciones(void);
+extern int topbar_show_short_menu_names;
+extern void topbar_guess_show_short_menu_names_variable(void);
 
 #endif

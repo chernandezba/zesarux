@@ -66,6 +66,22 @@ int posiciones_menus[TOPMENU_TOTAL_MENUS+1];
 //Y lo mismo pero considerando menus ocultados
 int posiciones_menus_ocultados[TOPMENU_TOTAL_MENUS+1];
 
+//Si mostrar nombres de menus pequeños o grandes
+int topbar_show_short_menu_names=0;
+
+//Actualiza variable de nombres cortos de acorde a zx desktop: si no tiene zx desktop, asumimos nombres cortos
+
+void topbar_guess_show_short_menu_names_variable(void)
+{
+
+    if (zxvision_topbar_menu_enabled.v==0) return;
+
+    if (if_zxdesktop_enabled_and_driver_allows() ) topbar_show_short_menu_names=0;
+    else topbar_show_short_menu_names=1;
+
+    menu_topbarmenu_crear_indice_posiciones();
+}
+
 //int temp_get_posiciones_menus_max=-1;
 
 //Funcion auxiliar que se uso temporalmente para ver que indices se pedian
@@ -313,7 +329,8 @@ z80_byte menu_topbarmenu_get_key(void)
 
 char *menu_topbar_get_text_topbar(void)
 {
-    if (if_zxdesktop_enabled_and_driver_allows() ) {
+    //if (if_zxdesktop_enabled_and_driver_allows() ) {
+    if (!topbar_show_short_menu_names) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return topbar_string_linea_menus_with_zxdesktop_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return topbar_string_linea_menus_with_zxdesktop_catalan;
         else return topbar_string_linea_menus_with_zxdesktop_english;
