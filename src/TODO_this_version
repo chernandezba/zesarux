@@ -150,7 +150,7 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 - Sin ZX desktop con topbar, submenus se despliegan en Y=0
 
 
--Poder crear ventanas sin barra de título. Creo que esto ya está en algún TO-DO. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
+-Poder crear ventanas sin barra de título. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
 solo los primeros menus principales, los submenus si que salgan con barra de título
 ->no se podrán mover con ratón?
 ->hacemos que se ubique todo igual aunque la barra de menu no aparezca? O sea si se pone uno arriba del todo la primera linea del contenido sera y=1 mientras que en y=0 estará
@@ -170,6 +170,8 @@ ok *como edita el usuario los items ocultos. y como se guarda en config (quiza a
 ok *con nombres de menus cortos no oculta bien los menus, corta la linea por la derecha
 ok *con nombres de menus cortos el raton no se mueve bien (esto ya pasaba antes de aplicar ocultacion, la versión 13.0 le sucede) -> quiza porque empieza a contar posicion x del raton a partir de zx desktop?
 
+
 ok -Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
+
 
 ok-al expandir zx desktop si se ha abierto top menu, genera segfault
