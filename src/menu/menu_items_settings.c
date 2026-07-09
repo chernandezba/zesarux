@@ -4058,7 +4058,7 @@ void menu_topmenu_items_visibility(MENU_ITEM_PARAMETERS)
 
         for (i=0;menu_items_strings[i]!=NULL;i++) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_topmenu_items_visibility_switch,NULL,"%s",menu_items_strings[i]);
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%c]",(topbar_get_topmenus_visibles(i+1) ? 'X' : ' ' ));
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(topbar_get_topmenus_visibles(i+1) ? 'X' : ' ' ));
             menu_add_item_menu_valor_opcion(array_menu_common,i);
         }
 
@@ -4254,13 +4254,14 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_topmenu_items_visibility,NULL,
                 "Top menu items visibility","Visibilidad items menú superior","Visibilitat items menú superior"
             );
-            menu_add_item_menu_prefijo_format(array_menu_common," ");
+            menu_add_item_menu_prefijo_format(array_menu_common,"    ");
+            menu_add_item_menu_tiene_submenu(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Show Top Menu moving mouse to top","Mostrar Menú Superior al mover ratón arriba","Mostrar Menú Superior al moure ratolí a dalt");
             menu_add_item_menu_tooltip(array_menu_common,"Show Top Menu when moving mouse to top");
             menu_add_item_menu_ayuda(array_menu_common,"Show Top Menu when moving mouse to top. If disabled, Top Menu will only be opened when clicking mouse");
-            menu_add_item_menu_prefijo_format(array_menu_common," [%c] ", (zxvision_topbar_appears_move_mouse_top.v ? 'X' : ' ') );
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (zxvision_topbar_appears_move_mouse_top.v ? 'X' : ' ') );
             menu_add_item_menu_opcion_conmuta(array_menu_common,&zxvision_topbar_appears_move_mouse_top);
             menu_add_item_menu_es_avanzado(array_menu_common);
         }
