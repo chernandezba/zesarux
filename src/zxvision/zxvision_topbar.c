@@ -84,14 +84,16 @@ int get_posiciones_menus(int indice)
 //lo defino como un array de char para que pueda cambiar el caracter 0 por la Z pequeña del logo
                                                           //012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
                                                           //0         1         2         3         4         5         6         7         8         9         10
+
+//Ojo que en las strings cortas sin zx desktop tambien hay que incluir la letra de hotkey de cada menu. si no, no funcionaria bien
 char topbar_string_linea_menus_with_zxdesktop_english[]=   "Z  Smartload  Snapshot  Machine  Audio  Display  Storage  Debug  Network  Windows  Settings  Help";
-char topbar_string_linea_menus_without_zxdesktop_english[]="Z SL Sna Mch Aud Dsp Sto Dbg Net Win Set Hlp";
+char topbar_string_linea_menus_without_zxdesktop_english[]="Z SL Sna Mch Aud Dsp Sto Deb Nwo Win Sti Hlp";
 
 char topbar_string_linea_menus_with_zxdesktop_spanish[]=   "Z  CargaAstuta  Instantanea  Maquina  Audio  Display  Almacenamiento  Debug  Network  Windows  Opciones  Help";
-char topbar_string_linea_menus_without_zxdesktop_spanish[]="Z CA Ins Mqu Aud Dsp Alm Dbg Net Win Opc Hlp";
+char topbar_string_linea_menus_without_zxdesktop_spanish[]="Z Cs Ins Mq Aud Dsp Amt Deb Nwo Win Opci Hlp";
 
 char topbar_string_linea_menus_with_zxdesktop_catalan[]=   "Z  CarregaAstuta  Instantania  Maquina  Audio  Display  Emmagatzematge  Debug  Network  Windows  Opcions  Help";
-char topbar_string_linea_menus_without_zxdesktop_catalan[]="Z CA Ins Mqu Aud Dsp Emm Dbg Net Win Opc Hlp";
+char topbar_string_linea_menus_without_zxdesktop_catalan[]="Z Cs Ins Mq Aud Dsp Emt Deb Nwo Win Opci Hlp";
 
 //Para ocultar menus
 int topmenus_visibles[TOPMENU_TOTAL_MENUS]={1,1,1,1,1,1,1,1,1,1,1,1};
