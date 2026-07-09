@@ -147,8 +147,7 @@ void topbar_switch_topmenus_visibles(int indice)
 
 int topbar_get_topmenus_visibles(int indice)
 {
-    //No se puede ocultar item 0 (menu Z)
-    if (indice<1 || indice>=TOPMENU_TOTAL_MENUS) {
+    if (indice<0 || indice>=TOPMENU_TOTAL_MENUS) {
         debug_printf(VERBOSE_DEBUG,"Invalid topbar menu index %d to get",indice);
         return 1;
     }
@@ -329,7 +328,6 @@ z80_byte menu_topbarmenu_get_key(void)
 
 char *menu_topbar_get_text_topbar(void)
 {
-    //if (if_zxdesktop_enabled_and_driver_allows() ) {
     if (!topbar_show_short_menu_names) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return topbar_string_linea_menus_with_zxdesktop_spanish;
         else if (gui_language==GUI_LANGUAGE_CATALAN) return topbar_string_linea_menus_with_zxdesktop_catalan;
@@ -378,10 +376,11 @@ void menu_topbarmenu_write_bar(void)
 
         //if (pos_menu<TOPMENU_TOTAL_MENUS) {
             int pos_mirar=pos_menu;
+            //printf("pos_mirar %d\n",pos_mirar);
 
             //esto es un poco chapuza. pos_menu ha cambiado a la siguiente posicion aunque aun no ha finalizado el texto de ese menu. Por tanto en ese caso tenemos que mirar pos_menu-1
             if (x<get_posiciones_menus(pos_menu)) pos_mirar--;
-            if (!topmenus_visibles[pos_mirar]) {
+            if (!topbar_get_topmenus_visibles(pos_mirar)) {
                 mostrar_caracter=0;
                 //printf("no mostrar caracter\n");
             }
@@ -474,7 +473,7 @@ void menu_topbarmenu_flecha_izquierda(void)
     do {
         if (dibujar_cursor_topbar_pos_cursor>0) dibujar_cursor_topbar_pos_cursor--;
         else salir=1;
-    } while (!salir && !topmenus_visibles[dibujar_cursor_topbar_pos_cursor]);
+    } while (!salir && !topbar_get_topmenus_visibles(dibujar_cursor_topbar_pos_cursor));
 }
 
 void menu_topbarmenu_flecha_derecha(int total_menus)
@@ -486,11 +485,11 @@ void menu_topbarmenu_flecha_derecha(int total_menus)
     do {
         if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
         else salir=1;
-    } while (!salir && !topmenus_visibles[dibujar_cursor_topbar_pos_cursor]);
+    } while (!salir && !topbar_get_topmenus_visibles(dibujar_cursor_topbar_pos_cursor));
 
     //Si se ha quedado en una posicion no visible, volver a posicion inicial
     //Esto sucede al ocultar el ultimo menu (Help)
-    if (!topmenus_visibles[dibujar_cursor_topbar_pos_cursor]) dibujar_cursor_topbar_pos_cursor=antes_dibujar_cursor_topbar_pos_cursor;
+    if (!topbar_get_topmenus_visibles(dibujar_cursor_topbar_pos_cursor)) dibujar_cursor_topbar_pos_cursor=antes_dibujar_cursor_topbar_pos_cursor;
 }
 
 
@@ -533,7 +532,7 @@ int menu_topbarmenu_crear_indice_posiciones(void)
         else {
             if (topbar_string_linea_menus[i]==' ') leido_espacio=1;
         }
-        if (topmenus_visibles[total_posiciones-1]) pos_destino_ocultados++;
+        if (topbar_get_topmenus_visibles(total_posiciones-1)) pos_destino_ocultados++;
 
         pos_destino++;
     }
@@ -752,7 +751,7 @@ void menu_topbarmenu(void)
                 if (tecla_leida>='a' && tecla_leida<='z') {
                     //ver hotkeys
                     for (i=0;topbar_hotkeys[i];i++) {
-                        if (tecla_leida==topbar_hotkeys[i] && topmenus_visibles[i]) break;
+                        if (tecla_leida==topbar_hotkeys[i] && topbar_get_topmenus_visibles(i)) break;
                     }
                     if (topbar_hotkeys[i]) {
                         dibujar_cursor_topbar_pos_cursor=i;

@@ -172,4 +172,4 @@ ok *con nombres de menus cortos el raton no se mueve bien (esto ya pasaba antes 
 
 ok -Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
 
--al expandir zx desktop si se ha abierto top menu, genera segfault
+ok-al expandir zx desktop si se ha abierto top menu, genera segfault
