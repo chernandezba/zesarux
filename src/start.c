@@ -71,6 +71,7 @@
 #include "snap.h"
 #include "snap_zsf.h"
 #include "zxvision.h"
+#include "zxvision_topbar.h"
 #include "menu_debug_cpu.h"
 #include "core_spectrum.h"
 #include "core_zx8081.h"
@@ -1948,6 +1949,7 @@ printf("\n"
 
         "--enable-top-menu                        Enable Top Menu\n"
         "--no-show-top-menu-move-top              Do not show Top Menu when moving mouse to top\n"
+        "--top-menu-hide-item n                   Hide menu item, n=1 hides Smartload, n=2 hides Snapshot, etc\n"
 
         //"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
 
@@ -4550,6 +4552,17 @@ int parse_cmdline_options(int desde_commandline)
                     //--no-show-topbar-menu-move-top deprecated
 
                 zxvision_topbar_appears_move_mouse_top.v=0;
+            }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--top-menu-hide-item")) {
+                siguiente_parametro_argumento();
+                int indice=parse_string_to_number(argv[puntero_parametro]);
+                if (indice<1 || indice>=TOPMENU_TOTAL_MENUS) {
+                    debug_printf (VERBOSE_ERR,"Invalid --top-menu-hide-item item %d\n",indice);
+
+                }
+                else topbar_set_topmenus_visibles(indice,0);
             }
 
             else if (!strcmp(argv[puntero_parametro],"--ignoremouseclickopenmenu")) {

@@ -58,7 +58,7 @@ int topbar_menu_desplegado=0;
 //Si se muestran los hotkeys por timer
 int topbarmenu_mostrar_hotkeys_por_timer=0;
 
-#define TOPMENU_TOTAL_MENUS 12
+
 
 //Generar posiciones de donde está cada menu
 //20 posiciones maximo, incluyendo el primero
@@ -106,6 +106,26 @@ char *topbar_hotkeys="zsnmadteowil";
 int menu_topbarmenu_pressed_bar=0;
 
 #define MAX_SWITCH_TOPBAR_VISIBLE_TIMER 100
+
+void topbar_set_topmenus_visibles(int indice,int valor)
+{
+    //No se puede ocultar item 0 (menu Z)
+    if (indice<1 || indice>=TOPMENU_TOTAL_MENUS) {
+        debug_printf(VERBOSE_DEBUG,"Invalid topbar menu index %d to set",indice);
+        return;
+    }
+    topmenus_visibles[indice]=valor;
+}
+
+int topbar_get_topmenus_visibles(int indice)
+{
+    //No se puede ocultar item 0 (menu Z)
+    if (indice<1 || indice>=TOPMENU_TOTAL_MENUS) {
+        debug_printf(VERBOSE_DEBUG,"Invalid topbar menu index %d to get",indice);
+        return 1;
+    }
+    return topmenus_visibles[indice];
+}
 
 void topbar_make_topbar_visible(void)
 {

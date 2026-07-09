@@ -4253,6 +4253,10 @@ int util_write_configfile(void)
     if (zxvision_topbar_menu_enabled.v)             ADD_STRING_CONFIG,"--enable-top-menu");
     if (zxvision_topbar_appears_move_mouse_top.v==0)     ADD_STRING_CONFIG,"--no-show-top-menu-move-top");
 
+    for (i=1;i<TOPMENU_TOTAL_MENUS;i++) {
+        if (!topbar_get_topmenus_visibles(i))       ADD_STRING_CONFIG,"--top-menu-hide-item %d",i);
+    }
+
     if (lightgun_emulation_enabled.v)               ADD_STRING_CONFIG,"--enable-optical-input");
     if (lightgun_scope.v)                           ADD_STRING_CONFIG,"--opticalinput-scope");
 
