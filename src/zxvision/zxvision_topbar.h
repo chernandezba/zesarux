@@ -40,6 +40,8 @@ extern void topbar_make_topbar_visible(void);
 extern void if_zxvision_topbar_menu_will_not_have_title(menu_item *m);
 extern int zxvision_topbar_menu_will_not_have_title;
 extern void topbar_set_topmenus_visibles(int indice,int valor);
+extern void topbar_switch_topmenus_visibles(int indice);
 extern int topbar_get_topmenus_visibles(int indice);
+extern int menu_topbarmenu_crear_indice_posiciones(void);
 
 #endif

@@ -117,6 +117,16 @@ void topbar_set_topmenus_visibles(int indice,int valor)
     topmenus_visibles[indice]=valor;
 }
 
+void topbar_switch_topmenus_visibles(int indice)
+{
+    //No se puede ocultar item 0 (menu Z)
+    if (indice<1 || indice>=TOPMENU_TOTAL_MENUS) {
+        debug_printf(VERBOSE_DEBUG,"Invalid topbar menu index %d to set",indice);
+        return;
+    }
+    topmenus_visibles[indice] ^=1;
+}
+
 int topbar_get_topmenus_visibles(int indice)
 {
     //No se puede ocultar item 0 (menu Z)
@@ -345,7 +355,7 @@ void menu_topbarmenu_write_bar(void)
 
         int mostrar_caracter=1;
 
-        printf("x %2d destino %2d pos_menu %2d get_posiciones_menus %d caracter %c ",x,xdestino,pos_menu,get_posiciones_menus(pos_menu),caracter_escribir);
+        //printf("x %2d destino %2d pos_menu %2d get_posiciones_menus %d caracter %c ",x,xdestino,pos_menu,get_posiciones_menus(pos_menu),caracter_escribir);
 
         //if (pos_menu<TOPMENU_TOTAL_MENUS) {
             int pos_mirar=pos_menu;
@@ -354,12 +364,12 @@ void menu_topbarmenu_write_bar(void)
             if (x<get_posiciones_menus(pos_menu)) pos_mirar--;
             if (!topmenus_visibles[pos_mirar]) {
                 mostrar_caracter=0;
-                printf("no mostrar caracter\n");
+                //printf("no mostrar caracter\n");
             }
         //}
 
         if (mostrar_caracter) {
-            printf("MOSTRAR caracter\n");
+            //printf("MOSTRAR caracter\n");
         }
 
         //Resaltar menu donde apunta el cursor
@@ -480,6 +490,7 @@ void menu_topbarmenu_preexit(void)
 
 int menu_topbarmenu_crear_indice_posiciones(void)
 {
+    //printf("crear indices posiciones\n");
     posiciones_menus[0]=0;
     posiciones_menus_ocultados[0]=0;
 

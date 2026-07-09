@@ -245,6 +245,7 @@ int main_window_special_effects_opcion_seleccionada=0;
 int main_window_special_effects_change=0;
 int main_window_special_effects_group_opcion_seleccionada=0;
 int settings_smartload_opcion_seleccionada=0;
+int topmenu_items_visibility_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -4031,6 +4032,70 @@ void menu_interface_reduce_menu_height_half(MENU_ITEM_PARAMETERS)
     else screen_reduce_menu_alto=1;
 }
 
+void menu_topmenu_items_visibility_switch(MENU_ITEM_PARAMETERS)
+{
+    int indice=valor_opcion+1;
+
+    topbar_switch_topmenus_visibles(indice);
+
+    menu_topbarmenu_crear_indice_posiciones();
+}
+
+void menu_topmenu_items_visibility(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    char *menu_items_strings[]={"Smartload","Snapshot","Machine","Audio","Display","Storage","Debug","Network","Windows","Settings","Help",NULL};
+
+
+    do {
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,"");
+
+        int i;
+
+        for (i=0;menu_items_strings[i]!=NULL;i++) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_topmenu_items_visibility_switch,NULL,"%s",menu_items_strings[i]);
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c]",(topbar_get_topmenus_visibles(i+1) ? 'X' : ' ' ));
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+        }
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings-> ZX Vision-> Top menu items visibility",
+            "Menú Principal-> Opciones-> ZX Vision-> Visibilidad items menú superior",
+            "Menú Principal-> Opcions-> ZX Vision-> Visibilitat items menú superior");
+
+        retorno_menu=menu_dibuja_menu(&topmenu_items_visibility_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Top menu items visibility","Visibilidad items menú superior","Visibilitat items menú superior" );
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -4186,6 +4251,11 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         if (zxvision_topbar_menu_enabled.v) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_topmenu_items_visibility,NULL,
+                "Top menu items visibility","Visibilidad items menú superior","Visibilitat items menú superior"
+            );
+            menu_add_item_menu_prefijo_format(array_menu_common," ");
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
                 "Show Top Menu moving mouse to top","Mostrar Menú Superior al mover ratón arriba","Mostrar Menú Superior al moure ratolí a dalt");
             menu_add_item_menu_tooltip(array_menu_common,"Show Top Menu when moving mouse to top");
