@@ -10,6 +10,7 @@ Agregado mas soporte de joystick en Mac (Dpad, different axis)
 Dibujar marco ventana de ventanas en segundo plano
 Menús principales cuando el menú superior está activado, no tienen título de ventana
 Permitir ordenar iconos alfabéticamente
+Permitir ocultar menús del menú superior
 Agregar a lista de recientes files/folders al seleccionar una carpeta (por ejemplo en directorio esxdos handler o ql mdv)
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 
