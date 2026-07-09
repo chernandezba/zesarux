@@ -1,14 +1,21 @@
 ZEsarUX 13.1 - xxxx edition. 15 Junio 2026
-Dibujar marco ventana de ventanas en segundo plano
-Permitir ordenar iconos alfabéticamente
+
+* Cosas nuevas agregadas:
+
 Agregada opción en archivo de configuración para activar el uso de teclas numéricas en teclado Azerty sin tener que pulsar tecla Shift
-Corregido el desactivado del menú de Búsqueda
 Agregado mas soporte de joystick en Mac (Dpad, different axis)
+
+* Mejoras:
+
+Dibujar marco ventana de ventanas en segundo plano
+Menús principales cuando el menú superior está activado, no tienen título de ventana
+Permitir ordenar iconos alfabéticamente
 Agregar a lista de recientes files/folders al seleccionar una carpeta (por ejemplo en directorio esxdos handler o ql mdv)
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 
-Menús principales cuando el menú superior está activado, no tienen título de ventana
+* Correcciones:
 
+Corregido el desactivado del menú de Búsqueda
 Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 Corregido efecto de video Fade Out
 Corregida descarga de ZEsarUX extras desde menú Network

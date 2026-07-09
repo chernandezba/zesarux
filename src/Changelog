@@ -1,14 +1,21 @@
 ZEsarUX 13.1 - xxxx edition. 15 June 2026
-Draw window frame on background windows
-Allow to sort icons alphabetically
+
+* New things added:
+
 Added configuration file setting for enabling to use numeric keys on Azerty keyboard, without having to press Shift
-Fixed disabling Search menu
 Added more different joystick support for Mac (Dpad, different axis)
+
+* Improvements:
+
+Draw window frame on background windows
+Main menus when top menu is enabled do not have window title
+Allow to sort icons alphabetically
 Add to recent files/folders list when selecting a folder (for example esxdos handler directory or ql mdv)
 Special effects for video output are applied dynamically when moving cursor
 
-Main menus when top menu is enabled do not have window title
+* Fixes:
 
+Fixed disabling Search menu
 Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
 Fixed Fade Out video effect
 Fixed downloading ZEsarUX extras from menu Network
