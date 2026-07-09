@@ -164,8 +164,8 @@ Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (c
 
 -Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Machine
 ok *ocultar el ultimo menu (help) no lo hace bien
-*que no deje ocultar primer menu (Z)
-*como edita el usuario los items ocultos. y como se guarda en config (quiza algo como --hide-topbaritem x donde x es el indice )
+ok *que no deje ocultar primer menu (Z)
+ok *como edita el usuario los items ocultos. y como se guarda en config (quiza algo como --hide-topbaritem x donde x es el indice )
 *con nombres de menus cortos no lo hace bien, corta la linea por la derecha
 *con nombres de menus cortos el raton no se mueve bien (esto ya pasaba antes de aplicar ocultacion, la versión 13.0 le sucede)
 
