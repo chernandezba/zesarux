@@ -171,3 +171,5 @@ ok *con nombres de menus cortos no oculta bien los menus, corta la linea por la 
 ok *con nombres de menus cortos el raton no se mueve bien (esto ya pasaba antes de aplicar ocultacion, la versión 13.0 le sucede) -> quiza porque empieza a contar posicion x del raton a partir de zx desktop?
 
 ok -Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
+
+-al expandir zx desktop si se ha abierto top menu, genera segfault
