@@ -327,7 +327,7 @@ void menu_topbarmenu_write_bar(void)
 
         printf("x %2d destino %2d pos_menu %2d get_posiciones_menus %d caracter %c ",x,xdestino,pos_menu,get_posiciones_menus(pos_menu),caracter_escribir);
 
-        if (pos_menu<TOPMENU_TOTAL_MENUS) {
+        //if (pos_menu<TOPMENU_TOTAL_MENUS) {
             int pos_mirar=pos_menu;
 
             //esto es un poco chapuza. pos_menu ha cambiado a la siguiente posicion aunque aun no ha finalizado el texto de ese menu. Por tanto en ese caso tenemos que mirar pos_menu-1
@@ -336,7 +336,7 @@ void menu_topbarmenu_write_bar(void)
                 mostrar_caracter=0;
                 printf("no mostrar caracter\n");
             }
-        }
+        //}
 
         if (mostrar_caracter) {
             printf("MOSTRAR caracter\n");
@@ -432,10 +432,16 @@ void menu_topbarmenu_flecha_derecha(int total_menus)
 {
     int salir=0;
 
+    int antes_dibujar_cursor_topbar_pos_cursor=dibujar_cursor_topbar_pos_cursor;
+
     do {
         if (dibujar_cursor_topbar_pos_cursor<total_menus-1) dibujar_cursor_topbar_pos_cursor++;
         else salir=1;
     } while (!salir && !topmenus_visibles[dibujar_cursor_topbar_pos_cursor]);
+
+    //Si se ha quedado en una posicion no visible, volver a posicion inicial
+    //Esto sucede al ocultar el ultimo menu (Help)
+    if (!topmenus_visibles[dibujar_cursor_topbar_pos_cursor]) dibujar_cursor_topbar_pos_cursor=antes_dibujar_cursor_topbar_pos_cursor;
 }
 
 
