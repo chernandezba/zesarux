@@ -1338,7 +1338,7 @@ echo "Creating Makefile"
 
 cat > Makefile << _EOF
 SHELL = /bin/sh
-EMULATOR_VERSION=13.0
+EMULATOR_VERSION=13.1
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 LIBS=$LIBS

@@ -172,10 +172,10 @@ case $1 in
 	;;
 
 	push)
-		docker build -f Dockerfile.pushimage .  --progress plain --tag=chernandezba/zesarux:13.0
+		docker build -f Dockerfile.pushimage .  --progress plain --tag=chernandezba/zesarux:13.1
 
-  		#docker tag zesarux.local chernandezba/zesarux:13.0
-		docker push chernandezba/zesarux:13.0
+  		#docker tag zesarux.local chernandezba/zesarux:13.1
+		docker push chernandezba/zesarux:13.1
 	;;
 
 	run-mac-xorg)

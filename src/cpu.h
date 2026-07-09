@@ -25,11 +25,11 @@
 #include "compileoptions.h"
 
 
-//#define EMULATOR_VERSION "13.0-SN"
-//#define EMULATOR_VERSION "13.0-B2"
-//#define EMULATOR_VERSION "13.0-RC"
-#define EMULATOR_VERSION "13.0"
-//#define SNAPSHOT_VERSION
+#define EMULATOR_VERSION "13.1-SN"
+//#define EMULATOR_VERSION "13.1-B2"
+//#define EMULATOR_VERSION "13.1-RC"
+//#define EMULATOR_VERSION "13.1"
+#define SNAPSHOT_VERSION
 
 /*
 EMULATOR_NUMBER_VERSION format:
