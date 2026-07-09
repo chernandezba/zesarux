@@ -10958,7 +10958,7 @@ void menu_dibuja_ventana(zxvision_window *w)
     //printf ("valor menu_speech_tecla_pulsada: %d\n",menu_speech_tecla_pulsada);
 
     //valores en pixeles
-    int xpixel,ypixel,anchopixel,altopixel;
+    //int xpixel,ypixel,anchopixel,altopixel;
 
 
     //guardamos valores globales de la ventana mostrada
@@ -18729,15 +18729,16 @@ void zxvision_handle_mouse_events_drag_icon(void)
 //esto solo lo llamo desde zxvision_handle_mouse_events cuando no hay ventanas abiertas
 //Al final hay una pequeña gestion de activar mouse_is_dragging etc al igual que en zxvision_handle_mouse_events
 //TODO: la idea es que solo hubiera una funcion zxvision_handle_mouse_events y que funcionase tanto si hubiera ventanas abiertas como si no
-void zxvision_handle_mouse_events_on_icons(void)
+//Retorna 0 o 1 si ha gestionado eventos o no
+int zxvision_handle_mouse_events_on_icons(void)
 {
 
     //printf("zxvision_handle_mouse_events_on_icons\n");
-    if (!zxdesktop_configurable_icons_enabled_and_visible()) return;
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) return 0;
 
     //printf("zxvision_handle_mouse_events_on_icons. icons enabled\n");
 
-    if (!si_menu_mouse_activado()) return;
+    if (!si_menu_mouse_activado()) return 0;
 
     menu_calculate_mouse_xy();
 
@@ -18783,6 +18784,8 @@ void zxvision_handle_mouse_events_on_icons(void)
             zxvision_handle_mouse_events_drag_icon();
         }
     }
+
+    return 1;
 
 }
 
@@ -18832,7 +18835,19 @@ void zxvision_handle_mouse_events(zxvision_window *w)
         //printf("Retorno de zxvision_handle_mouse_events porque w=NULL\n");
 
         //Pero llamamos a gestion movimiento iconos, que no son dependientes de la ventana
-        zxvision_handle_mouse_events_on_icons();
+        int gestionado=zxvision_handle_mouse_events_on_icons();
+
+        //Esto solo para topmenu. si la llamada anterior no ha hecho nada
+        if (!gestionado) {
+            if (si_menu_mouse_activado() && zxvision_topbar_menu_enabled.v) {
+                //Esto es lo que permite que el topmenu vea donde está el cursor, cuando zx desktop está desactivado
+                //Activara flag mouse_movido si se ha movido mouse
+                //Nota: sin esto, hay que tener en cuenta que al moverse por top menu, como no es una ventana (w=NULL) y si no tenemos zx desktop habilitado,
+                //no considera activar flag mouse_movido, porque no hay nadie que tenga esto en cuenta fuera de una ventana (excepto top menu)
+                menu_calculate_mouse_xy();
+            }
+        }
+
         return; // 0;
     }
 
@@ -20697,6 +20712,8 @@ int menu_allows_mouse(void)
 //Retorna las coordenadas absolutas del raton (en tamaño de pixel) teniendo en cuenta todo el tamaño de la interfaz del emulador
 void menu_calculate_mouse_xy_absolute_interface_pixel(int *resultado_x,int *resultado_y)
 {
+    //printf("ENTRANDO EN menu_calculate_mouse_xy_absolute_interface_pixel\n");
+
         int x,y;
 
 
@@ -20718,8 +20735,11 @@ void menu_calculate_mouse_xy_absolute_interface_pixel(int *resultado_x,int *resu
                 mouse_en_emulador=1;
         }
 
+        //printf("mouse_en_emulador %d\n",mouse_en_emulador);
+
         if (  (mouse_x!=last_mouse_x || mouse_y !=last_mouse_y) && mouse_en_emulador) {
             mouse_movido=1;
+            //printf("MOUSE MOVIDO\n");
         }
         else mouse_movido=0;
 
@@ -21198,7 +21218,7 @@ void menu_espera_tecla_timeout_tooltip(void)
 
                 acumulado=menu_da_todas_teclas();
 
-        //printf ("menu_espera_tecla_timeout_tooltip acumulado: %d\n",acumulado);
+                //printf ("menu_espera_tecla_timeout_tooltip acumulado: %d\n",acumulado);
 
         } while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA && menu_tooltip_counter<TOOLTIP_SECONDS);
 

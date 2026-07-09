@@ -656,6 +656,8 @@ void menu_topbarmenu(void)
 
             if (!menu_multitarea) menu_refresca_pantalla();
 
+            //printf("antes menu_topbarmenu_get_key\n");
+
             tecla_leida=menu_topbarmenu_get_key();
 
             //printf("tecla leida: %d\n",tecla_leida);
@@ -683,6 +685,7 @@ void menu_topbarmenu(void)
 
             //si se ha movido el raton por la parte superior
             if (tecla_leida==0) {
+                //printf("get_pos_y_mouse_topbar() %d\n",get_pos_y_mouse_topbar());
                 if (get_pos_y_mouse_topbar()==0)  {
                     int columna_actual=get_pos_x_mouse_topbar();
                     //printf("### raton en posicion superior. last_pos_x_mouse_columna %d columna_actual %d\n",last_pos_x_mouse_columna,columna_actual);
