@@ -82,6 +82,9 @@ Also tested on:
 
 Also a [Docker image](https://hub.docker.com/r/chernandezba/zesarux)
 
+If you have a Pebble watch, you may also try the ZEsarUX watchface, from [Rebble Store](https://apps.rebble.io/en_US/application/692644f5703cec0009a280fd) and [Repebble store](https://apps.repebble.com/cdfec388a4a74aa89c27e51b)
+
+
 ZEsarUX has won the "Best Emulator" award from Retrogaming Total blog on 2015 and 2017
 
 
