@@ -5934,6 +5934,7 @@ int quickload_valid_extension(char *nombre) {
                 || !util_compare_file_extension(nombre,"spg")
                 || !util_compare_file_extension(nombre,"nex")
                 || !util_compare_file_extension(nombre,"trd")
+                || !util_compare_file_extension(nombre,"scl")
                 || !util_compare_file_extension(nombre,"mdr")
                 || !util_compare_file_extension(nombre,"rmd")
                 || !util_compare_file_extension(nombre,"ddh")
@@ -6367,7 +6368,8 @@ int quickload_continue(char *nombre) {
 
     //TRD
     else if (
-        !util_compare_file_extension(nombre,"trd")
+        !util_compare_file_extension(nombre,"trd") ||
+        !util_compare_file_extension(nombre,"scl")
     ) {
         //Aqui el autoload da igual. cambiamos siempre a Pentagon si conviene
         if (!MACHINE_IS_SPECTRUM) {
@@ -6382,7 +6384,27 @@ int quickload_continue(char *nombre) {
         }
 
         betadisk_enable();
-        trd_insert_disk(nombre);
+
+        //Si es scl, extraer el trd que se obtiene del scl e insertar el trd
+        if (!util_compare_file_extension(nombre,"scl")) {
+            char nombre_sin_dir[PATH_MAX];
+            util_get_file_no_directory(nombre,nombre_sin_dir);
+
+            char tmpdir[PATH_MAX];
+            sprintf(tmpdir,"%s/%s",get_tmpdir_base(),nombre_sin_dir);
+            menu_filesel_mkdir(tmpdir);
+
+            char nombre_trd[PATH_MAX];
+            util_extract_scl(nombre,tmpdir,nombre_trd);
+
+            trd_insert_disk(nombre_trd);
+        }
+
+
+
+        else {
+            trd_insert_disk(nombre);
+        }
 
 
         return 0;
@@ -23504,19 +23526,19 @@ void util_normalize_query_http(char *orig,char *dest)
 }
 
 
-
-int util_extract_scl(char *sclname, char *dest_dir)
+//Si nombre_trd no es NULL, le escribe la ruta entera del archivo TRD
+int util_extract_scl(char *sclname, char *dest_dir, char *nombre_trd)
 {
         //Archivo orig
         char name[PATH_MAX];
-        //char dir[PATH_MAX];
         util_get_file_no_directory(sclname,name);
-        //util_get_dir(sclname,dir);
 
         char destname[PATH_MAX];
         sprintf(destname,"%s/%s.trd",dest_dir,name);
         debug_printf (VERBOSE_INFO,"Calling scl2trd_main %s %s",sclname,destname);
         scl2trd_main(sclname,destname);
+
+        if (nombre_trd!=NULL) strcpy(nombre_trd,destname);
         return 0;
 }
 

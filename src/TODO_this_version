@@ -1,6 +1,4 @@
 
-
-
 -osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
 
 -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
@@ -38,7 +36,7 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 
 -teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
 
--al seleccionar archivo scl que lo expanda en trd automaticamente y seleccione. en vez de tener que pasar por expansion pulsando espacio
+
 
 -con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
 
@@ -162,16 +160,4 @@ ok? *parece que menus si que tienen ventana de titulo, al reentrar en menu -> po
 Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (cosa rara) no tendria titulo... aunque eso ya es lo que queremos
 
 
-
--Poder ocultar menús del topbar: por ejemplo que no aparezca el menu Machine
-ok *ocultar el ultimo menu (help) no lo hace bien
-ok *que no deje ocultar primer menu (Z)
-ok *como edita el usuario los items ocultos. y como se guarda en config (quiza algo como --hide-topbaritem x donde x es el indice )
-ok *con nombres de menus cortos no oculta bien los menus, corta la linea por la derecha
-ok *con nombres de menus cortos el raton no se mueve bien (esto ya pasaba antes de aplicar ocultacion, la versión 13.0 le sucede) -> quiza porque empieza a contar posicion x del raton a partir de zx desktop?
-
-
-ok -Poder decir sin ZX desktop topbar salen nombres menús textos enteros o no: consecuencia del anterior, si hay menos menús cabran enteros los nombres
-
-
-ok-al expandir zx desktop si se ha abierto top menu, genera segfault
+ok -al seleccionar archivo scl que lo expanda en trd automaticamente y seleccione. en vez de tener que pasar por expansion pulsando espacio

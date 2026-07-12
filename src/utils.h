@@ -1012,7 +1012,7 @@ extern void util_normalize_name(char *texto);
 extern int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int estimated_maximum_size,char *ssl_sni_host_name);
 extern void util_normalize_query_http(char *orig,char *dest);
 
-extern int util_extract_scl(char *sclname, char *dest_dir);
+extern int util_extract_scl(char *sclname, char *dest_dir, char *nombre_trd);
 extern int util_extract_zip(char *zipname, char *dest_dir);
 
 extern z80_byte *util_compress_memory_zip(z80_byte *memoria_input,int longitud,int *longitud_comprimido,char *nombre_archivo_interno);

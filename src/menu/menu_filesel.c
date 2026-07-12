@@ -3373,7 +3373,7 @@ int menu_filesel_expand(char *archivo,char *tmpdir,char *sufijo_carpeta)
 
         else if ( !util_compare_file_extension(archivo,"scl") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a scl file");
-                return util_extract_scl(archivo,tmpdir);
+                return util_extract_scl(archivo,tmpdir,NULL);
         }
 
         else if (menu_filesel_is_compressed(archivo)) {
