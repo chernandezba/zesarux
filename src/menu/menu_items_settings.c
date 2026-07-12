@@ -3767,6 +3767,9 @@ void menu_interface_enable_topbar_menu(MENU_ITEM_PARAMETERS)
     zxvision_topbar_menu_enabled.v ^=1;
 
     if (zxvision_topbar_menu_enabled.v) {
+        //Cambiar nombres cortos/largos de menus en topbar segun si zx desktop activado o no
+        topbar_guess_show_short_menu_names_variable();
+
         //hacerla visible momentaneamente para que el usuario la vea
         topbar_make_topbar_visible();
     }

@@ -70,7 +70,6 @@ int posiciones_menus_ocultados[TOPMENU_TOTAL_MENUS+1];
 int topbar_show_short_menu_names=0;
 
 //Actualiza variable de nombres cortos de acorde a zx desktop: si no tiene zx desktop, asumimos nombres cortos
-
 void topbar_guess_show_short_menu_names_variable(void)
 {
 
