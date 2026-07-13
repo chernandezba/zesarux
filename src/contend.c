@@ -1594,9 +1594,14 @@ z80_byte *contend_table_no_mreq;
 	if (MACHINE_IS_SPECTRUM_P2A_P3) {
 		//+2A
                 timings=contend_patron_76543210;
-                offset_time=-1;
+
+		//Patron 1,0,7,6,5,4,3,2 comenzando en 14361, igual inicio que el 128k
+		//Segun http://www.worldofspectrum.org/faq/reference/128kreference.htm#Plus3
+		//Antes habia offset_time=-1 (inicio en 14365): era el valor antiguo sin corregir,
+		//el branch de 128k si recibio en su dia la correccion equivalente de -1 a 3.
+		//El desfase de 4 T-estados hacia parpadear columnas en efectos multicolor (Nirvana) en +2A/+3
+                offset_time=3;
                 offset_patron=4;
-		//Empieza en 14365 con 1076543210  Segun http://www.worldofspectrum.org/faq/reference/128kreference.htm#Plus3
 
 	}
 
