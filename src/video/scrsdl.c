@@ -2101,11 +2101,13 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
 */
 
 
-
+                // No se que sentido tiene esto. Esta sobreescribiendo siempre valor, aunque no se pulse axis. Y eso sobreescribe valor anterior de boton pulsado por ejemplo
+                /*
                 if (realjoystick_ultimo_axis==i) {
                         //printf ("guardar para test joystick axis boton %d valor %d\n",i,valoraxis);
                         menu_info_joystick_last_raw_value=valoraxis;
                 }
+                */
 
                 if (valoraxis!=sdl_states_joy_axes[i]) {
                         //printf ("Enviar cambio estado axis %d : %d\n",i,valorfinalaxis);

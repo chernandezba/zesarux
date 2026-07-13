@@ -7,13 +7,7 @@
 
 -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
 
--soporte joystick nimbus. soporte pad (no es como un eje que hay posicion para + y otra -). nuevo REALJOYSTICK_INPUT_EVENT_PAD
-ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis o dpad, solo considerar los limites que retorna el propio botón. corregir esto.
-* Ver que REALJOYSTICK_INPUT_EVENT_DPAD no mete incompatibilidad con Linux (de eventos con mismo valor)
-- soporte nimbus en Mac
-- soporte nimbus en Windows (SDL1, SDL2)
-- soporte nimbus en Linux (SDL1, SDL2)
-- soporte nimbus en Linux (Nativo Linux)
+
 
 
 -quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1)) que cambie algo mas de filesel, como:
@@ -154,3 +148,17 @@ el titulo, aunque no se vea
 ->quiza en if_zxvision_topbar_menu_will_not_have_title no poner setting a 0. que lo haga topbar al salir de ese menu
 Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (cosa rara) no tendria titulo... aunque eso ya es lo que queremos
 
+
+
+-soporte joystick nimbus. soporte pad (no es como un eje que hay posicion para + y otra -). nuevo REALJOYSTICK_INPUT_EVENT_PAD
+ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis o dpad, solo considerar los limites que retorna el propio botón. corregir esto.
+* Ver que REALJOYSTICK_INPUT_EVENT_DPAD no mete incompatibilidad con Linux (de eventos con mismo valor)
+ok - soporte nimbus en Mac
+- soporte nimbus en Windows (SDL1, SDL2)
+- soporte nimbus en Linux (SDL1, SDL2)
+- soporte nimbus en Linux (Nativo Linux)
+ok - probar joystick "nes" en Mac, joystick logic3
+error valores botones SDL1. probar joystick "nes" en Linux (SDL1, SDL2), joystick logic3
+ok - probar joystick "nes" en Linux (Nativo Linux), joystick logic3
+- probar joystick "nes" en Windows, joystick logic3
+- probar volante en Mac, Linux, Windows
