@@ -37,7 +37,6 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 -teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
 
 
-
 -con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
 
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
@@ -135,7 +134,6 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 -fullscreen en cpc, sin border, en mac , no se ve bien
 
 
-
 -Efecto de encefalograma en FX video effects. Pixel que vaya de izquierda a derecha y se mueva en vertical cuando:
 * sonido en algún canal AY
 * o a intervalo regular, indicando como parametro las "pulsaciones" de corazón
@@ -150,14 +148,9 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 
 -Poder crear ventanas sin barra de título. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
 solo los primeros menus principales, los submenus si que salgan con barra de título
-->no se podrán mover con ratón?
-->hacemos que se ubique todo igual aunque la barra de menu no aparezca? O sea si se pone uno arriba del todo la primera linea del contenido sera y=1 mientras que en y=0 estará
+ok ->no se podrán mover con ratón? de momento se pueden mover con raton, arrastrando sobre la barra de titulo que no se ve
+ok ->hacemos que se ubique todo igual aunque la barra de menu no aparezca? O sea si se pone uno arriba del todo la primera linea del contenido sera y=1 mientras que en y=0 estará
 el titulo, aunque no se vea
-->al final esto se gestiona con draw window contents lo de dentro
-ok? * con machine selection lista alfabetica, al ser ventana muy grande, acaba reasignando (creo) coordenada Y y sale 1 linea por debajo de donde deberia (al cambiar tipo ciciclamente a lista alfabetica)
-ok? *parece que menus si que tienen ventana de titulo, al reentrar en menu -> por ejemplo en menu audio conmutar opcion de activar fuente de sonido externa
 ->quiza en if_zxvision_topbar_menu_will_not_have_title no poner setting a 0. que lo haga topbar al salir de ese menu
 Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (cosa rara) no tendria titulo... aunque eso ya es lo que queremos
 
-
-ok -al seleccionar archivo scl que lo expanda en trd automaticamente y seleccione. en vez de tener que pasar por expansion pulsando espacio
