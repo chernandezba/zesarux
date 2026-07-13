@@ -158,7 +158,7 @@ ok - soporte nimbus en Mac
 - soporte nimbus en Linux (SDL1, SDL2)
 - soporte nimbus en Linux (Nativo Linux)
 ok - probar joystick "nes" en Mac, joystick logic3
-error valores botones SDL1. probar joystick "nes" en Linux (SDL1, SDL2), joystick logic3
+ok - probar joystick "nes" en Linux (SDL1, SDL2), joystick logic3
 ok - probar joystick "nes" en Linux (Nativo Linux), joystick logic3
 - probar joystick "nes" en Windows, joystick logic3
 - probar volante en Mac, Linux, Windows

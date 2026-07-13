@@ -12350,8 +12350,6 @@ int menu_common_wait_realjoystick_press(zxvision_window *ventana)
         }
 
 
-
-
         //Si pulsado boton
         if (menu_info_joystick_last_button>=0 && menu_info_joystick_last_value!=0) {
             //printf ("Salir por boton\n");
@@ -12363,57 +12361,6 @@ int menu_common_wait_realjoystick_press(zxvision_window *ventana)
             valor_contador_segundo_anterior=contador_segundo;
             //printf ("Refrescando. contador_segundo=%d\n",contador_segundo);
             if (menu_multitarea==0) menu_refresca_pantalla();
-
-
-            //char buffer_texto_medio[40];
-
-            /*
-
-            No escribimos nada. Creo que no es necesario mostrar esto
-
-            zxvision_print_string_defaults_fillspc(ventana,1,linea,"Last joystick button/axis:");
-
-
-
-
-            char buffer_type[40];
-
-
-
-            if (menu_info_joystick_last_type==REALJOYSTICK_INPUT_EVENT_BUTTON) {
-                strcpy(buffer_type,"Button");
-            }
-            else if (menu_info_joystick_last_type==REALJOYSTICK_INPUT_EVENT_AXIS) {
-                strcpy(buffer_type,"Axis");
-            }
-            else strcpy(buffer_type,"Unknown");
-
-
-            if (menu_info_joystick_last_button<0) strcpy(buffer_texto_medio,"Button: None");
-            else sprintf (buffer_texto_medio,"Button: %d",menu_info_joystick_last_button);
-            zxvision_print_string_defaults_fillspc(ventana,1,linea+1,buffer_texto_medio);
-
-            if (menu_info_joystick_last_type<0) strcpy(buffer_texto_medio,"Type: None");
-            else sprintf (buffer_texto_medio,"Type: %d (%s)",menu_info_joystick_last_type,buffer_type);
-            zxvision_print_string_defaults_fillspc(ventana,1,linea+2,buffer_texto_medio);
-
-
-
-            char buffer_event[40];
-            if (menu_info_joystick_last_index>=0 && menu_info_joystick_last_index<MAX_EVENTS_JOYSTICK) {
-                strcpy(buffer_event,realjoystick_event_names[menu_info_joystick_last_index]);
-            }
-            else {
-                strcpy(buffer_event,"None");
-            }
-
-
-            sprintf (buffer_texto_medio,"Value: %6d",menu_info_joystick_last_raw_value);
-            zxvision_print_string_defaults_fillspc(ventana,1,linea+3,buffer_texto_medio);
-
-            */
-
-
 
             zxvision_draw_window_contents(ventana);
 
@@ -12433,13 +12380,6 @@ int menu_common_wait_realjoystick_press(zxvision_window *ventana)
             if (tecla!=2) {
                 acumulado = MENU_PUERTO_TECLADO_NINGUNA;
             }
-
-
-            //Si ha salido por boton de joystick, esperar evento
-            /*if (salir_por_boton) {
-                if (menu_multitarea==0) menu_refresca_pantalla();
-                menu_espera_no_tecla();
-            }*/
 
 
         }
@@ -12473,7 +12413,7 @@ void menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
             break;
 
             default:
-                //Salir con eSC
+                //Salir con ESC
                 return;
             break;
         }
@@ -12496,18 +12436,12 @@ void menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
 
     zxvision_print_string_defaults(&ventana,1,linea,"Please press the button/axis");
 
-    //simulador_joystick_forzado=1;
 
     int tecla=menu_common_wait_realjoystick_press(&ventana);
 
 
 
-    //printf("Valor opcion: %d\n",valor_opcion);
-
-
     if (tecla==2) {
-        //Desasignar si se sale con ESC
-        //realjoystick_events_array[valor_opcion].asignado.v=0;
 
         //No hacer nada si se sale con ESC
 
@@ -12527,8 +12461,6 @@ void menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
             realjoystick_redefine_event_no_wait(valor_opcion,button,type,value);
         }
     }
-
-    //menu_espera_no_joystick();
 
 
     zxvision_destroy_window(&ventana);
@@ -12572,7 +12504,6 @@ int menu_joystick_event_list(void)
 
 
 
-
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
             //Si se pulsa Enter
@@ -12605,19 +12536,13 @@ void menu_hardware_realjoystick_keys_button_by_button(int indice,z80_byte caract
 
     zxvision_print_string_defaults(&ventana,1,linea,"Please press the button/axis");
 
-    //simulador_joystick_forzado=1;
 
     int tecla=menu_common_wait_realjoystick_press(&ventana);
 
 
 
-    //printf("Valor opcion: %d\n",indice);
-
 
     if (tecla==2) {
-        //Desasignar si se sale con ESC
-        //realjoystick_keys_array[indice].asignado.v=0;
-
         //No hacer nada si se sale con ESC
     }
 
@@ -12634,7 +12559,6 @@ void menu_hardware_realjoystick_keys_button_by_button(int indice,z80_byte caract
         }
     }
 
-    //menu_espera_no_joystick();
 
 
     zxvision_destroy_window(&ventana);
@@ -12667,9 +12591,6 @@ void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
     }
 
 
-    //printf("valor opcion: %d\n",valor_opcion);
-
-    //int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2)
     int tipo=menu_simple_two_choices("Selection type","You want to set by","Button","Event");
 
     if (tipo==0) return; //ESC
@@ -12686,9 +12607,6 @@ void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
     caracter=buffer_caracter[0];
 
     if (caracter==0) {
-        //desasignamos
-        //realjoystick_keys_array[valor_opcion].asignado.v=0;
-
         //no hacemos nada
         return;
     }
@@ -12706,7 +12624,6 @@ void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
     if (tipo==2) { //Definir por evento
         int evento=menu_joystick_event_list();
         realjoystick_copy_event_button_key(evento,valor_opcion,caracter);
-        //printf ("evento: %d\n",evento);
     }
 
 
@@ -12766,7 +12683,7 @@ void menu_hardware_realjoystick_keys(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu(array_menu_hardware_realjoystick_keys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-        //menu_add_item_menu(array_menu_hardware_realjoystick_keys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+
         menu_add_ESC_item(array_menu_hardware_realjoystick_keys);
 
         retorno_menu=menu_dibuja_menu_dialogo_no_title_lang(&hardware_realjoystick_keys_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick_keys,"Joystick to keys" );
@@ -13083,15 +13000,6 @@ void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
                 zxvision_print_string_defaults_fillspc(&ventana,1,linea++,buffer_texto_medio);
             }
 
-
-
-            //realjoystick_ultimo_indice=-1;
-            //menu_hardware_realjoystick_test_reset_last_values();
-            //menu_info_joystick_last_button=-1;
-            //menu_info_joystick_last_type=-1;
-            //menu_info_joystick_last_value=-1;
-            //menu_info_joystick_last_index=-1;
-            //menu_info_joystick_last_raw_value=-1;
 
             zxvision_draw_window_contents(&ventana);
 
