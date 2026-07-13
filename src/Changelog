@@ -26,6 +26,7 @@ Fixed disabling Search menu
 Fixed restoring minimized windows on startup and "Hide minimized windows" setting is enabled
 Fixed Fade Out video effect
 Fixed downloading ZEsarUX extras from menu Network
+Fixed showing joystick button values on Real Joystick information window when using SDL
 
 ----
 
