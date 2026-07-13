@@ -3055,7 +3055,7 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
     menu_reset_counters_tecla_repeticion();
 
 
-    int ancho=32;
+    int ancho=41;
     int alto=25;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
@@ -3105,6 +3105,8 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 
     zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO,0,"Window Box colour (this paper)");
 
+    zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_COLOR_RECUADRO_INACTIVO,0,"Inactive Window Box colour (this paper)");
+
     //tinta waveform y tinta normal se usan a la vez en widget tipo speaker. por tanto interesa que no sean iguales
     //asi este item lo mostramos combinando los dos colores
     zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_COLOR_WAVEFORM,0,"Waveform colour (this paper)");
@@ -3125,16 +3127,23 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
     zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_CAMPO_SELECCIONABLE,ESTILO_GUI_PAPEL_CAMPO_SELECCIONABLE,0,"Selectable field");
 
     zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"Ascii table:");
-    zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"!\"#$%&\'()*+,-./0123456789:;<=>");
-    zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\");
-    zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"]^_`abcdefghijklmnopqrstuvwxyz");
-
+    zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"!\"#$%&\'()*+,-./0123456789:;<=>?@");
+    zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`");
 
 
     if (si_complete_video_driver()) {
-        zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"{|}~\x7f");
         //el 127 en teoria no es ascii
         //aunque en mis tipos de letras si que esta y lo pongo
+        zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"abcdefghijklmnopqrstuvwxyz{|}~\x7f");
+    }
+
+    else {
+        //Sin el 127 porque no es ascii y en drivers de texto no se veria
+        zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"abcdefghijklmnopqrstuvwxyz{|}~");
+    }
+
+
+    if (si_complete_video_driver()) {
 
         zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"Extra characters:");
         int i;
@@ -3158,10 +3167,6 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
         zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,buffer_extra);
     }
 
-    else {
-        //Sin el 127 porque no es ascii y en drivers de texto no se veria
-        zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,"{|}~");
-    }
 
 
     zxvision_draw_window_contents(&ventana);
