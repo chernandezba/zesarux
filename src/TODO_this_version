@@ -28,7 +28,8 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 -teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
 
 
--con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
+ok -con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
+->es normal. tanto botones arriba o abajo se hacen el doble de tamaño si caben en el zx desktop
 
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
 

@@ -1059,25 +1059,25 @@ Byte Fields:
 2: Total memory multiplier: 1 for 128kb ram, 2 for 256 kb ram, 4 for 512 kb ram
 */
 
-	puerto_32765=header[0];
-	puerto_8189=header[1];
-	mem128_multiplicador=header[2];
+    puerto_32765=header[0];
+    puerto_8189=header[1];
+    mem128_multiplicador=header[2];
 
 //Distinguir entre 128/p2 y p2a
-	if (MACHINE_IS_SPECTRUM_128_P2) {
-		debug_printf(VERBOSE_DEBUG,"Paging 128k according to port 32765: %02XH",puerto_32765);
-		mem_page_ram_128k();
-		mem_page_rom_128k();
-	}
+    if (MACHINE_IS_SPECTRUM_128_P2) {
+        debug_printf(VERBOSE_DEBUG,"Paging 128k according to port 32765: %02XH",puerto_32765);
+        mem_page_ram_128k();
+        mem_page_rom_128k();
+    }
 
-	if (MACHINE_IS_SPECTRUM_P2A_P3) {
-		mem_page_ram_p2a();
+    if (MACHINE_IS_SPECTRUM_P2A_P3) {
+        mem_page_ram_p2a();
 
-		if (puerto_8189&1) mem_page_ram_rom();
-		else mem_page_rom_p2a();
+        if (puerto_8189&1) mem_page_ram_rom();
+        else mem_page_rom_p2a();
 
 
-		//mem_init_memory_tables_p2a();
+        //mem_init_memory_tables_p2a();
 /*
 
 p2a
@@ -1094,7 +1094,7 @@ p2a
 ram in rom: mem_page_ram_rom();
 mem_page_rom_p2a();
 */
-	}
+    }
 
     if (MACHINE_IS_CHROME) {
         chrome_set_memory_pages();
@@ -2383,13 +2383,13 @@ Byte fields:
 3-66: ULAplus palette
 */
 
-	ulaplus_presente.v=1;
+    ulaplus_presente.v=1;
 
-	ulaplus_mode=header[0];
-	if (ulaplus_mode) ulaplus_enabled.v=1;
-	else ulaplus_enabled.v=0;
+    ulaplus_mode=header[0];
+    if (ulaplus_mode) ulaplus_enabled.v=1;
+    else ulaplus_enabled.v=0;
 
-	debug_printf (VERBOSE_DEBUG,"Setting ULAplus mode %d",ulaplus_mode);
+    debug_printf (VERBOSE_DEBUG,"Setting ULAplus mode %d",ulaplus_mode);
 
 
         ulaplus_last_send_BF3B=header[1];
@@ -2897,11 +2897,11 @@ void load_zsf_datetime(z80_byte *header)
 {
 
 
-			//Fecha. Solo para informacion. No se usa para nada mas
-			char buffer_fecha[64];
-			sprintf(buffer_fecha,"Snapshot saved on: %d/%02d/%02d %02d:%02d ",
+            //Fecha. Solo para informacion. No se usa para nada mas
+            char buffer_fecha[64];
+            sprintf(buffer_fecha,"Snapshot saved on: %d/%02d/%02d %02d:%02d ",
           value_8_to_16(header[3],header[2]),header[1],header[0],header[4],header[5]);
-			debug_printf(VERBOSE_INFO,buffer_fecha);
+            debug_printf(VERBOSE_INFO,buffer_fecha);
 
       //printf("%s\n",buffer_fecha);
 
@@ -4026,23 +4026,23 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 
   //Save date time
   z80_byte datetime_buffer[6];
-  		//fecha grabacion
-		time_t tiempo = time(NULL);
-		struct tm tm = *localtime(&tiempo);
+          //fecha grabacion
+        time_t tiempo = time(NULL);
+        struct tm tm = *localtime(&tiempo);
 
-		//printf("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+        //printf("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
-		datetime_buffer[0]=tm.tm_mday;
-		datetime_buffer[1]=tm.tm_mon+1;
+        datetime_buffer[0]=tm.tm_mday;
+        datetime_buffer[1]=tm.tm_mon+1;
 
-		z80_int year;
-		year=tm.tm_year + 1900;
+        z80_int year;
+        year=tm.tm_year + 1900;
 
-		datetime_buffer[2]=value_16_to_8l(year);
-		datetime_buffer[3]=value_16_to_8h(year);
+        datetime_buffer[2]=value_16_to_8l(year);
+        datetime_buffer[3]=value_16_to_8h(year);
 
-		datetime_buffer[4]=tm.tm_hour;
-		datetime_buffer[5]=tm.tm_min;
+        datetime_buffer[4]=tm.tm_hour;
+        datetime_buffer[5]=tm.tm_min;
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, datetime_buffer,ZSF_DATETIME, 6);
 
@@ -4393,15 +4393,15 @@ Byte Fields:
 
   if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_ZX8081 || MACHINE_IS_ACE || MACHINE_IS_TIMEX_TS_TC_2068) {
 
-	  int inicio_ram=16384;
-	  int longitud_ram=49152;
-	  if (MACHINE_IS_SPECTRUM_16) longitud_ram=16384;
+      int inicio_ram=16384;
+      int longitud_ram=49152;
+      if (MACHINE_IS_SPECTRUM_16) longitud_ram=16384;
 
-	  if (MACHINE_IS_INVES) {
-  		//Grabar tambien la ram oculta de inves (0-16383). Por tanto, grabar todos los 64kb de ram
-	  	longitud_ram=65536; //65536
-		  inicio_ram=0;
-	  }
+      if (MACHINE_IS_INVES) {
+          //Grabar tambien la ram oculta de inves (0-16383). Por tanto, grabar todos los 64kb de ram
+          longitud_ram=65536; //65536
+          inicio_ram=0;
+      }
 
 
     if (MACHINE_IS_ZX8081) {
@@ -4451,8 +4451,8 @@ Byte Fields:
 
   if (MACHINE_IS_MK14) {
 
-	  int inicio_ram=0;
-	  int longitud_ram=65536;
+      int inicio_ram=0;
+      int longitud_ram=65536;
 
     //Para el bloque comprimido
     z80_byte *compressed_ramblock=malloc(longitud_ram*2);
@@ -4573,12 +4573,12 @@ Byte Fields:
 1: Port 8189 contents
 2: Total memory multiplier: 1 for 128kb ram, 2 for 256 kb ram, 4 for 512 kb ram
 */
-	z80_byte memconf[3];
-	memconf[0]=puerto_32765;
-	memconf[1]=puerto_8189;
-	memconf[2]=mem128_multiplicador;
+    z80_byte memconf[3];
+    memconf[0]=puerto_32765;
+    memconf[1]=puerto_8189;
+    memconf[2]=mem128_multiplicador;
 
-  	zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, memconf,ZSF_SPEC128_MEMCONF, 3);
+      zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, memconf,ZSF_SPEC128_MEMCONF, 3);
 
 }
 
@@ -4970,21 +4970,21 @@ Byte Fields:
 
   for (ram_page=0;ram_page<paginas;ram_page++) {
 
-	  compressed_ramblock[0]=0;
-	  compressed_ramblock[1]=value_16_to_8l(16384);
-	  compressed_ramblock[2]=value_16_to_8h(16384);
-	  compressed_ramblock[3]=value_16_to_8l(longitud_ram);
-	  compressed_ramblock[4]=value_16_to_8h(longitud_ram);
-	  compressed_ramblock[5]=ram_page;
+      compressed_ramblock[0]=0;
+      compressed_ramblock[1]=value_16_to_8l(16384);
+      compressed_ramblock[2]=value_16_to_8h(16384);
+      compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+      compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+      compressed_ramblock[5]=ram_page;
 
-	  int si_comprimido;
-	  int longitud_bloque=save_zsf_copyblock_compress_uncompres(ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
-	  if (si_comprimido) compressed_ramblock[0]|=1;
+      int si_comprimido;
+      int longitud_bloque=save_zsf_copyblock_compress_uncompres(ram_mem_table[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+      if (si_comprimido) compressed_ramblock[0]|=1;
 
-	  debug_printf(VERBOSE_DEBUG,"Saving ZSF_SPEC128_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+      debug_printf(VERBOSE_DEBUG,"Saving ZSF_SPEC128_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
 
-	  //Store block to file
-	  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SPEC128_RAMBLOCK, longitud_bloque+6);
+      //Store block to file
+      zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SPEC128_RAMBLOCK, longitud_bloque+6);
 
   }
 
