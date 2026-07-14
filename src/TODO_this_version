@@ -15,7 +15,7 @@ Esto en sistemas de 64 bits es una variable de 64 bits ya.
 **etc....
 
 
--en view sensors agregar sensores de canales de General Sound
+
 
 -al pulsar con ratón en menu previo, a veces cierra todos los menus. parece que es cuando se ha abierto tooltip, pero no siempre
 
@@ -166,3 +166,5 @@ ok - probar joystick "nes" en Windows, joystick logic3
 
 
 ok movido -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
+
+ok -en view sensors agregar sensores de canales de General Sound

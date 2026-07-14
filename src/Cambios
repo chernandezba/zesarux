@@ -20,6 +20,7 @@ Mejorado ZX Desktop:
 
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
 Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario
+Agregado registros de General Sound registers a la ventana de Ver Sensores
 
 * Correcciones:
 
