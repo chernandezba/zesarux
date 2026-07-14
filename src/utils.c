@@ -3659,32 +3659,32 @@ int configfile_read_aux(char *configfile,char *mem)
 int util_get_configfile_name_aux(char *configfile,char *file_to_find)
 {
 
-  #ifndef MINGW
-      char *directorio_home;
-      directorio_home=getenv("HOME");
-      if ( directorio_home==NULL) {
-                  //printf("Unable to find $HOME environment variable to open configuration file\n");
-          return 0;
-      }
+    #ifndef MINGW
+        char *directorio_home;
+        directorio_home=getenv("HOME");
+        if ( directorio_home==NULL) {
+            //printf("Unable to find $HOME environment variable to open configuration file\n");
+            return 0;
+        }
 
-      sprintf(configfile,"%s/%s",directorio_home,file_to_find);
+        sprintf(configfile,"%s/%s",directorio_home,file_to_find);
 
-  #else
-      char *homedrive;
-      char *homepath;
-      homedrive=getenv("HOMEDRIVE");
-      homepath=getenv("HOMEPATH");
+    #else
+        char *homedrive;
+        char *homepath;
+        homedrive=getenv("HOMEDRIVE");
+        homepath=getenv("HOMEPATH");
 
-      if (homedrive==NULL || homepath==NULL) {
-          //printf("Unable to find HOMEDRIVE or HOMEPATH environment variables to open configuration file\n");
-                  return 0;
-          }
+        if (homedrive==NULL || homepath==NULL) {
+            //printf("Unable to find HOMEDRIVE or HOMEPATH environment variables to open configuration file\n");
+            return 0;
+        }
 
-      sprintf(configfile,"%s\\%s\\%s",homedrive,homepath,file_to_find);
+        sprintf(configfile,"%s\\%s\\%s",homedrive,homepath,file_to_find);
 
-  #endif
+    #endif
 
-  return 1;
+    return 1;
 
 }
 

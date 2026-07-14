@@ -19,6 +19,7 @@ Mejorado ZX Desktop:
 - Permitir ordenar iconos alfabéticamente
 
 Efectos especiales de salida de video se aplican dinámicamente al mover el cursor
+Movido archivo de índice de búsqueda (zesarux_index_menu.idx) a la carpeta de inicio del usuario
 
 * Correcciones:
 

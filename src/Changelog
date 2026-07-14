@@ -19,6 +19,7 @@ Improved ZX Desktop:
 - Allow to sort icons alphabetically
 
 Special effects for video output are applied dynamically when moving cursor
+Moved search index file (zesarux_index_menu.idx) to user home directory
 
 * Fixes:
 
