@@ -171,6 +171,36 @@ int sensor_gensound_dac_funcion_get_value(int id)
 
 }
 
+//Retorna valor left/right de general sound
+int sensor_gensound_leftright_funcion_get_value(int id)
+{
+    int valor;
+
+    switch(id) {
+        case 0:
+            valor=gs_dac_valor_final_left;
+        break;
+
+        default:
+            valor=gs_dac_valor_final_right;
+        break;
+    }
+
+    valor -=128;
+
+    //TODO: esto permite que un valor +127 o -128 sean el 100% del sensor,
+    //pero por otra parte impide ver el valor real del DAC desde aqui
+    //Quizá habría que extender estas funciones de sensors para que retornasen el valor real tambien, aparte del valor que ya se retorna ahora
+    int absoluto=util_get_absolute(valor);
+
+    //Considerar tambien un valor de +127 como +128 asi es el tope de 100%
+    if (absoluto==127) absoluto=128;
+    return absoluto;
+
+}
+
+
+
 //Retorna volumen de canal de General Sound
 int sensor_gensound_vol_funcion_get_value(int id)
 {
@@ -569,6 +599,22 @@ pues de una octava a la otra es el doble de valor
     84,-9999,
     9999,-9999,
     sensor_gensound_vol_funcion_get_value,3
+    },
+
+    {
+    "gensound_left","General Sound Left","GENSNLEFT",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_gensound_leftright_funcion_get_value,0
+    },
+
+    {
+    "gensound_right","General Sound Right","GENSNRIGHT",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_gensound_leftright_funcion_get_value,1
     },
 
 
