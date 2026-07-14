@@ -32179,7 +32179,7 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
 
 int zxvision_get_indexfile_path(char *indexfile_path)
 {
-  return util_get_file_in_home_dir(indexfile_path,ZESARUX_INDEX_MENU_FILE);
+    return util_get_file_in_home_dir(indexfile_path,ZESARUX_INDEX_MENU_FILE);
 }
 
 
@@ -32190,6 +32190,7 @@ void zxvision_index_save_to_disk(void)
 
     char indexfile_path[PATH_MAX];
 
+    debug_printf (VERBOSE_INFO,"Writing index file");
 
     if (zxvision_get_indexfile_path(indexfile_path)==0)  {
         debug_printf(VERBOSE_ERR,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open index file");
