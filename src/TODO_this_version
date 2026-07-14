@@ -8,8 +8,6 @@
 -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
 
 
-
-
 -quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1)) que cambie algo mas de filesel, como:
 **que indique que se pide carpeta y no archivo (aparte del titulo de la ventana que ya lo dice)
 **que no se deba salir con ESC
@@ -154,6 +152,7 @@ Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (c
 ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis o dpad, solo considerar los limites que retorna el propio botón. corregir esto.
 * Ver que REALJOYSTICK_INPUT_EVENT_DPAD no mete incompatibilidad con Linux (de eventos con mismo valor)
 ok - soporte nimbus en Mac
+-> - nimbus solo va con apple o iphone
 - soporte nimbus en Windows (SDL1, SDL2)
 - soporte nimbus en Linux (SDL1, SDL2)
 - soporte nimbus en Linux (Nativo Linux)

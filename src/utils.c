@@ -3653,14 +3653,11 @@ int configfile_read_aux(char *configfile,char *mem)
 
 }
 
+//Retorna ruta en configfile del archivo file_to_find, buscando en carpeta HOME, etc
 //Devuelve 1 si ok
 //0 si error
 int util_get_configfile_name_aux(char *configfile,char *file_to_find)
 {
-  if (customconfigfile!=NULL) {
-        sprintf(configfile,"%s",customconfigfile);
-        return 1;
-  }
 
   #ifndef MINGW
       char *directorio_home;
@@ -3693,11 +3690,21 @@ int util_get_configfile_name_aux(char *configfile,char *file_to_find)
 
 int util_get_configfile_name(char *configfile)
 {
+  if (customconfigfile!=NULL) {
+        sprintf(configfile,"%s",customconfigfile);
+        return 1;
+  }
+
   return util_get_configfile_name_aux(configfile,DEFAULT_ZESARUX_CONFIG_FILE);
 }
 
 int util_get_devconfigfile_name(char *configfile)
 {
+  if (customconfigfile!=NULL) {
+        sprintf(configfile,"%s",customconfigfile);
+        return 1;
+  }
+
   return util_get_configfile_name_aux(configfile,DEFAULT_ZESARUX_DEVCONFIG_FILE);
 }
 

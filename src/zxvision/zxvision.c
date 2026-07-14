@@ -32177,16 +32177,31 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
 }
 
 
+int zxvision_get_indexfile_path(char *indexfile_path)
+{
+  return util_get_configfile_name_aux(indexfile_path,ZESARUX_INDEX_MENU_FILE);
+}
+
+
 
 void zxvision_index_save_to_disk(void)
 {
     if (index_menu_enabled.v==0) return;
 
+    char indexfile_path[PATH_MAX];
+
+
+    if (zxvision_get_indexfile_path(indexfile_path)==0)  {
+        debug_printf(VERBOSE_ERR,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open index file");
+        return;
+    }
+
+
     FILE *ptr_configfile;
 
-    ptr_configfile=fopen(ZESARUX_INDEX_MENU_FILE,"wb");
+    ptr_configfile=fopen(indexfile_path,"wb");
     if (!ptr_configfile) {
-        debug_printf(VERBOSE_DEBUG,"Cannot write index menu file %s",ZESARUX_INDEX_MENU_FILE);
+        debug_printf(VERBOSE_DEBUG,"Cannot write index menu file %s",indexfile_path);
         return;
     }
 
@@ -32268,16 +32283,24 @@ void zxvision_index_load_from_disk(void)
 
     if (index_menu_enabled.v==0) return;
 
-    if (!si_existe_archivo(ZESARUX_INDEX_MENU_FILE)) return;
+    char indexfile_path[PATH_MAX];
 
-    long long int longitud=get_file_size(ZESARUX_INDEX_MENU_FILE);
+
+    if (zxvision_get_indexfile_path(indexfile_path)==0)  {
+        //debug_printf(VERBOSE_ERR,"Unable to find $HOME, or HOMEDRIVE or HOMEPATH environment variables to open index file");
+        return;
+    }
+
+    if (!si_existe_archivo(indexfile_path)) return;
+
+    long long int longitud=get_file_size(indexfile_path);
 
     //Si longitud 0 (cosa extraña) volver sin mas
     if (!longitud) return;
 
     z80_byte *buffer_index=util_malloc(longitud,"Can not allocate memory to read index search file");
 
-    int total_leidos=util_load_file_bytes(buffer_index,ZESARUX_INDEX_MENU_FILE,longitud);
+    int total_leidos=util_load_file_bytes(buffer_index,indexfile_path,longitud);
 
     if (!total_leidos) return;
 
