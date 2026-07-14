@@ -49,6 +49,7 @@
 #include "spectra.h"
 #include "spritechip.h"
 #include "jupiterace.h"
+#include "core_spectrum.h"
 #include "chloe.h"
 #include "prism.h"
 #include "timex.h"
@@ -615,9 +616,26 @@ z80_byte fetch_opcode_vacio(void)
 
 
 
+
+//Sincronizar el buffer rainbow de la ULA antes de una escritura en la zona de pantalla/atributos,
+//para que las celdas que la ULA real ya habia leido conserven el valor anterior a la escritura.
+//Sin esto, el valor nuevo se aplicaba retroactivamente a todas las celdas leidas durante el opcode,
+//produciendo columnas de atributos incorrectas en efectos multicolor (Nirvana, etc)
+static inline void poke_byte_spectrum_sync_rainbow(z80_int dir)
+{
+        if (rainbow_enabled.v) {
+                //0x4000-0x7FFF: banco 5 (pantalla normal en 128k, pantalla en 48k)
+                //0xC000-0xFFFF: en 128k es el banco paginado, que puede ser el banco de pantalla (5 o 7)
+                if ( (dir&49152)==16384 || dir>=49152 ) {
+                        core_spectrum_store_rainbow_current_atributes();
+                }
+        }
+}
+
 void poke_byte_no_time_spectrum_48k(z80_int dir,z80_byte valor)
 {
         if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
 		memoria_spectrum[dir]=valor;
 
 #ifdef EMULATE_VISUALMEM
@@ -641,6 +659,7 @@ void poke_byte_spectrum_48k(z80_int dir,z80_byte valor)
 
 
         if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
 set_visualmembuffer(dir);
@@ -679,6 +698,7 @@ z80_byte *puntero;
                 segmento=dir / 16384;
 
         if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
 set_visualmembuffer(dir);
@@ -711,6 +731,7 @@ z80_byte *puntero;
 
 
         if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
 set_visualmembuffer(dir);
@@ -731,6 +752,7 @@ z80_byte *puntero;
                 segmento=dir / 16384;
 
         if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
 set_visualmembuffer(dir);
@@ -777,6 +799,7 @@ z80_byte *puntero;
 
 
         if (dir>16383) {
+		poke_byte_spectrum_sync_rainbow(dir);
 #ifdef EMULATE_VISUALMEM
 
 set_visualmembuffer(dir);

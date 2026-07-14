@@ -188,8 +188,29 @@ void interrupcion_si_despues_lda_ir(void)
 
 
 
+//Linea (t_scanline_draw) a la que corresponde el valor actual de last_x_atributo.
+//Permite distinguir un cambio de linea real de dos syncs consecutivos en la misma celda
+static int rainbow_ultima_linea_almacenada=-1;
+
+//Celdas pre-latcheadas del principio de la linea SIGUIENTE.
+//Cuando un poke a pantalla aterriza justo despues de cruzar el final de linea (t_estados ya en la
+//linea siguiente pero t_scanline_draw aun sin avanzar), no podemos escribir en scanline_buffer
+//porque aun contiene la linea anterior pendiente de renderizar. Guardamos aqui los pares
+//(pixel,atributo) de las primeras celdas con la memoria PREVIA a la escritura, y se vuelcan
+//al buffer cuando se detecta el cambio de linea
+#define RAINBOW_PENDING_MAX 16
+static z80_byte rainbow_pending_prefix[RAINBOW_PENDING_MAX*2];
+static int rainbow_pending_count=0;
+static int rainbow_pending_linea=-1;
+
 void core_spectrum_store_rainbow_current_atributes(void)
 {
+
+	//Offset en T-estados del prefetch de la ULA respecto al modelo t%linea==0 -> celda 0.
+	//En el modelo de zesarux el instante 0 de cada linea ya corresponde al inicio del fetch
+	//de la ULA (la contencion 128k empieza en 14361 y el paper en 14364 = linea 63*228),
+	//por lo que no debe aplicarse offset adicional (se probo con 8 y no mejoraba)
+#define ULA_PREFETCH_OFFSET_TSTATES 0
 
 	//No hacer esto en tbblue
 	if (MACHINE_IS_TBBLUE && tbblue_store_scanlines.v==0) return;
@@ -229,7 +250,10 @@ void core_spectrum_store_rainbow_current_atributes(void)
     //como esto es muy costoso, hacemos que se guardan los atributos leidos desde el opcode anterior hasta este
     if (rainbow_enabled.v) {
         if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
-            int atributo_pos=(t_estados % screen_testados_linea)/4;
+            //Sumamos el offset de prefetch de la ULA: latch de cada celda unos T-estados antes de mostrarse
+            int atributo_pos=((t_estados % screen_testados_linea)+ULA_PREFETCH_OFFSET_TSTATES)/4;
+            //Proteccion contra desbordamiento del buffer cerca del final de linea (zona border)
+            if (atributo_pos>=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2) atributo_pos=SCANLINEBUFFER_ONE_ARRAY_LENGTH/2-1;
             z80_byte *screen_atributo=get_base_mem_pantalla_attributes();
             z80_byte *screen_pixel=get_base_mem_pantalla();
 
@@ -249,33 +273,95 @@ void core_spectrum_store_rainbow_current_atributes(void)
 
             int dir_pixel=screen_addr_table[(t_scanline_draw-screen_indice_inicio_pant)*32];
 
-            //si hay cambio de linea, empezamos con el 0
-            //puede parecer que al cambiar de linea nos perdemos el ultimo atributo de pantalla hasta el primero de la linea
-            //siguiente, pero eso es imposible, dado que eso sucede desde el ciclo 128 hasta el 228 (zona de borde)
-            // y no hay ningun opcode que tarde 100 ciclos
-            if (last_x_atributo>atributo_pos) last_x_atributo=0;
+            //Cambio de linea: reiniciamos el puntero de celda SOLO cuando t_scanline_draw avanza.
+            //Antes se reiniciaba cuando last_x_atributo>atributo_pos, pero desde que el buffer se
+            //sincroniza en cada escritura a pantalla (poke_byte_spectrum_sync_rainbow) pueden llegar
+            //dos syncs dentro de la misma celda de 4 T-estados (ej: los dos bytes de un PUSH).
+            //El reset erroneo a 0 releia toda la linea desde la celda 0 con la memoria ya modificada,
+            //aplicando retroactivamente los atributos nuevos a celdas que la ULA ya habia leido
+            //(columnas de atributos incorrectos en efectos multicolor tipo Nirvana)
+            if (t_scanline_draw!=rainbow_ultima_linea_almacenada) {
+                rainbow_ultima_linea_almacenada=t_scanline_draw;
+                last_x_atributo=0;
+
+                //Si hay celdas pre-latcheadas de esta linea (poke tras cruzar el final de la anterior),
+                //volcarlas al buffer: contienen los valores previos a esa escritura
+                if (rainbow_pending_count>0) {
+                    if (rainbow_pending_linea==t_scanline_draw) {
+                        memcpy(scanline_buffer,rainbow_pending_prefix,rainbow_pending_count*2);
+                        last_x_atributo=rainbow_pending_count;
+                    }
+                    rainbow_pending_count=0;
+                }
+            }
+
+            //Si ya hemos almacenado hasta atributo_pos en esta linea, no hay nada que hacer.
+            //Sucede con un segundo sync dentro de la misma celda de 4 T-estados, o con un poke
+            //justo despues de cruzar el final de linea (t_estados ya esta en la linea siguiente
+            //pero t_scanline_draw aun no ha avanzado): en ese caso NO hay que tocar el buffer,
+            //que aun contiene la linea anterior pendiente de renderizar
+            if (last_x_atributo<=atributo_pos) {
+
                 dir_atributo += last_x_atributo;
                 dir_pixel +=last_x_atributo;
 
-            //Puntero al buffer de atributos
-            z80_byte *puntero_buffer;
-            puntero_buffer=&scanline_buffer[last_x_atributo*2];
+                //Puntero al buffer de atributos
+                z80_byte *puntero_buffer;
+                puntero_buffer=&scanline_buffer[last_x_atributo*2];
 
-            for (;last_x_atributo<=atributo_pos;last_x_atributo++) {
-                //printf ("last_x_atributo: %d atributo_pos: %d\n",last_x_atributo,atributo_pos);
-                last_ula_pixel=screen_pixel[dir_pixel];
-                last_ula_attribute=screen_atributo[dir_atributo];
+                for (;last_x_atributo<=atributo_pos;last_x_atributo++) {
+                    //printf ("last_x_atributo: %d atributo_pos: %d\n",last_x_atributo,atributo_pos);
+                    last_ula_pixel=screen_pixel[dir_pixel];
+                    last_ula_attribute=screen_atributo[dir_atributo];
 
-                //realmente en este array guardamos tambien atributo cuando estamos en la zona de border,
-                //nos da igual, lo hacemos por no complicarlo
-                //debemos tambien suponer que atributo_pos nunca sera mayor o igual que ATRIBUTOS_ARRAY_LENGTH
-                //esto debe ser asi dado que atributo_pos=(t_estados % screen_testados_linea)/4;
+                    //realmente en este array guardamos tambien atributo cuando estamos en la zona de border,
+                    //nos da igual, lo hacemos por no complicarlo
+                    //debemos tambien suponer que atributo_pos nunca sera mayor o igual que ATRIBUTOS_ARRAY_LENGTH
+                    //esto debe ser asi dado que atributo_pos=(t_estados % screen_testados_linea)/4;
 
-                *puntero_buffer++=last_ula_pixel;
-                *puntero_buffer++=last_ula_attribute;
-                dir_atributo++;
-                dir_pixel++;
+                    *puntero_buffer++=last_ula_pixel;
+                    *puntero_buffer++=last_ula_attribute;
+                    dir_atributo++;
+                    dir_pixel++;
+                }
             }
+
+            //Poke tras cruzar el final de linea: t_estados ya esta en la linea siguiente pero
+            //t_scanline_draw aun no ha avanzado (fin_scanline se ejecuta al acabar el opcode).
+            //No podemos tocar scanline_buffer (linea anterior pendiente de renderizar), pero si
+            //debemos capturar las primeras celdas de la linea siguiente ANTES de la escritura,
+            //porque la ULA ya las habria leido. Se vuelcan al detectar el cambio de linea
+            else if ((int)(t_estados/screen_testados_linea)>t_scanline) {
+                int linea_sig=t_scanline_draw+1;
+                if (linea_sig>=screen_indice_inicio_pant && linea_sig<screen_indice_fin_pant) {
+
+                    int dir_atributo_sig;
+                    if (timex_si_modo_8x1()) {
+                        dir_atributo_sig=screen_addr_table[(linea_sig-screen_indice_inicio_pant)*32];
+                    }
+                    else {
+                        dir_atributo_sig=(linea_sig-screen_indice_inicio_pant)/8;
+                        dir_atributo_sig *=32;
+                    }
+
+                    int dir_pixel_sig=screen_addr_table[(linea_sig-screen_indice_inicio_pant)*32];
+
+                    //Si el pending era de otra linea (stale por frameskip), descartarlo
+                    if (rainbow_pending_linea!=linea_sig) {
+                        rainbow_pending_count=0;
+                        rainbow_pending_linea=linea_sig;
+                    }
+
+                    int i;
+                    for (i=rainbow_pending_count;i<=atributo_pos && i<RAINBOW_PENDING_MAX;i++) {
+                        rainbow_pending_prefix[i*2]=screen_pixel[dir_pixel_sig+i];
+                        rainbow_pending_prefix[i*2+1]=screen_atributo[dir_atributo_sig+i];
+                    }
+                    if (i>rainbow_pending_count) rainbow_pending_count=i;
+                }
+            }
+
+            //else: segundo sync dentro de la misma celda de 4 T-estados: nada que hacer
 
             //Siguiente posicion se queda en last_x_atributo
 
