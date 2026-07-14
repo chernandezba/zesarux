@@ -5,7 +5,6 @@
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 
--ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
 
 
 -quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1)) que cambie algo mas de filesel, como:
@@ -161,3 +160,6 @@ ok - probar joystick "nes" en Linux (SDL1, SDL2), joystick logic3
 ok - probar joystick "nes" en Linux (Nativo Linux), joystick logic3
 ok - probar joystick "nes" en Windows, joystick logic3
 - probar volante en Mac, Linux, Windows
+
+
+ok movido -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
