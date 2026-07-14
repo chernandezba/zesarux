@@ -39,6 +39,7 @@
 #include "zeng_online_client.h"
 #include "ula.h"
 #include "tbblue.h"
+#include "gs.h"
 
 
 
@@ -117,6 +118,43 @@ int sensor_next_dac_funcion_get_value(int id)
 
         default:
             valor=tbblue_dac_d;
+        break;
+    }
+
+    valor -=128;
+
+    //TODO: esto permite que un valor +127 o -128 sean el 100% del sensor,
+    //pero por otra parte impide ver el valor real del DAC desde aqui
+    //Quizá habría que extender estas funciones de sensors para que retornasen el valor real tambien, aparte del valor que ya se retorna ahora
+    int absoluto=util_get_absolute(valor);
+
+    //Considerar tambien un valor de +127 como +128 asi es el tope de 100%
+    if (absoluto==127) absoluto=128;
+    return absoluto;
+
+}
+
+//Retorna valor DAC de General sound
+//Id es:
+int sensor_gensound_dac_funcion_get_value(int id)
+{
+    int valor;
+
+    switch(id) {
+        case 0:
+            valor=gs_dac_channels[0];
+        break;
+
+        case 1:
+            valor=gs_dac_channels[1];
+        break;
+
+        case 2:
+            valor=gs_dac_channels[2];
+        break;
+
+        default:
+            valor=gs_dac_channels[3];
         break;
     }
 
@@ -459,6 +497,38 @@ pues de una octava a la otra es el doble de valor
     80,-80,
     9999,-9999,
     sensor_next_dac_funcion_get_value,3
+    },
+
+    {
+    "gensound_dac_0","General Sound DAC 0","GENSNDAC0",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_gensound_dac_funcion_get_value,0
+    },
+
+    {
+    "gensound_dac_1","General Sound DAC 1","GENSNDAC1",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_gensound_dac_funcion_get_value,1
+    },
+
+    {
+    "gensound_dac_2","General Sound DAC 2","GENSNDAC_2",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_gensound_dac_funcion_get_value,2
+    },
+
+    {
+    "gensound_dac_3","General Sound DAC 3","GENSNDAC3",
+    0,128,
+    80,-80,
+    9999,-9999,
+    sensor_gensound_dac_funcion_get_value,3
     },
 
 

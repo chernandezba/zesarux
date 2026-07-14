@@ -4,7 +4,9 @@
 -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
-
+-> en teoria esto no deberia pasar. Ese limite es para sistemas de 32 bits al asignar:
+time_t tiempo = time(NULL);
+Esto en sistemas de 64 bits es una variable de 64 bits ya.
 
 
 -quiza al llamar a filesel para seleccionar una carpeta (menu_filesel_all_parameters("Enter dir & press ESC",filtros,nada,0,1)) que cambie algo mas de filesel, como:
