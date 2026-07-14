@@ -171,6 +171,13 @@ int sensor_gensound_dac_funcion_get_value(int id)
 
 }
 
+//Retorna volumen de canal de General Sound
+int sensor_gensound_vol_funcion_get_value(int id)
+{
+    if (id<0 || id>=4) id=0;
+
+    return gs_volumes[id] & 0x3F;
+}
 
 //Retorna valor DAC de Spectrum (specdrum, etc)
 int sensor_spec_dac_funcion_get_value(int id GCC_UNUSED)
@@ -529,6 +536,39 @@ pues de una octava a la otra es el doble de valor
     80,-80,
     9999,-9999,
     sensor_gensound_dac_funcion_get_value,3
+    },
+
+
+    {
+    "gensound_vol_0","General Sound VOL 0","GENSNVOL0",
+    0,0x3f,
+    84,-9999,
+    9999,-9999,
+    sensor_gensound_vol_funcion_get_value,0
+    },
+
+    {
+    "gensound_vol_1","General Sound VOL 1","GENSNVOL1",
+    0,0x3f,
+    84,-9999,
+    9999,-9999,
+    sensor_gensound_vol_funcion_get_value,1
+    },
+
+    {
+    "gensound_vol_2","General Sound VOL 2","GENSNVOL2",
+    0,0x3f,
+    84,-9999,
+    9999,-9999,
+    sensor_gensound_vol_funcion_get_value,2
+    },
+
+    {
+    "gensound_vol_3","General Sound VOL 3","GENSNVOL3",
+    0,0x3f,
+    84,-9999,
+    9999,-9999,
+    sensor_gensound_vol_funcion_get_value,3
     },
 
 
