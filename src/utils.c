@@ -3653,10 +3653,10 @@ int configfile_read_aux(char *configfile,char *mem)
 
 }
 
-//Retorna ruta en configfile del archivo file_to_find, buscando en carpeta HOME, etc
+//Retorna ruta en destpath del archivo file_to_find, buscando en carpeta HOME, etc
 //Devuelve 1 si ok
 //0 si error
-int util_get_configfile_name_aux(char *configfile,char *file_to_find)
+int util_get_file_in_home_dir(char *destpath,char *file_to_find)
 {
 
     #ifndef MINGW
@@ -3667,7 +3667,7 @@ int util_get_configfile_name_aux(char *configfile,char *file_to_find)
             return 0;
         }
 
-        sprintf(configfile,"%s/%s",directorio_home,file_to_find);
+        sprintf(destpath,"%s/%s",directorio_home,file_to_find);
 
     #else
         char *homedrive;
@@ -3680,7 +3680,7 @@ int util_get_configfile_name_aux(char *configfile,char *file_to_find)
             return 0;
         }
 
-        sprintf(configfile,"%s\\%s\\%s",homedrive,homepath,file_to_find);
+        sprintf(destpath,"%s\\%s\\%s",homedrive,homepath,file_to_find);
 
     #endif
 
@@ -3695,7 +3695,7 @@ int util_get_configfile_name(char *configfile)
         return 1;
   }
 
-  return util_get_configfile_name_aux(configfile,DEFAULT_ZESARUX_CONFIG_FILE);
+  return util_get_file_in_home_dir(configfile,DEFAULT_ZESARUX_CONFIG_FILE);
 }
 
 int util_get_devconfigfile_name(char *configfile)
@@ -3705,7 +3705,7 @@ int util_get_devconfigfile_name(char *configfile)
         return 1;
   }
 
-  return util_get_configfile_name_aux(configfile,DEFAULT_ZESARUX_DEVCONFIG_FILE);
+  return util_get_file_in_home_dir(configfile,DEFAULT_ZESARUX_DEVCONFIG_FILE);
 }
 
 //Devuelve 1 si ok

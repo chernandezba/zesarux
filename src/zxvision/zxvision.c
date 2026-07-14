@@ -32179,7 +32179,7 @@ index_menu *zxvision_index_entrada_menu(char *titulo)
 
 int zxvision_get_indexfile_path(char *indexfile_path)
 {
-  return util_get_configfile_name_aux(indexfile_path,ZESARUX_INDEX_MENU_FILE);
+  return util_get_file_in_home_dir(indexfile_path,ZESARUX_INDEX_MENU_FILE);
 }
 
 

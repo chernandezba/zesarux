@@ -294,7 +294,7 @@ extern void get_size_bps_human_friendly(long long int tamanyo,char *texto);
 extern int lee_archivo(char *nombre,char *buffer,int max_longitud);
 
 extern int util_get_configfile_name(char *configfile);
-extern int util_get_configfile_name_aux(char *configfile,char *file_to_find);
+extern int util_get_file_in_home_dir(char *destpath,char *file_to_find);
 
 //extern void util_print_second_overlay(char *texto, int x, int y);
 
