@@ -1320,6 +1320,8 @@ void menu_zxvision_test(MENU_ITEM_PARAMETERS)
 
 
         //Nombre de ventana solo aparece en el caso de stdout
+                retorno_menu=menu_dibuja_menu_no_title_lang(&audio_new_waveform_opcion_seleccionada,&item_seleccionado,array_menu_audio_new_waveform,"Waveform" );*/
+
 
     ventana.upper_margin=2;
     ventana.lower_margin=1;
@@ -1334,7 +1336,7 @@ void menu_zxvision_test(MENU_ITEM_PARAMETERS)
     menu_espera_no_tecla();
 
     //Jugar con offset
-	int i;
+/*	int i;
 
     for (i=0;i<7;i++) {
         zxvision_set_offset_x(&ventana,i);
@@ -4448,10 +4450,6 @@ void menu_waveform_draw_array(int ancho,int alto,int xorigen,int yorigen,int for
 {
     int x,y;
 
-    //Segun la escala y el tamaño de la ventana, la ultima linea de abajo puede que no se vea porque se va 1 pixel por debajo del maximo admitido
-    //por ejemplo arrancando con ./zesarux --tonegenerator 2
-    //Con esto aseguramos que se vea dicha linea
-    alto++;
 
     for (y=0;y<alto;y++) {
         for (x=0;x<ancho;x++) {
@@ -4468,18 +4466,7 @@ void menu_waveform_draw_array(int ancho,int alto,int xorigen,int yorigen,int for
                 if (valor!=ESTILO_GUI_PAPEL_NORMAL) {
                     if (forzar_color!=-1) valor=forzar_color;
 
-                    int ydestino=y+yorigen;
-                    int total_size=((menu_audio_draw_sound_wave_window->visible_height)-2)*menu_char_width;
-
-                    //Segun la escala y el tamaño de la ventana, la ultima linea de abajo puede que no se vea porque se va 1 pixel por debajo del maximo admitido
-                    //por ejemplo arrancando con ./zesarux --tonegenerator 2
-                    //Con esto aseguramos que se vea dicha linea
-                    if (ydestino>=total_size) ydestino=total_size-1;
-
-                    zxvision_putpixel(menu_audio_draw_sound_wave_window,x+xorigen,ydestino,valor);
-                    //printf("putpixel linea %4d,%4d total height %4d\n",x+xorigen,y+yorigen,total_size);
-
-
+                    zxvision_putpixel(menu_audio_draw_sound_wave_window,x+xorigen,y+yorigen,valor);
                 }
             }
             /*else {
@@ -4873,6 +4860,10 @@ void menu_audio_draw_sound_wave(void)
             //Lo situamos en el centro. Negativo hacia abajo (Y positiva)
             y=menu_audio_draw_sound_wave_ycentro-y;
 
+            //Segun la escala y el tamaño de la ventana, la ultima linea de abajo puede que no se vea porque se va 1 pixel por debajo del maximo admitido
+            //por ejemplo arrancando con ./zesarux --tonegenerator 2
+            //Con esto aseguramos que se vea dicha linea
+            if (y>=alto) y=alto-1;
 
             int dibujar_linea=1;
 
