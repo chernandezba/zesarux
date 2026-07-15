@@ -22,8 +22,6 @@ Esto en sistemas de 64 bits es una variable de 64 bits ya.
 el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 
 
--iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
-
 -teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
 
 
@@ -162,3 +160,8 @@ ok - probar joystick "nes" en Windows, joystick logic3
 - probar volante en Mac, Linux, Windows
 
 ok -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
+
+
+
+-iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
+-> hecho samram, zxmmc+, esxdos handler
