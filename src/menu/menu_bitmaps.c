@@ -2447,11 +2447,11 @@ char *bitmap_lowericon_ext_desktop_esxdoshandler[EXT_DESKTOP_BUTTONS_ANCHO]={
     "wbbbbbwbwbwbbwbbbbwbbbbbbw",
     "wbbbbbwwbbbwwbbbwwbbbbbbbw",
     "wbbbbbbbbbbbbbbbbbbbbbbbbw",
-    "wbbbbbwbwbwwbbwbbbwwwbbbbw",
-    "wbbbbbwbwbwbwbwbbbwbbwbbbw",
-    "wbbbbbwwwbwbwbwbbbwwwbbbbw",
-    "wbbbbbwbwbwbwbwbbbwbwbbbbw",//20
-    "wbbbbbwbwbwwbbwwwbwbbwbbbw",
+    "wbbbbbwbwbwbbwbwbbbwwwbbbw",
+    "wbbbbbwbwbwwbwbwbbbwbbwbbw",
+    "wbbbbbwwwbwbwwbwbbbwwwbbbw",
+    "wbbbbbwbwbwbbwbwbbbwbwbbbw",//20
+    "wbbbbbwbwbwbbwbwwwbwbbwbbw",
     "wbbbbbbbbbbbbbbbbbbbbbbbbw",
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "                          ",
