@@ -1304,24 +1304,6 @@ void menu_zxvision_test(MENU_ITEM_PARAMETERS)
     zxvision_print_string(&ventana,2,8,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0," --$$2ink--");
 
 
-                    /*    menu_add_item_menu_inicial_format(&array_menu_audio_new_waveform,MENU_OPCION_NORMAL,menu_audio_new_waveform_shape,NULL,"Change wave ~~Shape");
-                        menu_add_item_menu_shortcut(array_menu_audio_new_waveform,'s');
-
-                        //Evito tooltips en los menus tabulados que tienen overlay porque al salir el tooltip detiene el overlay
-                        //menu_add_item_menu_tooltip(array_menu_audio_new_waveform,"Change wave Shape");
-                        menu_add_item_menu_ayuda(array_menu_audio_new_waveform,"Change wave Shape: simple line or vertical fill");
-                        //0123456789
-                        // Change wave Shape
-
-            menu_add_item_menu_tabulado(array_menu_audio_new_waveform,1,0);
-
-
-
-
-
-        //Nombre de ventana solo aparece en el caso de stdout
-                retorno_menu=menu_dibuja_menu_no_title_lang(&audio_new_waveform_opcion_seleccionada,&item_seleccionado,array_menu_audio_new_waveform,"Waveform" );*/
-
 
     ventana.upper_margin=2;
     ventana.lower_margin=1;
