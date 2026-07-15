@@ -64,6 +64,11 @@ void esxdos_handler_footer_esxdos_handler_operating(void)
 
     generic_footertext_print_operating("ESX");
     watermark_tell_device_activity();
+
+    if (!zxdesktop_icon_esxdoshandler_inverse) {
+        zxdesktop_icon_esxdoshandler_inverse=1;
+        menu_draw_ext_desktop();
+    }
 }
 
 

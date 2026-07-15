@@ -1529,10 +1529,11 @@ void menu_zxvision_test(MENU_ITEM_PARAMETERS)
     zxvision_destroy_window(&ventana);
 
 
-
-
-
 }
+
+
+
+
 
 
 //Indica a la funcion de overlay cual es la ventana
@@ -42127,7 +42128,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_esxdos_traps,NULL,"~~ESXDOS Handler");
             menu_add_item_menu_shortcut(array_menu_storage,'e');
-            menu_add_item_menu_tooltip(array_menu_storage,"Enables emulator to handle ESXDOS calls");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_ESXDOS_HANDLER));
             menu_add_item_menu_ayuda(array_menu_storage,"Enables emulator to handle ESXDOS calls and "
                 "use local files from your computer instead of using from inside the mmc/ide virtual file.\n"
                 "You can choose to have also "
@@ -45491,6 +45492,7 @@ char *tooltips_devices_cartridge_ts2068="Timex Cartridge Settings";
 char *tooltips_devices_cartridge_z88="Z88 Memory Slots";
 char *tooltips_devices_zxuno_flash="ZXUno Flash settings";
 char *tooltips_devices_zxmmcplus_flash="ZXMMC+ settings";
+char *tooltips_devices_esxdoshandler="Enables emulator to handle ESXDOS calls";
 char *tooltips_devices_samram="Samram settings";
 char *tooltips_devices_hilow="HiLow Data Drive";
 char *tooltips_devices_cartridge_sms="Master System cartridge";;
@@ -45599,6 +45601,10 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip)
 
         case TOOLTIP_ZXMMCPLUS_FLASH:
             return tooltips_devices_zxmmcplus_flash;
+        break;
+
+        case TOOLTIP_ESXDOS_HANDLER:
+            return tooltips_devices_esxdoshandler;
         break;
 
         case TOOLTIP_SAMRAM:
@@ -47273,6 +47279,25 @@ void zxdesktop_lowericon_zxmmcplusflash_accion(void)
     menu_zxmmcplus(0);
 }
 
+//Funciones para ESXDOS handler
+int zxdesktop_lowericon_esxdoshandler_is_visible(void)
+{
+    if (MACHINE_IS_SPECTRUM && esxdos_handler_enabled.v) return 1;
+
+    else return 0;
+}
+
+int zxdesktop_lowericon_esxdoshandler_is_active(void)
+{
+    if (MACHINE_IS_SPECTRUM && esxdos_handler_enabled.v) return 1;
+    else return 0;
+}
+
+void zxdesktop_lowericon_esxdoshandler_accion(void)
+{
+    menu_esxdos_traps(0);
+}
+
 
 //Funciones para samram
 int zxdesktop_lowericon_samram_is_visible(void)
@@ -47530,6 +47555,7 @@ int zxdesktop_icon_flp1_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
 int zxdesktop_icon_zxmmcplusflash_inverse=0;
+int zxdesktop_icon_esxdoshandler_inverse=0;
 int zxdesktop_icon_samram_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
 
@@ -47632,6 +47658,10 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //zxmmc+ flash. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_zxmmcplusflash_is_visible, zxdesktop_lowericon_zxmmcplusflash_is_active, zxdesktop_lowericon_zxmmcplusflash_accion,NULL,
         bitmap_lowericon_ext_desktop_zxmmcplusflash,bitmap_lowericon_ext_desktop_zxmmcplusflash,&zxdesktop_icon_zxmmcplusflash_inverse,TOOLTIP_ZXMMCPLUS_FLASH},
+
+    //esxdos handler. En este caso no hay distincion entre icono insertado y no insertado
+    { zxdesktop_lowericon_esxdoshandler_is_visible, zxdesktop_lowericon_esxdoshandler_is_active, zxdesktop_lowericon_esxdoshandler_accion,NULL,
+        bitmap_lowericon_ext_desktop_esxdoshandler,bitmap_lowericon_ext_desktop_esxdoshandler,&zxdesktop_icon_esxdoshandler_inverse,TOOLTIP_ESXDOS_HANDLER},
 
     //cartucho dandanator
     { zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,

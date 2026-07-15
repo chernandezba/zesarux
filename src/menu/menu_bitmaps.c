@@ -2428,6 +2428,36 @@ char *bitmap_lowericon_ext_desktop_zxmmcplusflash[EXT_DESKTOP_BUTTONS_ANCHO]={
     "   wxxw  wxxw  wxxw  wxxw "	//25
 };
 
+char *bitmap_lowericon_ext_desktop_esxdoshandler[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+    "                          ",
+    "                          ",
+    "wwwwwwwwwwwwwwwwwwwwwwwwww",
+    "w                        w",
+    "w     xxx  xx  x   x     w",
+    "w     x   x     x x      w",
+    "w     xx   xx    x       w",
+    "w     x      x  x x      w",
+    "w     xxx  xx  x   x     w",
+    "w                        w", //10
+    "w     xx   xx   xx       w",
+    "w     x x x  x x         w",
+    "w     x x x  x  xx       w",
+    "w     x x x  x    x      w",
+    "w     xx   xx   xx       w",
+    "w                        w",
+    "w     x x xx  x   xxx    w",
+    "w     x x x x x   x  x   w",
+    "w     xxx x x x   xxx    w",
+    "w     x x x x x   x x    w", //20
+    "w     x x xx  xxx x  x   w",
+    "w                        w",
+    "wwwwwwwwwwwwwwwwwwwwwwwwww",
+    "                          ",
+    "                          "	//25
+};
+
 char *bitmap_lowericon_ext_desktop_samram[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "   wxxw  wxxw  wxxw  wxxw ",     //0
