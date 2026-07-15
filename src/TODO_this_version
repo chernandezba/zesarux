@@ -1,7 +1,7 @@
 
 -osd watermark no se ve en QL. quiza porque no tiene borde suficientemente grande?
 
--en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
+
 
 -Corregir timestamps. Con variables de 32 bits (31 realmente) se llega al límite en año 2038
 -> en teoria esto no deberia pasar. Ese limite es para sistemas de 32 bits al asignar:
@@ -164,7 +164,4 @@ ok - probar joystick "nes" en Linux (Nativo Linux), joystick logic3
 ok - probar joystick "nes" en Windows, joystick logic3
 - probar volante en Mac, Linux, Windows
 
-
-ok movido -ZESARUX_INDEX_MENU_FILE por que se guarda en carpeta actual? no seria mejor que lo guardase en misma ruta que .zesaruxrc?
-
-ok -en view sensors agregar sensores de canales de General Sound
+ok -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
