@@ -2433,15 +2433,14 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",     //0
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
-
     "wxbbxxxxxxyyyyyxxWWxxbbxxw",
     "wxbbxxxxxxyxxxyxxWWxxbbxxw",
     "wxxxxxxxRxyxxxyxxxxxxxxxxw",
     "wxxxxxxxxxyxxxyxRxxxxxxxxw",
     "wxxxxxxxxxyyyyyxxxxxxxxxxw",
     "wxwwwwwwwwwwxxwwwwwwwwwwxw",
-    "wxwxxxxxxxxwxxwxxxxxxxxwxw",//10
-    "wxxwxxxxxxxwxxxwxxxxxxxwxw",
+    "wxwxxxxxxxxwxxwxxxxxxxxwxw",
+    "wxxwxxxxxxxwxxxwxxxxxxxwxw",//10
     "wxwxxxxxxxxwxxwxxxxxxxxwxw",
     "wxwwwwwwwwwwxxwwwwwwwwwwxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
@@ -2456,7 +2455,7 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wwWWwwWWwwWWw    wWWwwWWww",
-    "                          " 	 //25
+    "                          " //25
 };
 
 
