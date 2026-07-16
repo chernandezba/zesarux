@@ -2424,7 +2424,7 @@ char *bitmap_lowericon_ext_desktop_kartusho[EXT_DESKTOP_BUTTONS_ANCHO]={
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wxWWxxWWxxWWw    wWWxxWWxw",
-    "wwWWwwWWwwWWw    wWWwwWWww",
+    "wwwwwwwwwwwww    wwwwwwwww",
     "                          " 	 //25
 };
 
@@ -2433,8 +2433,8 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",     //0
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wWxxWWWWWWyyyyyWWccWWxxWWw",
-    "wWxxWWWWWWyxxxyWWccWWxxWWw",
+    "wWxxWWWWWWyyyyyWWccWWWxxWw",
+    "wWxxWWWWWWyxxxyWWccWWWxxWw",
     "wWWWWWWWRWyxxxyWWWWWWWWWWw",
     "wWWWWWWWWWyxxxyWRWWWWWWWWw",
     "wWWWWWWWWWyyyyyWWWWWWWWWWw",
@@ -2450,11 +2450,11 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     "wWWxWxWWWxWxWxWxWxWWWxWWWw",
     "wWWxWxWWWxWxWxxxWxWWWxWWWw",
     "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wwwwwwwwwwwwwwwwwwwwwwwwww",//20
+    "wWWWWWWWWWWWwwwwwwWWWWWWWw",//20
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wxWWxxWWxxWWw    wWWxxWWxw",
     "wxWWxxWWxxWWw    wWWxxWWxw",
-    "wwWWwwWWwwWWw    wWWwwWWww",
+    "wwwwwwwwwwwww    wwwwwwwww",
     "                          " //25
 };
 
