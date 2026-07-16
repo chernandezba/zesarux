@@ -2412,7 +2412,7 @@ char *bitmap_lowericon_ext_desktop_kartusho[EXT_DESKTOP_BUTTONS_ANCHO]={
     "wxyyyyyxxxxxwxxxwxxxxxxxxw",
     "wxxxxxxxRxxxwxxxwxxxxWWxxw",//10
     "wxxRxxxxxxxxwxxxwxxxxWWxxw",
-    "wxxxxxcccxxxwwwwwxxxxxxxxw",
+    "wxxxxcccxxxxwwwwwxxxxxxxxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "wxxxxxwxxwxxwwxxxwwxxwwwxw",
@@ -2421,10 +2421,10 @@ char *bitmap_lowericon_ext_desktop_kartusho[EXT_DESKTOP_BUTTONS_ANCHO]={
     "wxwxxxwxwxxwxxwxwxwxxxwxxw",
     "wxxxxxwxxwxwxxwxwxxwxxwxxw",
     "wwwwwwwwwwwwwwwwwwwwwwwwww",//20
-    "wxWWxxWWxxWWxxWWxxWWxxWWxw",
-    "wxWWxxWWxxWWxxWWxxWWxxWWxw",
-    "wxWWxxWWxxWWxxWWxxWWxxWWxw",
-    "wwWWwwWWwwWWwwWWwwWWwwWWww",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wxWWxxWWxxWWw    wWWxxWWxw",
+    "wwWWwwWWwwWWw    wWWwwWWww",
     "                          " 	 //25
 };
 
