@@ -164,4 +164,4 @@ ok -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) 
 
 
 -iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
--> hecho samram, zxmmc+, esxdos handler
+-> hecho samram, zxmmc+, esxdos handler, ifrom, kartusho
