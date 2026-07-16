@@ -2431,17 +2431,18 @@ char *bitmap_lowericon_ext_desktop_kartusho[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-    "                          ",
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
+
     "wxbbxxxxxxyyyyyxxWWxxbbxxw",
     "wxbbxxxxxxyxxxyxxWWxxbbxxw",
     "wxxxxxxxRxyxxxyxxxxxxxxxxw",
     "wxxxxxxxxxyxxxyxRxxxxxxxxw",
     "wxxxxxxxxxyyyyyxxxxxxxxxxw",
     "wxwwwwwwwwwwxxwwwwwwwwwwxw",
-    "wxxwxxxxxxxwxxxwxxxxxxxwxw",//10
+    "wxwxxxxxxxxwxxwxxxxxxxxwxw",//10
     "wxxwxxxxxxxwxxxwxxxxxxxwxw",
+    "wxwxxxxxxxxwxxwxxxxxxxxwxw",
     "wxwwwwwwwwwwxxwwwwwwwwwwxw",
     "wxxxxxxxxxxxxxxxxxxxxxxxxw",
     "wxxwxwwwxwwxxwwwxwxxxwxxxw",
