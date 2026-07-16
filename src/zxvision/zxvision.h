@@ -1979,6 +1979,7 @@ enum tooltips_menus_inicio_storage {
     TOOLTIP_ZXUNO_FLASH,
     TOOLTIP_ZXMMCPLUS_FLASH,
     TOOLTIP_ESXDOS_HANDLER,
+    TOOLTIP_KARTUSHO,
     TOOLTIP_SAMRAM,
     TOOLTIP_HILOW
 };
@@ -1997,7 +1998,7 @@ struct s_zxdesktop_lowericons_info {
 
 
 
-#define TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS 28
+#define TOTAL_ZXDESKTOP_MAX_LOWER_BUTTONS 29
 
 //Cada 12 frames de pantalla lanzar las funciones de print y condicion
 #define ZXVISION_SIMPLE_PROGRESS_WINDOW_FRAMES_REFRESH 12

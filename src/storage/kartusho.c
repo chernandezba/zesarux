@@ -34,6 +34,8 @@
 #include "utils.h"
 #include "operaciones.h"
 #include "ula.h"
+#include "menu_items.h"
+#include "screen.h"
 
 
 z80_bit kartusho_enabled={0};
@@ -54,12 +56,27 @@ int kartusho_nested_id_peek_byte_no_time;
 //Banco activo. 0..31
 z80_byte kartusho_active_bank=0;
 
+void kartusho_footer_print_flash_operating(void)
+{
+
+
+	generic_footertext_print_operating("KART");
+    watermark_tell_device_activity();
+
+
+    //Y poner icono en inverso
+    if (!zxdesktop_icon_kartusho_inverse) {
+        zxdesktop_icon_kartusho_inverse=1;
+        menu_draw_ext_desktop();
+    }
+
+}
 
 int kartusho_check_if_rom_area(z80_int dir)
 {
-                if (dir<16384) {
+    if (dir<16384) {
 			return 1;
-                }
+    }
 	return 0;
 }
 
@@ -92,6 +109,9 @@ void kartusho_handle_special_dirs(z80_int dir)
 
 		//Si se habilita proteccion
 		if (dir&2) kartusho_protected.v=1;
+
+        //Realmente kartusho siempre se usa al activarlo, estamos destacando el dispositivo al acceder a ciertos registros de control
+        kartusho_footer_print_flash_operating();
 	}
 
 }
@@ -290,6 +310,9 @@ void kartusho_press_button(void)
 	kartusho_protected.v=0;
 
 	reset_cpu();
+
+    //Realmente kartusho siempre se usa al activarlo, estamos destacando el dispositivo al acceder a ciertos registros de control
+    kartusho_footer_print_flash_operating();
 
 
 }
