@@ -321,5 +321,7 @@ void ifrom_press_button(void)
 
 	reset_cpu();
 
+    //Realmente ifrom siempre se usa al activarlo, estamos destacando el dispositivo al acceder a ciertos registros de control
+    ifrom_footer_print_flash_operating();
 
 }
