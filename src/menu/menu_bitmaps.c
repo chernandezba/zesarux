@@ -2433,16 +2433,16 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",     //0
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "wWWWWWWWWWWWWWWWWWWWWWWWWw",
-    "wWbbWWWWWWyyyyyWWccWWbbWWw",
-    "wWbbWWWWWWyxxxyWWccWWbbWWw",
+    "wWxxWWWWWWyyyyyWWccWWxxWWw",
+    "wWxxWWWWWWyxxxyWWccWWxxWWw",
     "wWWWWWWWRWyxxxyWWWWWWWWWWw",
     "wWWWWWWWWWyxxxyWRWWWWWWWWw",
     "wWWWWWWWWWyyyyyWWWWWWWWWWw",
-    "wWwwwwwwwwwwWWwwwwwwwwwwWw",
-    "wWwxxxxxxxxwWWwxxxxxxxxwWw",
-    "wWWwxxxxxxxwWWWwxxxxxxxwWw",//10
-    "wWwxxxxxxxxwWWwxxxxxxxxwWw",
-    "wWwwwwwwwwwwWWwwwwwwwwwwWw",
+    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
+    "wWWxxxxxxxxWWWWxxxxxxxxWWw",
+    "wWWWxxxxxxxWWWWWxxxxxxxWWw",//10
+    "wWWxxxxxxxxWWWWxxxxxxxxWWw",
+    "wWWWWWWWWWWWWWWWWWWWWWWWWw",
     "wWWWWWWWWWWWWWWWWWWWWWWWWw",
     "wWWxWxxxWxxWWxxxWxWWWxWWWw",
     "wWWWWxWWWxWxWxWxWxxWxxWWWw",
