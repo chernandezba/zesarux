@@ -2432,7 +2432,6 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
     "                          ",
-    "                          ",
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "w                        w",
     "w bb      yyyyy  WW  bb  w",
@@ -2440,9 +2439,10 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
     "w       R y   y          w",
     "w         y   y R        w",
     "w         yyyyy          w",
-    "w                        w",//10
-    "w                        w",
-    "w                        w",
+    "w wwwwwwwwww  wwwwwwwwww w",
+    "w  wxxxxxxxw   wxxxxxxxw w",//10
+    "w  wxxxxxxxw   wxxxxxxxw w",
+    "w wwwwwwwwww  wwwwwwwwww w",
     "w                        w",
     "wwwwwwwwwwwwwwwwwwwwwwwwww",
     "w     w www ww  www w  w w",
