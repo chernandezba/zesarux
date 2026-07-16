@@ -318,6 +318,7 @@ extern int zxdesktop_icon_zxunoflash_inverse;
 extern int zxdesktop_icon_zxmmcplusflash_inverse;
 extern int zxdesktop_icon_esxdoshandler_inverse;
 extern int zxdesktop_icon_kartusho_inverse;
+extern int zxdesktop_icon_ifrom_inverse;
 extern int zxdesktop_icon_samram_inverse;
 extern int zxdesktop_icon_hilow_inverse;
 

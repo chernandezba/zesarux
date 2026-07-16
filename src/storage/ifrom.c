@@ -34,6 +34,8 @@
 #include "utils.h"
 #include "operaciones.h"
 #include "ula.h"
+#include "menu_items.h"
+#include "screen.h"
 
 
 z80_bit ifrom_enabled={0};
@@ -54,6 +56,22 @@ int ifrom_nested_id_peek_byte_no_time;
 //Banco activo. 0..31
 z80_byte ifrom_active_bank=0;
 
+
+void ifrom_footer_print_flash_operating(void)
+{
+
+
+	generic_footertext_print_operating("IFROM");
+    watermark_tell_device_activity();
+
+
+    //Y poner icono en inverso
+    if (!zxdesktop_icon_ifrom_inverse) {
+        zxdesktop_icon_ifrom_inverse=1;
+        menu_draw_ext_desktop();
+    }
+
+}
 
 /*
 byte paginacion: al escribir en rom (a14=a15=0), con mreq=0 y wr=0
@@ -101,6 +119,9 @@ bit 7: bit de bloqueo (a 1), impide futuras escrituras en este byte de paginacio
 		if (value&128) ifrom_protected.v=1;
 
 		//printf ("Cambiando a banco %d proteccion %d\n",ifrom_active_bank,ifrom_protected.v);
+
+        //Realmente ifrom siempre se usa al activarlo, estamos destacando el dispositivo al acceder a ciertos registros de control
+        ifrom_footer_print_flash_operating();
 	}
 
 }

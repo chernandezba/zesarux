@@ -224,6 +224,7 @@ extern char *bitmap_lowericon_ext_desktop_zxmmcplusflash[];
 extern char *bitmap_lowericon_ext_desktop_samram[];
 extern char *bitmap_lowericon_ext_desktop_esxdoshandler[];
 extern char *bitmap_lowericon_ext_desktop_kartusho[];
+extern char *bitmap_lowericon_ext_desktop_ifrom[];
 
 extern char *bitmap_lowericon_ext_desktop_hilow_active[];
 extern char *bitmap_lowericon_ext_desktop_hilow_inactive[];

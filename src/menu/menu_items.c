@@ -159,6 +159,7 @@
 #include "zxmmcplus.h"
 #include "video_chips_common.h"
 #include "kartusho.h"
+#include "ifrom.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -42174,7 +42175,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_ifrom,NULL,"i~~From");
             menu_add_item_menu_shortcut(array_menu_storage,'f');
-            menu_add_item_menu_tooltip(array_menu_storage,"iFrom settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_IFROM));
             menu_add_item_menu_ayuda(array_menu_storage,"iFrom settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -45495,6 +45496,7 @@ char *tooltips_devices_zxuno_flash="ZXUno Flash settings";
 char *tooltips_devices_zxmmcplus_flash="ZXMMC+ settings";
 char *tooltips_devices_esxdoshandler="Enables emulator to handle ESXDOS calls";
 char *tooltips_devices_kartusho="Kartusho settings";
+char *tooltips_devices_ifrom="iFrom settings";
 char *tooltips_devices_samram="Samram settings";
 char *tooltips_devices_hilow="HiLow Data Drive";
 char *tooltips_devices_cartridge_sms="Master System cartridge";;
@@ -45611,6 +45613,10 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip)
 
         case TOOLTIP_KARTUSHO:
             return tooltips_devices_kartusho;
+        break;
+
+        case TOOLTIP_IFROM:
+            return tooltips_devices_ifrom;
         break;
 
         case TOOLTIP_SAMRAM:
@@ -47323,6 +47329,24 @@ void zxdesktop_lowericon_kartusho_accion(void)
     menu_kartusho(0);
 }
 
+//Funciones para ifrom
+int zxdesktop_lowericon_ifrom_is_visible(void)
+{
+    if (MACHINE_IS_SPECTRUM && ifrom_enabled.v) return 1;
+
+    else return 0;
+}
+
+int zxdesktop_lowericon_ifrom_is_active(void)
+{
+    if (MACHINE_IS_SPECTRUM && ifrom_enabled.v) return 1;
+    else return 0;
+}
+
+void zxdesktop_lowericon_ifrom_accion(void)
+{
+    menu_ifrom(0);
+}
 
 //Funciones para samram
 int zxdesktop_lowericon_samram_is_visible(void)
@@ -47582,6 +47606,7 @@ int zxdesktop_icon_zxunoflash_inverse=0;
 int zxdesktop_icon_zxmmcplusflash_inverse=0;
 int zxdesktop_icon_esxdoshandler_inverse=0;
 int zxdesktop_icon_kartusho_inverse=0;
+int zxdesktop_icon_ifrom_inverse=0;
 int zxdesktop_icon_samram_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
 
@@ -47692,6 +47717,10 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     //kartusho. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_kartusho_is_visible, zxdesktop_lowericon_kartusho_is_active, zxdesktop_lowericon_kartusho_accion,NULL,
         bitmap_lowericon_ext_desktop_kartusho,bitmap_lowericon_ext_desktop_kartusho,&zxdesktop_icon_kartusho_inverse,TOOLTIP_KARTUSHO},
+
+    //ifrom. En este caso no hay distincion entre icono insertado y no insertado
+    { zxdesktop_lowericon_ifrom_is_visible, zxdesktop_lowericon_ifrom_is_active, zxdesktop_lowericon_ifrom_accion,NULL,
+        bitmap_lowericon_ext_desktop_ifrom,bitmap_lowericon_ext_desktop_ifrom,&zxdesktop_icon_ifrom_inverse,TOOLTIP_IFROM},
 
     //cartucho dandanator
     { zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
