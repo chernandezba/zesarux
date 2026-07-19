@@ -15257,6 +15257,7 @@ void delete_generic_footertext(void)
     zxdesktop_icon_esxdoshandler_inverse=0;
     zxdesktop_icon_kartusho_inverse=0;
     zxdesktop_icon_ifrom_inverse=0;
+    zxdesktop_icon_lec_memory_inverse=0;
     zxdesktop_icon_samram_inverse=0;
     zxdesktop_icon_hilow_inverse=0;
 

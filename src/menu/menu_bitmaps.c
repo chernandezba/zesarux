@@ -2459,6 +2459,37 @@ char *bitmap_lowericon_ext_desktop_ifrom[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_lowericon_ext_desktop_lec_memory[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  x   x   x   x   x   x   ",	//0
+    "  x   x   x   x   x   x   ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "          w    wwww  ww   ",
+    " w        w    w    w     ",
+    " ww       w    www  w     ",
+    " w        w    w    w     ",
+    "          wwww wwww  ww   ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",  //10
+    "  x   x   x   x   x   x   ",
+    "                          ",
+    "                          ",
+    "  x   x   x   x   x   x   ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "       w   w wwww w   w   ",
+    " w     ww ww w    ww ww   ",
+    " ww    w w w www  w w w   ",
+    " w     w   w w    w   w   ",//20
+    "       w   w wwww w   w   ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "  x   x   x   x   x   x   ",
+    "  x   x   x   x   x   x   ",//25
+};
+
+
 char *bitmap_lowericon_ext_desktop_zxmmcplusflash[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "   wxxw  wxxw  wxxw  wxxw ",     //0
