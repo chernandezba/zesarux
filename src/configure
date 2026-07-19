@@ -1833,7 +1833,7 @@ multiface.o: copy_interfaces/multiface.c copy_interfaces/multiface.h cpu.h debug
 superupgrade.o: storage/superupgrade.c storage/superupgrade.h cpu.h debug.h utils.h operaciones.h mem128.h zxvision/zxvision.h video/screen.h
 	\$(CC) \$(CFLAGS) -c storage/superupgrade.c
 
-lec.o: storage/lec.c storage/lec.h cpu.h debug.h utils.h operaciones.h mem128.h
+lec.o: storage/lec.c storage/lec.h cpu.h debug.h utils.h operaciones.h mem128.h menu/menu_items.h video/screen.h
 	\$(CC) \$(CFLAGS) -c storage/lec.c
 
 spectra.o: video_chips/spectra.c video_chips/spectra.h cpu.h debug.h utils.h zxvision/zxvision.h video/screen.h operaciones.h mem128.h video_chips/ulaplus.h

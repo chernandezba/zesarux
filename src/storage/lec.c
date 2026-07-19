@@ -29,6 +29,8 @@
 #include "utils.h"
 #include "operaciones.h"
 #include "mem128.h"
+#include "menu_items.h"
+#include "screen.h"
 
 
 
@@ -54,6 +56,22 @@ int lec_nested_id_peek_byte;
 int lec_nested_id_peek_byte_no_time;
 int lec_nested_id_poke_byte;
 int lec_nested_id_poke_byte_no_time;
+
+void lec_footer_print_flash_operating(void)
+{
+
+
+	generic_footertext_print_operating("LEC");
+    watermark_tell_device_activity();
+
+
+    //Y poner icono en inverso
+    if (!zxdesktop_icon_lec_memory_inverse) {
+        zxdesktop_icon_lec_memory_inverse=1;
+        menu_draw_ext_desktop();
+    }
+
+}
 
 //Se quitan los ultimos 32 kb de ram. Entonces:
 //0=lec-80  (2*32= 64  kb de RAM lec+16 kb de RAM baja)
@@ -182,6 +200,9 @@ void lec_out_port(z80_byte value)
 
     //if (lec_port_fd & 128) printf("Enabling lec memory all ram\n");
     //else printf("Disabling lec memory all ram\n");
+
+    //Realmente lec siempre se usa al activarlo, estamos destacando el dispositivo al acceder a ciertos registros de control
+    lec_footer_print_flash_operating();
 }
 
 z80_byte *lec_get_memory_pointer(int dir)
