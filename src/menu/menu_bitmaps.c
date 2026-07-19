@@ -2475,15 +2475,15 @@ char *bitmap_lowericon_ext_desktop_lec_memory[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  x   x   x   x   x   x   ",
     "  x   x   x   x   x   x   ",
     "                          ",
+    "                          ",
     "  x   x   x   x   x   x   ",
-    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "  x   x   x   x   x   x   ",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxwxxxwxwwwwxwxxxwxxx",
     "xwxxxxxwwxwwxwxxxxwwxwwxxx",
-    "xwwxxxxwxwxwxwwwxxwxwxwxxx",
-    "xwxxxxxwxxxwxwxxxxwxxxwxxx",//20
+    "xwwxxxxwxwxwxwwwxxwxwxwxxx",//20
+    "xwxxxxxwxxxwxwxxxxwxxxwxxx",
     "xxxxxxxwxxxwxwwwwxwxxxwxxx",
-    "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "xxxxxxxxxxxxxxxxxxxxxxxxxx",
     "  x   x   x   x   x   x   ",
     "  x   x   x   x   x   x   ",//25
