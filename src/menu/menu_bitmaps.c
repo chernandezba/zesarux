@@ -2493,15 +2493,15 @@ char *bitmap_lowericon_ext_desktop_superupgrade[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "  gggggggggggggggggggggg  ",//0
     "  gggggggggggggggggggggg  ",
-    " WxggggxxxxxxxxxxxxggggxW ",
-    " WxxxggxxwxxxxxxxxxggxxxW ",
-    " WxxxggxxwwxxxxxxxxggxxxW ",
-    " WxxxggxxwxxxxxxxxxggxxxW ",
-    " WxggggxxxxxxxxxxxxggggxW ",
+    " WxgggxxxxxxxxxxxggggggxW ",
+    " WxxxgxxwxxxxxxxxggggxxxW ",
+    " WxxxgxxwwxxxxxxxggggxxxW ",
+    " WxxxgxxwxxxxxxxxggggxxxW ",
+    " WxgggxxxxxxxxxxxggggggxW ",
     "  gggggggggggggggggggggg  ",
     "  gggggggggggggggggggggg  ",
-    "  xxgggxxxxxxgxxxxxxggxx  ",
-    " WxxgggxxxxxxgxxxxxxggxxW ",//10
+    "  xxggxxxxxxgxxxxxxgggxx  ",
+    " WxxggxxxxxxgxxxxxxgggxxW ",//10
     "  xxggggggggggggggggggxx  ",
     "  ggggggggggxgggggrggggg  ",
     "  gggggggggggggggggggggg  ",
@@ -2509,11 +2509,11 @@ char *bitmap_lowericon_ext_desktop_superupgrade[EXT_DESKTOP_BUTTONS_ANCHO]={
     "WWyyggxxxxxxxxxxggxxxxxg  ",
     "  ggggggggggggggggxwwwxg  ",
     "  ggggggggggggggggxxwxxg  ",
-    "  ggxxxxxxxxxxxgggxxxxxg  ",
-    "  ggxxwxxxxxxxxgggxxxxxg  ",
-    "  ggxxwwxxxxxxxgggxxxxxg  ",//20
-    "  ggxxwxxxxxxxxgrgxxxxxg  ",
-    "  ggxxxxxxxxxxxgggxxxxxg  ",
+    "  gxxxxxxxxxxxggggxxxxxg  ",
+    "  gxxwxxxxxxxxggggxxxxxg  ",
+    "  gxxwwxxxxxxxggggxxxxxg  ",//20
+    "  gxxwxxxxxxxxggrgxxxxxg  ",
+    "  gxxxxxxxxxxxggggxxxxxg  ",
     "  gggggggggggggggggggggg  ",
     "  gggggggggggggggggggggg  ",
     "  gggggggggggggggggggggg  ",//25
