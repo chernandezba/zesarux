@@ -2512,7 +2512,7 @@ char *bitmap_lowericon_ext_desktop_superupgrade[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  ggxxxxxxxxxxxgggxxxxxg  ",
     "  ggxxwxxxxxxxxgggxxxxxg  ",
     "  ggxxwwxxxxxxxgggxxxxxg  ",//20
-    "  ggxxwxxxxxxxxgggxxxxxg  ",
+    "  ggxxwxxxxxxxxgrgxxxxxg  ",
     "  ggxxxxxxxxxxxgggxxxxxg  ",
     "  gggggggggggggggggggggg  ",
     "  gggggggggggggggggggggg  ",
