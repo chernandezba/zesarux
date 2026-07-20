@@ -47742,7 +47742,6 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
     { zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,NULL,
         bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_TS2068},
 
-
     //3 Cartuchos de Z88.
     { zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,NULL,
         bitmap_lowericon_ext_desktop_z88_slot_one_active,bitmap_lowericon_ext_desktop_z88_slot_one_inactive,&zxdesktop_common_icon_no_inverse,TOOLTIP_CARTRIDGE_Z88},
