@@ -2491,32 +2491,32 @@ char *bitmap_lowericon_ext_desktop_lec_memory[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_lowericon_ext_desktop_superupgrade[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "RRRRRRxxxxxxxxxxxxxxxRRRR ",     //0
-      "R RRRRxxxxxxxxxxxxxxxRR R ",
-    "RRRRRRRRRRRRRRRRRRRRRRRRR ",
-    "RRxxRRxxxxxxxxxxxxxxxRRwww",
-    "RRxxRRxxxxxxxxxxxxxxxRRRR ",
-    "RRRRRRRRRRRRRRRRRRRRRRRww ",
-    "RRRRRRRRRRRRRRRRRRRRRRRww ",
-    "RRRRRRRRRRxxxxxxxxxRRRRRR ",
-    "RRRRRRRRRRxxxxxxxxxRRRxxxw",
-    "RRRRRRRRRRxxxxxxxxxRRRxxxw",
-    "RRRRRRRRRRRRRRRRRRRRRRxxxw",	//10
-    "xxRxxxRRRRRRRRRRRRRRRRxxxw",
-    "xxRxxxRRRRRRRRWWRRRWWRRRR ",
-    "xxRxxxRRxxxxxRWRWRWRRRxxxw",
-    "xxRxxxRRxxxxxRWWRRWRRRxxxw",
-    "xxRxxxRRxxxxxRWRWRWRRRxxxw",
-    "xxRxxxRRxxxxxRWWRRRWWRxxxw",
-    "xxRxxxRRxxxxxRRRRRRRRRRRR ",
-    "xxRxxxRRRRRRRRRRRRRRRRRRR ",
-    "RRRRRRRRRRRRRRRRRRRRwwwww ",
-    "RRRRRRRRRRRRRRRxxxRRwwwwR ",    //20
-    "RwwRRRxxxxxxxRRxxxRRwwwwR ",
-    "RwwRRRxxxxxxxRRxxxRRwwwww ",
-    "RRRRRRRRRRRRRRRRRRRRRRRRR ",
-    "R RRRWWWWWWWRRRRRRR RRRwww",
-    "RRRRRWWWWWWWRRRRRRRRRRRwww" 	 //25
+    " gggggggggggggggggggggggg ",//0
+    " g                      g ",
+    "wg                      gw",
+    "wg                      gw",
+    "wg                      gw",
+    "wg                      gw",
+    "wg                      gw",
+    " g                      g ",
+    " g                      g ",
+    " g                      g ",
+    "wg                      g ",//10
+    " g                      g ",
+    " g                      g ",
+    " g                      g ",
+    "wyyg                    g ",
+    "wyyg                    g ",
+    " g                      g ",
+    " g                      g ",
+    " g xxxxxxxxxxxx         g ",
+    " g x w        x         g ",
+    " g x ww       x         g ",//20
+    " g x w        x         g ",
+    " g xxxxxxxxxxxx         g ",
+    " g                      g ",
+    " g                      g ",
+    " gggggggggggggggggggggggg ",//25
 };
 
 
