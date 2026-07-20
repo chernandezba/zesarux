@@ -25,9 +25,6 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 -teclas F de funcion que se puedan lanzar también cuando está top menu abierto pero sin desplegar menus
 
 
-ok -con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen doble de tamaño pero superiores no salen doble
-->es normal. tanto botones arriba o abajo se hacen el doble de tamaño si caben en el zx desktop
-
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
@@ -38,7 +35,6 @@ ok -con zoom 1, zx desktop si es suficientemente grande, iconos inferiores salen
 
 -full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
 
--Función joystick para conmutar full screen
 
 -F función cualquiera Tecla F por joystick
 
@@ -159,10 +155,10 @@ ok - probar joystick "nes" en Linux (Nativo Linux), joystick logic3
 ok - probar joystick "nes" en Windows, joystick logic3
 - probar volante en Mac, Linux, Windows
 
-ok -en ventana waveform, con valor minimo de onda (./zesarux --tonegenerator 2) no se ve
+
+ok -iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
+-> hecho samram, zxmmc+, esxdos handler, ifrom, kartusho, lec memory, superupgrade
 
 
 
--iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
--> hecho samram, zxmmc+, esxdos handler, ifrom, kartusho, lec memory
--falta superupgrade. validar foto
+ok -Función joystick para conmutar full screen

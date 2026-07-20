@@ -49,6 +49,8 @@
 #include "snap_ram.h"
 #include "zeng.h"
 #include "operaciones.h"
+#include "menu_items_settings.h"
+#include "timer.h"
 
 
 
@@ -137,7 +139,7 @@ char *realjoystick_event_names[]={
     "Fire3",
     "Fire4",
     "EscMenu",
-    "ExitEmulator",
+    "ExitEmulator", //10
     "Enter",
     "MenuTab",
     "Smartload",
@@ -147,12 +149,13 @@ char *realjoystick_event_names[]={
 	"NumSelect",
 	"NumAction",
 	"JoySelect",
-	"Aux1",
+	"Aux1", //20
 	"Aux2",
 	"Aux3",
 	"Aux4",
     "Rewind",
-    "FForward"
+    "FForward",
+    "SwitchFullScr" //26
 };
 
 void realjoystick_print_event_keys(void)
@@ -565,6 +568,8 @@ void realjoystick_send_f_function(int accion)
 
 }
 
+int antes_realjoystick_full_screen_timer=0;
+
 //si value=0, es reset
 //si value != no, es set
 void realjoystick_set_reset_action(int index,int value)
@@ -709,6 +714,18 @@ void realjoystick_set_reset_action(int index,int value)
 		case REALJOYSTICK_EVENT_FFORWARD:
 			if (value) {
 				realjoystick_send_f_function(F_FUNCION_FFW);
+			}
+		break;
+
+		case REALJOYSTICK_EVENT_SWITCH_FULL_SCR:
+			if (value) {
+                //Evitar enviar mas de un full screen seguido antes de que realmente haya conmutado a full screen
+                //Darle 5 segundos de delay
+                int delta=contador_segundo_infinito-antes_realjoystick_full_screen_timer;
+                if (delta>20*50*5) {
+                    antes_realjoystick_full_screen_timer=contador_segundo_infinito;
+                    realjoystick_send_f_function(F_FUNCION_SWITCHFULLSCREEN);
+                }
 			}
 		break;
 
