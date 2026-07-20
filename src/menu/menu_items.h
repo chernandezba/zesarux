@@ -320,6 +320,7 @@ extern int zxdesktop_icon_esxdoshandler_inverse;
 extern int zxdesktop_icon_kartusho_inverse;
 extern int zxdesktop_icon_ifrom_inverse;
 extern int zxdesktop_icon_lec_memory_inverse;
+extern int zxdesktop_icon_superupgrade_inverse;
 extern int zxdesktop_icon_samram_inverse;
 extern int zxdesktop_icon_hilow_inverse;
 

@@ -42200,7 +42200,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM) {
             //menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,13);
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_lec_memory,NULL,"LEC memory");
-            menu_add_item_menu_tooltip(array_menu_storage,"LEC Memory extension");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_LEC_MEMORY));
             menu_add_item_menu_ayuda(array_menu_storage,"LEC Memory extension");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
@@ -42233,7 +42233,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
         if (superupgrade_supported_machine() ) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_superupgrade,NULL,"Speccy Superup~~grade");
             menu_add_item_menu_shortcut(array_menu_storage,'g');
-            menu_add_item_menu_tooltip(array_menu_storage,"Superupgrade settings");
+            menu_add_item_menu_tooltip(array_menu_storage,menu_inicio_retorna_tooltip(TOOLTIP_SUPERUPGRADE));
             menu_add_item_menu_ayuda(array_menu_storage,"Superupgrade settings");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 
@@ -45498,6 +45498,8 @@ char *tooltips_devices_zxmmcplus_flash="ZXMMC+ settings";
 char *tooltips_devices_esxdoshandler="Enables emulator to handle ESXDOS calls";
 char *tooltips_devices_kartusho="Kartusho settings";
 char *tooltips_devices_ifrom="iFrom settings";
+char *tooltips_devices_lec_memory="LEC memory extension";
+char *tooltips_devices_superupgrade="Superupgrade settings";
 char *tooltips_devices_samram="Samram settings";
 char *tooltips_devices_hilow="HiLow Data Drive";
 char *tooltips_devices_cartridge_sms="Master System cartridge";;
@@ -45618,6 +45620,14 @@ char *menu_inicio_retorna_tooltip(enum tooltips_menus_inicio_storage id_tooltip)
 
         case TOOLTIP_IFROM:
             return tooltips_devices_ifrom;
+        break;
+
+        case TOOLTIP_LEC_MEMORY:
+            return tooltips_devices_lec_memory;
+        break;
+
+        case TOOLTIP_SUPERUPGRADE:
+            return tooltips_devices_superupgrade;
         break;
 
         case TOOLTIP_SAMRAM:
@@ -47368,6 +47378,25 @@ void zxdesktop_lowericon_lec_memory_accion(void)
     menu_lec_memory(0);
 }
 
+//Funciones para superupgrade
+int zxdesktop_lowericon_superupgrade_is_visible(void)
+{
+    if (MACHINE_IS_SPECTRUM && superupgrade_enabled.v) return 1;
+
+    else return 0;
+}
+
+int zxdesktop_lowericon_superupgrade_is_active(void)
+{
+    if (MACHINE_IS_SPECTRUM && superupgrade_enabled.v) return 1;
+    else return 0;
+}
+
+void zxdesktop_lowericon_superupgrade_accion(void)
+{
+    menu_superupgrade(0);
+}
+
 //Funciones para samram
 int zxdesktop_lowericon_samram_is_visible(void)
 {
@@ -47628,6 +47657,7 @@ int zxdesktop_icon_esxdoshandler_inverse=0;
 int zxdesktop_icon_kartusho_inverse=0;
 int zxdesktop_icon_ifrom_inverse=0;
 int zxdesktop_icon_lec_memory_inverse=0;
+int zxdesktop_icon_superupgrade_inverse=0;
 int zxdesktop_icon_samram_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
 
@@ -47745,7 +47775,11 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 
     //lec memory. En este caso no hay distincion entre icono insertado y no insertado
     { zxdesktop_lowericon_lec_memory_is_visible, zxdesktop_lowericon_lec_memory_is_active, zxdesktop_lowericon_lec_memory_accion,NULL,
-        bitmap_lowericon_ext_desktop_lec_memory,bitmap_lowericon_ext_desktop_lec_memory,&zxdesktop_icon_lec_memory_inverse,TOOLTIP_IFROM},
+        bitmap_lowericon_ext_desktop_lec_memory,bitmap_lowericon_ext_desktop_lec_memory,&zxdesktop_icon_lec_memory_inverse,TOOLTIP_LEC_MEMORY},
+
+    //superupgrade. En este caso no hay distincion entre icono insertado y no insertado
+    { zxdesktop_lowericon_superupgrade_is_visible, zxdesktop_lowericon_superupgrade_is_active, zxdesktop_lowericon_superupgrade_accion,NULL,
+        bitmap_lowericon_ext_desktop_superupgrade,bitmap_lowericon_ext_desktop_superupgrade,&zxdesktop_icon_superupgrade_inverse,TOOLTIP_SUPERUPGRADE},
 
     //cartucho dandanator
     { zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,

@@ -2489,6 +2489,36 @@ char *bitmap_lowericon_ext_desktop_lec_memory[EXT_DESKTOP_BUTTONS_ANCHO]={
     "  x   x   x   x   x   x   ",//25
 };
 
+char *bitmap_lowericon_ext_desktop_superupgrade[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "RRRRRRxxxxxxxxxxxxxxxRRRR ",     //0
+      "R RRRRxxxxxxxxxxxxxxxRR R ",
+    "RRRRRRRRRRRRRRRRRRRRRRRRR ",
+    "RRxxRRxxxxxxxxxxxxxxxRRwww",
+    "RRxxRRxxxxxxxxxxxxxxxRRRR ",
+    "RRRRRRRRRRRRRRRRRRRRRRRww ",
+    "RRRRRRRRRRRRRRRRRRRRRRRww ",
+    "RRRRRRRRRRxxxxxxxxxRRRRRR ",
+    "RRRRRRRRRRxxxxxxxxxRRRxxxw",
+    "RRRRRRRRRRxxxxxxxxxRRRxxxw",
+    "RRRRRRRRRRRRRRRRRRRRRRxxxw",	//10
+    "xxRxxxRRRRRRRRRRRRRRRRxxxw",
+    "xxRxxxRRRRRRRRWWRRRWWRRRR ",
+    "xxRxxxRRxxxxxRWRWRWRRRxxxw",
+    "xxRxxxRRxxxxxRWWRRWRRRxxxw",
+    "xxRxxxRRxxxxxRWRWRWRRRxxxw",
+    "xxRxxxRRxxxxxRWWRRRWWRxxxw",
+    "xxRxxxRRxxxxxRRRRRRRRRRRR ",
+    "xxRxxxRRRRRRRRRRRRRRRRRRR ",
+    "RRRRRRRRRRRRRRRRRRRRwwwww ",
+    "RRRRRRRRRRRRRRRxxxRRwwwwR ",    //20
+    "RwwRRRxxxxxxxRRxxxRRwwwwR ",
+    "RwwRRRxxxxxxxRRxxxRRwwwww ",
+    "RRRRRRRRRRRRRRRRRRRRRRRRR ",
+    "R RRRWWWWWWWRRRRRRR RRRwww",
+    "RRRRRWWWWWWWRRRRRRRRRRRwww" 	 //25
+};
+
 
 char *bitmap_lowericon_ext_desktop_zxmmcplusflash[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345

@@ -36,6 +36,7 @@
 #include "contend.h"
 #include "mem128.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "screen.h"
 
 
@@ -132,19 +133,20 @@ int si_superupgrade_muestra_rom_interna(void)
   else return 0;
 }
 
-void superupgrade_footer_print_flash_operating(void)
+void superupgrade_footer_operating(void)
 {
 
-    generic_footertext_print_operating("FLASH");
+    generic_footertext_print_operating("SUPUPG");
     watermark_tell_device_activity();
 
+    //Y poner icono en inverso
+    if (!zxdesktop_icon_superupgrade_inverse) {
+        zxdesktop_icon_superupgrade_inverse=1;
+        menu_draw_ext_desktop();
+    }
+
 }
 
-void superupgrade_footer_flash_operating(void)
-{
-  superupgrade_footer_print_flash_operating();
-
-}
 
 
 
@@ -348,7 +350,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
         superupgrade_flash_must_flush_to_disk=1;
         superupgrade_write_status=0;
 
-        superupgrade_footer_flash_operating();
+        superupgrade_footer_operating();
 
         //Se habia ejecutado un comando de proteger la flash. Protegerla
         if (superupgrade_pending_protect_flash.v) {
@@ -731,6 +733,8 @@ void superupgrade_write_43b(z80_byte value)
 	puerto_8189 &=(255-4);
 
         superupgrade_set_memory_pages();
+
+        superupgrade_footer_operating();
 }
 
 
