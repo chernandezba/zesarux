@@ -36,7 +36,7 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 -full screen en cpc + real video (y creo que sin real video tambien) se ve mal. Probar por ejemplo con brunilda dandanator
 
 
--F función cualquiera Tecla F por joystick
+
 
 -Copi128: poder meter traps al grabar que permita identificar cuando se va a generar un nuevo bloque en un tap,
 y cada escritura de un byte del copi128 lo meta como byte en un tap. Asi se puede usar para grabar generando taps
@@ -162,3 +162,24 @@ ok -iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre,
 
 
 ok -Función joystick para conmutar full screen
+*ok funcion
+*quizá la conmutacion de pantalla completa (en general, no solo lo que venga desde joystick) evitar que se puedan lanzar mas de 1 en los ultimos 5? 4? 3? segundos
+
+
+
+-F función cualquiera Tecla F por joystick
+*ya se está usando una llamada desde realjoystick para llamar a cualquier funcion de F. Ejemplo:
+realjoystick_send_f_function(F_FUNCION_QUICKSAVE);
+*quizá se deberia tener otro setting, no --joystickevent,  que siga mismo formato que teclas , como:
+--def-f-function F11 "SwitchFullScr"
+Ejemplo:
+--joystickaction 8 "HardReset"
+Y similares tablas, funciones etc que con las F-funciones. y que usen las F-Funciones ya definidas para las teclas F. Y en realjoystick alguna gestion del evento como:
+
+void realjoystick_set_reset_f_function(int index,int value)
+{
+
+			if (value) {
+				realjoystick_send_f_function(index);
+			}
+}
