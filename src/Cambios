@@ -5,7 +5,7 @@ ZEsarUX 13.1 - xxxx edition. 10 Julio 2026
 Agregada opción en archivo de configuración para activar el uso de teclas numéricas en teclado Azerty sin tener que pulsar tecla Shift
 Agregado mas soporte de joystick en Mac (Dpad, different axis)
 Permitir smartload de archivo SCL
-Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom
+Agregado iconos de dispositivos: esxdos handler, kartusho, iFrom, lec memory, superupgrade
 
 * Mejoras:
 

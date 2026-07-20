@@ -625,6 +625,8 @@ void superupgrade_hard_reset(void)
     superupgrade_pending_protect_flash.v=0;
 
     superupgrade_set_memory_pages();
+
+    superupgrade_footer_operating();
 }
 
 int superupgrade_supported_machine(void)
