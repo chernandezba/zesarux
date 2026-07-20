@@ -2492,13 +2492,13 @@ char *bitmap_lowericon_ext_desktop_lec_memory[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_lowericon_ext_desktop_superupgrade[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "  gggggggggggggggggggggg  ",//0
-    "  gggggggggggggggggggggg  ",
+    "  ggggggggggggggggrrgggg  ",
     " WxgggxxxxxxxxxxxggggggxW ",
-    " WxxxgxxwxxxxxxxxggggxxxW ",
+    " WxxxgxxwxxxxxxxxgrrgxxxW ",
     " WxxxgxxwwxxxxxxxggggxxxW ",
-    " WxxxgxxwxxxxxxxxggggxxxW ",
+    " WxxxgxxwxxxxxxxxgrrgxxxW ",
     " WxgggxxxxxxxxxxxggggggxW ",
-    "  gggggggggggggggggggggg  ",
+    "  ggggggggggggggggrrgggg  ",
     "  gggggggggggggggggggggg  ",
     "  xxggxxxxxxgxxxxxxgggxx  ",
     " WxxggxxxxxxgxxxxxxgggxxW ",//10
