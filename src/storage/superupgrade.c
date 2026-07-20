@@ -183,212 +183,212 @@ randomize usr 32768
 void superupgrade_common_write_flash(z80_int dir, z80_byte valor)
 {
 
-z80_byte slot=superupgrade_get_rom_bank();
+    z80_byte slot=superupgrade_get_rom_bank();
 
-  if (dir<16384) {
-    //printf ("Pokeing in rom address %04XH value %02XH PC=%04XH index buffer: %d slot: %d\n",dir,valor,reg_pc,superupgrade_write_buffer_index,slot);
+    if (dir<16384) {
+        //printf ("Pokeing in rom address %04XH value %02XH PC=%04XH index buffer: %d slot: %d\n",dir,valor,reg_pc,superupgrade_write_buffer_index,slot);
 
-/* Bug en la rom del spectrum pokea en direccion 0. Evitar esto
-Pokeing in rom address 0000H value 80H PC=33E1H
-Pokeing in rom address 0001H value 00H PC=33EAH
-Pokeing in rom address 0002H value 00H PC=33F4H
-Pokeing in rom address 0003H value 00H PC=33F4H
-Pokeing in rom address 0004H value 00H PC=33F4H
-Pokeing in rom address 0000H value 81H PC=33E1H
-Pokeing in rom address 0001H value 49H PC=33EAH
-Pokeing in rom address 0002H value 0FH PC=33EAH
-Pokeing in rom address 0003H value DAH PC=33EAH
-Pokeing in rom address 0004H value A2H PC=33EAH
-*/
+    /* Bug en la rom del spectrum pokea en direccion 0. Evitar esto
+    Pokeing in rom address 0000H value 80H PC=33E1H
+    Pokeing in rom address 0001H value 00H PC=33EAH
+    Pokeing in rom address 0002H value 00H PC=33F4H
+    Pokeing in rom address 0003H value 00H PC=33F4H
+    Pokeing in rom address 0004H value 00H PC=33F4H
+    Pokeing in rom address 0000H value 81H PC=33E1H
+    Pokeing in rom address 0001H value 49H PC=33EAH
+    Pokeing in rom address 0002H value 0FH PC=33EAH
+    Pokeing in rom address 0003H value DAH PC=33EAH
+    Pokeing in rom address 0004H value A2H PC=33EAH
+    */
 
-  if (reg_pc==0x33E1 || reg_pc==0x33EA || reg_pc==0x33F4 || reg_pc==0x0E19) {
-    //printf ("Write comes from rom bug. Do not do anything\n");
-        //printf("Zona Bug, Addr=%d, Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
-   return;
-  }
-
-
-
-
-    //Guardar byte en buffer
-    superupgrade_write_buffer[superupgrade_write_buffer_index++]=valor;
-    //printf("Escritura en ROM, Addr=%d Data=%d, index=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index,reg_pc);
-
-//	printf(str, "Escritura en ROM, Addr=%d Data=%d, index=%d, , stat=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index, superupgrade_write_status, reg_pc);
-
-
-    switch (superupgrade_write_status) {
-
-      //Inicio de comando o escritura
-      case 0:
-        //Ready
-        //Ver si la escritura es un posible comando
-        if (slot==1 && dir==0x1555 && valor==0xAA) {
-          //Es inicio de comando, cambiar estado
-            //printf("primer byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
-         superupgrade_write_status=1;
-        }
-        else {
-          //Tiene que ser escritura tal cual.
-            //printf("Escritura normal en ROM, Addr=%d Data=%d, index=%d, PC=%d status=%d\n", dir,valor,superupgrade_write_buffer_index,reg_pc,superupgrade_write_status);
-//          superupgrade_write_status=2;
-            if (superupgrade_flash_write_protected.v==0){
-                superupgrade_write_status=2;
-            } else {
-                superupgrade_write_buffer_index =0;
-                superupgrade_write_status=0;
-            }
-        }
-      break;
-
-      //Se esta enviando comando
-      case 1:
-        //Ver que posicion de comando
-        //Segundo byte
-        if (superupgrade_write_buffer_index==2) {
-          if (slot==0 && dir==0x2AAA && valor!=0x55) {
-            //Comando invalido. Decir que es escritura de sector
-        debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
- //           superupgrade_write_status=2;
-             superupgrade_write_buffer_index =0;
-            superupgrade_write_status=0;
-         } else {
-            //printf("segundo byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
-          }
+        if (reg_pc==0x33E1 || reg_pc==0x33EA || reg_pc==0x33F4 || reg_pc==0x0E19) {
+            //printf ("Write comes from rom bug. Do not do anything\n");
+            //printf("Zona Bug, Addr=%d, Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
+            return;
         }
 
-        //Tercer byte
-        if (superupgrade_write_buffer_index==3) {
-          if (slot==1 && dir==0x1555) {
-            if (valor==0xA0) {
-            //Fin de comando de poner el chip en modo protegido
-        debug_printf (VERBOSE_DEBUG,"End superupgrade command protect flash (unprotect+write+protect)");
-            //printf("End superupgrade command protect flash (unprotect+write+protect), Addr=%d Data=%d, index=%d\n", dir,valor,superupgrade_write_buffer_index);
-            superupgrade_write_status=0;
-            superupgrade_write_buffer_index=0;
-            superupgrade_flash_write_protected.v=0;
-            superupgrade_pending_protect_flash.v=1;
-            }
-
-          //Sera comando de desproteger el chip?
-            else if (valor!=0x80) {
-              //Comando invalido. Decir que es escritura de sector
-                debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
-                //printf ("Invalid superupgrade command. Consider it as a sector write\n");
-//				superupgrade_write_status=2;
-                superupgrade_write_buffer_index =0;
-                superupgrade_write_status=0;
-            }
-          }
-        }
-
-        //Cuarto byte
-        if (superupgrade_write_buffer_index==4) {
-          if (slot==1 && dir==0x1555 && valor!=0xAA) {
-            //Comando invalido. Decir que es escritura de sector
-            debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
-            superupgrade_write_status=2;
-          }
-        }
-
-        //Quinto byte
-        if (superupgrade_write_buffer_index==5) {
-          if (slot==0 && dir==0x2AAA && valor!=0x55) {
-            //Comando invalido. Decir que es escritura de sector
-            debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
-            superupgrade_write_status=2;
-          }
-        }
-
-        //Sexto byte
-        if (superupgrade_write_buffer_index==6) {
-          if (slot==1 && dir==0x1555) {
-            if (valor==0x20) {
-            //Fin de comando de poner el chip en modo desprotegido
-            debug_printf (VERBOSE_DEBUG,"End superupgrade command unprotect flash");
-            superupgrade_write_status=0;
-            superupgrade_write_buffer_index=0;
-            superupgrade_flash_write_protected.v=0;
-            }
-
-
-            else {
-              //Comando invalido. Decir que es escritura de sector
-              debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
-              superupgrade_write_status=2;
-            }
-          }
-        }
-      break;
-
-      case 2:
-      //Se esta escriendo sector de 256 bytes
-            //printf("escribiendo, Addr=%d, Data=%d, index=%d, status=%d \n", dir,valor,superupgrade_write_buffer_index,superupgrade_write_status);
-      break;
-
-      default:
-        cpu_panic("Invalid superupgrade write status");
-      break;
-    }
-
-
-    //Si buffer llega al final, resetear a 0 y controlar si hay que escribir
-    if (superupgrade_write_buffer_index==256) {
-
-
-      //Si esta desprotegido, escribir
-      if (superupgrade_flash_write_protected.v==0) {
-        debug_printf (VERBOSE_DEBUG,"Write 256 byte sector in superupgrade flash");
-        //Escribir los 256 bytes
-        int i;
-        for (i=0;i<256;i++) {
-          superupgrade_common_poke_in_flash(dir-255+i,superupgrade_write_buffer[i]);
-        }
-
-        superupgrade_flash_must_flush_to_disk=1;
-        superupgrade_write_status=0;
 
         superupgrade_footer_operating();
 
-        //Se habia ejecutado un comando de proteger la flash. Protegerla
-        if (superupgrade_pending_protect_flash.v) {
-          superupgrade_flash_write_protected.v=1;
-          superupgrade_pending_protect_flash.v=0;
-          debug_printf (VERBOSE_DEBUG,"Protecting superupgrade flash");
-          //printf ("Protecting superupgrade flash");
+        //Guardar byte en buffer
+        superupgrade_write_buffer[superupgrade_write_buffer_index++]=valor;
+        //printf("Escritura en ROM, Addr=%d Data=%d, index=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index,reg_pc);
+
+    //	printf(str, "Escritura en ROM, Addr=%d Data=%d, index=%d, , stat=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index, superupgrade_write_status, reg_pc);
+
+
+        switch (superupgrade_write_status) {
+
+        //Inicio de comando o escritura
+        case 0:
+            //Ready
+            //Ver si la escritura es un posible comando
+            if (slot==1 && dir==0x1555 && valor==0xAA) {
+            //Es inicio de comando, cambiar estado
+                //printf("primer byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
+            superupgrade_write_status=1;
+            }
+            else {
+            //Tiene que ser escritura tal cual.
+                //printf("Escritura normal en ROM, Addr=%d Data=%d, index=%d, PC=%d status=%d\n", dir,valor,superupgrade_write_buffer_index,reg_pc,superupgrade_write_status);
+    //          superupgrade_write_status=2;
+                if (superupgrade_flash_write_protected.v==0){
+                    superupgrade_write_status=2;
+                } else {
+                    superupgrade_write_buffer_index =0;
+                    superupgrade_write_status=0;
+                }
+            }
+        break;
+
+        //Se esta enviando comando
+        case 1:
+            //Ver que posicion de comando
+            //Segundo byte
+            if (superupgrade_write_buffer_index==2) {
+            if (slot==0 && dir==0x2AAA && valor!=0x55) {
+                //Comando invalido. Decir que es escritura de sector
+            debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
+    //           superupgrade_write_status=2;
+                superupgrade_write_buffer_index =0;
+                superupgrade_write_status=0;
+            } else {
+                //printf("segundo byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
+            }
+            }
+
+            //Tercer byte
+            if (superupgrade_write_buffer_index==3) {
+            if (slot==1 && dir==0x1555) {
+                if (valor==0xA0) {
+                //Fin de comando de poner el chip en modo protegido
+            debug_printf (VERBOSE_DEBUG,"End superupgrade command protect flash (unprotect+write+protect)");
+                //printf("End superupgrade command protect flash (unprotect+write+protect), Addr=%d Data=%d, index=%d\n", dir,valor,superupgrade_write_buffer_index);
+                superupgrade_write_status=0;
+                superupgrade_write_buffer_index=0;
+                superupgrade_flash_write_protected.v=0;
+                superupgrade_pending_protect_flash.v=1;
+                }
+
+            //Sera comando de desproteger el chip?
+                else if (valor!=0x80) {
+                //Comando invalido. Decir que es escritura de sector
+                    debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
+                    //printf ("Invalid superupgrade command. Consider it as a sector write\n");
+    //				superupgrade_write_status=2;
+                    superupgrade_write_buffer_index =0;
+                    superupgrade_write_status=0;
+                }
+            }
+            }
+
+            //Cuarto byte
+            if (superupgrade_write_buffer_index==4) {
+            if (slot==1 && dir==0x1555 && valor!=0xAA) {
+                //Comando invalido. Decir que es escritura de sector
+                debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
+                superupgrade_write_status=2;
+            }
+            }
+
+            //Quinto byte
+            if (superupgrade_write_buffer_index==5) {
+            if (slot==0 && dir==0x2AAA && valor!=0x55) {
+                //Comando invalido. Decir que es escritura de sector
+                debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
+                superupgrade_write_status=2;
+            }
+            }
+
+            //Sexto byte
+            if (superupgrade_write_buffer_index==6) {
+            if (slot==1 && dir==0x1555) {
+                if (valor==0x20) {
+                //Fin de comando de poner el chip en modo desprotegido
+                debug_printf (VERBOSE_DEBUG,"End superupgrade command unprotect flash");
+                superupgrade_write_status=0;
+                superupgrade_write_buffer_index=0;
+                superupgrade_flash_write_protected.v=0;
+                }
+
+
+                else {
+                //Comando invalido. Decir que es escritura de sector
+                debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
+                superupgrade_write_status=2;
+                }
+            }
+            }
+        break;
+
+        case 2:
+        //Se esta escriendo sector de 256 bytes
+                //printf("escribiendo, Addr=%d, Data=%d, index=%d, status=%d \n", dir,valor,superupgrade_write_buffer_index,superupgrade_write_status);
+        break;
+
+        default:
+            cpu_panic("Invalid superupgrade write status");
+        break;
         }
 
-      }
-      else {
-        debug_printf (VERBOSE_DEBUG,"Trying to write 256 byte sector in superupgrade flash but it is protected");
-        //printf ("Trying to write 256 byte sector in superupgrade flash but it is protected");
-      }
 
-      superupgrade_write_buffer_index=0;
-    }
-
-/*
-Comandos modo protegido/desprotegido
--Luego, para poner el chip en modo desprotegido, escribo las direcciones desde el punto de vista del Z80 y el slot activo:
-
-Escribir AA en la dirección $1555 , con slot 1 activo
-Escribir 55 en la dirección $2AAA, con slot 0 activo
-Escribir 80 en la dirección $1555 , con slot 1 activo
-Escribir AA en la dirección $1555, con slot 1 activo
-Escribir 55 en la dirección $2AAA, con slot 0 activo
-Escribir 20 en la dirección $1555, con slot 1 activo
+        //Si buffer llega al final, resetear a 0 y controlar si hay que escribir
+        if (superupgrade_write_buffer_index==256) {
 
 
--Luego, para poner el chip en modo protegido, la secuencia de direccion del z80+slot seria:
+        //Si esta desprotegido, escribir
+        if (superupgrade_flash_write_protected.v==0) {
+            debug_printf (VERBOSE_DEBUG,"Write 256 byte sector in superupgrade flash");
+            //Escribir los 256 bytes
+            int i;
+            for (i=0;i<256;i++) {
+            superupgrade_common_poke_in_flash(dir-255+i,superupgrade_write_buffer[i]);
+            }
 
-Escribir AA en la dirección $1555 , con slot 1 activo
-Escribir 55 en la dirección $2AAA, con slot 0 activo
-Escribir A0 en la dirección $1555 , con slot 1 activo
-Y escribir 256 bytes de datos.
-Entendemos pues, tal y como dice la especificación del chip, que para protegerlo hay que enviar esa secuencia de 3 bytes y extrañamente escribir 256 bytes de datos a la flash para que finalmente se proteja.
+            superupgrade_flash_must_flush_to_disk=1;
+            superupgrade_write_status=0;
+
+            //superupgrade_footer_operating();
+
+            //Se habia ejecutado un comando de proteger la flash. Protegerla
+            if (superupgrade_pending_protect_flash.v) {
+            superupgrade_flash_write_protected.v=1;
+            superupgrade_pending_protect_flash.v=0;
+            debug_printf (VERBOSE_DEBUG,"Protecting superupgrade flash");
+            //printf ("Protecting superupgrade flash");
+            }
+
+        }
+        else {
+            debug_printf (VERBOSE_DEBUG,"Trying to write 256 byte sector in superupgrade flash but it is protected");
+            //printf ("Trying to write 256 byte sector in superupgrade flash but it is protected");
+        }
+
+        superupgrade_write_buffer_index=0;
+        }
+
+    /*
+    Comandos modo protegido/desprotegido
+    -Luego, para poner el chip en modo desprotegido, escribo las direcciones desde el punto de vista del Z80 y el slot activo:
+
+    Escribir AA en la dirección $1555 , con slot 1 activo
+    Escribir 55 en la dirección $2AAA, con slot 0 activo
+    Escribir 80 en la dirección $1555 , con slot 1 activo
+    Escribir AA en la dirección $1555, con slot 1 activo
+    Escribir 55 en la dirección $2AAA, con slot 0 activo
+    Escribir 20 en la dirección $1555, con slot 1 activo
 
 
-*/
+    -Luego, para poner el chip en modo protegido, la secuencia de direccion del z80+slot seria:
+
+    Escribir AA en la dirección $1555 , con slot 1 activo
+    Escribir 55 en la dirección $2AAA, con slot 0 activo
+    Escribir A0 en la dirección $1555 , con slot 1 activo
+    Y escribir 256 bytes de datos.
+    Entendemos pues, tal y como dice la especificación del chip, que para protegerlo hay que enviar esa secuencia de 3 bytes y extrañamente escribir 256 bytes de datos a la flash para que finalmente se proteja.
+
+
+    */
 
 
   }
