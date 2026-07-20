@@ -158,7 +158,7 @@ void superupgrade_common_poke_in_flash(z80_int dir,z80_byte valor)
   //printf ("Writing in flash memory. Dir: %04XH value: %02XH slot: %d\n",dir,valor,superupgrade_get_rom_bank() );
 
   int segmento;
-	z80_byte *puntero;
+    z80_byte *puntero;
 
   segmento=dir / 16384;
   dir = dir & 16383;
@@ -203,7 +203,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
 
   if (reg_pc==0x33E1 || reg_pc==0x33EA || reg_pc==0x33F4 || reg_pc==0x0E19) {
     //printf ("Write comes from rom bug. Do not do anything\n");
-		//printf("Zona Bug, Addr=%d, Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
+        //printf("Zona Bug, Addr=%d, Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
    return;
   }
 
@@ -212,7 +212,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
 
     //Guardar byte en buffer
     superupgrade_write_buffer[superupgrade_write_buffer_index++]=valor;
-	//printf("Escritura en ROM, Addr=%d Data=%d, index=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index,reg_pc);
+    //printf("Escritura en ROM, Addr=%d Data=%d, index=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index,reg_pc);
 
 //	printf(str, "Escritura en ROM, Addr=%d Data=%d, index=%d, , stat=%d, PC=%d \n", dir,valor,superupgrade_write_buffer_index, superupgrade_write_status, reg_pc);
 
@@ -227,19 +227,19 @@ Pokeing in rom address 0004H value A2H PC=33EAH
         //Ver si la escritura es un posible comando
         if (slot==1 && dir==0x1555 && valor==0xAA) {
           //Es inicio de comando, cambiar estado
-			//printf("primer byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
+            //printf("primer byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
          superupgrade_write_status=1;
         }
         else {
           //Tiene que ser escritura tal cual.
-			//printf("Escritura normal en ROM, Addr=%d Data=%d, index=%d, PC=%d status=%d\n", dir,valor,superupgrade_write_buffer_index,reg_pc,superupgrade_write_status);
+            //printf("Escritura normal en ROM, Addr=%d Data=%d, index=%d, PC=%d status=%d\n", dir,valor,superupgrade_write_buffer_index,reg_pc,superupgrade_write_status);
 //          superupgrade_write_status=2;
-			if (superupgrade_flash_write_protected.v==0){
-				superupgrade_write_status=2;
-			} else {
-				superupgrade_write_buffer_index =0;
-				superupgrade_write_status=0;
-			}
+            if (superupgrade_flash_write_protected.v==0){
+                superupgrade_write_status=2;
+            } else {
+                superupgrade_write_buffer_index =0;
+                superupgrade_write_status=0;
+            }
         }
       break;
 
@@ -250,13 +250,13 @@ Pokeing in rom address 0004H value A2H PC=33EAH
         if (superupgrade_write_buffer_index==2) {
           if (slot==0 && dir==0x2AAA && valor!=0x55) {
             //Comando invalido. Decir que es escritura de sector
-	    debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
+        debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
  //           superupgrade_write_status=2;
- 			superupgrade_write_buffer_index =0;
-			superupgrade_write_status=0;
+             superupgrade_write_buffer_index =0;
+            superupgrade_write_status=0;
          } else {
-			//printf("segundo byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
-		  }
+            //printf("segundo byte, Addr=%d Data=%d, index=%d \n", dir,valor,superupgrade_write_buffer_index);
+          }
         }
 
         //Tercer byte
@@ -264,8 +264,8 @@ Pokeing in rom address 0004H value A2H PC=33EAH
           if (slot==1 && dir==0x1555) {
             if (valor==0xA0) {
             //Fin de comando de poner el chip en modo protegido
-	    debug_printf (VERBOSE_DEBUG,"End superupgrade command protect flash (unprotect+write+protect)");
-			//printf("End superupgrade command protect flash (unprotect+write+protect), Addr=%d Data=%d, index=%d\n", dir,valor,superupgrade_write_buffer_index);
+        debug_printf (VERBOSE_DEBUG,"End superupgrade command protect flash (unprotect+write+protect)");
+            //printf("End superupgrade command protect flash (unprotect+write+protect), Addr=%d Data=%d, index=%d\n", dir,valor,superupgrade_write_buffer_index);
             superupgrade_write_status=0;
             superupgrade_write_buffer_index=0;
             superupgrade_flash_write_protected.v=0;
@@ -275,11 +275,11 @@ Pokeing in rom address 0004H value A2H PC=33EAH
           //Sera comando de desproteger el chip?
             else if (valor!=0x80) {
               //Comando invalido. Decir que es escritura de sector
-				debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
-				//printf ("Invalid superupgrade command. Consider it as a sector write\n");
+                debug_printf (VERBOSE_DEBUG,"Invalid superupgrade command. Consider it as a sector write");
+                //printf ("Invalid superupgrade command. Consider it as a sector write\n");
 //				superupgrade_write_status=2;
-				superupgrade_write_buffer_index =0;
-				superupgrade_write_status=0;
+                superupgrade_write_buffer_index =0;
+                superupgrade_write_status=0;
             }
           }
         }
@@ -325,7 +325,7 @@ Pokeing in rom address 0004H value A2H PC=33EAH
 
       case 2:
       //Se esta escriendo sector de 256 bytes
-			//printf("escribiendo, Addr=%d, Data=%d, index=%d, status=%d \n", dir,valor,superupgrade_write_buffer_index,superupgrade_write_status);
+            //printf("escribiendo, Addr=%d, Data=%d, index=%d, status=%d \n", dir,valor,superupgrade_write_buffer_index,superupgrade_write_status);
       break;
 
       default:
@@ -401,8 +401,8 @@ void superupgrade_common_poke(z80_int dir,z80_byte valor)
 
   superupgrade_common_write_flash(dir,valor);
 
-	int segmento;
-	z80_byte *puntero;
+    int segmento;
+    z80_byte *puntero;
         if (dir>16383) {
                 segmento=dir / 16384;
                 dir = dir & 16383;
@@ -417,7 +417,7 @@ z80_byte superupgrade_poke_byte_no_time(z80_int dir,z80_byte valor)
 {
 
   superupgrade_common_poke(dir,valor);
-	debug_nested_poke_byte_no_time_call_previous(superupgrade_nested_id_poke_byte_no_time,dir,valor);
+    debug_nested_poke_byte_no_time_call_previous(superupgrade_nested_id_poke_byte_no_time,dir,valor);
 
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
@@ -432,7 +432,7 @@ z80_byte superupgrade_poke_byte(z80_int dir,z80_byte valor)
 {
 
   superupgrade_common_poke(dir,valor);
-	debug_nested_poke_byte_call_previous(superupgrade_nested_id_poke_byte,dir,valor);
+    debug_nested_poke_byte_call_previous(superupgrade_nested_id_poke_byte,dir,valor);
 
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
@@ -450,15 +450,15 @@ z80_byte superupgrade_peek_byte_no_time(z80_int dir_orig,z80_byte value GCC_UNUS
 
         int segmento;
         z80_byte *puntero;
-	z80_int dir=dir_orig;
+    z80_int dir=dir_orig;
         segmento=dir / 16384;
 
         dir = dir & 16383;
         puntero=superupgrade_memory_paged[segmento]+dir;
 
-	//Aunque no usamos el valor de peek, llamamos para realizar contienda, llamar a otras funciones anidadas, etc
-	//superupgrade_original_peek_byte_no_time(dir_orig);
-	debug_nested_peek_byte_no_time_call_previous(superupgrade_nested_id_peek_byte_no_time,dir);
+    //Aunque no usamos el valor de peek, llamamos para realizar contienda, llamar a otras funciones anidadas, etc
+    //superupgrade_original_peek_byte_no_time(dir_orig);
+    debug_nested_peek_byte_no_time_call_previous(superupgrade_nested_id_peek_byte_no_time,dir);
 
         return *puntero;
 
@@ -474,15 +474,15 @@ z80_byte superupgrade_peek_byte(z80_int dir_orig,z80_byte value GCC_UNUSED)
 
         int segmento;
         z80_byte *puntero;
-	z80_int dir=dir_orig;
+    z80_int dir=dir_orig;
         segmento=dir / 16384;
 
         dir = dir & 16383;
         puntero=superupgrade_memory_paged[segmento]+dir;
 
-	//Aunque no usamos el valor de peek, llamamos para realizar contienda, llamar a otras funciones anidadas, etc
-	//superupgrade_original_peek_byte(dir_orig);
-	debug_nested_peek_byte_call_previous(superupgrade_nested_id_peek_byte,dir);
+    //Aunque no usamos el valor de peek, llamamos para realizar contienda, llamar a otras funciones anidadas, etc
+    //superupgrade_original_peek_byte(dir_orig);
+    debug_nested_peek_byte_call_previous(superupgrade_nested_id_peek_byte,dir);
 
         return *puntero;
 
@@ -542,8 +542,8 @@ void superupgrade_alloc_memory(void)
                 cpu_panic ("No enough memory for superupgrade emulation");
         }
 
-	//La RAM empieza despues de la ROM
-	superupgrade_ram_memory_pointer=&superupgrade_rom_memory_pointer[SUPERUPGRADE_ROM_SIZE];
+    //La RAM empieza despues de la ROM
+    superupgrade_ram_memory_pointer=&superupgrade_rom_memory_pointer[SUPERUPGRADE_ROM_SIZE];
 
 
 }
@@ -556,7 +556,7 @@ int superupgrade_load_rom(void)
 
         debug_printf (VERBOSE_INFO,"Loading superupgrade rom %s",superupgrade_rom_file_name);
 
-  			ptr_superupgrade_romfile=fopen(superupgrade_rom_file_name,"rb");
+              ptr_superupgrade_romfile=fopen(superupgrade_rom_file_name,"rb");
                 if (!ptr_superupgrade_romfile) {
                         debug_printf (VERBOSE_ERR,"Unable to open ROM file");
                 }
@@ -583,45 +583,45 @@ int superupgrade_load_rom(void)
 void superupgrade_init_memory_tables(void)
 {
 
-	int pagina;
+    int pagina;
 
-	for (pagina=0;pagina<32;pagina++) {
-		superupgrade_rom_memory_table[pagina]=&superupgrade_rom_memory_pointer[16384*pagina];
-		superupgrade_ram_memory_table[pagina]=&superupgrade_ram_memory_pointer[16384*pagina];
-	}
+    for (pagina=0;pagina<32;pagina++) {
+        superupgrade_rom_memory_table[pagina]=&superupgrade_rom_memory_pointer[16384*pagina];
+        superupgrade_ram_memory_table[pagina]=&superupgrade_ram_memory_pointer[16384*pagina];
+    }
 }
 
 z80_byte superupgrade_get_rom_bank(void)
 {
-	z80_byte banco;
+    z80_byte banco;
 
-	banco=(superupgrade_puerto_43b&31)+((puerto_32765>>4)&1)+((puerto_8189>>1)&2);
+    banco=(superupgrade_puerto_43b&31)+((puerto_32765>>4)&1)+((puerto_8189>>1)&2);
 
-	return banco;
+    return banco;
 }
 
 z80_byte superupgrade_get_ram_bank(void)
 {
-	z80_byte banco;
+    z80_byte banco;
 
-	//Maquinas de 128k solo soporta 128kb de RAM
-	if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) banco=(puerto_32765&7);
+    //Maquinas de 128k solo soporta 128kb de RAM
+    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) banco=(puerto_32765&7);
 
-	else banco=(puerto_32765&7)+((puerto_32765>>3)&24);
+    else banco=(puerto_32765&7)+((puerto_32765>>3)&24);
 
-	return banco;
+    return banco;
 }
 
 void superupgrade_set_memory_pages(void)
 {
-	z80_byte rom_page=superupgrade_get_rom_bank();
-	z80_byte ram_page=superupgrade_get_ram_bank();
+    z80_byte rom_page=superupgrade_get_rom_bank();
+    z80_byte ram_page=superupgrade_get_ram_bank();
 
-	superupgrade_memory_paged[0]=superupgrade_rom_memory_table[rom_page];
+    superupgrade_memory_paged[0]=superupgrade_rom_memory_table[rom_page];
 
-	superupgrade_memory_paged[1]=superupgrade_ram_memory_table[5];
-	superupgrade_memory_paged[2]=superupgrade_ram_memory_table[2];
-	superupgrade_memory_paged[3]=superupgrade_ram_memory_table[ram_page];
+    superupgrade_memory_paged[1]=superupgrade_ram_memory_table[5];
+    superupgrade_memory_paged[2]=superupgrade_ram_memory_table[2];
+    superupgrade_memory_paged[3]=superupgrade_ram_memory_table[ram_page];
 
 
 
@@ -634,22 +634,22 @@ void superupgrade_set_memory_pages(void)
 
 void superupgrade_hard_reset(void)
 {
-	superupgrade_puerto_43b=0;
+    superupgrade_puerto_43b=0;
   superupgrade_flash_write_protected.v=1;
   superupgrade_write_status=0;
   superupgrade_write_buffer_index=0;
   superupgrade_pending_protect_flash.v=0;
 
-	superupgrade_set_memory_pages();
+    superupgrade_set_memory_pages();
 }
 
 int superupgrade_supported_machine(void)
 {
-	if (
-		(    (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128_P2 || MACHINE_IS_SPECTRUM_128_P2_P2A_P3) && !(MACHINE_IS_INVES)     )
-	) return 1;
+    if (
+        (    (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128_P2 || MACHINE_IS_SPECTRUM_128_P2_P2A_P3) && !(MACHINE_IS_INVES)     )
+    ) return 1;
 
-	return 0;
+    return 0;
 
 }
 
@@ -660,41 +660,41 @@ void superupgrade_enable(int hard_reset)
     return;
   }
 
-	if (superupgrade_enabled.v) return;
+    if (superupgrade_enabled.v) return;
 
-	//En todas maquinas 16, 48, 128 , +2 y +2A pero en inves no
-	if (!superupgrade_supported_machine()) {
+    //En todas maquinas 16, 48, 128 , +2 y +2A pero en inves no
+    if (!superupgrade_supported_machine()) {
                 debug_printf (VERBOSE_ERR,"Superupgrade is not allowed on this machine");
-		return;
-	}
+        return;
+    }
 
-	if (superupgrade_rom_file_name[0]==0) {
-		debug_printf (VERBOSE_ERR,"Trying to enable Superupgrade but no ROM file selected");
-		return;
-	}
+    if (superupgrade_rom_file_name[0]==0) {
+        debug_printf (VERBOSE_ERR,"Trying to enable Superupgrade but no ROM file selected");
+        return;
+    }
 
-	superupgrade_alloc_memory();
-	superupgrade_init_memory_tables();
-	superupgrade_set_memory_pages();
-	if (superupgrade_load_rom()) return;
+    superupgrade_alloc_memory();
+    superupgrade_init_memory_tables();
+    superupgrade_set_memory_pages();
+    if (superupgrade_load_rom()) return;
 
-	superupgrade_set_peek_poke_functions();
+    superupgrade_set_peek_poke_functions();
 
-	superupgrade_enabled.v=1;
+    superupgrade_enabled.v=1;
 
-	if (hard_reset) hard_reset_cpu();
+    if (hard_reset) hard_reset_cpu();
 
 }
 
 void superupgrade_disable(void)
 {
-	if (superupgrade_enabled.v==0) return;
+    if (superupgrade_enabled.v==0) return;
 
-	superupgrade_restore_peek_poke_functions();
+    superupgrade_restore_peek_poke_functions();
 
-	free(superupgrade_rom_memory_pointer);
+    free(superupgrade_rom_memory_pointer);
 
-	superupgrade_enabled.v=0;
+    superupgrade_enabled.v=0;
 
 
 
@@ -704,19 +704,19 @@ void superupgrade_disable(void)
 
 void superupgrade_write_7ffd(z80_byte value)
 {
-	//si desactivado, volver
-	if (puerto_32765&32) return;
+    //si desactivado, volver
+    if (puerto_32765&32) return;
 
   //Bit indica desactivado pero el otro bit (el de 1ffd) no esta a 0, cosa que indicaria que se muestra la rom interna de superupgrade
-	if (superupgrade_puerto_43b&32 && !si_superupgrade_muestra_rom_interna() ) return;
-	puerto_32765=value;
-	superupgrade_set_memory_pages();
+    if (superupgrade_puerto_43b&32 && !si_superupgrade_muestra_rom_interna() ) return;
+    puerto_32765=value;
+    superupgrade_set_memory_pages();
 }
 
 void superupgrade_write_1ffd(z80_byte value)
 {
-	//si desactivado, volver
-	if (superupgrade_puerto_43b&64) return;
+    //si desactivado, volver
+    if (superupgrade_puerto_43b&64) return;
 
         puerto_8189=value;
         superupgrade_set_memory_pages();
@@ -726,11 +726,11 @@ void superupgrade_write_43b(z80_byte value)
 {
         superupgrade_puerto_43b=value;
 
-	//Poner a 0 bits de paginacion de 8189  y 32765
-	/*Cuando se realiza una llamada al puerto 43B, se pone a 0 los bits correspondientes de las variables de los puertos 7ffd y 1ffd. El valor completo del puerto se copia a la variable del puerto 43b.*/
+    //Poner a 0 bits de paginacion de 8189  y 32765
+    /*Cuando se realiza una llamada al puerto 43B, se pone a 0 los bits correspondientes de las variables de los puertos 7ffd y 1ffd. El valor completo del puerto se copia a la variable del puerto 43b.*/
 
-	puerto_32765 &=(255-16);
-	puerto_8189 &=(255-4);
+    puerto_32765 &=(255-16);
+    puerto_8189 &=(255-4);
 
         superupgrade_set_memory_pages();
 
