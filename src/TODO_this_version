@@ -191,4 +191,4 @@ Así tenemos :
 -acciones: resetcpu, nmi, poke, pause, MachineSelection, etc
 * soportar parametros de acciones. como "SetMachine" 48k, "OpenWindow" waveform, etc
 * que grabe config
-* que permita editar accion desde menu
+falta editar parametros de acciones * que permita editar accion desde menu.
