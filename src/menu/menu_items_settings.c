@@ -12732,6 +12732,9 @@ void menu_hardware_realjoystick_keys_action(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_realjoystick_clear_actions(MENU_ITEM_PARAMETERS)
 {
+    if (menu_confirm_yesno_texto("Clear list","Sure?")) {
+        realjoystick_clear_actions_array();
+    }
 }
 
 void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
