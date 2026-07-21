@@ -192,3 +192,4 @@ Así tenemos :
 * soportar parametros de acciones. como "SetMachine" 48k, "OpenWindow" waveform, etc
 * que grabe config
 falta editar parametros de acciones * que permita editar accion desde menu.
+* quiza evento de full screen no tiene sentido pues ahora se puede configurar como accion de full screen. pasaria lo mismo con quicksave y otras, que esas son acciones y ya no necesarias como eventos
