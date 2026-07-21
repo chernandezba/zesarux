@@ -395,8 +395,13 @@ echo Initial LIBS=$INITIALLIBS >> $LOGFILE
 #en raspberry, char por defecto es unsigned, no signed
 #agregar carpetas audio y video y cores etc
 #agregar tambien carpeta . necesaria para que al compilar desde carpetas audio y video etc encuentre los includes de esta carpeta principal
+CFLAGS="$CFLAGS -fsigned-char -I. -Iaudio -Icopy_interfaces -Icores -Icpus -Imachines -Imenu -Isnap -Istorage -Isoundchips -Ithird_party -Ivideo -Ivideo_chips -Izrcp -Izxvision"
+
 #agregar también -Werror=excess-initializers para que trate como un error el warning de que se excede tamaño de un array
-CFLAGS="$CFLAGS -Werror=excess-initializers -fsigned-char -I. -Iaudio -Icopy_interfaces -Icores -Icpus -Imachines -Imenu -Isnap -Istorage -Isoundchips -Ithird_party -Ivideo -Ivideo_chips -Izrcp -Izxvision"
+#esto para clang (eso en gcc lo trata siempre como warning)
+if $CCOMPILER --version 2>/dev/null | grep -qi clang; then
+	CFLAGS="$CFLAGS -Werror=excess-initializers"
+fi
 
 LIBS="$LIBS"
 
