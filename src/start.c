@@ -7634,7 +7634,7 @@ int parse_cmdline_options(int desde_commandline)
 
             else if (!strcmp(argv[puntero_parametro],"--joystickaction")) {
                 char *text_button;
-                char *text_event;
+                char *text_action;
 
                 //obtener boton
                 siguiente_parametro_argumento();
@@ -7642,10 +7642,10 @@ int parse_cmdline_options(int desde_commandline)
 
                 //obtener evento
                 siguiente_parametro_argumento();
-                text_event=argv[puntero_parametro];
+                text_action=argv[puntero_parametro];
 
                 //realjoystick_set_button_event(text_button,text_event);
-                realjoystick_add_button_action(text_button,text_event);
+                realjoystick_add_button_action(text_button,text_action);
 
             }
 
