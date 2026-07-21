@@ -1136,6 +1136,33 @@ int realjoystick_find_action(int indice_inicial,int button,int type,int value)
 
 
 
+//si value=0, es reset
+//si value != no, es set
+void realjoystick_set_reset_action(int index,int value)
+{
+
+    printf("set action index %d value %d\n",index,value);
+
+    int index_accion=realjoystick_actions_array[index].index_accion;
+
+    printf("index action %d\n",index_accion);
+
+    enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(index_accion);
+
+    printf("action: %d\n",accion);
+
+
+    if (value) {
+        realjoystick_send_f_function(accion);
+    }
+
+
+
+}
+
+
+
+
 
 
 z80_bit realjoystick_steering_enabled={0};
@@ -1431,7 +1458,7 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
                 //ver tipo boton normal o axis
 
                 if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
-                        realjoystick_set_reset_key(index,value);
+                        realjoystick_set_reset_action(index,value);
                 }
 		    }
         } while (index>=0);
