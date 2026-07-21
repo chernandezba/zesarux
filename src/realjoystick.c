@@ -1040,6 +1040,18 @@ int realjoystick_find_next_free_action(void)
 
 }
 
+
+int realjoystick_find_if_already_defined_button_action(int button,int type)
+{
+	int i;
+    for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
+        if (realjoystick_actions_array[i].asignado.v) {
+            if (realjoystick_actions_array[i].button==button && realjoystick_actions_array[i].button_type==type) return i;
+        }
+    }
+	return -1;
+}
+
 void realjoystick_add_button_action(char *text_button,char *text_action)
 {
     //Validar primero que el evento sea valido
@@ -1064,6 +1076,12 @@ void realjoystick_add_button_action(char *text_button,char *text_action)
     }
 
     printf("indice %d indice_accion accion %d boton %d tipo %d\n",indice,indice_accion,button,button_type);
+
+    //Validar que no exista ya
+    if (realjoystick_find_if_already_defined_button_action(button,button_type)>=0) {
+        debug_printf(VERBOSE_ERR,"Button %s already mapped",text_button);
+        return;
+    }
 
     //Y definir el evento
     realjoystick_actions_array[indice].asignado.v=1;
