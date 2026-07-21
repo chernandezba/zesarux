@@ -46711,7 +46711,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         break;
 
         case F_FUNCION_SWITCHFULLSCREEN:
-            menu_interface_fullscreen(0);
+            menu_interface_switch_full_screen();
         break;
 
         case F_FUNCION_RELOADMMC:

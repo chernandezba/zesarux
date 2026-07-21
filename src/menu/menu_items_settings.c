@@ -842,6 +842,24 @@ void menu_interface_fullscreen(MENU_ITEM_PARAMETERS)
 
 }
 
+//En milisegundos. 3 segundos
+#define SWITCH_FULLSCREEN_MINIMUM_BETWEEN_CHANGES 3000
+
+//Y empezamos con ese valor en negativo para que nada mas iniciar se pueda conmutar
+int antes_menu_interface_switch_full_screen_timer=-SWITCH_FULLSCREEN_MINIMUM_BETWEEN_CHANGES;
+
+void menu_interface_switch_full_screen(void)
+{
+    //Evitar que se pueda conmutar muy rápido de pantalla completa, por ejemplo con acciones de joystick pueden llegar dos eventos muy seguidos, sin haber
+    //acabado de cambiar de pantalla completa antes de llegar el siguiente evento
+    int delta=contador_segundo_infinito-antes_menu_interface_switch_full_screen_timer;
+    if (delta>SWITCH_FULLSCREEN_MINIMUM_BETWEEN_CHANGES) {
+        //printf("Cambio full screen\n");
+        antes_menu_interface_switch_full_screen_timer=contador_segundo_infinito;
+        menu_interface_fullscreen(0);
+    }
+}
+
 void menu_setting_limit_menu_open(MENU_ITEM_PARAMETERS)
 {
     menu_limit_menu_open.v ^=1;

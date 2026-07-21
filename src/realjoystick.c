@@ -50,7 +50,7 @@
 #include "zeng.h"
 #include "operaciones.h"
 #include "menu_items_settings.h"
-#include "timer.h"
+
 
 
 
@@ -568,7 +568,6 @@ void realjoystick_send_f_function(int accion)
 
 }
 
-int antes_realjoystick_full_screen_timer=0;
 
 //si value=0, es reset
 //si value != no, es set
@@ -719,13 +718,7 @@ void realjoystick_set_reset_action(int index,int value)
 
 		case REALJOYSTICK_EVENT_SWITCH_FULL_SCR:
 			if (value) {
-                //Evitar enviar mas de un full screen seguido antes de que realmente haya conmutado a full screen
-                //Darle 5 segundos de delay
-                int delta=contador_segundo_infinito-antes_realjoystick_full_screen_timer;
-                if (delta>20*50*5) {
-                    antes_realjoystick_full_screen_timer=contador_segundo_infinito;
-                    realjoystick_send_f_function(F_FUNCION_SWITCHFULLSCREEN);
-                }
+                realjoystick_send_f_function(F_FUNCION_SWITCHFULLSCREEN);
 			}
 		break;
 
