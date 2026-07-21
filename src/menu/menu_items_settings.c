@@ -246,6 +246,7 @@ int main_window_special_effects_change=0;
 int main_window_special_effects_group_opcion_seleccionada=0;
 int settings_smartload_opcion_seleccionada=0;
 int topmenu_items_visibility_opcion_seleccionada=0;
+int hardware_realjoystick_actions_opcion_seleccionada=0;
 //Fin opciones seleccionadas para cada menu
 
 
@@ -12725,6 +12726,88 @@ void menu_hardware_realjoystick_keys(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+void menu_hardware_realjoystick_keys_action(MENU_ITEM_PARAMETERS)
+{
+}
+
+void menu_hardware_realjoystick_clear_actions(MENU_ITEM_PARAMETERS)
+{
+}
+
+void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        char buffer_texto[40];
+        char buffer_texto_boton[10];
+
+        int i;
+        for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
+            if (realjoystick_actions_array[i].asignado.v) {
+                menu_print_text_axis(buffer_texto_boton,realjoystick_actions_array[i].button_type,realjoystick_actions_array[i].button);
+
+                sprintf (buffer_texto,"Button %s action %d",buffer_texto_boton,realjoystick_actions_array[i].index_accion);
+            }
+
+            else {
+                sprintf(buffer_texto,"Unused entry");
+            }
+
+
+
+            if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_action,NULL,buffer_texto);
+            else menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_action,NULL,buffer_texto);
+
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+
+            menu_add_item_menu_tooltip(array_menu_common,"Redefine the button");
+            menu_add_item_menu_ayuda(array_menu_common,"Indicates which key on the Spectrum keyboard is sent when "
+            "pressed the button/axis on the real joystick");
+        }
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_clear_actions,NULL,"Clear list");
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+
+        //Nota: si no se agrega el nombre del path del indice, se generará uno automáticamente
+        menu_add_item_menu_index_full_path(array_menu_common,
+            "Main Menu-> Settings Menu-> Hardware-> Real joystick settings-> Joystick to actions",
+            "Menú Principal-> Menú Opciones-> Hardware-> Opciones joystick real-> Joystick a acciones",
+            "Menú Principal-> Menú Opcions-> Hardware-> Opcions joystick real-> Joystick a accions");
+
+
+        retorno_menu=menu_dibuja_menu_dialogo(&hardware_realjoystick_actions_opcion_seleccionada,&item_seleccionado,array_menu_common,
+            "Joystick to actions","Joystick a acciones","Joystick a accions" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                //Si este menu lo definimos como un menu tabulado,
+                //si hay alguna accion disparada en la que se haya pulsado ESC,
+                //no queremos que cierre este menu
+                //salir_todos_menus=0;
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
 
 
 void menu_hardware_realjoystick_clear_events(MENU_ITEM_PARAMETERS)
@@ -13357,6 +13440,12 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
         //no queremos que se cierre la ventana cuando se ha asignado un evento, dejarla abierta por si se quiere asignar mas
         //menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
+        menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_actions,NULL,
+            "Joystick to ~~actions","Joystick a ~~acciones","Joystick a ~~accions");
+        menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'a');
+        menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which actions generate every button/movement of the joystick");
+        menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which actions generate every button/movement of the joystick");
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys,NULL,
