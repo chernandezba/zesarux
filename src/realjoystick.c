@@ -1219,167 +1219,164 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
 {
 
 
-		//eventos de init no hacerles caso, de momento
-		if ( (type&REALJOYSTICK_INPUT_EVENT_INIT)!=REALJOYSTICK_INPUT_EVENT_INIT) {
+    //eventos de init no hacerles caso, de momento
+    if ( (type&REALJOYSTICK_INPUT_EVENT_INIT)!=REALJOYSTICK_INPUT_EVENT_INIT) {
 
 
+        menu_info_joystick_last_button=button;
+
+        menu_info_joystick_last_type=type;
+        menu_info_joystick_last_value=value;
+
+        menu_info_joystick_last_index=-1; //de momento suponemos ningun evento
+
+        if (realjoystick_steering_enabled.v && button==realjoystick_steering_button && type==REALJOYSTICK_INPUT_EVENT_AXIS)  {
 
 
-			menu_info_joystick_last_button=button;
-
-			menu_info_joystick_last_type=type;
-			menu_info_joystick_last_value=value;
-
-			menu_info_joystick_last_index=-1; //de momento suponemos ningun evento
-
-            if (realjoystick_steering_enabled.v && button==realjoystick_steering_button && type==REALJOYSTICK_INPUT_EVENT_AXIS)  {
+            //Asumimos que valores que envia el joystick van entre -32768 y +32768
 
 
-                //Asumimos que valores que envia el joystick van entre -32768 y +32768
+            int multiplicador=realjoystick_steering_max_value-realjoystick_steering_min_value+1;
 
+            int valor_volante=value_axis;
 
-                int multiplicador=realjoystick_steering_max_value-realjoystick_steering_min_value+1;
+            if (realjoystick_steering_two_addresses.v) {
+                //Derecha primera direccion
+                //Izquierda segunda direccion
+                valor_volante=(util_get_absolute(valor_volante)*multiplicador)/32768;
+                if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
+                if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
 
-                int valor_volante=value_axis;
-
-                if (realjoystick_steering_two_addresses.v) {
-                    //Derecha primera direccion
-                    //Izquierda segunda direccion
-                    valor_volante=(util_get_absolute(valor_volante)*multiplicador)/32768;
-                    if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
-                    if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
-
-                    if (value_axis>=0) {
-                        poke_byte_no_time(realjoystick_steering_address,valor_volante);
-                        poke_byte_no_time(realjoystick_steering_address+1,0);
-                        //printf("Lectura Volante Der: %d Valor escrito: %d\n",value_axis,valor_volante);
-                    }
-                    else {
-                        poke_byte_no_time(realjoystick_steering_address,0);
-                        poke_byte_no_time(realjoystick_steering_address+1,-valor_volante);
-                        //printf("Lectura Volante Izq: %d Valor escrito: %d\n",value_axis,-valor_volante);
-                    }
-                }
-
-
-                else {
-
-
-                    if (realjoystick_steering_center_value!=0) {
-                        //Hacemos el 0 el valor mas a la izquierda
-                        valor_volante +=32768;
-                    }
-
-                    if (realjoystick_steering_center_value!=0 && valor_volante==32768) {
-                        //Para Nightmare rally, porque si no, el centro de volante daria valor 3 y no 4 como espera
-                        valor_volante=realjoystick_steering_center_value;
-                    }
-                    else {
-
-                        valor_volante=(valor_volante*multiplicador)/65536;
-
-                        if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
-                        if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
-
-                        if (realjoystick_steering_inverted.v) valor_volante=-valor_volante;
-                    }
-
-
-                    //printf("Lectura Volante: %d Valor escrito: %d\n",value_axis,valor_volante);
-
+                if (value_axis>=0) {
                     poke_byte_no_time(realjoystick_steering_address,valor_volante);
-
-
-                    if (realjoystick_steering_16bit.v) {
-                        if (valor_volante<0) poke_byte_no_time(realjoystick_steering_address+1,255);
-                        else poke_byte_no_time(realjoystick_steering_address+1,0);
-                    }
-
+                    poke_byte_no_time(realjoystick_steering_address+1,0);
+                    //printf("Lectura Volante Der: %d Valor escrito: %d\n",value_axis,valor_volante);
+                }
+                else {
+                    poke_byte_no_time(realjoystick_steering_address,0);
+                    poke_byte_no_time(realjoystick_steering_address+1,-valor_volante);
+                    //printf("Lectura Volante Izq: %d Valor escrito: %d\n",value_axis,-valor_volante);
                 }
             }
 
 
-			//buscamos el evento. En axis busca tanto la direccion como la opuesta
-			int index=-1;
-			do  {
-
-				index=realjoystick_find_event(index+1,button,type,value);
-				//menu_info_joystick_last_index=index;
-				//printf ("last index: %d\n",menu_info_joystick_last_index);
-				if (index>=0) {
-					debug_printf (VERBOSE_DEBUG,"Event found on index: %d",index);
-
-					menu_info_joystick_last_index=index;
-
-					//ver tipo boton normal
-
-					if (type==REALJOYSTICK_INPUT_EVENT_BUTTON) {
-						realjoystick_set_reset_action(index,value);
-					}
+            else {
 
 
-					//ver tipo axis
-					if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
-						switch (index) {
-							case REALJOYSTICK_EVENT_UP:
-								//reset abajo
-								joystick_release_down(1);
-								realjoystick_set_reset_action(index,value);
-							break;
+                if (realjoystick_steering_center_value!=0) {
+                    //Hacemos el 0 el valor mas a la izquierda
+                    valor_volante +=32768;
+                }
 
-							case REALJOYSTICK_EVENT_DOWN:
-									//reset arriba
-									joystick_release_up(1);
-									realjoystick_set_reset_action(index,value);
-							break;
+                if (realjoystick_steering_center_value!=0 && valor_volante==32768) {
+                    //Para Nightmare rally, porque si no, el centro de volante daria valor 3 y no 4 como espera
+                    valor_volante=realjoystick_steering_center_value;
+                }
+                else {
 
-							case REALJOYSTICK_EVENT_LEFT:
-									//reset derecha
-									joystick_release_right(1);
-									realjoystick_set_reset_action(index,value);
-							break;
+                    valor_volante=(valor_volante*multiplicador)/65536;
 
-							case REALJOYSTICK_EVENT_RIGHT:
-									//reset izquierda
-									joystick_release_left(1);
-									realjoystick_set_reset_action(index,value);
-							break;
+                    if (valor_volante>realjoystick_steering_max_value) valor_volante=realjoystick_steering_max_value;
+                    if (valor_volante<realjoystick_steering_min_value) valor_volante=realjoystick_steering_min_value;
+
+                    if (realjoystick_steering_inverted.v) valor_volante=-valor_volante;
+                }
 
 
+                //printf("Lectura Volante: %d Valor escrito: %d\n",value_axis,valor_volante);
 
-							default:
-								//acciones que no son de axis
-								realjoystick_set_reset_action(index,value);
-							break;
-						}
-					}
-
-					//gestionar si es 0, poner 0 en izquierda y derecha por ejemplo (solo para acciones de left/right/up/down)
-
-					//si es >0, hacer que la accion de -1 se resetee (solo para acciones de left/right/up/down)
-					//si es <0, hacer que la accion de +1 se resetee (solo para acciones de left/right/up/down)
-				}
-			} while (index>=0);
-
-			//despues de evento, buscar boton a tecla
-			//buscamos el evento
-			index=-1;
-			do {
-                        index=realjoystick_find_key(index+1,button,type,value);
-                        if (index>=0) {
-                                debug_printf (VERBOSE_DEBUG,"Event found on index: %d. key=%c value:%d",index,realjoystick_keys_array[index].caracter,value);
-
-                                //ver tipo boton normal o axis
-
-                                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
-                                        realjoystick_set_reset_key(index,value);
-                                }
-			}
-			} while (index>=0);
+                poke_byte_no_time(realjoystick_steering_address,valor_volante);
 
 
+                if (realjoystick_steering_16bit.v) {
+                    if (valor_volante<0) poke_byte_no_time(realjoystick_steering_address+1,255);
+                    else poke_byte_no_time(realjoystick_steering_address+1,0);
+                }
 
-		}
+            }
+        }
+
+
+        //buscamos el evento. En axis busca tanto la direccion como la opuesta
+        int index=-1;
+        do  {
+
+            index=realjoystick_find_event(index+1,button,type,value);
+            //menu_info_joystick_last_index=index;
+            //printf ("last index: %d\n",menu_info_joystick_last_index);
+            if (index>=0) {
+                debug_printf (VERBOSE_DEBUG,"Event found on index: %d",index);
+
+                menu_info_joystick_last_index=index;
+
+                //ver tipo boton normal
+
+                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON) {
+                    realjoystick_set_reset_action(index,value);
+                }
+
+
+                //ver tipo axis
+                if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+                    switch (index) {
+                        case REALJOYSTICK_EVENT_UP:
+                            //reset abajo
+                            joystick_release_down(1);
+                            realjoystick_set_reset_action(index,value);
+                        break;
+
+                        case REALJOYSTICK_EVENT_DOWN:
+                                //reset arriba
+                                joystick_release_up(1);
+                                realjoystick_set_reset_action(index,value);
+                        break;
+
+                        case REALJOYSTICK_EVENT_LEFT:
+                                //reset derecha
+                                joystick_release_right(1);
+                                realjoystick_set_reset_action(index,value);
+                        break;
+
+                        case REALJOYSTICK_EVENT_RIGHT:
+                                //reset izquierda
+                                joystick_release_left(1);
+                                realjoystick_set_reset_action(index,value);
+                        break;
+
+
+
+                        default:
+                            //acciones que no son de axis
+                            realjoystick_set_reset_action(index,value);
+                        break;
+                    }
+                }
+
+                //gestionar si es 0, poner 0 en izquierda y derecha por ejemplo (solo para acciones de left/right/up/down)
+
+                //si es >0, hacer que la accion de -1 se resetee (solo para acciones de left/right/up/down)
+                //si es <0, hacer que la accion de +1 se resetee (solo para acciones de left/right/up/down)
+            }
+        } while (index>=0);
+
+        //despues de evento, buscar boton a tecla
+        //buscamos el evento
+        index=-1;
+        do {
+            index=realjoystick_find_key(index+1,button,type,value);
+            if (index>=0) {
+                debug_printf (VERBOSE_DEBUG,"Event found on index: %d. key=%c value:%d",index,realjoystick_keys_array[index].caracter,value);
+
+                //ver tipo boton normal o axis
+
+                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+                        realjoystick_set_reset_key(index,value);
+                }
+		    }
+        } while (index>=0);
+
+
+    }
 
 
 
