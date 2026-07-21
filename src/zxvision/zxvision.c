@@ -216,7 +216,6 @@ int menu_mouse_left_double_click_counter_initial=0;
 
 int mouse_is_double_clicking=0;
 
-
 void menu_dibuja_ventana_titulo(zxvision_window *w,char *titulo_original_utf);
 
 defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
