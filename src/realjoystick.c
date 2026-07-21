@@ -1059,7 +1059,7 @@ void realjoystick_add_button_action(char *text_button,char *text_action)
     //Encontrar siguiente posicion libre
     int indice=realjoystick_find_next_free_action();
     if (indice<0) {
-        debug_printf(VERBOSE_ERR,"Joystick actions list full");
+        debug_printf(VERBOSE_ERR,"Joystick actions list full. Maximum %d",MAX_ACTIONS_JOYSTICK);
         return;
     }
 
