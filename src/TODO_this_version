@@ -190,3 +190,5 @@ Así tenemos :
 -eventos: up, down, escmenu, etc
 -acciones: resetcpu, nmi, poke, pause, MachineSelection, etc
 * soportar parametros de acciones. como "SetMachine" 48k, "OpenWindow" waveform, etc
+* que grabe config
+* que permita editar accion desde menu

@@ -12749,7 +12749,14 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
             if (realjoystick_actions_array[i].asignado.v) {
                 menu_print_text_axis(buffer_texto_boton,realjoystick_actions_array[i].button_type,realjoystick_actions_array[i].button);
 
-                sprintf (buffer_texto,"Button %s action %d",buffer_texto_boton,realjoystick_actions_array[i].index_accion);
+                int index_accion=realjoystick_actions_array[i].index_accion;
+                //enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(index_accion);
+
+                //printf("action: %d\n",accion);
+
+                //defined_direct_functions_array[indice_funcion].texto_funcion);
+
+                sprintf (buffer_texto,"Button %s action %s",buffer_texto_boton,defined_direct_functions_array[index_accion].texto_funcion);
             }
 
             else {
