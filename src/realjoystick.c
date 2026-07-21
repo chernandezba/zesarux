@@ -893,19 +893,19 @@ void realjoystick_copy_event_button_key(int indice_evento,int indice_tecla,z80_b
 //Devuelve 0 si ok
 int realjoystick_set_type(char *tipo) {
 
-				debug_printf (VERBOSE_INFO,"Setting joystick type %s",tipo);
+    debug_printf (VERBOSE_INFO,"Setting joystick type %s",tipo);
 
-                                int i;
-                                for (i=0;i<=JOYSTICK_TOTAL;i++) {
-                                        if (!strcasecmp(tipo,joystick_texto[i])) break;
-                                }
-                                if (i>JOYSTICK_TOTAL) {
-                                        debug_printf (VERBOSE_ERR,"Invalid joystick type %s",tipo);
-					return 1;
-                                }
+    int i;
+    for (i=0;i<=JOYSTICK_TOTAL;i++) {
+        if (!strcasecmp(tipo,joystick_texto[i])) break;
+    }
+    if (i>JOYSTICK_TOTAL) {
+        debug_printf (VERBOSE_ERR,"Invalid joystick type %s",tipo);
+        return 1;
+    }
 
 
-                                joystick_emulation=i;
+    joystick_emulation=i;
 	return 0;
 }
 
@@ -914,26 +914,26 @@ int realjoystick_set_type(char *tipo) {
 int realjoystick_set_button_event(char *text_button, char *text_event)
 {
 
-				debug_printf (VERBOSE_INFO,"Setting button %s to event %s",text_button,text_event);
+    debug_printf (VERBOSE_INFO,"Setting button %s to event %s",text_button,text_event);
 
 //--joystickevent but evt    Set a joystick button or axis to an event (changes joystick to event table)
 
-				//obtener boton
-				int button,button_type;
-				realjoystick_get_button_string(text_button,&button,&button_type);
+    //obtener boton
+    int button,button_type;
+    realjoystick_get_button_string(text_button,&button,&button_type);
 
-				//obtener evento
-				int evento=realjoystick_get_event_string(text_event);
-				if (evento==-1) {
-					debug_printf (VERBOSE_ERR,"Unknown event %s",text_event);
-					return 1;
-				}
+    //obtener evento
+    int evento=realjoystick_get_event_string(text_event);
+    if (evento==-1) {
+        debug_printf (VERBOSE_ERR,"Unknown event %s",text_event);
+        return 1;
+    }
 
 
-				//Y definir el evento
-				realjoystick_events_array[evento].asignado.v=1;
-				realjoystick_events_array[evento].button=button;
-				realjoystick_events_array[evento].button_type=button_type;
+    //Y definir el evento
+    realjoystick_events_array[evento].asignado.v=1;
+    realjoystick_events_array[evento].button=button;
+    realjoystick_events_array[evento].button_type=button_type;
 
 	return 0;
 }
@@ -943,30 +943,30 @@ int realjoystick_set_button_event(char *text_button, char *text_event)
 //Devuelve 0 si ok
 int realjoystick_set_button_key(char *text_button,char *text_key)
 {
-				debug_printf (VERBOSE_INFO,"Setting button %s to key %s",text_button,text_key);
+    debug_printf (VERBOSE_INFO,"Setting button %s to key %s",text_button,text_key);
 
 //"--joystickkeybt but key    Define a key pressed when a joystick button pressed (changes joystick to key table)\n"
 
-                                //ver si maximo definido
-                                if (joystickkey_definidas==MAX_KEYS_JOYSTICK) {
-                                        debug_printf (VERBOSE_ERR,"Maximum defined joystick to keys defined (%d)",joystickkey_definidas);
-                                        return 1;
-                                }
+    //ver si maximo definido
+    if (joystickkey_definidas==MAX_KEYS_JOYSTICK) {
+            debug_printf (VERBOSE_ERR,"Maximum defined joystick to keys defined (%d)",joystickkey_definidas);
+            return 1;
+    }
 
-                                //obtener boton
-                                int button,button_type;
-                                realjoystick_get_button_string(text_button,&button,&button_type);
+    //obtener boton
+    int button,button_type;
+    realjoystick_get_button_string(text_button,&button,&button_type);
 
-                                z80_byte caracter=parse_string_to_number(text_key);
+    z80_byte caracter=parse_string_to_number(text_key);
 
 
-                                //realjoystick_copy_event_button_key(evento,joystickkey_definidas,caracter);
-                                realjoystick_keys_array[joystickkey_definidas].asignado.v=1;
-                                realjoystick_keys_array[joystickkey_definidas].button=button;
-                                realjoystick_keys_array[joystickkey_definidas].button_type=button_type;
-                                realjoystick_keys_array[joystickkey_definidas].caracter=caracter;
+    //realjoystick_copy_event_button_key(evento,joystickkey_definidas,caracter);
+    realjoystick_keys_array[joystickkey_definidas].asignado.v=1;
+    realjoystick_keys_array[joystickkey_definidas].button=button;
+    realjoystick_keys_array[joystickkey_definidas].button_type=button_type;
+    realjoystick_keys_array[joystickkey_definidas].caracter=caracter;
 
-                                joystickkey_definidas++;
+    joystickkey_definidas++;
 
 
  return 0;
@@ -976,34 +976,34 @@ int realjoystick_set_button_key(char *text_button,char *text_key)
 //Devuelve 0 si ok
 int realjoystick_set_event_key(char *text_event,char *text_key)
 {
-				debug_printf (VERBOSE_INFO,"Setting event %s to key %s",text_event,text_key);
+    debug_printf (VERBOSE_INFO,"Setting event %s to key %s",text_event,text_key);
 
-//    "--joystickkeyev evt key    Define a key pressed when a joystick event is generated (changes joystick to key table)\n"
-
-
-
-                                //ver si maximo definido
-                                if (joystickkey_definidas==MAX_KEYS_JOYSTICK) {
-                                        debug_printf (VERBOSE_ERR,"Maximum defined joystick to keys defined (%d)",joystickkey_definidas);
-                                        return 1;
-                                }
+    //    "--joystickkeyev evt key    Define a key pressed when a joystick event is generated (changes joystick to key table)\n"
 
 
-                                //obtener evento
 
-                                int evento=realjoystick_get_event_string(text_event);
-                                if (evento==-1) {
-                                        debug_printf (VERBOSE_ERR,"Unknown event %s",text_event);
-                                        return 1;
-                                }
+    //ver si maximo definido
+    if (joystickkey_definidas==MAX_KEYS_JOYSTICK) {
+            debug_printf (VERBOSE_ERR,"Maximum defined joystick to keys defined (%d)",joystickkey_definidas);
+            return 1;
+    }
 
-                                //Y obtener tecla
 
-                                z80_byte caracter=parse_string_to_number(text_key);
+    //obtener evento
 
-                                realjoystick_copy_event_button_key(evento,joystickkey_definidas,caracter);
+    int evento=realjoystick_get_event_string(text_event);
+    if (evento==-1) {
+            debug_printf (VERBOSE_ERR,"Unknown event %s",text_event);
+            return 1;
+    }
 
-                                joystickkey_definidas++;
+    //Y obtener tecla
+
+    z80_byte caracter=parse_string_to_number(text_key);
+
+    realjoystick_copy_event_button_key(evento,joystickkey_definidas,caracter);
+
+    joystickkey_definidas++;
 	return 0;
 }
 
