@@ -56,6 +56,7 @@ extern void menu_interface_charwidth_after_width_change(void);
 extern void menu_interface_allow_background_windows_delete_windows(void);
 
 extern void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS);
+extern int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionada);
 extern void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS);
 
 extern void menu_settings_statistics(MENU_ITEM_PARAMETERS);

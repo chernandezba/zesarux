@@ -12728,7 +12728,131 @@ void menu_hardware_realjoystick_keys(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_realjoystick_keys_action(MENU_ITEM_PARAMETERS)
 {
+
+
+    menu_espera_no_tecla();
+
+    if (realjoystick_actions_array[valor_opcion].asignado.v) {
+        int opcion=menu_simple_two_choices("Action is assigned","What do you want?","Edit action","Unassign action");
+        switch(opcion) {
+            case 1:
+                //Editar. Salimos del switch
+            break;
+
+            case 2:
+                //Desasignar
+                realjoystick_actions_array[valor_opcion].asignado.v=0;
+                return;
+            break;
+
+            default:
+                //Salir con ESC
+                return;
+            break;
+        }
+    }
+
+
+
+    zxvision_window ventana;
+
+    int alto_ventana=3;
+    int ancho_ventana=30;
+    int x_ventana=menu_center_x()-ancho_ventana/2;
+    int y_ventana=menu_center_y()-alto_ventana/2;
+
+    zxvision_new_window(&ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,
+                            ancho_ventana-1,alto_ventana-2,"Redefine action");
+    zxvision_draw_window(&ventana);
+
+    int linea=0;
+
+    zxvision_print_string_defaults(&ventana,1,linea,"Please press the button/axis");
+
+
+    int tecla=menu_common_wait_realjoystick_press(&ventana);
+
+
+
+    int button=menu_info_joystick_last_button;
+
+    int type=menu_info_joystick_last_type;
+    int value=menu_info_joystick_last_value;
+
+    int redefinir=0;
+
+    if (tecla==2) {
+
+        //No hacer nada si se sale con ESC
+
+    }
+
+    else {
+
+        //printf("--Button %d type %d value %d\n",button,type,value);
+
+        if (button>=0 && type>=0) {
+            redefinir=1;
+        }
+    }
+
+
+    zxvision_destroy_window(&ventana);
+
+    if (redefinir) {
+                int index_accion=realjoystick_actions_array[valor_opcion].index_accion;
+
+                int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(index_accion);
+
+                if (indice_retorno>=0) {
+
+                    if ( (type&REALJOYSTICK_INPUT_EVENT_INIT)!=REALJOYSTICK_INPUT_EVENT_INIT) {
+                        debug_printf (VERBOSE_DEBUG,"redefine for button: %d type: %d value: %d",button,type,value);
+
+                        int button_type=0;
+
+
+                        if (type==REALJOYSTICK_INPUT_EVENT_BUTTON) {
+                                            //tabla[indice].button_type=0;
+                            button_type=0;
+                        }
+
+                        if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+                                if (value<0) button_type=-1;
+                                else button_type=+1;
+                        }
+
+                        //Antes de asignarlo, ver que no exista uno antes
+                        //desasignamos primero el actual
+                        realjoystick_actions_array[valor_opcion].asignado.v=0;
+
+                        //int existe_evento=realjoystick_find_if_already_defined_button(tabla,maximo,button,button_type);
+
+                        //if (existe_evento!=-1) {
+                        //	debug_printf (VERBOSE_ERR,"Button already mapped");
+                        //	return 0;
+                        //}
+
+                        realjoystick_actions_array[valor_opcion].asignado.v=1;
+                        realjoystick_actions_array[valor_opcion].button=button;
+                        realjoystick_actions_array[valor_opcion].button_type=button_type;
+                        realjoystick_actions_array[valor_opcion].index_accion=indice_retorno;
+
+                    }
+
+
+
+                    //Asignar parametros extra segun el tipo de accion
+                    enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
+
+                    //zxdesktop_add_extra_parameters_element_action(accion,
+                    //    defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion], NULL);
+
+                }
+    }
+
 }
+
 
 void menu_hardware_realjoystick_clear_actions(MENU_ITEM_PARAMETERS)
 {
@@ -12748,7 +12872,11 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
         char buffer_texto_boton[10];
 
         int i;
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_UNASSIGNED,NULL,NULL,"");
+
         for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
+
             if (realjoystick_actions_array[i].asignado.v) {
                 menu_print_text_axis(buffer_texto_boton,realjoystick_actions_array[i].button_type,realjoystick_actions_array[i].button);
 
@@ -12767,15 +12895,10 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
             }
 
 
-
-            if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_action,NULL,buffer_texto);
-            else menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_action,NULL,buffer_texto);
-
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_action,NULL,buffer_texto);
             menu_add_item_menu_valor_opcion(array_menu_common,i);
-
-
             menu_add_item_menu_tooltip(array_menu_common,"Redefine the button");
-            menu_add_item_menu_ayuda(array_menu_common,"Indicates which key on the Spectrum keyboard is sent when "
+            menu_add_item_menu_ayuda(array_menu_common,"Indicates which action is triggered when "
             "pressed the button/axis on the real joystick");
         }
 
