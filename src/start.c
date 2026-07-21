@@ -7587,8 +7587,6 @@ int parse_cmdline_options(int desde_commandline)
                 //No salir si hay error, simplemente saldra error por VERBOSE_ERR
                 realjoystick_set_button_event(text_button,text_event);
 
-
-
             }
 
                         else if (!strcmp(argv[puntero_parametro],"--joystickkeybt")) {
@@ -7632,6 +7630,26 @@ int parse_cmdline_options(int desde_commandline)
 
 
             }
+
+
+            else if (!strcmp(argv[puntero_parametro],"--joystickaction")) {
+                char *text_button;
+                char *text_event;
+
+                //obtener boton
+                siguiente_parametro_argumento();
+                text_button=argv[puntero_parametro];
+
+                //obtener evento
+                siguiente_parametro_argumento();
+                text_event=argv[puntero_parametro];
+
+                //realjoystick_set_button_event(text_button,text_event);
+                realjoystick_add_button_action(text_button,text_event);
+
+            }
+
+
 
             else if (!strcmp(argv[puntero_parametro],"--steering-wheel-axis-number")) {
                 siguiente_parametro_argumento();

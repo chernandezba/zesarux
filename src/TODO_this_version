@@ -162,8 +162,8 @@ ok -iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre,
 
 
 ok -Función joystick para conmutar full screen
-*ok funcion
-*quizá la conmutacion de pantalla completa (en general, no solo lo que venga desde joystick) evitar que se puedan lanzar mas de 1 en los ultimos 5? 4? 3? segundos
+ok *ok funcion
+ok *quizá la conmutacion de pantalla completa (en general, no solo lo que venga desde joystick) evitar que se puedan lanzar mas de 1 en los ultimos 5? 4? 3? segundos
 
 
 

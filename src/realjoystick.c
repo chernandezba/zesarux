@@ -1007,7 +1007,15 @@ int realjoystick_set_event_key(char *text_event,char *text_key)
 	return 0;
 }
 
-
+void realjoystick_add_button_action(char *text_button,char *text_action)
+{
+    //Validar primero que el evento sea valido
+    int indice=get_defined_direct_functions(text_action);
+    if (indice<0) {
+        debug_printf(VERBOSE_ERR,"Invalid action %s",text_action);
+        return;
+    }
+}
 
 
 z80_bit realjoystick_steering_enabled={0};
