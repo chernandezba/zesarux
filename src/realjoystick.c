@@ -125,6 +125,9 @@ z80_bit no_native_linux_realjoystick={0};
 //etc...
 realjoystick_events_keys_function realjoystick_events_array[MAX_EVENTS_JOYSTICK];
 
+//asignacion de botones de joystick a acciones, mismas acciones que se pueden lanzar con una tecla F o con un icono del ZX Desktop
+realjoystick_button_action realjoystick_actions_array[MAX_ACTIONS_JOYSTICK];
+
 //asignacion de botones de joystick a letras de teclado
 //la posicion dentro del array no indica nada
 realjoystick_events_keys_function realjoystick_keys_array[MAX_KEYS_JOYSTICK];
@@ -232,6 +235,8 @@ void realjoystick_clear_events_array(void)
 
 }
 
+
+
 void realjoystick_init_events_keys_tables(void)
 {
 	//eventos
@@ -239,6 +244,9 @@ void realjoystick_init_events_keys_tables(void)
 
 	//y teclas
 	realjoystick_clear_keys_array();
+
+    //y acciones
+    realjoystick_clear_actions_array();
 }
 
 
@@ -1007,14 +1015,62 @@ int realjoystick_set_event_key(char *text_event,char *text_key)
 	return 0;
 }
 
+void realjoystick_clear_actions_array(void)
+{
+
+	debug_printf (VERBOSE_INFO,"Clearing joystick to actions table");
+
+    int i;
+    for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
+            realjoystick_actions_array[i].asignado.v=0;
+    }
+
+}
+
+int realjoystick_find_next_free_action(void)
+{
+
+
+    int i;
+    for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
+        if (realjoystick_actions_array[i].asignado.v==0) return i;
+    }
+
+    return -1;
+
+}
+
 void realjoystick_add_button_action(char *text_button,char *text_action)
 {
     //Validar primero que el evento sea valido
-    int indice=get_defined_direct_functions(text_action);
-    if (indice<0) {
+    int indice_accion=get_defined_direct_functions(text_action);
+    if (indice_accion<0) {
         debug_printf(VERBOSE_ERR,"Invalid action %s",text_action);
         return;
     }
+
+
+    //obtener boton
+    int button,button_type;
+    realjoystick_get_button_string(text_button,&button,&button_type);
+
+
+
+    //Encontrar siguiente posicion libre
+    int indice=realjoystick_find_next_free_action();
+    if (indice<0) {
+        debug_printf(VERBOSE_ERR,"Joystick actions list full");
+        return;
+    }
+
+    printf("indice %d indice_accion accion %d boton %d tipo %d\n",indice,indice_accion,button,button_type);
+
+    //Y definir el evento
+    realjoystick_actions_array[indice].asignado.v=1;
+    realjoystick_actions_array[indice].button=button;
+    realjoystick_actions_array[indice].button_type=button_type;
+    realjoystick_actions_array[indice].index_accion=indice_accion;
+
 }
 
 

@@ -183,3 +183,5 @@ void realjoystick_set_reset_f_function(int index,int value)
 				realjoystick_send_f_function(index);
 			}
 }
+
+make -j8 && ./zesarux  --joystickaction 8 Reset

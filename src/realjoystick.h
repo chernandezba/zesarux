@@ -169,6 +169,31 @@ typedef struct s_realjoystick_event_key_function realjoystick_events_keys_functi
 
 extern realjoystick_events_keys_function realjoystick_events_array[];
 
+
+struct s_realjoystick_button_action {
+
+	//si esta asignada esa funcion o no
+	z80_bit asignado;
+
+	//numero de boton
+	int button;
+
+	//tipo de boton: 0-boton normal, +1 axis positivo o dpad, -1 axis negativo
+	int button_type;
+
+    //El indice a la accion en el array defined_direct_functions_array
+    int index_accion;
+
+};
+
+typedef struct s_realjoystick_button_action realjoystick_button_action;
+
+
+#define MAX_ACTIONS_JOYSTICK 30
+
+extern realjoystick_button_action realjoystick_actions_array[];
+
+
 extern int realjoystick_redefine_event(int indice);
 extern int realjoystick_redefine_event_no_wait(int indice,int button,int type,int value);
 extern int realjoystick_redefine_key(int indice,z80_byte caracter);
@@ -184,6 +209,8 @@ extern void realjoystick_copy_event_button_key(int indice_evento,int indice_tecl
 extern void realjoystick_clear_keys_array(void);
 
 extern void realjoystick_clear_events_array(void);
+
+extern void realjoystick_clear_actions_array(void);
 
 extern void realjoystick_print_event_keys(void);
 
