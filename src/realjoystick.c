@@ -579,7 +579,7 @@ void realjoystick_send_f_function(int accion)
 
 //si value=0, es reset
 //si value != no, es set
-void realjoystick_set_reset_action(int index,int value)
+void realjoystick_set_reset_event(int index,int value)
 {
 
 	switch (index) {
@@ -1358,7 +1358,7 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
                 //ver tipo boton normal
 
                 if (type==REALJOYSTICK_INPUT_EVENT_BUTTON) {
-                    realjoystick_set_reset_action(index,value);
+                    realjoystick_set_reset_event(index,value);
                 }
 
 
@@ -1368,32 +1368,32 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
                         case REALJOYSTICK_EVENT_UP:
                             //reset abajo
                             joystick_release_down(1);
-                            realjoystick_set_reset_action(index,value);
+                            realjoystick_set_reset_event(index,value);
                         break;
 
                         case REALJOYSTICK_EVENT_DOWN:
                                 //reset arriba
                                 joystick_release_up(1);
-                                realjoystick_set_reset_action(index,value);
+                                realjoystick_set_reset_event(index,value);
                         break;
 
                         case REALJOYSTICK_EVENT_LEFT:
                                 //reset derecha
                                 joystick_release_right(1);
-                                realjoystick_set_reset_action(index,value);
+                                realjoystick_set_reset_event(index,value);
                         break;
 
                         case REALJOYSTICK_EVENT_RIGHT:
                                 //reset izquierda
                                 joystick_release_left(1);
-                                realjoystick_set_reset_action(index,value);
+                                realjoystick_set_reset_event(index,value);
                         break;
 
 
 
                         default:
                             //acciones que no son de axis
-                            realjoystick_set_reset_action(index,value);
+                            realjoystick_set_reset_event(index,value);
                         break;
                     }
                 }
