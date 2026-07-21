@@ -1054,7 +1054,7 @@ int realjoystick_find_if_already_defined_button_action(int button,int type)
 
 void realjoystick_add_button_action(char *text_button,char *text_action)
 {
-    //Validar primero que el evento sea valido
+    //Validar primero que la accion sea valida
     int indice_accion=get_defined_direct_functions(text_action);
     if (indice_accion<0) {
         debug_printf(VERBOSE_ERR,"Invalid action %s",text_action);
@@ -1083,13 +1083,59 @@ void realjoystick_add_button_action(char *text_button,char *text_action)
         return;
     }
 
-    //Y definir el evento
+    //Y definir la accion
     realjoystick_actions_array[indice].asignado.v=1;
     realjoystick_actions_array[indice].button=button;
     realjoystick_actions_array[indice].button_type=button_type;
     realjoystick_actions_array[indice].index_accion=indice_accion;
 
 }
+
+
+//Retorna indice o -1 si no encontrado
+int realjoystick_find_action(int indice_inicial,int button,int type,int value)
+{
+    int i;
+    for (i=indice_inicial;i<MAX_ACTIONS_JOYSTICK;i++) {
+        if (realjoystick_actions_array[i].asignado.v==1) {
+            if (realjoystick_actions_array[i].button==button) {
+
+                //boton normal. no axis
+                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON && realjoystick_actions_array[i].button_type==0) return i;
+
+
+                if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+
+                    //ver si coindice el axis
+                    if (realjoystick_actions_array[i].button_type==+1) {
+                        if (value>0) return i;
+                    }
+
+                    if (realjoystick_actions_array[i].button_type==-1) {
+                        if (value<0) return i;
+                    }
+
+                    //si es 0, representara poner 0 en eje izquierdo y derecho por ejemplo
+
+                    if
+                    (
+                        (realjoystick_actions_array[i].button_type==+1 || realjoystick_actions_array[i].button_type==-1)
+                        && value==0
+                    )
+                    return i;
+
+                }
+            }
+
+        }
+    }
+
+	return -1;
+
+}
+
+
+
 
 
 z80_bit realjoystick_steering_enabled={0};
@@ -1366,6 +1412,21 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
             index=realjoystick_find_key(index+1,button,type,value);
             if (index>=0) {
                 debug_printf (VERBOSE_DEBUG,"Event found on index: %d. key=%c value:%d",index,realjoystick_keys_array[index].caracter,value);
+
+                //ver tipo boton normal o axis
+
+                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+                        realjoystick_set_reset_key(index,value);
+                }
+		    }
+        } while (index>=0);
+
+        //despues de boton a tecla, buscar boton a accion
+        index=-1;
+        do {
+            index=realjoystick_find_action(index+1,button,type,value);
+            if (index>=0) {
+                debug_printf (VERBOSE_DEBUG,"Action found on index: %d. value:%d",index,value);
 
                 //ver tipo boton normal o axis
 
