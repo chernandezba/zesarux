@@ -1022,8 +1022,9 @@ void realjoystick_clear_actions_array(void)
 
     int i;
     for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
-            realjoystick_actions_array[i].asignado.v=0;
-            realjoystick_actions_array[i].ultimo_valor=0;
+        realjoystick_actions_array[i].asignado.v=0;
+        realjoystick_actions_array[i].ultimo_valor=0;
+        realjoystick_actions_array[i].parametros[0]=0;
     }
 
 }
@@ -1136,6 +1137,16 @@ int realjoystick_find_action(int button,int type,int value)
 }
 
 
+void realjoystick_set_reset_action_send_action(int accion)
+{
+    //printf ("pulsada tecl de funcion\n");
+
+    menu_button_f_function.v=1;
+    menu_button_f_function_action=accion;
+    menu_set_menu_abierto(1);
+
+}
+
 
 void realjoystick_set_reset_action(int index,int value)
 {
@@ -1155,7 +1166,7 @@ void realjoystick_set_reset_action(int index,int value)
         //evitar repeticiones de acciones al mantener pulsado el botón/axis
         if (realjoystick_actions_array[index].ultimo_valor==0) {
             printf("ENVIAR ACCION\n");
-            realjoystick_send_f_function(accion);
+            realjoystick_set_reset_action_send_action(accion);
         }
     }
 
