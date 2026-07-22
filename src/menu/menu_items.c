@@ -46350,6 +46350,10 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                     //accion de joystick
                     if (si_pulsado_accion_joystick) {
                         //id_accion_joystick
+                        printf("Procesar parametros de openwindow desde accion joystick\n");
+                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
+                        printf("Ventana a abrir: %s\n",nombre);
+                        zxvision_open_window_by_name(nombre);
                     }
 
                     else {
