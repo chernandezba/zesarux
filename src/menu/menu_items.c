@@ -46249,6 +46249,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,
 
     //char buffer_mensaje[256];
 
+    char *extra_params=NULL;
+
     switch (id_funcion)
     {
         case F_FUNCION_DEFAULT:
@@ -46317,17 +46319,14 @@ void menu_process_f_functions_by_action_name(int id_funcion,
         case F_FUNCION_OPEN_WINDOW:
 
             //Abrir ventana que viene especificado como parametro del icono o tecla F.
+            printf("open window si_pulsado_icono_zxdesktop %d si_pulsado_boton_redefinido %d\n",si_pulsado_icono_zxdesktop,si_pulsado_boton_redefinido);
 
             //Si viene de pulsar icono
             if (si_pulsado_icono_zxdesktop) {
                 indice_icono=zxdesktop_configurable_icons_current_executing;
-
                 if (indice_icono!=-1) {
-
-                    char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
-
-                    zxvision_open_window_by_name(nombre);
-
+                    extra_params=zxdesktop_configurable_icons_list[indice_icono].extra_info;
+                    //printf("extra_params %s\n",extra_params);
                 }
             }
 
@@ -46342,8 +46341,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         debug_printf(VERBOSE_ERR,"Error getting Button parameters");
                     }
                     else {
-                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
-                        zxvision_open_window_by_name(nombre);
+                        extra_params=defined_buttons_functions_array_parameters[numero_boton_redefinido];
+                        //printf("extra_params %s\n",extra_params);
                     }
                 }
                 else {
@@ -46351,10 +46350,9 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         //accion de joystick
 
                         //id_accion_joystick
-                        printf("Procesar parametros de openwindow desde accion joystick\n");
-                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
-                        printf("Ventana a abrir: %s\n",nombre);
-                        zxvision_open_window_by_name(nombre);
+                        //printf("Procesar parametros de openwindow desde accion joystick\n");
+                        extra_params=realjoystick_actions_array[indice_accion_joystick].parametros;
+                        //printf("Ventana a abrir: %s\n",extra_params);
                     }
 
                     else {
@@ -46363,14 +46361,18 @@ void menu_process_f_functions_by_action_name(int id_funcion,
 
                         if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                         else {
-                            char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
-                            zxvision_open_window_by_name(nombre);
+                            extra_params=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
                         }
 
                     }
                 }
 
             }
+
+            if (extra_params!=NULL) {
+                zxvision_open_window_by_name(extra_params);
+            }
+
         break;
 
         case F_FUNCION_SEND_KEYS_MENU:

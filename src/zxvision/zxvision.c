@@ -28994,7 +28994,7 @@ int menu_inicio_return_button_userdef(int boton)
     int indice_tabla=defined_buttons_functions_array[boton];
     accion=menu_da_accion_direct_functions_indice(indice_tabla);
 
-    //printf("Boton: %d indice_tabla: %d accion: %d\n",boton,indice_tabla,accion);
+    //printf("menu_inicio_return_button_userdef Boton: %d indice_tabla: %d accion: %d\n",boton,indice_tabla,accion);
 
     if (accion!=F_FUNCION_DEFAULT) {
         return indice_tabla;
@@ -29010,35 +29010,15 @@ int menu_inicio_handle_button_presses_userdef(int boton)
     int indice_tabla=menu_inicio_return_button_userdef(boton);
     if (indice_tabla<0) return 0;
 
+    //printf("menu_inicio_handle_button_presses_userdef boton %d\n",boton);
+
     menu_process_f_functions_by_action_index(indice_tabla,1,boton); //Indicar que viene de boton redefinido por el usuario
     return 1;
 
 }
 
 
-//Mira si el boton pulsado esta redefinido por el usuario y lanza accion si conviene
-int old_delete_menu_inicio_handle_button_presses_userdef(int boton)
-{
-    boton--;
 
-    //El 0 no esta permitido
-    if (boton<0 || boton>=MAX_USERDEF_BUTTONS) return 0;
-
-    enum defined_f_function_ids accion;
-
-    int indice_tabla=defined_buttons_functions_array[boton];
-    accion=menu_da_accion_direct_functions_indice(indice_tabla);
-
-    //printf("Pulsado boton: %d\n",boton);
-
-    if (accion!=F_FUNCION_DEFAULT) {
-        menu_process_f_functions_by_action_index(indice_tabla,1,boton); //Indicar que viene de boton redefinido por el usuario
-        return 1;
-    }
-
-    return 0;
-
-}
 
 void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
 {
@@ -29104,6 +29084,7 @@ void menu_inicio_handle_button_presses(void)
 
     else {
 
+        //printf("menu_inicio_handle_button_presses pulsado_boton %d\n",pulsado_boton);
         if (menu_inicio_handle_button_presses_userdef(pulsado_boton)==0) {
 
             //Inicializar indice search, indicar ruta vacia
@@ -29516,11 +29497,11 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
 void menu_process_f_functions_by_action_index(int indice,int si_pulsado_boton_redefinido,int boton)
 {
 
-    //printf("numero boton: %d\n",boton);
+    //printf("menu_process_f_functions_by_action_index numero boton: %d\n",boton);
 
     int id_funcion=menu_da_accion_direct_functions_indice(indice);
 
-    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index,si_pulsado_boton_redefinido,boton,0,0);
+    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index,si_pulsado_boton_redefinido,boton-1,0,0);
 }
 
 void menu_process_f_functions(void)
