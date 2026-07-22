@@ -1137,14 +1137,13 @@ int realjoystick_find_action(int button,int type,int value)
 }
 
 
-void realjoystick_set_reset_action_send_action(int accion,int indice)
+void realjoystick_set_reset_action_send_action(int indice)
 {
     //printf ("pulsada tecl de funcion\n");
 
     //menu_button_f_function.v=1;
     menu_event_joystick_action.v=1;
     menu_event_joystick_action_indice=indice;
-    menu_button_f_function_action=accion;
     menu_set_menu_abierto(1);
 
 }
@@ -1155,20 +1154,20 @@ void realjoystick_set_reset_action(int index,int value)
 
     printf("set action index %d value %d\n",index,value);
 
-    int index_accion=realjoystick_actions_array[index].index_accion;
+    /*int index_accion=realjoystick_actions_array[index].index_accion;
 
     printf("index action %d\n",index_accion);
 
     enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(index_accion);
 
-    printf("action: %d\n",accion);
+    printf("action: %d\n",accion);*/
 
 
     if (value) {
         //evitar repeticiones de acciones al mantener pulsado el botón/axis
         if (realjoystick_actions_array[index].ultimo_valor==0) {
             printf("ENVIAR ACCION\n");
-            realjoystick_set_reset_action_send_action(accion,index);
+            realjoystick_set_reset_action_send_action(index);
         }
     }
 

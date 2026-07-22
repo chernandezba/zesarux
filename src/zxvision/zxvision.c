@@ -30499,10 +30499,20 @@ void menu_inicio(void)
             osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
 
 
-            menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0,0,0);
-            menu_button_f_function_action=0;
 
 
+                int index_accion=realjoystick_actions_array[menu_event_joystick_action_indice].index_accion;
+
+            printf("index action %d\n",index_accion);
+
+            enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(index_accion);
+
+            printf("action: %d\n",accion);
+
+            //int accion=menu_button_f_function_action;
+
+            menu_process_f_functions_by_action_name(accion,0,-1,0,0,0,0);
+            //menu_button_f_function_action=0;
 
 
             menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
