@@ -195,4 +195,4 @@ ok falta editar parametros de acciones * que permita editar accion desde menu.
 * quiza evento de full screen no tiene sentido pues ahora se puede configurar como accion de full screen. pasaria lo mismo con quicksave y otras, que esas son acciones y ya no necesarias como eventos
 ok * no permitir repeticiones: igual que si se pulsa una tecla F, hay que liberarla antes de pulsar y que se genere otra accion. en cambio eventos de joystick (up,down, etc) si que permiten repetición
 *entrada changelog
-*Gestión de parámetros en acciones openwindow, setmachine etc reducir código para evitar redundante
+ok *Gestión de parámetros en acciones openwindow, setmachine etc reducir código para evitar redundante

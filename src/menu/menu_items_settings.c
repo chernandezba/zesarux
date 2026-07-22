@@ -12966,6 +12966,8 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_clear_actions,NULL,"Clear list");
+        //para que el clear list no crea que es un item de parametros
+        menu_add_item_menu_valor_opcion(array_menu_common,0);
 
 
 
