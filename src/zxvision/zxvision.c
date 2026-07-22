@@ -28960,7 +28960,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
-        menu_process_f_functions_by_action_name(id_funcion,1,-1,0,0);
+        menu_process_f_functions_by_action_name(id_funcion,1,-1,0,0,0,0);
         //printf("Despues procesar funcion de icono\n");
     }
 
@@ -29515,7 +29515,7 @@ void menu_process_f_functions_by_action_index(int indice,int si_pulsado_boton_re
 
     int id_funcion=menu_da_accion_direct_functions_indice(indice);
 
-    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index,si_pulsado_boton_redefinido,boton);
+    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index,si_pulsado_boton_redefinido,boton,0,0);
 }
 
 void menu_process_f_functions(void)
@@ -30468,7 +30468,7 @@ void menu_inicio(void)
             if (menu_button_f_function_action==0) menu_process_f_functions();
             else {
                 //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
-                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0);
+                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0,0,0);
                 menu_button_f_function_action=0;
             }
 

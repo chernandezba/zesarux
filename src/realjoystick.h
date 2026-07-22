@@ -27,6 +27,9 @@
 
 #include "compileoptions.h"
 
+//Para usar PATH_MAX
+#include "zesarux.h"
+
 
 #ifdef USE_LINUXREALJOYSTICK
         //Es un linux con soporte realjoystick
@@ -186,6 +189,9 @@ struct s_realjoystick_button_action {
 
     //Ultimo valor recibido de joystick correspondiente a ese boton, para poder evitar repeticiones
     int ultimo_valor;
+
+    //Parametros de esa accion, como el nombre de la ventana en accion OpenWindow
+    char parametros[PATH_MAX];
 
 };
 

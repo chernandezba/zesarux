@@ -46024,7 +46024,7 @@ void menu_inicio_bucle_main(void)
             if (menu_button_f_function_action==0) menu_process_f_functions();
             else {
                 //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
-                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0);
+                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0,0,0);
                 menu_button_f_function_action=0;
             }
 
@@ -46233,10 +46233,13 @@ void menu_process_f_function_topspeed(void)
 
 int audiovolume_before_silence=100;
 
-//Procesar accion tecla F, o pulsado de boton superior reconfigurado, o pulsado de icono en ZX Desktop
+//Procesar accion tecla F, o pulsado de boton superior reconfigurado, o pulsado de icono en ZX Desktop o pulsada accion de joystick
 //si_pulsado_icono_zxdesktop=1 en caso de iconos de ZX Desktop
-//si_pulsado_icono_zxdesktop=0 en caso de teclas F o botones superior reconfigurado, y para distinguirlos, se usa si_pulsado_boton_redefinido
-void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,int si_pulsado_boton_redefinido,int numero_boton_redefinido)
+//si_pulsado_icono_zxdesktop=0 en caso de teclas F o botones superior reconfigurado, y para distinguirlos, se usa si_pulsado_boton_redefinido y si_pulsado_accion_joystick
+void menu_process_f_functions_by_action_name(int id_funcion,
+    int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,
+    int si_pulsado_boton_redefinido,int numero_boton_redefinido,
+    int si_pulsado_accion_joystick, int id_accion_joystick)
 {
 
     //printf("enum: %d\n",id_funcion);
@@ -46328,7 +46331,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                 }
             }
 
-            //Viene de pulsar boton ZX Desktop redefinido o tecla F
+            //Viene de pulsar boton ZX Desktop redefinido o tecla F o accion de joystick
             else {
                 if (si_pulsado_boton_redefinido) {
                     //boton ZX Desktop redefinido
@@ -46344,12 +46347,21 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                     }
                 }
                 else {
-                    //Tecla F
+                    //accion de joystick
+                    if (si_pulsado_accion_joystick) {
+                        //id_accion_joystick
+                    }
 
-                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                     else {
-                        char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
-                        zxvision_open_window_by_name(nombre);
+
+                        //Tecla F
+
+                        if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                        else {
+                            char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+                            zxvision_open_window_by_name(nombre);
+                        }
+
                     }
                 }
 
