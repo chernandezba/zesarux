@@ -184,6 +184,9 @@ struct s_realjoystick_button_action {
     //El indice a la accion en el array defined_direct_functions_array
     int index_accion;
 
+    //Ultimo valor recibido de joystick correspondiente a ese boton, para poder evitar repeticiones
+    int ultimo_valor;
+
 };
 
 typedef struct s_realjoystick_button_action realjoystick_button_action;

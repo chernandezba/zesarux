@@ -1023,6 +1023,7 @@ void realjoystick_clear_actions_array(void)
     int i;
     for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
             realjoystick_actions_array[i].asignado.v=0;
+            realjoystick_actions_array[i].ultimo_valor=0;
     }
 
 }
@@ -1136,8 +1137,6 @@ int realjoystick_find_action(int button,int type,int value)
 
 
 
-//si value=0, es reset
-//si value != no, es set
 void realjoystick_set_reset_action(int index,int value)
 {
 
@@ -1153,8 +1152,15 @@ void realjoystick_set_reset_action(int index,int value)
 
 
     if (value) {
-        realjoystick_send_f_function(accion);
+        //evitar repeticiones de acciones al mantener pulsado el botón/axis
+        if (realjoystick_actions_array[index].ultimo_valor==0) {
+            printf("ENVIAR ACCION\n");
+            realjoystick_send_f_function(accion);
+        }
     }
+
+
+    realjoystick_actions_array[index].ultimo_valor=value;
 
 
 

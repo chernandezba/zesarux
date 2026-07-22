@@ -645,7 +645,7 @@ void joystickWasRemoved(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED
 
 void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, void* inSender GCC_UNUSED, IOHIDValueRef value)
 {
-    //printf("Gamepad talked!\n");
+    //printf("joystickAction\n");
     IOHIDElementRef element = IOHIDValueGetElement(value);
     //NSLog(@"Element: %@", element);
 
