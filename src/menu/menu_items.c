@@ -46464,7 +46464,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                 }
             }
 
-            //Viene de pulsar tecla F o boton ZX Desktop redefinido
+            //Viene de pulsar boton ZX Desktop redefinido o tecla F o accion de joystick
             else {
                 if (si_pulsado_boton_redefinido) {
                     if (numero_boton_redefinido<0 || numero_boton_redefinido>=MAX_USERDEF_BUTTONS) {
@@ -46493,9 +46493,14 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                     //menu_smartload(0);
                 }
                 else {
-                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
-                    else {
-                        char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+
+                    if (si_pulsado_accion_joystick) {
+                        //accion de joystick
+
+                        //id_accion_joystick
+                        printf("Procesar parametros de quickload desde accion joystick\n");
+                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
+
                         strcpy(quickload_file,nombre);
 
                         quickfile=quickload_file;
@@ -46507,6 +46512,25 @@ void menu_process_f_functions_by_action_name(int id_funcion,
 
                         else {
                             quickload(quickload_file);
+                        }
+                    }
+
+                    else {
+                        if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                        else {
+                            char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+                            strcpy(quickload_file,nombre);
+
+                            quickfile=quickload_file;
+
+                            //Ver si es un zip que viene de una descarga online por ejemplo
+                            if (!util_compare_file_extension(nombre,"zip")) {
+                                menu_smartload(0);
+                            }
+
+                            else {
+                                quickload(quickload_file);
+                            }
                         }
                     }
                 }
