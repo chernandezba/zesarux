@@ -46681,7 +46681,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                 }
             }
 
-            //Viene de pulsar tecla F o boton ZX Desktop redefinido
+            //Viene de pulsar boton ZX Desktop redefinido o tecla F o accion de joystick
             else {
                 if (si_pulsado_boton_redefinido) {
                     //printf("Pulsado boton redefinido\n");
@@ -46708,23 +46708,39 @@ void menu_process_f_functions_by_action_name(int id_funcion,
 
                 else {
 
-                    //printf("Pulsado tecla F\n");
-                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                    if (si_pulsado_accion_joystick) {
+                        //accion de joystick
+
+                        //id_accion_joystick
+                        printf("Procesar parametros de quickload desde set machine\n");
+                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
+
+                        int maquina=get_machine_id_by_name(nombre);
+                        if (maquina==-1) return;
+
+                        menu_machine_set_machine_by_id(maquina);
+                    }
+
                     else {
-                        //printf("tecla F %d\n",id_tecla_f_pulsada);
-                        //printf("Parametros: %s\n",defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
-                        //Si opciones en blanco
-                        if (defined_f_functions_keys_array_parameters[id_tecla_f_pulsada][0]==0) {
-                            menu_machine_selection(0);
+
+                        //printf("Pulsado tecla F\n");
+                        if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                        else {
+                            //printf("tecla F %d\n",id_tecla_f_pulsada);
+                            //printf("Parametros: %s\n",defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
+                            //Si opciones en blanco
+                            if (defined_f_functions_keys_array_parameters[id_tecla_f_pulsada][0]==0) {
+                                menu_machine_selection(0);
+                            }
+
+                            else  {
+                                int maquina=get_machine_id_by_name(defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
+                                if (maquina==-1) return;
+
+                                menu_machine_set_machine_by_id(maquina);
+                            }
+
                         }
-
-                        else  {
-                            int maquina=get_machine_id_by_name(defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
-                            if (maquina==-1) return;
-
-                            menu_machine_set_machine_by_id(maquina);
-                        }
-
                     }
 
                 }
