@@ -46347,8 +46347,9 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                     }
                 }
                 else {
-                    //accion de joystick
                     if (si_pulsado_accion_joystick) {
+                        //accion de joystick
+
                         //id_accion_joystick
                         printf("Procesar parametros de openwindow desde accion joystick\n");
                         char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
@@ -46387,7 +46388,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                 }
             }
 
-            //Viene de pulsar tecla F o boton ZX Desktop redefinido
+            //Viene de pulsar boton ZX Desktop redefinido o tecla F o accion de joystick
             else {
                 if (si_pulsado_boton_redefinido) {
                     //debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon or F-key");
@@ -46401,10 +46402,25 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                     }
                 }
                 else {
-                    if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
-                    else {
-                        char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+                    if (si_pulsado_accion_joystick) {
+                        //accion de joystick
+
+                        //id_accion_joystick
+                        printf("Procesar parametros de F_FUNCION_SEND_KEYS_MENU desde accion joystick\n");
+                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
+                        printf("send keys: %s\n",nombre);
                         menu_inject_teclas_send_teclas(nombre);
+                    }
+
+                    else {
+
+
+                        if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
+                        else {
+                            char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
+                            menu_inject_teclas_send_teclas(nombre);
+                        }
+
                     }
                 }
 

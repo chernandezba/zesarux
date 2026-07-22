@@ -1030,6 +1030,7 @@ void realjoystick_clear_actions_array(void)
     //temp
     //strcpy(realjoystick_actions_array[1].parametros,"visualmem");
     //strcpy(realjoystick_actions_array[2].parametros,"DebugCPU");
+    //strcpy(realjoystick_actions_array[3].parametros,"la");
 
 }
 
