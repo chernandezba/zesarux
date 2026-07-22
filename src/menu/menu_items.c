@@ -46328,9 +46328,11 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                 }
             }
 
-            //Viene de pulsar tecla F o boton ZX Desktop redefinido
+            //Viene de pulsar boton ZX Desktop redefinido o tecla F
             else {
                 if (si_pulsado_boton_redefinido) {
+                    //boton ZX Desktop redefinido
+
                     //debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon or F-key");
                     //printf("Numero boton pulsado: %d\n",numero_boton_redefinido);
                     if (numero_boton_redefinido<0 || numero_boton_redefinido>=MAX_USERDEF_BUTTONS) {
@@ -46342,6 +46344,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                     }
                 }
                 else {
+                    //Tecla F
+
                     if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                     else {
                         char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
