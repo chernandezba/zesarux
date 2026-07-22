@@ -12818,12 +12818,16 @@ void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
                 else button_type=+1;
             }
 
+            char string_button_type[2];
+            if (button_type==0) string_button_type[0]=0;
+            else if (button_type>0) strcpy(string_button_type,"+");
+            else strcpy(string_button_type,"-");
 
             printf("buscando boton %d tipo %d\n",button,type);
 
             //Validar que no exista ya
             if (realjoystick_find_if_already_defined_button_action(button,button_type)>=0) {
-                debug_printf(VERBOSE_ERR,"Button %d already mapped",button);
+                debug_printf(VERBOSE_ERR,"Button/Axis %s%d already mapped",string_button_type,button);
                 return;
             }
 
