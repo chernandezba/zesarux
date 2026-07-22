@@ -46239,7 +46239,7 @@ int audiovolume_before_silence=100;
 void menu_process_f_functions_by_action_name(int id_funcion,
     int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada,
     int si_pulsado_boton_redefinido,int numero_boton_redefinido,
-    int si_pulsado_accion_joystick, int id_accion_joystick)
+    int si_pulsado_accion_joystick, int indice_accion_joystick)
 {
 
     //printf("enum: %d\n",id_funcion);
