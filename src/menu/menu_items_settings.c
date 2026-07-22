@@ -12842,7 +12842,7 @@ void menu_hardware_realjoystick_keys_action(MENU_ITEM_PARAMETERS)
 
 
             //Asignar parametros extra segun el tipo de accion
-            enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
+            //enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
 
             //zxdesktop_add_extra_parameters_element_action(accion,
             //    defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion], NULL);
@@ -12876,10 +12876,12 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
 
         for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
 
+            int index_accion=realjoystick_actions_array[i].index_accion;
+
             if (realjoystick_actions_array[i].asignado.v) {
                 menu_print_text_axis(buffer_texto_boton,realjoystick_actions_array[i].button_type,realjoystick_actions_array[i].button);
 
-                int index_accion=realjoystick_actions_array[i].index_accion;
+
                 //enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(index_accion);
 
                 //printf("action: %d\n",accion);
@@ -12899,6 +12901,32 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_common,"Redefine the button");
             menu_add_item_menu_ayuda(array_menu_common,"Indicates which action is triggered when "
             "pressed the button/axis on the real joystick");
+
+
+            //Algunas acciones que permiten extra info
+            if (realjoystick_actions_array[i].asignado.v) {
+                if (
+                    defined_direct_functions_array[index_accion].id_funcion==F_FUNCION_OPEN_WINDOW ||
+                    defined_direct_functions_array[index_accion].id_funcion==F_FUNCION_SEND_KEYS_MENU ||
+                    defined_direct_functions_array[index_accion].id_funcion==F_FUNCION_SET_MACHINE ||
+                    defined_direct_functions_array[index_accion].id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
+                    defined_direct_functions_array[index_accion].id_funcion==F_FUNCION_DESKTOP_TAPE ||
+                    defined_direct_functions_array[index_accion].id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD
+                ) {
+                    char string_extra_info[16];
+                    menu_tape_settings_trunc_name(realjoystick_actions_array[i].parametros,string_extra_info,16);
+
+                    menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                        " Parameters"," Parámetros"," Paràmetres");
+                    menu_add_item_menu_sufijo_format(array_menu_common,": %s",string_extra_info);
+                    menu_add_item_menu_tooltip(array_menu_common,"Parameters for some actions, like window name for OpenWindow action");
+                    menu_add_item_menu_ayuda(array_menu_common,"Parameters for some actions, like window name for OpenWindow action");
+
+                    //Esto es un poco chapuza... para indicar que es Parameters, la opcion tiene bit 8 alzado
+                    menu_add_item_menu_valor_opcion(array_menu_common,i | 256);
+                }
+            }
+
         }
 
         menu_add_item_menu_separator(array_menu_common);
@@ -12924,16 +12952,30 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+            //Se llama a la funcion de elegir accion o establecer extra info
+            if (item_seleccionado.valor_opcion>=256) {
+                //Establecer extra info
+                //char defined_f_functions_keys_array_parameters[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
 
-                //Si este menu lo definimos como un menu tabulado,
-                //si hay alguna accion disparada en la que se haya pulsado ESC,
-                //no queremos que cierre este menu
-                //salir_todos_menus=0;
+                int indice=item_seleccionado.valor_opcion & 0xFF;
 
+                menu_ventana_scanf("Parameters",realjoystick_actions_array[indice].parametros,PATH_MAX);
+
+            }
+
+            else {
+
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                    //printf ("actuamos por funcion\n");
+                    item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                    //Si este menu lo definimos como un menu tabulado,
+                    //si hay alguna accion disparada en la que se haya pulsado ESC,
+                    //no queremos que cierre este menu
+                    //salir_todos_menus=0;
+
+                }
             }
         }
 
