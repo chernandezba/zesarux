@@ -12802,38 +12802,36 @@ void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
     if (redefinir) {
         int index_accion=realjoystick_actions_array[valor_opcion].index_accion;
 
-        int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(index_accion);
 
-        if (indice_retorno>=0) {
+        if ( (type&REALJOYSTICK_INPUT_EVENT_INIT)!=REALJOYSTICK_INPUT_EVENT_INIT) {
+            debug_printf (VERBOSE_DEBUG,"redefine for button: %d type: %d value: %d",button,type,value);
 
-            if ( (type&REALJOYSTICK_INPUT_EVENT_INIT)!=REALJOYSTICK_INPUT_EVENT_INIT) {
-                debug_printf (VERBOSE_DEBUG,"redefine for button: %d type: %d value: %d",button,type,value);
-
-                int button_type=0;
+            int button_type=0;
 
 
-                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON) {
-                    button_type=0;
-                }
+            if (type==REALJOYSTICK_INPUT_EVENT_BUTTON) {
+                button_type=0;
+            }
 
-                if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
-                    if (value<0) button_type=-1;
-                    else button_type=+1;
-                }
+            if (type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+                if (value<0) button_type=-1;
+                else button_type=+1;
+            }
 
-                //Antes de asignarlo, ver que no exista uno antes
-                //desasignamos primero el actual
-                realjoystick_actions_array[valor_opcion].asignado.v=0;
 
-                printf("buscando boton %d tipo %d\n",button,type);
+            printf("buscando boton %d tipo %d\n",button,type);
 
-                //Validar que no exista ya
-                if (realjoystick_find_if_already_defined_button_action(button,button_type)>=0) {
-                    debug_printf(VERBOSE_ERR,"Button %d already mapped",button);
-                    return;
-                }
+            //Validar que no exista ya
+            if (realjoystick_find_if_already_defined_button_action(button,button_type)>=0) {
+                debug_printf(VERBOSE_ERR,"Button %d already mapped",button);
+                return;
+            }
 
-                printf("No existe\n");
+            printf("No existe\n");
+
+            int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(index_accion);
+
+            if (indice_retorno>=0) {
 
                 //int existe_evento=realjoystick_find_if_already_defined_button(tabla,maximo,button,button_type);
 
@@ -12846,18 +12844,18 @@ void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
                 realjoystick_actions_array[valor_opcion].button=button;
                 realjoystick_actions_array[valor_opcion].button_type=button_type;
                 realjoystick_actions_array[valor_opcion].index_accion=indice_retorno;
-
-            }
-
-
-
-            //Asignar parametros extra segun el tipo de accion
-            //enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
-
-            //zxdesktop_add_extra_parameters_element_action(accion,
-            //    defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion], NULL);
+                }
 
         }
+
+
+
+        //Asignar parametros extra segun el tipo de accion
+        //enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
+
+        //zxdesktop_add_extra_parameters_element_action(accion,
+        //    defined_f_functions_keys_array_parameters[item_seleccionado.valor_opcion], NULL);
+
     }
 
 }
