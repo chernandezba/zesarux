@@ -12826,6 +12826,9 @@ void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
             printf("buscando boton %d tipo %d\n",button,type);
 
             //Validar que no exista ya
+            //Desasignar antes
+            realjoystick_actions_array[valor_opcion].asignado.v=0;
+
             if (realjoystick_find_if_already_defined_button_action(button,button_type)>=0) {
                 debug_printf(VERBOSE_ERR,"Button/Axis %s%d already mapped",string_button_type,button);
                 return;
@@ -12848,7 +12851,27 @@ void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
                 realjoystick_actions_array[valor_opcion].button=button;
                 realjoystick_actions_array[valor_opcion].button_type=button_type;
                 realjoystick_actions_array[valor_opcion].index_accion=indice_retorno;
+
+
+                //Asignar parametros extra segun el tipo de accion
+                enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
+
+                //Si es open window, mostrar lista de posibles ventanas
+                if (accion==F_FUNCION_OPEN_WINDOW) {
+                    int elemento=menu_zxdesktop_get_window_list();
+                    if (elemento>=0) {
+
+                        if (zxvision_known_window_is_valid_by_index(elemento)>=0) {
+                            strcpy(realjoystick_actions_array[valor_opcion].parametros,
+                                zxvision_known_window_names_array[elemento].nombre);
+
+                        }
+
+
+                    }
                 }
+
+            }
 
         }
 
