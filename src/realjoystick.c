@@ -1027,10 +1027,6 @@ void realjoystick_clear_actions_array(void)
         realjoystick_actions_array[i].parametros[0]=0;
     }
 
-    //temp
-    //strcpy(realjoystick_actions_array[1].parametros,"visualmem");
-    //strcpy(realjoystick_actions_array[2].parametros,"DebugCPU");
-    strcpy(realjoystick_actions_array[3].parametros,"p2as");
 
 }
 
@@ -1059,7 +1055,7 @@ int realjoystick_find_if_already_defined_button_action(int button,int type)
 	return -1;
 }
 
-void realjoystick_add_button_action(char *text_button,char *text_action)
+void realjoystick_add_button_action(char *text_button,char *text_action,char *parameters)
 {
     //Validar primero que la accion sea valida
     int indice_accion=get_defined_direct_functions(text_action);
@@ -1095,6 +1091,7 @@ void realjoystick_add_button_action(char *text_button,char *text_action)
     realjoystick_actions_array[indice].button=button;
     realjoystick_actions_array[indice].button_type=button_type;
     realjoystick_actions_array[indice].index_accion=indice_accion;
+    strcpy(realjoystick_actions_array[indice].parametros,parameters);
 
 }
 
