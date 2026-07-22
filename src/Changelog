@@ -32,6 +32,7 @@ Fixed Fade Out video effect
 Fixed downloading ZEsarUX extras from menu Network
 Fixed showing joystick button values on Real Joystick information window when using SDL
 Fixed drawing last line of waveform on window View Waveform
+Fixed pressing redefined top button with extra parameters
 
 ----
 

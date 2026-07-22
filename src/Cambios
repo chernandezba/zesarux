@@ -32,6 +32,7 @@ Corregido efecto de video Fade Out
 Corregida descarga de ZEsarUX extras desde menú Network
 Corregido al mostrar valores de botones de joystick real en ventana de Real Joystick information al usar SDL
 Corregido al dibujar última linea de forma de onda en ventana View Waveform
+Corregido al pulsar un botón superior redefinido con parámetros adicionales
 
 ----
 
