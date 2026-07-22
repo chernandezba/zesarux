@@ -1141,7 +1141,8 @@ void realjoystick_set_reset_action_send_action(int accion)
 {
     //printf ("pulsada tecl de funcion\n");
 
-    menu_button_f_function.v=1;
+    //menu_button_f_function.v=1;
+    menu_event_joystick_action.v=1;
     menu_button_f_function_action=accion;
     menu_set_menu_abierto(1);
 

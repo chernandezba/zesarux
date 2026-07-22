@@ -1422,6 +1422,7 @@ extern void zmenu_parse_file(char *archivo);
 extern z80_bit menu_event_remote_protocol_enterstep;
 extern z80_bit menu_button_f_function;
 extern int menu_button_f_function_index;
+extern z80_bit menu_event_joystick_action;
 
 extern z80_bit zrcp_easter_egg_running;
 

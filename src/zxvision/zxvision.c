@@ -1465,6 +1465,8 @@ z80_bit menu_event_new_update={0};
 
 z80_bit menu_button_f_function={0};
 
+z80_bit menu_event_joystick_action={0};
+
 //tecla f pulsada
 int menu_button_f_function_index;
 //accion de tecla f simulada desde joystick
@@ -28440,6 +28442,7 @@ void menu_inicio_pre_retorno_reset_flags(void)
     menu_breakpoint_exception.v=0;
     menu_event_remote_protocol_enterstep.v=0;
     menu_button_f_function.v=0;
+    menu_event_joystick_action.v=0;
     menu_event_open_menu.v=0;
 }
 
@@ -30467,7 +30470,7 @@ void menu_inicio(void)
             //Procesamos cuando se pulsa tecla F concreta desde joystick
             if (menu_button_f_function_action==0) menu_process_f_functions();
             else {
-                //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
+                //O procesar cuando se envia un evento concreto, normalmente viene de evento de joystick
                 menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0,0,0);
                 menu_button_f_function_action=0;
             }
@@ -30481,6 +30484,33 @@ void menu_inicio(void)
 
 
         }
+
+        if (menu_event_joystick_action.v)  {
+
+            printf("### Procesar accion de joystick\n");
+
+            //Si se reabre menu, resetear flags de teclas pulsadas especiales
+            //Esto evita por ejemplo que al abrir menu con F5, si se entra a submenu, se crea que hemos pulsado F5 y cierre el menu y vuelva a abrir menu principal
+            menu_event_joystick_action.v=0;
+
+
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+
+            menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1,0,0,0,0);
+            menu_button_f_function_action=0;
+
+
+            //menu_event_open_menu.v
+
+            menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
+            cls_menu_overlay();
+
+            //printf("Fin procesamiento f funciones\n");
+
+
+        }
+
 
 
 
