@@ -46403,9 +46403,9 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         //accion de joystick
 
                         //id_accion_joystick
-                        printf("Procesar parametros de F_FUNCION_SEND_KEYS_MENU desde accion joystick\n");
+                        //printf("Procesar parametros de F_FUNCION_SEND_KEYS_MENU desde accion joystick\n");
                         extra_params=realjoystick_actions_array[indice_accion_joystick].parametros;
-                        printf("send keys: %s\n",extra_params);
+                        //printf("send keys: %s\n",extra_params);
                     }
 
                     else {
@@ -46437,28 +46437,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                 indice_icono=zxdesktop_configurable_icons_current_executing;
 
                 if (indice_icono!=-1) {
-
-                    char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
-                    //Si nombre vacio, indicar al usuario
-                    if (nombre[0]==0) {
-                        debug_printf(VERBOSE_ERR,"You should write a file name on the Icon parameters");
-                    }
-
-                    else {
-
-                        strcpy(quickload_file,nombre);
-
-                        quickfile=quickload_file;
-
-                        //Ver si es un zip que viene de una descarga online por ejemplo
-                        if (!util_compare_file_extension(nombre,"zip")) {
-                            menu_smartload(0);
-                        }
-
-                        else {
-                            quickload(quickload_file);
-                        }
-                    }
+                    extra_params=zxdesktop_configurable_icons_list[indice_icono].extra_info;
                 }
             }
 
@@ -46469,26 +46448,9 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         debug_printf(VERBOSE_ERR,"Error getting Button parameters");
                     }
                     else {
-                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
-
-                        strcpy(quickload_file,nombre);
-
-                        quickfile=quickload_file;
-
-                        //Ver si es un zip que viene de una descarga online por ejemplo
-                        if (!util_compare_file_extension(nombre,"zip")) {
-                            menu_smartload(0);
-                        }
-
-                        else {
-                            quickload(quickload_file);
-                        }
+                        extra_params=defined_buttons_functions_array_parameters[numero_boton_redefinido];
                     }
 
-
-                    //No hay parametros. Abrir smartload tal cual
-                    //printf("Pulsado boton redefinido\n");
-                    //menu_smartload(0);
                 }
                 else {
 
@@ -46496,43 +46458,41 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         //accion de joystick
 
                         //id_accion_joystick
-                        printf("Procesar parametros de quickload desde accion joystick\n");
-                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
+                        //printf("Procesar parametros de quickload desde accion joystick\n");
+                        extra_params=realjoystick_actions_array[indice_accion_joystick].parametros;
 
-                        strcpy(quickload_file,nombre);
-
-                        quickfile=quickload_file;
-
-                        //Ver si es un zip que viene de una descarga online por ejemplo
-                        if (!util_compare_file_extension(nombre,"zip")) {
-                            menu_smartload(0);
-                        }
-
-                        else {
-                            quickload(quickload_file);
-                        }
                     }
 
                     else {
                         if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                         else {
-                            char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
-                            strcpy(quickload_file,nombre);
-
-                            quickfile=quickload_file;
-
-                            //Ver si es un zip que viene de una descarga online por ejemplo
-                            if (!util_compare_file_extension(nombre,"zip")) {
-                                menu_smartload(0);
-                            }
-
-                            else {
-                                quickload(quickload_file);
-                            }
+                            extra_params=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
                         }
                     }
                 }
 
+            }
+
+            if (extra_params!=NULL) {
+
+                //Si nombre vacio, indicar al usuario
+                if (extra_params[0]==0) {
+                    debug_printf(VERBOSE_ERR,"You should write a file name on parameters");
+                }
+                else {
+                    strcpy(quickload_file,extra_params);
+
+                    quickfile=quickload_file;
+
+                    //Ver si es un zip que viene de una descarga online por ejemplo
+                    if (!util_compare_file_extension(extra_params,"zip")) {
+                        menu_smartload(0);
+                    }
+
+                    else {
+                        quickload(quickload_file);
+                    }
+                }
             }
         break;
 
