@@ -46626,16 +46626,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                 indice_icono=zxdesktop_configurable_icons_current_executing;
 
                 if (indice_icono!=-1) {
-                    //Si opciones en blanco
-                    if (zxdesktop_configurable_icons_list[indice_icono].extra_info[0]==0) {
-                        menu_machine_selection(0);
-                    }
-                    else {
-                        int maquina=get_machine_id_by_name(zxdesktop_configurable_icons_list[indice_icono].extra_info);
-                        if (maquina==-1) return;
-
-                        menu_machine_set_machine_by_id(maquina);
-                    }
+                    extra_params=zxdesktop_configurable_icons_list[indice_icono].extra_info;
                 }
             }
 
@@ -46648,19 +46639,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         debug_printf(VERBOSE_ERR,"Error getting Button parameters");
                     }
                     else {
-                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
-                        //Si opciones en blanco
-                        if (nombre[0]==0) {
-                            menu_machine_selection(0);
-                        }
-                        else {
-                            int maquina=get_machine_id_by_name(nombre);
-                            if (maquina==-1) return;
-
-                            menu_machine_set_machine_by_id(maquina);
-                        }
+                        extra_params=defined_buttons_functions_array_parameters[numero_boton_redefinido];
                     }
-
 
                 }
 
@@ -46670,13 +46650,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         //accion de joystick
 
                         //id_accion_joystick
-                        printf("Procesar parametros de quickload desde set machine\n");
-                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
-
-                        int maquina=get_machine_id_by_name(nombre);
-                        if (maquina==-1) return;
-
-                        menu_machine_set_machine_by_id(maquina);
+                        //printf("Procesar parametros de quickload desde set machine\n");
+                        extra_params=realjoystick_actions_array[indice_accion_joystick].parametros;
                     }
 
                     else {
@@ -46684,25 +46659,27 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         //printf("Pulsado tecla F\n");
                         if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                         else {
-                            //printf("tecla F %d\n",id_tecla_f_pulsada);
-                            //printf("Parametros: %s\n",defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
-                            //Si opciones en blanco
-                            if (defined_f_functions_keys_array_parameters[id_tecla_f_pulsada][0]==0) {
-                                menu_machine_selection(0);
-                            }
-
-                            else  {
-                                int maquina=get_machine_id_by_name(defined_f_functions_keys_array_parameters[id_tecla_f_pulsada]);
-                                if (maquina==-1) return;
-
-                                menu_machine_set_machine_by_id(maquina);
-                            }
-
+                            extra_params=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
                         }
                     }
 
                 }
 
+            }
+
+            if (extra_params!=NULL) {
+
+                //Si opciones en blanco
+                if (extra_params[0]==0) {
+                    menu_machine_selection(0);
+                }
+                else {
+
+                    int maquina=get_machine_id_by_name(extra_params);
+                    if (maquina==-1) return;
+
+                    menu_machine_set_machine_by_id(maquina);
+                }
             }
 
 
