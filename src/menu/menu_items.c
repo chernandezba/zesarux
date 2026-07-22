@@ -46319,7 +46319,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
         case F_FUNCION_OPEN_WINDOW:
 
             //Abrir ventana que viene especificado como parametro del icono o tecla F.
-            printf("open window si_pulsado_icono_zxdesktop %d si_pulsado_boton_redefinido %d\n",si_pulsado_icono_zxdesktop,si_pulsado_boton_redefinido);
+            //printf("open window si_pulsado_icono_zxdesktop %d si_pulsado_boton_redefinido %d\n",si_pulsado_icono_zxdesktop,si_pulsado_boton_redefinido);
 
             //Si viene de pulsar icono
             if (si_pulsado_icono_zxdesktop) {
@@ -46382,11 +46382,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                 indice_icono=zxdesktop_configurable_icons_current_executing;
 
                 if (indice_icono!=-1) {
-
-                    char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
-
-                    menu_inject_teclas_send_teclas(nombre);
-
+                    extra_params=zxdesktop_configurable_icons_list[indice_icono].extra_info;
                 }
             }
 
@@ -46399,8 +46395,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,
                         debug_printf(VERBOSE_ERR,"Error getting Button parameters");
                     }
                     else {
-                        char *nombre=defined_buttons_functions_array_parameters[numero_boton_redefinido];
-                        menu_inject_teclas_send_teclas(nombre);
+                        extra_params=defined_buttons_functions_array_parameters[numero_boton_redefinido];
                     }
                 }
                 else {
@@ -46409,23 +46404,24 @@ void menu_process_f_functions_by_action_name(int id_funcion,
 
                         //id_accion_joystick
                         printf("Procesar parametros de F_FUNCION_SEND_KEYS_MENU desde accion joystick\n");
-                        char *nombre=realjoystick_actions_array[indice_accion_joystick].parametros;
-                        printf("send keys: %s\n",nombre);
-                        menu_inject_teclas_send_teclas(nombre);
+                        extra_params=realjoystick_actions_array[indice_accion_joystick].parametros;
+                        printf("send keys: %s\n",extra_params);
                     }
 
                     else {
 
-
                         if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"Error getting F-Key info");
                         else {
-                            char *nombre=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
-                            menu_inject_teclas_send_teclas(nombre);
+                            extra_params=defined_f_functions_keys_array_parameters[id_tecla_f_pulsada];
                         }
 
                     }
                 }
 
+            }
+
+            if (extra_params!=NULL) {
+                menu_inject_teclas_send_teclas(extra_params);
             }
 
         break;
