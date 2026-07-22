@@ -12726,7 +12726,7 @@ void menu_hardware_realjoystick_keys(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
-void menu_hardware_realjoystick_keys_action(MENU_ITEM_PARAMETERS)
+void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
 {
 
 
@@ -12825,6 +12825,16 @@ void menu_hardware_realjoystick_keys_action(MENU_ITEM_PARAMETERS)
                 //desasignamos primero el actual
                 realjoystick_actions_array[valor_opcion].asignado.v=0;
 
+                printf("buscando boton %d tipo %d\n",button,type);
+
+                //Validar que no exista ya
+                if (realjoystick_find_if_already_defined_button_action(button,button_type)>=0) {
+                    debug_printf(VERBOSE_ERR,"Button %d already mapped",button);
+                    return;
+                }
+
+                printf("No existe\n");
+
                 //int existe_evento=realjoystick_find_if_already_defined_button(tabla,maximo,button,button_type);
 
                 //if (existe_evento!=-1) {
@@ -12895,8 +12905,7 @@ void menu_hardware_realjoystick_actions(MENU_ITEM_PARAMETERS)
                 sprintf(buffer_texto,"Unused entry");
             }
 
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys_action,NULL,buffer_texto);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_realjoystick_actions_edit,NULL,buffer_texto);
             menu_add_item_menu_valor_opcion(array_menu_common,i);
             menu_add_item_menu_tooltip(array_menu_common,"Redefine the button");
             menu_add_item_menu_ayuda(array_menu_common,"Indicates which action is triggered when "

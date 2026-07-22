@@ -239,6 +239,8 @@ extern int realjoystick_set_event_key(char *text_event,char *text_key);
 
 extern void realjoystick_add_button_action(char *text_button,char *text_action,char *parameters);
 
+extern int realjoystick_find_if_already_defined_button_action(int button,int type);
+
 extern void realjoystick_common_set_event(int button,int type,int value,int value_axis);
 extern void realjoystick_common_set_hat(int boton,int direccion);
 
