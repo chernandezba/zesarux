@@ -1467,6 +1467,8 @@ z80_bit menu_button_f_function={0};
 
 z80_bit menu_event_joystick_action={0};
 
+int menu_event_joystick_action_indice=0;
+
 //tecla f pulsada
 int menu_button_f_function_index;
 //accion de tecla f simulada desde joystick
@@ -30487,7 +30489,7 @@ void menu_inicio(void)
 
         if (menu_event_joystick_action.v)  {
 
-            printf("### Procesar accion de joystick\n");
+            printf("### Procesar accion de joystick. indice %d\n",menu_event_joystick_action_indice);
 
             //Si se reabre menu, resetear flags de teclas pulsadas especiales
             //Esto evita por ejemplo que al abrir menu con F5, si se entra a submenu, se crea que hemos pulsado F5 y cierre el menu y vuelva a abrir menu principal
@@ -30501,12 +30503,12 @@ void menu_inicio(void)
             menu_button_f_function_action=0;
 
 
-            //menu_event_open_menu.v
+
 
             menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
             cls_menu_overlay();
 
-            //printf("Fin procesamiento f funciones\n");
+
 
 
         }
