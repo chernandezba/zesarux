@@ -70,7 +70,7 @@ veces
 
 
 -Zeng opción para enviar mensaje a un usuario concreto
--En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre
+-En Zeng si usuario envía pulsación tecla pero la liberación de tecla no llega por fallo de red, se quedará la tecla pulsada siempre.
 Hacer un proceso en que, si nadie pulsa una tecla (ni clientes Zeng ni el propio servidor) durante 5 minutos, que libere todas teclas
 -en zeng online, poder pausar una habitación entera. un jugador que esté dentro verá el juego congelado
 
@@ -140,8 +140,3 @@ ok - probar joystick "nes" en Linux (Nativo Linux), joystick logic3
 ok - probar joystick "nes" en Windows, joystick logic3
 - probar volante en Mac, Linux, Windows
 
-
-
--F función cualquiera Tecla F por joystick
-ok *entrada changelog
-ok -acciones asignadas a mismo axis a izquierda y derecha solo hace uno, el otro considera que se está repitiendo al no recibir 0 (el derecho)
