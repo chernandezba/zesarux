@@ -5216,7 +5216,24 @@ int util_write_configfile(void)
         }
     }
 
+    //real joystick buttons to actions
+    for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
+        if (realjoystick_actions_array[i].asignado.v) {
+            char texto_button[20];
+            int button_type;
+            z80_byte caracter;
+            button_type=realjoystick_actions_array[i].button_type;
 
+            util_write_config_aux_realjoystick(button_type, realjoystick_actions_array[i].button, texto_button);
+
+
+            int index_accion=realjoystick_actions_array[i].index_accion;
+
+
+            ADD_STRING_CONFIG,"--joystickaction %s \"%s\" \"%s\"",texto_button,defined_direct_functions_array[index_accion].texto_funcion,realjoystick_actions_array[i].parametros);
+
+        }
+    }
 
 
     //joystickkeyev no lo estoy autoguardando, esto es mas indicado para archivos .config
