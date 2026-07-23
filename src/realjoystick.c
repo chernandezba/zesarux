@@ -996,6 +996,7 @@ void realjoystick_clear_actions_array(void)
         realjoystick_actions_array[i].asignado.v=0;
         realjoystick_actions_array[i].ultimo_valor=0;
         realjoystick_actions_array[i].parametros[0]=0;
+        realjoystick_actions_array[i].index_accion=0;
     }
 
 
