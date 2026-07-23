@@ -155,8 +155,7 @@ char *realjoystick_event_names[]={
 	"Aux1", //20
 	"Aux2",
 	"Aux3",
-	"Aux4",
-    "Rewind", //24
+	"Aux4", //23
 };
 
 void realjoystick_print_event_keys(void)
@@ -710,11 +709,6 @@ void realjoystick_set_reset_event(int index,int value)
 			}
 		break;
 
-		case REALJOYSTICK_EVENT_REWIND:
-			if (value) {
-                realjoystick_send_f_function(F_FUNCION_REWIND);
-			}
-		break;
 
 
 
