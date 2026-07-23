@@ -132,19 +132,18 @@ extern z80_bit realjoystick_disabled;
 #define REALJOYSTICK_EVENT_ENTER                10
 #define REALJOYSTICK_EVENT_MENU_TAB             11
 #define REALJOYSTICK_EVENT_QUICKLOAD            12
-#define REALJOYSTICK_EVENT_QUICKSAVE            13
-#define REALJOYSTICK_EVENT_OSDKEYBOARD          14
-#define REALJOYSTICK_EVENT_OSD_TEXT_KEYBOARD    15
-#define REALJOYSTICK_EVENT_NUMBERSELECT         16
-#define REALJOYSTICK_EVENT_NUMBERACTION         17
-#define REALJOYSTICK_EVENT_JOYSELECT            18
-#define REALJOYSTICK_EVENT_AUX1                 19
-#define REALJOYSTICK_EVENT_AUX2                 20
-#define REALJOYSTICK_EVENT_AUX3                 21
-#define REALJOYSTICK_EVENT_AUX4                 22
+#define REALJOYSTICK_EVENT_OSDKEYBOARD          13
+#define REALJOYSTICK_EVENT_OSD_TEXT_KEYBOARD    14
+#define REALJOYSTICK_EVENT_NUMBERSELECT         15
+#define REALJOYSTICK_EVENT_NUMBERACTION         16
+#define REALJOYSTICK_EVENT_JOYSELECT            17
+#define REALJOYSTICK_EVENT_AUX1                 18
+#define REALJOYSTICK_EVENT_AUX2                 19
+#define REALJOYSTICK_EVENT_AUX3                 20
+#define REALJOYSTICK_EVENT_AUX4                 21
 
 //este valor es el numero de ultimo REALJOYSTICK_EVENT_XX +1
-#define MAX_EVENTS_JOYSTICK 23
+#define MAX_EVENTS_JOYSTICK 22
 
 extern char *realjoystick_event_names[];
 

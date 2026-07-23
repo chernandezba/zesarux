@@ -146,7 +146,6 @@ char *realjoystick_event_names[]={
     "Enter",
     "MenuTab",
     "Smartload",
-	"Quicksave",
 	"Osdkeyboard",
 	"Osdtextkb",
 	"NumSelect",
@@ -710,15 +709,6 @@ void realjoystick_set_reset_event(int index,int value)
 		break;
 
 
-
-
-		case REALJOYSTICK_EVENT_QUICKSAVE:
-			if (value) {
-				//printf ("boton quicksave\n");
-				realjoystick_send_f_function(F_FUNCION_QUICKSAVE);
-		      	//Activar funcion f en menu. Primera funcion que llamo desde joystick de la misma manera que cuando se pulsa tecla F de funcion
-			}
-		break;
 
 		case REALJOYSTICK_EVENT_OSDKEYBOARD:
             if (value) {
