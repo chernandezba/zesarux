@@ -1125,7 +1125,7 @@ printf (
 
         int i;
         printf (
-        "--def-f-function key action                 Define F key to do an action. action can be: ");
+        "--def-f-function key action                 Define F key to do an action. Action must be one of: ");
 
 
         print_defined_direct_functions();
@@ -1912,23 +1912,19 @@ printf("\n"
         "--zxdesktop-icons-stroke-color n               Define color icons stroke (0-15)\n"
 
         "--zxdesktop-add-icon x y a n e s               Add icon to position x,y, to action a, icon name n, extra parameters e, status s. "
-          "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. action can be: ");
+          "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. Action must be one of: ");
 
 
-        for (i=0;i<MAX_F_FUNCTIONS;i++) {
-            printf ("%s ",defined_direct_functions_array[i].texto_funcion);
-        }
+        print_defined_direct_functions();
 
 
         printf (
         "\n\n"
 
-        "--def-button-function button action    Define Button to do an action. action can be: ");
+        "--def-button-function button action    Define Button to do an action. Action must be one of: ");
 
 
-            for (i=0;i<MAX_F_FUNCTIONS;i++) {
-                printf ("%s ",defined_direct_functions_array[i].texto_funcion);
-            }
+        print_defined_direct_functions();
 
 
 
