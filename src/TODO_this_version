@@ -169,3 +169,4 @@ ok *quizá la conmutacion de pantalla completa (en general, no solo lo que venga
 
 -F función cualquiera Tecla F por joystick
 ok *entrada changelog
+ok -acciones asignadas a mismo axis a izquierda y derecha solo hace uno, el otro considera que se está repitiendo al no recibir 0 (el derecho)

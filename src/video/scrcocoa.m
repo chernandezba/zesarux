@@ -706,7 +706,7 @@ void joystickAction(void* inContext GCC_UNUSED, IOReturn inResult GCC_UNUSED, vo
                 min=IOHIDElementGetPhysicalMin(element);
                 diff=max-min;
                 debug_printf(VERBOSE_DEBUG,"Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld ",valorboton,min,max,diff);
-                //printf("Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld\n",valorboton,min,max,diff);
+                //printf("Cocoa driver: received joystick event button %d value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld\n",boton,valorboton,min,max,diff);
 
                 //Al menos 2 valores de diferencia
                 if (diff>1) {

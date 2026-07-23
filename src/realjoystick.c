@@ -1069,10 +1069,10 @@ void realjoystick_add_button_action(char *text_button,char *text_action,char *pa
 
 
 //Retorna indice o -1 si no encontrado
-int realjoystick_find_action(int button,int type,int value)
+int realjoystick_find_action(int indice_inicial,int button,int type,int value)
 {
     int i;
-    for (i=0;i<MAX_ACTIONS_JOYSTICK;i++) {
+    for (i=indice_inicial;i<MAX_ACTIONS_JOYSTICK;i++) {
         if (realjoystick_actions_array[i].asignado.v) {
             if (realjoystick_actions_array[i].button==button) {
 
@@ -1142,6 +1142,9 @@ void realjoystick_set_reset_action(int index,int value)
         if (realjoystick_actions_array[index].ultimo_valor==0) {
             printf("ENVIAR ACCION\n");
             realjoystick_set_reset_action_send_action(index);
+        }
+        else {
+            printf("NO enviar accion porque se ha repetido: index %d ultimo_valor %d\n",index,realjoystick_actions_array[index].ultimo_valor);
         }
     }
 
@@ -1441,19 +1444,21 @@ void realjoystick_common_set_event(int button,int type,int value,int value_axis)
         } while (index>=0);
 
         //despues de boton a tecla, buscar boton a accion
-        //No se puede repetir boton, por tanto en caso de haberlo, solo se busca una vez
+        //No se puede repetir boton, pero lo que si se tiene es que los axis podran repetirse al recibir valor 0
+        index=-1;
+        do {
 
+            index=realjoystick_find_action(index+1,button,type,value);
+            if (index>=0) {
+                debug_printf (VERBOSE_DEBUG,"Action found on index: %d. value:%d",index,value);
 
-        index=realjoystick_find_action(button,type,value);
-        if (index>=0) {
-            debug_printf (VERBOSE_DEBUG,"Action found on index: %d. value:%d",index,value);
+                //ver tipo boton normal o axis
 
-            //ver tipo boton normal o axis
-
-            if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
-                    realjoystick_set_reset_action(index,value);
+                if (type==REALJOYSTICK_INPUT_EVENT_BUTTON || type==REALJOYSTICK_INPUT_EVENT_AXIS || type==REALJOYSTICK_INPUT_EVENT_DPAD) {
+                        realjoystick_set_reset_action(index,value);
+                }
             }
-        }
+        } while (index>=0);
 
 
 
