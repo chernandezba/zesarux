@@ -28,6 +28,7 @@ el minimo para que no corte el titulo. Ver funcion menu_dibuja_ventana
 -en stdout no deja ir al menu anterior -> culpa de topbar, al estar activado no se comporta bien
 
 -Acción de ESCMenu en joystick, cierra todos los menús? Quizá hay que crear una acción nueva que sea menú atrás... O sirve con mover a la izquierda?
+->sirve con mover a la izquierda
 
 -cambio de maquina con full screen (16k a 48k) peta: quiza son en Mac?
 
@@ -131,16 +132,6 @@ Hay que revisar todas las condiciones de cuando hay que mostrar menus centrados,
 - Sin ZX desktop con topbar, submenus se despliegan en Y=0
 
 
--Poder crear ventanas sin barra de título. Es para que los menus de topmenu se desplieguen sin barra de titulo, pero
-solo los primeros menus principales, los submenus si que salgan con barra de título
-ok ->no se podrán mover con ratón? de momento se pueden mover con raton, arrastrando sobre la barra de titulo que no se ve
-ok ->hacemos que se ubique todo igual aunque la barra de menu no aparezca? O sea si se pone uno arriba del todo la primera linea del contenido sera y=1 mientras que en y=0 estará
-el titulo, aunque no se vea
-->quiza en if_zxvision_topbar_menu_will_not_have_title no poner setting a 0. que lo haga topbar al salir de ese menu
-Pero se corre el riesgo que si desde un menu de esos abre otro menu principal (cosa rara) no tendria titulo... aunque eso ya es lo que queremos
-
-
-
 -soporte joystick nimbus. soporte pad (no es como un eje que hay posicion para + y otra -). nuevo REALJOYSTICK_INPUT_EVENT_PAD
 ok calculos de valorboton*32768 y diferencias deberia ser igual en caso de axis o dpad, solo considerar los limites que retorna el propio botón. corregir esto.
 * Ver que REALJOYSTICK_INPUT_EVENT_DPAD no mete incompatibilidad con Linux (de eventos con mismo valor)
@@ -154,16 +145,6 @@ ok - probar joystick "nes" en Linux (SDL1, SDL2), joystick logic3
 ok - probar joystick "nes" en Linux (Nativo Linux), joystick logic3
 ok - probar joystick "nes" en Windows, joystick logic3
 - probar volante en Mac, Linux, Windows
-
-
-ok -iconos de dispositivos de lec rom ,ifrom, kartusho... que no salgan siempre, solo al activarlos, como zxmmc+ o samram. en principio, iconos de todos los que faltan
--> hecho samram, zxmmc+, esxdos handler, ifrom, kartusho, lec memory, superupgrade
-
-
-
-ok -Función joystick para conmutar full screen
-ok *ok funcion
-ok *quizá la conmutacion de pantalla completa (en general, no solo lo que venga desde joystick) evitar que se puedan lanzar mas de 1 en los ultimos 5? 4? 3? segundos
 
 
 

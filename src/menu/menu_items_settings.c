@@ -13665,7 +13665,9 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'k');
         menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
         menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
-        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
+        menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA);
+        //no queremos que se cierre la ventana cuando se ha asignado una tecla, dejarla abierta por si se quiere asignar mas
+        //menu_add_item_menu_add_flags(array_menu_hardware_realjoystick,MENU_ITEM_FLAG_GENERA_VENTANA | MENU_ITEM_FLAG_SE_CERRARA);
 
         menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_steering,NULL,
             "S~~teering wheel","Volan~~te","Volan~~t");
