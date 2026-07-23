@@ -12823,7 +12823,7 @@ void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
             else if (button_type>0) strcpy(string_button_type,"+");
             else strcpy(string_button_type,"-");
 
-            printf("buscando boton %d tipo %d\n",button,type);
+            //printf("buscando boton %d tipo %d\n",button,type);
 
             //Validar que no exista ya
             //Desasignar antes
@@ -12834,7 +12834,7 @@ void menu_hardware_realjoystick_actions_edit(MENU_ITEM_PARAMETERS)
                 return;
             }
 
-            printf("No existe\n");
+            //printf("No existe\n");
 
             int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(index_accion);
 

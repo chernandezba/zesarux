@@ -1050,7 +1050,7 @@ void realjoystick_add_button_action(char *text_button,char *text_action,char *pa
         return;
     }
 
-    printf("indice %d indice_accion accion %d boton %d tipo %d\n",indice,indice_accion,button,button_type);
+    //printf("indice %d indice_accion accion %d boton %d tipo %d\n",indice,indice_accion,button,button_type);
 
     //Validar que no exista ya
     if (realjoystick_find_if_already_defined_button_action(button,button_type)>=0) {
@@ -1126,25 +1126,19 @@ void realjoystick_set_reset_action_send_action(int indice)
 void realjoystick_set_reset_action(int index,int value)
 {
 
-    printf("set action index %d value %d\n",index,value);
+    //printf("set action index %d value %d\n",index,value);
 
-    /*int index_accion=realjoystick_actions_array[index].index_accion;
 
-    printf("index action %d\n",index_accion);
-
-    enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(index_accion);
-
-    printf("action: %d\n",accion);*/
 
 
     if (value) {
         //evitar repeticiones de acciones al mantener pulsado el botón/axis
         if (realjoystick_actions_array[index].ultimo_valor==0) {
-            printf("ENVIAR ACCION\n");
+            //printf("ENVIAR ACCION\n");
             realjoystick_set_reset_action_send_action(index);
         }
         else {
-            printf("NO enviar accion porque se ha repetido: index %d ultimo_valor %d\n",index,realjoystick_actions_array[index].ultimo_valor);
+            //printf("NO enviar accion porque se ha repetido: index %d ultimo_valor %d\n",index,realjoystick_actions_array[index].ultimo_valor);
         }
     }
 
