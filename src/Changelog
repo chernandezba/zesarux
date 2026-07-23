@@ -6,7 +6,7 @@ Added configuration file setting for enabling to use numeric keys on Azerty keyb
 Added more different joystick support for Mac (Dpad, different axis)
 Allow to smartload a SCL file
 Added device icons: esxdos handler, kartusho, iFrom, lec memory, superupgrade
-Added joystick event to switch full screen
+Add support for triggering F-function actions from joystick (Reset CPU, Open window, NMI, etc)
 
 * Improvements:
 

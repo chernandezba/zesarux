@@ -133,7 +133,7 @@ realjoystick_button_action realjoystick_actions_array[MAX_ACTIONS_JOYSTICK];
 realjoystick_events_keys_function realjoystick_keys_array[MAX_KEYS_JOYSTICK];
 
 char *realjoystick_event_names[]={
-    "Up",
+    "Up", //1
     "Down",
     "Left",
     "Right",
@@ -156,8 +156,7 @@ char *realjoystick_event_names[]={
 	"Aux2",
 	"Aux3",
 	"Aux4",
-    "Rewind",
-    "FForward", //25
+    "Rewind", //24
 };
 
 void realjoystick_print_event_keys(void)
@@ -717,11 +716,6 @@ void realjoystick_set_reset_event(int index,int value)
 			}
 		break;
 
-		case REALJOYSTICK_EVENT_FFORWARD:
-			if (value) {
-				realjoystick_send_f_function(F_FUNCION_FFW);
-			}
-		break;
 
 
 		case REALJOYSTICK_EVENT_QUICKSAVE:
