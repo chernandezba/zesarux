@@ -157,8 +157,7 @@ char *realjoystick_event_names[]={
 	"Aux3",
 	"Aux4",
     "Rewind",
-    "FForward",
-    "SwitchFullScr" //26
+    "FForward", //25
 };
 
 void realjoystick_print_event_keys(void)
@@ -721,12 +720,6 @@ void realjoystick_set_reset_event(int index,int value)
 		case REALJOYSTICK_EVENT_FFORWARD:
 			if (value) {
 				realjoystick_send_f_function(F_FUNCION_FFW);
-			}
-		break;
-
-		case REALJOYSTICK_EVENT_SWITCH_FULL_SCR:
-			if (value) {
-                realjoystick_send_f_function(F_FUNCION_SWITCHFULLSCREEN);
 			}
 		break;
 
