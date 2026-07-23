@@ -1128,11 +1128,7 @@ printf (
         "--def-f-function key action                 Define F key to do an action. action can be: ");
 
 
-        for (i=0;i<MAX_F_FUNCTIONS;i++) {
-            printf ("%s ",defined_direct_functions_array[i].texto_funcion);
-        }
-
-
+        print_defined_direct_functions();
 
         printf (
         "\n\n"
@@ -1236,6 +1232,19 @@ printf (
         realjoystick_print_event_keys();
 
     printf ("\n"
+
+
+        "--joystickaction but act parms  Triggers an action when a joystick button or axis is pressed, action can have parameters (set it to \"\" if no parameters).\n"
+        "                                If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
+        "                                If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
+        "                                Action must be one of: ");
+
+        print_defined_direct_functions();
+
+
+    printf ("\n"
+
+
         "--joystickkeybt but key         Define a key pressed when a joystick button pressed (changes joystick to key table)\n"
         "                                If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
         "                                If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
@@ -1255,7 +1264,7 @@ printf (
 
             "\n"
         "  Note: As you may see, --joystickkeyev is not dependent on the real joystick type you use, because it sets an event to a key, "
-        "and --joystickkeybt and --joystickevent are dependent on the real joystick type, because they set a button/axis number to "
+        "and --joystickkeybt, --joystickevent and --joystickaction are dependent on the real joystick type, because they set a button/axis number to "
         "an event or key, and button/axis number changes depending on the joystick (the exception here is the axis up/down/left/right "
         "which are the same for all joysticks: up: -1, down: +1, left: -1, right: +1)\n"
 

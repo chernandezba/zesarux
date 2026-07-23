@@ -334,6 +334,15 @@ enum defined_f_function_ids menu_da_accion_direct_functions_indice(int indice)
     return defined_direct_functions_array[indice].id_funcion;
 }
 
+void print_defined_direct_functions(void)
+{
+    int i;
+
+    for (i=0;i<MAX_F_FUNCTIONS;i++) {
+        printf ("%s ",defined_direct_functions_array[i].texto_funcion);
+    }
+}
+
 //Funciones de teclas F mapeadas. Desde F1 hasta F15
 //apuntan a indices sobre la tabla defined_direct_functions_array
 int defined_f_functions_keys_array[MAX_F_FUNCTIONS_KEYS]={

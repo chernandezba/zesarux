@@ -823,7 +823,7 @@ enum zxdesktop_custom_icon_status_ids {
     ZXDESKTOP_CUSTOM_ICON_DELETED
 };
 
-
+extern void print_defined_direct_functions(void);
 
 //Identifica a un icono del escritorio
 struct s_zxdesktop_configurable_icon {
