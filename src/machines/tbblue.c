@@ -6000,17 +6000,21 @@ void tbblue_set_layer_priorities(void)
 
 z80_int tbblue_get_border_color(z80_int color)
 {
-    int flash_disabled = tbblue_registers[0x43]&1;  //flash_disabled se llamaba antes. ahora indica "enable ulanext"
+    int ulanext_enabled = tbblue_registers[0x43]&1;
+    int tbblue_ulaplus_enabled = tbblue_registers[0x68]&8;
     int is_timex_hires = timex_video_emulation.v && ((timex_port_ff&7) == 6);
 
     // 1) calculate correct color index into palette
     if (is_timex_hires) {
         // Timex HiRes 512x256 enforces border color by the FF port value, with priority over other methods
         color=get_timex_paper_mode6_color();        //0..7 PAPER index
-        if (flash_disabled) color += 128;           // current HW does not bother with Bright in ULANext ON mode
+        if (ulanext_enabled) color += 128;          // current HW does not bother with Bright in ULANext ON mode
         else color += 8 + 16;                       // +8 for BRIGHT 1, +16 for PAPER color in ULANext OFF mode
     }
-    else if (flash_disabled) {   // ULANext mode ON
+    else if (tbblue_ulaplus_enabled && !ulanext_enabled) {
+        color += 192 + 8;                           // ULA+ border uses PAPER in CLUT 0
+    }
+    else if (ulanext_enabled) {  // ULANext mode ON
 
         if (tbblue_registers[0x42] == 255) {    // full-ink mode takes border colour from "fallback"
         //    // in this case this is final result, just return it (no further processing needed)
@@ -6049,7 +6053,8 @@ void get_pixel_color_tbblue(z80_byte attribute,z80_int *tinta_orig, z80_int *pap
     z80_byte paper=*papel_orig;
 
     z80_byte palette_format=tbblue_registers[0x42];
-    z80_byte flash_disabled=tbblue_registers[0x43]&1; //flash_disabled se llamaba antes. ahora indica "enable ulanext"
+    z80_byte ulanext_enabled=tbblue_registers[0x43]&1;
+    z80_byte tbblue_ulaplus_enabled=tbblue_registers[0x68]&8;
 
 
     z80_byte bright,flash;
@@ -6057,7 +6062,13 @@ void get_pixel_color_tbblue(z80_byte attribute,z80_int *tinta_orig, z80_int *pap
 
 
 
-    if (!flash_disabled) {
+    if (tbblue_ulaplus_enabled && !ulanext_enabled) {
+        z80_byte palette_group=((attribute>>6)&3)*16;
+        ink=192+palette_group+(attribute&7);
+        paper=192+palette_group+8+((attribute>>3)&7);
+    }
+
+    else if (!ulanext_enabled) {
 
 /*
 (R/W) 0x40 (64) => Palette Index
