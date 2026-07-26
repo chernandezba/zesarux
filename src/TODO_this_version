@@ -147,3 +147,4 @@ ok -al pulsar con ratón en menu previo, a veces cierra todos los menus. parece 
 *en algun sitio resetear menu_dibuja_menu_yendo_atras_sumenus a 0? puede que se quede a no 0 en algun caso y al abrir menu se cierre o se vaya atras sin querer?
 ->probarlo con main menu->settings->hardware->audio->audio chip to midi output-> pulsar en menu audio settings (justo el anterior) pero se abrira hardware settings
 *cambiado metodo para recorrer hacia atras desde current window. puede haber algun problema ir atras asi? submenu_previous puede tener algun valor no null pero no tener menu anterior? REVISAR casos!
+->quiza usar menu_dibuja_submenu_find_last_submenu en vez de current window? podria ser que current window fuese un tooltip?
