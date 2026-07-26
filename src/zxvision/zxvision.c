@@ -23246,9 +23246,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
         else {
 
-        //printf ("despues de menu_refresca_pantalla\n");
+            //printf ("despues de menu_refresca_pantalla\n");
 
-        tecla=0;
+            tecla=0;
 
         }
 
@@ -23294,9 +23294,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             //Si no hubera este menu_refresca_pantalla cuando multitask esta a off,
             //no se moverian las ventanas con refresco al mover raton
             //el resto de cosas funcionaria bien
-             if (!menu_multitarea) {
-                        menu_refresca_pantalla();
-                }
+            if (!menu_multitarea) {
+                menu_refresca_pantalla();
+            }
 
 
             menu_espera_tecla_timeout_tooltip();
@@ -23319,8 +23319,6 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
             else {
                 //printf ("no reset counter tecla %d\n",tecla);
             }
-
-
 
 
 
@@ -23480,18 +23478,18 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     menu_active_item_primera_vez=1;
 
                 }
-                        }
+            }
 
 
-                        else if ((puerto_especial2 & 2)==0) {
-                                //F2
-                                tecla=MENU_RETORNO_F2;
-                        }
+            else if ((puerto_especial2 & 2)==0) {
+                    //F2
+                    tecla=MENU_RETORNO_F2;
+            }
 
-                        else if ((puerto_especial3 & 16)==0) {
-                                //F10
-                                tecla=MENU_RETORNO_F10;
-                        }
+            else if ((puerto_especial3 & 16)==0) {
+                    //F10
+                    tecla=MENU_RETORNO_F10;
+            }
 
 
             //teclas de atajos. De momento solo admitido entre a y z
@@ -23521,9 +23519,6 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         //Si no se ha pulsado tecla de atajo:
         if (!((tecla_leida>='a' && tecla_leida<='z') || (tecla_leida>='A' && tecla_leida<='Z')) ) {
             menu_espera_no_tecla();
-
-
-
         }
 
 
@@ -23574,7 +23569,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 if (sel_activo!=NULL) {
                             if ( sel_activo()==0 ) tecla=0;  //desactivamos seleccion
                 }
-                        break;
+            break;
 
 
             //Mover Izquierda:
@@ -23651,24 +23646,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                 zxvision_sound_event_cursor_movement();
             break;
 
-/*
-            //PgUp
-            case 24:
-                lineas_mover_pgup_dn=ventana->visible_height-3;
-                //Ver si al limite de arriba
-                if ((*opcion_inicial)-lineas_mover_pgup_dn<0) {
-                    lineas_mover_pgup_dn=(*opcion_inicial)-1; //el -1 final es por tener en cuenta el separador de siempre
-                }
 
-                //TODO esto movera el cursor tantas lineas como lineas visibles tiene el menu,
-                //si hay algun item como separador, se lo saltara, moviendo el cursor mas lineas de lo deseado
-                //printf ("lineas mover: %d\n",lineas_mover_pgup_dn);
-                for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<lineas_mover_pgup_dn;conta_mover_pgup_dn++) (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
-
-                zxvision_sound_event_cursor_movement();
-
-            break;
-*/
 
             //PgUp
             //Home
@@ -23773,16 +23751,16 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                     debug_printf (VERBOSE_DEBUG,"Found space key function associated to this menu item");
 
-                                    //ver si la opcion seleccionada esta activa
+                    //ver si la opcion seleccionada esta activa
 
-                                    sel_activo=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_activo;
+                    sel_activo=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_activo;
 
-                                    if (sel_activo!=NULL) {
-                                            if ( sel_activo()==0 ) {
+                    if (sel_activo!=NULL) {
+                        if ( sel_activo()==0 ) {
                             tecla=0;  //desactivamos seleccion
                             debug_printf (VERBOSE_DEBUG,"Menu item is disabled");
                         }
-                                    }
+                    }
 
                 }
 
@@ -23825,8 +23803,6 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                             tecla=0;
                     }
                 }
-
-
 
 
             }
