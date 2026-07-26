@@ -23118,110 +23118,90 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         }
 
 
-    while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 &&
-        tecla!=MENU_RETORNO_F10 && tecla!=MENU_RETORNO_BACKGROUND && redibuja_ventana==0 &&
-        !salir_con_flecha_izquierda && !salir_con_flecha_derecha && menu_tooltip_counter<TOOLTIP_SECONDS) {
+        while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 &&
+            tecla!=MENU_RETORNO_F10 && tecla!=MENU_RETORNO_BACKGROUND && redibuja_ventana==0 &&
+            !salir_con_flecha_izquierda && !salir_con_flecha_derecha && menu_tooltip_counter<TOOLTIP_SECONDS) {
 
-        //printf ("tecla desde bucle: %d\n",tecla);
+            //printf ("tecla desde bucle: %d\n",tecla);
 
-        //Ajustar scroll
-        //scroll_opciones=0;
-        //desactivado en zxvision , tiene su propio scroll
-
-
-        //Ajustar scroll de ventana
-        menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
+            //Ajustar scroll
+            //scroll_opciones=0;
+            //desactivado en zxvision , tiene su propio scroll
 
 
-
-        menu_item *funcion_seleccionado_item=menu_retorna_item(m,(*opcion_inicial));
-        if (funcion_seleccionado_item!=NULL) {
-            if (funcion_seleccionado_item->menu_funcion_seleccionada!=NULL) {
-                //printf("Llamando a funcion de item seleccionado\n");
-                funcion_seleccionado_item->menu_funcion_seleccionada(funcion_seleccionado_item);
-            }
-        }
-
-
-        //escribir todas opciones
-        //printf ("Escribiendo de nuevo las opciones\n");
-        menu_escribe_opciones_zxvision(ventana,m,(*opcion_inicial),max_opciones);
+            //Ajustar scroll de ventana
+            menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
 
 
 
-        //printf ("Linea seleccionada: %d\n",(*opcion_inicial));
-        //No queremos que el speech vuelva a leer la ventana
-        //menu_speech_set_tecla_pulsada();
-        zxvision_draw_window_contents_no_speech(ventana);
-
-        //printf ("despues de zxvision_draw_window_contents_no_speech\n");
-
-
-        menu_refresca_pantalla();
-
-        if (menu_dibuja_menu_recorrer_menus) {
-            //printf("Entering menu [%s]\n",titulo);
-            debug_printf(VERBOSE_INFO,"Entering menu [%s]",titulo);
-            if (menu_dibuja_menu_recorrer_menus==2) {
-                menu_dibuja_menu_recorrer_menus=1;
-                //printf("Volvemos de una flecha izquierda. Aumentar\n");
-                (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+            menu_item *funcion_seleccionado_item=menu_retorna_item(m,(*opcion_inicial));
+            if (funcion_seleccionado_item!=NULL) {
+                if (funcion_seleccionado_item->menu_funcion_seleccionada!=NULL) {
+                    //printf("Llamando a funcion de item seleccionado\n");
+                    funcion_seleccionado_item->menu_funcion_seleccionada(funcion_seleccionado_item);
+                }
             }
 
-            //Recorrer cada submenu
-            int salir_recorrer=0;
 
-            do {
+            //escribir todas opciones
+            //printf ("Escribiendo de nuevo las opciones\n");
+            menu_escribe_opciones_zxvision(ventana,m,(*opcion_inicial),max_opciones);
 
-                menu_item *item_recorrer=menu_retorna_item(m,(*opcion_inicial));
 
-                //printf("item [%s]. *opcion_inicial %d max_opciones %d\n",item_recorrer->texto_opcion,*opcion_inicial,max_opciones);
 
-                int item_test_submenu_activo=1;
+            //printf ("Linea seleccionada: %d\n",(*opcion_inicial));
+            //No queremos que el speech vuelva a leer la ventana
+            //menu_speech_set_tecla_pulsada();
+            zxvision_draw_window_contents_no_speech(ventana);
 
-                t_menu_funcion_activo item_test_sel_activo;
-                item_test_sel_activo=item_recorrer->menu_funcion_activo;
+            //printf ("despues de zxvision_draw_window_contents_no_speech\n");
 
-                if (item_test_sel_activo!=NULL) {
-                    if ( item_test_sel_activo()==0 ) item_test_submenu_activo=0;
+
+            menu_refresca_pantalla();
+
+            if (menu_dibuja_menu_recorrer_menus) {
+                //printf("Entering menu [%s]\n",titulo);
+                debug_printf(VERBOSE_INFO,"Entering menu [%s]",titulo);
+                if (menu_dibuja_menu_recorrer_menus==2) {
+                    menu_dibuja_menu_recorrer_menus=1;
+                    //printf("Volvemos de una flecha izquierda. Aumentar\n");
+                    (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
                 }
 
+                //Recorrer cada submenu
+                int salir_recorrer=0;
 
-                if (item_recorrer->tiene_submenu && item_test_submenu_activo) {
-                    //entrar a submenu con  enter
-                    salir_recorrer=1;
-                    tecla=13;
-                    //printf("Entering submenu [%s]\n",item_recorrer->texto_opcion);
-                    debug_printf(VERBOSE_INFO,"Entering submenu [%s]",item_recorrer->texto_opcion);
-                    menu_dibuja_menu_recorrer_menus_entrado_submenu=1;
+                do {
 
-                }
+                    menu_item *item_recorrer=menu_retorna_item(m,(*opcion_inicial));
 
-                else {
+                    //printf("item [%s]. *opcion_inicial %d max_opciones %d\n",item_recorrer->texto_opcion,*opcion_inicial,max_opciones);
 
-                    if (*opcion_inicial>=max_opciones-1) {
-                        //Salir con flecha izquierda
-                        //printf("####scanindex. salir con flecha izquierda\n");
+                    int item_test_submenu_activo=1;
+
+                    t_menu_funcion_activo item_test_sel_activo;
+                    item_test_sel_activo=item_recorrer->menu_funcion_activo;
+
+                    if (item_test_sel_activo!=NULL) {
+                        if ( item_test_sel_activo()==0 ) item_test_submenu_activo=0;
+                    }
+
+
+                    if (item_recorrer->tiene_submenu && item_test_submenu_activo) {
+                        //entrar a submenu con  enter
                         salir_recorrer=1;
+                        tecla=13;
+                        //printf("Entering submenu [%s]\n",item_recorrer->texto_opcion);
+                        debug_printf(VERBOSE_INFO,"Entering submenu [%s]",item_recorrer->texto_opcion);
+                        menu_dibuja_menu_recorrer_menus_entrado_submenu=1;
 
-                        if (m->no_es_realmente_un_menu) {
-                            //printf("salir con esc\n");
-                            tecla=MENU_RETORNO_ESC;
-                        }
-
-                        else tecla='5';
-                        menu_dibuja_menu_recorrer_menus=2;
                     }
 
                     else {
 
-                        int anterior_opcion=*opcion_inicial;
-                        //printf("bajar\n");
-                        (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
-
-                        //Si ha dado la vuelta
-                        if (*opcion_inicial<anterior_opcion) {
-                            //printf("ha dado la vuelta. salir con flecha izquierda\n");
+                        if (*opcion_inicial>=max_opciones-1) {
+                            //Salir con flecha izquierda
+                            //printf("####scanindex. salir con flecha izquierda\n");
                             salir_recorrer=1;
 
                             if (m->no_es_realmente_un_menu) {
@@ -23233,658 +23213,678 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                             menu_dibuja_menu_recorrer_menus=2;
                         }
 
+                        else {
 
+                            int anterior_opcion=*opcion_inicial;
+                            //printf("bajar\n");
+                            (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+
+                            //Si ha dado la vuelta
+                            if (*opcion_inicial<anterior_opcion) {
+                                //printf("ha dado la vuelta. salir con flecha izquierda\n");
+                                salir_recorrer=1;
+
+                                if (m->no_es_realmente_un_menu) {
+                                    //printf("salir con esc\n");
+                                    tecla=MENU_RETORNO_ESC;
+                                }
+
+                                else tecla='5';
+                                menu_dibuja_menu_recorrer_menus=2;
+                            }
+
+
+
+                        }
 
                     }
-
-                }
-            } while (!salir_recorrer);
+                } while (!salir_recorrer);
 
 
 
-        }
-
-        else {
-
-            //printf ("despues de menu_refresca_pantalla\n");
-
-            tecla=0;
-
-        }
-
-        //la inicializamos a 0. aunque parece que no haga falta, podria ser que el bucle siguiente
-        //no se entrase (porque menu_tooltip_counter<TOOLTIP_SECONDS) y entonces tecla_leida tendria valor indefinido
-        int tecla_leida=0;
-
-
-        //Si se estaba escuchando speech y se pulsa una tecla, esa tecla debe entrar aqui tal cual y por tanto, no hacemos espera_no_tecla
-        //temp menu_espera_no_tecla();
-        if (menu_speech_tecla_pulsada==0) {
-            //menu_espera_no_tecla();
-            menu_dibuja_menu_espera_no_tecla();
-        }
-        menu_speech_reset_tecla_pulsada();
-
-        while (tecla==0 && redibuja_ventana==0 && menu_tooltip_counter<TOOLTIP_SECONDS) {
-
-
-            //Si no hay barra scroll vertical, usamos hasta la ultima columna, solo para menus no tabulados
-            if (m->es_menu_tabulado==0) {
-                if (menu_dibuja_menu_adjust_last_column(ventana,ancho,alto)) {
-                    //printf ("Redibujar ventana pues hay cambio en columna final de scroll\n");
-
-                    //Es conveniente llamar antes a zxvision_draw_window pues este establece parametros de ventana_ancho y alto,
-                    //que se leen luego en menu_escribe_opciones_zxvision
-                    //sin embargo, al llamar a menu_escribe_opciones_zxvision, el cursor sigue apareciendo como mas pequeño hasta que
-                    //no se pulsa tecla
-                    //printf ("ventana ancho antes: %d\n",ventana_ancho);
-                    zxvision_draw_window(ventana);
-                    //printf ("ventana ancho despues: %d\n",ventana_ancho);
-
-                    //borrar contenido ventana despues de redimensionarla con espacios
-                    int i;
-                    for (i=0;i<ventana->total_height;i++) zxvision_print_string_defaults_fillspc(ventana,0,i,"");
-
-                    menu_escribe_opciones_zxvision(ventana,m,(*opcion_inicial),max_opciones);
-
-                    zxvision_draw_window_contents(ventana);
-                }
-            }
-
-            //Si no hubera este menu_refresca_pantalla cuando multitask esta a off,
-            //no se moverian las ventanas con refresco al mover raton
-            //el resto de cosas funcionaria bien
-            if (!menu_multitarea) {
-                menu_refresca_pantalla();
-            }
-
-
-            menu_espera_tecla_timeout_tooltip();
-
-            //Guardamos valor de mouse_movido pues se perdera el valor al leer el teclado de nuevo
-            int antes_mouse_movido=mouse_movido;
-
-            tecla_leida=zxvision_read_keyboard();
-
-            //printf ("Despues tecla leida: %d %c\n",tecla_leida,tecla_leida);
-
-            mouse_movido=antes_mouse_movido;
-
-            //Para poder usar repeticiones
-            if (tecla_leida==0) {
-                //printf ("llamar a menu_reset_counters_tecla_repeticion desde menu_dibuja_menu cuando tecla=0\n");
-                menu_reset_counters_tecla_repeticion();
             }
 
             else {
-                //printf ("no reset counter tecla %d\n",tecla);
+
+                //printf ("despues de menu_refresca_pantalla\n");
+
+                tecla=0;
+
             }
 
+            //la inicializamos a 0. aunque parece que no haga falta, podria ser que el bucle siguiente
+            //no se entrase (porque menu_tooltip_counter<TOOLTIP_SECONDS) y entonces tecla_leida tendria valor indefinido
+            int tecla_leida=0;
 
 
-            //printf ("mouse_movido: %d\n",mouse_movido);
+            //Si se estaba escuchando speech y se pulsa una tecla, esa tecla debe entrar aqui tal cual y por tanto, no hacemos espera_no_tecla
+            //temp menu_espera_no_tecla();
+            if (menu_speech_tecla_pulsada==0) {
+                //menu_espera_no_tecla();
+                menu_dibuja_menu_espera_no_tecla();
+            }
+            menu_speech_reset_tecla_pulsada();
+
+            while (tecla==0 && redibuja_ventana==0 && menu_tooltip_counter<TOOLTIP_SECONDS) {
 
 
-            //printf ("tecla_leida: %d\n",tecla_leida);
-            if (mouse_movido) {
-                //printf ("mouse x: %d y: %d menu mouse x: %d y: %d\n",mouse_x,mouse_y,menu_mouse_x,menu_mouse_y);
-                //printf ("ventana x %d y %d ancho %d alto %d\n",ventana_x,ventana_y,ventana_ancho,ventana_alto);
-                if (si_menu_mouse_en_ventana() ) {
-                //if (menu_mouse_x>=0 && menu_mouse_y>=0 && menu_mouse_x<ventana_ancho && menu_mouse_y<ventana_alto ) {
-                    //printf ("dentro ventana\n");
-                    //Descartar linea titulo y ultima linea
+                //Si no hay barra scroll vertical, usamos hasta la ultima columna, solo para menus no tabulados
+                if (m->es_menu_tabulado==0) {
+                    if (menu_dibuja_menu_adjust_last_column(ventana,ancho,alto)) {
+                        //printf ("Redibujar ventana pues hay cambio en columna final de scroll\n");
 
-                    if (menu_mouse_y>0 && menu_mouse_y<current_win_alto-1) {
-                        //printf ("dentro espacio efectivo ventana\n");
-                        //Ver si hay que subir o bajar cursor
-                        int posicion_raton_y=menu_mouse_y-1;
+                        //Es conveniente llamar antes a zxvision_draw_window pues este establece parametros de ventana_ancho y alto,
+                        //que se leen luego en menu_escribe_opciones_zxvision
+                        //sin embargo, al llamar a menu_escribe_opciones_zxvision, el cursor sigue apareciendo como mas pequeño hasta que
+                        //no se pulsa tecla
+                        //printf ("ventana ancho antes: %d\n",ventana_ancho);
+                        zxvision_draw_window(ventana);
+                        //printf ("ventana ancho despues: %d\n",ventana_ancho);
 
-                        //tener en cuenta scroll
-                        posicion_raton_y +=ventana->offset_y;
+                        //borrar contenido ventana despues de redimensionarla con espacios
+                        int i;
+                        for (i=0;i<ventana->total_height;i++) zxvision_print_string_defaults_fillspc(ventana,0,i,"");
 
-                        //Si no se selecciona separador. Menu no tabulado
-                        if (m->es_menu_tabulado==0) {
-                            if (menu_retorna_item(m,posicion_raton_y)->tipo_opcion!=MENU_OPCION_SEPARADOR) {
-                                (*opcion_inicial)=posicion_raton_y;
-                                redibuja_ventana=1;
-                                menu_tooltip_counter=0;
-                            }
-                        }
-                        else {
-                            menu_item *buscar_tabulado;
-                            int linea_buscada;
-                            int posicion_raton_x=menu_mouse_x;
-                            buscar_tabulado=menu_retorna_item_tabulado_xy(m,posicion_raton_x,posicion_raton_y,&linea_buscada);
+                        menu_escribe_opciones_zxvision(ventana,m,(*opcion_inicial),max_opciones);
 
-                            if (buscar_tabulado!=NULL) {
-                                //Buscar por coincidencia de coordenada x,y
-                                if (buscar_tabulado->tipo_opcion!=MENU_OPCION_SEPARADOR) {
-                                    (*opcion_inicial)=linea_buscada;
+                        zxvision_draw_window_contents(ventana);
+                    }
+                }
+
+                //Si no hubera este menu_refresca_pantalla cuando multitask esta a off,
+                //no se moverian las ventanas con refresco al mover raton
+                //el resto de cosas funcionaria bien
+                if (!menu_multitarea) {
+                    menu_refresca_pantalla();
+                }
+
+
+                menu_espera_tecla_timeout_tooltip();
+
+                //Guardamos valor de mouse_movido pues se perdera el valor al leer el teclado de nuevo
+                int antes_mouse_movido=mouse_movido;
+
+                tecla_leida=zxvision_read_keyboard();
+
+                //printf ("Despues tecla leida: %d %c\n",tecla_leida,tecla_leida);
+
+                mouse_movido=antes_mouse_movido;
+
+                //Para poder usar repeticiones
+                if (tecla_leida==0) {
+                    //printf ("llamar a menu_reset_counters_tecla_repeticion desde menu_dibuja_menu cuando tecla=0\n");
+                    menu_reset_counters_tecla_repeticion();
+                }
+
+                else {
+                    //printf ("no reset counter tecla %d\n",tecla);
+                }
+
+
+
+                //printf ("mouse_movido: %d\n",mouse_movido);
+
+
+                //printf ("tecla_leida: %d\n",tecla_leida);
+                if (mouse_movido) {
+                    //printf ("mouse x: %d y: %d menu mouse x: %d y: %d\n",mouse_x,mouse_y,menu_mouse_x,menu_mouse_y);
+                    //printf ("ventana x %d y %d ancho %d alto %d\n",ventana_x,ventana_y,ventana_ancho,ventana_alto);
+                    if (si_menu_mouse_en_ventana() ) {
+                    //if (menu_mouse_x>=0 && menu_mouse_y>=0 && menu_mouse_x<ventana_ancho && menu_mouse_y<ventana_alto ) {
+                        //printf ("dentro ventana\n");
+                        //Descartar linea titulo y ultima linea
+
+                        if (menu_mouse_y>0 && menu_mouse_y<current_win_alto-1) {
+                            //printf ("dentro espacio efectivo ventana\n");
+                            //Ver si hay que subir o bajar cursor
+                            int posicion_raton_y=menu_mouse_y-1;
+
+                            //tener en cuenta scroll
+                            posicion_raton_y +=ventana->offset_y;
+
+                            //Si no se selecciona separador. Menu no tabulado
+                            if (m->es_menu_tabulado==0) {
+                                if (menu_retorna_item(m,posicion_raton_y)->tipo_opcion!=MENU_OPCION_SEPARADOR) {
+                                    (*opcion_inicial)=posicion_raton_y;
                                     redibuja_ventana=1;
                                     menu_tooltip_counter=0;
                                 }
                             }
                             else {
-                                //printf ("item no encontrado\n");
-                            }
-                        }
+                                menu_item *buscar_tabulado;
+                                int linea_buscada;
+                                int posicion_raton_x=menu_mouse_x;
+                                buscar_tabulado=menu_retorna_item_tabulado_xy(m,posicion_raton_x,posicion_raton_y,&linea_buscada);
 
+                                if (buscar_tabulado!=NULL) {
+                                    //Buscar por coincidencia de coordenada x,y
+                                    if (buscar_tabulado->tipo_opcion!=MENU_OPCION_SEPARADOR) {
+                                        (*opcion_inicial)=linea_buscada;
+                                        redibuja_ventana=1;
+                                        menu_tooltip_counter=0;
+                                    }
+                                }
+                                else {
+                                    //printf ("item no encontrado\n");
+                                }
+                            }
+
+                        }
+                        //else {
+                        //	printf ("En espacio ventana no usable\n");
+                        //}
                     }
                     //else {
-                    //	printf ("En espacio ventana no usable\n");
+                    //	printf ("fuera ventana\n");
                     //}
                 }
-                //else {
-                //	printf ("fuera ventana\n");
-                //}
-            }
 
-            //mouse boton izquierdo es como enter
-            int mouse_en_zona_opciones=1;
+                //mouse boton izquierdo es como enter
+                int mouse_en_zona_opciones=1;
 
-            //if (menu_mouse_x>=0 && menu_mouse_y>=0 && menu_mouse_x<ventana_ancho && menu_mouse_y<ventana_alto ) return 1;
+                //if (menu_mouse_x>=0 && menu_mouse_y>=0 && menu_mouse_x<ventana_ancho && menu_mouse_y<ventana_alto ) return 1;
 
-            //Mouse en columna ultima de la derecha,
-            //o mouse en primera linea
-            //o mouse en ultima linea
-            // no enviamos enter si pulsamos boton
-            if (menu_mouse_x==current_win_ancho-1 || menu_mouse_y==0 || menu_mouse_y==current_win_alto-1) mouse_en_zona_opciones=0;
+                //Mouse en columna ultima de la derecha,
+                //o mouse en primera linea
+                //o mouse en ultima linea
+                // no enviamos enter si pulsamos boton
+                if (menu_mouse_x==current_win_ancho-1 || menu_mouse_y==0 || menu_mouse_y==current_win_alto-1) mouse_en_zona_opciones=0;
 
-            //printf ("Despues tecla leida2: %d\n",tecla_leida);
+                //printf ("Despues tecla leida2: %d\n",tecla_leida);
 
-            if (si_menu_mouse_en_ventana() && mouse_left && mouse_en_zona_opciones && !mouse_is_dragging) {
-                //printf ("Enviamos enter\n");
-                tecla=13;
-            }
-
-            //Si se pulsa flecha izquierda en zona de menus anteriores
-            else if (menu_dibuja_submenu_mouse_en_menus_anteriores() && m->no_es_realmente_un_menu==0) {
-                //printf ("Enviamos flecha izquierda porque raton en zona menus anteriores\n");
-                tecla='5';
-                //mouse_left=0;
-                //menu_espera_no_tecla();
-
-
-                //esto se ha habilitado porque se ha detectado pulsacion del raton fuera de la ventana activa
-                salir_todos_menus=0;
-            }
-
-            //enviar flecha izquierda si boton derecho raton
-            else if (/*si_menu_mouse_en_ventana() &&  mouse_en_zona_opciones &&*/ m->es_menu_tabulado==0 && mouse_right && !mouse_is_dragging && menu_mouse_right_send_esc.v==0) {
-                //printf ("Enviamos flecha izquierda\n");
-                tecla='5';
-            }
-
-            else if (tecla_leida==11) tecla='7';
-            else if (tecla_leida==10) tecla='6';
-            else if (tecla_leida==13) tecla=13;
-            else if (tecla_leida==24) tecla=24;
-            else if (tecla_leida==25) tecla=25;
-            else if (tecla_leida==26) tecla=26;
-            else if (tecla_leida==27) tecla=27;
-
-            //Teclas para teclados simples
-            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='5') tecla='5';
-            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='6') tecla='6';
-            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='7') tecla='7';
-            else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='8') tecla='8';
-
-
-            //Teclas para menus tabulados
-            else if (tecla_leida==8) tecla='5';
-            else if (tecla_leida==9) tecla='8';
-
-            else if (tecla_leida==2) {
-                //tecla=2; //ESC que viene de cerrar ventana al pulsar con raton boton de cerrar en titulo
-                tecla=MENU_RETORNO_ESC;
-                //printf ("tecla final es ESC desde tecla_leida\n");
-            }
-
-            else if (tecla_leida==3) {
-                //printf("Pressed background key on menu\n");
-                tecla=MENU_RETORNO_BACKGROUND;
-            }
-
-
-            else if ((puerto_especial1 & 1)==0) {
-                //Enter
-                //printf ("Leido ESC desde puerto_especial1\n");
-                tecla=MENU_RETORNO_ESC;
-            }
-
-
-
-            //En principio ya no volvemos mas con F1, dado que este se usa para ayuda contextual de cada funcion
-
-            //F1 (ayuda) o h en drivers que no soportan F
-            else if ((puerto_especial2 & 1)==0 || (tecla_leida=='h' && f_functions==0) ) {
-                //printf("mostrar ayuda puerto_especial2 &1 %d tecla_leida %d f_functions %d\n",puerto_especial2 &1,tecla_leida,f_functions );
-                                //F1
-                char *texto_ayuda;
-                texto_ayuda=menu_retorna_item(m,(*opcion_inicial))->texto_ayuda;
-                if (texto_ayuda!=NULL) {
-                    //Forzar que siempre suene
-                    //Esperamos antes a liberar tecla, sino lo que hara sera que esa misma tecla F1 cancelara el speech texto de ayuda
-                    menu_espera_no_tecla();
-                    menu_speech_reset_tecla_pulsada();
-
-
-                    menu_dibuja_menu_help_tooltip(texto_ayuda,0);
-
-
-                    redibuja_ventana=1;
-                    menu_tooltip_counter=0;
-                    //Y volver a decir "selected item"
-                    menu_active_item_primera_vez=1;
-
+                if (si_menu_mouse_en_ventana() && mouse_left && mouse_en_zona_opciones && !mouse_is_dragging) {
+                    //printf ("Enviamos enter\n");
+                    tecla=13;
                 }
-            }
+
+                //Si se pulsa flecha izquierda en zona de menus anteriores
+                else if (menu_dibuja_submenu_mouse_en_menus_anteriores() && m->no_es_realmente_un_menu==0) {
+                    //printf ("Enviamos flecha izquierda porque raton en zona menus anteriores\n");
+                    tecla='5';
+                    //mouse_left=0;
+                    //menu_espera_no_tecla();
 
 
-            else if ((puerto_especial2 & 2)==0) {
-                    //F2
-                    tecla=MENU_RETORNO_F2;
-            }
+                    //esto se ha habilitado porque se ha detectado pulsacion del raton fuera de la ventana activa
+                    salir_todos_menus=0;
+                }
 
-            else if ((puerto_especial3 & 16)==0) {
-                    //F10
-                    tecla=MENU_RETORNO_F10;
-            }
+                //enviar flecha izquierda si boton derecho raton
+                else if (/*si_menu_mouse_en_ventana() &&  mouse_en_zona_opciones &&*/ m->es_menu_tabulado==0 && mouse_right && !mouse_is_dragging && menu_mouse_right_send_esc.v==0) {
+                    //printf ("Enviamos flecha izquierda\n");
+                    tecla='5';
+                }
 
+                else if (tecla_leida==11) tecla='7';
+                else if (tecla_leida==10) tecla='6';
+                else if (tecla_leida==13) tecla=13;
+                else if (tecla_leida==24) tecla=24;
+                else if (tecla_leida==25) tecla=25;
+                else if (tecla_leida==26) tecla=26;
+                else if (tecla_leida==27) tecla=27;
 
-            //teclas de atajos. De momento solo admitido entre a y z
-            else if ( (tecla_leida>='a' && tecla_leida<='z') || (tecla_leida>='A' && tecla_leida<='Z')) {
-                debug_printf (VERBOSE_DEBUG,"Read key: %c. Possibly shortcut",tecla_leida);
-                tecla=tecla_leida;
-            }
-
-            //tecla espacio. acciones adicionales. Ejemplo en breakpoints para desactivar
-            else if (tecla_leida==32) {
-                debug_printf (VERBOSE_DEBUG,"Pressed key space");
-                tecla=32;
-            }
-
-
-
-
-            else {
-                //printf ("Final ponemos tecla a 0. Era %d\n",tecla);
-                tecla=0;
-            }
+                //Teclas para teclados simples
+                else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='5') tecla='5';
+                else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='6') tecla='6';
+                else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='7') tecla='7';
+                else if (zxvision_setting_use_speccy_keys.v && tecla_leida=='8') tecla='8';
 
 
-            //printf ("menu tecla: %d %c\n",tecla,tecla);
-        }
+                //Teclas para menus tabulados
+                else if (tecla_leida==8) tecla='5';
+                else if (tecla_leida==9) tecla='8';
 
-        //Si no se ha pulsado tecla de atajo:
-        if (!((tecla_leida>='a' && tecla_leida<='z') || (tecla_leida>='A' && tecla_leida<='Z')) ) {
-            menu_espera_no_tecla();
-        }
+                else if (tecla_leida==2) {
+                    //tecla=2; //ESC que viene de cerrar ventana al pulsar con raton boton de cerrar en titulo
+                    tecla=MENU_RETORNO_ESC;
+                    //printf ("tecla final es ESC desde tecla_leida\n");
+                }
+
+                else if (tecla_leida==3) {
+                    //printf("Pressed background key on menu\n");
+                    tecla=MENU_RETORNO_BACKGROUND;
+                }
+
+
+                else if ((puerto_especial1 & 1)==0) {
+                    //Enter
+                    //printf ("Leido ESC desde puerto_especial1\n");
+                    tecla=MENU_RETORNO_ESC;
+                }
 
 
 
-        t_menu_funcion_activo sel_activo;
+                //En principio ya no volvemos mas con F1, dado que este se usa para ayuda contextual de cada funcion
 
-        t_menu_funcion funcion_espacio;
+                //F1 (ayuda) o h en drivers que no soportan F
+                else if ((puerto_especial2 & 1)==0 || (tecla_leida=='h' && f_functions==0) ) {
+                    //printf("mostrar ayuda puerto_especial2 &1 %d tecla_leida %d f_functions %d\n",puerto_especial2 &1,tecla_leida,f_functions );
+                                    //F1
+                    char *texto_ayuda;
+                    texto_ayuda=menu_retorna_item(m,(*opcion_inicial))->texto_ayuda;
+                    if (texto_ayuda!=NULL) {
+                        //Forzar que siempre suene
+                        //Esperamos antes a liberar tecla, sino lo que hara sera que esa misma tecla F1 cancelara el speech texto de ayuda
+                        menu_espera_no_tecla();
+                        menu_speech_reset_tecla_pulsada();
 
-        if (tecla!=0) menu_tooltip_counter=0;
 
-        //int lineas_mover_pgup_dn;
-        int conta_mover_pgup_dn;
-        int scroll_esperado_pgdn;
-        int scroll_esperado_pgup;
-        int movido_en_ventana;
-        //int scroll_antes_pgdn;
+                        menu_dibuja_menu_help_tooltip(texto_ayuda,0);
 
-        //printf ("tecla en dibuja menu: %d\n",tecla);
 
-        //flecha derecha se comporta como enter en menus no tabulados y si tiene submenu
-        if (m->es_menu_tabulado==0) {
-            menu_item *comprobar_derecha=menu_retorna_item(m,(*opcion_inicial));
-            if (tecla=='8' && menu_old_behaviour_close_menus.v==0 && comprobar_derecha->tiene_submenu) {
-                int cambiar_a_enter=1;
-                //con topbar, si submenu no habilitado (como uart bridge emulation) se comporta como flecha derecha y no como enter
-                if (zxvision_topbar_menu_enabled.v) {
-                    t_menu_funcion_activo fun_activo=comprobar_derecha->menu_funcion_activo;
-                    if (fun_activo!=NULL) {
-                        if (fun_activo()==0) {
-                            debug_printf(VERBOSE_DEBUG,"Right cursor key behaves as Enter");
-                            cambiar_a_enter=0;
-                        }
+                        redibuja_ventana=1;
+                        menu_tooltip_counter=0;
+                        //Y volver a decir "selected item"
+                        menu_active_item_primera_vez=1;
+
                     }
                 }
 
-                if (cambiar_a_enter) tecla=13;
-            }
-        }
 
-        //printf("teclaxxx: %d\n",tecla);
-
-        switch (tecla) {
-            case 13:
-                //ver si la opcion seleccionada esta activa
-
-                sel_activo=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_activo;
-
-                if (sel_activo!=NULL) {
-                            if ( sel_activo()==0 ) tecla=0;  //desactivamos seleccion
+                else if ((puerto_especial2 & 2)==0) {
+                        //F2
+                        tecla=MENU_RETORNO_F2;
                 }
-            break;
 
-
-            //Mover Izquierda:
-            //En tabulados, sigue el cursor
-            //En no tabulados y en no dialogos, menu anterior
-            case '5':
-
-                if (m->es_menu_tabulado==0 && m->no_es_realmente_un_menu==0) {
-                    if (menu_old_behaviour_close_menus.v==0) {
-                        salir_con_flecha_izquierda=1;
-                        //printf("salir con flecha izquierda\n");
-                    }
+                else if ((puerto_especial3 & 16)==0) {
+                        //F10
+                        tecla=MENU_RETORNO_F10;
                 }
+
+
+                //teclas de atajos. De momento solo admitido entre a y z
+                else if ( (tecla_leida>='a' && tecla_leida<='z') || (tecla_leida>='A' && tecla_leida<='Z')) {
+                    debug_printf (VERBOSE_DEBUG,"Read key: %c. Possibly shortcut",tecla_leida);
+                    tecla=tecla_leida;
+                }
+
+                //tecla espacio. acciones adicionales. Ejemplo en breakpoints para desactivar
+                else if (tecla_leida==32) {
+                    debug_printf (VERBOSE_DEBUG,"Pressed key space");
+                    tecla=32;
+                }
+
+
+
 
                 else {
-
-                    //en menus tabulados, misma funcion que arriba para un no tabulado
-                    //Si es tabulado, seguira hasta la opcion '7'
-                    (*opcion_inicial)=menu_dibuja_menu_cursor_arriba((*opcion_inicial),max_opciones,m);
-                    zxvision_sound_event_cursor_movement();
-                }
-            break;
-
-
-            //Mover Derecha, solo en tabulados
-            case '8':
-                //en menus tabulados, misma funcion que abajo para un no tabulado
-                if (m->es_menu_tabulado==0) {
-                    //y si no tiene submenu, salir cuando se tiene topbar habilitado
-                    //y siendo el primer submenu
-                    if (zxvision_topbar_menu_enabled.v && m->no_es_realmente_un_menu==0) {
-
-                        if (menu_old_behaviour_close_menus.v) {
-                            salir_con_flecha_derecha=1;
-                        }
-
-                        else {
-
-                            if (ventana==menu_dibuja_submenu_primer_submenu) {
-                                //printf("--Somos el primer submenu\n");
-                                salir_con_flecha_derecha=1;
-                                //printf("### salir con flecha derecha siendo primer submenu\n");
-                            }
-                            else {
-                                //printf("--No somos el primer submenu\n");
-                                //salir como si fuera ESC, para cerrar todos submenus
-                                salir_todos_menus=1;
-                                salir_con_flecha_derecha=1;
-                                //break;
-                            }
-                        }
-
-                    }
-                    /*else {
-                        break;
-                    }*/
-                }
-
-                else {
-                    (*opcion_inicial)=menu_dibuja_menu_cursor_abajo((*opcion_inicial),max_opciones,m);
-                    zxvision_sound_event_cursor_movement();
-                }
-            break;
-
-            //Mover abajo
-            case '6':
-                (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
-                zxvision_sound_event_cursor_movement();
-            break;
-
-            //Mover arriba
-            case '7':
-                (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
-                zxvision_sound_event_cursor_movement();
-            break;
-
-
-
-            //PgUp
-            //Home
-            case 24:
-            case 26:
-                //Mover hacia arriba hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a abajo del todo
-
-                //calcular el cursor donde esta relativamente en ventana
-                movido_en_ventana=(*opcion_inicial)-(ventana->offset_y);
-
-                //Si el cursor esta en la mitad inferior de la ventana, hacer pgup lo que hace es llevarnos a la posicion del cursor arriba-1 posicion
-                if (movido_en_ventana>(ventana->visible_height/2)) scroll_esperado_pgup=ventana->offset_y-1;
-                else scroll_esperado_pgup=ventana->offset_y - (ventana->visible_height-3);
-                //printf("scroll esperado: %d\n",scroll_esperado_pgup);
-
-                //Tecla Home. hasta arriba del todo. Lo gestiono en el for
-
-                int salir_pgup=0;
-
-                for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && (ventana->offset_y>scroll_esperado_pgup || tecla==26) && !salir_pgup;conta_mover_pgup_dn++) {
-                    int posicion_antes_pgdn=*opcion_inicial;
-                    (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
-                    //Ajustar scroll de ventana
-                    menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
-                    //printf("mover arriba. offset_y: %d\n",ventana->offset_y);
-
-                    //Si el cursor actual ha llegado arriba del todo y dado la vuelta
-                    if (*opcion_inicial>posicion_antes_pgdn) {
-                        //printf("llegado al final y dado la vuelta. compensar hacia abajo\n");
-                        //subir uno hacia arriba y salir
-                        (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
-                        salir_pgup=1;
-                    }
-
-                }
-
-                zxvision_sound_event_cursor_movement();
-
-            break;
-
-
-
-            //PgDn
-            //End
-            case 25:
-            case 27:
-
-                //Mover hacia abajo hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a arriba del todo
-
-                //calcular el cursor donde esta relativamente en ventana
-                movido_en_ventana=(*opcion_inicial)-(ventana->offset_y);
-
-                //Si el cursor esta en la mitad superior de la ventana, hacer pgdn lo que hace es llevarnos a la posicion del cursor abajo+1 posicion
-                if (movido_en_ventana<(ventana->visible_height/2)) scroll_esperado_pgdn=ventana->offset_y+1;
-                else scroll_esperado_pgdn=ventana->offset_y + ventana->visible_height-3;
-
-
-                //printf("scroll esperado: %d\n",scroll_esperado_pgdn);
-                //printf("linea_seleccionada: %d offset_y: %d movido_en_ventana: %d\n",(*opcion_inicial),ventana->offset_y,movido_en_ventana);
-
-                //Tecla End. hasta abajo del todo. Lo gestiono en el for
-
-                int salir_pgdn=0;
-
-                for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && (ventana->offset_y<scroll_esperado_pgdn || tecla==27) && !salir_pgdn;conta_mover_pgup_dn++) {
-                    int posicion_antes_pgdn=*opcion_inicial;
-                    (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
-                    //Ajustar scroll de ventana
-                    menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
-                    //printf("mover abajo. offset_y: %d\n",ventana->offset_y);
-
-                    //Si el cursor actual ha llegado al final del todo y dado la vuelta
-                    if (*opcion_inicial<posicion_antes_pgdn) {
-                        //printf("llegado al final y dado la vuelta. compensar hacia arriba\n");
-                        //subir uno hacia arriba y salir
-                        (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
-                        salir_pgdn=1;
-                    }
-
-                }
-
-                zxvision_sound_event_cursor_movement();
-
-            break;
-
-
-            case 32:
-                //Accion para tecla espacio
-                //printf ("Pulsado espacio\n");
-                                //decimos que se ha pulsado Enter
-                                //tecla=13;
-
-                //Ver si tecla asociada a espacio
-                funcion_espacio=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_espacio;
-
-                if (funcion_espacio==NULL) {
-                    debug_printf (VERBOSE_DEBUG,"No space key function associated to this menu item");
+                    //printf ("Final ponemos tecla a 0. Era %d\n",tecla);
                     tecla=0;
                 }
 
-                else {
 
-                    debug_printf (VERBOSE_DEBUG,"Found space key function associated to this menu item");
+                //printf ("menu tecla: %d %c\n",tecla,tecla);
+            }
 
+            //Si no se ha pulsado tecla de atajo:
+            if (!((tecla_leida>='a' && tecla_leida<='z') || (tecla_leida>='A' && tecla_leida<='Z')) ) {
+                menu_espera_no_tecla();
+            }
+
+
+
+            t_menu_funcion_activo sel_activo;
+
+            t_menu_funcion funcion_espacio;
+
+            if (tecla!=0) menu_tooltip_counter=0;
+
+            //int lineas_mover_pgup_dn;
+            int conta_mover_pgup_dn;
+            int scroll_esperado_pgdn;
+            int scroll_esperado_pgup;
+            int movido_en_ventana;
+            //int scroll_antes_pgdn;
+
+            //printf ("tecla en dibuja menu: %d\n",tecla);
+
+            //flecha derecha se comporta como enter en menus no tabulados y si tiene submenu
+            if (m->es_menu_tabulado==0) {
+                menu_item *comprobar_derecha=menu_retorna_item(m,(*opcion_inicial));
+                if (tecla=='8' && menu_old_behaviour_close_menus.v==0 && comprobar_derecha->tiene_submenu) {
+                    int cambiar_a_enter=1;
+                    //con topbar, si submenu no habilitado (como uart bridge emulation) se comporta como flecha derecha y no como enter
+                    if (zxvision_topbar_menu_enabled.v) {
+                        t_menu_funcion_activo fun_activo=comprobar_derecha->menu_funcion_activo;
+                        if (fun_activo!=NULL) {
+                            if (fun_activo()==0) {
+                                debug_printf(VERBOSE_DEBUG,"Right cursor key behaves as Enter");
+                                cambiar_a_enter=0;
+                            }
+                        }
+                    }
+
+                    if (cambiar_a_enter) tecla=13;
+                }
+            }
+
+            //printf("teclaxxx: %d\n",tecla);
+
+            switch (tecla) {
+                case 13:
                     //ver si la opcion seleccionada esta activa
 
                     sel_activo=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_activo;
 
                     if (sel_activo!=NULL) {
-                        if ( sel_activo()==0 ) {
-                            tecla=0;  //desactivamos seleccion
-                            debug_printf (VERBOSE_DEBUG,"Menu item is disabled");
+                                if ( sel_activo()==0 ) tecla=0;  //desactivamos seleccion
+                    }
+                break;
+
+
+                //Mover Izquierda:
+                //En tabulados, sigue el cursor
+                //En no tabulados y en no dialogos, menu anterior
+                case '5':
+
+                    if (m->es_menu_tabulado==0 && m->no_es_realmente_un_menu==0) {
+                        if (menu_old_behaviour_close_menus.v==0) {
+                            salir_con_flecha_izquierda=1;
+                            //printf("salir con flecha izquierda\n");
                         }
                     }
 
-                }
+                    else {
 
-            break;
-
-
-
-        }
-
-        //teclas de atajos. De momento solo admitido entre a y z
-        if ( (tecla>='a' && tecla<='z') || (tecla>='A' && tecla<='Z')) {
-            //printf ("buscamos atajo\n");
-
-            int entrada_atajo;
-            entrada_atajo=menu_retorna_atajo(m,tecla);
-
-
-            //Encontrado atajo
-            if (entrada_atajo!=-1) {
-                (*opcion_inicial)=entrada_atajo;
-
-                //Mostrar por un momento opciones y letras
-                menu_writing_inverse_color.v=1;
-                menu_escribe_opciones_zxvision(ventana,m,entrada_atajo,max_opciones);
-                menu_refresca_pantalla();
-
-                menu_dibuja_menu_espera_no_tecla();
-
-
-                //decimos que se ha pulsado Enter
-                tecla=13;
-
-                //Ver si esa opcion esta habilitada o no
-                t_menu_funcion_activo sel_activo;
-                sel_activo=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_activo;
-                if (sel_activo!=NULL) {
-                    //opcion no habilitada
-                    if ( sel_activo()==0 ) {
-                            debug_printf (VERBOSE_DEBUG,"Shortcut found at entry number %d but entry disabled",(*opcion_inicial));
-                            tecla=0;
+                        //en menus tabulados, misma funcion que arriba para un no tabulado
+                        //Si es tabulado, seguira hasta la opcion '7'
+                        (*opcion_inicial)=menu_dibuja_menu_cursor_arriba((*opcion_inicial),max_opciones,m);
+                        zxvision_sound_event_cursor_movement();
                     }
+                break;
+
+
+                //Mover Derecha, solo en tabulados
+                case '8':
+                    //en menus tabulados, misma funcion que abajo para un no tabulado
+                    if (m->es_menu_tabulado==0) {
+                        //y si no tiene submenu, salir cuando se tiene topbar habilitado
+                        //y siendo el primer submenu
+                        if (zxvision_topbar_menu_enabled.v && m->no_es_realmente_un_menu==0) {
+
+                            if (menu_old_behaviour_close_menus.v) {
+                                salir_con_flecha_derecha=1;
+                            }
+
+                            else {
+
+                                if (ventana==menu_dibuja_submenu_primer_submenu) {
+                                    //printf("--Somos el primer submenu\n");
+                                    salir_con_flecha_derecha=1;
+                                    //printf("### salir con flecha derecha siendo primer submenu\n");
+                                }
+                                else {
+                                    //printf("--No somos el primer submenu\n");
+                                    //salir como si fuera ESC, para cerrar todos submenus
+                                    salir_todos_menus=1;
+                                    salir_con_flecha_derecha=1;
+                                    //break;
+                                }
+                            }
+
+                        }
+                        /*else {
+                            break;
+                        }*/
+                    }
+
+                    else {
+                        (*opcion_inicial)=menu_dibuja_menu_cursor_abajo((*opcion_inicial),max_opciones,m);
+                        zxvision_sound_event_cursor_movement();
+                    }
+                break;
+
+                //Mover abajo
+                case '6':
+                    (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+                    zxvision_sound_event_cursor_movement();
+                break;
+
+                //Mover arriba
+                case '7':
+                    (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+                    zxvision_sound_event_cursor_movement();
+                break;
+
+
+
+                //PgUp
+                //Home
+                case 24:
+                case 26:
+                    //Mover hacia arriba hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a abajo del todo
+
+                    //calcular el cursor donde esta relativamente en ventana
+                    movido_en_ventana=(*opcion_inicial)-(ventana->offset_y);
+
+                    //Si el cursor esta en la mitad inferior de la ventana, hacer pgup lo que hace es llevarnos a la posicion del cursor arriba-1 posicion
+                    if (movido_en_ventana>(ventana->visible_height/2)) scroll_esperado_pgup=ventana->offset_y-1;
+                    else scroll_esperado_pgup=ventana->offset_y - (ventana->visible_height-3);
+                    //printf("scroll esperado: %d\n",scroll_esperado_pgup);
+
+                    //Tecla Home. hasta arriba del todo. Lo gestiono en el for
+
+                    int salir_pgup=0;
+
+                    for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && (ventana->offset_y>scroll_esperado_pgup || tecla==26) && !salir_pgup;conta_mover_pgup_dn++) {
+                        int posicion_antes_pgdn=*opcion_inicial;
+                        (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+                        //Ajustar scroll de ventana
+                        menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
+                        //printf("mover arriba. offset_y: %d\n",ventana->offset_y);
+
+                        //Si el cursor actual ha llegado arriba del todo y dado la vuelta
+                        if (*opcion_inicial>posicion_antes_pgdn) {
+                            //printf("llegado al final y dado la vuelta. compensar hacia abajo\n");
+                            //subir uno hacia arriba y salir
+                            (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+                            salir_pgup=1;
+                        }
+
+                    }
+
+                    zxvision_sound_event_cursor_movement();
+
+                break;
+
+
+
+                //PgDn
+                //End
+                case 25:
+                case 27:
+
+                    //Mover hacia abajo hasta que llega el scroll a valor esperado o se llega al maximo de opciones o se va a arriba del todo
+
+                    //calcular el cursor donde esta relativamente en ventana
+                    movido_en_ventana=(*opcion_inicial)-(ventana->offset_y);
+
+                    //Si el cursor esta en la mitad superior de la ventana, hacer pgdn lo que hace es llevarnos a la posicion del cursor abajo+1 posicion
+                    if (movido_en_ventana<(ventana->visible_height/2)) scroll_esperado_pgdn=ventana->offset_y+1;
+                    else scroll_esperado_pgdn=ventana->offset_y + ventana->visible_height-3;
+
+
+                    //printf("scroll esperado: %d\n",scroll_esperado_pgdn);
+                    //printf("linea_seleccionada: %d offset_y: %d movido_en_ventana: %d\n",(*opcion_inicial),ventana->offset_y,movido_en_ventana);
+
+                    //Tecla End. hasta abajo del todo. Lo gestiono en el for
+
+                    int salir_pgdn=0;
+
+                    for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<max_opciones && (ventana->offset_y<scroll_esperado_pgdn || tecla==27) && !salir_pgdn;conta_mover_pgup_dn++) {
+                        int posicion_antes_pgdn=*opcion_inicial;
+                        (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+                        //Ajustar scroll de ventana
+                        menu_dibuja_menu_set_offset_y_common(ventana,m,*opcion_inicial);
+                        //printf("mover abajo. offset_y: %d\n",ventana->offset_y);
+
+                        //Si el cursor actual ha llegado al final del todo y dado la vuelta
+                        if (*opcion_inicial<posicion_antes_pgdn) {
+                            //printf("llegado al final y dado la vuelta. compensar hacia arriba\n");
+                            //subir uno hacia arriba y salir
+                            (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+                            salir_pgdn=1;
+                        }
+
+                    }
+
+                    zxvision_sound_event_cursor_movement();
+
+                break;
+
+
+                case 32:
+                    //Accion para tecla espacio
+                    //printf ("Pulsado espacio\n");
+                                    //decimos que se ha pulsado Enter
+                                    //tecla=13;
+
+                    //Ver si tecla asociada a espacio
+                    funcion_espacio=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_espacio;
+
+                    if (funcion_espacio==NULL) {
+                        debug_printf (VERBOSE_DEBUG,"No space key function associated to this menu item");
+                        tecla=0;
+                    }
+
+                    else {
+
+                        debug_printf (VERBOSE_DEBUG,"Found space key function associated to this menu item");
+
+                        //ver si la opcion seleccionada esta activa
+
+                        sel_activo=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_activo;
+
+                        if (sel_activo!=NULL) {
+                            if ( sel_activo()==0 ) {
+                                tecla=0;  //desactivamos seleccion
+                                debug_printf (VERBOSE_DEBUG,"Menu item is disabled");
+                            }
+                        }
+
+                    }
+
+                break;
+
+
+
+            }
+
+            //teclas de atajos. De momento solo admitido entre a y z
+            if ( (tecla>='a' && tecla<='z') || (tecla>='A' && tecla<='Z')) {
+                //printf ("buscamos atajo\n");
+
+                int entrada_atajo;
+                entrada_atajo=menu_retorna_atajo(m,tecla);
+
+
+                //Encontrado atajo
+                if (entrada_atajo!=-1) {
+                    (*opcion_inicial)=entrada_atajo;
+
+                    //Mostrar por un momento opciones y letras
+                    menu_writing_inverse_color.v=1;
+                    menu_escribe_opciones_zxvision(ventana,m,entrada_atajo,max_opciones);
+                    menu_refresca_pantalla();
+
+                    menu_dibuja_menu_espera_no_tecla();
+
+
+                    //decimos que se ha pulsado Enter
+                    tecla=13;
+
+                    //Ver si esa opcion esta habilitada o no
+                    t_menu_funcion_activo sel_activo;
+                    sel_activo=menu_retorna_item(m,(*opcion_inicial))->menu_funcion_activo;
+                    if (sel_activo!=NULL) {
+                        //opcion no habilitada
+                        if ( sel_activo()==0 ) {
+                                debug_printf (VERBOSE_DEBUG,"Shortcut found at entry number %d but entry disabled",(*opcion_inicial));
+                                tecla=0;
+                        }
+                    }
+
+
                 }
 
+                else {
+                    debug_printf (VERBOSE_DEBUG,"No shortcut found for read key: %c",tecla);
 
+                    //Probar teclas de movimiento ventana
+                    zxvision_handle_opqa_wskl(ventana,tecla);
+
+                    tecla=0;
+                    menu_espera_no_tecla();
+                }
             }
 
-            else {
-                debug_printf (VERBOSE_DEBUG,"No shortcut found for read key: %c",tecla);
 
-                //Probar teclas de movimiento ventana
-                zxvision_handle_opqa_wskl(ventana,tecla);
-
-                tecla=0;
-                menu_espera_no_tecla();
-            }
-        }
-
-
-
-    }
-
-    //NOTA: contador de tooltip se incrementa desde bucle de timer, ejecutado desde cpu loop
-    //Si no hay multitask de menu, NO se incrementa contador y por tanto no hay tooltip
-
-    if (menu_tooltip_counter>=TOOLTIP_SECONDS) {
-
-        redibuja_ventana=1;
-
-        //Por defecto asumimos que no saltara tooltip y por tanto que no queremos que vuelva a enviar a speech la ventana
-        //Aunque si que volvera a decir el "Selected item: ..." en casos que se este en una opcion sin tooltip,
-        //no aparecera el tooltip pero vendra aqui con el timeout y esto hara redibujar la ventana por redibuja_ventana=1
-        //si quitase ese redibujado, lo que pasaria es que no aparecerian los atajos de teclado para cada opcion
-        //Entonces tal y como esta ahora:
-        //Si la opcion seleccionada tiene tooltip, salta el tooltip
-        //Si no tiene tooltip, no salta tooltip, pero vuelve a decir "Selected item: ..."
-        menu_speech_set_tecla_pulsada();
-
-        //Si ventana no esta activa, no mostrar tooltips,
-        //porque esto hace que, por ejemplo, si el foco está en la máquina emulada, al saltar el tooltip, cambiaria el foco a la ventana de menu
-        if (tooltip_enabled.v && ventana_tipo_activa) {
-            char *texto_tooltip;
-            texto_tooltip=menu_retorna_item(m,(*opcion_inicial))->texto_tooltip;
-            if (texto_tooltip!=NULL) {
-                //printf ("mostramos tooltip\n");
-                //Forzar que siempre suene
-                menu_speech_reset_tecla_pulsada();
-
-
-                menu_dibuja_menu_help_tooltip(texto_tooltip,1);
-
-                //printf ("despues de mostrar tooltip\n");
-
-
-                //Esperar no tecla
-                menu_espera_no_tecla();
-
-
-                //Y volver a decir "Selected item"
-                menu_active_item_primera_vez=1;
-
-
-                //Y reactivar parametros ventana usados en menu_dibuja_ventana
-                //zxvision_set_draw_window_parameters(ventana);
-
-            }
-
-            else {
-                //printf ("no hay tooltip\n");
-
-                //No queremos que se vuelva a leer cuando tooltip es inexistente. si no, estaria todo el rato releyendo la linea
-                //TODO: esto no tiene efecto, sigue releyendo cuando estas sobre item que no tiene tooltip
-                //menu_speech_set_tecla_pulsada();
-
-            }
 
         }
 
-        //else printf ("No mostrar tooltip\n");
+        //NOTA: contador de tooltip se incrementa desde bucle de timer, ejecutado desde cpu loop
+        //Si no hay multitask de menu, NO se incrementa contador y por tanto no hay tooltip
 
-        //Hay que dibujar las letras correspondientes en texto inverso
-        menu_writing_inverse_color.v=1;
+        if (menu_tooltip_counter>=TOOLTIP_SECONDS) {
 
-        menu_tooltip_counter=0;
-    }
+            redibuja_ventana=1;
+
+            //Por defecto asumimos que no saltara tooltip y por tanto que no queremos que vuelva a enviar a speech la ventana
+            //Aunque si que volvera a decir el "Selected item: ..." en casos que se este en una opcion sin tooltip,
+            //no aparecera el tooltip pero vendra aqui con el timeout y esto hara redibujar la ventana por redibuja_ventana=1
+            //si quitase ese redibujado, lo que pasaria es que no aparecerian los atajos de teclado para cada opcion
+            //Entonces tal y como esta ahora:
+            //Si la opcion seleccionada tiene tooltip, salta el tooltip
+            //Si no tiene tooltip, no salta tooltip, pero vuelve a decir "Selected item: ..."
+            menu_speech_set_tecla_pulsada();
+
+            //Si ventana no esta activa, no mostrar tooltips,
+            //porque esto hace que, por ejemplo, si el foco está en la máquina emulada, al saltar el tooltip, cambiaria el foco a la ventana de menu
+            if (tooltip_enabled.v && ventana_tipo_activa) {
+                char *texto_tooltip;
+                texto_tooltip=menu_retorna_item(m,(*opcion_inicial))->texto_tooltip;
+                if (texto_tooltip!=NULL) {
+                    //printf ("mostramos tooltip\n");
+                    //Forzar que siempre suene
+                    menu_speech_reset_tecla_pulsada();
+
+
+                    menu_dibuja_menu_help_tooltip(texto_tooltip,1);
+
+                    //printf ("despues de mostrar tooltip\n");
+
+
+                    //Esperar no tecla
+                    menu_espera_no_tecla();
+
+
+                    //Y volver a decir "Selected item"
+                    menu_active_item_primera_vez=1;
+
+
+                    //Y reactivar parametros ventana usados en menu_dibuja_ventana
+                    //zxvision_set_draw_window_parameters(ventana);
+
+                }
+
+                else {
+                    //printf ("no hay tooltip\n");
+
+                    //No queremos que se vuelva a leer cuando tooltip es inexistente. si no, estaria todo el rato releyendo la linea
+                    //TODO: esto no tiene efecto, sigue releyendo cuando estas sobre item que no tiene tooltip
+                    //menu_speech_set_tecla_pulsada();
+
+                }
+
+            }
+
+            //else printf ("No mostrar tooltip\n");
+
+            //Hay que dibujar las letras correspondientes en texto inverso
+            menu_writing_inverse_color.v=1;
+
+            menu_tooltip_counter=0;
+        }
 
     } while (redibuja_ventana==1);
 
