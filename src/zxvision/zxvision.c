@@ -22692,11 +22692,20 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 
 }
 
+//Si se ha pulsado en submenu anterior y hay que ir mas de uno hacia atras
+int menu_dibuja_menu_yendo_atras_sumenus=0;
+
 
 int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 {
 
     //printf("menu_dibuja_submenu_mouse_en_menus_anteriores. mouse_is_dragging=%d\n",mouse_is_dragging);
+
+    if (menu_dibuja_menu_yendo_atras_sumenus) {
+        printf("Entramos en menu pero estamos yendo hacia atras. Cuantos quedan: %d\n",menu_dibuja_menu_yendo_atras_sumenus);
+        menu_dibuja_menu_yendo_atras_sumenus--;
+        return 1;
+    }
 
     //if (!si_menu_mouse_en_ventana() && mouse_left && !mouse_is_dragging && menu_show_submenus_tree.v) {
     //Antes se consideraba tambien !mouse_is_dragging pero creo que es un error, eso seguramente viene copiado
@@ -22721,7 +22730,22 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 
 
         while (w!=NULL) {
-            if (x>=(w->x) && y>=(w->y) && x<=(w->x+w->visible_width-1) && y<=(w->y+w->visible_height-1)) return 1;
+            if (x>=(w->x) && y>=(w->y) && x<=(w->x+w->visible_width-1) && y<=(w->y+w->visible_height-1)) {
+                printf("Pulsado en submenu [%s]\n",w->window_title);
+
+
+                //Ver cuantos menus hay que ir atras. o sea saber la distancia del menu que se pulsa hasta el menu actual
+                menu_dibuja_menu_yendo_atras_sumenus=0;
+                while (w->submenu_next!=NULL) {
+                    menu_dibuja_menu_yendo_atras_sumenus++;
+                    w=w->submenu_next;
+                }
+
+                printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_sumenus);
+
+                menu_dibuja_menu_yendo_atras_sumenus--;
+                return 1;
+            }
 
             w=w->submenu_next;
         }
@@ -23305,6 +23329,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     menu_refresca_pantalla();
                 }
 
+                if (menu_dibuja_menu_yendo_atras_sumenus) tecla_leida='5';
+
+                else {
 
                 menu_espera_tecla_timeout_tooltip();
 
@@ -23313,9 +23340,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                 tecla_leida=zxvision_read_keyboard();
 
+                mouse_movido=antes_mouse_movido;
+
+                }
+
                 //printf ("Despues tecla leida: %d %c\n",tecla_leida,tecla_leida);
 
-                mouse_movido=antes_mouse_movido;
 
                 //Para poder usar repeticiones
                 if (tecla_leida==0) {
