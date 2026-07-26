@@ -16,6 +16,7 @@ Improved ZX Vision:
 - Allow to hide menus from top menu
 - Allow to show Top Menu short menu names
 - Add to recent files/folders list when selecting a folder (for example esxdos handler directory or ql mdv)
+- Allow to click on a previous submenu
 
 Improved ZX Desktop:
 - Allow to sort icons alphabetically

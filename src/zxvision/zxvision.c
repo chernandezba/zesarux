@@ -22701,7 +22701,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 
     //printf("menu_dibuja_submenu_mouse_en_menus_anteriores. mouse_is_dragging=%d\n",mouse_is_dragging);
 
-    if (menu_dibuja_menu_yendo_atras_sumenus) {
+    if (menu_dibuja_menu_yendo_atras_sumenus>0) {
         printf("Entramos en menu pero estamos yendo hacia atras. Cuantos quedan: %d\n",menu_dibuja_menu_yendo_atras_sumenus);
         menu_dibuja_menu_yendo_atras_sumenus--;
         return 1;
@@ -22725,7 +22725,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 
         //printf("despues %d,%d\n",x,y);
 
-
+        /* metodo antiguo buscando desde primer submenu hasta el actual
         zxvision_window *w=menu_dibuja_submenu_primer_submenu;
 
 
@@ -22749,8 +22749,37 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 
             w=w->submenu_next;
         }
+        */
+
+        //nuevo metodo buscando desde el actual submenu hasta el anterior
+        zxvision_window *w=zxvision_current_window;
+
+        menu_dibuja_menu_yendo_atras_sumenus=0;
+
+        while (w!=NULL) {
+            w=w->submenu_previous;
+            if (w!=NULL) {
+                printf("Recorriendo submenus. actual [%s]\n",w->window_title);
+                menu_dibuja_menu_yendo_atras_sumenus++;
+
+                if (x>=(w->x) && y>=(w->y) && x<=(w->x+w->visible_width-1) && y<=(w->y+w->visible_height-1)) {
+                    printf("Pulsado en submenu [%s]\n",w->window_title);
+
+                    printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_sumenus);
+
+                    menu_dibuja_menu_yendo_atras_sumenus--;
+                    return 1;
+                }
+            }
+
+        }
+
+        //No se ha visto cual anterior pulsado, entonces no ir submenus hacia atras
+        menu_dibuja_menu_yendo_atras_sumenus=0;
 
     }
+
+    printf("no hemos pulsado en menu anterior\n");
 
     return 0;
 
@@ -23329,7 +23358,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     menu_refresca_pantalla();
                 }
 
-                if (menu_dibuja_menu_yendo_atras_sumenus) tecla_leida='5';
+                if (menu_dibuja_menu_yendo_atras_sumenus>0) tecla_leida='5';
 
                 else {
 
