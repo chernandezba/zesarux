@@ -22696,7 +22696,14 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 {
 
-    if (!si_menu_mouse_en_ventana() && mouse_left && !mouse_is_dragging && menu_show_submenus_tree.v) {
+    //printf("menu_dibuja_submenu_mouse_en_menus_anteriores. mouse_is_dragging=%d\n",mouse_is_dragging);
+
+    //if (!si_menu_mouse_en_ventana() && mouse_left && !mouse_is_dragging && menu_show_submenus_tree.v) {
+    //Antes se consideraba tambien !mouse_is_dragging pero creo que es un error, eso seguramente viene copiado
+    //de otros eventos de ZX Desktop en los que si que interesa saber que se ha pulsado pero no se esta arrastrando
+    //En este caso queremos saber si se pulsa en menu anterior y para eso da igual que se este arrastrando (probablemente sin querer el usuario porque ha pulsado mientras
+    //movia el raton y por eso se interpreta como arrastrando)
+    if (!si_menu_mouse_en_ventana() && mouse_left && menu_show_submenus_tree.v) {
 
         int x,y;
 
@@ -24033,8 +24040,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         return MENU_RETORNO_ESC;
     }
 
+    //printf("no Return con flecha izquierda\n");
+
     if (salir_con_flecha_derecha) {
-        //printf("Return con flecha izquierda\n");
+        //printf("Return con flecha derecha\n");
         zxvision_helper_menu_shortcut_delete_last();
 
         ultimo_menu_salido_con_flecha_derecha=1;

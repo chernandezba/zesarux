@@ -26,8 +26,11 @@ Agregado registros de General Sound registers a la ventana de Ver Sensores
 
 * Correcciones:
 
+Corregido ZX Vision:
+- Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
+- Corregido al pulsar en un menú previo y el menú se cerraba aleatoriamente
+
 Corregido el desactivado del menú de Búsqueda
-Corregido al restaurar ventanas minimizadas al inicio y la opción de "Ocultar ventanas minimizadas" está activada
 Corregido efecto de video Fade Out
 Corregida descarga de ZEsarUX extras desde menú Network
 Corregido al mostrar valores de botones de joystick real en ventana de Real Joystick information al usar SDL
