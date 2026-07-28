@@ -11909,8 +11909,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
             "Show advanced options","Mostrar opciones avanzadas","Mostra les opcions avançades");
         menu_add_item_menu_prefijo_format(array_menu_settings,"[%c] ",(menu_show_advanced_items.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_settings,"Show or hide advanced options in menus");
-        menu_add_item_menu_ayuda(array_menu_settings,"When enabled, additional options intended for advanced users are displayed throughout the application's menus. "
-                                "Disable this option to simplify the interface and show only the most commonly used commands");
+        menu_add_item_menu_ayuda(array_menu_settings,"When enabled, advanced options are displayed in menus. "
+                                "Disable this option to simplify the interface by hiding these options");
 
 
         menu_add_item_menu_separator(array_menu_settings);
