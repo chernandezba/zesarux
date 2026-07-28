@@ -45703,6 +45703,9 @@ int menu_inicio_mostrar_main_menu(int salir_menu)
         menu_dibuja_menu_recorrer_menus_entrado_submenu=1;
     }
 
+            //Como aqui es inicio de menu, por si acaso reseteamos posible acción de ir hacia atrás
+            reset_menu_dibuja_menu_yendo_atras_submenus();
+
             int retorno_menu;
 
             menu_item *array_menu_principal;

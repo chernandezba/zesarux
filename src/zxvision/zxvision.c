@@ -22695,6 +22695,10 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 //Si se ha pulsado en submenu anterior y hay que ir mas de uno hacia atras
 int menu_dibuja_menu_yendo_atras_submenus=0;
 
+void reset_menu_dibuja_menu_yendo_atras_submenus(void)
+{
+    menu_dibuja_menu_yendo_atras_submenus=0;
+}
 
 int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 {
@@ -29144,6 +29148,9 @@ void menu_inicio_handle_button_presses(void)
             //innecesario con nuevo metodo de indexacion zxvision_index_search_init_menu_path_main_menu();
 
             zxvision_helper_menu_shortcut_init();
+
+            //Como aqui es inicio de menu, por si acaso reseteamos posible acción de ir hacia atrás
+            reset_menu_dibuja_menu_yendo_atras_submenus();
 
             switch (pulsado_boton) {
                 case 0:

@@ -1264,6 +1264,7 @@ extern int menu_dibuja_menu_dialogo(int *opcion_inicial,menu_item *item_seleccio
 extern void menu_dibuja_submenu_cierra_todos_submenus(void);
 extern void menu_dibuja_submenu_free_all(void);
 extern void menu_tape_settings_trunc_name(char *orig,char *dest,int max);
+extern void reset_menu_dibuja_menu_yendo_atras_submenus(void);
 
 extern void menu_dibuja_cuadrado_putpixel_background_reset_cache(void);
 

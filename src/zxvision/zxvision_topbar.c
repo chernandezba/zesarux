@@ -607,6 +607,9 @@ void menu_topbarmenu(void)
 
     zxvision_redraw_all_windows();
 
+    //Como aqui es inicio de menu, por si acaso reseteamos posible acción de ir hacia atrás
+    reset_menu_dibuja_menu_yendo_atras_submenus();
+
 
     int total_posiciones=menu_topbarmenu_crear_indice_posiciones();
 
