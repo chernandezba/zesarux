@@ -22693,7 +22693,7 @@ void menu_dibuja_submenu_get_menu_pos(int *xnormal,int *ynormal)
 }
 
 //Si se ha pulsado en submenu anterior y hay que ir mas de uno hacia atras
-int menu_dibuja_menu_yendo_atras_sumenus=0;
+int menu_dibuja_menu_yendo_atras_submenus=0;
 
 
 int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
@@ -22701,9 +22701,9 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 
     //printf("menu_dibuja_submenu_mouse_en_menus_anteriores. mouse_is_dragging=%d\n",mouse_is_dragging);
 
-    if (menu_dibuja_menu_yendo_atras_sumenus>0) {
-        printf("Entramos en menu pero estamos yendo hacia atras. Cuantos quedan: %d\n",menu_dibuja_menu_yendo_atras_sumenus);
-        menu_dibuja_menu_yendo_atras_sumenus--;
+    if (menu_dibuja_menu_yendo_atras_submenus>0) {
+        printf("Entramos en menu pero estamos yendo hacia atras. Cuantos quedan: %d\n",menu_dibuja_menu_yendo_atras_submenus);
+        menu_dibuja_menu_yendo_atras_submenus--;
         return 1;
     }
 
@@ -22735,15 +22735,15 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
 
 
                 //Ver cuantos menus hay que ir atras. o sea saber la distancia del menu que se pulsa hasta el menu actual
-                menu_dibuja_menu_yendo_atras_sumenus=0;
+                menu_dibuja_menu_yendo_atras_submenus=0;
                 while (w->submenu_next!=NULL) {
-                    menu_dibuja_menu_yendo_atras_sumenus++;
+                    menu_dibuja_menu_yendo_atras_submenus++;
                     w=w->submenu_next;
                 }
 
-                printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_sumenus);
+                printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_submenus);
 
-                menu_dibuja_menu_yendo_atras_sumenus--;
+                menu_dibuja_menu_yendo_atras_submenus--;
                 return 1;
             }
 
@@ -22754,20 +22754,20 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
         //nuevo metodo buscando desde el actual submenu hasta el anterior
         zxvision_window *w=menu_dibuja_submenu_find_last_submenu();
 
-        menu_dibuja_menu_yendo_atras_sumenus=0;
+        menu_dibuja_menu_yendo_atras_submenus=0;
 
         while (w!=NULL) {
             w=w->submenu_previous;
             if (w!=NULL) {
                 printf("Recorriendo submenus. actual [%s]\n",w->window_title);
-                menu_dibuja_menu_yendo_atras_sumenus++;
+                menu_dibuja_menu_yendo_atras_submenus++;
 
                 if (x>=(w->x) && y>=(w->y) && x<=(w->x+w->visible_width-1) && y<=(w->y+w->visible_height-1)) {
                     printf("Pulsado en submenu [%s]\n",w->window_title);
 
-                    printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_sumenus);
+                    printf("Distancia del submenu anterior pulsado al actual: %d\n",menu_dibuja_menu_yendo_atras_submenus);
 
-                    menu_dibuja_menu_yendo_atras_sumenus--;
+                    menu_dibuja_menu_yendo_atras_submenus--;
                     return 1;
                 }
             }
@@ -22775,7 +22775,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
         }
 
         //No se ha visto cual anterior pulsado, entonces no ir submenus hacia atras
-        menu_dibuja_menu_yendo_atras_sumenus=0;
+        menu_dibuja_menu_yendo_atras_submenus=0;
 
     }
 
@@ -23358,7 +23358,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     menu_refresca_pantalla();
                 }
 
-                if (menu_dibuja_menu_yendo_atras_sumenus>0) tecla_leida='5';
+                if (menu_dibuja_menu_yendo_atras_submenus>0) tecla_leida='5';
 
                 else {
 
