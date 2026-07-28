@@ -22752,7 +22752,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
         */
 
         //nuevo metodo buscando desde el actual submenu hasta el anterior
-        zxvision_window *w=zxvision_current_window;
+        zxvision_window *w=menu_dibuja_submenu_find_last_submenu();
 
         menu_dibuja_menu_yendo_atras_sumenus=0;
 
