@@ -35724,7 +35724,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_se_cerrara(array_menu_debug);
 
 
-        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_debug);
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_source_code,NULL,
@@ -35858,7 +35858,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_genera_ventana(array_menu_debug);
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
-        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_debug);
 
 
 
@@ -35908,7 +35908,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 
-    menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+    menu_add_item_menu_separator(array_menu_debug);
 
 
 
@@ -36013,7 +36013,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         }
         */
 
-        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_debug);
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic,menu_debug_view_basic_cond,
             "~~Basic","~~Basic","~~Basic");
@@ -36067,7 +36067,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         }
 
 
-        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_debug);
                 //menu_add_item_menu(array_menu_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_debug);
 

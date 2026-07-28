@@ -24393,6 +24393,9 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 void menu_add_item_menu_separator(menu_item *m)
 {
     menu_add_item_menu(m,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+    //prueba con separador visible
+    //menu_add_item_menu(m,"----------",MENU_OPCION_SEPARADOR,NULL,NULL);
 }
 
 //Agregar ayuda al ultimo item de menu
