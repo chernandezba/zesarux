@@ -22763,7 +22763,7 @@ int menu_dibuja_submenu_mouse_en_menus_anteriores(void)
         while (w!=NULL) {
             w=w->submenu_previous;
             if (w!=NULL) {
-                printf("Recorriendo submenus. actual [%s]\n",w->window_title);
+                //printf("Recorriendo submenus. actual [%s]\n",w->window_title);
                 menu_dibuja_menu_yendo_atras_submenus++;
 
                 if (x>=(w->x) && y>=(w->y) && x<=(w->x+w->visible_width-1) && y<=(w->y+w->visible_height-1)) {
