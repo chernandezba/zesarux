@@ -35880,7 +35880,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
         if (si_complete_video_driver() ) {
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sprites,NULL,
-                "View ~~Sprites","Ver ~~Sprites","Veure ~~Sprites");
+                "~~Sprite Viewer","Visor de ~~Sprites","Visor de ~~Sprites");
             menu_add_item_menu_shortcut(array_menu_debug,'s');
             menu_add_item_menu_se_cerrara(array_menu_debug);
             menu_add_item_menu_genera_ventana(array_menu_debug);
